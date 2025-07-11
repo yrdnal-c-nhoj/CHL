@@ -48,7 +48,7 @@ function Manifesto() {
           <p><span className="hat">"Plus Ars Citius Omni Tempore Nam Quisque"*</span><br />
           <span className="smallcaps">WE HONOR</span> and thank the artists, photographers, typographers and programmers, our collaborators everywhere whose work is now part of Cubist Heart Laboratories.
            <span className="line">&nbsp;</span>
-           <span className="translate">*More Art Faster For Everybody All The Time</span></p>
+           <span className="translate">*"More Art Faster For Everybody All The Time"</span></p>
         </div>
         <footer className="footer">
           ©{new Date().getFullYear()} Cubist Heart Laboratories. All rights reserved.
