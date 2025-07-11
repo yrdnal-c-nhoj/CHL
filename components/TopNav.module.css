@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+.topnavchl {
+  font-family: "Roboto Slab", sans-serif;
+  color: #dfe7df;
+  font-size: 1.2rem;
+  line-height: 2.5rem;
+  letter-spacing: 0.02rem;
+  background-color: #050605;
+  padding: 0.1rem 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.topnavbt {
+  font-family: "Oxanium", sans-serif;
+  transform: skewX(-20deg);
+  color: #eae8ed;
+  text-shadow:
+    #b6e548 1px 0px 0px,
+    #101601 2px 0px 0px,
+    #eb7373 3px 0px 0.0px,
+    #fdf1f1 4px 0px 0px,
+    #24f704 -4px 0px 6px;
+  font-size: 4.8rem;
+  line-height: 5rem;
+  text-align: center;
+  letter-spacing: -0.23rem;
+}
+
+.topnavtag {
+  font-family: "Oxanium", sans-serif;
+  transform: skewX(-10deg);
+  font-size: 0.8rem;
+  line-height: 1.2rem;
+  color: #ede7e7;
+  text-align: center;
+  font-style: italic;
+  padding: 0.5rem 0;
+  background-color: #60615e;
+}
+
+.nav-menu {
+  font-family: "Roboto Slab", sans-serif;
+  display: none;
+  position: fixed;
+  top: 3.5rem;
+  right: 1rem;
+  flex-direction: column;
+  width: 200px;
+  padding: 0.1rem;
+  z-index: 999;
+  background-color: #c9ccc7;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.nav-menu.active {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav-item {
+  margin: 0.5rem 0;
+}
+
+.nav-link {
+  color: #123c9d;
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  display: block;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #050b0d;
+  text-decoration: underline;
+}
+
+.nav-link.active {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.hamburger {
+  display: block;
+  background-color: #bdb8b8;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  right: 1rem;
+  top: 1rem;
+  z-index: 1000;
+}
+
+.hamburger span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: #c9bebe;
+  margin: 5px 0;
+  transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
+@media (max-width: 768px) {
+  .topnavbt {
+    font-size: 3rem;
+    line-height: 3.5rem;
+  }
+  .topnavchl {
+    font-size: 1rem;
+  }
+  .topnavtag {
+    font-size: 0.7rem;
+    line-height: 1rem;
+  }
+}

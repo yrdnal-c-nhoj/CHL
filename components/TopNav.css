@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Nanum+Gothic&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
+/* 
+.topmotto {
+  font-family: "Cinzel Decorative", serif;
+  color: rgba(54, 42, 7, 0.877);
+  font-size: 0.6rem;
+  letter-spacing: 0.18rem;
+  text-align: center;
+  padding: 0.1rem 0;
+} */
+
+.topnavchl {
+  font-family: "Roboto Slab", sans-serif;
+  color: rgb(246, 246, 242);
+  text-shadow: #0e0d0d 0.5px 0.5px  0px, #000000 -0.5px  -0.5px  0px;
+  font-size: 1.1rem;
+  letter-spacing: 0.03rem;
+  /* text-align: left; */
+  background-color: #60615e;
+
+  /* Stretch full width */
+  width: 100vw;
+  position: relative;
+  left: 0;
+  margin: 0;
+  padding: 0.1rem; /* optional spacing */
+  box-sizing: border-box;
+}
+
+
+.topnavbt {
+  font-family: "Oxanium", sans-serif;
+  transform: skewX(-20deg);
+  color: #eae8ed;
+  text-shadow:
+    #990606 3px 1px 7.0px,
+    #b6e548 -2.2px -0.8px 5px,
+    #340303 3px 2px 0,
+    #340303 -3px -2px 0;
+  font-size: 3.5rem;
+  line-height: 3.7rem;
+  text-align: center;
+  letter-spacing: -0.05rem;
+  width: 100vw;
+  /* position: relative; */
+  background-color: #60615e;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+
+.topnavtag {
+  font-family: "Oxanium", sans-serif;
+  transform: skewX(-10deg);
+  font-size: 0.8rem;
+  line-height: 0.1rem;
+  color: #ede7e7;
+  text-align: center;
+  font-style: italic;
+  padding: 0.5rem 0;
+   background-color: #60615e;
+}
+
+.nav-menu {
+  font-family: "Roboto Slab", sans-serif;
+  display: none;
+  position: fixed;
+  top: 3.5rem;
+  right: 1rem;
+  flex-direction: column;
+  width: 200px;
+  padding: 0.1rem;
+  z-index: 999;
+  background-color: #c9ccc7;
+}
+
+.nav-menu.active {
+  display: flex;
+}
+
+.nav-item {
+  margin: 0.5rem 0;
+}
+
+.nav-link {
+  color: #123c9d;
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  display: block;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #050b0d;
+  text-decoration: underline;
+}
+
+.nav-link.active {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.hamburger {
+  display: block;
+  background-color: #bdb8b8;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  right: 1rem;
+  top: 1rem;
+  z-index: 1000;
+}
+
+.hamburger span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: #c9bebe;
+  margin: 5px 0;
+  transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
