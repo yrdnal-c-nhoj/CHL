@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './styles.css';
 import fwImage from './fw.gif';
-import giphyImage from './giphy (11).gif';
+// import giphyImage from './giphy (11).gif';
 import gif84298 from './84298.gif';
 
 function getRandomBrightColor() {
