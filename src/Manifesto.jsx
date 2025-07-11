@@ -45,11 +45,9 @@ function Manifesto() {
           <span className="smallcaps">INVISIBLE, ENDLESSLY JUMPING.</span> They subatomically convey all our ambitions, thoughts, emotions and knowledge. Our nevous system.
            <span className="line">We use the unseen to render the intangible.</span></p>
 
-          <p><span className="hat">Mostly...</span><br />
+          <p><span className="hat">"Plus Ars Citius Omni Tempore Nam Quisque"*</span><br />
           <span className="smallcaps">WE HONOR</span> and thank the artists, photographers, typographers and programmers, our collaborators everywhere whose work is now part of Cubist Heart Laboratories.
            <span className="line">&nbsp;</span>
-            <span className="smallcaps">"PLUS ARS CITIUS OMNI TEMPORE NAM QUISQUE"*</span>
-           
            <span className="translate">*More Art Faster For Everybody All The Time</span></p>
         </div>
         <footer className="footer">
