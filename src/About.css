@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Oxanium:wght@200..800&display=swap');
+
+html,
+body {
+  margin: 0;
+}
+
+.container {
+  font-family: "Nunito", sans-serif;
+  margin: 0;
+  padding: 0 0 60px 0;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  background-color: antiquewhite;
+}
+
+.centeredContent {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  width: 100%;
+  max-width: min(80%, 800px);
+  box-sizing: border-box;
+  z-index: 5;
+  color: #060706;
+}
+
+.centeredContent h1 {
+  font-family: "Roboto Slab", sans-serif;
+  color: #850404;
+  letter-spacing: 0.2rem;
+  font-size: 2.1rem;
+  text-align: left;
+  margin: 0.1rem 0;
+}
+
+.centeredContent p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.epigraph {
+  font-size: 1.0rem;
+  margin: 0.6rem 1rem;
+  text-align: left;
+  color: #323737;
+  max-width: 70rem;
+}
+
+.epigraph .quote {
+  font-style: italic;
+  border-left: 2px solid #9f9a9a; /* Added vertical line */
+  padding-left: 1rem; /* Space between line and text */
+}
+
+.epigraph .attribution {
+  text-align: left;
+  margin-top: 0.2rem;
+  margin-left: 1rem;
+  font-style: normal;
+  font-size: 0.8rem;
+}
+
+.epigraph .author {
+  color: #6b6969;
+}
+
+.epigraph .source {
+  color: #6b6969;
+  font-size: 0.8rem;
+}
+
+.footer {
+  font-size: 0.8rem;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: right;
+  color: #898b89;
+  font-family: "Nunito", sans-serif;
+}
+
+.hat {
+  font-family: "Roboto Slab", sans-serif;    
+  font-size: 1.4rem;
+  letter-spacing: 0.03em;
+  font-weight: bold;
+  color: #850404;
+  margin-bottom: -1.9rem;
+  display: block;
+}
+
+.smallcaps {
+  font-family: "Nunito", sans-serif;
+  font-size: 0.9rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+}
+
+p {
+  font-family: "Nunito", sans-serif;
+}
+
+.translate {
+  display: block;
+  font-size: 0.7rem;
+  font-style: italic;
+  text-align: right;
+  color: #4d514d;
+}
+
+.line {
+  display: block;
+  bottom: 100px;
+  margin-top: 0.1rem;
+}

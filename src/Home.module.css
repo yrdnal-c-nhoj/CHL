@@ -1,0 +1,181 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
+
+/* Ensure full-page layout */
+html,
+body {
+  margin: 0;
+}
+
+.container {
+  background-color: #dcd7d8;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.centeredContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 70%;
+  box-sizing: border-box;
+  z-index: 5;
+}
+
+.dateList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.entry {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align content to left, date handled separately */
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.3rem 5rem 0.3rem 0.3rem; /* Extra right padding for date */
+  position: relative; /* Anchor for absolute positioning */
+}
+
+.entry:not(:last-child) {
+  border-bottom: 1px solid #f4e1e1;
+}
+
+.entry:first-child {
+  border-top: 1px solid #f4e1e1;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-decoration: none;
+}
+
+.title {
+  flex: 1 1 auto; /* Take available space on left */
+  text-align: left; /* Flush left, ragged right */
+  font-size: 1rem;
+  font-family: "Nunito", sans-serif;
+  color: #0c0d0d;
+  word-break: break-word;
+  white-space: normal;
+  min-width: 0; /* Prevent flex shrinkage */
+  margin-right: 0.4rem;
+}
+
+.clockNumber {
+  flex: 0 0 auto;
+  font-size: 0.9rem;
+  font-family: "Nunito", sans-serif;
+  color: #0c0d0d;
+  text-align: center;
+  width: 4rem; /* Fixed width to align vertically */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* Center horizontally */
+}
+
+.date {
+  flex: 0 0 auto;
+  font-size: 0.9rem;
+  font-family: "Nunito", sans-serif;
+  color: #0c0d0d;
+  text-align: right; /* Flush right, ragged left */
+  white-space: nowrap;
+  position: absolute;
+  right: 0.3rem; /* Align to right edge with padding */
+  top: 50%;
+  transform: translateY(-50%); /* Vertically center */
+}
+
+.connector {
+  flex: 0 0 auto;
+  height: 0.5px;
+  background-color: #0e0e0e;
+  width: 1rem;
+  margin: 0 0.4rem;
+}
+
+.error {
+  color: #dc3545;
+  text-align: center;
+  font-size: 18px;
+  padding: 20px;
+}
+
+.loading {
+  color: #585c58;
+  text-align: center;
+  font-size: 18px;
+  padding: 20px;
+}
+
+.sortContainer {
+  display: flex;
+  justify-content: center;
+  padding: 0.1rem 0;
+  z-index: 6;
+}
+
+.sortButton {
+  background-color: transparent;
+  font-size: 0.7rem;
+  padding: 4px 18px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s, text-shadow 0.2s;
+  color: #8b8f8c;
+  font-family: "Roboto Slab", sans-serif;
+}
+
+.sortButton:hover {
+  background-color: rgba(48, 49, 50, 0.5);
+  color: #feffff;
+}
+
+.sortButton.active {
+  color: #616063;
+  border-color: #c7f2ce;
+  background-color: rgba(177, 175, 179, 0.3);
+}
+
+.sortButton:focus {
+  outline: none;
+}
+
+.titleSortButton {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.dateSortButton {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.entry:hover {
+  background-color: #0c0d0d;
+  color: #dcd7d8;
+}
+
+.entry:hover .clockNumber,
+.entry:hover .title,
+.entry:hover .date,
+.entry:hover .connector {
+  color: #cad8f4;
+  background-color: #0f0f0f; /* For connector */
+}
