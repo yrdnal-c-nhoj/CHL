@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Face Card Clock - BorrowedTime</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Nanum+Gothic+Coding:wght@400;700&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&family=Syne+Mono&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      background-repeat: repeat;
+      position: relative;
+    }
+
+    .bgimage {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 150vmax;
+      height: 150vmax;
+      object-fit: cover;
+      transform: translate(-50%, -50%);
+      filter: contrast(2.7) brightness(0.3);
+      z-index: -1;
+      animation: slow-rotate 720s linear infinite;
+      transform-origin: center center;
+    }
+
+    @keyframes slow-rotate {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1.5);
+      }
+      100% {
+        transform: translate(-50%, -50%) rotate(-360deg) scale(1.5);
+      }
+    }
+
+    .clock-container {
+      position: relative;
+      width: 80vmin;
+      height: 80vmin;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .number {
+      position: absolute;
+      width: 23vmin;
+      height: 23vmin;
+      top: 50%;
+      left: 50%;
+      transform-origin: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .number img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .hand {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform-origin: bottom;
+      border-radius: 5px;
+      box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(205, 201, 201);
+    }
+
+    .hour-hand {
+      width: 5vmin;
+      height: 17vmin;
+      background-color: #575a59;
+      transform: translateX(-50%);
+    }
+
+    .minute-hand {
+      width: 3vmin;
+      height: 27vmin;
+      background-color: #72878b;
+      transform: translateX(-50%);
+    }
+
+    .second-hand {
+      width: 0.5vmin;
+      height: 50vmin;
+      background-color: rgb(254, 254, 254);
+      transform: translateX(-50%);
+    }
+
+    .center {
+      position: absolute;
+      width: 5vmin;
+      height: 5vmin;
+      background-color: #979b99;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .title-container {
+      color: #646461;
+      text-shadow: #dddad6 1px 0px;
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 98%;
+      display: flex;
+      z-index: 6;
+    }
+
+    .chltitle {
+      font-family: "Roboto Slab", serif;
+      font-size: 2.8vh;
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      letter-spacing: 0.1vh;
+    }
+
+    .bttitle {
+      position: relative;
+      left: 0;
+      font-family: "Oxanium", serif;
+      font-size: 2.8vh;
+      font-style: italic;
+      z-index: 15;
+      letter-spacing: -0.1vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #e8ecec;
+      background-color: rgb(21, 0, 255);
+      text-decoration: none;
+    }
+
+    .date-container {
+      color: #e5e5d9;
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 98%;
+      display: flex;
+      z-index: 6;
+    }
+
+    .clockname {
+      font-family: "Oxanium", serif;
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 4vh;
+      line-height: 4vh;
+    }
+
+    .dateleft {
+      font-size: 3vh;
+      font-family: "Nanum Gothic Coding", monospace;
+      position: relative;
+      left: 0;
+    }
+
+    .dateright {
+      font-size: 3vh;
+      font-family: "Nanum Gothic Coding", monospace;
+      position: absolute;
+      right: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="title-container">
+    <div class="chltitle">Cubist Heart Laboratories</div>
+    <div class="bttitle">BorrowedTime</div>
+  </div>
+
+  <div class="date-container">
+    <a href="../blizzard/" class="dates dateleft">06/07/25</a>
+    <a href="../index.html" class="clockname">Face Cards</a>
+    <a href="../ionosphere/" class="dates dateright">06/09/25</a>
+  </div>
+
+  <img src="./81V9vt-RfGL._AC_SL1500_.jpg" class="bgimage" alt="Background" />
+
+  <div class="clock-container" id="clock">
+    <div class="number" style="transform: translate(-50%, -50%) rotate(0deg) translateY(-39vmin);">
+      <img src="./Khea.gif" alt="12" />
+    </div>
+    <div class="number" style="transform: translate(-50%, -50%) rotate(30deg) translateY(-39vmin);">
+      <img src="./qspades.jpg" alt="1" />
+    </div>
+    <div class="number" style="transform: translate(-50%, -50%) rotate(60deg) translateY(-39vmin);">
+      <img src="./Jdi.gif" alt="2" />
+    </div>
+    <div class="number" style="transform: translate(-50%, -50%) rotate(90deg) translateY(-39vmin);">
+      <img src="./Kclubs.png" alt="3" />
+    </div>
+    <div class="number" style="transform: translate(-50%, -50%) rotate(120deg) translateY(-39vmin);">
+      <img src="./Qhea.gif" alt="4" />
+    </div>
+    <div class="number" style="transform: translate(-50%, -50%) rotate(150deg) translateY(-39vmin);">
+      <img src="./JSpades.png" alt="5" />
+    </div>
+    <div class="number" style="transform: translate(-50%, -50%) rotate(180deg) translateY(-39vmin);">
+      <img src="./Kdi.gif" alt="6" />
+    </div>
+    <div class="number" style="transform: translate(-50%, -50%) rotate(210deg) translateY(-39vmin);">
+      <img src="./Qclu.gif" alt="7" />
+    </div>
+    <div class="number" style="transform: translate(-50%, -50%) rotate(240deg) translateY(-39vmin);">
+      <img src="./Jheart.jpg" alt="8" />
+    </div>
+    <div class="number" style="transform: translate(-50%, -50%) rotate(270deg) translateY(-39vmin);">
+      <img src="./Kspa.gif" alt="9" />
+    </div>
+    <div class="number" style="transform: translate(-50%, -50%) rotate(300deg) translateY(-39vmin);">
+      <img src="./Qdi.gif" alt="10" />
+    </div>
+    <div class="number" style="transform: translate(-50%, -50%) rotate(330deg) translateY(-39vmin);">
+      <img src="./Jclu.gif" alt="11" />
+    </div>
+    <div class="hand hour-hand" id="hour"></div>
+    <div class="hand minute-hand" id="minute"></div>
+    <div class="hand second-hand" id="second"></div>
+    <div class="center"></div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const ms = now.getMilliseconds();
+      const seconds = now.getSeconds() + ms / 1000;
+      const minutes = now.getMinutes() + seconds / 60;
+      const hours = now.getHours() % 12 + minutes / 60;
+
+      const secondDeg = (seconds / 60) * 360;
+      const minuteDeg = (minutes / 60) * 360;
+      const hourDeg = (hours / 12) * 360;
+
+      document.getElementById('second').style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
+      document.getElementById('minute').style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
+      document.getElementById('hour').style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+
+      requestAnimationFrame(updateClock);
+    }
+
+    requestAnimationFrame(updateClock);
+  </script>
+</body>
+</html>

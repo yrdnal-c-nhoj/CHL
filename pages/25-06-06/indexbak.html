@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rolling Clock - BorrowedTime</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Monofett&family=Nanum+Gothic+Coding:wght@400;700&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'rrrr';
+      src: url('./rrrr.ttf') format('truetype');
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-image: radial-gradient(#301e01 9px, transparent 9px), radial-gradient(#301e01 9px, transparent 9px);
+      background-size: 56px 56px;
+      background-position: 0 0, 28px 28px;
+      background-color: #4b1a03;
+    }
+
+    .ticker-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .clock {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%) rotate(0deg);
+      width: 80vh;
+      height: 80vh;
+      border-radius: 50%;
+    }
+
+    .number {
+      font-family: "rrrr", sans-serif;
+      position: absolute;
+      text-align: center;
+      transform-origin: center;
+      pointer-events: none;
+      font-size: 24px;
+      color: #f0f4ef;
+    }
+
+    .hand {
+      position: absolute;
+      width: 500%;
+      height: 2px;
+      background: rgb(218, 7, 7);
+      top: 50%;
+      left: 50%;
+      transform-origin: 0% 50%;
+    }
+
+    .minute { height: 3px; background: rgb(12, 213, 18); }
+    .hour { height: 4px; background: rgb(24, 111, 243); width: 395%; }
+
+    .center-dot {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: #290101;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .title-container {
+      color: #4b2c04;
+      text-shadow: #dee3e3 1px 0px;
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 98%;
+      display: flex;
+      z-index: 6;
+    }
+
+    .chltitle {
+      font-family: "Roboto Slab", serif;
+      font-size: 2.8vh;
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      letter-spacing: 0.1vh;
+    }
+
+    .bttitle {
+      position: relative;
+      left: 0;
+      font-family: "Oxanium", serif;
+      font-size: 2.8vh;
+      font-style: italic;
+      z-index: 15;
+      letter-spacing: -0.1vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #e8ecec;
+      background-color: rgb(21, 0, 255);
+      text-decoration: none;
+    }
+
+    .date-container {
+      color: #f3dee7;
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 98%;
+      display: flex;
+      z-index: 6;
+    }
+
+    .clockname {
+      font-family: "Oxanium", serif;
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 4vh;
+      line-height: 4vh;
+    }
+
+    .dateleft {
+      font-size: 3vh;
+      font-family: "Nanum Gothic Coding", monospace;
+      position: relative;
+      left: 0;
+    }
+
+    .dateright {
+      font-size: 3vh;
+      font-family: "Nanum Gothic Coding", monospace;
+      position: absolute;
+      right: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="title-container">
+    <div class="chltitle">Cubist Heart Laboratories</div>
+    <div class="bttitle">BorrowedTime</div>
+  </div>
+  <div class="date-container">
+    <a href="../treehouse/" class="dates dateleft">06/04/25</a>
+    <a href="../index.html" class="clockname">Rolling</a>
+    <a href="../sprout/" class="dates dateright">06/06/25</a>
+  </div>
+  <div class="ticker-container" id="ticker"></div>
+
+  <script>
+    const ticker = document.getElementById("ticker");
+    const clockSpeed = 50;
+    const screenWidth = window.innerWidth;
+
+    function createClock() {
+      const clock = document.createElement("div");
+      clock.className = "clock";
+      clock.style.left = screenWidth + "px";
+
+      for (let i = 1; i <= 12; i++) {
+        const num = document.createElement("div");
+        num.className = "number";
+        num.innerText = i;
+        const angle = (i - 3) * 30 * (Math.PI / 180);
+        const r = 40;
+        const x = 50 + r * Math.cos(angle);
+        const y = 50 + r * Math.sin(angle);
+        num.style.left = `${x}%`;
+        num.style.top = `${y}%`;
+        num.style.transform = `translate(-50%, -50%)`;
+        clock.appendChild(num);
+      }
+
+      const hourHand = document.createElement("div");
+      hourHand.className = "hand hour";
+      clock.appendChild(hourHand);
+
+      const minuteHand = document.createElement("div");
+      minuteHand.className = "hand minute";
+      clock.appendChild(minuteHand);
+
+      const secondHand = document.createElement("div");
+      secondHand.className = "hand";
+      clock.appendChild(secondHand);
+
+      const centerDot = document.createElement("div");
+      centerDot.className = "center-dot";
+      clock.appendChild(centerDot);
+
+      ticker.appendChild(clock);
+
+      const clockWidth = 300;
+      const totalTravel = screenWidth + clockWidth + 100;
+      const startTime = performance.now();
+
+      function animate(now) {
+        const elapsed = now - startTime;
+        const distance = (elapsed / 5000) * clockSpeed;
+        const angle = -(distance / (Math.PI * clockWidth)) * 360;
+
+        // Get live time
+        const nowTime = new Date();
+        const sec = nowTime.getSeconds() + nowTime.getMilliseconds() / 1000;
+        const min = nowTime.getMinutes() + sec / 60;
+        const hr = (nowTime.getHours() % 12) + min / 60;
+
+        secondHand.style.transform = `rotate(${sec * 6}deg)`;
+        minuteHand.style.transform = `rotate(${min * 6}deg)`;
+        hourHand.style.transform = `rotate(${hr * 30}deg)`;
+
+        clock.style.left = `${screenWidth - distance}px`;
+        clock.style.transform = `translateY(-50%) rotate(${angle}deg)`;
+
+        if (distance < totalTravel) {
+          requestAnimationFrame(animate);
+        } else {
+          clock.remove();
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    createClock();
+    setInterval(createClock, 10000);
+  </script>
+</body>
+</html>
