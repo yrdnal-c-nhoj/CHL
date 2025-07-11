@@ -1,0 +1,50 @@
+@font-face {
+    font-family: 'dotted';
+    src: url('./dotted.ttf') format('truetype');
+    font-display: swap;
+}
+
+body {
+    margin: 0;
+    background-image: linear-gradient(rgb(21, 84, 89), rgb(228, 207, 249));
+    overflow: hidden;
+    font-family: 'dotted', sans-serif;
+}
+
+#clock {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+.digit {
+    position: absolute;
+    will-change: transform, opacity;
+    white-space: pre;
+    pointer-events: none;
+    animation: fly-up 15s ease-out forwards;
+    transform-style: preserve-3d;
+}
+
+@keyframes fly-up {
+    0% {
+        transform: translate(var(--x-start), var(--y-start)) rotateX(var(--rotate-x-start)) rotateY(var(--rotate-y-start)) rotateZ(var(--rotate-z-start)) scale(var(--scale));
+        opacity: 1;
+    }
+
+    15%,
+    90% {
+        transform: translate(var(--x-final), var(--y-final)) rotateZ(var(--rotate-z-final)) scale(var(--scale));
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(var(--x-final), var(--y-final)) rotateZ(var(--rotate-z-final)) scale(var(--scale));
+        opacity: 0;
+    }
+}
+
+#screen-reader-time {
+    position: absolute;
+    left: -9999px;
+}
