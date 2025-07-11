@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ionosphere Clock - BorrowedTime</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Monofett&family=Nanum+Gothic+Coding:wght@400;700&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            /* background: black; */
+            overflow: hidden;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .date-container {
+            color: #82b080;
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 98%;
+            display: flex;
+            z-index: 6;
+        }
+
+        .clockname {
+            font-family: "Oxanium", serif;
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: "Oxanium", serif;
+            font-size: 4vh;
+            line-height: 4vh;
+        }
+
+
+        .dateleft {
+            font-size: 3vh;
+            font-family: "Nanum Gothic Coding", monospace;
+            position: relative;
+            left: 0;
+        }
+
+        .dateright {
+            font-size: 3vh;
+            font-family: "Nanum Gothic Coding", monospace;
+            position: absolute;
+            right: 0;
+        }
+
+        .title-container {
+            color: #2b1c1f;
+            text-shadow: #f0749d 1px 0px;
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 98%;
+            display: flex;
+            /* justify-content: space-between; */
+            z-index: 6;
+        }
+
+        .chltitle {
+            font-family: "Roboto Slab", serif;
+            font-size: 2.8vh;
+            position: absolute;
+            top: 1px;
+            right: 1px;
+            letter-spacing: 0.1vh;
+        }
+
+        .bttitle {
+            position: relative;
+            left: 0;
+            font-family: "Oxanium", serif;
+            font-size: 2.8vh;
+            font-style: italic;
+            z-index: 15;
+            letter-spacing: -0.1vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #e8ecec;
+            background-color: rgb(21, 0, 255);
+            text-decoration: none;
+        }
+         @font-face {
+      font-family: 'ion';
+      src: url('ion.ttf') format('truetype');
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: rgb(4, 30, 60);
+      font-family: monospace;
+      perspective: 1000px;
+    }
+
+    .clock-wrapper {
+      position: absolute;
+      will-change: transform;
+      pointer-events: none;
+      z-index: 6;
+    }
+
+    .clock {
+        z-index: 6;
+      font-family: 'ion', monospace;
+      display: inline-block;
+      transform-style: preserve-3d;
+      will-change: transform;
+      filter: saturate(80%) brightness(80%);
+      text-shadow:0 0 6px rgb(214, 241, 11),  0 0 3px rgb(188, 211, 234);
+    }
+
+    @keyframes drift-right {
+      from { transform: translateX(-120%); }
+      to   { transform: translateX(120vw); }
+    }
+
+    @keyframes drift-left {
+      from { transform: translateX(120vw); }
+      to   { transform: translateX(-120%); }
+    }
+
+    @keyframes spin-a {
+      from { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+      to   { transform: rotateX(180deg) rotateY(360deg) rotateZ(90deg); }
+    }
+
+    @keyframes spin-b {
+      from { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+      to   { transform: rotateX(360deg) rotateY(180deg) rotateZ(270deg); }
+    }
+
+    @keyframes spin-c {
+      from { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+      to   { transform: rotateX(90deg) rotateY(270deg) rotateZ(360deg); }
+    }
+
+    .bgimage1 {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 110vh;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: contrast(90%) saturate(200%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .bgimage2 {
+            position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: contrast(90%) saturate(90%);
+      z-index: 2;
+      opacity:  0.3;
+      pointer-events: none;
+    }
+
+    </style>
+</head>
+
+<body>
+    <div class="title-container">
+        <div class="chltitle">Cubist Heart Laboratories</div>
+        <div class="bttitle">BorrowedTime</div>
+    </div>
+
+    <div class="date-container">
+        <a href="../facecard/" class="dates dateleft">06/08/25</a>
+        <a href="../index.html" class="clockname">Ionosphere</a>
+         <a href="../index.html" class="dates dateright">06/10/25</a>
+    </div>
+
+
+  <img src="./ion.jpeg" class="bgimage2">
+  <img src="./isky.webp" class="bgimage1" alt="Sky background" />
+
+  
+
+     <script>
+    const CLOCK_BACKGROUND = 'rgba(0, 255, 255, 0.0)';
+    const CLOCK_COUNT_PER_DIRECTION = 1;
+    const MIN_DURATION = 0.1;
+    const MAX_DURATION = 20;
+    const CLOCK_SPREAD_Y_PADDING = 200;
+
+    let globalCharIndex = 0;
+
+    const namedSilverShades = [
+      'silver', 'lightgray', 'darkgray', 'gainsboro',
+      '#b0c4de', '#c0c0c0', '#a9a9a9', '#dcdcdc',
+      '#d3d3d3', '#eeeeee', '#f5f5f5', '#a5b487', '#adcbce'
+    ];
+
+    function getRandomGrayOrSilver() {
+      if (Math.random() < 0.5) {
+        const g = Math.floor(100 + Math.random() * 130);
+        return `rgb(${g}, ${g}, ${g})`;
+      } else {
+        return namedSilverShades[Math.floor(Math.random() * namedSilverShades.length)];
+      }
+    }
+
+    function getCharColor(index) {
+      const i = index + 1;
+
+      if (i % 29 === 0) return '#b99b5b'; // soft gold
+      if (i % 25 === 0) return '#a32934'; // rich red
+      if (i % 24 === 0) return '#861024'; // deep maroon
+      if (i % 13 === 0) return '#d0b35d'; // bright gold
+      if (i % 34 === 0) return '#3e7abc'; // blue steel
+
+      return getRandomGrayOrSilver();
+    }
+
+    const spinAnimations = ['spin-a', 'spin-b', 'spin-c'];
+
+    function createClock(direction) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'clock-wrapper';
+
+      const clock = document.createElement('div');
+      clock.className = 'clock';
+
+      const timeStr = new Date().toLocaleTimeString();
+
+      for (const char of timeStr) {
+        const span = document.createElement('span');
+        span.textContent = char;
+        span.style.color = getCharColor(globalCharIndex);
+        globalCharIndex++;
+        clock.appendChild(span);
+      }
+
+      const fontSize = `${Math.random() * 2}rem`;
+      const y = Math.random() * window.innerHeight;
+      wrapper.style.top = `${y}px`;
+      wrapper.style.left = '0';
+      const driftDuration = MIN_DURATION + Math.random() * (MAX_DURATION - MIN_DURATION);
+      wrapper.style.animation = `drift-${direction} ${driftDuration}s linear forwards`;
+
+      const spinName = spinAnimations[Math.floor(Math.random() * spinAnimations.length)];
+      const spinDuration = 20 + Math.random() * 30;
+      clock.style.animation = `${spinName} ${spinDuration}s linear infinite`;
+
+      Object.assign(clock.style, {
+        background: CLOCK_BACKGROUND,
+        fontSize,
+      });
+
+      wrapper.appendChild(clock);
+      document.body.appendChild(wrapper);
+
+      setTimeout(() => wrapper.remove(), driftDuration * 1000);
+    }
+
+    function launchRandomClock() {
+      const direction = Math.random() < 0.5 ? 'left' : 'right';
+      createClock(direction);
+      setTimeout(launchRandomClock, 300 + Math.random() * 1500);
+    }
+
+    function maintainClockBalance() {
+      const all = document.querySelectorAll('.clock-wrapper');
+      const lefts = [...all].filter(w => w.style.animation.includes('drift-left'));
+      const rights = [...all].filter(w => w.style.animation.includes('drift-right'));
+
+      if (lefts.length < CLOCK_COUNT_PER_DIRECTION || rights.length < CLOCK_COUNT_PER_DIRECTION) {
+        launchRandomClock();
+      }
+
+      setTimeout(maintainClockBalance, 1000);
+    }
+
+    maintainClockBalance();
+  </script>
+</body>
+
+</html>
