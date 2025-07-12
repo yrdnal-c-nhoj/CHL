@@ -15,7 +15,7 @@ const Clock = () => {
   useEffect(() => {
     const digitSize = 2.375 * 16;
 
-    // Inject fonts + style for .current
+    // Inject fonts + style for .digit and .current
     const styleSheet = document.createElement('style');
     styleSheet.textContent = `
       @font-face {
@@ -26,11 +26,15 @@ const Clock = () => {
         font-family: 'sli2';
         src: url(${sli2Font}) format('truetype');
       }
-      .digit.current {
-        font-family: 'sli2', monospace;
-        color: #fff6a9;
-        transform: scale(1.1);
-        text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+      .digit {
+        font-family: 'sli', cursive, sans-serif !important;
+        font-size: 3.125rem !important;
+        color: rgb(246, 187, 244) !important;
+      }
+      .digit-strip .digit.current {
+        font-family: 'sli2', Courier, monospace !important;
+        font-size: 1.4375rem !important;
+        color: rgb(98, 105, 174) !important;
       }
     `;
     document.head.appendChild(styleSheet);
@@ -99,9 +103,6 @@ const Clock = () => {
           height: '2.375rem',
           lineHeight: '2.375rem',
           textAlign: 'center',
-          fontSize: '3.125rem',
-          fontFamily: "'sli', cursive, sans-serif",
-          color: 'rgb(246, 187, 244)',
           transition: 'all 0.3s ease',
         }}
       >
@@ -120,9 +121,6 @@ const Clock = () => {
           height: '2.375rem',
           lineHeight: '2.375rem',
           textAlign: 'center',
-          fontSize: '3.125rem',
-          fontFamily: "'sli', cursive, sans-serif",
-          color: 'rgb(246, 187, 244)',
           transition: 'all 0.3s ease',
         }}
       >
@@ -137,6 +135,7 @@ const Clock = () => {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
+        width: '100vw',
         backgroundColor: '#080807',
         overflow: 'hidden',
       }}
