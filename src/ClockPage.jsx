@@ -8,7 +8,7 @@ const ClockPage = () => {
   const { items, loading, error } = useContext(DataContext);
   const [ClockComponent, setClockComponent] = useState(null);
   const [pageError, setPageError] = useState(null);
-  const [sideNavVisible, setSideNavVisible] = useState(true);
+  const [navVisible, setNavVisible] = useState(true);
   const [footerVisible, setFooterVisible] = useState(true);
 
   const formatTitle = (title) => {
@@ -21,7 +21,10 @@ const ClockPage = () => {
     const parts = dateStr.split('-');
     if (parts.length !== 3) return dateStr;
     const [yy, mm, dd] = parts;
-    return `${Number(mm)}/${Number(dd)}/${yy}`;
+    const month = Number(mm);
+    const day = Number(dd);
+    const year = yy;
+    return `${month}/${day}/${year}`;
   };
 
   useEffect(() => {
@@ -36,8 +39,12 @@ const ClockPage = () => {
       const item = items.find(i => i.date === date);
       if (item && item.path) {
         import(`./pages/${item.path}/Clock.jsx`)
-          .then(module => setClockComponent(() => module.default))
-          .catch(err => setPageError(`Failed to load clock for ${date}: ${err.message}`));
+          .then(module => {
+            setClockComponent(() => module.default);
+          })
+          .catch(err => {
+            setPageError(`Failed to load clock for ${date}: ${err.message}`);
+          });
 
         import(`./pages/${item.path}/styles.css`).catch(() => {});
       } else {
@@ -49,27 +56,27 @@ const ClockPage = () => {
   }, [date, items, loading]);
 
   useEffect(() => {
-    const sideFadeDelay = 1000;
-    const footerFadeDelay = 2500;
+    const navFadeDelay = 300;
+    const footerFadeDelay = 2000;
 
-    let sideFadeTimer = setTimeout(() => setSideNavVisible(false), sideFadeDelay);
-    let footerFadeTimer = setTimeout(() => setFooterVisible(false), footerFadeDelay);
+    let navTimer = setTimeout(() => setNavVisible(false), navFadeDelay);
+    let footerTimer = setTimeout(() => setFooterVisible(false), footerFadeDelay);
 
     const handleInteraction = () => {
-      setSideNavVisible(true);
+      setNavVisible(true);
       setFooterVisible(true);
-      clearTimeout(sideFadeTimer);
-      clearTimeout(footerFadeTimer);
-      sideFadeTimer = setTimeout(() => setSideNavVisible(false), sideFadeDelay);
-      footerFadeTimer = setTimeout(() => setFooterVisible(false), footerFadeDelay);
+      clearTimeout(navTimer);
+      clearTimeout(footerTimer);
+      navTimer = setTimeout(() => setNavVisible(false), navFadeDelay);
+      footerTimer = setTimeout(() => setFooterVisible(false), footerFadeDelay);
     };
 
     window.addEventListener('mousemove', handleInteraction);
     window.addEventListener('touchstart', handleInteraction);
 
     return () => {
-      clearTimeout(sideFadeTimer);
-      clearTimeout(footerFadeTimer);
+      clearTimeout(navTimer);
+      clearTimeout(footerTimer);
       window.removeEventListener('mousemove', handleInteraction);
       window.removeEventListener('touchstart', handleInteraction);
     };
@@ -91,17 +98,17 @@ const ClockPage = () => {
         {currentItem && (
           <Link
             to="/"
-            className={`${styles.footerStrip} ${styles.visible}`}
+            className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}
             aria-label="Go back to homepage"
           >
             <div className={styles.footerLeft}>
-              <span><strong>#</strong> {currentIndex + 1}</span>
+              <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
             </div>
             <div className={styles.footerCenter}>
-              <span>{formatTitle(currentItem.title)}</span>
+              <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
             </div>
             <div className={styles.footerRight}>
-              <span>{formatDate(currentItem.date)}</span>
+              <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
             </div>
           </Link>
         )}
@@ -118,7 +125,7 @@ const ClockPage = () => {
       {prevItem && (
         <Link
           to={`/${prevItem.date}`}
-          className={`${styles.floatingNav} ${styles.leftNav} ${sideNavVisible ? styles.visible : styles.hidden}`}
+          className={`${styles.floatingNav} ${styles.leftNav} ${navVisible ? styles.visible : styles.hidden}`}
           aria-label={`Go to ${formatTitle(prevItem.title)}`}
         >
           ←
@@ -128,7 +135,7 @@ const ClockPage = () => {
       {nextItem && (
         <Link
           to={`/${nextItem.date}`}
-          className={`${styles.floatingNav} ${styles.rightNav} ${sideNavVisible ? styles.visible : styles.hidden}`}
+          className={`${styles.floatingNav} ${styles.rightNav} ${navVisible ? styles.visible : styles.hidden}`}
           aria-label={`Go to ${formatTitle(nextItem.title)}`}
         >
           →
@@ -142,13 +149,13 @@ const ClockPage = () => {
           aria-label="Go back to homepage"
         >
           <div className={styles.footerLeft}>
-            <span><strong>#</strong> {currentIndex + 1}</span>
+            <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
           </div>
           <div className={styles.footerCenter}>
-            <span>{formatTitle(currentItem.title)}</span>
+            <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
           </div>
           <div className={styles.footerRight}>
-            <span>{formatDate(currentItem.date)}</span>
+            <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
           </div>
         </Link>
       )}
