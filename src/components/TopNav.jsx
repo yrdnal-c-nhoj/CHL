@@ -59,7 +59,7 @@ export default function TopNav() {
             </NavLink>
           </li>
 
-          {/* <li className="nav-item">
+          <li className="nav-item">
             <NavLink 
               to="/about" 
               className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
@@ -67,7 +67,7 @@ export default function TopNav() {
             >
               ABOUT
             </NavLink>
-          </li> */}
+          </li> 
         
           <li className="nav-item">
             <NavLink 
