@@ -3,23 +3,24 @@
 body {
   margin: 0;
 }
+
 .container {
+  position: relative;
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-sizing: border-box;
   overflow: hidden;
 }
 
 .content {
-  flex: 1 1 auto;
   width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  position: relative;
 }
 
 .centeredContent {
@@ -32,11 +33,6 @@ body {
   box-sizing: border-box;
   z-index: 5;
   margin-top: 13rem;
-}
-
-.dateList,
-.title {
-  color: #dc3545;
 }
 
 .dateList {
@@ -66,7 +62,6 @@ body {
   flex: 0 0 auto;
   text-align: left;
   font-size: 1.0rem;
-  color: #dc3545;
   font-family: "Nunito", sans-serif;
   white-space: nowrap;
 }
@@ -93,42 +88,21 @@ body {
   padding: 20px;
 }
 
-.navLink {
-  color: #b6dc0d;
-  font-family: "Nunito", sans-serif;
-  font-optical-sizing: auto;
-  text-decoration: none;
-  font-size: 12px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  transition: all 0.3s ease;
-  width: 100%;
-}
-
-.navLink:hover {
-  color: #dede9a;
-  background-color: rgba(198, 224, 190, 0.2);
-}
-
 .floatingNav {
   position: fixed;
-  bottom: 33vh; /* 1/3 up the screen */
+  bottom: 33vh;
   z-index: 1100;
   padding: 1.5rem 1.25rem;
   color: #6f6c6f;
-  font-family: "Nunito", sans-serif;
-  font-size: 1rem;
+  background-color: rgba(236, 241, 235, 0.5);
+  font-size: 3rem;
   text-decoration: none;
-  border: 1px solid #ddd4d5;
   border-radius: 0.5rem;
-  transition: background-color 0.3s ease;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .floatingNav:hover {
-  background-color: rgba(198, 224, 190, 0.2);
+  background-color: rgba(111, 167, 213, 0.7);
   color: #fff6a9;
 }
 
@@ -138,19 +112,6 @@ body {
 
 .rightNav {
   right: 1rem;
-}
-.footerStrip {
-  width: 100%;
-  background: rgba(220, 53, 69, 0.9); /* deep red */
-  color: #fff;
-  font-family: "Nunito", sans-serif;
-  font-size: 0.85rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  box-sizing: border-box;
-  flex-shrink: 0;
 }
 
 .footerLeft,
@@ -175,4 +136,46 @@ body {
   gap: 1.5rem;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.footerStrip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(241, 238, 238, 0.9);
+  color: #111010;
+  font-family: "Nunito", sans-serif;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
+  z-index: 10;
+  pointer-events: auto;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.footerStrip:hover {
+  background-color: rgba(198, 224, 190, 0.3);
+  color: #000;
+}
+
+.footerStrip:focus,
+.footerStrip:active {
+  outline: none;
+  text-decoration: none;
+}
+
+.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
