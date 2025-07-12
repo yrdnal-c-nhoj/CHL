@@ -8,36 +8,36 @@ const ClockPage = () => {
   const { items, loading, error } = useContext(DataContext);
   const [ClockComponent, setClockComponent] = useState(null);
   const [pageError, setPageError] = useState(null);
-  const [navVisible, setNavVisible] = useState(true);
+  const [sideNavVisible, setSideNavVisible] = useState(true);
+  const [footerVisible, setFooterVisible] = useState(true);
 
   const formatTitle = (title) => {
     if (!title) return 'Home';
     return title.replace(/clock/i, '').trim() || 'Home';
   };
 
-  // Handle body overflow cleanup
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return dateStr;
+    const [yy, mm, dd] = parts;
+    return `${Number(mm)}/${Number(dd)}/${yy}`;
+  };
+
   useEffect(() => {
     return () => {
       document.body.style.overflow = '';
     };
   }, []);
 
-  // Handle dynamic import of clock component
   useEffect(() => {
     if (loading) return;
     if (date && date.match(/^\d{2}-\d{2}-\d{2}$/)) {
       const item = items.find(i => i.date === date);
       if (item && item.path) {
-        console.log(`Attempting to import: ./pages/${item.path}/Clock.jsx`);
         import(`./pages/${item.path}/Clock.jsx`)
-          .then(module => {
-            console.log(`Successfully loaded Clock.jsx for path: ${item.path}`);
-            setClockComponent(() => module.default);
-          })
-          .catch(err => {
-            console.error(`Failed to load clock for path: ${item.path}`, err);
-            setPageError(`Failed to load clock for ${date}: ${err.message}`);
-          });
+          .then(module => setClockComponent(() => module.default))
+          .catch(err => setPageError(`Failed to load clock for ${date}: ${err.message}`));
 
         import(`./pages/${item.path}/styles.css`).catch(() => {});
       } else {
@@ -48,29 +48,30 @@ const ClockPage = () => {
     }
   }, [date, items, loading]);
 
-  // Handle navigation fade-out and interaction events
   useEffect(() => {
-    let fadeTimer = setTimeout(() => {
-      setNavVisible(false);
-    }, 500);
+    const sideFadeDelay = 1000;
+    const footerFadeDelay = 2500;
+
+    let sideFadeTimer = setTimeout(() => setSideNavVisible(false), sideFadeDelay);
+    let footerFadeTimer = setTimeout(() => setFooterVisible(false), footerFadeDelay);
 
     const handleInteraction = () => {
-      setNavVisible(true);
-      clearTimeout(fadeTimer);
-      fadeTimer = setTimeout(() => {
-        setNavVisible(false);
-      }, 500);
+      setSideNavVisible(true);
+      setFooterVisible(true);
+      clearTimeout(sideFadeTimer);
+      clearTimeout(footerFadeTimer);
+      sideFadeTimer = setTimeout(() => setSideNavVisible(false), sideFadeDelay);
+      footerFadeTimer = setTimeout(() => setFooterVisible(false), footerFadeDelay);
     };
 
-    window.addEventListener('touchstart', handleInteraction);
-    window.addEventListener('click', handleInteraction);
     window.addEventListener('mousemove', handleInteraction);
+    window.addEventListener('touchstart', handleInteraction);
 
     return () => {
-      clearTimeout(fadeTimer);
-      window.removeEventListener('touchstart', handleInteraction);
-      window.removeEventListener('click', handleInteraction);
+      clearTimeout(sideFadeTimer);
+      clearTimeout(footerFadeTimer);
       window.removeEventListener('mousemove', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
     };
   }, []);
 
@@ -83,30 +84,28 @@ const ClockPage = () => {
 
   if (error || pageError) {
     return (
-
-<div className={styles.container}>
-  <div className={styles.content}>
-    {ClockComponent ? <ClockComponent /> : <div className={styles.loading}>Loading clock...</div>}
-  </div>
-
-  {currentItem && (
-    <div className={styles.footerStrip}>
-      <div className={styles.footerLeft}>
-        <span><strong>#</strong> {currentIndex + 1}</span>
+      <div className={styles.container}>
+        <div className={styles.content}>
+          {ClockComponent ? <ClockComponent /> : <div className={styles.loading}>Loading clock...</div>}
+        </div>
+        {currentItem && (
+          <Link
+            to="/"
+            className={`${styles.footerStrip} ${styles.visible}`}
+            aria-label="Go back to homepage"
+          >
+            <div className={styles.footerLeft}>
+              <span><strong>#</strong> {currentIndex + 1}</span>
+            </div>
+            <div className={styles.footerCenter}>
+              <span>{formatTitle(currentItem.title)}</span>
+            </div>
+            <div className={styles.footerRight}>
+              <span>{formatDate(currentItem.date)}</span>
+            </div>
+          </Link>
+        )}
       </div>
-      <div className={styles.footerCenter}>
-        <span><strong>Title:</strong> {formatTitle(currentItem.title)}</span>
-      </div>
-      <div className={styles.footerRight}>
-        <span><strong>Date:</strong> {currentItem.date}</span>
-      </div>
-    </div>
-  )}
-</div>
-
-
-
-
     );
   }
 
@@ -115,45 +114,45 @@ const ClockPage = () => {
       <div className={styles.content}>
         {ClockComponent ? <ClockComponent /> : <div className={styles.loading}>Loading clock...</div>}
       </div>
+
       {prevItem && (
         <Link
           to={`/${prevItem.date}`}
-          className={`${styles.floatingNav} ${styles.leftNav} ${navVisible ? styles.visible : styles.hidden}`}
+          className={`${styles.floatingNav} ${styles.leftNav} ${sideNavVisible ? styles.visible : styles.hidden}`}
           aria-label={`Go to ${formatTitle(prevItem.title)}`}
         >
           ←
         </Link>
       )}
+
       {nextItem && (
         <Link
           to={`/${nextItem.date}`}
-          className={`${styles.floatingNav} ${styles.rightNav} ${navVisible ? styles.visible : styles.hidden}`}
+          className={`${styles.floatingNav} ${styles.rightNav} ${sideNavVisible ? styles.visible : styles.hidden}`}
           aria-label={`Go to ${formatTitle(nextItem.title)}`}
         >
           →
         </Link>
       )}
 
-
-
-
-{currentItem && (
-  <div className={styles.footerStrip}>
-    <div className={styles.footerLeft}>
-      <span><strong>#</strong> {currentIndex + 1}</span>
+      {currentItem && (
+        <Link
+          to="/"
+          className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}
+          aria-label="Go back to homepage"
+        >
+          <div className={styles.footerLeft}>
+            <span><strong>#</strong> {currentIndex + 1}</span>
+          </div>
+          <div className={styles.footerCenter}>
+            <span>{formatTitle(currentItem.title)}</span>
+          </div>
+          <div className={styles.footerRight}>
+            <span>{formatDate(currentItem.date)}</span>
+          </div>
+        </Link>
+      )}
     </div>
-    <div className={styles.footerCenter}>
-      <span><strong>Title:</strong> {formatTitle(currentItem.title)}</span>
-    </div>
-    <div className={styles.footerRight}>
-      <span><strong>Date:</strong> {currentItem.date}</span>
-    </div>
-  </div>
-)}
-
-
-    </div>
-    
   );
 };
 
