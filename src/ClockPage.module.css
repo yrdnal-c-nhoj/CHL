@@ -113,7 +113,6 @@ body {
 
 /* Font size overrides for footer sections */
 .footerNumber {
-   font-family: 'Cinzel';
   font-size: 0.9rem;
 }
 
@@ -123,6 +122,5 @@ body {
 }
 
 .footerDate {
-  font-family: 'Cinzel';
   font-size: 0.9rem;
 }
