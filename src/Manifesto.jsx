@@ -1,6 +1,7 @@
 import React from 'react';
 import TopNav from './components/TopNav';
 import './Wordpages.css';
+import Footer from './components/Footer';
 
 function Manifesto() {
   return (
@@ -50,10 +51,9 @@ function Manifesto() {
            <span className="line">&nbsp;</span>
            <span className="translate">*"More Art Faster For Everybody All The Time"</span></p>
         </div>
-        <footer className="footer">
-          ©{new Date().getFullYear()} Cubist Heart Laboratories. All rights reserved.
-        </footer>
+     
       </div>
+        <Footer />
     </div>
   );
 }

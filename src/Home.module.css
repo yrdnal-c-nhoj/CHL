@@ -5,10 +5,11 @@
 html,
 body {
   margin: 0;
+    background-color: #dcd7d8;
 }
 
 .container {
-  background-color: #dcd7d8;
+  /* background-color: #dcd7d8; */
   margin: 0;
   padding: 0;
   width: 100vw;
@@ -139,7 +140,7 @@ body {
   cursor: pointer;
   transition: background-color 0.2s, text-shadow 0.2s;
   color: #8b8f8c;
-  font-family: "Roboto Slab", sans-serif;
+    font-family: "Nunito", sans-serif;
 }
 
 .sortButton:hover {

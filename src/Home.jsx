@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import TopNav from './components/TopNav';
 import styles from './Home.module.css';
+import Footer from './components/Footer';
 
 const Home = () => {
   const { items, loading, error } = useContext(DataContext);
@@ -93,14 +94,7 @@ const Home = () => {
           </ul>
         </div>
       </div>
-      <footer className={styles.footer}>
-        <div className={styles.footerContent}>
-          © {new Date().getFullYear()} Cubist Heart Laboratories. All rights reserved.
-        </div>
-        <div className={styles.footerStrip}>
-          🧊🫀🔭 🧊🫀🔭 🧊🫀🔭 🧊🫀🔭 🧊🫀🔭 🧊🫀🔭 🧊🫀🔭 🧊🫀🔭 🧊🫀🔭 🧊🫀🔭
-        </div>
-      </footer>
+    <Footer />
     </div>
   );
 };
