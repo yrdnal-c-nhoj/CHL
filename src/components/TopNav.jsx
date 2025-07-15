@@ -20,6 +20,8 @@ export default function TopNav() {
         🧊🫀🔭 Cubist Heart Laboratories&nbsp; 🧊🫀🔭
       </div>
 
+<div className='topnavbgcolor'>
+
       <div className="topnavbt">
         BorrowedTime
       </div>
@@ -27,7 +29,7 @@ export default function TopNav() {
       <div className="topnavtag">
         a computationally intensive new clock, each day
       </div>
-
+</div>
       <nav className="navbar">
         <button 
           className={`hamburger ${isMenuOpen ? 'active' : ''}`}
