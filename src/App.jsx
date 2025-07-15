@@ -6,6 +6,7 @@ import ClockPage from './ClockPage';
 import Manifesto from './Manifesto';
 import About from './About';
 import Contact from './Contact';
+import { Analytics } from "@vercel/analytics/next"
 
 const App = () => {
   return (
