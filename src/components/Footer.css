@@ -1,0 +1,13 @@
+
+.footer {
+  font-size: 0.8rem;
+  text-align: right;
+  width: 100%;
+  color: #babdba;
+  font-family: "Nunito", sans-serif;
+  background: linear-gradient(to right, #302f2a, #55552a);
+  padding: 0.5rem 1rem;
+  /* no position */
+}
+
+
