@@ -129,9 +129,7 @@ const App = () => {
     { src: num7, top: '85%', left: '27%' },
     { src: num8, top: '73%', left: '15%' },
     { src: num9, top: '50%', left: '10%' },
-    { src: num10, top: '27
-
-%', left: '15%' },
+    { src: num10, top: '27%', left: '15%' },
     { src: num11, top: '15%', left: '27%' },
     { src: num12, top: '10%', left: '50%' },
   ];
