@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import './Elephant.css';
 import elWebp from './el.webp';
 import el1 from './el1.png';
 import el2 from './el2.png';
@@ -31,7 +30,9 @@ const ElephantClock = () => {
     randomizeSway(minuteSway);
 
     let orbitAngle = 0;
-    const orbitRadius = 50;
+    const orbitRadius = 40;
+
+    let frameId;
 
     const updateClock = () => {
       const now = new Date();
@@ -42,8 +43,7 @@ const ElephantClock = () => {
       const hours = now.getHours();
       const t = Date.now();
 
-      const randomWobble = 5 * Math.sin(t / 150) + Math.random() * 1;
-      const secondDeg = preciseSeconds * 6 + randomWobble;
+      const secondDeg = preciseSeconds * 6 + 5 * Math.sin(t / 150) + Math.random() * 1;
 
       const minuteDegBase = minutes * 6 + seconds * 0.1;
       const hourDegBase = (hours % 12) * 30 + minutes * 0.5;
@@ -51,15 +51,12 @@ const ElephantClock = () => {
       if (t > hourSway.nextUpdate) randomizeSway(hourSway);
       if (t > minuteSway.nextUpdate) randomizeSway(minuteSway);
 
-      const hourSwayOffset = hourSway.amplitude * Math.sin(t * hourSway.frequency);
-      const minuteSwayOffset = minuteSway.amplitude * Math.sin(t * minuteSway.frequency);
+      const hourDeg = hourDegBase + hourSway.amplitude * Math.sin(t * hourSway.frequency);
+      const minuteDeg = minuteDegBase + minuteSway.amplitude * Math.sin(t * minuteSway.frequency);
 
-      const hourDeg = hourDegBase + hourSwayOffset;
-      const minuteDeg = minuteDegBase + minuteSwayOffset;
-
-      hourHand.style.transform = `translate(-50%, -100%) rotate(${hourDeg}deg)`;
-      minuteHand.style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
-      secondHand.style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
+      hourHand.style.transform = `translate(-50%, -50%) rotate(${hourDeg}deg)`;
+      minuteHand.style.transform = `translate(-50%, -50%) rotate(${minuteDeg}deg)`;
+      secondHand.style.transform = `translate(-50%, -50%) rotate(${secondDeg}deg)`;
 
       orbitAngle -= 0.12;
       const rad = (orbitAngle * Math.PI) / 180;
@@ -69,10 +66,11 @@ const ElephantClock = () => {
       orbitingImage.style.top = `${y}%`;
       orbitingImage.style.transform = `translate(-50%, -50%) rotate(${orbitAngle + 90}deg)`;
 
-      requestAnimationFrame(updateClock);
+      frameId = requestAnimationFrame(updateClock);
     };
 
     updateClock();
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   const numbers = [];
@@ -88,13 +86,12 @@ const ElephantClock = () => {
           left: `${x}%`,
           top: `${y}%`,
           transform: 'translate(-50%, -50%)',
-          fontSize: '12vh',
+          fontSize: '8vmin',
           color: '#949393',
           textShadow: '#0a0909 -1px 0px 0px',
-          width: '10%',
+          width: '10vmin',
           textAlign: 'center',
         }}
-        className="fat-font"
       >
         {i}
       </div>
@@ -108,14 +105,14 @@ const ElephantClock = () => {
         padding: 0,
         height: '100vh',
         width: '100vw',
-        overflow: 'visible',
+        overflow: 'hidden',
         background: '#7e7c79',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         position: 'relative',
+        fontFamily: 'sans-serif',
       }}
-      className="fat-font"
     >
       <img
         src={elWebp}
@@ -126,25 +123,21 @@ const ElephantClock = () => {
           left: 0,
           width: '100vw',
           height: '100vh',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
+          objectFit: 'cover',
           filter: 'saturate(50%)',
           zIndex: 0,
         }}
       />
-  <div
-  style={{
-    width: '100vmin',
-    height: '100vmin',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    // Removed: transform: 'translate(-5%, -20%)',
-  }}
->
 
+      <div
+        style={{
+          width: '100vmin',
+          height: '100vmin',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+        }}
       >
         <div
           style={{
@@ -156,55 +149,62 @@ const ElephantClock = () => {
           }}
         >
           {numbers}
-          <div className="hand" id="hour-hand" style={handStyle}>
+
+          <div style={handStyle}>
             <img
               ref={hourRef}
               src={el2}
               alt="Hour Hand"
               style={{
                 height: '45%',
-                filter: 'saturate(60%)',
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
                 transformOrigin: 'bottom center',
+                transform: 'translate(-50%, -50%)',
+                filter: 'saturate(60%)',
               }}
             />
           </div>
-          <div className="hand" id="minute-hand" style={handStyle}>
+          <div style={handStyle}>
             <img
               ref={minuteRef}
               src={el1}
               alt="Minute Hand"
               style={{
                 height: '55%',
-                filter: 'saturate(130%)',
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
                 transformOrigin: 'bottom center',
+                transform: 'translate(-50%, -50%)',
+                filter: 'saturate(130%)',
               }}
             />
           </div>
-          <div className="hand" id="second-hand" style={handStyle}>
+          <div style={handStyle}>
             <img
               ref={secondRef}
               src={el3}
               alt="Second Hand"
               style={{
                 height: '65%',
-                filter: 'saturate(20%) contrast(70%)',
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
                 transformOrigin: 'bottom center',
+                transform: 'translate(-50%, -50%)',
+                filter: 'saturate(20%) contrast(70%)',
               }}
             />
           </div>
+
           <img
             ref={orbitRef}
             src={eleGif}
-            alt="Orbiting"
+            alt=""
+            aria-hidden="true"
+            role="presentation"
             style={{
               position: 'absolute',
               width: '20vmin',
@@ -212,6 +212,8 @@ const ElephantClock = () => {
               transform: 'translate(-50%, -50%)',
               zIndex: 1,
               filter: 'saturate(20%)',
+              left: '50%',
+              top: '50%',
             }}
           />
         </div>
@@ -226,9 +228,8 @@ const handStyle = {
   height: '100%',
   top: 0,
   left: 0,
-  opacity: 0.7,
+  opacity: 0.8,
   zIndex: 5,
-  transformOrigin: 'center center',
 };
 
 export default ElephantClock;

@@ -2,8 +2,6 @@
 import { useEffect, useRef, useState } from 'react';
 import './styles.css';
 import fwImage from './fw.gif';
-import giphyImage from './giphy (11).gif';
-import gif84298 from './84298.gif';
 
 function getRandomBrightColor() {
   const hue = Math.floor(Math.random() * 360);
@@ -60,8 +58,6 @@ function App() {
   return (
     <div className="relative h-screen w-screen">
       <img src={fwImage} className="bgimage" alt="Fireworks background 1" />
-      <img src={giphyImage} className="bgimage" alt="Fireworks background 2" />
-      <img src={gif84298} className="bgimage" alt="Fireworks background 3" />
       <div ref={clockRef} className="clock">
         {timeString.split('').map((char, index) => {
           const { dx, dy, rot } = getRandomExplosionVector();
