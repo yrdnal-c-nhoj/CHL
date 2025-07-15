@@ -102,10 +102,10 @@ const ClockPage = () => {
             aria-label="Go back to homepage"
           >
             <div className={styles.footerLeft}>
-              <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
+              <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
             </div>
             <div className={styles.footerCenter}>
-              <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
+              <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
             </div>
             <div className={styles.footerRight}>
               <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
@@ -125,7 +125,7 @@ const ClockPage = () => {
       {prevItem && (
         <Link
           to={`/${prevItem.date}`}
-          className={`${styles.floatingNav} ${styles.leftNav} ${navVisible ? styles.visible : styles.hidden}`}
+          className={`${styles.sideNav} ${styles.leftNav} ${navVisible ? styles.visible : styles.hidden}`}
           aria-label={`Go to ${formatTitle(prevItem.title)}`}
         >
           ←
@@ -135,7 +135,7 @@ const ClockPage = () => {
       {nextItem && (
         <Link
           to={`/${nextItem.date}`}
-          className={`${styles.floatingNav} ${styles.rightNav} ${navVisible ? styles.visible : styles.hidden}`}
+          className={`${styles.sideNav} ${styles.rightNav} ${navVisible ? styles.visible : styles.hidden}`}
           aria-label={`Go to ${formatTitle(nextItem.title)}`}
         >
           →
@@ -149,10 +149,10 @@ const ClockPage = () => {
           aria-label="Go back to homepage"
         >
           <div className={styles.footerLeft}>
-            <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
+            <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
           </div>
           <div className={styles.footerCenter}>
-            <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
+            <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
           </div>
           <div className={styles.footerRight}>
             <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>

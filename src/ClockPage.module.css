@@ -37,31 +37,33 @@ body {
   padding: 20px;
 }
 
-.floatingNav {
+.sideNav {
   position: fixed;
-  bottom: 33vh;
+  top: 0;
+  height: calc(100vh - 2.5rem - 10px); /* Subtract footer height and 10px gap */
+  width: 33.33vw;
   z-index: 1100;
-  padding: 1.5rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #6f6c6f;
   font-family: "Nunito", sans-serif;
-  font-size: 1rem;
+  font-size: 2rem;
   text-decoration: none;
-  border: 1px solid #ddd4d5;
-  border-radius: 0.5rem;
   transition: opacity 0.5s ease-in-out;
 }
 
-.floatingNav:hover {
+.sideNav:hover {
   background-color: rgba(111, 167, 213, 0.7);
   color: #fff6a9;
 }
 
 .leftNav {
-  left: 1rem;
+  left: 0;
 }
 
 .rightNav {
-  right: 1rem;
+  right: 0;
 }
 
 .visible {
@@ -88,9 +90,9 @@ body {
   padding: 0.5rem 1rem;
   box-sizing: border-box;
   z-index: 10;
-  /* Removed pointer-events:none to allow clicks on the link */
+  height: 2.5rem; /* Explicit height for footer */
   transition: opacity 0.7s ease-in-out;
-  cursor: pointer; /* show clickable cursor */
+  cursor: pointer;
   text-decoration: none;
 }
 

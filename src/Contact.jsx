@@ -1,46 +1,166 @@
-import React from 'react';
-import TopNav from './components/TopNav';
-import './Wordpages.css';
+import React, { useState, useEffect, useContext } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { DataContext } from './context/DataContext';
+import styles from './ClockPage.module.css';
 
+const ClockPage = () => {
+  const { date } = useParams();
+  const { items, loading, error } = useContext(DataContext);
+  const [ClockComponent, setClockComponent] = useState(null);
+  const [pageError, setPageError] = useState(null);
+  const [navVisible, setNavVisible] = useState(true);
+  const [footerVisible, setFooterVisible] = useState(true);
 
+  const formatTitle = (title) => {
+    if (!title) return 'Home';
+    return title.replace(/clock/i, '').trim() || 'Home';
+  };
 
-function Contact() {
- return (
-    <div className="container">
-      <TopNav />
-      <div className="centeredContent">
-        <h1>CONTACT</h1>
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return dateStr;
+    const [yy, mm, dd] = parts;
+    const month = Number(mm);
+    const day = Number(dd);
+    const year = yy;
+    return `${month}/${day}/${year}`;
+  };
 
-        {/* Manifesto Sections */}
-        <div className="manifestoSection">
-          <p><span className="hat">We Take Pictures</span><br />
-          <span className="smallcaps">WE APPROPRIATE BEAUTIFUL</span> images, scavenged from the infinite scroll of the Internet. Pictures isolate time. They make now into something permanent and forever. We remix them.
-          <span className="line">We are not thieves; we are alchemists.</span></p>
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
 
-          <p><span className="hat">We Love Typefaces</span><br />
-           <span className="smallcaps">BORN FROM LOVE</span> and shared like a secret handshake. Each contains the urgency to communicate information as well as the need to create, as unique as the maker's fingerprint. 
-           <span className="line">Across the page the symbols move.</span></p>
+  useEffect(() => {
+    if (loading) return;
+    if (date && date.match(/^\d{2}-\d{2}-\d{2}$/)) {
+      const item = items.find(i => i.date === date);
+      if (item && item.path) {
+        import(`./pages/${item.path}/Clock.jsx`)
+          .then(module => {
+            setClockComponent(() => module.default);
+          })
+          .catch(err => {
+            setPageError(`Failed to load clock for ${date}: ${err.message}`);
+          });
 
-          <p><span className="hat">We Are Open-Source Code</span><br />
-          <span className="smallcaps">WE EMPLOY SCRIPTS,</span> tools, libraries, and frameworks built by countless hands all around the world. It is history's most successful group project.
-          We copy and we clone and we fork and we install with joy and with gratitude in our cubist hearts.                    
-          <span className="line">We code on the shoulders of giants.</span></p>
+        import(`./pages/${item.path}/styles.css`).catch(() => {});
+      } else {
+        setPageError(`No path found for date ${date}.`);
+      }
+    } else {
+      setPageError('Invalid date format. Use YY-MM-DD (e.g., 25-06-01).');
+    }
+  }, [date, items, loading]);
 
-          <p><span className="hat">We Believe in Electrons</span><br />
-          <span className="smallcaps">INVISIBLE, ENDLESSLY JUMPING.</span> They subatomically convey all our ambitions, thoughts, emotions and knowledge. Our nevous system.
-           <span className="line">We use the unseen to render the intangible.</span></p>
+  useEffect(() => {
+    const navFadeDelay = 300;
+    const footerFadeDelay = 2000;
 
-          <p><span className="hat">"Plus Ars Citius Omni Tempore Nam Quisque"*</span><br />
-          <span className="smallcaps">WE HONOR</span> and thank the artists, photographers, typographers and programmers, our collaborators everywhere whose work is now part of Cubist Heart Laboratories.
-           <span className="line">&nbsp;</span>
-           <span className="translate">*"More Art Faster For Everybody All The Time"</span></p>
+    let navTimer = setTimeout(() => setNavVisible(false), navFadeDelay);
+    let footerTimer = setTimeout(() => setFooterVisible(false), footerFadeDelay);
+
+    const handleInteraction = () => {
+      setNavVisible(true);
+      setFooterVisible(true);
+      clearTimeout(navTimer);
+      clearTimeout(footerTimer);
+      navTimer = setTimeout(() => setNavVisible(false), navFadeDelay);
+      footerTimer = setTimeout(() => setFooterVisible(false), footerFadeDelay);
+    };
+
+    window.addEventListener('mousemove', handleInteraction);
+    window.addEventListener('touchstart', handleInteraction);
+
+    return () => {
+      clearTimeout(navTimer);
+      clearTimeout(footerTimer);
+      window.removeEventListener('mousemove', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+    };
+  }, []);
+
+  const currentIndex = items.findIndex(item => item.date === date);
+  const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
+  const nextItem = currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
+  const currentItem = items[currentIndex];
+
+  if (loading) return <div className={styles.loading}>Loading data...</div>;
+
+  if (error || pageError) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.content}>
+          {ClockComponent ? <ClockComponent /> : <div className={styles.loading}>Loading clock...</div>}
         </div>
-        <footer className="footer">
-          ©{new Date().getFullYear()} Cubist Heart Laboratories. All rights reserved.
-        </footer>
+        {currentItem && (
+          <Link
+            to="/"
+            className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}
+            aria-label="Go back to homepage"
+          >
+            <div className={styles.footerLeft}>
+              <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
+            </div>
+            <div className={styles.footerCenter}>
+              <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
+            </div>
+            <div className={styles.footerRight}>
+              <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
+            </div>
+          </Link>
+        )}
       </div>
+    );
+  }
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.content}>
+        {ClockComponent ? <ClockComponent /> : <div className={styles.loading}>Loading clock...</div>}
+      </div>
+
+      {prevItem && (
+        <Link
+          to={`/${prevItem.date}`}
+          className={`${styles.sideNav} ${styles.leftNav} ${navVisible ? styles.visible : styles.hidden}`}
+          aria-label={`Go to ${formatTitle(prevItem.title)}`}
+        >
+          ←
+        </Link>
+      )}
+
+      {nextItem && (
+        <Link
+          to={`/${nextItem.date}`}
+          className={`${styles.sideNav} ${styles.rightNav} ${navVisible ? styles.visible : styles.hidden}`}
+          aria-label={`Go to ${formatTitle(nextItem.title)}`}
+        >
+          →
+        </Link>
+      )}
+
+      {currentItem && (
+        <Link
+          to="/"
+          className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}
+          aria-label="Go back to homepage"
+        >
+          <div className={styles.footerLeft}>
+            <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
+          </div>
+          <div className={styles.footerCenter}>
+            <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
+          </div>
+          <div className={styles.footerRight}>
+            <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
+          </div>
+        </Link>
+      )}
     </div>
   );
-}
+};
 
-export default Contact;
+export default ClockPage;
