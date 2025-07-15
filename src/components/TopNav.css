@@ -15,10 +15,8 @@
   text-shadow: #0e0d0d 0.5px 0.5px  0px, #000000 -0.5px  -0.5px  0px;
   font-size: 1.1rem;
   letter-spacing: 0.03rem;
-  /* text-align: left; */
+  text-align: left;
   background-color: #60615e;
-
-  /* Stretch full width */
   width: 100vw;
   position: relative;
   left: 0;
@@ -104,17 +102,18 @@
   color: #ffffff;
   font-weight: bold;
 }
-
 .hamburger {
-  display: block;
-  background-color: #bdb8b8;
-  border: none;
-  cursor: pointer;
-  position: fixed;
-  right: 1rem;
-  top: 1rem;
-  z-index: 1000;
+
+position: absolute; /* or relative, depending on parent */
+   right: 1rem;
+   top: 1rem;
+   z-index: 1000;
+   display: block;
+   background-color: #bdb8b8;
+   border: none;
+   cursor: pointer;
 }
+
 
 .hamburger span {
   display: block;
