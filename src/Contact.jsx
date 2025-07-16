@@ -1,6 +1,6 @@
 import React from 'react';
 import TopNav from './components/TopNav';
-import './Wordpages.css';
+import './WordPages.css';
 import EmailForm from './Email';
 import Footer from './components/Footer';
 
