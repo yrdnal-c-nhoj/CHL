@@ -6,7 +6,7 @@ import minHand from './ca.gif';
 import secHand from './car.gif';
 
 // Digits
-import img1 from './digits/1.gif';
+import img1 from './digits/1.webp';
 import img2 from './digits/number-two.gif';
 import img3 from './digits/dancing-number-dancing-letter.gif';
 import img4 from './digits/kochstrasse-fussball.gif';
