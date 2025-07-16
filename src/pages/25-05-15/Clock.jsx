@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import roulGif from './roul.gif';
 import rouleGif from './roule.gif';
 import rouletteSvg from './Roulette_french.svg';
-import loraFont from './Lora.ttf'; // Assuming you have Lora.ttf in the same folder
+import loraFont from './lora.ttf'; // Assuming you have Lora.ttf in the same folder
 
 const RouletteClock = () => {
   useEffect(() => {
