@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Wordpages.css';
+import './WordPages.css';
 
 const EmailForm = () => {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
