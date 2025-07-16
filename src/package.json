@@ -22,5 +22,17 @@
 
   "engines": {
     "node": ">=18"
-  }
+  },
+
+
+
+
+
+
+   {
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
+
 }
