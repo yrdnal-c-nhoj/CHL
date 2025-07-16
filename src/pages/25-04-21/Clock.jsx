@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import backgroundImg from './Untitled.png';
-import leftHalfImg from './Untitled.png';
+import leftHalfImg from './Peacock.webp';
 import rightHalfImg from './PEACOCK-W-FEATHERS-OUT-STATUE_3e4d7f8a-a1ab-42d7-990e-4104e2fafe8e.5b85fc7293a509f2223b869b11481e53.jpeg';
 import cornerImg from './Pea.png';
 import hourImg from './Peaco.png';
