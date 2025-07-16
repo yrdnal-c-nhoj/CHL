@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import './sprout.css';
+import './Sprout.css';
 import spr from './spr.gif';
 import sprou from './sprou.gif';
 import sprout from './sprout.gif';
