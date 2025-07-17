@@ -13,7 +13,7 @@
   font-family: "Roboto Slab", sans-serif;
   color: rgb(246, 246, 242);
   text-shadow: #0e0d0d 0.5px 0.5px  0px, #000000 -0.5px  -0.5px  0px;
-  font-size: 0.8rem;
+  font-size: 0.4rem;
   letter-spacing: 0.03rem;
   text-align: left;
   background: linear-gradient(to right, #02106c,  #55552a);
@@ -35,10 +35,10 @@
     #b6e548 -2.2px -0.8px 5px,
     #340303 3px 2px 0,
     #340303 -3px -2px 0;
-  font-size: 3.4rem;
-  line-height: 3.7rem;
+  font-size: 1.4rem;
+  line-height: 1.7rem;
   text-align: center;
-  letter-spacing: -0.15rem;
+  letter-spacing: -0.05rem;
   width: 100vw;
   /* position: relative; */
   left: 0;
