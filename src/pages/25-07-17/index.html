@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Analog Clock with Individually Sized Image Numbers</title>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Nanum+Gothic+Coding&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap"
+        rel="stylesheet">
+    <style>
+         @font-face {
+            font-family: 'anim';
+            src: url('anim.ttf') format('truetype');
+        } 
+
+     
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #828f82;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .clock {
+      position: relative;
+      width: 100vmin;
+      height: 100vmin;
+      border-radius: 50%;
+    }
+
+    .number {
+      position: absolute;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Individual sizes per number */
+    .num1  { width: 29.5vmin; height: 29.5vmin; }
+    .num2  { width: 29.5vmin; height: 27.5vmin; }
+    .num3  { width: 25.5vmin; height: 27.5vmin; }
+    .num4  { width: 32.5vmin; height: 24.5vmin; }
+    .num5  { width: 29.5vmin; height: 26.5vmin; }
+    .num6  { width: 32.5vmin; height: 25.5vmin; }
+    .num7  { width: 27.5vmin; height: 22.5vmin; }
+    .num8  { width: 29.5vmin; height: 29.5vmin; }
+    .num9  { width: 22.5vmin; height: 22.5vmin; }
+    .num10 { width: 29.5vmin; height: 29vmin; }
+    .num11 { width: 25.5vmin; height: 23.5vmin; }
+    .num12 { width: 29.5vmin; height: 25.5vmin; }
+
+    .hand {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform-origin: bottom;
+      transform: translateX(-50%) rotate(0deg);
+    }
+
+    .hour {
+      width: 7vmin;
+      height: 25vmin;
+      background: #b6b3b3;
+      z-index: 3;
+      opacity: 0.9;
+    }
+
+    .minute {
+      width: 3.7vmin;
+      height: 44vmin;
+      background: #686565;
+      z-index: 2;
+      opacity: 0.9;
+    }
+
+    .second {
+      width: 0.4vmin;
+      height: 225vmin;
+      background: rgb(248, 122, 4);
+      z-index: 7;
+    }
+
+
+.text {
+  font-family: 'anim', sans-serif;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2vmin;
+  height: 45vmin; /* Spoke length */
+  color: #040404;
+  text-shadow: #f1a205 1px 0px, #f8f7f7 -1px 0px ;
+  font-size: 1.4rem;
+  text-align: left;
+  text-transform: uppercase;
+
+  transform-origin: top center;
+  writing-mode: vertical-lr;
+  z-index: 6;
+  white-space: nowrap; /* ADDED */
+}
+
+.label {
+
+  display: block;
+  margin-top: 39px; /* radial push from center */
+  white-space: nowrap; /* ADDED */
+}
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #e8ecec;
+            background-color: rgb(21, 0, 255);
+            text-decoration: none;
+        }
+
+        .date-container {
+            color: #191920;
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 98%;
+            display: flex;
+            z-index: 6;
+        }
+
+        .clockname {
+            font-family: "Oxanium", serif;
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: "Oxanium", serif;
+            font-size: 4vh;
+            line-height: 4vh;
+        }
+
+
+        .dateleft {
+            font-size: 3vh;
+            font-family: "Nanum Gothic Coding", monospace;
+            position: relative;
+            left: 0;
+        }
+
+        .dateright {
+            font-size: 3vh;
+            font-family: "Nanum Gothic Coding", monospace;
+            position: absolute;
+            right: 0;
+        }
+
+        .title-container {
+            color: #0e0c0d;
+            text-shadow: #9dd9ed 1px 0px;
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 98%;
+            display: flex;
+            /* justify-content: space-between; */
+            z-index: 6;
+        }
+
+        .chltitle {
+            font-family: "Roboto Slab", serif;
+            font-size: 2.8vh;
+            position: absolute;
+            top: 1px;
+            right: 1px;
+            letter-spacing: 0.1vh;
+        }
+
+        .bttitle {
+            position: relative;
+            left: 0;
+            font-family: "Oxanium", serif;
+            font-size: 2.8vh;
+            font-style: italic;
+            z-index: 15;
+            letter-spacing: -0.1vh;
+        }
+  .bgimage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;       /* or whatever stretch amount you want */
+  height: 150%;      /* same as above */
+  transform: translate(-50%, -50%); /* centers it */
+  z-index: 1;
+  opacity: 0.1;
+  transform-origin: center center;
+}
+
+
+  </style>
+</head>
+<body>
+     <div class="title-container">
+        <div class="chltitle">Cubist Heart Laboratories</div>
+        <div class="bttitle">BorrowedTime</div>
+    </div>
+
+    <div class="date-container">
+        <a href="../mobius/" class="dates dateleft">07/16/25</a>
+        <a href="../index.html" class="clockname">Animals</a>
+       <a href="../index.html"  class="dates dateright">07/18/25</a>
+    </div>
+    <img src="./anim.webp" class="bgimage">
+  <div class="clock">
+    <!-- Images with unique classes for individual sizing -->
+    <img class="number num6"  src="./Green-Anaconda-PNG-Photos-ezgif.com-apng-to-gif-converter.gif"  style="left:17%; top:50%;" />
+    <img class="number num7"  src="./m0149_7_cover-ezgif.com-optimize(1).gif"  style="left:22%; top:32%;" />
+    <img class="number num8"  src="./jhgfd(1).gif"  style="left:35%; top:22%;" />
+    <img class="number num9"  src="./mycoplasma-genitalium-ezgif.com-optipng.png"  style="left:50%; top:17%;" />
+    <img class="number num10" src="./dgffcir-93f9489c-305d-45b7-81d4-eb9622481af9-ezgif.com-apng-to-gif-converter.gif" style="left:65%; top:22%;" />
+    <img class="number num11" src="./African-Elephant-PNG-File-ezgif.com-optimize.gif" style="left:78%; top:35%;" />
+    <img class="number num12" src="./gergfeds.gif" style="left:83%; top:50%;" />
+
+    <img class="number num1"  src="./pngtree-a-beautiful-saltwater-crocodile-png-image_13409821-ezgif.com-rotate.gif"  style="left:78%; top:65%;" />
+
+    <img class="number num2"  src="./nbvfghj-ezgif.com-effects.gif"  style="left:65%; top:78%;" />
+
+     <img class="number num3"  src="./Kodiak-Brown-Bear-PNG-Isolated-HD-ezgif.com-optimize.gif"  style="left:50%; top:83%;" />
+   
+  <img class="number num5"  src="./pngtree-harpy-eagle-vulture-animal-flying-isolated-on-white-background-png-image_15617474-ezgif.com-apng-to-gif-converter.gif"  style="left:22%; top:65%;" />
+
+    <img class="number num4"  src="./jhgf.gif"  style="left:35%; top:82%;" />
+  
+    <!-- Text elements connecting numbers to center -->
+   <!-- Text elements radiating from the center -->
+<!-- Text elements radiating from the center -->
+<div class="text" style="transform: rotate(0deg);"><span class="label">Ursus arctos middendorffi</span></div>
+<div class="text" style="transform: rotate(30deg);"><span class="label">Macropus rufus</span></div>
+<div class="text" style="transform: rotate(60deg);"><span class="label">Harpia harpyja</span></div>
+<div class="text" style="transform: rotate(90deg);"><span class="label">Eunectes murinus</span></div>
+<div class="text" style="transform: rotate(120deg);"><span class="label">Suncus etruscus</span></div>
+<div class="text" style="transform: rotate(150deg);"><span class="label">Dicopomorpha echmepterygis</span></div>
+<div class="text" style="transform: rotate(180deg);"><span class="label">Mycoplasma genitalium</span></div>
+<div class="text" style="transform: rotate(210deg);"><span class="label">Balaenoptera musculus</span></div>
+<div class="text" style="transform: rotate(240deg);"><span class="label">Loxodonta africana</span></div>
+<div class="text" style="transform: rotate(270deg);"><span class="label">Ceratotherium simum</span></div>
+<div class="text" style="transform: rotate(300deg);"><span class="label">Crocodylus porosus</span></div>
+<div class="text" style="transform: rotate(330deg);"><span class="label">Equus ferus caballus</span></div>
+
+    <!-- Clock hands -->
+    <div class="hand hour" id="hourHand"></div>
+    <div class="hand minute" id="minuteHand"></div>
+    <div class="hand second" id="secondHand"></div>
+    <div class="center"></div>
+  </div>
+<script>
+  function updateClockSmooth() {
+    const now = new Date();
+    const milliseconds = now.getMilliseconds();
+    const seconds = now.getSeconds() + milliseconds / 1000;
+    const minutes = now.getMinutes() + seconds / 60;
+    const hours = now.getHours() + minutes / 60;
+
+    document.getElementById("secondHand").style.transform =
+      `translateX(-50%) rotate(${seconds * 6}deg)`;
+    document.getElementById("minuteHand").style.transform =
+      `translateX(-50%) rotate(${minutes * 6}deg)`;
+    document.getElementById("hourHand").style.transform =
+      `translateX(-50%) rotate(${(hours % 12) * 30}deg)`;
+
+    requestAnimationFrame(updateClockSmooth);
+  }
+
+  requestAnimationFrame(updateClockSmooth);
+</script>
+
+</body>
+</html>
