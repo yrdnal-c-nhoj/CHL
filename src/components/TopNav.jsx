@@ -17,7 +17,7 @@ export default function TopNav() {
       </div> */}
 
       <div className="topnavchl">
-        🧊🫀🔭 Cubist Heart Laboratories&nbsp; 🧊🫀🔭
+        🧊🫀🔭 Cubist Heart Laboratories  🧊🫀🔭
       </div>
 
 <div className='topnavbgcolor'>
