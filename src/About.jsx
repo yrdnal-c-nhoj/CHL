@@ -10,8 +10,8 @@ function About() {
       <div className="centeredContent">
         <h1>ABOUT</h1>
         <p>
-        BorrowedTime is a new clock each day, using images, typefaces and code snippets found on the Internet. 
-        </p><p>It is built using React and JavaScript, housed on Github and deployed on Vercel.
+        BorrowedTime is a new clock each day, using found images from the Internet. 
+        </p><p>In our transition from HTML to the currernt It is built using React and JavaScript, housed on Github and deployed on Vercel.
         </p>
       </div>
  <Footer />
