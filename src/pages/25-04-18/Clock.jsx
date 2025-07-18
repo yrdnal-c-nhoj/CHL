@@ -10,6 +10,11 @@ const AntarcticaClock = () => {
   useEffect(() => {
     const clock = clockRef.current;
 
+    // Clear any existing ticks (in case of remount)
+    while (clock.firstChild) {
+      clock.removeChild(clock.firstChild);
+    }
+
     // Create tick marks
     for (let i = 0; i < 60; i++) {
       const tick = document.createElement("div");
@@ -35,7 +40,7 @@ const AntarcticaClock = () => {
       const minuteAngle = minutes * 6 + seconds / 10;
       const baseSecondAngle = seconds * 6;
       const progress = ms / 1000;
-      const secondAngle = baseSecondAngle + (progress < 0.3 ? progress * 12 : 0);
+      const secondAngle = baseSecondAngle + progress * 6;
 
       hourRef.current.style.transform = `translateX(-50%) rotate(${hourAngle}deg)`;
       minuteRef.current.style.transform = `translateX(-50%) rotate(${minuteAngle}deg)`;
@@ -119,7 +124,7 @@ const AntarcticaClock = () => {
             height: 100%;
             object-fit: cover;
             filter: contrast(0.4);
-            z-index: -1;
+            z-index: 0; /* changed from -1 */
             animation: slow-rotate 440s linear infinite;
             transform-origin: center center;
           }
@@ -147,6 +152,7 @@ const AntarcticaClock = () => {
             width: "50vh",
             height: "30vh",
             borderRadius: "50%",
+            zIndex: 1, // added this so clock is above background image
           }}
         >
           <div className="center" />
