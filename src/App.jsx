@@ -6,7 +6,7 @@ import ClockPage from './ClockPage';
 import Manifesto from './Manifesto';
 import About from './About';
 import Contact from './Contact';
-import LogBook from './LogBook';
+import Log from './Log';
 
 const App = () => {
   return (
@@ -16,7 +16,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/:date" element={<ClockPage />} />
           <Route path="/about" element={<About />} />
-          <Route path="/logbook" element={<LogBook />} />
+          <Route path="/log" element={<Log />} />
           <Route path="/manifesto" element={<Manifesto />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
