@@ -1,129 +1,155 @@
 import React, { useEffect, useRef } from 'react';
 
-const Clock = () => {
+const CubeClock = () => {
   const cubeRef = useRef(null);
 
   useEffect(() => {
     const cube = cubeRef.current;
-
-    const cubeWidth = 15; // in vw
-    const cubeHeight = 15; // in vh
-
-    let posX = 50; // in vw
-    let posY = 50; // in vh
-
-    let velX = 0.3 + Math.random() * 0.3; // in vw/frame
-    let velY = 0.3 + Math.random() * 0.3; // in vh/frame
+    const cubeSizeVw = 15;
+    let posX = 50;
+    let posY = 50;
+    let velX = (Math.random() > 0.5 ? 1 : -1) * (0.2 + Math.random() * 0.2);
+    let velY = (Math.random() > 0.5 ? 1 : -1) * (0.2 + Math.random() * 0.2);
 
     const updatePosition = () => {
       posX += velX;
       posY += velY;
 
-      // Bounce horizontally
-      if (posX + cubeWidth > 100) {
-        posX = 100 - cubeWidth;
-        velX *= -1;
-      } else if (posX < 0) {
+      if (posX <= 0) {
         posX = 0;
-        velX *= -1;
+        velX = Math.abs(velX);
+      } else if (posX + cubeSizeVw >= 100) {
+        posX = 100 - cubeSizeVw;
+        velX = -Math.abs(velX);
       }
 
-      // Bounce vertically
-      if (posY + cubeHeight > 100) {
-        posY = 100 - cubeHeight;
-        velY *= -1;
-      } else if (posY < 0) {
+      if (posY <= 0) {
         posY = 0;
-        velY *= -1;
+        velY = Math.abs(velY);
+      } else if (posY + cubeSizeVw >= 100) {
+        posY = 100 - cubeSizeVw;
+        velY = -Math.abs(velY);
       }
 
-      cube.style.left = `${posX}vw`;
-      cube.style.top = `${posY}vh`;
+      if (cube) {
+        cube.style.left = `${posX}vw`;
+        cube.style.top = `${posY}vh`;
+      }
     };
 
     const updateClock = (el) => {
       const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      el.innerHTML = `${hours}<br>${minutes}`;
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      el.innerHTML = `${h}<br>${m}`;
     };
 
-    const updateClocks = () => {
-      cube.querySelectorAll('.face').forEach(updateClock);
+    const updateAllClocks = () => {
+      const faces = cube?.querySelectorAll('div');
+      faces?.forEach(face => updateClock(face));
     };
 
     const animate = () => {
       updatePosition();
+      updateAllClocks();
       requestAnimationFrame(animate);
     };
 
     animate();
-    updateClocks();
-    const interval = setInterval(updateClocks, 1000);
+    const clockInterval = setInterval(updateAllClocks, 1000);
+    updateAllClocks();
 
-    return () => clearInterval(interval);
+    return () => clearInterval(clockInterval);
   }, []);
 
-  const faceStyle = {
+  return (
+    <div style={styles.body}>
+      <div style={styles.scene}>
+        <div ref={cubeRef} style={styles.cube}>
+          <div style={{ ...styles.face, ...styles.front }}></div>
+          <div style={{ ...styles.face, ...styles.back }}></div>
+          <div style={{ ...styles.face, ...styles.left }}></div>
+          <div style={{ ...styles.face, ...styles.right }}></div>
+          <div style={{ ...styles.face, ...styles.top }}></div>
+          <div style={{ ...styles.face, ...styles.bottom }}></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const styles = {
+  body: {
+    margin: 0,
+    overflow: 'hidden',
+    backgroundColor: '#160584',
+    width: '100vw',
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scene: {
+    width: '100vw',
+    height: '100vh',
+    perspective: '1000px',
+    position: 'absolute',
+  },
+  cube: {
+    width: '15vw',
+    height: '15vw',
+    position: 'absolute',
+    transformStyle: 'preserve-3d',
+    transform: 'rotateX(45deg) rotateY(45deg)',
+    animation: 'rotate 20s linear infinite',
+  },
+  face: {
+    fontFamily: 'monospace',
+    fontWeight: 800,
     position: 'absolute',
     width: '100%',
     height: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: '4vh',
-    lineHeight: '3.5vh',
-    fontFamily: '"Azeret Mono", monospace',
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center',
-  };
-
-  return (
-    <div style={{
-      margin: 0,
-      padding: 0,
-      overflow: 'hidden',
-      backgroundColor: '#160584',
-      width: '100vw',
-      height: '100vh',
-      position: 'relative',
-    }}>
-      <div style={{
-        position: 'absolute',
-        width: '100vw',
-        height: '100vh',
-        perspective: '1000px',
-      }}>
-        <div
-          ref={cubeRef}
-          style={{
-            width: '15vw',
-            height: '15vh',
-            position: 'absolute',
-            transformStyle: 'preserve-3d',
-            animation: 'spin 20s linear infinite',
-            transform: 'rotateX(45deg) rotateY(45deg)',
-          }}
-        >
-          <div className="face" style={{ ...faceStyle, transform: 'translateZ(7.5vw)', backgroundColor: 'rgba(255,0,0,0.6)' }} />
-          <div className="face" style={{ ...faceStyle, transform: 'rotateY(180deg) translateZ(7.5vw)', backgroundColor: 'rgba(0,255,0,0.6)' }} />
-          <div className="face" style={{ ...faceStyle, transform: 'rotateY(-90deg) translateZ(7.5vw)', backgroundColor: 'rgba(0,0,255,0.6)' }} />
-          <div className="face" style={{ ...faceStyle, transform: 'rotateY(90deg) translateZ(7.5vw)', backgroundColor: 'rgba(255,255,0,0.6)' }} />
-          <div className="face" style={{ ...faceStyle, transform: 'rotateX(90deg) translateZ(7.5vw)', backgroundColor: 'rgba(255,0,255,0.6)' }} />
-          <div className="face" style={{ ...faceStyle, transform: 'rotateX(-90deg) translateZ(7.5vw)', backgroundColor: 'rgba(0,255,255,0.6)' }} />
-        </div>
-      </div>
-      <style>
-        {`
-          @keyframes spin {
-            0%   { transform: rotateX(0deg) rotateY(0deg); }
-            100% { transform: rotateX(360deg) rotateY(360deg); }
-          }
-        `}
-      </style>
-    </div> 
-  );
+    fontSize: '5vh',
+    lineHeight: '4vh',
+    color: 'rgb(70, 61, 61)',
+    backfaceVisibility: 'hidden',
+  },
+  front: {
+    transform: 'translateZ(7.5vw)',
+    backgroundColor: 'rgba(235, 108, 108, 0.7)',
+  },
+  back: {
+    transform: 'rotateY(180deg) translateZ(7.5vw)',
+    backgroundColor: 'rgba(163, 231, 163, 0.7)',
+  },
+  left: {
+    transform: 'rotateY(-90deg) translateZ(7.5vw)',
+    backgroundColor: 'rgba(184, 236, 219, 0.7)',
+  },
+  right: {
+    transform: 'rotateY(90deg) translateZ(7.5vw)',
+    backgroundColor: 'rgba(232, 192, 123, 0.7)',
+  },
+  top: {
+    transform: 'rotateX(90deg) translateZ(7.5vw)',
+    backgroundColor: 'rgba(224, 158, 224, 0.7)',
+  },
+  bottom: {
+    transform: 'rotateX(-90deg) translateZ(7.5vw)',
+    backgroundColor: 'rgba(236, 9, 70, 0.7)',
+  },
 };
 
-export default Clock;
+// Global keyframes
+const globalStyle = document.createElement("style");
+globalStyle.textContent = `
+@keyframes rotate {
+  0% { transform: rotateX(0deg) rotateY(0deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg); }
+}`;
+document.head.appendChild(globalStyle);
+
+export default CubeClock;

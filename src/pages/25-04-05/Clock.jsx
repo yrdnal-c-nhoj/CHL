@@ -16,20 +16,24 @@ const TallClock = () => {
       const minuteDeg = ((minute + second / 60) / 60) * 360;
       const hourDeg = ((hour % 12 + minute / 60) / 12) * 360;
 
-      document.querySelector(".second-hand").style.transform = `rotate(${secondDeg}deg)`;
-      document.querySelector(".minute-hand").style.transform = `rotate(${minuteDeg}deg)`;
-      document.querySelector(".hour-hand").style.transform = `rotate(${hourDeg}deg)`;
+      const secondHandEl = document.querySelector(".second-hand");
+      const minuteHandEl = document.querySelector(".minute-hand");
+      const hourHandEl = document.querySelector(".hour-hand");
+
+      if (secondHandEl) secondHandEl.style.transform = `rotate(${secondDeg}deg)`;
+      if (minuteHandEl) minuteHandEl.style.transform = `rotate(${minuteDeg}deg)`;
+      if (hourHandEl) hourHandEl.style.transform = `rotate(${hourDeg}deg)`;
     };
 
-    const interval = setInterval(updateClock, 1000);
     updateClock();
+    const interval = setInterval(updateClock, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div style={styles.body}>
-      <div style={styles.clock} className="clock">
+    <div style={styles.container}>
+      <div style={styles.clock} className="clock" aria-label="Analog clock">
         <div className="hand hour-hand" style={styles.hand}>
           <img src={hourHand} alt="Hour Hand" style={styles.handImg} />
         </div>
@@ -48,8 +52,8 @@ const TallClock = () => {
 };
 
 const styles = {
-  body: {
-    background: "#805c0d",
+  container: {
+    backgroundColor: "#805c0d",
     margin: 0,
     padding: 0,
     height: "100vh",
@@ -62,8 +66,8 @@ const styles = {
   },
   clock: {
     position: "relative",
-    width: "80vw",
-    height: "60vh",
+    width: "22vw",
+    height: "22vh",
   },
   hand: {
     position: "absolute",
@@ -82,13 +86,14 @@ const styles = {
   },
   overlay: {
     position: "absolute",
+    top: 0,
+    left: 0,
     width: "100%",
     height: "100%",
     backgroundImage: `url(${overlayImg})`,
     backgroundRepeat: "repeat",
-    zIndex: 2,
-    top: 0,
-    left: 0,
+    zIndex: 1,
+    pointerEvents: "none",
   },
   overlay1: {
     backgroundSize: "15vh 15vw",
