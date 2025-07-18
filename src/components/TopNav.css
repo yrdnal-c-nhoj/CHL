@@ -13,7 +13,7 @@
   font-family: "Roboto Slab", sans-serif;
   color: rgb(246, 246, 242);
   text-shadow: #0e0d0d 0.5px 0.5px  0px, #000000 -0.5px  -0.5px  0px;
-  font-size: 0.4rem;
+  font-size: 0.5rem;
   letter-spacing: 0.03rem;
   text-align: left;
   background: linear-gradient(to right, #02106c,  #55552a);
@@ -53,7 +53,7 @@
 .topnavtag {
   font-family: "Oxanium", sans-serif;
   transform: skewX(-10deg);
-  font-size: 0.8rem;
+  font-size: 0.4rem;
   line-height: 0.1rem;
   color: #ede7e7;
   text-align: center;
