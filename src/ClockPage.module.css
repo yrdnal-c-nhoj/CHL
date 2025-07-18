@@ -37,25 +37,47 @@ body {
   padding: 20px;
 }
 
+
+
+
+
+
+
+
+
+
 .sideNav {
   position: fixed;
   top: 0;
-  height: calc(100vh - 2.5rem - 10px); /* Subtract footer height and 10px gap */
+  height: calc(100vh - 2.5rem - 10px);
   width: 33.33vw;
   z-index: 1100;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6f6c6f;
   font-family: "Nunito", sans-serif;
   font-size: 2rem;
+  color: rgba(255, 255, 255, 0.9); /* Arrow visible initially */
+  background-color: rgba(111, 167, 213, 0.25); /* Blue overlay */
   text-decoration: none;
-  transition: opacity 0.5s ease-in-out;
+  transition: opacity 1s ease-in-out;
+  pointer-events: auto; /* Always hot */
+  opacity: 1;
+}
+
+.sideNav.visible {
+  opacity: 1;
+}
+
+.sideNav.hidden {
+  opacity: 0;
 }
 
 .sideNav:hover {
-  background-color: rgba(111, 167, 213, 0.7);
-  color: #fff6a9;
+  /* Disable ALL visual response on hover */
+  opacity: 0;
+  background-color: rgba(111, 167, 213, 0.25);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .leftNav {
@@ -66,36 +88,49 @@ body {
   right: 0;
 }
 
-.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
 
-.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
+
 
 .footerStrip {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  background: rgba(19, 12, 13, 0.7); /* deep red */
+  background: rgba(19, 12, 13, 0.7); /* dark red */
   color: #fff;
   font-family: "Nunito", sans-serif;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 0.5rem 1rem;
   box-sizing: border-box;
   z-index: 10;
-  height: 2.5rem; /* Explicit height for footer */
-  transition: opacity 0.7s ease-in-out;
+  height: 2.5rem;
   cursor: pointer;
   text-decoration: none;
+  transition: opacity 0.7s ease-in-out;
+  opacity: 1;
+  pointer-events: auto;
 }
 
+/* Fade behavior */
+.footerStrip.hidden {
+  opacity: 0;
+}
+
+.footerStrip.visible {
+  opacity: 1;
+}
+
+/* 70% content container */
+.footerContent {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Layout zones */
 .footerLeft,
 .footerCenter,
 .footerRight {
@@ -111,18 +146,4 @@ body {
 
 .footerRight {
   justify-content: flex-end;
-}
-
-/* Font size overrides for footer sections */
-.footerNumber {
-  font-size: 0.9rem;
-}
-
-.footerTitle {
-  font-size: 1.0rem;
-  font-weight: 600;
-}
-
-.footerDate {
-  font-size: 0.9rem;
 }

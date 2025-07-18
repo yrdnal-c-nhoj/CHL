@@ -143,21 +143,25 @@ const ClockPage = () => {
       )}
 
       {currentItem && (
-        <Link
-          to="/"
-          className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}
-          aria-label="Go back to homepage"
-        >
-          <div className={styles.footerLeft}>
-            <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
-          </div>
-          <div className={styles.footerCenter}>
-            <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
-          </div>
-          <div className={styles.footerRight}>
-            <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
-          </div>
-        </Link>
+ <Link
+  to="/"
+  className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}
+  aria-label="Go back to homepage"
+>
+  <div className={styles.footerContent}>
+    <div className={styles.footerLeft}>
+      <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
+    </div>
+    <div className={styles.footerCenter}>
+      <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
+    </div>
+    <div className={styles.footerRight}>
+      <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
+    </div>
+  </div>
+</Link>
+
+
       )}
     </div>
   );
