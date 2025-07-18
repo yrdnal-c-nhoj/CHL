@@ -25,7 +25,7 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 70%;
+  max-width:60%;
   box-sizing: border-box;
   z-index: 5;
 }
@@ -68,7 +68,7 @@ body {
 .title {
   flex: 1 1 auto; /* Take available space on left */
   text-align: left; /* Flush left, ragged right */
-  font-size: 1rem;
+  font-size: 0.7rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   word-break: break-word;
@@ -79,7 +79,7 @@ body {
 
 .clockNumber {
   flex: 0 0 auto;
-  font-size: 0.9rem;
+  font-size: 0.6rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: center;
@@ -91,7 +91,7 @@ body {
 
 .date {
   flex: 0 0 auto;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: right; /* Flush right, ragged left */
