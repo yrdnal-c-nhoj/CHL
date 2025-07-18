@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import asciiFontUrl from './ascii.ttf';
 import asciiImageUrl from './ascii.jpg';
 
@@ -15,119 +15,156 @@ const DIGITS = {
   '9': [" 99999 ","99   99","99   99"," 999999","     99","    99 "," 9999  ","       "],
   'A': ["   AA  ","  A  A "," A    A"," AAAAAA"," A    A"," A    A","A      A","       "],
   'M': ["M     M","MM   MM","M M M M","M  M  M","M     M","M     M","M     M","       "],
-  'P': ["PPPPP  ","P    P ","P    P ","PPPPP  ","P      ","P      ","P      ","       "],
+  'P': ["PPPPP  ","P    P ","P    P ","PPPPP  ","P      ","P      ","P      ","       "]
+};
+
+const makeGroup = (str) => {
+  const rows = Array(8).fill('');
+  for (const char of str) {
+    const glyph = DIGITS[char] || Array(8).fill('       ');
+    for (let i = 0; i < 8; i++) {
+      rows[i] += glyph[i];
+    }
+  }
+  return rows.join('\n');
 };
 
 const AsciiClock = () => {
-  const clockRef = useRef();
+  const [timeParts, setTimeParts] = useState([]);
 
   useEffect(() => {
     const font = new FontFace('ascii', `url(${asciiFontUrl})`);
-    font.load().then(() => {
-      document.fonts.add(font);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
     });
-  }, []);
 
-  const makeGroup = (str) => {
-    const rows = Array(8).fill('');
-    for (const char of str) {
-      const glyph = DIGITS[char.toUpperCase()] || Array(8).fill('       ');
-      for (let i = 0; i < 8; i++) {
-        rows[i] += glyph[i];
-      }
-    }
-    return rows.join('\n');
-  };
+    const updateClock = () => {
+      const now = new Date();
+      let h = now.getHours();
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      const isPM = h >= 12;
+      h = h % 12 || 12;
+      setTimeParts([String(h), m, s, isPM ? 'PM' : 'AM']);
+    };
 
-  const drawClock = () => {
-    const now = new Date();
-    let h = now.getHours();
-    const m = String(now.getMinutes()).padStart(2, '0');
-    const s = String(now.getSeconds()).padStart(2, '0');
-    const isPM = h >= 12;
-
-    h = h % 12 || 12;
-    const hStr = String(h);
-    const ampm = isPM ? 'PM' : 'AM';
-
-    if (clockRef.current) {
-      const clock = clockRef.current;
-      clock.innerHTML = '';
-      const container = document.createElement('div');
-      container.style.whiteSpace = 'pre';
-
-      [hStr, m, s, ampm].forEach((part) => {
-        const div = document.createElement('div');
-        div.style = digitGroupStyleString;
-        div.textContent = makeGroup(part);
-        container.appendChild(div);
-      });
-
-      clock.appendChild(container);
-    }
-  };
-
-  useEffect(() => {
-    drawClock();
-    const interval = setInterval(drawClock, 1000);
+    updateClock();
+    const interval = setInterval(updateClock, 1000);
     return () => clearInterval(interval);
   }, []);
 
+  const containerStyle = {
+    backgroundColor: 'rgb(32, 31, 31)',
+    color: 'rgb(224, 250, 224)',
+    whiteSpace: 'pre',
+    fontSize: '1rem',
+    margin: 0,
+    padding: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100vh',
+    fontFamily: 'ascii',
+    flexDirection: 'column',
+    position: 'relative',
+    overflow: 'hidden',
+  };
+
+  const bgStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    backgroundImage: `url(${asciiImageUrl})`,
+    backgroundRepeat: 'repeat',
+    transform: 'scaleX(-1)',
+    filter: 'invert(0.9) brightness(0.5)',
+    zIndex: -1,
+  };
+
+  const titleContainerStyle = {
+    color: '#a2a2a0',
+    textShadow: '#100f0f 0.1vw 0',
+    position: 'absolute',
+    top: '0.5vh',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    width: '98vw',
+    display: 'flex',
+    justifyContent: 'space-between',
+    zIndex: 6,
+  };
+
+  const chltitleStyle = {
+    fontFamily: '"Roboto Slab", serif',
+    fontSize: '2.8vh',
+    letterSpacing: '0.1vh',
+  };
+
+  const bttitleStyle = {
+    fontFamily: '"Oxanium", serif',
+    fontSize: '2.8vh',
+    fontStyle: 'italic',
+    letterSpacing: '-0.1vh',
+  };
+
+  const dateContainerStyle = {
+    color: '#d6d5d4',
+    position: 'absolute',
+    bottom: '0.5vh',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    width: '98vw',
+    display: 'flex',
+    justifyContent: 'space-between',
+    zIndex: 6,
+  };
+
+  const dateTextStyle = {
+    fontSize: '3vh',
+    fontFamily: '"Nanum Gothic Coding", monospace',
+  };
+
+  const clockNameStyle = {
+    fontFamily: '"Oxanium", serif',
+    fontSize: '4vh',
+    position: 'fixed',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    lineHeight: '4vh',
+  };
+
   return (
-    <div style={wrapperStyle}>
-      <div style={bgLayerStyle}></div>
-      <div id="clock" ref={clockRef} style={clockStyle}></div>
+    <div style={containerStyle}>
+      <div style={bgStyle} />
+      <div style={titleContainerStyle}>
+        <div style={chltitleStyle}>Cubist Heart Laboratories</div>
+        <div style={bttitleStyle}>BorrowedTime</div>
+      </div>
+      <div style={dateContainerStyle}>
+        <a href="../cartoon/" style={dateTextStyle}>07/14/25</a>
+        <a href="../index.html" style={clockNameStyle}>ASCII</a>
+        <a href="../mobius" style={dateTextStyle}>07/16/25</a>
+      </div>
+
+      {timeParts.map((group, i) => (
+        <div
+          key={i}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            textAlign: 'center',
+            lineHeight: '0.9',
+            letterSpacing: '0.3rem',
+            marginBottom: '0.6rem',
+          }}
+        >
+          {makeGroup(group)}
+        </div>
+      ))}
     </div>
   );
 };
-
-// Inline styles
-const wrapperStyle = {
-  position: 'relative',
-  width: '100vw',
-  height: '100vh',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  overflow: 'hidden',
-  backgroundColor: 'black',
-};
-
-const bgLayerStyle = {
-  backgroundImage: `url(${asciiImageUrl})`,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '100%',
-  filter: 'invert(1)',
-  zIndex: -1,
-};
-
-const clockStyle = {
-  fontFamily: 'ascii',
-  lineHeight: '0.9',
-  letterSpacing: '0.3rem',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '0.6rem',
-  zIndex: 1,
-  backgroundColor: 'rgba(0, 0, 0, 0.6)',
-  color: 'rgb(224, 250, 224)',
-  padding: '1rem',
-  borderRadius: '1rem',
-  whiteSpace: 'pre',
-};
-
-const digitGroupStyleString = `
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  white-space: pre;
-`;
 
 export default AsciiClock;
