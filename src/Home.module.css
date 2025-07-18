@@ -118,7 +118,7 @@ body {
 }
 
 .loading {
-  color: #585c58;
+  color: #212521;
   text-align: center;
   font-size: 18px;
   padding: 20px;
@@ -133,7 +133,7 @@ body {
 
 .sortButton {
   background-color: transparent;
-  font-size: 0.7rem;
+  font-size: 0.5rem;
   padding: 4px 18px;
   border: 1px solid transparent;
   border-radius: 3px;
