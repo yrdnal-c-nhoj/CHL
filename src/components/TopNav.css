@@ -118,7 +118,7 @@ position: absolute; /* or relative, depending on parent */
 
 .hamburger span {
   display: block;
-  width: 25px;
+  width: 22px;
   height: 3px;
   background-color: #c9bebe;
   margin: 5px 0;
