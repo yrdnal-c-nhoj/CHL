@@ -15,10 +15,10 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/:date" element={<ClockPage />} />
-        <Route path="/about" element={<About />} />
-           <Route path="/logbook" element={<LogBook />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/logbook" element={<LogBook />} />
           <Route path="/manifesto" element={<Manifesto />} />
-            <Route path="/contact" element={<Contact />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </Router>
     </DataProvider>
