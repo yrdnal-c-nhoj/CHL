@@ -2,6 +2,9 @@ import React from 'react';
 import TopNav from './components/TopNav';
 import './WordPages.css';
 import Footer from './components/Footer';
+// import Post from './blog/first-post.mdx';
+
+
 
 function LogBook() {
   return (
@@ -16,6 +19,7 @@ function LogBook() {
             6
             86
             </B3434593n456t45> 
+             {/* <Post /> */}
         </p><p>In our transition from HTML to the currernt It is built using React and JavaScript, housed on Github and deployed on Vercel.
         </p>
       </div>
