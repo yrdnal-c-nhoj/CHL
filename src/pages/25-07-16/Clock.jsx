@@ -1,127 +1,170 @@
 import React, { useEffect, useRef } from 'react';
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.js';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry.js';
+import mobFontUrl from './mob.otf';
 
-const MobiusStrip = () => {
-  const mountRef = useRef(null);
-  const clockCanvasRef = useRef(null);
+const MobiusStripClock = () => {
+  const containerRef = useRef();
 
   useEffect(() => {
-    // Create canvas for clock texture
-    const clockCanvas = document.createElement('canvas');
-    clockCanvas.width = 512;
-    clockCanvas.height = 256;
-    clockCanvasRef.current = clockCanvas;
-    const ctx = clockCanvas.getContext('2d');
+    // Inject font
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: 'mob';
+        src: url(${mobFontUrl}) format('opentype');
+      }
+    `;
+    document.head.appendChild(style);
 
-    // Function to update clock texture
-    const updateClockTexture = () => {
-      const now = new Date();
-      const timeString = now.toLocaleTimeString('en-US', { hour12: true });
-
-      // Clear canvas
-      ctx.fillStyle = '#000000';
-      ctx.fillRect(0, 0, clockCanvas.width, clockCanvas.height);
-
-      // Draw time
-      ctx.font = 'bold 60px Arial';
-      ctx.fillStyle = '#ffffff';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(timeString, clockCanvas.width / 2, clockCanvas.height / 2);
-
-      // Update texture
-      texture.needsUpdate = true;
-    };
-
-    // Scene setup
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    mountRef.current.appendChild(renderer.domElement);
 
-    // Möbius strip geometry
-    const geometry = new THREE.BufferGeometry();
-    const vertices = [];
-    const indices = [];
-    const uv = [];
-
-    const width = 0.5; // Width of the strip
-    const segments = 100; // Number of segments along the strip
-    const widthSegments = 10; // Number of segments across the width
-    const textureRepeat = 7; // Repeat texture 7 times along the strip
-
-    for (let i = 0; i <= segments; i++) {
-      const u = (i / segments) * Math.PI * 2;
-      for (let j = 0; j <= widthSegments; j++) {
-        const v = (j / widthSegments) * width - width / 2;
-        const x = (1 + v * Math.cos(u / 2)) * Math.cos(u);
-        const y = (1 + v * Math.cos(u / 2)) * Math.sin(u);
-        const z = v * Math.sin(u / 2);
-        vertices.push(x, y, z);
-        // Adjust UV mapping to repeat texture 7 times along u
-        uv.push((i / segments) * textureRepeat, j / widthSegments);
-      }
-    }
-
-    for (let i = 0; i < segments; i++) {
-      for (let j = 0; j < widthSegments; j++) {
-        const a = i * (widthSegments + 1) + j;
-        const b = a + 1;
-        const c = (i + 1) * (widthSegments + 1) + j;
-        const d = c + 1;
-        indices.push(a, b, d);
-        indices.push(a, d, c);
-      }
-    }
-
-    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-    geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
-    geometry.setIndex(indices);
-    geometry.computeVertexNormals();
-
-    // Create texture from canvas
-    const texture = new THREE.CanvasTexture(clockCanvas);
-    texture.wrapS = THREE.RepeatWrapping; // Ensure texture repeats correctly
-    const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
-    const mobius = new THREE.Mesh(geometry, material);
-    scene.add(mobius);
-
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
     camera.position.z = 3;
 
-    // Animation loop
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+
+    renderer.domElement.style.width = '100vw';
+    renderer.domElement.style.height = '100vh';
+    renderer.domElement.style.display = 'block';
+    containerRef.current.appendChild(renderer.domElement);
+
+    // Clock texture
+    const clockCanvas = document.createElement('canvas');
+    clockCanvas.width = 512;
+    clockCanvas.height = 128;
+    const clockContext = clockCanvas.getContext('2d');
+    const clockTexture = new THREE.CanvasTexture(clockCanvas);
+    clockTexture.minFilter = THREE.LinearFilter;
+    clockTexture.wrapS = THREE.RepeatWrapping;
+    clockTexture.wrapT = THREE.RepeatWrapping;
+
+    const mobiusFunction = (u, v, target) => {
+      const r = 1;
+      const w = 0.2;
+      const theta = u * Math.PI * 2;
+      const t = v * 2 - 1;
+      const x = (r + w * t * Math.cos(theta / 2)) * Math.cos(theta);
+      const y = (r + w * t * Math.cos(theta / 2)) * Math.sin(theta);
+      const z = w * t * Math.sin(theta / 2);
+      target.set(x, y, z);
+    };
+
+    const geometry = new ParametricGeometry(mobiusFunction, 100, 20);
+    const material = new THREE.MeshBasicMaterial({
+      map: clockTexture,
+      side: THREE.DoubleSide,
+      emissive: 0xffffff,
+      emissiveIntensity: 1,
+    });
+
+    const mobius = new THREE.Mesh(geometry, material);
+    const mobiusInner = new THREE.Mesh(geometry.clone(), material.clone());
+    mobiusInner.scale.set(2.5, 2.5, 2.5);
+
+    scene.add(mobius);
+    scene.add(mobiusInner);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    let lastMinute = null;
+    let timeString = '';
+
+    const updateClockTexture = () => {
+      const now = new Date();
+      const minute = now.getMinutes();
+      let hour = now.getHours();
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      hour = hour % 12 || 12;
+
+      if (minute !== lastMinute) {
+        lastMinute = minute;
+        timeString = `${hour}:${minute.toString().padStart(2, '0')} ${ampm}`;
+      }
+
+      clockContext.clearRect(0, 0, clockCanvas.width, clockCanvas.height);
+      clockContext.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      clockContext.fillRect(0, 0, clockCanvas.width, clockCanvas.height);
+
+      const fontSize = Math.round(clockCanvas.width / 4.5);
+      clockContext.font = `${fontSize}px mob`;
+      clockContext.fillStyle = '#EFF1F1FF'; // Cyan text for high contrast
+      clockContext.textAlign = 'left';
+      clockContext.textBaseline = 'middle';
+      clockContext.fillText(timeString, 10, clockCanvas.height / 2);
+
+      clockTexture.needsUpdate = true;
+    };
+
     const animate = () => {
       requestAnimationFrame(animate);
-      updateClockTexture(); // Update clock every frame
-      mobius.rotation.y += 0.01;
+
+      mobius.rotation.x += 0.003;
+      mobius.rotation.y += 0.005;
+      mobius.rotation.z += 0.002;
+
+      mobiusInner.rotation.x -= 0.002;
+      mobiusInner.rotation.y -= 0.003;
+      mobiusInner.rotation.z -= 0.001;
+
+      controls.update();
+      updateClockTexture();
+
+      clockTexture.offset.x -= 0.002;
+      if (clockTexture.offset.x < -1) clockTexture.offset.x += 1;
+
       renderer.render(scene, camera);
     };
+
     animate();
 
-    // Update clock every second
-    const clockInterval = setInterval(updateClockTexture, 1000);
+    let redraws = 0;
+    const forceRedraw = () => {
+      updateClockTexture();
+      redraws++;
+      if (redraws < 10) requestAnimationFrame(forceRedraw);
+    };
+    forceRedraw();
 
-    // Handle window resize
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
+
     window.addEventListener('resize', handleResize);
 
-    // Cleanup
     return () => {
-      clearInterval(clockInterval);
       window.removeEventListener('resize', handleResize);
-      mountRef.current.removeChild(renderer.domElement);
+      document.head.removeChild(style);
+      containerRef.current.removeChild(renderer.domElement);
     };
   }, []);
 
   return (
-    <div className="w-full h-screen bg-gray-900 flex items-center justify-center">
-      <div ref={mountRef} className="w-full h-full" />
-    </div>
+    <div
+      ref={containerRef}
+      style={{
+        height: '100vh',
+        width: '100vw',
+        overflow: 'hidden',
+        margin: 0,
+        padding: 0,
+        background: 'radial-gradient(circle at center, #ff5978 0%, #8000ff 100%)',
+      }}
+    />
   );
 };
 
-export default MobiusStrip;
+export default MobiusStripClock;
