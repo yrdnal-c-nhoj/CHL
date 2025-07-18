@@ -70,6 +70,17 @@ export default function TopNav() {
               ABOUT
             </NavLink>
           </li> 
+
+
+          <li className="nav-item">
+            <NavLink 
+              to="/logbook" 
+              className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              LOGBOOK
+            </NavLink>
+          </li> 
         
           <li className="nav-item">
             <NavLink 
