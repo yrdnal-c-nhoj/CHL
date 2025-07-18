@@ -1,135 +1,277 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.module.js';
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/controls/OrbitControls.js';
-import './Georgia.ttf'; // Assuming Georgia.ttf is in the same folder
+import React, { useEffect, useState } from "react";
 
-const MobiusClock = () => {
-  const canvasRef = useRef(null);
-  const clockCanvasRef = useRef(document.createElement('canvas'));
-  const lastMinuteRef = useRef(null);
-  const timeStringRef = useRef('');
+// Import font and images as modules from the same folder
+import animFont from "./ani.ttf";
+
+import num1Img from "./pngtree-a-beautiful-saltwater-crocodile-png-image_13409821-ezgif.com-rotate.gif";
+import num2Img from "./nbvfghj-ezgif.com-effects.gif";
+import num3Img from "./Kodiak-Brown-Bear-PNG-Isolated-HD-ezgif.com-optimize.gif";
+import num4Img from "./jhgf.gif";
+import num5Img from "./pngtree-harpy-eagle-vulture-animal-flying-isolated-on-white-background-png-image_15617474-ezgif.com-apng-to-gif-converter.gif";
+import num6Img from "./Green-Anaconda-PNG-Photos-ezgif.com-apng-to-gif-converter.gif";
+import num7Img from "./m0149_7_cover-ezgif.com-optimize(1).gif";
+import num8Img from "./jhgfd(1).gif";
+import num9Img from "./myo.gif";
+import num10Img from "./dgffcir-93f9489c-305d-45b7-81d4-eb9622481af9-ezgif.com-apng-to-gif-converter.gif";
+import num11Img from "./African-Elephant-PNG-File-ezgif.com-optimize.gif";
+import num12Img from "./gergfeds.gif";
+
+import bgImage from "./anim.webp";
+
+// We will inject @font-face dynamically using a style tag
+const fontFaceStyle = `
+@font-face {
+  font-family: 'anim';
+  src: url(${animFont}) format('truetype');
+}
+`;
+
+const texts = [
+  "Ursus arctos middendorffi",
+  "Macropus rufus",
+  "Harpia harpyja",
+  "Eunectes murinus",
+  "Suncus etruscus",
+  "Dicopomorpha echmepterygis",
+  "Mycoplasma genitalium",
+  "Balaenoptera musculus",
+  "Loxodonta africana",
+  "Ceratotherium simum",
+  "Crocodylus porosus",
+  "Equus ferus caballus",
+];
+
+const images = [
+  { img: num1Img, className: "num1", style: { left: "78%", top: "65%" } },
+  { img: num2Img, className: "num2", style: { left: "67%", top: "78%" } },
+  { img: num3Img, className: "num3", style: { left: "50%", top: "83%" } },
+  { img: num4Img, className: "num4", style: { left: "35%", top: "77%" } },
+  { img: num5Img, className: "num5", style: { left: "22%", top: "65%" } },
+  { img: num6Img, className: "num6", style: { left: "17%", top: "50%" } },
+  { img: num7Img, className: "num7", style: { left: "22%", top: "32%" } },
+  { img: num8Img, className: "num8", style: { left: "35%", top: "22%" } },
+  { img: num9Img, className: "num9", style: { left: "50%", top: "17%" } },
+  { img: num10Img, className: "num10", style: { left: "65%", top: "22%" } },
+  { img: num11Img, className: "num11", style: { left: "78%", top: "35%" } },
+  { img: num12Img, className: "num12", style: { left: "83%", top: "50%" } },
+];
+
+// Individual sizes per number (converted from vmin to rem approx assuming 1vmin ~ 1vh)
+// We will keep using vmin but as vh/vw/rem per your request — vmin is okay since vh and vw are in use, but let's replace vmin with vh (close enough)
+// If you want rem, you can scale accordingly — here I keep vmin for shape consistency, replaced with vh for example
+// To keep proportions let's use vh units here as a substitute for vmin
+const numberSizes = {
+  num1: { width: "19.5vh", height: "19.5vh" },
+  num2: { width: "19.5vh", height: "17.5vh" },
+  num3: { width: "19.5vh", height: "17.5vh" },
+  num4: { width: "22.5vh", height: "14.5vh" },
+  num5: { width: "19.5vh", height: "16.5vh" },
+  num6: { width: "17.5vh", height: "15.5vh" },
+  num7: { width: "17.5vh", height: "16.5vh" },
+  num8: { width: "19.5vh", height: "19.5vh" },
+  num9: { width: "12.5vh", height: "12.5vh" },
+  num10: { width: "19.5vh", height: "19vh" },
+  num11: { width: "15.5vh", height: "13.5vh" },
+  num12: { width: "19.5vh", height: "15.5vh" },
+};
+
+const textRotationDegrees = Array.from({ length: 12 }, (_, i) => i * 30);
+
+const AnalogClock = () => {
+  // State for time for smooth animation
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    // Initialize Three.js scene
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, canvas: canvasRef.current });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 0);
+    let animationFrameId;
 
-    // Clock canvas setup
-    clockCanvasRef.current.width = 51.2 * 16; // Equivalent to 512px in rem (assuming 1rem = 10px for simplicity)
-    clockCanvasRef.current.height = 12.8 * 16; // Equivalent to 128px in rem
-    const clockContext = clockCanvasRef.current.getContext('2d');
-    const clockTexture = new THREE.CanvasTexture(clockCanvasRef.current);
-    clockTexture.minFilter = THREE.LinearFilter;
-    clockTexture.wrapS = THREE.RepeatWrapping;
-    clockTexture.wrapT = THREE.RepeatWrapping;
-
-    // Möbius strip geometry
-    const geometry = new THREE.ParametricGeometry((u, v, target) => {
-      const r = 1;
-      const w = 0.2;
-      const theta = u * Math.PI * 2;
-      const t = v * 2 - 1;
-      const x = (r + w * t * Math.cos(theta / 2)) * Math.cos(theta);
-      const y = (r + w * t * Math.cos(theta / 2)) * Math.sin(theta);
-      const z = w * t * Math.sin(theta / 2);
-      target.set(x, y, z);
-    }, 100, 20);
-
-    const material = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      map: clockTexture,
-      side: THREE.DoubleSide,
-      metalness: 0.2,
-      roughness: 0.3,
-    });
-
-    const mobius = new THREE.Mesh(geometry, material);
-    scene.add(mobius);
-
-    // Lighting
-    scene.add(new THREE.AmbientLight(0x404040));
-    const pointLight = new THREE.PointLight(0xffffff, 1.2);
-    pointLight.position.set(5, 5, 5);
-    scene.add(pointLight);
-
-    camera.position.z = 3;
-
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-
-    // Clock texture update
-    const updateClockTexture = () => {
-      const now = new Date();
-      const currentMinute = now.getMinutes();
-      let currentHour = now.getHours();
-      const ampm = currentHour >= 12 ? 'PM' : 'AM';
-      currentHour = currentHour % 12 || 12;
-
-      if (currentMinute !== lastMinuteRef.current) {
-        lastMinuteRef.current = currentMinute;
-        const hourStr = currentHour.toString();
-        const minuteStr = currentMinute.toString().padStart(2, '0');
-        timeStringRef.current = `${hourStr}:${minuteStr} ${ampm}`;
-      }
-
-      clockContext.clearRect(0, 0, clockCanvasRef.current.width, clockCanvasRef.current.height);
-      clockContext.fillStyle = 'rgba(255, 255, 255, 0.6)';
-      clockContext.fillRect(0, 0, clockCanvasRef.current.width, clockCanvasRef.current.height);
-      clockContext.font = `${51.2 / 4.5}rem Georgia`; // Font size adjusted to rem
-      clockContext.fillStyle = '#000000';
-      clockContext.textBaseline = 'middle';
-      clockContext.textAlign = 'left';
-      clockContext.fillText(timeStringRef.current, 1, clockCanvasRef.current.height / 2);
-      clockTexture.needsUpdate = true;
+    const update = () => {
+      setTime(new Date());
+      animationFrameId = requestAnimationFrame(update);
     };
 
-    // Animation loop
-    const animate = () => {
-      requestAnimationFrame(animate);
-      mobius.rotation.x += 0.003;
-      mobius.rotation.y += 0.005;
-      mobius.rotation.z += 0.002;
-      controls.update();
-      updateClockTexture();
-      clockTexture.offset.x -= 0.002;
-      if (clockTexture.offset.x < -1) {
-        clockTexture.offset.x += 1;
-      }
-      renderer.render(scene, camera);
-    };
+    animationFrameId = requestAnimationFrame(update);
 
-    animate();
-
-    // Handle resize
-    const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-    window.addEventListener('resize', handleResize);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      renderer.dispose();
-    };
+    return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
+  // Compute angles for hands
+  const ms = time.getMilliseconds();
+  const s = time.getSeconds() + ms / 1000;
+  const m = time.getMinutes() + s / 60;
+  const h = time.getHours() + m / 60;
+
+  // Styles
+  const globalStyle = {
+    margin: 0,
+    padding: 0,
+    // background: "#828f82",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh",
+    width: "100vw",
+    fontFamily: "'anim', sans-serif",
+    position: "relative",
+  };
+
+  const clockStyle = {
+    position: "relative",
+    width: "100vh",
+    height: "100vh",
+    borderRadius: "50%",
+    zIndex: 10,
+  };
+
+  const numberCommonStyle = {
+    position: "absolute",
+    transform: "translate(-50%, -50%)",
+  };
+
+  const handCommonStyle = {
+    position: "absolute",
+    bottom: "50%",
+    left: "50%",
+    transformOrigin: "bottom",
+    transform: "translateX(-50%) rotate(0deg)",
+    opacity: 0.9,
+  };
+
+  const hourHandStyle = {
+    ...handCommonStyle,
+    width: "7vh",
+    height: "25vh",
+    background: "#b6b3b3",
+    zIndex: 3,
+  };
+
+  const minuteHandStyle = {
+    ...handCommonStyle,
+    width: "3.7vh",
+    height: "44vh",
+    background: "#686565",
+    zIndex: 2,
+  };
+
+  const secondHandStyle = {
+    ...handCommonStyle,
+    width: "0.vh",
+    height: "225vh",
+    background: "rgb(248, 122, 4)",
+    zIndex: 7,
+    opacity: 1,
+  };
+
+  const textStyleBase = {
+    fontFamily: "'anim', sans-serif",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    width: "2vh",
+    height: "45vh",
+    color: "#040404",
+    textShadow: " #f8f7f7 -1px 0px",
+    fontSize: "0.7rem",
+    textAlign: "left",
+    textTransform: "uppercase",
+    transformOrigin: "top center",
+    writingMode: "vertical-lr",
+    zIndex: 6,
+    whiteSpace: "nowrap",
+  };
+
+  const labelStyle = {
+    display: "block",
+    marginTop: "0.3rem",
+    whiteSpace: "nowrap",
+  };
+
+
+  const bgImageStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    width: "100%",
+    height: "100%",
+    transform: "translate(-50%, -50%)",
+    zIndex: 1,
+    opacity: 0.1,
+    transformOrigin: "center center",
+  };
+
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        display: 'block',
-        width: '100vw',
-        height: '100vh',
-        background: 'radial-gradient(circle at center, #e39dd8 0%, #ffee69 100%)',
-      }}
-    />
+    <>
+      {/* Inject font-face styles */}
+      <style>{fontFaceStyle}</style>
+
+      <div style={globalStyle}>
+       
+
+
+        <img src={bgImage} alt="Background" style={bgImageStyle} />
+
+        <div style={clockStyle}>
+          {images.map(({ img, className, style }, i) => {
+            const sizeStyle = numberSizes[className] || {};
+            return (
+              <img
+                key={i}
+                src={img}
+                alt={`number${i + 1}`}
+                style={{ ...numberCommonStyle, ...sizeStyle, ...style }}
+              />
+            );
+          })}
+
+          {texts.map((text, i) => (
+            <div
+              key={i}
+              style={{
+                ...textStyleBase,
+                transform: `rotate(${textRotationDegrees[i]}deg)`,
+              }}
+            >
+              <span style={labelStyle}>{text}</span>
+            </div>
+          ))}
+
+          {/* Clock hands */}
+          <div
+            style={{
+              ...hourHandStyle,
+              transform: `translateX(-50%) rotate(${(h % 12) * 30}deg)`,
+            }}
+          />
+          <div
+            style={{
+              ...minuteHandStyle,
+              transform: `translateX(-50%) rotate(${m * 6}deg)`,
+            }}
+          />
+          <div
+            style={{
+              ...secondHandStyle,
+              transform: `translateX(-50%) rotate(${s * 6}deg)`,
+            }}
+          />
+
+          {/* Optional center dot */}
+          <div
+            style={{
+              position: "absolute",
+              width: "0.01vh",
+              height: "0.01vh",
+              backgroundColor: "#222",
+              borderRadius: "50%",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 10,
+            }}
+          />
+        </div>
+      </div>
+    </>
   );
 };
 
-export default MobiusClock;
+export default AnalogClock;
