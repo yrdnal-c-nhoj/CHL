@@ -1,103 +1,127 @@
-import React, { useEffect, useRef } from "react";
-import * as THREE from "three";
+import React, { useEffect, useRef } from 'react';
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.js';
 
-export default function MobiusStrip() {
+const MobiusStrip = () => {
   const mountRef = useRef(null);
+  const clockCanvasRef = useRef(null);
 
   useEffect(() => {
+    // Create canvas for clock texture
+    const clockCanvas = document.createElement('canvas');
+    clockCanvas.width = 512;
+    clockCanvas.height = 256;
+    clockCanvasRef.current = clockCanvas;
+    const ctx = clockCanvas.getContext('2d');
+
+    // Function to update clock texture
+    const updateClockTexture = () => {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString('en-US', { hour12: true });
+
+      // Clear canvas
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, clockCanvas.width, clockCanvas.height);
+
+      // Draw time
+      ctx.font = 'bold 60px Arial';
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(timeString, clockCanvas.width / 2, clockCanvas.height / 2);
+
+      // Update texture
+      texture.needsUpdate = true;
+    };
+
     // Scene setup
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x111111);
-
-    // Camera
-    const width = mountRef.current.clientWidth;
-    const height = mountRef.current.clientHeight;
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.set(0, 2, 5);
-
-    // Renderer
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(width, height);
+    renderer.setSize(window.innerWidth, window.innerHeight);
     mountRef.current.appendChild(renderer.domElement);
 
-    // Light
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(5, 10, 7);
-    scene.add(light);
-
-    // Ambient light
-    scene.add(new THREE.AmbientLight(0x404040));
-
     // Möbius strip geometry
-    // Use parametric geometry to build a Möbius strip
-    const mobiusParam = (u, t, target) => {
-      // u: [0, 1], t: [0, 2 * PI]
-      u = u * 2 - 1; // Map u to [-1,1]
-      t = t * 2 * Math.PI; // Map t to [0, 2PI]
+    const geometry = new THREE.BufferGeometry();
+    const vertices = [];
+    const indices = [];
+    const uv = [];
 
-      const majorRadius = 1; // Radius of the center circle
-      const minorRadius = 0.3; // Width of the strip
+    const width = 0.5; // Width of the strip
+    const segments = 100; // Number of segments along the strip
+    const widthSegments = 10; // Number of segments across the width
+    const textureRepeat = 7; // Repeat texture 7 times along the strip
 
-      // Parametric formula for Möbius strip
-      const x =
-        (majorRadius + (u / 2) * Math.cos(t / 2)) * Math.cos(t);
-      const y = (majorRadius + (u / 2) * Math.cos(t / 2)) * Math.sin(t);
-      const z = (u / 2) * Math.sin(t / 2);
+    for (let i = 0; i <= segments; i++) {
+      const u = (i / segments) * Math.PI * 2;
+      for (let j = 0; j <= widthSegments; j++) {
+        const v = (j / widthSegments) * width - width / 2;
+        const x = (1 + v * Math.cos(u / 2)) * Math.cos(u);
+        const y = (1 + v * Math.cos(u / 2)) * Math.sin(u);
+        const z = v * Math.sin(u / 2);
+        vertices.push(x, y, z);
+        // Adjust UV mapping to repeat texture 7 times along u
+        uv.push((i / segments) * textureRepeat, j / widthSegments);
+      }
+    }
 
-      target.set(x, y, z);
-    };
+    for (let i = 0; i < segments; i++) {
+      for (let j = 0; j < widthSegments; j++) {
+        const a = i * (widthSegments + 1) + j;
+        const b = a + 1;
+        const c = (i + 1) * (widthSegments + 1) + j;
+        const d = c + 1;
+        indices.push(a, b, d);
+        indices.push(a, d, c);
+      }
+    }
 
-    const geometry = new THREE.ParametricGeometry(mobiusParam, 100, 30);
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+    geometry.setIndex(indices);
+    geometry.computeVertexNormals();
 
-    // Material
-    const material = new THREE.MeshPhongMaterial({
-      color: 0x44aaff,
-      side: THREE.DoubleSide,
-      shininess: 100,
-      specular: 0x555555,
-    });
+    // Create texture from canvas
+    const texture = new THREE.CanvasTexture(clockCanvas);
+    texture.wrapS = THREE.RepeatWrapping; // Ensure texture repeats correctly
+    const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+    const mobius = new THREE.Mesh(geometry, material);
+    scene.add(mobius);
 
-    // Mesh
-    const mobiusMesh = new THREE.Mesh(geometry, material);
-    scene.add(mobiusMesh);
+    camera.position.z = 3;
 
     // Animation loop
-    let reqId;
     const animate = () => {
-      mobiusMesh.rotation.x += 0.005;
-      mobiusMesh.rotation.y += 0.007;
-      mobiusMesh.rotation.z += 0.004;
-
+      requestAnimationFrame(animate);
+      updateClockTexture(); // Update clock every frame
+      mobius.rotation.y += 0.01;
       renderer.render(scene, camera);
-      reqId = requestAnimationFrame(animate);
     };
-
     animate();
 
-    // Handle resize
+    // Update clock every second
+    const clockInterval = setInterval(updateClockTexture, 1000);
+
+    // Handle window resize
     const handleResize = () => {
-      const width = mountRef.current.clientWidth;
-      const height = mountRef.current.clientHeight;
-      renderer.setSize(width, height);
-      camera.aspect = width / height;
+      camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
     };
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     // Cleanup
     return () => {
-      cancelAnimationFrame(reqId);
-      window.removeEventListener("resize", handleResize);
+      clearInterval(clockInterval);
+      window.removeEventListener('resize', handleResize);
       mountRef.current.removeChild(renderer.domElement);
-      geometry.dispose();
-      material.dispose();
     };
   }, []);
 
   return (
-    <div
-      ref={mountRef}
-      style={{ width: "100%", height: "100vh", overflow: "hidden" }}
-    />
+    <div className="w-full h-screen bg-gray-900 flex items-center justify-center">
+      <div ref={mountRef} className="w-full h-full" />
+    </div>
   );
-}
+};
+
+export default MobiusStrip;
