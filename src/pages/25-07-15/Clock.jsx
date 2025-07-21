@@ -64,6 +64,7 @@ const AsciiClock = () => {
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: '100vh',
+    width: '100%',
     fontFamily: 'ascii',
     flexDirection: 'column',
     position: 'relative',
