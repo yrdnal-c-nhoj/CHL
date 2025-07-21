@@ -30,16 +30,24 @@ const FStopClock = () => {
   useEffect(() => {
     const clock = document.querySelector('.clock');
     const customDigits = ['f/1.0', 'f/1.4', 'f/2.0', 'f/2.8', 'f/4.0', 'f/5.6', 'f/8.0', 'f/11', 'f/16', 'f/22', 'f/32', 'f/45'];
+    const sharpIndices = [];
+    while (sharpIndices.length < 6) {
+      const randIndex = Math.floor(Math.random() * 12);
+      if (!sharpIndices.includes(randIndex)) sharpIndices.push(randIndex);
+    }
 
     for (let i = 1; i <= 12; i++) {
       const angle = (i / 12) * 2 * Math.PI;
       const x = 50 + 42 * Math.sin(angle);
       const y = 50 - 42 * Math.cos(angle);
       const num = document.createElement('div');
-      num.className = 'number';
+      const isSharp = sharpIndices.includes(i - 1);
+      num.className = `number ${isSharp ? 'sharp' : ''}`;
       num.style.left = `${x}%`;
       num.style.top = `${y}%`;
       num.textContent = customDigits[i - 1];
+      const randomDelay = Math.random() * 10;
+      num.style.animation = `blurFocus${isSharp ? 'Sharp' : ''} 5s infinite ${randomDelay}s`;
       clock.appendChild(num);
     }
   }, []);
@@ -84,6 +92,90 @@ const FStopClock = () => {
             0 0 0.9rem #bbbbbb88;
         }
 
+        .sharp {
+          font-weight: 900;
+          text-rendering: optimizeLegibility;
+          -webkit-font-smoothing: antialiased;
+          background: linear-gradient(135deg, #ffffff 0%, #ffffff 50%, #f0f0f0 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-fill-color: transparent;
+          text-shadow: none;
+        }
+
+        @keyframes blurFocus {
+          0% {
+            filter: blur(0px);
+            opacity: 1;
+          }
+          50% {
+            filter: blur(5px);
+            opacity: 0.3;
+          }
+          100% {
+            filter: blur(0px);
+            opacity: 1;
+          }
+        }
+
+        @keyframes blurFocusSharp {
+          0% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.3;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+
+        @keyframes blurFocusHour {
+          0% {
+            filter: blur(0px);
+            opacity: 1;
+          }
+          50% {
+            filter: blur(5px);
+            opacity: 0.5;
+          }
+          100% {
+            filter: blur(0px);
+            opacity: 1;
+          }
+        }
+
+        @keyframes blurFocusMinute {
+          0% {
+            filter: blur(0px);
+            opacity: 1;
+          }
+          50% {
+            filter: blur(5px);
+            opacity: 0.5;
+          }
+          100% {
+            filter: blur(0px);
+            opacity: 1;
+          }
+        }
+
+        @keyframes blurFocusSecond {
+          0% {
+            filter: blur(0px);
+            opacity: 1;
+          }
+          50% {
+            filter: blur(3px);
+            opacity: 0.7;
+          }
+          100% {
+            filter: blur(0px);
+            opacity: 1;
+          }
+        }
+
         .hand {
           position: absolute;
           bottom: 50%;
@@ -103,29 +195,20 @@ const FStopClock = () => {
         .hour {
           width: 1rem;
           height: 20%;
+          animation: blurFocusHour 5s infinite;
         }
 
         .minute {
           width: 0.7rem;
           height: 30%;
           background: #ccc;
+          animation: blurFocusMinute 3s infinite;
         }
 
         .second {
           width: 0.3rem;
           height: 40%;
-        }
-
-        .center {
-          position: absolute;
-          width: 2rem;
-          height: 2rem;
-          background: #fff;
-          border-radius: 50%;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          z-index: 10;
+          animation: blurFocusSecond 1s infinite;
         }
 
         .bgimage, .bgimage2, .bgimage3, .bgimage4 {
@@ -150,7 +233,6 @@ const FStopClock = () => {
       <img src={bg2} className="bgimage2" alt="bg2" />
 
       <div className="clock">
-        <div className="center"></div>
         <div className="hand hour" id="hourHand"></div>
         <div className="hand minute" id="minuteHand"></div>
         <div className="hand second" id="secondHand"></div>
