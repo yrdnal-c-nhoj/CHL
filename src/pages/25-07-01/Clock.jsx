@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import bgImage from './mu.jpeg';
+import bgImage from './mu.jpg';
 import fontUrl from './mult.ttf';
 
 const CinemaClock = () => {
