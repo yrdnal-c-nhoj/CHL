@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import bgImage from './mu.jpg';
+import bgImage from './mu.jpeg';
 import fontUrl from './mult.ttf';
 
 const CinemaClock = () => {
-  const [time, setTime] = useState('');
+  const [time, setTime] = useState({ hours: '', minutes: '' });
 
   useEffect(() => {
     const updateClock = () => {
@@ -12,10 +12,11 @@ const CinemaClock = () => {
       const minutes = now.getMinutes();
 
       hours = hours % 12 || 12;
-      const hourStr = hours < 10 ? '0' + hours : hours;
-      const minuteStr = minutes < 10 ? '0' + minutes : minutes;
 
-      setTime(`${hourStr}${minuteStr}`);
+      setTime({
+        hours: String(hours),              // no leading zero
+        minutes: String(minutes),          // no leading zero
+      });
     };
 
     updateClock();
@@ -44,7 +45,7 @@ const CinemaClock = () => {
     },
     clock: {
       position: 'absolute',
-      top: '20vh',
+      top: '32vh',
       color: 'rgb(137, 3, 3)',
       fontSize: '2.1rem',
       letterSpacing: '0.5rem',
@@ -58,20 +59,22 @@ const CinemaClock = () => {
       width: '100%',
       height: '100%',
       backgroundImage: `url(${bgImage})`,
-      backgroundSize: 'cover',
+      backgroundSize: '100% 100%',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       filter: 'contrast(100%)',
       zIndex: 1,
       pointerEvents: 'none',
-    },
+    }
   };
 
   return (
     <div style={styles.htmlBody}>
       <style>{fontFace}</style>
       <div style={styles.bgImage}></div>
-      <div style={styles.clock}>{time}</div>
+      <div style={styles.clock}>
+        {time.hours}{time.minutes}
+      </div>
     </div>
   );
 };
