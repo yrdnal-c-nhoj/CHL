@@ -30,7 +30,7 @@ function Manifesto() {
         {/* Manifesto Sections */}
         <div className="manifestoSection">
           <p><span className="hat">We Take Pictures</span><br />
-          <span className="smallcaps">WE APPROPRIATE BEAUTIFUL</span> images, scavenged from the infinite scroll of the Internet. Pictures isolate time. They make now into something permanent and forever. We remix them.
+          <span className="smallcaps">WE APPROPRIATE BEAUTIFUL</span> images, scavenged from the infinite scroll of the Internet. Pictures do things to time. They make right now into something permanent and forever. We catch pictures as they swim by and remix them.
           <span className="line">We are not thieves; we are alchemists.</span></p>
 
           <p><span className="hat">We Love Typefaces</span><br />
@@ -47,7 +47,7 @@ function Manifesto() {
            <span className="line">We use the unseen to render the intangible.</span></p>
 
           <p><span className="hat">Plus Ars Citius Omni Tempore Nam Quisque*</span><br />
-          <span className="smallcaps">WE USE AI</span> to learn things, to make things, to write manifestos. We thank the artists, photographers, typographers, designers and programmers everywhere, our collaborators whose work is now part of Cubist Heart Laboratories.
+          <span className="smallcaps">WE USE AI</span> to learn things, to make things, to write manifestos. <span className="line"> We thank and honor our collaborators everywhere.</span>
            <span className="line">&nbsp;</span>
            <span className="translate">*"More Art Faster For Everybody All The Time"</span></p>
         </div>
