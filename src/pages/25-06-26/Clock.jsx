@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import bg1 from "./co.png";
 import bg2 from "./cos.png";
 import wheFont from "./whe.ttf";
+import { color } from "three/tsl";
 
 const CosmicWheelClock = () => {
   useEffect(() => {
@@ -21,23 +22,18 @@ const CosmicWheelClock = () => {
       const seconds = now.getSeconds();
       hours = hours % 12 || 12;
 
-      const pad = (num, digits) => String(num).padStart(digits, "0");
-      const hoursStr = pad(hours, 2);
-      const minutesStr = pad(minutes, 2);
-      const secondsStr = pad(seconds, 2);
+      const pad = (num, digits) => String(num).padStart(digits, '0');
+      const set = (id, val) => {
+        const section = document.getElementById(id);
+        if (section) {
+          const boxes = section.getElementsByClassName("digit-box");
+          [...boxes].forEach((box, i) => (box.textContent = val[i]));
+        }
+      };
 
-      updateSection("hours", hoursStr);
-      updateSection("minutes", minutesStr);
-      updateSection("seconds", secondsStr);
-    };
-
-    const updateSection = (id, value) => {
-      const section = document.getElementById(id);
-      if (!section) return;
-      const boxes = section.getElementsByClassName("digit-box");
-      for (let i = 0; i < boxes.length; i++) {
-        boxes[i].textContent = value[i];
-      }
+      set("hours", pad(hours, 2));
+      set("minutes", pad(minutes, 2));
+      set("seconds", pad(seconds, 2));
     };
 
     updateClock();
@@ -54,44 +50,23 @@ const CosmicWheelClock = () => {
     justifyContent: "center",
     alignItems: "center",
     background: "#dbd7ca",
-    fontFamily: "monospace",
-    overflow: "hidden",
+
+   overflow: "hidden",
     position: "relative",
   };
 
-  const imageStyle1 = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100vw",
-    height: "100vh",
-    objectFit: "cover",
-    filter: "contrast(0.9) invert()",
-    zIndex: 1,
-    opacity: 0.9,
-    animation: "slow-rotate 120s linear infinite",
-    transformOrigin: "center center",
-  };
-
-  const imageStyle2 = {
-    ...imageStyle1,
-    zIndex: 2,
-    opacity: 0.5,
-    animation: "slowrotate 120s linear infinite",
-  };
-
-  const clockContainerStyle = {
+  const clockContainer = {
     zIndex: 4,
     display: "flex",
-    flexDirection: "column",
+    flexDirection: window.innerWidth >= 768 ? "row" : "column",
     alignItems: "center",
   };
 
-  const timeSectionStyle = {
+  const timeSection = {
     display: "flex",
   };
 
-  const digitBoxBase = {
+  const digitBox = (index) => ({
     fontFamily: "whe",
     display: "flex",
     justifyContent: "center",
@@ -100,30 +75,48 @@ const CosmicWheelClock = () => {
     fontSize: "10rem",
     width: "8rem",
     height: "8rem",
+    color: "red",
     background: "transparent",
     WebkitTextFillColor: "transparent",
-    backgroundImage: `url(${require('./cosm.webp')})`,
+    backgroundImage: `url(${bg2})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     WebkitBackgroundClip: "text",
     backgroundClip: "text",
+    animation: `${index % 2 === 0 ? "spinClockwise" : "spinCounter"} 30s linear infinite`,
+  });
+
+  const bgImgStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    filter: "contrast(0.9) invert()",
+    zIndex: 1,
+    opacity: 0.9,
+    animation: "slow-rotate 120s linear infinite",
+    transformOrigin: "center center",
   };
 
-  const spinStyles = (index) => ({
-    ...digitBoxBase,
-    animation: `${
-      index % 2 === 0 ? "spin-clockwise" : "spin-counterclockwise"
-    } 30s linear infinite`,
-  });
+  const bgImg2Style = {
+    ...bgImgStyle,
+    zIndex: 2,
+    opacity: 0.5,
+    animation: "slowrotate 120s linear infinite",
+  };
+
+  
 
   return (
     <div style={containerStyle}>
       <style>{`
-        @keyframes spin-clockwise {
+        @keyframes spinClockwise {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
-        @keyframes spin-counterclockwise {
+        @keyframes spinCounter {
           from { transform: rotate(0deg); }
           to { transform: rotate(-360deg); }
         }
@@ -135,29 +128,26 @@ const CosmicWheelClock = () => {
           0% { transform: rotate(0deg) scale(1.5); }
           100% { transform: rotate(360deg) scale(1.5); }
         }
+        a {
+          color: inherit;
+          text-decoration: none;
+        }
+        a:hover {
+          color: #e8ecec;
+          background-color: rgb(21, 0, 255);
+        }
       `}</style>
 
+    
 
-      <div style={dateContainer}>
-        <a href="../bone/" style={{ color: "inherit", textDecoration: "none" }}>
-          06/25/25
-        </a>
-        <a href="../index.html" style={clockName}>
-          Cosmic Wheels
-        </a>
-        <a href="../morse/" style={{ color: "inherit", textDecoration: "none" }}>
-          06/27/25
-        </a>
-      </div>
+      <img src={bg1} alt="Background 1" style={bgImgStyle} />
+      <img src={bg2} alt="Background 2" style={bgImg2Style} />
 
-      <img src={bg1} alt="bg1" style={imageStyle1} />
-      <img src={bg2} alt="bg2" style={imageStyle2} />
-
-      <div style={clockContainerStyle}>
-        {["hours", "minutes", "seconds"].map((unit) => (
-          <div style={timeSectionStyle} id={unit} key={unit}>
+      <div style={clockContainer}>
+        {["hours", "minutes", "seconds"].map((section) => (
+          <div style={timeSection} id={section} key={section}>
             {[0, 1].map((i) => (
-              <div className="digit-box" key={i} style={spinStyles(i)}></div>
+              <div key={i} className="digit-box" style={digitBox(i)}></div>
             ))}
           </div>
         ))}
