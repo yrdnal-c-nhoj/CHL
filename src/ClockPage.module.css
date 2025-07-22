@@ -31,19 +31,11 @@ body {
 }
 
 .loading {
-  color: #dede9a;
+  color: #3f3f3d;
   text-align: center;
   font-size: 18px;
   padding: 20px;
 }
-
-
-
-
-
-
-
-
 
 
 .sideNav {
@@ -58,7 +50,7 @@ body {
   font-family: "Nunito", sans-serif;
   font-size: 2rem;
   color: rgba(255, 255, 255, 0.9); /* Arrow visible initially */
-  background-color: rgba(111, 167, 213, 0.25); /* Blue overlay */
+
   text-decoration: none;
   transition: opacity 1s ease-in-out;
   pointer-events: auto; /* Always hot */
@@ -76,8 +68,8 @@ body {
 .sideNav:hover {
   /* Disable ALL visual response on hover */
   opacity: 0;
-  background-color: rgba(111, 167, 213, 0.25);
-  color: rgba(255, 255, 255, 0.9);
+  /* background-color: rgba(111, 167, 213, 0.25); */
+  /* color: rgba(255, 255, 255, 0.9); */
 }
 
 .leftNav {
@@ -87,7 +79,6 @@ body {
 .rightNav {
   right: 0;
 }
-
 
 
 
