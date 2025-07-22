@@ -47,7 +47,7 @@ function Manifesto() {
            <span className="line">We use the unseen to render the intangible.</span></p>
 
           <p><span className="hat">Plus Ars Citius Omni Tempore Nam Quisque*</span><br />
-          <span className="smallcaps">WE HONOR AND THANK</span> the artists, photographers, typographers, designers and programmers everywhere, our collaborators whose work is now part of Cubist Heart Laboratories.
+          <span className="smallcaps">WE USE AI</span> to learn things, to make things, to write manifestos. We thank the artists, photographers, typographers, designers and programmers everywhere, our collaborators whose work is now part of Cubist Heart Laboratories.
            <span className="line">&nbsp;</span>
            <span className="translate">*"More Art Faster For Everybody All The Time"</span></p>
         </div>
