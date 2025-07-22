@@ -99,56 +99,19 @@ const AsciiClock = () => {
 
   const chltitleStyle = {
     fontFamily: '"Roboto Slab", serif',
-    fontSize: '2.8vh',
+    fontSize: '2.7vh',
     letterSpacing: '0.1vh',
   };
 
-  const bttitleStyle = {
-    fontFamily: '"Oxanium", serif',
-    fontSize: '2.8vh',
-    fontStyle: 'italic',
-    letterSpacing: '-0.1vh',
-  };
+  
 
-  const dateContainerStyle = {
-    color: '#d6d5d4',
-    position: 'absolute',
-    bottom: '0.5vh',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    width: '98vw',
-    display: 'flex',
-    justifyContent: 'space-between',
-    zIndex: 6,
-  };
 
-  const dateTextStyle = {
-    fontSize: '3vh',
-    fontFamily: '"Nanum Gothic Coding", monospace',
-  };
 
-  const clockNameStyle = {
-    fontFamily: '"Oxanium", serif',
-    fontSize: '4vh',
-    position: 'fixed',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    lineHeight: '4vh',
-  };
+ 
 
   return (
     <div style={containerStyle}>
-      <div style={bgStyle} />
-      <div style={titleContainerStyle}>
-        <div style={chltitleStyle}>Cubist Heart Laboratories</div>
-        <div style={bttitleStyle}>BorrowedTime</div>
-      </div>
-      <div style={dateContainerStyle}>
-        <a href="../cartoon/" style={dateTextStyle}>07/14/25</a>
-        <a href="../index.html" style={clockNameStyle}>ASCII</a>
-        <a href="../mobius" style={dateTextStyle}>07/16/25</a>
-      </div>
-
+      
       {timeParts.map((group, i) => (
         <div
           key={i}
