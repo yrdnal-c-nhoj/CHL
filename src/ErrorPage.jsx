@@ -7,10 +7,11 @@ const ErrorPage = () => {
     <div className={styles.container}>
       <h1 className={styles.title}>404 - Page Not Found</h1>
       <p className={styles.message}>
-        Sorry, the page you're looking for doesn't exist.
+        Sorry, the page you're looking for doesn't exist.🧊🫀🔭
       </p>
       <Link to="/" className={styles.homeLink}>
         Return to Home
+        
       </Link>
     </div>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import TopNav from './components/TopNav';
 import './WordPages.css';
-import EmailForm from './Email';
+
 import Footer from './components/Footer';
 
 function Contact() {
@@ -40,7 +40,7 @@ function Contact() {
             <span className="smallcaps">Questions? Comments? Suggestions?</span> Complaints? Requests? Pleas for help? Fan mail? Cease-and-desist orders?
           </p>
 
-          <EmailForm />
+        
         </div>
       </div>
       <Footer />
