@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import slotFont from "./slot.otf";
-
+import StickyNote from "../src/stickynote";
 const Reel = ({ value, symbols }) => {
   const [offset, setOffset] = useState(0);
   const [spinning, setSpinning] = useState(true);
@@ -45,6 +45,7 @@ const Reel = ({ value, symbols }) => {
           <div key={i}>{s}</div>
         ))}
       </div>
+         <StickyNote />
     </div>
   );
 };
@@ -95,6 +96,7 @@ const SlotMachineClock = () => {
       <Reel value={minute} symbols={minuteDigits} />
       <Reel value={second} symbols={secondDigits} />
     </div>
+ 
   );
 };
 
