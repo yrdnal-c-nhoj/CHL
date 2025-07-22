@@ -43,7 +43,7 @@ function Manifesto() {
           <span className="line">We code on the shoulders of giants.</span></p>
 
           <p><span className="hat">We Believe in Electrons</span><br />
-          <span className="smallcaps">INVISIBLE, ENDLESSLY JUMPING.</span> They, like us, occupy a place at the blurry and busy intersection of Nature, Culture and Technology. They subatomically convey all our ambitions, dreams, thoughts, emotions and knowledge. 
+          <span className="smallcaps">INVISIBLE, ENDLESSLY JUMPING. </span>  Like us, they occupy a place at the blurry and busy intersection of Nature, Culture and Technology. They subatomically convey all our ambitions, dreams, thoughts, emotions and knowledge. 
            <span className="line">We use the unseen to render the intangible.</span></p>
 
           <p><span className="hat">Plus Ars Citius Omni Tempore Nam Quisque*</span><br />
