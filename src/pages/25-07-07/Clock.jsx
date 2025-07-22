@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import suvFont from './suv.ttf';
-import suvImage from './images/suv.gif';
-import suvBackground from './images/suvx.jpg';
+import suvImage from './suv.gif';
+import suvBackground from './suvx.jpg';
 
 const Clock = () => {
   const [time, setTime] = useState({
@@ -11,7 +11,6 @@ const Clock = () => {
   });
 
   useEffect(() => {
-    // Inject font
     const font = new FontFace('suv', `url(${suvFont})`);
     font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
@@ -47,7 +46,6 @@ const Clock = () => {
     alignItems: 'flex-start',
     background: '#378a69',
     fontFamily: 'suv, sans-serif',
-    fontSize: '10vw',
     padding: '0vw',
     boxSizing: 'border-box',
     overflow: 'hidden',
@@ -55,31 +53,43 @@ const Clock = () => {
 
   const clockStyle = {
     position: 'fixed',
-    right: '30vw',
+    right: '230px',
     top: '51vh',
     transform: 'translateY(-50%)',
-    color: 'rgb(226, 224, 234)',
-    textShadow: '#090802 0.1rem 0.1rem, #f3f3ee -0.1rem 0rem',
     display: 'flex',
-    fontSize: '0.8rem',
     textAlign: 'left',
     zIndex: 2,
-    fontVariantNumeric: 'tabular-nums',
-    fontFeatureSettings: "'tnum'",
     lineHeight: 1,
-    opacity: 0.8,
-    gap: 0,
+    gap: '0rem',
   };
 
   const spanStyle = {
+    fontFamily: 'suv, sans-serif',
     display: 'block',
-    textAlign: 'left',
-  };
-
-  const ampmStyle = {
-    marginLeft: '0vw',
-    fontSize: '0.8em',
-    alignSelf: 'flex-end',
+    fontSize: '1.1rem',
+    color: 'transparent',
+    backgroundImage: `
+      linear-gradient(
+        145deg,
+        #ffffff 0%,
+        #d0d0d0 25%,
+        #b0b0b0 50%,
+        #eeeeee 70%,
+        #999999 100%
+      )
+    `,
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    textShadow: `
+      0.05rem 0.05rem 0.1rem rgba(255, 255, 255, 0.8),
+      -0.05rem -0.05rem 0.1rem rgba(0, 0, 0, 0.4),
+      0.05rem -0.05rem 0.03rem rgba(255, 255, 255, 0.3),
+      -0.05rem 0.05rem 0.03rem rgba(0, 0, 0, 0.3),
+      0 0 0.1rem rgba(255, 255, 255, 0.4)
+    `,
+    fontWeight: 900,
+    letterSpacing: '-0.2rem',
   };
 
   const bgImageStyle = {
@@ -91,7 +101,7 @@ const Clock = () => {
     backgroundImage: `url(${suvImage})`,
     backgroundPosition: 'left',
     backgroundRepeat: 'no-repeat',
-    filter: 'brightness(160%) saturate(90%) hue-rotate(30deg)',
+    filter: 'brightness(160%) saturate(190%) hue-rotate(130deg)',
     zIndex: 2,
     pointerEvents: 'none',
     transform: 'scaleX(-1)',
@@ -107,7 +117,7 @@ const Clock = () => {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    filter: 'brightness(300%) saturate(30%) hue-rotate(30deg)',
+    filter: 'brightness(200%) saturate(190%)',
     zIndex: 1,
   };
 
@@ -118,7 +128,7 @@ const Clock = () => {
       <div id="clock" style={clockStyle}>
         <span style={spanStyle}>{time.h}</span>
         <span style={spanStyle}>{time.m}</span>
-        <span style={{ ...spanStyle, ...ampmStyle }}>{time.ampm}</span>
+        <span style={spanStyle}>{time.ampm}</span>
       </div>
     </div>
   );

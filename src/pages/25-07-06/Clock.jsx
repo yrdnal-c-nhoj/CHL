@@ -38,18 +38,18 @@ const Clock = () => {
   `;
 
   const numbers = [
-    { num: '12', top: '10vh', left: '50vw' },
-    { num: '1', top: '18vh', left: '76vw' },
-    { num: '2', top: '34vh', left: '89vw' },
-    { num: '3', top: '50vh', left: '94vw' },
-    { num: '4', top: '66vh', left: '89vw' },
-    { num: '5', top: '82vh', left: '76vw' },
-    { num: '6', top: '90vh', left: '50vw' },
-    { num: '7', top: '82vh', left: '24vw' },
-    { num: '8', top: '66vh', left: '11vw' },
-    { num: '9', top: '50vh', left: '6vw' },
-    { num: '10', top: '34vh', left: '11vw' },
-    { num: '11', top: '18vh', left: '24vw' }
+    { num: '12', top: '5%', left: '50%' },
+    { num: '1', top: '16%', left: '78%' },
+    { num: '2', top: '30%', left: '89%' },
+    { num: '3', top: '50%', left: '95%' },
+    { num: '4', top: '70%', left: '89%' },
+    { num: '5', top: '84%', left: '78%' },
+    { num: '6', top: '94%', left: '50%' },
+    { num: '7', top: '84%', left: '22%' },
+    { num: '8', top: '70%', left: '11%' },
+    { num: '9', top: '50%', left: '5%' },
+    { num: '10', top: '30%', left: '11%' },
+    { num: '11', top: '16%', left: '22%' }
   ];
 
   return (
@@ -60,6 +60,7 @@ const Clock = () => {
       justifyContent: 'center',
       alignItems: 'center',
       height: '100vh',
+      width: '100vw',
       backgroundColor: 'rgb(3, 3, 61)',
       overflow: 'hidden',
       position: 'relative'
@@ -71,15 +72,14 @@ const Clock = () => {
         alt="Background"
         style={{
           position: 'absolute',
-          top: '25%',
+          top: '50%',
           left: '50%',
-          width: '50vw',
-          height: '50vh',
+          width: '60vmin',
+          height: '60vmin',
+          transform: 'translate(-50%, -50%)',
           filter: 'brightness(140%) saturate(30%)',
           zIndex: 1,
           animation: 'slow-rotate 60s linear infinite',
-          transform: 'translate(-50%, -50%) rotate(0deg)',
-          transformOrigin: 'center center',
           pointerEvents: 'none',
         }}
       />
@@ -88,8 +88,6 @@ const Clock = () => {
         className="clock"
         style={{
           position: 'relative',
-          top: '0.3vh',
-          left: '-0.3vw',
           width: '80vmin',
           height: '80vmin',
           borderRadius: '50%',
@@ -155,8 +153,8 @@ const Clock = () => {
               fontSize: '3.2rem',
               color: 'rgb(3, 3, 61)',
               textShadow: '#0f5c7a 0.3rem 0.3rem, #0f5c7a -0.3rem -0.3rem',
-              width: '2.2rem',
-              height: '2.2rem',
+              width: '3.2rem',
+              height: '3.2rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -172,8 +170,8 @@ const Clock = () => {
 
       <style>{`
         @keyframes slow-rotate {
-          0% { transform: rotate(0deg) scale(1.5); }
-          100% { transform: rotate(360deg) scale(1.5); }
+          0% { transform: translate(-50%, -50%) rotate(0deg) scale(1.5); }
+          100% { transform: translate(-50%, -50%) rotate(360deg) scale(1.5); }
         }
       `}</style>
     </div>
