@@ -1,158 +1,230 @@
-import { useEffect, useRef } from 'react';
-import morseFont from './morse.ttf';
+import React, { useEffect, useRef, useState } from "react";
+import morseFont from "./morse.ttf";
+import birdsGif from "./birds.gif";
 
-const App = () => {
+const colors = [
+  "#c0c6c7", "#99a3a3", "#96431FFF", "#666666", "#333333", "#777777",
+  "#444444", "#999999", "#888888", "#aaaaaa", "#bbbbbb", "#66615C",
+  "#c0c6c7", "#99a3a3", "#894528FF", "#7E4930FF"
+];
+
+const totalLines = 250;
+const svgWidth = 1000; // virtual coordinate system for SVG
+const svgHeight = 500;
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+const MorseClock = () => {
+  const [time, setTime] = useState(new Date());
+  const [digits, setDigits] = useState(Array(6).fill("0"));
+  const [changingIndices, setChangingIndices] = useState(new Set());
+  const wiresRef = useRef([]);
   const svgRef = useRef(null);
 
-  const colors = [
-    "#c0c6c7", "#99a3a3", "#B7410E", "#66615C", "#c0c6c7", "#99a3a3",
-    "#B7410E", "#66615C", "#c0c6c7", "#99a3a3", "#999999", "#b0b0b0",
-    "#a0522d", "#666666", "#333333", "#777777", "#444444", "#999999",
-    "#888888", "#aaaaaa", "#bbbbbb", "#66615C", "#c0c6c7", "#99a3a3", "#B7410E"
-  ];
-
-  const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-
-  const totalLines = 70;
-  const width = 1200; // Base width for viewport reference
-  const height = 1200; // Base height for viewport reference
-  const extendedWidth = 3600; // Overshoot on right
-  const extendedHeight = 1800; // Overshoot vertically
-
-  const denseY = (index, total) => {
-    const t = index / (total - 1);
-    return extendedHeight * (t * t * t); // Spread lines across full height
-  };
-
+  // Load font using FontFace API once
   useEffect(() => {
-    const svg = svgRef.current;
-    if (!svg) return;
+    const font = new FontFace("morse", `url(${morseFont})`);
+    font.load().then((loaded) => {
+      document.fonts.add(loaded);
+    });
+  }, []);
 
-    svg.innerHTML = ''; // Clear previous paths to avoid duplication
+  // Initialize wires on mount
+  useEffect(() => {
+    if (!svgRef.current) return;
+    wiresRef.current = [];
+
+    // Calculate evenly spaced Y positions with shuffle
+    const step = svgHeight / (totalLines + 1);
+    const yPositions = Array.from({ length: totalLines }, (_, i) => (i + 1) * step);
+
+    // Shuffle positions
+    for (let i = yPositions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [yPositions[i], yPositions[j]] = [yPositions[j], yPositions[i]];
+    }
+
+    // Clear previous SVG children
+    while (svgRef.current.firstChild) {
+      svgRef.current.removeChild(svgRef.current.firstChild);
+    }
 
     for (let i = 0; i < totalLines; i++) {
-      const startY = denseY(i, totalLines) + randomInt(-0.7, 0.7);
-      const controlX = width / 2; // Center control point for sag
-      // Significantly increased sag with more variation
-      const controlY = startY + randomInt(50, 120); // Increased range for deeper and varied sag
-      const endY = startY + randomInt(-1.2, 1.2);
-
-      // Start left of viewport, extend far beyond right edge
-      const startX = -100; // Start slightly left of viewport
-      const endX = extendedWidth; // Extend well beyond right edge
-
-      const d = `M${startX} ${startY} Q${controlX} ${controlY} ${endX} ${endY}`;
+      const sagFactor = randomInt(10, 100);
+      const baseY = yPositions[i];
+      const controlX = randomInt(svgWidth * 0.3, svgWidth * 0.7);
+      const controlY = baseY + sagFactor;
 
       const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      const d = `M0 ${baseY} Q${controlX} ${controlY} ${svgWidth} ${baseY}`;
       path.setAttribute("d", d);
       path.setAttribute("stroke", colors[i % colors.length]);
-      path.setAttribute("stroke-width", 1.8 + (i % 3) * 0.9); // Maintain thick lines
+      path.setAttribute("stroke-width", (1 + (i % 3) * 0.5).toString());
       path.setAttribute("fill", "none");
+      path.style.transition = "d 0.5s ease-in-out";
+      svgRef.current.appendChild(path);
 
-      svg.appendChild(path);
+      wiresRef.current.push({
+        path,
+        currentStartY: baseY,
+        currentEndY: baseY,
+        currentControlX: controlX,
+        currentControlY: controlY,
+        targetStartY: baseY,
+        targetEndY: baseY,
+        targetControlX: controlX,
+        targetControlY: controlY,
+        fixedStartY: baseY,
+        fixedEndY: baseY,
+      });
     }
   }, []);
 
+  // Update wires animation function
+  function updateWires() {
+    wiresRef.current.forEach((wire) => {
+      const sagFactor = randomInt(10, 100);
+      wire.targetControlY = wire.fixedStartY + sagFactor;
+      wire.targetControlX = randomInt(svgWidth * 0.3, svgWidth * 0.7);
+
+      // Interpolate positions
+      wire.currentControlY += (wire.targetControlY - wire.currentControlY) * 0.1;
+      wire.currentControlX += (wire.targetControlX - wire.currentControlX) * 0.1;
+
+      // Compose new path d attribute
+      const d = `M0 ${wire.fixedStartY} Q${wire.currentControlX} ${wire.currentControlY} ${svgWidth} ${wire.fixedEndY}`;
+      wire.path.setAttribute("d", d);
+    });
+  }
+
+  // Update time and digits every second
   useEffect(() => {
-    const updateClock = () => {
+    const interval = setInterval(() => {
       const now = new Date();
-      const hours = now.getHours().toString().padStart(2, '0');
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      const seconds = now.getSeconds().toString().padStart(2, '0');
 
-      document.getElementById('hour1').textContent = hours[0];
-      document.getElementById('hour2').textContent = hours[1];
-      document.getElementById('minute1').textContent = minutes[0];
-      document.getElementById('minute2').textContent = minutes[1];
-      document.getElementById('second1').textContent = seconds[0];
-      document.getElementById('second2').textContent = seconds[1];
-    };
+      setTime(now);
 
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
+      const hours = now.getHours().toString().padStart(2, "0");
+      const minutes = now.getMinutes().toString().padStart(2, "0");
+      const seconds = now.getSeconds().toString().padStart(2, "0");
+      const newDigits = [...hours, ...minutes, ...seconds];
+
+      // Detect which digits changed to animate fade
+      setChangingIndices((prev) => {
+        const changed = new Set();
+        newDigits.forEach((digit, idx) => {
+          if (digit !== digits[idx]) changed.add(idx);
+        });
+        return changed;
+      });
+
+      setDigits(newDigits);
+      updateWires();
+    }, 1000);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [digits]);
 
-  const styles = {
-    body: {
-      margin: 0,
-      height: '100vh',
-      background: 'linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%)',
-      position: 'relative',
-      overflow: 'visible', // Allow SVG to extend beyond viewport
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      fontFamily: '"morse", Arial, sans-serif',
-    },
-    backgroundSvg: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '150vw', // Ensure SVG covers beyond viewport
-      height: '100vh',
-      zIndex: 1,
-    },
-    clock: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      position: 'relative',
-      zIndex: 4,
-    },
-    digitBox: {
-      width: '110vw',
-      height: '2.3rem',
-      margin: '0.9rem 0',
-      backgroundColor: '#b87333',
-      color: '#b90404',
-      textShadow: `
-        0 -0.2rem 0 rgb(250, 247, 247),
-        -0.2rem 0 0 rgb(247, 242, 242),
-        0.2rem 0 0 rgba(0, 0, 0, 1),
-        0 0.2rem 0 rgba(0, 0, 0, 1),
-        0 -0.1rem 0 rgb(248, 241, 241),
-        -0.1rem 0 0 rgba(0, 0, 0, 1),
-        0.1rem 0 0 rgba(0, 0, 0, 1),
-        0 0.1rem 0 rgba(0, 0, 0, 1)
-      `,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      fontSize: '3rem',
-      borderRadius: '7.5rem',
-      zIndex: 4,
-    },
-  };
+  // Clear changing classes after fade duration (300ms)
+  useEffect(() => {
+    if (changingIndices.size === 0) return;
+    const timeout = setTimeout(() => {
+      setChangingIndices(new Set());
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [changingIndices]);
+
+  // Styles
+
+const styles = {
+  container: {
+    margin: 0,
+    height: "100vh",
+    width: "100vw",
+    background: "linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%)",
+    position: "relative",
+    overflow: "hidden",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontFamily: "'morse', Arial, sans-serif",
+  },
+  bgImage: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "60vh",
+    objectFit: "cover",
+    zIndex: 0,
+    opacity: 0.5,
+    userSelect: "none",
+    pointerEvents: "none",
+  },
+svg: {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100vw",
+  height: "100vh",  // increase from 50vh to 100vh or desired height
+  zIndex: 1,
+  pointerEvents: "none",
+},
+
+  clock: {
+    display: "flex",
+    flexDirection: "column",  // vertical stack
+    gap: "2rem",
+    position: "relative",
+    zIndex: 4,
+    userSelect: "none",
+    alignItems: "center",  // center digits horizontally
+  },
+  digitBox: {
+    width: "900%",     
+      height: "1.5rem",    // taller for vertical stacking
+    backgroundColor: "#b87333",
+    color: "#b90404",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: "3rem",
+    boxShadow:
+      "0px -0.2rem 0px #9db4a0, 0px 0.2rem 0px #9db4a0, 0px -0.325rem 0.25rem #ecf1c6, 0px 0.45rem 0.525rem #1a1b1a",
+    fontWeight: "normal",
+    textShadow:
+      "0px -0.125rem 0px rgb(250, 247, 247), -0.125rem 0px 0px rgb(247, 242, 242), 0.125rem 0px 0px rgba(0, 0, 0), 0px 0.125rem 0px rgba(0, 0, 0), 0px -0.0625rem 0px rgb(248, 241, 241), -0.0625rem 0px 0px rgba(0, 0, 0), 0.0625rem 0px 0px rgba(0, 0, 0), 0px 0.0625rem 0px rgba(0, 0, 0)",
+    transition: "opacity 0.3s ease-in-out",
+    userSelect: "none",
+  },
+  digitText: (isChanging) => ({
+    opacity: isChanging ? 0 : 1,
+    transition: "opacity 0.3s ease-in-out",
+  }),
+};
+
+
 
   return (
-    <div style={styles.body}>
-      <style>
-        {`
-          @font-face {
-            font-family: 'morse';
-            src: url(${morseFont}) format('truetype');
-            font-weight: normal;
-            font-style: normal;
-          }
-        `}
-      </style>
+    <div style={styles.container}>
+      <img src={birdsGif} alt="Background" style={styles.bgImage} draggable={false} />
       <svg
-        style={styles.backgroundSvg}
-        viewBox={`-100 0 ${extendedWidth + 100} ${extendedHeight}`} // Adjusted viewBox for overshoot
-        preserveAspectRatio="none"
         ref={svgRef}
-      />
-      <div style={styles.clock}>
-        <div style={styles.digitBox} id="hour1">0</div>
-        <div style={styles.digitBox} id="hour2">0</div>
-        <div style={styles.digitBox} id="minute1">0</div>
-        <div style={styles.digitBox} id="minute2">0</div>
-        <div style={styles.digitBox} id="second1">0</div>
-        <div style={styles.digitBox} id="second2">0</div>
+        viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+        preserveAspectRatio="none"
+        style={styles.svg}
+      ></svg>
+      <div style={styles.clock} aria-label="Morse Code Clock">
+        {digits.map((digit, i) => (
+          <div key={i} style={styles.digitBox} aria-live="polite">
+            <span style={styles.digitText(changingIndices.has(i))}>{digit}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
 };
 
-export default App;
+export default MorseClock;
