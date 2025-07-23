@@ -11,7 +11,8 @@ function About() {
         <h1>ABOUT</h1>
         <p>
         BorrowedTime is a new clock each day, using found images from the Internet. 
-        </p><p>In our transition from HTML to the currernt It is built using React and JavaScript, housed on Github and deployed on Vercel.
+        </p><p>It is made with VSCode using React JavaScript, housed on Github and deployed on Vercel.
+          <br />https://github.com/yrdnal-c-nhoj/CHL
         </p>
       </div>
  <Footer />
