@@ -1,6 +1,6 @@
 import React from 'react';
 import TopNav from './components/TopNav';
-import './WordPages.css';
+import styles from './WordPages.module.css';
 import Footer from './components/Footer';
 import Post from './blog/first-post.mdx';
 
