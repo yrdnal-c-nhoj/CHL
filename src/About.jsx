@@ -12,7 +12,7 @@ function About() {
         <p>
         BorrowedTime is a new clock each day, using found images from the Internet. 
         </p><p>It is made with VSCode using React JavaScript, housed on Github and deployed on Vercel.
-          <br />https://github.com/yrdnal-c-nhoj/CHL
+          <br />
         </p>
       </div>
  <Footer />
