@@ -1,6 +1,6 @@
 import React from 'react';
 import TopNav from './components/TopNav';
-import styles from './WordPages.module.css';
+import './WordPages.css';
 import Footer from './components/Footer';
 
 function About() {
