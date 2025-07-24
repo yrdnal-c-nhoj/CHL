@@ -1,7 +1,7 @@
 import React from 'react';
 import TopNav from './components/TopNav';
 import './WordPages.css';
-
+// import ContactForm from './ContactForm';  
 import Footer from './components/Footer';
 
 function Contact() {
@@ -17,7 +17,7 @@ function Contact() {
             <span className="hat">Get the Lab's Monthly Newsletter </span>
             <br />
 
-            <span className="smallcaps">Subscribe to recieve</span> the lab's monthly newsletter containing clock notes, dispatches, research findings, recipes, pictures of houseplants and exclusive links to original downloadable art from the lab. We will never sell or release your eMail address.
+            <span className="smallcaps">Subscribe to recieve</span> the lab's monthly newsletter containing clock notes, dispatches, research findings, recipes, pictures of houseplants and exclusive links to original downloadable art from the lab.<br /> We will never sell or release your eMail address.
           </p>
 
           <form
@@ -40,6 +40,12 @@ function Contact() {
             <span className="smallcaps">Questions? Comments? Suggestions?</span> Complaints? Requests? Pleas for help? Fan mail? Cease-and-desist orders?
           </p>
 
+  <a class="email-link" href="mailto:cubistheart@gmail.com?subject=🧊🫀🔭">
+   cubistheart@gmail.com
+  </a><br />
+
+          {/* <ContactForm /> */}
+&nbsp;
         
         </div>
       </div>

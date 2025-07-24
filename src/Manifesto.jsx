@@ -1,11 +1,11 @@
 import React from 'react';
 import TopNav from './components/TopNav';
-import styles from './WordPages.module.css';
+import './WordPages.css';
 import Footer from './components/Footer';
 
 function Manifesto() {
   return (
-    <div className={styles.container}>
+    <div className="container">
       <TopNav />
       <div className="centeredContent">
         <h1>MANIFESTO</h1>
