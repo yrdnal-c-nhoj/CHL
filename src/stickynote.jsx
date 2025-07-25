@@ -50,7 +50,7 @@ const StickyNote = () => {
         }}
         suppressContentEditableWarning={true}
       >
-        Write your note here...
+        Can we please get this offline and up o the racks before somebody sees it!!!
       </div>
     </div>
   );
