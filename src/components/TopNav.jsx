@@ -26,9 +26,9 @@ export default function TopNav() {
         BorrowedTime
       </div>
 
-      <div className="topnavtag">
+      {/* <div className="topnavtag">
         a computationally intensive new clock, each day
-      </div>
+      </div> */}
 </div>
       <nav className="navbar">
         <button 
