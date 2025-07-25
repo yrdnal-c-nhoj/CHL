@@ -38,11 +38,12 @@ body {
   color: #850404;
   letter-spacing: 0.1rem;
   font-size: 1.5rem;
+  line-height: 5rem;
   text-align: left;
-  margin: 0.1rem 0;
+  margin: 0.0rem 0;
 }
 
-.centeredContent p {
+.centeredContent p { 
   font-size: 0.9rem;
   line-height: 1.5;
   text-align: left;
@@ -87,7 +88,7 @@ body {
   letter-spacing: 0.02em;
   font-weight: bold;
   color: #850404;
-  line-height: 2.5rem;
+  line-height: 1.2rem;
   margin-bottom: -1.9rem;
   display: block;
 }
