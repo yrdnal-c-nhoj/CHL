@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
+import Header from './components/Header';
 import styles from './ClockPage.module.css';
 
-// Helpers outside component
+// Helpers
 const formatTitle = (title) => {
   if (!title) return 'Home';
   return title.replace(/clock/i, '').trim() || 'Home';
@@ -23,12 +24,11 @@ const ClockPage = () => {
 
   const [ClockComponent, setClockComponent] = useState(null);
   const [pageError, setPageError] = useState(null);
-
-  // Nav/footer visibility state
   const [navVisible, setNavVisible] = useState(true);
+  const [navHasFaded, setNavHasFaded] = useState(false);
   const [footerVisible, setFooterVisible] = useState(true);
+  const [headerVisible, setHeaderVisible] = useState(true);
 
-  // Load clock component on date/items change
   useEffect(() => {
     if (loading) return;
 
@@ -47,36 +47,34 @@ const ClockPage = () => {
     }
 
     setPageError(null);
-    setClockComponent(null); // Clear before load
+    setClockComponent(null);
 
-    // Dynamically import the clock component
     import(`./pages/${item.path}/Clock.jsx`)
       .then(mod => setClockComponent(() => mod.default))
       .catch(err => setPageError(`Failed to load clock for ${date}: ${err.message}`));
-
-    // Note: styles should be imported statically in Clock.jsx or globally
   }, [date, items, loading]);
 
-  // Handle nav/footer fade on inactivity
   useEffect(() => {
     const navFadeMs = 300;
     const footerFadeMs = 2000;
     let navTimer, footerTimer;
 
     const resetTimers = () => {
-      setNavVisible(true);
+      if (!navHasFaded) {
+        setNavVisible(true);
+        clearTimeout(navTimer);
+        navTimer = setTimeout(() => {
+          setNavVisible(false);
+          setNavHasFaded(true);
+        }, navFadeMs);
+      }
+
       setFooterVisible(true);
-
-      if (navTimer) clearTimeout(navTimer);
-      if (footerTimer) clearTimeout(footerTimer);
-
-      navTimer = setTimeout(() => setNavVisible(false), navFadeMs);
+      clearTimeout(footerTimer);
       footerTimer = setTimeout(() => setFooterVisible(false), footerFadeMs);
     };
 
-    // Initialize timers
     resetTimers();
-
     window.addEventListener('mousemove', resetTimers);
     window.addEventListener('touchstart', resetTimers);
 
@@ -86,34 +84,40 @@ const ClockPage = () => {
       window.removeEventListener('mousemove', resetTimers);
       window.removeEventListener('touchstart', resetTimers);
     };
-  }, []);
+  }, [navHasFaded]);
 
-  // Reset body overflow on unmount (if you modify it elsewhere)
+  useEffect(() => {
+    // Ensure header is visible on initial render
+    setHeaderVisible(true);
+    const headerTimer = setTimeout(() => {
+      setHeaderVisible(false);
+    }, 2000);
+
+    return () => clearTimeout(headerTimer);
+  }, [date]); // Trigger on date change to reset header visibility on page navigation
+
   useEffect(() => {
     return () => {
       document.body.style.overflow = '';
     };
   }, []);
 
-  // Find current, previous, next items for navigation
   const currentIndex = items.findIndex(item => item.date === date);
   const currentItem = currentIndex >= 0 ? items[currentIndex] : null;
   const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
   const nextItem = currentIndex >= 0 && currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
 
-  // Loading UI
   if (loading) {
     return <div className={styles.loading}>Loading data...</div>;
   }
 
-  // Error UI
   if (error || pageError) {
     return (
       <div className={styles.container}>
+        <Header visible={headerVisible} />
         <div className={styles.content}>
           {ClockComponent ? <ClockComponent /> : <div className={styles.loading}>Loading clock...</div>}
         </div>
-
         {currentItem && (
           <Link
             to="/"
@@ -133,15 +137,14 @@ const ClockPage = () => {
             </div>
           </Link>
         )}
-
         <div className={styles.error}>{error || pageError}</div>
       </div>
     );
   }
 
-  // Main content render
   return (
     <div className={styles.container}>
+      <Header visible={headerVisible} />
       <div className={styles.content}>
         {ClockComponent ? <ClockComponent /> : <div className={styles.loading}>Loading clock...</div>}
       </div>

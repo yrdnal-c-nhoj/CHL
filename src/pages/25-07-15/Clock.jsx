@@ -57,7 +57,7 @@ const AsciiClock = () => {
     backgroundColor: 'rgb(32, 31, 31)',
     color: 'rgb(224, 250, 224)',
     whiteSpace: 'pre',
-    fontSize: '1rem',
+    fontSize: '0.6rem',
     margin: 0,
     padding: 0,
     display: 'flex',

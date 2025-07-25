@@ -5,9 +5,9 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
   justify-content: center;
-  padding: 1rem;
+  padding: 0.5rem;
   z-index: 1000;
   opacity: 1;
   transition: opacity 0.7s ease-in-out;
@@ -22,13 +22,27 @@
 }
 
 .chltitle {
-  font-family: "Cinzel Decorative", serif;
-  font-size: 2rem;
+  font-size: 1.2rem;
   color: #fff;
 }
 
 .bttitle {
-  font-family: "Cinzel", serif;
-  font-size: 1.5rem;
-  color: #fff;
+  font-family: "Oxanium", sans-serif;
+  transform: skewX(-20deg);
+  color: #eae8ed;
+  text-shadow:
+    #340303 1px 0px 0,
+    #340303 0px -1px 0;
+  font-size: 0.9rem;
+  line-height: 0.7rem;
+  text-align: left;
+  letter-spacing: -0.05rem;
+  width: 100vw;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
+
