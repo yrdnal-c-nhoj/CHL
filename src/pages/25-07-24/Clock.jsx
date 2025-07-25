@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import bgImage from './em.png';
+import bgImage from './em.gif';
 
 const Clock = () => {
   const canvasRef = useRef(null);
