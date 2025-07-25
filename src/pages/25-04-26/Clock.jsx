@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import StickyNote from '../../stickynote';
 
 function App() {
   const canvasRef = useRef(null);
@@ -163,6 +164,7 @@ function App() {
 
   return (
     <div style={containerStyle}>
+      <StickyNote />
       <div style={clockStyle}>{time.hours}:{time.minutes}</div>
       <canvas ref={canvasRef} style={canvasStyle} />
     </div>
