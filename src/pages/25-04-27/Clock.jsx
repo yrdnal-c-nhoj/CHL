@@ -60,6 +60,7 @@ const SpinningCoinClock = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        width: "100vw",
         margin: 0,
         perspective: "100vw",
         overflow: "hidden",
