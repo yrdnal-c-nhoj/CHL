@@ -44,12 +44,12 @@ function Manifesto() {
 
           <p><span className="hat">We Believe in Electrons<br />&nbsp;</span><br />
           <span className="smallcaps">INVISIBLE, ENDLESSLY JUMPING. </span>  Like us, they occupy a place at the blurry and busy intersection of Nature, Culture and Technology. They subatomically convey all our ambitions, dreams, thoughts, emotions and knowledge. 
-           <span className="line">We use the unseen to render the intangible.<br />&nbsp;</span></p>
+           <span className="line">The unseen renders the intangible.<br />&nbsp;</span></p>
 
 
 
           <p><span className="hat">We Use AI<br />&nbsp;</span><br />
-          <span className="smallcaps">A NEW TOOL </span> that helps us to make new things and to learn new things and to write manifestos.
+          <span className="smallcaps">A NEW TOOL</span> is a new toy. It helps us to make new things and to learn new things and to write new things, like manifestos.
            <span className="line">We move forward without fear.<br />&nbsp;</span></p>
 
        

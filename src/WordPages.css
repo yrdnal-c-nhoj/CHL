@@ -37,8 +37,8 @@ body {
   font-family: "Roboto Slab", sans-serif;
   color: #850404;
   letter-spacing: 0.1rem;
-  font-size: 1.5rem;
-  line-height: 5rem;
+  font-size: 1.4rem;
+  line-height: 4rem;
   text-align: left;
   margin: 0.0rem 0;
 }
@@ -51,10 +51,10 @@ body {
 
 .epigraph {
   font-size: 1.0rem;
-  margin: 0.6rem 1rem;
+  margin: 0.6rem 0.0rem;
   text-align: left;
   color: #323737;
-  max-width: 70rem;
+  /* max-width: 70rem; */
 }
 
 .epigraph .quote {
