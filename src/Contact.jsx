@@ -34,12 +34,16 @@ function Contact() {
             <input type="submit" value="subscribe" />
           </form>
    
-          <p><br></br>
-            <span className="hat">Send an eMail to the Lab</span>
-            <br />
-            <span className="smallcaps">Questions? Comments? Suggestions?</span> Complaints? Requests? Pleas for help? Fan mail? Cease-and-desist orders?
-          </p>
 
+
+
+          <span className="hat">Send an eMail to the Lab<br />&nbsp;</span><br />
+           <span className="smallcaps">Questions? Comments? Suggestions?</span> Complaints? Requests? Pleas for help? Fan mail? Cease-and-desist orders?
+       
+
+
+
+      
   <a class="email-link" href="mailto:cubistheart@gmail.com?subject=🧊🫀🔭">
    cubistheart@gmail.com
   </a><br />
