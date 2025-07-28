@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import myCustomFont from './som.ttf';
+import backgroundImage from './met.jpg'; // Import your background image
 
 const Clock = () => {
   const [digits, setDigits] = useState([]);
@@ -71,7 +72,10 @@ const Clock = () => {
           position: 'relative',
           width: '100vw',
           height: '100vh',
-          background: 'black',
+          backgroundImage: `url(${backgroundImage})`, // Add background image
+          backgroundSize: 'cover', // Ensure the image covers the entire area
+          backgroundPosition: 'center', // Center the image
+          backgroundRepeat: 'no-repeat', // Prevent tiling
           overflow: 'hidden',
           fontFamily: 'MyCustomFont, monospace',
         }}
@@ -84,10 +88,10 @@ const Clock = () => {
               ...digitStyle(top),
               fontSize:
                 typeClass === 'hour'
-                  ? '9rem'
+                  ? '5rem'
                   : typeClass === 'minuteTens'
                   ? '3.5rem'
-                  : '1.5rem',
+                  : '1.6rem',
             }}
           >
             {char}
