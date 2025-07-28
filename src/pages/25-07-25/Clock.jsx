@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import background2 from './bb.webp';   // front
 import background1 from './bam.webp';  // back
-import background3 from './bambu.gif'; // <- NEW static background
+import background3 from './bambu.gif'; // static background
 import customFont from './bamboo.ttf';
 
 const Clock = () => {
@@ -29,27 +29,20 @@ const Clock = () => {
 
       @keyframes parallaxFrontReverse {
         0% { background-position: 0 0; }
-        100% { background-position: 200vw 0; } /* reversed direction */
+        100% { background-position: 200vw 0; }
       }
     `;
     document.head.appendChild(style);
     return () => document.head.removeChild(style);
   }, []);
 
-const formatTime = (date) => {
-  let hours = date.getHours();
-  const minutes = date.getMinutes();
-  const isAM = hours < 12;
-  const ampm = isAM ? 'AM' : 'PM';
+  const formatTime = (date) => {
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return { hours, minutes };
+  };
 
-  hours = hours % 12 || 12; // Convert to 12-hour format, removing 0
-  const minutesStr = minutes < 10 ? '0' + minutes : minutes;
-
-  return `${hours}:${minutesStr}${ampm}`;
-};
-
-
-  const timeString = formatTime(time);
+  const { hours, minutes } = formatTime(time);
 
   const wrapperStyle = {
     position: 'relative',
@@ -115,14 +108,21 @@ const formatTime = (date) => {
     zIndex: 3,
   };
 
-  const clockContainerStyle = {
+  const clockStackStyle = {
     display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     zIndex: 4,
   };
 
+  const digitRowStyle = {
+    display: 'flex',
+    margin: '0.5rem 0',
+  };
+
   const digitBoxStyle = {
-    width: '2rem',
-    height: '10rem',
+    width: '4.5rem',
+    height: '5rem',
     fontSize: '6rem',
     color: '#98AF86FF',
     fontFamily: 'CustomFont, monospace',
@@ -135,16 +135,19 @@ const formatTime = (date) => {
     <div style={wrapperStyle}>
       <div style={backgroundLayer1Style}></div>
       <div style={backgroundLayer2Style}></div>
-      <div style={backgroundLayer3Style}></div> {/* <-- Static background */}
+      <div style={backgroundLayer3Style}></div>
       <div style={overlayStyle}></div>
-      <div style={clockContainerStyle}>
-        {timeString.split('').map((char, index) =>
-          char !== ':' ? (
-            <div key={index} style={digitBoxStyle}>
-              {char}
-            </div>
-          ) : null
-        )}
+      <div style={clockStackStyle}>
+        <div style={digitRowStyle}>
+          {hours.split('').map((char, index) => (
+            <div key={`h-${index}`} style={digitBoxStyle}>{char}</div>
+          ))}
+        </div>
+        <div style={digitRowStyle}>
+          {minutes.split('').map((char, index) => (
+            <div key={`m-${index}`} style={digitBoxStyle}>{char}</div>
+          ))}
+        </div>
       </div>
     </div>
   );
