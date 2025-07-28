@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import Header from './components/Header';
 import styles from './ClockPage.module.css';
@@ -21,7 +21,6 @@ const formatDate = (dateStr) => {
 const ClockPage = () => {
   const { date } = useParams();
   const { items, loading, error } = useContext(DataContext);
-  const navigate = useNavigate();
 
   const [ClockComponent, setClockComponent] = useState(null);
   const [pageError, setPageError] = useState(null);
@@ -54,12 +53,6 @@ const ClockPage = () => {
       .then(mod => setClockComponent(() => mod.default))
       .catch(err => setPageError(`Failed to load clock for ${date}: ${err.message}`));
   }, [date, items, loading]);
-
-  useEffect(() => {
-    if (pageError) {
-      navigate('/'); // Redirect to homepage if there's a page error
-    }
-  }, [pageError, navigate]);
 
   useEffect(() => {
     const navFadeMs = 300;
@@ -170,7 +163,7 @@ const ClockPage = () => {
         <Link
           to={`/${nextItem.date}`}
           className={`${styles.sideNav} ${styles.rightNav} ${navVisible ? styles.visible : styles.hidden}`}
-          aria-label={`Go to ${formatTitle(nextItem.title)} `}
+          aria-label={`Go to ${formatTitle(nextItem.title)}`}
         >
           →
         </Link>
@@ -198,5 +191,8 @@ const ClockPage = () => {
     </div>
   );
 };
+
+
+
 
 export default ClockPage;
