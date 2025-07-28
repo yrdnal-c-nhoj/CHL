@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import Header from './components/Header';
 import styles from './ClockPage.module.css';
@@ -21,6 +21,7 @@ const formatDate = (dateStr) => {
 const ClockPage = () => {
   const { date } = useParams();
   const { items, loading, error } = useContext(DataContext);
+  const navigate = useNavigate();
 
   const [ClockComponent, setClockComponent] = useState(null);
   const [pageError, setPageError] = useState(null);
@@ -53,6 +54,12 @@ const ClockPage = () => {
       .then(mod => setClockComponent(() => mod.default))
       .catch(err => setPageError(`Failed to load clock for ${date}: ${err.message}`));
   }, [date, items, loading]);
+
+  useEffect(() => {
+    if (pageError) {
+      navigate('/');
+    }
+  }, [pageError, navigate]);
 
   useEffect(() => {
     const navFadeMs = 300;
@@ -111,7 +118,7 @@ const ClockPage = () => {
     return <div className={styles.loading}>Loading data...</div>;
   }
 
-  if (error || pageError) {
+  if (error) {
     return (
       <div className={styles.container}>
         <Header visible={headerVisible} />
@@ -137,7 +144,7 @@ const ClockPage = () => {
             </div>
           </Link>
         )}
-        <div className={styles.error}>{error || pageError}</div>
+        <div className={styles.error}>{error}</div>
       </div>
     );
   }
@@ -191,8 +198,5 @@ const ClockPage = () => {
     </div>
   );
 };
-
-
-
 
 export default ClockPage;
