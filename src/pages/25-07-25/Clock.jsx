@@ -109,6 +109,7 @@ const Clock = () => {
   };
 
   const clockStackStyle = {
+    position: 'relative', // <-- Added this so it layers above backgrounds
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
