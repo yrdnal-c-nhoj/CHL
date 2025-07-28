@@ -35,8 +35,7 @@ const App = () => {
           <Route path="/log" element={<Log />} />
           <Route path="/manifesto" element={<Manifesto />} />
           <Route path="/contact" element={<Contact />} />
-
-<Route path="*" element={<ErrorPage />} />
+          <Route path="*" element={<ErrorPage />} />
 
         </Routes>
       </Router>
