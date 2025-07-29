@@ -7,9 +7,9 @@ import bg4 from './camer.webp';
 
 const FStopClock = () => {
   useEffect(() => {
-    const hourHand = document.getElementById('hourHand');
-    const minuteHand = document.getElementById('minuteHand');
-    const secondHand = document.getElementById('secondHand');
+    const hourHand = document.getElementById('fstop-hourHand');
+    const minuteHand = document.getElementById('fstop-minuteHand');
+    const secondHand = document.getElementById('fstop-secondHand');
 
     const updateClock = () => {
       const now = new Date();
@@ -28,7 +28,7 @@ const FStopClock = () => {
   }, []);
 
   useEffect(() => {
-    const clock = document.querySelector('.clock');
+    const clock = document.querySelector('.fstop-clock');
     const customDigits = ['f/1.0', 'f/1.4', 'f/2.0', 'f/2.8', 'f/4.0', 'f/5.6', 'f/8.0', 'f/11', 'f/16', 'f/22', 'f/32', 'f/45'];
     const sharpIndices = [];
     while (sharpIndices.length < 6) {
@@ -42,29 +42,37 @@ const FStopClock = () => {
       const y = 50 - 42 * Math.cos(angle);
       const num = document.createElement('div');
       const isSharp = sharpIndices.includes(i - 1);
-      num.className = `number ${isSharp ? 'sharp' : ''}`;
+      num.className = `fstop-number ${isSharp ? 'fstop-sharp' : ''}`;
       num.style.left = `${x}%`;
       num.style.top = `${y}%`;
       num.textContent = customDigits[i - 1];
       const randomDelay = Math.random() * 10;
-      num.style.animation = `blurFocus${isSharp ? 'Sharp' : ''} 5s infinite ${randomDelay}s`;
+      num.style.animation = `fstop-blurFocus${isSharp ? 'Sharp' : ''} 5s infinite ${randomDelay}s`;
       clock.appendChild(num);
     }
   }, []);
 
   return (
-    <div style={{ margin: 0, background: '#111', height: '100vh', width: '100vw', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <div className="fstop-wrapper" style={{
+      margin: 0,
+      background: '#111',
+      height: '100vh',
+      width: '100vw',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}>
       <style>{`
         @font-face {
-          font-family: 'cam';
+          font-family: 'fstop-cam';
           src: url(${camFont}) format('opentype');
         }
 
-        :root {
+        .fstop-wrapper {
           font-size: 2vh;
         }
 
-        .clock {
+        .fstop-clock {
           width: 80vw;
           height: 80vw;
           max-width: 80vh;
@@ -75,9 +83,9 @@ const FStopClock = () => {
           z-index: 9;
         }
 
-        .number {
+        .fstop-number {
           position: absolute;
-          font-family: 'cam';
+          font-family: 'fstop-cam';
           font-size: 2rem;
           color: white;
           transform: translate(-50%, -50%);
@@ -92,7 +100,7 @@ const FStopClock = () => {
             0 0 0.9rem #bbbbbb88;
         }
 
-        .sharp {
+        .fstop-sharp {
           font-weight: 900;
           text-rendering: optimizeLegibility;
           -webkit-font-smoothing: antialiased;
@@ -104,8 +112,8 @@ const FStopClock = () => {
           text-shadow: none;
         }
 
-        @keyframes blurFocus {
-          0% {
+        @keyframes fstop-blurFocus {
+          0%, 100% {
             filter: blur(0px);
             opacity: 1;
           }
@@ -113,26 +121,19 @@ const FStopClock = () => {
             filter: blur(5px);
             opacity: 0.3;
           }
-          100% {
-            filter: blur(0px);
-            opacity: 1;
-          }
         }
 
-        @keyframes blurFocusSharp {
-          0% {
+        @keyframes fstop-blurFocusSharp {
+          0%, 100% {
             opacity: 1;
           }
           50% {
             opacity: 0.3;
           }
-          100% {
-            opacity: 1;
-          }
         }
 
-        @keyframes blurFocusHour {
-          0% {
+        @keyframes fstop-blurFocusHour {
+          0%, 100% {
             filter: blur(0px);
             opacity: 1;
           }
@@ -140,14 +141,10 @@ const FStopClock = () => {
             filter: blur(5px);
             opacity: 0.5;
           }
-          100% {
-            filter: blur(0px);
-            opacity: 1;
-          }
         }
 
-        @keyframes blurFocusMinute {
-          0% {
+        @keyframes fstop-blurFocusMinute {
+          0%, 100% {
             filter: blur(0px);
             opacity: 1;
           }
@@ -155,14 +152,10 @@ const FStopClock = () => {
             filter: blur(5px);
             opacity: 0.5;
           }
-          100% {
-            filter: blur(0px);
-            opacity: 1;
-          }
         }
 
-        @keyframes blurFocusSecond {
-          0% {
+        @keyframes fstop-blurFocusSecond {
+          0%, 100% {
             filter: blur(0px);
             opacity: 1;
           }
@@ -170,13 +163,9 @@ const FStopClock = () => {
             filter: blur(3px);
             opacity: 0.7;
           }
-          100% {
-            filter: blur(0px);
-            opacity: 1;
-          }
         }
 
-        .hand {
+        .fstop-hand {
           position: absolute;
           bottom: 50%;
           left: 50%;
@@ -192,26 +181,26 @@ const FStopClock = () => {
           );
         }
 
-        .hour {
+        .fstop-hour {
           width: 1rem;
           height: 20%;
-          animation: blurFocusHour 5s infinite;
+          animation: fstop-blurFocusHour 5s infinite;
         }
 
-        .minute {
+        .fstop-minute {
           width: 0.7rem;
           height: 30%;
           background: #ccc;
-          animation: blurFocusMinute 3s infinite;
+          animation: fstop-blurFocusMinute 3s infinite;
         }
 
-        .second {
+        .fstop-second {
           width: 0.3rem;
           height: 40%;
-          animation: blurFocusSecond 1s infinite;
+          animation: fstop-blurFocusSecond 1s infinite;
         }
 
-        .bgimage, .bgimage2, .bgimage3, .bgimage4 {
+        .fstop-bgimage, .fstop-bgimage2, .fstop-bgimage3, .fstop-bgimage4 {
           position: fixed;
           top: 0;
           left: 0;
@@ -221,21 +210,21 @@ const FStopClock = () => {
           filter: brightness(120%);
         }
 
-        .bgimage2 { z-index: 1; }
-        .bgimage  { z-index: 2; opacity: 0.5; }
-        .bgimage3 { z-index: 3; opacity: 0.4; }
-        .bgimage4 { z-index: 4; opacity: 0.2; width: 104vw; }
+        .fstop-bgimage2 { z-index: 1; }
+        .fstop-bgimage  { z-index: 2; opacity: 0.5; }
+        .fstop-bgimage3 { z-index: 3; opacity: 0.4; }
+        .fstop-bgimage4 { z-index: 4; opacity: 0.2; width: 104vw; }
       `}</style>
 
-      <img src={bg4} className="bgimage4" alt="bg4" />
-      <img src={bg3} className="bgimage3" alt="bg3" />
-      <img src={bg1} className="bgimage" alt="bg1" />
-      <img src={bg2} className="bgimage2" alt="bg2" />
+      <img src={bg4} className="fstop-bgimage4" alt="bg4" />
+      <img src={bg3} className="fstop-bgimage3" alt="bg3" />
+      <img src={bg1} className="fstop-bgimage" alt="bg1" />
+      <img src={bg2} className="fstop-bgimage2" alt="bg2" />
 
-      <div className="clock">
-        <div className="hand hour" id="hourHand"></div>
-        <div className="hand minute" id="minuteHand"></div>
-        <div className="hand second" id="secondHand"></div>
+      <div className="fstop-clock">
+        <div className="fstop-hand fstop-hour" id="fstop-hourHand"></div>
+        <div className="fstop-hand fstop-minute" id="fstop-minuteHand"></div>
+        <div className="fstop-hand fstop-second" id="fstop-secondHand"></div>
       </div>
     </div>
   );
