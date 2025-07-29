@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import fontUrl from './Petal.ttf';
-import bg1 from './05599424bb5a1b7819956d0288559697.gif';
+import bg1 from './petals.gif';
 import bg2 from './talos.gif';
 import bg3 from './petalos.gif';
 import bg4 from './petals.gif';
