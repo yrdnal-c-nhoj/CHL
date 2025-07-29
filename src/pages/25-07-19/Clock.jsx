@@ -21,31 +21,28 @@ const CuneiformClock = () => {
 
   return (
     <div
+      className="cunei-wrapper"
       style={{
         height: '100vh',
         width: '100vw',
         backgroundColor: '#062bb4',
         margin: 0,
         overflow: 'hidden',
-        fontFamily: 'cun, sans-serif',
+        fontFamily: 'cunei-cun, sans-serif',
         position: 'relative',
       }}
     >
       <style>{`
         @font-face {
-          font-family: 'cun';
+          font-family: 'cunei-cun';
           src: url(${cunFont}) format('truetype');
         }
 
-        :root {
+        .cunei-wrapper {
           font-size: 2vh;
         }
 
-        body {
-          margin: 0;
-        }
-
-        .clock-container {
+        .cunei-container {
           position: absolute;
           top: 50%;
           left: 50%;
@@ -54,7 +51,7 @@ const CuneiformClock = () => {
           text-align: center;
         }
 
-        .new-clock {
+        .cunei-clock {
           font-size: 8rem;
           background: linear-gradient(to bottom,
             #0b0b0a 1%,
@@ -67,10 +64,9 @@ const CuneiformClock = () => {
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           letter-spacing: 1vw;
-          
         }
 
-        .bgimage {
+        .cunei-bg-main {
           position: absolute;
           top: 50%;
           left: 50%;
@@ -83,7 +79,7 @@ const CuneiformClock = () => {
           filter: sepia(0.7) contrast(0.2) saturate(2.5);
         }
 
-        .bgimage2 {
+        .cunei-bg-overlay {
           position: absolute;
           top: 50%;
           left: 50%;
@@ -95,21 +91,21 @@ const CuneiformClock = () => {
           transform: translate(-50%, -50%) scale(1.5);
           transform-origin: center;
           z-index: 2;
-          animation: slow-rotate 800s linear infinite;
+          animation: cunei-slow-rotate 800s linear infinite;
           pointer-events: none;
         }
 
-        @keyframes slow-rotate {
+        @keyframes cunei-slow-rotate {
           0% { transform: translate(-50%, -50%) rotate(0deg) scale(1.5); }
           100% { transform: translate(-50%, -50%) rotate(360deg) scale(1.5); }
         }
       `}</style>
 
-      <img src={bgOverlay} className="bgimage2" alt="Overlay Background" />
-      <img src={bgMain} className="bgimage" alt="Main Background" />
+      <img src={bgOverlay} className="cunei-bg-overlay" alt="Overlay Background" />
+      <img src={bgMain} className="cunei-bg-main" alt="Main Background" />
 
-      <div className="clock-container">
-        <div className="new-clock">{time}</div>
+      <div className="cunei-container">
+        <div className="cunei-clock">{time}</div>
       </div>
     </div>
   );
