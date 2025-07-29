@@ -36,8 +36,8 @@ const Clock = () => {
     },
     digitBox: {
       fontFamily: 'digital, monospace',
-      fontSize: '1.5rem',
-      color: '#867959FF',
+      fontSize: '1.8rem',
+      color: '#524B38FF',
       textAlign: 'center',
     },
     colonBox: {
