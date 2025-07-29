@@ -11,12 +11,20 @@ const Clock = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Inject font-face dynamically
+  // Inject @font-face as a scoped <style> tag
   useEffect(() => {
-    const font = new FontFace('CustomFont', `url(${myFont})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-    });
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @font-face {
+        font-family: 'CustomFont';
+        src: url(${myFont}) format('truetype');
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
   }, []);
 
   const getRotationStyles = () => {
@@ -58,7 +66,6 @@ const Clock = () => {
     backgroundImage: `url(${clockBg})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    // boxShadow: '0 0 2rem rgba(0,0,0,0.4)',
   };
 
   const handCommon = {
