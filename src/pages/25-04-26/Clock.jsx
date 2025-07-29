@@ -1,49 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
-import StickyNote from '../../stickynote';
+import React, { useEffect, useRef, useState } from 'react';
+import stickFont from './Stick.ttf'; // Local font in same folder
 
-function App() {
+const SkewClock = () => {
   const canvasRef = useRef(null);
   const [time, setTime] = useState({ hours: '', minutes: '' });
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [targetPosition, setTargetPosition] = useState({ x: 0, y: 0 });
-  const [skewX, setSkewX] = useState(0);
-  const [skewY, setSkewY] = useState(0);
-  const [targetSkewX, setTargetSkewX] = useState(0);
-  const [targetSkewY, setTargetSkewY] = useState(0);
+  const [skew, setSkew] = useState(0);
   const [stretch, setStretch] = useState(1);
-  const [targetStretch, setTargetStretch] = useState(1);
-  const [rotation, setRotation] = useState({ x: 0, y: 0, z: 0 });
-  const [color, setColor] = useState('rgb(0, 0, 0)');
-  const [trail, setTrail] = useState([]);
-
-  const getRandomColor = () => {
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-    return `rgb(${r}, ${g}, ${b})`;
-  };
-
-  const updateClock = () => {
-    const now = new Date();
-    let hours = now.getHours();
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    hours = hours % 12 || 12;
-
-    setTime({ hours, minutes });
-    setColor(getRandomColor());
-    setTargetPosition(prev => ({
-      x: prev.x + (Math.random() - 0.5) * window.innerWidth * 0.02, // Slow movement
-      y: prev.y + (Math.random() - 0.5) * window.innerHeight * 0.02,
-    }));
-    setTargetSkewX((Math.random() - 0.5) * 10); // Slow skew ±5°
-    setTargetSkewY((Math.random() - 0.5) * 10);
-    setTargetStretch(0.9 + Math.random() * 0.2); // Stretch 0.9-1.1
-    setRotation({
-      x: (Math.random() - 0.5) * 15, // Slow rotation
-      y: (Math.random() - 0.5) * 15,
-      z: (Math.random() - 0.5) * 45,
-    });
-  };
+  const targetSkew = useRef(0);
+  const targetStretch = useRef(1);
+  const currentColor = useRef('rgb(255,0,0)');
+  const outlineColor = useRef('transparent');
+  const currentTime = useRef('');
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -54,121 +21,240 @@ function App() {
       canvas.height = window.innerHeight;
     };
 
-    const drawTrail = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      setTrail(prevTrail => {
-        const newTrail = [
-          ...prevTrail,
-          { 
-            x: position.x, 
-            y: position.y, 
-            skewX, 
-            skewY, 
-            stretch, 
-            color, 
-            opacity: 1,
-            rotationX: rotation.x,
-            rotationY: rotation.y,
-            rotationZ: rotation.z,
-          },
-        ].slice(-300); // 30s * 10 updates/s
-
-        newTrail.forEach((trailItem, index) => {
-          const opacity = trailItem.opacity * (1 - index / newTrail.length);
-          if (opacity < 0.05) return;
-          ctx.save();
-          ctx.font = `${window.innerHeight * 0.2}rem 'Stick', sans-serif`;
-          ctx.textBaseline = 'middle';
-          ctx.textAlign = 'center';
-          ctx.translate(canvas.width / 2 + trailItem.x, canvas.height / 2 + trailItem.y);
-          ctx.rotate(trailItem.rotationZ * Math.PI / 180);
-          ctx.setTransform(
-            trailItem.stretch * Math.cos(trailItem.rotationY * Math.PI / 180),
-            trailItem.skewX * 0.01,
-            trailItem.skewY * 0.01,
-            Math.cos(trailItem.rotationX * Math.PI / 180),
-            0,
-            0
-          );
-          ctx.fillStyle = `rgba(${trailItem.color.match(/\d+/g).join(',')}, ${opacity})`;
-          ctx.fillText(`${time.hours}:${time.minutes}`, 0, 0);
-          ctx.restore();
-        });
-
-        return newTrail.map(item => ({
-          ...item,
-          opacity: item.opacity * 0.994, // ~30s fade
-        }));
-      });
+    const getRandomVibrantColor = () => {
+      const hue = Math.floor(Math.random() * 360);
+      return `hsl(${hue}, 100%, 50%)`;
     };
 
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-    updateClock();
-    const interval = setInterval(updateClock, 100); // 10 updates/s
+    const updateClock = () => {
+      const now = new Date();
+      let hours = now.getHours() % 12;
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      currentTime.current = `${hours}${minutes}`;
+      setTime({ hours, minutes });
+      currentColor.current = getRandomVibrantColor();
+      outlineColor.current = getRandomVibrantColor();
+      targetSkew.current = (Math.random() - 0.5) * 500;
+      targetStretch.current = 0.6 + Math.random() * 0.8;
+    };
+
+    const drawText = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.font = `${canvas.height * 0.2}px 'skew-stick', sans-serif`;
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+
+      ctx.setTransform(
+        stretch,
+        skew * 0.01,
+        skew * 0.01,
+        1,
+        canvas.width / 2,
+        canvas.height / 2
+      );
+
+      ctx.lineWidth = 0.5 * canvas.height * 0.01;
+      ctx.strokeStyle = outlineColor.current;
+      ctx.strokeText(currentTime.current, 0, 0);
+
+      ctx.fillStyle = currentColor.current;
+      ctx.fillText(currentTime.current, 0, 0);
+    };
 
     const animate = () => {
-      setPosition(prev => ({
-        x: prev.x + (targetPosition.x - prev.x) * 0.05, // Slow interpolation
-        y: prev.y + (targetPosition.y - prev.y) * 0.05,
-      }));
-      setSkewX(prev => prev + (targetSkewX - prev) * 0.05);
-      setSkewY(prev => prev + (targetSkewY - prev) * 0.05);
-      setStretch(prev => prev + (targetStretch - prev) * 0.05);
-      drawTrail();
+      setSkew((prev) => prev + (targetSkew.current - prev) * 0.1);
+      setStretch((prev) => prev + (targetStretch.current - prev) * 0.1);
+      drawText();
       requestAnimationFrame(animate);
     };
+
+    const spinClock = () => {
+      const container = document.querySelector('.skew-time-container');
+      const rx = Math.random() * 360;
+      const ry = Math.random() * 360;
+      const rz = Math.random() * 360;
+      container.style.transform += ` rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg)`;
+    };
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    updateClock();
     animate();
+    const tick = setInterval(updateClock, 1000);
+    const spin = setInterval(spinClock, 5000);
 
     return () => {
+      clearInterval(tick);
+      clearInterval(spin);
       window.removeEventListener('resize', resizeCanvas);
-      clearInterval(interval);
     };
-  }, [position, targetPosition, skewX, skewY, targetSkewX, targetSkewY, stretch, targetStretch, rotation, color, time]);
-
-  const containerStyle = {
-    height: '100vh',
-    width: '100vw',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 0,
-    padding: 0,
-    background: 'white',
-    fontFamily: "'Stick', sans-serif",
-    fontWeight: 400,
-    fontStyle: 'normal',
-    position: 'relative',
-  };
-
-  const clockStyle = {
-    fontSize: '10rem',
-    color: color,
-    transform: `translate(${position.x}vw, ${position.y}vh) skewX(${skewX}deg) skewY(${skewY}deg) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) rotateZ(${rotation.z}deg) scale(${stretch})`,
-    transition: 'transform 0.1s ease, color 0.1s ease',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transformOrigin: 'center',
-  };
-
-  const canvasStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100vw',
-    height: '100vh',
-    zIndex: -1,
-  };
+  }, [skew, stretch]);
 
   return (
-    <div style={containerStyle}>
-      <StickyNote />
-      <div style={clockStyle}>{time.hours}:{time.minutes}</div>
-      <canvas ref={canvasRef} style={canvasStyle} />
+    <div className="skew-wrapper" style={{ fontFamily: 'skew-stick, sans-serif' }}>
+      <style>{`
+        @font-face {
+          font-family: 'skew-stick';
+          src: url(${stickFont}) format('truetype');
+        }
+
+        .skew-wrapper * {
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+        }
+
+        .skew-wrapper {
+          background: gainsboro;
+          height: 100vh;
+          width: 100vw;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          position: relative;
+          font-size: 1rem;
+        }
+
+        canvas {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+        }
+
+        .skew-time-container {
+          color: gainsboro;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 98vw;
+          display: flex;
+          justify-content: space-around;
+          z-index: -1;
+          transition: transform 0.5s ease;
+        }
+
+        .skew-title-container {
+          color: #67ac87;
+          text-shadow: #516a62 0.1rem 0 0;
+          position: absolute;
+          top: 0.3vh;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 98vw;
+          display: flex;
+          z-index: 6;
+        }
+
+        .skew-chltitle {
+          font-family: 'Roboto Slab', serif;
+          font-size: 2.8vh;
+          position: absolute;
+          top: 0.2vh;
+          right: 1vw;
+          letter-spacing: 0.1vh;
+        }
+
+        .skew-bttitle {
+          font-family: 'Oxanium', serif;
+          font-size: 2.8vh;
+          font-style: italic;
+          left: 0;
+          position: relative;
+          letter-spacing: -0.1vh;
+          z-index: 15;
+        }
+
+        .skew-date-container {
+          color: darkcyan;
+          position: absolute;
+          bottom: 0.5vh;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 98vw;
+          display: flex;
+          z-index: 6;
+        }
+
+        .skew-clockname {
+          font-family: 'Oxanium', serif;
+          position: fixed;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 4vh;
+          line-height: 4vh;
+        }
+
+        .skew-dateleft,
+        .skew-dateright {
+          font-size: 3vh;
+          font-family: 'Nanum Gothic Coding', monospace;
+        }
+
+        .skew-dateleft {
+          position: relative;
+          left: 0;
+        }
+
+        .skew-dateright {
+          position: absolute;
+          right: 0;
+        }
+
+        .skew-time {
+          font-size: 6vh;
+        }
+
+        @media (min-width: 48rem) {
+          .skew-time-container {
+            flex-direction: row;
+          }
+          .skew-time {
+            font-size: 8vh;
+          }
+        }
+
+        @media (max-width: 47.9375rem) {
+          .skew-time-container {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+
+        a {
+          color: inherit;
+          text-decoration: none;
+        }
+
+        a:hover {
+          color: #e8ecec;
+          background-color: rgb(21, 0, 255);
+        }
+      `}</style>
+
+      <div className="skew-title-container">
+        <div className="skew-chltitle">Cubist Heart Laboratories</div>
+        <div className="skew-bttitle">BorrowedTime</div>
+      </div>
+
+      <div className="skew-date-container">
+        <a href="../bandaid/" className="skew-dateleft">04/25/25</a>
+        <a href="../index.html" className="skew-clockname">Skew Clock</a>
+        <a href="../coin/" className="skew-dateright">04/27/25</a>
+      </div>
+
+      <div className="skew-time-container">
+        <div className="skew-time">{time.hours}</div>
+        <div className="skew-time">{time.minutes}</div>
+      </div>
+
+      <canvas ref={canvasRef} />
     </div>
   );
-}
+};
 
-export default App;
+export default SkewClock;
