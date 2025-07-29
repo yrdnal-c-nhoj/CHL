@@ -36,12 +36,15 @@ const Clock = () => {
     },
     digitBox: {
       fontFamily: 'digital, monospace',
-      fontSize: '1.8rem',
-      color: '#221E12FF',
+      fontSize: '2rem',
+      color: '#70706FFF',
       textAlign: 'center',
     },
     colonBox: {
-      fontSize: '1.5rem',
+      fontSize: '4.5rem',
+
+  lineHeight: '1rem', // or another value like '1', 'normal', etc.
+
       background: 'transparent',
     },
   };
