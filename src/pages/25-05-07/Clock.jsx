@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import bgImage from './3ce69531311986a8a78f1e093f53df3d-ezgif.com-optiwebp.webp';
 
-
 const Clock = () => {
   useEffect(() => {
     const updateClock = () => {
@@ -25,7 +24,17 @@ const Clock = () => {
   }, []);
 
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}>
+    <div
+      style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <img src={bgImage} alt="background" className="full-page-image" />
       <div className="clock">
         <div id="radar">
