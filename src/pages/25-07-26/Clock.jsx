@@ -3,46 +3,66 @@ import bg1 from './tum.gif';
 import bg2 from './tum2.gif';
 import myFontUrl from './sec.ttf';
 
+const COLORS = ['#CB0BEDFF', '#25E90CFF', '#F58E0FFF'];
+
+const getRandomDifferentColor = (currentColor, palette) => {
+  const newPalette = palette.filter(c => c !== currentColor);
+  return newPalette[Math.floor(Math.random() * newPalette.length)];
+};
+
 const PrimaryColorClock = () => {
   const secondHandRef = useRef(null);
   const minHandRef = useRef(null);
   const hourHandRef = useRef(null);
 
-  const COLORS = ['#CB0BEDFF', '#25E90CFF', '#F58E0FFF'];
   const [numberColors, setNumberColors] = useState(() =>
     Array.from({ length: 12 }, () => COLORS[Math.floor(Math.random() * COLORS.length)])
   );
 
-  // Clock hand movement
+  const [handColors, setHandColors] = useState({
+    second: COLORS[0],
+    minute: COLORS[1],
+    hour: COLORS[2],
+  });
+
+  // Clock hand movement - smooth seconds
   useEffect(() => {
-    const setDate = () => {
+    const update = () => {
       const now = new Date();
 
-      const seconds = now.getSeconds();
-      const secondsDegrees = ((seconds / 60) * 360) + 90;
-      secondHandRef.current.style.transform = `rotate(${secondsDegrees}deg)`;
+      const ms = now.getMilliseconds();
+      const seconds = now.getSeconds() + ms / 1000;
+      const minutes = now.getMinutes() + seconds / 60;
+      const hours = now.getHours() + minutes / 60;
 
-      const mins = now.getMinutes();
-      const minsDegrees = ((mins / 60) * 360) + ((seconds / 60) * 6) + 90;
-      minHandRef.current.style.transform = `rotate(${minsDegrees}deg)`;
+      const secondsDegrees = (seconds / 60) * 360 + 90;
+      const minsDegrees = (minutes / 60) * 360 + 90;
+      const hourDegrees = (hours / 12) * 360 + 90;
 
-      const hour = now.getHours();
-      const hourDegrees = ((hour / 12) * 360) + ((mins / 60) * 30) + 90;
-      hourHandRef.current.style.transform = `rotate(${hourDegrees}deg)`;
+      if (secondHandRef.current) secondHandRef.current.style.transform = `rotate(${secondsDegrees}deg)`;
+      if (minHandRef.current) minHandRef.current.style.transform = `rotate(${minsDegrees}deg)`;
+      if (hourHandRef.current) hourHandRef.current.style.transform = `rotate(${hourDegrees}deg)`;
+
+      requestAnimationFrame(update);
     };
 
-    setDate();
-    const clockInterval = setInterval(setDate, 1000);
-    return () => clearInterval(clockInterval);
+    update();
   }, []);
 
   // Color changer
   useEffect(() => {
     const colorInterval = setInterval(() => {
-      setNumberColors(
-        Array.from({ length: 12 }, () => COLORS[Math.floor(Math.random() * COLORS.length)])
+      setNumberColors(prev =>
+        prev.map(c => getRandomDifferentColor(c, COLORS))
       );
+
+      setHandColors(prev => ({
+        second: getRandomDifferentColor(prev.second, COLORS),
+        minute: getRandomDifferentColor(prev.minute, COLORS),
+        hour: getRandomDifferentColor(prev.hour, COLORS),
+      }));
     }, 1000);
+
     return () => clearInterval(colorInterval);
   }, []);
 
@@ -84,12 +104,12 @@ const PrimaryColorClock = () => {
     pointerEvents: 'none',
     opacity: 0.8,
     filter: 'hue-rotate(-320deg)',
-    transform: 'rotate(178deg)',
+    transform: 'rotate(179deg)',
   };
 
   const bgStyle2 = {
     ...bgStyle1,
-    transform: 'rotate(182deg)',
+    transform: 'rotate(181deg)',
   };
 
   const centerContainerStyle = {
@@ -115,14 +135,14 @@ const PrimaryColorClock = () => {
     top: '50%',
     right: '50%',
     transformOrigin: '100%',
-    transitionTimingFunction: 'cubic-bezier(0.1, 2.7, 0.58, 1)',
+    transition: 'background 0.5s ease',
   };
 
   const secondHandStyle = {
     ...baseHandStyle,
     height: '4vh',
     width: '400%',
-    background: '#b503fb',
+    background: handColors.second,
     zIndex: 18,
   };
 
@@ -130,7 +150,7 @@ const PrimaryColorClock = () => {
     ...baseHandStyle,
     height: '9vh',
     width: '100%',
-    background: '#f76f07',
+    background: handColors.minute,
     zIndex: 11,
   };
 
@@ -138,7 +158,7 @@ const PrimaryColorClock = () => {
     ...baseHandStyle,
     height: '11vh',
     width: '72%',
-    background: '#09dd09',
+    background: handColors.hour,
     zIndex: 18,
   };
 
@@ -158,7 +178,7 @@ const PrimaryColorClock = () => {
       color: numberColors[i - 1],
       fontFamily: 'MyFont, sans-serif',
       zIndex: 19,
-      transition: 'color 0.3s ease',
+      transition: 'color 0.5s ease',
     };
   };
 
