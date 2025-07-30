@@ -15,7 +15,6 @@ const Clock = () => {
   useEffect(() => {
     const digitSize = 2.375 * 16;
 
-    // Inject fonts + style for .digit and .current
     const styleSheet = document.createElement('style');
     styleSheet.textContent = `
       @font-face {
@@ -26,12 +25,12 @@ const Clock = () => {
         font-family: 'sli2';
         src: url(${sli2Font}) format('truetype');
       }
-      .digit {
+      .clock-component .digit {
         font-family: 'sli', cursive, sans-serif !important;
         font-size: 3.125rem !important;
         color: rgb(246, 187, 244) !important;
       }
-      .digit-strip .digit.current {
+      .clock-component .digit-strip .digit.current {
         font-family: 'sli2', Courier, monospace !important;
         font-size: 1.4375rem !important;
         color: rgb(98, 105, 174) !important;
@@ -89,6 +88,7 @@ const Clock = () => {
     return () => {
       clearInterval(interval);
       window.removeEventListener('resize', updateClock);
+      document.head.removeChild(styleSheet);
     };
   }, [isMobile]);
 
@@ -130,6 +130,7 @@ const Clock = () => {
 
   return (
     <div
+      className="clock-component"
       style={{
         display: 'flex',
         justifyContent: 'center',
