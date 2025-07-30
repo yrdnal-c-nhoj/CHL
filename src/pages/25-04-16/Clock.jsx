@@ -42,12 +42,12 @@ const BirthdayCakeClock = () => {
     justifyContent: "center",
     alignItems: "center",
     height: "100vh",
-    overflow: "hidden",
+    // Removed overflow: hidden to prevent clipping
   };
 
   const clockWrapperStyle = {
     position: "relative",
-    width: "80vmin",
+    width: "88vmin", // Increased size to accommodate 110% circle
     aspectRatio: "1 / 1",
   };
 
@@ -63,8 +63,8 @@ const BirthdayCakeClock = () => {
 
   const circleStyle = {
     position: "absolute",
-    top: 0,
-    left: 0,
+    top: "-5%", // Adjusted to center the 110% circle
+    left: "-5%",
     width: "110%",
     height: "110%",
     borderRadius: "50%",
