@@ -14,8 +14,8 @@ const CinemaClock = () => {
       hours = hours % 12 || 12;
 
       setTime({
-        hours: String(hours),              // no leading zero
-        minutes: String(minutes),          // no leading zero
+        hours: String(hours),                    // no leading zero
+        minutes: String(minutes).padStart(2, '0') // leading zero on minutes
       });
     };
 
