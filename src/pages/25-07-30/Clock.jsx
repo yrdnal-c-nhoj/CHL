@@ -80,7 +80,7 @@ const Clock = () => {
     ...handCommon,
     height: '20%',
     width: '1.5%',
-    background: '#555555',
+    background: '#5C7461FF',
     zIndex: 3,
     ...hourStyle,
   };
@@ -89,7 +89,7 @@ const Clock = () => {
     ...handCommon,
     height: '30%',
     width: '1%',
-   background: '#555555',
+   background: '#37591AFF',
     zIndex: 2,
     ...minuteStyle,
   };
@@ -98,7 +98,7 @@ const Clock = () => {
     ...handCommon,
     height: '40%',
     width: '0.5%',
-   background: '#555555',
+   background: '#597156FF',
     zIndex: 1,
     ...secondStyle,
   };
@@ -126,8 +126,8 @@ const Clock = () => {
       top: `${y}%`,
       transform: 'translate(-50%, -50%)',
       fontSize: '7rem',
-      color: '#B7B38FFF',
-      opacity: 0.6,
+      color: '#7E8A73FF',
+      opacity: 0.4,
       textShadow: '0 0 0.5rem black',
       fontFamily: 'CustomFont, sans-serif',
     };
