@@ -42,11 +42,9 @@ body {
 .entry {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
   box-sizing: border-box;
   padding: 0.3rem 0.3rem;
-  position: relative;
 }
 
 .entry:not(:last-child) {
@@ -65,17 +63,16 @@ body {
 }
 
 .clockNumber {
-  flex: 0 0 auto;
-  font-size: 0.7rem;
+  flex: 0 0 4rem; /* Fixed width for left alignment */
+  font-size: 0.6rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: left;
-  width: 4rem;
-  margin-right: 0.4rem;
+  margin-right: 0.5rem;
 }
 
 .title {
-  flex: 1 1 auto;
+  flex: 1; /* Take remaining space to center */
   font-size: 0.7rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
@@ -83,24 +80,15 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin: 0 0.4rem;
 }
 
 .date {
-  flex: 0 0 auto;
+  flex: 0 0 5rem; /* Fixed width for right alignment */
   font-size: 0.7rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: right;
-  white-space: nowrap;
-  margin-left: 0.4rem;
-}
-
-.connector {
-  flex: 0 0 auto;
-  height: 0.5px;
-  background-color: #0e0e0e;
-  width: 1rem;
+  margin-left: 0.5rem;
 }
 
 .error {
@@ -162,13 +150,11 @@ body {
 }
 
 .entry:hover {
-  background-color: #0c0d0d;
+  background-color: #0c0d0f;
 }
 
 .entry:hover .clockNumber,
 .entry:hover .title,
-.entry:hover .date,
-.entry:hover .connector {
+.entry:hover .date {
   color: #cad8f4;
-  background-color: #0f0f0f; /* For connector */
 }
