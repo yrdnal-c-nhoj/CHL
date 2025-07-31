@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import fontUrl from './bang.ttf';
-import gif1 from './fw.gif';
+import gif1 from './fw.webp';
 import gif2 from './giphy.gif';
 import gif3 from './84298.gif';
 
