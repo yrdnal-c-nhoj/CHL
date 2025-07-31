@@ -47,24 +47,23 @@ const Home = () => {
       <div className={styles.container}>
         <div className={styles.centeredContent}>
           <div className={styles.sortContainer}>
-            <button
-              onClick={handleTitleSort}
-              className={`${styles.sortButton} ${styles.titleSortButton} ${
-                sortBy.includes('title') ? styles.active : ''
-              }`}
-              title={sortBy === 'title-asc' ? 'Sort Reverse Alphabetically' : 'Sort Alphabetically'}
-            >
-              Sort by Title
-            </button>
-            <button
+              <button
               onClick={handleRandomSort}
               className={`${styles.sortButton} ${styles.randomSortButton} ${
                 sortBy === 'random' ? styles.active : ''
               }`}
               title="Sort Randomly"
             >
-              Random
+              random
+            </button><button
+              onClick={handleTitleSort}
+              className={`${styles.sortButton} ${styles.titleSortButton} ${
+                sortBy.includes('title') ? styles.active : ''
+              }`}
+              title={sortBy === 'title-asc' ? 'Sort Reverse Alphabetically' : 'Sort Alphabetically'}
+            >sort by title
             </button>
+          
             <button
               onClick={handleDateSort}
               className={`${styles.sortButton} ${styles.dateSortButton} ${
@@ -72,7 +71,7 @@ const Home = () => {
               }`}
               title={sortBy === 'date-desc' ? 'Sort Oldest to Newest' : 'Sort Newest to Oldest'}
             >
-              Sort by Date
+              sort by date
             </button>
           </div>
           <ul className={styles.dateList}>
