@@ -27,11 +27,11 @@ const LavaClock = () => {
 
     setTimeout(() => {
       setShowGif(true);
-    }, 500);
+    }, 100);
 
     setTimeout(() => {
       setFadeOut(true);
-    }, 500);
+    }, 100);
 
     return () => clearInterval(interval);
   }, []);
@@ -43,7 +43,7 @@ const LavaClock = () => {
     width: "100vw",
     height: "100vh",
     backgroundColor: "rgb(205, 15, 15)",
-    opacity: fadeOut ? 0 : 1,
+    opacity: fadeOut ? 0 : 0.5,
     transition: "opacity 1s ease",
     zIndex: 9999,
     pointerEvents: "none",
