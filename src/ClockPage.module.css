@@ -116,7 +116,7 @@ body {
 
 /* 70% content container */
 .footerContent {
-  width: 70%;
+  width: 95%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -138,4 +138,13 @@ body {
 
 .footerRight {
   justify-content: flex-end;
+}
+.footerCenter {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

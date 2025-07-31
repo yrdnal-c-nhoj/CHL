@@ -80,9 +80,7 @@ const Home = () => {
               <li key={`${item.date}-${randomSortKey}`} className={styles.entry}>
                 <Link to={`/${item.date}`} className={styles.navLink}>
                   <span className={styles.clockNumber}>#{item.clockNumber}</span>
-                  <span className={styles.connector}></span>
                   <span className={styles.title}>{item.title || 'No Title'}</span>
-                  <span className={styles.connector}></span>
                   <span className={styles.date}>{formatDate(item.date)}</span>
                 </Link>
               </li>
