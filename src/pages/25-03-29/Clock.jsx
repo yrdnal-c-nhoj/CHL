@@ -4,8 +4,11 @@ import orbFont from './orb.ttf'; // Local font
 const NeonClock = () => {
   const clockRef = useRef(null);
   const ticksRef = useRef([]);
+  const lastTickRef = useRef(-1);
 
   useEffect(() => {
+    let animationFrameId;
+
     const updateClock = () => {
       const now = new Date();
       const ms = now.getMilliseconds();
@@ -18,20 +21,20 @@ const NeonClock = () => {
       document.getElementById('hour').style.transform = `translateX(-50%) rotate(${(hour % 12) * 30}deg)`;
 
       const tickIndex = Math.floor(second) % 60;
-      const tickToGlow = ticksRef.current[tickIndex];
-      if (tickToGlow && !tickToGlow.classList.contains('glow')) {
-        tickToGlow.classList.add('glow');
-        setTimeout(() => {
-          tickToGlow.classList.remove('glow');
-        }, 4000);
+      if (lastTickRef.current !== tickIndex) {
+        const tickToGlow = ticksRef.current[tickIndex];
+        if (tickToGlow && !tickToGlow.classList.contains('glow')) {
+          tickToGlow.classList.add('glow');
+          setTimeout(() => tickToGlow.classList.remove('glow'), 4000);
+        }
+        lastTickRef.current = tickIndex;
       }
 
-      requestAnimationFrame(updateClock);
+      animationFrameId = requestAnimationFrame(updateClock);
     };
 
-    requestAnimationFrame(updateClock);
-
-    return () => cancelAnimationFrame(updateClock);
+    animationFrameId = requestAnimationFrame(updateClock);
+    return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
   const renderTicks = () =>
@@ -44,7 +47,7 @@ const NeonClock = () => {
 
       return (
         <div
-          key={`tick-${i}`}
+          key={i}
           ref={(el) => (ticksRef.current[i] = el)}
           style={{
             position: 'absolute',
@@ -74,7 +77,7 @@ const NeonClock = () => {
 
       return (
         <div
-          key={`number-${num}`}
+          key={num}
           style={{
             position: 'absolute',
             width: '2rem',
@@ -104,6 +107,10 @@ const NeonClock = () => {
             src: url(${orbFont}) format('truetype');
             font-weight: normal;
             font-style: normal;
+          }
+          @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
           }
         `}
       </style>
@@ -149,7 +156,7 @@ const NeonClock = () => {
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                transform: 'translate(-50%, -50%)',
+                animation: 'pulse 2s infinite ease-in-out',
                 boxShadow:
                   '0 0 1.5rem #ff00ff, 0 0 3rem #ff00ff, 0 0 6rem #ff00ff, inset 0 0 1rem #ff00ff',
                 zIndex: 10,
@@ -197,6 +204,8 @@ const NeonClock = () => {
                 left: '50%',
                 transformOrigin: 'bottom center',
                 transform: 'translateX(-50%) rotate(0deg)',
+                willChange: 'transform',
+                backfaceVisibility: 'hidden',
                 borderRadius: '1rem',
                 background: '#32a6c3',
                 boxShadow:
