@@ -11,11 +11,11 @@ function Contact() {
       <div className="centeredContent">
         <h1>CONTACT</h1>
 
-        {/* Manifesto Sections */}
+      
         <div className="manifestoSection">
           <p>
             <span className="hat">Get the Lab's Monthly Newsletter </span>
-            <br />
+            <br />&nbsp;<br />
 
             <span className="smallcaps">Subscribe to recieve</span> the lab's monthly newsletter containing clock notes, dispatches, research findings, recipes, pictures of houseplants and exclusive links to original downloadable art from the lab.<br /> We will never sell or release your eMail address.
           </p>
@@ -35,12 +35,11 @@ function Contact() {
           </form>
    
 
-
-
           <span className="hat">Send an eMail to the Lab<br />&nbsp;</span><br />
-           <span className="smallcaps">Questions? Comments? Suggestions?</span> Complaints? Requests? Pleas for help? Fan mail? Cease-and-desist orders?
+          <p>
+           <span className="smallcaps">Questions? Comments? Suggestions?</span> Complaints? Requests? Pleas for help?
        
-
+</p>
 
 
       
