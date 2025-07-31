@@ -52,7 +52,7 @@ const EmptyRoomClock = () => {
         border: '2px solid #a19f63',
         borderRadius: '50%',
         position: 'absolute',
-        top: '32vh',
+        top: '38vh',
         left: '14vw',
         boxShadow: `
           1px 1px rgba(191, 32, 32, 0.5),

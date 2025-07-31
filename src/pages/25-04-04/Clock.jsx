@@ -46,9 +46,9 @@ function RomanClock() {
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
-      const newTime = `${toRoman(now.getHours())}:${toRoman(
+      const newTime = `${toRoman(now.getHours())}.${toRoman(
         now.getMinutes()
-      )}:${toRoman(now.getSeconds())}`;
+      )}.${toRoman(now.getSeconds())}`;
       setFade(true);
       clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(() => {

@@ -14,7 +14,6 @@ const PirateClock = () => {
     ];
 
     function placeNumbers() {
-      // Clear any existing numbers
       clock.querySelectorAll(".number").forEach(el => el.remove());
 
       const clockWidth = clock.offsetWidth;
@@ -32,7 +31,7 @@ const PirateClock = () => {
           left: `${x}px`,
           top: `${y}px`,
           transform: "translate(-50%, -50%)",
-          fontSize: "4rem",
+          fontSize: "clamp(2.4rem, 4vw, 2.5rem)", // Responsive font size
           color: "#c29b0e",
           textShadow: "rgb(14, 2, 26) 1px 1px 5px",
           textAlign: "center",
@@ -72,10 +71,7 @@ const PirateClock = () => {
     updateClock();
     const interval = setInterval(updateClock, 1000);
 
-    const handleResize = () => {
-      placeNumbers(); // also clears existing numbers
-    };
-
+    const handleResize = () => placeNumbers();
     window.addEventListener("resize", handleResize);
 
     return () => {
@@ -85,103 +81,120 @@ const PirateClock = () => {
   }, []);
 
   return (
-    <div style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100vh",
-      margin: 0,
-      backgroundColor: "#1c4dd3",
-      overflow: "hidden"
-    }}>
-      <div style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        backgroundImage: `url(${pirateOverlay})`,
-        backgroundSize: "15% 15%",
-        backgroundRepeat: "repeat",
-        opacity: 0.4,
-        zIndex: 1
-      }} />
-      <img
-        src={pirateBackground}
-        alt="Background"
-        style={{
-          position: "fixed",
-          bottom: 0,
-          width: "100vw",
-          height: "100vh",
-          objectFit: "cover",
-          zIndex: 0
-        }}
-      />
-      <div
-        id="clock"
-        style={{
-          position: "relative",
-          width: "80vh",    // Increased from 30vw
-          height: "80vh",
-          borderRadius: "50%",
-          fontFamily: "Metamorphous, serif",
-          zIndex: 2
-        }}
-      >
-        <img
-          className="hand hour"
-          src={pirateHook}
-          alt="Hour hand"
-          style={{
-            position: "absolute",
-            bottom: "52%",
-            left: "50%",
-            transformOrigin: "bottom",
-            transform: "translateX(-50%)",
-            width: "20vh",
-            filter: "contrast(0.8)",
-            zIndex: 5
-          }}
-        />
-        <img
-          className="hand minute"
-          src={pirateCutlass}
-          alt="Minute hand"
-          style={{
-            position: "absolute",
-            bottom: "52%",
-            left: "50%",
-            transformOrigin: "bottom",
-            transform: "translateX(-50%)",
-            width: "19vh",
-            filter: "saturate(0.8)",
-            zIndex: 3
-          }}
-        />
-        <img
-          className="hand second"
-          src={pirateKnife}
-          alt="Second hand"
-          style={{
-            position: "absolute",
-            bottom: "55%",
-            left: "50%",
-            transformOrigin: "bottom",
-            transform: "translateX(-50%)",
-            width: "33vh",
-            zIndex: 3
-          }}
-        />
-      </div>
+    <>
       <style>{`
+        body {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 100vh;
+          overflow: hidden;
+        }
+        html {
+          width: 100%;
+          height: 100%;
+        }
         @keyframes float {
           0%   { transform: translate(-50%, -50%) translateY(0); }
           50%  { transform: translate(-50%, -50%) translateY(-1.9vw); }
           100% { transform: translate(-50%, -50%) translateY(0); }
         }
       `}</style>
-    </div>
+      <div style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        width: "100vw",
+        margin: 0,
+        padding: 0,
+        backgroundColor: "#1c4dd3",
+        position: "relative",
+        overflow: "hidden"
+      }}>
+        <div style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundImage: `url(${pirateOverlay})`,
+          backgroundSize: "15% 15%",
+          backgroundRepeat: "repeat",
+          opacity: 0.4,
+          zIndex: 1
+        }} />
+        <img
+          src={pirateBackground}
+          alt="Background"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            zIndex: 0
+          }}
+        />
+        <div
+          id="clock"
+          style={{
+            position: "relative",
+            width: "min(80vw, 80vh)",
+            height: "min(80vw, 80vh)",
+            borderRadius: "50%",
+            fontFamily: "Metamorphous, serif",
+            zIndex: 2
+          }}
+        >
+          <img
+            className="hand hour"
+            src={pirateHook}
+            alt="Hour hand"
+            style={{
+              position: "absolute",
+              bottom: "50%",
+              left: "50%",
+              transformOrigin: "bottom center",
+              transform: "translateX(-50%)",
+              width: "20%",
+              filter: "contrast(0.8)",
+              zIndex: 5
+            }}
+          />
+          <img
+            className="hand minute"
+            src={pirateCutlass}
+            alt="Minute hand"
+            style={{
+              position: "absolute",
+              bottom: "50%",
+              left: "50%",
+              transformOrigin: "bottom center",
+              transform: "translateX(-50%)",
+              width: "18%",
+              filter: "saturate(0.8)",
+              zIndex: 3
+            }}
+          />
+          <img
+            className="hand second"
+            src={pirateKnife}
+            alt="Second hand"
+            style={{
+              position: "absolute",
+              bottom: "50%",
+              left: "50%",
+              transformOrigin: "bottom center",
+              transform: "translateX(-50%)",
+              width: "28%",
+              zIndex: 3
+            }}
+          />
+        </div>
+      </div>
+    </>
   );
 };
 
