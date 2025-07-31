@@ -45,16 +45,42 @@ body {
   justify-content: space-between;
   width: 100%;
   box-sizing: border-box;
-  padding: 0.3rem 0.3rem;
+  padding: 0.1rem 0.1rem;
   position: relative;
+  z-index: 1;
 }
 
 .entry:not(:last-child) {
-  border-bottom: 1px solid #f4e1e1;
+  border-bottom: 1px solid #f8f9fb;
 }
 
 .entry:first-child {
-  border-top: 1px solid #f4e1e1;
+  border-top: 1px solid #fbfcfd;
+}
+
+.entry::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 100%;
+  background-color: #0c0d0f;
+  z-index: -1;
+  transform: translateX(-50%);
+  transition: width 0.2s ease;
+}
+
+.entry:hover::before {
+  width: 100vw;
+}
+
+.entry:hover:not(:last-child) {
+  border-bottom: 1px solid transparent;
+}
+
+.entry:hover:first-child {
+  border-top: 1px solid transparent;
 }
 
 .navLink {
@@ -76,7 +102,7 @@ body {
 
 .date {
   flex: 0 0 auto;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: right;
@@ -157,10 +183,6 @@ body {
 .dateSortButton {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-}
-
-.entry:hover {
-  background-color: #0c0d0f;
 }
 
 .entry:hover .clockNumber,
