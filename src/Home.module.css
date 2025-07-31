@@ -72,15 +72,18 @@ body {
 }
 
 .title {
-  flex: 1; /* Take remaining space to center */
-  font-size: 0.7rem;
+  flex: 1;
+  font-size: 0.6rem; /* smaller to fit more text */
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;     /* allows wrapping */
+  overflow: visible;
+  text-overflow: unset;
+  word-break: break-word;  /* breaks long words if needed */
+  line-height: 1.1;
 }
+
 
 .date {
   flex: 0 0 5rem; /* Fixed width for right alignment */
