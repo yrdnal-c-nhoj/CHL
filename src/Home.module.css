@@ -87,7 +87,7 @@ body {
 
 .date {
   flex: 0 0 5rem; /* Fixed width for right alignment */
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: right;
