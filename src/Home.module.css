@@ -5,11 +5,10 @@
 html,
 body {
   margin: 0;
-    background-color: #dcd7d8;
+  background-color: #dcd7d8;
 }
 
 .container {
-  /* background-color: #dcd7d8; */
   margin: 0;
   padding: 0;
   width: 100vw;
@@ -25,7 +24,7 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width:80%;
+  max-width: 80%;
   box-sizing: border-box;
   z-index: 5;
 }
@@ -43,11 +42,11 @@ body {
 .entry {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Align content to left, date handled separately */
+  justify-content: space-between;
   width: 100%;
   box-sizing: border-box;
-  padding: 0.3rem 5rem 0.3rem 0.3rem; /* Extra right padding for date */
-  position: relative; /* Anchor for absolute positioning */
+  padding: 0.3rem 0.3rem;
+  position: relative;
 }
 
 .entry:not(:last-child) {
@@ -65,28 +64,26 @@ body {
   text-decoration: none;
 }
 
-.title {
-  flex: 1 1 auto; /* Take available space on left */
-  text-align: left; /* Flush left, ragged right */
+.clockNumber {
+  flex: 0 0 auto;
   font-size: 0.7rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
-  word-break: break-word;
-  white-space: normal;
-  min-width: 0; /* Prevent flex shrinkage */
+  text-align: left;
+  width: 4rem;
   margin-right: 0.4rem;
 }
 
-.clockNumber {
-  flex: 0 0 auto;
-  font-size: 0.6rem;
+.title {
+  flex: 1 1 auto;
+  font-size: 0.7rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: center;
-  width: 4rem; /* Fixed width to align vertically */
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%); /* Center horizontally */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 0.4rem;
 }
 
 .date {
@@ -94,12 +91,9 @@ body {
   font-size: 0.7rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
-  text-align: right; /* Flush right, ragged left */
+  text-align: right;
   white-space: nowrap;
-  position: absolute;
-  right: 0.3rem; /* Align to right edge with padding */
-  top: 50%;
-  transform: translateY(-50%); /* Vertically center */
+  margin-left: 0.4rem;
 }
 
 .connector {
@@ -107,7 +101,6 @@ body {
   height: 0.5px;
   background-color: #0e0e0e;
   width: 1rem;
-  margin: 0 0.4rem;
 }
 
 .error {
@@ -140,7 +133,7 @@ body {
   cursor: pointer;
   transition: background-color 0.2s, text-shadow 0.2s;
   color: #8b8f8c;
-    font-family: "Nunito", sans-serif;
+  font-family: "Nunito", sans-serif;
 }
 
 .sortButton:hover {
@@ -170,7 +163,6 @@ body {
 
 .entry:hover {
   background-color: #0c0d0d;
-  color: #dcd7d8;
 }
 
 .entry:hover .clockNumber,
