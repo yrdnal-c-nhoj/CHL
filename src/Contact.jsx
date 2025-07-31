@@ -34,7 +34,7 @@ function Contact() {
             <input type="submit" value="subscribe" />
           </form>
    
-
+<br />&nbsp;
           <span className="hat">Send an eMail to the Lab<br />&nbsp;</span><br />
           <p>
            <span className="smallcaps">Questions? Comments? Suggestions?</span> Complaints? Requests? Pleas for help?
@@ -45,9 +45,9 @@ function Contact() {
       
   <a class="email-link" href="mailto:cubistheart@gmail.com?subject=🧊🫀🔭">
    cubistheart@gmail.com
-  </a><br />
+  </a><br /><p>We love email! We will respond as soon as we can. </p>
 
-          {/* <ContactForm /> */}
+         
 &nbsp;
         
         </div>
