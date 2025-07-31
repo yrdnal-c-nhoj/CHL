@@ -133,10 +133,10 @@ const ClockPage = () => {
           >
             <div className={styles.footerContent}>
               <div className={styles.footerLeft}>
-                <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
+                <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
               </div>
               <div className={styles.footerCenter}>
-                <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
+                <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
               </div>
               <div className={styles.footerRight}>
                 <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
@@ -184,10 +184,10 @@ const ClockPage = () => {
         >
           <div className={styles.footerContent}>
             <div className={styles.footerLeft}>
-              <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
+              <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
             </div>
             <div className={styles.footerCenter}>
-              <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
+              <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
             </div>
             <div className={styles.footerRight}>
               <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>

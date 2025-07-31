@@ -14,7 +14,7 @@ const Home = () => {
     if (sortBy === 'date-desc') return b.date.localeCompare(a.date);
     if (sortBy === 'date-asc') return a.date.localeCompare(b.date);
     if (sortBy === 'title-asc') return a.title.localeCompare(b.title);
-    if (sortBy === 'title-desc') return b.title.localeCompare(a.title);
+    if (sortBy === 'title-desc') return b.title.localeCompare(b.title);
     return Math.random() - 0.5;
   });
 
@@ -79,22 +79,18 @@ const Home = () => {
             {sortedItems.map((item) => (
               <li key={`${item.date}-${randomSortKey}`} className={styles.entry}>
                 <Link to={`/${item.date}`} className={styles.navLink}>
-                  <div className={styles.entryTop}>
-                    <span className={styles.title}>{item.title || 'No Title'}</span>
-                    <span className={styles.connector}> </span>
-                    <span className={styles.clockNumber}>#{item.clockNumber}</span>
-                  </div>
-                  <div className={styles.entryBottom}>
-                    <span className={styles.connector}> </span>
-                    <span className={styles.date}>{formatDate(item.date)}</span>
-                  </div>
+                  <span className={styles.clockNumber}>#{item.clockNumber}</span>
+                  <span className={styles.connector}></span>
+                  <span className={styles.title}>{item.title || 'No Title'}</span>
+                  <span className={styles.connector}></span>
+                  <span className={styles.date}>{formatDate(item.date)}</span>
                 </Link>
               </li>
             ))}
           </ul>
         </div>
       </div>
-    <Footer />
+      <Footer />
     </div>
   );
 };
