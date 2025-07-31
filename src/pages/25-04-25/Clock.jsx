@@ -23,13 +23,13 @@ const AnalogClock = () => {
       const sec = now.getSeconds();
       const ms = now.getMilliseconds();
 
-      const hourAngle = (hr + min / 60 + sec / 3600) * 30; // 360/12
-      const minuteAngle = (min + sec / 60 + ms / 60000) * 6; // 360/60
+      const hourAngle = (hr + min / 60 + sec / 3600) * 30;
+      const minuteAngle = (min + sec / 60 + ms / 60000) * 6;
       const secondAngle = (sec + ms / 1000) * 6;
 
-      if (hourRef.current) hourRef.current.style.transform = `rotate(${hourAngle}deg)`;
-      if (minuteRef.current) minuteRef.current.style.transform = `rotate(${minuteAngle}deg)`;
-      if (secondRef.current) secondRef.current.style.transform = `rotate(${secondAngle}deg)`;
+      if (hourRef.current) hourRef.current.style.transform = `rotate(${hourAngle}deg) translate(-50%, -100%)`;
+      if (minuteRef.current) minuteRef.current.style.transform = `rotate(${minuteAngle}deg) translate(-50%, -100%)`;
+      if (secondRef.current) secondRef.current.style.transform = `rotate(${secondAngle}deg) translate(-50%, -100%)`;
 
       requestAnimationFrame(updateClock);
     };
@@ -55,6 +55,7 @@ const AnalogClock = () => {
     height: '60vw',
     maxWidth: '90vh',
     maxHeight: '90vh',
+    boxSizing: 'border-box',
   };
 
   const handStyle = (width, height, zIndex) => ({
@@ -64,7 +65,7 @@ const AnalogClock = () => {
     width,
     height,
     transformOrigin: '50% 100%',
-    transform: 'rotate(0deg)',
+    transform: 'rotate(0deg) translate(-50%, -100%)',
     zIndex,
     pointerEvents: 'none',
   });
