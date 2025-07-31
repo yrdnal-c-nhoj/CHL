@@ -74,17 +74,20 @@ const Home = () => {
               sort by date
             </button>
           </div>
-          <ul className={styles.dateList}>
-            {sortedItems.map((item) => (
-              <li key={`${item.date}-${randomSortKey}`} className={styles.entry}>
-                <Link to={`/${item.date}`} className={styles.navLink}>
-                  <span className={styles.clockNumber}>#{item.clockNumber}</span>
-                  <span className={styles.title}>{item.title || 'No Title'}</span>
-                  <span className={styles.date}>{formatDate(item.date)}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+        <ul className={styles.dateList}>
+  {sortedItems.map((item) => (
+    <li key={`${item.date}-${randomSortKey}`} className={styles.entry}>
+      <Link to={`/${item.date}`} className={styles.navLink}>
+        <div className={styles.topRow}>
+          <span className={styles.clockNumber}>#{item.clockNumber}</span>
+          <span className={styles.title}>{item.title || 'No Title'}</span>
+        </div>
+        <div className={styles.date}>{formatDate(item.date)}</div>
+      </Link>
+    </li>
+  ))}
+</ul>
+
         </div>
       </div>
       <Footer />

@@ -42,9 +42,11 @@ body {
 .entry {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   box-sizing: border-box;
   padding: 0.3rem 0.3rem;
+  position: relative;
 }
 
 .entry:not(:last-child) {
@@ -58,40 +60,45 @@ body {
 .navLink {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   text-decoration: none;
 }
 
 .clockNumber {
-  flex: 0 0 4rem; /* Fixed width for left alignment */
+  flex: 0 0 auto;
   font-size: 0.6rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: left;
-  margin-right: 0.5rem;
+  min-width: 4rem;
 }
-
-.title {
-  flex: 1;
-  font-size: 0.6rem; /* smaller to fit more text */
-  font-family: "Nunito", sans-serif;
-  color: #0c0d0d;
-  text-align: center;
-  white-space: normal;     /* allows wrapping */
-  overflow: visible;
-  text-overflow: unset;
-  word-break: break-word;  /* breaks long words if needed */
-  line-height: 1.1;
-}
-
 
 .date {
-  flex: 0 0 5rem; /* Fixed width for right alignment */
+  flex: 0 0 auto;
   font-size: 0.6rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: right;
-  margin-left: 0.5rem;
+  min-width: 5rem;
+}
+
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  font-family: "Nunito", sans-serif;
+  color: #0c0d0d;
+  text-align: center;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  word-break: break-word;
+  line-height: 1.1;
+  max-width: 60%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .error {
