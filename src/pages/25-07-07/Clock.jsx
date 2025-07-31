@@ -89,7 +89,7 @@ const Clock = () => {
       0 0 0.1rem rgba(255, 255, 255, 0.4)
     `,
     fontWeight: 900,
-    letterSpacing: '-0.2rem',
+    letterSpacing: '-0.1rem',
   };
 
   const bgImageStyle = {
