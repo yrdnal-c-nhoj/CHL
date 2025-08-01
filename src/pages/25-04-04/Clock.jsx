@@ -105,7 +105,7 @@ const styles = {
   },
   clock: {
     color: "rgb(203, 227, 197)",
-    fontSize: "3.5rem",
+    fontSize: "3.0rem",
     textAlign: "center",
     position: "relative",
     zIndex: 1,
