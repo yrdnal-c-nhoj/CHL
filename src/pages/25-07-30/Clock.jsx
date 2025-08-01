@@ -88,7 +88,7 @@ const Clock = () => {
   const minuteHand = {
     ...handCommon,
     height: '30%',
-    width: '1%',
+    width: '3%',
    background: '#B59E7EFF',
     zIndex: 2,
     ...minuteStyle,
@@ -98,7 +98,7 @@ const Clock = () => {
     ...handCommon,
     height: '40%',
     width: '0.5%',
-   background: '#191A19FF',
+   background: '#454745FF',
     zIndex: 1,
     ...secondStyle,
   };
