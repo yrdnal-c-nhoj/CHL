@@ -1,228 +1,202 @@
-import React, { useEffect, useRef } from "react";
-import stars from "./stars.webp";
-import backgroundGif from "./437cb739d14912acd84d65ee853b9067.gif";
-import overlay1 from "./OzJtZ3Z.gif";
-import overlay2 from "./2556744_d34a4.gif";
-import pixelGif from "./sdswrf.gif";
+import React, { useEffect, useRef, useState } from 'react';
 
-const digits = {
-  "0": [
-    [1, 1, 1],
-    [1, 0, 1],
-    [1, 0, 1],
-    [1, 0, 1],
-    [1, 1, 1],
-  ],
-  "1": [
-    [1, 1, 0],
-    [0, 1, 0],
-    [0, 1, 0],
-    [0, 1, 0],
-    [1, 1, 1],
-  ],
-  "2": [
-    [1, 1, 1],
-    [0, 0, 1],
-    [1, 1, 1],
-    [1, 0, 0],
-    [1, 1, 1],
-  ],
-  "3": [
-    [1, 1, 1],
-    [0, 0, 1],
-    [1, 1, 1],
-    [0, 0, 1],
-    [1, 1, 1],
-  ],
-  "4": [
-    [1, 0, 1],
-    [1, 0, 1],
-    [1, 1, 1],
-    [0, 0, 1],
-    [0, 0, 1],
-  ],
-  "5": [
-    [1, 1, 1],
-    [1, 0, 0],
-    [1, 1, 1],
-    [0, 0, 1],
-    [1, 1, 1],
-  ],
-  "6": [
-    [1, 0, 0],
-    [1, 0, 0],
-    [1, 1, 1],
-    [1, 0, 1],
-    [1, 1, 1],
-  ],
-  "7": [
-    [1, 1, 1],
-    [0, 0, 1],
-    [0, 0, 1],
-    [0, 0, 1],
-    [0, 0, 1],
-  ],
-  "8": [
-    [1, 1, 1],
-    [1, 0, 1],
-    [1, 1, 1],
-    [1, 0, 1],
-    [1, 1, 1],
-  ],
-  "9": [
-    [1, 1, 1],
-    [1, 0, 1],
-    [1, 1, 1],
-    [0, 0, 1],
-    [0, 0, 1],
-  ],
-};
+const RandomColorClock = () => {
+  const hourRef = useRef();
+  const minuteRef = useRef();
+  const secondRef = useRef();
+  const dotContainerRef = useRef();
+  const squareRefs = useRef([]);
+  const clockRef = useRef();
 
-function DeepSpaceClock() {
-  const hour1 = useRef();
-  const hour2 = useRef();
-  const minute1 = useRef();
-  const minute2 = useRef();
-  const second1 = useRef();
-  const second2 = useRef();
+  const [background, setBackground] = useState('#f7050d');
 
-  const makeDigit = (target, digitMatrix) => {
-    const container = target.current;
-    if (!container) return;
-    container.innerHTML = "";
-    digitMatrix.forEach((row, i) =>
-      row.forEach((on, j) => {
-        if (on) {
-          const div = document.createElement("div");
-          div.style.gridRow = `${i + 1}`;
-          div.style.gridColumn = `${j + 1}`;
-          div.style.height = "4vmin";
-          div.style.width = "4vmin";
-          div.style.backgroundImage = `url(${pixelGif})`;
-          div.style.backgroundSize = "220% 250%";
-          container.appendChild(div);
-        }
-      })
-    );
+  const getRandomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+
+  const updateClock = () => {
+    const now = new Date();
+    const hours = now.getHours() % 12;
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+
+    const hourDeg = (hours + minutes / 60) * 30;
+    const minuteDeg = (minutes + seconds / 60) * 6;
+    const secondDeg = seconds * 6;
+
+    if (hourRef.current) {
+      hourRef.current.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+      hourRef.current.style.backgroundColor = getRandomColor();
+    }
+    if (minuteRef.current) {
+      minuteRef.current.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
+      minuteRef.current.style.backgroundColor = getRandomColor();
+    }
+    if (secondRef.current) {
+      secondRef.current.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
+      secondRef.current.style.backgroundColor = getRandomColor();
+    }
+
+    if (dotContainerRef.current) {
+      Array.from(dotContainerRef.current.children).forEach(dot => {
+        dot.style.backgroundColor = getRandomColor();
+      });
+    }
+
+    squareRefs.current.forEach(square => {
+      square.style.backgroundColor = getRandomColor();
+    });
+
+    setBackground(getRandomColor());
+  };
+
+  const createDots = () => {
+    const container = dotContainerRef.current;
+    if (!container || !clockRef.current) return;
+
+    container.innerHTML = '';
+    const size = clockRef.current.offsetWidth;
+    const radius = size * 0.3;
+    const center = size / 2;
+
+    for (let i = 0; i < 12; i++) {
+      const angle = (i * 30) * (Math.PI / 180);
+      const x = center + radius * Math.cos(angle) - size * 0.04;
+      const y = center + radius * Math.sin(angle) - size * 0.04;
+
+      const dot = document.createElement('div');
+      dot.style.position = 'absolute';
+      dot.style.width = '3vw';
+      dot.style.height = '3vw';
+      dot.style.left = `${x}px`;
+      dot.style.top = `${y}px`;
+      dot.style.transition = 'background-color 1s';
+      dot.style.zIndex = '1';
+      container.appendChild(dot);
+    }
+  };
+
+  const positionSquares = () => {
+    if (!clockRef.current) return;
+    const size = clockRef.current.offsetWidth;
+    const radius = size * 0.60;
+    const center = size / 2;
+
+    squareRefs.current.forEach((square, i) => {
+      const angleDeg = i * 30;
+      const angleRad = angleDeg * (Math.PI / 180);
+      const x = center + radius * Math.sin(angleRad);
+      const y = center - radius * Math.cos(angleRad);
+      square.style.left = `${x}px`;
+      square.style.top = `${y}px`;
+    });
   };
 
   useEffect(() => {
-    let shownHours = -1,
-      shownMinutes = -1,
-      shownSeconds = -1;
-
-    const updateClock = () => {
-      const now = new Date();
-      const [h, m, s] = [
-        now.getHours().toString().padStart(2, "0"),
-        now.getMinutes().toString().padStart(2, "0"),
-        now.getSeconds().toString().padStart(2, "0"),
-      ];
-
-      if (h !== shownHours.toString()) {
-        makeDigit(hour1, digits[h[0]]);
-        makeDigit(hour2, digits[h[1]]);
-        shownHours = h;
-      }
-      if (m !== shownMinutes.toString()) {
-        makeDigit(minute1, digits[m[0]]);
-        makeDigit(minute2, digits[m[1]]);
-        shownMinutes = m;
-      }
-      if (s !== shownSeconds.toString()) {
-        makeDigit(second1, digits[s[0]]);
-        makeDigit(second2, digits[s[1]]);
-        shownSeconds = s;
-      }
-    };
-
-    updateClock();
+    createDots();
+    positionSquares();
     const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
+    updateClock();
+
+    window.addEventListener('resize', () => {
+      createDots();
+      positionSquares();
+    });
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('resize', () => {});
+    };
   }, []);
 
   return (
     <div
       style={{
-        backgroundImage: `url(${stars})`,
-        backgroundSize: "cover",
-        overflow: "hidden",
-        height: "100vh",
-        width: "100vw",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        width: '100vw',
+        backgroundColor: background,
+        transition: 'background-color 2s',
+        overflow: 'hidden',
       }}
     >
       <div
+        className="clock"
+        ref={clockRef}
         style={{
-          backgroundImage: `url(${backgroundGif})`,
-          backgroundSize: "cover",
-          position: "absolute",
-          inset: 0,
-        }}
-      />
-      <div
-        style={{
-          backgroundImage: `url(${overlay1})`,
-          backgroundSize: "cover",
-          position: "fixed",
-          inset: 0,
-          opacity: 0.35,
-          zIndex: 6,
-        }}
-      />
-      <div
-        style={{
-          backgroundImage: `url(${overlay2})`,
-          backgroundSize: "cover",
-          position: "fixed",
-          inset: 0,
-          opacity: 0.15,
-          zIndex: 5,
-        }}
-      />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "3vw",
-          animation: "spinClock 20s linear infinite",
-          transformStyle: "preserve-3d",
-          perspective: "1000px",
+          position: 'relative',
+          width: '50vmin',
+          height: '50vmin',
         }}
       >
-        <style>
-          {`
-            @keyframes spinClock {
-              0% {
-                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-              }
-              100% {
-                transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
-              }
- nuevamente
-            }
-          `}
-        </style>
-        <div className="digit" ref={hour1} style={digitStyle}></div>
-        <div className="digit" ref={hour2} style={digitStyle}></div>
-        <div className="digit" ref={minute1} style={digitStyle}></div>
-        <div className="digit" ref={minute2} style={digitStyle}></div>
-        <div className="digit" ref={second1} style={digitStyle}></div>
-        <div className="digit" ref={second2} style={digitStyle}></div>
+        {Array.from({ length: 12 }).map((_, i) => (
+          <div
+            key={i}
+            ref={(el) => (squareRefs.current[i] = el)}
+            style={{
+              position: 'absolute',
+              width: '8vw',
+              height: '8vw',
+              backgroundColor: '#3498db',
+              transform: 'translate(-50%, -50%)',
+              transition: 'background-color 1s',
+              zIndex: 2,
+            }}
+          />
+        ))}
+
+        <div ref={dotContainerRef} />
+
+        <div
+          ref={hourRef}
+          style={{
+            position: 'absolute',
+            bottom: '50%',
+            left: '50%',
+            width: '11vmin',
+            height: '50%',
+            backgroundColor: 'blue',
+            transformOrigin: 'bottom',
+            transform: 'translateX(-50%) rotate(0deg)',
+            transition: 'background-color 1s',
+            zIndex: 3,
+          }}
+        />
+
+        <div
+          ref={minuteRef}
+          style={{
+            position: 'absolute',
+            bottom: '50%',
+            left: '50%',
+            width: '6vmin',
+            height: '70%',
+            backgroundColor: 'green',
+            transformOrigin: 'bottom',
+            transform: 'translateX(-50%) rotate(0deg)',
+            transition: 'background-color 1s',
+            zIndex: 4,
+          }}
+        />
+
+        <div
+          ref={secondRef}
+          style={{
+            position: 'absolute',
+            bottom: '50%',
+            left: '50%',
+            width: '2vmin',
+            height: '100%',
+            backgroundColor: 'red',
+            transformOrigin: 'bottom',
+            transform: 'translateX(-50%) rotate(0deg)',
+            transition: 'background-color 1s',
+            zIndex: 5,
+          }}
+        />
       </div>
     </div>
   );
-}
-
-const digitStyle = {
-  display: "grid",
-  gridTemplateColumns: "repeat(3, 1fr)",
-  gridTemplateRows: "repeat(5, 1fr)",
-  width: "13vw",
-  height: "44vh",
 };
 
-export default DeepSpaceClock;
+export default RandomColorClock;
