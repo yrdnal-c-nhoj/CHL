@@ -8,7 +8,7 @@ const Clock = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
-    const size = Math.min(window.innerWidth, window.innerHeight) * 0.8; // Increased from 0.6 to 0.8
+    const size = Math.min(window.innerWidth, window.innerHeight) * 0.85; // Increased to 0.85 to ensure space
     const dpr = window.devicePixelRatio || 1;
 
     canvas.width = size * dpr;
@@ -38,9 +38,9 @@ const Clock = () => {
         const angle = (i * 30) * Math.PI / 180;
         ctx.save();
         ctx.rotate(angle);
-        ctx.translate(0, -radius * 0.75);
+        ctx.translate(0, -radius * 0.85); // Moved from 0.75 to 0.85
         ctx.rotate(-angle);
-        ctx.font = '3.5rem Times New Roman';
+        ctx.font = '3rem Times New Roman'; // Slightly reduced font size to prevent clipping
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = 'black';
