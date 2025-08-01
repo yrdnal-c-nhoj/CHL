@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry.js';
@@ -6,6 +6,7 @@ import mobFontUrl from './mob.otf';
 
 const MobiusStripClock = () => {
   const containerRef = useRef();
+  const [timeString, setTimeString] = useState(''); // For accessibility
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -24,18 +25,20 @@ const MobiusStripClock = () => {
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     try {
       if (!renderer.getContext()) {
+        containerRef.current.innerHTML = '<p>Sorry, WebGL is not supported.</p>';
         console.error('WebGL not supported');
         return;
       }
     } catch (error) {
+      containerRef.current.innerHTML = '<p>Error initializing WebGL.</p>';
       console.error('Error initializing WebGL:', error);
       return;
     }
-    
+
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 0);
-    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.outputColorSpace = THREE.SRGBColorSpace; // Fixed for Three.js >= r152
     renderer.domElement.style.cssText = 'width: 100vw; height: 100vh; display: block;';
     containerRef.current.appendChild(renderer.domElement);
 
@@ -45,6 +48,10 @@ const MobiusStripClock = () => {
     clockCanvas.width = 512 * dpr;
     clockCanvas.height = 128 * dpr;
     const clockContext = clockCanvas.getContext('2d');
+    if (!clockContext) {
+      console.error('Canvas context not supported');
+      return;
+    }
     clockContext.scale(dpr, dpr);
     const clockTexture = new THREE.CanvasTexture(clockCanvas);
     clockTexture.minFilter = THREE.LinearFilter;
@@ -52,14 +59,18 @@ const MobiusStripClock = () => {
     clockTexture.wrapT = THREE.RepeatWrapping;
 
     // Font setup
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'mob';
-        src: url(${mobFontUrl}) format('opentype');
+    let fontLoaded = false;
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace('mob', `url(${mobFontUrl})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        fontLoaded = true;
+      } catch (error) {
+        console.warn('Font loading failed, using fallback:', error);
+        fontLoaded = false;
       }
-    `;
-    document.head.appendChild(style);
+    };
 
     // Möbius strip
     const mobiusFunction = (u, v, target) => {
@@ -73,7 +84,7 @@ const MobiusStripClock = () => {
       target.set(x, y, z);
     };
 
-    const geometry = new ParametricGeometry(mobiusFunction, 100, 20);
+    const geometry = new ParametricGeometry(mobiusFunction, 50, 10); // Reduced segments for performance
     const material = new THREE.MeshBasicMaterial({
       map: clockTexture,
       side: THREE.DoubleSide,
@@ -94,7 +105,6 @@ const MobiusStripClock = () => {
 
     // Clock update
     let lastMinute = null;
-    let timeString = '';
     const updateClockTexture = () => {
       const now = new Date();
       const minute = now.getMinutes();
@@ -104,19 +114,20 @@ const MobiusStripClock = () => {
 
       if (minute !== lastMinute) {
         lastMinute = minute;
-        timeString = `${hour}:${minute.toString().padStart(2, '0')} ${ampm}`;
-        
+        const newTimeString = `${hour}:${minute.toString().padStart(2, '0')} ${ampm}`;
+        setTimeString(newTimeString); // Update for accessibility
+
         clockContext.clearRect(0, 0, clockCanvas.width / dpr, clockCanvas.height / dpr);
         clockContext.fillStyle = 'rgba(0, 0, 0, 0.5)';
         clockContext.fillRect(0, 0, clockCanvas.width / dpr, clockCanvas.height / dpr);
-        
-        const fontSize = Math.round((clockCanvas.width / dpr) / 4.5);
-        clockContext.font = `${fontSize}px mob`;
+
+        const fontSize = Math.min(clockCanvas.width / dpr / 4.5, clockCanvas.height / dpr);
+        clockContext.font = `${fontSize}px ${fontLoaded ? 'mob' : 'Arial'}`;
         clockContext.fillStyle = '#EFF1F1FF';
         clockContext.textAlign = 'left';
         clockContext.textBaseline = 'middle';
-        clockContext.fillText(timeString, 10, (clockCanvas.height / dpr) / 2);
-        
+        clockContext.fillText(newTimeString, 10, (clockCanvas.height / dpr) / 2);
+
         clockTexture.needsUpdate = true;
       }
     };
@@ -137,30 +148,45 @@ const MobiusStripClock = () => {
     };
 
     // Start animation and clock updates
-    animate();
-    const timeUpdateInterval = setInterval(updateClockTexture, 1000);
-    updateClockTexture(); // Initial update
+    loadFont().then(() => {
+      updateClockTexture(); // Initial update after font loading
+      animate();
+      const timeUpdateInterval = setInterval(updateClockTexture, 1000);
 
-    // Resize handler
-    const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-    window.addEventListener('resize', handleResize);
+      // Resize handler
+      const handleResize = () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      };
+      window.addEventListener('resize', handleResize);
 
-    // Cleanup
-    return () => {
-      clearInterval(timeUpdateInterval);
-      window.removeEventListener('resize', handleResize);
-      document.head.removeChild(style);
-      if (containerRef.current) {
-        containerRef.current.removeChild(renderer.domElement);
+      // Cleanup
+      return () => {
+        clearInterval(timeUpdateInterval);
+        window.removeEventListener('resize', handleResize);
+        if (containerRef.current) {
+          containerRef.current.removeChild(renderer.domElement);
+        }
+        geometry.dispose();
+        material.dispose();
+        clockTexture.dispose();
+        renderer.dispose();
+      };
+    });
+
+    // Initial font style injection (for compatibility)
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: 'mob';
+        src: url(${mobFontUrl}) format('opentype');
       }
-      geometry.dispose();
-      material.dispose();
-      clockTexture.dispose();
-      renderer.dispose();
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
     };
   }, []);
 
@@ -175,7 +201,11 @@ const MobiusStripClock = () => {
         padding: 0,
         background: 'radial-gradient(circle at center, #ff5978 0%, #8000ff 100%)',
       }}
-    />
+    >
+      <span style={{ display: 'none' }} aria-live="polite">
+        {timeString}
+      </span>
+    </div>
   );
 };
 
