@@ -14,7 +14,7 @@ const Home = () => {
     if (sortBy === 'date-desc') return b.date.localeCompare(a.date);
     if (sortBy === 'date-asc') return a.date.localeCompare(b.date);
     if (sortBy === 'title-asc') return a.title.localeCompare(b.title);
-    if (sortBy === 'title-desc') return b.title.localeCompare(b.title);
+    if (sortBy === 'title-desc') return b.title.localeCompare(a.title); // ✅ FIXED LINE
     return Math.random() - 0.5;
   });
 
@@ -47,7 +47,7 @@ const Home = () => {
       <div className={styles.container}>
         <div className={styles.centeredContent}>
           <div className={styles.sortContainer}>
-              <button
+            <button
               onClick={handleRandomSort}
               className={`${styles.sortButton} ${styles.randomSortButton} ${
                 sortBy === 'random' ? styles.active : ''
@@ -55,39 +55,54 @@ const Home = () => {
               title="Sort Randomly"
             >
               random
-            </button><button
+            </button>
+            <button
               onClick={handleTitleSort}
               className={`${styles.sortButton} ${styles.titleSortButton} ${
                 sortBy.includes('title') ? styles.active : ''
               }`}
-              title={sortBy === 'title-asc' ? 'Sort Reverse Alphabetically' : 'Sort Alphabetically'}
-            >sort by title
+              title={
+                sortBy === 'title-asc'
+                  ? 'Sort Reverse Alphabetically'
+                  : 'Sort Alphabetically'
+              }
+            >
+              sort by title
             </button>
-          
             <button
               onClick={handleDateSort}
               className={`${styles.sortButton} ${styles.dateSortButton} ${
                 sortBy.includes('date') ? styles.active : ''
               }`}
-              title={sortBy === 'date-desc' ? 'Sort Oldest to Newest' : 'Sort Newest to Oldest'}
+              title={
+                sortBy === 'date-desc'
+                  ? 'Sort Oldest to Newest'
+                  : 'Sort Newest to Oldest'
+              }
             >
               sort by date
             </button>
           </div>
-        <ul className={styles.dateList}>
-  {sortedItems.map((item) => (
-    <li key={`${item.date}-${randomSortKey}`} className={styles.entry}>
-      <Link to={`/${item.date}`} className={styles.navLink}>
-        <div className={styles.topRow}>
-          <span className={styles.clockNumber}>#{item.clockNumber}</span>
-          <span className={styles.title}>{item.title || 'No Title'}</span>
-        </div>
-        <div className={styles.date}>{formatDate(item.date)}</div>
-      </Link>
-    </li>
-  ))}
-</ul>
-
+          <ul className={styles.dateList}>
+            {sortedItems.map((item) => (
+              <li
+                key={`${item.date}-${randomSortKey}`}
+                className={styles.entry}
+              >
+                <Link to={`/${item.date}`} className={styles.navLink}>
+                  <div className={styles.topRow}>
+                    <span className={styles.clockNumber}>
+                      #{item.clockNumber}
+                    </span>
+                    <span className={styles.title}>
+                      {item.title || 'No Title'}
+                    </span>
+                  </div>
+                  <div className={styles.date}>{formatDate(item.date)}</div>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
       <Footer />
