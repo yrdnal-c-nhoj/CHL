@@ -1,84 +1,83 @@
 import React, { useEffect, useRef } from 'react';
-import bgImage from './bad.png';
-import hourImg from './ba.png';
-import minuteImg from './ba.png';
-import secondImg from './ba.png';
-import fontUrl from './Oswald.ttf';
+import backgroundImage from './bad.png'; // your custom background
+import boldFont from './Oswald-Bold.ttf'; // Oswald bold version
 
-const AnalogClock = () => {
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
+const MyClock = () => {
+  const canvasRef = useRef(null);
 
   useEffect(() => {
-    const font = new FontFace('CustomFont', `url(${fontUrl})`);
+    const font = new FontFace('MyFont', `url(${boldFont})`);
     font.load().then(() => {
       document.fonts.add(font);
+      drawClock();
     });
 
-    const updateClock = () => {
-      const now = new Date();
-      const hr = now.getHours() % 12;
-      const min = now.getMinutes();
-      const sec = now.getSeconds();
-      const ms = now.getMilliseconds();
+    const drawClock = () => {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
 
-      const hourAngle = (hr + min / 60 + sec / 3600) * 30;
-      const minuteAngle = (min + sec / 60 + ms / 60000) * 6;
-      const secondAngle = (sec + ms / 1000) * 6;
+      const update = () => {
+        const now = new Date();
+        const w = canvas.width = window.innerWidth;
+        const h = canvas.height = window.innerHeight;
+        const r = Math.min(w, h) / 3; // controls clock size
 
-      if (hourRef.current) hourRef.current.style.transform = `rotate(${hourAngle}deg) translate(-50%, -100%)`;
-      if (minuteRef.current) minuteRef.current.style.transform = `rotate(${minuteAngle}deg) translate(-50%, -100%)`;
-      if (secondRef.current) secondRef.current.style.transform = `rotate(${secondAngle}deg) translate(-50%, -100%)`;
+        ctx.clearRect(0, 0, w, h);
+        ctx.save();
+        ctx.translate(w / 2, h / 2);
+        ctx.fillStyle = '#FA0820FF';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = `${r * 0.6}px MyFont`; // using bold font file
 
-      requestAnimationFrame(updateClock);
+        for (let i = 1; i <= 12; i++) {
+          const angle = (i * Math.PI) / 6;
+          ctx.save();
+          ctx.rotate(angle);
+          ctx.translate(0, -r * 0.85);
+          ctx.fillText(i, 0, 0);
+          ctx.restore();
+        }
+
+        const hour = now.getHours() % 12;
+        const minute = now.getMinutes();
+        const second = now.getSeconds();
+
+        const drawHand = (angle, length, width, color) => {
+          ctx.beginPath();
+          ctx.lineWidth = width;
+          ctx.strokeStyle = color;
+          ctx.moveTo(0, 0);
+          ctx.rotate(angle);
+          ctx.lineTo(0, -length);
+          ctx.stroke();
+          ctx.rotate(-angle);
+        };
+
+        drawHand((Math.PI / 6) * hour + (Math.PI / 360) * minute, r * 0.5, r * 0.05, '#f00');
+        drawHand((Math.PI / 30) * minute + (Math.PI / 1800) * second, r * 0.75, r * 0.03, '#f00');
+        drawHand((Math.PI / 30) * second, r * 0.85, r * 0.01, '#f00');
+
+        ctx.restore();
+        requestAnimationFrame(update);
+      };
+
+      update();
     };
-
-    requestAnimationFrame(updateClock);
   }, []);
 
-  const wrapperStyle = {
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    height: '100vh',
-    width: '100vw',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontFamily: 'CustomFont, sans-serif',
-  };
-
-  const clockStyle = {
-    position: 'relative',
-    width: '60vw',
-    height: '60vw',
-    maxWidth: '90vh',
-    maxHeight: '90vh',
-    boxSizing: 'border-box',
-  };
-
-  const handStyle = (width, height, zIndex) => ({
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width,
-    height,
-    transformOrigin: '50% 100%',
-    transform: 'rotate(0deg) translate(-50%, -100%)',
-    zIndex,
-    pointerEvents: 'none',
-  });
-
   return (
-    <div style={wrapperStyle}>
-      <div style={clockStyle}>
-        <img ref={hourRef} src={hourImg} alt="hour" style={handStyle('3vw', '20vw', 2)} />
-        <img ref={minuteRef} src={minuteImg} alt="minute" style={handStyle('2.5vw', '28vw', 3)} />
-        <img ref={secondRef} src={secondImg} alt="second" style={handStyle('1vw', '35vw', 4)} />
-      </div>
+    <div
+      style={{
+        width: '100vw',
+        height: '100vh',
+        background: `url(${backgroundImage}) center/cover no-repeat`,
+        overflow: 'hidden',
+      }}
+    >
+      <canvas ref={canvasRef} style={{ display: 'block' }} />
     </div>
   );
 };
 
-export default AnalogClock;
+export default MyClock;
