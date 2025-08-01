@@ -1,22 +1,34 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import TopNav from './components/TopNav';
-import styles from './Home.module.css';
 import Footer from './components/Footer';
+import styles from './Home.module.css';
 
 const Home = () => {
   const { items, loading, error } = useContext(DataContext);
   const [sortBy, setSortBy] = useState('date-desc');
   const [randomSortKey, setRandomSortKey] = useState(0);
 
-  const sortedItems = [...items].sort((a, b) => {
-    if (sortBy === 'date-desc') return b.date.localeCompare(a.date);
-    if (sortBy === 'date-asc') return a.date.localeCompare(b.date);
-    if (sortBy === 'title-asc') return a.title.localeCompare(b.title);
-    if (sortBy === 'title-desc') return b.title.localeCompare(a.title); // ✅ FIXED LINE
-    return Math.random() - 0.5;
-  });
+  // Load saved sort preference
+  useEffect(() => {
+    const savedSort = localStorage.getItem('sortBy');
+    if (savedSort) setSortBy(savedSort);
+  }, []);
+
+  // Persist sort selection
+  useEffect(() => {
+    localStorage.setItem('sortBy', sortBy);
+  }, [sortBy]);
+
+  const sortedItems = useMemo(() => {
+    const itemsCopy = [...items];
+    if (sortBy === 'date-desc') return itemsCopy.sort((a, b) => b.date.localeCompare(a.date));
+    if (sortBy === 'date-asc') return itemsCopy.sort((a, b) => a.date.localeCompare(b.date));
+    if (sortBy === 'title-asc') return itemsCopy.sort((a, b) => a.title.localeCompare(b.title));
+    if (sortBy === 'title-desc') return itemsCopy.sort((a, b) => b.title.localeCompare(a.title));
+    return itemsCopy.sort(() => Math.random() - 0.5);
+  }, [items, sortBy, randomSortKey]);
 
   const handleRandomSort = () => {
     setSortBy('random');
@@ -32,73 +44,72 @@ const Home = () => {
   };
 
   const formatDate = (dateStr) => {
-    const [yy, mm, dd] = dateStr.split('-');
-    return `${parseInt(mm, 10)}/${parseInt(dd, 10)}/${parseInt(yy, 10)}`;
+    if (!dateStr) return 'Invalid Date';
+    
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return 'Invalid Date';
+
+    const [year, month, day] = parts;
+    const date = new Date(Number(year), Number(month) - 1, Number(day));
+
+    if (isNaN(date.getTime())) {
+      console.warn('Invalid date:', dateStr);
+      return 'Invalid Date';
+    }
+
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'numeric',
+      day: 'numeric',
+      year: '2-digit',
+    }).format(date);
   };
 
   if (loading) return <div className={styles.loading}>Loading data...</div>;
   if (error) return <div className={styles.error}>Error: {error}</div>;
 
   return (
-    <div>
-      <div className={styles.topNav}>
-        <TopNav />
-      </div>
+    <>
+      <TopNav />
       <div className={styles.container}>
         <div className={styles.centeredContent}>
           <div className={styles.sortContainer}>
             <button
               onClick={handleRandomSort}
-              className={`${styles.sortButton} ${styles.randomSortButton} ${
-                sortBy === 'random' ? styles.active : ''
-              }`}
+              aria-label="Sort randomly"
+              className={`${styles.sortButton} ${sortBy === 'random' ? styles.active : ''}`}
               title="Sort Randomly"
             >
               random
             </button>
             <button
               onClick={handleTitleSort}
+              aria-label="Sort by title"
               className={`${styles.sortButton} ${styles.titleSortButton} ${
                 sortBy.includes('title') ? styles.active : ''
               }`}
-              title={
-                sortBy === 'title-asc'
-                  ? 'Sort Reverse Alphabetically'
-                  : 'Sort Alphabetically'
-              }
+              title={sortBy === 'title-asc' ? 'Sort Z–A' : 'Sort A–Z'}
             >
-              sort by title
+              title {sortBy === 'title-asc' ? '🔽' : sortBy === 'title-desc' ? '🔼' : ''}
             </button>
             <button
               onClick={handleDateSort}
+              aria-label="Sort by date"
               className={`${styles.sortButton} ${styles.dateSortButton} ${
                 sortBy.includes('date') ? styles.active : ''
               }`}
-              title={
-                sortBy === 'date-desc'
-                  ? 'Sort Oldest to Newest'
-                  : 'Sort Newest to Oldest'
-              }
+              title={sortBy === 'date-desc' ? 'Sort Oldest to Newest' : 'Sort Newest to Oldest'}
             >
-              sort by date
+              date {sortBy === 'date-asc' ? '🔽' : sortBy === 'date-desc' ? '🔼' : ''}
             </button>
           </div>
+
           <ul className={styles.dateList}>
             {sortedItems.map((item) => (
-              <li
-                key={`${item.date}-${randomSortKey}`}
-                className={styles.entry}
-              >
+              <li key={item.date} className={styles.entry}>
                 <Link to={`/${item.date}`} className={styles.navLink}>
-                  <div className={styles.topRow}>
-                    <span className={styles.clockNumber}>
-                      #{item.clockNumber}
-                    </span>
-                    <span className={styles.title}>
-                      {item.title || 'No Title'}
-                    </span>
-                  </div>
-                  <div className={styles.date}>{formatDate(item.date)}</div>
+                  <span className={styles.clockNumber}>#{item.clockNumber}</span>
+                  <span className={styles.title}>{item.title || 'No Title'}</span>
+                  <span className={styles.date}>{formatDate(item.date)}</span>
                 </Link>
               </li>
             ))}
@@ -106,7 +117,7 @@ const Home = () => {
         </div>
       </div>
       <Footer />
-    </div>
+    </>
   );
 };
 
