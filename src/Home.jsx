@@ -10,13 +10,11 @@ const Home = () => {
   const [sortBy, setSortBy] = useState('date-desc');
   const [randomSortKey, setRandomSortKey] = useState(0);
 
-  // Load saved sort preference
   useEffect(() => {
     const savedSort = localStorage.getItem('sortBy');
     if (savedSort) setSortBy(savedSort);
   }, []);
 
-  // Persist sort selection
   useEffect(() => {
     localStorage.setItem('sortBy', sortBy);
   }, [sortBy]);
@@ -45,12 +43,15 @@ const Home = () => {
 
   const formatDate = (dateStr) => {
     if (!dateStr) return 'Invalid Date';
-    
+
     const parts = dateStr.split('-');
     if (parts.length !== 3) return 'Invalid Date';
 
-    const [year, month, day] = parts;
-    const date = new Date(Number(year), Number(month) - 1, Number(day));
+    let [yy, mm, dd] = parts.map(Number);
+    if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return 'Invalid Date';
+
+    const fullYear = 2000 + yy; // handles 2-digit year
+    const date = new Date(fullYear, mm - 1, dd);
 
     if (isNaN(date.getTime())) {
       console.warn('Invalid date:', dateStr);
