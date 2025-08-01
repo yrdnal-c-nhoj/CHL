@@ -7,12 +7,23 @@ const Clock = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    const radius = canvas.width / 2;
+
+    const size = Math.min(window.innerWidth, window.innerHeight) * 0.6;
+    const dpr = window.devicePixelRatio || 1;
+
+    canvas.width = size * dpr;
+    canvas.height = size * dpr;
+    canvas.style.width = `${size}px`;
+    canvas.style.height = `${size}px`;
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const radius = size / 2;
+
     const hourNumbers = ['🎄', '🥇', '✌️', '🎶', '🍀', '⭐', '🀞', '🎰', '🎱', '🐈', '🎯', '⏸️'];
 
     const drawClock = () => {
       const now = new Date();
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, size, size);
       ctx.save();
       ctx.translate(radius, radius);
 
@@ -81,6 +92,7 @@ const Clock = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        background: 'black',
       }}
     >
       <img
@@ -90,7 +102,7 @@ const Clock = () => {
           position: 'absolute',
           top: 0,
           left: 0,
-          width: '102%',
+          width: '100%',
           height: '100%',
           objectFit: 'cover',
           zIndex: 1,
@@ -99,11 +111,10 @@ const Clock = () => {
       />
       <canvas
         ref={canvasRef}
-        width={(window.innerWidth * 0.6)}
-        height={(window.innerWidth * 0.6)}
         style={{
           borderRadius: '50%',
           zIndex: 3,
+          display: 'block',
         }}
       />
     </div>
