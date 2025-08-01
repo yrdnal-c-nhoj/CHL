@@ -1,16 +1,11 @@
-/* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
 
-/* Ensure full-page layout */
-html,
-body {
+html, body {
   margin: 0;
   background-color: #dcd7d8;
 }
 
 .container {
-  margin: 0;
-  padding: 0;
   width: 100vw;
   min-height: 100vh;
   display: flex;
@@ -36,7 +31,6 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
 }
 
 .entry {
@@ -48,6 +42,7 @@ body {
   padding: 0.1rem 0.1rem;
   position: relative;
   z-index: 1;
+  transition: background-color 0.3s ease;
 }
 
 .entry:not(:last-child) {
@@ -62,17 +57,16 @@ body {
   content: '';
   position: absolute;
   top: 0;
-  left: 50%;
+  left: 0;
   width: 0;
   height: 100%;
   background-color: #0c0d0f;
   z-index: -1;
-  transform: translateX(-50%);
   transition: width 0.2s ease;
 }
 
 .entry:hover::before {
-  width: 100vw;
+  width: 100%;
 }
 
 .entry:hover:not(:last-child) {
@@ -92,8 +86,7 @@ body {
 }
 
 .clockNumber {
-  flex: 0 0 auto;
-  font-size: 0.6rem;
+  font-size: clamp(0.6rem, 0.8vw, 1rem);
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: left;
@@ -101,8 +94,7 @@ body {
 }
 
 .date {
-  flex: 0 0 auto;
-  font-size: 0.7rem;
+  font-size: clamp(0.6rem, 0.8vw, 1rem);
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: right;
@@ -112,33 +104,38 @@ body {
 .title {
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.6rem;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(0.6rem, 1vw, 1.1rem);
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: center;
   white-space: normal;
-  overflow: visible;
-  text-overflow: unset;
   word-break: break-word;
   line-height: 1.1;
   max-width: 60%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  overflow: visible;
+}
+
+.entry:hover .clockNumber,
+.entry:hover .title,
+.entry:hover .date {
+  color: #cad8f4;
+  transition: color 0.3s ease;
+}
+
+.error, .loading {
+  text-align: center;
+  font-size: 1.1rem;
+  padding: 1rem;
 }
 
 .error {
   color: #dc3545;
-  text-align: center;
-  font-size: 18px;
-  padding: 20px;
 }
 
 .loading {
   color: #212521;
-  text-align: center;
-  font-size: 18px;
-  padding: 20px;
 }
 
 .sortContainer {
@@ -146,12 +143,13 @@ body {
   justify-content: center;
   padding: 0.1rem 0;
   z-index: 6;
+  gap: 0.5rem;
 }
 
 .sortButton {
   background-color: transparent;
-  font-size: 0.5rem;
-  padding: 4px 18px;
+  font-size: 0.6rem;
+  padding: 4px 12px;
   border: 1px solid transparent;
   border-radius: 3px;
   cursor: pointer;
@@ -171,8 +169,8 @@ body {
   background-color: rgba(177, 175, 179, 0.3);
 }
 
-.sortButton:focus {
-  outline: none;
+.sortButton:focus-visible {
+  outline: 2px solid #aad4ff;
 }
 
 .titleSortButton {
@@ -183,10 +181,4 @@ body {
 .dateSortButton {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-}
-
-.entry:hover .clockNumber,
-.entry:hover .title,
-.entry:hover .date {
-  color: #cad8f4;
 }
