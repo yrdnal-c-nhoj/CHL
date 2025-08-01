@@ -8,7 +8,7 @@ const Clock = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
-    const size = Math.min(window.innerWidth, window.innerHeight) * 0.6;
+    const size = Math.min(window.innerWidth, window.innerHeight) * 0.8; // Increased from 0.6 to 0.8
     const dpr = window.devicePixelRatio || 1;
 
     canvas.width = size * dpr;
