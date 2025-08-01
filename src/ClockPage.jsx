@@ -14,8 +14,16 @@ const formatDate = (dateStr) => {
   if (!dateStr) return '';
   const parts = dateStr.split('-');
   if (parts.length !== 3) return dateStr;
-  const [yy, mm, dd] = parts;
-  return `${Number(mm)}/${Number(dd)}/${yy}`;
+  const [yy, mm, dd] = parts.map(Number);
+  if (mm < 1 || mm > 12 || dd < 1 || dd > 31) return 'Invalid Date';
+  return `${mm}/${dd}/${yy}`;
+};
+
+const isValidDateFormat = (date) => {
+  const regex = /^\d{2}-\d{2}-\d{2}$/;
+  if (!regex.test(date)) return false;
+  const [yy, mm, dd] = date.split('-').map(Number);
+  return mm >= 1 && mm <= 12 && dd >= 1 && dd <= 31;
 };
 
 const ClockPage = () => {
@@ -33,17 +41,15 @@ const ClockPage = () => {
   useEffect(() => {
     if (loading) return;
 
-    if (!date || !/^\d{2}-\d{2}-\d{2}$/.test(date)) {
+    if (!date || !isValidDateFormat(date)) {
       setPageError('Invalid date format. Use YY-MM-DD (e.g., 25-06-01).');
-      setClockComponent(null);
       return;
     }
 
-    const item = items.find(i => i.date === date);
+    const item = items.find((i) => i?.date === date);
 
     if (!item || !item.path) {
-      setPageError(`No path found for date ${date}.`);
-      setClockComponent(null);
+      setPageError(`No clock found for date ${date}.`);
       return;
     }
 
@@ -51,15 +57,9 @@ const ClockPage = () => {
     setClockComponent(null);
 
     import(`./pages/${item.path}/Clock.jsx`)
-      .then(mod => setClockComponent(() => mod.default))
-      .catch(err => setPageError(`Failed to load clock for ${date}: ${err.message}`));
+      .then((mod) => setClockComponent(() => mod.default))
+      .catch((err) => setPageError(`Failed to load clock for ${date}: ${err.message}`));
   }, [date, items, loading]);
-
-  useEffect(() => {
-    if (pageError) {
-      navigate('/');
-    }
-  }, [pageError, navigate]);
 
   useEffect(() => {
     const navFadeMs = 300;
@@ -94,22 +94,19 @@ const ClockPage = () => {
   }, [navHasFaded]);
 
   useEffect(() => {
-    // Ensure header is visible on initial render
     setHeaderVisible(true);
-    const headerTimer = setTimeout(() => {
-      setHeaderVisible(false);
-    }, 2000);
-
+    const headerTimer = setTimeout(() => setHeaderVisible(false), 2000);
     return () => clearTimeout(headerTimer);
-  }, [date]); // Trigger on date change to reset header visibility on page navigation
+  }, [date]);
 
   useEffect(() => {
+    document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = '';
     };
   }, []);
 
-  const currentIndex = items.findIndex(item => item.date === date);
+  const currentIndex = items.findIndex((item) => item?.date === date);
   const currentItem = currentIndex >= 0 ? items[currentIndex] : null;
   const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
   const nextItem = currentIndex >= 0 && currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
@@ -118,33 +115,32 @@ const ClockPage = () => {
     return <div className={styles.loading}>Loading data...</div>;
   }
 
-  if (error) {
+  if (error || pageError) {
     return (
       <div className={styles.container}>
         <Header visible={headerVisible} />
         <div className={styles.content}>
-          {ClockComponent ? <ClockComponent /> : <div className={styles.loading}>Loading clock...</div>}
+          <div className={styles.error}>{error || pageError}</div>
         </div>
-        {currentItem && (
-          <Link
-            to="/"
-            className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}
-            aria-label="Go back to homepage"
-          >
-            <div className={styles.footerContent}>
-              <div className={styles.footerLeft}>
-                <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
-              </div>
-              <div className={styles.footerCenter}>
-                <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
-              </div>
-              <div className={styles.footerRight}>
-                <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
-              </div>
+        <Link
+          to="/"
+          className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}
+          aria-label="Go back to homepage"
+        >
+          <div className={styles.footerContent}>
+            <div className={styles.footerLeft}>
+              <span className={styles.footerNumber}>
+                <strong>#</strong> N/A
+              </span>
             </div>
-          </Link>
-        )}
-        <div className={styles.error}>{error}</div>
+            <div className={styles.footerCenter}>
+              <span className={styles.footerTitle}>Home</span>
+            </div>
+            <div className={styles.footerRight}>
+              <span className={styles.footerDate}>N/A</span>
+            </div>
+          </div>
+        </Link>
       </div>
     );
   }
@@ -160,9 +156,10 @@ const ClockPage = () => {
         <Link
           to={`/${prevItem.date}`}
           className={`${styles.sideNav} ${styles.leftNav} ${navVisible ? styles.visible : styles.hidden}`}
-          aria-label={`Go to ${formatTitle(prevItem.title)}`}
+          aria-label={`Go to previous clock: ${formatTitle(prevItem.title)}`}
         >
-          ←
+          <span aria-hidden="true">←</span>
+          <span className={styles.screenReaderText}>Previous: {formatTitle(prevItem.title)}</span>
         </Link>
       )}
 
@@ -170,9 +167,10 @@ const ClockPage = () => {
         <Link
           to={`/${nextItem.date}`}
           className={`${styles.sideNav} ${styles.rightNav} ${navVisible ? styles.visible : styles.hidden}`}
-          aria-label={`Go to ${formatTitle(nextItem.title)}`}
+          aria-label={`Go to next clock: ${formatTitle(nextItem.title)}`}
         >
-          →
+          <span aria-hidden="true">→</span>
+          <span className={styles.screenReaderText}>Next: {formatTitle(nextItem.title)}</span>
         </Link>
       )}
 
@@ -184,7 +182,9 @@ const ClockPage = () => {
         >
           <div className={styles.footerContent}>
             <div className={styles.footerLeft}>
-              <span className={styles.footerNumber}><strong>#</strong> {currentIndex + 1}</span>
+              <span className={styles.footerNumber}>
+                <strong>#</strong> {currentIndex + 1}
+              </span>
             </div>
             <div className={styles.footerCenter}>
               <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
