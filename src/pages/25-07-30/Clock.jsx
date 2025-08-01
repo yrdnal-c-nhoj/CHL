@@ -89,7 +89,7 @@ const Clock = () => {
     ...handCommon,
     height: '30%',
     width: '3%',
-   background: '#B59E7EFF',
+   background: '#B9A68CFF',
     zIndex: 2,
     ...minuteStyle,
   };
