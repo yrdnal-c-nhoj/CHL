@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import backgroundImage from './bad.png'; // your custom background
-import boldFont from './Oswald-Bold.ttf'; // Oswald bold version
+import backgroundImage from './bad.png';
+import boldFont from './Oswald-Bold.ttf';
+import hourHandImage from './ban.webp';
+import minuteHandImage from './ba.gif';
+import secondHandImage from './band.gif';
 
 const MyClock = () => {
   const canvasRef = useRef(null);
@@ -9,10 +12,30 @@ const MyClock = () => {
     const font = new FontFace('MyFont', `url(${boldFont})`);
     font.load().then(() => {
       document.fonts.add(font);
-      drawClock();
+      loadImages();
     });
 
-    const drawClock = () => {
+    const loadImages = () => {
+      const hourImg = new Image();
+      const minuteImg = new Image();
+      const secondImg = new Image();
+
+      let loadedCount = 0;
+      const checkLoaded = () => {
+        loadedCount++;
+        if (loadedCount === 3) drawClock(hourImg, minuteImg, secondImg);
+      };
+
+      hourImg.onload = checkLoaded;
+      minuteImg.onload = checkLoaded;
+      secondImg.onload = checkLoaded;
+
+      hourImg.src = hourHandImage;
+      minuteImg.src = minuteHandImage;
+      secondImg.src = secondHandImage;
+    };
+
+    const drawClock = (hourImg, minuteImg, secondImg) => {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext('2d');
 
@@ -20,15 +43,17 @@ const MyClock = () => {
         const now = new Date();
         const w = canvas.width = window.innerWidth;
         const h = canvas.height = window.innerHeight;
-        const r = Math.min(w, h) / 3; // controls clock size
+        const r = Math.min(w, h) / 3;
 
         ctx.clearRect(0, 0, w, h);
         ctx.save();
         ctx.translate(w / 2, h / 2);
+
+        // Draw clock numbers
         ctx.fillStyle = '#FA0820FF';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.font = `${r * 0.6}px MyFont`; // using bold font file
+        ctx.font = `${r * 0.6}px MyFont`;
 
         for (let i = 1; i <= 12; i++) {
           const angle = (i * Math.PI) / 6;
@@ -43,20 +68,21 @@ const MyClock = () => {
         const minute = now.getMinutes();
         const second = now.getSeconds();
 
-        const drawHand = (angle, length, width, color) => {
-          ctx.beginPath();
-          ctx.lineWidth = width;
-          ctx.strokeStyle = color;
-          ctx.moveTo(0, 0);
+        // Updated drawImageHand function
+        const drawImageHand = (img, angle, widthScale = 1, heightScale = 1) => {
+          const imgW = r * 0.1 * widthScale;
+          const imgH = r * heightScale;
+
+          ctx.save();
           ctx.rotate(angle);
-          ctx.lineTo(0, -length);
-          ctx.stroke();
-          ctx.rotate(-angle);
+          ctx.drawImage(img, -imgW / 2, -imgH * 0.9, imgW, imgH); // base of hand at center
+          ctx.restore();
         };
 
-        drawHand((Math.PI / 6) * hour + (Math.PI / 360) * minute, r * 0.5, r * 0.05, '#f00');
-        drawHand((Math.PI / 30) * minute + (Math.PI / 1800) * second, r * 0.75, r * 0.03, '#f00');
-        drawHand((Math.PI / 30) * second, r * 0.85, r * 0.01, '#f00');
+        // Customize image hand sizes here:
+        drawImageHand(hourImg, (Math.PI / 6) * hour + (Math.PI / 360) * minute, 1.9, 0.5);
+        drawImageHand(minuteImg, (Math.PI / 30) * minute + (Math.PI / 1800) * second, 1.6, 0.8);
+        drawImageHand(secondImg, (Math.PI / 30) * second, 1.2, 1.0);
 
         ctx.restore();
         requestAnimationFrame(update);
