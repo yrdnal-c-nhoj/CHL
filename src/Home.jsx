@@ -19,14 +19,26 @@ const Home = () => {
     localStorage.setItem('sortBy', sortBy);
   }, [sortBy]);
 
-  const sortedItems = useMemo(() => {
-    const itemsCopy = [...items];
-    if (sortBy === 'date-desc') return itemsCopy.sort((a, b) => b.date.localeCompare(a.date));
-    if (sortBy === 'date-asc') return itemsCopy.sort((a, b) => a.date.localeCompare(b.date));
-    if (sortBy === 'title-asc') return itemsCopy.sort((a, b) => a.title.localeCompare(b.title));
-    if (sortBy === 'title-desc') return itemsCopy.sort((a, b) => b.title.localeCompare(a.title));
-    return itemsCopy.sort(() => Math.random() - 0.5);
-  }, [items, sortBy, randomSortKey]);
+const sortedItems = useMemo(() => {
+  const isValidDate = (str) => {
+    const parts = str?.split('-');
+    if (!parts || parts.length !== 3) return false;
+    const [yy, mm, dd] = parts.map(Number);
+    if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return false;
+    const fullYear = 2000 + yy;
+    const date = new Date(fullYear, mm - 1, dd);
+    return !isNaN(date.getTime());
+  };
+
+  const itemsCopy = [...items].filter(item => item.date && isValidDate(item.date));
+
+  if (sortBy === 'date-desc') return itemsCopy.sort((a, b) => b.date.localeCompare(a.date));
+  if (sortBy === 'date-asc') return itemsCopy.sort((a, b) => a.date.localeCompare(b.date));
+  if (sortBy === 'title-asc') return itemsCopy.sort((a, b) => a.title.localeCompare(b.title));
+  if (sortBy === 'title-desc') return itemsCopy.sort((a, b) => b.title.localeCompare(a.title));
+  return itemsCopy.sort(() => Math.random() - 0.5);
+}, [items, sortBy, randomSortKey]);
+
 
   const handleRandomSort = () => {
     setSortBy('random');
