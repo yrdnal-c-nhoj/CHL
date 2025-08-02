@@ -41,15 +41,17 @@ const ClockPage = () => {
   useEffect(() => {
     if (loading) return;
 
+    // If no date or invalid date, redirect to homepage immediately
     if (!date || !isValidDateFormat(date)) {
-      setPageError('Invalid date format. Use YY-MM-DD (e.g., 25-06-01).');
-      return;
+      navigate('/', { replace: true });
+      return; // Prevent further processing
     }
 
     const item = items.find((i) => i?.date === date);
 
-    if (!item || !item.path) {
-      setPageError(`No clock found for date ${date}.`);
+    // If no item found for the date, redirect to homepage
+    if (!item) {
+      navigate('/', { replace: true });
       return;
     }
 
@@ -59,7 +61,7 @@ const ClockPage = () => {
     import(`./pages/${item.path}/Clock.jsx`)
       .then((mod) => setClockComponent(() => mod.default))
       .catch((err) => setPageError(`Failed to load clock for ${date}: ${err.message}`));
-  }, [date, items, loading]);
+  }, [date, items, loading, navigate]);
 
   useEffect(() => {
     const navFadeMs = 300;
@@ -143,6 +145,11 @@ const ClockPage = () => {
         </Link>
       </div>
     );
+  }
+
+  if (!currentItem) {
+    // If no current item (after redirect checks), return null to avoid rendering
+    return null;
   }
 
   return (

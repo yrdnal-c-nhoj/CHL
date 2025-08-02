@@ -19,7 +19,6 @@ const Home = () => {
     localStorage.setItem('sortBy', sortBy);
   }, [sortBy]);
 
-const sortedItems = useMemo(() => {
   const isValidDate = (str) => {
     const parts = str?.split('-');
     if (!parts || parts.length !== 3) return false;
@@ -30,15 +29,15 @@ const sortedItems = useMemo(() => {
     return !isNaN(date.getTime());
   };
 
-  const itemsCopy = [...items].filter(item => item.date && isValidDate(item.date));
+  const sortedItems = useMemo(() => {
+    const itemsCopy = [...items].filter(item => item?.date && isValidDate(item.date));
 
-  if (sortBy === 'date-desc') return itemsCopy.sort((a, b) => b.date.localeCompare(a.date));
-  if (sortBy === 'date-asc') return itemsCopy.sort((a, b) => a.date.localeCompare(b.date));
-  if (sortBy === 'title-asc') return itemsCopy.sort((a, b) => a.title.localeCompare(b.title));
-  if (sortBy === 'title-desc') return itemsCopy.sort((a, b) => b.title.localeCompare(a.title));
-  return itemsCopy.sort(() => Math.random() - 0.5);
-}, [items, sortBy, randomSortKey]);
-
+    if (sortBy === 'date-desc') return itemsCopy.sort((a, b) => b.date.localeCompare(a.date));
+    if (sortBy === 'date-asc') return itemsCopy.sort((a, b) => a.date.localeCompare(b.date));
+    if (sortBy === 'title-asc') return itemsCopy.sort((a, b) => a.title.localeCompare(b.title));
+    if (sortBy === 'title-desc') return itemsCopy.sort((a, b) => b.title.localeCompare(a.title));
+    return itemsCopy.sort(() => Math.random() - 0.5);
+  }, [items, sortBy, randomSortKey]);
 
   const handleRandomSort = () => {
     setSortBy('random');
@@ -54,27 +53,19 @@ const sortedItems = useMemo(() => {
   };
 
   const formatDate = (dateStr) => {
-    if (!dateStr) return 'Invalid Date';
-
-    const parts = dateStr.split('-');
-    if (parts.length !== 3) return 'Invalid Date';
-
-    let [yy, mm, dd] = parts.map(Number);
-    if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return 'Invalid Date';
-
-    const fullYear = 2000 + yy; // handles 2-digit year
+    const parts = dateStr?.split('-');
+    if (!parts || parts.length !== 3) return 'Unknown Date';
+    const [yy, mm, dd] = parts.map(Number);
+    if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return 'Unknown Date';
+    const fullYear = 2000 + yy;
     const date = new Date(fullYear, mm - 1, dd);
-
-    if (isNaN(date.getTime())) {
-      console.warn('Invalid date:', dateStr);
-      return 'Invalid Date';
-    }
-
-    return new Intl.DateTimeFormat('en-US', {
-      month: 'numeric',
-      day: 'numeric',
-      year: '2-digit',
-    }).format(date);
+    return isNaN(date.getTime())
+      ? 'Unknown Date'
+      : new Intl.DateTimeFormat('en-US', {
+          month: 'numeric',
+          day: 'numeric',
+          year: '2-digit',
+        }).format(date);
   };
 
   if (loading) return <div className={styles.loading}>Loading data...</div>;
@@ -88,7 +79,6 @@ const sortedItems = useMemo(() => {
           <div className={styles.sortContainer}>
             <button
               onClick={handleRandomSort}
-              aria-label="Sort randomly"
               className={`${styles.sortButton} ${sortBy === 'random' ? styles.active : ''}`}
               title="Sort Randomly"
             >
@@ -96,7 +86,6 @@ const sortedItems = useMemo(() => {
             </button>
             <button
               onClick={handleTitleSort}
-              aria-label="Sort by title"
               className={`${styles.sortButton} ${styles.titleSortButton} ${
                 sortBy.includes('title') ? styles.active : ''
               }`}
@@ -106,7 +95,6 @@ const sortedItems = useMemo(() => {
             </button>
             <button
               onClick={handleDateSort}
-              aria-label="Sort by date"
               className={`${styles.sortButton} ${styles.dateSortButton} ${
                 sortBy.includes('date') ? styles.active : ''
               }`}
