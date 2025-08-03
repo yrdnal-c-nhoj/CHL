@@ -30,7 +30,7 @@ function Manifesto() {
         {/* Manifesto Sections */}
         <div className="manifestoSection">
           <p><span className="hat">We Take Pictures<br />&nbsp;</span><br />
-          <span className="smallcaps">WE APPROPRIATE BEAUTIFUL</span> images, scavenged from the infinite scroll of the Internet. Pictures distort time. We catch themas they swim by and remix them.
+          <span className="smallcaps">WE APPROPRIATE BEAUTIFUL</span> images, scavenged from the infinite scroll of the Internet. Pictures distort time. We catch them as they swim by and remix them.
           <span className="line">We are not thieves; we are alchemists.<br />&nbsp;</span></p>
 
           <p><span className="hat">We Love Typefaces<br />&nbsp;</span><br />
