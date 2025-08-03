@@ -1,124 +1,99 @@
-import React, { useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import myFontWoff2 from './zod.ttf'; // Place this in the same folder as this component
+
+const romanNumerals = ['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
 
 const AnalogClock = () => {
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    let animationId;
-
-    const update = () => {
-      const now = new Date();
-      const ms = now.getMilliseconds();
-      const sec = now.getSeconds() + ms / 1000;
-      const min = now.getMinutes() + sec / 60;
-      const hr = now.getHours() % 12 + min / 60;
-
-      const secDeg = (sec / 60) * 360;
-      const minDeg = (min / 60) * 360;
-      const hrDeg = (hr / 12) * 360;
-
-      secondRef.current.style.transform = `rotate(${secDeg}deg)`;
-      minuteRef.current.style.transform = `rotate(${minDeg}deg)`;
-      hourRef.current.style.transform = `rotate(${hrDeg}deg)`;
-
-      animationId = requestAnimationFrame(update);
-    };
-
-    update();
-    return () => cancelAnimationFrame(animationId);
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
-  // Styles
-  const outerContainer = {
-    height: '100vh',
-    width: '100vw',
+  const seconds = time.getSeconds();
+  const minutes = time.getMinutes();
+  const hours = time.getHours();
+
+  const secondDeg = (seconds / 60) * 360;
+  const minuteDeg = (minutes / 60) * 360 + (seconds / 60) * 6;
+  const hourDeg = ((hours % 12) / 12) * 360 + (minutes / 60) * 30;
+
+  const containerStyle = {
+    position: 'relative',
+    width: '16rem',
+    height: '16rem',
+    backgroundColor: '#f0f0f0',
+    borderRadius: '50%',
+    boxShadow: '0 0 20px rgba(0,0,0,0.2)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: '#f0f0f0',
   };
 
-  const clockStyle = {
-    position: 'relative',
-    width: '30vw',
-    height: '30vw',
-    borderRadius: '50%',
-    border: '0.5vw solid #000',
-    background: 'radial-gradient(circle, #fff 70%, #ddd)',
-  };
-
-  const handBase = {
+  const centerDotStyle = {
     position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transformOrigin: 'top center',
+    width: '0.5rem',
+    height: '0.5rem',
+    backgroundColor: '#000',
+    borderRadius: '50%',
+    zIndex: 10,
   };
+
+  const numeralStyle = (angle) => ({
+    position: 'absolute',
+    transform: `rotate(${angle}deg) translate(0, -6.5rem) rotate(-${angle}deg)`,
+    fontSize: '1.25rem',
+    fontWeight: 'bold',
+    color: '#000',
+    fontFamily: 'MyCustomFont',
+  });
+
+  const handStyle = (width, height, color, angle) => ({
+    position: 'absolute',
+    width,
+    height,
+    backgroundColor: color,
+    transform: `rotate(${angle}deg) translate(0, -4px)`,
+    transformOrigin: 'bottom center',
+  });
 
   return (
-    <div style={outerContainer}>
-      <div style={clockStyle}>
-        {/* Hour hand */}
-        <div
-          ref={hourRef}
-          style={{
-            ...handBase,
-            height: '7vw',
-            width: '0.6vw',
-            backgroundColor: '#222',
-            marginLeft: '-0.3vw',
-            marginTop: '-7vw',
-            borderRadius: '0.3vw',
-            zIndex: 3,
-          }}
-        />
-        {/* Minute hand */}
-        <div
-          ref={minuteRef}
-          style={{
-            ...handBase,
-            height: '10vw',
-            width: '0.4vw',
-            backgroundColor: '#555',
-            marginLeft: '-0.2vw',
-            marginTop: '-10vw',
-            borderRadius: '0.2vw',
-            zIndex: 2,
-          }}
-        />
-        {/* Second hand */}
-        <div
-          ref={secondRef}
-          style={{
-            ...handBase,
-            height: '12vw',
-            width: '0.2vw',
-            backgroundColor: 'red',
-            marginLeft: '-0.1vw',
-            marginTop: '-12vw',
-            borderRadius: '0.1vw',
-            zIndex: 1,
-          }}
-        />
-        {/* Center pin */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            width: '1vw',
-            height: '1vw',
-            backgroundColor: '#000',
-            borderRadius: '50%',
-            transform: 'translate(-50%, -50%)',
-            zIndex: 5,
-          }}
-        />
-      </div>
+    <div style={containerStyle}>
+      <style>
+        {`
+          @font-face {
+            font-family: 'MyCustomFont';
+            src: url(${myFontWoff2}) format('woff2');
+            font-weight: normal;
+            font-style: normal;
+          }
+        `}
+      </style>
+
+      {/* Center dot */}
+      <div style={centerDotStyle} />
+
+      {/* Roman numerals */}
+      {romanNumerals.map((numeral, index) => {
+        const angle = (index / 12) * 360;
+        return (
+          <div key={numeral} style={numeralStyle(angle)}>
+            {numeral}
+          </div>
+        );
+      })}
+
+      {/* Hour hand */}
+      <div style={handStyle('0.25rem', '4rem', '#000', hourDeg)} />
+
+      {/* Minute hand */}
+      <div style={handStyle('0.15rem', '5rem', '#000', minuteDeg)} />
+
+      {/* Second hand */}
+      <div style={handStyle('0.1rem', '6rem', 'red', secondDeg)} />
     </div>
   );
 };
 
 export default AnalogClock;
-
