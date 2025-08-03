@@ -116,16 +116,16 @@ const AnalogClock = () => {
         to { transform: translate(-50%, -50%) rotate(360deg); }
       }
 
-      .numeral {
+  .numeral {
   position: absolute;
   font-size: 6.5rem;
-  color: #561F03FF;
+  color: #FDCA84FF;
   font-family: 'MyCustomFont', sans-serif;
   text-align: center;
   width: 2rem;
   pointer-events: none;
   z-index: 30;
-  text-shadow: 1px 0  #D4EBEFFF;
+  text-shadow: 1px 1px  #0667E6FF;
 }
 
     `;

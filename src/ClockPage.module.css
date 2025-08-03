@@ -120,10 +120,12 @@
 }
 
 .footerLeft {
+   white-space: nowrap;
   justify-content: flex-start;
 }
 
 .footerRight {
+   white-space: nowrap;
   justify-content: flex-end;
 }
 
