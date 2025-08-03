@@ -1,88 +1,172 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
+import bgImage from './3ce69531311986a8a78f1e093f53df3d-ezgif.com-optiwebp.webp';
 
-const AnalogClock = () => {
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
-
+const Clock = () => {
   useEffect(() => {
-    let animationFrameId;
-
     const updateClock = () => {
       const now = new Date();
-      const ms = now.getMilliseconds();
-      const sec = now.getSeconds() + ms / 1000;
-      const min = now.getMinutes() + sec / 60;
-      const hr = now.getHours() % 12 + min / 60;
+      const seconds = now.getSeconds();
+      const minutes = now.getMinutes();
+      const hours = now.getHours();
 
-      const secondDeg = (sec / 60) * 360;
-      const minuteDeg = (min / 60) * 360;
-      const hourDeg = (hr / 12) * 360;
+      const secondsDeg = (seconds / 60) * 360;
+      const minutesDeg = (minutes / 60) * 360 + (seconds / 60) * 6;
+      const hoursDeg = (hours % 12 / 12) * 360 + (minutes / 60) * 30;
 
-      secondRef.current.style.transform = `rotate(${secondDeg}deg)`;
-      minuteRef.current.style.transform = `rotate(${minuteDeg}deg)`;
-      hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
-
-      animationFrameId = requestAnimationFrame(updateClock);
+      document.querySelector('.second-hand').style.transform = `translateX(-50%) rotate(${secondsDeg}deg)`;
+      document.querySelector('.minute-hand').style.transform = `translateX(-50%) rotate(${minutesDeg}deg)`;
+      document.querySelector('.hour-hand').style.transform = `translateX(-50%) rotate(${hoursDeg}deg)`;
     };
 
     updateClock();
-    return () => cancelAnimationFrame(animationFrameId);
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
   }, []);
 
-  const clockStyle = {
-    position: 'relative',
-    width: '30vw',
-    height: '30vw',
-    borderRadius: '50%',
-    border: '0.5vw solid #000',
-    margin: 'auto',
-    top: '10vh',
-    background: 'radial-gradient(circle, #fff 70%, #ddd)',
-  };
-
-  const handStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transformOrigin: 'bottom center',
-    transform: 'rotate(0deg)',
-  };
-
   return (
-    <div style={clockStyle}>
-      <div
-        ref={hourRef}
-        style={{
-          ...handStyle,
-          height: '25%',
-          width: '1vw',
-          backgroundColor: '#333',
-          zIndex: 3,
-        }}
-      />
-      <div
-        ref={minuteRef}
-        style={{
-          ...handStyle,
-          height: '35%',
-          width: '0.6vw',
-          backgroundColor: '#666',
-          zIndex: 2,
-        }}
-      />
-      <div
-        ref={secondRef}
-        style={{
-          ...handStyle,
-          height: '45%',
-          width: '0.3vw',
-          backgroundColor: 'red',
-          zIndex: 1,
-        }}
-      />
+    <div
+      style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <img src={bgImage} alt="background" className="full-page-image" />
+      <div className="clock">
+        <div id="radar">
+          <div className="clock-face">
+            <div className="hand hour-hand"></div>
+            <div className="hand minute-hand"></div>
+            <div className="hand second-hand"></div>
+            <div className="center"></div>
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+        :root {
+          --g: rgb(14, 238, 14);
+          --bg-lines: rgb(2, 67, 2);
+          --bg-screen: #000100;
+          --line-opacity: 1.0;
+          --radial-opacity: 1.0;
+          --trail-length: 90deg;
+          --blend: color-dodge;
+          --speed: 60s;
+        }
+
+        .full-page-image {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          filter: contrast(200%) brightness(40%);
+          z-index: 1;
+        }
+
+        .clock {
+          position: relative;
+          z-index: 4;
+        }
+
+        #radar {
+          position: relative;
+          width: 99vmin;
+          aspect-ratio: 1;
+          opacity: 90%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #72706a;
+          border-radius: 50%;
+          z-index: 3;
+        }
+
+        #radar::before,
+        #radar::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 95%;
+          aspect-ratio: 1;
+          border-radius: 50%;
+          transition: all 0.3s ease;
+        }
+
+        #radar::before {
+          z-index: -1;
+          background-color: var(--bg-screen);
+          background-image:
+            linear-gradient(to bottom, transparent 50%, hsl(from var(--bg-lines) h s l / var(--line-opacity)), transparent calc(50% + 1px)),
+            linear-gradient(to right, transparent 50%, hsl(from var(--bg-lines) h s l / var(--line-opacity)), transparent calc(50% + 1px)),
+            linear-gradient(45deg, transparent 50%, hsl(from var(--bg-lines) h s l / var(--line-opacity)), transparent calc(50% + 1px)),
+            linear-gradient(-45deg, transparent 50%, hsl(from var(--bg-lines) h s l / var(--line-opacity)), transparent calc(50% + 1px)),
+            repeating-radial-gradient(hsl(from var(--bg-lines) h s l / var(--radial-opacity)) 0, transparent 1px 2.5vmin, hsl(from var(--bg-lines) h s l / var(--radial-opacity)) calc(2.5vmin + 1px));
+        }
+
+        #radar::after {
+          background-image: conic-gradient(#000 var(--trail-length), var(--g) 360deg);
+          mix-blend-mode: var(--blend);
+          animation: rotate var(--speed) linear infinite;
+        }
+
+        @keyframes rotate {
+          to {
+            transform: translate(-50%, -50%) rotate(1turn);
+          }
+        }
+
+        .hand {
+          position: absolute;
+          bottom: 50%;
+          left: 50%;
+          transform-origin: bottom;
+          background-color: #0bf226;
+        }
+
+        .hour-hand {
+          width: 2vh;
+          height: 15vh;
+          border-radius: 3px;
+        }
+
+        .minute-hand {
+          width: 1vh;
+          height: 25vh;
+          border-radius: 2px;
+        }
+
+        .second-hand {
+          width: 0.5vh;
+          height: 30vh;
+          border-radius: 1px;
+          background-color: transparent;
+        }
+
+        .center {
+          position: absolute;
+          width: 1.5vh;
+          height: 1.5vh;
+          background-color: transparent;
+          border-radius: 50%;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 5;
+        }
+      `}</style>
     </div>
   );
 };
 
-export default AnalogClock;
+export default Clock;

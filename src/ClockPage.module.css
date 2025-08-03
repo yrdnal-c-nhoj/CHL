@@ -104,7 +104,7 @@
 }
 
 .footerContent {
-  width: 88%;
+  /* width: 88%; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -133,7 +133,7 @@
   align-items: center;
   justify-content: center;
   white-space: nowrap;
-  overflow: hidden;
+  /* overflow: hidden; */
   text-overflow: ellipsis;
 }
 
