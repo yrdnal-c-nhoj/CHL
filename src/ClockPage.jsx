@@ -193,11 +193,9 @@ const ClockPage = () => {
                 <strong>#</strong> {currentIndex + 1}
               </span>
             </div>
-            &nbsp;&nbsp;&nbsp;&nbsp;
             <div className={styles.footerCenter}>
               <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
             </div>
-            &nbsp;&nbsp;&nbsp;&nbsp;
             <div className={styles.footerRight}>
               <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
             </div>
