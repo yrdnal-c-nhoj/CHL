@@ -126,8 +126,8 @@ const NeonClock = () => {
       >
         <div
           style={{
-            width: 'clamp(30vw, 60vh, 80vh)',
-            height: 'clamp(30vw, 60vh, 80vh)',
+            width: 'clamp(30vw, 50vh, 80vh)',
+            height: 'clamp(30vw, 50vh, 80vh)',
             aspectRatio: '1 / 1',
             position: 'relative',
             fontFamily: 'Orb, sans-serif',
