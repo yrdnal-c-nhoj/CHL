@@ -126,8 +126,8 @@ const NeonClock = () => {
       >
         <div
           style={{
-            width: '60vh', // Smaller size
-            height: '60vh',
+            width: 'clamp(40vw, 60vh, 80vh)',
+            height: 'clamp(40vw, 60vh, 80vh)',
             aspectRatio: '1 / 1',
             position: 'relative',
             fontFamily: 'Orb, sans-serif',
@@ -171,10 +171,7 @@ const NeonClock = () => {
                 transformOrigin: 'bottom center',
                 transform: 'translateX(-50%) rotate(0deg)',
                 borderRadius: '1rem',
-
                 background: '#32a6c3',
-                // boxShadow:
-                //   '0 0 1rem #32a6c3, 0 0 3rem #32a6c3, 0 0 5rem #32a6c3, inset 0 0 0.3rem #000',
                 width: '0.6rem',
                 height: '6rem',
                 zIndex: 4,
@@ -190,8 +187,6 @@ const NeonClock = () => {
                 transform: 'translateX(-50%) rotate(0deg)',
                 borderRadius: '1rem',
                 background: '#00ff90',
-                // boxShadow:
-                //   '0 0 1rem #00ff90, 0 0 3rem #00ff90, 0 0 5rem #00ff90, inset 0 0 0.3rem #000',
                 width: '0.4rem',
                 height: '8rem',
                 zIndex: 3,
@@ -208,9 +203,7 @@ const NeonClock = () => {
                 willChange: 'transform',
                 backfaceVisibility: 'hidden',
                 borderRadius: '1rem',
-    background: '#FD02C3FF',
-                // boxShadow:
-                //   '0 0 1rem #ff0040, 0 0 3rem #ff0040, 0 0 5rem #ff0040, inset 0 0 0.3rem #000',
+                background: '#FD02C3FF',
                 width: '0.3rem',
                 height: '9rem',
                 zIndex: 2,
