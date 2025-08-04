@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import stars from "./stars.webp";
 import backgroundGif from "./437cb739d14912acd84d65ee853b9067.gif";
 import overlay1 from "./OzJtZ3Z.gif";
-import overlay2 from "./2556744_d34a4.gif";
+import overlay2 from "./2556744_d34a4.webp";
 import pixelGif from "./sdswrf.gif";
 
 const digits = {
