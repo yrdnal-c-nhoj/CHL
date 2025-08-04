@@ -22,46 +22,69 @@ const MobyDickClock = () => {
       document.head.appendChild(style);
     }
 
-    const getRandomOutsideCenter = (screenSize, padding, centerSize) => {
-      const outerMin = padding;
-      const outerMax = screenSize - padding;
-      const centerMin = (screenSize - centerSize) / 2;
-      const centerMax = (screenSize + centerSize) / 2;
+    const centerAvoidSize = { width: 300, height: 200 }; // px area to avoid center
 
-      let value;
+    // Returns a random coordinate avoiding center rectangle
+    const getRandomPosAvoidCenter = (max, avoidStart, avoidEnd) => {
+      let pos;
       do {
-        value = outerMin + Math.random() * (outerMax - outerMin);
-      } while (value > centerMin && value < centerMax);
-      return value;
+        pos = Math.random() * max;
+      } while (pos > avoidStart && pos < avoidEnd);
+      return pos;
     };
 
-    const animateClock = () => {
+    const moveClock = () => {
       const clock = clockRef.current;
       if (!clock) return;
 
+      // Update time
       const now = new Date();
-      const timeString = now.toLocaleTimeString('en-US', {
+      clock.textContent = now.toLocaleTimeString('en-US', {
         hour12: false,
         hour: 'numeric',
         minute: 'numeric',
       });
-      clock.textContent = timeString;
 
-      const randomX = getRandomOutsideCenter(window.innerWidth, 60, 300);
-      const randomY = getRandomOutsideCenter(window.innerHeight, 40, 200);
-      const randomSize = Math.random() * 8 + 2; // rem
-      const randomOpacity = Math.random();
-      const willHide = Math.random() < 0.3;
+      // Calculate random X and Y avoiding center area
+      const x = getRandomPosAvoidCenter(
+        window.innerWidth,
+        (window.innerWidth - centerAvoidSize.width) / 2,
+        (window.innerWidth + centerAvoidSize.width) / 2
+      );
+      const y = getRandomPosAvoidCenter(
+        window.innerHeight,
+        (window.innerHeight - centerAvoidSize.height) / 2,
+        (window.innerHeight + centerAvoidSize.height) / 2
+      );
 
-      clock.style.fontSize = `${randomSize}rem`;
-      clock.style.transform = `translate(${randomX}px, ${randomY}px)`;
-      clock.style.opacity = willHide ? 0 : Math.max(randomOpacity, 0.5);
+      // Random font size and opacity
+      const fontSize = 2 + Math.random() * 6; // rem
+      const opacity = Math.random() * 0.7 + 0.3;
 
-      const nextDelay = Math.random() * 2000 + 1000;
-      setTimeout(animateClock, nextDelay);
+      // Apply styles with smooth transition
+      clock.style.transition = 'transform 2s ease-in-out, font-size 2s ease-in-out, opacity 2s ease-in-out';
+      clock.style.transform = `translate(${x}px, ${y}px)`;
+      clock.style.fontSize = `${fontSize}rem`;
+      clock.style.opacity = opacity;
+
+      // Next move after 2-4 seconds randomly
+      const nextTime = 2000 + Math.random() * 2000;
+      setTimeout(moveClock, nextTime);
     };
 
-    animateClock();
+    // Initial position: place clock off-screen so first move slides it in
+    const clock = clockRef.current;
+    if (clock) {
+      clock.style.position = 'absolute';
+      clock.style.top = '0';
+      clock.style.left = '0';
+      clock.style.opacity = '0';
+      clock.style.transform = 'translate(-500px, -500px)';
+    }
+
+    // Start animation loop
+    moveClock();
+
     return () => clearTimeout();
   }, []);
 
@@ -74,11 +97,9 @@ const MobyDickClock = () => {
         width: '100vw',
         overflow: 'hidden',
         backgroundColor: '#727B7BFF',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
         filter: 'brightness(300%) contrast(40%)',
         position: 'relative',
+        userSelect: 'none',
       }}
     >
       <div
@@ -88,9 +109,9 @@ const MobyDickClock = () => {
           color: '#a1b4b4',
           textShadow: '#ced4d4 0.1rem 0.1rem 0.2rem, #000404 -0.1rem -0.1rem 0.9rem',
           position: 'absolute',
+          whiteSpace: 'nowrap',
+          pointerEvents: 'none',
           opacity: 0,
-          transition: 'opacity 1s ease-in-out, transform 0.5s ease-in-out, font-size 0.5s ease-in-out',
-          animation: 'float 4s ease-in-out infinite',
         }}
       />
       <img
