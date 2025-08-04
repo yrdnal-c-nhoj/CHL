@@ -125,8 +125,8 @@ const RandomColorClock = () => {
         ref={clockRef}
         style={{
           position: 'relative',
-          width: '50vmin',
-          height: '50vmin',
+          width: '70vmin',
+          height: '70vmin',
         }}
       >
         {Array.from({ length: 12 }).map((_, i) => (
