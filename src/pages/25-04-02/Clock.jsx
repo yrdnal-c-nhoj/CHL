@@ -6,39 +6,63 @@ const MobyDickClock = () => {
   const clockRef = useRef(null);
 
   useEffect(() => {
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @font-face {
-        font-family: 'Moby';
-        src: url(${mobyFont}) format('truetype');
-      }
-    `;
-    document.head.appendChild(style);
+    if (!document.getElementById('moby-font')) {
+      const style = document.createElement('style');
+      style.id = 'moby-font';
+      style.innerHTML = `
+        @font-face {
+          font-family: 'Moby';
+          src: url(${mobyFont}) format('truetype');
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-0.5rem); }
+        }
+      `;
+      document.head.appendChild(style);
+    }
 
-    const updateClock = () => {
+    const getRandomOutsideCenter = (screenSize, padding, centerSize) => {
+      const outerMin = padding;
+      const outerMax = screenSize - padding;
+      const centerMin = (screenSize - centerSize) / 2;
+      const centerMax = (screenSize + centerSize) / 2;
+
+      let value;
+      do {
+        value = outerMin + Math.random() * (outerMax - outerMin);
+      } while (value > centerMin && value < centerMax);
+      return value;
+    };
+
+    const animateClock = () => {
       const clock = clockRef.current;
+      if (!clock) return;
+
       const now = new Date();
       const timeString = now.toLocaleTimeString('en-US', {
-        hour12: false, // 24-hour format
-        hour: 'numeric', // No leading zeros
-        minute: 'numeric', // No leading zeros
+        hour12: false,
+        hour: 'numeric',
+        minute: 'numeric',
       });
       clock.textContent = timeString;
 
-      const randomX = Math.random() * (window.innerWidth - 100);
-      const randomY = Math.random() * (window.innerHeight - 50);
+      const randomX = getRandomOutsideCenter(window.innerWidth, 60, 300);
+      const randomY = getRandomOutsideCenter(window.innerHeight, 40, 200);
       const randomSize = Math.random() * 8 + 2; // rem
       const randomOpacity = Math.random();
+      const willHide = Math.random() < 0.3;
 
-      clock.style.transform = `translate(${randomX}px, ${randomY}px) scale(${randomSize / 5})`;
-      clock.style.opacity = randomOpacity;
       clock.style.fontSize = `${randomSize}rem`;
+      clock.style.transform = `translate(${randomX}px, ${randomY}px)`;
+      clock.style.opacity = willHide ? 0 : Math.max(randomOpacity, 0.5);
+
+      const nextDelay = Math.random() * 2000 + 1000;
+      setTimeout(animateClock, nextDelay);
     };
 
-    const interval = setInterval(updateClock, 2000);
-    updateClock();
-
-    return () => clearInterval(interval);
+    animateClock();
+    return () => clearTimeout();
   }, []);
 
   return (
@@ -65,7 +89,8 @@ const MobyDickClock = () => {
           textShadow: '#ced4d4 0.1rem 0.1rem 0.2rem, #000404 -0.1rem -0.1rem 0.9rem',
           position: 'absolute',
           opacity: 0,
-          transition: 'opacity 1s ease-in-out, transform 1s ease-in-out',
+          transition: 'opacity 1s ease-in-out, transform 0.5s ease-in-out, font-size 0.5s ease-in-out',
+          animation: 'float 4s ease-in-out infinite',
         }}
       />
       <img
@@ -84,7 +109,6 @@ const MobyDickClock = () => {
           pointerEvents: 'none',
         }}
       />
-   
     </div>
   );
 };
