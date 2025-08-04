@@ -126,8 +126,8 @@ const NeonClock = () => {
       >
         <div
           style={{
-            width: 'clamp(40vw, 60vh, 80vh)',
-            height: 'clamp(40vw, 60vh, 80vh)',
+            width: 'clamp(30vw, 60vh, 80vh)',
+            height: 'clamp(30vw, 60vh, 80vh)',
             aspectRatio: '1 / 1',
             position: 'relative',
             fontFamily: 'Orb, sans-serif',
@@ -173,7 +173,7 @@ const NeonClock = () => {
                 borderRadius: '1rem',
                 background: '#32a6c3',
                 width: '0.6rem',
-                height: '6rem',
+                height: '5rem',
                 zIndex: 4,
               }}
             />
@@ -188,7 +188,7 @@ const NeonClock = () => {
                 borderRadius: '1rem',
                 background: '#00ff90',
                 width: '0.4rem',
-                height: '8rem',
+                height: '7rem',
                 zIndex: 3,
               }}
             />
@@ -205,7 +205,7 @@ const NeonClock = () => {
                 borderRadius: '1rem',
                 background: '#FD02C3FF',
                 width: '0.3rem',
-                height: '9rem',
+                height: '8.5rem',
                 zIndex: 2,
               }}
             />
