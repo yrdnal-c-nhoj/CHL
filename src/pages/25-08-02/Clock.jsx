@@ -62,8 +62,8 @@ const DigitalClock = () => {
       {/* Centered and Resized Background for bg1 with filters */}
       <div
         style={fullScreenBackgroundStyle(bg1, 1, 1, {
-          width: '90vw',
-          height: '90vh',
+          width: '100%',
+          height: '100%',
           position: 'absolute',
           top: '50%',
           left: '50%',
@@ -78,15 +78,15 @@ const DigitalClock = () => {
           position: 'absolute',
           top: '50%',
           left: '50%',
-          width: '90vw',
-          height: '90vh',
+             width: '100%',
+          height: '100%',
           backgroundImage: `url(${bg3})`,
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           transform: 'translate(-50%, -50%) scaleX(-1) scaleY(-1)',
           filter: bgFilter,
-          opacity: 1,
+          opacity: 0.8,
           zIndex: 0,
           pointerEvents: 'none',
         }}
