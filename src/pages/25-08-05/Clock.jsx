@@ -90,9 +90,9 @@ const ClockGrid = () => {
         ctx.save();
         ctx.translate(x, y);
         const infiniteLength = 10000;
-        drawHand(ctx, hourAngle, infiniteLength, width, '#F706DFFF');
-        drawHand(ctx, minuteAngle, infiniteLength, width, '#FA7F04FF');
-        drawHand(ctx, secondAngle, infiniteLength, width * 0.7, '#A60505FF');
+        drawHand(ctx, hourAngle, infiniteLength, width, '#F170E5FF');
+        drawHand(ctx, minuteAngle, infiniteLength, width, '#DA6F05FF');
+        drawHand(ctx, secondAngle, infiniteLength, width * 0.7, '#F45151FF');
         ctx.restore();
       });
 
