@@ -4,6 +4,8 @@ import klax from './klax.png';
 import klaxon from './klaxon.png';
 import klaHand from './kla.png';
 import klaxFont from './klax.ttf';
+import overlayImage from './klax.webp';
+
 
 const romanNumerals = ["xii", "i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "xi"];
 
@@ -106,7 +108,7 @@ const KlaxonClock = () => {
     <div style={styles.body}>
       <div style={styles.bgImage}></div>
 
- 
+ <div style={styles.overlay}></div>
 
       <div style={styles.clockWrapper}>
         <div style={styles.clock} id="clock">
@@ -133,7 +135,7 @@ const KlaxonClock = () => {
 
         @keyframes flash {
           from {
-            color: rgb(246, 14, 37);
+            color: rgb(246, 114, 37);
           }
           to {
             color: rgb(247, 46, 6);
@@ -174,45 +176,23 @@ const styles = {
     zIndex: 1,
     pointerEvents: 'none',
   },
-  titleContainer: {
-    position: 'absolute',
-    top: '1.5vh',
-    left: '3vw',
-    zIndex: 10,
-    color: '#fff',
-    fontSize: '2rem',
-    textShadow: '0 0 1rem #f00',
-  },
-  chltitle: {
-    fontWeight: 'bold',
-  },
-  bttitle: {
-    fontSize: '1.4rem',
-    fontStyle: 'italic',
-  },
-  dateContainer: {
-    position: 'absolute',
-    top: '1.5vh',
-    right: '3vw',
-    zIndex: 10,
-    color: '#fff',
-    display: 'flex',
-    gap: '1rem',
-    fontSize: '1.2rem',
-  },
-  dateLeft: {
-    color: '#fdd',
-    textDecoration: 'none',
-  },
-  dateRight: {
-    color: '#fdd',
-    textDecoration: 'none',
-  },
-  clockname: {
-    color: '#fff',
-    fontWeight: 'bold',
-    textDecoration: 'none',
-  },
+  overlay: {
+  backgroundImage: `url(${overlayImage})`,
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  width: '100vw',
+  height: '100vh',
+  backgroundSize: '190%', // Scale up the image
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  zIndex: 2,
+  pointerEvents: 'none',
+  opacity: 0.7,
+  mixBlendMode: 'screen',
+},
+
+
   clockWrapper: {
     position: 'relative',
     display: 'flex',
