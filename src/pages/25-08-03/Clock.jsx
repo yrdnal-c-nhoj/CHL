@@ -180,7 +180,7 @@ const OrnateClock = () => {
         0 0 8px #ffd700,
         0 0 15px #ffec85,
         0 0 20px #b8860b,
-        1px 1px 3px #222220CC
+        1px 1px 1px #222220CC
       `,
       textAlign: 'center',
       width: '20%',
@@ -197,7 +197,7 @@ const OrnateClock = () => {
     const positions = {
       XII: -90,
       III: 0,
-      IV: 90,
+      VI: 90,
       IX: 180,
     };
 
