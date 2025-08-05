@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import bgImage from './sta.gif';
 import overlay1 from './cur.webp';
 import overlay2 from './pro.gif';
@@ -43,7 +43,7 @@ const OrnateClock = () => {
       .catch((error) => console.error('Font loading failed:', error));
   }, []);
 
-  const styles = {
+  const styles = useMemo(() => ({
     background: {
       position: 'absolute',
       bottom: 0,
@@ -60,17 +60,15 @@ const OrnateClock = () => {
     },
     clockContainer: {
       position: 'absolute',
-      bottom: '21vmin',
+      top: '60%',
       left: '50%',
-      transform: 'translateX(-50%)',
+      transform: 'translate(-50%, -50%)',
       width: '39vmin',
       height: '39vmin',
       borderRadius: '50%',
-      // border: '0.8vmin solid',
       borderImageSlice: 1,
       borderWidth: '0.8vmin',
-      borderImageSource:
-        'linear-gradient(135deg, #fff4b1, #ffd700, #b8860b, #f5d742)',
+      borderImageSource: goldGradient,
       boxShadow: `
         inset 0 0 10px 2px #fff9c2,
         inset 0 0 15px 4px #f7e063,
@@ -83,7 +81,6 @@ const OrnateClock = () => {
       `,
       backgroundBlendMode: 'overlay',
       zIndex: 2,
-      // no overflow hidden to avoid clipping
     },
     clockFace: {
       position: 'absolute',
@@ -191,7 +188,7 @@ const OrnateClock = () => {
       justifyContent: 'center',
       userSelect: 'none',
     },
-  };
+  }), []);
 
   const renderClockNumbers = () => {
     const positions = {
