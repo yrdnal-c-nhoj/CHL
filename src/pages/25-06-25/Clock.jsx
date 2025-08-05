@@ -46,7 +46,7 @@ const BoneClock = () => {
         span.style.left = `${x}%`;
         span.style.top = `${y}%`;
         span.style.transform = 'translate(-50%, -50%)';
-        span.style.fontSize = '5.5rem';
+        span.style.fontSize = '3.5rem';
         span.style.fontFamily = 'bone, sans-serif';
         span.style.color = 'rgb(223, 213, 187)';
         span.style.textShadow = '#1b1b1a 1px 1px 0px, #141412 -1px -1px 0px';
@@ -85,8 +85,8 @@ const BoneClock = () => {
 
       <div style={{
         position: 'relative',
-        width: '28rem',
-        height: '28rem',
+        width: '15rem',
+        height: '15rem',
         borderRadius: '50%',
         zIndex: 5,
       }}>
@@ -97,7 +97,7 @@ const BoneClock = () => {
             left: '50%',
             transformOrigin: 'bottom center',
             transform: 'translateX(-50%) rotate(0deg)',
-            height: '5rem',
+            height: '4rem',
             zIndex: 3,
             pointerEvents: 'none',
           }} />
@@ -109,7 +109,7 @@ const BoneClock = () => {
             left: '50%',
             transformOrigin: 'bottom center',
             transform: 'translateX(-50%) rotate(0deg)',
-            height: '10rem',
+            height: '7rem',
             zIndex: 2,
             pointerEvents: 'none',
           }} />
@@ -121,7 +121,7 @@ const BoneClock = () => {
             left: '50%',
             transformOrigin: 'bottom center',
             transform: 'translateX(-50%) rotate(0deg)',
-            height: '14rem',
+            height: '8rem',
             filter: 'brightness(0.8) contrast(1.3)',
             zIndex: 1,
             pointerEvents: 'none',
