@@ -43,7 +43,7 @@ const FibonacciClock = () => {
     { angle: 270, value: '21' },
     { angle: 300, value: '34' },
     { angle: 330, value: '55' },
-    { angle: 0, value: '84' },
+    { angle: 0, value: '89' },
   ];
 
   return (
@@ -79,8 +79,8 @@ const FibonacciClock = () => {
         }}
       />
       <div style={{
-        width: '70vh',
-        height: '70vh',
+        width: '60vh',
+        height: '60vh',
         borderRadius: '50%',
         position: 'relative',
         zIndex: 3,
