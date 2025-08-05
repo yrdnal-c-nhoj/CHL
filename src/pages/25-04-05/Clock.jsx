@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import hourHand from "./images/gr4.webp";
+import hourHand from "./images/gr4.gif";
 import minuteHand from "./images/gr9.png";
-import secondHand from "./images/gr5.png";
-import overlayImg from "./images/gfccc.png";
+import secondHand from "./images/gr5.gif";
+import overlayImg from "./images/gfccc.gif";
 
 const TallClock = () => {
   useEffect(() => {
