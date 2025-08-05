@@ -3,8 +3,8 @@ import React, { useEffect, useRef } from 'react';
 const ClockGrid = () => {
   const canvasRef = useRef(null);
   const clockSize = 70;
-  const numRows = 12;
-  const numCols = 20;
+  const numRows = 18;
+  const numCols = 16;
 
   const drawClock = (ctx, x, y, radius, time) => {
     ctx.save();
