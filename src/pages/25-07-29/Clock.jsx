@@ -149,6 +149,7 @@ const SlotMachineClock = () => {
       alignItems: 'center',
       justifyContent: 'center',
       height: '100vh',
+      width: '100vw',
       margin: 0,
       backgroundColor: '#080808'
     }}>
