@@ -18,11 +18,24 @@ import num12Img from "./gergfeds.gif";
 
 import bgImage from "./anim.webp";
 
-// We will inject @font-face dynamically using a style tag
+// Inject font-face and background rotation styles
 const fontFaceStyle = `
 @font-face {
   font-family: 'anim';
   src: url(${animFont}) format('truetype');
+}
+
+@keyframes rotateCCW {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+.bg-rotate {
+  animation: rotateCCW 120s linear infinite;
 }
 `;
 
@@ -56,10 +69,6 @@ const images = [
   { img: num12Img, className: "num12", style: { left: "83%", top: "50%" } },
 ];
 
-// Individual sizes per number (converted from vmin to rem approx assuming 1vmin ~ 1vh)
-// We will keep using vmin but as vh/vw/rem per your request — vmin is okay since vh and vw are in use, but let's replace vmin with vh (close enough)
-// If you want rem, you can scale accordingly — here I keep vmin for shape consistency, replaced with vh for example
-// To keep proportions let's use vh units here as a substitute for vmin
 const numberSizes = {
   num1: { width: "19.5vh", height: "19.5vh" },
   num2: { width: "19.5vh", height: "17.5vh" },
@@ -78,7 +87,6 @@ const numberSizes = {
 const textRotationDegrees = Array.from({ length: 12 }, (_, i) => i * 30);
 
 const AnalogClock = () => {
-  // State for time for smooth animation
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -94,17 +102,14 @@ const AnalogClock = () => {
     return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
-  // Compute angles for hands
   const ms = time.getMilliseconds();
   const s = time.getSeconds() + ms / 1000;
   const m = time.getMinutes() + s / 60;
   const h = time.getHours() + m / 60;
 
-  // Styles
   const globalStyle = {
     margin: 0,
     padding: 0,
-    // background: "#828f82",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -154,8 +159,8 @@ const AnalogClock = () => {
 
   const secondHandStyle = {
     ...handCommonStyle,
-    width: "0.vh",
-    height: "225vh",
+    width: "0.3vh",
+    height: "45vh",
     background: "rgb(248, 122, 4)",
     zIndex: 7,
     opacity: 1,
@@ -169,7 +174,7 @@ const AnalogClock = () => {
     width: "2vh",
     height: "45vh",
     color: "#040404",
-    textShadow: " #f8f7f7 -1px 0px",
+    textShadow: "#f8f7f7 -1px 0px",
     fontSize: "0.7rem",
     textAlign: "left",
     textTransform: "uppercase",
@@ -185,14 +190,12 @@ const AnalogClock = () => {
     whiteSpace: "nowrap",
   };
 
-
   const bgImageStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
     width: "100%",
     height: "100%",
-    transform: "translate(-50%, -50%)",
     zIndex: 1,
     opacity: 0.1,
     transformOrigin: "center center",
@@ -200,14 +203,10 @@ const AnalogClock = () => {
 
   return (
     <>
-      {/* Inject font-face styles */}
       <style>{fontFaceStyle}</style>
 
       <div style={globalStyle}>
-       
-
-
-        <img src={bgImage} alt="Background" style={bgImageStyle} />
+        <img src={bgImage} alt="Background" className="bg-rotate" style={bgImageStyle} />
 
         <div style={clockStyle}>
           {images.map(({ img, className, style }, i) => {
@@ -234,7 +233,6 @@ const AnalogClock = () => {
             </div>
           ))}
 
-          {/* Clock hands */}
           <div
             style={{
               ...hourHandStyle,
@@ -254,7 +252,6 @@ const AnalogClock = () => {
             }}
           />
 
-          {/* Optional center dot */}
           <div
             style={{
               position: "absolute",
