@@ -79,8 +79,8 @@ const FibonacciClock = () => {
         }}
       />
       <div style={{
-        width: '80vh',
-        height: '80vh',
+        width: '70vh',
+        height: '70vh',
         borderRadius: '50%',
         position: 'relative',
         zIndex: 3,
