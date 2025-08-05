@@ -48,10 +48,10 @@ const OrnateClock = () => {
       position: 'absolute',
       bottom: 0,
       left: 0,
-      width: '100vw',      // full viewport width
-      height: '100vh',     // full viewport height
+      width: '100vw',
+      height: '100vh',
       backgroundImage: `url(${bgImage})`,
-      backgroundSize: '100% 100%', // stretch & distort fully
+      backgroundSize: '100% 100%',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center center',
       pointerEvents: 'none',
@@ -60,21 +60,30 @@ const OrnateClock = () => {
     },
     clockContainer: {
       position: 'absolute',
-      bottom: '10vmin',
+      bottom: '15vmin',
       left: '50%',
       transform: 'translateX(-50%)',
-      width: '35vmin',
-      height: '35vmin',
+      width: '39vmin',
+      height: '39vmin',
       borderRadius: '50%',
-      border: '2vmin solid gold',
-      boxShadow: '0 0 3vmin gold, 0 0 2vmin #d4af37 inset',
+      // border: '0.8vmin solid',
+      borderImageSlice: 1,
+      borderWidth: '0.8vmin',
+      borderImageSource:
+        'linear-gradient(135deg, #fff4b1, #ffd700, #b8860b, #f5d742)',
+      boxShadow: `
+        inset 0 0 10px 2px #fff9c2,
+        inset 0 0 15px 4px #f7e063,
+        0 0 12px 3px #ffdd55aa,
+        0 0 6px 1px #b8860b88
+      `,
       background: `
         radial-gradient(circle at 30% 30%, #fff8dc, #d4af37 70%),
         linear-gradient(135deg, #ffd700 25%, #b8860b 75%)
       `,
       backgroundBlendMode: 'overlay',
-      overflow: 'hidden',
       zIndex: 2,
+      // no overflow hidden to avoid clipping
     },
     clockFace: {
       position: 'absolute',
@@ -91,10 +100,10 @@ const OrnateClock = () => {
       position: 'absolute',
       bottom: 0,
       left: 0,
-      width: '100vw',      // full viewport width
-      height: '100vh',     // full viewport height
+      width: '100vw',
+      height: '100vh',
       backgroundImage: `url(${overlay1})`,
-      backgroundSize: '100% 100%', // stretch & distort fully
+      backgroundSize: '100% 100%',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center center',
       pointerEvents: 'none',
@@ -105,10 +114,10 @@ const OrnateClock = () => {
       position: 'absolute',
       top: 0,
       left: 0,
-      width: '100vw',      // full viewport width
-      height: '100vh',     // full viewport height
+      width: '100vw',
+      height: '100vh',
       backgroundImage: `url(${overlay2})`,
-      backgroundSize: '100% 100%', // stretch & distort fully
+      backgroundSize: '100% 100%',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center center',
       pointerEvents: 'none',
@@ -128,8 +137,8 @@ const OrnateClock = () => {
       background: goldGradient,
       borderRadius: '0.2vmin',
       boxShadow: `
-        inset 0 0 4px #fff8a6,  /* subtle highlight */
-        0 0 5px #b8860b        /* glow for depth */
+        inset 0 0 4px #fff8a6,
+        0 0 5px #b8860b
       `,
       zIndex: 10,
     },
@@ -158,16 +167,20 @@ const OrnateClock = () => {
     number: {
       position: 'absolute',
       fontFamily: 'ClockFont, sans-serif',
-      fontSize: '10vmin', // much bigger
-      color: '#b8860b', // base gold color (dark goldenrod)
-      background: 'linear-gradient(45deg, #ffd700, #fff8a6, #b8860b, #f5d742)', // gold gradient
+      fontSize: '10vmin',
+      color: '#b8860b',
+      background: `
+        linear-gradient(45deg, 
+          #fff9b1, #ffd700, #fff8a6, #b8860b, #f5d742
+        )
+      `,
       WebkitBackgroundClip: 'text',
       WebkitTextFillColor: 'transparent',
       textShadow: `
-        0 0 5px #ffd700,    /* bright outer glow */
-        0 0 10px #ffec85,   /* softer glow */
-        0 0 20px #b8860b,   /* deeper gold shadow */
-        1px 1px 2px #222220FF /* subtle dark shadow for depth */
+        0 0 8px #ffd700,
+        0 0 15px #ffec85,
+        0 0 20px #b8860b,
+        1px 1px 3px #222220CC
       `,
       textAlign: 'center',
       width: '20%',
@@ -176,27 +189,26 @@ const OrnateClock = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      userSelect: 'none',
     },
   };
 
   const renderClockNumbers = () => {
     const positions = {
-      12: -90,
-      3: 0,
-      0: 90,
-      9: 180,
+      XII: -90,
+      III: 0,
+      IV: 90,
+      IX: 180,
     };
 
-    const radius = 35; // smaller radius to bring numbers closer to center
+    const radius = 30;
 
     return Object.entries(positions).map(([num, deg]) => {
       const angle = (deg * Math.PI) / 180;
       let x = 50 + radius * Math.cos(angle);
       let y = 50 + radius * Math.sin(angle);
 
-      if (num === '6') {
-        y -= 5; // lift the 6 upward more
-      }
+      y -= 3; // move numbers slightly upward
 
       return (
         <div
