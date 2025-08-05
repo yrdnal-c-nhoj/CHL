@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import bg1 from "./co.png";
 import bg2 from "./cos.png";
 import wheFont from "./whe.ttf";
-import { color } from "three/tsl";
 
 const CosmicWheelClock = () => {
   useEffect(() => {
