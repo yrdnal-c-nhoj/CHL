@@ -60,7 +60,7 @@ const OrnateClock = () => {
     },
     clockContainer: {
       position: 'absolute',
-      bottom: '15vmin',
+      bottom: '21vmin',
       left: '50%',
       transform: 'translateX(-50%)',
       width: '39vmin',
