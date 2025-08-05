@@ -45,6 +45,7 @@ const styles = {
   body: {
     margin: 0,
     height: '100vh',
+    width: '100vw',
     background: '#313131FF',
     display: 'flex',
     justifyContent: 'center',
