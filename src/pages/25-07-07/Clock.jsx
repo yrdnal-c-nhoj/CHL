@@ -44,7 +44,7 @@ const Clock = () => {
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    background: '#378a69',
+    background: '#7E8280FF',
     fontFamily: 'suv, sans-serif',
     padding: '0vw',
     boxSizing: 'border-box',
@@ -53,7 +53,7 @@ const Clock = () => {
 
   const clockStyle = {
     position: 'fixed',
-    right: '230px',
+    left: '200px',
     top: '51vh',
     transform: 'translateY(-50%)',
     display: 'flex',
@@ -92,20 +92,22 @@ const Clock = () => {
     letterSpacing: '-0.1rem',
   };
 
-  const bgImageStyle = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100vw',
-    height: '100vh',
-    backgroundImage: `url(${suvImage})`,
-    backgroundPosition: 'left',
-    backgroundRepeat: 'no-repeat',
-    filter: 'brightness(160%) saturate(190%) hue-rotate(130deg)',
-    zIndex: 2,
-    pointerEvents: 'none',
-    transform: 'scaleX(-1)',
-  };
+ const bgImageStyle = {
+  position: 'fixed',
+  bottom: 0,
+  left: 0,
+  width: '100vw',
+  height: '100vh',
+  backgroundImage: `url(${suvImage})`,
+  backgroundPosition: 'right bottom',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'auto 100vh', // ensures full vertical fit
+  filter: 'brightness(160%) saturate(190%) hue-rotate(30deg)',
+  zIndex: 2,
+  pointerEvents: 'none',
+  transform: 'scaleX(-1)',
+};
+
 
   const bgImage2Style = {
     position: 'fixed',
@@ -117,7 +119,7 @@ const Clock = () => {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    filter: 'brightness(200%) saturate(190%)',
+    filter: 'brightness(100%) saturate(120%)',
     zIndex: 1,
   };
 
