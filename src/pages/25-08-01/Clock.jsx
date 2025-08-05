@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import myFontWoff2 from './zod.ttf';
-import bg1 from './stars.webp';
-import bg2 from './sta.gif';
+import bg1 from './sta.gif';
+import bg2 from './stars.webp';
 import htmlLogo from './zod.gif';
 
 const romanNumerals = ['l', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'];
