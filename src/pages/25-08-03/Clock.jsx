@@ -183,7 +183,7 @@ const OrnateClock = () => {
     const positions = {
       12: -90,
       3: 0,
-      6: 90,
+      0: 90,
       9: 180,
     };
 
