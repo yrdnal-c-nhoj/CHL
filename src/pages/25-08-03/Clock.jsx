@@ -48,12 +48,12 @@ const OrnateClock = () => {
       position: 'absolute',
       bottom: 0,
       left: 0,
-      width: '120%',
-      height: '90vh',
+      width: '100vw',      // full viewport width
+      height: '100vh',     // full viewport height
       backgroundImage: `url(${bgImage})`,
-      backgroundSize: 'contain',
+      backgroundSize: '100% 100%', // stretch & distort fully
       backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'bottom center',
+      backgroundPosition: 'center center',
       pointerEvents: 'none',
       zIndex: 2,
       filter: 'brightness(1.2)',
@@ -90,14 +90,13 @@ const OrnateClock = () => {
     overlay1: {
       position: 'absolute',
       bottom: 0,
-      left: '50%',
-      transform: 'translateX(-50%)',
-      width: '75%',
-      height: '100vh',
+      left: 0,
+      width: '100vw',      // full viewport width
+      height: '100vh',     // full viewport height
       backgroundImage: `url(${overlay1})`,
-      backgroundSize: '100% 70%',
+      backgroundSize: '100% 100%', // stretch & distort fully
       backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'bottom center',
+      backgroundPosition: 'center center',
       pointerEvents: 'none',
       zIndex: 20,
       filter: 'brightness(0.8)',
@@ -106,11 +105,12 @@ const OrnateClock = () => {
       position: 'absolute',
       top: 0,
       left: 0,
-      width: '100%',
-      height: '100%',
+      width: '100vw',      // full viewport width
+      height: '100vh',     // full viewport height
       backgroundImage: `url(${overlay2})`,
-      backgroundSize: '100% 100%',
+      backgroundSize: '100% 100%', // stretch & distort fully
       backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center center',
       pointerEvents: 'none',
       zIndex: 21,
       filter: 'brightness(1.0)',
