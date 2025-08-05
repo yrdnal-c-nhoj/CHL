@@ -43,7 +43,7 @@ const FibonacciClock = () => {
     { angle: 270, value: '21' },
     { angle: 300, value: '34' },
     { angle: 330, value: '55' },
-    { angle: 0, value: '89' },
+    { angle: 0, value: '84' },
   ];
 
   return (
