@@ -138,7 +138,7 @@ const KlaxonClock = () => {
             color: rgb(246, 114, 37);
           }
           to {
-            color: rgb(247, 46, 6);
+            color: rgb(247, 46, 136);
             text-shadow:
               0 0 1rem rgb(11, 237, 211),
               0 0 2rem rgb(237, 11, 11),
