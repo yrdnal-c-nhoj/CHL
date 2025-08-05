@@ -116,10 +116,8 @@ const DigitalClock = () => {
               style={{
                 position: 'absolute',
                 display: 'flex',
-                // gap: '0.25rem',
-                color: '#DFEDC2FF',
-                fontSize: '0.8rem',
-                fontWeight: 800,
+                color: '#E9F2D7FF',
+                fontSize: '1.0rem',
                 transition: 'opacity 10s linear',
                 opacity,
                 ...position,
