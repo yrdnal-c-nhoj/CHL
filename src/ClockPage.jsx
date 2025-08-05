@@ -190,7 +190,7 @@ const ClockPage = () => {
           <div className={styles.footerContent}>
             <div className={styles.footerLeft}>
               <span className={styles.footerNumber}>
-                <strong>#</strong> {currentIndex + 1}
+                <strong>#</strong>{currentIndex + 1}
               </span>&nbsp;&nbsp;&nbsp;
             </div>
             <div className={styles.footerCenter}>
