@@ -143,24 +143,26 @@ const AnalogClock = () => {
 
   const hourHandStyle = {
     ...handCommonStyle,
-    width: "7vh",
+    width: "5vh",
     height: "25vh",
-    background: "#b6b3b3",
+    background: "#A5A1A1FF",
     zIndex: 3,
+     opacity: 0.8,
   };
 
   const minuteHandStyle = {
     ...handCommonStyle,
-    width: "3.7vh",
-    height: "44vh",
-    background: "#686565",
+    width: "2.7vh",
+    height: "34vh",
+    background: "#7C7979FF",
     zIndex: 2,
+    opacity: 0.7,
   };
 
   const secondHandStyle = {
     ...handCommonStyle,
-    width: "0.3vh",
-    height: "45vh",
+    width: "0.0vh",
+    height: "0vh",
     background: "rgb(248, 122, 4)",
     zIndex: 7,
     opacity: 1,
