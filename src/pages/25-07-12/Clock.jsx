@@ -58,9 +58,7 @@ const FibonacciClock = () => {
       overflow: 'hidden',
       position: 'relative'
     }}>
-      <style>
-        {fontFace}
-      </style>
+      <style>{fontFace}</style>
       <img
         src={fibImage}
         alt="background"
@@ -79,8 +77,8 @@ const FibonacciClock = () => {
         }}
       />
       <div style={{
-        width: '60vh',
-        height: '60vh',
+        width: '40vh',
+        height: '40vh',
         borderRadius: '50%',
         position: 'relative',
         zIndex: 3,
@@ -96,14 +94,14 @@ const FibonacciClock = () => {
               transform: `rotate(${angle}deg)`,
               transformOrigin: 'center',
               fontFamily: 'fib',
-              fontSize: '2.5rem',
+              fontSize: '1.7rem',
               color: '#171715',
-              textShadow: '0.2rem 0.06rem #f1c72f',
+              textShadow: '0.15rem 0.04rem #f1c72f',
             }}
           >
             <div style={{
               position: 'absolute',
-              transform: 'translate(-50%, -32vh)',
+              transform: 'translate(-50%, -21vh)',
             }}>
               {value}
             </div>
@@ -114,38 +112,38 @@ const FibonacciClock = () => {
           position: 'absolute',
           bottom: '50%',
           left: '50%',
-          width: '1vh',
-          height: '10vh',
+          width: '0.7vh',
+          height: '6.5vh',
           backgroundColor: '#191918',
           transformOrigin: 'bottom',
-          borderRadius: '0.4vh',
-          filter: 'drop-shadow(0.2rem 0.06rem rgb(231, 196, 23))',
+          borderRadius: '0.3vh',
+          filter: 'drop-shadow(0.15rem 0.04rem rgb(231, 196, 23))',
         }} />
         <div className="hand minute-hand" style={{
           position: 'absolute',
           bottom: '50%',
           left: '50%',
-          width: '0.7vh',
-          height: '19vh',
+          width: '0.5vh',
+          height: '13vh',
           backgroundColor: '#191918',
           transformOrigin: 'bottom',
-          borderRadius: '0.3vh',
-          filter: 'drop-shadow(0.2rem 0.06rem rgb(231, 196, 23))',
+          borderRadius: '0.25vh',
+          filter: 'drop-shadow(0.15rem 0.04rem rgb(231, 196, 23))',
         }} />
         <div className="hand second-hand" style={{
           position: 'absolute',
           bottom: '50%',
           left: '50%',
-          width: '0.25vh',
-          height: '12vh',
+          width: '0.2vh',
+          height: '8vh',
           backgroundColor: 'transparent',
           transformOrigin: 'bottom',
           borderRadius: '0.2vh',
-          filter: 'drop-shadow(0.2rem 0.06rem rgb(231, 196, 23))',
+          filter: 'drop-shadow(0.15rem 0.04rem rgb(231, 196, 23))',
         }} />
         <div style={{
-          width: '3.9vh',
-          height: '3.9vh',
+          width: '2.6vh',
+          height: '2.6vh',
           borderRadius: '50%',
           position: 'absolute',
           top: '50%',
@@ -155,15 +153,12 @@ const FibonacciClock = () => {
           backgroundColor: '#000',
         }}></div>
       </div>
-
-      <style>
-        {`
-          @keyframes slow-rotate {
-            0% { transform: translate(-50%, -50%) scale(-1, -1) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) scale(-1, -1) rotate(360deg); }
-          }
-        `}
-      </style>
+      <style>{`
+        @keyframes slow-rotate {
+          0% { transform: translate(-50%, -50%) scale(-1, -1) rotate(0deg); }
+          100% { transform: translate(-50%, -50%) scale(-1, -1) rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 };
