@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import orbFont from './orb.ttf'; // Local font
+import orbFont from './orb.ttf'; // Local font file
 
 const NeonClock = () => {
   const clockRef = useRef(null);
@@ -49,6 +49,7 @@ const NeonClock = () => {
         <div
           key={i}
           ref={(el) => (ticksRef.current[i] = el)}
+          className="tick"
           style={{
             position: 'absolute',
             width: isHour ? '0.5rem' : '0.3rem',
@@ -108,13 +109,23 @@ const NeonClock = () => {
             font-weight: normal;
             font-style: normal;
           }
-          @keyframes pulse {
+
+          .neon-clock .pulse {
+            animation: neon-pulse 2s infinite ease-in-out;
+          }
+
+          @keyframes neon-pulse {
             0%, 100% { transform: translate(-50%, -50%) scale(1); }
             50% { transform: translate(-50%, -50%) scale(1.1); }
+          }
+
+          .neon-clock .glow {
+            box-shadow: 0 0 1.5rem #ffff00, 0 0 3rem #ffff00, 0 0 6rem #ffff00 !important;
           }
         `}
       </style>
       <div
+        className="neon-clock"
         style={{
           width: '100vw',
           height: '100vh',
@@ -148,6 +159,7 @@ const NeonClock = () => {
             }}
           >
             <div
+              className="pulse"
               style={{
                 width: '1.6rem',
                 height: '1.6rem',
@@ -156,7 +168,6 @@ const NeonClock = () => {
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                animation: 'pulse 2s infinite ease-in-out',
                 boxShadow:
                   '0 0 1.5rem #ff00ff, 0 0 3rem #ff00ff, 0 0 6rem #ff00ff, inset 0 0 1rem #ff00ff',
                 zIndex: 10,
