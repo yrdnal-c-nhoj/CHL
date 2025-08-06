@@ -41,10 +41,10 @@ const ClockPage = () => {
   useEffect(() => {
     if (loading) return;
 
-    // If no date or invalid date, redirect to homepage
+    // If no date or invalid date, redirect to homepage immediately
     if (!date || !isValidDateFormat(date)) {
       navigate('/', { replace: true });
-      return;
+      return; // Prevent further processing
     }
 
     const item = items.find((i) => i?.date === date);
@@ -113,19 +113,6 @@ const ClockPage = () => {
   const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
   const nextItem = currentIndex >= 0 && currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
 
-  // Redirect to homepage if at the beginning or end and navigation is attempted
-  const handlePrevClick = () => {
-    if (!prevItem) {
-      navigate('/', { replace: true });
-    }
-  };
-
-  const handleNextClick = () => {
-    if (!nextItem) {
-      navigate('/', { replace: true });
-    }
-  };
-
   if (loading) {
     return <div className={styles.loading}>Loading data...</div>;
   }
@@ -161,6 +148,7 @@ const ClockPage = () => {
   }
 
   if (!currentItem) {
+    // If no current item (after redirect checks), return null to avoid rendering
     return null;
   }
 
@@ -171,29 +159,27 @@ const ClockPage = () => {
         {ClockComponent ? <ClockComponent /> : <div className={styles.loading}>Loading clock...</div>}
       </div>
 
-      <Link
-        to={prevItem ? `/${prevItem.date}` : '/'}
-        onClick={handlePrevClick}
-        className={`${styles.sideNav} ${styles.leftNav} ${navVisible ? styles.visible : styles.hidden}`}
-        aria-label={prevItem ? `Go to previous clock: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
-      >
-        <span aria-hidden="true">←</span>
-        <span className={styles.screenReaderText}>
-          {prevItem ? `Previous: ${formatTitle(prevItem.title)}` : 'Homepage'}
-        </span>
-      </Link>
+      {prevItem && (
+        <Link
+          to={`/${prevItem.date}`}
+          className={`${styles.sideNav} ${styles.leftNav} ${navVisible ? styles.visible : styles.hidden}`}
+          aria-label={`Go to previous clock: ${formatTitle(prevItem.title)}`}
+        >
+          <span aria-hidden="true">←</span>
+          <span className={styles.screenReaderText}>Previous: {formatTitle(prevItem.title)}</span>
+        </Link>
+      )}
 
-      <Link
-        to={nextItem ? `/${nextItem.date}` : '/'}
-        onClick={handleNextClick}
-        className={`${styles.sideNav} ${styles.rightNav} ${navVisible ? styles.visible : styles.hidden}`}
-        aria-label={nextItem ? `Go to next clock: ${formatTitle(nextItem.title)}` : 'Go back to homepage'}
-      >
-        <span aria-hidden="true">→</span>
-        <span className={styles.screenReaderText}>
-          {nextItem ? `Next: ${formatTitle(nextItem.title)}` : 'Homepage'}
-        </span>
-      </Link>
+      {nextItem && (
+        <Link
+          to={`/${nextItem.date}`}
+          className={`${styles.sideNav} ${styles.rightNav} ${navVisible ? styles.visible : styles.hidden}`}
+          aria-label={`Go to next clock: ${formatTitle(nextItem.title)}`}
+        >
+          <span aria-hidden="true">→</span>
+          <span className={styles.screenReaderText}>Next: {formatTitle(nextItem.title)}</span>
+        </Link>
+      )}
 
       {currentItem && (
         <Link
@@ -204,7 +190,7 @@ const ClockPage = () => {
           <div className={styles.footerContent}>
             <div className={styles.footerLeft}>
               <span className={styles.footerNumber}>
-                <strong>#</strong>{currentIndex + 1}
+                <strong>#</strong> {currentIndex + 1}
               </span>&nbsp;&nbsp;&nbsp;
             </div>
             <div className={styles.footerCenter}>
