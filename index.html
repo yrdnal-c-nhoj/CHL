@@ -1,41 +1,59 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Nanum+Gothic+Coding:wght@400;700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-    
-    <title>BorrowedTime @ Cubist Heart Laboratories 🧊🫀🔭</title>
 
-    <!-- Google Analytics -->
+    <!-- 🔤 Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Nanum+Gothic+Coding:wght@400;700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- ✅ SEO Meta Tags -->
+    <title>BorrowedTime @ Cubist Heart Laboratories 🧊🫀🔭</title>
+    <meta name="description" content="BorrowedTime is a creative clock lab exploring time through visual experiments, coding, and Cubist design. Built with React + Vite." />
+    <meta name="keywords" content="clock, experimental time, art, react, vite, cubist, design, visual, timepiece" />
+    <meta name="author" content="Cubist Heart Laboratories" />
+    <link rel="canonical" href="https://yourdomain.com/" />
+
+    <!-- ✅ Open Graph -->
+    <meta property="og:title" content="BorrowedTime @ Cubist Heart Laboratories" />
+    <meta property="og:description" content="A creative lab for experimental clocks and temporal interfaces." />
+    <meta property="og:image" content="https://yourdomain.com/preview.jpg" />
+    <meta property="og:url" content="https://yourdomain.com/" />
+    <meta property="og:type" content="website" />
+
+    <!-- ✅ Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="BorrowedTime @ Cubist Heart Laboratories" />
+    <meta name="twitter:description" content="Creative visual experiments with time, code, and design." />
+    <meta name="twitter:image" content="https://yourdomain.com/preview.jpg" />
+
+    <!-- ✅ Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-24VJ4G2H48"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){ dataLayer.push(arguments); }
+      function gtag() { dataLayer.push(arguments); }
       gtag('js', new Date());
       gtag('config', 'G-24VJ4G2H48', { send_page_view: false });
     </script>
-    <!-- End Google Analytics -->
+
+    <!-- ❓ Optional: remove duplicate tracking if only using one tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3F5E9ZFKM"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-S3F5E9ZFKM');
+    </script>
   </head>
 
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-S3F5E9ZFKM"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-S3F5E9ZFKM');
-</script>
-
   </body>
 </html>
