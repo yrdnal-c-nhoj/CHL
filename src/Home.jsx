@@ -91,7 +91,7 @@ const Home = () => {
               }`}
               title={sortBy === 'title-asc' ? 'Sort Z–A' : 'Sort A–Z'}
             >
-              title {sortBy === 'title-asc' ? '🔽' : sortBy === 'title-desc' ? '🔼' : ''}
+              title {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
             </button>
             <button
               onClick={handleDateSort}
@@ -100,7 +100,7 @@ const Home = () => {
               }`}
               title={sortBy === 'date-desc' ? 'Sort Oldest to Newest' : 'Sort Newest to Oldest'}
             >
-              date {sortBy === 'date-asc' ? '🔽' : sortBy === 'date-desc' ? '🔼' : ''}
+              date {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
             </button>
           </div>
 
