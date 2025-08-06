@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import backgroundImg from './Untitled.jpeg';
-import leftHalfImg from './peacock.gif';
+import leftHalfImg from './peacock2.webp';
 import rightHalfImg from './peee.webp';
 import cornerImg from './Pea.gif';
 import hourImg from './Peaco.png';
-import minuteImg from './fea.png';
+import minuteImg from './fea.gif';
 import secondImg from './Peacok.gif';
 
 const PeacockClock = () => {
