@@ -5,7 +5,6 @@ import cloFont from "./clo.ttf";
 const CloudClock = () => {
   const [hoursHTML, setHoursHTML] = useState("");
   const [minutesHTML, setMinutesHTML] = useState("");
-  const [secondsHTML, setSecondsHTML] = useState("");
   const [ampmHTML, setAmPmHTML] = useState("");
 
   const fontFace = `
@@ -20,9 +19,9 @@ const CloudClock = () => {
   const getStyledText = (str) =>
     str
       .split("")
-      .map((char) => {
-        const randomSize = (Math.random() * 9 + 1.5).toFixed(2); // 1.5rem to 3.5rem
-        return `<span class="digit" style="font-size: ${randomSize}rem;">${char}</span>`;
+      .map((char, i) => {
+        const randomSize = (Math.random() * 11 + 1.5).toFixed(2); // 1.5rem–3.5rem
+        return `<span class="digit" style="font-size: ${randomSize}rem;" data-key="${Date.now() + i}">${char}</span>`;
       })
       .join("");
 
@@ -31,20 +30,16 @@ const CloudClock = () => {
       const now = new Date();
       let h = now.getHours();
       const m = now.getMinutes();
-      const s = now.getSeconds();
-
       const ampm = h >= 12 ? "PM" : "AM";
-      h = h % 12;
-      if (h === 0) h = 12;
+      h = h % 12 || 12;
 
       setHoursHTML(getStyledText(String(h)));
       setMinutesHTML(getStyledText(String(m).padStart(2, "0")));
-      setSecondsHTML(getStyledText(String(s).padStart(2, "0")));
       setAmPmHTML(getStyledText(ampm));
     };
 
     updateTime();
-    const interval = setInterval(updateTime, 1000);
+    const interval = setInterval(updateTime, 5000); // Update every 5 seconds
     return () => clearInterval(interval);
   }, []);
 
@@ -53,23 +48,59 @@ const CloudClock = () => {
       <style>{fontFace}</style>
       <style>{`
         * {
-          margin: 0;
+          CRT margin: 0;
           padding: 0;
           box-sizing: border-box;
         }
+
         .digit {
           display: inline-block;
-          line-height: 1;
-          color: #bed3ef;
+          line-height: 0.9;
+          color: #E5EBF0FF;
           font-family: 'CloFont', serif;
           text-align: center;
           user-select: none;
-          transition: font-size 0.3s ease;
+          transition: 
+            font-size 0.8s ease,
+            opacity 0.8s ease,
+            transform 0.8s ease;
+          text-shadow: 
+            19px 19px 0 #C9D2DEFF,
+            -19px -19px 0 #E1E5EBFF,    
+            0 -21px 0 #A8C4CCFF,
+            -20px 0px 0 #A9B7D2FF,
+            0 21px 0 #B3B8CEFF,
+            20px 0px 0 #9FB5C1FF,
+            -20px 23px 0 #CFD5DDFF,  
+            20px -23px 0 #E3E7ECFF;  
+          opacity: 0;
+          transform: scale(0.8);
+          animation: fadeIn 1s forwards;
         }
-        .digit-group {
+
+        @keyframes fadeIn {
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        .timeStack {
           display: flex;
-          gap: 0rem;
+          flex-direction: column;
           justify-content: center;
+          align-items: center;
+          font-family: 'CloFont', serif;
+          color: #bed3ef;
+          text-align: center;
+          gap: 0.2rem;
+          z-index: 6;
+        }
+
+        @media (min-width: 768px) {
+          .timeStack {
+            flex-direction: row;
+          }
         }
       `}</style>
 
@@ -87,39 +118,10 @@ const CloudClock = () => {
           backgroundSize: "cover",
         }}
       >
-        <div
-          className="timeStack"
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            zIndex: 6,
-            fontFamily: "'CloFont', serif",
-            color: "#bed3ef",
-            fontSize: "2.5rem",
-            textAlign: "center",
-            gap: "0rem",
-          }}
-        >
-          <div
-            id="hours"
-            style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-            dangerouslySetInnerHTML={{ __html: hoursHTML }}
-          />
-          <div
-            id="minutes"
-            style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-            dangerouslySetInnerHTML={{ __html: minutesHTML }}
-          />
-          <div
-            id="seconds"
-            style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-            dangerouslySetInnerHTML={{ __html: secondsHTML }}
-          />
-          <div
-            id="ampm"
-            style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-            dangerouslySetInnerHTML={{ __html: ampmHTML }}
-          />
+        <div className="timeStack">
+          <div id="hours" dangerouslySetInnerHTML={{ __html: hoursHTML }} />
+          <div id="minutes" dangerouslySetInnerHTML={{ __html: minutesHTML }} />
+          <div id="ampm" dangerouslySetInnerHTML={{ __html: ampmHTML }} />
         </div>
 
         <img
