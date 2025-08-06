@@ -48,7 +48,7 @@ const CloudClock = () => {
       <style>{fontFace}</style>
       <style>{`
         * {
-          CRT margin: 0;
+          margin: 0;
           padding: 0;
           box-sizing: border-box;
         }
@@ -60,11 +60,8 @@ const CloudClock = () => {
           font-family: 'CloFont', serif;
           text-align: center;
           user-select: none;
-          transition: 
-            font-size 0.8s ease,
-            opacity 0.8s ease,
-            transform 0.8s ease;
-          text-shadow: 
+          transition: opacity 1s ease, transform 1s ease, font-size 1s ease;
+          text-shadow:
             19px 19px 0 #C9D2DEFF,
             -19px -19px 0 #E1E5EBFF,    
             0 -21px 0 #A8C4CCFF,
@@ -72,16 +69,28 @@ const CloudClock = () => {
             0 21px 0 #B3B8CEFF,
             20px 0px 0 #9FB5C1FF,
             -20px 23px 0 #CFD5DDFF,  
-            20px -23px 0 #E3E7ECFF;  
+            20px -23px 0 #E3E7ECFF;
           opacity: 0;
-          transform: scale(0.8);
-          animation: fadeIn 1s forwards;
+          transform: scale(0.95);
+          animation: fadePulse 5s ease-in-out infinite;
         }
 
-        @keyframes fadeIn {
-          to {
+        @keyframes fadePulse {
+          0% {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          20% {
             opacity: 1;
             transform: scale(1);
+          }
+          80% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: scale(0.95);
           }
         }
 
