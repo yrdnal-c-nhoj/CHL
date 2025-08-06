@@ -11,7 +11,7 @@ const ClockGrid = () => {
     ctx.translate(x, y);
     ctx.beginPath();
     ctx.arc(0, 0, radius, 0, 2 * Math.PI);
-    ctx.fillStyle = '#606D89FF';
+    ctx.fillStyle = '#343C4EFF';
     ctx.fill();
     ctx.strokeStyle = '#F1EDEDFF';
     ctx.lineWidth = 0;
@@ -90,9 +90,9 @@ const ClockGrid = () => {
         ctx.save();
         ctx.translate(x, y);
         const infiniteLength = 10000;
-        drawHand(ctx, hourAngle, infiniteLength, width, '#F170E5FF');
-        drawHand(ctx, minuteAngle, infiniteLength, width, '#DA6F05FF');
-        drawHand(ctx, secondAngle, infiniteLength, width * 0.7, '#F45151FF');
+        drawHand(ctx, hourAngle, infiniteLength, width, '#031490FF');
+        drawHand(ctx, minuteAngle, infiniteLength, width, '#F75606FF');
+        drawHand(ctx, secondAngle, infiniteLength, width , '#E5074AFF');
         ctx.restore();
       });
 
