@@ -3,7 +3,8 @@ import stickFont from './Stick.ttf'; // Local font file in same folder
 
 const SkewClock = () => {
   const canvasRef = useRef(null);
-  const [time, setTime] = useState({ digits: ['0','0','0','0'], colors: ['white','white','white','white'] });
+  const [digits, setDigits] = useState(['0', '0', '0', '0']);
+  const [colors, setColors] = useState(['white', 'white', 'white', 'white']);
   const [skew, setSkew] = useState(0);
   const [stretch, setStretch] = useState(1);
   const targetSkew = useRef(0);
@@ -29,9 +30,10 @@ const SkewClock = () => {
       let hours = now.getHours() % 12;
       if (hours === 0) hours = 12;
       const minutes = String(now.getMinutes()).padStart(2, '0');
-      const digits = `${hours}${minutes}`.padStart(4, '0').split('');
-      const colors = digits.map(() => getRandomVibrantColor());
-      setTime({ digits, colors });
+      const newDigits = `${hours}${minutes}`.padStart(4, '0').split('');
+      const newColors = newDigits.map(() => getRandomVibrantColor());
+      setDigits(newDigits);
+      setColors(newColors);
 
       outlineColor.current = getRandomVibrantColor();
       targetSkew.current = (Math.random() - 0.5) * 500;
@@ -39,10 +41,14 @@ const SkewClock = () => {
     };
 
     const drawText = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
       ctx.save();
+
+      // Fade trail effect (instead of solid black fill)
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.globalAlpha = 1;
+
       ctx.font = `${canvas.height * 0.2}px 'skew-stick', sans-serif`;
       ctx.textBaseline = 'middle';
       ctx.textAlign = 'center';
@@ -51,9 +57,9 @@ const SkewClock = () => {
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
 
-      time.digits.forEach((digit, i) => {
-        const x = centerX + (i - 1.5) * spacing + (Math.random() - 0.5) * 10;
-        const y = centerY + (Math.random() - 0.5) * 10;
+      digits.forEach((digit, i) => {
+        const x = centerX + (i - 1.5) * spacing;
+        const y = centerY;
 
         ctx.setTransform(
           stretch,
@@ -68,7 +74,7 @@ const SkewClock = () => {
         ctx.lineWidth = 0.5 * canvas.height * 0.01;
         ctx.strokeText(digit, 0, 0);
 
-        ctx.fillStyle = time.colors[i] || 'white';
+        ctx.fillStyle = colors[i] || 'white';
         ctx.fillText(digit, 0, 0);
       });
 
@@ -112,7 +118,7 @@ const SkewClock = () => {
       clearInterval(spin);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [time]);
+  }, []); // Only run once on mount
 
   return (
     <div className="skew-wrapper" style={{ fontFamily: 'skew-stick, sans-serif' }}>
