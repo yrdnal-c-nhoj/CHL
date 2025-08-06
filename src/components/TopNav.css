@@ -35,8 +35,8 @@
     #b6e548 -2.2px -0.8px 5px,
     #340303 3px 2px 0,
     #340303 -3px -2px 0;
-  font-size: 1.4rem;
-  line-height: 1.7rem;
+  font-size: 1.8rem;
+  line-height: 1.9rem;
   text-align: center;
   letter-spacing: -0.05rem;
   width: 100vw;
@@ -53,12 +53,12 @@
 .topnavtag {
   font-family: "Oxanium", sans-serif;
   transform: skewX(-10deg);
-  font-size: 0.4rem;
-  line-height: 0.1rem;
+  font-size: 0.6rem;
+  line-height: 0.3rem;
   color: #ede7e7;
   text-align: center;
   font-style: italic;
-  padding: 0.5rem 0;
+  padding: 0.3rem 0;
 }
 
 .nav-menu {
