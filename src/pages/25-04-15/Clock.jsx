@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import horizonFontUrl from './hori.otf'; // local font in same folder
+import horizonFontUrl from './hori.otf';
 import layer1 from './images/4c558c5dbff1828f2b87582dc49526e8.gif';
 import layer2 from './images/sdfwef.gif';
 import layer3 from './images/ewfsdfsd.gif';
@@ -16,7 +16,8 @@ const HorizonClock = () => {
       hours = hours % 12;
       if (hours === 0) hours = 12;
 
-      setTime(`${hours}${minutes}`); // no colon or space
+      const timeString = `${hours}${minutes}`;
+      setTime(timeString);
     };
 
     updateClock();
@@ -118,18 +119,16 @@ const HorizonClock = () => {
           userSelect: 'none',
         }}
       >
-        {time.split('').map((char, i) => (
+        {time.padStart(4, ' ').split('').map((char, i) => (
           <span
             key={i}
             style={{
               display: 'inline-block',
               minWidth: '2.5rem',
               textAlign: 'center',
-              margin: 0,
-              padding: 0,
             }}
           >
-            {char}
+            {char === ' ' ? '\u00A0' : char}
           </span>
         ))}
       </div>
