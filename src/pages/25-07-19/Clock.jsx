@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import cunFont from './cun.ttf';
-import bgMain from './cuf.jpg';
 import bgOverlay from './cun1.webp';
 
 const CuneiformClock = () => {
@@ -49,10 +48,11 @@ const CuneiformClock = () => {
           transform: translate(-50%, -50%);
           z-index: 10;
           text-align: center;
+          padding: 1rem;
         }
 
         .cunei-clock {
-          font-size: 8rem;
+          font-size: clamp(3rem, 10vw, 12rem);
           background: linear-gradient(to bottom,
             #0b0b0a 1%,
             #f2b02c 4%,
@@ -61,48 +61,49 @@ const CuneiformClock = () => {
             #ffecb3 40%,
             #7c560a 81%,
             #e3d9c5 93%);
+          background-clip: text;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
-          letter-spacing: 1vw;
-        }
-
-        .cunei-bg-main {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transform: translate(-50%, -50%) scale(1.3);
-          transform-origin: center;
-          z-index: 1;
-          filter: sepia(0.7) contrast(0.2) saturate(2.5);
+          color: transparent;
+          letter-spacing: 0.5vw;
+          text-shadow: 0 0 1rem rgba(255, 215, 0, 0.3);
         }
 
         .cunei-bg-overlay {
           position: absolute;
           top: 50%;
           left: 50%;
-          width: auto;
-          height: auto;
-          max-width: 70vw;
-          max-height: 70vw;
+          width: 150vw;
+          height: 150vh;
           object-fit: cover;
-          transform: translate(-50%, -50%) scale(1.5);
+          transform: translate(-50%, -50%) rotate(0deg);
           transform-origin: center;
-          z-index: 2;
-          animation: cunei-slow-rotate 800s linear infinite;
+          z-index: 1;
+          animation: cunei-spin 240s linear infinite;
           pointer-events: none;
         }
 
-        @keyframes cunei-slow-rotate {
-          0% { transform: translate(-50%, -50%) rotate(0deg) scale(1.5); }
-          100% { transform: translate(-50%, -50%) rotate(360deg) scale(1.5); }
+        @keyframes cunei-spin {
+          0% { transform: translate(-50%, -50%) rotate(0deg); }
+          100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+          .cunei-clock {
+            letter-spacing: 1vw;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .cunei-clock {
+            font-size: clamp(2rem, 14vw, 6rem);
+            letter-spacing: 2vw;
+          }
         }
       `}</style>
 
-      <img src={bgOverlay} className="cunei-bg-overlay" alt="Overlay Background" />
-      <img src={bgMain} className="cunei-bg-main" alt="Main Background" />
+      {/* Spinning overlay fills entire screen */}
+      <img src={bgOverlay} className="cunei-bg-overlay" alt="Spinning Overlay" />
 
       <div className="cunei-container">
         <div className="cunei-clock">{time}</div>
