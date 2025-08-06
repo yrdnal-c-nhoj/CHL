@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import backgroundImg from './Untitled.png';
-import leftHalfImg from './peacock.webp';
-import rightHalfImg from './PEACOCK-W-FEATHERS-OUT-STATUE_3e4d7f8a-a1ab-42d7-990e-4104e2fafe8e.5b85fc7293a509f2223b869b11481e53.jpeg';
-import cornerImg from './Pea.png';
+import backgroundImg from './Untitled.jpeg';
+import leftHalfImg from './peacock.gif';
+import rightHalfImg from './peee.webp';
+import cornerImg from './Pea.gif';
 import hourImg from './Peaco.png';
 import minuteImg from './fea.png';
-import secondImg from './Peacock.gif';
+import secondImg from './Peacok.gif';
 
 const PeacockClock = () => {
   useEffect(() => {
