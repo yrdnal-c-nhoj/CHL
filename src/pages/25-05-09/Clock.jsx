@@ -38,7 +38,7 @@ const Clock = () => {
   const clockMaxRem = 60; // max 60rem
 
 
-  const radiusVW = 40;
+  const radiusVW = 20;
 
   return (
     <>
