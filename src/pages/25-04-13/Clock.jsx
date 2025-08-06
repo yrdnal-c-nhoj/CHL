@@ -59,8 +59,9 @@ const PizzaClock = () => {
       />
       <div style={{
         position: 'relative',
-        width: '80vh',
-        height: '80vh',
+        width: '80vmin',      // vmin ensures a square that fits within viewport
+        height: '80vmin',
+        aspectRatio: '1',
         backgroundImage: `url(${pizzaFace})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
@@ -90,7 +91,7 @@ const PizzaClock = () => {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -100%)',
-              height: '44vh',
+              height: '55%',
               opacity: 0.8,
               filter: 'brightness(190%) contrast(120%)',
             }}
@@ -118,7 +119,7 @@ const PizzaClock = () => {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -100%)',
-              height: '28vh',
+              height: '34%',
               opacity: 0.8,
               filter: 'brightness(190%) contrast(200%)',
             }}
@@ -146,7 +147,7 @@ const PizzaClock = () => {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -100%)',
-              height: '38vh',
+              height: '50%',
               filter: 'brightness(290%) contrast(190%)',
             }}
           />

@@ -1,15 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import stickFont from './Stick.ttf'; // Local font file in same folder
+import React, { useEffect, useRef } from 'react';
+import stickFont from './Stick.ttf';
 
 const SkewClock = () => {
   const canvasRef = useRef(null);
-  const [digits, setDigits] = useState(['0', '0', '0', '0']);
-  const [colors, setColors] = useState(['white', 'white', 'white', 'white']);
-  const [skew, setSkew] = useState(0);
-  const [stretch, setStretch] = useState(1);
-  const targetSkew = useRef(0);
-  const targetStretch = useRef(1);
-  const outlineColor = useRef('white');
 
   const getRandomVibrantColor = () => {
     const hue = Math.floor(Math.random() * 360);
@@ -30,72 +23,53 @@ const SkewClock = () => {
       let hours = now.getHours() % 12;
       if (hours === 0) hours = 12;
       const minutes = String(now.getMinutes()).padStart(2, '0');
-      const newDigits = `${hours}${minutes}`.padStart(4, '0').split('');
-      const newColors = newDigits.map(() => getRandomVibrantColor());
-      setDigits(newDigits);
-      setColors(newColors);
-
-      outlineColor.current = getRandomVibrantColor();
-      targetSkew.current = (Math.random() - 0.5) * 500;
-      targetStretch.current = 0.6 + Math.random() * 0.8;
+      let digits = `${hours}${minutes}`.split('');
+      if (digits.length < 4) digits.unshift(' '); // pad with space for single-digit hour
+      const colors = digits.map(() => getRandomVibrantColor());
+      drawText(digits, colors);
     };
 
-    const drawText = () => {
+    const drawText = (digits, colors) => {
       ctx.save();
 
-      // Fade trail effect (instead of solid black fill)
-      ctx.globalAlpha = 0.1;
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.globalAlpha = 1;
-
-      ctx.font = `${canvas.height * 0.2}px 'skew-stick', sans-serif`;
+      const fontSize = canvas.height * 0.2;
+      ctx.font = `${fontSize}px 'skew-stick', sans-serif`;
       ctx.textBaseline = 'middle';
-      ctx.textAlign = 'center';
+      ctx.textAlign = 'left';
 
-      const spacing = canvas.width * 0.15;
-      const centerX = canvas.width / 2;
+      // Measure widths for precise centering
+      const spacing = canvas.width * 0.015;
+      const widths = digits.map((d) => ctx.measureText(d).width);
+      const totalWidth = widths.reduce((acc, w) => acc + w, 0) + spacing * (digits.length - 1);
+      let startX = (canvas.width - totalWidth) / 2;
       const centerY = canvas.height / 2;
 
       digits.forEach((digit, i) => {
-        const x = centerX + (i - 1.5) * spacing;
-        const y = centerY;
+        // Slight random jitter around centered position
+        const jitterX = (Math.random() - 0.5) * 30; // ±15 px horizontally
+        const jitterY = (Math.random() - 0.5) * 30; // ±15 px vertically
 
-        ctx.setTransform(
-          stretch,
-          skew * 0.01,
-          skew * 0.01,
-          1,
-          x,
-          y
-        );
+        const x = startX + jitterX;
+        const y = centerY + jitterY;
 
-        ctx.strokeStyle = outlineColor.current;
+        // Exaggerated skew ±0.7
+        const skew = (Math.random() - 0.5) * 1.4;
+
+        ctx.setTransform(1, skew, skew, 1, x, y);
+
         ctx.lineWidth = 0.5 * canvas.height * 0.01;
+
+        ctx.strokeStyle = getRandomVibrantColor();
         ctx.strokeText(digit, 0, 0);
 
-        ctx.fillStyle = colors[i] || 'white';
+        ctx.fillStyle = colors[i];
         ctx.fillText(digit, 0, 0);
+
+        ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transform
+        startX += widths[i] + spacing;
       });
 
       ctx.restore();
-    };
-
-    const animate = () => {
-      setSkew(prev => prev + (targetSkew.current - prev) * 0.1);
-      setStretch(prev => prev + (targetStretch.current - prev) * 0.1);
-      drawText();
-      requestAnimationFrame(animate);
-    };
-
-    const spinClock = () => {
-      const container = document.querySelector('.skew-time-container');
-      if (container) {
-        const rx = Math.random() * 360;
-        const ry = Math.random() * 360;
-        const rz = Math.random() * 360;
-        container.style.transform = `translate(-50%, -50%) rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg)`;
-      }
     };
 
     resizeCanvas();
@@ -103,22 +77,15 @@ const SkewClock = () => {
 
     document.fonts.load(`1rem 'skew-stick'`).then(() => {
       updateClock();
-      animate();
-    }).catch(() => {
-      console.warn("Font failed to load");
-      updateClock();
-      animate();
     });
 
     const tick = setInterval(updateClock, 1000);
-    const spin = setInterval(spinClock, 5000);
 
     return () => {
       clearInterval(tick);
-      clearInterval(spin);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, []); // Only run once on mount
+  }, []);
 
   return (
     <div className="skew-wrapper" style={{ fontFamily: 'skew-stick, sans-serif' }}>
@@ -151,18 +118,7 @@ const SkewClock = () => {
           width: 100vw;
           height: 100vh;
         }
-
-        .skew-time-container {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          z-index: -1;
-          transition: transform 0.5s ease;
-        }
       `}</style>
-
-      <div className="skew-time-container" />
       <canvas ref={canvasRef} />
     </div>
   );
