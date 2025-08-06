@@ -58,39 +58,44 @@ const DigitalClock = () => {
           backgroundSize: '100% 100%',
         })}
       />
+{/* Centered Scaled Background for bg1 */}
+<div
+  style={{
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: '90vw',
+    height: '90vh',
+    backgroundImage: `url(${bg1})`,
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    transform: 'translate(-50%, -50%)',
+    filter: bgFilter, // optional
+    zIndex: 0,
+    pointerEvents: 'none',
+  }}
+/>
 
-      {/* Centered and Resized Background for bg1 with filters */}
-      <div
-        style={fullScreenBackgroundStyle(bg1, 1, 1, {
-          width: '100%',
-          height: '100%',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          backgroundSize: 'contain',
-        })}
-      />
+{/* Flipped and Centered Scaled Background for bg3 */}
+<div
+  style={{
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: '90vw',
+    height: '90vh',
+    backgroundImage: `url(${bg3})`,
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    transform: 'translate(-50%, -50%) scaleX(-1) scaleY(-1)',
+    filter: bgFilter,
+    zIndex: 0,
+    pointerEvents: 'none',
+  }}
+/>
 
-      {/* Flipped bg3 (copy of bg1), horizontally and vertically flipped */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-             width: '100%',
-          height: '100%',
-          backgroundImage: `url(${bg3})`,
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-          transform: 'translate(-50%, -50%) scaleX(-1) scaleY(-1)',
-          filter: bgFilter,
-          opacity: 0.8,
-          zIndex: 0,
-          pointerEvents: 'none',
-        }}
-      />
 
       {/* Clock Display */}
       <div style={clockContainerStyle}>{formatTime(time)}</div>
