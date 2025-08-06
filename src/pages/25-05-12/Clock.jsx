@@ -46,11 +46,12 @@ const CheetahClock = () => {
     };
   }, []);
 
-  const vars = {
-    '--digit-width': '9vw',
-    '--digit-height': '18vh',
-    '--font-size': '14wvh',
-  };
+ const vars = {
+  '--digit-width': isMobile ? '29vw' : '13vw',   // reduce in landscape
+  '--digit-height': '18vh',
+  '--font-size': isMobile ? '14vh' : '11vh',     // optional tweak for spacing
+};
+
 
   const sharedDigitStyle = {
     width: 'var(--digit-width)',
@@ -74,7 +75,7 @@ const CheetahClock = () => {
           "s1 s2"
           "ms1 ms2"
         `,
-        gap: '0.4rem',
+        gap: '0.1rem',
         fontFamily: 'leo, sans-serif',
         textShadow: 'rgb(14, 2, 26) 0.8rem 0.5rem 0.3rem',
         zIndex: 2,
@@ -134,37 +135,7 @@ const CheetahClock = () => {
         ))}
       </div>
 
-      {/* Footer */}
-      <div
-        className="date-container"
-        style={{
-          color: '#b39ea7',
-          position: 'absolute',
-          bottom: '0.5vh',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '98%',
-          display: 'flex',
-          zIndex: 6,
-        }}
-      >
-        <a
-          href="../index.html"
-          className="clockname"
-          style={{
-            fontFamily: 'Oxanium, serif',
-            fontSize: '4vh',
-            lineHeight: '4vh',
-            position: 'fixed',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            textDecoration: 'none',
-            color: 'inherit',
-          }}
-        >
-          Cheetah
-        </a>
-      </div>
+     
     </div>
   );
 };

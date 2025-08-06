@@ -113,7 +113,7 @@ const BirthdayCakeClock = () => {
 
   const secondImgStyle = {
     ...handImgStyle,
-    height: "55vh",
+    height: "40vh",
   };
 
   const fullPageImageStyle = {
