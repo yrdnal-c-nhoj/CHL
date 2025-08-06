@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-// import permanentMarkerFont from "./PermanentMarker.ttf"; // Uncomment and import your font file
+import permanentMarkerFont from "./sph.ttf"; 
 
 const BALL_SIZES = {
   hours: 18,
@@ -222,6 +222,13 @@ const SphereDropClock = () => {
   return (
     <>
       <style>{`
+        @font-face {
+          font-family: 'SphFont';
+          src: url(${permanentMarkerFont}) format('truetype');
+          font-weight: normal;
+          font-style: normal;
+        }
+
         * {
           margin: 0;
           padding: 0;
@@ -258,6 +265,7 @@ const SphereDropClock = () => {
         }
 
         .ball {
+          font-family: 'SphFont', sans-serif;
           border-radius: 50%;
           position: absolute;
           transform-style: preserve-3d;
