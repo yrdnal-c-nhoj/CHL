@@ -16,6 +16,7 @@ const ClockGrid = () => {
     ctx.strokeStyle = '#100101FF';
     ctx.lineWidth = 3;
     ctx.stroke();
+
     for (let num = 1; num <= 12; num++) {
       const angle = (num * Math.PI) / 6;
       ctx.rotate(angle);
@@ -30,10 +31,13 @@ const ClockGrid = () => {
       ctx.translate(0, radius * 0.85);
       ctx.rotate(-angle);
     }
+
     ctx.restore();
+
     const hour = time.getHours() % 12;
     const minute = time.getMinutes();
     const second = time.getSeconds() + time.getMilliseconds() / 1000;
+
     return {
       x,
       y,
@@ -67,14 +71,11 @@ const ClockGrid = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const now = new Date();
 
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
+      const totalGridWidth = numCols * clockSize;
+      const totalGridHeight = numRows * clockSize;
 
-      const gridCenterCol = Math.floor(numCols / 2);
-      const gridCenterRow = Math.floor(numRows / 2);
-
-      const offsetX = centerX - (gridCenterCol * clockSize + radius);
-      const offsetY = centerY - (gridCenterRow * clockSize + radius);
+      const offsetX = (canvas.width - totalGridWidth) / 2;
+      const offsetY = (canvas.height - totalGridHeight) / 2;
 
       const clocks = [];
       for (let row = 0; row < numRows; row++) {
@@ -90,10 +91,10 @@ const ClockGrid = () => {
         ctx.save();
         ctx.translate(x, y);
         const infiniteLength = 10000;
-         drawHand(ctx, secondAngle, infiniteLength, width , '#F90810FF');
-        drawHand(ctx, hourAngle, infiniteLength, width, '#7D0386FF'); 
-        drawHand(ctx, minuteAngle, infiniteLength, width,   '#46EF1CFF');
-          ctx.restore();
+        drawHand(ctx, secondAngle, infiniteLength, width, '#F90810FF');
+        drawHand(ctx, hourAngle, infiniteLength, width, '#7D0386FF');
+        drawHand(ctx, minuteAngle, infiniteLength, width, '#46EF1CFF');
+        ctx.restore();
       });
 
       animationFrameId = requestAnimationFrame(draw);
@@ -119,7 +120,14 @@ const ClockGrid = () => {
   return (
     <canvas
       ref={canvasRef}
-      style={{ background: '#A9A5A5FF', position: 'fixed', top: 0, left: 0 }}
+      style={{
+        background: '#A9A5A5FF',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+      }}
     />
   );
 };
