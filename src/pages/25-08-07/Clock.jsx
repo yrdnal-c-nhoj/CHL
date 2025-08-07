@@ -1,16 +1,17 @@
 import React, { useEffect, useRef } from 'react';
-import num1 from './num1.png';
-import num2 from './num2.png';
-import num3 from './num3.png';
-import num4 from './num4.png';
-import num5 from './num5.png';
-import num6 from './num6.png';
-import num7 from './num7.png';
-import num8 from './num8.png';
-import num9 from './num9.png';
-import num10 from './num10.png';
-import num11 from './num11.png';
-import num12 from './num12.png';
+
+import num1 from './0-6.webp';
+import num2 from './1-6.webp';
+import num3 from './3-6.webp';
+import num4 from './4-6.webp';
+import num5 from './5-6.webp';
+import num6 from './6-6.webp';
+import num7 from './7-6.webp';
+import num8 from './8-6.webp';
+import num9 from './9-6.webp';
+import num10 from './1-6.webp';
+import num11 from './1-6.webp';
+import num12 from './1-6.webp';
 
 const numberImages = [num12, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11];
 
