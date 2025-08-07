@@ -1,0 +1,45 @@
+.clock-container {
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clock-wrapper {
+  display: flex;
+  /* gap: 1rem; */
+  font-family: 'CustomFont', sans-serif;
+  font-size: 12vw;
+  color: #dedbdb;
+  opacity: 0.5;
+  text-shadow: 0 0 0.5rem black;
+}
+
+.digit-group {
+  display: flex;
+  /* gap: 0.4rem; */
+}
+
+/* Each digit in its own box */
+.digit-box {
+  min-width: 1ch;
+  padding: 0.01em 0.01em;
+  text-align: center;
+}
+
+/* Responsive layout: stack groups vertically */
+@media (max-width: 600px) {
+  .clock-wrapper {
+    flex-direction: column;
+    align-items: center;
+    font-size: 16vw;
+    gap: 0.01rem;
+  }
+
+  .digit-group {
+    justify-content: center;
+  }
+}
