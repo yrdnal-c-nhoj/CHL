@@ -90,10 +90,10 @@ const ClockGrid = () => {
         ctx.save();
         ctx.translate(x, y);
         const infiniteLength = 10000;
-        drawHand(ctx, hourAngle, infiniteLength, width, '#46EF1CFF');
-        drawHand(ctx, minuteAngle, infiniteLength, width, '#B505C1FF');
-        drawHand(ctx, secondAngle, infiniteLength, width , '#F90810FF');
-        ctx.restore();
+         drawHand(ctx, secondAngle, infiniteLength, width , '#F90810FF');
+        drawHand(ctx, hourAngle, infiniteLength, width, '#7D0386FF'); 
+        drawHand(ctx, minuteAngle, infiniteLength, width,   '#46EF1CFF');
+          ctx.restore();
       });
 
       animationFrameId = requestAnimationFrame(draw);
