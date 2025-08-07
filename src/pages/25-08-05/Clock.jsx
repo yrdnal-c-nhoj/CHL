@@ -3,17 +3,17 @@ import React, { useEffect, useRef } from 'react';
 const ClockGrid = () => {
   const canvasRef = useRef(null);
   const clockSize = 70;
-  const numRows = 18;
-  const numCols = 16;
+  const numRows = 10;
+  const numCols = 10;
 
   const drawClock = (ctx, x, y, radius, time) => {
     ctx.save();
     ctx.translate(x, y);
     ctx.beginPath();
     ctx.arc(0, 0, radius, 0, 2 * Math.PI);
-    ctx.fillStyle = '#343C4EFF';
+    ctx.fillStyle = '#334036FF';
     ctx.fill();
-    ctx.strokeStyle = '#F1EDEDFF';
+    ctx.strokeStyle = '#373434FF';
     ctx.lineWidth = 0;
     ctx.stroke();
     for (let num = 1; num <= 12; num++) {
@@ -21,7 +21,7 @@ const ClockGrid = () => {
       ctx.rotate(angle);
       ctx.translate(0, -radius * 0.85);
       ctx.rotate(-angle);
-      ctx.fillStyle = '#1D1D02FF';
+      ctx.fillStyle = '#FAF8F8FF';
       ctx.font = `${radius * 0.9}px Georgia`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -40,11 +40,11 @@ const ClockGrid = () => {
       hourAngle: ((hour + minute / 60) * Math.PI) / 6,
       minuteAngle: ((minute + second / 60) * Math.PI) / 30,
       secondAngle: (second * Math.PI) / 30,
-      width: radius * 0.05,
+      width: radius * 0.1,
     };
   };
 
-  const drawHand = (ctx, pos, length, width, color = '#07A3A3FF') => {
+  const drawHand = (ctx, pos, length, width, color = '#E9F1F1FF') => {
     ctx.beginPath();
     ctx.lineWidth = width;
     ctx.lineCap = 'round';
@@ -90,9 +90,9 @@ const ClockGrid = () => {
         ctx.save();
         ctx.translate(x, y);
         const infiniteLength = 10000;
-        drawHand(ctx, hourAngle, infiniteLength, width, '#031490FF');
-        drawHand(ctx, minuteAngle, infiniteLength, width, '#F75606FF');
-        drawHand(ctx, secondAngle, infiniteLength, width , '#E5074AFF');
+        drawHand(ctx, hourAngle, infiniteLength, width, '#46EF1CFF');
+        drawHand(ctx, minuteAngle, infiniteLength, width, '#E70BF7FF');
+        drawHand(ctx, secondAngle, infiniteLength, width , '#F90810FF');
         ctx.restore();
       });
 
@@ -119,7 +119,7 @@ const ClockGrid = () => {
   return (
     <canvas
       ref={canvasRef}
-      style={{ background: '#eee', position: 'fixed', top: 0, left: 0 }}
+      style={{ background: '#A9A5A5FF', position: 'fixed', top: 0, left: 0 }}
     />
   );
 };
