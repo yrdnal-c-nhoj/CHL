@@ -65,7 +65,7 @@ const ClockPage = () => {
 
   useEffect(() => {
     const navFadeMs = 300;
-    const footerFadeMs = 2000;
+    const footerFadeMs = 1000;
     let navTimer, footerTimer;
 
     const resetTimers = () => {
@@ -97,7 +97,7 @@ const ClockPage = () => {
 
   useEffect(() => {
     setHeaderVisible(true);
-    const headerTimer = setTimeout(() => setHeaderVisible(false), 2000);
+    const headerTimer = setTimeout(() => setHeaderVisible(false), 1300);
     return () => clearTimeout(headerTimer);
   }, [date]);
 
