@@ -183,15 +183,3 @@ position: absolute; /* or relative, depending on parent */
     padding: 0.2rem;
   }
 }
-
-/* Optional: further shrink for very small screens */
-@media (max-width: 400px) {
-  .topnavbt {
-    font-size: 1rem;
-    line-height: 1.1rem;
-  }
-  .nav-link {
-    font-size: 0.8rem;
-    padding: 0.3rem;
-  }
-}
