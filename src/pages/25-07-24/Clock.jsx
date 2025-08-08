@@ -41,7 +41,7 @@ const Clock = () => {
   ctx.translate(0, -radius * 0.65);
   ctx.rotate(-angle);
   
-  ctx.font = '3.5rem Times New Roman';
+  ctx.font = '3.2rem Times New Roman';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
 
