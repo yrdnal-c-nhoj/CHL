@@ -6,8 +6,8 @@ export default function Footer() {
         <>
             <div className="footer">
              
-     
-         🧊🫀🔭&nbsp;©{new Date().getFullYear()}Cubist Heart Laboratories.All rights reserved. 🧊🫀🔭&nbsp;
+     🧊🫀🔭<br /> 
+        ©{new Date().getFullYear()}Cubist Heart Laboratories.All rights reserved.
       
     
     
