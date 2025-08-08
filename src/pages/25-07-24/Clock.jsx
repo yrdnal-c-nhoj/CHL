@@ -38,7 +38,7 @@ const Clock = () => {
         const angle = (i * 30) * Math.PI / 180;
         ctx.save();
         ctx.rotate(angle);
-        ctx.translate(0, -radius * 0.85); // Moved from 0.75 to 0.85
+        ctx.translate(0, -radius * 0.65); // Moved from 0.75 to 0.85
         ctx.rotate(-angle);
         ctx.font = '3rem Times New Roman'; // Slightly reduced font size to prevent clipping
         ctx.textAlign = 'center';
