@@ -197,21 +197,21 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 85%;
+  max-width: 98%;
   box-sizing: border-box;
   z-index: 5;
 }
 
 .clockNumber {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 }
 
 .date {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 }
 
 .title {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   line-height: 1.1;
 } 
 }
