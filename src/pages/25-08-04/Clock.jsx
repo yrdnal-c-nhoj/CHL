@@ -1,9 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
-import bgImage from './shrub.jpg';      // Your background image file
+import bgImage from './shrub.jpeg';      // Your background image file
 import myFont from './Tr.ttf';          // Your custom font file
-
-// Because you can’t use @font-face with dynamic URL inside JSX style tag,
-// create a CSS file for your font or use a workaround below.
 
 const getRandomPosition = () => ({
   top: `${Math.random() * 80 + 10}%`,
@@ -18,29 +15,28 @@ const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
   const [fadeIndex, setFadeIndex] = useState(0);
 
-  // Generate clocks positions only once
-  const clocks = useMemo(() =>
-    Array.from({ length: 10 }, () => ({
-      position: getRandomPosition(),
-      tilt: getRandomTilt(),
-    })), []
+  const clocks = useMemo(
+    () =>
+      Array.from({ length: 10 }, () => ({
+        position: getRandomPosition(),
+        tilt: getRandomTilt(),
+      })),
+    []
   );
 
-  // Update time every second
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // Update fade index every 2 seconds
+  // faster fade change → 1s instead of 2s
   useEffect(() => {
     const fadeTimer = setInterval(() => {
       setFadeIndex((i) => (i + 1) % clocks.length);
-    }, 2000);
+    }, 1000);
     return () => clearInterval(fadeTimer);
   }, [clocks.length]);
 
-  // Calculate opacity for smooth fade transition across clocks
   const getOpacity = (i) => {
     const totalClocks = clocks.length;
     let diff = i - fadeIndex;
@@ -58,7 +54,6 @@ const DigitalClock = () => {
 
   return (
     <>
-      {/* Inject custom font via style tag - workaround */}
       <style>{`
         @font-face {
           font-family: 'MyCustomFont';
@@ -73,7 +68,7 @@ const DigitalClock = () => {
         }
       `}</style>
 
-      {/* Background image with filters */}
+      {/* Background image bigger but centered */}
       <div
         style={{
           position: 'fixed',
@@ -87,16 +82,15 @@ const DigitalClock = () => {
             position: 'absolute',
             inset: 0,
             backgroundImage: `url(${bgImage})`,
-            backgroundSize: 'cover',
+          backgroundSize: 'cover',
             backgroundPosition: 'center',
-            opacity: 0.5,
-            filter: 'saturate(1.2) brightness(0.55) contrast(2.3)',
+            filter: 'saturate(0.3) brightness(0.45) contrast(1.5)',
             zIndex: 0,
           }}
         />
       </div>
 
-      {/* Clocks container */}
+      {/* Clocks */}
       <div
         style={{
           position: 'fixed',
@@ -118,7 +112,7 @@ const DigitalClock = () => {
                 display: 'flex',
                 color: '#E9F2D7FF',
                 fontSize: '1.0rem',
-                transition: 'opacity 10s linear',
+                transition: 'opacity 2s linear', // faster fade
                 opacity,
                 ...position,
                 ...tilt,
