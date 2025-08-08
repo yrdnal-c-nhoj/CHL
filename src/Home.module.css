@@ -45,7 +45,7 @@ body {
   justify-content: space-between;
   width: 100%;
   box-sizing: border-box;
-  padding: 0.1rem 0.1rem;
+  padding: 0.01rem 0.1rem;
   position: relative;
   z-index: 1;
 }
@@ -93,7 +93,7 @@ body {
 
 .clockNumber {
   flex: 0 0 auto;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: left;
@@ -102,7 +102,7 @@ body {
 
 .date {
   flex: 0 0 auto;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: right;
@@ -113,7 +113,7 @@ body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 0.9rem;
+  font-size: 1.0rem;
   font-family: "Nunito", sans-serif;
   color: #0c0d0d;
   text-align: center;
@@ -150,7 +150,7 @@ body {
 
 .sortButton {
   background-color: transparent;
-  font-size: 0.5rem;
+  font-size: 0.7rem;
   padding: 4px 18px;
   border: 1px solid transparent;
   border-radius: 3px;
@@ -188,7 +188,7 @@ body {
 .entry:hover .clockNumber,
 .entry:hover .title,
 .entry:hover .date {
-  color: #cad8f4;
+  color: #f7f7f5;
 }
 @media (max-width: 600px) {
   
@@ -203,15 +203,15 @@ body {
 }
 
 .clockNumber {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .date {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .title {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   line-height: 1.1;
-}
+} 
 }
