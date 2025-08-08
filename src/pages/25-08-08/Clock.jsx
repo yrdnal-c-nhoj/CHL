@@ -53,7 +53,7 @@ const Clock = () => {
   // Background styles with side-to-side shift effect
   const backgroundStyle = {
     backgroundImage: `url(${bg})`,
-    backgroundSize: '110%',
+    backgroundSize: '110% 100%',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: shift
       ? (posToggle ? '48% center' : '52% center') // left/right shift
