@@ -146,13 +146,13 @@ position: absolute; /* or relative, depending on parent */
 
 @media (max-width: 600px) {
   .topnavchl {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     text-align: center;
     padding: 0.2rem;
   }
 
   .topnavbt {
-    font-size: 1.7rem;
+    font-size: 1.9rem;
     line-height: 1.3rem;
     letter-spacing: 0;
     padding: 0.1rem 0;
