@@ -68,7 +68,7 @@ const AnalogClock = () => {
       const now = new Date();
       const width = window.innerWidth;
       const height = window.innerHeight;
-      const radius = Math.min(width, height) / 4.5;
+      const radius = Math.min(width, height) / 3.5;
       const centerX = width / 2;
       const centerY = height / 2;
 
@@ -78,17 +78,19 @@ const AnalogClock = () => {
       // Move origin to center of clock
       ctx.translate(centerX, centerY);
 
-      ctx.font = `${radius * 0.5}px MyClockFont`;
-      ctx.fillStyle = '#8B4513'; // base rope color
+      ctx.font = `${radius * 0.7}px MyClockFont`;
+      ctx.fillStyle = '#DDD3B1FF'; // base rope color
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
       const shadowLayers = [
-        { offsetX: 1, offsetY: 1, color: '#5a3e1b', blur: 0 },
-        { offsetX: 2, offsetY: 2, color: '#4d3316', blur: 0 },
-        { offsetX: 3, offsetY: 3, color: '#3f2710', blur: 0 },
-        { offsetX: 4, offsetY: 4, color: '#33210c', blur: 0 },
-      ];
+
+        { offsetX: 1, offsetY: 1, color: '#C59D6DFF', blur: 0 },
+        { offsetX: 2, offsetY: 2, color: '#DDB254FF', blur: 0 },
+
+        { offsetX: 3, offsetY: 3, color: '#272523FF', blur: 0 },
+           { offsetX: 4, offsetY: 4, color: '#150F08FF', blur: 0 },
+   ];
 
       for (let num = 1; num <= 12; num++) {
         const angle = (num * Math.PI) / 6;
@@ -105,8 +107,8 @@ const AnalogClock = () => {
         });
 
         // Draw main text on top, no shadow
-        ctx.shadowColor = 'transparent';
-        ctx.fillStyle = '#8B4513';
+        ctx.shadowColor = '#CBC8C8FF';
+        ctx.fillStyle = '#261407FF';
         ctx.fillText(num.toString(), x, y);
       }
 
