@@ -1,8 +1,0 @@
-import{r as s,j as t}from"./index-WFum8C4s.js";const d="/assets/hea-Buqq-spA.ttf",a="/assets/la-DdAAh18E.gif",m="/assets/em-4vY-LZPE.webp",h=()=>{const[i,c]=s.useState(new Date);s.useEffect(()=>{const e=setInterval(()=>{c(new Date)},1e3);return()=>clearInterval(e)},[]);const l=e=>{const o=e.getHours().toString().padStart(2,"0"),r=e.getMinutes().toString().padStart(2,"0");return`${o}:${r}`},n="brightness(1.5) contrast(3.2)",u=(e,o,r,f={})=>({position:"fixed",backgroundImage:`url(${e})`,backgroundPosition:"center",backgroundRepeat:"no-repeat",top:0,left:0,width:"100vw",height:"100vh",opacity:o,zIndex:r,pointerEvents:"none",filter:n,...f}),g={position:"relative",zIndex:10,fontFamily:"MyCustomFont, monospace",fontSize:"0.5rem",color:"#2C2D2D",display:"flex",justifyContent:"center",alignItems:"center",height:"100vh"};return t.jsxs(t.Fragment,{children:[t.jsx("div",{style:u(m,1,2,{backgroundSize:"100% 100%"})}),t.jsx("div",{style:{position:"absolute",top:"50%",left:"50%",width:"90vw",height:"90vh",backgroundImage:`url(${a})`,backgroundSize:"cover",backgroundRepeat:"no-repeat",backgroundPosition:"center",transform:"translate(-50%, -50%)",filter:n,zIndex:0,pointerEvents:"none"}}),t.jsx("div",{style:{position:"absolute",top:"50%",left:"50%",width:"90vw",height:"90vh",backgroundImage:`url(${a})`,backgroundSize:"cover",backgroundRepeat:"no-repeat",backgroundPosition:"center",transform:"translate(-50%, -50%) scaleX(-1) scaleY(-1)",filter:n,zIndex:0,pointerEvents:"none"}}),t.jsx("div",{style:g,children:l(i)}),t.jsx("style",{children:`
-          @font-face {
-            font-family: 'MyCustomFont';
-            src: url(${d}) format('woff2');
-            font-weight: normal;
-            font-style: normal;
-          }
-        `})]})};export{h as default};

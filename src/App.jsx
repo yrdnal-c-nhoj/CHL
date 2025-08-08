@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useEffect, useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { DataProvider } from './context/DataContext';
+import { DataContext, DataProvider } from './context/DataContext';
 import Home from './Home';
 import ClockPage from './ClockPage';
 import Manifesto from './Manifesto';
@@ -32,7 +32,11 @@ const metaMap = {
   '/contact': {
     title: 'Contact | BorrowedTime',
     description: 'Get in touch with the team.',
-  }
+  },
+  '/today': {
+    title: 'Today\'s Clock | BorrowedTime',
+    description: 'The most recent clock created by Cubist Heart Laboratories.',
+  },
 };
 
 // 📊 Combined analytics and SEO effect
@@ -70,6 +74,37 @@ const AnalyticsAndSEO = () => {
   );
 };
 
+// Component to handle redirect to the most recent clock
+const TodayRedirect = () => {
+  const { items, loading } = useContext(DataContext);
+
+  // Convert MM-DD-YY to YYYY-MM-DD for routing
+  const convertDateFormat = (dateStr) => {
+    if (!dateStr || !dateStr.match(/^\d{2}-\d{2}-\d{2}$/)) return null;
+    const [month, day, year] = dateStr.split('-');
+    return `20${year}-${month}-${day}`; // Assumes 20XX for YY
+  };
+
+  // Get the most recent date
+  let latestDate = new Date().toISOString().split('T')[0]; // Fallback to today (YYYY-MM-DD)
+  if (!loading && items.length > 0) {
+    const sortedDates = items
+      .map((item) => item.date)
+      .filter((date) => date && date.match(/^\d{2}-\d{2}-\d{2}$/))
+      .map((date) => {
+        const [month, day, year] = date.split('-');
+        return new Date(`20${year}-${month}-${day}`);
+      })
+      .sort((a, b) => b - a); // Sort descending
+    if (sortedDates.length > 0) {
+      const latest = sortedDates[0];
+      latestDate = `${latest.getFullYear()}-${String(latest.getMonth() + 1).padStart(2, '0')}-${String(latest.getDate()).padStart(2, '0')}`;
+    }
+  }
+
+  return <Navigate to={`/${latestDate}`} replace />;
+};
+
 const App = () => {
   return (
     <DataProvider>
@@ -78,6 +113,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/:date" element={<ClockPage />} />
+          <Route path="/today" element={<TodayRedirect />} />
           <Route path="/about" element={<About />} />
           <Route path="/log" element={<Log />} />
           <Route path="/manifesto" element={<Manifesto />} />
