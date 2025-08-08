@@ -153,8 +153,8 @@ position: absolute; /* or relative, depending on parent */
   }
 
   .topnavbt {
-    font-size: 1.9rem;
-    line-height: 2.0rem;
+    font-size: 1.7rem;
+    line-height: 1.6rem;
     letter-spacing: 0;
     padding: 0.1rem 0;
   }
@@ -162,7 +162,7 @@ position: absolute; /* or relative, depending on parent */
   .topnavtag {
     font-size: 0.7rem;
     line-height: 0.7rem;
-    padding: 0.2rem 0;
+    padding: 0.1rem 0;
   }
 
   .nav-menu {

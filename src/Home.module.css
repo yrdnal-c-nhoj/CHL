@@ -45,7 +45,7 @@ body {
   justify-content: space-between;
   width: 100%;
   box-sizing: border-box;
-  padding: 0.01rem 0.1rem;
+  padding: 0.3rem 0.01rem;
   position: relative;
   z-index: 1;
 }
