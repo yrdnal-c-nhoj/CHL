@@ -152,3 +152,17 @@
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+
+@media (max-width: 600px) {
+  
+.footerCenter {
+  flex: 1;
+  display: flex;
+  align-items: center;
+   font-size: 0.9rem;
+  justify-content: center;
+  white-space: nowrap;
+  /* overflow: hidden; */
+  text-overflow: ellipsis;
+}
+}
