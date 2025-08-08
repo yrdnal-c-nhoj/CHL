@@ -123,9 +123,9 @@ const MagentaClock = () => {
           <span
             style={{
               position: "absolute",
-              color: "#161313FF",
+              color: "#EB11E0FF",
               textShadow:
-                "4rem 0rem #ED0EC4FF, 6rem 0rem #ED0EC4FF, -4rem 0rem #ED0EC4FF, -6rem 0rem #ED0EC4FF",
+                "4rem 0rem #E71BCBFF, 6rem 0rem #ED0EC4FF, -4rem 0rem #ED0EC4FF, -6rem 0rem #ED0EC4FF",
               fontSize: getFontSize(char),
               animation: animate ? "fadeInOut 0.3s ease-in-out" : undefined,
               transformOrigin: "center",
