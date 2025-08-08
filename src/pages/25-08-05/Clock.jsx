@@ -3,12 +3,14 @@ import React, { useEffect, useRef } from 'react';
 const ClockGrid = () => {
   const faceCanvasRef = useRef(null);
   const handsCanvasRef = useRef(null);
-  const baseClockSize = 70;
-  const phoneClockSize = 50;
   const numRows = 10;
   const numCols = 10;
 
-  const getClockSize = () => (window.innerWidth < 768 ? phoneClockSize : baseClockSize);
+  const getClockSize = () => {
+    const maxWidthSize = window.innerWidth / numCols;
+    const maxHeightSize = window.innerHeight / numRows;
+    return Math.floor(Math.min(maxWidthSize, maxHeightSize)); // fits both directions
+  };
 
   const drawClockFace = (ctx, x, y, radius) => {
     ctx.save();
@@ -58,15 +60,13 @@ const ClockGrid = () => {
     const handsCtx = handsCanvas.getContext('2d');
 
     let animationFrameId;
-
     let clockSize = getClockSize();
     let radius = clockSize / 2;
-
-    // Store clock positions for hands drawing
     let clocks = [];
 
     const drawFaces = () => {
       faceCtx.clearRect(0, 0, faceCanvas.width, faceCanvas.height);
+
       const totalGridWidth = numCols * clockSize;
       const totalGridHeight = numRows * clockSize;
       const offsetX = (faceCanvas.width - totalGridWidth) / 2;
@@ -91,13 +91,14 @@ const ClockGrid = () => {
       const minute = currentTime.getMinutes();
       const second = currentTime.getSeconds() + currentTime.getMilliseconds() / 1000;
 
+      const handLength = clockSize * 12; // proportional long hands
+
       clocks.forEach(({ x, y, radius }) => {
         handsCtx.save();
         handsCtx.translate(x, y);
-        // Hands all 800px long
-        drawHand(handsCtx, (second * Math.PI) / 30, 800, radius * 0.1, '#F90810FF'); // Second
-        drawHand(handsCtx, ((hour + minute / 60) * Math.PI) / 6, 800, radius * 0.1, '#7D0386FF'); // Hour
-        drawHand(handsCtx, ((minute + second / 60) * Math.PI) / 30, 800, radius * 0.1, '#46EF1CFF'); // Minute
+        drawHand(handsCtx, (second * Math.PI) / 30, handLength, radius * 0.1, '#F90810FF'); // Second
+        drawHand(handsCtx, ((hour + minute / 60) * Math.PI) / 6, handLength, radius * 0.1, '#14E809FF'); // Hour
+        drawHand(handsCtx, ((minute + second / 60) * Math.PI) / 30, handLength, radius * 0.1, '#6E10F3FF'); // Minute
         handsCtx.restore();
       });
 
@@ -134,7 +135,6 @@ const ClockGrid = () => {
       aria-label="Grid of analog clocks displaying the current time"
       style={{ position: 'relative', width: '100vw', height: '100vh' }}
     >
-      {/* Clock faces canvas - below */}
       <canvas
         ref={faceCanvasRef}
         style={{
@@ -148,7 +148,6 @@ const ClockGrid = () => {
           display: 'block',
         }}
       />
-      {/* Hands canvas - above */}
       <canvas
         ref={handsCanvasRef}
         style={{
@@ -157,7 +156,7 @@ const ClockGrid = () => {
           left: 0,
           width: '100vw',
           height: '100vh',
-          pointerEvents: 'none', // so clicks pass through
+          pointerEvents: 'none',
           zIndex: 2,
           display: 'block',
         }}
