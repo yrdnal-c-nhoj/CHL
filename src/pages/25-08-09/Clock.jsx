@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import myFont from "./box.ttf"; // Ensure this path is correct
+import myFont from "./box.ttf";
 
 export default function RectangularAnalogClock({
   showSeconds = true,
@@ -7,15 +7,27 @@ export default function RectangularAnalogClock({
   accentColor = "#EEE7E9FF",
   fontFamilyName = "CustomFont",
 }) {
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
+  const hourPathRef = useRef(null);
+  const minutePathRef = useRef(null);
+  const secondPathRef = useRef(null);
+  const extraSecondRefs = useRef([]);
   const rafRef = useRef(null);
 
   const [size, setSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
+
+  // Config for 25 jagged hands, each with unique smooth phase shifts
+  const [extraSecondsConfig] = useState(() =>
+    Array.from({ length: 25 }).map((_, i) => ({
+      segmentCount: 10,
+      maxSegmentLength: 0.3, // 30% of minHalf for big size
+      strokeWidth: 2,
+      baseColor: accentColor,
+      phaseShift: (i / 25) * Math.PI * 2, // evenly spaced phases for smooth non-sync motion
+    }))
+  );
 
   useEffect(() => {
     const handleResize = () =>
@@ -38,6 +50,60 @@ export default function RectangularAnalogClock({
     return () => style.remove();
   }, [fontFamilyName]);
 
+  const degToRad = (deg) => (deg - 90) * (Math.PI / 180);
+
+  // Generates a smooth right-angle path for a hand,
+  // where each segment length oscillates smoothly with sine waves.
+  const generateSmoothJaggedPath = (cx, cy, baseAngleRad, minHalf, config, time) => {
+    const { segmentCount, maxSegmentLength, phaseShift } = config;
+
+    let points = [[cx, cy]];
+    let currentX = cx;
+    let currentY = cy;
+
+    for (let i = 0; i < segmentCount; i++) {
+      // Each segment length oscillates smoothly between 0.5 and 1 times maxSegmentLength,
+      // phased differently so all segments move independently but smoothly.
+      const segmentPhase = time + phaseShift + i;
+      const lengthFrac = 0.5 + 0.5 * Math.sin(segmentPhase);
+      const segmentLength = lengthFrac * maxSegmentLength * minHalf;
+
+      // Alternate direction: even index = horizontal segment, odd = vertical segment
+      if (i % 2 === 0) {
+        // Move horizontally: direction depends on sign of cos(baseAngle)
+        const dir = Math.sign(Math.cos(baseAngleRad)) || 1;
+        currentX += dir * segmentLength;
+      } else {
+        // Move vertically: direction depends on sign of sin(baseAngle)
+        const dir = Math.sign(Math.sin(baseAngleRad)) || 1;
+        currentY += dir * segmentLength;
+      }
+      points.push([currentX, currentY]);
+    }
+
+    // Build SVG path string with only right angles (H and V commands)
+    let pathD = `M ${points[0][0]} ${points[0][1]}`;
+    for (let i = 1; i < points.length; i++) {
+      const [px, py] = points[i];
+      const [ppx, ppy] = points[i - 1];
+      if (px === ppx) {
+        pathD += ` V ${py.toFixed(2)}`;
+      } else if (py === ppy) {
+        pathD += ` H ${px.toFixed(2)}`;
+      } else {
+        pathD += ` L ${px.toFixed(2)} ${py.toFixed(2)}`;
+      }
+    }
+    return pathD;
+  };
+
+  // Simple straight hand path with 2 right angles (horizontal then vertical)
+  const makeSimpleRightAnglePath = (x1, y1, x2, y2) => {
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    return `M ${x1} ${y1} H ${x1 + dx} V ${y1 + dy}`;
+  };
+
   const updateHands = () => {
     const now = new Date();
     const ms = now.getMilliseconds();
@@ -52,8 +118,7 @@ export default function RectangularAnalogClock({
     const halfH = height / 2;
     const minHalf = Math.min(halfW, halfH);
 
-    const degToRad = (deg) => (deg - 90) * (Math.PI / 180);
-
+    // Calculate main hour, minute, and second hand positions
     const radH = degToRad((h / 12) * 360);
     const hourX = cx + Math.cos(radH) * minHalf * 0.35;
     const hourY = cy + Math.sin(radH) * minHalf * 0.35;
@@ -65,6 +130,8 @@ export default function RectangularAnalogClock({
     const radS = degToRad((s / 60) * 360);
     const vxS = Math.cos(radS);
     const vyS = Math.sin(radS);
+
+    // Distance to edge for main second hand
     const safeDiv = (num, denom) =>
       Math.abs(denom) < 1e-9 ? Infinity : num / Math.abs(denom);
     const distToVertical = safeDiv(halfW, vxS);
@@ -73,24 +140,48 @@ export default function RectangularAnalogClock({
     const secondX = cx + vxS * lenSecond;
     const secondY = cy + vyS * lenSecond;
 
-    if (hourRef.current) {
-      hourRef.current.setAttribute("x1", cx);
-      hourRef.current.setAttribute("y1", cy);
-      hourRef.current.setAttribute("x2", hourX);
-      hourRef.current.setAttribute("y2", hourY);
+    // Update hour, minute, and main second hand paths (simple right angle lines)
+    if (hourPathRef.current) {
+      hourPathRef.current.setAttribute(
+        "d",
+        makeSimpleRightAnglePath(cx, cy, hourX, hourY)
+      );
     }
-    if (minuteRef.current) {
-      minuteRef.current.setAttribute("x1", cx);
-      minuteRef.current.setAttribute("y1", cy);
-      minuteRef.current.setAttribute("x2", minuteX);
-      minuteRef.current.setAttribute("y2", minuteY);
+    if (minutePathRef.current) {
+      minutePathRef.current.setAttribute(
+        "d",
+        makeSimpleRightAnglePath(cx, cy, minuteX, minuteY)
+      );
     }
-    if (secondRef.current && showSeconds) {
-      secondRef.current.setAttribute("x1", cx);
-      secondRef.current.setAttribute("y1", cy);
-      secondRef.current.setAttribute("x2", secondX);
-      secondRef.current.setAttribute("y2", secondY);
+    if (secondPathRef.current && showSeconds) {
+      secondPathRef.current.setAttribute(
+        "d",
+        makeSimpleRightAnglePath(cx, cy, secondX, secondY)
+      );
     }
+
+    // Slow time factor for smooth, slow movement of jagged hands
+    const time = now.getTime() / 2000; // 0.5 Hz approx
+
+    // Update all 25 jagged hands smoothly
+    extraSecondsConfig.forEach((config, i) => {
+      const pathEl = extraSecondRefs.current[i];
+      if (!pathEl) return;
+
+      // Base angle slightly offset per hand for independent direction
+      // Offset ±20° from main second hand angle for variety
+      const offsetAngle =
+        radS + ((i / 25 - 0.5) * (20 * Math.PI) / 180);
+
+      const pathD = generateSmoothJaggedPath(cx, cy, offsetAngle, minHalf, config, time);
+
+      pathEl.setAttribute("d", pathD);
+      pathEl.setAttribute("stroke", config.baseColor);
+      pathEl.setAttribute("stroke-width", config.strokeWidth.toString());
+      pathEl.setAttribute("stroke-linecap", "square");
+      pathEl.setAttribute("fill", "none");
+      pathEl.style.opacity = "0.8";
+    });
   };
 
   useEffect(() => {
@@ -100,7 +191,9 @@ export default function RectangularAnalogClock({
     };
     rafRef.current = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [size, showSeconds]);
+  }, [size, showSeconds, extraSecondsConfig]);
+
+  // Number positions omitted for brevity (use your existing getNumberPositions function)
 
   const getNumberPositions = () => {
     const numberFontSize = Math.round(Math.min(size.width, size.height) * 0.15);
@@ -113,7 +206,7 @@ export default function RectangularAnalogClock({
       Math.max(8, Math.min(size.width, size.height) * 0.04)
     );
 
-    const textGap = 15; // distance from tick tip to number edge
+    const textGap = 15;
 
     return Array.from({ length: 12 }, (_, i) => {
       const num = i === 0 ? 12 : i;
@@ -152,11 +245,9 @@ export default function RectangularAnalogClock({
     inset: 0,
   };
 
-  // Calculate rectangle width/height for 15x15 grid
-  const rectWidth = size.width / 4;
-  const rectHeight = size.height / 4;
+  const rectWidth = size.width / 15;
+  const rectHeight = size.height / 15;
 
-  // Generate array for 15x15 grid cells
   const gridCells = [];
   for (let row = 0; row < 15; row++) {
     for (let col = 0; col < 15; col++) {
@@ -172,7 +263,7 @@ export default function RectangularAnalogClock({
         viewBox={`0 0 ${size.width} ${size.height}`}
         preserveAspectRatio="none"
       >
-        {/* Background: 15x15 grid of black/white rectangles */}
+        {/* Background grid */}
         {gridCells.map(({ row, col }) => {
           const isBlack = (row + col) % 2 === 0;
           return (
@@ -187,7 +278,7 @@ export default function RectangularAnalogClock({
           );
         })}
 
-        {/* Overlay the gradient with partial opacity */}
+        {/* Gradient overlay */}
         <rect
           x="0"
           y="0"
@@ -207,6 +298,7 @@ export default function RectangularAnalogClock({
           strokeWidth="2"
         />
 
+        {/* Clock ticks */}
         {Array.from({ length: 60 }).map((_, i) => {
           const isHour = i % 5 === 0;
           const angleDeg = i * 6;
@@ -246,6 +338,7 @@ export default function RectangularAnalogClock({
           );
         })}
 
+        {/* Clock numbers */}
         {numbers.map((n, idx) => (
           <text
             key={idx}
@@ -261,43 +354,46 @@ export default function RectangularAnalogClock({
           </text>
         ))}
 
-        <line
-          ref={hourRef}
+        {/* Hour and minute hands */}
+        <path
+          ref={hourPathRef}
           stroke={accentColor}
-          strokeWidth={Math.max(
-            4,
-            Math.round(Math.min(size.width, size.height) * 0.01)
-          )}
-          strokeLinecap="round"
+          strokeWidth={Math.max(4, Math.round(Math.min(size.width, size.height) * 0.01))}
+          strokeLinecap="square"
+          fill="none"
         />
-        <line
-          ref={minuteRef}
+        <path
+          ref={minutePathRef}
           stroke="#fff"
-          strokeWidth={Math.max(
-            2,
-            Math.round(Math.min(size.width, size.height) * 0.007)
-          )}
-          strokeLinecap="round"
+          strokeWidth={Math.max(2, Math.round(Math.min(size.width, size.height) * 0.007))}
+          strokeLinecap="square"
+          fill="none"
         />
+
+        {/* Main second hand */}
         {showSeconds && (
-          <line
-            ref={secondRef}
+          <path
+            ref={secondPathRef}
             stroke="#F5EEEFFF"
-            strokeWidth={Math.max(
-              1,
-              Math.round(Math.min(size.width, size.height) * 0.003)
-            )}
-            strokeLinecap="round"
+            strokeWidth={Math.max(1, Math.round(Math.min(size.width, size.height) * 0.003))}
+            strokeLinecap="square"
+            fill="none"
           />
         )}
 
+        {/* 25 smooth jagged second hands */}
+        {extraSecondsConfig.map((_, i) => (
+          <path
+            key={`extra-second-${i}`}
+            ref={(el) => (extraSecondRefs.current[i] = el)}
+          />
+        ))}
+
+        {/* Center circle */}
         <circle
           cx={size.width / 2}
           cy={size.height / 2}
-          r={Math.max(
-            4,
-            Math.round(Math.min(size.width, size.height) * 0.001)
-          )}
+          r={Math.max(4, Math.round(Math.min(size.width, size.height) * 0.001))}
           fill="#080708FF"
         />
       </svg>
