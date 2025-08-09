@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import myFont from "./box.otf"; // <- put your font file here
+import myFont from "./box.ttf"; // <- put your font file here
 
 export default function RectangularAnalogClock({
   showSeconds = true,
@@ -114,25 +114,45 @@ export default function RectangularAnalogClock({
 
   const fontSize = Math.max(
     12,
-    Math.round(Math.min(size.width, size.height) * 0.04)
+    Math.round(Math.min(size.width, size.height) * 0.4)
   );
 
+  // Number positions with fully responsive placement
   const numbers = Array.from({ length: 12 }, (_, i) => {
     const num = i === 0 ? 12 : i;
     const angleDeg = i * 30;
     const rad = (angleDeg - 90) * (Math.PI / 180);
     const vx = Math.cos(rad);
     const vy = Math.sin(rad);
+
     const safe = (num, denom) =>
       Math.abs(denom) < 1e-9 ? Infinity : num / Math.abs(denom);
-    const dx = safe(size.width / 2, vx);
-    const dy = safe(size.height / 2, vy);
-    const distToEdge = Math.min(dx, dy);
-    const labelDist =
-      distToEdge -
-      Math.max(20, Math.min(size.width, size.height) * 0.07);
-    const x = size.width / 2 + vx * labelDist;
-    const y = size.height / 2 + vy * labelDist;
+    const halfW = size.width / 2;
+    const halfH = size.height / 2;
+
+    // Calculate distance to edge for each axis
+    const dx = safe(halfW, vx);
+    const dy = safe(halfH, vy);
+
+    // Estimate text size (approximate, assumes square-ish bounding box)
+    const textSize = fontSize * 0.6;
+    const margin = 15 + textSize / 2;
+
+    // Normalize direction vector to account for aspect ratio
+    const magnitude = Math.sqrt(vx * vx + vy * vy);
+    const nx = vx / magnitude;
+    const ny = vy / magnitude;
+
+    // Calculate distance to edge along the normalized direction
+    const distX = Math.abs(safe(halfW, nx));
+    const distY = Math.abs(safe(halfH, ny));
+    const distToEdge = Math.min(distX, distY);
+
+    // Apply margin to keep text 15px from edge
+    const labelDist = distToEdge - margin;
+
+    const x = size.width / 2 + nx * labelDist;
+    const y = size.height / 2 + ny * labelDist;
     return { num, x, y };
   });
 
@@ -170,8 +190,14 @@ export default function RectangularAnalogClock({
           const innerDist =
             distToEdge -
             (isHour
-              ? Math.min(25, Math.max(8, Math.min(size.width, size.height) * 0.04))
-              : Math.min(12, Math.max(4, Math.min(size.width, size.height) * 0.02)));
+              ? Math.min(
+                  25,
+                  Math.max(8, Math.min(size.width, size.height) * 0.04)
+                )
+              : Math.min(
+                  12,
+                  Math.max(4, Math.min(size.width, size.height) * 0.02)
+                ));
           const x1 = size.width / 2 + vx * innerDist;
           const y1 = size.height / 2 + vy * innerDist;
           const x2 = size.width / 2 + vx * distToEdge;
@@ -195,7 +221,7 @@ export default function RectangularAnalogClock({
             key={idx}
             x={n.x}
             y={n.y}
-            fill="#fff"
+            fill="#DF2424FF"
             fontSize={fontSize}
             fontFamily={fontFamilyName}
             textAnchor="middle"
@@ -209,20 +235,29 @@ export default function RectangularAnalogClock({
         <line
           ref={hourRef}
           stroke={accentColor}
-          strokeWidth={Math.max(4, Math.round(Math.min(size.width, size.height) * 0.01))}
+          strokeWidth={Math.max(
+            4,
+            Math.round(Math.min(size.width, size.height) * 0.01)
+          )}
           strokeLinecap="round"
         />
         <line
           ref={minuteRef}
           stroke="#fff"
-          strokeWidth={Math.max(2, Math.round(Math.min(size.width, size.height) * 0.007))}
+          strokeWidth={Math.max(
+            2,
+            Math.round(Math.min(size.width, size.height) * 0.007)
+          )}
           strokeLinecap="round"
         />
         {showSeconds && (
           <line
             ref={secondRef}
             stroke="#fb7185"
-            strokeWidth={Math.max(1, Math.round(Math.min(size.width, size.height) * 0.003))}
+            strokeWidth={Math.max(
+              1,
+              Math.round(Math.min(size.width, size.height) * 0.003)
+            )}
             strokeLinecap="round"
           />
         )}
@@ -231,7 +266,10 @@ export default function RectangularAnalogClock({
         <circle
           cx={size.width / 2}
           cy={size.height / 2}
-          r={Math.max(4, Math.round(Math.min(size.width, size.height) * 0.01))}
+          r={Math.max(
+            4,
+            Math.round(Math.min(size.width, size.height) * 0.01)
+          )}
           fill="#fff"
         />
       </svg>
