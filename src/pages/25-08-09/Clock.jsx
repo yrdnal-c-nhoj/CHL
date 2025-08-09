@@ -103,7 +103,7 @@ export default function RectangularAnalogClock({
   }, [size, showSeconds]);
 
   const getNumberPositions = () => {
-    const numberFontSize = Math.round(Math.min(size.width, size.height) * 0.2);
+    const numberFontSize = Math.round(Math.min(size.width, size.height) * 0.15);
 
     const halfW = size.width / 2;
     const halfH = size.height / 2;
