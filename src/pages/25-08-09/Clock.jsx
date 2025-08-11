@@ -340,7 +340,15 @@ const RectangularAnalogClock = () => {
           padding: '4px 8px',
           fontFamily: 'MyCustomFont, monospace',
           color: '#F4F6F8FF',
+            textShadow: `
+    0 0 6px #F3F4F7FF,
+    0 0 12px #F3F4F7FF,
+    2px 2px 4px rgba(0, 0, 0, 0.7)
+  `,
           fontSize: '1rem',
+
+      textShadow: '3px 3px 2px rgba(0, 0, 0, 0.8)', // stronger shadow on digits
+
           userSelect: 'none',
         }}
       >
