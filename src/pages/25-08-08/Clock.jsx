@@ -34,6 +34,7 @@ export default function DigitalClock() {
         textAlign: 'center',
         display: 'inline-block',
         userSelect: 'none',
+        
       }}
     >
       {children}
