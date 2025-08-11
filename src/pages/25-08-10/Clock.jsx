@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-// Full-viewport rectangular analog clock component for Vite + React
-// - fills entire viewport (100vw x 100vh)
-// - rectangular face (SVG rect) that occupies the viewport
-// - analog hands (hour, minute, optional second)
-// - numbers: 12 top-center, 3 center-right, 6 bottom-center, 9 center-left
-// - responsive on resize
 
 export default function FullViewportRectangularAnalogClock({ showSeconds = true }) {
   const [now, setNow] = useState(new Date());

@@ -343,11 +343,11 @@ const RectangularAnalogClock = () => {
             textShadow: `
     0 0 6px #F3F4F7FF,
     0 0 12px #F3F4F7FF,
-    2px 2px 4px rgba(0, 0, 0, 0.7)
+    2px 2px 4px rgba(0, 0, 0, 1.0)
   `,
           fontSize: '1rem',
 
-      textShadow: '3px 3px 2px rgba(0, 0, 0, 0.8)', // stronger shadow on digits
+      textShadow: '1px 1px 1px #E70E0EFF', // stronger shadow on digits
 
           userSelect: 'none',
         }}
