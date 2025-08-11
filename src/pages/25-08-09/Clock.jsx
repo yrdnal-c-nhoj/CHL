@@ -165,7 +165,7 @@ const RectangularAnalogClock = () => {
         y={pos.y}
         textAnchor="middle"
         dominantBaseline="middle"
-        fill="#F0F2F5FF"
+        fill="#D9F27FFF"
         style={{
           fontFamily: 'MyCustomFont, system-ui, sans-serif',
           fontSize: '0.6rem',
