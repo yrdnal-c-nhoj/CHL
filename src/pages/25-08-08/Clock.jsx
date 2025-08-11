@@ -1,98 +1,93 @@
 import React, { useEffect, useState } from 'react';
-import './Clock.css';
-import bg from './q.webp';
-import fontUrl from './q.otf';
+import bgImage from './q.webp';
+import myFont from './q.otf';
 
-const Clock = () => {
+export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
-  const [shift, setShift] = useState(false);
-  const [posToggle, setPosToggle] = useState(false);
+  const [offsetX, setOffsetX] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 50);
-    return () => clearInterval(interval);
-  }, []);
+    const timeInterval = setInterval(() => setTime(new Date()), 40);
 
-  // Start background shifting after 2 seconds
-  useEffect(() => {
-    const startShiftTimer = setTimeout(() => {
-      setShift(true);
+    // Toggle between 0 and 1 pixel offset 10 times per second
+    const jumpInterval = setInterval(() => {
+      setOffsetX((prev) => (prev === 0 ? 1 : 0));
     }, 100);
 
-    return () => clearTimeout(startShiftTimer);
+    return () => {
+      clearInterval(timeInterval);
+      clearInterval(jumpInterval);
+    };
   }, []);
 
-  // Handle position toggling when shift starts
-  useEffect(() => {
-    if (!shift) return;
+  const hours = time.getHours().toString().padStart(2, '0');
+  const minutes = time.getMinutes().toString().padStart(2, '0');
+  const seconds = time.getSeconds().toString().padStart(2, '0');
+  const hundredths = Math.floor(time.getMilliseconds() / 10)
+    .toString()
+    .padStart(2, '0');
 
-    const shiftInterval = setInterval(() => {
-      setPosToggle(prev => !prev);
-    }, 60); // every 0.1 seconds
-
-    return () => clearInterval(shiftInterval);
-  }, [shift]);
-
-  const pad = (n, digits = 2) => n.toString().padStart(digits, '0');
-
-  const getGroupedDigits = () => {
-    const h = pad(time.getHours());
-    const m = pad(time.getMinutes());
-    const s = pad(time.getSeconds());
-    const ms = pad(time.getMilliseconds(), 3).slice(0, 2); // Only first 2 digits
-    return {
-      hours: [...h],
-      minutes: [...m],
-      seconds: [...s],
-      milliseconds: [...ms],
-    };
-  };
-
-  const { hours, minutes, seconds, milliseconds } = getGroupedDigits();
-
-  // Background styles with side-to-side shift effect
-  const backgroundStyle = {
-    backgroundImage: `url(${bg})`,
-    backgroundSize: '110% 100%',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: shift
-      ? (posToggle ? '48% center' : '52% center') // left/right shift
-      : 'center center',
-    transition: 'background-position 0.08s ease-in-out', // smooth
-  };
-
-  return (
-    <div className="clock-container" style={backgroundStyle}>
-      <style>
-        {`@font-face {
-          font-family: 'CustomFont';
-          src: url(${fontUrl});
-        }`}
-      </style>
-      <div className="clock-wrapper">
-        <div className="digit-group">
-          {hours.map((d, i) => (
-            <div key={`h${i}`} className="digit-box">{d}</div>
-          ))}
-        </div>
-        <div className="digit-group">
-          {minutes.map((d, i) => (
-            <div key={`m${i}`} className="digit-box">{d}</div>
-          ))}
-        </div>
-        <div className="digit-group">
-          {seconds.map((d, i) => (
-            <div key={`s${i}`} className="digit-box">{d}</div>
-          ))}
-        </div>
-        <div className="digit-group">
-          {milliseconds.map((d, i) => (
-            <div key={`ms${i}`} className="digit-box">{d}</div>
-          ))}
-        </div>
-      </div>
+  const DigitBox = ({ children }) => (
+    <div
+      style={{
+        width: '1.5ch',
+        textAlign: 'center',
+        display: 'inline-block',
+        userSelect: 'none',
+      }}
+    >
+      {children}
     </div>
   );
-};
 
-export default Clock;
+
+
+  return (
+    <>
+      <style>
+        {`
+          @font-face {
+            font-family: 'MyCustomFont';
+            src: url(${myFont}) format('opentype');
+            font-weight: normal;
+            font-style: normal;
+          }
+          html, body, #root {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'MyCustomFont', monospace, sans-serif;
+          }
+        `}
+      </style>
+
+      <div
+        style={{
+          height: '100vh',
+          width: '100vw',
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: '110% 110%',
+          backgroundPosition: `${offsetX}px 0px`, // horizontal jump
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: '10vh',
+          color: '#fff',
+          textShadow: '2px 2px 4px rgba(0,0,0,0.7)',
+          userSelect: 'none',
+          transition: 'none', // disable smooth transition for jump
+        }}
+      >
+        <DigitBox>{hours[0]}</DigitBox>
+        <DigitBox>{hours[1]}</DigitBox>
+       
+        <DigitBox>{minutes[0]}</DigitBox>
+        <DigitBox>{minutes[1]}</DigitBox>
+      
+        <DigitBox>{seconds[0]}</DigitBox>
+        <DigitBox>{seconds[1]}</DigitBox>
+  
+        <DigitBox>{hundredths[0]}</DigitBox>
+        <DigitBox>{hundredths[1]}</DigitBox>
+      </div>
+    </>
+  );
+}
