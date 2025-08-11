@@ -1,0 +1,10 @@
+import{r as d,j as a}from"./index-Bshzq55w.js";const y="/assets/moby-wfl9il6S.ttf",u="/assets/waves-JIQPqvMo.gif",p=()=>{const i=d.useRef(null);return d.useEffect(()=>{if(!document.getElementById("moby-font")){const t=document.createElement("style");t.id="moby-font",t.innerHTML=`
+        @font-face {
+          font-family: 'Moby';
+          src: url(${y}) format('truetype');
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-0.5rem); }
+        }
+      `,document.head.appendChild(t)}const n={width:300,height:200},c=(t,s,r)=>{let o;do o=Math.random()*t;while(o>s&&o<r);return o},l=()=>{const t=i.current;if(!t)return;const s=new Date;t.textContent=s.toLocaleTimeString("en-US",{hour12:!1,hour:"numeric",minute:"numeric"});const r=c(window.innerWidth,(window.innerWidth-n.width)/2,(window.innerWidth+n.width)/2),o=c(window.innerHeight,(window.innerHeight-n.height)/2,(window.innerHeight+n.height)/2),m=2+Math.random()*6,f=Math.random()*.7+.3;t.style.transition="transform 2s ease-in-out, font-size 2s ease-in-out, opacity 2s ease-in-out",t.style.transform=`translate(${r}px, ${o}px)`,t.style.fontSize=`${m}rem`,t.style.opacity=f;const h=2e3+Math.random()*2e3;setTimeout(l,h)},e=i.current;return e&&(e.style.position="absolute",e.style.top="0",e.style.left="0",e.style.opacity="0",e.style.transform="translate(-500px, -500px)"),l(),()=>clearTimeout()},[]),a.jsxs("div",{style:{margin:0,padding:0,height:"100vh",width:"100vw",overflow:"hidden",backgroundColor:"#727B7BFF",filter:"brightness(300%) contrast(40%)",position:"relative",userSelect:"none"},children:[a.jsx("div",{ref:i,style:{fontFamily:"Moby, cursive",color:"#a1b4b4",textShadow:"#ced4d4 0.1rem 0.1rem 0.2rem, #000404 -0.1rem -0.1rem 0.9rem",position:"absolute",whiteSpace:"nowrap",pointerEvents:"none",opacity:0}}),a.jsx("img",{src:u,alt:"waves",style:{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:6,opacity:.6,filter:"brightness(180%) contrast(110%)",pointerEvents:"none"}})]})};export{p as default};
