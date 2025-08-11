@@ -55,7 +55,7 @@ const RectangularAnalogClock = () => {
 
   // single shared color and stroke width for all hands
   const handColor = '#F3F4F7FF';
-  const handStroke = 0.15;
+  const handStroke = 0.1;
 
   /**
    * Render a multi-angle (zig-zag / many bends) hand as a series of <line> segments.
@@ -116,6 +116,31 @@ const RectangularAnalogClock = () => {
     return <g key={keyPrefix}>{lines}</g>;
   };
 
+  // Helper: compute tick edge positions so we can draw connecting lines
+  const computeTickPositions = () => {
+    const topXs = [];
+    for (let i = 0; i < 15; i++) {
+      topXs.push(10 + (i * 80 / 14));
+    }
+
+    const rightYs = [];
+    for (let i = 1; i < 15; i++) {
+      rightYs.push(5 + (i * 90 / 14));
+    }
+
+    const bottomXs = [];
+    for (let i = 1; i < 15; i++) {
+      bottomXs.push(90 - (i * 80 / 14));
+    }
+
+    const leftYs = [];
+    for (let i = 1; i < 14; i++) {
+      leftYs.push(95 - (i * 90 / 14));
+    }
+
+    return { topXs, rightYs, bottomXs, leftYs };
+  };
+
   // Hour numbers placements
   const generateHourMarkers = () => {
     const positions = [
@@ -140,7 +165,7 @@ const RectangularAnalogClock = () => {
         y={pos.y}
         textAnchor="middle"
         dominantBaseline="middle"
-        fill="#D1E0FF"
+        fill="#F0F2F5FF"
         style={{
           fontFamily: 'MyCustomFont, system-ui, sans-serif',
           fontSize: '0.6rem',
@@ -152,7 +177,7 @@ const RectangularAnalogClock = () => {
     ));
   };
 
-  // Tick marks around the square face
+  // Tick marks around the square face (kept visible)
   const generateTicks = () => {
     const ticks = [];
 
@@ -166,7 +191,7 @@ const RectangularAnalogClock = () => {
           y1="5"
           x2={x}
           y2={i === 0 || i === 7 || i === 14 ? "12" : "8"}
-          stroke="#D1E0FF"
+          stroke="#F2F3F6FF"
           strokeWidth={0.2}
         />
       );
@@ -182,7 +207,7 @@ const RectangularAnalogClock = () => {
           y1={y}
           x2={i === 7 ? "88" : "92"}
           y2={y}
-          stroke="#D1E0FF"
+          stroke="#EEEFF1FF"
           strokeWidth={0.2}
         />
       );
@@ -198,7 +223,7 @@ const RectangularAnalogClock = () => {
           y1="95"
           x2={x}
           y2={i === 7 ? "88" : "92"}
-          stroke="#D1E0FF"
+          stroke="#F6F7FAFF"
           strokeWidth={0.2}
         />
       );
@@ -214,13 +239,54 @@ const RectangularAnalogClock = () => {
           y1={y}
           x2={i === 7 ? "12" : "8"}
           y2={y}
-          stroke="#D1E0FF"
+          stroke="#F5F7FAFF"
           strokeWidth={0.2}
         />
       );
     }
 
     return ticks;
+  };
+
+  // Build connecting lines (verticals for top ticks, horizontals for left ticks)
+  const renderConnectingTickLines = () => {
+    const { topXs, leftYs } = computeTickPositions();
+    const connects = [];
+
+    // Vertical lines for each top tick x (top to bottom)
+    // Slightly lighter and thin so it's subtle behind hands
+    topXs.forEach((x, idx) => {
+      connects.push(
+        <line
+          key={`v-${idx}`}
+          x1={+x.toFixed(4)}
+          y1={5}
+          x2={+x.toFixed(4)}
+          y2={95}
+          stroke="#E8EBEFFF"
+          strokeWidth={0.2}
+          opacity={0.9}
+        />
+      );
+    });
+
+    // Horizontal lines for each left tick y (left to right)
+    leftYs.forEach((y, idx) => {
+      connects.push(
+        <line
+          key={`h-${idx}`}
+          x1={5}
+          y1={+y.toFixed(4)}
+          x2={95}
+          y2={+y.toFixed(4)}
+          stroke="#E8EBEFFF"
+          strokeWidth={0.2}
+          opacity={0.9}
+        />
+      );
+    });
+
+    return connects;
   };
 
   return (
@@ -247,6 +313,9 @@ const RectangularAnalogClock = () => {
         {/* Tick marks */}
         {generateTicks()}
 
+        {/* Connecting lines across the viewport (vertical + horizontal grid from ticks) */}
+        {renderConnectingTickLines()}
+
         {/* Hour numbers */}
         {generateHourMarkers()}
 
@@ -270,7 +339,7 @@ const RectangularAnalogClock = () => {
           borderRadius: 8,
           padding: '4px 8px',
           fontFamily: 'MyCustomFont, monospace',
-          color: '#D1E0FF',
+          color: '#F4F6F8FF',
           fontSize: '1rem',
           userSelect: 'none',
         }}
