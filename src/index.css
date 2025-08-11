@@ -22,3 +22,9 @@ body {
 .main-content {
   flex: 1;
 } */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './styles.css'; /* Import global styles */
