@@ -177,76 +177,6 @@ const RectangularAnalogClock = () => {
     ));
   };
 
-  // Tick marks around the square face (kept visible)
-  const generateTicks = () => {
-    const ticks = [];
-
-    // Top edge ticks (0..14)
-    for (let i = 0; i < 15; i++) {
-      const x = 10 + (i * 80 / 14);
-      ticks.push(
-        <line
-          key={`top-${i}`}
-          x1={x}
-          y1="5"
-          x2={x}
-          y2={i === 0 || i === 7 || i === 14 ? "12" : "8"}
-          stroke="#F2F3F6FF"
-          strokeWidth={0.2}
-        />
-      );
-    }
-
-    // Right edge ticks (1..14)
-    for (let i = 1; i < 15; i++) {
-      const y = 5 + (i * 90 / 14);
-      ticks.push(
-        <line
-          key={`right-${i}`}
-          x1="95"
-          y1={y}
-          x2={i === 7 ? "88" : "92"}
-          y2={y}
-          stroke="#EEEFF1FF"
-          strokeWidth={0.2}
-        />
-      );
-    }
-
-    // Bottom edge ticks (1..14)
-    for (let i = 1; i < 15; i++) {
-      const x = 90 - (i * 80 / 14);
-      ticks.push(
-        <line
-          key={`bottom-${i}`}
-          x1={x}
-          y1="95"
-          x2={x}
-          y2={i === 7 ? "88" : "92"}
-          stroke="#F6F7FAFF"
-          strokeWidth={0.2}
-        />
-      );
-    }
-
-    // Left edge ticks (1..13)
-    for (let i = 1; i < 14; i++) {
-      const y = 95 - (i * 90 / 14);
-      ticks.push(
-        <line
-          key={`left-${i}`}
-          x1="5"
-          y1={y}
-          x2={i === 7 ? "12" : "8"}
-          y2={y}
-          stroke="#F5F7FAFF"
-          strokeWidth={0.2}
-        />
-      );
-    }
-
-    return ticks;
-  };
 
   // Build connecting lines (verticals for top ticks, horizontals for left ticks)
   const renderConnectingTickLines = () => {
@@ -310,9 +240,6 @@ const RectangularAnalogClock = () => {
         {/* Clock face background */}
         <rect width="100" height="100" fill="#052149" />
 
-        {/* Tick marks */}
-        {generateTicks()}
-
         {/* Connecting lines across the viewport (vertical + horizontal grid from ticks) */}
         {renderConnectingTickLines()}
 
@@ -326,34 +253,7 @@ const RectangularAnalogClock = () => {
 
         {/* Center dot (match hand color, slightly larger) */}
         <circle cx="50" cy="50" r="1.9" fill={handColor} />
-      </svg>
-
-      {/* Digital time display */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 16,
-          right: 16,
-          backgroundColor: 'rgba(0,0,0,0.3)',
-          backdropFilter: 'blur(4px)',
-          borderRadius: 8,
-          padding: '4px 8px',
-          fontFamily: 'MyCustomFont, monospace',
-          color: '#F4F6F8FF',
-            textShadow: `
-    0 0 6px #F3F4F7FF,
-    0 0 12px #F3F4F7FF,
-    2px 2px 4px rgba(0, 0, 0, 1.0)
-  `,
-          fontSize: '1rem',
-
-      textShadow: '1px 1px 1px #E70E0EFF', // stronger shadow on digits
-
-          userSelect: 'none',
-        }}
-      >
-        {now.toLocaleTimeString()}
-      </div>
+      </svg> 
     </div>
   );
 };
