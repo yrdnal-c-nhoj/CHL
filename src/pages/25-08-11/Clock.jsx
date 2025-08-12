@@ -19,7 +19,6 @@ const SwirlingImages = () => {
   const [viewport, setViewport] = useState({ width: window.innerWidth, height: window.innerHeight });
   const [time, setTime] = useState(new Date());
 
-  // Generate swirling images only once on mount
   const imagesRef = useRef(null);
 
   if (!imagesRef.current) {
@@ -56,7 +55,6 @@ const SwirlingImages = () => {
     const onResize = () => setViewport({ width: window.innerWidth, height: window.innerHeight });
     window.addEventListener('resize', onResize);
 
-    // Update clock time every second for clock hands only
     const timer = setInterval(() => setTime(new Date()), 1000);
 
     return () => {
@@ -138,18 +136,23 @@ const SwirlingImages = () => {
     borderRadius: '2px',
   };
 
+  // Calculate rotation degrees based on current time
+  const hourDegrees = (time.getHours() % 12) * 30 + time.getMinutes() * 0.5; // 30deg per hour + 0.5deg per min
+  const minuteDegrees = time.getMinutes() * 6; // 6deg per minute
+  const secondDegrees = time.getSeconds() * 6; // 6deg per second
+
   const hourHandStyle = {
     ...handStyle,
     width: '4px',
     height: '5rem',
-    transform: `translateX(-50%) rotate(${((time.getHours() % 12) * 30 + time.getMinutes() / 2)}deg)`,
+    transform: `translateX(-50%) rotate(${hourDegrees}deg)`,
   };
 
   const minuteHandStyle = {
     ...handStyle,
     width: '3px',
     height: '7rem',
-    transform: `translateX(-50%) rotate(${time.getMinutes() * 6}deg)`,
+    transform: `translateX(-50%) rotate(${minuteDegrees}deg)`,
   };
 
   const secondHandStyle = {
@@ -157,7 +160,7 @@ const SwirlingImages = () => {
     width: '2px',
     height: '8rem',
     background: '#FBF9F9FF',
-    transform: `translateX(-50%) rotate(${time.getSeconds() * 6}deg)`,
+    transform: `translateX(-50%) rotate(${secondDegrees}deg)`,
   };
 
   const getOrbitWrapperStyle = (img) => ({
@@ -212,18 +215,6 @@ const SwirlingImages = () => {
     });
 
     keyframes += `
-      @keyframes hour-rotate {
-        0% { transform: translateX(-50%) rotate(0deg); }
-        100% { transform: translateX(-50%) rotate(360deg); }
-      }
-      @keyframes minute-rotate {
-        0% { transform: translateX(-50%) rotate(0deg); }
-        100% { transform: translateX(-50%) rotate(360deg); }
-      }
-      @keyframes second-rotate {
-        0% { transform: translateX(-50%) rotate(0deg); }
-        100% { transform: translateX(-50%) rotate(360deg); }
-      }
       @keyframes clock-face-rotate {
         0% { transform: translate(-50%, -50%) rotate(0deg); }
         100% { transform: translate(-50%, -50%) rotate(-360deg); }
@@ -233,10 +224,16 @@ const SwirlingImages = () => {
     return keyframes;
   };
 
-  // Generate clock numbers (1 through 12)
-  const clockNumbers = Array.from({ length: 12 }, (_, i) => i + 1).map((num, i) => {
-    const angle = (i * 30 - 90) * (Math.PI / 180); // Start at -90° to place 12 at top
-    const radius = 8.5; // rem, inside clock face
+  const selectedNumbers = [
+    { num: '12', angleDeg: -90 },
+    { num: '3', angleDeg: 0 },
+    { num: '6', angleDeg: 90 },
+    { num: '9', angleDeg: 180 },
+  ];
+
+  const clockNumbers = selectedNumbers.map(({ num, angleDeg }) => {
+    const angle = (angleDeg * Math.PI) / 180;
+    const radius = 8.5; // rem
     return {
       num,
       style: {
@@ -268,9 +265,9 @@ const SwirlingImages = () => {
             {num.num}
           </div>
         ))}
-        <div style={{ ...hourHandStyle, animation: 'hour-rotate 43200s linear infinite' }} />
-        <div style={{ ...minuteHandStyle, animation: 'minute-rotate 3600s linear infinite' }} />
-        <div style={{ ...secondHandStyle, animation: 'second-rotate 60s linear infinite' }} />
+        <div style={hourHandStyle} />
+        <div style={minuteHandStyle} />
+        <div style={secondHandStyle} />
       </div>
 
       <style>{generateKeyframes()}</style>
