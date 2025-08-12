@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import customFont from './wash.otf';
 import bgImage from './mach.gif';
 import topImage from './wash.gif';
@@ -19,11 +19,44 @@ const SwirlingImages = () => {
   const [viewport, setViewport] = useState({ width: window.innerWidth, height: window.innerHeight });
   const [time, setTime] = useState(new Date());
 
+  // Generate swirling images only once on mount
+  const imagesRef = useRef(null);
+
+  if (!imagesRef.current) {
+    const remToPx = (rem) => rem * 16;
+    const maxImageHalfPx = Math.max(...imageSizes) / 2 * 16;
+    const baseOrbitRadiusPx = Math.min(viewport.width, viewport.height) / 2 - maxImageHalfPx - 10;
+
+    const orbitRadiusFactor = 0.65;
+    const baseOrbitRadiusVh = ((baseOrbitRadiusPx / viewport.height) * 100) * orbitRadiusFactor;
+
+    imagesRef.current = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11].map((src, i) => {
+      const direction = Math.random() > 0.5 ? 1 : -1;
+      const baseSpeed = 3;
+      const speedVariance = Math.random() * 3;
+      return {
+        id: i,
+        src,
+        size: imageSizes[i] || 6,
+        startAngle: Math.random() * 360,
+        distance: baseOrbitRadiusVh + (i % 2 === 0 ? i * 4 : -i * 4),
+        orbitSpeed: baseSpeed + speedVariance,
+        orbitDirection: direction,
+        wobbleAmplitude: 0.3 + Math.random() * 1.2,
+        wobbleSpeed: 1.5 + Math.random() * 2.5,
+        opacity: 1.0,
+        selfSpinSpeed: 2 + Math.random() * 4,
+      };
+    });
+  }
+
+  const images = imagesRef.current;
+
   useEffect(() => {
     const onResize = () => setViewport({ width: window.innerWidth, height: window.innerHeight });
     window.addEventListener('resize', onResize);
 
-    // Update time every second
+    // Update clock time every second for clock hands only
     const timer = setInterval(() => setTime(new Date()), 1000);
 
     return () => {
@@ -31,32 +64,6 @@ const SwirlingImages = () => {
       clearInterval(timer);
     };
   }, []);
-
-  const remToPx = (rem) => rem * 16;
-  const maxImageHalfPx = Math.max(...imageSizes) / 2 * 16;
-  const baseOrbitRadiusPx = Math.min(viewport.width, viewport.height) / 2 - maxImageHalfPx - 10;
-
-  const orbitRadiusFactor = 0.65;
-  const baseOrbitRadiusVh = ((baseOrbitRadiusPx / viewport.height) * 100) * orbitRadiusFactor;
-
-  const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11].map((src, i) => {
-    const direction = Math.random() > 0.5 ? 1 : -1;
-    const baseSpeed = 3;
-    const speedVariance = Math.random() * 3;
-    return {
-      id: i,
-      src,
-      size: imageSizes[i] || 6,
-      startAngle: Math.random() * 360,
-      distance: baseOrbitRadiusVh + (i % 2 === 0 ? i * 4 : -i * 4),
-      orbitSpeed: baseSpeed + speedVariance,
-      orbitDirection: direction,
-      wobbleAmplitude: 0.3 + Math.random() * 1.2,
-      wobbleSpeed: 1.5 + Math.random() * 2.5,
-      opacity: 1.0,
-      selfSpinSpeed: 2 + Math.random() * 4,
-    };
-  });
 
   const containerStyle = {
     position: 'relative',
@@ -97,7 +104,6 @@ const SwirlingImages = () => {
     pointerEvents: 'none',
   };
 
-  // Clock styles
   const clockContainerStyle = {
     position: 'absolute',
     top: '50%',
@@ -106,8 +112,6 @@ const SwirlingImages = () => {
     width: '20rem',
     height: '20rem',
     borderRadius: '50%',
-    // background: 'rgba(0, 0, 0, 0.7)',
-    // border: '2px solid #fff', 
     zIndex: 10,
     display: 'flex',
     alignItems: 'center',
@@ -207,7 +211,6 @@ const SwirlingImages = () => {
       `;
     });
 
-    // Add animations for clock hands (clockwise) and clock face (counterclockwise)
     keyframes += `
       @keyframes hour-rotate {
         0% { transform: translateX(-50%) rotate(0deg); }
@@ -238,11 +241,7 @@ const SwirlingImages = () => {
       num,
       style: {
         ...clockNumberStyle,
-        transform: `translate(-50%, -50%) translate(${
-          radius * Math.cos(angle)
-        }rem, ${
-          radius * Math.sin(angle)
-        }rem)`,
+        transform: `translate(-50%, -50%) translate(${radius * Math.cos(angle)}rem, ${radius * Math.sin(angle)}rem)`,
       },
     };
   });
