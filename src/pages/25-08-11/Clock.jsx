@@ -19,6 +19,7 @@ const SwirlingImages = () => {
   const [viewport, setViewport] = useState({ width: window.innerWidth, height: window.innerHeight });
   const [time, setTime] = useState(new Date());
 
+  // Generate swirling images only once on mount
   const imagesRef = useRef(null);
 
   if (!imagesRef.current) {
@@ -127,7 +128,7 @@ const SwirlingImages = () => {
 
   const clockNumberStyle = {
     position: 'absolute',
-    color: '#EFF3F5FF',
+    color: '#F1EAEAFF',
     fontFamily: '"CustomFont", sans-serif',
     fontSize: '4.2rem',
     textAlign: 'center',
@@ -241,27 +242,10 @@ const SwirlingImages = () => {
     return keyframes;
   };
 
-  // Only 4 clock numbers: 12, 3, 6, 9
-  const clockNumbers = [12, 3, 6, 9].map((num) => {
-    let angleDeg;
-    switch (num) {
-      case 12:
-        angleDeg = 0;
-        break;
-      case 3:
-        angleDeg = 90;
-        break;
-      case 6:
-        angleDeg = 180;
-        break;
-      case 9:
-        angleDeg = 270;
-        break;
-      default:
-        angleDeg = 0;
-    }
-    const angle = (angleDeg - 90) * (Math.PI / 180);
-    const radius = 8.5; // rem
+  // Generate clock numbers (1 through 12)
+  const clockNumbers = Array.from({ length: 12 }, (_, i) => i + 1).map((num, i) => {
+    const angle = (i * 30 - 90) * (Math.PI / 180); // Start at -90° to place 12 at top
+    const radius = 8.5; // rem, inside clock face
     return {
       num,
       style: {
@@ -293,9 +277,9 @@ const SwirlingImages = () => {
             {num.num}
           </div>
         ))}
-        <div style={hourHandStyle} />
-        <div style={minuteHandStyle} />
-        <div style={secondHandStyle} />
+        <div style={{ ...hourHandStyle, animation: 'hour-rotate 43200s linear infinite' }} />
+        <div style={{ ...minuteHandStyle, animation: 'minute-rotate 3600s linear infinite' }} />
+        <div style={{ ...secondHandStyle, animation: 'second-rotate 60s linear infinite' }} />
       </div>
 
       <style>{generateKeyframes()}</style>
