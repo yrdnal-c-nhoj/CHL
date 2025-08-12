@@ -75,7 +75,7 @@ const SwirlingImages = () => {
     position: 'absolute',
     inset: 0,
     backgroundImage: `url(${bgImage})`,
-    backgroundSize: '200%',
+    backgroundSize: '230%',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     transform: 'scaleX(-1)',
