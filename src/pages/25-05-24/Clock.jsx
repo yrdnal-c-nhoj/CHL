@@ -54,7 +54,7 @@ const Clock = () => {
 
     function createLetter() {
       const span = document.createElement('span');
-      span.className = 'tornado-letter';
+      span.className = 'tornado-clock__letter';
       const letter = randomLetter();
       span.textContent = letter;
       span.style.color = assignColor(letter);
@@ -73,7 +73,7 @@ const Clock = () => {
         speed: Math.random() * 0.2 + 0.2,
         wobblePhase: Math.random() * 2 * Math.PI,
         wobbleFreq: Math.random() * 0.15 + 0.1,
-        wobbleAmp: Math.random() * 40 + 20,
+        wobbleAmp: Math.random() * 2 + 1,
         secondaryWobblePhase: Math.random() * 2 * Math.PI,
         secondaryWobbleFreq: Math.random() * 0.2 + 0.05
       };
@@ -83,13 +83,13 @@ const Clock = () => {
     function animate() {
       requestAnimationFrame(animate);
       time += 0.01;
-      const swayOffset = Math.sin(time) * 50;
+      const swayOffset = Math.sin(time) * 5;
 
       particles.forEach(p => {
         p.angle += p.speed * 0.05;
         p.baseHeight -= p.speed + Math.sin(time + p.wobblePhase) * 0.2;
-        if (p.baseHeight < -50) {
-          p.baseHeight = window.innerHeight + 50;
+        if (p.baseHeight < -5) {
+          p.baseHeight = window.innerHeight + 5;
           p.el.textContent = randomLetter();
           p.el.style.color = assignColor(p.el.textContent);
           p.el.style.fontSize = `${randomInRange(3, 8)}vh`;
@@ -99,29 +99,28 @@ const Clock = () => {
         }
 
         const normalizedHeight = 1 - (p.baseHeight / window.innerHeight);
-        const baseRadius = 30 + normalizedHeight * 200;
-        const radiusVariation = Math.sin(time + p.wobblePhase) * 15;
+        const baseRadius = 3 + normalizedHeight * 20;
+        const radiusVariation = Math.sin(time + p.wobblePhase) * 1.5;
         const radius = baseRadius + radiusVariation;
 
         const wobble =
           Math.sin(time * p.wobbleFreq + p.wobblePhase) * p.wobbleAmp +
           Math.cos(time * p.secondaryWobbleFreq + p.secondaryWobblePhase) *
             (p.wobbleAmp * 0.5);
-        const x = centerX + swayOffset + Math.cos(p.angle) * radius + wobble;
-        const y = p.baseHeight;
+        const x = (centerX / window.innerWidth) * 100 + swayOffset + Math.cos(p.angle) * radius + wobble;
+        const y = (p.baseHeight / window.innerHeight) * 100;
 
         const scale = 0.5 + (p.baseHeight / window.innerHeight) * 1.5;
         const rotation = p.angle * 50;
 
-        p.el.style.transform = `translate(${x}px, ${y}px) scale(${scale}) rotate(${rotation}deg)`;
+        p.el.style.transform = `translate(${x}vw, ${y}vh) scale(${scale}) rotate(${rotation}deg)`;
         p.el.style.zIndex = Math.floor(scale * 100);
       });
     }
 
     animate();
 
-    // Flash logic
-    const flashOverlay = document.getElementById('flash-overlay');
+    const flashOverlay = document.getElementById('tornado-clock__flash-overlay');
     function triggerFlash(color) {
       if (flashOverlay) {
         flashOverlay.style.backgroundColor = color;
@@ -142,6 +141,13 @@ const Clock = () => {
     }
 
     randomFlashLoop();
+
+    return () => {
+      particles.forEach(p => p.el.remove());
+      window.removeEventListener('resize', () => {
+        centerX = window.innerWidth / 2;
+      });
+    };
   }, []);
 
   return (
@@ -161,16 +167,17 @@ const Clock = () => {
             background: radial-gradient(ellipse at center, #8d906e 0%, #eaf5a2 100%);
             background-color: rgb(184, 204, 168);
             font-family: 'speed', sans-serif;
+            isolation: isolate;
           }
 
-          .tornado-letter {
+          .tornado-clock__letter {
             position: absolute;
             pointer-events: none;
             will-change: transform;
             font-family: 'speed', Arial, sans-serif;
           }
 
-          .tornado-clock .bgimage {
+          .tornado-clock__bgimage {
             background-size: cover;
             background-position: center;
             position: absolute;
@@ -182,7 +189,7 @@ const Clock = () => {
             filter: contrast(0.2) invert(5.0);
           }
 
-          .tornado-clock #flash-overlay {
+          .tornado-clock__flash-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -196,8 +203,8 @@ const Clock = () => {
         `}
       </style>
 
-      <img src={torGif} className="bgimage" alt="Tornado Background" />
-      <div id="flash-overlay"></div>
+      <img src={torGif} className="tornado-clock__bgimage" alt="Tornado Background" />
+      <div id="tornado-clock__flash-overlay"></div>
     </div>
   );
 };
