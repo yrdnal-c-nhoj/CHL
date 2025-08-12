@@ -23,37 +23,29 @@ const SwirlingImages = () => {
   const imagesRef = useRef(null);
 
   if (!imagesRef.current) {
+    const remToPx = (rem) => rem * 16;
     const maxImageHalfPx = Math.max(...imageSizes) / 2 * 16;
     const baseOrbitRadiusPx = Math.min(viewport.width, viewport.height) / 2 - maxImageHalfPx - 10;
+
     const orbitRadiusFactor = 0.65;
     const baseOrbitRadiusVh = ((baseOrbitRadiusPx / viewport.height) * 100) * orbitRadiusFactor;
-
-    const minOrbitDistance = 8; // minimum orbit radius in vh
-    const maxOrbitDistance = baseOrbitRadiusVh;
 
     imagesRef.current = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11].map((src, i) => {
       const direction = Math.random() > 0.5 ? 1 : -1;
       const baseSpeed = 3;
       const speedVariance = Math.random() * 3;
-
-      const orbitDistance = minOrbitDistance + Math.random() * (maxOrbitDistance - minOrbitDistance);
-
       return {
         id: i,
         src,
         size: imageSizes[i] || 6,
         startAngle: Math.random() * 360,
-        distance: orbitDistance,
+        distance: baseOrbitRadiusVh + (i % 2 === 0 ? i * 4 : -i * 4),
         orbitSpeed: baseSpeed + speedVariance,
         orbitDirection: direction,
         wobbleAmplitude: 0.3 + Math.random() * 1.2,
         wobbleSpeed: 1.5 + Math.random() * 2.5,
-        wobbleDirectionX: Math.random() > 0.5 ? 1 : -1,
-        wobbleDirectionY: Math.random() > 0.5 ? 1 : -1,
         opacity: 1.0,
         selfSpinSpeed: 2 + Math.random() * 4,
-        animationDelay: `${(Math.random() * 5).toFixed(2)}s`,
-        selfSpinDelay: `${(Math.random() * 5).toFixed(2)}s`,
       };
     });
   }
@@ -64,6 +56,7 @@ const SwirlingImages = () => {
     const onResize = () => setViewport({ width: window.innerWidth, height: window.innerHeight });
     window.addEventListener('resize', onResize);
 
+    // Update clock time every second for clock hands only
     const timer = setInterval(() => setTime(new Date()), 1000);
 
     return () => {
@@ -128,7 +121,7 @@ const SwirlingImages = () => {
 
   const clockNumberStyle = {
     position: 'absolute',
-    color: '#F1EAEAFF',
+    color: 'transparent',
     fontFamily: '"CustomFont", sans-serif',
     fontSize: '4.2rem',
     textAlign: 'center',
@@ -177,7 +170,6 @@ const SwirlingImages = () => {
     animationTimingFunction: 'linear',
     animationIterationCount: 'infinite',
     animationDirection: img.orbitDirection > 0 ? 'normal' : 'reverse',
-    animationDelay: img.animationDelay,
     opacity: img.opacity,
   });
 
@@ -192,7 +184,6 @@ const SwirlingImages = () => {
     objectFit: 'cover',
     display: 'block',
     animation: `self-spin-${img.id} ${img.selfSpinSpeed}s linear infinite`,
-    animationDelay: img.selfSpinDelay,
   });
 
   const generateKeyframes = () => {
@@ -211,7 +202,7 @@ const SwirlingImages = () => {
         }
         @keyframes wobble-${img.id} {
           0% { transform: translateY(0) translateX(0); }
-          100% { transform: translateY(${img.wobbleAmplitude * img.wobbleDirectionY}vh) translateX(${img.wobbleAmplitude * 0.5 * img.wobbleDirectionX}vw); }
+          100% { transform: translateY(${img.wobbleAmplitude}vh) translateX(${img.wobbleAmplitude * 0.5}vw); }
         }
         @keyframes self-spin-${img.id} {
           0% { transform: rotate(0deg); }
