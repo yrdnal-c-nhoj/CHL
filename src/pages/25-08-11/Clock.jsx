@@ -121,7 +121,7 @@ const SwirlingImages = () => {
 
   const clockNumberStyle = {
     position: 'absolute',
-    color: 'transparent',
+    color: '#D4E7F7FF',
     fontFamily: '"CustomFont", sans-serif',
     fontSize: '4.2rem',
     textAlign: 'center',
