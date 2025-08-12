@@ -31,7 +31,6 @@ const ElephantClock = () => {
 
     let orbitAngle = 0;
     const orbitRadius = 40;
-
     let frameId;
 
     const updateClock = () => {
@@ -107,9 +106,6 @@ const ElephantClock = () => {
         width: '100vw',
         overflow: 'hidden',
         background: '#7e7c79',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         position: 'relative',
         fontFamily: 'sans-serif',
       }}
@@ -118,32 +114,32 @@ const ElephantClock = () => {
         src={elWebp}
         alt="Background"
         style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
           objectFit: 'cover',
           filter: 'saturate(50%)',
           zIndex: 0,
         }}
       />
 
+      {/* Absolute centering for the clock face */}
       <div
         style={{
-          width: '100vmin',
-          height: '100vmin',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '80vmin',
+          height: '80vmin',
         }}
       >
         <div
           style={{
             position: 'relative',
-            width: '80vmin',
-            height: '80vmin',
+            width: '100%',
+            height: '100%',
             borderRadius: '50%',
             zIndex: 2,
           }}
@@ -204,7 +200,6 @@ const ElephantClock = () => {
             src={eleGif}
             alt=""
             aria-hidden="true"
-            role="presentation"
             style={{
               position: 'absolute',
               width: '20vmin',
@@ -225,7 +220,7 @@ const ElephantClock = () => {
 const handStyle = {
   position: 'absolute',
   width: '100%',
-  height: '100%',
+  height: '80%',
   top: 0,
   left: 0,
   opacity: 0.8,
