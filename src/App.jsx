@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { DataProvider } from './context/DataContext';
 import Home from './Home';
@@ -40,8 +40,8 @@ const AnalyticsAndSEO = () => {
   const location = useLocation();
   const path = location.pathname;
 
-  // Match dynamic clock routes like "/2025-08-05"
-  const dynamicClockRoute = /^\/\d{4}-\d{2}-\d{2}$/;
+  // Match dynamic clock routes like "/25-08-12"
+  const dynamicClockRoute = /^\/\d{2}-\d{2}-\d{2}$/;
   const isClockPage = dynamicClockRoute.test(path);
 
   const meta = isClockPage
@@ -70,6 +70,15 @@ const AnalyticsAndSEO = () => {
   );
 };
 
+// Helper to format as YY-MM-DD
+const getTodayDateString = () => {
+  const today = new Date();
+  const yy = String(today.getFullYear()).slice(2);
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  return `${yy}-${mm}-${dd}`;
+};
+
 const App = () => {
   return (
     <DataProvider>
@@ -77,6 +86,7 @@ const App = () => {
         <AnalyticsAndSEO />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/today" element={<Navigate to={`/${getTodayDateString()}`} replace />} />
           <Route path="/:date" element={<ClockPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/log" element={<Log />} />
