@@ -11,6 +11,10 @@ import Log from './Log';
 import ErrorPage from './ErrorPage';
 import { pageview } from './analytics';
 
+
+
+
+
 // 🧠 Route-based SEO title + description map
 const metaMap = {
   '/': {
@@ -84,16 +88,17 @@ const App = () => {
     <DataProvider>
       <Router>
         <AnalyticsAndSEO />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/today" element={<Navigate to={`/${getTodayDateString()}`} replace />} />
-          <Route path="/:date" element={<ClockPage />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/log" element={<Log />} />
-          <Route path="/manifesto" element={<Manifesto />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
+      
+
+<Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/:date" element={<ClockPage />} />
+  <Route path="/about" element={<About />} />
+  <Route path="/log" element={<Log />} />
+  <Route path="/manifesto" element={<Manifesto />} />
+  <Route path="/contact" element={<Contact />} />
+  <Route path="*" element={<ErrorPage />} />
+</Routes>
       </Router>
     </DataProvider>
   );
