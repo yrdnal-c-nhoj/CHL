@@ -10,7 +10,7 @@ function Manifesto() {
       <div className="centeredContent">
         <h1>MANIFESTO</h1>
 
-        {/* Epigraphs */}
+    
         <div className="epigraph">
           <div className="quote">“Time and Space died yesterday.”</div>
           <div className="attribution">
@@ -27,7 +27,7 @@ function Manifesto() {
           </div>
         </div>
 
-        {/* Manifesto Sections */}
+
         <div className="manifestoSection">
           <p><span className="hat">We Take Pictures<br />&nbsp;</span><br />
           <span className="smallcaps">WE APPROPRIATE BEAUTIFUL</span> images, scavenged from the infinite scroll of the Internet. Pictures distort time. We catch them as they swim by and remix them.
