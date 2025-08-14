@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import customFontUrl from './cubic.ttf'; // local font file in same folder
 
 const faceColors = [
-  'rgba(132, 87, 84, 0.75)',
-  'rgba(113, 94, 107, 0.75)',
-  'rgba(89, 34, 30, 0.75)',
-  'rgba(137, 65, 47, 0.75)',
-  'rgba(73, 23, 25, 0.75)',
-  'rgba(148, 126, 77, 0.75)'
+  'rgba(102, 51, 0, 0.75)',
+  'rgba(194, 178, 128, 0.75)',
+  'rgba(85, 87, 17, 0.75)',
+  'rgba(160, 82, 45, 0.75)',
+  'rgba(34, 32, 52, 0.75)',
+  'rgba(230, 180, 140, 0.75)'
 ];
 
 const BiteviteHexahedron = () => {
@@ -28,7 +28,6 @@ const BiteviteHexahedron = () => {
 
   const timeString = formatTime();
 
-  // Scoped container styles
   const containerStyle = {
     width: '100vw',
     height: '100vh',
@@ -41,9 +40,10 @@ const BiteviteHexahedron = () => {
 
   const perspectiveStyle = {
     position: 'relative',
-    width: '25rem',
-    height: '25rem',
-    perspective: '290rem'
+    width: '24rem',
+    height: '24rem',
+    perspective: '290rem', // default for desktop
+    transition: 'perspective 0.3s ease'
   };
 
   const cubeStyle = {
@@ -65,7 +65,7 @@ const BiteviteHexahedron = () => {
 
   const timeDisplayStyle = {
     fontFamily: "'CustomHexFont', 'Courier New', monospace",
-    fontSize: '9.5rem',
+    fontSize: '9.5rem', // default
     background: 'linear-gradient(135deg, #5B3A1A 0%, #7A5230 40%, #3E2A15 100%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
@@ -79,7 +79,8 @@ const BiteviteHexahedron = () => {
       0 -1px 2px rgba(255,255,255,0.05)
     `,
     filter: 'contrast(1.2) brightness(0.9)',
-    letterSpacing: '0.01em'
+    letterSpacing: '0.01em',
+    transition: 'font-size 0.3s ease'
   };
 
   const faceTransforms = {
@@ -93,7 +94,6 @@ const BiteviteHexahedron = () => {
 
   return (
     <>
-      {/* Scoped styles including @font-face */}
       <style jsx>{`
         @font-face {
           font-family: 'CustomHexFont';
@@ -110,62 +110,42 @@ const BiteviteHexahedron = () => {
           75% { transform: rotateX(270deg) rotateY(270deg) rotateZ(270deg); }
           100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
         }
+
+        /* Responsive adjustments for mobile */
+        @media (max-width: 600px) {
+          div[style*="perspective: 290rem"] {
+            perspective: 500rem; /* further away on small screens */
+            width: 15rem;
+            height: 15rem;
+          }
+
+          div[style*="font-size: 9.5rem"] {
+            font-size: 5rem; /* smaller font on mobile */
+          }
+        }
       `}</style>
 
       <div style={containerStyle}>
         <div style={perspectiveStyle}>
           <div style={cubeStyle}>
-           {['front', 'back', 'right', 'left', 'top', 'bottom'].map((face, i) => (
-  <div
-    key={face}
-    style={{
-      ...baseFaceStyle,
-      transform: faceTransforms[face],
-      backgroundColor: faceColors[i]
-    }}
-  >
-    <div style={timeDisplayStyle}>{timeString}</div>
+            {['front', 'back', 'right', 'left', 'top', 'bottom'].map((face, i) => (
+              <div
+                key={face}
+                style={{
+                  ...baseFaceStyle,
+                  transform: faceTransforms[face],
+                  backgroundColor: faceColors[i]
+                }}
+              >
+                <div style={timeDisplayStyle}>{timeString}</div>
 
-    {/* 3D edges */}
-    {/* top edge */}
-    <div style={{
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '0.1rem',
-      backgroundColor: 'black'
-    }} />
-    {/* bottom edge */}
-    <div style={{
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      width: '100%',
-      height: '0.1rem',
-      backgroundColor: 'black'
-    }} />
-    {/* left edge */}
-    <div style={{
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '0.1rem',
-      height: '100%',
-      backgroundColor: 'black'
-    }} />
-    {/* right edge */}
-    <div style={{
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      width: '0.1rem',
-      height: '100%',
-      backgroundColor: 'black'
-    }} />
-  </div>
-))}
-
+                {/* 3D edges */}
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '0.1rem', backgroundColor: 'black' }} />
+                <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '0.1rem', backgroundColor: 'black' }} />
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '0.1rem', height: '100%', backgroundColor: 'black' }} />
+                <div style={{ position: 'absolute', top: 0, right: 0, width: '0.1rem', height: '100%', backgroundColor: 'black' }} />
+              </div>
+            ))}
           </div>
         </div>
       </div>
