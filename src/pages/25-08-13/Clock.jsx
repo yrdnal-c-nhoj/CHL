@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import font1 from './code.ttf';
 import font2 from './bar.ttf';
 import bgImage2 from './bgpo.webp';   // Bottom background
-import bgImage from './ware.webp'; // Top background
+import bgImage from './wh.webp'; // Top background
 
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
@@ -57,7 +57,7 @@ export default function DigitalClock() {
   const digitStyle = (fontName, size) => ({
     fontSize: size,
     fontWeight: 'bold',
-    color: '#3b2f1d', // dark brown ink
+    color: '#275254FF', // dark brown ink
     textAlign: 'center',
     fontFamily: fontName,
     margin: 0,
