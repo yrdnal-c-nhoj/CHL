@@ -28,7 +28,7 @@ function About() {
           </p>
 
           <p>
-          Previously this was an HTML-based website. You can see it<a href="https://github.com/the-clocks/Borrowed-Time" target="_blank" rel="noopener noreferrer">here.</a>
+          Previously this was an HTML-based website. You can see it<a href="https://the-clocks.github.io/Borrowed-Time/" target="_blank" rel="noopener noreferrer">here.</a>
           </p>
 
          
