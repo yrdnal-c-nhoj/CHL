@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import customFontUrl from './dom.ttf';
-import backgroundImg from './tabl.webp'; // <-- Add your custom image here
+import backgroundImg from './tabl.webp';
 
 const fontFamily = "'dom', monospace";
 
@@ -11,39 +11,46 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: '100vh',
-    backgroundImage: `url(${backgroundImg})`, // <-- Custom background
-    backgroundSize: 'cover',                 // Fill screen
-    backgroundPosition: 'center',            // Center image
+    backgroundImage: `url(${backgroundImg})`, // Your custom background
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     fontFamily: fontFamily,
-    padding: '2rem',
+    // padding: '2rem',
     boxSizing: 'border-box',
   },
   clockDisplay: {
-    fontSize: '4rem',
-    fontWeight: 'bold',
-    color: '#282A29FF',
-    // textShadow: '0 0 1rem rgba(0, 255, 136, 0.8), 0 0 2rem rgba(0, 255, 136, 0.4)',
-    backgroundColor: '#ECE6E6FF',
-    // padding: '1.5rem 3rem',
-    borderRadius: '1rem',
-    // border: '0.125rem solid #D9DFDCFF',
-    // boxShadow: '0 0 2rem rgba(0, 255, 136, 0.3)',
+    display: 'flex',
+    gap: '0.5rem',
     fontVariantNumeric: 'tabular-nums',
-    // letterSpacing: '0.25rem',
-    backdropFilter: 'blur(0.625rem)',
     fontFamily: fontFamily,
+  },
+ digit: {
+  display: 'inline-block',
+  fontSize: '4rem',
+  color: '#2C2A2AFF',
+  backgroundColor: '#F5EFDFFF',
+  borderRadius: '0.5rem',
+  padding: 0,
+  lineHeight: 1,
+  border: 'none',
+  fontFamily: fontFamily,
+  textAlign: 'center',
+  width: 'auto',
+  height: 'auto',
+  boxShadow: '0.2rem 0.2rem 0.9rem rgba(0,0,0,0.3)', // soft shadow, like resting on a table
+},
+
+  colon: {
+    fontSize: '0.01rem',
+    display: 'flex',
+    alignItems: 'center',
   },
   digitalFrame: {
     position: 'relative',
-    padding: '2rem',
-    // background: 'rgba(0, 0, 0, 0.3)',
-    // borderRadius: '1.5rem',
-    // border: '0.0625rem solid rgba(255, 255, 255, 0.2)',
-    // backdropFilter: 'blur(0.625rem)',
+    padding: '30.01rem',
   },
- 
-};
+}
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
@@ -88,10 +95,29 @@ const DigitalClock = () => {
     return digitToLetter(timeStr);
   };
 
+  const renderTimeWithSeparateDigits = (timeString) => {
+    return timeString.split('').map((char, index) => {
+      if (char === ':') {
+        return (
+          <span key={index} style={styles.colon}>
+            :
+          </span>
+        );
+      }
+      return (
+        <span key={index} style={styles.digit}>
+          {char}
+        </span>
+      );
+    });
+  };
+
   return (
     <div style={styles.clockContainer}>
       <div style={styles.digitalFrame}>
-        <div style={styles.clockDisplay}>{formatTime(time)}</div>
+        <div style={styles.clockDisplay}>
+          {renderTimeWithSeparateDigits(formatTime(time))}
+        </div>
       </div>
     </div>
   );
