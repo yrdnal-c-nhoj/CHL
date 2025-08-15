@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import customFontUrl from './dom.ttf';
-import backgroundImg from './tal.webp'; // <-- Add your custom image here
+import backgroundImg from './tabl.webp'; // <-- Add your custom image here
 
 const fontFamily = "'dom', monospace";
 
@@ -24,13 +24,13 @@ const styles = {
     fontWeight: 'bold',
     color: '#282A29FF',
     // textShadow: '0 0 1rem rgba(0, 255, 136, 0.8), 0 0 2rem rgba(0, 255, 136, 0.4)',
-    // backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    padding: '1.5rem 3rem',
+    backgroundColor: '#ECE6E6FF',
+    // padding: '1.5rem 3rem',
     borderRadius: '1rem',
-    // border: '0.125rem solid #00ff88',
+    // border: '0.125rem solid #D9DFDCFF',
     // boxShadow: '0 0 2rem rgba(0, 255, 136, 0.3)',
     fontVariantNumeric: 'tabular-nums',
-    letterSpacing: '0.25rem',
+    // letterSpacing: '0.25rem',
     backdropFilter: 'blur(0.625rem)',
     fontFamily: fontFamily,
   },
