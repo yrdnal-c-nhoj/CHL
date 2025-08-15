@@ -21,7 +21,7 @@ const styles = {
   },
   clockDisplay: {
     display: 'flex',
-    gap: '0.5rem',
+    // gap: '0.5rem',
     fontVariantNumeric: 'tabular-nums',
     fontFamily: fontFamily,
   },
