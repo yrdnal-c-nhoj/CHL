@@ -13,7 +13,7 @@ import digit9 from './9.gif';
 import digit10 from './10.gif';
 import digit11 from './11.gif';
 import digit12 from './12.gif';
-import customFont from './bir.ttf'; // Your custom font
+import customFont from './bir.ttf';
 
 const digitImages = [
   digit1, digit2, digit3, digit4, digit5, digit6,
@@ -83,8 +83,8 @@ const AnalogClock = () => {
 
   const clockStyle = {
     position: 'relative',
-    width: '20%',
-    height: '20vw',
+    width: 'min(70vw, 70vh, 600px)', // Responsive: 80% of viewport width or height, max 500px
+    height: 'min(70vw, 70vh, 600px)', // Same for height to maintain square aspect ratio
     borderRadius: '50%',
   };
 
@@ -95,6 +95,15 @@ const AnalogClock = () => {
     transformOrigin: 'bottom center',
     animation: 'rotate linear infinite',
   };
+
+  // Calculate responsive sizes based on clock size
+  const clockSize = 'min(80vw, 80vh, 500px)';
+  const digitSize = 'calc(' + clockSize + ' * 0.12)'; // 12% of clock size
+  const digitRadius = 'calc(' + clockSize + ' * 0.32)'; // 32% of clock size from center
+  const wordRadius = 'calc(' + clockSize + ' * 0.20)'; // 20% of clock size from center
+  const hourHandHeight = 'calc(' + clockSize + ' * 0.20)'; // 20% of clock size
+  const minuteHandHeight = 'calc(' + clockSize + ' * 0.28)'; // 28% of clock size
+  const secondHandHeight = 'calc(' + clockSize + ' * 0.32)'; // 32% of clock size
 
   return (
     <div style={pageStyle}>
@@ -112,9 +121,9 @@ const AnalogClock = () => {
                   position: 'absolute',
                   top: '50%',
                   left: '50%',
-                  width: '60px',
-                  height: '60px',
-                  transform: `translate(-50%, -50%) rotate(${angle}deg) translate(0, -130px) rotate(-${angle}deg)`,
+                  width: digitSize,
+                  height: digitSize,
+                  transform: `translate(-50%, -50%) rotate(${angle}deg) translate(0, calc(-1 * ${digitRadius})) rotate(-${angle}deg)`,
                 }}
               >
                 <img
@@ -136,11 +145,11 @@ const AnalogClock = () => {
                   position: 'absolute',
                   top: '50%',
                   left: '50%',
-                  width: '80px', // shorter distance
+                  width: wordRadius,
                   transform: `rotate(${angle}deg)`,
                   transformOrigin: 'left center',
                   color: '#C8C1C1FF',
-                  fontSize: '1.2rem',
+                  fontSize: `calc(${clockSize} * 0.045)`, // Responsive font size
                   fontFamily: 'CustomClockFont, sans-serif',
                   textAlign: 'right',
                   letterSpacing: '0.1em',
@@ -157,9 +166,9 @@ const AnalogClock = () => {
           <div
             style={{
               ...handStyle,
-              width: '8px',
-              height: '100px',
-            backgroundColor: '#F9F6F6FF',
+              width: `calc(${clockSize} * 0.016)`, // Responsive width
+              height: hourHandHeight,
+              backgroundColor: '#F9F6F6FF',
               animationDuration: '43200s',
               opacity: '0.3',
               animationDelay: `${hoursDelay}s`,
@@ -168,10 +177,10 @@ const AnalogClock = () => {
           <div
             style={{
               ...handStyle,
-              width: '4px',
-              height: '140px',
+              width: `calc(${clockSize} * 0.008)`, // Responsive width
+              height: minuteHandHeight,
               backgroundColor: '#F7EFEFFF',
-                opacity: '0.3',
+              opacity: '0.3',
               animationDuration: '3600s',
               animationDelay: `${minutesDelay}s`,
             }}
@@ -179,8 +188,8 @@ const AnalogClock = () => {
           <div
             style={{
               ...handStyle,
-              width: '2px',
-              height: '160px',
+              width: `calc(${clockSize} * 0.004)`, // Responsive width
+              height: secondHandHeight,
               backgroundColor: '#848184FF',
               animationDuration: '60s',
               animationDelay: `${secondsDelay}s`,
@@ -193,8 +202,8 @@ const AnalogClock = () => {
               position: 'absolute',
               top: '50%',
               left: '50%',
-              width: '12px',
-              height: '12px',
+              width: `calc(${clockSize} * 0.004)`, // Responsive size
+              height: `calc(${clockSize} * 0.004)`,
               backgroundColor: 'grey',
               borderRadius: '50%',
               transform: 'translate(-50%, -50%)',
