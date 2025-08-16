@@ -83,8 +83,8 @@ const AnalogClock = () => {
 
   const clockStyle = {
     position: 'relative',
-    width: '400px',
-    height: '400px',
+    width: '20%',
+    height: '20vw',
     borderRadius: '50%',
   };
 
@@ -195,7 +195,7 @@ const AnalogClock = () => {
               left: '50%',
               width: '12px',
               height: '12px',
-              backgroundColor: 'black',
+              backgroundColor: 'grey',
               borderRadius: '50%',
               transform: 'translate(-50%, -50%)',
             }}
