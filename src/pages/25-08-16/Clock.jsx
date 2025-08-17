@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import imageLeft from './pal.webp';
-import imageRight from './pal.webp';
 import clockFace from './palm.webp';
 import customFontUrl from './palm.ttf';
 import hourHandImage from './p1.webp';
@@ -38,7 +37,7 @@ const MirroredBackground = () => {
 
   const clockSize = 'min(70vh, 70vw)';
   const bezel = '1rem';
-  const centerDot = '0.9rem';
+  const centerDot = '0.01rem';
 
   const containerStyle = {
     display: 'flex',
@@ -57,17 +56,22 @@ const MirroredBackground = () => {
     contain: 'strict',
   };
 
-  const leftStyle = {
-    ...imageSectionStyle,
-    backgroundImage: `url(${imageLeft})`,
-    filter: 'brightness(0.9) contrast(1.0) saturate(0.8) blur(0.2rem)',
-  };
+const leftStyle = {
+  ...imageSectionStyle,
+  backgroundImage: `url(${imageLeft})`,
+  transform: 'scaleX(-1)', // flipped LEFT side
+  filter: 'brightness(0.9) contrast(1.0) saturate(0.8)',
+  backgroundSize: '80%',   // zoom in (>100%) / zoom out (<100%)
+  backgroundPosition: 'center',
+};
+
 
   const rightStyle = {
-    ...imageSectionStyle,
-    backgroundImage: `url(${imageRight})`,
-    transform: 'scaleX(-1)',
-    filter: 'brightness(0.9) contrast(1.0) saturate(0.8) blur(0.2rem)',
+      ...imageSectionStyle,
+    backgroundImage: `url(${imageLeft})`,
+    // transform: 'scaleX(-1)', // flipped LEFT side
+      backgroundSize: '80%',   // zoom in (>100%) / zoom out (<100%)
+    filter: 'brightness(0.9) contrast(1.0) saturate(0.8)',
   };
 
   const overlayStyle = {
@@ -92,7 +96,7 @@ const MirroredBackground = () => {
     alignItems: 'center',
     justifyContent: 'center',
     fontFamily: `'${CLOCK_FONT_FAMILY}', sans-serif`,
-    color: '#A3D81BFF',
+    color: '#D8EEA1FF',
     filter: 'drop-shadow(0 0 0.5rem rgba(0,0,0,0.3))',
   };
 
@@ -107,9 +111,13 @@ const MirroredBackground = () => {
       left: x,
       top: y,
       transform: 'translate(-50%, -50%)',
-      fontSize: `calc(${clockSize} * 0.08)`,
-      fontWeight: 'bold',
-      textShadow: '0 0 0.3rem rgba(255,255,255,0.8)',
+      fontSize: `calc(${clockSize} * 0.15)`,
+   textShadow: `
+  0 -1 0.09rem #F4EAEAFF,   /* hard thin outline */
+    1 0 0.09rem #000000,   /* hard thin outline */
+  0 0 0.3rem #EDF7E7, /* soft glow */
+  0 0 0.6rem #EDF7E7
+`,
       userSelect: 'none',
       zIndex: 1,
     };
@@ -123,6 +131,7 @@ const MirroredBackground = () => {
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center bottom',
+    zIndex: '6'
   };
 
   const hourHandStyle = {
@@ -131,7 +140,7 @@ const MirroredBackground = () => {
     height: `calc(${clockSize} * 0.56)`,
     transform: `translateX(-50%) rotate(${hourDeg}deg)`,
     backgroundImage: `url(${hourHandImage})`,
-    filter: 'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5)) brightness(1.2)',
+    filter: 'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5))  saturate(1.5) brightness(2.2)',
   };
 
   const minuteHandStyle = {
@@ -140,7 +149,7 @@ const MirroredBackground = () => {
     height: `calc(${clockSize} * 0.495)`,
     transform: `translateX(-50%) rotate(${minDeg}deg)`,
     backgroundImage: `url(${minuteHandImage})`,
-    // filter: 'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5)) brightness(1.2)',
+    filter: 'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5)) saturate(1.5) brightness(2.2)',
   };
 
   const secondHandStyle = {
@@ -149,16 +158,7 @@ const MirroredBackground = () => {
     height: `calc(${clockSize} * 0.47)`,
     transform: `translateX(-50%) rotate(${secDeg}deg)`,
     backgroundImage: `url(${secondHandImage})`,
-    // filter: 'drop-shadow(0 0 0.3rem rgba(0,0,0,0.7)) saturate(1.5)',
-  };
-
-  const hubStyle = {
-    position: 'absolute',
-    width: centerDot,
-    height: centerDot,
-    borderRadius: '50%',
-    background: 'rgba(0,0,0,0.95)',
-    boxShadow: '0 0 0 0.25rem rgba(255,255,255,0.15) inset',
+      filter: 'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5)) saturate(1.5) brightness(2.2)',
   };
 
   return (
@@ -174,9 +174,7 @@ const MirroredBackground = () => {
           ))}
           <div style={hourHandStyle} />
           <div style={minuteHandStyle} />
-          <div style={secondHandStyle} />
-          <div style={hubStyle} />
-        
+          <div style={secondHandStyle} />        
         </div>
       </div>
     </div>
