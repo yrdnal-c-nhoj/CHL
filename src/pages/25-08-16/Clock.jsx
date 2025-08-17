@@ -101,27 +101,40 @@ const leftStyle = {
   };
 
   const numberStyle = (hour) => {
-    const angle = (hour - 3) * 30;
-    const radius = `calc(${clockSize} * 0.36)`;
-    const x = `calc(50% + ${radius} * ${Math.cos(angle * Math.PI / 180)})`;
-    const y = `calc(50% + ${radius} * ${Math.sin(angle * Math.PI / 180)})`;
+  const angle = (hour - 3) * 30;
+  const radius = `calc(${clockSize} * 0.36)`;
+  const x = `calc(50% + ${radius} * ${Math.cos(angle * Math.PI / 180)})`;
+  const y = `calc(50% + ${radius} * ${Math.sin(angle * Math.PI / 180)})`;
 
-    return {
-      position: 'absolute',
-      left: x,
-      top: y,
-      transform: 'translate(-50%, -50%)',
-      fontSize: `calc(${clockSize} * 0.15)`,
-   textShadow: `
-  0 -1 0.09rem #F4EAEAFF,   /* hard thin outline */
-    1 0 0.09rem #000000,   /* hard thin outline */
-  0 0 0.3rem #EDF7E7, /* soft glow */
-  0 0 0.6rem #EDF7E7
-`,
-      userSelect: 'none',
-      zIndex: 1,
-    };
+  return {
+    position: 'absolute',
+    left: x,
+    top: y,
+    transform: 'translate(-50%, -50%)',
+    fontSize: `calc(${clockSize} * 0.15)`,
+    userSelect: 'none',
+    zIndex: 1,
+    color: '#D8EEA1FF',
+    fontFamily: `'${CLOCK_FONT_FAMILY}', sans-serif`,
+    textShadow: `
+      /* soft glow */
+      0 0 0.2rem #D8EEA1FF,
+      0 0 0.4rem #D8EEA1FF,
+      0 0 0.6rem #D8EEA1FF,
+      /* hard thin black outline */
+      -0.05rem -0.05rem 0 #000,
+      0.05rem -0.05rem 0 #000,
+      -0.05rem 0.05rem 0 #000,
+      0.05rem 0.05rem 0 #000,
+      /* hard thin white outline */
+      -0.025rem -0.025rem 0 #fff,
+      0.025rem -0.025rem 0 #fff,
+      -0.025rem 0.025rem 0 #fff,
+      0.025rem 0.025rem 0 #fff
+    `,
   };
+};
+
 
   const handCommon = {
     position: 'absolute',
@@ -131,7 +144,7 @@ const leftStyle = {
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center bottom',
-    zIndex: '6'
+    zIndex: '6',
   };
 
   const hourHandStyle = {
@@ -140,7 +153,8 @@ const leftStyle = {
     height: `calc(${clockSize} * 0.56)`,
     transform: `translateX(-50%) rotate(${hourDeg}deg)`,
     backgroundImage: `url(${hourHandImage})`,
-    filter: 'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5))  saturate(1.5) brightness(2.2)',
+        filter: 'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5)) saturate(5.5) brightness(2.2)',
+
   };
 
   const minuteHandStyle = {
@@ -149,7 +163,8 @@ const leftStyle = {
     height: `calc(${clockSize} * 0.495)`,
     transform: `translateX(-50%) rotate(${minDeg}deg)`,
     backgroundImage: `url(${minuteHandImage})`,
-    filter: 'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5)) saturate(1.5) brightness(2.2)',
+        filter: 'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5)) saturate(1.5) brightness(2.2)',
+
   };
 
   const secondHandStyle = {
@@ -158,7 +173,8 @@ const leftStyle = {
     height: `calc(${clockSize} * 0.47)`,
     transform: `translateX(-50%) rotate(${secDeg}deg)`,
     backgroundImage: `url(${secondHandImage})`,
-      filter: 'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5)) saturate(1.5) brightness(2.2)',
+        filter: 'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5)) saturate(1.5) brightness(2.2)',
+
   };
 
   return (
