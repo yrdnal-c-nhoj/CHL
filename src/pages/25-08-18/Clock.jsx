@@ -66,9 +66,9 @@ export default function ClockLetters({
   };
 
   const backgroundLayers = [
-    { url: bg1, opacity: 0.9, zIndex: 1, size: "50%", pos: "center", saturation: 1.2, hue: -30, rotate: rotation.layer1 },
-    { url: bg2, opacity: 0.3, zIndex: 2, size: "60%", pos: "center", saturation: 0.8, hue: -90, rotate: rotation.layer2 },
-    { url: bg3, opacity: 0.4, zIndex: 3, size: "50%", pos: "center", saturation: 1.5, hue: -40 },
+    { url: bg1, opacity: 0.9, zIndex: 1, size: "50%", pos: "center", saturation: 2.2, hue: -30, rotate: rotation.layer1 },
+    { url: bg2, opacity: 0.3, zIndex: 2, size: "60%", pos: "center", saturation: 2.8, hue: -90, rotate: rotation.layer2 },
+    { url: bg3, opacity: 0.4, zIndex: 3, size: "50%", pos: "center", saturation: 2.5, hue: -40 },
   ];
 
   const bgLayerStyle = (layer) => ({
@@ -173,7 +173,7 @@ export default function ClockLetters({
     return nodes;
   }, [sizeVmin]);
 
-  const handStyle = (deg, length, z) => ({
+  const handContainerStyle = (deg, length, z) => ({
     position: "absolute",
     left: "50%",
     top: "50%",
@@ -183,8 +183,15 @@ export default function ClockLetters({
     height: "auto",
     zIndex: z,
     pointerEvents: "none",
-    filter: "drop-shadow(0.2vmin 0.2vmin 0.3vmin rgba(0,0,0,0.5))",
   });
+
+  const handImageStyle = {
+    width: "100%",
+    height: "auto",
+    transform: "rotate(180deg)", // Rotate the image itself by 180 degrees
+    transformOrigin: "center", // Ensure rotation is around the image center
+    filter: "drop-shadow(0.2vmin 0.2vmin 0.3vmin rgba(0,0,0,0.5))",
+  };
 
   return (
     <div style={root}>
@@ -204,10 +211,16 @@ export default function ClockLetters({
         <div style={face}>
           {ticks}
           {lettersNodes}
-          <img src={hourHandImg} style={handStyle(hourDeg, sizeVmin * 0.37, 3)} />
-          <img src={minuteHandImg} style={handStyle(minDeg, sizeVmin * 0.53, 4)} />
+          <div style={handContainerStyle(hourDeg, sizeVmin * 0.37, 3)}>
+            <img src={hourHandImg} style={handImageStyle} />
+          </div>
+          <div style={handContainerStyle(minDeg, sizeVmin * 0.53, 4)}>
+            <img src={minuteHandImg} style={handImageStyle} />
+          </div>
           {showSecondHand && (
-            <img src={secondHandImg} style={handStyle(secDeg, sizeVmin * 0.6, 5)} />
+            <div style={handContainerStyle(secDeg, sizeVmin * 0.6, 5)}>
+              <img src={secondHandImg} style={handImageStyle} />
+            </div>
           )}
         </div>
       </div>
