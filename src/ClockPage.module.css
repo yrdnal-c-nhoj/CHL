@@ -1,128 +1,81 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
-
-.container {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden;
-  margin: 0; /* Scoped replacement for global body style */
-}
-
-.content {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.error {
-  color: #dc3545;
-  text-align: center;
-  font-size: 18px;
-  padding: 20px;
-}
-
-.loading {
-  color: #3f3f3d;
-  text-align: center;
-  font-size: 18px;
-  padding: 20px;
-}
-
 .footerStrip {
   position: absolute;
   bottom: 0;
   left: 50%;
-  transform: translateX(-50%) translateY(100%); /* start below screen */
+  transform: translateX(-50%) translateY(100%);
   width: 100%;
-  /* background: rgba(19, 12, 13, 0.6); */
-  color: #f0f1ed;
-  font-family: "Nunito", sans-serif;
-  /* border-radius: 0.8rem 0.8rem 0 0; */
-  /* box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.4); */
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  /* padding: 0.5rem; */
+  align-items: stretch; /* All children match height */
+  gap: 1px; /* 1px gap between buttons */
   box-sizing: border-box;
   z-index: 90;
   transition: opacity 0.7s ease-in-out, transform 0.5s ease-in-out;
-  opacity: 0;
   pointer-events: none;
+  font-family: 'Nunito', sans-serif; /* Unified font for all footer text */
 }
 
 .footerStrip.visible {
   opacity: 1;
-  transform: translateX(-50%) translateY(0); /* slide straight up */
+  transform: translateX(-50%) translateY(0);
   pointer-events: auto;
 }
 
 .footerStrip.hidden {
   opacity: 0;
-  transform: translateX(-50%) translateY(100%); /* slide straight down */
+  transform: translateX(-50%) translateY(100%);
   pointer-events: none;
 }
 
-
-
 .footerButton,
-.navButton  {
-    padding: 0.5rem;
+.navButton {
+  padding: 0.5rem;
   background: rgba(3, 2, 2, 0.8);
-  border: 1px solid rgba(128, 129, 131, 0.8); /* Button border */
+  border: 1px solid rgba(128, 129, 131, 0.8);
   border-radius: 0.4rem;
   text-decoration: none;
   color: #f0f1ed;
-  
-}
-.footerButton {
+
   display: flex;
-  flex-direction: column; /* Stack number, title, date */
-  align-items: center;
-  justify-content: center;
+  flex-direction: column; /* stack content vertically */
+  justify-content: center; /* center content vertically */
+  align-items: center; /* center content horizontally */
   text-align: center;
-  width: 100%;
-  flex: 1; /* Take equal space */
-  transition: background 0.3s ease, opacity 0.7s ease-in-out;
+  box-sizing: border-box;
+  font-family: inherit; /* inherit the footer font */
 }
 
-.footerButton:hover {
-  background: rgba(255, 255, 255, 0.2); /* Hover effect */
-  opacity: 0.9;
+.footerButton {
+  flex: 1; /* equal width */
 }
+
 .navButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto; /* Fixed width for arrows */
-  width: 60px; /* Fixed button size */
-  height: 60px; /* Square buttons */
-  font-size: 1.9rem; /* Adjust font size here */
-  transition: background 0.3s ease, opacity 0.7s ease-in-out;
-  pointer-events: auto;
+  flex: 0 0 auto; /* fixed width */
+  width: 60px;
+  font-size: clamp(1.5rem, 2vw, 1.9rem); /* responsive scaling */
 }
 
+/* Hover effects */
+.footerButton:hover {
+  background: rgb(1, 10, 61);
+}
 
 .navButton:hover {
-  background: rgba(191, 191, 238, 0.2);
+  background: rgb(1, 10, 61);
   opacity: 0.9;
 }
 
+/* Footer font sizes with responsive scaling */
 .footerLeft {
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
 }
 
 .footerCenter {
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
 }
 
 .footerRight {
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
 }
 
 /* Accessibility for screen readers */
@@ -137,26 +90,12 @@
   border: 0;
 }
 
+/* Responsive tweaks for very small screens */
 @media (max-width: 600px) {
-  .footerStrip {
-    /* padding: 0.3rem; */
-    max-width: 100%; /* Full width on small screens */
+  .footerButton, .navButton {
+    padding: 0.3rem;
   }
   .navButton {
-    /* width: 40px; Smaller buttons */
-    /* height: 40px; */
-    font-size: 1.2rem;
-     padding: 0.1rem;
-  }
-
-
-  .footerButton {
-    padding: 0.1rem;
-  }
-  .footerLeft, .footerRight {
-    font-size: 0.9rem;
-  }
-  .footerCenter {
-    font-size: 1rem;
+    width: 50px;
   }
 }
