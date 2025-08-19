@@ -13,7 +13,7 @@ import digit9 from './9.gif';
 import digit10 from './10.gif';
 import digit11 from './11.gif';
 import digit12 from './12.gif';
-import customFont from './bir.ttf'; // Your custom font
+import customFont from './bir.ttf';
 
 const digitImages = [
   digit1, digit2, digit3, digit4, digit5, digit6,
@@ -26,8 +26,18 @@ const words = [
 ];
 
 const AnalogClock = () => {
-  const [initialTime] = useState(new Date());
+  const [now, setNow] = useState(new Date());
 
+  // Smoothly update time
+  useEffect(() => {
+    const update = () => {
+      setNow(new Date());
+      requestAnimationFrame(update);
+    };
+    requestAnimationFrame(update);
+  }, []);
+
+  // Load custom font
   useEffect(() => {
     const style = document.createElement('style');
     style.innerHTML = `
@@ -35,24 +45,19 @@ const AnalogClock = () => {
         font-family: 'CustomClockFont';
         src: url(${customFont}) format('truetype');
       }
-
-      @keyframes rotate {
-        0% { transform: translateX(-50%) rotate(0deg); }
-        100% { transform: translateX(-50%) rotate(360deg); }
-      }
     `;
     document.head.appendChild(style);
     return () => document.head.removeChild(style);
   }, []);
 
-  const ms = initialTime.getMilliseconds() / 1000;
-  const seconds = initialTime.getSeconds() + ms;
-  const minutes = initialTime.getMinutes() * 60 + seconds;
-  const hours = (initialTime.getHours() % 12) * 3600 + minutes;
+  // Calculate angles
+  const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+  const minutes = now.getMinutes() + seconds / 60;
+  const hours = now.getHours() % 12 + minutes / 60;
 
-  const secondsDelay = -seconds;
-  const minutesDelay = -minutes;
-  const hoursDelay = -hours;
+  const secondDeg = seconds * 6;
+  const minuteDeg = minutes * 6;
+  const hourDeg = hours * 30;
 
   const pageStyle = {
     width: '100vw',
@@ -82,18 +87,16 @@ const AnalogClock = () => {
   };
 
   const clockStyle = {
-    // position: 'relative',
-    // width: '20%',
-    // height: '20vw',
-    // borderRadius: '50%',
+    position: 'relative',
+    width: '60vmin',   // bigger clock
+    height: '60vmin'
   };
 
-  const handStyle = {
+  const handCommonStyle = {
     position: 'absolute',
     left: '50%',
     bottom: '50%',
     transformOrigin: 'bottom center',
-    animation: 'rotate linear infinite',
   };
 
   return (
@@ -112,9 +115,9 @@ const AnalogClock = () => {
                   position: 'absolute',
                   top: '50%',
                   left: '50%',
-                  width: '60px',
-                  height: '60px',
-                  transform: `translate(-50%, -50%) rotate(${angle}deg) translate(0, -130px) rotate(-${angle}deg)`,
+                  width: '12vmin',      // bigger digits
+                  height: '12vmin',
+                  transform: `translate(-50%, -50%) rotate(${angle}deg) translate(0, -32vmin) rotate(-${angle}deg)`,
                 }}
               >
                 <img
@@ -126,7 +129,7 @@ const AnalogClock = () => {
             );
           })}
 
-          {/* Words stretched as spokes, closer to center */}
+          {/* Words */}
           {words.map((word, index) => {
             const angle = (index + 1) * 30;
             return (
@@ -136,11 +139,11 @@ const AnalogClock = () => {
                   position: 'absolute',
                   top: '50%',
                   left: '50%',
-                  width: '80px', // shorter distance
-                  transform: `rotate(${angle}deg)`,
+                  width: '10vmin',
+                  transform: `rotate(${angle}deg) translateX(9vmin)`, // pushed closer to digits
                   transformOrigin: 'left center',
                   color: '#C8C1C1FF',
-                  fontSize: '1.2rem',
+                  fontSize: '1.6rem',   // bigger font
                   fontFamily: 'CustomClockFont, sans-serif',
                   textAlign: 'right',
                   letterSpacing: '0.1em',
@@ -153,48 +156,48 @@ const AnalogClock = () => {
             );
           })}
 
-          {/* Hands */}
+          {/* Hour Hand */}
           <div
             style={{
-              ...handStyle,
-              width: '8px',
-              height: '100px',
-            backgroundColor: '#F9F6F6FF',
-              animationDuration: '43200s',
-              opacity: '0.3',
-              animationDelay: `${hoursDelay}s`,
+              ...handCommonStyle,
+              width: '1vmin',
+              height: '22vmin',   // longer hand
+              backgroundColor: '#F9F6F6FF',
+              opacity: 0.6,
+              transform: `translateX(-50%) rotate(${hourDeg}deg)`
             }}
           />
+          {/* Minute Hand */}
           <div
             style={{
-              ...handStyle,
-              width: '4px',
-              height: '140px',
+              ...handCommonStyle,
+              width: '0.5vmin',
+              height: '33vmin',
               backgroundColor: '#F7EFEFFF',
-                opacity: '0.3',
-              animationDuration: '3600s',
-              animationDelay: `${minutesDelay}s`,
+              opacity: 0.6,
+              transform: `translateX(-50%) rotate(${minuteDeg}deg)`
             }}
           />
+          {/* Second Hand */}
           <div
             style={{
-              ...handStyle,
-              width: '2px',
-              height: '160px',
-              backgroundColor: '#848184FF',
-              animationDuration: '60s',
-              animationDelay: `${secondsDelay}s`,
+              ...handCommonStyle,
+              width: '0.25vmin',
+              height: '33vmin',
+              backgroundColor: '#F7EFEFFF',
+              opacity: 0.6,
+              transform: `translateX(-50%) rotate(${secondDeg}deg)`
             }}
           />
 
-          {/* Center circle */}
+          {/* Center Circle */}
           <div
             style={{
               position: 'absolute',
               top: '50%',
               left: '50%',
-              width: '12px',
-              height: '12px',
+              width: '1.5vmin',
+              height: '1.5vmin',
               backgroundColor: 'grey',
               borderRadius: '50%',
               transform: 'translate(-50%, -50%)',
