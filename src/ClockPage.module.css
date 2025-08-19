@@ -39,22 +39,20 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%); /* keep it centered */
-  width: 100%;        
+  width: 100%;
+  max-width: 600px; /* Limit width for better button layout */
   background: rgba(19, 12, 13, 0.6);
   color: #f0f1ed;
   font-family: "Nunito", sans-serif;
   border-radius: 0.8rem 0.8rem 0 0; /* rounded top corners */
   box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.4);
   display: flex;
-  justify-content: space-between; /* Spread content with arrows on edges */
+  justify-content: space-between; /* Spread buttons evenly */
   align-items: center;
-  padding: 1rem;               /* more breathing room */
+  padding: 0.5rem; /* Reduced padding to fit buttons */
   box-sizing: border-box;
   z-index: 90;
-  height: auto;                /* allow content to size naturally */
-  font-size: 1rem;
-  cursor: pointer;
-  text-decoration: none;
+  height: auto; /* Allow content to size naturally */
   transition: opacity 0.7s ease-in-out, transform 0.4s ease-in-out;
   opacity: 1;
   pointer-events: auto;
@@ -70,13 +68,47 @@
   transform: translateX(-50%) translateY(0);
 }
 
-.footerContent {
+.footerButton {
   display: flex;
-  flex-direction: column;   /* vertical stack */
+  flex-direction: column; /* Stack number, title, date */
   align-items: center;
   justify-content: center;
   text-align: center;
-  width: 100%;
+  flex: 1; /* Take equal space */
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1); /* Subtle button background */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Button border */
+  border-radius: 0.4rem;
+  text-decoration: none;
+  color: #f0f1ed;
+  transition: background 0.3s ease, opacity 0.7s ease-in-out;
+}
+
+.footerButton:hover {
+  background: rgba(255, 255, 255, 0.2); /* Hover effect */
+  opacity: 0.9;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto; /* Fixed width for arrows */
+  width: 60px; /* Fixed button size */
+  height: 60px; /* Square buttons */
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.4rem;
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  transition: background 0.3s ease, opacity 0.7s ease-in-out;
+  pointer-events: auto;
+}
+
+.navButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  opacity: 0.9;
 }
 
 .footerLeft {
@@ -89,19 +121,6 @@
 
 .footerRight {
   font-size: 1.1rem;
-}
-
-.navArrow {
-  font-size: 2rem;
-  color: rgba(255, 255, 255, 0.9);
-  text-decoration: none;
-  transition: opacity 0.7s ease-in-out;
-  pointer-events: auto;
-  padding: 0 1rem; /* Space arrows from edges */
-}
-
-.navArrow:hover {
-  opacity: 0.7; /* Subtle hover effect */
 }
 
 /* Accessibility for screen readers */
@@ -118,14 +137,19 @@
 
 @media (max-width: 600px) {
   .footerStrip {
-    padding: 0.5rem; /* Adjust padding for smaller screens */
+    padding: 0.3rem;
+    max-width: 100%; /* Full width on small screens */
   }
-  .navArrow {
-    font-size: 1.5rem; /* Smaller arrows on mobile */
-    padding: 0 0.5rem;
+  .navButton {
+    width: 40px; /* Smaller buttons */
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  .footerButton {
+    padding: 0.3rem;
   }
   .footerLeft, .footerRight {
-    font-size: 0.9rem; /* Slightly smaller text */
+    font-size: 0.9rem;
   }
   .footerCenter {
     font-size: 1rem;

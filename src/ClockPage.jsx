@@ -109,10 +109,24 @@ const ClockPage = () => {
       <div className={styles.container}>
         <Header visible={headerVisible} />
         <div className={styles.content}>
-          <div className={styles.error}>{error || pageError}</div>
+          <div className={styles.sheet}>
+            <div className={styles.error}>{error || pageError}</div>
+          </div>
         </div>
         <div className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}>
-          <div className={styles.footerContent}>
+          <Link
+            to="/"
+            className={styles.navButton}
+            aria-label="Go back to homepage"
+          >
+            <span aria-hidden="true">←</span>
+            <span className={styles.screenReaderText}>Go back to homepage</span>
+          </Link>
+          <Link
+            to="/"
+            className={styles.footerButton}
+            aria-label="Go back to homepage"
+          >
             <div className={styles.footerLeft}>
               <span className={styles.footerNumber}>
                 <strong>#</strong> N/A
@@ -124,7 +138,16 @@ const ClockPage = () => {
             <div className={styles.footerRight}>
               <span className={styles.footerDate}>N/A</span>
             </div>
-          </div>
+            <span className={styles.screenReaderText}>Go back to homepage</span>
+          </Link>
+          <Link
+            to="/"
+            className={styles.navButton}
+            aria-label="Go back to homepage"
+          >
+            <span aria-hidden="true">→</span>
+            <span className={styles.screenReaderText}>Go back to homepage</span>
+          </Link>
         </div>
       </div>
     );
@@ -142,17 +165,21 @@ const ClockPage = () => {
         {ClockComponent ? <ClockComponent /> : <div className={styles.loading}>Loading clock...</div>}
       </div>
       <div className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}>
-        {prevItem && (
-          <Link
-            to={`/${prevItem.date}`}
-            className={styles.navArrow}
-            aria-label={`Go to previous clock: ${formatTitle(prevItem.title)}`}
-          >
-            <span aria-hidden="true">←</span>
-            <span className={styles.screenReaderText}>Previous: {formatTitle(prevItem.title)}</span>
-          </Link>
-        )}
-        <div className={styles.footerContent}>
+        <Link
+          to={prevItem ? `/${prevItem.date}` : '/'}
+          className={styles.navButton}
+          aria-label={prevItem ? `Go to previous clock: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
+        >
+          <span aria-hidden="true">←</span>
+          <span className={styles.screenReaderText}>
+            {prevItem ? `Previous: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
+          </span>
+        </Link>
+        <Link
+          to="/"
+          className={styles.footerButton}
+          aria-label="Go back to homepage"
+        >
           <div className={styles.footerLeft}>
             <span className={styles.footerNumber}>
               <strong>#</strong>{currentIndex + 1}
@@ -164,17 +191,18 @@ const ClockPage = () => {
           <div className={styles.footerRight}>
             <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
           </div>
-        </div>
-        {nextItem && (
-          <Link
-            to={`/${nextItem.date}`}
-            className={styles.navArrow}
-            aria-label={`Go to next clock: ${formatTitle(nextItem.title)}`}
-          >
-            <span aria-hidden="true">→</span>
-            <span className={styles.screenReaderText}>Next: {formatTitle(nextItem.title)}</span>
-          </Link>
-        )}
+          <span className={styles.screenReaderText}>Go back to homepage</span>
+        </Link>
+        <Link
+          to={nextItem ? `/${nextItem.date}` : '/'}
+          className={styles.navButton}
+          aria-label={nextItem ? `Go to next clock: ${formatTitle(nextItem.title)}` : 'Go back to homepage'}
+        >
+          <span aria-hidden="true">→</span>
+          <span className={styles.screenReaderText}>
+            {nextItem ? `Next: ${formatTitle(nextItem.title)}` : 'Go back to homepage'}
+          </span>
+        </Link>
       </div>
     </div>
   );
