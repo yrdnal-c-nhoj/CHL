@@ -8,7 +8,7 @@ export default function Footer() {
              
     &nbsp;<br />
         ©{new Date().getFullYear()}Cubist Heart Laboratories.All rights reserved.
-         <br /> 🧊🫀🔭<br />   &nbsp;
+         <br /><div className='chl_logo'>🧊🫀🔭</div> <br />   &nbsp;
       
     
     
