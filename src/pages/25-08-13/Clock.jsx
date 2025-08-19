@@ -43,7 +43,7 @@ export default function DigitalClock() {
 
   const digitsContainer = {
     display: 'flex',
-    transform: 'translateX(20%) translateY(80%)', // Move right 30%, down 20%
+    transform: 'translateX(-30%) translateY(90%)', // Move right 30%, down 20%
   };
 
   const digitStack = {
