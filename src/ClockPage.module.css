@@ -30,12 +30,11 @@
 .footerButton,
 .navButton {
   padding: 0.5rem;
-  background: rgba(3, 2, 2, 0.8);
-  border: 1px solid rgba(128, 129, 131, 0.8);
+  background: rgba(3, 2, 2, 0.7);
+  border: 1px solid rgba(223, 230, 244, 0.8);
   border-radius: 0.4rem;
   text-decoration: none;
   color: #f0f1ed;
-
   display: flex;
   flex-direction: column; /* stack content vertically */
   justify-content: center; /* center content vertically */
@@ -51,31 +50,31 @@
 
 .navButton {
   flex: 0 0 auto; /* fixed width */
-  width: 60px;
-  font-size: clamp(1.5rem, 2vw, 1.9rem); /* responsive scaling */
+  width: 80px;
+  font-size: 2rem; /* responsive scaling */
 }
 
 /* Hover effects */
-.footerButton:hover {
+.footerButton:hover,
+.navButton:hover  {
   background: rgb(1, 10, 61);
+  opacity: 0.8;
+  color: #ffffff;
 }
 
-.navButton:hover {
-  background: rgb(1, 10, 61);
-  opacity: 0.9;
-}
+
 
 /* Footer font sizes with responsive scaling */
 .footerLeft {
-  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  font-size: 1.2rem;
 }
 
 .footerCenter {
-  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  font-size: 1.2rem;
 }
 
 .footerRight {
-  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  font-size: 1.2rem;
 }
 
 /* Accessibility for screen readers */
@@ -93,9 +92,20 @@
 /* Responsive tweaks for very small screens */
 @media (max-width: 600px) {
   .footerButton, .navButton {
-    padding: 0.3rem;
+    padding: 0.6rem;
   }
   .navButton {
-    width: 50px;
+    width: 70px;
   }
+  .footerLeft {
+  font-size: 1em;
+}
+
+.footerCenter {
+  font-size: 1.2rem;
+}
+
+.footerRight {
+  font-size: 1rem;
+}
 }
