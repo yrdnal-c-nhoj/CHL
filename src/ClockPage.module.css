@@ -6,106 +6,64 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: stretch; /* All children match height */
-  gap: 1px; /* 1px gap between buttons */
+  align-items: stretch;
+  gap: 1px;
   box-sizing: border-box;
   z-index: 90;
+  font-family: 'Nunito', sans-serif;
   transition: opacity 0.7s ease-in-out, transform 0.5s ease-in-out;
-  pointer-events: none;
-  font-family: 'Nunito', sans-serif; /* Unified font for all footer text */
+  pointer-events: auto;
 }
 
 .footerStrip.visible {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
-  pointer-events: auto;
 }
 
 .footerStrip.hidden {
   opacity: 0;
   transform: translateX(-50%) translateY(100%);
-  pointer-events: none;
 }
 
 .footerButton,
 .navButton {
   padding: 0.5rem;
   background: rgba(3, 2, 2, 0.7);
-  border: 1px solid rgba(223, 230, 244, 0.8);
-  border-radius: 0.4rem;
-  text-decoration: none;
-  color: #f0f1ed;
+  border: 0.5px solid RGBA(98, 103, 112, 0.8);
+  color: #dadbd7;
   display: flex;
-  flex-direction: column; /* stack content vertically */
-  justify-content: center; /* center content vertically */
-  align-items: center; /* center content horizontally */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  text-decoration: none;
   box-sizing: border-box;
-  font-family: inherit; /* inherit the footer font */
+  font-family: inherit;
+  transition: background 0.4s ease, color 0.4s ease;
+  pointer-events: auto; /* Ensure buttons are always interactive */
 }
 
 .footerButton {
-  flex: 1; /* equal width */
+  flex: 1;
 }
 
 .navButton {
-  flex: 0 0 auto; /* fixed width */
+  flex: 0 0 auto;
   width: 80px;
-  font-size: 2rem; /* responsive scaling */
+  font-size: 2rem;
 }
 
-/* Hover effects */
+.footerStrip.hidden .footerButton,
+.footerStrip.hidden .navButton {
+  background: rgba(3, 2, 2, 0);
+  color: rgba(218, 219, 215, 0);
+  border-color: rgba(98, 103, 112, 0);
+}
+
 .footerButton:hover,
-.navButton:hover  {
+.navButton:hover {
   background: rgb(1, 10, 61);
-  opacity: 0.8;
   color: #ffffff;
-}
-
-
-
-/* Footer font sizes with responsive scaling */
-.footerLeft {
-  font-size: 1.2rem;
-}
-
-.footerCenter {
-  font-size: 1.2rem;
-}
-
-.footerRight {
-  font-size: 1.2rem;
-}
-
-/* Accessibility for screen readers */
-.screenReaderText {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-}
-
-/* Responsive tweaks for very small screens */
-@media (max-width: 600px) {
-  .footerButton, .navButton {
-    padding: 0.6rem;
-  }
-  .navButton {
-    width: 70px;
-  }
-  .footerLeft {
-  font-size: 1em;
-}
-
-.footerCenter {
-  font-size: 1.2rem;
-}
-
-.footerRight {
-  font-size: 1rem;
-}
+  opacity: 0.9;
+  border-color: rgba(98, 103, 112, 0.8);
 }
