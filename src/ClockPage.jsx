@@ -170,7 +170,7 @@ const ClockPage = () => {
           className={styles.navButton}
           aria-label={prevItem ? `Go to previous clock: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
         >
-          <span aria-hidden="true">←</span>
+          <span aria-hidden="true">⇽</span>
           <span className={styles.screenReaderText}>
             {prevItem ? `Previous: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
           </span>
@@ -198,7 +198,7 @@ const ClockPage = () => {
           className={styles.navButton}
           aria-label={nextItem ? `Go to next clock: ${formatTitle(nextItem.title)}` : 'Go back to homepage'}
         >
-          <span aria-hidden="true">→</span>
+          <span aria-hidden="true">⇾</span>
           <span className={styles.screenReaderText}>
             {nextItem ? `Next: ${formatTitle(nextItem.title)}` : 'Go back to homepage'}
           </span>

@@ -38,49 +38,56 @@
   position: absolute;
   bottom: 0;
   left: 50%;
-  transform: translateX(-50%); /* keep it centered */
+  transform: translateX(-50%) translateY(100%); /* start below screen */
   width: 100%;
-  max-width: 600px; /* Limit width for better button layout */
-  background: rgba(19, 12, 13, 0.6);
+  /* background: rgba(19, 12, 13, 0.6); */
   color: #f0f1ed;
   font-family: "Nunito", sans-serif;
-  border-radius: 0.8rem 0.8rem 0 0; /* rounded top corners */
-  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.4);
+  /* border-radius: 0.8rem 0.8rem 0 0; */
+  /* box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.4); */
   display: flex;
-  justify-content: space-between; /* Spread buttons evenly */
+  justify-content: space-between;
   align-items: center;
-  padding: 0.5rem; /* Reduced padding to fit buttons */
+  /* padding: 0.5rem; */
   box-sizing: border-box;
   z-index: 90;
-  height: auto; /* Allow content to size naturally */
-  transition: opacity 0.7s ease-in-out, transform 0.4s ease-in-out;
+  transition: opacity 0.7s ease-in-out, transform 0.5s ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.footerStrip.visible {
   opacity: 1;
+  transform: translateX(-50%) translateY(0); /* slide straight up */
   pointer-events: auto;
 }
 
 .footerStrip.hidden {
   opacity: 0;
-  transform: translateX(-50%) translateY(20px); /* smooth slide down */
+  transform: translateX(-50%) translateY(100%); /* slide straight down */
+  pointer-events: none;
 }
 
-.footerStrip.visible {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
 
+
+.footerButton,
+.navButton  {
+    padding: 0.5rem;
+  background: rgba(3, 2, 2, 0.8);
+  border: 1px solid rgba(128, 129, 131, 0.8); /* Button border */
+  border-radius: 0.4rem;
+  text-decoration: none;
+  color: #f0f1ed;
+  
+}
 .footerButton {
   display: flex;
   flex-direction: column; /* Stack number, title, date */
   align-items: center;
   justify-content: center;
   text-align: center;
+  width: 100%;
   flex: 1; /* Take equal space */
-  padding: 0.5rem;
-  background: rgba(255, 255, 255, 0.1); /* Subtle button background */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Button border */
-  border-radius: 0.4rem;
-  text-decoration: none;
-  color: #f0f1ed;
   transition: background 0.3s ease, opacity 0.7s ease-in-out;
 }
 
@@ -88,7 +95,6 @@
   background: rgba(255, 255, 255, 0.2); /* Hover effect */
   opacity: 0.9;
 }
-
 .navButton {
   display: flex;
   align-items: center;
@@ -96,18 +102,14 @@
   flex: 0 0 auto; /* Fixed width for arrows */
   width: 60px; /* Fixed button size */
   height: 60px; /* Square buttons */
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 0.4rem;
-  font-size: 1.5rem;
-  color: rgba(255, 255, 255, 0.9);
-  text-decoration: none;
+  font-size: 1.9rem; /* Adjust font size here */
   transition: background 0.3s ease, opacity 0.7s ease-in-out;
   pointer-events: auto;
 }
 
+
 .navButton:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(191, 191, 238, 0.2);
   opacity: 0.9;
 }
 
@@ -137,16 +139,19 @@
 
 @media (max-width: 600px) {
   .footerStrip {
-    padding: 0.3rem;
+    /* padding: 0.3rem; */
     max-width: 100%; /* Full width on small screens */
   }
   .navButton {
-    width: 40px; /* Smaller buttons */
-    height: 40px;
+    /* width: 40px; Smaller buttons */
+    /* height: 40px; */
     font-size: 1.2rem;
+     padding: 0.1rem;
   }
+
+
   .footerButton {
-    padding: 0.3rem;
+    padding: 0.1rem;
   }
   .footerLeft, .footerRight {
     font-size: 0.9rem;
