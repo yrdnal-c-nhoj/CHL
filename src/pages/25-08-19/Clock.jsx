@@ -50,9 +50,9 @@ const Pendulum = () => {
     },
     pendulum: {
       display: 'flex',
-      border: '2.25px solid white',
+      border: '8.25px solid #574503FF',
       borderBottomWidth: '2.25vw',
-      borderRadius: '2.25vw 2.25vw 0 0',
+      borderRadius: '3.25vw 3.25vw 0 0',
       padding: '0 4.5vw 2.25vw',
       height: '22.5vw',
     },
@@ -81,7 +81,7 @@ const Pendulum = () => {
       alignItems: 'center',
       fontFamily: '"CustomFont", monospace',
       fontSize: '4vw',
-      color: '#CF101DFF',
+      color: '#6B040BFF',
     },
     pieceFirstChild: {
       animation: 'left 1s cubic-bezier(0.215, 0.61, 0.355, 1) infinite alternate',
@@ -106,7 +106,7 @@ const Pendulum = () => {
         }
         .piece::before {
           content: "";
-          background: #888;
+          background: #232123FF;
           width: 2.25px;
           height: 18vw;
         }
@@ -120,8 +120,8 @@ const Pendulum = () => {
           justify-content: center;
           align-items: center;
           font-family: 'CustomFont', monospace;
-          font-size: 4vw;
-          color: #333;
+          font-size: 5vw;
+           color: '#6B040BFF',
         }
       `}</style>
       <div style={styles.pendulum}>
