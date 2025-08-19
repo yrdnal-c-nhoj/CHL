@@ -42,6 +42,7 @@
   box-sizing: border-box;
   font-family: inherit;
   transition: background 0.4s ease, color 0.4s ease;
+  pointer-events: auto; /* Ensure buttons remain interactive */
 }
 
 .footerButton {
@@ -60,6 +61,7 @@
   background: rgba(3, 2, 2, 0); /* transparent background */
   color: rgba(218, 219, 215, 0); /* invisible text/icons */
   border-color: rgba(98, 103, 112, 0); /* fade border too */
+  pointer-events: auto; /* Ensure buttons remain clickable even when hidden */
 }
 
 /* Hover will still light them up, even when strip is hidden */
