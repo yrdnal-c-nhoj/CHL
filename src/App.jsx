@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { DataProvider } from './context/DataContext';
+import { DataProvider, DataContext } from './context/DataContext';
 import Home from './Home';
 import ClockPage from './ClockPage';
 import Manifesto from './Manifesto';
@@ -10,10 +10,6 @@ import Contact from './Contact';
 import Log from './Log';
 import ErrorPage from './ErrorPage';
 import { pageview } from './analytics';
-
-
-
-
 
 // 🧠 Route-based SEO title + description map
 const metaMap = {
@@ -36,6 +32,10 @@ const metaMap = {
   '/contact': {
     title: 'Contact | BorrowedTime',
     description: 'Get in touch with the team.',
+  },
+  '/today': {
+    title: 'Today\'s Clock | BorrowedTime',
+    description: 'Discover today\'s unique clock from Cubist Heart Laboratories.',
   }
 };
 
@@ -83,22 +83,38 @@ const getTodayDateString = () => {
   return `${yy}-${mm}-${dd}`;
 };
 
+const TodayRedirect = () => {
+  const { items, loading } = useContext(DataContext);
+
+  if (loading) {
+    return null; // Wait for data to load
+  }
+
+  // Find the most recent item by date
+  const latestItem = items.reduce((latest, item) => {
+    if (!item?.date) return latest;
+    return !latest || item.date > latest.date ? item : latest;
+  }, null);
+
+  // Redirect to the latest clock's date or homepage if no items
+  return <Navigate to={latestItem ? `/${latestItem.date}` : '/'} replace />;
+};
+
 const App = () => {
   return (
     <DataProvider>
       <Router>
         <AnalyticsAndSEO />
-      
-
-<Routes>
-  <Route path="/" element={<Home />} />
-  <Route path="/:date" element={<ClockPage />} />
-  <Route path="/about" element={<About />} />
-  <Route path="/log" element={<Log />} />
-  <Route path="/manifesto" element={<Manifesto />} />
-  <Route path="/contact" element={<Contact />} />
-  <Route path="*" element={<ErrorPage />} />
-</Routes>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/:date" element={<ClockPage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/log" element={<Log />} />
+          <Route path="/manifesto" element={<Manifesto />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/today" element={<TodayRedirect />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
       </Router>
     </DataProvider>
   );
