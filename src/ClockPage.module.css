@@ -7,14 +7,15 @@
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  gap: 1px;
+  gap: 1px; /* 1px gap between buttons */
   box-sizing: border-box;
   z-index: 90;
   font-family: 'Nunito', sans-serif;
   transition: opacity 0.7s ease-in-out, transform 0.5s ease-in-out;
-  pointer-events: auto;
+  pointer-events: auto; /* always interactive */
 }
 
+/* --- Visibility states --- */
 .footerStrip.visible {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
@@ -25,11 +26,12 @@
   transform: translateX(-50%) translateY(100%);
 }
 
+/* --- Buttons --- */
 .footerButton,
 .navButton {
   padding: 0.5rem;
   background: rgba(3, 2, 2, 0.7);
-  border: 0.5px solid RGBA(98, 103, 112, 0.8);
+  border: 0.5px solid rgba(98, 103, 112, 0.8);
   color: #dadbd7;
   display: flex;
   flex-direction: column;
@@ -40,11 +42,10 @@
   box-sizing: border-box;
   font-family: inherit;
   transition: background 0.4s ease, color 0.4s ease;
-  pointer-events: auto; /* Ensure buttons are always interactive */
 }
 
 .footerButton {
-  flex: 1;
+  flex: 1; /* equal width */
 }
 
 .navButton {
@@ -53,17 +54,58 @@
   font-size: 2rem;
 }
 
+/* --- Fade buttons but keep clickable --- */
 .footerStrip.hidden .footerButton,
 .footerStrip.hidden .navButton {
-  background: rgba(3, 2, 2, 0);
-  color: rgba(218, 219, 215, 0);
-  border-color: rgba(98, 103, 112, 0);
+  background: rgba(3, 2, 2, 0); /* transparent background */
+  color: rgba(218, 219, 215, 0); /* invisible text/icons */
+  border-color: rgba(98, 103, 112, 0); /* fade border too */
 }
 
+/* Hover will still light them up, even when strip is hidden */
 .footerButton:hover,
 .navButton:hover {
   background: rgb(1, 10, 61);
   color: #ffffff;
   opacity: 0.9;
   border-color: rgba(98, 103, 112, 0.8);
+}
+
+/* --- Font scaling --- */
+.footerLeft,
+.footerCenter,
+.footerRight {
+  font-size: 1.2rem;
+}
+
+/* --- Accessibility --- */
+.screenReaderText {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  .footerButton,
+  .navButton {
+    padding: 0.6rem;
+  }
+  .navButton {
+    width: 70px;
+  }
+  .footerLeft {
+    font-size: 1em;
+  }
+  .footerCenter {
+    font-size: 1.2rem;
+  }
+  .footerRight {
+    font-size: 1rem;
+  }
 }
