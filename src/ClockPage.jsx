@@ -33,8 +33,6 @@ const ClockPage = () => {
 
   const [ClockComponent, setClockComponent] = useState(null);
   const [pageError, setPageError] = useState(null);
-  const [navVisible, setNavVisible] = useState(true);
-  const [navHasFaded, setNavHasFaded] = useState(false);
   const [footerVisible, setFooterVisible] = useState(true);
   const [headerVisible, setHeaderVisible] = useState(true);
 
@@ -64,36 +62,25 @@ const ClockPage = () => {
   }, [date, items, loading, navigate]);
 
   useEffect(() => {
-    const navFadeMs = 300;
     const footerFadeMs = 1000;
-    let navTimer, footerTimer;
+    let footerTimer;
 
-    const resetTimers = () => {
-      if (!navHasFaded) {
-        setNavVisible(true);
-        clearTimeout(navTimer);
-        navTimer = setTimeout(() => {
-          setNavVisible(false);
-          setNavHasFaded(true);
-        }, navFadeMs);
-      }
-
+    const resetTimer = () => {
       setFooterVisible(true);
       clearTimeout(footerTimer);
       footerTimer = setTimeout(() => setFooterVisible(false), footerFadeMs);
     };
 
-    resetTimers();
-    window.addEventListener('mousemove', resetTimers);
-    window.addEventListener('touchstart', resetTimers);
+    resetTimer();
+    window.addEventListener('mousemove', resetTimer);
+    window.addEventListener('touchstart', resetTimer);
 
     return () => {
-      clearTimeout(navTimer);
       clearTimeout(footerTimer);
-      window.removeEventListener('mousemove', resetTimers);
-      window.removeEventListener('touchstart', resetTimers);
+      window.removeEventListener('mousemove', resetTimer);
+      window.removeEventListener('touchstart', resetTimer);
     };
-  }, [navHasFaded]);
+  }, []);
 
   useEffect(() => {
     setHeaderVisible(true);
@@ -124,11 +111,7 @@ const ClockPage = () => {
         <div className={styles.content}>
           <div className={styles.error}>{error || pageError}</div>
         </div>
-        <Link
-          to="/"
-          className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}
-          aria-label="Go back to homepage"
-        >
+        <div className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}>
           <div className={styles.footerContent}>
             <div className={styles.footerLeft}>
               <span className={styles.footerNumber}>
@@ -142,7 +125,7 @@ const ClockPage = () => {
               <span className={styles.footerDate}>N/A</span>
             </div>
           </div>
-        </Link>
+        </div>
       </div>
     );
   }
@@ -158,50 +141,41 @@ const ClockPage = () => {
       <div className={styles.content}>
         {ClockComponent ? <ClockComponent /> : <div className={styles.loading}>Loading clock...</div>}
       </div>
-
-      {prevItem && (
-        <Link
-          to={`/${prevItem.date}`}
-          className={`${styles.sideNav} ${styles.leftNav} ${navVisible ? styles.visible : styles.hidden}`}
-          aria-label={`Go to previous clock: ${formatTitle(prevItem.title)}`}
-        >
-          <span aria-hidden="true">←</span>
-          <span className={styles.screenReaderText}>Previous: {formatTitle(prevItem.title)}</span>
-        </Link>
-      )}
-
-      {nextItem && (
-        <Link
-          to={`/${nextItem.date}`}
-          className={`${styles.sideNav} ${styles.rightNav} ${navVisible ? styles.visible : styles.hidden}`}
-          aria-label={`Go to next clock: ${formatTitle(nextItem.title)}`}
-        >
-          <span aria-hidden="true">→</span>
-          <span className={styles.screenReaderText}>Next: {formatTitle(nextItem.title)}</span>
-        </Link>
-      )}
-
-      {currentItem && (
-        <Link
-          to="/"
-          className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}
-          aria-label="Go back to homepage"
-        >
-          <div className={styles.footerContent}>
-            <div className={styles.footerLeft}>
-              <span className={styles.footerNumber}>
-                <strong>#</strong>{currentIndex + 1}
-              </span>&nbsp;&nbsp;&nbsp;
-            </div>
-            <div className={styles.footerCenter}>
-              <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
-            </div>&nbsp;&nbsp;&nbsp;
-            <div className={styles.footerRight}>
-              <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
-            </div>
+      <div className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}>
+        {prevItem && (
+          <Link
+            to={`/${prevItem.date}`}
+            className={styles.navArrow}
+            aria-label={`Go to previous clock: ${formatTitle(prevItem.title)}`}
+          >
+            <span aria-hidden="true">←</span>
+            <span className={styles.screenReaderText}>Previous: {formatTitle(prevItem.title)}</span>
+          </Link>
+        )}
+        <div className={styles.footerContent}>
+          <div className={styles.footerLeft}>
+            <span className={styles.footerNumber}>
+              <strong>#</strong>{currentIndex + 1}
+            </span>
           </div>
-        </Link>
-      )}
+          <div className={styles.footerCenter}>
+            <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
+          </div>
+          <div className={styles.footerRight}>
+            <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
+          </div>
+        </div>
+        {nextItem && (
+          <Link
+            to={`/${nextItem.date}`}
+            className={styles.navArrow}
+            aria-label={`Go to next clock: ${formatTitle(nextItem.title)}`}
+          >
+            <span aria-hidden="true">→</span>
+            <span className={styles.screenReaderText}>Next: {formatTitle(nextItem.title)}</span>
+          </Link>
+        )}
+      </div>
     </div>
   );
 };
