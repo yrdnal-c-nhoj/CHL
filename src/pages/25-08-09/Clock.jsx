@@ -135,7 +135,6 @@ const RectangularAnalogClock = () => {
           y2={y.toFixed(4)}
           stroke="#F3F4F7FF"
           strokeWidth={0.4}
-          opacity={0.9}
         />
       )),
     ];
@@ -165,11 +164,11 @@ const RectangularAnalogClock = () => {
         y={pos.y}
         textAnchor="middle"
         dominantBaseline="middle"
-        fill="#F3F4F7FF"
+        fill="#22FB05FF"
         filter="url(#multiShadow)"
         style={{
           fontFamily: 'MyCustomFont, system-ui, sans-serif',
-          fontSize: '0.8rem',
+          fontSize: '0.9rem',
           userSelect: 'none',
         }}
       >
@@ -179,7 +178,7 @@ const RectangularAnalogClock = () => {
   };
 
   const { hour, minute, second } = calculateHandAngles();
-  const handColor = '#F3F4F7FF';
+  const handColor = '#22FB05FF';
   const handStroke = 0.4;
 
   return (
