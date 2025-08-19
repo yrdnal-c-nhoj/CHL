@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
-import bg1 from "./target.gif";
+import bg3 from "./target.gif";
 import bg2 from "./arrows.gif";
-import bg3 from "./ar.gif";
+import bg1 from "./ar.gif";
 import bg4 from "./ar.gif";
 import fontFileUrl from "./targ.otf";
 
@@ -17,9 +17,25 @@ export default function ClockLetters({
   showSecondHand = true,
 }) {
   const [now, setNow] = useState(new Date());
+  const [rotation, setRotation] = useState({ layer1: 0, layer2: 0 });
+
   useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(t);
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Animate rotating layers
+  useEffect(() => {
+    let frame;
+    const animate = () => {
+      setRotation((r) => ({
+        layer1: r.layer1 + 0.05, // clockwise
+        layer2: r.layer2 - 0.03, // counterclockwise
+      }));
+      frame = requestAnimationFrame(animate);
+    };
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const { hourDeg, minDeg, secDeg } = useMemo(() => {
@@ -47,29 +63,30 @@ export default function ClockLetters({
     position: "relative",
     width: "100vw",
     height: "100vh",
-    overflow: "hidden",
   };
 
- // Each background layer has its own positioning and size
-const backgroundLayers = [
-  { url: bg1, opacity: 0.9, zIndex: 1, size: "contain", pos: "center", saturation: 1.2, hue: -30 },
-  { url: bg2, opacity: 0.3, zIndex: 2, size: "cover", pos: "center", saturation: 0.8, hue: -90 },
-  { url: bg3, opacity: 0.4, zIndex: 3, size: "80%", pos: "center", saturation: 1.5, hue: -40 },
-  { url: bg4, opacity: 0.5, zIndex: 4, size: "cover", pos: "center", saturation: 1.5, hue: -20 },
-];
+  const backgroundLayers = [
+    { url: bg1, opacity: 0.9, zIndex: 1, size: "50%", pos: "center", saturation: 1.2, hue: -30, rotate: rotation.layer1 },
+    { url: bg2, opacity: 0.3, zIndex: 2, size: "60%", pos: "center", saturation: 0.8, hue: -90, rotate: rotation.layer2 },
+    { url: bg3, opacity: 0.4, zIndex: 3, size: "50%", pos: "center", saturation: 1.5, hue: -40 },
+  ];
 
-const bgLayerStyle = (layer) => ({
-  position: "absolute",
-  inset: 0,
-  backgroundImage: `url(${layer.url})`,
-  backgroundSize: layer.size || "cover",
-  backgroundPosition: layer.pos || "center",
-  backgroundRepeat: "no-repeat",
-  opacity: layer.opacity,
-  zIndex: layer.zIndex,
-  filter: `saturate(${layer.saturation || 1}) hue-rotate(${layer.hue || 0}deg)`,
-});
-
+  const bgLayerStyle = (layer) => ({
+    position: "absolute",
+    width: "150vw",
+    height: "150vh",
+    top: "50%",
+    left: "50%",
+    transform: layer.rotate ? `translate(-50%, -50%) rotate(${layer.rotate}deg)` : "translate(-50%, -50%)",
+    transformOrigin: "center",
+    backgroundImage: `url(${layer.url})`,
+    backgroundSize: layer.size || "cover",
+    backgroundPosition: layer.pos || "center",
+    backgroundRepeat: "no-repeat",
+    opacity: layer.opacity,
+    zIndex: layer.zIndex,
+    filter: `saturate(${layer.saturation || 1}) hue-rotate(${layer.hue || 0}deg)`,
+  });
 
   const faceWrap = {
     position: "absolute",
@@ -156,7 +173,6 @@ const bgLayerStyle = (layer) => ({
     return nodes;
   }, [sizeVmin]);
 
-  // Hand image styles
   const handStyle = (deg, length, z) => ({
     position: "absolute",
     left: "50%",
@@ -167,6 +183,7 @@ const bgLayerStyle = (layer) => ({
     height: "auto",
     zIndex: z,
     pointerEvents: "none",
+    filter: "drop-shadow(0.2vmin 0.2vmin 0.3vmin rgba(0,0,0,0.5))",
   });
 
   return (
@@ -179,26 +196,18 @@ const bgLayerStyle = (layer) => ({
         }
       `}</style>
 
-      {/* Background layers */}
       {backgroundLayers.map((layer, i) => (
         <div key={i} style={bgLayerStyle(layer)} />
       ))}
 
-      {/* Clock */}
       <div style={faceWrap}>
         <div style={face}>
           {ticks}
           {lettersNodes}
           <img src={hourHandImg} style={handStyle(hourDeg, sizeVmin * 0.37, 3)} />
-          <img
-            src={minuteHandImg}
-            style={handStyle(minDeg, sizeVmin * 0.53, 4)}
-          />
+          <img src={minuteHandImg} style={handStyle(minDeg, sizeVmin * 0.53, 4)} />
           {showSecondHand && (
-            <img
-              src={secondHandImg}
-              style={handStyle(secDeg, sizeVmin * 0.6, 5)}
-            />
+            <img src={secondHandImg} style={handStyle(secDeg, sizeVmin * 0.6, 5)} />
           )}
         </div>
       </div>
