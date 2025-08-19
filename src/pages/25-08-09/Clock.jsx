@@ -8,14 +8,12 @@ const RectangularAnalogClock = () => {
   // Animation loop for updating time
   useEffect(() => {
     const updateTime = () => {
-      setTime(new Date()); // Force new Date object for state update
+      setTime(new Date());
       rafRef.current = requestAnimationFrame(updateTime);
     };
     rafRef.current = requestAnimationFrame(updateTime);
     return () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
@@ -124,9 +122,8 @@ const RectangularAnalogClock = () => {
           y1={5}
           x2={x.toFixed(4)}
           y2={95}
-          stroke= "#F3F4F7FF"
+          stroke="#F3F4F7FF"
           strokeWidth={0.4}
-          opacity={0.9}
         />
       )),
       ...leftYs.map((y, idx) => (
@@ -136,7 +133,7 @@ const RectangularAnalogClock = () => {
           y1={y.toFixed(4)}
           x2={95}
           y2={y.toFixed(4)}
-          stroke= "#F3F4F7FF"
+          stroke="#F3F4F7FF"
           strokeWidth={0.4}
           opacity={0.9}
         />
@@ -191,7 +188,6 @@ const RectangularAnalogClock = () => {
         width: '100vw',
         height: '100vh',
         overflow: 'hidden',
-        backgroundColor: '#400D4DFF',
         userSelect: 'none',
       }}
     >
@@ -199,23 +195,28 @@ const RectangularAnalogClock = () => {
         width="100vw"
         height="100vh"
         viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-        style={{ backgroundColor: '#460260FF' }}
+        preserveAspectRatio="xMidYMid meet"
+        style={{
+          backgroundColor: '#460260FF',
+          backgroundImage:
+            'linear-gradient(#592dc1 1px, transparent 1px), linear-gradient(to right, #592dc1 1px, transparent 1px)',
+          backgroundSize: '10px 10px',
+        }}
       >
         <defs>
           <filter id="multiShadow">
-            <feDropShadow dx="1.5" dy="1.5" stdDeviation="0.53" floodColor="#1EF425FF" />
-            <feDropShadow dx="1.5" dy="1.5" stdDeviation="0.65" floodColor="#1EF425FF" />
+            <feDropShadow dx="1.5" dy="1.5" stdDeviation="0.53" floodColor="#540579FF" />
+            <feDropShadow dx="1.5" dy="1.5" stdDeviation="0.65" floodColor="#480462FF" />
           </filter>
-        </defs> 
+        </defs>
 
-        <rect width="100" height="100" fill="#052149" />
+        <rect width="100" height="100" fill="transparent" />
         {renderGridLines()}
         {generateHourMarkers()}
         {renderMultiAngleHand(hour, 18, 6, 11, handColor, handStroke, 'hour', true)}
         {renderMultiAngleHand(minute, 28, 8, 15, handColor, handStroke, 'minute', false)}
         {renderMultiAngleHand(second, 36, 10, 19, handColor, handStroke, 'second', true)}
-        <circle cx="50" cy="50" r="0.1" fill={handColor} />
+        <circle cx="50" cy="50" r="0.4" fill={handColor} />
       </svg>
     </div>
   );
