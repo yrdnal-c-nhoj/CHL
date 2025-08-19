@@ -80,8 +80,8 @@ const Pendulum = () => {
       justifyContent: 'center',
       alignItems: 'center',
       fontFamily: '"CustomFont", monospace',
-      fontSize: '2vw',
-      color: '#333',
+      fontSize: '4vw',
+      color: '#CF101DFF',
     },
     pieceFirstChild: {
       animation: 'left 1s cubic-bezier(0.215, 0.61, 0.355, 1) infinite alternate',
@@ -120,7 +120,7 @@ const Pendulum = () => {
           justify-content: center;
           align-items: center;
           font-family: 'CustomFont', monospace;
-          font-size: 2vw;
+          font-size: 4vw;
           color: #333;
         }
       `}</style>
