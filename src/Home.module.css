@@ -1,5 +1,4 @@
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
 
 /* Ensure full-page layout */
 html,
@@ -93,8 +92,8 @@ body {
 
 .clockNumber {
   flex: 0 0 auto;
-  font-size: 0.9rem;
-  font-family: "Nunito", sans-serif;
+font-size: 1rem;
+  font-family: "Manrope", sans-serif;
   color: #0c0d0d;
   text-align: left;
   min-width: 1rem;
@@ -102,8 +101,8 @@ body {
 
 .date {
   flex: 0 0 auto;
-  font-size: 0.9rem;
-  font-family: "Nunito", sans-serif;
+  font-size: 1rem;
+  font-family: "Manrope", sans-serif;
   color: #0c0d0d;
   text-align: right;
   min-width: 5rem;
@@ -113,8 +112,8 @@ body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 1.0rem;
-  font-family: "Nunito", sans-serif;
+  font-size: 1.1rem;
+  font-family: "Manrope", sans-serif;
   color: #0c0d0d;
   text-align: center;
   white-space: normal;
@@ -157,7 +156,7 @@ body {
   cursor: pointer;
   transition: background-color 0.2s, text-shadow 0.2s;
   color: #8b8f8c;
-  font-family: "Nunito", sans-serif;
+   font-family: "Manrope", sans-serif;
 }
 
 .sortButton:hover {

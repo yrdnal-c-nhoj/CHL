@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Oxanium:wght@200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
+
+
 
 html,
 body {
@@ -6,12 +8,12 @@ body {
 }
 
 .text {
- font-family: "Nunito", sans-serif;
+ font-family: "Manrope", sans-serif;
  font-size: 3rem;
 }
 
 .container {
-  font-family: "Nunito", sans-serif;
+ font-family: "Manrope", sans-serif;
   margin: 0.0;
   padding: 0 0 60px 0;
   width: 100vw;
