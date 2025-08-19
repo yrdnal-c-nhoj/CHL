@@ -1,0 +1,6 @@
+import{r as i,j as t}from"./index-CPtGTb2j.js";const m="/assets/mu-CGV3ESk5.jpg",d="/assets/mult-DNXazs0y.ttf",p=()=>{const[n,a]=i.useState({hours:"",minutes:""});i.useEffect(()=>{const o=()=>{const r=new Date;let s=r.getHours();const u=r.getMinutes();s=s%12||12,a({hours:String(s),minutes:String(u).padStart(2,"0")})};o();const l=setInterval(o,1e3);return()=>clearInterval(l)},[]);const c=`
+    @font-face {
+      font-family: 'mult';
+      src: url(${d}) format('truetype');
+    }
+  `,e={htmlBody:{margin:0,padding:0,height:"100vh",width:"100vw",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",fontFamily:"mult, monospace"},clock:{position:"absolute",top:"32vh",color:"rgb(137, 3, 3)",fontSize:"2.1rem",letterSpacing:"0.5rem",textTransform:"uppercase",zIndex:2},bgImage:{position:"fixed",top:0,left:0,width:"100%",height:"100%",backgroundImage:`url(${m})`,backgroundSize:"100% 100%",backgroundPosition:"center",backgroundRepeat:"no-repeat",filter:"contrast(100%)",zIndex:1,pointerEvents:"none"}};return t.jsxs("div",{style:e.htmlBody,children:[t.jsx("style",{children:c}),t.jsx("div",{style:e.bgImage}),t.jsxs("div",{style:e.clock,children:[n.hours,n.minutes]})]})};export{p as default};
