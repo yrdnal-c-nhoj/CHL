@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import bg1 from "./ar.gif";
+import bg1 from "./target.png";
 import bg2 from "./arrows.gif";
 import bg3 from "./arro.webp";
 import bg4 from "./po.gif";
@@ -187,10 +187,10 @@ export default function ClockLetters({
       `}</style>
 
       {/* Four stacked backgrounds */}
-      <div style={bgLayer(bg1, 0.0, 1)} />
-      <div style={bgLayer(bg2, 0.009, 2)} />
-      <div style={bgLayer(bg3, 0.6, 3)} />
-      <div style={bgLayer(bg4, 0.3, 4)} />
+      <div style={bgLayer(bg1, 0.2, 4)} />
+      <div style={bgLayer(bg2, 0.09, 1)} />
+      <div style={bgLayer(bg3, 0.4, 3)} />
+      <div style={bgLayer(bg4, 0.4, 2)} />
 
       {/* Clock */}
       <div style={faceWrap}>
