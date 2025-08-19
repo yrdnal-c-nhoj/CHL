@@ -46,7 +46,6 @@ const styles = {
   },
   digitalFrame: {
     position: 'relative',
-    padding: '30.01rem',
   },
 }
 
