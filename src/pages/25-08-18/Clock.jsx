@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import bg3 from "./target.gif";
-import bg2 from "./arrows.gif";
-import bg1 from "./ar.gif";
-import bg4 from "./ar.gif";
+import bg1 from "./arrows.gif";
+import bg2 from "./ar.gif";
 import fontFileUrl from "./targ.otf";
 
 import hourHandImg from "./aro.gif";
@@ -29,8 +28,8 @@ export default function ClockLetters({
     let frame;
     const animate = () => {
       setRotation((r) => ({
-        layer1: r.layer1 + 0.05, // clockwise
-        layer2: r.layer2 - 0.03, // counterclockwise
+        layer1: r.layer1 + 0.1, // clockwise
+        layer2: r.layer2 - 0.06, // counterclockwise
       }));
       frame = requestAnimationFrame(animate);
     };
@@ -66,9 +65,9 @@ export default function ClockLetters({
   };
 
   const backgroundLayers = [
-    { url: bg1, opacity: 0.9, zIndex: 1, size: "50%", pos: "center", saturation: 2.2, hue: -30, rotate: rotation.layer1 },
-    { url: bg2, opacity: 0.3, zIndex: 2, size: "60%", pos: "center", saturation: 2.8, hue: -90, rotate: rotation.layer2 },
-    { url: bg3, opacity: 0.4, zIndex: 3, size: "50%", pos: "center", saturation: 2.5, hue: -40 },
+    { url: bg1, opacity: 0.4, zIndex: 3, size: "50%", pos: "center", saturation: 4.2, hue: 20, rotate: rotation.layer1 },
+    { url: bg2, opacity: 0.6, zIndex: 2, size: "40%", pos: "center", saturation: 4.8, hue: 10, rotate: rotation.layer2 },
+    { url: bg3, opacity: 0.9, zIndex: 1, size: "50%", pos: "center", saturation: 2.5, hue: -40 },
   ];
 
   const bgLayerStyle = (layer) => ({
