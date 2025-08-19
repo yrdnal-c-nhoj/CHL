@@ -1,9 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
-import bg1 from "./target.png";
+import bg1 from "./target.gif";
 import bg2 from "./arrows.gif";
-import bg3 from "./arro.webp";
-import bg4 from "./po.gif";
+import bg3 from "./ar.gif";
+import bg4 from "./ar.gif";
 import fontFileUrl from "./targ.otf";
+
+import hourHandImg from "./aro.gif";
+import minuteHandImg from "./arrr.gif";
+import secondHandImg from "./ar9.gif";
 
 const CLOCK_FONT_FAMILY = "ClockFont__Scoped_7t3";
 
@@ -46,15 +50,26 @@ export default function ClockLetters({
     overflow: "hidden",
   };
 
-  const bgLayer = (url, opacity, z) => ({
-    position: "absolute",
-    inset: 0,
-    backgroundImage: `url(${url})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    opacity,
-    zIndex: z,
-  });
+ // Each background layer has its own positioning and size
+const backgroundLayers = [
+  { url: bg1, opacity: 0.9, zIndex: 1, size: "contain", pos: "center", saturation: 1.2, hue: -30 },
+  { url: bg2, opacity: 0.3, zIndex: 2, size: "cover", pos: "center", saturation: 0.8, hue: -90 },
+  { url: bg3, opacity: 0.4, zIndex: 3, size: "80%", pos: "center", saturation: 1.5, hue: -40 },
+  { url: bg4, opacity: 0.5, zIndex: 4, size: "cover", pos: "center", saturation: 1.5, hue: -20 },
+];
+
+const bgLayerStyle = (layer) => ({
+  position: "absolute",
+  inset: 0,
+  backgroundImage: `url(${layer.url})`,
+  backgroundSize: layer.size || "cover",
+  backgroundPosition: layer.pos || "center",
+  backgroundRepeat: "no-repeat",
+  opacity: layer.opacity,
+  zIndex: layer.zIndex,
+  filter: `saturate(${layer.saturation || 1}) hue-rotate(${layer.hue || 0}deg)`,
+});
+
 
   const faceWrap = {
     position: "absolute",
@@ -72,42 +87,7 @@ export default function ClockLetters({
     position: "relative",
     width: "100%",
     height: "100%",
-    borderRadius: "50%", };
-
-  const tickBase = {
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transformOrigin: "0% 50%",
-    borderRadius: "0.6vmin",
-    willChange: "transform",
-  };
-
-  const hourHand = {
-    ...tickBase,
-    width: `${sizeVmin * 0.37}vmin`,
-    height: `${sizeVmin * 0.015}vmin`,
-    background: "rgba(20,20,20,0.9)",
-    zIndex: 3,
-    transform: `rotate(${hourDeg - 90}deg) translateX(${sizeVmin * 0.04}vmin)`,
-  };
-
-  const minuteHand = {
-    ...tickBase,
-    width: `${sizeVmin * 0.53}vmin`,
-    height: `${sizeVmin * 0.01}vmin`,
-    background: "rgba(20,20,20,0.9)",
-    zIndex: 4,
-    transform: `rotate(${minDeg - 90}deg) translateX(${sizeVmin * 0.04}vmin)`,
-  };
-
-  const secondHand = {
-    ...tickBase,
-    width: `${sizeVmin * 0.6}vmin`,
-    height: `${sizeVmin * 0.005}vmin`,
-    background: "rgba(210,0,0,0.9)",
-    zIndex: 5,
-    transform: `rotate(${secDeg - 90}deg) translateX(${sizeVmin * 0.04}vmin)`,
+    borderRadius: "50%",
   };
 
   const letterStyleBase = {
@@ -176,6 +156,19 @@ export default function ClockLetters({
     return nodes;
   }, [sizeVmin]);
 
+  // Hand image styles
+  const handStyle = (deg, length, z) => ({
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    transformOrigin: "0% 50%",
+    transform: `rotate(${deg - 90}deg) translateX(${sizeVmin * 0.04}vmin)`,
+    width: `${length}vmin`,
+    height: "auto",
+    zIndex: z,
+    pointerEvents: "none",
+  });
+
   return (
     <div style={root}>
       <style>{`
@@ -186,20 +179,27 @@ export default function ClockLetters({
         }
       `}</style>
 
-      {/* Four stacked backgrounds */}
-      <div style={bgLayer(bg1, 0.2, 4)} />
-      <div style={bgLayer(bg2, 0.09, 1)} />
-      <div style={bgLayer(bg3, 0.4, 3)} />
-      <div style={bgLayer(bg4, 0.4, 2)} />
+      {/* Background layers */}
+      {backgroundLayers.map((layer, i) => (
+        <div key={i} style={bgLayerStyle(layer)} />
+      ))}
 
       {/* Clock */}
       <div style={faceWrap}>
         <div style={face}>
           {ticks}
           {lettersNodes}
-          <div style={hourHand} />
-          <div style={minuteHand} />
-          {showSecondHand && <div style={secondHand} />}
+          <img src={hourHandImg} style={handStyle(hourDeg, sizeVmin * 0.37, 3)} />
+          <img
+            src={minuteHandImg}
+            style={handStyle(minDeg, sizeVmin * 0.53, 4)}
+          />
+          {showSecondHand && (
+            <img
+              src={secondHandImg}
+              style={handStyle(secDeg, sizeVmin * 0.6, 5)}
+            />
+          )}
         </div>
       </div>
     </div>
