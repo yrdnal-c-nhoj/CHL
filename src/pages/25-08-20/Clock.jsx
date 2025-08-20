@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import myFontUrl from "./go.ttf"; // <-- your custom font file
+import myFontUrl from "./go.otf";
+import bgImage from "./24.webp"; // background image
 
 const TIMEZONES = [
   "UTC", "America/New_York", "America/Chicago", "America/Denver",
@@ -10,7 +11,6 @@ const TIMEZONES = [
   "America/Sao_Paulo", "America/Argentina/Buenos_Aires", "Europe/Istanbul", "Europe/Athens"
 ];
 
-// Inject custom font once
 function useCustomFont(fontName, fontUrl) {
   useEffect(() => {
     const style = document.createElement("style");
@@ -60,9 +60,11 @@ function AnalogClock({ zone, clockSize, fontName }) {
     transformOrigin: "bottom center",
   };
 
-  const hourHandHeight = clockSize * 0.35;
+  const hourHandHeight = clockSize * 0.3;
   const minuteHandHeight = clockSize * 0.45;
   const secondHandHeight = clockSize * 0.48;
+
+  const handShadow = "drop-shadow(-1px 0 white) drop-shadow(1px 0 black)";
 
   return (
     <div style={{ 
@@ -81,6 +83,7 @@ function AnalogClock({ zone, clockSize, fontName }) {
             height: `${hourHandHeight}px`,
             background: "#7C05A8FF",
             transform: `translate(-50%, -100%) rotate(${hourAngle}deg)`,
+            filter: handShadow,
           }}
         />
         <div
@@ -90,6 +93,7 @@ function AnalogClock({ zone, clockSize, fontName }) {
             height: `${minuteHandHeight}px`,
             background: "#E407E0FF",
             transform: `translate(-50%, -100%) rotate(${minAngle}deg)`,
+            filter: handShadow,
           }}
         />
         <div
@@ -99,6 +103,7 @@ function AnalogClock({ zone, clockSize, fontName }) {
             height: `${secondHandHeight}px`,
             background: "red",
             transform: `translate(-50%, -100%) rotate(${secAngle}deg)`,
+            filter: handShadow,
           }}
         />
         <div
@@ -115,12 +120,18 @@ function AnalogClock({ zone, clockSize, fontName }) {
         />
       </div>
       <div style={{ 
-        fontSize: `${Math.max(8, clockSize * 0.1)}px`, 
+        fontSize: `${Math.max(8, clockSize * 0.25)}px`, 
         marginTop: "4px",
         textAlign: "center",
         lineHeight: "1.2",
         fontWeight: "500",
-        fontFamily: fontName
+        fontFamily: fontName,
+        filter: "saturate(3.5)", // saturation filter
+
+        textShadow: `
+          -2px 0 2px red,   /* red shadow to the left */
+           2px 0 2px white  /* white shadow to the right */
+        `
       }}>
         {zone.split('/').pop().replace(/_/g, " ")}
       </div>
@@ -145,7 +156,6 @@ export default function WorldClockGrid() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Responsive layout: phone vs desktop
   const isMobile = dimensions.width < 768;
   const cols = isMobile ? 6 : 12;
   const rows = isMobile ? 4 : 2;
@@ -167,8 +177,14 @@ export default function WorldClockGrid() {
     justifyItems: "center",
     alignItems: "center",
     placeContent: "center",
-    fontFamily: "MyCustomFont"
-  };
+    fontFamily: "MyCustomFont",
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat", 
+    filter: "contrast(0.5) saturate(3.5)", // saturation filter
+
+     };
 
   return (
     <div style={containerStyle}>
