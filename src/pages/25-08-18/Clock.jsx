@@ -163,18 +163,23 @@ export default function ClockLetters({
   };
 
   const letterStyleBase = {
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transform: "translate(-50%, -50%)",
-    fontFamily: CLOCK_FONT_FAMILY,
-    fontWeight: "700",
-    userSelect: "none",
-    textShadow:
-      "0 0.2vmin 0.6vmin rgba(0,0,0,0.5), 0 0 0.2vmin rgba(255,255,255,0.9)",
-    color: "rgba(15,15,15,0.95)",
-    zIndex: 2,
-  };
+  position: "absolute",
+  left: "50%",
+  top: "50%",
+  transform: "translate(-50%, -50%)",
+  fontFamily: CLOCK_FONT_FAMILY,
+  fontWeight: "700",
+  userSelect: "none",
+  color: "rgba(15,15,15,0.95)",
+  zIndex: 2,
+  textShadow: `
+    0 1px 0px rgba(255,255,255), /* White glow */
+    1 -1px 0px  rgba(255,0,0),
+    0 -1px 0px  rgba(255,255,0),
+    -1 0px 0px  rgba(0,255,255)            /* Red shadow */
+  `,
+};
+
 
   const lettersNodes = useMemo(() => {
     const radius = sizeVmin / 2 - sizeVmin * 0.08;
