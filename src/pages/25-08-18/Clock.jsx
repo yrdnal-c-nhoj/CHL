@@ -136,7 +136,7 @@ export default function ClockLetters({
     position: "absolute",
     fontFamily: "Arial, sans-serif",
     fontWeight: "bold",
-    color: "#000000",
+    color: "#393737FF",
     fontSize: `${sizeVmin * 0.1}vmin`,
     textShadow: "0 0.1vmin 0.2vmin rgba(255,255,255,0.8)",
     userSelect: "none",
