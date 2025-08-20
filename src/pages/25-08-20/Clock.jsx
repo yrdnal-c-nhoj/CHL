@@ -1,103 +1,80 @@
-import { useState, useEffect } from 'react';
-import fontUrl from './sq.ttf'; // replace with your font file name
+import { useEffect, useState } from "react";
+import myFontUrl from "./sq.ttf";
 
 export default function FullViewportClock() {
-  const [time, setTime] = useState(new Date());
-  const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
-
-  // Inject scoped @font-face only once
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: "ClockFontScoped";
-        src: url(${fontUrl}) format("opentype");
-        font-weight: normal;
-        font-style: normal;
-      }
-    `;
-    document.head.appendChild(style);
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
+  const [now, setNow] = useState(new Date());
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
+    const timer = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
+  const digits = (() => {
+    const h = now.getHours() % 12 || 12;
+    const hh = String(h).padStart(2, "0");
+    const mm = String(now.getMinutes()).padStart(2, "0");
+    return (hh + mm).split("");
+  })();
+
+  // Inject custom font
   useEffect(() => {
-    const handleResize = () =>
-      setDimensions({ width: window.innerWidth, height: window.innerHeight });
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @font-face {
+        font-family: 'CustomFont';
+        src: url(${myFontUrl}) format('truetype');
+      }
+    `;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
   }, []);
 
-  // Format as HHMM (no seconds)
-  const formatTime = (date) => {
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return hours + minutes;
-  };
+  // Calculate dimensions
+  const digitCount = digits.length; // Typically 4 digits (HH:MM)
+  const baseFontSize = window.innerHeight * 0.25; // Base size before scaling
+  const scaleY = window.innerHeight / (baseFontSize * 0.75); // Stretch to fill height
+  const digitWidth = window.innerWidth / digitCount; // Exact width per digit
 
-  const digits = formatTime(time);
-  const isMobile = dimensions.width < dimensions.height;
-
-  // Size per digit to fill viewport
-  const cellMainSize = isMobile
-    ? dimensions.height / digits.length
-    : dimensions.width / digits.length;
-
-  const containerStyle = {
-    width: '100vw',
-    height: '100vh',
-    backgroundColor: '#E6E8EDFF',
-    display: 'flex',
-    flexDirection: isMobile ? 'column' : 'row',
-    margin: 0,
-    padding: 0,
-    overflow: 'hidden',
-    position: 'relative', // Enable absolute positioning of children
-  };
-
-  const colors = [
-    'rgba(16, 185, 129, 0.5)',
-    'rgba(239, 68, 68, 0.5)',
-    'rgba(59, 130, 246, 0.5)',
-    'rgba(245, 158, 11, 0.5)',
-    'rgba(168, 85, 247, 0.5)',
-    'rgba(34, 197, 94, 0.5)',
-  ];
-
-  const getDigitStyle = (index) => ({
-    fontFamily: 'ClockFontScoped, monospace',
-    fontWeight: 'bold',
-    color: colors[index % colors.length],
-    fontSize: isMobile
-      ? `${dimensions.height}px`
-      : `${dimensions.width / digits.length}px`,
-    lineHeight: 1,
-    position: 'absolute',
-    top: isMobile ? `${index * (dimensions.height / digits.length)}px` : 0,
-    left: isMobile ? 0 : `${index * (dimensions.width / digits.length)}px`,
-    width: isMobile ? '100vw' : `${dimensions.width / digits.length}px`,
-    height: isMobile ? `${dimensions.height / digits.length}px` : '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transform: isMobile
-      ? `scale(1, ${dimensions.height / (digits.length * cellMainSize)})`
-      : `scale(${dimensions.width / (digits.length * cellMainSize)}, 1)`,
-    transformOrigin: 'center',
-  });
+  const colors = ["#FF3C38", "#FFDD00", "#00D1FF", "#00FF88"];
 
   return (
-    <div style={containerStyle}>
-      {digits.split('').map((d, idx) => (
-        <div key={idx} style={getDigitStyle(idx)}>
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        display: "flex",
+        justifyContent: "flex-start", // Align digits to left edge
+        alignItems: "center",
+        gap: 0,
+        background: "black",
+        height: "100vh",
+        width: "100vw",
+        overflow: "hidden",
+        margin: 0,
+        padding: 0,
+        border: 0, // No borders
+      }}
+    >
+      {digits.map((d, i) => (
+        <span
+          key={i}
+          style={{
+            fontFamily: "CustomFont",
+            fontSize: `${baseFontSize}px`,
+            color: colors[i % colors.length],
+            lineHeight: 1,
+            display: "block",
+            transform: `scaleY(${scaleY})`, // Stretch to full viewport height
+            width: `${digitWidth}px`, // Exact width to fill viewport
+            textAlign: "center",
+            flex: `0 0 ${digitWidth}px`, // Fixed width, no shrinking
+            margin: 0,
+            padding: 0,
+            border: 0, // No borders
+          }}
+        >
           {d}
-        </div>
+        </span>
       ))}
     </div>
   );
