@@ -65,9 +65,9 @@ export default function ClockLetters({
   };
 
   const backgroundLayers = [
-    { url: bg1, opacity: 0.4, zIndex: 3, size: "50%", pos: "center", saturation: 4.2, hue: 20, rotate: rotation.layer1 },
-    { url: bg2, opacity: 0.6, zIndex: 2, size: "40%", pos: "center", saturation: 4.8, hue: 10, rotate: rotation.layer2 },
-    { url: bg3, opacity: 0.9, zIndex: 1, size: "50%", pos: "center", saturation: 2.5, hue: -40 },
+    { url: bg1, opacity: 0.7, zIndex: 2, size: "50%", pos: "center", saturation: 2.2, hue: 20, rotate: rotation.layer1 },
+    { url: bg2, opacity: 0.9, zIndex: 3, size: "40%", pos: "center", saturation: 2.8, hue: 10, rotate: rotation.layer2 },
+    { url: bg3, opacity: 1.0, contrast: 2.0, zIndex: 1, size: "50%", pos: "center", saturation: 2.5, hue: -40 },
   ];
 
   const bgLayerStyle = (layer) => ({
