@@ -22,8 +22,9 @@
 }
 
 .footerStrip.hidden {
-  opacity: 0.5; /* Keep footer strip slightly visible to indicate active areas */
-  transform: translateX(-50%) translateY(0); /* Keep in place, no sliding out */
+  opacity: 0; /* Fully invisible */
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto; /* Keep links clickable */
 }
 
 /* --- Buttons --- */
@@ -55,17 +56,7 @@
   font-size: 1.8rem;
 }
 
-/* --- Keep all buttons visible and clickable when footer is hidden --- */
-.footerStrip.hidden .footerButton,
-.footerStrip.hidden .navButton {
-  background: rgba(3, 2, 2, 0.4); /* Slightly more pronounced background */
-  color: rgba(218, 219, 215, 0.6); /* More visible text/icons */
-  border-color: rgba(98, 103, 112, 0.6); /* More visible border */
-  opacity: 0.6; /* Clearly visible to indicate interactivity */
-  pointer-events: auto; /* Ensure buttons remain clickable */
-}
-
-/* Hover will still light them up, even when strip is hidden */
+/* Hover effect */
 .footerButton:hover,
 .navButton:hover {
   background: rgb(1, 10, 61);
