@@ -57,7 +57,7 @@ export default function TopNav() {
               className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
               onClick={() => setIsMenuOpen(false)}
             >
-              Today
+              TODAY
             </NavLink>
           </li> 
 
