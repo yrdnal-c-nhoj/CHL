@@ -42,7 +42,7 @@ function About() {
             <span className="hat">About Cubist Heart Laboratories</span>
             <p>&nbsp;</p> 
 Cubist Heart Laboratories is a global collective of scientists, artists and shamans, found wherever electrons move.
-                 </p>
+                 </p><br /><br />
         </section>
       </div>
 
