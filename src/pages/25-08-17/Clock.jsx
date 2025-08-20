@@ -26,23 +26,37 @@ const StickyNoteClock = () => {
         left: 0,
         width: "100vw",
         height: "100vh",
-        backgroundImage: `url(${pageBg})`,
-        backgroundSize: "170%", // Zoom in on the background
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
+        overflow: "hidden", // prevent rotated background from causing scrollbars
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      {/* Opaque Sticky Note */}
+      {/* Rotated background container */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          width: "120%", // slightly larger to cover corners after rotation
+          height: "120%",
+          backgroundImage: `url(${pageBg})`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          transform: "translate(-50%, -50%) rotate(4deg)",
+          zIndex: -1,
+        }}
+      ></div>
+
+      {/* Sticky Note */}
       <div
         style={{
           width: "220px",
           height: "220px",
           padding: "15px",
-          transform: "rotate(-3deg) translateY(-20px)", // Move sticky note up
-          backgroundColor: "#ffff99", // solid opaque sticky note
+          transform: "rotate(-3deg) translateY(-20px)", // keep note tilt
+          backgroundColor: "#ffff99",
           boxShadow:
             "5px 5px 15px rgba(0,0,0,0.3), -3px -3px 10px rgba(0,0,0,0.2)",
           border: "1px solid #e0e0e0",
