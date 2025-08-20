@@ -1,31 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Nanum+Gothic&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
-/* 
-.topmotto {
-  font-family: "Cinzel Decorative", serif;
-  color: rgba(54, 42, 7, 0.877);
-  font-size: 0.3rem;
-  letter-spacing: 0.18rem;
-  text-align: center;
-  padding: 0.1rem 0;
-} */
 
 .topnavchl {
   font-family: "Roboto Slab", sans-serif;
   color: rgb(246, 246, 242);
-  text-shadow: #0e0d0d 0.5px 0.5px  0px, #000000 -0.5px  -0.5px  0px;
+  text-shadow: #0e0d0d 0.5px 0.5px 0px, #000000 -0.5px -0.5px 0px;
   font-size: 0.8rem;
   letter-spacing: 0.03rem;
   text-align: center;
   background-color: #333333;
-  /* background: linear-gradient(to right, #02106c,  #55552a); */
   width: 100vw;
   position: relative;
   left: 0;
   margin: 0;
-  padding: 0.1rem; /* optional spacing */
+  padding: 0.1rem;
   box-sizing: border-box;
 }
-
 
 .topnavbt {
   font-family: "Oxanium", sans-serif;
@@ -41,7 +30,6 @@
   text-align: center;
   letter-spacing: -0.05rem;
   width: 100vw;
-  /* position: relative; */
   left: 0;
   right: 0;
   margin: 0;
@@ -49,7 +37,6 @@
   box-sizing: border-box;
   overflow-x: hidden;
 }
-
 
 .topnavtag {
   font-family: "Oxanium", sans-serif;
@@ -62,29 +49,37 @@
   padding: 0.6rem 0;
 }
 
+.navbar {
+  position: relative;
+  width: 100vw;
+  background-color: #2e382e;
+}
+
 .nav-menu {
   font-family: "Roboto Slab", sans-serif;
   font-weight: bold;
+  font-size: 1rem;
   letter-spacing: 0.1rem;
-  display: none;
-  position: fixed;
-  top: 3.5rem;
-  right: 1rem;
-  text-align: center;
   list-style: none;
-  flex-direction: column;
-  width: 200px;
-  padding: 0.1rem;
-  z-index: 999;
+  padding: 0;
+  margin: 0;
   background-color: #2e382e;
+  z-index: 999;
+  display: flex;           /* flex container */
+  justify-content: center; /* center items horizontally */
+  align-items: center;     /* center vertically */
+  gap: 0.2rem;               /* space between menu items */
 }
+
+
+
 
 .nav-menu.active {
   display: flex;
 }
 
 .nav-item {
-  margin: 0.5rem 0;
+  margin: 0.5rem;
 }
 
 .nav-link {
@@ -105,17 +100,17 @@
   color: #ffffff;
   font-weight: bold;
 }
-.hamburger {
-position: absolute; /* or relative, depending on parent */
-   right: 0.4rem;
-   top: 0.5rem;
-   z-index: 1000;
-   display: block;
-   background-color: #767373;
-   border: none;
-   cursor: pointer;
-}
 
+.hamburger {
+  position: absolute;
+  right: 0.4rem;
+  top: 0.5rem;
+  z-index: 1000;
+  display: block;
+  background-color: #767373;
+  border: none;
+  cursor: pointer;
+}
 
 .hamburger span {
   display: block;
@@ -140,16 +135,36 @@ position: absolute; /* or relative, depending on parent */
 
 .topnavbgcolor {
   background-color: #2e382e;
-   /* background: linear-gradient(to right, #302f2a, #55552a); */
+}
 
+@media (min-width: 601px) {
+  .hamburger {
+    display: none;
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: static;
+    width: 100%;
+    padding: 0.5rem 0;
+  }
+
+  .nav-item {
+    margin: 0 1rem;
+  }
+
+  .nav-link {
+    padding: 0.3rem 0.5rem;
+  }
 }
 
 @media (max-width: 600px) {
   .topnavchl {
     font-size: 0.5rem;
-    text-align: center;
+    text-align: left;
     padding: 0.1rem;
-      text-align: left;
   }
 
   .topnavbt {
@@ -166,10 +181,17 @@ position: absolute; /* or relative, depending on parent */
   }
 
   .nav-menu {
-    width: 100vw;
-    right: 0;
+    display: none;
+    position: fixed;
     top: 3.2rem;
+    right: 0;
+    width: 100vw;
+    flex-direction: column;
     padding: 0.2rem;
+  }
+
+  .nav-menu.active {
+    display: flex;
   }
 
   .nav-link {
@@ -178,8 +200,8 @@ position: absolute; /* or relative, depending on parent */
   }
 
   .hamburger {
-    right: 0.2rem;
-    top: 0.3rem;
+    right: 0.3rem;
+    top: -3.3rem;
     padding: 0.2rem;
   }
 }
