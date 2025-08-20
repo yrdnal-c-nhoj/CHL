@@ -112,8 +112,8 @@ const Pendulum = () => {
         }
         .piece::before {
           content: "";
-          background: #F4F0DCFF;
-          width: 2.25px;
+          background: #F6E79DFF;
+          width: 1px;
           height: 18vw;
         }
 
