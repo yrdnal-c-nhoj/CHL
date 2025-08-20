@@ -4,7 +4,6 @@ import bgUrl from './ap.jpeg';
 
 const Pendulum = () => {
   useEffect(() => {
-    // Inject font-face for custom font
     const style = document.createElement('style');
     style.textContent = `
       @font-face {
@@ -19,7 +18,7 @@ const Pendulum = () => {
     const updateTimeOnBalls = () => {
       const now = new Date();
       let hours = now.getHours();
-      hours = hours % 12 || 12; // Convert to 12-hour format, use 12 for midnight
+      hours = hours % 12 || 12;
       hours = String(hours).padStart(2, '0');
       const minutes = String(now.getMinutes()).padStart(2, '0');
       const seconds = String(now.getSeconds()).padStart(2, '0');
@@ -33,7 +32,7 @@ const Pendulum = () => {
     const interval = setInterval(updateTimeOnBalls, 1000);
     return () => {
       clearInterval(interval);
-      document.head.removeChild(style); // Clean up font style on unmount
+      document.head.removeChild(style);
     };
   }, []);
 
@@ -45,8 +44,19 @@ const Pendulum = () => {
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'column',
+      position: 'relative', // ✅ allows bgLayer to stay inside
+      overflow: 'hidden',
+    },
+    bgLayer: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
       background: `url(${bgUrl}) no-repeat center center fixed`,
       backgroundSize: 'cover',
+      filter: 'blur(6px) brightness(0.8)', // 👈 filter effect
+      zIndex: 0, // ✅ keep visible
     },
     pendulum: {
       display: 'flex',
@@ -55,6 +65,7 @@ const Pendulum = () => {
       borderRadius: '3.25vw 3.25vw 0 0',
       padding: '0 4.5vw 2.25vw',
       height: '22.5vw',
+      zIndex: 1, // ✅ ensures pendulum sits above bgLayer
     },
     piece: {
       transformOrigin: 'center top',
@@ -63,25 +74,6 @@ const Pendulum = () => {
       flexDirection: 'column',
       width: '4.5vw',
       height: '22.5vw',
-    },
-    pieceBefore: {
-      content: '""',
-      background: '#888',
-      width: '2.25px',
-      height: '18vw',
-    },
-    pieceAfter: {
-      content: '""',
-      borderRadius: '100%',
-      background: 'white',
-      width: '4.5vw',
-      height: '4.5vw',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      fontFamily: '"CustomFont", monospace',
-      fontSize: '4vw',
-      color: '#6B040BFF',
     },
     pieceFirstChild: {
       animation: 'left 1s cubic-bezier(0.215, 0.61, 0.355, 1) infinite alternate',
@@ -93,6 +85,9 @@ const Pendulum = () => {
 
   return (
     <div style={styles.pendulumApp}>
+      {/* ✅ filtered background layer */}
+      <div style={styles.bgLayer}></div>
+
       <style>{`
         @keyframes left {
           0% { transform: rotate(0deg); }
@@ -121,16 +116,17 @@ const Pendulum = () => {
           align-items: center;
           font-family: 'CustomFont', monospace;
           font-size: 5vw;
-           color: '#6B040BFF',
+          color: #6B040BFF;
         }
       `}</style>
+
       <div style={styles.pendulum}>
-        <div style={{ ...styles.piece, ...styles.pieceFirstChild }} className="piece" data-digit=""></div>
-        <div style={styles.piece} className="piece" data-digit=""></div>
-        <div style={styles.piece} className="piece" data-digit=""></div>
-        <div style={styles.piece} className="piece" data-digit=""></div>
-        <div style={styles.piece} className="piece" data-digit=""></div>
-        <div style={{ ...styles.piece, ...styles.pieceLastChild }} className="piece" data-digit=""></div>
+        <div style={{ ...styles.piece, ...styles.pieceFirstChild }} className="piece"></div>
+        <div style={styles.piece} className="piece"></div>
+        <div style={styles.piece} className="piece"></div>
+        <div style={styles.piece} className="piece"></div>
+        <div style={styles.piece} className="piece"></div>
+        <div style={{ ...styles.piece, ...styles.pieceLastChild }} className="piece"></div>
       </div>
     </div>
   );
