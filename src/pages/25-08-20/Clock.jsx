@@ -1,80 +1,179 @@
 import { useEffect, useState } from "react";
-import myFontUrl from "./sq.ttf";
+import myFontUrl from "./go.ttf"; // <-- your custom font file
 
-export default function FullViewportClock() {
-  const [now, setNow] = useState(new Date());
+const TIMEZONES = [
+  "UTC", "America/New_York", "America/Chicago", "America/Denver",
+  "America/Los_Angeles", "America/Anchorage", "Pacific/Honolulu", "Europe/London",
+  "Europe/Paris", "Europe/Berlin", "Europe/Moscow", "Asia/Dubai",
+  "Asia/Kolkata", "Asia/Bangkok", "Asia/Hong_Kong", "Asia/Tokyo",
+  "Australia/Sydney", "Pacific/Auckland", "Africa/Cairo", "Africa/Johannesburg",
+  "America/Sao_Paulo", "America/Argentina/Buenos_Aires", "Europe/Istanbul", "Europe/Athens"
+];
 
-  useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const digits = (() => {
-    const h = now.getHours() % 12 || 12;
-    const hh = String(h).padStart(2, "0");
-    const mm = String(now.getMinutes()).padStart(2, "0");
-    return (hh + mm).split("");
-  })();
-
-  // Inject custom font
+// Inject custom font once
+function useCustomFont(fontName, fontUrl) {
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
       @font-face {
-        font-family: 'CustomFont';
-        src: url(${myFontUrl}) format('truetype');
+        font-family: '${fontName}';
+        src: url(${fontUrl}) format('truetype');
+        font-display: swap;
       }
     `;
     document.head.appendChild(style);
     return () => document.head.removeChild(style);
+  }, [fontName, fontUrl]);
+}
+
+// Analog clock component
+function AnalogClock({ zone, clockSize, fontName }) {
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const tick = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(tick);
   }, []);
 
-  // Calculate dimensions
-  const digitCount = digits.length; // Typically 4 digits (HH:MM)
-  const baseFontSize = window.innerHeight * 0.25; // Base size before scaling
-  const scaleY = window.innerHeight / (baseFontSize * 0.75); // Stretch to fill height
-  const digitWidth = window.innerWidth / digitCount; // Exact width per digit
+  const local = new Date(time.toLocaleString("en-US", { timeZone: zone }));
+  const seconds = local.getSeconds();
+  const minutes = local.getMinutes();
+  const hours = local.getHours();
 
-  const colors = ["#FF3C38", "#FFDD00", "#00D1FF", "#00FF88"];
+  const secAngle = seconds * 6;
+  const minAngle = minutes * 6 + seconds * 0.1;
+  const hourAngle = (hours % 12) * 30 + minutes * 0.5;
+
+  const clockStyle = {
+    width: `${clockSize}px`,
+    height: `${clockSize}px`,
+    borderRadius: "50%",
+    position: "relative",
+    margin: "0 auto",
+    flexShrink: 0,
+  };
+
+  const handCommon = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transformOrigin: "bottom center",
+  };
+
+  const hourHandHeight = clockSize * 0.35;
+  const minuteHandHeight = clockSize * 0.45;
+  const secondHandHeight = clockSize * 0.48;
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        display: "flex",
-        justifyContent: "flex-start", // Align digits to left edge
-        alignItems: "center",
-        gap: 0,
-        background: "black",
-        height: "100vh",
-        width: "100vw",
-        overflow: "hidden",
-        margin: 0,
-        padding: 0,
-        border: 0, // No borders
-      }}
-    >
-      {digits.map((d, i) => (
-        <span
-          key={i}
+    <div style={{ 
+      display: "flex", 
+      flexDirection: "column", 
+      alignItems: "center", 
+      justifyContent: "center",
+      height: "100%",
+      width: "100%"
+    }}>
+      <div style={clockStyle}>
+        <div
           style={{
-            fontFamily: "CustomFont",
-            fontSize: `${baseFontSize}px`,
-            color: colors[i % colors.length],
-            lineHeight: 1,
-            display: "block",
-            transform: `scaleY(${scaleY})`, // Stretch to full viewport height
-            width: `${digitWidth}px`, // Exact width to fill viewport
-            textAlign: "center",
-            flex: `0 0 ${digitWidth}px`, // Fixed width, no shrinking
-            margin: 0,
-            padding: 0,
-            border: 0, // No borders
+            ...handCommon,
+            width: "3px",
+            height: `${hourHandHeight}px`,
+            background: "#7C05A8FF",
+            transform: `translate(-50%, -100%) rotate(${hourAngle}deg)`,
           }}
-        >
-          {d}
-        </span>
+        />
+        <div
+          style={{
+            ...handCommon,
+            width: "2px",
+            height: `${minuteHandHeight}px`,
+            background: "#E407E0FF",
+            transform: `translate(-50%, -100%) rotate(${minAngle}deg)`,
+          }}
+        />
+        <div
+          style={{
+            ...handCommon,
+            width: "1px",
+            height: `${secondHandHeight}px`,
+            background: "red",
+            transform: `translate(-50%, -100%) rotate(${secAngle}deg)`,
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            width: "6px",
+            height: "6px",
+            background: "#444",
+            borderRadius: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+      </div>
+      <div style={{ 
+        fontSize: `${Math.max(8, clockSize * 0.1)}px`, 
+        marginTop: "4px",
+        textAlign: "center",
+        lineHeight: "1.2",
+        fontWeight: "500",
+        fontFamily: fontName
+      }}>
+        {zone.split('/').pop().replace(/_/g, " ")}
+      </div>
+    </div>
+  );
+}
+
+export default function WorldClockGrid() {
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+
+  useCustomFont("MyCustomFont", myFontUrl);
+
+  useEffect(() => {
+    const handleResize = () => setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight
+    });
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Responsive layout: phone vs desktop
+  const isMobile = dimensions.width < 768;
+  const cols = isMobile ? 6 : 12;
+  const rows = isMobile ? 4 : 2;
+
+  const clockSize = Math.min(
+    (dimensions.width - 20) / cols,
+    (dimensions.height - 20) / rows
+  ) - 10;
+
+  const containerStyle = {
+    display: "grid",
+    gridTemplateColumns: `repeat(${cols}, 1fr)`,
+    gridTemplateRows: `repeat(${rows}, 1fr)`,
+    gap: "5px",
+    width: "100vw",
+    height: "100vh",
+    padding: "10px",
+    boxSizing: "border-box",
+    justifyItems: "center",
+    alignItems: "center",
+    placeContent: "center",
+    fontFamily: "MyCustomFont"
+  };
+
+  return (
+    <div style={containerStyle}>
+      {TIMEZONES.map((zone) => (
+        <AnalogClock key={zone} zone={zone} clockSize={clockSize} fontName="MyCustomFont" />
       ))}
     </div>
   );
