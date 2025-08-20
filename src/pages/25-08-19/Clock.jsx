@@ -44,7 +44,7 @@ const Pendulum = () => {
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'column',
-      position: 'relative', // ✅ allows bgLayer to stay inside
+      position: 'relative', 
       overflow: 'hidden',
     },
     bgLayer: {
@@ -55,18 +55,29 @@ const Pendulum = () => {
       height: '100%',
       background: `url(${bgUrl}) no-repeat center center fixed`,
       backgroundSize: 'cover',
-      filter: 'blur(6px) brightness(0.8)', // 👈 filter effect
-      zIndex: 0, // ✅ keep visible
+      filter: 'blur(2px) contrast(0.8) brightness(0.5) saturate(1.6)', // 👈 filter effect
+      zIndex: 0, 
     },
-    pendulum: {
-      display: 'flex',
-      border: '8.25px solid #574503FF',
-      borderBottomWidth: '2.25vw',
-      borderRadius: '3.25vw 3.25vw 0 0',
-      padding: '0 4.5vw 2.25vw',
-      height: '22.5vw',
-      zIndex: 1, // ✅ ensures pendulum sits above bgLayer
-    },
+
+ pendulum: {
+  display: 'flex',
+  borderStyle: 'solid',
+  borderWidth: '1vw 1vw 3vw 1vw', // thicker bottom
+  borderRadius: '3.25vw 3.25vw 0 0', // rounded top corners
+  padding: '0 4.5vw 2.25vw',
+  height: '26vw',
+  zIndex: 1,
+  borderImage: 'linear-gradient(145deg, #b08d57, #f6e27a, #b08d57, #8c6b32) 1',
+  borderImageSlice: 1, // ensures the gradient slices evenly
+  backgroundColor: 'transparent', // keeps inside open
+  boxShadow: `
+    inset 0 0.25vw 0.5vw rgba(255, 255, 255, 0.5),
+    inset 0 -0.25vw 0.5vw rgba(0, 0, 0, 0.5)
+  `,
+}
+
+
+,
     piece: {
       transformOrigin: 'center top',
       display: 'flex',
@@ -85,7 +96,7 @@ const Pendulum = () => {
 
   return (
     <div style={styles.pendulumApp}>
-      {/* ✅ filtered background layer */}
+     
       <div style={styles.bgLayer}></div>
 
       <style>{`
@@ -101,24 +112,44 @@ const Pendulum = () => {
         }
         .piece::before {
           content: "";
-          background: #232123FF;
+          background: #F4F0DCFF;
           width: 2.25px;
           height: 18vw;
         }
-        .piece::after {
-          content: attr(data-digit);
-          border-radius: 100%;
-          background: white;
-          width: 4.5vw;
-          height: 4.5vw;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-family: 'CustomFont', monospace;
-          font-size: 5vw;
-          color: #6B040BFF;
-        }
-      `}</style>
+
+
+
+
+
+
+  .piece::after {
+    content: attr(data-digit);
+    border-radius: 50%;
+    width: 4.5vw;
+    height: 4.5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'CustomFont', monospace;
+    font-size: 5vw;
+    color: #31041DFF;
+
+    /* Chrome metallic gradient */
+    background: radial-gradient(circle at 30% 30%, #ffffff 0%, #d0d0d0 40%, #888888 60%, #4d4d4d 90%);
+    
+    /* Add a subtle inner glow for more metallic feel */
+    box-shadow: inset -0.2vw -0.2vw 0.4vw rgba(255,255,255,0.6),
+                inset 0.2vw 0.2vw 0.4vw rgba(0,0,0,0.4),
+                0 0.2vw 0.4vw rgba(0,0,0,0.3);
+    
+    border: 0.1vw solid #aaa; /* subtle metallic edge */
+  }
+`}</style>
+
+
+
+
+
 
       <div style={styles.pendulum}>
         <div style={{ ...styles.piece, ...styles.pieceFirstChild }} className="piece"></div>
