@@ -81,7 +81,7 @@ function AnalogClock({ zone, clockSize, fontName }) {
             ...handCommon,
             width: "3px",
             height: `${hourHandHeight}px`,
-            background: "#7C05A8FF",
+            background: "#FB7C06FF",
             transform: `translate(-50%, -100%) rotate(${hourAngle}deg)`,
             filter: handShadow,
           }}
@@ -91,7 +91,7 @@ function AnalogClock({ zone, clockSize, fontName }) {
             ...handCommon,
             width: "2px",
             height: `${minuteHandHeight}px`,
-            background: "#E407E0FF",
+            background: "#F6EF2CFF",
             transform: `translate(-50%, -100%) rotate(${minAngle}deg)`,
             filter: handShadow,
           }}
