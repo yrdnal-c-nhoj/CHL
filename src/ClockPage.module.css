@@ -60,7 +60,7 @@
   background: rgb(1, 10, 61);
   color: #dadbd7; /* keep uniform color even on hover */
   opacity: 0.9;
-    text-decoration: none; /* remove underlines */
+  text-decoration: none; /* remove underlines */
   border-color: rgba(98, 103, 112, 0.8);
 }
 
