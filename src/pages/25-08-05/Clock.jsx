@@ -97,7 +97,7 @@ const ClockGrid = () => {
         handsCtx.save();
         handsCtx.translate(x, y);
         drawHand(handsCtx, (second * Math.PI) / 30, handLength, radius * 0.1, '#F90810FF'); // Second
-        drawHand(handsCtx, ((hour + minute / 60) * Math.PI) / 6, handLength, radius * 0.1, '#14E809FF'); // Hour
+        drawHand(handsCtx, ((hour + minute / 60) * Math.PI) / 6, handLength, radius * 0.1, '#63FC11FF'); // Hour
         drawHand(handsCtx, ((minute + second / 60) * Math.PI) / 30, handLength, radius * 0.1, '#893CF6FF'); // Minute
         handsCtx.restore();
       });
