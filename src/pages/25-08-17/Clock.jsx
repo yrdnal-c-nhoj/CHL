@@ -14,8 +14,7 @@ const StickyNoteClock = () => {
 
   let hours = time.getHours();
   const ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12;
-  hours = hours === 0 ? 12 : hours;
+  hours = hours % 12 || 12; // convert 0 → 12
   const minutes = time.getMinutes().toString().padStart(2, "0");
 
   return (
@@ -26,20 +25,20 @@ const StickyNoteClock = () => {
         left: 0,
         width: "100vw",
         height: "100vh",
-        overflow: "hidden", // prevent rotated background from causing scrollbars
+        overflow: "hidden",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      {/* Rotated background container */}
+      {/* Rotated background */}
       <div
         style={{
           position: "absolute",
           top: "50%",
           left: "50%",
-          width: "120%", // slightly larger to cover corners after rotation
-          height: "120%",
+          width: "140%",
+          height: "140%",
           backgroundImage: `url(${pageBg})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
@@ -47,18 +46,18 @@ const StickyNoteClock = () => {
           transform: "translate(-50%, -50%) rotate(4deg)",
           zIndex: -1,
         }}
-      ></div>
+      />
 
       {/* Sticky Note */}
       <div
         style={{
-          width: "220px",
-          height: "220px",
+          width: "180px",
+          height: "180px",
           padding: "15px",
-          transform: "rotate(-3deg) translateY(-20px)", // keep note tilt
+          transform: "rotate(-3deg) translateY(-20px)",
           backgroundColor: "#ffff99",
           boxShadow:
-            "5px 5px 15px rgba(0,0,0,0.3), -3px -3px 10px rgba(0,0,0,0.2)",
+            "-3px 0px 6px rgba(0,0,0,0.5), 3px 0px 6px rgba(0,0,0,0.5), 0px 6px 12px rgba(0,0,0,0.8)",
           border: "1px solid #e0e0e0",
           display: "flex",
           justifyContent: "center",
@@ -69,7 +68,7 @@ const StickyNoteClock = () => {
           {`
             @font-face {
               font-family: '${CLOCK_FONT_FAMILY}';
-              src: url(${customFontUrl}) format('truetype');
+              src: url(${customFontUrl}) format('opentype');
               font-weight: normal;
               font-style: normal;
             }
@@ -80,7 +79,7 @@ const StickyNoteClock = () => {
           style={{
             fontFamily: CLOCK_FONT_FAMILY,
             fontSize: "2rem",
-            color: "#3174E9FF",
+            color: "#3174E9",
             textAlign: "center",
             userSelect: "none",
           }}
