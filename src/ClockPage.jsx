@@ -39,15 +39,13 @@ const ClockPage = () => {
   useEffect(() => {
     if (loading) return;
 
-    // If no date or invalid date, redirect to homepage immediately
     if (!date || !isValidDateFormat(date)) {
       navigate('/', { replace: true });
-      return; // Prevent further processing
+      return;
     }
 
     const item = items.find((i) => i?.date === date);
 
-    // If no item found for the date, redirect to homepage
     if (!item) {
       navigate('/', { replace: true });
       return;
@@ -113,50 +111,11 @@ const ClockPage = () => {
             <div className={styles.error}>{error || pageError}</div>
           </div>
         </div>
-        <div className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}>
-          <Link
-            to="/"
-            className={styles.navButton}
-            aria-label="Go back to homepage"
-          >
-            <span aria-hidden="true">←</span>
-            <span className={styles.screenReaderText}>Go back to homepage</span>
-          </Link>
-          <Link
-            to="/"
-            className={styles.footerButton}
-            aria-label="Go back to homepage"
-          >
-            <div className={styles.footerLeft}>
-              <span className={styles.footerNumber}>
-                <strong>#</strong> N/A
-              </span>
-            </div>
-            <div className={styles.footerCenter}>
-              <span className={styles.footerTitle}>Home</span>
-            </div>
-            <div className={styles.footerRight}>
-              <span className={styles.footerDate}>N/A</span>
-            </div>
-            <span className={styles.screenReaderText}>Go back to homepage</span>
-          </Link>
-          <Link
-            to="/"
-            className={styles.navButton}
-            aria-label="Go back to homepage"
-          >
-            <span aria-hidden="true">→</span>
-            <span className={styles.screenReaderText}>Go back to homepage</span>
-          </Link>
-        </div>
       </div>
     );
   }
 
-  if (!currentItem) {
-    // If no current item (after redirect checks), return null to avoid rendering
-    return null;
-  }
+  if (!currentItem) return null;
 
   return (
     <div className={styles.container}>
@@ -164,7 +123,10 @@ const ClockPage = () => {
       <div className={styles.content}>
         {ClockComponent ? <ClockComponent /> : <div className={styles.loading}>Loading clock...</div>}
       </div>
+
+      {/* Footer */}
       <div className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}>
+        {/* Previous button */}
         <Link
           to={prevItem ? `/${prevItem.date}` : '/'}
           className={styles.navButton}
@@ -175,24 +137,24 @@ const ClockPage = () => {
             {prevItem ? `Previous: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
           </span>
         </Link>
+
+        {/* Center footer button */}
         <Link
           to="/"
           className={styles.footerButton}
           aria-label="Go back to homepage"
         >
-          <div className={styles.footerLeft}>
+          <div className={styles.footerCenter}>
+            <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
+            <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
             <span className={styles.footerNumber}>
               <strong>#</strong>{currentIndex + 1}
             </span>
           </div>
-          <div className={styles.footerCenter}>
-            <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
-          </div>
-          <div className={styles.footerRight}>
-            <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
-          </div>
           <span className={styles.screenReaderText}>Go back to homepage</span>
         </Link>
+
+        {/* Next button */}
         <Link
           to={nextItem ? `/${nextItem.date}` : '/'}
           className={styles.navButton}

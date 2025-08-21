@@ -78,12 +78,14 @@ const Home = () => {
         <div className={styles.centeredContent}>
           <div className={styles.sortContainer}>
             <button
-              onClick={handleRandomSort}
-              className={`${styles.sortButton} ${sortBy === 'random' ? styles.active : ''}`}
-              title="Sort Randomly"
+              onClick={handleDateSort}
+              className={`${styles.sortButton} ${styles.dateSortButton} ${
+                sortBy.includes('date') ? styles.active : ''
+              }`}
+              title={sortBy === 'date-desc' ? 'Sort Oldest to Newest' : 'Sort Newest to Oldest'}
             >
-              random
-            </button>
+              date {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
+            </button> 
             <button
               onClick={handleTitleSort}
               className={`${styles.sortButton} ${styles.titleSortButton} ${
@@ -93,14 +95,12 @@ const Home = () => {
             >
               title {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
             </button>
-            <button
-              onClick={handleDateSort}
-              className={`${styles.sortButton} ${styles.dateSortButton} ${
-                sortBy.includes('date') ? styles.active : ''
-              }`}
-              title={sortBy === 'date-desc' ? 'Sort Oldest to Newest' : 'Sort Newest to Oldest'}
+           <button
+              onClick={handleRandomSort}
+              className={`${styles.sortButton} ${sortBy === 'random' ? styles.active : ''}`}
+              title="Sort Randomly"
             >
-              date {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
+              random
             </button>
           </div>
 
@@ -108,10 +108,11 @@ const Home = () => {
             {sortedItems.map((item) => (
               <li key={item.date} className={styles.entry}>
                 <Link to={`/${item.date}`} className={styles.navLink}>
-                  <span className={styles.clockNumber}>#{item.clockNumber}</span>
+                    <span className={styles.date}>{formatDate(item.date)}</span>
+  
                   <span className={styles.title}>{item.title || 'No Title'}</span>
-                  <span className={styles.date}>{formatDate(item.date)}</span>
-                </Link>
+                   <span className={styles.clockNumber}>#{item.clockNumber}</span>
+                  </Link>
               </li>
             ))}
           </ul>

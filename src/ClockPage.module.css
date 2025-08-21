@@ -7,12 +7,12 @@
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  gap: 1px; /* 1px gap between buttons */
+  gap: 1px;
   box-sizing: border-box;
   z-index: 90;
   font-family: 'Manrope', sans-serif;
   transition: opacity 0.7s ease-in-out, transform 0.5s ease-in-out;
-  pointer-events: auto; /* always interactive */
+  pointer-events: auto;
 }
 
 /* --- Visibility states --- */
@@ -22,9 +22,9 @@
 }
 
 .footerStrip.hidden {
-  opacity: 0; /* Fully invisible */
+  opacity: 0;
   transform: translateX(-50%) translateY(0);
-  pointer-events: auto; /* Keep links clickable */
+  pointer-events: auto;
 }
 
 /* --- Buttons --- */
@@ -33,43 +33,71 @@
   padding: 0.5rem;
   background: rgba(3, 2, 2, 0.7);
   border: 0.5px solid rgba(98, 103, 112, 0.8);
-  color: #dadbd7;
+  color: #dadbd7; /* uniform text color */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  text-decoration: none;
+  width: 100%;
+  text-decoration: none; /* remove underlines */
   box-sizing: border-box;
   font-family: inherit;
   transition: background 0.4s ease, color 0.4s ease, opacity 0.4s ease;
-  pointer-events: auto; /* Ensure buttons remain interactive */
+  pointer-events: auto;
 }
 
-.footerButton {
-  flex: 1; /* equal width */
-}
-
-.navButton {
-  flex: 0 0 auto;
-  width: 80px;
-  font-size: 1.8rem;
+/* Ensure all text inside footer buttons uses the same color */
+.footerButton span,
+.navButton span {
+  color: #dadbd7; /* same color for title, date, number, arrows */
+  text-decoration: none; /* no underline on inner spans */
 }
 
 /* Hover effect */
 .footerButton:hover,
 .navButton:hover {
   background: rgb(1, 10, 61);
-  color: #ffffff;
+  color: #dadbd7; /* keep uniform color even on hover */
   opacity: 0.9;
+    text-decoration: none; /* remove underlines */
   border-color: rgba(98, 103, 112, 0.8);
 }
+
 
 /* --- Font scaling --- */
 .footerLeft,
 .footerCenter,
 .footerRight {
   font-size: 1.2rem;
+}
+
+/* --- Center footer layout --- */
+.footerCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.footerDate {
+  font-size: 0.9rem;
+}
+
+.footerTitle {
+  font-size: 1rem;
+}
+
+.footerNumber {
+  font-size: 0.9rem;
+}
+
+/* --- Left/right nav buttons --- */
+.footerLeft,
+.footerRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* --- Accessibility --- */
@@ -93,13 +121,7 @@
   .navButton {
     width: 70px;
   }
-  .footerLeft {
-    font-size: 1em;
-  }
-  .footerCenter {
-    font-size: 1.2rem;
-  }
-  .footerRight {
-    font-size: 1rem;
-  }
+ 
+ 
+ 
 }
