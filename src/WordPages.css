@@ -1,13 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
-
-
 html,
 body {
   margin: 0;
 }
 
 .container {
-  margin: 0.0;
+  margin: 0;
   padding: 0 0 60px 0;
   width: 100vw;
   min-height: 100vh;
@@ -20,9 +17,9 @@ body {
 .centeredContent {
   display: flex;
   flex-direction: column;
-  align-items: left;
-  width: 100%;
-  max-width: min(80%, 800px);
+  align-items: flex-start; /* changed from 'left' */
+  width: 90%;
+  max-width: 60ch; /* limits line length for readability */
   box-sizing: border-box;
   z-index: 5;
   color: #060706;
@@ -32,31 +29,30 @@ body {
   font-family: "Roboto Slab", sans-serif;
   color: #850404;
   letter-spacing: 0.1rem;
-  font-size: 1.6rem;
-  line-height: 4rem;
+  font-size: clamp(1.2rem, 2vw, 2rem); /* responsive font size */
+  line-height: 1.4em;
   text-align: center;
-  margin: 0.0rem 0;
+  margin: 0.5rem 0;
 }
 
 .centeredContent p { 
-  font-size: 1.0rem;
-  line-height: 1.5;
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem); /* responsive font size */
+  line-height: 1.6;
   text-align: left;
 }
 
 .epigraph {
   font-family: "Manrope", sans-serif;
-  font-size: 1.0rem;
-  margin: 0.6rem 0.0rem;
+  font-size: clamp(0.9rem, 1vw, 1rem);
+  margin: 0.6rem 0;
   text-align: left;
   color: #323737;
-  /* max-width: 70rem; */
 }
 
 .epigraph .quote {
   font-style: italic;
-  border-left: 2px solid #9f9a9a; /* Added vertical line */
-  padding-left: 1rem; /* Space between line and text */
+  border-left: 2px solid #9f9a9a;
+  padding-left: 1rem;
 }
 
 .epigraph .attribution {
@@ -67,16 +63,11 @@ body {
   font-size: 0.8rem;
 }
 
-.epigraph .author {
-  color: #6b6969;
-}
-
+.epigraph .author,
 .epigraph .source {
   color: #6b6969;
   font-size: 0.8rem;
 }
-
-
 
 .hat {
   font-family: "Roboto Slab", sans-serif;    
@@ -95,7 +86,6 @@ body {
   font-weight: bold;
   letter-spacing: 0.041em;
   text-transform: uppercase;
-
 }
 
 p {
@@ -118,10 +108,19 @@ p {
 
 a {
   color: #02385f;
-    /* border: 1px solid #838080; */
-    padding: 0.2rem 0.4rem;
+  padding: 0.2rem 0.4rem;
   text-decoration: none;
 }
+
 a:hover {
-  text-decoration: none;
+  text-decoration: underline;
 }
+
+/* Media query for larger screens */
+@media (min-width: 1200px) {
+  .centeredContent {
+    width: 70%;
+    max-width: 70ch; /* ensures line length stays readable */
+  }
+}
+
