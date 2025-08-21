@@ -116,17 +116,32 @@ const AnalogClock = () => {
         to { transform: translate(-50%, -50%) rotate(360deg); }
       }
 
-  .numeral {
+      .numeral {
   position: absolute;
-  font-size: 6.5rem;
-  color: #FDCA84FF;
+  font-size: 9.5rem;
   font-family: 'MyCustomFont', sans-serif;
   text-align: center;
   width: 2rem;
   pointer-events: none;
   z-index: 30;
-  text-shadow: 1px 1px  #0667E6FF;
+
+  /* Brass metallic effect */
+  background: linear-gradient(
+    135deg,
+    #FFD86F 0%,
+    #D4AF37 50%,
+    #B8860B 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* Optional subtle glow for extra shine */
+  text-shadow:
+    0 0 1px #FFF4CC,
+    0 0 2px #FFD86F,
+    0 0 4px #D4AF37;
 }
+
 
     `;
     document.head.appendChild(styleSheet);
@@ -219,6 +234,8 @@ const AnalogClock = () => {
               backgroundPosition: 'center',
               borderRadius: '50%',
               zIndex: 0,
+
+    filter: 'hue-rotate(120deg)',
             }}
           />
           <div
@@ -242,26 +259,32 @@ const AnalogClock = () => {
           <div style={handStyle('0.25rem', '4rem', '#556389FF', hourDeg, 5)} />
           <div style={handStyle('0.15rem', '5rem', '#3E5E6DFF', minuteDeg, 5)} />
 
-          {romanNumerals.map((numeral, index) => {
-            const centerX = 0;
-            const centerY = 0;
-            const x = centerX + Math.cos((numerals[index].angle * Math.PI) / 180) * numerals[index].radius;
-            const y = centerY - Math.sin((numerals[index].angle * Math.PI) / 180) * numerals[index].radius;
-            return (
-              <div
-                key={numeral}
-                className="numeral"
-                style={{
-                  left: `calc(50% + ${x}px)`,
-                  top: `calc(50% + ${y}px)`,
-                  transform: `translate(-50%, -50%) scale(${numerals[index].scale})`,
-                  transformOrigin: 'center center',
-                }}
-              >
-                {numeral}
-              </div>
-            );
-          })}
+         {romanNumerals.map((numeral, index) => {
+  const centerX = 0;
+  const centerY = 0;
+
+  const offset = 20; // <-- increase this number to move numerals further out
+  const radius = numerals[index].radius + offset;
+
+  const x = centerX + Math.cos((numerals[index].angle * Math.PI) / 180) * radius;
+  const y = centerY - Math.sin((numerals[index].angle * Math.PI) / 180) * radius;
+
+  return (
+    <div
+      key={numeral}
+      className="numeral"
+      style={{
+        left: `calc(30% + ${x}px)`,
+        top: `calc(50% + ${y}px)`,
+        transform: `translate(-50%, -50%) scale(${numerals[index].scale})`,
+        transformOrigin: 'center center',
+      }}
+    >
+      {numeral}
+    </div>
+  );
+})}
+
         </div>
       </div>
     </>
