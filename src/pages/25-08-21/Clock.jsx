@@ -148,7 +148,7 @@ const NumberLineClock = () => {
               </div>
               <div
                 style={{
-                  width: '2px',
+                  width: '0px',
                   height: i % 5 === 0 ? '1.5rem' : '1rem',
                   backgroundColor: i % 5 === 0 ? '#2d3748' : '#a0aec0',
                   margin: '0 auto',
