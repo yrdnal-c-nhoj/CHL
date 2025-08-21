@@ -60,11 +60,11 @@ function AnalogClock({ zone, clockSize, fontName }) {
     transformOrigin: "bottom center",
   };
 
-  const hourHandHeight = clockSize * 0.3;
-  const minuteHandHeight = clockSize * 0.45;
-  const secondHandHeight = clockSize * 0.48;
+  const hourHandHeight = clockSize * 0.4;
+  const minuteHandHeight = clockSize * 0.55;
+  const secondHandHeight = clockSize * 0.66;
 
-  const handShadow = "drop-shadow(-1px 0 white) drop-shadow(1px 0 black)";
+  const handShadow = "drop-shadow(-4px 0px white) drop-shadow(4px -0px pink)";
 
   return (
     <div style={{ 
@@ -81,7 +81,7 @@ function AnalogClock({ zone, clockSize, fontName }) {
             ...handCommon,
             width: "3px",
             height: `${hourHandHeight}px`,
-            background: "#FB7C06FF",
+            background: "#FC9905FF",
             transform: `translate(-50%, -100%) rotate(${hourAngle}deg)`,
             filter: handShadow,
           }}
@@ -91,7 +91,7 @@ function AnalogClock({ zone, clockSize, fontName }) {
             ...handCommon,
             width: "2px",
             height: `${minuteHandHeight}px`,
-            background: "#F6EF2CFF",
+            background: "#F7EF06FF",
             transform: `translate(-50%, -100%) rotate(${minAngle}deg)`,
             filter: handShadow,
           }}
@@ -124,13 +124,14 @@ function AnalogClock({ zone, clockSize, fontName }) {
         marginTop: "4px",
         textAlign: "center",
         lineHeight: "1.2",
+          color: "#1C89A2FF",
         fontWeight: "500",
         fontFamily: fontName,
         filter: "saturate(3.5)", // saturation filter
 
         textShadow: `
-          -2px 0 2px red,   /* red shadow to the left */
-           2px 0 2px white  /* white shadow to the right */
+          -2px 0 12px #F07C62FF,   /* red shadow to the left */
+           2px 0 1px white  /* white shadow to the right */
         `
       }}>
         {zone.split('/').pop().replace(/_/g, " ")}
@@ -165,26 +166,32 @@ export default function WorldClockGrid() {
     (dimensions.height - 20) / rows
   ) - 10;
 
+  
+  
   const containerStyle = {
-    display: "grid",
-    gridTemplateColumns: `repeat(${cols}, 1fr)`,
-    gridTemplateRows: `repeat(${rows}, 1fr)`,
-    gap: "5px",
-    width: "100vw",
-    height: "100vh",
-    padding: "10px",
-    boxSizing: "border-box",
-    justifyItems: "center",
-    alignItems: "center",
-    placeContent: "center",
-    fontFamily: "MyCustomFont",
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat", 
-    filter: "contrast(0.5) saturate(3.5)", // saturation filter
+  display: "grid",
+  gridTemplateColumns: `repeat(${cols}, 1fr)`,
+  gridTemplateRows: `repeat(${rows}, 1fr)`,
+  gap: "5px",
+  width: "100vw",
+  height: "100vh",
+  padding: "10px",
+  boxSizing: "border-box",
+  justifyItems: "center",
+  alignItems: "center",
+  placeContent: "center",
+  fontFamily: "MyCustomFont",
+  
+  backgroundImage: `url(${bgImage})`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
+  
+  // ✅ overlay + blend mode = static filter
+  backgroundColor: "rgba(0,0,0,0.35)", 
+  backgroundBlendMode: "multiply",
+};
 
-     };
 
   return (
     <div style={containerStyle}>
