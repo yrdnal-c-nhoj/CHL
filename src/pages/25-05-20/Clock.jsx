@@ -23,7 +23,7 @@ const Clock = () => {
     clockCanvas.width = 512;
     clockCanvas.height = 512;
     const ctx = clockCanvas.getContext('2d');
-    const textColor = '#000000';
+    const textColor = '#130101FF';
 
     const clockTexture = new THREE.CanvasTexture(clockCanvas);
     clockTexture.minFilter = THREE.LinearFilter;
@@ -48,7 +48,7 @@ const Clock = () => {
       clockTexture.needsUpdate = true;
     };
 
-    const faceColors = [0xff0000, 0xdb026b, 0xf76b07, 0xb80404];
+    const faceColors = [0xff0000, 0xd3531b, 0xf76b07, 0xb80404];
     const materials = faceColors.map(
       color =>
         new THREE.MeshBasicMaterial({
@@ -88,15 +88,15 @@ const Clock = () => {
 
     const animate = () => {
       requestAnimationFrame(animate);
-      tetrahedron.rotation.x += 0.003;
-      tetrahedron.rotation.y += 0.003;
-      wireframe.rotation.x += 0.003;
-      wireframe.rotation.y += 0.003;
+      tetrahedron.rotation.x += 0.01;
+      tetrahedron.rotation.y += 0.01;
+      wireframe.rotation.x += 0.01;
+      wireframe.rotation.y += 0.01;
 
       const time = performance.now() / 1000;
-      const period = 30;
+      const period = 14;
       const zMin = -2;
-      const zMax = 12;
+      const zMax = 17;
       const zRange = zMax - zMin;
       camera.position.z = zMin + (zRange * (Math.sin((2 * Math.PI * time) / period) + 1)) / 2;
 
