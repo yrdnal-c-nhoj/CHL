@@ -1,137 +1,228 @@
-import React, { useEffect, useRef } from 'react';
-import mobyFont from './moby.ttf';
-import waves from './waves.gif';
+import React, { useEffect, useRef } from "react";
+import stars from "./stars.webp";
+import backgroundGif from "./437cb739d14912acd84d65ee853b9067.gif";
+import overlay1 from "./OzJtZ3Z.gif";
+import overlay2 from "./2556744_d34a4.webp";
+import pixelGif from "./sdswrf.gif";
 
-const MobyDickClock = () => {
-  const clockRef = useRef(null);
+const digits = {
+  "0": [
+    [1, 1, 1],
+    [1, 0, 1],
+    [1, 0, 1],
+    [1, 0, 1],
+    [1, 1, 1],
+  ],
+  "1": [
+    [1, 1, 0],
+    [0, 1, 0],
+    [0, 1, 0],
+    [0, 1, 0],
+    [1, 1, 1],
+  ],
+  "2": [
+    [1, 1, 1],
+    [0, 0, 1],
+    [1, 1, 1],
+    [1, 0, 0],
+    [1, 1, 1],
+  ],
+  "3": [
+    [1, 1, 1],
+    [0, 0, 1],
+    [1, 1, 1],
+    [0, 0, 1],
+    [1, 1, 1],
+  ],
+  "4": [
+    [1, 0, 1],
+    [1, 0, 1],
+    [1, 1, 1],
+    [0, 0, 1],
+    [0, 0, 1],
+  ],
+  "5": [
+    [1, 1, 1],
+    [1, 0, 0],
+    [1, 1, 1],
+    [0, 0, 1],
+    [1, 1, 1],
+  ],
+  "6": [
+    [1, 0, 0],
+    [1, 0, 0],
+    [1, 1, 1],
+    [1, 0, 1],
+    [1, 1, 1],
+  ],
+  "7": [
+    [1, 1, 1],
+    [0, 0, 1],
+    [0, 0, 1],
+    [0, 0, 1],
+    [0, 0, 1],
+  ],
+  "8": [
+    [1, 1, 1],
+    [1, 0, 1],
+    [1, 1, 1],
+    [1, 0, 1],
+    [1, 1, 1],
+  ],
+  "9": [
+    [1, 1, 1],
+    [1, 0, 1],
+    [1, 1, 1],
+    [0, 0, 1],
+    [0, 0, 1],
+  ],
+};
+
+function DeepSpaceClock() {
+  const hour1 = useRef();
+  const hour2 = useRef();
+  const minute1 = useRef();
+  const minute2 = useRef();
+  const second1 = useRef();
+  const second2 = useRef();
+
+  const makeDigit = (target, digitMatrix) => {
+    const container = target.current;
+    if (!container) return;
+    container.innerHTML = "";
+    digitMatrix.forEach((row, i) =>
+      row.forEach((on, j) => {
+        if (on) {
+          const div = document.createElement("div");
+          div.style.gridRow = `${i + 1}`;
+          div.style.gridColumn = `${j + 1}`;
+          div.style.height = "4vmin";
+          div.style.width = "4vmin";
+          div.style.backgroundImage = `url(${pixelGif})`;
+          div.style.backgroundSize = "220% 250%";
+          container.appendChild(div);
+        }
+      })
+    );
+  };
 
   useEffect(() => {
-    if (!document.getElementById('moby-font')) {
-      const style = document.createElement('style');
-      style.id = 'moby-font';
-      style.innerHTML = `
-        @font-face {
-          font-family: 'Moby';
-          src: url(${mobyFont}) format('truetype');
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-0.5rem); }
-        }
-      `;
-      document.head.appendChild(style);
-    }
+    let shownHours = -1,
+      shownMinutes = -1,
+      shownSeconds = -1;
 
-    const centerAvoidSize = { width: 300, height: 200 }; // px area to avoid center
-
-    // Returns a random coordinate avoiding center rectangle
-    const getRandomPosAvoidCenter = (max, avoidStart, avoidEnd) => {
-      let pos;
-      do {
-        pos = Math.random() * max;
-      } while (pos > avoidStart && pos < avoidEnd);
-      return pos;
-    };
-
-    const moveClock = () => {
-      const clock = clockRef.current;
-      if (!clock) return;
-
-      // Update time
+    const updateClock = () => {
       const now = new Date();
-      clock.textContent = now.toLocaleTimeString('en-US', {
-        hour12: false,
-        hour: 'numeric',
-        minute: 'numeric',
-      });
+      const [h, m, s] = [
+        now.getHours().toString().padStart(2, "0"),
+        now.getMinutes().toString().padStart(2, "0"),
+        now.getSeconds().toString().padStart(2, "0"),
+      ];
 
-      // Calculate random X and Y avoiding center area
-      const x = getRandomPosAvoidCenter(
-        window.innerWidth,
-        (window.innerWidth - centerAvoidSize.width) / 2,
-        (window.innerWidth + centerAvoidSize.width) / 2
-      );
-      const y = getRandomPosAvoidCenter(
-        window.innerHeight,
-        (window.innerHeight - centerAvoidSize.height) / 2,
-        (window.innerHeight + centerAvoidSize.height) / 2
-      );
-
-      // Random font size and opacity
-      const fontSize = 2 + Math.random() * 6; // rem
-      const opacity = Math.random() * 0.7 + 0.3;
-
-      // Apply styles with smooth transition
-      clock.style.transition = 'transform 2s ease-in-out, font-size 2s ease-in-out, opacity 2s ease-in-out';
-      clock.style.transform = `translate(${x}px, ${y}px)`;
-      clock.style.fontSize = `${fontSize}rem`;
-      clock.style.opacity = opacity;
-
-      // Next move after 2-4 seconds randomly
-      const nextTime = 2000 + Math.random() * 2000;
-      setTimeout(moveClock, nextTime);
+      if (h !== shownHours.toString()) {
+        makeDigit(hour1, digits[h[0]]);
+        makeDigit(hour2, digits[h[1]]);
+        shownHours = h;
+      }
+      if (m !== shownMinutes.toString()) {
+        makeDigit(minute1, digits[m[0]]);
+        makeDigit(minute2, digits[m[1]]);
+        shownMinutes = m;
+      }
+      if (s !== shownSeconds.toString()) {
+        makeDigit(second1, digits[s[0]]);
+        makeDigit(second2, digits[s[1]]);
+        shownSeconds = s;
+      }
     };
 
-    // Initial position: place clock off-screen so first move slides it in
-    const clock = clockRef.current;
-    if (clock) {
-      clock.style.position = 'absolute';
-      clock.style.top = '0';
-      clock.style.left = '0';
-      clock.style.opacity = '0';
-      clock.style.transform = 'translate(-500px, -500px)';
-    }
-
-    // Start animation loop
-    moveClock();
-
-    return () => clearTimeout();
+    updateClock();
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <div
       style={{
-        margin: 0,
-        padding: 0,
-        height: '100vh',
-        width: '100vw',
-        overflow: 'hidden',
-        backgroundColor: '#727B7BFF',
-        filter: 'brightness(300%) contrast(40%)',
-        position: 'relative',
-        userSelect: 'none',
+        backgroundImage: `url(${stars})`,
+        backgroundSize: "cover",
+        overflow: "hidden",
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <div
-        ref={clockRef}
         style={{
-          fontFamily: 'Moby, cursive',
-          color: '#a1b4b4',
-          textShadow: '#ced4d4 0.1rem 0.1rem 0.2rem, #000404 -0.1rem -0.1rem 0.9rem',
-          position: 'absolute',
-          whiteSpace: 'nowrap',
-          pointerEvents: 'none',
-          opacity: 0,
+          backgroundImage: `url(${backgroundGif})`,
+          backgroundSize: "cover",
+          position: "absolute",
+          inset: 0,
         }}
       />
-      <img
-        src={waves}
-        alt="waves"
+      <div
         style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          objectFit: 'cover',
+          backgroundImage: `url(${overlay1})`,
+          backgroundSize: "cover",
+          position: "fixed",
+          inset: 0,
+          opacity: 0.35,
           zIndex: 6,
-          opacity: 0.6,
-          filter: 'brightness(180%) contrast(110%)',
-          pointerEvents: 'none',
         }}
       />
+      <div
+        style={{
+          backgroundImage: `url(${overlay2})`,
+          backgroundSize: "cover",
+          position: "fixed",
+          inset: 0,
+          opacity: 0.15,
+          zIndex: 5,
+        }}
+      />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "3vw",
+          animation: "spinClock 20s linear infinite",
+          transformStyle: "preserve-3d",
+          perspective: "1000px",
+        }}
+      >
+        <style>
+          {`
+            @keyframes spinClock {
+              0% {
+                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+              }
+              100% {
+                transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+              }
+ nuevamente
+            }
+          `}
+        </style>
+        <div className="digit" ref={hour1} style={digitStyle}></div>
+        <div className="digit" ref={hour2} style={digitStyle}></div>
+        <div className="digit" ref={minute1} style={digitStyle}></div>
+        <div className="digit" ref={minute2} style={digitStyle}></div>
+        <div className="digit" ref={second1} style={digitStyle}></div>
+        <div className="digit" ref={second2} style={digitStyle}></div>
+      </div>
     </div>
   );
+}
+
+const digitStyle = {
+  display: "grid",
+  gridTemplateColumns: "repeat(3, 1fr)",
+  gridTemplateRows: "repeat(5, 1fr)",
+  width: "13vw",
+  height: "44vh",
 };
 
-export default MobyDickClock;
+export default DeepSpaceClock;
