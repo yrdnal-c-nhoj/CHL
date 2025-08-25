@@ -4,8 +4,12 @@ import React, { useEffect, useRef } from 'react';
 import hourHand from './hour.gif';
 import minuteHand from './minute.gif';
 import secondHand from './second.gif';
-import bgImage from './pp.gif';   // spinning layers
-import mainBackground from './peacock.webp'; // static full-screen background
+import bgImage from './pp.gif';   // spinning layer
+import mainBackground from './p.jpg'; // static full-screen background
+
+// Overlay images
+import overlayTopLeft from './Pea.gif';     // top-left overlay
+import overlayBottomRight from './Pea2.gif'; // bottom-right overlay (different file)
 
 export default function AnalogImageClock() {
   const hourRef = useRef(null);
@@ -47,7 +51,7 @@ export default function AnalogImageClock() {
           display: grid;
           place-items: center;
           overflow: hidden;
-          background: url(${mainBackground}) center/cover no-repeat; /* static background */
+          background: url(${mainBackground}) center/cover no-repeat;
         }
         .background {
           position: absolute;
@@ -56,12 +60,12 @@ export default function AnalogImageClock() {
           z-index: 0;
         }
         .background.clockwise {
-          animation: spin-cw 220s linear infinite;
-          opacity: 0.6; /* opacity for clockwise layer */
+          animation: spin-cw 290s linear infinite;
+          opacity: 0.5;
         }
         .background.counter {
-          animation: spin-ccw 220s linear infinite;
-          opacity: 0.3; /* opacity for counter layer */
+          animation: spin-ccw 290s linear infinite;
+          opacity: 0.3;
         }
         @keyframes spin-cw {
           from { transform: rotate(0deg) scale(1.5); }
@@ -84,23 +88,30 @@ export default function AnalogImageClock() {
           top: 50%;
           transform-origin: 50% 85%;
           will-change: transform;
+          opacity: 0.8;
           filter: drop-shadow(0 0.3rem 0.5rem rgba(0,0,0,0.4));
           pointer-events: none;
         }
         .hour-hand { height: 11rem; z-index: 2; }
         .minute-hand { height: 13rem; z-index: 3; }
         .second-hand { height: 15rem; z-index: 4; }
-        .center-dot {
+
+        /* Overlay images */
+        .overlay {
           position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          width: 1.5rem;
-          height: 1.5rem;
-          border-radius: 50%;
-          background: radial-gradient(circle, #eee, #555);
-          box-shadow: 0 0 1rem rgba(0,0,0,0.5);
-          z-index: 5;
+          z-index: 10; /* highest layer */
+          width: 70vw; /* adjust size */
+          height: auto;
+          opacity: 0.3;
+          pointer-events: none;
+        }
+        .overlay.top-left {
+          top: 0vh;
+          left: 0vw;
+        }
+        .overlay.bottom-right {
+          bottom: 0vh;
+          right: 0vw;
         }
       `}</style>
 
@@ -113,8 +124,11 @@ export default function AnalogImageClock() {
         <img ref={hourRef} src={hourHand} alt="hour hand" className="hand hour-hand" />
         <img ref={minuteRef} src={minuteHand} alt="minute hand" className="hand minute-hand" />
         <img ref={secondRef} src={secondHand} alt="second hand" className="hand second-hand" />
-        <div className="center-dot" />
       </div>
+
+      {/* Overlay images */}
+      <img src={overlayTopLeft} alt="top left overlay" className="overlay top-left" />
+      <img src={overlayBottomRight} alt="bottom right overlay" className="overlay bottom-right" />
     </div>
   );
 }
