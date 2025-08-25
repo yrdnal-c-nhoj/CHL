@@ -35,6 +35,12 @@ const digitImages = {
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
 
+  // Separate variables for full control
+  const fontSize = '2rem';         // floating text font size
+  const textOffset = '-1.5rem';    // floating text vertical offset
+  const imageWidth = '19vw';       // width of digit images
+  const floatDistance = '-7rem';   // animation float distance
+
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
@@ -56,7 +62,7 @@ const DigitalClock = () => {
 
     @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5rem); }
+      50% { transform: translateY(${floatDistance}); }
     }
   `;
 
@@ -81,7 +87,6 @@ const DigitalClock = () => {
       {/* Digits */}
       <div style={{
         position: 'relative',
-
         width: '100%',
         height: '110%',
         display: 'flex',
@@ -91,20 +96,20 @@ const DigitalClock = () => {
         {timeDigits.map((digit, index) => (
           <div key={index} style={{
             position: 'relative',
-            width: '18vw',
-            marginLeft: index === 0 ? 0 : '-12vw',
+            width: imageWidth,
+            marginLeft: index === 0 ? 0 : '-12vw', // overlap, adjust if needed
             textAlign: 'center',
           }}>
             {/* Floating digit text above the image */}
             <span style={{
               position: 'absolute',
-              top: '-2rem',
+              top: textOffset,
               width: '100%',
               color: 'white',
-              fontSize: '2rem',
+              fontSize: fontSize,
               fontFamily: 'CustomFont, sans-serif',
               textShadow: '0.2rem 0.2rem 0.4rem white',
-              animation: `float 2s ease-in-out ${index * 0.1}s infinite`, // stagger animation slightly
+              animation: `float 2s ease-in-out ${index * 0.1}s infinite`,
             }}>
               {digit}
             </span>
@@ -113,8 +118,7 @@ const DigitalClock = () => {
               src={digitImages[digit]}
               alt={digit}
               style={{
-                width: '100%',
-                // zIndex: 2,
+                width: imageWidth,
                 height: 'auto',
                 transform: 'rotate(90deg)',
                 filter: 'drop-shadow(0.4rem 0.2rem 0.3rem grey) drop-shadow(-0.4rem -0.4rem 0.3rem grey)',
@@ -137,8 +141,7 @@ const DigitalClock = () => {
         opacity: 0.5,
         transform: 'rotate(180deg)',
         zIndex: 4,
-          filter: 'brightness(1.7) contrast(1.8) saturate(1.9)',
-  
+        filter: 'brightness(1.7) contrast(1.8) saturate(1.9)',
         pointerEvents: 'none',
       }} />
     </div>
