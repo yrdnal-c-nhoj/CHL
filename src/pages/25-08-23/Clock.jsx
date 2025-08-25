@@ -1,115 +1,147 @@
-import React, { useEffect, useRef, useState } from "react";
-import castelImage from "./castel.jpg";
-import viaFont from "./via.ttf"; // Make sure this path is correct
+import React, { useState, useEffect } from 'react';
 
-const toRoman = (num) => {
-  const romanMap = [
-    [1000, "M"],
-    [900, "CM"],
-    [500, "D"],
-    [400, "CD"],
-    [100, "C"],
-    [90, "XC"],
-    [50, "L"],
-    [40, "XL"],
-    [10, "X"],
-    [9, "IX"],
-    [5, "V"],
-    [4, "IV"],
-    [1, "I"],
-  ];
-  let result = "";
-  for (const [value, numeral] of romanMap) {
-    while (num >= value) {
-      result += numeral;
-      num -= value;
-    }
-  }
-  return result || "N";
+// Import digit images
+import digit0 from './0.gif';
+import digit1 from './1.gif';
+import digit2 from './2.gif';
+import digit3 from './3.gif';
+import digit4 from './4.gif';
+import digit5 from './5.gif';
+import digit6 from './6.gif';
+import digit7 from './7.gif';
+import digit8 from './8.gif';
+import digit9 from './9.gif';
+
+// Import background and overlay images
+import backgroundImage from './g.webp';
+import overlayImage from './fog.gif';
+
+// Import custom font as module
+import customFont from './fog.ttf';
+
+const digitImages = {
+  '0': digit0,
+  '1': digit1,
+  '2': digit2,
+  '3': digit3,
+  '4': digit4,
+  '5': digit5,
+  '6': digit6,
+  '7': digit7,
+  '8': digit8,
+  '9': digit9,
 };
 
-// Inject @font-face dynamically
-const fontStyle = document.createElement("style");
-fontStyle.innerHTML = `
-  @font-face {
-    font-family: 'Via';
-    src: url(${viaFont}) format('truetype');
-  }
-`;
-document.head.appendChild(fontStyle);
-
-function RomanClock() {
-  const [time, setTime] = useState("");
-  const [fade, setFade] = useState(false);
-  const timeoutRef = useRef();
+const DigitalClock = () => {
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      const newTime = `${toRoman(now.getHours())}.${toRoman(
-        now.getMinutes()
-      )}.${toRoman(now.getSeconds())}`;
-      setFade(true);
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
-        setTime(newTime);
-        setFade(false);
-      }, 500);
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 5000);
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeoutRef.current);
-    };
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
+  const hours = String(time.getHours()).padStart(2, '0');
+  const minutes = String(time.getMinutes()).padStart(2, '0');
+  const seconds = String(time.getSeconds()).padStart(2, '0');
+  const timeDigits = `${hours}${minutes}${seconds}`.split('');
+
+  // Inline font-face and floating animation
+  const inlineStyle = `
+    @font-face {
+      font-family: 'CustomFont';
+      src: url(${customFont}) format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-1rem); }
+    }
+  `;
+
   return (
-    <div style={styles.container}>
-      <img src={castelImage} alt="Background" style={styles.bgImage} />
-      <div
-        style={{
-          ...styles.clock,
-          opacity: fade ? 0 : 1,
-          transition: "opacity 0.5s ease-in-out",
-        }}
-      >
-        {time}
+    <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
+      <style>{inlineStyle}</style>
+
+      {/* Background */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        filter: 'brightness(0.7) contrast(0.4) saturate(.9)',
+        zIndex: 0,
+      }} />
+
+      {/* Digits */}
+      <div style={{
+        position: 'relative',
+        zIndex: 1,
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+        {timeDigits.map((digit, index) => (
+          <div key={index} style={{
+            position: 'relative',
+            width: '18vw',
+            marginLeft: index === 0 ? 0 : '-12vw',
+            textAlign: 'center',
+          }}>
+            {/* Floating digit text above the image */}
+            <span style={{
+              position: 'absolute',
+              top: '-5rem',
+              width: '100%',
+              color: 'white',
+              fontSize: '3rem',
+              fontFamily: 'CustomFont, sans-serif',
+              textShadow: '0.2rem 0.2rem 0.4rem black',
+              zIndex: 2,
+              opacity: 0.2,
+              animation: `float 2s ease-in-out ${index * 0.1}s infinite`, // stagger animation slightly
+            }}>
+              {digit}
+            </span>
+
+            <img
+              src={digitImages[digit]}
+              alt={digit}
+              style={{
+                width: '100%',
+                height: 'auto',
+                transform: 'rotate(90deg)',
+                filter: 'drop-shadow(0.4rem 0.2rem 0.3rem grey) drop-shadow(-0.4rem -0.4rem 0.3rem grey)',
+              }}
+            />
+          </div>
+        ))}
       </div>
+
+      {/* Overlay */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundImage: `url(${overlayImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.5,
+        transform: 'rotate(180deg)',
+        zIndex: 2,
+        pointerEvents: 'none',
+      }} />
     </div>
   );
-}
-
-const styles = {
-  container: {
-    height: "100vh",
-    width: "100vw",
-    overflow: "hidden",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontFamily: "'Via', monospace",
-    backgroundColor: "rgb(19, 4, 4)",
-    position: "relative",
-  },
-  bgImage: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    filter: "blur(5px)",
-    zIndex: 0,
-  },
-  clock: {
-    color: "rgb(203, 227, 197)",
-    fontSize: "1.7rem",
-    textAlign: "center",
-    position: "relative",
-    zIndex: 1,
-  },
 };
 
-export default RomanClock;
+export default DigitalClock;
