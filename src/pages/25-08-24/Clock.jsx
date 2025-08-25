@@ -1,202 +1,115 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
+import castelImage from "./castel.jpg";
+import viaFont from "./via.ttf"; // Make sure this path is correct
 
-const RandomColorClock = () => {
-  const hourRef = useRef();
-  const minuteRef = useRef();
-  const secondRef = useRef();
-  const dotContainerRef = useRef();
-  const squareRefs = useRef([]);
-  const clockRef = useRef();
-
-  const [background, setBackground] = useState('#f7050d');
-
-  const getRandomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
-
-  const updateClock = () => {
-    const now = new Date();
-    const hours = now.getHours() % 12;
-    const minutes = now.getMinutes();
-    const seconds = now.getSeconds();
-
-    const hourDeg = (hours + minutes / 60) * 30;
-    const minuteDeg = (minutes + seconds / 60) * 6;
-    const secondDeg = seconds * 6;
-
-    if (hourRef.current) {
-      hourRef.current.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
-      hourRef.current.style.backgroundColor = getRandomColor();
+const toRoman = (num) => {
+  const romanMap = [
+    [1000, "M"],
+    [900, "CM"],
+    [500, "D"],
+    [400, "CD"],
+    [100, "C"],
+    [90, "XC"],
+    [50, "L"],
+    [40, "XL"],
+    [10, "X"],
+    [9, "IX"],
+    [5, "V"],
+    [4, "IV"],
+    [1, "I"],
+  ];
+  let result = "";
+  for (const [value, numeral] of romanMap) {
+    while (num >= value) {
+      result += numeral;
+      num -= value;
     }
-    if (minuteRef.current) {
-      minuteRef.current.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
-      minuteRef.current.style.backgroundColor = getRandomColor();
-    }
-    if (secondRef.current) {
-      secondRef.current.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
-      secondRef.current.style.backgroundColor = getRandomColor();
-    }
+  }
+  return result || "N";
+};
 
-    if (dotContainerRef.current) {
-      Array.from(dotContainerRef.current.children).forEach(dot => {
-        dot.style.backgroundColor = getRandomColor();
-      });
-    }
+// Inject @font-face dynamically
+const fontStyle = document.createElement("style");
+fontStyle.innerHTML = `
+  @font-face {
+    font-family: 'Via';
+    src: url(${viaFont}) format('truetype');
+  }
+`;
+document.head.appendChild(fontStyle);
 
-    squareRefs.current.forEach(square => {
-      square.style.backgroundColor = getRandomColor();
-    });
-
-    setBackground(getRandomColor());
-  };
-
-  const createDots = () => {
-    const container = dotContainerRef.current;
-    if (!container || !clockRef.current) return;
-
-    container.innerHTML = '';
-    const size = clockRef.current.offsetWidth;
-    const radius = size * 0.3;
-    const center = size / 2;
-
-    for (let i = 0; i < 12; i++) {
-      const angle = (i * 30) * (Math.PI / 180);
-      const x = center + radius * Math.cos(angle) - size * 0.04;
-      const y = center + radius * Math.sin(angle) - size * 0.04;
-
-      const dot = document.createElement('div');
-      dot.style.position = 'absolute';
-      dot.style.width = '3vw';
-      dot.style.height = '3vw';
-      dot.style.left = `${x}px`;
-      dot.style.top = `${y}px`;
-      dot.style.transition = 'background-color 1s';
-      dot.style.zIndex = '1';
-      container.appendChild(dot);
-    }
-  };
-
-  const positionSquares = () => {
-    if (!clockRef.current) return;
-    const size = clockRef.current.offsetWidth;
-    const radius = size * 0.60;
-    const center = size / 2;
-
-    squareRefs.current.forEach((square, i) => {
-      const angleDeg = i * 30;
-      const angleRad = angleDeg * (Math.PI / 180);
-      const x = center + radius * Math.sin(angleRad);
-      const y = center - radius * Math.cos(angleRad);
-      square.style.left = `${x}px`;
-      square.style.top = `${y}px`;
-    });
-  };
+function RomanClock() {
+  const [time, setTime] = useState("");
+  const [fade, setFade] = useState(false);
+  const timeoutRef = useRef();
 
   useEffect(() => {
-    createDots();
-    positionSquares();
-    const interval = setInterval(updateClock, 1000);
+    const updateClock = () => {
+      const now = new Date();
+      const newTime = `${toRoman(now.getHours())}.${toRoman(
+        now.getMinutes()
+      )}.${toRoman(now.getSeconds())}`;
+      setFade(true);
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        setTime(newTime);
+        setFade(false);
+      }, 500);
+    };
+
     updateClock();
-
-    window.addEventListener('resize', () => {
-      createDots();
-      positionSquares();
-    });
-
+    const interval = setInterval(updateClock, 5000);
     return () => {
       clearInterval(interval);
-      window.removeEventListener('resize', () => {});
+      clearTimeout(timeoutRef.current);
     };
   }, []);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        width: '100vw',
-        backgroundColor: background,
-        transition: 'background-color 2s',
-        overflow: 'hidden',
-      }}
-    >
+    <div style={styles.container}>
+      <img src={castelImage} alt="Background" style={styles.bgImage} />
       <div
-        className="clock"
-        ref={clockRef}
         style={{
-          position: 'relative',
-          width: '70vmin',
-          height: '70vmin',
+          ...styles.clock,
+          opacity: fade ? 0 : 1,
+          transition: "opacity 0.5s ease-in-out",
         }}
       >
-        {Array.from({ length: 12 }).map((_, i) => (
-          <div
-            key={i}
-            ref={(el) => (squareRefs.current[i] = el)}
-            style={{
-              position: 'absolute',
-              width: '8vw',
-              height: '8vw',
-              backgroundColor: '#3498db',
-              transform: 'translate(-50%, -50%)',
-              transition: 'background-color 1s',
-              zIndex: 2,
-            }}
-          />
-        ))}
-
-        <div ref={dotContainerRef} />
-
-        <div
-          ref={hourRef}
-          style={{
-            position: 'absolute',
-            bottom: '50%',
-            left: '50%',
-            width: '11vmin',
-            height: '50%',
-            backgroundColor: 'blue',
-            transformOrigin: 'bottom',
-            transform: 'translateX(-50%) rotate(0deg)',
-            transition: 'background-color 1s',
-            zIndex: 3,
-          }}
-        />
-
-        <div
-          ref={minuteRef}
-          style={{
-            position: 'absolute',
-            bottom: '50%',
-            left: '50%',
-            width: '6vmin',
-            height: '70%',
-            backgroundColor: 'green',
-            transformOrigin: 'bottom',
-            transform: 'translateX(-50%) rotate(0deg)',
-            transition: 'background-color 1s',
-            zIndex: 4,
-          }}
-        />
-
-        <div
-          ref={secondRef}
-          style={{
-            position: 'absolute',
-            bottom: '50%',
-            left: '50%',
-            width: '2vmin',
-            height: '100%',
-            backgroundColor: 'red',
-            transformOrigin: 'bottom',
-            transform: 'translateX(-50%) rotate(0deg)',
-            transition: 'background-color 1s',
-            zIndex: 5,
-          }}
-        />
+        {time}
       </div>
     </div>
   );
+}
+
+const styles = {
+  container: {
+    height: "100vh",
+    width: "100vw",
+    overflow: "hidden",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontFamily: "'Via', monospace",
+    backgroundColor: "rgb(19, 4, 4)",
+    position: "relative",
+  },
+  bgImage: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    filter: "blur(5px)",
+    zIndex: 0,
+  },
+  clock: {
+    color: "rgb(203, 227, 197)",
+    fontSize: "1.7rem",
+    textAlign: "center",
+    position: "relative",
+    zIndex: 1,
+  },
 };
 
-export default RandomColorClock;
+export default RomanClock;
