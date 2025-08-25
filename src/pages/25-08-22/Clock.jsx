@@ -42,21 +42,30 @@ const DigitalClock = () => {
   const timeDigits = `${hours}${minutes}${seconds}`.split('');
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
+      {/* Background layer with filter */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'brightness(0.7) contrast(0.4) saturate(0.9)',
+          zIndex: 0,
+        }}
+      />
+
+      {/* Digits layer on top */}
       <div
         style={{
           position: 'relative',
+          zIndex: 1,
+          width: '100%',
+          height: '100%',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -72,7 +81,8 @@ const DigitalClock = () => {
               width: '18vw',
               height: 'auto',
               transform: 'rotate(90deg)',
-              marginLeft: index === 0 ? 0 : '-12vw', // very very close overlap
+              marginLeft: index === 0 ? 0 : '-12vw',
+              filter: 'drop-shadow(4px 2px 3px black) drop-shadow(-4px -4px 3px black)',
               zIndex: index,
             }}
           />
