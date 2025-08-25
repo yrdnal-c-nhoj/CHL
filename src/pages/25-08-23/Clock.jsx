@@ -56,7 +56,7 @@ const DigitalClock = () => {
 
     @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-1rem); }
+      50% { transform: translateY(-5rem); }
     }
   `;
 
@@ -74,16 +74,16 @@ const DigitalClock = () => {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        filter: 'brightness(0.7) contrast(0.4) saturate(.9)',
+        filter: 'brightness(0.7) contrast(0.8) saturate(0.9)',
         zIndex: 0,
       }} />
 
       {/* Digits */}
       <div style={{
         position: 'relative',
-        zIndex: 1,
+
         width: '100%',
-        height: '100%',
+        height: '110%',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -98,14 +98,12 @@ const DigitalClock = () => {
             {/* Floating digit text above the image */}
             <span style={{
               position: 'absolute',
-              top: '-5rem',
+              top: '-2rem',
               width: '100%',
               color: 'white',
-              fontSize: '3rem',
+              fontSize: '2rem',
               fontFamily: 'CustomFont, sans-serif',
-              textShadow: '0.2rem 0.2rem 0.4rem black',
-              zIndex: 2,
-              opacity: 0.2,
+              textShadow: '0.2rem 0.2rem 0.4rem white',
               animation: `float 2s ease-in-out ${index * 0.1}s infinite`, // stagger animation slightly
             }}>
               {digit}
@@ -116,6 +114,7 @@ const DigitalClock = () => {
               alt={digit}
               style={{
                 width: '100%',
+                // zIndex: 2,
                 height: 'auto',
                 transform: 'rotate(90deg)',
                 filter: 'drop-shadow(0.4rem 0.2rem 0.3rem grey) drop-shadow(-0.4rem -0.4rem 0.3rem grey)',
@@ -137,7 +136,9 @@ const DigitalClock = () => {
         backgroundPosition: 'center',
         opacity: 0.5,
         transform: 'rotate(180deg)',
-        zIndex: 2,
+        zIndex: 4,
+          filter: 'brightness(1.7) contrast(1.8) saturate(1.9)',
+  
         pointerEvents: 'none',
       }} />
     </div>
