@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-// Import digit images as modules
+// Import digit images
 import digit0 from './0.gif';
 import digit1 from './1.gif';
 import digit2 from './2.gif';
@@ -12,8 +12,9 @@ import digit7 from './7.gif';
 import digit8 from './8.gif';
 import digit9 from './9.gif';
 
-// Import background image as module
+// Import background and overlay images
 import backgroundImage from './g.webp';
+import overlayImage from './fog.gif'; // transparent image
 
 const digitImages = {
   '0': digit0,
@@ -43,7 +44,7 @@ const DigitalClock = () => {
 
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-      {/* Background layer with filter */}
+      {/* Background layer */}
       <div
         style={{
           position: 'absolute',
@@ -59,7 +60,7 @@ const DigitalClock = () => {
         }}
       />
 
-      {/* Digits layer on top */}
+      {/* Digits layer */}
       <div
         style={{
           position: 'relative',
@@ -82,13 +83,40 @@ const DigitalClock = () => {
               height: 'auto',
               transform: 'rotate(90deg)',
               marginLeft: index === 0 ? 0 : '-12vw',
-              filter: 'drop-shadow(4px 2px 3px black) drop-shadow(-4px -4px 3px black)',
+              filter: 'drop-shadow(4px 2px 3px grey) drop-shadow(-4px -4px 3px grey)',
               zIndex: index,
             }}
           />
         ))}
       </div>
+
+    {/* Transparent overlay layer */}
+<div
+  style={{
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundImage: `url(${overlayImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    opacity: 0.6, // adjust for desired transparency
+    transform: 'rotate(180deg)', // rotate the overlay
+    zIndex: 2,
+    pointerEvents: 'none', // lets clicks pass through
+  }}
+/>
+
     </div>
+
+
+
+
+
+
+
+
   );
 };
 
