@@ -14,7 +14,10 @@ import digit9 from './9.gif';
 
 // Import background and overlay images
 import backgroundImage from './g.webp';
-import overlayImage from './fog.gif'; // transparent image
+import overlayImage from './fog.gif';
+
+// Import custom font as module
+import customFont from './fog.ttf';
 
 const digitImages = {
   '0': digit0,
@@ -42,81 +45,102 @@ const DigitalClock = () => {
   const seconds = String(time.getSeconds()).padStart(2, '0');
   const timeDigits = `${hours}${minutes}${seconds}`.split('');
 
+  // Inline font-face and floating animation
+  const inlineStyle = `
+    @font-face {
+      font-family: 'CustomFont';
+      src: url(${customFont}) format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-1rem); }
+    }
+  `;
+
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-      {/* Background layer */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'brightness(0.7) contrast(0.4) saturate(0.9)',
-          zIndex: 0,
-        }}
-      />
+      <style>{inlineStyle}</style>
 
-      {/* Digits layer */}
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 1,
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+      {/* Background */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        filter: 'brightness(0.7) contrast(0.4) saturate(.9)',
+        zIndex: 0,
+      }} />
+
+      {/* Digits */}
+      <div style={{
+        position: 'relative',
+        zIndex: 1,
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
         {timeDigits.map((digit, index) => (
-          <img
-            key={index}
-            src={digitImages[digit]}
-            alt={digit}
-            style={{
-              position: 'relative',
-              width: '18vw',
-              height: 'auto',
-              transform: 'rotate(90deg)',
-              marginLeft: index === 0 ? 0 : '-12vw',
-              filter: 'drop-shadow(4px 2px 3px grey) drop-shadow(-4px -4px 3px grey)',
-              zIndex: index,
-            }}
-          />
+          <div key={index} style={{
+            position: 'relative',
+            width: '18vw',
+            marginLeft: index === 0 ? 0 : '-12vw',
+            textAlign: 'center',
+          }}>
+            {/* Floating digit text above the image */}
+            <span style={{
+              position: 'absolute',
+              top: '-5rem',
+              width: '100%',
+              color: 'white',
+              fontSize: '3rem',
+              fontFamily: 'CustomFont, sans-serif',
+              textShadow: '0.2rem 0.2rem 0.4rem black',
+              zIndex: 2,
+              opacity: 0.2,
+              animation: `float 2s ease-in-out ${index * 0.1}s infinite`, // stagger animation slightly
+            }}>
+              {digit}
+            </span>
+
+            <img
+              src={digitImages[digit]}
+              alt={digit}
+              style={{
+                width: '100%',
+                height: 'auto',
+                transform: 'rotate(90deg)',
+                filter: 'drop-shadow(0.4rem 0.2rem 0.3rem grey) drop-shadow(-0.4rem -0.4rem 0.3rem grey)',
+              }}
+            />
+          </div>
         ))}
       </div>
 
-    {/* Transparent overlay layer */}
-<div
-  style={{
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${overlayImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    opacity: 0.6, // adjust for desired transparency
-    transform: 'rotate(180deg)', // rotate the overlay
-    zIndex: 2,
-    pointerEvents: 'none', // lets clicks pass through
-  }}
-/>
-
+      {/* Overlay */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundImage: `url(${overlayImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.5,
+        transform: 'rotate(180deg)',
+        zIndex: 2,
+        pointerEvents: 'none',
+      }} />
     </div>
-
-
-
-
-
-
-
-
   );
 };
 

@@ -1,109 +1,137 @@
-import { useEffect, useRef } from "react";
-import hand1 from "./hand1.webp";
-import hand2 from "./hand2.webp";
-import hand3 from "./hand3.webp";
-import inst from "./inst.webp";
+import React, { useEffect, useRef } from 'react';
+import mobyFont from './moby.ttf';
+import waves from './waves.gif';
 
-const BoringClock = () => {
-  const secondRef = useRef(null);
-  const minuteRef = useRef(null);
-  const hourRef = useRef(null);
+const MobyDickClock = () => {
+  const clockRef = useRef(null);
 
   useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
+    if (!document.getElementById('moby-font')) {
+      const style = document.createElement('style');
+      style.id = 'moby-font';
+      style.innerHTML = `
+        @font-face {
+          font-family: 'Moby';
+          src: url(${mobyFont}) format('truetype');
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-0.5rem); }
+        }
+      `;
+      document.head.appendChild(style);
+    }
 
-      const milliseconds = now.getMilliseconds();
-      const seconds = now.getSeconds() + milliseconds / 1000;
-      const minutes = now.getMinutes() + seconds / 60;
-      const hours = now.getHours() + minutes / 60;
+    const centerAvoidSize = { width: 300, height: 200 }; // px area to avoid center
 
-      const secondDegrees = ((seconds / 60) * 360) + 90;
-      const minuteDegrees = ((minutes / 60) * 360) + 90;
-      const hourDegrees = ((hours / 12) * 360) + 90;
-
-      if (secondRef.current) secondRef.current.style.transform = `rotate(${secondDegrees}deg)`;
-      if (minuteRef.current) minuteRef.current.style.transform = `rotate(${minuteDegrees}deg)`;
-      if (hourRef.current) hourRef.current.style.transform = `rotate(${hourDegrees}deg)`;
-
-      requestAnimationFrame(updateClock);
+    // Returns a random coordinate avoiding center rectangle
+    const getRandomPosAvoidCenter = (max, avoidStart, avoidEnd) => {
+      let pos;
+      do {
+        pos = Math.random() * max;
+      } while (pos > avoidStart && pos < avoidEnd);
+      return pos;
     };
 
-    updateClock();
+    const moveClock = () => {
+      const clock = clockRef.current;
+      if (!clock) return;
+
+      // Update time
+      const now = new Date();
+      clock.textContent = now.toLocaleTimeString('en-US', {
+        hour12: false,
+        hour: 'numeric',
+        minute: 'numeric',
+      });
+
+      // Calculate random X and Y avoiding center area
+      const x = getRandomPosAvoidCenter(
+        window.innerWidth,
+        (window.innerWidth - centerAvoidSize.width) / 2,
+        (window.innerWidth + centerAvoidSize.width) / 2
+      );
+      const y = getRandomPosAvoidCenter(
+        window.innerHeight,
+        (window.innerHeight - centerAvoidSize.height) / 2,
+        (window.innerHeight + centerAvoidSize.height) / 2
+      );
+
+      // Random font size and opacity
+      const fontSize = 2 + Math.random() * 6; // rem
+      const opacity = Math.random() * 0.7 + 0.3;
+
+      // Apply styles with smooth transition
+      clock.style.transition = 'transform 2s ease-in-out, font-size 2s ease-in-out, opacity 2s ease-in-out';
+      clock.style.transform = `translate(${x}px, ${y}px)`;
+      clock.style.fontSize = `${fontSize}rem`;
+      clock.style.opacity = opacity;
+
+      // Next move after 2-4 seconds randomly
+      const nextTime = 2000 + Math.random() * 2000;
+      setTimeout(moveClock, nextTime);
+    };
+
+    // Initial position: place clock off-screen so first move slides it in
+    const clock = clockRef.current;
+    if (clock) {
+      clock.style.position = 'absolute';
+      clock.style.top = '0';
+      clock.style.left = '0';
+      clock.style.opacity = '0';
+      clock.style.transform = 'translate(-500px, -500px)';
+    }
+
+    // Start animation loop
+    moveClock();
+
+    return () => clearTimeout();
   }, []);
 
   return (
-    <div style={styles.body}>
-  
-      <img src={inst} alt="border" style={styles.borer2} />
-
-      <div style={styles.clock}>
-        <img src={hand2} alt="second hand" ref={secondRef} style={{ ...styles.hand, ...styles.secondHand }} />
-        <img src={hand1} alt="hour hand" ref={hourRef} style={{ ...styles.hand, ...styles.hourHand }} />
-        <img src={hand3} alt="minute hand" ref={minuteRef} style={{ ...styles.hand, ...styles.minHand }} />
-      </div>
+    <div
+      style={{
+        margin: 0,
+        padding: 0,
+        height: '100vh',
+        width: '100vw',
+        overflow: 'hidden',
+        backgroundColor: '#727B7BFF',
+        filter: 'brightness(300%) contrast(40%)',
+        position: 'relative',
+        userSelect: 'none',
+      }}
+    >
+      <div
+        ref={clockRef}
+        style={{
+          fontFamily: 'Moby, cursive',
+          color: '#a1b4b4',
+          textShadow: '#ced4d4 0.1rem 0.1rem 0.2rem, #000404 -0.1rem -0.1rem 0.9rem',
+          position: 'absolute',
+          whiteSpace: 'nowrap',
+          pointerEvents: 'none',
+          opacity: 0,
+        }}
+      />
+      <img
+        src={waves}
+        alt="waves"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          objectFit: 'cover',
+          zIndex: 6,
+          opacity: 0.6,
+          filter: 'brightness(180%) contrast(110%)',
+          pointerEvents: 'none',
+        }}
+      />
     </div>
   );
 };
 
-export default BoringClock;
-
-const styles = {
-  body: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100vh",
-    width: "100vw",
-    backgroundColor: "rgb(154, 110, 53)",
-    position: "relative",
-    overflow: "hidden",
-  },
-
-  borer2: {
-    position: "absolute",
-    opacity: 0.5,
-    filter: "contrast(130%) brightness(200%)",
-    width: "180vw",
-    height: "140vh",
-    zIndex: 1,
-    pointerEvents: "none",
-  },
-  clock: {
-    width: "80vw",
-    height: "80vh",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-  },
-  hand: {
-    position: "absolute",
-    top: "40%",
-    right: "50%",
-    transformOrigin: "100%",
-    transform: "rotate(90deg)",
-    zIndex: 9,
-    opacity: 0.5,
-    transition: "transform 0s linear",
-  },
-  hourHand: {
-    zIndex: 8,
-    width: "6rem",
-    height: "5rem",
-    filter: "contrast(170%) brightness(200%)",
-  },
-  minHand: {
-    zIndex: 6,
-    width: "10rem",
-    height: "4rem",
-    filter: "contrast(170%) brightness(200%)",
-    transform: "scaleX(-1)",
-  },
-  secondHand: {
-    zIndex: 7,
-    width: "14rem",
-    height: "5rem",
-    filter: "contrast(170%) brightness(200%)",
-  },
-};
+export default MobyDickClock;

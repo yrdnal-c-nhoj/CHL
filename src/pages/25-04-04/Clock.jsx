@@ -1,115 +1,109 @@
-import React, { useEffect, useRef, useState } from "react";
-import castelImage from "./castel.jpg";
-import viaFont from "./via.ttf"; // Make sure this path is correct
+import { useEffect, useRef } from "react";
+import hand1 from "./hand1.webp";
+import hand2 from "./hand2.webp";
+import hand3 from "./hand3.webp";
+import inst from "./inst.webp";
 
-const toRoman = (num) => {
-  const romanMap = [
-    [1000, "M"],
-    [900, "CM"],
-    [500, "D"],
-    [400, "CD"],
-    [100, "C"],
-    [90, "XC"],
-    [50, "L"],
-    [40, "XL"],
-    [10, "X"],
-    [9, "IX"],
-    [5, "V"],
-    [4, "IV"],
-    [1, "I"],
-  ];
-  let result = "";
-  for (const [value, numeral] of romanMap) {
-    while (num >= value) {
-      result += numeral;
-      num -= value;
-    }
-  }
-  return result || "N";
-};
-
-// Inject @font-face dynamically
-const fontStyle = document.createElement("style");
-fontStyle.innerHTML = `
-  @font-face {
-    font-family: 'Via';
-    src: url(${viaFont}) format('truetype');
-  }
-`;
-document.head.appendChild(fontStyle);
-
-function RomanClock() {
-  const [time, setTime] = useState("");
-  const [fade, setFade] = useState(false);
-  const timeoutRef = useRef();
+const BoringClock = () => {
+  const secondRef = useRef(null);
+  const minuteRef = useRef(null);
+  const hourRef = useRef(null);
 
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
-      const newTime = `${toRoman(now.getHours())}.${toRoman(
-        now.getMinutes()
-      )}.${toRoman(now.getSeconds())}`;
-      setFade(true);
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
-        setTime(newTime);
-        setFade(false);
-      }, 500);
+
+      const milliseconds = now.getMilliseconds();
+      const seconds = now.getSeconds() + milliseconds / 1000;
+      const minutes = now.getMinutes() + seconds / 60;
+      const hours = now.getHours() + minutes / 60;
+
+      const secondDegrees = ((seconds / 60) * 360) + 90;
+      const minuteDegrees = ((minutes / 60) * 360) + 90;
+      const hourDegrees = ((hours / 12) * 360) + 90;
+
+      if (secondRef.current) secondRef.current.style.transform = `rotate(${secondDegrees}deg)`;
+      if (minuteRef.current) minuteRef.current.style.transform = `rotate(${minuteDegrees}deg)`;
+      if (hourRef.current) hourRef.current.style.transform = `rotate(${hourDegrees}deg)`;
+
+      requestAnimationFrame(updateClock);
     };
 
     updateClock();
-    const interval = setInterval(updateClock, 5000);
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeoutRef.current);
-    };
   }, []);
 
   return (
-    <div style={styles.container}>
-      <img src={castelImage} alt="Background" style={styles.bgImage} />
-      <div
-        style={{
-          ...styles.clock,
-          opacity: fade ? 0 : 1,
-          transition: "opacity 0.5s ease-in-out",
-        }}
-      >
-        {time}
+    <div style={styles.body}>
+  
+      <img src={inst} alt="border" style={styles.borer2} />
+
+      <div style={styles.clock}>
+        <img src={hand2} alt="second hand" ref={secondRef} style={{ ...styles.hand, ...styles.secondHand }} />
+        <img src={hand1} alt="hour hand" ref={hourRef} style={{ ...styles.hand, ...styles.hourHand }} />
+        <img src={hand3} alt="minute hand" ref={minuteRef} style={{ ...styles.hand, ...styles.minHand }} />
       </div>
     </div>
   );
-}
+};
+
+export default BoringClock;
 
 const styles = {
-  container: {
-    height: "100vh",
-    width: "100vw",
-    overflow: "hidden",
+  body: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontFamily: "'Via', monospace",
-    backgroundColor: "rgb(19, 4, 4)",
+    height: "100vh",
+    width: "100vw",
+    backgroundColor: "rgb(154, 110, 53)",
     position: "relative",
+    overflow: "hidden",
   },
-  bgImage: {
+
+  borer2: {
     position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    filter: "blur(5px)",
-    zIndex: 0,
+    opacity: 0.5,
+    filter: "contrast(130%) brightness(200%)",
+    width: "180vw",
+    height: "140vh",
+    zIndex: 1,
+    pointerEvents: "none",
   },
   clock: {
-    color: "rgb(203, 227, 197)",
-    fontSize: "1.7rem",
-    textAlign: "center",
-    position: "relative",
-    zIndex: 1,
+    width: "80vw",
+    height: "80vh",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+  },
+  hand: {
+    position: "absolute",
+    top: "40%",
+    right: "50%",
+    transformOrigin: "100%",
+    transform: "rotate(90deg)",
+    zIndex: 9,
+    opacity: 0.5,
+    transition: "transform 0s linear",
+  },
+  hourHand: {
+    zIndex: 8,
+    width: "6rem",
+    height: "5rem",
+    filter: "contrast(170%) brightness(200%)",
+  },
+  minHand: {
+    zIndex: 6,
+    width: "10rem",
+    height: "4rem",
+    filter: "contrast(170%) brightness(200%)",
+    transform: "scaleX(-1)",
+  },
+  secondHand: {
+    zIndex: 7,
+    width: "14rem",
+    height: "5rem",
+    filter: "contrast(170%) brightness(200%)",
   },
 };
-
-export default RomanClock;
