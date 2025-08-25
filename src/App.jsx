@@ -1,5 +1,5 @@
-import React, { useEffect, useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { DataProvider, DataContext } from './context/DataContext';
 import Home from './Home';
@@ -11,7 +11,33 @@ import Log from './Log';
 import ErrorPage from './ErrorPage';
 import { pageview } from './analytics';
 
-// 🧠 Route-based SEO title + description map
+// --- Helper functions ---
+const formatDate = (date) => {
+  const yy = String(date.getFullYear()).slice(2);
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${yy}-${mm}-${dd}`;
+};
+
+const getEffectiveDate = (items) => {
+  if (!items || items.length === 0) return null;
+
+  const today = new Date();
+  const todayDate = formatDate(today);
+
+  // Check for today
+  let selected = items.find(item => item.date === todayDate);
+  if (selected) return selected.date;
+
+  // Fall back to most recent
+  const latestItem = items.reduce((latest, item) => {
+    if (!item?.date) return latest;
+    return !latest || item.date > latest.date ? item : latest;
+  }, null);
+  return latestItem ? latestItem.date : null;
+};
+
+// --- Analytics & SEO ---
 const metaMap = {
   '/': {
     title: 'BorrowedTime @ Cubist Heart Laboratories 🧊🫀🔭',
@@ -36,29 +62,36 @@ const metaMap = {
   '/today': {
     title: 'Today\'s Clock | BorrowedTime',
     description: 'Discover today\'s unique clock from Cubist Heart Laboratories.',
-  }
+  },
 };
 
-// 📊 Combined analytics and SEO effect
 const AnalyticsAndSEO = () => {
   const location = useLocation();
   const path = location.pathname;
+  const { items, loading } = useContext(DataContext);
 
-  // Match dynamic clock routes like "/25-08-12"
   const dynamicClockRoute = /^\/\d{2}-\d{2}-\d{2}$/;
   const isClockPage = dynamicClockRoute.test(path);
+
+  // For /today, use effective date (today or most recent)
+  const effectiveDate = path === '/today' && !loading ? getEffectiveDate(items) : null;
 
   const meta = isClockPage
     ? {
         title: `BorrowedTime Clock for ${path.slice(1)}`,
         description: `A clock for ${path.slice(1)} created by Cubist Heart Laboratories.`,
       }
+    : path === '/today' && effectiveDate
+    ? {
+        title: `BorrowedTime Clock for ${effectiveDate}`,
+        description: `A clock for ${effectiveDate} created by Cubist Heart Laboratories.`,
+      }
     : metaMap[path] || {
         title: 'BorrowedTime',
         description: 'A project by Cubist Heart Laboratories.',
       };
 
-  useEffect(() => {
+  React.useEffect(() => {
     pageview(location.pathname + location.search);
   }, [location]);
 
@@ -74,32 +107,30 @@ const AnalyticsAndSEO = () => {
   );
 };
 
-// Helper to format as YY-MM-DD
-const getTodayDateString = () => {
+// --- Today page ---
+const TodayPage = () => {
+  const { items, loading, error } = useContext(DataContext);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <ErrorPage />;
+
   const today = new Date();
-  const yy = String(today.getFullYear()).slice(2);
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
-  return `${yy}-${mm}-${dd}`;
-};
+  const todayDate = formatDate(today);
 
-const TodayRedirect = () => {
-  const { items, loading } = useContext(DataContext);
+  // Try today's clock first
+  let effectiveDate = items.find(item => item.date === todayDate)?.date;
 
-  if (loading) {
-    return null; // Wait for data to load
+  // Fallback to most recent if today's clock not available
+  if (!effectiveDate) {
+    effectiveDate = getEffectiveDate(items);
   }
 
-  // Find the most recent item by date
-  const latestItem = items.reduce((latest, item) => {
-    if (!item?.date) return latest;
-    return !latest || item.date > latest.date ? item : latest;
-  }, null);
+  if (!effectiveDate) return <Home />;
 
-  // Redirect to the latest clock's date or homepage if no items
-  return <Navigate to={latestItem ? `/${latestItem.date}` : '/'} replace />;
+  return <ClockPage date={effectiveDate} />;
 };
 
+// --- App component ---
 const App = () => {
   return (
     <DataProvider>
@@ -112,7 +143,7 @@ const App = () => {
           <Route path="/log" element={<Log />} />
           <Route path="/manifesto" element={<Manifesto />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/today" element={<TodayRedirect />} />
+          <Route path="/today" element={<TodayPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Router>
