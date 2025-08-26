@@ -10,13 +10,10 @@ export const DataProvider = ({ children }) => {
 
   useEffect(() => {
     const SHEET_ID = '11mYDoSA7Sl8Eb7-Fko4FGpk0e-3yS2VujkO02_f_LGE';
-    const SHEET_NAME = 'Sheet1'; // change if your tab is named differently
+    const SHEET_NAME = 'Sheet1';
 
     const urls = [
-      // Direct CSV export
       `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}`,
-
-      // CORS proxy fallback
       `https://api.allorigins.win/get?url=${encodeURIComponent(
         `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}`
       )}`
@@ -29,43 +26,6 @@ export const DataProvider = ({ children }) => {
       }
     }, 7000);
 
-    const loadData = async () => {
-      for (let i = 0; i < urls.length; i++) {
-        try {
-          if (i === 1) {
-            // Handle proxy JSON wrapper
-            const response = await fetch(urls[i]);
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const data = await response.json();
-
-            Papa.parse(data.contents, {
-              header: true,
-              skipEmptyLines: true,
-              complete: (result) => handleParseSuccess(result),
-              error: (err) => setError(`Parse error: ${err.message}`)
-            });
-          } else {
-            // Normal CSV fetch
-            Papa.parse(urls[i], {
-              download: true,
-              header: true,
-              skipEmptyLines: true,
-              complete: (result) => handleParseSuccess(result),
-              error: (err) => setError(`Parse error: ${err.message}`)
-            });
-          }
-          break; // if successful, stop trying
-        } catch (err) {
-          console.error(`Failed to fetch from URL ${i + 1}`, err.message);
-          if (i === urls.length - 1) {
-            setError(`All attempts failed: ${err.message}`);
-            setLoading(false);
-            clearTimeout(timeoutId);
-          }
-        }
-      }
-    };
-
     const handleParseSuccess = (result) => {
       try {
         if (!result.data || result.data.length === 0) {
@@ -73,8 +33,8 @@ export const DataProvider = ({ children }) => {
         }
 
         const parsedItems = result.data.map((row, index) => ({
-          path: row.path?.toString().trim() || '',
-          date: row.date?.toString().trim() || '', // keep even if empty
+          path: row.path?.toString().trim().replace(/^\/|\/$/g, '') || '',
+          date: row.date?.toString().trim() || '',
           title: row.title?.toString().trim().replace(/\bclock\b/gi, '').trim() || 'No Title',
           clockNumber: index + 1,
         }));
@@ -89,8 +49,41 @@ export const DataProvider = ({ children }) => {
       }
     };
 
-    loadData();
+    const loadData = async () => {
+      for (let i = 0; i < urls.length; i++) {
+        try {
+          if (i === 1) {
+            const response = await fetch(urls[i]);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            Papa.parse(data.contents, {
+              header: true,
+              skipEmptyLines: true,
+              complete: handleParseSuccess,
+              error: (err) => setError(`Parse error: ${err.message}`)
+            });
+          } else {
+            Papa.parse(urls[i], {
+              download: true,
+              header: true,
+              skipEmptyLines: true,
+              complete: handleParseSuccess,
+              error: (err) => setError(`Parse error: ${err.message}`)
+            });
+          }
+          break; // stop if successful
+        } catch (err) {
+          console.error(`Failed to fetch from URL ${i + 1}`, err.message);
+          if (i === urls.length - 1) {
+            setError(`All attempts failed: ${err.message}`);
+            setLoading(false);
+            clearTimeout(timeoutId);
+          }
+        }
+      }
+    };
 
+    loadData();
     return () => clearTimeout(timeoutId);
   }, []);
 
