@@ -16,7 +16,7 @@ export const DataProvider = ({ children }) => {
       `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}`,
       `https://api.allorigins.win/get?url=${encodeURIComponent(
         `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}`
-      )}`
+      )}`,
     ];
 
     const timeoutId = setTimeout(() => {
@@ -28,18 +28,40 @@ export const DataProvider = ({ children }) => {
 
     const handleParseSuccess = (result) => {
       try {
+        console.log('Raw CSV data:', result.data);
         if (!result.data || result.data.length === 0) {
           throw new Error('No data found in sheet.');
         }
 
-        const parsedItems = result.data.map((row, index) => ({
-          path: row.path?.toString().trim().replace(/^\/|\/$/g, '') || '',
-          date: row.date?.toString().trim() || '',
-          title: row.title?.toString().trim().replace(/\bclock\b/gi, '').trim() || 'No Title',
-          clockNumber: index + 1,
-        }));
+        const parsedItems = result.data.map((row, index) => {
+          let path = row.path?.toString().trim().replace(/^\/|\/$/g, '') || '';
+          
+          // If path is empty, use the date as the path
+          if (!path && row.date) {
+            path = row.date.toString().trim();
+          }
+          
+          // If path is in YY-MM-DD format, keep it as is (don't transform to YYYY/MM/DD)
+          // because ClockPage expects ./pages/YY-MM-DD/Clock.jsx
+          
+          const item = {
+            path,
+            date: row.date?.toString().trim() || '',
+            title: row.title?.toString().trim().replace(/\bclock\b/gi, '').trim() || 'No Title',
+            clockNumber: index + 1,
+          };
+          console.log(`Parsed item ${index + 1}:`, item);
+          return item;
+        });
 
-        setItems(parsedItems);
+        // Filter out items with empty path or date
+        const validItems = parsedItems.filter((item) => item.path && item.date);
+        if (validItems.length === 0) {
+          throw new Error('No valid items with path and date found.');
+        }
+
+        console.log('Valid items:', validItems);
+        setItems(validItems);
         setLoading(false);
         clearTimeout(timeoutId);
       } catch (err) {
@@ -60,7 +82,7 @@ export const DataProvider = ({ children }) => {
               header: true,
               skipEmptyLines: true,
               complete: handleParseSuccess,
-              error: (err) => setError(`Parse error: ${err.message}`)
+              error: (err) => setError(`Parse error: ${err.message}`),
             });
           } else {
             Papa.parse(urls[i], {
@@ -68,12 +90,12 @@ export const DataProvider = ({ children }) => {
               header: true,
               skipEmptyLines: true,
               complete: handleParseSuccess,
-              error: (err) => setError(`Parse error: ${err.message}`)
+              error: (err) => setError(`Parse error: ${err.message}`),
             });
           }
-          break; // stop if successful
+          break;
         } catch (err) {
-          console.error(`Failed to fetch from URL ${i + 1}`, err.message);
+          console.error(`Failed to fetch from URL ${i + 1}:`, err.message);
           if (i === urls.length - 1) {
             setError(`All attempts failed: ${err.message}`);
             setLoading(false);
