@@ -19,14 +19,12 @@ const formatDate = (date) => {
   return `${yy}-${mm}-${dd}`;
 };
 
-// Get today’s effective date (today or most recent)
+// Get today's effective date (today or most recent)
 const getEffectiveDate = (items) => {
   if (!items || items.length === 0) return null;
   const todayDate = formatDate(new Date());
-
   let selected = items.find(item => item.date === todayDate);
   if (selected) return selected;
-
   // Fallback to most recent
   return items.reduce((latest, item) => (!latest || item.date > latest.date ? item : latest), null);
 };
@@ -36,20 +34,17 @@ const AnalyticsAndSEO = () => {
   const location = useLocation();
   const path = location.pathname;
   const { items, loading } = useContext(DataContext);
-
   const dynamicClockRoute = /^\/\d{2}-\d{2}-\d{2}$/;
   const isClockPage = dynamicClockRoute.test(path);
-
   const effectiveClock = path === '/today' && !loading ? getEffectiveDate(items) : null;
-
+  
   const meta = isClockPage
     ? { title: `BorrowedTime Clock for ${path.slice(1)}`, description: `A clock for ${path.slice(1)} created by Cubist Heart Laboratories.` }
     : path === '/today' && effectiveClock
     ? { title: `BorrowedTime Clock for ${effectiveClock.date}`, description: `A clock for ${effectiveClock.date} created by Cubist Heart Laboratories.` }
     : {
-        '/': { title: 'BorrowedTime @ Cubist Heart Laboratories 🧊🫀🔭', description: 'A new clock every day.' }[path] || 
-        { title: 'BorrowedTime', description: 'A project by Cubist Heart Laboratories.' }
-      };
+        '/': { title: 'BorrowedTime @ Cubist Heart Laboratories 🧊🫀🔭', description: 'A new clock every day.' }
+      }[path] || { title: 'BorrowedTime', description: 'A project by Cubist Heart Laboratories.' };
 
   React.useEffect(() => {
     pageview(location.pathname + location.search);
@@ -67,19 +62,6 @@ const AnalyticsAndSEO = () => {
   );
 };
 
-// Today page
-const TodayPage = () => {
-  const { items, loading, error } = useContext(DataContext);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <ErrorPage />;
-
-  const effectiveClock = getEffectiveDate(items);
-  if (!effectiveClock) return <Home />;
-
-  return <ClockPage date={effectiveClock.date} sheetPath={effectiveClock.path} />;
-};
-
 const App = () => {
   return (
     <DataProvider>
@@ -87,7 +69,7 @@ const App = () => {
         <AnalyticsAndSEO />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/today" element={<TodayPage />} />
+          <Route path="/today" element={<ClockPage />} />
           <Route path="/:date" element={<ClockPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/log" element={<Log />} />
