@@ -27,7 +27,7 @@ export const DataProvider = ({ children }) => {
         setError('Google Sheet load timed out. Check if sheet is published to web.');
         setLoading(false);
       }
-    }, 7000); // shorter timeout
+    }, 7000);
 
     const loadData = async () => {
       for (let i = 0; i < urls.length; i++) {
@@ -40,6 +40,7 @@ export const DataProvider = ({ children }) => {
 
             Papa.parse(data.contents, {
               header: true,
+              skipEmptyLines: true,
               complete: (result) => handleParseSuccess(result),
               error: (err) => setError(`Parse error: ${err.message}`)
             });
@@ -48,6 +49,7 @@ export const DataProvider = ({ children }) => {
             Papa.parse(urls[i], {
               download: true,
               header: true,
+              skipEmptyLines: true,
               complete: (result) => handleParseSuccess(result),
               error: (err) => setError(`Parse error: ${err.message}`)
             });
@@ -70,21 +72,12 @@ export const DataProvider = ({ children }) => {
           throw new Error('No data found in sheet.');
         }
 
-        const parsedItems = result.data
-          .map((row, index) => ({
-            path: row.path?.toString().trim(),
-            date: row.date?.toString().trim(),
-            title: row.title?.toString().trim().replace(/\bclock\b/gi, '').trim(),
-            clockNumber: index + 1,
-          }))
-          .filter((item) => {
-            const validDate = /^\d{2}-\d{2}-\d{2}$/.test(item.date);
-            return item.path && validDate;
-          });
-
-        if (parsedItems.length === 0) {
-          throw new Error('No valid items after filtering. Check sheet format.');
-        }
+        const parsedItems = result.data.map((row, index) => ({
+          path: row.path?.toString().trim() || '',
+          date: row.date?.toString().trim() || '', // keep even if empty
+          title: row.title?.toString().trim().replace(/\bclock\b/gi, '').trim() || 'No Title',
+          clockNumber: index + 1,
+        }));
 
         setItems(parsedItems);
         setLoading(false);
