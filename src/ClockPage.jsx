@@ -1,78 +1,73 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import Header from './components/Header';
 import styles from './ClockPage.module.css';
 
-// Helpers
-const formatTitle = (title) => {
-  if (!title) return 'Home';
-  return title.replace(/clock/i, '').trim() || 'Home';
-};
+// Preload all Clock.jsx modules under /pages/**/Clock.jsx
+const clockModules = import.meta.glob('./pages/**/Clock.jsx');
 
-const formatDate = (dateStr) => {
-  if (!dateStr) return '';
-  const parts = dateStr.split('-');
-  if (parts.length !== 3) return dateStr;
-  const [yy, mm, dd] = parts.map(Number);
-  if (mm < 1 || mm > 12 || dd < 1 || dd > 31) return 'Invalid Date';
-  return `${mm}/${dd}/${yy}`;
-};
-
-const isValidDateFormat = (date) => {
-  const regex = /^\d{2}-\d{2}-\d{2}$/;
-  if (!regex.test(date)) return false;
-  const [yy, mm, dd] = date.split('-').map(Number);
-  return mm >= 1 && mm <= 12 && dd >= 1 && dd <= 31;
-};
-
-const ClockPage = () => {
-  const { date } = useParams();
+const ClockPage = ({ date: propDate, sheetPath: propPath }) => {
   const { items, loading, error } = useContext(DataContext);
-  const navigate = useNavigate();
+  const { date: routeDate } = useParams();
 
   const [ClockComponent, setClockComponent] = useState(null);
   const [pageError, setPageError] = useState(null);
   const [footerVisible, setFooterVisible] = useState(true);
   const [headerVisible, setHeaderVisible] = useState(true);
 
+  // Determine effective clock
   useEffect(() => {
     if (loading) return;
 
-    if (!date || !isValidDateFormat(date)) {
-      navigate('/', { replace: true });
-      return;
+    let item = null;
+
+    // 1. Try path from props (TodayPage)
+    if (propPath) {
+      item = items.find(i => i.path.replace(/^\/|\/$/g, '') === propPath.replace(/^\/|\/$/g, ''));
     }
 
-    const item = items.find((i) => i?.date === date);
+    // 2. Try date from props or route
+    if (!item) {
+      const targetDate = propDate || routeDate;
+      item = items.find(i => i.date === targetDate);
+    }
+
+    // 3. Fallback to most recent
+    if (!item && items.length > 0) {
+      item = items.reduce((latest, i) => (!latest || i.date > latest.date ? i : latest), null);
+    }
 
     if (!item) {
-      navigate('/', { replace: true });
+      setPageError('No clock found for this date.');
       return;
     }
 
-    setPageError(null);
-    setClockComponent(null);
+    // Build module key
+    const key = `./pages/${item.path || item.date}/Clock.jsx`;
 
-    import(`./pages/${item.path}/Clock.jsx`)
-      .then((mod) => setClockComponent(() => mod.default))
-      .catch((err) => setPageError(`Failed to load clock for ${date}: ${err.message}`));
-  }, [date, items, loading, navigate]);
+    if (clockModules[key]) {
+      clockModules[key]()
+        .then(mod => setClockComponent(() => mod.default))
+        .catch(err => setPageError(`Failed to load clock: ${err.message}`));
+    } else {
+      console.warn('Available keys:', Object.keys(clockModules));
+      setPageError(`No clock module found at path: ${key}`);
+    }
+  }, [propDate, propPath, routeDate, items, loading]);
 
+  // Auto-hide footer
   useEffect(() => {
     const footerFadeMs = 1000;
     let footerTimer;
-
     const resetTimer = () => {
       setFooterVisible(true);
       clearTimeout(footerTimer);
       footerTimer = setTimeout(() => setFooterVisible(false), footerFadeMs);
     };
-
     resetTimer();
     window.addEventListener('mousemove', resetTimer);
     window.addEventListener('touchstart', resetTimer);
-
     return () => {
       clearTimeout(footerTimer);
       window.removeEventListener('mousemove', resetTimer);
@@ -80,42 +75,21 @@ const ClockPage = () => {
     };
   }, []);
 
+  // Auto-hide header
   useEffect(() => {
     setHeaderVisible(true);
     const headerTimer = setTimeout(() => setHeaderVisible(false), 1300);
     return () => clearTimeout(headerTimer);
-  }, [date]);
+  }, [propDate, routeDate]);
 
+  // Prevent scroll
   useEffect(() => {
     document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = '';
-    };
+    return () => { document.body.style.overflow = ''; };
   }, []);
 
-  const currentIndex = items.findIndex((item) => item?.date === date);
-  const currentItem = currentIndex >= 0 ? items[currentIndex] : null;
-  const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
-  const nextItem = currentIndex >= 0 && currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
-
-  if (loading) {
-    return <div className={styles.loading}>Loading data...</div>;
-  }
-
-  if (error || pageError) {
-    return (
-      <div className={styles.container}>
-        <Header visible={headerVisible} />
-        <div className={styles.content}>
-          <div className={styles.sheet}>
-            <div className={styles.error}>{error || pageError}</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!currentItem) return null;
+  if (loading) return <div className={styles.loading}>Loading clock...</div>;
+  if (error || pageError) return <div className={styles.error}>{error || pageError}</div>;
 
   return (
     <div className={styles.container}>
@@ -123,48 +97,8 @@ const ClockPage = () => {
       <div className={styles.content}>
         {ClockComponent ? <ClockComponent /> : <div className={styles.loading}>Loading clock...</div>}
       </div>
-
-      {/* Footer */}
       <div className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}>
-        {/* Previous button */}
-        <Link
-          to={prevItem ? `/${prevItem.date}` : '/'}
-          className={styles.navButton}
-          aria-label={prevItem ? `Go to previous clock: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
-        >
-          <span aria-hidden="true">⇽</span>
-          <span className={styles.screenReaderText}>
-            {prevItem ? `Previous: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
-          </span>
-        </Link>
-
-        {/* Center footer button */}
-        <Link
-          to="/"
-          className={styles.footerButton}
-          aria-label="Go back to homepage"
-        >
-          <div className={styles.footerCenter}>
-            <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
-            <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
-            <span className={styles.footerNumber}>
-              <strong>#</strong>{currentIndex + 1}
-            </span>
-          </div>
-          <span className={styles.screenReaderText}>Go back to homepage</span>
-        </Link>
-
-        {/* Next button */}
-        <Link
-          to={nextItem ? `/${nextItem.date}` : '/'}
-          className={styles.navButton}
-          aria-label={nextItem ? `Go to next clock: ${formatTitle(nextItem.title)}` : 'Go back to homepage'}
-        >
-          <span aria-hidden="true">⇾</span>
-          <span className={styles.screenReaderText}>
-            {nextItem ? `Next: ${formatTitle(nextItem.title)}` : 'Go back to homepage'}
-          </span>
-        </Link>
+        {/* Footer buttons can go here */}
       </div>
     </div>
   );
