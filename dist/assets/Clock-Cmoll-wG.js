@@ -1,8 +1,0 @@
-import{r as a,j as n}from"./index-CRYDvM5t.js";const u="/assets/dom-CFmutEmp.ttf",g="/assets/tabl-_8rRal9u.webp",i="'dom', monospace",o={clockContainer:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100vh",backgroundImage:`url(${g})`,backgroundSize:"cover",backgroundPosition:"center",backgroundRepeat:"no-repeat",fontFamily:i,boxSizing:"border-box"},clockDisplay:{display:"flex",fontVariantNumeric:"tabular-nums",fontFamily:i},digit:{display:"inline-block",fontSize:"4rem",color:"#2C2A2AFF",backgroundColor:"#F5EFDFFF",borderRadius:"0.4rem",padding:0,lineHeight:1,border:"none",fontFamily:i,textAlign:"center",width:"auto",height:"auto",boxShadow:"0.2rem 0.2rem 0.9rem rgba(0,0,0,0.3)"},colon:{fontSize:"0.01rem",display:"flex",alignItems:"center"},digitalFrame:{position:"relative"}},f=()=>{const[s,l]=a.useState(new Date);a.useEffect(()=>{const e=document.createElement("style");e.textContent=`
-      @font-face {
-        font-family: 'dom';
-        src: url(${u}) format('truetype');
-        font-weight: normal;
-        font-style: normal;
-      }
-    `,document.head.appendChild(e);const t=setInterval(()=>{l(new Date)},1e3);return()=>{clearInterval(t),document.head.removeChild(e)}},[]);const c=e=>{const t={0:"A",1:"B",2:"C",3:"E",4:"F",5:"I",6:"J",7:"N",8:"O",9:"T"};return e.replace(/\d/g,r=>t[r])},d=e=>{const t=e.toLocaleTimeString("en-US",{hour12:!1,hour:"2-digit",minute:"2-digit",second:"2-digit"});return c(t)},m=e=>e.split("").map((t,r)=>t===":"?n.jsx("span",{style:o.colon,children:":"},r):n.jsx("span",{style:o.digit,children:t},r));return n.jsx("div",{style:o.clockContainer,children:n.jsx("div",{style:o.digitalFrame,children:n.jsx("div",{style:o.clockDisplay,children:m(d(s))})})})};export{f as default};

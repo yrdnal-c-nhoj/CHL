@@ -9,6 +9,17 @@ export const DataProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const cacheKey = 'cachedClockData';
+    const cacheTTL = 24 * 60 * 60 * 1000; // 24 hours
+    const cachedData = localStorage.getItem(cacheKey);
+    const cachedTimestamp = localStorage.getItem(`${cacheKey}_timestamp`);
+
+    if (cachedData && cachedTimestamp && Date.now() - cachedTimestamp < cacheTTL) {
+      setItems(JSON.parse(cachedData));
+      setLoading(false);
+      return;
+    }
+
     const timeoutId = setTimeout(() => {
       if (loading) {
         setError('Request timed out while loading data from Google Sheet.');
@@ -38,6 +49,8 @@ export const DataProvider = ({ children }) => {
           console.log('DataContext - Parsed Google Sheet data:', parsedItems);
           setItems(parsedItems);
           setLoading(false);
+          localStorage.setItem(cacheKey, JSON.stringify(parsedItems));
+          localStorage.setItem(`${cacheKey}_timestamp`, Date.now());
           clearTimeout(timeoutId);
         },
         error: (err) => {
