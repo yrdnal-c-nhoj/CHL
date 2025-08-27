@@ -45,7 +45,7 @@ export default function DigitalClock() {
       fontSize: "14vw",
       lineHeight: 1,
       letterSpacing: "-0.05em",
-      color: "#723E11FF",
+      color: "#A89484FF",
       textShadow: `
         2px 2px 0 #3B2E23,
 
