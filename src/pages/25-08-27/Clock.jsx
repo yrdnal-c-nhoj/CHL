@@ -59,9 +59,9 @@ export default function TwelfthRootsOfUnityWithClock() {
         canvas.height / 2,
         Math.max(canvas.width, canvas.height) / 2
       );
-      gradient.addColorStop(0, "rgba(255,182,193,0.3)"); // soft pink
-      gradient.addColorStop(0.5, "rgba(255,105,180,0.3)"); // hot pink
-      gradient.addColorStop(1, "rgba(219,112,147,0.3)");   // pale violet red
+      gradient.addColorStop(0, "rgba(255,182,153,0.7)"); // soft pink
+      gradient.addColorStop(0.5, "rgba(255,205,130,0.8)"); // hot pink
+      gradient.addColorStop(1, "rgba(219,212,147,0.6)");   // pale violet red
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, w, h);
 
@@ -70,7 +70,8 @@ export default function TwelfthRootsOfUnityWithClock() {
       const centerY = canvas.height / 2;
 
       // pinkish dodecagons
-      ctx.strokeStyle = "rgba(255,182,193,0.2)";
+      ctx.strokeStyle = "#9A3232FF";
+      
       ctx.lineWidth = 2;
 
       const spacingX = radius * 1.8;
@@ -109,12 +110,13 @@ export default function TwelfthRootsOfUnityWithClock() {
       // Outer circle
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-      ctx.strokeStyle = "rgba(255,105,180,0.8)"; // hot pink
+      ctx.strokeStyle = "rgba(255,0,0,0.8)"; // hot pink
       ctx.lineWidth = size * 0.009;
       ctx.stroke();
 
+
       // Roots points
-      ctx.fillStyle = "rgba(255,182,193,0.9)"; // soft pink
+      ctx.fillStyle = "#212321FF"; // soft pink
       ctx.font = `${size * 0.08}px CustomFont`;
       roots.forEach((root, k) => {
         ctx.beginPath();
@@ -127,7 +129,7 @@ export default function TwelfthRootsOfUnityWithClock() {
       });
 
       // Connecting lines
-      ctx.strokeStyle = `rgba(255,182,193,${alpha})`; // soft pink, dynamic alpha
+      ctx.strokeStyle = `rgba(255,255,0,${alpha})`; // soft pink, dynamic alpha
       ctx.lineWidth = size * 0.01;
       ctx.beginPath();
       for (let k = 0; k < step - 1; k++) {
@@ -174,7 +176,7 @@ export default function TwelfthRootsOfUnityWithClock() {
         centerX + radius * 0.5 * Math.cos(hourAngle),
         centerY + radius * 0.5 * Math.sin(hourAngle)
       );
-      cctx.strokeStyle = "rgba(255,105,180,0.9)"; // pink hour hand
+      cctx.strokeStyle = "#312E2EFF"; // pink hour hand
       cctx.lineWidth = 4;
       cctx.stroke();
 
@@ -186,7 +188,7 @@ export default function TwelfthRootsOfUnityWithClock() {
         centerX + radius * 0.8 * Math.cos(minAngle),
         centerY + radius * 0.8 * Math.sin(minAngle)
       );
-      cctx.strokeStyle = "rgba(255,182,193,0.9)"; // pink minute hand
+      cctx.strokeStyle = "#312E2EFF"; // pink minute hand
       cctx.lineWidth = 3;
       cctx.stroke();
 
@@ -198,7 +200,7 @@ export default function TwelfthRootsOfUnityWithClock() {
         centerX + radius * 0.9 * Math.cos(secAngle),
         centerY + radius * 0.9 * Math.sin(secAngle)
       );
-      cctx.strokeStyle = "rgba(255,105,180,0.8)"; // pink second hand
+      cctx.strokeStyle = "#312E2EFF"; // pink second hand
       cctx.lineWidth = 1;
       cctx.stroke();
     };
