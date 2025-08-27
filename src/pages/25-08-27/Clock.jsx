@@ -66,8 +66,9 @@ export default function TwelfthRootsOfUnityWithClock() {
       const spacingX = radius * 1.8;
       const spacingY = radius * 1.8;
 
-      const cols = Math.ceil(w / spacingX) + 2;
-      const rows = Math.ceil(h / spacingY) + 2;
+      // Extend pattern to viewport edges
+      const cols = Math.ceil(window.innerWidth / spacingX) + 2;
+      const rows = Math.ceil(window.innerHeight / spacingY) + 2;
 
       for (let i = -cols; i < cols; i++) {
         for (let j = -rows; j < rows; j++) {
