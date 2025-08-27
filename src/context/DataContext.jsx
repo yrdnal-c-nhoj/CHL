@@ -1,3 +1,4 @@
+// DataContext.js
 import React, { createContext, useState, useEffect } from 'react';
 import Papa from 'papaparse';
 
@@ -7,6 +8,9 @@ export const DataProvider = ({ children }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Validate YY-MM-DD format
+  const isValidDateFormat = (date) => /^\d{2}-\d{2}-\d{2}$/.test(date);
 
   useEffect(() => {
     const SHEET_ID = '11mYDoSA7Sl8Eb7-Fko4FGpk0e-3yS2VujkO02_f_LGE';
@@ -28,39 +32,31 @@ export const DataProvider = ({ children }) => {
 
     const handleParseSuccess = (result) => {
       try {
-        console.log('Raw CSV data:', result.data);
         if (!result.data || result.data.length === 0) {
           throw new Error('No data found in sheet.');
         }
 
         const parsedItems = result.data.map((row, index) => {
           let path = row.path?.toString().trim().replace(/^\/|\/$/g, '') || '';
-          
-          // If path is empty, use the date as the path
           if (!path && row.date) {
             path = row.date.toString().trim();
           }
-          
-          // If path is in YY-MM-DD format, keep it as is (don't transform to YYYY/MM/DD)
-          // because ClockPage expects ./pages/YY-MM-DD/Clock.jsx
-          
+
           const item = {
             path,
             date: row.date?.toString().trim() || '',
             title: row.title?.toString().trim().replace(/\bclock\b/gi, '').trim() || 'No Title',
             clockNumber: index + 1,
           };
-          console.log(`Parsed item ${index + 1}:`, item);
           return item;
         });
 
-        // Filter out items with empty path or date
-        const validItems = parsedItems.filter((item) => item.path && item.date);
+        // Filter out items with invalid path or date
+        const validItems = parsedItems.filter((item) => item.path && isValidDateFormat(item.date));
         if (validItems.length === 0) {
           throw new Error('No valid items with path and date found.');
         }
 
-        console.log('Valid items:', validItems);
         setItems(validItems);
         setLoading(false);
         clearTimeout(timeoutId);

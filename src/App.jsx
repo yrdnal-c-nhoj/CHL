@@ -1,3 +1,4 @@
+// App.js
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -11,9 +12,9 @@ import Log from './Log';
 import ErrorPage from './ErrorPage';
 import { pageview } from './analytics';
 
-// Format date as yy-mm-dd
+// Format date as YY-MM-DD
 const formatDate = (date) => {
-  const yy = String(date.getFullYear()).slice(2);
+  const yy = String(date.getFullYear()).slice(-2);
   const mm = String(date.getMonth() + 1).padStart(2, '0');
   const dd = String(date.getDate()).padStart(2, '0');
   return `${yy}-${mm}-${dd}`;
@@ -23,10 +24,8 @@ const formatDate = (date) => {
 const getEffectiveDate = (items) => {
   if (!items || items.length === 0) return null;
   const todayDate = formatDate(new Date());
-  let selected = items.find(item => item.date === todayDate);
-  if (selected) return selected;
-  // Fallback to most recent
-  return items.reduce((latest, item) => (!latest || item.date > latest.date ? item : latest), null);
+  return items.find(item => item.date === todayDate) || 
+         items.reduce((latest, item) => (!latest || item.date > latest.date ? item : latest), null);
 };
 
 // Analytics & SEO
