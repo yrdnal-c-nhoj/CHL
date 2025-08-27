@@ -224,7 +224,7 @@ export default function TwelfthRootsOfUnityWithClock() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#964444FF", // outer pink background
+        backgroundColor: "#F4E4CBFF", // outer pink background
       }}
     >
       <div
