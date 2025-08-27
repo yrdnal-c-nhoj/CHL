@@ -90,7 +90,7 @@ export default function DigitalClock() {
   const layers = [
     { img: bg0, opacity: 1, zIndex: 1, brightness: 1, saturation: 1 },
     { img: bg1, opacity: 1, zIndex: 8, brightness: 4, saturation: 1 },
-    { img: bg3, opacity: 0.9, zIndex: 9, invert: 90, brightness: 0.4, saturation: 1 },
+    { img: bg3, opacity: 0.9, zIndex: 9, invert: 90, brightness: 0.9, saturation: 0.4 },
   ];
 
   return (
@@ -99,7 +99,7 @@ export default function DigitalClock() {
       <style>{`
         @keyframes branchFlicker {
           0% { text-shadow: 2px 2px 0 #3B2E23, -2px -1px 0 #3B2E23; }
-          50% { text-shadow: 3px 1px 0 #AEAEA4FF, -1px -2px 0 #3B2E23; }
+          50% { text-shadow: 3px 1px 0 #86841BFF, -1px -2px 0 #3B2E23; }
           100% { text-shadow: 2px 3px 0 #3B2E23, -2px -1px 0 #3B2E23; }
         }
       `}</style>
