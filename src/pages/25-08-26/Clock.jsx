@@ -42,7 +42,7 @@ export default function DigitalClock() {
     clock: {
       position: "relative",
       fontVariantNumeric: "tabular-nums lining-nums",
-      fontSize: "10vw",
+      fontSize: "12vw",
       lineHeight: 1,
       letterSpacing: "-0.05em",
       color: "#7C6D60FF",
