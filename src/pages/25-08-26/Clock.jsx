@@ -66,21 +66,28 @@ export default function DigitalClock() {
       saturation = 1,
       invert = 0,
       hueRotate = 0,
+      transform = undefined,
+      width = "100%",
+      height = "100%",
+      top = 0,
+      left = 0,
+      backgroundSize = "cover",
+      backgroundPosition = "center",
     }) => ({
       position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "140%",
+      top,
+      left,
+      width,
+      height,
       backgroundImage: `url(${img})`,
-      backgroundSize: "auto 100%",
-      backgroundPosition: "top center",
+      backgroundSize,
+      backgroundPosition,
       backgroundRepeat: "no-repeat",
       opacity,
       zIndex,
       pointerEvents: "none",
       filter: `brightness(${brightness}) saturate(${saturation}) invert(${invert}%) hue-rotate(${hueRotate}deg)`,
-      transition: "all 1s ease",
+      transform,
     }),
     styleTag: {
       fontFace: `@font-face { font-family: 'ClockFont'; src: url(${clockFont}) format('truetype'); }`,
@@ -88,9 +95,36 @@ export default function DigitalClock() {
   };
 
   const layers = [
-    { img: bg0, opacity: 1, zIndex: 1, brightness: 1, saturation: 1 },
-    { img: bg1, opacity: 1, zIndex: 8, brightness: 1, saturation: 1 },
-    { img: bg3, opacity: 0.9, zIndex: 9, invert: 90, brightness: 0.9, saturation: 0.4 },
+    {
+      img: bg0,
+      opacity: 1,
+      zIndex: 1,
+      width: "120%",
+      height: "110%",
+      top: "-5%",
+      left: "-10%",
+    },
+    {
+      img: bg1,
+      opacity: 1,
+      zIndex: 8,
+      width: "100%",
+      height: "120%",
+      top: "-10%",
+      left: "0",
+    },
+    {
+      img: bg3,
+      opacity: 0.9,
+      zIndex: 2,
+      invert: 90,
+      brightness: 0.9,
+      saturation: 0.4,
+      width: "100%",
+      height: "170%",
+      top: "0%",
+      left: "0%",
+    },
   ];
 
   return (
@@ -104,9 +138,18 @@ export default function DigitalClock() {
         }
       `}</style>
 
-      {layers.map((layerProps, i) => (
-        <div key={i} style={styles.layer(layerProps)} />
-      ))}
+      {layers.map((layerProps, i) => {
+        // Duplicate and flip the second layer horizontally
+        if (i === 1) {
+          return (
+            <React.Fragment key={i}>
+              <div style={styles.layer(layerProps)} />
+              <div style={styles.layer({ ...layerProps, transform: "scaleX(-1)" })} />
+            </React.Fragment>
+          );
+        }
+        return <div key={i} style={styles.layer(layerProps)} />;
+      })}
 
       <div style={styles.clock}>
         {time.hh} {time.mm} {time.period}
@@ -123,8 +166,8 @@ function getTimeParts() {
   const period = isAM ? "AM" : "PM";
   h = h % 12 || 12; // convert to 12-hour format
   return {
-    hh: String(h), // no leading zero
-    mm: String(m).padStart(2, "0"), // keep leading zero
+    hh: String(h),
+    mm: String(m).padStart(2, "0"),
     period,
   };
 }
