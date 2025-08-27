@@ -99,7 +99,7 @@ export default function DigitalClock() {
       <style>{`
         @keyframes branchFlicker {
           0% { text-shadow: 2px 2px 0 #3B2E23, -2px -1px 0 #3B2E23; }
-          50% { text-shadow: 3px 1px 0 #3B2E23, -1px -2px 0 #3B2E23; }
+          50% { text-shadow: 3px 1px 0 #AEAEA4FF, -1px -2px 0 #3B2E23; }
           100% { text-shadow: 2px 3px 0 #3B2E23, -2px -1px 0 #3B2E23; }
         }
       `}</style>
