@@ -7,7 +7,6 @@ export default function TwelfthRootsOfUnityWithClock() {
   const clockRef = useRef(null);
 
   useEffect(() => {
-    // Load custom font
     const font = new FontFace("CustomFont", `url(${customFont})`);
     font.load().then((loaded) => document.fonts.add(loaded));
 
@@ -25,20 +24,66 @@ export default function TwelfthRootsOfUnityWithClock() {
     let frameCount = 0;
 
     const resize = () => {
-      const size = Math.min(canvas.parentElement.offsetWidth, canvas.parentElement.offsetHeight);
-      canvas.width = size;
-      canvas.height = size;
-
-      clock.width = 500;
-      clock.height = 500;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      clock.width = window.innerWidth;
+      clock.height = window.innerHeight;
     };
 
     resize();
     window.addEventListener("resize", resize);
 
+    const drawDodecagon = (cx, cy, r) => {
+      ctx.beginPath();
+      for (let k = 0; k <= n; k++) {
+        const angle = ((2 * Math.PI * k) / n) - Math.PI / 2;
+        const x = cx + r * Math.cos(angle);
+        const y = cy + r * Math.sin(angle);
+        if (k === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    };
+
+    const drawBackgroundPattern = () => {
+      const w = canvas.width;
+      const h = canvas.height;
+
+      // Radial gradient
+      const gradient = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, Math.max(w,h)/2);
+      gradient.addColorStop(0, "#ff9ff3");
+      gradient.addColorStop(0.5, "#EE6EBFFF");
+      gradient.addColorStop(1, "#670505FF");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, w, h);
+
+      
+
+      // Dodecagon grid
+      const radius = 50;
+      const centerX = w / 2;
+      const centerY = h / 2;
+      ctx.strokeStyle = "rgba(255,255,255,0.15)";
+      ctx.lineWidth = 2;
+
+      const spacingX = radius * 1.8;
+      const spacingY = radius * 1.8;
+
+      const cols = Math.ceil(w / spacingX) + 2;
+      const rows = Math.ceil(h / spacingY) + 2;
+
+      for (let i = -cols; i < cols; i++) {
+        for (let j = -rows; j < rows; j++) {
+          const xOffset = i * spacingX;
+          const yOffset = j * spacingY;
+          drawDodecagon(centerX + xOffset, centerY + yOffset, radius);
+        }
+      }
+    };
+
     const drawRoots = () => {
-      const size = canvas.width;
-      const center = size / 2;
+      const size = Math.min(window.innerWidth, window.innerHeight) * 0.65;
+      const center = window.innerWidth / 2;
       const radius = size * 0.35;
       const pointRadius = size * 0.02;
       const textOffset = size * 0.04;
@@ -51,14 +96,16 @@ export default function TwelfthRootsOfUnityWithClock() {
         roots.push({ x, y });
       }
 
-      ctx.clearRect(0, 0, size, size);
+      drawBackgroundPattern();
 
+      // Outer circle
       ctx.beginPath();
-      ctx.arc(center, center, radius, 0, 2 * Math.PI);
+      ctx.arc(center, window.innerHeight/2, radius, 0, 2 * Math.PI);
       ctx.strokeStyle = "#F00927FF";
       ctx.lineWidth = size * 0.009;
       ctx.stroke();
 
+      // Points & labels
       ctx.fillStyle = "#84700FFF";
       ctx.font = `${size * 0.08}px CustomFont`;
       roots.forEach((root, k) => {
@@ -68,6 +115,7 @@ export default function TwelfthRootsOfUnityWithClock() {
         ctx.fillText(`ω^${k}`, root.x + textOffset, root.y - textOffset);
       });
 
+      // Connecting lines
       ctx.strokeStyle = `rgba(0,255,255,${alpha})`;
       ctx.lineWidth = size * 0.01;
       ctx.beginPath();
@@ -101,45 +149,36 @@ export default function TwelfthRootsOfUnityWithClock() {
 
     const drawClock = () => {
       const size = clock.width;
-      const center = size / 2;
+      const centerX = size / 2;
+      const centerY = size / 2;
       const radius = size * 0.45;
       cctx.clearRect(0, 0, size, size);
-
-      // Clock face
-      cctx.beginPath();
-      cctx.arc(center, center, radius, 0, 2 * Math.PI);
-      cctx.fillStyle = "transparent";
-      cctx.fill();
-
 
       const now = new Date();
       const sec = now.getSeconds();
       const min = now.getMinutes();
       const hr = now.getHours() % 12;
 
-      // Hour hand
       const hourAngle = ((hr + min / 60) * 2 * Math.PI) / 12 - Math.PI / 2;
       cctx.beginPath();
-      cctx.moveTo(center, center);
-      cctx.lineTo(center + radius * 0.5 * Math.cos(hourAngle), center + radius * 0.5 * Math.sin(hourAngle));
+      cctx.moveTo(centerX, centerY);
+      cctx.lineTo(centerX + radius * 0.5 * Math.cos(hourAngle), centerY + radius * 0.5 * Math.sin(hourAngle));
       cctx.strokeStyle = "#000";
       cctx.lineWidth = 4;
       cctx.stroke();
 
-      // Minute hand
       const minAngle = ((min + sec / 60) * 2 * Math.PI) / 60 - Math.PI / 2;
       cctx.beginPath();
-      cctx.moveTo(center, center);
-      cctx.lineTo(center + radius * 0.8 * Math.cos(minAngle), center + radius * 0.8 * Math.sin(minAngle));
+      cctx.moveTo(centerX, centerY);
+      cctx.lineTo(centerX + radius * 0.8 * Math.cos(minAngle), centerY + radius * 0.8 * Math.sin(minAngle));
       cctx.strokeStyle = "#000";
       cctx.lineWidth = 3;
       cctx.stroke();
 
-      // Second hand
       const secAngle = (sec * 2 * Math.PI) / 60 - Math.PI / 2;
       cctx.beginPath();
-      cctx.moveTo(center, center);
-      cctx.lineTo(center + radius * 0.9 * Math.cos(secAngle), center + radius * 0.9 * Math.sin(secAngle));
+      cctx.moveTo(centerX, centerY);
+      cctx.lineTo(centerX + radius * 0.9 * Math.cos(secAngle), centerY + radius * 0.9 * Math.sin(secAngle));
       cctx.strokeStyle = "red";
       cctx.lineWidth = 1;
       cctx.stroke();
@@ -165,54 +204,47 @@ export default function TwelfthRootsOfUnityWithClock() {
         justifyContent: "center",
         alignItems: "center",
         position: "relative",
-        backgroundColor: "#fff",
       }}
     >
-      <div
+      <img
+        src={backgroundImage}
+        alt="Background"
         style={{
-          width: "65vw",
-          height: "65vw",
-          position: "relative",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "60%",
+          height: "60%",
+          objectFit: "contain",
+          zIndex: 2,
         }}
-      >
-        <img
-          src={backgroundImage}
-          alt="Background"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "95%",
-            objectFit: "contain",
-            zIndex: 1,
-          }}
-        />
-        <canvas
-          ref={canvasRef}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            zIndex: 5,
-          }}
-        />
-        <canvas
-          ref={clockRef}
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "200px",
-            height: "200px",
-            pointerEvents: "none",
-            zIndex: 10,
-          }}
-        />
-      </div>
+      />
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "102%",
+          zIndex: 1,
+
+        }}
+      />
+      <canvas
+        ref={clockRef}
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "50%",
+          height: "50%",
+          pointerEvents: "none",
+          zIndex: 3,
+        }}
+      />
     </div>
   );
 }
