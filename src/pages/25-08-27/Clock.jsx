@@ -61,7 +61,7 @@ export default function TwelfthRootsOfUnityWithClock() {
       );
       gradient.addColorStop(0, "rgba(255,182,153,0.7)"); // soft pink
       gradient.addColorStop(0.5, "rgba(255,205,130,0.8)"); // hot pink
-      gradient.addColorStop(1, "rgba(219,212,147,0.6)");   // pale violet red
+      gradient.addColorStop(1, "rgba(219,212,147,0.9)");   // pale violet red
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, w, h);
 
@@ -110,7 +110,7 @@ export default function TwelfthRootsOfUnityWithClock() {
       // Outer circle
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-      ctx.strokeStyle = "rgba(255,0,0,0.8)"; // hot pink
+      ctx.strokeStyle = "rgba(255,0,0,0.3)"; // hot pink
       ctx.lineWidth = size * 0.009;
       ctx.stroke();
 
@@ -224,14 +224,14 @@ export default function TwelfthRootsOfUnityWithClock() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#F4E4CBFF", // outer pink background
+        backgroundColor: "rgba(219,212,147,0.9)", // outer pink background
       }}
     >
       <div
         style={{
           position: "relative",
-          width: "60vmin",
-          height: "60vmin",
+          width: "80vmin",
+          height: "80vmin",
         }}
       >
         <img
