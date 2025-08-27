@@ -89,7 +89,7 @@ export default function DigitalClock() {
 
   const layers = [
     { img: bg0, opacity: 1, zIndex: 1, brightness: 1, saturation: 1 },
-    { img: bg1, opacity: 1, zIndex: 8, brightness: 4, saturation: 1 },
+    { img: bg1, opacity: 1, zIndex: 8, brightness: 1, saturation: 1 },
     { img: bg3, opacity: 0.9, zIndex: 9, invert: 90, brightness: 0.9, saturation: 0.4 },
   ];
 
@@ -109,7 +109,7 @@ export default function DigitalClock() {
       ))}
 
       <div style={styles.clock}>
-        {time.hh}:{time.mm} {time.period}
+        {time.hh} {time.mm} {time.period}
       </div>
     </div>
   );
