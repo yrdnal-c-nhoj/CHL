@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import clockFont from "./root.ttf";
-import bg1 from "./ro.gif";
-import bg2 from "./roo.gif";
-import bg3 from "./root.gif";
+import bg0 from "./rrr.webp"; // bottom-most
+import bg1 from "./ro.gif";   // middle
+import bg3 from "./root.webp"; // top foreground
 
 export default function DigitalClock() {
-  const [time, setTime] = useState(() => getTimeParts());
+  const [time, setTime] = useState(getTimeParts);
 
   useEffect(() => {
     const tick = () => setTime(getTimeParts());
-
     const now = Date.now();
     const delay = 1000 - (now % 1000);
+
     const align = setTimeout(() => {
       tick();
       const id = setInterval(tick, 1000);
@@ -29,48 +29,87 @@ export default function DigitalClock() {
 
   const styles = {
     root: {
+      position: "relative",
       minHeight: "100vh",
       minWidth: "100vw",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      background: `url(${bg1}) center/cover no-repeat,
-                   url(${bg2}) center/cover no-repeat,
-                   url(${bg3}) center/cover no-repeat`,
-      backgroundBlendMode: "overlay",
-      padding: "4vh",
+      fontFamily: "'ClockFont', sans-serif",
+      overflow: "hidden",
       boxSizing: "border-box",
     },
     clock: {
-      display: "flex",
-      alignItems: "baseline",
-      gap: "1.2rem",
-      padding: "6vh 8vw",
-      borderRadius: "2rem",
-      fontFamily: "'ClockFont', sans-serif",
-    },
-    time: {
+      position: "relative",
       fontVariantNumeric: "tabular-nums lining-nums",
-      fontWeight: 700,
-      fontSize: "12vw",
+      fontSize: "clamp(5rem, 12vw, 15rem)",
       lineHeight: 1,
-      letterSpacing: "0.01em",
-      color: "#0D8352FF", // single color variable for digits + AM/PM
-      textShadow: "0 .2rem .6rem #0D8352FF",
+      letterSpacing: "-0.05em",
+      color: "#4B3A2B",
+      textShadow: `
+        2px 2px 0 #3B2E23,
+        -2px -1px 0 #3B2E23,
+        1px -2px 1px #2E241B,
+        -1px 2px 1px #2E241B
+      `,
+      transform: "rotate(-1deg) skewX(-2deg) skewY(1deg)",
+      zIndex: 2,
       userSelect: "none",
+      filter: "contrast(1.2) saturate(1.0)",
+      animation: "branchFlicker 3s infinite alternate",
     },
+    layer: ({
+      img,
+      opacity = 1,
+      zIndex = 0,
+      brightness = 1,
+      saturation = 1,
+      invert = 0,
+      hueRotate = 0,
+    }) => ({
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "140%",
+      backgroundImage: `url(${img})`,
+      backgroundSize: "auto 100%",
+      backgroundPosition: "top center",
+      backgroundRepeat: "no-repeat",
+      opacity,
+      zIndex,
+      pointerEvents: "none",
+      filter: `brightness(${brightness}) saturate(${saturation}) invert(${invert}%) hue-rotate(${hueRotate}deg)`,
+      transition: "all 1s ease",
+    }),
     styleTag: {
       fontFace: `@font-face { font-family: 'ClockFont'; src: url(${clockFont}) format('truetype'); }`,
     },
   };
 
+  const layers = [
+    { img: bg0, opacity: 1, zIndex: 1, brightness: 1, saturation: 1 },
+    { img: bg1, opacity: 1, zIndex: 8, brightness: 4, saturation: 1 },
+    { img: bg3, opacity: 0.9, zIndex: 9, invert: 90, brightness: 0.4, saturation: 1 },
+  ];
+
   return (
     <div style={styles.root}>
       <style>{styles.styleTag.fontFace}</style>
-      <div style={styles.clock} aria-label={`Current time ${time.hh}:${time.mm} ${time.period}`}>
-        <div style={styles.time}>
-          {time.hh}{time.mm}{time.period}
-        </div>
+      <style>{`
+        @keyframes branchFlicker {
+          0% { text-shadow: 2px 2px 0 #3B2E23, -2px -1px 0 #3B2E23; }
+          50% { text-shadow: 3px 1px 0 #3B2E23, -1px -2px 0 #3B2E23; }
+          100% { text-shadow: 2px 3px 0 #3B2E23, -2px -1px 0 #3B2E23; }
+        }
+      `}</style>
+
+      {layers.map((layerProps, i) => (
+        <div key={i} style={styles.layer(layerProps)} />
+      ))}
+
+      <div style={styles.clock}>
+        {time.hh}:{time.mm} {time.period}
       </div>
     </div>
   );
@@ -82,11 +121,10 @@ function getTimeParts() {
   const m = now.getMinutes();
   const isAM = h < 12;
   const period = isAM ? "AM" : "PM";
-  h = h % 12;
-  if (h === 0) h = 12;
+  h = h % 12 || 12; // convert to 12-hour format
   return {
-    hh: String(h).padStart(2, "0"),
-    mm: String(m).padStart(2, "0"),
+    hh: String(h), // no leading zero
+    mm: String(m).padStart(2, "0"), // keep leading zero
     period,
   };
 }
