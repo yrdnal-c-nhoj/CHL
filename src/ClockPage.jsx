@@ -18,8 +18,17 @@ const formatDate = (dateStr) => {
 };
 const isValidDateFormat = (date) => /^\d{2}-\d{2}-\d{2}$/.test(date);
 
+// Format date as YY-MM-DD for comparison
+const getTodayDate = () => {
+  const date = new Date();
+  const yy = String(date.getFullYear()).slice(-2);
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${yy}-${mm}-${dd}`;
+};
+
 const ClockPage = () => {
-  const { date } = useParams(); // may be 'today' or a date string
+  const { date } = useParams(); // 'today' or a date string (YY-MM-DD)
   const { items, loading, error } = useContext(DataContext);
   const navigate = useNavigate();
 
@@ -31,29 +40,36 @@ const ClockPage = () => {
   useEffect(() => {
     if (loading) return;
 
+    if (!items || items.length === 0) {
+      setPageError('No clocks available.');
+      setClockComponent(null);
+      return;
+    }
+
     let item;
 
     if (date === 'today') {
-      // Most recent clock
-      item = items.reduce((latest, current) =>
-        !latest || current.date > latest.date ? current : latest,
-        null
-      );
-      if (!item) {
-        setPageError('No clocks available.');
-        setClockComponent(null);
-        return;
-      }
+      // Find today's date or most recent
+      const todayDate = getTodayDate();
+      item = items.find((i) => i.date === todayDate) || 
+             items.reduce((latest, current) =>
+               !latest || current.date > latest.date ? current : latest,
+               null
+             );
     } else if (!isValidDateFormat(date)) {
       navigate('/', { replace: true });
       return;
     } else {
       // Specific date
-      item = items.find((i) => i.date === date) || items[items.length - 1];
+      item = items.find((i) => i.date === date) || null;
+      if (!item) {
+        navigate('/', { replace: true });
+        return;
+      }
     }
 
-    if (!item.path) {
-      setPageError(`Clock path missing for date: ${item.date}`);
+    if (!item || !item.path) {
+      setPageError(`Clock path missing for date: ${item?.date || 'unknown'}`);
       setClockComponent(null);
       return;
     }
@@ -112,14 +128,30 @@ const ClockPage = () => {
   let currentItem;
 
   if (date === 'today') {
-    currentItem = items.reduce((latest, current) =>
-      !latest || current.date > latest.date ? current : latest,
-      null
-    );
+    const todayDate = getTodayDate();
+    currentItem = items.find((i) => i.date === todayDate) || 
+                  items.reduce((latest, current) =>
+                    !latest || current.date > latest.date ? current : latest,
+                    null
+                  );
     currentIndex = items.findIndex((i) => i.date === currentItem.date);
   } else {
     currentIndex = items.findIndex((item) => item.date === date);
-    currentItem = currentIndex >= 0 ? items[currentIndex] : items[items.length - 1];
+    currentItem = currentIndex >= 0 ? items[currentIndex] : null;
+  }
+
+  if (!currentItem) {
+    setPageError('No valid clock found.');
+    return (
+      <div className={styles.container}>
+        <Header visible={headerVisible} />
+        <div className={styles.content}>
+          <div className={styles.sheet}>
+            <div className={styles.error}>No valid clock found.</div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
@@ -137,8 +169,6 @@ const ClockPage = () => {
         </div>
       </div>
     );
-
-  if (!currentItem) return null;
 
   return (
     <div className={styles.container}>
@@ -163,14 +193,16 @@ const ClockPage = () => {
         <Link
           to={date === 'today' ? '/today' : '/'}
           className={styles.footerButton}
-          aria-label="Go back to homepage"
+          aria-label="Go back to homepage or refresh today"
         >
           <div className={styles.footerCenter}>
             <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
             <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
-            <span className={styles.footerNumber}><strong>#</strong>{currentIndex + 1}</span>
+            <span className={styles.footerNumber}><strong>#</strong>{currentItem.clockNumber}</span>
           </div>
-          <span className={styles.screenReaderText}>Go back to homepage</span>
+          <span className={styles.screenReaderText}>
+            {date === 'today' ? 'Refresh today’s clock' : 'Go back to homepage'}
+          </span>
         </Link>
 
         <Link
