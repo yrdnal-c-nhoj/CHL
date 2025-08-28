@@ -1,58 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-// Import digit images
-import digit0 from './0.gif';
-import digit1 from './1.gif';
-import digit2 from './2.gif';
-import digit3 from './3.gif';
-import digit4 from './4.gif';
-import digit5 from './5.gif';
-import digit6 from './6.gif';
-import digit7 from './7.gif';
-import digit8 from './8.gif';
-import digit9 from './9.gif';
+// Digit images
+import digit0 from "./0.gif";
+import digit1 from "./1.gif";
+import digit2 from "./2.gif";
+import digit3 from "./3.gif";
+import digit4 from "./4.gif";
+import digit5 from "./5.gif";
+import digit6 from "./6.gif";
+import digit7 from "./7.gif";
+import digit8 from "./8.gif";
+import digit9 from "./9.gif";
 
-// Import background and overlay images
-import backgroundImage from './g.webp';
-import overlayImage from './fog.gif';
+// Background + overlay
+import backgroundImage from "./g.webp";
+import overlayImage from "./fog.gif";
 
-// Import custom font as module
-import customFont from './fog.ttf';
+// Custom font (local, same folder)
+import customFont from "./fog.ttf";
 
 const digitImages = {
-  '0': digit0,
-  '1': digit1,
-  '2': digit2,
-  '3': digit3,
-  '4': digit4,
-  '5': digit5,
-  '6': digit6,
-  '7': digit7,
-  '8': digit8,
-  '9': digit9,
+  "0": digit0,
+  "1": digit1,
+  "2": digit2,
+  "3": digit3,
+  "4": digit4,
+  "5": digit5,
+  "6": digit6,
+  "7": digit7,
+  "8": digit8,
+  "9": digit9,
 };
 
-const DigitalClock = () => {
+export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
 
-  // Separate variables for full control
-  const fontSize = '2rem';         // floating text font size
-  const textOffset = '-1.5rem';    // floating text vertical offset
-  const imageWidth = '19vw';       // width of digit images
-  const floatDistance = '-7rem';   // animation float distance
+  // Style variables
+  const fontSize = "2rem";
+  const textOffset = "-1.5rem";
+  const imageWidth = "19vw";
+  const floatDistance = "-7rem";
 
+  // Update time
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    const tick = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(tick);
   }, []);
 
-  const hours = String(time.getHours()).padStart(2, '0');
-  const minutes = String(time.getMinutes()).padStart(2, '0');
-  const seconds = String(time.getSeconds()).padStart(2, '0');
-  const timeDigits = `${hours}${minutes}${seconds}`.split('');
+  const hours = String(time.getHours()).padStart(2, "0");
+  const minutes = String(time.getMinutes()).padStart(2, "0");
+  const seconds = String(time.getSeconds()).padStart(2, "0");
+  const digits = `${hours}${minutes}${seconds}`.split("");
 
-  // Inline font-face and floating animation
-  const inlineStyle = `
+  // Component-scoped font + animation
+  const scopedCSS = `
     @font-face {
       font-family: 'CustomFont';
       src: url(${customFont}) format('truetype');
@@ -67,61 +68,78 @@ const DigitalClock = () => {
   `;
 
   return (
-    <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-      <style>{inlineStyle}</style>
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Scoped styles */}
+      <style>{scopedCSS}</style>
 
       {/* Background */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        filter: 'brightness(0.7) contrast(0.8) saturate(0.9)',
-        zIndex: 0,
-      }} />
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "brightness(0.7) contrast(0.8) saturate(0.9)",
+          zIndex: 0,
+        }}
+      />
 
       {/* Digits */}
-      <div style={{
-        position: 'relative',
-        width: '100%',
-        height: '110%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-        {timeDigits.map((digit, index) => (
-          <div key={index} style={{
-            position: 'relative',
-            width: imageWidth,
-            marginLeft: index === 0 ? 0 : '-12vw', // overlap, adjust if needed
-            textAlign: 'center',
-          }}>
-            {/* Floating digit text above the image */}
-            <span style={{
-              position: 'absolute',
-              top: textOffset,
-              width: '100%',
-              color: 'white',
-              fontSize: fontSize,
-              fontFamily: 'CustomFont, sans-serif',
-              textShadow: '0.2rem 0.2rem 0.4rem white',
-              animation: `float 2s ease-in-out ${index * 0.1}s infinite`,
-            }}>
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "110%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 2,
+        }}
+      >
+        {digits.map((digit, i) => (
+          <div
+            key={i}
+            style={{
+              position: "relative",
+              width: imageWidth,
+              marginLeft: i === 0 ? 0 : "-12vw", // overlapping
+              textAlign: "center",
+            }}
+          >
+            {/* Floating text overlay */}
+            <span
+              style={{
+                position: "absolute",
+                top: textOffset,
+                width: "100%",
+                color: "white",
+                fontSize,
+                fontFamily: "CustomFont, sans-serif",
+                textShadow: "0.2rem 0.2rem 0.4rem white",
+                animation: `float 2s ease-in-out ${i * 0.1}s infinite`,
+              }}
+            >
               {digit}
             </span>
 
+            {/* Digit image */}
             <img
               src={digitImages[digit]}
               alt={digit}
               style={{
                 width: imageWidth,
-                height: 'auto',
-                transform: 'rotate(90deg)',
-                filter: 'drop-shadow(0.4rem 0.2rem 0.3rem grey) drop-shadow(-0.4rem -0.4rem 0.3rem grey)',
+                height: "auto",
+                transform: "rotate(90deg)",
+                filter:
+                  "drop-shadow(0.4rem 0.2rem 0.3rem grey) drop-shadow(-0.4rem -0.4rem 0.3rem grey)",
               }}
             />
           </div>
@@ -129,23 +147,20 @@ const DigitalClock = () => {
       </div>
 
       {/* Overlay */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundImage: `url(${overlayImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        opacity: 0.5,
-        transform: 'rotate(180deg)',
-        zIndex: 4,
-        filter: 'brightness(1.7) contrast(1.8) saturate(1.9)',
-        pointerEvents: 'none',
-      }} />
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `url(${overlayImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: 0.5,
+          transform: "rotate(180deg)",
+          zIndex: 4,
+          filter: "brightness(1.7) contrast(1.8) saturate(1.9)",
+          pointerEvents: "none",
+        }}
+      />
     </div>
   );
-};
-
-export default DigitalClock;
+}

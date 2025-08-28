@@ -1,18 +1,15 @@
 import { useEffect, useRef } from "react";
-import backgroundImage from "./rootsu.gif";
-import customFont from "./root.ttf";
+import backgroundImage from "./rootsu.gif"; // Image in same folder, imported as module
+import customFont from "./root.ttf"; // Font in same folder, imported as module
 
 export default function TwelfthRootsOfUnityWithClock() {
   const canvasRef = useRef(null);
   const clockRef = useRef(null);
+  const fontRef = useRef(null); // Store font loading state
 
   useEffect(() => {
-    const font = new FontFace("CustomFont", `url(${customFont})`);
-    font.load().then((loaded) => document.fonts.add(loaded));
-
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-
     const clock = clockRef.current;
     const cctx = clock.getContext("2d");
 
@@ -23,8 +20,19 @@ export default function TwelfthRootsOfUnityWithClock() {
     const fadeSpeed = 0.01;
     let frameCount = 0;
 
+    // Load font once at component mount
+    const font = new FontFace("CustomFont", `url(${customFont})`);
+    font.load()
+      .then((loadedFont) => {
+        fontRef.current = loadedFont; // Store loaded font
+      })
+      .catch((error) => {
+        console.error("Font loading failed:", error);
+        fontRef.current = "sans-serif"; // Fallback to sans-serif
+      });
+
     const resize = () => {
-      const size = Math.min(window.innerWidth, window.innerHeight) * 0.6; // square
+      const size = Math.min(window.innerWidth, window.innerHeight) * 0.6;
       canvas.width = size;
       canvas.height = size;
       clock.width = size;
@@ -37,7 +45,7 @@ export default function TwelfthRootsOfUnityWithClock() {
     const drawDodecagon = (cx, cy, r) => {
       ctx.beginPath();
       for (let k = 0; k <= n; k++) {
-        const angle = ((2 * Math.PI * k) / n) - Math.PI / 2;
+        const angle = (2 * Math.PI * k) / n - Math.PI / 2;
         const x = cx + r * Math.cos(angle);
         const y = cy + r * Math.sin(angle);
         if (k === 0) ctx.moveTo(x, y);
@@ -47,44 +55,36 @@ export default function TwelfthRootsOfUnityWithClock() {
     };
 
     const drawBackgroundPattern = () => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
+      const w = canvas.width;
+      const h = canvas.height;
 
-      // radial gradient with pink tones
+      // Radial gradient
       const gradient = ctx.createRadialGradient(
-        canvas.width / 2,
-        canvas.height / 2,
+        w / 2,
+        h / 2,
         0,
-        canvas.width / 2,
-        canvas.height / 2,
-        Math.max(canvas.width, canvas.height) / 2
+        w / 2,
+        h / 2,
+        Math.max(w, h) / 2
       );
-      gradient.addColorStop(0, "rgba(255,182,153,0.7)"); // soft pink
-      gradient.addColorStop(0.5, "rgba(255,205,130,0.8)"); // hot pink
-      gradient.addColorStop(1, "rgba(219,212,147,0.9)");   // pale violet red
+      gradient.addColorStop(0, "rgba(255,182,153,0.7)");
+      gradient.addColorStop(0.5, "rgba(255,205,130,0.8)");
+      gradient.addColorStop(1, "rgba(219,212,147,0.9)");
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, w, h);
 
-      const radius = canvas.width * 0.08;
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-
-      // pinkish dodecagons
-      ctx.strokeStyle = "#9A3232FF";
-      
-      ctx.lineWidth = 2;
-
+      const radius = w * 0.08;
       const spacingX = radius * 1.8;
       const spacingY = radius * 1.8;
+      const cols = Math.ceil(w / spacingX) + 2;
+      const rows = Math.ceil(h / spacingY) + 2;
 
-      const cols = Math.ceil(window.innerWidth / spacingX) + 2;
-      const rows = Math.ceil(window.innerHeight / spacingY) + 2;
+      ctx.strokeStyle = "#9A3232FF";
+      ctx.lineWidth = 0.3 * (w / 100);
 
       for (let i = -cols; i < cols; i++) {
         for (let j = -rows; j < rows; j++) {
-          const xOffset = i * spacingX;
-          const yOffset = j * spacingY;
-          drawDodecagon(centerX + xOffset, centerY + yOffset, radius);
+          drawDodecagon(w / 2 + i * spacingX, h / 2 + j * spacingY, radius);
         }
       }
     };
@@ -110,26 +110,26 @@ export default function TwelfthRootsOfUnityWithClock() {
       // Outer circle
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-      ctx.strokeStyle = "rgba(255,0,0,0.3)"; // hot pink
+      ctx.strokeStyle = "rgba(255,0,0,0.3)";
       ctx.lineWidth = size * 0.009;
       ctx.stroke();
 
+      // Set font (use loaded font or fallback)
+      ctx.font = `${size * 0.08}px ${fontRef.current === "sans-serif" ? "sans-serif" : "CustomFont"}`;
 
-      // Roots points
-      ctx.fillStyle = "#212321FF"; // soft pink
-      ctx.font = `${size * 0.08}px CustomFont`;
+      // Roots + labels
       roots.forEach((root, k) => {
         ctx.beginPath();
         ctx.arc(root.x, root.y, pointRadius, 0, 2 * Math.PI);
+        ctx.fillStyle = "#212321FF";
         ctx.fill();
 
-        // ω^k labels
-        ctx.fillStyle = "#03341FFF"; // hot pink
+        ctx.fillStyle = "#03341FFF";
         ctx.fillText(`ω^${k}`, root.x + textOffset, root.y - textOffset);
       });
 
       // Connecting lines
-      ctx.strokeStyle = `rgba(255,255,0,${alpha})`; // soft pink, dynamic alpha
+      ctx.strokeStyle = `rgba(255,255,0,${alpha})`;
       ctx.lineWidth = size * 0.01;
       ctx.beginPath();
       for (let k = 0; k < step - 1; k++) {
@@ -168,7 +168,7 @@ export default function TwelfthRootsOfUnityWithClock() {
       const min = now.getMinutes();
       const hr = now.getHours() % 12;
 
-      // hour
+      // Hour
       const hourAngle = ((hr + min / 60) * 2 * Math.PI) / 12 - Math.PI / 2;
       cctx.beginPath();
       cctx.moveTo(centerX, centerY);
@@ -176,11 +176,11 @@ export default function TwelfthRootsOfUnityWithClock() {
         centerX + radius * 0.5 * Math.cos(hourAngle),
         centerY + radius * 0.5 * Math.sin(hourAngle)
       );
-      cctx.strokeStyle = "#312E2EFF"; // pink hour hand
-      cctx.lineWidth = 4;
+      cctx.strokeStyle = "#312E2EFF";
+      cctx.lineWidth = 0.4 * (size / 100);
       cctx.stroke();
 
-      // minute
+      // Minute
       const minAngle = ((min + sec / 60) * 2 * Math.PI) / 60 - Math.PI / 2;
       cctx.beginPath();
       cctx.moveTo(centerX, centerY);
@@ -188,11 +188,11 @@ export default function TwelfthRootsOfUnityWithClock() {
         centerX + radius * 0.8 * Math.cos(minAngle),
         centerY + radius * 0.8 * Math.sin(minAngle)
       );
-      cctx.strokeStyle = "#312E2EFF"; // pink minute hand
-      cctx.lineWidth = 3;
+      cctx.strokeStyle = "#312E2EFF";
+      cctx.lineWidth = 0.3 * (size / 100);
       cctx.stroke();
 
-      // second
+      // Second
       const secAngle = (sec * 2 * Math.PI) / 60 - Math.PI / 2;
       cctx.beginPath();
       cctx.moveTo(centerX, centerY);
@@ -200,8 +200,8 @@ export default function TwelfthRootsOfUnityWithClock() {
         centerX + radius * 0.9 * Math.cos(secAngle),
         centerY + radius * 0.9 * Math.sin(secAngle)
       );
-      cctx.strokeStyle = "#312E2EFF"; // pink second hand
-      cctx.lineWidth = 1;
+      cctx.strokeStyle = "#312E2EFF";
+      cctx.lineWidth = 0.1 * (size / 100);
       cctx.stroke();
     };
 
@@ -211,7 +211,14 @@ export default function TwelfthRootsOfUnityWithClock() {
       requestAnimationFrame(animate);
     };
 
-    animate();
+    // Start animation only after font is loaded or fallback is set
+    font.load()
+      .then(() => {
+        animate();
+      })
+      .catch(() => {
+        animate(); // Proceed with fallback font
+      });
 
     return () => window.removeEventListener("resize", resize);
   }, []);
@@ -224,7 +231,7 @@ export default function TwelfthRootsOfUnityWithClock() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(219,212,147,0.9)", // outer pink background
+        backgroundColor: "rgba(219,212,147,0.9)",
       }}
     >
       <div
@@ -251,8 +258,7 @@ export default function TwelfthRootsOfUnityWithClock() {
           ref={canvasRef}
           style={{
             position: "absolute",
-            top: 0,
-            left: 0,
+            inset: 0,
             width: "100%",
             height: "100%",
             zIndex: 1,
@@ -262,8 +268,7 @@ export default function TwelfthRootsOfUnityWithClock() {
           ref={clockRef}
           style={{
             position: "absolute",
-            top: 0,
-            left: 0,
+            inset: 0,
             width: "100%",
             height: "100%",
             pointerEvents: "none",
