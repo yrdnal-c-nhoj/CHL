@@ -24,11 +24,11 @@ export default function TwelfthRootsOfUnityWithClock() {
     const font = new FontFace("CustomFont", `url(${customFont})`);
     font.load()
       .then((loadedFont) => {
-        fontRef.current = loadedFont; // Store loaded font
+        fontRef.current = loadedFont;
       })
       .catch((error) => {
         console.error("Font loading failed:", error);
-        fontRef.current = "sans-serif"; // Fallback to sans-serif
+        fontRef.current = "sans-serif";
       });
 
     const resize = () => {
@@ -41,53 +41,6 @@ export default function TwelfthRootsOfUnityWithClock() {
 
     resize();
     window.addEventListener("resize", resize);
-
-    const drawDodecagon = (cx, cy, r) => {
-      ctx.beginPath();
-      for (let k = 0; k <= n; k++) {
-        const angle = (2 * Math.PI * k) / n - Math.PI / 2;
-        const x = cx + r * Math.cos(angle);
-        const y = cy + r * Math.sin(angle);
-        if (k === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-    };
-
-    const drawBackgroundPattern = () => {
-      const w = canvas.width;
-      const h = canvas.height;
-
-      // Radial gradient
-      const gradient = ctx.createRadialGradient(
-        w / 2,
-        h / 2,
-        0,
-        w / 2,
-        h / 2,
-        Math.max(w, h) / 2
-      );
-      gradient.addColorStop(0, "rgba(255,182,153,0.7)");
-      gradient.addColorStop(0.5, "rgba(255,205,130,0.8)");
-      gradient.addColorStop(1, "rgba(219,212,147,0.9)");
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, w, h);
-
-      const radius = w * 0.08;
-      const spacingX = radius * 1.8;
-      const spacingY = radius * 1.8;
-      const cols = Math.ceil(w / spacingX) + 2;
-      const rows = Math.ceil(h / spacingY) + 2;
-
-      ctx.strokeStyle = "#9A3232FF";
-      ctx.lineWidth = 0.3 * (w / 100);
-
-      for (let i = -cols; i < cols; i++) {
-        for (let j = -rows; j < rows; j++) {
-          drawDodecagon(w / 2 + i * spacingX, h / 2 + j * spacingY, radius);
-        }
-      }
-    };
 
     const drawRoots = () => {
       const size = canvas.width;
@@ -105,7 +58,7 @@ export default function TwelfthRootsOfUnityWithClock() {
         roots.push({ x, y });
       }
 
-      drawBackgroundPattern();
+      ctx.clearRect(0, 0, size, size);
 
       // Outer circle
       ctx.beginPath();
@@ -115,7 +68,9 @@ export default function TwelfthRootsOfUnityWithClock() {
       ctx.stroke();
 
       // Set font (use loaded font or fallback)
-      ctx.font = `${size * 0.08}px ${fontRef.current === "sans-serif" ? "sans-serif" : "CustomFont"}`;
+      ctx.font = `${size * 0.08}px ${
+        fontRef.current === "sans-serif" ? "sans-serif" : "CustomFont"
+      }`;
 
       // Roots + labels
       roots.forEach((root, k) => {
@@ -177,7 +132,7 @@ export default function TwelfthRootsOfUnityWithClock() {
         centerY + radius * 0.5 * Math.sin(hourAngle)
       );
       cctx.strokeStyle = "#312E2EFF";
-      cctx.lineWidth = 0.4 * (size / 100);
+      cctx.lineWidth = 0.3 * (size / 100);
       cctx.stroke();
 
       // Minute
@@ -200,8 +155,8 @@ export default function TwelfthRootsOfUnityWithClock() {
         centerX + radius * 0.9 * Math.cos(secAngle),
         centerY + radius * 0.9 * Math.sin(secAngle)
       );
-      cctx.strokeStyle = "#312E2EFF";
-      cctx.lineWidth = 0.1 * (size / 100);
+      cctx.strokeStyle = "#1A1C1AFF";
+      cctx.lineWidth = 0.3 * (size / 100);
       cctx.stroke();
     };
 
@@ -211,14 +166,9 @@ export default function TwelfthRootsOfUnityWithClock() {
       requestAnimationFrame(animate);
     };
 
-    // Start animation only after font is loaded or fallback is set
     font.load()
-      .then(() => {
-        animate();
-      })
-      .catch(() => {
-        animate(); // Proceed with fallback font
-      });
+      .then(() => animate())
+      .catch(() => animate());
 
     return () => window.removeEventListener("resize", resize);
   }, []);
@@ -249,7 +199,7 @@ export default function TwelfthRootsOfUnityWithClock() {
             top: 0,
             left: 0,
             width: "100%",
-            height: "100%",
+            height: "95%",
             objectFit: "contain",
             zIndex: 2,
           }}
