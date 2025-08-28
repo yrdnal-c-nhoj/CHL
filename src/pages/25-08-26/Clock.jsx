@@ -45,7 +45,7 @@ export default function DigitalClock() {
       fontSize: "14vw",
       lineHeight: 1,
       letterSpacing: "-0.05em",
-      color: "#A89484FF",
+      color: "#DFCDBFFF",
       textShadow: `
         2px 2px 0 #3B2E23,
 
@@ -153,7 +153,7 @@ export default function DigitalClock() {
       })}
 
       <div style={styles.clock}>
-        {time.hh} {time.mm} {time.period}
+        {time.hh}{time.mm}{time.period}
       </div>
     </div>
   );
