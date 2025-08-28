@@ -1,6 +1,6 @@
 // App.js
 import React, { useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { DataProvider, DataContext } from './context/DataContext';
 import Home from './Home';
@@ -20,7 +20,7 @@ const formatDate = (date) => {
   return `${yy}-${mm}-${dd}`;
 };
 
-// Get today's effective date (today or most recent)
+// Get today's effective date
 const getEffectiveDate = (items) => {
   if (!items || items.length === 0) return null;
   const todayDate = formatDate(new Date());
@@ -61,21 +61,32 @@ const AnalyticsAndSEO = () => {
   );
 };
 
+// Wrapper to normalize /index.html to /
+const NormalizeIndex = ({ children }) => {
+  const location = useLocation();
+  if (location.pathname === '/index.html') {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+};
+
 const App = () => {
   return (
     <DataProvider>
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <AnalyticsAndSEO />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/today" element={<ClockPage />} />
-          <Route path="/:date" element={<ClockPage />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/log" element={<Log />} />
-          <Route path="/manifesto" element={<Manifesto />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
+        <NormalizeIndex>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/today" element={<ClockPage />} />
+            <Route path="/:date" element={<ClockPage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/log" element={<Log />} />
+            <Route path="/manifesto" element={<Manifesto />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </NormalizeIndex>
       </Router>
     </DataProvider>
   );
