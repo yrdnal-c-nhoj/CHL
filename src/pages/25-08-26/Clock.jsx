@@ -45,19 +45,17 @@ export default function DigitalClock() {
       fontSize: "14vw",
       lineHeight: 1,
       letterSpacing: "-0.05em",
-      color: "#DFCDBFFF",
+      color: "#BFBBAAFF",
       textShadow: `
-        2px 2px 0 #3B2E23,
-
-        -2px -1px 0 #DCDAD8FF,
-        1px -2px 1px #2E241B,
-        -1px 2px 1px #2E241B
+        2px 2px 0 #373635FF,
+        -2px -1px 4px #6B5D48FF,
+        1px -2px 4px #403A30FF,
+        -1px 2px 4px #3C362FFF
       `,
       transform: "rotate(-1deg) skewX(-2deg) skewY(1deg)",
-      zIndex: 2,
+      zIndex: 4,
       userSelect: "none",
-      filter: "contrast(1.2) saturate(1.0)",
-      animation: "branchFlicker 3s infinite alternate",
+      filter: "contrast(1.2) saturate(2.0)",
     },
     layer: ({
       img,
@@ -107,7 +105,6 @@ export default function DigitalClock() {
     },
     {
       img: bg1,
-      opacity: 1,
       zIndex: 8,
       width: "100%",
       height: "120%",
@@ -116,8 +113,8 @@ export default function DigitalClock() {
     },
     {
       img: bg3,
-      opacity: 0.9,
-      zIndex: 2,
+      opacity: 0.8,
+      zIndex: 6,
       invert: 90,
       brightness: 0.9,
       saturation: 0.4,
@@ -131,13 +128,6 @@ export default function DigitalClock() {
   return (
     <div style={styles.root}>
       <style>{styles.styleTag.fontFace}</style>
-      <style>{`
-        @keyframes branchFlicker {
-          0% { text-shadow: 2px 2px 0 #3B2E23, -2px -1px 0 #3B2E23; }
-          50% { text-shadow: 3px 1px 0 #86841BFF, -1px -2px 0 #3B2E23; }
-          100% { text-shadow: 2px 3px 0 #3B2E23, -2px -1px 0 #3B2E23; }
-        }
-      `}</style>
 
       {layers.map((layerProps, i) => {
         // Duplicate and flip the second layer horizontally
