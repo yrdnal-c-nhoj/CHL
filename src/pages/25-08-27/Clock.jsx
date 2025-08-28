@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import backgroundImage from "./rootsu.gif"; // Image in same folder, imported as module
-import customFont from "./root.ttf"; // Font in same folder, imported as module
+import backgroundImage from "./rootsu.gif"; // Image in same folder
+import customFont from "./root.ttf"; // Font in same folder
 
 export default function TwelfthRootsOfUnityWithClock() {
   const canvasRef = useRef(null);
@@ -20,7 +20,7 @@ export default function TwelfthRootsOfUnityWithClock() {
     const fadeSpeed = 0.01;
     let frameCount = 0;
 
-    // Load font once at component mount
+    // Load font once
     const font = new FontFace("CustomFont", `url(${customFont})`);
     font.load()
       .then((loadedFont) => {
@@ -67,7 +67,7 @@ export default function TwelfthRootsOfUnityWithClock() {
       ctx.lineWidth = size * 0.009;
       ctx.stroke();
 
-      // Set font (use loaded font or fallback)
+      // Set font
       ctx.font = `${size * 0.08}px ${
         fontRef.current === "sans-serif" ? "sans-serif" : "CustomFont"
       }`;
@@ -80,7 +80,34 @@ export default function TwelfthRootsOfUnityWithClock() {
         ctx.fill();
 
         ctx.fillStyle = "#03341FFF";
-        ctx.fillText(`ω^${k}`, root.x + textOffset, root.y - textOffset);
+
+        // Default diagonal offset
+        let tx = root.x + textOffset;
+        let ty = root.y - textOffset;
+
+        // Horizontal adjustment
+        if (tx > size - textOffset) {
+          tx = root.x - textOffset;
+          ctx.textAlign = "right";
+        } else if (tx < textOffset) {
+          tx = root.x + textOffset;
+          ctx.textAlign = "left";
+        } else {
+          ctx.textAlign = "center";
+        }
+
+        // Vertical adjustment
+        if (ty < textOffset) {
+          ty = root.y + textOffset;
+          ctx.textBaseline = "top";
+        } else if (ty > size - textOffset) {
+          ty = root.y - textOffset;
+          ctx.textBaseline = "bottom";
+        } else {
+          ctx.textBaseline = "middle";
+        }
+
+        ctx.fillText(`ω^${k}`, tx, ty);
       });
 
       // Connecting lines
@@ -181,7 +208,8 @@ export default function TwelfthRootsOfUnityWithClock() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(219,212,147,0.9)",
+        background:
+          "radial-gradient(circle, #F9C7B4FF 0%, #D8CFCFFF 90%)",
       }}
     >
       <div
@@ -202,6 +230,7 @@ export default function TwelfthRootsOfUnityWithClock() {
             height: "95%",
             objectFit: "contain",
             zIndex: 2,
+            opacity: 0.5,
           }}
         />
         <canvas
