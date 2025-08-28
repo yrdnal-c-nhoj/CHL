@@ -1,6 +1,5 @@
-// App.js
 import React, { useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { DataProvider, DataContext } from './context/DataContext';
 import Home from './Home';
@@ -9,7 +8,6 @@ import Manifesto from './Manifesto';
 import About from './About';
 import Contact from './Contact';
 import Log from './Log';
-import ErrorPage from './ErrorPage';
 import { pageview } from './analytics';
 
 // Format date as YY-MM-DD
@@ -31,7 +29,7 @@ const getEffectiveDate = (items) => {
 // Analytics & SEO
 const AnalyticsAndSEO = () => {
   const location = useLocation();
-  const path = location.pathname;
+  const path = location.pathname === '/index.html' ? '/' : location.pathname;
   const { items, loading } = useContext(DataContext);
   const dynamicClockRoute = /^\/\d{2}-\d{2}-\d{2}$/;
   const isClockPage = dynamicClockRoute.test(path);
@@ -61,32 +59,22 @@ const AnalyticsAndSEO = () => {
   );
 };
 
-// Wrapper to normalize /index.html to /
-const NormalizeIndex = ({ children }) => {
-  const location = useLocation();
-  if (location.pathname === '/index.html') {
-    return <Navigate to="/" replace />;
-  }
-  return children;
-};
-
 const App = () => {
   return (
     <DataProvider>
-      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <Router>
         <AnalyticsAndSEO />
-        <NormalizeIndex>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/today" element={<ClockPage />} />
-            <Route path="/:date" element={<ClockPage />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/log" element={<Log />} />
-            <Route path="/manifesto" element={<Manifesto />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<ErrorPage />} />
-          </Routes>
-        </NormalizeIndex>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/today" element={<ClockPage />} />
+          <Route path="/:date" element={<ClockPage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/log" element={<Log />} />
+          <Route path="/manifesto" element={<Manifesto />} />
+          <Route path="/contact" element={<Contact />} />
+          {/* Catch-all: redirect any unmatched path to homepage */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </Router>
     </DataProvider>
   );
