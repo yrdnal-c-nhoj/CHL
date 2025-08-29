@@ -5,7 +5,7 @@ import customFont from "./root.ttf"; // Font in same folder
 export default function TwelfthRootsOfUnityWithClock() {
   const canvasRef = useRef(null);
   const clockRef = useRef(null);
-  const fontRef = useRef(null); // Store font loading state
+  const fontRef = useRef("sans-serif"); // Default to sans-serif
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -20,15 +20,20 @@ export default function TwelfthRootsOfUnityWithClock() {
     const fadeSpeed = 0.01;
     let frameCount = 0;
 
-    // Load font once
+    // Load font as module and add to document.fonts
     const font = new FontFace("CustomFont", `url(${customFont})`);
-    font.load()
+    font
+      .load()
       .then((loadedFont) => {
-        fontRef.current = loadedFont;
+        document.fonts.add(loadedFont);
+        fontRef.current = "CustomFont";
       })
       .catch((error) => {
         console.error("Font loading failed:", error);
         fontRef.current = "sans-serif";
+      })
+      .finally(() => {
+        animate();
       });
 
     const resize = () => {
@@ -68,18 +73,15 @@ export default function TwelfthRootsOfUnityWithClock() {
       ctx.stroke();
 
       // Set font
-      ctx.font = `${size * 0.08}px ${
-        fontRef.current === "sans-serif" ? "sans-serif" : "CustomFont"
-      }`;
+      ctx.font = `${size * 0.08}px ${fontRef.current}`;
+      ctx.fillStyle = "#03341F";
 
       // Roots + labels
       roots.forEach((root, k) => {
         ctx.beginPath();
         ctx.arc(root.x, root.y, pointRadius, 0, 2 * Math.PI);
-        ctx.fillStyle = "#212321FF";
+        ctx.fillStyle = "#212321";
         ctx.fill();
-
-        ctx.fillStyle = "#03341FFF";
 
         // Default diagonal offset
         let tx = root.x + textOffset;
@@ -158,7 +160,7 @@ export default function TwelfthRootsOfUnityWithClock() {
         centerX + radius * 0.5 * Math.cos(hourAngle),
         centerY + radius * 0.5 * Math.sin(hourAngle)
       );
-      cctx.strokeStyle = "#312E2EFF";
+      cctx.strokeStyle = "#312E2E";
       cctx.lineWidth = 0.3 * (size / 100);
       cctx.stroke();
 
@@ -170,7 +172,7 @@ export default function TwelfthRootsOfUnityWithClock() {
         centerX + radius * 0.8 * Math.cos(minAngle),
         centerY + radius * 0.8 * Math.sin(minAngle)
       );
-      cctx.strokeStyle = "#312E2EFF";
+      cctx.strokeStyle = "#312E2E";
       cctx.lineWidth = 0.3 * (size / 100);
       cctx.stroke();
 
@@ -182,22 +184,23 @@ export default function TwelfthRootsOfUnityWithClock() {
         centerX + radius * 0.9 * Math.cos(secAngle),
         centerY + radius * 0.9 * Math.sin(secAngle)
       );
-      cctx.strokeStyle = "#1A1C1AFF";
+      cctx.strokeStyle = "#1A1C1A";
       cctx.lineWidth = 0.3 * (size / 100);
       cctx.stroke();
     };
 
+    let animationId;
     const animate = () => {
       drawRoots();
       drawClock();
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     };
 
-    font.load()
-      .then(() => animate())
-      .catch(() => animate());
-
-    return () => window.removeEventListener("resize", resize);
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(animationId);
+    };
   }, []);
 
   return (
@@ -208,8 +211,7 @@ export default function TwelfthRootsOfUnityWithClock() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background:
-          "radial-gradient(circle, #F9C7B4FF 0%, #D8CFCFFF 90%)",
+        background: "radial-gradient(circle, #F9C7B4 0%, #D8CFCF 90%)",
       }}
     >
       <div

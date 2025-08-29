@@ -138,7 +138,7 @@ export default function ClockLetters({
     fontWeight: "bold",
     color: "#393737FF",
     fontSize: `${sizeVmin * 0.1}vmin`,
-    textShadow: "0 0.1vmin 0.2vmin rgba(255,255,255,0.8)",
+    textShadow: "0 0.2vmin 0.2vmin #F6E6E6FF",
     userSelect: "none",
     zIndex: 6, // Above crosshairs
   };
@@ -162,7 +162,7 @@ export default function ClockLetters({
     borderRadius: "50%",
   };
 
-  const letterStyleBase = {
+const letterStyleBase = {
   position: "absolute",
   left: "50%",
   top: "50%",
@@ -170,15 +170,10 @@ export default function ClockLetters({
   fontFamily: CLOCK_FONT_FAMILY,
   fontWeight: "700",
   userSelect: "none",
-  color: "rgba(15,15,15,0.95)",
-  zIndex: 2,
-  textShadow: `
-    0 1px 0px rgba(255,255,255), /* White glow */
-    1 -1px 0px  rgba(255,0,0),
-    0 -1px 0px  rgba(255,255,0),
-    -1 0px 0px  rgba(0,255,255)            /* Red shadow */
-  `,
-};
+  color: "#0D0C0CFF",
+  zIndex: 2, 
+ };
+
 
 
   const lettersNodes = useMemo(() => {
