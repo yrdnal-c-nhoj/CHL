@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
-import backgroundImage from "./rootsu.gif"; // Image in same folder
-import customFont from "./root.ttf"; // Font in same folder
+import backgroundImage from "./rootsu.gif";
+import customFont from "./root.ttf";
 
 export default function TwelfthRootsOfUnityWithClock() {
   const canvasRef = useRef(null);
   const clockRef = useRef(null);
-  const fontRef = useRef("sans-serif"); // Default to sans-serif
+  const fontRef = useRef("sans-serif");
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -20,7 +20,6 @@ export default function TwelfthRootsOfUnityWithClock() {
     const fadeSpeed = 0.01;
     let frameCount = 0;
 
-    // Load font as module and add to document.fonts
     const font = new FontFace("CustomFont", `url(${customFont})`);
     font
       .load()
@@ -28,27 +27,32 @@ export default function TwelfthRootsOfUnityWithClock() {
         document.fonts.add(loadedFont);
         fontRef.current = "CustomFont";
       })
-      .catch((error) => {
-        console.error("Font loading failed:", error);
-        fontRef.current = "sans-serif";
-      })
-      .finally(() => {
-        animate();
-      });
+      .catch(() => (fontRef.current = "sans-serif"))
+      .finally(() => animate());
 
     const resize = () => {
-      const size = Math.min(window.innerWidth, window.innerHeight) * 0.6;
-      canvas.width = size;
-      canvas.height = size;
-      clock.width = size;
-      clock.height = size;
+      const containerSize = Math.min(window.innerWidth, window.innerHeight) * 0.8; // slightly bigger
+      const dpr = window.devicePixelRatio || 1;
+
+      canvas.width = containerSize * dpr;
+      canvas.height = containerSize * dpr;
+      clock.width = containerSize * dpr;
+      clock.height = containerSize * dpr;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      cctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      canvas.style.width = `${containerSize}px`;
+      canvas.style.height = `${containerSize}px`;
+      clock.style.width = `${containerSize}px`;
+      clock.style.height = `${containerSize}px`;
     };
 
     resize();
     window.addEventListener("resize", resize);
 
     const drawRoots = () => {
-      const size = canvas.width;
+      const size = canvas.width / (window.devicePixelRatio || 1);
       const centerX = size / 2;
       const centerY = size / 2;
       const radius = size * 0.35;
@@ -72,42 +76,26 @@ export default function TwelfthRootsOfUnityWithClock() {
       ctx.lineWidth = size * 0.009;
       ctx.stroke();
 
-      // Set font
       ctx.font = `${size * 0.08}px ${fontRef.current}`;
       ctx.fillStyle = "#03341F";
 
-      // Roots + labels
       roots.forEach((root, k) => {
         ctx.beginPath();
         ctx.arc(root.x, root.y, pointRadius, 0, 2 * Math.PI);
         ctx.fillStyle = "#212321";
         ctx.fill();
 
-        // Default diagonal offset
-        let tx = root.x + textOffset;
-        let ty = root.y - textOffset;
+        let tx = root.x;
+        let ty = root.y;
 
-        // Horizontal adjustment
-        if (tx > size - textOffset) {
-          tx = root.x - textOffset;
-          ctx.textAlign = "right";
-        } else if (tx < textOffset) {
-          tx = root.x + textOffset;
-          ctx.textAlign = "left";
-        } else {
-          ctx.textAlign = "center";
-        }
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
 
-        // Vertical adjustment
-        if (ty < textOffset) {
-          ty = root.y + textOffset;
-          ctx.textBaseline = "top";
-        } else if (ty > size - textOffset) {
-          ty = root.y - textOffset;
-          ctx.textBaseline = "bottom";
-        } else {
-          ctx.textBaseline = "middle";
-        }
+        // Draw labels directly next to points
+        const angle = Math.atan2(root.y - centerY, root.x - centerX);
+        const labelDist = radius * 0.15;
+        tx = centerX + (radius + labelDist) * Math.cos(angle);
+        ty = centerY + (radius + labelDist) * Math.sin(angle);
 
         ctx.fillText(`ω^${k}`, tx, ty);
       });
@@ -141,7 +129,7 @@ export default function TwelfthRootsOfUnityWithClock() {
     };
 
     const drawClock = () => {
-      const size = clock.width;
+      const size = clock.width / (window.devicePixelRatio || 1);
       const centerX = size / 2;
       const centerY = size / 2;
       const radius = size * 0.45;
@@ -152,41 +140,22 @@ export default function TwelfthRootsOfUnityWithClock() {
       const min = now.getMinutes();
       const hr = now.getHours() % 12;
 
-      // Hour
       const hourAngle = ((hr + min / 60) * 2 * Math.PI) / 12 - Math.PI / 2;
-      cctx.beginPath();
-      cctx.moveTo(centerX, centerY);
-      cctx.lineTo(
-        centerX + radius * 0.5 * Math.cos(hourAngle),
-        centerY + radius * 0.5 * Math.sin(hourAngle)
-      );
-      cctx.strokeStyle = "#312E2E";
-      cctx.lineWidth = 0.3 * (size / 100);
-      cctx.stroke();
-
-      // Minute
       const minAngle = ((min + sec / 60) * 2 * Math.PI) / 60 - Math.PI / 2;
-      cctx.beginPath();
-      cctx.moveTo(centerX, centerY);
-      cctx.lineTo(
-        centerX + radius * 0.8 * Math.cos(minAngle),
-        centerY + radius * 0.8 * Math.sin(minAngle)
-      );
-      cctx.strokeStyle = "#312E2E";
-      cctx.lineWidth = 0.3 * (size / 100);
-      cctx.stroke();
-
-      // Second
       const secAngle = (sec * 2 * Math.PI) / 60 - Math.PI / 2;
-      cctx.beginPath();
-      cctx.moveTo(centerX, centerY);
-      cctx.lineTo(
-        centerX + radius * 0.9 * Math.cos(secAngle),
-        centerY + radius * 0.9 * Math.sin(secAngle)
-      );
-      cctx.strokeStyle = "#1A1C1A";
-      cctx.lineWidth = 0.3 * (size / 100);
-      cctx.stroke();
+
+      const drawHand = (angle, length, color, width) => {
+        cctx.beginPath();
+        cctx.moveTo(centerX, centerY);
+        cctx.lineTo(centerX + length * Math.cos(angle), centerY + length * Math.sin(angle));
+        cctx.strokeStyle = color;
+        cctx.lineWidth = width;
+        cctx.stroke();
+      };
+
+      drawHand(hourAngle, radius * 0.5, "#312E2E", 0.3 * (size / 100));
+      drawHand(minAngle, radius * 0.8, "#312E2E", 0.3 * (size / 100));
+      drawHand(secAngle, radius * 0.9, "#1A1C1A", 0.3 * (size / 100));
     };
 
     let animationId;
@@ -196,7 +165,6 @@ export default function TwelfthRootsOfUnityWithClock() {
       animationId = requestAnimationFrame(animate);
     };
 
-    // Cleanup
     return () => {
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(animationId);
@@ -219,6 +187,9 @@ export default function TwelfthRootsOfUnityWithClock() {
           position: "relative",
           width: "80vmin",
           height: "80vmin",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <img
@@ -232,7 +203,6 @@ export default function TwelfthRootsOfUnityWithClock() {
             height: "95%",
             objectFit: "contain",
             zIndex: 2,
-            opacity: 0.5,
           }}
         />
         <canvas
