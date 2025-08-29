@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real Sun Position Sundial</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
+    <style>
+        body {
+            background: #e0d9c6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: sans-serif;
+        }
+
+        .wall {
+            width: 300px;
+            height: 300px;
+            background: #c9b89e;
+            border-radius: 8px;
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .sundial-center {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        .shadow {
+            position: absolute;
+            width: 2px;
+            height: 130px;
+            background: rgba(0, 0, 0, 0.4);
+            top: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            z-index: 1;
+        }
+
+        .hour-markers {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .hour-marker {
+            position: absolute;
+            width: 4px;
+            height: 20px;
+            background: #333;
+            top: 10px;
+            left: 50%;
+            transform-origin: center 140px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wall">
+        <div class="hour-markers" id="markers"></div>
+        <div class="sundial-center"></div>
+        <div class="shadow" id="shadow"></div>
+    </div>
+
+    <script>
+        const shadow = document.getElementById("shadow");
+        const markersContainer = document.getElementById("markers");
+
+        // Create hour markers (12)
+        for (let i = 0; i < 12; i++) {
+            const mark = document.createElement("div");
+            mark.className = "hour-marker";
+            mark.style.transform = `rotate(${i * 30}deg) translateX(-50%)`;
+            markersContainer.appendChild(mark);
+        }
+
+        // Set your location (latitude and longitude)
+        const latitude = 40.7128;  // New York (you can change this to your location)
+        const longitude = -74.0060;
+
+        function updateSundial() {
+            const now = new Date();
+            const sunPosition = SunCalc.getPosition(now, latitude, longitude);
+
+            // Azimuth is the angle from north (clockwise), we need to invert the angle for the sundial
+            const azimuth = sunPosition.azimuth * (180 / Math.PI); // Convert to degrees
+            const altitude = sunPosition.altitude * (180 / Math.PI); // Convert to degrees
+
+            // Adjust the azimuth (sun's angle from north) to rotate the shadow
+            const angle = (azimuth + 180) % 360;  // Convert azimuth to rotate the shadow correctly
+            shadow.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
+
+            // Optional: Use the altitude to adjust shadow length if desired
+            const shadowLength = 130 - (altitude * 130 / 90);  // Shadow length based on altitude
+            shadow.style.height = `${Math.max(shadowLength, 5)}px`;  // Prevent shadow from being too short
+        }
+
+        updateSundial();
+        setInterval(updateSundial, 60 * 1000); // Update every minute
+    </script>
+</body>
+
+</html>
