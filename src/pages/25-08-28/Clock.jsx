@@ -1,44 +1,29 @@
 // src/components/DigitalClock.jsx
 import { useState, useEffect } from "react";
 import backgroundImage from "./gob.jpg"; // local image
-import customFont from "./gob.ttf";       // local font
+import clockFontFile from "./gob.ttf";   // renamed font variable
 
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
 
-  // Load custom font once
+  // Load font using FontFace API, scoped only to this component
   useEffect(() => {
-    const font = new FontFace("ClockFont", `url(${customFont})`);
+    const font = new FontFace("ClockFontScoped", `url(${clockFontFile})`);
     font.load()
       .then((loadedFont) => {
         document.fonts.add(loadedFont);
         setFontLoaded(true);
       })
-      .catch((error) => {
-        console.error("Font loading failed:", error);
+      .catch((err) => {
+        console.error("Font load failed:", err);
         setFontLoaded(true); // fallback
       });
   }, []);
 
-  // Update time every second
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
-  }, []);
-
-  // Inject shimmer animation keyframes
-  useEffect(() => {
-    const shimmerStyle = `
-      @keyframes shimmer {
-        0% { background-position: -200% 0; }
-        100% { background-position: 200% 0; }
-      }
-    `;
-    const styleTag = document.createElement("style");
-    styleTag.innerHTML = shimmerStyle;
-    document.head.appendChild(styleTag);
-    return () => document.head.removeChild(styleTag);
   }, []);
 
   const formatTime = (date) => {
@@ -55,7 +40,7 @@ export default function DigitalClock() {
     justifyContent: "center",
     height: "100vh",
     width: "100vw",
-    fontFamily: fontLoaded ? "'ClockFont', monospace" : "monospace",
+    fontFamily: fontLoaded ? "'ClockFontScoped', monospace" : "monospace",
     overflow: "hidden",
   };
 
@@ -78,12 +63,11 @@ export default function DigitalClock() {
     zIndex: 1,
   };
 
-  const separatorWidth = "0.5rem"; // <-- variable to control separator width
+  const separatorWidth = "0.5rem";
 
-  // Fixed-width shimmering gold style for digits
   const goldShimmerStyle = {
     fontSize: "2.5rem",
-    fontFamily: fontLoaded ? "'ClockFont', monospace" : "monospace",
+    fontFamily: fontLoaded ? "'ClockFontScoped', monospace" : "monospace",
     background: "linear-gradient(90deg, #FFD700, #FFEC00, #FFC700, #FFD700, #FFEC00)",
     WebkitBackgroundClip: "text",
     backgroundClip: "text",
@@ -94,14 +78,13 @@ export default function DigitalClock() {
       0 0 4px #FFA500,
       0 0 6px #FFD700
     `,
-    width: "2.0rem",       
+    width: "2.0rem",
     textAlign: "center",
     lineHeight: "1",
     boxSizing: "border-box",
     animation: "shimmer 2s infinite linear",
   };
 
-  // Style for separators with very small width
   const separatorStyle = {
     ...goldShimmerStyle,
     width: separatorWidth,
