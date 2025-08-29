@@ -78,9 +78,11 @@ export default function DigitalClock() {
     zIndex: 1,
   };
 
-  // Fixed-width shimmering gold style for all characters
+  const separatorWidth = "0.5rem"; // <-- variable to control separator width
+
+  // Fixed-width shimmering gold style for digits
   const goldShimmerStyle = {
-    fontSize: "3rem",
+    fontSize: "2.5rem",
     fontFamily: fontLoaded ? "'ClockFont', monospace" : "monospace",
     background: "linear-gradient(90deg, #FFD700, #FFEC00, #FFC700, #FFD700, #FFEC00)",
     WebkitBackgroundClip: "text",
@@ -92,11 +94,17 @@ export default function DigitalClock() {
       0 0 4px #FFA500,
       0 0 6px #FFD700
     `,
-    width: "2.2rem",       // FIXED width to prevent jumping
-    textAlign: "center", // center inside box
+    width: "2.0rem",       
+    textAlign: "center",
     lineHeight: "1",
     boxSizing: "border-box",
     animation: "shimmer 2s infinite linear",
+  };
+
+  // Style for separators with very small width
+  const separatorStyle = {
+    ...goldShimmerStyle,
+    width: separatorWidth,
   };
 
   const timeString = formatTime(time).split("");
@@ -105,11 +113,14 @@ export default function DigitalClock() {
     <div style={containerStyle}>
       <div style={backgroundStyle}></div>
       <div style={timeStyle}>
-        {timeString.map((char, idx) => (
-          <div key={idx} style={goldShimmerStyle}>
-            {char}
-          </div>
-        ))}
+        {timeString.map((char, idx) => {
+          const isSeparator = char === ":" || char === ".";
+          return (
+            <div key={idx} style={isSeparator ? separatorStyle : goldShimmerStyle}>
+              {char}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
