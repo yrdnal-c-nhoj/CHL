@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
 import backgroundImage from "./rootsu.gif";
-import customFont from "./root.ttf";
+import dodecahedronFontFile from "./root.ttf"; // renamed import
 
 export default function TwelfthRootsOfUnityWithClock() {
   const canvasRef = useRef(null);
   const clockRef = useRef(null);
-  const fontRef = useRef("sans-serif");
+  const fontRef = useRef("sans-serif"); // fallback
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -20,18 +20,19 @@ export default function TwelfthRootsOfUnityWithClock() {
     const fadeSpeed = 0.01;
     let frameCount = 0;
 
-    const font = new FontFace("CustomFont", `url(${customFont})`);
-    font
+    // Scoped Dodecahedron font
+    const dodecahedronFont = new FontFace("DodecahedronFont", `url(${dodecahedronFontFile})`);
+    dodecahedronFont
       .load()
       .then((loadedFont) => {
         document.fonts.add(loadedFont);
-        fontRef.current = "CustomFont";
+        fontRef.current = "DodecahedronFont";
       })
       .catch(() => (fontRef.current = "sans-serif"))
       .finally(() => animate());
 
     const resize = () => {
-      const containerSize = Math.min(window.innerWidth, window.innerHeight) * 0.8; // slightly bigger
+      const containerSize = Math.min(window.innerWidth, window.innerHeight) * 0.8;
       const dpr = window.devicePixelRatio || 1;
 
       canvas.width = containerSize * dpr;
@@ -69,7 +70,6 @@ export default function TwelfthRootsOfUnityWithClock() {
 
       ctx.clearRect(0, 0, size, size);
 
-      // Outer circle
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
       ctx.strokeStyle = "rgba(255,0,0,0.3)";
@@ -85,22 +85,16 @@ export default function TwelfthRootsOfUnityWithClock() {
         ctx.fillStyle = "#212321";
         ctx.fill();
 
-        let tx = root.x;
-        let ty = root.y;
+        const angle = Math.atan2(root.y - centerY, root.x - centerX);
+        const labelDist = radius * 0.15;
+        const tx = centerX + (radius + labelDist) * Math.cos(angle);
+        const ty = centerY + (radius + labelDist) * Math.sin(angle);
 
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-
-        // Draw labels directly next to points
-        const angle = Math.atan2(root.y - centerY, root.x - centerX);
-        const labelDist = radius * 0.15;
-        tx = centerX + (radius + labelDist) * Math.cos(angle);
-        ty = centerY + (radius + labelDist) * Math.sin(angle);
-
         ctx.fillText(`ω^${k}`, tx, ty);
       });
 
-      // Connecting lines
       ctx.strokeStyle = `rgba(255,255,0,${alpha})`;
       ctx.lineWidth = size * 0.01;
       ctx.beginPath();
