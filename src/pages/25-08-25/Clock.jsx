@@ -110,7 +110,7 @@ export default function AnalogClock() {
           backgroundImage: `url(${bgImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: 0.5,
+          opacity: 0.9,
         }}
       />
 
