@@ -1,99 +1,116 @@
-import { useState, useEffect } from 'react';
-import backgroundImage from './tsi.gif'; // your local background
+// src/components/DigitalClock.jsx
+import { useState, useEffect } from "react";
+import backgroundImage from "./gob.jpg"; // local image
+import customFont from "./gob.ttf";       // local font
 
-// Map standard digits to counting rod Unicode characters
-const digitMap = {
-  '0': '□', // Placeholder for zero
-  '1': '\u{1D360}',
-  '2': '\u{1D361}',
-  '3': '\u{1D362}',
-  '4': '\u{1D363}',
-  '5': '\u{1D364}',
-  '6': '\u{1D365}',
-  '7': '\u{1D366}',
-  '8': '\u{1D367}',
-  '9': '\u{1D369}',
-};
-
-// Convert a number to its counting rod representation (array of symbols)
-const toCountingRod = (number) =>
-  String(number)
-    .padStart(2, '0')
-    .split('')
-    .map((digit) => digitMap[digit]);
-
-const DigitalClock = () => {
+export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
 
+  // Load custom font once
+  useEffect(() => {
+    const font = new FontFace("ClockFont", `url(${customFont})`);
+    font.load()
+      .then((loadedFont) => {
+        document.fonts.add(loadedFont);
+        setFontLoaded(true);
+      })
+      .catch((error) => {
+        console.error("Font loading failed:", error);
+        setFontLoaded(true); // fallback
+      });
+  }, []);
+
+  // Update time every second
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const hours = toCountingRod(time.getHours());
-  const minutes = toCountingRod(time.getMinutes());
-  const seconds = toCountingRod(time.getSeconds());
+  // Inject shimmer animation keyframes
+  useEffect(() => {
+    const shimmerStyle = `
+      @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+      }
+    `;
+    const styleTag = document.createElement("style");
+    styleTag.innerHTML = shimmerStyle;
+    document.head.appendChild(styleTag);
+    return () => document.head.removeChild(styleTag);
+  }, []);
 
-  // Digit box style with dual shadows
-  const digitBoxStyle = {
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '2rem',
-    fontSize: '5rem',
-    padding: '0 0.2rem',
-    textShadow: `
-      -0.15rem 0 0.15rem rgba(255, 255, 255, 0.8),  /* left light shadow */
-      0.15rem 0 0.15rem rgba(0, 0, 0, 1)            /* right black shadow */
-    `,
+  const formatTime = (date) => {
+    const h = date.getHours().toString().padStart(2, "0");
+    const m = date.getMinutes().toString().padStart(2, "0");
+    const s = date.getSeconds().toString().padStart(2, "0");
+    return `${h}:${m}.${s}`;
   };
 
+  const containerStyle = {
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh",
+    width: "100vw",
+    fontFamily: fontLoaded ? "'ClockFont', monospace" : "monospace",
+    overflow: "hidden",
+  };
+
+  const backgroundStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    filter: "saturate(0.6) brightness(0.6)",
+    zIndex: 0,
+  };
+
+  const timeStyle = {
+    position: "relative",
+    display: "flex",
+    zIndex: 1,
+  };
+
+  // Fixed-width shimmering gold style for all characters
+  const goldShimmerStyle = {
+    fontSize: "3rem",
+    fontFamily: fontLoaded ? "'ClockFont', monospace" : "monospace",
+    background: "linear-gradient(90deg, #FFD700, #FFEC00, #FFC700, #FFD700, #FFEC00)",
+    WebkitBackgroundClip: "text",
+    backgroundClip: "text",
+    color: "transparent",
+    textShadow: `
+      0 0 1px #fff,
+      0 0 2px #FFD700,
+      0 0 4px #FFA500,
+      0 0 6px #FFD700
+    `,
+    width: "2.2rem",       // FIXED width to prevent jumping
+    textAlign: "center", // center inside box
+    lineHeight: "1",
+    boxSizing: "border-box",
+    animation: "shimmer 2s infinite linear",
+  };
+
+  const timeString = formatTime(time).split("");
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        width: '100vw',
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        fontFamily: 'sans-serif',
-        color: '#F50823FF',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          gap: '1rem',
-          padding: '1rem',
-        }}
-      >
-        {hours.map((d, i) => (
-          <span key={`h${i}`} style={digitBoxStyle}>
-            {d}
-          </span>
-        ))}
-        <span style={{ alignSelf: 'center', fontSize: '5rem', textShadow: digitBoxStyle.textShadow }}>
-          :
-        </span>
-        {minutes.map((d, i) => (
-          <span key={`m${i}`} style={digitBoxStyle}>
-            {d}
-          </span>
-        ))}
-        <span style={{ alignSelf: 'center', fontSize: '5rem', textShadow: digitBoxStyle.textShadow }}>
-          .
-        </span>
-        {seconds.map((d, i) => (
-          <span key={`s${i}`} style={digitBoxStyle}>
-            {d}
-          </span>
+    <div style={containerStyle}>
+      <div style={backgroundStyle}></div>
+      <div style={timeStyle}>
+        {timeString.map((char, idx) => (
+          <div key={idx} style={goldShimmerStyle}>
+            {char}
+          </div>
         ))}
       </div>
     </div>
   );
-};
-
-export default DigitalClock;
+}
