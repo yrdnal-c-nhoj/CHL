@@ -96,7 +96,7 @@ export default function AnalogClock() {
     height: "3vw",
     maxWidth: "2rem",
     maxHeight: "2rem",
-    border: "0.3vw solid #D8BFD8",
+    border: "0.3vw solid #E1E0C3FF",
     borderRadius: "50%",
     backgroundColor: "transparent",
     transform: `translate(-50%, -50%) rotate(${secondDeg}deg) translateY(4vw)`,
@@ -113,13 +113,13 @@ export default function AnalogClock() {
         })}
 
         {/* Hour hand */}
-        <div style={handStyle(hourDeg, "1vw", "#A8D5BA", 6, "35%")} />
+        <div style={handStyle(hourDeg, "1vw", "#D5CAA8FF", 6, "35%")} />
 
         {/* Minute hand */}
         <div style={handStyle(minuteDeg, "0.7vw", "#EADCB3FF", 7, "50%")} />
 
         {/* Second hand */}
-        <div style={handStyle(secondDeg, "0.3vw", "#D8BFD8", 8, "70%")} />
+        <div style={handStyle(secondDeg, "0.3vw", "#EDE4C7FF", 8, "70%")} />
         <div style={counterweightStyle} />
 
         {/* Center image */}
