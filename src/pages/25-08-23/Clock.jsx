@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-// Digit images
+// Digit images (imported as modules)
 import digit0 from "./0.gif";
 import digit1 from "./1.gif";
 import digit2 from "./2.gif";
@@ -12,13 +12,14 @@ import digit7 from "./7.gif";
 import digit8 from "./8.gif";
 import digit9 from "./9.gif";
 
-// Background + overlay
+// Background and overlay images
 import backgroundImage from "./g.webp";
 import overlayImage from "./fog.gif";
 
-// Custom font (local, same folder)
+// Custom font (imported as module)
 import customFont from "./fog.ttf";
 
+// Map digits to their respective images
 const digitImages = {
   "0": digit0,
   "1": digit1,
@@ -35,24 +36,25 @@ const digitImages = {
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
 
-  // Style variables
+  // Style constants
   const fontSize = "2rem";
   const textOffset = "-1.5rem";
   const imageWidth = "19vw";
   const floatDistance = "-7rem";
 
-  // Update time
+  // Update time every second
   useEffect(() => {
     const tick = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(tick);
+    return () => clearInterval(tick); // Cleanup interval on unmount
   }, []);
 
+  // Format time as HH:MM:SS
   const hours = String(time.getHours()).padStart(2, "0");
   const minutes = String(time.getMinutes()).padStart(2, "0");
   const seconds = String(time.getSeconds()).padStart(2, "0");
   const digits = `${hours}${minutes}${seconds}`.split("");
 
-  // Component-scoped font + animation
+  // Scoped CSS for font and animation
   const scopedCSS = `
     @font-face {
       font-family: 'CustomFont';
@@ -74,12 +76,13 @@ export default function DigitalClock() {
         height: "100vh",
         position: "relative",
         overflow: "hidden",
+        isolation: "isolate", // Ensures styles don't leak
       }}
     >
       {/* Scoped styles */}
       <style>{scopedCSS}</style>
 
-      {/* Background */}
+      {/* Background image */}
       <div
         style={{
           position: "absolute",
@@ -92,12 +95,12 @@ export default function DigitalClock() {
         }}
       />
 
-      {/* Digits */}
+      {/* Digits container */}
       <div
         style={{
           position: "relative",
           width: "100%",
-          height: "110%",
+          height: "100%",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -110,7 +113,7 @@ export default function DigitalClock() {
             style={{
               position: "relative",
               width: imageWidth,
-              marginLeft: i === 0 ? 0 : "-12vw", // overlapping
+              marginLeft: i === 0 ? 0 : "-12vw", // Overlap digits
               textAlign: "center",
             }}
           >
@@ -122,7 +125,7 @@ export default function DigitalClock() {
                 width: "100%",
                 color: "white",
                 fontSize,
-                fontFamily: "CustomFont, sans-serif",
+                fontFamily: "'CustomFont', sans-serif", // Fallback to sans-serif
                 textShadow: "0.2rem 0.2rem 0.4rem white",
                 animation: `float 2s ease-in-out ${i * 0.1}s infinite`,
               }}
@@ -133,7 +136,7 @@ export default function DigitalClock() {
             {/* Digit image */}
             <img
               src={digitImages[digit]}
-              alt={digit}
+              alt={`Digit ${digit}`}
               style={{
                 width: imageWidth,
                 height: "auto",
@@ -146,7 +149,7 @@ export default function DigitalClock() {
         ))}
       </div>
 
-      {/* Overlay */}
+      {/* Overlay image */}
       <div
         style={{
           position: "absolute",
