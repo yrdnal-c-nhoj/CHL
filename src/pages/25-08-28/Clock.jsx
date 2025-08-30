@@ -63,7 +63,7 @@ export default function DigitalClock() {
     zIndex: 1,
   };
 
-  const separatorWidth = "0.5rem";
+  const separatorWidth = "0.9rem";
 
   const goldShimmerStyle = {
     fontSize: "2.5rem",
