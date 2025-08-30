@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import customFontUrl from './cubic.ttf'; // local font file in same folder
+import React, { useState, useEffect } from "react";
+import customFontUrl from "./cubic.ttf"; // local font file
+import backgroundImage from "./earth.webp"; // local background image
 
 const faceColors = [
-  'rgba(102, 51, 0, 0.75)',
-  'rgba(194, 178, 128, 0.75)',
-  'rgba(85, 87, 17, 0.75)',
-  'rgba(160, 82, 45, 0.75)',
-  'rgba(34, 32, 52, 0.75)',
-  'rgba(230, 180, 140, 0.75)'
+  "rgba(102, 51, 0, 0.75)",
+  "rgba(194, 178, 128, 0.75)",
+  "rgba(85, 87, 17, 0.75)",
+  "rgba(160, 82, 45, 0.75)",
+  "rgba(34, 32, 52, 0.75)",
+  "rgba(230, 180, 140, 0.75)",
 ];
 
-const BiteviteHexahedron = () => {
+export default function BiteviteHexahedron() {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -23,52 +24,67 @@ const BiteviteHexahedron = () => {
     const minutes = time.getMinutes();
     if (hours === 0) hours = 12;
     if (hours > 12) hours -= 12;
-    return `${hours}${minutes.toString().padStart(2, '0')}`;
+    return `${hours}${minutes.toString().padStart(2, "0")}`;
   };
 
   const timeString = formatTime();
 
+  // ✅ Container ensures stacking context
   const containerStyle = {
-    width: '100vw',
-    height: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-    backgroundColor: '#1F1504FF'
+    position: "relative",
+    width: "100vw",
+    height: "100vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
   };
 
+  // ✅ Background layer with filter
+  const bgLayerStyle = {
+    position: "absolute",
+    inset: 0,
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    filter: "brightness(0.8) contrast(1.15)",
+    zIndex: 0,
+  };
+
+  // ✅ Cube sits above background
   const perspectiveStyle = {
-    position: 'relative',
-    width: '24rem',
-    height: '24rem',
-    perspective: '290rem', // default for desktop
-    transition: 'perspective 0.3s ease'
+    position: "relative",
+    width: "24rem",
+    height: "24rem",
+    perspective: "290rem",
+    zIndex: 1,
   };
 
   const cubeStyle = {
-    width: '100%',
-    height: '100%',
-    transformStyle: 'preserve-3d',
-    animation: 'biteviteRotate 120s infinite linear'
+    width: "100%",
+    height: "100%",
+    transformStyle: "preserve-3d",
+    animation: "biteviteRotate 120s infinite linear",
   };
 
   const baseFaceStyle = {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backdropFilter: 'blur(0.125rem)'
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backdropFilter: "blur(0.125rem)",
   };
 
   const timeDisplayStyle = {
     fontFamily: "'CustomHexFont', 'Courier New', monospace",
-    fontSize: '9.5rem', // default
-    background: 'linear-gradient(135deg, #5B3A1A 0%, #7A5230 40%, #3E2A15 100%)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
+    fontSize: "9.5rem",
+    background:
+      "linear-gradient(135deg, #5B3A1A 0%, #7A5230 40%, #3E2A15 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
     textShadow: `
       1px 1px 0 #3b2713,
       -1px -1px 1px #F0E4D5FF,
@@ -78,23 +94,22 @@ const BiteviteHexahedron = () => {
       0 1px 3px rgba(0,0,0,0.8),
       0 -1px 2px rgba(255,255,255,0.05)
     `,
-    filter: 'contrast(1.2) brightness(0.9)',
-    letterSpacing: '0.01em',
-    transition: 'font-size 0.3s ease'
+    filter: "contrast(1.2) brightness(0.9)",
+    letterSpacing: "0.01em",
   };
 
   const faceTransforms = {
-    front: 'translateZ(12.5rem)',
-    back: 'translateZ(-12.5rem) rotateY(180deg)',
-    right: 'rotateY(90deg) translateZ(12.5rem)',
-    left: 'rotateY(-90deg) translateZ(12.5rem)',
-    top: 'rotateX(90deg) translateZ(12.5rem)',
-    bottom: 'rotateX(-90deg) translateZ(12.5rem)'
+    front: "translateZ(12rem)",
+    back: "translateZ(-12rem) rotateY(180deg)",
+    right: "rotateY(90deg) translateZ(12rem)",
+    left: "rotateY(-90deg) translateZ(12rem)",
+    top: "rotateX(90deg) translateZ(12rem)",
+    bottom: "rotateX(-90deg) translateZ(12rem)",
   };
 
   return (
     <>
-      <style jsx>{`
+      <style>{`
         @font-face {
           font-family: 'CustomHexFont';
           src: url(${customFontUrl}) format('truetype');
@@ -111,46 +126,42 @@ const BiteviteHexahedron = () => {
           100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
         }
 
-        /* Responsive adjustments for mobile */
         @media (max-width: 600px) {
-          div[style*="perspective: 290rem"] {
-            perspective: 500rem; /* further away on small screens */
-            width: 15rem;
-            height: 15rem;
+          .hexa-perspective {
+            perspective: 500rem !important;
+            width: 15rem !important;
+            height: 15rem !important;
           }
 
-          div[style*="font-size: 9.5rem"] {
-            font-size: 5rem; /* smaller font on mobile */
+          .hexa-time {
+            font-size: 5rem !important;
           }
         }
       `}</style>
 
       <div style={containerStyle}>
-        <div style={perspectiveStyle}>
+        <div style={bgLayerStyle} /> {/* background image with filter */}
+        <div style={perspectiveStyle} className="hexa-perspective">
           <div style={cubeStyle}>
-            {['front', 'back', 'right', 'left', 'top', 'bottom'].map((face, i) => (
-              <div
-                key={face}
-                style={{
-                  ...baseFaceStyle,
-                  transform: faceTransforms[face],
-                  backgroundColor: faceColors[i]
-                }}
-              >
-                <div style={timeDisplayStyle}>{timeString}</div>
-
-                {/* 3D edges */}
-                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '0.1rem', backgroundColor: 'black' }} />
-                <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '0.1rem', backgroundColor: 'black' }} />
-                <div style={{ position: 'absolute', top: 0, left: 0, width: '0.1rem', height: '100%', backgroundColor: 'black' }} />
-                <div style={{ position: 'absolute', top: 0, right: 0, width: '0.1rem', height: '100%', backgroundColor: 'black' }} />
-              </div>
-            ))}
+            {["front", "back", "right", "left", "top", "bottom"].map(
+              (face, i) => (
+                <div
+                  key={face}
+                  style={{
+                    ...baseFaceStyle,
+                    transform: faceTransforms[face],
+                    backgroundColor: faceColors[i],
+                  }}
+                >
+                  <div style={timeDisplayStyle} className="hexa-time">
+                    {timeString}
+                  </div>
+                </div>
+              )
+            )}
           </div>
         </div>
       </div>
     </>
   );
-};
-
-export default BiteviteHexahedron;
+}
