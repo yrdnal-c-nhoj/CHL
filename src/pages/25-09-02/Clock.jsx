@@ -61,10 +61,10 @@ export default function FullViewportRectangularAnalogClock({ showSeconds = true 
   const svgStyle = { display: 'block', width: '100%', height: '100%' };
 
   // Hand sizes relative to radius
-  const hourHandSize = radius * 2.55; // Image height for hour hand
-  const minuteHandSize = radius * 4.76; // Image height for minute hand
-  const secondHandSize = radius * 2.9; // Image height for second hand
-  const handWidthScale = 0.2; // Adjust width relative to height (assumes image aspect ratio)
+  const hourHandSize = radius * 1.5; // Image height for hour hand
+  const minuteHandSize = radius * 2.76; // Image height for minute hand
+  const secondHandSize = radius * 1.7; // Image height for second hand
+  const handWidthScale = 0.3; // Adjust width relative to height (assumes image aspect ratio)
 
   return (
     <div style={containerStyle}>
@@ -81,6 +81,7 @@ export default function FullViewportRectangularAnalogClock({ showSeconds = true 
           height={hourHandSize}
           transform={`rotate(${hourAngle} ${cx} ${cy})`}
           preserveAspectRatio="xMidYMax meet"
+          opacity={0.7} 
         />
 
         {/* Minute hand */}
@@ -92,6 +93,7 @@ export default function FullViewportRectangularAnalogClock({ showSeconds = true 
           height={minuteHandSize}
           transform={`rotate(${minAngle} ${cx} ${cy})`}
           preserveAspectRatio="xMidYMax meet"
+          opacity={0.7} 
         />
 
         {/* Second hand */}
@@ -104,12 +106,11 @@ export default function FullViewportRectangularAnalogClock({ showSeconds = true 
             height={secondHandSize}
             transform={`rotate(${secAngle} ${cx} ${cy})`}
             preserveAspectRatio="xMidYMax meet"
+              opacity={0.7} 
           />
         )}
 
-        {/* Center circle */}
-        <circle cx={cx} cy={cy} r={radius * 0.03} fill="#000000AA" />
-      </svg>
+        </svg>
     </div>
   );
 }
