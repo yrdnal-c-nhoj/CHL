@@ -90,7 +90,7 @@ export default function FullViewportRectangularAnalogClock({ showSeconds = true 
         xmlns="http://www.w3.org/2000/svg"
       >
         {/* ticks */}
-        <g stroke="#ffffff" strokeOpacity={0.7}>
+        <g stroke="#EDE7E7FF" strokeOpacity={0.7}>
           {ticks.map((t, idx) => (
             <line
               key={idx}
@@ -112,7 +112,7 @@ export default function FullViewportRectangularAnalogClock({ showSeconds = true 
           y1={cy}
           x2={hourEnd.x}
           y2={hourEnd.y}
-          stroke="#ffffff"
+          stroke="#F3EBEBFF"
           strokeWidth={Math.max(6, Math.min(w, h) * 0.02)}
           strokeLinecap="round"
         />
@@ -123,7 +123,7 @@ export default function FullViewportRectangularAnalogClock({ showSeconds = true 
           y1={cy}
           x2={minuteEnd.x}
           y2={minuteEnd.y}
-          stroke="#ffffff"
+          stroke="#E1DCDCFF"
           strokeWidth={Math.max(4, Math.min(w, h) * 0.012)}
           strokeLinecap="round"
         />
@@ -135,7 +135,7 @@ export default function FullViewportRectangularAnalogClock({ showSeconds = true 
             y1={cy}
             x2={secondEnd.x}
             y2={secondEnd.y}
-            stroke="#ff4d4d"
+            stroke="#D6CFCFFF"
             strokeWidth={Math.max(2, Math.min(w, h) * 0.006)}
             strokeLinecap="round"
           />
