@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import bgImage from './lp.webp'; // local background image, same folder
+import bgImage from './lp.webp';
+import hourHandImage from './arm1.gif';
+import minuteHandImage from './arm2.gif';
+import secondHandImage from './arm3.gif';
 
 export default function FullViewportRectangularAnalogClock({ showSeconds = true }) {
   const [now, setNow] = useState(new Date());
@@ -32,35 +35,15 @@ export default function FullViewportRectangularAnalogClock({ showSeconds = true 
   const minAngle = (minutes / 60) * 360;
   const hourAngle = (hours / 12) * 360;
 
-  const pointFromAngle = (angleDeg, length) => {
-    const a = (angleDeg - 90) * (Math.PI / 180);
-    return { x: cx + Math.cos(a) * length, y: cy + Math.sin(a) * length };
-  };
-
-  const hourNumbers = Array.from({ length: 12 }).map((_, i) => {
-    const angle = i * 30;
-    const pos = pointFromAngle(angle, radius);
-    const label = i === 0 ? 12 : i;
-    return { x: pos.x, y: pos.y, label };
-  });
-
-  const edgeNumerals = [
-    { label: '12', x: cx, y: 24 },
-    { label: '3', x: w - 24, y: cy },
-    { label: '6', x: cx, y: h - 24 },
-    { label: '9', x: 24, y: cy },
-  ];
-
   const ticks = Array.from({ length: 60 }).map((_, i) => {
     const angle = i * 6;
-    const outer = pointFromAngle(angle, radius * 1.04);
-    const inner = pointFromAngle(angle, radius * 0.96);
-    return { x1: inner.x, y1: inner.y, x2: outer.x, y2: outer.y, major: i % 5 === 0 };
+    const a = (angle - 90) * (Math.PI / 180);
+    const outerX = cx + Math.cos(a) * radius * 1.04;
+    const outerY = cy + Math.sin(a) * radius * 1.04;
+    const innerX = cx + Math.cos(a) * radius * 0.96;
+    const innerY = cy + Math.sin(a) * radius * 0.96;
+    return { x1: innerX, y1: innerY, x2: outerX, y2: outerY, major: i % 5 === 0 };
   });
-
-  const hourEnd = pointFromAngle(hourAngle, radius * 0.55);
-  const minuteEnd = pointFromAngle(minAngle, radius * 0.76);
-  const secondEnd = pointFromAngle(secAngle, radius * 0.9);
 
   const containerStyle = {
     width: '100vw',
@@ -75,73 +58,57 @@ export default function FullViewportRectangularAnalogClock({ showSeconds = true 
     backgroundRepeat: 'no-repeat',
   };
 
-  const svgStyle = {
-    display: 'block',
-    width: '100%',
-    height: '100%',
-  };
+  const svgStyle = { display: 'block', width: '100%', height: '100%' };
+
+  // Hand sizes relative to radius
+  const hourHandSize = radius * 2.55; // Image height for hour hand
+  const minuteHandSize = radius * 4.76; // Image height for minute hand
+  const secondHandSize = radius * 2.9; // Image height for second hand
+  const handWidthScale = 0.2; // Adjust width relative to height (assumes image aspect ratio)
 
   return (
     <div style={containerStyle}>
-      <svg
-        style={svgStyle}
-        viewBox={`0 0 ${w} ${h}`}
-        preserveAspectRatio="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {/* ticks */}
-        <g stroke="#EDE7E7FF" strokeOpacity={0.7}>
-          {ticks.map((t, idx) => (
-            <line
-              key={idx}
-              x1={t.x1}
-              y1={t.y1}
-              x2={t.x2}
-              y2={t.y2}
-              strokeWidth={t.major ? 2 : 1}
-              strokeOpacity={t.major ? 0.9 : 0.5}
-            />
-          ))}
-        </g>
-
+      <svg style={svgStyle} viewBox={`0 0 ${w} ${h}`} xmlns="http://www.w3.org/2000/svg">
+  
        
 
-        {/* hour hand */}
-        <line
-          x1={cx}
-          y1={cy}
-          x2={hourEnd.x}
-          y2={hourEnd.y}
-          stroke="#F3EBEBFF"
-          strokeWidth={Math.max(6, Math.min(w, h) * 0.02)}
-          strokeLinecap="round"
+        {/* Hour hand */}
+        <image
+          href={hourHandImage}
+          x={cx - (hourHandSize * handWidthScale) / 2}
+          y={cy - hourHandSize}
+          width={hourHandSize * handWidthScale}
+          height={hourHandSize}
+          transform={`rotate(${hourAngle} ${cx} ${cy})`}
+          preserveAspectRatio="xMidYMax meet"
         />
 
-        {/* minute hand */}
-        <line
-          x1={cx}
-          y1={cy}
-          x2={minuteEnd.x}
-          y2={minuteEnd.y}
-          stroke="#E1DCDCFF"
-          strokeWidth={Math.max(4, Math.min(w, h) * 0.012)}
-          strokeLinecap="round"
+        {/* Minute hand */}
+        <image
+          href={minuteHandImage}
+          x={cx - (minuteHandSize * handWidthScale) / 2}
+          y={cy - minuteHandSize}
+          width={minuteHandSize * handWidthScale}
+          height={minuteHandSize}
+          transform={`rotate(${minAngle} ${cx} ${cy})`}
+          preserveAspectRatio="xMidYMax meet"
         />
 
-        {/* second hand */}
+        {/* Second hand */}
         {showSeconds && (
-          <line
-            x1={cx}
-            y1={cy}
-            x2={secondEnd.x}
-            y2={secondEnd.y}
-            stroke="#D6CFCFFF"
-            strokeWidth={Math.max(2, Math.min(w, h) * 0.006)}
-            strokeLinecap="round"
+          <image
+            href={secondHandImage}
+            x={cx - (secondHandSize * handWidthScale) / 2}
+            y={cy - secondHandSize}
+            width={secondHandSize * handWidthScale}
+            height={secondHandSize}
+            transform={`rotate(${secAngle} ${cx} ${cy})`}
+            preserveAspectRatio="xMidYMax meet"
           />
         )}
 
-     
+        {/* Center circle */}
+        <circle cx={cx} cy={cy} r={radius * 0.03} fill="#000000AA" />
       </svg>
     </div>
   );
