@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { DataProvider, DataContext } from './context/DataContext';
@@ -22,11 +22,13 @@ const formatDate = (date) => {
 const getEffectiveDate = (items) => {
   if (!items || items.length === 0) return null;
   const todayDate = formatDate(new Date());
-  return items.find(item => item.date === todayDate) || 
-         items.reduce((latest, item) => (!latest || item.date > latest.date ? item : latest), null);
+  return (
+    items.find((item) => item.date === todayDate) ||
+    items.reduce((latest, item) => (!latest || item.date > latest.date ? item : latest), null)
+  );
 };
 
-// Analytics & SEO
+// Analytics & SEO component
 const AnalyticsAndSEO = () => {
   const location = useLocation();
   const path = location.pathname === '/index.html' ? '/' : location.pathname;
@@ -34,18 +36,25 @@ const AnalyticsAndSEO = () => {
   const dynamicClockRoute = /^\/\d{2}-\d{2}-\d{2}$/;
   const isClockPage = dynamicClockRoute.test(path);
   const effectiveClock = path === '/today' && !loading ? getEffectiveDate(items) : null;
-  
-  const meta = isClockPage
-    ? { title: `BorrowedTime Clock for ${path.slice(1)}`, description: `A clock for ${path.slice(1)} created by Cubist Heart Laboratories.` }
-    : path === '/today' && effectiveClock
-    ? { title: `BorrowedTime Clock for ${effectiveClock.date}`, description: `A clock for ${effectiveClock.date} created by Cubist Heart Laboratories.` }
-    : {
-        '/': { title: 'BorrowedTime @ Cubist Heart Laboratories 🧊🫀🔭', description: 'A new clock every day.' }
-      }[path] || { title: 'BorrowedTime', description: 'A project by Cubist Heart Laboratories.' };
 
-  React.useEffect(() => {
-    pageview(location.pathname + location.search);
-  }, [location]);
+  const meta = isClockPage
+    ? {
+        title: `BorrowedTime Clock for ${path.slice(1)}`,
+        description: `A clock for ${path.slice(1)} created by Cubist Heart Laboratories.`,
+      }
+    : path === '/today' && effectiveClock
+    ? {
+        title: `BorrowedTime Clock for ${effectiveClock.date}`,
+        description: `A clock for ${effectiveClock.date} created by Cubist Heart Laboratories.`,
+      }
+    : {
+        title: 'BorrowedTime @ Cubist Heart Laboratories 🧊🫀🔭',
+        description: 'A new clock every day.',
+      };
+
+  useEffect(() => {
+    pageview(path + location.search);
+  }, [path, location.search]);
 
   return (
     <Helmet>
@@ -72,6 +81,10 @@ const App = () => {
           <Route path="/log" element={<Log />} />
           <Route path="/manifesto" element={<Manifesto />} />
           <Route path="/contact" element={<Contact />} />
+
+          {/* Redirect /index.html to homepage */}
+          <Route path="/index.html" element={<Navigate to="/" replace />} />
+
           {/* Catch-all: redirect any unmatched path to homepage */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
