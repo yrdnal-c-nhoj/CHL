@@ -73,7 +73,6 @@ export default function DigitalClock() {
     backgroundImage: 'url("./cardboard_texture.jpg")', // add local corrugated cardboard texture
     backgroundSize: 'cover',
     WebkitBackgroundClip: 'text',
-    color: 'transparent', // shows texture through text
     filter: 'contrast(85%) brightness(95%)', // slightly faded print
   });
 
