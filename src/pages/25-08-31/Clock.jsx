@@ -116,21 +116,24 @@ const UltraElaborateAnalogClock = () => {
     }) + `.${date.getMilliseconds().toString().padStart(3, '0')}`;
   };
 
-  return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'linear-gradient(135deg, #0f172a, #5b21b6, #4f46e5)',
-      overflow: 'hidden',
-      margin: 0,
-      padding: 0,
-    }}>
+return (
+  <div style={{
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: 'repeating-conic-gradient(from 45deg, #d91e0c 0% 25%, #c91fae 0% 50%)',
+    backgroundSize: '20px 10px',
+    backgroundColor: '#c91fae',
+    overflow: 'hidden',
+    margin: 0,
+    padding: 0,
+  }}>
+
       <div style={{
         position: 'relative',
         background: 'linear-gradient(135deg, #f9fafb, #e5e7eb)',
@@ -218,7 +221,7 @@ const UltraElaborateAnalogClock = () => {
                 y={marker.textY - (8 * scale)}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                style={{ fontSize: `${30 * scale}px`, fontWeight: '700', fill: '#111827' }}
+                style={{ fontSize: `${1 * scale}px`, fontWeight: '700', fill: '#111827' }}
               >
                 {marker.number}
               </text>
@@ -242,7 +245,7 @@ const UltraElaborateAnalogClock = () => {
               y={marker.textY}
               textAnchor="middle"
               dominantBaseline="middle"
-              style={{ fontSize: `${12 * scale}px`, fontFamily: 'monospace', fill: '#1e40af' }}
+              style={{ fontSize: `${22 * scale}px`, fontFamily: 'monospace', fill: '#1e40af' }}
             >
               {marker.hour24.toString().padStart(2, '0')}
             </text>
@@ -290,18 +293,18 @@ const UltraElaborateAnalogClock = () => {
           {/* Cardinal and intercardinal directions */}
           <text x={center} y={50 * scale} textAnchor="middle" style={{ fontSize: `${18 * scale}px`, fontWeight: '700', fill: '#b91c1c' }}>N • 0°</text>
           <text x={center + (230 * scale)} y={60 * scale} textAnchor="middle" style={{ fontSize: `${14 * scale}px`, fontWeight: '600', fill: '#dc2626' }} transform={`rotate(45 ${center + (230 * scale)} ${60 * scale})`}>NE • 45°</text>
-          <text x={center + (250 * scale)} y={center + (5 * scale)} textAnchor="middle" style={{ fontSize: `${18 * scale}px`, fontWeight: '700', fill: '#b91c1c' }}>E • 90°</text>
-          <text x={center + (230 * scale)} y={center + (250 * scale)} textAnchor="middle" style={{ fontSize: `${14 * scale}px`, fontWeight: '600', fill: '#dc2626' }} transform={`rotate(135 ${center + (230 * scale)} ${center + (250 * scale)})`}>SE • 135°</text>
+          <text x={center + (250 * scale)} y={center + (5 * scale)} textAnchor="middle" style={{ fontSize: `${28 * scale}px`, fontWeight: '700', fill: '#b91c1c' }}>E • 90°</text>
+          <text x={center + (230 * scale)} y={center + (250 * scale)} textAnchor="middle" style={{ fontSize: `${24 * scale}px`, fontWeight: '600', fill: '#dc2626' }} transform={`rotate(135 ${center + (230 * scale)} ${center + (250 * scale)})`}>SE • 135°</text>
           <text x={center} y={center + (270 * scale)} textAnchor="middle" style={{ fontSize: `${18 * scale}px`, fontWeight: '700', fill: '#b91c1c' }}>S • 180°</text>
-          <text x={center - (230 * scale)} y={center + (250 * scale)} textAnchor="middle" style={{ fontSize: `${14 * scale}px`, fontWeight: '600', fill: '#dc2626' }} transform={`rotate(-135 ${center - (230 * scale)} ${center + (250 * scale)})`}>SW • 225°</text>
-          <text x={center - (250 * scale)} y={center + (5 * scale)} textAnchor="middle" style={{ fontSize: `${18 * scale}px`, fontWeight: '700', fill: '#b91c1c' }}>W • 270°</text>
+          <text x={center - (230 * scale)} y={center + (250 * scale)} textAnchor="middle" style={{ fontSize: `${24 * scale}px`, fontWeight: '600', fill: '#dc2626' }} transform={`rotate(-135 ${center - (230 * scale)} ${center + (250 * scale)})`}>SW • 225°</text>
+          <text x={center - (250 * scale)} y={center + (5 * scale)} textAnchor="middle" style={{ fontSize: `${28 * scale}px`, fontWeight: '700', fill: '#b91c1c' }}>W • 270°</text>
           <text x={center - (230 * scale)} y={60 * scale} textAnchor="middle" style={{ fontSize: `${14 * scale}px`, fontWeight: '600', fill: '#dc2626' }} transform={`rotate(-45 ${center - (230 * scale)} ${60 * scale})`}>NW • 315°</text>
 
           {/* Time zone markers */}
-          <text x={center + (85 * scale)} y={center - (185 * scale)} textAnchor="middle" style={{ fontSize: `${12 * scale}px`, fill: '#16a34a' }} transform={`rotate(30 ${center + (85 * scale)} ${center - (185 * scale)})`}>15° • 1hr</text>
-          <text x={center + (185 * scale)} y={center - (85 * scale)} textAnchor="middle" style={{ fontSize: `${12 * scale}px`, fill: '#16a34a' }} transform={`rotate(60 ${center + (185 * scale)} ${center - (85 * scale)})`}>30° • 2hr</text>
-          <text x={center + (85 * scale)} y={center + (185 * scale)} textAnchor="middle" style={{ fontSize: `${12 * scale}px`, fill: '#16a34a' }} transform={`rotate(150 ${center + (85 * scale)} ${center + (185 * scale)})`}>150° • 10hr</text>
-          <text x={center - (85 * scale)} y={center + (185 * scale)} textAnchor="middle" style={{ fontSize: `${12 * scale}px`, fill: '#16a34a' }} transform={`rotate(-150 ${center - (85 * scale)} ${center + (185 * scale)})`}>210° • 14hr</text>
+          <text x={center + (85 * scale)} y={center - (185 * scale)} textAnchor="middle" style={{ fontSize: `${32 * scale}px`, fill: '#16a34a' }} transform={`rotate(30 ${center + (85 * scale)} ${center - (185 * scale)})`}>15° • 1hr</text>
+          <text x={center + (185 * scale)} y={center - (85 * scale)} textAnchor="middle" style={{ fontSize: `${32 * scale}px`, fill: '#16a34a' }} transform={`rotate(60 ${center + (185 * scale)} ${center - (85 * scale)})`}>30° • 2hr</text>
+          <text x={center + (85 * scale)} y={center + (185 * scale)} textAnchor="middle" style={{ fontSize: `${32 * scale}px`, fill: '#16a34a' }} transform={`rotate(150 ${center + (85 * scale)} ${center + (185 * scale)})`}>150° • 10hr</text>
+          <text x={center - (85 * scale)} y={center + (185 * scale)} textAnchor="middle" style={{ fontSize: `${32 * scale}px`, fill: '#16a34a' }} transform={`rotate(-150 ${center - (85 * scale)} ${center + (185 * scale)})`}>210° • 14hr</text>
 
           {/* Minute subdivision markers */}
           {Array.from({ length: 12 }, (_, i) => {
@@ -454,7 +457,7 @@ const UltraElaborateAnalogClock = () => {
                   y={dialCenterY + Math.sin(radian) * (30 * scale)}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  style={{ fontSize: `${12 * scale}px`, fill: isCurrentDay ? '#dc2626' : '#6b7280', fontWeight: isCurrentDay ? '700' : '400' }}
+                  style={{ fontSize: `${22 * scale}px`, fill: isCurrentDay ? '#F46E09FF' : '#EC05D9FF', fontWeight: isCurrentDay ? '700' : '400' }}
                 >
                   {i + 1}
                 </text>
@@ -480,7 +483,6 @@ const UltraElaborateAnalogClock = () => {
           fontSize: `${Math.max(10, 12 * scale)}px`,
           fontWeight: '700',
           color: '#374151',
-          background: 'rgba(255, 255, 255, 0.8)',
           padding: `${Math.max(2, 4 * scale)}px ${Math.max(4, 8 * scale)}px`,
           borderRadius: `${4 * scale}px`,
           whiteSpace: 'nowrap',
@@ -494,7 +496,6 @@ const UltraElaborateAnalogClock = () => {
           fontSize: `${Math.max(10, 12 * scale)}px`,
           fontWeight: '700',
           color: '#374151',
-          background: 'rgba(255, 255, 255, 0.8)',
           padding: `${Math.max(2, 4 * scale)}px ${Math.max(4, 8 * scale)}px`,
           borderRadius: `${4 * scale}px`,
           whiteSpace: 'nowrap',
@@ -508,7 +509,6 @@ const UltraElaborateAnalogClock = () => {
           fontSize: `${Math.max(10, 12 * scale)}px`,
           fontWeight: '700',
           color: '#374151',
-          background: 'rgba(255, 255, 255, 0.8)',
           padding: `${Math.max(2, 4 * scale)}px ${Math.max(4, 8 * scale)}px`,
           borderRadius: `${4 * scale}px`,
           whiteSpace: 'nowrap',
@@ -522,7 +522,6 @@ const UltraElaborateAnalogClock = () => {
           fontSize: `${Math.max(10, 12 * scale)}px`,
           fontWeight: '700',
           color: '#374151',
-          background: 'rgba(255, 255, 255, 0.8)',
           padding: `${Math.max(2, 4 * scale)}px ${Math.max(4, 8 * scale)}px`,
           borderRadius: `${4 * scale}px`,
           whiteSpace: 'nowrap',
