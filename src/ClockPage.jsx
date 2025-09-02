@@ -4,11 +4,13 @@ import { DataContext } from './context/DataContext';
 import Header from './components/Header';
 import styles from './ClockPage.module.css';
 
-// Preload all Clock.jsx files under /pages/**/Clock.jsx
+// Preload all Clock.jsx files under /pages/**/Clock.jsx using Vite's glob import
 const clockModules = import.meta.glob('./pages/**/Clock.jsx');
 
-// Helpers
+// Helper function to remove 'Clock' from title and trim whitespace
 const formatTitle = (title) => title?.replace(/clock/i, '').trim() || 'Home';
+
+// Helper function to format date string from YY-MM-DD to MM/DD/YY
 const formatDate = (dateStr) => {
   if (!dateStr) return '';
   const parts = dateStr.split('-');
@@ -16,9 +18,11 @@ const formatDate = (dateStr) => {
   const [yy, mm, dd] = parts.map(Number);
   return mm >= 1 && mm <= 12 && dd >= 1 && dd <= 31 ? `${mm}/${dd}/${yy}` : 'Invalid Date';
 };
+
+// Helper to check if string matches YY-MM-DD format
 const isValidDateFormat = (date) => /^\d{2}-\d{2}-\d{2}$/.test(date);
 
-// Format date as YY-MM-DD for comparison
+// Helper to get today’s date in YY-MM-DD format
 const getTodayDate = () => {
   const date = new Date();
   const yy = String(date.getFullYear()).slice(-2);
@@ -28,17 +32,21 @@ const getTodayDate = () => {
 };
 
 const ClockPage = () => {
-  const { date } = useParams(); // 'today' or a date string (YY-MM-DD)
-  const { items, loading, error } = useContext(DataContext);
-  const navigate = useNavigate();
+  const { date } = useParams(); // Get date from URL params ('today' or YY-MM-DD)
+  const { items, loading, error } = useContext(DataContext); // DataContext provides clock items
+  const navigate = useNavigate(); // Router navigation
 
+  // State to store the dynamically imported Clock component
   const [ClockComponent, setClockComponent] = useState(null);
+  // State for page-level errors
   const [pageError, setPageError] = useState(null);
+  // States for auto-hide header/footer
   const [footerVisible, setFooterVisible] = useState(true);
   const [headerVisible, setHeaderVisible] = useState(true);
 
+  // Effect: Load Clock component based on current date parameter
   useEffect(() => {
-    if (loading) return;
+    if (loading) return; // Wait until data loads
 
     if (!items || items.length === 0) {
       setPageError('No clocks available.');
@@ -49,7 +57,7 @@ const ClockPage = () => {
     let item;
 
     if (date === 'today') {
-      // Find today's date or most recent
+      // Find today's clock or most recent one
       const todayDate = getTodayDate();
       item = items.find((i) => i.date === todayDate) || 
              items.reduce((latest, current) =>
@@ -57,10 +65,11 @@ const ClockPage = () => {
                null
              );
     } else if (!isValidDateFormat(date)) {
+      // Invalid date format → redirect to home
       navigate('/', { replace: true });
       return;
     } else {
-      // Specific date
+      // Specific date requested
       item = items.find((i) => i.date === date) || null;
       if (!item) {
         navigate('/', { replace: true });
@@ -68,17 +77,21 @@ const ClockPage = () => {
       }
     }
 
+    // Check if item has a valid path to Clock.jsx
     if (!item || !item.path) {
       setPageError(`Clock path missing for date: ${item?.date || 'unknown'}`);
       setClockComponent(null);
       return;
     }
 
+    // Reset state before loading new Clock
     setPageError(null);
     setClockComponent(null);
 
+    // Construct key for Vite glob import
     const key = `./pages/${item.path}/Clock.jsx`.replace(/^\/|\/$/g, '');
 
+    // Dynamically import the Clock component
     if (clockModules[key]) {
       clockModules[key]()
         .then((mod) => setClockComponent(() => mod.default))
@@ -91,12 +104,12 @@ const ClockPage = () => {
     }
   }, [date, items, loading, navigate]);
 
-  // Auto-hide footer
+  // Auto-hide footer after user inactivity
   useEffect(() => {
     const footerFadeMs = 1000;
     let footerTimer;
     const resetTimer = () => {
-      setFooterVisible(true);
+      setFooterVisible(true); // Show footer
       clearTimeout(footerTimer);
       footerTimer = setTimeout(() => setFooterVisible(false), footerFadeMs);
     };
@@ -110,20 +123,20 @@ const ClockPage = () => {
     };
   }, []);
 
-  // Auto-hide header
+  // Auto-hide header shortly after loading
   useEffect(() => {
     setHeaderVisible(true);
     const headerTimer = setTimeout(() => setHeaderVisible(false), 1300);
     return () => clearTimeout(headerTimer);
   }, [date]);
 
-  // Prevent scroll
+  // Prevent page scroll
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = ''; };
   }, []);
 
-  // Determine current, prev, next for footer
+  // Determine current, previous, and next clock for footer navigation
   let currentIndex;
   let currentItem;
 
@@ -154,9 +167,11 @@ const ClockPage = () => {
     );
   }
 
+  // Determine previous and next items for navigation
   const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
   const nextItem = currentIndex >= 0 && currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
 
+  // Loading and error states
   if (loading) return <div className={styles.loading}>Loading data...</div>;
   if (error || pageError)
     return (
@@ -174,11 +189,13 @@ const ClockPage = () => {
     <div className={styles.container}>
       <Header visible={headerVisible} />
       <div className={styles.content}>
+        {/* Render dynamically loaded Clock component or loading message */}
         {ClockComponent ? <ClockComponent /> : <div className={styles.loading}>Loading clock...</div>}
       </div>
 
-      {/* Footer */}
+      {/* Footer navigation strip */}
       <div className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}>
+        {/* Previous Clock */}
         <Link
           to={prevItem ? `/${prevItem.date}` : '/'}
           className={styles.navButton}
@@ -190,6 +207,7 @@ const ClockPage = () => {
           </span>
         </Link>
 
+        {/* Current Clock / Homepage */}
         <Link
           to={date === 'today' ? '/today' : '/'}
           className={styles.footerButton}
@@ -205,6 +223,7 @@ const ClockPage = () => {
           </span>
         </Link>
 
+        {/* Next Clock */}
         <Link
           to={nextItem ? `/${nextItem.date}` : '/'}
           className={styles.navButton}
