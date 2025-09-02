@@ -7,10 +7,8 @@ import styles from './ClockPage.module.css';
 // Preload all Clock.jsx files under /pages/**/Clock.jsx using Vite's glob import
 const clockModules = import.meta.glob('./pages/**/Clock.jsx');
 
-// Helper function to remove 'Clock' from title and trim whitespace
+// Helper functions
 const formatTitle = (title) => title?.replace(/clock/i, '').trim() || 'Home';
-
-// Helper function to format date string from YY-MM-DD to MM/DD/YY
 const formatDate = (dateStr) => {
   if (!dateStr) return '';
   const parts = dateStr.split('-');
@@ -18,11 +16,7 @@ const formatDate = (dateStr) => {
   const [yy, mm, dd] = parts.map(Number);
   return mm >= 1 && mm <= 12 && dd >= 1 && dd <= 31 ? `${mm}/${dd}/${yy}` : 'Invalid Date';
 };
-
-// Helper to check if string matches YY-MM-DD format
 const isValidDateFormat = (date) => /^\d{2}-\d{2}-\d{2}$/.test(date);
-
-// Helper to get today’s date in YY-MM-DD format
 const getTodayDate = () => {
   const date = new Date();
   const yy = String(date.getFullYear()).slice(-2);
@@ -30,24 +24,23 @@ const getTodayDate = () => {
   const dd = String(date.getDate()).padStart(2, '0');
   return `${yy}-${mm}-${dd}`;
 };
+const normalizeDate = (d) => d.split('-').map((n) => n.padStart(2, '0')).join('-');
 
 const ClockPage = () => {
-  const { date } = useParams(); // Get date from URL params ('today' or YY-MM-DD)
-  const { items, loading, error } = useContext(DataContext); // DataContext provides clock items
-  const navigate = useNavigate(); // Router navigation
+  const { date } = useParams(); // 'today' or YY-MM-DD
+  const { items, loading, error } = useContext(DataContext);
+  const navigate = useNavigate();
 
-  // State to store the dynamically imported Clock component
   const [ClockComponent, setClockComponent] = useState(null);
-  // State for page-level errors
   const [pageError, setPageError] = useState(null);
-  // States for auto-hide header/footer
   const [footerVisible, setFooterVisible] = useState(true);
   const [headerVisible, setHeaderVisible] = useState(true);
 
-  // Effect: Load Clock component based on current date parameter
+  // -------------------------------
+  // Load Clock component dynamically
+  // -------------------------------
   useEffect(() => {
-    if (loading) return; // Wait until data loads
-
+    if (loading) return;
     if (!items || items.length === 0) {
       setPageError('No clocks available.');
       setClockComponent(null);
@@ -57,41 +50,44 @@ const ClockPage = () => {
     let item;
 
     if (date === 'today') {
-      // Find today's clock or most recent one
       const todayDate = getTodayDate();
-      item = items.find((i) => i.date === todayDate) || 
-             items.reduce((latest, current) =>
-               !latest || current.date > latest.date ? current : latest,
-               null
-             );
+      item = items.find((i) => normalizeDate(i.date) === normalizeDate(todayDate));
+      if (!item) {
+        // fallback to latest clock
+        item = items.reduce(
+          (latest, current) =>
+            !latest || normalizeDate(current.date) > normalizeDate(latest.date)
+              ? current
+              : latest,
+          null
+        );
+        console.log(`No clock for today, using latest clock: ${item.date}`);
+      }
     } else if (!isValidDateFormat(date)) {
-      // Invalid date format → redirect to home
       navigate('/', { replace: true });
       return;
     } else {
-      // Specific date requested
-      item = items.find((i) => i.date === date) || null;
+      item = items.find((i) => normalizeDate(i.date) === normalizeDate(date));
       if (!item) {
         navigate('/', { replace: true });
         return;
       }
     }
 
-    // Check if item has a valid path to Clock.jsx
-    if (!item || !item.path) {
-      setPageError(`Clock path missing for date: ${item?.date || 'unknown'}`);
+    if (!item.path) {
+      setPageError(`Clock path missing for date: ${item.date}`);
       setClockComponent(null);
       return;
     }
 
-    // Reset state before loading new Clock
     setPageError(null);
     setClockComponent(null);
 
-    // Construct key for Vite glob import
-    const key = `./pages/${item.path}/Clock.jsx`.replace(/^\/|\/$/g, '');
+    const key = `./pages/${item.path}/Clock.jsx`;
 
-    // Dynamically import the Clock component
+    console.log('Available keys:', Object.keys(clockModules));
+    console.log('Attempting to load key:', key);
+
     if (clockModules[key]) {
       clockModules[key]()
         .then((mod) => setClockComponent(() => mod.default))
@@ -99,17 +95,18 @@ const ClockPage = () => {
           setPageError(`Failed to load clock for ${item.date}: ${err.message}`)
         );
     } else {
-      console.log('Available keys:', Object.keys(clockModules));
       setPageError(`No clock found at path: ${key}`);
     }
   }, [date, items, loading, navigate]);
 
-  // Auto-hide footer after user inactivity
+  // -------------------------------
+  // Auto-hide footer after inactivity
+  // -------------------------------
   useEffect(() => {
     const footerFadeMs = 1000;
     let footerTimer;
     const resetTimer = () => {
-      setFooterVisible(true); // Show footer
+      setFooterVisible(true);
       clearTimeout(footerTimer);
       footerTimer = setTimeout(() => setFooterVisible(false), footerFadeMs);
     };
@@ -123,55 +120,56 @@ const ClockPage = () => {
     };
   }, []);
 
-  // Auto-hide header shortly after loading
+  // -------------------------------
+  // Auto-hide header shortly after load
+  // -------------------------------
   useEffect(() => {
     setHeaderVisible(true);
     const headerTimer = setTimeout(() => setHeaderVisible(false), 1300);
     return () => clearTimeout(headerTimer);
   }, [date]);
 
-  // Prevent page scroll
+  // -------------------------------
+  // Prevent scrolling
+  // -------------------------------
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = ''; };
   }, []);
 
-  // Determine current, previous, and next clock for footer navigation
-  let currentIndex;
-  let currentItem;
+  // -------------------------------
+  // Determine navigation items
+  // -------------------------------
+  let currentIndex = -1;
+  let currentItem = null;
 
-  if (date === 'today') {
-    const todayDate = getTodayDate();
-    currentItem = items.find((i) => i.date === todayDate) || 
-                  items.reduce((latest, current) =>
-                    !latest || current.date > latest.date ? current : latest,
-                    null
-                  );
-    currentIndex = items.findIndex((i) => i.date === currentItem.date);
-  } else {
-    currentIndex = items.findIndex((item) => item.date === date);
-    currentItem = currentIndex >= 0 ? items[currentIndex] : null;
+  if (items && items.length > 0) {
+    if (date === 'today') {
+      const todayDate = getTodayDate();
+      currentItem = items.find((i) => normalizeDate(i.date) === normalizeDate(todayDate));
+      if (!currentItem) {
+        currentItem = items.reduce(
+          (latest, current) =>
+            !latest || normalizeDate(current.date) > normalizeDate(latest.date)
+              ? current
+              : latest,
+          null
+        );
+      }
+      currentIndex = items.findIndex((i) => i.date === currentItem.date);
+    } else {
+      currentIndex = items.findIndex((i) => normalizeDate(i.date) === normalizeDate(date));
+      currentItem = currentIndex >= 0 ? items[currentIndex] : null;
+    }
   }
 
-  if (!currentItem) {
-    setPageError('No valid clock found.');
-    return (
-      <div className={styles.container}>
-        <Header visible={headerVisible} />
-        <div className={styles.content}>
-          <div className={styles.sheet}>
-            <div className={styles.error}>No valid clock found.</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Determine previous and next items for navigation
   const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
-  const nextItem = currentIndex >= 0 && currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
+  const nextItem =
+    currentIndex >= 0 && currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
 
-  // Loading and error states
+  // -------------------------------
+  // Handle loading & errors
+  // -------------------------------
   if (loading) return <div className={styles.loading}>Loading data...</div>;
   if (error || pageError)
     return (
@@ -185,17 +183,35 @@ const ClockPage = () => {
       </div>
     );
 
+  if (!currentItem) {
+    return (
+      <div className={styles.container}>
+        <Header visible={headerVisible} />
+        <div className={styles.content}>
+          <div className={styles.sheet}>
+            <div className={styles.error}>No valid clock found.</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // -------------------------------
+  // Render
+  // -------------------------------
   return (
     <div className={styles.container}>
       <Header visible={headerVisible} />
       <div className={styles.content}>
-        {/* Render dynamically loaded Clock component or loading message */}
-        {ClockComponent ? <ClockComponent /> : <div className={styles.loading}>Loading clock...</div>}
+        {ClockComponent ? (
+          <ClockComponent />
+        ) : (
+          <div className={styles.loading}>Loading clock...</div>
+        )}
       </div>
 
-      {/* Footer navigation strip */}
+      {/* Footer navigation */}
       <div className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}>
-        {/* Previous Clock */}
         <Link
           to={prevItem ? `/${prevItem.date}` : '/'}
           className={styles.navButton}
@@ -207,7 +223,6 @@ const ClockPage = () => {
           </span>
         </Link>
 
-        {/* Current Clock / Homepage */}
         <Link
           to={date === 'today' ? '/today' : '/'}
           className={styles.footerButton}
@@ -223,7 +238,6 @@ const ClockPage = () => {
           </span>
         </Link>
 
-        {/* Next Clock */}
         <Link
           to={nextItem ? `/${nextItem.date}` : '/'}
           className={styles.navButton}

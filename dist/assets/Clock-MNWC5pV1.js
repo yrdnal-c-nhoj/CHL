@@ -1,0 +1,9 @@
+import{r as i,j as e}from"./index-CBkcEe8T.js";const g="/assets/laika-BWSre48q.ttf",d="/assets/Laika-DJOZ2aiL.jpeg",u=()=>{const[o,s]=i.useState(new Date);i.useEffect(()=>{const t=setInterval(()=>s(new Date),50);return()=>clearInterval(t)},[]);const l=t=>{const n=t.getHours().toString().padStart(2,"0"),c=t.getMinutes().toString().padStart(2,"0"),m=t.getSeconds().toString().padStart(2,"0"),f=Math.floor(t.getMilliseconds()/10).toString().padStart(2,"0");return`${n}${c}${m}${f}`},a=t=>{const n=l(t);return[n.slice(0,2),n.slice(2,4),n.slice(4,6),n.slice(6,8)]},r={container:{display:"flex",flexDirection:"row",height:"100vh",width:"100vw",backgroundColor:"#111010FF",fontFamily:"'Orbitron', monospace",color:"#ff0000"},imageContainer:{width:"60%",display:"flex",justifyContent:"center",alignItems:"center"},image:{width:"100%",height:"100vh",objectFit:"cover"},clockContainer:{width:"40%",backgroundColor:"rgba(0,0,0,0.8)",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"},timeVertical:{fontWeight:900,fontSize:"4rem",letterSpacing:"0.25rem",display:"flex",flexDirection:"column",alignItems:"center",userSelect:"none",color:"#ff0000"},timeGroup:{fontSize:"4rem",fontWeight:900,letterSpacing:"0.25rem",marginBottom:"1rem",textAlign:"center",color:"#ff0000"}};return e.jsxs(e.Fragment,{children:[e.jsx("style",{children:`
+        @font-face {
+          font-family: 'Orbitron';
+          src: url(${g}) format('truetype');
+          font-weight: 400;
+          font-style: normal;
+          font-display: swap;
+        }
+      `}),e.jsxs("div",{style:r.container,children:[e.jsx("div",{style:r.imageContainer,children:e.jsx("img",{src:d,alt:"Featured content",style:r.image})}),e.jsx("div",{style:r.clockContainer,children:e.jsx("div",{style:r.timeVertical,children:a(o).map((t,n)=>e.jsx("div",{style:r.timeGroup,children:t},n))})})]})]})};export{u as default};
