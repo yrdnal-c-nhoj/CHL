@@ -17,17 +17,10 @@ const formatDate = (dateStr) => {
   return mm >= 1 && mm <= 12 && dd >= 1 && dd <= 31 ? `${mm}/${dd}/${yy}` : 'Invalid Date';
 };
 const isValidDateFormat = (date) => /^\d{2}-\d{2}-\d{2}$/.test(date);
-const getTodayDate = () => {
-  const date = new Date();
-  const yy = String(date.getFullYear()).slice(-2);
-  const mm = String(date.getMonth() + 1).padStart(2, '0');
-  const dd = String(date.getDate()).padStart(2, '0');
-  return `${yy}-${mm}-${dd}`;
-};
 const normalizeDate = (d) => d.split('-').map((n) => n.padStart(2, '0')).join('-');
 
 const ClockPage = () => {
-  const { date } = useParams(); // 'today' or YY-MM-DD
+  const { date } = useParams(); // YY-MM-DD
   const { items, loading, error } = useContext(DataContext);
   const navigate = useNavigate();
 
@@ -47,31 +40,15 @@ const ClockPage = () => {
       return;
     }
 
-    let item;
-
-    if (date === 'today') {
-      const todayDate = getTodayDate();
-      item = items.find((i) => normalizeDate(i.date) === normalizeDate(todayDate));
-      if (!item) {
-        // fallback to latest clock
-        item = items.reduce(
-          (latest, current) =>
-            !latest || normalizeDate(current.date) > normalizeDate(latest.date)
-              ? current
-              : latest,
-          null
-        );
-        console.log(`No clock for today, using latest clock: ${item.date}`);
-      }
-    } else if (!isValidDateFormat(date)) {
+    if (!isValidDateFormat(date)) {
       navigate('/', { replace: true });
       return;
-    } else {
-      item = items.find((i) => normalizeDate(i.date) === normalizeDate(date));
-      if (!item) {
-        navigate('/', { replace: true });
-        return;
-      }
+    }
+
+    const item = items.find((i) => normalizeDate(i.date) === normalizeDate(date));
+    if (!item) {
+      navigate('/', { replace: true });
+      return;
     }
 
     if (!item.path) {
@@ -144,23 +121,8 @@ const ClockPage = () => {
   let currentItem = null;
 
   if (items && items.length > 0) {
-    if (date === 'today') {
-      const todayDate = getTodayDate();
-      currentItem = items.find((i) => normalizeDate(i.date) === normalizeDate(todayDate));
-      if (!currentItem) {
-        currentItem = items.reduce(
-          (latest, current) =>
-            !latest || normalizeDate(current.date) > normalizeDate(latest.date)
-              ? current
-              : latest,
-          null
-        );
-      }
-      currentIndex = items.findIndex((i) => i.date === currentItem.date);
-    } else {
-      currentIndex = items.findIndex((i) => normalizeDate(i.date) === normalizeDate(date));
-      currentItem = currentIndex >= 0 ? items[currentIndex] : null;
-    }
+    currentIndex = items.findIndex((i) => normalizeDate(i.date) === normalizeDate(date));
+    currentItem = currentIndex >= 0 ? items[currentIndex] : null;
   }
 
   const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
@@ -224,9 +186,9 @@ const ClockPage = () => {
         </Link>
 
         <Link
-          to={date === 'today' ? '/today' : '/'}
+          to='/'
           className={styles.footerButton}
-          aria-label="Go back to homepage or refresh today"
+          aria-label="Go back to homepage"
         >
           <div className={styles.footerCenter}>
             <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
@@ -234,7 +196,7 @@ const ClockPage = () => {
             <span className={styles.footerNumber}><strong>#</strong>{currentItem.clockNumber}</span>
           </div>
           <span className={styles.screenReaderText}>
-            {date === 'today' ? 'Refresh today’s clock' : 'Go back to homepage'}
+            Go back to homepage
           </span>
         </Link>
 
