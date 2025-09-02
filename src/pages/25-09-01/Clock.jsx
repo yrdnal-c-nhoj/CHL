@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import * as DigitalClock from './ChinaClock.module.css';
 import NotoSerifCJKSC from './NotoSerif.ttf';
-import bgImage from './clo.jpg'; // local background image
+import bgImage from './clo.jpg'; // main background
+import cornerImage from './seal.png'; // image for upper-right corner
 
 const chineseDigits = {
   0: '零', 1: '一', 2: '二', 3: '三', 4: '四',
@@ -45,7 +46,7 @@ const ChinaClock = () => {
     alignItems: 'center',
     flexDirection: isMobile ? 'column' : 'row',
     textAlign: 'center',
-    background: 'linear-gradient(45deg, #FFD700, #FFA500, #FFE135)', // gold gradient
+    background: 'linear-gradient(45deg, #FFD700, #FFA500, #FFE135)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     textShadow: `
@@ -57,7 +58,7 @@ const ChinaClock = () => {
     `,
     fontWeight: 'bold',
     letterSpacing: '0.1rem',
-    position: 'relative', // ensure it's above the background
+    position: 'relative',
     zIndex: 1,
   };
 
@@ -91,7 +92,6 @@ const ChinaClock = () => {
         filter: 'invert(100%) hue-rotate(180deg) brightness(0.5) contrast(1.3) saturate(1.2)',
         zIndex: 0,
       }}>
-        {/* Optional Vignette Overlay */}
         <div style={{
           position: 'absolute',
           top: 0,
@@ -119,6 +119,24 @@ const ChinaClock = () => {
           : <span style={partStyle}>{timeParts}</span>
         }
       </div>
+
+      {/* Upper Right Corner Image */}
+      <img
+        src={cornerImage}
+        alt="Corner"
+        style={{
+          position: 'absolute',
+          top: '1rem',
+          right: '1rem',
+          width: '10vw',
+          height: 'auto',
+          zIndex: 2,
+          opacity: 0.9,
+          transition: 'transform 0.3s ease, opacity 0.3s ease',
+        }}
+        onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.style.opacity = 1; }}
+        onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.opacity = 0.9; }}
+      />
     </div>
   );
 };
