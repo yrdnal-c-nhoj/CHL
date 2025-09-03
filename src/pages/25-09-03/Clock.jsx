@@ -1,13 +1,21 @@
 import { useState, useEffect } from 'react';
 import customFont from './mau.ttf';
 import cornerImage from './corner.gif';
+import backgroundImage from './mau.gif'; // <-- your background image
 
 function DigitalClock() {
   const [time, setTime] = useState(new Date());
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    // Delay so fade-in looks smooth
+    const t = setTimeout(() => setLoaded(true), 100);
+    return () => clearTimeout(t);
   }, []);
 
   const getTimeParts = (date) => {
@@ -30,23 +38,33 @@ function DigitalClock() {
     margin: 0,
     padding: 0,
     backgroundColor: '#b784a7',
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundAttachment: 'fixed',
+    backgroundSize: 'cover',       // scales whole image, no clipping
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
     position: 'relative',
     overflow: 'hidden',
+    opacity: loaded ? 1 : 0,         // fade in
+    transition: 'opacity 1.5s ease-in-out',
   };
 
   const clockStyle = {
     fontFamily: 'Digital7, sans-serif',
-    fontSize: '6rem',
-    color: '#E0B0FF',
+    fontSize: '18vw',
+    color: '#E2BBFCFF',
     textAlign: 'center',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    lineHeight: 1.2,
-  letterSpacing: '0.05em', // slightly spaced letters
-    textShadow: '1px 1px 2px rgba(0,0,0,0.3)', // subtle engraved effect
+    lineHeight: 1.25,
+    letterSpacing: '0.05em',
+    textShadow: '1px 1px 2px rgba(0,0,0,0.4)',
+  };
 
+  const ampmStyle = {
+    fontSize: '16vw',
   };
 
   const cornerStyle = (position) => {
@@ -85,7 +103,7 @@ function DigitalClock() {
         <div style={clockStyle}>
           <div>{hours}</div>
           <div>{minutes}</div>
-          <div>{ampm}</div>
+          <div style={ampmStyle}>{ampm}</div>
         </div>
       </div>
     </>
