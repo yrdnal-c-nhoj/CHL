@@ -38,7 +38,7 @@ const PizzaClock = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '100vh',
+      height: '100dvh',
       width: '100vw',
       overflow: 'hidden',
       position: 'relative',

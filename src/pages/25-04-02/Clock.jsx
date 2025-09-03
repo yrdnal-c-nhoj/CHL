@@ -147,7 +147,7 @@ function DeepSpaceClock() {
         backgroundImage: `url(${stars})`,
         backgroundSize: "cover",
         overflow: "hidden",
-        height: "100vh",
+        height: "100dvh",
         width: "100vw",
         display: "flex",
         justifyContent: "center",
