@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import bgImage from './lp.webp';
-import hourHandImage from './arm1.gif';
-import minuteHandImage from './arm2.gif';
+import hourHandImage from './arm2.gif';
+import minuteHandImage from './arm1.gif';
 import secondHandImage from './arm3.gif';
 
 export default function FullViewportRectangularAnalogClock({ showSeconds = true }) {
@@ -61,9 +61,9 @@ export default function FullViewportRectangularAnalogClock({ showSeconds = true 
   const svgStyle = { display: 'block', width: '100%', height: '100%' };
 
   // Hand sizes relative to radius
-  const hourHandSize = radius * 1.5; // Image height for hour hand
-  const minuteHandSize = radius * 2.76; // Image height for minute hand
-  const secondHandSize = radius * 1.7; // Image height for second hand
+  const hourHandSize = radius * 0.7; // Image height for hour hand
+  const minuteHandSize = radius * 0.9; // Image height for minute hand
+  const secondHandSize = radius * 1.3; // Image height for second hand
   const handWidthScale = 0.3; // Adjust width relative to height (assumes image aspect ratio)
 
   return (
@@ -81,7 +81,7 @@ export default function FullViewportRectangularAnalogClock({ showSeconds = true 
           height={hourHandSize}
           transform={`rotate(${hourAngle} ${cx} ${cy})`}
           preserveAspectRatio="xMidYMax meet"
-          opacity={0.7} 
+          opacity={0.9} 
         />
 
         {/* Minute hand */}
@@ -93,7 +93,7 @@ export default function FullViewportRectangularAnalogClock({ showSeconds = true 
           height={minuteHandSize}
           transform={`rotate(${minAngle} ${cx} ${cy})`}
           preserveAspectRatio="xMidYMax meet"
-          opacity={0.7} 
+          opacity={0.9} 
         />
 
         {/* Second hand */}
@@ -106,7 +106,7 @@ export default function FullViewportRectangularAnalogClock({ showSeconds = true 
             height={secondHandSize}
             transform={`rotate(${secAngle} ${cx} ${cy})`}
             preserveAspectRatio="xMidYMax meet"
-              opacity={0.7} 
+              opacity={0.9} 
           />
         )}
 
