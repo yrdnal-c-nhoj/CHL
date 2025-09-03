@@ -73,7 +73,7 @@ export default function DigitalClock() {
     <div
       style={{
         width: "100vw",
-        height: "100vh",
+        height: "100dvh",
         position: "relative",
         overflow: "hidden",
         isolation: "isolate", // Ensures styles don't leak

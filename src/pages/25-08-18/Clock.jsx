@@ -62,7 +62,7 @@ export default function ClockLetters({
   const root = {
     position: "relative",
     width: "100vw",
-    height: "100vh",
+    height: "100dvh",
     background: "#ffffff",
   };
 

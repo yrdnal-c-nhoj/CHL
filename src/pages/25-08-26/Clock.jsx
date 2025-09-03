@@ -30,8 +30,8 @@ export default function DigitalClock() {
   const styles = {
     root: {
       position: "relative",
-      minHeight: "100vh",
-      minWidth: "100vw",
+      height: "100dvh",
+      width: "100vw",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
