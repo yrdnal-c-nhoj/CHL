@@ -39,7 +39,7 @@ function Clock() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "100vh",
+    height: "100dvh",
     width: "100vw",
     flexDirection: isMobile ? "column" : "row",
     gap: isMobile ? "0.1rem" : "0.1rem",

@@ -71,7 +71,7 @@ const Clock = () => {
         style={{
           position: 'relative',
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           backgroundImage: `url(${backgroundImage})`, // Add background image
           backgroundSize: 'cover', // Ensure the image covers the entire area
           backgroundPosition: 'center', // Center the image

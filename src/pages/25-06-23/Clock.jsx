@@ -125,7 +125,7 @@ const SquigglingClock = () => {
   return (
     <div style={{
       margin: 0,
-      height: '100vh',
+      height: '100dvh',
       width: '100vw',
       display: 'flex',
       justifyContent: 'center',

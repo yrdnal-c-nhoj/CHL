@@ -53,7 +53,7 @@ export default function BlizzardClock() {
       style={{
         margin: 0,
         padding: 0,
-        height: "100vh",
+        height: "100dvh",
         width: "100vw",
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: "100%",

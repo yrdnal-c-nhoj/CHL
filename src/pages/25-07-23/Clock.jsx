@@ -54,7 +54,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     margin: 0,
     position: 'relative',

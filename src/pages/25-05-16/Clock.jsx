@@ -25,7 +25,7 @@ const Clock = () => {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      height: 100dvh;
       width: 100vw;
       font-family: 'brai', sans-serif;
       text-align: center;

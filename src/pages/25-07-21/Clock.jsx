@@ -24,7 +24,7 @@ const AnglerfishClock = () => {
 
   return (
     <div style={{
-      height: '100vh',
+      height: '100dvh',
       width: '100vw',
       overflow: 'hidden',
       backgroundColor: '#093063',

@@ -107,7 +107,7 @@ const IndecisiveClock = () => {
     backgroundSize: "24vw 42vh",
     backgroundPosition: "0 0, 0 0, 12vw 21vh, 12vw 21vh, 0 0, 12vw 21vh",
     overflow: "hidden",
-    height: "100vh",
+    height: "100dvh",
     width: "100vw",
   };
 

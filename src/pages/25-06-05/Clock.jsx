@@ -68,7 +68,7 @@ const TreehouseClock = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     background: 'linear-gradient(180deg, rgb(142, 183, 243) 0%, rgb(108, 164, 197) 80%)',
     position: 'relative',

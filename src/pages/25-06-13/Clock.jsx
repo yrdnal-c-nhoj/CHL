@@ -34,7 +34,7 @@ const CloudyNightClock = () => {
     margin: 0,
     overflow: 'hidden',
     background: 'linear-gradient(to bottom, #1d1d4f, #182c21)',
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     display: 'flex',
     justifyContent: 'center',

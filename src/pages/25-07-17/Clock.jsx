@@ -113,7 +113,7 @@ const AnalogClock = () => {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "100vh",
+    height: "100dvh",
     width: "100vw",
     fontFamily: "'anim', sans-serif",
     position: "relative",

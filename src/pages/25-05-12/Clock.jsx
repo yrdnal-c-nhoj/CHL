@@ -97,7 +97,7 @@ const CheetahClock = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh',
+        height: '100dvh',
         margin: 0,
         position: 'relative',
         overflow: 'hidden',
