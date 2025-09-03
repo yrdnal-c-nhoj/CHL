@@ -66,7 +66,7 @@ const UnrulyClock = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
+    height: '100dvh',
     margin: 0,
     fontSize: '1rem',
   };
