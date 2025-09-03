@@ -77,7 +77,7 @@ const FireworksClock = () => {
     margin: 0,
     padding: 0,
     background: 'rgb(9, 9, 9)',
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     overflow: 'hidden',
     display: 'flex',

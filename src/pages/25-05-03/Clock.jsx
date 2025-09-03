@@ -33,7 +33,7 @@ const FlyingPetalsClock = () => {
     padding: 0,
     overflow: 'hidden',
     backgroundColor: 'rgb(224, 145, 156)',
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     position: 'relative',
   };

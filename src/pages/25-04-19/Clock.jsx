@@ -252,7 +252,7 @@ const SphereDropClock = () => {
           transform: scale(0.8) rotateX(20deg) rotateY(20deg);
           perspective: 1500px;
           width: 100vw;
-          height: 100vh;
+          height: 100dvh;
           overflow: visible;
         }
 

@@ -103,7 +103,7 @@ const SkewClock = () => {
 
         .skew-wrapper {
           background: black;
-          height: 100vh;
+          height: 100dvh;
           width: 100vw;
           display: flex;
           justify-content: center;
