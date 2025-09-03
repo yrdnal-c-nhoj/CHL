@@ -7,7 +7,6 @@ import ClockPage from './ClockPage';
 import Manifesto from './Manifesto';
 import About from './About';
 import Contact from './Contact';
-import Log from './Log';
 import { pageview } from './analytics';
 
 // Analytics & SEO component
@@ -51,7 +50,6 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/:date" element={<ClockPage />} />
           <Route path="/about" element={<About />} />
-          <Route path="/log" element={<Log />} />
           <Route path="/manifesto" element={<Manifesto />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/index.html" element={<Navigate to="/" replace />} />
