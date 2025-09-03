@@ -110,7 +110,7 @@ const ConfettiClock = () => {
           top: 0,
           left: 0,
           width: "100vw",
-          height: "100vh",
+          height: "100dvh",
           background: "linear-gradient(to top, #ff0000, #ffff00)", // red to yellow gradient
           zIndex: 0,
         }}
@@ -123,7 +123,7 @@ const ConfettiClock = () => {
           top: 0,
           left: 0,
           width: "100vw",
-          height: "100vh",
+          height: "100dvh",
           backgroundImage: `url(${confettiBg})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -143,7 +143,7 @@ const ConfettiClock = () => {
           top: 0,
           left: 0,
           width: "100vw",
-          height: "100vh",
+          height: "100dvh",
           pointerEvents: "none",
           userSelect: "none",
           zIndex: 2,

@@ -84,7 +84,7 @@ const MagentaClock = () => {
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
-    height: "100vh",
+    height: "100dvh",
     width: "100vw",
     margin: 0,
     backgroundColor: "#ff00ff",

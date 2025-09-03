@@ -41,7 +41,7 @@ const BirthdayCakeClock = () => {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "100vh",
+    height: "100dvh",
     // Removed overflow: hidden to prevent clipping
   };
 
