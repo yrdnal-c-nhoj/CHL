@@ -14,7 +14,6 @@ html, body {
   padding: 0;
   height: 100dvh;   /* dynamic VH for mobile browsers */
   width: 100%;
-  overflow: hidden; /* prevent scroll */
   display: flex;    /* makes body a flex container */
   flex-direction: column;
 }
