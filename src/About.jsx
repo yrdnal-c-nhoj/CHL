@@ -21,9 +21,11 @@ function About() {
         </div>
 
         <section className="manifestoSection">
+          
           <p>
-            <span className="hat">About Borrowed Time</span>
-            <p>&nbsp;</p> BorrowedTime is a project by Cubist Heart Laboratories. It is new clock each day, using found images from the Internet.
+            <span className="hat">About BorrowedTime<br />&nbsp;</span><br />
+                  <span className="smallcaps">a project by  </span>Cubist Heart Laboratories, BorrowedTime is
+             new clock each day, using found images from the Internet.
           It is made with VSCode using React JavaScript, housed on Github and deployed on Vercel.
           </p>
 
@@ -39,9 +41,9 @@ function About() {
           </p>
 <br />
           <p>
-            <span className="hat">About Cubist Heart Laboratories</span>
-            <p>&nbsp;</p> 
-Cubist Heart Laboratories is a global collective of scientists, artists and shamans, found wherever electrons move.
+            <span className="hat">About Cubist Heart Laboratories<br />&nbsp;</span><br />
+                      <span className="smallcaps">Cubist Heart Laboratories </span>
+ is a global collective of scientists, artists and shamans, found wherever electrons move.
                  </p><br /><br />
         </section>
       </div>
