@@ -140,7 +140,7 @@ const CoffeeClock = () => {
       style={{
         margin: 0,
         padding: 0,
-        height: "100vh",
+        height: "100dvh",
         width: "100vw",
         background: "#5c4106",
         display: "flex",

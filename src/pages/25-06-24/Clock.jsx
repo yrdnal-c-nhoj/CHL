@@ -49,7 +49,7 @@ const ThoughtBalloonClock = () => {
         position: 'relative',
         margin: 0,
         padding: 0,
-        height: '100vh',
+        height: '100dvh',
         width: '100vw',
         overflow: 'hidden',
         fontSize: '3rem',

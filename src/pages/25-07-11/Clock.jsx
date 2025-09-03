@@ -68,7 +68,7 @@ const PenmanshipClock = () => {
   return (
     <div
       style={{
-        height: '100vh',
+        height: '100dvh',
         width: '100vw',
         overflow: 'hidden',
         margin: 0,

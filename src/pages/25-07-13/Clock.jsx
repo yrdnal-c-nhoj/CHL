@@ -73,7 +73,7 @@ const RorschachClock = () => {
 
   const containerStyle = {
     margin: 0,
-    height: '100vh',
+    height: '100dvh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

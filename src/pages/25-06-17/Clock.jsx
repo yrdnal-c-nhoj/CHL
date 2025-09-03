@@ -145,7 +145,7 @@ const styles = {
   body: {
     margin: 0,
     padding: 0,
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     backgroundImage: 'linear-gradient(24deg, #211408 6.25%, #f3a64e 6.25%, #ea8007 25%, #fff 25%, #f9c2c2 31.25%, #e3630d 31.25%, #e3630d 50%, #211408 50%, #0b30ea 56.25%, #ed8917 56.25%, #ed8917 75%, #f60808 75%, #fff 81.25%, #e3630d 81.25%, #e3630d 100%)',
     backgroundSize: '6vw 2vh',

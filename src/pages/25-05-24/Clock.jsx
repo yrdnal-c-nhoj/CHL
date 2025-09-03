@@ -162,7 +162,7 @@ const Clock = () => {
           .tornado-clock {
             position: relative;
             width: 100vw;
-            height: 100vh;
+            height: 100dvh;
             overflow: hidden;
             background: radial-gradient(ellipse at center, #8d906e 0%, #eaf5a2 100%);
             background-color: rgb(184, 204, 168);

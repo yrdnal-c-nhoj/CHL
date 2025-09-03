@@ -28,7 +28,7 @@ const Clock = () => {
 
   return (
     <div style={{
-      height: '100vh',
+      height: '100d',
       width: '100vw',
       display: 'flex',
       justifyContent: 'center',

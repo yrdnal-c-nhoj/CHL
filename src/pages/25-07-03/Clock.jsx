@@ -29,7 +29,7 @@ const Clock = () => {
   const containerStyle = {
     margin: 0,
     padding: 0,
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     backgroundImage: `url(${rocketGif})`,
     backgroundRepeat: 'no-repeat',

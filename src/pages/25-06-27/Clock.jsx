@@ -141,7 +141,7 @@ const MorseClock = () => {
 const styles = {
   container: {
     margin: 0,
-    height: "100vh",
+    height: "100dvh",
     width: "100vw",
     background: "linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%)",
     position: "relative",

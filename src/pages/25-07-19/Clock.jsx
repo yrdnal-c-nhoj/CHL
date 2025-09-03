@@ -22,7 +22,7 @@ const CuneiformClock = () => {
     <div
       className="cunei-wrapper"
       style={{
-        height: '100vh',
+        height: '100dvh',
         width: '100vw',
         backgroundColor: '#062bb4',
         margin: 0,
