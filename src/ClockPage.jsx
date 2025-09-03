@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import Header from './components/Header';
+import ClockPageNav from './components/ClockPageNav'; // Import the new navigation component
 import styles from './ClockPage.module.css';
 
 // Preload all Clock.jsx files under /pages/**/Clock.jsx using Vite's glob import
@@ -171,46 +172,13 @@ const ClockPage = () => {
           <div className={styles.loading}>Loading clock...</div>
         )}
       </div>
-
-      {/* Footer navigation */}
-      <div className={`${styles.footerStrip} ${footerVisible ? styles.visible : styles.hidden}`}>
-        <Link
-          to={prevItem ? `/${prevItem.date}` : '/'}
-          className={styles.navButton}
-          aria-label={prevItem ? `Go to previous clock: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
-        >
-          <span aria-hidden="true">⇽</span>
-          <span className={styles.screenReaderText}>
-            {prevItem ? `Previous: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
-          </span>
-        </Link>
-
-        <Link
-          to='/'
-          className={styles.footerButton}
-          aria-label="Go back to homepage"
-        >
-          <div className={styles.footerCenter}>
-            <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
-            <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
-            <span className={styles.footerNumber}><strong>#</strong>{currentItem.clockNumber}</span>
-          </div>
-          <span className={styles.screenReaderText}>
-            Go back to homepage
-          </span>
-        </Link>
-
-        <Link
-          to={nextItem ? `/${nextItem.date}` : '/'}
-          className={styles.navButton}
-          aria-label={nextItem ? `Go to next clock: ${formatTitle(nextItem.title)}` : 'Go back to homepage'}
-        >
-          <span aria-hidden="true">⇾</span>
-          <span className={styles.screenReaderText}>
-            {nextItem ? `Next: ${formatTitle(nextItem.title)}` : 'Go back to homepage'}
-          </span>
-        </Link>
-      </div>
+<ClockPageNav
+  prevItem={prevItem}
+  nextItem={nextItem}
+  currentItem={currentItem}
+  formatTitle={formatTitle}
+  formatDate={formatDate}
+/>
     </div>
   );
 };

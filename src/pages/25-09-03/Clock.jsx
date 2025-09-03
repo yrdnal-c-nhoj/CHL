@@ -44,6 +44,9 @@ function DigitalClock() {
     justifyContent: 'center',
     alignItems: 'center',
     lineHeight: 1.2,
+  letterSpacing: '0.05em', // slightly spaced letters
+    textShadow: '1px 1px 2px rgba(0,0,0,0.3)', // subtle engraved effect
+
   };
 
   const cornerStyle = (position) => {
