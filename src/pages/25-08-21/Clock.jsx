@@ -168,7 +168,7 @@ const NumberLineClock = () => {
   return (
     <div
       style={{
-        minHeight: '100vh',
+        height: '100dvh',
         opacity: 0.9,
         backgroundImage:
           'linear-gradient(#444cf7 0.4px, transparent 0.4px), linear-gradient(to right, #444cf7 0.4px, #2a331c 0.4px)',
