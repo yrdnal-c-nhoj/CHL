@@ -1,21 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
 
-:root{
+/* Root element stuff — keep it clean */
+:root {
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-   display: flex;
+}
+
+/* Constrain html + body to viewport and remove scrollbars */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100dvh;   /* dynamic VH for mobile browsers */
+  width: 100%;
+  overflow: hidden; /* prevent scroll */
+  display: flex;    /* makes body a flex container */
   flex-direction: column;
-  flex: 1;
 }
-
-
-body, html,{
-  height: 100dvh;
-}
-
-/* 
-.main-content {
-  flex: 1;
-} */
