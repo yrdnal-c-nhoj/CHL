@@ -41,7 +41,7 @@ export default function FullViewportRectangularAnalogClock({
 
   const containerStyle = {
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     margin: 0,
     padding: 0,
     overflow: 'hidden',
