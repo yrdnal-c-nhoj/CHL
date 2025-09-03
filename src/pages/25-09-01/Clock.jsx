@@ -72,7 +72,7 @@ const ChinaClock = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      minHeight: '100vh',
+      height: '100dvh',
       width: '100vw',
       margin: 0,
       padding: 0,
