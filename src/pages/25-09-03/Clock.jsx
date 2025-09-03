@@ -13,7 +13,6 @@ function DigitalClock() {
   }, []);
 
   useEffect(() => {
-    // Delay so fade-in looks smooth
     const t = setTimeout(() => setLoaded(true), 100);
     return () => clearTimeout(t);
   }, []);
@@ -40,18 +39,18 @@ function DigitalClock() {
     backgroundColor: '#b784a7',
     backgroundImage: `url(${backgroundImage})`,
     backgroundAttachment: 'fixed',
-    backgroundSize: 'cover',       // scales whole image, no clipping
+    backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     position: 'relative',
     overflow: 'hidden',
-    opacity: loaded ? 1 : 0,         // fade in
-    transition: 'opacity 1.5s ease-in-out',
+    opacity: loaded ? 1 : 0,
+    transition: 'opacity 0.5s ease-in-out',
   };
 
   const clockStyle = {
     fontFamily: 'Digital7, sans-serif',
-    fontSize: '18vw',
+    fontSize: '18vw', // default for phones
     color: '#E2BBFCFF',
     textAlign: 'center',
     display: 'flex',
@@ -92,6 +91,16 @@ function DigitalClock() {
             font-weight: normal;
             font-style: normal;
           }
+
+          /* On larger screens, reduce font size */
+          @media (min-width: 700px) {
+            .clock-text {
+              font-size: 18vh !important;
+            }
+            .clock-ampm {
+              font-size: 16vh !important;
+            }
+          }
         `}
       </style>
       <div style={containerStyle}>
@@ -100,10 +109,10 @@ function DigitalClock() {
         <img src={cornerImage} alt="Corner" style={cornerStyle('bottom-left')} />
         <img src={cornerImage} alt="Corner" style={cornerStyle('bottom-right')} />
 
-        <div style={clockStyle}>
+        <div style={clockStyle} className="clock-text">
           <div>{hours}</div>
           <div>{minutes}</div>
-          <div style={ampmStyle}>{ampm}</div>
+          <div style={ampmStyle} className="clock-ampm">{ampm}</div>
         </div>
       </div>
     </>
