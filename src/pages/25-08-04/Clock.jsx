@@ -82,7 +82,7 @@ const DigitalClock = () => {
             position: 'absolute',
             inset: 0,
             backgroundImage: `url(${bgImage})`,
-          backgroundSize: 'cover',
+            backgroundSize: 'cover',
             backgroundPosition: 'center',
             filter: 'saturate(0.3) brightness(0.45) contrast(1.5)',
             zIndex: 0,

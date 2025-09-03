@@ -33,7 +33,7 @@ export default function DigitalClock() {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '100vh',
+    height: '100dvh',
     width: '100%',
     backgroundImage: `url(${bgImage2}), url(${bgImage})`,
     backgroundSize: '100% 100%',

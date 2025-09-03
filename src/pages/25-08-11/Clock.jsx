@@ -66,7 +66,7 @@ const SwirlingImages = () => {
   const containerStyle = {
     position: 'relative',
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     overflow: 'hidden',
     fontFamily: '"CustomFont", sans-serif',
   };

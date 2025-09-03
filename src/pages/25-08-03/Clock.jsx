@@ -49,7 +49,7 @@ const OrnateClock = () => {
       bottom: 0,
       left: 0,
       width: '100vw',
-      height: '100vh',
+      height: '100dvh',
       backgroundImage: `url(${bgImage})`,
       backgroundSize: '100% 100%',
       backgroundRepeat: 'no-repeat',

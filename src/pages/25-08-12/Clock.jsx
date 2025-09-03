@@ -33,7 +33,7 @@ export default function BiteviteHexahedron() {
   const containerStyle = {
     position: "relative",
     width: "100vw",
-    height: "100vh",
+    height: "100dvh",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
