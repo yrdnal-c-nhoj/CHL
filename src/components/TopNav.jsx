@@ -46,16 +46,8 @@ export default function TopNav() {
             </NavLink>
           </li>
 
-            <li className="nav-item">
-            <NavLink
-              to="/about"
-              className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              ABOUT
-            </NavLink>
-          </li>
-          
+
+
           <li className="nav-item">
             <NavLink
               to="/manifesto"
@@ -66,6 +58,17 @@ export default function TopNav() {
             </NavLink>
           </li>
         
+
+            <li className="nav-item">
+            <NavLink
+              to="/about"
+              className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              ABOUT
+            </NavLink>
+          </li>
+          
           <li className="nav-item">
             <NavLink
               to="/contact"
