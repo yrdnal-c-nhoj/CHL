@@ -51,7 +51,7 @@ function DigitalClock() {
   const clockStyle = {
     fontFamily: 'Digital7, sans-serif',
     fontSize: '18vw', // default for phones
-    color: '#E2BBFCFF',
+    color: '#E1B6FEFF',
     textAlign: 'center',
     display: 'flex',
     flexDirection: 'column',
