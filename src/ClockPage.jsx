@@ -163,26 +163,24 @@ const ClockPage = () => {
   // Render
   // -------------------------------
   return (
-  <div className={styles.container}>
-  <Header visible={headerVisible} className={headerVisible ? '' : styles.hidden} />
-  <div className={styles.content}>
-    {ClockComponent ? (
-      <ClockComponent />
-    ) : (
-      <div className={styles.loading}>Loading clock...</div>
-    )}
-  </div>
-
-  <ClockPageNav
-    prevItem={prevItem}
-    nextItem={nextItem}
-    currentItem={currentItem}
-    formatTitle={formatTitle}
-    formatDate={formatDate}
-    className={footerVisible ? '' : styles.hidden}
-  />
-</div>
-
+    <div className={styles.container}>
+      <Header visible={headerVisible} />
+      <div className={styles.content}>
+        {ClockComponent ? (
+          <ClockComponent />
+        ) : (
+          <div className={styles.loading}>Loading clock...</div>
+        )}
+      </div>
+      
+<ClockPageNav
+  prevItem={prevItem}
+  nextItem={nextItem}
+  currentItem={currentItem}
+  formatTitle={formatTitle}
+  formatDate={formatDate}
+/>
+    </div>
   );
 };
 
