@@ -6,6 +6,7 @@ import Home from './Home';
 import ClockPage from './ClockPage';
 import Manifesto from './Manifesto';
 import About from './About';
+import Today from './Today';
 import Contact from './Contact';
 import { pageview } from './analytics';
 
@@ -52,6 +53,7 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/manifesto" element={<Manifesto />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/today" element={<Today />} />
           <Route path="/index.html" element={<Navigate to="/" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
