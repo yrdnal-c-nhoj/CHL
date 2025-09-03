@@ -41,7 +41,7 @@ const LavaClock = () => {
     top: 0,
     left: 0,
     width: "100vw",
-    height: "100vh",
+    height: "100dvh",
     backgroundColor: "rgb(205, 15, 15)",
     opacity: fadeOut ? 0 : 0.5,
     transition: "opacity 1s ease",

@@ -96,7 +96,7 @@ const MyClock = () => {
     <div
       style={{
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         background: `url(${backgroundImage}) center/cover no-repeat`,
         overflow: 'hidden',
       }}

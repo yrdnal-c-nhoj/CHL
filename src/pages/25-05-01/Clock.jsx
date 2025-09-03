@@ -83,7 +83,7 @@ export default function SlowLightningClock() {
       backgroundSize: "cover",
       backgroundPosition: "center",
       position: "absolute",
-      height: "100vh",
+      height: "100dvh",
       width: "100vw",
       top: "50%",
       left: "50%",

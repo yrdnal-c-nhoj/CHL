@@ -31,7 +31,7 @@ const Clock = () => {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "100vh",
+    height: "100dvh",
     fontFamily: "'Oxanium', 'Nanum Gothic Coding', 'Roboto Slab', monospace",
   };
 

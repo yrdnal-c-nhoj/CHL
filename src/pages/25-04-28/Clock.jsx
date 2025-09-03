@@ -90,7 +90,7 @@ const ClockApp = () => {
 
   const bodyStyle = {
     fontFamily: "'Skater', sans-serif",
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     backgroundColor: '#929dae',
     overflow: 'hidden',
