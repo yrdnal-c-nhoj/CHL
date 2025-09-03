@@ -27,7 +27,7 @@ export default function MessyClock() {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover',

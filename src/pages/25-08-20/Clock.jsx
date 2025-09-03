@@ -174,7 +174,7 @@ export default function WorldClockGrid() {
   gridTemplateRows: `repeat(${rows}, 1fr)`,
   gap: "5px",
   width: "100vw",
-  height: "100vh",
+  height: "100dvh",
   padding: "10px",
   boxSizing: "border-box",
   justifyItems: "center",

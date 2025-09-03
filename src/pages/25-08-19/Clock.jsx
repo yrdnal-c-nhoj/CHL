@@ -38,7 +38,7 @@ const Pendulum = () => {
 
   const styles = {
     pendulumApp: {
-      height: '100vh',
+      height: '100dvh',
       margin: 0,
       display: 'flex',
       justifyContent: 'center',
