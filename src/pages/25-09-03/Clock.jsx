@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import customFont from './mau.ttf';
+import backgroundImage from './bg.gif';
 
 function DigitalClock() {
   const [time, setTime] = useState(new Date());
@@ -20,15 +21,26 @@ function DigitalClock() {
 
   const { hours, minutes, ampm } = getTimeParts(time);
 
-  const containerStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    width: '100vw',
-    margin: 0,
-    backgroundColor: '#BB85AB',
-  };
+const containerStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100vh',
+  width: '100vw',
+  margin: 0,
+  padding: 0,
+  backgroundColor: '#b784a7', // Background color behind the image
+  backgroundImage: `url(${backgroundImage})`,
+  backgroundSize: '100% 100%',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  overflow: 'hidden',
+};
 
   const clockStyle = {
     fontFamily: 'Digital7, sans-serif',
