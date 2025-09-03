@@ -10,7 +10,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '100vh',
+    height: '100dvh',
     backgroundImage: `url(${backgroundImg})`, // Your custom background
     backgroundSize: 'cover',
     backgroundPosition: 'center',

@@ -42,7 +42,7 @@ const MirroredBackground = () => {
   const containerStyle = {
     display: 'flex',
     width: '100%',
-    height: '100vh',
+    height: '100dvh',
     position: 'relative',
     overflow: 'hidden',
     isolation: 'isolate',

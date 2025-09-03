@@ -48,7 +48,7 @@ const Clock = () => {
   const { hourStyle, minuteStyle, secondStyle } = getRotationStyles();
 
   const wrapperStyle = {
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     backgroundImage: `url(${fullBg})`,
     backgroundSize: 'cover',
