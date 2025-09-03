@@ -174,7 +174,7 @@ const HummingbirdClock = () => {
 const styles = {
   body: {
     margin: 0,
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     background: '#e478d4',
     overflow: 'hidden',

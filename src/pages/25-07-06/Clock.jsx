@@ -59,7 +59,7 @@ const Clock = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '100vh',
+      height: '100dvh',
       width: '100vw',
       backgroundColor: 'rgb(3, 3, 61)',
       overflow: 'hidden',

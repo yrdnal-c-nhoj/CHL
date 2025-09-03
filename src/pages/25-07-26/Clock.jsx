@@ -78,7 +78,7 @@ const PrimaryColorClock = () => {
   const styleTag = <style>{fontFace}</style>;
 
   const containerStyle = {
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     margin: 0,
     overflow: 'hidden',

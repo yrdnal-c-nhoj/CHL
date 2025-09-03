@@ -51,7 +51,7 @@ const PrimaryClock = () => {
 
 const styles = {
   body: {
-    height: '100vh',
+    height: '100dvh',
     margin: 0,
     overflow: 'hidden',
     display: 'flex',

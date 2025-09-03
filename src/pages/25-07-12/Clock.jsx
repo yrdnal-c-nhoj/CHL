@@ -49,7 +49,7 @@ const FibonacciClock = () => {
   return (
     <div style={{
       margin: 0,
-      height: '100vh',
+      height: '100dvh',
       width: '100vw',
       backgroundColor: '#cac7c7',
       display: 'flex',

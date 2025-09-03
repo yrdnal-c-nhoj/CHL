@@ -110,7 +110,7 @@ const NumberTossClock = () => {
 
 const styles = {
   body: {
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     margin: 0,
     overflow: 'hidden',

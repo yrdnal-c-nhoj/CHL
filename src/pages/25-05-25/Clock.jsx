@@ -46,7 +46,7 @@ const Clock = () => {
   const containerStyle = {
     margin: 0,
     padding: 0,
-    height: "100vh",
+    height: "100dvh",
     width: "100vw",
     background: "radial-gradient(circle at center, #dfeb6f, #ff6a06)",
     display: "flex",

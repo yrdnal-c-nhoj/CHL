@@ -80,7 +80,7 @@ const Clock24 = () => {
     <div
       style={{
         margin: 0,
-        height: '100vh',
+        height: '100dvh',
         width: '100vw',
         backgroundColor: 'rgb(161, 161, 160)',
         display: 'flex',

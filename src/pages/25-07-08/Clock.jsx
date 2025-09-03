@@ -128,7 +128,7 @@ const MintClock = () => {
             background-size: cover;
             background-position: center;
             position: fixed;
-            height: 100vh;
+            height: 100dvh;
             width: 100vw;
             top: 50%;
             left: 50%;

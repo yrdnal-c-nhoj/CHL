@@ -44,7 +44,7 @@ const HospitalClock = () => {
 const styles = {
   body: {
     margin: 0,
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     background: '#313131FF',
     display: 'flex',

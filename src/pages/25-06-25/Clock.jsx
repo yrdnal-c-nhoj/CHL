@@ -74,7 +74,7 @@ const BoneClock = () => {
           left: 50%;
           transform: translateX(-50%);
           width: 200vw;
-          height: 100vh;
+          height: 100dvh;
           z-index: 0;
           filter: brightness(120%);
           pointer-events: none;

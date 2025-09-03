@@ -123,7 +123,7 @@ const RouletteClock = () => {
   `;
 
   return (
-    <div style={{ height: '100vh', margin: 0, overflow: 'hidden', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <div style={{ height: '100dvh', margin: 0, overflow: 'hidden', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <style>{fontStyle}</style>
 
       <div

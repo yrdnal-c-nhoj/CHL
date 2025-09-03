@@ -7,7 +7,7 @@ import sprout from './sprout.gif';
 const styles = {
   container: {
     fontFamily: "'sprout', monospace",
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     margin: 0,
     padding: 0,

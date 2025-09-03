@@ -104,7 +104,7 @@ const FaceCardClock = () => {
       style={{
         margin: 0,
         padding: 0,
-        height: '100vh',
+        height: '100dvh',
         width: '100vw',
         overflow: 'hidden',
         display: 'flex',

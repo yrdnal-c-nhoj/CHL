@@ -44,8 +44,8 @@ const Clock = () => {
 
   const containerStyle = {
     position: 'relative',
-    minHeight: '100vh',
-    minWidth: '100vh',
+    height: '100dvh',
+    width: '100vh',
     margin: 0,
     backgroundColor: '#4f4d4d',
     display: 'flex',

@@ -67,7 +67,7 @@ const MercuryClock = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '100vh',
+      height: '100dvh',
      width: '100vw',
       backgroundColor: '#838b8f',
       backgroundImage: `url(${bg1}), url(${bg2}), url(${bg3})`,

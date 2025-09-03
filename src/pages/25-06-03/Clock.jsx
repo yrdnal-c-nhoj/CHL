@@ -35,7 +35,7 @@ const FiligreeClock = () => {
       background:
         "radial-gradient(circle, rgba(163, 91, 111, 1) 0%, rgba(145, 81, 144, 1) 100%)",
       width: "100vw",
-      height: "100vh",
+      height: "100dvh",
       margin: 0,
       padding: 0,
       overflow: "hidden",

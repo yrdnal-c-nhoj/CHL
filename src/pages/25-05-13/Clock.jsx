@@ -59,7 +59,7 @@ const FlatClock = () => {
         }
         body {
           margin: 0;
-          height: 100vh;
+          height: 100dvh;
           background: linear-gradient(to top, #000000 0%, #122346 100%);
           overflow: hidden;
           perspective: 1000px;

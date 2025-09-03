@@ -56,7 +56,7 @@ const FStopClock = () => {
     <div className="fstop-wrapper" style={{
       margin: 0,
       background: '#111',
-      height: '100vh',
+      height: '100dvh',
       width: '100vw',
       display: 'flex',
       justifyContent: 'center',

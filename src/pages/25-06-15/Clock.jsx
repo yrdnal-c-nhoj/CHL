@@ -63,7 +63,7 @@ const styles = {
     margin: 0,
     background: '#d7d2d2',
     overflow: 'hidden',
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     position: 'relative',
     fontFamily: 'ZombieStitch',
