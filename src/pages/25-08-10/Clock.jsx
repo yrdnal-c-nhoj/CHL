@@ -29,7 +29,7 @@ const DigitalClock = () => {
     container: {
       display: 'flex',
       flexDirection: 'row',
-      height: '100vh',
+      height: '100dvh',
       width: '100vw',
       backgroundColor: '#111010FF',
       fontFamily: `'Orbitron', monospace`,
