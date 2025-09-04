@@ -1,81 +1,102 @@
 import React, { useEffect, useState } from 'react';
+import DigitalClockFont from './swi.ttf';
+import DigitalClockBg from './swiss.jpg';
 
-export default function AnalogClock() {
+export default function DigitalClock() {
   const [now, setNow] = useState(new Date());
+  const [fontReady, setFontReady] = useState(false);
 
-  // Update every second
+  // Load custom font
   useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(timer);
+    let mounted = true;
+    if (typeof window !== 'undefined' && window.FontFace) {
+      const f = new FontFace('DigitalClockFont', `url(${DigitalClockFont})`);
+      f.load().then((loaded) => {
+        if (!mounted) return;
+        try { document.fonts.add(loaded); } catch {}
+        setFontReady(true);
+      }).catch(() => setFontReady(true));
+    } else setFontReady(true);
+    return () => { mounted = false; };
   }, []);
 
-  // Calculate angles
-  const seconds = now.getSeconds();
+  // Update time
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 500);
+    return () => clearInterval(t);
+  }, []);
+
+  const sharedFontFamily = fontReady ? 'DigitalClockFont, monospace' : 'monospace';
+
+  const formatTwoDigits = (num) => num.toString().padStart(2, '0');
+
+  const hours24 = now.getHours();
+  const hours12 = hours24 % 12 || 12;
   const minutes = now.getMinutes();
-  const hours = now.getHours() % 12;
+  const seconds = now.getSeconds();
+  const ampm = hours24 >= 12 ? 'P.M.' : 'A.M.';
 
-  const secondDeg = seconds * 6; // 360 / 60
-  const minuteDeg = minutes * 6 + seconds * 0.1; // smooth
-  const hourDeg = hours * 30 + minutes * 0.5; // smooth
+  const allDigits = [...formatTwoDigits(hours12), ...formatTwoDigits(minutes), ...formatTwoDigits(seconds)];
+  const allAMPM = ampm.split('');
 
-  const containerStyle = {
+  const rootStyle = {
     height: '100dvh',
     width: '100vw',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#000',
-    overflow: 'hidden',
-  };
-
-  const clockStyle = {
     position: 'relative',
-    width: '50vw',
-    height: '50vw',
-    maxWidth: '80rem',
-    maxHeight: '80rem',
-    border: '0.5rem solid #fff',
-    borderRadius: '50%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundImage: `url(${DigitalClockBg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    fontFamily: sharedFontFamily,
   };
 
-  const handStyle = (deg, width, height, color) => ({
+  // Single variable for color + text shadow
+  const fontStyle = {
+    color: '#EFD67BFF',
+    textShadow: '0 1px 2px #333333',
+  };
+
+  const digitStyle = (xPercent, yPercent, fontSizeVW) => ({
     position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width,
-    height,
-    backgroundColor: color,
-    transform: `translate(-50%, -100%) rotate(${deg}deg)`,
-    transformOrigin: '50% 100%',
-    borderRadius: '0.2rem',
+    left: `${xPercent}%`,
+    top: `${yPercent}%`,
+    fontSize: fontSizeVW,
+    fontFamily: sharedFontFamily,
+    userSelect: 'none',
+    transform: 'translate(-50%, -50%)',
+    ...fontStyle, // merge color + shadow
   });
 
-  // Optional: clock center dot
-  const centerDotStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '1.5rem',
-    height: '1.5rem',
-    backgroundColor: '#fff',
-    borderRadius: '50%',
-    transform: 'translate(-50%, -50%)',
-  };
-
   return (
-    <div style={containerStyle}>
-      <div style={clockStyle}>
-        {/* Hour hand */}
-        <div style={handStyle(hourDeg, '1rem', '12vw', '#fff')}></div>
-        {/* Minute hand */}
-        <div style={handStyle(minuteDeg, '0.7rem', '18vw', '#fff')}></div>
-        {/* Second hand */}
-        <div style={handStyle(secondDeg, '0.4rem', '20vw', 'red')}></div>
-        <div style={centerDotStyle}></div>
-      </div>
+    <div style={rootStyle}>
+      {allDigits.map((d, i) => {
+        const positions = [
+          { x: 3, y: 5 }, // hour tens
+          { x: 19, y: 20 }, // hour units
+          { x: 30, y: 50 }, // minute tens
+          { x: 40, y: 75 }, // minute units
+          { x: 50, y: 17 }, // second tens
+          { x: 60, y: 30 }, // second units
+        ];
+        return (
+          <div key={`d${i}`} style={digitStyle(positions[i].x, positions[i].y, '12vw')}>
+            {d}
+          </div>
+        );
+      })}
+
+      {allAMPM.map((c, i) => {
+        const positions = [
+          { x: 70, y: 70 }, // A
+          { x: 805, y: 80 }, // .
+          { x: 90, y: 90 }, // M
+          { x: 950, y: 80 }, // .
+        ];
+        return (
+          <div key={`a${i}`} style={digitStyle(positions[i].x, positions[i].y, '12vw')}>
+            {c}
+          </div>
+        );
+      })}
     </div>
   );
 }
