@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import CustomFont from './in.ttf';
+import CustomFont from './ins.ttf';
 
 const AnalogClock = () => {
   const [time, setTime] = useState(new Date());
@@ -61,14 +61,19 @@ const AnalogClock = () => {
               textAlign: 'center',
             }}>
               <span style={{
-                position: 'absolute',
-                top: '39%',
-                left: '50%',
-                transform: `translateX(-50%) rotate(${-angle}deg)`,
-                color: '#F8E2F5FF',
-                fontSize: '1.0rem',
-                fontFamily: 'CustomFont, Arial, sans-serif',
-              }}>
+                 position: 'absolute',
+  top: '39%',
+  left: '50%',
+  transform: `translateX(-50%) rotate(${-angle}deg)`,
+  color: '#F8E2F5FF',
+  fontSize: '0.8rem',
+  fontFamily: 'CustomFont, Arial, sans-serif',
+  textShadow: `
+    1px 1px 0 #F4171788,
+    -1px -1px 0 #00000088,
+    1px -1px 0 #00000088,
+    -1px 1px 0 #00000088
+  `   }}>
                 {i + 1}
               </span>
             </div>
