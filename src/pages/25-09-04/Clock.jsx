@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import CustomFont from './in.ttf'; // replace with your font filename
+import CustomFont from './in.ttf';
 
 const AnalogClock = () => {
   const [time, setTime] = useState(new Date());
@@ -7,24 +7,33 @@ const AnalogClock = () => {
   useEffect(() => {
     // Load custom font
     const font = new FontFace('CustomFont', `url(${CustomFont})`);
-    font.load().then(() => {
-      document.fonts.add(font);
-    });
+    font.load().then(() => document.fonts.add(font));
 
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
+    // Update more frequently for smooth motion
+    const timer = setInterval(() => setTime(new Date()), 50); // 20 FPS
 
     return () => clearInterval(timer);
   }, []);
 
-  const hours = time.getHours() % 12;
-  const minutes = time.getMinutes();
-  const seconds = time.getSeconds();
+  const hours = time.getHours() % 12 + time.getMinutes() / 60 + time.getSeconds() / 3600;
+  const minutes = time.getMinutes() + time.getSeconds() / 60 + time.getMilliseconds() / 60000;
+  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
 
-  const hourDeg = (hours + minutes / 60) * 30;
-  const minuteDeg = (minutes + seconds / 60) * 6;
+  const hourDeg = hours * 30; // 360 / 12
+  const minuteDeg = minutes * 6; // 360 / 60
   const secondDeg = seconds * 6;
+
+  const handStyle = (width, height, color, origin) => ({
+    position: 'absolute',
+    width,
+    height,
+    backgroundColor: color,
+    top: '-1rem',
+    left: `calc(50% - ${parseFloat(width)/2}rem)`,
+    transformOrigin: origin,
+    borderRadius: '0.05rem',
+    transition: 'transform 0.05s linear', // smooth rotation
+  });
 
   return (
     <div style={{
@@ -33,34 +42,31 @@ const AnalogClock = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#000',
+      backgroundColor: '#3D2D02FF',
     }}>
       <div style={{
         position: 'relative',
         width: '20rem',
         height: '20rem',
       }}>
-        {/* Number circle */}
+        {/* Numbers */}
         {[...Array(12)].map((_, i) => {
           const angle = (i + 1) * 30;
           return (
-            <div
-              key={i}
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                transform: `rotate(${angle}deg)`,
-                textAlign: 'center',
-              }}
-            >
+            <div key={i} style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              transform: `rotate(${angle}deg)`,
+              textAlign: 'center',
+            }}>
               <span style={{
                 position: 'absolute',
-                top: '35%', // closer to center
+                top: '39%',
                 left: '50%',
                 transform: `translateX(-50%) rotate(${-angle}deg)`,
-                color: '#fff',
-                fontSize: '1.5rem',
+                color: '#F8E2F5FF',
+                fontSize: '1.0rem',
                 fontFamily: 'CustomFont, Arial, sans-serif',
               }}>
                 {i + 1}
@@ -70,69 +76,19 @@ const AnalogClock = () => {
         })}
 
         {/* Hour hand */}
-        <div style={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          transform: `rotate(${hourDeg}deg)`,
-        }}>
-          <div style={{
-            position: 'absolute',
-            width: '0.5rem',
-            height: '4rem',
-            backgroundColor: '#fff',
-            top: '-1rem',
-            left: 'calc(50% - 0.25rem)',
-            transformOrigin: 'center 3rem',
-          }} />
+        <div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${hourDeg}deg)` }}>
+          <div style={handStyle('0.5rem', '5rem', '#fff', 'center 3rem')} />
         </div>
 
         {/* Minute hand */}
-        <div style={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          transform: `rotate(${minuteDeg}deg)`,
-        }}>
-          <div style={{
-            position: 'absolute',
-            width: '0.3rem',
-            height: '5rem',
-            backgroundColor: '#ccc',
-            top: '-2rem',
-            left: 'calc(50% - 0.15rem)',
-            transformOrigin: 'center 4rem',
-          }} />
+        <div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${minuteDeg}deg)` }}>
+          <div style={handStyle('0.3rem', '7rem', '#ccc', 'center 4rem')} />
         </div>
 
         {/* Second hand */}
-        <div style={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          transform: `rotate(${secondDeg}deg)`,
-        }}>
-          <div style={{
-            position: 'absolute',
-            width: '0.1rem',
-            height: '6rem',
-            backgroundColor: '#f00',
-            top: '-3rem',
-            left: 'calc(50% - 0.05rem)',
-            transformOrigin: 'center 5rem',
-          }} />
+        <div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${secondDeg}deg)` }}>
+          <div style={handStyle('0.1rem', '7rem', '#EEBFE5FF', 'center 5rem')} />
         </div>
-
-        {/* Center dot */}
-        <div style={{
-          position: 'absolute',
-          width: '0.5rem',
-          height: '0.5rem',
-          backgroundColor: '#fff',
-          borderRadius: '50%',
-          top: 'calc(50% - 0.25rem)',
-          left: 'calc(50% - 0.25rem)',
-        }} />
       </div>
     </div>
   );
