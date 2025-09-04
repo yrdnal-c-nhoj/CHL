@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DigitalClockFont from './swi.ttf';
 import DigitalClockBg from './swiss.jpg';
+import MovingImg from './mouse.gif'; // your image to move
 
 export default function DigitalClock() {
   const [now, setNow] = useState(new Date());
@@ -27,7 +28,6 @@ export default function DigitalClock() {
   }, []);
 
   const sharedFontFamily = fontReady ? 'DigitalClockFont, monospace' : 'monospace';
-
   const formatTwoDigits = (num) => num.toString().padStart(2, '0');
 
   const hours24 = now.getHours();
@@ -47,38 +47,62 @@ export default function DigitalClock() {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     fontFamily: sharedFontFamily,
+    overflow: 'hidden', // hide anything outside viewport
   };
 
-  // Single variable for color + text shadow
   const fontStyle = {
     color: '#EFD67BFF',
     textShadow: '0 1px 2px #333333',
   };
 
-  const digitStyle = (xPercent, yPercent, fontSizeVW) => ({
+  const digitStyle = (xPercent, yPercent, fontSizeVW, zIndex = 1) => ({
     position: 'absolute',
     left: `${xPercent}%`,
     top: `${yPercent}%`,
     fontSize: fontSizeVW,
     fontFamily: sharedFontFamily,
     userSelect: 'none',
+    opacity: 0.8,
     transform: 'translate(-50%, -50%)',
-    ...fontStyle, // merge color + shadow
+    zIndex,
+    ...fontStyle,
   });
+
+  // Animation style for the moving image
+  const movingStyle = {
+    position: 'absolute',
+    bottom: '5vh', // distance from bottom
+    left: '-20%', // start outside left
+    width: '10vw', // size of the image
+    height: 'auto',
+    zIndex: 10,
+    animation: 'moveRight 8s linear infinite',
+  };
+
+  // Inline keyframes via a <style> tag
+  const keyframes = `
+    @keyframes moveRight {
+      0% { left: -20%; }
+      100% { left: 120%; }
+    }
+  `;
 
   return (
     <div style={rootStyle}>
+      <style>{keyframes}</style>
+
       {allDigits.map((d, i) => {
         const positions = [
-          { x: 3, y: 5 }, // hour tens
-          { x: 19, y: 20 }, // hour units
-          { x: 30, y: 50 }, // minute tens
-          { x: 40, y: 75 }, // minute units
-          { x: 50, y: 17 }, // second tens
-          { x: 60, y: 30 }, // second units
+          { x: 13, y: 15 },
+          { x: 33, y: 44 },
+          { x: 20, y: 58 },
+          { x: 40, y: 79 },
+          { x: 60, y: 17 },
+          { x: 89, y: 30 },
         ];
+        let z = i < 2 ? 4 : i < 4 ? 3 : 2;
         return (
-          <div key={`d${i}`} style={digitStyle(positions[i].x, positions[i].y, '12vw')}>
+          <div key={`d${i}`} style={digitStyle(positions[i].x, positions[i].y, '62vw', z)}>
             {d}
           </div>
         );
@@ -86,17 +110,20 @@ export default function DigitalClock() {
 
       {allAMPM.map((c, i) => {
         const positions = [
-          { x: 70, y: 70 }, // A
-          { x: 805, y: 80 }, // .
-          { x: 90, y: 90 }, // M
-          { x: 950, y: 80 }, // .
+          { x: 70, y: 70 },
+          { x: 805, y: 80 },
+          { x: 90, y: 90 },
+          { x: 950, y: 80 },
         ];
         return (
-          <div key={`a${i}`} style={digitStyle(positions[i].x, positions[i].y, '12vw')}>
+          <div key={`a${i}`} style={digitStyle(positions[i].x, positions[i].y, '62vw', 5)}>
             {c}
           </div>
         );
       })}
+
+      {/* Moving image */}
+      <img src={MovingImg} alt="moving" style={movingStyle} />
     </div>
   );
 }
