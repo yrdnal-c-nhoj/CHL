@@ -3,20 +3,18 @@ import React, { useEffect, useState } from 'react';
 export default function AnalogClock() {
   const [now, setNow] = useState(new Date());
 
-  // Update every second
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // Calculate angles
   const seconds = now.getSeconds();
   const minutes = now.getMinutes();
   const hours = now.getHours() % 12;
 
-  const secondDeg = seconds * 6; // 360 / 60
-  const minuteDeg = minutes * 6 + seconds * 0.1; // smooth
-  const hourDeg = hours * 30 + minutes * 0.5; // smooth
+  const secondDeg = seconds * 6;
+  const minuteDeg = minutes * 6 + seconds * 0.1;
+  const hourDeg = hours * 30 + minutes * 0.5;
 
   const containerStyle = {
     height: '100dvh',
@@ -53,7 +51,6 @@ export default function AnalogClock() {
     borderRadius: '0.2rem',
   });
 
-  // Optional: clock center dot
   const centerDotStyle = {
     position: 'absolute',
     top: '50%',
@@ -65,6 +62,16 @@ export default function AnalogClock() {
     transform: 'translate(-50%, -50%)',
   };
 
+  const numberStyle = (deg) => ({
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: `translate(-50%, -50%) rotate(${deg}deg) translateY(-20%) rotate(${-deg}deg)`,
+    color: '#fff',
+    fontSize: '4rem', // bigger text
+    fontWeight: 'bold',
+  });
+
   return (
     <div style={containerStyle}>
       <div style={clockStyle}>
@@ -75,6 +82,17 @@ export default function AnalogClock() {
         {/* Second hand */}
         <div style={handStyle(secondDeg, '0.4rem', '20vw', 'red')}></div>
         <div style={centerDotStyle}></div>
+
+        {/* Numbers */}
+        {[...Array(12)].map((_, i) => {
+          const deg = i * 30;
+          const num = i === 0 ? 12 : i;
+          return (
+            <div key={i} style={numberStyle(deg)}>
+              {num}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
