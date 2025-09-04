@@ -65,11 +65,11 @@ const AnalogClock = () => {
   top: '39%',
   left: '50%',
   transform: `translateX(-50%) rotate(${-angle}deg)`,
-  color: '#F8E2F5FF',
+  color: '#F4F3E1FF',
   fontSize: '0.8rem',
   fontFamily: 'CustomFont, Arial, sans-serif',
   textShadow: `
-    1px 1px 0 #F4171788,
+    1px 1px 0 #11010188,
     -1px -1px 0 #00000088,
     1px -1px 0 #00000088,
     -1px 1px 0 #00000088
@@ -82,17 +82,17 @@ const AnalogClock = () => {
 
         {/* Hour hand */}
         <div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${hourDeg}deg)` }}>
-          <div style={handStyle('0.5rem', '5rem', '#fff', 'center 3rem')} />
+          <div style={handStyle('1.4rem', '4rem', '#F4F4DBFF', 'center 3rem')} />
         </div>
 
         {/* Minute hand */}
         <div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${minuteDeg}deg)` }}>
-          <div style={handStyle('0.3rem', '7rem', '#ccc', 'center 4rem')} />
+          <div style={handStyle('0.7rem', '7rem', '#F7F7D7FF', 'center 4rem')} />
         </div>
 
         {/* Second hand */}
         <div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${secondDeg}deg)` }}>
-          <div style={handStyle('0.1rem', '7rem', '#EEBFE5FF', 'center 5rem')} />
+          <div style={handStyle('0.1rem', '7rem', '#FAF7D9FF', 'center 5rem')} />
         </div>
       </div>
     </div>
