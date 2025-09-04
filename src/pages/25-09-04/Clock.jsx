@@ -9,9 +9,8 @@ const AnalogClock = () => {
     const font = new FontFace('CustomFont', `url(${CustomFont})`);
     font.load().then(() => document.fonts.add(font));
 
-    // Update more frequently for smooth motion
+    // Update frequently for smooth motion
     const timer = setInterval(() => setTime(new Date()), 50); // 20 FPS
-
     return () => clearInterval(timer);
   }, []);
 
@@ -38,7 +37,7 @@ const AnalogClock = () => {
   return (
     <div style={{
       width: '100vw',
-      height: '100dvh',
+      height: '100vh', // changed from 100dvh for better centering
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -61,19 +60,20 @@ const AnalogClock = () => {
               textAlign: 'center',
             }}>
               <span style={{
-                 position: 'absolute',
-  top: '39%',
-  left: '50%',
-  transform: `translateX(-50%) rotate(${-angle}deg)`,
-  color: '#F4F3E1FF',
-  fontSize: '0.8rem',
-  fontFamily: 'CustomFont, Arial, sans-serif',
-  textShadow: `
-    1px 1px 0 #11010188,
-    -1px -1px 0 #00000088,
-    1px -1px 0 #00000088,
-    -1px 1px 0 #00000088
-  `   }}>
+                position: 'absolute',
+                top: '39%',
+                left: '50%',
+                transform: `translateX(-50%) rotate(${-angle}deg)`,
+                color: '#F4F3E1FF',
+                fontSize: '0.8rem',
+                fontFamily: 'CustomFont, Arial, sans-serif',
+                textShadow: `
+                  1px 1px 0 #11010188,
+                  -1px -1px 0 #00000088,
+                  1px -1px 0 #00000088,
+                  -1px 1px 0 #00000088
+                `
+              }}>
                 {i + 1}
               </span>
             </div>
