@@ -37,7 +37,7 @@ const AnalogClock = () => {
   return (
     <div style={{
       width: '100vw',
-      height: '100vh', // changed from 100dvh for better centering
+      height: '100vh',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -61,11 +61,11 @@ const AnalogClock = () => {
             }}>
               <span style={{
                 position: 'absolute',
-                top: '39%',
+                top: '32%',
                 left: '50%',
                 transform: `translateX(-50%) rotate(${-angle}deg)`,
                 color: '#F4F3E1FF',
-                fontSize: '0.8rem',
+                fontSize: '0.9rem',
                 fontFamily: 'CustomFont, Arial, sans-serif',
                 textShadow: `
                   1px 1px 0 #11010188,
@@ -94,6 +94,20 @@ const AnalogClock = () => {
         <div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${secondDeg}deg)` }}>
           <div style={handStyle('0.1rem', '7rem', '#FAF7D9FF', 'center 5rem')} />
         </div>
+
+        {/* Center circle */}
+       <div style={{
+  width: '4.5rem',
+  height: '4.5rem',
+  backgroundColor: 'transparent', // hollow
+  border: '0.1rem solid #FFFFFFFF',   // outline only
+  borderRadius: '50%',
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+}} />
+
       </div>
     </div>
   );
