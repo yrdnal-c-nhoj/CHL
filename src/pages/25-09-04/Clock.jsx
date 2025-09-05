@@ -1,116 +1,129 @@
-import { useState, useEffect } from 'react';
-import CustomFont from './ins.ttf';
+import React, { useEffect, useState } from 'react';
+import DigitalClockFont from './swi.ttf';
+import DigitalClockBg from './swiss.jpg';
+import MovingImg from './mouse.gif'; // your image to move
 
-const AnalogClock = () => {
-  const [time, setTime] = useState(new Date());
+export default function DigitalClock() {
+  const [now, setNow] = useState(new Date());
+  const [fontReady, setFontReady] = useState(false);
 
+  // Load custom font
   useEffect(() => {
-    // Load custom font
-    const font = new FontFace('CustomFont', `url(${CustomFont})`);
-    font.load().then(() => document.fonts.add(font));
-
-    // Update frequently for smooth motion
-    const timer = setInterval(() => setTime(new Date()), 50); // 20 FPS
-    return () => clearInterval(timer);
+    let mounted = true;
+    if (typeof window !== 'undefined' && window.FontFace) {
+      const f = new FontFace('DigitalClockFont', `url(${DigitalClockFont})`);
+      f.load().then((loaded) => {
+        if (!mounted) return;
+        try { document.fonts.add(loaded); } catch {}
+        setFontReady(true);
+      }).catch(() => setFontReady(true));
+    } else setFontReady(true);
+    return () => { mounted = false; };
   }, []);
 
-  const hours = time.getHours() % 12 + time.getMinutes() / 60 + time.getSeconds() / 3600;
-  const minutes = time.getMinutes() + time.getSeconds() / 60 + time.getMilliseconds() / 60000;
-  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+  // Update time
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 500);
+    return () => clearInterval(t);
+  }, []);
 
-  const hourDeg = hours * 30; // 360 / 12
-  const minuteDeg = minutes * 6; // 360 / 60
-  const secondDeg = seconds * 6;
+  const sharedFontFamily = fontReady ? 'DigitalClockFont, monospace' : 'monospace';
+  const formatTwoDigits = (num) => num.toString().padStart(2, '0');
 
-  const handStyle = (width, height, color, origin) => ({
+  const hours24 = now.getHours();
+  const hours12 = hours24 % 12 || 12;
+  const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
+  const ampm = hours24 >= 12 ? 'P.M.' : 'A.M.';
+
+  const allDigits = [...formatTwoDigits(hours12), ...formatTwoDigits(minutes), ...formatTwoDigits(seconds)];
+  const allAMPM = ampm.split('');
+
+  const rootStyle = {
+    height: '100dvh',
+    width: '100vw',
+    position: 'relative',
+    backgroundImage: `url(${DigitalClockBg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    fontFamily: sharedFontFamily,
+    overflow: 'hidden', // hide anything outside viewport
+  };
+
+  const fontStyle = {
+    color: '#EFD67BFF',
+    textShadow: '0 1px 2px #333333',
+  };
+
+  const digitStyle = (xPercent, yPercent, fontSizeVW, zIndex = 1) => ({
     position: 'absolute',
-    width,
-    height,
-    backgroundColor: color,
-    top: '-1rem',
-    left: `calc(50% - ${parseFloat(width)/2}rem)`,
-    transformOrigin: origin,
-    borderRadius: '0.05rem',
-    transition: 'transform 0.05s linear', // smooth rotation
+    left: `${xPercent}%`,
+    top: `${yPercent}%`,
+    fontSize: fontSizeVW,
+    fontFamily: sharedFontFamily,
+    userSelect: 'none',
+    opacity: 0.8,
+    transform: 'translate(-50%, -50%)',
+    zIndex,
+    ...fontStyle,
   });
 
+  // Animation style for the moving image
+  const movingStyle = {
+    position: 'absolute',
+    bottom: '5vh', // distance from bottom
+    left: '-20%', // start outside left
+    width: '10vw', // size of the image
+    height: 'auto',
+    zIndex: 10,
+    animation: 'moveRight 8s linear infinite',
+  };
+
+  // Inline keyframes via a <style> tag
+  const keyframes = `
+    @keyframes moveRight {
+      0% { left: -20%; }
+      100% { left: 120%; }
+    }
+  `;
+
   return (
-    <div style={{
-      width: '100vw',
-      height: '100vh',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#3D2D02FF',
-    }}>
-      <div style={{
-        position: 'relative',
-        width: '20rem',
-        height: '20rem',
-      }}>
-        {/* Numbers */}
-        {[...Array(12)].map((_, i) => {
-          const angle = (i + 1) * 30;
-          return (
-            <div key={i} style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              transform: `rotate(${angle}deg)`,
-              textAlign: 'center',
-            }}>
-              <span style={{
-                position: 'absolute',
-                top: '32%',
-                left: '50%',
-                transform: `translateX(-50%) rotate(${-angle}deg)`,
-                color: '#F4F3E1FF',
-                fontSize: '0.9rem',
-                fontFamily: 'CustomFont, Arial, sans-serif',
-                textShadow: `
-                  1px 1px 0 #11010188,
-                  -1px -1px 0 #00000088,
-                  1px -1px 0 #00000088,
-                  -1px 1px 0 #00000088
-                `
-              }}>
-                {i + 1}
-              </span>
-            </div>
-          );
-        })}
+    <div style={rootStyle}>
+      <style>{keyframes}</style>
 
-        {/* Hour hand */}
-        <div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${hourDeg}deg)` }}>
-          <div style={handStyle('1.4rem', '4rem', '#F4F4DBFF', 'center 3rem')} />
-        </div>
+      {allDigits.map((d, i) => {
+        const positions = [
+          { x: 13, y: 15 },
+          { x: 33, y: 44 },
+          { x: 20, y: 58 },
+          { x: 40, y: 79 },
+          { x: 60, y: 17 },
+          { x: 89, y: 30 },
+        ];
+        let z = i < 2 ? 4 : i < 4 ? 3 : 2;
+        return (
+          <div key={`d${i}`} style={digitStyle(positions[i].x, positions[i].y, '62vw', z)}>
+            {d}
+          </div>
+        );
+      })}
 
-        {/* Minute hand */}
-        <div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${minuteDeg}deg)` }}>
-          <div style={handStyle('0.7rem', '7rem', '#F7F7D7FF', 'center 4rem')} />
-        </div>
+      {allAMPM.map((c, i) => {
+        const positions = [
+          { x: 70, y: 70 },
+          { x: 805, y: 80 },
+          { x: 90, y: 90 },
+          { x: 950, y: 80 },
+        ];
+        return (
+          <div key={`a${i}`} style={digitStyle(positions[i].x, positions[i].y, '62vw', 5)}>
+            {c}
+          </div>
+        );
+      })}
 
-        {/* Second hand */}
-        <div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${secondDeg}deg)` }}>
-          <div style={handStyle('0.1rem', '7rem', '#FAF7D9FF', 'center 5rem')} />
-        </div>
-
-        {/* Center circle */}
-       <div style={{
-  width: '4.5rem',
-  height: '4.5rem',
-  backgroundColor: 'transparent', // hollow
-  border: '0.1rem solid #FFFFFFFF',   // outline only
-  borderRadius: '50%',
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-}} />
-
-      </div>
+      {/* Moving image */}
+      <img src={MovingImg} alt="moving" style={movingStyle} />
     </div>
   );
-};
-
-export default AnalogClock;
+}
