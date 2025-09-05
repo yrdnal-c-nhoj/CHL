@@ -1,42 +1,46 @@
-import puppeteer from 'puppeteer-core';
+// screenshot-batch-tight.mjs
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import puppeteer from 'puppeteer';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const screenshotsDir = path.join(process.cwd(), 'screenshots');
+if (!fs.existsSync(screenshotsDir)) fs.mkdirSync(screenshotsDir);
 
-// URL to capture
-const url = 'https://www.cubistheart.com/today';
+// List of URLs (based on your paths)
+const paths = [
+  '25-09-01'
+];
 
-// Ensure screenshots directory exists
-const screenshotsDir = path.join(__dirname, 'screenshots');
-if (!fs.existsSync(screenshotsDir)) {
-  fs.mkdirSync(screenshotsDir, { recursive: true });
-}
+const baseURL = 'https://www.cubistheart.com/';
 
-// Build screenshot file path with timestamp
-const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-const screenshotPath = path.join(screenshotsDir, `screenshot-${timestamp}.png`);
+async function main() {
+  const browser = await puppeteer.launch({ headless: true });
+  const page = await browser.newPage();
 
-async function takeScreenshot() {
-  try {
-    const browser = await puppeteer.launch({
-      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', // <-- your Chrome
-      headless: true,
-    });
+  // Set a large square viewport first
+  const squareSize = 1000; // pick a fixed square size (px)
+  await page.setViewport({ width: squareSize, height: squareSize });
 
-    const page = await browser.newPage();
-    await page.setViewport({ width: 1280, height: 720 });
-    await page.goto(url, { waitUntil: 'networkidle2' });
+  for (let i = 0; i < paths.length; i++) {
+    const url = baseURL + paths[i];
+    console.log(`Capturing ${url} ...`);
 
-    await page.screenshot({ path: screenshotPath });
-    console.log(`Screenshot saved: ${screenshotPath}`);
+    try {
+      await page.goto(url, { waitUntil: 'networkidle2' });
 
-    await browser.close();
-  } catch (err) {
-    console.error('Unexpected error:', err);
+      // Wait 5 seconds before capturing
+      await new Promise(resolve => setTimeout(resolve, 5000));
+
+      const screenshotPath = path.join(screenshotsDir, `${paths[i]}.png`);
+      await page.screenshot({ path: screenshotPath, fullPage: false });
+
+      console.log(`Saved ${screenshotPath}`);
+    } catch (err) {
+      console.error(`Failed for ${url}:`, err);
+    }
   }
+
+  await browser.close();
 }
 
-takeScreenshot();
+main().catch(console.error);
