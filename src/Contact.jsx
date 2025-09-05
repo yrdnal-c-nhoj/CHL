@@ -1,57 +1,80 @@
 import React from 'react';
 import TopNav from './components/TopNav';
-import './WordPages.css';
-// import ContactForm from './ContactForm';  
 import Footer from './components/Footer';
+import './WordPages.css';
+import instaImg from './assets/insta.png';
 
 function Contact() {
   return (
     <div className="container">
       <TopNav />
+
       <div className="centeredContent">
         <h1>CONTACT</h1>
+         <br /> 
 
-      
-        <div className="manifestoSection">
-          <p>
-            <span className="hat">Get the Lab's Monthly Newsletter </span>
-            <br />&nbsp;<br />
+        <section className="manifestoSection">
+          {/* Instagram */}
+          <div className="section">
+            <span className="hat">Follow on Instagram</span>
+           
+            <a
+              href="https://www.instagram.com/cubist_heart/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={instaImg}
+                alt="Cubist Heart Instagram preview"
+                className="instaImg"
+              />
+            </a>
+            <br /> <br />
+          </div>
 
-            <span className="smallcaps">Subscribe to recieve</span> the lab's monthly newsletter containing clock notes, dispatches, research findings, recipes, pictures of houseplants and exclusive links to original downloadable art from the lab.<br /> We will never sell or release your eMail address.
-          </p>
+          {/* Newsletter */}
+          <div className="section">
+            <span className="hat">Get the Lab's Monthly Newsletter</span>
+            <p>
+              <span className="smallcaps">Subscribe to receive</span> the lab's monthly newsletter containing clock notes,
+              dispatches, research findings, recipes, pictures of houseplants, and exclusive links to original downloadable art.
+              <br />
+              We will never sell or release your email address.
+            </p>
 
-          <form
-            action="https://buttondown.com/api/emails/embed-subscribe/borrowed"
-            method="post"
-            target="popupwindow"
-            onSubmit={(e) => {
-              window.open('https://buttondown.com/borrowed', 'popupwindow');
-            }}
-            className="embeddable-buttondown-form"
-          >
-            <label htmlFor="bd-email"></label>
-            <input type="email" name="email" id="bd-email" required />
-            <input type="submit" value="subscribe" />
-          </form>
-   
-<br />&nbsp;
-          <span className="hat">Send an eMail to the Lab<br />&nbsp;</span><br />
-          <p>
-           <span className="smallcaps">Questions? Comments? Suggestions?</span> Complaints? Requests? Pleas for help?
-       
-</p>
+            <form
+              action="https://buttondown.email/api/emails/embed-subscribe/borrowed"
+              method="post"
+              target="popupwindow"
+              className="embeddable-buttondown-form"
+            >
+              <label htmlFor="bd-email">Email:</label>
+              <input
+                type="email"
+                name="email"
+                id="bd-email"
+                placeholder="you@example.com"
+                required
+              />
+              <input type="submit" value="Subscribe" />
+            </form>
+             <br /> <br />
+          </div>
 
-
-      
-  <a class="email-link" href="mailto:cubistheart@gmail.com?subject=🧊🫀🔭">
-   cubistheart@gmail.com
-  </a><br /><p>We love email! We will respond as soon as we can. </p>
-
-         
-&nbsp;
-        
-        </div>
+          {/* Email contact */}
+          <div className="section">
+            <span className="hat">Send an eMail to the Lab</span>
+            <p>
+              <span className="smallcaps">Questions? Comments? Suggestions?</span> Complaints? Requests? Pleas for help?
+            </p>
+            <a className="email-link" href="mailto:cubistheart@gmail.com?subject=🧊🫀🔭">
+              cubistheart@gmail.com
+            </a>
+            <p>We love email! We will respond as soon as we can.</p>
+          </div>
+        </section>
       </div>
+
       <Footer />
     </div>
   );
