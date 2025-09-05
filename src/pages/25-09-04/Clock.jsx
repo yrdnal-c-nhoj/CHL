@@ -37,7 +37,7 @@ const AnalogClock = () => {
   return (
     <div style={{
       width: '100vw',
-      height: '100vh', // changed from 100dvh for better centering
+      height: '100vh',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -94,9 +94,22 @@ const AnalogClock = () => {
         <div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${secondDeg}deg)` }}>
           <div style={handStyle('0.1rem', '7rem', '#FAF7D9FF', 'center 5rem')} />
         </div>
+
+        {/* Center circle */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '1.2rem',
+          height: '1.2rem',
+          border: '0.15rem solid #F4F3E1FF',
+          borderRadius: '50%',
+          backgroundColor: 'transparent',
+          transform: 'translate(-50%, -50%)',
+        }} />
       </div>
     </div>
   );
 };
 
-export default AnalogClock;
+export default AnalogC
