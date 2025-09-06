@@ -8,31 +8,30 @@ export default function TimeMeasurementDisplay() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
-    }, 100); // Update every 100ms for smooth animations
+    }, 100);
 
     return () => clearInterval(timer);
   }, []);
 
-  // Calculate various time measurements
   const now = currentTime;
   const sessionDuration = now - startTime;
 
   // Atomic/Physics Time
-  const cesiumOscillations = Math.floor(sessionDuration * 9192631770); // Cesium-133 transitions per ms
-  const plankTimes = Math.floor(sessionDuration * (1 / 5.39124e-44)); // Planck time units
+  const cesiumOscillations = Math.floor(sessionDuration * 9192631770);
+  const plankTimes = Math.floor(sessionDuration * (1 / 5.39124e-44));
 
   // Astronomical Time
-  const siderealDay = 23 * 3600 + 56 * 60 + 4.0905; // seconds
+  const siderealDay = 23 * 3600 + 56 * 60 + 4.0905;
   const siderealTime = (now.getTime() / 1000 / siderealDay) % 1;
   const julianDay = Math.floor(now.getTime() / 86400000) + 2440587.5;
 
   // Geological Time
-  const earthAge = 4.54e9; // years
+  const earthAge = 4.54e9;
   const yearsSinceEarth = now.getFullYear() - (-earthAge);
 
   // Biological Rhythms
-  const heartbeats = Math.floor((sessionDuration / 1000) * 1.17); // ~70 bpm average
-  const breathCycles = Math.floor(sessionDuration / 1000 / 4); // ~15 per minute
+  const heartbeats = Math.floor((sessionDuration / 1000) * 1.17);
+  const breathCycles = Math.floor(sessionDuration / 1000 / 4);
 
   // Internet Time
   const beatTime = Math.floor(
@@ -43,7 +42,7 @@ export default function TimeMeasurementDisplay() {
   const unixTime = Math.floor(now.getTime() / 1000);
 
   // Network Time Protocol
-  const ntpTime = unixTime + 2208988800; // NTP epoch offset
+  const ntpTime = unixTime + 2208988800;
 
   // Binary/Hexadecimal time
   const binaryTime = unixTime.toString(2);
@@ -237,7 +236,6 @@ export default function TimeMeasurementDisplay() {
     },
   ];
 
-  // -------------------- Styles --------------------
   const styles = {
     root: {
       minHeight: '100vh',
@@ -288,7 +286,13 @@ export default function TimeMeasurementDisplay() {
       margin: 0,
     },
     itemWrap: { display: 'flex', flexDirection: 'column', gap: '16px' },
-    item: { display: 'flex', flexDirection: 'column', gap: '4px' },
+    item: {
+      display: 'flex',
+      flexDirection: 'row-reverse', // <- tick/label on the other side
+      justifyContent: 'space-between',
+      gap: '8px',
+      alignItems: 'center',
+    },
     itemLabel: { fontSize: '0.875rem', color: '#94a3b8', fontWeight: 500 },
     itemValue: {
       fontFamily:
@@ -320,7 +324,14 @@ export default function TimeMeasurementDisplay() {
       gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
       gap: '16px',
     },
-    footerStat: { display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.9rem' },
+    footerStat: {
+      display: 'flex',
+      flexDirection: 'row-reverse', // <- tick/label on the other side
+      justifyContent: 'space-between',
+      gap: '8px',
+      alignItems: 'center',
+      fontSize: '0.9rem',
+    },
     footerLabel: { color: '#94a3b8' },
     footerValue: {
       fontFamily:
@@ -332,7 +343,7 @@ export default function TimeMeasurementDisplay() {
     <div style={styles.root}>
       <div style={styles.container}>
         <div style={styles.header}>
-           <div style={styles.subtitle}>
+          <div style={styles.subtitle}>
             Session started: {startTime.toLocaleString()}
           </div>
         </div>
