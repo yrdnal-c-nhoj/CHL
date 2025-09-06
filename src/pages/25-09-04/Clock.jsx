@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import font_25_09_06 from './ins.ttf';
+import centerImage from './sky.gif'; // replace with your image file
 
 const AnalogClock = () => {
   const [time, setTime] = useState(new Date());
@@ -62,10 +63,10 @@ const AnalogClock = () => {
               {/* Tick mark */}
               <div style={{
                 position: 'absolute',
-                top: '15%',
+                top: '36%',
                 left: '50%',
-                width: '0.2rem',
-                height: '1rem',
+                width: '0.1rem',
+                height: '0.5rem',
                 backgroundColor: '#FFFFFFFF',
                 transform: 'translateX(-50%)',
                 borderRadius: '0.05rem',
@@ -74,7 +75,7 @@ const AnalogClock = () => {
               {/* Number */}
               <span style={{
                 position: 'absolute',
-                top: '32%',
+                top: '30%',
                 left: '50%',
                 transform: `translateX(-50%) rotate(${-angle}deg)`,
                 color: '#F4F3E1FF',
@@ -102,19 +103,20 @@ const AnalogClock = () => {
           <div style={handStyle('0.1rem', '7rem', '#FAF7D9FF', 'center 5rem')} />
         </div>
 
-        {/* Center circle */}
+        {/* Center circle with image */}
         <div style={{
           width: '4.5rem',
           height: '4.5rem',
-          backgroundColor: 'transparent',
-          border: '0.1rem solid #FFFFFFFF',
+          backgroundImage: `url(${centerImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
           borderRadius: '50%',
           position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
+          border: '0.1rem solid #FFFFFFFF',
         }} />
-
       </div>
     </div>
   );
