@@ -71,9 +71,9 @@ export default function DigitalClock() {
   // Animation style for the moving image
   const movingStyle = {
     position: 'absolute',
-    bottom: '5vh', // distance from bottom
+    bottom: '19vh', // distance from bottom
     left: '-20%', // start outside left
-    width: '10vw', // size of the image
+    width: '11vw', // size of the image
     height: 'auto',
     zIndex: 10,
     animation: 'moveRight 8s linear infinite',
