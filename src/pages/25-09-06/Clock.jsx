@@ -100,7 +100,7 @@ const AnalogClock = () => {
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                width: '0.4rem',
+                width: '0.9rem',
                 height: `${tickLength}rem`,
                 transform: `translate(-50%, -50%) rotate(${angle}deg) translate(0, -${radius}vh)`,
                 transformOrigin: '50% 50%',
