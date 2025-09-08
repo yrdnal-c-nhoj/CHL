@@ -54,6 +54,7 @@ export default function Clock() {
           fontSize: "8rem",
           color: "#CECAC0FF",
           letterSpacing: "0.1rem",
+          opacity: "0.4",
           lineHeight: "0.8",
           textAlign: "center"
         }}
