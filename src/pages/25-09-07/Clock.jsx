@@ -59,7 +59,7 @@ export default function Clock() {
     backgroundImage: `url(${bgImage})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
-    filter: "saturate(0.9) hue-rotate(-120deg)",
+    filter: "saturate(1.3) hue-rotate(-120deg)",
     transform: "scaleX(-1)", // flips horizontally
     zIndex: 0,
   }}
@@ -74,6 +74,7 @@ export default function Clock() {
           alignItems: "center",
           textAlign: "center",
           lineHeight: "0.7",
+           color: "#CDD3D4FF",
           position: "relative",
           zIndex: 1, // make sure it stays above the background
         }}
@@ -81,17 +82,15 @@ export default function Clock() {
         <span
           style={{
             fontSize: "5rem",
-            color: "#8B678BFF",
             letterSpacing: "0.1rem",
             opacity: "0.6",
           }}
         >
-          {hours}:{minutes}
+          {hours}{minutes}
         </span>
         <span
           style={{
             fontSize: "5rem",
-            color: "#8B678BFF",
             opacity: "0.6",
             marginTop: "0.5rem",
           }}
