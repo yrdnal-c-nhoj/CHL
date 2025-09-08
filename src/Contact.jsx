@@ -2,7 +2,8 @@ import React from 'react';
 import TopNav from './components/TopNav';
 import Footer from './components/Footer';
 import './WordPages.css';
-import instaImg from './assets/insta.png';
+import instaImg from './assets/i.png';
+import elonImg from './assets/x.png';
 
 function Contact() {
   return (
@@ -15,22 +16,41 @@ function Contact() {
 
         <section className="manifestoSection">
           {/* Instagram */}
-          <div className="section">
-            <span className="hat">Follow on Instagram</span>
-           
-            <a
-              href="https://www.instagram.com/cubist_heart/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src={instaImg}
-                alt="Cubist Heart Instagram preview"
-                className="instaImg"
-              />
-            </a>
-            <br /> <br />
-          </div>
+         {/* Instagram + X side by side */}
+<div className="section">
+  <span className="hat">Follow on Social</span>
+
+  <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+    <a
+      href="https://www.instagram.com/cubist_heart/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img
+        src={instaImg}
+        alt="Cubist Heart Instagram preview"
+        className="instaImg"
+        style={{ width: "2rem", height: "2rem" }}
+      />
+    </a>
+
+    <a
+      href="https://x.com/cubistheartlabs"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img
+        src={elonImg}
+        alt="Cubist Heart X preview"
+        className="elonImg"
+        style={{ width: "2rem", height: "2rem" }}
+      />
+    </a>
+  </div>
+
+  <br /> <br />
+</div>
+
 
           {/* Newsletter */}
           <div className="section">
