@@ -25,7 +25,7 @@ export default function ImageAnalogClock() {
   const clockSize = 90; // size of the clock in vmin
   const center = clockSize / 2;
   const imgRadius = clockSize * 0.42; // distance from clock center to image center
-  const imgSize = clockSize * 0.14; // size of hour images
+  const imgSize = clockSize * 0.2; // size of hour images
 
   const images = [img12, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
 
@@ -39,16 +39,27 @@ export default function ImageAnalogClock() {
   const secondAngle = seconds * 6; // optional second hand
 
   return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#166611",
-      }}
-    >
+  <div
+  style={{
+    width: "100vw",
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#BDC1BBFF",
+    backgroundImage: `url("data:image/svg+xml;utf8,
+      <svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'>
+        <g fill='white' opacity='0.15'>
+          <path d='M10,10 h60 a10,10 0 0 1 10,10 v40 a10,10 0 0 1 -10,10 h-20 l-10,10 l0,-10 h-10 a10,10 0 0 1 -10,-10 v-40 a10,10 0 0 1 10,-10 z'/>
+          <path d='M70,20 h40 a8,8 0 0 1 8,8 v32 a8,8 0 0 1 -8,8 h-18 l-8,8 l0,-8 h-12 a8,8 0 0 1 -8,-8 v-32 a8,8 0 0 1 8,-8 z'/>
+        </g>
+      </svg>
+    ")`,
+    backgroundRepeat: "repeat",
+    backgroundSize: "150px 150px",
+  }}
+>
+
       <div
         style={{
           width: `${clockSize}vmin`,
@@ -98,7 +109,7 @@ export default function ImageAnalogClock() {
           style={{
             width: `${clockSize * 0.02}vmin`,
             height: `${clockSize * 0.25}vmin`,
-            backgroundColor: "white",
+           backgroundColor: "#333333",
             position: "absolute",
             top: `${center - clockSize * 0.25}vmin`,
             left: `${center - (clockSize * 0.02) / 2}vmin`,
@@ -114,7 +125,7 @@ export default function ImageAnalogClock() {
           style={{
             width: `${clockSize * 0.01}vmin`,
             height: `${clockSize * 0.38}vmin`,
-            backgroundColor: "white",
+            backgroundColor: "#333333",
             position: "absolute",
             top: `${center - clockSize * 0.38}vmin`,
             left: `${center - (clockSize * 0.01) / 2}vmin`,
@@ -130,7 +141,7 @@ export default function ImageAnalogClock() {
           style={{
             width: `${clockSize * 0.005}vmin`,
             height: `${clockSize * 0.4}vmin`,
-            backgroundColor: "red",
+        backgroundColor: "#333333",
             position: "absolute",
             top: `${center - clockSize * 0.4}vmin`,
             left: `${center - (clockSize * 0.005) / 2}vmin`,
