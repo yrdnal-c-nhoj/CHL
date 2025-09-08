@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-
-// Import images for 12 hours
 import img1 from "./1.jpg";
 import img2 from "./2.jpg";
 import img3 from "./3.jpg";
@@ -24,42 +22,39 @@ export default function ImageAnalogClock() {
 
   const clockSize = 90; // size of the clock in vmin
   const center = clockSize / 2;
-  const imgRadius = clockSize * 0.42; // distance from clock center to image center
-  const imgSize = clockSize * 0.2; // size of hour images
-
+  const imgRadius = clockSize * 0.42;
+  const imgSize = clockSize * 0.2;
   const images = [img12, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
 
-  // Calculate hand rotations
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
 
-  const hourAngle = (hours + minutes / 60) * 30; // 360/12 = 30deg per hour
-  const minuteAngle = (minutes + seconds / 60) * 6; // 360/60 = 6deg per minute
-  const secondAngle = seconds * 6; // optional second hand
+  const hourAngle = (hours + minutes / 60) * 30;
+  const minuteAngle = (minutes + seconds / 60) * 6;
+  const secondAngle = seconds * 6;
 
   return (
-  <div
-  style={{
-    width: "100vw",
-    height: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#3E3F3DFF",
-    backgroundImage: `url("data:image/svg+xml;utf8,
-      <svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'>
-        <g fill='white' opacity='0.15'>
-          <path d='M10,10 h60 a10,10 0 0 1 10,10 v40 a10,10 0 0 1 -10,10 h-20 l-10,10 l0,-10 h-10 a10,10 0 0 1 -10,-10 v-40 a10,10 0 0 1 10,-10 z'/>
-          <path d='M70,20 h40 a8,8 0 0 1 8,8 v32 a8,8 0 0 1 -8,8 h-18 l-8,8 l0,-8 h-12 a8,8 0 0 1 -8,-8 v-32 a8,8 0 0 1 8,-8 z'/>
-        </g>
-      </svg>
-    ")`,
-    backgroundRepeat: "repeat",
-    backgroundSize: "150px 150px",
-  }}
->
-
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#3E3F3DFF",
+        backgroundImage: `url("data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'>
+            <g fill='white' opacity='0.15'>
+              <path d='M10,10 h60 a10,10 0 0 1 10,10 v40 a10,10 0 0 1 -10,10 h-20 l-10,10 l0,-10 h-10 a10,10 0 0 1 -10,-10 v-40 a10,10 0 0 1 10,-10 z'/>
+              <path d='M70,20 h40 a8,8 0 0 1 8,8 v32 a8,8 0 0 1 -8,8 h-18 l-8,8 l0,-8 h-12 a8,8 0 0 1 -8,-8 v-32 a8,8 0 0 1 8,-8 z'/>
+            </g>
+          </svg>
+        ")`,
+        backgroundRepeat: "repeat",
+        backgroundSize: "150px 150px",
+      }}
+    >
       <div
         style={{
           width: `${clockSize}vmin`,
@@ -89,6 +84,7 @@ export default function ImageAnalogClock() {
                 justifyContent: "center",
                 alignItems: "center",
                 zIndex: 1,
+                boxShadow: "0 0.5vmin 1vmin rgba(0,0,0,0.6)", // shadow for hovering effect
               }}
             >
               <img
@@ -109,7 +105,7 @@ export default function ImageAnalogClock() {
           style={{
             width: `${clockSize * 0.02}vmin`,
             height: `${clockSize * 0.25}vmin`,
-           backgroundColor: "#8A8686FF",
+            backgroundColor: "#8A8686FF",
             position: "absolute",
             top: `${center - clockSize * 0.25}vmin`,
             left: `${center - (clockSize * 0.02) / 2}vmin`,
@@ -117,6 +113,7 @@ export default function ImageAnalogClock() {
             transform: `rotate(${hourAngle}deg)`,
             borderRadius: "1vmin",
             zIndex: 2,
+            boxShadow: "0 0.5vmin 1vmin rgba(0,0,0,0.7)", // shadow for depth
           }}
         />
 
@@ -133,6 +130,7 @@ export default function ImageAnalogClock() {
             transform: `rotate(${minuteAngle}deg)`,
             borderRadius: "1vmin",
             zIndex: 3,
+            boxShadow: "0 0.5vmin 1vmin rgba(0,0,0,0.7)",
           }}
         />
 
@@ -149,6 +147,7 @@ export default function ImageAnalogClock() {
             transform: `rotate(${secondAngle}deg)`,
             borderRadius: "0.5vmin",
             zIndex: 4,
+            boxShadow: "0 0.5vmin 1vmin rgba(0,0,0,0.7)",
           }}
         />
       </div>
