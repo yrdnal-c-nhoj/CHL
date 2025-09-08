@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import DigitalClockFont from './swi.ttf';
 import DigitalClockBg from './swiss.jpg';
-import MovingImg from './mouse.gif'; // your image to move
+import MovingImg from './mouse.gif';
 
 export default function DigitalClock() {
   const [now, setNow] = useState(new Date());
   const [fontReady, setFontReady] = useState(false);
+  const [bgReady, setBgReady] = useState(false);
+  const [imgReady, setImgReady] = useState(false);
 
   // Load custom font
   useEffect(() => {
@@ -21,13 +23,32 @@ export default function DigitalClock() {
     return () => { mounted = false; };
   }, []);
 
+  // Preload background
+  useEffect(() => {
+    const img = new Image();
+    img.src = DigitalClockBg;
+    img.onload = () => setBgReady(true);
+  }, []);
+
+  // Preload moving image
+  useEffect(() => {
+    const img = new Image();
+    img.src = MovingImg;
+    img.onload = () => setImgReady(true);
+  }, []);
+
   // Update time
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 500);
     return () => clearInterval(t);
   }, []);
 
-  const sharedFontFamily = fontReady ? 'DigitalClockFont, monospace' : 'monospace';
+  // Only render once all assets are ready
+  const allLoaded = fontReady && bgReady && imgReady;
+
+  if (!allLoaded) return null; // or a loader div
+
+  const sharedFontFamily = 'DigitalClockFont, monospace';
   const formatTwoDigits = (num) => num.toString().padStart(2, '0');
 
   const hours24 = now.getHours();
@@ -47,7 +68,7 @@ export default function DigitalClock() {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     fontFamily: sharedFontFamily,
-    overflow: 'hidden', // hide anything outside viewport
+    overflow: 'hidden',
   };
 
   const fontStyle = {
@@ -68,18 +89,16 @@ export default function DigitalClock() {
     ...fontStyle,
   });
 
-  // Animation style for the moving image
   const movingStyle = {
     position: 'absolute',
-    bottom: '19vh', // distance from bottom
-    left: '-20%', // start outside left
-    width: '11vw', // size of the image
+    bottom: '19vh',
+    left: '-20%',
+    width: '11vw',
     height: 'auto',
     zIndex: 10,
     animation: 'moveRight 8s linear infinite',
   };
 
-  // Inline keyframes via a <style> tag
   const keyframes = `
     @keyframes moveRight {
       0% { left: -20%; }
@@ -122,7 +141,6 @@ export default function DigitalClock() {
         );
       })}
 
-      {/* Moving image */}
       <img src={MovingImg} alt="moving" style={movingStyle} />
     </div>
   );
