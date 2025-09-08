@@ -46,7 +46,7 @@ export default function ImageAnalogClock() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#BDC1BBFF",
+    backgroundColor: "#3E3F3DFF",
     backgroundImage: `url("data:image/svg+xml;utf8,
       <svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'>
         <g fill='white' opacity='0.15'>
@@ -109,7 +109,7 @@ export default function ImageAnalogClock() {
           style={{
             width: `${clockSize * 0.02}vmin`,
             height: `${clockSize * 0.25}vmin`,
-           backgroundColor: "#333333",
+           backgroundColor: "#8A8686FF",
             position: "absolute",
             top: `${center - clockSize * 0.25}vmin`,
             left: `${center - (clockSize * 0.02) / 2}vmin`,
@@ -125,7 +125,7 @@ export default function ImageAnalogClock() {
           style={{
             width: `${clockSize * 0.01}vmin`,
             height: `${clockSize * 0.38}vmin`,
-            backgroundColor: "#333333",
+            backgroundColor: "#8A8585FF",
             position: "absolute",
             top: `${center - clockSize * 0.38}vmin`,
             left: `${center - (clockSize * 0.01) / 2}vmin`,
@@ -141,7 +141,7 @@ export default function ImageAnalogClock() {
           style={{
             width: `${clockSize * 0.005}vmin`,
             height: `${clockSize * 0.4}vmin`,
-        backgroundColor: "#333333",
+            backgroundColor: "#F9F6F6FF",
             position: "absolute",
             top: `${center - clockSize * 0.4}vmin`,
             left: `${center - (clockSize * 0.005) / 2}vmin`,
