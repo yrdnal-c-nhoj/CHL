@@ -49,20 +49,22 @@ export default function Clock() {
       }}
     >
       {/* Background image with filter */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundImage: `url(${bgImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          filter: "saturate(0.5) hue-rotate(180deg)", // example filter, adjust as needed
-          zIndex: 0,
-        }}
-      />
+     <div
+  style={{
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    filter: "saturate(0.9) hue-rotate(-120deg)",
+    transform: "scaleX(-1)", // flips horizontally
+    zIndex: 0,
+  }}
+/>
+
 
       {/* Clock on top */}
       <div
