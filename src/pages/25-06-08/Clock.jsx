@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import bgImage from './bg.jpg';
+import bgImage from './bg.webp';
 
 import img12 from './Khea.gif';
 import img1 from './qspades.jpg';
