@@ -117,8 +117,8 @@ const Clock = () => {
             position: "absolute",
             bottom: "50%",
             left: "50%",
-            width: "9vw",
-            height: "25%",
+            width: "12vw",
+            height: "30%",
             transformOrigin: "50% 100%",
           }}
         />
@@ -132,8 +132,8 @@ const Clock = () => {
             position: "absolute",
             bottom: "50%",
             left: "50%",
-            width: "vw",
-            height: "35%",
+            width: "9vw",
+            height: "45%",
             transformOrigin: "50% 100%",
           }}
         />
@@ -147,8 +147,8 @@ const Clock = () => {
             position: "absolute",
             bottom: "50%",
             left: "50%",
-            width: "5vw",
-            height: "40%",
+            width: "9vw",
+            height: "50%",
             transformOrigin: "50% 100%",
           }}
         />
