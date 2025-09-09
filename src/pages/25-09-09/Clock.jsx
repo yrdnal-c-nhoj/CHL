@@ -1,6 +1,6 @@
 // pages/25-09-09/clock.jsx
 import React, { useEffect, useRef, useState } from "react";
-import font250909 from "./slot.otf";
+import font250909 from "./van.ttf";
 import bgImage from "./skull.jpg"; // 👈 background image in the same folder
 
 const CONFIG = {
