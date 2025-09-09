@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import font250909 from "./van.ttf";
 import bgImage2 from "./skull.jpg";       // bottom layer
 import bgImage from "./va.webp";       // top layer
-import bgImage3 from "./can.webp"; // new bottom-fixed layer
+import bgImage3 from "./cand.webp"; // new bottom-fixed layer
 
 const CONFIG = {
   font: `f${font250909}`,
