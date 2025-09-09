@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import Header from './components/Header';
-import ClockPageNav from './components/ClockPageNav'; // Import the new navigation component
+import ClockPageNav from './components/ClockPageNav';
 import styles from './ClockPage.module.css';
 
 // Preload all Clock.jsx files under /pages/**/Clock.jsx using Vite's glob import
@@ -29,6 +29,7 @@ const ClockPage = () => {
   const [pageError, setPageError] = useState(null);
   const [footerVisible, setFooterVisible] = useState(true);
   const [headerVisible, setHeaderVisible] = useState(true);
+  const [isContentReady, setIsContentReady] = useState(false); // New state for content readiness
 
   // -------------------------------
   // Load Clock component dynamically
@@ -38,6 +39,7 @@ const ClockPage = () => {
     if (!items || items.length === 0) {
       setPageError('No clocks available.');
       setClockComponent(null);
+      setIsContentReady(false);
       return;
     }
 
@@ -55,6 +57,7 @@ const ClockPage = () => {
     if (!item.path) {
       setPageError(`Clock path missing for date: ${item.date}`);
       setClockComponent(null);
+      setIsContentReady(false);
       return;
     }
 
@@ -68,12 +71,17 @@ const ClockPage = () => {
 
     if (clockModules[key]) {
       clockModules[key]()
-        .then((mod) => setClockComponent(() => mod.default))
-        .catch((err) =>
-          setPageError(`Failed to load clock for ${item.date}: ${err.message}`)
-        );
+        .then((mod) => {
+          setClockComponent(() => mod.default);
+          setIsContentReady(true); // Set content ready when ClockComponent is loaded
+        })
+        .catch((err) => {
+          setPageError(`Failed to load clock for ${item.date}: ${err.message}`);
+          setIsContentReady(false);
+        });
     } else {
       setPageError(`No clock found at path: ${key}`);
+      setIsContentReady(false);
     }
   }, [date, items, loading, navigate]);
 
@@ -133,8 +141,11 @@ const ClockPage = () => {
   // -------------------------------
   // Handle loading & errors
   // -------------------------------
-  if (loading) return <div className={styles.loading}>Loading data...</div>;
-  if (error || pageError)
+  if (loading || !isContentReady) {
+    return <div className={styles.loading}>Loading data...</div>;
+  }
+
+  if (error || pageError) {
     return (
       <div className={styles.container}>
         <Header visible={headerVisible} />
@@ -145,6 +156,7 @@ const ClockPage = () => {
         </div>
       </div>
     );
+  }
 
   if (!currentItem) {
     return (
@@ -172,14 +184,13 @@ const ClockPage = () => {
           <div className={styles.loading}>Loading clock...</div>
         )}
       </div>
-      
-<ClockPageNav
-  prevItem={prevItem}
-  nextItem={nextItem}
-  currentItem={currentItem}
-  formatTitle={formatTitle}
-  formatDate={formatDate}
-/>
+      <ClockPageNav
+        prevItem={prevItem}
+        nextItem={nextItem}
+        currentItem={currentItem}
+        formatTitle={formatTitle}
+        formatDate={formatDate}
+      />
     </div>
   );
 };

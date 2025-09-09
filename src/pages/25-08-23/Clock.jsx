@@ -17,7 +17,7 @@ import backgroundImage from "./g.webp";
 import overlayImage from "./fog.gif";
 
 // Custom font (imported as module)
-import customFont from "./fog.ttf";
+import fogFont from "./fog.ttf";
 
 // Map digits to their respective images
 const digitImages = {
@@ -58,7 +58,7 @@ export default function DigitalClock() {
   const scopedCSS = `
     @font-face {
       font-family: 'CustomFont';
-      src: url(${customFont}) format('truetype');
+      src: url(${fogFont}) format('truetype');
       font-weight: normal;
       font-style: normal;
     }
