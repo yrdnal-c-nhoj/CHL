@@ -90,7 +90,7 @@ const Clock = () => {
         top: `${y}%`,
         left: `${x}%`,
         transform: "translate(-50%, -50%)",
-        fontSize: "5rem",
+        fontSize: "4rem",
         color: "#EA81E0FF", // base color
         textShadow: `
           7px 0 0.9rem red,   /* red shadow to right */
