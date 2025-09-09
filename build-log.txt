@@ -1,0 +1,15 @@
+
+> daily-clock-app@0.0.0 build
+> vite build
+
+vite v7.1.1 building for production...
+transforming...
+✓ 451 modules transformed.
+✗ Build failed in 471ms
+error during build:
+Could not resolve "./Jheart.jpg" from "src/pages/25-06-08/Clock.jsx"
+file: /Users/john/Desktop/CHL/src/pages/25-06-08/Clock.jsx
+    at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
+    at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
+    at ModuleLoader.handleInvalidResolvedId (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21490:24)
+    at file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21450:26
