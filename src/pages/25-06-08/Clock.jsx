@@ -4,7 +4,7 @@ import bgImage from './bg.webp';
 import img12 from './Khea.gif';
 import img1 from './qspades.jpg';
 import img2 from './Jdi.gif';
-import img3 from './Kclubs.png';
+import img3 from './Kclubs.webp';
 import img4 from './Qhea.gif';
 import img5 from './JSpades.png';
 import img6 from './Kdi.gif';
