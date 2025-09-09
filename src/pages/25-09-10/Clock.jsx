@@ -63,10 +63,10 @@ const Clock = () => {
       <div
         style={{
           position: "relative",
-          width: "80vw",
-          height: "80vw",
-          maxWidth: "80dvh",
-          maxHeight: "80dvh",
+          width: "90vw",
+          height: "90vw",
+          maxWidth: "90dvh",
+          maxHeight: "90dvh",
           borderRadius: "50%",
           background: "rgba(255,255,255,0.05)",
           display: "flex",
