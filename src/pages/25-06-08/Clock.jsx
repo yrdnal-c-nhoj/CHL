@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import bgImage from './81V9vt-RfGL._AC_SL1500_.jpg';
+import bgImage from './bg.jpg';
 
 import img12 from './Khea.gif';
 import img1 from './qspades.jpg';
@@ -47,14 +47,14 @@ const FaceCardClock = () => {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    width: '150vmax',
-    height: '150vmax',
+    width: '150dvw',
+    height: '150dvh',
     objectFit: 'cover',
-    transform: 'translate(-50%, -50%)',
     filter: 'contrast(2.7) brightness(0.3)',
-    zIndex: -1,
-    animation: 'slow-rotate 720s linear infinite',
+    zIndex: 0,
+    transform: 'translate(-50%, -50%)',
     transformOrigin: 'center center',
+    animation: 'slow-rotate 720s linear infinite',
   };
 
   const clockContainer = {
@@ -65,6 +65,7 @@ const FaceCardClock = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 1,
   };
 
   const numberBase = {
@@ -90,8 +91,8 @@ const FaceCardClock = () => {
 
   const centerDot = {
     position: 'absolute',
-    width: '5vmin',
-    height: '5vmin',
+    width: '2vmin',
+    height: '2vmin',
     backgroundColor: '#979b99',
     borderRadius: '50%',
     top: '50%',
@@ -105,12 +106,11 @@ const FaceCardClock = () => {
         margin: 0,
         padding: 0,
         height: '100dvh',
-        width: '100vw',
+        width: '100dvw',
         overflow: 'hidden',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundRepeat: 'repeat',
         position: 'relative',
       }}
     >
@@ -168,12 +168,8 @@ const FaceCardClock = () => {
       <style>
         {`
           @keyframes slow-rotate {
-            0% {
-              transform: translate(-50%, -50%) rotate(0deg) scale(1.5);
-            }
-            100% {
-              transform: translate(-50%, -50%) rotate(-360deg) scale(1.5);
-            }
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(-360deg); }
           }
         `}
       </style>
