@@ -9,7 +9,7 @@ import img4 from './Qhea.gif';
 import img5 from './JSpades.png';
 import img6 from './Kdi.gif';
 import img7 from './Qclu.gif';
-import img8 from './Jheart.jpg';
+import img8 from './Jheart.jpeg';
 import img9 from './Kspa.gif';
 import img10 from './Qdi.gif';
 import img11 from './Jclu.gif';
