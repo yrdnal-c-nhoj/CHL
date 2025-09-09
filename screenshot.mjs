@@ -1,4 +1,4 @@
-// screenshot-today.mjs
+// screenshot-batch-tight.mjs
 import fs from 'fs';
 import path from 'path';
 import puppeteer from 'puppeteer';
@@ -6,36 +6,37 @@ import puppeteer from 'puppeteer';
 const screenshotsDir = path.join(process.cwd(), 'screenshots');
 if (!fs.existsSync(screenshotsDir)) fs.mkdirSync(screenshotsDir);
 
-const url = 'https://www.cubistheart.com/today';
+const paths = [
+'25-09-08',
+];
 
-// Generate today's date in YY-MM-DD format (for filename)
-function getTodayFilename() {
-  const now = new Date();
-  const yy = String(now.getFullYear()).slice(-2);
-  const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const dd = String(now.getDate()).padStart(2, '0');
-  return `${yy}-${mm}-${dd}.png`;
-}
+const baseURL = 'https://www.cubistheart.com/';
 
 async function main() {
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
-  console.log(`Capturing ${url} ...`);
+  for (let i = 0; i < paths.length; i++) {
+    const url = baseURL + paths[i];
+    console.log(`Capturing ${url} ...`);
 
-  try {
-    await page.goto(url, { waitUntil: 'networkidle2' });
+    try {
+      await page.goto(url, { waitUntil: 'networkidle2' });
 
-    // Get visible viewport size and make it square
-    const squareSize = await page.evaluate(() => Math.min(window.innerWidth, window.innerHeight));
-    await page.setViewport({ width: squareSize, height: squareSize });
+      // Get visible viewport size and make it square
+      const squareSize = await page.evaluate(() => {
+        return Math.min(window.innerWidth, window.innerHeight);
+      });
 
-    const screenshotPath = path.join(screenshotsDir, getTodayFilename());
-    await page.screenshot({ path: screenshotPath, fullPage: false });
+      await page.setViewport({ width: squareSize, height: squareSize });
 
-    console.log(`Saved ${screenshotPath}`);
-  } catch (err) {
-    console.error(`Failed for ${url}:`, err);
+      const screenshotPath = path.join(screenshotsDir, `${paths[i]}.png`);
+      await page.screenshot({ path: screenshotPath, fullPage: false });
+
+      console.log(`Saved ${screenshotPath}`);
+    } catch (err) {
+      console.error(`Failed for ${url}:`, err);
+    }
   }
 
   await browser.close();
