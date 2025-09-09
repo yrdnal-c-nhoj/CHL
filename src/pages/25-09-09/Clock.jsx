@@ -1,7 +1,8 @@
-// pages/25-09-09/clock.jsx
 import React, { useEffect, useRef, useState } from "react";
 import font250909 from "./van.ttf";
-import bgImage from "./skull.jpg"; // 👈 background image in the same folder
+import bgImage from "./skull.jpg";       // bottom layer
+import bgImage2 from "./va.webp";       // top layer
+import bgImage3 from "./can.webp"; // new bottom-fixed layer
 
 const CONFIG = {
   font: `f${font250909}`,
@@ -12,7 +13,6 @@ const CONFIG = {
   digitGap: "0.3rem",
   clockPadding: "0.1rem 0.1rem",
   symbolWidth: "0.1rem",
-  viewportBackground: "rgba(0, 0, 0, 0.05)",
   gridGap: "1rem",
 };
 
@@ -65,17 +65,18 @@ export default function ClockWall() {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    background: CONFIG.digitBackground,
     borderRadius: "0.2rem",
     userSelect: "none",
-    color: "#817F7FFF", // 👈 Added red color for digits
+    opacity: "0.6",
+    color: "#20862CFF",
+    textShadow: "0 0 1px red",
   };
 
   const symbolBoxStyle = {
     ...digitBoxStyle,
     width: CONFIG.symbolWidth,
     background: "transparent",
-    color: "#817F7FFF", // 👈 Added red color for digits
+    color: "#817F7FFF",
   };
 
   const renderClock = (key) => (
@@ -84,7 +85,6 @@ export default function ClockWall() {
       style={{
         display: "flex",
         gap: CONFIG.digitGap,
-        background: CONFIG.clockBackground,
         borderRadius: "0.5rem",
         padding: CONFIG.clockPadding,
       }}
@@ -118,6 +118,36 @@ export default function ClockWall() {
     backgroundRepeat: "no-repeat",
   };
 
+  const overlayStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundImage: `url(${bgImage2})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    opacity: 0.35,
+    pointerEvents: "none",
+    mixBlendMode: "hard-light",
+  };
+
+const bottomImageStyle = {
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  width: "100%",
+  height: "300%", // Adjustable height
+  backgroundImage: `url(${bgImage3})`,
+  backgroundSize: "contain", // Allows resizing while maintaining aspect ratio
+  backgroundPosition: "center bottom",
+  backgroundRepeat: "no-repeat",
+  opacity: 0.4,
+  pointerEvents: "none",
+};
+
+
   const gridStyle = {
     position: "absolute",
     top: "50%",
@@ -131,6 +161,8 @@ export default function ClockWall() {
 
   return (
     <div style={containerStyle}>
+      <div style={overlayStyle}></div>
+      <div style={bottomImageStyle}></div>
       <style>{`
         @font-face {
           font-family: "${CONFIG.font}";
