@@ -2,8 +2,10 @@ import React, { useState, useContext, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import TopNav from './components/TopNav';
-import Footer from './components/Footer';
 import styles from './Home.module.css';
+import Footer from './components/Footer';
+import instaImg from './assets/i.png';
+import elonImg from './assets/x.png';
 
 const Home = () => {
   const { items, loading, error } = useContext(DataContext);
@@ -41,15 +43,15 @@ const Home = () => {
 
   const handleRandomSort = () => {
     setSortBy('random');
-    setRandomSortKey((prev) => prev + 1);
+    setRandomSortKey(prev => prev + 1);
   };
 
   const handleDateSort = () => {
-    setSortBy((prev) => (prev === 'date-desc' ? 'date-asc' : 'date-desc'));
+    setSortBy(prev => (prev === 'date-desc' ? 'date-asc' : 'date-desc'));
   };
 
   const handleTitleSort = () => {
-    setSortBy((prev) => (prev === 'title-asc' ? 'title-desc' : 'title-asc'));
+    setSortBy(prev => (prev === 'title-asc' ? 'title-desc' : 'title-asc'));
   };
 
   const formatDate = (dateStr) => {
@@ -74,51 +76,84 @@ const Home = () => {
   return (
     <>
       <TopNav />
-      <div className={styles.container}>
-        <div className={styles.centeredContent}>
-          <div className={styles.sortContainer}>
-            <button
-              onClick={handleDateSort}
-              className={`${styles.sortButton} ${styles.dateSortButton} ${
-                sortBy.includes('date') ? styles.active : ''
-              }`}
-              title={sortBy === 'date-desc' ? 'Sort Oldest to Newest' : 'Sort Newest to Oldest'}
-            >
-              date {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
-            </button> 
-            <button
-              onClick={handleTitleSort}
-              className={`${styles.sortButton} ${styles.titleSortButton} ${
-                sortBy.includes('title') ? styles.active : ''
-              }`}
-              title={sortBy === 'title-asc' ? 'Sort Z–A' : 'Sort A–Z'}
-            >
-              title {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
-            </button>
-           <button
-              onClick={handleRandomSort}
-              className={`${styles.sortButton} ${sortBy === 'random' ? styles.active : ''}`}
-              title="Sort Randomly"
-            >
-              random
-            </button>
-          </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh", // full viewport height
+        }}
+      >
+        {/* Main content */}
+        <main style={{ flex: 1 }}>
+          <div className={styles.container}>
+            <div className={styles.centeredContent}>
+              <div className={styles.sortContainer}>
+                <button
+                  onClick={handleDateSort}
+                  className={`${styles.sortButton} ${styles.dateSortButton} ${sortBy.includes('date') ? styles.active : ''}`}
+                  title={sortBy === 'date-desc' ? 'Sort Oldest to Newest' : 'Sort Newest to Oldest'}
+                >
+                  date {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
+                </button>
+                <button
+                  onClick={handleTitleSort}
+                  className={`${styles.sortButton} ${styles.titleSortButton} ${sortBy.includes('title') ? styles.active : ''}`}
+                  title={sortBy === 'title-asc' ? 'Sort Z–A' : 'Sort A–Z'}
+                >
+                  title {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
+                </button>
+                <button
+                  onClick={handleRandomSort}
+                  className={`${styles.sortButton} ${sortBy === 'random' ? styles.active : ''}`}
+                  title="Sort Randomly"
+                >
+                  random
+                </button>
+              </div>
 
-          <ul className={styles.dateList}>
-            {sortedItems.map((item) => (
-              <li key={item.date} className={styles.entry}>
-                <Link to={`/${item.date}`} className={styles.navLink}>
-                    <span className={styles.date}>{formatDate(item.date)}</span>
-  
-                  <span className={styles.title}>{item.title || 'No Title'}</span>
-                   <span className={styles.clockNumber}>#{item.clockNumber}</span>
-                  </Link>
-              </li>
-            ))}
-          </ul>
+              <ul className={styles.dateList}>
+                {sortedItems.map(item => (
+                  <li key={item.date} className={styles.entry}>
+                    <Link to={`/${item.date}`} className={styles.navLink}>
+                      <span className={styles.date}>{formatDate(item.date)}</span>
+                      <span className={styles.title}>{item.title || 'No Title'}</span>
+                      <span className={styles.clockNumber}>#{item.clockNumber}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </main>
+
+        {/* Bottom-right icon section */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            gap: "0.1rem",
+            padding: "0.1rem",
+          }}
+        >
+          <a
+            href="https://www.instagram.com/cubist_heart_labs/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src={instaImg} alt="Instagram" style={{ width: "2rem", height: "2rem" }} />
+          </a>
+
+          <a
+            href="https://x.com/cubistheartlabs"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src={elonImg} alt="X" style={{ width: "2rem", height: "2rem" }} />
+          </a>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 };
