@@ -86,7 +86,7 @@ export default function ImageAnalogClock() {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          filter: "brightness(0.5) contrast(1.2) blur(1px)",
+          filter: "brightness(0.6) contrast(2.2)",
           zIndex: 0,
         }}
       />
@@ -136,10 +136,10 @@ export default function ImageAnalogClock() {
         {/* Hour hand */}
         <div
           style={{
-            width: `${clockSize * 0.02}vmin`,
-            height: `${clockSize * 0.25}vmin`,
-            backgroundColor: "#8A8686FF",
-            position: "absolute",
+            width: `${clockSize * 0.05}vmin`,
+            height: `${clockSize * 0.29}vmin`,
+ backgroundColor: "#B8C2F1FF",
+                      position: "absolute",
             top: `${center - clockSize * 0.25}vmin`,
             left: `${center - (clockSize * 0.02) / 2}vmin`,
             transformOrigin: `50% ${clockSize * 0.25}vmin`,
@@ -153,9 +153,9 @@ export default function ImageAnalogClock() {
         {/* Minute hand */}
         <div
           style={{
-            width: `${clockSize * 0.01}vmin`,
-            height: `${clockSize * 0.38}vmin`,
-            backgroundColor: "#8A8585FF",
+            width: `${clockSize * 0.03}vmin`,
+            height: `${clockSize * 0.42}vmin`,
+            backgroundColor: "#B8C2F1FF",
             position: "absolute",
             top: `${center - clockSize * 0.38}vmin`,
             left: `${center - (clockSize * 0.01) / 2}vmin`,
@@ -170,9 +170,9 @@ export default function ImageAnalogClock() {
         {/* Second hand */}
         <div
           style={{
-            width: `${clockSize * 0.005}vmin`,
-            height: `${clockSize * 0.4}vmin`,
-            backgroundColor: "#F9F6F6FF",
+            width: `${clockSize * 0.01}vmin`,
+            height: `${clockSize * 0.5}vmin`,
+            backgroundColor: "#B8C2F1FF",
             position: "absolute",
             top: `${center - clockSize * 0.4}vmin`,
             left: `${center - (clockSize * 0.005) / 2}vmin`,
