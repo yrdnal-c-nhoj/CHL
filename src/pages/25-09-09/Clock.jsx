@@ -6,9 +6,9 @@ import bgImage from "./skull.jpg"; // 👈 background image in the same folder
 const CONFIG = {
   font: `f${font250909}`,
   fontUrl: font250909,
-  fontSize: "0.8rem",
-  digitWidth: "0.3rem",
-  digitHeight: "0.2rem",
+  fontSize: "1.4rem",
+  digitWidth: "0.1rem",
+  digitHeight: "1.2rem",
   digitGap: "0.3rem",
   clockPadding: "0.1rem 0.1rem",
   symbolWidth: "0.1rem",
@@ -39,15 +39,11 @@ export default function ClockWall() {
         parseFloat(CONFIG.digitWidth) * clockCharCount +
         parseFloat(CONFIG.digitGap) * (clockCharCount - 1) +
         40;
-
       const clockHeight = parseFloat(CONFIG.digitHeight) + 40;
-
       const cols = Math.ceil(window.innerWidth / clockWidth) + 2;
       const rows = Math.ceil(window.innerHeight / clockHeight) + 2;
-
       setGrid({ rows, cols });
     };
-
     calcGrid();
     window.addEventListener("resize", calcGrid);
     return () => window.removeEventListener("resize", calcGrid);
@@ -72,12 +68,14 @@ export default function ClockWall() {
     background: CONFIG.digitBackground,
     borderRadius: "0.2rem",
     userSelect: "none",
+    color: "#817F7FFF", // 👈 Added red color for digits
   };
 
   const symbolBoxStyle = {
     ...digitBoxStyle,
     width: CONFIG.symbolWidth,
     background: "transparent",
+    color: "#817F7FFF", // 👈 Added red color for digits
   };
 
   const renderClock = (key) => (
