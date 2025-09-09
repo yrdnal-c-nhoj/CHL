@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import img1 from "./1.jpg";
+import bgImage from "./orange.webp"; // 👈 your local background
+import img1 from "./1.webp";
 import img2 from "./2.jpg";
 import img3 from "./3.jpg";
 import img4 from "./4.jpg";
@@ -34,7 +35,6 @@ export default function ImageAnalogClock() {
   const minuteAngle = (minutes + seconds / 60) * 6;
   const secondAngle = seconds * 6;
 
-  const shadowStyle = "0 1vmin 2vmin rgba(0,0,0,0.9)"; // really strong shadow
   const intenseShadow = "0 1.5vmin 3vmin rgba(0,0,0,1), 0 0 2vmin rgba(0,0,0,0.8)";
 
   return (
@@ -42,30 +42,40 @@ export default function ImageAnalogClock() {
       style={{
         width: "100vw",
         height: "100vh",
+        position: "relative",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#3E3F3DFF",
-        backgroundImage: `url("data:image/svg+xml;utf8,
-          <svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'>
-            <g fill='white' opacity='0.15'>
-              <path d='M10,10 h60 a10,10 0 0 1 10,10 v40 a10,10 0 0 1 -10,10 h-20 l-10,10 l0,-10 h-10 a10,10 0 0 1 -10,-10 v-40 a10,10 0 0 1 10,-10 z'/>
-              <path d='M70,20 h40 a8,8 0 0 1 8,8 v32 a8,8 0 0 1 -8,8 h-18 l-8,8 l0,-8 h-12 a8,8 0 0 1 -8,-8 v-32 a8,8 0 0 1 8,-8 z'/>
-            </g>
-          </svg>
-        ")`,
-        backgroundRepeat: "repeat",
-        backgroundSize: "150px 150px",
       }}
     >
+      {/* Background with brightness/contrast/blur */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          filter: "brightness(0.5) contrast(1.2) blur(1px)",
+          zIndex: 0,
+        }}
+      />
+
+      {/* Clock container */}
       <div
         style={{
           width: `${clockSize}vmin`,
           height: `${clockSize}vmin`,
           borderRadius: "50%",
           position: "relative",
+          zIndex: 1, // above background
         }}
       >
+        {/* Hour images around clock */}
         {images.map((img, i) => {
           const angle = (i * 30) * (Math.PI / 180);
           const x = center + imgRadius * Math.sin(angle);
