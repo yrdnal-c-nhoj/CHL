@@ -22,7 +22,7 @@ function Contact() {
 
   <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
     <a
-      href="https://www.instagram.com/cubist_heart/"
+      href="https://www.instagram.com/cubist_heart_labs/"
       target="_blank"
       rel="noopener noreferrer"
     >
