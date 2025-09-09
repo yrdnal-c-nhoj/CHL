@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import bgImage from "./orange.webp"; // 👈 your local background
+import bgImage from "./orange.webp"; // background
 import img1 from "./1.webp";
 import img2 from "./2.jpg";
 import img3 from "./3.jpg";
@@ -15,17 +15,43 @@ import img12 from "./12.webp";
 
 export default function ImageAnalogClock() {
   const [time, setTime] = useState(new Date());
+  const [loaded, setLoaded] = useState(false);
 
+  const images = [bgImage, img12, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
+
+  // Preload images
+  useEffect(() => {
+    let loadedCount = 0;
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        loadedCount += 1;
+        if (loadedCount === images.length) setLoaded(true);
+      };
+      img.onerror = () => {
+        // If any image fails, we still proceed
+        loadedCount += 1;
+        if (loadedCount === images.length) setLoaded(true);
+      };
+    });
+  }, []);
+
+  // Tick every second
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
+  if (!loaded) {
+    return null; // or a loader div if you prefer
+  }
+
   const clockSize = 90; 
   const center = clockSize / 2;
   const imgRadius = clockSize * 0.42;
   const imgSize = clockSize * 0.2;
-  const images = [img12, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
+  const hourImages = [img12, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
@@ -48,7 +74,7 @@ export default function ImageAnalogClock() {
         alignItems: "center",
       }}
     >
-      {/* Background with brightness/contrast/blur */}
+      {/* Background */}
       <div
         style={{
           position: "absolute",
@@ -65,18 +91,17 @@ export default function ImageAnalogClock() {
         }}
       />
 
-      {/* Clock container */}
+      {/* Clock */}
       <div
         style={{
           width: `${clockSize}vmin`,
           height: `${clockSize}vmin`,
           borderRadius: "50%",
           position: "relative",
-          zIndex: 1, // above background
+          zIndex: 1,
         }}
       >
-        {/* Hour images around clock */}
-        {images.map((img, i) => {
+        {hourImages.map((img, i) => {
           const angle = (i * 30) * (Math.PI / 180);
           const x = center + imgRadius * Math.sin(angle);
           const y = center - imgRadius * Math.cos(angle);
@@ -102,11 +127,7 @@ export default function ImageAnalogClock() {
               <img
                 src={img}
                 alt={`hour-${i}`}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
             </div>
           );
