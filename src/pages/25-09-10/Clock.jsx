@@ -63,8 +63,8 @@ const Clock = () => {
       <div
         style={{
           position: "relative",
-          width: "60vw",
-          height: "60vw",
+          width: "80vw",
+          height: "80vw",
           maxWidth: "80dvh",
           maxHeight: "80dvh",
           borderRadius: "50%",
@@ -74,30 +74,39 @@ const Clock = () => {
           alignItems: "center",
         }}
       >
-        {/* Numbers 1–12 */}
-        {[...Array(12)].map((_, i) => {
-          const angle = (i + 1) * 30;
-          const x = 50 + 40 * Math.sin((angle * Math.PI) / 180);
-          const y = 50 - 40 * Math.cos((angle * Math.PI) / 180);
-          return (
-            <div
-              key={i}
-              style={{
-                position: "absolute",
-                top: `${y}%`,
-                left: `${x}%`,
-                transform: "translate(-50%, -50%)",
-                fontSize: "5rem",
-                // fontWeight: "bold",
-                opacity: "0.3",
-                color: "#DFB8F1FF",
-                textShadow: "0 0 0.5rem black",
-              }}
-            >
-              {i + 1}
-            </div>
-          );
-        })}
+
+
+
+{/* Numbers 1–12 */}
+{[...Array(12)].map((_, i) => {
+  const angle = (i + 1) * 30;
+  const x = 50 + 40 * Math.sin((angle * Math.PI) / 180);
+  const y = 50 - 40 * Math.cos((angle * Math.PI) / 180);
+  return (
+    <div
+      key={i}
+      style={{
+        position: "absolute",
+        top: `${y}%`,
+        left: `${x}%`,
+        transform: "translate(-50%, -50%)",
+        fontSize: "5rem",
+        color: "#EA81E0FF", // base color
+        textShadow: `
+          7px 0 0.9rem red,   /* red shadow to right */
+          -0.3rem 0 0.3rem yellow /* yellow shadow to left */
+        `,
+      }}
+    >
+      {i + 1}
+    </div>
+  );
+})}
+
+
+
+
+
 
         {/* Hour Hand */}
         <img
