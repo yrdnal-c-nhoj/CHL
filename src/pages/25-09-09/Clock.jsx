@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import font250909 from "./van.ttf";
-import bgImage from "./skull.jpg";       // bottom layer
-import bgImage2 from "./va.webp";       // top layer
+import bgImage2 from "./skull.jpg";       // bottom layer
+import bgImage from "./va.webp";       // top layer
 import bgImage3 from "./can.webp"; // new bottom-fixed layer
 
 const CONFIG = {
@@ -67,8 +67,8 @@ export default function ClockWall() {
     justifyContent: "center",
     borderRadius: "0.2rem",
     userSelect: "none",
-    opacity: "0.6",
-    color: "#20862CFF",
+    opacity: "0.8",
+    color: "#558A59FF",
     textShadow: "0 0 1px red",
   };
 
@@ -128,9 +128,9 @@ export default function ClockWall() {
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
-    opacity: 0.35,
+    opacity: 0.65,
     pointerEvents: "none",
-    mixBlendMode: "hard-light",
+    // mixBlendMode: "hard-light",
   };
 
 const bottomImageStyle = {
@@ -138,9 +138,9 @@ const bottomImageStyle = {
   bottom: 0,
   left: 0,
   width: "100%",
-  height: "300%", // Adjustable height
+  height: "100%", // Adjustable height
   backgroundImage: `url(${bgImage3})`,
-  backgroundSize: "contain", // Allows resizing while maintaining aspect ratio
+  backgroundSize: "cover", // Allows resizing while maintaining aspect ratio
   backgroundPosition: "center bottom",
   backgroundRepeat: "no-repeat",
   opacity: 0.4,
