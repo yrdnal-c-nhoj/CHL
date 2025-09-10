@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import bgImage from "./orange.webp"; // background
+import bgImage from "./orange.webp";
 import img1 from "./1.webp";
 import img2 from "./2.jpg";
 import img3 from "./3.jpg";
@@ -18,6 +18,11 @@ export default function ImageAnalogClock() {
   const [loaded, setLoaded] = useState(false);
 
   const images = [bgImage, img12, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
+  const CLOCK_SIZE = 90;
+  const CENTER = CLOCK_SIZE / 2;
+  const IMG_RADIUS = CLOCK_SIZE * 0.42;
+  const IMG_SIZE = CLOCK_SIZE * 0.2;
+  const intenseShadow = "0 1.5vmin 3vmin rgba(0,0,0,1), 0 0 2vmin rgba(0,0,0,0.8)";
 
   // Preload images
   useEffect(() => {
@@ -30,7 +35,6 @@ export default function ImageAnalogClock() {
         if (loadedCount === images.length) setLoaded(true);
       };
       img.onerror = () => {
-        // If any image fails, we still proceed
         loadedCount += 1;
         if (loadedCount === images.length) setLoaded(true);
       };
@@ -44,15 +48,10 @@ export default function ImageAnalogClock() {
   }, []);
 
   if (!loaded) {
-    return null; // or a loader div if you prefer
+    return <div style={{ color: "white", fontSize: "2rem", position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>Loading...</div>;
   }
 
-  const clockSize = 90; 
-  const center = clockSize / 2;
-  const imgRadius = clockSize * 0.42;
-  const imgSize = clockSize * 0.2;
   const hourImages = [img12, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
-
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
@@ -61,20 +60,23 @@ export default function ImageAnalogClock() {
   const minuteAngle = (minutes + seconds / 60) * 6;
   const secondAngle = seconds * 6;
 
-  const intenseShadow = "0 1.5vmin 3vmin rgba(0,0,0,1), 0 0 2vmin rgba(0,0,0,0.8)";
-
   return (
     <div
       style={{
         width: "100vw",
         height: "100vh",
-        position: "relative",
+        position: "fixed",
+        top: 0,
+        left: 0,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        overflow: "hidden",
+        margin: 0,
+        padding: 0,
       }}
+      aria-label={`Analog clock showing ${hours}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`}
     >
-      {/* Background */}
       <div
         style={{
           position: "absolute",
@@ -90,12 +92,12 @@ export default function ImageAnalogClock() {
           zIndex: 0,
         }}
       />
-
-      {/* Clock */}
       <div
         style={{
-          width: `${clockSize}vmin`,
-          height: `${clockSize}vmin`,
+          width: `${CLOCK_SIZE}vmin`,
+          height: `${CLOCK_SIZE}vmin`,
+          maxWidth: "800px",
+          maxHeight: "800px",
           borderRadius: "50%",
           position: "relative",
           zIndex: 1,
@@ -103,20 +105,20 @@ export default function ImageAnalogClock() {
       >
         {hourImages.map((img, i) => {
           const angle = (i * 30) * (Math.PI / 180);
-          const x = center + imgRadius * Math.sin(angle);
-          const y = center - imgRadius * Math.cos(angle);
+          const x = CENTER + IMG_RADIUS * Math.sin(angle);
+          const y = CENTER - IMG_RADIUS * Math.cos(angle);
           return (
             <div
               key={i}
               style={{
-                width: `${imgSize}vmin`,
-                height: `${imgSize}vmin`,
+                width: `${IMG_SIZE}vmin`,
+                height: `${IMG_SIZE}vmin`,
                 position: "absolute",
-                left: `${x - imgSize / 2}vmin`,
-                top: `${y - imgSize / 2}vmin`,
+                left: `${x - IMG_SIZE / 2}vmin`,
+                top: `${y - IMG_SIZE / 2}vmin`,
                 borderRadius: "50%",
                 overflow: "hidden",
-                border: `${clockSize * 0.0025}vmin solid white`,
+                border: `${CLOCK_SIZE * 0.0025}vmin solid white`,
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -126,60 +128,71 @@ export default function ImageAnalogClock() {
             >
               <img
                 src={img}
-                alt={`hour-${i}`}
+                alt={`Hour marker for ${i || 12}`}
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
             </div>
           );
         })}
-
         {/* Hour hand */}
         <div
           style={{
-            width: `${clockSize * 0.05}vmin`,
-            height: `${clockSize * 0.29}vmin`,
- backgroundColor: "#B8C2F1FF",
-                      position: "absolute",
-            top: `${center - clockSize * 0.25}vmin`,
-            left: `${center - (clockSize * 0.02) / 2}vmin`,
-            transformOrigin: `50% ${clockSize * 0.25}vmin`,
+            width: `${CLOCK_SIZE * 0.05}vmin`,
+            height: `${CLOCK_SIZE * 0.29}vmin`,
+            backgroundColor: "#B8C2F1FF",
+            position: "absolute",
+            top: `${CENTER - CLOCK_SIZE * 0.25}vmin`,
+            left: `${CENTER - (CLOCK_SIZE * 0.02) / 2}vmin`,
+            transformOrigin: `50% ${CLOCK_SIZE * 0.25}vmin`,
             transform: `rotate(${hourAngle}deg)`,
             borderRadius: "1vmin",
             zIndex: 2,
             boxShadow: intenseShadow,
           }}
         />
-
         {/* Minute hand */}
         <div
           style={{
-            width: `${clockSize * 0.03}vmin`,
-            height: `${clockSize * 0.42}vmin`,
+            width: `${CLOCK_SIZE * 0.03}vmin`,
+            height: `${CLOCK_SIZE * 0.42}vmin`,
             backgroundColor: "#B8C2F1FF",
             position: "absolute",
-            top: `${center - clockSize * 0.38}vmin`,
-            left: `${center - (clockSize * 0.01) / 2}vmin`,
-            transformOrigin: `50% ${clockSize * 0.38}vmin`,
+            top: `${CENTER - CLOCK_SIZE * 0.38}vmin`,
+            left: `${CENTER - (CLOCK_SIZE * 0.01) / 2}vmin`,
+            transformOrigin: `50% ${CLOCK_SIZE * 0.38}vmin`,
             transform: `rotate(${minuteAngle}deg)`,
             borderRadius: "1vmin",
             zIndex: 3,
             boxShadow: intenseShadow,
           }}
         />
-
         {/* Second hand */}
         <div
           style={{
-            width: `${clockSize * 0.01}vmin`,
-            height: `${clockSize * 0.5}vmin`,
+            width: `${CLOCK_SIZE * 0.01}vmin`,
+            height: `${CLOCK_SIZE * 0.5}vmin`,
             backgroundColor: "#B8C2F1FF",
             position: "absolute",
-            top: `${center - clockSize * 0.4}vmin`,
-            left: `${center - (clockSize * 0.005) / 2}vmin`,
-            transformOrigin: `50% ${clockSize * 0.4}vmin`,
+            top: `${CENTER - CLOCK_SIZE * 0.4}vmin`,
+            left: `${CENTER - (CLOCK_SIZE * 0.005) / 2}vmin`,
+            transformOrigin: `50% ${CLOCK_SIZE * 0.4}vmin`,
             transform: `rotate(${secondAngle}deg)`,
             borderRadius: "0.5vmin",
             zIndex: 4,
+            boxShadow: intenseShadow,
+          }}
+        />
+        {/* Center dot */}
+        <div
+          style={{
+            width: `${CLOCK_SIZE * 0.05}vmin`,
+            height: `${CLOCK_SIZE * 0.05}vmin`,
+            backgroundColor: "#B8C2F1FF",
+            position: "absolute",
+            top: `${CENTER - (CLOCK_SIZE * 0.025)}vmin`,
+            left: `${CENTER - (CLOCK_SIZE * 0.025)}vmin`,
+            borderRadius: "50%",
+            zIndex: 5,
             boxShadow: intenseShadow,
           }}
         />
