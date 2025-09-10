@@ -7,7 +7,7 @@ const screenshotsDir = path.join(process.cwd(), 'screenshots');
 if (!fs.existsSync(screenshotsDir)) fs.mkdirSync(screenshotsDir);
 
 const paths = [
-'25-09-08',
+'today',
 ];
 
 const baseURL = 'https://www.cubistheart.com/';
