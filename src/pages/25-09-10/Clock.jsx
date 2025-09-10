@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
 // Local images
-import bgImage from "./bg.gif";
+import bgImage from "./bg.webp";
 import hourHand from "./hour.gif";
 import minuteHand from "./min.gif";
 import secondHand from "./sec.gif";
