@@ -64,8 +64,8 @@ const Clock = () => {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "90vmin",
-          height: "90vmin",
+          width: "95vmin",
+          height: "95vmin",
           borderRadius: "50%",
           background: "rgba(255,255,255,0.05)",
           zIndex: 1,
@@ -111,7 +111,7 @@ const Clock = () => {
           top: "50%",
           left: "50%",
           width: "17vmin",
-          height: "22vmin",
+          height: "29vmin",
           transformOrigin: "50% 100%", // Rotate around bottom center
           zIndex: 3,
         }}
@@ -124,7 +124,7 @@ const Clock = () => {
           position: "absolute",
           top: "50%",
           left: "50%",
-          width: "12vmin",
+          width: "16vmin",
           height: "45vmin",
           transformOrigin: "50% 100%", // Rotate around bottom center
           zIndex: 2,
@@ -138,8 +138,8 @@ const Clock = () => {
           position: "absolute",
           top: "50%",
           left: "50%",
-          width: "9vmin",
-          height: "44vmin",
+          width: "12vmin",
+          height: "48vmin",
           transformOrigin: "50% 100%", // Rotate around bottom center
           zIndex: 4,
         }}
