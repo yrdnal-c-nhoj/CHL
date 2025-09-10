@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import font250909 from "./van.ttf";
-import bgImage2 from "./skull.jpg";       // bottom layer
-import bgImage from "./va.webp";       // top layer
+import bgImage2 from "./skull.jpg"; // bottom layer
+import bgImage from "./va.webp"; // top layer
 import bgImage3 from "./cand.webp"; // new bottom-fixed layer
 
 const CONFIG = {
@@ -116,6 +116,7 @@ export default function ClockWall() {
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
+    filter: "brightness(1.8) contrast(1.8)", // adjust main background
   };
 
   const overlayStyle = {
@@ -130,23 +131,23 @@ export default function ClockWall() {
     backgroundRepeat: "no-repeat",
     opacity: 0.65,
     pointerEvents: "none",
-    // mixBlendMode: "hard-light",
+    filter: "brightness(0.9) contrast(1.9)", // adjust overlay
   };
 
-const bottomImageStyle = {
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  width: "100%",
-  height: "100%", // Adjustable height
-  backgroundImage: `url(${bgImage3})`,
-  backgroundSize: "cover", // Allows resizing while maintaining aspect ratio
-  backgroundPosition: "center bottom",
-  backgroundRepeat: "no-repeat",
-  opacity: 0.4,
-  pointerEvents: "none",
-};
-
+  const bottomImageStyle = {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundImage: `url(${bgImage3})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center bottom",
+    backgroundRepeat: "no-repeat",
+    opacity: 0.4,
+    pointerEvents: "none",
+    filter: "brightness(1.7) contrast(0.4)", // adjust bottom layer
+  };
 
   const gridStyle = {
     position: "absolute",
