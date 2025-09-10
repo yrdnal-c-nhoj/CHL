@@ -1,11 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 const StarsParallax = () => {
-  const [stars, setStars] = useState({
-    near: [],
-    mid: [],
-    far: []
-  });
+  const [stars, setStars] = useState({ near: [], mid: [], far: [] });
 
   useEffect(() => {
     const generateStars = (count, sizeMin, sizeMax, speedMultiplier) => {
@@ -51,7 +47,7 @@ const StarsParallax = () => {
     <div style={{
       width: '100vw',
       height: '100dvh',
-      background: '#000000',
+      background: 'linear-gradient(to top, #193527FF 0%, #07145EFF 100%)',
       position: 'absolute',
       overflow: 'hidden',
       zIndex: 1
@@ -65,7 +61,7 @@ const StarsParallax = () => {
             top: `${star.y}dvh`,
             width: `${star.size}rem`,
             height: `${star.size}rem`,
-            background: '#ffffff',
+            background: '#F9C4F5FF',
             borderRadius: '50%',
             opacity: 0.4
           }}
@@ -80,7 +76,7 @@ const StarsParallax = () => {
             top: `${star.y}dvh`,
             width: `${star.size}rem`,
             height: `${star.size}rem`,
-            background: '#ffffff',
+            background: '#C6B3D2FF',
             borderRadius: '50%',
             opacity: 0.6
           }}
@@ -95,7 +91,7 @@ const StarsParallax = () => {
             top: `${star.y}dvh`,
             width: `${star.size}rem`,
             height: `${star.size}rem`,
-            background: '#ffffff',
+            background: '#D5D1D1FF',
             borderRadius: '50%',
             opacity: 0.8
           }}
@@ -112,7 +108,7 @@ const Clock = () => {
   const secondRef = useRef(null);
 
   useEffect(() => {
-    const size = Math.min(window.innerWidth, window.innerHeight) * 0.8; // Reduced size to fit well
+    const size = Math.min(window.innerWidth, window.innerHeight) * 0.8;
     const dpr = window.devicePixelRatio || 1;
 
     const createCanvasContext = (ref) => {
@@ -132,7 +128,7 @@ const Clock = () => {
     const secondCtx = createCanvasContext(secondRef);
 
     const radius = size / 2;
-    const hourNumbers = ['🌕', '🌖', '🌗', '🌘', '🌙', '🌛', '🌚', '🌜', '🌙', '🌒', '🌓', '🌔'];
+    const hourNumbers = ['🌕', '🌔','🌓', '🌒','🌙',  '🌛',  '🌚', '🌜', '🌙', '🌘', '🌗', '🌖'];
 
     const drawClockFace = () => {
       faceCtx.save();
@@ -155,7 +151,16 @@ const Clock = () => {
         faceCtx.shadowOffsetY = 2;
 
         faceCtx.fillStyle = '#CB5206FF';
-        faceCtx.fillText(hourNumbers[i], 0, 0);
+
+        // Flip index 2 (3 o’clock) and index 7 (9 o’clock) if they are '🌙'
+        if ((i === 2 || i === 7) && hourNumbers[i] === '🌙') {
+          faceCtx.save();
+          faceCtx.scale(-1, 1);
+          faceCtx.fillText(hourNumbers[i], 0, 0);
+          faceCtx.restore();
+        } else {
+          faceCtx.fillText(hourNumbers[i], 0, 0);
+        }
 
         faceCtx.restore();
       }
@@ -192,9 +197,9 @@ const Clock = () => {
         const minutes = now.getMinutes() + now.getSeconds() / 60 + now.getMilliseconds() / 60000;
         const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
 
-        drawHand(hourCtx, hours, 12, 0.5, 6, 'white');
-        drawHand(minuteCtx, minutes, 60, 0.7, 4, 'white');
-        drawHand(secondCtx, seconds, 60, 0.9, 2, 'silver');
+        drawHand(hourCtx, hours, 12, 0.5, 6, '#333333');
+        drawHand(minuteCtx, minutes, 60, 0.7, 4, '#535252FF');
+        drawHand(secondCtx, seconds, 60, 0.8, 2, '#636060FF');
 
         requestAnimationFrame(updateClock);
       };
@@ -219,50 +224,17 @@ const Clock = () => {
         background: 'transparent'
       }}
     >
-      <canvas
-        ref={faceRef}
-        style={{
-          position: 'absolute',
-          borderRadius: '50%',
-          zIndex: 2,
-        }}
-      />
-      <canvas
-        ref={hourRef}
-        style={{
-          position: 'absolute',
-          borderRadius: '50%',
-          zIndex: 5,
-        }}
-      />
-      <canvas
-        ref={minuteRef}
-        style={{
-          position: 'absolute',
-          borderRadius: '50%',
-          zIndex: 4,
-        }}
-      />
-      <canvas
-        ref={secondRef}
-        style={{
-          position: 'absolute',
-          borderRadius: '50%',
-          zIndex: 5,
-        }}
-      />
+      <canvas ref={faceRef} style={{ position: 'absolute', borderRadius: '50%', zIndex: 2 }} />
+      <canvas ref={hourRef} style={{ position: 'absolute', borderRadius: '50%', zIndex: 5 }} />
+      <canvas ref={minuteRef} style={{ position: 'absolute', borderRadius: '50%', zIndex: 4 }} />
+      <canvas ref={secondRef} style={{ position: 'absolute', borderRadius: '50%', zIndex: 5 }} />
     </div>
   );
 };
 
 const App = () => {
   return (
-    <div style={{
-      width: '100vw',
-      height: '100dvh',
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
+    <div style={{ width: '100vw', height: '100dvh', position: 'relative', overflow: 'hidden' }}>
       <StarsParallax />
       <Clock />
     </div>
