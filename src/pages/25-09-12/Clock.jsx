@@ -18,9 +18,9 @@ const StarsParallax = () => {
     };
 
     setStars({
-      near: generateStars(80, 0.1, 0.3, 1.0),
-      mid: generateStars(150, 0.05, 0.2, 0.6),
-      far: generateStars(190, 0.03, 0.1, 0.3)
+      near: generateStars(80, 0.1, .22, 0.8),
+      mid: generateStars(150, 0.05, 0.15, 0.7),
+      far: generateStars(190, 0.03, 0.1, 0.6)
     });
 
     const animateStars = () => {
@@ -85,7 +85,7 @@ const Clock = () => {
   const secondRef = useRef(null);
 
   useEffect(() => {
-    const size = Math.min(window.innerWidth, window.innerHeight) * 0.8;
+    const size = Math.min(window.innerWidth, window.innerHeight) * 1.1;
     const dpr = window.devicePixelRatio || 1;
 
     const createCanvasContext = (ref) => {
@@ -119,7 +119,7 @@ const Clock = () => {
         faceCtx.translate(0, -radius * 0.65);
         faceCtx.rotate(-angle);
 
-        faceCtx.font = '3.2rem Times New Roman';
+        faceCtx.font = '4.5rem Times New Roman';
         faceCtx.textAlign = 'center';
         faceCtx.textBaseline = 'middle';
 
@@ -158,9 +158,9 @@ const Clock = () => {
       ctx.rotate((value / max) * 2 * Math.PI);
 
       const grad = ctx.createLinearGradient(0, 0, 0, -radius * length);
-      grad.addColorStop(0, "#f9f9f9");
-      grad.addColorStop(0.5, "#b0b0b0");
-      grad.addColorStop(1, "#e6e6e6");
+      grad.addColorStop(0, "#CFCCCCFF");
+      grad.addColorStop(0.5, "#797878FF");
+      grad.addColorStop(1, "#B2B0B0FF");
 
       ctx.beginPath();
       ctx.moveTo(0, 0);
