@@ -61,6 +61,7 @@ function Manifesto() {
         </div>
      
       </div>
+      
         <Footer />
     </div>
   );
