@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const StarsParallax = () => {
-  const [stars, setStars] = useState({ near: [], mid: [], far: [] });
+  const [stars, setStars] = React.useState({ near: [], mid: [], far: [] });
 
   useEffect(() => {
     const generateStars = (count, sizeMin, sizeMax, speedMultiplier) => {
@@ -11,36 +11,40 @@ const StarsParallax = () => {
           x: Math.random() * 100,
           y: Math.random() * 100,
           size: size,
-          speed: size * speedMultiplier
+          speed: (size * speedMultiplier)/50,
+          twinkleOffset: Math.random() * Math.PI * 2
         };
       });
     };
 
     setStars({
-      near: generateStars(50, 0.1, 0.3, 1.0),
-      mid: generateStars(100, 0.05, 0.2, 0.6),
-      far: generateStars(150, 0.03, 0.1, 0.3)
+      near: generateStars(80, 0.1, 0.3, 1.0),
+      mid: generateStars(150, 0.05, 0.2, 0.6),
+      far: generateStars(190, 0.03, 0.1, 0.3)
     });
 
     const animateStars = () => {
       setStars((prev) => ({
         near: prev.near.map(star => ({
           ...star,
-          y: star.y - star.speed < 0 ? 100 : star.y - star.speed
+          y: star.y - star.speed / 2 < 0 ? 100 : star.y - star.speed / 2,
+          opacity: 0.7 + 0.3 * Math.sin(Date.now() / 500 + star.twinkleOffset)
         })),
         mid: prev.mid.map(star => ({
           ...star,
-          y: star.y - star.speed < 0 ? 100 : star.y - star.speed
+          y: star.y - star.speed / 2 < 0 ? 100 : star.y - star.speed / 2,
+          opacity: 0.5 + 0.5 * Math.sin(Date.now() / 600 + star.twinkleOffset)
         })),
         far: prev.far.map(star => ({
           ...star,
-          y: star.y - star.speed < 0 ? 100 : star.y - star.speed
+          y: star.y - star.speed / 2 < 0 ? 100 : star.y - star.speed / 2,
+          opacity: 0.3 + 0.5 * Math.sin(Date.now() / 700 + star.twinkleOffset)
         }))
       }));
+      requestAnimationFrame(animateStars);
     };
 
-    const interval = setInterval(animateStars, 50);
-    return () => clearInterval(interval);
+    animateStars();
   }, []);
 
   return (
@@ -52,57 +56,30 @@ const StarsParallax = () => {
       overflow: 'hidden',
       zIndex: 1
     }}>
-      {stars.far.map((star, index) => (
-        <div
-          key={`far-${index}`}
-          style={{
-            position: 'absolute',
-            left: `${star.x}vw`,
-            top: `${star.y}dvh`,
-            width: `${star.size}rem`,
-            height: `${star.size}rem`,
-            background: '#F9C4F5FF',
-            borderRadius: '50%',
-            opacity: 0.4
-          }}
-        />
-      ))}
-      {stars.mid.map((star, index) => (
-        <div
-          key={`mid-${index}`}
-          style={{
-            position: 'absolute',
-            left: `${star.x}vw`,
-            top: `${star.y}dvh`,
-            width: `${star.size}rem`,
-            height: `${star.size}rem`,
-            background: '#C6B3D2FF',
-            borderRadius: '50%',
-            opacity: 0.6
-          }}
-        />
-      ))}
-      {stars.near.map((star, index) => (
-        <div
-          key={`near-${index}`}
-          style={{
-            position: 'absolute',
-            left: `${star.x}vw`,
-            top: `${star.y}dvh`,
-            width: `${star.size}rem`,
-            height: `${star.size}rem`,
-            background: '#D5D1D1FF',
-            borderRadius: '50%',
-            opacity: 0.8
-          }}
-        />
-      ))}
+      {['far', 'mid', 'near'].map(layer =>
+        stars[layer].map((star, index) => (
+          <div
+            key={`${layer}-${index}`}
+            style={{
+              position: 'absolute',
+              left: `${star.x}vw`,
+              top: `${star.y}dvh`,
+              width: `${star.size}rem`,
+              height: `${star.size}rem`,
+              background: '#E0E0FF',
+              borderRadius: '50%',
+              opacity: star.opacity
+            }}
+          />
+        ))
+      )}
     </div>
   );
 };
 
 const Clock = () => {
   const faceRef = useRef(null);
+  const sheenRef = useRef(null);
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
@@ -123,6 +100,7 @@ const Clock = () => {
     };
 
     const faceCtx = createCanvasContext(faceRef);
+    const sheenCtx = createCanvasContext(sheenRef);
     const hourCtx = createCanvasContext(hourRef);
     const minuteCtx = createCanvasContext(minuteRef);
     const secondCtx = createCanvasContext(secondRef);
@@ -145,15 +123,16 @@ const Clock = () => {
         faceCtx.textAlign = 'center';
         faceCtx.textBaseline = 'middle';
 
-        faceCtx.shadowColor = 'rgba(0,0,0,1.0)';
-        faceCtx.shadowBlur = 1;
-        faceCtx.shadowOffsetX = 2;
-        faceCtx.shadowOffsetY = 2;
+        // Silvery glow
+        faceCtx.shadowColor = 'rgba(220, 235, 255, 0.9)';
+        faceCtx.shadowBlur = 10;
+        faceCtx.shadowOffsetX = 1;
+        faceCtx.shadowOffsetY = 1;
 
-        faceCtx.fillStyle = '#CB5206FF';
+        faceCtx.filter = "hue-rotate(190deg) saturate(410%) brightness(110%) contrast(60%)";
+        faceCtx.fillStyle = '#e0e0e0';
 
-        // Flip index 2 (3 o’clock) and index 7 (9 o’clock) if they are '🌙'
-        if ((i === 2 || i === 7) && hourNumbers[i] === '🌙') {
+        if ((i === 2 || i === 7 || i === 8) && hourNumbers[i] === '🌙' || i === 7) {
           faceCtx.save();
           faceCtx.scale(-1, 1);
           faceCtx.fillText(hourNumbers[i], 0, 0);
@@ -169,27 +148,59 @@ const Clock = () => {
       faceCtx.arc(0, 0, radius * 0.01, 0, 2 * Math.PI);
       faceCtx.fillStyle = 'white';
       faceCtx.fill();
-
       faceCtx.restore();
     };
 
-    const drawHand = (ctx, value, max, length, width, color) => {
+    const drawHand = (ctx, value, max, length, width) => {
       ctx.clearRect(0, 0, size, size);
       ctx.save();
       ctx.translate(radius, radius);
       ctx.rotate((value / max) * 2 * Math.PI);
+
+      const grad = ctx.createLinearGradient(0, 0, 0, -radius * length);
+      grad.addColorStop(0, "#f9f9f9");
+      grad.addColorStop(0.5, "#b0b0b0");
+      grad.addColorStop(1, "#e6e6e6");
+
       ctx.beginPath();
       ctx.moveTo(0, 0);
       ctx.lineTo(0, -radius * length);
       ctx.lineWidth = width;
-      ctx.strokeStyle = color;
+      ctx.strokeStyle = grad;
       ctx.lineCap = 'round';
+
+      ctx.shadowColor = 'rgba(200, 220, 255, 0.8)';
+      ctx.shadowBlur = 15;
+
       ctx.stroke();
       ctx.restore();
     };
 
+    let sheenAngle = 0;
+    const drawSheen = () => {
+      sheenCtx.clearRect(0, 0, size, size);
+      sheenCtx.save();
+      sheenCtx.translate(radius, radius);
+      sheenCtx.rotate(sheenAngle);
+
+      const grad = sheenCtx.createRadialGradient(0, 0, radius * 0.2, 0, 0, radius);
+      grad.addColorStop(0, "rgba(255,255,255,0.1)");
+      grad.addColorStop(0.4, "rgba(200,200,200,0.05)");
+      grad.addColorStop(1, "rgba(255,255,255,0)");
+
+      sheenCtx.fillStyle = grad;
+      sheenCtx.beginPath();
+      sheenCtx.arc(0, 0, radius, 0, 2 * Math.PI);
+      sheenCtx.fill();
+      sheenCtx.restore();
+
+      sheenAngle += 0.002;
+      requestAnimationFrame(drawSheen);
+    };
+
     const startClock = () => {
       drawClockFace();
+      drawSheen();
 
       const updateClock = () => {
         const now = new Date();
@@ -197,9 +208,9 @@ const Clock = () => {
         const minutes = now.getMinutes() + now.getSeconds() / 60 + now.getMilliseconds() / 60000;
         const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
 
-        drawHand(hourCtx, hours, 12, 0.5, 6, '#333333');
-        drawHand(minuteCtx, minutes, 60, 0.7, 4, '#535252FF');
-        drawHand(secondCtx, seconds, 60, 0.8, 2, '#636060FF');
+        drawHand(hourCtx, hours, 12, 0.5, 8);
+        drawHand(minuteCtx, minutes, 60, 0.7, 5);
+        drawHand(secondCtx, seconds, 60, 0.8, 3);
 
         requestAnimationFrame(updateClock);
       };
@@ -225,6 +236,7 @@ const Clock = () => {
       }}
     >
       <canvas ref={faceRef} style={{ position: 'absolute', borderRadius: '50%', zIndex: 2 }} />
+      <canvas ref={sheenRef} style={{ position: 'absolute', borderRadius: '50%', zIndex: 3, pointerEvents: 'none' }} />
       <canvas ref={hourRef} style={{ position: 'absolute', borderRadius: '50%', zIndex: 5 }} />
       <canvas ref={minuteRef} style={{ position: 'absolute', borderRadius: '50%', zIndex: 4 }} />
       <canvas ref={secondRef} style={{ position: 'absolute', borderRadius: '50%', zIndex: 5 }} />
