@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as DigitalClock from './ChinaClock.module.css';
 import NotoSerifCJKSC from './NotoSerif.ttf';
 import bgImage from './clo.webp'; // main background
-import cornerImage from './seal.png'; // image for upper-right corner
+import cornerImage from './seal.png'; // upper-right corner image
 
 const chineseDigits = {
   0: '零', 1: '一', 2: '二', 3: '三', 4: '四',
@@ -12,6 +12,14 @@ const chineseDigits = {
 const ChinaClock = () => {
   const [time, setTime] = useState(new Date());
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Load font once
+  useEffect(() => {
+    const font = new FontFace('Noto Serif CJK SC', `url(${NotoSerifCJKSC})`);
+    font.load().then(loadedFont => {
+      document.fonts.add(loadedFont);
+    });
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -31,12 +39,12 @@ const ChinaClock = () => {
 
     const toChinese = (digits) => digits.map(d => chineseDigits[d]).join('');
 
-    if (isMobile) {
-      return [toChinese(hours), toChinese(minutes), toChinese(seconds)];
-    } else {
-      return `${toChinese(hours)}:${toChinese(minutes)}.${toChinese(seconds)}`;
-    }
+    return isMobile
+      ? [toChinese(hours), toChinese(minutes), toChinese(seconds)]
+      : `${toChinese(hours)}:${toChinese(minutes)}.${toChinese(seconds)}`;
   };
+
+  const timeParts = formatTimeToChinese(time);
 
   const clockStyle = {
     fontFamily: 'Noto Serif CJK SC',
@@ -64,8 +72,6 @@ const ChinaClock = () => {
 
   const partStyle = { textAlign: 'center' };
 
-  const timeParts = formatTimeToChinese(time);
-
   return (
     <div style={{
       position: 'relative',
@@ -78,7 +84,7 @@ const ChinaClock = () => {
       padding: 0,
       overflow: 'hidden',
     }}>
-      {/* Cinematic Background Layer */}
+      {/* Background */}
       <div style={{
         position: 'absolute',
         top: 0,
@@ -104,16 +110,6 @@ const ChinaClock = () => {
 
       {/* Clock */}
       <div style={clockStyle} className={DigitalClock.clock}>
-        <style>
-          {`
-            @font-face {
-              font-family: 'Noto Serif CJK SC';
-              src: url(${NotoSerifCJKSC}) format('truetype');
-              font-weight: normal;
-              font-style: normal;
-            }
-          `}
-        </style>
         {isMobile
           ? timeParts.map((part, idx) => <div key={idx} style={partStyle}>{part}</div>)
           : <span style={partStyle}>{timeParts}</span>
@@ -132,10 +128,7 @@ const ChinaClock = () => {
           height: 'auto',
           zIndex: 2,
           opacity: 0.9,
-          transition: 'transform 0.3s ease, opacity 0.3s ease',
         }}
-        onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.style.opacity = 1; }}
-        onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.opacity = 0.9; }}
       />
     </div>
   );
