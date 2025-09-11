@@ -157,10 +157,10 @@ const Clock = () => {
       ctx.translate(radius, radius);
       ctx.rotate((value / max) * 2 * Math.PI);
 
-      const grad = ctx.createLinearGradient(0, 0, 0, -radius * length);
-      grad.addColorStop(0, "#CFCCCCFF");
-      grad.addColorStop(0.5, "#797878FF");
-      grad.addColorStop(1, "#B2B0B0FF");
+const grad = ctx.createLinearGradient(0, 0, 0, -radius * length);
+grad.addColorStop(0, "#CFCCCC80");  // Changed FF to 80 (50% opacity)
+grad.addColorStop(0.5, "#79787880"); // Changed FF to 80 (50% opacity)
+grad.addColorStop(1, "#B2B0B080");   // Changed FF to 80 (50% opacity)
 
       ctx.beginPath();
       ctx.moveTo(0, 0);
