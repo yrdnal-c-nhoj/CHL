@@ -106,7 +106,7 @@ const Clock = () => {
     const secondCtx = createCanvasContext(secondRef);
 
     const radius = size / 2;
-    const hourNumbers = ['🌕', '🌔','🌓', '🌒','🌙',  '🌛',  '🌚', '🌜', '🌙', '🌘', '🌗', '🌖'];
+    const hourNumbers = ['🌕', '🌔','🌓', '🌒','🌙', '🌜',  '🌚', '🌜', '🌙', '🌘', '🌗', '🌖'];
 
     const drawClockFace = () => {
       faceCtx.save();
@@ -129,7 +129,7 @@ const Clock = () => {
         faceCtx.shadowOffsetX = 1;
         faceCtx.shadowOffsetY = 1;
 
-        faceCtx.filter = "hue-rotate(190deg) saturate(410%) brightness(110%) contrast(60%)";
+        faceCtx.filter = "hue-rotate(170deg) saturate(40%) brightness(90%) contrast(80%)";
         faceCtx.fillStyle = '#e0e0e0';
 
         if ((i === 2 || i === 7 || i === 8) && hourNumbers[i] === '🌙' || i === 7) {
