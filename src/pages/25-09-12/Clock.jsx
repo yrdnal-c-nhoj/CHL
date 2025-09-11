@@ -108,9 +108,20 @@ const Clock = () => {
     const radius = size / 2;
     const hourNumbers = ['🌕', '🌔','🌓', '🌒','🌙', '🌜',  '🌚', '🌜', '🌙', '🌘', '🌗', '🌖'];
 
+    // Check for filter support
+    let supportsFilter = false;
+    try {
+      faceCtx.filter = 'none';
+      supportsFilter = true;
+      faceCtx.filter = ''; // Reset
+    } catch (e) {
+      supportsFilter = false;
+    }
+
     const drawClockFace = () => {
       faceCtx.save();
       faceCtx.translate(radius, radius);
+      faceCtx.imageSmoothingEnabled = false; // Crisp emojis
 
       for (let i = 0; i < 12; i++) {
         const angle = (i * 30) * Math.PI / 180;
@@ -119,18 +130,25 @@ const Clock = () => {
         faceCtx.translate(0, -radius * 0.65);
         faceCtx.rotate(-angle);
 
-        faceCtx.font = '4.5rem Times New Roman';
+        faceCtx.font = '4rem Times New Roman'; // Slight bump for better emoji support
         faceCtx.textAlign = 'center';
         faceCtx.textBaseline = 'middle';
 
-        // Silvery glow
+        // Silvery glow (universally supported)
         faceCtx.shadowColor = 'rgba(220, 235, 255, 0.9)';
         faceCtx.shadowBlur = 10;
         faceCtx.shadowOffsetX = 1;
         faceCtx.shadowOffsetY = 1;
 
-        faceCtx.filter = "hue-rotate(170deg) saturate(40%) brightness(90%) contrast(80%)";
-        faceCtx.fillStyle = '#e0e0e0';
+        if (supportsFilter) {
+          // Use filter if supported
+          faceCtx.filter = "hue-rotate(170deg) saturate(40%) brightness(90%) contrast(80%)";
+          faceCtx.fillStyle = '#e0e0e0';
+        } else {
+          // Fallback: Refined static color for silvery-blue tone
+          faceCtx.filter = 'none';
+          faceCtx.fillStyle = '#c0d4e8';
+        }
 
         if ((i === 2 || i === 7 || i === 8) && hourNumbers[i] === '🌙' || i === 7) {
           faceCtx.save();
@@ -157,10 +175,10 @@ const Clock = () => {
       ctx.translate(radius, radius);
       ctx.rotate((value / max) * 2 * Math.PI);
 
-const grad = ctx.createLinearGradient(0, 0, 0, -radius * length);
-grad.addColorStop(0, "#CFCCCC80");  // Changed FF to 80 (50% opacity)
-grad.addColorStop(0.5, "#79787880"); // Changed FF to 80 (50% opacity)
-grad.addColorStop(1, "#B2B0B080");   // Changed FF to 80 (50% opacity)
+      const grad = ctx.createLinearGradient(0, 0, 0, -radius * length);
+      grad.addColorStop(0, "#CFCCCC80");
+      grad.addColorStop(0.5, "#79787880");
+      grad.addColorStop(1, "#B2B0B080");
 
       ctx.beginPath();
       ctx.moveTo(0, 0);
@@ -170,7 +188,7 @@ grad.addColorStop(1, "#B2B0B080");   // Changed FF to 80 (50% opacity)
       ctx.lineCap = 'round';
 
       ctx.shadowColor = 'rgba(200, 220, 255, 0.8)';
-      ctx.shadowBlur = 15;
+      ctx.shadowBlur = 12; // Slightly reduced for Chrome sharpness
 
       ctx.stroke();
       ctx.restore();
