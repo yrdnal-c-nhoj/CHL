@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // URL to capture
-const url = 'https://www.cubistheart.com/today';
+const url = 'https://www.cubistheart.com/25-09-11';
 
 // Ensure screenshots directory exists
 const screenshotsDir = path.join(__dirname, 'screenshots');
