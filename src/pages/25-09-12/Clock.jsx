@@ -129,7 +129,7 @@ const Clock = () => {
     const secondCtx = createCanvasContext(secondRef);
 
     const radius = size / 2;
-    const hourNumbers = ["🌕", "🌔", "🌓", "🌒", "🌙", "🌜", "🌚", "🌜", "🌙", "🌘", "🌗", "🌖"];
+    const hourNumbers = ["🌕", "🌔", "🌓", "🌒", "🌙", "🌛", "🌚", "🌜", "🌙", "🌘", "🌗", "🌖"];
 
     // Check for filter support
     let supportsFilter = false;
