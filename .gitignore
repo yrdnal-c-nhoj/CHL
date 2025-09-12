@@ -10,7 +10,6 @@
 *.userosscache
 *.sln.docstates
 *.env
-*.env.production
 *.cron.log
 
 # User-specific files (MonoDevelop/Xamarin Studio)
