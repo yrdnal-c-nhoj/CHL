@@ -24,7 +24,7 @@ const StarsParallax = () => {
       }));
 
     const near = generateStars(50, 0.8, 2.7, 0.5);
-    const mid = generateStars(100, 0.5, 2.5, 0.35);
+    const mid = generateStars(100, 0.5, 2.5, 0.);
     const far = generateStars(250, 0.5, 2.0, 0.2);
 
     const drawStars = () => {
@@ -86,7 +86,7 @@ const Clock = () => {
   const secondRef = useRef(null);
 
   useEffect(() => {
-    const size = Math.min(window.innerWidth, window.innerHeight) * 0.8;
+    const size = Math.min(window.innerWidth, window.innerHeight) * 0.9;
     const dpr = window.devicePixelRatio || 1;
 
     const createCanvasContext = (ref) => {
