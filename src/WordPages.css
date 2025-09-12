@@ -182,3 +182,8 @@ a:hover {
 .embeddable-buttondown-form input[type="submit"]:hover {
   background-color: #585656;
 }
+.email-link {
+   font-family: "Manrope", sans-serif;
+  color: #04406a;
+  text-decoration: none;
+}

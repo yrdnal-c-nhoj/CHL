@@ -68,7 +68,6 @@ function Contact() {
               target="popupwindow"
               className="embeddable-buttondown-form"
             >
-              <label htmlFor="bd-email">Email:</label>
               <input
                 type="email"
                 name="email"
@@ -76,7 +75,7 @@ function Contact() {
                 placeholder="you@example.com"
                 required
               />
-              <input type="submit" value="Subscribe" />
+              <input type="submit" value="subscribe" />
             </form>
              <br /> <br />
           </div>
