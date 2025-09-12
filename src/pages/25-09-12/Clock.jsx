@@ -105,7 +105,7 @@ const Clock = () => {
     const secondCtx = createCanvasContext(secondRef);
 
     const radius = size / 2;
-    const hourNumbers = ["🌕", "🌔", "🌓", "🌒", "🌙", "🌜", "🌚", "🌛", "🌙", "🌘", "🌗", "🌖"];
+    const hourNumbers = ["🌕", "🌔", "🌓", "🌒", "🌙", "🌛", "🌚", "🌜", "🌙", "🌘", "🌗", "🌖"];
     const supportsFilter = typeof faceCtx.filter !== "undefined";
 
     const drawClockFace = () => {

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rotating Twelve Golden Chords</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #111;
+  }
+  canvas {
+    background-color: #222;
+    border-radius: 50%;
+  }
+</style>
+</head>
+<body>
+<canvas id="goldenChords" width="400" height="400"></canvas>
+
+<script>
+const canvas = document.getElementById('goldenChords');
+const ctx = canvas.getContext('2d');
+
+const R = 150; // Circle radius
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+const phi = 1.618; // Golden ratio
+const chordLength = Math.min(R * phi, 2*R); // chord cannot exceed diameter
+const numChords = 12; // Changed to 12 chords
+
+let rotation = 0;
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw circle
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, R, 0, 2*Math.PI);
+    ctx.strokeStyle = "#888";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Draw twelve golden chords evenly spaced
+    for (let i = 0; i < numChords; i++) {
+        const angleOffset = rotation + i * 2 * Math.PI / numChords;
+        const halfChordAngle = Math.asin(chordLength / (2 * R));
+        const x1 = centerX + R * Math.cos(angleOffset - halfChordAngle);
+        const y1 = centerY + R * Math.sin(angleOffset - halfChordAngle);
+        const x2 = centerX + R * Math.cos(angleOffset + halfChordAngle);
+        const y2 = centerY + R * Math.sin(angleOffset + halfChordAngle);
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = "green";
+        ctx.lineWidth = 3;
+        ctx.stroke();
+    }
+
+    rotation += 0.005; // rotation speed
+    requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+</body>
+</html>
