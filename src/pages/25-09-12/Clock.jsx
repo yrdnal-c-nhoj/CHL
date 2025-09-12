@@ -86,7 +86,7 @@ const Clock = () => {
   const secondRef = useRef(null);
 
   useEffect(() => {
-    const size = Math.min(window.innerWidth, window.innerHeight) * 0.9;
+    const size = Math.min(window.innerWidth, window.innerHeight) * 1.0;
     const dpr = window.devicePixelRatio || 1;
 
     const createCanvasContext = (ref) => {
