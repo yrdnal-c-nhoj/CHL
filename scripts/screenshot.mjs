@@ -1,36 +1,32 @@
-// screenshot-batch-tight.mjs
 import fs from 'fs';
 import path from 'path';
 import puppeteer from 'puppeteer';
 
-const screenshotsDir = path.join(process.cwd(), 'screenshots');
-if (!fs.existsSync(screenshotsDir)) fs.mkdirSync(screenshotsDir);
+// Save screenshots to a fixed folder
+const screenshotsDir = '/Users/john/Desktop/CHL/screenshots'; 
+if (!fs.existsSync(screenshotsDir)) fs.mkdirSync(screenshotsDir, { recursive: true });
 
-const paths = [
-'today',
-];
-
+const paths = ['today'];
 const baseURL = 'https://www.cubistheart.com/';
 
 async function main() {
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
-  for (let i = 0; i < paths.length; i++) {
-    const url = baseURL + paths[i];
+  for (const p of paths) {
+    const url = baseURL + p;
     console.log(`Capturing ${url} ...`);
 
     try {
       await page.goto(url, { waitUntil: 'networkidle2' });
 
-      // Get visible viewport size and make it square
-      const squareSize = await page.evaluate(() => {
-        return Math.min(window.innerWidth, window.innerHeight);
-      });
-
+      // Make viewport square based on visible size
+      const squareSize = await page.evaluate(() =>
+        Math.min(window.innerWidth, window.innerHeight)
+      );
       await page.setViewport({ width: squareSize, height: squareSize });
 
-      const screenshotPath = path.join(screenshotsDir, `${paths[i]}.png`);
+      const screenshotPath = path.join(screenshotsDir, `${p}.png`);
       await page.screenshot({ path: screenshotPath, fullPage: false });
 
       console.log(`Saved ${screenshotPath}`);
