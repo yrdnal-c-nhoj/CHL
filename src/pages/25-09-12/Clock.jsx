@@ -14,7 +14,6 @@ const StarsParallax = () => {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Generate stars once
     const generateStars = (count, sizeMin, sizeMax, speed) =>
       Array.from({ length: count }, () => ({
         x: Math.random() * canvas.width,
@@ -38,7 +37,6 @@ const StarsParallax = () => {
           ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
           ctx.fill();
 
-          // move star
           star.y -= star.speed;
           if (star.y < 0) {
             star.y = canvas.height;
@@ -108,8 +106,6 @@ const Clock = () => {
 
     const radius = size / 2;
     const hourNumbers = ["🌕", "🌔", "🌓", "🌒", "🌙", "🌜", "🌚", "🌛", "🌙", "🌘", "🌗", "🌖"];
-
-    // ✅ safer filter support check
     const supportsFilter = typeof faceCtx.filter !== "undefined";
 
     const drawClockFace = () => {
@@ -141,7 +137,15 @@ const Clock = () => {
           faceCtx.fillStyle = "#b0c4de";
         }
 
-        faceCtx.fillText(hourNumbers[i], 0, 0);
+        if (i === 8) { // index of "9" emoji
+          faceCtx.save();
+          faceCtx.scale(-1, 1); // flip horizontally
+          faceCtx.fillText(hourNumbers[i], 0, 0);
+          faceCtx.restore();
+        } else {
+          faceCtx.fillText(hourNumbers[i], 0, 0);
+        }
+
         faceCtx.restore();
       }
 
