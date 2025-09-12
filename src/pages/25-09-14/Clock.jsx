@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 const StarsParallax = () => {
   const [stars, setStars] = React.useState({ near: [], mid: [], far: [] });
+  const rafRef = useRef(null);
 
   useEffect(() => {
     const generateStars = (count, sizeMin, sizeMax, speedMultiplier) => {
@@ -10,53 +11,59 @@ const StarsParallax = () => {
         return {
           x: Math.random() * 100,
           y: Math.random() * 100,
-          size: size,
-          speed: (size * speedMultiplier)/50,
-          twinkleOffset: Math.random() * Math.PI * 2
+          size,
+          speed: size * speedMultiplier,
+          twinkleOffset: Math.random() * Math.PI * 2,
         };
       });
     };
 
     setStars({
-      near: generateStars(80, 0.1, .2, 1.0),
-      mid: generateStars(150, 0.05, 0.15, 0.6),
-      far: generateStars(190, 0.03, 0.1, 0.3)
+      near: generateStars(80, 0.1, 0.2, 0.1),
+      mid: generateStars(150, 0.05, 0.15, 0.06),
+      far: generateStars(190, 0.03, 0.1, 0.03),
     });
 
     const animateStars = () => {
       setStars((prev) => ({
-        near: prev.near.map(star => ({
+        near: prev.near.map((star) => ({
           ...star,
-          y: star.y - star.speed / 2 < 0 ? 100 : star.y - star.speed / 0.15,
-          opacity: 0.7 + 0.3 * Math.sin(Date.now() / 500 + star.twinkleOffset)
+          y: star.y - star.speed < 0 ? 100 : star.y - star.speed,
+          opacity: 0.7 + 0.3 * Math.sin(Date.now() / 500 + star.twinkleOffset),
         })),
-        mid: prev.mid.map(star => ({
+        mid: prev.mid.map((star) => ({
           ...star,
-          y: star.y - star.speed / 2 < 0 ? 100 : star.y - star.speed / 0.15,
-          opacity: 0.5 + 0.5 * Math.sin(Date.now() / 600 + star.twinkleOffset)
+          y: star.y - star.speed < 0 ? 100 : star.y - star.speed,
+          opacity: 0.5 + 0.5 * Math.sin(Date.now() / 600 + star.twinkleOffset),
         })),
-        far: prev.far.map(star => ({
+        far: prev.far.map((star) => ({
           ...star,
-          y: star.y - star.speed / 2 < 0 ? 100 : star.y - star.speed / 0.15,
-          opacity: 0.3 + 0.5 * Math.sin(Date.now() / 700 + star.twinkleOffset)
-        }))
+          y: star.y - star.speed < 0 ? 100 : star.y - star.speed,
+          opacity: 0.3 + 0.5 * Math.sin(Date.now() / 700 + star.twinkleOffset),
+        })),
       }));
-      requestAnimationFrame(animateStars);
+      rafRef.current = requestAnimationFrame(animateStars);
     };
 
     animateStars();
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   return (
-    <div style={{
-      width: '100vw',
-      height: '100dvh',
-      background: 'linear-gradient(to top, #193527FF 0%, #07145EFF 100%)',
-      position: 'absolute',
-      overflow: 'hidden',
-      zIndex: 1
-    }}>
-      {['far', 'mid', 'near'].map(layer =>
+    <div
+      style={{
+        width: '100vw',
+        height: '100dvh',
+        background: 'linear-gradient(to top, #193527FF 0%, #07145EFF 100%)',
+        position: 'absolute',
+        overflow: 'hidden',
+        zIndex: 1,
+      }}
+    >
+      {['far', 'mid', 'near'].map((layer) =>
         stars[layer].map((star, index) => (
           <div
             key={`${layer}-${index}`}
@@ -68,7 +75,7 @@ const StarsParallax = () => {
               height: `${star.size}rem`,
               background: '#E0E0FF',
               borderRadius: '50%',
-              opacity: star.opacity
+              opacity: star.opacity,
             }}
           />
         ))
@@ -83,6 +90,8 @@ const Clock = () => {
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
+  const sheenRafRef = useRef(null);
+  const clockRafRef = useRef(null);
 
   useEffect(() => {
     const size = Math.min(window.innerWidth, window.innerHeight) * 0.8;
@@ -106,7 +115,7 @@ const Clock = () => {
     const secondCtx = createCanvasContext(secondRef);
 
     const radius = size / 2;
-    const hourNumbers = ['🌕', '🌔','🌓', '🌒','🌙',  '🌛',  '🌚', '🌜', '🌙', '🌘', '🌗', '🌖'];
+    const hourNumbers = ['🌕', '🌔', '🌓', '🌒', '🌙', '🌛', '🌚', '🌜', '🌙', '🌘', '🌗', '🌖'];
 
     const drawClockFace = () => {
       faceCtx.save();
@@ -119,20 +128,19 @@ const Clock = () => {
         faceCtx.translate(0, -radius * 0.65);
         faceCtx.rotate(-angle);
 
-        faceCtx.font = '3.2rem Times New Roman';
+        faceCtx.font = `${radius * 0.1}px Times New Roman`;
         faceCtx.textAlign = 'center';
         faceCtx.textBaseline = 'middle';
 
-        // Silvery glow
         faceCtx.shadowColor = 'rgba(220, 235, 255, 0.9)';
         faceCtx.shadowBlur = 10;
         faceCtx.shadowOffsetX = 1;
         faceCtx.shadowOffsetY = 1;
 
-        faceCtx.filter = "hue-rotate(190deg) saturate(410%) brightness(110%) contrast(60%)";
+        faceCtx.filter = 'hue-rotate(190deg) saturate(410%) brightness(110%) contrast(60%)';
         faceCtx.fillStyle = '#e0e0e0';
 
-        if ((i === 2 || i === 7 || i === 8) && hourNumbers[i] === '🌙' || i === 7) {
+        if (i === 2 || i === 7 || i === 8) {
           faceCtx.save();
           faceCtx.scale(-1, 1);
           faceCtx.fillText(hourNumbers[i], 0, 0);
@@ -158,9 +166,9 @@ const Clock = () => {
       ctx.rotate((value / max) * 2 * Math.PI);
 
       const grad = ctx.createLinearGradient(0, 0, 0, -radius * length);
-      grad.addColorStop(0, "#CFCCCCFF");
-      grad.addColorStop(0.5, "#797878FF");
-      grad.addColorStop(1, "#B2B0B0FF");
+      grad.addColorStop(0, '#CFCCCCFF');
+      grad.addColorStop(0.5, '#797878FF');
+      grad.addColorStop(1, '#B2B0B0FF');
 
       ctx.beginPath();
       ctx.moveTo(0, 0);
@@ -184,9 +192,9 @@ const Clock = () => {
       sheenCtx.rotate(sheenAngle);
 
       const grad = sheenCtx.createRadialGradient(0, 0, radius * 0.2, 0, 0, radius);
-      grad.addColorStop(0, "rgba(255,255,255,0.1)");
-      grad.addColorStop(0.4, "rgba(200,200,200,0.05)");
-      grad.addColorStop(1, "rgba(255,255,255,0)");
+      grad.addColorStop(0, 'rgba(255,255,255,0.2)');
+      grad.addColorStop(0.4, 'rgba(200,200,200,0.1)');
+      grad.addColorStop(1, 'rgba(255,255,255,0)');
 
       sheenCtx.fillStyle = grad;
       sheenCtx.beginPath();
@@ -195,7 +203,7 @@ const Clock = () => {
       sheenCtx.restore();
 
       sheenAngle += 0.002;
-      requestAnimationFrame(drawSheen);
+      sheenRafRef.current = requestAnimationFrame(drawSheen);
     };
 
     const startClock = () => {
@@ -212,13 +220,18 @@ const Clock = () => {
         drawHand(minuteCtx, minutes, 60, 0.7, 5);
         drawHand(secondCtx, seconds, 60, 0.8, 3);
 
-        requestAnimationFrame(updateClock);
+        clockRafRef.current = requestAnimationFrame(updateClock);
       };
 
       updateClock();
     };
 
     startClock();
+
+    return () => {
+      if (sheenRafRef.current) cancelAnimationFrame(sheenRafRef.current);
+      if (clockRafRef.current) cancelAnimationFrame(clockRafRef.current);
+    };
   }, []);
 
   return (
@@ -232,7 +245,7 @@ const Clock = () => {
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 2,
-        background: 'transparent'
+        background: 'transparent',
       }}
     >
       <canvas ref={faceRef} style={{ position: 'absolute', borderRadius: '50%', zIndex: 2 }} />
