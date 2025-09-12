@@ -1,102 +1,80 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 const StarsParallax = () => {
-  const [stars, setStars] = useState({ near: [], mid: [], far: [] });
+  const canvasRef = useRef(null);
 
   useEffect(() => {
-    const generateStars = (count, sizeMin, sizeMax, speed) => {
-      return Array.from({ length: count }, () => ({
-        x: Math.random() * 100,
-        y: Math.random() * 100,
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    // Generate stars once
+    const generateStars = (count, sizeMin, sizeMax, speed) =>
+      Array.from({ length: count }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
         size: Math.random() * (sizeMax - sizeMin) + sizeMin,
-        speed: speed
+        speed,
       }));
+
+    const near = generateStars(50, 0.8, 2.7, 0.5);
+    const mid = generateStars(100, 0.5, 2.5, 0.35);
+    const far = generateStars(250, 0.5, 2.0, 0.2);
+
+    const drawStars = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const drawLayer = (stars, color, opacity) => {
+        ctx.fillStyle = color;
+        stars.forEach((star) => {
+          ctx.globalAlpha = opacity;
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+          ctx.fill();
+
+          // move star
+          star.y -= star.speed;
+          if (star.y < 0) {
+            star.y = canvas.height;
+            star.x = Math.random() * canvas.width;
+          }
+        });
+        ctx.globalAlpha = 1.0;
+      };
+
+      drawLayer(far, "#E5EAF8", 0.4);
+      drawLayer(mid, "#F9E7E7", 0.6);
+      drawLayer(near, "#F4F3E1", 0.8);
+
+      requestAnimationFrame(drawStars);
     };
 
-    setStars({
-      near: generateStars(50, 0.1, 0.27, 0.5),
-      mid: generateStars(100, 0.05, 0.25, 0.4),
-      far: generateStars(250, 0.1, 0.2, 0.3)
-    });
+    drawStars();
 
-    const animateStars = () => {
-      setStars((prev) => ({
-        near: prev.near.map(star => ({
-          ...star,
-          y: star.y - star.speed < 0 ? 100 : star.y - star.speed
-        })),
-        mid: prev.mid.map(star => ({
-          ...star,
-          y: star.y - star.speed < 0 ? 100 : star.y - star.speed
-        })),
-        far: prev.far.map(star => ({
-          ...star,
-          y: star.y - star.speed < 0 ? 100 : star.y - star.speed
-        }))
-      }));
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
     };
-
-    const interval = setInterval(animateStars, 50);
-    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div
+    <canvas
+      ref={canvasRef}
       style={{
         width: "100vw",
         height: "100dvh",
+        position: "absolute",
+        top: 0,
+        left: 0,
         background: "#000",
-        position: "absolute", // sits behind everything else
-        overflow: "hidden",
-        zIndex: 0
+        zIndex: 0,
       }}
-    >
-      {stars.far.map((star, index) => (
-        <div
-          key={`far-${index}`}
-          style={{
-            position: "absolute",
-            left: `${star.x}vw`,
-            top: `${star.y}dvh`,
-            width: `${star.size}rem`,
-            height: `${star.size}rem`,
-            background: "#E5EAF8FF",
-            borderRadius: "50%",
-            opacity: 0.4
-          }}
-        />
-      ))}
-      {stars.mid.map((star, index) => (
-        <div
-          key={`mid-${index}`}
-          style={{
-            position: "absolute",
-            left: `${star.x}vw`,
-            top: `${star.y}dvh`,
-            width: `${star.size}rem`,
-            height: `${star.size}rem`,
-            background: "#F9E7E7FF",
-            borderRadius: "50%",
-            opacity: 0.6
-          }}
-        />
-      ))}
-      {stars.near.map((star, index) => (
-        <div
-          key={`near-${index}`}
-          style={{
-            position: "absolute",
-            left: `${star.x}vw`,
-            top: `${star.y}dvh`,
-            width: `${star.size}rem`,
-            height: `${star.size}rem`,
-            background: "#F4F3E1FF",
-            borderRadius: "50%",
-            opacity: 0.8
-          }}
-        />
-      ))}
-    </div>
+    />
   );
 };
 
@@ -108,7 +86,7 @@ const Clock = () => {
   const secondRef = useRef(null);
 
   useEffect(() => {
-    const size = Math.min(window.innerWidth, window.innerHeight) * 0.8; // shrink to fit
+    const size = Math.min(window.innerWidth, window.innerHeight) * 0.8;
     const dpr = window.devicePixelRatio || 1;
 
     const createCanvasContext = (ref) => {
@@ -131,15 +109,8 @@ const Clock = () => {
     const radius = size / 2;
     const hourNumbers = ["🌕", "🌔", "🌓", "🌒", "🌙", "🌜", "🌚", "🌛", "🌙", "🌘", "🌗", "🌖"];
 
-    // Check for filter support
-    let supportsFilter = false;
-    try {
-      faceCtx.filter = "none";
-      supportsFilter = true;
-      faceCtx.filter = "";
-    } catch (e) {
-      supportsFilter = false;
-    }
+    // ✅ safer filter support check
+    const supportsFilter = typeof faceCtx.filter !== "undefined";
 
     const drawClockFace = () => {
       faceCtx.save();
@@ -163,22 +134,14 @@ const Clock = () => {
         faceCtx.shadowOffsetY = 1;
 
         if (supportsFilter) {
-          faceCtx.filter = "hue-rotate(170deg) saturate(40%) brightness(90%) contrast(80%)";
+          faceCtx.filter = "brightness(110%) contrast(80%)";
           faceCtx.fillStyle = "#e0e0e0";
         } else {
           faceCtx.filter = "none";
-          faceCtx.fillStyle = "#c0d4e8";
+          faceCtx.fillStyle = "#b0c4de";
         }
 
-        if ((i === 2 || i === 7 || i === 8) && hourNumbers[i] === "🌙") {
-          faceCtx.save();
-          faceCtx.scale(-1, 1);
-          faceCtx.fillText(hourNumbers[i], 0, 0);
-          faceCtx.restore();
-        } else {
-          faceCtx.fillText(hourNumbers[i], 0, 0);
-        }
-
+        faceCtx.fillText(hourNumbers[i], 0, 0);
         faceCtx.restore();
       }
 
@@ -268,13 +231,13 @@ const Clock = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        zIndex: 2, // always on top
-        background: "transparent"
+        zIndex: 2,
+        background: "transparent",
       }}
     >
       <canvas ref={faceRef} style={{ position: "absolute", borderRadius: "50%", zIndex: 2 }} />
       <canvas ref={sheenRef} style={{ position: "absolute", borderRadius: "50%", zIndex: 3, pointerEvents: "none" }} />
-      <canvas ref={hourRef} style={{ position: "absolute", borderRadius: "50%", zIndex: 5 }} />
+      <canvas ref={hourRef} style={{ position: "absolute", borderRadius: "50%", zIndex: 3 }} />
       <canvas ref={minuteRef} style={{ position: "absolute", borderRadius: "50%", zIndex: 4 }} />
       <canvas ref={secondRef} style={{ position: "absolute", borderRadius: "50%", zIndex: 5 }} />
     </div>
