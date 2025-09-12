@@ -14,9 +14,9 @@ const StarsParallax = () => {
     };
 
     setStars({
-      near: generateStars(50, 0.1, 0.27, 0.8),
-      mid: generateStars(100, 0.05, 0.25, 0.2),
-      far: generateStars(250, 0.1, 0.2, 0.1)
+      near: generateStars(50, 0.1, 0.27, 0.5),
+      mid: generateStars(100, 0.05, 0.25, 0.4),
+      far: generateStars(250, 0.1, 0.2, 0.3)
     });
 
     const animateStars = () => {
