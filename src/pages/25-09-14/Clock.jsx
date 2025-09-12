@@ -57,7 +57,7 @@ const StarsParallax = () => {
       style={{
         width: '100vw',
         height: '100dvh',
-        background: 'linear-gradient(to top, #193527FF 0%, #07145EFF 100%)',
+        background: 'linear-gradient(to top, #182E23FF 0%, #07145EFF 100%)',
         position: 'absolute',
         overflow: 'hidden',
         zIndex: 1,
