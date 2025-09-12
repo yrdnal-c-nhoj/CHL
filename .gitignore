@@ -419,3 +419,6 @@ FodyWeavers.xsd
 *.msm
 *.msp
 .vercel
+
+
+screenshots/
