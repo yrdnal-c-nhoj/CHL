@@ -164,16 +164,14 @@ const Clock = () => {
         ctx.restore();
       }
 
-      ctx.beginPath();
-      ctx.arc(0, 0, radius * 0.01, 0, 2 * Math.PI);
-      ctx.fillStyle = CONFIG.CENTER_DOT_COLOR;
-      ctx.fill();
-      ctx.restore();
+  
     };
 
     const drawHand = (ctx, value, max, length, width, radius) => {
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       ctx.save();
+      ctx.globalAlpha = 0.4; // <1 for more transparency
+
       ctx.translate(radius, radius);
       ctx.rotate((value / max) * 2 * Math.PI);
 
@@ -280,7 +278,7 @@ const Clock = () => {
           position: "absolute",
           borderRadius: "50%",
           zIndex: 2,
-          filter: "grayscale(100%) brightness(120%) contrast(110%)", // Silver effect for emojis
+          filter: "grayscale(90%) brightness(100%) contrast(100%)", // Silver effect for emojis
         }}
       />
       <canvas ref={sheenRef} style={{ position: "absolute", borderRadius: "50%", zIndex: 3, pointerEvents: "none" }} />
