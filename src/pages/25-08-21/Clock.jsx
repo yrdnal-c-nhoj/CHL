@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import customFont from './wide.ttf'; // Your font file
+import customFont821 from './wide.ttf'; // Your font file
 
 const NumberLineClock = () => {
   const hoursRef = useRef(null);
@@ -183,7 +183,7 @@ const NumberLineClock = () => {
       <style>{`
         @font-face {
           font-family: 'CustomFont';
-          src: url(${customFont}) format('truetype');
+          src: url(${customFont821}) format('truetype');
           font-weight: normal;
           font-style: normal;
         }
