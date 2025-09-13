@@ -29,6 +29,12 @@ const StarsParallax = () => {
     const drawStars = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      const gradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
+      gradient.addColorStop(0, "#22362CFF");
+      gradient.addColorStop(1, "#190442FF");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
       const drawLayer = (stars, color, opacity) => {
         ctx.fillStyle = color;
         stars.forEach((star) => {
@@ -69,7 +75,6 @@ const StarsParallax = () => {
         position: "absolute",
         top: 0,
         left: 0,
-        background: "#000",
         zIndex: 0,
       }}
     />
@@ -84,146 +89,159 @@ const Clock = () => {
   const secondRef = useRef(null);
 
   useEffect(() => {
-    const size = Math.min(window.innerWidth, window.innerHeight) * 1.1;
-    const dpr = window.devicePixelRatio || 1;
+    const handleResize = () => {
+      const isLaptop = window.innerWidth >= 768;
+      const size = isLaptop
+        ? Math.min(window.innerWidth, window.innerHeight) * 0.8 // Laptop clock size
+        : Math.min(window.innerWidth, window.innerHeight) * 0.9; // Phone clock size
+      const fontSize = isLaptop ? "3rem" : "1.5rem"; // Laptop and phone icon sizes
+      const dpr = window.devicePixelRatio || 1;
 
-    const createCanvasContext = (ref) => {
-      const canvas = ref.current;
-      canvas.width = size * dpr;
-      canvas.height = size * dpr;
-      canvas.style.width = `${size}px`;
-      canvas.style.height = `${size}px`;
-      const ctx = canvas.getContext("2d");
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      return ctx;
-    };
-
-    const faceCtx = createCanvasContext(faceRef);
-    const sheenCtx = createCanvasContext(sheenRef);
-    const hourCtx = createCanvasContext(hourRef);
-    const minuteCtx = createCanvasContext(minuteRef);
-    const secondCtx = createCanvasContext(secondRef);
-
-    const radius = size / 2;
-    const hourNumbers = ["🌕", "🌔", "🌓", "🌒", "🌙", "🌛", "🌚", "🌜", "🌙", "🌘", "🌗", "🌖"];
-    const supportsFilter = typeof faceCtx.filter !== "undefined";
-
-    const drawClockFace = () => {
-      faceCtx.save();
-      faceCtx.translate(radius, radius);
-      faceCtx.imageSmoothingEnabled = false;
-
-      for (let i = 0; i < 12; i++) {
-        const angle = (i * 30 * Math.PI) / 180;
-        faceCtx.save();
-        faceCtx.rotate(angle);
-        faceCtx.translate(0, -radius * 0.65);
-        faceCtx.rotate(-angle);
-
-        faceCtx.font = "3rem Times New Roman";
-        faceCtx.textAlign = "center";
-        faceCtx.textBaseline = "middle";
-
-        faceCtx.shadowColor = "rgba(220, 235, 255, 0.9)";
-        faceCtx.shadowBlur = 10;
-        faceCtx.shadowOffsetX = 1;
-        faceCtx.shadowOffsetY = 1;
-
-        if (supportsFilter) {
-          faceCtx.filter = "brightness(110%) contrast(80%)";
-          faceCtx.fillStyle = "#e0e0e0";
-        } else {
-          faceCtx.filter = "none";
-          faceCtx.fillStyle = "#b0c4de";
-        }
-
-        if (i === 8) { // index of "9" emoji
-          faceCtx.save();
-          faceCtx.scale(-1, 1); // flip horizontally
-          faceCtx.fillText(hourNumbers[i], 0, 0);
-          faceCtx.restore();
-        } else {
-          faceCtx.fillText(hourNumbers[i], 0, 0);
-        }
-
-        faceCtx.restore();
-      }
-
-      faceCtx.beginPath();
-      faceCtx.arc(0, 0, radius * 0.01, 0, 2 * Math.PI);
-      faceCtx.fillStyle = "white";
-      faceCtx.fill();
-      faceCtx.restore();
-    };
-
-    const drawHand = (ctx, value, max, length, width) => {
-      ctx.clearRect(0, 0, size, size);
-      ctx.save();
-      ctx.translate(radius, radius);
-      ctx.rotate((value / max) * 2 * Math.PI);
-
-      const grad = ctx.createLinearGradient(0, 0, 0, -radius * length);
-      grad.addColorStop(0, "#CFCCCC80");
-      grad.addColorStop(0.5, "#79787880");
-      grad.addColorStop(1, "#B2B0B080");
-
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.lineTo(0, -radius * length);
-      ctx.lineWidth = width;
-      ctx.strokeStyle = grad;
-      ctx.lineCap = "round";
-
-      ctx.shadowColor = "rgba(200, 220, 255, 0.8)";
-      ctx.shadowBlur = 12;
-
-      ctx.stroke();
-      ctx.restore();
-    };
-
-    let sheenAngle = 0;
-    const drawSheen = () => {
-      sheenCtx.clearRect(0, 0, size, size);
-      sheenCtx.save();
-      sheenCtx.translate(radius, radius);
-      sheenCtx.rotate(sheenAngle);
-
-      const grad = sheenCtx.createRadialGradient(0, 0, radius * 0.2, 0, 0, radius);
-      grad.addColorStop(0, "rgba(255,255,255,0.1)");
-      grad.addColorStop(0.4, "rgba(200,200,200,0.05)");
-      grad.addColorStop(1, "rgba(255,255,255,0)");
-
-      sheenCtx.fillStyle = grad;
-      sheenCtx.beginPath();
-      sheenCtx.arc(0, 0, radius, 0, 2 * Math.PI);
-      sheenCtx.fill();
-      sheenCtx.restore();
-
-      sheenAngle += 0.002;
-      requestAnimationFrame(drawSheen);
-    };
-
-    const startClock = () => {
-      drawClockFace();
-      drawSheen();
-
-      const updateClock = () => {
-        const now = new Date();
-        const hours = (now.getHours() % 12) + now.getMinutes() / 60 + now.getSeconds() / 3600;
-        const minutes = now.getMinutes() + now.getSeconds() / 60 + now.getMilliseconds() / 60000;
-        const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
-
-        drawHand(hourCtx, hours, 12, 0.5, 8);
-        drawHand(minuteCtx, minutes, 60, 0.7, 5);
-        drawHand(secondCtx, seconds, 60, 0.8, 3);
-
-        requestAnimationFrame(updateClock);
+      const createCanvasContext = (ref) => {
+        const canvas = ref.current;
+        canvas.width = size * dpr;
+        canvas.height = size * dpr;
+        canvas.style.width = `${size}px`;
+        canvas.style.height = `${size}px`;
+        const ctx = canvas.getContext("2d");
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        return ctx;
       };
 
-      updateClock();
+      const faceCtx = createCanvasContext(faceRef);
+      const sheenCtx = createCanvasContext(sheenRef);
+      const hourCtx = createCanvasContext(hourRef);
+      const minuteCtx = createCanvasContext(minuteRef);
+      const secondCtx = createCanvasContext(secondRef);
+
+      const radius = size / 2;
+      const hourNumbers = ["🌕", "🌔", "🌓", "🌒", "🌙", "🌛", "🌚", "🌜", "🌙", "🌘", "🌗", "🌖"];
+      const supportsFilter = typeof faceCtx.filter !== "undefined";
+
+      const drawClockFace = () => {
+        faceCtx.save();
+        faceCtx.translate(radius, radius);
+        faceCtx.imageSmoothingEnabled = false;
+
+        for (let i = 0; i < 12; i++) {
+          const angle = (i * 30 * Math.PI) / 180;
+          faceCtx.save();
+          faceCtx.rotate(angle);
+          faceCtx.translate(0, -radius * 0.65);
+          faceCtx.rotate(-angle);
+
+          faceCtx.font = `${fontSize} Times New Roman`;
+          faceCtx.textAlign = "center";
+          faceCtx.textBaseline = "middle";
+
+          faceCtx.shadowColor = "rgba(220, 215, 255)";
+          faceCtx.shadowBlur = 40;
+          faceCtx.shadowOffsetX = 0;
+          faceCtx.shadowOffsetY = 0;
+
+          if (supportsFilter) {
+            faceCtx.filter = "brightness(110%) contrast(80%)";
+            faceCtx.fillStyle = "#e0e0e0";
+          } else {
+            faceCtx.filter = "none";
+            faceCtx.fillStyle = "#b0c4de";
+          }
+
+          if (i === 8) {
+            faceCtx.save();
+            faceCtx.scale(-1, 1);
+            faceCtx.fillText(hourNumbers[i], 0, 0);
+            faceCtx.restore();
+          } else {
+            faceCtx.fillText(hourNumbers[i], 0, 0);
+          }
+
+          faceCtx.restore();
+        }
+
+        faceCtx.beginPath();
+        faceCtx.arc(0, 0, radius * 0.01, 0, 2 * Math.PI);
+        faceCtx.fillStyle = "white";
+        faceCtx.fill();
+        faceCtx.restore();
+      };
+
+      const drawHand = (ctx, value, max, length, width) => {
+        ctx.clearRect(0, 0, size, size);
+        ctx.save();
+        ctx.translate(radius, radius);
+        ctx.rotate((value / max) * 2 * Math.PI);
+
+        const grad = ctx.createLinearGradient(0, 0, 0, -radius * length);
+        grad.addColorStop(0, "#CFCCCC80");
+        grad.addColorStop(0.5, "#79787880");
+        grad.addColorStop(1, "#B2B0B080");
+
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, -radius * length);
+        ctx.lineWidth = width;
+        ctx.strokeStyle = grad;
+        ctx.lineCap = "round";
+
+        ctx.shadowColor = "rgba(200, 220, 255, 0.8)";
+        ctx.shadowBlur = 12;
+
+        ctx.stroke();
+        ctx.restore();
+      };
+
+      let sheenAngle = 0;
+      const drawSheen = () => {
+        sheenCtx.clearRect(0, 0, size, size);
+        sheenCtx.save();
+        sheenCtx.translate(radius, radius);
+        sheenCtx.rotate(sheenAngle);
+
+        const grad = sheenCtx.createRadialGradient(0, 0, radius * 0.2, 0, 0, radius);
+        grad.addColorStop(0, "rgba(255,255,255,0.1)");
+        grad.addColorStop(0.4, "rgba(200,200,200,0.05)");
+        grad.addColorStop(1, "rgba(255,255,255,0)");
+
+        sheenCtx.fillStyle = grad;
+        sheenCtx.beginPath();
+        sheenCtx.arc(0, 0, radius, 0, 2 * Math.PI);
+        sheenCtx.fill();
+        sheenCtx.restore();
+
+        sheenAngle += 0.002;
+        requestAnimationFrame(drawSheen);
+      };
+
+      const startClock = () => {
+        drawClockFace();
+        drawSheen();
+
+        const updateClock = () => {
+          const now = new Date();
+          const hours = (now.getHours() % 12) + now.getMinutes() / 60 + now.getSeconds() / 3600;
+          const minutes = now.getMinutes() + now.getSeconds() / 60 + now.getMilliseconds() / 60000;
+          const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+
+          drawHand(hourCtx, hours, 12, 0.5, 8);
+          drawHand(minuteCtx, minutes, 60, 0.7, 5);
+          drawHand(secondCtx, seconds, 60, 0.8, 3);
+
+          requestAnimationFrame(updateClock);
+        };
+
+        updateClock();
+      };
+
+      startClock();
     };
 
-    startClock();
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   return (
