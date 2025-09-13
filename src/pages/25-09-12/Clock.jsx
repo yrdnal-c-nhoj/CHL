@@ -114,7 +114,7 @@ const Clock = () => {
       { type: "second", max: 60, length: 0.5, width: 8 },
     ],
     SIZE_MULTIPLIER: 1.1,
-    FONT_SIZES: { laptop: "5rem", phone: "3.3rem" },
+    FONT_SIZES: { laptop: "5rem", phone: "3.0rem" },
     BREAKPOINT: 768,
   };
 
