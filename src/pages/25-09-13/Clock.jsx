@@ -32,6 +32,8 @@ const DigitalClock = () => {
   const current = formatTime(time);
   const previous = formatTime(prevTime);
 
+  const replaceNine = (str) => str.replace(/9/g, 'q'); // <-- key function
+
   const containerStyle = {
     width: '100vw',
     height: '100dvh',
@@ -39,7 +41,6 @@ const DigitalClock = () => {
     flexDirection: isHorizontal ? 'row' : 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    // gap: '2rem',
     backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -60,37 +61,36 @@ const DigitalClock = () => {
     overflow: 'hidden',
   };
 
+    const digitStyle = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: `
+      linear-gradient(
+        to bottom,
+        rgba(20,20,20,0.9) 15%,  
+        rgba(128,128,128,0.9) 40%,     
+        rgba(128,128,128,0.9) 50%, 
+        rgba(225,225,255,0.9) 85%,
+        white 90%,   /* starts pure white */
+        white 100%   /* stays pure white bottom 10% */
+      )
+    `,
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+    textFillColor: 'transparent',
+    opacity: 0.8,
+  };
 
-const digitStyle = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  background: `
-    linear-gradient(
-      to bottom,
-      rgba(0,0,0,0.9) 15%,      /* Dark top */
-      rgba(128,128,128,0.9) 50%, /* Medium middle */
-      rgba(225,225,255,0.9) 85%  /* Light bottom */
-    )
-  `,
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  backgroundClip: 'text',
-  textFillColor: 'transparent',
-  opacity: 0.7,  // Global opacity
-};
 
-
-
-
-  
   const renderRow = (currentStr, previousStr, boxStyle) =>
-    currentStr.split('').map((digit, idx) => (
+    replaceNine(currentStr).split('').map((digit, idx) => (
       <div key={idx} style={{ ...boxStyle, position: 'relative' }}>
         <div style={digitStyle}>{digit}</div>
       </div>
