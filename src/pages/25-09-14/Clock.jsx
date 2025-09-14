@@ -18,40 +18,31 @@ const GoldenChordsClock = () => {
     const font = new FontFace(fontName, `url(${dateFont})`);
     font.load().then((loadedFont) => document.fonts.add(loadedFont));
 
-    // Load rotating background image
+    // Load background image
     const bgImage = new Image();
     bgImage.src = bgImageSrc;
 
-    bgImage.onload = () => requestAnimationFrame(draw);
+    let startTime = performance.now(); // continuous timer
 
-    const draw = () => {
-      const now = new Date();
-      const elapsedSeconds = now.getSeconds() + now.getMilliseconds() / 1000;
+    const draw = (time) => {
+      const elapsed = (time - startTime) / 1000; // seconds elapsed continuously
 
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
       const scale = Math.min(canvas.width, canvas.height) / 400;
 
       // --- SHIMMERING GOLD BACKGROUND ---
+      const shimmer = 5 * Math.sin(elapsed * 5);
       const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(
-        0,
-        `hsl(${50 + 10 * Math.sin(elapsedSeconds)}, 100%, 50%)`
-      );
-      gradient.addColorStop(
-        0.5,
-        `hsl(${50 + 15 * Math.cos(elapsedSeconds)}, 90%, 60%)`
-      );
-      gradient.addColorStop(
-        1,
-        `hsl(${50 + 20 * Math.sin(elapsedSeconds * 1.5)}, 100%, 55%)`
-      );
+      gradient.addColorStop(0, `hsl(${50 + shimmer}, 100%, 50%)`);
+      gradient.addColorStop(0.5, `hsl(${50 + shimmer * 1.2}, 90%, 60%)`);
+      gradient.addColorStop(1, `hsl(${50 + shimmer * 1.5}, 100%, 55%)`);
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // --- ROTATING BACKGROUND IMAGE ---
+      // --- ROTATING BACKGROUND IMAGE (1 rev per 60s) ---
       if (bgImage.complete) {
-        const bgRotation = (elapsedSeconds * Math.PI) / 60;
+        const bgRotation = ((elapsed % 60) / 60) * 2 * Math.PI; // smooth rotation
         ctx.save();
         ctx.translate(centerX, centerY);
         ctx.rotate(bgRotation);
@@ -71,8 +62,8 @@ const GoldenChordsClock = () => {
         ctx.filter = "none";
       }
 
-      // --- GOLDEN CHORDS WITH REFLECTION ---
-      const chordRotation = -(elapsedSeconds * 2 * Math.PI) / 60;
+      // --- GOLDEN CHORDS (continuous rotation) ---
+      const chordRotation = -(elapsed * 2 * Math.PI) / 60; // full rotation per 60s
       const halfChordAngle = Math.asin(Math.min(1, chordLength / (2 * R)));
 
       for (let i = 0; i < numChords; i++) {
@@ -115,13 +106,15 @@ const GoldenChordsClock = () => {
       }
 
       // --- CLOCK HANDS ---
-      const minutes = now.getMinutes() + elapsedSeconds / 60;
-      const hours = now.getHours() % 12 + minutes / 60;
+      const minutes = new Date().getMinutes() + (elapsed % 60) / 60;
+      const hours = new Date().getHours() % 12 + minutes / 60;
       const clockRadius = R * 0.6 * scale;
 
       const drawHand = (angle, length, width, color) => {
         ctx.save();
         ctx.globalAlpha = 0.6;
+        ctx.shadowColor = "#FFD700";
+        ctx.shadowBlur = 15 * scale;
         ctx.beginPath();
         ctx.moveTo(centerX, centerY);
         ctx.lineTo(
@@ -148,10 +141,17 @@ const GoldenChordsClock = () => {
     window.addEventListener("resize", handleResize);
     handleResize();
 
+    requestAnimationFrame(draw);
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  return <canvas ref={canvasRef} style={{ width: "100vw", height: "100dvh", display: "block" }} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{ width: "100vw", height: "100dvh", display: "block" }}
+    />
+  );
 };
 
 export default GoldenChordsClock;
