@@ -56,7 +56,7 @@ const GoldenChordsClock = () => {
         ctx.translate(centerX, centerY);
         ctx.rotate(bgRotation);
 
-        ctx.filter = "contrast(1.2) saturate(1.1) hue-rotate(10deg) invert(0.9)";
+        ctx.filter = "contrast(1.0) brightness(0.7) saturate(1.1)";
         const imgScale =
           0.8 *
           Math.max(canvas.width / bgImage.width, canvas.height / bgImage.height);
@@ -119,18 +119,24 @@ const GoldenChordsClock = () => {
       const hours = now.getHours() % 12 + minutes / 60;
       const clockRadius = R * 0.6 * scale;
 
+      
       const drawHand = (angle, length, width, color) => {
-        ctx.beginPath();
-        ctx.moveTo(centerX, centerY);
-        ctx.lineTo(
-          centerX + Math.sin(angle) * length,
-          centerY - Math.cos(angle) * length
-        );
-        ctx.strokeStyle = color;
-        ctx.lineWidth = width;
-        ctx.lineCap = "round";
-        ctx.stroke();
-      };
+  ctx.save();
+  ctx.globalAlpha = 0.6; // lines semi-transparent
+  ctx.beginPath();
+  ctx.moveTo(centerX, centerY);
+  ctx.lineTo(
+    centerX + Math.sin(angle) * length,
+    centerY - Math.cos(angle) * length
+  );
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  ctx.lineCap = "round";
+  ctx.stroke();
+  ctx.restore();
+};
+
+
 
       drawHand((hours * 2 * Math.PI) / 12, clockRadius * 1.0, 8 * scale, "#7E7C7FFF");
       drawHand((minutes * 2 * Math.PI) / 60, clockRadius * 1.5, 4.5 * scale, "#7E7C7FFF");
