@@ -71,48 +71,56 @@ const GoldenChordsClock = () => {
         ctx.filter = "none";
       }
 
-      // --- GOLDEN CHORDS ---
-      const chordRotation = -(elapsedSeconds * 2 * Math.PI) / 60;
-      const halfChordAngle = Math.asin(Math.min(1, chordLength / (2 * R)));
 
-      for (let i = 0; i < numChords; i++) {
-        const angleOffset = chordRotation + (i * 2 * Math.PI) / numChords;
-        const x1 = centerX + R * Math.cos(angleOffset - halfChordAngle) * scale;
-        const y1 = centerY + R * Math.sin(angleOffset - halfChordAngle) * scale;
-        const x2 = centerX + R * Math.cos(angleOffset + halfChordAngle) * scale;
-        const y2 = centerY + R * Math.sin(angleOffset + halfChordAngle) * scale;
 
-        const grad = ctx.createLinearGradient(x1, y1, x2, y2);
-        grad.addColorStop(0, "#FFD700");
-        grad.addColorStop(10.2, "#FFF5B7");
-        grad.addColorStop(0.5, "#FFFFFF");
-        grad.addColorStop(1.8, "#FFE135");
-        grad.addColorStop(1, "#FFD700");
 
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 8 * scale;
-        ctx.shadowColor = "#FFD700";
-        ctx.shadowBlur = 30 * scale;
-        ctx.stroke();
 
-        // extra sparks
-        for (let j = 0; j < 8; j++) {
-          const t = Math.random();
-          const sparkX = x1 + (x2 - x1) * t;
-          const sparkY = y1 + (y2 - y1) * t;
-          const sparkRadius = Math.random() * 3 + 1.5;
 
-          ctx.beginPath();
-          ctx.arc(sparkX, sparkY, sparkRadius * scale, 0, 2 * Math.PI);
-          ctx.fillStyle = "#ECD330FF";
-          ctx.shadowColor = "#EBE3B6FF";
-          ctx.shadowBlur = 25 * scale;
-          ctx.fill();
-        }
-      }
+
+
+// --- GOLDEN CHORDS ---
+const chordRotation = -(elapsedSeconds * 2 * Math.PI) / 60;
+const halfChordAngle = Math.asin(Math.min(1, chordLength / (2 * R)));
+
+for (let i = 0; i < numChords; i++) {
+  const angleOffset = chordRotation + (i * 2 * Math.PI) / numChords;
+  const x1 = centerX + R * Math.cos(angleOffset - halfChordAngle) * scale;
+  const y1 = centerY + R * Math.sin(angleOffset - halfChordAngle) * scale;
+  const x2 = centerX + R * Math.cos(angleOffset + halfChordAngle) * scale;
+  const y2 = centerY + R * Math.sin(angleOffset + halfChordAngle) * scale;
+
+  const grad = ctx.createLinearGradient(x1, y1, x2, y2);
+  grad.addColorStop(0, "#FFD700");
+  grad.addColorStop(0.3, "#FFF5B7");
+  grad.addColorStop(0.5, "#FFFFFF");
+  grad.addColorStop(0.7, "#FFE135");
+  grad.addColorStop(1, "#FFD700");
+
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.strokeStyle = grad;
+  ctx.lineWidth = 2 * scale; // increased from 8
+  ctx.shadowColor = "#FFD700";
+  ctx.shadowBlur = 40 * scale; // increased blur
+  ctx.stroke();
+
+  // extra sparks
+  for (let j = 0; j < 12; j++) { // more sparks
+    const t = Math.random();
+    const sparkX = x1 + (x2 - x1) * t;
+    const sparkY = y1 + (y2 - y1) * t;
+    const sparkRadius = Math.random() * 4 + 2; // larger sparks
+
+    ctx.beginPath();
+    ctx.arc(sparkX, sparkY, sparkRadius * scale, 0, 2 * Math.PI);
+    ctx.fillStyle = "#FFD93DFF"; // brighter spark color
+    ctx.shadowColor = "#FFF8B6FF";
+    ctx.shadowBlur = 35 * scale;
+    ctx.fill();
+  }
+}
+
 
       // --- CLOCK HANDS ---
       const minutes = now.getMinutes() + elapsedSeconds / 60;
