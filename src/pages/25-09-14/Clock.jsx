@@ -71,80 +71,69 @@ const GoldenChordsClock = () => {
         ctx.filter = "none";
       }
 
+      // --- GOLDEN CHORDS WITH REFLECTION ---
+      const chordRotation = -(elapsedSeconds * 2 * Math.PI) / 60;
+      const halfChordAngle = Math.asin(Math.min(1, chordLength / (2 * R)));
 
+      for (let i = 0; i < numChords; i++) {
+        const angleOffset = chordRotation + (i * 2 * Math.PI) / numChords;
+        const x1 = centerX + R * Math.cos(angleOffset - halfChordAngle) * scale;
+        const y1 = centerY + R * Math.sin(angleOffset - halfChordAngle) * scale;
+        const x2 = centerX + R * Math.cos(angleOffset + halfChordAngle) * scale;
+        const y2 = centerY + R * Math.sin(angleOffset + halfChordAngle) * scale;
 
+        // Base metallic gradient
+        const grad = ctx.createLinearGradient(x1, y1, x2, y2);
+        grad.addColorStop(0, "#FFD700");
+        grad.addColorStop(0.25, "#FFE066");
+        grad.addColorStop(0.5, "#FFF8B0");
+        grad.addColorStop(0.75, "#FFE066");
+        grad.addColorStop(1, "#FFD700");
 
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 4 * scale;
+        ctx.shadowColor = "#FFD700";
+        ctx.shadowBlur = 60 * scale;
+        ctx.stroke();
 
+        // Subtle reflection line
+        const reflectionGrad = ctx.createLinearGradient(x1, y1, x2, y2);
+        reflectionGrad.addColorStop(0, "rgba(255,255,255,0.3)");
+        reflectionGrad.addColorStop(0.5, "rgba(255,255,255,0.5)");
+        reflectionGrad.addColorStop(1, "rgba(255,255,255,0.3)");
 
-
-
-// --- GOLDEN CHORDS ---
-const chordRotation = -(elapsedSeconds * 2 * Math.PI) / 60;
-const halfChordAngle = Math.asin(Math.min(1, chordLength / (2 * R)));
-
-for (let i = 0; i < numChords; i++) {
-  const angleOffset = chordRotation + (i * 2 * Math.PI) / numChords;
-  const x1 = centerX + R * Math.cos(angleOffset - halfChordAngle) * scale;
-  const y1 = centerY + R * Math.sin(angleOffset - halfChordAngle) * scale;
-  const x2 = centerX + R * Math.cos(angleOffset + halfChordAngle) * scale;
-  const y2 = centerY + R * Math.sin(angleOffset + halfChordAngle) * scale;
-
-  const grad = ctx.createLinearGradient(x1, y1, x2, y2);
-  grad.addColorStop(0, "#FFD700");
-  grad.addColorStop(0.3, "#FFF5B7");
-  grad.addColorStop(0.5, "#FFFFFF");
-  grad.addColorStop(0.7, "#FFE135");
-  grad.addColorStop(1, "#FFD700");
-
-  ctx.beginPath();
-  ctx.moveTo(x1, y1);
-  ctx.lineTo(x2, y2);
-  ctx.strokeStyle = grad;
-  ctx.lineWidth = 2 * scale; // increased from 8
-  ctx.shadowColor = "#FFD700";
-  ctx.shadowBlur = 40 * scale; // increased blur
-  ctx.stroke();
-
-  // extra sparks
-  for (let j = 0; j < 12; j++) { // more sparks
-    const t = Math.random();
-    const sparkX = x1 + (x2 - x1) * t;
-    const sparkY = y1 + (y2 - y1) * t;
-    const sparkRadius = Math.random() * 4 + 2; // larger sparks
-
-    ctx.beginPath();
-    ctx.arc(sparkX, sparkY, sparkRadius * scale, 0, 2 * Math.PI);
-    ctx.fillStyle = "#FFD93DFF"; // brighter spark color
-    ctx.shadowColor = "#FFF8B6FF";
-    ctx.shadowBlur = 35 * scale;
-    ctx.fill();
-  }
-}
-
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = reflectionGrad;
+        ctx.lineWidth = 1.5 * scale;
+        ctx.shadowBlur = 0;
+        ctx.stroke();
+      }
 
       // --- CLOCK HANDS ---
       const minutes = now.getMinutes() + elapsedSeconds / 60;
       const hours = now.getHours() % 12 + minutes / 60;
       const clockRadius = R * 0.6 * scale;
 
-      
       const drawHand = (angle, length, width, color) => {
-  ctx.save();
-  ctx.globalAlpha = 0.6; // lines semi-transparent
-  ctx.beginPath();
-  ctx.moveTo(centerX, centerY);
-  ctx.lineTo(
-    centerX + Math.sin(angle) * length,
-    centerY - Math.cos(angle) * length
-  );
-  ctx.strokeStyle = color;
-  ctx.lineWidth = width;
-  ctx.lineCap = "round";
-  ctx.stroke();
-  ctx.restore();
-};
-
-
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(
+          centerX + Math.sin(angle) * length,
+          centerY - Math.cos(angle) * length
+        );
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.lineCap = "round";
+        ctx.stroke();
+        ctx.restore();
+      };
 
       drawHand((hours * 2 * Math.PI) / 12, clockRadius * 1.0, 8 * scale, "#7E7C7FFF");
       drawHand((minutes * 2 * Math.PI) / 60, clockRadius * 1.5, 4.5 * scale, "#7E7C7FFF");
