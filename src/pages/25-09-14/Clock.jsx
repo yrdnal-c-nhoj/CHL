@@ -1,269 +1,154 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
+import dateFont from "./swi.ttf";
+import bgImageSrc from "./bg.gif";
 
-const StarsParallax = () => {
-  const [stars, setStars] = React.useState({ near: [], mid: [], far: [] });
-  const rafRef = useRef(null);
+const GoldenChordsClock = () => {
+  const canvasRef = useRef(null);
 
-  useEffect(() => {
-    const generateStars = (count, sizeMin, sizeMax, speedMultiplier) => {
-      return Array.from({ length: count }, () => {
-        const size = Math.random() * (sizeMax - sizeMin) + sizeMin;
-        return {
-          x: Math.random() * 100,
-          y: Math.random() * 100,
-          size,
-          speed: size * speedMultiplier,
-          twinkleOffset: Math.random() * Math.PI * 2,
-        };
-      });
-    };
-
-    setStars({
-      near: generateStars(80, 0.1, 0.2, 0.1),
-      mid: generateStars(150, 0.05, 0.15, 0.06),
-      far: generateStars(190, 0.03, 0.1, 0.03),
-    });
-
-    const animateStars = () => {
-      setStars((prev) => ({
-        near: prev.near.map((star) => ({
-          ...star,
-          y: star.y - star.speed < 0 ? 100 : star.y - star.speed,
-          opacity: 0.7 + 0.3 * Math.sin(Date.now() / 500 + star.twinkleOffset),
-        })),
-        mid: prev.mid.map((star) => ({
-          ...star,
-          y: star.y - star.speed < 0 ? 100 : star.y - star.speed,
-          opacity: 0.5 + 0.5 * Math.sin(Date.now() / 600 + star.twinkleOffset),
-        })),
-        far: prev.far.map((star) => ({
-          ...star,
-          y: star.y - star.speed < 0 ? 100 : star.y - star.speed,
-          opacity: 0.3 + 0.5 * Math.sin(Date.now() / 700 + star.twinkleOffset),
-        })),
-      }));
-      rafRef.current = requestAnimationFrame(animateStars);
-    };
-
-    animateStars();
-
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, []);
-
-  return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        background: 'linear-gradient(to top, #193527FF 0%, #07145EFF 100%)',
-        position: 'absolute',
-        overflow: 'hidden',
-        zIndex: 1,
-      }}
-    >
-      {['far', 'mid', 'near'].map((layer) =>
-        stars[layer].map((star, index) => (
-          <div
-            key={`${layer}-${index}`}
-            style={{
-              position: 'absolute',
-              left: `${star.x}vw`,
-              top: `${star.y}dvh`,
-              width: `${star.size}rem`,
-              height: `${star.size}rem`,
-              background: '#E0E0FF',
-              borderRadius: '50%',
-              opacity: star.opacity,
-            }}
-          />
-        ))
-      )}
-    </div>
-  );
-};
-
-const Clock = () => {
-  const faceRef = useRef(null);
-  const sheenRef = useRef(null);
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
-  const sheenRafRef = useRef(null);
-  const clockRafRef = useRef(null);
+  const R = 180;
+  const chordLength = 1.8 * R;
+  const numChords = 12;
 
   useEffect(() => {
-    const size = Math.min(window.innerWidth, window.innerHeight) * 0.8;
-    const dpr = window.devicePixelRatio || 1;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
 
-    const createCanvasContext = (ref) => {
-      const canvas = ref.current;
-      canvas.width = size * dpr;
-      canvas.height = size * dpr;
-      canvas.style.width = `${size}px`;
-      canvas.style.height = `${size}px`;
-      const ctx = canvas.getContext('2d');
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      return ctx;
-    };
+    // Load custom font
+    const fontName = `CustomFont_${Date.now()}`;
+    const font = new FontFace(fontName, `url(${dateFont})`);
+    font.load().then((loadedFont) => document.fonts.add(loadedFont));
 
-    const faceCtx = createCanvasContext(faceRef);
-    const sheenCtx = createCanvasContext(sheenRef);
-    const hourCtx = createCanvasContext(hourRef);
-    const minuteCtx = createCanvasContext(minuteRef);
-    const secondCtx = createCanvasContext(secondRef);
+    // Load rotating background image
+    const bgImage = new Image();
+    bgImage.src = bgImageSrc;
 
-    const radius = size / 2;
-    const hourNumbers = ['🌕', '🌔', '🌓', '🌒', '🌙', '🌛', '🌚', '🌜', '🌙', '🌘', '🌗', '🌖'];
+    bgImage.onload = () => requestAnimationFrame(draw);
 
-    const drawClockFace = () => {
-      faceCtx.save();
-      faceCtx.translate(radius, radius);
+    const draw = () => {
+      const now = new Date();
+      const elapsedSeconds = now.getSeconds() + now.getMilliseconds() / 1000;
 
-      for (let i = 0; i < 12; i++) {
-        const angle = (i * 30) * Math.PI / 180;
-        faceCtx.save();
-        faceCtx.rotate(angle);
-        faceCtx.translate(0, -radius * 0.65);
-        faceCtx.rotate(-angle);
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const scale = Math.min(canvas.width, canvas.height) / 400;
 
-        faceCtx.font = `${radius * 0.1}px Times New Roman`;
-        faceCtx.textAlign = 'center';
-        faceCtx.textBaseline = 'middle';
+      // --- SHIMMERING GOLD BACKGROUND ---
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(
+        0,
+        `hsl(${50 + 10 * Math.sin(elapsedSeconds)}, 100%, 50%)`
+      );
+      gradient.addColorStop(
+        0.5,
+        `hsl(${50 + 15 * Math.cos(elapsedSeconds)}, 90%, 60%)`
+      );
+      gradient.addColorStop(
+        1,
+        `hsl(${50 + 20 * Math.sin(elapsedSeconds * 1.5)}, 100%, 55%)`
+      );
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        faceCtx.shadowColor = 'rgba(220, 235, 255, 0.9)';
-        faceCtx.shadowBlur = 10;
-        faceCtx.shadowOffsetX = 1;
-        faceCtx.shadowOffsetY = 1;
+      // --- ROTATING BACKGROUND IMAGE ---
+      if (bgImage.complete) {
+        const bgRotation = (elapsedSeconds * Math.PI) / 60;
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(bgRotation);
 
-        faceCtx.filter = 'hue-rotate(190deg) saturate(410%) brightness(110%) contrast(60%)';
-        faceCtx.fillStyle = '#e0e0e0';
-
-        if (i === 2 || i === 7 || i === 8) {
-          faceCtx.save();
-          faceCtx.scale(-1, 1);
-          faceCtx.fillText(hourNumbers[i], 0, 0);
-          faceCtx.restore();
-        } else {
-          faceCtx.fillText(hourNumbers[i], 0, 0);
-        }
-
-        faceCtx.restore();
+        ctx.filter = "contrast(1.2) saturate(1.1) hue-rotate(10deg) invert(0.9)";
+        const imgScale =
+          0.8 *
+          Math.max(canvas.width / bgImage.width, canvas.height / bgImage.height);
+        ctx.drawImage(
+          bgImage,
+          (-bgImage.width / 2) * imgScale,
+          (-bgImage.height / 2) * imgScale,
+          bgImage.width * imgScale,
+          bgImage.height * imgScale
+        );
+        ctx.restore();
+        ctx.filter = "none";
       }
 
-      faceCtx.beginPath();
-      faceCtx.arc(0, 0, radius * 0.01, 0, 2 * Math.PI);
-      faceCtx.fillStyle = 'white';
-      faceCtx.fill();
-      faceCtx.restore();
-    };
+      // --- GOLDEN CHORDS ---
+      const chordRotation = -(elapsedSeconds * 2 * Math.PI) / 60;
+      const halfChordAngle = Math.asin(Math.min(1, chordLength / (2 * R)));
 
-    const drawHand = (ctx, value, max, length, width) => {
-      ctx.clearRect(0, 0, size, size);
-      ctx.save();
-      ctx.translate(radius, radius);
-      ctx.rotate((value / max) * 2 * Math.PI);
+      for (let i = 0; i < numChords; i++) {
+        const angleOffset = chordRotation + (i * 2 * Math.PI) / numChords;
+        const x1 = centerX + R * Math.cos(angleOffset - halfChordAngle) * scale;
+        const y1 = centerY + R * Math.sin(angleOffset - halfChordAngle) * scale;
+        const x2 = centerX + R * Math.cos(angleOffset + halfChordAngle) * scale;
+        const y2 = centerY + R * Math.sin(angleOffset + halfChordAngle) * scale;
 
-      const grad = ctx.createLinearGradient(0, 0, 0, -radius * length);
-      grad.addColorStop(0, '#CFCCCCFF');
-      grad.addColorStop(0.5, '#797878FF');
-      grad.addColorStop(1, '#B2B0B0FF');
+        const grad = ctx.createLinearGradient(x1, y1, x2, y2);
+        grad.addColorStop(0, "#FFD700");
+        grad.addColorStop(0.2, "#FFF5B7");
+        grad.addColorStop(0.5, "#FFFFFF");
+        grad.addColorStop(0.8, "#FFE135");
+        grad.addColorStop(1, "#FFD700");
 
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.lineTo(0, -radius * length);
-      ctx.lineWidth = width;
-      ctx.strokeStyle = grad;
-      ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 0.5 * scale;
+        ctx.shadowColor = "#FFD700";
+        ctx.shadowBlur = 30 * scale;
+        ctx.stroke();
 
-      ctx.shadowColor = 'rgba(200, 220, 255, 0.8)';
-      ctx.shadowBlur = 15;
+        // extra sparks
+        for (let j = 0; j < 8; j++) {
+          const t = Math.random();
+          const sparkX = x1 + (x2 - x1) * t;
+          const sparkY = y1 + (y2 - y1) * t;
+          const sparkRadius = Math.random() * 3 + 1.5;
 
-      ctx.stroke();
-      ctx.restore();
-    };
+          ctx.beginPath();
+          ctx.arc(sparkX, sparkY, sparkRadius * scale, 0, 2 * Math.PI);
+          ctx.fillStyle = "#ECD330FF";
+          ctx.shadowColor = "#EBE3B6FF";
+          ctx.shadowBlur = 25 * scale;
+          ctx.fill();
+        }
+      }
 
-    let sheenAngle = 0;
-    const drawSheen = () => {
-      sheenCtx.clearRect(0, 0, size, size);
-      sheenCtx.save();
-      sheenCtx.translate(radius, radius);
-      sheenCtx.rotate(sheenAngle);
+      // --- CLOCK HANDS ---
+      const minutes = now.getMinutes() + elapsedSeconds / 60;
+      const hours = now.getHours() % 12 + minutes / 60;
+      const clockRadius = R * 0.6 * scale;
 
-      const grad = sheenCtx.createRadialGradient(0, 0, radius * 0.2, 0, 0, radius);
-      grad.addColorStop(0, 'rgba(255,255,255,0.2)');
-      grad.addColorStop(0.4, 'rgba(200,200,200,0.1)');
-      grad.addColorStop(1, 'rgba(255,255,255,0)');
-
-      sheenCtx.fillStyle = grad;
-      sheenCtx.beginPath();
-      sheenCtx.arc(0, 0, radius, 0, 2 * Math.PI);
-      sheenCtx.fill();
-      sheenCtx.restore();
-
-      sheenAngle += 0.002;
-      sheenRafRef.current = requestAnimationFrame(drawSheen);
-    };
-
-    const startClock = () => {
-      drawClockFace();
-      drawSheen();
-
-      const updateClock = () => {
-        const now = new Date();
-        const hours = now.getHours() % 12 + now.getMinutes() / 60 + now.getSeconds() / 3600;
-        const minutes = now.getMinutes() + now.getSeconds() / 60 + now.getMilliseconds() / 60000;
-        const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
-
-        drawHand(hourCtx, hours, 12, 0.5, 8);
-        drawHand(minuteCtx, minutes, 60, 0.7, 5);
-        drawHand(secondCtx, seconds, 60, 0.8, 3);
-
-        clockRafRef.current = requestAnimationFrame(updateClock);
+      const drawHand = (angle, length, width, color) => {
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(
+          centerX + Math.sin(angle) * length,
+          centerY - Math.cos(angle) * length
+        );
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.lineCap = "round";
+        ctx.stroke();
       };
 
-      updateClock();
+      drawHand((hours * 2 * Math.PI) / 12, clockRadius * 1.0, 8 * scale, "#7E7C7FFF");
+      drawHand((minutes * 2 * Math.PI) / 60, clockRadius * 1.5, 4.5 * scale, "#7E7C7FFF");
+
+      requestAnimationFrame(draw);
     };
 
-    startClock();
-
-    return () => {
-      if (sheenRafRef.current) cancelAnimationFrame(sheenRafRef.current);
-      if (clockRafRef.current) cancelAnimationFrame(clockRafRef.current);
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        height: '100dvh',
-        width: '100vw',
-        overflow: 'hidden',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 2,
-        background: 'transparent',
-      }}
-    >
-      <canvas ref={faceRef} style={{ position: 'absolute', borderRadius: '50%', zIndex: 2 }} />
-      <canvas ref={sheenRef} style={{ position: 'absolute', borderRadius: '50%', zIndex: 3, pointerEvents: 'none' }} />
-      <canvas ref={hourRef} style={{ position: 'absolute', borderRadius: '50%', zIndex: 5 }} />
-      <canvas ref={minuteRef} style={{ position: 'absolute', borderRadius: '50%', zIndex: 4 }} />
-      <canvas ref={secondRef} style={{ position: 'absolute', borderRadius: '50%', zIndex: 5 }} />
-    </div>
-  );
+  return <canvas ref={canvasRef} style={{ width: "100vw", height: "100dvh", display: "block" }} />;
 };
 
-const App = () => {
-  return (
-    <div style={{ width: '100vw', height: '100dvh', position: 'relative', overflow: 'hidden' }}>
-      <StarsParallax />
-      <Clock />
-    </div>
-  );
-};
-
-export default App;
+export default GoldenChordsClock;
