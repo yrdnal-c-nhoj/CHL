@@ -55,7 +55,7 @@ const Pendulum = () => {
       height: '100%',
       background: `url(${bgUrl}) no-repeat center center fixed`,
       backgroundSize: 'cover',
-      filter: 'blur(2px) contrast(0.8) brightness(0.5) saturate(1.6)', // 👈 filter effect
+      filter:  contrast(0.8) brightness(0.5) saturate(1.6)', // 👈 filter effect
       zIndex: 0, 
     },
 
