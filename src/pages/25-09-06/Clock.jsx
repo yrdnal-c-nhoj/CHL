@@ -10,9 +10,6 @@ const AnalogClock = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const font = new FontFace('customFont', `url(${font_06_09_2025})`);
-    font.load().then(() => document.fonts.add(font));
-
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
@@ -41,15 +38,25 @@ const AnalogClock = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        fontFamily: 'customFont',
       }}
     >
+      {/* Scoped Font */}
+      <style>
+        {`
+          @font-face {
+            font-family: 'analogClockFont';
+            src: url(${font_06_09_2025}) format('truetype');
+          }
+        `}
+      </style>
+
       <div
         style={{
           width: `${clockSize}vh`,
           height: `${clockSize}vh`,
           borderRadius: '50%',
           position: 'relative',
+          fontFamily: 'analogClockFont', // only applied here
         }}
       >
         {/* Hour Numbers */}
