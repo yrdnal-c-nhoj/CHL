@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import * as DigitalClock from './ChinaClock.module.css';
 import NotoSerifCJKSC from './NotoSerif.ttf';
-import bgImage from './clo.webp'; // main background
-import cornerImage from './seal.png'; // upper-right corner image
+import bgImage from './clo.webp';
+import cornerImage from './seal.png';
 
 const chineseDigits = {
   0: '零', 1: '一', 2: '二', 3: '三', 4: '四',
@@ -12,20 +12,24 @@ const chineseDigits = {
 const ChinaClock = () => {
   const [time, setTime] = useState(new Date());
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [fontLoaded, setFontLoaded] = useState(false);
 
-  // Load font once
+  // Load font once and wait for it
   useEffect(() => {
     const font = new FontFace('Noto Serif CJK SC', `url(${NotoSerifCJKSC})`);
     font.load().then(loadedFont => {
       document.fonts.add(loadedFont);
+      setFontLoaded(true); // render only after font is ready
     });
   }, []);
 
+  // Update time every second
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
+  // Handle resize
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
@@ -43,6 +47,11 @@ const ChinaClock = () => {
       ? [toChinese(hours), toChinese(minutes), toChinese(seconds)]
       : `${toChinese(hours)}:${toChinese(minutes)}.${toChinese(seconds)}`;
   };
+
+  if (!fontLoaded) {
+    // Optionally, show a blank screen or a loader until font is ready
+    return null;
+  }
 
   const timeParts = formatTimeToChinese(time);
 
