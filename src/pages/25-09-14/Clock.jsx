@@ -84,16 +84,16 @@ const GoldenChordsClock = () => {
 
         const grad = ctx.createLinearGradient(x1, y1, x2, y2);
         grad.addColorStop(0, "#FFD700");
-        grad.addColorStop(0.2, "#FFF5B7");
+        grad.addColorStop(10.2, "#FFF5B7");
         grad.addColorStop(0.5, "#FFFFFF");
-        grad.addColorStop(0.8, "#FFE135");
+        grad.addColorStop(1.8, "#FFE135");
         grad.addColorStop(1, "#FFD700");
 
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.strokeStyle = grad;
-        ctx.lineWidth = 0.5 * scale;
+        ctx.lineWidth = 8 * scale;
         ctx.shadowColor = "#FFD700";
         ctx.shadowBlur = 30 * scale;
         ctx.stroke();
