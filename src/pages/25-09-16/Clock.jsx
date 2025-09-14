@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import bgImage from "./bg.jpg";
+import dateFont from "./baud.ttf";
 
-const DigitalClock = () => {
+const Clock = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -8,91 +10,78 @@ const DigitalClock = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (num) => String(num).padStart(2, "0").split("");
+  const hours = String(((time.getHours() + 11) % 12) + 1).padStart(2, "0");
+  const minutes = String(time.getMinutes()).padStart(2, "0");
+  const seconds = String(time.getSeconds()).padStart(2, "0");
 
-  const hours = formatTime(time.getHours());
-  const minutes = formatTime(time.getMinutes());
-  const seconds = formatTime(time.getSeconds());
+  const digitBox = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontFamily: "'MyDateFont', sans-serif",
+    fontSize: "8rem",
+    color: "#ffffff",
+    margin: "0 0.5vw",
+    minWidth: "8vw",
+    textShadow: `
+      0 0 5px #ff0000,
+      0 0 10px #ff9900,
+      0 0 15px #ffff00,
+      0 0 20px #00ff00,
+      0 0 25px #00ffff,
+      0 0 30px #0000ff,
+      0 0 35px #ff00ff,
+      0 0 40px #ffffff,
+      0 0 50px #ffffff,
+      0 0 75px #ffffff
+    `
+  };
 
-  const DigitBox = ({ value }) => (
-    <div
-      style={{
-        minWidth: "8vw",
-        minHeight: "14dvh",
-        margin: "0 0.8vw",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "6rem",
-        fontWeight: "700",
-        borderRadius: "2rem",
-        color: "#ffffff",
-        background: "linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03))",
-        boxShadow:
-          "0 0 2rem rgba(255,255,255,0.5), inset 0 0 1.5rem rgba(255,255,255,0.15), 0 0 4rem rgba(0,150,255,0.4)",
-        backdropFilter: "blur(1.5rem)",
-        transition: "all 0.4s ease",
-        animation: "shimmer 4s infinite linear",
-      }}
-    >
-      {value}
-    </div>
-  );
+  const containerStyle = {
+    height: "100dvh",
+    width: "100vw",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  };
+
+  const faceStyle = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+
+  const renderDigits = (value) =>
+    value.split("").map((d, i) => (
+      <div key={i} style={digitBox}>
+        {d}
+      </div>
+    ));
 
   return (
-    <div
-      style={{
-        height: "100dvh",
-        width: "100vw",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "linear-gradient(120deg, #1a0033 0%, #002060 50%, #004080 100%)",
-        fontFamily: "'Segoe UI', sans-serif",
-      }}
-    >
-      <div style={{ display: "flex", alignItems: "center" }}>
-        {hours.map((d, i) => (
-          <DigitBox key={`h-${i}`} value={d} />
-        ))}
-        <div
-          style={{
-            fontSize: "6rem",
-            fontWeight: "300",
-            color: "rgba(255,255,255,0.75)",
-            margin: "0 1vw",
-          }}
-        >
-          :
-        </div>
-        {minutes.map((d, i) => (
-          <DigitBox key={`m-${i}`} value={d} />
-        ))}
-        <div
-          style={{
-            fontSize: "6rem",
-            fontWeight: "300",
-            color: "rgba(255,255,255,0.75)",
-            margin: "0 1vw",
-          }}
-        >
-          :
-        </div>
-        {seconds.map((d, i) => (
-          <DigitBox key={`s-${i}`} value={d} />
-        ))}
+    <div style={containerStyle}>
+      <style>
+        {`
+          @font-face {
+            font-family: 'MyDateFont';
+            src: url(${dateFont}) format('truetype');
+            font-display: swap;
+          }
+        `}
+      </style>
+      <div style={faceStyle}>
+        {renderDigits(hours)}
+        <div style={digitBox}>:</div>
+        {renderDigits(minutes)}
+        <div style={digitBox}>:</div>
+        {renderDigits(seconds)}
       </div>
-
-      {/* inline keyframes */}
-      <style>{`
-        @keyframes shimmer {
-          0% { box-shadow: 0 0 2rem rgba(255,255,255,0.5), inset 0 0 1.5rem rgba(255,255,255,0.15), 0 0 4rem rgba(0,150,255,0.4); }
-          50% { box-shadow: 0 0 3rem rgba(255,255,255,0.7), inset 0 0 2rem rgba(255,255,255,0.25), 0 0 5rem rgba(0,200,255,0.6); }
-          100% { box-shadow: 0 0 2rem rgba(255,255,255,0.5), inset 0 0 1.5rem rgba(255,255,255,0.15), 0 0 4rem rgba(0,150,255,0.4); }
-        }
-      `}</style>
     </div>
   );
 };
 
-export default DigitalClock;
+export default Clock;
