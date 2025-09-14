@@ -6,7 +6,7 @@ const GoldenChordsClock = () => {
   const canvasRef = useRef(null);
 
   const R = 180;
-  const chordLength = 1.8 * R;
+  const chordLength = 1.9 * R;
   const numChords = 12;
 
   useEffect(() => {
@@ -113,8 +113,8 @@ const GoldenChordsClock = () => {
       const drawHand = (angle, length, width, color) => {
         ctx.save();
         ctx.globalAlpha = 0.6;
-        ctx.shadowColor = "#FFD700";
-        ctx.shadowBlur = 15 * scale;
+        ctx.shadowColor = "#F4B806FF";
+        ctx.shadowBlur = 40 * scale; // 🔥 stronger shadow glow
         ctx.beginPath();
         ctx.moveTo(centerX, centerY);
         ctx.lineTo(
@@ -128,8 +128,8 @@ const GoldenChordsClock = () => {
         ctx.restore();
       };
 
-      drawHand((hours * 2 * Math.PI) / 12, clockRadius * 1.0, 8 * scale, "#7E7C7FFF");
-      drawHand((minutes * 2 * Math.PI) / 60, clockRadius * 1.5, 4.5 * scale, "#7E7C7FFF");
+      drawHand((hours * 2 * Math.PI) / 12, clockRadius * 1.0, 8 * scale, "#39C5EFFF");
+      drawHand((minutes * 2 * Math.PI) / 60, clockRadius * 1.5, 4.5 * scale,"#39C5EFFF");
 
       requestAnimationFrame(draw);
     };
