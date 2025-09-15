@@ -110,23 +110,30 @@ const GoldenChordsClock = () => {
       const hours = new Date().getHours() % 12 + minutes / 60;
       const clockRadius = R * 0.6 * scale;
 
-      const drawHand = (angle, length, width, color) => {
-        ctx.save();
-        ctx.globalAlpha = 0.6;
-        ctx.shadowColor = "#F4B806FF";
-        ctx.shadowBlur = 40 * scale; // 🔥 stronger shadow glow
-        ctx.beginPath();
-        ctx.moveTo(centerX, centerY);
-        ctx.lineTo(
-          centerX + Math.sin(angle) * length,
-          centerY - Math.cos(angle) * length
-        );
-        ctx.strokeStyle = color;
-        ctx.lineWidth = width;
-        ctx.lineCap = "round";
-        ctx.stroke();
-        ctx.restore();
-      };
+
+
+
+const drawHand = (angle, length, width, color) => {
+  ctx.save();
+  ctx.globalAlpha = 0.9; // less transparent for bolder presence
+  ctx.shadowColor = "rgba(24, 28, 26, 0.95)"; // almost solid golden shadow
+  ctx.shadowBlur = 2 * scale; // 🔥 MUCH stronger blur
+  ctx.shadowOffsetX = 0.1 * scale; // optional: shift shadow horizontally
+  ctx.shadowOffsetY = 0.1 * scale; // optional: shift shadow vertically
+
+  ctx.beginPath();
+  ctx.moveTo(centerX, centerY);
+  ctx.lineTo(
+    centerX + Math.sin(angle) * length,
+    centerY - Math.cos(angle) * length
+  );
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  ctx.lineCap = "round";
+  ctx.stroke();
+  ctx.restore();
+};
+
 
       drawHand((hours * 2 * Math.PI) / 12, clockRadius * 1.0, 8 * scale, "#39C5EFFF");
       drawHand((minutes * 2 * Math.PI) / 60, clockRadius * 1.5, 4.5 * scale,"#39C5EFFF");
