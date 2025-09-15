@@ -108,16 +108,17 @@ export default function ClockWall() {
   }
 
   const containerStyle = {
-    position: "relative",
-    height: "100dvh",
-    width: "100vw",
-    overflow: "hidden",
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    filter: "brightness(1.8) contrast(1.8)", // adjust main background
-  };
+  position: "relative",
+  height: "100dvh",
+  width: "100vw",
+  overflow: "hidden",
+  backgroundImage: `url(${bgImage})`,
+  backgroundSize: "140% auto", // make background slightly larger horizontally
+  backgroundPosition: "20% center", // move background a bit to the right
+  backgroundRepeat: "no-repeat",
+  filter: "brightness(1.8) contrast(1.8)", // adjust main background
+};
+
 
   const overlayStyle = {
     position: "absolute",
