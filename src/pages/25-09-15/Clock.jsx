@@ -11,31 +11,14 @@ const SkewFlatClock = () => {
       const minutes = now.getMinutes().toString().padStart(2, "0");
       const ampm = hours >= 12 ? "PM" : "AM";
       hours = hours % 12 || 12;
-      setTime(`${hours}:${minutes} ${ampm}`);
+      setTime(`${hours}:${minutes} ${ampm}`); // seconds removed
       setFontVar(now.toISOString().slice(0, 10).replace(/-/g, ""));
     };
 
     updateTime();
-
-    // Align the first update to the start of the next minute
-    const now = new Date();
-    const delay = (60 - now.getSeconds()) * 1000;
-
-    const timeout = setTimeout(() => {
-      updateTime();
-      const interval = setInterval(updateTime, 60000); // update every minute
-      // Save interval so we can clear it on unmount
-      window._minuteInterval = interval;
-    }, delay);
-
-    return () => {
-      clearTimeout(timeout);
-      clearInterval(window._minuteInterval);
-    };
+    const interval = setInterval(updateTime, 1000); // still updates every second
+    return () => clearInterval(interval);
   }, []);
-
-  // --- rest of your tartan code remains unchanged ---
-
 
   const tartanColors = [
     "#1A3C34", // Dark green
