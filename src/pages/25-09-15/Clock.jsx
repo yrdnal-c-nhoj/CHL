@@ -9,15 +9,14 @@ const SkewFlatClock = () => {
       const now = new Date();
       let hours = now.getHours();
       const minutes = now.getMinutes().toString().padStart(2, "0");
-      const seconds = now.getSeconds().toString().padStart(2, "0"); // added seconds
       const ampm = hours >= 12 ? "PM" : "AM";
       hours = hours % 12 || 12;
-      setTime(`${hours}:${minutes}:${seconds} ${ampm}`); // include seconds
+      setTime(`${hours}:${minutes} ${ampm}`); // seconds removed
       setFontVar(now.toISOString().slice(0, 10).replace(/-/g, ""));
     };
 
     updateTime();
-    const interval = setInterval(updateTime, 1000); // update every second
+    const interval = setInterval(updateTime, 1000); // still updates every second
     return () => clearInterval(interval);
   }, []);
 
@@ -121,7 +120,6 @@ const SkewFlatClock = () => {
 
   const createGrids = () => (
     <>
-      {/* Original smaller grids */}
       {createTwoGrids()}
 
       {/* Bigger number line */}
@@ -223,7 +221,6 @@ const SkewFlatClock = () => {
           `}
       </style>
 
-      {/* Render all grids */}
       {createGrids()}
     </div>
   );
