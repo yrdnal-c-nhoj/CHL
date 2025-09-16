@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import backgroundImageUrl from "./plaid.jpg"; // put your texture here
 
 const SkewFlatClock = ({
-  colors = ["#1A3C34", "#D81E05", "#004B87", "#F1C40F", "#FFFFFF", "#0E1A40"],
-  stripeWidths = [2, 4, 1, 3, 0.5, 2.5],
-  verticalRepeats = 50, // Restored to original for viewport coverage
-  horizontalRepeats = 30, // Restored to original for viewport coverage
+  horizontalColors = ["#0E1A40", "#004B87", "#1A3C34"], // weft
+  verticalColors = ["#F1C40F", "#FFFFFF", "#E6DBDBFF"], // warp
+  verticalRepeats = 40,
+  horizontalRepeats = 30,
 }) => {
   const [time, setTime] = useState("");
 
@@ -19,27 +20,25 @@ const SkewFlatClock = ({
     };
 
     updateTime();
-    const interval = setInterval(updateTime, 60000); // Update every minute
+    const interval = setInterval(updateTime, 60000);
     return () => clearInterval(interval);
   }, []);
 
-  const createTartanGrid = () => {
+  const createTartanGrid = (colors) => {
     const rows = [];
     for (let row = 0; row < verticalRepeats; row++) {
+      const rowColor = colors[row % colors.length];
       const cols = [];
       for (let col = 0; col < horizontalRepeats; col++) {
-        const colorIndex = (row + col) % colors.length;
-        const color = colors[colorIndex];
-        const width = stripeWidths[col % stripeWidths.length];
         cols.push(
           <span
             key={`${row}-${col}`}
             style={{
               display: "inline-block",
-              width: `${width}rem`,
               marginRight: "0.1rem",
-              color,
-              textShadow: `0 0 1px ${color}88, 1px 1px 2px ${color}55`,
+              color: rowColor,
+              opacity: 0.85,
+              textShadow: `0 0 2px ${rowColor}55`,
             }}
           >
             {time}
@@ -47,7 +46,13 @@ const SkewFlatClock = ({
         );
       }
       rows.push(
-        <div key={row} style={{ whiteSpace: "nowrap", lineHeight: "5.2" }}>
+        <div
+          key={row}
+          style={{
+            whiteSpace: "nowrap",
+            lineHeight: "1.05",
+          }}
+        >
           {cols}
         </div>
       );
@@ -56,54 +61,56 @@ const SkewFlatClock = ({
   };
 
   const baseGridStyle = {
-    fontSize: "1.8rem",
-    fontWeight: "bold",
+    fontSize: "2.6rem",
     fontFamily: "'Times New Roman', serif",
     position: "absolute",
     top: "50%",
     left: "50%",
     transformOrigin: "center",
     translate: "-50% -50%",
-    opacity: 0.9,
   };
 
-  const grids = [
-    { fontSize: "1.8rem", transform: "rotate(-15deg) skewX(-40deg) scaleY(0.25) translate(-2vw, -1vh)" },
-    { fontSize: "1.8rem", transform: "rotate(-15deg) skewX(-40deg) scaleY(0.25) translate(2vw, 1vh)" },
-    { fontSize: "3rem", opacity: 0.7, transform: "rotate(-15deg) skewX(-40deg) scaleY(0.25) translate(-2vw, -2vh)" },
-    { fontSize: "3rem", opacity: 0.7, transform: "rotate(-15deg) skewX(-40deg) scaleY(0.25) translate(2vw, -2vh)" },
-  ];
-
-  const perpendicularGrids = [
-    { transform: "rotate(-15deg) skewX(-40deg) scaleY(0.25) translate(-2vw, -2vh)" },
-    { transform: "rotate(-15deg) skewX(-40deg) scaleY(0.25) translate(2vw, -2vh)" },
-    { transform: "rotate(-15deg) skewX(-40deg) scaleY(0.25) translate(0vw, -2vh)" },
-  ];
+  const horizontalGrids = [{ transform: "rotate(0deg)" }];
+  const verticalGrids = [{ transform: "rotate(90deg)" }];
 
   return (
     <div
-      role="timer"
-      aria-live="polite"
       style={{
         height: "100dvh",
         width: "100vw",
+        overflow: "hidden",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#1A3C34",
-        overflow: "hidden",
-        position: "relative",
+        background: "#000",
       }}
     >
-      {grids.map((style, index) => (
-        <div key={index} style={{ ...baseGridStyle, ...style }}>
-          {createTartanGrid()}
-        </div>
-      ))}
-      <div style={{ transform: "rotate(90deg)", position: "absolute", top: 0, left: 0, fontSize: "3rem", opacity: 0.7 }}>
-        {perpendicularGrids.map((style, index) => (
-          <div key={index} style={{ ...baseGridStyle, ...style }}>
-            {createTartanGrid()}
+      {/* Rotating wrapper (everything tilts 17°) */}
+      <div
+        role="timer"
+        aria-live="polite"
+        style={{
+          height: "150dvh",
+          width: "150vw",
+          backgroundImage: `url(${backgroundImageUrl})`,
+          backgroundRepeat: "repeat",     // tile background
+          backgroundSize: "auto",         // natural size, or set e.g. "200px"
+          transform: "rotate(-17deg)",    // tilt counterclockwise
+          transformOrigin: "center",
+          position: "relative",
+        }}
+      >
+        {/* Horizontal tartan threads */}
+        {horizontalGrids.map((style, index) => (
+          <div key={`h-${index}`} style={{ ...baseGridStyle, ...style }}>
+            {createTartanGrid(horizontalColors)}
+          </div>
+        ))}
+
+        {/* Vertical tartan threads */}
+        {verticalGrids.map((style, index) => (
+          <div key={`v-${index}`} style={{ ...baseGridStyle, ...style }}>
+            {createTartanGrid(verticalColors)}
           </div>
         ))}
       </div>
