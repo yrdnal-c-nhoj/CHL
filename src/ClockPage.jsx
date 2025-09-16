@@ -29,7 +29,8 @@ const ClockPage = () => {
   const [pageError, setPageError] = useState(null);
   const [footerVisible, setFooterVisible] = useState(true);
   const [headerVisible, setHeaderVisible] = useState(true);
-  const [isContentReady, setIsContentReady] = useState(false); // New state for content readiness
+  const [isContentReady, setIsContentReady] = useState(false);
+  const [showContent, setShowContent] = useState(false); // New state for controlling content visibility
 
   // -------------------------------
   // Load Clock component dynamically
@@ -73,7 +74,7 @@ const ClockPage = () => {
       clockModules[key]()
         .then((mod) => {
           setClockComponent(() => mod.default);
-          setIsContentReady(true); // Set content ready when ClockComponent is loaded
+          setIsContentReady(true);
         })
         .catch((err) => {
           setPageError(`Failed to load clock for ${item.date}: ${err.message}`);
@@ -84,6 +85,19 @@ const ClockPage = () => {
       setIsContentReady(false);
     }
   }, [date, items, loading, navigate]);
+
+  // -------------------------------
+  // Show content with fade-in after everything is ready
+  // -------------------------------
+  useEffect(() => {
+    if (isContentReady && !loading && !error && !pageError) {
+      // Small delay to ensure smooth transition
+      const timer = setTimeout(() => {
+        setShowContent(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isContentReady, loading, error, pageError]);
 
   // -------------------------------
   // Auto-hide footer after inactivity
@@ -110,10 +124,12 @@ const ClockPage = () => {
   // Auto-hide header shortly after load
   // -------------------------------
   useEffect(() => {
-    setHeaderVisible(true);
-    const headerTimer = setTimeout(() => setHeaderVisible(false), 1300);
-    return () => clearTimeout(headerTimer);
-  }, [date]);
+    if (showContent) {
+      setHeaderVisible(true);
+      const headerTimer = setTimeout(() => setHeaderVisible(false), 1300);
+      return () => clearTimeout(headerTimer);
+    }
+  }, [showContent]);
 
   // -------------------------------
   // Prevent scrolling
@@ -139,35 +155,68 @@ const ClockPage = () => {
     currentIndex >= 0 && currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
 
   // -------------------------------
-  // Handle loading & errors
+  // Loading overlay component
   // -------------------------------
-  if (loading || !isContentReady) {
-    return <div className={styles.loading}>Loading data...</div>;
-  }
+  const LoadingOverlay = () => (
+    <div 
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: '#000',
+        zIndex: 9999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: showContent ? 0 : 1,
+        visibility: showContent ? 'hidden' : 'visible',
+        transition: 'opacity 0.5s ease-out, visibility 0.5s ease-out'
+      }}
+    >
+      {/* Optional: Add a subtle loading indicator */}
+      <div style={{
+        width: '2px',
+        height: '20px',
+        backgroundColor: '#333',
+        animation: 'pulse 1.5s ease-in-out infinite'
+      }} />
+    </div>
+  );
 
+  // -------------------------------
+  // Handle errors
+  // -------------------------------
   if (error || pageError) {
     return (
-      <div className={styles.container}>
-        <Header visible={headerVisible} />
-        <div className={styles.content}>
-          <div className={styles.sheet}>
-            <div className={styles.error}>{error || pageError}</div>
+      <>
+        <LoadingOverlay />
+        <div className={styles.container} style={{ opacity: showContent ? 1 : 0 }}>
+          <Header visible={headerVisible} />
+          <div className={styles.content}>
+            <div className={styles.sheet}>
+              <div className={styles.error}>{error || pageError}</div>
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
-  if (!currentItem) {
+  if (!currentItem && !loading) {
     return (
-      <div className={styles.container}>
-        <Header visible={headerVisible} />
-        <div className={styles.content}>
-          <div className={styles.sheet}>
-            <div className={styles.error}>No valid clock found.</div>
+      <>
+        <LoadingOverlay />
+        <div className={styles.container} style={{ opacity: showContent ? 1 : 0 }}>
+          <Header visible={headerVisible} />
+          <div className={styles.content}>
+            <div className={styles.sheet}>
+              <div className={styles.error}>No valid clock found.</div>
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -175,23 +224,40 @@ const ClockPage = () => {
   // Render
   // -------------------------------
   return (
-    <div className={styles.container}>
-      <Header visible={headerVisible} />
-      <div className={styles.content}>
-        {ClockComponent ? (
-          <ClockComponent />
-        ) : (
-          <div className={styles.loading}>Loading clock...</div>
-        )}
+    <>
+      <LoadingOverlay />
+      <div 
+        className={styles.container} 
+        style={{ 
+          opacity: showContent ? 1 : 0,
+          transition: 'opacity 0.5s ease-in'
+        }}
+      >
+        <Header visible={headerVisible} />
+        <div className={styles.content}>
+          {ClockComponent ? (
+            <ClockComponent />
+          ) : (
+            <div className={styles.loading}>Loading clock...</div>
+          )}
+        </div>
+        <ClockPageNav
+          prevItem={prevItem}
+          nextItem={nextItem}
+          currentItem={currentItem}
+          formatTitle={formatTitle}
+          formatDate={formatDate}
+        />
       </div>
-      <ClockPageNav
-        prevItem={prevItem}
-        nextItem={nextItem}
-        currentItem={currentItem}
-        formatTitle={formatTitle}
-        formatDate={formatDate}
-      />
-    </div>
+      
+      {/* Add CSS for pulse animation */}
+      <style jsx>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 1; }
+        }
+      `}</style>
+    </>
   );
 };
 
