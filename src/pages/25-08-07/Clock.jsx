@@ -67,11 +67,10 @@ const AnalogClock = () => {
       ctx.save();
       ctx.translate(centerX, centerY);
 
-      // --- Numbers with 3D bevel + inner gradient + tilt + flicker ---
+      // --- Numbers with 3D bevel + inner gradient + tilt ---
       ctx.font = `${radius * 0.7}px MyClockFont`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      const flicker = Math.sin(Date.now() / 150) * 0.15 + 0.85;
 
       for (let num = 1; num <= 12; num++) {
         const angle = (num * Math.PI) / 6;
@@ -98,9 +97,9 @@ const AnalogClock = () => {
 
         // Main front face with inner gradient
         const gradient = ctx.createLinearGradient(0, -radius*0.35, 0, radius*0.35);
-        gradient.addColorStop(0, `rgba(${255*flicker}, ${249*flicker}, ${230*flicker}, 1)`);
-        gradient.addColorStop(0.5, `rgba(${220*flicker}, ${180*flicker}, ${120*flicker}, 1)`);
-        gradient.addColorStop(1, `rgba(${150*flicker}, ${100*flicker}, ${50*flicker}, 1)`);
+        gradient.addColorStop(0, `rgba(255, 249, 230, 1)`);
+        gradient.addColorStop(0.5, `rgba(220, 180, 120, 1)`);
+        gradient.addColorStop(1, `rgba(150, 100, 50, 1)`);
 
         ctx.shadowColor = `rgba(0,0,0,0.2)`;
         ctx.shadowBlur = 12;
@@ -110,7 +109,7 @@ const AnalogClock = () => {
         ctx.restore();
       }
 
-      // --- Hands with wobble + flicker ---
+      // --- Hands ---
       const hour = now.getHours() % 12;
       const minute = now.getMinutes();
       const second = now.getSeconds();
@@ -123,8 +122,6 @@ const AnalogClock = () => {
       const minuteLength = radius * 0.7;
       const secondLength = radius * 0.9;
 
-      const wobble = Math.sin(Date.now() / 300) * (Math.PI / 180) * 0.5;
-
       const drawHandImage = (img, scale, pivotYNormalized) => {
         const imgAspect = img.width / img.height || 1;
         const targetHeight = scale;
@@ -135,31 +132,31 @@ const AnalogClock = () => {
 
       // HOUR hand
       ctx.save();
-      ctx.rotate(hourAngle + wobble);
+      ctx.rotate(hourAngle);
       ctx.shadowColor = '#2c1c0f';
-      ctx.shadowBlur = 12 * flicker;
+      ctx.shadowBlur = 12;
       ctx.globalCompositeOperation = 'lighter';
-      ctx.filter = `brightness(${0.8 * flicker}) contrast(2) sepia(0.6)`;
+      ctx.filter = `brightness(0.8) contrast(2) sepia(0.6)`;
       drawHandImage(hourHandImage, hourLength, pivots.hour);
       ctx.restore();
 
       // MINUTE hand
       ctx.save();
-      ctx.rotate(minuteAngle - wobble * 1.5);
+      ctx.rotate(minuteAngle);
       ctx.shadowColor = '#0B0A07FF';
-      ctx.shadowBlur = 16 * flicker;
+      ctx.shadowBlur = 16;
       ctx.globalCompositeOperation = 'lighter';
-      ctx.filter = `brightness(${1.1 * flicker}) contrast(1.2) sepia(0.4)`;
+      ctx.filter = `brightness(1.1) contrast(1.2) sepia(0.4)`;
       drawHandImage(minuteHandImage, minuteLength, pivots.minute);
       ctx.restore();
 
       // SECOND hand
       ctx.save();
-      ctx.rotate(secondAngle + wobble * 2);
+      ctx.rotate(secondAngle);
       ctx.shadowColor = '#ff6347';
-      ctx.shadowBlur = 20 * flicker;
+      ctx.shadowBlur = 20;
       ctx.globalCompositeOperation = 'lighter';
-      ctx.filter = `brightness(${1.4 * flicker}) contrast(1.5) sepia(0.5)`;
+      ctx.filter = `brightness(1.4) contrast(1.5) sepia(0.5)`;
       drawHandImage(secondHandImage, secondLength, pivots.second);
       ctx.restore();
 
