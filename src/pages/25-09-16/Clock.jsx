@@ -31,9 +31,16 @@ const Clock = () => {
       0 0 25px #00ffff,
       0 0 30px #0000ff,
       0 0 35px #ff00ff,
-      0 0 40px #ffffff,
-      0 0 50px #ffffff,
-      0 0 75px #ffffff
+      0 0 45px #ff0000,
+      0 0 50px #ff9900,
+      0 0 55px #ffff00,
+      0 0 60px #00ff00,
+      0 0 65px #00ffff,
+      0 0 70px #0000ff,
+      0 0 75px #ff00ff,
+      0 0 80px #ffffff,
+      0 0 90px #ffffff,
+      0 0 99px #ffffff
     `
   };
 
