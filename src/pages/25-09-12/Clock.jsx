@@ -10,8 +10,8 @@ const StarsParallax = () => {
   ];
 
   const BACKGROUND_GRADIENT = [
-    { stop: 0, color: "#383803FF" },
-    { stop: 1, color: "#15023CFF" },
+    { stop: 0, color: "#4D9307FF" },
+    { stop: 1, color: "#0E0D0DFF" },
   ];
 
   useEffect(() => {
@@ -35,33 +35,64 @@ const StarsParallax = () => {
 
     const stars = STAR_LAYERS.map((layer) => generateStars(layer.count, layer.sizeMin, layer.sizeMax, layer.speed));
 
-    const drawStars = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const gradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
-      BACKGROUND_GRADIENT.forEach(({ stop, color }) => gradient.addColorStop(stop, color));
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      stars.forEach((layer, index) => {
-        ctx.fillStyle = STAR_LAYERS[index].color;
-        layer.forEach((star) => {
-          ctx.globalAlpha = STAR_LAYERS[index].opacity;
-          ctx.beginPath();
-          ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-          ctx.fill();
 
-          star.y -= star.speed;
-          if (star.y < 0) {
-            star.y = canvas.height;
-            star.x = Math.random() * canvas.width;
-          }
-        });
-        ctx.globalAlpha = 1.0;
-      });
 
-      requestAnimationFrame(drawStars);
-    };
+const drawStars = () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Create a base vertical gradient (top dark blue to bottom green)
+  const verticalGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  verticalGradient.addColorStop(0, "#0E0133FF"); // dark blue top
+  verticalGradient.addColorStop(1, "#072702FF"); // green bottom
+  ctx.fillStyle = verticalGradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Add a radial gradient for central redish glow
+  const radialGradient = ctx.createRadialGradient(
+    canvas.width / 2, // center x
+    canvas.height / 2, // center y
+    0,
+    canvas.width / 2,
+    canvas.height / 2,
+    Math.min(canvas.width, canvas.height) / 2
+  );
+  radialGradient.addColorStop(0, "rgba(2, 2, 2)"); // reddish center
+  radialGradient.addColorStop(0.5, "rgba(0,0,0,0)"); // fade out
+  ctx.fillStyle = radialGradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Add side purple shading (left and right)
+  const sideGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+  sideGradient.addColorStop(0, "rgba(128,0,128,0.25)"); // left purple
+  sideGradient.addColorStop(0.5, "rgba(0,0,0,0)"); // fade to transparent
+  sideGradient.addColorStop(1, "rgba(128,0,128,0.25)"); // right purple
+  ctx.fillStyle = sideGradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Draw the stars
+  stars.forEach((layer, index) => {
+    ctx.fillStyle = STAR_LAYERS[index].color;
+    layer.forEach((star) => {
+      ctx.globalAlpha = STAR_LAYERS[index].opacity;
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+      ctx.fill();
+
+      star.y -= star.speed;
+      if (star.y < 0) {
+        star.y = canvas.height;
+        star.x = Math.random() * canvas.width;
+      }
+    });
+    ctx.globalAlpha = 1.0;
+  });
+
+  requestAnimationFrame(drawStars);
+};
+
+
 
     drawStars();
 
@@ -95,18 +126,18 @@ const Clock = () => {
     EMOJI_COLOR: "#C0C0C0", // Silver (maintained for consistency, though canvas emojis may ignore)
     CENTER_DOT_COLOR: "white",
     SHADOW_COLOR: "rgba(220, 215, 255)",
-    SHADOW_BLUR: 40,
-    HAND_SHADOW_COLOR: "rgba(200, 220, 255, 0.8)",
-    HAND_SHADOW_BLUR: 12,
+    SHADOW_BLUR: 30,
+    HAND_SHADOW_COLOR: "rgba(200, 220, 255)",
+    HAND_SHADOW_BLUR: 22,
     SHEEN_GRADIENT: [
       { stop: 0, color: "rgba(255,255,255,0.1)" },
       { stop: 0.4, color: "rgba(200,200,200,0.05)" },
       { stop: 1, color: "rgba(255,255,255,0)" },
     ],
     HAND_GRADIENT: [
-      { stop: 0, color: "#CFCCCC80" },
-      { stop: 0.5, color: "#79787880" },
-      { stop: 1, color: "#B2B0B080" },
+      { stop: 0, color: "#0E0E0E80" },
+      { stop: 0.5, color: "#9F9FA980" },
+      { stop: 1, color: "#F4F3F380" },
     ],
     HAND_CONFIG: [
       { type: "hour", max: 12, length: 0.3, width: 20 },
