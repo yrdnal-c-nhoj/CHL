@@ -9,6 +9,15 @@ if (!fs.existsSync(screenshotsDir)) fs.mkdirSync(screenshotsDir, { recursive: tr
 const paths = ['today'];
 const baseURL = 'https://www.cubistheart.com/';
 
+// Format date as YYYY-MM-DD
+function getDateString() {
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+}
+
 async function main() {
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
@@ -26,7 +35,8 @@ async function main() {
       );
       await page.setViewport({ width: squareSize, height: squareSize });
 
-      const screenshotPath = path.join(screenshotsDir, `${p}.png`);
+      const dateStr = getDateString();
+      const screenshotPath = path.join(screenshotsDir, `${p}-${dateStr}.png`);
       await page.screenshot({ path: screenshotPath, fullPage: false });
 
       console.log(`Saved ${screenshotPath}`);
