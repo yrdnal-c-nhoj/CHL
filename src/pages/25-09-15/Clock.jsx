@@ -12,22 +12,19 @@ const SkewFlatClock = ({
   const [hue, setHue] = useState(0);
 
   useEffect(() => {
-    // Update the time every minute
     const updateTime = () => {
       const now = new Date();
       let hours = now.getHours();
       const minutes = now.getMinutes().toString().padStart(2, "0");
-      const ampm = hours >= 12 ? "PM" : "AM";
-      hours = hours % 12 || 12;
-      setTime(`${hours}:${minutes} ${ampm}`);
+      hours = hours % 12 || 12; // 12-hour format
+      setTime(`${hours}:${minutes}_`);
     };
 
     updateTime();
     const timeInterval = setInterval(updateTime, 60000);
 
-    // Animate hue rotation
     const hueInterval = setInterval(() => {
-      setHue((prev) => (prev + 1) % 360); // increase hue by 1 degree every 50ms
+      setHue((prev) => (prev + 1) % 360);
     }, 200);
 
     return () => {
@@ -49,8 +46,7 @@ const SkewFlatClock = ({
               display: "inline-block",
               marginRight: "0.1rem",
               color: rowColor,
-              opacity: 0.85,
-              textShadow: `0 0 2px ${rowColor}55`,
+              opacity: 0.95,
               fontFamily: "MyCustomFont",
             }}
           >
@@ -86,10 +82,9 @@ const SkewFlatClock = ({
         alignItems: "center",
         justifyContent: "center",
         background: "#F3EFEFFF",
-        filter: `hue-rotate(${hue}deg)`, // dynamic hue rotation
+        filter: `hue-rotate(${hue}deg)`,
       }}
     >
-      {/* Scoped @font-face */}
       <style>
         {`
           @font-face {
@@ -104,11 +99,11 @@ const SkewFlatClock = ({
         role="timer"
         aria-live="polite"
         style={{
-          height: "150dvh",
-          width: "150vw",
+          height: "200dvh",        // enlarged to cover rotated viewport
+          width: "200vw",
           backgroundImage: `url(${backgroundImageUrl})`,
           backgroundRepeat: "repeat",
-          backgroundSize: "auto",
+          backgroundSize: "15rem 15rem", // tile size
           transform: "rotate(-17deg)",
           transformOrigin: "center",
           position: "relative",
