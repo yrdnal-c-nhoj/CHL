@@ -46,7 +46,7 @@ const SkewFlatClock = ({
               display: "inline-block",
               marginRight: "0.1rem",
               color: rowColor,
-              opacity: 0.95,
+              opacity: 0.65,
               fontFamily: "MyCustomFont",
             }}
           >
