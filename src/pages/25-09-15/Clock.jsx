@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import backgroundImageUrl from "./plaid.jpg";
-import myFontUrl from "./plaid.ttf"; // your single font
+import myFontUrl from "./plaid.ttf";
 
 const SkewFlatClock = ({
   horizontalColors = ["#BB100AFF", "#FFFFFF", "#026033FF"],
@@ -9,8 +9,10 @@ const SkewFlatClock = ({
   horizontalRepeats = 30,
 }) => {
   const [time, setTime] = useState("");
+  const [hue, setHue] = useState(0);
 
   useEffect(() => {
+    // Update the time every minute
     const updateTime = () => {
       const now = new Date();
       let hours = now.getHours();
@@ -21,8 +23,17 @@ const SkewFlatClock = ({
     };
 
     updateTime();
-    const interval = setInterval(updateTime, 60000);
-    return () => clearInterval(interval);
+    const timeInterval = setInterval(updateTime, 60000);
+
+    // Animate hue rotation
+    const hueInterval = setInterval(() => {
+      setHue((prev) => (prev + 1) % 360); // increase hue by 1 degree every 50ms
+    }, 200);
+
+    return () => {
+      clearInterval(timeInterval);
+      clearInterval(hueInterval);
+    };
   }, []);
 
   const createTartanGrid = (colors) => {
@@ -40,7 +51,7 @@ const SkewFlatClock = ({
               color: rowColor,
               opacity: 0.85,
               textShadow: `0 0 2px ${rowColor}55`,
-              fontFamily: "MyCustomFont", // use your custom font
+              fontFamily: "MyCustomFont",
             }}
           >
             {time}
@@ -75,6 +86,7 @@ const SkewFlatClock = ({
         alignItems: "center",
         justifyContent: "center",
         background: "#000",
+        filter: `hue-rotate(${hue}deg)`, // dynamic hue rotation
       }}
     >
       {/* Scoped @font-face */}
@@ -88,20 +100,20 @@ const SkewFlatClock = ({
         `}
       </style>
 
-      <div
-        role="timer"
-        aria-live="polite"
-        style={{
-          height: "150dvh",
-          width: "150vw",
-          backgroundImage: `url(${backgroundImageUrl})`,
-          backgroundRepeat: "repeat",
-          backgroundSize: "auto",
-          transform: "rotate(-17deg)",
-          transformOrigin: "center",
-          position: "relative",
-        }}
-      >
+    <div
+  style={{
+    height: "150dvh",
+    width: "150vw",
+    backgroundImage: `url(${backgroundImageUrl})`,
+    backgroundRepeat: "repeat",        // tile the image
+    backgroundSize: "auto",            // keeps original image size
+    backgroundPosition: "center",      // optional centering
+    transform: "rotate(-17deg)",       // rotate everything together
+    transformOrigin: "center",
+    position: "relative",
+  }}
+>
+
         {/* Horizontal threads */}
         <div style={{ ...baseGridStyle, transform: "rotate(0deg)" }}>
           {createTartanGrid(horizontalColors)}
