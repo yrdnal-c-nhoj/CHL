@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import myFontUrl from './rope.ttf'; // Font in the same folder
 import backgroundImageUrl from './wes.webp'; // Animated GIF background
-import hourHandImageUrl from './gunn.gif'; // Hour hand image in the same folder
-import minuteHandImageUrl from './gun.gif'; // Minute hand image in the same folder
-import secondHandImageUrl from './ggg.gif'; // Second hand image in the same folder
+import hourHandImageUrl from './gunn.gif'; // Hour hand image
+import minuteHandImageUrl from './gun.gif'; // Minute hand image
+import secondHandImageUrl from './ggg.gif'; // Second hand image
 
 const AnalogClock = () => {
   const canvasRef = useRef(null);
@@ -29,24 +29,17 @@ const AnalogClock = () => {
       new Promise((resolve) => { secondHandImage.onload = resolve; }),
     ]);
 
-    // pivotY: 0 = pivot at top of image, 0.5 = center, 1 = bottom
-    const pivots = {
-      hour: 1,
-      minute: 1,
-      second: 1,
-    };
+    // pivotY: 0 = top of image, 1 = bottom
+    const pivots = { hour: 1, minute: 1, second: 1 };
 
     let dpr = window.devicePixelRatio || 1;
 
     const resizeCanvas = () => {
       dpr = window.devicePixelRatio || 1;
-      // set backing store size
       canvas.width = Math.round(window.innerWidth * dpr);
       canvas.height = Math.round(window.innerHeight * dpr);
-      // set CSS size
       canvas.style.width = `${window.innerWidth}px`;
       canvas.style.height = `${window.innerHeight}px`;
-      // normalize drawing so 1 unit = 1 CSS pixel
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       drawClock();
     };
@@ -54,97 +47,118 @@ const AnalogClock = () => {
     // helper to draw a hand image with a pivot inside the image
     const drawHandImage = (img, scale, pivotYNormalized) => {
       const imgAspect = img.width / img.height || 1;
-      let targetHeight = scale; // desired pixel height (CSS px)
+      let targetHeight = scale;
       let targetWidth = targetHeight * imgAspect;
-
       const pivotY = pivotYNormalized * targetHeight;
-
-      // draw so pivot point sits at (0,0)
       ctx.drawImage(img, -targetWidth / 2, -pivotY, targetWidth, targetHeight);
     };
 
-    const drawClock = () => {
-      if (!canvas) return;
-      const now = new Date();
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      const radius = Math.min(width, height) / 3.5;
-      const centerX = width / 2;
-      const centerY = height / 2;
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.save();
 
-      // Move origin to center of clock
-      ctx.translate(centerX, centerY);
 
-      ctx.font = `${radius * 0.7}px MyClockFont`;
-      ctx.fillStyle = '#DDD3B1FF'; // base rope color
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
 
-      const shadowLayers = [
 
-        { offsetX: 1, offsetY: 1, color: '#C59D6DFF', blur: 0 },
-        { offsetX: 2, offsetY: 2, color: '#DDB254FF', blur: 0 },
+const drawClock = () => {
+  if (!canvas) return;
+  const now = new Date();
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const radius = Math.min(width, height) / 3.5;
+  const centerX = width / 2;
+  const centerY = height / 2;
 
-        { offsetX: 3, offsetY: 3, color: '#272523FF', blur: 0 },
-           { offsetX: 4, offsetY: 4, color: '#150F08FF', blur: 0 },
-   ];
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      for (let num = 1; num <= 12; num++) {
-        const angle = (num * Math.PI) / 6;
-        const x = Math.cos(angle - Math.PI / 2) * (radius * 0.85);
-        const y = Math.sin(angle - Math.PI / 2) * (radius * 0.85);
+  // --- Vignette overlay ---
+  const vignette = ctx.createRadialGradient(
+    centerX, centerY, radius * 1.1, // start bright center
+    centerX, centerY, Math.max(width, height) * 0.7 // fade into dark at edges
+  );
+  vignette.addColorStop(0, 'rgba(0,0,0,0)');
+  vignette.addColorStop(1, 'rgba(0,0,0,0.75)');
+  ctx.fillStyle = vignette;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Draw shadows from furthest to closest
-        shadowLayers.forEach(({ offsetX, offsetY, color, blur }) => {
-          ctx.shadowColor = color;
-          ctx.shadowOffsetX = offsetX;
-          ctx.shadowOffsetY = offsetY;
-          ctx.shadowBlur = blur;
-          ctx.fillText(num.toString(), x, y);
-        });
+  ctx.save();
+  ctx.translate(centerX, centerY);
 
-        // Draw main text on top, no shadow
-        ctx.shadowColor = '#CBC8C8FF';
-        ctx.fillStyle = '#261407FF';
-        ctx.fillText(num.toString(), x, y);
-      }
+  // --- Numbers ---
+  ctx.font = `${radius * 0.7}px MyClockFont`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const shadowLayers = [
+    { offsetX: 1, offsetY: 1, color: '#C59D6DFF', blur: 0 },
+    { offsetX: 2, offsetY: 2, color: '#DDB254FF', blur: 0 },
+    { offsetX: 3, offsetY: 3, color: '#272523FF', blur: 0 },
+    { offsetX: 4, offsetY: 4, color: '#150F08FF', blur: 0 },
+  ];
 
-      const hour = now.getHours() % 12;
-      const minute = now.getMinutes();
-      const second = now.getSeconds();
+  for (let num = 1; num <= 12; num++) {
+    const angle = (num * Math.PI) / 6;
+    const x = Math.cos(angle - Math.PI / 2) * (radius * 0.85);
+    const y = Math.sin(angle - Math.PI / 2) * (radius * 0.85);
 
-      // HOUR hand with filter
-      ctx.save();
-      ctx.filter = 'brightness(0.7) contrast(1.9)';
-      const hourAngle = ((Math.PI / 6) * hour) + ((Math.PI / 360) * minute);
-      ctx.rotate(hourAngle);
-      const hourLength = radius * 0.5;
-      drawHandImage(hourHandImage, hourLength, pivots.hour);
-      ctx.restore();
+    shadowLayers.forEach(({ offsetX, offsetY, color, blur }) => {
+      ctx.shadowColor = color;
+      ctx.shadowOffsetX = offsetX;
+      ctx.shadowOffsetY = offsetY;
+      ctx.shadowBlur = blur;
+      ctx.fillStyle = '#DDD3B1FF';
+      ctx.fillText(num.toString(), x, y);
+    });
 
-      // MINUTE hand with filter
-      ctx.save();
-      ctx.filter = 'brightness(1.0) contrast(0.9)';
-      const minuteAngle = ((Math.PI / 30) * minute) + ((Math.PI / 1800) * second);
-      ctx.rotate(minuteAngle);
-      const minuteLength = radius * 0.7;
-      drawHandImage(minuteHandImage, minuteLength, pivots.minute);
-      ctx.restore();
+    ctx.shadowColor = '#CBC8C8FF';
+    ctx.fillStyle = '#261407FF';
+    ctx.fillText(num.toString(), x, y);
+  }
 
-      // SECOND hand with filter
-      ctx.save();
-      ctx.filter = 'brightness(1.3) contrast(1.3)';
-      const secondAngle = (Math.PI / 30) * second;
-      ctx.rotate(secondAngle);
-      const secondLength = radius * 0.9;
-      drawHandImage(secondHandImage, secondLength, pivots.second);
-      ctx.restore();
+  // --- Hands ---
+  const hour = now.getHours() % 12;
+  const minute = now.getMinutes();
+  const second = now.getSeconds();
 
-      ctx.restore();
-    };
+  const hourAngle = (Math.PI / 6) * hour + (Math.PI / 360) * minute;
+  const minuteAngle = (Math.PI / 30) * minute + (Math.PI / 1800) * second;
+  const secondAngle = (Math.PI / 30) * second;
+
+  const hourLength = radius * 0.5;
+  const minuteLength = radius * 0.7;
+  const secondLength = radius * 0.9;
+
+  // HOUR hand – aged iron
+  ctx.save();
+  ctx.rotate(hourAngle);
+  ctx.shadowColor = '#2c1c0f';
+  ctx.shadowBlur = 12;
+  ctx.globalCompositeOperation = 'lighter';
+  ctx.filter = 'brightness(0.8) contrast(2) sepia(0.6)';
+  drawHandImage(hourHandImage, hourLength, pivots.hour);
+  ctx.restore();
+
+  // MINUTE hand – brass glow
+  ctx.save();
+  ctx.rotate(minuteAngle);
+  ctx.shadowColor = '#d4a253';
+  ctx.shadowBlur = 16;
+  ctx.globalCompositeOperation = 'lighter';
+  ctx.filter = 'brightness(1.1) contrast(1.2) sepia(0.4)';
+  drawHandImage(minuteHandImage, minuteLength, pivots.minute);
+  ctx.restore();
+
+  // SECOND hand – ember copper
+  ctx.save();
+  ctx.rotate(secondAngle);
+  ctx.shadowColor = '#ff6347';
+  ctx.shadowBlur = 20;
+  ctx.globalCompositeOperation = 'lighter';
+  ctx.filter = 'brightness(1.4) contrast(1.5) sepia(0.5)';
+  drawHandImage(secondHandImage, secondLength, pivots.second);
+  ctx.restore();
+
+  ctx.restore();
+};
+
+
 
     loadResources.then(([loadedFont]) => {
       document.fonts.add(loadedFont);
