@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import backgroundImageUrl from "./plaid.jpg"; // put your texture here
+import backgroundImageUrl from "./plaid.jpg";
+import myFontUrl from "./plaid.ttf"; // your single font
 
 const SkewFlatClock = ({
-  horizontalColors = ["#0E1A40", "#004B87", "#1A3C34"], // weft
-  verticalColors = ["#F1C40F", "#FFFFFF", "#E6DBDBFF"], // warp
+  horizontalColors = ["#BB100AFF", "#FFFFFF", "#026033FF"],
+  verticalColors = ["#BB100AFF", "#FFFFFF", "#026033FF"],
   verticalRepeats = 40,
   horizontalRepeats = 30,
 }) => {
@@ -39,6 +40,7 @@ const SkewFlatClock = ({
               color: rowColor,
               opacity: 0.85,
               textShadow: `0 0 2px ${rowColor}55`,
+              fontFamily: "MyCustomFont", // use your custom font
             }}
           >
             {time}
@@ -46,13 +48,7 @@ const SkewFlatClock = ({
         );
       }
       rows.push(
-        <div
-          key={row}
-          style={{
-            whiteSpace: "nowrap",
-            lineHeight: "1.05",
-          }}
-        >
+        <div key={row} style={{ whiteSpace: "nowrap", lineHeight: "1.05" }}>
           {cols}
         </div>
       );
@@ -62,16 +58,12 @@ const SkewFlatClock = ({
 
   const baseGridStyle = {
     fontSize: "2.6rem",
-    fontFamily: "'Times New Roman', serif",
     position: "absolute",
     top: "50%",
     left: "50%",
     transformOrigin: "center",
     translate: "-50% -50%",
   };
-
-  const horizontalGrids = [{ transform: "rotate(0deg)" }];
-  const verticalGrids = [{ transform: "rotate(90deg)" }];
 
   return (
     <div
@@ -85,7 +77,17 @@ const SkewFlatClock = ({
         background: "#000",
       }}
     >
-      {/* Rotating wrapper (everything tilts 17°) */}
+      {/* Scoped @font-face */}
+      <style>
+        {`
+          @font-face {
+            font-family: 'MyCustomFont';
+            src: url(${myFontUrl}) format('truetype');
+            font-display: swap;
+          }
+        `}
+      </style>
+
       <div
         role="timer"
         aria-live="polite"
@@ -93,26 +95,22 @@ const SkewFlatClock = ({
           height: "150dvh",
           width: "150vw",
           backgroundImage: `url(${backgroundImageUrl})`,
-          backgroundRepeat: "repeat",     // tile background
-          backgroundSize: "auto",         // natural size, or set e.g. "200px"
-          transform: "rotate(-17deg)",    // tilt counterclockwise
+          backgroundRepeat: "repeat",
+          backgroundSize: "auto",
+          transform: "rotate(-17deg)",
           transformOrigin: "center",
           position: "relative",
         }}
       >
-        {/* Horizontal tartan threads */}
-        {horizontalGrids.map((style, index) => (
-          <div key={`h-${index}`} style={{ ...baseGridStyle, ...style }}>
-            {createTartanGrid(horizontalColors)}
-          </div>
-        ))}
+        {/* Horizontal threads */}
+        <div style={{ ...baseGridStyle, transform: "rotate(0deg)" }}>
+          {createTartanGrid(horizontalColors)}
+        </div>
 
-        {/* Vertical tartan threads */}
-        {verticalGrids.map((style, index) => (
-          <div key={`v-${index}`} style={{ ...baseGridStyle, ...style }}>
-            {createTartanGrid(verticalColors)}
-          </div>
-        ))}
+        {/* Vertical threads */}
+        <div style={{ ...baseGridStyle, transform: "rotate(90deg)" }}>
+          {createTartanGrid(verticalColors)}
+        </div>
       </div>
     </div>
   );
