@@ -85,7 +85,7 @@ const SkewFlatClock = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#000",
+        background: "#F3EFEFFF",
         filter: `hue-rotate(${hue}deg)`, // dynamic hue rotation
       }}
     >
@@ -100,20 +100,20 @@ const SkewFlatClock = ({
         `}
       </style>
 
-    <div
-  style={{
-    height: "150dvh",
-    width: "150vw",
-    backgroundImage: `url(${backgroundImageUrl})`,
-    backgroundRepeat: "repeat",        // tile the image
-    backgroundSize: "auto",            // keeps original image size
-    backgroundPosition: "center",      // optional centering
-    transform: "rotate(-17deg)",       // rotate everything together
-    transformOrigin: "center",
-    position: "relative",
-  }}
->
-
+      <div
+        role="timer"
+        aria-live="polite"
+        style={{
+          height: "150dvh",
+          width: "150vw",
+          backgroundImage: `url(${backgroundImageUrl})`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "auto",
+          transform: "rotate(-17deg)",
+          transformOrigin: "center",
+          position: "relative",
+        }}
+      >
         {/* Horizontal threads */}
         <div style={{ ...baseGridStyle, transform: "rotate(0deg)" }}>
           {createTartanGrid(horizontalColors)}
