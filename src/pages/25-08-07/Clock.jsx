@@ -42,16 +42,9 @@ const AnalogClock = () => {
       drawClock();
     };
 
-    const drawHandImage = (img, scale, pivotYNormalized) => {
-      const imgAspect = img.width / img.height || 1;
-      const targetHeight = scale;
-      const targetWidth = targetHeight * imgAspect;
-      const pivotY = pivotYNormalized * targetHeight;
-      ctx.drawImage(img, -targetWidth / 2, -pivotY, targetWidth, targetHeight);
-    };
-
     const drawClock = () => {
       if (!canvas) return;
+
       const now = new Date();
       const width = window.innerWidth;
       const height = window.innerHeight;
@@ -74,7 +67,7 @@ const AnalogClock = () => {
       ctx.save();
       ctx.translate(centerX, centerY);
 
-      // --- Numbers with tilt + flicker ---
+      // --- Numbers with 3D bevel + inner gradient + tilt + flicker ---
       ctx.font = `${radius * 0.7}px MyClockFont`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -90,22 +83,28 @@ const AnalogClock = () => {
         const tilt = ((num % 2 === 0 ? -1 : 1) * Math.PI) / 18;
         ctx.rotate(tilt);
 
-        // Outer flickering glow
-        ctx.shadowColor = `rgba(255, 220, 180, ${0.3 * flicker})`;
-        ctx.shadowBlur = 20;
-        ctx.fillStyle = `rgba(${255 * flicker}, ${249 * flicker}, ${230 * flicker}, 1)`;
-        ctx.fillText(num.toString(), 0, 0);
+        const depth = 6;
 
-        // Middle glow
-        ctx.shadowColor = '#d4a253';
-        ctx.shadowBlur = 8;
-        ctx.fillStyle = '#e6d4a2';
-        ctx.fillText(num.toString(), 0, 0);
+        // Beveled shadow + highlight layers
+        for (let i = depth; i > 0; i--) {
+          ctx.shadowColor = 'rgba(0,0,0,0.05)';
+          ctx.shadowBlur = 2;
+          ctx.fillStyle = `rgba(50,30,10,${0.3 / i})`;
+          ctx.fillText(num.toString(), i, i);
 
-        // Dark base shadow
-        ctx.shadowColor = '#4D311AFF';
+          ctx.fillStyle = `rgba(255,255,255,${0.08 / i})`;
+          ctx.fillText(num.toString(), -i, -i);
+        }
+
+        // Main front face with inner gradient
+        const gradient = ctx.createLinearGradient(0, -radius*0.35, 0, radius*0.35);
+        gradient.addColorStop(0, `rgba(${255*flicker}, ${249*flicker}, ${230*flicker}, 1)`);
+        gradient.addColorStop(0.5, `rgba(${220*flicker}, ${180*flicker}, ${120*flicker}, 1)`);
+        gradient.addColorStop(1, `rgba(${150*flicker}, ${100*flicker}, ${50*flicker}, 1)`);
+
+        ctx.shadowColor = `rgba(0,0,0,0.2)`;
         ctx.shadowBlur = 12;
-        ctx.fillStyle = '#F4CEB1FF';
+        ctx.fillStyle = gradient;
         ctx.fillText(num.toString(), 0, 0);
 
         ctx.restore();
@@ -124,7 +123,15 @@ const AnalogClock = () => {
       const minuteLength = radius * 0.7;
       const secondLength = radius * 0.9;
 
-      const wobble = Math.sin(Date.now() / 300) * (Math.PI / 180) * 0.5; // ±0.5° wobble
+      const wobble = Math.sin(Date.now() / 300) * (Math.PI / 180) * 0.5;
+
+      const drawHandImage = (img, scale, pivotYNormalized) => {
+        const imgAspect = img.width / img.height || 1;
+        const targetHeight = scale;
+        const targetWidth = targetHeight * imgAspect;
+        const pivotY = pivotYNormalized * targetHeight;
+        ctx.drawImage(img, -targetWidth / 2, -pivotY, targetWidth, targetHeight);
+      };
 
       // HOUR hand
       ctx.save();
