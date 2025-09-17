@@ -59,7 +59,7 @@ const SkewFlatClock = ({
 
     updateTime();
     const timeInterval = setInterval(updateTime, 60000);
-    const hueInterval = setInterval(() => setHue((prev) => (prev + 1) % 360), 150);
+    const hueInterval = setInterval(() => setHue((prev) => (prev + 1) % 360), 70);
 
     return () => {
       clearInterval(timeInterval);
