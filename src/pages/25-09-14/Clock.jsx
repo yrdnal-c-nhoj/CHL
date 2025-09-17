@@ -22,31 +22,31 @@ const GoldenChordsClock = () => {
     const bgImage = new Image();
     bgImage.src = bgImageSrc;
 
-    let startTime = performance.now();
-
-    const draw = (time) => {
-      const elapsed = (time - startTime) / 1000;
+    const draw = () => {
+      const now = new Date();
+      const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+      const minutes = now.getMinutes() + seconds / 60;
+      const hours = now.getHours() % 12 + minutes / 60;
 
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
       const scale = Math.min(canvas.width, canvas.height) / 400;
 
-      // --- SHIMMERING GOLD BACKGROUND ---
-      const shimmer = 5 * Math.sin(elapsed * 5);
+      // --- STRONGER SHIMMERING GOLD BACKGROUND ---
+      const shimmer = 20 * Math.sin(seconds * 5); // amplify shimmer
       const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, `hsl(${50 + shimmer}, 100%, 50%)`);
-      gradient.addColorStop(0.5, `hsl(${50 + shimmer * 1.2}, 90%, 60%)`);
-      gradient.addColorStop(1, `hsl(${50 + shimmer * 1.5}, 100%, 55%)`);
+      gradient.addColorStop(0, `hsl(${50 + shimmer}, 100%, 40%)`);
+      gradient.addColorStop(0.5, `hsl(${50 + shimmer * 1.3}, 90%, 60%)`);
+      gradient.addColorStop(1, `hsl(${50 + shimmer * 1.6}, 100%, 50%)`);
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // --- ROTATING BACKGROUND IMAGE (1 rev per 60s) ---
       if (bgImage.complete) {
-        const bgRotation = ((elapsed % 60) / 60) * 2 * Math.PI;
+        const bgRotation = ((seconds % 60) / 60) * 2 * Math.PI;
         ctx.save();
         ctx.translate(centerX, centerY);
         ctx.rotate(bgRotation);
-
         ctx.filter = "contrast(1.0) brightness(0.7) saturate(1.1)";
         const imgScale =
           0.8 *
@@ -63,18 +63,13 @@ const GoldenChordsClock = () => {
       }
 
       // --- CLOCK HANDS ---
-      const minutes = new Date().getMinutes() + (elapsed % 60) / 60;
-      const hours = new Date().getHours() % 12 + minutes / 60;
       const clockRadius = R * 0.6 * scale;
 
       const drawHand = (angle, length, width, color) => {
         ctx.save();
-        ctx.globalAlpha = 0.8;
-        ctx.shadowColor = "rgba(24, 28, 26)";
-        ctx.shadowBlur = 3 * scale;
-        ctx.shadowOffsetX = 0.1 * scale;
-        ctx.shadowOffsetY = 0.1 * scale;
-
+        ctx.globalAlpha = 0.9;
+        ctx.shadowColor = "rgba(24, 28, 26, 0.8)";
+        ctx.shadowBlur = 4 * scale;
         ctx.beginPath();
         ctx.moveTo(centerX, centerY);
         ctx.lineTo(
@@ -88,21 +83,11 @@ const GoldenChordsClock = () => {
         ctx.restore();
       };
 
-      drawHand(
-        (hours * 2 * Math.PI) / 12,
-        clockRadius * 1.0,
-        8 * scale,
-        "#F1EB6BFF"
-      );
-      drawHand(
-        (minutes * 2 * Math.PI) / 60,
-        clockRadius * 1.5,
-        4.5 * scale,
-        "#F1EB6BFF"
-      );
+      drawHand((hours * 2 * Math.PI) / 12, clockRadius * 1.0, 8 * scale, "#F1EB6BFF");
+      drawHand((minutes * 2 * Math.PI) / 60, clockRadius * 1.5, 4.5 * scale, "#F1EB6BFF");
 
-      // --- GOLDEN CHORDS (drawn ABOVE hands, transparent) ---
-      const chordRotation = -(elapsed * 2 * Math.PI) / 60;
+      // --- GOLDEN CHORDS ---
+      const chordRotation = -(seconds * 2 * Math.PI) / 60;
       const halfChordAngle = Math.asin(Math.min(1, chordLength / (2 * R)));
 
       for (let i = 0; i < numChords; i++) {
@@ -113,11 +98,11 @@ const GoldenChordsClock = () => {
         const y2 = centerY + R * Math.sin(angleOffset + halfChordAngle) * scale;
 
         const grad = ctx.createLinearGradient(x1, y1, x2, y2);
-        grad.addColorStop(0, "rgba(255, 215, 0)");
-        grad.addColorStop(0.25, "rgba(255, 224, 102)");
-        grad.addColorStop(0.5, "rgba(255, 248, 176)");
-        grad.addColorStop(0.75, "rgba(255, 224, 10)");
-        grad.addColorStop(1, "rgba(255, 215, 0)");
+        grad.addColorStop(0, "rgba(255, 215, 0, 1)");
+        grad.addColorStop(0.25, "rgba(255, 224, 102, 0.9)");
+        grad.addColorStop(0.5, "rgba(255, 248, 176, 0.7)");
+        grad.addColorStop(0.75, "rgba(255, 224, 10, 0.9)");
+        grad.addColorStop(1, "rgba(255, 215, 0, 1)");
 
         ctx.save();
         ctx.beginPath();
@@ -125,16 +110,16 @@ const GoldenChordsClock = () => {
         ctx.lineTo(x2, y2);
         ctx.strokeStyle = grad;
         ctx.lineWidth = 4 * scale;
-        ctx.shadowColor = "rgba(255, 215, 0)";
-        ctx.shadowBlur = 50 * scale;
+        ctx.shadowColor = "rgba(255, 215, 0, 0.9)";
+        ctx.shadowBlur = 60 * scale; // stronger glow
         ctx.stroke();
         ctx.restore();
 
+        // reflection
         const reflectionGrad = ctx.createLinearGradient(x1, y1, x2, y2);
-        reflectionGrad.addColorStop(0, "rgba(255,255,255)");
-        reflectionGrad.addColorStop(0.5, "rgba(255,255,255)");
-        reflectionGrad.addColorStop(1, "rgba(255,255,255)");
-
+        reflectionGrad.addColorStop(0, "rgba(255,255,255,0.6)");
+        reflectionGrad.addColorStop(0.5, "rgba(255,255,255,0.2)");
+        reflectionGrad.addColorStop(1, "rgba(255,255,255,0)");
         ctx.save();
         ctx.globalAlpha = 0.9;
         ctx.beginPath();
