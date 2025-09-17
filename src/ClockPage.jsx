@@ -83,17 +83,38 @@ const ClockPage = () => {
   }, [date, items, loading, navigate]);
 
   // -------------------------------
-  // Wait for fonts to be ready
+  // Wait for specific font to be ready
   // -------------------------------
   useEffect(() => {
     if (isContentReady && !loading && !error && !pageError) {
-      // wait until fonts are loaded before showing content
-      document.fonts.ready.then(() => {
-        const timer = setTimeout(() => {
+      // Check if Font Loading API is supported
+      if ('fonts' in document) {
+        // Specify the font you want to wait for (e.g., 'Roboto')
+        const fontToLoad = 'Roboto'; // Replace with your font name
+        const fontLoadPromise = document.fonts.load(`1em ${fontToLoad}`).then(() => {
+          console.log(`${fontToLoad} font loaded successfully`);
           setShowContent(true);
-        }, 100); // slight delay for smoother fade
-        return () => clearTimeout(timer);
-      });
+        });
+
+        // Fallback: Show content after 5 seconds if font fails to load
+        const fallbackTimer = setTimeout(() => {
+          console.warn(`Fallback: ${fontToLoad} font did not load within 5 seconds`);
+          setShowContent(true);
+        }, 5000);
+
+        // Handle font loading errors
+        fontLoadPromise.catch((err) => {
+          console.error(`Failed to load ${fontToLoad} font:`, err);
+          setShowContent(true); // Show content anyway
+        });
+
+        // Cleanup
+        return () => clearTimeout(fallbackTimer);
+      } else {
+        // Fallback for browsers without Font Loading API
+        console.warn('Font Loading API not supported, showing content immediately');
+        setShowContent(true);
+      }
     }
   }, [isContentReady, loading, error, pageError]);
 
