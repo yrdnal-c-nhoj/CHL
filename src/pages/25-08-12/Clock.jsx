@@ -13,6 +13,16 @@ const faceColors = [
 
 export default function BiteviteHexahedron() {
   const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
+
+  // Load custom font before showing
+  useEffect(() => {
+    const font = new FontFace("CustomHexFont", `url(${customFontUrl})`);
+    font.load().then((loaded) => {
+      document.fonts.add(loaded);
+      setFontLoaded(true);
+    });
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -40,7 +50,6 @@ export default function BiteviteHexahedron() {
     overflow: "hidden",
   };
 
-  // ✅ Background layer with filter
   const bgLayerStyle = {
     position: "absolute",
     inset: 0,
@@ -52,7 +61,6 @@ export default function BiteviteHexahedron() {
     zIndex: 0,
   };
 
-  // ✅ Cube sits above background
   const perspectiveStyle = {
     position: "relative",
     width: "24rem",
@@ -110,14 +118,6 @@ export default function BiteviteHexahedron() {
   return (
     <>
       <style>{`
-        @font-face {
-          font-family: 'CustomHexFont';
-          src: url(${customFontUrl}) format('truetype');
-          font-weight: normal;
-          font-style: normal;
-          font-display: swap;
-        }
-
         @keyframes biteviteRotate {
           0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
           25% { transform: rotateX(90deg) rotateY(90deg) rotateZ(90deg); }
@@ -140,27 +140,31 @@ export default function BiteviteHexahedron() {
       `}</style>
 
       <div style={containerStyle}>
-        <div style={bgLayerStyle} /> {/* background image with filter */}
-        <div style={perspectiveStyle} className="hexa-perspective">
-          <div style={cubeStyle}>
-            {["front", "back", "right", "left", "top", "bottom"].map(
-              (face, i) => (
-                <div
-                  key={face}
-                  style={{
-                    ...baseFaceStyle,
-                    transform: faceTransforms[face],
-                    backgroundColor: faceColors[i],
-                  }}
-                >
-                  <div style={timeDisplayStyle} className="hexa-time">
-                    {timeString}
+        <div style={bgLayerStyle} />
+
+        {/* Only render cube when font is loaded */}
+        {fontLoaded && (
+          <div style={perspectiveStyle} className="hexa-perspective">
+            <div style={cubeStyle}>
+              {["front", "back", "right", "left", "top", "bottom"].map(
+                (face, i) => (
+                  <div
+                    key={face}
+                    style={{
+                      ...baseFaceStyle,
+                      transform: faceTransforms[face],
+                      backgroundColor: faceColors[i],
+                    }}
+                  >
+                    <div style={timeDisplayStyle} className="hexa-time">
+                      {timeString}
+                    </div>
                   </div>
-                </div>
-              )
-            )}
+                )
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );
