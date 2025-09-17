@@ -8,9 +8,9 @@ const pad = (n) => n.toString().padStart(2, '0');
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
   const [isLoaded, setIsLoaded] = useState(false);
-  const [blinkIndex, setBlinkIndex] = useState(-1); // -1 = no blinking
+  const [fadeIndex, setFadeIndex] = useState(-1); // which digit is fading
 
-  // Load font and image
+  // Load font and images
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
@@ -42,10 +42,7 @@ const DigitalClock = () => {
 
     Promise.all([fontPromise, imagePromise, centerImgPromise])
       .then(() => setIsLoaded(true))
-      .catch((err) => {
-        console.error('Asset loading error:', err);
-        setIsLoaded(true);
-      });
+      .catch(() => setIsLoaded(true));
 
     return () => document.head.removeChild(style);
   }, []);
@@ -56,19 +53,27 @@ const DigitalClock = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Blink logic
+  // Fade logic: one digit fades out and in for 1 second, then visible for 1 second, then next digit
   useEffect(() => {
-    const blinkTimeout = setTimeout(() => {
-      let currentIndex = 0;
-      const digitsCount = 10; // hours, minutes, seconds, AM/PM
-      const blinkInterval = setInterval(() => {
-        setBlinkIndex(currentIndex);
-        currentIndex = (currentIndex + 1) % digitsCount;
-      }, 1000);
-      return () => clearInterval(blinkInterval);
-    }, 1000);
+    let currentIndex = 0;
+    const digitsCount = 8; // hours, minutes, seconds, AM/PM
 
-    return () => clearTimeout(blinkTimeout);
+    const interval = setInterval(() => {
+      // Start fade for current digit
+      setFadeIndex(currentIndex);
+
+      // After 1 second, restore full opacity
+      setTimeout(() => {
+        setFadeIndex(-1); // Restore
+      }, 1000);
+
+      // Move to next digit after 2 seconds (1s fade + 1s visible)
+      setTimeout(() => {
+        currentIndex = (currentIndex + 1) % digitsCount;
+      }, 2000);
+    }, 2000); // Total cycle per digit: 2 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   const hours = pad(time.getHours() % 12 || 12);
@@ -88,7 +93,7 @@ const DigitalClock = () => {
   }
 
   const getOpacity = (index, defaultOpacity = 1) =>
-    blinkIndex === index ? 0 : defaultOpacity;
+    fadeIndex === index ? 0 : defaultOpacity;
 
   return (
     <div
@@ -121,12 +126,11 @@ const DigitalClock = () => {
           position: 'absolute',
           top: '40%',
           left: '50%',
-          transform: 'translate(-50%, -50%)',
+          transform: 'translate(-50%, -50%) rotate(32deg)',
           width: '25vw',
           height: '25vh',
-          opacity:'0.6',
-          transform: 'rotate(32deg)',
-          zIndex: 2, // above background but below digits
+          opacity: 0.6,
+          zIndex: 2,
         }}
       >
         <img
@@ -148,6 +152,7 @@ const DigitalClock = () => {
             fontSize: '23vh',
             color: '#F65427FF',
             opacity: getOpacity(0, 0.9),
+            transition: 'opacity 0.5s ease-in-out', // Smooth fade
           }}
         >
           {digits[0]}
@@ -161,6 +166,7 @@ const DigitalClock = () => {
             fontSize: '29vh',
             color: '#F112C8FF',
             opacity: getOpacity(1, 0.8),
+            transition: 'opacity 0.5s ease-in-out', // Smooth fade
           }}
         >
           {digits[1]}
@@ -176,6 +182,7 @@ const DigitalClock = () => {
             fontSize: '33vh',
             color: '#07DFDFFF',
             opacity: getOpacity(2, 0.9),
+            transition: 'opacity 0.5s ease-in-out', // Smooth fade
           }}
         >
           {digits[2]}
@@ -189,6 +196,7 @@ const DigitalClock = () => {
             fontSize: '33vh',
             color: '#F0F406FF',
             opacity: getOpacity(3, 1),
+            transition: 'opacity 0.5s ease-in-out', // Smooth fade
           }}
         >
           {digits[3]}
@@ -204,6 +212,7 @@ const DigitalClock = () => {
             fontSize: '33vh',
             color: '#EB0CC5FF',
             opacity: getOpacity(4, 0.7),
+            transition: 'opacity 0.5s ease-in-out', // Smooth fade
           }}
         >
           {digits[4]}
@@ -217,6 +226,7 @@ const DigitalClock = () => {
             fontSize: '23vh',
             color: '#AEF606FF',
             opacity: getOpacity(5, 0.8),
+            transition: 'opacity 0.5s ease-in-out', // Smooth fade
           }}
         >
           {digits[5]}
@@ -232,6 +242,7 @@ const DigitalClock = () => {
             fontSize: '23vh',
             color: '#7A73E5FF',
             opacity: getOpacity(6, 0.7),
+            transition: 'opacity 0.5s ease-in-out', // Smooth fade
             fontWeight: 'bold',
           }}
         >
@@ -246,6 +257,7 @@ const DigitalClock = () => {
             fontSize: '19vh',
             color: '#E50AD6FF',
             opacity: getOpacity(7, 0.8),
+            transition: 'opacity 0.5s ease-in-out', // Smooth fade
             fontWeight: 'bold',
           }}
         >
