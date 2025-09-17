@@ -5,13 +5,12 @@ import fontFile from './crush.ttf'; // Replace with your actual font file path
 // Helper function to pad numbers with leading zero
 const pad = (n) => n.toString().padStart(2, '0');
 
-// Component
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Inject @font-face dynamically
   useEffect(() => {
+    // Inject @font-face dynamically
     const style = document.createElement('style');
     style.textContent = `
       @font-face {
@@ -20,20 +19,30 @@ const DigitalClock = () => {
         font-weight: 100 900;
         font-style: normal;
         font-display: swap;
-        font-variation-settings: 'wght' 400; /* Default; can vary based on time/date if desired */
+        font-variation-settings: 'wght' 400;
       }
     `;
     document.head.appendChild(style);
 
     // Preload font
-    document.fonts.load('10rem CustomClockFont').then(() => {
-      setIsLoaded(true);
-    }).catch((err) => {
-      console.error('Font loading error:', err);
-      setIsLoaded(true); // Fallback to loaded state
+    const fontPromise = document.fonts.load('10rem CustomClockFont');
+
+    // Preload background image
+    const imagePromise = new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = backgroundImage;
+      img.onload = resolve;
+      img.onerror = reject;
     });
 
-    // Cleanup on unmount
+    // Wait for both font and image before showing anything
+    Promise.all([fontPromise, imagePromise])
+      .then(() => setIsLoaded(true))
+      .catch((err) => {
+        console.error('Asset loading error:', err);
+        setIsLoaded(true); // Fallback to loaded state if error
+      });
+
     return () => {
       document.head.removeChild(style);
     };
@@ -47,21 +56,18 @@ const DigitalClock = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Format time
   const hours = pad(time.getHours() % 12 || 12);
   const minutes = pad(time.getMinutes());
   const seconds = pad(time.getSeconds());
   const ampm = time.getHours() >= 12 ? 'PM' : 'AM';
 
+  // Black screen until fully loaded
   if (!isLoaded) {
     return (
       <div
         style={{
           position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100dvh',
+          inset: 0,
           backgroundColor: 'black',
           zIndex: 9999,
         }}
@@ -80,41 +86,32 @@ const DigitalClock = () => {
         fontVariationSettings: '"wght" 400',
       }}
     >
-      {/* Background image with filter */}
+      {/* Background image */}
       <div
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100dvh',
+          inset: 0,
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'top left',
           backgroundRepeat: 'no-repeat',
-          filter: 'saturate(300%) hue-rotate(-240deg)', // Apply filter only to background
+          filter: 'saturate(300%) hue-rotate(-240deg)',
           zIndex: 1,
         }}
       />
-      {/* Clock content */}
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 2, // Ensure clock text is above the filtered background
-        }}
-      >
-        {/* Hours - Upper left at 17°, split into two boxes */}
+
+      {/* Clock digits */}
+      <div style={{ position: 'relative', zIndex: 2 }}>
+        {/* Hours */}
         <div
           style={{
             position: 'absolute',
             top: '1vh',
             left: '2rem',
             transform: 'rotate(23deg)',
-            transformOrigin: 'left center',
             fontSize: '23vh',
-            color: '#F65427FF', // Pink for first hour digit
-            opacity: '0.9',
-            whiteSpace: 'nowrap',
+            color: '#F65427FF',
+            opacity: 0.9,
           }}
         >
           {hours[0]}
@@ -123,19 +120,17 @@ const DigitalClock = () => {
           style={{
             position: 'absolute',
             top: '16vh',
-            left: '10rem', // Offset for second digit
+            left: '10rem',
             transform: 'rotate(-20deg)',
-            transformOrigin: 'left center',
             fontSize: '29vh',
-            color: '#F112C8FF', // Orange for second hour digit
-            opacity: '0.8',
-            whiteSpace: 'nowrap',
+            color: '#F112C8FF',
+            opacity: 0.8,
           }}
         >
           {hours[1]}
         </div>
 
-        {/* Minutes - Center lower left at -27°, split into two boxes */}
+        {/* Minutes */}
         <div
           style={{
             position: 'absolute',
@@ -143,10 +138,8 @@ const DigitalClock = () => {
             left: '4rem',
             transform: 'rotate(27deg) translateY(50%)',
             fontSize: '33vh',
-            color: '#07DFDFFF', // Green for first minute digit
-            opacity: '0.9',
-            whiteSpace: 'nowrap',
-            textAlign: 'left',
+            color: '#07DFDFFF',
+            opacity: 0.9,
           }}
         >
           {minutes[0]}
@@ -155,30 +148,25 @@ const DigitalClock = () => {
           style={{
             position: 'absolute',
             top: '55vh',
-            left: '3rem', // Offset for second digit
+            left: '3rem',
             transform: 'rotate(-67deg) translateY(50%)',
             fontSize: '33vh',
-            color: '#F0F406FF', // Cyan for second minute digit
-            // opacity: '0.8',
-            whiteSpace: 'nowrap',
-            textAlign: 'left',
+            color: '#F0F406FF',
           }}
         >
           {minutes[1]}
         </div>
 
-        {/* Seconds - Upper right at -52°, split into two boxes */}
+        {/* Seconds */}
         <div
           style={{
             position: 'absolute',
             top: '1vh',
-            right: '28vw', // Offset for first digit
+            right: '28vw',
             transform: 'rotate(52deg)',
-            transformOrigin: 'right center',
             fontSize: '33vh',
-            color: '#EB0CC5FF', // Pink for first second digit
-            opacity: '0.7',
-            whiteSpace: 'nowrap',
+            color: '#EB0CC5FF',
+            opacity: 0.7,
           }}
         >
           {seconds[0]}
@@ -189,28 +177,24 @@ const DigitalClock = () => {
             top: '3vh',
             right: '5vw',
             transform: 'rotate(-22deg)',
-            transformOrigin: 'right center',
             fontSize: '23vh',
-            color: '#AEF606FF', // Yellow for second second digit
-            opacity: '0.8',
-            whiteSpace: 'nowrap',
+            color: '#AEF606FF',
+            opacity: 0.8,
           }}
         >
           {seconds[1]}
         </div>
 
-        {/* AM/PM - Bottom right at 22°, split into two boxes */}
+        {/* AM/PM */}
         <div
           style={{
             position: 'absolute',
             top: '61vh',
-            right: '5vw', // Offset for first character (A or P)
+            right: '5vw',
             transform: 'rotate(-6deg)',
-            transformOrigin: 'left bottom',
             fontSize: '23vh',
-            color: '#7A73E5FF', // Purple for first AM/PM character
-            opacity: '0.7',
-            whiteSpace: 'nowrap',
+            color: '#7A73E5FF',
+            opacity: 0.7,
             fontWeight: 'bold',
           }}
         >
@@ -222,11 +206,9 @@ const DigitalClock = () => {
             top: '78vh',
             right: '3vw',
             transform: 'rotate(22deg)',
-            transformOrigin: 'left bottom',
             fontSize: '19vh',
-            color: '#E50AD6FF', // Deep pink for second AM/PM character
-            opacity: '0.8',
-            whiteSpace: 'nowrap',
+            color: '#E50AD6FF',
+            opacity: 0.8,
             fontWeight: 'bold',
           }}
         >

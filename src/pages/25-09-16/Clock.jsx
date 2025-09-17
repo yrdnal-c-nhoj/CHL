@@ -4,12 +4,52 @@ import dateFont from "./baud.ttf";
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
+  const [isLoaded, setIsLoaded] = useState(false);
 
+  // Update time every second
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
+  // Preload font and image
+  useEffect(() => {
+    // Inject font-face
+    const style = document.createElement("style");
+    style.textContent = `
+      @font-face {
+        font-family: 'MyDateFont';
+        src: url(${dateFont}) format('truetype');
+        font-display: swap;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Font preload
+    const fontPromise = document.fonts.load("10rem MyDateFont");
+
+    // Background image preload
+    const imagePromise = new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = bgImage;
+      img.onload = resolve;
+      img.onerror = reject;
+    });
+
+    // Wait for both
+    Promise.all([fontPromise, imagePromise])
+      .then(() => setIsLoaded(true))
+      .catch((err) => {
+        console.error("Asset loading error:", err);
+        setIsLoaded(true); // fallback
+      });
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  // Format time
   const hours = String(((time.getHours() + 11) % 12) + 1).padStart(2, "0");
   const minutes = String(time.getMinutes()).padStart(2, "0");
   const seconds = String(time.getSeconds()).padStart(2, "0");
@@ -50,7 +90,8 @@ const Clock = () => {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundImage: `url(${bgImage})`,
+    backgroundColor: "black", // fallback black until loaded
+    backgroundImage: isLoaded ? `url(${bgImage})` : "none",
     backgroundSize: "cover",
     backgroundPosition: "center",
   };
@@ -69,17 +110,13 @@ const Clock = () => {
       </div>
     ));
 
+  // Show black screen until everything is ready
+  if (!isLoaded) {
+    return <div style={{ height: "100dvh", width: "100vw", backgroundColor: "black" }} />;
+  }
+
   return (
     <div style={containerStyle}>
-      <style>
-        {`
-          @font-face {
-            font-family: 'MyDateFont';
-            src: url(${dateFont}) format('truetype');
-            font-display: swap;
-          }
-        `}
-      </style>
       <div style={faceStyle}>
         {renderDigits(hours)}
         <div style={digitBox}>:</div>
