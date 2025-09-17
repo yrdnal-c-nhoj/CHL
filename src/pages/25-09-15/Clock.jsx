@@ -10,7 +10,44 @@ const SkewFlatClock = ({
 }) => {
   const [time, setTime] = useState("");
   const [hue, setHue] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
 
+  // Load font and background image
+  useEffect(() => {
+    // Inject font-face
+    const style = document.createElement("style");
+    style.textContent = `
+      @font-face {
+        font-family: 'MyCustomFont';
+        src: url(${myFontUrl}) format('truetype');
+        font-display: swap;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Font preload
+    const fontPromise = document.fonts.load("10rem MyCustomFont");
+
+    // Background image preload
+    const imagePromise = new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = backgroundImageUrl;
+      img.onload = resolve;
+      img.onerror = reject;
+    });
+
+    // Wait for both
+    Promise.all([fontPromise, imagePromise])
+      .then(() => setIsLoaded(true))
+      .catch((err) => {
+        console.error("Asset loading error:", err);
+        setIsLoaded(true);
+      });
+
+    return () => document.head.removeChild(style);
+  }, []);
+
+  // Update time and hue
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
@@ -22,16 +59,18 @@ const SkewFlatClock = ({
 
     updateTime();
     const timeInterval = setInterval(updateTime, 60000);
-
-    const hueInterval = setInterval(() => {
-      setHue((prev) => (prev + 1) % 360);
-    }, 150);
+    const hueInterval = setInterval(() => setHue((prev) => (prev + 1) % 360), 150);
 
     return () => {
       clearInterval(timeInterval);
       clearInterval(hueInterval);
     };
   }, []);
+
+  // If not loaded, render plain black screen
+  if (!isLoaded) {
+    return <div style={{ height: "100dvh", width: "100vw", backgroundColor: "black" }} />;
+  }
 
   const createTartanGrid = (colors) => {
     const rows = [];
@@ -85,25 +124,15 @@ const SkewFlatClock = ({
         filter: `hue-rotate(${hue}deg)`,
       }}
     >
-      <style>
-        {`
-          @font-face {
-            font-family: 'MyCustomFont';
-            src: url(${myFontUrl}) format('truetype');
-            font-display: swap;
-          }
-        `}
-      </style>
-
       <div
         role="timer"
         aria-live="polite"
         style={{
-          height: "200dvh",        // enlarged to cover rotated viewport
+          height: "200dvh",
           width: "200vw",
           backgroundImage: `url(${backgroundImageUrl})`,
           backgroundRepeat: "repeat",
-          backgroundSize: "15rem 15rem", // tile size
+          backgroundSize: "15rem 15rem",
           transform: "rotate(-17deg)",
           transformOrigin: "center",
           position: "relative",
