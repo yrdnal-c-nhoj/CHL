@@ -30,8 +30,6 @@ const ClockPage = () => {
   const [headerVisible, setHeaderVisible] = useState(true);
   const [isContentReady, setIsContentReady] = useState(false);
   const [showContent, setShowContent] = useState(false);
-  const [fontsLoaded, setFontsLoaded] = useState(false);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   // -------------------------------
   // Load Clock component dynamically
@@ -85,106 +83,16 @@ const ClockPage = () => {
   }, [date, items, loading, navigate]);
 
   // -------------------------------
-  // Wait for all fonts to be ready
+  // Show content when ready
   // -------------------------------
   useEffect(() => {
-    const loadFonts = async () => {
-      if ('fonts' in document) {
-        try {
-          // Wait for all fonts to be ready
-          await document.fonts.ready;
-          console.log('All fonts loaded successfully');
-          setFontsLoaded(true);
-        } catch (err) {
-          console.error('Error loading fonts:', err);
-          // Still show content if fonts fail to load
-          setFontsLoaded(true);
-        }
-      } else {
-        // Fallback for browsers without Font Loading API
-        console.warn('Font Loading API not supported');
-        setFontsLoaded(true);
-      }
-    };
-
-    // Add a small delay to ensure fonts are properly loaded
-    const fontTimer = setTimeout(loadFonts, 100);
-    
-    // Fallback: Show content after 8 seconds if fonts fail to load
-    const fallbackTimer = setTimeout(() => {
-      console.warn('Fallback: Fonts did not load within 8 seconds');
-      setFontsLoaded(true);
-    }, 8000);
-
-    return () => {
-      clearTimeout(fontTimer);
-      clearTimeout(fallbackTimer);
-    };
-  }, []);
-
-  // -------------------------------
-  // Wait for images to load
-  // -------------------------------
-  useEffect(() => {
-    const checkImages = () => {
-      const images = document.querySelectorAll('img');
-      if (images.length === 0) {
-        setImagesLoaded(true);
-        return;
-      }
-
-      let loadedCount = 0;
-      const totalImages = images.length;
-
-      const onImageLoad = () => {
-        loadedCount++;
-        if (loadedCount === totalImages) {
-          setImagesLoaded(true);
-        }
-      };
-
-      const onImageError = () => {
-        loadedCount++;
-        if (loadedCount === totalImages) {
-          setImagesLoaded(true);
-        }
-      };
-
-      images.forEach(img => {
-        if (img.complete) {
-          onImageLoad();
-        } else {
-          img.addEventListener('load', onImageLoad);
-          img.addEventListener('error', onImageError);
-        }
-      });
-
-      // Fallback timer for images
-      setTimeout(() => {
-        if (!imagesLoaded) {
-          console.warn('Fallback: Images did not load within 5 seconds');
-          setImagesLoaded(true);
-        }
-      }, 5000);
-    };
-
-    // Check images after a short delay to ensure DOM is ready
-    const imageTimer = setTimeout(checkImages, 200);
-    return () => clearTimeout(imageTimer);
-  }, [ClockComponent, imagesLoaded]);
-
-  // -------------------------------
-  // Show content only when everything is ready
-  // -------------------------------
-  useEffect(() => {
-    if (isContentReady && fontsLoaded && imagesLoaded && !loading && !error && !pageError) {
-      // Add a small delay for smoother transition
+    if (isContentReady && !loading && !error && !pageError) {
       const showTimer = setTimeout(() => {
         setShowContent(true);
       }, 100);
       return () => clearTimeout(showTimer);
     }
-  }, [isContentReady, fontsLoaded, imagesLoaded, loading, error, pageError]);
+  }, [isContentReady, loading, error, pageError]);
 
   // -------------------------------
   // Auto-hide footer after inactivity
@@ -244,6 +152,7 @@ const ClockPage = () => {
   // -------------------------------
   const LoadingOverlay = () => (
     <div 
+      className="loading-overlay"
       style={{
         position: 'fixed',
         top: 0, left: 0,
@@ -275,7 +184,7 @@ const ClockPage = () => {
       <>
         <LoadingOverlay />
         {showContent && (
-          <div className={styles.container}>
+          <div className={`${styles.container} clock-content`}>
             <Header visible={headerVisible} />
             <div className={styles.content}>
               <div className={styles.sheet}>
@@ -293,7 +202,7 @@ const ClockPage = () => {
       <>
         <LoadingOverlay />
         {showContent && (
-          <div className={styles.container}>
+          <div className={`${styles.container} clock-content`}>
             <Header visible={headerVisible} />
             <div className={styles.content}>
               <div className={styles.sheet}>
@@ -312,10 +221,9 @@ const ClockPage = () => {
   return (
     <>
       <LoadingOverlay />
-      {/* Only render content when everything is fully loaded */}
       {showContent && (
         <div 
-          className={styles.container} 
+          className={`${styles.container} clock-content`}
           style={{ 
             opacity: 1,
             transition: 'opacity 0.8s ease-in'
