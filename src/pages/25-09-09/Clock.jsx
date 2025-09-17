@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import font250909 from "./van.ttf";
 import bgImage2 from "./skull.jpg"; 
 import bgImage from "./va.webp"; 
@@ -8,38 +8,93 @@ const CONFIG = {
   font: "VanFont",
   fontUrl: font250909,
   fontSize: "1.4rem",
-  digitWidth: "0.1rem",
-  digitHeight: "1.2rem",
+  digitWidth: "1.2rem",
+  digitHeight: "1.4rem",
   digitGap: "0.3rem",
   clockPadding: "0.1rem 0.1rem",
-  symbolWidth: "0.1rem",
+  symbolWidth: "0.6rem",
   gridGap: "1rem",
 };
 
+const Digit = memo(({ char }) => {
+  const style = {
+    fontFamily: CONFIG.font,
+    fontSize: CONFIG.fontSize,
+    width: char === ":" || char === "." ? CONFIG.symbolWidth : CONFIG.digitWidth,
+    height: CONFIG.digitHeight,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "0.2rem",
+    userSelect: "none",
+    opacity: 0.8,
+    color: char === ":" || char === "." ? "#817F7FFF" : "#558A59FF",
+    textShadow: char === ":" || char === "." ? "none" : "0 0 1px red",
+    background: "transparent",
+  };
+  return <div style={style}>{char}</div>;
+});
+
+const Clock = memo(({ timeStr }) => (
+  <div
+    style={{
+      display: "flex",
+      gap: CONFIG.digitGap,
+      borderRadius: "0.5rem",
+      padding: CONFIG.clockPadding,
+    }}
+  >
+    {timeStr.split("").map((char, i) => (
+      <Digit key={i} char={char} />
+    ))}
+  </div>
+));
+
 export default function ClockWall() {
-  const [, setTick] = useState(0);
-  const rafRef = useRef(null);
+  const [timeStr, setTimeStr] = useState("00:00:00.00");
   const [grid, setGrid] = useState({ rows: 1, cols: 1 });
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [ready, setReady] = useState(false); // ✅ only show page when true
 
-  // ✅ Preload font
+  // Load font
   useEffect(() => {
-    const font = new FontFace(CONFIG.font, `url(${CONFIG.fontUrl})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontLoaded(true);
-    });
-  }, []);
-
-  useEffect(() => {
-    const tick = () => {
-      setTick((t) => t + 1);
-      rafRef.current = requestAnimationFrame(tick);
+    const loadFont = async () => {
+      const font = new FontFace(CONFIG.font, `url(${CONFIG.fontUrl})`);
+      await font.load();
+      document.fonts.add(font);
     };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => rafRef.current && cancelAnimationFrame(rafRef.current);
+
+    // Preload images
+    const loadImage = (src) =>
+      new Promise((res) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = res;
+      });
+
+    const preloadAll = async () => {
+      await loadFont();
+      await Promise.all([loadImage(bgImage), loadImage(bgImage2), loadImage(bgImage3)]);
+      setReady(true); // ✅ everything loaded
+    };
+
+    preloadAll();
   }, []);
 
+  // Update time
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const pad = (num, length = 2) => String(num).padStart(length, "0");
+      const hours = pad(now.getHours());
+      const minutes = pad(now.getMinutes());
+      const seconds = pad(now.getSeconds());
+      const ms = pad(Math.floor(now.getMilliseconds() / 10));
+      setTimeStr(`${hours}:${minutes}:${seconds}.${ms}`);
+    }, 50);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Calculate grid
   useEffect(() => {
     const calcGrid = () => {
       const clockCharCount = "00:00:00.00".length;
@@ -57,66 +112,13 @@ export default function ClockWall() {
     return () => window.removeEventListener("resize", calcGrid);
   }, []);
 
-  if (!fontLoaded) {
-    // ✅ Prevent FOUT — render background only until font is ready
-    return <div style={{ backgroundImage: `url(${bgImage})`, height: "100dvh" }} />;
-  }
+  if (!ready) return null; // ✅ nothing shows until font + images loaded
 
-  const now = new Date();
-  const pad = (num, length = 2) => String(num).padStart(length, "0");
-  const hours = pad(now.getHours(), 2);
-  const minutes = pad(now.getMinutes(), 2);
-  const seconds = pad(now.getSeconds(), 2);
-  const ms = pad(Math.floor(now.getMilliseconds() / 10), 2);
-  const timeStr = `${hours}:${minutes}:${seconds}.${ms}`;
-
-  const digitBoxStyle = {
-    fontFamily: CONFIG.font,
-    fontSize: CONFIG.fontSize,
-    width: CONFIG.digitWidth,
-    height: CONFIG.digitHeight,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: "0.2rem",
-    userSelect: "none",
-    opacity: "0.8",
-    color: "#558A59FF",
-    textShadow: "0 0 1px red",
-  };
-
-  const symbolBoxStyle = {
-    ...digitBoxStyle,
-    width: CONFIG.symbolWidth,
-    background: "transparent",
-    color: "#817F7FFF",
-  };
-
-  const renderClock = (key) => (
-    <div
-      key={key}
-      style={{
-        display: "flex",
-        gap: CONFIG.digitGap,
-        borderRadius: "0.5rem",
-        padding: CONFIG.clockPadding,
-      }}
-    >
-      {timeStr.split("").map((char, i) => (
-        <div
-          key={i}
-          style={char === ":" || char === "." ? symbolBoxStyle : digitBoxStyle}
-        >
-          {char}
-        </div>
-      ))}
-    </div>
-  );
-
+  // Render grid
   const clocks = [];
   for (let r = 0; r < grid.rows; r++) {
     for (let c = 0; c < grid.cols; c++) {
-      clocks.push(renderClock(`${r}-${c}`));
+      clocks.push(<Clock key={`${r}-${c}`} timeStr={timeStr} />);
     }
   }
 
