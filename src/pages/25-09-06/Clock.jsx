@@ -8,11 +8,39 @@ import tickImg from './b.gif'; // tick image
 
 const AnalogClock = () => {
   const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
+
+  useEffect(() => {
+    // Load font manually to avoid FOUT
+    const font = new FontFace('analogClockFont', `url(${font_06_09_2025})`);
+    font.load().then((loaded) => {
+      document.fonts.add(loaded);
+      setFontLoaded(true);
+    });
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
+
+  if (!fontLoaded) {
+    // While font is loading, keep background but hide text
+    return (
+      <div
+        style={{
+          width: '100vw',
+          height: '100dvh',
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      />
+    );
+  }
 
   const clockSize = 50; // vh
   const radius = clockSize / 2;
@@ -40,23 +68,13 @@ const AnalogClock = () => {
         alignItems: 'center',
       }}
     >
-      {/* Scoped Font */}
-      <style>
-        {`
-          @font-face {
-            font-family: 'analogClockFont';
-            src: url(${font_06_09_2025}) format('truetype');
-          }
-        `}
-      </style>
-
       <div
         style={{
           width: `${clockSize}vh`,
           height: `${clockSize}vh`,
           borderRadius: '50%',
           position: 'relative',
-          fontFamily: 'analogClockFont', // only applied here
+          fontFamily: 'analogClockFont',
         }}
       >
         {/* Hour Numbers */}

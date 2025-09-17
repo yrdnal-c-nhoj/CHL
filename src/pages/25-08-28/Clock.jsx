@@ -1,13 +1,13 @@
 // src/components/DigitalClock.jsx
 import { useState, useEffect } from "react";
-import backgroundImage from "./gob.jpg"; // local image
-import clockFontFile from "./gob.ttf";   // renamed font variable
+import backgroundImage from "./gob.jpg"; 
+import clockFontFile from "./gob.ttf";   
 
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
 
-  // Load font using FontFace API, scoped only to this component
+  // Load font
   useEffect(() => {
     const font = new FontFace("ClockFontScoped", `url(${clockFontFile})`);
     font.load()
@@ -40,7 +40,7 @@ export default function DigitalClock() {
     justifyContent: "center",
     height: "100dvh",
     width: "100vw",
-    fontFamily: fontLoaded ? "'ClockFontScoped', monospace" : "monospace",
+    fontFamily: "'ClockFontScoped', monospace",
     overflow: "hidden",
   };
 
@@ -61,13 +61,11 @@ export default function DigitalClock() {
     position: "relative",
     display: "flex",
     zIndex: 1,
+    visibility: fontLoaded ? "visible" : "hidden", // hide until font ready
   };
-
-  const separatorWidth = "0.9rem";
 
   const goldShimmerStyle = {
     fontSize: "2.5rem",
-    fontFamily: fontLoaded ? "'ClockFontScoped', monospace" : "monospace",
     background: "linear-gradient(90deg, #FFD700, #FFEC00, #FFC700, #FFD700, #FFEC00)",
     WebkitBackgroundClip: "text",
     backgroundClip: "text",
@@ -87,7 +85,7 @@ export default function DigitalClock() {
 
   const separatorStyle = {
     ...goldShimmerStyle,
-    width: separatorWidth,
+    width: "0.9rem",
   };
 
   const timeString = formatTime(time).split("");

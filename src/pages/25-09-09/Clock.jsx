@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import font250909 from "./van.ttf";
-import bgImage2 from "./skull.jpg"; // bottom layer
-import bgImage from "./va.webp"; // top layer
-import bgImage3 from "./cand.webp"; // new bottom-fixed layer
+import bgImage2 from "./skull.jpg"; 
+import bgImage from "./va.webp"; 
+import bgImage3 from "./cand.webp"; 
 
 const CONFIG = {
-  font: `f${font250909}`,
+  font: "VanFont",
   fontUrl: font250909,
   fontSize: "1.4rem",
   digitWidth: "0.1rem",
@@ -20,6 +20,16 @@ export default function ClockWall() {
   const [, setTick] = useState(0);
   const rafRef = useRef(null);
   const [grid, setGrid] = useState({ rows: 1, cols: 1 });
+  const [fontLoaded, setFontLoaded] = useState(false);
+
+  // ✅ Preload font
+  useEffect(() => {
+    const font = new FontFace(CONFIG.font, `url(${CONFIG.fontUrl})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      setFontLoaded(true);
+    });
+  }, []);
 
   useEffect(() => {
     const tick = () => {
@@ -27,9 +37,7 @@ export default function ClockWall() {
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
+    return () => rafRef.current && cancelAnimationFrame(rafRef.current);
   }, []);
 
   useEffect(() => {
@@ -49,6 +57,11 @@ export default function ClockWall() {
     return () => window.removeEventListener("resize", calcGrid);
   }, []);
 
+  if (!fontLoaded) {
+    // ✅ Prevent FOUT — render background only until font is ready
+    return <div style={{ backgroundImage: `url(${bgImage})`, height: "100dvh" }} />;
+  }
+
   const now = new Date();
   const pad = (num, length = 2) => String(num).padStart(length, "0");
   const hours = pad(now.getHours(), 2);
@@ -58,7 +71,7 @@ export default function ClockWall() {
   const timeStr = `${hours}:${minutes}:${seconds}.${ms}`;
 
   const digitBoxStyle = {
-    fontFamily: `"${CONFIG.font}"`,
+    fontFamily: CONFIG.font,
     fontSize: CONFIG.fontSize,
     width: CONFIG.digitWidth,
     height: CONFIG.digitHeight,
@@ -108,17 +121,16 @@ export default function ClockWall() {
   }
 
   const containerStyle = {
-  position: "relative",
-  height: "100dvh",
-  width: "100vw",
-  overflow: "hidden",
-  backgroundImage: `url(${bgImage})`,
-  backgroundSize: "140% auto", // make background slightly larger horizontally
-  backgroundPosition: "20% center", // move background a bit to the right
-  backgroundRepeat: "no-repeat",
-  filter: "brightness(1.8) contrast(1.8)", // adjust main background
-};
-
+    position: "relative",
+    height: "100dvh",
+    width: "100vw",
+    overflow: "hidden",
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: "140% auto",
+    backgroundPosition: "20% center",
+    backgroundRepeat: "no-repeat",
+    filter: "brightness(1.8) contrast(1.8)",
+  };
 
   const overlayStyle = {
     position: "absolute",
@@ -132,7 +144,7 @@ export default function ClockWall() {
     backgroundRepeat: "no-repeat",
     opacity: 0.65,
     pointerEvents: "none",
-    filter: "brightness(0.9) contrast(1.9)", // adjust overlay
+    filter: "brightness(0.9) contrast(1.9)",
   };
 
   const bottomImageStyle = {
@@ -147,7 +159,7 @@ export default function ClockWall() {
     backgroundRepeat: "no-repeat",
     opacity: 0.4,
     pointerEvents: "none",
-    filter: "brightness(1.7) contrast(0.4)", // adjust bottom layer
+    filter: "brightness(1.7) contrast(0.4)",
   };
 
   const gridStyle = {
@@ -165,12 +177,6 @@ export default function ClockWall() {
     <div style={containerStyle}>
       <div style={overlayStyle}></div>
       <div style={bottomImageStyle}></div>
-      <style>{`
-        @font-face {
-          font-family: "${CONFIG.font}";
-          src: url(${CONFIG.fontUrl}) format("truetype");
-        }
-      `}</style>
       <div style={gridStyle}>{clocks}</div>
     </div>
   );

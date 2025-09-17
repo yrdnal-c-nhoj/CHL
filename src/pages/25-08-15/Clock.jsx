@@ -5,73 +5,57 @@ import backgroundImg from './tabl.webp';
 const fontFamily = "'dom', monospace";
 
 const styles = {
-  clockContainer: {
+  clockContainer: (fontReady) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     height: '100dvh',
-    backgroundImage: `url(${backgroundImg})`, // Your custom background
+    backgroundImage: `url(${backgroundImg})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    fontFamily: fontFamily,
-    boxSizing: 'border-box',
-  },
+    fontFamily: fontReady ? fontFamily : 'monospace', // fallback until font is ready
+    visibility: fontReady ? 'visible' : 'hidden', // hide until font loads
+  }),
   clockDisplay: {
     display: 'flex',
     fontVariantNumeric: 'tabular-nums',
-    fontFamily: fontFamily,
   },
- digit: {
-  display: 'inline-block',
-  fontSize: '4rem',
-  color: '#2C2A2AFF',
-  backgroundColor: '#F5EFDFFF',
-  borderRadius: '0.4rem',
-  padding: 0,
-  lineHeight: 1,
-  border: 'none',
-  fontFamily: fontFamily,
-  textAlign: 'center',
-  width: 'auto',
-  height: 'auto',
-  boxShadow: '0.2rem 0.2rem 0.9rem rgba(0,0,0,0.3)', // soft shadow, like resting on a table
-},
-
+  digit: {
+    display: 'inline-block',
+    fontSize: '4rem',
+    color: '#2C2A2AFF',
+    backgroundColor: '#F5EFDFFF',
+    borderRadius: '0.4rem',
+    lineHeight: 1,
+    border: 'none',
+    textAlign: 'center',
+    width: 'auto',
+    height: 'auto',
+    boxShadow: '0.2rem 0.2rem 0.9rem rgba(0,0,0,0.3)',
+  },
   colon: {
     fontSize: '0.01rem',
     display: 'flex',
     alignItems: 'center',
   },
-  digitalFrame: {
-    position: 'relative',
-  },
-}
+};
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
+  const [fontReady, setFontReady] = useState(false);
 
   useEffect(() => {
-    const styleSheet = document.createElement('style');
-    styleSheet.textContent = `
-      @font-face {
-        font-family: 'dom';
-        src: url(${customFontUrl}) format('truetype');
-        font-weight: normal;
-        font-style: normal;
-      }
-    `;
-    document.head.appendChild(styleSheet);
+    // Load custom font via FontFace API
+    const font = new FontFace('dom', `url(${customFontUrl})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      setFontReady(true);
+    });
 
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-    return () => {
-      clearInterval(timer);
-      document.head.removeChild(styleSheet);
-    };
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
   const digitToLetter = (str) => {
@@ -92,30 +76,22 @@ const DigitalClock = () => {
     return digitToLetter(timeStr);
   };
 
-  const renderTimeWithSeparateDigits = (timeString) => {
-    return timeString.split('').map((char, index) => {
-      if (char === ':') {
-        return (
-          <span key={index} style={styles.colon}>
-            :
-          </span>
-        );
-      }
-      return (
-        <span key={index} style={styles.digit}>
-          {char}
-        </span>
-      );
-    });
-  };
+  const renderTimeWithSeparateDigits = (timeString) =>
+    timeString.split('').map((char, index) =>
+      char === ':' ? (
+        <span key={index} style={styles.colon}>:</span>
+      ) : (
+        <span key={index} style={styles.digit}>{char}</span>
+      )
+    );
 
   return (
-    <div style={styles.clockContainer}>
-      <div style={styles.digitalFrame}>
+    <div style={styles.clockContainer(fontReady)}>
+      {fontReady && (
         <div style={styles.clockDisplay}>
           {renderTimeWithSeparateDigits(formatTime(time))}
         </div>
-      </div>
+      )}
     </div>
   );
 };
