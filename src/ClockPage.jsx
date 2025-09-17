@@ -30,6 +30,8 @@ const ClockPage = () => {
   const [headerVisible, setHeaderVisible] = useState(true);
   const [isContentReady, setIsContentReady] = useState(false);
   const [showContent, setShowContent] = useState(false);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   // -------------------------------
   // Load Clock component dynamically
@@ -83,40 +85,106 @@ const ClockPage = () => {
   }, [date, items, loading, navigate]);
 
   // -------------------------------
-  // Wait for specific font to be ready
+  // Wait for all fonts to be ready
   // -------------------------------
   useEffect(() => {
-    if (isContentReady && !loading && !error && !pageError) {
-      // Check if Font Loading API is supported
+    const loadFonts = async () => {
       if ('fonts' in document) {
-        // Specify the font you want to wait for (e.g., 'Roboto')
-        const fontToLoad = 'Roboto'; // Replace with your font name
-        const fontLoadPromise = document.fonts.load(`1em ${fontToLoad}`).then(() => {
-          console.log(`${fontToLoad} font loaded successfully`);
-          setShowContent(true);
-        });
-
-        // Fallback: Show content after 5 seconds if font fails to load
-        const fallbackTimer = setTimeout(() => {
-          console.warn(`Fallback: ${fontToLoad} font did not load within 5 seconds`);
-          setShowContent(true);
-        }, 5000);
-
-        // Handle font loading errors
-        fontLoadPromise.catch((err) => {
-          console.error(`Failed to load ${fontToLoad} font:`, err);
-          setShowContent(true); // Show content anyway
-        });
-
-        // Cleanup
-        return () => clearTimeout(fallbackTimer);
+        try {
+          // Wait for all fonts to be ready
+          await document.fonts.ready;
+          console.log('All fonts loaded successfully');
+          setFontsLoaded(true);
+        } catch (err) {
+          console.error('Error loading fonts:', err);
+          // Still show content if fonts fail to load
+          setFontsLoaded(true);
+        }
       } else {
         // Fallback for browsers without Font Loading API
-        console.warn('Font Loading API not supported, showing content immediately');
-        setShowContent(true);
+        console.warn('Font Loading API not supported');
+        setFontsLoaded(true);
       }
+    };
+
+    // Add a small delay to ensure fonts are properly loaded
+    const fontTimer = setTimeout(loadFonts, 100);
+    
+    // Fallback: Show content after 8 seconds if fonts fail to load
+    const fallbackTimer = setTimeout(() => {
+      console.warn('Fallback: Fonts did not load within 8 seconds');
+      setFontsLoaded(true);
+    }, 8000);
+
+    return () => {
+      clearTimeout(fontTimer);
+      clearTimeout(fallbackTimer);
+    };
+  }, []);
+
+  // -------------------------------
+  // Wait for images to load
+  // -------------------------------
+  useEffect(() => {
+    const checkImages = () => {
+      const images = document.querySelectorAll('img');
+      if (images.length === 0) {
+        setImagesLoaded(true);
+        return;
+      }
+
+      let loadedCount = 0;
+      const totalImages = images.length;
+
+      const onImageLoad = () => {
+        loadedCount++;
+        if (loadedCount === totalImages) {
+          setImagesLoaded(true);
+        }
+      };
+
+      const onImageError = () => {
+        loadedCount++;
+        if (loadedCount === totalImages) {
+          setImagesLoaded(true);
+        }
+      };
+
+      images.forEach(img => {
+        if (img.complete) {
+          onImageLoad();
+        } else {
+          img.addEventListener('load', onImageLoad);
+          img.addEventListener('error', onImageError);
+        }
+      });
+
+      // Fallback timer for images
+      setTimeout(() => {
+        if (!imagesLoaded) {
+          console.warn('Fallback: Images did not load within 5 seconds');
+          setImagesLoaded(true);
+        }
+      }, 5000);
+    };
+
+    // Check images after a short delay to ensure DOM is ready
+    const imageTimer = setTimeout(checkImages, 200);
+    return () => clearTimeout(imageTimer);
+  }, [ClockComponent, imagesLoaded]);
+
+  // -------------------------------
+  // Show content only when everything is ready
+  // -------------------------------
+  useEffect(() => {
+    if (isContentReady && fontsLoaded && imagesLoaded && !loading && !error && !pageError) {
+      // Add a small delay for smoother transition
+      const showTimer = setTimeout(() => {
+        setShowContent(true);
+      }, 100);
+      return () => clearTimeout(showTimer);
     }
-  }, [isContentReady, loading, error, pageError]);
+  }, [isContentReady, fontsLoaded, imagesLoaded, loading, error, pageError]);
 
   // -------------------------------
   // Auto-hide footer after inactivity
@@ -182,14 +250,17 @@ const ClockPage = () => {
         width: '100vw', height: '100vh',
         backgroundColor: '#000',
         zIndex: 9999,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
         opacity: showContent ? 0 : 1,
         visibility: showContent ? 'hidden' : 'visible',
-        transition: 'opacity 0.5s ease-out, visibility 0.5s ease-out'
+        transition: 'opacity 0.8s ease-out, visibility 0.8s ease-out'
       }}
     >
       <div style={{
-        width: '2px', height: '20px',
+        width: '2px', 
+        height: '20px',
         backgroundColor: '#333',
         animation: 'pulse 1.5s ease-in-out infinite'
       }} />
@@ -203,14 +274,16 @@ const ClockPage = () => {
     return (
       <>
         <LoadingOverlay />
-        <div className={styles.container} style={{ opacity: showContent ? 1 : 0 }}>
-          <Header visible={headerVisible} />
-          <div className={styles.content}>
-            <div className={styles.sheet}>
-              <div className={styles.error}>{error || pageError}</div>
+        {showContent && (
+          <div className={styles.container}>
+            <Header visible={headerVisible} />
+            <div className={styles.content}>
+              <div className={styles.sheet}>
+                <div className={styles.error}>{error || pageError}</div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </>
     );
   }
@@ -219,14 +292,16 @@ const ClockPage = () => {
     return (
       <>
         <LoadingOverlay />
-        <div className={styles.container} style={{ opacity: showContent ? 1 : 0 }}>
-          <Header visible={headerVisible} />
-          <div className={styles.content}>
-            <div className={styles.sheet}>
-              <div className={styles.error}>No valid clock found.</div>
+        {showContent && (
+          <div className={styles.container}>
+            <Header visible={headerVisible} />
+            <div className={styles.content}>
+              <div className={styles.sheet}>
+                <div className={styles.error}>No valid clock found.</div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </>
     );
   }
@@ -237,29 +312,32 @@ const ClockPage = () => {
   return (
     <>
       <LoadingOverlay />
-      <div 
-        className={styles.container} 
-        style={{ 
-          opacity: showContent ? 1 : 0,
-          transition: 'opacity 0.5s ease-in'
-        }}
-      >
-        <Header visible={headerVisible} />
-        <div className={styles.content}>
-          {ClockComponent ? (
-            <ClockComponent />
-          ) : (
-            <div className={styles.loading}>Loading clock...</div>
-          )}
+      {/* Only render content when everything is fully loaded */}
+      {showContent && (
+        <div 
+          className={styles.container} 
+          style={{ 
+            opacity: 1,
+            transition: 'opacity 0.8s ease-in'
+          }}
+        >
+          <Header visible={headerVisible} />
+          <div className={styles.content}>
+            {ClockComponent ? (
+              <ClockComponent />
+            ) : (
+              <div className={styles.loading}>Loading clock...</div>
+            )}
+          </div>
+          <ClockPageNav
+            prevItem={prevItem}
+            nextItem={nextItem}
+            currentItem={currentItem}
+            formatTitle={formatTitle}
+            formatDate={formatDate}
+          />
         </div>
-        <ClockPageNav
-          prevItem={prevItem}
-          nextItem={nextItem}
-          currentItem={currentItem}
-          formatTitle={formatTitle}
-          formatDate={formatDate}
-        />
-      </div>
+      )}
 
       <style jsx>{`
         @keyframes pulse {
