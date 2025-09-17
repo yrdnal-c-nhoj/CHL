@@ -32,25 +32,19 @@ const GoldenChordsClock = () => {
       const centerY = canvas.height / 2;
       const scale = Math.min(canvas.width, canvas.height) / 400;
 
-      // --- STRONGER SHIMMERING GOLD BACKGROUND ---
-      const shimmer = 20 * Math.sin(seconds * 5); // amplify shimmer
-      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, `hsl(${50 + shimmer}, 100%, 40%)`);
-      gradient.addColorStop(0.5, `hsl(${50 + shimmer * 1.3}, 90%, 60%)`);
-      gradient.addColorStop(1, `hsl(${50 + shimmer * 1.6}, 100%, 50%)`);
-      ctx.fillStyle = gradient;
+      // --- STATIC GOLD BACKGROUND ---
+      ctx.fillStyle = "hsl(50, 100%, 40%)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // --- ROTATING BACKGROUND IMAGE (1 rev per 60s) ---
+      // --- ROTATING BACKGROUND IMAGE ---
       if (bgImage.complete) {
         const bgRotation = ((seconds % 60) / 60) * 2 * Math.PI;
         ctx.save();
         ctx.translate(centerX, centerY);
         ctx.rotate(bgRotation);
-        ctx.filter = "contrast(1.0) brightness(0.7) saturate(1.1)";
+        ctx.filter = "contrast(1.1) brightness(1.2) saturate(1.6)";
         const imgScale =
-          0.8 *
-          Math.max(canvas.width / bgImage.width, canvas.height / bgImage.height);
+          0.8 * Math.max(canvas.width / bgImage.width, canvas.height / bgImage.height);
         ctx.drawImage(
           bgImage,
           (-bgImage.width / 2) * imgScale,
@@ -64,7 +58,6 @@ const GoldenChordsClock = () => {
 
       // --- CLOCK HANDS ---
       const clockRadius = R * 0.6 * scale;
-
       const drawHand = (angle, length, width, color) => {
         ctx.save();
         ctx.globalAlpha = 0.9;
@@ -86,18 +79,23 @@ const GoldenChordsClock = () => {
       drawHand((hours * 2 * Math.PI) / 12, clockRadius * 1.0, 8 * scale, "#F1EB6BFF");
       drawHand((minutes * 2 * Math.PI) / 60, clockRadius * 1.5, 4.5 * scale, "#F1EB6BFF");
 
-      // --- GOLDEN CHORDS ---
+      // --- GOLDEN CHORDS PULLED TOWARD CENTER ---
       const chordRotation = -(seconds * 2 * Math.PI) / 60;
       const halfChordAngle = Math.asin(Math.min(1, chordLength / (2 * R)));
+      const extension = Math.max(canvas.width, canvas.height) * 1.5;
+
+      // offsetFactor: 0 = exact center, 1 = original starting point (further out)
+      const offsetFactor = 0.28; // smaller = closer to center
 
       for (let i = 0; i < numChords; i++) {
         const angleOffset = chordRotation + (i * 2 * Math.PI) / numChords;
-        const x1 = centerX + R * Math.cos(angleOffset - halfChordAngle) * scale;
-        const y1 = centerY + R * Math.sin(angleOffset - halfChordAngle) * scale;
-        const x2 = centerX + R * Math.cos(angleOffset + halfChordAngle) * scale;
-        const y2 = centerY + R * Math.sin(angleOffset + halfChordAngle) * scale;
 
-        const grad = ctx.createLinearGradient(x1, y1, x2, y2);
+        const startX = centerX + Math.cos(angleOffset - halfChordAngle) * extension * offsetFactor;
+        const startY = centerY + Math.sin(angleOffset - halfChordAngle) * extension * offsetFactor;
+        const endX = centerX + Math.cos(angleOffset + halfChordAngle) * extension;
+        const endY = centerY + Math.sin(angleOffset + halfChordAngle) * extension;
+
+        const grad = ctx.createLinearGradient(startX, startY, endX, endY);
         grad.addColorStop(0, "rgba(255, 215, 0, 1)");
         grad.addColorStop(0.25, "rgba(255, 224, 102, 0.9)");
         grad.addColorStop(0.5, "rgba(255, 248, 176, 0.7)");
@@ -106,25 +104,25 @@ const GoldenChordsClock = () => {
 
         ctx.save();
         ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
         ctx.strokeStyle = grad;
         ctx.lineWidth = 4 * scale;
         ctx.shadowColor = "rgba(255, 215, 0, 0.9)";
-        ctx.shadowBlur = 60 * scale; // stronger glow
+        ctx.shadowBlur = 60 * scale;
         ctx.stroke();
         ctx.restore();
 
-        // reflection
-        const reflectionGrad = ctx.createLinearGradient(x1, y1, x2, y2);
+        // Reflection
+        const reflectionGrad = ctx.createLinearGradient(startX, startY, endX, endY);
         reflectionGrad.addColorStop(0, "rgba(255,255,255,0.6)");
         reflectionGrad.addColorStop(0.5, "rgba(255,255,255,0.2)");
         reflectionGrad.addColorStop(1, "rgba(255,255,255,0)");
         ctx.save();
         ctx.globalAlpha = 0.9;
         ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
         ctx.strokeStyle = reflectionGrad;
         ctx.lineWidth = 1.5 * scale;
         ctx.stroke();
@@ -140,18 +138,12 @@ const GoldenChordsClock = () => {
     };
     window.addEventListener("resize", handleResize);
     handleResize();
-
     requestAnimationFrame(draw);
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{ width: "100vw", height: "100dvh", display: "block" }}
-    />
-  );
+  return <canvas ref={canvasRef} style={{ width: "100vw", height: "100dvh", display: "block" }} />;
 };
 
 export default GoldenChordsClock;

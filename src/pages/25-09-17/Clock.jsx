@@ -8,9 +8,10 @@ const pad = (n) => n.toString().padStart(2, '0');
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
   const [isLoaded, setIsLoaded] = useState(false);
+  const [activeDigit, setActiveDigit] = useState(null);
 
   useEffect(() => {
-    // Inject @font-face dynamically
+    // Inject @font-face and animation keyframes dynamically
     const style = document.createElement('style');
     style.textContent = `
       @font-face {
@@ -20,6 +21,15 @@ const DigitalClock = () => {
         font-style: normal;
         font-display: swap;
         font-variation-settings: 'wght' 400;
+      }
+      @keyframes gentleRock {
+        0% { transform: translateX(0) rotate(0deg); }
+        25% { transform: translateX(5px) rotate(2deg); }
+        75% { transform: translateX(-5px) rotate(-2deg); }
+        100% { transform: translateX(0) rotate(0deg); }
+      }
+      .rocking {
+        animation: gentleRock 1s ease-in-out;
       }
     `;
     document.head.appendChild(style);
@@ -54,6 +64,30 @@ const DigitalClock = () => {
       setTime(new Date());
     }, 1000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Handle digit rocking animation
+  useEffect(() => {
+    // Start after 1-second delay
+    const initialDelay = setTimeout(() => {
+      // Order of digits: hours[0], hours[1], minutes[0], minutes[1], seconds[0], seconds[1], ampm[0], ampm[1]
+      const digitOrder = ['hours0', 'hours1', 'minutes0', 'minutes1', 'seconds0', 'seconds1', 'ampm0', 'ampm1'];
+      let index = 0;
+
+      const animateDigit = () => {
+        setActiveDigit(digitOrder[index]);
+        // Move to next digit after 1 second
+        setTimeout(() => {
+          setActiveDigit(null); // Clear animation
+          index = (index + 1) % digitOrder.length; // Cycle through digits
+          animateDigit(); // Trigger next digit
+        }, 1000);
+      };
+
+      animateDigit();
+    }, 1000);
+
+    return () => clearTimeout(initialDelay);
   }, []);
 
   const hours = pad(time.getHours() % 12 || 12);
@@ -113,6 +147,7 @@ const DigitalClock = () => {
             color: '#F65427FF',
             opacity: 0.9,
           }}
+          className={activeDigit === 'hours0' ? 'rocking' : ''}
         >
           {hours[0]}
         </div>
@@ -126,6 +161,7 @@ const DigitalClock = () => {
             color: '#F112C8FF',
             opacity: 0.8,
           }}
+          className={activeDigit === 'hours1' ? 'rocking' : ''}
         >
           {hours[1]}
         </div>
@@ -141,6 +177,7 @@ const DigitalClock = () => {
             color: '#07DFDFFF',
             opacity: 0.9,
           }}
+          className={activeDigit === 'minutes0' ? 'rocking' : ''}
         >
           {minutes[0]}
         </div>
@@ -153,6 +190,7 @@ const DigitalClock = () => {
             fontSize: '33vh',
             color: '#F0F406FF',
           }}
+          className={activeDigit === 'minutes1' ? 'rocking' : ''}
         >
           {minutes[1]}
         </div>
@@ -168,6 +206,7 @@ const DigitalClock = () => {
             color: '#EB0CC5FF',
             opacity: 0.7,
           }}
+          className={activeDigit === 'seconds0' ? 'rocking' : ''}
         >
           {seconds[0]}
         </div>
@@ -181,6 +220,7 @@ const DigitalClock = () => {
             color: '#AEF606FF',
             opacity: 0.8,
           }}
+          className={activeDigit === 'seconds1' ? 'rocking' : ''}
         >
           {seconds[1]}
         </div>
@@ -197,6 +237,7 @@ const DigitalClock = () => {
             opacity: 0.7,
             fontWeight: 'bold',
           }}
+          className={activeDigit === 'ampm0' ? 'rocking' : ''}
         >
           {ampm[0]}
         </div>
@@ -211,6 +252,7 @@ const DigitalClock = () => {
             opacity: 0.8,
             fontWeight: 'bold',
           }}
+          className={activeDigit === 'ampm1' ? 'rocking' : ''}
         >
           {ampm[1]}
         </div>
