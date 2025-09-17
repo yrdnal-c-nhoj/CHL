@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import backgroundImage from './crush.jpg';
 import fontFile from './crush.ttf';
+import centerImage from './cru.gif'; // replace with your image file
 
 const pad = (n) => n.toString().padStart(2, '0');
 
@@ -32,7 +33,14 @@ const DigitalClock = () => {
       img.onerror = reject;
     });
 
-    Promise.all([fontPromise, imagePromise])
+    const centerImgPromise = new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = centerImage;
+      img.onload = resolve;
+      img.onerror = reject;
+    });
+
+    Promise.all([fontPromise, imagePromise, centerImgPromise])
       .then(() => setIsLoaded(true))
       .catch((err) => {
         console.error('Asset loading error:', err);
@@ -50,10 +58,9 @@ const DigitalClock = () => {
 
   // Blink logic
   useEffect(() => {
-    // Start 1 second after load
     const blinkTimeout = setTimeout(() => {
       let currentIndex = 0;
-      const digitsCount = 10; // total digits: hours[0,1], minutes[0,1], seconds[0,1], AM/PM[0,1]
+      const digitsCount = 10; // hours, minutes, seconds, AM/PM
       const blinkInterval = setInterval(() => {
         setBlinkIndex(currentIndex);
         currentIndex = (currentIndex + 1) % digitsCount;
@@ -69,7 +76,6 @@ const DigitalClock = () => {
   const seconds = pad(time.getSeconds());
   const ampm = time.getHours() >= 12 ? 'PM' : 'AM';
 
-  // Map digits into an array for easier blinking management
   const digits = [
     hours[0], hours[1],
     minutes[0], minutes[1],
@@ -109,8 +115,29 @@ const DigitalClock = () => {
         }}
       />
 
+      {/* Center Image */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '40%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '25vw',
+          height: '25vh',
+          opacity:'0.6',
+          transform: 'rotate(32deg)',
+          zIndex: 2, // above background but below digits
+        }}
+      >
+        <img
+          src={centerImage}
+          alt="Center"
+          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+        />
+      </div>
+
       {/* Clock digits */}
-      <div style={{ position: 'relative', zIndex: 2 }}>
+      <div style={{ position: 'relative', zIndex: 3 }}>
         {/* Hours */}
         <div
           style={{
