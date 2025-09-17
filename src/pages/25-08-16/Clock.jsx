@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import imageLeft from './pal.webp';
 import clockFace from './palm.webp';
 import customFontUrl from './palm.ttf';
-import hourHandImage from './p1.webp';
+import hourHandImage from './p1.gif';
 import minuteHandImage from './p2.webp';
-import secondHandImage from './p3.webp';
+import secondHandImage from './p3.gif';
 
 const CLOCK_FONT_FAMILY = 'ClockFont__Scoped_9k2';
 
