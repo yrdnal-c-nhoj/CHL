@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import Header from './components/Header';
 import ClockPageNav from './components/ClockPageNav';
@@ -8,7 +8,6 @@ import styles from './ClockPage.module.css';
 // Preload all Clock.jsx files under /pages/**/Clock.jsx using Vite's glob import
 const clockModules = import.meta.glob('./pages/**/Clock.jsx');
 
-// Helper functions
 const formatTitle = (title) => title?.replace(/clock/i, '').trim() || 'Home';
 const formatDate = (dateStr) => {
   if (!dateStr) return '';
@@ -21,7 +20,7 @@ const isValidDateFormat = (date) => /^\d{2}-\d{2}-\d{2}$/.test(date);
 const normalizeDate = (d) => d.split('-').map((n) => n.padStart(2, '0')).join('-');
 
 const ClockPage = () => {
-  const { date } = useParams(); // YY-MM-DD
+  const { date } = useParams();
   const { items, loading, error } = useContext(DataContext);
   const navigate = useNavigate();
 
@@ -30,7 +29,7 @@ const ClockPage = () => {
   const [footerVisible, setFooterVisible] = useState(true);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [isContentReady, setIsContentReady] = useState(false);
-  const [showContent, setShowContent] = useState(false); // New state for controlling content visibility
+  const [showContent, setShowContent] = useState(false);
 
   // -------------------------------
   // Load Clock component dynamically
@@ -67,9 +66,6 @@ const ClockPage = () => {
 
     const key = `./pages/${item.path}/Clock.jsx`;
 
-    console.log('Available keys:', Object.keys(clockModules));
-    console.log('Attempting to load key:', key);
-
     if (clockModules[key]) {
       clockModules[key]()
         .then((mod) => {
@@ -87,15 +83,17 @@ const ClockPage = () => {
   }, [date, items, loading, navigate]);
 
   // -------------------------------
-  // Show content with fade-in after everything is ready
+  // Wait for fonts to be ready
   // -------------------------------
   useEffect(() => {
     if (isContentReady && !loading && !error && !pageError) {
-      // Small delay to ensure smooth transition
-      const timer = setTimeout(() => {
-        setShowContent(true);
-      }, 100);
-      return () => clearTimeout(timer);
+      // wait until fonts are loaded before showing content
+      document.fonts.ready.then(() => {
+        const timer = setTimeout(() => {
+          setShowContent(true);
+        }, 100); // slight delay for smoother fade
+        return () => clearTimeout(timer);
+      });
     }
   }, [isContentReady, loading, error, pageError]);
 
@@ -121,7 +119,7 @@ const ClockPage = () => {
   }, []);
 
   // -------------------------------
-  // Auto-hide header shortly after load
+  // Auto-hide header
   // -------------------------------
   useEffect(() => {
     if (showContent) {
@@ -144,41 +142,33 @@ const ClockPage = () => {
   // -------------------------------
   let currentIndex = -1;
   let currentItem = null;
-
   if (items && items.length > 0) {
     currentIndex = items.findIndex((i) => normalizeDate(i.date) === normalizeDate(date));
     currentItem = currentIndex >= 0 ? items[currentIndex] : null;
   }
-
   const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
   const nextItem =
     currentIndex >= 0 && currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
 
   // -------------------------------
-  // Loading overlay component
+  // Loading overlay
   // -------------------------------
   const LoadingOverlay = () => (
     <div 
       style={{
         position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
+        top: 0, left: 0,
+        width: '100vw', height: '100vh',
         backgroundColor: '#000',
         zIndex: 9999,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
         opacity: showContent ? 0 : 1,
         visibility: showContent ? 'hidden' : 'visible',
         transition: 'opacity 0.5s ease-out, visibility 0.5s ease-out'
       }}
     >
-      {/* Optional: Add a subtle loading indicator */}
       <div style={{
-        width: '2px',
-        height: '20px',
+        width: '2px', height: '20px',
         backgroundColor: '#333',
         animation: 'pulse 1.5s ease-in-out infinite'
       }} />
@@ -249,8 +239,7 @@ const ClockPage = () => {
           formatDate={formatDate}
         />
       </div>
-      
-      {/* Add CSS for pulse animation */}
+
       <style jsx>{`
         @keyframes pulse {
           0%, 100% { opacity: 0.3; }
