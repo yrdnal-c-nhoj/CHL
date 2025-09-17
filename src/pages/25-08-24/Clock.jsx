@@ -100,7 +100,7 @@ const styles = {
     width: "100%",
     height: "100%",
     objectFit: "cover",
-    filter: "blur(5px)",
+    // filter: "blur(5px)",
     zIndex: 0,
   },
   clock: {
