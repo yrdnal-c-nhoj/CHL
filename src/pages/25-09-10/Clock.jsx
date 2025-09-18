@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 // Local images
 import bgImage from "./bg.webp";
@@ -14,7 +14,12 @@ const Clock = () => {
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
 
+  const [isReady, setIsReady] = useState(false);
+
+  // Clock ticking
   useEffect(() => {
+    if (!isReady) return;
+
     const updateClock = () => {
       const now = new Date();
       const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
@@ -36,26 +41,69 @@ const Clock = () => {
     const interval = setInterval(updateClock, 20);
     updateClock();
     return () => clearInterval(interval);
+  }, [isReady]);
+
+  // Preload font and background
+  useEffect(() => {
+    let fontLoaded = false;
+    let imageLoaded = false;
+
+    const checkReady = () => {
+      if (fontLoaded && imageLoaded) setIsReady(true);
+    };
+
+    // Load font
+    const font = new FontFace("CustomLavaFont_25_09_18", `url(${customLavaFont})`);
+    font.load().then(() => {
+      fontLoaded = true;
+      checkReady();
+    });
+
+    // Load background image
+    const img = new Image();
+    img.src = bgImage;
+    img.onload = () => {
+      imageLoaded = true;
+      checkReady();
+    };
   }, []);
+
+  if (!isReady) {
+    return <div style={{ width: "100vw", height: "100dvh", backgroundColor: "black" }} />;
+  }
 
   return (
     <div
       style={{
-        height: "100dvh",
         width: "100vw",
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        fontFamily: "'CustomFont', sans-serif",
+        height: "100dvh",
         position: "relative",
+        overflow: "hidden",
+        fontFamily: "'CustomLavaFont_25_09_18', sans-serif",
       }}
     >
+      {/* Scoped font injection */}
       <style>{`
         @font-face {
-          font-family: 'CustomFont';
+          font-family: 'CustomLavaFont_25_09_18';
           src: url(${customLavaFont}) format('opentype');
         }
       `}</style>
+
+      {/* Background */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100dvh",
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          zIndex: 1,
+        }}
+      />
 
       {/* Clock face container */}
       <div
@@ -68,10 +116,9 @@ const Clock = () => {
           height: "95vmin",
           borderRadius: "50%",
           background: "rgba(255,255,255,0.05)",
-          zIndex: 1,
+          zIndex: 2,
         }}
       >
-        {/* Numbers 1–12 */}
         {[...Array(12)].map((_, i) => {
           const angle = (i + 1) * 30;
           const radius = 40;
@@ -88,11 +135,11 @@ const Clock = () => {
                 fontSize: "4rem",
                 color: "#EA81E0FF",
                 textShadow: `
-                  7px 0 0.9rem red,
+                  0.7rem 0 0.9rem red,
                   -0.3rem 0 0.3rem yellow
                 `,
                 textAlign: "center",
-                zIndex: 1,
+                zIndex: 3,
               }}
             >
               {i + 1}
@@ -101,7 +148,7 @@ const Clock = () => {
         })}
       </div>
 
-      {/* Clock hands, centered in viewport */}
+      {/* Clock hands */}
       <img
         ref={hourRef}
         src={hourHand}
@@ -112,8 +159,8 @@ const Clock = () => {
           left: "50%",
           width: "17vmin",
           height: "29vmin",
-          transformOrigin: "50% 100%", // Rotate around bottom center
-          zIndex: 3,
+          transformOrigin: "50% 100%",
+          zIndex: 4,
         }}
       />
       <img
@@ -126,8 +173,8 @@ const Clock = () => {
           left: "50%",
           width: "16vmin",
           height: "45vmin",
-          transformOrigin: "50% 100%", // Rotate around bottom center
-          zIndex: 2,
+          transformOrigin: "50% 100%",
+          zIndex: 5,
         }}
       />
       <img
@@ -140,8 +187,8 @@ const Clock = () => {
           left: "50%",
           width: "12vmin",
           height: "48vmin",
-          transformOrigin: "50% 100%", // Rotate around bottom center
-          zIndex: 4,
+          transformOrigin: "50% 100%",
+          zIndex: 6,
         }}
       />
     </div>
