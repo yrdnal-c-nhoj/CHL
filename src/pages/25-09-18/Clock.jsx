@@ -1,196 +1,165 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef } from "react";
+import matrixFont from "./matrix.ttf"; // Your Matrix-style font
 
-function getClockTime() {
-  const now = new Date();
-  const h = now.getHours();
-  const m = now.getMinutes();
-  const s = now.getSeconds();
-  return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-}
-
-const UFO_HOVER_X = 49;     // VW at hover
-const UFO_ENTER_START = 112; // VW off-screen right
-const UFO_LEAVE_END = 125;  // VW off-screen right
-const CLOCK_BASE_Y = 80;    // DVH on desert
-const CLOCK_SCRUNCH_Y = 78; // DVH slight squish
-const CLOCK_SUCKED_Y = 44;  // DVH sucked up to UFO
-const ABDUCTION_DELAY = 1700; // How long UFO hovers before abducting
-const CLOCK_SCRUNCH_DURATION = 700;
-const CLOCK_SUCK_UP_DURATION = 1300;
-const UFO_LEAVE_DURATION = 2000;
-const CLOCK_REAPPEAR_DELAY = 1300;
-const LOOP_DELAY = 1000;    // Delay before loop restarts
-
-export default function DesertUFOSequence() {
-  const [stage, setStage] = useState(0);
-  const [ufoX, setUfoX] = useState(UFO_ENTER_START);
-  const [clockY, setClockY] = useState(CLOCK_BASE_Y);
-  const [clockScale, setClockScale] = useState(1);
-  const [beam, setBeam] = useState(false);
-  const [clockVisible, setClockVisible] = useState(true);
-  const [clockOpacity, setClockOpacity] = useState(1);
-  const [clockText, setClockText] = useState(getClockTime());
+export default function MatrixRain() {
+  const canvasRef = useRef(null);
 
   useEffect(() => {
-    const interval = setInterval(() => setClockText(getClockTime()), 1000);
-    return () => clearInterval(interval);
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
+    // Inject font
+    const style = document.createElement("style");
+    style.textContent = `
+      @font-face {
+        font-family: 'MatrixFont';
+        src: url(${matrixFont}) format('truetype');
+      }
+    `;
+    document.head.appendChild(style);
+
+    const resizeCanvas = () => {
+      canvas.height = window.innerHeight;
+      canvas.width = window.innerWidth;
+    };
+    resizeCanvas();
+
+    // Characters to use in the rain (digits + letters + AM/PM)
+    const getTimeChars = () => {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes();
+      const ampm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12 || 12;
+      const timeStr =
+        hours.toString().padStart(2, "0") +
+        minutes.toString().padStart(2, "0") +
+        ampm;
+      return timeStr.split("");
+    };
+
+    let fontSize = Math.max(44, canvas.width / 40);
+    let columns = Math.floor(canvas.width / fontSize);
+
+    // Initialize drops
+    const drops = [];
+    const initDrops = () => {
+      const chars = getTimeChars();
+      for (let i = 0; i < columns; i++) {
+        drops[i] = {
+          y: Math.random() * canvas.height,
+          speed: 1 + Math.random() * 0.5,
+          length: Math.random() * 20 + 15,
+          chars: Array(30).fill().map(() => chars[Math.floor(Math.random() * chars.length)]),
+          timeChar: chars[i % chars.length],
+        };
+      }
+    };
+    initDrops();
+
+    let animationId;
+    let frameCount = 0;
+
+    const draw = () => {
+      frameCount++;
+
+      // Semi-transparent black background to create fading trail effect
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.font = `${fontSize}px 'MatrixFont', monospace`;
+      ctx.textAlign = "center";
+
+      if (frameCount % 120 === 0) {
+        const chars = getTimeChars();
+        drops.forEach((drop, i) => {
+          drop.timeChar = chars[i % chars.length];
+          drop.chars = drop.chars.map(() => chars[Math.floor(Math.random() * chars.length)]);
+        });
+      }
+
+      drops.forEach((drop, i) => {
+        for (let j = 0; j < drop.length; j++) {
+          let y = drop.y - j * fontSize;
+
+          // Wrap Y position so the column is always full
+          if (y > canvas.height) y -= canvas.height + drop.length * fontSize;
+          if (y < -fontSize) y += canvas.height + drop.length * fontSize;
+
+          const char = j === 0 ? drop.timeChar : drop.chars[j % drop.chars.length];
+          const alpha = 1 - j / drop.length;
+
+          if (j === 0) {
+            ctx.fillStyle = "#ffffff";
+            ctx.shadowColor = "#00ff41";
+            ctx.shadowBlur = 15;
+          } else {
+            ctx.fillStyle = `rgba(0, 255, 65, ${alpha})`;
+            ctx.shadowColor = "#00ff41";
+            ctx.shadowBlur = 6;
+          }
+
+          ctx.fillText(char, i * fontSize + fontSize / 2, y);
+          ctx.shadowBlur = 0;
+        }
+
+        drop.y += drop.speed;
+
+        // Recycle characters seamlessly at the top
+        if (drop.y > canvas.height + drop.length * fontSize) {
+          drop.y -= canvas.height + drop.length * fontSize;
+          const chars = getTimeChars();
+          drop.chars = drop.chars.map(() => chars[Math.floor(Math.random() * chars.length)]);
+          drop.timeChar = chars[i % chars.length];
+        }
+      });
+
+      animationId = requestAnimationFrame(draw);
+    };
+
+    const handleResize = () => {
+      resizeCanvas();
+      fontSize = Math.max(44, canvas.width / 40);
+      columns = Math.floor(canvas.width / fontSize);
+
+      const chars = getTimeChars();
+      while (drops.length < columns) {
+        const i = drops.length;
+        drops.push({
+          y: Math.random() * canvas.height,
+          speed: 1 + Math.random() * 0.5,
+          length: Math.random() * 20 + 15,
+          chars: Array(30).fill().map(() => chars[Math.floor(Math.random() * chars.length)]),
+          timeChar: chars[i % chars.length],
+        });
+      }
+      if (drops.length > columns) drops.length = columns;
+    };
+
+    window.addEventListener("resize", handleResize);
+    animationId = requestAnimationFrame(draw);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener("resize", handleResize);
+      document.head.removeChild(style);
+    };
   }, []);
 
-  useEffect(() => {
-    let timer;
-    if (stage === 0) { // UFO enters
-      setClockVisible(true); setClockOpacity(1); setClockScale(1); setClockY(CLOCK_BASE_Y);
-      setBeam(false); setUfoX(UFO_ENTER_START);
-      timer = setTimeout(() => {
-        setUfoX(UFO_HOVER_X);
-        setStage(1);
-      }, 1800);
-    }
-    else if (stage === 1) { // UFO hovers over clock
-      setBeam(false); setUfoX(UFO_HOVER_X);
-      timer = setTimeout(() => setStage(2), ABDUCTION_DELAY);
-    }
-    else if (stage === 2) { // Clock scrunch
-      setBeam(true);
-      // Animate "scrunch": shrink width, lower opacity, squish closer to ground for dramatic tension.
-      setClockScale(0.6); setClockY(CLOCK_SCRUNCH_Y);
-      timer = setTimeout(() => setStage(3), CLOCK_SCRUNCH_DURATION);
-    }
-    else if (stage === 3) { // Suck up clock (clock moves up, fades out)
-      let step = 0;
-      const steps = 22;
-      const suckInterval = setInterval(() => {
-        setClockY(prev => Math.max(CLOCK_SUCKED_Y, prev - ((CLOCK_SCRUNCH_Y - CLOCK_SUCKED_Y) / steps)));
-        setClockOpacity(prev => Math.max(0, prev - (1/steps)));
-        step++;
-        if (step >= steps) {
-          clearInterval(suckInterval);
-          setClockVisible(false);
-          setStage(4);
-        }
-      }, CLOCK_SUCK_UP_DURATION / steps);
-    }
-    else if (stage === 4) { // UFO leaves right
-      setBeam(false);
-      let step = 0;
-      const steps = 26;
-      const leaveInterval = setInterval(() => {
-        setUfoX(prev => Math.min(UFO_LEAVE_END, prev + ((UFO_LEAVE_END - UFO_HOVER_X) / steps)));
-        step++;
-        if (step >= steps) {
-          clearInterval(leaveInterval);
-          setUfoX(UFO_ENTER_START);
-          setStage(5);
-        }
-      }, UFO_LEAVE_DURATION / steps);
-    }
-    else if (stage === 5) { // Clock reappears
-      setClockY(CLOCK_BASE_Y); setClockScale(1); setClockOpacity(1); setClockVisible(true);
-      timer = setTimeout(() => setStage(6), CLOCK_REAPPEAR_DELAY);
-    }
-    else if (stage === 6) { // UFO comes in and abducts again
-      setUfoX(UFO_ENTER_START);
-      timer = setTimeout(() => {
-        setUfoX(UFO_HOVER_X);
-        setStage(7);
-      }, 1800);
-    }
-    else if (stage === 7) { // UFO hovers, beam appears quickly, then abduction
-      setBeam(true);
-      setTimeout(() => setStage(2), 400); // Immediate re-abduction: go back to "scrunch"
-    }
-    else if (stage === 8) { // (Optional any extra repeat stage. Otherwise restart loop)
-      timer = setTimeout(() => setStage(0), LOOP_DELAY);
-    }
-    return () => timer && clearTimeout(timer);
-  }, [stage]);
-
   return (
-    <div style={{
-      position: 'relative',
-      width: '100vw',
-      height: '100dvh',
-      overflow: 'hidden',
-      background: 'linear-gradient(180deg, #050b1a 0%, #21233c 65%, #b29971 100%)'
-    }}>
-      <div style={{
-        position: 'absolute',
-        left: 0, bottom: 0,
-        width: '100vw', height: '26dvh',
-        background: 'linear-gradient(180deg, #b29971 20%, #d7c28e 100%)'
-      }} />
-      {/* Digital Clock */}
-      {clockVisible && (
-        <div style={{
-          position: 'absolute',
-          left: '50vw', transform: `translateX(-50%) scale(${clockScale})`,
-          top: `${clockY}dvh`,
-          color: '#fffefc',
-          background: 'rgba(25,23,45, 0.8)',
-          fontFamily: 'monospace',
-          fontSize: '3.5rem',
-          padding: '1.2rem 2.5rem',
-          borderRadius: '2rem',
-          boxShadow: '0 0 3rem 1rem #efe6c8',
-          textAlign: 'center',
-          opacity: clockOpacity
-        }}>
-          {clockText}
-        </div>
-      )}
-      {/* UFO */}
-      <div style={{
-        position: 'absolute',
-        top: `36dvh`,
-        left: `${ufoX}vw`,
-        width: '10vw',
-        height: '4.8dvh',
-        background: 'radial-gradient(circle,#cacde1 70%,#a5abbf 100%)',
-        borderRadius: '50%/55%',
-        boxShadow: '0 0 6rem 0.8rem #b7c3f2',
-        zIndex: 4,
-        transition: 'left 0.4s linear'
-      }}>
-        {/* UFO dome */}
-        <div style={{
-          position: 'absolute',
-          left: '1vw',
-          top: '-2dvh',
-          width: '8vw',
-          height: '2dvh',
-          background: 'radial-gradient(circle,#e8e8e8 60%,#acb3c7 100%)',
-          borderRadius: '50%'
-        }} />
-        {/* Beam */}
-        {beam && (
-          <div style={{
-            position: 'absolute',
-            left: '4vw', top: '2dvh',
-            width: '2vw', height: '44dvh',
-            background: 'linear-gradient(180deg, rgba(194,241,255,0.48) 0%, rgba(255,255,192,0.18) 85%, rgba(255,230,192,0.00) 100%)',
-            borderRadius: '0.8vw',
-            filter: 'blur(0.25rem)'
-          }} />
-        )}
-      </div>
-      {Array.from({length:18}).map((_,i)=>(
-        <div key={i} style={{
-          position:'absolute',
-          left:`${(6+i*5)%100}vw`,
-          top:`${(150 + i*11)%85}dvh`,
-          width:'0.44rem', height:'0.44rem',
-          borderRadius:'50%',
-          background:'#fff',
-          opacity:0.52 + (i%3)*0.15
-        }} />
-      ))}
-      <div style={{
-        position:'absolute',
-        left:0,top:0,
-        width:'100vw',height:'100dvh',
-        pointerEvents:'none',
-        background: 'radial-gradient(ellipse at 54vw 8dvh, rgba(40,60,140,0.27) 0%,rgba(30,32,49,0.65) 100%)'
-      }} />
-    </div>
+    <canvas
+      ref={canvasRef}
+      style={{
+        display: "block",
+        background: "#000000",
+        width: "100vw",
+        height: "100dvh",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        zIndex: 0,
+        pointerEvents: "none",
+      }}
+    />
   );
 }
