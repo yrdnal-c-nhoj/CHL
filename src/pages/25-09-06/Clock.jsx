@@ -1,48 +1,51 @@
 import { useState, useEffect } from 'react';
-import font_06_09_2025 from './boom.ttf'; // custom font
-import bgImage from './boo.jpg'; // full-screen background
+import font_06_09_2025 from './boom.ttf';
+import bgImage from './boo.jpg';
 import hourHandImg from './b1.gif';
 import minuteHandImg from './b2.gif';
 import secondHandImg from './b3.gif';
-import tickImg from './b.gif'; // tick image
+import tickImg from './b.gif';
 
 const AnalogClock = () => {
   const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
+  // Preload font + background image
   useEffect(() => {
-    // Load font manually to avoid FOUT
-    const font = new FontFace('analogClockFont', `url(${font_06_09_2025})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-      setFontLoaded(true);
+    let fontLoaded = false;
+    let imageLoaded = false;
+
+    const checkReady = () => {
+      if (fontLoaded && imageLoaded) setIsReady(true);
+    };
+
+    const font = new FontFace('AnalogClockFont_06_09_2025', `url(${font_06_09_2025})`);
+    font.load().then(() => {
+      fontLoaded = true;
+      checkReady();
     });
+
+    const img = new Image();
+    img.src = bgImage;
+    img.onload = () => {
+      imageLoaded = true;
+      checkReady();
+    };
   }, []);
 
+  // Update clock every second
   useEffect(() => {
+    if (!isReady) return;
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isReady]);
 
-  if (!fontLoaded) {
-    // While font is loading, keep background but hide text
-    return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100dvh',
-          backgroundImage: `url(${bgImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      />
-    );
+  if (!isReady) {
+    // black screen until everything loaded
+    return <div style={{ width: '100vw', height: '100dvh', backgroundColor: 'black' }} />;
   }
 
-  const clockSize = 50; // vh
+  const clockSize = 50; // in vh
   const radius = clockSize / 2;
 
   const hours = time.getHours();
@@ -60,24 +63,46 @@ const AnalogClock = () => {
       style={{
         width: '100vw',
         height: '100dvh',
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        position: 'relative',
+        fontFamily: "'AnalogClockFont_06_09_2025', sans-serif",
       }}
     >
+      {/* Scoped font */}
+      <style>{`
+        @font-face {
+          font-family: 'AnalogClockFont_06_09_2025';
+          src: url(${font_06_09_2025}) format('truetype');
+        }
+      `}</style>
+
+      {/* Background */}
       <div
         style={{
+          position: 'absolute',
+          width: '100vw',
+          height: '100dvh',
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          zIndex: 0,
+        }}
+      />
+
+      {/* Clock container */}
+      <div
+        style={{
+          position: 'absolute',
           width: `${clockSize}vh`,
           height: `${clockSize}vh`,
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
           borderRadius: '50%',
           position: 'relative',
-          fontFamily: 'analogClockFont',
+          zIndex: 1,
         }}
       >
-        {/* Hour Numbers */}
+        {/* Numbers */}
         {Array.from({ length: 12 }).map((_, i) => {
           const angle = (i * 360) / 12 - 90;
           const digitRadius = radius * 0.85;
@@ -94,17 +119,16 @@ const AnalogClock = () => {
                 transform: 'translate(-50%, -50%)',
                 fontSize: '4rem',
                 fontWeight: 'bold',
-                userSelect: 'none',
-                background:
-                  'linear-gradient(45deg, #8B5A2B, #A0522D, #CD853F, #D2B48C)',
+                background: 'linear-gradient(45deg, #8B5A2B, #A0522D, #CD853F, #D2B48C)',
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
                 color: 'transparent',
                 textShadow: `
-                  1px 1px 2px rgba(0,0,0,0.6),
-                  -1px -1px 1px rgba(255,255,255,0.3),
-                  2px 2px 4px rgba(0,0,0,0.7)
+                  0.1rem 0.1rem 0.2rem rgba(0,0,0,0.6),
+                  -0.1rem -0.1rem 0.1rem rgba(255,255,255,0.3),
+                  0.2rem 0.2rem 0.4rem rgba(0,0,0,0.7)
                 `,
+                userSelect: 'none',
               }}
             >
               {i === 0 ? 12 : i}
@@ -129,8 +153,6 @@ const AnalogClock = () => {
                 height: `${tickLength}rem`,
                 transform: `translate(-50%, -50%) rotate(${angle}deg) translate(0, -${radius}vh)`,
                 transformOrigin: '50% 50%',
-                filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.6))',
-                userSelect: 'none',
               }}
             />
           );
@@ -148,8 +170,6 @@ const AnalogClock = () => {
             height: `${radius * 0.5}vh`,
             transform: `translate(-50%, -50%) rotate(${hourAngle}deg) translate(0, -${radius * 0.25}vh)`,
             transformOrigin: '50% 50%',
-            filter: 'drop-shadow(2px 2px 2px rgba(0,0,0,0.7))',
-            userSelect: 'none',
           }}
         />
 
@@ -165,8 +185,6 @@ const AnalogClock = () => {
             height: `${radius * 0.7}vh`,
             transform: `translate(-50%, -50%) rotate(${minuteAngle}deg) translate(0, -${radius * 0.35}vh)`,
             transformOrigin: '50% 50%',
-            filter: 'drop-shadow(2px 2px 2px rgba(0,0,0,0.7))',
-            userSelect: 'none',
           }}
         />
 
@@ -182,8 +200,6 @@ const AnalogClock = () => {
             height: `${radius * 0.9}vh`,
             transform: `translate(-50%, -50%) rotate(${secondAngle}deg) translate(0, -${radius * 0.45}vh)`,
             transformOrigin: '50% 50%',
-            filter: 'drop-shadow(2px 2px 2px rgba(0,0,0,0.7))',
-            userSelect: 'none',
           }}
         />
       </div>
