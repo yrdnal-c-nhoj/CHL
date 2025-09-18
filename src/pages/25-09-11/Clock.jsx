@@ -7,13 +7,13 @@ const MedievalBanner = () => {
   const [time, setTime] = useState(new Date());
   const [isReady, setIsReady] = useState(false);
 
-  // Keep clock ticking
+  // Clock ticking
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // Preload font and background image
+  // Preload font, background image, and optionally SVG
   useEffect(() => {
     let fontLoaded = false;
     let imageLoaded = false;
@@ -22,9 +22,10 @@ const MedievalBanner = () => {
       if (fontLoaded && imageLoaded) setIsReady(true);
     };
 
-    // Load font but do NOT add globally
+    // Load font
     const font = new FontFace('ClockFont_25_09_18', `url(${medievalFont})`);
     font.load().then(() => {
+      document.fonts.add(font); // Make sure it’s usable in the page
       fontLoaded = true;
       checkReady();
     });
@@ -46,9 +47,8 @@ const MedievalBanner = () => {
 
   const { hours, minutes } = formatTime(time);
 
-  if (!isReady) {
-    return <div style={{ width: '100vw', height: '100dvh', backgroundColor: 'black' }} />;
-  }
+  // Show nothing until everything is loaded
+  if (!isReady) return null;
 
   return (
     <div
@@ -59,6 +59,7 @@ const MedievalBanner = () => {
         padding: 0,
         overflow: 'hidden',
         position: 'relative',
+        backgroundColor: 'black', // fallback while rendering
       }}
     >
       {/* Background */}
@@ -115,16 +116,11 @@ const MedievalBanner = () => {
             0 0 2rem #FFD700
           `,
           animation: 'sparkle 1.5s infinite alternate',
+          fontFamily: 'ClockFont_25_09_18, monospace',
         }}
       >
-        {/* Scoped font injected here */}
         <style>
           {`
-            @font-face {
-              font-family: 'ClockFont_25_09_18';
-              src: url(${medievalFont});
-            }
-
             @keyframes sparkle {
               0% { text-shadow: 0 0 0.5rem #fff8dc, 0 0 1rem #FFD700, 0 0 1.5rem #FFA500, 0 0 2rem #FFD700; }
               50% { text-shadow: 0 0 1rem #fff8dc, 0 0 2rem #FFD700, 0 0 3rem #FFA500, 0 0 4rem #FFD700; }
@@ -132,10 +128,7 @@ const MedievalBanner = () => {
             }
           `}
         </style>
-
-        <span style={{ fontFamily: 'ClockFont_25_09_18, monospace' }}>
-          {hours}{minutes}
-        </span>
+        {hours}{minutes}
       </div>
     </div>
   );

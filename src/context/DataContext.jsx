@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
-import clockPagesData from './clockpages.json'; // <-- Import local JSON
+import prodData from './clockpages.json';
+import testData from './testclock.json';
 
-// Context
 export const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
@@ -13,6 +13,10 @@ export const DataProvider = ({ children }) => {
 
   useEffect(() => {
     try {
+      // Pick JSON file based on environment variable
+      const env = import.meta.env.VITE_ENVIRONMENT;
+      const clockPagesData = env === 'testing' ? testData : prodData;
+
       if (!clockPagesData || clockPagesData.length === 0) {
         throw new Error('No data found in JSON file.');
       }
