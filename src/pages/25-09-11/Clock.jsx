@@ -7,13 +7,13 @@ const MedievalBanner = () => {
   const [time, setTime] = useState(new Date());
   const [isReady, setIsReady] = useState(false);
 
-  // keep clock ticking
+  // Keep clock ticking
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // preload font + background
+  // Preload font and background image
   useEffect(() => {
     let fontLoaded = false;
     let imageLoaded = false;
@@ -22,15 +22,14 @@ const MedievalBanner = () => {
       if (fontLoaded && imageLoaded) setIsReady(true);
     };
 
-    // load font using FontFace API
-    const font = new FontFace('ClockFont', `url(${medievalFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
+    // Load font but do NOT add globally
+    const font = new FontFace('ClockFont_25_09_18', `url(${medievalFont})`);
+    font.load().then(() => {
       fontLoaded = true;
       checkReady();
     });
 
-    // load background image
+    // Load background image
     const img = new Image();
     img.src = backgroundImage;
     img.onload = () => {
@@ -48,16 +47,7 @@ const MedievalBanner = () => {
   const { hours, minutes } = formatTime(time);
 
   if (!isReady) {
-    // black screen until everything is loaded
-    return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100dvh',
-          backgroundColor: 'black',
-        }}
-      />
-    );
+    return <div style={{ width: '100vw', height: '100dvh', backgroundColor: 'black' }} />;
   }
 
   return (
@@ -84,7 +74,6 @@ const MedievalBanner = () => {
           backgroundPosition: 'center',
           zIndex: 1,
           filter: 'brightness(1.7) saturate(0.1)',
-          transform: 'scaleX(-1)',
         }}
       />
 
@@ -92,10 +81,11 @@ const MedievalBanner = () => {
       <div
         style={{
           position: 'absolute',
-          top: -60,
-          left: 0,
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
           width: '100vw',
-          height: '125dvh',
+          height: '100dvh',
           zIndex: 2,
         }}
       >
@@ -113,34 +103,40 @@ const MedievalBanner = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontFamily: 'ClockFont, monospace',
           fontSize: '12dvh',
           background: 'linear-gradient(45deg, #FFD700, #FFA500, #FFF8DC)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           letterSpacing: '0.1em',
           textShadow: `
-            0 0 5px #fff8dc,
-            0 0 10px #FFD700,
-            0 0 15px #FFA500,
-            0 0 20px #FFD700
+            0 0 0.5rem #fff8dc,
+            0 0 1rem #FFD700,
+            0 0 1.5rem #FFA500,
+            0 0 2rem #FFD700
           `,
           animation: 'sparkle 1.5s infinite alternate',
         }}
       >
-        {hours}{minutes}
-      </div>
+        {/* Scoped font injected here */}
+        <style>
+          {`
+            @font-face {
+              font-family: 'ClockFont_25_09_18';
+              src: url(${medievalFont});
+            }
 
-      {/* Sparkle animation */}
-      <style>
-        {`
-          @keyframes sparkle {
-            0% { text-shadow: 0 0 5px #fff8dc, 0 0 10px #FFD700, 0 0 15px #FFA500, 0 0 20px #FFD700; }
-            50% { text-shadow: 0 0 10px #fff8dc, 0 0 20px #FFD700, 0 0 30px #FFA500, 0 0 40px #FFD700; }
-            100% { text-shadow: 0 0 5px #fff8dc, 0 0 10px #FFD700, 0 0 15px #FFA500, 0 0 20px #FFD700; }
-          }
-        `}
-      </style>
+            @keyframes sparkle {
+              0% { text-shadow: 0 0 0.5rem #fff8dc, 0 0 1rem #FFD700, 0 0 1.5rem #FFA500, 0 0 2rem #FFD700; }
+              50% { text-shadow: 0 0 1rem #fff8dc, 0 0 2rem #FFD700, 0 0 3rem #FFA500, 0 0 4rem #FFD700; }
+              100% { text-shadow: 0 0 0.5rem #fff8dc, 0 0 1rem #FFD700, 0 0 1.5rem #FFA500, 0 0 2rem #FFD700; }
+            }
+          `}
+        </style>
+
+        <span style={{ fontFamily: 'ClockFont_25_09_18, monospace' }}>
+          {hours}{minutes}
+        </span>
+      </div>
     </div>
   );
 };
