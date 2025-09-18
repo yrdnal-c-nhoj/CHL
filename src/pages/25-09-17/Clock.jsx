@@ -98,9 +98,9 @@ const DigitalClock = () => {
     {
       src: overlay1,
       top: '25%',
-      left: '85%',
-      width: '20vw',
-      height: '20vh',
+      left: '65%',
+      width: '30vw',
+      height: '30vh',
       rotate: '35deg',
       opacity: 0.3,
       filter: 'saturate(150%) hue-rotate(50deg)',
@@ -109,7 +109,7 @@ const DigitalClock = () => {
     {
       src: overlay2,
       top: '50%',
-      left: '70%',
+      left: '85%',
       width: '25vw',
       height: '25vh',
       rotate: '-30deg',
@@ -119,13 +119,13 @@ const DigitalClock = () => {
     },
     {
       src: overlay3,
-      top: '75%',
+      top: '85%',
       left: '75%',
-      width: '35vw',
-      height: '25vh',
+      width: '45vw',
+      height: '45vh',
       rotate: '0deg',
       opacity: 0.4,
-      filter: 'saturate(200%) hue-rotate(-260deg)',
+      filter: 'saturate(20%) hue-rotate(-260deg)',
       zIndex: 7,
     },
   ];
@@ -164,7 +164,7 @@ const DigitalClock = () => {
           transform: 'translate(-50%, -50%) rotate(-32deg)',
           width: '35vw',
           height: '35vh',
-          opacity: 0.2,
+          opacity: 0.5,
           filter: 'saturate(120%) hue-rotate(290deg)',
           zIndex: 2,
         }}
@@ -185,7 +185,7 @@ const DigitalClock = () => {
           transform: 'translate(-50%, -50%) rotate(20deg)',
           width: '30vw',
           height: '30vh',
-          opacity: 0.3,
+          opacity: 0.7,
           filter: 'saturate(150%) hue-rotate(10deg)',
           zIndex: 4,
         }}
