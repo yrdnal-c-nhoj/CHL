@@ -227,7 +227,7 @@ const DigitalClock = () => {
         <div style={{ position: 'absolute', top: '1vh', left: '2rem', transform: 'rotate(23deg)', fontSize: '23vh', color: '#F65427FF', opacity: getOpacity(0, 0.9), transition: 'opacity 0.5s ease-in-out' }}>
           {digits[0]}
         </div>
-        <div style={{ position: 'absolute', top: '16vh', left: '10rem', transform: 'rotate(-20deg)', fontSize: '29vh', color: '#F112C8FF', opacity: getOpacity(1, 0.8), transition: 'opacity 0.5s ease-in-out' }}>
+        <div style={{ position: 'absolute', top: '16vh', left: '10rem', transform: 'rotate(-20deg)', fontSize: '29vh', color: '#589CE9FF', opacity: getOpacity(1, 0.8), transition: 'opacity 0.5s ease-in-out' }}>
           {digits[1]}
         </div>
 
