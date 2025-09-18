@@ -6,6 +6,16 @@ const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
   const [prevTime, setPrevTime] = useState(new Date());
   const [isHorizontal, setIsHorizontal] = useState(window.innerWidth >= 768);
+  const [fontLoaded, setFontLoaded] = useState(false); // <-- track font load
+
+  useEffect(() => {
+    // Load custom font before showing content
+    const font = new FontFace('CustomClockFont', `url(${customFont})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      setFontLoaded(true); // font is ready
+    });
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -31,8 +41,7 @@ const DigitalClock = () => {
 
   const current = formatTime(time);
   const previous = formatTime(prevTime);
-
-  const replaceNine = (str) => str.replace(/9/g, 'q'); // <-- key function
+  const replaceNine = (str) => str.replace(/9/g, 'q');
 
   const containerStyle = {
     width: '100vw',
@@ -44,14 +53,12 @@ const DigitalClock = () => {
     backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    fontFamily: 'CustomClockFont',
+    fontFamily: fontLoaded ? 'CustomClockFont' : 'sans-serif', // <-- fallback
+    visibility: fontLoaded ? 'visible' : 'hidden', // hide until font ready
   };
 
-  const rowStyle = {
-    display: 'flex',
-  };
-
-  const digitBoxStyle = {   
+  const rowStyle = { display: 'flex' };
+  const digitBoxStyle = {
     padding: '1rem 1.2rem',
     fontSize: '6rem',
     minWidth: '4rem',
@@ -60,8 +67,7 @@ const DigitalClock = () => {
     position: 'relative',
     overflow: 'hidden',
   };
-
-    const digitStyle = {
+  const digitStyle = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -77,8 +83,8 @@ const DigitalClock = () => {
         rgba(128,128,128,0.9) 40%,     
         rgba(128,128,128,0.9) 50%, 
         rgba(225,225,255,0.9) 85%,
-        white 90%,   /* starts pure white */
-        white 100%   /* stays pure white bottom 10% */
+        white 90%, 
+        white 100%
       )
     `,
     WebkitBackgroundClip: 'text',
@@ -88,27 +94,17 @@ const DigitalClock = () => {
     opacity: 0.8,
   };
 
-
   const renderRow = (currentStr, previousStr, boxStyle) =>
-    replaceNine(currentStr).split('').map((digit, idx) => (
-      <div key={idx} style={{ ...boxStyle, position: 'relative' }}>
-        <div style={digitStyle}>{digit}</div>
-      </div>
-    ));
+    replaceNine(currentStr)
+      .split('')
+      .map((digit, idx) => (
+        <div key={idx} style={{ ...boxStyle, position: 'relative' }}>
+          <div style={digitStyle}>{digit}</div>
+        </div>
+      ));
 
   return (
     <div style={containerStyle}>
-      <style>
-        {`
-          @font-face {
-            font-family: 'CustomClockFont';
-            src: url(${customFont}) format('truetype');
-            font-weight: normal;
-            font-style: normal;
-          }
-        `}
-      </style>
-
       {/* Hours */}
       <div style={rowStyle}>{renderRow(current.hours, previous.hours, digitBoxStyle)}</div>
 
