@@ -74,6 +74,7 @@ const MedievalBanner = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           zIndex: 1,
+          transform: 'scaleX(-1)', // <-- flips horizonta
           filter: 'brightness(1.7) saturate(0.1)',
         }}
       />
