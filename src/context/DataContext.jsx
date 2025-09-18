@@ -1,7 +1,9 @@
+// DataProvider.jsx
 import React, { createContext, useState, useEffect } from 'react';
 import prodData from './clockpages.json';
 import testData from './testclock.json';
 
+// Create context
 export const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
@@ -9,19 +11,21 @@ export const DataProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Validate date format: "yy-mm-dd"
   const isValidDateFormat = (date) => /^\d{2}-\d{2}-\d{2}$/.test(date);
 
   useEffect(() => {
     try {
-      // Pick JSON file based on environment variable
-      const env = import.meta.env.VITE_ENVIRONMENT;
-      const clockPagesData = env === 'testing' ? testData : prodData;
+      // Use environment variable to pick JSON
+      const env = import.meta.env.VITE_ENVIRONMENT || 'production';
+      const clockData = env === 'testing' ? testData : prodData;
 
-      if (!clockPagesData || clockPagesData.length === 0) {
+      if (!clockData || clockData.length === 0) {
         throw new Error('No data found in JSON file.');
       }
 
-      const parsedItems = clockPagesData.map((row, index) => {
+      // Parse JSON rows
+      const parsedItems = clockData.map((row, index) => {
         let path = row.path?.toString().trim().replace(/^\/|\/$/g, '') || '';
         if (!path && row.date) path = row.date.toString().trim();
 
@@ -35,6 +39,7 @@ export const DataProvider = ({ children }) => {
         };
       });
 
+      // Keep only valid items
       const validItems = parsedItems.filter(
         (item) => item.path && isValidDateFormat(item.date)
       );
