@@ -24,7 +24,7 @@ export default function MatrixRain() {
     };
     resizeCanvas();
 
-    // Characters to use in the rain (digits + letters + AM/PM)
+    // Clock string → ["0","7","3","5","P","M"]
     const getTimeChars = () => {
       const now = new Date();
       let hours = now.getHours();
@@ -50,50 +50,40 @@ export default function MatrixRain() {
           y: Math.random() * canvas.height,
           speed: 1 + Math.random() * 0.5,
           length: Math.random() * 20 + 15,
-          chars: Array(30).fill().map(() => chars[Math.floor(Math.random() * chars.length)]),
-          timeChar: chars[i % chars.length],
+          offset: Math.floor(Math.random() * chars.length),
         };
       }
     };
     initDrops();
 
     let animationId;
-    let frameCount = 0;
 
     const draw = () => {
-      frameCount++;
-
-      // Semi-transparent black background to create fading trail effect
+      // trail effect
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.font = `${fontSize}px 'MatrixFont', monospace`;
       ctx.textAlign = "center";
 
-      if (frameCount % 120 === 0) {
-        const chars = getTimeChars();
-        drops.forEach((drop, i) => {
-          drop.timeChar = chars[i % chars.length];
-          drop.chars = drop.chars.map(() => chars[Math.floor(Math.random() * chars.length)]);
-        });
-      }
+      const chars = getTimeChars(); // update each frame for live time
 
       drops.forEach((drop, i) => {
         for (let j = 0; j < drop.length; j++) {
           let y = drop.y - j * fontSize;
 
-          // Wrap Y position so the column is always full
           if (y > canvas.height) y -= canvas.height + drop.length * fontSize;
           if (y < -fontSize) y += canvas.height + drop.length * fontSize;
 
-          const char = j === 0 ? drop.timeChar : drop.chars[j % drop.chars.length];
-          const alpha = 1 - j / drop.length;
+          const charIndex = (drop.offset + j) % chars.length;
+          const char = chars[charIndex];
 
           if (j === 0) {
-            ctx.fillStyle = "#ffffff";
+            ctx.fillStyle = "#ffffff"; // bright leader
             ctx.shadowColor = "#00ff41";
             ctx.shadowBlur = 15;
           } else {
+            const alpha = 1 - j / drop.length;
             ctx.fillStyle = `rgba(0, 255, 65, ${alpha})`;
             ctx.shadowColor = "#00ff41";
             ctx.shadowBlur = 6;
@@ -105,12 +95,9 @@ export default function MatrixRain() {
 
         drop.y += drop.speed;
 
-        // Recycle characters seamlessly at the top
         if (drop.y > canvas.height + drop.length * fontSize) {
           drop.y -= canvas.height + drop.length * fontSize;
-          const chars = getTimeChars();
-          drop.chars = drop.chars.map(() => chars[Math.floor(Math.random() * chars.length)]);
-          drop.timeChar = chars[i % chars.length];
+          drop.offset = Math.floor(Math.random() * chars.length);
         }
       });
 
@@ -121,19 +108,7 @@ export default function MatrixRain() {
       resizeCanvas();
       fontSize = Math.max(44, canvas.width / 40);
       columns = Math.floor(canvas.width / fontSize);
-
-      const chars = getTimeChars();
-      while (drops.length < columns) {
-        const i = drops.length;
-        drops.push({
-          y: Math.random() * canvas.height,
-          speed: 1 + Math.random() * 0.5,
-          length: Math.random() * 20 + 15,
-          chars: Array(30).fill().map(() => chars[Math.floor(Math.random() * chars.length)]),
-          timeChar: chars[i % chars.length],
-        });
-      }
-      if (drops.length > columns) drops.length = columns;
+      initDrops();
     };
 
     window.addEventListener("resize", handleResize);
