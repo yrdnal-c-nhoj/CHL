@@ -1,38 +1,45 @@
 import React, { useState, useEffect } from "react";
 import bgImage from "./oort.jpg";
-import customFont from "./oort.ttf";
 
 export default function AnalogClock() {
   const [ready, setReady] = useState(false);
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
+    // Inject CSS for spinning background + responsive clock
     const styleEl = document.createElement("style");
     styleEl.innerHTML = `
-      @font-face {
-        font-family: "CustomClockFont";
-        src: url(${customFont}) format("truetype");
-        font-display: swap;
-      }
       @keyframes spinBackground {
         from { transform: rotate(0deg); }
         to { transform: rotate(360deg); }
       }
+
+      .clock-face {
+        position: relative;
+        border-radius: 50%;
+        border: 2px solid;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #08B0CDFF;
+        z-index: 1;
+        width: 50vw;   /* default for laptops */
+        height: 40vh;
+      }
+
+      @media (max-width: 768px) {
+        .clock-face {
+          width: 60vw;   /* mobile width */
+          height: 80vh;  /* mobile taller height */
+        }
+      }
     `;
     document.head.appendChild(styleEl);
 
-    const loadFont = document.fonts.load("1rem CustomClockFont");
-
+    // Preload background image
     const img = new Image();
     img.src = bgImage;
-
-    Promise.all([
-      loadFont,
-      new Promise((res, rej) => {
-        img.onload = res;
-        img.onerror = rej;
-      }),
-    ]).then(() => setReady(true));
+    img.onload = () => setReady(true);
 
     let animationFrameId;
     const updateTime = () => {
@@ -92,29 +99,14 @@ export default function AnalogClock() {
       />
 
       {/* Clock face */}
-      <div
-        style={{
-          position: "relative",
-          width: "80vw",
-          height: "80vw",
-          // maxHeight: "80dvh",
-          borderRadius: "50%",
-          border: "2px solid",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: "CustomClockFont",
-          color: "#08B0CDFF",
-          zIndex: 1,
-        }}
-      >
+      <div className="clock-face">
         {/* Hour hand */}
         <div
           style={{
             position: "absolute",
             width: "1px",
             height: "20%",
-            backgroundColor: "#0E1010FF",
+            backgroundColor: "#DEE5F5FF",
             transformOrigin: "50% 100%",
             transform: `rotate(${hourDeg}deg) translateY(-50%)`,
             top: "30%",
@@ -124,10 +116,9 @@ export default function AnalogClock() {
         <div
           style={{
             position: "absolute",
-             width: "1px",
+            width: "1px",
             height: "30%",
-              backgroundColor: "#0E1010FF",
-            transformOrigin: "50% 100%",
+   backgroundColor: "#E1E7F9FF",            transformOrigin: "50% 100%",
             transform: `rotate(${minDeg}deg) translateY(-50%)`,
             top: "20%",
           }}
@@ -136,10 +127,9 @@ export default function AnalogClock() {
         <div
           style={{
             position: "absolute",
-             width: "1px",
+            width: "1px",
             height: "40%",
-             backgroundColor: "#0E1010FF",
-            transformOrigin: "50% 100%",
+   backgroundColor: "#BCCBF7FF",            transformOrigin: "50% 100%",
             transform: `rotate(${secDeg}deg) translateY(-50%)`,
             top: "10%",
           }}
