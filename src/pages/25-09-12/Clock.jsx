@@ -7,21 +7,20 @@ const App = () => {
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
-  const offscreenStarRef = useRef(null);
 
   const STAR_LAYERS = [
-    { count: 190, sizeMin: 0.5, sizeMax: 2.0, speed: 0.15, color: "#E5EAF8", opacity: 0.4 },
-    { count: 120, sizeMin: 0.5, sizeMax: 2.5, speed: 0.2, color: "#F9E7E7", opacity: 0.6 },
-    { count: 70, sizeMin: 0.8, sizeMax: 2.7, speed: 0.25, color: "#F4F3E1", opacity: 0.8 },
+    { count: 250, sizeMin: 0.5, sizeMax: 2.0, speed: 0.15, color: "#E5EAF8", opacity: 0.4 },
+    { count: 100, sizeMin: 0.5, sizeMax: 2.5, speed: 0.2, color: "#F9E7E7", opacity: 0.6 },
+    { count: 50, sizeMin: 0.8, sizeMax: 2.7, speed: 0.25, color: "#F4F3E1", opacity: 0.8 },
   ];
 
   const CONFIG = {
     HOUR_NUMBERS: ["🌕", "🌔", "🌓", "🌒", "🌙", "🌛", "🌚", "🌜", "🌙", "🌘", "🌗", "🌖"],
     CENTER_DOT_COLOR: "white",
-    SHADOW_COLOR: "rgba(220, 215, 255, 0.5)",
-    SHADOW_BLUR: 20,
-    HAND_SHADOW_COLOR: "rgba(200, 220, 255, 0.5)",
-    HAND_SHADOW_BLUR: 15,
+    SHADOW_COLOR: "rgba(220, 215, 255)",
+    SHADOW_BLUR: 30,
+    HAND_SHADOW_COLOR: "rgba(200, 220, 255)",
+    HAND_SHADOW_BLUR: 22,
     SHEEN_GRADIENT: [
       { stop: 0, color: "rgba(255,255,255,0.1)" },
       { stop: 0.4, color: "rgba(200,200,200,0.05)" },
@@ -40,35 +39,17 @@ const App = () => {
     SIZE_MULTIPLIER: 1.1,
     FONT_SIZES: { laptop: "5rem", phone: "3rem" },
     BREAKPOINT: 768,
-    DEBOUNCE_MS: 200,
   };
 
   useEffect(() => {
     const starCanvas = starCanvasRef.current;
-    const faceCanvas = faceRef.current;
-    const sheenCanvas = sheenRef.current;
-    const hourCanvas = hourRef.current;
-    const minuteCanvas = minuteRef.current;
-    const secondCanvas = secondRef.current;
-    offscreenStarRef.current = document.createElement("canvas");
-
-    const starCtx = starCanvas?.getContext("2d");
-    const faceCtx = faceCanvas?.getContext("2d");
-    const sheenCtx = sheenCanvas?.getContext("2d");
-    const hourCtx = hourCanvas?.getContext("2d");
-    const minuteCtx = minuteCanvas?.getContext("2d");
-    const secondCtx = secondCanvas?.getContext("2d");
-
-    if (!starCtx || !faceCtx || !sheenCtx || !hourCtx || !minuteCtx || !secondCtx) {
-      console.error("Failed to get canvas context");
-      return;
-    }
+    const starCtx = starCanvas.getContext("2d");
 
     let stars;
+    let contexts;
     let radius;
     let fontSize;
     let sheenAngle = 0;
-    let resizeTimeout;
 
     const generateStars = (count, sizeMin, sizeMax, speed) =>
       Array.from({ length: count }, () => ({
@@ -76,10 +57,11 @@ const App = () => {
         y: Math.random() * starCanvas.height,
         size: Math.random() * (sizeMax - sizeMin) + sizeMin,
         speed,
-        twinklePhase: Math.random() * Math.PI * 2,
+        twinklePhase: Math.random() * Math.PI * 2, // for twinkling
       }));
 
-    const createCanvasContext = (canvas, size, dpr) => {
+    const createCanvasContext = (ref, size, dpr) => {
+      const canvas = ref.current;
       canvas.width = size * dpr;
       canvas.height = size * dpr;
       canvas.style.width = `${size}px`;
@@ -89,24 +71,10 @@ const App = () => {
       return ctx;
     };
 
-    const drawStarBackground = (ctx, width, height) => {
-      const verticalGradient = ctx.createLinearGradient(0, 0, 0, height);
-      verticalGradient.addColorStop(0, "#0E0133FF");
-      verticalGradient.addColorStop(1, "#072702FF");
-      ctx.fillStyle = verticalGradient;
-      ctx.fillRect(0, 0, width, height);
-    };
-
     const drawClockFace = (ctx, radius, fontSize) => {
       ctx.save();
       ctx.translate(radius, radius);
       ctx.imageSmoothingEnabled = false;
-
-      // Draw central dot
-      ctx.beginPath();
-      ctx.arc(0, 0, 5, 0, 2 * Math.PI);
-      ctx.fillStyle = CONFIG.CENTER_DOT_COLOR;
-      ctx.fill();
 
       for (let i = 0; i < 12; i++) {
         const angle = (i * 30 * Math.PI) / 180;
@@ -114,11 +82,13 @@ const App = () => {
         ctx.rotate(angle);
         ctx.translate(0, -radius * 0.65);
         ctx.rotate(-angle);
+
         ctx.font = `${fontSize} Times New Roman`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.shadowColor = CONFIG.SHADOW_COLOR;
         ctx.shadowBlur = CONFIG.SHADOW_BLUR;
+
         if (i === 8) {
           ctx.save();
           ctx.scale(-1, 1);
@@ -171,43 +141,42 @@ const App = () => {
     };
 
     const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
-      const size = Math.min(window.innerWidth, window.innerHeight) * CONFIG.SIZE_MULTIPLIER;
-      fontSize = window.innerWidth >= CONFIG.BREAKPOINT ? CONFIG.FONT_SIZES.laptop : CONFIG.FONT_SIZES.phone;
-      radius = size / 2;
-
-      // Star canvas
-      starCanvas.width = window.innerWidth * dpr;
-      starCanvas.height = window.innerHeight * dpr;
-      starCanvas.style.width = `${window.innerWidth}px`;
-      starCanvas.style.height = `${window.innerHeight}px`;
-      starCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      // Offscreen star background
-      offscreenStarRef.current.width = starCanvas.width;
-      offscreenStarRef.current.height = starCanvas.height;
-      const offscreenStarCtx = offscreenStarRef.current.getContext("2d");
-      offscreenStarCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      drawStarBackground(offscreenStarCtx, window.innerWidth, window.innerHeight);
-
-      // Clock canvases
-      createCanvasContext(faceCanvas, size, dpr);
-      createCanvasContext(sheenCanvas, size, dpr);
-      createCanvasContext(hourCanvas, size, dpr);
-      createCanvasContext(minuteCanvas, size, dpr);
-      createCanvasContext(secondCanvas, size, dpr);
+      starCanvas.width = window.innerWidth;
+      starCanvas.height = window.innerHeight;
 
       stars = STAR_LAYERS.map((layer) =>
         generateStars(layer.count, layer.sizeMin, layer.sizeMax, layer.speed)
       );
 
-      drawClockFace(faceCtx, radius, fontSize);
+      const isLaptop = window.innerWidth >= CONFIG.BREAKPOINT;
+      const size = Math.min(window.innerWidth, window.innerHeight) * CONFIG.SIZE_MULTIPLIER;
+      fontSize = isLaptop ? CONFIG.FONT_SIZES.laptop : CONFIG.FONT_SIZES.phone;
+      const dpr = window.devicePixelRatio || 1;
+
+      contexts = {
+        face: createCanvasContext(faceRef, size, dpr),
+        sheen: createCanvasContext(sheenRef, size, dpr),
+        hour: createCanvasContext(hourRef, size, dpr),
+        minute: createCanvasContext(minuteRef, size, dpr),
+        second: createCanvasContext(secondRef, size, dpr),
+      };
+      radius = size / 2;
+
+      drawClockFace(contexts.face, radius, fontSize);
     };
 
     const animate = () => {
+      // ---- Stars ----
       starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
-      starCtx.drawImage(offscreenStarRef.current, 0, 0);
 
+      // vertical gradient
+      const verticalGradient = starCtx.createLinearGradient(0, 0, 0, starCanvas.height);
+      verticalGradient.addColorStop(0, "#0E0133FF");
+      verticalGradient.addColorStop(1, "#072702FF");
+      starCtx.fillStyle = verticalGradient;
+      starCtx.fillRect(0, 0, starCanvas.width, starCanvas.height);
+
+      // stars
       stars.forEach((layer, index) => {
         layer.forEach((star) => {
           const twinkle = 0.5 + 0.5 * Math.sin(Date.now() * 0.002 + star.twinklePhase);
@@ -226,38 +195,27 @@ const App = () => {
       });
       starCtx.globalAlpha = 1.0;
 
+      // ---- Clock ----
       const now = new Date();
       const hours = (now.getHours() % 12) + now.getMinutes() / 60 + now.getSeconds() / 3600;
       const minutes = now.getMinutes() + now.getSeconds() / 60 + now.getMilliseconds() / 60000;
       const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
 
-      drawHand(hourCtx, hours, CONFIG.HAND_CONFIG[0].max, CONFIG.HAND_CONFIG[0].length, CONFIG.HAND_CONFIG[0].width, radius);
-      drawHand(minuteCtx, minutes, CONFIG.HAND_CONFIG[1].max, CONFIG.HAND_CONFIG[1].length, CONFIG.HAND_CONFIG[1].width, radius);
-      drawHand(secondCtx, seconds, CONFIG.HAND_CONFIG[2].max, CONFIG.HAND_CONFIG[2].length, CONFIG.HAND_CONFIG[2].width, radius);
+      drawHand(contexts.hour, hours, CONFIG.HAND_CONFIG[0].max, CONFIG.HAND_CONFIG[0].length, CONFIG.HAND_CONFIG[0].width, radius);
+      drawHand(contexts.minute, minutes, CONFIG.HAND_CONFIG[1].max, CONFIG.HAND_CONFIG[1].length, CONFIG.HAND_CONFIG[1].width, radius);
+      drawHand(contexts.second, seconds, CONFIG.HAND_CONFIG[2].max, CONFIG.HAND_CONFIG[2].length, CONFIG.HAND_CONFIG[2].width, radius);
 
-      drawSheen(sheenCtx, radius, sheenAngle);
       sheenAngle += 0.002;
+      drawSheen(contexts.sheen, radius, sheenAngle);
 
       requestAnimationFrame(animate);
     };
 
-    const debouncedResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(resize, CONFIG.DEBOUNCE_MS);
-    };
+    resize();
+    animate();
+    window.addEventListener("resize", resize);
 
-    try {
-      resize();
-      requestAnimationFrame(animate);
-      window.addEventListener("resize", debouncedResize);
-    } catch (error) {
-      console.error("Animation setup failed:", error);
-    }
-
-    return () => {
-      window.removeEventListener("resize", debouncedResize);
-      clearTimeout(resizeTimeout);
-    };
+    return () => window.removeEventListener("resize", resize);
   }, []);
 
   return (
