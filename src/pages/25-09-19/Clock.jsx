@@ -21,16 +21,16 @@ export default function AnalogClock() {
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #08B0CDFF;
+        color: #0BCAF5FF;
         z-index: 1;
-        width: 50vw;   /* default for laptops */
+        width: 70vw;   /* default for laptops */
         height: 40vh;
       }
 
       @media (max-width: 768px) {
         .clock-face {
           width: 60vw;   /* mobile width */
-          height: 80vh;  /* mobile taller height */
+          height: 90vh;  /* mobile taller height */
         }
       }
     `;
@@ -106,7 +106,7 @@ export default function AnalogClock() {
             position: "absolute",
             width: "1px",
             height: "20%",
-            backgroundColor: "#DEE5F5FF",
+            backgroundColor: "#292A2BFF",
             transformOrigin: "50% 100%",
             transform: `rotate(${hourDeg}deg) translateY(-50%)`,
             top: "30%",
@@ -118,7 +118,7 @@ export default function AnalogClock() {
             position: "absolute",
             width: "1px",
             height: "30%",
-   backgroundColor: "#E1E7F9FF",            transformOrigin: "50% 100%",
+   backgroundColor: "#232325FF",            transformOrigin: "50% 100%",
             transform: `rotate(${minDeg}deg) translateY(-50%)`,
             top: "20%",
           }}
@@ -129,7 +129,7 @@ export default function AnalogClock() {
             position: "absolute",
             width: "1px",
             height: "40%",
-   backgroundColor: "#BCCBF7FF",            transformOrigin: "50% 100%",
+            backgroundColor: "#09E3FBFF",            transformOrigin: "50% 100%",
             transform: `rotate(${secDeg}deg) translateY(-50%)`,
             top: "10%",
           }}
