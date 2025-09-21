@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Four Elements</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .elements {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 2rem;
+      width: 90%;
+      max-width: 1000px;
+    }
+
+    .element {
+      padding: 2rem;
+      border-radius: 10px;
+      color: white;
+      font-size: 1.2rem;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .fire {
+      background-color: #e74c3c; /* red/orange */
+    }
+
+    .water {
+      background-color: #3498db; /* blue */
+    }
+
+    .earth {
+      background-color: #27ae60; /* green */
+    }
+
+    .air {
+      background-color: #f1c40f; /* yellow */
+      color: #333; /* dark text for contrast */
+    }
+
+    footer {
+      margin: 2rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>The Four Classical Elements</h1>
+  <div class="elements">
+    <div class="element fire">
+      <h2>Fire</h2>
+      <p>Fire represents energy, transformation, and passion. In Greek philosophy, it was associated with warmth and the creative force of the universe.</p>
+    </div>
+    <div class="element water">
+      <h2>Water</h2>
+      <p>Water symbolizes emotion, intuition, and fluidity. Greek and Roman philosophers linked it to cleansing, adaptability, and life-giving properties.</p>
+    </div>
+    <div class="element earth">
+      <h2>Earth</h2>
+      <p>Earth stands for stability, nourishment, and material reality. It represents strength, growth, and the grounding forces of nature.</p>
+    </div>
+    <div class="element air">
+      <h2>Air</h2>
+      <p>Air embodies intellect, communication, and movement. Philosophers saw it as essential for life, thought, and the breath of the cosmos.</p>
+    </div>
+  </div>
+  <footer>
+    Greek and Roman philosophy recognized these four elements as the building blocks of all matter.
+  </footer>
+</body>
+</html>

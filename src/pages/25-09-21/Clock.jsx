@@ -1,128 +1,232 @@
-import React, { useState, useEffect } from 'react';
-import backgroundImage from './ccr.gif';
+import React, { useEffect, useState } from "react";
+import stripe2 from "./air.gif";
+import stripe1 from "./fire.gif";
+import stripe3 from "./h2o.gif";
+import stripe4 from "./earth.webp";
+import customFont from "./gre.ttf";
 
-const fontUrl = './crush.ttf';
-
-function Clock() {
-  const [loaded, setLoaded] = useState(false);
+export default function AnalogClock() {
+  const [ready, setReady] = useState(false);
   const [time, setTime] = useState(new Date());
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [fontVar] = useState(`font${new Date().getTime()}`);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    const fontStyle = document.createElement('style');
-    fontStyle.textContent = `
+    const styleEl = document.createElement("style");
+    styleEl.innerHTML = `
       @font-face {
-        font-family: 'StreamlineModerne';
-        src: url('${fontUrl}') format('woff');
-        font-weight: normal;
-        font-style: normal;
+        font-family: '${fontVar}';
+        src: url(${customFont}) format('truetype');
+        font-display: swap;
       }
     `;
-    document.head.appendChild(fontStyle);
-    return () => document.head.removeChild(fontStyle);
-  }, []);
+    document.head.appendChild(styleEl);
 
-  useEffect(() => {
-    const loadResources = async () => {
-      await document.fonts.load('4rem "StreamlineModerne"');
-      const image = new Image();
-      image.src = backgroundImage;
-      await new Promise((resolve, reject) => {
-        image.onload = resolve;
-        image.onerror = reject;
+    const font = new FontFace(fontVar, `url(${customFont})`);
+    font.load().then(() => {
+      document.fonts.add(font);
+
+      const images = [stripe1, stripe2, stripe3, stripe4];
+      let loadedCount = 0;
+      images.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => {
+          loadedCount++;
+          if (loadedCount === images.length) setReady(true);
+        };
       });
-      setLoaded(true);
-    };
-    loadResources();
+    });
   }, []);
 
   useEffect(() => {
+    if (!ready) return;
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [ready]);
 
-  if (!loaded) {
-    return <div style={{ backgroundColor: 'black', width: '100vw', height: '100dvh', position: 'fixed', top: 0, left: 0, zIndex: 9999 }} />;
+  if (!ready) {
+    return <div style={{ width: "100vw", height: "100dvh", backgroundColor: "#F2E8E8FF" }} />;
   }
 
-  const hours = ((time.getHours() % 12) || 12).toString().padStart(2, '0');
-  const minutes = time.getMinutes().toString().padStart(2, '0');
-  const seconds = time.getSeconds().toString().padStart(2, '0');
+  const size = "70vmin";
+  const hour = time.getHours() % 12;
+  const minute = time.getMinutes();
+  const second = time.getSeconds();
 
-  const digitStyle = {
-    display: 'inline-block',
-    width: '3rem',
-    textAlign: 'center',
-    fontFamily: '"StreamlineModerne"',
-    fontSize: '6rem',
-    background: 'linear-gradient(180deg, #e0e0e0, #a0a0a0, #e0e0e0)',
-    borderRadius: '1rem 1rem 0.5rem 0.5rem',
-    boxShadow: '0 0.3rem 0.6rem rgba(0,0,0,0.4), inset 0 0.1rem 0.2rem rgba(255,255,255,0.5)',
-    color: '#333',
-    margin: '0.2rem',
-    padding: '0.5rem 0',
-    textShadow: '0 0.1rem 0.2rem rgba(255,255,255,0.3)',
-  };
+  const hourDeg = (hour + minute / 60) * 30;
+  const minuteDeg = (minute + second / 60) * 6;
+  const secondDeg = second * 6;
 
-  const colonStyle = {
-    fontSize: '6rem',
-    margin: '0 0.5rem',
-    color: '#333',
-    textShadow: '0 0.1rem 0.2rem rgba(255,255,255,0.3)',
-  };
-
-  const containerStyle = {
-    display: 'flex',
-    flexDirection: isMobile ? 'column' : 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100dvh',
-    width: '100vw',
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    overflow: 'hidden',
-  };
-
-  const sectionStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: isMobile ? '1rem 0' : '0 1rem',
-  };
-
-  const renderDigits = (str) => str.split('').map((d, i) => <span key={i} style={digitStyle}>{d}</span>);
-
-  const clockContent = isMobile ? (
-    <>
-      <div style={sectionStyle}>{renderDigits(hours)}</div>
-      <div style={sectionStyle}>{renderDigits(minutes)}</div>
-      <div style={sectionStyle}>{renderDigits(seconds)}</div>
-    </>
-  ) : (
-    <div style={sectionStyle}>
-      {renderDigits(hours)}
-      <span style={colonStyle}>:</span>
-      {renderDigits(minutes)}
-      <span style={colonStyle}>:</span>
-      {renderDigits(seconds)}
-    </div>
-  );
+  const stripes = [stripe1, stripe2, stripe3, stripe4];
 
   return (
-    <div style={containerStyle}>
-      {clockContent}
+    <div
+      style={{
+        width: "100vw",
+        height: "100dvh",
+        position: "relative",
+        overflow: "hidden",
+        backgroundColor: "#EFE9E9FF",
+      }}
+    >
+      {stripes.map((src, idx) => {
+        let mask = "";
+        if (idx === 0)
+          mask = "linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)";
+        else if (idx === 3)
+          mask = "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%)";
+        else
+          mask =
+            "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)";
+
+        let filter = "hue-rotate(0deg) saturate(1) brightness(1) contrast(0.8)";
+        if (idx === 0) filter = "hue-rotate(-30deg) saturate(1.7) brightness(1.1) contrast(1.1)";
+        if (idx === 1) filter = "hue-rotate(18deg) saturate(0.7) brightness(1.0) contrast(1.9)";
+        if (idx === 2) filter = "hue-rotate(-39deg) saturate(1.1) brightness(1.05) contrast(0.9)";
+        if (idx === 3) filter = "sepia(1) hue-rotate(-30deg) saturate(3.2) brightness(1.1) contrast(0.7)";
+
+        const layers = [false, true];
+
+        return (
+          <div
+            key={idx}
+            style={{
+              position: "absolute",
+              top:
+                idx === 0
+                  ? "0"
+                  : idx === 1
+                  ? "22dvh"
+                  : idx === 2
+                  ? "43dvh"
+                  : "calc(100dvh - 28dvh)",
+              left: 0,
+              width: "100vw",
+              height: idx === 1 ? "50dvh" : idx === 2 ? "40dvh" : "28dvh",
+              zIndex: idx,
+            }}
+          >
+            {layers.map((flipped, i) => (
+              <div
+                key={i}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  backgroundImage: `url(${src})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  WebkitMaskImage: mask,
+                  WebkitMaskRepeat: "no-repeat",
+                  WebkitMaskSize: "100% 100%",
+                  maskImage: mask,
+                  maskRepeat: "no-repeat",
+                  maskSize: "100% 100%",
+                  filter: filter,
+                  opacity: 0.5,
+                  transform: flipped ? "scaleX(-1)" : "none",
+                }}
+              />
+            ))}
+          </div>
+        );
+      })}
+
+      {/* Clock overlay */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: size,
+          height: size,
+          borderRadius: "50%",
+          fontFamily: fontVar,
+          zIndex: 10,
+        }}
+      >
+        {/* Clock Numbers */}
+        {Array.from({ length: 12 }, (_, i) => {
+          const angle = ((i + 1) / 12) * 2 * Math.PI;
+          const radius = 28;
+          const x = radius * Math.sin(angle);
+          const y = -radius * Math.cos(angle);
+          return (
+            <div
+              key={i}
+              style={{
+                position: "absolute",
+                left: `calc(50% + ${x}vmin)`,
+                top: `calc(50% + ${y}vmin)`,
+                transform: "translate(-50%, -50%)",
+                fontSize: "3rem",
+                zIndex: 15,
+                fontFamily: fontVar,
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                textShadow: "0.15rem 0.15rem 0.2rem gold",
+              }}
+            >
+              {i + 1}
+            </div>
+          );
+        })}
+
+        {/* Hour Hand */}
+        <div
+          style={{
+            position: "absolute",
+            width: "0.1rem",
+            height: "25%",
+            top: "25%",
+            left: "50%",
+            transformOrigin: "50% 100%",
+            transform: `rotate(${hourDeg}deg)`,
+            borderRadius: "0.4rem",
+            zIndex: 20,
+            background: "linear-gradient(135deg, rgba(254,252,248,0.6), rgba(225,228,232,0.6), rgba(214,226,233,0.6), rgba(254,252,248,0.6))",
+            boxShadow: "0 0.1rem 0.2rem gold",
+          }}
+        />
+
+        {/* Minute Hand */}
+        <div
+          style={{
+            position: "absolute",
+            width: "0.1rem",
+            height: "35%",
+            top: "15%",
+            left: "50%",
+            transformOrigin: "50% 100%",
+            transform: `rotate(${minuteDeg}deg)`,
+            borderRadius: "0.25rem",
+            zIndex: 20,
+            background: "linear-gradient(135deg, rgba(254,252,248,0.6), rgba(225,228,232,0.6), rgba(214,226,233,0.6), rgba(254,252,248,0.6))",
+            boxShadow: "0 0.1rem 0.2rem gold",
+          }}
+        />
+
+        {/* Second Hand */}
+        <div
+          style={{
+            position: "absolute",
+            width: "0.1rem",
+            height: "40%",
+            top: "10%",
+            left: "50%",
+            transformOrigin: "50% 100%",
+            transform: `rotate(${secondDeg}deg)`,
+            borderRadius: "0.125rem",
+            zIndex: 20,
+            // background: "linear-gradient(135deg, rgba(254,252,248,0.6), rgba(225,228,232,0.6), rgba(214,226,233,0.6), rgba(254,252,248,0.6))",
+            boxShadow: "0 0.1rem 0.2rem gold",
+          }}
+        />
+      </div>
     </div>
   );
 }
-
-export default Clock;
