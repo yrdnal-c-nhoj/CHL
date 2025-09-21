@@ -19,7 +19,10 @@ const AnalogClock = () => {
       if (fontLoaded && imageLoaded) setIsReady(true);
     };
 
-    const font = new FontFace('AnalogClockFont_06_09_2025', `url(${font_06_09_2025})`);
+    const font = new FontFace(
+      'AnalogClockFont_06_09_2025',
+      `url(${font_06_09_2025})`
+    );
     font.load().then(() => {
       fontLoaded = true;
       checkReady();
@@ -42,7 +45,9 @@ const AnalogClock = () => {
 
   if (!isReady) {
     // black screen until everything loaded
-    return <div style={{ width: '100vw', height: '100dvh', backgroundColor: 'black' }} />;
+    return (
+      <div style={{ width: '100vw', height: '100dvh', backgroundColor: 'black' }} />
+    );
   }
 
   const clockSize = 50; // in vh
@@ -98,7 +103,6 @@ const AnalogClock = () => {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           borderRadius: '50%',
-          position: 'relative',
           zIndex: 1,
         }}
       >
@@ -119,7 +123,8 @@ const AnalogClock = () => {
                 transform: 'translate(-50%, -50%)',
                 fontSize: '4rem',
                 fontWeight: 'bold',
-                background: 'linear-gradient(45deg, #8B5A2B, #A0522D, #CD853F, #D2B48C)',
+                background:
+                  'linear-gradient(45deg, #8B5A2B, #A0522D, #CD853F, #D2B48C)',
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
                 color: 'transparent',
@@ -168,7 +173,9 @@ const AnalogClock = () => {
             left: '50%',
             width: '3rem',
             height: `${radius * 0.5}vh`,
-            transform: `translate(-50%, -50%) rotate(${hourAngle}deg) translate(0, -${radius * 0.25}vh)`,
+            transform: `translate(-50%, -50%) rotate(${hourAngle}deg) translate(0, -${
+              radius * 0.25
+            }vh)`,
             transformOrigin: '50% 50%',
           }}
         />
@@ -183,7 +190,9 @@ const AnalogClock = () => {
             left: '50%',
             width: '3rem',
             height: `${radius * 0.7}vh`,
-            transform: `translate(-50%, -50%) rotate(${minuteAngle}deg) translate(0, -${radius * 0.35}vh)`,
+            transform: `translate(-50%, -50%) rotate(${minuteAngle}deg) translate(0, -${
+              radius * 0.35
+            }vh)`,
             transformOrigin: '50% 50%',
           }}
         />
@@ -198,7 +207,9 @@ const AnalogClock = () => {
             left: '50%',
             width: '2.7rem',
             height: `${radius * 0.9}vh`,
-            transform: `translate(-50%, -50%) rotate(${secondAngle}deg) translate(0, -${radius * 0.45}vh)`,
+            transform: `translate(-50%, -50%) rotate(${secondAngle}deg) translate(0, -${
+              radius * 0.45
+            }vh)`,
             transformOrigin: '50% 50%',
           }}
         />
