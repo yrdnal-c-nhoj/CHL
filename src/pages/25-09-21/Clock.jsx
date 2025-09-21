@@ -149,29 +149,29 @@ export default function AnalogClock() {
           zIndex: 10,
         }}
       >
-        {/* Clock Numbers */}
-        {Array.from({ length: 12 }, (_, i) => {
-          const angle = ((i + 1) / 12) * 2 * Math.PI;
+        {/* Clock Numbers: only 3, 6, 9, 12 */}
+        {[3, 6, 9, 12].map((num) => {
+          const angle = (num / 12) * 2 * Math.PI;
           const radius = 28;
           const x = radius * Math.sin(angle);
           const y = -radius * Math.cos(angle);
           return (
             <div
-              key={i}
+              key={num}
               style={{
                 position: "absolute",
                 left: `calc(50% + ${x}vmin)`,
                 top: `calc(50% + ${y}vmin)`,
                 transform: "translate(-50%, -50%)",
-                fontSize: "3rem",
+                fontSize: "4rem",
                 zIndex: 15,
                 fontFamily: fontVar,
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
-                textShadow: "0.15rem 0.15rem 0.2rem gold",
+                textShadow: "0.2rem 0.2rem 0.3rem gold",
               }}
             >
-              {i + 1}
+              {num}
             </div>
           );
         })}
@@ -188,7 +188,8 @@ export default function AnalogClock() {
             transform: `rotate(${hourDeg}deg)`,
             borderRadius: "0.4rem",
             zIndex: 20,
-            background: "linear-gradient(135deg, rgba(254,252,248,0.6), rgba(225,228,232,0.6), rgba(214,226,233,0.6), rgba(254,252,248,0.6))",
+            background:
+              "linear-gradient(135deg, rgba(254,252,248,0.6), rgba(225,228,232,0.6), rgba(214,226,233,0.6), rgba(254,252,248,0.6))",
             boxShadow: "0 0.1rem 0.2rem gold",
           }}
         />
@@ -205,7 +206,8 @@ export default function AnalogClock() {
             transform: `rotate(${minuteDeg}deg)`,
             borderRadius: "0.25rem",
             zIndex: 20,
-            background: "linear-gradient(135deg, rgba(254,252,248,0.6), rgba(225,228,232,0.6), rgba(214,226,233,0.6), rgba(254,252,248,0.6))",
+            background:
+              "linear-gradient(135deg, rgba(254,252,248,0.6), rgba(225,228,232,0.6), rgba(214,226,233,0.6), rgba(254,252,248,0.6))",
             boxShadow: "0 0.1rem 0.2rem gold",
           }}
         />
@@ -222,7 +224,6 @@ export default function AnalogClock() {
             transform: `rotate(${secondDeg}deg)`,
             borderRadius: "0.125rem",
             zIndex: 20,
-            // background: "linear-gradient(135deg, rgba(254,252,248,0.6), rgba(225,228,232,0.6), rgba(214,226,233,0.6), rgba(254,252,248,0.6))",
             boxShadow: "0 0.1rem 0.2rem gold",
           }}
         />
