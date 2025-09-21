@@ -185,7 +185,7 @@ const DigitalClock = () => {
           transform: 'translate(-50%, -50%) rotate(20deg)',
           width: '30vw',
           height: '30vh',
-          opacity: 0.7,
+          opacity: 0.3,
           filter: 'saturate(150%) hue-rotate(10deg)',
           zIndex: 4,
         }}
