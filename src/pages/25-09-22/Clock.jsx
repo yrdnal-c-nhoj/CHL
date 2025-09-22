@@ -46,7 +46,7 @@ export default function DigitalClockVideo() {
     style.innerHTML = `
       @keyframes sparkle {
         0% { background-position: 0% 50%; color: #42210B; }
-        25% { color: #8B4513; }
+        25% { color: #8B4512; }
         50% { color: #D4AF37; }
         75% { color: #C28840; }
         100% { background-position: 100% 50%; color: #42210B; }
