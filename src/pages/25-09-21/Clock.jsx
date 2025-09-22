@@ -27,9 +27,7 @@ export default function AnalogClock() {
     let fontLoaded = false;
 
     const checkReady = () => {
-      if (fontLoaded && loadedCount === images.length) {
-        setReady(true);
-      }
+      if (fontLoaded && loadedCount === images.length) setReady(true);
     };
 
     font.load()
@@ -46,11 +44,7 @@ export default function AnalogClock() {
     images.forEach((src) => {
       const img = new Image();
       img.src = src;
-      img.onload = () => {
-        loadedCount++;
-        checkReady();
-      };
-      img.onerror = () => {
+      img.onload = img.onerror = () => {
         loadedCount++;
         checkReady();
       };
@@ -64,10 +58,9 @@ export default function AnalogClock() {
     };
   }, [fontVar]);
 
-  // Smooth time update for continuous hand motion
   useEffect(() => {
     if (!ready) return;
-    const interval = setInterval(() => setTime(new Date()), 16); // ~60fps
+    const interval = setInterval(() => setTime(new Date()), 16);
     return () => clearInterval(interval);
   }, [ready]);
 
@@ -75,35 +68,18 @@ export default function AnalogClock() {
     return <div style={{ width: "100vw", height: "100dvh", backgroundColor: "black" }} />;
   }
 
-  // Current time
   const hour = time.getHours() % 12;
   const minute = time.getMinutes();
   const second = time.getSeconds();
   const millisecond = time.getMilliseconds();
 
-  // Smooth rotation angles
   const hourDeg = (hour + minute / 60 + second / 3600) * 30;
   const minuteDeg = (minute + second / 60 + millisecond / 60000) * 6;
   const secondDeg = (second + millisecond / 1000) * 6;
 
   const stripes = [stripe1, stripe2, stripe3, stripe4];
 
-  // Styles for numbers
-  const numberStyle = {
-    position: "absolute",
-    fontSize: "8rem",
-    fontFamily: fontVar,
-    color: "transparent",
-    WebkitTextStroke: "1.7px rgba(255,255,255,0.9)",
-    textStroke: "1.6px rgba(255,255,255,0.9)",
-    zIndex: 100,
-    opacity: 0.3,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  };
-
-  // Hand style helper
+  // Hand style helper: transparent with thin highlight and dark shadow
   const handStyle = (width, height, top, rotateDeg) => ({
     position: "absolute",
     width: width,
@@ -113,12 +89,31 @@ export default function AnalogClock() {
     transformOrigin: "50% 100%",
     transform: `rotate(${rotateDeg}deg)`,
     backgroundColor: "transparent",
-    border: "1px solid rgba(255,255,255,0.5)",
     borderRadius: "0.25rem",
     zIndex: 20,
-    opacity: 0.5,
-    boxShadow: "0 0.1rem 0.2rem rgba(255, 255, 255,0.9)",
+    boxShadow: `
+      0.05rem 0.05rem 0 rgba(255, 250, 230, 0.8), /* light whitish-gold */
+      -0.05rem -0.05rem 0 rgba(0,0,0,0.8)         /* dark black */
+    `,
   });
+
+  // Numbers style: same effect as hands
+  const numberStyle = {
+    position: "absolute",
+    fontSize: "8rem",
+    fontFamily: fontVar,
+    color: "transparent",
+    WebkitTextFillColor: "transparent",
+    textShadow: `
+      0.05rem 0.05rem 0 rgba(255, 250, 230, 0.8),
+      -0.05rem -0.05rem 0 rgba(0,0,0,0.8)
+    `,
+    zIndex: 100,
+    display: "flex",
+          opacity: "0.3",
+    alignItems: "center",
+    justifyContent: "center",
+  };
 
   return (
     <div
@@ -134,43 +129,22 @@ export default function AnalogClock() {
       {/* Stripes */}
       {stripes.map((src, idx) => {
         let mask = "";
-        if (idx === 0)
-          mask =
-            "linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)";
-        else if (idx === 3)
-          mask =
-            "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%)";
-        else
-          mask =
-            "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)";
+        if (idx === 0) mask = "linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)";
+        else if (idx === 3) mask = "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%)";
+        else mask = "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)";
 
         let filter = "hue-rotate(0deg) saturate(1) brightness(1) contrast(0.8)";
-        if (idx === 0)
-          filter =
-            "hue-rotate(-40deg) saturate(2.2) brightness(1.1) contrast(1.1)";
-        if (idx === 1)
-          filter =
-            "hue-rotate(220deg) saturate(1.9) brightness(1.0) contrast(1.9)";
-        if (idx === 2)
-          filter =
-            "hue-rotate(-19deg) saturate(1.1) brightness(1.05) contrast(1.3)";
-        if (idx === 3)
-          filter =
-            "sepia(1) hue-rotate(20deg) saturate(1.2) brightness(1.1) contrast(0.7)";
+        if (idx === 0) filter = "hue-rotate(-40deg) saturate(2.2) brightness(1.1) contrast(1.1)";
+        if (idx === 1) filter = "hue-rotate(220deg) saturate(1.9) brightness(1.0) contrast(1.9)";
+        if (idx === 2) filter = "hue-rotate(-19deg) saturate(1.1) brightness(1.05) contrast(1.3)";
+        if (idx === 3) filter = "sepia(1) hue-rotate(20deg) saturate(1.2) brightness(1.1) contrast(0.7)";
 
         return (
           <div
             key={idx}
             style={{
               position: "absolute",
-              top:
-                idx === 0
-                  ? "0"
-                  : idx === 1
-                  ? "15dvh"
-                  : idx === 2
-                  ? "49dvh"
-                  : "calc(100dvh - 28dvh)",
+              top: idx === 0 ? "0" : idx === 1 ? "15dvh" : idx === 2 ? "49dvh" : "calc(100dvh - 28dvh)",
               left: 0,
               width: "100vw",
               height: idx === 1 ? "50dvh" : idx === 2 ? "40dvh" : "28dvh",
@@ -218,25 +192,28 @@ export default function AnalogClock() {
           width: "70vw",
           height: "70vw",
           borderRadius: "50%",
+          opacity: "0.8",
           background: "transparent",
           zIndex: 10,
         }}
       >
-        {/* Second hand - full viewport */}
-<div
-  style={{
-    position: "absolute",
-    width: "0.2rem",
-    height: "50dvh", // half viewport height from center
-    top: "50%",       // start at center
-    left: "50%",
-    transformOrigin: "50% 0%", // rotate around the top of the hand
-    transform: `rotate(${secondDeg}deg)`,
-    // backgroundColor: "rgba(255,255,255,0.9)", // optional color to make it visible
-    zIndex: 20,
-    boxShadow: "0 0.1rem 0.2rem rgba(255, 255, 255,0.9)",
-  }}
-/>
+        {/* Full viewport second hand */}
+        <div
+          style={{
+            position: "absolute",
+            width: "0.2rem",
+            height: "50dvh",
+            top: "50%",
+            left: "50%",
+            transformOrigin: "50% 0%",
+            transform: `rotate(${secondDeg}deg)`,
+            backgroundColor: "transparent",
+            boxShadow: `
+              0.05rem 0.05rem 0 rgba(255, 250, 230, 0.8),
+              -0.05rem -0.05rem 0 rgba(0,0,0,0.8)
+            `,
+          }}
+        />
 
         {/* Hour hand */}
         <div style={handStyle("0.5rem", "25%", "25%", hourDeg)} />
