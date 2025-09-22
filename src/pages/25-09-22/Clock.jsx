@@ -7,14 +7,22 @@ export default function DigitalClockVideo() {
   const [videoFailed, setVideoFailed] = useState(false);
   const [time, setTime] = useState(new Date());
   const [isPhone, setIsPhone] = useState(window.innerWidth <= 768);
+  const [isReady, setIsReady] = useState(false); // prevent FOUC
 
-  // Load custom fontpwd
+  // Load custom font
   useEffect(() => {
     const font = new FontFace("CustomFont", `url(${customFont})`);
     font
       .load()
-      .then((loadedFont) => document.fonts.add(loadedFont))
-      .catch(() => console.warn("Custom font failed to load"));
+      .then((loadedFont) => {
+        document.fonts.add(loadedFont);
+        return document.fonts.ready;
+      })
+      .then(() => setIsReady(true))
+      .catch(() => {
+        console.warn("Custom font failed to load");
+        setIsReady(true); // fallback to system font
+      });
   }, []);
 
   // Update time every 10ms
@@ -75,9 +83,9 @@ export default function DigitalClockVideo() {
     justifyContent: "center",
     alignItems: "center",
     fontFamily: "'CustomFont', sans-serif",
+    visibility: isReady ? "visible" : "hidden", // hide until font ready
   };
 
-  // Normal color background
   const mediaStyle = {
     position: "absolute",
     top: 0,
@@ -87,7 +95,7 @@ export default function DigitalClockVideo() {
     objectFit: "cover",
     zIndex: 0,
     pointerEvents: "none",
-    };
+  };
 
   const clockStyle = {
     position: "relative",
@@ -101,12 +109,8 @@ export default function DigitalClockVideo() {
     textAlign: "center",
   };
 
-  const rowStyle = {
-    display: "flex",
-    flexDirection: "row",
-  };
+  const rowStyle = { display: "flex", flexDirection: "row" };
 
-  // Bronze/Gold numbers
   const boxStyle = {
     width: isPhone ? "2.5rem" : "3.2rem",
     height: isPhone ? "3rem" : "3.8rem",
@@ -123,14 +127,11 @@ export default function DigitalClockVideo() {
       "0 0 0.3rem #42210B, 0 0 0.6rem #8B4513, 0 0 1rem #D4AF37, 0 0 1.5rem #C28840",
   };
 
-  // AM/PM style
   const ampmBoxStyle = {
     ...boxStyle,
     width: isPhone ? "4rem" : "6rem",
     minWidth: isPhone ? "4rem" : "6rem",
     fontSize: isPhone ? "1.5rem" : "3rem",
-    textShadow:
-      "0 0 0.3rem #42210B, 0 0 0.6rem #8B4513, 0 0 1rem #D4AF37, 0 0 1.5rem #C28840",
   };
 
   const renderBoxes = (str) =>
