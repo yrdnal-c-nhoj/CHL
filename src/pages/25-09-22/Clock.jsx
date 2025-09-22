@@ -40,14 +40,16 @@ export default function DigitalClockVideo() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Inject keyframes for shimmer/sparkle
+  // Inject keyframes for bronze/gold shimmer
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
       @keyframes sparkle {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+        0% { background-position: 0% 50%; color: #42210B; }
+        25% { color: #8B4513; }
+        50% { color: #D4AF37; }
+        75% { color: #C28840; }
+        100% { background-position: 100% 50%; color: #42210B; }
       }
     `;
     document.head.appendChild(style);
@@ -75,7 +77,7 @@ export default function DigitalClockVideo() {
     fontFamily: "'CustomFont', sans-serif",
   };
 
-  // Nightmare dark background
+  // Normal color background
   const mediaStyle = {
     position: "absolute",
     top: 0,
@@ -85,8 +87,7 @@ export default function DigitalClockVideo() {
     objectFit: "cover",
     zIndex: 0,
     pointerEvents: "none",
-    filter:
-      "invert(1) hue-rotate(200deg) contrast(1.8) saturate(1.5) blur(0.15rem) brightness(0.8)",
+    filter: "blur(0.15rem) brightness(1)", // normal color, slight blur
   };
 
   const clockStyle = {
@@ -106,7 +107,7 @@ export default function DigitalClockVideo() {
     flexDirection: "row",
   };
 
-  // Magical numbers style
+  // Bronze/Gold numbers
   const boxStyle = {
     width: isPhone ? "2.5rem" : "3.2rem",
     height: isPhone ? "3rem" : "3.8rem",
@@ -118,22 +119,19 @@ export default function DigitalClockVideo() {
     fontSize: isPhone ? "3.8rem" : "5.5rem",
     lineHeight: 1,
     textAlign: "center",
-    background: "linear-gradient(90deg, #FFD700, #FFDD55, #FFE27A, #FFD700)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
     animation: "sparkle 3.5s infinite linear",
     textShadow:
-      "0 0 0.5rem #fff7b2, 0 0 1rem #ffe066, 0 0 1.5rem #ffcc00, 0 0 2rem #fff8c2",
+      "0 0 0.3rem #42210B, 0 0 0.6rem #8B4513, 0 0 1rem #D4AF37, 0 0 1.5rem #C28840",
   };
 
-  // AM/PM style (larger on horizontal)
+  // AM/PM style
   const ampmBoxStyle = {
     ...boxStyle,
     width: isPhone ? "4rem" : "6rem",
     minWidth: isPhone ? "4rem" : "6rem",
-    fontSize: isPhone ? "1.5rem" : "3rem", // bigger horizontally
+    fontSize: isPhone ? "1.5rem" : "3rem",
     textShadow:
-      "0 0 0.4rem #fff7b2, 0 0 0.8rem #ffe066, 0 0 1.2rem #ffcc00, 0 0 1.5rem #fff8c2",
+      "0 0 0.3rem #42210B, 0 0 0.6rem #8B4513, 0 0 1rem #D4AF37, 0 0 1.5rem #C28840",
   };
 
   const renderBoxes = (str) =>
