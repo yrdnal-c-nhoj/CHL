@@ -18,10 +18,6 @@ export default function AnalogClock() {
         src: url(${customFont}) format('truetype');
         font-display: swap;
       }
-      @keyframes shimmer {
-        0% { background-position: 0% 50%; }
-        100% { background-position: 200% 50%; }
-      }
     `;
     document.head.appendChild(styleEl);
 
@@ -60,9 +56,7 @@ export default function AnalogClock() {
       };
     });
 
-    const timeout = setTimeout(() => {
-      setReady(true);
-    }, 5000);
+    const timeout = setTimeout(() => setReady(true), 5000);
 
     return () => {
       document.head.removeChild(styleEl);
@@ -70,31 +64,27 @@ export default function AnalogClock() {
     };
   }, [fontVar]);
 
+  // Smooth time update for continuous hand motion
   useEffect(() => {
     if (!ready) return;
-    const interval = setInterval(() => setTime(new Date()), 1000);
+    const interval = setInterval(() => setTime(new Date()), 16); // ~60fps
     return () => clearInterval(interval);
   }, [ready]);
 
   if (!ready) {
-    return (
-      <div
-        style={{
-          width: "100vw",
-          height: "100dvh",
-          backgroundColor: "black",
-        }}
-      />
-    );
+    return <div style={{ width: "100vw", height: "100dvh", backgroundColor: "black" }} />;
   }
 
+  // Current time
   const hour = time.getHours() % 12;
   const minute = time.getMinutes();
   const second = time.getSeconds();
+  const millisecond = time.getMilliseconds();
 
-  const hourDeg = (hour + minute / 60) * 30;
-  const minuteDeg = (minute + second / 60) * 6;
-  const secondDeg = second * 6;
+  // Smooth rotation angles
+  const hourDeg = (hour + minute / 60 + second / 3600) * 30;
+  const minuteDeg = (minute + second / 60 + millisecond / 60000) * 6;
+  const secondDeg = (second + millisecond / 1000) * 6;
 
   const stripes = [stripe1, stripe2, stripe3, stripe4];
 
@@ -232,6 +222,22 @@ export default function AnalogClock() {
           zIndex: 10,
         }}
       >
+        {/* Second hand - full viewport */}
+<div
+  style={{
+    position: "absolute",
+    width: "0.2rem",
+    height: "50dvh", // half viewport height from center
+    top: "50%",       // start at center
+    left: "50%",
+    transformOrigin: "50% 0%", // rotate around the top of the hand
+    transform: `rotate(${secondDeg}deg)`,
+    // backgroundColor: "rgba(255,255,255,0.9)", // optional color to make it visible
+    zIndex: 20,
+    boxShadow: "0 0.1rem 0.2rem rgba(255, 255, 255,0.9)",
+  }}
+/>
+
         {/* Hour hand */}
         <div style={handStyle("0.5rem", "25%", "25%", hourDeg)} />
 
