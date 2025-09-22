@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import customFont from "./gre.ttf?url";
+import customFont from "./ele.ttf?url";
 import stripe1 from "./fire.gif?url";
 import stripe2 from "./air.gif?url";
 import stripe3 from "./h2o.gif?url";
@@ -11,7 +11,6 @@ export default function AnalogClock() {
   const [fontVar] = useState(`font${new Date().getTime()}`);
 
   useEffect(() => {
-    // Inject font and shimmer animation
     const styleEl = document.createElement("style");
     styleEl.innerHTML = `
       @font-face {
@@ -26,7 +25,6 @@ export default function AnalogClock() {
     `;
     document.head.appendChild(styleEl);
 
-    // Preload font and background images
     const font = new FontFace(fontVar, `url(${customFont})`);
     const images = [stripe1, stripe2, stripe3, stripe4];
     let loadedCount = 0;
@@ -44,9 +42,8 @@ export default function AnalogClock() {
         fontLoaded = true;
         checkReady();
       })
-      .catch((err) => {
-        console.error(`Font load failed: ${err}`);
-        fontLoaded = true; // Proceed even if font fails
+      .catch(() => {
+        fontLoaded = true;
         checkReady();
       });
 
@@ -58,20 +55,17 @@ export default function AnalogClock() {
         checkReady();
       };
       img.onerror = () => {
-        console.error(`Image load failed: ${src}`);
         loadedCount++;
         checkReady();
       };
     });
 
-    // Timeout to prevent infinite loading
     const timeout = setTimeout(() => {
-      console.warn("Loading timeout, proceeding with rendering");
       setReady(true);
     }, 5000);
 
     return () => {
-      document.head.removeChild(styleEl); // Cleanup to avoid style leakage
+      document.head.removeChild(styleEl);
       clearTimeout(timeout);
     };
   }, [fontVar]);
@@ -104,6 +98,38 @@ export default function AnalogClock() {
 
   const stripes = [stripe1, stripe2, stripe3, stripe4];
 
+  // Styles for numbers
+  const numberStyle = {
+    position: "absolute",
+    fontSize: "9rem",
+    fontFamily: fontVar,
+    color: "transparent",
+    WebkitTextStroke: "1.7px rgba(255,255,255,0.9)",
+    textStroke: "1.6px rgba(255,255,255,0.9)",
+    zIndex: 100,
+    opacity: 0.3,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  };
+
+  // Hand style helper
+  const handStyle = (width, height, top, rotateDeg) => ({
+    position: "absolute",
+    width: width,
+    height: height,
+    top: top,
+    left: "50%",
+    transformOrigin: "50% 100%",
+    transform: `rotate(${rotateDeg}deg)`,
+    backgroundColor: "transparent",
+    border: "2px solid rgba(255,255,255,0.5)",
+    borderRadius: "0.25rem",
+    zIndex: 20,
+    opacity: 0.5,
+    boxShadow: "0 0.1rem 0.2rem rgba(0,0,0,0.3)",
+  });
+
   return (
     <div
       style={{
@@ -112,8 +138,10 @@ export default function AnalogClock() {
         position: "relative",
         overflow: "hidden",
         backgroundColor: "#EFE9E9FF",
+        fontFamily: fontVar,
       }}
     >
+      {/* Stripes */}
       {stripes.map((src, idx) => {
         let mask = "";
         if (idx === 0)
@@ -184,6 +212,13 @@ export default function AnalogClock() {
         );
       })}
 
+      {/* Numbers */}
+      <div style={{ ...numberStyle, top: "2vh", left: "50%", transform: "translateX(-50%) scaleX(-1)" }}>8</div>
+      <div style={{ ...numberStyle, bottom: "2vh", left: "50%", transform: "translateX(-50%)" }}>6</div>
+      <div style={{ ...numberStyle, top: "50%", right: "2vw", transform: "translateY(-50%)" }}>3</div>
+      <div style={{ ...numberStyle, top: "50%", left: "2vw", transform: "translateY(-50%)" }}>9</div>
+
+      {/* Clock face + hands */}
       <div
         style={{
           position: "absolute",
@@ -193,111 +228,18 @@ export default function AnalogClock() {
           width: "70vw",
           height: "70vw",
           borderRadius: "50%",
-          fontFamily: fontVar,
           background: "transparent",
           zIndex: 10,
         }}
       >
-        {[3, 6, 9, 12].map((num) => {
-          const angle = (num / 12) * 2 * Math.PI;
-          const radius = 28;
-          const x = radius * Math.sin(angle);
-          const y = -radius * Math.cos(angle);
-          return (
-            <div
-              key={num}
-              style={{
-                position: "absolute",
-                left: `calc(50% + ${x}vw)`,
-                top: `calc(50% + ${y}vw)`,
-                transform: "translate(-50%, -50%)",
-                fontSize: "5rem",
-                fontFamily: fontVar,
-                background:
-                  "linear-gradient(135deg, #fdfdfd, #d8d8d8, #ffffff, #eaeaea, #d0d0d0)",
-                backgroundSize: "200% 200%",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                opacity: 0.3,
-                animation: "shimmer 6s infinite linear",
-                textShadow: "0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.5)",
-                zIndex: 30,
-              }}
-            >
-              {num}
-            </div>
-          );
-        })}
+        {/* Hour hand */}
+        <div style={handStyle("0.5rem", "25%", "25%", hourDeg)} />
 
-        <div
-          style={{
-            position: "absolute",
-            width: "0.5rem",
-            height: "25%",
-            top: "25%",
-            left: "50%",
-            transformOrigin: "50% 100%",
-            transform: `rotate(${hourDeg}deg)`,
-            background:
-              "linear-gradient(135deg, #fefcf8, #c8d2e6, #e6e1f0, #ffffff)",
-            backgroundSize: "200% 200%",
-            animation: "shimmer 8s infinite linear",
-            borderRadius: "0.4rem",
-            zIndex: 20,
-            opacity: 0.5,
-            boxShadow: "0 0.1rem 0.3rem rgba(0, 0, 0, 0.5)",
-          }}
-        />
+        {/* Minute hand */}
+        <div style={handStyle("0.35rem", "35%", "15%", minuteDeg)} />
 
-        <div
-          style={{
-            position: "absolute",
-            width: "0.35rem",
-            height: "35%",
-            top: "15%",
-            left: "50%",
-            transformOrigin: "50% 100%",
-            transform: `rotate(${minuteDeg}deg)`,
-            background:
-              "linear-gradient(135deg, #fefcf8, #d4d8eb, #e1e8f5, #ffffff)",
-            backgroundSize: "200% 200%",
-            animation: "shimmer 6s infinite linear",
-            borderRadius: "0.25rem",
-            zIndex: 20,
-            opacity: 0.5,
-            boxShadow: "0 0.1rem 0.3rem rgba(0, 0, 0, 0.5)",
-          }}
-        />
-
-        <div
-          style={{
-            position: "absolute",
-            width: "0.2rem",
-            height: "40%",
-            top: "10%",
-            left: "50%",
-            transformOrigin: "50% 100%",
-            transform: `rotate(${secondDeg}deg)`,
-            background: "linear-gradient(135deg, #fff, #ececec, #dcdcdc, #fff)",
-            backgroundSize: "200% 200%",
-            animation: "shimmer 5s infinite linear",
-            borderRadius: "0.125rem",
-            zIndex: 20,
-            opacity: 0.5,
-            boxShadow: "0 0.1rem 0.2rem rgba(0, 0, 0, 0.5)",
-          }}
-        />
-
-        <div
-          style={{
-            position: "absolute",
-            visibility: "hidden",
-          }}
-          aria-live="polite"
-        >
-          {time.toLocaleTimeString()}
-        </div>
+        {/* Second hand */}
+        <div style={handStyle("0.2rem", "40%", "10%", secondDeg)} />
       </div>
     </div>
   );
