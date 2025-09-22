@@ -123,11 +123,11 @@ export default function AnalogClock() {
     transformOrigin: "50% 100%",
     transform: `rotate(${rotateDeg}deg)`,
     backgroundColor: "transparent",
-    border: "2px solid rgba(255,255,255,0.5)",
+    border: "1px solid rgba(255,255,255,0.5)",
     borderRadius: "0.25rem",
     zIndex: 20,
     opacity: 0.5,
-    boxShadow: "0 0.1rem 0.2rem rgba(0,0,0,0.3)",
+    boxShadow: "0 0.1rem 0.2rem rgba(255, 255, 255,0.9)",
   });
 
   return (
