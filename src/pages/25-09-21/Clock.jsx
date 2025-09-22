@@ -101,7 +101,7 @@ export default function AnalogClock() {
   // Styles for numbers
   const numberStyle = {
     position: "absolute",
-    fontSize: "9rem",
+    fontSize: "8rem",
     fontFamily: fontVar,
     color: "transparent",
     WebkitTextStroke: "1.7px rgba(255,255,255,0.9)",
