@@ -87,7 +87,7 @@ export default function DigitalClockVideo() {
     objectFit: "cover",
     zIndex: 0,
     pointerEvents: "none",
-    filter: "blur(0.15rem) brightness(1)", // normal color, slight blur
+    filter: "brightness(1)", // normal color, slight blur
   };
 
   const clockStyle = {
