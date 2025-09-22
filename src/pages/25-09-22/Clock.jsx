@@ -87,8 +87,7 @@ export default function DigitalClockVideo() {
     objectFit: "cover",
     zIndex: 0,
     pointerEvents: "none",
-    filter: "brightness(1)", // normal color, slight blur
-  };
+    };
 
   const clockStyle = {
     position: "relative",
