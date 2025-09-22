@@ -55,7 +55,11 @@ export default function AnalogClock() {
   }, [ready]);
 
   if (!ready) {
-    return <div style={{ width: "100vw", height: "100vh", backgroundColor: "#F2E8E8FF" }} />;
+    return (
+      <div
+        style={{ width: "100vw", height: "100vh", backgroundColor: "#F2E8E8FF" }}
+      />
+    );
   }
 
   const size = "70vmin";
@@ -73,7 +77,7 @@ export default function AnalogClock() {
     <div
       style={{
         width: "100vw",
-        height: "100vh", // use vh instead of dvh for iOS compatibility
+        height: "100dvh", // use vh instead of dvh for iOS compatibility
         position: "relative",
         overflow: "hidden",
         backgroundColor: "#EFE9E9FF",
@@ -82,18 +86,28 @@ export default function AnalogClock() {
       {stripes.map((src, idx) => {
         let mask = "";
         if (idx === 0)
-          mask = "linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)";
+          mask =
+            "linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)";
         else if (idx === 3)
-          mask = "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%)";
+          mask =
+            "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%)";
         else
           mask =
             "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)";
 
         let filter = "hue-rotate(0deg) saturate(1) brightness(1) contrast(0.8)";
-        if (idx === 0) filter = "hue-rotate(-30deg) saturate(1.7) brightness(1.1) contrast(1.1)";
-        if (idx === 1) filter = "hue-rotate(18deg) saturate(0.7) brightness(1.0) contrast(1.9)";
-        if (idx === 2) filter = "hue-rotate(-39deg) saturate(1.1) brightness(1.05) contrast(0.9)";
-        if (idx === 3) filter = "sepia(1) hue-rotate(-30deg) saturate(3.2) brightness(1.1) contrast(0.7)";
+        if (idx === 0)
+          filter =
+            "hue-rotate(-30deg) saturate(1.7) brightness(1.1) contrast(1.1)";
+        if (idx === 1)
+          filter =
+            "hue-rotate(18deg) saturate(1.3) brightness(1.0) contrast(1.9)";
+        if (idx === 2)
+          filter =
+            "hue-rotate(-39deg) saturate(1.1) brightness(1.05) contrast(1.3)";
+        if (idx === 3)
+          filter =
+            "sepia(1) hue-rotate(-30deg) saturate(3.2) brightness(1.1) contrast(0.7)";
 
         const layers = [false, true];
 
@@ -106,9 +120,9 @@ export default function AnalogClock() {
                 idx === 0
                   ? "0"
                   : idx === 1
-                  ? "22vh"
+                  ? "15vh"
                   : idx === 2
-                  ? "43vh"
+                  ? "49vh"
                   : "calc(100vh - 28vh)",
               left: 0,
               width: "100vw",
@@ -145,7 +159,7 @@ export default function AnalogClock() {
         );
       })}
 
-      {/* Clock overlay */}
+      {/* Transparent clock overlay */}
       <div
         style={{
           position: "absolute",
@@ -157,6 +171,9 @@ export default function AnalogClock() {
           borderRadius: "50%",
           fontFamily: fontVar,
           zIndex: 10,
+          background: "transparent",
+          border: "none",
+          boxShadow: "none",
         }}
       >
         {/* Numbers */}
@@ -180,6 +197,7 @@ export default function AnalogClock() {
                   "linear-gradient(135deg, #fdfdfd, #d8d8d8, #ffffff, #eaeaea, #d0d0d0)",
                 backgroundSize: "200% 200%",
                 WebkitBackgroundClip: "text",
+                opacity: 0.5,
                 WebkitTextFillColor: "transparent",
                 animation: "shimmer 6s infinite linear",
                 WebkitAnimation: "shimmer 6s infinite linear",
@@ -203,6 +221,7 @@ export default function AnalogClock() {
             transform: `rotate(${hourDeg}deg)`,
             borderRadius: "0.4rem",
             zIndex: 20,
+            opacity: 0.5,
             background:
               "linear-gradient(135deg, #fefcf8, #c8d2e6, #e6e1f0, #ffffff)",
             backgroundSize: "200% 200%",
@@ -224,6 +243,7 @@ export default function AnalogClock() {
             transform: `rotate(${minuteDeg}deg)`,
             borderRadius: "0.25rem",
             zIndex: 20,
+            opacity: 0.5,
             background:
               "linear-gradient(135deg, #fefcf8, #d4d8eb, #e1e8f5, #ffffff)",
             backgroundSize: "200% 200%",
@@ -245,8 +265,8 @@ export default function AnalogClock() {
             transform: `rotate(${secondDeg}deg)`,
             borderRadius: "0.125rem",
             zIndex: 20,
-            background:
-              "linear-gradient(135deg, #fff, #ececec, #dcdcdc, #fff)",
+            opacity: 0.5,
+            background: "linear-gradient(135deg, #fff, #ececec, #dcdcdc, #fff)",
             backgroundSize: "200% 200%",
             animation: "shimmer 5s infinite linear",
             WebkitAnimation: "shimmer 5s infinite linear",
