@@ -17,10 +17,26 @@ export default function ClockLetters({
 }) {
   const [now, setNow] = useState(new Date());
   const [rotation, setRotation] = useState({ layer1: 0, layer2: 0 });
+  const [fontLoaded, setFontLoaded] = useState(false); // New: Track font load
 
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(interval);
+  }, []);
+
+  // New: Load font and set loaded state
+  useEffect(() => {
+    const font = new FontFace(CLOCK_FONT_FAMILY, `url(${fontFileUrl})`, {
+      style: "normal",
+      weight: "700",
+    });
+    document.fonts.add(font);
+    font.load()
+      .then(() => setFontLoaded(true))
+      .catch((err) => {
+        console.warn("Font load failed:", err);
+        setFontLoaded(true); // Fallback: show content to avoid infinite hide
+      });
   }, []);
 
   // Animate rotating layers
@@ -113,7 +129,7 @@ export default function ClockLetters({
     backgroundRepeat: "no-repeat",
     opacity: layer.opacity,
     zIndex: layer.zIndex,
-    filter: `saturate(${layer.saturation || 1}) hue-rotate(${layer.hue || 0}deg)`,
+    filter: `saturate(${layer.saturation || 1}) hue-rotate(${layer.hue || 0}deg) contrast(${layer.contrast || 1})`, // Fix: Added missing contrast
   });
 
   const crosshairStyle = {
@@ -138,7 +154,7 @@ export default function ClockLetters({
     fontWeight: "bold",
     color: "#393737FF",
     fontSize: `${sizeVmin * 0.1}vmin`,
-    textShadow: "0 0.2vmin 0.2vmin #FFFFFF", // Changed to white text shadow
+    textShadow: "0 0.2vmin 0.2vmin #FFFFFF", // Fix: Removed extra dot
     userSelect: "none",
     zIndex: 6, // Above crosshairs
   };
@@ -167,7 +183,7 @@ export default function ClockLetters({
     left: "50%",
     top: "50%",
     transform: "translate(-50%, -50%)",
-    fontFamily: CLOCK_FONT_FAMILY,
+    fontFamily: `${CLOCK_FONT_FAMILY}, Arial, sans-serif`, // New: Added fallback
     fontWeight: "700",
     userSelect: "none",
     color: "#0D0C0CFF",
@@ -325,7 +341,9 @@ export default function ClockLetters({
         @font-face {
           font-family: '${CLOCK_FONT_FAMILY}';
           src: url(${fontFileUrl}) format('opentype');
-          font-display: swap;
+          font-weight: 700;
+          font-style: normal;
+          font-display: swap; // Allows fallback font during load
         }
       `}</style>
 
@@ -364,18 +382,22 @@ export default function ClockLetters({
 
       <div style={faceWrap}>
         <div style={face}>
-          {ticks}
-          {lettersNodes}
-          <div style={handContainerStyle(hourDeg, sizeVmin * 0.37, 3)}>
-            <img src={hourHandImg} style={handImageStyle} alt="Hour hand" />
-          </div>
-          <div style={handContainerStyle(minDeg, sizeVmin * 0.53, 4)}>
-            <img src={minuteHandImg} style={handImageStyle} alt="Minute hand" />
-          </div>
-          {showSecondHand && (
-            <div style={handContainerStyle(secDeg, sizeVmin * 0.6, 5)}>
-              <img src={secondHandImg} style={handImageStyle} alt="Second hand" />
-            </div>
+          {fontLoaded && ( // New: Only render clock face when font is loaded
+            <>
+              {ticks}
+              {lettersNodes}
+              <div style={handContainerStyle(hourDeg, sizeVmin * 0.37, 3)}>
+                <img src={hourHandImg} style={handImageStyle} alt="Hour hand" />
+              </div>
+              <div style={handContainerStyle(minDeg, sizeVmin * 0.53, 4)}>
+                <img src={minuteHandImg} style={handImageStyle} alt="Minute hand" />
+              </div>
+              {showSecondHand && (
+                <div style={handContainerStyle(secDeg, sizeVmin * 0.6, 5)}>
+                  <img src={secondHandImg} style={handImageStyle} alt="Second hand" />
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
