@@ -11,12 +11,22 @@ export default function AnalogClock() {
   const [fontVar] = useState(`font${new Date().getTime()}`);
 
   useEffect(() => {
+    // Inject font + shimmer animation
     const styleEl = document.createElement("style");
     styleEl.innerHTML = `
       @font-face {
         font-family: '${fontVar}';
         src: url(${customFont}) format('truetype');
         font-display: swap;
+      }
+
+      @keyframes shimmer {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 200% 50%; }
+      }
+      @-webkit-keyframes shimmer {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 200% 50%; }
       }
     `;
     document.head.appendChild(styleEl);
@@ -45,7 +55,7 @@ export default function AnalogClock() {
   }, [ready]);
 
   if (!ready) {
-    return <div style={{ width: "100vw", height: "100dvh", backgroundColor: "#F2E8E8FF" }} />;
+    return <div style={{ width: "100vw", height: "100vh", backgroundColor: "#F2E8E8FF" }} />;
   }
 
   const size = "70vmin";
@@ -63,7 +73,7 @@ export default function AnalogClock() {
     <div
       style={{
         width: "100vw",
-        height: "100dvh",
+        height: "100vh", // use vh instead of dvh for iOS compatibility
         position: "relative",
         overflow: "hidden",
         backgroundColor: "#EFE9E9FF",
@@ -96,13 +106,13 @@ export default function AnalogClock() {
                 idx === 0
                   ? "0"
                   : idx === 1
-                  ? "22dvh"
+                  ? "22vh"
                   : idx === 2
-                  ? "43dvh"
-                  : "calc(100dvh - 28dvh)",
+                  ? "43vh"
+                  : "calc(100vh - 28vh)",
               left: 0,
               width: "100vw",
-              height: idx === 1 ? "50dvh" : idx === 2 ? "40dvh" : "28dvh",
+              height: idx === 1 ? "50vh" : idx === 2 ? "40vh" : "28vh",
               zIndex: idx,
             }}
           >
@@ -149,7 +159,7 @@ export default function AnalogClock() {
           zIndex: 10,
         }}
       >
-        {/* Clock Numbers: only 3, 6, 9, 12 */}
+        {/* Numbers */}
         {[3, 6, 9, 12].map((num) => {
           const angle = (num / 12) * 2 * Math.PI;
           const radius = 28;
@@ -164,10 +174,15 @@ export default function AnalogClock() {
                 top: `calc(50% + ${y}vmin)`,
                 transform: "translate(-50%, -50%)",
                 fontSize: "4rem",
-                zIndex: 15,
+                zIndex: 30, // keep above hands
                 fontFamily: fontVar,
+                background:
+                  "linear-gradient(135deg, #fdfdfd, #d8d8d8, #ffffff, #eaeaea, #d0d0d0)",
+                backgroundSize: "200% 200%",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
+                animation: "shimmer 6s infinite linear",
+                WebkitAnimation: "shimmer 6s infinite linear",
                 textShadow: "0.2rem 0.2rem 0.3rem gold",
               }}
             >
@@ -180,7 +195,7 @@ export default function AnalogClock() {
         <div
           style={{
             position: "absolute",
-            width: "0.1rem",
+            width: "0.5rem",
             height: "25%",
             top: "25%",
             left: "50%",
@@ -189,8 +204,11 @@ export default function AnalogClock() {
             borderRadius: "0.4rem",
             zIndex: 20,
             background:
-              "linear-gradient(135deg, rgba(254,252,248,0.6), rgba(225,228,232,0.6), rgba(214,226,233,0.6), rgba(254,252,248,0.6))",
-            boxShadow: "0 0.1rem 0.2rem gold",
+              "linear-gradient(135deg, #fefcf8, #c8d2e6, #e6e1f0, #ffffff)",
+            backgroundSize: "200% 200%",
+            animation: "shimmer 8s infinite linear",
+            WebkitAnimation: "shimmer 8s infinite linear",
+            boxShadow: "0 0.1rem 0.3rem gold",
           }}
         />
 
@@ -198,7 +216,7 @@ export default function AnalogClock() {
         <div
           style={{
             position: "absolute",
-            width: "0.1rem",
+            width: "0.35rem",
             height: "35%",
             top: "15%",
             left: "50%",
@@ -207,8 +225,11 @@ export default function AnalogClock() {
             borderRadius: "0.25rem",
             zIndex: 20,
             background:
-              "linear-gradient(135deg, rgba(254,252,248,0.6), rgba(225,228,232,0.6), rgba(214,226,233,0.6), rgba(254,252,248,0.6))",
-            boxShadow: "0 0.1rem 0.2rem gold",
+              "linear-gradient(135deg, #fefcf8, #d4d8eb, #e1e8f5, #ffffff)",
+            backgroundSize: "200% 200%",
+            animation: "shimmer 6s infinite linear",
+            WebkitAnimation: "shimmer 6s infinite linear",
+            boxShadow: "0 0.1rem 0.3rem gold",
           }}
         />
 
@@ -216,7 +237,7 @@ export default function AnalogClock() {
         <div
           style={{
             position: "absolute",
-            width: "0.1rem",
+            width: "0.2rem",
             height: "40%",
             top: "10%",
             left: "50%",
@@ -224,6 +245,11 @@ export default function AnalogClock() {
             transform: `rotate(${secondDeg}deg)`,
             borderRadius: "0.125rem",
             zIndex: 20,
+            background:
+              "linear-gradient(135deg, #fff, #ececec, #dcdcdc, #fff)",
+            backgroundSize: "200% 200%",
+            animation: "shimmer 5s infinite linear",
+            WebkitAnimation: "shimmer 5s infinite linear",
             boxShadow: "0 0.1rem 0.2rem gold",
           }}
         />
