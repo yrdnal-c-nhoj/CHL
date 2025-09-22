@@ -98,16 +98,16 @@ export default function AnalogClock() {
         let filter = "hue-rotate(0deg) saturate(1) brightness(1) contrast(0.8)";
         if (idx === 0)
           filter =
-            "hue-rotate(-30deg) saturate(1.7) brightness(1.1) contrast(1.1)";
+            "hue-rotate(-40deg) saturate(2.2) brightness(1.1) contrast(1.1)";
         if (idx === 1)
           filter =
-            "hue-rotate(18deg) saturate(1.3) brightness(1.0) contrast(1.9)";
+            "hue-rotate(220deg) saturate(1.9) brightness(1.0) contrast(1.9)";
         if (idx === 2)
           filter =
-            "hue-rotate(-39deg) saturate(1.1) brightness(1.05) contrast(1.3)";
+            "hue-rotate(-19deg) saturate(1.1) brightness(1.05) contrast(1.3)";
         if (idx === 3)
           filter =
-            "sepia(1) hue-rotate(-30deg) saturate(3.2) brightness(1.1) contrast(0.7)";
+            "sepia(1) hue-rotate(20deg) saturate(1.2) brightness(1.1) contrast(0.7)";
 
         const layers = [false, true];
 
