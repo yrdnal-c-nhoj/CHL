@@ -79,7 +79,7 @@ export default function AnalogClock() {
         justifyContent: "center",
         alignItems: "center",
         background:
-          "radial-gradient(circle, rgba(223, 221, 220, 0.2) 0%, rgba(159, 126, 120, 0.4) 80%)",
+          "radial-gradient(circle, rgba(223, 220, 220, 0.2) 0%, rgba(159, 126, 120, 0.4) 80%)",
       }}
     >
       <div
