@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 
 // digits
 import digit1 from "./z.gif";
@@ -21,18 +21,31 @@ import secondHandImg from "./ste.gif";
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
+  const secondHandRef = useRef(null);
 
-  // Smooth update using requestAnimationFrame
+  // Update hour and minute hands every second
+  useEffect(() => {
+    const interval = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Animate second hand smoothly via requestAnimationFrame
   useEffect(() => {
     let animationFrameId;
 
-    const update = () => {
-      setTime(new Date());
-      animationFrameId = requestAnimationFrame(update);
+    const animateSecondHand = () => {
+      const now = new Date();
+      const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+      const angle = (seconds / 60) * 360;
+
+      if (secondHandRef.current) {
+        secondHandRef.current.style.transform = `translateX(-50%) rotate(${angle}deg)`;
+      }
+
+      animationFrameId = requestAnimationFrame(animateSecondHand);
     };
 
-    update();
-
+    animateSecondHand();
     return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
@@ -83,21 +96,19 @@ export default function AnalogClock() {
     const seconds = time.getSeconds();
     const minutes = time.getMinutes();
     const hours = time.getHours();
-    const milliseconds = time.getMilliseconds();
 
-    const smoothSecondAngle = ((seconds + milliseconds / 1000) / 60) * 360;
     const minuteAngle = (minutes / 60) * 360 + (seconds / 60) * 6;
     const hourAngle = ((hours % 12) / 12) * 360 + (minutes / 60) * 30;
 
-    return { second: smoothSecondAngle, minute: minuteAngle, hour: hourAngle };
+    return { minute: minuteAngle, hour: hourAngle };
   }, [time]);
 
   const handStyle = (angle, width, height, extraShadow = "") => ({
     position: "absolute",
     bottom: "50%",
     left: "50%",
-    width: width,
-    height: height,
+    width,
+    height,
     transform: `translateX(-50%) rotate(${angle}deg)`,
     transformOrigin: "bottom center",
     filter: `
@@ -162,9 +173,10 @@ export default function AnalogClock() {
         />
 
         <img
+          ref={secondHandRef}
           src={secondHandImg}
           alt="second-hand"
-          style={{ ...handStyle(angles.second, "32vmin", "38vmin") }}
+          style={{ ...handStyle(0, "32vmin", "38vmin") }}
         />
       </div>
     </div>
