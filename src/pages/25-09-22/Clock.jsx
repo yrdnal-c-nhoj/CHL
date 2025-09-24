@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import bgVideo from "./deex.mp4";
 import fallbackImage from "./deex.gif";
 import customFontmmm from "./disney.ttf";
@@ -11,7 +11,7 @@ export default function DigitalClockVideo() {
 
   // Load custom font
   useEffect(() => {
-    const font = new FontFace("CustomFontmmm", `url(${customFont})`);
+    const font = new FontFace("CustomFontmmm", `url(${customFontmmm})`);
     font
       .load()
       .then((loadedFont) => {
@@ -25,9 +25,9 @@ export default function DigitalClockVideo() {
       });
   }, []);
 
-  // Update time every 10ms
+  // Update time every ~16ms for smooth display
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 10);
+    const interval = setInterval(() => setTime(new Date()), 16);
     return () => clearInterval(interval);
   }, []);
 
@@ -53,17 +53,15 @@ export default function DigitalClockVideo() {
     const style = document.createElement("style");
     style.innerHTML = `
       @keyframes sparkle {
-        0% { background-position: 0% 50%; color: #42210B; }
+        0% { color: #42210B; }
         25% { color: #8B4513; }
         50% { color: #D4AF37; }
         75% { color: #C28840; }
-        100% { background-position: 100% 50%; color: #42210B; }
+        100% { color: #42210B; }
       }
     `;
     document.head.appendChild(style);
-    return () => {
-      document.head.removeChild(style);
-    };
+    return () => document.head.removeChild(style);
   }, []);
 
   // Format time
@@ -74,6 +72,7 @@ export default function DigitalClockVideo() {
   const milliseconds = formatNumber(Math.floor(time.getMilliseconds() / 10), 2);
   const ampm = time.getHours() >= 12 ? "PM" : "AM";
 
+  // Styles
   const containerStyle = {
     height: "100dvh",
     width: "100vw",
@@ -82,8 +81,8 @@ export default function DigitalClockVideo() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontFamily: "'CustomFont', sans-serif",
-    visibility: isReady ? "visible" : "hidden", // hide until font ready
+    fontFamily: "'CustomFontmmm', sans-serif",
+    visibility: isReady ? "visible" : "hidden",
   };
 
   const mediaStyle = {
@@ -118,7 +117,7 @@ export default function DigitalClockVideo() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontFamily: "'CustomFont', sans-serif",
+    fontFamily: "'CustomFontmmm', sans-serif",
     fontSize: isPhone ? "3.8rem" : "5.5rem",
     lineHeight: 1,
     textAlign: "center",
@@ -134,12 +133,10 @@ export default function DigitalClockVideo() {
     fontSize: isPhone ? "1.5rem" : "3rem",
   };
 
-  const renderBoxes = (str) =>
-    str.split("").map((c, i) => (
-      <div key={i} style={boxStyle}>
-        {c}
-      </div>
-    ));
+  const renderBoxes = useCallback(
+    (str) => str.split("").map((c, i) => <div key={i} style={boxStyle}>{c}</div>),
+    [boxStyle]
+  );
 
   return (
     <div style={containerStyle}>
