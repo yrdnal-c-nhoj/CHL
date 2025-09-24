@@ -85,7 +85,7 @@ const HorizontalProportionalGradientClock = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 backgroundColor: bgColor,
-                color: "#05EA61FF",
+                color: "#05about:blank#blockedEA61FF",
                 fontSize: `${size}vw`,
                 borderRight: idx < numbers.length - 1 ? "2px solid blue" : "none",
               }}

@@ -20,34 +20,10 @@ import minuteHandImg from "./sss.webp";
 import secondHandImg from "./ste.gif";
 
 export default function AnalogClock() {
-  const [time, setTime] = useState(new Date());
-  const secondHandRef = useRef(null);
-
-  // Update hour and minute hands every second
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Animate second hand smoothly via requestAnimationFrame
-  useEffect(() => {
-    let animationFrameId;
-
-    const animateSecondHand = () => {
-      const now = new Date();
-      const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
-      const angle = (seconds / 60) * 360;
-
-      if (secondHandRef.current) {
-        secondHandRef.current.style.transform = `translateX(-50%) rotate(${angle}deg)`;
-      }
-
-      animationFrameId = requestAnimationFrame(animateSecondHand);
-    };
-
-    animateSecondHand();
-    return () => cancelAnimationFrame(animationFrameId);
-  }, []);
+  const hourRef = useRef(null);
+  const minuteRef = useRef(null);
+  const secondRef = useRef(null);
+  const [ready, setReady] = useState(false);
 
   const digits = useMemo(
     () => [
@@ -56,6 +32,34 @@ export default function AnalogClock() {
     ],
     []
   );
+
+  const allImages = useMemo(
+    () => [...digits, hourHandImg, minuteHandImg, secondHandImg],
+    [digits]
+  );
+
+  // Preload images
+  useEffect(() => {
+    let loadedCount = 0;
+
+    allImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        loadedCount += 1;
+        if (loadedCount === allImages.length) {
+          setReady(true);
+        }
+      };
+      img.onerror = () => {
+        console.warn(`Failed to load image: ${src}`);
+        loadedCount += 1;
+        if (loadedCount === allImages.length) {
+          setReady(true);
+        }
+      };
+    });
+  }, [allImages]);
 
   const digitPositions = useMemo(() => {
     return digits.map((src, i) => {
@@ -81,7 +85,6 @@ export default function AnalogClock() {
       `;
 
       if (i === 6) {
-        // remove black outward shadow for digit 7
         shadowFilter = shadowFilter.replace(
           /drop-shadow\(\-?\d+(\.\d+)?rem \-?\d+(\.\d+)?rem 0 black\)/,
           ""
@@ -92,32 +95,54 @@ export default function AnalogClock() {
     });
   }, [digits]);
 
-  const angles = useMemo(() => {
-    const seconds = time.getSeconds();
-    const minutes = time.getMinutes();
-    const hours = time.getHours();
-
-    const minuteAngle = (minutes / 60) * 360 + (seconds / 60) * 6;
-    const hourAngle = ((hours % 12) / 12) * 360 + (minutes / 60) * 30;
-
-    return { minute: minuteAngle, hour: hourAngle };
-  }, [time]);
-
-  const handStyle = (angle, width, height, extraShadow = "") => ({
+  const handStyle = (ref, width, height, extraShadow = "") => ({
+    ref,
     position: "absolute",
     bottom: "50%",
     left: "50%",
     width,
     height,
-    transform: `translateX(-50%) rotate(${angle}deg)`,
     transformOrigin: "bottom center",
     filter: `
-      drop-shadow(0.4rem 0.4rem 1.2rem rgba(0,0,0,0.55)) 
+      drop-shadow(0.4rem 0.4rem 1.2rem rgba(0,0,0,0.55))
       drop-shadow(-0.1rem -0.1rem 0.1rem rgba(220,230,25,0.9))
       drop-shadow(0.05rem 0.05rem 0.05rem white)
-      ${extraShadow}
+      ${extraShadow || ""}
     `,
   });
+
+  // Animate hands smoothly
+  useEffect(() => {
+    if (!ready) return;
+
+    let animationFrameId;
+
+    const animateHands = () => {
+      const now = new Date();
+      const ms = now.getMilliseconds() / 1000;
+      const seconds = now.getSeconds() + ms;
+      const minutes = now.getMinutes() + seconds / 60;
+      const hours = (now.getHours() % 12) + minutes / 60;
+
+      if (secondRef.current) {
+        secondRef.current.style.transform = `translateX(-50%) rotate(${(seconds / 60) * 360}deg)`;
+      }
+      if (minuteRef.current) {
+        minuteRef.current.style.transform = `translateX(-50%) rotate(${(minutes / 60) * 360}deg)`;
+      }
+      if (hourRef.current) {
+        hourRef.current.style.transform = `translateX(-50%) rotate(${(hours / 12) * 360}deg)`;
+      }
+
+      animationFrameId = requestAnimationFrame(animateHands);
+    };
+
+    animateHands();
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [ready]);
+
+  if (!ready) return null; // hide everything until all images loaded
 
   return (
     <div
@@ -161,22 +186,24 @@ export default function AnalogClock() {
         ))}
 
         <img
+          ref={hourRef}
           src={hourHandImg}
           alt="hour-hand"
-          style={{ ...handStyle(angles.hour, "6vmin", "17vmin"), opacity: 0.75 }}
+          style={{ ...handStyle(hourRef, "6vmin", "17vmin"), opacity: 0.75 }}
         />
 
         <img
+          ref={minuteRef}
           src={minuteHandImg}
           alt="minute-hand"
-          style={{ ...handStyle(angles.minute, "12.5vmin", "28vmin"), opacity: 0.7 }}
+          style={{ ...handStyle(minuteRef, "12.5vmin", "28vmin"), opacity: 0.7 }}
         />
 
         <img
-          ref={secondHandRef}
+          ref={secondRef}
           src={secondHandImg}
           alt="second-hand"
-          style={{ ...handStyle(0, "32vmin", "38vmin") }}
+          style={{ ...handStyle(secondRef, "32vmin", "38vmin") }}
         />
       </div>
     </div>
