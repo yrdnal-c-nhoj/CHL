@@ -143,7 +143,7 @@ export default function AnalogClock() {
 
         /* Digits */
         .clock-digit {
-          height: 5rem; /* phones */
+          height:16vh; /* phones */
         }
         @media (min-width: 768px) {
           .clock-face {
@@ -151,7 +151,7 @@ export default function AnalogClock() {
             height: 90vh;
           }
           .clock-digit {
-            height: 7rem; /* laptops/desktops */
+            height: 12vw; /* laptops/desktops */
           }
         }
 
