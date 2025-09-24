@@ -1,115 +1,130 @@
 import React, { useState, useEffect } from "react";
 import bgImage from "./wall.jpg";
-import customFont from "./anim.ttf";
+import fontA from "./not.otf";   // First typeface
+import fontB from "./not2.otf"; // Second typeface
 
-export default function StreamlineClock() {
+export default function DualFontClock() {
   const [ready, setReady] = useState(false);
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    // Inject @font-face dynamically
     const styleEl = document.createElement("style");
     styleEl.innerHTML = `
-      @font-face {
-        font-family: "Streamline25";
-        src: url(${customFont}) format("truetype");
-        font-display: swap;
-      }
+      @font-face { font-family: "FontA"; src: url(${fontA}) format("truetype"); font-display: swap; }
+      @font-face { font-family: "FontB"; src: url(${fontB}) format("truetype"); font-display: swap; }
       body { margin: 0; background: black; }
     `;
     document.head.appendChild(styleEl);
 
-    // Preload font
-    document.fonts.load("1rem Streamline25").then(() => {
-      // Preload image
+    Promise.all([
+      document.fonts.load("1rem FontA"),
+      document.fonts.load("1rem FontB"),
+    ]).then(() => {
       const img = new Image();
       img.src = bgImage;
       img.onload = () => setReady(true);
     });
 
-    // Clock tick
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  if (!ready) {
-    return (
-      <div
-        style={{
-          width: "100vw",
-          height: "100dvh",
-          background: "black",
-        }}
-      />
-    );
-  }
+  if (!ready) return <div style={{ width: "100vw", height: "100dvh", background: "black" }} />;
 
-  // Format time
-  let hours = time.getHours() % 12 || 12;
-  let minutes = time.getMinutes();
-  let seconds = time.getSeconds();
+  const hours = (time.getHours() % 12) || 12; // no leading zero
+  const minutes = time.getMinutes();
+  const ampm = time.getHours() >= 12 ? "PM" : "AM";
 
   const formatDigits = (num, length = 2) => num.toString().padStart(length, "0");
-
-  const h = formatDigits(hours);
+  const h = hours.toString(); // remove leading zero
   const m = formatDigits(minutes);
-  const s = formatDigits(seconds);
 
   const isPhone = window.innerWidth < 768;
 
-  const digitBox = (digit, key) => (
+  // Single character stacked for both fonts
+  const stackedChar = (char) => (
     <div
-      key={key}
       style={{
-        flex: "1",
+        position: "relative",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        margin: "0.2rem",
-        background: "rgba(255,255,255,0.1)",
-        borderRadius: "1rem",
-        boxShadow: "0 0 1rem rgba(0,0,0,0.6) inset",
+        width: isPhone ? "9vw" : "6rem",
+        height: isPhone ? "12vw" : "5rem",
+        margin: "0.001rem",
       }}
     >
       <span
         style={{
-          fontFamily: "Streamline25, sans-serif",
-          fontSize: isPhone ? "8vw" : "6rem",
-          color: "#f5f5f5",
-          letterSpacing: "0.1rem",
+          fontFamily: "FontA, sans-serif",
+          fontSize: isPhone ? "14vw" : "9rem",
+          color: "#EA0C0CFF",
+          position: "absolute",
         }}
       >
-        {digit}
+        {char}
+      </span>
+      <span
+        style={{
+          fontFamily: "FontB, sans-serif",
+          fontSize: isPhone ? "14vw" : "9rem",
+          color: "#0A90FFFF",
+          position: "absolute",
+        }}
+      >
+        {char}
       </span>
     </div>
   );
+
+  const renderTime = () => {
+    // Digits with colon and AM/PM immediately after minutes
+    const timeChars = [...h, ":", ...m, ...ampm];
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "row",
+        }}
+      >
+        {timeChars.map((char, idx) => stackedChar(char))}
+      </div>
+    );
+  };
 
   return (
     <div
       style={{
         width: "100vw",
         height: "100dvh",
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        position: "relative",
         display: "flex",
-        flexDirection: isPhone ? "row" : "column",
         justifyContent: "center",
         alignItems: "center",
-        padding: "2rem",
-        boxSizing: "border-box",
       }}
     >
-      {/* Desktop: H/M/S stacked | Phone: all in one row */}
-      {isPhone ? (
-        [...h, ...m, ...s].map((d, i) => digitBox(d, i))
-      ) : (
-        <>
-          <div style={{ display: "flex" }}>{[...h].map((d, i) => digitBox(d, "h" + i))}</div>
-          <div style={{ display: "flex" }}>{[...m].map((d, i) => digitBox(d, "m" + i))}</div>
-          <div style={{ display: "flex" }}>{[...s].map((d, i) => digitBox(d, "s" + i))}</div>
-        </>
-      )}
+      {/* Background */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: 0.3,
+          zIndex: 0,
+        }}
+      />
+
+      {/* Clock */}
+      <div style={{ position: "relative", zIndex: 1 }}>
+        {renderTime()}
+      </div>
     </div>
   );
 }
