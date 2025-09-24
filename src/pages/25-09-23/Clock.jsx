@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useRef } from "react";
+import React, { useEffect, useState, useMemo, useRef, useCallback } from "react";
 
 // digits
 import digit1 from "./z.gif";
@@ -23,8 +23,10 @@ export default function AnalogClock() {
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
+  const animationFrameRef = useRef(null);
   const [ready, setReady] = useState(false);
 
+  // Memoized static arrays - these never change
   const digits = useMemo(
     () => [
       digit12, digit1, digit2, digit3, digit4, digit5,
@@ -38,29 +40,44 @@ export default function AnalogClock() {
     [digits]
   );
 
-  // Preload images
+  // Preload images with cleanup
   useEffect(() => {
     let loadedCount = 0;
+    const imageElements = [];
+
+    const handleLoad = () => {
+      loadedCount += 1;
+      if (loadedCount === allImages.length) {
+        setReady(true);
+      }
+    };
+
+    const handleError = (src) => {
+      console.warn(`Failed to load image: ${src}`);
+      loadedCount += 1;
+      if (loadedCount === allImages.length) {
+        setReady(true);
+      }
+    };
 
     allImages.forEach((src) => {
       const img = new Image();
+      img.onload = handleLoad;
+      img.onerror = () => handleError(src);
       img.src = src;
-      img.onload = () => {
-        loadedCount += 1;
-        if (loadedCount === allImages.length) {
-          setReady(true);
-        }
-      };
-      img.onerror = () => {
-        console.warn(`Failed to load image: ${src}`);
-        loadedCount += 1;
-        if (loadedCount === allImages.length) {
-          setReady(true);
-        }
-      };
+      imageElements.push(img);
     });
+
+    // Cleanup function to prevent memory leaks
+    return () => {
+      imageElements.forEach(img => {
+        img.onload = null;
+        img.onerror = null;
+      });
+    };
   }, [allImages]);
 
+  // Memoize digit positions - expensive calculation done once
   const digitPositions = useMemo(() => {
     return digits.map((src, i) => {
       const angle = (i / 12) * 2 * Math.PI;
@@ -95,79 +112,97 @@ export default function AnalogClock() {
     });
   }, [digits]);
 
-  const handStyle = (ref, width, height, extraShadow = "") => ({
-    ref,
-    position: "absolute",
-    bottom: "50%",
-    left: "50%",
-    width,
-    height,
-    transformOrigin: "bottom center",
-    filter: `
-      drop-shadow(0.4rem 0.4rem 1.2rem rgba(0,0,0,0.55))
-      drop-shadow(-0.1rem -0.1rem 0.1rem rgba(220,230,25,0.9))
-      drop-shadow(0.05rem 0.05rem 0.05rem white)
-      ${extraShadow || ""}
-    `,
-  });
+  // Memoize hand styles - these never change
+  const handStyles = useMemo(() => {
+    const createHandStyle = (width, height, extraShadow = "") => ({
+      position: "absolute",
+      bottom: "50%",
+      left: "50%",
+      width,
+      height,
+      transformOrigin: "bottom center",
+      filter: `
+        drop-shadow(0.4rem 0.4rem 1.2rem rgba(0,0,0,0.55))
+        drop-shadow(-0.1rem -0.1rem 0.1rem rgba(220,230,25,0.9))
+        drop-shadow(0.05rem 0.05rem 0.05rem white)
+        ${extraShadow || ""}
+      `,
+    });
 
-  // Animate hands smoothly
+    return {
+      hour: { ...createHandStyle("6vmin", "17vmin"), opacity: 0.75 },
+      minute: { ...createHandStyle("12.5vmin", "28vmin"), opacity: 0.7 },
+      second: createHandStyle("32vmin", "38vmin")
+    };
+  }, []);
+
+  // Optimized animation function with reduced DOM queries
+  const animateHands = useCallback(() => {
+    const now = new Date();
+    const ms = now.getMilliseconds() / 1000;
+    const seconds = now.getSeconds() + ms;
+    const minutes = now.getMinutes() + seconds / 60;
+    const hours = (now.getHours() % 12) + minutes / 60;
+
+    // Cache refs locally to avoid repeated property access
+    const secondHand = secondRef.current;
+    const minuteHand = minuteRef.current;
+    const hourHand = hourRef.current;
+
+    if (secondHand) {
+      secondHand.style.transform = `translateX(-50%) rotate(${(seconds / 60) * 360}deg)`;
+    }
+    if (minuteHand) {
+      minuteHand.style.transform = `translateX(-50%) rotate(${(minutes / 60) * 360}deg)`;
+    }
+    if (hourHand) {
+      hourHand.style.transform = `translateX(-50%) rotate(${(hours / 12) * 360}deg)`;
+    }
+
+    animationFrameRef.current = requestAnimationFrame(animateHands);
+  }, []);
+
+  // Animation effect with proper cleanup
   useEffect(() => {
     if (!ready) return;
 
-    let animationFrameId;
-
-    const animateHands = () => {
-      const now = new Date();
-      const ms = now.getMilliseconds() / 1000;
-      const seconds = now.getSeconds() + ms;
-      const minutes = now.getMinutes() + seconds / 60;
-      const hours = (now.getHours() % 12) + minutes / 60;
-
-      if (secondRef.current) {
-        secondRef.current.style.transform = `translateX(-50%) rotate(${(seconds / 60) * 360}deg)`;
-      }
-      if (minuteRef.current) {
-        minuteRef.current.style.transform = `translateX(-50%) rotate(${(minutes / 60) * 360}deg)`;
-      }
-      if (hourRef.current) {
-        hourRef.current.style.transform = `translateX(-50%) rotate(${(hours / 12) * 360}deg)`;
-      }
-
-      animationFrameId = requestAnimationFrame(animateHands);
-    };
-
     animateHands();
 
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [ready]);
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+    };
+  }, [ready, animateHands]);
+
+  // Memoized container styles
+  const containerStyle = useMemo(() => ({
+    height: "100dvh",
+    width: "100vw",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    background:
+      "radial-gradient(circle, rgba(223, 20, 20, 0.3) 0%, rgba(159, 16, 10, 0.9) 80%)",
+  }), []);
+
+  const clockFaceStyle = useMemo(() => ({
+    position: "relative",
+    height: "80vmin",
+    width: "80vmin",
+    borderRadius: "50%",
+    boxShadow:
+      "inset -1.2rem -1.2rem 2.4rem rgba(0,0,0,0.75), inset 1.2rem 1.2rem 2.4rem rgba(220,235,255,0.9), 0 1.5rem 3rem rgba(0,0,0,0.35)",
+    background:
+      "radial-gradient(circle at center, rgba(210,20,10,0.2) 10%, rgba(260,60,60,0.8) 90%)",
+  }), []);
 
   if (!ready) return null; // hide everything until all images loaded
 
   return (
-    <div
-      style={{
-        height: "100dvh",
-        width: "100vw",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background:
-          "radial-gradient(circle, rgba(223, 220, 220, 0.2) 0%, rgba(159, 126, 120, 0.4) 80%)",
-      }}
-    >
-      <div
-        style={{
-          position: "relative",
-          height: "80vmin",
-          width: "80vmin",
-          borderRadius: "50%",
-          boxShadow:
-            "inset -1.2rem -1.2rem 2.4rem rgba(0,0,0,0.35), inset 1.2rem 1.2rem 2.4rem rgba(220,235,255,0.3), 0 1.5rem 3rem rgba(0,0,0,0.35)",
-          background:
-            "radial-gradient(circle at center, rgba(210,210,210,0.2) 10%, rgba(60,60,60,0.2) 90%)",
-        }}
-      >
+    <div style={containerStyle}>
+      <div style={clockFaceStyle}>
         {digitPositions.map(({ src, x, y, shadowFilter, key }) => (
           <img
             key={key}
@@ -189,21 +224,21 @@ export default function AnalogClock() {
           ref={hourRef}
           src={hourHandImg}
           alt="hour-hand"
-          style={{ ...handStyle(hourRef, "6vmin", "17vmin"), opacity: 0.75 }}
+          style={handStyles.hour}
         />
 
         <img
           ref={minuteRef}
           src={minuteHandImg}
           alt="minute-hand"
-          style={{ ...handStyle(minuteRef, "12.5vmin", "28vmin"), opacity: 0.7 }}
+          style={handStyles.minute}
         />
 
         <img
           ref={secondRef}
           src={secondHandImg}
           alt="second-hand"
-          style={{ ...handStyle(secondRef, "32vmin", "38vmin") }}
+          style={handStyles.second}
         />
       </div>
     </div>
