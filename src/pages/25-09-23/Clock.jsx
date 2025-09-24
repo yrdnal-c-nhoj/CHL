@@ -54,7 +54,7 @@ export default function AnalogClock() {
   const digitElements = useMemo(() => {
     return digits.map((src, i) => {
       const angle = (i / 12) * 2 * Math.PI;
-      const radius = 35;
+      const radius = 42;
       const x = 50 + radius * Math.sin(angle);
       const y = 50 - radius * Math.cos(angle);
 
@@ -115,7 +115,7 @@ export default function AnalogClock() {
         justifyContent: "center",
         alignItems: "center",
         background:
-          "radial-gradient(circle, rgba(123,120,120,0.8) 0%, rgba(159,16,10,0.3) 80%)",
+          "radial-gradient(circle, rgba(123,120,120,0.8) 0%, rgba(159,116,10,0.3) 80%)",
       }}
     >
       <div className="clock-face">
@@ -137,8 +137,8 @@ export default function AnalogClock() {
           background: radial-gradient(circle at center,
                       rgba(210,260,10,0.2) 10%,
                       rgba(260,280,60,0.5) 90%);
-          width: 90vw;
-          height: 90vw;
+          width: 95vw;
+          height: 95vw;
         }
 
         /* Digits */
