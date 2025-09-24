@@ -137,8 +137,8 @@ export default function AnalogClock() {
           background: radial-gradient(circle at center,
                       rgba(210,260,10,0.2) 10%,
                       rgba(260,280,60,0.5) 90%);
-          width: 95vw;
-          height: 95vw;
+          width: 100vw;
+          height: 100vw;
         }
 
         /* Digits */
