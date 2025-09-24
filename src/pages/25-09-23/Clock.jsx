@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useRef, useCallback } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 
 // digits
 import digit1 from "./z.gif";
@@ -26,7 +26,7 @@ export default function AnalogClock() {
   const animationFrameRef = useRef(null);
   const [ready, setReady] = useState(false);
 
-  // Memoized static arrays - these never change
+  // Digits array
   const digits = useMemo(
     () => [
       digit12, digit1, digit2, digit3, digit4, digit5,
@@ -35,210 +35,146 @@ export default function AnalogClock() {
     []
   );
 
-  const allImages = useMemo(
-    () => [...digits, hourHandImg, minuteHandImg, secondHandImg],
-    [digits]
-  );
-
-  // Preload images with cleanup
+  // Preload images once
   useEffect(() => {
-    let loadedCount = 0;
-    const imageElements = [];
+    const allImages = [...digits, hourHandImg, minuteHandImg, secondHandImg];
+    Promise.all(
+      allImages.map(
+        src =>
+          new Promise(resolve => {
+            const img = new Image();
+            img.onload = img.onerror = resolve;
+            img.src = src;
+          })
+      )
+    ).then(() => setReady(true));
+  }, [digits]);
 
-    const handleLoad = () => {
-      loadedCount += 1;
-      if (loadedCount === allImages.length) {
-        setReady(true);
-      }
-    };
-
-    const handleError = (src) => {
-      console.warn(`Failed to load image: ${src}`);
-      loadedCount += 1;
-      if (loadedCount === allImages.length) {
-        setReady(true);
-      }
-    };
-
-    allImages.forEach((src) => {
-      const img = new Image();
-      img.onload = handleLoad;
-      img.onerror = () => handleError(src);
-      img.src = src;
-      imageElements.push(img);
-    });
-
-    // Cleanup function to prevent memory leaks
-    return () => {
-      imageElements.forEach(img => {
-        img.onload = null;
-        img.onerror = null;
-      });
-    };
-  }, [allImages]);
-
-  // Memoize digit positions - expensive calculation done once
-  const digitPositions = useMemo(() => {
+  // Digit positions (static)
+  const digitElements = useMemo(() => {
     return digits.map((src, i) => {
       const angle = (i / 12) * 2 * Math.PI;
       const radius = 35;
       const x = 50 + radius * Math.sin(angle);
       const y = 50 - radius * Math.cos(angle);
 
-      const dx = Math.sin(angle);
-      const dy = -Math.cos(angle);
-      const offset = 0.09;
-      const outwardX = dx * offset;
-      const outwardY = dy * offset;
-      const inwardX = -dx * offset;
-      const inwardY = -dy * offset;
-
-      let shadowFilter = `
-        drop-shadow(0 0 0.9rem rgba(100,150,255,0.8))
-        drop-shadow(${outwardX}rem ${outwardY}rem 0 black)
-        drop-shadow(${inwardX}rem ${inwardY}rem 0 white)
-        drop-shadow(0.6rem 0.6rem 1.4rem rgba(0,0,0,0.25))
-        drop-shadow(-0.4rem -0.4rem 0.9rem rgba(200,220,255,0.4))
-      `;
-
-      if (i === 6) {
-        shadowFilter = shadowFilter.replace(
-          /drop-shadow\(\-?\d+(\.\d+)?rem \-?\d+(\.\d+)?rem 0 black\)/,
-          ""
-        );
-      }
-
-      return { src, x, y, shadowFilter, key: i };
+      return (
+        <img
+          key={i}
+          src={src}
+          alt={`digit-${i}`}
+          style={{
+            position: "absolute",
+            top: `${y}%`,
+            left: `${x}%`,
+            transform: "translate(-50%, -50%)",
+            height: "5rem",
+            width: "auto",
+          }}
+        />
+      );
     });
   }, [digits]);
 
-  // Memoize hand styles - these never change
-  const handStyles = useMemo(() => {
-    const createHandStyle = (width, height, extraShadow = "") => ({
-      position: "absolute",
-      bottom: "50%",
-      left: "50%",
-      width,
-      height,
-      transformOrigin: "bottom center",
-      filter: `
-        drop-shadow(0.4rem 0.4rem 1.2rem rgba(0,0,0,0.55))
-        drop-shadow(-0.1rem -0.1rem 0.1rem rgba(220,230,25,0.9))
-        drop-shadow(0.05rem 0.05rem 0.05rem white)
-        ${extraShadow || ""}
-      `,
-    });
-
-    return {
-      hour: { ...createHandStyle("6vmin", "17vmin"), opacity: 0.75 },
-      minute: { ...createHandStyle("12.5vmin", "28vmin"), opacity: 0.7 },
-      second: createHandStyle("32vmin", "38vmin")
-    };
-  }, []);
-
-  // Optimized animation function with reduced DOM queries
-  const animateHands = useCallback(() => {
-    const now = new Date();
-    const ms = now.getMilliseconds() / 1000;
-    const seconds = now.getSeconds() + ms;
-    const minutes = now.getMinutes() + seconds / 60;
-    const hours = (now.getHours() % 12) + minutes / 60;
-
-    // Cache refs locally to avoid repeated property access
-    const secondHand = secondRef.current;
-    const minuteHand = minuteRef.current;
-    const hourHand = hourRef.current;
-
-    if (secondHand) {
-      secondHand.style.transform = `translateX(-50%) rotate(${(seconds / 60) * 360}deg)`;
-    }
-    if (minuteHand) {
-      minuteHand.style.transform = `translateX(-50%) rotate(${(minutes / 60) * 360}deg)`;
-    }
-    if (hourHand) {
-      hourHand.style.transform = `translateX(-50%) rotate(${(hours / 12) * 360}deg)`;
-    }
-
-    animationFrameRef.current = requestAnimationFrame(animateHands);
-  }, []);
-
-  // Animation effect with proper cleanup
+  // Animate hands efficiently
   useEffect(() => {
     if (!ready) return;
 
-    animateHands();
+    const update = () => {
+      const now = new Date();
+      const ms = now.getMilliseconds() / 1000;
+      const seconds = now.getSeconds() + ms;
+      const minutes = now.getMinutes() + seconds / 60;
+      const hours = (now.getHours() % 12) + minutes / 60;
 
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
+      if (secondRef.current) {
+        secondRef.current.style.transform = `translateX(-50%) rotate(${(seconds / 60) * 360}deg)`;
       }
+      if (minuteRef.current) {
+        minuteRef.current.style.transform = `translateX(-50%) rotate(${(minutes / 60) * 360}deg)`;
+      }
+      if (hourRef.current) {
+        hourRef.current.style.transform = `translateX(-50%) rotate(${(hours / 12) * 360}deg)`;
+      }
+
+      animationFrameRef.current = requestAnimationFrame(update);
     };
-  }, [ready, animateHands]);
 
-  // Memoized container styles
-  const containerStyle = useMemo(() => ({
-    height: "100dvh",
-    width: "100vw",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    background:
-      "radial-gradient(circle, rgba(223, 20, 20, 0.3) 0%, rgba(159, 16, 10, 0.9) 80%)",
-  }), []);
+    animationFrameRef.current = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(animationFrameRef.current);
+  }, [ready]);
 
-  const clockFaceStyle = useMemo(() => ({
-    position: "relative",
-    height: "80vmin",
-    width: "80vmin",
-    borderRadius: "50%",
-    boxShadow:
-      "inset -1.2rem -1.2rem 2.4rem rgba(0,0,0,0.75), inset 1.2rem 1.2rem 2.4rem rgba(220,235,255,0.9), 0 1.5rem 3rem rgba(0,0,0,0.35)",
-    background:
-      "radial-gradient(circle at center, rgba(210,20,10,0.2) 10%, rgba(260,60,60,0.8) 90%)",
-  }), []);
-
-  if (!ready) return null; // hide everything until all images loaded
+  if (!ready) return null;
 
   return (
-    <div style={containerStyle}>
-      <div style={clockFaceStyle}>
-        {digitPositions.map(({ src, x, y, shadowFilter, key }) => (
-          <img
-            key={key}
-            src={src}
-            alt={`digit-${key}`}
-            style={{
-              position: "absolute",
-              top: `${y}%`,
-              left: `${x}%`,
-              transform: "translate(-50%, -50%)",
-              height: "6rem",
-              width: "auto",
-              filter: shadowFilter,
-            }}
-          />
-        ))}
+    <div
+      style={{
+        height: "100dvh",
+        width: "100vw",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background:
+          "radial-gradient(circle, rgba(223,20,20,0.8) 0%, rgba(159,16,10,0.9) 80%)",
+      }}
+    >
+      <div
+        style={{
+          position: "relative",
+          height: "min(80vmin, 90vh)",
+          width: "min(80vmin, 90vw)",
+          borderRadius: "50%",
+          boxShadow:
+            "inset -1.2rem -1.2rem 2.4rem rgba(0,0,0,0.75), inset 1.2rem 1.2rem 2.4rem rgba(220,235,255,0.9), 0 1.5rem 3rem rgba(0,0,0,0.35)",
+          background:
+            "radial-gradient(circle at center, rgba(210,260,10,0.2) 10%, rgba(260,280,60,0.5) 90%)",
+        }}
+      >
+        {digitElements}
 
         <img
           ref={hourRef}
           src={hourHandImg}
           alt="hour-hand"
-          style={handStyles.hour}
+          style={{
+            position: "absolute",
+            bottom: "50%",
+            left: "50%",
+            width: "6vmin",
+            height: "17vmin",
+            transformOrigin: "bottom center",
+            opacity: 0.75,
+            willChange: "transform",
+          }}
         />
-
         <img
           ref={minuteRef}
           src={minuteHandImg}
           alt="minute-hand"
-          style={handStyles.minute}
+          style={{
+            position: "absolute",
+            bottom: "50%",
+            left: "50%",
+            width: "12vmin",
+            height: "28vmin",
+            transformOrigin: "bottom center",
+            opacity: 0.7,
+            willChange: "transform",
+          }}
         />
-
         <img
           ref={secondRef}
           src={secondHandImg}
           alt="second-hand"
-          style={handStyles.second}
+          style={{
+            position: "absolute",
+            bottom: "50%",
+            left: "50%",
+            width: "32vmin",
+            height: "38vmin",
+            transformOrigin: "bottom center",
+            willChange: "transform",
+          }}
         />
       </div>
     </div>
