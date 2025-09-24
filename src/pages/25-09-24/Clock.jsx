@@ -24,8 +24,8 @@ const HorizontalProportionalGradientClock = () => {
     { value: seconds % 10, max: 9, isHour: false },
   ];
 
-  const scaleFactor = 18.5; // scaling for all digits
-  const adder = 6;
+  const scaleFactor = 16; // scaling for all digits
+  const adder = 2;
 
   const scaleDigit = (num) => {
     const normalized = num.isHour
@@ -42,6 +42,8 @@ const HorizontalProportionalGradientClock = () => {
     display: "flex",
     flexDirection: "row",
     alignItems: "stretch",
+    border: "2px solid blue", // added border on all sides
+    boxSizing: "border-box",   // ensures border doesn't overflow
   };
 
   const getGray = (value, max) => {
