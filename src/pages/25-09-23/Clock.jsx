@@ -15,7 +15,7 @@ import digit3 from "./z11.gif";
 import digit4 from "./z12.gif";
 
 // hands
-import hourHandImg from "./stteth.gif";
+import hourHandImg from "./steth.png";
 import minuteHandImg from "./sss.webp";
 import secondHandImg from "./ste.gif";
 
@@ -165,28 +165,28 @@ export default function AnalogClock() {
         }
 
         .hour-hand {
-          opacity: 0.75;
-          width: 6vmin;
-          height: 17vmin;
+          opacity: 0.9;
+          width: 9vmin;
+          height: 22vmin;
         }
         .minute-hand {
-          opacity: 0.7;
+          opacity: 0.8;
           width: 12vmin;
-          height: 28vmin;
+          height: 35vmin;
         }
         .second-hand {
           width: 32vmin;
-          height: 38vmin;
+          height: 40vmin;
         }
 
         @media (min-width: 768px) {
           .hour-hand {
-            width: 6vh;
+            width: 16vh;
             height: 17vh;
           }
           .minute-hand {
             width: 12vh;
-            height: 28vh;
+            height: 33vh;
           }
           .second-hand {
             width: 32vh;
