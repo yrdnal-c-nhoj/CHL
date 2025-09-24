@@ -115,7 +115,7 @@ export default function AnalogClock() {
         justifyContent: "center",
         alignItems: "center",
         background:
-          "radial-gradient(circle, rgba(223,20,20,0.8) 0%, rgba(159,16,10,0.9) 80%)",
+          "radial-gradient(circle, rgba(123,120,120,0.8) 0%, rgba(159,16,10,0.3) 80%)",
       }}
     >
       <div
@@ -125,7 +125,7 @@ export default function AnalogClock() {
           width: "min(80vmin, 90vw)",
           borderRadius: "50%",
           boxShadow:
-            "inset -1.2rem -1.2rem 2.4rem rgba(0,0,0,0.75), inset 1.2rem 1.2rem 2.4rem rgba(220,235,255,0.9), 0 1.5rem 3rem rgba(0,0,0,0.35)",
+            "inset -1.2rem -1.2rem 2.4rem rgba(0,0,0,0.35), inset 1.2rem 1.2rem 2.4rem rgba(220,235,255,0.7), 0 1.5rem 3rem rgba(90,0,0,0.75)",
           background:
             "radial-gradient(circle at center, rgba(210,260,10,0.2) 10%, rgba(260,280,60,0.5) 90%)",
         }}
