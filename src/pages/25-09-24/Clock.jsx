@@ -70,6 +70,8 @@ const HorizontalProportionalGradientClock = () => {
                   background-color 0.6s ease-in-out, color 0.6s ease-in-out;
       border-right: 2px solid black;
       animation: borderFade 20s infinite linear;
+        filter: saturate(300%); /* <-- increases saturation */
+
     }
     .clock-digit:last-child {
       border-right: none;
