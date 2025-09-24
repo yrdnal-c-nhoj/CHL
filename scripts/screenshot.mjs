@@ -6,7 +6,7 @@ import puppeteer from 'puppeteer';
 const screenshotsDir = '/Users/john/Desktop/CHL/screenshots'; 
 if (!fs.existsSync(screenshotsDir)) fs.mkdirSync(screenshotsDir, { recursive: true });
 
-const paths = ['25-09-19'];
+const paths = ['today'];
 const baseURL = 'https://www.cubistheart.com/';
 
 // Format date as YYYY-MM-DD

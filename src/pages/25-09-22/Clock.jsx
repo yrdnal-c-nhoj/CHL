@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import bgVideo from "./deex.mp4";
 import fallbackImage from "./deex.gif";
-import customFont from "./disney.ttf";
+import customFontmmm from "./disney.ttf";
 
 export default function DigitalClockVideo() {
   const [videoFailed, setVideoFailed] = useState(false);
@@ -11,7 +11,7 @@ export default function DigitalClockVideo() {
 
   // Load custom font
   useEffect(() => {
-    const font = new FontFace("CustomFont", `url(${customFont})`);
+    const font = new FontFace("CustomFontmmm", `url(${customFont})`);
     font
       .load()
       .then((loadedFont) => {
