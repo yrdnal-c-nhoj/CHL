@@ -61,6 +61,7 @@ const HorizontalProportionalGradientClock = () => {
     }
     .clock-digit {
       font-family: 'CustomFont', sans-serif;
+      color: #19EE6EFF;
       text-shadow: 
         -3px 0px 0px black, /* strong left black shadow */
         3px 0px 0px white;  /* strong right white shadow */
