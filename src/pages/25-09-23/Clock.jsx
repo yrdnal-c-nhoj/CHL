@@ -131,12 +131,12 @@ export default function AnalogClock() {
         .clock-face {
           position: relative;
           border-radius: 50%;
-          box-shadow: inset -1.2rem -1.2rem 2.4rem rgba(0,0,0,0.35),
-                      inset 1.2rem 1.2rem 2.4rem rgba(220,235,255,0.7),
-                      0 1.5rem 3rem rgba(90,0,0,0.75);
+          box-shadow: inset -1.2rem -1.2rem 2.4rem rgba(0,0,0,0.15),
+                      inset 1.2rem 1.2rem 2.4rem rgba(220,235,255,0.15),
+                      0 1.5rem 3rem rgba(90,0,0,0.15);
           background: radial-gradient(circle at center,
-                      rgba(210,260,10,0.2) 10%,
-                      rgba(260,280,60,0.5) 90%);
+                      rgba(210,260,10,0.15) 10%,
+                      rgba(260,280,60,0.15) 90%);
           width: 100vw;
           height: 100vw;
         }
