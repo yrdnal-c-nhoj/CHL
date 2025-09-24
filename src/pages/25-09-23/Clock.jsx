@@ -63,12 +63,12 @@ export default function AnalogClock() {
           key={i}
           src={src}
           alt={`digit-${i}`}
+          className="clock-digit"
           style={{
             position: "absolute",
             top: `${y}%`,
             left: `${x}%`,
             transform: "translate(-50%, -50%)",
-            height: "5rem",
             width: "auto",
           }}
         />
@@ -118,65 +118,82 @@ export default function AnalogClock() {
           "radial-gradient(circle, rgba(123,120,120,0.8) 0%, rgba(159,16,10,0.3) 80%)",
       }}
     >
-      <div
-        style={{
-          position: "relative",
-          height: "min(80vmin, 90vh)",
-          width: "min(80vmin, 90vw)",
-          borderRadius: "50%",
-          boxShadow:
-            "inset -1.2rem -1.2rem 2.4rem rgba(0,0,0,0.35), inset 1.2rem 1.2rem 2.4rem rgba(220,235,255,0.7), 0 1.5rem 3rem rgba(90,0,0,0.75)",
-          background:
-            "radial-gradient(circle at center, rgba(210,260,10,0.2) 10%, rgba(260,280,60,0.5) 90%)",
-        }}
-      >
+      <div className="clock-face">
         {digitElements}
 
-        <img
-          ref={hourRef}
-          src={hourHandImg}
-          alt="hour-hand"
-          style={{
-            position: "absolute",
-            bottom: "50%",
-            left: "50%",
-            width: "6vmin",
-            height: "17vmin",
-            transformOrigin: "bottom center",
-            opacity: 0.75,
-            willChange: "transform",
-          }}
-        />
-        <img
-          ref={minuteRef}
-          src={minuteHandImg}
-          alt="minute-hand"
-          style={{
-            position: "absolute",
-            bottom: "50%",
-            left: "50%",
-            width: "12vmin",
-            height: "28vmin",
-            transformOrigin: "bottom center",
-            opacity: 0.7,
-            willChange: "transform",
-          }}
-        />
-        <img
-          ref={secondRef}
-          src={secondHandImg}
-          alt="second-hand"
-          style={{
-            position: "absolute",
-            bottom: "50%",
-            left: "50%",
-            width: "32vmin",
-            height: "38vmin",
-            transformOrigin: "bottom center",
-            willChange: "transform",
-          }}
-        />
+        <img ref={hourRef} src={hourHandImg} alt="hour-hand" className="hour-hand" />
+        <img ref={minuteRef} src={minuteHandImg} alt="minute-hand" className="minute-hand" />
+        <img ref={secondRef} src={secondHandImg} alt="second-hand" className="second-hand" />
       </div>
+
+      <style>{`
+        /* Clock Face */
+        .clock-face {
+          position: relative;
+          border-radius: 50%;
+          box-shadow: inset -1.2rem -1.2rem 2.4rem rgba(0,0,0,0.35),
+                      inset 1.2rem 1.2rem 2.4rem rgba(220,235,255,0.7),
+                      0 1.5rem 3rem rgba(90,0,0,0.75);
+          background: radial-gradient(circle at center,
+                      rgba(210,260,10,0.2) 10%,
+                      rgba(260,280,60,0.5) 90%);
+          width: 90vw;
+          height: 90vw;
+        }
+
+        /* Digits */
+        .clock-digit {
+          height: 5rem; /* phones */
+        }
+        @media (min-width: 768px) {
+          .clock-face {
+            width: 90vh;
+            height: 90vh;
+          }
+          .clock-digit {
+            height: 7rem; /* laptops/desktops */
+          }
+        }
+
+        /* Hands */
+        .hour-hand, .minute-hand, .second-hand {
+          position: absolute;
+          bottom: 50%;
+          left: 50%;
+          transform-origin: bottom center;
+          will-change: transform;
+        }
+
+        .hour-hand {
+          opacity: 0.75;
+          width: 6vmin;
+          height: 17vmin;
+        }
+        .minute-hand {
+          opacity: 0.7;
+          width: 12vmin;
+          height: 28vmin;
+        }
+        .second-hand {
+          width: 32vmin;
+          height: 38vmin;
+        }
+
+        @media (min-width: 768px) {
+          .hour-hand {
+            width: 6vh;
+            height: 17vh;
+          }
+          .minute-hand {
+            width: 12vh;
+            height: 28vh;
+          }
+          .second-hand {
+            width: 32vh;
+            height: 38vh;
+          }
+        }
+      `}</style>
     </div>
   );
 }
