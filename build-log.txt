@@ -4,11 +4,19 @@
 
 vite v7.1.6 building for production...
 transforming...
-✓ 36 modules transformed.
-✗ Build failed in 185ms
+✓ 33 modules transformed.
+✗ Build failed in 172ms
 error during build:
-[vite:json] [plugin vite:json] src/context/clockpages.json: Failed to parse JSON file.
-file: /Users/john/Desktop/CHL/src/context/clockpages.json
+[vite:json] [plugin vite:json] src/context/testclock.json (179:1): Failed to parse JSON file, invalid JSON syntax found at position 12474
+file: /Users/john/Desktop/CHL/src/context/testclock.json:179:1
+
+177:   { "path": "25-09-23", "date": "25-09-23", "title": "Cardio" },
+178:   { "path": "25-09-24", "date": "25-09-24", "title": "Proportion" }
+179:   { "path": "25-09-25", "date": "25-09-25", "title": "UNIX Epoch" }
+      ^
+180:   { "path": "25-09-26", "date": "25-09-26", "title": "XXXXXXXXXXXX" },
+181:   { "path": "25-09-27", "date": "25-09-27", "title": "XXXXXXXXXXXX" },
+
     at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
     at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
     at Object.error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:22029:20)
@@ -16,3 +24,8 @@ file: /Users/john/Desktop/CHL/src/context/clockpages.json
     at Object.handler (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:8832:11)
     at Object.handler (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:34051:13)
     at file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:22351:40
+npm notice
+npm notice New major version of npm available! 10.9.2 -> 11.6.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.6.1
+npm notice To update run: npm install -g npm@11.6.1
+npm notice
