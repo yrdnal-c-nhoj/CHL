@@ -3,7 +3,7 @@ import bgVideo from "./unix.mp4";
 import fallbackImage from "./unix.webp";
 import FontOne_2025_09_25 from "./unix.otf";
 import FontTwo_2025_09_25 from "./unix2.otf";
-import FontThree_2025_09_25 from "./disco.ttf";
+import FontThree_2025_09_25 from "./un.otf";
 import FontFour_2025_09_25 from "./uunix.ttf"; // new local font
 
 const today = new Date().toISOString().slice(0, 10).replace(/-/g, "_");
@@ -217,12 +217,12 @@ const UnixEpochClock = () => {
           backgroundColor: "rgba(255, 255, 255, 0.5)",
           padding: "0.2rem 0.2rem",
           borderRadius: "0.5rem",
-           letterSpacing: "0.1rem",
+           letterSpacing: "0.05rem",
           marginBottom: "0.5rem",
         }}
       >
-        <div style={{ fontSize: "0.6rem", color: "#560367FF" }}>
-          CELEBRATING {currentYear} YEARS <br /> OF DIGITAL HISTORY 
+        <div style={{ fontSize: "1.3rem", color: "#560367FF" }}>
+          Celebrating {currentYear} Years of Digital History 
         </div>
       </div>
     </div>
