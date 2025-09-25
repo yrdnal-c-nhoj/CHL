@@ -85,12 +85,22 @@ const UnixEpochClock = () => {
     return () => clearInterval(intervalRef.current);
   }, [ready]);
 
+  // ✅ Fix autoplay on mobile
   useEffect(() => {
     const videoEl = document.getElementById("bg-video");
     if (videoEl) {
+      const tryPlay = () => {
+        videoEl.play().catch(() => setVideoFailed(true));
+      };
+
+      tryPlay(); // try immediately
+      const playTimeout = setTimeout(tryPlay, 500); // retry for iOS
+
       videoEl.onerror = () => setVideoFailed(true);
       videoEl.onabort = () => setVideoFailed(true);
       videoEl.onstalled = () => setVideoFailed(true);
+
+      return () => clearTimeout(playTimeout);
     }
   }, [ready]);
 
@@ -135,10 +145,6 @@ const UnixEpochClock = () => {
           preload="auto"
           src={bgVideo}
           poster={fallbackImage}
-          onCanPlayThrough={(e) =>
-            e.currentTarget.play().catch(() => setVideoFailed(true))
-          }
-          onError={() => setVideoFailed(true)}
         />
       ) : (
         <img
