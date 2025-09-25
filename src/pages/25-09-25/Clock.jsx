@@ -152,7 +152,7 @@ const UnixEpochClock = () => {
           style={{
             fontSize: "0.8rem",
             color: "#7E7979FF",
-            maxWidth: "25rem",
+            maxWidth: "20rem",
             marginBottom: "0.5rem",
             lineHeight: "0.9",
           }}
@@ -165,7 +165,7 @@ const UnixEpochClock = () => {
             <div
               key={idx}
               style={{
-                width: "1.5rem",
+                width: "1.1rem",
                 height: "3rem",
                 display: "flex",
                 justifyContent: "center",
@@ -187,15 +187,15 @@ const UnixEpochClock = () => {
 
      <div
   style={{
-    fontSize: "1.1rem",
+    fontSize: "1.3rem",
     fontFamily: fontFourName,
     color: "#61A0FFFF", // warm retro orange
     background: "linear-gradient(90deg, #0572EFFF, #FFD93D, #720524FF)", // rainbow gradient
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
     textShadow: "2px 2px 0 #00000055",
-    letterSpacing: "0.05rem",
-    marginTop: "0.5rem",
+    letterSpacing: "-0.05rem",
+    marginTop: "0.01rem",
     display: "inline-block",
   }}
 >
