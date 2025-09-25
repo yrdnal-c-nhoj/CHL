@@ -4,6 +4,7 @@ import fallbackImage from "./unix.webp";
 import FontOne_2025_09_25 from "./unix.otf";
 import FontTwo_2025_09_25 from "./unix2.otf";
 import FontThree_2025_09_25 from "./disco.ttf";
+import FontFour_2025_09_25 from "./uunix.ttf"; // your new local font
 
 const today = new Date().toISOString().slice(0, 10).replace(/-/g, "_");
 
@@ -16,6 +17,7 @@ const UnixEpochClock = () => {
   const fontOneName = `FontOne-${today}`;
   const fontTwoName = `FontTwo-${today}`;
   const fontThreeName = `FontThree-${today}`;
+  const fontFourName = `FontFour-${today}`;
 
   const preloadFont = (url, family) =>
     new FontFace(family, `url(${url}) format('truetype')`).load().then(f => document.fonts.add(f)).catch(() => {});
@@ -45,6 +47,11 @@ const UnixEpochClock = () => {
         src: url(${FontThree_2025_09_25}) format('truetype');
         font-display: block;
       }
+      @font-face {
+        font-family: '${fontFourName}';
+        src: url(${FontFour_2025_09_25}) format('truetype');
+        font-display: block;
+      }
     `;
     document.head.appendChild(style);
 
@@ -52,6 +59,7 @@ const UnixEpochClock = () => {
       preloadFont(FontOne_2025_09_25, fontOneName),
       preloadFont(FontTwo_2025_09_25, fontTwoName),
       preloadFont(FontThree_2025_09_25, fontThreeName),
+      preloadFont(FontFour_2025_09_25, fontFourName),
       preloadVideo(bgVideo),
     ]).then(() => setReady(true));
 
@@ -142,39 +150,60 @@ const UnixEpochClock = () => {
       <div style={{ zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <div
           style={{
-            fontSize: "1rem",
+            fontSize: "1.1rem",
             color: "#7E7979FF",
             maxWidth: "25rem",
             marginBottom: "0.5rem",
-            lineHeight: "1.2",
+            lineHeight: "1.1",
           }}
         >
           On January 1st, 1970, at precisely 00:00:00 UTC, the digital universe began counting. That moment became the foundation of time itself in computing. The UNIX Epoch began.
         </div>
 
-        {/* Timestamp with each digit in its own box */}
-        <div style={{ display: "flex", justifyContent: "center", gap: "0.2rem", zIndex: 10 }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: "0.3rem", zIndex: 10 }}>
           {timestamp.split("").map((digit, idx) => (
             <div
               key={idx}
               style={{
                 width: "2.0rem",
-                height: "2.5rem",
+                height: "3rem",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                color: "#DB290EFF",
                 fontFamily: fontTwoName,
-                fontSize: "2.7rem",
+                fontSize: "3rem",
+                color: "#FF6F00",
+                textShadow: `
+                  2px 2px 0 #FFD54F, 
+                  4px 4px 0 #321F05FF, 
+                  6px 6px 0 #EB5122FF
+                `,
+                letterSpacing: "-0.1rem",
+                borderRadius: "0.5rem",
+                transform: "rotate(-1deg) skewX(-3deg)",
               }}
             >
               {digit}
             </div>
           ))}
         </div>
-        <div style={{ fontSize: "0.9rem", color: "#7B7575FF" }}>
-          Seconds Since the Dawn of Digital Time
-        </div>
+
+     <div
+  style={{
+    fontSize: "1.6rem",
+    fontFamily: fontFourName,
+    color: "#61A0FFFF", // warm retro orange
+    background: "linear-gradient(90deg, #0572EFFF, #FFD93D, #A20632FF)", // rainbow gradient
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    textShadow: "2px 2px 0 #00000055",
+    letterSpacing: "0.05rem",
+    marginTop: "0.5rem",
+    display: "inline-block",
+  }}
+>
+  seconds since the dawn of digital time
+</div>
       </div>
 
       {/* Bottom Green text */}
@@ -191,8 +220,8 @@ const UnixEpochClock = () => {
           marginBottom: "0.5rem",
         }}
       >
-        <div style={{ fontSize: "1.0rem", color: "#560367FF" }}>
-          {currentYear} YEARS OF DIGITAL HISTORY
+        <div style={{ fontSize: "0.8rem", color: "#560367FF" }}>
+          celebrating {currentYear} YEARS OF DIGITAL HISTORY
         </div>
       </div>
     </div>
