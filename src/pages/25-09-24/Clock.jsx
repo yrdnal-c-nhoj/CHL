@@ -62,14 +62,14 @@ const HorizontalProportionalGradientClock = () => {
     }
     .clock-digit {
       font-family: 'CustomFont', sans-serif;
-      text-shadow: -2px 0px 0px black, 2px 0px 0px white;
+      text-shadow: -4px 0px 0px black, 2px 0px 0px white;
       display: flex;
       justify-content: center;
       align-items: center;
       transition: flex 0.6s ease-in-out, font-size 0.6s ease-in-out,
                   background-color 0.6s ease-in-out, color 0.6s ease-in-out;
-      border-right: 2px solid black;
-      animation: borderFade 20s infinite linear;
+      border-right: 1px solid black;
+      animation: borderFade 12s infinite linear;
         filter: saturate(300%); /* <-- increases saturation */
 
     }
