@@ -196,7 +196,7 @@ const UnixEpochClock = () => {
             background: "linear-gradient(90deg, #0572EFFF, #FFD93D, #720524FF)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            textShadow: "2px 2px 0 #00000055",
+    
             letterSpacing: "-0.1rem",
             marginTop: "0.01rem",
             display: "inline-block",
