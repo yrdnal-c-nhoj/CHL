@@ -4,7 +4,7 @@ import fallbackImage from "./unix.webp";
 import FontOne_2025_09_25 from "./unix.otf";
 import FontTwo_2025_09_25 from "./unix2.otf";
 import FontThree_2025_09_25 from "./disco.ttf";
-import FontFour_2025_09_25 from "./uunix.ttf"; // your new local font
+import FontFour_2025_09_25 from "./uunix.ttf"; // new local font
 
 const today = new Date().toISOString().slice(0, 10).replace(/-/g, "_");
 
@@ -12,6 +12,7 @@ const UnixEpochClock = () => {
   const [ready, setReady] = useState(false);
   const [timestamp, setTimestamp] = useState("");
   const [videoFailed, setVideoFailed] = useState(false);
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const intervalRef = useRef(null);
 
   const fontOneName = `FontOne-${today}`;
@@ -20,7 +21,11 @@ const UnixEpochClock = () => {
   const fontFourName = `FontFour-${today}`;
 
   const preloadFont = (url, family) =>
-    new FontFace(family, `url(${url}) format('truetype')`).load().then(f => document.fonts.add(f)).catch(() => {});
+    new FontFace(family, `url(${url}) format('truetype')`)
+      .load()
+      .then(f => document.fonts.add(f))
+      .catch(() => {});
+
   const preloadVideo = (src) =>
     new Promise(resolve => {
       const vid = document.createElement("video");
@@ -67,12 +72,16 @@ const UnixEpochClock = () => {
   }, []);
 
   useEffect(() => {
-    if (!ready) return;
+    const handleResize = () => setWindowHeight(window.innerHeight);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
+  useEffect(() => {
+    if (!ready) return;
     const updateTime = () => setTimestamp(Math.floor(Date.now() / 1000).toString());
     updateTime();
     intervalRef.current = setInterval(updateTime, 1000);
-
     return () => clearInterval(intervalRef.current);
   }, [ready]);
 
@@ -85,9 +94,7 @@ const UnixEpochClock = () => {
     }
   }, [ready]);
 
-  if (!ready) {
-    return <div style={{ width: "100vw", height: "100dvh", backgroundColor: "black" }} />;
-  }
+  if (!ready) return <div style={{ width: "100vw", height: `${windowHeight}px`, backgroundColor: "black" }} />;
 
   const currentYear = ((Date.now() - new Date("1970-01-01T00:00:00Z").getTime()) / (1000 * 60 * 60 * 24 * 365.25)).toFixed(1);
 
@@ -95,7 +102,7 @@ const UnixEpochClock = () => {
     <div
       style={{
         width: "100vw",
-        height: "100dvh",
+        height: `${windowHeight}px`,
         fontFamily: fontOneName,
         display: "flex",
         flexDirection: "column",
@@ -115,8 +122,8 @@ const UnixEpochClock = () => {
             position: "absolute",
             top: 0,
             left: 0,
-            width: "100vw",
-            height: "100dvh",
+            width: "100%",
+            height: `${windowHeight}px`,
             objectFit: "cover",
             zIndex: 0,
             pointerEvents: "none",
@@ -127,7 +134,7 @@ const UnixEpochClock = () => {
           playsInline
           preload="auto"
           src={bgVideo}
-          type="video/mp4"
+          poster={fallbackImage}
         />
       ) : (
         <img
@@ -135,8 +142,8 @@ const UnixEpochClock = () => {
             position: "absolute",
             top: 0,
             left: 0,
-            width: "100vw",
-            height: "100dvh",
+            width: "100%",
+            height: `${windowHeight}px`,
             objectFit: "cover",
             zIndex: 0,
             pointerEvents: "none",
@@ -173,34 +180,30 @@ const UnixEpochClock = () => {
                 fontFamily: fontTwoName,
                 fontSize: "2rem",
                 color: "#FF6F00",
-                textShadow: `
-                  2px 2px 0 #FFD54F, 
-                  4px 4px 0 #321F05FF, 
-                  6px 6px 0 #EB5122FF
-                `,    
-                    }}
+                textShadow: `2px 2px 0 #FFD54F, 4px 4px 0 #321F05FF, 6px 6px 0 #EB5122FF`,
+              }}
             >
               {digit}
             </div>
           ))}
         </div>
 
-     <div
-  style={{
-    fontSize: "1.3rem",
-    fontFamily: fontFourName,
-    color: "#61A0FFFF", // warm retro orange
-    background: "linear-gradient(90deg, #0572EFFF, #FFD93D, #720524FF)", // rainbow gradient
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    textShadow: "2px 2px 0 #00000055",
-    letterSpacing: "-0.05rem",
-    marginTop: "0.01rem",
-    display: "inline-block",
-  }}
->
-  seconds since the dawn of digital time
-</div>
+        <div
+          style={{
+            fontSize: "1.3rem",
+            fontFamily: fontFourName,
+            color: "#61A0FFFF",
+            background: "linear-gradient(90deg, #0572EFFF, #FFD93D, #720524FF)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            textShadow: "2px 2px 0 #00000055",
+            letterSpacing: "-0.05rem",
+            marginTop: "0.01rem",
+            display: "inline-block",
+          }}
+        >
+          seconds since the dawn of digital time
+        </div>
       </div>
 
       {/* Bottom Green text */}
