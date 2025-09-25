@@ -135,6 +135,10 @@ const UnixEpochClock = () => {
           preload="auto"
           src={bgVideo}
           poster={fallbackImage}
+          onCanPlayThrough={(e) =>
+            e.currentTarget.play().catch(() => setVideoFailed(true))
+          }
+          onError={() => setVideoFailed(true)}
         />
       ) : (
         <img
@@ -196,7 +200,6 @@ const UnixEpochClock = () => {
             background: "linear-gradient(90deg, #0572EFFF, #FFD93D, #720524FF)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-    
             letterSpacing: "-0.1rem",
             marginTop: "0.01rem",
             display: "inline-block",
@@ -217,7 +220,7 @@ const UnixEpochClock = () => {
           backgroundColor: "rgba(255, 255, 255, 0.5)",
           padding: "0.2rem 0.2rem",
           borderRadius: "0.5rem",
-           letterSpacing: "0.05rem",
+          letterSpacing: "0.05rem",
           marginBottom: "0.5rem",
         }}
       >
