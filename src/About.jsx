@@ -43,7 +43,7 @@ function About() {
           <p>
             <span className="hat">About Cubist Heart Laboratories<br />&nbsp;</span>
                       <span className="smallcaps">Cubist Heart Laboratories </span>
- is a global collective of scientists, artists, and shamans found wherever electrons move.
+ is a global collective of scientists, artists and shamans found wherever electrons move.
                  </p><br /><br />
         </section>
       </div>
