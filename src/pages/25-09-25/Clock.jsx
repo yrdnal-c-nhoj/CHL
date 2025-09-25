@@ -85,28 +85,39 @@ const UnixEpochClock = () => {
     return () => clearInterval(intervalRef.current);
   }, [ready]);
 
-  // ✅ Fix autoplay on mobile
+  // ✅ Fix autoplay on mobile with fast GIF fallback
   useEffect(() => {
     const videoEl = document.getElementById("bg-video");
-    if (videoEl) {
-      const tryPlay = () => {
-        videoEl.play().catch(() => setVideoFailed(true));
-      };
+    if (!videoEl) return;
 
-      tryPlay(); // try immediately
-      const playTimeout = setTimeout(tryPlay, 500); // retry for iOS
+    videoEl.muted = true; // required for autoplay
+    const tryPlay = () => {
+      videoEl.play().catch(() => setVideoFailed(true));
+    };
 
-      videoEl.onerror = () => setVideoFailed(true);
-      videoEl.onabort = () => setVideoFailed(true);
-      videoEl.onstalled = () => setVideoFailed(true);
+    tryPlay();
 
-      return () => clearTimeout(playTimeout);
-    }
+    // if still paused after 300ms, assume autoplay blocked → fallback
+    const checkPaused = setTimeout(() => {
+      if (videoEl.paused) {
+        setVideoFailed(true);
+      }
+    }, 300);
+
+    videoEl.onerror = () => setVideoFailed(true);
+    videoEl.onabort = () => setVideoFailed(true);
+    videoEl.onstalled = () => setVideoFailed(true);
+
+    return () => clearTimeout(checkPaused);
   }, [ready]);
 
-  if (!ready) return <div style={{ width: "100vw", height: `${windowHeight}px`, backgroundColor: "black" }} />;
+  if (!ready)
+    return <div style={{ width: "100vw", height: `${windowHeight}px`, backgroundColor: "black" }} />;
 
-  const currentYear = ((Date.now() - new Date("1970-01-01T00:00:00Z").getTime()) / (1000 * 60 * 60 * 24 * 365.25)).toFixed(1);
+  const currentYear = (
+    (Date.now() - new Date("1970-01-01T00:00:00Z").getTime()) /
+    (1000 * 60 * 60 * 24 * 365.25)
+  ).toFixed(1);
 
   return (
     <div
@@ -174,7 +185,8 @@ const UnixEpochClock = () => {
             lineHeight: "0.9",
           }}
         >
-          On January 1st, 1970, at precisely 00:00:00 UTC, the digital universe began counting. That moment became the foundation of time itself in computing. The UNIX Epoch was underway.
+          On January 1st, 1970, at precisely 00:00:00 UTC, the digital universe began counting. That
+          moment became the foundation of time itself in computing. The UNIX Epoch was underway.
         </div>
 
         <div style={{ display: "flex", justifyContent: "center", gap: "0.3rem", zIndex: 10 }}>
@@ -231,7 +243,7 @@ const UnixEpochClock = () => {
         }}
       >
         <div style={{ fontSize: "1.3rem", color: "#560367FF" }}>
-          Celebrating {currentYear} Years of Digital History 
+          Celebrating {currentYear} Years of Digital History
         </div>
       </div>
     </div>
