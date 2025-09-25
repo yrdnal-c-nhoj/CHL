@@ -150,11 +150,11 @@ const UnixEpochClock = () => {
       <div style={{ zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <div
           style={{
-            fontSize: "1.1rem",
+            fontSize: "0.8rem",
             color: "#7E7979FF",
             maxWidth: "25rem",
             marginBottom: "0.5rem",
-            lineHeight: "1.1",
+            lineHeight: "0.9",
           }}
         >
           On January 1st, 1970, at precisely 00:00:00 UTC, the digital universe began counting. That moment became the foundation of time itself in computing. The UNIX Epoch was underway.
@@ -165,23 +165,20 @@ const UnixEpochClock = () => {
             <div
               key={idx}
               style={{
-                width: "2.0rem",
+                width: "1.5rem",
                 height: "3rem",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 fontFamily: fontTwoName,
-                fontSize: "3rem",
+                fontSize: "2rem",
                 color: "#FF6F00",
                 textShadow: `
                   2px 2px 0 #FFD54F, 
                   4px 4px 0 #321F05FF, 
                   6px 6px 0 #EB5122FF
-                `,
-                letterSpacing: "-0.1rem",
-                borderRadius: "0.5rem",
-                transform: "rotate(-1deg) skewX(-3deg)",
-              }}
+                `,    
+                    }}
             >
               {digit}
             </div>
@@ -190,7 +187,7 @@ const UnixEpochClock = () => {
 
      <div
   style={{
-    fontSize: "1.6rem",
+    fontSize: "1.1rem",
     fontFamily: fontFourName,
     color: "#61A0FFFF", // warm retro orange
     background: "linear-gradient(90deg, #0572EFFF, #FFD93D, #720524FF)", // rainbow gradient
@@ -220,7 +217,7 @@ const UnixEpochClock = () => {
           marginBottom: "0.5rem",
         }}
       >
-        <div style={{ fontSize: "0.8rem", color: "#560367FF" }}>
+        <div style={{ fontSize: "0.6rem", color: "#560367FF" }}>
           celebrating {currentYear} YEARS OF DIGITAL HISTORY
         </div>
       </div>
