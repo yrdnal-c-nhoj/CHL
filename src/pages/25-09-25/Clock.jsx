@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import bgVideo from "./unix.mp4";
+import bgVideo from "./unix-optimized.mp4"; // Optimized video for mobile compatibility
 import fallbackImage from "./unix.webp";
 import FontOne_2025_09_25 from "./unix.otf";
 import FontTwo_2025_09_25 from "./unix2.otf";
 import FontThree_2025_09_25 from "./un.otf";
-import FontFour_2025_09_25 from "./uunix.ttf"; // new local font
+import FontFour_2025_09_25 from "./uunix.ttf";
 
 const today = new Date().toISOString().slice(0, 10).replace(/-/g, "_");
 
@@ -23,15 +23,21 @@ const UnixEpochClock = () => {
   const preloadFont = (url, family) =>
     new FontFace(family, `url(${url}) format('truetype')`)
       .load()
-      .then(f => document.fonts.add(f))
-      .catch(() => {});
+      .then((f) => document.fonts.add(f))
+      .catch(() => console.error(`Failed to load font: ${family}`));
 
   const preloadVideo = (src) =>
-    new Promise(resolve => {
+    new Promise((resolve) => {
       const vid = document.createElement("video");
       vid.src = src;
-      vid.oncanplaythrough = resolve;
-      vid.onerror = resolve;
+      vid.oncanplaythrough = () => {
+        console.log("Video preloaded successfully");
+        resolve();
+      };
+      vid.onerror = () => {
+        console.error("Video preload failed");
+        resolve(); // Resolve to avoid hanging
+      };
     });
 
   useEffect(() => {
@@ -40,79 +46,147 @@ const UnixEpochClock = () => {
       @font-face {
         font-family: '${fontOneName}';
         src: url(${FontOne_2025_09_25}) format('truetype');
-        font-display: block;
+        font-display: swap;
       }
       @font-face {
         font-family: '${fontTwoName}';
         src: url(${FontTwo_2025_09_25}) format('truetype');
-        font-display: block;
+        font-display: swap;
       }
       @font-face {
         font-family: '${fontThreeName}';
         src: url(${FontThree_2025_09_25}) format('truetype');
-        font-display: block;
+        font-display: swap;
       }
       @font-face {
         font-family: '${fontFourName}';
         src: url(${FontFour_2025_09_25}) format('truetype');
-        font-display: block;
+        font-display: swap;
       }
     `;
     document.head.appendChild(style);
 
-    Promise.all([
-      preloadFont(FontOne_2025_09_25, fontOneName),
-      preloadFont(FontTwo_2025_09_25, fontTwoName),
-      preloadFont(FontThree_2025_09_25, fontThreeName),
-      preloadFont(FontFour_2025_09_25, fontFourName),
-      preloadVideo(bgVideo),
-    ]).then(() => setReady(true));
+    const loadResources = async () => {
+      const timeout = setTimeout(() => {
+        console.log("Resource loading timeout reached, setting ready");
+        setReady(true);
+      }, 3000); // 3s timeout to prevent hanging
 
-    return () => document.head.removeChild(style);
+      try {
+        console.log("Starting resource loading");
+        await preloadFont(FontOne_2025_09_25, fontOneName);
+        await preloadFont(FontTwo_2025_09_25, fontTwoName);
+        await preloadFont(FontThree_2025_09_25, fontThreeName);
+        await preloadFont(FontFour_2025_09_25, fontFourName);
+        await preloadVideo(bgVideo);
+        console.log("All resources loaded successfully");
+        setReady(true);
+      } catch (err) {
+        console.error("Resource loading error:", err);
+        setReady(true); // Proceed even if resources fail
+      } finally {
+        clearTimeout(timeout);
+      }
+    };
+
+    loadResources();
+
+    return () => {
+      console.log("Cleaning up style element");
+      document.head.removeChild(style);
+    };
   }, []);
 
   useEffect(() => {
-    const handleResize = () => setWindowHeight(window.innerHeight);
+    const handleResize = () => {
+      console.log("Window resized, updating height");
+      setWindowHeight(window.innerHeight);
+    };
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      console.log("Removing resize event listener");
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   useEffect(() => {
     if (!ready) return;
-    const updateTime = () => setTimestamp(Math.floor(Date.now() / 1000).toString());
+    const updateTime = () => {
+      console.log("Updating timestamp");
+      setTimestamp(Math.floor(Date.now() / 1000).toString());
+    };
     updateTime();
     intervalRef.current = setInterval(updateTime, 1000);
-    return () => clearInterval(intervalRef.current);
+    return () => {
+      console.log("Clearing timestamp interval");
+      clearInterval(intervalRef.current);
+    };
   }, [ready]);
 
-  // ✅ Fix autoplay on mobile with fast GIF fallback
   useEffect(() => {
-    const videoEl = document.getElementById("bg-video");
-    if (!videoEl) return;
+    if (!ready) return;
 
-    videoEl.muted = true; // required for autoplay
+    const videoEl = document.getElementById("bg-video");
+    if (!videoEl) {
+      console.error("Video element not found");
+      setVideoFailed(true);
+      return;
+    }
+
+    videoEl.muted = true;
+    videoEl.playsInline = true;
+
     const tryPlay = () => {
-      videoEl.play().catch(() => setVideoFailed(true));
+      console.log("Attempting video playback");
+      videoEl.play().catch((err) => {
+        console.error("Video playback failed:", err);
+        setVideoFailed(true);
+      });
     };
 
     tryPlay();
 
-    // if still paused after 300ms, assume autoplay blocked → fallback
     const checkPaused = setTimeout(() => {
       if (videoEl.paused) {
+        console.error("Video is paused after timeout");
         setVideoFailed(true);
       }
-    }, 300);
+    }, 500);
 
-    videoEl.onerror = () => setVideoFailed(true);
-    videoEl.onabort = () => setVideoFailed(true);
-    videoEl.onstalled = () => setVideoFailed(true);
+    videoEl.onerror = () => {
+      console.error("Video error:", videoEl.error);
+      setVideoFailed(true);
+    };
+    videoEl.onabort = () => {
+      console.error("Video aborted");
+      setVideoFailed(true);
+    };
+    videoEl.onstalled = () => {
+      console.error("Video stalled");
+      setVideoFailed(true);
+    };
 
-    return () => clearTimeout(checkPaused);
-  }, [ready]);
+    const handleInteraction = () => {
+      if (videoEl.paused && !videoFailed) {
+        console.log("User interaction detected, retrying video playback");
+        tryPlay();
+      }
+    };
+    window.addEventListener("touchstart", handleInteraction, { once: true });
+
+    return () => {
+      console.log("Cleaning up video effect");
+      clearTimeout(checkPaused);
+      window.removeEventListener("touchstart", handleInteraction);
+    };
+  }, [ready, videoFailed]);
 
   if (!ready)
-    return <div style={{ width: "100vw", height: `${windowHeight}px`, backgroundColor: "black" }} />;
+    return (
+      <div
+        style={{ width: "100vw", height: `${windowHeight}px`, backgroundColor: "black" }}
+      />
+    );
 
   const currentYear = (
     (Date.now() - new Date("1970-01-01T00:00:00Z").getTime()) /
@@ -135,7 +209,6 @@ const UnixEpochClock = () => {
         overflow: "hidden",
       }}
     >
-      {/* Background video or fallback */}
       {!videoFailed ? (
         <video
           id="bg-video"
@@ -171,10 +244,10 @@ const UnixEpochClock = () => {
           }}
           src={fallbackImage}
           alt="Background fallback"
+          onError={() => console.error("Fallback image failed to load")}
         />
       )}
 
-      {/* Top Gray + Red text */}
       <div style={{ zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <div
           style={{
@@ -227,7 +300,6 @@ const UnixEpochClock = () => {
         </div>
       </div>
 
-      {/* Bottom Green text */}
       <div
         style={{
           zIndex: 10,
