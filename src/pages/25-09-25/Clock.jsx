@@ -197,7 +197,7 @@ const UnixEpochClock = () => {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             textShadow: "2px 2px 0 #00000055",
-            letterSpacing: "-0.05rem",
+            letterSpacing: "-0.1rem",
             marginTop: "0.01rem",
             display: "inline-block",
           }}
@@ -217,11 +217,12 @@ const UnixEpochClock = () => {
           backgroundColor: "rgba(255, 255, 255, 0.5)",
           padding: "0.2rem 0.2rem",
           borderRadius: "0.5rem",
+           letterSpacing: "0.3rem",
           marginBottom: "0.5rem",
         }}
       >
         <div style={{ fontSize: "0.6rem", color: "#560367FF" }}>
-          celebrating {currentYear} YEARS OF DIGITAL HISTORY
+          CELEBRATING {currentYear} YEARS <br /> OF DIGITAL HISTORY 
         </div>
       </div>
     </div>
