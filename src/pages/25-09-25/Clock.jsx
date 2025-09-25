@@ -217,7 +217,7 @@ const UnixEpochClock = () => {
           backgroundColor: "rgba(255, 255, 255, 0.5)",
           padding: "0.2rem 0.2rem",
           borderRadius: "0.5rem",
-           letterSpacing: "0.3rem",
+           letterSpacing: "0.1rem",
           marginBottom: "0.5rem",
         }}
       >
