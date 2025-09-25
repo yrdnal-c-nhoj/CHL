@@ -157,7 +157,7 @@ const UnixEpochClock = () => {
             lineHeight: "1.1",
           }}
         >
-          On January 1st, 1970, at precisely 00:00:00 UTC, the digital universe began counting. That moment became the foundation of time itself in computing. The UNIX Epoch had begun.
+          On January 1st, 1970, at precisely 00:00:00 UTC, the digital universe began counting. That moment became the foundation of time itself in computing. The UNIX Epoch was underway.
         </div>
 
         <div style={{ display: "flex", justifyContent: "center", gap: "0.3rem", zIndex: 10 }}>
