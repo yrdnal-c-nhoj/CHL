@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import bgVideo from "./deex.mp4";
 import fallbackImage from "./deex.gif";
 import customFontmmm from "./disney.ttf";
@@ -8,49 +8,96 @@ export default function DigitalClockVideo() {
   const [time, setTime] = useState(new Date());
   const [isPhone, setIsPhone] = useState(window.innerWidth <= 768);
   const [isReady, setIsReady] = useState(false); // prevent FOUC
+  const videoRef = useRef(null); // Ref for video element
 
   // Load custom font
   useEffect(() => {
+    console.log("Starting font load for CustomFontmmm");
     const font = new FontFace("CustomFontmmm", `url(${customFontmmm})`);
     font
       .load()
       .then((loadedFont) => {
+        console.log("Font loaded successfully");
         document.fonts.add(loadedFont);
         return document.fonts.ready;
       })
-      .then(() => setIsReady(true))
-      .catch(() => {
-        console.warn("Custom font failed to load");
+      .then(() => {
+        console.log("Font ready, setting isReady to true");
+        setIsReady(true);
+      })
+      .catch((error) => {
+        console.warn("Custom font failed to load:", error.message);
         setIsReady(true); // fallback to system font
       });
   }, []);
 
   // Update time every ~16ms for smooth display
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 16);
-    return () => clearInterval(interval);
+    console.log("Starting time update interval");
+    const interval = setInterval(() => {
+      const newTime = new Date();
+      setTime(newTime);
+      console.log("Time updated:", newTime.toLocaleTimeString());
+    }, 16);
+    return () => {
+      console.log("Clearing time update interval");
+      clearInterval(interval);
+    };
   }, []);
 
-  // Video error handlers
+  // Video event handlers
   useEffect(() => {
-    const videoEl = document.getElementById("bg-video");
+    const videoEl = videoRef.current;
     if (videoEl) {
-      videoEl.onerror = () => setVideoFailed(true);
-      videoEl.onabort = () => setVideoFailed(true);
-      videoEl.onstalled = () => setVideoFailed(true);
+      console.log("Attaching video event handlers");
+      videoEl.oncanplay = () => console.log("Video can play at", new Date().toLocaleTimeString());
+      videoEl.onplay = () => console.log("Video is playing at", new Date().toLocaleTimeString());
+      videoEl.onerror = () => {
+        console.error("Video error:", videoEl.error?.message || "Unknown error");
+        setVideoFailed(true);
+      };
+      videoEl.onabort = () => {
+        console.warn("Video aborted");
+        setVideoFailed(true);
+      };
+      videoEl.onstalled = () => {
+        console.warn("Video stalled");
+        setVideoFailed(true);
+      };
     }
-  }, []);
+    console.log("videoFailed state:", videoFailed);
+    return () => {
+      if (videoEl) {
+        console.log("Cleaning up video event handlers");
+        videoEl.oncanplay = null;
+        videoEl.onplay = null;
+        videoEl.onerror = null;
+        videoEl.onabort = null;
+        videoEl.onstalled = null;
+      }
+    };
+  }, [videoFailed]);
 
   // Responsive detection
   useEffect(() => {
-    const handleResize = () => setIsPhone(window.innerWidth <= 768);
+    const handleResize = () => {
+      const newIsPhone = window.innerWidth <= 768;
+      console.log("Window resized, isPhone:", newIsPhone);
+      setIsPhone(newIsPhone);
+    };
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    console.log("Initial isPhone state:", isPhone);
+    return () => {
+      console.log("Removing resize event listener");
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isPhone]);
 
   // Inject keyframes for bronze/gold shimmer
   useEffect(() => {
+    console.log("Injecting sparkle keyframes");
     const style = document.createElement("style");
+    style.id = "sparkle-styles"; // Prevent duplicates
     style.innerHTML = `
       @keyframes sparkle {
         0% { color: #42210B; }
@@ -61,7 +108,10 @@ export default function DigitalClockVideo() {
       }
     `;
     document.head.appendChild(style);
-    return () => document.head.removeChild(style);
+    return () => {
+      console.log("Removing sparkle keyframes");
+      document.head.removeChild(style);
+    };
   }, []);
 
   // Format time
@@ -134,7 +184,10 @@ export default function DigitalClockVideo() {
   };
 
   const renderBoxes = useCallback(
-    (str) => str.split("").map((c, i) => <div key={i} style={boxStyle}>{c}</div>),
+    (str) => {
+      console.log("Rendering boxes for:", str);
+      return str.split("").map((c, i) => <div key={i} style={boxStyle}>{c}</div>);
+    },
     [boxStyle]
   );
 
@@ -142,20 +195,20 @@ export default function DigitalClockVideo() {
     <div style={containerStyle}>
       {!videoFailed ? (
         <video
+          ref={videoRef}
           id="bg-video"
           style={mediaStyle}
           autoPlay
           loop
           muted
           playsInline
-          preload="auto"
+          preload="metadata" // Changed from "auto" for faster initial load
           src={bgVideo}
           type="video/mp4"
         />
       ) : (
         <img style={mediaStyle} src={fallbackImage} alt="Background fallback" />
       )}
-
       <div style={clockStyle}>
         {isPhone ? (
           <>
