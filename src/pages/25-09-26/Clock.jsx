@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import bgImage from "./wall.jpg";
-import fontA from "./not.otf";
-import fontB from "./not2.otf";
+import bgImage926 from "./wall.jpg";
+import font20250926A from "./not.otf";   // give date-specific names
+import font20250926B from "./not2.otf";
 
 export default function DualFontClock() {
   const [ready, setReady] = useState(false);
@@ -17,28 +17,23 @@ export default function DualFontClock() {
   const phoneColonSpacing = "-3vw";
   const desktopColonSpacing = "-1.5rem";
 
-  // Choose current device spacing/font
   const fontSize = isPhone ? phoneFontSize : desktopFontSize;
   const digitSpacing = isPhone ? phoneDigitSpacing : desktopDigitSpacing;
   const colonSpacing = isPhone ? phoneColonSpacing : desktopColonSpacing;
 
-  // Inject fonts and CSS
+  // Preload fonts + background image
   useEffect(() => {
     const styleEl = document.createElement("style");
     styleEl.innerHTML = `
       @font-face {
         font-family: "FontA";
-        src: url(${fontA}) format("truetype");
+        src: url(${font20250926A}) format("opentype");
         font-display: swap;
       }
       @font-face {
         font-family: "FontB";
-        src: url(${fontB}) format("truetype");
+        src: url(${font20250926B}) format("opentype");
         font-display: swap;
-      }
-      body {
-        margin: 0;
-        background: black;
       }
       @keyframes fadeLoop {
         0% { opacity: 0; }
@@ -50,15 +45,16 @@ export default function DualFontClock() {
     `;
     document.head.appendChild(styleEl);
 
-    // Preload fonts and background
     Promise.all([
       document.fonts.load("1rem FontA"),
-      document.fonts.load("1rem FontB")
-    ]).then(() => {
-      const img = new Image();
-      img.src = bgImage;
-      img.onload = () => setReady(true);
-    });
+      document.fonts.load("1rem FontB"),
+      new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = bgImage926;
+        img.onload = resolve;
+        img.onerror = reject;
+      }),
+    ]).then(() => setReady(true));
 
     const timer = setInterval(() => setTime(new Date()), 1000);
     const handleResize = () => setIsPhone(window.innerWidth < 768);
@@ -70,22 +66,24 @@ export default function DualFontClock() {
     };
   }, []);
 
-  // Start FontB fade animation after 4 seconds
   useEffect(() => {
     if (!ready) return;
-    const startTimer = setTimeout(() => setFadeStarted(true), 4000);
-    return () => clearTimeout(startTimer);
+    const t = setTimeout(() => setFadeStarted(true), 3000);
+    return () => clearTimeout(t);
   }, [ready]);
 
-  if (!ready)
-    return <div style={{ width: "100vw", height: "100dvh", background: "black" }} />;
+  if (!ready) {
+    return (
+      <div style={{ width: "100vw", height: "100dvh", background: "black" }} />
+    );
+  }
 
+  // Time formatting
   const hours = (time.getHours() % 12) || 12;
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
   const ampm = time.getHours() >= 12 ? "PM" : "AM";
-
-  const formatDigits = (num) => num.toString().padStart(2, "0");
+  const formatDigits = (n) => n.toString().padStart(2, "0");
 
   const h = hours.toString();
   const m = formatDigits(minutes);
@@ -100,22 +98,23 @@ export default function DualFontClock() {
         alignItems: "center",
         width: isPhone ? "17vw" : "6rem",
         height: isPhone ? "17vw" : "5rem",
-        margin: char === ":" ? colonSpacing : digitSpacing,
+        marginLeft: char === ":" ? colonSpacing : digitSpacing,
+        marginRight: char === ":" ? colonSpacing : digitSpacing,
       }}
     >
-      {/* FontA always visible */}
+      {/* FontA - always visible */}
       <span
         style={{
           fontFamily: "FontA, sans-serif",
-          fontSize: fontSize,
+          fontSize,
           color: "#F44444FF",
           textShadow: `
-            -1px -1px 0px #F5F3D6FF,
-            1px 1px 0px #000000,
-            2px 2px 11px rgba(250,180,0,0.9),
-            0 0 15px #CAFF44FF,
-            0 0 25px #04FF00FF,
-            0 0 35px #66FFB3FF
+            -0.2rem -0.2rem 0 #F5F3D6FF,
+            0.2rem 0.2rem 0 #000000,
+            0.4rem 0.4rem 1rem rgba(250,180,0,0.9),
+            0 0 1.5rem #CAFF44FF,
+            0 0 2.5rem #04FF00FF,
+            0 0 3.5rem #66FFB3FF
           `,
           position: "absolute",
         }}
@@ -123,14 +122,14 @@ export default function DualFontClock() {
         {char}
       </span>
 
-      {/* FontB fades in/out */}
+      {/* FontB - fades in/out */}
       <span
         style={{
           fontFamily: "FontB, sans-serif",
-          fontSize: fontSize,
+          fontSize,
           color: "#5CB6FFFF",
           position: "absolute",
-          textShadow: "0 0 10px rgba(10,144,255,0.7)",
+          textShadow: "0 0 1rem rgba(10,144,255,0.7)",
           opacity: 0,
           animation: fadeStarted ? "fadeLoop 15s linear infinite" : "none",
         }}
@@ -143,7 +142,13 @@ export default function DualFontClock() {
   const renderTime = () => {
     if (isPhone) {
       return (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           <div style={{ display: "flex" }}>{[...h].map(stackedChar)}</div>
           <div style={{ display: "flex" }}>{[...m].map(stackedChar)}</div>
           <div style={{ display: "flex" }}>{[...s].map(stackedChar)}</div>
@@ -151,26 +156,39 @@ export default function DualFontClock() {
         </div>
       );
     } else {
-      const timeChars = [...h, ":", ...m, ":", ...s, ...ampm];
+      const chars = [...h, ":", ...m, ":", ...s, ...ampm];
       return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
-          {timeChars.map((char, idx) => stackedChar(char))}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+          }}
+        >
+          {chars.map((c, i) => stackedChar(c))}
         </div>
       );
     }
   };
 
   return (
-    <div style={{ width: "100vw", height: "100dvh", position: "relative", display: "flex", justifyContent: "center", alignItems: "center" }}>
-      {/* Background */}
+    <div
+      style={{
+        width: "100vw",
+        height: "100dvh",
+        position: "relative",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "black",
+      }}
+    >
       <div
         style={{
           position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundImage: `url(${bgImage})`,
+          inset: 0,
+          backgroundImage: `url(${bgImage926})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           filter: "brightness(0.7) contrast(1.9)",
@@ -178,7 +196,6 @@ export default function DualFontClock() {
           zIndex: 0,
         }}
       />
-      {/* Clock */}
       <div style={{ position: "relative", zIndex: 1 }}>{renderTime()}</div>
     </div>
   );
