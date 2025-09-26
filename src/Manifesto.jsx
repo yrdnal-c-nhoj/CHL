@@ -40,7 +40,7 @@ function Manifesto() {
           <p><span className="hat">We Use Open-Source Code<br />&nbsp;</span>
           <span className="smallcaps">WE EMPLOY SCRIPTS,</span> tools, libraries, and frameworks built by countless hands all around the world. It is history's most successful group project.
           We copy and we clone and we fork and we install with joy and with gratitude in our cubist hearts.                    
-          <span className="line">We code on the shoulders of giants.<br />&nbsp;</span></p>
+          <span className="line">We code on the shoulders of giants. <br />&nbsp;</span></p>
 
           <p><span className="hat">We Believe in Electrons<br />&nbsp;</span>
           <span className="smallcaps">INVISIBLE, ENDLESSLY JUMPING. </span>  Like us, they occupy a place at the blurry and busy intersection of Nature, Culture and Technology. They subatomically convey all our ambitions, dreams, thoughts, emotions and knowledge. 
