@@ -258,7 +258,7 @@ const UnixEpochClock = () => {
             lineHeight: "0.9",
           }}
         >
-          On January 1st, 1970, at precisely 00:00:00 UTC, the digital universe began counting. That
+          On January 1st, 1970, at precisely 00:00:00 UTC, the digital universe began counting at zero seconds. That
           moment became the foundation of time itself in computing. The UNIX Epoch was underway.
         </div>
 
@@ -288,7 +288,7 @@ const UnixEpochClock = () => {
             fontSize: "1.3rem",
             fontFamily: fontFourName,
             color: "#61A0FFFF",
-            background: "linear-gradient(90deg, #0572EFFF, #FFD93D, #720524FF)",
+            background: "linear-gradient(90deg, #0572EFFF, #BF9A07FF, #720524FF)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             letterSpacing: "-0.1rem",
@@ -314,8 +314,8 @@ const UnixEpochClock = () => {
           marginBottom: "0.5rem",
         }}
       >
-        <div style={{ fontSize: "1.3rem", color: "#560367FF" }}>
-          Celebrating {currentYear} Years of Digital History
+        <div style={{ fontSize: "2.3rem", color: "#560367FF" }}>
+          Celebrating {currentYear} Years!
         </div>
       </div>
     </div>
