@@ -5,11 +5,48 @@ import bgInner from "./disc.gif";
 
 const AnalogClock = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [loaded, setLoaded] = useState(false);
 
+  // Load images and font first
   useEffect(() => {
+    const images = [bgOuter, bgInner];
+    let loadedCount = 0;
+
+    const checkAllLoaded = () => {
+      loadedCount++;
+      if (loadedCount === images.length) {
+        setLoaded(true);
+      }
+    };
+
+    // Preload images
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = checkAllLoaded;
+      img.onerror = checkAllLoaded; // consider it loaded even if failed
+    });
+
+    // Load font
+    const font = new FontFace("CustomClockFont", `url(${kittycatFont})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      // Optionally mark loaded here if you want font before rendering
+    });
+
+  }, []);
+
+  // Clock update
+  useEffect(() => {
+    if (!loaded) return; // only start timer after loaded
     const timer = setInterval(() => setCurrentTime(new Date()), 50);
     return () => clearInterval(timer);
-  }, []);
+  }, [loaded]);
+
+  if (!loaded) {
+    // Optionally render nothing or a spinner until loaded
+    return null;
+  }
 
   const hours24 = currentTime.getHours();
   const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12;
@@ -82,7 +119,7 @@ const AnalogClock = () => {
               alignmentBaseline: "middle",
               fontSize: fontSize,
               fontFamily: `'CustomClockFont', Arial, sans-serif`,
-              fill: i === activeIndex ? "#ED1010FF" : "#69646AFF",
+              fill: i === activeIndex ? "#ED0B0BFF" : "#CCC8CDFF",
               fontWeight: "bold",
               textShadow:
                 i === activeIndex
@@ -114,22 +151,9 @@ const AnalogClock = () => {
         backgroundSize: "cover",
         backgroundPosition: "center",
         filter: "contrast(0.8) opacity(0.9)",
-        transform: "scaleX(-1)", // flip horizontally
+        transform: "scaleX(-1)",
       }}
     >
-      {/* Custom font */}
-      <style>
-        {`
-          @font-face {
-            font-family: 'CustomClockFont';
-            src: url(${kittycatFont}) format('truetype');
-            font-weight: normal;
-            font-style: normal;
-          }
-        `}
-      </style>
-
-      {/* Dark overlay over outer background */}
       <div
         style={{
           position: "absolute",
@@ -142,13 +166,12 @@ const AnalogClock = () => {
         }}
       />
 
-      {/* Clock container */}
       <div
         style={{
           position: "absolute",
           top: "50%",
           left: "50%",
-          transform: "translate(-50%, -50%) scaleX(-1)", // flip inner container too
+          transform: "translate(-50%, -50%) scaleX(-1)",
           width: "90vmin",
           height: "90vmin",
           borderRadius: "50%",
@@ -162,7 +185,6 @@ const AnalogClock = () => {
           alignItems: "center",
         }}
       >
-        {/* Optional inner dark overlay for readability */}
         <div
           style={{
             position: "absolute",
@@ -192,7 +214,6 @@ const AnalogClock = () => {
           <g transform={`rotate(${secondsOnesRotation}, 50, 50)`}>
             {createRing(10, 14, 6, secondsOnes, "secondsOnes", "0.3rem")}
           </g>
-          {/* Center circle transparent */}
           <circle cx="50" cy="50" r="6" fill="transparent" />
         </svg>
       </div>
