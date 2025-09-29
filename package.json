@@ -23,7 +23,7 @@
     "googleapis": "^159.0.0",
     "lucide-react": "^0.541.0",
     "papaparse": "^5.5.3",
-    "puppeteer": "^24.19.0",
+    "puppeteer": "^24.22.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-ga4": "^2.1.0",

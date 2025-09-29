@@ -6,8 +6,12 @@ import puppeteer from 'puppeteer';
 const screenshotsDir = '/Users/john/Desktop/CHL/screenshots'; 
 if (!fs.existsSync(screenshotsDir)) fs.mkdirSync(screenshotsDir, { recursive: true });
 
+// Paths you want to capture
 const paths = ['today'];
 const baseURL = 'https://www.cubistheart.com/';
+
+// Delay in milliseconds before screenshot (e.g., 3000 = 3s)
+const screenshotDelay = 9000;
 
 // Format date as YYYY-MM-DD
 function getDateString() {
@@ -16,6 +20,11 @@ function getDateString() {
   const mm = String(now.getMonth() + 1).padStart(2, '0');
   const dd = String(now.getDate()).padStart(2, '0');
   return `${yyyy}-${mm}-${dd}`;
+}
+
+// Delay helper (works everywhere, no Puppeteer dependency)
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function main() {
@@ -34,6 +43,12 @@ async function main() {
         Math.min(window.innerWidth, window.innerHeight)
       );
       await page.setViewport({ width: squareSize, height: squareSize });
+
+      // Wait the configured delay before taking the screenshot
+      if (screenshotDelay > 0) {
+        console.log(`Waiting ${screenshotDelay}ms before screenshot...`);
+        await delay(screenshotDelay);
+      }
 
       const dateStr = getDateString();
       const screenshotPath = path.join(screenshotsDir, `${p}-${dateStr}.png`);
