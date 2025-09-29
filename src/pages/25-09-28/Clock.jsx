@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ufoImg from './ufo.gif';
+import ufoImg from './ufo.webp';
 import skyImg from './stars.gif';
 import nebulaImg from './sta.gif'; // New background image
 import customFont from './cow.ttf';
