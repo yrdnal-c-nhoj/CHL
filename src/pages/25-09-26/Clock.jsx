@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import bgImage926 from "./wall.jpg";
+import bgImage926 from "./wall.webp";
 import font20250926A from "./not.otf";   // give date-specific names
 import font20250926B from "./not2.otf";
 
