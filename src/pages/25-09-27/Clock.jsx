@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import kittycatFont from "./disc.ttf";
+import sss47wert from "./disc.ttf";
 import bgOuter from "./dis.gif";
 import bgInner from "./disc.gif";
 
@@ -7,45 +7,41 @@ const AnalogClock = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [loaded, setLoaded] = useState(false);
 
-  // Load images and font first
   useEffect(() => {
-    const images = [bgOuter, bgInner];
-    let loadedCount = 0;
+    // Inject @font-face dynamically
+    const fontFace = new FontFace("CustomClockFont", `url(${sss47wert})`);
+    fontFace.load().then((loadedFace) => {
+      document.fonts.add(loadedFace);
 
-    const checkAllLoaded = () => {
-      loadedCount++;
-      if (loadedCount === images.length) {
-        setLoaded(true);
-      }
-    };
+      // Preload images
+      const images = [bgOuter, bgInner];
+      let loadedCount = 0;
 
-    // Preload images
-    images.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = checkAllLoaded;
-      img.onerror = checkAllLoaded; // consider it loaded even if failed
+      const checkAllLoaded = () => {
+        loadedCount++;
+        if (loadedCount === images.length) {
+          setLoaded(true);
+        }
+      };
+
+      images.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = checkAllLoaded;
+        img.onerror = checkAllLoaded;
+      });
     });
-
-    // Load font
-    const font = new FontFace("CustomClockFont", `url(${kittycatFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      // Optionally mark loaded here if you want font before rendering
-    });
-
   }, []);
 
-  // Clock update
+  // Clock update only after resources loaded
   useEffect(() => {
-    if (!loaded) return; // only start timer after loaded
+    if (!loaded) return;
     const timer = setInterval(() => setCurrentTime(new Date()), 50);
     return () => clearInterval(timer);
   }, [loaded]);
 
   if (!loaded) {
-    // Optionally render nothing or a spinner until loaded
-    return null;
+    return null; // Could show loader if wanted
   }
 
   const hours24 = currentTime.getHours();
@@ -118,16 +114,16 @@ const AnalogClock = () => {
               textAnchor: "middle",
               alignmentBaseline: "middle",
               fontSize: fontSize,
-              fontFamily: `'CustomClockFont', Arial, sans-serif`,
+              fontFamily: `'CustomClockFont', sans-serif`,
               fill: i === activeIndex ? "#ED0B0BFF" : "#CCC8CDFF",
               fontWeight: "bold",
               textShadow:
                 i === activeIndex
-                  ? `2px 2px 0 #000,
-                     -2px -2px 0 #000,
-                     2px -2px 0 #000,
-                     -2px 2px 0 #000,
-                     4px 4px 10px #FF0000`
+                  ? `0.2rem 0.2rem 0 #000,
+                     -0.2rem -0.2rem 0 #000,
+                     0.2rem -0.2rem 0 #000,
+                     -0.2rem 0.2rem 0 #000,
+                     0.4rem 0.4rem 1rem #FF0000`
                   : "none",
             }}
             transform={`rotate(${textRotation}, ${labelX}, ${labelY})`}
@@ -144,7 +140,7 @@ const AnalogClock = () => {
     <div
       style={{
         width: "100vw",
-        height: "100vh",
+        height: "100dvh",
         position: "relative",
         overflow: "hidden",
         backgroundImage: `url(${bgOuter})`,
@@ -157,10 +153,7 @@ const AnalogClock = () => {
       <div
         style={{
           position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
+          inset: 0,
           backgroundColor: "rgba(0,0,0,0.4)",
           zIndex: 1,
         }}
@@ -188,10 +181,7 @@ const AnalogClock = () => {
         <div
           style={{
             position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
+            inset: 0,
             borderRadius: "50%",
             backgroundColor: "rgba(0,0,0,0.3)",
             zIndex: 1,
