@@ -21,10 +21,10 @@ const CLOCK_BASE_Y = 100;
 const CLOCK_ABDUCTED_Y = 44;
 const ABDUCTION_DELAY = 1700;
 const CHAOS_DURATION = 3000;
-const TRANSFORM_DURATION = 1000; // Duration for text-to-blob transformation
+const TRANSFORM_DURATION = 50; // Duration for text-to-blob transformation
 const UFO_LEAVE_DURATION = 2000;
 const LOOP_DELAY = 1000;
-const FLASH_DURATION = 200; // Duration of the flash
+const FLASH_DURATION = 600; // Duration of the flash
 
 const dateVariation = '20250929';
 const customFontFamily = `CustomClockFont${dateVariation}`;
@@ -80,7 +80,7 @@ export default function DesertUFOSequence() {
       transition: 'transform 0.005s linear, opacity 0.2s linear, filter 0.2s linear, color 0.2s linear',
       opacity: clockOpacity,
       filter: stage === 3 ? `blur(${0.4 * (1 - clockOpacity)}rem)` : 'none',
-      color: stage === 3 ? `rgba(255,255,255,${1 - (1 - clockOpacity) * 0.5})` : '#FEFEFEFF'
+      color: stage === 3 ? `rgba(255,255,255,${1 - (1 - clockOpacity) * 0.5})` : '#B3EF30FF'
     }}>{char}</span>
   ));
 
@@ -250,8 +250,8 @@ export default function DesertUFOSequence() {
       }}>
         {clockVisible && (
           <div style={{
-            fontSize:'3.5rem',
-            color:'#FEFEFEFF',
+            fontSize:'2rem',
+            color:'#EBCF93FF',
             padding: stage===3 ? '0' : '1.2rem 2.5rem',
             borderRadius: stage===3 ? '50%' : '2rem',
             transition:'padding 0.2s linear, border-radius 0.2s linear'
@@ -273,10 +273,10 @@ export default function DesertUFOSequence() {
           left:'50%',
           top:'0',
           width:'3rem',
-          height:'3rem',
+          height:'6rem',
           borderRadius:'50%',
-          background:'rgba(255,255,255,0.9)',
-          filter:'blur(0.5rem) drop-shadow(0 0 1.2rem #ffffff)',
+          background:'#B1ED7FFF',
+          filter:'blur(0.5rem) drop-shadow(0 0 1.2rem #C7F650FF)',
           transform:`translateX(-50%) scale(${blobScale})`,
           opacity:blobOpacity,
           pointerEvents:'none',
@@ -306,7 +306,7 @@ export default function DesertUFOSequence() {
         {beam && <div style={{
           position:'absolute', left:'50%', top:'60%', transform:'translateX(-50%)',
           width:'2vw', height:'44dvh',
-          background:'linear-gradient(180deg, rgba(194,241,255,0.48) 0%, rgba(255,255,192,0.18) 85%, rgba(255,230,192,0.00) 100%)',
+          background:'linear-gradient(180deg, rgba(194,241,255,0.98) 0%, rgba(255,255,192,0.68) 85%, rgba(255,230,192,0.00) 100%)',
           borderRadius:'0.8vw',
           filter:'blur(0.25rem)'
         }}/>}
