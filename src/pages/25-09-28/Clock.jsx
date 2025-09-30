@@ -78,7 +78,7 @@ export default function DesertUFOSequence() {
       display: 'inline-block',
       transform: `translate(${(Math.random() - 0.5) * chaos}vw, ${(Math.random() - 0.5) * chaos}dvh) rotate(${(Math.random() - 0.5) * chaos * 5}deg) scale(${digitScale})`,
       transition: 'transform 0.005s linear, opacity 0.2s linear, filter 0.2s linear, color 0.2s linear',
-      opacity: clockOpacity,
+      opacity: 0.5,
       filter: stage === 3 ? `blur(${0.4 * (1 - clockOpacity)}rem)` : 'none',
       color: stage === 3 ? `rgba(255,255,255,${1 - (1 - clockOpacity) * 0.5})` : '#B3EF30FF'
     }}>{char}</span>
