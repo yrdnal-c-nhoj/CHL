@@ -4,7 +4,7 @@
 
 vite v7.1.6 building for production...
 transforming...
-✓ 34 modules transformed.
+✓ 33 modules transformed.
 ✗ Build failed in 127ms
 error during build:
 [vite:json] [plugin vite:json] src/context/clockpages.json: Failed to parse JSON file.
