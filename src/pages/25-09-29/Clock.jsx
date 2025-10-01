@@ -96,7 +96,7 @@ const tailStyle = {
     { content: createBubbleContent(Math.floor(seconds / 10)), flexBasis: "20vw", background: cheapComicBackground("lightblue") },
     { content: createBubbleContent(seconds % 10), flexBasis: "20vw", background: cheapComicBackground("#F18F84FF") },
     { content: createBubbleContent(ampm[0]), flexBasis: "20vw", background: cheapComicBackground("#F0DF6EFF") },
-    { content: createBubbleContent(ampm[1]), flexBasis: "30vw", background: cheapComicBackground("#CFF3A8FF"), text: <p style={{ ...speechBubbleStyle, position: "absolute", bottom: "0.5rem", right: "0.5rem" }}>THE END</p> },
+    { content: createBubbleContent(ampm[1]), flexBasis: "30vw", background: cheapComicBackground("#CFF3A8FF"), text: <p style={{ ...speechBubbleStyle, position: "absolute", bottom: "0.5rem", right: "0.5rem" }}>...to keep looking...</p> },
   ];
 
   return (
