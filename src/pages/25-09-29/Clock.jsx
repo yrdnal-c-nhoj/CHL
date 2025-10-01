@@ -88,15 +88,15 @@ const tailStyle = {
   );
 
   const panels = [
-    { content: createBubbleContent(Math.floor(hours / 10)), flexBasis: "40vw", background: cheapComicBackground("lightblue"),text: <p style={{ ...speechBubbleStyle, position: "absolute", top: "-1rem", left: "-0.2rem" }}>BY THEN...</p>  },
+    { content: createBubbleContent(Math.floor(hours / 10)), flexBasis: "40vw", background: cheapComicBackground("lightblue"),text: <p style={{ ...speechBubbleStyle, position: "absolute", top: "-1rem", left: "-0.2rem" }}>BY THAT TIME...</p>  },
     { content: createBubbleContent(hours % 10), flexBasis: "30vw", background: cheapComicBackground("#CFF3A8FF") },
-    { content: null, flexBasis: "20vw", background: cheapComicBackground("#F0DF6EFF"), text: <p style={{ ...speechBubbleStyle, position: "absolute", bottom: "0.5rem", right: "0.5rem" }}>...they knew it would be...</p> },
-    { content: createBubbleContent(Math.floor(minutes / 10)), flexBasis: "20vw", background: cheapComicBackground("#F18F84FF") },
+    { content: null, flexBasis: "20vw", background: cheapComicBackground("#F0DF6EFF"), text: <p style={{ ...speechBubbleStyle, position: "absolute", bottom: "0.5rem", right: "1rem" }}>...they knew...</p> },
+    { content: createBubbleContent(Math.floor(minutes / 10)), flexBasis: "20vw", background: cheapComicBackground("#F18F84FF"), text: <p style={{ ...speechBubbleStyle, position: "absolute", top: "-2rem", left: "-1.0rem" }}>...more art faster...</p> },
     { content: createBubbleContent(minutes % 10), flexBasis: "20vw", background: cheapComicBackground("#F1B24BFF") },
     { content: createBubbleContent(Math.floor(seconds / 10)), flexBasis: "20vw", background: cheapComicBackground("lightblue") },
     { content: createBubbleContent(seconds % 10), flexBasis: "20vw", background: cheapComicBackground("#F18F84FF") },
-    { content: createBubbleContent(ampm[0]), flexBasis: "20vw", background: cheapComicBackground("#F0DF6EFF") },
-    { content: createBubbleContent(ampm[1]), flexBasis: "30vw", background: cheapComicBackground("#CFF3A8FF"), text: <p style={{ ...speechBubbleStyle, position: "absolute", bottom: "0.0rem", right: "0.5rem" }}>...more art faster for everybody all the time...</p> },
+    { content: createBubbleContent(ampm[0]), flexBasis: "20vw", background: cheapComicBackground("#F0DF6EFF") , text: <p style={{ ...speechBubbleStyle, position: "absolute", bottom: "-0.2rem", left: "-0.5rem" }}>...for everybody ...</p>},
+    { content: createBubbleContent(ampm[1]), flexBasis: "30vw", background: cheapComicBackground("#CFF3A8FF"), text: <p style={{ ...speechBubbleStyle, position: "absolute", bottom: "-0.2rem", right: "-0.5rem" }}>...all the time...</p> },
   ];
 
   return (

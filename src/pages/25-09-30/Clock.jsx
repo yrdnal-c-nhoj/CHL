@@ -63,7 +63,7 @@ export default function StripedClock() {
           animation: slideStripes 6040s linear infinite;
           display: flex;
           font-family: 'CustomFont1001', sans-serif;
-          font-size: 4vw;
+          font-size: 14vw;
           font-weight: bold;
           color: transparent;
           background: ${stripeGradient};
