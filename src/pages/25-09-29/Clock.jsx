@@ -5,6 +5,7 @@ export default function ComicClock() {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [time, setTime] = useState(new Date());
 
+  // Load font
   useEffect(() => {
     const font = new FontFace("ComicFont", `url(${comicFont})`);
     font.load().then(() => {
@@ -13,6 +14,7 @@ export default function ComicClock() {
     });
   }, []);
 
+  // Update time every second
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
@@ -24,10 +26,10 @@ export default function ComicClock() {
     display: "flex",
     flexWrap: "wrap",
     fontFamily: "ComicFont, cursive",
-    padding: "1vmin 1vmin 3vmin 1vmin",
+    padding: "1vmin",
     height: "100vh",
     boxSizing: "border-box",
-    background: "#fdf5e6",
+    background: "#F3E9D6FF",
   };
 
   const panelBaseStyle = {
@@ -42,32 +44,39 @@ export default function ComicClock() {
     justifyContent: "center",
     alignItems: "center",
   };
-const digitStyle = {
-  fontFamily: "ComicFont, cursive",
-  fontSize: "4rem", // smaller digits
-};
 
-const speechBubbleStyle = {
-  position: "relative",
-  padding: "0.5rem 1rem", // smaller padding
-  background: "#fff",
-  border: "0.2rem solid black",
-  borderRadius: "0.8rem", // slightly smaller bubble radius
-  display: "inline-block",
-  textAlign: "center",
-};
+  const digitStyle = {
+    fontFamily: "ComicFont, cursive",
+    fontSize: "8vw",
+  };
 
-const tailStyle = {
-  content: "''",
-  position: "absolute",
-  width: 0,
-  height: 0,
-  border: "0.8rem solid transparent", // smaller tail
-  borderTopColor: "#fff",
-  bottom: "-0.8rem",
-  left: "0.5rem",
-};
+  // NEW: Digit bubble style (round)
+  const digitBubbleStyle = {
+    position: "relative",
+    padding: "0.5rem 1rem",
+    background: "#F3E9D6FF",
+    border: "0.25rem solid black",
+    borderRadius: "50%",
+    display: "inline-flex",
+    justifyContent: "center",
+    alignItems: "center",
+    minWidth: "4rem",
+    minHeight: "4rem",
+    boxShadow: "2px 2px 0px black",
+  };
 
+  // NEW: Text bubble style (rectangular narration)
+  const textBubbleStyle = {
+    position: "relative",
+    padding: "0.1rem 0.15rem",
+    background: "#F3E9D6FF",
+    border: "0.2rem solid black",
+    borderRadius: "0.8rem",
+    display: "inline-block",
+    textAlign: "center",
+    fontSize: "2vw",
+    lineHeight: 1.2,
+  };
 
   const cheapComicBackground = (baseColor, dotColor = "rgba(0,0,0,0.15)") => ({
     backgroundColor: baseColor,
@@ -81,22 +90,117 @@ const tailStyle = {
   const ampm = time.getHours() >= 12 ? "PM" : "AM";
 
   const createBubbleContent = (digit) => (
-    <div style={speechBubbleStyle}>
+    <div style={digitBubbleStyle}>
       <span style={digitStyle}>{digit}</span>
-      <div style={tailStyle}></div>
     </div>
   );
 
   const panels = [
-    { content: createBubbleContent(Math.floor(hours / 10)), flexBasis: "40vw", background: cheapComicBackground("lightblue"),text: <p style={{ ...speechBubbleStyle, position: "absolute", top: "-1rem", left: "-0.2rem" }}>BY THAT TIME...</p>  },
-    { content: createBubbleContent(hours % 10), flexBasis: "30vw", background: cheapComicBackground("#CFF3A8FF") },
-    { content: null, flexBasis: "20vw", background: cheapComicBackground("#F0DF6EFF"), text: <p style={{ ...speechBubbleStyle, position: "absolute", bottom: "0.5rem", right: "1rem" }}>...they knew...</p> },
-    { content: createBubbleContent(Math.floor(minutes / 10)), flexBasis: "20vw", background: cheapComicBackground("#F18F84FF"), text: <p style={{ ...speechBubbleStyle, position: "absolute", top: "-2rem", left: "-1.0rem" }}>...more art faster...</p> },
-    { content: createBubbleContent(minutes % 10), flexBasis: "20vw", background: cheapComicBackground("#F1B24BFF") },
-    { content: createBubbleContent(Math.floor(seconds / 10)), flexBasis: "20vw", background: cheapComicBackground("lightblue") },
-    { content: createBubbleContent(seconds % 10), flexBasis: "20vw", background: cheapComicBackground("#F18F84FF") },
-    { content: createBubbleContent(ampm[0]), flexBasis: "20vw", background: cheapComicBackground("#F0DF6EFF") , text: <p style={{ ...speechBubbleStyle, position: "absolute", bottom: "-0.2rem", left: "-0.5rem" }}>...for everybody ...</p>},
-    { content: createBubbleContent(ampm[1]), flexBasis: "30vw", background: cheapComicBackground("#CFF3A8FF"), text: <p style={{ ...speechBubbleStyle, position: "absolute", bottom: "-0.2rem", right: "-0.5rem" }}>...all the time...</p> },
+    {
+      content: createBubbleContent(Math.floor(hours / 10)),
+      flexBasis: "40vw",
+      background: cheapComicBackground("lightblue"),
+      text: (
+        <p
+          style={{
+            ...textBubbleStyle,
+            position: "absolute",
+            top: "-0.5rem",
+            left: "-0.2rem",
+          }}
+        >
+          BY THAT TIME...
+        </p>
+      ),
+    },
+    {
+      content: createBubbleContent(hours % 10),
+      flexBasis: "30vw",
+      background: cheapComicBackground("#CFF3A8FF"),
+    },
+    {
+      content: null,
+      flexBasis: "20vw",
+      background: cheapComicBackground("#F0DF6EFF"),
+      text: (
+        <p
+          style={{
+            ...textBubbleStyle,
+            position: "absolute",
+            top: "0.5rem",
+            right: "-0.2rem",
+          }}
+        >
+          ...they knew...
+        </p>
+      ),
+    },
+    {
+      content: createBubbleContent(Math.floor(minutes / 10)),
+      flexBasis: "20vw",
+      background: cheapComicBackground("#F18F84FF"),
+      text: (
+        <p
+          style={{
+            ...textBubbleStyle,
+            position: "absolute",
+            top: "-0.5rem",
+            left: "-0.2rem",
+          }}
+        >
+          ...it would...
+        </p>
+      ),
+    },
+    {
+      content: createBubbleContent(minutes % 10),
+      flexBasis: "20vw",
+      background: cheapComicBackground("#F1B24BFF"),
+    },
+    {
+      content: createBubbleContent(Math.floor(seconds / 10)),
+      flexBasis: "20vw",
+      background: cheapComicBackground("lightblue"),
+    },
+    {
+      content: createBubbleContent(seconds % 10),
+      flexBasis: "20vw",
+      background: cheapComicBackground("#F18F84FF"),
+    },
+    {
+      content: createBubbleContent(ampm[0]),
+      flexBasis: "20vw",
+      background: cheapComicBackground("#F0DF6EFF"),
+      text: (
+        <p
+          style={{
+            ...textBubbleStyle,
+            position: "absolute",
+            top: "-0.7rem",
+            left: "-0.5rem",
+          }}
+        >
+          ...not...
+        </p>
+      ),
+    },
+    {
+      content: createBubbleContent(ampm[1]),
+      flexBasis: "30vw",
+      background: cheapComicBackground("#CFF3A8FF"),
+      text: (
+        <p
+          style={{
+            ...textBubbleStyle,
+            position: "absolute",
+            bottom: "-0.2rem",
+            right: "-0.5rem",
+          }}
+        >
+          ...stop...
+        </p>
+      ),
+    },
   ];
 
   return (
