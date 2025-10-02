@@ -111,10 +111,10 @@ export default function ImageAnalogClock() {
     transform: "translate(-50%, -50%)",
     objectFit: "contain",
     filter: `
-      grayscale(90%) 
+      grayscale(80%) 
       contrast(80%) 
-      brightness(1.2)
-      drop-shadow(2px 4px 0 #1E1E1E)
+      brightness(1.1)
+      drop-shadow(2px 2px 0 #1E1E1E)
       drop-shadow(-2px -2px 0 #E2E2E1)
     `,
     opacity: 0.95,
@@ -161,7 +161,7 @@ export default function ImageAnalogClock() {
           width: "100vw",
           height: "100dvh",
           objectFit: "cover",
-           filter: "saturate(1.5)", 
+           filter: "saturate(1.9) contrast(0.6) brightness(1.9)", 
           zIndex: -2,
         }}
       >
@@ -177,6 +177,7 @@ export default function ImageAnalogClock() {
           width: "100vw",
           height: "100dvh",
           objectFit: "cover",
+          
           zIndex: -3,
         }}
       />
