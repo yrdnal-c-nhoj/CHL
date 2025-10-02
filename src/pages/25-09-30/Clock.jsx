@@ -20,10 +20,10 @@ export default function StripedClock() {
   const stripeGradient = `
     linear-gradient(
       0deg,
-      #000 0%, #000 24.9%,
-      #fff 25%, #fff 49.9%,
-      #000 50%, #000 74.9%,
-      #fff 75%, #fff 100%
+      #7E054EFF  0%,  #7E054EFF 24.9%,
+      #A0E418FF 25%,#A0E418FF 49.9%,
+       #54057EFF 50%,  #54057EFF 74.9%,
+      #0BF82BFF 75%, #0BF82BFF 100%
     )
   `;
 
