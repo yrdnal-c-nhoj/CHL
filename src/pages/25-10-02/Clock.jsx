@@ -47,13 +47,13 @@ const DigitalClock = () => {
     background: 'rgba(178,34,34,0.8)',
     borderRadius: '1rem',
     boxShadow: '0 0 1rem #FFD700',
-    margin: '0.2rem',
+    margin: '-0.2rem',
   };
 
   // Generate grid cells (20x20 grid to extend beyond viewport)
   const gridCells = [];
-  const columns = 20; // Enough to cover ~100vw (12.5rem * 20 = 250rem)
-  const rows = 20;    // Enough to cover ~100dvh (6.25rem * 20 = 125rem)
+  const columns = 8; // Enough to cover ~100vw (12.5rem * 20 = 250rem)
+  const rows = 11;    // Enough to cover ~100dvh (6.25rem * 20 = 125rem)
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < columns; col++) {
       const isFlipped = (row + col) % 2 === 1; // Checkerboard pattern: flip if row + col is odd
