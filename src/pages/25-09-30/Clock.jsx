@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from "react";
-
-// Import the OTF font file
-import customFont1001 from "./str.ttf";
+import customFont1001 from "./stt.ttf";
 
 export default function StripedClock() {
   const [time, setTime] = useState([]);
 
   function getClockTime() {
     const now = new Date();
-    let h = now.getHours();
+    const h = now.getHours().toString().padStart(2, "0");
     const m = now.getMinutes().toString().padStart(2, "0");
-    const ampm = h >= 12 ? "pm" : "am";
-
-    h = h % 12;
-    if (h === 0) h = 12;
-    const hh = h.toString().padStart(2, "0");
-
-    return (hh + m + ampm).split("");
+    return (h + m).split("");
   }
 
   useEffect(() => {
@@ -40,19 +32,19 @@ export default function StripedClock() {
       <style>{`
         @font-face {
           font-family: 'CustomFont1001';
-          src: url(${customFont1001}) format('opentype');
+          src: url(${customFont1001}) format('truetype');
           font-weight: normal;
           font-style: normal;
         }
 
         @keyframes slideStripes {
           from { background-position: 0 0; }
-          to   { background-position: 4800px 4800px; }
+          to   { background-position: 200rem 200rem; }
         }
 
         @keyframes slideStripesReverse {
           from { background-position: 0 0; }
-          to   { background-position: -4800px -4800px; }
+          to   { background-position: -200rem -200rem; }
         }
 
         .animated-bg {
@@ -63,15 +55,22 @@ export default function StripedClock() {
           animation: slideStripes 6040s linear infinite;
           display: flex;
           font-family: 'CustomFont1001', sans-serif;
-          font-size: 14vw;
-          font-weight: bold;
+          font-size: 33vw;
           color: transparent;
           background: ${stripeGradient};
-          background-size: 3rem 3rem;
+          background-size: 0.8rem 0.8rem;
           -webkit-background-clip: text;
           background-clip: text;
           line-height: 1;
-          letter-spacing: -0.0rem; /* small negative space between chars */
+        }
+
+        .digit-box {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: -0.9rem;       /* fixed width for each digit */
+          height: 32rem;      /* fixed height for equal boxing */
+          overflow: hidden; /* ensures no clipping outside the box */
         }
       `}</style>
 
@@ -81,14 +80,19 @@ export default function StripedClock() {
           width: "100vw",
           height: "100vh",
           backgroundImage: stripeGradient,
-          backgroundSize: "3rem 3rem",
+          backgroundSize: "0.8rem 0.8rem",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          overflow: "hidden",
         }}
       >
-        <div className="animated-text">{time.join("")}</div>
+        <div className="animated-text">
+          {time.map((digit, i) => (
+            <span key={i} className="digit-box">
+              {digit}
+            </span>
+          ))}
+        </div>
       </div>
     </>
   );
