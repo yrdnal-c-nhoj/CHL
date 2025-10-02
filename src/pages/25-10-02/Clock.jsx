@@ -35,20 +35,20 @@ const DigitalClock = () => {
   const seconds = toCountingRod(time.getSeconds());
 
   // Inline styles for digit boxes
-  const digitBoxStyle = {
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '10vw',
-    fontSize: '16vw',
-    fontFamily: "'KaiTi', 'STKaiti', serif",
-    color: '#D1EEC9FF',
-    background: 'rgba(178,34,34,0.5)',
-     textShadow: '2px 2px 0 #036A20FF', // razor-thin black shadow
- 
-    boxShadow: '0 0 8vw #E1640AFF',
-    margin: '-0.4vw',
-  };
+ const digitBoxStyle = {
+  display: 'inline-flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '10vw',
+  fontSize: '16vw',
+  fontFamily: "'KaiTi', 'STKaiti', serif",
+  color: '#D1EEC9FF',
+  background: 'rgba(178,34,34,0.5)',
+  textShadow: '2px 2px 0 #000000, -2px -2px 0 #000000', // razor-thin black shadows
+  boxShadow: '0 0 2vw #E1230AFF', // smaller, softer glow instead of 66vw
+  margin: '-0.4vw',
+};
+
 
   return (
     <div
@@ -82,7 +82,7 @@ const DigitalClock = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          opacity: 0.3,
+          opacity: 0.2,
           zIndex: 1,
         }}
       />
