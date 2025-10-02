@@ -39,11 +39,13 @@ const DigitalClock = () => {
     display: 'inline-flex',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '8vw',
-    fontSize: '12vw',
+    width: '10vw',
+    fontSize: '16vw',
     fontFamily: "'KaiTi', 'STKaiti', serif",
-    color: '#C8F1BEFF',
+    color: '#D1EEC9FF',
     background: 'rgba(178,34,34,0.5)',
+     textShadow: '2px 2px 0 #036A20FF', // razor-thin black shadow
+ 
     boxShadow: '0 0 8vw #E1640AFF',
     margin: '-0.4vw',
   };
