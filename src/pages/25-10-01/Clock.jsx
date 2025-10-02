@@ -48,7 +48,7 @@ export default function ImageAnalogClock() {
 
   const clockSize = "80vh";
   const center = { x: 50, y: 50 };
-  const radius = 45;
+  const radius = 39;
 
   const numberImages = [
     { src: one, angle: 0, width: "30%", height: "30%" },
@@ -91,12 +91,15 @@ export default function ImageAnalogClock() {
     )`,
     borderRadius: "0.5rem",
     boxShadow: `
+    -2px -2px 0 #E2E2E1,
+    2px 2px 0 #1E1E1E,
       0 0.3rem 0.5rem rgba(0,0,0,0.6),
       inset 0 0.15rem 0.3rem rgba(255,255,255,0.8),
       inset 0 -0.15rem 0.3rem rgba(0,0,0,0.4),
       0 0 8px #fff,
       0 0 12px #bbb
     `,
+
     pointerEvents: "none",
     border: "0.05rem solid #999",
     opacity: 1.0,
@@ -236,7 +239,7 @@ export default function ImageAnalogClock() {
         {/* Hands */}
         <div style={metallicHandStyle("0.8rem", "24dvh", hourAngle)} />
         <div style={metallicHandStyle("0.5rem", "36dvh", minuteAngle)} />
-        <div style={metallicHandStyle("0.15rem", "50dvh", secondAngle)} />
+        <div style={metallicHandStyle("0.15rem", "40dvh", secondAngle)} />
       </div>
     </div>
   );
