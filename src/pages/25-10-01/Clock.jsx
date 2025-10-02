@@ -35,7 +35,7 @@ export default function ImageAnalogClock() {
     return () => clearTimeout(timeout);
   }, []);
 
-  const clockSize = "90vh";
+  const clockSize = "85vh";
   const center = { x: 50, y: 50 };
   const radius = 45;
 
@@ -62,7 +62,7 @@ export default function ImageAnalogClock() {
   const minuteAngle = (minutes + seconds / 60) * 6;
   const secondAngle = seconds * 6;
 
-  // Fierce metallic hands
+  // Metallic chrome hands
   const metallicHandStyle = (width, length, angle) => ({
     position: "absolute",
     width: width,
@@ -71,23 +71,44 @@ export default function ImageAnalogClock() {
     left: "50%",
     transformOrigin: "50% 100%",
     transform: `translate(-50%, -100%) rotate(${angle}deg)`,
-
     background: `linear-gradient(
       135deg,
-      #d4d4d4 0%,
-      #b0b0b0 20%,
-      #e6e6e6 50%,
-      #b0b0b0 80%,
-      #d4d4d4 100%
+      #FDF8F8FF 0%,
+      #B3B0B0FF 25%,
+      #fff 50%,
+      #939292FF 75%,
+      #FAF7F7FF 100%
     )`,
     borderRadius: "0.5rem",
     boxShadow: `
       0 0.3rem 0.5rem rgba(0,0,0,0.6),
       inset 0 0.15rem 0.3rem rgba(255,255,255,0.8),
-      inset 0 -0.15rem 0.3rem rgba(0,0,0,0.4)
+      inset 0 -0.15rem 0.3rem rgba(0,0,0,0.4),
+      0 0 8px #fff,
+      0 0 12px #bbb
     `,
     pointerEvents: "none",
     border: "0.05rem solid #999",
+    opacity: 1.0,
+  });
+
+  // Metallic numbers with reflective gradient
+  const metallicNumberStyle = (width, height) => ({
+    position: "absolute",
+    width: width,
+    height: height,
+    left: "50%",
+    top: "50%",
+    transform: "translate(-50%, -50%)",
+    objectFit: "contain",
+    filter: `
+      grayscale(90%) 
+      contrast(80%) 
+      brightness(1.2)
+      drop-shadow(2px 4px 0 #1E1E1EFF)
+      drop-shadow(-2px -2px 0 #E2E2E1FF)
+    `,
+    opacity: 0.95,
   });
 
   if (!ready) {
@@ -153,12 +174,11 @@ export default function ImageAnalogClock() {
           width: clockSize,
           height: clockSize,
           borderRadius: "50%",
-          opacity: 0.85,
           overflow: "hidden",
           isolation: "isolate",
         }}
       >
-        {/* Desaturated clock face as backgroundImage */}
+        {/* Desaturated clock face */}
         <div
           style={{
             position: "absolute",
@@ -169,7 +189,8 @@ export default function ImageAnalogClock() {
             backgroundImage: `url(${clockFace})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "grayscale(100%)", // <-- desaturate
+            filter: "grayscale(95%)",
+            opacity: 0.9,
             zIndex: -1,
           }}
         />
@@ -190,14 +211,9 @@ export default function ImageAnalogClock() {
               src={num.src}
               alt={`number ${idx + 1}`}
               style={{
-                position: "absolute",
-                width: num.width,
-                height: num.height,
+                ...metallicNumberStyle(num.width, num.height),
                 left: `${x}%`,
                 top: `${y}%`,
-                opacity: 0.8,
-                transform: "translate(-50%, -50%)",
-                objectFit: "contain",
               }}
             />
           );
@@ -207,20 +223,6 @@ export default function ImageAnalogClock() {
         <div style={metallicHandStyle("0.8rem", "18dvh", hourAngle)} />
         <div style={metallicHandStyle("0.5rem", "28dvh", minuteAngle)} />
         <div style={metallicHandStyle("0.15rem", "32.5dvh", secondAngle)} />
-
-        {/* Center dot */}
-        <div
-          style={{
-            position: "absolute",
-            width: "1.0rem",
-            height: "1.0rem",
-            backgroundColor: "grey",
-            borderRadius: "50%",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-          }}
-        />
       </div>
     </div>
   );
