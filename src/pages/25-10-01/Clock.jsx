@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-// Import number images from the same folder
+// Import number images
 import one from "./1.png";
 import two from "./12.png";
 import three from "./11.png";
@@ -14,22 +14,33 @@ import ten from "./4.png";
 import eleven from "./3.png";
 import twelve from "./2.png";
 
-// Import clock face background image
+// Clock face
 import clockFace from "./gears.webp";
 
-// Import background video and fallback GIF
-import backgroundVideo from "./sma.mp4";
-import fallbackGif from "./sma.webp";
+// Background video and fallback
+import backgroundVideo from "./small.mp4";
+import fallbackGif from "./small.webp";
 
 export default function ImageAnalogClock() {
   const [time, setTime] = useState(new Date());
   const [ready, setReady] = useState(false);
+  const [rotation, setRotation] = useState(0);
 
+  // Update time every ~16ms for smooth second hand
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
+    const interval = setInterval(() => setTime(new Date()), 16);
     return () => clearInterval(interval);
   }, []);
 
+  // Rotate clock face CCW
+  useEffect(() => {
+    const rotateInterval = setInterval(() => {
+      setRotation((prev) => (prev - 0.1) % 360);
+    }, 16);
+    return () => clearInterval(rotateInterval);
+  }, []);
+
+  // Initial ready state
   useEffect(() => {
     const timeout = setTimeout(() => setReady(true), 500);
     return () => clearTimeout(timeout);
@@ -56,13 +67,12 @@ export default function ImageAnalogClock() {
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
-  const seconds = time.getSeconds();
+  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
 
   const hourAngle = (hours + minutes / 60) * 30;
   const minuteAngle = (minutes + seconds / 60) * 6;
   const secondAngle = seconds * 6;
 
-  // Metallic chrome hands
   const metallicHandStyle = (width, length, angle) => ({
     position: "absolute",
     width: width,
@@ -73,11 +83,11 @@ export default function ImageAnalogClock() {
     transform: `translate(-50%, -100%) rotate(${angle}deg)`,
     background: `linear-gradient(
       135deg,
-      #FDF8F8FF 0%,
-      #B3B0B0FF 25%,
+      #FDF8F8 0%,
+      #B3B0B0 25%,
       #fff 50%,
-      #939292FF 75%,
-      #FAF7F7FF 100%
+      #939292 75%,
+      #FAF7F7 100%
     )`,
     borderRadius: "0.5rem",
     boxShadow: `
@@ -92,7 +102,6 @@ export default function ImageAnalogClock() {
     opacity: 1.0,
   });
 
-  // Metallic numbers with reflective gradient
   const metallicNumberStyle = (width, height) => ({
     position: "absolute",
     width: width,
@@ -105,8 +114,8 @@ export default function ImageAnalogClock() {
       grayscale(90%) 
       contrast(80%) 
       brightness(1.2)
-      drop-shadow(2px 4px 0 #1E1E1EFF)
-      drop-shadow(-2px -2px 0 #E2E2E1FF)
+      drop-shadow(2px 4px 0 #1E1E1E)
+      drop-shadow(-2px -2px 0 #E2E2E1)
     `,
     opacity: 0.95,
   });
@@ -141,7 +150,7 @@ export default function ImageAnalogClock() {
         backgroundColor: "#111",
       }}
     >
-      {/* Background video with fallback GIF */}
+      {/* Video background */}
       <video
         autoPlay
         loop
@@ -152,33 +161,38 @@ export default function ImageAnalogClock() {
           width: "100vw",
           height: "100dvh",
           objectFit: "cover",
+           filter: "saturate(1.5)", 
           zIndex: -2,
         }}
       >
         <source src={backgroundVideo} type="video/mp4" />
-        <img
-          src={fallbackGif}
-          alt="Fallback background"
-          style={{
-            width: "100vw",
-            height: "100dvh",
-            objectFit: "cover",
-          }}
-        />
       </video>
 
-      {/* Clock Face */}
+      {/* Fallback */}
+      <img
+        src={fallbackGif}
+        alt="Fallback background"
+        style={{
+          position: "absolute",
+          width: "100vw",
+          height: "100dvh",
+          objectFit: "cover",
+          zIndex: -3,
+        }}
+      />
+
+      {/* Clock face */}
       <div
         style={{
           position: "relative",
           width: clockSize,
           height: clockSize,
           borderRadius: "50%",
-          overflow: "hidden",
+          overflow: "visible", // allow hands to extend
           isolation: "isolate",
         }}
       >
-        {/* Desaturated clock face */}
+        {/* Rotating clock face */}
         <div
           style={{
             position: "absolute",
@@ -192,18 +206,17 @@ export default function ImageAnalogClock() {
             filter: "grayscale(95%)",
             opacity: 0.9,
             zIndex: -1,
+            transform: `rotate(${rotation}deg)`,
+            transformOrigin: "50% 50%",
+            transition: "transform 0.016s linear",
           }}
         />
 
         {/* Numbers */}
         {numberImages.map((num, idx) => {
           const angleRad = (num.angle - 90) * (Math.PI / 180);
-          const widthPercent = parseFloat(num.width);
-          const heightPercent = parseFloat(num.height);
-          const adjustedRadiusX = radius * (1 - widthPercent / 100 / 2);
-          const adjustedRadiusY = radius * (1 - heightPercent / 100 / 2);
-          const x = center.x + adjustedRadiusX * Math.cos(angleRad);
-          const y = center.y + adjustedRadiusY * Math.sin(angleRad);
+          const x = center.x + radius * Math.cos(angleRad);
+          const y = center.y + radius * Math.sin(angleRad);
 
           return (
             <img
@@ -220,9 +233,9 @@ export default function ImageAnalogClock() {
         })}
 
         {/* Hands */}
-        <div style={metallicHandStyle("0.8rem", "18dvh", hourAngle)} />
-        <div style={metallicHandStyle("0.5rem", "28dvh", minuteAngle)} />
-        <div style={metallicHandStyle("0.15rem", "32.5dvh", secondAngle)} />
+        <div style={metallicHandStyle("0.8rem", "24dvh", hourAngle)} />
+        <div style={metallicHandStyle("0.5rem", "36dvh", minuteAngle)} />
+        <div style={metallicHandStyle("0.15rem", "50dvh", secondAngle)} />
       </div>
     </div>
   );
