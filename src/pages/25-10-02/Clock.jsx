@@ -40,39 +40,13 @@ const DigitalClock = () => {
     justifyContent: 'center',
     alignItems: 'center',
     width: '8vw',
-    // height: '4.5vw',
     fontSize: '12vw',
     fontFamily: "'KaiTi', 'STKaiti', serif",
-    color: '#807746FF',
-    background: 'rgba(178,34,34,0.8)',
-    borderRadius: '1rem',
-    boxShadow: '0 0 1rem #FFD700',
-    margin: '-0.2rem',
+    color: '#C8F1BEFF',
+    background: 'rgba(178,34,34,0.5)',
+    boxShadow: '0 0 8vw #E1640AFF',
+    margin: '-0.4vw',
   };
-
-  // Generate grid cells (20x20 grid to extend beyond viewport)
-  const gridCells = [];
-  const columns = 12; // Enough to cover ~100vw (12.5rem * 20 = 250rem)
-  const rows = 16;    // Enough to cover ~100dvh (6.25rem * 20 = 125rem)
-  for (let row = 0; row < rows; row++) {
-    for (let col = 0; col < columns; col++) {
-      const isFlipped = (row + col) % 2 === 1; // Checkerboard pattern: flip if row + col is odd
-      gridCells.push(
-        <div
-          key={`grid-${row}-${col}`}
-          style={{
-            width: '74vw',
-            height: '26vh',
-            backgroundImage: `url(${gridImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            transform: isFlipped ? 'scaleX(-1)' : 'none', // Flip horizontally for checkerboard effect
-          }}
-        />
-      );
-    }
-  }
 
   return (
     <div
@@ -93,33 +67,33 @@ const DigitalClock = () => {
         fontFamily: "'KaiTi', 'STKaiti', serif",
       }}
     >
-      {/* Background grid */}
+      {/* Single background image, flipped horizontally */}
       <div
         style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
-          transform: 'translate(-50%, -50%)',
-          display: 'grid',
+          transform: 'translate(-50%, -50%) scaleX(-1)', // Added scaleX(-1) for horizontal flip
+          width: '100vw',
+          height: '100dvh',
+          backgroundImage: `url(${gridImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
           opacity: 0.3,
-          gridTemplateColumns: `repeat(${columns}, 16rem)`,
-          gridTemplateRows: `repeat(${rows}, 6.25rem)`,
           zIndex: 1,
         }}
-      >
-        {gridCells}
-      </div>
+      />
 
       {/* Clock display */}
       <div
         style={{
           display: 'flex',
-          gap: '0.5rem',
-          padding: '2rem',
+          gap: '1vw',
+          padding: '2vw',
           background: 'rgba(0,0,0,0.3)',
-          borderRadius: '3rem',
           zIndex: 10,
-          boxShadow: '0 0 2rem #FFD700',
+          boxShadow: '0 0 5rem  rgba(255,215,0,0.3) ',
         }}
       >
         {hours.map((d, i) => (
