@@ -52,8 +52,8 @@ const DigitalClock = () => {
 
   // Generate grid cells (20x20 grid to extend beyond viewport)
   const gridCells = [];
-  const columns = 8; // Enough to cover ~100vw (12.5rem * 20 = 250rem)
-  const rows = 11;    // Enough to cover ~100dvh (6.25rem * 20 = 125rem)
+  const columns = 12; // Enough to cover ~100vw (12.5rem * 20 = 250rem)
+  const rows = 16;    // Enough to cover ~100dvh (6.25rem * 20 = 125rem)
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < columns; col++) {
       const isFlipped = (row + col) % 2 === 1; // Checkerboard pattern: flip if row + col is odd
