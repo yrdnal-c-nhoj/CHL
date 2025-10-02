@@ -45,7 +45,7 @@ const DigitalClock = () => {
   color: '#D1EEC9FF',
   background: 'rgba(178,34,34,0.5)',
   textShadow: '2px 2px 0 #000000, -2px -2px 0 #000000', // razor-thin black shadows
-  boxShadow: '0 0 2vw #E1230AFF', // smaller, softer glow instead of 66vw
+  boxShadow: '0 0 7vw #CB4F3FFF', // smaller, softer glow instead of 66vw
   margin: '-0.4vw',
 };
 
@@ -60,9 +60,9 @@ const DigitalClock = () => {
         height: '100dvh',
         width: '100vw',
         background: `
-          radial-gradient(circle at 30% 20%, rgba(255,215,0,0.3) 0%, transparent 50%),
-          radial-gradient(circle at 70% 80%, rgba(178,34,34,0.6) 0%, transparent 50%),
-          linear-gradient(135deg, #8B0000 0%, #2F1B14 50%, #000000 100%)
+          radial-gradient(circle at 30% 20%, rgba(155,15,0,0.5) 0%, transparent 50%),
+          radial-gradient(circle at 70% 80%, rgba(178,34,34,0.8) 0%, transparent 50%),
+          linear-gradient(135deg, #8B0000 0%, #9C320CFF 50%, #A31B1BFF 100%)
         `,
         overflow: 'hidden',
         position: 'relative',
