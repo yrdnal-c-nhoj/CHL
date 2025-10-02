@@ -43,7 +43,7 @@ const DigitalClock = () => {
     // height: '4.5vw',
     fontSize: '12vw',
     fontFamily: "'KaiTi', 'STKaiti', serif",
-    color: '#EFE08CFF',
+    color: '#807746FF',
     background: 'rgba(178,34,34,0.8)',
     borderRadius: '1rem',
     boxShadow: '0 0 1rem #FFD700',
