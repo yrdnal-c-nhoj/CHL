@@ -46,7 +46,7 @@ export default function ImageAnalogClock() {
     return () => clearTimeout(timeout);
   }, []);
 
-  const clockSize = "85vh";
+  const clockSize = "80vh";
   const center = { x: 50, y: 50 };
   const radius = 45;
 
@@ -177,7 +177,7 @@ export default function ImageAnalogClock() {
           width: "100vw",
           height: "100dvh",
           objectFit: "cover",
-          
+
           zIndex: -3,
         }}
       />
