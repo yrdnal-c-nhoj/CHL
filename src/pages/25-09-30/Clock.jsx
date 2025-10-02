@@ -22,8 +22,8 @@ export default function StripedClock() {
       0deg,
       #7E054EFF  0%,  #7E054EFF 24.9%,
       #A0E418FF 25%,#A0E418FF 49.9%,
-       #54057EFF 50%,  #54057EFF 74.9%,
-      #0BF82BFF 75%, #0BF82BFF 100%
+       #7E054EFF 50%,  #7E054EFF 74.9%,
+      #A0E418FF  75%, #A0E418FF  100%
     )
   `;
 
@@ -55,7 +55,7 @@ export default function StripedClock() {
           animation: slideStripes 6040s linear infinite;
           display: flex;
           font-family: 'CustomFont1001', sans-serif;
-          font-size: 33vw;
+          font-size: 43vw;
           color: transparent;
           background: ${stripeGradient};
           background-size: 0.8rem 0.8rem;
