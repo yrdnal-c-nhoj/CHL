@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-// Import images from the same folder
+// Import number images from the same folder
 import one from "./1.png";
 import two from "./12.png";
 import three from "./11.png";
@@ -14,17 +14,22 @@ import ten from "./4.png";
 import eleven from "./3.png";
 import twelve from "./2.png";
 
+// Import clock face background image
+import clockFace from "./gears.webp";
+
+// Import background video and fallback GIF
+import backgroundVideo from "./sma.mp4";
+import fallbackGif from "./sma.webp";
+
 export default function ImageAnalogClock() {
   const [time, setTime] = useState(new Date());
   const [ready, setReady] = useState(false);
 
-  // Update time every second
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // Fade in after small delay
   useEffect(() => {
     const timeout = setTimeout(() => setReady(true), 500);
     return () => clearTimeout(timeout);
@@ -34,7 +39,6 @@ export default function ImageAnalogClock() {
   const center = { x: 50, y: 50 };
   const radius = 45;
 
-  // Number images with individual width/height
   const numberImages = [
     { src: one, angle: 0, width: "30%", height: "30%" },
     { src: two, angle: 30, width: "20%", height: "20%" },
@@ -58,18 +62,32 @@ export default function ImageAnalogClock() {
   const minuteAngle = (minutes + seconds / 60) * 6;
   const secondAngle = seconds * 6;
 
-  // Hand style generator (pivot from bottom, center-aligned)
-  const handStyle = (width, length, color, angle) => ({
+  // Fierce metallic hands
+  const metallicHandStyle = (width, length, angle) => ({
     position: "absolute",
     width: width,
     height: length,
-    backgroundColor: color,
     top: "50%",
     left: "50%",
     transformOrigin: "50% 100%",
     transform: `translate(-50%, -100%) rotate(${angle}deg)`,
+
+    background: `linear-gradient(
+      135deg,
+      #d4d4d4 0%,
+      #b0b0b0 20%,
+      #e6e6e6 50%,
+      #b0b0b0 80%,
+      #d4d4d4 100%
+    )`,
     borderRadius: "0.5rem",
+    boxShadow: `
+      0 0.3rem 0.5rem rgba(0,0,0,0.6),
+      inset 0 0.15rem 0.3rem rgba(255,255,255,0.8),
+      inset 0 -0.15rem 0.3rem rgba(0,0,0,0.4)
+    `,
     pointerEvents: "none",
+    border: "0.05rem solid #999",
   });
 
   if (!ready) {
@@ -82,7 +100,7 @@ export default function ImageAnalogClock() {
           width: "100vw",
           height: "100dvh",
           backgroundColor: "black",
-          zIndex: 9999,
+          zIndex: 99,
         }}
       ></div>
     );
@@ -91,37 +109,78 @@ export default function ImageAnalogClock() {
   return (
     <div
       style={{
+        position: "relative",
+        width: "100vw",
+        height: "100dvh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        width: "100vw",
-        height: "100dvh",
-        backgroundColor: "#111",
         overflow: "hidden",
         isolation: "isolate",
+        backgroundColor: "#111",
       }}
     >
+      {/* Background video with fallback GIF */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: "absolute",
+          width: "100vw",
+          height: "100dvh",
+          objectFit: "cover",
+          zIndex: -2,
+        }}
+      >
+        <source src={backgroundVideo} type="video/mp4" />
+        <img
+          src={fallbackGif}
+          alt="Fallback background"
+          style={{
+            width: "100vw",
+            height: "100dvh",
+            objectFit: "cover",
+          }}
+        />
+      </video>
+
+      {/* Clock Face */}
       <div
         style={{
           position: "relative",
           width: clockSize,
           height: clockSize,
-          backgroundColor: "#222",
           borderRadius: "50%",
+          opacity: 0.85,
+          overflow: "hidden",
           isolation: "isolate",
         }}
       >
+        {/* Desaturated clock face as backgroundImage */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage: `url(${clockFace})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "grayscale(100%)", // <-- desaturate
+            zIndex: -1,
+          }}
+        />
+
         {/* Numbers */}
         {numberImages.map((num, idx) => {
           const angleRad = (num.angle - 90) * (Math.PI / 180);
-
-          // Adjust radius slightly based on image size
           const widthPercent = parseFloat(num.width);
           const heightPercent = parseFloat(num.height);
-
           const adjustedRadiusX = radius * (1 - widthPercent / 100 / 2);
           const adjustedRadiusY = radius * (1 - heightPercent / 100 / 2);
-
           const x = center.x + adjustedRadiusX * Math.cos(angleRad);
           const y = center.y + adjustedRadiusY * Math.sin(angleRad);
 
@@ -136,6 +195,7 @@ export default function ImageAnalogClock() {
                 height: num.height,
                 left: `${x}%`,
                 top: `${y}%`,
+                opacity: 0.8,
                 transform: "translate(-50%, -50%)",
                 objectFit: "contain",
               }}
@@ -144,17 +204,17 @@ export default function ImageAnalogClock() {
         })}
 
         {/* Hands */}
-        <div style={handStyle("0.8rem", "18dvh", "white", hourAngle)} />
-        <div style={handStyle("0.5rem", "28dvh", "white", minuteAngle)} />
-        <div style={handStyle("0.15rem", "32.5dvh", "red", secondAngle)} />
+        <div style={metallicHandStyle("0.8rem", "18dvh", hourAngle)} />
+        <div style={metallicHandStyle("0.5rem", "28dvh", minuteAngle)} />
+        <div style={metallicHandStyle("0.15rem", "32.5dvh", secondAngle)} />
 
         {/* Center dot */}
         <div
           style={{
             position: "absolute",
-            width: "1.2rem",
-            height: "1.2rem",
-            backgroundColor: "white",
+            width: "1.0rem",
+            height: "1.0rem",
+            backgroundColor: "grey",
             borderRadius: "50%",
             top: "50%",
             left: "50%",
