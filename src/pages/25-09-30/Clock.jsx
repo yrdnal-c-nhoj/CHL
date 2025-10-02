@@ -23,7 +23,7 @@ export default function StripedClock() {
       #7E054EFF  0%,  #7E054EFF 24.9%,
       #A0E418FF 25%,#A0E418FF 49.9%,
        #7E054EFF 50%,  #7E054EFF 74.9%,
-      #A0E418FF  75%, #A0E418FF  100%
+      #A0E418FF  75%, #0BF82BFF 100%
     )
   `;
 
@@ -61,14 +61,13 @@ export default function StripedClock() {
           background-size: 0.8rem 0.8rem;
           -webkit-background-clip: text;
           background-clip: text;
-          line-height: 1;
         }
 
         .digit-box {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: -0.9rem;       /* fixed width for each digit */
+          width: -0.1rem;       /* fixed width for each digit */
           height: 32rem;      /* fixed height for equal boxing */
           overflow: hidden; /* ensures no clipping outside the box */
         }
@@ -78,7 +77,7 @@ export default function StripedClock() {
         className="animated-bg"
         style={{
           width: "100vw",
-          height: "100vh",
+          height: "100dvh",
           backgroundImage: stripeGradient,
           backgroundSize: "0.8rem 0.8rem",
           display: "flex",
