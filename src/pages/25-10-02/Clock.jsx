@@ -39,12 +39,16 @@ const DigitalClock = () => {
   display: 'inline-flex',
   justifyContent: 'center',
   alignItems: 'center',
-  width: '10vw',
-  fontSize: '16vw',
+  width: '12vw',
+  fontSize: '20vw',
   fontFamily: "'KaiTi', 'STKaiti', serif",
   color: '#D1EEC9FF',
   background: 'rgba(178,34,34,0.5)',
-  textShadow: '2px 2px 0 #000000, -2px -2px 0 #000000', // razor-thin black shadows
+  textShadow: '2px 2px 0 #000000, -2px -2px 0 #000000',
+  
+  
+  
+  // razor-thin black shadows
   boxShadow: '0 0 7vw #CB4F3FFF', // smaller, softer glow instead of 66vw
   margin: '-0.4vw',
 };
@@ -77,12 +81,12 @@ const DigitalClock = () => {
           left: '50%',
           transform: 'translate(-50%, -50%) scaleX(-1)', // Added scaleX(-1) for horizontal flip
           width: '100vw',
-          height: '100dvh',
+          height: '120dvh',
           backgroundImage: `url(${gridImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          opacity: 0.2,
+          opacity: 0.4,
           zIndex: 1,
         }}
       />
