@@ -4,19 +4,11 @@
 
 vite v7.1.6 building for production...
 transforming...
-✓ 32 modules transformed.
-✗ Build failed in 171ms
+✓ 36 modules transformed.
+✗ Build failed in 121ms
 error during build:
-[vite:json] [plugin vite:json] src/context/testclock.json (187:1): Failed to parse JSON file, invalid JSON syntax found at position 13032
-file: /Users/john/Desktop/CHL/src/context/testclock.json:187:1
-
-185:   { "path": "25-10-01", "date": "25-10-01", "title": "Small World" },
-186:   { "path": "25-10-02", "date": "25-10-02", "title": "Counting Rods" }
-187:   { "path": "25-10-03", "date": "25-10-03", "title": "XXXXXXXXXXXX" },
-      ^
-188:   { "path": "25-10-04", "date": "25-10-04", "title": "XXXXXXXXXXXX" }
-189: ]
-
+[vite:json] [plugin vite:json] src/context/clockpages.json: Failed to parse JSON file.
+file: /Users/john/Desktop/CHL/src/context/clockpages.json
     at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
     at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
     at Object.error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:22029:20)
@@ -24,8 +16,3 @@ file: /Users/john/Desktop/CHL/src/context/testclock.json:187:1
     at Object.handler (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:8832:11)
     at Object.handler (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:34051:13)
     at file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:22351:40
-npm notice
-npm notice New major version of npm available! 10.9.2 -> 11.6.1
-npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.6.1
-npm notice To update run: npm install -g npm@11.6.1
-npm notice
