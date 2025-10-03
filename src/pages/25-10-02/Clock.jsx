@@ -3,7 +3,7 @@ import gridImage from './lan.gif'; // Replace with your image file in the same f
 
 // Map standard digits to counting rod Unicode characters
 const digitMap = {
-  '0': '·', // Placeholder for zero
+  '0': '▫', // Placeholder for zero
   '1': '\u{1D360}',
   '2': '\u{1D361}',
   '3': '\u{1D362}',
