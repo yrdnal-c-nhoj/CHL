@@ -8,42 +8,59 @@ const AnalogClock = () => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    // Inject @font-face dynamically
-    const fontFace = new FontFace("CustomClockFont", `url(${sss47wert})`);
-    fontFace.load().then((loadedFace) => {
+    // Load font
+    const fontFace92725 = new FontFace("CustomClockFont", `url(${sss47wert})`);
+    const fontPromise = fontFace92725.load().then((loadedFace) => {
       document.fonts.add(loadedFace);
+    });
 
-      // Preload images
-      const images = [bgOuter, bgInner];
-      let loadedCount = 0;
+    // Load images
+    const images = [bgOuter, bgInner];
+    const imagePromises = images.map(
+      (src) =>
+        new Promise((resolve) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = resolve;
+          img.onerror = resolve; // avoid blocking if one fails
+        })
+    );
 
-      const checkAllLoaded = () => {
-        loadedCount++;
-        if (loadedCount === images.length) {
-          setLoaded(true);
-        }
-      };
-
-      images.forEach((src) => {
-        const img = new Image();
-        img.src = src;
-        img.onload = checkAllLoaded;
-        img.onerror = checkAllLoaded;
-      });
+    // Wait for font + images
+    Promise.all([fontPromise, ...imagePromises]).then(() => {
+      setLoaded(true);
     });
   }, []);
 
-  // Clock update only after resources loaded
+  // Update time once loaded
   useEffect(() => {
     if (!loaded) return;
     const timer = setInterval(() => setCurrentTime(new Date()), 50);
     return () => clearInterval(timer);
   }, [loaded]);
 
+  // Loader (overlay until everything is ready)
   if (!loaded) {
-    return null; // Could show loader if wanted
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100dvh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          background: "black",
+          color: "white",
+          fontSize: "2rem",
+          fontFamily: "sans-serif",
+        }}
+      >
+        Loading Clock…
+      </div>
+    );
   }
 
+  // Time calculations
   const hours24 = currentTime.getHours();
   const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12;
   const minutes = currentTime.getMinutes();
@@ -171,7 +188,7 @@ const AnalogClock = () => {
           backgroundImage: `url(${bgInner})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "contrast(2.4)",
+          filter: "contrast(4.4)",
           zIndex: 2,
           display: "flex",
           justifyContent: "center",
