@@ -26,13 +26,13 @@ export default function ImageAnalogClock() {
   const [ready, setReady] = useState(false);
   const [rotation, setRotation] = useState(0);
 
-  // Update time every ~16ms for smooth second hand
+  // Update time smoothly
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 16);
     return () => clearInterval(interval);
   }, []);
 
-  // Rotate clock face CCW
+  // Rotate face slowly
   useEffect(() => {
     const rotateInterval = setInterval(() => {
       setRotation((prev) => (prev - 0.1) % 360);
@@ -40,13 +40,34 @@ export default function ImageAnalogClock() {
     return () => clearInterval(rotateInterval);
   }, []);
 
-  // Initial ready state
+  // Preload all images before rendering
   useEffect(() => {
-    const timeout = setTimeout(() => setReady(true), 500);
-    return () => clearTimeout(timeout);
+    const sources = [
+      one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve,
+      clockFace, fallbackGif
+    ];
+
+    let loaded = 0;
+    sources.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        loaded++;
+        if (loaded === sources.length) {
+          setReady(true); // All assets loaded
+        }
+      };
+      img.onerror = () => {
+        // Even on error, count as loaded (to avoid hang)
+        loaded++;
+        if (loaded === sources.length) {
+          setReady(true);
+        }
+      };
+    });
   }, []);
 
-  const clockSize = "min(80vw, 80vh)"; // Use min of vw/vh for better scaling
+  const clockSize = "min(80vw, 80vh)";
   const center = { x: 50, y: 50 };
   const radius = 38;
 
@@ -122,6 +143,7 @@ export default function ImageAnalogClock() {
     opacity: 0.95,
   });
 
+  // Don’t render until ready
   if (!ready) {
     return (
       <div
@@ -132,9 +154,8 @@ export default function ImageAnalogClock() {
           width: "100vw",
           height: "100dvh",
           backgroundColor: "black",
-          zIndex: 99,
         }}
-      ></div>
+      />
     );
   }
 
@@ -187,7 +208,7 @@ export default function ImageAnalogClock() {
       <div
         style={{
           position: "relative",
-          width: "min(90vw, 90vh)", // Slightly larger container
+          width: "min(90vw, 90vh)",
           height: "min(90vw, 90vh)",
           borderRadius: "50%",
           overflow: "visible",
@@ -240,38 +261,6 @@ export default function ImageAnalogClock() {
         <div style={metallicHandStyle("0.5rem", "36dvh", minuteAngle)} />
         <div style={metallicHandStyle("0.15rem", "40dvh", secondAngle)} />
       </div>
-
-      {/* Media query for smaller screens */}
-      <style>
-        {`
-          @media (max-width: 768px) {
-            .clock-container {
-              width: min(95vw, 95vh) !important;
-              height: min(95vw, 95vh) !important;
-            }
-            .clock-face {
-              width: min(75vw, 75vh) !important;
-              height: min(75vw, 75vh) !important;
-            }
-            .hand {
-              height: calc(36dvh * 0.8) !important;
-            }
-          }
-          @media (max-width: 480px) {
-            .clock-container {
-              width: min(100vw, 100vh) !important;
-              height: min(100vw, 100vh) !important;
-            }
-            .clock-face {
-              width: min(70vw, 70vh) !important;
-              height: min(70vw, 70vh) !important;
-            }
-            .hand {
-              height: calc(36dvh * 0.7) !important;
-            }
-          }
-        `}
-      </style>
     </div>
   );
 }
