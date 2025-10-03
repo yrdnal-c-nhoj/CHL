@@ -3,8 +3,20 @@ import font20250924 from "./cora.ttf";
 
 const HorizontalProportionalGradientClock = () => {
   const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
 
+  // Load the font before rendering
   useEffect(() => {
+    const font = new FontFace("CustomFont", `url(${font20250924})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      setFontLoaded(true);
+    });
+  }, []);
+
+  // Clock ticking
+  useEffect(() => {
+    if (!fontLoaded) return; // Don't tick until font is loaded
     let frame;
     const tick = () => {
       setTime(new Date());
@@ -12,7 +24,12 @@ const HorizontalProportionalGradientClock = () => {
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, []);
+  }, [fontLoaded]);
+
+  if (!fontLoaded) {
+    // Optionally render nothing or a placeholder
+    return null;
+  }
 
   let hours = time.getHours() % 12;
   if (hours === 0) hours = 12;
@@ -54,12 +71,6 @@ const HorizontalProportionalGradientClock = () => {
   };
 
   const styles = `
-    @font-face {
-      font-family: 'CustomFont';
-      src: url(${font20250924}) format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
     .clock-digit {
       font-family: 'CustomFont', sans-serif;
       text-shadow: -4px 0px 0px black, 2px 0px 0px white;
@@ -70,8 +81,7 @@ const HorizontalProportionalGradientClock = () => {
                   background-color 0.6s ease-in-out, color 0.6s ease-in-out;
       border-right: 1px solid black;
       animation: borderFade 12s infinite linear;
-        filter: saturate(300%); /* <-- increases saturation */
-
+      filter: saturate(300%);
     }
     .clock-digit:last-child {
       border-right: none;
