@@ -55,7 +55,7 @@ const AnalogClockWithImages = () => {
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
 
-  const clockFaceSize = "min(90vw, 80vh)";
+  const clockFaceSize = "min(90vw, 90vh)";
 
   const numberStyle = (angleDeg) => {
     const radius = 40;
@@ -95,7 +95,7 @@ const AnalogClockWithImages = () => {
           width: "100%",
           height: "100%",
           background: "linear-gradient(to top, #737575FF, #272525FF)",
-          animation: "bgBW 30s ease-in-out infinite alternate",
+          animation: "bgBW 15s ease-in-out infinite alternate",
           zIndex: 0, // behind everything
         }}
       />
