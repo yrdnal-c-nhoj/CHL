@@ -22,17 +22,19 @@ const Clock = () => {
         src: url(${issFont}) format('truetype');
       }
     `,
-    iframe: {
-      position: 'fixed',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%) scale(1.0)',
-      width: '100vw',
-      height: '120vh',
-      border: 'none',
-      zIndex: 0,
-      pointerEvents: 'none',
-    },
+  // Inside styles
+iframe: {
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%) scale(1.2)', // increased scale
+  width: '120vw',  // larger than viewport width
+  height: '140vh', // taller than viewport height
+  border: 'none',
+  zIndex: 0,
+  pointerEvents: 'none',
+},
+
     wrapper: {
       position: 'absolute',
       top: '50%',
@@ -77,8 +79,9 @@ const Clock = () => {
     <div style={{ margin: 0, padding: 0, overflow: 'hidden', width: '100vw', height: '100vh' }}>
       <style>{styles.fontFace}</style>
 
+      {/* Background YouTube Video */}
       <iframe
-        src="https://www.youtube-nocookie.com/embed/DIgkvm2nmHc?autoplay=1&mute=1&controls=0&si=_KKOlzjwM5GbxkM4"
+        src="https://www.youtube.com/embed/iYmvCUonukw?autoplay=1&mute=1&controls=0&loop=1&playlist=iYmvCUonukw"
         title="YouTube video player"
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -87,6 +90,7 @@ const Clock = () => {
         style={styles.iframe}
       ></iframe>
 
+      {/* Clock overlay */}
       <div style={styles.wrapper}>
         <div style={styles.clockContainer}>
           {[h1, h2, m1, m2, s1, s2].map((digit, i) => (
