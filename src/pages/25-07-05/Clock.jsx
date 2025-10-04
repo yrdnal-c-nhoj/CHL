@@ -9,6 +9,9 @@ const VegasClock = () => {
   const second1Ref = useRef(null);
   const second2Ref = useRef(null);
 
+  const playerRef = useRef(null);
+  const playerContainerRef = useRef(null);
+
   // Inject font once
   useEffect(() => {
     const font = new FontFace('vegas', `url(${vegasFontUrl})`);
@@ -17,6 +20,36 @@ const VegasClock = () => {
     });
   }, []);
 
+  // Initialize YouTube IFrame API for autoplay
+  useEffect(() => {
+    if (!window.YT) {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.body.appendChild(tag);
+    }
+
+    window.onYouTubeIframeAPIReady = () => {
+      if (!playerRef.current) {
+        playerRef.current = new window.YT.Player(playerContainerRef.current, {
+          videoId: 'jtvmwjzZY0c',
+          playerVars: {
+            autoplay: 1,
+            mute: 1,
+            controls: 0,
+            modestbranding: 1,
+            loop: 1,
+            playlist: 'jtvmwjzZY0c', // loop requires playlist param
+            playsinline: 1,
+          },
+          events: {
+            onReady: (event) => event.target.playVideo(),
+          },
+        });
+      }
+    };
+  }, []);
+
+  // Clock logic
   useEffect(() => {
     const refs = {
       hour1: hour1Ref.current,
@@ -74,15 +107,14 @@ const VegasClock = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const containerStyle = {
+  const iframeStyle = {
     position: 'fixed',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    top: 0,
+    left: 0,
     width: '100vw',
     height: '100dvh',
     zIndex: 1,
-    border: 'none',
+    pointerEvents: 'none', // clicks pass through
   };
 
   const wrapperStyle = {
@@ -91,19 +123,15 @@ const VegasClock = () => {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 'max-content',
-    maxWidth: '100vw',
     zIndex: 10,
   };
 
   const clockContainerStyle = {
     display: 'flex',
     flexDirection: 'row',
-    flexWrap: 'nowrap',
-    justifyContent: 'center',
-    alignItems: 'center',
     gap: '1vmin',
+    alignItems: 'center',
     whiteSpace: 'nowrap',
-    maxWidth: '100vw',
     overflow: 'hidden',
   };
 
@@ -146,14 +174,10 @@ const VegasClock = () => {
         .flicker-03-c  { animation: flicker03c 0.3s 1; }
       `}</style>
 
-      <iframe
-        style={containerStyle}
-        src="https://www.youtube.com/embed/jtvmwjzZY0c?autoplay=1&mute=1"
-        title="YouTube video player"
-        allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      />
+      {/* YouTube video as background */}
+      <div ref={playerContainerRef} style={iframeStyle}></div>
 
+      {/* Vegas Clock */}
       <div style={wrapperStyle}>
         <div style={clockContainerStyle}>
           <div style={digitGroupStyle}>
