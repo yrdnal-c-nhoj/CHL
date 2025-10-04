@@ -309,9 +309,9 @@ export default function DesertUFOSequence() {
             left:'50%',
             top:'60%',
             transform:'translateX(-50%)',
-            width:'3vw',
+            width:'4vw',
             height:'44dvh',
-            background:'linear-gradient(180deg, rgba(194,241,255,0.98) 0%, rgba(255,255,192,0.68) 85%, rgba(255,230,192,0.00) 100%)',
+            background:'linear-gradient(180deg, rgba(194,241,255,0.98) 0%, rgba(255,255,192,0.88) 85%, rgba(255,230,192,0.00) 100%)',
             borderRadius:'0.8vw',
             filter:'blur(0.2rem)',
             zIndex: 3
