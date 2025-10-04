@@ -229,24 +229,37 @@ export default function DesertUFOSequence() {
         whiteSpace:'pre',
         zIndex: 6
       }}>
-        {clockVisible && (
-          <div style={{
-            fontSize:'12vw',
-            color:'#EBCF93FF',
-            padding: stage===3 ? '0' : '1.2vw 2.5vw',
-            borderRadius: stage===3 ? '50%' : '2rem',
-            transition:'padding 0.2s linear, border-radius 0.2s linear'
-          }}>
-            {stage===2.5 || stage===3 ? renderScrambledClock() : (
-              <span className="clock-text" style={{
-                display:'inline-block',
-                transform:`scale(${digitScale})`,
-                opacity: clockOpacity,
-                transition:'transform 0.05s linear, opacity 0.05s linear'
-              }}>{clockText}</span>
-            )}
-          </div>
-        )}
+       {clockVisible && (
+  <div style={{
+    fontSize:'12vw',
+    padding: stage===3 ? '0' : '1.2vw 2.5vw',
+    borderRadius: stage===3 ? '50%' : '2rem',
+    transition:'padding 0.2s linear, border-radius 0.2s linear',
+    fontFamily: 'CowFont, serif', // your cow font
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#055500', // base black for stamped look
+    textShadow: '0.3vw 0.3vw 0 #7a5a32, -1vw -1vw 0 #F4EFE9FF', // subtle embossed/branded effect
+    letterSpacing: '0.05em',
+    // backgroundColor: 'white', // optional for contrast
+    paddingInline: '0.5em', // tiny extra padding around digits
+  }}>
+    {stage===2.5 || stage===3 ? renderScrambledClock() : (
+      <span className="clock-text" style={{
+        display:'inline-block',
+        transform:`scale(${digitScale})`,
+        opacity: clockOpacity,
+        transition:'transform 0.05s linear, opacity 0.05s linear',
+        color: '#E6EAE6FF',
+        textShadow: '0.5vw 0.5vw 0 #141312FF', 
+      }}>
+        {clockText}
+      </span>
+    )}
+  </div>
+)}
+
 
         {/* Blob */}
         <div style={{
