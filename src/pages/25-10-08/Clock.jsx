@@ -80,7 +80,7 @@ export default function ImageAnalogClock() {
           width: "100vw",
           height: "100dvh",
           backgroundColor: "black",
-          zIndex: 9,
+          zIndex: 1,
         }}
       />
     );
@@ -148,10 +148,15 @@ export default function ImageAnalogClock() {
           isolation: "isolate",
         }}
       >
+        {/* Clock hands – rendered first to go behind numbers */}
+        <div style={handStyle("0.01rem", "18dvh", "white", hourAngle)} />
+        <div style={handStyle("0.01rem", "28dvh", "white", minuteAngle)} />
+        <div style={handStyle("0.5rem", "432.5dvh", "red", secondAngle)} />
+
         {/* Numbers */}
         {numbers.map((num, idx) => {
           const angleRad = (num.angle - 90) * (Math.PI / 180);
-          const fontSize = num.digit.length > 1 ? "2.5rem" : "3rem";
+          const fontSize = "5rem";
           const adjustedRadius = radius * 0.9;
 
           const x = center.x + adjustedRadius * Math.cos(angleRad);
@@ -176,25 +181,6 @@ export default function ImageAnalogClock() {
             </div>
           );
         })}
-
-        {/* Clock hands */}
-        <div style={handStyle("0.01rem", "18dvh", "white", hourAngle)} />
-        <div style={handStyle("0.01rem", "28dvh", "white", minuteAngle)} />
-        <div style={handStyle("0.5rem", "432.5dvh", "red", secondAngle)} />
-
-        {/* Center dot */}
-        <div
-          style={{
-            position: "absolute",
-            width: "0.2rem",
-            height: "0.2rem",
-            backgroundColor: "white",
-            borderRadius: "50%",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-          }}
-        />
       </div>
     </div>
   );
