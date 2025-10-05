@@ -12,12 +12,12 @@ function getClockTime() {
   return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 }
 
-const UFO_WIDTH = 28; // VW
+const UFO_WIDTH = 20; // VW
 const UFO_HOVER_X = 50 - UFO_WIDTH / 2;
 const UFO_ENTER_START = 112;
 const UFO_LEAVE_END = -15;
 
-const GROUND_HEIGHT = 28;
+const GROUND_HEIGHT = 21;
 const CLOCK_BASE_Y = 72 + GROUND_HEIGHT / 2; // = 86 — middle of ground
 
 const CLOCK_ABDUCTED_Y = 44;
@@ -233,7 +233,7 @@ export default function DesertUFOSequence() {
       }}>
        {clockVisible && (
   <div style={{
-    fontSize:'12vw',
+    fontSize:'7vw',
     padding: stage===3 ? '0' : '1.2vw 2.5vw',
     borderRadius: stage===3 ? '50%' : '2rem',
     transition:'padding 0.2s linear, border-radius 0.2s linear',
