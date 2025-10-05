@@ -18,7 +18,8 @@ export default function HexAnalogClock() {
   const seconds = currentTime.getSeconds();
   const milliseconds = currentTime.getMilliseconds();
 
-  const clockSize = 400;
+  // Make clock size responsive: 80% of the smaller viewport dimension
+  const clockSize = Math.min(window.innerWidth, window.innerHeight) * 0.8;
   const center = clockSize / 2;
   const radius = center - 29;
 
@@ -37,38 +38,39 @@ export default function HexAnalogClock() {
     `0x${i.toString(16).toUpperCase().padStart(2, '0')}`
   );
 
- const styles = {
-  root: {
-    position: 'relative',
-    minHeight: '100vh',
-    width: '100vw',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: '1rem',
-    padding: '1rem',
-    boxSizing: 'border-box',
-    fontFamily:
-      "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji'",
-    overflow: 'hidden',
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: '200% auto',   // width twice the viewport, height auto to keep aspect ratio
-    backgroundPosition: 'center',  // keep it centered
-    backgroundRepeat: 'no-repeat', // no tiling
-  },
-
+  const styles = {
+    root: {
+      position: 'relative',
+      height: '100vh',
+      width: '100vw',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: '0.5rem',
+      padding: '0.5rem',
+      boxSizing: 'border-box',
+      fontFamily:
+        "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji'",
+      overflow: 'hidden',
+      backgroundImage: `url(${bgImage})`,
+      backgroundSize: '180% auto', // Scale width to 150% of viewport, height preserves aspect ratio
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      margin: 0,
+    },
     card: {
-      background: 'rgba(225, 214, 196, 0.6)',
+      background: 'rgba(225, 214, 196, 0.9)',
       border: '1px solid rgba(204, 187, 170, 0.5)',
       borderRadius: '12px',
-      padding: '1rem 1.5rem',
+      padding: '0.5rem 1rem',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      gap: '0.5rem',
-      fontSize: '2.5rem',
+      gap: '0.25rem',
+      fontSize: 'clamp(1.5rem, 5vw, 2rem)',
       zIndex: 2,
+      maxWidth: '90%',
     },
     hexValue: {
       fontFamily:
@@ -81,7 +83,7 @@ export default function HexAnalogClock() {
     },
     progressContainer: {
       width: '100%',
-      height: '12px',
+      height: '10px',
       background: 'rgba(204, 187, 170, 0.3)',
       borderRadius: '6px',
       overflow: 'hidden',
@@ -98,12 +100,18 @@ export default function HexAnalogClock() {
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
       }
+      body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+      }
     `,
     svg: { width: clockSize, height: clockSize, zIndex: 2, position: 'relative' },
     centerDot: { fill: '#0b8d49' },
     markingText: {
       fill: '#0f172a',
-      fontSize: 18,
+      fontSize: Math.max(12, clockSize * 0.045),
       textAnchor: 'middle',
       dominantBaseline: 'middle',
     },
@@ -124,6 +132,8 @@ export default function HexAnalogClock() {
       width: clockSize,
       height: clockSize,
       borderRadius: '50%',
+      maxWidth: '90vw',
+      maxHeight: '90vh',
     },
   };
 
