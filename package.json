@@ -21,6 +21,7 @@
     "express": "^5.1.0",
     "form-data": "^4.0.4",
     "googleapis": "^159.0.0",
+    "gsap": "^3.13.0",
     "lucide-react": "^0.541.0",
     "papaparse": "^5.5.3",
     "puppeteer": "^24.22.3",
