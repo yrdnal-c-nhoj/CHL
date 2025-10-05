@@ -60,8 +60,8 @@ export default function HexAnalogClock() {
       margin: 0,
     },
     card: {
-      background: 'rgba(225, 214, 196, 0.9)',
-      border: '1px solid rgba(204, 187, 170, 0.5)',
+      background: 'rgba(225, 244, 246,)',
+      border: '3px solid #0E0404FF',
       borderRadius: '12px',
       padding: '0.5rem 1rem',
       display: 'flex',
