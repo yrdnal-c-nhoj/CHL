@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import font20251006 from './shado.ttf'; // local font in same folder
+import font20251006 from './shado.ttf'; 
 
 export default function DigitalClock() {
   const [currentTime, setCurrentTime] = useState(new Date());
