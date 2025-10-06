@@ -87,7 +87,7 @@ export default function DigitalClock() {
     // progress along the stack
     const progress = i / (shadowLayers - 1);
 
-    let color = '#C50F49FF';
+    let color = '#EB0DA9FF';
     if (progress > 0.85 && progress < 0.98) {
       const redIntensity = Math.floor(128 + (progress - 0.85) * 800);
       color = `rgb(${redIntensity},0,0)`;
