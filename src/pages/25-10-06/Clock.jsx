@@ -76,24 +76,23 @@ export default function DigitalClock() {
 
   const radians = (shadowAngle * Math.PI) / 180;
 
-  const shadowLayers = 50;
+  // --- Modified shadow logic ---
+  const shadowLayers = 20; // fewer, more spaced
   const textShadows = Array.from({ length: shadowLayers }, (_, i) => {
-    const distance = i * 4 + 2; // 2px shadow + 2px gap
+    // 3px shadow + 9px gap pattern = 12px spacing per step
+    const distance = i * 12 + 3;
     const x = -Math.cos(radians) * distance;
     const y = -Math.sin(radians) * distance;
 
-    // Progress through the shadow stack
+    // progress along the stack
     const progress = i / (shadowLayers - 1);
 
-    // Most shadows are green; last few fade to red
     let color = '#C50F49FF';
     if (progress > 0.85 && progress < 0.98) {
-      // Fade to dark red
       const redIntensity = Math.floor(128 + (progress - 0.85) * 800);
       color = `rgb(${redIntensity},0,0)`;
     } else if (progress >= 0.98) {
-      // Last few are orange
-      color = '#D09153FF';
+      color = '#E9CF06FF';
     }
 
     return `${x}px ${y}px 0 ${color}`;
