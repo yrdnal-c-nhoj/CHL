@@ -86,7 +86,7 @@ export default function DigitalClock() {
     const progress = i / (shadowLayers - 1);
 
     // Most shadows are green; last few fade to red
-    let color = '#61BC0BFF';
+    let color = '#C50F49FF';
     if (progress > 0.85 && progress < 0.98) {
       // Fade to dark red
       const redIntensity = Math.floor(128 + (progress - 0.85) * 800);
@@ -123,7 +123,7 @@ export default function DigitalClock() {
     time: {
       fontFamily: 'ClockFont, sans-serif',
       fontSize: '88px',
-      color: '#75EB87FF',
+      color: '#C40D53FF',
       textShadow: textShadows,
       letterSpacing: '3vh',
       textAlign: 'center',
