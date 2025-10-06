@@ -184,7 +184,7 @@ export default function ImageAnalogClock() {
           width: "100vw",
           height: "100dvh",
           objectFit: "cover",
-          filter: "saturate(0.2) contrast(1.1) brightness(1.3)",
+          filter: "saturate(0.3) contrast(1.1) brightness(1.3)",
           zIndex: -2,
         }}
       >
