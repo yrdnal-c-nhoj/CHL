@@ -93,7 +93,7 @@ export default function DigitalClock() {
       color = `rgb(${redIntensity},0,0)`;
     } else if (progress >= 0.98) {
       // Last few are orange
-      color = '#CE6A07FF';
+      color = '#D09153FF';
     }
 
     return `${x}px ${y}px 0 ${color}`;
@@ -104,12 +104,12 @@ export default function DigitalClock() {
       height: '100dvh',
       width: '100vw',
       backgroundImage: `
-        radial-gradient(rgb(6, 137, 39) 30.8%, transparent 30.8%),
+        radial-gradient(rgb(96, 137, 39) 30.8%, transparent 30.8%),
         radial-gradient(rgb(0, 0, 0) 30.8%, transparent 30.8%)
       `,
       backgroundPosition: '4px 4px, 3.6px 4.4px',
       backgroundSize: '8px 8px',
-      backgroundColor: 'rgb(31, 59, 7)',
+      backgroundColor: 'rgb(131, 159, 7)',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -123,7 +123,7 @@ export default function DigitalClock() {
     time: {
       fontFamily: 'ClockFont, sans-serif',
       fontSize: '88px',
-      color: '#065D13FF',
+      color: '#75EB87FF',
       textShadow: textShadows,
       letterSpacing: '3vh',
       textAlign: 'center',
