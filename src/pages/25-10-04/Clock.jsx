@@ -6,36 +6,47 @@ import bgWebp from './waterfall.webp';
 const ClockVideoBackground = () => {
   const [time, setTime] = useState(new Date());
   const [loaded, setLoaded] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(false);
   const videoRef = useRef(null);
 
-  // Update clock every 50ms for smooth milliseconds
+  // Load the font
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 50);
-    return () => clearInterval(interval);
+    const font = new FontFace('iss', `url(${clockFont})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      setFontLoaded(true);
+    });
   }, []);
 
-  // Fade in effect
+  // Smooth clock updates using requestAnimationFrame
+  useEffect(() => {
+    let animationFrame;
+
+    const updateClock = () => {
+      setTime(new Date());
+      animationFrame = requestAnimationFrame(updateClock);
+    };
+
+    animationFrame = requestAnimationFrame(updateClock);
+    return () => cancelAnimationFrame(animationFrame);
+  }, []);
+
+  // Fade-in effect for video
   useEffect(() => {
     const timeout = setTimeout(() => setLoaded(true), 100);
     return () => clearTimeout(timeout);
   }, []);
 
-  // Split each number into digits with leading zeros
   const formatDigits = (value, length = 2) =>
     String(value).padStart(length, '0').split('');
 
   const hDigits = formatDigits(time.getHours());
   const mDigits = formatDigits(time.getMinutes());
   const sDigits = formatDigits(time.getSeconds());
+  // Show 2 digits of milliseconds smoothly
   const msDigits = formatDigits(Math.floor(time.getMilliseconds() / 10));
 
   const styles = {
-    fontFace: `
-      @font-face {
-        font-family: 'iss';
-        src: url(${clockFont}) format('truetype');
-      }
-    `,
     root: {
       margin: 0,
       padding: 0,
@@ -44,7 +55,7 @@ const ClockVideoBackground = () => {
       height: '100dvh',
       backgroundColor: '#000000',
       position: 'relative',
-      fontFamily: 'iss, sans-serif',
+      fontFamily: fontLoaded ? 'iss, sans-serif' : 'sans-serif',
     },
     video: {
       position: 'fixed',
@@ -64,13 +75,13 @@ const ClockVideoBackground = () => {
       left: '50%',
       transform: 'translate(-50%, -50%)',
       zIndex: 10,
-      display: loaded ? 'flex' : 'none',
-      flexDirection: 'column', // stack vertically always
-      gap: '0.0rem',
+      display: loaded && fontLoaded ? 'flex' : 'none',
+      flexDirection: 'column',
+      gap: '0rem',
       alignItems: 'center',
     },
     group: {
-      display: 'flex', // horizontal group of digits
+      display: 'flex',
       flexDirection: 'row',
       gap: '0.01vh',
       justifyContent: 'center',
@@ -80,7 +91,7 @@ const ClockVideoBackground = () => {
       color: '#0946C1FF',
       textShadow: `
         0.1vh 0.1vh rgba(0,0,0,0.8),
-        -0.1vh -0.1vh  rgba(255,220,220,0.9)
+        -0.1vh -0.1vh rgba(255,220,220,0.9)
       `,
       display: 'flex',
       justifyContent: 'center',
@@ -95,8 +106,6 @@ const ClockVideoBackground = () => {
 
   return (
     <div style={styles.root}>
-      <style>{styles.fontFace}</style>
-
       {/* Background Video */}
       <video
         ref={videoRef}
