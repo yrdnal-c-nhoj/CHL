@@ -1,9 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import kalFont from './kal.otf';
 import bgImage from './7ZAx.webp';
 
 const Clock = () => {
+  const [fontLoaded, setFontLoaded] = useState(false);
+
+  // Load custom font first
   useEffect(() => {
+    const font = new FontFace('kal', `url(${kalFont})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      setFontLoaded(true);
+    });
+  }, []);
+
+  // Only start clock animation after font is loaded
+  useEffect(() => {
+    if (!fontLoaded) return;
+
     const SEGMENTS = 12;
     const colors = [
       '#ff0040', '#045DF7FF', '#F9D108FF', '#00ff00',
@@ -94,12 +108,26 @@ const Clock = () => {
     };
 
     updateClock();
-  }, []);
+  }, [fontLoaded]);
 
-  useEffect(() => {
-    const font = new FontFace('kal', `url(${kalFont})`);
-    font.load().then(f => document.fonts.add(f));
-  }, []);
+  // While font loads, show a blank or subtle fade
+  if (!fontLoaded) {
+    return (
+      <div style={{
+        background: 'black',
+        height: '100vh',
+        width: '100vw',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#777',
+        fontFamily: 'sans-serif',
+        fontSize: '2vh',
+      }}>
+        Loading…
+      </div>
+    );
+  }
 
   return (
     <div style={{ margin: 0, padding: 0, background: 'black', height: '100vh', overflow: 'hidden' }}>
