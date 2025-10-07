@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import bgImage from './16a.png'; // Full component background
-import clockBgImage from './16.png'; // Clock-face background
+import bgImage from './16a.png';
+import clockBgImage from './16.png';
+import digitalFontUrl from './dode.ttf'; // digital clock font
+import analogFontUrl from './do.ttf'; // analog clock font
 
 export default function HexAnalogClock() {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -18,7 +20,6 @@ export default function HexAnalogClock() {
   const seconds = currentTime.getSeconds();
   const milliseconds = currentTime.getMilliseconds();
 
-  // Make clock size responsive: 80% of the smaller viewport dimension
   const clockSize = Math.min(window.innerWidth, window.innerHeight) * 0.8;
   const center = clockSize / 2;
   const radius = center - 29;
@@ -50,66 +51,59 @@ export default function HexAnalogClock() {
       gap: '0.5rem',
       padding: '0.5rem',
       boxSizing: 'border-box',
-      fontFamily:
-        "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji'",
       overflow: 'hidden',
       backgroundImage: `url(${bgImage})`,
-      backgroundSize: '180% auto', // Scale width to 150% of viewport, height preserves aspect ratio
+      backgroundSize: '180% auto',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       margin: 0,
     },
     card: {
       background: '#fff',
-      border: '3px solid #0E0404FF',
+      border: '4px solid #0E0404FF',
       borderRadius: '12px',
-      padding: '0.5rem 1rem',
+      padding: '1vh 2vh',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      gap: '0.25rem',
-      fontSize: 'clamp(1.5rem, 5vw, 2rem)',
+      fontSize: '19vh',
       zIndex: 2,
       maxWidth: '90%',
     },
-    hexValue: {
-      fontFamily:
-        "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-      background: 'linear-gradient(90deg, #0b8d49, #587045, #9f5a05, #0533ea)',
-      WebkitBackgroundClip: 'text',
-      color: 'transparent',
-      backgroundSize: '300% 100%',
-      animation: 'gradientShift 3s linear infinite',
-    },
     progressContainer: {
       width: '100%',
-      height: '10px',
-      background: 'rgba(204, 187, 170, 0.3)',
-      borderRadius: '6px',
+      height: '7vh',
+      background: 'rgba(204, 187, 170, 0.9)',
+      borderRadius: '12px',
       overflow: 'hidden',
     },
     progressBar: {
       height: '100%',
       width: `${fractionOfDay * 100}%`,
-      background: 'linear-gradient(90deg, #0b8d49, #9f5a05, #0533ea)',
+      background: 'linear-gradient(90deg, #0b8d49, #EC2308FF, #0533ea)',
       transition: 'width 0.1s linear',
     },
     styleTag: `
+      @font-face {
+        font-family: 'DigitalFont';
+        src: url(${digitalFontUrl}) format('truetype');
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'AnalogFont';
+        src: url(${analogFontUrl}) format('opentype');
+        font-display: swap;
+      }
       @keyframes gradientShift {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
       }
-      body, html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
-      }
     `,
     svg: { width: clockSize, height: clockSize, zIndex: 2, position: 'relative' },
-    centerDot: { fill: '#0b8d49' },
+    centerDot: { fill: '#E04807FF' },
     markingText: {
+      fontFamily: 'AnalogFont',
       fill: '#0f172a',
       fontSize: Math.max(12, clockSize * 0.045),
       textAnchor: 'middle',
@@ -135,6 +129,20 @@ export default function HexAnalogClock() {
       maxWidth: '90vw',
       maxHeight: '90vh',
     },
+    hexDigitBox: {
+      width: '1.5ch',
+      height: '2rem',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontFamily: 'DigitalFont',
+      fontSize: 'clamp(1.5rem, 5vw, 2rem)',
+      background: 'linear-gradient(90deg, #0b8d49, #587045, #9f5a05, #0533ea)',
+      WebkitBackgroundClip: 'text',
+      color: 'transparent',
+      backgroundSize: '300% 100%',
+      animation: 'gradientShift 3s linear infinite',
+    },
   };
 
   return (
@@ -142,8 +150,12 @@ export default function HexAnalogClock() {
       <style>{styles.styleTag}</style>
 
       <div style={styles.card}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <div style={styles.hexValue}>0x{hexTime}</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+          {`0x${hexTime}`.split('').map((char, index) => (
+            <div key={index} style={styles.hexDigitBox}>
+              {char}
+            </div>
+          ))}
         </div>
 
         <div style={styles.progressContainer}>
@@ -151,9 +163,7 @@ export default function HexAnalogClock() {
         </div>
       </div>
 
-      {/* Clock Container */}
       <div style={styles.clockContainer}>
-        {/* Clock-face background */}
         <div style={styles.clockFaceBackground}></div>
 
         <svg viewBox={`0 0 ${clockSize} ${clockSize}`} style={styles.svg}>
