@@ -48,8 +48,8 @@ export default function HexAnalogClock() {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      gap: '0.5rem',
-      padding: '0.5rem',
+      gap: '0.05rem',
+      padding: '0.05rem',
       boxSizing: 'border-box',
       overflow: 'hidden',
       backgroundImage: `url(${bgImage})`,
@@ -62,18 +62,18 @@ export default function HexAnalogClock() {
       background: '#fff',
       border: '4px solid #0E0404FF',
       borderRadius: '12px',
-      padding: '1vh 2vh',
+      padding: '1vh 3vh',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      fontSize: '19vh',
+      fontSize: '9rem',
       zIndex: 2,
       maxWidth: '90%',
     },
     progressContainer: {
       width: '100%',
       height: '7vh',
-      background: 'rgba(204, 187, 170, 0.9)',
+      background: 'rgba(204, 187, 170, 0.2)',
       borderRadius: '12px',
       overflow: 'hidden',
     },
@@ -82,6 +82,8 @@ export default function HexAnalogClock() {
       width: `${fractionOfDay * 100}%`,
       background: 'linear-gradient(90deg, #0b8d49, #EC2308FF, #0533ea)',
       transition: 'width 0.1s linear',
+      border: '0.5px solid #000', // thin black border
+      boxSizing: 'border-box',
     },
     styleTag: `
       @font-face {
@@ -104,8 +106,8 @@ export default function HexAnalogClock() {
     centerDot: { fill: '#E04807FF' },
     markingText: {
       fontFamily: 'AnalogFont',
-      fill: '#0f172a',
-      fontSize: Math.max(12, clockSize * 0.045),
+      fill: '#5B07A0FF',
+      fontSize: Math.max(12, clockSize * 0.07),
       textAnchor: 'middle',
       dominantBaseline: 'middle',
     },
@@ -129,20 +131,26 @@ export default function HexAnalogClock() {
       maxWidth: '90vw',
       maxHeight: '90vh',
     },
-    hexDigitBox: {
-      width: '1.5ch',
-      height: '2rem',
+    hexDigitBox: (index) => ({
+      width: '9vw',
+      height: '7vh',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       fontFamily: 'DigitalFont',
-      fontSize: 'clamp(1.5rem, 5vw, 2rem)',
-      background: 'linear-gradient(90deg, #0b8d49, #587045, #9f5a05, #0533ea)',
+      fontSize: '9vh',
+      background: 'linear-gradient(90deg, #00FF00, #FF0000, #0000FF, #FFFF00)',
       WebkitBackgroundClip: 'text',
       color: 'transparent',
       backgroundSize: '300% 100%',
-      animation: 'gradientShift 3s linear infinite',
-    },
+      animation: 'gradientShift 1.5s linear infinite',
+      animationDelay: `${index * 0.2}s`,
+      textShadow: `
+      
+     
+        1px 0px 0 #000
+      `, // thin black outline
+    }),
   };
 
   return (
@@ -152,7 +160,7 @@ export default function HexAnalogClock() {
       <div style={styles.card}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
           {`0x${hexTime}`.split('').map((char, index) => (
-            <div key={index} style={styles.hexDigitBox}>
+            <div key={index} style={styles.hexDigitBox(index)}>
               {char}
             </div>
           ))}
