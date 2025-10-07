@@ -99,13 +99,13 @@ export default function AnalogClock() {
 
   const numberStyle = {
     position: "absolute",
-    fontSize: "8rem",
+    fontSize: "4rem",
     fontFamily: fontVar,
     color: "transparent",
     WebkitTextFillColor: "transparent",
     textShadow: `
-      0.05rem 0.05rem 0 rgba(255, 250, 230, 0.8),
-      -0.05rem -0.05rem 0 rgba(0,0,0,0.8)
+      0.05rem 0.05rem 0 rgba(255, 250, 230),
+      -0.05rem -0.05rem 0 rgba(0,0,0)
     `,
     zIndex: 10,
     display: "flex",
