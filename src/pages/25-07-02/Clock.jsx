@@ -1,13 +1,22 @@
-import React, { useEffect } from 'react';
-import bakFont from './bak.ttf';    
+import React, { useEffect, useRef } from 'react';
+import bakFont from './bak.ttf';
 import backgroundGif from './bk.gif';
 
-const Clock = () => {
-  useEffect(() => {
-    const font = new FontFace('bak', `url(${bakFont})`);
-    document.fonts.add(font);
-    font.load();
+export default function Clock() {
+  const hourRef = useRef(null);
+  const minuteRef = useRef(null);
+  const secondRef = useRef(null);
+  const numberRefs = useRef([]);
 
+  useEffect(() => {
+    // --- Load font first, then add ---
+    const font = new FontFace('bak', `url(${bakFont})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      document.body.classList.add('font-loaded');
+    });
+
+    // --- Clock update loop ---
     const updateClock = () => {
       const now = new Date();
       const seconds = now.getSeconds();
@@ -18,11 +27,11 @@ const Clock = () => {
       const minuteDeg = (minutes / 60) * 360 + (seconds / 60) * 6;
       const hourDeg = (hours / 12) * 360 + (minutes / 60) * 30;
 
-      document.querySelector('.second-hand').style.transform = `rotate(${secondDeg}deg)`;
-      document.querySelector('.minute-hand').style.transform = `rotate(${minuteDeg}deg)`;
-      document.querySelector('.hour-hand').style.transform = `rotate(${hourDeg}deg)`;
+      if (secondRef.current) secondRef.current.style.transform = `rotate(${secondDeg}deg)`;
+      if (minuteRef.current) minuteRef.current.style.transform = `rotate(${minuteDeg}deg)`;
+      if (hourRef.current) hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
 
-      document.querySelectorAll('.number').forEach(number => {
+      numberRefs.current.forEach((number) => {
         const numberAngle = parseFloat(number.getAttribute('data-angle'));
         const angleDiff = Math.abs(secondDeg - numberAngle);
         const isNear = angleDiff < 5 || angleDiff > 355;
@@ -42,26 +51,32 @@ const Clock = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // --- Layout Styles ---
   const containerStyle = {
-    position: 'relative',
-    height: '100dvh',
-    width: '100vh',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    height: '100vh',
+    width: '100vw',
     margin: 0,
-    backgroundColor: '#4f4d4d',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#4f4d4d',
     overflow: 'hidden',
   };
 
   const clockStyle = {
+    position: 'relative',
     width: '70vh',
     height: '70vh',
     borderRadius: '50%',
-    position: 'relative',
     transform: 'scaleX(-1)',
     perspective: '1000px',
-    zIndex: 2, 
+    zIndex: 2,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   };
 
   const handStyle = {
@@ -88,6 +103,7 @@ const Clock = () => {
 
   return (
     <div style={containerStyle}>
+      {/* Background */}
       <img
         src={backgroundGif}
         alt="background"
@@ -103,13 +119,27 @@ const Clock = () => {
           transformOrigin: 'center center',
         }}
       />
-   
+
+      {/* Clock */}
       <div className="clock" style={clockStyle}>
-        <div className="hand hour-hand" style={{ ...handStyle, width: '0.4rem', height: '6rem', background: '#634a05' }}></div>
-        <div className="hand minute-hand" style={{ ...handStyle, width: '0.3rem', height: '8rem', background: '#b97c03' }}></div>
-        <div className="hand second-hand" style={{ ...handStyle, width: '0.2rem', height: '9rem', background: 'rgb(148, 3, 3)' }}></div>
         <div
-          className="center"
+          ref={hourRef}
+          className="hand hour-hand"
+          style={{ ...handStyle, width: '0.4rem', height: '6rem', background: '#634a05' }}
+        ></div>
+        <div
+          ref={minuteRef}
+          className="hand minute-hand"
+          style={{ ...handStyle, width: '0.3rem', height: '8rem', background: '#b97c03' }}
+        ></div>
+        <div
+          ref={secondRef}
+          className="hand second-hand"
+          style={{ ...handStyle, width: '0.2rem', height: '9rem', background: 'rgb(148, 3, 3)' }}
+        ></div>
+
+        {/* Center dot */}
+        <div
           style={{
             width: '2rem',
             height: '2rem',
@@ -119,13 +149,15 @@ const Clock = () => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%) scaleX(-1)',
+            zIndex: 3,
           }}
-        >
+        ></div>
 
-        </div>
-        {numbers.map(({ top, left, angle, label }) => (
+        {/* Numbers */}
+        {numbers.map(({ top, left, angle, label }, i) => (
           <div
             key={label}
+            ref={(el) => (numberRefs.current[i] = el)}
             className="number"
             data-angle={angle}
             style={{
@@ -147,8 +179,12 @@ const Clock = () => {
         ))}
       </div>
 
+      {/* Embedded CSS for spin animation */}
       <style>
         {`
+          body { visibility: hidden; }
+          body.font-loaded { visibility: visible; }
+
           @keyframes spin3D {
             0% {
               transform: translate(-50%, -50%) scaleX(-1) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
@@ -160,6 +196,7 @@ const Clock = () => {
               transform: translate(-50%, -50%) scaleX(-1) rotateX(1440deg) rotateY(1440deg) rotateZ(1440deg);
             }
           }
+
           .number.spin {
             animation: spin3D 5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
           }
@@ -167,6 +204,4 @@ const Clock = () => {
       </style>
     </div>
   );
-};
-
-export default Clock;
+}
