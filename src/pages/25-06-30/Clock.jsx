@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import bgImage from './fried-egg.gif';
 import img1 from './1.gif';
 import img2 from './2.gif';
@@ -16,8 +16,32 @@ import hourHand from './whi.gif';
 import minuteHand from './whis.gif';
 import secondHand from './w.gif';
 
-const Clock = () => {
+const allImages = [
+  bgImage,
+  img1, img2, img3, img4, img5, img6,
+  img7, img8, img9, img10, img11, img12,
+  hourHand, minuteHand, secondHand
+];
+
+export default function Clock() {
+  const [loaded, setLoaded] = useState(false);
+
+  // preload all images
   useEffect(() => {
+    let loadedCount = 0;
+    allImages.forEach(src => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === allImages.length) setLoaded(true);
+      };
+    });
+  }, []);
+
+  // clock rotation logic
+  useEffect(() => {
+    if (!loaded) return;
     const updateClock = () => {
       const now = new Date();
       const second = now.getSeconds();
@@ -36,7 +60,7 @@ const Clock = () => {
     const interval = setInterval(updateClock, 1000);
     updateClock();
     return () => clearInterval(interval);
-  }, []);
+  }, [loaded]);
 
   const eggBackground = {
     position: 'absolute',
@@ -57,11 +81,13 @@ const Clock = () => {
     transform: 'translate(-50%, -50%)',
     height: '75vh',
     width: '75vh',
-        zIndex: 2,
+    zIndex: 2,
     borderRadius: '50%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    transition: 'opacity 1s ease',
+    opacity: loaded ? 1 : 0, // Fade in when ready
   };
 
   const numberStyle = {
@@ -94,10 +120,26 @@ const Clock = () => {
         position: 'relative',
       }}
     >
-      {/* Animated Background */}
+      {!loaded && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundColor: 'rgb(240, 203, 36)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '2rem',
+            color: '#fff',
+            zIndex: 10,
+          }}
+        >
+          🍳 loading…
+        </div>
+      )}
+
       <img src={bgImage} alt="Egg background" style={eggBackground} />
 
-      {/* Clock */}
       <div style={clockStyle}>
         {[img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12].map((img, i) => {
           const positions = [
@@ -115,12 +157,7 @@ const Clock = () => {
             { top: '10%', left: '50%' },
           ];
           return (
-            <img
-              key={i}
-              src={img}
-              alt={`Number ${i + 1}`}
-              style={{ ...numberStyle, ...positions[i] }}
-            />
+            <img key={i} src={img} alt={`Number ${i + 1}`} style={{ ...numberStyle, ...positions[i] }} />
           );
         })}
         <img id="hour" src={hourHand} alt="Hour hand" style={{ ...handStyle, height: '18vh', width: '12.8rem', zIndex: 2 }} />
@@ -128,7 +165,6 @@ const Clock = () => {
         <img id="second" src={secondHand} alt="Second hand" style={{ ...handStyle, height: '30vh', width: '7.2rem', zIndex: 3, filter: 'brightness(120%)' }} />
       </div>
 
-      {/* Slow rotate keyframe */}
       <style>
         {`
           @keyframes slow-rotate {
@@ -139,6 +175,4 @@ const Clock = () => {
       </style>
     </div>
   );
-};
-
-export default Clock;
+}
