@@ -5,20 +5,25 @@ const PenmanshipClock = () => {
   const [timeString, setTimeString] = useState('--:--');
   const [ampm, setAmpm] = useState('--');
   const [gridSize, setGridSize] = useState({ columns: 1, rows: 1 });
+  const [fontLoaded, setFontLoaded] = useState(false); // Track font load
 
+  // Load font
   useEffect(() => {
     const font = new FontFace('Pen', `url(${penFontUrl})`);
     font.load().then((loaded) => {
       document.fonts.add(loaded);
+      setFontLoaded(true); // Font is ready
     });
+  }, []);
 
+  // Update time every second
+  useEffect(() => {
     const updateTime = () => {
       const now = new Date();
       let hours = now.getHours();
       const minutes = now.getMinutes();
       const ampmVal = hours >= 12 ? 'pm' : 'am';
-      hours = hours % 12;
-      if (hours === 0) hours = 12;
+      hours = hours % 12 || 12; // Convert 0 -> 12
       const paddedMinutes = String(minutes).padStart(2, '0');
       setTimeString(`${hours}:${paddedMinutes}`);
       setAmpm(ampmVal);
@@ -29,12 +34,11 @@ const PenmanshipClock = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Calculate grid size
   useEffect(() => {
     const resize = () => {
       const clockWidthVW = 18;
       const clockHeightVH = 8.2;
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
       const columns = Math.ceil(100 / clockWidthVW);
       const rows = Math.ceil(100 / clockHeightVH);
       setGridSize({ columns, rows });
@@ -44,6 +48,11 @@ const PenmanshipClock = () => {
     window.addEventListener('resize', resize);
     return () => window.removeEventListener('resize', resize);
   }, []);
+
+  if (!fontLoaded) {
+    // Optionally render nothing or a placeholder until font is loaded
+    return null; // avoids FOUT completely
+  }
 
   const clocks = [];
   for (let i = 0; i < gridSize.columns * gridSize.rows; i++) {
@@ -78,11 +87,6 @@ const PenmanshipClock = () => {
         fontFamily: 'sans-serif',
       }}
     >
-    
-
-   
-
-      {/* Grid of clocks */}
       <div
         style={{
           display: 'grid',
