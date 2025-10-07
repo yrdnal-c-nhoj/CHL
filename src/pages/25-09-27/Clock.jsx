@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import sss47wert from "./disc.ttf";
-import bgOuter from "./dis.gif";
+import bgOuter from "./water.webp";
 import bgInner from "./disc.gif";
 
 const AnalogClock = () => {
