@@ -1,26 +1,27 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import vegasFontUrl from './vegas.ttf';
 
 const VegasClock = () => {
+  const [fontLoaded, setFontLoaded] = useState(false);
   const hour1Ref = useRef(null);
   const hour2Ref = useRef(null);
   const minute1Ref = useRef(null);
   const minute2Ref = useRef(null);
   const second1Ref = useRef(null);
   const second2Ref = useRef(null);
-
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
 
-  // Inject font once
+  // Load font before showing text
   useEffect(() => {
     const font = new FontFace('vegas', `url(${vegasFontUrl})`);
     font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
+      setFontLoaded(true);
     });
   }, []);
 
-  // Initialize YouTube IFrame API for autoplay
+  // Initialize YouTube IFrame API
   useEffect(() => {
     if (!window.YT) {
       const tag = document.createElement('script');
@@ -38,12 +39,10 @@ const VegasClock = () => {
             controls: 0,
             modestbranding: 1,
             loop: 1,
-            playlist: 'jtvmwjzZY0c', // loop requires playlist param
+            playlist: 'jtvmwjzZY0c',
             playsinline: 1,
           },
-          events: {
-            onReady: (event) => event.target.playVideo(),
-          },
+          events: { onReady: (event) => event.target.playVideo() },
         });
       }
     };
@@ -51,6 +50,8 @@ const VegasClock = () => {
 
   // Clock logic
   useEffect(() => {
+    if (!fontLoaded) return;
+
     const refs = {
       hour1: hour1Ref.current,
       hour2: hour2Ref.current,
@@ -61,8 +62,12 @@ const VegasClock = () => {
     };
 
     const flickerClasses = [
-      'flicker-015-a', 'flicker-015-b', 'flicker-015-c',
-      'flicker-03-a', 'flicker-03-b', 'flicker-03-c',
+      'flicker-015-a',
+      'flicker-015-b',
+      'flicker-015-c',
+      'flicker-03-a',
+      'flicker-03-b',
+      'flicker-03-c',
     ];
 
     const getRandomInt = (min, max) =>
@@ -71,11 +76,9 @@ const VegasClock = () => {
     const setFlicker = (elementId, minInterval, maxInterval) => {
       const element = refs[elementId];
       if (!element) return;
-
       flickerClasses.forEach((cls) => element.classList.remove(cls));
       const flickerClass = flickerClasses[Math.floor(Math.random() * flickerClasses.length)];
       element.classList.add(flickerClass);
-
       const duration = flickerClass.includes('015') ? 150 : 300;
       setTimeout(() => element.classList.remove(flickerClass), duration);
       setTimeout(() => setFlicker(elementId, minInterval, maxInterval), getRandomInt(minInterval, maxInterval));
@@ -86,10 +89,8 @@ const VegasClock = () => {
       let hours = now.getHours();
       const minutes = String(now.getMinutes()).padStart(2, '0');
       const seconds = String(now.getSeconds()).padStart(2, '0');
-
       hours = hours % 12 || 12;
       const hourStr = String(hours).padStart(2, '0');
-
       hour1Ref.current.textContent = hourStr[0];
       hour2Ref.current.textContent = hourStr[1];
       minute1Ref.current.textContent = minutes[0];
@@ -105,7 +106,7 @@ const VegasClock = () => {
     setTimeout(() => setFlicker('hour1', 4000, 12000), 2000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [fontLoaded]);
 
   const iframeStyle = {
     position: 'fixed',
@@ -114,7 +115,7 @@ const VegasClock = () => {
     width: '100vw',
     height: '100dvh',
     zIndex: 1,
-    pointerEvents: 'none', // clicks pass through
+    pointerEvents: 'none',
   };
 
   const wrapperStyle = {
@@ -127,7 +128,7 @@ const VegasClock = () => {
   };
 
   const clockContainerStyle = {
-    display: 'flex',
+    display: fontLoaded ? 'flex' : 'none', // hide until ready
     flexDirection: 'row',
     gap: '1vmin',
     alignItems: 'center',
@@ -143,7 +144,8 @@ const VegasClock = () => {
 
   const digitBoxStyle = {
     color: '#edcb0b',
-    textShadow: '#c406fe 0 0.2rem, #f84802 0 -0.2rem, #48d9e9 0.2rem 0, #f84802 -0.2rem 0',
+    textShadow:
+      '#c406fe 0 0.2rem, #f84802 0 -0.2rem, #48d9e9 0.2rem 0, #f84802 -0.2rem 0',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -168,7 +170,6 @@ const VegasClock = () => {
         .flicker-015-a { animation: flicker015a 0.15s 1; }
         .flicker-015-b { animation: flicker015b 0.15s 1; }
         .flicker-015-c { animation: flicker015c 0.15s 1; }
-
         .flicker-03-a  { animation: flicker03a 0.3s 1; }
         .flicker-03-b  { animation: flicker03b 0.3s 1; }
         .flicker-03-c  { animation: flicker03c 0.3s 1; }
@@ -177,7 +178,7 @@ const VegasClock = () => {
       {/* YouTube video as background */}
       <div ref={playerContainerRef} style={iframeStyle}></div>
 
-      {/* Vegas Clock */}
+      {/* Clock */}
       <div style={wrapperStyle}>
         <div style={clockContainerStyle}>
           <div style={digitGroupStyle}>
