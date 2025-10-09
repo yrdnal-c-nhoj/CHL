@@ -77,7 +77,7 @@ export default function DigitalClock() {
   const radians = (shadowAngle * Math.PI) / 180;
 
   // --- Modified shadow logic ---
-  const shadowLayers = 20; // fewer, more spaced
+  const shadowLayers = 14; // fewer, more spaced
   const textShadows = Array.from({ length: shadowLayers }, (_, i) => {
     // 3px shadow + 9px gap pattern = 12px spacing per step
     const distance = i * 12 + 3;
