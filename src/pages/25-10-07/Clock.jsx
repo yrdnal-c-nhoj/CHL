@@ -156,7 +156,7 @@ export default function ImageAnalogClock() {
         {/* Numbers */}
         {numbers.map((num, idx) => {
           const angleRad = (num.angle - 90) * (Math.PI / 180);
-          const fontSize = "4rem";
+          const fontSize = "3rem";
           const adjustedRadius = radius * 0.9;
 
           const x = center.x + adjustedRadius * Math.cos(angleRad);
