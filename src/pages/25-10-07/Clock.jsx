@@ -66,7 +66,6 @@ export default function ImageAnalogClock() {
     left: "50%",
     transformOrigin: "50% 100%",
     transform: `translate(-50%, -100%) rotate(${angle}deg)`,
-    borderRadius: "0.5rem",
     pointerEvents: "none",
   });
 
@@ -149,14 +148,14 @@ export default function ImageAnalogClock() {
         }}
       >
         {/* Clock hands – rendered first to go behind numbers */}
-        <div style={handStyle("0.01rem", "18dvh", "white", hourAngle)} />
-        <div style={handStyle("0.01rem", "28dvh", "white", minuteAngle)} />
+        <div style={handStyle("0.05rem", "18dvh", "white", hourAngle)} />
+        <div style={handStyle("0.05rem", "28dvh", "white", minuteAngle)} />
         <div style={handStyle("0.5rem", "432.5dvh", "red", secondAngle)} />
 
         {/* Numbers */}
         {numbers.map((num, idx) => {
           const angleRad = (num.angle - 90) * (Math.PI / 180);
-          const fontSize = "3rem";
+          const fontSize = "12vw";
           const adjustedRadius = radius * 0.9;
 
           const x = center.x + adjustedRadius * Math.cos(angleRad);
