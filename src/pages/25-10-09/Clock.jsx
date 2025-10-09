@@ -1,178 +1,204 @@
-import React, { useState, useEffect } from 'react';
-import venusBackground from './disc.gif';
-import venusSymbol from './disc.gif';
-import font_20251008 from './stt.ttf';
+import React, { useRef, useEffect, useMemo } from "react";
+import font_25_10_09 from "./rain.ttf";
 
-const VenusClock = () => {
-  const [time, setTime] = useState(new Date());
-  const [loaded, setLoaded] = useState(false);
+export default function DigitRain() {
+  const canvasRef = useRef(null);
+  const rafRef = useRef(null);
+  const timeDigitsRef = useRef([]);
+
+  // Constants
+  const GRAVITY = 0.15;
+  const WIND = 0.01;
+  const SPAWN_CHANCE = 0.4;
+  const INITIAL_PARTICLES = 8;
+  const SPLASH_COUNT_RANGE = [25, 50];
+  const BACKGROUND_COLOR = "#BDE4F0FF";
+
+  // Memoized canvas context
+  const ctxRef = useRef(null);
+
+  // Update time digits every minute
+  useEffect(() => {
+    const updateTimeDigits = () => {
+      const now = new Date();
+      let hours = now.getHours() % 12 || 12;
+      let minutes = now.getMinutes();
+      timeDigitsRef.current = `${hours}${minutes.toString().padStart(2, "0")}`.split("");
+    };
+
+    updateTimeDigits();
+    const interval = setInterval(updateTimeDigits, 60000); // Update every minute
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
-    // Inject font
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'VenusFont';
-        src: url(${font_20251008}) format('woff2');
-        font-weight: normal;
-        font-style: normal;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    ctxRef.current = canvas.getContext("2d", { alpha: false }); // Optimize for opaque background
+
+    // Load custom font
+    const fontFace = new FontFace("DigitFont_25_10_09", `url(${font_25_10_09})`);
+    fontFace.load().then((loaded) => document.fonts.add(loaded));
+
+    // Vector utility
+    class Vector {
+      constructor(x = 0, y = 0) {
+        this.x = x;
+        this.y = y;
       }
-    `;
-    document.head.appendChild(style);
+      add(v) {
+        this.x += v.x;
+        this.y += v.y;
+        return this;
+      }
+    }
 
-    // Fade in effect
-    setTimeout(() => setLoaded(true), 100);
+    // Falling digit
+    class DigitParticle {
+      constructor(value, width) {
+        this.value = value;
+        this.pos = new Vector(Math.random() * width, -10);
+        this.vel = new Vector(0, Math.random() * 1 + 0.5);
+        this.fontSize = Math.random() * 2 + 2.5; // in rem
+        this.alpha = 1;
+      }
+      update() {
+        this.vel.y += GRAVITY * 0.2;
+        this.vel.x += WIND;
+        this.pos.add(this.vel);
+      }
+      draw(ctx) {
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = "#0A0A0A";
+        ctx.font = `${this.fontSize}rem "DigitFont_25_10_09"`;
+        ctx.fillText(this.value, this.pos.x, this.pos.y);
+      }
+    }
 
-    // Update time
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
+    // Splash digits
+    class Splash {
+      constructor(x, y, val) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 12 + 6;
+        this.pos = new Vector(x, y);
+        this.vel = new Vector(Math.cos(angle) * speed, Math.sin(angle) * speed);
+        this.val = val;
+        this.alpha = 1;
+        this.size = Math.random() * 0.8 + 0.5;
+        this.rotation = Math.random() * 2 * Math.PI;
+        this.rotationSpeed = (Math.random() - 0.5) * 0.3;
+      }
+      update() {
+        this.vel.y += GRAVITY * 0.3;
+        this.vel.x *= 0.93;
+        this.vel.y *= 0.93;
+        this.pos.add(this.vel);
+        this.rotation += this.rotationSpeed;
+        this.alpha -= 0.02;
+      }
+      draw(ctx) {
+        ctx.save();
+        ctx.translate(this.pos.x, this.pos.y);
+        ctx.rotate(this.rotation);
+        ctx.globalAlpha = Math.max(0, this.alpha);
+        ctx.fillStyle = "#000";
+        ctx.font = `${this.size}rem "DigitFont_25_10_09"`;
+        ctx.fillText(this.val, 0, 0);
+        ctx.restore();
+      }
+    }
+
+    // Canvas scaling
+    const resizeCanvasToDisplaySize = () => {
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      const width = Math.floor(canvas.clientWidth * dpr);
+      const height = Math.floor(canvas.clientHeight * dpr);
+      if (canvas.width !== width || canvas.height !== height) {
+        canvas.width = width;
+        canvas.height = height;
+        ctxRef.current.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+    };
+
+    // Animation loop
+    const digits = [];
+    const splashes = [];
+    const update = () => {
+      const ctx = ctxRef.current;
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+
+      // Clear canvas once
+      ctx.fillStyle = BACKGROUND_COLOR;
+      ctx.fillRect(0, 0, width, height);
+
+      // Batch draw operations
+      ctx.save();
+      ctx.textAlign = "center";
+      for (let i = digits.length - 1; i >= 0; i--) {
+        const d = digits[i];
+        d.update();
+        if (d.pos.y >= height) {
+          const n = Math.floor(Math.random() * (SPLASH_COUNT_RANGE[1] - SPLASH_COUNT_RANGE[0] + 1)) + SPLASH_COUNT_RANGE[0];
+          for (let j = 0; j < n; j++) {
+            const randomDigit = timeDigitsRef.current[Math.floor(Math.random() * timeDigitsRef.current.length)];
+            splashes.push(new Splash(d.pos.x, height, randomDigit));
+          }
+          digits.splice(i, 1);
+        } else {
+          d.draw(ctx);
+        }
+      }
+
+      for (let i = splashes.length - 1; i >= 0; i--) {
+        const s = splashes[i];
+        s.update();
+        s.draw(ctx);
+        if (s.alpha <= 0) splashes.splice(i, 1);
+      }
+      ctx.restore();
+
+      // Spawn new digit
+      if (Math.random() < SPAWN_CHANCE) {
+        const randomDigit = timeDigitsRef.current[Math.floor(Math.random() * timeDigitsRef.current.length)];
+        digits.push(new DigitParticle(randomDigit, width));
+      }
+
+      rafRef.current = requestAnimationFrame(update);
+    };
+
+    // Initialize
+    resizeCanvasToDisplaySize();
+    for (let i = 0; i < INITIAL_PARTICLES; i++) {
+      const randomDigit = timeDigitsRef.current[Math.floor(Math.random() * timeDigitsRef.current.length)];
+      digits.push(new DigitParticle(randomDigit, canvas.clientWidth));
+    }
+    rafRef.current = requestAnimationFrame(update);
+
+    // Event listeners
+    window.addEventListener("resize", resizeCanvasToDisplaySize);
+    window.addEventListener("orientationchange", resizeCanvasToDisplaySize);
 
     return () => {
-      clearInterval(timer);
-      document.head.removeChild(style);
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("resize", resizeCanvasToDisplaySize);
+      window.removeEventListener("orientationchange", resizeCanvasToDisplaySize);
     };
   }, []);
 
-  const hours = time.getHours() % 12;
-  const minutes = time.getMinutes();
-  const seconds = time.getSeconds();
-
-  const hourAngle = (hours * 30) + (minutes * 0.5);
-  const minuteAngle = minutes * 6;
-  const secondAngle = seconds * 6;
-
-  const clockNumbers = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+  const inlineCanvasStyle = useMemo(() => ({
+    display: "block",
+    width: "100vw",
+    height: "100dvh",
+    margin: "0",
+    background: BACKGROUND_COLOR,
+  }), []);
 
   return (
-    <div style={{
-      width: '100vw',
-      height: '100dvh',
-      margin: 0,
-      padding: 0,
-      backgroundColor: '#000',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundImage: loaded ? `url(${venusBackground})` : 'none',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      transition: 'opacity 1s ease-in',
-      opacity: loaded ? 1 : 0,
-      overflow: 'hidden'
-    }}>
-      <div style={{
-        position: 'relative',
-        width: '80vmin',
-        height: '80vmin',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle at 30% 30%, rgba(255, 215, 180, 0.3), rgba(139, 69, 19, 0.2))',
-        backdropFilter: 'blur(10px)',
-        border: '0.5vmin solid rgba(255, 215, 180, 0.5)',
-        boxShadow: '0 0 5vmin rgba(255, 215, 180, 0.4), inset 0 0 3vmin rgba(0, 0, 0, 0.3)'
-      }}>
-        {/* Center Venus symbol */}
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '10vmin',
-          height: '10vmin',
-          backgroundImage: `url(${venusSymbol})`,
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-          opacity: 0.6,
-          zIndex: 0
-        }} />
-
-        {/* Clock numbers */}
-        {clockNumbers.map((num, index) => {
-          const angle = (index * 30 - 90) * (Math.PI / 180);
-          const radius = 32;
-          const x = 50 + radius * Math.cos(angle);
-          const y = 50 + radius * Math.sin(angle);
-
-          return (
-            <div key={num} style={{
-              position: 'absolute',
-              left: `${x}%`,
-              top: `${y}%`,
-              transform: 'translate(-50%, -50%)',
-              fontFamily: 'VenusFont, serif',
-              fontSize: '4vmin',
-              color: '#FFD7B4',
-              textShadow: '0 0 1vmin rgba(255, 215, 180, 0.8)',
-              fontWeight: 'bold',
-              zIndex: 1
-            }}>
-              {num}
-            </div>
-          );
-        })}
-
-        {/* Hour hand */}
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '1vmin',
-          height: '20vmin',
-          backgroundColor: '#FFD7B4',
-          transformOrigin: 'top center',
-          transform: `translate(-50%, 0) rotate(${hourAngle}deg)`,
-          borderRadius: '1vmin',
-          boxShadow: '0 0 1vmin rgba(255, 215, 180, 0.8)',
-          zIndex: 2
-        }} />
-
-        {/* Minute hand */}
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '0.7vmin',
-          height: '28vmin',
-          backgroundColor: '#FFF5E1',
-          transformOrigin: 'top center',
-          transform: `translate(-50%, 0) rotate(${minuteAngle}deg)`,
-          borderRadius: '0.7vmin',
-          boxShadow: '0 0 1vmin rgba(255, 245, 225, 0.8)',
-          zIndex: 3
-        }} />
-
-        {/* Second hand */}
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '0.3vmin',
-          height: '32vmin',
-          backgroundColor: '#FFB6C1',
-          transformOrigin: 'top center',
-          transform: `translate(-50%, 0) rotate(${secondAngle}deg)`,
-          borderRadius: '0.3vmin',
-          boxShadow: '0 0 0.5vmin rgba(255, 182, 193, 0.9)',
-          zIndex: 4
-        }} />
-
-        {/* Center dot */}
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '2vmin',
-          height: '2vmin',
-          borderRadius: '50%',
-          backgroundColor: '#FFD7B4',
-          boxShadow: '0 0 1vmin rgba(255, 215, 180, 1)',
-          zIndex: 5
-        }} />
-      </div>
-    </div>
+    <canvas
+      ref={canvasRef}
+      style={inlineCanvasStyle}
+      aria-label="Digit rain animation using custom font"
+    />
   );
-};
-
-export default VenusClock;
+}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 
 // === Local assets ===
 import bgImg from "./table.png";
@@ -26,69 +26,71 @@ const digitMap = {
   "9": digit9,
 };
 
+const getAllDigits = (t) => {
+  const hours = String(t.getHours() % 12 || 12).padStart(2, "0");
+  const minutes = String(t.getMinutes()).padStart(2, "0");
+  const seconds = String(t.getSeconds()).padStart(2, "0");
+  return hours + minutes + seconds;
+};
+
 export default function DigitalImageClock() {
-  const [time, setTime] = useState(new Date());
-  const [prevDigits, setPrevDigits] = useState("");
+  const [time, setTime] = useState(() => new Date());
+  const [prevDigits, setPrevDigits] = useState(() => getAllDigits(new Date()));
   const [digitSize, setDigitSize] = useState(0);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768);
+
+  const currentDigits = useMemo(() => getAllDigits(time), [time]);
+
+  const calculateSize = useCallback(() => {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    if (isMobile) {
+      const sizeByWidth = vw / 2 - 1;
+      const sizeByHeight = vh / 3 - 1;
+      setDigitSize(Math.floor(Math.min(sizeByWidth, sizeByHeight)));
+    } else {
+      const sizeByWidth = vw / 6 - 1;
+      const sizeByHeight = vh;
+      setDigitSize(Math.floor(Math.min(sizeByWidth, sizeByHeight)));
+    }
+  }, [isMobile]);
 
   useEffect(() => {
-    setPrevDigits(getAllDigits(new Date()));
-
     const interval = setInterval(() => {
-      setPrevDigits(currentDigits);
+      setPrevDigits(getAllDigits(new Date()));
       setTime(new Date());
     }, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const getAllDigits = (t) => {
-    const hours = String(t.getHours() % 12 || 12).padStart(2, "0");
-    const minutes = String(t.getMinutes()).padStart(2, "0");
-    const seconds = String(t.getSeconds()).padStart(2, "0");
-    return hours + minutes + seconds;
-  };
-
-  const currentDigits = getAllDigits(time);
-
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+    };
+    
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
-    const calculateSize = () => {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-
-      if (isMobile) {
-        const sizeByWidth = vw / 2 - 1;
-        const sizeByHeight = vh / 3 - 1;
-        setDigitSize(Math.floor(Math.min(sizeByWidth, sizeByHeight)));
-      } else {
-        const sizeByWidth = vw / 6 - 1;
-        const sizeByHeight = vh;
-        setDigitSize(Math.floor(Math.min(sizeByWidth, sizeByHeight)));
-      }
-    };
-
     calculateSize();
     window.addEventListener("resize", calculateSize);
     return () => window.removeEventListener("resize", calculateSize);
-  }, [isMobile]);
+  }, [calculateSize]);
 
-  const containerStyle = {
+  const containerStyle = useMemo(() => ({
     width: "100vw",
     height: "100dvh",
     position: "relative",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-  };
+  }), []);
 
-  const backgroundStyle = {
+  const backgroundStyle = useMemo(() => ({
     position: "absolute",
     top: 0,
     left: 0,
@@ -98,27 +100,27 @@ export default function DigitalImageClock() {
     backgroundSize: "100% 100%",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
-  filter: "contrast(0.6)",  // adjust contrast
-    opacity: 0.5, // <-- semi-transparent
+    filter: "contrast(0.6)",
+    opacity: 0.5,
     zIndex: 0,
-  };
+  }), []);
 
-  const clockWrapperStyle = {
+  const clockWrapperStyle = useMemo(() => ({
     display: "flex",
     flexDirection: isMobile ? "column" : "row",
     justifyContent: "center",
     alignItems: "center",
     gap: 0,
-    zIndex: 1, // on top of background
-  };
+    zIndex: 1,
+  }), [isMobile]);
 
-  const groupStyle = {
+  const groupStyle = useMemo(() => ({
     display: "flex",
     flexDirection: "row",
     gap: 0,
-  };
+  }), []);
 
-  const digitStyle = {
+  const digitStyle = useMemo(() => ({
     position: "absolute",
     top: 0,
     left: 0,
@@ -127,7 +129,7 @@ export default function DigitalImageClock() {
     objectFit: "contain",
     transition: "opacity 0.5s ease-in-out",
     opacity: 0.5,
-  };
+  }), []);
 
   if (digitSize === 0) return null;
 
@@ -140,35 +142,34 @@ export default function DigitalImageClock() {
             {currentDigits
               .slice(startIdx, startIdx + 2)
               .split("")
-              .map((digit, idx, arr) => (
-                <div
-                  key={idx}
-                  style={{
-                    width: `${digitSize}px`,
-                    height: `${digitSize}px`,
-                    position: "relative",
-                    marginRight:
-                      !isMobile && idx !== arr.length - 1 ? "1px" : "0px",
-                    marginBottom:
-                      isMobile && idx !== arr.length - 1 ? "1px" : "0px",
-                  }}
-                >
-                  <img
-                    src={digitMap[prevDigits[startIdx + idx]] || digitMap[digit]}
-                    alt={prevDigits[startIdx + idx]}
+              .map((digit, idx, arr) => {
+                const prevDigit = prevDigits[startIdx + idx];
+                return (
+                  <div
+                    key={idx}
                     style={{
-                      ...digitStyle,
+                      width: `${digitSize}px`,
+                      height: `${digitSize}px`,
+                      position: "relative",
+                      marginRight:
+                        !isMobile && idx !== arr.length - 1 ? "1px" : "0px",
+                      marginBottom:
+                        isMobile && idx !== arr.length - 1 ? "1px" : "0px",
                     }}
-                  />
-                  <img
-                    src={digitMap[digit]}
-                    alt={digit}
-                    style={{
-                      ...digitStyle,
-                    }}
-                  />
-                </div>
-              ))}
+                  >
+                    <img
+                      src={digitMap[prevDigit] || digitMap[digit]}
+                      alt={prevDigit}
+                      style={digitStyle}
+                    />
+                    <img
+                      src={digitMap[digit]}
+                      alt={digit}
+                      style={digitStyle}
+                    />
+                  </div>
+                );
+              })}
           </div>
         ))}
       </div>
