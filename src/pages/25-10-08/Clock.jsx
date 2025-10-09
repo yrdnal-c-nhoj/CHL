@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 // === Local assets ===
 import bgImg from "./table.png";
 import digit0 from "./0.jpg";
-import digit1 from "./1.gif";
+import digit1 from "./1.webp";
 import digit2 from "./2.png";
 import digit3 from "./3.webp";
 import digit4 from "./4.jpg";
@@ -33,7 +33,7 @@ export default function DigitalImageClock() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
-    setPrevDigits(getAllDigits(new Date())); // initialize previous digits
+    setPrevDigits(getAllDigits(new Date()));
 
     const interval = setInterval(() => {
       setPrevDigits(currentDigits);
@@ -52,25 +52,23 @@ export default function DigitalImageClock() {
 
   const currentDigits = getAllDigits(time);
 
-  // Update isMobile on resize
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Calculate digit size after mount and on resize
   useEffect(() => {
     const calculateSize = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
 
       if (isMobile) {
-        const sizeByWidth = vw / 2 - 1; // 2 digits per row minus gap
-        const sizeByHeight = vh / 3 - 1; // 3 rows minus gap
+        const sizeByWidth = vw / 2 - 1;
+        const sizeByHeight = vh / 3 - 1;
         setDigitSize(Math.floor(Math.min(sizeByWidth, sizeByHeight)));
       } else {
-        const sizeByWidth = vw / 6 - 1; // 6 digits in a row minus gaps
+        const sizeByWidth = vw / 6 - 1;
         const sizeByHeight = vh;
         setDigitSize(Math.floor(Math.min(sizeByWidth, sizeByHeight)));
       }
@@ -81,18 +79,29 @@ export default function DigitalImageClock() {
     return () => window.removeEventListener("resize", calculateSize);
   }, [isMobile]);
 
-const containerStyle = {
-  width: "100vw",
-  height: "100dvh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  backgroundImage: `url(${bgImg})`,
-  backgroundSize: "cover", // <-- change from "contain" to "cover"
-  backgroundRepeat: "no-repeat",
-  backgroundPosition: "center",
-};
+  const containerStyle = {
+    width: "100vw",
+    height: "100dvh",
+    position: "relative",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  };
 
+  const backgroundStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundImage: `url(${bgImg})`,
+    backgroundSize: "100% 100%",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+  filter: "contrast(0.6)",  // adjust contrast
+    opacity: 0.5, // <-- semi-transparent
+    zIndex: 0,
+  };
 
   const clockWrapperStyle = {
     display: "flex",
@@ -100,6 +109,7 @@ const containerStyle = {
     justifyContent: "center",
     alignItems: "center",
     gap: 0,
+    zIndex: 1, // on top of background
   };
 
   const groupStyle = {
@@ -116,13 +126,14 @@ const containerStyle = {
     height: "100%",
     objectFit: "contain",
     transition: "opacity 0.5s ease-in-out",
-    opacity: 0.8, // <-- all digits at 0.8 opacity
+    opacity: 0.8,
   };
 
   if (digitSize === 0) return null;
 
   return (
     <div style={containerStyle}>
+      <div style={backgroundStyle}></div>
       <div style={clockWrapperStyle}>
         {[0, 2, 4].map((startIdx) => (
           <div key={startIdx} style={groupStyle}>
