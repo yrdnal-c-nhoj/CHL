@@ -126,7 +126,7 @@ export default function DigitalImageClock() {
     height: "100%",
     objectFit: "contain",
     transition: "opacity 0.5s ease-in-out",
-    opacity: 0.8,
+    opacity: 0.5,
   };
 
   if (digitSize === 0) return null;
