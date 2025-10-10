@@ -54,7 +54,7 @@ export default function ProcessingCounterClock() {
   const containerStyle = {
     position: 'relative',
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     overflow: 'hidden',
     backgroundColor: '#000',
     margin: 0,
