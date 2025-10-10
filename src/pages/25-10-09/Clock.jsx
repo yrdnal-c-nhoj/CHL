@@ -9,7 +9,7 @@ export default function AnalogClock() {
   const hourRef = useRef(null);
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  // Inject fonts
+  // Inject fonts and background animation keyframes
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
@@ -27,6 +27,12 @@ export default function AnalogClock() {
         font-family: 'SecondsFont';
         src: url(${orbitron20251010}) format('opentype');
         font-display: swap;
+      }
+
+      @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
       }
     `;
     document.head.appendChild(style);
@@ -60,7 +66,7 @@ export default function AnalogClock() {
   // Dial configuration
   const dialConfig = {
     hour: { fontFamily: 'HoursFont', fontSize: '9vh', color: '#FF0000', fontWeight: 400, zIndex: 160 },
-    minute: { fontFamily: 'MinutesFont', fontSize: '2.5vh', color: '#1B891BFF', fontWeight: 300, zIndex: 120 },
+    minute: { fontFamily: 'MinutesFont', fontSize: '2.5vh', color: '#095A09FF', fontWeight: 300, zIndex: 120 },
     second: { fontFamily: 'SecondsFont', fontSize: '4vh', color: '#0000FF', fontWeight: 300, zIndex: 130 },
   };
 
@@ -124,12 +130,16 @@ export default function AnalogClock() {
     <div
       style={{
         position: 'fixed',
-        left: '50%',
-        top: '50%',
-        transform: 'translate(-50%, -50%)',
+        left: 0,
+        top: 0,
         width: '100vw',
         height: '100vh',
-        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #95C9C2FF, #A9B073FF, #D1BB94FF, #A5C395FF)',
+        backgroundSize: '400% 400%',
+        animation: 'gradientBG 20s ease infinite',
         overflow: 'hidden',
       }}
     >
@@ -209,7 +219,8 @@ export default function AnalogClock() {
             top: '50%',
             left: '50%',
             width: '50vw',
-            height: '0.2vh',
+            height: '5vh',
+            opacity: '0.5',
             backgroundColor: 'orange',
             transformOrigin: '0 50%',
             transform: 'translateY(-50%)',
