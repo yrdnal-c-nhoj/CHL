@@ -8,6 +8,7 @@ export default function AnalogClock() {
   const minuteRef = useRef(null);
   const hourRef = useRef(null);
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [currentTime, setCurrentTime] = useState({ h: 0, m: 0, s: 0 });
 
   // Inject fonts and background animation keyframes
   useEffect(() => {
@@ -50,6 +51,8 @@ export default function AnalogClock() {
       const minute = now.getMinutes();
       const hour = now.getHours();
 
+      setCurrentTime({ h: hour % 12, m: minute, s: second });
+
       if (secondRef.current)
         secondRef.current.style.transform = `rotate(${-6 * second}deg)`;
       if (minuteRef.current)
@@ -73,9 +76,12 @@ export default function AnalogClock() {
   const renderDial = (count, size, type) => {
     const spans = [];
     const cfg = dialConfig[type];
+    const current = type === 'hour' ? currentTime.h : type === 'minute' ? currentTime.m : currentTime.s;
+
     for (let s = 0; s < count; s++) {
       const rotation = type === 'hour' ? 30 * s : 6 * s;
       const content = type === 'hour' ? (s === 0 ? 12 : s) : s === 0 ? '' : s;
+
       spans.push(
         <span
           key={s}
@@ -89,7 +95,7 @@ export default function AnalogClock() {
             transform: `rotate(${rotation}deg) translateX(${size}vh)`,
             fontFamily: cfg.fontFamily,
             fontSize: cfg.fontSize,
-            color: cfg.color,
+            color: s === current ? '#F1DD09FF' : cfg.color, // <-- active digit in black
             fontWeight: cfg.fontWeight,
             zIndex: cfg.zIndex,
           }}
@@ -111,7 +117,6 @@ export default function AnalogClock() {
             position: 'absolute',
             width: '100vw',
             height: '100vh',
-            lineHeight: '2vh',
             transformOrigin: '50%',
             textIndent: '100vh',
             overflow: 'hidden',
@@ -168,7 +173,7 @@ export default function AnalogClock() {
             transition: '0.2s 0.2s ease-in',
           }}
         >
-          {renderDial(12, 15, 'hour')}
+          {renderDial(12, 20, 'hour')}
         </div>
 
         {/* Minute dial */}
@@ -187,7 +192,7 @@ export default function AnalogClock() {
             transition: '0.2s 0.2s ease-in',
           }}
         >
-          {renderDial(60, 22, 'minute')}
+          {renderDial(60, 29, 'minute')}
         </div>
 
         {/* Second dial */}
@@ -206,7 +211,7 @@ export default function AnalogClock() {
             transition: '0.2s 0.2s ease-in',
           }}
         >
-          {renderDial(60, 30, 'second')}
+          {renderDial(60, 35, 'second')}
         </div>
 
         {/* Minute/second marks */}
