@@ -117,13 +117,13 @@ export default function ConcentricClock() {
 
       <div style={{ position: 'relative', width: '800px', height: '800px' }}>
         {/* Hours - inner ring */}
-        {renderRing(12, 145, 'h')}
+        {renderRing(12, 100, 'h')}
         
         {/* Minutes - middle ring */}
-        {renderRing(60, 180, 'm')}
+        {renderRing(60, 130, 'm')}
         
         {/* Seconds - outer ring */}
-        {renderRing(60, 216, 's')}
+        {renderRing(60, 150, 's')}
       </div>
     </div>
   );
