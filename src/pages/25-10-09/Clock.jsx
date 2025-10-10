@@ -1,16 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import cinzel20251010 from './d1.ttf'; // Hours font
 import roboto20251010 from './d2.otf'; // Minutes font
 import orbitron20251010 from './d3.otf'; // Seconds font
 
-export default function AnalogClock() {
-  const secondRef = useRef(null);
-  const minuteRef = useRef(null);
-  const hourRef = useRef(null);
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+export default function ConcentricClock() {
   const [currentTime, setCurrentTime] = useState({ h: 0, m: 0, s: 0 });
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  // Inject fonts and background animation keyframes
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
@@ -29,36 +25,21 @@ export default function AnalogClock() {
         src: url(${orbitron20251010}) format('opentype');
         font-display: swap;
       }
-
-      @keyframes gradientBG {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-      }
     `;
     document.head.appendChild(style);
-
     document.fonts.ready.then(() => setFontsLoaded(true));
   }, []);
 
-  // Clock rotation logic
   useEffect(() => {
     if (!fontsLoaded) return;
-
+    
     const getTime = () => {
       const now = new Date();
-      const second = now.getSeconds();
-      const minute = now.getMinutes();
-      const hour = now.getHours();
-
-      setCurrentTime({ h: hour % 12, m: minute, s: second });
-
-      if (secondRef.current)
-        secondRef.current.style.transform = `rotate(${-6 * second}deg)`;
-      if (minuteRef.current)
-        minuteRef.current.style.transform = `rotate(${-6 * minute}deg)`;
-      if (hourRef.current)
-        hourRef.current.style.transform = `rotate(${-30 * hour}deg)`;
+      setCurrentTime({
+        h: now.getHours() % 12 || 12,
+        m: now.getMinutes(),
+        s: now.getSeconds()
+      });
     };
 
     getTime();
@@ -66,67 +47,43 @@ export default function AnalogClock() {
     return () => clearInterval(interval);
   }, [fontsLoaded]);
 
-  // Dial configuration
-  const dialConfig = {
-    hour: { fontFamily: 'HoursFont', fontSize: '9vh', color: '#FF0000', fontWeight: 400, zIndex: 160 },
-    minute: { fontFamily: 'MinutesFont', fontSize: '2.5vh', color: '#095A09FF', fontWeight: 300, zIndex: 120 },
-    second: { fontFamily: 'SecondsFont', fontSize: '4vh', color: '#0000FF', fontWeight: 300, zIndex: 130 },
-  };
+  const renderRing = (count, radius, type) => {
+    const items = [];
+    const current = currentTime[type];
+    const fontFamily = type === 'h' ? 'HoursFont' : type === 'm' ? 'MinutesFont' : 'SecondsFont';
+    
+    // Offset so current time aligns at 0 degrees (right side)
+    const currentOffset = (360 / count) * current;
 
-  const renderDial = (count, size, type) => {
-    const spans = [];
-    const cfg = dialConfig[type];
-    const current = type === 'hour' ? currentTime.h : type === 'minute' ? currentTime.m : currentTime.s;
+    for (let i = 0; i < count; i++) {
+      const angle = (360 / count) * i - currentOffset;
+      const rad = (angle * Math.PI) / 180;
+      const x = radius * Math.cos(rad);
+      const y = radius * Math.sin(rad);
+      
+      const value = type === 'h' ? (i === 0 ? 12 : i) : i;
+      const isActive = type === 'h' ? value === current : i === current;
 
-    for (let s = 0; s < count; s++) {
-      const rotation = type === 'hour' ? 30 * s : 6 * s;
-      const content = type === 'hour' ? (s === 0 ? 12 : s) : s === 0 ? '' : s;
-
-      spans.push(
-        <span
-          key={s}
+      items.push(
+        <div
+          key={i}
           style={{
             position: 'absolute',
-            width: '3vh',
-            height: '3vh',
-            lineHeight: '3vh',
-            textAlign: 'center',
-            transformOrigin: '50%',
-            transform: `rotate(${rotation}deg) translateX(${size}vh)`,
-            fontFamily: cfg.fontFamily,
-            fontSize: cfg.fontSize,
-            color: s === current ? '#020C21FF' : cfg.color, // <-- active digit in black
-            fontWeight: cfg.fontWeight,
-            zIndex: cfg.zIndex,
+            left: '50%',
+            top: '50%',
+            transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+            fontFamily: fontFamily,
+            fontSize: type === 'h' ? '3rem' : type === 'm' ? '1.5rem' : '1.2rem',
+            fontWeight: isActive ? 900 : 400,
+            color: isActive ? '#2F032EFF' : type === 'h' ? '#FF0000' : type === 'm' ? '#00AA00' : '#0000FF',
+            transition: 'all 0.3s ease',
           }}
         >
-          {content}
-        </span>
+          {value}
+        </div>
       );
     }
-    return spans;
-  };
-
-  const renderDail = () => {
-    const spans = [];
-    for (let s = 0; s < 60; s++) {
-      spans.push(
-        <span
-          key={s}
-          style={{
-            position: 'absolute',
-            width: '100vw',
-            height: '100vh',
-            transformOrigin: '50%',
-            textIndent: '100vh',
-            overflow: 'hidden',
-            transform: `rotate(${6 * s}deg) translateX(30vh)`,
-            zIndex: 90,
-          }}
-        />
-      );
-    }
-    return spans;
+    return items;
   };
 
   if (!fontsLoaded) return null;
@@ -142,96 +99,31 @@ export default function AnalogClock() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #95C9C2FF, #A9B073FF, #D1BB94FF, #A5C395FF)',
+        background: 'linear-gradient(135deg, #EDEDAEFF, #EDE7C3FF, #F1EBC5FF, #E9F5B4FF)',
         backgroundSize: '400% 400%',
         animation: 'gradientBG 20s ease infinite',
         overflow: 'hidden',
       }}
     >
-      <div
-        style={{
-          width: '100vw',
-          height: '100vh',
-          borderRadius: '50%',
-          margin: '2vh',
-          position: 'relative',
-        }}
-      >
-        {/* Hour dial */}
-        <div
-          ref={hourRef}
-          style={{
-            width: '3vh',
-            height: '3vh',
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            right: 0,
-            bottom: 0,
-            margin: 'auto',
-            zIndex: 150,
-            transition: '0.2s 0.2s ease-in',
-          }}
-        >
-          {renderDial(12, 20, 'hour')}
-        </div>
+      <style>
+        {`
+          @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+        `}
+      </style>
 
-        {/* Minute dial */}
-        <div
-          ref={minuteRef}
-          style={{
-            width: '3vh',
-            height: '3vh',
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            right: 0,
-            bottom: 0,
-            margin: 'auto',
-            zIndex: 100,
-            transition: '0.2s 0.2s ease-in',
-          }}
-        >
-          {renderDial(60, 24, 'minute')}
-        </div>
-
-        {/* Second dial */}
-        <div
-          ref={secondRef}
-          style={{
-            width: '3vh',
-            height: '3vh',
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            right: 0,
-            bottom: 0,
-            margin: 'auto',
-            zIndex: 130,
-            transition: '0.2s 0.2s ease-in',
-          }}
-        >
-          {renderDial(60, 28, 'second')}
-        </div>
-
-        {/* Minute/second marks */}
-        <div>{renderDail()}</div>
-
-        {/* Thin orange line from center to right */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            width: '50vw',
-            height: '5vh',
-            opacity: '0.5',
-            backgroundColor: 'orange',
-            transformOrigin: '0 50%',
-            transform: 'translateY(-50%)',
-            zIndex: 200,
-          }}
-        />
+      <div style={{ position: 'relative', width: '800px', height: '800px' }}>
+        {/* Hours - inner ring */}
+        {renderRing(12, 145, 'h')}
+        
+        {/* Minutes - middle ring */}
+        {renderRing(60, 180, 'm')}
+        
+        {/* Seconds - outer ring */}
+        {renderRing(60, 216, 's')}
       </div>
     </div>
   );
