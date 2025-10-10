@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 // === Local assets ===
 import bgWebp from './roma.webp'; // fallback image
-import bgVideo from './rom.mp4'; // background video
+import bgVideo from './ro.mp4'; // background video
 import font_20251007 from './roma.ttf'; // custom font
 
 export default function ProcessingCounterClock() {
