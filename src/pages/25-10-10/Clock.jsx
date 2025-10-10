@@ -1,73 +1,75 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 // === Local assets ===
-import bgWebp from './roma.webp'; // fallback image
-import bgVideo from './ro.mp4'; // background video
-import font_20251007 from './roma.ttf'; // custom font
+import bgWebp from './roma.webp';
+import bgVideo from './ro.mp4';
+import font_20251007 from './roma.ttf';
 
 export default function ProcessingCounterClock() {
   const [time, setTime] = useState(new Date());
-  const [ready, setReady] = useState(false); // unified readiness (font + render)
+  const [fontLoaded, setFontLoaded] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const videoRef = useRef(null);
 
-  // === Preload font early ===
+  // === Font preload (scoped only to this component) ===
   useEffect(() => {
-    const font = new FontFace('ProcessingFont', `url(${font_20251007})`);
+    const font = new FontFace('ProcessingFontScoped', `url(${font_20251007})`);
     font
       .load()
       .then((loadedFont) => {
         document.fonts.add(loadedFont);
-        // Apply immediately to body/html
-        document.body.style.fontFamily = 'ProcessingFont, monospace';
-        setReady(true);
+        setFontLoaded(true);
       })
-      .catch(() => setReady(true)); // Fallback still renders text
+      .catch(() => setFontLoaded(true));
   }, []);
 
   // === Time update ===
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 100);
-    return () => clearInterval(timer);
+    const t = setInterval(() => setTime(new Date()), 100);
+    return () => clearInterval(t);
   }, []);
 
-  // === Mobile detection ===
+  // === Mobile resize watcher ===
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // === Video control ===
+  // === Video playback handling ===
   useEffect(() => {
-    if (videoRef.current) {
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => setVideoReady(true))
-          .catch(() => setVideoFailed(true));
-      }
+    const v = videoRef.current;
+    if (!v) return;
+    const playPromise = v.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => setVideoReady(true))
+        .catch(() => setVideoFailed(true));
     }
   }, [videoFailed]);
 
-  // === Time formatting ===
+  // === Clock formatting ===
   const hours24 = time.getHours();
   const hours12 = hours24 % 12 || 12;
   const ampm = hours24 >= 12 ? 'PM' : 'AM';
   const pad = (n) => String(n).padStart(2, '0');
-  const hh = pad(hours12);
-  const mm = pad(time.getMinutes());
-  const ss = pad(time.getSeconds());
-  const displayChars = [...hh, ...mm, ...ss, ...ampm];
+  const displayChars = [
+    ...pad(hours12),
+    ...pad(time.getMinutes()),
+    ...pad(time.getSeconds()),
+    ...ampm,
+  ];
 
   const columns = isMobile ? 2 : displayChars.length;
   const rows = isMobile ? Math.ceil(displayChars.length / 2) : 1;
   const baseSize = isMobile ? 100 / rows : 100 / columns;
   const fontSize = isMobile ? `${baseSize}dvh` : `${baseSize}vw`;
 
-  // === Styles ===
+  // === Styles (isolated namespace) ===
+  const ns = 'processing-clock'; // namespace class
+
   const containerStyle = {
     position: 'relative',
     width: '100vw',
@@ -76,8 +78,8 @@ export default function ProcessingCounterClock() {
     backgroundColor: '#000',
     margin: 0,
     padding: 0,
-    opacity: ready ? 1 : 0, // <-- hide until font ready
-    transition: 'opacity 0.5s ease',
+    opacity: fontLoaded ? 1 : 0,
+    transition: 'opacity 0.6s ease',
   };
 
   const bgMediaStyle = {
@@ -105,24 +107,27 @@ export default function ProcessingCounterClock() {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontFamily: 'ProcessingFont, monospace',
+    fontFamily: 'ProcessingFontScoped, monospace',
     fontSize,
     color: 'white',
     lineHeight: 1,
     userSelect: 'none',
   };
 
-  // === Prevent flash via base styles ===
-  useEffect(() => {
-    document.body.style.margin = '0';
-    document.body.style.padding = '0';
-    document.documentElement.style.height = '100%';
-    document.body.style.height = '100%';
-    document.body.style.backgroundColor = '#000';
-  }, []);
-
   return (
-    <div style={containerStyle}>
+    <div className={ns} style={containerStyle}>
+      {/* Scoped @font-face injected dynamically */}
+      <style>{`
+        @font-face {
+          font-family: 'ProcessingFontScoped';
+          src: url(${font_20251007}) format('truetype');
+          font-display: swap;
+        }
+        .${ns} * {
+          box-sizing: border-box;
+        }
+      `}</style>
+
       {/* === Video background === */}
       {!videoFailed && (
         <video
@@ -154,7 +159,7 @@ export default function ProcessingCounterClock() {
         />
       )}
 
-      {/* === Clock characters === */}
+      {/* === Clock display === */}
       <div style={gridStyle}>
         {displayChars.map((char, i) => (
           <div key={i} style={digitBoxStyle}>
