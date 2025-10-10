@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 // === Local assets ===
-import bgWebp from './roma.webp'; // fallback background image
-import bgVideo from './rom.mp4'; // background video
-import font_20251007 from './roma.ttf'; // custom font
+import bgWebp from './roma.webp';
+import bgVideo from './rom.mp4';
+import font_20251007 from './roma.ttf';
 
 export default function ProcessingCounterClock() {
   const [time, setTime] = useState(new Date());
@@ -26,11 +26,16 @@ export default function ProcessingCounterClock() {
     return () => clearInterval(timer);
   }, []);
 
-  // === Handle resize ===
+  // === Handle resize and viewport height fix ===
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const setViewportHeight = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+      setIsMobile(window.innerWidth < 768);
+    };
+    setViewportHeight();
+    window.addEventListener('resize', setViewportHeight);
+    return () => window.removeEventListener('resize', setViewportHeight);
   }, []);
 
   // === Format time ===
@@ -46,7 +51,6 @@ export default function ProcessingCounterClock() {
   const columns = isMobile ? 2 : displayChars.length;
   const rows = isMobile ? Math.ceil(displayChars.length / 2) : 1;
 
-  // === Dynamic font sizing ===
   const baseSize = isMobile ? 100 / rows : 100 / columns;
   const fontSize = isMobile ? `${baseSize}vh` : `${baseSize}vw`;
 
@@ -54,9 +58,9 @@ export default function ProcessingCounterClock() {
   const containerStyle = {
     position: 'relative',
     width: '100vw',
-    height: '100dvh',
+    height: 'calc(var(--vh, 1vh) * 100)', // ✅ Use visible viewport height
     overflow: 'hidden',
-    backgroundColor: '#000000',
+    backgroundColor: '#000',
     margin: 0,
     padding: 0,
   };
@@ -94,7 +98,6 @@ export default function ProcessingCounterClock() {
 
   return (
     <div style={containerStyle}>
-      {/* Try to play the video first; fallback to image if it fails */}
       {!videoFailed ? (
         <video
           src={bgVideo}
@@ -109,7 +112,6 @@ export default function ProcessingCounterClock() {
         <img src={bgWebp} alt="background" style={bgMediaStyle} />
       )}
 
-      {/* Inverting text grid */}
       <div style={gridStyle}>
         {displayChars.map((char, i) => (
           <div key={i} style={digitBoxStyle}>
