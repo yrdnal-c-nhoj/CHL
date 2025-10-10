@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-// === Local assets ===
+// === Local assets (replace with your actual paths or hosted URLs in production) ===
 import bgWebp from './roma.webp'; // fallback image
 import bgVideo from './rom.mp4'; // background video
 import font_20251007 from './roma.ttf'; // custom font
@@ -19,7 +19,7 @@ export default function ProcessingCounterClock() {
     font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
       setFontLoaded(true);
-    });
+    }).catch(() => setFontLoaded(true)); // Fallback on error
   }, []);
 
   // === Update time every 100 ms ===
@@ -35,23 +35,20 @@ export default function ProcessingCounterClock() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // === Force autoplay attempt on mobile ===
+  // === Explicitly handle video play for mobile compatibility ===
   useEffect(() => {
-    const vid = videoRef.current;
-    if (vid) {
-      // small delay gives Safari/Chrome time to attach the element
-      const tryPlay = () => {
-        const p = vid.play();
-        if (p && typeof p.catch === 'function') {
-          p.catch(() => {
-            // try again if it was blocked temporarily
-            setTimeout(tryPlay, 500);
+    if (videoRef.current) {
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => setVideoReady(true))
+          .catch((error) => {
+            console.warn('Auto-play failed:', error);
+            setVideoFailed(true);
           });
-        }
-      };
-      setTimeout(tryPlay, 200);
+      }
     }
-  }, [videoReady]);
+  }, [videoFailed]);
 
   // === Time formatting ===
   const hours24 = time.getHours();
@@ -66,15 +63,18 @@ export default function ProcessingCounterClock() {
   const columns = isMobile ? 2 : displayChars.length;
   const rows = isMobile ? Math.ceil(displayChars.length / 2) : 1;
   const baseSize = isMobile ? 100 / rows : 100 / columns;
-  const fontSize = isMobile ? `${baseSize}vh` : `${baseSize}vw`;
+  const fontSize = isMobile ? `${baseSize}dvh` : `${baseSize}vw`;
 
-  // === Styles ===
+  // === Inline styles (no external CSS to prevent FOUC) ===
   const containerStyle = {
     position: 'relative',
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
     backgroundColor: '#000',
+    margin: 0,
+    padding: 0,
+    fontFamily: fontLoaded ? 'ProcessingFont, monospace' : 'monospace', // Pre-apply font to body via JS if needed, but inline here minimizes flash
   };
 
   const bgMediaStyle = {
@@ -102,12 +102,22 @@ export default function ProcessingCounterClock() {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontFamily: fontLoaded ? 'ProcessingFont, monospace' : 'monospace',
+    fontFamily: 'inherit',
     fontSize,
     color: 'white',
     lineHeight: 1,
     userSelect: 'none',
   };
+
+  // To further prevent FOUC, apply base styles to document in useEffect
+  useEffect(() => {
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
+    document.body.style.backgroundColor = '#000';
+    document.body.style.fontFamily = fontLoaded ? 'ProcessingFont, monospace' : 'monospace';
+    document.documentElement.style.height = '100%';
+    document.body.style.height = '100%';
+  }, [fontLoaded]);
 
   return (
     <div style={containerStyle}>
@@ -116,14 +126,16 @@ export default function ProcessingCounterClock() {
         <video
           ref={videoRef}
           src={bgVideo}
-          type="video/mp4"
-          muted
+          autoPlay
           loop
+          muted
           playsInline
           preload="auto"
-          autoPlay
           onCanPlayThrough={() => setVideoReady(true)}
           onError={() => setVideoFailed(true)}
+          onLoadedData={() => {
+            if (videoRef.current) videoRef.current.play().catch(() => setVideoFailed(true));
+          }}
           style={{
             ...bgMediaStyle,
             opacity: videoReady ? 1 : 0,
