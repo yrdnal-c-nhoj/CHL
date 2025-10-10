@@ -1,204 +1,206 @@
-import React, { useRef, useEffect, useMemo } from "react";
-import font_25_10_09 from "./rain.ttf";
+import React, { useEffect, useState } from "react";
+import cinzel20251010 from "./d1.ttf"; // Hours font
+import roboto20251010 from "./d2.otf"; // Minutes font
+import orbitron20251010 from "./d3.otf"; // Seconds font
 
-export default function DigitRain() {
-  const canvasRef = useRef(null);
-  const rafRef = useRef(null);
-  const timeDigitsRef = useRef([]);
+export default function SpinningAnalogClock() {
+  const [mounted, setMounted] = useState(false);
+  const [time, setTime] = useState(new Date());
 
-  // Constants
-  const GRAVITY = 0.15;
-  const WIND = 0.01;
-  const SPAWN_CHANCE = 0.4;
-  const INITIAL_PARTICLES = 8;
-  const SPLASH_COUNT_RANGE = [25, 50];
-  const BACKGROUND_COLOR = "#BDE4F0FF";
+  const hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
+  const minutesSeconds = Array.from({ length: 60 }, (_, i) =>
+    i.toString().padStart(2, "0")
+  );
 
-  // Memoized canvas context
-  const ctxRef = useRef(null);
-
-  // Update time digits every minute
+  // Black screen first, then mount
   useEffect(() => {
-    const updateTimeDigits = () => {
-      const now = new Date();
-      let hours = now.getHours() % 12 || 12;
-      let minutes = now.getMinutes();
-      timeDigitsRef.current = `${hours}${minutes.toString().padStart(2, "0")}`.split("");
-    };
-
-    updateTimeDigits();
-    const interval = setInterval(updateTimeDigits, 60000); // Update every minute
-    return () => clearInterval(interval);
+    const timer = setTimeout(() => setMounted(true), 100);
+    return () => clearTimeout(timer);
   }, []);
 
+  // Smooth animation
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    ctxRef.current = canvas.getContext("2d", { alpha: false }); // Optimize for opaque background
-
-    // Load custom font
-    const fontFace = new FontFace("DigitFont_25_10_09", `url(${font_25_10_09})`);
-    fontFace.load().then((loaded) => document.fonts.add(loaded));
-
-    // Vector utility
-    class Vector {
-      constructor(x = 0, y = 0) {
-        this.x = x;
-        this.y = y;
-      }
-      add(v) {
-        this.x += v.x;
-        this.y += v.y;
-        return this;
-      }
-    }
-
-    // Falling digit
-    class DigitParticle {
-      constructor(value, width) {
-        this.value = value;
-        this.pos = new Vector(Math.random() * width, -10);
-        this.vel = new Vector(0, Math.random() * 1 + 0.5);
-        this.fontSize = Math.random() * 2 + 2.5; // in rem
-        this.alpha = 1;
-      }
-      update() {
-        this.vel.y += GRAVITY * 0.2;
-        this.vel.x += WIND;
-        this.pos.add(this.vel);
-      }
-      draw(ctx) {
-        ctx.globalAlpha = this.alpha;
-        ctx.fillStyle = "#0A0A0A";
-        ctx.font = `${this.fontSize}rem "DigitFont_25_10_09"`;
-        ctx.fillText(this.value, this.pos.x, this.pos.y);
-      }
-    }
-
-    // Splash digits
-    class Splash {
-      constructor(x, y, val) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 12 + 6;
-        this.pos = new Vector(x, y);
-        this.vel = new Vector(Math.cos(angle) * speed, Math.sin(angle) * speed);
-        this.val = val;
-        this.alpha = 1;
-        this.size = Math.random() * 0.8 + 0.5;
-        this.rotation = Math.random() * 2 * Math.PI;
-        this.rotationSpeed = (Math.random() - 0.5) * 0.3;
-      }
-      update() {
-        this.vel.y += GRAVITY * 0.3;
-        this.vel.x *= 0.93;
-        this.vel.y *= 0.93;
-        this.pos.add(this.vel);
-        this.rotation += this.rotationSpeed;
-        this.alpha -= 0.02;
-      }
-      draw(ctx) {
-        ctx.save();
-        ctx.translate(this.pos.x, this.pos.y);
-        ctx.rotate(this.rotation);
-        ctx.globalAlpha = Math.max(0, this.alpha);
-        ctx.fillStyle = "#000";
-        ctx.font = `${this.size}rem "DigitFont_25_10_09"`;
-        ctx.fillText(this.val, 0, 0);
-        ctx.restore();
-      }
-    }
-
-    // Canvas scaling
-    const resizeCanvasToDisplaySize = () => {
-      const dpr = Math.max(1, window.devicePixelRatio || 1);
-      const width = Math.floor(canvas.clientWidth * dpr);
-      const height = Math.floor(canvas.clientHeight * dpr);
-      if (canvas.width !== width || canvas.height !== height) {
-        canvas.width = width;
-        canvas.height = height;
-        ctxRef.current.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
-    };
-
-    // Animation loop
-    const digits = [];
-    const splashes = [];
+    if (!mounted) return;
+    let frame;
     const update = () => {
-      const ctx = ctxRef.current;
-      const width = canvas.clientWidth;
-      const height = canvas.clientHeight;
-
-      // Clear canvas once
-      ctx.fillStyle = BACKGROUND_COLOR;
-      ctx.fillRect(0, 0, width, height);
-
-      // Batch draw operations
-      ctx.save();
-      ctx.textAlign = "center";
-      for (let i = digits.length - 1; i >= 0; i--) {
-        const d = digits[i];
-        d.update();
-        if (d.pos.y >= height) {
-          const n = Math.floor(Math.random() * (SPLASH_COUNT_RANGE[1] - SPLASH_COUNT_RANGE[0] + 1)) + SPLASH_COUNT_RANGE[0];
-          for (let j = 0; j < n; j++) {
-            const randomDigit = timeDigitsRef.current[Math.floor(Math.random() * timeDigitsRef.current.length)];
-            splashes.push(new Splash(d.pos.x, height, randomDigit));
-          }
-          digits.splice(i, 1);
-        } else {
-          d.draw(ctx);
-        }
-      }
-
-      for (let i = splashes.length - 1; i >= 0; i--) {
-        const s = splashes[i];
-        s.update();
-        s.draw(ctx);
-        if (s.alpha <= 0) splashes.splice(i, 1);
-      }
-      ctx.restore();
-
-      // Spawn new digit
-      if (Math.random() < SPAWN_CHANCE) {
-        const randomDigit = timeDigitsRef.current[Math.floor(Math.random() * timeDigitsRef.current.length)];
-        digits.push(new DigitParticle(randomDigit, width));
-      }
-
-      rafRef.current = requestAnimationFrame(update);
+      setTime(new Date());
+      frame = requestAnimationFrame(update);
     };
+    frame = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(frame);
+  }, [mounted]);
 
-    // Initialize
-    resizeCanvasToDisplaySize();
-    for (let i = 0; i < INITIAL_PARTICLES; i++) {
-      const randomDigit = timeDigitsRef.current[Math.floor(Math.random() * timeDigitsRef.current.length)];
-      digits.push(new DigitParticle(randomDigit, canvas.clientWidth));
-    }
-    rafRef.current = requestAnimationFrame(update);
+  const h = time.getHours() % 12;
+  const m = time.getMinutes();
+  const s = time.getSeconds();
+  const ms = time.getMilliseconds();
 
-    // Event listeners
-    window.addEventListener("resize", resizeCanvasToDisplaySize);
-    window.addEventListener("orientationchange", resizeCanvasToDisplaySize);
+  // Smooth continuous angles
+  const hourAngle = (h + m / 60 + s / 3600) * 30;
+  const minuteAngle = (m + s / 60 + ms / 60000) * 6;
+  const secondAngle = (s + ms / 1000) * 6;
 
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("resize", resizeCanvasToDisplaySize);
-      window.removeEventListener("orientationchange", resizeCanvasToDisplaySize);
-    };
-  }, []);
+  const renderNumbers = (numbers, radius, type, fontFamily, fontSize) => {
+    let current;
+    if (type === "hours") current = (h % 12) || 12;
+    if (type === "minutes") current = m;
+    if (type === "seconds") current = s;
 
-  const inlineCanvasStyle = useMemo(() => ({
-    display: "block",
-    width: "100vw",
-    height: "100dvh",
-    margin: "0",
-    background: BACKGROUND_COLOR,
-  }), []);
+    return numbers.map((num, i) => {
+      const angle = (i / numbers.length) * 360;
+      const isCurrent = parseInt(num) === current;
+      return (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-${radius}dvh)`,
+            color: isCurrent ? "#ffff00" : "#ffffff",
+            textAlign: "center",
+            fontFamily: fontFamily,
+            fontSize: fontSize,
+            margin: 0,
+            padding: 0,
+          }}
+        >
+          {num}
+        </div>
+      );
+    });
+  };
+
+  if (!mounted) {
+    return (
+      <div
+        style={{
+          height: "100dvh",
+          width: "100dvw",
+          background: "#625D5DFF",
+          margin: 0,
+          padding: 0,
+          overflow: "hidden",
+        }}
+      />
+    );
+  }
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={inlineCanvasStyle}
-      aria-label="Digit rain animation using custom font"
-    />
+    <>
+      <style>
+        {`
+          @font-face {
+            font-family: 'Cinzel20251010';
+            src: url(${cinzel20251010}) format('truetype');
+          }
+          @font-face {
+            font-family: 'Roboto20251010';
+            src: url(${roboto20251010}) format('opentype');
+          }
+          @font-face {
+            font-family: 'Orbitron20251010';
+            src: url(${orbitron20251010}) format('opentype');
+          }
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+        `}
+      </style>
+      <div
+        style={{
+          height: "100dvh",
+          width: "100dvw",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "radial-gradient(circle at center, #111111 40%, #000000 100%)",
+          overflow: "hidden",
+          margin: 0,
+          padding: 0,
+        }}
+      >
+        <div
+          style={{
+            position: "relative",
+            height: "80dvh",
+            width: "80dvh",
+            margin: 0,
+            padding: 0,
+          }}
+        >
+          {/* Hour Disc */}
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: "30dvh",
+              height: "30dvh",
+              borderRadius: "50%",
+              border: "0.5dvh solid #ffd700",
+              background: "rgba(255,215,0,0.15)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transform: `translate(-50%, -50%) rotate(${hourAngle}deg)`,
+              transition: "transform 0.05s linear",
+              margin: 0,
+              padding: 0,
+            }}
+          >
+            {renderNumbers(hours, 11, "hours", "Cinzel20251010", "4dvh")}
+          </div>
+
+          {/* Minute Disc */}
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: "45dvh",
+              height: "45dvh",
+              borderRadius: "50%",
+              border: "0.5dvh solid #00ffff",
+              background: "rgba(0,255,255,0.15)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transform: `translate(-50%, -50%) rotate(${minuteAngle}deg)`,
+              transition: "transform 0.05s linear",
+              margin: 0,
+              padding: 0,
+            }}
+          >
+            {renderNumbers(minutesSeconds, 18, "minutes", "Roboto20251010", "2.5dvh")}
+          </div>
+
+          {/* Second Disc */}
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: "60dvh",
+              height: "60dvh",
+              borderRadius: "50%",
+              border: "0.5dvh solid #ff00ff",
+              background: "rgba(255,0,255,0.15)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transform: `translate(-50%, -50%) rotate(${secondAngle}deg)`,
+              transition: "transform 0.05s linear",
+              margin: 0,
+              padding: 0,
+            }}
+          >
+            {renderNumbers(minutesSeconds, 26, "seconds", "Orbitron20251010", "2dvh")}
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
