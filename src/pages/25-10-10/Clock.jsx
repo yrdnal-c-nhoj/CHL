@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // === Local assets ===
 import bgWebp from './roma.webp'; // fallback image
@@ -11,6 +11,7 @@ export default function ProcessingCounterClock() {
   const [videoReady, setVideoReady] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const videoRef = useRef(null);
 
   // === Load custom font ===
   useEffect(() => {
@@ -34,6 +35,24 @@ export default function ProcessingCounterClock() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // === Force autoplay attempt on mobile ===
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (vid) {
+      // small delay gives Safari/Chrome time to attach the element
+      const tryPlay = () => {
+        const p = vid.play();
+        if (p && typeof p.catch === 'function') {
+          p.catch(() => {
+            // try again if it was blocked temporarily
+            setTimeout(tryPlay, 500);
+          });
+        }
+      };
+      setTimeout(tryPlay, 200);
+    }
+  }, [videoReady]);
+
   // === Time formatting ===
   const hours24 = time.getHours();
   const hours12 = hours24 % 12 || 12;
@@ -56,8 +75,6 @@ export default function ProcessingCounterClock() {
     height: '100dvh',
     overflow: 'hidden',
     backgroundColor: '#000',
-    margin: 0,
-    padding: 0,
   };
 
   const bgMediaStyle = {
@@ -97,12 +114,14 @@ export default function ProcessingCounterClock() {
       {/* === Video background with fallback === */}
       {!videoFailed && (
         <video
+          ref={videoRef}
           src={bgVideo}
-          autoPlay
-          loop
+          type="video/mp4"
           muted
+          loop
           playsInline
           preload="auto"
+          autoPlay
           onCanPlayThrough={() => setVideoReady(true)}
           onError={() => setVideoFailed(true)}
           style={{
