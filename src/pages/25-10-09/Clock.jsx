@@ -1,210 +1,222 @@
-import React, { useEffect, useState } from "react";
-import cinzel20251010 from "./d1.ttf"; // Hours font
-import roboto20251010 from "./d2.otf"; // Minutes font
-import orbitron20251010 from "./d3.otf"; // Seconds font
+import React, { useEffect, useRef, useState } from 'react';
+import cinzel20251010 from './d1.ttf'; // Hours font
+import roboto20251010 from './d2.otf'; // Minutes font
+import orbitron20251010 from './d3.otf'; // Seconds font
 
-export default function SpinningAnalogClock() {
-  const [mounted, setMounted] = useState(false);
-  const [time, setTime] = useState(new Date());
+export default function AnalogClock() {
+  const secondRef = useRef(null);
+  const minuteRef = useRef(null);
+  const hourRef = useRef(null);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  const hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
-  const minutesSeconds = Array.from({ length: 60 }, (_, i) =>
-    i.toString().padStart(2, "0")
-  );
-
-  // Black screen first, then mount
+  // Inject fonts
   useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 100);
-    return () => clearTimeout(timer);
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: 'HoursFont';
+        src: url(${cinzel20251010}) format('truetype');
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'MinutesFont';
+        src: url(${roboto20251010}) format('opentype');
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'SecondsFont';
+        src: url(${orbitron20251010}) format('opentype');
+        font-display: swap;
+      }
+    `;
+    document.head.appendChild(style);
+
+    document.fonts.ready.then(() => setFontsLoaded(true));
   }, []);
 
-  // Smooth animation
+  // Clock rotation logic
   useEffect(() => {
-    if (!mounted) return;
-    let frame;
-    const update = () => {
-      setTime(new Date());
-      frame = requestAnimationFrame(update);
+    if (!fontsLoaded) return;
+
+    const getTime = () => {
+      const now = new Date();
+      const second = now.getSeconds();
+      const minute = now.getMinutes();
+      const hour = now.getHours();
+
+      if (secondRef.current)
+        secondRef.current.style.transform = `rotate(${-6 * second}deg)`;
+      if (minuteRef.current)
+        minuteRef.current.style.transform = `rotate(${-6 * minute}deg)`;
+      if (hourRef.current)
+        hourRef.current.style.transform = `rotate(${-30 * hour}deg)`;
     };
-    frame = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(frame);
-  }, [mounted]);
 
-  const h = time.getHours() % 12;
-  const m = time.getMinutes();
-  const s = time.getSeconds();
-  const ms = time.getMilliseconds();
+    getTime();
+    const interval = setInterval(getTime, 1000);
+    return () => clearInterval(interval);
+  }, [fontsLoaded]);
 
-  // Smooth continuous angles
-  const hourAngle = (h + m / 60 + s / 3600) * 30;
-  const minuteAngle = (m + s / 60 + ms / 60000) * 6;
-  const secondAngle = (s + ms / 1000) * 6;
-
-  const renderNumbers = (numbers, radius, type, fontFamily, fontSize) => {
-    let current;
-    if (type === "hours") current = (h % 12) || 12;
-    if (type === "minutes") current = m;
-    if (type === "seconds") current = s;
-
-    const gapFactor = 0.1; // gap = 10% of radius
-    const gap = radius * gapFactor;
-
-    return numbers.map((num, i) => {
-      const angle = (i / numbers.length) * 360;
-      const isCurrent = parseInt(num) === current;
-      return (
-        <div
-          key={i}
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-${radius - gap}dvh) rotate(${angle}deg)`,
-            color: isCurrent ? "#ffff00" : "#ffffff",
-            textAlign: "center",
-            fontFamily: fontFamily,
-            fontSize: fontSize,
-            margin: 0,
-            padding: 0,
-          }}
-        >
-          {num}
-        </div>
-      );
-    });
+  // Dial configuration
+  const dialConfig = {
+    hour: { fontFamily: 'HoursFont', fontSize: '9vh', color: '#FF0000', fontWeight: 400, zIndex: 160 },
+    minute: { fontFamily: 'MinutesFont', fontSize: '2.5vh', color: '#1B891BFF', fontWeight: 300, zIndex: 120 },
+    second: { fontFamily: 'SecondsFont', fontSize: '4vh', color: '#0000FF', fontWeight: 300, zIndex: 130 },
   };
 
-  if (!mounted) {
-    return (
-      <div
-        style={{
-          height: "100dvh",
-          width: "100dvw",
-          background: "#000000",
-          margin: 0,
-          padding: 0,
-          overflow: "hidden",
-        }}
-      />
-    );
-  }
-
-  return (
-    <>
-      <style>
-        {`
-          @font-face {
-            font-family: 'Cinzel20251010';
-            src: url(${cinzel20251010}) format('truetype');
-          }
-          @font-face {
-            font-family: 'Roboto20251010';
-            src: url(${roboto20251010}) format('opentype');
-          }
-          @font-face {
-            font-family: 'Orbitron20251010';
-            src: url(${orbitron20251010}) format('opentype');
-          }
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-          }
-        `}
-      </style>
-      <div
-        style={{
-          height: "100dvh",
-          width: "100dvw",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background:
-            "radial-gradient(circle at center, #111111 40%, #000000 100%)",
-          overflow: "hidden",
-          margin: 0,
-          padding: 0,
-        }}
-      >
-        <div
+  const renderDial = (count, size, type) => {
+    const spans = [];
+    const cfg = dialConfig[type];
+    for (let s = 0; s < count; s++) {
+      const rotation = type === 'hour' ? 30 * s : 6 * s;
+      const content = type === 'hour' ? (s === 0 ? 12 : s) : s === 0 ? '' : s;
+      spans.push(
+        <span
+          key={s}
           style={{
-            position: "relative",
-            height: "80dvh",
-            width: "80dvh",
-            margin: 0,
-            padding: 0,
+            position: 'absolute',
+            width: '3vh',
+            height: '3vh',
+            lineHeight: '3vh',
+            textAlign: 'center',
+            transformOrigin: '50%',
+            transform: `rotate(${rotation}deg) translateX(${size}vh)`,
+            fontFamily: cfg.fontFamily,
+            fontSize: cfg.fontSize,
+            color: cfg.color,
+            fontWeight: cfg.fontWeight,
+            zIndex: cfg.zIndex,
           }}
         >
-          {/* Hour Disc */}
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: "30dvh",
-              height: "30dvh",
-              borderRadius: "50%",
-              border: "0.5dvh solid #ffd700",
-              background: "rgba(255,215,0,0.15)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transform: `translate(-50%, -50%) rotate(${hourAngle}deg)`,
-              transition: "transform 0.05s linear",
-              margin: 0,
-              padding: 0,
-            }}
-          >
-            {renderNumbers(hours, 13, "hours", "Cinzel20251010", "2dvh")}
-          </div>
+          {content}
+        </span>
+      );
+    }
+    return spans;
+  };
 
-          {/* Minute Disc */}
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: "45dvh",
-              height: "45dvh",
-              borderRadius: "50%",
-              border: "0.5dvh solid #00ffff",
-              background: "rgba(0,255,255,0.15)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transform: `translate(-50%, -50%) rotate(${minuteAngle}deg)`,
-              transition: "transform 0.05s linear",
-              margin: 0,
-              padding: 0,
-            }}
-          >
-            {renderNumbers(minutesSeconds, 21, "minutes", "Roboto20251010", "1.5dvh")}
-          </div>
+  const renderDail = () => {
+    const spans = [];
+    for (let s = 0; s < 60; s++) {
+      spans.push(
+        <span
+          key={s}
+          style={{
+            position: 'absolute',
+            width: '100vw',
+            height: '100vh',
+            lineHeight: '2vh',
+            transformOrigin: '50%',
+            textIndent: '100vh',
+            overflow: 'hidden',
+            transform: `rotate(${6 * s}deg) translateX(30vh)`,
+            zIndex: 90,
+          }}
+        />
+      );
+    }
+    return spans;
+  };
 
-          {/* Second Disc */}
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: "60dvh",
-              height: "60dvh",
-              borderRadius: "50%",
-              border: "0.5dvh solid #ff00ff",
-              background: "rgba(255,0,255,0.15)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transform: `translate(-50%, -50%) rotate(${secondAngle}deg)`,
-              transition: "transform 0.05s linear",
-              margin: 0,
-              padding: 0,
-            }}
-          >
-            {renderNumbers(minutesSeconds, 29, "seconds", "Orbitron20251010", "1dvh")}
-          </div>
+  if (!fontsLoaded) return null;
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '100vw',
+        height: '100vh',
+        borderRadius: '50%',
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          borderRadius: '50%',
+          margin: '2vh',
+          position: 'relative',
+        }}
+      >
+        {/* Hour dial */}
+        <div
+          ref={hourRef}
+          style={{
+            width: '3vh',
+            height: '3vh',
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            margin: 'auto',
+            zIndex: 150,
+            transition: '0.2s 0.2s ease-in',
+          }}
+        >
+          {renderDial(12, 15, 'hour')}
         </div>
+
+        {/* Minute dial */}
+        <div
+          ref={minuteRef}
+          style={{
+            width: '3vh',
+            height: '3vh',
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            margin: 'auto',
+            zIndex: 100,
+            transition: '0.2s 0.2s ease-in',
+          }}
+        >
+          {renderDial(60, 22, 'minute')}
+        </div>
+
+        {/* Second dial */}
+        <div
+          ref={secondRef}
+          style={{
+            width: '3vh',
+            height: '3vh',
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            margin: 'auto',
+            zIndex: 130,
+            transition: '0.2s 0.2s ease-in',
+          }}
+        >
+          {renderDial(60, 30, 'second')}
+        </div>
+
+        {/* Minute/second marks */}
+        <div>{renderDail()}</div>
+
+        {/* Thin orange line from center to right */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: '50vw',
+            height: '0.2vh',
+            backgroundColor: 'orange',
+            transformOrigin: '0 50%',
+            transform: 'translateY(-50%)',
+            zIndex: 200,
+          }}
+        />
       </div>
-    </>
+    </div>
   );
 }
