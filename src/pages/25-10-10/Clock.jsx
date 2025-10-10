@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
 // === Local assets ===
-import bgWebp from './roma.webp'; // background
+import bgWebp from './roma.webp'; // fallback background image
+import bgVideo from './rom.mp4'; // background video
 import font_20251007 from './roma.ttf'; // custom font
 
 export default function ProcessingCounterClock() {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   // === Load font ===
@@ -54,12 +56,12 @@ export default function ProcessingCounterClock() {
     width: '100vw',
     height: '100vh',
     overflow: 'hidden',
+    backgroundColor: '#000',
     margin: 0,
     padding: 0,
-    backgroundColor: '#000',
   };
 
-  const bgStyle = {
+  const bgMediaStyle = {
     position: 'absolute',
     inset: 0,
     width: '100%',
@@ -69,18 +71,14 @@ export default function ProcessingCounterClock() {
     zIndex: 0,
   };
 
-  // === Text container (applies inversion only to text) ===
   const gridStyle = {
     position: 'absolute',
     inset: 0,
     display: 'grid',
     gridTemplateColumns: `repeat(${columns}, 1fr)`,
     gridTemplateRows: `repeat(${rows}, 1fr)`,
-    margin: 0,
-    padding: 0,
-    gap: 0,
     zIndex: 1,
-    mixBlendMode: 'difference', // << text only inverts underlying image
+    mixBlendMode: 'difference',
   };
 
   const digitBoxStyle = {
@@ -89,20 +87,29 @@ export default function ProcessingCounterClock() {
     alignItems: 'center',
     fontFamily: fontLoaded ? 'ProcessingFont, monospace' : 'monospace',
     fontSize,
-    color: 'white', // color for inversion blend
+    color: 'white',
     lineHeight: 1,
     userSelect: 'none',
-    overflow: 'hidden',
-    margin: 0,
-    padding: 0,
   };
 
   return (
     <div style={containerStyle}>
-      {/* Background stays normal */}
-      <img src={bgWebp} alt="background" style={bgStyle} />
+      {/* Try to play the video first; fallback to image if it fails */}
+      {!videoFailed ? (
+        <video
+          src={bgVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          onError={() => setVideoFailed(true)}
+          style={bgMediaStyle}
+        />
+      ) : (
+        <img src={bgWebp} alt="background" style={bgMediaStyle} />
+      )}
 
-      {/* Digits invert the background behind them */}
+      {/* Inverting text grid */}
       <div style={gridStyle}>
         {displayChars.map((char, i) => (
           <div key={i} style={digitBoxStyle}>
