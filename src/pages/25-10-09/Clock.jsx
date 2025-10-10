@@ -95,7 +95,7 @@ export default function AnalogClock() {
             transform: `rotate(${rotation}deg) translateX(${size}vh)`,
             fontFamily: cfg.fontFamily,
             fontSize: cfg.fontSize,
-            color: s === current ? '#F1DD09FF' : cfg.color, // <-- active digit in black
+            color: s === current ? '#020C21FF' : cfg.color, // <-- active digit in black
             fontWeight: cfg.fontWeight,
             zIndex: cfg.zIndex,
           }}
@@ -192,7 +192,7 @@ export default function AnalogClock() {
             transition: '0.2s 0.2s ease-in',
           }}
         >
-          {renderDial(60, 29, 'minute')}
+          {renderDial(60, 24, 'minute')}
         </div>
 
         {/* Second dial */}
@@ -211,7 +211,7 @@ export default function AnalogClock() {
             transition: '0.2s 0.2s ease-in',
           }}
         >
-          {renderDial(60, 35, 'second')}
+          {renderDial(60, 28, 'second')}
         </div>
 
         {/* Minute/second marks */}
