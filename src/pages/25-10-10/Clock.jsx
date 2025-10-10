@@ -1,204 +1,115 @@
-import React, { useRef, useEffect, useMemo } from "react";
-import font_25_10_09 from "./rain.ttf";
+import React, { useState, useEffect } from 'react';
 
-export default function DigitRain() {
-  const canvasRef = useRef(null);
-  const rafRef = useRef(null);
-  const timeDigitsRef = useRef([]);
+// === Local assets ===
+import bgWebp from './roma.webp'; // background
+import font_20251007 from './roma.ttf'; // custom font
 
-  // Constants
-  const GRAVITY = 0.15;
-  const WIND = 0.01;
-  const SPAWN_CHANCE = 0.4;
-  const INITIAL_PARTICLES = 8;
-  const SPLASH_COUNT_RANGE = [25, 50];
-  const BACKGROUND_COLOR = "#BDE4F0FF";
+export default function ProcessingCounterClock() {
+  const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  // Memoized canvas context
-  const ctxRef = useRef(null);
-
-  // Update time digits every minute
+  // === Load font ===
   useEffect(() => {
-    const updateTimeDigits = () => {
-      const now = new Date();
-      let hours = now.getHours() % 12 || 12;
-      let minutes = now.getMinutes();
-      timeDigitsRef.current = `${hours}${minutes.toString().padStart(2, "0")}`.split("");
-    };
-
-    updateTimeDigits();
-    const interval = setInterval(updateTimeDigits, 60000); // Update every minute
-    return () => clearInterval(interval);
+    const font = new FontFace('ProcessingFont', `url(${font_20251007})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      setFontLoaded(true);
+    });
   }, []);
 
+  // === Update time ===
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    ctxRef.current = canvas.getContext("2d", { alpha: false }); // Optimize for opaque background
-
-    // Load custom font
-    const fontFace = new FontFace("DigitFont_25_10_09", `url(${font_25_10_09})`);
-    fontFace.load().then((loaded) => document.fonts.add(loaded));
-
-    // Vector utility
-    class Vector {
-      constructor(x = 0, y = 0) {
-        this.x = x;
-        this.y = y;
-      }
-      add(v) {
-        this.x += v.x;
-        this.y += v.y;
-        return this;
-      }
-    }
-
-    // Falling digit
-    class DigitParticle {
-      constructor(value, width) {
-        this.value = value;
-        this.pos = new Vector(Math.random() * width, -10);
-        this.vel = new Vector(0, Math.random() * 1 + 0.5);
-        this.fontSize = Math.random() * 2 + 2.5; // in rem
-        this.alpha = 1;
-      }
-      update() {
-        this.vel.y += GRAVITY * 0.2;
-        this.vel.x += WIND;
-        this.pos.add(this.vel);
-      }
-      draw(ctx) {
-        ctx.globalAlpha = this.alpha;
-        ctx.fillStyle = "#0A0A0A";
-        ctx.font = `${this.fontSize}rem "DigitFont_25_10_09"`;
-        ctx.fillText(this.value, this.pos.x, this.pos.y);
-      }
-    }
-
-    // Splash digits
-    class Splash {
-      constructor(x, y, val) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 12 + 6;
-        this.pos = new Vector(x, y);
-        this.vel = new Vector(Math.cos(angle) * speed, Math.sin(angle) * speed);
-        this.val = val;
-        this.alpha = 1;
-        this.size = Math.random() * 0.8 + 0.5;
-        this.rotation = Math.random() * 2 * Math.PI;
-        this.rotationSpeed = (Math.random() - 0.5) * 0.3;
-      }
-      update() {
-        this.vel.y += GRAVITY * 0.3;
-        this.vel.x *= 0.93;
-        this.vel.y *= 0.93;
-        this.pos.add(this.vel);
-        this.rotation += this.rotationSpeed;
-        this.alpha -= 0.02;
-      }
-      draw(ctx) {
-        ctx.save();
-        ctx.translate(this.pos.x, this.pos.y);
-        ctx.rotate(this.rotation);
-        ctx.globalAlpha = Math.max(0, this.alpha);
-        ctx.fillStyle = "#000";
-        ctx.font = `${this.size}rem "DigitFont_25_10_09"`;
-        ctx.fillText(this.val, 0, 0);
-        ctx.restore();
-      }
-    }
-
-    // Canvas scaling
-    const resizeCanvasToDisplaySize = () => {
-      const dpr = Math.max(1, window.devicePixelRatio || 1);
-      const width = Math.floor(canvas.clientWidth * dpr);
-      const height = Math.floor(canvas.clientHeight * dpr);
-      if (canvas.width !== width || canvas.height !== height) {
-        canvas.width = width;
-        canvas.height = height;
-        ctxRef.current.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
-    };
-
-    // Animation loop
-    const digits = [];
-    const splashes = [];
-    const update = () => {
-      const ctx = ctxRef.current;
-      const width = canvas.clientWidth;
-      const height = canvas.clientHeight;
-
-      // Clear canvas once
-      ctx.fillStyle = BACKGROUND_COLOR;
-      ctx.fillRect(0, 0, width, height);
-
-      // Batch draw operations
-      ctx.save();
-      ctx.textAlign = "center";
-      for (let i = digits.length - 1; i >= 0; i--) {
-        const d = digits[i];
-        d.update();
-        if (d.pos.y >= height) {
-          const n = Math.floor(Math.random() * (SPLASH_COUNT_RANGE[1] - SPLASH_COUNT_RANGE[0] + 1)) + SPLASH_COUNT_RANGE[0];
-          for (let j = 0; j < n; j++) {
-            const randomDigit = timeDigitsRef.current[Math.floor(Math.random() * timeDigitsRef.current.length)];
-            splashes.push(new Splash(d.pos.x, height, randomDigit));
-          }
-          digits.splice(i, 1);
-        } else {
-          d.draw(ctx);
-        }
-      }
-
-      for (let i = splashes.length - 1; i >= 0; i--) {
-        const s = splashes[i];
-        s.update();
-        s.draw(ctx);
-        if (s.alpha <= 0) splashes.splice(i, 1);
-      }
-      ctx.restore();
-
-      // Spawn new digit
-      if (Math.random() < SPAWN_CHANCE) {
-        const randomDigit = timeDigitsRef.current[Math.floor(Math.random() * timeDigitsRef.current.length)];
-        digits.push(new DigitParticle(randomDigit, width));
-      }
-
-      rafRef.current = requestAnimationFrame(update);
-    };
-
-    // Initialize
-    resizeCanvasToDisplaySize();
-    for (let i = 0; i < INITIAL_PARTICLES; i++) {
-      const randomDigit = timeDigitsRef.current[Math.floor(Math.random() * timeDigitsRef.current.length)];
-      digits.push(new DigitParticle(randomDigit, canvas.clientWidth));
-    }
-    rafRef.current = requestAnimationFrame(update);
-
-    // Event listeners
-    window.addEventListener("resize", resizeCanvasToDisplaySize);
-    window.addEventListener("orientationchange", resizeCanvasToDisplaySize);
-
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("resize", resizeCanvasToDisplaySize);
-      window.removeEventListener("orientationchange", resizeCanvasToDisplaySize);
-    };
+    const timer = setInterval(() => setTime(new Date()), 100);
+    return () => clearInterval(timer);
   }, []);
 
-  const inlineCanvasStyle = useMemo(() => ({
-    display: "block",
-    width: "100vw",
-    height: "100dvh",
-    margin: "0",
-    background: BACKGROUND_COLOR,
-  }), []);
+  // === Handle resize ===
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // === Format time ===
+  const hours24 = time.getHours();
+  const hours12 = hours24 % 12 || 12;
+  const ampm = hours24 >= 12 ? 'PM' : 'AM';
+  const pad = (n) => String(n).padStart(2, '0');
+  const hh = pad(hours12);
+  const mm = pad(time.getMinutes());
+  const ss = pad(time.getSeconds());
+  const displayChars = [...hh, ...mm, ...ss, ...ampm];
+
+  const columns = isMobile ? 2 : displayChars.length;
+  const rows = isMobile ? Math.ceil(displayChars.length / 2) : 1;
+
+  // === Dynamic font sizing ===
+  const baseSize = isMobile ? 100 / rows : 100 / columns;
+  const fontSize = isMobile ? `${baseSize}vh` : `${baseSize}vw`;
+
+  // === Styles ===
+  const containerStyle = {
+    position: 'relative',
+    width: '100vw',
+    height: '100vh',
+    overflow: 'hidden',
+    margin: 0,
+    padding: 0,
+    backgroundColor: '#000',
+  };
+
+  const bgStyle = {
+    position: 'absolute',
+    inset: 0,
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    filter: 'brightness(1.2) contrast(1.3) saturate(1.1)',
+    zIndex: 0,
+  };
+
+  // === Text container (applies inversion only to text) ===
+  const gridStyle = {
+    position: 'absolute',
+    inset: 0,
+    display: 'grid',
+    gridTemplateColumns: `repeat(${columns}, 1fr)`,
+    gridTemplateRows: `repeat(${rows}, 1fr)`,
+    margin: 0,
+    padding: 0,
+    gap: 0,
+    zIndex: 1,
+    mixBlendMode: 'difference', // << text only inverts underlying image
+  };
+
+  const digitBoxStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: fontLoaded ? 'ProcessingFont, monospace' : 'monospace',
+    fontSize,
+    color: 'white', // color for inversion blend
+    lineHeight: 1,
+    userSelect: 'none',
+    overflow: 'hidden',
+    margin: 0,
+    padding: 0,
+  };
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={inlineCanvasStyle}
-      aria-label="Digit rain animation using custom font"
-    />
+    <div style={containerStyle}>
+      {/* Background stays normal */}
+      <img src={bgWebp} alt="background" style={bgStyle} />
+
+      {/* Digits invert the background behind them */}
+      <div style={gridStyle}>
+        {displayChars.map((char, i) => (
+          <div key={i} style={digitBoxStyle}>
+            {char}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
