@@ -46,6 +46,9 @@ export default function SpinningAnalogClock() {
     if (type === "minutes") current = m;
     if (type === "seconds") current = s;
 
+    const gapFactor = 0.1; // gap = 10% of radius
+    const gap = radius * gapFactor;
+
     return numbers.map((num, i) => {
       const angle = (i / numbers.length) * 360;
       const isCurrent = parseInt(num) === current;
@@ -56,7 +59,7 @@ export default function SpinningAnalogClock() {
             position: "absolute",
             top: "50%",
             left: "50%",
-            transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-${radius}dvh)`,
+            transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-${radius - gap}dvh) rotate(${angle}deg)`,
             color: isCurrent ? "#ffff00" : "#ffffff",
             textAlign: "center",
             fontFamily: fontFamily,
@@ -77,7 +80,7 @@ export default function SpinningAnalogClock() {
         style={{
           height: "100dvh",
           width: "100dvw",
-          background: "#625D5DFF",
+          background: "#000000",
           margin: 0,
           padding: 0,
           overflow: "hidden",
@@ -116,7 +119,8 @@ export default function SpinningAnalogClock() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "radial-gradient(circle at center, #111111 40%, #000000 100%)",
+          background:
+            "radial-gradient(circle at center, #111111 40%, #000000 100%)",
           overflow: "hidden",
           margin: 0,
           padding: 0,
@@ -151,7 +155,7 @@ export default function SpinningAnalogClock() {
               padding: 0,
             }}
           >
-            {renderNumbers(hours, 11, "hours", "Cinzel20251010", "4dvh")}
+            {renderNumbers(hours, 13, "hours", "Cinzel20251010", "2dvh")}
           </div>
 
           {/* Minute Disc */}
@@ -174,7 +178,7 @@ export default function SpinningAnalogClock() {
               padding: 0,
             }}
           >
-            {renderNumbers(minutesSeconds, 18, "minutes", "Roboto20251010", "2.5dvh")}
+            {renderNumbers(minutesSeconds, 21, "minutes", "Roboto20251010", "1.5dvh")}
           </div>
 
           {/* Second Disc */}
@@ -197,7 +201,7 @@ export default function SpinningAnalogClock() {
               padding: 0,
             }}
           >
-            {renderNumbers(minutesSeconds, 26, "seconds", "Orbitron20251010", "2dvh")}
+            {renderNumbers(minutesSeconds, 29, "seconds", "Orbitron20251010", "1dvh")}
           </div>
         </div>
       </div>
