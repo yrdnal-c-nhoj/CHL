@@ -56,7 +56,7 @@ export default function ProcessingCounterClock() {
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
-    backgroundColor: '#000',
+    backgroundColor: '#000000',
     margin: 0,
     padding: 0,
   };
