@@ -8,7 +8,6 @@ import OctFont from "./str.ttf";
 export default function ImageAnalogClock() {
   const [time, setTime] = useState(new Date());
   const [ready, setReady] = useState(false);
-  const [started, setStarted] = useState(false);
 
   // Update time every second
   useEffect(() => {
@@ -31,14 +30,26 @@ export default function ImageAnalogClock() {
       });
   }, []);
 
-  // Force autoplay attempt on mount
+  // Force autoplay (iOS sometimes ignores initial play call)
   useEffect(() => {
-    const vid = document.querySelector("video");
-    if (vid) {
-      vid.play().catch(() => {
-        // ignored – some browsers block it until user gesture
-      });
-    }
+    const video = document.querySelector("video");
+    if (!video) return;
+
+    const tryPlay = () => {
+      video.play().catch(() => {});
+    };
+
+    // Attempt several times in case of delayed video load
+    tryPlay();
+    const t1 = setTimeout(tryPlay, 500);
+    const t2 = setTimeout(tryPlay, 1500);
+    const t3 = setTimeout(tryPlay, 3000);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
   }, [ready]);
 
   const clockSize = "80%";
@@ -149,34 +160,6 @@ export default function ImageAnalogClock() {
           }}
         />
       </video>
-
-      {/* Tap-to-start overlay for strict mobile browsers */}
-      {!started && (
-        <div
-          onClick={() => {
-            const vid = document.querySelector("video");
-            if (vid) vid.play().catch(() => {});
-            setStarted(true);
-          }}
-          style={{
-            position: "absolute",
-            width: "100vw",
-            height: "100dvh",
-            backgroundColor: "rgba(0,0,0,0.8)",
-            color: "white",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            fontFamily: "Oct022025Font, sans-serif",
-            fontSize: "2rem",
-            zIndex: 10,
-            cursor: "pointer",
-            transition: "opacity 0.4s ease",
-          }}
-        >
-          Tap to Start
-        </div>
-      )}
 
       {/* Clock face */}
       <div
