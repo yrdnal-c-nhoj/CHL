@@ -7,7 +7,6 @@ export default function ConcentricClock() {
   const [currentTime, setCurrentTime] = useState({ h: 0, m: 0, s: 0 });
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  // Track true viewport height
   useEffect(() => {
     const setVh = () => {
       document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
@@ -17,31 +16,26 @@ export default function ConcentricClock() {
     return () => window.removeEventListener('resize', setVh);
   }, []);
 
-  // Load fonts
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
       @font-face {
         font-family: 'HoursFont';
         src: url(${cinzel20251010}) format('truetype');
-        font-display: swap;
       }
       @font-face {
         font-family: 'MinutesFont';
         src: url(${roboto20251010}) format('opentype');
-        font-display: swap;
       }
       @font-face {
         font-family: 'SecondsFont';
         src: url(${orbitron20251010}) format('opentype');
-        font-display: swap;
       }
     `;
     document.head.appendChild(style);
     document.fonts.ready.then(() => setFontsLoaded(true));
   }, []);
 
-  // Update time every second
   useEffect(() => {
     if (!fontsLoaded) return;
     const getTime = () => {
@@ -57,7 +51,6 @@ export default function ConcentricClock() {
     return () => clearInterval(interval);
   }, [fontsLoaded]);
 
-  // Render ring with optional X/Y offsets
   const renderRing = (count, radiusVh, type, offset = { x: 0, y: 0 }) => {
     const items = [];
     const current = currentTime[type];
@@ -70,53 +63,37 @@ export default function ConcentricClock() {
       const rad = (angle * Math.PI) / 180;
       const x = radiusVh * Math.cos(rad) + offset.x;
       const y = radiusVh * Math.sin(rad) + offset.y;
-      const value = type === 'h' ? (i === 0 ? 12 : i) : i;
-      const isActive = type === 'h' ? value === current : i === current;
 
-     items.push(
-  <div
-    key={i}
-    style={{
-      position: 'absolute',
-      left: '50%',
-      top: '50%',
-      transform: `translate(${x}vh, ${y}vh)`,
-      transformOrigin: 'left center',
-      fontFamily,
-      fontSize: type === 'h' ? '17vh' : type === 'm' ? '10vh' : '6vh',
-      fontWeight: isActive ? 900 : 400,
-      color: isActive
-        ? '#F4F149FF'
-        : type === 'h'
-        ? '#B69473FF'
-        : type === 'm'
-        ? '#799679FF'
-        : '#7E7EA6FF',
-      transition: 'all 0.3s ease',
-      textShadow: isActive
-        ? `
-          1px 1px 0 #000,
-          -1px 1px 0 #000,
-          1px -1px 0 #000,
-          -1px -1px 0 #000,
+      let value;
+      if (type === 'h') value = i === 0 ? 12 : i;
+      else value = i.toString().padStart(2, '0');
 
-          2px 2px 0 #fff,
-          -2px 2px 0 #fff,
-          2px -2px 0 #fff,
-          -2px -2px 0 #fff,
+      const isCurrent =
+        (type === 'h' && value === (currentTime.h === 0 ? 12 : currentTime.h)) ||
+        (type === 'm' && i === currentTime.m) ||
+        (type === 's' && i === currentTime.s);
 
-          1px 1px 0 #000,
-          -1px 1px 0 #000,
-          1px -1px 0 #000,
-          -1px -1px 0 #000
-        `
-        : 'none',
-      textAlign: 'left',
-      whiteSpace: 'nowrap',
-    }}
-  >
-
-
+      items.push(
+        <div
+          key={`${type}-${i}`}
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            transform: `translate(${x}vh, ${y}vh)`,
+            fontFamily,
+            fontSize: type === 'h' ? '22vh' : type === 'm' ? '10vh' : '6vh',
+            fontWeight: isCurrent ? 700 : 300,
+            color: isCurrent ? '#fff' : 'rgba(255, 150, 200, 0.2)',
+            textShadow: isCurrent
+              ? '0 0 1vh #ff7bcb, 0 0 2vh #ff1493, 0 0 4vh #ff0099'
+              : '0 0 0.8vh rgba(255, 100, 180, 0.15)',
+            opacity: isCurrent ? 1 : 0.4,
+            transition: 'all 0.4s ease',
+            pointerEvents: 'none',
+            whiteSpace: 'nowrap',
+          }}
+        >
           {value}
         </div>
       );
@@ -136,24 +113,10 @@ export default function ConcentricClock() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background:
-          'linear-gradient(135deg, #52520AFF, #4A0512FF, #514156FF, #2D490EFF)',
-        backgroundSize: '400% 400%',
-        animation: 'gradientBG 20s ease infinite',
+        background: 'radial-gradient(circle at center, #712A2AFF 30%, #060006 100%)',
         overflow: 'hidden',
       }}
     >
-      <style>
-        {`
-          @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-        `}
-      </style>
-
-      {/* Centered clock */}
       <div
         style={{
           position: 'relative',
@@ -161,9 +124,9 @@ export default function ConcentricClock() {
           height: '100vh',
         }}
       >
-        {renderRing(12, 32, 'h', { x: -48, y: -14 })}   {/* hours nudge */}
-        {renderRing(60, 139, 'm', { x: -149, y: -10 })}    {/* minutes nudge */}
-        {renderRing(60, 72, 's', { x: -67, y: -10 })} {/* seconds nudge */}
+        {renderRing(12, 62, 'h', { x: -98, y: -34 })}
+        {renderRing(60, 139, 'm', { x: -149, y: -10 })}
+        {renderRing(60, 72, 's', { x: -58, y: -1 })}
       </div>
     </div>
   );
