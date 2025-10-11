@@ -83,7 +83,7 @@ export default function ConcentricClock() {
       transform: `translate(${x}vh, ${y}vh)`,
       transformOrigin: 'left center',
       fontFamily,
-      fontSize: type === 'h' ? '18vh' : type === 'm' ? '5vh' : '6vh',
+      fontSize: type === 'h' ? '17vh' : type === 'm' ? '10vh' : '6vh',
       fontWeight: isActive ? 900 : 400,
       color: isActive
         ? '#F4F149FF'
@@ -161,9 +161,9 @@ export default function ConcentricClock() {
           height: '100vh',
         }}
       >
-        {renderRing(12, 32, 'h', { x: -48, y: -13 })}   {/* hours nudge */}
-        {renderRing(60, 49, 'm', { x: -57, y: -6 })}    {/* minutes nudge */}
-        {renderRing(60, 52, 's', { x: -49, y: -8 })} {/* seconds nudge */}
+        {renderRing(12, 32, 'h', { x: -48, y: -14 })}   {/* hours nudge */}
+        {renderRing(60, 139, 'm', { x: -149, y: -10 })}    {/* minutes nudge */}
+        {renderRing(60, 72, 's', { x: -67, y: -10 })} {/* seconds nudge */}
       </div>
     </div>
   );
