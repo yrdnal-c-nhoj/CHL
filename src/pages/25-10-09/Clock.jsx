@@ -84,9 +84,9 @@ export default function ConcentricClock() {
             fontFamily,
             fontSize: type === 'h' ? '22vh' : type === 'm' ? '10vh' : '6vh',
             fontWeight: isCurrent ? 700 : 300,
-            color: isCurrent ? '#fff' : 'rgba(255, 150, 200, 0.2)',
+            color: isCurrent ? '#fff' : 'rgba(255, 150, 200)',
             textShadow: isCurrent
-              ? '0 0 1vh #ff7bcb, 0 0 2vh #ff1493, 0 0 4vh #ff0099'
+              ? '0 0 1vh #BEE317FF, 0 0 2vh #14ADFFFF, 0 0 4vh #EEDE80FF'
               : '0 0 0.8vh rgba(255, 100, 180, 0.15)',
             opacity: isCurrent ? 1 : 0.4,
             transition: 'all 0.4s ease',
@@ -113,7 +113,7 @@ export default function ConcentricClock() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'radial-gradient(circle at center, #712A2AFF 30%, #060006 100%)',
+        background: 'radial-gradient(circle at center, #042DE3FF 30%, #472DEFFF 100%)',
         overflow: 'hidden',
       }}
     >
