@@ -84,10 +84,10 @@ export default function ConcentricClock() {
             fontFamily,
             fontSize: type === 'h' ? '22vh' : type === 'm' ? '10vh' : '6vh',
             fontWeight: isCurrent ? 700 : 300,
-            color: isCurrent ? '#fff' : 'rgba(255, 150, 200)',
+            color: isCurrent ? '#AE0C0CFF' : 'rgba(255, 150, 200)',
             textShadow: isCurrent
-              ? '0 0 1vh #BEE317FF, 0 0 2vh #14ADFFFF, 0 0 4vh #EEDE80FF'
-              : '0 0 0.8vh rgba(255, 100, 180, 0.15)',
+              ? '0 0 1vh #111210FF, -1 -0 2vh #F1F2F3FF, 0 0 4vh #09EC60FF'
+              : '0 0 0.8vh rgba(25, 10, 80)',
             opacity: isCurrent ? 1 : 0.4,
             transition: 'all 0.4s ease',
             pointerEvents: 'none',
