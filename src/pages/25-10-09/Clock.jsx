@@ -87,7 +87,7 @@ export default function ConcentricClock() {
               type === 'h' ? '7vh' : type === 'm' ? '2.5vh' : '2.2vh',
             fontWeight: isActive ? 900 : 400,
             color: isActive
-              ? '#2F032EFF'
+              ? '#F7F305FF'
               : type === 'h'
               ? '#F0C091FF'
               : type === 'm'
@@ -95,7 +95,7 @@ export default function ConcentricClock() {
               : '#9797C5FF',
             transition: 'all 0.3s ease',
             textShadow: isActive
-              ? `1px 1px 0 #fff, -1px 1px 0 #fff, 1px -1px 0 #fff, -1px -1px 0 #fff`
+              ? `1px 1px 0 #1A1818FF, -1px 1px 0 #161515FF, 1px -1px 0 #1B1A1AFF, -1px -1px 0 #1B1919FF`
               : 'none',
             textAlign: 'left',
             whiteSpace: 'nowrap',
