@@ -146,9 +146,9 @@ export default function ConcentricClock() {
           height: '100vh',
         }}
       >
-        {renderRing(12, 18, 'h')}   {/* 18vh radius */}
-        {renderRing(60, 26, 'm')}   {/* 26vh radius */}
-        {renderRing(60, 36, 's')}   {/* 36vh radius */}
+        {renderRing(12, 12, 'h')}   {/* 18vh radius */}
+        {renderRing(60, 19, 'm')}   {/* 26vh radius */}
+        {renderRing(60, 23, 's')}   {/* 36vh radius */}
       </div>
     </div>
   );
