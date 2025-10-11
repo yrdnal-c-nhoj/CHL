@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-// Import background video, fallback GIF, and font
+// === Local assets ===
 import backgroundVideo from "./big.mp4";
 import fallbackGif from "./big.webp";
 import OctFont from "./str.ttf";
@@ -8,6 +8,7 @@ import OctFont from "./str.ttf";
 export default function ImageAnalogClock() {
   const [time, setTime] = useState(new Date());
   const [ready, setReady] = useState(false);
+  const [started, setStarted] = useState(false);
 
   // Update time every second
   useEffect(() => {
@@ -15,20 +16,30 @@ export default function ImageAnalogClock() {
     return () => clearInterval(interval);
   }, []);
 
-  // Preload custom font
+  // Preload font
   useEffect(() => {
     const font = new FontFace("Oct022025Font", `url(${OctFont})`);
     font
       .load()
       .then(() => {
         document.fonts.add(font);
-        setTimeout(() => setReady(true), 200); // slight delay for smooth fade-in
+        setTimeout(() => setReady(true), 200);
       })
       .catch(() => {
         console.error("Font failed to load");
-        setReady(true); // proceed even if font fails
+        setReady(true);
       });
   }, []);
+
+  // Force autoplay attempt on mount
+  useEffect(() => {
+    const vid = document.querySelector("video");
+    if (vid) {
+      vid.play().catch(() => {
+        // ignored – some browsers block it until user gesture
+      });
+    }
+  }, [ready]);
 
   const clockSize = "80%";
   const center = { x: 50, y: 50 };
@@ -59,7 +70,7 @@ export default function ImageAnalogClock() {
 
   const handStyle = (width, length, color, angle) => ({
     position: "absolute",
-    width: width,
+    width,
     height: length,
     backgroundColor: color,
     top: "50%",
@@ -79,7 +90,6 @@ export default function ImageAnalogClock() {
           width: "100vw",
           height: "100dvh",
           backgroundColor: "black",
-          zIndex: 1,
         }}
       />
     );
@@ -111,12 +121,15 @@ export default function ImageAnalogClock() {
         `}
       </style>
 
-      {/* Background video with fallback */}
+      {/* Background video with autoplay + fallback */}
       <video
         autoPlay
         loop
         muted
         playsInline
+        disablePictureInPicture
+        preload="auto"
+        onLoadedData={(e) => e.target.play().catch(() => {})}
         style={{
           position: "absolute",
           width: "100vw",
@@ -137,6 +150,34 @@ export default function ImageAnalogClock() {
         />
       </video>
 
+      {/* Tap-to-start overlay for strict mobile browsers */}
+      {!started && (
+        <div
+          onClick={() => {
+            const vid = document.querySelector("video");
+            if (vid) vid.play().catch(() => {});
+            setStarted(true);
+          }}
+          style={{
+            position: "absolute",
+            width: "100vw",
+            height: "100dvh",
+            backgroundColor: "rgba(0,0,0,0.8)",
+            color: "white",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            fontFamily: "Oct022025Font, sans-serif",
+            fontSize: "2rem",
+            zIndex: 10,
+            cursor: "pointer",
+            transition: "opacity 0.4s ease",
+          }}
+        >
+          Tap to Start
+        </div>
+      )}
+
       {/* Clock face */}
       <div
         style={{
@@ -147,27 +188,23 @@ export default function ImageAnalogClock() {
           isolation: "isolate",
         }}
       >
-        {/* Clock hands – rendered first to go behind numbers */}
+        {/* Hands */}
         <div style={handStyle("0.05rem", "18dvh", "white", hourAngle)} />
         <div style={handStyle("0.05rem", "28dvh", "white", minuteAngle)} />
-        <div style={handStyle("0.5rem", "432.5dvh", "red", secondAngle)} />
+        <div style={handStyle("0.15rem", "32dvh", "red", secondAngle)} />
 
         {/* Numbers */}
         {numbers.map((num, idx) => {
           const angleRad = (num.angle - 90) * (Math.PI / 180);
-          const fontSize = "12vw";
-          const adjustedRadius = radius * 0.9;
-
-          const x = center.x + adjustedRadius * Math.cos(angleRad);
-          const y = center.y + adjustedRadius * Math.sin(angleRad);
-
+          const x = center.x + radius * 0.9 * Math.cos(angleRad);
+          const y = center.y + radius * 0.9 * Math.sin(angleRad);
           return (
             <div
               key={idx}
               style={{
                 position: "absolute",
                 fontFamily: "Oct022025Font, sans-serif",
-                fontSize: fontSize,
+                fontSize: "12vw",
                 color: "white",
                 left: `${x}%`,
                 top: `${y}%`,
