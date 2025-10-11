@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import cinzel20251010 from './d1.ttf'; // Hours font
-import roboto20251010 from './d2.otf'; // Minutes font
-import orbitron20251010 from './d3.otf'; // Seconds font
+import cinzel20251010 from './d1.ttf';
+import roboto20251010 from './d2.otf';
+import orbitron20251010 from './d3.otf';
 
 export default function ConcentricClock() {
   const [currentTime, setCurrentTime] = useState({ h: 0, m: 0, s: 0 });
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
+  // ✅ Track true viewport height
+  useEffect(() => {
+    const setVh = () => {
+      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    };
+    setVh();
+    window.addEventListener('resize', setVh);
+    return () => window.removeEventListener('resize', setVh);
+  }, []);
+
+  // ✅ Load fonts
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
@@ -30,60 +41,69 @@ export default function ConcentricClock() {
     document.fonts.ready.then(() => setFontsLoaded(true));
   }, []);
 
+  // ✅ Update time every second
   useEffect(() => {
     if (!fontsLoaded) return;
-    
     const getTime = () => {
       const now = new Date();
       setCurrentTime({
         h: now.getHours() % 12 || 12,
         m: now.getMinutes(),
-        s: now.getSeconds()
+        s: now.getSeconds(),
       });
     };
-
     getTime();
     const interval = setInterval(getTime, 1000);
     return () => clearInterval(interval);
   }, [fontsLoaded]);
 
-  const renderRing = (count, radius, type) => {
+  // ✅ Render rings
+  const renderRing = (count, radiusVh, type) => {
     const items = [];
     const current = currentTime[type];
-    const fontFamily = type === 'h' ? 'HoursFont' : type === 'm' ? 'MinutesFont' : 'SecondsFont';
-    
-    // Offset so current time aligns at 0 degrees (right side)
+    const fontFamily =
+      type === 'h' ? 'HoursFont' : type === 'm' ? 'MinutesFont' : 'SecondsFont';
     const currentOffset = (360 / count) * current;
 
     for (let i = 0; i < count; i++) {
       const angle = (360 / count) * i - currentOffset;
       const rad = (angle * Math.PI) / 180;
-      const x = radius * Math.cos(rad);
-      const y = radius * Math.sin(rad);
-      
+      const radiusPx = radiusVh; // in vh
+      const x = radiusPx * Math.cos(rad);
+      const y = radiusPx * Math.sin(rad);
       const value = type === 'h' ? (i === 0 ? 12 : i) : i;
       const isActive = type === 'h' ? value === current : i === current;
 
-     items.push(
-  <div
-    key={i}
-    style={{
-      position: 'absolute',
-      left: '50%',
-      top: '50%',
-      transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-      fontFamily: fontFamily,
-      fontSize: type === 'h' ? '7vh' : type === 'm' ? '3vh' : '2.8vh',
-      fontWeight: isActive ? 900 : 400,
-      color: isActive ? '#2F032EFF' : type === 'h' ? '#BE3D06FF' : type === 'm' ? '#00AA00' : '#4949EEFF',
-      transition: 'all 0.3s ease',
-      textShadow: isActive
-        ? `2px 2px 0 #fff, -2px 2px 0 #fff, 2px -2px 0 #fff, -2px -2px 0 #fff`
-        : 'none',
-    }}
-  >
-    {value}
-  </div>
+      items.push(
+        <div
+          key={i}
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            transform: `translate(${x}vh, ${y}vh)`,
+            transformOrigin: 'left center',
+            fontFamily,
+            fontSize:
+              type === 'h' ? '7vh' : type === 'm' ? '2.5vh' : '2.2vh',
+            fontWeight: isActive ? 900 : 400,
+            color: isActive
+              ? '#2F032EFF'
+              : type === 'h'
+              ? '#F0C091FF'
+              : type === 'm'
+              ? '#A6D2A6FF'
+              : '#9797C5FF',
+            transition: 'all 0.3s ease',
+            textShadow: isActive
+              ? `1px 1px 0 #fff, -1px 1px 0 #fff, 1px -1px 0 #fff, -1px -1px 0 #fff`
+              : 'none',
+            textAlign: 'left',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {value}
+        </div>
       );
     }
     return items;
@@ -95,14 +115,14 @@ export default function ConcentricClock() {
     <div
       style={{
         position: 'fixed',
-        left: 0,
-        top: 0,
+        inset: 0,
         width: '100vw',
-        height: '100dvh',
+        height: 'calc(var(--vh, 1vh) * 100)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #EDEDAEFF, #F2C7CFFF, #EAC9F6FF, #E1F9C8FF)',
+        background:
+          'linear-gradient(135deg, #52520AFF, #4A0512FF, #514156FF, #2D490EFF)',
         backgroundSize: '400% 400%',
         animation: 'gradientBG 20s ease infinite',
         overflow: 'hidden',
@@ -118,15 +138,17 @@ export default function ConcentricClock() {
         `}
       </style>
 
-      <div style={{ position: 'relative', width: '800px', height: '800px' }}>
-        {/* Hours - inner ring */}
-        {renderRing(12, 108, 'h')}
-        
-        {/* Minutes - middle ring */}
-        {renderRing(60, 130, 'm')}
-        
-        {/* Seconds - outer ring */}
-        {renderRing(60, 150, 's')}
+      {/* ✅ Centered clock */}
+      <div
+        style={{
+          position: 'relative',
+          width: '100vh',
+          height: '100vh',
+        }}
+      >
+        {renderRing(12, 18, 'h')}   {/* 18vh radius */}
+        {renderRing(60, 26, 'm')}   {/* 26vh radius */}
+        {renderRing(60, 36, 's')}   {/* 36vh radius */}
       </div>
     </div>
   );
