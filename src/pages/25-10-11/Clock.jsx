@@ -1,204 +1,190 @@
-import React, { useRef, useEffect, useMemo } from "react";
-import font_25_10_09 from "./rain.ttf";
+import React, { useEffect, useState } from "react";
+import backgroundImg from "./ches.jpg";
+import customFont20251011 from "./ch.ttf";
+import alphabetFont20251011 from "./chess.ttf";
 
-export default function DigitRain() {
-  const canvasRef = useRef(null);
-  const rafRef = useRef(null);
-  const timeDigitsRef = useRef([]);
+export default function FancyClock() {
+  const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const [alphabetFontLoaded, setAlphabetFontLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-  // Constants
-  const GRAVITY = 0.15;
-  const WIND = 0.01;
-  const SPAWN_CHANCE = 0.4;
-  const INITIAL_PARTICLES = 8;
-  const SPLASH_COUNT_RANGE = [25, 50];
-  const BACKGROUND_COLOR = "#BDE4F0FF";
-
-  // Memoized canvas context
-  const ctxRef = useRef(null);
-
-  // Update time digits every minute
+  // Load fonts
   useEffect(() => {
-    const updateTimeDigits = () => {
-      const now = new Date();
-      let hours = now.getHours() % 12 || 12;
-      let minutes = now.getMinutes();
-      timeDigitsRef.current = `${hours}${minutes.toString().padStart(2, "0")}`.split("");
-    };
+    const font = new FontFace("CustomFont20251011", `url(${customFont20251011})`);
+    font.load().then((loaded) => {
+      document.fonts.add(loaded);
+      setFontLoaded(true);
+    });
+    const alphaFont = new FontFace("AlphabetFont20251011", `url(${alphabetFont20251011})`);
+    alphaFont.load().then((loaded) => {
+      document.fonts.add(loaded);
+      setAlphabetFontLoaded(true);
+    });
+  }, []);
 
-    updateTimeDigits();
-    const interval = setInterval(updateTimeDigits, 60000); // Update every minute
+  useEffect(() => {
+    const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    ctxRef.current = canvas.getContext("2d", { alpha: false }); // Optimize for opaque background
-
-    // Load custom font
-    const fontFace = new FontFace("DigitFont_25_10_09", `url(${font_25_10_09})`);
-    fontFace.load().then((loaded) => document.fonts.add(loaded));
-
-    // Vector utility
-    class Vector {
-      constructor(x = 0, y = 0) {
-        this.x = x;
-        this.y = y;
-      }
-      add(v) {
-        this.x += v.x;
-        this.y += v.y;
-        return this;
-      }
-    }
-
-    // Falling digit
-    class DigitParticle {
-      constructor(value, width) {
-        this.value = value;
-        this.pos = new Vector(Math.random() * width, -10);
-        this.vel = new Vector(0, Math.random() * 1 + 0.5);
-        this.fontSize = Math.random() * 2 + 2.5; // in rem
-        this.alpha = 1;
-      }
-      update() {
-        this.vel.y += GRAVITY * 0.2;
-        this.vel.x += WIND;
-        this.pos.add(this.vel);
-      }
-      draw(ctx) {
-        ctx.globalAlpha = this.alpha;
-        ctx.fillStyle = "#0A0A0A";
-        ctx.font = `${this.fontSize}rem "DigitFont_25_10_09"`;
-        ctx.fillText(this.value, this.pos.x, this.pos.y);
-      }
-    }
-
-    // Splash digits
-    class Splash {
-      constructor(x, y, val) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 12 + 6;
-        this.pos = new Vector(x, y);
-        this.vel = new Vector(Math.cos(angle) * speed, Math.sin(angle) * speed);
-        this.val = val;
-        this.alpha = 1;
-        this.size = Math.random() * 0.8 + 0.5;
-        this.rotation = Math.random() * 2 * Math.PI;
-        this.rotationSpeed = (Math.random() - 0.5) * 0.3;
-      }
-      update() {
-        this.vel.y += GRAVITY * 0.3;
-        this.vel.x *= 0.93;
-        this.vel.y *= 0.93;
-        this.pos.add(this.vel);
-        this.rotation += this.rotationSpeed;
-        this.alpha -= 0.02;
-      }
-      draw(ctx) {
-        ctx.save();
-        ctx.translate(this.pos.x, this.pos.y);
-        ctx.rotate(this.rotation);
-        ctx.globalAlpha = Math.max(0, this.alpha);
-        ctx.fillStyle = "#000";
-        ctx.font = `${this.size}rem "DigitFont_25_10_09"`;
-        ctx.fillText(this.val, 0, 0);
-        ctx.restore();
-      }
-    }
-
-    // Canvas scaling
-    const resizeCanvasToDisplaySize = () => {
-      const dpr = Math.max(1, window.devicePixelRatio || 1);
-      const width = Math.floor(canvas.clientWidth * dpr);
-      const height = Math.floor(canvas.clientHeight * dpr);
-      if (canvas.width !== width || canvas.height !== height) {
-        canvas.width = width;
-        canvas.height = height;
-        ctxRef.current.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
-    };
-
-    // Animation loop
-    const digits = [];
-    const splashes = [];
-    const update = () => {
-      const ctx = ctxRef.current;
-      const width = canvas.clientWidth;
-      const height = canvas.clientHeight;
-
-      // Clear canvas once
-      ctx.fillStyle = BACKGROUND_COLOR;
-      ctx.fillRect(0, 0, width, height);
-
-      // Batch draw operations
-      ctx.save();
-      ctx.textAlign = "center";
-      for (let i = digits.length - 1; i >= 0; i--) {
-        const d = digits[i];
-        d.update();
-        if (d.pos.y >= height) {
-          const n = Math.floor(Math.random() * (SPLASH_COUNT_RANGE[1] - SPLASH_COUNT_RANGE[0] + 1)) + SPLASH_COUNT_RANGE[0];
-          for (let j = 0; j < n; j++) {
-            const randomDigit = timeDigitsRef.current[Math.floor(Math.random() * timeDigitsRef.current.length)];
-            splashes.push(new Splash(d.pos.x, height, randomDigit));
-          }
-          digits.splice(i, 1);
-        } else {
-          d.draw(ctx);
-        }
-      }
-
-      for (let i = splashes.length - 1; i >= 0; i--) {
-        const s = splashes[i];
-        s.update();
-        s.draw(ctx);
-        if (s.alpha <= 0) splashes.splice(i, 1);
-      }
-      ctx.restore();
-
-      // Spawn new digit
-      if (Math.random() < SPAWN_CHANCE) {
-        const randomDigit = timeDigitsRef.current[Math.floor(Math.random() * timeDigitsRef.current.length)];
-        digits.push(new DigitParticle(randomDigit, width));
-      }
-
-      rafRef.current = requestAnimationFrame(update);
-    };
-
-    // Initialize
-    resizeCanvasToDisplaySize();
-    for (let i = 0; i < INITIAL_PARTICLES; i++) {
-      const randomDigit = timeDigitsRef.current[Math.floor(Math.random() * timeDigitsRef.current.length)];
-      digits.push(new DigitParticle(randomDigit, canvas.clientWidth));
-    }
-    rafRef.current = requestAnimationFrame(update);
-
-    // Event listeners
-    window.addEventListener("resize", resizeCanvasToDisplaySize);
-    window.addEventListener("orientationchange", resizeCanvasToDisplaySize);
-
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("resize", resizeCanvasToDisplaySize);
-      window.removeEventListener("orientationchange", resizeCanvasToDisplaySize);
-    };
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const inlineCanvasStyle = useMemo(() => ({
-    display: "block",
-    width: "100vw",
-    height: "100dvh",
-    margin: "0",
-    background: BACKGROUND_COLOR,
-  }), []);
+  if (!fontLoaded || !alphabetFontLoaded) return null;
+
+  const hours = time.getHours() % 12 || 12;
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds();
+  const ampm = time.getHours() >= 12 ? "pm" : "am";
+
+  const formatClock = (h, m, s, ampm) =>
+    `${String(h).padStart(2, "0")}${String(m).padStart(2, "0")}${String(s).padStart(2, "0")}${ampm}`;
+
+  const clockStr = formatClock(hours, minutes, seconds, ampm);
+
+  const gridSize = 8;
+  const gridScale = 0.89;
+
+  // Top 2 and bottom 2 rows
+  const alphabetRows = [
+    ["R", "H", "B", "Q", "K", "B", "H", "R"], // top row 0
+    ["P", "P", "P", "P", "P", "P", "P", "P"], // top row 1
+    ["O", "O", "O", "O", "O", "O", "O", "O"], // bottom row 6
+    ["T", "J", "N", "W", "L", "N", "J", "T"], // bottom row 7
+  ];
+
+  const renderAlphabetRow = (chars, rowIndex) =>
+    chars.map((letter, i) => (
+      <div
+        key={`alpha-${rowIndex}-${i}`}
+        style={{
+          position: "absolute",
+          top: `${(rowIndex / gridSize) * 100}%`,
+          left: `${(i / gridSize) * 100}%`,
+          width: `${100 / gridSize}%`,
+          height: `${100 / gridSize}%`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: isMobile ? "10vw" : "10vh",
+          fontFamily: "AlphabetFont20251011",
+          color: "#F4DDF7FF",
+          zIndex: 1,
+          pointerEvents: "none",
+          textShadow: `
+            -0.15em -0.15em 0 #000,
+            -0.15em 0 0 #000,
+            -0.15em 0.15em 0 #000,
+            0 -0.15em 0 #000,
+            0 0.15em 0 #000,
+            0.15em -0.15em 0 #000,
+            0.15em 0 0 #000,
+            0.15em 0.15em 0 #000
+          `,
+        }}
+      >
+        {letter}
+      </div>
+    ));
+
+  // Column labels - top of each column, centered horizontally
+  const renderColumnLabels = (clockStr) =>
+    clockStr.slice(0, gridSize).split("").map((char, i) => (
+      <div
+        key={`col-${i}`}
+        style={{
+          position: "absolute",
+          top: `0%`,
+          left: `${(i + 0.5) / gridSize * 100}%`, // center of the cell
+          transform: "translateX(-50%) translateY(-100%)", // above the grid
+          fontSize: isMobile ? "3vw" : "3vh",
+          fontFamily: "CustomFont20251011",
+          color: "#686464FF",
+          zIndex: 3,
+          pointerEvents: "none",
+        }}
+      >
+        {char}
+      </div>
+    ));
+
+  // Row labels - left of each row, centered vertically
+ 
+ // Row labels - left of each row, centered vertically
+const renderRowLabels = (clockStr) =>
+  clockStr.slice(0, gridSize).split("").map((char, i) => (
+    <div
+      key={`row-${i}`}
+      style={{
+        position: "absolute",
+        top: `${(i + 0.5) / gridSize * 100}%`, // center vertically
+        left: `0%`,
+        transform: "translateX(-120%) translateY(-50%)", // moved further left
+        fontSize: isMobile ? "3vw" : "3vh",
+        fontFamily: "CustomFont20251011",
+       color: "#686464FF",
+        zIndex: 3,
+        pointerEvents: "none",
+      }}
+    >
+      {char}
+    </div>
+  ));
+
+ 
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={inlineCanvasStyle}
-      aria-label="Digit rain animation using custom font"
-    />
+    <div
+      style={{
+        width: "100vw",
+        height: "100dvh",
+        position: "relative",
+        fontFamily: "CustomFont20251011",
+        overflow: "hidden",
+      }}
+    >
+      <img
+        src={backgroundImg}
+        alt="Background"
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: isMobile ? "100vw" : "100vh",
+          height: isMobile ? "100vw" : "100vh",
+          objectFit: "cover",
+          zIndex: 0,
+        }}
+      />
+
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: `translate(-50%, -50%) scale(${gridScale})`,
+          width: isMobile ? "100vw" : "100vh",
+          height: isMobile ? "100vw" : "100vh",
+          zIndex: 1,
+        }}
+      >
+        {/* Column & Row Labels */}
+        {renderColumnLabels(clockStr)}
+        {renderRowLabels(clockStr)}
+
+        {/* Top 2 rows */}
+        {renderAlphabetRow(alphabetRows[0], 0)}
+        {renderAlphabetRow(alphabetRows[1], 1)}
+
+        {/* Bottom 2 rows */}
+        {renderAlphabetRow(alphabetRows[2], 6)}
+        {renderAlphabetRow(alphabetRows[3], 7)}
+      </div>
+    </div>
   );
 }
