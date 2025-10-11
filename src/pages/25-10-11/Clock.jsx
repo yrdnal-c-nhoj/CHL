@@ -166,6 +166,7 @@ export default function FancyClock() {
           position: "absolute",
           top: "50%",
           left: "50%",
+          opacity: "0.8",
           transform: "translate(-50%, -50%)",
           width: isMobile ? "100vw" : "100vh",
           height: isMobile ? "100vw" : "100vh",
@@ -174,7 +175,7 @@ export default function FancyClock() {
         }}
       />
 
-      {/* Grid overlay */}
+      Grid overlay
       <div
         style={{
           position: "absolute",
