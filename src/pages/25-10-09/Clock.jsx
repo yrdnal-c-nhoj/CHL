@@ -64,23 +64,26 @@ export default function ConcentricClock() {
       const value = type === 'h' ? (i === 0 ? 12 : i) : i;
       const isActive = type === 'h' ? value === current : i === current;
 
-      items.push(
-        <div
-          key={i}
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-            fontFamily: fontFamily,
-            fontSize: type === 'h' ? '3rem' : type === 'm' ? '1.5rem' : '1.2rem',
-            fontWeight: isActive ? 900 : 400,
-            color: isActive ? '#2F032EFF' : type === 'h' ? '#FF0000' : type === 'm' ? '#00AA00' : '#0000FF',
-            transition: 'all 0.3s ease',
-          }}
-        >
-          {value}
-        </div>
+     items.push(
+  <div
+    key={i}
+    style={{
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+      transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+      fontFamily: fontFamily,
+      fontSize: type === 'h' ? '7vh' : type === 'm' ? '3vh' : '2.8vh',
+      fontWeight: isActive ? 900 : 400,
+      color: isActive ? '#2F032EFF' : type === 'h' ? '#BE3D06FF' : type === 'm' ? '#00AA00' : '#4949EEFF',
+      transition: 'all 0.3s ease',
+      textShadow: isActive
+        ? `2px 2px 0 #fff, -2px 2px 0 #fff, 2px -2px 0 #fff, -2px -2px 0 #fff`
+        : 'none',
+    }}
+  >
+    {value}
+  </div>
       );
     }
     return items;
@@ -99,7 +102,7 @@ export default function ConcentricClock() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #EDEDAEFF, #EDE7C3FF, #F1EBC5FF, #E9F5B4FF)',
+        background: 'linear-gradient(135deg, #EDEDAEFF, #ECDDF3FF, #ECD9F3FF, #E9DEAFFF)',
         backgroundSize: '400% 400%',
         animation: 'gradientBG 20s ease infinite',
         overflow: 'hidden',
@@ -117,7 +120,7 @@ export default function ConcentricClock() {
 
       <div style={{ position: 'relative', width: '800px', height: '800px' }}>
         {/* Hours - inner ring */}
-        {renderRing(12, 100, 'h')}
+        {renderRing(12, 108, 'h')}
         
         {/* Minutes - middle ring */}
         {renderRing(60, 130, 'm')}
