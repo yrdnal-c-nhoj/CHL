@@ -7,7 +7,7 @@ export default function ConcentricClock() {
   const [currentTime, setCurrentTime] = useState({ h: 0, m: 0, s: 0 });
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  // ✅ Track true viewport height
+  // Track true viewport height
   useEffect(() => {
     const setVh = () => {
       document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
@@ -17,7 +17,7 @@ export default function ConcentricClock() {
     return () => window.removeEventListener('resize', setVh);
   }, []);
 
-  // ✅ Load fonts
+  // Load fonts
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
@@ -41,7 +41,7 @@ export default function ConcentricClock() {
     document.fonts.ready.then(() => setFontsLoaded(true));
   }, []);
 
-  // ✅ Update time every second
+  // Update time every second
   useEffect(() => {
     if (!fontsLoaded) return;
     const getTime = () => {
@@ -57,8 +57,8 @@ export default function ConcentricClock() {
     return () => clearInterval(interval);
   }, [fontsLoaded]);
 
-  // ✅ Render rings
-  const renderRing = (count, radiusVh, type) => {
+  // Render ring with optional X/Y offsets
+  const renderRing = (count, radiusVh, type, offset = { x: 0, y: 0 }) => {
     const items = [];
     const current = currentTime[type];
     const fontFamily =
@@ -68,9 +68,8 @@ export default function ConcentricClock() {
     for (let i = 0; i < count; i++) {
       const angle = (360 / count) * i - currentOffset;
       const rad = (angle * Math.PI) / 180;
-      const radiusPx = radiusVh; // in vh
-      const x = radiusPx * Math.cos(rad);
-      const y = radiusPx * Math.sin(rad);
+      const x = radiusVh * Math.cos(rad) + offset.x;
+      const y = radiusVh * Math.sin(rad) + offset.y;
       const value = type === 'h' ? (i === 0 ? 12 : i) : i;
       const isActive = type === 'h' ? value === current : i === current;
 
@@ -138,7 +137,7 @@ export default function ConcentricClock() {
         `}
       </style>
 
-      {/* ✅ Centered clock */}
+      {/* Centered clock */}
       <div
         style={{
           position: 'relative',
@@ -146,9 +145,9 @@ export default function ConcentricClock() {
           height: '100vh',
         }}
       >
-        {renderRing(12, 12, 'h')}   {/* 18vh radius */}
-        {renderRing(60, 19, 'm')}   {/* 26vh radius */}
-        {renderRing(60, 23, 's')}   {/* 36vh radius */}
+        {renderRing(12, 12, 'h', { x: -0.7, y: -3.8 })}   {/* hours nudge */}
+        {renderRing(60, 19, 'm', { x: 0.1, y: 0 })}    {/* minutes nudge */}
+        {renderRing(60, 28, 's', { x: -4.2, y: -0.8 })} {/* seconds nudge */}
       </div>
     </div>
   );
