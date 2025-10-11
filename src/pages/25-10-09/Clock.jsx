@@ -73,34 +73,50 @@ export default function ConcentricClock() {
       const value = type === 'h' ? (i === 0 ? 12 : i) : i;
       const isActive = type === 'h' ? value === current : i === current;
 
-      items.push(
-        <div
-          key={i}
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            transform: `translate(${x}vh, ${y}vh)`,
-            transformOrigin: 'left center',
-            fontFamily,
-            fontSize:
-              type === 'h' ? '7vh' : type === 'm' ? '2.5vh' : '2.2vh',
-            fontWeight: isActive ? 900 : 400,
-            color: isActive
-              ? '#F7F305FF'
-              : type === 'h'
-              ? '#F0C091FF'
-              : type === 'm'
-              ? '#A6D2A6FF'
-              : '#9797C5FF',
-            transition: 'all 0.3s ease',
-            textShadow: isActive
-              ? `1px 1px 0 #1A1818FF, -1px 1px 0 #161515FF, 1px -1px 0 #1B1A1AFF, -1px -1px 0 #1B1919FF`
-              : 'none',
-            textAlign: 'left',
-            whiteSpace: 'nowrap',
-          }}
-        >
+     items.push(
+  <div
+    key={i}
+    style={{
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+      transform: `translate(${x}vh, ${y}vh)`,
+      transformOrigin: 'left center',
+      fontFamily,
+      fontSize: type === 'h' ? '17vh' : type === 'm' ? '6vh' : '6vh',
+      fontWeight: isActive ? 900 : 400,
+      color: isActive
+        ? '#F4F149FF'
+        : type === 'h'
+        ? '#B69473FF'
+        : type === 'm'
+        ? '#799679FF'
+        : '#7E7EA6FF',
+      transition: 'all 0.3s ease',
+      textShadow: isActive
+        ? `
+          1px 1px 0 #000,
+          -1px 1px 0 #000,
+          1px -1px 0 #000,
+          -1px -1px 0 #000,
+
+          2px 2px 0 #fff,
+          -2px 2px 0 #fff,
+          2px -2px 0 #fff,
+          -2px -2px 0 #fff,
+
+          1px 1px 0 #000,
+          -1px 1px 0 #000,
+          1px -1px 0 #000,
+          -1px -1px 0 #000
+        `
+        : 'none',
+      textAlign: 'left',
+      whiteSpace: 'nowrap',
+    }}
+  >
+
+
           {value}
         </div>
       );
@@ -145,9 +161,9 @@ export default function ConcentricClock() {
           height: '100vh',
         }}
       >
-        {renderRing(12, 12, 'h', { x: -0.7, y: -3.8 })}   {/* hours nudge */}
-        {renderRing(60, 19, 'm', { x: 0.1, y: 0 })}    {/* minutes nudge */}
-        {renderRing(60, 28, 's', { x: -4.2, y: -0.8 })} {/* seconds nudge */}
+        {renderRing(12, 32, 'h', { x: -44, y: -12 })}   {/* hours nudge */}
+        {renderRing(60, 49, 'm', { x: -54, y: -6 })}    {/* minutes nudge */}
+        {renderRing(60, 52, 's', { x: -47, y: -8 })} {/* seconds nudge */}
       </div>
     </div>
   );
