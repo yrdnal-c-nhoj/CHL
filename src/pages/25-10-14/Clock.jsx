@@ -115,7 +115,7 @@ export default function AnalogClock() {
     transformOrigin: "50% 100%",
     borderRadius: "0.4vh",
     willChange: "transform",
-    opacity:    "0.3",
+    opacity:    "0.1",
     background: "#E669DAFF",
     // romantic text shadow to make them soft & fuzzy
     boxShadow: "0 0 2.4vh rgba(255,0,60,0.6)",
@@ -138,7 +138,7 @@ export default function AnalogClock() {
   const secondStyle = {
     ...handCommon,
     width: "0.4vh",
-    height: "44vmin",
+    height: "37vmin",
     transform: `translate(-50%, 0) rotate(${secondDeg}deg)`,
   };
 
