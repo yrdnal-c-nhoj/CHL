@@ -33,7 +33,7 @@
     "react-router-dom": "^6.30.1",
     "styled-components": "^6.1.19",
     "tailwind": "^2.4.1",
-    "three": "^0.152.2",
+    "three": "^0.180.0",
     "twitter-api-v2": "^1.27.0",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-pages": "^0.33.1",
