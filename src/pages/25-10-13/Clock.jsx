@@ -7,8 +7,12 @@ const SpinningDodecahedronClock = () => {
   const containerRef = useRef(null);
   const bgRef = useRef(null);
   const animationIdRef = useRef(null);
-  const [fontLoaded, setFontLoaded] = useState(false);
 
+  const [ready, setReady] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  // --- Load font ---
   useEffect(() => {
     const fontFace = new FontFace("Orbitron20251012", `url(${OrbitronFont20251012})`);
     fontFace.load().then((loadedFace) => {
@@ -17,12 +21,25 @@ const SpinningDodecahedronClock = () => {
     });
   }, []);
 
+  // --- Load background image ---
   useEffect(() => {
-    if (!containerRef.current || !fontLoaded) return;
+    const img = new Image();
+    img.src = bgImage;
+    img.onload = () => setImageLoaded(true);
+  }, []);
 
-    // --- Scene & Camera ---
+  // --- Initialize scene once all assets are ready ---
+  useEffect(() => {
+    if (!containerRef.current || !fontLoaded || !imageLoaded) return;
+
+    // --- Scene ---
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
     camera.position.z = 7;
 
     // --- Renderer ---
@@ -31,20 +48,29 @@ const SpinningDodecahedronClock = () => {
     renderer.setPixelRatio(window.devicePixelRatio);
     containerRef.current.appendChild(renderer.domElement);
 
-    // --- Dodecahedron Wireframe ---
+    // --- Dodecahedron with gradient glow ---
     const geometry = new THREE.DodecahedronGeometry(2, 0);
     const edges = new THREE.EdgesGeometry(geometry);
-    const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x3f4fff, linewidth: 10 });
-    const wireframe = new THREE.LineSegments(edges, edgeMaterial);
 
-    // Simulated “thicker glow” overlay (since real linewidth rarely works)
-    const glowMaterial = new THREE.LineBasicMaterial({ color: 0x3f4fff, transparent: true, opacity: 0.9 });
-    const glowWire = new THREE.LineSegments(edges, glowMaterial);
-    glowWire.scale.set(1.03, 1.03, 1.03); // slightly larger to simulate thickness
+    const coreMaterial = new THREE.LineBasicMaterial({ color: 0x4f80ff });
+    const wireframe = new THREE.LineSegments(edges, coreMaterial);
 
     const dodecahedronGroup = new THREE.Group();
     dodecahedronGroup.add(wireframe);
-    dodecahedronGroup.add(glowWire);
+
+    const glowColors = [0x01100f, 0x3fa0ff, 0x2fffd5];
+    glowColors.forEach((color, i) => {
+      const glowMaterial = new THREE.LineBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.35 - i * 0.08,
+      });
+      const glowWire = new THREE.LineSegments(edges, glowMaterial);
+      const scale = 1 + (i + 1) * 0.015;
+      glowWire.scale.set(scale, scale, scale);
+      dodecahedronGroup.add(glowWire);
+    });
+
     scene.add(dodecahedronGroup);
 
     // --- Clock Texture ---
@@ -54,23 +80,23 @@ const SpinningDodecahedronClock = () => {
       canvas.height = 512;
       const ctx = canvas.getContext("2d");
 
-      const update = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const drawTime = () => {
+        ctx.clearRect(0, 0, 512, 512);
         const now = new Date();
         const hours = now.getHours();
         const minutes = String(now.getMinutes()).padStart(2, "0");
         const time = `${hours}${minutes}`;
         ctx.font = "280px 'Orbitron20251012', monospace";
-        ctx.fillStyle = "#F6F3F0FF";
+        ctx.fillStyle = "#F6F3F0";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(time, canvas.width / 2, canvas.height / 2);
+        ctx.fillText(time, 256, 256);
       };
 
-      update();
+      drawTime();
       const texture = new THREE.CanvasTexture(canvas);
       setInterval(() => {
-        update();
+        drawTime();
         texture.needsUpdate = true;
       }, 1000);
       return texture;
@@ -83,7 +109,7 @@ const SpinningDodecahedronClock = () => {
       transparent: true,
     });
 
-    // --- Face Text Panels ---
+    // --- Plane placement ---
     const phi = (1 + Math.sqrt(5)) / 2;
     const a = 1 / Math.sqrt(3);
     const b = a / phi;
@@ -117,7 +143,7 @@ const SpinningDodecahedronClock = () => {
     pointLight.position.set(5, 5, 5);
     scene.add(pointLight);
 
-    // --- Fixed Background Filters ---
+    // --- Background filter ---
     if (bgRef.current) {
       bgRef.current.style.filter = `
         brightness(1.15)
@@ -125,6 +151,8 @@ const SpinningDodecahedronClock = () => {
         saturate(0.1)
         hue-rotate(-110deg)
       `;
+      bgRef.current.style.opacity = "1";
+      bgRef.current.style.transition = "opacity 1.2s ease";
     }
 
     // --- Animate ---
@@ -133,11 +161,11 @@ const SpinningDodecahedronClock = () => {
       animationIdRef.current = requestAnimationFrame(animate);
       const t = clockObj.getElapsedTime();
 
-      // Rotate dodecahedron
+      // Gentle spin
       dodecahedronGroup.rotation.x += 0.002;
       dodecahedronGroup.rotation.y += 0.003;
 
-      // Move the dodecahedron in and out through the camera
+      // Depth movement
       dodecahedronGroup.position.z = Math.sin(t * 0.6) * 8;
 
       renderer.render(scene, camera);
@@ -152,21 +180,58 @@ const SpinningDodecahedronClock = () => {
     };
     window.addEventListener("resize", handleResize);
 
+    setReady(true);
+
     return () => {
       window.removeEventListener("resize", handleResize);
       if (animationIdRef.current) cancelAnimationFrame(animationIdRef.current);
       renderer.dispose();
-      edges.dispose();
       geometry.dispose();
+      edges.dispose();
       clockTexture.dispose();
       textMaterial.dispose();
       if (containerRef.current && renderer.domElement)
         containerRef.current.removeChild(renderer.domElement);
     };
-  }, [fontLoaded]);
+  }, [fontLoaded, imageLoaded]);
 
+  // --- Layout ---
   return (
-    <div style={{ width: "100vw", height: "100vh", position: "fixed", top: 0, left: 0 }}>
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        overflow: "hidden",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        backgroundColor: "#000",
+      }}
+    >
+      {/* Preloader */}
+      {!ready && (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "#000",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#888",
+            fontFamily: "monospace",
+            fontSize: "1.2rem",
+            zIndex: 5,
+          }}
+        >
+          Loading clock...
+        </div>
+      )}
+
+      {/* Background */}
       <div
         ref={bgRef}
         style={{
@@ -179,12 +244,25 @@ const SpinningDodecahedronClock = () => {
           backgroundSize: "100% 100%",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
+          opacity: "0",
+          transition: "opacity 1.2s ease",
           zIndex: 0,
         }}
       />
+
+      {/* Three.js container */}
       <div
         ref={containerRef}
-        style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 1 }}
+        style={{
+          opacity: ready ? 1 : 0,
+          transition: "opacity 1s ease",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 1,
+        }}
       />
     </div>
   );
