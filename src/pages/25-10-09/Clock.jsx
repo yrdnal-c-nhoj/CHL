@@ -124,9 +124,9 @@ export default function ConcentricClock() {
           height: '100vh',
         }}
       >
-        {renderRing(12, 62, 'h', { x: -98, y: -34 })}
+        {renderRing(12, 62, 'h', { x: -92, y: -34 })}
         {renderRing(60, 139, 'm', { x: -149, y: -10 })}
-        {renderRing(60, 72, 's', { x: -58, y: -1 })}
+        {renderRing(60, 72, 's', { x: -66, y: 4 })}
       </div>
     </div>
   );
