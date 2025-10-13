@@ -128,7 +128,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: clamp(2.4vw, 3.5vw, 5vw);
+  font-size: clamp(2.9vw, 3.5vw, 4vw);
   font-family: "Manrope", sans-serif;
   letter-spacing: 0.02vw;
   max-width: 80%;
