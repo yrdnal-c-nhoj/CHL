@@ -117,7 +117,7 @@ body {
 
 .date {
   flex: 0 0 auto;
-  font-size: clamp(1.5vw, 2.5vw, 4vw);
+  font-size: clamp(1.8vw, 3vw, 4vw);
   font-family: "Manrope", sans-serif;
   color: #0c0d0d;
   letter-spacing: -0.05rem;
@@ -128,7 +128,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: clamp(1.8vw, 3vw, 5vw);
+  font-size: clamp(3vw, 3vw, 4vw);
   font-family: "Manrope", sans-serif;
   line-height: 1.2;
   max-width: 80%;
@@ -202,9 +202,9 @@ body {
 }
 
 /* --- Responsive for small devices --- */
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
   .centeredContent {
     max-width: 98%;
     gap: clamp(0.5vw, 1vw, 2vw);
   }
-}
+} */
