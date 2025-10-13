@@ -27,15 +27,16 @@ export default function ComicClock() {
     flexWrap: "wrap",
     fontFamily: "ComicFont, cursive",
     padding: "1vmin",
-    height: "100dvh",
+    height: "100dvh", // digital viewport height for mobile correctness
+    width: "100vw",
     boxSizing: "border-box",
     background: "#F3E9D6FF",
   };
 
   const panelBaseStyle = {
     display: "flex",
-    flex: "1 1 auto",
-    height: "calc((100vh - 7vmin) / 3)",
+    flex: "1 1 30%",
+    height: "calc((100dvh - 7vmin) / 3)", // use dvh not vh
     margin: "1vmin",
     overflow: "hidden",
     position: "relative",
@@ -47,10 +48,9 @@ export default function ComicClock() {
 
   const digitStyle = {
     fontFamily: "ComicFont, cursive",
-    fontSize: "8vw",
+    fontSize: "clamp(2rem, 8vw, 6rem)", // responsive font scaling
   };
 
-  // NEW: Digit bubble style (round)
   const digitBubbleStyle = {
     position: "relative",
     padding: "0.5rem 1rem",
@@ -60,21 +60,20 @@ export default function ComicClock() {
     display: "inline-flex",
     justifyContent: "center",
     alignItems: "center",
-    minWidth: "4rem",
-    minHeight: "4rem",
+    minWidth: "3.5rem",
+    minHeight: "3.5rem",
     boxShadow: "2px 2px 0px black",
   };
 
-  // NEW: Text bubble style (rectangular narration)
   const textBubbleStyle = {
     position: "relative",
-    padding: "0.1rem 0.15rem",
+    padding: "0.1rem 0.2rem",
     background: "#F3E9D6FF",
     border: "0.2rem solid black",
     borderRadius: "0.8rem",
     display: "inline-block",
     textAlign: "center",
-    fontSize: "2vw",
+    fontSize: "clamp(0.8rem, 2vw, 1.5rem)",
     lineHeight: 1.2,
   };
 
@@ -98,15 +97,15 @@ export default function ComicClock() {
   const panels = [
     {
       content: createBubbleContent(Math.floor(hours / 10)),
-      flexBasis: "40vw",
+      flexBasis: "40%",
       background: cheapComicBackground("lightblue"),
       text: (
         <p
           style={{
             ...textBubbleStyle,
             position: "absolute",
-            top: "-0.5rem",
-            left: "-0.2rem",
+            top: "0.5rem",
+            left: "0.5rem",
           }}
         >
           BY THAT TIME...
@@ -115,20 +114,20 @@ export default function ComicClock() {
     },
     {
       content: createBubbleContent(hours % 10),
-      flexBasis: "30vw",
+      flexBasis: "30%",
       background: cheapComicBackground("#CFF3A8FF"),
     },
     {
       content: null,
-      flexBasis: "20vw",
+      flexBasis: "20%",
       background: cheapComicBackground("#F0DF6EFF"),
       text: (
         <p
           style={{
             ...textBubbleStyle,
             position: "absolute",
-            top: "0.5rem",
-            right: "-0.2rem",
+            bottom: "0.5rem",
+            right: "0.5rem",
           }}
         >
           ...they knew...
@@ -137,15 +136,15 @@ export default function ComicClock() {
     },
     {
       content: createBubbleContent(Math.floor(minutes / 10)),
-      flexBasis: "20vw",
+      flexBasis: "20%",
       background: cheapComicBackground("#F18F84FF"),
       text: (
         <p
           style={{
             ...textBubbleStyle,
             position: "absolute",
-            top: "-0.5rem",
-            left: "-0.2rem",
+            top: "0.5rem",
+            left: "0.5rem",
           }}
         >
           ...it would...
@@ -154,30 +153,30 @@ export default function ComicClock() {
     },
     {
       content: createBubbleContent(minutes % 10),
-      flexBasis: "20vw",
+      flexBasis: "20%",
       background: cheapComicBackground("#F1B24BFF"),
     },
     {
       content: createBubbleContent(Math.floor(seconds / 10)),
-      flexBasis: "20vw",
+      flexBasis: "20%",
       background: cheapComicBackground("lightblue"),
     },
     {
       content: createBubbleContent(seconds % 10),
-      flexBasis: "20vw",
+      flexBasis: "20%",
       background: cheapComicBackground("#F18F84FF"),
     },
     {
       content: createBubbleContent(ampm[0]),
-      flexBasis: "20vw",
+      flexBasis: "20%",
       background: cheapComicBackground("#F0DF6EFF"),
       text: (
         <p
           style={{
             ...textBubbleStyle,
             position: "absolute",
-            top: "-0.7rem",
-            left: "-0.5rem",
+            top: "0.5rem",
+            left: "0.5rem",
           }}
         >
           ...not...
@@ -186,15 +185,15 @@ export default function ComicClock() {
     },
     {
       content: createBubbleContent(ampm[1]),
-      flexBasis: "30vw",
+      flexBasis: "30%",
       background: cheapComicBackground("#CFF3A8FF"),
       text: (
         <p
           style={{
             ...textBubbleStyle,
             position: "absolute",
-            bottom: "-0.2rem",
-            right: "-0.5rem",
+            bottom: "0.5rem",
+            right: "0.5rem",
           }}
         >
           ...stop...
