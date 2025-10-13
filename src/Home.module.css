@@ -1,33 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
 
-/* Ensure full-page layout */
+/* --- Full-page layout --- */
 html,
 body {
   margin: 0;
   background-color: #dcd7d8;
+  width: 100%;
+  height: 100%;
 }
 
 .container {
   margin: 0;
   padding: 0;
   width: 100vw;
-  min-height: 100vh; /* Changed from height: 100vh */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
 }
 
+/* --- Centered content --- */
 .centeredContent {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 70%;
+  max-width: 98%;
   box-sizing: border-box;
   z-index: 5;
+  gap: clamp(0.5vh, 1vh, 2vh); /* scales spacing between sections */
 }
 
+/* --- Entry list --- */
 .dateList {
   list-style: none;
   padding: 0;
@@ -36,6 +41,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  gap: clamp(0.5vh, 1vh, 2vh); /* vertical space between entries */
 }
 
 .entry {
@@ -44,9 +50,10 @@ body {
   justify-content: space-between;
   width: 100%;
   box-sizing: border-box;
-  padding: 0.1rem 0.01rem;
+  padding: clamp(0.2vh, 0.5vh, 1vh) clamp(0.2vh, 0.5vh, 1vh); /* scales with vh */
   position: relative;
   z-index: 1;
+  gap: clamp(0.5vh, 1vh, 2vh); /* space between number, title, date */
 }
 
 .entry:not(:last-child) {
@@ -57,6 +64,7 @@ body {
   border-top: 1px solid #f1f3f5;
 }
 
+/* --- Hover background scaling with vh --- */
 .entry::before {
   content: '';
   position: absolute;
@@ -67,11 +75,12 @@ body {
   background-color: #02112f;
   z-index: -1;
   transform: translateX(-50%);
-  transition: width 0.2s ease;
+  transition: width 0.2s ease, height 0.2s ease;
 }
 
 .entry:hover::before {
   width: 100vw;
+  height: 100%;
 }
 
 .entry:hover:not(:last-child) {
@@ -82,6 +91,13 @@ body {
   border-top: 1px solid transparent;
 }
 
+.entry:hover .clockNumber,
+.entry:hover .title,
+.entry:hover .date {
+  color: #f7f7f5;
+}
+
+/* --- Links inside entries --- */
 .navLink {
   display: flex;
   align-items: center;
@@ -90,67 +106,52 @@ body {
   text-decoration: none;
 }
 
+/* --- Text scaling with vh --- */
 .clockNumber {
   flex: 0 0 auto;
-  font-size: 0.9rem;
+  font-size: clamp(1.5vh, 2.5vh, 3vh);
   font-family: "Manrope", sans-serif;
   color: #0c0d0d;
-  /* text-align: left; */
-  min-width: 1rem;
+  letter-spacing: -0.05rem;
 }
 
 .date {
   flex: 0 0 auto;
-  font-size: 0.9rem;
+  font-size: clamp(1.8vh, 3vh, 4vh);
   font-family: "Manrope", sans-serif;
   color: #0c0d0d;
-  /* text-align: right; */
-  min-width: 5rem;
+  letter-spacing: -0.05rem;
 }
 
 .title {
   position: absolute;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  font-size: 1rem;
+  transform: translate(-50%, -50%);
+  font-size: clamp(2vh, 4vh, 5vh);
   font-family: "Manrope", sans-serif;
-  color: #0c0d0d;
-  /* text-align: center; */
+  line-height: 1.2;
+  max-width: 80%;
+  text-align: center;
   white-space: normal;
   overflow: visible;
   text-overflow: unset;
   word-break: break-word;
-  line-height: 1.1;
-  max-width: 60%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  z-index: 5;
 }
 
-.error {
-  color: #dc3545;
-  text-align: center;
-  font-size: 18px;
-  padding: 20px;
-}
-
-.loading {
-  color: #212521;
-  text-align: center;
-  font-size: 18px;
-  padding: 20px;
-}
-
+/* --- Sort buttons --- */
 .sortContainer {
   display: flex;
   justify-content: center;
-  padding: 0.1rem 0;
+  padding: clamp(0.2vh, 0.5vh, 1vh) 0;
   z-index: 6;
 }
 
 .sortButton {
   background-color: transparent;
-  font-size: 0.7rem;
-  padding: 4px 18px;
+  font-size: clamp(1.2vh, 2vh, 2.5vh);
+  padding: clamp(0.4vh, 0.8vh, 1vh) clamp(1.5vh, 2.5vh, 3vh);
   border: 1px solid transparent;
   border-radius: 3px;
   cursor: pointer;
@@ -184,23 +185,26 @@ body {
   border-bottom-left-radius: 0;
 }
 
-.entry:hover .clockNumber,
-.entry:hover .title,
-.entry:hover .date {
-  color: #f7f7f5;
+/* --- Loading & error messages --- */
+.error,
+.loading {
+  text-align: center;
+  font-size: clamp(1.5vh, 2.5vh, 3vh);
+  padding: clamp(1vh, 2vh, 3vh);
 }
+
+.error {
+  color: #dc3545;
+}
+
+.loading {
+  color: #212521;
+}
+
+/* --- Responsive for small devices --- */
 @media (max-width: 600px) {
-  
-.centeredContent {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 98%;
-  box-sizing: border-box;
-  z-index: 5;
-}
-
-
-
+  .centeredContent {
+    max-width: 98%;
+    gap: clamp(0.5vh, 1vh, 2vh);
+  }
 }

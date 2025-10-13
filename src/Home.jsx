@@ -2,8 +2,8 @@ import React, { useState, useContext, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import TopNav from './components/TopNav';
-import styles from './Home.module.css';
 import Footer from './components/Footer';
+import styles from './Home.module.css';
 import instaImg from './assets/i.png';
 import elonImg from './assets/x.png';
 
@@ -13,7 +13,7 @@ const Home = () => {
   const [randomSortKey, setRandomSortKey] = useState(0);
   const [fontsReady, setFontsReady] = useState(sessionStorage.getItem('fontsLoaded') === 'true');
 
-  // 🟢 Only show loader until fonts are ready — on first visit only
+  // 🟢 Load fonts and prevent FOUT
   useEffect(() => {
     if (!fontsReady) {
       document.fonts.ready.then(() => {
@@ -23,6 +23,7 @@ const Home = () => {
     }
   }, [fontsReady]);
 
+  // Load saved sort preference
   useEffect(() => {
     const savedSort = localStorage.getItem('sortBy');
     if (savedSort) setSortBy(savedSort);
@@ -32,16 +33,28 @@ const Home = () => {
     localStorage.setItem('sortBy', sortBy);
   }, [sortBy]);
 
+  // Validate date format
   const isValidDate = (str) => {
     const parts = str?.split('-');
     if (!parts || parts.length !== 3) return false;
     const [yy, mm, dd] = parts.map(Number);
     if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return false;
-    const fullYear = 2000 + yy;
-    const date = new Date(fullYear, mm - 1, dd);
+    const date = new Date(2000 + yy, mm - 1, dd);
     return !isNaN(date.getTime());
   };
 
+  // Format date
+  const formatDate = (dateStr) => {
+    const parts = dateStr?.split('-');
+    if (!parts || parts.length !== 3) return 'Unknown Date';
+    const [yy, mm, dd] = parts.map(Number);
+    const date = new Date(2000 + yy, mm - 1, dd);
+    return isNaN(date.getTime())
+      ? 'Unknown Date'
+      : new Intl.DateTimeFormat('en-US', { month: 'numeric', day: 'numeric', year: '2-digit' }).format(date);
+  };
+
+  // Sorted items
   const sortedItems = useMemo(() => {
     const itemsCopy = [...items].filter(item => item?.date && isValidDate(item.date));
 
@@ -52,50 +65,22 @@ const Home = () => {
     return itemsCopy.sort(() => Math.random() - 0.5);
   }, [items, sortBy, randomSortKey]);
 
-  const handleRandomSort = () => {
-    setSortBy('random');
-    setRandomSortKey(prev => prev + 1);
-  };
+  const handleRandomSort = () => setSortBy('random') || setRandomSortKey(prev => prev + 1);
+  const handleDateSort = () => setSortBy(prev => (prev === 'date-desc' ? 'date-asc' : 'date-desc'));
+  const handleTitleSort = () => setSortBy(prev => (prev === 'title-asc' ? 'title-desc' : 'title-asc'));
 
-  const handleDateSort = () => {
-    setSortBy(prev => (prev === 'date-desc' ? 'date-asc' : 'date-desc'));
-  };
-
-  const handleTitleSort = () => {
-    setSortBy(prev => (prev === 'title-asc' ? 'title-desc' : 'title-asc'));
-  };
-
-  const formatDate = (dateStr) => {
-    const parts = dateStr?.split('-');
-    if (!parts || parts.length !== 3) return 'Unknown Date';
-    const [yy, mm, dd] = parts.map(Number);
-    if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return 'Unknown Date';
-    const fullYear = 2000 + yy;
-    const date = new Date(fullYear, mm - 1, dd);
-    return isNaN(date.getTime())
-      ? 'Unknown Date'
-      : new Intl.DateTimeFormat('en-US', {
-          month: 'numeric',
-          day: 'numeric',
-          year: '2-digit',
-        }).format(date);
-  };
-
-  // 🟡 Show loader only if fonts not yet ready (first visit) or data is still loading
+  // 🟡 Show loader until fonts AND data are ready
   if (!fontsReady || loading) {
     return (
-      <div
-        style={{
-          height: '100dvh',
-          width: '100vw',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#fff',
-          fontFamily: 'sans-serif',
-          transition: 'opacity 0.5s ease',
-        }}
-      >
+      <div style={{
+        height: '100dvh',
+        width: '100vw',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        fontFamily: 'sans-serif',
+      }}>
         Loading...
       </div>
     );
@@ -106,15 +91,13 @@ const Home = () => {
   return (
     <>
       <TopNav />
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          minHeight: "100vh",
-          opacity: fontsReady ? 1 : 0,
-          transition: "opacity 0.6s ease-in",
-        }}
-      >
+      <div style={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+        opacity: fontsReady ? 1 : 0,
+        transition: "opacity 0.6s ease-in",
+      }}>
         <main style={{ flex: 1 }}>
           <div className={styles.container}>
             <div className={styles.centeredContent}>
@@ -157,31 +140,21 @@ const Home = () => {
           </div>
         </main>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            gap: "0.1rem",
-            padding: "0.1rem",
-          }}
-        >
-          <a
-            href="https://www.instagram.com/cubist_heart_labs/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+        <div style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          gap: "0.1rem",
+          padding: "0.1rem",
+        }}>
+          <a href="https://www.instagram.com/cubist_heart_labs/" target="_blank" rel="noopener noreferrer">
             <img src={instaImg} alt="Instagram" style={{ width: "2rem", height: "2rem" }} />
           </a>
-
-          <a
-            href="https://x.com/cubistheartlabs"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href="https://x.com/cubistheartlabs" target="_blank" rel="noopener noreferrer">
             <img src={elonImg} alt="X" style={{ width: "2rem", height: "2rem" }} />
           </a>
         </div>
+
         <Footer />
       </div>
     </>
