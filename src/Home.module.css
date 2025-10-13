@@ -109,7 +109,7 @@ body {
 /* --- Text scaling with vw --- */
 .clockNumber {
   flex: 0 0 auto;
-  font-size: clamp(2vw, 3vw, 4vw);
+  font-size: clamp(3vw, 3.5vw, 4vw);
   font-family: "Manrope", sans-serif;
   color: #0c0d0d;
   letter-spacing: -0.3vw;
@@ -117,7 +117,7 @@ body {
 
 .date {
   flex: 0 0 auto;
-  font-size: clamp(2vw, 3vw, 4vw);
+  font-size: clamp(3vw, 3.5vw, 4vw);
   font-family: "Manrope", sans-serif;
   color: #0c0d0d;
   letter-spacing: -0.3vw;
@@ -128,7 +128,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: clamp(3vw, 3.5vw, 4vw);
+  font-size: clamp(4vw, 4vw, 4vw);
   font-family: "Manrope", sans-serif;
   letter-spacing: 0.02vw;
   max-width: 80%;
