@@ -92,7 +92,7 @@ body {
 
 .clockNumber {
   flex: 0 0 auto;
-font-size: 1rem;
+  font-size: 1rem;
   font-family: "Manrope", sans-serif;
   color: #0c0d0d;
   /* text-align: left; */
@@ -156,7 +156,7 @@ font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s, text-shadow 0.2s;
   color: #8b8f8c;
-   font-family: "Manrope", sans-serif;
+  font-family: "Manrope", sans-serif;
 }
 
 .sortButton:hover {
@@ -200,7 +200,7 @@ font-size: 1rem;
   box-sizing: border-box;
   z-index: 5;
 }
-
+/* 
 .clockNumber {
   font-size: 0.7rem;
 }
@@ -212,5 +212,5 @@ font-size: 1rem;
 .title {
   font-size: 0.8rem;
   line-height: 1.1;
-} 
+}  */
 }
