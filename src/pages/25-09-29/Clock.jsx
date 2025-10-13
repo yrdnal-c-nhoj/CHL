@@ -27,7 +27,7 @@ export default function ComicClock() {
     flexWrap: "wrap",
     fontFamily: "ComicFont, cursive",
     padding: "1vmin",
-    height: "100vh",
+    height: "100dvh",
     boxSizing: "border-box",
     background: "#F3E9D6FF",
   };
@@ -87,7 +87,7 @@ export default function ComicClock() {
   const hours = time.getHours() % 12 || 12;
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
-  const ampm = time.getHours() >= 12 ? "PM" : "AM";
+  const ampm = time.getHours() >= 12 ? "am" : "pm";
 
   const createBubbleContent = (digit) => (
     <div style={digitBubbleStyle}>
