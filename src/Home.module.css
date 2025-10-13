@@ -29,7 +29,7 @@ body {
   max-width: 98%;
   box-sizing: border-box;
   z-index: 5;
-  gap: clamp(0.5vh, 1vh, 2vh); /* scales spacing between sections */
+  gap: clamp(0.5vw, 1vw, 2vw); /* scales spacing between sections */
 }
 
 /* --- Entry list --- */
@@ -41,7 +41,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: clamp(0.5vh, 1vh, 2vh); /* vertical space between entries */
+  gap: clamp(0.5vw, 1vw, 2vw); /* vertical space between entries */
 }
 
 .entry {
@@ -50,10 +50,10 @@ body {
   justify-content: space-between;
   width: 100%;
   box-sizing: border-box;
-  padding: clamp(0.2vh, 0.5vh, 1vh) clamp(0.2vh, 0.5vh, 1vh); /* scales with vh */
+  padding: clamp(0.2vw, 0.5vw, 1vw) clamp(0.2vw, 0.5vw, 1vw); /* scales with vw */
   position: relative;
   z-index: 1;
-  gap: clamp(0.5vh, 1vh, 2vh); /* space between number, title, date */
+  gap: clamp(0.5vw, 1vw, 2vw); /* space between number, title, date */
 }
 
 .entry:not(:last-child) {
@@ -64,7 +64,7 @@ body {
   border-top: 1px solid #f1f3f5;
 }
 
-/* --- Hover background scaling with vh --- */
+/* --- Hover background scaling with vw --- */
 .entry::before {
   content: '';
   position: absolute;
@@ -106,10 +106,10 @@ body {
   text-decoration: none;
 }
 
-/* --- Text scaling with vh --- */
+/* --- Text scaling with vw --- */
 .clockNumber {
   flex: 0 0 auto;
-  font-size: clamp(1.5vh, 2.5vh, 3vh);
+  font-size: clamp(1.5vw, 2.5vw, 3vw);
   font-family: "Manrope", sans-serif;
   color: #0c0d0d;
   letter-spacing: -0.05rem;
@@ -117,7 +117,7 @@ body {
 
 .date {
   flex: 0 0 auto;
-  font-size: clamp(1.8vh, 3vh, 4vh);
+  font-size: clamp(1.5vw, 2.5vw, 4vw);
   font-family: "Manrope", sans-serif;
   color: #0c0d0d;
   letter-spacing: -0.05rem;
@@ -128,7 +128,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: clamp(2vh, 4vh, 5vh);
+  font-size: clamp(1.8vw, 3vw, 5vw);
   font-family: "Manrope", sans-serif;
   line-height: 1.2;
   max-width: 80%;
@@ -144,14 +144,14 @@ body {
 .sortContainer {
   display: flex;
   justify-content: center;
-  padding: clamp(0.2vh, 0.5vh, 1vh) 0;
+  padding: clamp(0.2vw, 0.5vw, 1vw) 0;
   z-index: 6;
 }
 
 .sortButton {
   background-color: transparent;
-  font-size: clamp(1.2vh, 2vh, 2.5vh);
-  padding: clamp(0.4vh, 0.8vh, 1vh) clamp(1.5vh, 2.5vh, 3vh);
+  font-size: clamp(1.2vw, 2vw, 2.5vw);
+  padding: clamp(0.4vw, 0.8vw, 1vw) clamp(1.5vw, 2.5vw, 3vw);
   border: 1px solid transparent;
   border-radius: 3px;
   cursor: pointer;
@@ -189,8 +189,8 @@ body {
 .error,
 .loading {
   text-align: center;
-  font-size: clamp(1.5vh, 2.5vh, 3vh);
-  padding: clamp(1vh, 2vh, 3vh);
+  font-size: clamp(1.5vw, 2.5vw, 3vw);
+  padding: clamp(1vw, 2vw, 3vw);
 }
 
 .error {
@@ -205,6 +205,6 @@ body {
 @media (max-width: 600px) {
   .centeredContent {
     max-width: 98%;
-    gap: clamp(0.5vh, 1vh, 2vh);
+    gap: clamp(0.5vw, 1vw, 2vw);
   }
 }
