@@ -11,6 +11,17 @@ const Home = () => {
   const { items, loading, error } = useContext(DataContext);
   const [sortBy, setSortBy] = useState('date-desc');
   const [randomSortKey, setRandomSortKey] = useState(0);
+  const [fontsReady, setFontsReady] = useState(sessionStorage.getItem('fontsLoaded') === 'true');
+
+  // 🟢 Only show loader until fonts are ready — on first visit only
+  useEffect(() => {
+    if (!fontsReady) {
+      document.fonts.ready.then(() => {
+        sessionStorage.setItem('fontsLoaded', 'true');
+        setFontsReady(true);
+      });
+    }
+  }, [fontsReady]);
 
   useEffect(() => {
     const savedSort = localStorage.getItem('sortBy');
@@ -70,7 +81,26 @@ const Home = () => {
         }).format(date);
   };
 
-  if (loading) return <div className={styles.loading}>Loading data...</div>;
+  // 🟡 Show loader only if fonts not yet ready (first visit) or data is still loading
+  if (!fontsReady || loading) {
+    return (
+      <div
+        style={{
+          height: '100dvh',
+          width: '100vw',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#fff',
+          fontFamily: 'sans-serif',
+          transition: 'opacity 0.5s ease',
+        }}
+      >
+        Loading...
+      </div>
+    );
+  }
+
   if (error) return <div className={styles.error}>Error: {error}</div>;
 
   return (
@@ -80,10 +110,11 @@ const Home = () => {
         style={{
           display: "flex",
           flexDirection: "column",
-          minHeight: "100vh", // full viewport height
+          minHeight: "100vh",
+          opacity: fontsReady ? 1 : 0,
+          transition: "opacity 0.6s ease-in",
         }}
       >
-        {/* Main content */}
         <main style={{ flex: 1 }}>
           <div className={styles.container}>
             <div className={styles.centeredContent}>
@@ -126,7 +157,6 @@ const Home = () => {
           </div>
         </main>
 
-        {/* Bottom-right icon section */}
         <div
           style={{
             display: "flex",
