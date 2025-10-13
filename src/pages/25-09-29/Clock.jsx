@@ -48,7 +48,7 @@ export default function ComicClock() {
 
   const digitStyle = {
     fontFamily: "ComicFont, cursive",
-    fontSize: "clamp(2rem, 8vw, 6rem)", // responsive font scaling
+    fontSize: "11vh", // responsive font scaling
   };
 
   const digitBubbleStyle = {
@@ -73,7 +73,7 @@ export default function ComicClock() {
     borderRadius: "0.8rem",
     display: "inline-block",
     textAlign: "center",
-    fontSize: "clamp(0.8rem, 2vw, 1.5rem)",
+    fontSize: "4vh",
     lineHeight: 1.2,
   };
 
