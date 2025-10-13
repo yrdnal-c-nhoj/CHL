@@ -82,7 +82,7 @@ export default function ConcentricClock() {
       top: '50%',
       transform: `translate(${x}vh, ${y}vh)`,
       fontFamily,
-      fontSize: type === 'h' ? '26vh' : type === 'm' ? '18vh' : '8vh',
+      fontSize: type === 'h' ? '26vh' : type === 'm' ? '20vh' : '10vh',
       fontWeight: isCurrent ? 700 : 300,
       color: isCurrent ? '#F41C1CFF' : 'rgba(255, 150, 200)',
      textShadow: isCurrent
@@ -151,7 +151,7 @@ export default function ConcentricClock() {
       >
         {renderRing(12, 62, 'h', { x: -77, y: -54 })}
         {renderRing(60, 139, 'm', { x: -147, y: -20 })}
-        {renderRing(60, 72, 's', { x: -70, y: 6 })}
+        {renderRing(60, 72, 's', { x: -75, y: 9 })}
       </div>
     </div>
   );
