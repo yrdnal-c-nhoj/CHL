@@ -120,7 +120,7 @@ export default function ConcentricClock() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'radial-gradient(circle at center, #74B294FF 30%, #528275FF 100%)',
+        background: 'radial-gradient(circle at center, #530B7CFF 30%, #70099CFF 100%)',
         overflow: 'hidden',
       }}
     >
