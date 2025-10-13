@@ -1,17 +1,87 @@
 import React, { useState, useEffect } from 'react';
 import bgImage from './16a.png';
 import clockBgImage from './16.png';
-import digitalFontUrl from './dode.ttf'; // digital clock font
-import analogFontUrl from './do.ttf'; // analog clock font
+import digitalFontUrl from './dode.ttf';
+import analogFontUrl from './do.ttf';
 
 export default function HexAnalogClock() {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [ready, setReady] = useState(false);
+  const [viewport, setViewport] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
+  // Update viewport on resize/orientation
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 100);
-    return () => clearInterval(timer);
+    const updateSize = () =>
+      setViewport({ width: window.innerWidth, height: window.innerHeight });
+    window.addEventListener('resize', updateSize);
+    window.addEventListener('orientationchange', updateSize);
+    updateSize();
+    return () => {
+      window.removeEventListener('resize', updateSize);
+      window.removeEventListener('orientationchange', updateSize);
+    };
   }, []);
 
+  // Load assets (fonts + images)
+  useEffect(() => {
+    async function loadAssets() {
+      try {
+        // Load fonts
+        const digitalFont = new FontFace('DigitalFont', `url(${digitalFontUrl})`);
+        const analogFont = new FontFace('AnalogFont', `url(${analogFontUrl})`);
+        await Promise.all([digitalFont.load(), analogFont.load()]);
+        document.fonts.add(digitalFont);
+        document.fonts.add(analogFont);
+
+        // Load images
+        const loadImage = (src) =>
+          new Promise((resolve) => {
+            const img = new Image();
+            img.src = src;
+            img.onload = resolve;
+          });
+        await Promise.all([loadImage(bgImage), loadImage(clockBgImage)]);
+
+        setReady(true);
+      } catch (err) {
+        console.error('Asset load error:', err);
+        setReady(true); // fallback to render anyway
+      }
+    }
+    loadAssets();
+  }, []);
+
+  // Clock tick
+  useEffect(() => {
+    if (!ready) return;
+    const timer = setInterval(() => setCurrentTime(new Date()), 100);
+    return () => clearInterval(timer);
+  }, [ready]);
+
+  if (!ready) {
+    return (
+      <div
+        style={{
+          height: '100dvh',
+          width: '100vw',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: '#000',
+          color: '#fff',
+          fontSize: '4vh',
+          fontFamily: 'sans-serif',
+        }}
+      >
+        Loading Hex Clock…
+      </div>
+    );
+  }
+
+  // Time calculations
   const unixTime = Math.floor(currentTime.getTime() / 1000);
   const hexTime = unixTime.toString(16).toUpperCase();
 
@@ -20,7 +90,7 @@ export default function HexAnalogClock() {
   const seconds = currentTime.getSeconds();
   const milliseconds = currentTime.getMilliseconds();
 
-  const clockSize = Math.min(window.innerWidth, window.innerHeight) * 0.8;
+  const clockSize = Math.min(viewport.width, viewport.height) * 0.8;
   const center = clockSize / 2;
   const radius = center - 29;
 
@@ -48,31 +118,30 @@ export default function HexAnalogClock() {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      gap: '0.05rem',
-      padding: '0.05rem',
+      gap: '0.5vh',
+      padding: '0.5vh',
       boxSizing: 'border-box',
       overflow: 'hidden',
       backgroundImage: `url(${bgImage})`,
-      backgroundSize: '180% auto',
+      backgroundSize: 'cover',
       backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
       margin: 0,
     },
     card: {
       background: '#fff',
       border: '4px solid #0E0404FF',
       borderRadius: '12px',
-      padding: '1vh 3vh',
+      padding: '1vh 2vh',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      fontSize: '9rem',
+      fontSize: '6vh',
       zIndex: 2,
-      maxWidth: '90%',
+      maxWidth: '95vw',
     },
     progressContainer: {
       width: '100%',
-      height: '7vh',
+      height: '6vh',
       background: 'rgba(204, 187, 170, 0.2)',
       borderRadius: '12px',
       overflow: 'hidden',
@@ -82,20 +151,10 @@ export default function HexAnalogClock() {
       width: `${fractionOfDay * 100}%`,
       background: 'linear-gradient(90deg, #0b8d49, #EC2308FF, #0533ea)',
       transition: 'width 0.1s linear',
-      border: '0.5px solid #000', // thin black border
+      border: '0.5px solid #000',
       boxSizing: 'border-box',
     },
     styleTag: `
-      @font-face {
-        font-family: 'DigitalFont';
-        src: url(${digitalFontUrl}) format('truetype');
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'AnalogFont';
-        src: url(${analogFontUrl}) format('opentype');
-        font-display: swap;
-      }
       @keyframes gradientShift {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
@@ -103,7 +162,6 @@ export default function HexAnalogClock() {
       }
     `,
     svg: { width: clockSize, height: clockSize, zIndex: 2, position: 'relative' },
-    centerDot: { fill: '#E04807FF' },
     markingText: {
       fontFamily: 'AnalogFont',
       fill: '#5B07A0FF',
@@ -125,32 +183,29 @@ export default function HexAnalogClock() {
     },
     clockContainer: {
       position: 'relative',
-      width: clockSize,
-      height: clockSize,
+      width: '80dvw',
+      height: '80dvw',
+      maxWidth: '80dvh',
+      maxHeight: '80dvh',
       borderRadius: '50%',
-      maxWidth: '90vw',
-      maxHeight: '90vh',
     },
     hexDigitBox: (index) => ({
-      width: '9vw',
-      height: '7vh',
+      width: '8vw',
+      height: '6vh',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       fontFamily: 'DigitalFont',
-      fontSize: '9vh',
+      fontSize: '7vh',
       background: 'linear-gradient(90deg, #00FF00, #FF0000, #0000FF, #FFFF00)',
       WebkitBackgroundClip: 'text',
       color: 'transparent',
       backgroundSize: '300% 100%',
       animation: 'gradientShift 1.5s linear infinite',
       animationDelay: `${index * 0.2}s`,
-      textShadow: `
-      
-     
-        1px 0px 0 #000
-      `, // thin black outline
+      textShadow: '1px 0px 0 #000',
     }),
+    centerDot: { fill: '#E04807FF' },
   };
 
   return (
