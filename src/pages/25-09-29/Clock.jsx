@@ -75,8 +75,9 @@ export default function ComicClock() {
     textAlign: "center",
     fontSize: "2vh",
     lineHeight: 1.2,
-    fontStyle: "italic",
-  };
+  transform: "skew(-10deg)", // visually italicizes text
+  fontStyle: "italic", // still included for completeness
+};
 
   const cheapComicBackground = (baseColor, dotColor = "rgba(0,0,0,0.15)") => ({
     backgroundColor: baseColor,
