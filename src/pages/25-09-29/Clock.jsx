@@ -75,6 +75,7 @@ export default function ComicClock() {
     textAlign: "center",
     fontSize: "2vh",
     lineHeight: 1.2,
+    fontStyle: "italic",
   };
 
   const cheapComicBackground = (baseColor, dotColor = "rgba(0,0,0,0.15)") => ({
@@ -130,7 +131,7 @@ export default function ComicClock() {
             right: "0.5rem",
           }}
         >
-          ...they knew...
+          ...they knew?!
         </p>
       ),
     },
@@ -147,7 +148,7 @@ export default function ComicClock() {
             left: "0.5rem",
           }}
         >
-          ...it would...
+          It would...
         </p>
       ),
     },
@@ -179,7 +180,7 @@ export default function ComicClock() {
             left: "0.5rem",
           }}
         >
-          ...not...
+          ...never...
         </p>
       ),
     },
@@ -196,7 +197,7 @@ export default function ComicClock() {
             right: "0.5rem",
           }}
         >
-          ...stop...
+          ...stop!!!
         </p>
       ),
     },
