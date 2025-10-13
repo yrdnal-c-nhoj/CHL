@@ -48,22 +48,38 @@ const SpinningDodecahedronClock = () => {
     renderer.setPixelRatio(window.devicePixelRatio);
     containerRef.current.appendChild(renderer.domElement);
 
-    // --- Dodecahedron with gradient glow ---
+    // --- Dodecahedron base geometry ---
     const geometry = new THREE.DodecahedronGeometry(2, 0);
-    const edges = new THREE.EdgesGeometry(geometry);
 
+    // --- Blue translucent surface ---
+    const surfaceMaterial = new THREE.MeshStandardMaterial({
+      color: 0x1f4fff, // vivid blue
+      transparent: true,
+      opacity: 0.05, // mostly transparent
+      roughness: 0.3,
+      metalness: 0.8,
+      side: THREE.DoubleSide,
+      emissive: 0x0022ff,
+      emissiveIntensity: 0.4,
+    });
+    const blueSurface = new THREE.Mesh(geometry, surfaceMaterial);
+    scene.add(blueSurface);
+
+    // --- Wireframe edges ---
+    const edges = new THREE.EdgesGeometry(geometry);
     const coreMaterial = new THREE.LineBasicMaterial({ color: 0x1f10ff });
     const wireframe = new THREE.LineSegments(edges, coreMaterial);
 
     const dodecahedronGroup = new THREE.Group();
     dodecahedronGroup.add(wireframe);
 
+    // --- Glow layers ---
     const glowColors = [0x01100f, 0x3fa0ff, 0x2fffd5];
     glowColors.forEach((color, i) => {
       const glowMaterial = new THREE.LineBasicMaterial({
         color,
         transparent: true,
-        opacity: 0.35 - i * 0.08,
+        opacity: 0.45 - i * 0.08, // slightly stronger glow
       });
       const glowWire = new THREE.LineSegments(edges, glowMaterial);
       const scale = 1 + (i + 1) * 0.015;
@@ -138,8 +154,8 @@ const SpinningDodecahedronClock = () => {
     });
 
     // --- Lighting ---
-    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
-    const pointLight = new THREE.PointLight(0xffff5f, 0.8);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+    const pointLight = new THREE.PointLight(0x66aaff, 0.8);
     pointLight.position.set(5, 5, 5);
     scene.add(pointLight);
 
@@ -161,12 +177,15 @@ const SpinningDodecahedronClock = () => {
       animationIdRef.current = requestAnimationFrame(animate);
       const t = clockObj.getElapsedTime();
 
-      // Gentle spin
+      // gentle spin
       dodecahedronGroup.rotation.x += 0.002;
       dodecahedronGroup.rotation.y += 0.003;
+      blueSurface.rotation.x += 0.002;
+      blueSurface.rotation.y += 0.003;
 
-      // Depth movement
+      // slow depth pulse
       dodecahedronGroup.position.z = Math.sin(t * 0.6) * 8;
+      blueSurface.position.z = Math.sin(t * 0.6) * 8;
 
       renderer.render(scene, camera);
     };
@@ -208,7 +227,6 @@ const SpinningDodecahedronClock = () => {
         backgroundColor: "#000",
       }}
     >
-      {/* Preloader */}
       {!ready && (
         <div
           style={{
@@ -231,7 +249,6 @@ const SpinningDodecahedronClock = () => {
         </div>
       )}
 
-      {/* Background */}
       <div
         ref={bgRef}
         style={{
@@ -250,7 +267,6 @@ const SpinningDodecahedronClock = () => {
         }}
       />
 
-      {/* Three.js container */}
       <div
         ref={containerRef}
         style={{
