@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import cinzel20251010 from './d1.ttf';
-import roboto20251010 from './d2.otf';
+import roboto20251010 from './d2.ttf';
 import orbitron20251010 from './d3.otf';
 
 export default function ConcentricClock() {
@@ -82,12 +82,19 @@ export default function ConcentricClock() {
             top: '50%',
             transform: `translate(${x}vh, ${y}vh)`,
             fontFamily,
-            fontSize: type === 'h' ? '22vh' : type === 'm' ? '10vh' : '6vh',
+            fontSize: type === 'h' ? '33vh' : type === 'm' ? '21vh' : '6vh',
             fontWeight: isCurrent ? 700 : 300,
             color: isCurrent ? '#AE0C0CFF' : 'rgba(255, 150, 200)',
-            textShadow: isCurrent
-              ? '0 0 1vh #111210FF, -1 -0 2vh #F1F2F3FF, 0 0 4vh #09EC60FF'
-              : '0 0 0.8vh rgba(25, 10, 80)',
+       textShadow: isCurrent
+  ? `
+    -1px -1px 0 #FFFFFF,
+    1px -1px 0 #FFFFFF,
+    -1px 1px 0 #FFFFFF,
+    1px 1px 0 #FFFFFF,
+    0 0 0.5vh #FFFFFF
+  `
+  : '0 0 0.8vh rgba(25, 10, 80)',
+
             opacity: isCurrent ? 1 : 0.4,
             transition: 'all 0.4s ease',
             pointerEvents: 'none',
@@ -113,7 +120,7 @@ export default function ConcentricClock() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'radial-gradient(circle at center, #042DE3FF 30%, #472DEFFF 100%)',
+        background: 'radial-gradient(circle at center, #74B294FF 30%, #528275FF 100%)',
         overflow: 'hidden',
       }}
     >
@@ -124,9 +131,9 @@ export default function ConcentricClock() {
           height: '100vh',
         }}
       >
-        {renderRing(12, 62, 'h', { x: -92, y: -34 })}
-        {renderRing(60, 139, 'm', { x: -149, y: -10 })}
-        {renderRing(60, 72, 's', { x: -66, y: 4 })}
+        {renderRing(12, 62, 'h', { x: -90, y: -54 })}
+        {renderRing(60, 139, 'm', { x: -149, y: -20 })}
+        {renderRing(60, 72, 's', { x: -66, y: 9 })}
       </div>
     </div>
   );

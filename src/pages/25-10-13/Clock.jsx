@@ -52,7 +52,7 @@ const SpinningDodecahedronClock = () => {
     const geometry = new THREE.DodecahedronGeometry(2, 0);
     const edges = new THREE.EdgesGeometry(geometry);
 
-    const coreMaterial = new THREE.LineBasicMaterial({ color: 0x4f80ff });
+    const coreMaterial = new THREE.LineBasicMaterial({ color: 0x1f10ff });
     const wireframe = new THREE.LineSegments(edges, coreMaterial);
 
     const dodecahedronGroup = new THREE.Group();
