@@ -73,33 +73,40 @@ export default function ConcentricClock() {
         (type === 'm' && i === currentTime.m) ||
         (type === 's' && i === currentTime.s);
 
-      items.push(
-        <div
-          key={`${type}-${i}`}
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            transform: `translate(${x}vh, ${y}vh)`,
-            fontFamily,
-            fontSize: type === 'h' ? '26vh' : type === 'm' ? '18vh' : '5vh',
-            fontWeight: isCurrent ? 700 : 300,
-            color: isCurrent ? '#F41C1CFF' : 'rgba(255, 150, 200)',
-       textShadow: isCurrent
+     items.push(
+  <div
+    key={`${type}-${i}`}
+    style={{
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+      transform: `translate(${x}vh, ${y}vh)`,
+      fontFamily,
+      fontSize: type === 'h' ? '26vh' : type === 'm' ? '18vh' : '8vh',
+      fontWeight: isCurrent ? 700 : 300,
+      color: isCurrent ? '#F41C1CFF' : 'rgba(255, 150, 200)',
+     textShadow: isCurrent
   ? `
     -1px -1px 0 #FFFFFF,
     1px -1px 0 #FFFFFF,
     -1px 1px 0 #FFFFFF,
     1px 1px 0 #FFFFFF,
-    0 0 0.5vh #FFFFFF
+    0 0 0.5vh #FFFFFF,
+    0 0 2vh #00FF73FF,
+    0 0 4vh #00FFE5FF,
+    0 0 6vh #84FF00FF
   `
   : '0 0 0.8vh rgba(25, 10, 80)',
 
-            opacity: isCurrent ? 1 : 0.4,
-            transition: 'all 0.4s ease',
-            pointerEvents: 'none',
-            whiteSpace: 'nowrap',
-          }}
+      opacity: isCurrent ? 1 : 0.4,
+      transition: 'all 0.4s ease',
+      pointerEvents: 'none',
+      whiteSpace: 'nowrap',
+
+      // 🆕 Add this line:
+      zIndex: isCurrent ? 10 : 1,
+    }}
+
         >
           {value}
         </div>
@@ -110,6 +117,13 @@ export default function ConcentricClock() {
 
   if (!fontsLoaded) return null;
 
+  // Format time in HH:MM:SS (12-hour)
+  const formattedTime = `${currentTime.h
+    .toString()
+    .padStart(2, '0')}:${currentTime.m.toString().padStart(2, '0')}:${currentTime.s
+    .toString()
+    .padStart(2, '0')}`;
+
   return (
     <div
       style={{
@@ -118,12 +132,16 @@ export default function ConcentricClock() {
         width: '100vw',
         height: 'calc(var(--vh, 1vh) * 100)',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        background: 'radial-gradient(circle at center, #530B7CFF 30%, #70099CFF 100%)',
+        justifyContent: 'flex-start',
+        background: 'radial-gradient(circle at center, #530B7CFF 30%, #6B11BAFF 100%)',
         overflow: 'hidden',
       }}
     >
+     
+
+      {/* Concentric rings */}
       <div
         style={{
           position: 'relative',
