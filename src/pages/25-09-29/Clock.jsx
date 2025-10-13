@@ -73,7 +73,7 @@ export default function ComicClock() {
     borderRadius: "0.8rem",
     display: "inline-block",
     textAlign: "center",
-    fontSize: "4vh",
+    fontSize: "2vh",
     lineHeight: 1.2,
   };
 
