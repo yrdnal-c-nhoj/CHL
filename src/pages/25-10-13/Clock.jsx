@@ -74,7 +74,7 @@ const SpinningDodecahedronClock = () => {
     dodecahedronGroup.add(wireframe);
 
     // --- Glow layers ---
-    const glowColors = [0x01100f, 0x3fa0ff, 0x2fffd5];
+    const glowColors = [0x01100f, 0x3fa0ff, 0x2fff05];
     glowColors.forEach((color, i) => {
       const glowMaterial = new THREE.LineBasicMaterial({
         color,
@@ -103,7 +103,7 @@ const SpinningDodecahedronClock = () => {
         const minutes = String(now.getMinutes()).padStart(2, "0");
         const time = `${hours}${minutes}`;
         ctx.font = "280px 'Orbitron20251012', monospace";
-        ctx.fillStyle = "#F6F3F0";
+        ctx.fillStyle = "#A6EFF5FF";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(time, 256, 256);
@@ -179,13 +179,13 @@ const SpinningDodecahedronClock = () => {
 
       // gentle spin
       dodecahedronGroup.rotation.x += 0.002;
-      dodecahedronGroup.rotation.y += 0.003;
+      dodecahedronGroup.rotation.y += 0.0041;
       blueSurface.rotation.x += 0.002;
-      blueSurface.rotation.y += 0.003;
+      blueSurface.rotation.y += 0.0041;
 
       // slow depth pulse
-      dodecahedronGroup.position.z = Math.sin(t * 0.6) * 8;
-      blueSurface.position.z = Math.sin(t * 0.6) * 8;
+      dodecahedronGroup.position.z = Math.sin(t * 0.4) * 9;
+      blueSurface.position.z = Math.sin(t * 0.4) * 9;
 
       renderer.render(scene, camera);
     };
