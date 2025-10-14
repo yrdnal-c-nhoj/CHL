@@ -9,12 +9,12 @@ export default function Clock() {
   const [now, setNow] = useState(new Date());
   const tickRef = useRef(null);
 
-  // Base font size for digits/labels, responsive with clamp
-  const fontSizeVH = "clamp(3vh, 4vw, 6vh)";
-  const dividerScale = 1.1; 
+  const fontSizeVH = 4; // base size for digits and labels
+  const dividerScale = 1.1; // divider scale relative to fontSizeVH
 
   const z = (n) => (n < 10 ? `0${n}` : `${n}`);
 
+  // Shared color and shadow for digits and labels
   const sharedTextStyle = {
     color: "#ffcc33",
     textShadow: `
@@ -30,22 +30,20 @@ export default function Clock() {
     alignItems: "center",
     justifyContent: "center",
     userSelect: "none",
-    fontSize: fontSizeVH,
-    width: "auto",
-    minWidth: "2.5ch", // keeps digits consistent
-    height: "auto",
-    padding: "0.2em 0.3em",
+    fontSize: `${fontSizeVH}vh`,
+    width: `${fontSizeVH * 0.65}vh`,
+    height: `${fontSizeVH}vh`,
   };
 
   const labelStyle = {
     ...sharedTextStyle,
-    fontSize: fontSizeVH,
+    fontSize: `${fontSizeVH}vh`,
   };
 
   const dividerStyle = {
     ...sharedTextStyle,
     fontFamily: "'ImportantFont', serif",
-    fontSize: `calc(${fontSizeVH} * ${dividerScale})`,
+    fontSize: `${fontSizeVH * dividerScale}vh`,
     opacity: 0.8,
     color: "#00ccff",
     textShadow: `
@@ -62,31 +60,25 @@ export default function Clock() {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#1a0b2e",
-    backgroundImage: `url(${bgImage}), url(${bgImage2})`,
-    backgroundSize: "contain, cover",
+    backgroundImage: `url(${bgImage}), url(${bgImage2})`, // top layer first, bottom layer second
+    backgroundSize: "contain, cover", // first image: contain, second: cover whole
     backgroundRepeat: "no-repeat, no-repeat",
-    backgroundPosition: "66% center, center",
+    backgroundPosition: "66% center, center", // first image position, second image position
     textAlign: "center",
     fontVariantNumeric: "tabular-nums",
-    padding: "2vh",
-    boxSizing: "border-box",
   };
 
   const lineStyle = {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: "1vw",
+    gap: "0.5vw",
     lineHeight: "1",
-    flexWrap: "wrap",
-    justifyContent: "center",
   };
 
   const digitsRowStyle = {
     display: "flex",
-    gap: "0.5vw",
-    flexWrap: "wrap",
-    justifyContent: "center",
+    gap: "0.3vw",
   };
 
   useEffect(() => {
