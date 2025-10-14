@@ -54,7 +54,7 @@ export default function Clock() {
 
   const containerStyle = {
     width: "100vw",
-    height: "100vh",
+    height: "100dvh",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
