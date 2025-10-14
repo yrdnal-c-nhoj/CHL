@@ -44,12 +44,14 @@ export default function Clock() {
     ...sharedTextStyle,
     fontFamily: "'ImportantFont', serif",
     fontSize: `${fontSizeVH * dividerScale}vh`,
-    opacity: 0.8,
+    opacity: 0.9,
     color: "#EDCE72FF",
     textShadow: `
       0px 1px 0 #ff00ff,
       0px -1px 0 #0BCFCFFF
     `,
+    margin: "0",       // tighter spacing
+    lineHeight: "0.4",   // tight vertical line spacing
   };
 
   const containerStyle = {
@@ -60,10 +62,10 @@ export default function Clock() {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#1a0b2e",
-    backgroundImage: `url(${bgImage}), url(${bgImage2})`, // top layer first, bottom layer second
-    backgroundSize: "contain, cover", // first image: contain, second: cover whole
+    backgroundImage: `url(${bgImage}), url(${bgImage2})`,
+    backgroundSize: "contain, cover",
     backgroundRepeat: "no-repeat, no-repeat",
-    backgroundPosition: "50% center, center", // first image position, second image position
+    backgroundPosition: "50% center, center",
     textAlign: "center",
     fontVariantNumeric: "tabular-nums",
   };
@@ -73,7 +75,7 @@ export default function Clock() {
     flexDirection: "row",
     alignItems: "center",
     gap: "0.5vw",
-    lineHeight: "1.2",
+    lineHeight: "1.3",
   };
 
   const digitsRowStyle = {
@@ -141,6 +143,7 @@ export default function Clock() {
   if (!ready) return null;
 
   const hours24 = now.getHours();
+  const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12; // 12-hour format
   const minutes = now.getMinutes();
   const seconds = now.getSeconds();
   const milliseconds = Math.floor(now.getMilliseconds() / 10)
@@ -158,44 +161,44 @@ export default function Clock() {
 
   return (
     <div style={containerStyle}>
-  
-      <div style={dividerStyle}>j</div>
-      
-      <div style={lineStyle}>
-        {renderDigits(z(hours24))}
-        <div style={labelStyle}>&nbsp;Hours</div>
-      </div>
-      
-      <div style={lineStyle}>
-        {renderDigits(z(minutes))}
-        <div style={labelStyle}>&nbsp;Minutes</div>
-      </div>
-      
-      <div style={lineStyle}>
-        {renderDigits(z(seconds))}
-        <div style={labelStyle}>&nbsp;Seconds</div>
-      </div>
-      
-      <div style={lineStyle}>
-        {renderDigits(milliseconds)}
-        <div style={labelStyle}>&nbsp;Milliseconds</div>
-      </div>
-    
-      <div style={lineStyle}>
-        <div
-          style={{
-            ...digitBoxStyle,
-            width: "auto",
-            height: "auto",
-            whiteSpace: "nowrap",
-            padding: "0 0.5vh",
-          }}
-        >
-          {isAM ? "Ante Meridiem" : "Post Meridiem"}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0" }}>
+        <div style={dividerStyle}>T</div>
+        
+        <div style={lineStyle}>
+          {renderDigits(z(hours12))}
+          <div style={labelStyle}>&nbsp;Hours</div>
         </div>
-       
+        
+        <div style={lineStyle}>
+          {renderDigits(z(minutes))}
+          <div style={labelStyle}>&nbsp;Minutes</div>
+        </div>
+        
+        <div style={lineStyle}>
+          {renderDigits(z(seconds))}
+          <div style={labelStyle}>&nbsp;Seconds</div>
+        </div>
+        
+        <div style={lineStyle}>
+          {renderDigits(milliseconds)}
+          <div style={labelStyle}>&nbsp;Milliseconds</div>
+        </div>
+      
+        <div style={lineStyle}>
+          <div
+            style={{
+              ...digitBoxStyle,
+              width: "auto",
+              height: "auto",
+              whiteSpace: "nowrap",
+              padding: "0 0.5vh",
+            }}
+          >
+            {isAM ? "Ante Meridiem" : "Post Meridiem"}
+          </div>
+        </div>
+        <div style={dividerStyle}>f</div>
       </div>
-         <div style={dividerStyle}>f</div>
     </div>
   );
 }
