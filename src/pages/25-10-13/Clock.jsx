@@ -171,9 +171,9 @@ const SpinningDodecahedronClock = () => {
     // --- Background filter ---
     if (bgRef.current) {
       bgRef.current.style.filter = `
-        brightness(2.0)
-        contrast(0.3)
-        saturate(2.7)
+        brightness(1.8)
+        contrast(1.2)
+        saturate(0.7)
         hue-rotate(-170deg)
       `;
       bgRef.current.style.opacity = "1";
