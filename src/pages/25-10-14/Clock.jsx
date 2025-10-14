@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import bgImage from "./roundhay.webp";
-import bgImage2 from "./ro.jpg"; // second background
+import bgImage2 from "./ro.jpg";
 import roundhayFont from "./roundhay.ttf";
 import importantFont from "./line.otf";
 
@@ -9,12 +9,11 @@ export default function Clock() {
   const [now, setNow] = useState(new Date());
   const tickRef = useRef(null);
 
-  const fontSizeVH = 4; // base size for digits and labels
-  const dividerScale = 1.1; // divider scale relative to fontSizeVH
+  const fontSizeVH = 4;
+  const dividerScale = 1.1;
 
   const z = (n) => (n < 10 ? `0${n}` : `${n}`);
 
-  // Shared color and shadow for digits and labels
   const sharedTextStyle = {
     color: "#ffcc33",
     textShadow: `
@@ -60,10 +59,10 @@ export default function Clock() {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#1a0b2e",
-    backgroundImage: `url(${bgImage}), url(${bgImage2})`, // top layer first, bottom layer second
-    backgroundSize: "contain, cover", // first image: contain, second: cover whole
+    backgroundImage: `url(${bgImage}), url(${bgImage2})`,
+    backgroundSize: "contain, cover",
     backgroundRepeat: "no-repeat, no-repeat",
-    backgroundPosition: "66% center, center", // first image position, second image position
+    backgroundPosition: "center center, center",
     textAlign: "center",
     fontVariantNumeric: "tabular-nums",
   };
@@ -107,24 +106,28 @@ export default function Clock() {
     };
 
     const f1 = new FontFace("RoundhayFont", `url(${roundhayFont})`);
-    f1.load().then((font) => {
-      document.fonts.add(font);
-      font1Loaded = true;
-      checkReady();
-    }).catch(() => {
-      font1Loaded = true;
-      checkReady();
-    });
+    f1.load()
+      .then((font) => {
+        document.fonts.add(font);
+        font1Loaded = true;
+        checkReady();
+      })
+      .catch(() => {
+        font1Loaded = true;
+        checkReady();
+      });
 
     const f2 = new FontFace("ImportantFont", `url(${importantFont})`);
-    f2.load().then((font) => {
-      document.fonts.add(font);
-      font2Loaded = true;
-      checkReady();
-    }).catch(() => {
-      font2Loaded = true;
-      checkReady();
-    });
+    f2.load()
+      .then((font) => {
+        document.fonts.add(font);
+        font2Loaded = true;
+        checkReady();
+      })
+      .catch(() => {
+        font2Loaded = true;
+        checkReady();
+      });
 
     return () => {
       mounted = false;
@@ -151,7 +154,9 @@ export default function Clock() {
   const renderDigits = (value) => (
     <div style={digitsRowStyle}>
       {String(value).split("").map((digit, i) => (
-        <div key={i} style={digitBoxStyle}>{digit}</div>
+        <div key={i} style={digitBoxStyle}>
+          {digit}
+        </div>
       ))}
     </div>
   );
