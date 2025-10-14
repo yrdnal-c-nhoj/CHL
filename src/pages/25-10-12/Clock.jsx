@@ -77,10 +77,10 @@ export default function AnalogClock() {
 
   // 🌹 Apply visual filters here:
   const backgroundFilters = `
-    brightness(1.3)
-    contrast(0.7)
-    saturate(0.7)
-    hue-rotate(-40deg)
+    brightness(3.9)
+    contrast(0.6)
+    saturate(0.5)
+    hue-rotate(-30deg)
    
   `;
 
