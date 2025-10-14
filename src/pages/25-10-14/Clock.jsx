@@ -9,99 +9,27 @@ export default function Clock() {
   const [now, setNow] = useState(new Date());
   const tickRef = useRef(null);
 
-  const fontSizeVH = 4;
-  const dividerScale = 1.1;
-
   const z = (n) => (n < 10 ? `0${n}` : `${n}`);
-
-  const sharedTextStyle = {
-    color: "#ffcc33",
-    textShadow: `
-      1px 0px 0 #ff00ff,
-      -1px 0px 0 #00ffff
-    `,
-    fontFamily: "'RoundhayFont', serif",
-  };
-
-  const digitBoxStyle = {
-    ...sharedTextStyle,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    userSelect: "none",
-    fontSize: `${fontSizeVH}vh`,
-    width: `${fontSizeVH * 0.65}vh`,
-    height: `${fontSizeVH}vh`,
-  };
-
-  const labelStyle = {
-    ...sharedTextStyle,
-    fontSize: `${fontSizeVH}vh`,
-  };
-
-  const dividerStyle = {
-    ...sharedTextStyle,
-    fontFamily: "'ImportantFont', serif",
-    fontSize: `${fontSizeVH * dividerScale}vh`,
-    opacity: 0.8,
-    color: "#00ccff",
-    textShadow: `
-      1px 1px 0 #ff0066,
-      1px 1px 0 #ffcc00
-    `,
-  };
-
-  const containerStyle = {
-    width: "100vw",
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#1a0b2e",
-    backgroundImage: `url(${bgImage}), url(${bgImage2})`,
-    backgroundSize: "contain, cover",
-    backgroundRepeat: "no-repeat, no-repeat",
-    backgroundPosition: "center center, center",
-    textAlign: "center",
-    fontVariantNumeric: "tabular-nums",
-  };
-
-  const lineStyle = {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: "0.5vw",
-    lineHeight: "1",
-  };
-
-  const digitsRowStyle = {
-    display: "flex",
-    gap: "0.3vw",
-  };
 
   useEffect(() => {
     let mounted = true;
-    let imageLoaded = false;
-    let image2Loaded = false;
-    let font1Loaded = false;
-    let font2Loaded = false;
+    let loaded = { img1: false, img2: false, font1: false, font2: false };
 
     const checkReady = () => {
-      if (imageLoaded && image2Loaded && font1Loaded && font2Loaded && mounted) setReady(true);
+      if (Object.values(loaded).every(Boolean) && mounted) setReady(true);
     };
 
     const img1 = new Image();
     img1.src = bgImage;
     img1.onload = img1.onerror = () => {
-      imageLoaded = true;
+      loaded.img1 = true;
       checkReady();
     };
 
     const img2 = new Image();
     img2.src = bgImage2;
     img2.onload = img2.onerror = () => {
-      image2Loaded = true;
+      loaded.img2 = true;
       checkReady();
     };
 
@@ -109,11 +37,11 @@ export default function Clock() {
     f1.load()
       .then((font) => {
         document.fonts.add(font);
-        font1Loaded = true;
+        loaded.font1 = true;
         checkReady();
       })
       .catch(() => {
-        font1Loaded = true;
+        loaded.font1 = true;
         checkReady();
       });
 
@@ -121,11 +49,11 @@ export default function Clock() {
     f2.load()
       .then((font) => {
         document.fonts.add(font);
-        font2Loaded = true;
+        loaded.font2 = true;
         checkReady();
       })
       .catch(() => {
-        font2Loaded = true;
+        loaded.font2 = true;
         checkReady();
       });
 
@@ -151,8 +79,71 @@ export default function Clock() {
     .padStart(2, "0");
   const isAM = hours24 < 12;
 
+  // base shared style
+  const sharedTextStyle = {
+    color: "#ffcc33",
+    textShadow: "0.2vh 0 #ff00ff, -0.2vh 0 #00ffff",
+    fontFamily: "'RoundhayFont', serif",
+  };
+
+  const containerStyle = {
+    width: "100vw",
+    height: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#1a0b2e",
+    backgroundImage: `url(${bgImage}), url(${bgImage2})`,
+    backgroundSize: "cover, cover",
+    backgroundPosition: "center, center",
+    backgroundRepeat: "no-repeat, no-repeat",
+    overflow: "hidden",
+    textAlign: "center",
+    fontVariantNumeric: "tabular-nums",
+    padding: "2vh",
+    boxSizing: "border-box",
+  };
+
+  const lineStyle = {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    flexWrap: "wrap",
+    gap: "1vw",
+    margin: "1vh 0",
+  };
+
+  const digitBoxStyle = {
+    ...sharedTextStyle,
+    fontSize: "clamp(2.5vh, 5vw, 5vh)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    userSelect: "none",
+    padding: "0.5vh 0.6vh",
+    minWidth: "3vh",
+    borderRadius: "0.5vh",
+  };
+
+  const labelStyle = {
+    ...sharedTextStyle,
+    fontSize: "clamp(2vh, 4vw, 4vh)",
+    opacity: 0.9,
+  };
+
+  const dividerStyle = {
+    ...sharedTextStyle,
+    fontFamily: "'ImportantFont', serif",
+    fontSize: "clamp(2.5vh, 5vw, 6vh)",
+    opacity: 0.8,
+    color: "#00ccff",
+    textShadow: "0.2vh 0.2vh 0 #ff0066, 0.3vh 0.3vh 0 #ffcc00",
+  };
+
   const renderDigits = (value) => (
-    <div style={digitsRowStyle}>
+    <div style={{ display: "flex", gap: "0.3vw" }}>
       {String(value).split("").map((digit, i) => (
         <div key={i} style={digitBoxStyle}>
           {digit}
@@ -163,43 +154,39 @@ export default function Clock() {
 
   return (
     <div style={containerStyle}>
-      {/* Hours */}
       <div style={lineStyle}>
         {renderDigits(z(hours24))}
-        <div style={labelStyle}>&nbsp;Hours</div>
+        <div style={labelStyle}>Hours</div>
       </div>
       <div style={dividerStyle}>h</div>
 
-      {/* Minutes */}
       <div style={lineStyle}>
         {renderDigits(z(minutes))}
-        <div style={labelStyle}>&nbsp;Minutes</div>
+        <div style={labelStyle}>Minutes</div>
       </div>
       <div style={dividerStyle}>h</div>
 
-      {/* Seconds */}
       <div style={lineStyle}>
         {renderDigits(z(seconds))}
-        <div style={labelStyle}>&nbsp;Seconds</div>
+        <div style={labelStyle}>Seconds</div>
       </div>
       <div style={dividerStyle}>h</div>
 
-      {/* Milliseconds */}
       <div style={lineStyle}>
         {renderDigits(milliseconds)}
-        <div style={labelStyle}>&nbsp;Milliseconds</div>
+        <div style={labelStyle}>Milliseconds</div>
       </div>
       <div style={dividerStyle}>j</div>
 
-      {/* AM/PM */}
       <div style={lineStyle}>
         <div
           style={{
             ...digitBoxStyle,
             width: "auto",
             height: "auto",
+            padding: "0 1vh",
+            fontSize: "clamp(2vh, 3.5vw, 3.5vh)",
             whiteSpace: "nowrap",
-            padding: "0 0.5vh",
           }}
         >
           {isAM ? "Ante Meridiem" : "Post Meridiem"}
