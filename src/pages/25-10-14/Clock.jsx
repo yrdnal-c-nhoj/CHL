@@ -140,8 +140,7 @@ export default function Clock() {
 
   if (!ready) return null;
 
- const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12;
-
+  const hours24 = now.getHours();
   const minutes = now.getMinutes();
   const seconds = now.getSeconds();
   const milliseconds = Math.floor(now.getMilliseconds() / 10)
