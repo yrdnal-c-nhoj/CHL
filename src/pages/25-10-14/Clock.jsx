@@ -1,47 +1,130 @@
 import React, { useEffect, useState, useRef } from "react";
 import bgImage from "./roundhay.webp";
-import dividerImage from "./line.png"; // new image between digit sets
-import d20251014Font from "./roundhay.ttf";
+import bgImage2 from "./ro.jpg"; // second background
+import roundhayFont from "./roundhay.ttf";
+import importantFont from "./line.otf";
 
 export default function Clock() {
   const [ready, setReady] = useState(false);
   const [now, setNow] = useState(new Date());
   const tickRef = useRef(null);
 
+  const fontSizeVH = 4; // base size for digits and labels
+  const dividerScale = 1.1; // divider scale relative to fontSizeVH
+
   const z = (n) => (n < 10 ? `0${n}` : `${n}`);
+
+  // Shared color and shadow for digits and labels
+  const sharedTextStyle = {
+    color: "#ffcc33",
+    textShadow: `
+      1px 0px 0 #ff00ff,
+      -1px 0px 0 #00ffff
+    `,
+    fontFamily: "'RoundhayFont', serif",
+  };
+
+  const digitBoxStyle = {
+    ...sharedTextStyle,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    userSelect: "none",
+    fontSize: `${fontSizeVH}vh`,
+    width: `${fontSizeVH * 0.65}vh`,
+    height: `${fontSizeVH}vh`,
+  };
+
+  const labelStyle = {
+    ...sharedTextStyle,
+    fontSize: `${fontSizeVH}vh`,
+  };
+
+  const dividerStyle = {
+    ...sharedTextStyle,
+    fontFamily: "'ImportantFont', serif",
+    fontSize: `${fontSizeVH * dividerScale}vh`,
+    opacity: 0.8,
+    color: "#00ccff",
+    textShadow: `
+      1px 1px 0 #ff0066,
+      1px 1px 0 #ffcc00
+    `,
+  };
+
+  const containerStyle = {
+    width: "100vw",
+    height: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#1a0b2e",
+    backgroundImage: `url(${bgImage}), url(${bgImage2})`, // top layer first, bottom layer second
+    backgroundSize: "contain, cover", // first image: contain, second: cover whole
+    backgroundRepeat: "no-repeat, no-repeat",
+    backgroundPosition: "66% center, center", // first image position, second image position
+    textAlign: "center",
+    fontVariantNumeric: "tabular-nums",
+  };
+
+  const lineStyle = {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: "0.5vw",
+    lineHeight: "1",
+  };
+
+  const digitsRowStyle = {
+    display: "flex",
+    gap: "0.3vw",
+  };
 
   useEffect(() => {
     let mounted = true;
     let imageLoaded = false;
-    let fontLoaded = false;
+    let image2Loaded = false;
+    let font1Loaded = false;
+    let font2Loaded = false;
 
     const checkReady = () => {
-      if (imageLoaded && fontLoaded && mounted) setReady(true);
+      if (imageLoaded && image2Loaded && font1Loaded && font2Loaded && mounted) setReady(true);
     };
 
-    const img = new Image();
-    img.src = bgImage;
-    img.onload = () => {
-      imageLoaded = true;
-      checkReady();
-    };
-    img.onerror = () => {
+    const img1 = new Image();
+    img1.src = bgImage;
+    img1.onload = img1.onerror = () => {
       imageLoaded = true;
       checkReady();
     };
 
-    const font = new FontFace("RoundhayFont", `url(${d20251014Font})`);
-    font
-      .load()
-      .then((loadedFont) => {
-        document.fonts.add(loadedFont);
-        fontLoaded = true;
-        checkReady();
-      })
-      .catch(() => {
-        fontLoaded = true;
-        checkReady();
-      });
+    const img2 = new Image();
+    img2.src = bgImage2;
+    img2.onload = img2.onerror = () => {
+      image2Loaded = true;
+      checkReady();
+    };
+
+    const f1 = new FontFace("RoundhayFont", `url(${roundhayFont})`);
+    f1.load().then((font) => {
+      document.fonts.add(font);
+      font1Loaded = true;
+      checkReady();
+    }).catch(() => {
+      font1Loaded = true;
+      checkReady();
+    });
+
+    const f2 = new FontFace("ImportantFont", `url(${importantFont})`);
+    f2.load().then((font) => {
+      document.fonts.add(font);
+      font2Loaded = true;
+      checkReady();
+    }).catch(() => {
+      font2Loaded = true;
+      checkReady();
+    });
 
     return () => {
       mounted = false;
@@ -67,101 +150,55 @@ export default function Clock() {
 
   const renderDigits = (value) => (
     <div style={digitsRowStyle}>
-      {String(value)
-        .split("")
-        .map((digit, i) => (
-          <span key={i} style={digitStyle}>
-            {digit}
-          </span>
-        ))}
+      {String(value).split("").map((digit, i) => (
+        <div key={i} style={digitBoxStyle}>{digit}</div>
+      ))}
     </div>
   );
 
-  // --- Styles ---
-  const containerStyle = {
-    width: "100vw",
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    fontFamily: "'RoundhayFont', sans-serif",
-    textAlign: "center",
-  };
-
-  const lineStyle = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    margin: "-0.8vh 0",
-    lineHeight: "1.1",
-  };
-
-  const digitsRowStyle = {
-    display: "flex",
-    justifyContent: "center",
-    gap: "0.4vw",
-  };
-
-  const digitStyle = {
-    display: "inline-block",
-    width: "6.5vh",
-    textAlign: "center",
-    fontSize: "10vh",
-    color: "white",
-    textShadow: "0 0.4vh 0.8vh rgba(0,0,0,0.8)",
-    userSelect: "none",
-  };
-
-  const labelStyle = {
-    fontSize: "5.3vh",
-    color: "rgba(255,255,255,0.9)",
-    textShadow: "0 0.3vh 0.6vh rgba(0,0,0,0.6)",
-    marginTop: "0.2vh",
-  };
-
-  const dividerStyle = {
-    width: "8vw",
-    height: "auto",
-    margin: "1vh 0",
-    opacity: 0.85,
-    filter: "drop-shadow(0 0.4vh 0.6vh rgba(0,0,0,0.5))",
-  };
-
   return (
     <div style={containerStyle}>
+      {/* Hours */}
       <div style={lineStyle}>
         {renderDigits(z(hours24))}
-        <div style={labelStyle}>Hours</div>
+        <div style={labelStyle}>&nbsp;Hours</div>
       </div>
+      <div style={dividerStyle}>h</div>
 
-      <img src={dividerImage} alt="divider" style={dividerStyle} />
-
+      {/* Minutes */}
       <div style={lineStyle}>
         {renderDigits(z(minutes))}
-        <div style={labelStyle}>Minutes</div>
+        <div style={labelStyle}>&nbsp;Minutes</div>
       </div>
+      <div style={dividerStyle}>h</div>
 
-      <img src={dividerImage} alt="divider" style={dividerStyle} />
-
+      {/* Seconds */}
       <div style={lineStyle}>
         {renderDigits(z(seconds))}
-        <div style={labelStyle}>Seconds</div>
+        <div style={labelStyle}>&nbsp;Seconds</div>
       </div>
+      <div style={dividerStyle}>h</div>
 
-      <img src={dividerImage} alt="divider" style={dividerStyle} />
-
+      {/* Milliseconds */}
       <div style={lineStyle}>
         {renderDigits(milliseconds)}
-        <div style={labelStyle}>Milliseconds</div>
+        <div style={labelStyle}>&nbsp;Milliseconds</div>
       </div>
+      <div style={dividerStyle}>j</div>
 
-      <div style={{ ...labelStyle, marginTop: "2vh" }}>
-        {isAM ? "Ante Meridiem" : "Post Meridiem"}
+      {/* AM/PM */}
+      <div style={lineStyle}>
+        <div
+          style={{
+            ...digitBoxStyle,
+            width: "auto",
+            height: "auto",
+            whiteSpace: "nowrap",
+            padding: "0 0.5vh",
+          }}
+        >
+          {isAM ? "Ante Meridiem" : "Post Meridiem"}
+        </div>
       </div>
     </div>
   );
