@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import bgImage from "./roundhay.webp";
-import d20251014Font from "./roundhay.ttf"; // today's date in variable name
+import dividerImage from "./line.png"; // new image between digit sets
+import d20251014Font from "./roundhay.ttf";
 
 export default function Clock() {
   const [ready, setReady] = useState(false);
@@ -64,7 +65,6 @@ export default function Clock() {
     .padStart(2, "0");
   const isAM = hours24 < 12;
 
-  // Helper: split digits into spans
   const renderDigits = (value) => (
     <div style={digitsRowStyle}>
       {String(value)
@@ -77,11 +77,12 @@ export default function Clock() {
     </div>
   );
 
-  // styles
+  // --- Styles ---
   const containerStyle = {
     width: "100vw",
     height: "100vh",
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     backgroundImage: `url(${bgImage})`,
@@ -89,20 +90,15 @@ export default function Clock() {
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     fontFamily: "'RoundhayFont', sans-serif",
+    textAlign: "center",
   };
 
-  const clockCardStyle = {
+  const lineStyle = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    textAlign: "center",
-    gap: "1.2vh",
-  };
-
-  const labelStyle = {
-    fontSize: "2.2vh",
-    color: "rgba(255,255,255,0.9)",
-    textShadow: "0 0.3vh 0.6vh rgba(0,0,0,0.6)",
+    margin: "-0.8vh 0",
+    lineHeight: "1.1",
   };
 
   const digitsRowStyle = {
@@ -113,36 +109,59 @@ export default function Clock() {
 
   const digitStyle = {
     display: "inline-block",
-    width: "3.5vh", // fixed width prevents “jumping”
+    width: "6.5vh",
     textAlign: "center",
-    fontSize: "6vh",
+    fontSize: "10vh",
     color: "white",
     textShadow: "0 0.4vh 0.8vh rgba(0,0,0,0.8)",
     userSelect: "none",
   };
 
+  const labelStyle = {
+    fontSize: "5.3vh",
+    color: "rgba(255,255,255,0.9)",
+    textShadow: "0 0.3vh 0.6vh rgba(0,0,0,0.6)",
+    marginTop: "0.2vh",
+  };
+
+  const dividerStyle = {
+    width: "8vw",
+    height: "auto",
+    margin: "1vh 0",
+    opacity: 0.85,
+    filter: "drop-shadow(0 0.4vh 0.6vh rgba(0,0,0,0.5))",
+  };
+
   return (
     <div style={containerStyle}>
-      <div style={clockCardStyle}>
-        <div>
-          {renderDigits(z(hours24))}
-          <div style={labelStyle}>Hours</div>
-        </div>
-        <div>
-          {renderDigits(z(minutes))}
-          <div style={labelStyle}>Minutes</div>
-        </div>
-        <div>
-          {renderDigits(z(seconds))}
-          <div style={labelStyle}>Seconds</div>
-        </div>
-        <div>
-          {renderDigits(milliseconds)}
-          <div style={labelStyle}>Milliseconds</div>
-        </div>
-        <div style={labelStyle}>
-          {isAM ? "Ante Meridiem" : "Post Meridiem"}
-        </div>
+      <div style={lineStyle}>
+        {renderDigits(z(hours24))}
+        <div style={labelStyle}>Hours</div>
+      </div>
+
+      <img src={dividerImage} alt="divider" style={dividerStyle} />
+
+      <div style={lineStyle}>
+        {renderDigits(z(minutes))}
+        <div style={labelStyle}>Minutes</div>
+      </div>
+
+      <img src={dividerImage} alt="divider" style={dividerStyle} />
+
+      <div style={lineStyle}>
+        {renderDigits(z(seconds))}
+        <div style={labelStyle}>Seconds</div>
+      </div>
+
+      <img src={dividerImage} alt="divider" style={dividerStyle} />
+
+      <div style={lineStyle}>
+        {renderDigits(milliseconds)}
+        <div style={labelStyle}>Milliseconds</div>
+      </div>
+
+      <div style={{ ...labelStyle, marginTop: "2vh" }}>
+        {isAM ? "Ante Meridiem" : "Post Meridiem"}
       </div>
     </div>
   );
