@@ -53,33 +53,33 @@ const SpinningDodecahedronClock = () => {
 
     // --- Blue translucent surface ---
     const surfaceMaterial = new THREE.MeshStandardMaterial({
-      color: 0x1f4fff, // vivid blue
+      color: 0x1f4faf, // vivid blue
       transparent: true,
-      opacity: 0.05, // mostly transparent
+      opacity: 0.2, // mostly transparent
       roughness: 0.3,
       metalness: 0.8,
       side: THREE.DoubleSide,
-      emissive: 0x0022ff,
-      emissiveIntensity: 0.4,
+      emissive: 0x10129f,
+      emissiveIntensity: 0.9,
     });
     const blueSurface = new THREE.Mesh(geometry, surfaceMaterial);
     scene.add(blueSurface);
 
     // --- Wireframe edges ---
     const edges = new THREE.EdgesGeometry(geometry);
-    const coreMaterial = new THREE.LineBasicMaterial({ color: 0x1f10ff });
+    const coreMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
     const wireframe = new THREE.LineSegments(edges, coreMaterial);
 
     const dodecahedronGroup = new THREE.Group();
     dodecahedronGroup.add(wireframe);
 
     // --- Glow layers ---
-    const glowColors = [0x01100f, 0x3fa0ff, 0x2fff05];
+    const glowColors = [0xf1f0ff, 0xaa0000, 0x2fff05];
     glowColors.forEach((color, i) => {
       const glowMaterial = new THREE.LineBasicMaterial({
         color,
         transparent: true,
-        opacity: 0.45 - i * 0.08, // slightly stronger glow
+        opacity: 0.95 - i * 0.8, // slightly stronger glow
       });
       const glowWire = new THREE.LineSegments(edges, glowMaterial);
       const scale = 1 + (i + 1) * 0.015;
@@ -96,18 +96,27 @@ const SpinningDodecahedronClock = () => {
       canvas.height = 512;
       const ctx = canvas.getContext("2d");
 
-      const drawTime = () => {
-        ctx.clearRect(0, 0, 512, 512);
-        const now = new Date();
-        const hours = now.getHours();
-        const minutes = String(now.getMinutes()).padStart(2, "0");
-        const time = `${hours}${minutes}`;
-        ctx.font = "280px 'Orbitron20251012', monospace";
-        ctx.fillStyle = "#A6EFF5FF";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(time, 256, 256);
-      };
+ const drawTime = () => {
+  ctx.clearRect(0, 0, 512, 512);
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const time = `${hours}${minutes}`;
+
+  ctx.font = "280px 'Orbitron20251012', monospace";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  // Draw black outline
+  ctx.lineWidth = 3;            // thickness of the outline
+  ctx.strokeStyle = "black";     // color of the outline
+  ctx.strokeText(time, 256, 256);
+
+  // Draw main text
+  ctx.fillStyle = "#E8CB0DFF";   // fill color
+  ctx.fillText(time, 256, 256);
+};
+
 
       drawTime();
       const texture = new THREE.CanvasTexture(canvas);
@@ -162,10 +171,10 @@ const SpinningDodecahedronClock = () => {
     // --- Background filter ---
     if (bgRef.current) {
       bgRef.current.style.filter = `
-        brightness(1.15)
-        contrast(0.8)
-        saturate(0.1)
-        hue-rotate(-110deg)
+        brightness(0.8)
+        contrast(1.8)
+        saturate(0.9)
+        hue-rotate(-170deg)
       `;
       bgRef.current.style.opacity = "1";
       bgRef.current.style.transition = "opacity 1.2s ease";
