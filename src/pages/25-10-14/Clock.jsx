@@ -18,8 +18,8 @@ export default function Clock() {
   const sharedTextStyle = {
     color: "#ffcc33",
     textShadow: `
-      0px 2px 0 #ff00ff,
-      0px -2px 0 #00ffff
+    0px 2px 0 #ff00ff,
+    0px -2px 0 #00ffff
     `,
     fontFamily: "'RoundhayFont', serif",
   };
@@ -140,9 +140,8 @@ export default function Clock() {
 
   if (!ready) return null;
 
-  // ✅ Convert 24-hour to 12-hour without changing anything else
-  const hours24 = now.getHours();
-  const hours12 = hours24 % 12 || 12; // convert to 12-hour format
+ const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12;
+
   const minutes = now.getMinutes();
   const seconds = now.getSeconds();
   const milliseconds = Math.floor(now.getMilliseconds() / 10)
@@ -160,10 +159,11 @@ export default function Clock() {
 
   return (
     <div style={containerStyle}>
+  
       <div style={dividerStyle}>j</div>
       
       <div style={lineStyle}>
-        {renderDigits(hours12)}
+        {renderDigits(z(hours24))}
         <div style={labelStyle}>&nbsp;Hours</div>
       </div>
       
@@ -194,9 +194,9 @@ export default function Clock() {
         >
           {isAM ? "Ante Meridiem" : "Post Meridiem"}
         </div>
+       
       </div>
-
-      <div style={dividerStyle}>f</div>
+         <div style={dividerStyle}>f</div>
     </div>
   );
 }
