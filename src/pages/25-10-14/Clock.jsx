@@ -10,7 +10,7 @@ export default function Clock() {
   const tickRef = useRef(null);
 
   const fontSizeVH = 4; // base size for digits and labels
-  const dividerScale = 1.1; // divider scale relative to fontSizeVH
+  const dividerScale = 2.8; // divider scale relative to fontSizeVH
 
   const z = (n) => (n < 10 ? `0${n}` : `${n}`);
 
@@ -18,8 +18,8 @@ export default function Clock() {
   const sharedTextStyle = {
     color: "#ffcc33",
     textShadow: `
-      1px 0px 0 #ff00ff,
-      -1px 0px 0 #00ffff
+      0px 2px 0 #ff00ff,
+      0px -2px 0 #00ffff
     `,
     fontFamily: "'RoundhayFont', serif",
   };
@@ -45,10 +45,10 @@ export default function Clock() {
     fontFamily: "'ImportantFont', serif",
     fontSize: `${fontSizeVH * dividerScale}vh`,
     opacity: 0.8,
-    color: "#00ccff",
+    color: "#EDCE72FF",
     textShadow: `
-      1px 1px 0 #ff0066,
-      1px 1px 0 #ffcc00
+      0px 1px 0 #ff00ff,
+      0px -1px 0 #0BCFCFFF
     `,
   };
 
@@ -73,7 +73,7 @@ export default function Clock() {
     flexDirection: "row",
     alignItems: "center",
     gap: "0.5vw",
-    lineHeight: "1",
+    lineHeight: "1.2",
   };
 
   const digitsRowStyle = {
@@ -140,7 +140,9 @@ export default function Clock() {
 
   if (!ready) return null;
 
+  // ✅ Convert 24-hour to 12-hour without changing anything else
   const hours24 = now.getHours();
+  const hours12 = hours24 % 12 || 12; // convert to 12-hour format
   const minutes = now.getMinutes();
   const seconds = now.getSeconds();
   const milliseconds = Math.floor(now.getMilliseconds() / 10)
@@ -158,35 +160,28 @@ export default function Clock() {
 
   return (
     <div style={containerStyle}>
-      {/* Hours */}
+      <div style={dividerStyle}>j</div>
+      
       <div style={lineStyle}>
-        {renderDigits(z(hours24))}
+        {renderDigits(hours12)}
         <div style={labelStyle}>&nbsp;Hours</div>
       </div>
-      <div style={dividerStyle}>h</div>
-
-      {/* Minutes */}
+      
       <div style={lineStyle}>
         {renderDigits(z(minutes))}
         <div style={labelStyle}>&nbsp;Minutes</div>
       </div>
-      <div style={dividerStyle}>h</div>
-
-      {/* Seconds */}
+      
       <div style={lineStyle}>
         {renderDigits(z(seconds))}
         <div style={labelStyle}>&nbsp;Seconds</div>
       </div>
-      <div style={dividerStyle}>h</div>
-
-      {/* Milliseconds */}
+      
       <div style={lineStyle}>
         {renderDigits(milliseconds)}
         <div style={labelStyle}>&nbsp;Milliseconds</div>
       </div>
-      <div style={dividerStyle}>j</div>
-
-      {/* AM/PM */}
+    
       <div style={lineStyle}>
         <div
           style={{
@@ -200,6 +195,8 @@ export default function Clock() {
           {isAM ? "Ante Meridiem" : "Post Meridiem"}
         </div>
       </div>
+
+      <div style={dividerStyle}>f</div>
     </div>
   );
 }
