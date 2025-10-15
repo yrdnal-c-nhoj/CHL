@@ -8,7 +8,7 @@ import font20251015 from "./venus.ttf";
 export default function VenusClock() {
   const [ready, setReady] = useState(false);
   const [time, setTime] = useState(new Date());
-  const clockSizeVh = 44;
+  const clockSizeVh = 42;
   const clockRadiusVh = clockSizeVh / 1.1;
   const symbols = ["y", "Q", "C", "D", "E", "9", "G", "H", "I", "p", "1", "5"];
 
@@ -274,7 +274,7 @@ const handCommonStyle = {
             left: "50%",
             top: "50%",
             width: "1.2vh",
-            height: "1.2vh",
+            height: "1.vh",
             borderRadius: "50%",
             background: "linear-gradient(180deg, #7c9a6d, #2b4a30)",
             zIndex: 13,
