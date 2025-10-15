@@ -67,7 +67,7 @@ const SpinningDodecahedronClock = () => {
 
     // --- Wireframe edges ---
     const edges = new THREE.EdgesGeometry(geometry);
-    const coreMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
+    const coreMaterial = new THREE.LineBasicMaterial({ color: 0xff900f });
     const wireframe = new THREE.LineSegments(edges, coreMaterial);
 
     const dodecahedronGroup = new THREE.Group();
@@ -173,8 +173,8 @@ const SpinningDodecahedronClock = () => {
       bgRef.current.style.filter = `
         brightness(1.8)
         contrast(1.2)
-        saturate(0.7)
-        hue-rotate(-170deg)
+        saturate(1.6)
+        hue-rotate(160deg)
       `;
       bgRef.current.style.opacity = "1";
       bgRef.current.style.transition = "opacity 1.2s ease";
