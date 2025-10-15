@@ -7,7 +7,7 @@ import font20251015 from "./venus.ttf";
 export default function VenusClock() {
   const [ready, setReady] = useState(false);
   const [time, setTime] = useState(new Date());
-  const clockSizeVh = 55;
+  const clockSizeVh = 77;
   const clockRadiusVh = clockSizeVh / 2;
 
   const symbols = ["y", "Q", "C", "D", "E", "9", "G", "H", "I", "p", "1", "5"];
@@ -82,15 +82,15 @@ export default function VenusClock() {
     left: "50%",
     top: "50%",
     transform: `translate(-50%, -50%) scale(${scale})`,
-    width: `${clockSizeVh * 1.6}vh`,
-    height: `${clockSizeVh * 1.6}vh`,
+    width: `${clockSizeVh * 1.7}vh`,
+    height: `${clockSizeVh * 1.7}vh`,
     backgroundImage: `url("${url}")`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     mixBlendMode: "overlay",
     pointerEvents: "none",
     zIndex: 2,
-    filter: "brightness(1.3) contrast(2.2) hue-rotate(-80deg) saturate(0.8)",
+    filter: "brightness(1.3) contrast(2.2) hue-rotate(-80deg) saturate(0.6)",
   });
 
   const containerStyle = {
@@ -110,7 +110,8 @@ export default function VenusClock() {
   const numberStyle = (i) => {
     const angleDeg = (i / 12) * 360 - 90;
     const angleRad = (angleDeg * Math.PI) / 180;
-    const r = clockRadiusVh * 0.78;
+    ///////////
+    const r = clockRadiusVh * 0.68;
 
     return {
       position: "absolute",
@@ -120,7 +121,7 @@ export default function VenusClock() {
       fontSize: `${clockSizeVh * 0.13}vh`,
       fontWeight: 900,
       fontFamily: "VenusFont, serif",
-      color: "#35C98EFF", // copper base
+      color:   "#5CC6AD",
       textShadow: `
         0.15vh 0.15vh 0.3vh #3f2e23,
         -0.15vh 0.15vh 0.3vh #3f2e23,
@@ -147,7 +148,7 @@ export default function VenusClock() {
           width: `${thickness}vh`,
           height: `${len}vh`,
           transform: `translate(-50%,-50%) rotate(${deg}deg) translateY(-${clockRadiusVh - len / 2}vh)`,
-          background: "#7C5C45",
+          background: "#5CC6ADFF",
           borderRadius: "0.05rem",
           boxShadow: `
             0.1vh 0.1vh 0.25vh #3f2e23,
@@ -165,7 +166,7 @@ export default function VenusClock() {
   useEffect(() => {
     if (!ready) return;
     let posX = 0;
-    const speed = -0.04;
+    const speed= -0.016;
     const scroll = () => {
       posX -= speed;
       const bgEl = document.getElementById("venus-scroll-bg");
@@ -182,7 +183,7 @@ export default function VenusClock() {
     top: "50%",
     transformOrigin: "50% 50%",
     borderRadius: "0.1rem",
-    background: "linear-gradient(180deg, #7c9a6d, #2b4a30)", // patinated copper gradient
+    background: "linear-gradient(180deg, #101110FF,  #5EC0A4FF)", // patinated copper gradient
     boxShadow: "0 0.2vh 0.5vh rgba(0,0,0,0.3)",
   };
 
@@ -208,7 +209,7 @@ export default function VenusClock() {
     ...handCommonStyle,
     width: "0.25vh",
     height: `${clockRadiusVh * 0.85}vh`,
-    background: "#92AC99FF",
+    background:  "#5CC6AD",
     transform: `translate(-50%, -50%) rotate(${secondDeg}deg)`,
     zIndex: 12,
   };
