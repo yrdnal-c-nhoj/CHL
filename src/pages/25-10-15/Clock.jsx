@@ -1,18 +1,30 @@
-// Clock.jsx
 import React, { useEffect, useState } from "react";
 import bgLayer1 from "./venus.gif";
 import bgLayer2 from "./venus.webp";
-import fullBg from "./ve.jpg"; // <-- your new full-screen background
+import fullBg from "./ve.jpg"; 
 import font20251015 from "./venus.ttf";
 
 export default function VenusClock() {
   const [ready, setReady] = useState(false);
   const [time, setTime] = useState(new Date());
-  const clockSizeVh = 32;
+  const [clockSizeVh, setClockSizeVh] = useState(30); // default phone size
+
   const clockRadiusVh = clockSizeVh / 1.1;
   const symbols = ["y", "Q", "C", "D", "E", "9", "G", "H", "I", "p", "1", "5"];
 
-  // Preload font + images
+  // --- Responsive clock size ---
+  useEffect(() => {
+    const handleResize = () => {
+      const vw = window.innerWidth;
+      if (vw < 768) setClockSizeVh(30); // phones
+      else setClockSizeVh(40); // laptops/desktops
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // --- Preload font + images ---
   useEffect(() => {
     const styleEl = document.createElement("style");
     styleEl.setAttribute("data-venus-font", "1");
@@ -28,7 +40,7 @@ export default function VenusClock() {
     document.head.appendChild(styleEl);
 
     let imagesLoaded = 0;
-    const totalImages = 3; // include fullBg
+    const totalImages = 3;
     let fontLoaded = false;
 
     const checkReady = () => {
@@ -40,7 +52,7 @@ export default function VenusClock() {
     const img3 = new Image();
     img1.src = bgLayer1;
     img2.src = bgLayer2;
-    img3.src = fullBg; // preload full background
+    img3.src = fullBg;
     img1.onload = img2.onload = img3.onload = () => { imagesLoaded++; checkReady(); };
     img1.onerror = img2.onerror = img3.onerror = () => { imagesLoaded++; checkReady(); };
 
@@ -61,18 +73,18 @@ export default function VenusClock() {
     };
   }, []);
 
-  // Update current time every second
+  // --- Update current time ---
   useEffect(() => {
     if (!ready) return;
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, [ready]);
 
-  // Scrolling background animation
+  // --- Scrolling background ---
   useEffect(() => {
     if (!ready) return;
     let posX = 0;
-    const speed = -0.016;
+    const speed = -0.046;
     const scroll = () => {
       posX -= speed;
       const bgEl = document.getElementById("venus-scroll-bg");
@@ -109,7 +121,7 @@ export default function VenusClock() {
     pointerEvents: "none",
     zIndex: 2,
     opacity: 0.7,
-    filter: "brightness(1.3) contrast(2.2) hue-rotate(-80deg) saturate(1.1)",
+    filter: "brightness(1.3) contrast(0.5) hue-rotate(-60deg) saturate(2.9)",
   });
 
   const containerStyle = {
@@ -125,45 +137,42 @@ export default function VenusClock() {
 
   const tickCommon = { position: "absolute", left: "50%", top: "50%", transformOrigin: "center" };
 
-  // Updated numberStyle for shiny effect
-const numberStyle = (i) => {
-  const angleDeg = (i / 12) * 360 - 90;
-  const angleRad = (angleDeg * Math.PI) / 180;
-  const r = clockRadiusVh * 0.68;
-  return {
+  const numberStyle = (i) => {
+    const angleDeg = (i / 12) * 360 - 90;
+    const angleRad = (angleDeg * Math.PI) / 180;
+    const r = clockRadiusVh * 0.68;
+    return {
+      position: "absolute",
+      left: "50%",
+      top: "50%",
+      transform: `translate(${Math.cos(angleRad) * r}vh, ${Math.sin(angleRad) * r}vh) translate(-50%, -50%)`,
+      fontSize: `${clockSizeVh * 0.14}vh`,
+      fontWeight: 900,
+      fontFamily: "VenusFont, serif",
+      color: "#5CC6AD",
+      textShadow: `
+        0.2vh 0.2vh 0.1vh #F2EBEBFF,
+        -0.1vh -0.2vh 0.15vh #000000,
+        0.09vh 0.09vh 0.7vh #111010FF,
+        -0.09vh -0.09vh 0.8vh #ffffff
+      `,
+      zIndex: 7,
+      userSelect: "none",
+    };
+  };
+
+  const handCommonStyle = {
     position: "absolute",
     left: "50%",
     top: "50%",
-    transform: `translate(${Math.cos(angleRad) * r}vh, ${Math.sin(angleRad) * r}vh) translate(-50%, -50%)`,
-    fontSize: `${clockSizeVh * 0.14}vh`,
-    fontWeight: 900,
-    fontFamily: "VenusFont, serif",
-    color: "#5CC6AD",
-    textShadow: `
-      0.2vh 0.2vh 0.1vh #F2EBEBFF, /* black highlight/shadow */
-      -0.1vh -0.2vh 0.15vh #000000,
-      0.09vh 0.09vh 0.7vh #111010FF, /* white highlight */
-      -0.09vh -0.09vh 0.8vh #ffffff
+    transformOrigin: "50% 50%",
+    borderRadius: "0.1rem",
+    background: "linear-gradient(180deg, #101110FF,  #5EC0A4FF)",
+    boxShadow: `
+      0 0.2vh 0.5vh rgba(0,0,0,0.3),
+      inset 0 0.4vh 0.2vh rgba(255,255,255,0.9)
     `,
-    zIndex: 7,
-    userSelect: "none",
   };
-};
-
-// Updated handCommonStyle for shiny effect
-const handCommonStyle = {
-  position: "absolute",
-  left: "50%",
-  top: "50%",
-  transformOrigin: "50% 50%",
-  borderRadius: "0.1rem",
-  background: "linear-gradient(180deg, #101110FF,  #5EC0A4FF)",
-  boxShadow: `
-    0 0.2vh 0.5vh rgba(0,0,0,0.3),
-    inset 0 0.4vh 0.2vh rgba(255,255,255,0.9) /* white highlight inside */
-  `,
-};
-
 
   const ticks = [];
   for (let t = 0; t < 60; t++) {
@@ -191,7 +200,6 @@ const handCommonStyle = {
       />
     );
   }
-
 
   const hourDeg = ((time.getHours() % 12) + time.getMinutes() / 60) * 30;
   const minuteDeg = (time.getMinutes() + time.getSeconds() / 60) * 6;
@@ -222,7 +230,6 @@ const handCommonStyle = {
 
   return (
     <div style={outerWrapperStyle}>
-      {/* FULLSCREEN BACKGROUND */}
       <img
         src={fullBg}
         alt="background"
@@ -235,12 +242,9 @@ const handCommonStyle = {
           objectFit: "fill",
           zIndex: 0,
           filter: "saturate(0.1)",
-
           pointerEvents: "none",
         }}
       />
-
-      {/* Existing layered backgrounds */}
       <div style={backgroundLayerStyle(bgLayer1, 1.1)} />
       <div
         id="venus-scroll-bg"
@@ -260,8 +264,6 @@ const handCommonStyle = {
           filter: "brightness(1.1) contrast(0.7) saturate(1.2) hue-rotate(80deg)",
         }}
       />
-
-      {/* Clock container */}
       <div style={containerStyle}>
         {ticks}
         {symbols.map((char, i) => (
@@ -270,7 +272,6 @@ const handCommonStyle = {
         <div style={hourStyle} />
         <div style={minuteStyle} />
         <div style={secondStyle} />
-        
       </div>
     </div>
   );
