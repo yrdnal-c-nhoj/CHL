@@ -121,7 +121,7 @@ export default function VenusClock() {
     pointerEvents: "none",
     zIndex: 2,
     opacity: 0.7,
-    filter: "brightness(1.3) contrast(1.8) hue-rotate(-60deg) saturate(5.9)",
+    filter: "brightness(1.3) contrast(1.8) hue-rotate(-60deg) saturate(1.3)",
   });
 
   const containerStyle = {
