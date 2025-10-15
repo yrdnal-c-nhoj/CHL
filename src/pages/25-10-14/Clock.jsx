@@ -10,7 +10,7 @@ export default function Clock() {
   const tickRef = useRef(null);
 
   const fontSizeVH = 4; // base size for digits and labels
-  const dividerScale = 2.8; // divider scale relative to fontSizeVH
+  const dividerScale = 1.8; // divider scale relative to fontSizeVH
 
   const z = (n) => (n < 10 ? `0${n}` : `${n}`);
 
