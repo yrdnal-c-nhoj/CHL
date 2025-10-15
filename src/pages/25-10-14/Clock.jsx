@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import bgImage from "./roundhay.webp";
-import bgImage2 from "./ro.jpg"; // second background
+import bgImage2 from "./ro.jpeg"; // second background
 import roundhayFont from "./rou.ttf";
 import importantFont from "./line.otf";
 
