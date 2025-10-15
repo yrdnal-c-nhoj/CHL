@@ -16,10 +16,10 @@ export default function Clock() {
 
   // Shared color and shadow for digits and labels
   const sharedTextStyle = {
-    color: "#ffcc33",
+    color: "#F3D784FF",
     textShadow: `
-    0px 2px 0 #ff00ff,
-    0px -2px 0 #00ffff
+    0px 1px 0 #ff00ff,
+      0px -1px 0 #0BCFCFFF
     `,
     fontFamily: "'RoundhayFont', serif",
   };
@@ -45,7 +45,7 @@ export default function Clock() {
     fontFamily: "'ImportantFont', serif",
     fontSize: `${fontSizeVH * dividerScale}vh`,
     opacity: 0.9,
-    color: "#EDCE72FF",
+    color: "#F3D889FF",
     textShadow: `
       0px 1px 0 #ff00ff,
       0px -1px 0 #0BCFCFFF
