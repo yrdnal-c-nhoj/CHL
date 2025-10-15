@@ -140,9 +140,9 @@ const numberStyle = (i) => {
     fontFamily: "VenusFont, serif",
     color: "#5CC6AD",
     textShadow: `
-      0.1vh 0.2vh 0.15vh #000000, /* black highlight/shadow */
+      0.2vh 0.2vh 0.1vh #F2EBEBFF, /* black highlight/shadow */
       -0.1vh -0.2vh 0.15vh #000000,
-      0.09vh 0.09vh 0.7vh #ffffff, /* white highlight */
+      0.09vh 0.09vh 0.7vh #111010FF, /* white highlight */
       -0.09vh -0.09vh 0.8vh #ffffff
     `,
     zIndex: 7,
@@ -160,7 +160,7 @@ const handCommonStyle = {
   background: "linear-gradient(180deg, #101110FF,  #5EC0A4FF)",
   boxShadow: `
     0 0.2vh 0.5vh rgba(0,0,0,0.3),
-    inset 0 0.1vh 0.2vh rgba(255,255,255,0.9) /* white highlight inside */
+    inset 0 0.4vh 0.2vh rgba(255,255,255,0.9) /* white highlight inside */
   `,
 };
 
@@ -181,8 +181,8 @@ const handCommonStyle = {
           background: "#5CC6ADFF",
           borderRadius: "0.05rem",
           boxShadow: `
-            0.1vh 0.1vh 0.25vh #3f2e23,
-            -0.1vh 0.1vh 0.25vh #3f2e23,
+            0.2vh 0.2vh 0.25vh #F0EEEDFF,
+            -0.3vh 0.3vh 0.25vh #3f2e23,
             0.1vh -0.1vh 0.25vh #3f2e23,
             -0.1vh -0.1vh 0.25vh #3f2e23
           `,
