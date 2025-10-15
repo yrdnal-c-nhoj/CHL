@@ -84,7 +84,7 @@ export default function VenusClock() {
   useEffect(() => {
     if (!ready) return;
     let posX = 0;
-    const speed = -0.046;
+    const speed = -0.026;
     const scroll = () => {
       posX -= speed;
       const bgEl = document.getElementById("venus-scroll-bg");
