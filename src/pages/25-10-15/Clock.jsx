@@ -8,7 +8,7 @@ import font20251015 from "./venus.ttf";
 export default function VenusClock() {
   const [ready, setReady] = useState(false);
   const [time, setTime] = useState(new Date());
-  const clockSizeVh = 40;
+  const clockSizeVh = 39;
   const clockRadiusVh = clockSizeVh / 1.1;
   const symbols = ["y", "Q", "C", "D", "E", "9", "G", "H", "I", "p", "1", "5"];
 
@@ -108,8 +108,8 @@ export default function VenusClock() {
     mixBlendMode: "overlay",
     pointerEvents: "none",
     zIndex: 2,
-    opacity: 0.5,
-    filter: "brightness(1.3) contrast(2.2) hue-rotate(-80deg) saturate(0.6)",
+    opacity: 0.7,
+    filter: "brightness(1.3) contrast(2.2) hue-rotate(-80deg) saturate(1.1)",
   });
 
   const containerStyle = {
@@ -140,8 +140,8 @@ const numberStyle = (i) => {
     fontFamily: "VenusFont, serif",
     color: "#5CC6AD",
     textShadow: `
-      0.1vh 0.1vh 0.15vh #000000, /* black highlight/shadow */
-      -0.1vh -0.1vh 0.15vh #000000,
+      0.1vh 0.2vh 0.15vh #000000, /* black highlight/shadow */
+      -0.1vh -0.2vh 0.15vh #000000,
       0.09vh 0.09vh 0.7vh #ffffff, /* white highlight */
       -0.09vh -0.09vh 0.8vh #ffffff
     `,
@@ -168,8 +168,8 @@ const handCommonStyle = {
   const ticks = [];
   for (let t = 0; t < 60; t++) {
     const deg = (t / 60) * 360;
-    const len = t % 5 === 0 ? 2.6 : 1.4;
-    const thickness = t % 5 === 0 ? 0.02 * clockSizeVh : 0.01 * clockSizeVh;
+    const len = t % 5 === 0 ? 5.9 : 2.9;
+    const thickness = t % 5 === 0 ? 0.01 * clockSizeVh : 0.01 * clockSizeVh;
     ticks.push(
       <div
         key={t}
@@ -234,6 +234,8 @@ const handCommonStyle = {
           height: "100vh",
           objectFit: "fill",
           zIndex: 0,
+          filter: "saturate(0.1)",
+
           pointerEvents: "none",
         }}
       />
@@ -255,7 +257,7 @@ const handCommonStyle = {
           opacity: 0.9,
           zIndex: 1,
           pointerEvents: "none",
-          filter: "brightness(1.1) contrast(0.7) saturate(0.7) hue-rotate(80deg)",
+          filter: "brightness(1.1) contrast(0.7) saturate(1.2) hue-rotate(80deg)",
         }}
       />
 
@@ -268,20 +270,7 @@ const handCommonStyle = {
         <div style={hourStyle} />
         <div style={minuteStyle} />
         <div style={secondStyle} />
-        <div
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: "50%",
-            width: "1.2vh",
-            height: "1.vh",
-            borderRadius: "50%",
-            background: "linear-gradient(180deg, #7c9a6d, #2b4a30)",
-            zIndex: 13,
-            transform: "translate(-50%, -50%)",
-            boxShadow: "0 0 0.3vh rgba(0,0,0,0.5)",
-          }}
-        />
+        
       </div>
     </div>
   );
