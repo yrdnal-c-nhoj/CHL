@@ -8,7 +8,7 @@ import font20251015 from "./venus.ttf";
 export default function VenusClock() {
   const [ready, setReady] = useState(false);
   const [time, setTime] = useState(new Date());
-  const clockSizeVh = 42;
+  const clockSizeVh = 40;
   const clockRadiusVh = clockSizeVh / 1.1;
   const symbols = ["y", "Q", "C", "D", "E", "9", "G", "H", "I", "p", "1", "5"];
 
