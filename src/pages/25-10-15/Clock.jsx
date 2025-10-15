@@ -2,14 +2,14 @@
 import React, { useEffect, useState } from "react";
 import bgLayer1 from "./venus.gif";
 import bgLayer2 from "./venus.webp";
+import fullBg from "./ve.jpg"; // <-- your new full-screen background
 import font20251015 from "./venus.ttf";
 
 export default function VenusClock() {
   const [ready, setReady] = useState(false);
   const [time, setTime] = useState(new Date());
-  const clockSizeVh = 77;
-  const clockRadiusVh = clockSizeVh / 2;
-
+  const clockSizeVh = 44;
+  const clockRadiusVh = clockSizeVh / 1.1;
   const symbols = ["y", "Q", "C", "D", "E", "9", "G", "H", "I", "p", "1", "5"];
 
   // Preload font + images
@@ -28,7 +28,7 @@ export default function VenusClock() {
     document.head.appendChild(styleEl);
 
     let imagesLoaded = 0;
-    const totalImages = 2;
+    const totalImages = 3; // include fullBg
     let fontLoaded = false;
 
     const checkReady = () => {
@@ -37,10 +37,12 @@ export default function VenusClock() {
 
     const img1 = new Image();
     const img2 = new Image();
+    const img3 = new Image();
     img1.src = bgLayer1;
     img2.src = bgLayer2;
-    img1.onload = img2.onload = () => { imagesLoaded++; checkReady(); };
-    img1.onerror = img2.onerror = () => { imagesLoaded++; checkReady(); };
+    img3.src = fullBg; // preload full background
+    img1.onload = img2.onload = img3.onload = () => { imagesLoaded++; checkReady(); };
+    img1.onerror = img2.onerror = img3.onerror = () => { imagesLoaded++; checkReady(); };
 
     try {
       const fontFace = new FontFace("VenusFont", `url(${font20251015})`);
@@ -66,6 +68,23 @@ export default function VenusClock() {
     return () => clearInterval(interval);
   }, [ready]);
 
+  // Scrolling background animation
+  useEffect(() => {
+    if (!ready) return;
+    let posX = 0;
+    const speed = -0.016;
+    const scroll = () => {
+      posX -= speed;
+      const bgEl = document.getElementById("venus-scroll-bg");
+      if (bgEl) bgEl.style.backgroundPosition = `${posX}vh 50%`;
+      requestAnimationFrame(scroll);
+    };
+    requestAnimationFrame(scroll);
+  }, [ready]);
+
+  if (!ready) return <div>Loading...</div>;
+
+  // --- Styles ---
   const outerWrapperStyle = {
     width: "100vw",
     height: "100vh",
@@ -74,7 +93,6 @@ export default function VenusClock() {
     justifyContent: "center",
     overflow: "hidden",
     position: "relative",
-    background: "radial-gradient(circle at 30% 40%, #e3f0ec 0%, #b7d2ca 50%, #8fb0a0 90%)",
   };
 
   const backgroundLayerStyle = (url, scale) => ({
@@ -90,6 +108,7 @@ export default function VenusClock() {
     mixBlendMode: "overlay",
     pointerEvents: "none",
     zIndex: 2,
+    opacity: 0.5,
     filter: "brightness(1.3) contrast(2.2) hue-rotate(-80deg) saturate(0.6)",
   });
 
@@ -106,35 +125,46 @@ export default function VenusClock() {
 
   const tickCommon = { position: "absolute", left: "50%", top: "50%", transformOrigin: "center" };
 
-  // --- 3D metal digits ---
-  const numberStyle = (i) => {
-    const angleDeg = (i / 12) * 360 - 90;
-    const angleRad = (angleDeg * Math.PI) / 180;
-    ///////////
-    const r = clockRadiusVh * 0.68;
-
-    return {
-      position: "absolute",
-      left: "50%",
-      top: "50%",
-      transform: `translate(${Math.cos(angleRad) * r}vh, ${Math.sin(angleRad) * r}vh) translate(-50%, -50%)`,
-      fontSize: `${clockSizeVh * 0.13}vh`,
-      fontWeight: 900,
-      fontFamily: "VenusFont, serif",
-      color:   "#5CC6AD",
-      textShadow: `
-        0.15vh 0.15vh 0.3vh #3f2e23,
-        -0.15vh 0.15vh 0.3vh #3f2e23,
-        0.15vh -0.15vh 0.3vh #3f2e23,
-        -0.15vh -0.15vh 0.3vh #3f2e23,
-        0 0 0.4vh rgba(0,0,0,0.5)
-      `,
-      zIndex: 7,
-      userSelect: "none",
-    };
+  // Updated numberStyle for shiny effect
+const numberStyle = (i) => {
+  const angleDeg = (i / 12) * 360 - 90;
+  const angleRad = (angleDeg * Math.PI) / 180;
+  const r = clockRadiusVh * 0.68;
+  return {
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    transform: `translate(${Math.cos(angleRad) * r}vh, ${Math.sin(angleRad) * r}vh) translate(-50%, -50%)`,
+    fontSize: `${clockSizeVh * 0.14}vh`,
+    fontWeight: 900,
+    fontFamily: "VenusFont, serif",
+    color: "#5CC6AD",
+    textShadow: `
+      0.1vh 0.1vh 0.15vh #000000, /* black highlight/shadow */
+      -0.1vh -0.1vh 0.15vh #000000,
+      0.09vh 0.09vh 0.7vh #ffffff, /* white highlight */
+      -0.09vh -0.09vh 0.8vh #ffffff
+    `,
+    zIndex: 7,
+    userSelect: "none",
   };
+};
 
-  // --- 3D metal ticks ---
+// Updated handCommonStyle for shiny effect
+const handCommonStyle = {
+  position: "absolute",
+  left: "50%",
+  top: "50%",
+  transformOrigin: "50% 50%",
+  borderRadius: "0.1rem",
+  background: "linear-gradient(180deg, #101110FF,  #5EC0A4FF)",
+  boxShadow: `
+    0 0.2vh 0.5vh rgba(0,0,0,0.3),
+    inset 0 0.1vh 0.2vh rgba(255,255,255,0.9) /* white highlight inside */
+  `,
+};
+
+
   const ticks = [];
   for (let t = 0; t < 60; t++) {
     const deg = (t / 60) * 360;
@@ -162,30 +192,6 @@ export default function VenusClock() {
     );
   }
 
-  // Scrolling background animation
-  useEffect(() => {
-    if (!ready) return;
-    let posX = 0;
-    const speed= -0.016;
-    const scroll = () => {
-      posX -= speed;
-      const bgEl = document.getElementById("venus-scroll-bg");
-      if (bgEl) bgEl.style.backgroundPosition = `${posX}vh 50%`;
-      requestAnimationFrame(scroll);
-    };
-    requestAnimationFrame(scroll);
-  }, [ready]);
-
-  // --- Clock Hands Styles ---
-  const handCommonStyle = {
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transformOrigin: "50% 50%",
-    borderRadius: "0.1rem",
-    background: "linear-gradient(180deg, #101110FF,  #5EC0A4FF)", // patinated copper gradient
-    boxShadow: "0 0.2vh 0.5vh rgba(0,0,0,0.3)",
-  };
 
   const hourDeg = ((time.getHours() % 12) + time.getMinutes() / 60) * 30;
   const minuteDeg = (time.getMinutes() + time.getSeconds() / 60) * 6;
@@ -209,15 +215,30 @@ export default function VenusClock() {
     ...handCommonStyle,
     width: "0.25vh",
     height: `${clockRadiusVh * 0.85}vh`,
-    background:  "#5CC6AD",
+    background: "#5CC6AD",
     transform: `translate(-50%, -50%) rotate(${secondDeg}deg)`,
     zIndex: 12,
   };
 
-  if (!ready) return <div>Loading...</div>;
-
   return (
     <div style={outerWrapperStyle}>
+      {/* FULLSCREEN BACKGROUND */}
+      <img
+        src={fullBg}
+        alt="background"
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "100vw",
+          height: "100vh",
+          objectFit: "fill",
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Existing layered backgrounds */}
       <div style={backgroundLayerStyle(bgLayer1, 1.1)} />
       <div
         id="venus-scroll-bg"
@@ -237,18 +258,16 @@ export default function VenusClock() {
           filter: "brightness(1.1) contrast(0.7) saturate(0.7) hue-rotate(80deg)",
         }}
       />
+
+      {/* Clock container */}
       <div style={containerStyle}>
         {ticks}
         {symbols.map((char, i) => (
           <div key={i} style={numberStyle(i)}>{char}</div>
         ))}
-
-        {/* Clock Hands */}
         <div style={hourStyle} />
         <div style={minuteStyle} />
         <div style={secondStyle} />
-
-        {/* Center pivot */}
         <div
           style={{
             position: "absolute",
