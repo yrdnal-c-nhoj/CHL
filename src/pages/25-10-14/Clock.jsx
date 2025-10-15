@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import bgImage from "./roundhay.webp";
 import bgImage2 from "./ro.jpg"; // second background
-import roundhayFont from "./roundhay.ttf";
+import roundhayFont from "./rou.ttf";
 import importantFont from "./line.otf";
 
 export default function Clock() {
@@ -162,7 +162,7 @@ export default function Clock() {
   return (
     <div style={containerStyle}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0" }}>
-        <div style={dividerStyle}>T</div>
+        <div style={dividerStyle}>u</div>
         
         <div style={lineStyle}>
           {renderDigits(z(hours12))}
@@ -197,7 +197,7 @@ export default function Clock() {
             {isAM ? "Ante Meridiem" : "Post Meridiem"}
           </div>
         </div>
-        <div style={dividerStyle}>f</div>
+        <div style={dividerStyle}>W</div>
       </div>
     </div>
   );
