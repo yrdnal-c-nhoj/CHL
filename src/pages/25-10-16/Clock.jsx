@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import font20251016 from "./brahmi.ttf";
-import image1 from "./br.gif"; // grid image
-import image2 from "./brm.gif"; // hole image
+import image1 from "./br.gif"; // first grid image
+import image2 from "./brahmi.webp"; // second grid image
 
 const brahmiDigits = ["𑁦","𑁧","𑁨","𑁩","𑁪","𑁫","𑁬","𑁭","𑁮","𑁯"];
 
@@ -13,6 +13,7 @@ export default function BrahmiClock() {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
 
+  // Load font
   useEffect(() => {
     const font = new FontFace("BrahmiFont", `url(${font20251016})`);
     font.load().then(() => {
@@ -21,6 +22,7 @@ export default function BrahmiClock() {
     });
   }, []);
 
+  // Update time every second
   useEffect(() => {
     if (!fontLoaded) return;
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -34,7 +36,7 @@ export default function BrahmiClock() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        fontSize: "4rem",
+        fontSize: "6rem",
         color: "#ffd700"
       }}>
         Loading...
@@ -50,16 +52,16 @@ export default function BrahmiClock() {
     display: "inline-flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "4rem",
+    width: "7vh",
     height: "4rem",
-    margin: "0 0.2rem"
+    margin: "0 0.02rem"
   };
 
   const colonStyle = {
     display: "inline-flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "2rem"
+    width: "0.5rem"
   };
 
   const containerStyle = {
@@ -77,7 +79,18 @@ export default function BrahmiClock() {
     overflow: "hidden"
   };
 
-  // Flipped and smaller grid
+  // Gradient background behind images
+  const gradientStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    background: "linear-gradient(180deg, #3366E5FF, #9A9C9FFF, #351E03FF)", // you can change colors
+    zIndex: 1
+  };
+
+  // First tiled grid
   const gridStyle = {
     position: "absolute",
     top: 0,
@@ -87,23 +100,25 @@ export default function BrahmiClock() {
     backgroundImage: `url(${image1})`,
     backgroundRepeat: "repeat",
     backgroundPosition: "center center",
-    backgroundSize: "4rem 4rem", // smaller tiles
-    filter: "contrast(1.2) brightness(1.1) hue-rotate(20deg) saturate(1.3)",
-    transform: "scaleX(-1)", // flip horizontally
-    zIndex: 0
+    backgroundSize: "2rem 2rem",
+    filter: "contrast(0.2) brightness(1.1) hue-rotate(120deg) saturate(0.3)",
+    transform: "scaleX(-1)",
+    zIndex: 2
   };
 
+  // Second tiled grid (semi-transparent)
   const holeStyle = {
     position: "absolute",
-    top: "10%", // adjust as needed
-    right: "10%", // adjust as needed
-    width: "20vw", // adjust size
-    height: "20vh",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
     backgroundImage: `url(${image2})`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "contain",
+    backgroundRepeat: "repeat",
     backgroundPosition: "center center",
-    filter: "contrast(1.5) brightness(1.2) hue-rotate(-10deg) saturate(1.1)",
+    backgroundSize: "5rem 5rem",
+    opacity: "0.4",
+    filter: "contrast(1.5) brightness(1.2) hue-rotate(-10deg) saturate(0.1) opacity(0.4)",
     zIndex: 1
   };
 
@@ -115,6 +130,7 @@ export default function BrahmiClock() {
 
   return (
     <div style={containerStyle}>
+      <div style={gradientStyle}></div>
       <div style={gridStyle}></div>
       <div style={holeStyle}></div>
       <div style={clockStyle}>
