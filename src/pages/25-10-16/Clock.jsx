@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import font20251016 from "./brahmi.ttf";
-import image1 from "./br.gif"; // first grid image
+import image1 from "./palm.webp"; // first grid image
 import image2 from "./brahmi.webp"; // second grid image
 
 const brahmiDigits = ["𑁦","𑁧","𑁨","𑁩","𑁪","𑁫","𑁬","𑁭","𑁮","𑁯"];
