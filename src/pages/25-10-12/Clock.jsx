@@ -3,27 +3,29 @@ import bgVideo from "./rose.mp4";
 import bgFallback from "./rose.webp";
 
 export default function AnalogClock() {
-  const [time, setTime] = useState(new Date());
   const [videoPlayable, setVideoPlayable] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const videoRef = useRef(null);
 
-  // Smooth continuous update
+  // Store the reference "start time" (real time when mounted)
+  const startTime = useRef(Date.now());
+
+  // Animated render loop
+  const [, forceRender] = useState(0);
   useEffect(() => {
     let frame;
     const update = () => {
-      setTime(new Date());
+      forceRender((x) => x + 1);
       frame = requestAnimationFrame(update);
     };
     frame = requestAnimationFrame(update);
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  // Try playing background video
+  // Background video handling
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-
     const onCanPlay = () => setVideoPlayable(true);
     const onError = () => setVideoFailed(true);
     v.addEventListener("canplay", onCanPlay);
@@ -32,8 +34,7 @@ export default function AnalogClock() {
     v.muted = true;
     v.loop = true;
     v.playsInline = true;
-    const playPromise = v.play();
-    if (playPromise?.catch) playPromise.catch(() => {});
+    v.play().catch(() => {});
 
     return () => {
       v.removeEventListener("canplay", onCanPlay);
@@ -41,15 +42,23 @@ export default function AnalogClock() {
     };
   }, []);
 
-  const ms = time.getMilliseconds();
-  const seconds = time.getSeconds() + ms / 1000;
-  const minutes = time.getMinutes() + seconds / 60;
-  const hours = time.getHours() % 12 + minutes / 60;
+  // ---- TIME CALCULATIONS ----
+  const now = new Date();
+  const baseMs = startTime.current;
+  const elapsed = Date.now() - baseMs;
+  const ms = now.getMilliseconds() + elapsed % 1000;
 
-  const secondDeg = seconds * 6;
+  // Get smooth fractional time values
+  const seconds = now.getSeconds() + ms / 1000;
+  const minutes = now.getMinutes() + seconds / 60;
+  const hours = now.getHours() % 12 + minutes / 60;
+
+  // Continuous degree values
+  const secondDeg = seconds * 6; // 360° / 60
   const minuteDeg = minutes * 6;
   const hourDeg = hours * 30;
 
+  // ---- STYLES ----
   const containerStyle = {
     position: "relative",
     width: "100vw",
@@ -59,8 +68,6 @@ export default function AnalogClock() {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#0b1220",
-    WebkitFontSmoothing: "antialiased",
-    MozOsxFontSmoothing: "grayscale",
   };
 
   const backgroundBaseStyle = {
@@ -71,17 +78,14 @@ export default function AnalogClock() {
     height: "100%",
     objectFit: "cover",
     zIndex: 0,
-    display: "block",
-    transition: "opacity 400ms ease, filter 1s ease",
+    transition: "opacity 0.4s ease, filter 1s ease",
   };
 
-  // 🌹 Apply visual filters here:
   const backgroundFilters = `
-    brightness(3.9)
-    contrast(0.6)
-    saturate(0.5)
+    brightness(2.9)
+    contrast(0.8)
+    saturate(1.3)
     hue-rotate(-30deg)
-   
   `;
 
   const backgroundTransform = "rotate(0.5deg) scale(1.02)";
@@ -113,17 +117,20 @@ export default function AnalogClock() {
     bottom: "50%",
     left: "50%",
     transformOrigin: "50% 100%",
-    borderRadius: "0.4vh",
+    borderRadius: "0.6vh",
     willChange: "transform",
-    opacity:    "0.3",
-    background: "#E669DAFF",
-    // romantic text shadow to make them soft & fuzzy
-    boxShadow: "0 0 2.4vh rgba(255,0,60,0.6)",
+    background: "rgba(255, 0, 40, 0.95)",
+    opacity: 0.9,
+    boxShadow: `
+    0 0 3vh rgba(255, 20, 20, 0.8),
+      0 0 6vh rgba(255, 40, 60, 0.6),
+      0 0 10vh rgba(255, 0, 0, 0.5)
+    `,
   };
 
   const hourStyle = {
     ...handCommon,
-    width: "1.9vh",
+    width: "1.6vh",
     height: "12vmin",
     transform: `translate(-50%, 0) rotate(${hourDeg}deg)`,
   };
@@ -139,11 +146,18 @@ export default function AnalogClock() {
     ...handCommon,
     width: "0.4vh",
     height: "44vmin",
+    opacity: 0.85,
+    boxShadow: `
+      0 0 3vh rgba(255, 20, 20, 0.8),
+      0 0 6vh rgba(255, 40, 60, 0.6),
+      0 0 10vh rgba(255, 0, 0, 0.5)
+    `,
+    filter: "blur(0.4vh)",
     transform: `translate(-50%, 0) rotate(${secondDeg}deg)`,
   };
 
   return (
-    <div style={containerStyle} aria-label="Analog clock with filtered video background">
+    <div style={containerStyle}>
       <video
         ref={videoRef}
         style={backgroundVideoStyle}
@@ -152,15 +166,13 @@ export default function AnalogClock() {
         muted
         loop
         preload="auto"
-        aria-hidden
       />
-      <img src={bgFallback} alt="background fallback" style={backgroundImageStyle} aria-hidden />
+      <img src={bgFallback} alt="" style={backgroundImageStyle} />
       <div style={handsContainerStyle}>
         <div style={hourStyle} />
         <div style={minuteStyle} />
         <div style={secondStyle} />
       </div>
-      <span style={{ position: "absolute", left: -9999 }}>{time.toLocaleTimeString()}</span>
     </div>
   );
 }
