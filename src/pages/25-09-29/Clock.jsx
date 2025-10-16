@@ -88,7 +88,7 @@ export default function ComicClock() {
   const hours = time.getHours() % 12 || 12;
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
-  const ampm = time.getHours() >= 12 ? "am" : "pm";
+  const ampm = time.getHours() >= 12 ? "pm" : "am";
 
   const createBubbleContent = (digit) => (
     <div style={digitBubbleStyle}>
