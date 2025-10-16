@@ -73,15 +73,18 @@
 }
 
 .footerDate {
-  font-size: 0.9rem;
+  font-size: 1rem;
+  letter-spacing: -0.05rem;
 }
 
 .footerTitle {
   font-size: 1rem;
+  letter-spacing: 0.02rem;
 }
 
 .footerNumber {
-  font-size: 0.9rem;
+  font-size: 1rem;
+  letter-spacing: -0.05rem;
 }
 
 /* --- Left/right nav buttons --- */

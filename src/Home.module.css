@@ -29,7 +29,7 @@ body {
   max-width: 98%;
   box-sizing: border-box;
   z-index: 5;
-  gap: clamp(0.5vw, 1vw, 2vw); /* scales spacing between sections */
+  gap: clamp(0.5rem, 1vw, 1.5rem); /* responsive spacing between sections */
 }
 
 /* --- Entry list --- */
@@ -41,7 +41,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: clamp(0.5vw, 1vw, 2vw); /* vertical space between entries */
+  gap: clamp(0.5rem, 1vw, 1.5rem); /* vertical space between entries */
 }
 
 .entry {
@@ -50,10 +50,10 @@ body {
   justify-content: space-between;
   width: 100%;
   box-sizing: border-box;
-  padding: clamp(0.2vw, 0.5vw, 1vw) clamp(0.2vw, 0.5vw, 1vw); /* scales with vw */
+  padding: clamp(0.2rem, 0.5vw, 1rem) clamp(0.2rem, 0.5vw, 1rem); /* responsive padding */
   position: relative;
   z-index: 1;
-  gap: clamp(0.5vw, 1vw, 2vw); /* space between number, title, date */
+  gap: clamp(0.5rem, 1vw, 1.5rem); /* spacing between number, title, date */
 }
 
 .entry:not(:last-child) {
@@ -64,7 +64,7 @@ body {
   border-top: 1px solid #f1f3f5;
 }
 
-/* --- Hover background scaling with vw --- */
+/* --- Hover background scaling --- */
 .entry::before {
   content: '';
   position: absolute;
@@ -91,10 +91,13 @@ body {
   border-top: 1px solid transparent;
 }
 
+/* --- Hover text effect --- */
 .entry:hover .clockNumber,
 .entry:hover .title,
 .entry:hover .date {
   color: #f7f7f5;
+  /* transform: scale(1.02); subtle emphasis */
+  transition: color 0.2s ease;
 }
 
 /* --- Links inside entries --- */
@@ -106,53 +109,62 @@ body {
   text-decoration: none;
 }
 
-/* --- Text scaling with vw --- */
+/* --- Text scaling --- */
+/* Clock number */
 .clockNumber {
   flex: 0 0 auto;
-  font-size: clamp(3vw, 3.5vw, 4vw);
+  font-size: clamp(1.1rem, 2vw, 2rem); /* 16px - 32px */
   font-family: "Manrope", sans-serif;
   color: #0c0d0d;
-  letter-spacing: -0.3vw;
+  letter-spacing: -0.04rem;
+  padding: 0.2rem 0.5rem;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
+/* Date */
 .date {
   flex: 0 0 auto;
-  font-size: clamp(3vw, 3.5vw, 4vw);
+  font-size: clamp(1.1rem, 2vw, 2rem); /* 14px - 28px */
   font-family: "Manrope", sans-serif;
   color: #0c0d0d;
-  letter-spacing: -0.3vw;
+  letter-spacing: -0.06rem;
+  padding: 0.2rem 0.5rem;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
+/* Title */
 .title {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: clamp(4vw, 4vw, 4vw);
+  font-size: clamp(1.2rem, 2.2vw, 2.2rem); /* 19px - 40px */
   font-family: "Manrope", sans-serif;
-  letter-spacing: 0.02vw;
+  letter-spacing: 0.02rem;
   max-width: 80%;
-    color: #0c0d0d;
+  color: #0c0d0d;
   text-align: center;
   white-space: normal;
   overflow: visible;
   text-overflow: unset;
   word-break: break-word;
   z-index: 5;
+  padding: 0.2rem 0.5rem;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 /* --- Sort buttons --- */
 .sortContainer {
   display: flex;
   justify-content: center;
-  padding: clamp(0.2vw, 0.5vw, 1vw) 0;
+  padding: clamp(0.2rem, 0.5vw, 1rem) 0;
   z-index: 6;
 }
 
 .sortButton {
   background-color: transparent;
-  font-size: clamp(1.2vw, 2vw, 2.5vw);
-  padding: clamp(0.4vw, 0.8vw, 1vw) clamp(1.5vw, 2.5vw, 3vw);
+  font-size: clamp(0.9rem, 1.5vw, 1.5rem);
+  padding: clamp(0.4rem, 0.8vw, 1rem) clamp(1.5rem, 2.5vw, 3rem);
   border: 1px solid transparent;
   border-radius: 3px;
   cursor: pointer;
@@ -190,8 +202,8 @@ body {
 .error,
 .loading {
   text-align: center;
-  font-size: clamp(1.5vw, 2.5vw, 3vw);
-  padding: clamp(1vw, 2vw, 3vw);
+  font-size: clamp(1rem, 2vw, 2rem);
+  padding: clamp(0.5rem, 1vw, 1.5rem);
 }
 
 .error {
@@ -201,11 +213,3 @@ body {
 .loading {
   color: #212521;
 }
-
-/* --- Responsive for small devices --- */
-/* @media (max-width: 600px) {
-  .centeredContent {
-    max-width: 98%;
-    gap: clamp(0.5vw, 1vw, 2vw);
-  }
-} */
