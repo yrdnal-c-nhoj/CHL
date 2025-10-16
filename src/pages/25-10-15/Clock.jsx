@@ -1,7 +1,8 @@
+// VenusClock.jsx
 import React, { useEffect, useState } from "react";
 import bgLayer1 from "./venus.gif";
 import bgLayer2 from "./venus.webp";
-import fullBg from "./ve.jpg"; 
+import fullBg from "./ve.jpg";
 import font20251015 from "./venus.ttf";
 
 export default function VenusClock() {
@@ -84,7 +85,7 @@ export default function VenusClock() {
   useEffect(() => {
     if (!ready) return;
     let posX = 0;
-    const speed = -0.026;
+    const speed = -0.1;
     const scroll = () => {
       posX -= speed;
       const bgEl = document.getElementById("venus-scroll-bg");
@@ -119,9 +120,9 @@ export default function VenusClock() {
     backgroundPosition: "center",
     mixBlendMode: "overlay",
     pointerEvents: "none",
-    zIndex: 2,
+    zIndex: 17,
     opacity: 0.7,
-    filter: "brightness(1.3) contrast(1.8) hue-rotate(-60deg) saturate(1.3)",
+    filter: "brightness(0.8) contrast(7.0) hue-rotate(-50deg) saturate(8.0)",
   });
 
   const containerStyle = {
@@ -151,12 +152,12 @@ export default function VenusClock() {
       fontFamily: "VenusFont, serif",
       color: "#5CC6AD",
       textShadow: `
-        0.2vh 0.2vh 0.1vh #F2EBEBFF,
-        -0.1vh -0.2vh 0.15vh #000000,
-        0.09vh 0.09vh 0.7vh #111010FF,
-        -0.09vh -0.09vh 0.8vh #ffffff
+        0.5vh 0.2vh #F2EBEBFF,
+        -0.5vh -0.2vh  #000000,
+        0.09vh 0.09vh 1.9vh #E60B0BFF,
+        -0.09vh -0.09vh 1.8vh #ffffff
       `,
-      zIndex: 7,
+      zIndex:28,
       userSelect: "none",
     };
   };
@@ -261,10 +262,28 @@ export default function VenusClock() {
           opacity: 0.9,
           zIndex: 1,
           pointerEvents: "none",
-          filter: "brightness(1.1) contrast(0.7) saturate(1.2) hue-rotate(80deg)",
+          ////////////////////////////////////
+          filter: "brightness(1.1) contrast(1.4) saturate(1.2) hue-rotate(80deg)",
         }}
       />
       <div style={containerStyle}>
+        {/* translucent white disc behind face */}
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            width: `55vh`,
+            height: `55vh`,
+            transform: "translate(-50%, -50%)",
+            borderRadius: "50%",
+            background: "white",
+            opacity: 0.7,
+            zIndex: 6,
+            boxShadow: "inset 0 0 2vh rgba(0,0,0,0.3)",
+          }}
+        />
+
         {ticks}
         {symbols.map((char, i) => (
           <div key={i} style={numberStyle(i)}>{char}</div>
