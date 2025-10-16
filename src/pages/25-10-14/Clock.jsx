@@ -1,297 +1,296 @@
-// VenusClock.jsx
-import React, { useEffect, useState } from "react";
-import bgLayer1 from "./venus.gif";
-import bgLayer2 from "./venus.webp";
-import fullBg from "./ve.jpg";
-import font20251015 from "./venus.ttf";
+import React, { useRef, useEffect, useState } from "react";
+import * as THREE from "three";
+import OrbitronFont20251012 from "./air.ttf";
+import bgImage from "./air.webp";
 
-export default function VenusClock() {
+const SpinningDodecahedronClock = () => {
+  const containerRef = useRef(null);
+  const bgRef = useRef(null);
+  const animationIdRef = useRef(null);
+
   const [ready, setReady] = useState(false);
-  const [time, setTime] = useState(new Date());
-  const [clockSizeVh, setClockSizeVh] = useState(30); // default phone size
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
-  const clockRadiusVh = clockSizeVh / 1.1;
-  const symbols = ["y", "Q", "C", "D", "E", "9", "G", "H", "I", "p", "1", "5"];
-
-  // --- Responsive clock size ---
+  // --- Load font ---
   useEffect(() => {
-    const handleResize = () => {
-      const vw = window.innerWidth;
-      if (vw < 768) setClockSizeVh(30); // phones
-      else setClockSizeVh(40); // laptops/desktops
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    const fontFace = new FontFace("Orbitron20251012", `url(${OrbitronFont20251012})`);
+    fontFace.load().then((loadedFace) => {
+      document.fonts.add(loadedFace);
+      setFontLoaded(true);
+    });
   }, []);
 
-  // --- Preload font + images ---
+  // --- Load background image ---
   useEffect(() => {
-    const styleEl = document.createElement("style");
-    styleEl.setAttribute("data-venus-font", "1");
-    styleEl.innerHTML = `
-      @font-face {
-        font-family: 'VenusFont';
-        src: url('${font20251015}') format('truetype');
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
-      }
-    `;
-    document.head.appendChild(styleEl);
+    const img = new Image();
+    img.src = bgImage;
+    img.onload = () => setImageLoaded(true);
+  }, []);
 
-    let imagesLoaded = 0;
-    const totalImages = 3;
-    let fontLoaded = false;
+  // --- Initialize scene once all assets are ready ---
+  useEffect(() => {
+    if (!containerRef.current || !fontLoaded || !imageLoaded) return;
 
-    const checkReady = () => {
-      if (imagesLoaded >= totalImages && fontLoaded) setReady(true);
+    // --- Scene ---
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+    camera.position.z = 7;
+
+    // --- Renderer ---
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    containerRef.current.appendChild(renderer.domElement);
+
+    // --- Dodecahedron base geometry ---
+    const geometry = new THREE.DodecahedronGeometry(2, 0);
+
+    // --- Blue translucent surface ---
+    const surfaceMaterial = new THREE.MeshStandardMaterial({
+      color: 0x1f4faf, // vivid blue
+      transparent: true,
+      opacity: 0.2, // mostly transparent
+      roughness: 0.3,
+      metalness: 0.8,
+      side: THREE.DoubleSide,
+      emissive: 0x10129f,
+      emissiveIntensity: 0.9,
+    });
+    const blueSurface = new THREE.Mesh(geometry, surfaceMaterial);
+    scene.add(blueSurface);
+
+    // --- Wireframe edges ---
+    const edges = new THREE.EdgesGeometry(geometry);
+    const coreMaterial = new THREE.LineBasicMaterial({ color: 0xff900f });
+    const wireframe = new THREE.LineSegments(edges, coreMaterial);
+
+    const dodecahedronGroup = new THREE.Group();
+    dodecahedronGroup.add(wireframe);
+
+    // --- Glow layers ---
+    const glowColors = [0xf1f0ff, 0xaa0000, 0x2fff05];
+    glowColors.forEach((color, i) => {
+      const glowMaterial = new THREE.LineBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.95 - i * 0.8, // slightly stronger glow
+      });
+      const glowWire = new THREE.LineSegments(edges, glowMaterial);
+      const scale = 1 + (i + 1) * 0.015;
+      glowWire.scale.set(scale, scale, scale);
+      dodecahedronGroup.add(glowWire);
+    });
+
+    scene.add(dodecahedronGroup);
+
+    // --- Clock Texture ---
+    const createClockTexture = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 512;
+      canvas.height = 512;
+      const ctx = canvas.getContext("2d");
+
+ const drawTime = () => {
+  ctx.clearRect(0, 0, 512, 512);
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const time = `${hours}${minutes}`;
+
+  ctx.font = "280px 'Orbitron20251012', monospace";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  // Draw black outline
+  ctx.lineWidth = 3;            // thickness of the outline
+  ctx.strokeStyle = "black";     // color of the outline
+  ctx.strokeText(time, 256, 256);
+
+  // Draw main text
+  ctx.fillStyle = "#E8CB0DFF";   // fill color
+  ctx.fillText(time, 256, 256);
+};
+
+
+      drawTime();
+      const texture = new THREE.CanvasTexture(canvas);
+      setInterval(() => {
+        drawTime();
+        texture.needsUpdate = true;
+      }, 1000);
+      return texture;
     };
 
-    const img1 = new Image();
-    const img2 = new Image();
-    const img3 = new Image();
-    img1.src = bgLayer1;
-    img2.src = bgLayer2;
-    img3.src = fullBg;
-    img1.onload = img2.onload = img3.onload = () => { imagesLoaded++; checkReady(); };
-    img1.onerror = img2.onerror = img3.onerror = () => { imagesLoaded++; checkReady(); };
+    const clockTexture = createClockTexture();
+    const textMaterial = new THREE.MeshBasicMaterial({
+      map: clockTexture,
+      side: THREE.DoubleSide,
+      transparent: true,
+    });
 
-    try {
-      const fontFace = new FontFace("VenusFont", `url(${font20251015})`);
-      fontFace.load().then((loadedFace) => {
-        document.fonts.add(loadedFace);
-        fontLoaded = true;
-        checkReady();
-      }).catch(() => { fontLoaded = true; checkReady(); });
-    } catch {
-      fontLoaded = true;
-      checkReady();
+    // --- Plane placement ---
+    const phi = (1 + Math.sqrt(5)) / 2;
+    const a = 1 / Math.sqrt(3);
+    const b = a / phi;
+    const c = a * phi;
+    const faceCenters = [
+      new THREE.Vector3(c, 0, b),
+      new THREE.Vector3(-c, 0, -b),
+      new THREE.Vector3(-b, c, 0),
+      new THREE.Vector3(-b, -c, 0),
+      new THREE.Vector3(0, -b, c),
+      new THREE.Vector3(0, b, -c),
+      new THREE.Vector3(b, c, 0),
+      new THREE.Vector3(b, -c, 0),
+      new THREE.Vector3(0, b, c),
+      new THREE.Vector3(0, -b, -c),
+      new THREE.Vector3(c, 0, -b),
+      new THREE.Vector3(-c, 0, b),
+    ];
+
+    faceCenters.forEach((center) => {
+      const mesh = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 1.2), textMaterial);
+      const pos = center.clone().multiplyScalar(2);
+      mesh.position.copy(pos);
+      mesh.lookAt(new THREE.Vector3(0, 0, 0));
+      dodecahedronGroup.add(mesh);
+    });
+
+    // --- Lighting ---
+    scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+    const pointLight = new THREE.PointLight(0x66aaff, 0.8);
+    pointLight.position.set(5, 5, 5);
+    scene.add(pointLight);
+
+    // --- Background filter ---
+    if (bgRef.current) {
+      bgRef.current.style.filter = `
+        brightness(1.8)
+        contrast(0.8)
+        saturate(1.6)
+        hue-rotate(160deg)
+      `;
+      bgRef.current.style.opacity = "1";
+      bgRef.current.style.transition = "opacity 1.2s ease";
     }
 
+    // --- Animate ---
+    const clockObj = new THREE.Clock();
+    const animate = () => {
+      animationIdRef.current = requestAnimationFrame(animate);
+      const t = clockObj.getElapsedTime();
+
+      // gentle spin
+      dodecahedronGroup.rotation.x += 0.002;
+      dodecahedronGroup.rotation.y += 0.0041;
+      blueSurface.rotation.x += 0.002;
+      blueSurface.rotation.y += 0.0041;
+
+      // slow depth pulse
+      dodecahedronGroup.position.z = Math.sin(t * 0.4) * 9;
+      blueSurface.position.z = Math.sin(t * 0.4) * 9;
+
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    // --- Handle Resize ---
+    const handleResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener("resize", handleResize);
+
+    setReady(true);
+
     return () => {
-      if (styleEl && styleEl.parentNode) styleEl.parentNode.removeChild(styleEl);
+      window.removeEventListener("resize", handleResize);
+      if (animationIdRef.current) cancelAnimationFrame(animationIdRef.current);
+      renderer.dispose();
+      geometry.dispose();
+      edges.dispose();
+      clockTexture.dispose();
+      textMaterial.dispose();
+      if (containerRef.current && renderer.domElement)
+        containerRef.current.removeChild(renderer.domElement);
     };
-  }, []);
+  }, [fontLoaded, imageLoaded]);
 
-  // --- Update current time ---
-  useEffect(() => {
-    if (!ready) return;
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, [ready]);
-
-  // --- Scrolling background ---
-  useEffect(() => {
-    if (!ready) return;
-    let posX = 0;
-    const speed = -0.1;
-    const scroll = () => {
-      posX -= speed;
-      const bgEl = document.getElementById("venus-scroll-bg");
-      if (bgEl) bgEl.style.backgroundPosition = `${posX}vh 50%`;
-      requestAnimationFrame(scroll);
-    };
-    requestAnimationFrame(scroll);
-  }, [ready]);
-
-  if (!ready) return <div>Loading...</div>;
-
-  // --- Styles ---
-  const outerWrapperStyle = {
-    width: "100vw",
-    height: "100dvh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-    position: "relative",
-  };
-
-  const backgroundLayerStyle = (url, scale) => ({
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transform: `translate(-50%, -50%) scale(${scale})`,
-    width: `${clockSizeVh * 1.7}vh`,
-    height: `${clockSizeVh * 1.7}vh`,
-    backgroundImage: `url("${url}")`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    mixBlendMode: "overlay",
-    pointerEvents: "none",
-    zIndex: 17,
-    opacity: 0.7,
-    filter: "brightness(0.8) contrast(7.0) hue-rotate(-50deg) saturate(8.0)",
-  });
-
-  const containerStyle = {
-    width: `${clockSizeVh}vh`,
-    height: `${clockSizeVh}vh`,
-    position: "relative",
-    zIndex: 9,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontFamily: "VenusFont, serif",
-  };
-
-  const tickCommon = { position: "absolute", left: "50%", top: "50%", transformOrigin: "center" };
-
-  const numberStyle = (i) => {
-    const angleDeg = (i / 12) * 360 - 90;
-    const angleRad = (angleDeg * Math.PI) / 180;
-    const r = clockRadiusVh * 0.68;
-    return {
-      position: "absolute",
-      left: "50%",
-      top: "50%",
-      transform: `translate(${Math.cos(angleRad) * r}vh, ${Math.sin(angleRad) * r}vh) translate(-50%, -50%)`,
-      fontSize: `${clockSizeVh * 0.14}vh`,
-      fontWeight: 900,
-      fontFamily: "VenusFont, serif",
-      color: "#5CC6AD",
-      textShadow: `
-        0.5vh 0.2vh #F2EBEBFF,
-        -0.5vh -0.2vh  #000000,
-        0.09vh 0.09vh 1.9vh #E60B0BFF,
-        -0.09vh -0.09vh 1.8vh #ffffff
-      `,
-      zIndex:28,
-      userSelect: "none",
-    };
-  };
-
-  const handCommonStyle = {
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transformOrigin: "50% 50%",
-    borderRadius: "0.1rem",
-    background: "linear-gradient(180deg, #101110FF,  #5EC0A4FF)",
-    boxShadow: `
-      0 0.2vh 0.5vh rgba(0,0,0,0.3),
-      inset 0 0.4vh 0.2vh rgba(255,255,255,0.9)
-    `,
-  };
-
-  const ticks = [];
-  for (let t = 0; t < 60; t++) {
-    const deg = (t / 60) * 360;
-    const len = t % 5 === 0 ? 5.9 : 2.9;
-    const thickness = t % 5 === 0 ? 0.01 * clockSizeVh : 0.01 * clockSizeVh;
-    ticks.push(
-      <div
-        key={t}
-        style={{
-          ...tickCommon,
-          width: `${thickness}vh`,
-          height: `${len}vh`,
-          transform: `translate(-50%,-50%) rotate(${deg}deg) translateY(-${clockRadiusVh - len / 2}vh)`,
-          background: "#5CC6ADFF",
-          borderRadius: "0.05rem",
-          boxShadow: `
-            0.2vh 0.2vh 0.25vh #F0EEEDFF,
-            -0.3vh 0.3vh 0.25vh #3f2e23,
-            0.1vh -0.1vh 0.25vh #3f2e23,
-            -0.1vh -0.1vh 0.25vh #3f2e23
-          `,
-          zIndex: 8,
-        }}
-      />
-    );
-  }
-
-  const hourDeg = ((time.getHours() % 12) + time.getMinutes() / 60) * 30;
-  const minuteDeg = (time.getMinutes() + time.getSeconds() / 60) * 6;
-  const secondDeg = time.getSeconds() * 6;
-
-  const hourStyle = {
-    ...handCommonStyle,
-    width: "0.8vh",
-    height: `${clockRadiusVh * 0.5}vh`,
-    transform: `translate(-50%, -50%) rotate(${hourDeg}deg)`,
-    zIndex: 10,
-  };
-  const minuteStyle = {
-    ...handCommonStyle,
-    width: "0.5vh",
-    height: `${clockRadiusVh * 0.75}vh`,
-    transform: `translate(-50%, -50%) rotate(${minuteDeg}deg)`,
-    zIndex: 11,
-  };
-  const secondStyle = {
-    ...handCommonStyle,
-    width: "0.25vh",
-    height: `${clockRadiusVh * 0.85}vh`,
-    background: "#5CC6AD",
-    transform: `translate(-50%, -50%) rotate(${secondDeg}deg)`,
-    zIndex: 12,
-  };
-
+  // --- Layout ---
   return (
-    <div style={outerWrapperStyle}>
-      <img
-        src={fullBg}
-        alt="background"
-        style={{
-          position: "absolute",
-          left: 0,
-          top: 0,
-          width: "100vw",
-          height: "100vh",
-          objectFit: "cover",
-          zIndex: 0,
-          filter: "saturate(0.1)",
-          pointerEvents: "none",
-        }}
-      />
-      <div style={backgroundLayerStyle(bgLayer1, 1.1)} />
-      <div
-        id="venus-scroll-bg"
-        style={{
-          position: "absolute",
-          left: 0,
-          top: "50%",
-          width: "200%",
-          height: `${clockSizeVh * 1.9}vh`,
-          transform: "translateY(-50%)",
-          backgroundImage: `url("${bgLayer2}"), url("${bgLayer2}")`,
-          backgroundRepeat: "repeat-x",
-          backgroundSize: "auto 100%",
-          opacity: 0.9,
-          zIndex: 1,
-          pointerEvents: "none",
-          ////////////////////////////////////
-          filter: "brightness(1.1) contrast(1.4) saturate(1.2) hue-rotate(80deg)",
-        }}
-      />
-      <div style={containerStyle}>
-        {/* translucent white disc behind face */}
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        overflow: "hidden",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        backgroundColor: "#000",
+      }}
+    >
+      {!ready && (
         <div
           style={{
             position: "absolute",
-            left: "50%",
-            top: "50%",
-            width: `55vh`,
-            height: `55vh`,
-            transform: "translate(-50%, -50%)",
-            borderRadius: "50%",
-            background: "white",
-            opacity: 0.7,
-            zIndex: 6,
-            boxShadow: "inset 0 0 2vh rgba(0,0,0,0.3)",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "#000",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#888",
+            fontFamily: "monospace",
+            fontSize: "1.2rem",
+            zIndex: 5,
           }}
-        />
+        >
+          Loading clock...
+        </div>
+      )}
 
-        {ticks}
-        {symbols.map((char, i) => (
-          <div key={i} style={numberStyle(i)}>{char}</div>
-        ))}
-        <div style={hourStyle} />
-        <div style={minuteStyle} />
-        <div style={secondStyle} />
-      </div>
+      <div
+        ref={bgRef}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: "100% 100%",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center center",
+          opacity: "0",
+          transition: "opacity 1.2s ease",
+          zIndex: 0,
+        }}
+      />
+
+      <div
+        ref={containerRef}
+        style={{
+          opacity: ready ? 1 : 0,
+          transition: "opacity 1s ease",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 1,
+        }}
+      />
     </div>
   );
-}
+};
+
+export default SpinningDodecahedronClock;
