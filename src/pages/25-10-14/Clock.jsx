@@ -187,10 +187,10 @@ const SpinningDodecahedronClock = () => {
       const t = clockObj.getElapsedTime();
 
       // gentle spin
-      dodecahedronGroup.rotation.x += 0.002;
-      dodecahedronGroup.rotation.y += 0.0041;
-      blueSurface.rotation.x += 0.002;
-      blueSurface.rotation.y += 0.0041;
+      dodecahedronGroup.rotation.x += 0.007;
+      dodecahedronGroup.rotation.y += 0.009;
+      blueSurface.rotation.x += 0.007;
+      blueSurface.rotation.y += 0.009;
 
       // slow depth pulse
       dodecahedronGroup.position.z = Math.sin(t * 0.4) * 9;
