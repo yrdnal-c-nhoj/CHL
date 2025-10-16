@@ -240,7 +240,7 @@ export default function VenusClock() {
           top: 0,
           width: "100vw",
           height: "100vh",
-          objectFit: "fill",
+          objectFit: "cover",
           zIndex: 0,
           filter: "saturate(0.1)",
           pointerEvents: "none",
