@@ -102,12 +102,11 @@ export default function TimeWordsClock() {
     let period = hours >= 12 ? "PM" : "AM";
 
     if (minutes > 30 || (minutes === 30 && seconds > 0)) {
-      relation = "until";
+      relation = "before";
       displayMinutes = 60 - minutes;
       displaySeconds = seconds > 0 ? 60 - seconds : 0;
       const nextHour = (hours + 1) % 24;
       displayHour = nextHour % 12 === 0 ? 12 : nextHour % 12;
-      period = nextHour >= 12 ? "PM" : "AM";
     }
 
     const hourWord = hourWords[displayHour % 12 === 0 ? 0 : displayHour];
@@ -116,7 +115,7 @@ export default function TimeWordsClock() {
 
     // Minutes
     if (displayMinutes > 0) {
-      lines.push(`It is ${numberToWords(displayMinutes)} minute${displayMinutes !== 1 ? "s" : ""}`);
+      lines.push(`"Now, it is ${numberToWords(displayMinutes)} minute${displayMinutes !== 1 ? "s" : ""}`);
     }
 
     // Seconds (only if there are seconds to display)
@@ -129,7 +128,7 @@ export default function TimeWordsClock() {
     }
 
     // Relation / hour
-    lines.push(`${relation} ${hourWord} o'clock ${period}.`);
+    lines.push(`${relation} ${hourWord} o'clock."`);
 
     return lines;
   }
@@ -158,7 +157,7 @@ export default function TimeWordsClock() {
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
-    filter: "hue-rotate(90deg) saturate(0.6) contrast(0.3) brightness(1.9)",
+    filter: "hue-rotate(-130deg) saturate(0.6) contrast(0.3) brightness(1.9)",
     transform: "scaleX(-1)",
     zIndex: 0,
   };
@@ -174,9 +173,9 @@ export default function TimeWordsClock() {
     lineHeight: "1.4",
     borderRadius: "0.2vh",
     textShadow: `
-      0.05em 0.05em 0.05em #DF1414FF,
-      0.1em 0.1em 0.1em rgba(0,0,0,0.1),
-      -0.02em -0.02em 0 rgba(255,255,255,0.2)
+      0.02em 0.02em  #DF1414FF,
+     
+      -0.02em -0.02em 0 rgba(255,255,255,0.9)
     `,
     padding: "2vh 4vw",
     border: "0.2vh solid rgba(255, 255, 255, 0.3)",
