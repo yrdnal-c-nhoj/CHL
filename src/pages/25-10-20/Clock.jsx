@@ -104,7 +104,7 @@ export default function TimeWordsClock() {
     if (minutes > 30 || (minutes === 30 && seconds > 0)) {
       relation = "until";
       displayMinutes = 60 - minutes;
-      displaySeconds = seconds > 0 ? 60 - seconds : 0;
+      displaySeconds = 60 - seconds;
       const nextHour = (hours + 1) % 24;
       displayHour = nextHour % 12 === 0 ? 12 : nextHour % 12;
       period = nextHour >= 12 ? "PM" : "AM";
@@ -119,7 +119,7 @@ export default function TimeWordsClock() {
       lines.push(`It is ${numberToWords(displayMinutes)} minute${displayMinutes !== 1 ? "s" : ""}`);
     }
 
-    // Seconds (only if there are seconds to display)
+    // Seconds
     if (displaySeconds > 0) {
       if (displayMinutes > 0) {
         lines.push(`and ${numberToWords(displaySeconds)} second${displaySeconds !== 1 ? "s" : ""}`);
@@ -147,39 +147,36 @@ export default function TimeWordsClock() {
     overflow: "hidden",
   };
 
-  // Background image with filter and horizontal flip
-  const backgroundStyle = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    filter: "hue-rotate(90deg) saturate(0.6) contrast(0.3) brightness(1.9)",
-    transform: "scaleX(-1)",
-    zIndex: 0,
-  };
+  // Background image with filter
+ // Background image with filter and horizontal flip
+const backgroundStyle = {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  backgroundImage: `url(${backgroundImage})`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
+  filter: "hue-rotate(90deg) saturate(0.6) contrast(0.3) brightness(1.9)",
+  transform: "scaleX(-1)",  // <-- Flip horizontally
+  zIndex: 0,
+};
+
 
   // Text
   const textStyle = {
     position: "relative",
     zIndex: 1,
-    fontFamily: "UserLoadedFont20251016, Georgia, serif",
+    fontFamily: "UserLoadedFont20251016, sans-serif",
     fontSize: "clamp(4vh, 5vw, 8vh)",
-    color: "#050504FF",
+    color: "#0F0F0EFF",
     textAlign: "center",
     lineHeight: "1.4",
-    borderRadius: "0.2vh",
-    textShadow: `
-      0.05em 0.05em 0.05em #DF1414FF,
-      0.1em 0.1em 0.1em rgba(0,0,0,0.1),
-      -0.02em -0.02em 0 rgba(255,255,255,0.2)
-    `,
-    padding: "2vh 4vw",
-    border: "0.2vh solid rgba(255, 255, 255, 0.3)",
+    padding: "3vh",
+    borderRadius: "1vh",
+    textShadow: "0 1px #F36F09FF",
   };
 
   const lines = timeToWords(now);
@@ -189,7 +186,7 @@ export default function TimeWordsClock() {
       <div style={backgroundStyle}></div>
       <div style={textStyle}>
         {lines.map((line, i) => (
-          <div key={i}>{line}<br />&nbsp;</div>
+          <div key={i}>{line}<br></br>&nbsp;</div>
         ))}
       </div>
     </div>
