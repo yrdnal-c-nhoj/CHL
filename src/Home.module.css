@@ -113,7 +113,7 @@ body {
 /* Clock number */
 .clockNumber {
   flex: 0 0 auto;
-  font-size: clamp(1.1rem, 2vw, 2rem); /* 16px - 32px */
+  font-size: clamp(0.9rem, 2vw, 2rem); /* 16px - 32px */
   font-family: "Manrope", sans-serif;
   color: #0c0d0d;
   letter-spacing: -0.04rem;
@@ -124,7 +124,7 @@ body {
 /* Date */
 .date {
   flex: 0 0 auto;
-  font-size: clamp(1.1rem, 2vw, 2rem); /* 14px - 28px */
+  font-size: clamp(0.9rem, 2vw, 2rem); /* 14px - 28px */
   font-family: "Manrope", sans-serif;
   color: #0c0d0d;
   letter-spacing: -0.06rem;
@@ -138,7 +138,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: clamp(1.2rem, 2.2vw, 2.2rem); /* 19px - 40px */
+  font-size: clamp(0.9rem, 2.2vw, 2.2rem); /* 19px - 40px */
   font-family: "Manrope", sans-serif;
   letter-spacing: 0.02rem;
   max-width: 80%;
