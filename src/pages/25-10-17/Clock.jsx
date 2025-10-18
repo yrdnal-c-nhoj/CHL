@@ -167,7 +167,7 @@ export default function TimeWordsClock() {
     position: "relative",
     zIndex: 1,
     fontFamily: "UserLoadedFont20251016, Georgia, serif",
-    fontSize: "clamp(4vh, 4.5vw, 8vh)",
+    fontSize: "clamp(4vh, 5vw, 8vh)",
     color: "#050504FF",
     textAlign: "center",
     lineHeight: "1.4",
