@@ -113,7 +113,7 @@ export default function MediaClock() {
             position: "absolute",
             top: 0,
             left: 0,
-            height: "100vh",
+            height: "100dvh",
             width: "100vw",
             objectFit: "cover",
             objectPosition: `${backgroundShiftX} ${backgroundShiftY}`,
@@ -128,7 +128,7 @@ export default function MediaClock() {
           style={{
             position: "relative",
             zIndex: 2,
-            height: "100vh",
+            height: "100dvh",
             width: "100vw",
             display: "flex",
             alignItems: "center",
@@ -137,7 +137,7 @@ export default function MediaClock() {
         >
           <span
             style={{
-              fontSize: "16vh",
+              fontSize: "14vh",
               fontWeight: 700,
               color: "#3A0505FF",
               textShadow: "1 1.6vh 1.2vh rgba(0,0,0)",
