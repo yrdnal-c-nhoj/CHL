@@ -11,7 +11,14 @@ function About() {
       <div className="centeredContent">
         <h1>ABOUT</h1>
 
+
         <div className="epigraph">
+          <div className="quote">“Nature is too green, and badly lit.”</div>
+          <div className="attribution">
+            <span className="author">— François Boucher</span>, 
+            <span className="source"><cite> Boucher et la peinture sous Louis XV</cite></span>
+          </div>
+
           <div className="quote">
             “Our heads are round so our thoughts can change direction.”
           </div>
