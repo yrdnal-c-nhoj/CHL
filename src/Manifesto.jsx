@@ -10,15 +10,15 @@ function Manifesto() {
       <div className="centeredContent">
         <h1>MANIFESTO</h1>
 
-    
+{/*     
         <div className="epigraph">
           <div className="quote">“Time and Space died yesterday.”</div>
           <div className="attribution">
             <span className="author">— F.T. Marinetti</span>, 
             <span className="source"><cite> The Futurist Manifesto</cite></span>
           </div>
-        </div>
-{/* 
+        </div> */}
+
         <div className="epigraph">
           <div className="quote">“Nature is too green, and badly lit.”</div>
           <div className="attribution">
@@ -26,7 +26,8 @@ function Manifesto() {
             <span className="source"><cite> Boucher et la peinture sous Louis XV</cite></span>
           </div>
         </div>
- */}
+        
+
 
         <div className="manifestoSection">
           <p><span className="hat">We Take Pictures<br />&nbsp;</span>
