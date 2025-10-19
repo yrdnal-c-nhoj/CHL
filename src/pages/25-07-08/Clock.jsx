@@ -70,7 +70,7 @@ const MintClock = () => {
             z-index: 6;
             position: relative;
             width: 60vh;
-            height: 60vh;
+            height: 60dvh;
             border-radius: 50%;
             display: flex;
             align-items: center;
