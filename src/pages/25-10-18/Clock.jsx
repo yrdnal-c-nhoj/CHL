@@ -1,6 +1,6 @@
 // MediaClock.jsx
 import React, { useEffect, useRef, useState } from "react";
-import bgVideo from "./tot.mp4";
+import bgVideo from "./total.mp4";
 import fallbackImg from "./tot.webp";
 import font_20251018 from "./tot.ttf";
 
