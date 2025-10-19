@@ -12,7 +12,7 @@ export default function MediaClock() {
   const videoRef = useRef(null);
 
   // Adjust these to reposition the background
-  const backgroundShiftX = "46%";
+  const backgroundShiftX = "49%";
   const backgroundShiftY = "center";
 
   // Load font once
