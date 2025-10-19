@@ -11,11 +11,10 @@ export default function MediaClock() {
   const [time, setTime] = useState("--:--");
   const videoRef = useRef(null);
 
-  // Adjust these to reposition the background
   const backgroundShiftX = "49%";
   const backgroundShiftY = "center";
 
-  // Load font once
+  // Load font
   useEffect(() => {
     const fontName = "SereneFont";
     const styleEl = document.createElement("style");
@@ -34,15 +33,12 @@ export default function MediaClock() {
         document.fonts.add(loadedFace);
         setFontReady(true);
       })
-      .catch((err) => {
-        console.error("Font failed to load:", err);
-        setFontReady(true);
-      });
+      .catch(() => setFontReady(true));
 
     return () => document.head.removeChild(styleEl);
   }, []);
 
-  // Update time (24-hour, with leading zeros)
+  // Update time
   useEffect(() => {
     function updateTime() {
       const d = new Date();
@@ -51,7 +47,6 @@ export default function MediaClock() {
       setTime(`${hh}${mm}`);
     }
     updateTime();
-    // Update at the start of each new minute
     const id = setInterval(updateTime, 60 * 1000);
     return () => clearInterval(id);
   }, []);
@@ -72,9 +67,6 @@ export default function MediaClock() {
         width: "100vw",
         overflow: "hidden",
         position: "relative",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
         backgroundColor: "#F9F985FF",
       }}
     >
@@ -105,10 +97,7 @@ export default function MediaClock() {
           src={fallbackImg}
           alt=""
           onLoad={handleImageLoad}
-          onError={() => {
-            console.error("Fallback image failed to load.");
-            setMediaReady(true);
-          }}
+          onError={() => setMediaReady(true)}
           style={{
             position: "absolute",
             top: 0,
@@ -126,10 +115,11 @@ export default function MediaClock() {
       {allReady && (
         <div
           style={{
-            position: "relative",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
             zIndex: 2,
-            height: "100dvh",
-            width: "100vw",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -139,11 +129,12 @@ export default function MediaClock() {
             style={{
               fontSize: "14vh",
               fontWeight: 700,
-              color: "#383131FF",
-              textShadow: "0.2px 0.2px #F1E499FF",
+              color: "#2B2626FF",
+              textShadow: "1.2px -0.2px #F1E499FF",
               letterSpacing: "2.6vh",
               fontFamily:
                 "'SereneFont', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace",
+              textAlign: "center",
             }}
           >
             {time}
