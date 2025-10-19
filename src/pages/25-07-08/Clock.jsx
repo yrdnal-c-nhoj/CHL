@@ -1,4 +1,3 @@
-// MintClock.jsx
 import React, { useEffect } from 'react';
 import mintFont from './mint.ttf';
 import hourImg from './mint.png';
@@ -9,7 +8,6 @@ import bgImage from './candy.jpg';
 const MintClock = () => {
   useEffect(() => {
     const clock = document.getElementById('clock');
-
     for (let i = 1; i <= 12; i++) {
       const numberDiv = document.createElement('div');
       numberDiv.className = 'number';
@@ -29,7 +27,6 @@ const MintClock = () => {
       const seconds = now.getSeconds();
       const minutes = now.getMinutes();
       const hours = now.getHours();
-
       const secDeg = seconds * 6;
       const minDeg = minutes * 6 + seconds * 0.1;
       const hrDeg = (hours % 12) * 30 + minutes * 0.5;
@@ -45,12 +42,9 @@ const MintClock = () => {
     [hourHand, minuteHand, secondHand].forEach(hand => {
       hand.onerror = () => {
         console.error(`Failed to load image for ${hand.alt} at ${hand.src}`);
-        hand.style.background = hand.classList.contains('hour') ? 'blue' :
-                                hand.classList.contains('minute') ? 'green' : 'red';
-        hand.style.width = hand.classList.contains('hour') ? '0.3rem' :
-                           hand.classList.contains('minute') ? '0.2rem' : '0.1rem';
-        hand.style.height = hand.classList.contains('hour') ? '6rem' :
-                            hand.classList.contains('minute') ? '8rem' : '10rem';
+        hand.style.background = hand.classList.contains('hour') ? 'blue' : hand.classList.contains('minute') ? 'green' : 'red';
+        hand.style.width = hand.classList.contains('hour') ? '0.3rem' : hand.classList.contains('minute') ? '0.2rem' : '0.1rem';
+        hand.style.height = hand.classList.contains('hour') ? '6rem' : hand.classList.contains('minute') ? '8rem' : '10rem';
       };
     });
 
@@ -58,7 +52,7 @@ const MintClock = () => {
   }, []);
 
   return (
-    <div style={{ margin: 0, height: '100vh', width: '100vw', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#85ed6b' }}>
+    <div style={{ margin: 0, height: '100vh', width: '100vw', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#85ed6b', overflow: 'hidden' }}>
       <style>
         {`
           @font-face {
@@ -68,9 +62,12 @@ const MintClock = () => {
 
           .clock {
             z-index: 6;
-            position: relative;
-            width: 60vh;
-            height: 60dvh;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60vmin;
+            height: 60vmin;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -94,7 +91,7 @@ const MintClock = () => {
 
           .number span {
             display: block;
-            transform: translateY(-15vh);
+            transform: translateY(-15vmin);
           }
 
           .hand {
@@ -109,17 +106,17 @@ const MintClock = () => {
           }
 
           .hour {
-            height: 10vh;
+            height: 10vmin;
             z-index: 2;
           }
 
           .minute {
-            height: 16vh;
+            height: 16vmin;
             z-index: 3;
           }
 
           .second {
-            height: 20vh;
+            height: 20vmin;
             z-index: 4;
           }
 
@@ -128,7 +125,7 @@ const MintClock = () => {
             background-size: cover;
             background-position: center;
             position: fixed;
-            height: 100dvh;
+            height: 100vh;
             width: 100vw;
             top: 50%;
             left: 50%;
@@ -138,7 +135,6 @@ const MintClock = () => {
           }
         `}
       </style>
-
       <div className="bgimage"></div>
       <div className="clock" id="clock">
         <img className="hand hour" src={hourImg} alt="Hour Hand" />
