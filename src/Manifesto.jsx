@@ -18,7 +18,7 @@ function Manifesto() {
             <span className="source"><cite> The Futurist Manifesto</cite></span>
           </div>
         </div>
-
+{/* 
         <div className="epigraph">
           <div className="quote">“Nature is too green, and badly lit.”</div>
           <div className="attribution">
@@ -26,7 +26,7 @@ function Manifesto() {
             <span className="source"><cite> Boucher et la peinture sous Louis XV</cite></span>
           </div>
         </div>
-
+ */}
 
         <div className="manifestoSection">
           <p><span className="hat">We Take Pictures<br />&nbsp;</span>

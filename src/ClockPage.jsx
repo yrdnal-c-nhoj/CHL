@@ -234,7 +234,7 @@ const ClockPage = () => {
             {ClockComponent ? (
               <ClockComponent />
             ) : (
-              <div className={styles.loading}>Loading clock...</div>
+              <div className={styles.loading}></div>
             )}
           </div>
           <ClockPageNav
