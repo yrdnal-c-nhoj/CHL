@@ -3,7 +3,7 @@ import blackImg from "./tile1.jpg"; // "1" squares
 import pinkImg from "./tile2.jpg";  // "0" squares
 
 const GRID_SIZE = 5;
-const DIGIT_GAP = 2; // px between digits
+const DIGIT_GAP = 3; // px between digits
 const CELL_GAP = 1;  // px between grid cells
 
 // Digit patterns
@@ -15,7 +15,11 @@ const DIGITS = {
   "4": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => c===GRID_SIZE-1 || r===Math.floor(GRID_SIZE/2) || (c===0&&r<Math.floor(GRID_SIZE/2)) ? 1 : 0)),
   "5": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===Math.floor(GRID_SIZE/2) || r===GRID_SIZE-1 || (r<Math.floor(GRID_SIZE/2)&&c===0) || (r>Math.floor(GRID_SIZE/2)&&c===GRID_SIZE-1) ? 1 : 0)),
   "6": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===Math.floor(GRID_SIZE/2) || r===GRID_SIZE-1 || c===0 || (r>Math.floor(GRID_SIZE/2)&&c===GRID_SIZE-1) ? 1 : 0)),
-  "7": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || c===GRID_SIZE-1 ? 1 : 0)),
+  "7": Array(GRID_SIZE).fill(0).map((_, r) =>
+    Array(GRID_SIZE).fill(0).map((_, c) =>
+      r === 0 || c === GRID_SIZE - 1 - r ? 1 : 0
+    )
+  ),
   "8": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===GRID_SIZE-1 || r===Math.floor(GRID_SIZE/2) || c===0 || c===GRID_SIZE-1 ? 1 : 0)),
   "9": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===GRID_SIZE-1 || r===Math.floor(GRID_SIZE/2) || c===GRID_SIZE-1 || (c===0&&r<Math.floor(GRID_SIZE/2)) ? 1 : 0)),
 };
@@ -45,10 +49,24 @@ export default function QuadrantClock() {
   }
 
   const digits = [...time.hours, ...time.minutes, ...time.seconds];
-  const totalGapWidth = DIGIT_GAP * (digits.length - 1);
-  const maxDigitWidth = (windowSize.width - totalGapWidth) / digits.length;
-  const maxDigitHeight = windowSize.height;
-  const digitSize = Math.floor(Math.min(maxDigitWidth, maxDigitHeight));
+  const isMobile = windowSize.width <= 768;
+
+  // Calculate digit size dynamically based on layout
+  let digitSize;
+  if (isMobile) {
+    const rows = 3; // hours, minutes, seconds
+    const digitsPerRow = 2;
+    const totalGapWidth = DIGIT_GAP * (digitsPerRow - 1);
+    const totalGapHeight = DIGIT_GAP * (rows - 1);
+    const maxWidth = (windowSize.width - totalGapWidth) / digitsPerRow;
+    const maxHeight = (windowSize.height - totalGapHeight) / rows;
+    digitSize = Math.floor(Math.min(maxWidth, maxHeight));
+  } else {
+    const totalGapWidth = DIGIT_GAP * (digits.length - 1);
+    const maxWidth = (windowSize.width - totalGapWidth) / digits.length;
+    const maxHeight = windowSize.height;
+    digitSize = Math.floor(Math.min(maxWidth, maxHeight));
+  }
 
   function renderDigit(digit) {
     const grid = DIGITS[digit] || DIGITS["0"];
@@ -83,6 +101,17 @@ export default function QuadrantClock() {
     );
   }
 
+  // Helper to render a row of digits
+  const renderRow = (digitSlice, offset) => (
+    <div style={{ display: "flex", gap: `${DIGIT_GAP}px` }}>
+      {digitSlice.map((d, i) => (
+        <div key={i + offset} style={{ width: digitSize, height: digitSize }}>
+          {renderDigit(d)}
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <div
       style={{
@@ -94,13 +123,13 @@ export default function QuadrantClock() {
         gap: `${DIGIT_GAP}px`,
         backgroundColor: "#1F4E79",
         overflow: "hidden",
+        flexDirection: isMobile ? "column" : "row",
+        flexWrap: isMobile ? "wrap" : "nowrap",
       }}
     >
-      {digits.map((d, i) => (
-        <div key={i} style={{ width: digitSize, height: digitSize }}>
-          {renderDigit(d)}
-        </div>
-      ))}
+      {renderRow(digits.slice(0, 2), 0)}
+      {renderRow(digits.slice(2, 4), 2)}
+      {renderRow(digits.slice(4, 6), 4)}
     </div>
   );
 }
