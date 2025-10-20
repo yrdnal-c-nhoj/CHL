@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import fontLatin from "./word.ttf"; // Latin font for most languages
-import fontCJK from "./CJK.ttf"; // zh, ja
-import fontArabic from "./NotoNaskhArabic-Regular.ttf"; // ar
-import fontDevanagari from "./NotoSansDevanagari-Regular.ttf"; // hi
-
+import fontLatin from "./word.ttf";
+import fontCJK from "./CJK.ttf";
+import fontArabic from "./NotoNaskhArabic-Regular.ttf";
+import fontDevanagari from "./NotoSansDevanagari-Regular.ttf";
 import backgroundImage from "./words.jpg";
 
 export default function TimeWordsClock() {
@@ -16,7 +15,7 @@ export default function TimeWordsClock() {
     "ja", "de", "hi", "id", "it", "tr", "pl", "nl"
   ];
 
-  const pluralize = (n, singular, plural) => n === 1 ? singular : plural;
+  const pluralize = (n, singular, plural) => (n === 1 ? singular : plural);
 
   const translations = {
     en:{after:"after", before:"before", oclock:"o'clock", nowItIs:"Now, it is", and:"and", itIs:"It is", minute:["minute","minutes"], second:["second","seconds"], dir:"ltr"},
@@ -38,50 +37,89 @@ export default function TimeWordsClock() {
 
   useEffect(() => {
     let cancelled = false;
-    const family = "UserLoadedFontLatin";
-    const preload = document.createElement("link");
-    preload.rel = "preload";
-    preload.as = "font";
-    preload.href = fontLatin;
-    preload.type = "font/ttf";
-    preload.crossOrigin = "anonymous";
-    document.head.appendChild(preload);
+
+    const fonts = [
+      { name: "LatinFont", url: fontLatin },
+      { name: "CJKFont", url: fontCJK },
+      { name: "ArabicFont", url: fontArabic },
+      { name: "DevanagariFont", url: fontDevanagari },
+    ];
 
     const styleTag = document.createElement("style");
-    styleTag.textContent = `
-      @font-face { font-family: '${family}'; src: url('${fontLatin}') format('truetype'); font-display: swap; }
-    `;
+    styleTag.textContent = fonts
+      .map(
+        (f) =>
+          `@font-face { font-family: '${f.name}'; src: url('${f.url}') format('truetype'); font-display: swap; }`
+      )
+      .join("\n");
     document.head.appendChild(styleTag);
 
-    (async () => {
-      try {
-        if ("FontFace" in window) {
-          const ff = new FontFace(family, `url(${fontLatin})`);
-          await ff.load();
-          document.fonts.add(ff);
-        } else if (document.fonts && document.fonts.ready) {
-          await document.fonts.ready;
-        }
-        if (!cancelled) { setNow(new Date()); setReady(true); }
-      } catch { if (!cancelled) { setNow(new Date()); setReady(true); } }
-    })();
+    const image = new Image();
+    image.src = backgroundImage;
 
-    return () => { cancelled = true; document.head.removeChild(preload); document.head.removeChild(styleTag); };
+    Promise.all([
+      ...fonts.map((f) => {
+        if ("FontFace" in window) {
+          const ff = new FontFace(f.name, `url(${f.url})`);
+          return ff.load().then((loaded) => {
+            document.fonts.add(loaded);
+          });
+        } else {
+          return document.fonts?.ready || Promise.resolve();
+        }
+      }),
+      new Promise((resolve) => {
+        if (image.complete) resolve();
+        else {
+          image.onload = resolve;
+          image.onerror = resolve;
+        }
+      }),
+    ])
+      .then(() => {
+        if (!cancelled) {
+          setNow(new Date());
+          setReady(true);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setNow(new Date());
+          setReady(true);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+      document.head.removeChild(styleTag);
+    };
   }, []);
 
   useEffect(() => {
     if (!ready) return;
-    const tick = () => { setNow(new Date()); setLangIndex(prev => (prev + 1) % languages.length); };
+    const tick = () => {
+      setNow(new Date());
+      setLangIndex((prev) => (prev + 1) % languages.length);
+    };
     const msToNext = 1000 - (Date.now() % 1000);
-    const t = setTimeout(() => { tick(); const i = setInterval(tick, 1000); return () => clearInterval(i); }, msToNext);
+    const t = setTimeout(() => {
+      tick();
+      const i = setInterval(tick, 1000);
+      return () => clearInterval(i);
+    }, msToNext);
     return () => clearTimeout(t);
   }, [ready]);
 
   const timeToWords = (date, lang) => {
     const t = translations[lang];
-    let hours = date.getHours(), minutes = date.getMinutes(), seconds = date.getSeconds();
-    let relation = t.after, displayMinutes = minutes, displaySeconds = seconds;
+    let hours = date.getHours(),
+      minutes = date.getMinutes(),
+      seconds = date.getSeconds();
+    let relation = t.after,
+      displayMinutes = minutes,
+      displaySeconds = seconds;
     let displayHour = hours % 12 === 0 ? 12 : hours % 12;
+
     if (minutes > 30 || (minutes === 30 && seconds > 0)) {
       relation = t.before;
       displayMinutes = 60 - minutes;
@@ -89,22 +127,87 @@ export default function TimeWordsClock() {
       const nextHour = (hours + 1) % 24;
       displayHour = nextHour % 12 === 0 ? 12 : nextHour % 12;
     }
-    const hourDigit = displayHour; // <— use digit instead of word
+
     const lines = [];
-    if (displayMinutes>0) lines.push(`${t.nowItIs} ${displayMinutes} ${pluralize(displayMinutes,t.minute[0],t.minute[1])}`);
-    if (displaySeconds>0) lines.push(displayMinutes>0?`${t.and} ${displaySeconds} ${pluralize(displaySeconds,t.second[0],t.second[1])}`:`${t.itIs} ${displaySeconds} ${pluralize(displaySeconds,t.second[0],t.second[1])}`);
-    lines.push(`${relation} ${hourDigit} ${t.oclock}`);
+    if (displayMinutes > 0)
+      lines.push(
+        `${t.nowItIs} ${displayMinutes} ${pluralize(
+          displayMinutes,
+          t.minute[0],
+          t.minute[1]
+        )}`
+      );
+    if (displaySeconds > 0)
+      lines.push(
+        displayMinutes > 0
+          ? `${t.and} ${displaySeconds} ${pluralize(
+              displaySeconds,
+              t.second[0],
+              t.second[1]
+            )}`
+          : `${t.itIs} ${displaySeconds} ${pluralize(
+              displaySeconds,
+              t.second[0],
+              t.second[1]
+            )}`
+      );
+    lines.push(`${relation} ${displayHour} ${t.oclock}`);
     return lines;
   };
 
-  if(!ready || !now) return null;
+  const containerStyle = {
+    width: "100vw",
+    height: "100dvh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+    overflow: "hidden",
+    backgroundColor: "#000",
+    direction: "ltr",
+  };
+
+  if (!ready || !now)
+    return (
+      <div style={containerStyle}>
+        {/* Black loading screen */}
+      </div>
+    );
 
   const lang = languages[langIndex];
   const dir = translations[lang].dir || "ltr";
 
-  const containerStyle={width:"100vw",height:"100dvh",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",overflow:"hidden",direction:dir};
-  const backgroundStyle={position:"absolute",top:0,left:0,width:"100%",height:"100%",backgroundImage:`url(${backgroundImage})`,backgroundSize:"cover",backgroundPosition:"center",backgroundRepeat:"no-repeat",filter:"hue-rotate(-130deg) saturate(0.6) contrast(0.3) brightness(1.9)",transform:"scaleX(-1)",zIndex:0};
-  const textStyle={position:"relative",zIndex:1,fontFamily:"UserLoadedFontLatin, Georgia, serif",fontSize:"clamp(4vh,5vw,8vh)",color:"#050504FF",textAlign:"center",lineHeight:"1.4",borderRadius:"0.2vh",textShadow:"0.02em 0.02em #DF1414FF, -0.02em -0.02em 0 rgba(255,255,255,0.9)",padding:"2vh 4vw",border:"0.2vh solid rgba(255,255,255,0.3)"};
+  const backgroundStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    filter:
+      "hue-rotate(-130deg) saturate(0.6) contrast(0.3) brightness(1.9)",
+    transform: "scaleX(-1)",
+    zIndex: 0,
+  };
+
+  const textStyle = {
+    position: "relative",
+    zIndex: 1,
+    fontFamily: "LatinFont, Georgia, serif",
+    fontSize: "clamp(4vh, 5vw, 8vh)",
+    color: "#050504FF",
+    textAlign: "center",
+    lineHeight: "1.4",
+    borderRadius: "0.2vh",
+    textShadow:
+      "0.02em 0.02em #DF1414FF, -0.02em -0.02em 0 rgba(255,255,255,0.9)",
+    padding: "2vh 4vw",
+    border: "0.2vh solid rgba(255,255,255,0.3)",
+    direction: dir,
+  };
 
   const lines = timeToWords(now, lang);
 
@@ -112,7 +215,13 @@ export default function TimeWordsClock() {
     <div style={containerStyle} aria-live="polite">
       <div style={backgroundStyle}></div>
       <div style={textStyle}>
-        {lines.map((line,i)=>(<div key={i}>{line}<br />&nbsp;</div>))}
+        {lines.map((line, i) => (
+          <div key={i}>
+            {line}
+            <br />
+            &nbsp;
+          </div>
+        ))}
       </div>
     </div>
   );
