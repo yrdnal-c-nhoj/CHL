@@ -21,7 +21,7 @@ function Contact() {
           </div>
         </div>
 
-
+<br></br>
 
         <section className="manifestoSection">
           {/* Instagram */}
