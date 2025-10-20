@@ -37,7 +37,7 @@ const ClockPage = () => {
   useEffect(() => {
     if (loading) return;
     if (!items || items.length === 0) {
-      setPageError('No clocks available.');
+      setPageError('No clock is available.');
       setClockComponent(null);
       setIsContentReady(false);
       return;
