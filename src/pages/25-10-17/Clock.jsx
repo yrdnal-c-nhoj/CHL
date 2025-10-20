@@ -5,11 +5,106 @@ import backgroundImage from "./words.jpg";
 export default function TimeWordsClock() {
   const [ready, setReady] = useState(false);
   const [now, setNow] = useState(null);
+  const [langIndex, setLangIndex] = useState(0);
 
+  const languages = ["en", "fr", "es", "pl", "it", "de", "nl", "pt"];
+
+  // Translation dictionaries
+  const translations = {
+    en: {
+      hourWords: ["twelve", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven"],
+      smallNumbers: ["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"],
+      tens: ["", "", "twenty", "thirty", "forty", "fifty"],
+      after: "after",
+      before: "before",
+      oclock: "o'clock",
+      nowItIs: "Now, it is",
+      and: "and",
+      itIs: "It is"
+    },
+    fr: {
+      hourWords: ["douze","une","deux","trois","quatre","cinq","six","sept","huit","neuf","dix","onze"],
+      smallNumbers: ["zéro","un","deux","trois","quatre","cinq","six","sept","huit","neuf","dix","onze","douze","treize","quatorze","quinze","seize","dix-sept","dix-huit","dix-neuf"],
+      tens: ["", "", "vingt", "trente", "quarante", "cinquante"],
+      after: "après",
+      before: "avant",
+      oclock: "heures",
+      nowItIs: "Il est maintenant",
+      and: "et",
+      itIs: "Il est"
+    },
+    es: {
+      hourWords: ["doce","una","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez","once"],
+      smallNumbers: ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez","once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve"],
+      tens: ["", "", "veinte","treinta","cuarenta","cincuenta"],
+      after: "después",
+      before: "para",
+      oclock: "en punto",
+      nowItIs: "Ahora son",
+      and: "y",
+      itIs: "Son"
+    },
+    pl: {
+      hourWords: ["dwanaście","jedna","dwie","trzy","cztery","pięć","sześć","siedem","osiem","dziewięć","dziesięć","jedenaście"],
+      smallNumbers: ["zero","jeden","dwa","trzy","cztery","pięć","sześć","siedem","osiem","dziewięć","dziesięć","jedenaście","dwanaście","trzynaście","czternaście","piętnaście","szesnaście","siedemnaście","osiemnaście","dziewiętnaście"],
+      tens: ["", "", "dwadzieścia","trzydzieści","czterdzieści","pięćdziesiąt"],
+      after: "po",
+      before: "do",
+      oclock: "godzina",
+      nowItIs: "Jest teraz",
+      and: "i",
+      itIs: "Jest"
+    },
+    it: {
+      hourWords: ["dodici","una","due","tre","quattro","cinque","sei","sette","otto","nove","dieci","undici"],
+      smallNumbers: ["zero","uno","due","tre","quattro","cinque","sei","sette","otto","nove","dieci","undici","dodici","tredici","quattordici","quindici","sedici","diciassette","diciotto","diciannove"],
+      tens: ["", "", "venti","trenta","quaranta","cinquanta"],
+      after: "dopo",
+      before: "a",
+      oclock: "in punto",
+      nowItIs: "Ora sono",
+      and: "e",
+      itIs: "Sono"
+    },
+    de: {
+      hourWords: ["zwölf","eins","zwei","drei","vier","fünf","sechs","sieben","acht","neun","zehn","elf"],
+      smallNumbers: ["null","eins","zwei","drei","vier","fünf","sechs","sieben","acht","neun","zehn","elf","zwölf","dreizehn","vierzehn","fünfzehn","sechzehn","siebzehn","achtzehn","neunzehn"],
+      tens: ["", "", "zwanzig","dreißig","vierzig","fünfzig"],
+      after: "nach",
+      before: "vor",
+      oclock: "Uhr",
+      nowItIs: "Jetzt ist es",
+      and: "und",
+      itIs: "Es ist"
+    },
+    nl: {
+      hourWords: ["twaalf","een","twee","drie","vier","vijf","zes","zeven","acht","negen","tien","elf"],
+      smallNumbers: ["nul","een","twee","drie","vier","vijf","zes","zeven","acht","negen","tien","elf","twaalf","dertien","veertien","vijftien","zestien","zeventien","achttien","negentien"],
+      tens: ["", "", "twintig","dertig","veertig","vijftig"],
+      after: "over",
+      before: "voor",
+      oclock: "uur",
+      nowItIs: "Het is nu",
+      and: "en",
+      itIs: "Het is"
+    },
+    pt: {
+      hourWords: ["doze","uma","duas","três","quatro","cinco","seis","sete","oito","nove","dez","onze"],
+      smallNumbers: ["zero","um","dois","três","quatro","cinco","seis","sete","oito","nove","dez","onze","doze","treze","catorze","quinze","dezasseis","dezassete","dezoito","dezanove"],
+      tens: ["", "", "vinte","trinta","quarenta","cinquenta"],
+      after: "depois",
+      before: "para",
+      oclock: "em ponto",
+      nowItIs: "Agora são",
+      and: "e",
+      itIs: "São"
+    }
+  };
+
+  // Load font
   useEffect(() => {
     let cancelled = false;
 
-    // Preload font
     const preload = document.createElement("link");
     preload.rel = "preload";
     preload.as = "font";
@@ -57,9 +152,13 @@ export default function TimeWordsClock() {
     };
   }, []);
 
+  // Tick
   useEffect(() => {
     if (!ready) return;
-    const tick = () => setNow(new Date());
+    const tick = () => {
+      setNow(new Date());
+      setLangIndex(prev => (prev + 1) % languages.length);
+    };
     const msToNext = 1000 - (Date.now() % 1000);
     const t = setTimeout(() => {
       tick();
@@ -69,73 +168,57 @@ export default function TimeWordsClock() {
     return () => clearTimeout(t);
   }, [ready]);
 
-  const hourWords = [
-    "twelve", "one", "two", "three", "four", "five",
-    "six", "seven", "eight", "nine", "ten", "eleven"
-  ];
+  const numberToWords = (num, lang) => {
+    const smallNumbers = translations[lang].smallNumbers;
+    const tens = translations[lang].tens;
+    if (num < 20) return smallNumbers[num];
+    const ten = Math.floor(num / 10);
+    const one = num % 10;
+    return one === 0 ? tens[ten] : `${tens[ten]}-${smallNumbers[one]}`;
+  };
 
-  const smallNumberWords = [
-    "zero", "one", "two", "three", "four", "five",
-    "six", "seven", "eight", "nine", "ten",
-    "eleven", "twelve", "thirteen", "fourteen", "fifteen",
-    "sixteen", "seventeen", "eighteen", "nineteen"
-  ];
-
-  const tensWords = ["", "", "twenty", "thirty", "forty", "fifty"];
-
-  function numberToWords(num) {
-    if (num < 20) return smallNumberWords[num];
-    const tens = Math.floor(num / 10);
-    const ones = num % 10;
-    return ones === 0 ? tensWords[tens] : `${tensWords[tens]}-${smallNumberWords[ones]}`;
-  }
-
-  function timeToWords(date) {
+  const timeToWords = (date, lang) => {
+    const t = translations[lang];
     let hours = date.getHours();
     let minutes = date.getMinutes();
     let seconds = date.getSeconds();
 
-    let relation = "after";
+    let relation = t.after;
     let displayMinutes = minutes;
     let displaySeconds = seconds;
     let displayHour = hours % 12 === 0 ? 12 : hours % 12;
-    let period = hours >= 12 ? "PM" : "AM";
 
     if (minutes > 30 || (minutes === 30 && seconds > 0)) {
-      relation = "before";
+      relation = t.before;
       displayMinutes = 60 - minutes;
       displaySeconds = seconds > 0 ? 60 - seconds : 0;
       const nextHour = (hours + 1) % 24;
       displayHour = nextHour % 12 === 0 ? 12 : nextHour % 12;
     }
 
-    const hourWord = hourWords[displayHour % 12 === 0 ? 0 : displayHour];
+    const hourWord = t.hourWords[displayHour % 12 === 0 ? 0 : displayHour];
 
     const lines = [];
 
-    // Minutes
     if (displayMinutes > 0) {
-      lines.push(`"Now, it is ${numberToWords(displayMinutes)} minute${displayMinutes !== 1 ? "s" : ""}`);
+      lines.push(`${t.nowItIs} ${numberToWords(displayMinutes, lang)} ${lang==="en"?"minute":"minut"}${displayMinutes !== 1?"s":""}`);
     }
 
-    // Seconds (only if there are seconds to display)
     if (displaySeconds > 0) {
       if (displayMinutes > 0) {
-        lines.push(`and ${numberToWords(displaySeconds)} second${displaySeconds !== 1 ? "s" : ""}`);
+        lines.push(`${t.and} ${numberToWords(displaySeconds, lang)} ${lang==="en"?"second":"sekund"}${displaySeconds !==1?"s":""}`);
       } else {
-        lines.push(`It is ${numberToWords(displaySeconds)} second${displaySeconds !== 1 ? "s" : ""}`);
+        lines.push(`${t.itIs} ${numberToWords(displaySeconds, lang)} ${lang==="en"?"second":"sekund"}${displaySeconds !==1?"s":""}`);
       }
     }
 
-    // Relation / hour
-    lines.push(`${relation} ${hourWord} o'clock."`);
+    lines.push(`${relation} ${hourWord} ${t.oclock}.`);
 
     return lines;
-  }
+  };
 
   if (!ready || !now) return null;
 
-  // Container
   const containerStyle = {
     width: "100vw",
     height: "100dvh",
@@ -146,7 +229,6 @@ export default function TimeWordsClock() {
     overflow: "hidden",
   };
 
-  // Background image with filter and horizontal flip
   const backgroundStyle = {
     position: "absolute",
     top: 0,
@@ -162,7 +244,6 @@ export default function TimeWordsClock() {
     zIndex: 0,
   };
 
-  // Text
   const textStyle = {
     position: "relative",
     zIndex: 1,
@@ -172,16 +253,12 @@ export default function TimeWordsClock() {
     textAlign: "center",
     lineHeight: "1.4",
     borderRadius: "0.2vh",
-    textShadow: `
-      0.02em 0.02em  #DF1414FF,
-     
-      -0.02em -0.02em 0 rgba(255,255,255,0.9)
-    `,
+    textShadow: `0.02em 0.02em  #DF1414FF, -0.02em -0.02em 0 rgba(255,255,255,0.9)`,
     padding: "2vh 4vw",
     border: "0.2vh solid rgba(255, 255, 255, 0.3)",
   };
 
-  const lines = timeToWords(now);
+  const lines = timeToWords(now, languages[langIndex]);
 
   return (
     <div style={containerStyle} aria-live="polite">
