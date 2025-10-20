@@ -77,7 +77,7 @@ const ClockPage = () => {
           setIsContentReady(false);
         });
     } else {
-      setPageError(`No clock found at path: ${key}`);
+      setPageError(`No clock found at path: ${key}. But try hitting reload anyway, what have you got to lose?`);
       setIsContentReady(false);
     }
   }, [date, items, loading, navigate]);
