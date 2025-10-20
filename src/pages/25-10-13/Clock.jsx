@@ -166,22 +166,20 @@ export default function Clock() {
         
         <div style={lineStyle}>
           {renderDigits(z(hours12))}
-          <div style={labelStyle}>&nbsp;Hours</div>
-        </div>
+         </div>
         
         <div style={lineStyle}>
           {renderDigits(z(minutes))}
-          <div style={labelStyle}>&nbsp;Minutes</div>
-        </div>
+         </div>
         
         <div style={lineStyle}>
           {renderDigits(z(seconds))}
-          <div style={labelStyle}>&nbsp;Seconds</div>
+         
         </div>
         
         <div style={lineStyle}>
           {renderDigits(milliseconds)}
-          <div style={labelStyle}>&nbsp;Milliseconds</div>
+         
         </div>
       
         <div style={lineStyle}>
