@@ -10,7 +10,15 @@ function Manifesto() {
       <div className="centeredContent">
         <h1>MANIFESTO</h1>
 
-    
+        <div className="epigraph">
+          <div className="quote">“Nature is too green, and badly lit.”</div>
+          <div className="attribution">
+            <span className="author">— François Boucher</span>, 
+            <span className="source"><cite> Boucher et la peinture sous Louis XV</cite></span>
+          </div>
+        </div>
+
+
         <div className="manifestoSection">
           <p><span className="hat">We Take Pictures<br />&nbsp;</span>
           <span className="smallcaps">WE APPROPRIATE BEAUTIFUL</span> images, scavenged from the infinite scroll of the Internet. Pictures distort time. We catch them as they swim by, and remix them.
