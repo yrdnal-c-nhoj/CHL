@@ -73,11 +73,11 @@ const ClockPage = () => {
           setIsContentReady(true);
         })
         .catch((err) => {
-          setPageError(`Failed to load clock for ${item.date}: ${err.message} These things happen. It's nobody's fault. Don't blame yourself. Just hit reload.`);
+          setPageError(`Failed to load clock for ${item.date}: ${err.message}`);
           setIsContentReady(false);
         });
     } else {
-      setPageError(`No clock found at path: ${key}. But try hitting reload anyway, what have you got to lose?`);
+      setPageError(`No clock found at path: ${key}.`);
       setIsContentReady(false);
     }
   }, [date, items, loading, navigate]);
