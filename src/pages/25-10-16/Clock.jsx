@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import font20251016 from "./brahmi.ttf";
-import image1 from "./palm.webp"; // first grid image
-import image2 from "./brahmi.webp"; // second grid image
+import image1 from "./palm.webp";
+import image2 from "./brahmi.webp";
 
 const brahmiDigits = ["𑁦","𑁧","𑁨","𑁩","𑁪","𑁫","𑁬","𑁭","𑁮","𑁯"];
 
@@ -13,7 +13,6 @@ export default function BrahmiClock() {
   const [time, setTime] = useState(new Date());
   const [ready, setReady] = useState(false);
 
-  // Load everything (font + images)
   useEffect(() => {
     let isCancelled = false;
 
@@ -51,30 +50,14 @@ export default function BrahmiClock() {
     return () => clearInterval(interval);
   }, [ready]);
 
-  if (!ready) {
-    return (
-      <div
-        style={{
-          height: "100vh",
-          width: "100vw",
-          background: "linear-gradient(180deg, #3366E5FF, #9A9C9FFF, #351E03FF)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "6rem",
-          color: "#ffd700",
-          fontFamily: "serif",
-        }}
-      >
-        Loading...
-      </div>
-    );
-  }
+  // **Do not render anything until ready**
+  if (!ready) return <div style={{backgroundColor: "black", width: "100vw", height: "100dvh"}} />;
 
   const hours = toBrahmi(time.getHours().toString().padStart(2, "0"));
   const minutes = toBrahmi(time.getMinutes().toString().padStart(2, "0"));
   const seconds = toBrahmi(time.getSeconds().toString().padStart(2, "0"));
 
+  // ... your existing styles
   const containerStyle = {
     position: "relative",
     height: "100dvh",
@@ -161,21 +144,15 @@ export default function BrahmiClock() {
       <div style={holeStyle}></div>
       <div style={clockStyle}>
         {hours.map((h, i) => (
-          <div key={`h${i}`} style={digitBoxStyle}>
-            {h}
-          </div>
+          <div key={`h${i}`} style={digitBoxStyle}>{h}</div>
         ))}
         <div style={colonStyle}>:</div>
         {minutes.map((m, i) => (
-          <div key={`m${i}`} style={digitBoxStyle}>
-            {m}
-          </div>
+          <div key={`m${i}`} style={digitBoxStyle}>{m}</div>
         ))}
         <div style={colonStyle}>:</div>
         {seconds.map((s, i) => (
-          <div key={`s${i}`} style={digitBoxStyle}>
-            {s}
-          </div>
+          <div key={`s${i}`} style={digitBoxStyle}>{s}</div>
         ))}
       </div>
     </div>
