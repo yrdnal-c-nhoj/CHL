@@ -12,7 +12,18 @@ function Contact() {
 
       <div className="centeredContent">
         <h1>CONTACT</h1>
-         <br /> 
+        
+        <div className="epigraph">
+          <div className="quote">If there’s a book that you want to read, but it hasn’t been written yet, then you must write it.
+”</div>
+          <div className="attribution">
+            <span className="author">— Toni Morrison</span>, 
+          </div>
+        </div>
+
+
+“If there’s a book that you want to read, but it hasn’t been written yet, then you must write it.”
+
 
         <section className="manifestoSection">
           {/* Instagram */}
