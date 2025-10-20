@@ -73,7 +73,7 @@ const ClockPage = () => {
           setIsContentReady(true);
         })
         .catch((err) => {
-          setPageError(`Failed to load clock for ${item.date}: ${err.message}`);
+          setPageError(`Failed to load clock for ${item.date}: ${err.message} These things happen. It's nobody's fault. Don't blame yourself. Just hit reload.`);
           setIsContentReady(false);
         });
     } else {
