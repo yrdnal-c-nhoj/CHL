@@ -130,7 +130,7 @@ export default function MediaClock() {
               fontSize: "14vh",
               fontWeight: 700,
               color: "#2B2626FF",
-              textShadow: "0.5px -0.5px #F1E499FF",
+              textShadow: "0.25px -0.25px #F1E499FF",
               letterSpacing: "2.6vh",
               fontFamily:
                 "'SereneFont', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace",
