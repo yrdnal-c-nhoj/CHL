@@ -15,11 +15,7 @@ const DIGITS = {
   "4": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => c===GRID_SIZE-1 || r===Math.floor(GRID_SIZE/2) || (c===0&&r<Math.floor(GRID_SIZE/2)) ? 1 : 0)),
   "5": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===Math.floor(GRID_SIZE/2) || r===GRID_SIZE-1 || (r<Math.floor(GRID_SIZE/2)&&c===0) || (r>Math.floor(GRID_SIZE/2)&&c===GRID_SIZE-1) ? 1 : 0)),
   "6": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===Math.floor(GRID_SIZE/2) || r===GRID_SIZE-1 || c===0 || (r>Math.floor(GRID_SIZE/2)&&c===GRID_SIZE-1) ? 1 : 0)),
-  "7": Array(GRID_SIZE).fill(0).map((_, r) =>
-    Array(GRID_SIZE).fill(0).map((_, c) =>
-      r === 0 || c === GRID_SIZE - 1 - r ? 1 : 0
-    )
-  ),
+  "7": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r === 0 || c === GRID_SIZE - 1 - r ? 1 : 0)),
   "8": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===GRID_SIZE-1 || r===Math.floor(GRID_SIZE/2) || c===0 || c===GRID_SIZE-1 ? 1 : 0)),
   "9": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===GRID_SIZE-1 || r===Math.floor(GRID_SIZE/2) || c===GRID_SIZE-1 || (c===0&&r<Math.floor(GRID_SIZE/2)) ? 1 : 0)),
 };
@@ -42,33 +38,30 @@ export default function QuadrantClock() {
   function getCurrentTime() {
     const now = new Date();
     return {
-      hours: now.getHours().toString().padStart(2,"0"),
-      minutes: now.getMinutes().toString().padStart(2,"0"),
-      seconds: now.getSeconds().toString().padStart(2,"0"),
+      hours: now.getHours().toString().padStart(2, "0"),
+      minutes: now.getMinutes().toString().padStart(2, "0"),
+      seconds: now.getSeconds().toString().padStart(2, "0"),
     };
   }
 
   const digits = [...time.hours, ...time.minutes, ...time.seconds];
   const isMobile = windowSize.width <= 768;
 
-  // Calculate digit size dynamically based on layout
-  let digitSize;
-  if (isMobile) {
-    const rows = 3; // hours, minutes, seconds
-    const digitsPerRow = 2;
-    const totalGapWidth = DIGIT_GAP * (digitsPerRow - 1);
-    const totalGapHeight = DIGIT_GAP * (rows - 1);
-    const maxWidth = (windowSize.width - totalGapWidth) / digitsPerRow;
-    const maxHeight = (windowSize.height - totalGapHeight) / rows;
-    digitSize = Math.floor(Math.min(maxWidth, maxHeight));
-  } else {
-    const totalGapWidth = DIGIT_GAP * (digits.length - 1);
-    const maxWidth = (windowSize.width - totalGapWidth) / digits.length;
-    const maxHeight = windowSize.height;
-    digitSize = Math.floor(Math.min(maxWidth, maxHeight));
-  }
+  // Calculate digit size dynamically
+  const digitSize = (() => {
+    if (isMobile) {
+      const pairCount = 3; // hours, minutes, seconds
+      const totalGap = DIGIT_GAP * (pairCount - 1);
+      const maxHeightPerPair = (windowSize.height - totalGap) / pairCount;
+      const maxWidthPerDigit = (windowSize.width - DIGIT_GAP) / 2;
+      return Math.floor(Math.min(maxHeightPerPair, maxWidthPerDigit));
+    } else {
+      const totalGap = DIGIT_GAP * (digits.length - 1);
+      return Math.floor((windowSize.width - totalGap) / digits.length);
+    }
+  })();
 
-  function renderDigit(digit) {
+  const renderDigit = (digit) => {
     const grid = DIGITS[digit] || DIGITS["0"];
     const totalCellGap = CELL_GAP * (GRID_SIZE - 1);
     const cellSize = (digitSize - totalCellGap) / GRID_SIZE;
@@ -89,22 +82,17 @@ export default function QuadrantClock() {
             key={idx}
             src={val ? blackImg : pinkImg}
             alt=""
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-              display: "block",
-            }}
+            style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
           />
         ))}
       </div>
     );
-  }
+  };
 
-  // Helper to render a row of digits
-  const renderRow = (digitSlice, offset) => (
+  // Helper for mobile pairs
+  const renderPair = (pairDigits, offset) => (
     <div style={{ display: "flex", gap: `${DIGIT_GAP}px` }}>
-      {digitSlice.map((d, i) => (
+      {pairDigits.map((d, i) => (
         <div key={i + offset} style={{ width: digitSize, height: digitSize }}>
           {renderDigit(d)}
         </div>
@@ -124,12 +112,20 @@ export default function QuadrantClock() {
         backgroundColor: "#1F4E79",
         overflow: "hidden",
         flexDirection: isMobile ? "column" : "row",
-        flexWrap: isMobile ? "wrap" : "nowrap",
       }}
     >
-      {renderRow(digits.slice(0, 2), 0)}
-      {renderRow(digits.slice(2, 4), 2)}
-      {renderRow(digits.slice(4, 6), 4)}
+      {isMobile
+        ? <>
+            {renderPair(digits.slice(0, 2), 0)}
+            {renderPair(digits.slice(2, 4), 2)}
+            {renderPair(digits.slice(4, 6), 4)}
+          </>
+        : digits.map((d, i) => (
+            <div key={i} style={{ width: digitSize, height: digitSize }}>
+              {renderDigit(d)}
+            </div>
+          ))
+      }
     </div>
   );
 }
