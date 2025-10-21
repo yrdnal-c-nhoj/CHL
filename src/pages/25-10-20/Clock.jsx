@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import blackImg from "./tile1.jpg"; // "1" squares
 import pinkImg from "./tile2.jpg";  // "0" squares
 
 const GRID_SIZE = 5;
-const DIGIT_GAP = 3; // px between digits
-const CELL_GAP = 1;  // px between grid cells
+const DIGIT_GAP = 0.5; // vh between digits
+const CELL_GAP = 0.1;  // vh between grid cells
+const MIN_DIGIT_SIZE = 5; // vh
 
 // Digit patterns
 const DIGITS = {
@@ -15,11 +16,7 @@ const DIGITS = {
   "4": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => c===GRID_SIZE-1 || r===Math.floor(GRID_SIZE/2) || (c===0&&r<Math.floor(GRID_SIZE/2)) ? 1 : 0)),
   "5": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===Math.floor(GRID_SIZE/2) || r===GRID_SIZE-1 || (r<Math.floor(GRID_SIZE/2)&&c===0) || (r>Math.floor(GRID_SIZE/2)&&c===GRID_SIZE-1) ? 1 : 0)),
   "6": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===Math.floor(GRID_SIZE/2) || r===GRID_SIZE-1 || c===0 || (r>Math.floor(GRID_SIZE/2)&&c===GRID_SIZE-1) ? 1 : 0)),
-  "7": Array(GRID_SIZE).fill(0).map((_, r) =>
-    Array(GRID_SIZE).fill(0).map((_, c) =>
-      r === 0 || c === GRID_SIZE - 1 - r ? 1 : 0
-    )
-  ),
+  "7": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r === 0 || c === GRID_SIZE - 1 - r ? 1 : 0)),
   "8": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===GRID_SIZE-1 || r===Math.floor(GRID_SIZE/2) || c===0 || c===GRID_SIZE-1 ? 1 : 0)),
   "9": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===GRID_SIZE-1 || r===Math.floor(GRID_SIZE/2) || c===GRID_SIZE-1 || (c===0&&r<Math.floor(GRID_SIZE/2)) ? 1 : 0)),
 };
@@ -27,12 +24,31 @@ const DIGITS = {
 export default function QuadrantClock() {
   const [time, setTime] = useState(getCurrentTime());
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
+  const [isReady, setIsReady] = useState(false);
 
+  // Preload images
+  useEffect(() => {
+    let loadedAssets = 0;
+    const totalAssets = 2; // 2 images
+
+    const preloadImages = [blackImg, pinkImg];
+    preloadImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = img.onerror = () => {
+        loadedAssets++;
+        if (loadedAssets === totalAssets) setIsReady(true);
+      };
+    });
+  }, []);
+
+  // Update time every second
   useEffect(() => {
     const interval = setInterval(() => setTime(getCurrentTime()), 1000);
     return () => clearInterval(interval);
   }, []);
 
+  // Handle window resize
   useEffect(() => {
     const handleResize = () => setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     window.addEventListener("resize", handleResize);
@@ -42,33 +58,33 @@ export default function QuadrantClock() {
   function getCurrentTime() {
     const now = new Date();
     return {
-      hours: now.getHours().toString().padStart(2,"0"),
-      minutes: now.getMinutes().toString().padStart(2,"0"),
-      seconds: now.getSeconds().toString().padStart(2,"0"),
+      hours: now.getHours().toString().padStart(2, "0"),
+      minutes: now.getMinutes().toString().padStart(2, "0"),
+      seconds: now.getSeconds().toString().padStart(2, "0"),
     };
   }
 
   const digits = [...time.hours, ...time.minutes, ...time.seconds];
   const isMobile = windowSize.width <= 768;
 
-  // Calculate digit size dynamically based on layout
+  // Calculate digit size in vh
   let digitSize;
   if (isMobile) {
     const rows = 3; // hours, minutes, seconds
     const digitsPerRow = 2;
-    const totalGapWidth = DIGIT_GAP * (digitsPerRow - 1);
+    const totalGapWidth = DIGIT_GAP * (digitsPerRow - 1 + 1); // Account for colon
     const totalGapHeight = DIGIT_GAP * (rows - 1);
-    const maxWidth = (windowSize.width - totalGapWidth) / digitsPerRow;
-    const maxHeight = (windowSize.height - totalGapHeight) / rows;
-    digitSize = Math.floor(Math.min(maxWidth, maxHeight));
+    const maxWidth = (windowSize.width / window.innerHeight * 100 - totalGapWidth) / (digitsPerRow + 0.5);
+    const maxHeight = (100 - totalGapHeight) / rows;
+    digitSize = Math.max(MIN_DIGIT_SIZE, Math.min(maxWidth, maxHeight));
   } else {
-    const totalGapWidth = DIGIT_GAP * (digits.length - 1);
-    const maxWidth = (windowSize.width - totalGapWidth) / digits.length;
-    const maxHeight = windowSize.height;
-    digitSize = Math.floor(Math.min(maxWidth, maxHeight));
+    const totalGapWidth = DIGIT_GAP * (digits.length - 1 + 2); // Account for two colons
+    const maxWidth = (windowSize.width / window.innerHeight * 100 - totalGapWidth) / (digits.length + 1);
+    const maxHeight = 100;
+    digitSize = Math.max(MIN_DIGIT_SIZE, Math.min(maxWidth, maxHeight));
   }
 
-  function renderDigit(digit) {
+  const renderDigit = useCallback((digit) => {
     const grid = DIGITS[digit] || DIGITS["0"];
     const totalCellGap = CELL_GAP * (GRID_SIZE - 1);
     const cellSize = (digitSize - totalCellGap) / GRID_SIZE;
@@ -77,9 +93,9 @@ export default function QuadrantClock() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${GRID_SIZE}, ${cellSize}px)`,
-          gridTemplateRows: `repeat(${GRID_SIZE}, ${cellSize}px)`,
-          gap: `${CELL_GAP}px`,
+          gridTemplateColumns: `repeat(${GRID_SIZE}, ${cellSize}vh)`,
+          gridTemplateRows: `repeat(${GRID_SIZE}, ${cellSize}vh)`,
+          gap: `${CELL_GAP}vh`,
           width: "100%",
           height: "100%",
         }}
@@ -95,22 +111,50 @@ export default function QuadrantClock() {
               objectFit: "contain",
               display: "block",
             }}
+            onError={(e) => {
+              e.target.style.backgroundColor = val ? "black" : "#FF69B4";
+            }}
           />
         ))}
       </div>
     );
-  }
+  }, [digitSize]);
 
-  // Helper to render a row of digits
   const renderRow = (digitSlice, offset) => (
-    <div style={{ display: "flex", gap: `${DIGIT_GAP}px` }}>
+    <div
+      style={{
+        display: "flex",
+        gap: `${DIGIT_GAP}vh`,
+        alignItems: "center",
+      }}
+    >
       {digitSlice.map((d, i) => (
-        <div key={i + offset} style={{ width: digitSize, height: digitSize }}>
+        <div
+          key={i + offset}
+          style={{
+            width: `${digitSize}vh`,
+            height: `${digitSize}vh`,
+          }}
+        >
           {renderDigit(d)}
         </div>
       ))}
+      <span
+        style={{
+          color: "white",
+          fontSize: `${digitSize / 2}vh`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: `${digitSize / 2}vh`,
+        }}
+      >
+        :
+      </span>
     </div>
   );
+
+  if (!isReady) return null; // Render nothing until images are loaded
 
   return (
     <div
@@ -120,16 +164,52 @@ export default function QuadrantClock() {
         alignItems: "center",
         width: "100vw",
         height: "100dvh",
-        gap: `${DIGIT_GAP}px`,
+        gap: `${DIGIT_GAP}vh`,
         backgroundColor: "#1F4E79",
         overflow: "hidden",
         flexDirection: isMobile ? "column" : "row",
         flexWrap: isMobile ? "wrap" : "nowrap",
+        padding: "env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)",
       }}
+      aria-label={`Current time: ${time.hours}:${time.minutes}:${time.seconds}`}
     >
-      {renderRow(digits.slice(0, 2), 0)}
-      {renderRow(digits.slice(2, 4), 2)}
-      {renderRow(digits.slice(4, 6), 4)}
+      {isMobile ? (
+        <>
+          {renderRow(digits.slice(0, 2), 0)}
+          {renderRow(digits.slice(2, 4), 2)}
+          {renderRow(digits.slice(4, 6), 4)}
+        </>
+      ) : (
+        <>
+          {renderRow(digits.slice(0, 2), 0)}
+          <span
+            style={{
+              color: "white",
+              fontSize: `${digitSize / 2}vh`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: `${digitSize / 2}vh`,
+            }}
+          >
+            :
+          </span>
+          {renderRow(digits.slice(2, 4), 2)}
+          <span
+            style={{
+              color: "white",
+              fontSize: `${digitSize / 2}vh`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: `${digitSize / 2}vh`,
+            }}
+          >
+            :
+          </span>
+          {renderRow(digits.slice(4, 6), 4)}
+        </>
+      )}
     </div>
   );
 }
