@@ -9,16 +9,44 @@ const MIN_DIGIT_SIZE = 5; // vh
 
 // Digit patterns
 const DIGITS = {
-  "0": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r === 0 || r === GRID_SIZE-1 || c === 0 || c === GRID_SIZE-1 ? 1 : 0)),
-  "1": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => c === Math.floor(GRID_SIZE/2) ? 1 : 0)),
-  "2": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r === 0 || r === Math.floor(GRID_SIZE/2) || r === GRID_SIZE-1 || (r<Math.floor(GRID_SIZE/2)&&c===GRID_SIZE-1) || (r>Math.floor(GRID_SIZE/2)&&c===0) ? 1 : 0)),
-  "3": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===Math.floor(GRID_SIZE/2) || r===GRID_SIZE-1 || c===GRID_SIZE-1 ? 1 : 0)),
-  "4": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => c===GRID_SIZE-1 || r===Math.floor(GRID_SIZE/2) || (c===0&&r<Math.floor(GRID_SIZE/2)) ? 1 : 0)),
-  "5": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===Math.floor(GRID_SIZE/2) || r===GRID_SIZE-1 || (r<Math.floor(GRID_SIZE/2)&&c===0) || (r>Math.floor(GRID_SIZE/2)&&c===GRID_SIZE-1) ? 1 : 0)),
-  "6": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===Math.floor(GRID_SIZE/2) || r===GRID_SIZE-1 || c===0 || (r>Math.floor(GRID_SIZE/2)&&c===GRID_SIZE-1) ? 1 : 0)),
-  "7": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r === 0 || c === GRID_SIZE - 1 - r ? 1 : 0)),
-  "8": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===GRID_SIZE-1 || r===Math.floor(GRID_SIZE/2) || c===0 || c===GRID_SIZE-1 ? 1 : 0)),
-  "9": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===GRID_SIZE-1 || r===Math.floor(GRID_SIZE/2) || c===GRID_SIZE-1 || (c===0&&r<Math.floor(GRID_SIZE/2)) ? 1 : 0)),
+  "0": Array(GRID_SIZE).fill(0).map((_, r) => 
+    Array(GRID_SIZE).fill(0).map((_, c) => 
+      r === 0 || r === GRID_SIZE-1 || c === 0 || c === GRID_SIZE-1 ? 1 : 0)),
+  "1": Array(GRID_SIZE).fill(0).map((_, r) => 
+    Array(GRID_SIZE).fill(0).map((_, c) => 
+      c === Math.floor(GRID_SIZE/2) ? 1 : 0)),
+  "2": Array(GRID_SIZE).fill(0).map((_, r) => 
+    Array(GRID_SIZE).fill(0).map((_, c) => 
+      r === 0 || r === Math.floor(GRID_SIZE/2) || r === GRID_SIZE-1 || 
+      (r < Math.floor(GRID_SIZE/2) && c === GRID_SIZE-1) || 
+      (r > Math.floor(GRID_SIZE/2) && c === 0) ? 1 : 0)),
+  "3": Array(GRID_SIZE).fill(0).map((_, r) => 
+    Array(GRID_SIZE).fill(0).map((_, c) => 
+      r === 0 || r === Math.floor(GRID_SIZE/2) || r === GRID_SIZE-1 || c === GRID_SIZE-1 ? 1 : 0)),
+  "4": Array(GRID_SIZE).fill(0).map((_, r) => 
+    Array(GRID_SIZE).fill(0).map((_, c) => 
+      c === GRID_SIZE-1 || r === Math.floor(GRID_SIZE/2) || 
+      (c === 0 && r < Math.floor(GRID_SIZE/2)) ? 1 : 0)),
+  "5": Array(GRID_SIZE).fill(0).map((_, r) => 
+    Array(GRID_SIZE).fill(0).map((_, c) => 
+      r === 0 || r === Math.floor(GRID_SIZE/2) || r === GRID_SIZE-1 || 
+      (r < Math.floor(GRID_SIZE/2) && c === 0) || 
+      (r > Math.floor(GRID_SIZE/2) && c === GRID_SIZE-1) ? 1 : 0)),
+  "6": Array(GRID_SIZE).fill(0).map((_, r) => 
+    Array(GRID_SIZE).fill(0).map((_, c) => 
+      r === 0 || r === Math.floor(GRID_SIZE/2) || r === GRID_SIZE-1 || 
+      c === 0 || (r > Math.floor(GRID_SIZE/2) && c === GRID_SIZE-1) ? 1 : 0)),
+  "7": Array(GRID_SIZE).fill(0).map((_, r) => 
+    Array(GRID_SIZE).fill(0).map((_, c) => 
+      r === 0 || c === GRID_SIZE - 1 - r ? 1 : 0)),
+  "8": Array(GRID_SIZE).fill(0).map((_, r) => 
+    Array(GRID_SIZE).fill(0).map((_, c) => 
+      r === 0 || r === GRID_SIZE-1 || r === Math.floor(GRID_SIZE/2) || 
+      c === 0 || c === GRID_SIZE-1 ? 1 : 0)),
+  "9": Array(GRID_SIZE).fill(0).map((_, r) => 
+    Array(GRID_SIZE).fill(0).map((_, c) => 
+      r === 0 || r === GRID_SIZE-1 || r === Math.floor(GRID_SIZE/2) || 
+      c === GRID_SIZE-1 || (c === 0 && r < Math.floor(GRID_SIZE/2)) ? 1 : 0)),
 };
 
 export default function QuadrantClock() {
@@ -29,8 +57,7 @@ export default function QuadrantClock() {
   // Preload images
   useEffect(() => {
     let loadedAssets = 0;
-    const totalAssets = 2; // 2 images
-
+    const totalAssets = 2;
     const preloadImages = [blackImg, pinkImg];
     preloadImages.forEach((src) => {
       const img = new Image();
@@ -67,19 +94,18 @@ export default function QuadrantClock() {
   const digits = [...time.hours, ...time.minutes, ...time.seconds];
   const isMobile = windowSize.width <= 768;
 
-  // Calculate digit size in vh
+  // Calculate digit size
   let digitSize;
   if (isMobile) {
-    const rows = 3; // hours, minutes, seconds
+    const rows = 3;
     const digitsPerRow = 2;
-    const totalGapWidth = DIGIT_GAP * (digitsPerRow - 1 + 1); // Account for colon
     const totalGapHeight = DIGIT_GAP * (rows - 1);
-    const maxWidth = (windowSize.width / window.innerHeight * 100 - totalGapWidth) / (digitsPerRow + 0.5);
+    const maxWidth = (windowSize.width / window.innerHeight * 100) / (digitsPerRow + 0.2);
     const maxHeight = (100 - totalGapHeight) / rows;
     digitSize = Math.max(MIN_DIGIT_SIZE, Math.min(maxWidth, maxHeight));
   } else {
-    const totalGapWidth = DIGIT_GAP * (digits.length - 1 + 2); // Account for two colons
-    const maxWidth = (windowSize.width / window.innerHeight * 100 - totalGapWidth) / (digits.length + 1);
+    const totalGapWidth = DIGIT_GAP * (digits.length - 1);
+    const maxWidth = (windowSize.width / window.innerHeight * 100 - totalGapWidth) / digits.length;
     const maxHeight = 100;
     digitSize = Math.max(MIN_DIGIT_SIZE, Math.min(maxWidth, maxHeight));
   }
@@ -139,22 +165,10 @@ export default function QuadrantClock() {
           {renderDigit(d)}
         </div>
       ))}
-      <span
-        style={{
-          color: "white",
-          fontSize: `${digitSize / 2}vh`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: `${digitSize / 2}vh`,
-        }}
-      >
-        :
-      </span>
     </div>
   );
 
-  if (!isReady) return null; // Render nothing until images are loaded
+  if (!isReady) return null;
 
   return (
     <div
@@ -171,7 +185,7 @@ export default function QuadrantClock() {
         flexWrap: isMobile ? "wrap" : "nowrap",
         padding: "env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)",
       }}
-      aria-label={`Current time: ${time.hours}:${time.minutes}:${time.seconds}`}
+      aria-label={`Current time: ${time.hours}${time.minutes}${time.seconds}`}
     >
       {isMobile ? (
         <>
@@ -181,33 +195,17 @@ export default function QuadrantClock() {
         </>
       ) : (
         <>
-          {renderRow(digits.slice(0, 2), 0)}
-          <span
-            style={{
-              color: "white",
-              fontSize: `${digitSize / 2}vh`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: `${digitSize / 2}vh`,
-            }}
-          >
-            :
-          </span>
-          {renderRow(digits.slice(2, 4), 2)}
-          <span
-            style={{
-              color: "white",
-              fontSize: `${digitSize / 2}vh`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: `${digitSize / 2}vh`,
-            }}
-          >
-            :
-          </span>
-          {renderRow(digits.slice(4, 6), 4)}
+          {digits.map((d, i) => (
+            <div
+              key={i}
+              style={{
+                width: `${digitSize}vh`,
+                height: `${digitSize}vh`,
+              }}
+            >
+              {renderDigit(d)}
+            </div>
+          ))}
         </>
       )}
     </div>
