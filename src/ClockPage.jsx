@@ -10,7 +10,7 @@ const clockModules = import.meta.glob('./pages/**/Clock.jsx');
 
 const normalizeDate = (d) => d.split('-').map((n) => n.padStart(2, '0')).join('-');
 
-const ClockPage = () => {
+export default function ClockPage() {
   const { date } = useParams();
   const { items, loading, error } = useContext(DataContext);
   const navigate = useNavigate();
@@ -18,10 +18,20 @@ const ClockPage = () => {
   const [ClockComponent, setClockComponent] = useState(null);
   const [pageError, setPageError] = useState(null);
   const [isReady, setIsReady] = useState(false);
+  const [fadeHeader, setFadeHeader] = useState(false);
 
-  // -------------------------------
-  // Load Clock dynamically
-  // -------------------------------
+  // --------------------------------
+  // Header fade timing — always runs first
+  // --------------------------------
+  useEffect(() => {
+    setFadeHeader(false); // show immediately
+    const timer = setTimeout(() => setFadeHeader(true), 2000); // fade out after 2s
+    return () => clearTimeout(timer);
+  }, [date]); // runs on every new page
+
+  // --------------------------------
+  // Load Clock dynamically (happens behind header)
+  // --------------------------------
   useEffect(() => {
     if (loading) return;
 
@@ -52,75 +62,57 @@ const ClockPage = () => {
       return;
     }
 
-    // Dynamically import Clock component
     clockModules[key]()
       .then((mod) => {
         const Component = mod.default;
-
-        // Preload all images inside the ClockComponent
-        const tempContainer = document.createElement('div');
-        tempContainer.style.display = 'none';
-        document.body.appendChild(tempContainer);
-
-        const instance = <Component />;
-        const rendered = React.cloneElement(instance);
-
-        // Render temporarily to find images
-        const wrapper = document.createElement('div');
-        tempContainer.appendChild(wrapper);
-
-        // Create a hidden div to mount the component
-        const root = document.createElement('div');
-        wrapper.appendChild(root);
-
-        // This is just to find all <img> sources in the JSX
-        // Note: Since we can't fully render JSX outside React, we'll assume images are imported modules
-        const images = Object.values(mod)
-          .filter((v) => typeof v === 'string' && (v.endsWith('.jpg') || v.endsWith('.webp') || v.endsWith('.png')));
+        const images = Object.values(mod).filter(
+          (v) =>
+            typeof v === 'string' &&
+            (v.endsWith('.jpg') || v.endsWith('.png') || v.endsWith('.webp'))
+        );
 
         if (images.length === 0) {
           setClockComponent(() => Component);
           setIsReady(true);
         } else {
-          let loadedCount = 0;
+          let loaded = 0;
           images.forEach((src) => {
             const img = new Image();
             img.src = src;
             img.onload = img.onerror = () => {
-              loadedCount++;
-              if (loadedCount === images.length) {
+              loaded++;
+              if (loaded === images.length) {
                 setClockComponent(() => Component);
                 setIsReady(true);
               }
             };
           });
         }
-
-        // Cleanup temp container
-        document.body.removeChild(tempContainer);
       })
-      .catch((err) => {
-        setPageError(`Failed to load clock: ${err.message}`);
-      });
+      .catch((err) => setPageError(`Failed to load clock: ${err.message}`));
   }, [date, items, loading, navigate]);
 
   // Prevent scrolling
   useEffect(() => {
     document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, []);
 
-  // -------------------------------
-  // Full-screen loading overlay
-  // -------------------------------
+  // --------------------------------
+  // Loading overlay
+  // --------------------------------
   const LoadingOverlay = () => (
     <div
       style={{
         position: 'fixed',
-        top: 0, left: 0,
-        width: '100vw', height: '100vh',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
         backgroundColor: '#000',
-        zIndex: 9999,
+        zIndex: 10, // below header
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -131,7 +123,7 @@ const ClockPage = () => {
           width: '3px',
           height: '20px',
           backgroundColor: '#333',
-          animation: 'pulse 1.5s ease-in-out infinite'
+          animation: 'pulse 1.5s ease-in-out infinite',
         }}
       />
       <style>{`
@@ -143,50 +135,48 @@ const ClockPage = () => {
     </div>
   );
 
-  // -------------------------------
-  // Show nothing until ready
-  // -------------------------------
-  if (!isReady && !pageError) {
-    return <LoadingOverlay />;
-  }
-
-  // -------------------------------
-  // Show error if any
-  // -------------------------------
-  if (pageError || error) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.error}>{pageError || error}</div>
-      </div>
-    );
-  }
-
-  // -------------------------------
-  // Navigation items
-  // -------------------------------
+  // --------------------------------
+  // Render
+  // --------------------------------
   const currentIndex = items.findIndex((i) => normalizeDate(i.date) === normalizeDate(date));
   const currentItem = items[currentIndex];
   const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
   const nextItem = currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
 
-  // -------------------------------
-  // Render page
-  // -------------------------------
   return (
     <div className={styles.container}>
-      <Header visible={true} />
-      <div className={styles.content}>
-        {ClockComponent && <ClockComponent />}
+      {/* 👇 Header always appears first */}
+      <div
+        style={{
+          opacity: fadeHeader ? 0 : 1,
+          transition: 'opacity 2s ease-out',
+          pointerEvents: 'none',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          zIndex: 100, // ensures it's on top
+        }}
+      >
+        <Header visible={true} />
       </div>
-      <ClockPageNav
-        prevItem={prevItem}
-        nextItem={nextItem}
-        currentItem={currentItem}
-        formatTitle={(t) => t?.replace(/clock/i, '').trim() || 'Home'}
-        formatDate={(d) => d}
-      />
+
+      {/* 👇 Clock + loading content */}
+      <div className={styles.content}>
+        {!isReady && !pageError && <LoadingOverlay />}
+        {pageError && <div className={styles.error}>{pageError}</div>}
+        {isReady && ClockComponent && <ClockComponent />}
+      </div>
+
+      {isReady && (
+        <ClockPageNav
+          prevItem={prevItem}
+          nextItem={nextItem}
+          currentItem={currentItem}
+          formatTitle={(t) => t?.replace(/clock/i, '').trim() || 'Home'}
+          formatDate={(d) => d}
+        />
+      )}
     </div>
   );
-};
-
-export default ClockPage;
+}
