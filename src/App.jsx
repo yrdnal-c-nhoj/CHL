@@ -1,3 +1,4 @@
+// App.jsx
 import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -10,9 +11,12 @@ import Today from './Today';
 import Contact from './Contact';
 import { pageview } from './analytics';
 
-// Analytics & SEO component
+console.log('📦 [App.jsx] File loaded.');
+
 const AnalyticsAndSEO = () => {
   const location = useLocation();
+  console.log('🧭 [AnalyticsAndSEO] useLocation called:', location.pathname);
+
   const path = location.pathname === '/index.html' ? '/' : location.pathname;
   const dynamicClockRoute = /^\/\d{2}-\d{2}-\d{2}$/;
 
@@ -27,8 +31,11 @@ const AnalyticsAndSEO = () => {
       };
 
   useEffect(() => {
+    console.log('📊 [AnalyticsAndSEO] pageview() triggered for path:', path + location.search);
     pageview(path + location.search);
   }, [path, location.search]);
+
+  console.log('🧠 [AnalyticsAndSEO] Meta prepared:', meta);
 
   return (
     <Helmet>
@@ -43,11 +50,20 @@ const AnalyticsAndSEO = () => {
 };
 
 const App = () => {
+  console.log('🧩 [App] Component rendering...');
+
+  useEffect(() => {
+    console.log('✅ [App] Mounted successfully.');
+    return () => console.log('🧹 [App] Unmounted.');
+  }, []);
+
   return (
     <DataProvider>
+      {console.log('🌐 [App] Router starting...')}
       <Router>
         <AnalyticsAndSEO />
         <Routes>
+          {console.log('🗺️ [App] Defining routes...')}
           <Route path="/" element={<Home />} />
           <Route path="/:date" element={<ClockPage />} />
           <Route path="/about" element={<About />} />
