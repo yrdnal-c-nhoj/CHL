@@ -81,7 +81,7 @@ const Home = () => {
         backgroundColor: '#fff',
         fontFamily: 'sans-serif',
       }}>
-        Loading...
+        
       </div>
     );
   }
