@@ -119,7 +119,7 @@ export default function QuadrantClock() {
         justifyContent: "center",
         alignItems: "center",
         width: "100vw",
-        height: "100vh",
+        height: "100dvh",
         gap: `${DIGIT_GAP}px`,
         backgroundColor: "#1F4E79",
         overflow: "hidden",
