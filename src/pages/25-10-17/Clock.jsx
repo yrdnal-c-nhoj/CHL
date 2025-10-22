@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import fontLatin from "./word.ttf";
+import fontLatin from "./words.ttf";
 import fontCJK from "./CJK.ttf";
 import fontArabic from "./NotoNaskhArabic-Regular.ttf";
 import fontDevanagari from "./NotoSansDevanagari-Regular.ttf";
