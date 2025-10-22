@@ -11,7 +11,7 @@ const paths = ['today'];
 const baseURL = 'https://www.cubistheart.com/';
 
 // Delay in milliseconds before screenshot (e.g., 3000 = 3s)
-const screenshotDelay = 100;
+const screenshotDelay = 200;
 
 // Format date as YYYY-MM-DD
 function getDateString() {
