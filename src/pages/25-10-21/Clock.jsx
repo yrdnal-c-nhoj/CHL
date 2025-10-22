@@ -6,42 +6,30 @@ import minuteHandImg from "./min.gif";
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+  const [isWide, setIsWide] = useState(true);
 
-  // Update time every second
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
+    const interval = setInterval(() => setTime(new Date()), 60000);
     return () => clearInterval(interval);
   }, []);
 
-  // Track window resize
   useEffect(() => {
-    const handleResize = () =>
-      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    const onResize = () => setIsWide(window.innerWidth >= window.innerHeight);
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // Clock angles
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
+
   const hourAngle = (360 / 12) * hours + (360 / (12 * 60)) * minutes;
   const minuteAngle = (360 / 60) * minutes;
-
-  // Determine main clock size (80% of smaller viewport dimension)
-  const clockSize = Math.min(windowSize.width, windowSize.height) * 0.8;
-  const offset = clockSize * 1.1; // spacing for duplicates
-
-  // Determine orientation
-  const isWide = windowSize.width >= windowSize.height;
 
   const containerStyle = {
     position: "relative",
     width: "100vw",
-    height: "100vh",
+    height: "100dvh",
     overflow: "hidden",
     display: "flex",
     justifyContent: "center",
@@ -49,60 +37,66 @@ export default function AnalogClock() {
     backgroundColor: "#000",
   };
 
-  const handStyle = (angle, lengthScale = 0.5, zIndex = 5) => ({
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    width: `${lengthScale * 100}%`,
-    height: `${lengthScale * 100}%`,
-    transformOrigin: "center center",
-    transform: `translate(-50%, -50%) rotate(${angle}deg)`,
-    pointerEvents: "none",
-    userSelect: "none",
-    zIndex,
-  });
+  // The largest possible size for center clock
+  const centerClockSize = Math.min(window.innerWidth, window.innerHeight);
 
-  const handImageStyle = (contrast = 80, brightness = 200) => ({
-    width: "100%",
-    height: "100%",
-    objectFit: "contain",
-    filter: `contrast(${contrast}%) brightness(${brightness}%)`,
-  });
-
-  const backgroundStyle = {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    objectFit: "contain",
-    top: 0,
-    left: 0,
-    zIndex: 1,
-  };
-
-  const ClockInstance = ({ offsetX = 0, offsetY = 0 }) => {
+  // Helper to render a clock at offset
+  const ClockInstance = ({ offsetX = 0, offsetY = 0, size = centerClockSize }) => {
     const wrapperStyle = {
       position: "absolute",
       top: "50%",
       left: "50%",
-      width: `${clockSize}px`,
-      height: `${clockSize}px`,
-      transform: `translate(-50%, -50%) translate(${offsetX}px, ${offsetY}px)`,
+      width: `${size}px`,
+      height: `${size}px`,
+      transform: `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))`,
+    };
+
+    const handStyle = (img, angle, lengthScale = 0.5, slideFactor = 0) => ({
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      width: `${lengthScale * 100}%`,
+      height: `${lengthScale * 100}%`,
+      transformOrigin: "center center",
+      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(${slideFactor}%)`,
+      pointerEvents: "none",
+      userSelect: "none",
+      zIndex: img === minuteHandImg ? 10 : 5,
+    });
+
+    const handImage = ({ contrast = 50, brightness = 30 }) => ({
+      width: "100%",
+      height: "100%",
+      objectFit: "contain",
+      filter: `contrast(${contrast}%) brightness(${brightness}%)`,
+    });
+
+    const backgroundStyle = {
+      position: "absolute",
+      width: "100%",
+      height: "100%",
+      objectFit: "contain",
+      top: 0,
+      left: 0,
+      zIndex: 1,
     };
 
     return (
       <div style={wrapperStyle}>
         <img src={backgroundImg} alt="Clock Background" style={backgroundStyle} />
-        <div style={handStyle(hourAngle, 0.33, 5)}>
-          <img src={hourHandImg} alt="Hour Hand" style={handImageStyle(80, 200)} />
+        <div style={handStyle(hourHandImg, hourAngle, 0.33, -22)}>
+          <img src={hourHandImg} alt="Hour Hand" style={handImage({ contrast: 80, brightness: 200 })} />
         </div>
-        <div style={handStyle(minuteAngle, 0.56, 10)}>
-          <img src={minuteHandImg} alt="Minute Hand" style={handImageStyle(80, 190)} />
+        <div style={handStyle(minuteHandImg, minuteAngle, 0.56, -31)}>
+          <img src={minuteHandImg} alt="Minute Hand" style={handImage({ contrast: 80, brightness: 190 })} />
         </div>
       </div>
     );
   };
 
-  // Duplicates
+  // Determine offset for duplicates
+  const offset = centerClockSize; // same as center clock size
+
   const clocks = [
     <ClockInstance key="center" />,
     ...(isWide
