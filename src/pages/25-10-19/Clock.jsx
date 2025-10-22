@@ -1,119 +1,131 @@
-import React, { useEffect, useRef } from "react";
-import treeImg from "./trees.jpg";
+import React, { useEffect, useState } from "react";
+import blackImg from "./tile1.jpg"; // "1" squares
+import pinkImg from "./tile2.jpg";  // "0" squares
 
-export default function ClockPage() {
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const rafRef = useRef(null);
-  const bgRef = useRef(null);
-  const bgRafRef = useRef(null);
+const GRID_SIZE = 5;
+const DIGIT_GAP = 3; // px between digits
+const CELL_GAP = 1;  // px between grid cells
+
+// Digit patterns
+const DIGITS = {
+  "0": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r === 0 || r === GRID_SIZE-1 || c === 0 || c === GRID_SIZE-1 ? 1 : 0)),
+  "1": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => c === Math.floor(GRID_SIZE/2) ? 1 : 0)),
+  "2": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r === 0 || r === Math.floor(GRID_SIZE/2) || r === GRID_SIZE-1 || (r<Math.floor(GRID_SIZE/2)&&c===GRID_SIZE-1) || (r>Math.floor(GRID_SIZE/2)&&c===0) ? 1 : 0)),
+  "3": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===Math.floor(GRID_SIZE/2) || r===GRID_SIZE-1 || c===GRID_SIZE-1 ? 1 : 0)),
+  "4": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => c===GRID_SIZE-1 || r===Math.floor(GRID_SIZE/2) || (c===0&&r<Math.floor(GRID_SIZE/2)) ? 1 : 0)),
+  "5": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===Math.floor(GRID_SIZE/2) || r===GRID_SIZE-1 || (r<Math.floor(GRID_SIZE/2)&&c===0) || (r>Math.floor(GRID_SIZE/2)&&c===GRID_SIZE-1) ? 1 : 0)),
+  "6": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===Math.floor(GRID_SIZE/2) || r===GRID_SIZE-1 || c===0 || (r>Math.floor(GRID_SIZE/2)&&c===GRID_SIZE-1) ? 1 : 0)),
+  "7": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r === 0 || c === GRID_SIZE - 1 - r ? 1 : 0)),
+  "8": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===GRID_SIZE-1 || r===Math.floor(GRID_SIZE/2) || c===0 || c===GRID_SIZE-1 ? 1 : 0)),
+  "9": Array(GRID_SIZE).fill(0).map((_, r) => Array(GRID_SIZE).fill(0).map((_, c) => r===0 || r===GRID_SIZE-1 || r===Math.floor(GRID_SIZE/2) || c===GRID_SIZE-1 || (c===0&&r<Math.floor(GRID_SIZE/2)) ? 1 : 0)),
+};
+
+export default function QuadrantClock() {
+  const [time, setTime] = useState(getCurrentTime());
+  const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
 
   useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      const hours = now.getHours() % 12;
-      const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
-
-      const hourAngle = (hours + minutes / 60) * 30;
-      const minuteAngle = (minutes + seconds / 60) * 6;
-
-      if (hourRef.current)
-        hourRef.current.style.transform = `rotate(${hourAngle}deg) translateX(-50%)`;
-      if (minuteRef.current)
-        minuteRef.current.style.transform = `rotate(${minuteAngle}deg) translateX(-50%)`;
-
-      rafRef.current = requestAnimationFrame(updateClock);
-    };
-    rafRef.current = requestAnimationFrame(updateClock);
-
-    const rotateBackground = () => {
-      const now = new Date();
-      const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
-      const degrees = (seconds / 60) * 360;
-      if (bgRef.current) {
-        bgRef.current.style.transform = `translate(-50%, -50%) rotate(${-degrees}deg)`;
-      }
-      bgRafRef.current = requestAnimationFrame(rotateBackground);
-    };
-    rotateBackground();
-
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      cancelAnimationFrame(bgRafRef.current);
-    };
+    const interval = setInterval(() => setTime(getCurrentTime()), 1000);
+    return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const handleResize = () => setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  function getCurrentTime() {
+    const now = new Date();
+    return {
+      hours: now.getHours().toString().padStart(2, "0"),
+      minutes: now.getMinutes().toString().padStart(2, "0"),
+      seconds: now.getSeconds().toString().padStart(2, "0"),
+    };
+  }
+
+  const digits = [...time.hours, ...time.minutes, ...time.seconds];
+  const isMobile = windowSize.width <= 768;
+
+  // Calculate digit size dynamically
+  const digitSize = (() => {
+    if (isMobile) {
+      const pairCount = 3; // hours, minutes, seconds
+      const totalGap = DIGIT_GAP * (pairCount - 1);
+      const maxHeightPerPair = (windowSize.height - totalGap) / pairCount;
+      const maxWidthPerDigit = (windowSize.width - DIGIT_GAP) / 2;
+      return Math.floor(Math.min(maxHeightPerPair, maxWidthPerDigit));
+    } else {
+      const totalGap = DIGIT_GAP * (digits.length - 1);
+      return Math.floor((windowSize.width - totalGap) / digits.length);
+    }
+  })();
+
+  const renderDigit = (digit) => {
+    const grid = DIGITS[digit] || DIGITS["0"];
+    const totalCellGap = CELL_GAP * (GRID_SIZE - 1);
+    const cellSize = (digitSize - totalCellGap) / GRID_SIZE;
+
+    return (
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: `repeat(${GRID_SIZE}, ${cellSize}px)`,
+          gridTemplateRows: `repeat(${GRID_SIZE}, ${cellSize}px)`,
+          gap: `${CELL_GAP}px`,
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        {grid.flat().map((val, idx) => (
+          <img
+            key={idx}
+            src={val ? blackImg : pinkImg}
+            alt=""
+            style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  // Helper for mobile pairs
+  const renderPair = (pairDigits, offset) => (
+    <div style={{ display: "flex", gap: `${DIGIT_GAP}px` }}>
+      {pairDigits.map((d, i) => (
+        <div key={i + offset} style={{ width: digitSize, height: digitSize }}>
+          {renderDigit(d)}
+        </div>
+      ))}
+    </div>
+  );
 
   return (
     <div
       style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         width: "100vw",
         height: "100dvh",
+        gap: `${DIGIT_GAP}px`,
+        backgroundColor: "#1F4E79",
         overflow: "hidden",
-        position: "relative",
+        flexDirection: isMobile ? "column" : "row",
       }}
     >
-      {/* Full-viewport spinning background */}
-      <div
-        ref={bgRef}
-        style={{
-          backgroundImage: `url(${treeImg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          width: "200%",
-          height: "200%",
-          transformOrigin: "center",
-        }}
-      />
-
-      {/* Clock container */}
-      <div
-        style={{
-          width: "50vh",
-          height: "50vh",
-          borderRadius: "50%",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {/* Hour hand */}
-        <div
-          ref={hourRef}
-          style={{
-            position: "absolute",
-            width: "0.5%",
-            height: "25%",
-            background: "#C2DDEDFF",
-            top: "25%",
-            left: "50%",
-            transformOrigin: "bottom center",
-            borderRadius: "1rem",
-          }}
-        />
-
-        {/* Minute hand */}
-        <div
-          ref={minuteRef}
-          style={{
-            position: "absolute",
-            width: "0.5%",
-            height: "35%",
-            background: "#C2DDEDFF",
-            top: "15%",
-            left: "50%",
-            transformOrigin: "bottom center",
-            borderRadius: "1rem",
-          }}
-        />
-      </div>
+      {isMobile
+        ? <>
+            {renderPair(digits.slice(0, 2), 0)}
+            {renderPair(digits.slice(2, 4), 2)}
+            {renderPair(digits.slice(4, 6), 4)}
+          </>
+        : digits.map((d, i) => (
+            <div key={i} style={{ width: digitSize, height: digitSize }}>
+              {renderDigit(d)}
+            </div>
+          ))
+      }
     </div>
   );
 }
