@@ -112,10 +112,10 @@ export default function ClockWithVideo() {
   color: "transparent", // watery blue
   opacity: 0.85,
   textShadow: `
-    0 0 2px #78BEB5FF,
-    0 0 4px #63998EFF,
-    0 0 6px #5C857CFF,
-    0 0 8px #4B6059FF
+    0 0 8px #9ED7D0FF,
+    0 0 6px #63998EFF,
+    0 0 4px #55706AFF,
+    0 0 2px #262F2CFF
   `,
   animation: "colorCycle 26s linear infinite", // keep your existing color animation
 };
