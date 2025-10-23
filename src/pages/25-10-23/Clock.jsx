@@ -108,7 +108,7 @@ export default function VictorianEsperantoClock() {
     width: "90vw",
     left: "50%",
     transform: "translateX(-50%)",
-    fontSize: "6vh",
+    fontSize: "5vh",
     whiteSpace: "nowrap",
     top: "0",
     textShadow: textAndOrnamentShadow,
@@ -199,7 +199,7 @@ export default function VictorianEsperantoClock() {
           top: "8%",
           width: "100%",
           textAlign: "center",
-          fontSize: "8vh",
+          fontSize: "7vh",
           letterSpacing: "0.2rem",
           textShadow: textAndOrnamentShadow,
           fontWeight: "normal", // ✅ ensure heading not bold
