@@ -97,7 +97,7 @@ export default function ClockWithVideo() {
     width: "100%",
     textAlign: "center",
     zIndex: 1,
-    animation: "float 26s linear infinite",
+    animation: "float 26.3s linear infinite",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
