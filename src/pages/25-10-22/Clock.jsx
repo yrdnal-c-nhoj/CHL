@@ -134,7 +134,7 @@ export default function ClockWithVideo() {
     }
     @keyframes float {
       0% { bottom: 0; }
-      50% { bottom: calc(100vh - 4rem - 20px); }
+      50% { bottom: calc(100dvh - 4rem - 20px); }
       100% { bottom: 0; }
     }
     @keyframes colorCycle {
