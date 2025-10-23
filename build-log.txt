@@ -4,11 +4,11 @@
 
 vite v7.1.6 building for production...
 transforming...
-✓ 964 modules transformed.
-✗ Build failed in 802ms
+✓ 968 modules transformed.
+✗ Build failed in 836ms
 error during build:
-Could not resolve "./word.ttf" from "src/pages/25-10-17/Clock.jsx"
-file: /Users/john/Desktop/CHL/src/pages/25-10-17/Clock.jsx
+Could not resolve "./bg.jpg" from "src/pages/25-10-22/Clock.jsx"
+file: /Users/john/Desktop/CHL/src/pages/25-10-22/Clock.jsx
     at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
     at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
     at ModuleLoader.handleInvalidResolvedId (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21490:24)
