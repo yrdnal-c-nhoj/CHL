@@ -108,7 +108,7 @@ export default function VictorianEsperantoClock() {
     width: "90vw",
     left: "50%",
     transform: "translateX(-50%)",
-    fontSize: "3vh",
+    fontSize: "4vh",
     whiteSpace: "nowrap",
     top: "0",
     textShadow: textAndOrnamentShadow,
