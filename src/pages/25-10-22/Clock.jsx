@@ -101,19 +101,25 @@ export default function ClockWithVideo() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    gap: "0.4rem",
+    gap: "0.1rem",
   };
 
   const digitBoxStyle = {
-    fontFamily: "'MyCustomFont', sans-serif",
-    fontSize: "4rem",
-    opacity: 1,
-    width: "2.5rem",
-    textAlign: "center",
-    color: "inherit",
-    textShadow: "none",
-    animation: "colorCycle 26s linear infinite",
-  };
+  fontFamily: "'MyCustomFont', sans-serif",
+  fontSize: "4rem",
+  width: "2rem",
+  textAlign: "center",
+  color: "transparent", // watery blue
+  opacity: 0.85,
+  textShadow: `
+    0 0 2px #78BEB5FF,
+    0 0 4px #63998EFF,
+    0 0 6px #5C857CFF,
+    0 0 8px #4B6059FF
+  `,
+  animation: "colorCycle 26s linear infinite", // keep your existing color animation
+};
+
 
   const separatorStyle = {
     ...digitBoxStyle,
