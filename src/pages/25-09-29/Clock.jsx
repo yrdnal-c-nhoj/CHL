@@ -110,7 +110,7 @@ export default function ComicClock() {
             left: "0.5rem",
           }}
         >
-          BY THAT TIME...
+          TIUTEMPE ...
         </p>
       ),
     },
@@ -132,7 +132,7 @@ export default function ComicClock() {
             right: "0.5rem",
           }}
         >
-          ...they knew?!
+          ...ili sciis?!
         </p>
       ),
     },
@@ -149,7 +149,7 @@ export default function ComicClock() {
             left: "0.5rem",
           }}
         >
-          It would...
+          Ke ĝi...
         </p>
       ),
     },
@@ -181,7 +181,7 @@ export default function ComicClock() {
             left: "0.5rem",
           }}
         >
-          ...never...
+          ...neniam...
         </p>
       ),
     },
@@ -198,7 +198,7 @@ export default function ComicClock() {
             right: "0.5rem",
           }}
         >
-          ...stop!!!
+          ...ĉesos!!!
         </p>
       ),
     },
