@@ -43,16 +43,27 @@ const Home = () => {
     return !isNaN(date.getTime());
   };
 
-  // Format date
-  const formatDate = (dateStr) => {
-    const parts = dateStr?.split('-');
-    if (!parts || parts.length !== 3) return 'Unknown Date';
-    const [yy, mm, dd] = parts.map(Number);
-    const date = new Date(2000 + yy, mm - 1, dd);
-    return isNaN(date.getTime())
-      ? 'Unknown Date'
-      : new Intl.DateTimeFormat('en-US', { month: 'numeric', day: 'numeric', year: '2-digit' }).format(date);
-  };
+
+
+
+const formatDate = (dateStr) => {
+  const parts = dateStr?.split('-');
+  if (!parts || parts.length !== 3) return 'Unknown Date';
+  const [yy, mm, dd] = parts.map(Number);
+  const date = new Date(2000 + yy, mm - 1, dd);
+  if (isNaN(date.getTime())) return 'Unknown Date';
+
+  const year = String(date.getFullYear()).slice(-2); // 2-digit year
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 2-digit month
+  const day = String(date.getDate()).padStart(2, '0'); // 2-digit day
+
+  return `${year}.${month}.${day}`; // YYYY-MM-DD
+};
+
+
+
+
+  // Fo
 
   // Sorted items
   const sortedItems = useMemo(() => {
