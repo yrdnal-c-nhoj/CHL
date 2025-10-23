@@ -79,7 +79,7 @@ export default function EsperantoClockWithVideo() {
   fontFamily: "'CustomFont', sans-serif",
   width: "100vw",
   height: "100dvh",
-  minHeight: "100vh",
+  minHeight: "100dvh",
   position: "relative",
   overflow: "hidden",
   backgroundColor: "#000",
