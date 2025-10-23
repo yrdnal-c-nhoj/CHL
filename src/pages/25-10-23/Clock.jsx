@@ -176,10 +176,10 @@ export default function EsperantoClockWithVideo() {
       <div
         style={{
           position: "absolute",
-          top: "18%",
+          top: "13%",
           width: "100%",
           textAlign: "center",
-          fontSize: "6vh",
+          fontSize: "5vh",
         }}
       >
         BONVENON AL <br />LA ESPERANTO HORLOĜO!
@@ -191,12 +191,12 @@ export default function EsperantoClockWithVideo() {
         <div style={labelStyle}>{capitalizeWords("horoj")}</div>
       </div>
 
-      <div style={{ ...rowBaseStyle, top: "55%" }}>
+      <div style={{ ...rowBaseStyle, top: "60%" }}>
         <div style={boxStyle}>{minuteWord}</div>
         <div style={labelStyle}>{capitalizeWords("minutoj")}</div>
       </div>
 
-      <div style={{ ...rowBaseStyle, top: "70%" }}>
+      <div style={{ ...rowBaseStyle, top: "75%" }}>
         <div style={boxStyle}>{secondWord}</div>
         <div style={labelStyle}>{capitalizeWords("sekundoj")}</div>
       </div>
