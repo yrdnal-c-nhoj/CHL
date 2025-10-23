@@ -123,7 +123,7 @@ export default function VictorianEsperantoClock() {
     backgroundImage: `repeating-linear-gradient(to right, ${textAndOrnamentColor} 0 2px, transparent 2px 6px)`,
     margin: "0 1vw",
     opacity: 0.6,
-    boxShadow: textAndOrnamentShadow,
+    // boxShadow: textAndOrnamentShadow,
   };
 
   const renderRow = (number, label, top) => (
