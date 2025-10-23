@@ -98,7 +98,7 @@ export default function EsperantoClockWithVideo() {
     height: "100%",
     objectFit: "cover",
     zIndex: 0,
-    filter: "saturate(0.4) brightness(0.8) contrast(0.8) hue-rotate(30deg)",
+    filter: "saturate(0.4) brightness(0.8) contrast(0.8) hue-rotate(20deg)",
   };
 
   const fallbackStyle = {
