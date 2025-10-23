@@ -187,7 +187,7 @@ export default function EsperantoClockWithVideo() {
       </div>
 
       {/* Clock Rows */}
-      <div style={{ ...rowBaseStyle, top: "40%" }}>
+      <div style={{ ...rowBaseStyle, top: "45%" }}>
         <div style={boxStyle}>{hourWord}</div>
         <div style={labelStyle}>{capitalizeWords("horoj")}</div>
       </div>
