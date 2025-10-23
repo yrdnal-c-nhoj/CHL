@@ -168,15 +168,18 @@ export default function ClockPage() {
         {isReady && ClockComponent && <ClockComponent />}
       </div>
 
-      {isReady && (
-        <ClockPageNav
-          prevItem={prevItem}
-          nextItem={nextItem}
-          currentItem={currentItem}
-          formatTitle={(t) => t?.replace(/clock/i, '').trim() || 'Home'}
-          formatDate={(d) => d}
-        />
-      )}
+
+
+{isReady && (
+  <ClockPageNav
+    prevItem={prevItem}
+    nextItem={nextItem}
+    currentItem={currentItem}
+    formatTitle={(t) => t?.replace(/clock/i, '').trim() || 'Home'}
+    formatDate={(d) => d.replace(/-/g, '.')}
+  />
+)}
+
     </div>
   );
 }
