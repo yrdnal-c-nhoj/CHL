@@ -64,7 +64,7 @@ export default function ClockWithVideo() {
   // Inline Styles
   const containerStyle = {
     width: "100vw",
-    height: "100vh",
+    height: "100dvh",
     position: "relative",
     overflow: "hidden",
     backgroundColor: "#000",
