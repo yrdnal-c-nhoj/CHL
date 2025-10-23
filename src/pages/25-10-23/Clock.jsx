@@ -84,7 +84,7 @@ export default function EsperantoClockWithVideo() {
   overflow: "hidden",
   backgroundColor: "#000",
   color: "#F1D8D8FF",
-  fontSize: "6vh",
+  fontSize: "4vh",
   textShadow: "1px 1px #EF2A07FF, -1px -1px #F7E11BFF",
   zIndex: 1,
 };
