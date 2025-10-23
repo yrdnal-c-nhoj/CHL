@@ -4,12 +4,23 @@
 
 vite v7.1.6 building for production...
 transforming...
-✓ 966 modules transformed.
-✗ Build failed in 806ms
+✓ 32 modules transformed.
+✗ Build failed in 170ms
 error during build:
-Could not resolve "./bg.jpg" from "src/pages/25-10-22/Clock.jsx"
-file: /Users/john/Desktop/CHL/src/pages/25-10-22/Clock.jsx
+[vite:json] [plugin vite:json] src/context/testclock.json (215:3): Failed to parse JSON file, invalid JSON syntax found at position 14861
+file: /Users/john/Desktop/CHL/src/context/testclock.json:215:3
+
+213:   { "path": "25-10-22", "date": "25-10-22", "title": "Bay of Fundy"},
+214:   { "path": "25-10-23", "date": "25-10-23", "title": "Esperanto" } 
+215:     { "path": "25-10-24", "date": "25-10-24", "title": "xxxxxx" },
+        ^
+216:       { "path": "25-10-25", "date": "25-10-25", "title": "xxxxxx" },
+217:         { "path": "25-10-26", "date": "25-10-26", "title": "xxxxxx" },
+
     at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
     at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
-    at ModuleLoader.handleInvalidResolvedId (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21490:24)
-    at file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21450:26
+    at Object.error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:22029:20)
+    at Object.error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21091:42)
+    at Object.handler (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:8832:11)
+    at Object.handler (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:34051:13)
+    at file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:22351:40
