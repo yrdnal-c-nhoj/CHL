@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import videoFile from "./bg.webp";
-import fallbackImg from "./bg.jpg";
+import videoFile from "./bg.mp4";
+import fallbackImg from "./bg.webp";
 import fontFile_2025_10_22 from "./fundy.ttf"; // local font in same folder
 
 export default function ClockWithVideo() {
