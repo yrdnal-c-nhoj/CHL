@@ -204,12 +204,12 @@ export default function VictorianEsperantoClock() {
           fontWeight: "normal", // ✅ ensure heading not bold
         }}
       >
-        Bonvenon al <br />la Esperanta <br />horloĝo!
+        Bonvenon al <br />la Esperanta <br />Horloĝo!
       </div>
 
-      {renderRow(hourWord, capitalizeWords("horoj"), "45%")}
-      {renderRow(minuteWord, capitalizeWords("minutoj"), "60%")}
-      {renderRow(secondWord, capitalizeWords("sekundoj"), "75%")}
+      {renderRow(hourWord, capitalizeWords("horoj"), "40%")}
+      {renderRow(minuteWord, capitalizeWords("minutoj"), "55%")}
+      {renderRow(secondWord, capitalizeWords("sekundoj"), "70%")}
     </div>
   );
 }
