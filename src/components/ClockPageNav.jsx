@@ -50,7 +50,7 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
         <div className={styles.footerCenter}>
           <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
           <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
-          <span className={styles.footerNumber}><strong>#</strong>{currentItem.clockNumber}</span>
+          <span className={styles.footerNumber}>#{currentItem.clockNumber}</span>
         </div>
         <span className={styles.screenReaderText}>
           Go back to homepage
