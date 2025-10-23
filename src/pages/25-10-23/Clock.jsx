@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import videoFile from "./esp.mp4";
 import videoWebM from "./esp.webp"; // Added for compatibility
 import fallbackImg from "./esp.jpeg"; // Fallback image
-import fontFile from "./noto.ttf"; // Custom font
+import fontFile from "./noto.ttf"; // Custom font (Noto supports Esperanto characters)
 
 export default function EsperantoClockWithVideo() {
   const videoRef = useRef(null);
@@ -43,52 +43,53 @@ export default function EsperantoClockWithVideo() {
     };
   }, []);
 
-  // Capitalize first letter of every word
+  // Capitalize first letter of every word for Esperanto text
   const capitalizeWords = (phrase) =>
     phrase
       .split(" ")
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(" ");
 
-  // Hours spelled out
+  // Hours spelled out for 24-hour clock (0–23) in standard Esperanto
   const hoursWords = [
-    "unu","du","tri","kvar","kvin","ses","sep","ok","naŭ","dek",
-    "dek unu","dek du","dek tri","dek kvar","dek kvin","dek ses","dek sep",
-    "dek ok","dek naŭ","dudek","dudek unu","dudek du","dudek tri","dudek kvar"
+    "nul", "unu", "du", "tri", "kvar", "kvin", "ses", "sep", "ok", "naŭ", "dek",
+    "dek unu", "dek du", "dek tri", "dek kvar", "dek kvin", "dek ses", "dek sep",
+    "dek ok", "dek naŭ", "dudek", "dudek unu", "dudek du", "dudek tri"
   ];
 
-  // Minutes & seconds spelled out
+  // Minutes & seconds spelled out in standard Esperanto
   const minutesAndSecondsWords = [
-    "nul","unu","du","tri","kvar","kvin","ses","sep","ok","naŭ","dek",
-    "dek unu","dek du","dek tri","dek kvar","dek kvin","dek ses","dek sep",
-    "dek ok","dek naŭ","dudek","dudek unu","dudek du","dudek tri","dudek kvar",
-    "dudek kvin","dudek ses","dudek sep","dudek ok","dudek naŭ","tridek",
-    "tridek unu","tridek du","tridek tri","tridek kvar","tridek kvin","tridek ses",
-    "tridek sep","tridek ok","tridek naŭ","kvardek","kvardek unu","kvardek du",
-    "kvardek tri","kvardek kvar","kvardek kvin","kvardek ses","kvardek sep",
-    "kvardek ok","kvardek naŭ","kvindek","kvindek unu","kvindek du","kvindek tri",
-    "kvindek kvar","kvindek kvin","kvindek ses","kvindek sep","kvindek ok","kvindek naŭ"
+    "nul", "unu", "du", "tri", "kvar", "kvin", "ses", "sep", "ok", "naŭ", "dek",
+    "dek unu", "dek du", "dek tri", "dek kvar", "dek kvin", "dek ses", "dek sep",
+    "dek ok", "dek naŭ", "dudek", "dudek unu", "dudek du", "dudek tri", "dudek kvar",
+    "dudek kvin", "dudek ses", "dudek sep", "dudek ok", "dudek naŭ", "tridek",
+    "tridek unu", "tridek du", "tridek tri", "tridek kvar", "tridek kvin", "tridek ses",
+    "tridek sep", "tridek ok", "tridek naŭ", "kvardek", "kvardek unu", "kvardek du",
+    "kvardek tri", "kvardek kvar", "kvardek kvin", "kvardek ses", "kvardek sep",
+    "kvardek ok", "kvardek naŭ", "kvindek", "kvindek unu", "kvindek du", "kvindek tri",
+    "kvindek kvar", "kvindek kvin", "kvindek ses", "kvindek sep", "kvindek ok", "kvindek naŭ"
   ];
 
-  const hourWord = capitalizeWords(hoursWords[time.getHours()]);
+  // Use 24-hour time directly
+  const hour24 = time.getHours();
+  const hourWord = capitalizeWords(hoursWords[hour24]);
   const minuteWord = capitalizeWords(minutesAndSecondsWords[time.getMinutes()]);
   const secondWord = capitalizeWords(minutesAndSecondsWords[time.getSeconds()]);
 
   // Styles
   const containerStyle = {
-  fontFamily: "'CustomFont', sans-serif",
-  width: "100vw",
-  height: "100dvh",
-  minHeight: "100dvh",
-  position: "relative",
-  overflow: "hidden",
-  backgroundColor: "#000",
-  color: "#F1D8D8FF",
-  fontSize: "4vh",
-  textShadow: "1px 1px #EF2A07FF, -1px -1px #F7E11BFF",
-  zIndex: 1,
-};
-
+    fontFamily: "'CustomFont', sans-serif",
+    width: "100vw",
+    height: "100dvh",
+    minHeight: "100dvh",
+    position: "relative",
+    overflow: "hidden",
+    backgroundColor: "#000",
+    color: "#F1D8D8FF",
+    fontSize: "4vh",
+    textShadow: "1px 1px #EF2A07FF, -1px -1px #F7E11BFF",
+    zIndex: 1,
+  };
 
   const videoStyle = {
     position: "absolute",
@@ -97,7 +98,7 @@ export default function EsperantoClockWithVideo() {
     height: "100%",
     objectFit: "cover",
     zIndex: 0,
-    filter: " saturate(0.6) brightness(0.8) contrast(0.8)",
+    filter: "saturate(0.6) brightness(0.8) contrast(0.8)",
   };
 
   const fallbackStyle = {
@@ -182,7 +183,7 @@ export default function EsperantoClockWithVideo() {
           fontSize: "5vh",
         }}
       >
-        BONVENON AL <br />LA ESPERANTO HORLOĜO!
+        BONVENON AL <br />LA ESPERANTA HORLOĜO!
       </div>
 
       {/* Clock Rows */}
