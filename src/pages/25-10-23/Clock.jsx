@@ -200,7 +200,6 @@ export default function VictorianEsperantoClock() {
           width: "100%",
           textAlign: "center",
           fontSize: "7vh",
-          letterSpacing: "0.1rem",
           textShadow: textAndOrnamentShadow,
           fontWeight: "normal", // ✅ ensure heading not bold
         }}
