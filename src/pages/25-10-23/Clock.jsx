@@ -11,8 +11,8 @@ export default function VictorianEsperantoClock() {
   const [videoFailed, setVideoFailed] = useState(false);
   const [time, setTime] = useState(new Date());
 
-  const textAndOrnamentColor = "#21032BFF";
-  const textAndOrnamentShadow = "2px 2px 4px #F1E7D8FF";
+  const textAndOrnamentColor = "#110116FF";
+  const textAndOrnamentShadow = "-1px 1px 0px #F1E7D8FF";
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -84,7 +84,7 @@ export default function VictorianEsperantoClock() {
     height: "100%",
     objectFit: "cover",
     zIndex: 0,
-    filter: "saturate(0.5) brightness(1.9) contrast(0.5) sepia(0.2)",
+    filter: "saturate(0.4) brightness(2.9) contrast(0.3) sepia(0.2) hue-rotate(-30deg)",
   };
 
   const fallbackStyle = {
@@ -147,9 +147,7 @@ export default function VictorianEsperantoClock() {
     position: "absolute",
     width: "16vh",
     height: "auto",
-    opacity: 0.6,
-    // filter: `drop-shadow(${textAndOrnamentShadow}) sepia(0.3)`,
-    tint: textAndOrnamentColor,
+   tint: textAndOrnamentColor,
   };
 
   return (
