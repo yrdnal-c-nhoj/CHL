@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import videoFile from "./bg.mp4";
+import videoFile from "./bg.webp";
 import fallbackImg from "./bg.jpg";
 import fontFile_2025_10_22 from "./fundy.ttf"; // local font in same folder
 
