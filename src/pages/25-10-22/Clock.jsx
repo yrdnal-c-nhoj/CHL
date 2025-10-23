@@ -1,3 +1,4 @@
+// ClockWithVideo.jsx
 import React, { useEffect, useRef, useState } from "react";
 import videoFile from "./bg.mp4";
 import fallbackImg from "./bg.webp";
@@ -17,7 +18,7 @@ export default function ClockWithVideo() {
     return () => clearInterval(interval);
   }, []);
 
-  // Load custom TTF font properly (avoids flash)
+  // Load custom font
   useEffect(() => {
     const font = new FontFace(
       "MyCustomFont",
@@ -29,10 +30,10 @@ export default function ClockWithVideo() {
         document.fonts.add(loadedFace);
         setFontReady(true);
       })
-      .catch(() => setFontReady(true)); // fallback if it fails silently
+      .catch(() => setFontReady(true));
   }, []);
 
-  // Video fallback handling
+  // Handle video fallback
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -49,7 +50,7 @@ export default function ClockWithVideo() {
     };
   }, []);
 
-  // Format time as HH:MM:SS:MMM with leading zeros
+  // Format time as HHMMSScc
   const formatTime = () => {
     const hours = String(time.getHours()).padStart(2, "0");
     const minutes = String(time.getMinutes()).padStart(2, "0");
@@ -58,10 +59,9 @@ export default function ClockWithVideo() {
     return `${hours}${minutes}${seconds}${milliseconds.slice(0, 2)}`;
   };
 
-  const timeString = formatTime();
-  const timeChars = timeString.split("");
+  const timeChars = formatTime().split("");
 
-  // Inline Styles
+  // Inline styles
   const containerStyle = {
     width: "100vw",
     height: "100dvh",
@@ -105,21 +105,20 @@ export default function ClockWithVideo() {
   };
 
   const digitBoxStyle = {
-  fontFamily: "'MyCustomFont', sans-serif",
-  fontSize: "4rem",
-  width: "2rem",
-  textAlign: "center",
-  color: "transparent", // watery blue
-  opacity: 0.85,
-  textShadow: `
-    0 0 8px #9ED7D0FF,
-    0 0 6px #63998EFF,
-    0 0 4px #55706AFF,
-    0 0 2px #262F2CFF
-  `,
-  animation: "colorCycle 26s linear infinite", // keep your existing color animation
-};
-
+    fontFamily: "'MyCustomFont', sans-serif",
+    fontSize: "4rem",
+    width: "2rem",
+    textAlign: "center",
+    color: "#DF9268FF",
+    animation: "colorCycle 26s linear infinite",
+    textShadow: `
+      0 0 8px #4B3424FF,
+      0 0 6px #98643FFF,
+      0 0 4px #C88A5E,
+      0 0 2px #D2C497FF
+    `,
+    transition: "text-shadow 1s linear",
+  };
 
   const separatorStyle = {
     ...digitBoxStyle,
@@ -132,17 +131,63 @@ export default function ClockWithVideo() {
       src: url(${fontFile_2025_10_22}) format('truetype');
       font-display: block;
     }
+
     @keyframes float {
       0% { bottom: 0; }
       50% { bottom: calc(100dvh - 4rem - 20px); }
       100% { bottom: 0; }
     }
+
     @keyframes colorCycle {
-      0% { color: #E8A270FF; }
-      23.08% { color: #749B82FF; }
-      50% { color: #90B1E5FF; }
-      76.92% { color: #80A48EFF; }
-      100% { color:  #E8A270FF; }
+      0% {
+        color: #df9268ff;
+        text-shadow:
+          0 0 8px #4b3424ff,
+          0 0 6px #98643fff,
+          0 0 4px #c88a5e,
+          0 0 2px #d2c497ff;
+        opacity: 1;
+      }
+
+      23.08% {
+        opacity: 0;
+        color: #7C947CFF;
+        text-shadow:
+          -1px  -1px #E5EAE7FF,
+          3px 2px 6px #E6EDE9FF,
+          -2px 0 4px #749b82,
+          1px 1px #e4ebe6ff;
+      }
+
+      50% {
+        opacity: 1;
+        color: #EEE3ADFF;
+        text-shadow:
+          1px 1px #e10e23ff,
+          0 0 6px #90b1e5,
+          0 0 4px #5874a0ff,
+          -1px 0 #0d131cff;
+      }
+
+      76.92% {
+        opacity: 0;
+        color: #7C947CFF;
+        text-shadow:
+          -1px  -1px #E5EAE7FF,
+          3px 2px 6px #E6EDE9FF,
+          -2px 0 4px #749b82,
+          1px 1px #e4ebe6ff;
+      }
+
+      100% {
+        color: #df9268ff;
+        text-shadow:
+          0 0 8px #4b3424ff,
+          0 0 6px #98643fff,
+          0 0 4px #c88a5e,
+          0 0 2px #d2c497ff;
+        opacity: 1;
+      }
     }
   `;
 
