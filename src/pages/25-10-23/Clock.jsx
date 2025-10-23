@@ -108,7 +108,7 @@ export default function VictorianEsperantoClock() {
     width: "90vw",
     left: "50%",
     transform: "translateX(-50%)",
-    fontSize: "5vh",
+    fontSize: "4vh",
     whiteSpace: "nowrap",
     top: "0",
     textShadow: textAndOrnamentShadow,
@@ -147,8 +147,8 @@ export default function VictorianEsperantoClock() {
     position: "absolute",
     width: "16vh",
     height: "auto",
-    opacity: 0.9,
-    filter: `drop-shadow(${textAndOrnamentShadow}) sepia(0.3)`,
+    opacity: 0.6,
+    // filter: `drop-shadow(${textAndOrnamentShadow}) sepia(0.3)`,
     tint: textAndOrnamentColor,
   };
 
@@ -199,7 +199,7 @@ export default function VictorianEsperantoClock() {
           top: "8%",
           width: "100%",
           textAlign: "center",
-          fontSize: "7vh",
+          fontSize: "6vh",
           textShadow: textAndOrnamentShadow,
           fontWeight: "normal", // ✅ ensure heading not bold
         }}
