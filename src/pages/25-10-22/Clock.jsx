@@ -142,10 +142,10 @@ export default function ClockWithVideo() {
       0% {
         color: #df9268ff;
         text-shadow:
-          0 0 8px #4b3424ff,
+           -1px 0 0px #4b3424ff,
           0 0 6px #98643fff,
           0 0 4px #c88a5e,
-          0 0 2px #d2c497ff;
+          1px 0 2px #d2c497ff;
         opacity: 1;
       }
 
@@ -153,18 +153,18 @@ export default function ClockWithVideo() {
         opacity: 0;
         color: #7C947CFF;
         text-shadow:
-          -1px  -1px #E5EAE7FF,
+      -1px  -1px #04140BFF,
           3px 2px 6px #E6EDE9FF,
-          -2px 0 4px #749b82,
+          -2px 0 4px #EBECEBFF,
           1px 1px #e4ebe6ff;
       }
 
       50% {
         opacity: 1;
-        color: #EEE3ADFF;
+        color: #F4ECCCFF;
         text-shadow:
           1px 1px #e10e23ff,
-          0 0 6px #90b1e5,
+          0 0 6px #F8FDF7FF,
           0 0 4px #5874a0ff,
           -1px 0 #0d131cff;
       }
@@ -173,19 +173,19 @@ export default function ClockWithVideo() {
         opacity: 0;
         color: #7C947CFF;
         text-shadow:
-          -1px  -1px #E5EAE7FF,
+          -1px  -1px #04140BFF,
           3px 2px 6px #E6EDE9FF,
-          -2px 0 4px #749b82,
+          -2px 0 4px #EBECEBFF,
           1px 1px #e4ebe6ff;
       }
 
       100% {
         color: #df9268ff;
         text-shadow:
-          0 0 8px #4b3424ff,
+          -1px 0 0px #4b3424ff,
           0 0 6px #98643fff,
           0 0 4px #c88a5e,
-          0 0 2px #d2c497ff;
+          1px 0 2px #d2c497ff;
         opacity: 1;
       }
     }
