@@ -85,7 +85,7 @@ const Clockgrid = () => {
   overflow: 'hidden',
   backgroundImage: `url(${bgImage})`,
   backgroundRepeat: 'repeat',                     // tile the image
-  backgroundSize: `${CELL_VH * 10}vh ${CELL_VH * 10}vh`, // width = 3 digits, height = 1 digit
+  backgroundSize: `${CELL_VH * 9}vh ${CELL_VH * 10}vh`, // width = 3 digits, height = 1 digit
   backgroundPosition: 'center center',           // start tiling from the middle
   fontFamily: 'mult, monospace',
   position: 'relative',
@@ -108,7 +108,7 @@ const Clockgrid = () => {
       color: 'rgb(237, 333, 93)',
       fontSize: `${CELL_VH * 1.35}vh`,
       display: 'flex',
-      opacity: 0.55,
+      opacity: 0.75,
       justifyContent: 'center',
       alignItems: 'center',
       textTransform: 'uppercase',
