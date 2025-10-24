@@ -1,9 +1,8 @@
-// Clockgrid.jsx
 import React, { useEffect, useState, useMemo } from 'react';
 import fontUrl from './gr.ttf';
+import bgImage from './bg.gif'; // <-- import your image here
 
 const Clockgrid = () => {
-  // 1. Time State
   const [time, setTime] = useState({
     hours: '',
     minutes: '',
@@ -12,13 +11,11 @@ const Clockgrid = () => {
     ampm: '',
   });
 
-  // 2. Viewport-dependent grid
   const [viewport, setViewport] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
-  // 3. Update clock
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
@@ -43,7 +40,6 @@ const Clockgrid = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // 4. Update viewport on resize
   useEffect(() => {
     const handleResize = () => {
       setViewport({
@@ -55,7 +51,6 @@ const Clockgrid = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // 5. Time characters
   const timeCharacters = useMemo(() => {
     const timeString =
       time.hours + time.minutes + time.seconds + time.millis + time.ampm;
@@ -64,15 +59,13 @@ const Clockgrid = () => {
 
   const patternLength = timeCharacters.length;
 
-  // 6. Calculate grid based on viewport height
-  const CELL_VH = 10; // Each cell is 10vh tall
-  const ROWS = Math.ceil(viewport.height / (CELL_VH / 100 * viewport.height)) + 2; // extra for overflow
-  const COLUMNS = Math.ceil(viewport.width / (CELL_VH / 100 * viewport.height)) + 2; // width in vh
+  const CELL_VH = 10;
+  const ROWS = Math.ceil(viewport.height / (CELL_VH / 100 * viewport.height)) + 2;
+  const COLUMNS = Math.ceil(viewport.width / (CELL_VH / 100 * viewport.height)) + 2;
   const totalCells = ROWS * COLUMNS;
   const repeatCount = Math.ceil(totalCells / patternLength);
   const totalCharactersToRender = repeatCount * patternLength;
 
-  // 7. Font and styles
   const fontFace = `
     @font-face {
       font-family: 'mult';
@@ -81,19 +74,24 @@ const Clockgrid = () => {
   `;
 
   const styles = {
-    htmlBody: {
-      margin: 0,
-      padding: 0,
-      height: '100vh',
-      width: '100vw',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      overflow: 'hidden',
-      backgroundColor: '#F2D5D5FF',
-      fontFamily: 'mult, monospace',
-      position: 'relative',
-    },
+  htmlBody: {
+  margin: 0,
+  padding: 0,
+  height: '100vh',
+  width: '100vw',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  overflow: 'hidden',
+  backgroundImage: `url(${bgImage})`,
+  backgroundRepeat: 'repeat',                     // tile the image
+  backgroundSize: `${CELL_VH * 3}vh ${CELL_VH}vh`, // width = 3 digits, height = 1 digit
+  backgroundPosition: 'center center',           // start tiling from the middle
+  fontFamily: 'mult, monospace',
+  position: 'relative',
+},
+
+
 
     clockGrid: {
       display: 'grid',
@@ -107,9 +105,10 @@ const Clockgrid = () => {
     },
 
     characterCell: {
-      color: 'rgb(137, 3, 3)',
+      color: 'rgb(237, 333, 93)',
       fontSize: `${CELL_VH * 1.35}vh`,
       display: 'flex',
+      opacity: 0.55,
       justifyContent: 'center',
       alignItems: 'center',
       textTransform: 'uppercase',
@@ -117,7 +116,6 @@ const Clockgrid = () => {
     },
   };
 
-  // 8. Render characters
   const allCharacters = Array.from(
     { length: totalCharactersToRender },
     (_, i) => {
