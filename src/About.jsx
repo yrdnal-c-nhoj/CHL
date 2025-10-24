@@ -31,14 +31,17 @@ function About() {
 
          
 
-          <p>
+          {/* <p>
            Whether you are launching spacecraft, splitting atoms, or timing delivery room contractions, we are your source for computationally intensive timekeeping devices.
-{/* 
+
+   </p> */}
+   
+   {/* 
           <p>
           Previously this was an HTML-based website. You can see it<a href="https://the-clocks.github.io/Borrowed-Time/" target="_blank" rel="noopener noreferrer">here.</a>
           </p> */}
 
-          </p>
+       
 <br />
           <p>
             <span className="hat">About Cubist Heart Laboratories<br />&nbsp;</span>
