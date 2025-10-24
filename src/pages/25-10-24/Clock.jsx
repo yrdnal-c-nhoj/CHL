@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import fontUrl from './gr.ttf';
-import bgImage from './bg.gif'; // <-- import your image here
+import bgImage from './bg.gif'; 
 
 const Clockgrid = () => {
   const [time, setTime] = useState({
@@ -85,7 +85,7 @@ const Clockgrid = () => {
   overflow: 'hidden',
   backgroundImage: `url(${bgImage})`,
   backgroundRepeat: 'repeat',                     // tile the image
-  backgroundSize: `${CELL_VH * 3}vh ${CELL_VH}vh`, // width = 3 digits, height = 1 digit
+  backgroundSize: `${CELL_VH * 10}vh ${CELL_VH * 10}vh`, // width = 3 digits, height = 1 digit
   backgroundPosition: 'center center',           // start tiling from the middle
   fontFamily: 'mult, monospace',
   position: 'relative',
