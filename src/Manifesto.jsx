@@ -10,13 +10,13 @@ function Manifesto() {
       <div className="centeredContent">
         <h1>MANIFESTO</h1>
 
-        <div className="epigraph">
+        {/* <div className="epigraph">
           <div className="quote">“Nature is too green, and badly lit.”</div>
           <div className="attribution">
             <span className="author">— François Boucher</span>, 
             <span className="source"><cite> Boucher et la peinture sous Louis XV</cite></span>
           </div>
-        </div>
+        </div> */}
 
 
         <div className="manifestoSection">

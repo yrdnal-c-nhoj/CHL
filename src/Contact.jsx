@@ -12,7 +12,7 @@ function Contact() {
 
       <div className="centeredContent">
         <h1>CONTACT</h1>
-        
+{/*         
         <div className="epigraph">
           <div className="quote">If there’s a book that you want to read, but it hasn’t been written yet, then you must write it.
 ”</div>
@@ -21,7 +21,7 @@ function Contact() {
           </div>
         </div>
 
-<br></br>
+<br></br> */}
 
         <section className="manifestoSection">
           {/* Instagram */}
