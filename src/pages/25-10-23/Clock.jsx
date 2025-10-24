@@ -84,6 +84,7 @@ export default function VictorianEsperantoClock() {
     height: "100%",
     objectFit: "cover",
     zIndex: 0,
+     opacity: 0.7,
     filter: "saturate(0.4) brightness(2.9) contrast(0.3) sepia(0.2) hue-rotate(-30deg)",
   };
 
@@ -97,6 +98,7 @@ export default function VictorianEsperantoClock() {
     backgroundPosition: "center",
     display: videoFailed ? "block" : "none",
     zIndex: 0,
+     opacity: 0.7,
     filter: "sepia(0.3) contrast(0.4) brightness(1.9)",
   };
 

@@ -108,7 +108,7 @@ const Clockgrid = () => {
 
     characterCell: {
       color: 'rgb(137, 3, 3)',
-      fontSize: `${CELL_VH * 0.8}vh`,
+      fontSize: `${CELL_VH * 1.35}vh`,
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
