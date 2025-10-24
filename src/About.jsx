@@ -11,14 +11,14 @@ function About() {
       <div className="centeredContent">
         <h1>ABOUT</h1>
 
-        <div className="epigraph">
+        {/* <div className="epigraph">
           <div className="quote">
             “Our heads are round so our thoughts can change direction.”
           </div>
           <div className="attribution">
             <span className="author">— Francis Picabia</span>
           </div>
-        </div>
+        </div> */}
 
         <section className="manifestoSection">
           
