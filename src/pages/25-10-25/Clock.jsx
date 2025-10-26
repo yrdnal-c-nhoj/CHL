@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import font20251026 from "./fall.ttf";
 
 const EntropyClock = () => {
   const [time, setTime] = useState(new Date());
+  const [animationKey, setAnimationKey] = useState(0); // For restarting animation
   const numbersRef = useRef([]);
   const handsRef = useRef({ hour: null, minute: null, second: null });
   const dotRef = useRef(null);
+  const clockContainerRef = useRef(null);
 
   // Update every second
   useEffect(() => {
@@ -28,11 +29,17 @@ const EntropyClock = () => {
     timers.push(setTimeout(() => fallHand("hour"), 14000));
     timers.push(setTimeout(() => fallHand("second"), 17000));
 
-    // Dot explosion
+    // Dot explosion (stays in center)
     timers.push(setTimeout(() => explodeDot(), 20000));
+    
+    // Clock/dock explosion 3 seconds after dot
+    timers.push(setTimeout(() => explodeClock(), 23000));
+    
+    // Restart entire animation
+    timers.push(setTimeout(() => setAnimationKey(prev => prev + 1), 26000));
 
     return () => timers.forEach(clearTimeout);
-  }, []);
+  }, [animationKey]); // Re-run when animationKey changes
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
@@ -86,16 +93,19 @@ const EntropyClock = () => {
     if (!dot) return;
     const total = 2000;
     const rect = dot.getBoundingClientRect();
-    const container = dot.parentNode;
+    const container = document.body;
+    
+    // Dot stays in place, particles explode from its center
     for (let i = 0; i < total; i++) {
       const p = document.createElement("div");
-      p.style.position = "absolute";
+      p.style.position = "fixed";
       p.style.width = "2px";
       p.style.height = "2px";
       p.style.background = "gold";
       p.style.borderRadius = "50%";
       p.style.left = `${rect.left + rect.width / 2}px`;
       p.style.top = `${rect.top + rect.height / 2}px`;
+      p.style.zIndex = "1000";
       container.appendChild(p);
 
       const angle = Math.random() * 2 * Math.PI;
@@ -120,33 +130,66 @@ const EntropyClock = () => {
     dot.style.opacity = 0;
   };
 
-  const clockSize = "90vmin"; // scale with viewport
+  const explodeClock = () => {
+    const clock = clockContainerRef.current;
+    if (!clock) return;
+    
+    // Get all clock elements (numbers, hands, dot)
+    const allElements = [
+      ...numbersRef.current.filter(el => el),
+      ...Object.values(handsRef.current).filter(el => el),
+      dotRef.current
+    ].filter(el => el);
+
+    allElements.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      const angle = Math.atan2(rect.top - centerY, rect.left - centerX);
+      const distance = 150 + Math.random() * 100;
+      
+      let start = null;
+      const duration = 2000 + Math.random() * 1000;
+      const rotateX = Math.random() * 1440 - 720;
+      const rotateY = Math.random() * 1440 - 720;
+      const rotateZ = Math.random() * 1440 - 720;
+
+      const animate = (timestamp) => {
+        if (!start) start = timestamp;
+        const t = Math.min((timestamp - start) / duration, 1);
+        const easeOut = 1 - Math.pow(1 - t, 3);
+        const dx = Math.cos(angle) * distance * easeOut;
+        const dy = Math.sin(angle) * distance * easeOut + t * 150;
+        
+        const currentTransform = el.style.transform || '';
+        el.style.transform = `${currentTransform} translate(${dx}vw, ${dy}vh) rotateX(${rotateX * t}deg) rotateY(${rotateY * t}deg) rotateZ(${rotateZ * t}deg)`;
+        el.style.opacity = 1 - t;
+        
+        if (t < 1) requestAnimationFrame(animate);
+      };
+      requestAnimationFrame(animate);
+    });
+  };
+
+  const clockSize = "90vmin";
 
   return (
     <div
-  style={{
-    width: "100vw",
-    height: "100dvh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
-    fontFamily: "'CustomFont', sans-serif",
-    perspective: "1500px",
-    background: "radial-gradient(circle at center, #FF1500FF 0%, #631212 70%, #41025EFF 100%)",
-  }}
+      style={{
+        width: "100vw",
+        height: "100dvh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        overflow: "hidden",
+        fontFamily: "'Courier New', monospace",
+        perspective: "1500px",
+        background: "radial-gradient(circle at center, #FF1500FF 0%, #631212 70%, #41025EFF 100%)",
+      }}
     >
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-            @font-face {
-              font-family: 'CustomFont';
-              src: url(${font20251026}) format('truetype');
-            }
-          `,
-        }}
-      />
       <div
+        key={animationKey}
+        ref={clockContainerRef}
         style={{
           position: "relative",
           width: clockSize,
@@ -174,12 +217,12 @@ const EntropyClock = () => {
                   "0 0 4px #fff, 0 0 6px #FFD700, 0 0 10px #FFD700, 0 0 20px #FFEA00",
               }}
             >
-              {i + 1}
+              {i === 0 ? 12 : i}
             </div>
           );
         })}
 
-        {/* Center dot */}
+        {/* Center dot - stays in place */}
         <div
           ref={dotRef}
           style={{
