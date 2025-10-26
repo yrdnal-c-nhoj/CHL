@@ -12,85 +12,12 @@ const normalizeDate = (d) => d.split('-').map((n) => n.padStart(2, '0')).join('-
 
 export default function ClockPage() {
   const { date } = useParams();
-  const { items, loading, error } = useContext(DataContext);
+  const { items, loading } = useContext(DataContext);
   const navigate = useNavigate();
 
   const [ClockComponent, setClockComponent] = useState(null);
   const [pageError, setPageError] = useState(null);
   const [isReady, setIsReady] = useState(false);
-  const [fadeHeader, setFadeHeader] = useState(false);
-
-  // --------------------------------
-  // Header fade timing — always runs first
-  // --------------------------------
-  useEffect(() => {
-    setFadeHeader(false); // show immediately
-    const timer = setTimeout(() => setFadeHeader(true), 2000); // fade out after 2s
-    return () => clearTimeout(timer);
-  }, [date]); // runs on every new page
-
-  // --------------------------------
-  // Load Clock dynamically (happens behind header)
-  // --------------------------------
-  useEffect(() => {
-    if (loading) return;
-
-    if (!items || items.length === 0) {
-      setPageError('No clock is available.');
-      return;
-    }
-
-    if (!/^\d{2}-\d{2}-\d{2}$/.test(date)) {
-      navigate('/', { replace: true });
-      return;
-    }
-
-    const item = items.find((i) => normalizeDate(i.date) === normalizeDate(date));
-    if (!item) {
-      navigate('/', { replace: true });
-      return;
-    }
-
-    if (!item.path) {
-      setPageError(`Clock path missing for date: ${item.date}`);
-      return;
-    }
-
-    const key = `./pages/${item.path}/Clock.jsx`;
-    if (!clockModules[key]) {
-      setPageError(`No clock found at path: ${key}`);
-      return;
-    }
-
-    clockModules[key]()
-      .then((mod) => {
-        const Component = mod.default;
-        const images = Object.values(mod).filter(
-          (v) =>
-            typeof v === 'string' &&
-            (v.endsWith('.jpg') || v.endsWith('.png') || v.endsWith('.webp'))
-        );
-
-        if (images.length === 0) {
-          setClockComponent(() => Component);
-          setIsReady(true);
-        } else {
-          let loaded = 0;
-          images.forEach((src) => {
-            const img = new Image();
-            img.src = src;
-            img.onload = img.onerror = () => {
-              loaded++;
-              if (loaded === images.length) {
-                setClockComponent(() => Component);
-                setIsReady(true);
-              }
-            };
-          });
-        }
-      })
-      .catch((err) => setPageError(`Failed to load clock: ${err.message}`));
-  }, [date, items, loading, navigate]);
 
   // Prevent scrolling
   useEffect(() => {
@@ -101,42 +28,109 @@ export default function ClockPage() {
   }, []);
 
   // --------------------------------
-  // Loading overlay
+  // Load everything at once (background, fonts, images, component)
   // --------------------------------
-  const LoadingOverlay = () => (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        backgroundColor: '#000',
-        zIndex: 10, // below header
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <div
-        style={{
-          width: '3px',
-          height: '20px',
-          backgroundColor: '#333',
-          animation: 'pulse 1.5s ease-in-out infinite',
-        }}
-      />
-      <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 1; }
+  useEffect(() => {
+    const loadEverything = async () => {
+      try {
+        if (loading) return;
+
+        if (!items || items.length === 0) {
+          setPageError('No clock is available.');
+          return;
         }
-      `}</style>
-    </div>
-  );
+
+        if (!/^\d{2}-\d{2}-\d{2}$/.test(date)) {
+          navigate('/', { replace: true });
+          return;
+        }
+
+        const item = items.find((i) => normalizeDate(i.date) === normalizeDate(date));
+        if (!item) {
+          navigate('/', { replace: true });
+          return;
+        }
+
+        const key = `./pages/${item.path}/Clock.jsx`;
+        if (!clockModules[key]) {
+          setPageError(`No clock found at path: ${key}`);
+          return;
+        }
+
+        const mod = await clockModules[key]();
+        const Component = mod.default;
+
+        // Collect images to preload
+        const images = Object.values(mod).filter(
+          (v) =>
+            typeof v === 'string' &&
+            (v.endsWith('.jpg') || v.endsWith('.png') || v.endsWith('.webp') || v.endsWith('.gif'))
+        );
+
+        // Load all images before displaying anything
+        await Promise.all(
+          images.map(
+            (src) =>
+              new Promise((resolve) => {
+                const img = new Image();
+                img.src = src;
+                img.onload = img.onerror = resolve;
+              })
+          )
+        );
+
+        // Optional: preload fonts (for no unstyled text)
+        document.fonts.ready.then(() => {
+          setClockComponent(() => Component);
+          setIsReady(true);
+        });
+      } catch (err) {
+        setPageError(`Failed to load clock: ${err.message}`);
+      }
+    };
+
+    loadEverything();
+  }, [date, items, loading, navigate]);
 
   // --------------------------------
-  // Render
+  // Black overlay while loading (no flicker, no partial load)
+  // --------------------------------
+  if (!isReady && !pageError) {
+    return (
+      <div
+        style={{
+          backgroundColor: '#000',
+          width: '100vw',
+          height: '100vh',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#333',
+          fontSize: '1rem',
+        }}
+      >
+        {/* Optional minimal loading indicator */}
+        <div
+          style={{
+            width: '3px',
+            height: '20px',
+            backgroundColor: '#444',
+            animation: 'pulse 1.5s ease-in-out infinite',
+          }}
+        />
+        <style>{`
+          @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+          }
+        `}</style>
+      </div>
+    );
+  }
+
+  // --------------------------------
+  // Ready: render everything at once
   // --------------------------------
   const currentIndex = items.findIndex((i) => normalizeDate(i.date) === normalizeDate(date));
   const currentItem = items[currentIndex];
@@ -145,41 +139,25 @@ export default function ClockPage() {
 
   return (
     <div className={styles.container}>
-      {/* 👇 Header always appears first */}
-      <div
-        style={{
-          opacity: fadeHeader ? 0 : 1,
-          transition: 'opacity 2s ease-out',
-          pointerEvents: 'none',
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          zIndex: 100, // ensures it's on top
-        }}
-      >
-        <Header visible={true} />
-      </div>
+      {/* Entire page appears instantly when ready */}
+      {pageError ? (
+        <div className={styles.error}>{pageError}</div>
+      ) : (
+        <>
+          <Header visible={true} />
+          <div className={styles.content}>
+            <ClockComponent />
+          </div>
 
-      {/* 👇 Clock + loading content */}
-      <div className={styles.content}>
-        {!isReady && !pageError && <LoadingOverlay />}
-        {pageError && <div className={styles.error}>{pageError}</div>}
-        {isReady && ClockComponent && <ClockComponent />}
-      </div>
-
-
-
-{isReady && (
-  <ClockPageNav
-    prevItem={prevItem}
-    nextItem={nextItem}
-    currentItem={currentItem}
-    formatTitle={(t) => t?.replace(/clock/i, '').trim() || 'Home'}
-    formatDate={(d) => d.replace(/-/g, '.')}
-  />
-)}
-
+          <ClockPageNav
+            prevItem={prevItem}
+            nextItem={nextItem}
+            currentItem={currentItem}
+            formatTitle={(t) => t?.replace(/clock/i, '').trim() || 'Home'}
+            formatDate={(d) => d.replace(/-/g, '.')}
+          />
+        </>
+      )}
     </div>
   );
 }
