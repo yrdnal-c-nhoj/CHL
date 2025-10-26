@@ -11,9 +11,10 @@ export default function ProcessingCounterClock() {
   const [videoReady, setVideoReady] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [visible, setVisible] = useState(true); // controls fade-in
   const videoRef = useRef(null);
 
-  // === Font preload (scoped only to this component) ===
+  // === Font preload ===
   useEffect(() => {
     const font = new FontFace('ProcessingFontScoped', `url(${font_20251007})`);
     font
@@ -50,6 +51,24 @@ export default function ProcessingCounterClock() {
     }
   }, [videoFailed]);
 
+  // === Clock fade-back-in loop after 22s ===
+  useEffect(() => {
+    let fadeTimeout;
+
+    const loopFadeIn = () => {
+      fadeTimeout = setTimeout(() => {
+        setVisible(false); // briefly hide to trigger fade-in
+        setTimeout(() => {
+          setVisible(true); // fade back in
+          loopFadeIn(); // repeat endlessly
+        }, 100); // small pause
+      }, 22000); // wait 22s
+    };
+
+    loopFadeIn();
+    return () => clearTimeout(fadeTimeout);
+  }, []);
+
   // === Clock formatting ===
   const hours24 = time.getHours();
   const hours12 = hours24 % 12 || 12;
@@ -67,8 +86,8 @@ export default function ProcessingCounterClock() {
   const baseSize = isMobile ? 100 / rows : 100 / columns;
   const fontSize = isMobile ? `${baseSize}dvh` : `${baseSize}vw`;
 
-  // === Styles (isolated namespace) ===
-  const ns = 'processing-clock'; // namespace class
+  // === Styles ===
+  const ns = 'processing-clock';
 
   const containerStyle = {
     position: 'relative',
@@ -78,8 +97,8 @@ export default function ProcessingCounterClock() {
     backgroundColor: '#000',
     margin: 0,
     padding: 0,
-    opacity: fontLoaded ? 1 : 0,
-    transition: 'opacity 0.6s ease',
+    opacity: fontLoaded && visible ? 1 : 0,
+    transition: 'opacity 1s ease',
   };
 
   const bgMediaStyle = {
@@ -89,8 +108,8 @@ export default function ProcessingCounterClock() {
     height: '100%',
     objectFit: 'cover',
     filter: 'brightness(1.2) contrast(1.3) saturate(1.1)',
-    transition: 'opacity 1.2s ease-in-out',
     zIndex: 0,
+    transition: 'opacity 1s ease',
   };
 
   const gridStyle = {
@@ -116,7 +135,7 @@ export default function ProcessingCounterClock() {
 
   return (
     <div className={ns} style={containerStyle}>
-      {/* Scoped @font-face injected dynamically */}
+      {/* Scoped @font-face */}
       <style>{`
         @font-face {
           font-family: 'ProcessingFontScoped';
