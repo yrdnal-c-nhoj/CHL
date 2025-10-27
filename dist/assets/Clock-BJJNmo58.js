@@ -1,0 +1,10 @@
+import{r as e,j as r}from"./index-DuxRGnoV.js";const h="/assets/shado-DP_jcYIP.ttf";function k(){const[d,g]=e.useState(new Date),[y,x]=e.useState(!1),[F,w]=e.useState(0);if(e.useEffect(()=>{const t=document.createElement("style");return t.textContent=`
+      @font-face {
+        font-family: 'ClockFont';
+        src: url(${h}) format('truetype');
+        font-display: swap;
+      }
+    `,document.head.appendChild(t),()=>document.head.removeChild(t)},[]),e.useEffect(()=>{new FontFace("ClockFont",`url(${h})`).load().then(n=>{document.fonts.add(n),x(!0)})},[]),e.useEffect(()=>{const t=setInterval(()=>g(new Date),1e3);return()=>clearInterval(t)},[]),e.useEffect(()=>{let t;const n=performance.now(),s=c=>{const o=-((c-n)/1e3%60*6);w(o),t=requestAnimationFrame(s)};return t=requestAnimationFrame(s),()=>cancelAnimationFrame(t)},[]),!y)return r.jsx("div",{style:{height:"100dvh",width:"100vw",display:"flex",alignItems:"center",justifyContent:"center",backgroundColor:"black",color:"white",fontSize:"2.5rem",fontFamily:"sans-serif"},children:"Loading..."});const f=d.getHours(),a=d.getMinutes(),C=f%12===0?12:f%12,v=a<10?`0${a}`:a,u=F*Math.PI/180,m=14,S=Array.from({length:m},(t,n)=>{const s=n*12+3,c=-Math.cos(u)*s,p=-Math.sin(u)*s,o=n/(m-1);let l="#EB0DA9FF";return o>.85&&o<.98?l=`rgb(${Math.floor(128+(o-.85)*800)},0,0)`:o>=.98&&(l="#E9CF06FF"),`${c}px ${p}px 0 ${l}`}).join(", "),i={root:{height:"100dvh",width:"100vw",backgroundImage:`
+        radial-gradient(rgb(96, 137, 39) 30.8%, transparent 30.8%),
+        radial-gradient(rgb(0, 0, 0) 30.8%, transparent 30.8%)
+      `,backgroundPosition:"4px 4px, 3.6px 4.4px",backgroundSize:"8px 8px",backgroundColor:"rgb(131, 159, 7)",display:"flex",justifyContent:"center",alignItems:"center",overflow:"hidden"},timeWrapper:{display:"flex",justifyContent:"center",alignItems:"center"},time:{fontFamily:"ClockFont, sans-serif",fontSize:"88px",color:"#C40D53FF",textShadow:S,letterSpacing:"3vh",textAlign:"center",display:"inline-block"}};return r.jsx("div",{style:i.root,children:r.jsx("div",{style:i.timeWrapper,children:r.jsxs("div",{style:i.time,children:[C,":",v]})})})}export{k as default};
