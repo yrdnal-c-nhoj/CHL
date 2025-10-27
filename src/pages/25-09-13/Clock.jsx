@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import customFont from './anim.ttf';
+import customFontpawww from './anim.ttf';
 import bgImage from './anim.jpg';
 
 const DigitalClock = () => {
@@ -10,7 +10,7 @@ const DigitalClock = () => {
 
   useEffect(() => {
     // Load custom font before showing content
-    const font = new FontFace('CustomClockFont', `url(${customFont})`);
+    const font = new FontFace('CustomClockFont', `url(${customFontpawww})`);
     font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
       setFontLoaded(true); // font is ready
