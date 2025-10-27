@@ -239,7 +239,7 @@ const EntropyClock = () => {
                 fontWeight: "900",
                 color: "#FFD700",
                 textShadow:
-                  "0 0 4px #fff, 0 0 6px #FFD700, 0 0 10px #FFD700, 0 0 20px #FFEA00",
+                  "0 0 2px #999fff, 0 0 6px #FFD700, 0 0 10px #FFD700, 0 0 20px #FFEA00",
               }}
             >
               {i === 0 ? 12 : i}
