@@ -233,7 +233,7 @@ const adjectives3 = [
         justifyContent: "center",
         alignItems: "center",
         color: inverseColor,
-         textShadow: `10 0.2rem 1rem ${inverseColor}80, 0 0 2rem ${inverseColor}50`,
+        textShadow: `10 0.2rem 1rem ${inverseColor}80, 0 0 2rem ${inverseColor}50`,
         textAlign: "center",
       }}
     >
