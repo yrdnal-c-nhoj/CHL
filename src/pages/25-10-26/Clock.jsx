@@ -283,6 +283,10 @@ export default function SkyClock() {
             WebkitTextFillColor: "transparent",
             MozBackgroundClip: "text",
             MozTextFillColor: "transparent",
+             textShadow: `
+      1px 0 #fff,    /* white on the right */
+      -1px 0 #000     /* black on the left */
+    `,
           }}
         >
           {localTime}
@@ -301,7 +305,14 @@ export default function SkyClock() {
             WebkitTextFillColor: "transparent",
             MozBackgroundClip: "text",
             MozTextFillColor: "transparent",
+             textShadow: `
+      1px 0 #fff,    /* white on the right */
+      -1px 0 #000     /* black on the left */
+    `,
           }}
+
+
+          
         />
       </div>
     </div>
