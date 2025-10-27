@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-const UNSPLASH_ACCESS_KEY = import.meta.env.VITE_UNSPLASH_KEY;
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+const GOOGLE_CX = import.meta.env.VITE_GOOGLE_CX; // Your Custom Search Engine ID
 const digitWords = ["zero","one","two","three","four","five","six","seven","eight","nine"];
 
 const TimeDigitGallery = () => {
@@ -12,9 +13,9 @@ const TimeDigitGallery = () => {
     const now = new Date();
     let hours = now.getHours();
     const minutes = now.getMinutes();
-    
+
     hours = hours % 12 || 12;
-    const timeString = `${hours}${minutes.toString().padStart(2, '0')}`;
+    const timeString = `${hours}${minutes.toString().padStart(2, "0")}`;
     return timeString.split("").map(Number);
   };
 
@@ -33,34 +34,27 @@ const TimeDigitGallery = () => {
     for (const query of queries) {
       try {
         const response = await fetch(
-          `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}`
+          `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_CX}&searchType=image&q=${encodeURIComponent(query)}&safe=high&num=5`
         );
-        if (!response.ok) throw new Error("Unsplash request failed");
+
+        if (!response.ok) throw new Error("Google API request failed");
 
         const data = await response.json();
 
-        const filteredResults = data.results.filter(photo => {
-          const desc = (photo.description || photo.alt_description || "").toLowerCase();
-          return !desc.match(/\d{2,}/); // exclude multiple digits
-        });
+        if (data.items && data.items.length > 0) {
+          const randomImg = data.items[Math.floor(Math.random() * data.items.length)];
 
-        if (filteredResults.length > 0) {
-          const randomPhoto = filteredResults[Math.floor(Math.random() * filteredResults.length)];
           setImages(prev => ({
             ...prev,
             [digit]: {
-              url: randomPhoto.urls.regular,
-              photographer: randomPhoto.user.name,
-              photographerLink: randomPhoto.user.links.html,
-              id: randomPhoto.id
+              url: randomImg.link,
+              photographer: randomImg.displayLink,
+              photographerLink: randomImg.image.contextLink,
+              id: randomImg.cacheId || randomImg.link
             }
           }));
 
-          fetch(
-            `https://api.unsplash.com/photos/${randomPhoto.id}/download?client_id=${UNSPLASH_ACCESS_KEY}`
-          ).catch(err => console.error("Download tracking failed:", err));
-
-          return; // stop after finding one
+          return; // stop searching after first match
         }
       } catch (err) {
         console.error(err);
@@ -68,7 +62,7 @@ const TimeDigitGallery = () => {
       }
     }
 
-    // If no image found, leave it blank (no fallback)
+    // If no image found, leave blank
     setImages(prev => ({
       ...prev,
       [digit]: null
