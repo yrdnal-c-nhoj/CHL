@@ -116,8 +116,8 @@ export default function SkyClock() {
       "a wondrously-soft", "a joyfully-glimmering", "a luminously-bright", "a serenely-harmonious", "a delicately-lit",
       "a charmingly-glowing", "a peacefully-bright", "a radiant-soft", "a euphorically-lit", "a whimsically-bright",
       "a gently-lit", "a glowingly", "a lightly-lit", "a serenely-bright", "a magnificently-soft",
-      "a dreamily-bright", "a delightfully-glimmering", "a harmoniously-glimmering", "a luminously-glittering", "a blissfully-bright",
-      "a gloriously-lit", "a soft-glimmering", "a splendidly-lit", "a beautifully-glowing", "a enchantingly-lit"
+      "a dreamily-bright", "a delightfully-glimmering", "a harmoniously", "a luminously-glittering", "a blissfully-bright",
+      "a splendidly-lit", "a beautifully-glowing", "a enchantingly"
     ];
 
     const adjectives2_day = [
