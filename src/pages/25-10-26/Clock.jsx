@@ -224,7 +224,7 @@ const adjectives3 = [
     <div
       style={{
         width: "100vw",
-        height: "100vh",
+        height: "100dvh",
         position: "relative",
         overflow: "hidden",
         background: skyGradient,
