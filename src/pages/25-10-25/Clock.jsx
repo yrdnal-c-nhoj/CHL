@@ -3,15 +3,17 @@ import font20251027 from "./fall.ttf"; // Local font file
 
 const EntropyClock = () => {
   const [time, setTime] = useState(new Date());
-  const [animationKey, setAnimationKey] = useState(0);
+  const [animationKey, setAnimationKey] = useState(0); // triggers animation restart
   const [fontLoaded, setFontLoaded] = useState(false);
+  const [showClock, setShowClock] = useState(false);  // controls fade-in
+  const [mountedClockKey, setMountedClockKey] = useState(0); // unique key for each cycle
   const numbersRef = useRef([]);
   const handsRef = useRef({ hour: null, minute: null, second: null });
   const dotRef = useRef(null);
   const clockContainerRef = useRef(null);
   const styleElementRef = useRef(null);
 
-  // Inject local font
+  // --- Inject local font ---
   useEffect(() => {
     const styleElement = document.createElement("style");
     styleElement.innerHTML = `
@@ -24,10 +26,9 @@ const EntropyClock = () => {
     `;
     document.head.appendChild(styleElement);
     styleElementRef.current = styleElement;
-    
-    // Wait for font to load
-    setTimeout(() => setFontLoaded(true), 100);
-    
+
+    setTimeout(() => setFontLoaded(true), 100); // small delay to ensure font is loaded
+
     return () => {
       if (styleElementRef.current && document.head.contains(styleElementRef.current)) {
         document.head.removeChild(styleElementRef.current);
@@ -35,23 +36,42 @@ const EntropyClock = () => {
     };
   }, []);
 
-  // Update time every second
+  // --- Update time every second ---
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // Helper to shuffle arrays
-  const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
-
-  // Animation sequence: numbers → hands → dot → clock
+  // --- Trigger fade-in for each animation cycle ---
   useEffect(() => {
     if (!fontLoaded) return;
-    
-    const timers = [];
-    let cumulativeDelay = 2000; // Wait 2 seconds before starting
 
-    // --- Numbers tremble then fall ---
+    // Hide clock first
+    setShowClock(false);
+
+    // Mount a new clock div shortly after
+    const mountTimeout = setTimeout(() => setMountedClockKey((k) => k + 1), 50);
+    return () => clearTimeout(mountTimeout);
+  }, [animationKey, fontLoaded]);
+
+  // --- Fade in the mounted clock ---
+  useEffect(() => {
+    if (!fontLoaded) return;
+    const fadeTimeout = setTimeout(() => setShowClock(true), 50);
+    return () => clearTimeout(fadeTimeout);
+  }, [mountedClockKey, fontLoaded]);
+
+  // --- Helper to shuffle arrays ---
+  const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
+
+  // --- Animation sequence: numbers → hands → dot → clock ---
+  useEffect(() => {
+    if (!fontLoaded) return;
+
+    const timers = [];
+    let cumulativeDelay = 2000;
+
+    // Numbers tremble then fall
     const numbersOrder = shuffle([...Array(12).keys()]);
     numbersOrder.forEach((i) => {
       const trembleDelay = 500 + Math.random() * 500;
@@ -60,7 +80,7 @@ const EntropyClock = () => {
       timers.push(setTimeout(() => fallNumber(i), cumulativeDelay + 1500));
     });
 
-    // --- Hands tremble then fall ---
+    // Hands tremble then fall
     const handsOrder = shuffle(["hour", "minute", "second"]);
     handsOrder.forEach((hand) => {
       const trembleDelay = 800 + Math.random() * 500;
@@ -69,22 +89,22 @@ const EntropyClock = () => {
       timers.push(setTimeout(() => fallHand(hand), cumulativeDelay + 1500));
     });
 
-    // --- Dot explodes ---
+    // Dot explodes
     cumulativeDelay += 1000 + Math.random() * 500;
     timers.push(setTimeout(() => explodeDot(), cumulativeDelay));
 
-    // --- Clock explosion ---
+    // Clock explodes
     cumulativeDelay += 1000 + Math.random() * 500;
     timers.push(setTimeout(() => explodeClock(), cumulativeDelay));
 
-    // --- Restart animation ---
+    // Restart animation
     cumulativeDelay += 2000;
     timers.push(setTimeout(() => setAnimationKey((k) => k + 1), cumulativeDelay));
 
     return () => timers.forEach(clearTimeout);
   }, [animationKey, fontLoaded]);
 
-  // Time calculations
+  // --- Time calculations ---
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
@@ -98,17 +118,14 @@ const EntropyClock = () => {
     if (!el) return;
     let start = null;
     const duration = 1500;
-
     const animate = (timestamp) => {
       if (!start) start = timestamp;
       const t = (timestamp - start) / duration;
       if (t >= 1) return;
-      
       const intensity = Math.pow(t, 2) * 5;
       const offsetX = (Math.random() - 0.5) * intensity;
       const offsetY = (Math.random() - 0.5) * intensity;
       const rotation = (Math.random() - 0.5) * intensity * 2;
-      
       el.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px)) rotate(${rotation}deg)`;
       requestAnimationFrame(animate);
     };
@@ -121,15 +138,12 @@ const EntropyClock = () => {
     let start = null;
     const duration = 1500;
     const deg = hand === "hour" ? hourDeg : hand === "minute" ? minuteDeg : secondDeg;
-
     const animate = (timestamp) => {
       if (!start) start = timestamp;
       const t = (timestamp - start) / duration;
       if (t >= 1) return;
-      
       const intensity = Math.pow(t, 2) * 10;
       const wobble = (Math.random() - 0.5) * intensity;
-      
       el.style.transform = `rotate(${deg + wobble}deg)`;
       requestAnimationFrame(animate);
     };
@@ -144,7 +158,6 @@ const EntropyClock = () => {
     const rotateX = Math.random() * 1440 - 720;
     const rotateY = Math.random() * 1440 - 720;
     const rotateZ = Math.random() * 1440 - 720;
-
     const animate = (timestamp) => {
       if (!start) start = timestamp;
       const t = Math.min((timestamp - start) / duration, 1);
@@ -159,91 +172,27 @@ const EntropyClock = () => {
   const fallHand = (hand) => {
     const el = handsRef.current[hand];
     if (!el) return;
-    
-    const shouldBreak = hand === "minute" || hand === "second";
-    const pieces = hand === "minute" ? 3 : hand === "second" ? 2 : 1;
-    
-    if (!shouldBreak || pieces === 1) {
-      let start = null;
-      const duration = 3000 + Math.random() * 1000;
-      const rotateX = Math.random() * 1440 - 720;
-      const rotateY = Math.random() * 1440 - 720;
-      const rotateZ = Math.random() * 1440 - 720;
-
-      const animate = (timestamp) => {
-        if (!start) start = timestamp;
-        const t = Math.min((timestamp - start) / duration, 1);
-        const jump = Math.sin(t * Math.PI) * 20;
-        el.style.transform = `translate(-50%, ${jump + t * 150}vh) rotateX(${rotateX * t}deg) rotateY(${rotateY * t}deg) rotateZ(${rotateZ * t}deg)`;
-        el.style.opacity = 1 - t;
-        if (t < 1) requestAnimationFrame(animate);
-      };
-      requestAnimationFrame(animate);
-    } else {
-      const rect = el.getBoundingClientRect();
-      const handLength = parseFloat(el.style.height);
-      const deg = hand === "minute" ? minuteDeg : secondDeg;
-      
-      el.style.opacity = "0";
-      
-      const pieceData = pieces === 3 
-        ? [0.25, 0.35, 0.40]
-        : [0.40, 0.60];
-      
-      let currentPos = 0;
-      pieceData.forEach((portion, i) => {
-        const piece = document.createElement("div");
-        const pieceLength = handLength * portion;
-        
-        Object.assign(piece.style, {
-          position: "fixed",
-          width: el.style.width,
-          height: `${pieceLength}vmin`,
-          backgroundColor: el.style.backgroundColor,
-          borderRadius: el.style.borderRadius,
-          boxShadow: el.style.boxShadow,
-          left: `${rect.left}px`,
-          top: `${rect.top + currentPos * parseFloat(handLength) * (rect.height / handLength)}px`,
-          transformOrigin: "center top",
-          transform: `rotate(${deg}deg)`,
-          pointerEvents: "none",
-          zIndex: "1000"
-        });
-        
-        document.body.appendChild(piece);
-        currentPos += portion;
-        
-        let start = null;
-        const duration = 3000 + Math.random() * 1000;
-        const rotateX = Math.random() * 1440 - 720;
-        const rotateY = Math.random() * 1440 - 720;
-        const rotateZ = Math.random() * 1440 - 720 + (i * 360);
-        const spinMultiplier = 1 + i * 0.5;
-
-        const animate = (timestamp) => {
-          if (!start) start = timestamp;
-          const t = Math.min((timestamp - start) / duration, 1);
-          const jump = Math.sin(t * Math.PI) * 20;
-          const drift = (i - pieces / 2) * 30 * t;
-          piece.style.transform = `translate(${drift}vw, ${jump + t * 150}vh) rotateX(${rotateX * t * spinMultiplier}deg) rotateY(${rotateY * t * spinMultiplier}deg) rotateZ(${deg + rotateZ * t * spinMultiplier}deg)`;
-          piece.style.opacity = 1 - t;
-          if (t < 1) {
-            requestAnimationFrame(animate);
-          } else {
-            piece.remove();
-          }
-        };
-        requestAnimationFrame(animate);
-      });
-    }
+    let start = null;
+    const duration = 3000 + Math.random() * 1000;
+    const rotateX = Math.random() * 1440 - 720;
+    const rotateY = Math.random() * 1440 - 720;
+    const rotateZ = Math.random() * 1440 - 720;
+    const animate = (timestamp) => {
+      if (!start) start = timestamp;
+      const t = Math.min((timestamp - start) / duration, 1);
+      const jump = Math.sin(t * Math.PI) * 20;
+      el.style.transform = `translate(-50%, ${jump + t * 150}vh) rotateX(${rotateX * t}deg) rotateY(${rotateY * t}deg) rotateZ(${rotateZ * t}deg)`;
+      el.style.opacity = 1 - t;
+      if (t < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
   };
 
   const explodeDot = () => {
     const dot = dotRef.current;
     if (!dot) return;
-    const total = 1000;
+    const total = 500;
     const rect = dot.getBoundingClientRect();
-
     for (let i = 0; i < total; i++) {
       const p = document.createElement("div");
       Object.assign(p.style, {
@@ -282,8 +231,6 @@ const EntropyClock = () => {
   };
 
   const explodeClock = () => {
-    const clock = clockContainerRef.current;
-    if (!clock) return;
     const allElements = [
       ...numbersRef.current.filter(Boolean),
       ...Object.values(handsRef.current).filter(Boolean),
@@ -296,13 +243,11 @@ const EntropyClock = () => {
       const centerY = window.innerHeight / 2;
       const angle = Math.atan2(rect.top - centerY, rect.left - centerX);
       const distance = 150 + Math.random() * 100;
-
       let start = null;
       const duration = 2000 + Math.random() * 1000;
       const rotateX = Math.random() * 1440 - 720;
       const rotateY = Math.random() * 1440 - 720;
       const rotateZ = Math.random() * 1440 - 720;
-
       const animate = (timestamp) => {
         if (!start) start = timestamp;
         const t = Math.min((timestamp - start) / duration, 1);
@@ -332,18 +277,20 @@ const EntropyClock = () => {
         fontFamily: "EntropyFont, monospace",
         perspective: "1500px",
         background: "radial-gradient(circle at center, #FF1500FF 0%, #631212 70%, #41025EFF 100%)",
-        margin: "0",
-        padding: "0"
+        margin: 0,
+        padding: 0
       }}
     >
       <div
-        key={animationKey}
+        key={mountedClockKey} // new key triggers re-mount each cycle
         ref={clockContainerRef}
         style={{
           position: "relative",
           width: clockSize,
           height: clockSize,
-          borderRadius: "50%"
+          borderRadius: "50%",
+          opacity: showClock ? 1 : 0,
+          transition: "opacity 1s ease-in-out"
         }}
       >
         {[...Array(12).keys()].map((i) => {
@@ -383,7 +330,7 @@ const EntropyClock = () => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             boxShadow: "0 0 20px #FFD700, 0 0 40px #FFD700, 0 0 60px #FFEA00",
-            zIndex: "10"
+            zIndex: 10
           }}
         />
 
