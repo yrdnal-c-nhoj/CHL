@@ -146,7 +146,18 @@ export default function ClockPage() {
         <>
           <Header visible={true} />
           <div className={styles.content}>
-            <ClockComponent />
+            {/* === FONT ISOLATION WRAPPER (only for clock) === */}
+            <div
+              style={{
+                all: 'initial',
+                fontFamily: 'system-ui, sans-serif',
+                display: 'block',
+                width: '100%',
+                height: '100%',
+              }}
+            >
+              <ClockComponent />
+            </div>
           </div>
 
           <ClockPageNav

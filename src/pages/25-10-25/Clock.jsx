@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import font20251026 from "./fall.ttf"; // <-- Your local font file (same folder)
+import font20251026 from "./fall.ttf"; // Local font file
 
 const EntropyClock = () => {
   const [time, setTime] = useState(new Date());
@@ -9,7 +9,7 @@ const EntropyClock = () => {
   const dotRef = useRef(null);
   const clockContainerRef = useRef(null);
 
-  // Inject @font-face for the local font
+  // Inject local font
   useEffect(() => {
     const fontStyle = document.createElement("style");
     fontStyle.innerHTML = `
@@ -30,27 +30,46 @@ const EntropyClock = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Animation sequence
+  // Helper to shuffle arrays
+  const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
+
+  // Animation sequence: numbers → hands → dot → clock
   useEffect(() => {
     const timers = [];
 
-    timers.push(setTimeout(() => fallNumber(0), 2000));
-    timers.push(setTimeout(() => fallNumber(1), 3000));
-    for (let i = 2; i < 12; i++) {
-      timers.push(setTimeout(() => fallNumber(i), 4000 + Math.random() * 8000));
-    }
+    // --- Numbers fall ---
+    const numbersOrder = shuffle([...Array(12).keys()]);
+    let cumulativeDelay = 0;
+    numbersOrder.forEach((i) => {
+      const delay = 500 + Math.random() * 500;
+      cumulativeDelay += delay;
+      timers.push(setTimeout(() => fallNumber(i), cumulativeDelay));
+    });
 
-    timers.push(setTimeout(() => fallHand("minute"), 12000));
-    timers.push(setTimeout(() => fallHand("hour"), 14000));
-    timers.push(setTimeout(() => fallHand("second"), 17000));
+    // --- Hands fall after numbers ---
+    const handsOrder = shuffle(["hour", "minute", "second"]);
+    handsOrder.forEach((hand) => {
+      const delay = 800 + Math.random() * 500;
+      cumulativeDelay += delay;
+      timers.push(setTimeout(() => fallHand(hand), cumulativeDelay));
+    });
 
-    timers.push(setTimeout(() => explodeDot(), 20000));
-    timers.push(setTimeout(() => explodeClock(), 23000));
-    timers.push(setTimeout(() => setAnimationKey((prev) => prev + 1), 26000));
+    // --- Dot explodes ---
+    cumulativeDelay += 1000 + Math.random() * 500;
+    timers.push(setTimeout(() => explodeDot(), cumulativeDelay));
+
+    // --- Clock explosion ---
+    cumulativeDelay += 1000 + Math.random() * 500;
+    timers.push(setTimeout(() => explodeClock(), cumulativeDelay));
+
+    // --- Restart animation ---
+    cumulativeDelay += 2000;
+    timers.push(setTimeout(() => setAnimationKey((k) => k + 1), cumulativeDelay));
 
     return () => timers.forEach(clearTimeout);
   }, [animationKey]);
 
+  // Time calculations
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
@@ -58,12 +77,12 @@ const EntropyClock = () => {
   const minuteDeg = (minutes + seconds / 60) * 6;
   const secondDeg = seconds * 6;
 
-  // === Animations ===
+  // === Animation helpers ===
   const fallNumber = (index) => {
     const el = numbersRef.current[index];
     if (!el) return;
     let start = null;
-    const duration = 4000 + Math.random() * 2000;
+    const duration = 3000 + Math.random() * 2000;
     const rotateX = Math.random() * 1440 - 720;
     const rotateY = Math.random() * 1440 - 720;
     const rotateZ = Math.random() * 1440 - 720;
@@ -102,7 +121,7 @@ const EntropyClock = () => {
   const explodeDot = () => {
     const dot = dotRef.current;
     if (!dot) return;
-    const total = 2000;
+    const total = 1000;
     const rect = dot.getBoundingClientRect();
     const container = document.body;
 
@@ -115,7 +134,6 @@ const EntropyClock = () => {
       p.style.borderRadius = "50%";
       p.style.left = `${rect.left + rect.width / 2}px`;
       p.style.top = `${rect.top + rect.height / 2}px`;
-      p.style.zIndex = "1000";
       container.appendChild(p);
 
       const angle = Math.random() * 2 * Math.PI;
@@ -144,10 +162,10 @@ const EntropyClock = () => {
     const clock = clockContainerRef.current;
     if (!clock) return;
     const allElements = [
-      ...numbersRef.current.filter((el) => el),
-      ...Object.values(handsRef.current).filter((el) => el),
+      ...numbersRef.current.filter(Boolean),
+      ...Object.values(handsRef.current).filter(Boolean),
       dotRef.current,
-    ].filter((el) => el);
+    ].filter(Boolean);
 
     allElements.forEach((el) => {
       const rect = el.getBoundingClientRect();
@@ -188,7 +206,7 @@ const EntropyClock = () => {
         justifyContent: "center",
         alignItems: "center",
         overflow: "hidden",
-        fontFamily: "EntropyFont, 'Courier New', monospace",
+        fontFamily: "EntropyFont, monospace",
         perspective: "1500px",
         background:
           "radial-gradient(circle at center, #FF1500FF 0%, #631212 70%, #41025EFF 100%)",
@@ -217,7 +235,7 @@ const EntropyClock = () => {
                 left: `calc(50% + ${40 * Math.cos(rad)}vmin)`,
                 top: `calc(50% + ${40 * Math.sin(rad)}vmin)`,
                 transform: "translate(-50%, -50%)",
-                fontSize: "8vmin",
+                fontSize: "14vmin",
                 fontWeight: "900",
                 color: "#FFD700",
                 textShadow:
