@@ -18,6 +18,7 @@ export default function ClockPage() {
   const [ClockComponent, setClockComponent] = useState(null);
   const [pageError, setPageError] = useState(null);
   const [isReady, setIsReady] = useState(false);
+  const [hideHeader, setHideHeader] = useState(false); // <-- state to fade out header
 
   // Prevent scrolling
   useEffect(() => {
@@ -27,9 +28,15 @@ export default function ClockPage() {
     };
   }, []);
 
-  // --------------------------------
+  // Header fade-out after 2 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHideHeader(true);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Load everything at once (background, fonts, images, component)
-  // --------------------------------
   useEffect(() => {
     const loadEverything = async () => {
       try {
@@ -92,9 +99,7 @@ export default function ClockPage() {
     loadEverything();
   }, [date, items, loading, navigate]);
 
-  // --------------------------------
   // Black overlay while loading (no flicker, no partial load)
-  // --------------------------------
   if (!isReady && !pageError) {
     return (
       <div
@@ -110,7 +115,6 @@ export default function ClockPage() {
           fontSize: '1rem',
         }}
       >
-        {/* Optional minimal loading indicator */}
         <div
           style={{
             width: '3px',
@@ -129,9 +133,7 @@ export default function ClockPage() {
     );
   }
 
-  // --------------------------------
   // Ready: render everything at once
-  // --------------------------------
   const currentIndex = items.findIndex((i) => normalizeDate(i.date) === normalizeDate(date));
   const currentItem = items[currentIndex];
   const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
@@ -139,12 +141,15 @@ export default function ClockPage() {
 
   return (
     <div className={styles.container}>
-      {/* Entire page appears instantly when ready */}
       {pageError ? (
         <div className={styles.error}>{pageError}</div>
       ) : (
         <>
-          <Header visible={true} />
+          <Header
+            visible={!hideHeader}
+            className={`${styles.headerFade} ${hideHeader ? styles.fadeOut : ''}`}
+          />
+
           <div className={styles.content}>
             {/* === FONT ISOLATION WRAPPER (only for clock) === */}
             <div
@@ -169,6 +174,17 @@ export default function ClockPage() {
           />
         </>
       )}
+
+      {/* CSS for header fade */}
+      <style>{`
+        .${styles.headerFade} {
+          opacity: 1;
+          transition: opacity 1s ease-in-out;
+        }
+        .${styles.fadeOut} {
+          opacity: 0;
+        }
+      `}</style>
     </div>
   );
 }
