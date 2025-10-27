@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import videoFile from "./bg.mp4";
 import fallbackImg from "./bg.webp";
-import fontFile_2025_10_22 from "./fundy.ttf"; // Local font in same folder
+import fontFile_2025_10_22 from "./fundy.ttf"; 
 
 export default function ClockWithVideo() {
   const [fontReady, setFontReady] = useState(false);
@@ -9,13 +9,13 @@ export default function ClockWithVideo() {
   const [time, setTime] = useState(new Date());
   const videoRef = useRef(null);
 
-  // Update time smoothly (every 10ms)
+
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 10);
     return () => clearInterval(interval);
   }, []);
 
-  // Load local custom font (no leakage)
+ 
   useEffect(() => {
     const font = new FontFace(
       "MyCustomFont",
