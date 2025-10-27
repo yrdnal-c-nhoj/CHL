@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const UNSPLASH_ACCESS_KEY = import.meta.env.VITE_UNSPLASH_KEY;
+const digitWords = ["zero","one","two","three","four","five","six","seven","eight","nine"];
 
 const TimeDigitGallery = () => {
   const [currentDigits, setCurrentDigits] = useState([]);
@@ -12,60 +13,77 @@ const TimeDigitGallery = () => {
     let hours = now.getHours();
     const minutes = now.getMinutes();
     
-    // Convert to 12-hour format
     hours = hours % 12 || 12;
-    
-    // Format without leading zeros
     const timeString = `${hours}${minutes.toString().padStart(2, '0')}`;
-    
-    // Split into individual digits
-    return timeString.split('').map(Number);
+    return timeString.split("").map(Number);
   };
 
   const fetchDigitImage = async (digit) => {
-    // Don't fetch if we already have an image for this digit
     if (images[digit]) return;
-    
-    try {
-      const response = await fetch(
-        `https://api.unsplash.com/search/photos?query=${digit}&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}`
-      );
-      if (!response.ok) throw new Error("Unsplash request failed");
-      const data = await response.json();
-      if (data.results.length > 0) {
-        const randomPhoto =
-          data.results[Math.floor(Math.random() * data.results.length)];
-        setImages((prev) => ({
-          ...prev,
-          [digit]: {
-            url: randomPhoto.urls.regular,
-            photographer: randomPhoto.user.name,
-            photographerLink: randomPhoto.user.links.html,
-            id: randomPhoto.id,
-          },
-        }));
-        // Trigger download endpoint
-        fetch(
-          `https://api.unsplash.com/photos/${randomPhoto.id}/download?client_id=${UNSPLASH_ACCESS_KEY}`
-        ).catch((err) => console.error("Download tracking failed:", err));
+
+    const queries = [
+      `${digit} single digit illustration`,
+      `${digit} isolated number typography`,
+      `${digit} solo graphic`,
+      `${digitWords[digit]} single illustration`,
+      `${digitWords[digit]} isolated typography`,
+      `${digitWords[digit]} solo graphic`
+    ];
+
+    for (const query of queries) {
+      try {
+        const response = await fetch(
+          `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}`
+        );
+        if (!response.ok) throw new Error("Unsplash request failed");
+
+        const data = await response.json();
+
+        const filteredResults = data.results.filter(photo => {
+          const desc = (photo.description || photo.alt_description || "").toLowerCase();
+          return !desc.match(/\d{2,}/); // exclude multiple digits
+        });
+
+        if (filteredResults.length > 0) {
+          const randomPhoto = filteredResults[Math.floor(Math.random() * filteredResults.length)];
+          setImages(prev => ({
+            ...prev,
+            [digit]: {
+              url: randomPhoto.urls.regular,
+              photographer: randomPhoto.user.name,
+              photographerLink: randomPhoto.user.links.html,
+              id: randomPhoto.id
+            }
+          }));
+
+          fetch(
+            `https://api.unsplash.com/photos/${randomPhoto.id}/download?client_id=${UNSPLASH_ACCESS_KEY}`
+          ).catch(err => console.error("Download tracking failed:", err));
+
+          return; // stop after finding one
+        }
+      } catch (err) {
+        console.error(err);
+        setError(`Error fetching image for ${digit}.`);
       }
-    } catch (err) {
-      console.error(err);
-      setError(`Error fetching image for ${digit}.`);
     }
+
+    // If no image found, leave it blank (no fallback)
+    setImages(prev => ({
+      ...prev,
+      [digit]: null
+    }));
   };
 
   useEffect(() => {
-    // Initial load
     const digits = getTimeDigits();
     setCurrentDigits(digits);
-    digits.forEach((digit) => fetchDigitImage(digit));
+    digits.forEach(fetchDigitImage);
 
-    // Update every minute
     const interval = setInterval(() => {
       const newDigits = getTimeDigits();
       setCurrentDigits(newDigits);
-      newDigits.forEach((digit) => fetchDigitImage(digit));
+      newDigits.forEach(fetchDigitImage);
     }, 60000);
 
     return () => clearInterval(interval);
@@ -124,15 +142,9 @@ const TimeDigitGallery = () => {
     textDecoration: "none",
   };
 
-  const headerStyle = {
-    fontSize: "3vh",
-    color: "#888",
-    marginBottom: "2vh",
-  };
-
   return (
     <div style={containerStyle}>
-       <div style={timeContainerStyle}>
+      <div style={timeContainerStyle}>
         {currentDigits.map((digit, index) => (
           <div key={`${digit}-${index}`} style={digitStyle}>
             <div style={titleStyle}>{digit}</div>
@@ -140,7 +152,7 @@ const TimeDigitGallery = () => {
               <>
                 <img
                   src={images[digit].url}
-                  alt={`Random image for digit ${digit}`}
+                  alt={`Digit ${digit}`}
                   style={imageStyle}
                 />
                 <a
@@ -149,7 +161,7 @@ const TimeDigitGallery = () => {
                   rel="noopener noreferrer"
                   style={attributionStyle}
                 >
-                  Photo by {images[digit].photographer}
+                  {images[digit].photographer}
                 </a>
               </>
             ) : (
