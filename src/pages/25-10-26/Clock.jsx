@@ -265,12 +265,14 @@ export default function SkyClock() {
         `}
       </style>
 
-      <div
-        style={{
-          opacity: fade ? 1 : 0,
-          transition: "opacity 1s ease-in-out",
-        }}
-      >
+    <div
+  style={{
+    opacity: fade ? 1 : 0,
+    transition: "opacity 1s ease-in-out",
+    transform: "translateY(-5vh)", // 👈 move both time + phrase up slightly
+  }}
+>
+
         {/* Time */}
         <div
           style={{
