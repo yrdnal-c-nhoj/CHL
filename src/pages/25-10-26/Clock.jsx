@@ -85,11 +85,61 @@ export default function SkyClock() {
     const minute = now.getMinutes();
     const timeDecimal = hour + minute / 60;
 
-    const adjectives1 = ["an ethereally","a transcendently","a deeply","a profoundly","a vividly","an endlessly","a vastly","am infinitely","a boundlessly","an atmospherically"];
-    const adjectives2_day = ["luminous","shimmering","dazzling","glowing","glistening","sparkling","gleaming","bright","splendid","lustrous","majestic","wonderous","magical","beautiful","exquisite","vibrant"];
-    const adjectives2_night = ["glimmering","shimmering","sparkling","enigmatical","romantical","sweet","dreami","soft","fleeting","nocturnal","tender","incandescent","twinkling","gent","sublime","delicate","divine","enchanting","rapturous","entrancing"];
-    const adjectives2_twilight = ["hazi","gent","warm","glowing","enigmatical","tender","resplendent","soft","fleeting","tender","incandescent","sparkling","twinkling","sweet","gent","sublime","delicate","divine","enchanting","rapturous","entrancing"];
-    const adjectives3 = ["blissful","gleeful","brilliant","harmonious","serene","splendid","tranquil","enchanted","peaceful","jubilant","exuberant","effervescent","buoyant","lighthearted","euphoric","cheerful","delightful","joy-suffused","mirthful"];
+const adjectives1 = [
+  "an ethereally", "a transcendently", "a deeply", "a profoundly", "a vividly",
+  "an endlessly", "a vastly", "am infinitely", "a boundlessly", "an atmospherically",
+  "a magically", "a subtly", "a luminously", "an exquisitely", "a serenely",
+  "a delicately", "a harmoniously", "an enchantingly", "a blissfully", "a radiantly"
+];
+
+const adjectives2_day = [
+  "luminous", "shimmering", "dazzling", "glowing", "glistening", "sparkling",
+  "gleaming", "bright", "splendid", "lustrous", "majestic", "wonderous",
+  "magical", "beautiful", "exquisite", "vibrant",
+  "radiant", "effulgent", "glorious", "brilliant", "resplendent", "sunlit",
+  "illuminated", "resplendent", "glinting", "sparkly"
+];
+
+const adjectives2_night = [
+  "glimmering", "shimmering", "sparkling", "enigmatical", "romantical", "sweet",
+  "dreami", "soft", "fleeting", "nocturnal", "tender", "incandescent",
+  "twinkling", "gentle", "sublime", "delicate", "divine", "enchanting",
+  "rapturous", "entrancing",
+  "moonlit", "starlit", "mysterious", "ethereal", "phantasmal", "hushed",
+  "silvery", "shadowy", "celestial", "quiet"
+];
+
+const adjectives2_twilight = [
+  "hazy", "gentle", "warm", "glowing", "enigmatical", "tender", "resplendent",
+  "soft", "fleeting", "tender", "incandescent", "sparkling", "twinkling",
+  "sweet", "gent", "sublime", "delicate", "divine", "enchanting", "rapturous",
+  "entrancing",
+  "dusky", "muted", "golden", "rosy", "tranquil", "mellow", "serene",
+  "dreamlike", "whispering", "peaceful"
+];
+
+const adjectives3 = [
+  "humdinger of", "beauty of", "gem of", "wonder of", "marvel of",
+  "delight of", "treasure of", "jewel of", "masterpiece of", "miracle of",
+  "splendor of", "blessing of", "magic of", "legend of", "wonderful of",
+  "charm of", "dazzler of", "pearl of", "triumph of", "sparkle of",
+  "glory of", "radiance of", "spectacle of", "gift of",
+  "stunner of", "brilliance of", "whiz of", "sensation of", "dream of",
+  "epic of", "paradise of", "vision of", "phenomenon of", "joy of",
+  "star of", "knockout of", "masterwork of", "gemstone of", "rarity of",
+  "bliss of", "grandeur of", "charmer of",  "whopper of",
+  "glimmer of", "awe of", "shine of", "luster of", "glamour of",
+  "feast of", "thrill of", "crown of", "bounty of", "elegance of",
+  "mirage of", "bloom of", "glitz of", "haven of", "spark of",
+  "zinger of", "prize of", "delicacy of", "enchantment of", "fantasy of",
+  "lark of", "gleam of", "whimsy of", "rapture of", 
+  "vibrance of", "pinnacle of", "allure of",  "grace of",
+ "divinity of", "opulence of", "panache of", "flair of",
+  "jolt of", "oasis of", "rhapsody of", "boon of", "luxe of",
+   "zest of", 
+  "sizzle of", "elixir of", "dash of", "fire of", 
+  "plum of", "score of", "catch of", "blooming of", "radiant of"
+];
 
     const adjectives2 =
       hour >= 7 && hour < 17
@@ -102,26 +152,25 @@ export default function SkyClock() {
     const phrase = (label) => `Wishing you<br>
   ${randomPick(adjectives1)}<br>
   ${randomPick(adjectives2)}<br>
-  and<br>
   ${randomPick(adjectives3)}<br>
   ${label}.`;
 
-    if (timeDecimal >= 0 && timeDecimal < 3) return phrase("deep night");
-    if (timeDecimal >= 3 && timeDecimal < 4) return phrase("dead of night");
-    if (timeDecimal >= 4 && timeDecimal < 4.5) return phrase("pre-dawn");
-    if (timeDecimal >= 4.5 && timeDecimal < 5.5) return phrase("Astronomical Twilight");
-    if (timeDecimal >= 5.5 && timeDecimal < 6.25) return phrase("Nautical Twilight");
-    if (timeDecimal >= 6.25 && timeDecimal < 7) return phrase("Civil Twilight");
-    if (timeDecimal >= 7 && timeDecimal < 9) return phrase("morning");
-    if (timeDecimal >= 9 && timeDecimal < 11) return phrase("mid-morning");
-    if (timeDecimal >= 11 && timeDecimal < 12) return phrase("late morning");
-    if (timeDecimal >= 12 && timeDecimal < 14) return phrase("early afternoon");
-    if (timeDecimal >= 14 && timeDecimal < 15.5) return phrase("mid-afternoon");
-    if (timeDecimal >= 15.5 && timeDecimal < 17) return phrase("late afternoon");
-    if (timeDecimal >= 17 && timeDecimal < 18.25) return phrase("Civil Twilight");
-    if (timeDecimal >= 18.25 && timeDecimal < 19.15) return phrase("Nautical Twilight");
-    if (timeDecimal >= 19.15 && timeDecimal < 20) return phrase("Astronomical Twilight");
-    if (timeDecimal >= 20 && timeDecimal < 22) return phrase("evening");
+    if (timeDecimal >= 0 && timeDecimal < 3) return phrase("a deep night");
+    if (timeDecimal >= 3 && timeDecimal < 4) return phrase("the dead of night");
+    if (timeDecimal >= 4 && timeDecimal < 4.5) return phrase("a pre-dawn");
+    if (timeDecimal >= 4.5 && timeDecimal < 5.5) return phrase("an Astronomical Twilight");
+    if (timeDecimal >= 5.5 && timeDecimal < 6.25) return phrase("a Nautical Twilight");
+    if (timeDecimal >= 6.25 && timeDecimal < 7) return phrase("a Civil Twilight");
+    if (timeDecimal >= 7 && timeDecimal < 9) return phrase("a morning");
+    if (timeDecimal >= 9 && timeDecimal < 11) return phrase("a mid-morning");
+    if (timeDecimal >= 11 && timeDecimal < 12) return phrase("a late morning");
+    if (timeDecimal >= 12 && timeDecimal < 14) return phrase("an early afternoon");
+    if (timeDecimal >= 14 && timeDecimal < 15.5) return phrase("a mid-afternoon");
+    if (timeDecimal >= 15.5 && timeDecimal < 17) return phrase("a late afternoon");
+    if (timeDecimal >= 17 && timeDecimal < 18.25) return phrase("a Civil Twilight");
+    if (timeDecimal >= 18.25 && timeDecimal < 19.15) return phrase("a Nautical Twilight");
+    if (timeDecimal >= 19.15 && timeDecimal < 20) return phrase("an Astronomical Twilight");
+    if (timeDecimal >= 20 && timeDecimal < 22) return phrase("an evening");
     return phrase("night");
   }
 
