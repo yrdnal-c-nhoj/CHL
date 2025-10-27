@@ -104,20 +104,20 @@ export default function SkyClock() {
       "a delicately", "a harmoniously", "an enchantingly", "a blissfully", "a radiantly",
       "a wondrously", "a dreamily", "a softly", "an elegantly", "a miraculously",
       "a gracefully", "a celestialy", "a charmingly", "a euphorically", "a sparklingly",
-      "a luminously", "a joyfully", "a gloriously", "a luminously-lit", "a whimsically",
-      "a melodiously", "a quietly", "a sweetly", "a tranquilly", "a serenely-lit",
+      "a luminously", "a joyfully", "a gloriously", "a luminously", "a whimsically",
+      "a melodiously", "a quietly", "a sweetly", "a tranquilly", "a serenely",
       "a resplendently", "a luminously-glowing", "a harmoniously-blessed", "a blissfully-lighted",
-      "a dreamlike", "a magically-lit", "a radiantly-bright", "a infinitely-luminous", "a softly-glowing",
-      "a exquisitely-gentle", "a fantastically", "a splendidly-lit", "a beautifully-lit", "a enchantingly-soft",
-      "a luminously-harmonious", "a celestial-lit", "a serenely-glowing", "a blissfully-soft", "a magically-glimmering",
-      "a joy-suffused", "a harmoniously-lit", "a tranquilly-glowing", "a delightfully", "a peacefully-lit",
-      "a luminous-glistening", "a gloriously-soft", "a splendidly-glowing", "a dreamily-lit", "a softly-harmonious",
+      "a dreamlike", "a magically", "a radiantly-bright", "a infinitely-luminous", "a softly-glowing",
+      "a exquisitely-gentle", "a fantastically", "a splendidly", "a beautifully", "a enchantingly-soft",
+      "a luminously-harmonious", "a celestial", "a serenely-glowing", "a blissfully-soft", "a magically-glimmering",
+      "a joy-suffused", "a harmoniously", "a tranquilly-glowing", "a delightfully", "a peacefully",
+      "a luminous-glistening", "a gloriously-soft", "a splendidly-glowing", "a dreamily", "a softly-harmonious",
       "a radiantly-harmonious", "a enchantingly-bright", "a blissfully-glowing", "a exquisitely-luminous", "a magically-harmonious",
-      "a wondrously-soft", "a joyfully-glimmering", "a luminously-bright", "a serenely-harmonious", "a delicately-lit",
-      "a charmingly-glowing", "a peacefully-bright", "a radiant-soft", "a euphorically-lit", "a whimsically-bright",
-      "a gently-lit", "a glowingly", "a lightly-lit", "a serenely-bright", "a magnificently-soft",
+      "a wondrously-soft", "a joyfully-glimmering", "a luminously-bright", "a serenely-harmonious", "a delicately",
+      "a charmingly-glowing", "a peacefully-bright", "a radiant-soft", "a euphorically", "a whimsically-bright",
+      "a gently", "a glowingly", "a lightly", "a serenely-bright", "a magnificently-soft",
       "a dreamily-bright", "a delightfully-glimmering", "a harmoniously", "a luminously-glittering", "a blissfully-bright",
-      "a splendidly-lit", "a beautifully-glowing", "a enchantingly"
+      "a splendidly", "a beautifully-glowing", "a enchantingly"
     ];
 
     const adjectives2_day = [
@@ -241,7 +241,7 @@ export default function SkyClock() {
     <div
       style={{
         width: "100vw",
-        height: "100vh",
+        height: "100dvh",
         position: "relative",
         overflow: "hidden",
         background: skyGradient,
@@ -284,8 +284,8 @@ export default function SkyClock() {
             MozBackgroundClip: "text",
             MozTextFillColor: "transparent",
              textShadow: `
-      1px 0 #fff,    /* white on the right */
-      -1px 0 #000     /* black on the left */
+      2px 0px #fff,    /* white on the right */
+      -2px 0px #000     /* black on the left */
     `,
           }}
         >
@@ -306,8 +306,8 @@ export default function SkyClock() {
             MozBackgroundClip: "text",
             MozTextFillColor: "transparent",
              textShadow: `
-      1px 0 #fff,    /* white on the right */
-      -1px 0 #000     /* black on the left */
+      -1px -1px #fff,    /* white on the right */
+      1px 1px #000     /* black on the left */
     `,
           }}
 
