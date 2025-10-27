@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import rainFont from "./wish.ttf";
+import rainFont from "./wish.otf";
 import skyFont from "./aaa.ttf";
 
 export default function SkyClock() {
@@ -84,39 +84,85 @@ export default function SkyClock() {
     const hour = now.getHours();
     const minute = now.getMinutes();
     const timeDecimal = hour + minute / 60;
-
 const adjectives1 = [
   "an ethereally", "a transcendently", "a deeply", "a profoundly", "a vividly",
   "an endlessly", "a vastly", "am infinitely", "a boundlessly", "an atmospherically",
   "a magically", "a subtly", "a luminously", "an exquisitely", "a serenely",
-  "a delicately", "a harmoniously", "an enchantingly", "a blissfully", "a radiantly"
+  "a delicately", "a harmoniously", "an enchantingly", "a blissfully", "a radiantly",
+  "a wondrously", "a dreamily", "a softly", "an elegantly", "a miraculously",
+  "a gracefully", "a celestialy", "a charmingly", "a euphorically", "a sparklingly",
+  "a luminously", "a joyfully", "a gloriously", "a luminously-lit", "a whimsically",
+  "a melodiously", "a quietly", "a sweetly", "a tranquilly", "a serenely-lit",
+  "a resplendently", "a luminously-glowing", "a harmoniously-blessed", "a blissfully-lighted",
+  "a dreamlike", "a magically-lit", "a radiantly-bright", "a infinitely-luminous", "a softly-glowing",
+  "a exquisitely-gentle", "a fantastically", "a splendidly-lit", "a beautifully-lit", "a enchantingly-soft",
+  "a luminously-harmonious", "a celestial-lit", "a serenely-glowing", "a blissfully-soft", "a magically-glimmering",
+  "a joy-suffused", "a harmoniously-lit", "a tranquilly-glowing", "a delightfully", "a peacefully-lit",
+  "a luminous-glistening", "a gloriously-soft", "a splendidly-glowing", "a dreamily-lit", "a softly-harmonious",
+  "a radiantly-harmonious", "a enchantingly-bright", "a blissfully-glowing", "a exquisitely-luminous", "a magically-harmonious",
+  "a wondrously-soft", "a joyfully-glimmering", "a luminously-bright", "a serenely-harmonious", "a delicately-lit",
+  "a charmingly-glowing", "a peacefully-bright", "a radiant-soft", "a euphorically-lit", "a whimsically-bright",
+  "a gently-lit", "a glowingly", "a lightly-lit", "a serenely-bright", "a magnificently-soft",
+  "a dreamily-bright", "a delightfully-glimmering", "a harmoniously-glimmering", "a luminously-glittering", "a blissfully-bright",
+  "a gloriously-lit", "a soft-glimmering", "a splendidly-lit", "a beautifully-glowing", "a enchantingly-lit"
 ];
 
 const adjectives2_day = [
   "luminous", "shimmering", "dazzling", "glowing", "glistening", "sparkling",
   "gleaming", "bright", "splendid", "lustrous", "majestic", "wonderous",
-  "magical", "beautiful", "exquisite", "vibrant",
-  "radiant", "effulgent", "glorious", "brilliant", "resplendent", "sunlit",
-  "illuminated", "resplendent", "glinting", "sparkly"
+  "magical", "beautiful", "exquisite", "vibrant", "radiant", "effulgent", "glorious",
+  "brilliant", "resplendent", "sunlit", "illuminated", "glinting", "sparkly",
+  "glaring", "fiery", "sun-drenched", "beaming", "scintillating", "polished",
+  "glittering", "effervescent", "golden", "lively", "vivacious", "shiny", "brilliantly-colored",
+  "radiantly-lit", "dandy", "luxuriant", "magnificent", "prismatic", "gleamy", "lustrously",
+  "splendiferous", "flourishing", "illustrious", "sunshiny", "brilliance-filled", "radiantly-glowing",
+  "glorious-lit", "sparklingly-bright", "sun-kissed", "brightened", "shiny-glimmering", "effulgently-lit",
+  "shiny-glistening", "resplendently-lit", "vividly-lit", "sunbright", "shiny-splendid", "flaming", "fiery-glow",
+  "brilliance-filled", "illuminantly", "radiant-sparkling", "sunshine-laden", "scintillatingly-lit", "glisteningly-bright",
+  "radiantly-shining", "glimmering-lit", "sun-glowing", "gleamingly-bright", "dazzlingly-lit", "lustrous-lit",
+  "effulgent-glow", "resplendent-glimmering", "sparklingly-glorious", "magnificently-lit", "luxuriantly-lit", "gloriously-bright",
+  "bright-splendid", "vivid-lit", "resplendent-sparkling", "sun-drenched-glow", "shiny-glistening-lit", "radiantly-splendid",
+  "glorious-glistening", "illustriously-lit", "sun-glimmered", "glowing-splendid", "sparklingly-vibrant", "luminous-glorious",
+  "glistening-sparkling", "sunlit-lustrous", "shiny-lustrously", "effulgent-sparkling", "glimmering-radiant"
 ];
 
 const adjectives2_night = [
   "glimmering", "shimmering", "sparkling", "enigmatical", "romantical", "sweet",
   "dreami", "soft", "fleeting", "nocturnal", "tender", "incandescent",
   "twinkling", "gentle", "sublime", "delicate", "divine", "enchanting",
-  "rapturous", "entrancing",
-  "moonlit", "starlit", "mysterious", "ethereal", "phantasmal", "hushed",
-  "silvery", "shadowy", "celestial", "quiet"
+  "rapturous", "entrancing", "moonlit", "starlit", "mysterious", "ethereal",
+  "phantasmal", "hushed", "silvery", "shadowy", "celestial", "quiet", "gossamer",
+  "night-kissed", "tranquil", "mellow", "glacial", "softly-lit", "twilight-hued",
+  "enrapturing", "melodious", "dreamlike", "sublimely-lit", "wispy", "lunar",
+  "serene", "phantasmic", "airy", "glinting", "enveloping", "mysteriously-lit",
+  "starlight-infused", "noctilucent", "celestially", "radiantly-dark", "enigmatic",
+  "shadow-kissed", "moonbeam-lit", "softly-glimmering", "silvery-lit", "dimly-glowing",
+  "twilight-lit", "ethereally-lit", "calmly-lit", "hushed-lit", "softly-radiant", "quietly-glowing",
+  "starlight-lit", "moon-glimmering", "glacial-lit", "dreamy-lit", "serenely-lit", "delicately-lit",
+  "nocturnally-lit", "celestial-lit", "gentle-glow", "lunar-lit", "shadowy-lit", "ethereal-glow",
+  "mystically-lit", "moonlit-glimmer", "starlit-glow", "twilight-glow", "hallowed-lit", "softly-enchanted",
+  "nightly-glimmering", "glimmer-lit", "dim-lit", "shadow-kissed-lit", "celestial-glimmer", "dreamily-lit",
+  "silvery-glimmer", "phantasmal-glow", "twilight-kissed", "ethereal-glimmer", "moonlit-soft"
 ];
 
 const adjectives2_twilight = [
   "hazy", "gentle", "warm", "glowing", "enigmatical", "tender", "resplendent",
   "soft", "fleeting", "tender", "incandescent", "sparkling", "twinkling",
   "sweet", "gent", "sublime", "delicate", "divine", "enchanting", "rapturous",
-  "entrancing",
-  "dusky", "muted", "golden", "rosy", "tranquil", "mellow", "serene",
-  "dreamlike", "whispering", "peaceful"
+  "entrancing", "dusky", "muted", "golden", "rosy", "tranquil", "mellow", "serene",
+  "dreamlike", "whispering", "peaceful", "amber-hued", "honeyed", "sunset-kissed",
+  "lavender-tinted", "roseate", "softly-glimmering", "gently-lit", "warm-hued",
+  "shadowed", "faintly-glowing", "gilded", "calm", "simmering", "pastel-tinted",
+  "twilight-infused", "hallowed", "dusken", "mystically-tinted", "golden-hued",
+  "quiet", "placid", "soft-hued", "serenely-lit", "gentle-glimmering", "peacefully-lit",
+  "amber-lit", "rose-lit", "dusky-glow", "tranquil-lit", "mellow-lit", "soft-glowing",
+  "golden-lit", "rosy-glow", "warm-glimmer", "hazy-lit", "muted-lit", "serenely-glow",
+  "softly-tinted", "gentle-glow", "peaceful-glimmer", "dusky-glimmer", "honeyed-lit",
+  "pastel-glow", "tranquil-glimmer", "twilight-lit", "golden-glimmer", "lavender-glow",
+  "roseate-lit", "soft-glimmer-lit", "mellow-glimmer", "quiet-glow", "serene-glimmer",
+  "gilded-glow", "placid-lit", "calm-glimmer", "hallowed-glow"
 ];
+
 
 const adjectives3 = [
   "humdinger of", "beauty of", "gem of", "wonder of", "marvel of",
@@ -213,7 +259,7 @@ const adjectives3 = [
         {/* Time */}
         <div
           style={{
-            fontSize: "9vh",
+            fontSize: "20vh",
             fontFamily: "ClockFont, system-ui",
             marginBottom: "2vh",
             color: inverseColor,
