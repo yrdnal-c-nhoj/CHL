@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import bgVideo from "./monarch.mp4";
 import fallbackImg from "./monarch.webp";
-import romanFont2025_10_27 from "./roman.otf"; // Use optimized OTF
+import romanFont2025_10_27 from "./roman.otf"; // Optimized OTF
 
 export default function MonarchClock() {
   const [mediaReady, setMediaReady] = useState(false);
@@ -11,13 +11,6 @@ export default function MonarchClock() {
 
   const [now, setNow] = useState(() => new Date());
   useEffect(() => {
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    );
-    if (isMobile) {
-      setVideoFailed(true); // Skip video on mobile
-    }
-
     let lastUpdate = Date.now();
     const id = setInterval(() => {
       const now = Date.now();
@@ -29,7 +22,7 @@ export default function MonarchClock() {
     return () => clearInterval(id);
   }, []);
 
-  // Load font with FontFace API
+  // Load font
   useEffect(() => {
     const fontFamilyName = "RomanClockFont_2025_10_27";
     const font = new FontFace(fontFamilyName, `url(${romanFont2025_10_27}) format('opentype')`);
@@ -37,45 +30,22 @@ export default function MonarchClock() {
       .then(() => {
         document.fonts.add(font);
         setFontLoaded(true);
-        console.log("Font loaded successfully.");
       })
-      .catch((err) => {
-        console.warn("Font failed to load:", err);
-        setFontLoaded(true); // Proceed with fallback font
-      });
+      .catch(() => setFontLoaded(true));
 
-    // Fallback timeout for font loading
     const timeout = setTimeout(() => {
-      if (!fontLoaded) {
-        console.warn("Font loading timed out, using fallback.");
-        setFontLoaded(true);
-      }
-    }, 3000); // 3-second timeout
+      if (!fontLoaded) setFontLoaded(true);
+    }, 3000);
     return () => clearTimeout(timeout);
   }, []);
 
-  function handleVideoLoaded() {
-    console.log("Video loaded successfully.");
-    setMediaReady(true);
-  }
+  const handleVideoLoaded = () => setMediaReady(true);
+  const handleVideoError = () => setVideoFailed(true);
+  const handleImageLoad = () => setMediaReady(true);
 
-  function handleVideoError(e) {
-    console.warn("Video failed to load:", e);
-    setVideoFailed(true);
-  }
-
-  function handleImageLoad() {
-    console.log("Fallback image loaded successfully.");
-    setMediaReady(true);
-  }
-
-  const mediaTransformFilter = {
-    transform: "scaleX(-1)",
-    filter: "saturate(1.5)", // Simplified for performance
-  };
-
+  // Clock calculations
   const clockDiameterVh = 56;
-  const clockRadiusVh = clockDiameterVh / 2;
+  const clockRadiusVh = clockDiameterVh / 2.5;
   const numeralOffsetVh = 4.2;
   const numeralRadiusVh = clockRadiusVh + numeralOffsetVh;
 
@@ -101,8 +71,7 @@ export default function MonarchClock() {
     position: "absolute",
     left: "50%",
     top: "50%",
-        background: "linear-gradient(180deg, #E8B87DFF, #EA9227FF)",
-
+    background: "linear-gradient(180deg, #E8B87DFF, #EA9227FF)",
     transformOrigin: "50% 90%",
     borderRadius: "0.6dvh",
     pointerEvents: "none",
@@ -142,6 +111,11 @@ export default function MonarchClock() {
     pointerEvents: "none",
     transformOrigin: "50% 50%",
     letterSpacing: "0.15rem",
+  };
+
+  const mediaTransformFilter = {
+    transform: "scaleX(-1)",
+    filter: "saturate(1.5)",
   };
 
   return (
