@@ -29,14 +29,12 @@ export default function HexAnalogClock() {
   useEffect(() => {
     async function loadAssets() {
       try {
-        // Load fonts
         const digitalFont = new FontFace('DigitalFont', `url(${digitalFontUrl})`);
         const analogFont = new FontFace('AnalogFont', `url(${analogFontUrl})`);
         await Promise.all([digitalFont.load(), analogFont.load()]);
         document.fonts.add(digitalFont);
         document.fonts.add(analogFont);
 
-        // Load images
         const loadImage = (src) =>
           new Promise((resolve) => {
             const img = new Image();
@@ -48,7 +46,7 @@ export default function HexAnalogClock() {
         setReady(true);
       } catch (err) {
         console.error('Asset load error:', err);
-        setReady(true); // fallback to render anyway
+        setReady(true);
       }
     }
     loadAssets();
@@ -81,7 +79,6 @@ export default function HexAnalogClock() {
     );
   }
 
-  // Time calculations
   const unixTime = Math.floor(currentTime.getTime() / 1000);
   const hexTime = unixTime.toString(16).toUpperCase();
 
@@ -138,6 +135,7 @@ export default function HexAnalogClock() {
       fontSize: '6vh',
       zIndex: 2,
       maxWidth: '95vw',
+      transform: 'translateY(-3vh)', // <-- moves digital clock up
     },
     progressContainer: {
       width: '100%',
