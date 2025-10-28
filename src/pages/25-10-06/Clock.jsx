@@ -41,7 +41,7 @@ export default function DigitalClock() {
     const startTime = performance.now();
     const updateShadow = (currentTimeMs) => {
       const elapsedSeconds = (currentTimeMs - startTime) / 1000;
-      const angle = -((elapsedSeconds % 60) * 6); // Counterclockwise
+      const angle = -((elapsedSeconds % 60) * 60); // Counterclockwise
       setShadowAngle(angle);
       animationFrameId = requestAnimationFrame(updateShadow);
     };
@@ -64,7 +64,7 @@ export default function DigitalClock() {
           fontFamily: 'sans-serif',
         }}
       >
-        Loading...
+     
       </div>
     );
   }
@@ -103,12 +103,12 @@ export default function DigitalClock() {
       height: '100dvh',
       width: '100vw',
       backgroundImage: `
-        radial-gradient(rgb(96, 137, 39) 30.8%, transparent 30.8%),
+        radial-gradient(rgb(26, 137, 139) 30.8%, transparent 30.8%),
         radial-gradient(rgb(0, 0, 0) 30.8%, transparent 30.8%)
       `,
       backgroundPosition: '4px 4px, 3.6px 4.4px',
       backgroundSize: '8px 8px',
-      backgroundColor: 'rgb(131, 159, 7)',
+      backgroundColor: 'rgb(131, 159, 117)',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
