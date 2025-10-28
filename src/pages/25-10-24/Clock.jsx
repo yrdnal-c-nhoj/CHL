@@ -108,7 +108,7 @@ const Clockgrid = () => {
       color: 'rgb(237, 333, 93)',
       fontSize: `${CELL_VH * 1.35}vh`,
       display: 'flex',
-      opacity: 0.75,
+      opacity: 0.8,
       justifyContent: 'center',
       alignItems: 'center',
       textTransform: 'uppercase',
@@ -130,8 +130,9 @@ const Clockgrid = () => {
 
   return (
     <div style={styles.htmlBody}>
-      <style>{fontFace}</style>
+     
       <div style={styles.clockGrid}>{allCharacters}</div>
+       <style>{fontFace}</style>
     </div>
   );
 };
