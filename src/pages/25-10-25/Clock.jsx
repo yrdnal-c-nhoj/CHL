@@ -305,7 +305,7 @@ const EntropyClock = () => {
                 left: `calc(50% + ${40 * Math.cos(rad)}vmin)`,
                 top: `calc(50% + ${40 * Math.sin(rad)}vmin)`,
                 transform: "translate(-50%, -50%)",
-                fontSize: "12vh",
+                fontSize: "9vh",
                 fontWeight: "900",
                 color: "#FFD700",
                 textShadow: "-1px -1px 0px #37034AFF,   0 0 30px #FFEA00",
