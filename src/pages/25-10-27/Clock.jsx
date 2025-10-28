@@ -101,6 +101,8 @@ export default function MonarchClock() {
     position: "absolute",
     left: "50%",
     top: "50%",
+        background: "linear-gradient(180deg, #E8B87DFF, #EA9227FF)",
+
     transformOrigin: "50% 90%",
     borderRadius: "0.6dvh",
     pointerEvents: "none",
@@ -108,9 +110,8 @@ export default function MonarchClock() {
 
   const hourHandStyle = {
     ...handCommon,
-    height: `${clockRadiusVh * 0.55}dvh`,
-    width: "1.4dvh",
-    background: "linear-gradient(180deg, #FE8D03, #FE8D03)",
+    height: `${clockRadiusVh * 0.5}dvh`,
+    width: "1.0dvh",
     transform: `translate(-50%,-100%) rotate(${hourAngle}deg)`,
     zIndex: 6,
   };
@@ -118,17 +119,15 @@ export default function MonarchClock() {
   const minuteHandStyle = {
     ...handCommon,
     height: `${clockRadiusVh * 0.72}dvh`,
-    width: "1.0dvh",
-    background: "linear-gradient(180deg, #FE8D03, #FE8D03)",
+    width: "0.5dvh",
     transform: `translate(-50%,-100%) rotate(${minAngle}deg)`,
     zIndex: 8,
   };
 
   const secondHandStyle = {
     ...handCommon,
-    height: `${clockRadiusVh * 0.86}dvh`,
-    width: "0.5dvh",
-    background: "linear-gradient(180deg, #FE8D03, #FE8D03)",
+    height: `${clockRadiusVh * 0.9}dvh`,
+    width: "0.25dvh",
     transform: `translate(-50%,-100%) rotate(${secAngle}deg)`,
     zIndex: 9,
   };
@@ -137,7 +136,7 @@ export default function MonarchClock() {
     position: "absolute",
     fontFamily: `'${fontFamilyName}', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`,
     fontSize: "9.2dvh",
-    color: "#FE8D03",
+    color: "#DF9336FF",
     fontWeight: 600,
     userSelect: "none",
     pointerEvents: "none",
