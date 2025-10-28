@@ -188,7 +188,7 @@ export default function SkyClock() {
     <div
       style={{
         width: "100vw",
-        height: "100vh",
+        height: "100dvh",
         position: "relative",
         overflow: "hidden",
         background: skyGradient,
