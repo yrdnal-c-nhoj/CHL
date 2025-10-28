@@ -276,7 +276,7 @@ export default function SkyClock() {
         {/* Time */}
         <div
           style={{
-            fontSize: "20vh",
+            fontSize: "16vh",
             fontFamily: `'${clockFontFamily}', system-ui`,
             marginBottom: "2vh",
             backgroundImage: inverseGradient,
