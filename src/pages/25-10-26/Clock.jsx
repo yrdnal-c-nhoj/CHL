@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import rainFont from "./wish.otf";
 import skyFont from "./wish.ttf";
 
@@ -9,13 +9,63 @@ export default function SkyClock() {
   const [fade, setFade] = useState(true);
   const [inverseGradient, setInverseGradient] = useState("linear-gradient(to bottom, #fff 0%, #fff 100%)");
 
+  // Alphabetically sorted arrays
+  const adjectives1 = [
+    "a whimsically","a softly-harmonious","a joyfully","a gracefully","a miraculously",
+    "a blissfully","a enchantingly","a softly","a magically-glimmering","a luminously",
+    "a serenely","a exquisitely","a boundlessly","a softly-glowing","a dreamily",
+    "a charmingly","a magically","a harmoniously","a serenely-glowing","a delicately",
+    "a wondrously","a euphorically"
+  ];
+
+  const adjectives2_day = [
+    "sunlit-lustrous","effulgently-lit","sparkling","radiantly-glowing","fiery",
+    "luxuriantly-lit","glorious-lit","vibrant","majestic","effervescent","brightened",
+    "radiantly-lit","gleamingly-bright","shiny-glistening","lively","prismatic","beaming",
+    "sun-drenched","glimmering-lit","shiny-glimmering","splendiferous","illustrious",
+    "radiantly-splendid","shiny","golden","bright","luxuriant","glorious-lit","glinting",
+    "sun-kissed","dandy","sparklingly-bright","magnificent","effulgent-glow"
+  ];
+
+  const adjectives2_twilight = [
+    "tranquil-lit","warm-glimmer","amber-lit","softly-tinted","resplendent","gentle-glimmering",
+    "pastel-glow","hazy-lit","quiet-glow","mellow-lit","gentle","placid-lit","rosy-glow",
+    "amber-hued","whispering","dusky","softly-glimmering","soft-glimmer-lit","quiet","tranquil-glimmer",
+    "warm-hued","lavender-tinted","soft-hued","dusken","serenely-lit","pastel-tinted","roseate-lit",
+    "hallowed","lavender-glow"
+  ];
+
+  const adjectives2_night = [
+    "moonlit-glimmer","starlight-infused","moon-glimmering","ethereal-glow","glimmering",
+    "moonbeam-lit","phantasmal-glow","twilight-lit","dim-lit","noctilucent","softly-radiant",
+    "lunar","serenely-lit","dreamlike","hallowed-lit","starlight-lit","night-kissed","wispy",
+    "ethereal-glimmer","celestial","mysteriously-lit","glacial-lit","moonlit-soft","quietly-glowing",
+    "airy","phantasmic","starlit-glow","celestial-lit","phantasmal","lunar-lit","dreamy-lit",
+    "enigmatic","silvery","gentle","silvery-lit","twilight-kissed","mystically-lit"
+  ];
+
+  const adjectives3 = [
+    "gem of","thrill of","blessing of","radiance of","opulence of","zinger of","joy of",
+    "catch of","bliss of","bloom of","masterpiece of","prize of","feast of","miracle of",
+    "stunner of","luxe of","delight of","fantasy of","boon of","allure of",
+    "paradise of","vision of","masterwork of","sensation of","mirage of","charmer of",
+    "gemstone of","crown of","rhapsody of","elegance of","zest of","plum of","fire of",
+    "epic of","thrill of","knockout of","panache of","boon of","wonderful of","elixir of",
+    "divinity of","catch of","grandeur of","blessing of","sparkle of"
+  ];
+
+  // useRef to keep track of indexes for sequential cycling
+  const index1 = useRef(0);
+  const index2 = useRef(0);
+  const index3 = useRef(0);
+
   useEffect(() => {
     updateTime();
-    fadePhrase();
+    updatePhrase();
 
     const interval = setInterval(() => {
       updateTime();
-      fadePhrase();
+      updatePhrase();
     }, 5000);
 
     return () => clearInterval(interval);
@@ -27,7 +77,7 @@ export default function SkyClock() {
     const minute = now.getMinutes();
     const timeDecimal = hour + minute / 60;
 
-    setLocalTime(`${String(hour).padStart(2, "0")}${String(minute).padStart(2, "0")}`);
+    setLocalTime(`${String(hour).padStart(2,"0")}${String(minute).padStart(2,"0")}`);
 
     // Sky gradient based on time
     let gradient = "#000";
@@ -64,154 +114,52 @@ export default function SkyClock() {
     const hexMatches = gradient.match(/#([0-9a-fA-F]{6})/g);
     if (hexMatches) {
       const invertedColors = hexMatches.map(hex => {
-        const cleanHex = hex.replace('#', '');
-        const r = 255 - parseInt(cleanHex.substr(0, 2), 16);
-        const g = 255 - parseInt(cleanHex.substr(2, 2), 16);
-        const b = 255 - parseInt(cleanHex.substr(4, 2), 16);
+        const cleanHex = hex.replace('#','');
+        const r = 255 - parseInt(cleanHex.substr(0,2),16);
+        const g = 255 - parseInt(cleanHex.substr(2,2),16);
+        const b = 255 - parseInt(cleanHex.substr(4,2),16);
         return `rgb(${r},${g},${b})`;
       });
-      
-      // Extract percentages from original gradient
-      const percentages = gradient.match(/\d+%/g) || ['0%', '33%', '70%', '100%'];
-      
-      // Build inverse gradient
-      const inverseGradientStops = invertedColors.map((color, i) => 
-        `${color} ${percentages[i] || (i * 100 / (invertedColors.length - 1)) + '%'}`
+      const percentages = gradient.match(/\d+%/g) || ['0%','33%','70%','100%'];
+      const inverseGradientStops = invertedColors.map((color,i) =>
+        `${color} ${percentages[i]||(i*100/(invertedColors.length-1))+'%'}`
       ).join(', ');
-      
       setInverseGradient(`linear-gradient(to bottom, ${inverseGradientStops})`);
     }
   }
 
-  function fadePhrase() {
+  function updatePhrase() {
     setFade(false);
     setTimeout(() => {
-      setSkyPhrase(getSkyDescription());
+      setSkyPhrase(getNextPhrase());
       setFade(true);
     }, 1000);
   }
 
-  function getSkyDescription() {
+  function getNextPhrase() {
     const now = new Date();
     const hour = now.getHours();
     const minute = now.getMinutes();
-    const timeDecimal = hour + minute / 60;
-    
-    const adjectives1 = [
-      "an ethereally", "a transcendently", "a deeply", "a profoundly", "a vividly",
-      "an endlessly", "a vastly", "am infinitely", "a boundlessly", "an atmospherically",
-      "a magically", "a subtly", "a luminously", "an exquisitely", "a serenely",
-      "a delicately", "a harmoniously", "an enchantingly", "a blissfully", "a radiantly",
-      "a wondrously", "a dreamily", "a softly", "an elegantly", "a miraculously",
-      "a gracefully", "a celestialy", "a charmingly", "a euphorically", "a sparklingly",
-      "a luminously", "a joyfully", "a gloriously", "a luminously", "a whimsically",
-      "a melodiously", "a quietly", "a sweetly", "a tranquilly", "a serenely",
-      "a resplendently", "a luminously-glowing", "a harmoniously-blessed", "a blissfully-lighted",
-      "a dreamlike", "a magically", "a radiantly-bright", "a infinitely-luminous", "a softly-glowing",
-      "a exquisitely-gentle", "a fantastically", "a splendidly", "a beautifully", "a enchantingly-soft",
-      "a luminously-harmonious", "a celestial", "a serenely-glowing", "a blissfully-soft", "a magically-glimmering",
-      "a joy-suffused", "a harmoniously", "a tranquilly-glowing", "a delightfully", "a peacefully",
-      "a luminous-glistening", "a gloriously-soft", "a splendidly-glowing", "a dreamily", "a softly-harmonious",
-      "a radiantly-harmonious", "a enchantingly-bright", "a blissfully-glowing", "a exquisitely-luminous", "a magically-harmonious",
-      "a wondrously-soft", "a joyfully-glimmering", "a luminously-bright", "a serenely-harmonious", "a delicately",
-      "a charmingly-glowing", "a peacefully-bright", "a radiant-soft", "a euphorically", "a whimsically-bright",
-      "a gently", "a glowingly", "a lightly", "a serenely-bright", "a magnificently-soft",
-      "a dreamily-bright", "a delightfully-glimmering", "a harmoniously", "a luminously-glittering", "a blissfully-bright",
-      "a splendidly", "a beautifully-glowing", "a enchantingly"
-    ];
+    const timeDecimal = hour + minute/60;
 
-    const adjectives2_day = [
-      "luminous", "shimmering", "dazzling", "glowing", "glistening", "sparkling",
-      "gleaming", "bright", "splendid", "lustrous", "majestic", "wonderous",
-      "magical", "beautiful", "exquisite", "vibrant", "radiant", "effulgent", "glorious",
-      "brilliant", "resplendent", "sunlit", "illuminated", "glinting", "sparkly",
-      "glaring", "fiery", "sun-drenched", "beaming", "scintillating", "polished",
-      "glittering", "effervescent", "golden", "lively", "vivacious", "shiny", "brilliantly-colored",
-      "radiantly-lit", "dandy", "luxuriant", "magnificent", "prismatic", "gleamy", "lustrously",
-      "splendiferous", "flourishing", "illustrious", "sunshiny", "brilliance-filled", "radiantly-glowing",
-      "glorious-lit", "sparklingly-bright", "sun-kissed", "brightened", "shiny-glimmering", "effulgently-lit",
-      "shiny-glistening", "resplendently-lit", "vividly-lit", "sunbright", "shiny-splendid", "flaming", "fiery-glow",
-      "brilliance-filled", "illuminantly", "radiant-sparkling", "sunshine-laden", "scintillatingly-lit", "glisteningly-bright",
-      "radiantly-shining", "glimmering-lit", "sun-glowing", "gleamingly-bright", "dazzlingly-lit", "lustrous-lit",
-      "effulgent-glow", "resplendent-glimmering", "sparklingly-glorious", "magnificently-lit", "luxuriantly-lit", "gloriously-bright",
-      "bright-splendid", "vivid-lit", "resplendent-sparkling", "sun-drenched-glow", "shiny-glistening-lit", "radiantly-splendid",
-      "glorious-glistening", "illustriously-lit", "sun-glimmered", "glowing-splendid", "sparklingly-vibrant", "luminous-glorious",
-      "glistening-sparkling", "sunlit-lustrous", "shiny-lustrously", "effulgent-sparkling", "glimmering-radiant"
-    ];
+    let adjectives2;
+    if (hour >= 7 && hour < 17) adjectives2 = adjectives2_day;
+    else if ((hour >= 4 && hour < 7) || (hour >= 17 && hour < 20)) adjectives2 = adjectives2_twilight;
+    else adjectives2 = adjectives2_night;
 
-    const adjectives2_night = [
-      "glimmering", "shimmering", "sparkling", "enigmatical", "romantical", "sweet",
-      "dreami", "soft", "fleeting", "nocturnal", "tender", "incandescent",
-      "twinkling", "gentle", "sublime", "delicate", "divine", "enchanting",
-      "rapturous", "entrancing", "moonlit", "starlit", "mysterious", "ethereal",
-      "phantasmal", "hushed", "silvery", "shadowy", "celestial", "quiet", "gossamer",
-      "night-kissed", "tranquil", "mellow", "glacial", "softly-lit", "twilight-hued",
-      "enrapturing", "melodious", "dreamlike", "sublimely-lit", "wispy", "lunar",
-      "serene", "phantasmic", "airy", "glinting", "enveloping", "mysteriously-lit",
-      "starlight-infused", "noctilucent", "celestially", "radiantly-dark", "enigmatic",
-      "shadow-kissed", "moonbeam-lit", "softly-glimmering", "silvery-lit", "dimly-glowing",
-      "twilight-lit", "ethereally-lit", "calmly-lit", "hushed-lit", "softly-radiant", "quietly-glowing",
-      "starlight-lit", "moon-glimmering", "glacial-lit", "dreamy-lit", "serenely-lit", "delicately-lit",
-      "nocturnally-lit", "celestial-lit", "gentle-glow", "lunar-lit", "shadowy-lit", "ethereal-glow",
-      "mystically-lit", "moonlit-glimmer", "starlit-glow", "twilight-glow", "hallowed-lit", "softly-enchanted",
-      "nightly-glimmering", "glimmer-lit", "dim-lit", "shadow-kissed-lit", "celestial-glimmer", "dreamily-lit",
-      "silvery-glimmer", "phantasmal-glow", "twilight-kissed", "ethereal-glimmer", "moonlit-soft"
-    ];
+    // Each list advances independently
+    const pick = arr => {
+      let idxRef;
+      if (arr === adjectives1) idxRef = index1;
+      else if (arr === adjectives2) idxRef = index2;
+      else idxRef = index3;
 
-    const adjectives2_twilight = [
-      "hazy", "gentle", "warm", "glowing", "enigmatical", "tender", "resplendent",
-      "soft", "fleeting", "tender", "incandescent", "sparkling", "twinkling",
-      "sweet", "gent", "sublime", "delicate", "divine", "enchanting", "rapturous",
-      "entrancing", "dusky", "muted", "golden", "rosy", "tranquil", "mellow", "serene",
-      "dreamlike", "whispering", "peaceful", "amber-hued", "honeyed", "sunset-kissed",
-      "lavender-tinted", "roseate", "softly-glimmering", "gently-lit", "warm-hued",
-      "shadowed", "faintly-glowing", "gilded", "calm", "simmering", "pastel-tinted",
-      "twilight-infused", "hallowed", "dusken", "mystically-tinted", "golden-hued",
-      "quiet", "placid", "soft-hued", "serenely-lit", "gentle-glimmering", "peacefully-lit",
-      "amber-lit", "rose-lit", "dusky-glow", "tranquil-lit", "mellow-lit", "soft-glowing",
-      "golden-lit", "rosy-glow", "warm-glimmer", "hazy-lit", "muted-lit", "serenely-glow",
-      "softly-tinted", "gentle-glow", "peaceful-glimmer", "dusky-glimmer", "honeyed-lit",
-      "pastel-glow", "tranquil-glimmer", "twilight-lit", "golden-glimmer", "lavender-glow",
-      "roseate-lit", "soft-glimmer-lit", "mellow-glimmer", "quiet-glow", "serene-glimmer",
-      "gilded-glow", "placid-lit", "calm-glimmer", "hallowed-glow"
-    ];
+      const value = arr[idxRef.current];
+      idxRef.current = (idxRef.current + 1) % arr.length;
+      return value;
+    };
 
-    const adjectives3 = [
-      "humdinger of", "beauty of", "gem of", "wonder of", "marvel of",
-      "delight of", "treasure of", "jewel of", "masterpiece of", "miracle of",
-      "splendor of", "blessing of", "magic of", "legend of", "wonderful of",
-      "charm of", "dazzler of", "pearl of", "triumph of", "sparkle of",
-      "glory of", "radiance of", "spectacle of", "gift of",
-      "stunner of", "brilliance of", "whiz of", "sensation of", "dream of",
-      "epic of", "paradise of", "vision of", "phenomenon of", "joy of",
-      "star of", "knockout of", "masterwork of", "gemstone of", "rarity of",
-      "bliss of", "grandeur of", "charmer of", "whopper of",
-      "glimmer of", "awe of", "shine of", "luster of", "glamour of",
-      "feast of", "thrill of", "crown of", "bounty of", "elegance of",
-      "mirage of", "bloom of", "glitz of", "haven of", "spark of",
-      "zinger of", "prize of", "delicacy of", "enchantment of", "fantasy of",
-      "lark of", "gleam of", "whimsy of", "rapture of",
-      "vibrance of", "pinnacle of", "allure of", "grace of",
-      "divinity of", "opulence of", "panache of", "flair of",
-      "jolt of", "oasis of", "rhapsody of", "boon of", "luxe of",
-      "zest of",
-      "sizzle of", "elixir of", "dash of", "fire of",
-      "plum of", "score of", "catch of", "blooming of", "radiant of"
-    ];
-
-    const adjectives2 =
-      hour >= 7 && hour < 17
-        ? adjectives2_day
-        : hour >= 4 && hour < 7 || hour >= 17 && hour < 20
-        ? adjectives2_twilight
-        : adjectives2_night;
-
-    const randomPick = arr => arr[Math.floor(Math.random() * arr.length)];
-    const phrase = (label) => `Wishing you<br>
-  ${randomPick(adjectives1)}<br>
-  ${randomPick(adjectives2)}<br>
-  ${randomPick(adjectives3)}<br>
-  ${label}.`;
+    const phrase = label => `Wishing you<br>${pick(adjectives1)}<br>${pick(adjectives2)}<br>${pick(adjectives3)}<br>${label}.`;
 
     if (timeDecimal >= 0 && timeDecimal < 3) return phrase("a deep night");
     if (timeDecimal >= 3 && timeDecimal < 4) return phrase("the dead of night");
@@ -232,8 +180,7 @@ export default function SkyClock() {
     return phrase("night");
   }
 
-  // Generate unique font family names with today's date
-  const today = new Date().toISOString().split('T')[0].replace(/-/g, '');
+  const today = new Date().toISOString().split('T')[0].replace(/-/g,'');
   const clockFontFamily = `ClockFont${today}`;
   const skyFontFamily = `SkyFont${today}`;
 
@@ -241,7 +188,7 @@ export default function SkyClock() {
     <div
       style={{
         width: "100vw",
-        height: "100dvh",
+        height: "100vh",
         position: "relative",
         overflow: "hidden",
         background: skyGradient,
@@ -250,13 +197,15 @@ export default function SkyClock() {
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
+        margin: 0,
+        padding: 0,
       }}
     >
       <style>
         {`
           @font-face {
             font-family: '${clockFontFamily}';
-            src: url(${rainFont}) format('truetype');
+            src: url(${rainFont}) format('opentype');
           }
           @font-face {
             font-family: '${skyFontFamily}';
@@ -265,57 +214,102 @@ export default function SkyClock() {
         `}
       </style>
 
-    <div
-  style={{
-    opacity: fade ? 1 : 0,
-    transition: "opacity 1s ease-in-out",
-    transform: "translateY(-5vh)", // 👈 move both time + phrase up slightly
-  }}
->
-
+      <div
+        style={{
+          opacity: fade ? 1 : 0,
+          transition: "opacity 1s ease-in-out",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "2vh",
+          transform: "translateY(-5vh)",
+        }}
+      >
         {/* Time */}
-        <div
-          style={{
-            fontSize: "16vh",
-            fontFamily: `'${clockFontFamily}', system-ui`,
-            marginBottom: "2vh",
-            backgroundImage: inverseGradient,
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            MozBackgroundClip: "text",
-            MozTextFillColor: "transparent",
-             textShadow: `
-      2px 0px #fff,    /* white on the right */
-      -2px 0px #000     /* black on the left */
-    `,
-          }}
-        >
-          {localTime}
+        <div style={{ position: "relative", display: "inline-block" }}>
+          <div
+            style={{
+              fontSize: "16vh",
+              fontFamily: `'${clockFontFamily}', system-ui`,
+              color: "#000",
+              textShadow: "1px 0 0 #000",
+              position: "absolute",
+              top: 0,
+              left: 0,
+            }}
+          >
+            {localTime}
+          </div>
+          <div
+            style={{
+              fontSize: "16vh",
+              fontFamily: `'${clockFontFamily}', system-ui`,
+              color: "#fff",
+              textShadow: "-1px 0 0 #fff",
+              position: "absolute",
+              top: 0,
+              left: 0,
+            }}
+          >
+            {localTime}
+          </div>
+          <div
+            style={{
+              fontSize: "16vh",
+              fontFamily: `'${clockFontFamily}', system-ui`,
+              backgroundImage: inverseGradient,
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              position: "relative",
+            }}
+          >
+            {localTime}
+          </div>
         </div>
 
         {/* Phrase */}
-        <div
-          dangerouslySetInnerHTML={{ __html: skyPhrase }}
-          style={{
-            fontSize: "7vh",
-            fontFamily: `'${skyFontFamily}', system-ui`,
-            lineHeight: "7.5vh",
-            backgroundImage: inverseGradient,
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            MozBackgroundClip: "text",
-            MozTextFillColor: "transparent",
-             textShadow: `
-      -1px -1px #fff,    /* white on the right */
-      1px 1px #000     /* black on the left */
-    `,
-          }}
-
-
-          
-        />
+        <div style={{ position: "relative", display: "inline-block" }}>
+          <div
+            dangerouslySetInnerHTML={{ __html: skyPhrase }}
+            style={{
+              fontSize: "7vh",
+              fontFamily: `'${skyFontFamily}', system-ui`,
+              lineHeight: "7.5vh",
+              color: "#000",
+              textShadow: "1px 0 0 #000",
+              position: "absolute",
+              top: 0,
+              left: 0,
+            }}
+          />
+          <div
+            dangerouslySetInnerHTML={{ __html: skyPhrase }}
+            style={{
+              fontSize: "7vh",
+              fontFamily: `'${skyFontFamily}', system-ui`,
+              lineHeight: "7.5vh",
+              color: "#fff",
+              textShadow: "-1px 0 0 #fff",
+              position: "absolute",
+              top: 0,
+              left: 0,
+            }}
+          />
+          <div
+            dangerouslySetInnerHTML={{ __html: skyPhrase }}
+            style={{
+              fontSize: "7vh",
+              fontFamily: `'${skyFontFamily}', system-ui`,
+              lineHeight: "7.5vh",
+              backgroundImage: inverseGradient,
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              position: "relative",
+            }}
+          />
+        </div>
       </div>
     </div>
   );
