@@ -281,17 +281,18 @@ const EntropyClock = () => {
         padding: 0
       }}
     >
-      <div
-        key={mountedClockKey} // new key triggers re-mount each cycle
-        ref={clockContainerRef}
-        style={{
-          position: "relative",
-          width: clockSize,
-          height: clockSize,
-          borderRadius: "50%",
-          opacity: showClock ? 1 : 0,
-          transition: "opacity 1s ease-in-out"
-        }}
+   <div
+  key={mountedClockKey} // new key triggers re-mount each cycle
+  ref={clockContainerRef}
+  style={{
+    position: "relative",
+    width: clockSize,
+    height: clockSize,
+    borderRadius: "50%",
+    opacity: showClock ? 1 : 0,
+    transition: "opacity 1s ease-in-out",
+    transform: "translateY(-3vh)" // <-- move entire clock up by 5vh
+  }}
       >
         {[...Array(12).keys()].map((i) => {
           const angle = (i / 12) * 360;
