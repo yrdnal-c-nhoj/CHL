@@ -45,7 +45,7 @@ export default function MonarchClock() {
 
   // Clock calculations
   const clockDiameterVh = 56;
-  const clockRadiusVh = clockDiameterVh / 2.5;
+  const clockRadiusVh = clockDiameterVh / 2.7;
   const numeralOffsetVh = 4.2;
   const numeralRadiusVh = clockRadiusVh + numeralOffsetVh;
 
@@ -79,8 +79,8 @@ export default function MonarchClock() {
 
   const hourHandStyle = {
     ...handCommon,
-    height: `${clockRadiusVh * 0.5}dvh`,
-    width: "1.0dvh",
+    height: `${clockRadiusVh * 0.4}dvh`,
+    width: "0.7dvh",
     transform: `translate(-50%,-100%) rotate(${hourAngle}deg)`,
     zIndex: 6,
   };
@@ -104,7 +104,7 @@ export default function MonarchClock() {
   const numeralBaseStyle = {
     position: "absolute",
     fontFamily: `'${fontFamilyName}', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`,
-    fontSize: "9.2dvh",
+    fontSize: "7dvh",
     color: "#DF9336FF",
     fontWeight: 600,
     userSelect: "none",
