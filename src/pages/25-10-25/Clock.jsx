@@ -197,7 +197,7 @@ const EntropyClock = () => {
       const p = document.createElement("div");
       Object.assign(p.style, {
         position: "fixed",
-        width: "2px",
+  width: "2px",
         height: "2px",
         background: "gold",
         borderRadius: "50%",
@@ -265,6 +265,9 @@ const EntropyClock = () => {
 
   const clockSize = "90vmin";
 
+  // === REUSABLE TEXT SHADOW (same as digits) ===
+  const digitTextShadow = "-2px -2px 0px #37034A, 0 0 30px #FFEA00";
+
   return (
     <div
       style={{
@@ -276,24 +279,25 @@ const EntropyClock = () => {
         overflow: "hidden",
         fontFamily: "EntropyFont, monospace",
         perspective: "1500px",
-        background: "radial-gradient(circle at center, #FF1500FF 0%, #631212 70%, #41025EFF 100%)",
+        background: "radial-gradient(circle at center, #F761C2FF 0%, #DA44BFFF 30%, #C96CF5FF 100%)",
         margin: 0,
         padding: 0
       }}
     >
-   <div
-  key={mountedClockKey} // new key triggers re-mount each cycle
-  ref={clockContainerRef}
-  style={{
-    position: "relative",
-    width: clockSize,
-    height: clockSize,
-    borderRadius: "50%",
-    opacity: showClock ? 1 : 0,
-    transition: "opacity 1s ease-in-out",
-    transform: "translateY(-3vh)" // <-- move entire clock up by 5vh
-  }}
+      <div
+        key={mountedClockKey} // new key triggers re-mount each cycle
+        ref={clockContainerRef}
+        style={{
+          position: "relative",
+          width: clockSize,
+          height: clockSize,
+          borderRadius: "50%",
+          opacity: showClock ? 1 : 0,
+          transition: "opacity 1s ease-in-out",
+          transform: "translateY(-3vh)" // move entire clock up by 3vh
+        }}
       >
+        {/* === NUMBERS === */}
         {[...Array(12).keys()].map((i) => {
           const angle = (i / 12) * 360;
           const rad = ((angle - 90) * Math.PI) / 180;
@@ -309,7 +313,7 @@ const EntropyClock = () => {
                 fontSize: "7vh",
                 fontWeight: "900",
                 color: "#FFD700",
-                textShadow: "-1px -1px 0px #37034AFF,   0 0 30px #FFEA00",
+                textShadow: digitTextShadow, // same shadow
                 fontFamily: "EntropyFont, monospace",
                 userSelect: "none"
               }}
@@ -319,6 +323,7 @@ const EntropyClock = () => {
           );
         })}
 
+        {/* === CENTER DOT === */}
         <div
           ref={dotRef}
           style={{
@@ -330,17 +335,16 @@ const EntropyClock = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            boxShadow: "0 0 20px #FFD700, 0 0 40px #FFD700, 0 0 60px #FFEA00",
+            boxShadow: "-2px -2px 0px #37034AFF, 0 0 20px #FFD700, 0 0 40px #FFD700, 0 0 60px #FFEA00",
             zIndex: 10
           }}
         />
 
+        {/* === CLOCK HANDS (NOW WITH DIGIT-LIKE SHADOW) === */}
         {["hour", "minute", "second"].map((hand) => {
           const deg = hand === "hour" ? hourDeg : hand === "minute" ? minuteDeg : secondDeg;
           const size = hand === "hour" ? "25vmin" : hand === "minute" ? "35vmin" : "45vmin";
           const width = hand === "hour" ? "1.5vmin" : hand === "minute" ? "1vmin" : "0.5vmin";
-          const color = hand === "second" ? "#FF6347" : "#FFD700";
-          const shadow = hand === "second" ? "0 0 6px #FF6347, 0 0 12px #FF6347" : "0 0 6px #FFD700, 0 0 12px #FFD700, 0 0 20px #FFEA00";
 
           return (
             <div
@@ -348,15 +352,22 @@ const EntropyClock = () => {
               ref={(el) => (handsRef.current[hand] = el)}
               style={{
                 position: "absolute",
-                width: width,
+                width,
                 height: size,
-                backgroundColor: color,
+                backgroundColor: hand === "second" ? "#FF0404FF" : "#FFD700",
                 left: `calc(50% - ${parseFloat(width) / 2}vmin)`,
                 top: `calc(50% - ${parseFloat(size)}vmin)`,
                 transformOrigin: "center bottom",
                 transform: `rotate(${deg}deg)`,
                 borderRadius: "50%",
-                boxShadow: shadow
+                // APPLY THE SAME TEXT-SHADOW EFFECT USING boxShadow
+                boxShadow: digitTextShadow,
+                // Optional: keep red glow for second hand (using filter for better performance on thin elements)
+                ...(hand === "second"
+                  ? {
+                      filter: "drop-shadow(0 0 6px #FB0808FF) drop-shadow(0 0 12px #FF6347)"
+                    }
+                  : {})
               }}
             />
           );
