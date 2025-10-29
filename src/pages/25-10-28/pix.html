@@ -1,0 +1,57 @@
+import fs from 'fs';
+import path from 'path';
+import express from 'express';
+
+const app = express();
+const PORT = 3000;
+
+// Serve static files from the current folder
+app.use(express.static('.'));
+
+app.get('/', (req, res) => {
+  const baseFolder = path.join('.', 'digits');
+  let html = `
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>All Digit Images</title>
+    <style>
+      body { margin: 0; background: #111; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; }
+      h1 { margin: 1rem; font-weight: 400; }
+      .folder { width: 90%; max-width: 1200px; margin-bottom: 3rem; }
+      .folder h2 { border-bottom: 1px solid #444; padding-bottom: 0.5rem; margin-bottom: 1rem; font-weight: 400; }
+      .grid { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: flex-start; }
+      .grid img { width: 180px; height: 180px; object-fit: cover; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: transform 0.2s ease; }
+      .grid img:hover { transform: scale(1.1); }
+      footer { margin: 3rem 0; color: #666; font-size: 0.9rem; }
+    </style>
+  </head>
+  <body>
+    <h1>All Digit Images</h1>
+    <div id="container">
+  `;
+
+  for (let i = 0; i < 10; i++) {
+    const folderPath = path.join(baseFolder, i.toString());
+    let files = [];
+    try {
+      files = fs.readdirSync(folderPath).filter(f => /\.(png|jpe?g|gif|webp)$/i.test(f));
+    } catch (e) {
+      console.log(`Folder ${i} missing or unreadable`);
+    }
+
+    html += `<div class="folder"><h2>Folder ${i}</h2><div class="grid">`;
+    files.forEach(file => {
+      const filePath = `digits/${i}/${file}`;
+      html += `<img src="${filePath}" alt="${file}">`;
+    });
+    html += `</div></div>`;
+  }
+
+  html += `<footer>Displaying all images in digits/0–digits/9</footer></div></body></html>`;
+
+  res.send(html);
+});
+
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
