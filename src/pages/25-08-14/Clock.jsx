@@ -117,7 +117,7 @@ const AnalogClock = () => {
                   left: '50%',
                   width: '13vmin',      // bigger digits
                   height: '13vmin',
-                  transform: `translate(-50%, -50%) rotate(${angle}deg) translate(0, -34vmin) rotate(-${angle}deg)`,
+                  transform: `translate(-50%, -50%) rotate(${angle}deg) translate(0, -35vmin) rotate(-${angle}deg)`,
                 }}
               >
                 <img
