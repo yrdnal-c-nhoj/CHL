@@ -26,7 +26,7 @@ const HorizonClock = () => {
   }, []);
 
   return (
-    <div style={{ width: '100vw', height: '100vh', margin: 0 }}>
+    <div style={{ width: '100vw', height: '100dvh', margin: 0 }}>
       <style>
         {`
           @font-face {
