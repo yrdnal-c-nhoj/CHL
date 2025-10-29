@@ -132,7 +132,7 @@ export default function DigitClock() {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    background: "#767A76FF",
+    background: "#62A093FF",
     color: "#fff",
     fontFamily: "sans-serif",
     padding: "1rem",
