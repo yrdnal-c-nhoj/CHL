@@ -27,7 +27,7 @@ const AnalogClock = () => {
   });
 
   // Adjust handStyle so hour hand is closer to center
-  const handStyle = (width, height, origin, offset = 8) => ({
+  const handStyle = (width, height, origin, offset = 6) => ({
     position: 'absolute',
     width,
     height,
@@ -73,15 +73,16 @@ const AnalogClock = () => {
       {/* Clock container */}
       <div style={{ position: 'relative', zIndex: 1, width: '51rem', height: '51rem' }}>
         {/* Clock hands */}
-        <div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${hourDeg}deg)` }}>
-          <div style={handStyle('1.4rem', '5rem', 'center 2rem', 10)} /> {/* hour hand shorter & closer */}
-        </div>
-        <div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${minuteDeg}deg)` }}>
-          <div style={handStyle('0.7rem', '7rem', 'center 4rem')} />
-        </div>
-        <div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${secondDeg}deg)` }}>
-          <div style={handStyle('0.1rem', '7rem', 'center 5rem')} />
-        </div>
+     {/* Clock hands */}
+<div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${hourDeg}deg)` }}>
+  <div style={handStyle('1.4rem', '11rem', 'center 2rem', 6)} /> {/* Changed from 10 to 6 */}
+</div>
+<div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${minuteDeg}deg)` }}>
+  <div style={handStyle('0.7rem', '11rem', 'center 4rem', 6)} />
+</div>
+<div style={{ position: 'absolute', width: '100%', height: '100%', transform: `rotate(${secondDeg}deg)` }}>
+  <div style={handStyle('0.1rem', '11rem', 'center 5rem', 6)} />
+</div>
 
         {/* Clock center */}
         <div style={{
