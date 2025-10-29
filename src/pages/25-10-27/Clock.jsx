@@ -4,15 +4,17 @@ import fallbackImg from "./monarch.webp";
 import romanFont2025_10_27 from "./roman.otf"; // Optimized OTF
 
 export default function MonarchClock() {
+  const videoRef = useRef(null);
   const [mediaReady, setMediaReady] = useState(false);
   const [fontLoaded, setFontLoaded] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
-  const videoRef = useRef(null);
+  const [videoStyle, setVideoStyle] = useState({});
 
-  // Single gradient variable for hands and numerals
-  const clockGradient = "linear-gradient(180deg, #FC8015FF, #7D5C34FF)";
+  // Gradient for hands & numerals
+  const clockGradient = "linear-gradient(180deg, #E8B87DFF, #EA9227FF)";
 
-  const [now, setNow] = useState(() => new Date());
+  // Clock state
+  const [now, setNow] = useState(new Date());
   useEffect(() => {
     let lastUpdate = Date.now();
     const id = setInterval(() => {
@@ -25,20 +27,17 @@ export default function MonarchClock() {
     return () => clearInterval(id);
   }, []);
 
-  // Load font
+  // Load custom font
   useEffect(() => {
     const fontFamilyName = "RomanClockFont_2025_10_27";
     const font = new FontFace(
       fontFamilyName,
       `url(${romanFont2025_10_27}) format('opentype')`
     );
-    font
-      .load()
-      .then(() => {
-        document.fonts.add(font);
-        setFontLoaded(true);
-      })
-      .catch(() => setFontLoaded(true));
+    font.load().then(() => {
+      document.fonts.add(font);
+      setFontLoaded(true);
+    }).catch(() => setFontLoaded(true));
 
     const timeout = setTimeout(() => {
       if (!fontLoaded) setFontLoaded(true);
@@ -46,9 +45,55 @@ export default function MonarchClock() {
     return () => clearTimeout(timeout);
   }, []);
 
-  const handleVideoLoaded = () => setMediaReady(true);
+  const handleVideoLoaded = () => {
+    setMediaReady(true);
+    adjustVideoPosition();
+  };
   const handleVideoError = () => setVideoFailed(true);
   const handleImageLoad = () => setMediaReady(true);
+
+  // Adjust video: center or flush-left if wider than viewport
+  const adjustVideoPosition = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const videoAspect = video.videoWidth / video.videoHeight;
+    const viewportAspect = vw / vh;
+
+    if (viewportAspect < videoAspect) {
+      // Video wider → flush left
+      setVideoStyle({
+        position: "absolute",
+        top: "50%",
+        left: 0,
+        transform: "translateY(-50%)",
+        height: "100dvh",
+        width: "auto",
+        objectFit: "cover",
+        zIndex: 0,
+        filter: "saturate(1.5)",
+      });
+    } else {
+      // Video fits → center
+      setVideoStyle({
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        height: "100dvh",
+        width: "auto",
+        objectFit: "contain",
+        zIndex: 0,
+        filter: "saturate(1.5)",
+      });
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", adjustVideoPosition);
+    return () => window.removeEventListener("resize", adjustVideoPosition);
+  }, []);
 
   // Clock calculations
   const clockDiameterVh = 56;
@@ -65,18 +110,7 @@ export default function MonarchClock() {
   const hourAngle = hours * 30;
 
   const romanNumerals = [
-    "XII",
-    "I",
-    "II",
-    "III",
-    "IV",
-    "V",
-    "VI",
-    "VII",
-    "VIII",
-    "IX",
-    "X",
-    "XI",
+    "XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI",
   ];
   const fontFamilyName = "RomanClockFont_2025_10_27";
   const fontFaceStyle = `
@@ -87,40 +121,19 @@ export default function MonarchClock() {
     }
   `;
 
-  // Common hand style
   const handCommon = {
     position: "absolute",
     left: "50%",
     top: "50%",
-    background: clockGradient, // single gradient variable
+    background: clockGradient,
     transformOrigin: "50% 90%",
     borderRadius: "0.6dvh",
     pointerEvents: "none",
   };
 
-  const hourHandStyle = {
-    ...handCommon,
-    height: `${clockRadiusVh * 0.4}dvh`,
-    width: "0.7dvh",
-    transform: `translate(-50%,-100%) rotate(${hourAngle}deg)`,
-    zIndex: 6,
-  };
-
-  const minuteHandStyle = {
-    ...handCommon,
-    height: `${clockRadiusVh * 0.72}dvh`,
-    width: "0.5dvh",
-    transform: `translate(-50%,-100%) rotate(${minAngle}deg)`,
-    zIndex: 8,
-  };
-
-  const secondHandStyle = {
-    ...handCommon,
-    height: `${clockRadiusVh * 0.9}dvh`,
-    width: "0.25dvh",
-    transform: `translate(-50%,-100%) rotate(${secAngle}deg)`,
-    zIndex: 9,
-  };
+  const hourHandStyle = { ...handCommon, height: `${clockRadiusVh * 0.4}dvh`, width: "0.7dvh", transform: `translate(-50%,-100%) rotate(${hourAngle}deg)`, zIndex: 6 };
+  const minuteHandStyle = { ...handCommon, height: `${clockRadiusVh * 0.72}dvh`, width: "0.5dvh", transform: `translate(-50%,-100%) rotate(${minAngle}deg)`, zIndex: 8 };
+  const secondHandStyle = { ...handCommon, height: `${clockRadiusVh * 0.9}dvh`, width: "0.25dvh", transform: `translate(-50%,-100%) rotate(${secAngle}deg)`, zIndex: 9 };
 
   const numeralBaseStyle = {
     position: "absolute",
@@ -131,30 +144,13 @@ export default function MonarchClock() {
     pointerEvents: "none",
     transformOrigin: "50% 50%",
     letterSpacing: "0.15rem",
-
-    // Gradient text
     background: clockGradient,
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
   };
 
-  const mediaTransformFilter = {
-    filter: "saturate(1.5)",
-  };
-
   return (
-    <div
-      style={{
-        height: "100dvh",
-        width: "100dvw",
-        overflow: "hidden",
-        position: "relative",
-        backgroundColor: "#000",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <div style={{ height: "100dvh", width: "100dvw", overflow: "hidden", position: "relative", backgroundColor: "#000" }}>
       {!videoFailed ? (
         <video
           ref={videoRef}
@@ -163,42 +159,24 @@ export default function MonarchClock() {
           autoPlay
           loop
           playsInline
-          preload="auto"
           onLoadedData={handleVideoLoaded}
           onError={handleVideoError}
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: "50%",
-            height: "100dvh",
-            width: "auto",
-            transform: "translateX(-50%)",
-            objectFit: "contain",
-            zIndex: 0,
-            ...mediaTransformFilter,
-          }}
+          style={videoStyle}
         />
       ) : (
         <img
           src={fallbackImg}
           alt=""
           onLoad={handleImageLoad}
-          onError={() => {
-            console.warn("Fallback image failed to load.");
-            setMediaReady(true);
-          }}
           style={{
             position: "absolute",
-            top: 0,
-            left: "50%",
+            top: "50%",
+            left: 0,
+            transform: "translateY(-50%)",
             height: "100dvh",
             width: "auto",
-            transform: "translateX(-50%)",
-            objectFit: "contain",
+            objectFit: "cover",
             zIndex: 0,
-            userSelect: "none",
-            ...mediaTransformFilter,
           }}
         />
       )}
