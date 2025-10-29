@@ -48,7 +48,7 @@ const AnalogClock = () => {
   return (
     <div style={{
       width: '100vw',
-      height: '100vh',
+      height: '100dvh',
       position: 'relative',
       display: 'flex',
       justifyContent: 'center',
@@ -85,8 +85,8 @@ const AnalogClock = () => {
 
         {/* Clock center */}
         <div style={{
-          width: '15rem',
-          height: '15rem',
+          width: '13rem',
+          height: '13rem',
           position: 'absolute',
           top: '50%',
           left: '50%',
