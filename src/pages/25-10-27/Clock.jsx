@@ -114,7 +114,6 @@ export default function MonarchClock() {
   };
 
   const mediaTransformFilter = {
-    transform: "scaleX(-1)",
     filter: "saturate(1.5)",
   };
 
