@@ -63,7 +63,7 @@ export default function DigitalClock() {
       <div
         style={{
           height: '100vh',
-          width: '100vw',
+          width: '100dvw',
           backgroundImage: `url(${bgImage})`,
           backgroundSize: '110% 110%',
           backgroundPosition: `${offsetX}px 0px`, // horizontal jump
