@@ -32,27 +32,20 @@ function loadAllDigitImages() {
    ------------------------------------------------------------------ */
 export default function DigitClock() {
   const [currentTime, setCurrentTime] = useState(() => new Date());
-  // The digitIndices array must be large enough for the maximum number of digits (6: H/HH:MM:SS).
-  // This state holds the index of the image currently shown for each position.
   const [digitIndices, setDigitIndices] = useState([0, 0, 0, 0, 0, 0]);
   const intervalRef = useRef(null);
 
-  /* ---- Load images (once, no shuffle) --------------------------- */
   const orderedImages = useMemo(() => {
     const raw = loadAllDigitImages();
     const out = {};
     for (let d = 0; d <= 9; d++) {
       let imgs = raw[d] || [];
-      // Remove nulls and keep the original load order (which is usually determined by the import.meta.glob key iteration)
-      out[d] = imgs.filter(Boolean); 
-      if (out[d].length === 0) {
-        out[d] = [null]; // fallback
-      }
+      out[d] = imgs.filter(Boolean);
+      if (out[d].length === 0) out[d] = [null];
     }
     return out;
   }, []);
 
-  /* ---- Time → digits (12‑hour, single digit centered) -------- */
   const getTimeDigits = (date) => {
     let h = date.getHours() % 12 || 12;
     const hStr = String(h);
@@ -67,60 +60,33 @@ export default function DigitClock() {
   const minuteStart = isSingleHour ? 1 : 2;
   const secondStart = isSingleHour ? 3 : 4;
 
-  /* ---- Clock tick ------------------------------------------- */
   useEffect(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
 
     const tick = () => {
       const now = new Date();
       setCurrentTime(now);
-
       const newDigits = getTimeDigits(now);
-      
-      // Update indices only if the digit *value* has changed at that position
-      setDigitIndices((prev) => {
-        // Create a new array for the next indices state
-        const nextIndices = [...prev]; 
-        
-        // Iterate through all possible digit positions (up to 6)
-        for(let i = 0; i < nextIndices.length; i++) {
-            const currentDigitValue = newDigits[i];
-            
-            // Safety check for array bounds, although newDigits should match position count
-            if (currentDigitValue === undefined) continue; 
-            
-            // The list of images for the current digit value
-            const folder = orderedImages[currentDigitValue] || [];
-            
-            // Check if the digit value at this position has changed
-            // This is a common pattern to only change image when the clock value changes
-            // The current setup *always* increments the index, which is what we want for cycling
-            // The existing logic is correct for *cycling* every second, even if the digit value doesn't change:
-            
-            // To CYCLE the image every second (as the previous logic did, but non-randomly):
-            if (folder.length > 0) {
-                // Increment the index and wrap around using modulo operator
-                nextIndices[i] = (prev[i] + 1) % folder.length;
-            } else {
-                nextIndices[i] = 0; // fallback
-            }
 
+      setDigitIndices((prev) => {
+        const next = [...prev];
+        for (let i = 0; i < next.length; i++) {
+          const folder = orderedImages[newDigits[i]] || [];
+          next[i] = folder.length > 0 ? (prev[i] + 1) % folder.length : 0;
         }
-        return nextIndices;
+        return next;
       });
     };
 
-    intervalRef.current = window.setInterval(tick, 1000);
+    intervalRef.current = setInterval(tick, 1000);
     tick();
 
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [orderedImages]); // Dependency updated to orderedImages
+    return () => clearInterval(intervalRef.current);
+  }, [orderedImages]);
 
   const getImage = (digit, pos) => {
-    const folder = orderedImages[digit] || []; // Use orderedImages
-    if (folder.length === 0 || !folder[0]) return ""; // no image
+    const folder = orderedImages[digit] || [];
+    if (folder.length === 0 || !folder[0]) return "";
     const idx = digitIndices[pos] % folder.length;
     return folder[idx];
   };
@@ -132,7 +98,7 @@ export default function DigitClock() {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    background: "#62A093FF",
+    background: "#6A8894FF",
     color: "#fff",
     fontFamily: "sans-serif",
     padding: "1rem",
@@ -144,6 +110,7 @@ export default function DigitClock() {
     alignItems: "center",
     flexWrap: "wrap",
     justifyContent: "center",
+    transform: "translateY(-3vh)", // ⬆️ move clock up by 3vh
   };
 
   const section = {
@@ -163,7 +130,6 @@ export default function DigitClock() {
 
   return (
     <div style={container}>
-      {/* REMOVED: <style jsx> — use regular <style> or CSS module */}
       <style>{`
         @media (max-width: 768px) {
           .clock-container {
@@ -182,7 +148,6 @@ export default function DigitClock() {
         <div
           style={{
             display: "flex",
-            // gap: "0.5rem",
             alignItems: "center",
             justifyContent: "center",
             minWidth: isSingleHour ? "18vh" : "auto",
