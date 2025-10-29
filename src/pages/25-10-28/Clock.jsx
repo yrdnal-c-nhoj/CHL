@@ -15,61 +15,62 @@ const digitImagesFolders = {
 };
 
 export default function DigitClock() {
-  const [timeDigits, setTimeDigits] = useState([]);
-  const [digitIndices, setDigitIndices] = useState([0, 0, 0, 0, 0, 0]);
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [digitIndices, setDigitIndices] = useState([0, 0, 0, 0, 0, 0]); // 6 positions
 
-  // Shuffle each folder once to ensure random order
+  // Shuffle images once per digit
   const shuffledImages = useMemo(() => {
-    const result = {};
+    const result: { [key: number]: string[] } = {};
     for (let digit = 0; digit <= 9; digit++) {
-      const imgs = digitImagesFolders[digit] || [];
+      const imgs = (digitImagesFolders[digit] || []).map((mod: any) => mod.default || mod);
       const shuffled = [...imgs].sort(() => Math.random() - 0.5);
-      result[digit] = shuffled.map(img => img.default || img);
+      result[digit] = shuffled.length > 0 ? shuffled : [""];
     }
     return result;
   }, []);
 
+  // Format time into 6 digits: [H1?, H2, M1, M2, S1, S2]
   const getTimeDigits = () => {
-    const now = new Date();
+    const now = currentTime;
     let hours = now.getHours();
-    const minutes = now.getMinutes();
-    const seconds = now.getSeconds();
+    hours = hours % 12 || 12; // 12-hour format, 0 → 12
 
-    hours = hours % 12 || 12; // Convert 0 → 12
-    const hDigits = [...String(hours)].map(Number);
-    const mDigits = [...String(minutes).padStart(2, "0")].map(Number);
-    const sDigits = [...String(seconds).padStart(2, "0")].map(Number);
-    return [...hDigits, ...mDigits, ...sDigits];
+    const hStr = String(hours).padStart(2, "0"); // Always 2 digits
+    const mStr = String(now.getMinutes()).padStart(2, "0");
+    const sStr = String(now.getSeconds()).padStart(2, "0");
+
+    return [...hStr, ...mStr, ...sStr].map(Number); // [d0, d1, d2, d3, d4, d5]
   };
+
+  const timeDigits = getTimeDigits();
 
   useEffect(() => {
     const tick = () => {
-      const newDigits = getTimeDigits();
-      setTimeDigits(newDigits);
+      setCurrentTime(new Date());
 
-      // increment all indices every second
-      setDigitIndices(prev => prev.map((idx, i) => (idx + 1) % 10));
+      // Cycle image index for each position based on its folder length
+      setDigitIndices(prev =>
+        prev.map((idx, pos) => {
+          const digit = timeDigits[pos];
+          const folder = shuffledImages[digit];
+          return folder.length > 0 ? (idx + 1) % folder.length : 0;
+        })
+      );
     };
 
-    tick(); // initial render
+    tick(); // Immediate first render
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [shuffledImages, timeDigits]); // Re-run if timeDigits change structure (rare)
 
-  const getImageForPosition = (digit, positionIndex) => {
+  const getImageForPosition = (digit: number, positionIndex: number) => {
     const folder = shuffledImages[digit];
-    if (!folder || folder.length === 0) return "";
     const imageIndex = digitIndices[positionIndex] % folder.length;
-    return folder[imageIndex];
+    return folder[imageIndex] || "";
   };
 
-  // Split digits into hours, minutes, seconds
-  const hoursDigits = timeDigits.slice(0, timeDigits.length - 4);
-  const minutesDigits = timeDigits.slice(timeDigits.length - 4, timeDigits.length - 2);
-  const secondsDigits = timeDigits.slice(timeDigits.length - 2);
-
   // --- Styles ---
-  const container = {
+  const container: React.CSSProperties = {
     minHeight: "100dvh",
     display: "flex",
     flexDirection: "column",
@@ -79,68 +80,82 @@ export default function DigitClock() {
     color: "#fff",
     fontFamily: "sans-serif",
     padding: "1rem",
-    position: "relative",
-    top: "-3vh",
   };
 
-  const clockStyle = {
+  const clockStyle: React.CSSProperties = {
     display: "flex",
-    gap: "1rem",
+    gap: "1.5rem",
     alignItems: "center",
+    flexWrap: "wrap",
     justifyContent: "center",
   };
 
-  const timeSection = {
+  const timeSection: React.CSSProperties = {
     display: "flex",
     gap: "0.5rem",
     alignItems: "center",
-    justifyContent: "center",
   };
 
-  const imgStyle = {
-    width: "20vh",
-    height: "20vh",
+  const imgStyle: React.CSSProperties = {
+    width: "18vh",
+    height: "18vh",
     objectFit: "cover",
     boxShadow: "0 0 1.5vh rgba(0,0,0,0.6)",
     transition: "transform 0.5s ease-out",
+    borderRadius: "8px",
   };
 
   return (
     <div style={container}>
-      <style>{`
+      <style jsx>{`
         @media (max-width: 768px) {
           .clock-container {
             flex-direction: column !important;
+            gap: 1rem !important;
+          }
+          img {
+            width: 14vh !important;
+            height: 14vh !important;
           }
         }
       `}</style>
+
       <div className="clock-container" style={clockStyle}>
+        {/* Hours */}
         <div style={timeSection}>
-          {hoursDigits.map((digit, idx) => (
+          {timeDigits.slice(0, 2).map((digit, idx) => (
             <img
-              key={idx}
+              key={`h${idx}`}
               src={getImageForPosition(digit, idx)}
-              alt={`Digit ${digit}`}
+              alt={`Hour digit ${digit}`}
               style={imgStyle}
             />
           ))}
         </div>
+
+        <span style={{ fontSize: "6vh", fontWeight: "bold" }}>:</span>
+
+        {/* Minutes */}
         <div style={timeSection}>
-          {minutesDigits.map((digit, idx) => (
+          {timeDigits.slice(2, 4).map((digit, idx) => (
             <img
-              key={idx + hoursDigits.length}
-              src={getImageForPosition(digit, idx + hoursDigits.length)}
-              alt={`Digit ${digit}`}
+              key={`m${idx}`}
+              src={getImageForPosition(digit, idx + 2)}
+              alt={`Minute digit ${digit}`}
               style={imgStyle}
             />
           ))}
         </div>
+
+        <span style={{ fontSize: "6vh", fontWeight: "bold" }}>:</span>
+
+        {/* Seconds */}
         <div style={timeSection}>
-          {secondsDigits.map((digit, idx) => (
+          {timeDigits.slice(4, 6).map((digit, idx) => (
             <img
-              key={idx + hoursDigits.length + minutesDigits.length}
-              src={getImageForPosition(digit, idx + hoursDigits.length + minutesDigits.length)}
-              alt={`Digit ${digit}`}
+              key={`s${idx}`}
+              src={getImageForPosition(digit, idx + 4)}
+              alt={`Second digit ${digit}`}
               style={imgStyle}
             />
           ))}
