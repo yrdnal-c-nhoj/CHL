@@ -192,7 +192,7 @@ const RectangularAnalogClock = () => {
     >
       <svg
         width="100vw"
-        height="100vh"
+        height="100dvh"
         viewBox="0 0 100 100"
         preserveAspectRatio="xMidYMid meet"
         style={{
