@@ -1,76 +1,102 @@
-import React, { useEffect, useState, useMemo } from "react";
+/** @jsxImportSource react */
+import React, { useEffect, useState, useMemo, useRef } from "react";
 
-// Load all digit images from folders 0–9
-const digitImagesFolders = {
-  0: Object.values(import.meta.glob("./digits/0/*.{png,jpg,jpeg,gif,webp}", { eager: true })),
-  1: Object.values(import.meta.glob("./digits/1/*.{png,jpg,jpeg,gif,webp}", { eager: true })),
-  2: Object.values(import.meta.glob("./digits/2/*.{png,jpg,jpeg,gif,webp}", { eager: true })),
-  3: Object.values(import.meta.glob("./digits/3/*.{png,jpg,jpeg,gif,webp}", { eager: true })),
-  4: Object.values(import.meta.glob("./digits/4/*.{png,jpg,jpeg,gif,webp}", { eager: true })),
-  5: Object.values(import.meta.glob("./digits/5/*.{png,jpg,jpeg,gif,webp}", { eager: true })),
-  6: Object.values(import.meta.glob("./digits/6/*.{png,jpg,jpeg,gif,webp}", { eager: true })),
-  7: Object.values(import.meta.glob("./digits/7/*.{png,jpg,jpeg,gif,webp}", { eager: true })),
-  8: Object.values(import.meta.glob("./digits/8/*.{png,jpg,jpeg,gif,webp}", { eager: true })),
-  9: Object.values(import.meta.glob("./digits/9/*.{png,jpg,jpeg,gif,webp}", { eager: true })),
-};
-
-export default function DigitClock() {
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [digitIndices, setDigitIndices] = useState([0, 0, 0, 0, 0, 0]); // 6 positions
-
-  // Shuffle images once per digit
-  const shuffledImages = useMemo(() => {
-    const result: { [key: number]: string[] } = {};
-    for (let digit = 0; digit <= 9; digit++) {
-      const imgs = (digitImagesFolders[digit] || []).map((mod: any) => mod.default || mod);
-      const shuffled = [...imgs].sort(() => Math.random() - 0.5);
-      result[digit] = shuffled.length > 0 ? shuffled : [""];
-    }
-    return result;
-  }, []);
-
-  // Format time into 6 digits: [H1?, H2, M1, M2, S1, S2]
-  const getTimeDigits = () => {
-    const now = currentTime;
-    let hours = now.getHours();
-    hours = hours % 12 || 12; // 12-hour format, 0 → 12
-
-    const hStr = String(hours).padStart(2, "0"); // Always 2 digits
-    const mStr = String(now.getMinutes()).padStart(2, "0");
-    const sStr = String(now.getSeconds()).padStart(2, "0");
-
-    return [...hStr, ...mStr, ...sStr].map(Number); // [d0, d1, d2, d3, d4, d5]
+/* ------------------------------------------------------------------
+   1. Load ALL images from digits/0/ to digits/9/ automatically
+   ------------------------------------------------------------------ */
+function loadAllDigitImages() {
+  const globs = {
+    0: import.meta.glob("./digits/0/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    1: import.meta.glob("./digits/1/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    2: import.meta.glob("./digits/2/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    3: import.meta.glob("./digits/3/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    4: import.meta.glob("./digits/4/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    5: import.meta.glob("./digits/5/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    6: import.meta.glob("./digits/6/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    7: import.meta.glob("./digits/7/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    8: import.meta.glob("./digits/8/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    9: import.meta.glob("./digits/9/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
   };
 
-  const timeDigits = getTimeDigits();
+  const folders = {};
+  for (let d = 0; d <= 9; d++) {
+    const modMap = globs[d] || {};
+    const urls = Object.values(modMap);
+    folders[d] = urls.length > 0 ? urls : [null]; // fallback
+  }
+  return folders;
+}
 
+/* ------------------------------------------------------------------
+   2. Component
+   ------------------------------------------------------------------ */
+export default function DigitClock() {
+  const [currentTime, setCurrentTime] = useState(() => new Date());
+  const [digitIndices, setDigitIndices] = useState([0, 0, 0, 0, 0, 0]);
+  const intervalRef = useRef(null);
+
+  /* ---- Load & shuffle images (once) --------------------------- */
+  const shuffledImages = useMemo(() => {
+    const raw = loadAllDigitImages();
+    const out = {};
+    for (let d = 0; d <= 9; d++) {
+      let imgs = raw[d] || [];
+      imgs = imgs.filter(Boolean); // remove nulls
+      out[d] = imgs.length > 0 ? imgs.sort(() => Math.random() - 0.5) : [null];
+    }
+    return out;
+  }, []);
+
+  /* ---- Time → digits (12‑hour, single digit centered) -------- */
+  const getTimeDigits = (date) => {
+    let h = date.getHours() % 12 || 12;
+    const hStr = String(h);
+    const mStr = String(date.getMinutes()).padStart(2, "0");
+    const sStr = String(date.getSeconds()).padStart(2, "0");
+    return [...hStr, ...mStr, ...sStr].map(Number);
+  };
+
+  const timeDigits = getTimeDigits(currentTime);
+  const isSingleHour = timeDigits.length === 5;
+
+  const minuteStart = isSingleHour ? 1 : 2;
+  const secondStart = isSingleHour ? 3 : 4;
+
+  /* ---- Clock tick ------------------------------------------- */
   useEffect(() => {
-    const tick = () => {
-      setCurrentTime(new Date());
+    if (intervalRef.current) clearInterval(intervalRef.current);
 
-      // Cycle image index for each position based on its folder length
-      setDigitIndices(prev =>
-        prev.map((idx, pos) => {
-          const digit = timeDigits[pos];
-          const folder = shuffledImages[digit];
+    const tick = () => {
+      const now = new Date();
+      setCurrentTime(now);
+
+      const newDigits = getTimeDigits(now);
+      setDigitIndices((prev) =>
+        prev.map((idx, i) => {
+          const digit = newDigits[i];
+          const folder = shuffledImages[digit] || [];
           return folder.length > 0 ? (idx + 1) % folder.length : 0;
         })
       );
     };
 
-    tick(); // Immediate first render
-    const interval = setInterval(tick, 1000);
-    return () => clearInterval(interval);
-  }, [shuffledImages, timeDigits]); // Re-run if timeDigits change structure (rare)
+    intervalRef.current = window.setInterval(tick, 1000);
+    tick();
 
-  const getImageForPosition = (digit: number, positionIndex: number) => {
-    const folder = shuffledImages[digit];
-    const imageIndex = digitIndices[positionIndex] % folder.length;
-    return folder[imageIndex] || "";
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [shuffledImages]);
+
+  const getImage = (digit, pos) => {
+    const folder = shuffledImages[digit] || [];
+    if (folder.length === 0 || !folder[0]) return ""; // no image
+    const idx = digitIndices[pos] % folder.length;
+    return folder[idx];
   };
 
-  // --- Styles ---
-  const container: React.CSSProperties = {
+  /* ---- Styles ------------------------------------------------ */
+  const container = {
     minHeight: "100dvh",
     display: "flex",
     flexDirection: "column",
@@ -82,7 +108,7 @@ export default function DigitClock() {
     padding: "1rem",
   };
 
-  const clockStyle: React.CSSProperties = {
+  const clock = {
     display: "flex",
     gap: "1.5rem",
     alignItems: "center",
@@ -90,13 +116,13 @@ export default function DigitClock() {
     justifyContent: "center",
   };
 
-  const timeSection: React.CSSProperties = {
+  const section = {
     display: "flex",
     gap: "0.5rem",
     alignItems: "center",
   };
 
-  const imgStyle: React.CSSProperties = {
+  const img = {
     width: "18vh",
     height: "18vh",
     objectFit: "cover",
@@ -107,58 +133,72 @@ export default function DigitClock() {
 
   return (
     <div style={container}>
-      <style jsx>{`
+      {/* REMOVED: <style jsx> — use regular <style> or CSS module */}
+      <style>{`
         @media (max-width: 768px) {
           .clock-container {
             flex-direction: column !important;
             gap: 1rem !important;
           }
-          img {
+          .clock-img {
             width: 14vh !important;
             height: 14vh !important;
           }
         }
       `}</style>
 
-      <div className="clock-container" style={clockStyle}>
-        {/* Hours */}
-        <div style={timeSection}>
-          {timeDigits.slice(0, 2).map((digit, idx) => (
-            <img
-              key={`h${idx}`}
-              src={getImageForPosition(digit, idx)}
-              alt={`Hour digit ${digit}`}
-              style={imgStyle}
-            />
-          ))}
+      <div className="clock-container" style={clock}>
+        {/* HOURS */}
+        <div
+          style={{
+            display: "flex",
+            gap: "0.5rem",
+            alignItems: "center",
+            justifyContent: "center",
+            minWidth: isSingleHour ? "18vh" : "auto",
+          }}
+        >
+          {timeDigits
+            .slice(0, isSingleHour ? 1 : 2)
+            .map((d, i) => (
+              <img
+                key={`h${i}`}
+                src={getImage(d, i)}
+                alt={`hour ${d}`}
+                className="clock-img"
+                style={img}
+              />
+            ))}
         </div>
 
-        <span style={{ fontSize: "6vh", fontWeight: "bold" }}>:</span>
-
-        {/* Minutes */}
-        <div style={timeSection}>
-          {timeDigits.slice(2, 4).map((digit, idx) => (
-            <img
-              key={`m${idx}`}
-              src={getImageForPosition(digit, idx + 2)}
-              alt={`Minute digit ${digit}`}
-              style={imgStyle}
-            />
-          ))}
+        {/* MINUTES */}
+        <div style={section}>
+          {timeDigits
+            .slice(minuteStart, minuteStart + 2)
+            .map((d, i) => (
+              <img
+                key={`m${i}`}
+                src={getImage(d, minuteStart + i)}
+                alt={`minute ${d}`}
+                className="clock-img"
+                style={img}
+              />
+            ))}
         </div>
 
-        <span style={{ fontSize: "6vh", fontWeight: "bold" }}>:</span>
-
-        {/* Seconds */}
-        <div style={timeSection}>
-          {timeDigits.slice(4, 6).map((digit, idx) => (
-            <img
-              key={`s${idx}`}
-              src={getImageForPosition(digit, idx + 4)}
-              alt={`Second digit ${digit}`}
-              style={imgStyle}
-            />
-          ))}
+        {/* SECONDS */}
+        <div style={section}>
+          {timeDigits
+            .slice(secondStart, secondStart + 2)
+            .map((d, i) => (
+              <img
+                key={`s${i}`}
+                src={getImage(d, secondStart + i)}
+                alt={`second ${d}`}
+                className="clock-img"
+                style={img}
+              />
+            ))}
         </div>
       </div>
     </div>
