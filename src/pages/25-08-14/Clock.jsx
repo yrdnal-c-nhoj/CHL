@@ -88,8 +88,8 @@ const AnalogClock = () => {
 
   const clockStyle = {
     position: 'relative',
-    width: '60vmin',   // bigger clock
-    height: '60vmin'
+    // width: '60vmin',   // bigger clock
+    // height: '60vmin'
   };
 
   const handCommonStyle = {
@@ -115,9 +115,9 @@ const AnalogClock = () => {
                   position: 'absolute',
                   top: '50%',
                   left: '50%',
-                  width: '12vmin',      // bigger digits
-                  height: '12vmin',
-                  transform: `translate(-50%, -50%) rotate(${angle}deg) translate(0, -32vmin) rotate(-${angle}deg)`,
+                  width: '13vmin',      // bigger digits
+                  height: '13vmin',
+                  transform: `translate(-50%, -50%) rotate(${angle}deg) translate(0, -34vmin) rotate(-${angle}deg)`,
                 }}
               >
                 <img
