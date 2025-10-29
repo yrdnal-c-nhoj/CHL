@@ -9,6 +9,9 @@ export default function MonarchClock() {
   const [videoFailed, setVideoFailed] = useState(false);
   const videoRef = useRef(null);
 
+  // Single gradient variable for hands and numerals
+  const clockGradient = "linear-gradient(180deg, #FC8015FF, #7D5C34FF)";
+
   const [now, setNow] = useState(() => new Date());
   useEffect(() => {
     let lastUpdate = Date.now();
@@ -25,8 +28,12 @@ export default function MonarchClock() {
   // Load font
   useEffect(() => {
     const fontFamilyName = "RomanClockFont_2025_10_27";
-    const font = new FontFace(fontFamilyName, `url(${romanFont2025_10_27}) format('opentype')`);
-    font.load()
+    const font = new FontFace(
+      fontFamilyName,
+      `url(${romanFont2025_10_27}) format('opentype')`
+    );
+    font
+      .load()
       .then(() => {
         document.fonts.add(font);
         setFontLoaded(true);
@@ -57,7 +64,20 @@ export default function MonarchClock() {
   const minAngle = minutes * 6 + seconds * 0.1;
   const hourAngle = hours * 30;
 
-  const romanNumerals = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"];
+  const romanNumerals = [
+    "XII",
+    "I",
+    "II",
+    "III",
+    "IV",
+    "V",
+    "VI",
+    "VII",
+    "VIII",
+    "IX",
+    "X",
+    "XI",
+  ];
   const fontFamilyName = "RomanClockFont_2025_10_27";
   const fontFaceStyle = `
     @font-face {
@@ -67,11 +87,12 @@ export default function MonarchClock() {
     }
   `;
 
+  // Common hand style
   const handCommon = {
     position: "absolute",
     left: "50%",
     top: "50%",
-    background: "linear-gradient(180deg, #E8B87DFF, #EA9227FF)",
+    background: clockGradient, // single gradient variable
     transformOrigin: "50% 90%",
     borderRadius: "0.6dvh",
     pointerEvents: "none",
@@ -105,12 +126,16 @@ export default function MonarchClock() {
     position: "absolute",
     fontFamily: `'${fontFamilyName}', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`,
     fontSize: "7dvh",
-    color: "#DF9336FF",
     fontWeight: 600,
     userSelect: "none",
     pointerEvents: "none",
     transformOrigin: "50% 50%",
     letterSpacing: "0.15rem",
+
+    // Gradient text
+    background: clockGradient,
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
   };
 
   const mediaTransformFilter = {
@@ -145,10 +170,11 @@ export default function MonarchClock() {
           style={{
             position: "absolute",
             top: 0,
-            left: 0,
+            left: "50%",
             height: "100dvh",
-            width: "100dvw",
-            objectFit: "cover",
+            width: "auto",
+            transform: "translateX(-50%)",
+            objectFit: "contain",
             zIndex: 0,
             ...mediaTransformFilter,
           }}
@@ -165,10 +191,11 @@ export default function MonarchClock() {
           style={{
             position: "absolute",
             top: 0,
-            left: 0,
+            left: "50%",
             height: "100dvh",
-            width: "100dvw",
-            objectFit: "cover",
+            width: "auto",
+            transform: "translateX(-50%)",
+            objectFit: "contain",
             zIndex: 0,
             userSelect: "none",
             ...mediaTransformFilter,
