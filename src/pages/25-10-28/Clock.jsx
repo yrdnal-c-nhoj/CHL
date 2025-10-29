@@ -140,7 +140,7 @@ export default function DigitClock() {
 
   const clock = {
     display: "flex",
-    gap: "1.5rem",
+    gap: "0.5rem",
     alignItems: "center",
     flexWrap: "wrap",
     justifyContent: "center",
@@ -153,8 +153,8 @@ export default function DigitClock() {
   };
 
   const img = {
-    width: "18vh",
-    height: "18vh",
+    width: "22vh",
+    height: "22vh",
     objectFit: "cover",
     boxShadow: "0 0 1.5vh rgba(0,0,0,0.6)",
     transition: "transform 0.5s ease-out",
@@ -171,8 +171,8 @@ export default function DigitClock() {
             gap: 1rem !important;
           }
           .clock-img {
-            width: 14vh !important;
-            height: 14vh !important;
+            width: 20vh !important;
+            height: 20vh !important;
           }
         }
       `}</style>
@@ -182,7 +182,7 @@ export default function DigitClock() {
         <div
           style={{
             display: "flex",
-            gap: "0.5rem",
+            // gap: "0.5rem",
             alignItems: "center",
             justifyContent: "center",
             minWidth: isSingleHour ? "18vh" : "auto",
