@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 
-// Load images for each digit folder with multiple file types
+// Load all digit images from folders 0–9
 const digitImagesFolders = {
   0: Object.values(import.meta.glob("./digits/0/*.{png,jpg,jpeg,gif,webp}", { eager: true })),
   1: Object.values(import.meta.glob("./digits/1/*.{png,jpg,jpeg,gif,webp}", { eager: true })),
@@ -14,32 +14,19 @@ const digitImagesFolders = {
   9: Object.values(import.meta.glob("./digits/9/*.{png,jpg,jpeg,gif,webp}", { eager: true })),
 };
 
-// Shuffle array and take first N items
-const getRandomImages = (images, count = 10) => {
-  if (!images || images.length === 0) return [];
-  const shuffled = [...images].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, Math.min(count, images.length)).map(img => img.default || img);
-};
-
 export default function DigitClock() {
   const [timeDigits, setTimeDigits] = useState([]);
-  const [digitIndices, setDigitIndices] = useState([0, 0, 0, 0, 0, 0]); // Track which image to show for each position
+  const [digitIndices, setDigitIndices] = useState([0, 0, 0, 0, 0, 0]);
 
-  // Preload 10 random images TOTAL (not per digit) once at component mount
-  // Map each digit 0-9 to one of these 10 images
-  const preloadedImages = useMemo(() => {
-    const imageMapping = {};
-    
-    // For each digit 0-9, pick one random image from that digit's folder
+  // Shuffle each folder once to ensure random order
+  const shuffledImages = useMemo(() => {
+    const result = {};
     for (let digit = 0; digit <= 9; digit++) {
-      const images = digitImagesFolders[digit];
-      if (images && images.length > 0) {
-        const randomImg = images[Math.floor(Math.random() * images.length)];
-        imageMapping[digit] = randomImg.default || randomImg;
-      }
+      const imgs = digitImagesFolders[digit] || [];
+      const shuffled = [...imgs].sort(() => Math.random() - 0.5);
+      result[digit] = shuffled.map(img => img.default || img);
     }
-    
-    return imageMapping;
+    return result;
   }, []);
 
   const getTimeDigits = () => {
@@ -49,42 +36,31 @@ export default function DigitClock() {
     const seconds = now.getSeconds();
 
     hours = hours % 12 || 12; // Convert 0 → 12
-
-    const hDigits = [...String(hours)].map(Number); 
+    const hDigits = [...String(hours)].map(Number);
     const mDigits = [...String(minutes).padStart(2, "0")].map(Number);
     const sDigits = [...String(seconds).padStart(2, "0")].map(Number);
-
     return [...hDigits, ...mDigits, ...sDigits];
   };
 
-  // Update time every second
   useEffect(() => {
     const tick = () => {
       const newDigits = getTimeDigits();
-      setTimeDigits((prevDigits) => {
-        // Update indices only for positions where digit changed
-        setDigitIndices((prevIndices) => {
-          const newIndices = [...prevIndices];
-          newDigits.forEach((digit, idx) => {
-            if (prevDigits[idx] !== digit) {
-              // Digit changed, increment to next random image
-              newIndices[idx] = (prevIndices[idx] + 1) % 10;
-            }
-          });
-          return newIndices;
-        });
-        return newDigits;
-      });
+      setTimeDigits(newDigits);
+
+      // increment all indices every second
+      setDigitIndices(prev => prev.map((idx, i) => (idx + 1) % 10));
     };
-    
-    tick(); // initial set
+
+    tick(); // initial render
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // Get the image for a specific digit at a specific position
   const getImageForPosition = (digit, positionIndex) => {
-    return preloadedImages[digit] || "";
+    const folder = shuffledImages[digit];
+    if (!folder || folder.length === 0) return "";
+    const imageIndex = digitIndices[positionIndex] % folder.length;
+    return folder[imageIndex];
   };
 
   // Split digits into hours, minutes, seconds
@@ -125,7 +101,6 @@ export default function DigitClock() {
     width: "20vh",
     height: "20vh",
     objectFit: "cover",
-    // borderRadius: "0.5vh",
     boxShadow: "0 0 1.5vh rgba(0,0,0,0.6)",
     transition: "transform 0.5s ease-out",
   };
