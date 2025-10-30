@@ -101,7 +101,7 @@ export default function DigitClock() {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    background: "#B5B7B7FF",
+    background: "#5B6C6CFF",
     color: "#fff",
     fontFamily: "sans-serif",
     padding: "0.1rem",
@@ -128,7 +128,7 @@ export default function DigitClock() {
     objectFit: "cover",
     boxShadow: "0 0 1.5vh rgba(0,0,0,0.6)",
     border: "1px solid rgba(255,255,255)",
-    backgroundColor: "rgba(90, 90, 90)", // fallback color behind transparent areas
+    backgroundColor: "rgba(190, 200, 170)", // fallback color behind transparent areas
     transition: "transform 0.5s ease-out",
     borderRadius: "8px",
   };
