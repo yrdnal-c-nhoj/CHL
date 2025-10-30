@@ -113,7 +113,7 @@ export default function DigitClock() {
     alignItems: "center",
     flexWrap: "wrap",
     justifyContent: "center",
-    transform: "translateY(-5vh)",
+    transform: "translateY(-3vh)",
   };
 
   const section = {
