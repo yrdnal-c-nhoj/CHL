@@ -22,7 +22,7 @@ function loadAllDigitImages() {
   for (let d = 0; d <= 9; d++) {
     const modMap = globs[d] || {};
     const urls = Object.values(modMap);
-    folders[d] = urls.length > 0 ? urls : [null]; // fallback
+    folders[d] = urls.length > 0 ? urls : [null];
   }
   return folders;
 }
@@ -60,12 +60,9 @@ export default function DigitClock() {
   const minuteStart = isSingleHour ? 1 : 2;
   const secondStart = isSingleHour ? 3 : 4;
 
-
-
-
-
-
-  
+  /* ------------------------------------------------------------------
+     3. Update every second
+     ------------------------------------------------------------------ */
   useEffect(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
 
@@ -104,24 +101,24 @@ export default function DigitClock() {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    background: "#6A8894FF",
+    background: "#53666EFF",
     color: "#fff",
     fontFamily: "sans-serif",
-    padding: "1rem",
+    padding: "0.1rem",
   };
 
   const clock = {
     display: "flex",
-    gap: "0.5rem",
+    gap: "1.2rem", // space between HH, MM, SS
     alignItems: "center",
     flexWrap: "wrap",
     justifyContent: "center",
-    transform: "translateY(-3vh)", // ⬆️ move clock up by 3vh
+    transform: "translateY(-5vh)",
   };
 
   const section = {
     display: "flex",
-    gap: "0.5rem",
+    gap: "0.5rem", // consistent space between tens and ones
     alignItems: "center",
   };
 
@@ -130,6 +127,8 @@ export default function DigitClock() {
     height: "22vh",
     objectFit: "cover",
     boxShadow: "0 0 1.5vh rgba(0,0,0,0.6)",
+    border: "1px solid rgba(255,255,255)",
+    backgroundColor: "rgba(90, 90, 90)", // fallback color behind transparent areas
     transition: "transform 0.5s ease-out",
     borderRadius: "8px",
   };
@@ -151,14 +150,7 @@ export default function DigitClock() {
 
       <div className="clock-container" style={clock}>
         {/* HOURS */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            minWidth: isSingleHour ? "18vh" : "auto",
-          }}
-        >
+        <div style={section}>
           {timeDigits
             .slice(0, isSingleHour ? 1 : 2)
             .map((d, i) => (
