@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 
 /* ------------------------------------------------------------------
-   1. Load ALL images (Unchanged)
+   1. Load ALL images
    ------------------------------------------------------------------ */
 function loadAllDigitImages() {
   const globs = {
@@ -27,11 +27,10 @@ function loadAllDigitImages() {
   return folders;
 }
 
-// Function to get the current time as a 6-digit array: [H1, H2, M1, M2, S1, S2]
-// Moved outside the component for better efficiency (already done in original)
+// Get current time as 6-digit array: [H1, H2, M1, M2, S1, S2]
 const getTimeDigits = (date) => {
-  let h = date.getHours() % 12 || 12; // 12-hour format (1-12)
-  const hStr = String(h).padStart(2, "0"); // Always pad the hour to 2 digits (e.g., 9 -> 09)
+  let h = date.getHours() % 12 || 12;
+  const hStr = String(h).padStart(2, "0");
   const mStr = String(date.getMinutes()).padStart(2, "0");
   const sStr = String(date.getSeconds()).padStart(2, "0");
   return [...hStr, ...mStr, ...sStr].map(Number);
@@ -41,10 +40,9 @@ const getTimeDigits = (date) => {
    2. Component Definition
    ------------------------------------------------------------------ */
 export default function DigitClock() {
-  const [currentTime, setCurrentTime] = useState(() => new Date());
-  const [currentImageUrls, setCurrentImageUrls] = useState(["", "", "", "", "", ""]); 
+  const [currentImageUrls, setCurrentImageUrls] = useState(["", "", "", "", "", ""]);
   const intervalRef = useRef(null);
-  const lastUsedRef = useRef({}); 
+  const lastUsedRef = useRef({}); // Fixed: Now actually used to prevent repetition across seconds
 
   const orderedImages = useMemo(() => {
     const raw = loadAllDigitImages();
@@ -52,28 +50,24 @@ export default function DigitClock() {
     for (let d = 0; d <= 9; d++) {
       let imgs = raw[d] || [];
       out[d] = imgs.filter(Boolean);
-      if (out[d].length === 0) out[d] = [""]; 
+      if (out[d].length === 0) out[d] = [""];
     }
     return out;
   }, []);
 
-  // 💡 OPTIMIZATION: Remove useMemo, compute directly as it runs on every second update
-  const timeDigits = getTimeDigits(currentTime); 
-
   /* ------------------------------------------------------------------
-     3. Update Logic (Runs every second) - LOGIC UNCHANGED
+     3. Update Logic - Fixed to use lastUsedRef properly
      ------------------------------------------------------------------ */
   useEffect(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
 
     const tick = () => {
       const now = new Date();
-      setCurrentTime(now); // Update the time display
-      const newDigits = getTimeDigits(now); // [H1, H2, M1, M2, S1, S2]
+      const newDigits = getTimeDigits(now);
       const currentSecond = now.getSeconds();
 
       const newUrls = ["", "", "", "", "", ""];
-      const usedIndicesMap = {}; 
+      const usedIndicesMap = {};
 
       for (let i = 0; i < newDigits.length; i++) {
         const digit = newDigits[i];
@@ -91,42 +85,51 @@ export default function DigitClock() {
         const availableStylesCount = folder.length;
         let selectedIndex = -1;
 
-        // --- Forced Change Logic ---
         const rotationOffset = currentSecond % availableStylesCount;
+        const lastUsed = lastUsedRef.current[`${digit}-${i}`];
 
-        // 1. PRIMARY LOGIC: Search for the SMALLEST UNUSED style index from the offset
+        // PRIMARY: Find unused style, avoiding the last one used for this position
         for (let j = 0; j < availableStylesCount; j++) {
           const checkIndex = (rotationOffset + j) % availableStylesCount;
 
-          if (!usedIndicesMap[digit].includes(checkIndex)) {
+          if (!usedIndicesMap[digit].includes(checkIndex) && checkIndex !== lastUsed) {
             selectedIndex = checkIndex;
-            break; 
+            break;
           }
         }
-        
-        // 2. FALLBACK LOGIC: If a unique one wasn't found, use the style dictated by the offset
+
+        // FALLBACK 1: At least avoid repeating within current display
         if (selectedIndex === -1) {
-            selectedIndex = rotationOffset;
+          for (let j = 0; j < availableStylesCount; j++) {
+            const checkIndex = (rotationOffset + j) % availableStylesCount;
+            if (!usedIndicesMap[digit].includes(checkIndex)) {
+              selectedIndex = checkIndex;
+              break;
+            }
+          }
+        }
+
+        // FALLBACK 2: Use rotation offset
+        if (selectedIndex === -1) {
+          selectedIndex = rotationOffset;
         }
 
         newUrls[i] = folder[selectedIndex];
-        
-        // Mark the selected index as used by this digit in this time cycle
         usedIndicesMap[digit].push(selectedIndex);
+        lastUsedRef.current[`${digit}-${i}`] = selectedIndex;
       }
 
       setCurrentImageUrls(newUrls);
     };
 
-    // Run `tick` every 1000 milliseconds (1 second)
     intervalRef.current = setInterval(tick, 1000);
-    tick(); // Run immediately on mount
+    tick();
 
     return () => clearInterval(intervalRef.current);
-  }, [orderedImages]); // Note: Removed 'currentImageUrls' from deps as it's modified within the tick
+  }, [orderedImages]);
 
   /* ------------------------------------------------------------------
-     4. Styles and Rendering (Unchanged)
+     4. Styles and Rendering - YOUR ORIGINAL DESIGN
      ------------------------------------------------------------------ */
   const container = {
     minHeight: "100dvh",
@@ -134,7 +137,7 @@ export default function DigitClock() {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    background: "#5B6C6CFF",
+    background: "linear-gradient(to right, #8AA0A0FF, #477777FF, #7CA4A4FF)",
     color: "#fff",
     fontFamily: "sans-serif",
     padding: "0.1rem",
@@ -142,7 +145,7 @@ export default function DigitClock() {
 
   const clock = {
     display: "flex",
-    gap: "1.2rem", // space between HH, MM, SS
+    gap: "1.2rem",
     alignItems: "center",
     flexWrap: "wrap",
     justifyContent: "center",
@@ -151,7 +154,7 @@ export default function DigitClock() {
 
   const section = {
     display: "flex",
-    gap: "0.5rem", // consistent space between tens and ones
+    gap: "0.5rem",
     alignItems: "center",
   };
 
@@ -159,12 +162,14 @@ export default function DigitClock() {
     width: "22vh",
     height: "22vh",
     objectFit: "cover",
-    boxShadow: "0 0 1.5vh rgba(0,0,0,0.6)",
-    border: "1px solid rgba(255,255,255)",
+    boxShadow: "0 0 33vh #F4EBEBFF",
+    border: "2px solid #050404FF",
     backgroundColor: "rgba(190, 200, 170)",
     transition: "transform 0.5s ease-out",
-    borderRadius: "8px",
+    borderRadius: "3px",
   };
+
+  const timeDigits = getTimeDigits(new Date());
 
   return (
     <div style={container}>
@@ -207,7 +212,6 @@ export default function DigitClock() {
             />
           ))}
         </div>
-        
 
         {/* SECONDS (Positions 4 and 5) */}
         <div style={section}>
