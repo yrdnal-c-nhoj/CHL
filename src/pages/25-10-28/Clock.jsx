@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 
 /* ------------------------------------------------------------------
-   1. Load ALL images from digits/0/ to digits/9/ automatically
+   1. Load ALL images (Unchanged)
    ------------------------------------------------------------------ */
 function loadAllDigitImages() {
   const globs = {
@@ -28,53 +28,53 @@ function loadAllDigitImages() {
 }
 
 /* ------------------------------------------------------------------
-   2. Component
+   2. Component Definition
    ------------------------------------------------------------------ */
 export default function DigitClock() {
   const [currentTime, setCurrentTime] = useState(() => new Date());
-  // The state will now hold the SPECIFIC IMAGE URL for each of the 6 positions
   const [currentImageUrls, setCurrentImageUrls] = useState(["", "", "", "", "", ""]); 
   const intervalRef = useRef(null);
+
+  // Tracks the last time (timestamp) a specific image style index was used for a digit (LRU Fallback)
+  // NOTE: LRU fallback logic is now removed/simplified as we are forcing a change via offset.
+  const lastUsedRef = useRef({}); 
 
   const orderedImages = useMemo(() => {
     const raw = loadAllDigitImages();
     const out = {};
     for (let d = 0; d <= 9; d++) {
       let imgs = raw[d] || [];
-      // Filter out nulls and ensure there's a fallback
       out[d] = imgs.filter(Boolean);
-      if (out[d].length === 0) out[d] = [""]; // Use an empty string URL as a definitive fallback
+      if (out[d].length === 0) out[d] = [""]; 
     }
     return out;
   }, []);
 
-  // --- MODIFICATION: Ensure 6 digits (HHMMSS) by always padding the hour ---
+  // Function to get the current time as a 6-digit array: [H1, H2, M1, M2, S1, S2]
   const getTimeDigits = (date) => {
-    let h = date.getHours() % 12 || 12; // 12-hour format
-    // Always pad the hour to 2 digits (e.g., 9 becomes 09, 12 remains 12)
-    const hStr = String(h).padStart(2, "0"); 
+    let h = date.getHours() % 12 || 12; // 12-hour format (1-12)
+    const hStr = String(h).padStart(2, "0"); // Always pad the hour to 2 digits (e.g., 9 -> 09)
     const mStr = String(date.getMinutes()).padStart(2, "0");
     const sStr = String(date.getSeconds()).padStart(2, "0");
-    // Return a consistent 6 digits
     return [...hStr, ...mStr, ...sStr].map(Number);
   };
 
-  const timeDigits = getTimeDigits(currentTime); // This is now always 6 digits: [H1, H2, M1, M2, S1, S2]
+  const timeDigits = useMemo(() => getTimeDigits(currentTime), [currentTime]); 
 
   /* ------------------------------------------------------------------
-     3. Update every second (Implementing the unique image logic)
+     3. Update Logic (Runs every second) - FORCING A CHANGE
      ------------------------------------------------------------------ */
   useEffect(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
 
     const tick = () => {
       const now = new Date();
-      setCurrentTime(now);
+      setCurrentTime(now); // Update the time display
       const newDigits = getTimeDigits(now); // [H1, H2, M1, M2, S1, S2]
+      const currentSecond = now.getSeconds(); // The key to forcing the change
 
       const newUrls = ["", "", "", "", "", ""];
-      // Map to track which image indices are currently used for a given digit value
-      // e.g., usedIndicesMap = { 1: [0, 1], 0: [0] } means digit '1' is using styles 0 and 1
+      // Tracks image styles (indexes) already used by a given digit *in this tick* (for uniqueness)
       const usedIndicesMap = {}; 
 
       for (let i = 0; i < newDigits.length; i++) {
@@ -82,12 +82,10 @@ export default function DigitClock() {
         const folder = orderedImages[digit];
 
         if (!folder || folder.length === 0 || folder[0] === "") {
-          // No images available, assign empty string URL
           newUrls[i] = "";
           continue;
         }
 
-        // Initialize the tracking array for this digit if needed
         if (!usedIndicesMap[digit]) {
           usedIndicesMap[digit] = [];
         }
@@ -95,26 +93,29 @@ export default function DigitClock() {
         const availableStylesCount = folder.length;
         let selectedIndex = -1;
 
-        // Find the SMALLEST UNUSED index/style for this digit
+        // --- NEW LOGIC FORCED CHANGE: Use the current second as an OFFSET ---
+        // This calculates a starting index that changes every second.
+        const rotationOffset = currentSecond % availableStylesCount;
+
+        // 1. PRIMARY LOGIC: Start searching for the SMALLEST UNUSED style index from the offset
         for (let j = 0; j < availableStylesCount; j++) {
-          if (!usedIndicesMap[digit].includes(j)) {
-            selectedIndex = j;
-            break; // Found the unique style for this position
+          // Calculate the index in the folder, wrapping around the folder length
+          const checkIndex = (rotationOffset + j) % availableStylesCount;
+
+          if (!usedIndicesMap[digit].includes(checkIndex)) {
+            selectedIndex = checkIndex;
+            break; 
           }
         }
         
-        // --- FALLBACK LOGIC ---
-        // If we ran out of unique styles (e.g., '11:11:11' and only 4 styles for '1'),
-        // we must reuse an index, starting from the beginning of the folder list (index 0).
-        // The prompt implies you *must* have enough unique images, but this is a safe fallback.
+        // 2. FALLBACK LOGIC: If we couldn't find a unique one (e.g., only 2 styles for '1' but it appears 6 times)
         if (selectedIndex === -1) {
-            // This position will reuse the style that has been unused the longest.
-            // For simplicity, we just use the first available style (index 0) and accept a repeat.
-            // A more complex solution would track which style was last used, but index 0 is simple.
-            selectedIndex = 0; 
+            // For simplicity, just reuse the style dictated by the offset, accepting the repeat
+            selectedIndex = rotationOffset;
         }
 
         newUrls[i] = folder[selectedIndex];
+        
         // Mark the selected index as used by this digit in this time cycle
         usedIndicesMap[digit].push(selectedIndex);
       }
@@ -122,14 +123,17 @@ export default function DigitClock() {
       setCurrentImageUrls(newUrls);
     };
 
+    // Run `tick` every 1000 milliseconds (1 second)
     intervalRef.current = setInterval(tick, 1000);
-    tick();
+    tick(); // Run immediately on mount
 
     return () => clearInterval(intervalRef.current);
   }, [orderedImages]);
 
 
-  /* ---- Styles (No Change) ------------------------------------------------ */
+  /* ------------------------------------------------------------------
+     4. Styles and Rendering (Unchanged)
+     ------------------------------------------------------------------ */
   const container = {
     minHeight: "100dvh",
     display: "flex",
@@ -163,12 +167,11 @@ export default function DigitClock() {
     objectFit: "cover",
     boxShadow: "0 0 1.5vh rgba(0,0,0,0.6)",
     border: "1px solid rgba(255,255,255)",
-    backgroundColor: "rgba(190, 200, 170)", // fallback color behind transparent areas
+    backgroundColor: "rgba(190, 200, 170)",
     transition: "transform 0.5s ease-out",
     borderRadius: "8px",
   };
 
-  // The rendering logic must be updated to use the new currentImageUrls state
   return (
     <div style={container}>
       <style>{`
