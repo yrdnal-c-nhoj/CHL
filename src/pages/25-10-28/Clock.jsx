@@ -198,9 +198,6 @@ export default function DigitClock() {
           ))}
         </div>
 
-        {/* Separator */}
-        <span style={{ fontSize: '10vh', color: '#fff' }}>:</span>
-
         {/* MINUTES (Positions 2 and 3) */}
         <div style={section}>
           {currentImageUrls.slice(2, 4).map((url, i) => (
@@ -214,9 +211,6 @@ export default function DigitClock() {
           ))}
         </div>
         
-        {/* Separator */}
-        <span style={{ fontSize: '10vh', color: '#fff' }}>:</span>
-
 
         {/* SECONDS (Positions 4 and 5) */}
         <div style={section}>
