@@ -60,29 +60,51 @@ export default function DigitClock() {
   const minuteStart = isSingleHour ? 1 : 2;
   const secondStart = isSingleHour ? 3 : 4;
 
-  useEffect(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
 
-    const tick = () => {
-      const now = new Date();
-      setCurrentTime(now);
-      const newDigits = getTimeDigits(now);
+useEffect(() => {
+  if (intervalRef.current) clearInterval(intervalRef.current);
 
-      setDigitIndices((prev) => {
-        const next = [...prev];
-        for (let i = 0; i < next.length; i++) {
+  let onesCycleIndex = 0; // tracks cycling within folder
+  const tick = () => {
+    const now = new Date();
+    setCurrentTime(now);
+    const newDigits = getTimeDigits(now);
+    const seconds = now.getSeconds();
+
+    setDigitIndices((prev) => {
+      const next = [...prev];
+
+      // Determine positions
+      const secondStart = newDigits.length === 5 ? 3 : 4;
+      const tensOfSecondsPos = secondStart;
+      const onesOfSecondsPos = secondStart + 1;
+
+      // --- Ones of seconds cycles through every image in folder ---
+      {
+        const folder = orderedImages[newDigits[onesOfSecondsPos]] || [];
+        const frameCount = folder.length || 1;
+        onesCycleIndex = (onesCycleIndex + 1) % frameCount;
+        next[onesOfSecondsPos] = onesCycleIndex;
+      }
+
+      // --- Update tens of seconds, minutes, and hours every 5 seconds (0 and 5) ---
+      if (seconds % 5 === 0) {
+        for (let i = 0; i < onesOfSecondsPos; i++) {
           const folder = orderedImages[newDigits[i]] || [];
           next[i] = folder.length > 0 ? (prev[i] + 1) % folder.length : 0;
         }
-        return next;
-      });
-    };
+      }
 
-    intervalRef.current = setInterval(tick, 1000);
-    tick();
+      return next;
+    });
+  };
 
-    return () => clearInterval(intervalRef.current);
-  }, [orderedImages]);
+  intervalRef.current = setInterval(tick, 1000);
+  tick();
+
+  return () => clearInterval(intervalRef.current);
+}, [orderedImages]);
+
 
   const getImage = (digit, pos) => {
     const folder = orderedImages[digit] || [];
