@@ -101,7 +101,7 @@ export default function DigitClock() {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    background: "#53666EFF",
+    background: "#B5B7B7FF",
     color: "#fff",
     fontFamily: "sans-serif",
     padding: "0.1rem",
