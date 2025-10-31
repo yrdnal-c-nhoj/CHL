@@ -93,7 +93,7 @@ export default function AnalogClock() {
     left: 0,
     width: "100%",
     height: "100%",
-    backgroundColor: "rgba(64,224,228,0.7)", // turquoise with 0.7 opacity
+    backgroundColor: "rgba(64,224,227,0.7)", // turquoise with 0.7 opacity
     borderRadius: "50%",
     zIndex: 1,
   };
