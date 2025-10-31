@@ -53,13 +53,13 @@ const SpinningDodecahedronClock = () => {
 
     // --- Blue translucent surface ---
     const surfaceMaterial = new THREE.MeshStandardMaterial({
-      color: 0x1f4faf, // vivid blue
+      color: 0x7f00ff, // vivid blue
       transparent: true,
       opacity: 0.3, // mostly transparent
       roughness: 0.3,
       metalness: 0.8,
       side: THREE.DoubleSide,
-      emissive: 0x10129f,
+      emissive: 0x7f00ff, 
       emissiveIntensity: 0.9,
     });
     const blueSurface = new THREE.Mesh(geometry, surfaceMaterial);
@@ -171,9 +171,9 @@ const SpinningDodecahedronClock = () => {
     // --- Background filter ---
     if (bgRef.current) {
       bgRef.current.style.filter = `
-        brightness(1.8)
-        contrast(0.8)
-        saturate(0.6)
+        brightness(1.2)
+        contrast(1.2)
+        saturate(0.1)
         hue-rotate(200deg)
       `;
       bgRef.current.style.opacity = "1";
