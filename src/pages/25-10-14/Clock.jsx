@@ -254,7 +254,7 @@ const SpinningDodecahedronClock = () => {
             zIndex: 5,
           }}
         >
-          Loading clock...
+          
         </div>
       )}
 
