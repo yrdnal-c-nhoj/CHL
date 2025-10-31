@@ -131,58 +131,61 @@ export default function AnalogClock() {
   };
 
 
-  // SVG Numbers – Firefox-safe
-  const svgNumbers = (
-    <svg
-      style={{
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        zIndex: 2,
-        pointerEvents: "none",
-      }}
-      viewBox="0 0 100 100"
-    >
-      <defs>
-        <linearGradient id="numGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#7C7A7BFF" />
-          <stop offset="25%" stopColor="#B0B4B4FF" />
-          <stop offset="50%" stopColor="#ffffff" />
-          <stop offset="75%" stopColor="#BBBEBEFF" />
-          <stop offset="100%" stopColor="#777A79FF" />
-        </linearGradient>
-        <filter id="numShadow">
-          <feDropShadow dx="0" dy="0.5" stdDeviation="0.8" floodColor="#000" floodOpacity="0.4" />
-        </filter>
-      </defs>
+// SVG Numbers – Firefox-safe, visually consistent
+const svgNumbers = (
+  <svg
+    style={{
+      position: "absolute",
+      width: "100%",
+      height: "100%",
+      zIndex: 2,
+      pointerEvents: "none",
+    }}
+    viewBox="0 0 100 100"
+  >
+    <defs>
+      <linearGradient id="numGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#7C7A7BFF" />
+        <stop offset="25%" stopColor="#B0B4B4FF" />
+        <stop offset="50%" stopColor="#ffffff" />
+        <stop offset="75%" stopColor="#BBBEBEFF" />
+        <stop offset="100%" stopColor="#777A79FF" />
+      </linearGradient>
+      <filter id="numShadow">
+        <feDropShadow dx="0" dy="0.5" stdDeviation="0.8" floodColor="#000" floodOpacity="0.4" />
+      </filter>
+    </defs>
 
-      {Array.from({ length: 12 }, (_, i) => {
-        const angle = i * 30 * (Math.PI / 180);
-        const x = 50 + 38 * Math.sin(angle);
-        const y = 50 - 38 * Math.cos(angle);
-        const label = i === 0 ? "12" : i.toString();
+    {Array.from({ length: 12 }, (_, i) => {
+      const angle = i * 30 * (Math.PI / 180);
+      const radiusPos = 38;
+      const x = 50 + radiusPos * Math.sin(angle);
+      const y = 50 - radiusPos * Math.cos(angle);
+      const label = i === 0 ? "12" : i === 6 ? "6" : (i === 9 ? "9" : i === 3 ? "3" : i.toString());
 
-        return (
-          <text
-            key={i}
-            x={x}
-            y={y}
-            textAnchor="middle"
-            dominantBaseline="central"
-            fontSize="11"
-            fontFamily="'CustomFont2025_10_31', serif"
-            fill="url(#numGrad)"
-            filter="url(#numShadow)"
-            style={{
-              transform: `rotate(${i * 30}deg)`,
-              transformOrigin: `${x}px ${y}px`,
-            }}
-          >
-            {label}
-          </text>
-        );
-      })}
-    </svg>
+      return (
+        <text
+          key={i}
+          x={x}
+          y={y}
+          textAnchor="middle"
+          dominantBaseline="central"
+          fontSize="11"
+          fontFamily="'CustomFont2025_10_31', serif"
+          fill="url(#numGrad)"
+          filter="url(#numShadow)"
+          style={{
+            transform: `rotate(${i * 30}deg)`,
+            transformOrigin: `${x}px ${y}px`,
+            fontVariantNumeric: "tabular-nums", // ensures equal width for all digits
+          }}
+        >
+          {label}
+        </text>
+      );
+    })}
+  </svg>
+
   );
 
   return (
