@@ -1,5 +1,5 @@
 /** @jsxImportSource react */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import bgImage from "./turq.webp";
 import customFont2025_10_31 from "./turqs.ttf";
 
@@ -19,41 +19,27 @@ export default function AnalogClock() {
   const minuteDeg = minutes * 6 + seconds * 0.1;
   const hourDeg = hours * 30 + minutes * 0.5;
 
-  // --- Move radius and clockSize definition up! ---
   const radius = "min(40vh, 40vw)";
   const clockSize = `calc(2 * ${radius})`;
-  // --------------------------------------------------
 
-  const METALLIC_STYLE = {
+  // Metallic base
+  const METALLIC = {
     background:
-      "linear-gradient(135deg, #8E8B8BFF 0%, #C9C6C6FF 25%, #ffffff 50%, #C8C8C8FF 75%, #9D9B9BFF 100%)",
+      "linear-gradient(135deg, #8E8B8B 0%, #C9C6C6 25%, #ffffff 50%, #C8C8C8 75%, #868484FF 100%)",
     boxShadow:
-      "0 0.2vh 0.8vh rgba(0,0,0,0.3), inset -0.1vh 0 0.3vh rgba(255,255,255,0.8), inset 0.1vh 0 0.3vh rgba(0,0,0,0.3)",
+      "0 0.2vh 0.8vh rgba(0,0,0,0.3), inset -0.1vh 0 0.9vh rgba(255,255,255,0.9), inset 0.1vh 0 0.3vh rgba(0,0,0,0.9)",
   };
 
-  const FILIGREE_METALLIC_STYLE = {
-    ...METALLIC_STYLE,
-    // Add a slight blue tint for a 'Southwestern Silver' feel
+  const FILIGREE = {
+    ...METALLIC,
     filter: "hue-rotate(190deg) saturate(0.5) brightness(1.1)",
   };
 
-  // This style now correctly references the defined 'radius'
-  const CenterJewelStyle = {
-    position: "absolute",
-    width: `calc(0.004 * ${radius})`,
-    height: `calc(0.004 * ${radius})`,
-    borderRadius: "50%",
-    background: "radial-gradient(circle, #40E0D0 0%, #008B8B 70%)", // Turquoise gem
-    boxShadow:
-      "0 0 0.5vh rgba(0,255,255,0.4), inset 0 0 0.1vh rgba(255,255,255,0.9)",
-    zIndex: 4,
-    top: `calc(50% - 0.02 * ${radius})`, // Center it
-    left: `calc(50% - 0.02 * ${radius})`,
-  };
-
-  const page = {
+  const pageStyle = {
     width: "100vw",
     height: "100dvh",
+    margin: 0,
+    padding: 0,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -62,12 +48,9 @@ export default function AnalogClock() {
     overflow: "hidden",
   };
 
-  const background = {
+  const bgStyle = {
     position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
+    inset: 0,
     backgroundImage: `url(${bgImage})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
@@ -75,146 +58,170 @@ export default function AnalogClock() {
     zIndex: 0,
   };
 
-  const wrapper = {
+  const wrapperStyle = {
     position: "relative",
     width: clockSize,
     height: clockSize,
     borderRadius: "50%",
     overflow: "hidden",
-    zIndex: 1, // sits above the background
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    zIndex: 1,
   };
 
-  const overlay = {
+  const overlayStyle = {
     position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(64,224,227,0.7)", // turquoise with 0.7 opacity
+    inset: 0,
+    backgroundColor: "rgba(64,224,227,0.6)",
     borderRadius: "50%",
     zIndex: 1,
   };
 
-  const number = (deg) => ({
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    fontSize: `calc(0.5 * ${radius})`,
-    fontWeight: "bold",
-    background: METALLIC_STYLE.background,
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    backgroundClip: "text",
-    filter: `drop-shadow(0 0.2vh 0.8vh rgba(0,0,0,0.3))`,
-    userSelect: "none",
-    transformOrigin: "center center",
-    transform: `translate(-50%, -50%) rotate(${deg}deg) translateY(-100%) rotate(-${deg}deg)`,
-    zIndex: 2, // above overlay
-  });
-  
-  // Base Hand Style
-  const ornateHand = (widthFrac, lengthFrac, deg, clipPath) => ({
-    ...FILIGREE_METALLIC_STYLE,
+  // CORRECTED: Hands pivot from **center**, not top
+  const handBase = (widthFrac, lengthFrac, deg, clipPath) => ({
+    ...FILIGREE,
     position: "absolute",
     width: `calc(${widthFrac} * ${radius})`,
     height: `calc(${lengthFrac} * ${radius})`,
     left: "50%",
     top: "50%",
-    transformOrigin: "center top",
-    transform: `translate(-50%, 0%) rotate(${deg}deg)`,
-    clipPath: clipPath,
-    zIndex: 3, // higher Z-index
+    transform: `translate(-50%, -100%) rotate(${deg}deg)`,
+    transformOrigin: "center bottom", // Pivot from **bottom center** of hand
+    clipPath,
+    zIndex: 3,
   });
-  
-  // Hour Hand (Shorter, Fatter)
-  const hourHandStyle = ornateHand(
-    0.1, // widthFrac
-    0.28, // lengthFrac
+
+  const hourHand = handBase(
+    0.1,
+    0.28,
     hourDeg,
-    // Ornate clipped shape (an arrowhead/lance)
     "polygon(50% 0%, 75% 15%, 70% 50%, 90% 80%, 75% 100%, 25% 100%, 10% 80%, 30% 50%, 25% 15%)"
   );
-  
-  // Minute Hand (Longer, Thinner)
-  const minuteHandStyle = ornateHand(
-    0.06, // widthFrac
-    0.4, // lengthFrac
+
+  const minuteHand = handBase(
+    0.06,
+    0.4,
     minuteDeg,
-    // Slightly thinner, longer ornate shape
     "polygon(50% 0%, 70% 5%, 60% 40%, 80% 70%, 60% 100%, 40% 100%, 20% 70%, 40% 40%, 30% 5%)"
   );
 
-  // Second Hand (simple rod for legibility, but with the new metallic style)
-  const secondHandStyle = {
-    ...FILIGREE_METALLIC_STYLE,
+  const secondHand = {
+    ...FILIGREE,
     position: "absolute",
     width: `calc(0.01 * ${radius})`,
     height: `calc(0.4375 * ${radius})`,
     left: "50%",
     top: "50%",
-    transformOrigin: "center top",
-    transform: `translate(-50%, 0%) rotate(${secondDeg}deg)`,
-    borderRadius: "0.2vh",
+    transform: `translate(-50%, -100%) rotate(${secondDeg}deg)`,
+    transformOrigin: "center bottom",
+    borderRadius: "0 0 0.2vh 0.2vh",
     zIndex: 3,
   };
 
-  // Center Cap/Embellishment
-  const centerCapStyle = {
-    ...FILIGREE_METALLIC_STYLE,
+  const centerCap = {
+    ...FILIGREE,
     position: "absolute",
     width: `calc(0.12 * ${radius})`,
     height: `calc(0.12 * ${radius})`,
     borderRadius: "50%",
-    zIndex: 5, // Sits on top of the hands
     top: `calc(50% - 0.06 * ${radius})`,
     left: `calc(50% - 0.06 * ${radius})`,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 5,
   };
+
+  const centerJewel = {
+    position: "absolute",
+    width: `calc(0.004 * ${radius})`,
+    height: `calc(0.004 * ${radius})`,
+    borderRadius: "50%",
+    background: "radial-gradient(circle, #40E0D0 0%, #008B8B 70%)",
+    boxShadow: "0 0 0.5vh rgba(0,255,255,0.4), inset 0 0 0.1vh rgba(255,255,255,0.9)",
+    zIndex: 6,
+  };
+
+  // SVG Numbers – Firefox-safe
+  const svgNumbers = (
+    <svg
+      style={{
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        zIndex: 2,
+        pointerEvents: "none",
+      }}
+      viewBox="0 0 100 100"
+    >
+      <defs>
+        <linearGradient id="numGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#6BA4A0" />
+          <stop offset="25%" stopColor="#A8D5D1" />
+          <stop offset="50%" stopColor="#ffffff" />
+          <stop offset="75%" stopColor="#A8D5D1" />
+          <stop offset="100%" stopColor="#6BA4A0" />
+        </linearGradient>
+        <filter id="numShadow">
+          <feDropShadow dx="0" dy="0.5" stdDeviation="0.8" floodColor="#000" floodOpacity="0.4" />
+        </filter>
+      </defs>
+
+      {Array.from({ length: 12 }, (_, i) => {
+        const angle = i * 30 * (Math.PI / 180);
+        const x = 50 + 38 * Math.sin(angle);
+        const y = 50 - 38 * Math.cos(angle);
+        const label = i === 0 ? "12" : i.toString();
+
+        return (
+          <text
+            key={i}
+            x={x}
+            y={y}
+            textAnchor="middle"
+            dominantBaseline="central"
+            fontSize="11"
+            fontFamily="'CustomFont2025_10_31', serif"
+            fill="url(#numGrad)"
+            filter="url(#numShadow)"
+            style={{
+              transform: `rotate(${i * 30}deg)`,
+              transformOrigin: `${x}px ${y}px`,
+            }}
+          >
+            {label}
+          </text>
+        );
+      })}
+    </svg>
+  );
 
   return (
     <>
-      <style>
-        {`
-          @font-face {
-            font-family: 'CustomFont2025_10_31';
-            src: url(${customFont2025_10_31}) format('truetype');
-            font-weight: normal;
-            font-style: normal;
-          }
-        `}
-      </style>
+      <style jsx>{`
+        @font-face {
+          font-family: 'CustomFont2025_10_31';
+          src: url(${customFont2025_10_31}) format('truetype');
+          font-weight: normal;
+          font-style: normal;
+          font-display: swap;
+        }
+      `}</style>
 
-      <div style={page}>
-        {/* Fullscreen filtered background */}
-        <div style={background} />
+      <div style={pageStyle}>
+        <div style={bgStyle} />
 
-        {/* Clock wrapper */}
-        <div style={wrapper}>
-          {/* Semi-transparent turquoise overlay on the clock face */}
-          <div style={overlay} />
+        <div style={wrapperStyle}>
+          <div style={overlayStyle} />
+          {svgNumbers}
 
-          {/* Numbers */}
-          {Array.from({ length: 12 }, (_, i) => (
-            <div key={i} style={number(i * 30)}>
-              {i === 0 ? 12 : i}
-            </div>
-          ))}
+          {/* Hands – now rotate from center */}
+          <div style={hourHand} />
+          <div style={minuteHand} />
+          <div style={secondHand} />
 
-          {/* Hands with new ornate shapes */}
-          <div style={hourHandStyle} />
-          <div style={minuteHandStyle} />
-          <div style={secondHandStyle} />
-
-          {/* Center Embellishment */}
-          <div style={centerCapStyle}>
-         
+          {/* Center */}
+          <div style={centerCap}>
+            <div style={centerJewel} />
           </div>
-
         </div>
       </div>
     </>
