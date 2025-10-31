@@ -1,28 +1,30 @@
 /** @jsxImportSource react */
 import { useEffect, useState } from "react";
 import bgImage from "./turq.webp";
+import clockFaceImage from "./tur.jpg"; // 🟦 your clock face image
 import customFont2025_10_31 from "./turqs.ttf";
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const id = setInterval(() => setTime(new Date()), 1000);
+    const update = () => setTime(new Date());
+    const id = setInterval(update, 50);
     return () => clearInterval(id);
   }, []);
 
-  const seconds = time.getSeconds();
-  const minutes = time.getMinutes();
-  const hours = time.getHours() % 12;
+  const ms = time.getMilliseconds();
+  const seconds = time.getSeconds() + ms / 1000;
+  const minutes = time.getMinutes() + seconds / 60;
+  const hours = (time.getHours() % 12) + minutes / 60;
 
   const secondDeg = seconds * 6;
-  const minuteDeg = minutes * 6 + seconds * 0.1;
-  const hourDeg = hours * 30 + minutes * 0.5;
+  const minuteDeg = minutes * 6;
+  const hourDeg = hours * 30;
 
   const radius = "min(40vh, 40vw)";
   const clockSize = `calc(2 * ${radius})`;
 
-  // Metallic base
   const METALLIC = {
     background:
       "linear-gradient(135deg, #847979FF 0%, #C9C6C6 25%, #ffffff 50%, #C8C8C8 75%, #836F6FFF 100%)",
@@ -58,6 +60,7 @@ export default function AnalogClock() {
     zIndex: 0,
   };
 
+  // 🟢 Clock face image background
   const wrapperStyle = {
     position: "relative",
     width: clockSize,
@@ -65,26 +68,29 @@ export default function AnalogClock() {
     borderRadius: "50%",
     overflow: "hidden",
     zIndex: 1,
-  };
+    backgroundImage: `url(${clockFaceImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+   };
 
   const overlayStyle = {
     position: "absolute",
     inset: 0,
-    backgroundColor: "rgba(64,224,227,0.6)",
+    backgroundColor: "rgba(64,224,227,0.7)",
     borderRadius: "50%",
     zIndex: 1,
   };
 
-  // CORRECTED: Hands pivot from **center**, not top
   const handBase = (widthFrac, lengthFrac, deg, clipPath) => ({
     ...FILIGREE,
     position: "absolute",
     width: `calc(${widthFrac} * ${radius})`,
-    height: `calc(${lengthFrac} * ${radius})`,
+    height: `calc(${lengthFrac} * ${radius} * 2)`,
     left: "50%",
     top: "50%",
     transform: `translate(-50%, -100%) rotate(${deg}deg)`,
-    transformOrigin: "center bottom", // Pivot from **bottom center** of hand
+    transformOrigin: "center bottom",
     clipPath,
     zIndex: 3,
   });
@@ -107,7 +113,7 @@ export default function AnalogClock() {
     ...FILIGREE,
     position: "absolute",
     width: `calc(0.01 * ${radius})`,
-    height: `calc(0.4375 * ${radius})`,
+    height: `calc(0.4375 * ${radius} * 2)`,
     left: "50%",
     top: "50%",
     transform: `translate(-50%, -100%) rotate(${secondDeg}deg)`,
@@ -130,65 +136,67 @@ export default function AnalogClock() {
     zIndex: 5,
   };
 
+  const svgNumbers = (
+    <svg
+      style={{
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        zIndex: 2,
+        pointerEvents: "none",
+      }}
+      viewBox="0 0 100 100"
+    >
+      <defs>
+        <linearGradient id="numGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#7C7A7BFF" />
+          <stop offset="25%" stopColor="#B0B4B4FF" />
+          <stop offset="50%" stopColor="#ffffff" />
+          <stop offset="75%" stopColor="#BBBEBEFF" />
+          <stop offset="100%" stopColor="#777A79FF" />
+        </linearGradient>
+        <filter id="numShadow">
+          <feDropShadow
+            dx="0"
+            dy="0.5"
+            stdDeviation="0.8"
+            floodColor="#000"
+            floodOpacity="0.4"
+          />
+        </filter>
+      </defs>
 
+      {Array.from({ length: 12 }, (_, i) => {
+        const angle = i * 30 * (Math.PI / 180);
+        const radiusPos = 38;
+        const x = 50 + radiusPos * Math.sin(angle);
+        const y = 50 - radiusPos * Math.cos(angle);
+        const label =
+          i === 0 ? "12" : i === 6 ? "6" : i === 9 ? "9" : i === 3 ? "3" : i.toString();
 
-
-// SVG Numbers – Firefox-safe, visually consistent
-const svgNumbers = (
-  <svg
-    style={{
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-      zIndex: 2,
-      pointerEvents: "none",
-    }}
-    viewBox="0 0 100 100"
-  >
-    <defs>
-      <linearGradient id="numGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#7C7A7BFF" />
-        <stop offset="25%" stopColor="#B0B4B4FF" />
-        <stop offset="50%" stopColor="#ffffff" />
-        <stop offset="75%" stopColor="#BBBEBEFF" />
-        <stop offset="100%" stopColor="#777A79FF" />
-      </linearGradient>
-      <filter id="numShadow">
-        <feDropShadow dx="0" dy="0.5" stdDeviation="0.8" floodColor="#000" floodOpacity="0.4" />
-      </filter>
-    </defs>
-
-    {Array.from({ length: 12 }, (_, i) => {
-      const angle = i * 30 * (Math.PI / 180);
-      const radiusPos = 38;
-      const x = 50 + radiusPos * Math.sin(angle);
-      const y = 50 - radiusPos * Math.cos(angle);
-      const label = i === 0 ? "12" : i === 6 ? "6" : (i === 9 ? "9" : i === 3 ? "3" : i.toString());
-
-      return (
-        <text
-          key={i}
-          x={x}
-          y={y}
-          textAnchor="middle"
-          dominantBaseline="central"
-          fontSize="11"
-          fontFamily="'CustomFont2025_10_31', serif"
-          fill="url(#numGrad)"
-          filter="url(#numShadow)"
-          style={{
-            transform: `rotate(${i * 30}deg)`,
-            transformOrigin: `${x}px ${y}px`,
-            fontVariantNumeric: "tabular-nums", // ensures equal width for all digits
-          }}
-        >
-          {label}
-        </text>
-      );
-    })}
-  </svg>
-);
-
+        return (
+          <text
+            key={i}
+            x={x}
+            y={y}
+            textAnchor="middle"
+            dominantBaseline="central"
+            fontSize="11"
+            fontFamily="'CustomFont2025_10_31', serif"
+            fill="url(#numGrad)"
+            filter="url(#numShadow)"
+            style={{
+              transform: `rotate(${i * 30}deg)`,
+              transformOrigin: `${x}px ${y}px`,
+              fontVariantNumeric: "tabular-nums",
+            }}
+          >
+            {label}
+          </text>
+        );
+      })}
+    </svg>
+  );
 
   return (
     <>
@@ -208,16 +216,10 @@ const svgNumbers = (
         <div style={wrapperStyle}>
           <div style={overlayStyle} />
           {svgNumbers}
-
-          {/* Hands – now rotate from center */}
           <div style={hourHand} />
           <div style={minuteHand} />
           <div style={secondHand} />
-
-          {/* Center */}
-          <div style={centerCap}>
-     
-          </div>
+          <div style={centerCap}></div>
         </div>
       </div>
     </>
