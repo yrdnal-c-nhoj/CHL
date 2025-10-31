@@ -128,28 +128,59 @@ export default function MonarchClock() {
     fontFamily: fontLoaded
       ? "RomanClockFont_2025_10_27, 'Courier New', monospace"
       : "'Courier New', monospace",
-    fontSize: "8dvh",
-    letterSpacing: "0.9dvh",
+    fontWeight: 700,
     color: "#D1D9D1FF",
-    // textShadow:
-    //   "0 0 1dvh rgba(10,255,10,0.6), 0 0 2dvh rgba(10,255,10,0.3), 0 0 4dvh rgba(0,255,0,0.2)",
-    opacity: 0.8,
+    opacity: 0.9,
     mixBlendMode: "screen",
     userSelect: "none",
-    fontWeight: 700,
+    whiteSpace: "nowrap",
   };
 
-  const overlayStyle = {
+  // responsive scale that shrinks on small viewports
+  const scale =
+    typeof window !== "undefined" && window.innerWidth < 600 ? 0.7 : 1;
+
+  const overlayContainer = {
     position: "absolute",
     bottom: "5dvh",
     left: "50%",
-    transform: "translateX(-50%)",
+    transform: `translateX(-50%) scale(${scale})`,
     zIndex: 5,
-    textAlign: "center",
-    backgroundColor: "rgba(0,0,0,0.25)",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "1dvh",
+    // backgroundColor: "rgba(0,0,0,0.25)",
     padding: "1.5dvh 3dvh",
     borderRadius: "0.8dvh",
     animation: "flicker 3s infinite, fadeIn 1.5s ease-out",
+  };
+
+  const topLine = {
+    ...counterFont,
+    fontSize: "7dvh",
+    letterSpacing: "0.9dvh",
+    textAlign: "center",
+  };
+
+  const bottomLine = {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+  };
+
+  const recStyle = {
+    ...counterFont,
+    fontSize: "7dvh",
+    textAlign: "center",
+    flex: 1,
+  };
+
+  const lockStyle = {
+    ...counterFont,
+    fontSize: "7dvh",
+    textAlign: "right",
+    flex: 1,
   };
 
   const flickerAnimation = `
@@ -226,9 +257,12 @@ export default function MonarchClock() {
       <div style={scanlineOverlay} />
 
       {mediaReady && fontLoaded && (
-        <div style={overlayStyle}>
-          <span style={counterFont}>TCR {timeString}</span>
-           <span style={counterFont}><br />REC     LOCK </span>
+        <div style={overlayContainer}>
+          <div style={topLine}>TCR {timeString}</div>
+          <div style={bottomLine}>
+            <div style={recStyle}>REC</div>
+            <div style={lockStyle}>LOCK</div>
+          </div>
         </div>
       )}
     </div>
