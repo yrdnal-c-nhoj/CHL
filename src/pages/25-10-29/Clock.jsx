@@ -149,8 +149,6 @@ export default function MonarchClock() {
     backgroundColor: "rgba(0,0,0,0.25)",
     padding: "1.5dvh 3dvh",
     borderRadius: "0.8dvh",
-    boxShadow:
-      "0 0 1.5dvh rgba(0,255,0,0.4), inset 0 0 1dvh rgba(0,255,0,0.3)",
     animation: "flicker 3s infinite, fadeIn 1.5s ease-out",
   };
 
