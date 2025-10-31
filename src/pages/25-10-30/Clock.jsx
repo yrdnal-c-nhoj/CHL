@@ -22,7 +22,7 @@ export default function AnalogClock() {
   const minuteDeg = minutes * 6;
   const hourDeg = hours * 30;
 
-  const radius = "min(40vh, 40vw)";
+  const radius = "min(50vh, 50vw)";
   const clockSize = `calc(2 * ${radius})`;
 
   const METALLIC = {
