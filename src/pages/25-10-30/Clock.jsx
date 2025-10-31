@@ -130,15 +130,6 @@ export default function AnalogClock() {
     zIndex: 5,
   };
 
-  const centerJewel = {
-    position: "absolute",
-    width: `calc(0.004 * ${radius})`,
-    height: `calc(0.004 * ${radius})`,
-    borderRadius: "50%",
-    background: "radial-gradient(circle, #40E0D0 0%, #008B8B 70%)",
-    boxShadow: "0 0 0.5vh rgba(0,255,255,0.4), inset 0 0 0.1vh rgba(255,255,255,0.9)",
-    zIndex: 6,
-  };
 
   // SVG Numbers – Firefox-safe
   const svgNumbers = (
@@ -220,7 +211,7 @@ export default function AnalogClock() {
 
           {/* Center */}
           <div style={centerCap}>
-            <div style={centerJewel} />
+     
           </div>
         </div>
       </div>
