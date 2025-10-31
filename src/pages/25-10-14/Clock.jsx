@@ -59,7 +59,7 @@ const SpinningDodecahedronClock = () => {
       roughness: 0.3,
       metalness: 0.8,
       side: THREE.DoubleSide,
-      emissive: 0x7f00ff, 
+      emissive: 0x7f01ff, 
       emissiveIntensity: 0.9,
     });
     const blueSurface = new THREE.Mesh(geometry, surfaceMaterial);
