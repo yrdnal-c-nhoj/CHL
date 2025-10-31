@@ -131,6 +131,8 @@ export default function AnalogClock() {
   };
 
 
+
+
 // SVG Numbers – Firefox-safe, visually consistent
 const svgNumbers = (
   <svg
@@ -185,8 +187,8 @@ const svgNumbers = (
       );
     })}
   </svg>
+);
 
-  );
 
   return (
     <>
