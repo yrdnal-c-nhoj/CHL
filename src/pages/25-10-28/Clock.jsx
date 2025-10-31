@@ -159,8 +159,8 @@ export default function DigitClock() {
   };
 
   const img = {
-    width: "24vh",
-    height: "24vh",
+    width: "22vh",
+    height: "22vh",
     objectFit: "cover",
     boxShadow: "0 0 33vh #F4EBEBFF",
     border: "2px solid #050404FF",
@@ -180,8 +180,8 @@ export default function DigitClock() {
             gap: 1rem !important;
           }
           .clock-img {
-            width: 21vh !important;
-            height: 21vh !important;
+            width: 20vh !important;
+            height: 20vh !important;
           }
         }
       `}</style>
