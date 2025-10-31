@@ -25,7 +25,7 @@ export default function AnalogClock() {
   // Metallic base
   const METALLIC = {
     background:
-      "linear-gradient(135deg, #8E8B8B 0%, #C9C6C6 25%, #ffffff 50%, #C8C8C8 75%, #868484FF 100%)",
+      "linear-gradient(135deg, #847979FF 0%, #C9C6C6 25%, #ffffff 50%, #C8C8C8 75%, #836F6FFF 100%)",
     boxShadow:
       "0 0.2vh 0.8vh rgba(0,0,0,0.3), inset -0.1vh 0 0.9vh rgba(255,255,255,0.9), inset 0.1vh 0 0.3vh rgba(0,0,0,0.9)",
   };
@@ -154,11 +154,11 @@ export default function AnalogClock() {
     >
       <defs>
         <linearGradient id="numGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#6BA4A0" />
-          <stop offset="25%" stopColor="#A8D5D1" />
+          <stop offset="0%" stopColor="#7C7A7BFF" />
+          <stop offset="25%" stopColor="#B0B4B4FF" />
           <stop offset="50%" stopColor="#ffffff" />
-          <stop offset="75%" stopColor="#A8D5D1" />
-          <stop offset="100%" stopColor="#6BA4A0" />
+          <stop offset="75%" stopColor="#BBBEBEFF" />
+          <stop offset="100%" stopColor="#777A79FF" />
         </linearGradient>
         <filter id="numShadow">
           <feDropShadow dx="0" dy="0.5" stdDeviation="0.8" floodColor="#000" floodOpacity="0.4" />
