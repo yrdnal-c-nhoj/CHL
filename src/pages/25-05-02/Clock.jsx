@@ -25,12 +25,27 @@ const Body = styled.div`
   margin: 0;
   background-color: #94814a;
   overflow: hidden;
+  position: relative; /* create stacking context */
+`;
+
+const BgImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+  z-index: 0;
+  filter: saturate(200%) contrast(200%);
+  pointer-events: none;
 `;
 
 const ClockContainer = styled.div`
   position: relative;
   width: 90vmin;
   height: 90vmin;
+  z-index: 2; /* ensures above background */
 `;
 
 const ClockFace = styled.div`
@@ -48,7 +63,7 @@ const Number = styled.div`
   text-align: center;
   font-size: 16.5vmin;
   color: #c5c53e;
-  z-index: 91;
+  z-index: 3;
   text-shadow: #09f745 0.1rem 0.1rem, #080808 -0.1rem 0.1rem;
 
   & > div {
@@ -68,33 +83,30 @@ const Hand = styled.div`
 
 const HourHand = styled(Hand)`
   filter: saturate(950%);
-  z-index: 3;
+  z-index: 4;
 `;
 
 const MinuteHand = styled(Hand)`
   filter: sepia(300%) saturate(400%);
   left: 8.8rem;
   transform: translateX(-60%);
-  z-index: 2;
+  z-index: 5;
 `;
 
 const SecondHand = styled(Hand)`
   filter: saturate(390%) contrast(200%) brightness(170%) sepia(200%);
-  z-index: 11;
+  z-index: 6;
 `;
 
-const BgImage = styled.img`
+const Nav = styled.div`
   position: fixed;
-  opacity: 70%;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-  transform: none;
-  filter: saturate(200%) contrast(200%);
+  top: 2vh;
+  left: 2vw;
+  z-index: 100; /* ensures above everything */
+  color: white;
+  font-family: sans-serif;
+  font-size: 1.5rem;
 `;
-
 
 const Clock = () => {
   useEffect(() => {
@@ -137,8 +149,8 @@ const Clock = () => {
   return (
     <Body>
       <BgImage src={scorpImage} alt="Background" />
-     
-  
+      <Nav>← Navigation</Nav>
+
       <ClockContainer>
         <ClockFace>
           {numbers.map((num) => (
