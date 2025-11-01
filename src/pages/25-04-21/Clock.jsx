@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // Import images (same folder as component)
 import hourHand from './hour.gif';
@@ -6,8 +6,6 @@ import minuteHand from './minute.gif';
 import secondHand from './second.gif';
 import bgImage from './pp.gif';   // spinning layer
 import mainBackground from './p.jpg'; // static full-screen background
-
-// Overlay images
 import overlayTopLeft from './Pea.gif';     // top-left overlay
 import overlayBottomRight from './Pea2.gif'; // bottom-right overlay (different file)
 
@@ -16,7 +14,31 @@ export default function AnalogImageClock() {
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
   const rafRef = useRef(0);
+  const [isLoaded, setIsLoaded] = useState(false);
 
+  // Track image loading
+  useEffect(() => {
+    const images = [hourHand, minuteHand, secondHand, bgImage, mainBackground, overlayTopLeft, overlayBottomRight];
+    let loadedCount = 0;
+    const totalImages = images.length;
+
+    const handleImageLoad = () => {
+      loadedCount += 1;
+      if (loadedCount === totalImages) {
+        setIsLoaded(true);
+      }
+    };
+
+    // Preload images
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = handleImageLoad;
+      img.onerror = handleImageLoad; // Count even if an image fails to load
+    });
+  }, []);
+
+  // Clock hand animation
   useEffect(() => {
     const update = () => {
       const now = new Date();
@@ -43,15 +65,19 @@ export default function AnalogImageClock() {
   }, []);
 
   return (
-    <div className="analog-clock">
+    <div className={`analog-clock ${isLoaded ? 'loaded' : ''}`}>
       <style>{`
         .analog-clock {
           position: fixed;
           inset: 0;
           display: grid;
           place-items: center;
-          overflow: hidden;
           background: url(${mainBackground}) center/cover no-repeat;
+          opacity: 0;
+          transition: opacity 1s ease-in;
+        }
+        .analog-clock.loaded {
+          opacity: 1;
         }
         .background {
           position: absolute;
@@ -77,9 +103,8 @@ export default function AnalogImageClock() {
         }
         .clock-face {
           position: relative;
-          width: 80vmin;
-          height: 80vmin;
-          overflow: hidden;
+          width: 90vmin; /* Increased to prevent clipping */
+          height: 90vmin; /* Increased to prevent clipping */
           z-index: 1;
         }
         .hand {
@@ -91,16 +116,16 @@ export default function AnalogImageClock() {
           opacity: 0.8;
           filter: drop-shadow(0 0.3rem 0.5rem rgba(0,0,0,0.4));
           pointer-events: none;
+          width: auto;
+          max-height: 100%; /* Ensure hands scale within clock face */
         }
         .hour-hand { height: 11rem; z-index: 2; }
         .minute-hand { height: 13rem; z-index: 3; }
         .second-hand { height: 15rem; z-index: 4; }
-
-        /* Overlay images */
         .overlay {
           position: absolute;
-          z-index: 10; /* highest layer */
-          width: 70vw; /* adjust size */
+          z-index: 10;
+          width: 70vw;
           height: auto;
           opacity: 0.3;
           pointer-events: none;
