@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 const DigitalClock = () => {
@@ -48,11 +47,7 @@ const DigitalClock = () => {
 
   useEffect(() => {
     if (!isReady) return;
-
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
+    const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, [isReady]);
 
@@ -60,13 +55,11 @@ const DigitalClock = () => {
     let hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
-
     hours = hours % 12 || 12;
-
     return {
       hours: hours.toString().padStart(2, '0'),
       minutes: minutes.toString().padStart(2, '0'),
-      seconds: seconds.toString().padStart(2, '0')
+      seconds: seconds.toString().padStart(2, '0'),
     };
   };
 
@@ -76,7 +69,7 @@ const DigitalClock = () => {
     display: 'inline-block',
     fontFamily: `${fontVariation}, 'JetBrains Mono', 'SF Mono', Menlo, Monaco, Consolas, monospace`,
     fontWeight: '900',
-    fontSize: isMobile ? '5vw' : '6vw', // Reduced for viewport fit
+    fontSize: isMobile ? '5vw' : '6vw',
     lineHeight: '0.85',
     color: '#ffffff',
     textAlign: 'center',
@@ -90,9 +83,9 @@ const DigitalClock = () => {
       )
     `,
     borderRadius: '1.5rem',
-    margin: isMobile ? '0.2rem' : '0.3rem', // Reduced margins
-    padding: isMobile ? '0.8rem 0.6rem' : '1.2rem 0.8rem', // Adjusted padding
-    minWidth: isMobile ? '2.5rem' : '3.5rem', // Smaller boxes
+    margin: isMobile ? '0.2rem' : '0.3rem',
+    padding: isMobile ? '0.8rem 0.6rem' : '1.2rem 0.8rem',
+    minWidth: isMobile ? '2.5rem' : '3.5rem',
     border: '3px solid transparent',
     backgroundClip: 'padding-box',
     backdropFilter: 'blur(50px) saturate(220%) brightness(130%)',
@@ -119,30 +112,32 @@ const DigitalClock = () => {
       0 3rem 6rem rgba(0,0,0,0.6)
     `,
     filter: 'brightness(1.15) contrast(1.3) saturate(1.4)',
-    animation: 'float 7s ease-in-out infinite, rainbow-glow 6s ease-in-out infinite'
+    animation: 'float 7s ease-in-out infinite, rainbow-glow 6s ease-in-out infinite',
   };
 
   const containerStyle = {
     width: '100vw',
-    height: '100dvh', // Changed to vh for viewport fit
+    height: '100dvh',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    background: isReady ? `
+    background: isReady
+      ? `
       radial-gradient(ellipse at top left, #667eea 0%, #764ba2 20%, #f093fb 40%, #f5576c 60%, #4facfe 80%, #ec4899 100%),
       radial-gradient(ellipse at top right, #a8edea 0%, #fed6e3 20%, #ffecd2 40%, #fcb69f 60%, #667eea 80%, #f59e0b 100%),
       radial-gradient(ellipse at bottom left, #ff9a9e 0%, #fecfef 20%, #fecfef 40%, #667eea 60%, #764ba2 80%, #8b5cf6 100%),
       radial-gradient(ellipse at bottom right, #667eea 0%, #764ba2 20%, #f093fb 40%, #f5576c 60%, #4facfe 80%, #10b981 100%),
       linear-gradient(45deg, #000000 0%, #1a1a2e 20%, #16213e 40%, #0f0f23 60%, #000000 80%, #1e293b 100%)
-    ` : '#000000',
+    `
+      : '#000000',
     backgroundSize: '500% 500%, 500% 500%, 500% 500%, 500% 500%, 100% 100%',
     backgroundBlendMode: 'overlay, soft-light, color-dodge, multiply, normal',
     margin: 0,
     padding: 0,
     overflow: 'hidden',
     position: 'relative',
-    animation: isReady ? 'aurora 25s ease-in-out infinite, fadeIn 4s ease-out' : 'none'
+    animation: isReady ? 'aurora 25s ease-in-out infinite, fadeIn 4s ease-out' : 'none',
   };
 
   const timeContainerStyle = {
@@ -150,12 +145,12 @@ const DigitalClock = () => {
     flexDirection: isMobile ? 'column' : 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: isMobile ? '1.5rem' : '2rem', // Reduced gap for viewport fit
+    gap: isMobile ? '1.5rem' : '2rem',
     position: 'relative',
     zIndex: 10,
     animation: isReady ? 'entrance 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s both' : 'none',
     transform: 'translateZ(0)',
-    perspective: '1200px'
+    perspective: '1200px',
   };
 
   const timeGroupStyle = {
@@ -164,7 +159,7 @@ const DigitalClock = () => {
     justifyContent: 'center',
     position: 'relative',
     transform: 'translateZ(60px)',
-    animation: 'group-float 9s ease-in-out infinite'
+    animation: 'group-float 9s ease-in-out infinite',
   };
 
   const cosmicNoiseStyle = {
@@ -184,7 +179,7 @@ const DigitalClock = () => {
       radial-gradient(circle at 75% 25%, rgba(236,72,153,0.2) 0%, transparent 3%)
     `,
     backgroundSize: '350px 350px, 300px 300px, 450px 450px, 400px 400px, 250px 250px, 320px 320px, 280px 280px',
-    animation: 'cosmic-drift 35s linear infinite, twinkle 3s ease-in-out infinite'
+    animation: 'cosmic-drift 35s linear infinite, twinkle 3s ease-in-out infinite',
   };
 
   const auroraOverlayStyle = {
@@ -205,81 +200,88 @@ const DigitalClock = () => {
       )
     `,
     animation: 'aurora-sweep 15s ease-in-out infinite',
-    zIndex: 2
+    zIndex: 2,
   };
 
   if (!isReady) {
     return (
-      <div style={{
-        width: '100vw',
-        height: '100d', // Changed to vh for viewport fit
-        background: 'radial-gradient(circle at center, #1a1a2e 0%, #000000 100%)',
-        margin: 0,
-        padding: 0,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <div style={{
+      <div
+        style={{
+          width: '100vw',
+          height: '100dvh',
+          background: 'radial-gradient(circle at center, #1a1a2e 0%, #000000 100%)',
+          margin: 0,
+          padding: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
           position: 'relative',
-          width: '8rem', // Reduced size
-          height: '8rem', // Reduced size
-          marginBottom: '2rem'
-        }}>
-          <div style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            border: '4px solid transparent',
-            borderTop: '4px solid rgba(147,51,234,0.9)',
-            borderRight: '4px solid rgba(59,130,246,0.7)',
-            borderRadius: '50%',
-            animation: 'premium-spin 2.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite'
-          }} />
-          <div style={{
-            position: 'absolute',
-            width: '85%',
-            height: '85%',
-            top: '7.5%',
-            left: '7.5%',
-            border: '3px solid transparent',
-            borderTop: '3px solid rgba(16,185,129,0.9)',
-            borderLeft: '3px solid rgba(245,101,101,0.7)',
-            borderRadius: '50%',
-            animation: 'premium-spin 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite reverse'
-          }} />
-          <div style={{
-            position: 'absolute',
-            width: '70%',
-            height: '70%',
-            top: '15%',
-            left: '15%',
-            background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%)',
-            borderRadius: '50%',
-            animation: 'pulse 2.5s ease-in-out infinite'
-          }} />
-          <div style={{
-            position: 'absolute',
-            width: '40%',
-            height: '40%',
-            top: '30%',
-            left: '30%',
-            background: 'radial-gradient(circle, rgba(236,72,153,0.3) 0%, transparent 70%)',
-            borderRadius: '50%',
-            animation: 'pulse 1.5s ease-in-out infinite reverse'
-          }} />
+          overflow: 'hidden',
+        }}
+      >
+        <div style={{ position: 'relative', width: '8rem', height: '8rem', marginBottom: '2rem' }}>
+          <div
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              border: '4px solid transparent',
+              borderTop: '4px solid rgba(147,51,234,0.9)',
+              borderRight: '4px solid rgba(59,130,246,0.7)',
+              borderRadius: '50%',
+              animation: 'premium-spin 2.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              width: '85%',
+              height: '85%',
+              top: '7.5%',
+              left: '7.5%',
+              border: '3px solid transparent',
+              borderTop: '3px solid rgba(16,185,129,0.9)',
+              borderLeft: '3px solid rgba(245,101,101,0.7)',
+              borderRadius: '50%',
+              animation: 'premium-spin 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite reverse',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              width: '70%',
+              height: '70%',
+              top: '15%',
+              left: '15%',
+              background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%)',
+              borderRadius: '50%',
+              animation: 'pulse 2.5s ease-in-out infinite',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              width: '40%',
+              height: '40%',
+              top: '30%',
+              left: '30%',
+              background: 'radial-gradient(circle, rgba(236,72,153,0.3) 0%, transparent 70%)',
+              borderRadius: '50%',
+              animation: 'pulse 1.5s ease-in-out infinite reverse',
+            }}
+          />
         </div>
-        <div style={{
-          color: 'rgba(255,255,255,0.8)',
-          fontSize: '1.2rem', // Slightly reduced
-          fontFamily: 'monospace',
-          letterSpacing: '0.3rem',
-          textTransform: 'uppercase',
-          animation: 'glow-text 2.5s ease-in-out infinite alternate'
-        }}>
+        <div
+          style={{
+            color: 'rgba(255,255,255,0.8)',
+            fontSize: '1.2rem',
+            fontFamily: 'monospace',
+            letterSpacing: '0.3rem',
+            textTransform: 'uppercase',
+            animation: 'glow-text 2.5s ease-in-out infinite alternate',
+          }}
+        >
           Initializing Cosmos...
         </div>
       </div>
@@ -290,42 +292,24 @@ const DigitalClock = () => {
     <div style={containerStyle}>
       <div style={cosmicNoiseStyle} />
       <div style={auroraOverlayStyle} />
-      
+
       <div style={timeContainerStyle}>
-        <div style={{...timeGroupStyle, animationDelay: '0s'}}>
-          <div style={{
-            ...digitBoxStyle,
-            animationDelay: '0.1s'
-          }}>{hours[0]}</div>
-          <div style={{
-            ...digitBoxStyle,
-            animationDelay: '0.2s'
-          }}>{hours[1]}</div>
+        <div style={{ ...timeGroupStyle, animationDelay: '0s' }}>
+          <div style={{ ...digitBoxStyle, animationDelay: '0.1s' }}>{hours[0]}</div>
+          <div style={{ ...digitBoxStyle, animationDelay: '0.2s' }}>{hours[1]}</div>
         </div>
-        
-        <div style={{...timeGroupStyle, animationDelay: '1.2s'}}>
-          <div style={{
-            ...digitBoxStyle,
-            animationDelay: '0.3s'
-          }}>{minutes[0]}</div>
-          <div style={{
-            ...digitBoxStyle,
-            animationDelay: '0.4s'
-          }}>{minutes[1]}</div>
+
+        <div style={{ ...timeGroupStyle, animationDelay: '1.2s' }}>
+          <div style={{ ...digitBoxStyle, animationDelay: '0.3s' }}>{minutes[0]}</div>
+          <div style={{ ...digitBoxStyle, animationDelay: '0.4s' }}>{minutes[1]}</div>
         </div>
-        
-        <div style={{...timeGroupStyle, animationDelay: '2.4s'}}>
-          <div style={{
-            ...digitBoxStyle,
-            animationDelay: '0.5s'
-          }}>{seconds[0]}</div>
-          <div style={{
-            ...digitBoxStyle,
-            animationDelay: '0.6s'
-          }}>{seconds[1]}</div>
+
+        <div style={{ ...timeGroupStyle, animationDelay: '2.4s' }}>
+          <div style={{ ...digitBoxStyle, animationDelay: '0.5s' }}>{seconds[0]}</div>
+          <div style={{ ...digitBoxStyle, animationDelay: '0.6s' }}>{seconds[1]}</div>
         </div>
       </div>
-      
+
       <style>{`
         @keyframes aurora {
           0%, 100% { background-position: 0% 50%, 0% 50%, 0% 50%, 0% 50%, 0% 50%; }
@@ -335,125 +319,56 @@ const DigitalClock = () => {
           80% { background-position: 75% 75%, 0% 25%, 100% 75%, 50% 50%, 0% 50%; }
           100% { background-position: 0% 50%, 0% 50%, 0% 50%, 0% 50%, 0% 50%; }
         }
-        
         @keyframes fadeIn {
           from { opacity: 0; transform: scale(0.8) rotate(5deg); }
           to { opacity: 1; transform: scale(1) rotate(0deg); }
         }
-        
         @keyframes entrance {
-          0% { 
-            opacity: 0; 
-            transform: translateY(10rem) rotateX(60deg) scale(0.7); 
-            filter: blur(3rem);
-          }
-          100% { 
-            opacity: 1; 
-            transform: translateY(0) rotateX(0deg) scale(1); 
-            filter: blur(0);
-          }
+          0% { opacity: 0; transform: translateY(10rem) rotateX(60deg) scale(0.7); filter: blur(3rem); }
+          100% { opacity: 1; transform: translateY(0) rotateX(0deg) scale(1); filter: blur(0); }
         }
-        
         @keyframes float {
           0%, 100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
           25% { transform: translateY(-0.8rem) rotateX(3deg) rotateY(1deg); }
           50% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
           75% { transform: translateY(0.5rem) rotateX(-2deg) rotateY(-1deg); }
         }
-        
         @keyframes group-float {
           0%, 100% { transform: translateZ(60px) rotateY(0deg) rotateX(0deg); }
           33% { transform: translateZ(70px) rotateY(3deg) rotateX(1deg); }
           66% { transform: translateZ(50px) rotateY(-3deg) rotateX(-1deg); }
         }
-        
         @keyframes rainbow-glow {
-          0% { 
-            text-shadow: 
-              0 0 1.5rem rgba(255,255,255,1),
-              0 0 3rem rgba(147,51,234,0.9),
-              0 0 4.5rem rgba(59,130,246,0.9),
-              0 0 6rem rgba(16,185,129,0.7);
-          }
-          20% { 
-            text-shadow: 
-              0 0 1.5rem rgba(255,255,255,1),
-              0 0 3rem rgba(59,130,246,0.9),
-              0 0 4.5rem rgba(16,185,129,0.9),
-              0 0 6rem rgba(245,101,101,0.7);
-          }
-          40% { 
-            text-shadow: 
-              0 0 1.5rem rgba(255,255,255,1),
-              0 0 3rem rgba(16,185,129,0.9),
-              0 0 4.5rem rgba(245,101,101,0.9),
-              0 0 6rem rgba(236,72,153,0.7);
-          }
-          60% { 
-            text-shadow: 
-              0 0 1.5rem rgba(255,255,255,1),
-              0 0 3rem rgba(245,101,101,0.9),
-              0 0 4.5rem rgba(236,72,153,0.9),
-              0 0 6rem rgba(147,51,234,0.7);
-          }
-          80% { 
-            text-shadow: 
-              0 0 1.5rem rgba(255,255,255,1),
-              0 0 3rem rgba(236,72,153,0.9),
-              0 0 4.5rem rgba(147,51,234,0.9),
-              0 0 6rem rgba(59,130,246,0.7);
-          }
-          100% { 
-            text-shadow: 
-              0 0 1.5rem rgba(255,255,255,1),
-              0 0 3rem rgba(147,51,234,0.9),
-              0 0 4.5rem rgba(59,130,246,0.9),
-              0 0 6rem rgba(16,185,129,0.7);
-          }
+          0% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(147,51,234,0.9), 0 0 4.5rem rgba(59,130,246,0.9), 0 0 6rem rgba(16,185,129,0.7); }
+          20% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(59,130,246,0.9), 0 0 4.5rem rgba(16,185,129,0.9), 0 0 6rem rgba(245,101,101,0.7); }
+          40% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(16,185,129,0.9), 0 0 4.5rem rgba(236,72,153,0.9), 0 0 6rem rgba(59,130,246,0.7); }
+          60% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(236,72,153,0.9), 0 0 4.5rem rgba(245,101,101,0.9), 0 0 6rem rgba(147,51,234,0.7); }
+          80% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(245,101,101,0.9), 0 0 4.5rem rgba(147,51,234,0.9), 0 0 6rem rgba(16,185,129,0.7); }
+          100% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(147,51,234,0.9), 0 0 4.5rem rgba(59,130,246,0.9), 0 0 6rem rgba(16,185,129,0.7); }
         }
-        
         @keyframes cosmic-drift {
-          from { transform: translateX(0) translateY(0); }
-          to { transform: translateX(-350px) translateY(-150px); }
+          0% { background-position: 0% 0%, 0% 0%, 0% 0%; }
+          100% { background-position: 100% 100%, -100% -100%, 100% -100%; }
         }
-        
         @keyframes twinkle {
           0%, 100% { opacity: 0.2; }
-          50% { opacity: 0.4; }
+          50% { opacity: 0.3; }
         }
-        
         @keyframes aurora-sweep {
-          0% { transform: translateX(-100%) skewX(5deg); opacity: 0; }
-          50% { opacity: 1; }
-          100% { transform: translateX(100%) skewX(-5deg); opacity: 0; }
+          0%, 100% { transform: translateX(-20%) scaleX(1); opacity: 0.2; }
+          50% { transform: translateX(120%) scaleX(1.5); opacity: 0.5; }
         }
-        
         @keyframes premium-spin {
-          0% { transform: rotate(0deg) scale(1); }
-          50% { transform: rotate(180deg) scale(1.15); }
-          100% { transform: rotate(360deg) scale(1); }
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
-        
-        @keyframes glow-text {
-          0% { 
-            text-shadow: 0 0 1.5rem rgba(147,51,234,0.6); 
-            color: rgba(255,255,255,0.8); 
-          }
-          100% { 
-            text-shadow: 0 0 3rem rgba(147,51,234,1), 0 0 4.5rem rgba(59,130,246,0.9), 0 0 6rem rgba(236,72,153,0.7); 
-            color: rgba(255,255,255,1); 
-          }
-        }
-        
         @keyframes pulse {
-          0%, 100% { transform: scale(1); opacity: 1; }
-          50% { transform: scale(1.1); opacity: 0.7; }
+          0%, 100% { transform: scale(1); opacity: 0.8; }
+          50% { transform: scale(1.2); opacity: 0.4; }
         }
-        
-        body {
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
+        @keyframes glow-text {
+          0% { text-shadow: 0 0 0.5rem rgba(255,255,255,0.3); opacity: 0.6; }
+          100% { text-shadow: 0 0 2rem rgba(147,51,234,0.8), 0 0 4rem rgba(59,130,246,0.6); opacity: 1; }
         }
       `}</style>
     </div>
