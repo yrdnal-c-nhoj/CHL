@@ -5,12 +5,13 @@ import stamp2Img from './stamp2.png';
 import stamp3Img from './stamp3.png';
 import frameImg from './frame.jpg';
 
-// Inject @font-face via JS
+// Inject @font-face with fallback and enhanced media queries
 const styleSheet = new CSSStyleSheet();
 styleSheet.replaceSync(`
   @font-face {
     font-family: 'air';
     src: url(${airFontUrl}) format('truetype');
+    font-display: swap;
   }
 
   @keyframes bounceJostle {
@@ -27,6 +28,26 @@ styleSheet.replaceSync(`
     75%  { transform: translate(1.5px, -1.5px) rotate(-0.3deg); }
     82%  { transform: translate(-0.7px, 1px) rotate(0.15deg); }
   }
+
+  @media (max-width: 600px) {
+    .stamp { top: 1vh; right: 5vw; width: 4rem; height: 2.5rem; }
+    .stamp2 { top: 3vh; right: 2vw; width: 3rem; height: 2.5rem; }
+    .stamp3 { top: 1.5vh; right: 2vw; width: 4rem; height: 2rem; }
+    .bgimage { maxHeight: 80dvh; maxWidth: 90vw; }
+    .digitBox { fontSize: 4rem; width: 1.5rem; }
+    .colon { fontSize: 4rem; width: 0.8rem; height: 4rem; }
+    .clock { margin-top: 15vh; } /* Increased margin for smaller screens */
+  }
+
+  @media (max-width: 400px) {
+    .stamp { top: 0.5vh; right: 3vw; width: 3rem; height: 2rem; }
+    .stamp2 { top: 2vh; right: 1vw; width: 2.5rem; height: 2rem; }
+    .stamp3 { top: 1vh; right: 1vw; width: 3rem; height: 1.5rem; }
+    .bgimage { maxHeight: 75dvh; maxWidth: 85vw; }
+    .digitBox { fontSize: 3rem; width: 1.2rem; }
+    .colon { fontSize: 3rem; width: 0.6rem; height: 3rem; }
+    .clock { margin-top: 20vh; } /* Further increased margin for very small screens */
+  }
 `);
 
 document.adoptedStyleSheets = [...document.adoptedStyleSheets, styleSheet];
@@ -35,18 +56,21 @@ const styles = {
   body: {
     color: 'rgb(84, 82, 176)',
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100d',
+    minHeight: '100dvh',
     width: '100vw',
     margin: 0,
-    overflow: 'hidden',
+    overflow: 'visible', // Changed to 'visible' to ensure no clipping of the image
     position: 'relative',
-    fontFamily: 'air'
+    fontFamily: 'air, Arial, sans-serif',
+    boxSizing: 'border-box',
   },
   clock: {
     display: 'flex',
-    zIndex: 3
+    zIndex: 10,
+    marginTop: '10vh', // Prevent overlap with stamps
   },
   digitBox: {
     width: '2rem',
@@ -54,7 +78,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: '8rem',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
   },
   colon: {
     width: '1rem',
@@ -62,18 +86,24 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: '7rem'
+    fontSize: '7rem',
   },
   jostle: {
-    animation: 'bounceJostle 10s infinite ease-in-out'
+    animation: 'bounceJostle 10s infinite ease-in-out',
+    willChange: 'transform',
   },
   bgimage: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    height: '85%',
-    width: '95%',
-    zIndex: 1
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)', // Center the image
+    maxHeight: '90dvh',
+    maxWidth: '90vw',
+    width: 'auto',
+    height: 'auto',
+    objectFit: 'contain', // Ensure no clipping
+    zIndex: 1,
+    // Removed jostle animation to isolate centering issue
   },
   stamp: {
     position: 'absolute',
@@ -82,8 +112,8 @@ const styles = {
     width: '6rem',
     height: '4rem',
     transformOrigin: 'center center',
-    zIndex: 2,
-    animationDelay: '0.4s'
+    zIndex: 5,
+    animationDelay: '0.4s',
   },
   stamp2: {
     position: 'absolute',
@@ -92,8 +122,8 @@ const styles = {
     width: '5rem',
     height: '4rem',
     transformOrigin: 'center center',
-    zIndex: 2,
-    animationDelay: '0.8s'
+    zIndex: 5,
+    animationDelay: '0.8s',
   },
   stamp3: {
     position: 'absolute',
@@ -102,8 +132,8 @@ const styles = {
     width: '7rem',
     height: '3rem',
     transformOrigin: 'center center',
-    zIndex: 2
-  }
+    zIndex: 5,
+  },
 };
 
 export default function Clock() {
@@ -114,23 +144,22 @@ export default function Clock() {
     return () => clearInterval(interval);
   }, []);
 
-  const timeStr = time.toLocaleTimeString('en-US', { hour12: false }).replace(/:/g, '');
+  const timeStr = time.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(/:/g, '');
   const format = ['digit', 'digit', 'colon', 'digit', 'digit', 'colon', 'digit', 'digit'];
   const timeParts = [...timeStr];
   let i = 0;
 
   return (
-    <div style={styles.body}>
-      <img src={frameImg} style={{ ...styles.bgimage, ...styles.jostle, animationDelay: '0.2s' }} />
-      <img src={stamp3Img} style={{ ...styles.stamp3, ...styles.jostle }} />
-      <img src={stamp2Img} style={{ ...styles.stamp2, ...styles.jostle }} />
-      <img src={stampImg} style={{ ...styles.stamp, ...styles.jostle }} />
-
+    <div style={styles.body} role="timer" aria-live="polite">
+      <img src={frameImg} alt="Background frame" style={styles.bgimage} />
+      <img src={stamp3Img} alt="Stamp 3" style={{ ...styles.stamp3, ...styles.jostle }} />
+      <img src={stamp2Img} alt="Stamp 2" style={{ ...styles.stamp2, ...styles.jostle }} />
+      <img src={stampImg} alt="Stamp 1" style={{ ...styles.stamp, ...styles.jostle }} />
       <div style={styles.clock}>
         {format.map((type, idx) => {
           if (type === 'colon') {
             return (
-              <div key={idx} style={{ ...styles.colon, ...styles.jostle }}>
+              <div key={idx} style={{ ...styles.colon, ...styles.jostle }} aria-hidden="true">
                 :
               </div>
             );
