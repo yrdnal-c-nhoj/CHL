@@ -1,115 +1,21 @@
-import { useEffect } from 'react';
-import styled from 'styled-components';
-import pinMeNeedles from './pin_me_needles.ttf';
-import scorpImage from './scorp.webp';
+import React, { useEffect } from 'react';
+import scorpImage from './sand.webp';
 import hourHandImage from './giphy1-ezgif.com-rotate(2).gif';
 import minuteHandImage from './giphy1-ezgif.com-rotate(1).gif';
 import secondHandImage from './giphy1-ezgif.com-rotate(3).gif';
+import bangFont_2025_11_01 from './bang.ttf'; // font variable includes today's date
 
-const numbers = Array.from({ length: 12 }, (_, i) => ({
-  value: i + 1,
-  rotation: i * 30,
-}));
-
-const Body = styled.div`
-  @font-face {
-    font-family: 'pin_me_needles';
-    src: url(${pinMeNeedles}) format('truetype');
-  }
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100dvh;
-  width: 100vw;
-  margin: 0;
-  background-color: #94814a;
-  overflow: hidden;
-  position: relative; /* create stacking context */
-`;
-
-const BgImage = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.7;
-  z-index: 0;
-  filter: saturate(200%) contrast(200%);
-  pointer-events: none;
-`;
-
-const ClockContainer = styled.div`
-  position: relative;
-  width: 90vmin;
-  height: 90vmin;
-  z-index: 2; /* ensures above background */
-`;
-
-const ClockFace = styled.div`
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  position: relative;
-`;
-
-const Number = styled.div`
-  font-family: 'pin_me_needles';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  font-size: 16.5vmin;
-  color: #c5c53e;
-  z-index: 3;
-  text-shadow: #09f745 0.1rem 0.1rem, #080808 -0.1rem 0.1rem;
-
-  & > div {
-    position: absolute;
-    width: 100%;
-    top: 5%;
-  }
-`;
-
-const Hand = styled.div`
-  position: absolute;
-  bottom: 50%;
-  left: 50%;
-  transform-origin: bottom;
-  transition: transform 0.05s ease-out;
-`;
-
-const HourHand = styled(Hand)`
-  filter: saturate(950%);
-  z-index: 4;
-`;
-
-const MinuteHand = styled(Hand)`
-  filter: sepia(300%) saturate(400%);
-  left: 8.8rem;
-  transform: translateX(-60%);
-  z-index: 5;
-`;
-
-const SecondHand = styled(Hand)`
-  filter: saturate(390%) contrast(200%) brightness(170%) sepia(200%);
-  z-index: 6;
-`;
-
-const Nav = styled.div`
-  position: fixed;
-  top: 2vh;
-  left: 2vw;
-  z-index: 100; /* ensures above everything */
-  color: white;
-  font-family: sans-serif;
-  font-size: 1.5rem;
-`;
-
-const Clock = () => {
+export default function Clock() {
   useEffect(() => {
+    const styleTag = document.createElement('style');
+    styleTag.textContent = `
+      @font-face {
+        font-family: 'bang';
+        src: url(${bangFont_2025_11_01}) format('truetype');
+      }
+    `;
+    document.head.appendChild(styleTag);
+
     const updateClock = () => {
       const now = new Date();
       const seconds = now.getSeconds();
@@ -130,47 +36,150 @@ const Clock = () => {
       const hourHand = document.querySelector('.hour-hand');
 
       if (secondHand) {
-        secondHand.style.transform = `translateX(-50%) rotate(${secondDeg}deg) scaleY(${secondScale})`;
+        secondHand.style.transform = `translate(-50%, 0) rotate(${secondDeg}deg) scaleY(${secondScale})`;
       }
       if (minuteHand) {
-        minuteHand.style.transform = `translateX(-60%) rotate(${minuteDeg}deg) scaleY(${minuteScale})`;
+        minuteHand.style.transform = `translate(-50%, 0) rotate(${minuteDeg}deg) scaleY(${minuteScale})`;
       }
       if (hourHand) {
-        hourHand.style.transform = `translateX(-50%) rotate(${hourDeg}deg) scaleY(${hourScale})`;
+        hourHand.style.transform = `translate(-50%, 0) rotate(${hourDeg}deg) scaleY(${hourScale})`;
       }
     };
 
-    const intervalId = setInterval(updateClock, 50);
+    const interval = setInterval(updateClock, 50);
     updateClock();
-
-    return () => clearInterval(intervalId);
+    return () => clearInterval(interval);
   }, []);
 
+  const numbers = Array.from({ length: 12 }, (_, i) => ({
+    value: i + 1,
+    rotation: i * 30,
+  }));
+
   return (
-    <Body>
-      <BgImage src={scorpImage} alt="Background" />
-      <Nav>← Navigation</Nav>
+    <div
+      style={{
+        fontFamily: 'bang, sans-serif',
+        margin: 0,
+        padding: 0,
+        background: 'rgb(9,9,9)',
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+      }}
+    >
+      {/* Rotated background filling the window */}
+      <img
+        src={scorpImage}
+        alt="Background"
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '100vh',
+          height: '100vw',
+          objectFit: 'cover',
+          opacity: 0.7,
+          filter: 'saturate(0.6) contrast(1.8)',
+          pointerEvents: 'none',
+          transform: 'translate(-50%, -50%) rotate(90deg)',
+        }}
+      />
 
-      <ClockContainer>
-        <ClockFace>
-          {numbers.map((num) => (
-            <Number key={num.value} style={{ transform: `rotate(${num.rotation}deg)` }}>
-              <div>{num.value}</div>
-            </Number>
-          ))}
-          <HourHand className="hour-hand">
-            <img src={hourHandImage} alt="Hour Hand" />
-          </HourHand>
-          <MinuteHand className="minute-hand">
-            <img src={minuteHandImage} alt="Minute Hand" />
-          </MinuteHand>
-          <SecondHand className="second-hand">
-            <img src={secondHandImage} alt="Second Hand" />
-          </SecondHand>
-        </ClockFace>
-      </ClockContainer>
-    </Body>
+      {/* Clock */}
+      <div
+        style={{
+          position: 'relative',
+          width: '90vmin',
+          height: '90vmin',
+          zIndex: 2,
+        }}
+      >
+        {numbers.map((num) => (
+          <div
+            key={num.value}
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              textAlign: 'center',
+              fontSize: '16.5vmin',
+              color: '#c5c53e',
+              textShadow: '#09f745 0.1rem 0.1rem, #080808 -0.1rem 0.1rem',
+              transform: `rotate(${num.rotation}deg)`,
+              fontFamily: 'bang, sans-serif',
+            }}
+          >
+            <div
+              style={{
+                position: 'absolute',
+                width: '100%',
+                top: '5%',
+              }}
+            >
+              {num.value}
+            </div>
+          </div>
+        ))}
+
+        {/* Hour Hand */}
+        <div
+          className="hour-hand"
+          style={{
+            position: 'absolute',
+            bottom: '50%',
+            left: '50%',
+            transformOrigin: 'bottom',
+            zIndex: 4,
+          }}
+        >
+          <img
+            src={hourHandImage}
+            alt="Hour Hand"
+            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+          />
+        </div>
+
+        {/* Minute Hand */}
+        <div
+          className="minute-hand"
+          style={{
+            position: 'absolute',
+            bottom: '50%',
+            left: '50%',
+            transformOrigin: 'bottom',
+            zIndex: 5,
+          }}
+        >
+          <img
+            src={minuteHandImage}
+            alt="Minute Hand"
+            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+          />
+        </div>
+
+        {/* Second Hand */}
+        <div
+          className="second-hand"
+          style={{
+            position: 'absolute',
+            bottom: '50%',
+            left: '50%',
+            transformOrigin: 'bottom',
+            zIndex: 6,
+          }}
+        >
+          <img
+            src={secondHandImage}
+            alt="Second Hand"
+            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+          />
+        </div>
+      </div>
+    </div>
   );
-};
-
-export default Clock;
+}

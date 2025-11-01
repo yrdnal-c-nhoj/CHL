@@ -112,7 +112,7 @@ export default function SlowLightningClock() {
     clockContainer: {
       position: "relative",
       zIndex: 7,
-      height: "100vh",
+      height: "100dvh",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
