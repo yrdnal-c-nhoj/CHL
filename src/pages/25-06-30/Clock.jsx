@@ -20,16 +20,15 @@ const allImages = [
   bgImage,
   img1, img2, img3, img4, img5, img6,
   img7, img8, img9, img10, img11, img12,
-  hourHand, minuteHand, secondHand
+  hourHand, minuteHand, secondHand,
 ];
 
 export default function Clock() {
   const [loaded, setLoaded] = useState(false);
 
-  // preload all images
   useEffect(() => {
     let loadedCount = 0;
-    allImages.forEach(src => {
+    allImages.forEach((src) => {
       const img = new Image();
       img.src = src;
       img.onload = () => {
@@ -39,9 +38,9 @@ export default function Clock() {
     });
   }, []);
 
-  // clock rotation logic
   useEffect(() => {
     if (!loaded) return;
+
     const updateClock = () => {
       const now = new Date();
       const second = now.getSeconds();
@@ -52,9 +51,15 @@ export default function Clock() {
       const minuteDeg = minute * 6 + second * 0.1;
       const hourDeg = hour * 30 + minute * 0.5;
 
-      document.getElementById('second').style.transform = `translate(-50%, 0%) rotate(${secondDeg}deg)`;
-      document.getElementById('minute').style.transform = `translate(-50%, 0%) rotate(${minuteDeg}deg)`;
-      document.getElementById('hour').style.transform = `translate(-50%, 0%) rotate(${hourDeg}deg)`;
+      const sec = document.getElementById('second');
+      const min = document.getElementById('minute');
+      const hr = document.getElementById('hour');
+
+      if (sec && min && hr) {
+        sec.style.transform = `translate(-50%, 0%) rotate(${secondDeg}deg)`;
+        min.style.transform = `translate(-50%, 0%) rotate(${minuteDeg}deg)`;
+        hr.style.transform = `translate(-50%, 0%) rotate(${hourDeg}deg)`;
+      }
     };
 
     const interval = setInterval(updateClock, 1000);
@@ -66,12 +71,13 @@ export default function Clock() {
     position: 'absolute',
     top: 0,
     left: 0,
-    width: '100vw',
-    height: '100dvh',
+    width: '100%',
+    height: '100%',
     objectFit: 'cover',
     zIndex: 1,
     animation: 'slow-rotate 60s linear infinite',
     transformOrigin: 'center center',
+    willChange: 'transform',
   };
 
   const clockStyle = {
@@ -79,15 +85,16 @@ export default function Clock() {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    height: '75vh',
-    width: '75vh',
+    height: '75dvh',
+    width: '75dvh',
     zIndex: 2,
     borderRadius: '50%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    opacity: loaded ? 1 : 0,
     transition: 'opacity 1s ease',
-    opacity: loaded ? 1 : 0, // Fade in when ready
+    willChange: 'transform',
   };
 
   const numberStyle = {
@@ -95,6 +102,7 @@ export default function Clock() {
     height: '3rem',
     width: '3rem',
     transform: 'translate(-50%, -50%)',
+    willChange: 'transform',
   };
 
   const handStyle = {
@@ -102,6 +110,7 @@ export default function Clock() {
     bottom: '50%',
     left: '50%',
     transformOrigin: 'bottom',
+    willChange: 'transform',
   };
 
   return (
@@ -112,12 +121,12 @@ export default function Clock() {
           "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'%3E%3Ctext x='25' y='35' font-size='30' text-anchor='middle' dominant-baseline='middle' font-family='Arial, sans-serif'%3E🥚%3C/text%3E%3C/svg%3E\")",
         backgroundRepeat: 'repeat',
         backgroundSize: '15vw 15vw',
-        margin: 0,
-        height: '100vh',
-        width: '100vw',
+        height: '100dvh',
+        width: '100%',
         overflow: 'hidden',
         fontSize: '1rem',
         position: 'relative',
+        touchAction: 'none',
       }}
     >
       {!loaded && (
@@ -157,7 +166,12 @@ export default function Clock() {
             { top: '10%', left: '50%' },
           ];
           return (
-            <img key={i} src={img} alt={`Number ${i + 1}`} style={{ ...numberStyle, ...positions[i] }} />
+            <img
+              key={i}
+              src={img}
+              alt={`Number ${i + 1}`}
+              style={{ ...numberStyle, ...positions[i] }}
+            />
           );
         })}
         <img id="hour" src={hourHand} alt="Hour hand" style={{ ...handStyle, height: '18vh', width: '12.8rem', zIndex: 2 }} />
