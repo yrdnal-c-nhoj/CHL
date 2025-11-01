@@ -1,463 +1,295 @@
+import React, { useEffect, useRef, useMemo } from 'react';
+import orbFont from './orb.ttf'; // Local font file
 
-import React, { useState, useEffect } from 'react';
+const COLORS = {
+  hourTick: '#ff00ff',
+  minuteTick: '#ffff00',
+  number: '#00ffff',
+  hourHand: '#32a6c3',
+  minuteHand: '#00ff90',
+  secondHand: '#FD02C3FF',
+  background: '#000',
+  clockBorder: '#0ff',
+  centerDot: '#ff00ff',
+  centerDotGradient: '#800080',
+};
 
-const DigitalClock = () => {
-  const [time, setTime] = useState(new Date());
-  const [isReady, setIsReady] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+const SIZES = {
+  clock: 'clamp(30vw, 50vh, 80vh)',
+  hourHand: { width: '0.6rem', height: '5rem' },
+  minuteHand: { width: '0.4rem', height: '7rem' },
+  secondHand: { width: '0.3rem', height: '8.5rem' },
+  centerDot: '1.6rem',
+  hourTick: { width: '0.5rem', height: '2rem' },
+  minuteTick: { width: '0.3rem', height: '1rem' },
+  number: { width: '2rem', height: '2rem', fontSize: '1.9rem' },
+};
 
-  const fontVariation = `ultraFont${new Date().getTime()}`;
+const NeonClock = () => {
+  const clockRef = useRef(null);
+  const ticksRef = useRef([]);
+  const lastTickRef = useRef(-1);
+  const timeRef = useRef(null);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+    let animationFrameId;
+
+    const updateClock = () => {
+      const now = new Date();
+      const ms = now.getMilliseconds();
+      const second = now.getSeconds() + ms / 1000;
+      const minute = now.getMinutes() + second / 60;
+      const hour = now.getHours() + minute / 60;
+
+      const hourEl = document.getElementById('hour');
+      const minuteEl = document.getElementById('minute');
+      const secondEl = document.getElementById('second');
+      if (hourEl && minuteEl && secondEl) {
+        hourEl.style.transform = `translateX(-50%) rotate(${(hour % 12) * 30}deg)`;
+        minuteEl.style.transform = `translateX(-50%) rotate(${minute * 6}deg)`;
+        secondEl.style.transform = `translateX(-50%) rotate(${second * 6}deg)`;
+      }
+
+      if (timeRef.current) {
+        timeRef.current.textContent = now.toLocaleTimeString();
+      }
+
+      const tickIndex = Math.floor(second) % 60;
+      if (lastTickRef.current !== tickIndex) {
+        const tickToGlow = ticksRef.current[tickIndex];
+        if (tickToGlow && !tickToGlow.classList.contains('glow')) {
+          tickToGlow.classList.add('glow');
+          setTimeout(() => tickToGlow.classList.remove('glow'), 4000);
+        }
+        lastTickRef.current = tickIndex;
+      }
+
+      animationFrameId = requestAnimationFrame(updateClock);
     };
 
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-
-    return () => window.removeEventListener('resize', checkMobile);
+    animationFrameId = requestAnimationFrame(updateClock);
+    return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: '${fontVariation}';
-        src: local('JetBrains Mono'), local('SF Mono'), local('Menlo'), local('Monaco'), local('Consolas'), local('Fira Code'), local('monospace');
-        font-display: block;
-        font-weight: 100 900;
-        font-variation-settings: 'wght' 900;
-      }
-    `;
-    document.head.appendChild(style);
+  const renderTicks = useMemo(() => {
+    return Array.from({ length: 60 }).map((_, i) => {
+      const angle = i * 6 - 90;
+      const rad = (angle * Math.PI) / 180;
+      const tickX = 50 + 45 * Math.cos(rad);
+      const tickY = 50 + 45 * Math.sin(rad);
+      const isHour = i % 5 === 0;
 
-    const loadAssets = async () => {
-      await new Promise(resolve => setTimeout(resolve, 2500));
-      setIsReady(true);
-    };
-
-    loadAssets();
-
-    return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
-    };
-  }, [fontVariation]);
-
-  useEffect(() => {
-    if (!isReady) return;
-
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [isReady]);
-
-  const formatTime = (date) => {
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-
-    hours = hours % 12 || 12;
-
-    return {
-      hours: hours.toString().padStart(2, '0'),
-      minutes: minutes.toString().padStart(2, '0'),
-      seconds: seconds.toString().padStart(2, '0')
-    };
-  };
-
-  const { hours, minutes, seconds } = formatTime(time);
-
-  const digitBoxStyle = {
-    display: 'inline-block',
-    fontFamily: `${fontVariation}, 'JetBrains Mono', 'SF Mono', Menlo, Monaco, Consolas, monospace`,
-    fontWeight: '900',
-    fontSize: isMobile ? '5vw' : '6vw', // Reduced for viewport fit
-    lineHeight: '0.85',
-    color: '#ffffff',
-    textAlign: 'center',
-    background: `
-      linear-gradient(135deg, 
-        rgba(255,255,255,0.3) 0%, 
-        rgba(255,255,255,0.15) 25%,
-        rgba(147,51,234,0.2) 50%,
-        rgba(59,130,246,0.2) 75%,
-        rgba(0,0,0,0.3) 100%
-      )
-    `,
-    borderRadius: '1.5rem',
-    margin: isMobile ? '0.2rem' : '0.3rem', // Reduced margins
-    padding: isMobile ? '0.8rem 0.6rem' : '1.2rem 0.8rem', // Adjusted padding
-    minWidth: isMobile ? '2.5rem' : '3.5rem', // Smaller boxes
-    border: '3px solid transparent',
-    backgroundClip: 'padding-box',
-    backdropFilter: 'blur(50px) saturate(220%) brightness(130%)',
-    WebkitBackdropFilter: 'blur(50px) saturate(220%) brightness(130%)',
-    position: 'relative',
-    overflow: 'hidden',
-    transform: 'translateZ(0) perspective(1200px)',
-    transformStyle: 'preserve-3d',
-    transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
-    textShadow: `
-      0 0 1.5rem rgba(255,255,255,1),
-      0 0 3rem rgba(147,51,234,0.9),
-      0 0 4.5rem rgba(59,130,246,0.9),
-      0 0 6rem rgba(16,185,129,0.7),
-      0 0 7.5rem rgba(245,101,101,0.5),
-      0 0 9rem rgba(236,72,153,0.3)
-    `,
-    boxShadow: `
-      0 0 3rem rgba(147,51,234,0.5),
-      0 0 6rem rgba(59,130,246,0.4),
-      0 0 9rem rgba(16,185,129,0.3),
-      inset 0 1px 0 rgba(255,255,255,0.5),
-      inset 0 -1px 0 rgba(0,0,0,0.3),
-      0 3rem 6rem rgba(0,0,0,0.6)
-    `,
-    filter: 'brightness(1.15) contrast(1.3) saturate(1.4)',
-    animation: 'float 7s ease-in-out infinite, rainbow-glow 6s ease-in-out infinite'
-  };
-
-  const containerStyle = {
-    width: '100vw',
-    height: '100vh', // Changed to vh for viewport fit
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    background: isReady ? `
-      radial-gradient(ellipse at top left, #667eea 0%, #764ba2 20%, #f093fb 40%, #f5576c 60%, #4facfe 80%, #ec4899 100%),
-      radial-gradient(ellipse at top right, #a8edea 0%, #fed6e3 20%, #ffecd2 40%, #fcb69f 60%, #667eea 80%, #f59e0b 100%),
-      radial-gradient(ellipse at bottom left, #ff9a9e 0%, #fecfef 20%, #fecfef 40%, #667eea 60%, #764ba2 80%, #8b5cf6 100%),
-      radial-gradient(ellipse at bottom right, #667eea 0%, #764ba2 20%, #f093fb 40%, #f5576c 60%, #4facfe 80%, #10b981 100%),
-      linear-gradient(45deg, #000000 0%, #1a1a2e 20%, #16213e 40%, #0f0f23 60%, #000000 80%, #1e293b 100%)
-    ` : '#000000',
-    backgroundSize: '500% 500%, 500% 500%, 500% 500%, 500% 500%, 100% 100%',
-    backgroundBlendMode: 'overlay, soft-light, color-dodge, multiply, normal',
-    margin: 0,
-    padding: 0,
-    overflow: 'hidden',
-    position: 'relative',
-    animation: isReady ? 'aurora 25s ease-in-out infinite, fadeIn 4s ease-out' : 'none'
-  };
-
-  const timeContainerStyle = {
-    display: 'flex',
-    flexDirection: isMobile ? 'column' : 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: isMobile ? '1.5rem' : '2rem', // Reduced gap for viewport fit
-    position: 'relative',
-    zIndex: 10,
-    animation: isReady ? 'entrance 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s both' : 'none',
-    transform: 'translateZ(0)',
-    perspective: '1200px'
-  };
-
-  const timeGroupStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    transform: 'translateZ(60px)',
-    animation: 'group-float 9s ease-in-out infinite'
-  };
-
-  const cosmicNoiseStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    opacity: 0.2,
-    background: `
-      radial-gradient(circle at 20% 20%, rgba(255,255,255,0.25) 0%, transparent 3%),
-      radial-gradient(circle at 80% 80%, rgba(255,255,255,0.2) 0%, transparent 4%),
-      radial-gradient(circle at 50% 5%, rgba(147,51,234,0.35) 0%, transparent 5%),
-      radial-gradient(circle at 5% 50%, rgba(59,130,246,0.35) 0%, transparent 6%),
-      radial-gradient(circle at 95% 95%, rgba(16,185,129,0.25) 0%, transparent 3%),
-      radial-gradient(circle at 25% 75%, rgba(245,101,101,0.25) 0%, transparent 4%),
-      radial-gradient(circle at 75% 25%, rgba(236,72,153,0.2) 0%, transparent 3%)
-    `,
-    backgroundSize: '350px 350px, 300px 300px, 450px 450px, 400px 400px, 250px 250px, 320px 320px, 280px 280px',
-    animation: 'cosmic-drift 35s linear infinite, twinkle 3s ease-in-out infinite'
-  };
-
-  const auroraOverlayStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: `
-      linear-gradient(90deg, 
-        transparent 0%, 
-        rgba(147,51,234,0.15) 15%, 
-        rgba(59,130,246,0.15) 30%, 
-        rgba(16,185,129,0.15) 45%, 
-        rgba(245,101,101,0.15) 60%, 
-        rgba(236,72,153,0.15) 75%, 
-        transparent 100%
-      )
-    `,
-    animation: 'aurora-sweep 15s ease-in-out infinite',
-    zIndex: 2
-  };
-
-  if (!isReady) {
-    return (
-      <div style={{
-        width: '100vw',
-        height: '100vh', // Changed to vh for viewport fit
-        background: 'radial-gradient(circle at center, #1a1a2e 0%, #000000 100%)',
-        margin: 0,
-        padding: 0,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <div style={{
-          position: 'relative',
-          width: '8rem', // Reduced size
-          height: '8rem', // Reduced size
-          marginBottom: '2rem'
-        }}>
-          <div style={{
+      return (
+        <div
+          key={i}
+          ref={(el) => (ticksRef.current[i] = el)}
+          className={`tick ${isHour ? 'hour-tick' : 'minute-tick'}`}
+          style={{
             position: 'absolute',
-            width: '100%',
-            height: '100%',
-            border: '4px solid transparent',
-            borderTop: '4px solid rgba(147,51,234,0.9)',
-            borderRight: '4px solid rgba(59,130,246,0.7)',
-            borderRadius: '50%',
-            animation: 'premium-spin 2.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite'
-          }} />
-          <div style={{
+            top: `${tickY}%`,
+            left: `${tickX}%`,
+            transform: `translate(-50%, -50%) rotate(${angle + 90}deg)`,
+          }}
+        />
+      );
+    });
+  }, []);
+
+  const renderNumbers = useMemo(() => {
+    return Array.from({ length: 12 }).map((_, i) => {
+      const num = i + 1;
+      const angle = num * 30 - 90;
+      const rad = (angle * Math.PI) / 180;
+      const numX = 50 + 39 * Math.cos(rad);
+      const numY = 50 + 39 * Math.sin(rad);
+
+      return (
+        <div
+          key={num}
+          className="number"
+          style={{
             position: 'absolute',
-            width: '85%',
-            height: '85%',
-            top: '7.5%',
-            left: '7.5%',
-            border: '3px solid transparent',
-            borderTop: '3px solid rgba(16,185,129,0.9)',
-            borderLeft: '3px solid rgba(245,101,101,0.7)',
-            borderRadius: '50%',
-            animation: 'premium-spin 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite reverse'
-          }} />
-          <div style={{
-            position: 'absolute',
-            width: '70%',
-            height: '70%',
-            top: '15%',
-            left: '15%',
-            background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%)',
-            borderRadius: '50%',
-            animation: 'pulse 2.5s ease-in-out infinite'
-          }} />
-          <div style={{
-            position: 'absolute',
-            width: '40%',
-            height: '40%',
-            top: '30%',
-            left: '30%',
-            background: 'radial-gradient(circle, rgba(236,72,153,0.3) 0%, transparent 70%)',
-            borderRadius: '50%',
-            animation: 'pulse 1.5s ease-in-out infinite reverse'
-          }} />
+            top: `${numY}%`,
+            left: `${numX}%`,
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          {num}
         </div>
-        <div style={{
-          color: 'rgba(255,255,255,0.8)',
-          fontSize: '1.2rem', // Slightly reduced
-          fontFamily: 'monospace',
-          letterSpacing: '0.3rem',
-          textTransform: 'uppercase',
-          animation: 'glow-text 2.5s ease-in-out infinite alternate'
-        }}>
-          Initializing Cosmos...
-        </div>
-      </div>
-    );
-  }
+      );
+    });
+  }, []);
 
   return (
-    <div style={containerStyle}>
-      <div style={cosmicNoiseStyle} />
-      <div style={auroraOverlayStyle} />
-      
-      <div style={timeContainerStyle}>
-        <div style={{...timeGroupStyle, animationDelay: '0s'}}>
-          <div style={{
-            ...digitBoxStyle,
-            animationDelay: '0.1s'
-          }}>{hours[0]}</div>
-          <div style={{
-            ...digitBoxStyle,
-            animationDelay: '0.2s'
-          }}>{hours[1]}</div>
-        </div>
-        
-        <div style={{...timeGroupStyle, animationDelay: '1.2s'}}>
-          <div style={{
-            ...digitBoxStyle,
-            animationDelay: '0.3s'
-          }}>{minutes[0]}</div>
-          <div style={{
-            ...digitBoxStyle,
-            animationDelay: '0.4s'
-          }}>{minutes[1]}</div>
-        </div>
-        
-        <div style={{...timeGroupStyle, animationDelay: '2.4s'}}>
-          <div style={{
-            ...digitBoxStyle,
-            animationDelay: '0.5s'
-          }}>{seconds[0]}</div>
-          <div style={{
-            ...digitBoxStyle,
-            animationDelay: '0.6s'
-          }}>{seconds[1]}</div>
+    <>
+      <style>
+        {`
+          @font-face {
+            font-family: 'Orb';
+            src: url(${orbFont}) format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+          }
+
+          .neon-clock {
+            width: 100vw;
+            height: 100dvh;
+            background-color: ${COLORS.background};
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .clock-container {
+            width: ${SIZES.clock};
+            height: ${SIZES.clock};
+            aspect-ratio: 1 / 1;
+            position: relative;
+            font-family: 'Orb', sans-serif;
+          }
+
+          .clock-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, #111 30%, ${COLORS.background} 100%);
+            box-shadow: 0 0 4rem ${COLORS.number}, 0 0 9rem ${COLORS.hourTick}, 0 0 16rem ${COLORS.number},
+                        inset 0 0 3rem ${COLORS.number}, inset 0 0 8rem ${COLORS.hourTick};
+            border: 0.4rem solid ${COLORS.clockBorder};
+            filter: drop-shadow(0 0 2rem ${COLORS.clockBorder}) drop-shadow(0 0 3rem ${COLORS.hourTick});
+          }
+
+          .center-dot {
+            width: ${SIZES.centerDot};
+            height: ${SIZES.centerDot};
+            background: radial-gradient(circle, ${COLORS.centerDot}, ${COLORS.centerDotGradient});
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            box-shadow: 0 0 1.5rem ${COLORS.centerDot}, 0 0 3rem ${COLORS.centerDot}, 0 0 6rem ${COLORS.centerDot},
+                        inset 0 0 1rem ${COLORS.centerDot};
+            z-index: 10;
+          }
+
+          .pulse {
+            animation: neon-pulse 2s infinite ease-in-out;
+          }
+
+          @keyframes neon-pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+          }
+
+          .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            border-radius: 1rem;
+            transition: transform 0.05s linear;
+          }
+
+          .hour-hand {
+            width: ${SIZES.hourHand.width};
+            height: ${SIZES.hourHand.height};
+            background: ${COLORS.hourHand};
+            z-index: 4;
+          }
+
+          .minute-hand {
+            width: ${SIZES.minuteHand.width};
+            height: ${SIZES.minuteHand.height};
+            background: ${COLORS.minuteHand};
+            z-index: 3;
+          }
+
+          .second-hand {
+            width: ${SIZES.secondHand.width};
+            height: ${SIZES.secondHand.height};
+            background: ${COLORS.secondHand};
+            z-index: 2;
+            will-change: transform;
+            backface-visibility: hidden;
+          }
+
+          .tick {
+            position: absolute;
+            border-radius: 0.3rem;
+            transition: transform 5s ease, box-shadow 0.3s ease;
+          }
+
+          .hour-tick {
+            width: ${SIZES.hourTick.width};
+            height: ${SIZES.hourTick.height};
+            background: ${COLORS.hourTick};
+            box-shadow: 0 0 1rem ${COLORS.hourTick}, 0 0 2rem ${COLORS.hourTick}, 0 0 3rem ${COLORS.hourTick};
+          }
+
+          .minute-tick {
+            width: ${SIZES.minuteTick.width};
+            height: ${SIZES.minuteTick.height};
+            background: ${COLORS.minuteTick};
+            box-shadow: 0 0 0.6rem ${COLORS.minuteTick}, 0 0 1rem ${COLORS.minuteTick}, 0 0 2rem ${COLORS.minuteTick};
+          }
+
+          .glow {
+            box-shadow: 0 0 1.5rem ${COLORS.minuteTick}, 0 0 3rem ${COLORS.minuteTick}, 0 0 6rem ${COLORS.minuteTick} !important;
+          }
+
+          .number {
+            position: absolute;
+            width: ${SIZES.number.width};
+            height: ${SIZES.number.height};
+            text-align: center;
+            line-height: ${SIZES.number.height};
+            color: ${COLORS.number};
+            font-size: ${SIZES.number.fontSize};
+            font-family: 'Orb', sans-serif;
+            text-shadow: 0 0 0.5rem ${COLORS.number}, 0 0 1rem ${COLORS.number}, 0 0 1.5rem ${COLORS.number};
+          }
+
+          .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .pulse {
+              animation: none;
+            }
+          }
+        `}
+      </style>
+      <div
+        className="neon-clock"
+        role="img"
+        aria-label="Analog neon clock displaying the current time"
+      >
+        <div className="clock-container">
+          <div ref={clockRef} className="clock-face">
+            <div className="pulse center-dot" />
+            <div id="hour" className="hand hour-hand" />
+            <div id="minute" className="hand minute-hand" />
+            <div id="second" className="hand second-hand" />
+            {renderTicks}
+            {renderNumbers}
+            <div className="sr-only" aria-live="polite" ref={timeRef}>
+              {new Date().toLocaleTimeString()}
+            </div>
+          </div>
         </div>
       </div>
-      
-      <style>{`
-        @keyframes aurora {
-          0%, 100% { background-position: 0% 50%, 0% 50%, 0% 50%, 0% 50%, 0% 50%; }
-          20% { background-position: 100% 50%, 25% 75%, 75% 25%, 50% 100%, 0% 50%; }
-          40% { background-position: 50% 100%, 100% 50%, 50% 0%, 0% 50%, 0% 50%; }
-          60% { background-position: 25% 25%, 75% 25%, 25% 75%, 75% 75%, 0% 50%; }
-          80% { background-position: 75% 75%, 0% 25%, 100% 75%, 50% 50%, 0% 50%; }
-          100% { background-position: 0% 50%, 0% 50%, 0% 50%, 0% 50%, 0% 50%; }
-        }
-        
-        @keyframes fadeIn {
-          from { opacity: 0; transform: scale(0.8) rotate(5deg); }
-          to { opacity: 1; transform: scale(1) rotate(0deg); }
-        }
-        
-        @keyframes entrance {
-          0% { 
-            opacity: 0; 
-            transform: translateY(10rem) rotateX(60deg) scale(0.7); 
-            filter: blur(3rem);
-          }
-          100% { 
-            opacity: 1; 
-            transform: translateY(0) rotateX(0deg) scale(1); 
-            filter: blur(0);
-          }
-        }
-        
-        @keyframes float {
-          0%, 100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
-          25% { transform: translateY(-0.8rem) rotateX(3deg) rotateY(1deg); }
-          50% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
-          75% { transform: translateY(0.5rem) rotateX(-2deg) rotateY(-1deg); }
-        }
-        
-        @keyframes group-float {
-          0%, 100% { transform: translateZ(60px) rotateY(0deg) rotateX(0deg); }
-          33% { transform: translateZ(70px) rotateY(3deg) rotateX(1deg); }
-          66% { transform: translateZ(50px) rotateY(-3deg) rotateX(-1deg); }
-        }
-        
-        @keyframes rainbow-glow {
-          0% { 
-            text-shadow: 
-              0 0 1.5rem rgba(255,255,255,1),
-              0 0 3rem rgba(147,51,234,0.9),
-              0 0 4.5rem rgba(59,130,246,0.9),
-              0 0 6rem rgba(16,185,129,0.7);
-          }
-          20% { 
-            text-shadow: 
-              0 0 1.5rem rgba(255,255,255,1),
-              0 0 3rem rgba(59,130,246,0.9),
-              0 0 4.5rem rgba(16,185,129,0.9),
-              0 0 6rem rgba(245,101,101,0.7);
-          }
-          40% { 
-            text-shadow: 
-              0 0 1.5rem rgba(255,255,255,1),
-              0 0 3rem rgba(16,185,129,0.9),
-              0 0 4.5rem rgba(245,101,101,0.9),
-              0 0 6rem rgba(236,72,153,0.7);
-          }
-          60% { 
-            text-shadow: 
-              0 0 1.5rem rgba(255,255,255,1),
-              0 0 3rem rgba(245,101,101,0.9),
-              0 0 4.5rem rgba(236,72,153,0.9),
-              0 0 6rem rgba(147,51,234,0.7);
-          }
-          80% { 
-            text-shadow: 
-              0 0 1.5rem rgba(255,255,255,1),
-              0 0 3rem rgba(236,72,153,0.9),
-              0 0 4.5rem rgba(147,51,234,0.9),
-              0 0 6rem rgba(59,130,246,0.7);
-          }
-          100% { 
-            text-shadow: 
-              0 0 1.5rem rgba(255,255,255,1),
-              0 0 3rem rgba(147,51,234,0.9),
-              0 0 4.5rem rgba(59,130,246,0.9),
-              0 0 6rem rgba(16,185,129,0.7);
-          }
-        }
-        
-        @keyframes cosmic-drift {
-          from { transform: translateX(0) translateY(0); }
-          to { transform: translateX(-350px) translateY(-150px); }
-        }
-        
-        @keyframes twinkle {
-          0%, 100% { opacity: 0.2; }
-          50% { opacity: 0.4; }
-        }
-        
-        @keyframes aurora-sweep {
-          0% { transform: translateX(-100%) skewX(5deg); opacity: 0; }
-          50% { opacity: 1; }
-          100% { transform: translateX(100%) skewX(-5deg); opacity: 0; }
-        }
-        
-        @keyframes premium-spin {
-          0% { transform: rotate(0deg) scale(1); }
-          50% { transform: rotate(180deg) scale(1.15); }
-          100% { transform: rotate(360deg) scale(1); }
-        }
-        
-        @keyframes glow-text {
-          0% { 
-            text-shadow: 0 0 1.5rem rgba(147,51,234,0.6); 
-            color: rgba(255,255,255,0.8); 
-          }
-          100% { 
-            text-shadow: 0 0 3rem rgba(147,51,234,1), 0 0 4.5rem rgba(59,130,246,0.9), 0 0 6rem rgba(236,72,153,0.7); 
-            color: rgba(255,255,255,1); 
-          }
-        }
-        
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); opacity: 1; }
-          50% { transform: scale(1.1); opacity: 0.7; }
-        }
-        
-        body {
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-        }
-      `}</style>
-    </div>
+    </>
   );
 };
 
-export default DigitalClock;
+export default NeonClock;
