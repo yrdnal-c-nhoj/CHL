@@ -1,127 +1,173 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import airFontUrl from './air.ttf';
+import stampImg from './stamp.png';
+import stamp2Img from './stamp2.png';
+import stamp3Img from './stamp3.png';
+import frameImg from './frame.jpg';
 
-export default function Clock() {
-  useEffect(() => {
-    const hourHand = document.getElementById('hour-hand');
-    const minuteHand = document.getElementById('minute-hand');
-    const secondHand = document.getElementById('second-hand');
+// Inject @font-face with fallback and enhanced media queries
+const styleSheet = new CSSStyleSheet();
+styleSheet.replaceSync(`
+  @font-face {
+    font-family: 'air';
+    src: url(${airFontUrl}) format('truetype');
+    font-display: swap;
+  }
 
-    function updateClock() {
-      const now = new Date();
-      const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
-      const minutes = now.getMinutes() + seconds / 60;
-      const hours = now.getHours() % 12 + minutes / 60;
-
-      const secondsDeg = seconds * 6 - 90;
-      const minutesDeg = minutes * 6 - 90;
-      const hoursDeg = hours * 30 - 90;
-
-      secondHand.style.transform = `rotate(${secondsDeg}deg)`;
-      minuteHand.style.transform = `rotate(${minutesDeg}deg)`;
-      hourHand.style.transform = `rotate(${hoursDeg}deg)`;
-
-      requestAnimationFrame(updateClock);
+  @keyframes bounceJostle {
+    0%, 10%, 20%, 90%, 100% {
+      transform: translate(-50%, -50%) translate(0, 0) rotate(0);
     }
+    5%   { transform: translate(-50%, -50%) translate(1px, -1.5px) rotate(0.3deg); }
+    12%  { transform: translate(-50%, -50%) translate(-1.2px, 1.2px) rotate(-0.25deg); }
+    18%  { transform: translate(-50%, -50%) translate(1.5px, 0.8px) rotate(0.2deg); }
+    25%  { transform: translate(-50%, -50%) translate(-1px, -1px) rotate(-0.2deg); }
+    40%  { transform: translate(-50%, -50%) translate(0.5px, 0.3px) rotate(0.1deg); }
+    55%  { transform: translate(-50%, -50%) translate(0, 0) rotate(0); }
+    70%  { transform: translate(-50%, -50%) translate(-1.2px, 1.2px) rotate(0.25deg); }
+    75%  { transform: translate(-50%, -50%) translate(1.5px, -1.5px) rotate(-0.3deg); }
+    82%  { transform: translate(-50%, -50%) translate(-0.7px, 1px) rotate(0.15deg); }
+  }
 
-    updateClock();
-  }, []);
+  @media (max-width: 600px) {
+    .stamp { top: 1vh; right: 5vw; width: 4rem; height: 2.5rem; }
+    .stamp2 { top: 3vh; right: 2vw; width: 3rem; height: 2.5rem; }
+    .stamp3 { top: 1.5vh; right: 2vw; width: 4rem; height: 2rem; }
+    .bgimage { maxHeight: 80dvh; maxWidth: 90vw; }
+    .digitBox { fontSize: 4rem; width: 1.5rem; }
+    .colon { fontSize: 4rem; width: 0.8rem; height: 4rem; }
+    .clock { margin-top: 15vh; }
+  }
 
-  const numberPositions = {
-    1: { top: '20%', left: '70%' },
-    2: { top: '30%', left: '82%' },
-    3: { top: '50%', left: '90%' },
-    4: { top: '70%', left: '82%' },
-    5: { top: '80%', left: '70%' },
-    6: { top: '90%', left: '50%' },
-    7: { top: '80%', left: '30%' },
-    8: { top: '70%', left: '18%' },
-    9: { top: '50%', left: '10%' },
-    10: { top: '30%', left: '18%' },
-    11: { top: '20%', left: '30%' },
-    12: { top: '10%', left: '50%' },
-  };
+  @media (max-width: 400px) {
+    .stamp { top: 0.5vh; right: 3vw; width: 3rem; height: 2rem; }
+    .stamp2 { top: 2vh; right: 1vw; width: 2.5rem; height: 2rem; }
+    .stamp3 { top: 1vh; right: 1vw; width: 3rem; height: 1.5rem; }
+    .bgimage { maxHeight: 75dvh; maxWidth: 85vw; }
+    .digitBox { fontSize: 3rem; width: 1.2rem; }
+    .colon { fontSize: 3rem; width: 0.6rem; height: 3rem; }
+    .clock { margin-top: 20vh; }
+  }
+`);
 
-  const handStyle = {
+document.adoptedStyleSheets = [...document.adoptedStyleSheets, styleSheet];
+
+const styles = {
+  body: {
+    color: 'rgb(84, 82, 176)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100dvh',
+    width: '100vw',
+    margin: 0,
+    overflow: 'visible',
+    position: 'relative',
+    fontFamily: 'air, Arial, sans-serif',
+    boxSizing: 'border-box',
+  },
+  clock: {
+    display: 'flex',
+    zIndex: 10,
+    marginTop: '10vh',
+  },
+  digitBox: {
+    width: '2rem',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: '8rem',
+    boxSizing: 'border-box',
+  },
+  colon: {
+    width: '1rem',
+    height: '7rem',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: '7rem',
+  },
+  jostle: {
+    animation: 'bounceJostle 10s infinite ease-in-out',
+    willChange: 'transform',
+  },
+  bgimage: {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transformOrigin: '0% 50%',
-    filter: 'saturate(4.5) contrast(7.2)',
-    zIndex: 18,
-  };
+    maxHeight: '90dvh',
+    maxWidth: '90vw',
+    width: 'auto',
+    height: 'auto',
+    objectFit: 'contain',
+    zIndex: 1,
+  },
+  stamp: {
+    position: 'absolute',
+    top: '2rem',
+    right: '9.6rem',
+    width: '6rem',
+    height: '4rem',
+    transformOrigin: 'center center',
+    zIndex: 5,
+    animationDelay: '0.4s',
+  },
+  stamp2: {
+    position: 'absolute',
+    top: '4.9rem',
+    right: '3rem',
+    width: '5rem',
+    height: '4rem',
+    transformOrigin: 'center center',
+    zIndex: 5,
+    animationDelay: '0.8s',
+  },
+  stamp3: {
+    position: 'absolute',
+    top: '2.5rem',
+    right: '3.3rem',
+    width: '7rem',
+    height: '3rem',
+    transformOrigin: 'center center',
+    zIndex: 5,
+  },
+};
 
-  const assets = {
-    parts1: new URL('./wwarnn.png', import.meta.url).href,
-    parts2: new URL('./wwarnn.png', import.meta.url).href,
-    meter: new URL('./wwz.gif', import.meta.url).href,
-    meter2: new URL('./dash.webp', import.meta.url).href,
-    meter3: new URL('./da.webp', import.meta.url).href,
-    hand: new URL('./wzzz.png', import.meta.url).href,
-    numbers: {
-      1: new URL('./werer-ezgif.com-gif-maker.webp', import.meta.url).href,
-      2: new URL('./Icons-03.png-ezgif.com-gif-maker.webp', import.meta.url).href,
-      3: new URL('./Icons-25.png-ezgif.com-gif-maker.webp', import.meta.url).href,
-      4: new URL('./IconsRED-11.png-ezgif.com-gif-maker.webp', import.meta.url).href,
-      5: new URL('./Icons-11.png-ezgif.com-gif-maker.webp', import.meta.url).href,
-      6: new URL('./Icons-14.png-ezgif.com-gif-maker.webp', import.meta.url).href,
-      7: new URL('./Icons-16.png-ezgif.com-gif-maker.webp', import.meta.url).href,
-      8: new URL('./Icons-24.png-ezgif.com-gif-maker.webp', import.meta.url).href,
-      9: new URL('./Icons-08.png-ezgif.com-gif-maker.webp', import.meta.url).href,
-      10: new URL('./Icons-27.png-ezgif.com-gif-maker.webp', import.meta.url).href,
-      11: new URL('./Icons-28.png-ezgif.com-gif-maker.webp', import.meta.url).href,
-      12: new URL('./Icons-10.png-ezgif.com-gif-maker.webp', import.meta.url).href,
-    },
-  };
+export default function Clock() {
+  const [time, setTime] = useState(() => new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const timeStr = time.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(/:/g, '');
+  const format = ['digit', 'digit', 'colon', 'digit', 'digit', 'colon', 'digit', 'digit'];
+  const timeParts = [...timeStr];
+  let i = 0;
 
   return (
-    <div
-      style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '100vw',
-        height: '100dvh',
-        background: 'grey',
-        overflow: 'hidden',
-      }}
-    >
-      <img src={assets.parts2} style={{ position: 'absolute', width: '100vw', height: '100vh', opacity: 0.3, left: '50%', transform: 'translateX(-50%) scaleX(-1)', zIndex: 0 }} alt="" />
-      <img src={assets.parts1} style={{ position: 'absolute', width: '100vw', height: '100vh', opacity: 0.3, left: '50%', transform: 'translateX(-50%)', zIndex: 1 }} alt="" />
-      <img src={assets.meter} style={{ position: 'absolute',  height: '50vh', top: '20vh', left: '50%', transform: 'translateX(-50%)', zIndex: 2 }} alt="" />
-      <img src={assets.meter3} style={{ position: 'absolute', height: '36vh', top: '29vh', left: '50%', transform: 'translateX(-50%)', zIndex: 3 }} alt="" />
-      <img src={assets.meter2} style={{ position: 'absolute', height: '50vh', top: '29vh', left: '50%', transform: 'translateX(-50%)', zIndex: 4 }} alt="" />
-
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '90vh',
-          height: '90vh',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 8,
-        }}
-      >
-        {Object.entries(numberPositions).map(([num, pos]) => (
-          <img
-            key={num}
-            src={assets.numbers[num]}
-            alt={`Number ${num}`}
-            style={{
-              position: 'absolute',
-              width: '75px',
-              height: '75px',
-              transform: 'translate(-50%, -50%)',
-              top: pos.top,
-              left: pos.left,
-            }}
-          />
-        ))}
-
-        <img id="hour-hand" src={assets.hand} alt="Hour Hand" style={{ ...handStyle, width: '25%', height: '66px' }} />
-        <img id="minute-hand" src={assets.hand} alt="Minute Hand" style={{ ...handStyle, width: '35%', height: '38px' }} />
-        <img id="second-hand" src={assets.hand} alt="Second Hand" style={{ ...handStyle, width: '45%', height: '22px' }} />
+    <div style={styles.body} role="timer" aria-live="polite">
+      <img src={frameImg} alt="Background frame" style={{ ...styles.bgimage, ...styles.jostle, animationDelay: '0.2s' }} />
+      <img src={stamp3Img} alt="Stamp 3" style={{ ...styles.stamp3, ...styles.jostle }} />
+      <img src={stamp2Img} alt="Stamp 2" style={{ ...styles.stamp2, ...styles.jostle }} />
+      <img src={stampImg} alt="Stamp 1" style={{ ...styles.stamp, ...styles.jostle }} />
+      <div style={styles.clock}>
+        {format.map((type, idx) => {
+          if (type === 'colon') {
+            return (
+              <div key={idx} style={{ ...styles.colon, ...styles.jostle }} aria-hidden="true">
+                :
+              </div>
+            );
+          }
+          return (
+            <div key={idx} style={{ ...styles.digitBox, ...styles.jostle }}>
+              {timeParts[i++]}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
