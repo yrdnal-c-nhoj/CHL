@@ -1,13 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import videoFile from "./midsun.mp4";
 import fallbackImg from "./midsun.webp";
-import fontFile_2025_10_31 from "./mi.otf"; // your TTF font
+import fontFile_2025_10_31 from "./mi.otf";
 
 export default function VideoClock() {
+  const [fontLoaded, setFontLoaded] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const [showPlayButton, setShowPlayButton] = useState(false);
   const [time, setTime] = useState(new Date());
   const videoRef = useRef(null);
+
+  // Load custom font before rendering
+  useEffect(() => {
+    const loadFont = async () => {
+      const font = new FontFace("CustomFont", `url(${fontFile_2025_10_31})`);
+      await font.load();
+      document.fonts.add(font);
+      setFontLoaded(true);
+    };
+    loadFont();
+  }, []);
 
   // Clock update every 10ms
   useEffect(() => {
@@ -73,8 +85,8 @@ export default function VideoClock() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    // Cold crisp overlay: subtle blue tint with high contrast
-    background: "linear-gradient(rgba(0, 50, 100, 0.15), rgba(0, 50, 100, 0.15)), #000",
+    opacity: fontLoaded ? 1 : 0,
+    transition: "opacity 0.15s linear",
   };
 
   const mediaStyle = {
@@ -86,7 +98,6 @@ export default function VideoClock() {
     zIndex: 0,
     pointerEvents: "none",
     display: videoFailed ? "none" : "block",
-    // Enhance cold/crisp: adjusted for consistency
     filter: "brightness(1.1) contrast(0.8) hue-rotate(15deg) saturate(1.2)",
   };
 
@@ -97,28 +108,25 @@ export default function VideoClock() {
     backgroundSize: "cover",
     backgroundPosition: "center",
     display: videoFailed ? "block" : "none",
-    // Apply same cold filter to fallback image
     filter: "brightness(1.3) contrast(1.4) hue-rotate(-10deg) saturate(1.2)",
   };
 
-  // Clock styling: centered, nearly full width, upside-down, moved 5vh higher
   const clockStyle = {
     display: "grid",
-    gridTemplateColumns: "repeat(8, 1fr)", // 8 digits
-    width: "98vw", // Nearly full viewport width
-    maxWidth: "100%", // Prevent overflow
-    transform: "rotate(180deg) translateY(5vh)", // Upside down and shifted 5vh higher
+    gridTemplateColumns: "repeat(8, 1fr)",
+    width: "98vw",
+    maxWidth: "100%",
+    transform: "rotate(180deg) translateY(5vh)",
     zIndex: 2,
-    fontFamily: "CustomFont, Arial, sans-serif", // Fallback for debugging
-    fontSize: "24vw", // Large digits
-    color: "#e6f2ff", // Icy white-blue for crisp cold look
+    fontFamily: "CustomFont, Arial, sans-serif",
+    fontSize: "24vw",
+    color: "#e6f2ff",
     userSelect: "none",
-    textAlign: "center", // Center digits in grid cells
+    textAlign: "center",
     textShadow: `
       1px 0px 0 #274676FF,
       -1px 0px 17px rgba(0, 50, 100, 0.8)
     `,
-    // Crisp sharpness
     WebkitFontSmoothing: "antialiased",
     MozOsxFontSmoothing: "grayscale",
   };
@@ -126,21 +134,14 @@ export default function VideoClock() {
   const scopedCSS = `
     @font-face {
       font-family: "CustomFont";
-      src: url(${fontFile_2025_10_31}) format("truetype");
+      src: url(${fontFile_2025_10_31}) format("opentype");
       font-weight: normal;
       font-style: normal;
-      font-display: swap;
     }
 
     @media (max-width: 768px) {
       div[data-clock] {
         font-size: 3.5rem;
-        padding: 0 0.2rem;
-        text-shadow: 
-          // 0 0 6px rgba(100, 180, 255, 0.6),
-          // 0 0 12px rgba(100, 180, 255, 0.4),
-          // 0.8px 0.8px 0 #001133,
-          // -0.8px -0.8px 2.5px rgba(0, 50, 100, 0.8);
       }
       video {
         object-fit: contain;
@@ -175,7 +176,7 @@ export default function VideoClock() {
             padding: "10px 20px",
             fontSize: "1rem",
             cursor: "pointer",
-            backgroundColor: "rgba(0, 30, 60 Pragmatic Play",
+            backgroundColor: "rgba(0,30,60,0.8)",
             color: "#e6f2ff",
             border: "1px solid rgba(100, 180, 255, 0.5)",
             borderRadius: "5px",
@@ -186,11 +187,13 @@ export default function VideoClock() {
           Play Video
         </button>
       )}
-      <div style={clockStyle} data-clock>
-        {digits.map((d, i) => (
-          <span key={i} style={{ display: "block" }}>{d}</span>
-        ))}
-      </div>
+      {fontLoaded && (
+        <div style={clockStyle} data-clock>
+          {digits.map((d, i) => (
+            <span key={i} style={{ display: "block" }}>{d}</span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
