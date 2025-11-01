@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import bgImage from "./q.webp";
-import fontFile_2025_11_01 from "./q.otf"; // import with today's date in variable name
+import fontFile_2025_11_01 from "./q.otf";
 
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
@@ -32,6 +32,9 @@ export default function DigitalClock() {
         textAlign: "center",
         display: "inline-block",
         userSelect: "none",
+        fontFamily: "'MyCustomFont', monospace, sans-serif", // Explicitly apply font
+        fontWeight: "normal",
+        fontStyle: "normal",
       }}
     >
       {children}
@@ -71,6 +74,7 @@ export default function DigitalClock() {
           textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
           userSelect: "none",
           transition: "none",
+          fontFamily: "'MyCustomFont', monospace, sans-serif", // Ensure font is applied
         }}
       >
         <DigitBox>{hours[0]}</DigitBox>
