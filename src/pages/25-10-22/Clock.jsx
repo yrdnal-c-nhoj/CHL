@@ -1,24 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
-import videoFile from "./bg.mp4";
-import fallbackImg from "./bg.webp";
-import fontFile_2025_10_22 from "./fundy.ttf";
+import videoFile from "./midsun.mp4";
+import fallbackImg from "./midsun.webp";
+import fontFile_2025_10_31 from "./mid.ttf"; // your TTF font
 
-export default function ClockWithVideo() {
+export default function VideoClock() {
   const [fontReady, setFontReady] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const [showPlayButton, setShowPlayButton] = useState(false);
   const [time, setTime] = useState(new Date());
   const videoRef = useRef(null);
 
+  // Clock update every 10ms
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 10);
     return () => clearInterval(interval);
   }, []);
 
+  // Load custom font
   useEffect(() => {
     const font = new FontFace(
-      "MyCustomFont",
-      `url(${fontFile_2025_10_22}) format("truetype")`
+      "CustomFont",
+      `url(${fontFile_2025_10_31}) format("truetype")`
     );
     font
       .load()
@@ -29,6 +31,7 @@ export default function ClockWithVideo() {
       .catch(() => setFontReady(true));
   }, []);
 
+  // Video error handling
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -60,19 +63,22 @@ export default function ClockWithVideo() {
   const handlePlayClick = () => {
     const v = videoRef.current;
     if (v) {
-      v.play().then(() => setShowPlayButton(false)).catch((err) => console.error("Manual play failed:", err));
+      v.play()
+        .then(() => setShowPlayButton(false))
+        .catch((err) => console.error("Manual play failed:", err));
     }
   };
 
+  // Format time HHMMSSMS
   const formatTime = () => {
     const h = String(time.getHours()).padStart(2, "0");
     const m = String(time.getMinutes()).padStart(2, "0");
     const s = String(time.getSeconds()).padStart(2, "0");
-    const ms = String(time.getMilliseconds()).padStart(3, "0");
-    return `${h}${m}${s}${ms.slice(0, 2)}`;
+    const ms = String(Math.floor(time.getMilliseconds() / 10)).padStart(2, "0");
+    return h + m + s + ms;
   };
 
-  const timeChars = formatTime().split("");
+  const digits = formatTime().split("");
 
   const containerStyle = {
     width: "100vw",
@@ -103,101 +109,37 @@ export default function ClockWithVideo() {
     display: videoFailed ? "block" : "none",
   };
 
+  // Clock styling with digits hugging edges, upside-down
   const clockStyle = {
     position: "absolute",
-    bottom: 0,
+    top: 0,
+    left: 0,
     width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: "0.1rem",
-    zIndex: 1,
-    animation: "float_2025_10_22 26.3s linear infinite",
-  };
-
-  const digitStyle = {
-    fontFamily: "'MyCustomFont', sans-serif",
-    fontSize: "4rem",
-    width: "2rem",
-    textAlign: "center",
-    color: "#DF9268FF",
-    animation: "colorCycle_2025_10_22 26s linear infinite",
-    textShadow: `
-      0 0 8px #4B3424FF,
-      0 0 6px #98643FFF,
-      0 0 4px #C88A5E,
-      0 0 2px #D2C497FF
-    `,
-    transition: "text-shadow 1s linear",
-  };
-
-  const separatorStyle = {
-    ...digitStyle,
-    width: "1rem",
+    display: "grid",
+    gridTemplateColumns: "repeat(8, 1fr)",
+    justifyContent: "space-between",
+    transform: "rotate(180deg)", // upside down
+    zIndex: 2,
+    fontFamily: "CustomFont, monospace",
+    fontSize: "5rem",
+    color: "#fff",
+    userSelect: "none",
+    padding: "0 0.5rem",
   };
 
   const scopedCSS = `
     @font-face {
-      font-family: 'MyCustomFont';
-      src: url(${fontFile_2025_10_22}) format('truetype');
+      font-family: "CustomFont";
+      src: url(${fontFile_2025_10_31}) format("truetype");
+      font-weight: normal;
+      font-style: normal;
       font-display: block;
     }
 
-    @keyframes float_2025_10_22 {
-      0% { bottom: 0; }
-      50% { bottom: calc(100dvh - 4rem - 20px); }
-      100% { bottom: 0; }
-    }
-
-    @keyframes colorCycle_2025_10_22 {
-      0% {
-        color: #df9268ff;
-        text-shadow:
-           -1px 0 0px #4b3424ff,
-           0 0 6px #98643fff,
-           0 0 4px #c88a5e,
-           1px 0 2px #d2c497ff;
-        opacity: 1;
-      }
-      23.08% {
-        opacity: 0;
-        color: #7C947CFF;
-        text-shadow:
-          -1px -1px #04140BFF,
-           3px 2px 6px #E6EDE9FF,
-          -2px 0 4px #EBECEBFF,
-           1px 1px #e4ebe6ff;
-      }
-      50% {
-        opacity: 1;
-        color: #F4ECCCFF;
-        text-shadow:
-          1px 1px #e10e23ff,
-          0 0 6px #F8FDF7FF,
-          0 0 4px #5874a0ff,
-         -1px 0 #0d131cff;
-      }
-      76.92% {
-        opacity: 0;
-        color: #7C947CFF;
-        text-shadow:
-          -1px -1px #04140BFF,
-           3px 2px 6px #E6EDE9FF,
-          -2px 0 4px #EBECEBFF,
-           1px 1px #e4ebe6ff;
-      }
-      100% {
-        color: #df9268ff;
-        text-shadow:
-           -1px 0 0px #4b3424ff,
-           0 0 6px #98643fff,
-           0 0 4px #c88a5e,
-           1px 0 2px #d2c497ff;
-        opacity: 1;
-      }
-    }
-
     @media (max-width: 768px) {
+      div[data-clock] {
+        font-size: 3rem;
+      }
       video {
         object-fit: contain;
       }
@@ -217,7 +159,6 @@ export default function ClockWithVideo() {
         preload="metadata"
       >
         <source src={videoFile} type="video/mp4" />
-        <source src="./bg.webm" type="video/webm" />
         Your browser does not support the video tag.
       </video>
       <div style={fallbackStyle} aria-hidden />
@@ -228,7 +169,7 @@ export default function ClockWithVideo() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            zIndex: 2,
+            zIndex: 3,
             padding: "10px 20px",
             fontSize: "1rem",
             cursor: "pointer",
@@ -238,14 +179,9 @@ export default function ClockWithVideo() {
           Play Video
         </button>
       )}
-      <div style={clockStyle}>
-        {timeChars.map((char, i) => (
-          <span
-            key={i}
-            style={/[0-9]/.test(char) ? digitStyle : separatorStyle}
-          >
-            {char}
-          </span>
+      <div style={clockStyle} data-clock>
+        {digits.map((d, i) => (
+          <span key={i}>{d}</span>
         ))}
       </div>
     </div>
