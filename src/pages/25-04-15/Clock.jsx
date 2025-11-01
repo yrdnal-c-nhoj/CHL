@@ -26,20 +26,43 @@ const HorizonClock = () => {
   }, []);
 
   return (
-    <div style={{ width: '100vw', height: '100dvh', margin: 0 }}>
+    <div style={{ width: '100vw', height: '100dvh', margin: 0, display: 'flex' }}>
       <style>
         {`
           @font-face {
             font-family: 'HorizonFont';
-            src: url(${horizonFontUrl}) format('opentype');
+            src: url(${horizonFontUrl}) format '
+
+(opentype)';
             font-weight: normal;
             font-style: normal;
           }
-          html {
-            background-size: cover;
-          }
         `}
       </style>
+
+      {/* Left half - Sky */}
+      <div
+        style={{
+          width: '50vw',
+          height: '100dvh',
+          background: 'linear-gradient(to bottom, #87CEEB, #E0F7FA)', // Sky-like gradient
+          position: 'fixed',
+          left: 0,
+          zIndex: 0,
+        }}
+      />
+
+      {/* Right half - Non-sky (e.g., ground) */}
+      <div
+        style={{
+          width: '50vw',
+          height: '100dvh',
+          background: 'linear-gradient(to bottom, #4A3721, #8B5A2B)', // Ground-like gradient
+          position: 'fixed',
+          right: 0,
+          zIndex: 0,
+        }}
+      />
 
       {/* Background layers */}
       <div
