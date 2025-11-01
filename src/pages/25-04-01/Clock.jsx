@@ -124,7 +124,7 @@ const DigitalClock = () => {
 
   const containerStyle = {
     width: '100vw',
-    height: '100vh', // Changed to vh for viewport fit
+    height: '100dvh', // Changed to vh for viewport fit
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -212,7 +212,7 @@ const DigitalClock = () => {
     return (
       <div style={{
         width: '100vw',
-        height: '100vh', // Changed to vh for viewport fit
+        height: '100d', // Changed to vh for viewport fit
         background: 'radial-gradient(circle at center, #1a1a2e 0%, #000000 100%)',
         margin: 0,
         padding: 0,
