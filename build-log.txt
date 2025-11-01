@@ -4,22 +4,18 @@
 
 vite v7.1.6 building for production...
 transforming...
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-✓ 990 modules transformed.
-✗ Build failed in 962ms
+✓ 179 modules transformed.
+✗ Build failed in 402ms
 error during build:
-Could not resolve "./midsun.mp4" from "src/pages/25-10-22/Clock.jsx"
-file: /Users/john/Desktop/CHL/src/pages/25-10-22/Clock.jsx
-    at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
-    at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
-    at ModuleLoader.handleInvalidResolvedId (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21490:24)
-    at file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21450:26
+[vite:css] [postcss] /Users/john/Desktop/CHL/src/pages/25-05-14/RoughIdea.css:1:17: Unknown word useEffect
+file: /Users/john/Desktop/CHL/src/pages/25-05-14/RoughIdea.css:1:16
+    at Input.error (/Users/john/Desktop/CHL/node_modules/postcss/lib/input.js:135:16)
+    at Parser.unknownWord (/Users/john/Desktop/CHL/node_modules/postcss/lib/parser.js:595:22)
+    at Parser.other (/Users/john/Desktop/CHL/node_modules/postcss/lib/parser.js:437:12)
+    at Parser.parse (/Users/john/Desktop/CHL/node_modules/postcss/lib/parser.js:472:16)
+    at parse (/Users/john/Desktop/CHL/node_modules/postcss/lib/parse.js:11:12)
+    at new LazyResult (/Users/john/Desktop/CHL/node_modules/postcss/lib/lazy-result.js:165:16)
+    at Processor.process (/Users/john/Desktop/CHL/node_modules/postcss/lib/processor.js:53:14)
+    at runPostCSS (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:32132:68)
+    at async compilePostCSS (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:32116:6)
+    at async compileCSS (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:32046:26)
