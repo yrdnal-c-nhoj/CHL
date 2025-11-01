@@ -1,139 +1,196 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef, useState } from "react";
+import videoFile from "./midsun.mp4";
+import fallbackImg from "./midsun.webp";
+import fontFile_2025_10_31 from "./mi.otf"; // your TTF font
 
-export default function ChaoticClock({ accentColor = '#ff6600' }) {
-  const [time, setTime] = useState(0);
+export default function VideoClock() {
+  const [videoFailed, setVideoFailed] = useState(false);
+  const [showPlayButton, setShowPlayButton] = useState(false);
+  const [time, setTime] = useState(new Date());
+  const videoRef = useRef(null);
 
-  // Static random positions memoized once
-  const secondHandPositions = useMemo(() => 
-    Array.from({ length: 125 }).map(() => ({
-      offsetX: (Math.random() - 0.5) * 1.6,
-      offsetY: (Math.random() - 0.5) * 1.6,
-    })), []
-  );
-
-  const mainHandsPositions = useMemo(() =>
-    Array.from({ length: 25 }).map(() => ({
-      offsetX: (Math.random() - 0.5) * 1.6,
-      offsetY: (Math.random() - 0.5) * 1.6,
-    })), []
-  );
-
-  const extraSecondsConfig = useMemo(() =>
-    Array.from({ length: 25 }).map(() => ({
-      startX: (Math.random() - 0.5) * 1.6,
-      startY: (Math.random() - 0.5) * 1.6,
-      segmentCount: Math.floor(Math.random() * 10) + 8,
-      maxSegmentLength: 0.05 + Math.random() * 0.15,
-      strokeWidth: 0.5 + Math.random() * 1.5,
-      baseColor: accentColor,
-      phaseShift: Math.random() * Math.PI * 2,
-      baseAngle: Math.random() * Math.PI * 2,
-      spinSpeed: (Math.random() - 0.5) * 0.5,
-      fadeSpeed: 0.5 + Math.random() * 1.5,
-      fadePhase: Math.random() * Math.PI * 2,
-    })), [accentColor]
-  );
-
+  // Clock update every 10ms
   useEffect(() => {
-    let rafId;
-    const tick = () => {
-      setTime(performance.now() / 1000);
-      rafId = requestAnimationFrame(tick);
-    };
-    tick();
-    return () => cancelAnimationFrame(rafId);
+    const interval = setInterval(() => setTime(new Date()), 10);
+    return () => clearInterval(interval);
   }, []);
 
-  const now = new Date();
-  const sec = now.getSeconds() + now.getMilliseconds() / 1000;
-  const min = now.getMinutes() + sec / 60;
-  const hr = now.getHours() % 12 + min / 60;
+  // Video error handling
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
 
-  const radH = (Math.PI * 2 * (hr / 12)) - Math.PI / 2;
-  const radM = (Math.PI * 2 * (min / 60)) - Math.PI / 2;
-  const radS = (Math.PI * 2 * (sec / 60)) - Math.PI / 2;
+    const onError = (e) => {
+      console.error("Video error:", e.target.error);
+      setVideoFailed(true);
+      setShowPlayButton(true);
+    };
+    const onStalled = () => setShowPlayButton(true);
 
-  // Helper to build chaotic path d attribute on the fly
-  const buildChaoticPath = (config) => {
-    const angles = [0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2];
-    let x = config.startX;
-    let y = config.startY;
-    const points = [];
+    v.addEventListener("error", onError);
+    v.addEventListener("stalled", onStalled);
 
-    for (let j = 0; j < config.segmentCount; j++) {
-      const segLength = config.maxSegmentLength * (0.5 + 0.5 * Math.sin(time * 2 + j + config.phaseShift));
-      const angle = angles[Math.floor(Math.random() * 4)];
-      x += Math.cos(angle) * segLength;
-      y += Math.sin(angle) * segLength;
-      points.push(`${x} ${y}`);
+    const playPromise = v.play?.();
+    if (playPromise) {
+      playPromise.catch((err) => {
+        console.error("Autoplay failed:", err);
+        setShowPlayButton(true);
+      });
     }
 
-    return `M ${config.startX} ${config.startY} L ${points.join(' L ')}`;
+    return () => {
+      v.removeEventListener("error", onError);
+      v.removeEventListener("stalled", onStalled);
+    };
+  }, []);
+
+  const handlePlayClick = () => {
+    const v = videoRef.current;
+    if (v) {
+      v.play()
+        .then(() => setShowPlayButton(false))
+        .catch((err) => console.error("Manual play failed:", err));
+    }
   };
 
+  // Format time HHMMSSMS
+  const formatTime = () => {
+    const h = String(time.getHours()).padStart(2, "0");
+    const m = String(time.getMinutes()).padStart(2, "0");
+    const s = String(time.getSeconds()).padStart(2, "0");
+    const ms = String(Math.floor(time.getMilliseconds() / 10)).padStart(2, "0");
+    return h + m + s + ms;
+  };
+
+  const digits = formatTime().split("");
+
+  const containerStyle = {
+    width: "100vw",
+    height: "100dvh",
+    position: "relative",
+    overflow: "hidden",
+    backgroundColor: "#000",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    // Cold crisp overlay: subtle blue tint with high contrast
+    background: "linear-gradient(rgba(0, 50, 100, 0.15), rgba(0, 50, 100, 0.15)), #000",
+  };
+
+  const mediaStyle = {
+    position: "absolute",
+    inset: 0,
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    zIndex: 0,
+    pointerEvents: "none",
+    display: videoFailed ? "none" : "block",
+    // Enhance cold/crisp: adjusted for consistency
+    filter: "brightness(1.1) contrast(0.8) hue-rotate(15deg) saturate(1.2)",
+  };
+
+  const fallbackStyle = {
+    position: "absolute",
+    inset: 0,
+    backgroundImage: `url(${fallbackImg})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    display: videoFailed ? "block" : "none",
+    // Apply same cold filter to fallback image
+    filter: "brightness(1.3) contrast(1.4) hue-rotate(-10deg) saturate(1.2)",
+  };
+
+  // Clock styling: centered, nearly full width, upside-down, moved 5vh higher
+  const clockStyle = {
+    display: "grid",
+    gridTemplateColumns: "repeat(8, 1fr)", // 8 digits
+    width: "98vw", // Nearly full viewport width
+    maxWidth: "100%", // Prevent overflow
+    transform: "rotate(180deg) translateY(5vh)", // Upside down and shifted 5vh higher
+    zIndex: 2,
+    fontFamily: "CustomFont, Arial, sans-serif", // Fallback for debugging
+    fontSize: "24vw", // Large digits
+    color: "#e6f2ff", // Icy white-blue for crisp cold look
+    userSelect: "none",
+    textAlign: "center", // Center digits in grid cells
+    textShadow: `
+      1px 0px 0 #274676FF,
+      -1px 0px 17px rgba(0, 50, 100, 0.8)
+    `,
+    // Crisp sharpness
+    WebkitFontSmoothing: "antialiased",
+    MozOsxFontSmoothing: "grayscale",
+  };
+
+  const scopedCSS = `
+    @font-face {
+      font-family: "CustomFont";
+      src: url(${fontFile_2025_10_31}) format("truetype");
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @media (max-width: 768px) {
+      div[data-clock] {
+        font-size: 3.5rem;
+        padding: 0 0.2rem;
+        text-shadow: 
+          // 0 0 6px rgba(100, 180, 255, 0.6),
+          // 0 0 12px rgba(100, 180, 255, 0.4),
+          // 0.8px 0.8px 0 #001133,
+          // -0.8px -0.8px 2.5px rgba(0, 50, 100, 0.8);
+      }
+      video {
+        object-fit: contain;
+      }
+    }
+  `;
+
   return (
-    <svg
-      viewBox="-2 -2 4 4"
-      style={{ width: '400px', height: '400px', background: '#111', borderRadius: '50%' }}
-    >
-      {/* Clock face */}
-      <circle cx="0" cy="0" r="1.98" stroke="#888" strokeWidth="0.02" fill="none" />
-
-      {/* Chaotic hands */}
-      {extraSecondsConfig.map((config, i) => {
-        const d = buildChaoticPath(config);
-        const opacity = 0.3 + 0.7 * Math.abs(Math.sin(time * config.fadeSpeed + config.fadePhase));
-        const currentAngle = config.baseAngle + time * config.spinSpeed;
-        return (
-          <path
-            key={`extra-${i}`}
-            d={d}
-            stroke={config.baseColor}
-            strokeWidth={config.strokeWidth}
-            opacity={opacity}
-            fill="none"
-            transform={`rotate(${(currentAngle * 180) / Math.PI})`}
-          />
-        );
-      })}
-
-      {/* Main hands */}
-      {mainHandsPositions.map(({ offsetX, offsetY }, idx) => (
-        <g key={`main-${idx}`} transform={`translate(${offsetX}, ${offsetY})`}>
-          {/* Hour hand */}
-          <path
-            d="M 0 0 L 0.3 0 L 0.3 -0.15"
-            stroke="#888fff"
-            strokeWidth="0.05"
-            fill="none"
-            transform={`rotate(${(radH * 180) / Math.PI})`}
-          />
-          {/* Minute hand */}
-          <path
-            d="M 0 0 L 0.45 0 L 0.45 -0.1"
-            stroke="#fff"
-            strokeWidth="0.03"
-            fill="none"
-            transform={`rotate(${(radM * 180) / Math.PI})`}
-          />
-        </g>
-      ))}
-
-      {/* Second hands */}
-      {secondHandPositions.map(({ offsetX, offsetY }, idx) => (
-        <g
-          key={`second-${idx}`}
-          transform={`translate(${offsetX}, ${offsetY}) rotate(${(radS * 180) / Math.PI})`}
-          opacity={0.6 + 0.4 * Math.sin((idx + time) * Math.PI)}
+    <div style={containerStyle}>
+      <style>{scopedCSS}</style>
+      <video
+        ref={videoRef}
+        style={mediaStyle}
+        loop
+        muted
+        playsInline
+        autoPlay
+        preload="metadata"
+      >
+        <source src={videoFile} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div style={fallbackStyle} aria-hidden />
+      {showPlayButton && (
+        <button
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 3,
+            padding: "10px 20px",
+            fontSize: "1rem",
+            cursor: "pointer",
+            backgroundColor: "rgba(0, 30, 60 Pragmatic Play",
+            color: "#e6f2ff",
+            border: "1px solid rgba(100, 180, 255, 0.5)",
+            borderRadius: "5px",
+            textShadow: "0 0 4px rgba(100, 180, 255, 0.5)",
+          }}
+          onClick={handlePlayClick}
         >
-          <path
-            d="M 0 0 L 0.5 0 L 0.5 -0.05"
-            stroke={accentColor}
-            strokeWidth="0.015"
-            fill="none"
-          />
-        </g>
-      ))}
-    </svg>
+          Play Video
+        </button>
+      )}
+      <div style={clockStyle} data-clock>
+        {digits.map((d, i) => (
+          <span key={i} style={{ display: "block" }}>{d}</span>
+        ))}
+      </div>
+    </div>
   );
 }
