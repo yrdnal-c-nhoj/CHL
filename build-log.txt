@@ -4,10 +4,10 @@
 
 vite v7.1.6 building for production...
 transforming...
-✓ 486 modules transformed.
-✗ Build failed in 517ms
+✓ 460 modules transformed.
+✗ Build failed in 600ms
 error during build:
-Could not resolve "./air.ttf" from "src/pages/25-06-02/Clock.jsx"
+Could not resolve "./stamp.png" from "src/pages/25-06-02/Clock.jsx"
 file: /Users/john/Desktop/CHL/src/pages/25-06-02/Clock.jsx
     at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
     at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
