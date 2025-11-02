@@ -141,7 +141,7 @@ export default function VideoClock() {
     display: "grid",
     gridTemplateColumns: "repeat(8, 1fr)",
     width: "98vw",
-    transform: "rotate(180deg) translateY(5vh)",
+    transform: "rotate(180deg) translateY(3vh)",
     zIndex: 2,
     fontFamily: "CustomFont, Arial, sans-serif",
     fontSize: "24vw",
