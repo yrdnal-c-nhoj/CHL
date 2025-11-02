@@ -1,18 +1,65 @@
 /** @jsxImportSource react */
 import { useEffect, useState } from "react";
 import bgImage from "./turq.webp";
-import clockFaceImage from "./tur.jpg"; // 🟦 your clock face image
+import clockFaceImage from "./tur.jpg";
 import customFont2025_10_31 from "./turqs.ttf";
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
+  const [ready, setReady] = useState(false);
 
+  // Update clock smoothly
   useEffect(() => {
-    const update = () => setTime(new Date());
-    const id = setInterval(update, 50);
+    const id = setInterval(() => setTime(new Date()), 50);
     return () => clearInterval(id);
   }, []);
 
+  // Preload images and font
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const font = new FontFace("CustomFont2025_10_31", `url(${customFont2025_10_31})`);
+        await font.load();
+        document.fonts.add(font);
+      } catch (err) {
+        console.warn("Font failed to load:", err);
+      }
+    };
+
+    const loadImage = (src) =>
+      new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = src;
+      });
+
+    Promise.all([loadFont(), loadImage(bgImage), loadImage(clockFaceImage)])
+      .then(() => setReady(true))
+      .catch(() => setReady(true)); // still show even if some fail
+  }, []);
+
+  // Do not render until ready
+  if (!ready)
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100dvh",
+          backgroundColor: "#000",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          color: "#4ff",
+          fontFamily: "sans-serif",
+          letterSpacing: "0.2em",
+        }}
+      >
+        Loading...
+      </div>
+    );
+
+  // Time math
   const ms = time.getMilliseconds();
   const seconds = time.getSeconds() + ms / 1000;
   const minutes = time.getMinutes() + seconds / 60;
@@ -21,17 +68,16 @@ export default function AnalogClock() {
   const secondDeg = seconds * 6;
   const minuteDeg = minutes * 6;
   const hourDeg = hours * 30;
-
   const radius = "min(50vh, 50vw)";
   const clockSize = `calc(2 * ${radius})`;
 
+  // Style definitions
   const METALLIC = {
     background:
-      "linear-gradient(135deg, #847979FF 0%, #C9C6C6 25%, #ffffff 50%, #C8C8C8 75%, #836F6FFF 100%)",
+      "linear-gradient(135deg, #847979 0%, #C9C6C6 25%, #ffffff 50%, #C8C8C8 75%, #836F6F 100%)",
     boxShadow:
       "0 0.2vh 0.8vh rgba(0,0,0,0.3), inset -0.1vh 0 0.9vh rgba(255,255,255,0.9), inset 0.1vh 0 0.3vh rgba(0,0,0,0.9)",
   };
-
   const FILIGREE = {
     ...METALLIC,
     filter: "hue-rotate(190deg) saturate(0.5) brightness(1.1)",
@@ -60,7 +106,6 @@ export default function AnalogClock() {
     zIndex: 0,
   };
 
-  // 🟢 Clock face image background
   const wrapperStyle = {
     position: "relative",
     width: clockSize,
@@ -72,7 +117,7 @@ export default function AnalogClock() {
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
-   };
+  };
 
   const overlayStyle = {
     position: "absolute",
@@ -101,14 +146,12 @@ export default function AnalogClock() {
     hourDeg,
     "polygon(50% 0%, 75% 15%, 70% 50%, 90% 80%, 75% 100%, 25% 100%, 10% 80%, 30% 50%, 25% 15%)"
   );
-
   const minuteHand = handBase(
     0.06,
     0.4,
     minuteDeg,
     "polygon(50% 0%, 70% 5%, 60% 40%, 80% 70%, 60% 100%, 40% 100%, 20% 70%, 40% 40%, 30% 5%)"
   );
-
   const secondHand = {
     ...FILIGREE,
     position: "absolute",
@@ -149,20 +192,14 @@ export default function AnalogClock() {
     >
       <defs>
         <linearGradient id="numGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#7C7A7BFF" />
-          <stop offset="25%" stopColor="#B0B4B4FF" />
+          <stop offset="0%" stopColor="#7C7A7B" />
+          <stop offset="25%" stopColor="#B0B4B4" />
           <stop offset="50%" stopColor="#ffffff" />
-          <stop offset="75%" stopColor="#BBBEBEFF" />
-          <stop offset="100%" stopColor="#777A79FF" />
+          <stop offset="75%" stopColor="#BBBEBE" />
+          <stop offset="100%" stopColor="#777A79" />
         </linearGradient>
         <filter id="numShadow">
-          <feDropShadow
-            dx="0"
-            dy="0.5"
-            stdDeviation="0.8"
-            floodColor="#000"
-            floodOpacity="0.4"
-          />
+          <feDropShadow dx="0" dy="0.5" stdDeviation="0.8" floodColor="#000" floodOpacity="0.4" />
         </filter>
       </defs>
 
@@ -171,8 +208,7 @@ export default function AnalogClock() {
         const radiusPos = 38;
         const x = 50 + radiusPos * Math.sin(angle);
         const y = 50 - radiusPos * Math.cos(angle);
-        const label =
-          i === 0 ? "12" : i === 6 ? "6" : i === 9 ? "9" : i === 3 ? "3" : i.toString();
+        const label = i === 0 ? "12" : i === 3 ? "3" : i === 6 ? "6" : i === 9 ? "9" : i.toString();
 
         return (
           <text
@@ -185,11 +221,6 @@ export default function AnalogClock() {
             fontFamily="'CustomFont2025_10_31', serif"
             fill="url(#numGrad)"
             filter="url(#numShadow)"
-            style={{
-              transform: `rotate(${i * 30}deg)`,
-              transformOrigin: `${x}px ${y}px`,
-              fontVariantNumeric: "tabular-nums",
-            }}
           >
             {label}
           </text>
@@ -200,19 +231,8 @@ export default function AnalogClock() {
 
   return (
     <>
-      <style jsx>{`
-        @font-face {
-          font-family: 'CustomFont2025_10_31';
-          src: url(${customFont2025_10_31}) format('truetype');
-          font-weight: normal;
-          font-style: normal;
-          font-display: swap;
-        }
-      `}</style>
-
       <div style={pageStyle}>
         <div style={bgStyle} />
-
         <div style={wrapperStyle}>
           <div style={overlayStyle} />
           {svgNumbers}
