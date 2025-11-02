@@ -35,7 +35,7 @@ export default function ClockLetters({
       .then(() => setFontLoaded(true))
       .catch((err) => {
         console.warn("Font load failed:", err);
-        setFontLoaded(true); // Fallback: show content to avoid infinite hide
+        setFontLoaded(true); // Fallback show content to avoid infinite hide
       });
   }, []);
 
