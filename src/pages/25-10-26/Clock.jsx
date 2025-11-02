@@ -52,43 +52,50 @@ export default function MonarchClock() {
   const handleVideoError = () => setVideoFailed(true);
   const handleImageLoad = () => setMediaReady(true);
 
-  // Adjust video: center or flush-left if wider than viewport
-  const adjustVideoPosition = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const videoAspect = video.videoWidth / video.videoHeight;
-    const viewportAspect = vw / vh;
 
-    if (viewportAspect < videoAspect) {
-      // Video wider → flush left
-      setVideoStyle({
-        position: "absolute",
-        top: "50%",
-        left: 0,
-        transform: "translateY(-50%)",
-        height: "100dvh",
-        width: "auto",
-        objectFit: "cover",
-        zIndex: 0,
-        filter: "saturate(1.5)",
-      });
-    } else {
-      // Video fits → center
-      setVideoStyle({
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        height: "100dvh",
-        width: "auto",
-        objectFit: "contain",
-        zIndex: 0,
-        filter: "saturate(1.5)",
-      });
-    }
-  };
+
+
+
+const adjustVideoPosition = () => {
+  const video = videoRef.current;
+  if (!video) return;
+
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const videoAspect = video.videoWidth / video.videoHeight;
+  const viewportAspect = vw / vh;
+
+  // Always cover the viewport completely
+  if (viewportAspect < videoAspect) {
+    // Video is wider → center horizontally
+    setVideoStyle({
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      height: "100dvh",
+      width: "auto",
+      objectFit: "cover",
+      zIndex: 0,
+      filter: "saturate(1.5)",
+    });
+  } else {
+    // Video is taller → center vertically
+    setVideoStyle({
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: "100dvw",
+      height: "auto",
+      objectFit: "cover",
+      zIndex: 0,
+      filter: "saturate(1.5)",
+    });
+  }
+};
+
+
 
   useEffect(() => {
     window.addEventListener("resize", adjustVideoPosition);
