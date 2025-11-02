@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import videoFile from "./midsun.mp4";
+import videoFile from "./mids.mp4";
 import fallbackImg from "./midsun.webp";
 import fontFile_2025_10_31 from "./mi.otf";
 
