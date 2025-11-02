@@ -4,8 +4,8 @@
 
 vite v7.1.6 building for production...
 transforming...
-✓ 179 modules transformed.
-✗ Build failed in 402ms
+✓ 235 modules transformed.
+✗ Build failed in 433ms
 error during build:
 [vite:css] [postcss] /Users/john/Desktop/CHL/src/pages/25-05-14/RoughIdea.css:1:17: Unknown word useEffect
 file: /Users/john/Desktop/CHL/src/pages/25-05-14/RoughIdea.css:1:16
