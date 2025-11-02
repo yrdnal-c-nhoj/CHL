@@ -4,7 +4,7 @@ import bgVideo from "./tilt.mp4";
 import fallbackImg from "./tilt.webp";
 import romanFont2025_10_27 from "./tilt.ttf";
 
-export default function MonarchClock() {
+export default function TiltClock() {
   const videoRef = useRef(null);
   const [mediaReady, setMediaReady] = useState(false);
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -72,36 +72,22 @@ export default function MonarchClock() {
   const adjustVideoPosition = () => {
     const video = videoRef.current;
     if (!video) return;
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const videoAspect = video.videoWidth / video.videoHeight;
-    const viewportAspect = vw / vh;
 
-    if (viewportAspect < videoAspect) {
-      setVideoStyle({
-        position: "absolute",
-        top: "50%",
-        left: 0,
-        transform: "translateY(-50%)",
-        height: "100dvh",
-        width: "auto",
-        objectFit: "cover",
-        zIndex: 0,
-        filter: "saturate(1.5)",
-      });
-    } else {
-      setVideoStyle({
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        height: "100dvh",
-        width: "auto",
-        objectFit: "contain",
-        zIndex: 0,
-        filter: "saturate(1.5)",
-      });
-    }
+    // Ensure centered and fully visible (contain), with fade-in animation
+    setVideoStyle({
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: "100vw",
+      height: "100vh",
+      objectFit: "contain", // never clip
+      backgroundColor: "black",
+      zIndex: 0,
+      filter: "saturate(1.5)",
+      opacity: 0,
+      animation: "fadeInBg 1.8s ease-out forwards",
+    });
   };
 
   useEffect(() => {
@@ -136,7 +122,6 @@ export default function MonarchClock() {
     whiteSpace: "nowrap",
   };
 
-  // responsive scale that shrinks on small viewports
   const scale =
     typeof window !== "undefined" && window.innerWidth < 600 ? 0.7 : 1;
 
@@ -150,7 +135,6 @@ export default function MonarchClock() {
     flexDirection: "column",
     alignItems: "center",
     gap: "1dvh",
-    // backgroundColor: "rgba(0,0,0,0.25)",
     padding: "1.5dvh 3dvh",
     borderRadius: "0.8dvh",
     animation: "flicker 3s infinite, fadeIn 1.5s ease-out",
@@ -183,20 +167,6 @@ export default function MonarchClock() {
     flex: 1,
   };
 
-  const flickerAnimation = `
-    @keyframes flicker {
-      0%, 18%, 20%, 22%, 25%, 53%, 57%, 100% { opacity: 0.9; }
-      19%, 21%, 24%, 54%, 56% { opacity: 1; }
-    }
-  `;
-
-  const fadeInAnimation = `
-    @keyframes fadeIn {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
-    }
-  `;
-
   const scanlineOverlay = {
     position: "absolute",
     top: 0,
@@ -222,7 +192,22 @@ export default function MonarchClock() {
         backgroundColor: "#000",
       }}
     >
-      <style>{flickerAnimation + fadeInAnimation}</style>
+      <style>{`
+        @keyframes flicker {
+          0%, 18%, 20%, 22%, 25%, 53%, 57%, 100% { opacity: 0.9; }
+          19%, 21%, 24%, 54%, 56% { opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+          0% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+
+        @keyframes fadeInBg {
+          0% { opacity: 0; transform: translate(-50%, -50%) scale(1.03); }
+          100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+      `}</style>
 
       {!videoFailed ? (
         <video
@@ -244,12 +229,15 @@ export default function MonarchClock() {
           style={{
             position: "absolute",
             top: "50%",
-            left: 0,
-            transform: "translateY(-50%)",
-            height: "100dvh",
-            width: "auto",
-            objectFit: "cover",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "100vw",
+            height: "100vh",
+            objectFit: "contain",
+            backgroundColor: "black",
             zIndex: 0,
+            opacity: 0,
+            animation: "fadeInBg 1.8s ease-out forwards",
           }}
         />
       )}
