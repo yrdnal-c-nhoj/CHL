@@ -7,7 +7,7 @@ export default function Clock() {
     const fontName = "DottedRough2025_11_01";
     let animationFrameId;
 
-    // Utility functions
+    // ------------------- Utility functions -------------------
     const getTimeDigits = (srTime) => {
       const now = new Date();
       const hours = now.getHours() % 12 || 12;
@@ -21,10 +21,10 @@ export default function Clock() {
       return `hsl(${hues[Math.floor(Math.random() * hues.length)]}, 70%, 50%)`;
     };
 
-    function randomFontSizeVH() { return `clamp(4rem, 6vh, 6rem)`; }
-    function randomScale() { return (Math.random() * 0.5 + 0.75).toFixed(2); }
-    function randomRotation() { return `${Math.floor(Math.random() * 720 - 360)}deg`; }
-    function randomFinalAngle() { return `${Math.floor(Math.random() * 31 - 15)}deg`; }
+    const randomFontSizeVH = () => `28vh`;
+    const randomScale = () => (Math.random() * 0.5 + 0.75).toFixed(2);
+    const randomRotation = () => `${Math.floor(Math.random() * 720 - 360)}deg`;
+    const randomFinalAngle = () => `${Math.floor(Math.random() * 31 - 15)}deg`;
 
     function randomDirectionOffset() {
       const side = ["top", "bottom", "left", "right"][Math.floor(Math.random() * 4)];
@@ -38,11 +38,14 @@ export default function Clock() {
       }
     }
 
-    const throwDigitsUp = (root, srTime) => {
+
+
+const throwDigitsUp = (root, srTime) => {
       const digits = getTimeDigits(srTime);
       const fragment = document.createDocumentFragment();
       const digitCount = digits.length;
-      const baseX = 50, spreadX = 10, baseY = 30, spreadY = 5, minSpacing = 8;
+      const baseX = 50 - 5; // shift left by 5vw
+      const spreadX = 20, baseY = 30, spreadY = 5, minSpacing = 8;
       const batchColor = randomColor();
 
       digits.forEach((char, index) => {
@@ -55,6 +58,7 @@ export default function Clock() {
         const yFinal = `${(baseY + (Math.random() * spreadY - spreadY / 2)).toFixed(2)}vh`;
         const scale = randomScale();
         const { x: xStart, y: yStart } = randomDirectionOffset();
+        const duration = 10 + Math.random() * 8;
 
         span.style.cssText = `
           --x-start: ${xStart};
@@ -67,16 +71,17 @@ export default function Clock() {
           --rotate-z-start: ${randomRotation()};
           --rotate-z-final: ${randomFinalAngle()};
           --digit-fs: ${randomFontSizeVH()};
-          --anim-duration: ${(10 + Math.random() * 8).toFixed(2)}s;
+          --anim-duration: ${duration.toFixed(2)}s;
           color: ${batchColor};
-          transition: opacity 1s ease;
+          opacity: 1;
         `;
 
-        // Remove after 5 seconds with fade
+        // Remove digit after animation completes
         setTimeout(() => {
-          span.style.opacity = "0";
-          setTimeout(() => span.remove(), 1000); // Remove after fade completes
-        }, 5000);
+          if (span.parentNode) {
+            span.remove();
+          }
+        }, duration * 1000);
 
         fragment.appendChild(span);
       });
@@ -84,12 +89,14 @@ export default function Clock() {
       root.appendChild(fragment);
     };
 
+
+    // ------------------- Clock logic -------------------
     const startClockLogic = () => {
       const root = document.getElementById(SCOPE_ID);
       const srTime = document.getElementById("screen-reader-time");
       if (!root || !srTime) return;
 
-      const interval = 200; // 5 times per second
+      const interval = 1000; // once per second
       let lastFrameTime = 0;
 
       const tick = (currentTime) => {
@@ -103,7 +110,7 @@ export default function Clock() {
       animationFrameId = requestAnimationFrame(tick);
     };
 
-    // Inject font + styles
+    // ------------------- Inject font + styles -------------------
     const style = document.createElement("style");
     style.setAttribute("data-scope", SCOPE_ID);
     style.textContent = `
@@ -126,9 +133,18 @@ export default function Clock() {
         animation: ri-fly-up var(--anim-duration, 12s) cubic-bezier(.2,.9,.3,1) forwards;
       }
       @keyframes ri-fly-up {
-        0% { transform: translate(var(--x-start), var(--y-start)) rotateX(var(--rotate-x-start)) rotateY(var(--rotate-y-start)) rotateZ(var(--rotate-z-start)) scale(var(--scale)); opacity: 1; }
-        15%, 90% { transform: translate(var(--x-final), var(--y-final)) rotateZ(var(--rotate-z-final)) scale(var(--scale)); opacity: 1; }
-        100% { transform: translate(var(--x-final), var(--y-final)) rotateZ(var(--rotate-z-final)) scale(var(--scale)); opacity: 0; }
+        0% { 
+          transform: translate(var(--x-start), var(--y-start)) rotateX(var(--rotate-x-start)) rotateY(var(--rotate-y-start)) rotateZ(var(--rotate-z-start)) scale(var(--scale)); 
+          opacity: 1; 
+        }
+        15%, 70% { 
+          transform: translate(var(--x-final), var(--y-final)) rotateZ(var(--rotate-z-final)) scale(var(--scale)); 
+          opacity: 1; 
+        }
+        100% { 
+          transform: translate(var(--x-final), var(--y-final)) rotateZ(var(--rotate-z-final)) scale(var(--scale)); 
+          opacity: 0; 
+        }
       }
       #${SCOPE_ID} #screen-reader-time {
         position: absolute !important; width: 1px; height: 1px;
