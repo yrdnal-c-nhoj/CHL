@@ -86,7 +86,7 @@ export default function TiltClock() {
       zIndex: 0,
       filter: "saturate(1.5)",
       opacity: 0,
-      animation: "fadeInBg 1.8s ease-out forwards",
+      animation: "fadeInBg 3.8s ease-out forwards",
     });
   };
 
