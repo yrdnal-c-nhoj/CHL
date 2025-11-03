@@ -1,8 +1,8 @@
 /** @jsxImportSource react */
 import { useState, useEffect } from "react";
-import customFont2025_11_02 from "./vp.ttf"; // 🟩 Local font
+import customFont2025_11_02 from "./vp.ttf"; // 🟩 Local font in same folder
 
-const clockSize = 50; // Diameter in vh units
+const clockSize = 50; // Diameter (used for hour hand, not viewport hands)
 
 // --- Time Rotation Logic ---
 const getHandRotation = () => {
@@ -18,7 +18,7 @@ const getHandRotation = () => {
   return { secondsDeg, minutesDeg, hoursDeg };
 };
 
-// --- Outer number position logic ---
+// --- Positioning Logic for OUTER Viewport Numbers ---
 const getOuterNumberPosition = (hour) => {
   const adjustedHour = hour % 12;
   const degrees = adjustedHour * 30;
@@ -28,7 +28,7 @@ const getOuterNumberPosition = (hour) => {
   const dirY = Math.sin(angleInRadians);
 
   let finalX, finalY;
-  const scaleFactor = 0.9;
+  const scaleFactor = 0.8;
 
   if (dirX !== 0) {
     const tHorizontal = dirX > 0 ? 50 / dirX : -50 / dirX;
@@ -64,6 +64,7 @@ const getOuterNumberPosition = (hour) => {
   };
 };
 
+// --- React Component ---
 export default function AnalogClock() {
   const [rotation, setRotation] = useState(getHandRotation);
   const [viewport, setViewport] = useState({
@@ -71,23 +72,26 @@ export default function AnalogClock() {
     height: window.innerHeight,
   });
 
-  // Update rotation every second
   useEffect(() => {
-    const interval = setInterval(() => setRotation(getHandRotation()), 1000);
+    const interval = setInterval(() => {
+      setRotation(getHandRotation());
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // Update viewport dimensions on resize
+  // Track viewport for hand length
   useEffect(() => {
-    const updateViewport = () =>
+    const update = () =>
       setViewport({ width: window.innerWidth, height: window.innerHeight });
-    window.addEventListener("resize", updateViewport);
-    return () => window.removeEventListener("resize", updateViewport);
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, []);
 
   const { secondsDeg, minutesDeg, hoursDeg } = rotation;
   const hours = Array.from({ length: 12 }, (_, i) => i + 1);
 
+  // Compute hand lengths dynamically:
+  // Distance from center to edge minus 5px
   const maxRadiusPx = Math.min(viewport.width, viewport.height) / 2 - 5;
   const maxRadiusVh = (maxRadiusPx / viewport.height) * 100;
 
@@ -97,7 +101,7 @@ export default function AnalogClock() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "100vh",
+    minHeight: "100dvh",
     width: "100vw",
     backgroundColor: "#1C3405FF",
     overflow: "hidden",
@@ -126,11 +130,12 @@ export default function AnalogClock() {
     ...handBaseStyle,
     height: `${clockSize * 0.7}vh`,
     width: `${clockSize * 0.012}vh`,
-    backgroundColor: "#DBBEDDFF",
+     backgroundColor: "#DBBEDDFF",
     transform: `translateX(-50%) rotate(${hoursDeg}deg)`,
     zIndex: 30,
   };
 
+  // 🟦 Minute hand: dynamic to viewport edge (minus 5px)
   const minuteHandStyle = {
     ...handBaseStyle,
     height: `${maxRadiusVh}vh`,
@@ -140,6 +145,7 @@ export default function AnalogClock() {
     zIndex: 20,
   };
 
+  // 🟥 Second hand: dynamic to viewport edge (minus 5px)
   const secondHandStyle = {
     ...handBaseStyle,
     height: `${maxRadiusVh}vh`,
@@ -156,32 +162,19 @@ export default function AnalogClock() {
     width: `${clockSize * 0.03}vh`,
     height: `${clockSize * 0.03}vh`,
     borderRadius: "50%",
-    backgroundColor: "#F1ECEDFF",
+    backgroundColor: "#333",
     transform: "translate(-50%, -50%)",
     zIndex: 50,
   };
 
   const outerNumberStyle = {
     position: "absolute",
-    fontSize: "7vh",
+    fontSize: "vh",
     color: "#EFD3F1FF",
     zIndex: 1,
   };
 
-  // --- Floating rectangle in the center, always viewport-sized ---
-const rectangleStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  width: "65vw",
-  height: "65vh",
-  backgroundColor: "rgba(255, 255, 255)", // more visible overlay
-  border: "1.5vh solid #EFD3F1FF", // slightly thicker, visible border
-  transform: "translate(-50%, -50%)",
-  zIndex: 5, // behind clock hands but above background
-  pointerEvents: "none", // so it doesn’t block interaction if needed
-};
-
+  // --- Render ---
   return (
     <div style={containerStyle}>
       <style>
@@ -195,14 +188,14 @@ const rectangleStyle = {
       `}
       </style>
 
-      {/* Floating rectangle */}
-      <div style={rectangleStyle}></div>
-
-      {/* Outer numbers */}
+      {/* Viewport-edge numbers */}
       {hours.map((hour) => (
         <div
           key={`outer-${hour}`}
-          style={{ ...outerNumberStyle, ...getOuterNumberPosition(hour) }}
+          style={{
+            ...outerNumberStyle,
+            ...getOuterNumberPosition(hour),
+          }}
         >
           {hour}
         </div>
