@@ -1,12 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import circleFont from './circle.ttf'; // Local font file
 
 const Clock = () => {
+  const [fontLoaded, setFontLoaded] = useState(false);
+
   useEffect(() => {
     // Load the font
     const font = new FontFace('circle', `url(${circleFont})`);
     font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
+      setFontLoaded(true); // Set state to true when font is loaded
+    }).catch((error) => {
+      console.error('Font loading failed:', error);
+      setFontLoaded(true); // Fallback to render even if font fails
     });
 
     const updateClocks = () => {
@@ -36,6 +42,11 @@ const Clock = () => {
     updateClocks();
     return () => cancelAnimationFrame(updateClocks);
   }, []);
+
+  // Don't render until font is loaded
+  if (!fontLoaded) {
+    return null; // or a loading placeholder if desired
+  }
 
   const clockSize = '82vh';
 
