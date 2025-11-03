@@ -55,7 +55,7 @@ const AnalogClock = () => {
           fontFamily: "sans-serif",
         }}
       >
-        Loading Clock…
+      
       </div>
     );
   }
