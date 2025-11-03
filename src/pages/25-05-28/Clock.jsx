@@ -156,7 +156,7 @@ const Clock = () => {
         margin: 0,
         overflow: 'hidden',
         background: `linear-gradient(to bottom, #775011, #746c78)`,
-        height: '100vh',
+        height: '100dvh',
         width: '100vw',
         position: 'relative',
         fontFamily: 'circle, sans-serif',
