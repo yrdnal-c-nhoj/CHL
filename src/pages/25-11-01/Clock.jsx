@@ -69,7 +69,7 @@ export default function EdgeClockWithHands() {
 
     const dx = angle === 0 || angle === Math.PI ? centerX - margin * viewport.height / 100 : centerX / Math.abs(Math.cos(angle));
     const dy = angle === Math.PI / 2 || angle === -Math.PI / 2 ? centerY - margin * viewport.height / 100 : centerY / Math.abs(Math.sin(angle));
-    const dist = Math.min(dx, dy) * 0.9;
+    const dist = Math.min(dx, dy) * 0.95;
 
     const x = centerX + Math.cos(angle) * dist;
     const y = centerY + Math.sin(angle) * dist;
