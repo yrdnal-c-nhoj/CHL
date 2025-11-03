@@ -33,8 +33,8 @@ const WarholGraveCamClock = () => {
   const digitStyle = {
     color: '#ef1337',
     fontFamily: "'Map', sans-serif",
-    fontSize: '8rem',
-    width: '4.5rem',
+    fontSize: '4rem',
+    width: '2rem',
     height: '6rem',
     display: 'flex',
     justifyContent: 'center',
