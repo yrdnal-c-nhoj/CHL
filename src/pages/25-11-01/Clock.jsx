@@ -1,6 +1,6 @@
 /** @jsxImportSource react */
 import React, { useEffect, useState } from "react";
-import romanFont2025_10_27 from "./roman.otf";
+import romanFont2025_10_27 from "./vp.otf";
 
 export default function AnalogClock() {
   const [now, setNow] = useState(() => new Date());
