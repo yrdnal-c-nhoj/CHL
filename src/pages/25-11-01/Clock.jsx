@@ -1,195 +1,114 @@
 /** @jsxImportSource react */
 import React, { useEffect, useState } from "react";
-import romanFont2025_10_27 from "./vp.otf";
 
 export default function AnalogClock() {
-  const [now, setNow] = useState(() => new Date());
-  const [viewport, setViewport] = useState({ width: window.innerWidth, height: window.innerHeight });
+  const [time, setTime] = useState(new Date());
 
-  // Update time every second
+  // Continuous update for sweeping second hand
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
+    const tick = () => {
+      setTime(new Date());
+      requestAnimationFrame(tick);
+    };
+    const id = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(id);
   }, []);
 
-  // Update viewport on resize
-  useEffect(() => {
-    const handler = () => setViewport({ width: window.innerWidth, height: window.innerHeight });
-    window.addEventListener("resize", handler);
-    return () => window.removeEventListener("resize", handler);
-  }, []);
+  const radius = 25; // Clock radius in vh
+  const center = radius;
 
-  const clockDiameterVh = 56;
-  const clockRadiusVh = clockDiameterVh / 2;
-  const numeralOffsetVh = 4.2;
-  const numeralRadiusVh = clockRadiusVh + numeralOffsetVh;
+  const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-  const seconds = now.getSeconds();
-  const minutes = now.getMinutes();
-  const hours = now.getHours() % 12 + minutes / 60 + seconds / 3600;
+  // Time calculations
+  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+  const minutes = time.getMinutes() + seconds / 60;
+  const hours = time.getHours() % 12 + minutes / 60;
 
-  const secAngle = seconds * 6;
-  const minAngle = minutes * 6 + seconds * 0.1;
-  const hourAngle = hours * 30;
+  const secondDeg = seconds * 6;
+  const minuteDeg = minutes * 6;
+  const hourDeg = hours * 30;
 
-  const romanNumerals = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"];
-  const fontFamilyName = "RomanClockFont_2025_10_27";
-
-  const fontFaceStyle = `
-    @font-face {
-      font-family: '${fontFamilyName}';
-      src: url('${romanFont2025_10_27}') format('truetype');
-      font-display: swap;
-    }
-  `;
-
-  const wrapperStyle = {
-    height: "100vh",
-    width: "100vw",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: "linear-gradient(180deg, hsl(2 30% 72%) 0%, hsl(90 20% 88%) 100%)",
-    overflow: "hidden",
-  };
-
-  const clockShellStyle = {
-    width: `${clockDiameterVh}vh`,
-    height: `${clockDiameterVh}vh`,
-    borderRadius: "50%",
+  const clockStyle = {
     position: "relative",
-    display: "grid",
-    placeItems: "center",
-  };
-
-  const dialFaceStyle = {
-    width: "92%",
-    height: "92%",
+    width: `${radius * 2}vh`,
+    height: `${radius * 2}vh`,
     borderRadius: "50%",
-    background: "transparent",
+    border: "0.3vh solid black",
+    backgroundColor: "#fff",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+
+  // Hands pivot at the base (bottom center)
+  const handStyle = (widthVh, lengthVh, color, rotation) => ({
     position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%,-50%)",
-    boxSizing: "border-box",
+    width: `${widthVh}vh`,
+    height: `${lengthVh}vh`,
+    backgroundColor: color,
+    transformOrigin: "50% 100%", // Pivot at the bottom center of the hand
+    top: `${center - lengthVh}vh`, // Position base at clock center
+    left: `${center - widthVh / 2}vh`, // Center horizontally
+    transform: `rotate(${rotation}deg)`, // Only rotate
+    borderRadius: "0.5vh",
+  });
+
+  const numberStyle = (num) => {
+    const angle = (num - 3) * (Math.PI / 6); // Start at 3 o'clock
+    const x = center + Math.cos(angle) * (radius - 4);
+    const y = center + Math.sin(angle) * (radius - 4);
+    return {
+      position: "absolute",
+      left: `${x}vh`,
+      top: `${y}vh`,
+      transform: "translate(-50%, -50%)",
+      fontSize: "3vh",
+      fontWeight: "bold",
+    };
   };
 
-  const handCommon = {
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transformOrigin: "50% 100%", // bottom pivot
-    borderRadius: "0.6vh",
-    pointerEvents: "none",
+  const lineStyle = (num) => {
+    const angle = (num - 3) * (Math.PI / 6); // Same angle as numbers
+    const rotation = (num - 3) * 30; // Convert to degrees for CSS rotation
+    return {
+      position: "absolute",
+      width: `100vh`, // Long enough to extend past viewport
+      height: `0.2vh`, // Thin line
+      backgroundColor: "gray", // Distinct color for visibility
+      transformOrigin: "0% 50%", // Rotate from left edge (center of clock)
+      top: `${center}vh`, // Center vertically
+      left: `${center}vh`, // Center horizontally
+      transform: `rotate(${rotation}deg)`, // Rotate to align with number
+    };
   };
-
-  const hourHandStyle = {
-    ...handCommon,
-    height: `${clockRadiusVh * 0.55}vh`,
-    width: "1.4vh",
-    background: "linear-gradient(180deg, hsl(0 0% 98%), hsl(220 10% 75%))",
-    transform: `translate(-50%,0) rotate(${hourAngle}deg)`,
-    zIndex: 6,
-  };
-
-  const minuteHandStyle = {
-    ...handCommon,
-    height: `${clockRadiusVh * 0.72}vh`,
-    width: "1.0vh",
-    background: "linear-gradient(180deg, hsl(0 0% 98%), hsl(220 10% 85%))",
-    transform: `translate(-50%,0) rotate(${minAngle}deg)`,
-    zIndex: 8,
-  };
-
-  const secondHandStyle = {
-    ...handCommon,
-    height: `${clockRadiusVh * 0.86}vh`,
-    width: "0.5vh",
-    background: "linear-gradient(180deg, hsl(2 80% 60%), hsl(2 80% 45%))",
-    transform: `translate(-50%,0) rotate(${secAngle}deg)`,
-    zIndex: 9,
-  };
-
-  const numeralBaseStyle = {
-    position: "absolute",
-    fontFamily: `${fontFamilyName}, system-ui, -apple-system, 'Segoe UI', Roboto`,
-    fontSize: "9.2vh",
-    fontWeight: 600,
-    userSelect: "none",
-    pointerEvents: "none",
-    transformOrigin: "50% 50%",
-    letterSpacing: "0.15rem",
-  };
-
-  const centerX = viewport.width / 2;
-  const centerY = viewport.height / 2;
-  const maxLineLength = Math.sqrt(centerX ** 2 + centerY ** 2);
 
   return (
-    <div style={wrapperStyle}>
-      <style>{fontFaceStyle}</style>
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div style={clockStyle}>
+        {/* Lines */}
+        {numbers.map((n) => (
+          <div key={`line-${n}`} style={lineStyle(n)} />
+        ))}
 
-      <div aria-hidden style={clockShellStyle}>
-        <div style={dialFaceStyle}>
-          {/* jawlines to numerals */}
-          {romanNumerals.map((num, i) => {
-            const angleFromTop = i * 30 - 90;
-            const lineLengthVh = numeralRadiusVh - 2;
-            const lineStyle = {
-              position: "absolute",
-              left: "50%",
-              top: "50%",
-              width: `${lineLengthVh}vh`,
-              height: "0.3vh",
-              background: "rgba(0,0,0,0.4)",
-              transformOrigin: "0% 50%",
-              transform: `rotate(${angleFromTop}deg) translateX(0)`,
-              zIndex: 2,
-            };
-            return <div key={`line-num-${i}`} style={lineStyle} aria-hidden />;
-          })}
+        {/* Numbers */}
+        {numbers.map((n) => (
+          <div key={n} style={numberStyle(n)}>
+            {n}
+          </div>
+        ))}
 
-          {/* jawlines to viewport edges */}
-          {romanNumerals.map((num, i) => {
-            const angleFromTop = i * 30 - 90;
-            const lineStyle = {
-              position: "absolute",
-              left: `${centerX}px`,
-              top: `${centerY}px`,
-              width: `${maxLineLength}px`,
-              height: "2px",
-              background: "rgba(0,0,0,0.3)",
-              transformOrigin: "0% 50%",
-              transform: `rotate(${angleFromTop}deg)`,
-              zIndex: 1,
-            };
-            return <div key={`line-edge-${i}`} style={lineStyle} aria-hidden />;
-          })}
-
-          {/* clock hands */}
-          <div style={hourHandStyle} />
-          <div style={minuteHandStyle} />
-          <div style={secondHandStyle} />
-
-          {/* numerals */}
-          {romanNumerals.map((num, i) => {
-            const angleRad = ((i * 30 - 90) * Math.PI) / 180;
-            const x = numeralRadiusVh * Math.cos(angleRad);
-            const y = numeralRadiusVh * Math.sin(angleRad);
-            const numeralStyle = {
-              ...numeralBaseStyle,
-              left: `50%`,
-              top: `50%`,
-              transform: `translate(${x}vh, ${y}vh) translate(-50%, -50%)`,
-              zIndex: 3,
-            };
-            return (
-              <div key={`numeral-${i}`} style={numeralStyle}>
-                {num}
-              </div>
-            );
-          })}
-        </div>
+        {/* Hands */}
+        <div style={handStyle(0.8, radius * 0.5, "black", hourDeg)} />
+        <div style={handStyle(0.5, radius * 0.7, "black", minuteDeg)} />
+        <div style={handStyle(0.2, radius * 0.95, "red", secondDeg)} />
       </div>
     </div>
   );
