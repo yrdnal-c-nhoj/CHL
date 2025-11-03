@@ -3,35 +3,41 @@ import cylFont from "./cyl.ttf";
 
 const FiligreeClock = () => {
   const [digits, setDigits] = useState(Array(16).fill("0"));
+  const [fontLoaded, setFontLoaded] = useState(false);
 
-  // Load font dynamically
+  // Load font dynamically and mark when loaded
   useEffect(() => {
     const font = new FontFace("cyl", `url(${cylFont})`);
     font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
+      setFontLoaded(true); // only render digits when font is ready
     });
   }, []);
 
   // Update time digits every second
   useEffect(() => {
+    if (!fontLoaded) return; // skip updating digits until font loaded
     const updateDigits = () => {
       const now = new Date();
-      // Format HH:MM:SS as 6 digits, repeat to fill 16 digits for all faces
-      const timeStr = now.toLocaleTimeString("en-GB", { hour12: false }).replace(/:/g, "");
-      // Repeat time digits to fill 16 places (for each "face" digit set)
-      const fullDigits = timeStr.repeat(Math.ceil(16 / timeStr.length)).slice(0, 16).split("");
+      const timeStr = now
+        .toLocaleTimeString("en-GB", { hour12: false })
+        .replace(/:/g, "");
+      const fullDigits = timeStr
+        .repeat(Math.ceil(16 / timeStr.length))
+        .slice(0, 16)
+        .split("");
       setDigits(fullDigits);
     };
 
     updateDigits();
     const interval = setInterval(updateDigits, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [fontLoaded]);
 
   // Inline styles
   const styles = {
     root: {
-      fontFamily: "'cyl', sans-serif",
+      fontFamily: fontLoaded ? "'cyl', sans-serif" : "sans-serif",
       background:
         "radial-gradient(circle, rgba(163, 91, 111, 1) 0%, rgba(145, 81, 144, 1) 100%)",
       width: "100vw",
@@ -110,20 +116,21 @@ const FiligreeClock = () => {
     <div style={styles.root}>
       <div style={styles.container}>
         <div id="clockBox" style={styles.box}>
-          {[...Array(16)].map((_, i) => (
-            <div key={i} className="face" style={styles.face(i)}>
-              {[...Array(6)].map((__, j) => (
-                <div key={j} className="digit" style={styles.digit}>
-                  <div className="face-front" style={styles.faceFront}>
-                    {digits[j] || "0"}
+          {fontLoaded &&
+            [...Array(16)].map((_, i) => (
+              <div key={i} className="face" style={styles.face(i)}>
+                {[...Array(6)].map((__, j) => (
+                  <div key={j} className="digit" style={styles.digit}>
+                    <div className="face-front" style={styles.faceFront}>
+                      {digits[j] || "0"}
+                    </div>
+                    <div className="face-back" style={styles.faceBack}>
+                      {digits[j] || "0"}
+                    </div>
                   </div>
-                  <div className="face-back" style={styles.faceBack}>
-                    {digits[j] || "0"}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ))}
+                ))}
+              </div>
+            ))}
         </div>
       </div>
 
