@@ -1,12 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import watchFont from "./watch.ttf";
 import gearsGif from "./gears-13950_128.gif";
 
 const Clock = () => {
+  const [loaded, setLoaded] = useState(false);
+
   useEffect(() => {
     const charMap = {
-      "0": "zero", "1": "one", "2": "two", "3": "three", "4": "four",
-      "5": "five", "6": "six", "7": "seven", "8": "eight", "9": "nine"
+      "0": "zero",
+      "1": "one",
+      "2": "two",
+      "3": "three",
+      "4": "four",
+      "5": "five",
+      "6": "six",
+      "7": "seven",
+      "8": "eight",
+      "9": "nine",
     };
 
     const substituteDigit = (str) =>
@@ -41,10 +51,27 @@ const Clock = () => {
       setValue("seconds", secondsDigits);
     };
 
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
-    return () => clearInterval(interval);
+    // Wait for font to load before showing anything
+    const loadFontAndStart = async () => {
+      try {
+        const font = new FontFace("watch", `url(${watchFont})`);
+        await font.load();
+        document.fonts.add(font);
+        updateClock(); // render initial digits
+        setLoaded(true);
+        const interval = setInterval(updateClock, 1000);
+        return () => clearInterval(interval);
+      } catch (err) {
+        console.error("Font failed to load", err);
+      }
+    };
+
+    loadFontAndStart();
   }, []);
+
+  if (!loaded) {
+    return null; // hide clock until everything is ready
+  }
 
   const backgroundStyle = {
     position: "fixed",
@@ -74,19 +101,6 @@ const Clock = () => {
       }}
     >
       <style>{`
-        @font-face {
-          font-family: 'watch';
-          src: url(${watchFont}) format('truetype');
-        }
-
-        html, body {
-          margin: 0;
-          padding: 0;
-          height: 100%;
-          width: 100%;
-          overflow: hidden;
-        }
-
         .clock {
           font-family: 'watch', sans-serif;
           color: rgb(29, 2, 84);
@@ -100,33 +114,11 @@ const Clock = () => {
           z-index: 10;
         }
 
-        .unit {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .value {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .digit-box {
-          display: inline-flex;
-          justify-content: center;
-          align-items: center;
-          height: 3rem;
-          user-select: none;
-        }
-
-        .divider {
-          height: 1px;
-          width: 30vw;
-          background-color: rgb(52, 1, 77);
-          margin: 0.5rem auto;
-        }
-      `}
-      </style>
+        .unit { display: flex; flex-direction: column; }
+        .value { display: flex; flex-direction: column; align-items: center; }
+        .digit-box { display: inline-flex; justify-content: center; align-items: center; height: 3rem; user-select: none; }
+        .divider { height: 1px; width: 30vw; background-color: rgb(52, 1, 77); margin: 0.5rem auto; }
+      `}</style>
 
       {/* Background Layers */}
       <div style={{ ...backgroundStyle, backgroundSize: "22vw 18vw", opacity: 0.3, zIndex: 5 }} />
