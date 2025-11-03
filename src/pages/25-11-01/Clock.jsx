@@ -1,213 +1,116 @@
 /** @jsxImportSource react */
 import { useState, useEffect } from "react";
-import customFont2025_11_02 from "./vp.ttf"; // 🟩 Local font in same folder
 
-const clockSize = 50; // Diameter (used for hour hand, not viewport hands)
-
-// --- Time Rotation Logic ---
-const getHandRotation = () => {
-  const now = new Date();
-  const seconds = now.getSeconds();
-  const minutes = now.getMinutes();
-  const hours = now.getHours() % 12;
-
-  const secondsDeg = seconds * 6;
-  const minutesDeg = minutes * 6 + seconds * 0.1;
-  const hoursDeg = hours * 30 + minutes * 0.5;
-
-  return { secondsDeg, minutesDeg, hoursDeg };
-};
-
-// --- Positioning Logic for OUTER Viewport Numbers ---
-const getOuterNumberPosition = (hour) => {
-  const adjustedHour = hour % 12;
-  const degrees = adjustedHour * 30;
-  const angleInRadians = degrees * (Math.PI / 180) - Math.PI / 2;
-
-  const dirX = Math.cos(angleInRadians);
-  const dirY = Math.sin(angleInRadians);
-
-  let finalX, finalY;
-  const scaleFactor = 0.8;
-
-  if (dirX !== 0) {
-    const tHorizontal = dirX > 0 ? 50 / dirX : -50 / dirX;
-    const yAtHorizontal = dirY * tHorizontal;
-    if (Math.abs(yAtHorizontal) <= 50) {
-      finalX = dirX > 0 ? 100 : 0;
-      finalY = 50 + yAtHorizontal;
-      finalX = 50 + (finalX - 50) * scaleFactor;
-      finalY = 50 + (finalY - 50) * scaleFactor;
-    }
-  }
-
-  if (finalX === undefined && dirY !== 0) {
-    const tVertical = dirY > 0 ? 50 / dirY : -50 / dirY;
-    const xAtVertical = dirX * tVertical;
-    if (Math.abs(xAtVertical) <= 50) {
-      finalX = 50 + xAtVertical;
-      finalY = dirY > 0 ? 100 : 0;
-      finalX = 50 + (finalX - 50) * scaleFactor;
-      finalY = 50 + (finalY - 50) * scaleFactor;
-    }
-  }
-
-  if (finalX === undefined) {
-    finalX = 50 + dirX * 50 * scaleFactor;
-    finalY = 50 + dirY * 50 * scaleFactor;
-  }
-
-  return {
-    top: `${finalY}vh`,
-    left: `${finalX}vw`,
-    transform: "translate(-50%, -50%)",
-  };
-};
-
-// --- React Component ---
 export default function AnalogClock() {
-  const [rotation, setRotation] = useState(getHandRotation);
-  const [viewport, setViewport] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setRotation(getHandRotation());
-    }, 1000);
+    const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // Track viewport for hand length
-  useEffect(() => {
-    const update = () =>
-      setViewport({ width: window.innerWidth, height: window.innerHeight });
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
+  const clockSize = 40; // in vh
+  const center = clockSize / 2;
 
-  const { secondsDeg, minutesDeg, hoursDeg } = rotation;
-  const hours = Array.from({ length: 12 }, (_, i) => i + 1);
+  // --- Hand Rotations ---
+  const seconds = time.getSeconds();
+  const minutes = time.getMinutes();
+  const hours = time.getHours() % 12;
 
-  // Compute hand lengths dynamically:
-  // Distance from center to edge minus 5px
-  const maxRadiusPx = Math.min(viewport.width, viewport.height) / 2 - 5;
-  const maxRadiusVh = (maxRadiusPx / viewport.height) * 100;
+  const secondDeg = (seconds / 60) * 360;
+  const minuteDeg = (minutes / 60) * 360 + (seconds / 60) * 6;
+  const hourDeg = (hours / 12) * 360 + (minutes / 60) * 30;
 
-  // --- Styles ---
-  const containerStyle = {
-    position: "relative",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    minHeight: "100dvh",
-    width: "100vw",
-    backgroundColor: "#1C3405FF",
-    overflow: "hidden",
-    fontFamily: "'CustomFont2025_11_02', sans-serif",
-  };
+  // --- Digit Positions (12 at top) ---
+  const digits = Array.from({ length: 12 }, (_, i) => {
+    const angle = (i / 12) * 2 * Math.PI - Math.PI / 2; // -90° so 12 is top
+    const radius = center * 0.85;
+    const x = center + radius * Math.cos(angle);
+    const y = center + radius * Math.sin(angle);
+    return { num: i + 1, x, y };
+  });
 
-  const clockStyle = {
-    position: "relative",
-    width: `${clockSize}vh`,
-    height: `${clockSize}vh`,
-    borderRadius: "50%",
-    zIndex: 10,
-  };
-
-  const handBaseStyle = {
-    position: "absolute",
-    left: "50%",
-    bottom: "50%",
-    transformOrigin: "bottom center",
-    transform: "translateX(-50%) rotate(0deg)",
-    zIndex: 10,
-    borderRadius: "0.15vh",
-  };
-
-  const hourHandStyle = {
-    ...handBaseStyle,
-    height: `${clockSize * 0.7}vh`,
-    width: `${clockSize * 0.012}vh`,
-     backgroundColor: "#DBBEDDFF",
-    transform: `translateX(-50%) rotate(${hoursDeg}deg)`,
-    zIndex: 30,
-  };
-
-  // 🟦 Minute hand: dynamic to viewport edge (minus 5px)
-  const minuteHandStyle = {
-    ...handBaseStyle,
-    height: `${maxRadiusVh}vh`,
-    width: `${clockSize * 0.008}vh`,
-    backgroundColor: "#DBBEDDFF",
-    transform: `translateX(-50%) rotate(${minutesDeg}deg)`,
-    zIndex: 20,
-  };
-
-  // 🟥 Second hand: dynamic to viewport edge (minus 5px)
-  const secondHandStyle = {
-    ...handBaseStyle,
-    height: `${maxRadiusVh}vh`,
-    width: `${clockSize * 0.005}vh`,
-    backgroundColor: "#E58A8AFF",
-    transform: `translateX(-50%) rotate(${secondsDeg}deg)`,
-    zIndex: 40,
-  };
-
-  const centerDotStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    width: `${clockSize * 0.03}vh`,
-    height: `${clockSize * 0.03}vh`,
-    borderRadius: "50%",
-    backgroundColor: "#333",
-    transform: "translate(-50%, -50%)",
-    zIndex: 50,
-  };
-
-  const outerNumberStyle = {
-    position: "absolute",
-    fontSize: "10vh",
-    color: "#EFD3F1FF",
-    zIndex: 1,
-  };
-
-  // --- Render ---
   return (
-    <div style={containerStyle}>
-      <style>
-        {`
-        @font-face {
-          font-family: 'CustomFont2025_11_02';
-          src: url(${customFont2025_11_02}) format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
-      `}
-      </style>
+    <div
+      style={{
+        width: `${clockSize}vh`,
+        height: `${clockSize}vh`,
+        borderRadius: "50%",
+        border: "0.5vh solid black",
+        position: "relative",
+        margin: "5vh auto",
+        backgroundColor: "#fff",
+      }}
+    >
+      {/* Hour Hand */}
+      <div
+        style={{
+          position: "absolute",
+          width: "0.5vh",
+          height: `${center * 0.5}vh`,
+          backgroundColor: "black",
+          top: `${center - center * 0.5}vh`,
+          left: `${center - 0.25}vh`,
+          transformOrigin: "50% 100%",
+          transform: `rotate(${hourDeg}deg)`,
+        }}
+      />
+      {/* Minute Hand */}
+      <div
+        style={{
+          position: "absolute",
+          width: "0.3vh",
+          height: `${center * 0.7}vh`,
+          backgroundColor: "black",
+          top: `${center - center * 0.7}vh`,
+          left: `${center - 0.15}vh`,
+          transformOrigin: "50% 100%",
+          transform: `rotate(${minuteDeg}deg)`,
+        }}
+      />
+      {/* Second Hand */}
+      <div
+        style={{
+          position: "absolute",
+          width: "0.2vh",
+          height: `${center * 0.9}vh`,
+          backgroundColor: "red",
+          top: `${center - center * 0.9}vh`,
+          left: `${center - 0.1}vh`,
+          transformOrigin: "50% 100%",
+          transform: `rotate(${secondDeg}deg)`,
+        }}
+      />
 
-      {/* Viewport-edge numbers */}
-      {hours.map((hour) => (
+      {/* Digits */}
+      {digits.map((d) => (
         <div
-          key={`outer-${hour}`}
+          key={d.num}
           style={{
-            ...outerNumberStyle,
-            ...getOuterNumberPosition(hour),
+            position: "absolute",
+            left: `${d.x}vh`,
+            top: `${d.y}vh`,
+            transform: "translate(-50%, -50%)",
+            fontSize: "3vh",
+            fontWeight: "bold",
           }}
         >
-          {hour}
+          {d.num}
         </div>
       ))}
 
-      {/* Center clock */}
-      <div style={clockStyle}>
-        <div style={hourHandStyle}></div>
-        <div style={minuteHandStyle}></div>
-        <div style={secondHandStyle}></div>
-        <div style={centerDotStyle}></div>
-      </div>
+      {/* Center Circle */}
+      <div
+        style={{
+          position: "absolute",
+          width: "1.5vh",
+          height: "1.5vh",
+          backgroundColor: "black",
+          borderRadius: "50%",
+          top: `${center - 0.75}vh`,
+          left: `${center - 0.75}vh`,
+        }}
+      />
     </div>
   );
 }
