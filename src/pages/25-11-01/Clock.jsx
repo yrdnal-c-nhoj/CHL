@@ -8,7 +8,7 @@ export default function EdgeClockWithHands() {
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   // Choose a single color for numbers and hands
-  const numberAndHandColor = "#BEC1E6FF"; 
+  const numberAndHandColor = "#BEC1E6FF";
 
   // Load custom font
   useEffect(() => {
@@ -22,7 +22,8 @@ export default function EdgeClockWithHands() {
   useEffect(() => {
     const tick = () => {
       setTime(new Date());
-      requestAnimationFrame(tick);
+      const id = requestAnimationFrame(tick);
+      return () => cancelAnimationFrame(id);
     };
     const id = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(id);
@@ -66,7 +67,6 @@ export default function EdgeClockWithHands() {
   // Place numbers slightly closer to the center
   const numberStyle = (num) => {
     const angle = (num - 3) * (Math.PI / 6);
-
     const dx = angle === 0 || angle === Math.PI ? centerX - margin * viewport.height / 100 : centerX / Math.abs(Math.cos(angle));
     const dy = angle === Math.PI / 2 || angle === -Math.PI / 2 ? centerY - margin * viewport.height / 100 : centerY / Math.abs(Math.sin(angle));
     const dist = Math.min(dx, dy) * 0.9;
@@ -80,11 +80,15 @@ export default function EdgeClockWithHands() {
       top: `${y}px`,
       transform: "translate(-50%, -50%)",
       fontSize: "4vh",
-      color: numberAndHandColor, // same color as hands
+      color: numberAndHandColor,
       fontFamily: "CustomClockFont",
       zIndex: 2,
     };
   };
+
+  // Rectangle dimensions: 50px smaller than viewport
+  const rectWidth = viewport.width - 100;
+  const rectHeight = viewport.height - 100;
 
   return (
     <div
@@ -93,9 +97,27 @@ export default function EdgeClockWithHands() {
         height: "100dvh",
         position: "relative",
         overflow: "hidden",
-        backgroundColor: "#410606FF", // background color
+        backgroundColor: "#410606FF",
+        border: "5px solid #E90B0BFF", // Component border
+        boxSizing: "border-box",
       }}
     >
+      {/* Yellow rectangle, 50px smaller than viewport, centered */}
+      {viewport.width > 0 && (
+        <div
+          style={{
+            position: "absolute",
+            width: `${rectWidth}px`,
+            height: `${rectHeight}px`,
+            top: `${(viewport.height - rectHeight) / 2}px`, // Center vertically
+            left: `${(viewport.width - rectWidth) / 2}px`, // Center horizontally
+            border: "4px solid #F01212FF", // Yellow border
+            boxSizing: "border-box",
+            zIndex: 1, // Behind numbers and hands
+          }}
+        />
+      )}
+
       {viewport.width > 0 &&
         numbers.map((n) => (
           <React.Fragment key={n}>
