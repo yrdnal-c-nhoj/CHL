@@ -7,6 +7,9 @@ export default function EdgeClockWithHands() {
   const [viewport, setViewport] = useState({ width: 0, height: 0 });
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
+  // Choose a single color for numbers and hands
+  const numberAndHandColor = "#BEC1E6FF"; 
+
   // Load custom font
   useEffect(() => {
     const font = new FontFace("CustomClockFont", `url(${customFont})`);
@@ -36,7 +39,6 @@ export default function EdgeClockWithHands() {
   const centerX = viewport.width / 2;
   const centerY = viewport.height / 2;
   const margin = 1; // in vh units
-  const lineLength = Math.max(viewport.width, viewport.height) * 0.001;
 
   // Time calculations
   const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
@@ -78,15 +80,22 @@ export default function EdgeClockWithHands() {
       top: `${y}px`,
       transform: "translate(-50%, -50%)",
       fontSize: "4vh",
-      color: "#2D36BAFF",
+      color: numberAndHandColor, // same color as hands
       fontFamily: "CustomClockFont",
       zIndex: 2,
     };
   };
 
-
   return (
-    <div style={{ width: "100vw", height: "100dvh", position: "relative", overflow: "hidden" }}>
+    <div
+      style={{
+        width: "100vw",
+        height: "100dvh",
+        position: "relative",
+        overflow: "hidden",
+        backgroundColor: "#410606FF", // background color
+      }}
+    >
       {viewport.width > 0 &&
         numbers.map((n) => (
           <React.Fragment key={n}>
@@ -95,9 +104,9 @@ export default function EdgeClockWithHands() {
         ))}
 
       {/* Clock hands */}
-      <div style={handStyle(0.6, 25, "black", hourDeg)} />
-      <div style={handStyle(0.4, 35, "black", minuteDeg)} />
-      <div style={handStyle(0.2, 45, "red", secondDeg)} />
+      <div style={handStyle(0.6, 25, numberAndHandColor, hourDeg)} />
+      <div style={handStyle(0.4, 35, numberAndHandColor, minuteDeg)} />
+      <div style={handStyle(0.2, 45, numberAndHandColor, secondDeg)} />
     </div>
   );
 }
