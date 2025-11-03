@@ -1,11 +1,28 @@
+/** @jsxImportSource react */
 import React, { useEffect, useState } from "react";
+import customFont20251103 from "./dia.otf"; // 🟩 Local font
 
 export default function EdgeClockWithHands() {
   const [time, setTime] = useState(new Date());
   const [viewport, setViewport] = useState({ width: 0, height: 0 });
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-  const numberAndHandColor = "#DBEF58FF";
+  const numberAndHandColor = "#0C0C0BFF";
+
+  // Inject font-face dynamically
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @font-face {
+        font-family: 'CustomFont';
+        src: url(${customFont20251103}) format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }
+    `;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
+  }, []);
 
   // Continuous update for smooth hands
   useEffect(() => {
@@ -20,7 +37,8 @@ export default function EdgeClockWithHands() {
 
   // Track viewport size
   useEffect(() => {
-    const updateSize = () => setViewport({ width: window.innerWidth, height: window.innerHeight });
+    const updateSize = () =>
+      setViewport({ width: window.innerWidth, height: window.innerHeight });
     updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
@@ -38,7 +56,7 @@ export default function EdgeClockWithHands() {
   const minuteDeg = minutes * 6;
   const hourDeg = hours * 30;
 
-  // Hands style with fixed pixel sizes
+  // Hands style
   const handStyle = (widthPx, lengthPx, color, rotation) => ({
     position: "absolute",
     width: `${widthPx}px`,
@@ -52,7 +70,7 @@ export default function EdgeClockWithHands() {
     zIndex: 3,
   });
 
-  // Place numbers at the actual edges of the viewport
+  // Place numbers at edges
   const numberStyle = (num) => {
     const margin = 20; // pixels from edge
     let x, y;
@@ -70,22 +88,18 @@ export default function EdgeClockWithHands() {
       x = margin;
       y = centerY;
     } else if (num === 1 || num === 2) {
-      // Top right quadrant
       const t = num === 1 ? 0.33 : 0.67;
       x = centerX + (viewport.width - centerX - margin) * t;
       y = margin + (centerY - margin) * t;
     } else if (num === 4 || num === 5) {
-      // Bottom right quadrant
       const t = num === 4 ? 0.33 : 0.67;
       x = viewport.width - margin - (viewport.width - centerX - margin) * t;
       y = centerY + (viewport.height - centerY - margin) * t;
     } else if (num === 7 || num === 8) {
-      // Bottom left quadrant
       const t = num === 7 ? 0.33 : 0.67;
       x = centerX - (centerX - margin) * t;
       y = viewport.height - margin - (viewport.height - centerY - margin) * t;
-    } else { // num === 10 || num === 11
-      // Top left quadrant
+    } else {
       const t = num === 11 ? 0.33 : 0.67;
       x = margin + (centerX - margin) * t;
       y = centerY - (centerY - margin) * t;
@@ -96,17 +110,13 @@ export default function EdgeClockWithHands() {
       left: `${x}px`,
       top: `${y}px`,
       transform: "translate(-50%, -50%)",
-      fontSize: "4vh",
+      fontSize: "14vh",
       color: numberAndHandColor,
-      fontFamily: "Arial, sans-serif",
+      fontFamily: "CustomFont, Arial, sans-serif", // Use custom font
       fontWeight: "bold",
       zIndex: 2,
     };
   };
-
-  // Rectangle dimensions: 50px smaller than viewport
-  const rectWidth = viewport.width - 130;
-  const rectHeight = viewport.height - 130;
 
   return (
     <div
@@ -115,21 +125,21 @@ export default function EdgeClockWithHands() {
         height: "100dvh",
         position: "relative",
         overflow: "hidden",
-        backgroundColor: "#06413AFF",
+        backgroundColor: "#CBE1DFFF",
         boxSizing: "border-box",
       }}
     >
-     
-
       {viewport.width > 0 &&
         numbers.map((n) => (
-          <div key={n} style={numberStyle(n)}>{n}</div>
+          <div key={n} style={numberStyle(n)}>
+            {n}
+          </div>
         ))}
 
       {/* Clock hands */}
-      <div style={handStyle(6, 15, numberAndHandColor, hourDeg)} />
-      <div style={handStyle(4, 20, numberAndHandColor, minuteDeg)} />
-      <div style={handStyle(2, 25, numberAndHandColor, secondDeg)} />
+      <div style={handStyle(6, 100, numberAndHandColor, hourDeg)} />
+      <div style={handStyle(4, 130, numberAndHandColor, minuteDeg)} />
+      <div style={handStyle(2, 135, numberAndHandColor, secondDeg)} />
     </div>
   );
 }
