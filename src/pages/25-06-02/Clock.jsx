@@ -32,11 +32,10 @@ export default function AnalogImageClock() {
     return () => clearInterval(interval);
   }, []);
 
-  // Gradient animation
   useEffect(() => {
     const anim = setInterval(() => {
-      setGradientShift(prev => (prev + 0.5) % 360);
-    }, 50); // adjust speed here
+      setGradientShift((prev) => (prev + 0.5) % 360);
+    }, 50);
     return () => clearInterval(anim);
   }, []);
 
@@ -66,7 +65,7 @@ export default function AnalogImageClock() {
   const renderNumbers = () =>
     numberImages.map((img, i) => {
       const angle = (i * 30 - 90) * (Math.PI / 180); // start from top
-      const radius = 40; // percent radius
+      const radius = 40; // percent of clock container
       const x = 50 + radius * Math.cos(angle);
       const y = 50 + radius * Math.sin(angle);
       return (
@@ -76,8 +75,8 @@ export default function AnalogImageClock() {
           alt={`number-${i}`}
           style={{
             position: "absolute",
-            width: "18%",
-            height: "18%",
+            width: "10vmin",
+            height: "10vmin",
             left: `${x}%`,
             top: `${y}%`,
             transform: "translate(-50%, -50%)",
@@ -86,58 +85,21 @@ export default function AnalogImageClock() {
       );
     });
 
-  const handStyle = (deg, widthPercent, heightPercent) => ({
+  const handStyle = (deg, widthVmin, heightVmin) => ({
     position: "absolute",
-    width: `${widthPercent}%`,
-    height: `${heightPercent}%`,
+    width: `${widthVmin}vmin`,
+    height: `${heightVmin}vmin`,
     top: "50%",
     left: "50%",
     transform: `rotate(${deg}deg) translate(-50%, -50%)`,
     transformOrigin: "50% 50%",
   });
 
-  // Fully customizable backgrounds
   const backgrounds = [
-    {
-      src: bg1Img,
-      opacity: 0.91,
-      width: "100%",
-      height: "100%",
-      top: "50%",
-      left: "50%",
-      objectFit: "cover",
-      zIndex: 1,
-    },
-    {
-      src: bg2Img,
-      opacity: 0.91,
-    //   width: "90%",
-    //   height: "90%",
-       top: "52%",
-      left: "48%",
-      objectFit: "contain",
-      zIndex: 2,
-    },
-    {
-      src: bg3Img,
-      opacity: 0.8,
-     width: "70%",
-      height: "70%",
-      top: "56%",
-      left: "50%",
-      objectFit: "cover",
-      zIndex: 3,
-    },
-    {
-      src: bg4Img,
-    //    opacity: 0.7,
-      width: "70%",
-    //   height: "70%",
-      top: "40%",
-      left: "50%",
-      objectFit: "cover",
-      zIndex: 4,
-    },
+    { src: bg1Img, opacity: 0.91, zIndex: 1 },
+    { src: bg2Img, opacity: 0.91, zIndex: 2 },
+    { src: bg3Img, opacity: 0.8, zIndex: 3 },
+    { src: bg4Img, opacity: 0.7, zIndex: 4 },
   ];
 
   return (
@@ -151,7 +113,7 @@ export default function AnalogImageClock() {
         overflow: "hidden",
       }}
     >
-      {/* Render backgrounds */}
+      {/* Backgrounds */}
       {backgrounds.map((bg, idx) => (
         <img
           key={idx}
@@ -159,38 +121,36 @@ export default function AnalogImageClock() {
           alt={`background-${idx}`}
           style={{
             position: "absolute",
-            width: bg.width,
-            height: bg.height,
-            top: bg.top,
-            left: bg.left,
+            width: "100%",
+            height: "100%",
+            top: "50%",
+            left: "50%",
             transform: "translate(-50%, -50%)",
             zIndex: bg.zIndex,
             opacity: bg.opacity,
-            objectFit: bg.objectFit,
+            objectFit: "cover",
           }}
         />
       ))}
 
-      {/* Clock face */}
+      {/* Centered Clock */}
       <div
         style={{
           position: "absolute",
-          width: "100vw",
-          height: "100vw",
-          maxWidth: "100vh",
-          maxHeight: "100vh",
-          borderRadius: "50%",
-          overflow: "hidden",
           top: "50%",
           left: "50%",
+          width: "80vmin",
+          height: "80vmin",
+          borderRadius: "50%",
           transform: "translate(-50%, -50%)",
+          overflow: "visible",
           zIndex: 10,
         }}
       >
         {renderNumbers()}
-        <img src={hourHandImg} alt="hour-hand" style={handStyle(hourDeg, 6, 25)} />
-        <img src={minuteHandImg} alt="minute-hand" style={handStyle(minuteDeg, 3, 35)} />
-        <img src={secondHandImg} alt="second-hand" style={handStyle(secondDeg, 2, 40)} />
+        <img src={hourHandImg} alt="hour-hand" style={handStyle(hourDeg, 2, 25)} />
+        <img src={minuteHandImg} alt="minute-hand" style={handStyle(minuteDeg, 1.5, 35)} />
+        <img src={secondHandImg} alt="second-hand" style={handStyle(secondDeg, 1, 40)} />
       </div>
     </div>
   );
