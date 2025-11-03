@@ -156,7 +156,7 @@ export default function AnalogClock() {
     width: `${clockSize * 0.03}vh`,
     height: `${clockSize * 0.03}vh`,
     borderRadius: "50%",
-    backgroundColor: "#333",
+    backgroundColor: "#F1ECEDFF",
     transform: "translate(-50%, -50%)",
     zIndex: 50,
   };
@@ -173,10 +173,10 @@ const rectangleStyle = {
   position: "absolute",
   top: "50%",
   left: "50%",
-  width: "78vw",
-  height: "78vh",
+  width: "75vw",
+  height: "75vh",
   backgroundColor: "rgba(255, 255, 255)", // more visible overlay
-  border: "0.5vh solid #EFD3F1FF", // slightly thicker, visible border
+  border: "1.5vh solid #EFD3F1FF", // slightly thicker, visible border
   transform: "translate(-50%, -50%)",
   zIndex: 5, // behind clock hands but above background
   pointerEvents: "none", // so it doesn’t block interaction if needed
