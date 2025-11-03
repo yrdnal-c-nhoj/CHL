@@ -97,8 +97,8 @@ const styles = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)', // Center the image
-    maxHeight: '90dvh',
-    maxWidth: '90vw',
+    maxHeight: '100dvh',
+    // maxWidth: '190vw',
     width: 'auto',
     height: 'auto',
     objectFit: 'contain', // Ensure no clipping
