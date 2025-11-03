@@ -1,45 +1,43 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import hourHand from "./images/gr4.gif";
 import minuteHand from "./images/gr9.png";
 import secondHand from "./images/gr5.gif";
 import overlayImg from "./images/gfccc.gif";
 
 const TallClock = () => {
+  const [time, setTime] = useState(new Date());
+
   useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      const second = now.getSeconds();
-      const minute = now.getMinutes();
-      const hour = now.getHours();
-
-      const secondDeg = (second / 60) * 360;
-      const minuteDeg = ((minute + second / 60) / 60) * 360;
-      const hourDeg = ((hour % 12 + minute / 60) / 12) * 360;
-
-      const secondHandEl = document.querySelector(".second-hand");
-      const minuteHandEl = document.querySelector(".minute-hand");
-      const hourHandEl = document.querySelector(".hour-hand");
-
-      if (secondHandEl) secondHandEl.style.transform = `rotate(${secondDeg}deg)`;
-      if (minuteHandEl) minuteHandEl.style.transform = `rotate(${minuteDeg}deg)`;
-      if (hourHandEl) hourHandEl.style.transform = `rotate(${hourDeg}deg)`;
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
+    const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
+  const secondDeg = (time.getSeconds() / 60) * 360;
+  const minuteDeg = ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360;
+  const hourDeg = ((time.getHours() % 12 + time.getMinutes() / 60) / 12) * 360;
+
+  const handStyle = (deg) => ({
+    position: "absolute",
+    top: 0,
+    left: "50%",
+    width: "100%",
+    height: "100%",
+    transformOrigin: "50% 100%", // bottom center
+    transform: `translateX(-50%) rotate(${deg}deg)`,
+    zIndex: 9,
+    pointerEvents: "none",
+  });
+
   return (
     <div style={styles.container}>
-      <div style={styles.clock} className="clock">
-        <div className="hand hour-hand" style={styles.hand}>
+      <div style={styles.clock}>
+        <div className="hand hour-hand" style={handStyle(hourDeg)}>
           <img src={hourHand} alt="Hour Hand" style={styles.handImg} />
         </div>
-        <div className="hand minute-hand" style={styles.hand}>
+        <div className="hand minute-hand" style={handStyle(minuteDeg)}>
           <img src={minuteHand} alt="Minute Hand" style={styles.handImg} />
         </div>
-        <div className="hand second-hand" style={styles.hand}>
+        <div className="hand second-hand" style={handStyle(secondDeg)}>
           <img src={secondHand} alt="Second Hand" style={styles.handImg} />
         </div>
       </div>
@@ -56,8 +54,8 @@ const styles = {
     backgroundColor: "#805c0d",
     margin: 0,
     padding: 0,
-    height: "100dvh", // Chrome-safe dynamic viewport
     width: "100vw",
+    height: "100svh", // mobile-safe viewport height
     overflow: "hidden",
     display: "flex",
     justifyContent: "center",
@@ -67,21 +65,10 @@ const styles = {
   },
   clock: {
     position: "relative",
-    width: "min(60vw, 40vh)", // keep it responsive
+    width: "min(60vw, 40vh)",
     height: "min(60vw, 40vh)",
     maxWidth: "90vmin",
     maxHeight: "90vmin",
-  },
-  hand: {
-    position: "absolute",
-    top: "5%",
-    left: "50%",
-    transformOrigin: "50% 90%",
-    width: "100%",
-    height: "100%",
-    translate: "-50% 0",
-    zIndex: 9,
-    pointerEvents: "none",
   },
   handImg: {
     width: "100%",
@@ -98,7 +85,6 @@ const styles = {
     backgroundRepeat: "repeat",
     zIndex: 1,
     pointerEvents: "none",
-    backgroundAttachment: "fixed", // prevents weird parallax on scroll
   },
   overlay1: {
     backgroundSize: "12vmin 12vmin",
