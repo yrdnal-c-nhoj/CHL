@@ -8,7 +8,7 @@ export default function EdgeClockWithHands() {
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   // Choose a single color for numbers and hands
-  const numberAndHandColor = "#BEC1E6FF";
+  const numberAndHandColor = "#DBEF58FF";
 
   // Load custom font
   useEffect(() => {
