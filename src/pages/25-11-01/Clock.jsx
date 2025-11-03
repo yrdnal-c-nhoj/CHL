@@ -17,7 +17,7 @@ export default function AnalogClock() {
   const radius = 25; // Clock radius in vh
   const center = radius;
 
-  const numbers = [1, 2, 3, 4, 58, 6, 7, 8, 9, 10, 11, 12];
+  const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   // Time calculations
   const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
