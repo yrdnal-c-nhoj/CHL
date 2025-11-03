@@ -1,23 +1,44 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import coffeeFont from "./cof.ttf";
 import bgStill from "./coff.png";
 import bgAnimated from "./coff.gif";
 
 const CoffeeClock = () => {
+  const [isReady, setIsReady] = useState(false);
+
   const jitterSettings = useRef([]);
   const numberRefs = useRef([]);
   const hourHandRef = useRef(null);
   const minuteHandRef = useRef(null);
   const secondHandRef = useRef(null);
 
+  // Wait for font + images
   useEffect(() => {
-    const font = new FontFace("cof", `url(${coffeeFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
+    const loadFont = new Promise((resolve) => {
+      const font = new FontFace("cof", `url(${coffeeFont})`);
+      font.load().then((loadedFont) => {
+        document.fonts.add(loadedFont);
+        resolve();
+      });
     });
+
+    const loadImage = (src) =>
+      new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = src;
+      });
+
+    Promise.all([loadFont, loadImage(bgStill), loadImage(bgAnimated)]).then(() =>
+      setIsReady(true)
+    );
   }, []);
 
+  // Animate numbers jitter
   useEffect(() => {
+    if (!isReady) return;
+
     for (let i = 0; i < 12; i++) {
       jitterSettings.current[i] = {
         phase: Math.random() * Math.PI * 2,
@@ -42,9 +63,12 @@ const CoffeeClock = () => {
       requestAnimationFrame(loop);
     };
     loop();
-  }, []);
+  }, [isReady]);
 
+  // Clock hands
   useEffect(() => {
+    if (!isReady) return;
+
     const updateClock = () => {
       const now = new Date();
       const sec = now.getSeconds();
@@ -66,8 +90,9 @@ const CoffeeClock = () => {
     updateClock();
     const interval = setInterval(updateClock, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isReady]);
 
+  // Styles
   const numberStyle = {
     position: "absolute",
     width: "6vh",
@@ -135,21 +160,46 @@ const CoffeeClock = () => {
     opacity: 0.4,
   };
 
+  // Simple fade-in transition
+  const containerStyle = {
+    margin: 0,
+    padding: 0,
+    height: "100dvh",
+    width: "100vw",
+    background: "#5c4106",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+    position: "relative",
+    opacity: isReady ? 1 : 0,
+    transition: "opacity 0.8s ease-in-out",
+  };
+
+  // Loading fallback
+  if (!isReady) {
+    return (
+      <div
+        style={{
+          height: "100dvh",
+          width: "100vw",
+          background: "#5c4106",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#ebbe07",
+          fontFamily: "sans-serif",
+          fontSize: "2rem",
+        }}
+      >
+        Brewing your clock ☕...
+      </div>
+    );
+  }
+
+  // Actual clock render
   return (
-    <div
-      style={{
-        margin: 0,
-        padding: 0,
-        height: "100dvh",
-        width: "100vw",
-        background: "#5c4106",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        overflow: "hidden",
-        position: "relative",
-      }}
-    >
+    <div style={containerStyle}>
       <img src={bgStill} alt="Still Background" style={bgStillStyle} />
       <img src={bgAnimated} alt="Animated Overlay" style={bgAnimStyle} />
 
