@@ -22,28 +22,31 @@ const WarholGraveCamClock = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Inject font-face once
+  useEffect(() => {
+    const font = new FontFace('Map', `url(${mapFont})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+    });
+  }, []);
+
+  const digitStyle = {
+    color: '#ef1337',
+    fontFamily: "'Map', sans-serif",
+    fontSize: '8rem',
+    width: '4.5rem',
+    height: '6rem',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minWidth: '2rem',
+    textAlign: 'center',
+    boxSizing: 'border-box',
+    userSelect: 'none',
+  };
+
   return (
     <>
-      {/* Inject font-face dynamically */}
-      <style>{`
-        @font-face {
-          font-family: 'Map';
-          src: url(${mapFont}) format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
-
-        html, body, #root {
-          margin: 0;
-          padding: 0;
-          height: 100%;
-          width: 100%;
-          overflow: hidden;
-          font-family: 'Map', sans-serif;
-        }
-      `}</style>
-
-      {/* YouTube iframe full viewport */}
       <iframe
         src="https://www.youtube.com/embed/JHpJvvn9hvk?autoplay=1&mute=1"
         title="Live YouTube Stream"
@@ -61,7 +64,6 @@ const WarholGraveCamClock = () => {
         }}
       />
 
-      {/* Clock wrapper centered */}
       <div
         style={{
           position: 'absolute',
@@ -73,122 +75,17 @@ const WarholGraveCamClock = () => {
           justifyContent: 'center',
           alignItems: 'center',
           gap: '2vmin',
-          flexWrap: 'nowrap',
         }}
       >
-        {/* Hours */}
-        <div style={{ display: 'flex', gap: '0.5vmin' }}>
-          <div
-            style={{
-              color: '#ef1337',
-              fontSize: '8rem',
-              width: '4.5rem',
-              height: '6rem',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              minWidth: '2rem',
-              textAlign: 'center',
-              boxSizing: 'border-box',
-              userSelect: 'none',
-            }}
-          >
-            {time.hours[0]}
+        {Object.values(time).map((unit, i) => (
+          <div key={i} style={{ display: 'flex', gap: '0.5vmin' }}>
+            {unit.split('').map((digit, j) => (
+              <div key={j} style={digitStyle}>
+                {digit}
+              </div>
+            ))}
           </div>
-          <div
-            style={{
-              color: '#ef1337',
-              fontSize: '8rem',
-              width: '4.5rem',
-              height: '6rem',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              minWidth: '2rem',
-              textAlign: 'center',
-              boxSizing: 'border-box',
-              userSelect: 'none',
-            }}
-          >
-            {time.hours[1]}
-          </div>
-        </div>
-
-        {/* Minutes */}
-        <div style={{ display: 'flex', gap: '0.5vmin' }}>
-          <div
-            style={{
-              color: '#ef1337',
-              fontSize: '8rem',
-              width: '4.5rem',
-              height: '6rem',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              minWidth: '2rem',
-              textAlign: 'center',
-              boxSizing: 'border-box',
-              userSelect: 'none',
-            }}
-          >
-            {time.minutes[0]}
-          </div>
-          <div
-            style={{
-              color: '#ef1337',
-              fontSize: '8rem',
-              width: '4.5rem',
-              height: '6rem',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              minWidth: '2rem',
-              textAlign: 'center',
-              boxSizing: 'border-box',
-              userSelect: 'none',
-            }}
-          >
-            {time.minutes[1]}
-          </div>
-        </div>
-
-        {/* Seconds */}
-        <div style={{ display: 'flex', gap: '0.5vmin' }}>
-          <div
-            style={{
-              color: '#ef1337',
-              fontSize: '8rem',
-              width: '4.5rem',
-              height: '6rem',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              minWidth: '2rem',
-              textAlign: 'center',
-              boxSizing: 'border-box',
-              userSelect: 'none',
-            }}
-          >
-            {time.seconds[0]}
-          </div>
-          <div
-            style={{
-              color: '#ef1337',
-              fontSize: '8rem',
-              width: '4.5rem',
-              height: '6rem',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              minWidth: '2rem',
-              textAlign: 'center',
-              boxSizing: 'border-box',
-              userSelect: 'none',
-            }}
-          >
-            {time.seconds[1]}
-          </div>
-        </div>
+        ))}
       </div>
     </>
   );
