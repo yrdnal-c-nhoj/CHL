@@ -4,60 +4,52 @@ import gearsGif from "./gears-13950_128.gif";
 
 const Clock = () => {
   const [loaded, setLoaded] = useState(false);
+  const [hoursDigits, setHoursDigits] = useState([]);
+  const [minutesDigits, setMinutesDigits] = useState([]);
+  const [secondsDigits, setSecondsDigits] = useState([]);
+  const [vh, setVh] = useState(window.innerHeight);
+
+  // Character map for digits
+  const charMap = {
+    "0": "zero",
+    "1": "one",
+    "2": "two",
+    "3": "three",
+    "4": "four",
+    "5": "five",
+    "6": "six",
+    "7": "seven",
+    "8": "eight",
+    "9": "nine",
+  };
+
+  const substituteDigit = (str) => str.split("").map((d) => charMap[d] || d);
 
   useEffect(() => {
-    const charMap = {
-      "0": "zero",
-      "1": "one",
-      "2": "two",
-      "3": "three",
-      "4": "four",
-      "5": "five",
-      "6": "six",
-      "7": "seven",
-      "8": "eight",
-      "9": "nine",
-    };
+    // Update vh on resize for mobile viewport issues
+    const onResize = () => setVh(window.innerHeight);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
-    const substituteDigit = (str) =>
-      str.split("").map((d) => charMap[d] || d);
-
+  useEffect(() => {
     const updateClock = () => {
       const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
+      let hours = now.getHours() % 12 || 12;
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
 
-      hours = hours % 12 || 12;
-
-      const hoursDigits = substituteDigit(String(hours));
-      const minutesDigits = substituteDigit(String(minutes).padStart(2, "0"));
-      const secondsDigits = substituteDigit(String(seconds).padStart(2, "0"));
-
-      const setValue = (id, digits) => {
-        const container = document.querySelector(`#${id} .value`);
-        if (!container) return;
-        container.innerHTML = "";
-        digits.forEach((digitName) => {
-          const span = document.createElement("span");
-          span.className = "digit-box";
-          span.textContent = digitName;
-          container.appendChild(span);
-        });
-      };
-
-      setValue("hours", hoursDigits);
-      setValue("minutes", minutesDigits);
-      setValue("seconds", secondsDigits);
+      setHoursDigits(substituteDigit(String(hours)));
+      setMinutesDigits(substituteDigit(minutes));
+      setSecondsDigits(substituteDigit(seconds));
     };
 
-    // Wait for font to load before showing anything
-    const loadFontAndStart = async () => {
+    const loadFont = async () => {
       try {
         const font = new FontFace("watch", `url(${watchFont})`);
         await font.load();
         document.fonts.add(font);
-        updateClock(); // render initial digits
+        updateClock(); // initial render
         setLoaded(true);
         const interval = setInterval(updateClock, 1000);
         return () => clearInterval(interval);
@@ -66,12 +58,10 @@ const Clock = () => {
       }
     };
 
-    loadFontAndStart();
+    loadFont();
   }, []);
 
-  if (!loaded) {
-    return null; // hide clock until everything is ready
-  }
+  if (!loaded) return null;
 
   const backgroundStyle = {
     position: "fixed",
@@ -88,7 +78,7 @@ const Clock = () => {
   return (
     <div
       style={{
-        height: "100dvh",
+        height: vh,
         width: "100vw",
         display: "flex",
         justifyContent: "center",
@@ -109,7 +99,7 @@ const Clock = () => {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          font-size: 5rem;
+          font-size: 15vh;
           text-align: center;
           z-index: 10;
         }
@@ -118,6 +108,12 @@ const Clock = () => {
         .value { display: flex; flex-direction: column; align-items: center; }
         .digit-box { display: inline-flex; justify-content: center; align-items: center; height: 3rem; user-select: none; }
         .divider { height: 1px; width: 30vw; background-color: rgb(52, 1, 77); margin: 0.5rem auto; }
+
+        @media (max-width: 600px) {
+          .clock { font-size: 12vh; }
+          .digit-box { height: 9vh; }
+          .divider { width: 50vw; }
+        }
       `}</style>
 
       {/* Background Layers */}
@@ -127,11 +123,17 @@ const Clock = () => {
 
       {/* Clock */}
       <div className="clock">
-        <div className="unit" id="hours"><div className="value"></div></div>
+        <div className="unit" id="hours">
+          <div className="value">{hoursDigits.map((d, i) => <span key={i} className="digit-box">{d}</span>)}</div>
+        </div>
         <div className="divider"></div>
-        <div className="unit" id="minutes"><div className="value"></div></div>
+        <div className="unit" id="minutes">
+          <div className="value">{minutesDigits.map((d, i) => <span key={i} className="digit-box">{d}</span>)}</div>
+        </div>
         <div className="divider"></div>
-        <div className="unit" id="seconds"><div className="value"></div></div>
+        <div className="unit" id="seconds">
+          <div className="value">{secondsDigits.map((d, i) => <span key={i} className="digit-box">{d}</span>)}</div>
+        </div>
       </div>
     </div>
   );
