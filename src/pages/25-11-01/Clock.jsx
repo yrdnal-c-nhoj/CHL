@@ -87,8 +87,8 @@ export default function EdgeClockWithHands() {
   };
 
   // Rectangle dimensions: 50px smaller than viewport
-  const rectWidth = viewport.width - 100;
-  const rectHeight = viewport.height - 100;
+  const rectWidth = viewport.width - 130;
+  const rectHeight = viewport.height - 130;
 
   return (
     <div
@@ -98,7 +98,7 @@ export default function EdgeClockWithHands() {
         position: "relative",
         overflow: "hidden",
         backgroundColor: "#06413AFF",
-        border: "5px solid #E90B0BFF", // Component border
+        border: "5px solid #F65F0DFF", // Component border
         boxSizing: "border-box",
       }}
     >
@@ -111,7 +111,7 @@ export default function EdgeClockWithHands() {
             height: `${rectHeight}px`,
             top: `${(viewport.height - rectHeight) / 2}px`, // Center vertically
             left: `${(viewport.width - rectWidth) / 2}px`, // Center horizontally
-            border: "4px solid #F01212FF", // Yellow border
+            border: "4px solid #F64B07FF", // Yellow border
             boxSizing: "border-box",
             zIndex: 1, // Behind numbers and hands
           }}
