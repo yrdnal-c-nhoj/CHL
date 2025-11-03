@@ -64,7 +64,7 @@ export default function Clock() {
         padding: 0,
         background: 'rgb(9,9,9)',
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         overflow: 'hidden',
         display: 'flex',
         justifyContent: 'center',
