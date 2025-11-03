@@ -97,7 +97,7 @@ export default function AnalogClock() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    minHeight: "100dvh",
+    minHeight: "100vh",
     width: "100vw",
     backgroundColor: "#1C3405FF",
     overflow: "hidden",
