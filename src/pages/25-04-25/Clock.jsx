@@ -53,7 +53,7 @@ const MyClock = () => {
         ctx.fillStyle = '#FA0820FF';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.font = `${r * 0.6}px MyFont`;
+        ctx.font = `${r * 0.5}px MyFont`;
 
         for (let i = 1; i <= 12; i++) {
           const angle = (i * Math.PI) / 6;
