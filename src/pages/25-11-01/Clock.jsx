@@ -35,7 +35,7 @@ export default function AnalogClock() {
   `;
 
   const wrapperStyle = {
-    minHeight: "100vh",
+    height: "100vh",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
