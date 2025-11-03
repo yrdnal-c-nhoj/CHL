@@ -49,17 +49,17 @@ export default function EdgeClockWithHands() {
   const minuteDeg = minutes * 6;
   const hourDeg = hours * 30;
 
-  // Hands style
-  const handStyle = (widthVh, lengthVh, color, rotation) => ({
+  // Hands style with fixed pixel sizes
+  const handStyle = (widthPx, lengthPx, color, rotation) => ({
     position: "absolute",
-    width: `${widthVh}vh`,
-    height: `${lengthVh}vh`,
+    width: `${widthPx}px`,
+    height: `${lengthPx}px`,
     backgroundColor: color,
     transformOrigin: "50% 100%",
-    top: `${centerY - (lengthVh / 100) * viewport.height}px`,
-    left: `${centerX - (widthVh / 100) * viewport.height / 2}px`,
+    top: `${centerY - lengthPx}px`,
+    left: `${centerX - widthPx / 2}px`,
     transform: `rotate(${rotation}deg)`,
-    borderRadius: "0.2vh",
+    borderRadius: "2px",
     zIndex: 3,
   });
 
@@ -103,10 +103,10 @@ export default function EdgeClockWithHands() {
           </React.Fragment>
         ))}
 
-      {/* Clock hands */}
-      <div style={handStyle(0.7, 5, numberAndHandColor, hourDeg)} />
-      <div style={handStyle(0.6, 10, numberAndHandColor, minuteDeg)} />
-      <div style={handStyle(0.2, 10, numberAndHandColor, secondDeg)} />
+      {/* Clock hands with fixed pixel sizes */}
+      <div style={handStyle(6, 50, numberAndHandColor, hourDeg)} />
+      <div style={handStyle(4, 80, numberAndHandColor, minuteDeg)} />
+      <div style={handStyle(2, 80, numberAndHandColor, secondDeg)} />
     </div>
   );
 }
