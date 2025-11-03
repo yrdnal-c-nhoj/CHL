@@ -173,8 +173,8 @@ const rectangleStyle = {
   position: "absolute",
   top: "50%",
   left: "50%",
-  width: "75vw",
-  height: "75vh",
+  width: "65vw",
+  height: "65vh",
   backgroundColor: "rgba(255, 255, 255)", // more visible overlay
   border: "1.5vh solid #EFD3F1FF", // slightly thicker, visible border
   transform: "translate(-50%, -50%)",
