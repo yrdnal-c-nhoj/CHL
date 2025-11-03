@@ -1,47 +1,104 @@
-import React, { useEffect, useState } from "react";
-import hourHand from "./images/gr4.gif";
-import minuteHand from "./images/gr9.png";
-import secondHand from "./images/gr5.gif";
-import overlayImg from "./images/gfccc.gif";
+import React, { useState, useEffect } from "react";
+// Import main background image
+import overlayImg from "./images/gfccc.gif"; 
+
+// --- 🖼️ CORRECT IMAGE IMPORTS ---
+// Assuming gr4.gif, gr5.gif, and gr6.gif are in the same folder as the main component file, 
+// or adjust the paths as necessary (e.g., if they are in './images/').
+// I'll assume they are imported from the same place as overlayImg based on your original structure.
+import hourHandSource from "./images/gr4.gif";
+import minuteHandSource from "./images/gr5.gif";
+import secondHandSource from "./images/gr9.png";
+// ------------------------------------
+
+// --- Clock Logic Functions (Unchanged) ---
+const getHourRotation = (date) => {
+  const hours = date.getHours() % 12;
+  const minutes = date.getMinutes();
+  return (hours * 30) + (minutes * 0.5);
+};
+
+const getMinuteRotation = (date) => {
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+  return (minutes * 6) + (seconds * 0.1);
+};
+
+const getSecondRotation = (date) => {
+  const seconds = date.getSeconds();
+  return seconds * 6;
+};
+
 
 const TallClock = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
+    const timerId = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+    return () => clearInterval(timerId);
   }, []);
 
-  const secondDeg = (time.getSeconds() / 60) * 360;
-  const minuteDeg = ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360;
-  const hourDeg = ((time.getHours() % 12 + time.getMinutes() / 60) / 12) * 360;
+  const hourRotation = getHourRotation(time);
+  const minuteRotation = getMinuteRotation(time);
+  const secondRotation = getSecondRotation(time);
 
-  const handStyle = (deg) => ({
-    position: "absolute",
-    top: 0,
-    left: "50%",
-    width: "100%",
-    height: "100%",
-    transformOrigin: "50% 100%", // bottom center
-    transform: `translateX(-50%) rotate(${deg}deg)`,
-    zIndex: 9,
-    pointerEvents: "none",
-  });
+  // Set image URLs using the imported source variables
+  const hourHandStyle = { 
+    backgroundImage: `url(${hourHandSource})`, 
+    transform: `translateX(-50%) rotate(${hourRotation}deg)` 
+  };
+  const minuteHandStyle = { 
+    backgroundImage: `url(${minuteHandSource})`, 
+    transform: `translateX(-50%) rotate(${minuteRotation}deg)` 
+  };
+  const secondHandStyle = { 
+    backgroundImage: `url(${secondHandSource})`, 
+    transform: `translateX(-50%) rotate(${secondRotation}deg)` 
+  };
 
   return (
     <div style={styles.container}>
-      <div style={styles.clock}>
-        <div className="hand hour-hand" style={handStyle(hourDeg)}>
-          <img src={hourHand} alt="Hour Hand" style={styles.handImg} />
-        </div>
-        <div className="hand minute-hand" style={handStyle(minuteDeg)}>
-          <img src={minuteHand} alt="Minute Hand" style={styles.handImg} />
-        </div>
-        <div className="hand second-hand" style={handStyle(secondDeg)}>
-          <img src={secondHand} alt="Second Hand" style={styles.handImg} />
+      {/* Clock Content */}
+      <div style={styles.clockContainer}>
+        <div style={styles.clockFace}>
+          
+          {/* Hour Hand */}
+          <div 
+            style={{ 
+              ...styles.hand, 
+              ...styles.hourHand, 
+              ...styles.imageHand, 
+              ...hourHandStyle
+            }} 
+          />
+          
+          {/* Minute Hand */}
+          <div 
+            style={{ 
+              ...styles.hand, 
+              ...styles.minuteHand, 
+              ...styles.imageHand,
+              ...minuteHandStyle
+            }} 
+          />
+          
+          {/* Second Hand */}
+          <div 
+            style={{ 
+              ...styles.hand, 
+              ...styles.secondHand, 
+              ...styles.imageHand,
+              ...secondHandStyle
+            }} 
+          />
+          
+          <div style={styles.centerDot} />
         </div>
       </div>
 
+      {/* Overlays */}
       <div style={{ ...styles.overlay, ...styles.overlay1 }} />
       <div style={{ ...styles.overlay, ...styles.overlay2 }} />
       <div style={{ ...styles.overlay, ...styles.overlay3 }} />
@@ -49,32 +106,88 @@ const TallClock = () => {
   );
 };
 
+// --- Styles (Unchanged, optimized for image background) ---
 const styles = {
   container: {
     backgroundColor: "#805c0d",
     margin: 0,
     padding: 0,
     width: "100vw",
-    height: "100svh", // mobile-safe viewport height
+    height: "100vh",
     overflow: "hidden",
+    position: "fixed",
+    top: 0,
+    left: 0,
+    boxSizing: "border-box",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    position: "relative",
-    touchAction: "none",
   },
-  clock: {
+  clockContainer: {
     position: "relative",
-    width: "min(60vw, 40vh)",
-    height: "min(60vw, 40vh)",
-    maxWidth: "90vmin",
-    maxHeight: "90vmin",
+    zIndex: 9,
+    width: "80vmin",
+    height: "80vmin",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  handImg: {
+  clockFace: {
     width: "100%",
     height: "100%",
-    objectFit: "contain",
+    borderRadius: "50%",
+    position: "relative",
   },
+  centerDot: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    width: "15px",
+    height: "15px",
+    borderRadius: "50%",
+    backgroundColor: "#333",
+    transform: "translate(-50%, -50%)",
+    zIndex: 10,
+  },
+  
+  // General hand properties
+  hand: {
+    position: "absolute",
+    left: "50%",
+    transformOrigin: "bottom center",
+    transition: "all 0.1s cubic-bezier(0, 0, 0.58, 1)", 
+  },
+  
+  // Properties for hands that use images
+  imageHand: {
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center bottom', 
+    backgroundSize: '100% 100%',
+    backgroundColor: 'transparent',
+    borderRadius: 0, 
+  },
+
+  // Hand Sizing 
+  hourHand: {
+    width: "10%",
+    height: "35%", 
+    top: "15%",
+    zIndex: 8,
+  },
+  minuteHand: {
+    width: "8%",
+    height: "45%",
+    top: "5%",
+    zIndex: 9,
+  },
+  secondHand: {
+    width: "50%",
+    height: "50%",
+    top: "0%",
+    zIndex: 11,
+  },
+  
+  // Overlay Styles
   overlay: {
     position: "absolute",
     top: 0,
@@ -89,17 +202,17 @@ const styles = {
   overlay1: {
     backgroundSize: "12vmin 12vmin",
     opacity: 0.8,
-    zIndex: 3,
+    zIndex: 5,
   },
   overlay2: {
     backgroundSize: "20vmin 20vmin",
     opacity: 0.5,
-    zIndex: 2,
+    zIndex: 6,
   },
   overlay3: {
     backgroundSize: "auto",
     opacity: 0.3,
-    zIndex: 1,
+    zIndex: 7,
   },
 };
 
