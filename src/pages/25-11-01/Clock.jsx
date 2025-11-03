@@ -104,9 +104,9 @@ export default function EdgeClockWithHands() {
         ))}
 
       {/* Clock hands */}
-      <div style={handStyle(0.6, 25, numberAndHandColor, hourDeg)} />
-      <div style={handStyle(0.4, 35, numberAndHandColor, minuteDeg)} />
-      <div style={handStyle(0.2, 45, numberAndHandColor, secondDeg)} />
+      <div style={handStyle(0.7, 5, numberAndHandColor, hourDeg)} />
+      <div style={handStyle(0.6, 10, numberAndHandColor, minuteDeg)} />
+      <div style={handStyle(0.2, 10, numberAndHandColor, secondDeg)} />
     </div>
   );
 }
