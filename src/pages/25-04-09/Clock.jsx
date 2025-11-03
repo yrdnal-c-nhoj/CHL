@@ -1,22 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
-import roomImage from './images/room.webp'; // Local image
+import roomImage from './images/room.webp';
 
 const EmptyRoomClock = () => {
   const hourRef = useRef();
   const minuteRef = useRef();
   const secondRef = useRef();
 
-  // Optional: track window size to adapt positioning
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
   useEffect(() => {
-    const handleResize = () => setWindowSize({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
+    const handleResize = () =>
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -42,14 +39,11 @@ const EmptyRoomClock = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Adjust clock size and position based on window size
-  // Clock size = 40% of smaller viewport dimension (width or height)
   const clockSize = Math.min(windowSize.width, windowSize.height) * 0.4;
 
-  // Position: center clock horizontally, and around 40-50% from top
-  // You can tweak these percentages or make them dynamic
-  const clockTop = windowSize.height * 0.44;
-  const clockLeft = windowSize.width * 0.4;
+  // Distance from bottom of viewport
+  const clockBottom = windowSize.height * 0.2; // 10% from bottom
+  const clockLeft = windowSize.width * 0.6; // center horizontally
 
   return (
     <div
@@ -58,23 +52,22 @@ const EmptyRoomClock = () => {
         width: '100vw',
         height: '100dvh',
         overflow: 'hidden',
-        backgroundColor: '#000', // fallback background
+        backgroundColor: '#000',
       }}
     >
-     <img
-  src={roomImage}
-  alt="Room background"
-  style={{
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'fill',  // <-- stretch and distort to fit exactly
-    zIndex: 0,
-  }}
-/>
-
+      <img
+        src={roomImage}
+        alt="Room background"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'fill',
+          zIndex: 0,
+        }}
+      />
 
       <div
         style={{
@@ -87,8 +80,10 @@ const EmptyRoomClock = () => {
           border: '2px solid #a19f63',
           borderRadius: '50%',
           position: 'absolute',
-          top: clockTop,
+          bottom: clockBottom,
           left: clockLeft,
+          transform: 'translateX(-50%) rotateX(-9deg) rotateZ(3deg)',
+          transformOrigin: 'bottom center',
           boxShadow: `
             1px 1px rgba(191, 32, 32, 0.5),
             -1px 1px rgba(191, 32, 32, 0.5),
@@ -96,10 +91,8 @@ const EmptyRoomClock = () => {
             1px -1px rgba(191, 32, 32, 0.5),
             -10px 15px 30px rgba(0, 0, 0, 0.5)
           `,
-          transform: 'rotateX(-9deg) rotateZ(3deg)',
-          transformOrigin: 'bottom center',
           zIndex: 1,
-          transition: 'width 0.3s ease, height 0.3s ease, top 0.3s ease, left 0.3s ease',
+          transition: 'width 0.3s ease, height 0.3s ease, bottom 0.3s ease, left 0.3s ease',
         }}
       >
         <div
@@ -108,8 +101,8 @@ const EmptyRoomClock = () => {
             position: 'absolute',
             bottom: '50%',
             left: '50%',
-            width: clockSize * 0.023, // 6px at 450px clock (approx)
-            height: clockSize * 0.21, // 50px at 450px clock
+            width: clockSize * 0.023,
+            height: clockSize * 0.21,
             background: '#333',
             borderRadius: '4px',
             transformOrigin: 'bottom center',
@@ -121,8 +114,8 @@ const EmptyRoomClock = () => {
             position: 'absolute',
             bottom: '50%',
             left: '50%',
-            width: clockSize * 0.019, // 4px at 450px clock
-            height: clockSize * 0.356, // 70px at 450px clock
+            width: clockSize * 0.019,
+            height: clockSize * 0.356,
             background: '#666',
             borderRadius: '4px',
             transformOrigin: 'bottom center',
@@ -134,34 +127,32 @@ const EmptyRoomClock = () => {
             position: 'absolute',
             bottom: '50%',
             left: '50%',
-            width: clockSize * 0.0044, // 2px at 450px clock
-            height: clockSize * 0.5, // 90px at 450px clock
+            width: clockSize * 0.0044,
+            height: clockSize * 0.5,
             background: 'rgb(186, 41, 41)',
             borderRadius: '4px',
             transformOrigin: 'bottom center',
           }}
         />
-        {/* Optional center dot */}
         <div
           style={{
             position: 'absolute',
             left: '50%',
             bottom: '50%',
-            width: clockSize * 0.022, // 10px at 450px clock
+            width: clockSize * 0.022,
             height: clockSize * 0.022,
             background: '#333',
             borderRadius: '50%',
             transform: 'translate(-50%, 50%)',
           }}
         />
-        {/* Clock shadow */}
         <div
           style={{
             position: 'absolute',
-            bottom: -(clockSize * 0.045), // -20px at 450px clock
-            left: clockSize * 0.044, // 20px at 450px clock
-            width: clockSize * 0.35, // 160px at 450px clock
-            height: clockSize * 0.045, // 20px at 450px clock
+            bottom: -(clockSize * 0.045),
+            left: clockSize * 0.044,
+            width: clockSize * 0.35,
+            height: clockSize * 0.045,
             background: 'rgba(0, 0, 0, 0.2)',
             filter: 'blur(10px)',
             borderRadius: '50%',
