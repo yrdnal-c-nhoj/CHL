@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import videoFile from "./esp.mp4";
 import videoWebM from "./esp.webp";
 import fallbackImg from "./esp.jpeg";
-import fontFile from "./esp.ttf";
+import fontFile251024 from "./esp.ttf";
 import cornerUL from "./ul.webp"; // 🟩 upper-left decorative image
 import cornerLR from "./lr.webp"; // 🟩 lower-right decorative image
 
@@ -158,7 +158,7 @@ export default function VictorianEsperantoClock() {
         {`
           @font-face {
             font-family: 'CustomFont';
-            src: url(${fontFile}) format('truetype');
+            src: url(${fontFile251024}) format('truetype');
             font-weight: normal;
             font-style: normal;
           }
