@@ -1,109 +1,156 @@
-import { useEffect, useRef } from "react";
-import hand1 from "./hand1.webp";
-import hand2 from "./hand2.webp";
-import hand3 from "./hand3.webp";
-import inst from "./inst.webp";
+import React, { useEffect, useRef } from "react";
+import beat4 from "./images/beat4.webp";
+import tumblrImg from "./images/tumblr_eb7034da88f87c02b8539374dca9c92e_746715e1_500.webp";
 
-const BoringClock = () => {
-  const secondRef = useRef(null);
-  const minuteRef = useRef(null);
+const HeartbeatClock = () => {
   const hourRef = useRef(null);
+  const minuteRef = useRef(null);
+  const secondRef = useRef(null);
 
   useEffect(() => {
-    const updateClock = () => {
+    function updateClock() {
       const now = new Date();
+      const seconds = now.getSeconds();
+      const minutes = now.getMinutes();
+      const hours = now.getHours();
 
-      const milliseconds = now.getMilliseconds();
-      const seconds = now.getSeconds() + milliseconds / 1000;
-      const minutes = now.getMinutes() + seconds / 60;
-      const hours = now.getHours() + minutes / 60;
+      const secDeg = seconds * 6;
+      const minDeg = minutes * 6 + seconds * 0.1;
+      const hourDeg = (hours % 12) * 30 + minutes * 0.5;
 
-      const secondDegrees = ((seconds / 60) * 360) + 90;
-      const minuteDegrees = ((minutes / 60) * 360) + 90;
-      const hourDegrees = ((hours / 12) * 360) + 90;
-
-      if (secondRef.current) secondRef.current.style.transform = `rotate(${secondDegrees}deg)`;
-      if (minuteRef.current) minuteRef.current.style.transform = `rotate(${minuteDegrees}deg)`;
-      if (hourRef.current) hourRef.current.style.transform = `rotate(${hourDegrees}deg)`;
-
-      requestAnimationFrame(updateClock);
-    };
+      if (secondRef.current) secondRef.current.style.transform = `rotate(${secDeg}deg)`;
+      if (minuteRef.current) minuteRef.current.style.transform = `rotate(${minDeg}deg)`;
+      if (hourRef.current) hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
+    }
 
     updateClock();
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
   }, []);
 
-  return (
-    <div style={styles.body}>
-  
-      <img src={inst} alt="border" style={styles.borer2} />
-
-      <div style={styles.clock}>
-        <img src={hand2} alt="second hand" ref={secondRef} style={{ ...styles.hand, ...styles.secondHand }} />
-        <img src={hand1} alt="hour hand" ref={hourRef} style={{ ...styles.hand, ...styles.hourHand }} />
-        <img src={hand3} alt="minute hand" ref={minuteRef} style={{ ...styles.hand, ...styles.minHand }} />
-      </div>
-    </div>
-  );
-};
-
-export default BoringClock;
-
-const styles = {
-  body: {
+  const bodyStyle = {
+    margin: 0,
+    overflow: "hidden",
+    position: "relative",
+    height: "100dvh",
+    width: "100vw",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "100dvh",
-    width: "100vw",
-    backgroundColor: "rgb(154, 110, 53)",
-    position: "relative",
-    overflow: "hidden",
-  },
+  };
 
-  borer2: {
+  const backgroundStyle = {
     position: "absolute",
-    opacity: 0.5,
-    filter: "contrast(130%) brightness(200%)",
-    width: "180vw",
-    height: "140vh",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundImage: `url(${beat4})`,
+    filter: "saturate(300%)",
+    backgroundRepeat: "repeat",
+    backgroundSize: "6%",
+    zIndex: 0,
+  };
+
+  const clockStyle = {
+    position: "relative",
+    width: "50vh",
+    height: "50vh",
+    backgroundImage: `url(${tumblrImg})`,
+    filter: "hue-rotate(200deg)",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    border: "2px solid #eb0808",
+    borderRadius: "50%",
+    boxShadow: "0 0 400px #8e4dff",
+    animation: "heartbeat 1s infinite",
+    transformOrigin: "center",
+    zIndex: 10,
+  };
+
+  const handBaseStyle = {
+    position: "absolute",
+    bottom: "50%",
+    left: "50%",
+    transformOrigin: "bottom center",
+    transform: "rotate(0deg)",
+  };
+
+  const hourStyle = {
+    ...handBaseStyle,
+    width: "7px",
+    height: "70px",
+    background: "transparent",
+    borderRadius: "10px",
+    boxShadow: "0 0 3px #F80D3CFF",
+    zIndex: 3,
+  };
+
+  const minuteStyle = {
+    ...handBaseStyle,
+    width: "6px",
+    height: "140px",
+    background: "transparent",
+    borderRadius: "6px",
+      boxShadow: "0 0 3px #F80D3CFF",
+    zIndex: 2,
+  };
+
+  const secondStyle = {
+    ...handBaseStyle,
+    width: "4px",
+    height: "150px",
+    background: "#588944FF",
+    borderRadius: "4px",
     zIndex: 1,
-    pointerEvents: "none",
-  },
-  clock: {
-    width: "80vw",
-    height: "80vh",
+  };
+
+  const centerDotStyle = {
+    width: "30px",
+    height: "30px",
+    background: "#ff333f",
+    borderRadius: "50%",
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-  },
-  hand: {
-    position: "absolute",
-    top: "40%",
-    right: "50%",
-    transformOrigin: "100%",
-    transform: "rotate(90deg)",
-    zIndex: 9,
-    opacity: 0.5,
-    transition: "transform 0s linear",
-  },
-  hourHand: {
-    zIndex: 8,
-    width: "6rem",
-    height: "5rem",
-    filter: "contrast(170%) brightness(200%)",
-  },
-  minHand: {
-    zIndex: 6,
-    width: "10rem",
-    height: "4rem",
-    filter: "contrast(170%) brightness(200%)",
-    transform: "scaleX(-1)",
-  },
-  secondHand: {
-    zIndex: 7,
-    width: "14rem",
-    height: "5rem",
-    filter: "contrast(170%) brightness(200%)",
-  },
+    zIndex: 5,
+    boxShadow: "0 0 5px #fff",
+  };
+
+  return (
+    <>
+      <style>{`
+        @keyframes heartbeat {
+          0%, 100% {
+            transform: scale(1);
+          }
+          20% {
+            transform: scale(1.2);
+          }
+          40% {
+            transform: scale(0.95);
+          }
+          60% {
+            transform: scale(1.1);
+          }
+          80% {
+            transform: scale(1.03);
+          }
+        }
+      `}</style>
+      <div style={bodyStyle}>
+        <div style={backgroundStyle} />
+        <div style={clockStyle}>
+          <div ref={hourRef} style={hourStyle} />
+          <div ref={minuteRef} style={minuteStyle} />
+          <div ref={secondRef} style={secondStyle} />
+          <div style={centerDotStyle} />
+        </div>
+      </div>
+    </>
+  );
 };
+
+export default HeartbeatClock;
