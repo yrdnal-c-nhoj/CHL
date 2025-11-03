@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import stars from "./stars.webp";
 import backgroundGif from "./437cb739d14912acd84d65ee853b9067.gif";
 import overlay1 from "./OzJtZ3Z.gif";
@@ -85,6 +85,27 @@ function DeepSpaceClock() {
   const minute2 = useRef();
   const second1 = useRef();
   const second2 = useRef();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Preload images
+  useEffect(() => {
+    const images = [stars, backgroundGif, overlay1, overlay2, pixelGif];
+    let loadedCount = 0;
+
+    const handleImageLoad = () => {
+      loadedCount += 1;
+      if (loadedCount === images.length) {
+        setIsLoaded(true);
+      }
+    };
+
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = handleImageLoad;
+      img.onerror = handleImageLoad; // Handle errors to avoid blocking
+    });
+  }, []);
 
   const makeDigit = (target, digitMatrix) => {
     const container = target.current;
@@ -107,6 +128,8 @@ function DeepSpaceClock() {
   };
 
   useEffect(() => {
+    if (!isLoaded) return; // Only start clock when assets are loaded
+
     let shownHours = -1,
       shownMinutes = -1,
       shownSeconds = -1;
@@ -139,7 +162,11 @@ function DeepSpaceClock() {
     updateClock();
     const interval = setInterval(updateClock, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isLoaded]);
+
+  if (!isLoaded) {
+    return null; // Render nothing until assets are loaded
+  }
 
   return (
     <div
@@ -202,7 +229,6 @@ function DeepSpaceClock() {
               100% {
                 transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
               }
- nuevamente
             }
           `}
         </style>
