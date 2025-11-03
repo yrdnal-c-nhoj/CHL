@@ -14,7 +14,17 @@ import amaticRegular from "./amati.ttf";
 export default function BlizzardClock() {
   const clockRef = useRef(null);
 
-  // Inject font-face rule
+  // ✅ Correct viewport height for mobile Chrome
+  useEffect(() => {
+    const setVh = () => {
+      document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
+    };
+    setVh();
+    window.addEventListener("resize", setVh);
+    return () => window.removeEventListener("resize", setVh);
+  }, []);
+
+  // ✅ Inject font dynamically
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
@@ -29,7 +39,7 @@ export default function BlizzardClock() {
     return () => document.head.removeChild(style);
   }, []);
 
-  // Update clock in real-time
+  // ✅ Live time updater
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
@@ -53,11 +63,12 @@ export default function BlizzardClock() {
       style={{
         margin: 0,
         padding: 0,
-        height: "100dvh",
+        height: "calc(var(--vh, 1vh) * 100)",
         width: "100vw",
         backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "100%",
+        backgroundSize: "cover",
         backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         overflow: "hidden",
         position: "relative",
       }}
@@ -68,7 +79,7 @@ export default function BlizzardClock() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh",
+          height: "calc(var(--vh, 1vh) * 100)",
           width: "100vw",
           position: "relative",
           zIndex: 2,
@@ -92,6 +103,7 @@ export default function BlizzardClock() {
                   width: "17vw",
                   backgroundImage: `url(${sgSnow}), url(${snow659})`,
                   backgroundRepeat: "repeat, no-repeat",
+                  backgroundSize: "cover, contain",
                 }}
               />
               <td
@@ -99,6 +111,7 @@ export default function BlizzardClock() {
                   ...cellStyle,
                   backgroundImage: `url(${snow659}), url(${flakes})`,
                   backgroundRepeat: "no-repeat, repeat",
+                  backgroundSize: "contain, auto",
                 }}
               />
               <td
@@ -108,15 +121,18 @@ export default function BlizzardClock() {
                   width: "17vw",
                   backgroundImage: `url(${sgSnow}), url(${snow659})`,
                   backgroundRepeat: "repeat, no-repeat",
+                  backgroundSize: "cover, contain",
                 }}
               />
             </tr>
+
             <tr>
               <td
                 style={{
                   ...cellStyle,
                   backgroundImage: `url(${snow01})`,
                   backgroundRepeat: "repeat",
+                  backgroundSize: "auto",
                 }}
               />
               <td
@@ -124,6 +140,7 @@ export default function BlizzardClock() {
                   ...cellStyle,
                   backgroundImage: `url(${eref}), url(${snow02}), url(${sno}), url(${snow7}), url(${sgSnow}), url(${flakes})`,
                   backgroundRepeat: "repeat",
+                  backgroundSize: "auto",
                   textAlign: "center",
                   verticalAlign: "middle",
                 }}
@@ -149,6 +166,7 @@ export default function BlizzardClock() {
                 }}
               />
             </tr>
+
             <tr>
               <td
                 style={{
@@ -181,13 +199,13 @@ export default function BlizzardClock() {
       {/* Snow Overlay */}
       <div
         style={{
-          position: "fixed",
+          position: "absolute",
           top: 0,
           left: 0,
           width: "200vw",
           height: "200vh",
           backgroundImage: `url(${flakesGif})`,
-          backgroundSize: "100% 100%",
+          backgroundSize: "cover",
           opacity: 0.6,
           zIndex: 1,
           pointerEvents: "none",
