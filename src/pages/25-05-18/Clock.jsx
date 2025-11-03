@@ -7,42 +7,38 @@ import image3 from './bloo.gif'; // top layer
 const Clock = () => {
   const [time, setTime] = useState(new Date());
 
+  // Update time every second
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
+  // Format time with leading zeros
   const formatTime = (unit) => String(unit).padStart(2, '0');
   const hours = formatTime(time.getHours());
   const minutes = formatTime(time.getMinutes());
   const seconds = formatTime(time.getSeconds());
 
-  return (
-    <div style={styles.container}>
-      {/* Inject the font via <style> */}
-      <style>
-        {`
-          @font-face {
-            font-family: 'blu';
-            src: url('${bluFont}') format('opentype');
-            font-display: swap;
-          }
-        `}
-      </style>
+  // Load font via FontFace API
+  useEffect(() => {
+    const font = new FontFace('blu', `url(${bluFont})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+    });
+  }, []);
 
-      {/* Background images */}
+  return (
+    <div style={{ ...styles.container, fontFamily: `'blu', monospace` }}>
+      {/* Background layers */}
       <img src={image1} alt="bg1" style={styles.image1} />
       <img src={image2} alt="bg2" style={styles.image2} />
       <img src={image3} alt="bg3" style={styles.image3} />
 
-      {/* Clock digits */}
+      {/* Centered clock */}
       <div style={styles.clock}>
-        <span style={styles.digit}>{hours[0]}</span>
-        <span style={styles.digit}>{hours[1]}</span>
-        <span style={styles.digit}>{minutes[0]}</span>
-        <span style={styles.digit}>{minutes[1]}</span>
-        <span style={styles.digit}>{seconds[0]}</span>
-        <span style={styles.digit}>{seconds[1]}</span>
+        {[hours[0], hours[1], minutes[0], minutes[1], seconds[0], seconds[1]].map((digit, idx) => (
+          <span key={idx} style={styles.digit}>{digit}</span>
+        ))}
       </div>
     </div>
   );
@@ -55,7 +51,6 @@ const styles = {
     position: 'relative',
     overflow: 'hidden',
     background: 'black',
-    fontFamily: `'blu', monospace`,
   },
   clock: {
     position: 'absolute',
