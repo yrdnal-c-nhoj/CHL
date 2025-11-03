@@ -74,7 +74,7 @@ export default function HexAnalogClock() {
           fontFamily: 'sans-serif',
         }}
       >
-        Loading Hex Clock…
+        
       </div>
     );
   }
