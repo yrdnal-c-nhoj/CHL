@@ -169,7 +169,7 @@ export default function AnalogClock() {
 
   const outerNumberStyle = {
     position: "absolute",
-    fontSize: "vh",
+    fontSize: "10vh",
     color: "#EFD3F1FF",
     zIndex: 1,
   };
