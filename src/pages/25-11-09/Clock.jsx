@@ -1,22 +1,11 @@
-/** @jsxImportSource react */
 import React, { useEffect, useState } from "react";
-import customFont from "./vp.ttf"; // 🟩 Local font
 
 export default function EdgeClockWithHands() {
   const [time, setTime] = useState(new Date());
   const [viewport, setViewport] = useState({ width: 0, height: 0 });
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-  // Choose a single color for numbers and hands
   const numberAndHandColor = "#DBEF58FF";
-
-  // Load custom font
-  useEffect(() => {
-    const font = new FontFace("CustomClockFont", `url(${customFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-    });
-  }, []);
 
   // Continuous update for smooth hands
   useEffect(() => {
@@ -39,7 +28,6 @@ export default function EdgeClockWithHands() {
 
   const centerX = viewport.width / 2;
   const centerY = viewport.height / 2;
-  const margin = 1; // in vh units
 
   // Time calculations
   const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
@@ -55,7 +43,7 @@ export default function EdgeClockWithHands() {
     position: "absolute",
     width: `${widthPx}px`,
     height: `${lengthPx}px`,
-    backgroundColor: "#F7F3F3FF",
+    backgroundColor: color,
     transformOrigin: "50% 100%",
     top: `${centerY - lengthPx}px`,
     left: `${centerX - widthPx / 2}px`,
@@ -64,15 +52,44 @@ export default function EdgeClockWithHands() {
     zIndex: 3,
   });
 
-  // Place numbers slightly closer to the center
+  // Place numbers at the actual edges of the viewport
   const numberStyle = (num) => {
-    const angle = (num - 3) * (Math.PI / 6);
-    const dx = angle === 0 || angle === Math.PI ? centerX - margin * viewport.height / 100 : centerX / Math.abs(Math.cos(angle));
-    const dy = angle === Math.PI / 2 || angle === -Math.PI / 2 ? centerY - margin * viewport.height / 100 : centerY / Math.abs(Math.sin(angle));
-    const dist = Math.min(dx, dy) * 0.9;
+    const margin = 20; // pixels from edge
+    let x, y;
 
-    const x = centerX + Math.cos(angle) * dist;
-    const y = centerY + Math.sin(angle) * dist;
+    if (num === 12) {
+      x = centerX;
+      y = margin;
+    } else if (num === 3) {
+      x = viewport.width - margin;
+      y = centerY;
+    } else if (num === 6) {
+      x = centerX;
+      y = viewport.height - margin;
+    } else if (num === 9) {
+      x = margin;
+      y = centerY;
+    } else if (num === 1 || num === 2) {
+      // Top right quadrant
+      const t = num === 1 ? 0.33 : 0.67;
+      x = centerX + (viewport.width - centerX - margin) * t;
+      y = margin + (centerY - margin) * t;
+    } else if (num === 4 || num === 5) {
+      // Bottom right quadrant
+      const t = num === 4 ? 0.33 : 0.67;
+      x = viewport.width - margin - (viewport.width - centerX - margin) * t;
+      y = centerY + (viewport.height - centerY - margin) * t;
+    } else if (num === 7 || num === 8) {
+      // Bottom left quadrant
+      const t = num === 7 ? 0.33 : 0.67;
+      x = centerX - (centerX - margin) * t;
+      y = viewport.height - margin - (viewport.height - centerY - margin) * t;
+    } else { // num === 10 || num === 11
+      // Top left quadrant
+      const t = num === 11 ? 0.33 : 0.67;
+      x = margin + (centerX - margin) * t;
+      y = centerY - (centerY - margin) * t;
+    }
 
     return {
       position: "absolute",
@@ -81,7 +98,8 @@ export default function EdgeClockWithHands() {
       transform: "translate(-50%, -50%)",
       fontSize: "4vh",
       color: numberAndHandColor,
-      fontFamily: "CustomClockFont",
+      fontFamily: "Arial, sans-serif",
+      fontWeight: "bold",
       zIndex: 2,
     };
   };
@@ -98,34 +116,17 @@ export default function EdgeClockWithHands() {
         position: "relative",
         overflow: "hidden",
         backgroundColor: "#06413AFF",
-        border: "6px solid #FC0101FF", // Component border
         boxSizing: "border-box",
       }}
     >
-      {/* Yellow rectangle, 50px smaller than viewport, centered */}
-      {viewport.width > 0 && (
-        <div
-          style={{
-            position: "absolute",
-            width: `${rectWidth}px`,
-            height: `${rectHeight}px`,
-            top: `${(viewport.height - rectHeight) / 2}px`, // Center vertically
-            left: `${(viewport.width - rectWidth) / 2}px`, // Center horizontally
-            border: "1px solid #2B1309FF", // Yellow border
-            boxSizing: "border-box",
-            zIndex: 1, // Behind numbers and hands
-          }}
-        />
-      )}
+     
 
       {viewport.width > 0 &&
         numbers.map((n) => (
-          <React.Fragment key={n}>
-            <div style={numberStyle(n)}>{n}</div>
-          </React.Fragment>
+          <div key={n} style={numberStyle(n)}>{n}</div>
         ))}
 
-      {/* Clock hands with fixed pixel sizes */}
+      {/* Clock hands */}
       <div style={handStyle(6, 15, numberAndHandColor, hourDeg)} />
       <div style={handStyle(4, 20, numberAndHandColor, minuteDeg)} />
       <div style={handStyle(2, 25, numberAndHandColor, secondDeg)} />
