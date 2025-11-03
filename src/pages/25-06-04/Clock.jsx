@@ -192,7 +192,7 @@ const CoffeeClock = () => {
           fontSize: "2rem",
         }}
       >
-        Brewing your clock ☕...
+        
       </div>
     );
   }
