@@ -24,7 +24,6 @@ export default function VideoClock() {
 
     const checkReady = () => {
       if ((videoLoaded || videoFailed) && imageLoaded && fontLoaded) {
-        // Delay slightly for smooth fade-in
         setTimeout(() => setReady(true), 100);
       }
     };
@@ -101,7 +100,7 @@ export default function VideoClock() {
   };
   const digits = formatTime().split("");
 
-  // Styles
+  // Inline styles
   const containerStyle = {
     width: "100vw",
     height: "100dvh",
@@ -112,7 +111,7 @@ export default function VideoClock() {
     justifyContent: "center",
     alignItems: "center",
     transition: "opacity 0.4s ease-in-out",
-    opacity: ready ? 1 : 0, // invisible until ready
+    opacity: ready ? 1 : 0,
   };
 
   const videoStyle = {
@@ -156,8 +155,34 @@ export default function VideoClock() {
     MozOsxFontSmoothing: "grayscale",
   };
 
+  const playButtonStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    zIndex: 3,
+    padding: "10px 20px",
+    fontSize: "1rem",
+    cursor: "pointer",
+    backgroundColor: "rgba(0, 30, 60, 0.8)",
+    color: "#e6f2ff",
+    border: "1px solid rgba(100, 180, 255, 0.5)",
+    borderRadius: "5px",
+    textShadow: "0 0 4px rgba(100, 180, 255, 0.5)",
+  };
+
   return (
     <div style={containerStyle}>
+      {/* Inject @font-face inline to avoid style leakage */}
+      <style>{`
+        @font-face {
+          font-family: 'CustomFont';
+          src: url(${fontFile_2025_10_31}) format('opentype');
+          font-weight: normal;
+          font-style: normal;
+          font-display: swap;
+        }
+      `}</style>
       <video
         ref={videoRef}
         style={videoStyle}
@@ -171,24 +196,7 @@ export default function VideoClock() {
       </video>
       <div style={fallbackStyle} aria-hidden />
       {showPlayButton && ready && (
-        <button
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            zIndex: 3,
-            padding: "10px 20px",
-            fontSize: "1rem",
-            cursor: "pointer",
-            backgroundColor: "rgba(0, 30, 60, 0.8)",
-            color: "#e6f2ff",
-            border: "1px solid rgba(100, 180, 255, 0.5)",
-            borderRadius: "5px",
-            textShadow: "0 0 4px rgba(100, 180, 255, 0.5)",
-          }}
-          onClick={handlePlayClick}
-        >
+        <button style={playButtonStyle} onClick={handlePlayClick}>
           Play Video
         </button>
       )}
