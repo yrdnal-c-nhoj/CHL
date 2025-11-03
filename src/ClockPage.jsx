@@ -1,5 +1,5 @@
 /** @jsxImportSource react */
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { DataContext } from "./context/DataContext";
 import Header from "./components/Header";
@@ -19,12 +19,22 @@ export default function ClockPage() {
   const [ClockComponent, setClockComponent] = useState(null);
   const [pageError, setPageError] = useState(null);
   const [isReady, setIsReady] = useState(false);
-  const [overlayVisible, setOverlayVisible] = useState(true); // Black overlay
+  const [overlayVisible, setOverlayVisible] = useState(true);
+  const [headerOpacity, setHeaderOpacity] = useState(1); // State for header opacity
 
   // Prevent scrolling
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => (document.body.style.overflow = "");
+  }, []);
+
+  // Fade out header after 1.5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHeaderOpacity(0); // Set opacity to 0 after 1.5 seconds
+    }, 1500); // 1.5 seconds
+
+    return () => clearTimeout(timer); // Cleanup timeout on unmount
   }, []);
 
   // Load everything: component, images, fonts
@@ -103,7 +113,15 @@ export default function ClockPage() {
 
       {ClockComponent && (
         <>
-          <Header visible={true} />
+          <div
+            style={{
+              opacity: headerOpacity,
+              transition: "opacity 0.5s ease-out", // Smooth fade-out over 0.5 seconds
+              pointerEvents: headerOpacity > 0 ? "auto" : "none", // Prevent interaction when faded
+            }}
+          >
+            <Header visible={headerOpacity > 0} /> {/* Pass visibility based on opacity */}
+          </div>
 
           <div style={{ width: "100%", height: "100%" }}>
             {/* Font isolation wrapper */}
