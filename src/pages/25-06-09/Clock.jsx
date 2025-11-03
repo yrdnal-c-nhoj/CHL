@@ -9,19 +9,9 @@ const MIN_DURATION = 0.01;
 const MAX_DURATION = 20;
 
 const namedSilverShades = [
-  "silver",
-  "lightgray",
-  "darkgray",
-  "gainsboro",
-  "#b0c4de",
-  "#c0c0c0",
-  "#a9a9a9",
-  "#dcdcdc",
-  "#d3d3d3",
-  "#eeeeee",
-  "#f5f5f5",
-  "#a5b487",
-  "#adcbce",
+  "silver", "lightgray", "darkgray", "gainsboro", "#b0c4de",
+  "#c0c0c0", "#a9a9a9", "#dcdcdc", "#d3d3d3", "#eeeeee",
+  "#f5f5f5", "#a5b487", "#adcbce",
 ];
 
 const spinAnimations = ["spin-a", "spin-b", "spin-c"];
@@ -50,7 +40,7 @@ function generateTimeString() {
   const hours = now.getHours() % 12 || 12;
   const minutes = now.getMinutes().toString().padStart(2, "0");
   const ampm = now.getHours() >= 12 ? "PM" : "AM";
-  return `${hours} ${minutes} ${ampm}`; // spaces instead of colon
+  return `${hours} ${minutes} ${ampm}`;
 }
 
 let globalCharIndex = 0;
@@ -67,12 +57,8 @@ function createClockObject(direction, vw, vh) {
   }
 
   const fontSize = 1 + Math.random() * 2.9; // rem
-
-  // Distribute vertically between 5vh and 95vh
   const topVh = 5 + Math.random() * 90;
-
   const driftDuration = MIN_DURATION + Math.random() * (MAX_DURATION - MIN_DURATION);
-
   const spinName = spinAnimations[Math.floor(Math.random() * spinAnimations.length)];
   const spinDuration = 20 + Math.random() * 30;
 
@@ -93,6 +79,7 @@ export default function IonosphereClock() {
   const [clocks, setClocks] = useState([]);
   const containerRef = useRef(null);
 
+  // Font + animations
   useEffect(() => {
     const styleEl = document.createElement("style");
     styleEl.innerHTML = `
@@ -107,7 +94,7 @@ export default function IonosphereClock() {
         margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden;
         background: rgb(4, 30, 60);
         perspective: 1000px;
-        font-size: 16px; /* base font-size for rem */
+        font-size: 16px;
       }
 
       @keyframes drift-right {
@@ -135,7 +122,7 @@ export default function IonosphereClock() {
         position: absolute;
         will-change: transform;
         pointer-events: none;
-        z-index: 6;
+        z-index: 3; /* lowered from 6 to stay under nav */
       }
 
       .clock {
@@ -146,13 +133,17 @@ export default function IonosphereClock() {
         filter: saturate(80%) brightness(80%);
         text-shadow: 0 0 0.375rem rgb(214 241 11), 0 0 0.1875rem rgb(188 211 234);
       }
+
+      nav, .navbar, header {
+        position: relative;
+        z-index: 10; /* ensures navigation stays on top */
+      }
     `;
     document.head.appendChild(styleEl);
-    return () => {
-      document.head.removeChild(styleEl);
-    };
+    return () => document.head.removeChild(styleEl);
   }, []);
 
+  // Maintain clocks
   useEffect(() => {
     let maintainTimeout;
     function maintainClockBalance() {
@@ -164,16 +155,13 @@ export default function IonosphereClock() {
         const lefts = filteredClocks.filter((c) => c.direction === "left");
         const rights = filteredClocks.filter((c) => c.direction === "right");
         const newClocks = [...filteredClocks];
-
         const vw = window.innerWidth / 100;
         const vh = window.innerHeight / 100;
 
-        if (lefts.length < CLOCK_COUNT_PER_DIRECTION) {
+        if (lefts.length < CLOCK_COUNT_PER_DIRECTION)
           newClocks.push(createClockObject("left", vw, vh));
-        }
-        if (rights.length < CLOCK_COUNT_PER_DIRECTION) {
+        if (rights.length < CLOCK_COUNT_PER_DIRECTION)
           newClocks.push(createClockObject("right", vw, vh));
-        }
 
         return newClocks;
       });
@@ -182,15 +170,12 @@ export default function IonosphereClock() {
     }
 
     maintainClockBalance();
-
-    return () => {
-      clearTimeout(maintainTimeout);
-    };
+    return () => clearTimeout(maintainTimeout);
   }, []);
 
+  // Launch random clocks
   useEffect(() => {
     let launchTimeout;
-
     function launchRandomClock() {
       setClocks((currentClocks) => {
         const vw = window.innerWidth / 100;
@@ -198,18 +183,10 @@ export default function IonosphereClock() {
         const direction = Math.random() < 0.5 ? "left" : "right";
         return [...currentClocks, createClockObject(direction, vw, vh)];
       });
-
-      launchTimeout = setTimeout(
-        launchRandomClock,
-        300 + Math.random() * 1500
-      );
+      launchTimeout = setTimeout(launchRandomClock, 300 + Math.random() * 1500);
     }
-
     launchRandomClock();
-
-    return () => {
-      clearTimeout(launchTimeout);
-    };
+    return () => clearTimeout(launchTimeout);
   }, []);
 
   return (
@@ -223,9 +200,7 @@ export default function IonosphereClock() {
           left: 0,
           width: "100vw",
           height: "100vh",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
+          objectFit: "cover",
           filter: "contrast(90%) saturate(200%)",
           zIndex: 1,
           pointerEvents: "none",
@@ -240,9 +215,7 @@ export default function IonosphereClock() {
           left: 0,
           width: "100vw",
           height: "100vh",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
+          objectFit: "cover",
           filter: "contrast(90%) saturate(90%)",
           opacity: 0.5,
           zIndex: 2,
@@ -260,21 +233,16 @@ export default function IonosphereClock() {
           driftDuration,
           spinName,
           spinDuration,
-          startTime,
         }) => {
           const animationName = `drift-${direction}`;
-
           return (
             <div
               key={id}
               className="clock-wrapper"
               style={{
                 top: `${topVh}vh`,
-                left: 0, // <-- always 0 to let translateX do full drifting
+                left: 0,
                 animation: `${animationName} ${driftDuration}s linear forwards`,
-                pointerEvents: "none",
-                zIndex: 6,
-                willChange: "transform",
               }}
             >
               <div
