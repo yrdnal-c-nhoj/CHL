@@ -90,7 +90,7 @@ export default function BinaryClockWithColumns() {
 
   const labelStyle = {
     fontFamily: labelFont,
-    fontSize: "2vh",
+    fontSize: "1vh",
     width: "100%",
     color: "#D8F0EAFF",
     backgroundColor: "#555552FF",
@@ -115,7 +115,7 @@ export default function BinaryClockWithColumns() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: "4vh",
+    fontSize: "6vh",
     fontFamily: digitalFont,
     color: "#09D509FF",
     backgroundColor: "#545451FF",
