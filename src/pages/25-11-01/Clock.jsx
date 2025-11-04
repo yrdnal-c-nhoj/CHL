@@ -111,7 +111,7 @@ export default function EdgeClockWithHands() {
             height: `${rectHeight}px`,
             top: `${(viewport.height - rectHeight) / 2}px`, // Center vertically
             left: `${(viewport.width - rectWidth) / 2}px`, // Center horizontally
-            border: "1px solid #2B1309FF", // Yellow border
+            border: "11px solid #2B1309FF", // Yellow border
             boxSizing: "border-box",
             zIndex: 1, // Behind numbers and hands
           }}
