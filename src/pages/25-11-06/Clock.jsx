@@ -56,23 +56,23 @@ export default function TimeMeasurementDisplay() {
   const decimalSeconds = Math.floor((decimalDay * 100000) % 100);
 
   const timeCategories = [
-    {
-      title: 'Standard Time',
-      icon: <Clock width={24} height={24} />,
-      items: [
-        { label: 'Local Time', value: now.toLocaleTimeString() },
-        { label: 'UTC Time', value: now.toUTCString() },
-        { label: 'ISO 8601', value: now.toISOString() },
-        { label: 'Unix Timestamp', value: unixTime.toLocaleString() },
-        { label: 'Milliseconds', value: now.getTime().toLocaleString() },
-        {
-          label: 'Session Duration',
-          value: `${Math.floor(sessionDuration / 1000)}s ${
-            sessionDuration % 1000
-          }ms`,
-        },
-      ],
-    },
+    // {
+    //   title: 'Standard Time',
+    //   icon: <Clock width={24} height={24} />,
+    //   items: [
+    //     { label: 'Local Time', value: now.toLocaleTimeString() },
+    //     { label: 'UTC Time', value: now.toUTCString() },
+    //     { label: 'ISO 8601', value: now.toISOString() },
+    //     { label: 'Unix Timestamp', value: unixTime.toLocaleString() },
+    //     { label: 'Milliseconds', value: now.getTime().toLocaleString() },
+    //     {
+    //       label: 'Session Duration',
+    //       value: `${Math.floor(sessionDuration / 1000)}s ${
+    //         sessionDuration % 1000
+    //       }ms`,
+    //     },
+    //   ],
+    // },
     {
       title: 'Alternative Formats',
       icon: <Timer width={24} height={24} />,
