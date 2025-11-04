@@ -103,7 +103,7 @@ export default function OceanStorm() {
 
         /* Brass gradient text effect */
         .brass-text {
-          background: linear-gradient(135deg, #b58e33 0%, #d4af37 40%, #996515 70%, #b58e33 100%);
+          background: linear-gradient(135deg, #b58e33 0%, #DEC05BFF 40%, #996515 70%, #b58e33 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
         }
@@ -148,7 +148,7 @@ function ClockFace() {
     transformOrigin: "bottom center",
     width,
     height,
-    background: "linear-gradient(180deg, #e0c060 0%, #b8860b 60%, #5a3e0a 100%)",
+    background: "linear-gradient(180deg, #E7C970FF 0%, #b8860b 60%, #5a3e0a 100%)",
     borderRadius: "1rem",
     boxShadow: shadow,
   });
