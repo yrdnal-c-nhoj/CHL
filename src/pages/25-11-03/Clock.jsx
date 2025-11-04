@@ -1,175 +1,226 @@
-/** @jsxImportSource react */
-import React, { useEffect, useState } from "react";
-import romanFont2025_10_27 from "./roman.otf";
+import React, { useEffect, useRef } from "react";
+import bgVideo from "./sea.mp4";
+import fallbackImg from "./sea.webp";
+import customFont from "./naut.ttf"; // Nautical font
 
-export default function AnalogClock() {
-  const [now, setNow] = useState(() => new Date());
+export default function OceanStorm() {
+  const videoRef = useRef(null);
 
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
+    const video = videoRef.current;
+    if (video) {
+      video.play().catch(() => {
+        video.style.display = "none";
+      });
+    }
+
+    // Load custom font
+    const font = new FontFace("Nautical", `url(${customFont})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+    });
   }, []);
 
-  const clockDiameterVh = 56;
-  const clockRadiusVh = clockDiameterVh / 2;
-  const numeralOffsetVh = 4.2;
-  const numeralRadiusVh = clockRadiusVh + numeralOffsetVh;
-
-  const seconds = now.getSeconds();
-  const minutes = now.getMinutes();
-  const hours = now.getHours() % 12 + minutes / 60 + seconds / 3600;
-
-  const secAngle = seconds * 6;
-  const minAngle = minutes * 6 + seconds * 0.1;
-  const hourAngle = hours * 30;
-
-  const romanNumerals = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"];
-  const fontFamilyName = "RomanClockFont_2025_10_27";
-
-  const fontFaceStyle = `
-    @font-face {
-      font-family: '${fontFamilyName}';
-      src: url('${romanFont2025_10_27}') format('truetype');
-      font-display: swap;
-    }
-  `;
-
-  const wrapperStyle = {
-    minHeight: "100vh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: "linear-gradient(180deg, hsl(2 30% 72%) 0%, hsl(90 20% 88%) 100%)",
-  };
-
-  const clockShellStyle = {
-    width: `${clockDiameterVh}vh`,
-    height: `${clockDiameterVh}vh`,
-    borderRadius: "50%",
-    position: "relative",
-    display: "grid",
-    placeItems: "center",
-  };
-
-  const dialFaceStyle = {
-    width: "92%",
-    height: "92%",
-    borderRadius: "50%",
-    background: "transparent",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%,-50%)",
-    boxSizing: "border-box",
-  };
-
-  const handCommon = {
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transformOrigin: "50% 90%",
-    borderRadius: "0.6vh",
-    pointerEvents: "none",
-  };
-
-  const hourHandStyle = {
-    ...handCommon,
-    height: `${clockRadiusVh * 0.55}vh`,
-    width: "1.4vh",
-    background: "linear-gradient(180deg, hsl(0 0% 98%), hsl(220 10% 75%))",
-    transform: `translate(-50%,-100%) rotate(${hourAngle}deg)`,
-    zIndex: 6,
-  };
-
-  const minuteHandStyle = {
-    ...handCommon,
-    height: `${clockRadiusVh * 0.72}vh`,
-    width: "1.0vh",
-    background: "linear-gradient(180deg, hsl(0 0% 98%), hsl(220 10% 85%))",
-    transform: `translate(-50%,-100%) rotate(${minAngle}deg)`,
-    zIndex: 8,
-  };
-
-  const secondHandStyle = {
-    ...handCommon,
-    height: `${clockRadiusVh * 0.86}vh`,
-    width: "0.5vh",
-    background: "linear-gradient(180deg, hsl(2 80% 60%), hsl(2 80% 45%))",
-    transform: `translate(-50%,-100%) rotate(${secAngle}deg)`,
-    zIndex: 9,
-  };
-
-  const numeralBaseStyle = {
-    position: "absolute",
-    fontFamily: fontFamilyName + ", system-ui, -apple-system, 'Segoe UI', Roboto",
-    fontSize: "9.2vh",
-    fontWeight: 600,
-    userSelect: "none",
-    pointerEvents: "none",
-    transformOrigin: "50% 50%",
-    letterSpacing: "0.15rem",
-  };
+  const clockSize = "60vmin";
 
   return (
-    <div style={wrapperStyle}>
-      <style>{fontFaceStyle}</style>
+    <div
+      style={{
+        position: "relative",
+        width: "100vw",
+        height: "100vh",
+        overflow: "hidden",
+        backgroundColor: "#001f33",
+      }}
+    >
+      {/* Background video with contrast & brightness filter */}
+      <video
+        ref={videoRef}
+        src={bgVideo}
+        poster={fallbackImg}
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
+          filter: "brightness(1.5) contrast(1.4) hue-rotate(-10deg)",
+        }}
+      />
 
-      <div aria-hidden style={clockShellStyle}>
-        <div style={dialFaceStyle}>
+      {/* Fallback image for cases where video fails */}
+      <img
+        src={fallbackImg}
+        alt="Sea Fallback"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
+          filter: "brightness(1.4) contrast(1.4)",
+          display: "none", // only shown if video fails
+        }}
+        onError={(e) => (e.target.style.display = "none")}
+      />
 
-          {/* jawlines from center to numerals */}
-          {romanNumerals.map((num, i) => {
-            const angleFromTop = i * 30 - 90;
-            const tangentOffsetVh = 2; 
-            const lineLengthVh = numeralRadiusVh - tangentOffsetVh;
-
-            const lineStyle = {
-              position: "absolute",
-              left: "50%",
-              top: "50%",
-              width: `${lineLengthVh}vh`,
-              height: "0.3vh",
-              background: "rgba(0,0,0,0.4)",
-              transformOrigin: "0% 50%",
-              transform: `rotate(${angleFromTop}deg) translateX(0)`,
-              zIndex: 2,
-            };
-            return <div key={`line-${i}`} style={lineStyle} aria-hidden />;
-          })}
-
-
-{/* jawlines from center to viewport edges */}
-{romanNumerals.map((num, i) => {
-  const angleFromTop = i * 30 - 90;
-  const angleRad = (angleFromTop * Math.PI) / 180;
-
-  // distance from center to far edge of viewport along this angle
-  const lineLengthVh = Math.sqrt(50 ** 2 + 50 ** 2); // Pythagoras for full viewport (assuming center at 50vh/50vw)
-  
-  const lineStyle = {
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    width: `${lineLengthVh}vh`,
-    height: "0.3vh",
-    background: "rgba(0,0,0,0.4)",
-    transformOrigin: "0% 50%",
-    transform: `rotate(${angleFromTop}deg) translateX(0)`,
-    zIndex: 1,
-  };
-
-  return <div key={`line-${i}`} style={lineStyle} aria-hidden />;
-})}
-
-
-
-          {/* clock hands */}
-          <div style={hourHandStyle} />
-          <div style={minuteHandStyle} />
-          <div style={secondHandStyle} />
-
-        </div>
+      {/* Rocking clock container (not affected by filters) */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: clockSize,
+          height: clockSize,
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          animation: "rock 8s ease-in-out infinite",
+          transformOrigin: "center center",
+          zIndex: 2,
+          opacity: 0.6,
+        }}
+      >
+        <ClockFace />
       </div>
+
+      <style>{`
+        @keyframes rock {
+          0% { transform: translate(-50%, -50%) rotate(-19deg); }
+          50% { transform: translate(-50%, -50%) rotate(19deg); }
+          100% { transform: translate(-50%, -50%) rotate(-19deg); }
+        }
+
+        /* Brass gradient text effect */
+        .brass-text {
+          background: linear-gradient(135deg, #b58e33 0%, #d4af37 40%, #996515 70%, #b58e33 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function ClockFace() {
+  const hourRef = useRef(null);
+  const minuteRef = useRef(null);
+  const secondRef = useRef(null);
+
+  useEffect(() => {
+    const updateClock = () => {
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const minutes = now.getMinutes();
+      const hours = now.getHours() % 12;
+
+      const secDeg = seconds * 6;
+      const minDeg = minutes * 6 + seconds * 0.1;
+      const hourDeg = hours * 30 + minutes * 0.5;
+
+      if (hourRef.current)
+        hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
+      if (minuteRef.current)
+        minuteRef.current.style.transform = `rotate(${minDeg}deg)`;
+      if (secondRef.current)
+        secondRef.current.style.transform = `rotate(${secDeg}deg)`;
+    };
+
+    updateClock();
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const brassHand = (width, height, shadow) => ({
+    position: "absolute",
+    bottom: "50%",
+    left: "50%",
+    transformOrigin: "bottom center",
+    width,
+    height,
+    background: "linear-gradient(180deg, #e0c060 0%, #b8860b 60%, #5a3e0a 100%)",
+    borderRadius: "1rem",
+    boxShadow: shadow,
+  });
+
+  const mainNumbers = [
+    { num: 12, angle: 0 },
+    { num: 3, angle: 90 },
+    { num: 6, angle: 180 },
+    { num: 9, angle: 270 },
+  ];
+
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: "90%",
+        height: "90%",
+        borderRadius: "50%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "Nautical, sans-serif",
+        color: "white",
+      }}
+    >
+      {/* Brass Numbers */}
+      {mainNumbers.map(({ num, angle }) => {
+        const x = 40 * Math.sin((angle * Math.PI) / 180);
+        const y = -40 * Math.cos((angle * Math.PI) / 180);
+        return (
+          <div
+            key={num}
+            className="brass-text"
+            style={{
+              position: "absolute",
+              left: `calc(50% + ${x}%)`,
+              top: `calc(50% + ${y}%)`,
+              transform: "translate(-50%, -50%)",
+              fontSize: "14vh",
+            }}
+          >
+            {num}
+          </div>
+        );
+      })}
+
+      {/* Brass Hands */}
+      <div
+        ref={hourRef}
+        style={brassHand("0.8rem", "28%", "inset 0 0 0.5rem #2a1b00, 0 0 1rem rgba(255,200,100,0.5)")}
+      ></div>
+      <div
+        ref={minuteRef}
+        style={brassHand("0.5rem", "40%", "inset 0 0 0.3rem #3a2b00, 0 0 1rem rgba(255,200,80,0.4)")}
+      ></div>
+      <div
+        ref={secondRef}
+        style={brassHand("0.25rem", "45%", "inset 0 0 0.2rem #4a3400, 0 0 1rem rgba(255,200,80,0.4)")}
+      ></div>
+
+      {/* Brass Center Rivet */}
+      <div
+        style={{
+          position: "absolute",
+          width: "2vh",
+          height: "2vh",
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle at 30% 30%, #f1c15c, #b8860b 70%, #4d3a05 100%)",
+          boxShadow: "0 0 1rem rgba(255,220,120,0.6)",
+        }}
+      ></div>
     </div>
   );
 }
