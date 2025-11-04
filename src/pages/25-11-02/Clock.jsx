@@ -10,7 +10,7 @@ export default function MonarchScene() {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
 
-  // Load custom font and wait until it's ready
+  // Load custom font
   useEffect(() => {
     const fontFace = new FontFace(
       "MedTech2025_11_04",
@@ -26,10 +26,18 @@ export default function MonarchScene() {
   const adjustVideoPosition = () => {
     const video = videoRef.current;
     if (!video) return;
+
     const vw = window.innerWidth;
     const vh = window.innerHeight;
     const videoAspect = video.videoWidth / video.videoHeight;
     const viewportAspect = vw / vh;
+
+    const filterSettings = `
+      hue-rotate(105deg)
+      saturate(1.6)
+      brightness(0.9)
+      contrast(1.2)
+    `;
 
     const baseStyle = {
       position: "absolute",
@@ -38,7 +46,8 @@ export default function MonarchScene() {
       transform: "translate(-50%, -50%)",
       objectFit: "cover",
       zIndex: 0,
-      filter: "saturate(1.5)",
+      filter: filterSettings,
+      transition: "filter 0.5s ease",
     };
 
     if (viewportAspect < videoAspect) {
@@ -96,14 +105,13 @@ export default function MonarchScene() {
           src={fallbackImg}
           alt=""
           style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            height: "100dvh",
-            width: "auto",
-            objectFit: "cover",
-            zIndex: 0,
+            ...videoStyle,
+            filter: `
+              hue-rotate(125deg)
+              saturate(1.6)
+              brightness(1.1)
+              contrast(1.2)
+            `,
           }}
         />
       )}
@@ -131,7 +139,7 @@ export default function MonarchScene() {
         <div style={timeRowStyle("15vh")}>{h}</div>
         <div style={timeRowStyle("15vh")}>{m}</div>
         <div style={timeRowStyle("15vh")}>{s}</div>
-        <div style={timeRowStyle("15vh", 0.6)}>{ms}</div>
+        <div style={timeRowStyle("15vh")}>{ms}</div>
       </div>
     </div>
   );
@@ -140,7 +148,7 @@ export default function MonarchScene() {
 const timeRowStyle = (fontSize, opacity = 1) => ({
   fontSize,
   fontWeight: "bold",
-  letterSpacing: "0.1rem",
+  letterSpacing: "0.3rem",
   textAlign: "center",
   minWidth: "10rem",
   opacity,
