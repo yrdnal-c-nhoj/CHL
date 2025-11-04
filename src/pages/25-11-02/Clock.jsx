@@ -1,108 +1,161 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import bgVideo from "./swim.mp4";
+import fallbackImg from "./swim.webp";
+import fontFile2025_11_04 from "./sperm.ttf"; // Custom scientific font
 
-export default function AnalogClock() {
+export default function MonarchScene() {
+  const videoRef = useRef(null);
+  const [mediaReady, setMediaReady] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
+  const [videoStyle, setVideoStyle] = useState({});
   const [time, setTime] = useState(new Date());
 
+  // Load custom font
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
+    const fontFace = new FontFace(
+      "MedTech2025_11_04",
+      `url(${fontFile2025_11_04}) format("truetype")`
+    );
+    fontFace.load().then((loaded) => {
+      document.fonts.add(loaded);
+    });
+  }, []);
+
+  const adjustVideoPosition = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const videoAspect = video.videoWidth / video.videoHeight;
+    const viewportAspect = vw / vh;
+
+    if (viewportAspect < videoAspect) {
+      setVideoStyle({
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        height: "100dvh",
+        width: "auto",
+        objectFit: "cover",
+        zIndex: 0,
+        filter: "saturate(1.5)",
+      });
+    } else {
+      setVideoStyle({
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: "100dvw",
+        height: "auto",
+        objectFit: "cover",
+        zIndex: 0,
+        filter: "saturate(1.5)",
+      });
+    }
+  };
+
+  const handleVideoLoaded = () => {
+    setMediaReady(true);
+    adjustVideoPosition();
+  };
+  const handleVideoError = () => setVideoFailed(true);
+  const handleImageLoad = () => setMediaReady(true);
+
+  useEffect(() => {
+    window.addEventListener("resize", adjustVideoPosition);
+    return () => window.removeEventListener("resize", adjustVideoPosition);
+  }, []);
+
+  // Clock update (every 25ms)
+  useEffect(() => {
+    const interval = setInterval(() => setTime(new Date()), 25);
     return () => clearInterval(interval);
   }, []);
 
-  // Clock hands
-  const seconds = time.getSeconds();
-  const minutes = time.getMinutes();
-  const hours = time.getHours() % 12;
-
-  const secondDeg = (seconds / 60) * 360;
-  const minuteDeg = (minutes / 60) * 360 + (seconds / 60) * 6;
-  const hourDeg = (hours / 12) * 360 + (minutes / 60) * 30;
-
-  // Styles
-  const containerStyle = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100vh",
-    width: "100vw",
-    background: "#f0f0f0",
+  const formatTime = (date) => {
+    const h = String(date.getHours()).padStart(2, "0");
+    const m = String(date.getMinutes()).padStart(2, "0");
+    const s = String(date.getSeconds()).padStart(2, "0");
+    const ms = String(date.getMilliseconds()).padStart(3, "0");
+    return `${h}${m}${s}${ms}`;
   };
 
-  const clockStyle = {
-    position: "relative",
-    height: "40vh",
-    width: "40vh",
-    borderRadius: "50%",
-    border: "0.5vh solid #333",
-    background: "#fff",
-    boxShadow: "0 0 2vh rgba(0,0,0,0.2)",
-  };
-
-  const handStyle = (width, height, bgColor, deg) => ({
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    width: `${width}vh`,
-    height: `${height}vh`,
-    backgroundColor: bgColor,
-    transformOrigin: "bottom center",
-    transform: `translate(-50%, -100%) rotate(${deg}deg)`,
-    borderRadius: "0.25vh",
-  });
-
-  const centerDotStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    width: "1.5vh",
-    height: "1.5vh",
-    backgroundColor: "#333",
-    borderRadius: "50%",
-    transform: "translate(-50%, -50%)",
-    zIndex: 10,
-  };
-
-  // Roman numerals
-  const romanNumerals = [
-    "I", "II", "III", "IV", "V", "VI",
-    "VII", "VIII", "IX", "X", "XI", "XII"
-  ];
-
-  const numberStyle = (num) => {
-    const clockRadius = 20; // half of clock's 40vh
-    const offset = 3; // push numbers outside by 3vh
-    const radius = clockRadius + offset; // total distance from center
-    const angle = ((num - 3) / 12) * 2 * Math.PI; // align 12 at top
-    const x = 50 + radius * Math.cos(angle);
-    const y = 50 + radius * Math.sin(angle);
-    const rotateDeg = (angle * 180) / Math.PI; // tangent rotation
-
-    return {
-      position: "absolute",
-      left: `${x}%`,
-      top: `${y}%`,
-      transform: `translate(-50%, -50%) rotate(${rotateDeg}deg)`,
-      transformOrigin: "center center",
-      fontSize: "3vh",
-      fontWeight: "bold",
-      color: "#333",
-    };
-  };
+  const timeStr = formatTime(time);
 
   return (
-    <div style={containerStyle}>
-      <div style={clockStyle}>
-        {/* Hour hand */}
-        <div style={handStyle(0.8, 12, "#333", hourDeg)} />
-        {/* Minute hand */}
-        <div style={handStyle(0.5, 16, "#666", minuteDeg)} />
-        {/* Second hand */}
-        <div style={handStyle(0.2, 18, "red", secondDeg)} />
-        {/* Center dot */}
-        <div style={centerDotStyle} />
-        {/* Numbers */}
-        {romanNumerals.map((num, i) => (
-          <div key={i} style={numberStyle(i + 1)}>
-            {num}
+    <div
+      style={{
+        height: "100dvh",
+        width: "100dvw",
+        overflow: "hidden",
+        position: "relative",
+        backgroundColor: "#000",
+        fontFamily: "'MedTech2025_11_04', monospace",
+      }}
+    >
+      {!videoFailed ? (
+        <video
+          ref={videoRef}
+          src={bgVideo}
+          muted
+          autoPlay
+          loop
+          playsInline
+          onLoadedData={handleVideoLoaded}
+          onError={handleVideoError}
+          style={videoStyle}
+        />
+      ) : (
+        <img
+          src={fallbackImg}
+          alt=""
+          onLoad={handleImageLoad}
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            height: "100dvh",
+            width: "auto",
+            objectFit: "cover",
+            zIndex: 0,
+          }}
+        />
+      )}
+
+      {/* Centered Digital Clock */}
+      <div
+        style={{
+          position: "absolute",
+          top: "20%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "0.1vh",
+          color: "#00FFFF",
+          fontSize: "9vh",
+          letterSpacing: "0.35vh",
+          userSelect: "none",
+          zIndex: 10,
+        }}
+      >
+        {timeStr.split("").map((char, i) => (
+          <div
+            key={i}
+            style={{
+              minWidth: char === "." ? "2vw" : "7vw",
+              textAlign: "center",
+              fontWeight: "bold",
+              fontFeatureSettings: "'tnum' 1, 'lnum' 1",
+              backdropFilter: "blur(0.2rem)",
+            }}
+          >
+            {char}
           </div>
         ))}
       </div>
