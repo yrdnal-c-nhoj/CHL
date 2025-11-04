@@ -1,176 +1,226 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import bgVideo from "./sea.mp4";
 import fallbackImg from "./sea.webp";
-import customFont from "./naut.ttf"; // Replace with your font file
+import customFont from "./naut.ttf"; // Nautical font
 
 export default function OceanStorm() {
   const videoRef = useRef(null);
-  const [videoFailed, setVideoFailed] = useState(false);
-  const [videoStyle, setVideoStyle] = useState({});
-
-  // Adjust video scaling
-  const adjustVideoPosition = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const videoAspect = video.videoWidth / video.videoHeight;
-    const viewportAspect = vw / vh;
-
-    const baseStyle = {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      objectFit: "cover",
-      zIndex: 0,
-      filter: "hue-rotate(30deg) saturate(1.5) brightness(1.2) contrast(1.1)",
-    };
-
-    if (viewportAspect < videoAspect) {
-      setVideoStyle({ ...baseStyle, height: "100vh", width: "auto" });
-    } else {
-      setVideoStyle({ ...baseStyle, width: "100vw", height: "auto" });
-    }
-  };
-
-  const handleVideoLoaded = () => adjustVideoPosition();
-  const handleVideoError = () => setVideoFailed(true);
 
   useEffect(() => {
-    window.addEventListener("resize", adjustVideoPosition);
-    return () => window.removeEventListener("resize", adjustVideoPosition);
-  }, []);
-
-  // Clock face component
-  const ClockFace = () => {
-    const [time, setTime] = useState(new Date());
-
-    useEffect(() => {
-      const interval = setInterval(() => setTime(new Date()), 1000);
-      return () => clearInterval(interval);
-    }, []);
-
-    const hours = time.getHours() % 12;
-    const minutes = time.getMinutes();
-    const seconds = time.getSeconds();
-
-    const hourAngle = (hours + minutes / 60) * 30;
-    const minuteAngle = (minutes + seconds / 60) * 6;
-    const secondAngle = seconds * 6;
-
-    const handStyle = (width, height, angle, color) => ({
-      position: "absolute",
-      width,
-      height,
-      backgroundColor: color,
-      top: "50%",
-      left: "50%",
-      transformOrigin: "bottom center",
-      transform: `translate(-50%, -100%) rotate(${angle}deg)`,
-      borderRadius: "2vh",
-    });
-
-    // Only show 12, 3, 6, and 9
-    const visibleNumbers = [12, 3, 6, 9];
-    const numbers = [];
-    const clockRadius = 24;
-
-    for (let n of visibleNumbers) {
-      const angle = ((n - 3) * 30 * Math.PI) / 180;
-      const x = 30 + clockRadius * Math.cos(angle);
-      const y = 30 + clockRadius * Math.sin(angle);
-
-      numbers.push(
-        <div
-          key={n}
-          style={{
-            position: "absolute",
-            left: `${x}vh`,
-            top: `${y}vh`,
-            transform: "translate(-50%, -50%)",
-            fontFamily: "CustomFont, sans-serif",
-            fontSize: "19vh",
-            color: "#E4D5D5FF",
-          }}
-        >
-          {n}
-        </div>
-      );
+    const video = videoRef.current;
+    if (video) {
+      video.play().catch(() => {
+        video.style.display = "none";
+      });
     }
 
-    return (
-      <div
-        style={{
-          position: "absolute",
-          width: "60vh",
-          height: "60vh",
-          borderRadius: "50%",
-          border: "0.6vh solid white",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 1,
-        }}
-      >
-        {numbers}
-        <div style={handStyle("1.2vh", "18vh", hourAngle, "white")}></div>
-        <div style={handStyle("0.9vh", "24vh", minuteAngle, "white")}></div>
-        <div style={handStyle("0.4vh", "28vh", secondAngle, "red")}></div>
-      </div>
-    );
-  };
+    // Load custom font
+    const font = new FontFace("Nautical", `url(${customFont})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+    });
+  }, []);
+
+  const clockSize = "60vmin";
 
   return (
     <div
       style={{
-        height: "100vh",
-        width: "100vw",
-        overflow: "hidden",
         position: "relative",
-        backgroundColor: "#000",
+        width: "100vw",
+        height: "100vh",
+        overflow: "hidden",
+        backgroundColor: "#001f33",
       }}
     >
-      <style>
-        {`
-          @font-face {
-            font-family: "CustomFont";
-            src: url(${customFont}) format("truetype");
-          }
-        `}
-      </style>
+      {/* Background video with contrast & brightness filter */}
+      <video
+        ref={videoRef}
+        src={bgVideo}
+        poster={fallbackImg}
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
+          filter: "brightness(1.5) contrast(1.4) hue-rotate(-10deg)",
+        }}
+      />
 
-      {!videoFailed ? (
-        <video
-          ref={videoRef}
-          src={bgVideo}
-          muted
-          autoPlay
-          loop
-          playsInline
-          onLoadedData={handleVideoLoaded}
-          onError={handleVideoError}
-          style={videoStyle}
-        />
-      ) : (
-        <img
-          src={fallbackImg}
-          alt=""
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            height: "100vh",
-            width: "auto",
-            objectFit: "cover",
-            zIndex: 0,
-            filter: "hue-rotate(30deg) saturate(1.5) brightness(1.2) contrast(1.1)",
-          }}
-        />
-      )}
+      {/* Fallback image for cases where video fails */}
+      <img
+        src={fallbackImg}
+        alt="Sea Fallback"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
+          filter: "brightness(1.4) contrast(1.4)",
+          display: "none", // only shown if video fails
+        }}
+        onError={(e) => (e.target.style.display = "none")}
+      />
 
-      <ClockFace />
+      {/* Rocking clock container (not affected by filters) */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: clockSize,
+          height: clockSize,
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          animation: "rock 8s ease-in-out infinite",
+          transformOrigin: "center center",
+          zIndex: 2,
+          opacity: 0.6,
+        }}
+      >
+        <ClockFace />
+      </div>
+
+      <style>{`
+        @keyframes rock {
+          0% { transform: translate(-50%, -50%) rotate(-19deg); }
+          50% { transform: translate(-50%, -50%) rotate(19deg); }
+          100% { transform: translate(-50%, -50%) rotate(-19deg); }
+        }
+
+        /* Brass gradient text effect */
+        .brass-text {
+          background: linear-gradient(135deg, #b58e33 0%, #d4af37 40%, #996515 70%, #b58e33 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function ClockFace() {
+  const hourRef = useRef(null);
+  const minuteRef = useRef(null);
+  const secondRef = useRef(null);
+
+  useEffect(() => {
+    const updateClock = () => {
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const minutes = now.getMinutes();
+      const hours = now.getHours() % 12;
+
+      const secDeg = seconds * 6;
+      const minDeg = minutes * 6 + seconds * 0.1;
+      const hourDeg = hours * 30 + minutes * 0.5;
+
+      if (hourRef.current)
+        hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
+      if (minuteRef.current)
+        minuteRef.current.style.transform = `rotate(${minDeg}deg)`;
+      if (secondRef.current)
+        secondRef.current.style.transform = `rotate(${secDeg}deg)`;
+    };
+
+    updateClock();
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const brassHand = (width, height, shadow) => ({
+    position: "absolute",
+    bottom: "50%",
+    left: "50%",
+    transformOrigin: "bottom center",
+    width,
+    height,
+    background: "linear-gradient(180deg, #e0c060 0%, #b8860b 60%, #5a3e0a 100%)",
+    borderRadius: "1rem",
+    boxShadow: shadow,
+  });
+
+  const mainNumbers = [
+    { num: 12, angle: 0 },
+    { num: 3, angle: 90 },
+    { num: 6, angle: 180 },
+    { num: 9, angle: 270 },
+  ];
+
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: "90%",
+        height: "90%",
+        borderRadius: "50%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "Nautical, sans-serif",
+        color: "white",
+      }}
+    >
+      {/* Brass Numbers */}
+      {mainNumbers.map(({ num, angle }) => {
+        const x = 40 * Math.sin((angle * Math.PI) / 180);
+        const y = -40 * Math.cos((angle * Math.PI) / 180);
+        return (
+          <div
+            key={num}
+            className="brass-text"
+            style={{
+              position: "absolute",
+              left: `calc(50% + ${x}%)`,
+              top: `calc(50% + ${y}%)`,
+              transform: "translate(-50%, -50%)",
+              fontSize: "14vh",
+            }}
+          >
+            {num}
+          </div>
+        );
+      })}
+
+      {/* Brass Hands */}
+      <div
+        ref={hourRef}
+        style={brassHand("0.8rem", "28%", "inset 0 0 0.5rem #2a1b00, 0 0 1rem rgba(255,200,100,0.5)")}
+      ></div>
+      <div
+        ref={minuteRef}
+        style={brassHand("0.5rem", "40%", "inset 0 0 0.3rem #3a2b00, 0 0 1rem rgba(255,200,80,0.4)")}
+      ></div>
+      <div
+        ref={secondRef}
+        style={brassHand("0.25rem", "45%", "inset 0 0 0.2rem #4a3400, 0 0 1rem rgba(255,200,80,0.4)")}
+      ></div>
+
+      {/* Brass Center Rivet */}
+      <div
+        style={{
+          position: "absolute",
+          width: "2vh",
+          height: "2vh",
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle at 30% 30%, #f1c15c, #b8860b 70%, #4d3a05 100%)",
+          boxShadow: "0 0 1rem rgba(255,220,120,0.6)",
+        }}
+      ></div>
     </div>
   );
 }
