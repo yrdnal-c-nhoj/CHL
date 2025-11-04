@@ -12,9 +12,9 @@ export default function BinaryClockWithColumns() {
   const [time, setTime] = useState(new Date());
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  // --- Update time every 500ms ---
+  // --- Update time every 50ms for smooth milliseconds ---
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 500);
+    const interval = setInterval(() => setTime(new Date()), 50);
     return () => clearInterval(interval);
   }, []);
 
@@ -94,7 +94,6 @@ export default function BinaryClockWithColumns() {
     width: "100%",
     color: "#D8F0EAFF",
     backgroundColor: "#555552FF",
-    // marginBottom: "1vh",
     textAlign: "center",
     paddingTop: "1vh",
     paddingBottom: "1vh",
@@ -155,9 +154,12 @@ export default function BinaryClockWithColumns() {
     </div>
   );
 
+  // --- Time values ---
   const hours = formatBinary(time.getHours());
   const minutes = formatBinary(time.getMinutes());
   const seconds = formatBinary(time.getSeconds());
+  const milliseconds = Math.floor(time.getMilliseconds() / 10); // 0-99
+  const msBits = formatBinary(milliseconds);
 
   // --- Don't render until fonts are ready ---
   if (!fontsLoaded) return null;
@@ -171,6 +173,7 @@ export default function BinaryClockWithColumns() {
           {renderColumn("H", hours, time.getHours())}
           {renderColumn("M", minutes, time.getMinutes())}
           {renderColumn("S", seconds, time.getSeconds())}
+          {renderColumn("MS", msBits, milliseconds)} {/* Milliseconds column */}
         </div>
       </div>
     </>
