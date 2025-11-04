@@ -6,10 +6,17 @@ export default function SkyClock() {
   const [localTime, setLocalTime] = useState("");
   const [skyGradient, setSkyGradient] = useState("");
   const [skyPhrase, setSkyPhrase] = useState("");
-  const [fade, setFade] = useState(true);
-  const [inverseGradient, setInverseGradient] = useState("linear-gradient(to bottom, #fff 0%, #fff 100%)");
+  const [fade, setFade] = useState(false); // fade controlled after fonts load
+  const [inverseGradient, setInverseGradient] = useState(
+    "linear-gradient(to bottom, #fff 0%, #fff 100%)"
+  );
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  // Alphabetically sorted arrays
+  const index1 = useRef(0);
+  const index2 = useRef(0);
+  const index3 = useRef(0);
+
+  // Alphabetically sorted arrays (same as your original)
   const adjectives1 = [
     "a whimsically","a softly-harmonious","a joyfully","a gracefully","a miraculously",
     "a blissfully","a enchantingly","a softly","a magically-glimmering","a luminously",
@@ -54,12 +61,22 @@ export default function SkyClock() {
     "divinity of","catch of","grandeur of","blessing of","sparkle of"
   ];
 
-  // useRef to keep track of indexes for sequential cycling
-  const index1 = useRef(0);
-  const index2 = useRef(0);
-  const index3 = useRef(0);
-
+  // Preload fonts before rendering
   useEffect(() => {
+    const rain = new FontFace("ClockFont", `url(${rainFont})`);
+    const sky = new FontFace("SkyFont", `url(${skyFont})`);
+
+    Promise.all([rain.load(), sky.load()]).then(loadedFonts => {
+      loadedFonts.forEach(f => document.fonts.add(f));
+      setFontsLoaded(true);
+      setFade(true); // start fade after fonts loaded
+    });
+  }, []);
+
+  // Only run clock updates after fonts loaded
+  useEffect(() => {
+    if (!fontsLoaded) return;
+
     updateTime();
     updatePhrase();
 
@@ -69,7 +86,7 @@ export default function SkyClock() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [fontsLoaded]);
 
   function updateTime() {
     const now = new Date();
@@ -77,12 +94,13 @@ export default function SkyClock() {
     const minute = now.getMinutes();
     const timeDecimal = hour + minute / 60;
 
-    setLocalTime(`${String(hour).padStart(2,"0")}${String(minute).padStart(2,"0")}`);
+    setLocalTime(`${String(hour).padStart(2, "0")}${String(minute).padStart(2, "0")}`);
 
     // Sky gradient based on time
     let gradient = "#000";
     if (timeDecimal >= 0 && timeDecimal < 3)
-      gradient = "linear-gradient(to bottom, #3D0E33 0%, #371D38 30%, #0c1445 60%, #2D3F05 100%)";
+      gradient =
+        "linear-gradient(to bottom, #3D0E33 0%, #371D38 30%, #0c1445 60%, #2D3F05 100%)";
     else if (timeDecimal >= 3 && timeDecimal < 4)
       gradient = "linear-gradient(to bottom, #990360 0%, #6B1259 33%, #371D38 70%, #0c1445 100%)";
     else if (timeDecimal >= 4 && timeDecimal < 6)
@@ -110,20 +128,22 @@ export default function SkyClock() {
 
     setSkyGradient(gradient);
 
-    // Inverse gradient for text contrast
+    // Inverse gradient
     const hexMatches = gradient.match(/#([0-9a-fA-F]{6})/g);
     if (hexMatches) {
       const invertedColors = hexMatches.map(hex => {
-        const cleanHex = hex.replace('#','');
-        const r = 255 - parseInt(cleanHex.substr(0,2),16);
-        const g = 255 - parseInt(cleanHex.substr(2,2),16);
-        const b = 255 - parseInt(cleanHex.substr(4,2),16);
+        const cleanHex = hex.replace("#", "");
+        const r = 255 - parseInt(cleanHex.substr(0, 2), 16);
+        const g = 255 - parseInt(cleanHex.substr(2, 2), 16);
+        const b = 255 - parseInt(cleanHex.substr(4, 2), 16);
         return `rgb(${r},${g},${b})`;
       });
-      const percentages = gradient.match(/\d+%/g) || ['0%','33%','70%','100%'];
-      const inverseGradientStops = invertedColors.map((color,i) =>
-        `${color} ${percentages[i]||(i*100/(invertedColors.length-1))+'%'}`
-      ).join(', ');
+      const percentages = gradient.match(/\d+%/g) || ["0%", "33%", "70%", "100%"];
+      const inverseGradientStops = invertedColors
+        .map(
+          (color, i) => `${color} ${percentages[i] || (i * 100) / (invertedColors.length - 1) + "%"}`
+        )
+        .join(", ");
       setInverseGradient(`linear-gradient(to bottom, ${inverseGradientStops})`);
     }
   }
@@ -140,14 +160,13 @@ export default function SkyClock() {
     const now = new Date();
     const hour = now.getHours();
     const minute = now.getMinutes();
-    const timeDecimal = hour + minute/60;
+    const timeDecimal = hour + minute / 60;
 
     let adjectives2;
     if (hour >= 7 && hour < 17) adjectives2 = adjectives2_day;
     else if ((hour >= 4 && hour < 7) || (hour >= 17 && hour < 20)) adjectives2 = adjectives2_twilight;
     else adjectives2 = adjectives2_night;
 
-    // Each list advances independently
     const pick = arr => {
       let idxRef;
       if (arr === adjectives1) idxRef = index1;
@@ -180,9 +199,9 @@ export default function SkyClock() {
     return phrase("night");
   }
 
-  const today = new Date().toISOString().split('T')[0].replace(/-/g,'');
-  const clockFontFamily = `ClockFont${today}`;
-  const skyFontFamily = `SkyFont${today}`;
+  if (!fontsLoaded) {
+    return <div style={{ width: "100vw", height: "100dvh", background: "#000" }} />;
+  }
 
   return (
     <div
@@ -201,19 +220,6 @@ export default function SkyClock() {
         padding: 0,
       }}
     >
-      <style>
-        {`
-          @font-face {
-            font-family: '${clockFontFamily}';
-            src: url(${rainFont}) format('opentype');
-          }
-          @font-face {
-            font-family: '${skyFontFamily}';
-            src: url(${skyFont}) format('truetype');
-          }
-        `}
-      </style>
-
       <div
         style={{
           opacity: fade ? 1 : 0,
@@ -230,21 +236,8 @@ export default function SkyClock() {
           <div
             style={{
               fontSize: "16vh",
-              fontFamily: `'${clockFontFamily}', system-ui`,
-             color: "#fff",
-              textShadow: "1px 1px 0 #041901FF, -1px -1px 0 #E9F2E8FF",
-                          position: "absolute",
-              top: 0,
-              left: 0,
-            }}
-          >
-            {localTime}
-          </div>
-          <div
-            style={{
-              fontSize: "16vh",
-              fontFamily: `'${clockFontFamily}', system-ui`,
-            color: "#fff",
+              fontFamily: `'ClockFont', system-ui`,
+              color: "#fff",
               textShadow: "1px 1px 0 #041901FF, -1px -1px 0 #E9F2E8FF",
               position: "absolute",
               top: 0,
@@ -256,7 +249,7 @@ export default function SkyClock() {
           <div
             style={{
               fontSize: "16vh",
-              fontFamily: `'${clockFontFamily}', system-ui`,
+              fontFamily: `'ClockFont', system-ui`,
               backgroundImage: inverseGradient,
               WebkitBackgroundClip: "text",
               backgroundClip: "text",
@@ -274,33 +267,7 @@ export default function SkyClock() {
             dangerouslySetInnerHTML={{ __html: skyPhrase }}
             style={{
               fontSize: "7vh",
-              fontFamily: `'${skyFontFamily}', system-ui`,
-              lineHeight: "7.5vh",
-              color: "#000",
-              textShadow: "0.5px 0.5px 0 #041901FF, -0.5px -0.5px 0 #E9F2E8FF",
-              position: "absolute",
-              top: 0,
-              left: 0,
-            }}
-          />
-          <div
-            dangerouslySetInnerHTML={{ __html: skyPhrase }}
-            style={{
-              fontSize: "7vh",
-              fontFamily: `'${skyFontFamily}', system-ui`,
-              lineHeight: "7.5vh",
-              color: "#fff",
-              textShadow: "0.5px 0.5px 0 #041901FF, -0.5px -0.5px 0 #E9F2E8FF",
-              position: "absolute",
-              top: 0,
-              left: 0,
-            }}
-          />
-          <div
-            dangerouslySetInnerHTML={{ __html: skyPhrase }}
-            style={{
-              fontSize: "7vh",
-              fontFamily: `'${skyFontFamily}', system-ui`,
+              fontFamily: `'SkyFont', system-ui`,
               lineHeight: "7.5vh",
               backgroundImage: inverseGradient,
               WebkitBackgroundClip: "text",
