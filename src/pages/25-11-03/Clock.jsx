@@ -94,7 +94,7 @@ export default function BinaryClockWithColumns() {
     width: "100%",
     color: "#D8F0EAFF",
     backgroundColor: "#555552FF",
-    marginBottom: "1vh",
+    // marginBottom: "1vh",
     textAlign: "center",
     paddingTop: "1vh",
     paddingBottom: "1vh",
