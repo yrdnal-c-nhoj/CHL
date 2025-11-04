@@ -68,7 +68,7 @@ export default function BinaryClockWithColumns() {
     backgroundRepeat: "repeat",
     backgroundSize: "auto",
     backgroundPosition: "top left",
-    filter: "hue-rotate(1deg) contrast(0.2) brightness(0.9) saturate(9.5)",
+    filter: "hue-rotate(1deg) contrast(0.03) brightness(1.9) saturate(9.5)",
     zIndex: 0,
   };
 
@@ -115,7 +115,7 @@ export default function BinaryClockWithColumns() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: "6vh",
+    fontSize: "vh",
     fontFamily: digitalFont,
     color: "#09D509FF",
     backgroundColor: "#545451FF",
@@ -135,7 +135,7 @@ export default function BinaryClockWithColumns() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: "8vh",
+    fontSize: "7vh",
     fontFamily: techFont,
     color: bit === "1" ? "#ffffff" : "#000000",
     backgroundColor: bit === "1" ? "#1100CCFF" : "#EFFA26FF",
