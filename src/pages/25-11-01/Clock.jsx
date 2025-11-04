@@ -98,7 +98,7 @@ export default function EdgeClockWithHands() {
         position: "relative",
         overflow: "hidden",
         backgroundColor: "#06413AFF",
-        border: "6px solid #FC0101FF", // Component border
+        border: "6px solid #72FF06FF", // Component border
         boxSizing: "border-box",
       }}
     >
