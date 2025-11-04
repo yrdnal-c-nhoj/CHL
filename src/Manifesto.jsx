@@ -1,6 +1,6 @@
 import React from 'react';
 import TopNav from './components/TopNav';
-import './WordPages.css';
+// import './WordPages.css';
 import Footer from './components/Footer';
 
 function Manifesto() {
