@@ -8,8 +8,9 @@ export default function MonarchScene() {
   const [videoFailed, setVideoFailed] = useState(false);
   const [videoStyle, setVideoStyle] = useState({});
   const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
 
-  // Load custom font
+  // Load custom font and wait until it's ready
   useEffect(() => {
     const fontFace = new FontFace(
       "MedTech2025_11_04",
@@ -17,6 +18,7 @@ export default function MonarchScene() {
     );
     fontFace.load().then((loaded) => {
       document.fonts.add(loaded);
+      document.fonts.ready.then(() => setFontLoaded(true));
     });
   }, []);
 
@@ -29,30 +31,20 @@ export default function MonarchScene() {
     const videoAspect = video.videoWidth / video.videoHeight;
     const viewportAspect = vw / vh;
 
+    const baseStyle = {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      objectFit: "cover",
+      zIndex: 0,
+      filter: "saturate(1.5)",
+    };
+
     if (viewportAspect < videoAspect) {
-      setVideoStyle({
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        height: "100dvh",
-        width: "auto",
-        objectFit: "cover",
-        zIndex: 0,
-        filter: "saturate(1.5)",
-      });
+      setVideoStyle({ ...baseStyle, height: "100dvh", width: "auto" });
     } else {
-      setVideoStyle({
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        width: "100dvw",
-        height: "auto",
-        objectFit: "cover",
-        zIndex: 0,
-        filter: "saturate(1.5)",
-      });
+      setVideoStyle({ ...baseStyle, width: "100dvw", height: "auto" });
     }
   };
 
@@ -70,7 +62,6 @@ export default function MonarchScene() {
     return () => clearInterval(interval);
   }, []);
 
-  // Format time pieces
   const h = String(time.getHours()).padStart(2, "0");
   const m = String(time.getMinutes()).padStart(2, "0");
   const s = String(time.getSeconds()).padStart(2, "0");
@@ -129,13 +120,14 @@ export default function MonarchScene() {
           justifyContent: "center",
           alignItems: "center",
           color: "#00FFFF",
-          textShadow: "0 0 1yh #00FFFF",
+          textShadow: "0 0 1vh #00FFFF",
           userSelect: "none",
           zIndex: 10,
           width: "90vw",
+          opacity: fontLoaded ? 1 : 0,
+          transition: "opacity 0.6s ease",
         }}
       >
-        {/* Each row: hours, minutes, seconds, milliseconds */}
         <div style={timeRowStyle("15vh")}>{h}</div>
         <div style={timeRowStyle("15vh")}>{m}</div>
         <div style={timeRowStyle("15vh")}>{s}</div>
@@ -145,13 +137,11 @@ export default function MonarchScene() {
   );
 }
 
-// Helper for consistent responsive row style
 const timeRowStyle = (fontSize, opacity = 1) => ({
   fontSize,
   fontWeight: "bold",
   letterSpacing: "0.1rem",
   textAlign: "center",
   minWidth: "10rem",
-  // backdropFilter: "blur(0.2rem)",
-  // color: `rgba(0,255,255,${opacity})`,
+  opacity,
 });
