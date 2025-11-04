@@ -1,248 +1,155 @@
-import React, { useEffect, useRef, useState } from "react";
-import bgVideo from "./sea.mp4";
-import fallbackImg from "./sea.webp";
-import customFont from "./naut.ttf"; // Nautical font
+import React, { useEffect, useState } from "react";
+import digitalFontUrl from "./bin3.ttf"; 
+import labelFontUrl from "./bin2.ttf";   
+import techFontUrl from "./bin1.otf";    
+import bgImage from "./bg.gif"; 
 
-export default function OceanStorm() {
-  const videoRef = useRef(null);
-  const [videoFailed, setVideoFailed] = useState(false);
-  const [vh, setVh] = useState(window.innerHeight);
-  const [fontLoaded, setFontLoaded] = useState(false);
+const digitalFont = "digitalFont";
+const labelFont = "labelFont";
+const techFont = "techFont";
 
-  useEffect(() => {
-    // Update vh dynamically for mobile
-    const handleResize = () => setVh(window.innerHeight);
-    window.addEventListener("resize", handleResize);
-
-    // Load custom font
-    const font = new FontFace("Nautical", `url(${customFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontLoaded(true);
-    });
-
-    // Play video
-    const video = videoRef.current;
-    if (video) video.play().catch(() => setVideoFailed(true));
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const clockSize = "60vmin";
-
-  return (
-    <div
-      style={{
-        position: "relative",
-        width: "100vw",
-        height: `${vh}px`,
-        overflow: "hidden",
-        backgroundColor: "#001f33",
-      }}
-    >
-      {/* Background video */}
-      {!videoFailed && (
-        <video
-          ref={videoRef}
-          src={bgVideo}
-          poster={fallbackImg}
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            zIndex: 0,
-            filter: "brightness(1.5) contrast(1.4) hue-rotate(-10deg)",
-          }}
-          onError={() => setVideoFailed(true)}
-        />
-      )}
-
-      {/* Fallback image */}
-      {videoFailed && (
-        <img
-          src={fallbackImg}
-          alt="Sea Fallback"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            zIndex: 0,
-            filter: "brightness(1.4) contrast(1.4)",
-          }}
-        />
-      )}
-
-      {/* Rocking clock */}
-      <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 2,
-          width: clockSize,
-          height: clockSize,
-          opacity: 0.9,
-          borderRadius: "50%",
-          animation: "rock 8s ease-in-out infinite",
-        }}
-      >
-        {fontLoaded && <ClockFace />}
-      </div>
-
-      {/* Styles */}
-      <style>{`
-        @keyframes rock {
-          0% { transform: rotate(-15deg); }
-          25% { transform: rotate(10deg); }
-          50% { transform: rotate(15deg); }
-          75% { transform: rotate(-10deg); }
-          100% { transform: rotate(-15deg); }
-        }
-
-        .brass-text {
-          background: linear-gradient(
-            135deg,
-            #b58e33 0%,
-            #DEC05BFF 30%,
-            #FFFACD 50%,
-            #996515 70%,
-            #b58e33 100%
-          );
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          text-shadow: 0 0 2px rgba(255, 220, 120, 0.5);
-        }
-
-        .clock-glow {
-          box-shadow: 0 0 3rem rgba(255, 220, 120, 0.4);
-          border-radius: 50%;
-          width: 100%;
-          height: 100%;
-          position: relative;
-        }
-      `}</style>
-    </div>
-  );
-}
-
-function ClockFace() {
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
+export default function BinaryClockWithColumns() {
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      const seconds = now.getSeconds();
-      const minutes = now.getMinutes();
-      const hours = now.getHours() % 12;
-
-      const secDeg = seconds * 6;
-      const minDeg = minutes * 6 + seconds * 0.1;
-      const hourDeg = hours * 30 + minutes * 0.5;
-
-      if (hourRef.current)
-        hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
-      if (minuteRef.current)
-        minuteRef.current.style.transform = `rotate(${minDeg}deg)`;
-      if (secondRef.current)
-        secondRef.current.style.transform = `rotate(${secDeg}deg)`;
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
+    const interval = setInterval(() => setTime(new Date()), 500);
     return () => clearInterval(interval);
   }, []);
 
-  const brassHand = (widthVmin, heightVmin, shadow) => ({
+  const formatBinary = (num) => num.toString(2).padStart(8, "0").split("");
+
+  const globalFontFaces = `
+    @font-face { font-family: '${digitalFont}'; src: url(${digitalFontUrl}) format('truetype'); }
+    @font-face { font-family: '${labelFont}'; src: url(${labelFontUrl}) format('truetype'); }
+    @font-face { font-family: '${techFont}'; src: url(${techFontUrl}) format('opentype'); }
+  `;
+
+  // --- STYLES ---
+  const containerStyle = {
+    position: "relative",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100dvh",
+    width: "100vw",
+    overflow: "hidden",
+  };
+
+  const backgroundStyle = {
     position: "absolute",
-    bottom: "50%",
-    left: "50%",
-    transformOrigin: "bottom center",
-    width: `${widthVmin}vmin`,
-    height: `${heightVmin}vmin`,
-    background: "linear-gradient(180deg, #E7C970FF 0%, #b8860b 50%, #5a3e0a 100%)",
-    borderRadius: "0.5vmin",
-    boxShadow: shadow,
+    top: 0,
+    left: 0,
+    height: "100%",
+    width: "100%",
+    backgroundImage: `url(${bgImage})`,
+    backgroundRepeat: "repeat",
+    backgroundSize: "auto",
+    backgroundPosition: "top left",
+    filter: "hue-rotate(1deg) contrast(0.2) brightness(0.9) saturate(9.5)",
+    zIndex: 0,
+  };
+
+  const columnsWrapperStyle = {
+    display: "flex",
+    gap: "0vw",
+    padding: "0vh",
+    position: "relative",
+    zIndex: 1, // make sure clock is on top of background
+  };
+
+  const columnContainerStyle = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "0.1vh",
+  };
+
+  const labelStyle = {
+    fontFamily: labelFont,
+    fontSize: "2vh",
+        width: "100%",
+    color: "#D8F0EAFF",
+    backgroundColor: "#555552FF",
+    marginBottom: "1vh",
+    textAlign: "center",
+
+  paddingTop: "1vh",    // space above the text
+  paddingBottom: "1vh", // space below the text
+  };
+
+  const binaryContainerStyle = {
+    display: "flex",
+    flexDirection: "column-reverse",
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+  };
+
+  const digitBoxStyle = {
+    width: "100%",
+    flexShrink: 0,
+    height: "5vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: "6vh",
+    fontFamily: digitalFont,
+    color: "#09D509FF",
+   backgroundColor: "#545451FF",
+
+  paddingTop: "1vh",    // space above the text
+  paddingBottom: "1vh", // space below the text
+    textShadow: `
+      1px 1px 0 #000,
+      -1px -1px 0 #000,
+      1px -1px 0 #FFF,
+      -1px 1px 0 #FFF
+    `
+  };
+
+  const bitBoxStyle = (bit) => ({
+    width: "100%",
+    flex: 1,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: "8vh",
+    fontFamily: techFont,
+    color: bit === "1" ? "#ffffff" : "#000000",
+    backgroundColor: bit === "1" ? "#1100CCFF" : "#EFFA26FF",
+    // borderRadius: "0.5vh",
+    margin: "0.1vh 0",
+    transition: "all 0.3s ease",
   });
 
-  const mainNumbers = [
-    { num: 12, angle: 0 },
-    { num: 3, angle: 90 },
-    { num: 6, angle: 180 },
-    { num: 9, angle: 270 },
-  ];
+  const renderColumn = (label, bits, digit) => (
+    <div style={columnContainerStyle}>
+      <div style={labelStyle}>{label}</div>
+      <div style={binaryContainerStyle}>
+        {bits.map((bit, idx) => (
+          <div key={idx} style={bitBoxStyle(bit)}>{bit}</div>
+        ))}
+      </div>
+      <div style={digitBoxStyle}>{digit.toString().padStart(2, "0")}</div>
+    </div>
+  );
+
+  const hours = formatBinary(time.getHours());
+  const minutes = formatBinary(time.getMinutes());
+  const seconds = formatBinary(time.getSeconds());
 
   return (
-    <div
-      className="clock-glow"
-      style={{
-        fontFamily: "Nautical, sans-serif",
-        width: "100%",
-        height: "100%",
-        position: "relative",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      {/* Brass Numbers */}
-      {mainNumbers.map(({ num, angle }) => {
-        const x = 40 * Math.sin((angle * Math.PI) / 180);
-        const y = -40 * Math.cos((angle * Math.PI) / 180);
-        return (
-          <div
-            key={num}
-            className="brass-text"
-            style={{
-              position: "absolute",
-              left: `calc(50% + ${x}%)`,
-              top: `calc(50% + ${y}%)`,
-              transform: "translate(-50%, -50%)",
-              fontSize: "clamp(6vmin, 10vmin, 12vmin)",
-            }}
-          >
-            {num}
-          </div>
-        );
-      })}
-
-      {/* Brass Hands */}
-      <div
-        ref={hourRef}
-        style={brassHand(1.5, 28, "inset 0 0 0.5rem #2a1b00, 0 0 1rem rgba(255,200,100,0.5)")}
-      />
-      <div
-        ref={minuteRef}
-        style={brassHand(1, 40, "inset 0 0 0.3rem #3a2b00, 0 0 1rem rgba(255,200,80,0.4)")}
-      />
-      <div
-        ref={secondRef}
-        style={brassHand(0.5, 45, "inset 0 0 0.2rem #4a3400, 0 0 1rem rgba(255,200,80,0.4)")}
-      />
-
-      {/* Center Rivet */}
-      <div
-        style={{
-          position: "absolute",
-          width: "2.5vmin",
-          height: "2.5vmin",
-          borderRadius: "50%",
-          background: "radial-gradient(circle at 30% 30%, #f1c15c, #b8860b 70%, #4d3a05 100%)",
-          boxShadow: "0 0 1rem rgba(255,220,120,0.6)",
-        }}
-      ></div>
-    </div>
+    <>
+      <style>{globalFontFaces}</style>
+      <div style={containerStyle}>
+        <div style={backgroundStyle}></div>
+        <div style={columnsWrapperStyle}>
+          {renderColumn("H", hours, time.getHours())}
+          {renderColumn("M", minutes, time.getMinutes())}
+          {renderColumn("S", seconds, time.getSeconds())}
+        </div>
+      </div>
+    </>
   );
 }
