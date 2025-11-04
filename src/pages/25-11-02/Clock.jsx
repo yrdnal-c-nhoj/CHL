@@ -5,7 +5,6 @@ import fontFile2025_11_04 from "./sperm.ttf"; // Custom scientific font
 
 export default function MonarchScene() {
   const videoRef = useRef(null);
-  const [mediaReady, setMediaReady] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const [videoStyle, setVideoStyle] = useState({});
   const [time, setTime] = useState(new Date());
@@ -21,10 +20,10 @@ export default function MonarchScene() {
     });
   }, []);
 
+  // Adjust background video scaling
   const adjustVideoPosition = () => {
     const video = videoRef.current;
     if (!video) return;
-
     const vw = window.innerWidth;
     const vh = window.innerHeight;
     const videoAspect = video.videoWidth / video.videoHeight;
@@ -57,33 +56,25 @@ export default function MonarchScene() {
     }
   };
 
-  const handleVideoLoaded = () => {
-    setMediaReady(true);
-    adjustVideoPosition();
-  };
+  const handleVideoLoaded = () => adjustVideoPosition();
   const handleVideoError = () => setVideoFailed(true);
-  const handleImageLoad = () => setMediaReady(true);
 
   useEffect(() => {
     window.addEventListener("resize", adjustVideoPosition);
     return () => window.removeEventListener("resize", adjustVideoPosition);
   }, []);
 
-  // Clock update (every 25ms)
+  // Update time every 25ms
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 25);
     return () => clearInterval(interval);
   }, []);
 
-  const formatTime = (date) => {
-    const h = String(date.getHours()).padStart(2, "0");
-    const m = String(date.getMinutes()).padStart(2, "0");
-    const s = String(date.getSeconds()).padStart(2, "0");
-    const ms = String(date.getMilliseconds()).padStart(3, "0");
-    return `${h}${m}${s}${ms}`;
-  };
-
-  const timeStr = formatTime(time);
+  // Format time pieces
+  const h = String(time.getHours()).padStart(2, "0");
+  const m = String(time.getMinutes()).padStart(2, "0");
+  const s = String(time.getSeconds()).padStart(2, "0");
+  const ms = String(time.getMilliseconds()).padStart(3, "0");
 
   return (
     <div
@@ -96,6 +87,7 @@ export default function MonarchScene() {
         fontFamily: "'MedTech2025_11_04', monospace",
       }}
     >
+      {/* Background Video or Fallback Image */}
       {!videoFailed ? (
         <video
           ref={videoRef}
@@ -112,7 +104,6 @@ export default function MonarchScene() {
         <img
           src={fallbackImg}
           alt=""
-          onLoad={handleImageLoad}
           style={{
             position: "absolute",
             top: "50%",
@@ -126,39 +117,41 @@ export default function MonarchScene() {
         />
       )}
 
-      {/* Centered Digital Clock */}
+      {/* Centered Vertical Clock */}
       <div
         style={{
           position: "absolute",
-          top: "20%",
+          top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          gap: "0.1vh",
           color: "#00FFFF",
-          fontSize: "9vh",
-          letterSpacing: "0.35vh",
+          textShadow: "0 0 1yh #00FFFF",
           userSelect: "none",
           zIndex: 10,
+          width: "90vw",
         }}
       >
-        {timeStr.split("").map((char, i) => (
-          <div
-            key={i}
-            style={{
-              minWidth: char === "." ? "2vw" : "7vw",
-              textAlign: "center",
-              fontWeight: "bold",
-              fontFeatureSettings: "'tnum' 1, 'lnum' 1",
-              backdropFilter: "blur(0.2rem)",
-            }}
-          >
-            {char}
-          </div>
-        ))}
+        {/* Each row: hours, minutes, seconds, milliseconds */}
+        <div style={timeRowStyle("15vh")}>{h}</div>
+        <div style={timeRowStyle("15vh")}>{m}</div>
+        <div style={timeRowStyle("15vh")}>{s}</div>
+        <div style={timeRowStyle("15vh", 0.6)}>{ms}</div>
       </div>
     </div>
   );
 }
+
+// Helper for consistent responsive row style
+const timeRowStyle = (fontSize, opacity = 1) => ({
+  fontSize,
+  fontWeight: "bold",
+  letterSpacing: "0.1rem",
+  textAlign: "center",
+  minWidth: "10rem",
+  // backdropFilter: "blur(0.2rem)",
+  // color: `rgba(0,255,255,${opacity})`,
+});
