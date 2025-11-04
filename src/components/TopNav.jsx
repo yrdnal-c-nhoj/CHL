@@ -47,7 +47,7 @@ export default function TopNav() {
           </li>
 
 
-
+{/* 
           <li className="nav-item">
             <NavLink
               to="/manifesto"
@@ -68,7 +68,8 @@ export default function TopNav() {
               ABOUT
             </NavLink>
           </li>
-          
+           */}
+           
           <li className="nav-item">
             <NavLink
               to="/contact"
