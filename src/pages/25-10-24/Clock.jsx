@@ -67,7 +67,7 @@ export default function VictorianEsperantoClock() {
   const secondWord = capitalizeWords(minutesAndSecondsWords[time.getSeconds()]);
 
   const containerStyle = {
-    fontFamily: "'CustomFont', serif",
+    fontFamily: "'CustomzzzFont', serif",
     width: "100vw",
     height: "100dvh",
     minHeight: "100dvh",
@@ -157,7 +157,7 @@ export default function VictorianEsperantoClock() {
       <style>
         {`
           @font-face {
-            font-family: 'CustomFont';
+            font-family: 'CustomzzzFont';
             src: url(${fontFile251024}) format('truetype');
             font-weight: normal;
             font-style: normal;
