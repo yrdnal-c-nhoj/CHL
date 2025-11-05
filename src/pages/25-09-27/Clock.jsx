@@ -163,7 +163,7 @@ const AnalogClock = () => {
         backgroundImage: `url(${bgOuter})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        filter: "contrast(0.8) opacity(0.9)",
+        filter: "contrast(0.8) opacity(0.9) saturate(5.2) hue-rotate(90deg)",
         transform: "scaleX(-1)",
       }}
     >
@@ -188,7 +188,7 @@ const AnalogClock = () => {
           backgroundImage: `url(${bgInner})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "contrast(4.4)",
+          filter: "contrast(2.4)",
           zIndex: 2,
           display: "flex",
           justifyContent: "center",
