@@ -114,7 +114,7 @@ export default function BinaryClockWithColumns() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: "6vh",
+    fontSize: "5vh",
     fontFamily: digitalFont,
     color: "#09D509FF",
     backgroundColor: "#545451FF",
