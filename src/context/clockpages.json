@@ -216,5 +216,6 @@
   { "path": "25-11-01", "date": "25-11-01", "title": "Edge Case" },
   { "path": "25-11-02", "date": "25-11-02", "title": "Swimmers" },
   { "path": "25-11-03", "date": "25-11-03", "title": "Binary" },
-  { "path": "25-11-04", "date": "25-11-04", "title": "Churn" }
+  { "path": "25-11-04", "date": "25-11-04", "title": "Churn" },
+  { "path": "25-11-05", "date": "25-11-05", "title": "Punctuation" }
 ]
