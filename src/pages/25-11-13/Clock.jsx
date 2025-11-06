@@ -28,7 +28,7 @@ export default function TimeMeasurementDisplay() {
   // Geological Time
   const earthAge = 4.54e9;
   const yearsSinceEarth = now.getFullYear() - (-earthAge);
-czz
+
   // Biological Rhythms
   const heartbeats = Math.floor((sessionDuration / 1000) * 1.17);
   const breathCycles = Math.floor(sessionDuration / 1000 / 4);
