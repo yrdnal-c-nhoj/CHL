@@ -132,11 +132,24 @@ export default function Clock251106() {
   const [now, setNow] = useState(new Date());
   const [viewportWidth, setViewportWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1440);
   const [viewportHeight, setViewportHeight] = useState(typeof window !== "undefined" ? window.innerHeight : 900);
+  const [fontsReady, setFontsReady] = useState(false);
 
   // Time update interval
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 100);
     return () => clearInterval(id);
+  }, []);
+
+  // Avoid FOUT: wait for fonts then reveal component
+  useEffect(() => {
+    let raf = requestAnimationFrame(() => {
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => setFontsReady(true));
+      } else {
+        setFontsReady(true);
+      }
+    });
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   // Resize listener
@@ -192,6 +205,8 @@ export default function Clock251106() {
         position: "relative",
         overflow: "hidden",
         fontFamily: LABEL_TYPEFACE,
+        opacity: fontsReady ? 1 : 0,
+        transition: "opacity 300ms ease-out",
         border: "3px solid #fff",
        
         outlineOffset: 0,
