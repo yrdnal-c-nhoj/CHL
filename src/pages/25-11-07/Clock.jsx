@@ -24,11 +24,9 @@ export default function PanicAnalogClock() {
 
   const [timeStr, setTimeStr] = useState("");
   const [overlayVisible, setOverlayVisible] = useState(true);
+  const [leftLoaded, setLeftLoaded] = useState(false);
+  const [rightLoaded, setRightLoaded] = useState(false);
 
-  useEffect(() => {
-    const t = setTimeout(() => setOverlayVisible(false), 500);
-    return () => clearTimeout(t);
-  }, []);
 
   const formatTime = (d) => {
     let h = d.getHours();
@@ -58,29 +56,18 @@ export default function PanicAnalogClock() {
   }, []);
 
   // === IMAGE AND FONT FETCH EFFECT ===
+  // Start fade 100ms after the second image has loaded
   useEffect(() => {
+    if (!rightLoaded) return;
     let cancelled = false;
-    const startFade = () => {
+    const t = setTimeout(() => {
       if (cancelled) return;
       requestAnimationFrame(() => {
         if (!cancelled) setOverlayVisible(false);
       });
-    };
-
-    if (fontUrl && typeof document !== 'undefined' && document.fonts && document.fonts.load) {
-      const readyPromise = document.fonts.ready.catch(() => {});
-      // Use px for broader compatibility in Chrome mobile
-      const loadPromise = document.fonts.load(`16px "${fontName}"`).catch(() => {});
-      Promise.race([
-        Promise.all([readyPromise, loadPromise]),
-        new Promise((res) => setTimeout(res, 2000)),
-      ]).then(startFade);
-      return () => { cancelled = true; };
-    } else {
-      const t = setTimeout(startFade, 300);
-      return () => { cancelled = true; clearTimeout(t); };
-    }
-  }, [fontUrl, fontName]);
+    }, 100);
+    return () => { cancelled = true; clearTimeout(t); };
+  }, [rightLoaded]);
 
   useEffect(() => {
     let aborted = false;
@@ -236,6 +223,7 @@ export default function PanicAnalogClock() {
       <img
         src={leftSrc || undefined}
         alt="left background"
+        onLoad={() => setLeftLoaded(true)}
         style={{
           ...baseImgStyle,
           left: 0,
@@ -249,6 +237,7 @@ export default function PanicAnalogClock() {
       <img
         src={rightSrc || undefined}
         alt="right background"
+        onLoad={() => setRightLoaded(true)}
         style={{
           ...baseImgStyle,
           right: 0,
@@ -270,7 +259,7 @@ export default function PanicAnalogClock() {
           height: "100svh",
           backgroundColor: "#000",
           opacity: overlayVisible ? 1 : 0,
-          transition: "opacity 600ms ease-out",
+          transition: "opacity 700ms ease-out",
           pointerEvents: "none",
           zIndex: 9999,
           willChange: "opacity",
