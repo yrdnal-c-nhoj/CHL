@@ -208,7 +208,6 @@ export default function Clock251106() {
         opacity: fontsReady ? 1 : 0,
         transition: "opacity 300ms ease-out",
         border: "3px solid #fff",
-       
         outlineOffset: 0,
         boxSizing: "border-box",
       }}
@@ -494,8 +493,6 @@ export default function Clock251106() {
               padding: "0.4vh 0.8vh",
               fontSize: "3.2vh",
               fontWeight: 700,
-
-
               letterSpacing: "0.1vh",
               opacity: viewportWidth >= bp.width * (viewportWidth / 100) ? 1 : 0.5,
               fontFamily: LABEL_TYPEFACE,
@@ -618,22 +615,16 @@ export default function Clock251106() {
       >
         <div
           style={{
-            // fontSize: `clamp(6vh, min(22vmin, 20vw, 20vh), 18vh)`,
             fontSize: "10vw",
             lineHeight: 1.1,
-            // letterSpacing: "0.05vh",
             textShadow: "3px 1px  rgba(220,0,0)",
-            // fontWeight: 400,
             color: "#D9D9EEFF",
             textAlign: "center",
             display: "flex",
             alignItems: "baseline",
             justifyContent: "center",
-            // gap: "-0.6vh",
-            // letterSpacing: "-0.2vh",
             whiteSpace: "nowrap",
             fontVariantNumeric: "tabular-nums",
-            // padding: "1.2vh",
             maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
             maxHeight: `calc(100vh - ${2 * SAFE_INSET_V}vh)`,
             overflow: "hidden",
@@ -666,8 +657,6 @@ export default function Clock251106() {
           fontSize: "3.2vh",
           fontWeight: 700,
           letterSpacing: "0.1vh",
-
-
           fontFamily: LABEL_TYPEFACE,
         }}
       >
