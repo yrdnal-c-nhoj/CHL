@@ -7,7 +7,7 @@ const screenshotsDir = '/Users/john/Desktop/CHL/screenshots';
 if (!fs.existsSync(screenshotsDir)) fs.mkdirSync(screenshotsDir, { recursive: true });
 
 // Paths you want to capture
-const paths = ['25-10-26'];
+const paths = ['25-10-29'];
 const baseURL = 'https://www.cubistheart.com/';
 
 // Delay in milliseconds before screenshot (e.g., 3000 = 3s)
