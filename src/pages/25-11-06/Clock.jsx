@@ -35,13 +35,24 @@ const Clock = () => {
       }
     }
 
-    // Hour markers
+    // Hour markers (spelled-out names, centered)
+    const hourNames = [
+      'TWELVE', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE',
+      'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN', 'ELEVEN'
+    ];
     for (let i = 0; i < 12; i++) {
       const angle = (i * 30 - 90) * (Math.PI / 180);
       const x = Math.round(centerX + (radius - 2) * Math.cos(angle));
       const y = Math.round(centerY + (radius - 2) * Math.sin(angle) * 0.5);
-      if (y >= 0 && y < 41 && x >= 0 && x < 81) {
-        display[y][x] = i === 0 ? '12' : i.toString();
+      const text = hourNames[i];
+      const startX = x - Math.floor(text.length / 2);
+      if (y >= 0 && y < 41) {
+        for (let j = 0; j < text.length; j++) {
+          const xx = startX + j;
+          if (xx >= 0 && xx < 81) {
+            display[y][xx] = text[j];
+          }
+        }
       }
     }
 
