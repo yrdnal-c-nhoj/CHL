@@ -6,11 +6,11 @@ import webnov725 from "./webs3.ttf";
 // Helper function remains the same
 function makeColumnsBackground(columns, gutterVw, marginVw) {
   if (columns <= 0) {
-    console.error("Columns must be greater than 0");
+    console.error("Columns Must Be Greater Than 0"); // Changed error message to Title Case
     return "none";
   }
-  const colColor = "rgba(255,255,255,0.12)";
-  const gutColor = "rgba(255,255,255,0.22)";
+  const colColor = "rgba(255,255,255)";
+  const gutColor = "rgba(255,255,255)";
   return [
     `linear-gradient(90deg, ${colColor} 0, ${colColor} ${marginVw}vw, transparent ${marginVw}vw)`,
     `repeating-linear-gradient(90deg,
@@ -30,13 +30,10 @@ function Rulers({ viewportWidth, viewportHeight }) {
   const COUNT = 200;
   const labelStyle = {
     fontSize: "3.4vh",
-    color: "#71717a",
+    color: "#BBBBC7FF",
     textShadow: "0 0.2vh 0.4vh rgba(0,0,0,0.8)",
     fontWeight: 700,
-    // Note: Teko251106 is not defined, assuming it should be 'Teko' or 'Poppins'
-    // I will use 'Teko' as a placeholder based on the other declarations.
-
-    fontFamily: "'Teko', sans-serif", 
+    fontFamily: "'Teko', sans-serif",
   };
 
   return (
@@ -156,8 +153,8 @@ export default function Clock251106() {
 
   // Scaffolding config (Constants remain the same)
   const BASELINE = 0.8; // vh
-  const BASELINE_BOLD_EVERY = 4;
-  const COLUMNS = 12;
+  const BASELINE_BOLD_EVERY = 2;
+  const COLUMNS = 4;
   const GUTTER = 1; // vw
   const MARGIN_H = 5; // vw
   const SAFE_INSET_V = 8; // vh
@@ -165,13 +162,13 @@ export default function Clock251106() {
 
   // Device breakpoints (Constants remain the same)
   const breakpoints = [
-    { name: "Mobile S", width: 12.5, color: "#ff006e" },
-    { name: "Mobile M", width: 14.65, color: "#fb5607" },
-    { name: "Mobile L", width: 16.6, color: "#ffbe0b" },
-    { name: "Tablet", width: 30, color: "#8ac926" },
-    { name: "Laptop", width: 40, color: "#1982c4" },
-    { name: "Laptop L", width: 56.25, color: "#6a4c93" },
-    { name: "4K", width: 100, color: "#d62828" },
+    { name: "Mobile S", width: 12.5, color: "#ff006e" }, // Changed 'Mobile S' to 'Mobile S' (already Title Case)
+    { name: "Mobile M", width: 14.65, color: "#fb5607" }, // Changed 'Mobile M' to 'Mobile M' (already Title Case)
+    { name: "Mobile L", width: 16.6, color: "#ffbe0b" }, // Changed 'Mobile L' to 'Mobile L' (already Title Case)
+    { name: "Tablet", width: 30, color: "#8ac926" }, // Changed 'Tablet' to 'Tablet' (already Title Case)
+    { name: "Laptop", width: 40, color: "#1982c4" }, // Changed 'Laptop' to 'Laptop' (already Title Case)
+    { name: "Laptop L", width: 56.25, color: "#8C6EB7FF" }, // Changed 'Laptop L' to 'Laptop L' (already Title Case)
+    { name: "4K", width: 100, color: "#d62828" }, // Changed '4K' to '4K' (Title Case appropriate)
   ];
 
   const baselineLines = useMemo(() => Array.from({ length: 200 }, (_, i) => i), []);
@@ -233,7 +230,7 @@ export default function Clock251106() {
           pointerEvents: "none",
           backgroundImage: makeColumnsBackground(COLUMNS, GUTTER, MARGIN_H),
           backgroundSize: "100% 100%",
-          opacity: 0.08,
+          opacity: 0.15, // Increased opacity for more prominence
         }}
       />
 
@@ -250,7 +247,9 @@ export default function Clock251106() {
                 left: 0,
                 width: "100%",
                 height: "0.1vh",
-                background: thick ? "rgba(147, 51, 234, 0.25)" : "rgba(147, 51, 234, 0.1)",
+                // Brighter baseline colors and added box-shadow
+                background: thick ? "rgba(180, 80, 255, 0.5)" : "rgba(180, 80, 255, 0.25)",
+                boxShadow: thick ? "0 0 0.4vh rgba(180, 80, 255, 0.5)" : "none",
               }}
             />
           );
@@ -266,8 +265,8 @@ export default function Clock251106() {
             top: 0,
             width: "0.2vw",
             height: "100%",
-            background: "rgba(6, 182, 212, 0.3)",
-            boxShadow: "0 0 0.8vh rgba(6, 182, 212, 0.3)",
+            background: "rgba(6, 182, 212, 0.7)", // Brighter background
+            boxShadow: "0 0 1.2vh rgba(6, 182, 212, 0.7)", // Increased and brighter shadow
           }}
         />
         <div
@@ -277,8 +276,8 @@ export default function Clock251106() {
             left: 0,
             height: "0.2vh",
             width: "100%",
-            background: "rgba(6, 182, 212, 0.5)",
-            boxShadow: "0 0 0.8vh rgba(6, 182, 212, 0.3)",
+            background: "rgba(6, 182, 212, 0.9)", // Brighter background
+            boxShadow: "0 0 1.2vh rgba(6, 182, 212, 0.7)", // Increased and brighter shadow
           }}
         />
         {/* Centerline labels */}
@@ -296,7 +295,7 @@ export default function Clock251106() {
             textShadow: "0 0.2vh 0.4vh rgba(0,0,0,0.5)",
           }}
         >
-          <span>CENTERLINE X • </span>
+          <span>Centerline X • </span>
           <span style={{ fontFamily: DIGIT_TYPEFACE }}>50VW</span>
         </div>
         <div
@@ -317,7 +316,7 @@ export default function Clock251106() {
             textOverflow: "ellipsis",
           }}
         >
-          <span>CENTERLINE Y • </span>
+          <span>Centerline Y • </span>
           <span style={{ fontFamily: DIGIT_TYPEFACE }}>50VH</span>
         </div>
       </div>
@@ -355,13 +354,13 @@ export default function Clock251106() {
             textOverflow: "ellipsis",
           }}
         >
-          <span>SAFE AREA • </span>
-          <span style={{ fontFamily: DIGIT_TYPEFACE }}>{SAFE_INSET_H}VW × {SAFE_INSET_V}VH INSET</span>
+          <span>Safe Area • </span>
+          <span style={{ fontFamily: DIGIT_TYPEFACE }}>{SAFE_INSET_H}VW × {SAFE_INSET_V}VH Inset</span>
         </div>
       </div>
 
       {/* Danger zones */}
-      <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+      <div aria-hidden style={{ position: 0, inset: 0, pointerEvents: "none" }}>
         <div
           style={{
             position: "absolute",
@@ -390,7 +389,7 @@ export default function Clock251106() {
               textOverflow: "ellipsis",
             }}
           >
-            DANGER ZONE • NO CRITICAL CONTENT
+            Danger Zone • No Critical Content
           </div>
         </div>
         <div
@@ -421,7 +420,7 @@ export default function Clock251106() {
               textOverflow: "ellipsis",
             }}
           >
-            DANGER ZONE • NO CRITICAL CONTENT
+            Danger Zone • No Critical Content
           </div>
         </div>
         <div
@@ -476,9 +475,8 @@ export default function Clock251106() {
               padding: "0.4vh 0.8vh",
               fontSize: "3.2vh",
               fontWeight: 700,
-              whiteSpace: "nowrap",
-              
-              
+
+
               letterSpacing: "0.1vh",
               opacity: viewportWidth >= bp.width * (viewportWidth / 100) ? 1 : 0.5,
               fontFamily: LABEL_TYPEFACE,
@@ -520,8 +518,8 @@ export default function Clock251106() {
               color: "#fbbf24",
               fontSize: "clamp(1.2vh, 2vw, 2.6vh)",
               fontWeight: 700,
-              
-              
+
+
               letterSpacing: "0.1vh",
               fontFamily: LABEL_TYPEFACE,
               textShadow: "0 0.2vh 0.4vh rgba(0,0,0,0.5)",
@@ -531,7 +529,7 @@ export default function Clock251106() {
               textOverflow: "ellipsis",
             }}
           >
-            <span>HEIGHT GUIDE </span>
+            <span>Height Guide </span>
             <span style={{ fontFamily: DIGIT_TYPEFACE }}>{Math.round(height * (viewportHeight / 100))}PX</span>
           </div>
         </div>
@@ -545,8 +543,8 @@ export default function Clock251106() {
           bottom: "3.6vh",
           fontSize: "clamp(1.4vh, 2vw, 3vh)",
           color: "#f2f2f3",
-          
-          
+
+
           letterSpacing: "0.12vh",
           fontWeight: 700,
           opacity: 0.5,
@@ -558,8 +556,8 @@ export default function Clock251106() {
           textOverflow: "ellipsis",
         }}
       >
-        <span>{COLUMNS} COLUMN GRID • {GUTTER}VW GUTTER • </span>
-        <span style={{ fontFamily: DIGIT_TYPEFACE }}>{MARGIN_H}VW MARGIN</span>
+        <span>{COLUMNS} Column Grid • {GUTTER}VW Gutter • </span>
+        <span style={{ fontFamily: DIGIT_TYPEFACE }}>{MARGIN_H}VW Margin</span>
       </div>
 
       {/* Baseline grid label */}
@@ -570,8 +568,8 @@ export default function Clock251106() {
           bottom: "3.6vh",
           fontSize: "clamp(1.4vh, 2vw, 3vh)",
           color: "#9333ea",
-          
-          
+
+
           letterSpacing: "0.12vh",
           fontWeight: 700,
           opacity: 0.6,
@@ -583,7 +581,7 @@ export default function Clock251106() {
           textOverflow: "ellipsis",
         }}
       >
-        <span>BASELINE {BASELINE}VH • BOLD EVERY </span>
+        <span>Baseline {BASELINE}VH • Bold Every </span>
         <span style={{ fontFamily: DIGIT_TYPEFACE }}>{BASELINE_BOLD_EVERY}</span>
       </div>
 
@@ -653,18 +651,18 @@ export default function Clock251106() {
           fontSize: "3.2vh",
           fontWeight: 700,
           letterSpacing: "0.1vh",
-          
-          
+
+
           fontFamily: LABEL_TYPEFACE,
         }}
       >
         <span style={{ color: activeBreakpoint.color }}>{activeBreakpoint.name}</span>
-        <span style={{ opacity: 0.5 }}>•</span>
-        <span style={{ opacity: 0.7, fontFamily: DIGIT_TYPEFACE }}>
+        <span style={{ opacity: 0.9 }}>•</span>
+        <span style={{ opacity: 0.9, fontFamily: DIGIT_TYPEFACE }}>
           {Math.round(viewportWidth)} × {Math.round(viewportHeight)}PX
         </span>
-        <span style={{ opacity: 0.5 }}>•</span>
-        <span style={{ opacity: 0.5 }}>SCAFFOLDING SYSTEM ACTIVE</span>
+        <span style={{ opacity: 0.9 }}>•</span>
+        <span style={{ opacity: 0.9 }}>Scaffolding System Active</span>
       </div>
 
       {/* Corner system indicators */}
@@ -673,25 +671,25 @@ export default function Clock251106() {
           position: "absolute",
           right: `${SAFE_INSET_H}vw`,
           top: `${SAFE_INSET_V + 2}vh`,
-          fontSize: "clamp(1.2vh, 2.4vw, 3.2vh)",
-          color: "#999",
+          fontSize: "3vh",
+          color: "#F0EBEBFF",
           textAlign: "right",
           lineHeight: 1.6,
           letterSpacing: "0.08vh",
-      
+
           fontFamily: LABEL_TYPEFACE,
           textShadow: "0 0.2vh 0.4vh rgba(0,0,0,0.5)",
           maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
           overflow: "hidden",
         }}
       >
-        <div style={{ color: "#06b6d4" }}>█ CENTERLINES</div>
-        <div style={{ color: "#10b981" }}>█ SAFE AREA</div>
-        <div style={{ color: "#ef4444" }}>█ DANGER ZONES</div>
-        <div style={{ color: "#9333ea" }}>█ BASELINE GRID</div>
-        <div style={{ color: "#f2f2f3" }}>█ COLUMN GRID</div>
-        <div style={{ color: "#fbbf24" }}>█ HEIGHT GUIDES</div>
-        <div style={{ color: "#ff006e" }}>█ BREAKPOINTS</div>
+        <div style={{ color: "#06b6d4" }}>█ Centerlines</div>
+        <div style={{ color: "#10b981" }}>█ Safe Area</div>
+        <div style={{ color: "#ef4444" }}>█ Danger Zones</div>
+        <div style={{ color: "#9333ea" }}>█ Baseline Grid</div>
+        <div style={{ color: "#f2f2f3" }}>█ Column Grid</div>
+        <div style={{ color: "#fbbf24" }}>█ Height Guides</div>
+        <div style={{ color: "#ff006e" }}>█ Breakpoints</div>
       </div>
     </div>
   );
