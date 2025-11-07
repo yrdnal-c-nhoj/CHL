@@ -91,14 +91,14 @@ export default function BinaryClockWithColumns() {
   const digitBoxStyle = {
     width: "100%",
     flexShrink: 0,
-    height: "5vh",
+    height: "9vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: "5vh",
+    fontSize: "9vh",
     fontFamily: digitalFont,
-    color: "#27F027FF",
-    backgroundColor: "#400C28FF",
+    color: "#F713DCFF",
+    backgroundColor: "#032502FF",
     paddingTop: "1vh",
     paddingBottom: "1vh",
     textShadow: `
