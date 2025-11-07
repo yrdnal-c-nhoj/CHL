@@ -23,6 +23,12 @@ export default function PanicAnalogClock() {
   const timersRef = useRef({ rightDelay: null });
 
   const [timeStr, setTimeStr] = useState("");
+  const [overlayVisible, setOverlayVisible] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setOverlayVisible(false), 500);
+    return () => clearTimeout(t);
+  }, []);
 
   const formatTime = (d) => {
     let h = d.getHours();
@@ -238,6 +244,18 @@ export default function PanicAnalogClock() {
         }}
       />
       <div style={stoneClockStyle}>{timeStr}</div>
+
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundColor: "#000",
+          opacity: overlayVisible ? 1 : 0,
+          transition: "opacity 500ms ease-out",
+          pointerEvents: "none",
+          zIndex: 9999,
+        }}
+      />
     </div>
   );
 }
