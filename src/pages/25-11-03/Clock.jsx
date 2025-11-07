@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import digitalFontUrl from "./bin3.ttf"; 
-import labelFontUrl from "./bin2.ttf";   
 import techFontUrl from "./bin1.otf";    
-import bgImage from "./bg.gif"; 
 
 const digitalFont = "digitalFont";
-const labelFont = "labelFont";
 const techFont = "techFont";
 
 export default function BinaryClockWithColumns() {
@@ -22,7 +19,6 @@ export default function BinaryClockWithColumns() {
   useEffect(() => {
     Promise.all([
       document.fonts.load(`10pt ${digitalFont}`),
-      document.fonts.load(`10pt ${labelFont}`),
       document.fonts.load(`10pt ${techFont}`)
     ]).then(() => setFontsLoaded(true));
   }, []);
@@ -33,11 +29,6 @@ export default function BinaryClockWithColumns() {
     @font-face { 
       font-family: '${digitalFont}'; 
       src: url(${digitalFontUrl}) format('truetype'); 
-      font-display: block;
-    }
-    @font-face { 
-      font-family: '${labelFont}'; 
-      src: url(${labelFontUrl}) format('truetype'); 
       font-display: block;
     }
     @font-face { 
@@ -64,53 +55,37 @@ export default function BinaryClockWithColumns() {
     textSizeAdjust: "100%",
   };
 
-  const backgroundStyle = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    height: "100%",
-    width: "100%",
-    backgroundImage: `url(${bgImage})`,
-    backgroundRepeat: "repeat",
-    backgroundSize: "auto",
-    backgroundPosition: "top left",
-    filter: "hue-rotate(1deg) contrast(0.03) brightness(1.9) saturate(9.5)",
-    zIndex: 0,
-  };
+  // Background removed per request
 
   const columnsWrapperStyle = {
     display: "flex",
-    gap: "0vw",
-    padding: "0vh",
+    flexDirection: "row",
+    gap: 0,
+    padding: 0,
     position: "relative",
     zIndex: 1,
+    width: "100%",
+    height: "100%",
   };
 
   const columnContainerStyle = {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "0.1vh",
+    alignItems: "stretch",
+    justifyContent: "stretch",
+    padding: 0,
+    flex: 1,
+    height: "100%",
   };
 
-  const labelStyle = {
-    fontFamily: labelFont,
-    fontSize: "1vh",
-    width: "100%",
-    color: "#D8F0EAFF",
-    backgroundColor: "#555552FF",
-    textAlign: "center",
-    paddingTop: "1vh",
-    paddingBottom: "1vh",
-  };
 
   const binaryContainerStyle = {
     display: "flex",
     flexDirection: "column-reverse",
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "stretch",
+    alignItems: "stretch",
     flex: 1,
+    width: "100%",
   };
 
   const digitBoxStyle = {
@@ -144,13 +119,12 @@ export default function BinaryClockWithColumns() {
     fontFamily: techFont,
     color: bit === "1" ? "#F6F2F2FF" : "#020202FF",
     backgroundColor: bit === "1" ? "#1100CCFF" : "#EFFA26FF",
-    margin: "0.1vh 0",
+    margin: 0,
     transition: "all 0.3s ease",
   });
 
-  const renderColumn = (label, bits, digit) => (
+  const renderColumn = (_label, bits, digit) => (
     <div style={columnContainerStyle}>
-      <div style={labelStyle}>{label}</div>
       <div style={binaryContainerStyle}>
         {bits.map((bit, idx) => (
           <div key={idx} style={bitBoxStyle(bit)}>{bit}</div>
@@ -174,7 +148,6 @@ export default function BinaryClockWithColumns() {
     <>
       <style>{globalFontFaces}</style>
       <div style={containerStyle}>
-        <div style={backgroundStyle}></div>
         <div style={columnsWrapperStyle}>
           {renderColumn("H", hours, time.getHours())}
           {renderColumn("M", minutes, time.getMinutes())}
