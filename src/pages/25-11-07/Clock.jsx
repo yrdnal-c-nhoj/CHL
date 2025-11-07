@@ -6,7 +6,7 @@ export default function PanicAnalogClock() {
   // === CONFIGURATION ===
   const edgeInset = 324;
   const fadeDuration = 50;
-  const rightImageDelay = 390; // 0.5s delay as requested
+  const rightImageDelay = 590; // 0.5s delay as requested
   const leftOpacity = 0.4;
   const rightOpacity = 0.6;
   const fontName = "CustomClockFont"; // Custom font name for @font-face
