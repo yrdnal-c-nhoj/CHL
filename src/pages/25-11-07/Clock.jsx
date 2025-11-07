@@ -141,10 +141,10 @@ export default function PanicAnalogClock() {
     left: 0,
     right: 0,
     textAlign: "center",
-    zIndex: 100,
+    zIndex: 4,
     fontFamily: fontUrl ? `"${fontName}", Menlo, Monaco, Consolas, monospace` : "Menlo, Monaco, Consolas, monospace",
     fontWeight: 900,
-    fontSize: "14vh",
+    fontSize: "10vh",
     lineHeight: 1,
     letterSpacing: "0.6vh",
     userSelect: "none",
@@ -220,7 +220,7 @@ export default function PanicAnalogClock() {
           opacity: showLeft ? leftOpacity : 0,
           objectPosition: "left center",
           marginLeft: -edgeInset,
-          zIndex: 5,
+          zIndex: 2,
         }}
       />
       {/* Top layer (starts after 0.5s) */}
@@ -234,7 +234,7 @@ export default function PanicAnalogClock() {
           objectPosition: "right center",
           transform: "scaleX(-1)",
           marginRight: -edgeInset,
-          zIndex: 6,
+          zIndex: 1,
         }}
       />
       <div style={stoneClockStyle}>{timeStr}</div>
