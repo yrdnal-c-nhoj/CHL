@@ -59,6 +59,30 @@ export default function PanicAnalogClock() {
 
   // === IMAGE AND FONT FETCH EFFECT ===
   useEffect(() => {
+    let cancelled = false;
+    const startFade = () => {
+      if (cancelled) return;
+      requestAnimationFrame(() => {
+        if (!cancelled) setOverlayVisible(false);
+      });
+    };
+
+    if (fontUrl && typeof document !== 'undefined' && document.fonts && document.fonts.load) {
+      const readyPromise = document.fonts.ready.catch(() => {});
+      // Use px for broader compatibility in Chrome mobile
+      const loadPromise = document.fonts.load(`16px "${fontName}"`).catch(() => {});
+      Promise.race([
+        Promise.all([readyPromise, loadPromise]),
+        new Promise((res) => setTimeout(res, 2000)),
+      ]).then(startFade);
+      return () => { cancelled = true; };
+    } else {
+      const t = setTimeout(startFade, 300);
+      return () => { cancelled = true; clearTimeout(t); };
+    }
+  }, [fontUrl, fontName]);
+
+  useEffect(() => {
     let aborted = false;
 
     (async () => {
@@ -124,11 +148,6 @@ export default function PanicAnalogClock() {
     };
   }, [rightImageDelay]);
 
-
-
-
-
-
   // === STYLES ===
   const baseImgStyle = {
     position: "absolute",
@@ -139,7 +158,6 @@ export default function PanicAnalogClock() {
     pointerEvents: "none",
     transition: `opacity ${fadeDuration}ms ease-out`,
   };
-
 
   const stoneClockStyle = {
     position: "absolute",
@@ -188,8 +206,6 @@ export default function PanicAnalogClock() {
     transform: "perspective(80vh) rotateX(10deg) rotateY(-5deg) scale(1.02)",
     transformOrigin: "center bottom",
   };
-
-
 
   return (
     <div
@@ -247,13 +263,18 @@ export default function PanicAnalogClock() {
 
       <div
         style={{
-          position: "absolute",
-          inset: 0,
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100svh",
           backgroundColor: "#000",
           opacity: overlayVisible ? 1 : 0,
-          transition: "opacity 500ms ease-out",
+          transition: "opacity 600ms ease-out",
           pointerEvents: "none",
           zIndex: 9999,
+          willChange: "opacity",
+          transform: "translateZ(0)",
         }}
       />
     </div>
