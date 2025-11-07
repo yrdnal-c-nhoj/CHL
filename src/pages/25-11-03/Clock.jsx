@@ -98,7 +98,7 @@ export default function BinaryClockWithColumns() {
     fontSize: "9vh",
     fontFamily: digitalFont,
     color: "#F713DCFF",
-    backgroundColor: "#032502FF",
+    backgroundColor: "#024236FF",
     paddingTop: "1vh",
     paddingBottom: "1vh",
     textShadow: `
