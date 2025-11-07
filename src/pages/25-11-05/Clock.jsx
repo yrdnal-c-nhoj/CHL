@@ -31,7 +31,7 @@ function Rulers({ viewportWidth, viewportHeight }) {
   const labelStyle = {
     fontSize: "3.4vh",
     color: "#BBBBC7FF",
-    textShadow: "0 0.2vh 0.4vh rgba(0,0,0,0.8)",
+    textShadow: "0 0.2vh 0.4vh rgba(233,0,0)",
     fontWeight: 700,
     fontFamily: "'Teko', sans-serif",
   };
@@ -47,8 +47,8 @@ function Rulers({ viewportWidth, viewportHeight }) {
           right: 0,
           top: 0,
           height: "3.2vh",
-          background: "rgba(0,0,0,0.4)",
-          borderBottom: "0.1vh solid rgba(255,255,255,0.1)",
+          background: "rgba(250,20,0,0.4)",
+          borderBottom: "0.2vh solid rgba(2,255,2)",
           pointerEvents: "none",
         }}
       >
@@ -61,9 +61,9 @@ function Rulers({ viewportWidth, viewportHeight }) {
                 position: "absolute",
                 left: `${x}vw`,
                 bottom: 0,
-                width: major ? "0.2vw" : "0.1vw",
+                width: major ? "0.3vw" : "0.3vw",
                 height: major ? "2.4vh" : "1.6vh",
-                background: major ? "#8b5cf6" : "#3f3f46",
+                background: major ? "#8b5cf6" : "#A9EF06FF",
               }}
             />
           );
@@ -71,7 +71,7 @@ function Rulers({ viewportWidth, viewportHeight }) {
         {Array.from({ length: COUNT }, (_, i) => i * TICK_MAJOR).map((x) => (
           <div
             key={`label-x-${x}`}
-            style={{ position: "absolute", left: `${x + 0.6}vw`, top: "0.4vh", ...labelStyle }}
+            style={{ position: "absolute", left: `${x + 0.6}vw`, top: "4vh", ...labelStyle }}
           >
             {Math.round(x * (viewportWidth / 100))}
           </div>
@@ -87,8 +87,8 @@ function Rulers({ viewportWidth, viewportHeight }) {
           bottom: 0,
           left: 0,
           width: "2.4vw",
-          background: "#000",
-          borderRight: "0.1vh solid rgba(255,255,255,0.1)",
+          background: "#D20B0BFF",
+          borderRight: "0.3vh solid rgba(255,255,2)",
           pointerEvents: "none",
         }}
       >
@@ -101,8 +101,8 @@ function Rulers({ viewportWidth, viewportHeight }) {
                 position: "absolute",
                 top: `${y}vh`,
                 right: 0,
-                width: major ? "2.8vw" : "1.6vw",
-                height: major ? "0.2vh" : "0.1vh",
+                width: major ? "3.8vw" : "3.6vw",
+                height: major ? "0.3vh" : "0.2vh",
                 background: major ? "#8b5cf6" : "#3f3f46",
               }}
             />
@@ -192,6 +192,10 @@ export default function Clock251106() {
         position: "relative",
         overflow: "hidden",
         fontFamily: LABEL_TYPEFACE,
+        border: "3px solid #fff",
+       
+        outlineOffset: 0,
+        boxSizing: "border-box",
       }}
     >
       {/* 2. Simplified Inline @font-face declarations using imported URLs */}
@@ -230,7 +234,7 @@ export default function Clock251106() {
           pointerEvents: "none",
           backgroundImage: makeColumnsBackground(COLUMNS, GUTTER, MARGIN_H),
           backgroundSize: "100% 100%",
-          opacity: 0.15, // Increased opacity for more prominence
+          opacity: 0.35, // Increased opacity for more prominence
         }}
       />
 
@@ -248,7 +252,7 @@ export default function Clock251106() {
                 width: "100%",
                 height: "0.1vh",
                 // Brighter baseline colors and added box-shadow
-                background: thick ? "rgba(180, 80, 255, 0.5)" : "rgba(180, 80, 255, 0.25)",
+                background: thick ? "rgba(180, 80, 255, 0.8)" : "rgba(180, 80, 255, 0.55)",
                 boxShadow: thick ? "0 0 0.4vh rgba(180, 80, 255, 0.5)" : "none",
               }}
             />
@@ -263,7 +267,7 @@ export default function Clock251106() {
             position: "absolute",
             left: "50%",
             top: 0,
-            width: "0.2vw",
+            width: "0.5vw",
             height: "100%",
             background: "rgba(6, 182, 212, 0.7)", // Brighter background
             boxShadow: "0 0 1.2vh rgba(6, 182, 212, 0.7)", // Increased and brighter shadow
@@ -274,7 +278,7 @@ export default function Clock251106() {
             position: "absolute",
             top: "50%",
             left: 0,
-            height: "0.2vh",
+            height: "0.5vh",
             width: "100%",
             background: "rgba(6, 182, 212, 0.9)", // Brighter background
             boxShadow: "0 0 1.2vh rgba(6, 182, 212, 0.7)", // Increased and brighter shadow
@@ -285,7 +289,7 @@ export default function Clock251106() {
           style={{
             position: "absolute",
             left: "50%",
-            top: "1.2vh",
+            top: "25.2vh",
             transform: "translateX(-50%)",
             fontSize: "3.6vh",
             color: "#06b6d4",
@@ -304,7 +308,7 @@ export default function Clock251106() {
             top: "50%",
             right: `${SAFE_INSET_H}vw`,
             transform: "translateY(-50%)",
-            fontSize: "clamp(1.4vh, 2.1vw, 3vh)",
+            fontSize: "3.6vh",
             color: "#06b6d4",
             letterSpacing: "0.12vh",
             fontWeight: 700,
@@ -330,9 +334,9 @@ export default function Clock251106() {
             right: `${SAFE_INSET_H}vw`,
             top: `${SAFE_INSET_V}vh`,
             bottom: `${SAFE_INSET_V}vh`,
-            border: "0.2vh dashed rgba(16, 185, 129, 0.7)",
-            background: "rgba(16, 185, 129, 0.03)",
-            boxShadow: "inset 0 0 2vh rgba(16, 185, 129, 0.15)",
+            border: "0.2vh dashed rgba(16, 185, 129)",
+            // background: "rgba(16, 185, 129, 0.03)",
+            boxShadow: "inset 0 0 2vh rgba(16, 185, 129, 0.55)",
           }}
         />
         {/* Safe area corner labels */}
@@ -347,7 +351,7 @@ export default function Clock251106() {
             fontWeight: 700,
             transform: "translate(0.8vh, 0.8vh)",
             fontFamily: LABEL_TYPEFACE,
-            textShadow: "0 0.2vh 0.4vh rgba(0,0,0,0.5)",
+            textShadow: "0 0.2vh 0.4vh rgba(220,0,0)",
             maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
             whiteSpace: "nowrap",
             overflow: "hidden",
@@ -368,8 +372,8 @@ export default function Clock251106() {
             right: 0,
             top: 0,
             height: `${SAFE_INSET_V}vh`,
-            background: "rgba(239, 68, 68, 0.05)",
-            borderBottom: "0.1vh solid rgba(239, 68, 68, 0.3)",
+            // background: "rgba(239, 68, 68, 0.05)",
+            borderBottom: "0.1vh solid rgba(239, 68, 68)",
           }}
         >
           <div
@@ -506,7 +510,7 @@ export default function Clock251106() {
             left: 0,
             width: "100%",
             height: "0.1vh",
-            background: "rgba(251, 191, 36, 0.4)",
+            background: "rgba(251, 191, 36, 0.9)",
             pointerEvents: "none",
           }}
         >
@@ -515,8 +519,8 @@ export default function Clock251106() {
               position: "absolute",
               right: `${SAFE_INSET_H}vw`,
               top: "-1.1vh",
-              color: "#fbbf24",
-              fontSize: "clamp(1.2vh, 2vw, 2.6vh)",
+              color: "#F50DEDFF",
+              fontSize: "clamp(2.2vh, 3vw, 2.9vh)",
               fontWeight: 700,
 
 
@@ -541,13 +545,11 @@ export default function Clock251106() {
           position: "absolute",
           left: `${MARGIN_H}vw`,
           bottom: "3.6vh",
-          fontSize: "clamp(1.4vh, 2vw, 3vh)",
-          color: "#f2f2f3",
-
-
+          fontSize: "clamp(1.4vh, 4vw, 3vh)",
+          color: "#1EFEE4FF",
           letterSpacing: "0.12vh",
           fontWeight: 700,
-          opacity: 0.5,
+          opacity: 0.7,
           fontFamily: LABEL_TYPEFACE,
           textShadow: "0 0.2vh 0.4vh rgba(0,0,0,0.5)",
           maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
@@ -566,13 +568,11 @@ export default function Clock251106() {
           position: "absolute",
           right: `${SAFE_INSET_H}vw`,
           bottom: "3.6vh",
-          fontSize: "clamp(1.4vh, 2vw, 3vh)",
-          color: "#9333ea",
-
-
+          fontSize: "clamp(1.4vh, 5vw, 3vh)",
+          color: "#A957F5FF",
           letterSpacing: "0.12vh",
           fontWeight: 700,
-          opacity: 0.6,
+          opacity: 0.8,
           fontFamily: LABEL_TYPEFACE,
           textShadow: "0 0.2vh 0.4vh rgba(0,0,0,0.5)",
           maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
@@ -607,7 +607,7 @@ export default function Clock251106() {
             fontSize: "10vw",
             lineHeight: 1.1,
             // letterSpacing: "0.05vh",
-            textShadow: "0 0.6vh 2vh rgba(0,0,0,0.9)",
+            textShadow: "3px 1px  rgba(220,0,0)",
             // fontWeight: 400,
             color: "#D9D9EEFF",
             textAlign: "center",
@@ -639,11 +639,11 @@ export default function Clock251106() {
       <div
         style={{
           position: "absolute",
-          top: 0,
+          top: 40,
           left: 0,
           right: 0,
           height: "3.2vh",
-          background: "linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 100%)",
+          background: "linear-gradient(180deg, rgba(220,0,220) 0%, transparent 100%)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
