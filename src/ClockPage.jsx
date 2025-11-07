@@ -22,6 +22,17 @@ export default function ClockPage() {
   const [overlayVisible, setOverlayVisible] = useState(true);
   const [headerOpacity, setHeaderOpacity] = useState(1); // State for header opacity
 
+  // Hide overlay if an error occurs so the error is visible and page isn't stuck black
+  useEffect(() => {
+    if (pageError) setOverlayVisible(false);
+  }, [pageError]);
+
+  // Safety: ensure overlay clears after a few seconds even if font/module load stalls
+  useEffect(() => {
+    const timeout = setTimeout(() => setOverlayVisible(false), 3000);
+    return () => clearTimeout(timeout);
+  }, [date]);
+
   // Prevent scrolling
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -95,6 +106,7 @@ export default function ClockPage() {
         setTimeout(() => setOverlayVisible(false), 50);
       } catch (err) {
         setPageError(`Failed to load clock: ${err.message}`);
+        setOverlayVisible(false);
       }
     };
 
