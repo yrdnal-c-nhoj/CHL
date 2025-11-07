@@ -74,7 +74,7 @@ const Clock = () => {
   return (
     <div
       style={{
-        height: "100vh",
+        height: "100dvh",
         width: "100vw",
         backgroundColor: "#D7F5F3FF",
         color: "#0A110CFF",
