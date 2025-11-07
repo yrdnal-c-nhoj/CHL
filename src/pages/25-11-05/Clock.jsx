@@ -199,7 +199,7 @@ export default function Clock251106() {
     <div
       style={{
         width: "100vw",
-        height: "100vh",
+        height: "100dvh",
         background: "#0a0a0b",
         color: "#1D1DCEFF",
         position: "relative",
