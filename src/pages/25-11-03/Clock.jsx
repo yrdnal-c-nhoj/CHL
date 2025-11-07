@@ -53,9 +53,15 @@ export default function BinaryClockWithColumns() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "100dvh",
+    height: "100svh",
     width: "100vw",
     overflow: "hidden",
+    paddingTop: "env(safe-area-inset-top)",
+    paddingBottom: "env(safe-area-inset-bottom)",
+    paddingLeft: "env(safe-area-inset-left)",
+    paddingRight: "env(safe-area-inset-right)",
+    WebkitTextSizeAdjust: "100%",
+    textSizeAdjust: "100%",
   };
 
   const backgroundStyle = {
