@@ -21,6 +21,12 @@ export default function PanicAnalogClock() {
   // Refs for cleanup of object URLs and timers
   const urlsRef = useRef({ left: null, right: null, font: null });
   const timersRef = useRef({ rightDelay: null });
+  // Refs for layout measurements
+  const containerRef = useRef(null);
+  const leftImgRef = useRef(null);
+  const rightImgRef = useRef(null);
+  // Mask rectangles for non-overlap regions
+  const [nonOverlapMasks, setNonOverlapMasks] = useState({ left: null, right: null });
 
   const [timeStr, setTimeStr] = useState("");
   const [overlayVisible, setOverlayVisible] = useState(true);
@@ -135,6 +141,37 @@ export default function PanicAnalogClock() {
     };
   }, [rightImageDelay]);
 
+  // Compute non-overlap masks whenever layout may change
+  useEffect(() => {
+    const compute = () => {
+      const container = containerRef.current;
+      const li = leftImgRef.current;
+      const ri = rightImgRef.current;
+      if (!container || !li || !ri) {
+        setNonOverlapMasks({ left: null, right: null });
+        return;
+      }
+      const c = container.getBoundingClientRect();
+      const l = li.getBoundingClientRect();
+      const r = ri.getBoundingClientRect();
+      // Overlap segment along X within container bounds
+      const overlapLeft = Math.max(l.left, r.left, c.left);
+      const overlapRight = Math.min(l.right, r.right, c.right);
+      if (overlapRight > overlapLeft) {
+        const leftMask = { left: 0, width: Math.max(0, overlapLeft - c.left) };
+        const rightMask = { left: Math.max(0, overlapRight - c.left), width: Math.max(0, c.right - overlapRight) };
+        setNonOverlapMasks({ left: leftMask, right: rightMask });
+      } else {
+        // No overlap -> cover entire container (single-image areas only)
+        setNonOverlapMasks({ left: { left: 0, width: c.width }, right: null });
+      }
+    };
+    compute();
+    const onResize = () => compute();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [leftLoaded, rightLoaded, showLeft, showRight]);
+
   // === STYLES ===
   const baseImgStyle = {
     position: "absolute",
@@ -203,6 +240,7 @@ export default function PanicAnalogClock() {
 
   return (
     <div
+      ref={containerRef}
       style={{
         width: "100vw",
         height: "100dvh",
@@ -228,6 +266,7 @@ export default function PanicAnalogClock() {
 
       {/* Bottom layer (starts immediately) */}
       <img
+        ref={leftImgRef}
         src={leftSrc || undefined}
         alt="left background"
         onLoad={() => setLeftLoaded(true)}
@@ -242,6 +281,7 @@ export default function PanicAnalogClock() {
       />
       {/* Top layer (starts after 0.5s) */}
       <img
+        ref={rightImgRef}
         src={rightSrc || undefined}
         alt="right background"
         onLoad={() => setRightLoaded(true)}
@@ -255,6 +295,36 @@ export default function PanicAnalogClock() {
           zIndex: 1,
         }}
       />
+      {/* Black overlays covering non-overlap (exactly-one) regions */}
+      {nonOverlapMasks.left && nonOverlapMasks.left.width > 0 && (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: nonOverlapMasks.left.left,
+            width: nonOverlapMasks.left.width,
+            height: "100%",
+            backgroundColor: "#000",
+            zIndex: 3,
+            pointerEvents: "none",
+          }}
+        />
+      )}
+      {nonOverlapMasks.right && nonOverlapMasks.right.width > 0 && (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: nonOverlapMasks.right.left,
+            width: nonOverlapMasks.right.width,
+            height: "100%",
+            backgroundColor: "#000",
+            zIndex: 3,
+            pointerEvents: "none",
+          }}
+        />
+      )}
+
       <div style={stoneClockStyle}>
         {Array.from(timeStr).map((ch, idx) => {
           const isAlnum = /[0-9A-Za-z]/.test(ch);
