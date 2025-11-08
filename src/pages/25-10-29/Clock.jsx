@@ -90,6 +90,7 @@ export default function MonarchClock() {
     gap: "1dvh",
     padding: "1.5dvh 3dvh",
     borderRadius: "0.8dvh",
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
     animation: "flicker 3s infinite, fadeIn 1.5s ease-out",
   };
 
