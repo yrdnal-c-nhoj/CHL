@@ -170,31 +170,34 @@ export default function PanicAnalogClock() {
   const rockDigitStyle = {
     display: "inline-block",
     padding: "0 0.15em",
-    // Layered rock texture (granite-like)
+    // Layered rock texture (warm brown stone)
     backgroundImage: [
-      "linear-gradient(135deg, #bbbfc3 0%, #8e9499 100%)",
-      "radial-gradient(circle at 25% 30%, rgba(255,255,255,0.20) 0%, transparent 35%)",
-      "radial-gradient(circle at 70% 60%, rgba(0,0,0,0.40) 0%, transparent 45%)",
-      "radial-gradient(circle at 40% 80%, rgba(120,120,120,0.25) 0%, transparent 30%)",
-      "linear-gradient(to top, rgba(255,255,255,0.10), rgba(0,0,0,0) 60%)",
+      // Base strata: warm browns
+      "linear-gradient(135deg, #5b3a1d 0%, #8a5b33 35%, #c59a6a 70%, #e0c39a 100%)",
+      // Light mineral flecks
+      "radial-gradient(circle at 22% 28%, rgba(255,235,200,0.22) 0%, transparent 30%)",
+      "radial-gradient(circle at 68% 62%, rgba(90,60,30,0.35) 0%, transparent 40%)",
+      // Dark inclusions
+      "radial-gradient(circle at 40% 80%, rgba(40,25,15,0.28) 0%, transparent 28%)",
+      // Subtle top highlight
+      "linear-gradient(to top, rgba(255,240,210,0.14), rgba(0,0,0,0) 60%)",
     ].join(", "),
     WebkitBackgroundClip: "text",
     backgroundClip: "text",
     WebkitTextFillColor: "transparent",
-    // Stronger bevel/emboss
+    // Carved/beveled edges tuned for brown stone
     textShadow: [
-      "0.9vh 0.9vh 0 rgba(0,0,0,0.9)",
-      "0.28vh 0.28vh 0 rgba(255,255,255,0.6)",
-      "-0.2vh -0.2vh 0 rgba(0,0,0,0.65)",
-      "0 1.9vh 2.8vh rgba(0,0,0,0.9)",
+      "0.7vh 0.9vh 0 rgba(0,0,0,0.9)",          // deep drop
+      "0.28vh 0.28vh 0 rgba(255,230,200,0.55)", // warm highlight edge
+      "-0.2vh -0.2vh 0 rgba(70,45,25,0.6)",     // inner bevel
+      "0 1.6vh 2.8vh rgba(0,0,0,0.9)",          // ambient thickness
     ].join(", "),
-    filter: "saturate(0.85) contrast(1.1)",
+    filter: "saturate(0.95) contrast(1.12)",
   };
 
   const rockPunctStyle = {
     display: "inline-block",
     opacity: 0.2,
-    padding: "0 0.05em",
   };
 
   return (
