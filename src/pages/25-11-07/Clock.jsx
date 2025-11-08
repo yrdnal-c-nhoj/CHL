@@ -176,9 +176,10 @@ export default function PanicAnalogClock() {
   const baseImgStyle = {
     position: "absolute",
     top: 0,
+    left: "50%",
     height: "100%",
-    width: "100%",
-    objectFit: "contain",
+    width: "auto",
+    transform: "translateX(-50%)",
     pointerEvents: "none",
     transition: `opacity ${fadeDuration}ms ease-out`,
   };
@@ -272,9 +273,7 @@ export default function PanicAnalogClock() {
         onLoad={() => setLeftLoaded(true)}
         style={{
           ...baseImgStyle,
-          left: 0,
           opacity: showLeft ? leftOpacity : 0,
-          objectPosition: "center center",
           zIndex: 2,
         }}
       />
@@ -286,30 +285,10 @@ export default function PanicAnalogClock() {
         onLoad={() => setRightLoaded(true)}
         style={{
           ...baseImgStyle,
-          right: 0,
           opacity: showRight ? rightOpacity : 0,
-            width: nonOverlapMasks.left.width,
-            height: "100%",
-            backgroundColor: "#000",
-            zIndex: 3,
-            pointerEvents: "none",
-          }}
+          zIndex: 3,
+        }}
         />
-      )}
-      {nonOverlapMasks.right && nonOverlapMasks.right.width > 0 && (
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: nonOverlapMasks.right.left,
-            width: nonOverlapMasks.right.width,
-            height: "100%",
-            backgroundColor: "#000",
-            zIndex: 3,
-            pointerEvents: "none",
-          }}
-        />
-      )}
 
       <div style={stoneClockStyle}>
         {Array.from(timeStr).map((ch, idx) => {
