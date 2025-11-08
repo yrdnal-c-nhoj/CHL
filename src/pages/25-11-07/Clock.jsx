@@ -7,8 +7,8 @@ export default function PanicAnalogClock() {
   const edgeInset = 324;
   const fadeDuration = 50;
   const rightImageDelay = 590; // 0.5s delay as requested
-  const leftOpacity = 0.4;
-  const rightOpacity = 0.6;
+  const leftOpacity = 0.5;
+  const rightOpacity = 1.0;
   const fontName = "CustomClockFont"; // Custom font name for @font-face
 
   // === STATE ===
@@ -35,7 +35,7 @@ export default function PanicAnalogClock() {
     h = h % 12;
     if (h === 0) h = 12;
     const mm = String(m).padStart(2, "0");
-    return `${h}:${mm} ${ampm}`;
+    return `${h}${mm} ${ampm}`;
   };
 
   // === TIME UPDATE EFFECT ===
@@ -155,43 +155,46 @@ export default function PanicAnalogClock() {
     zIndex: 4,
     fontFamily: fontUrl ? `"${fontName}", Menlo, Monaco, Consolas, monospace` : "Menlo, Monaco, Consolas, monospace",
     fontWeight: 900,
-    fontSize: "10vh",
+    fontSize: "14vh",
     lineHeight: 1,
     letterSpacing: "0.6vh",
+    opacity: 0.9,
     userSelect: "none",
-    // REFINED TEXT SHADOW for deeper carving and clearer 3D-ness
-    textShadow: [
-      // Deep, offset shadow for 'carved out' depth
-      "0.3vh 0.3vh 0.4vh rgba(0, 0, 0, 0.9)", 
-      "0.5vh 0.5vh 0.8vh rgba(0, 0, 0, 0.8)",
-      // Very slight, lighter border for an etched edge
-      "0.1vh 0.1vh 0 rgba(255, 255, 255, 0.2)",
-      // Inset shadows - simulates light hitting the carved surface edges
-      "inset 0 0 1vh rgba(0, 0, 0, 0.5)", // Inner dark shadow
-      "inset -0.2vh -0.2vh 0.3vh rgba(255, 255, 255, 0.2)", // Inner highlight
-    ].join(", "),
-    
-    // REFINED ROCKY TEXTURE with more pronounced speckles and color variation
+    // Container-level stronger drop shadow for lift
+    textShadow: "0.6vh 1vh 2vh rgba(0,0,0,0.7)",
+    transform: "perspective(80vh) rotateX(10deg) rotateY(-5deg) scale(1.02)",
+    transformOrigin: "center bottom",
+  };
+
+  // Per-digit rock styling
+  const rockDigitStyle = {
+    display: "inline-block",
+    padding: "0 0.15em",
+    // Layered rock texture (granite-like)
     backgroundImage: [
-      // Base: Darker, cooler grey for stone
-      "linear-gradient(135deg, #C1AA85FF 0%, #EBD258FF 100%)", 
-      
-      // Speckled texture (noise) - slightly more random and colored
-      "radial-gradient(circle at 50% 50%, rgba(255, 255, 255) 1%, transparent 2%)",
-      "radial-gradient(circle at 20% 80%, rgba(0, 0, 0, 0.8) 1%, transparent 3%)",
-      "radial-gradient(circle at 75% 30%, rgba(150, 100, 70, 0.1) 1%, transparent 2.5%)", // Hint of brown/earth tone
-      
-      // Lighting/Highlighting for the top surface (subtle, non-text-filled)
-      "linear-gradient(to top, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.0) 50%)",
+      "linear-gradient(135deg, #bbbfc3 0%, #8e9499 100%)",
+      "radial-gradient(circle at 25% 30%, rgba(255,255,255,0.20) 0%, transparent 35%)",
+      "radial-gradient(circle at 70% 60%, rgba(0,0,0,0.40) 0%, transparent 45%)",
+      "radial-gradient(circle at 40% 80%, rgba(120,120,120,0.25) 0%, transparent 30%)",
+      "linear-gradient(to top, rgba(255,255,255,0.10), rgba(0,0,0,0) 60%)",
     ].join(", "),
-    
     WebkitBackgroundClip: "text",
     backgroundClip: "text",
     WebkitTextFillColor: "transparent",
-    
-    // 3D transform for better perspective on a stone slab
-    transform: "perspective(80vh) rotateX(10deg) rotateY(-5deg) scale(1.02)",
-    transformOrigin: "center bottom",
+    // Stronger bevel/emboss
+    textShadow: [
+      "0.9vh 0.9vh 0 rgba(0,0,0,0.9)",
+      "0.28vh 0.28vh 0 rgba(255,255,255,0.6)",
+      "-0.2vh -0.2vh 0 rgba(0,0,0,0.65)",
+      "0 1.9vh 2.8vh rgba(0,0,0,0.9)",
+    ].join(", "),
+    filter: "saturate(0.85) contrast(1.1)",
+  };
+
+  const rockPunctStyle = {
+    display: "inline-block",
+    opacity: 0.2,
+    padding: "0 0.05em",
   };
 
   return (
@@ -248,7 +251,28 @@ export default function PanicAnalogClock() {
           zIndex: 1,
         }}
       />
-      <div style={stoneClockStyle}>{timeStr}</div>
+      <div style={stoneClockStyle}>
+        {Array.from(timeStr).map((ch, idx) => {
+          const isAlnum = /[0-9A-Za-z]/.test(ch);
+          if (!isAlnum) {
+            return (
+              <span key={idx} style={rockPunctStyle}>{ch}</span>
+            );
+          }
+          // Slight per-digit variation for a more natural rock look
+          const rot = (Math.random() * 4 - 2).toFixed(2); // -2deg to 2deg
+          const lift = (Math.random() * 0.2 - 0.1).toFixed(2); // -0.1em to 0.1em
+          const bright = (0.95 + Math.random() * 0.1).toFixed(2); // 0.95..1.05
+          const perDigitStyle = {
+            ...rockDigitStyle,
+            transform: `translateY(${lift}em) rotate(${rot}deg)`,
+            filter: `${rockDigitStyle.filter} brightness(${bright})`,
+          };
+          return (
+            <span key={idx} style={perDigitStyle}>{ch}</span>
+          );
+        })}
+      </div>
 
       <div
         style={{
