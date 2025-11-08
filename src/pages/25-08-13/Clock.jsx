@@ -1,106 +1,155 @@
-import { useState, useEffect } from 'react';
-import font1 from './code.ttf';
-import font2 from './bar.ttf';
-import bgImage2 from './bgpo.webp';   // Bottom background
-import bgImage from './wh.webp'; // Top background
+import { useEffect, useRef, useState } from "react";
+import bgImage from "./bg.webp";
+import secondBgImage from "./loop.webp";
+import thirdBgImage from "./tiny.gif"; // new background image
 
-export default function DigitalClock() {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 10);
-    return () => clearInterval(interval);
-  }, []);
-
-  const formatTimeDigits = (date) => {
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-    const milliseconds = date.getMilliseconds();
-
-    hours = hours % 12 || 12;
-
-    const h = hours.toString().padStart(2, '0');
-    const m = minutes.toString().padStart(2, '0');
-    const s = seconds.toString().padStart(2, '0');
-    const ms = Math.floor(milliseconds / 10).toString().padStart(2, '0');
-
-    return [...h, ...m, ...s, ...ms];
-  };
-
-  const containerStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100dvh',
-    width: '100%',
-    backgroundImage: `url(${bgImage2}), url(${bgImage})`,
-    backgroundSize: '100% 100%',
-    backgroundPosition: 'center, center',
-    backgroundRepeat: 'no-repeat, no-repeat',
-  };
-
-  const digitsContainer = {
-    display: 'flex',
-    transform: 'translateX(-10%) translateY(90%)', // Move right 30%, down 20%
-  };
-
-  const digitStack = {
-    display: 'flex',
-    flexDirection: 'column',
-    lineHeight: 1,
-    margin: 0,
-    padding: 0,
-  };
-
-  const digitStyle = (fontName, size) => ({
-    fontSize: size,
-    fontWeight: 'bold',
-    color: '#275254FF', // dark brown ink
-    textAlign: 'center',
-    fontFamily: fontName,
-    margin: 0,
-    padding: 0,
-    lineHeight: 1,
-    letterSpacing: '0.05em', // slightly inconsistent spacing
-    textShadow: `
-      1px 0 #4a3a28, 
-      -1px 0 #4a3a28, 
-      0 1px #4a3a28, 
-      0 -1px #4a3a28
-    `, // "bleed" edges
-    backgroundImage: 'url("./cardboard_texture.jpg")', // add local corrugated cardboard texture
-    backgroundSize: 'cover',
-    WebkitBackgroundClip: 'text',
-    filter: 'contrast(85%) brightness(95%)', // slightly faded print
+export default function AnalogClock() {
+  const canvasRef = useRef(null);
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
   });
 
-  const digits = formatTimeDigits(time);
+  // Resize listener
+  useEffect(() => {
+    const handleResize = () =>
+      setDimensions({ width: window.innerWidth, height: window.innerHeight });
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Draw clock
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
+    const drawClock = () => {
+      const { width, height } = dimensions;
+      canvas.width = width;
+      canvas.height = height;
+
+      const radius = Math.min(width, height) * 0.02;
+      const cx = width / 2;
+      const cy = height / 2;
+
+      ctx.clearRect(0, 0, width, height);
+
+      ctx.save();
+      ctx.translate(cx, cy);
+
+      const now = new Date();
+      const sec = now.getSeconds();
+      const min = now.getMinutes();
+      const hr = now.getHours() % 12;
+
+      // Clock face
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+      ctx.fillStyle = "#F4EEEEFF"; // white
+      ctx.fill();
+      ctx.closePath();
+
+      // Numbers
+      ctx.font = `${radius * 0.25}px Arial`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "#000000"; // black
+      for (let num = 1; num <= 12; num++) {
+        const ang = (num * Math.PI) / 6;
+        const x = radius * 0.8 * Math.sin(ang);
+        const y = -radius * 0.8 * Math.cos(ang);
+        ctx.fillText(num.toString(), x, y);
+      }
+
+      // Hands
+      const drawHand = (angle, length, width, color) => {
+        ctx.beginPath();
+        ctx.lineWidth = width;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = color;
+        ctx.moveTo(0, 0);
+        ctx.rotate(angle);
+        ctx.lineTo(0, -length);
+        ctx.stroke();
+        ctx.rotate(-angle);
+      };
+
+      drawHand((Math.PI / 6) * hr + (Math.PI / 360) * min, radius * 0.5, radius * 0.06, "#000000"); // black
+      drawHand((Math.PI / 30) * min + (Math.PI / 1800) * sec, radius * 0.75, radius * 0.04, "#000000"); // black
+      drawHand((Math.PI / 30) * sec, radius * 0.85, radius * 0.02, "#FF0000"); // red
+
+      ctx.restore();
+    };
+
+    drawClock();
+    const interval = setInterval(drawClock, 1000);
+    return () => clearInterval(interval);
+  }, [dimensions]);
 
   return (
-    <div style={containerStyle}>
-      <style>
-        {`
-          @font-face {
-            font-family: 'CodeFont';
-            src: url(${font1}) format('truetype');
-          }
-          @font-face {
-            font-family: 'BarFont';
-            src: url(${font2}) format('truetype');
-          }
-        `}
-      </style>
+    <div
+      style={{
+        width: "100vw",
+        height: "100dvh",
+        overflow: "hidden",
+        position: "relative",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        fontFamily: "Arial",
+        backgroundColor: "#DE0E0EFF", // black
+      }}
+    >
+      {/* Background layer 1 */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: 0.7,
+          zIndex: 1,
+        }}
+      />
 
-      <div style={digitsContainer}>
-        {digits.map((digit, index) => (
-          <div key={index} style={digitStack}>
-            <div style={digitStyle('BarFont', '0.5rem')}>{digit}</div>
-            <div style={digitStyle('CodeFont', '4rem')}>{digit}</div>
-          </div>
-        ))}
-      </div>
+      {/* Background layer 2 */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `url(${secondBgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          mixBlendMode: "overlay",
+          opacity: 0.4,
+          zIndex: 4,
+        }}
+      />
+
+      {/* Background layer 3 */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `url(${thirdBgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          mixBlendMode: "overlay",
+          // opacity: 0.9,
+          zIndex: 3,
+        }}
+      />
+
+      {/* Clock canvas */}
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: "relative",
+          zIndex: 2, // always on top
+          opacity: 1.0,
+        }}
+      />
     </div>
   );
 }
