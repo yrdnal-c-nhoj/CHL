@@ -4,36 +4,24 @@ import todayFont from "./twobirds.ttf"; // Font import for TTF file
 
 export default function PanicAnalogClock() {
   // === CONFIGURATION ===
-  const edgeInset = 324;
-  const fadeDuration = 50;
-  const rightImageDelay = 590; // 0.5s delay as requested
-  const leftOpacity = 0.5;
-  const rightOpacity = 1.0;
+  const rightImageDelay = 500; // 0.5s delay
+  const bottomImageOpacity = 1.0;
+  const topImageOpacity = 0.5;
   const fontName = "CustomClockFont"; // Custom font name for @font-face
 
   // === STATE ===
-  const [showLeft, setShowLeft] = useState(false);
-  const [showRight, setShowRight] = useState(false);
   const [leftSrc, setLeftSrc] = useState(null);
   const [rightSrc, setRightSrc] = useState(null);
   const [fontUrl, setFontUrl] = useState(null);
+  const [showImages, setShowImages] = useState({ left: false, right: false });
+  const [startOverlayFade, setStartOverlayFade] = useState(false); // State for overlay fade
 
   // Refs for cleanup of object URLs and timers
   const urlsRef = useRef({ left: null, right: null, font: null });
-  const timersRef = useRef({ rightDelay: null });
-  // Refs for layout measurements
-  const containerRef = useRef(null);
-  const leftImgRef = useRef(null);
-  const rightImgRef = useRef(null);
-  // Mask rectangles for non-overlap regions
-  const [nonOverlapMasks, setNonOverlapMasks] = useState({ left: null, right: null });
+  const timerRef = useRef(null);
 
+  // === CLOCK LOGIC (UNTOUCHED) ===
   const [timeStr, setTimeStr] = useState("");
-  const [overlayVisible, setOverlayVisible] = useState(true);
-  const [leftLoaded, setLeftLoaded] = useState(false);
-  const [rightLoaded, setRightLoaded] = useState(false);
-
-
   const formatTime = (d) => {
     let h = d.getHours();
     const m = d.getMinutes();
@@ -44,7 +32,6 @@ export default function PanicAnalogClock() {
     return `${h}${mm} ${ampm}`;
   };
 
-  // === TIME UPDATE EFFECT ===
   useEffect(() => {
     const update = () => setTimeStr(formatTime(new Date()));
     update();
@@ -62,25 +49,11 @@ export default function PanicAnalogClock() {
   }, []);
 
   // === IMAGE AND FONT FETCH EFFECT ===
-  // Start fade 100ms after the second image has loaded
-  useEffect(() => {
-    if (!rightLoaded) return;
-    let cancelled = false;
-    const t = setTimeout(() => {
-      if (cancelled) return;
-      requestAnimationFrame(() => {
-        if (!cancelled) setOverlayVisible(false);
-      });
-    }, 100);
-    return () => { cancelled = true; clearTimeout(t); };
-  }, [rightLoaded]);
-
   useEffect(() => {
     let aborted = false;
-
     (async () => {
       try {
-        // Fetch the animated image
+        // Fetch the image
         const imgRes = await fetch(bgImage, { cache: "no-store" });
         const imgBuf = await imgRes.arrayBuffer();
         const imgBlobType = imgRes.headers.get("content-type") || "image/gif";
@@ -94,94 +67,61 @@ export default function PanicAnalogClock() {
         const fontBuf = await fontRes.arrayBuffer();
         const fontBlobType = fontRes.headers.get("content-type") || "font/ttf";
         const fontBlob = new Blob([fontBuf], { type: fontBlobType });
-        const fontUrl = URL.createObjectURL(fontBlob);
+        const urlFont = URL.createObjectURL(fontBlob);
 
         if (aborted) {
           URL.revokeObjectURL(urlLeft);
           URL.revokeObjectURL(urlRight);
-          URL.revokeObjectURL(fontUrl);
+          URL.revokeObjectURL(urlFont);
           return;
         }
 
-        urlsRef.current.left = urlLeft;
-        urlsRef.current.right = urlRight;
-        urlsRef.current.font = fontUrl;
-
-        // Set image sources
+        urlsRef.current = { left: urlLeft, right: urlRight, font: urlFont };
         setLeftSrc(urlLeft);
-        setShowLeft(true);
-        timersRef.current.rightDelay = setTimeout(() => {
-          setRightSrc(urlRight);
-          setShowRight(true);
-        }, rightImageDelay);
+        setRightSrc(urlRight);
+        setFontUrl(urlFont); // Set font URL
 
-        // Set font URL
-        setFontUrl(fontUrl);
+        // Show left image immediately
+        setShowImages({ left: true, right: false });
+
+        // Show right image after delay
+        timerRef.current = setTimeout(() => {
+          if (!aborted) setShowImages((prev) => ({ ...prev, right: true }));
+        }, rightImageDelay);
       } catch (e) {
+        if (aborted) return;
+        console.error("Fetch failed, using direct URLs:", e);
         // Fallback for images
         setLeftSrc(`${bgImage}?l=${Date.now()}`);
-        timersRef.current.rightDelay = setTimeout(() => {
-          setRightSrc(`${bgImage}?r=${Date.now()}`);
+        setRightSrc(`${bgImage}?r=${Date.now()}`);
+        setShowImages({ left: true, right: false });
+        timerRef.current = setTimeout(() => {
+          if (!aborted) setShowImages((prev) => ({ ...prev, right: true }));
         }, rightImageDelay);
-        setShowLeft(true);
-        timersRef.current.rightDelay = setTimeout(() => setShowRight(true), rightImageDelay);
-
         // Fallback for font
         setFontUrl(null);
       }
     })();
 
     return () => {
-      // Cleanup timers and object URLs
-      if (timersRef.current.rightDelay) clearTimeout(timersRef.current.rightDelay);
+      aborted = true;
+      if (timerRef.current) clearTimeout(timerRef.current);
       if (urlsRef.current.left) URL.revokeObjectURL(urlsRef.current.left);
       if (urlsRef.current.right) URL.revokeObjectURL(urlsRef.current.right);
       if (urlsRef.current.font) URL.revokeObjectURL(urlsRef.current.font);
-      aborted = true;
     };
-  }, [rightImageDelay]);
-
-  // Compute non-overlap masks whenever layout may change
-  useEffect(() => {
-    const compute = () => {
-      const container = containerRef.current;
-      const li = leftImgRef.current;
-      const ri = rightImgRef.current;
-      if (!container || !li || !ri) {
-        setNonOverlapMasks({ left: null, right: null });
-        return;
-      }
-      const c = container.getBoundingClientRect();
-      const l = li.getBoundingClientRect();
-      const r = ri.getBoundingClientRect();
-      // Overlap segment along X within container bounds
-      const overlapLeft = Math.max(l.left, r.left, c.left);
-      const overlapRight = Math.min(l.right, r.right, c.right);
-      if (overlapRight > overlapLeft) {
-        const leftMask = { left: 0, width: Math.max(0, overlapLeft - c.left) };
-        const rightMask = { left: Math.max(0, overlapRight - c.left), width: Math.max(0, c.right - overlapRight) };
-        setNonOverlapMasks({ left: leftMask, right: rightMask });
-      } else {
-        // No overlap -> cover entire container (single-image areas only)
-        setNonOverlapMasks({ left: { left: 0, width: c.width }, right: null });
-      }
-    };
-    compute();
-    const onResize = () => compute();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, [leftLoaded, rightLoaded, showLeft, showRight]);
+  }, []);
 
   // === STYLES ===
   const baseImgStyle = {
     position: "absolute",
     top: 0,
-    left: "50%",
     height: "100%",
-    width: "auto",
-    transform: "translateX(-50%)",
+    width: "100%",
+    objectFit: "cover",
+    objectPosition: "top center",
     pointerEvents: "none",
-    transition: `opacity ${fadeDuration}ms ease-out`,
+    transition: "opacity 0ms", // Immediate appearance
   };
 
   const stoneClockStyle = {
@@ -193,64 +133,63 @@ export default function PanicAnalogClock() {
     zIndex: 4,
     fontFamily: fontUrl ? `"${fontName}", Menlo, Monaco, Consolas, monospace` : "Menlo, Monaco, Consolas, monospace",
     fontWeight: 900,
-    fontSize: "10vh",
+    fontSize: "14vh",
     lineHeight: 1,
     letterSpacing: "0.6vh",
     opacity: 0.9,
     userSelect: "none",
-    // Container-level stronger drop shadow for lift
     textShadow: "0.6vh 1vh 2vh rgba(0,0,0,0.7)",
     transform: "perspective(80vh) rotateX(10deg) rotateY(-5deg) scale(1.02)",
     transformOrigin: "center bottom",
   };
 
-  // Per-digit rock styling
   const rockDigitStyle = {
     display: "inline-block",
-    padding: "0 0.15em",
-    // Layered rock texture (warm brown stone)
+    padding: "0 0.05em",
     backgroundImage: [
-      // Base strata: warm browns
-      "linear-gradient(135deg, #5b3a1d 0%, #8a5b33 35%, #c59a6a 70%, #e0c39a 100%)",
-      // Light mineral flecks
-      "radial-gradient(circle at 22% 28%, rgba(255,235,200,0.22) 0%, transparent 30%)",
-      "radial-gradient(circle at 68% 62%, rgba(90,60,30,0.35) 0%, transparent 40%)",
-      // Dark inclusions
-      "radial-gradient(circle at 40% 80%, rgba(40,25,15,0.28) 0%, transparent 28%)",
-      // Subtle top highlight
-      "linear-gradient(to top, rgba(255,240,210,0.14), rgba(0,0,0,0) 60%)",
+      "linear-gradient(135deg, #bbbfc3 0%, #8e9499 100%)",
+      "radial-gradient(circle at 25% 30%, rgba(255,255,255,0.20) 0%, transparent 35%)",
+      "radial-gradient(circle at 70% 60%, rgba(0,0,0,0.40) 0%, transparent 45%)",
+      "radial-gradient(circle at 40% 80%, rgba(120,120,120,0.25) 0%, transparent 30%)",
+      "linear-gradient(to top, rgba(255,255,255,0.10), rgba(0,0,0,0) 60%)",
     ].join(", "),
     WebkitBackgroundClip: "text",
     backgroundClip: "text",
     WebkitTextFillColor: "transparent",
-    // Carved/beveled edges tuned for brown stone
     textShadow: [
-      "0.7vh 0.9vh 0 rgba(0,0,0,0.9)",          // deep drop
-      "0.28vh 0.28vh 0 rgba(255,230,200,0.55)", // warm highlight edge
-      "-0.2vh -0.2vh 0 rgba(70,45,25,0.6)",     // inner bevel
-      "0 1.6vh 2.8vh rgba(0,0,0,0.9)",          // ambient thickness
+      "1.7vh 1.8vh 0 rgba(0,0,0,0.9)",
+      "0.28vh 0.28vh 0 rgba(255,255,255,0.6)",
+      "-0.2vh -0.2vh 0 rgba(0,0,0,0.65)",
+      "0 1.6vh 2.8vh rgba(0,0,0,0.9)",
     ].join(", "),
-    filter: "saturate(0.95) contrast(1.12)",
+    filter: "saturate(0.85) contrast(1.1)",
     opacity: 0.8,
+    animation: "digitFade 1s ease forwards",
   };
 
   const rockPunctStyle = {
     display: "inline-block",
-    opacity: 0.2,
+    opacity: 0.6,
+    padding: "0 0.05em",
+  };
+
+  // Handler for when the first image loads
+  const handleLeftImageLoad = () => {
+    // Start the overlay fade once the first background image is loaded
+    setStartOverlayFade(true);
   };
 
   return (
     <div
-      ref={containerRef}
       style={{
         width: "100vw",
         height: "100dvh",
-        backgroundColor: "#000",
+        backgroundColor: "transparent",
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Inline @font-face for custom font */}
+      {/* 1. Inline @font-face for custom font */}
       {fontUrl && (
         <style>
           {`
@@ -264,71 +203,87 @@ export default function PanicAnalogClock() {
           `}
         </style>
       )}
-
-      {/* Bottom layer (starts immediately) */}
+      <style>
+        {`
+          @keyframes digitFade {
+            from {
+              opacity: 0;
+              -webkit-text-fill-color: black;
+            }
+            to {
+              opacity: 0.8;
+              -webkit-text-fill-color: transparent;
+            }
+          }
+          @keyframes overlayFadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+          }
+        `}
+      </style>
+      
+      {/* 2. Black overlay - fades out over 0.75s */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundColor: "#000",
+          zIndex: 10,
+          pointerEvents: "none",
+          // Set duration to 0.75s
+          animation: startOverlayFade ? "overlayFadeOut 0.75s ease forwards" : "none",
+          willChange: "opacity",
+        }}
+      />
+      
+      {/* 3. Left image (bottom layer, triggers fade on load) */}
       <img
-        ref={leftImgRef}
         src={leftSrc || undefined}
-        alt="left background"
-        onLoad={() => setLeftLoaded(true)}
+        alt="background"
+        onLoad={handleLeftImageLoad}
         style={{
           ...baseImgStyle,
-          opacity: showLeft ? leftOpacity : 0,
+          opacity: showImages.left ? bottomImageOpacity : 0,
           zIndex: 2,
         }}
       />
-      {/* Top layer (starts after 0.5s) */}
+      
+      {/* 4. Right image (top layer, reversed, shows after delay) */}
       <img
-        ref={rightImgRef}
         src={rightSrc || undefined}
-        alt="right background"
-        onLoad={() => setRightLoaded(true)}
+        alt="reversed background"
         style={{
           ...baseImgStyle,
-          opacity: showRight ? rightOpacity : 0,
-          zIndex: 3,
-        }}
-        />
-
-      <div style={stoneClockStyle}>
-        {Array.from(timeStr).map((ch, idx) => {
-          const isAlnum = /[0-9A-Za-z]/.test(ch);
-          if (!isAlnum) {
-            return (
-              <span key={idx} style={rockPunctStyle}>{ch}</span>
-            );
-          }
-          // Slight per-digit variation for a more natural rock look
-          const rot = (Math.random() * 4 - 2).toFixed(2); // -2deg to 2deg
-          const lift = (Math.random() * 0.2 - 0.1).toFixed(2); // -0.1em to 0.1em
-          const bright = (0.95 + Math.random() * 0.1).toFixed(2); // 0.95..1.05
-          const perDigitStyle = {
-            ...rockDigitStyle,
-            transform: `translateY(${lift}em) rotate(${rot}deg)`,
-            filter: `${rockDigitStyle.filter} brightness(${bright})`,
-          };
-          return (
-            <span key={idx} style={perDigitStyle}>{ch}</span>
-          );
-        })}
-      </div>
-
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          height: "100svh",
-          backgroundColor: "#000",
-          opacity: overlayVisible ? 1 : 0,
-          transition: "opacity 700ms ease-out",
-          pointerEvents: "none",
-          zIndex: 9999,
-          willChange: "opacity",
-          transform: "translateZ(0)",
+          opacity: showImages.right ? topImageOpacity : 0,
+          transform: "scaleX(-1)", // Reverse the image
+          zIndex: 2,
         }}
       />
+      
+      {/* 5. Clock display - RENDERED ONLY WHEN FONT IS LOADED */}
+      {fontUrl && (
+        <div style={stoneClockStyle}>
+          {Array.from(timeStr).map((ch, idx) => {
+            const isAlnum = /[0-9A-Za-z]/.test(ch);
+            if (!isAlnum) {
+              return (
+                <span key={idx} style={rockPunctStyle}>{ch}</span>
+              );
+            }
+            const rot = (Math.random() * 4 - 2).toFixed(2);
+            const lift = (Math.random() * 0.2 - 0.1).toFixed(2);
+            const bright = (0.95 + Math.random() * 0.1).toFixed(2);
+            const perDigitStyle = {
+              ...rockDigitStyle,
+              transform: `translateY(${lift}em) rotate(${rot}deg)`,
+              filter: `${rockDigitStyle.filter} brightness(${bright})`,
+            };
+            return (
+              <span key={idx} style={perDigitStyle}>{ch}</span>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
