@@ -5,17 +5,35 @@ import customFont from "./edgecase.ttf"; // 🟩 Local font
 export default function EdgeClockWithHands() {
   const [time, setTime] = useState(new Date());
   const [viewport, setViewport] = useState({ width: 0, height: 0 });
+  const [fontsReady, setFontsReady] = useState(false);
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   // Choose a single color for numbers and hands
-  const numberAndHandColor = "#DBEF58FF";
+  const numberAndHandColor = "#EEF3D0FF";
 
   // Load custom font
   useEffect(() => {
+    let didCancel = false;
     const font = new FontFace("CustomClockFont", `url(${customFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-    });
+    font
+      .load()
+      .then((loadedFont) => {
+        if (didCancel) return;
+        document.fonts.add(loadedFont);
+        document.fonts.load('1rem "CustomClockFont"').then(() => {
+          if (!didCancel) setFontsReady(true);
+        });
+      })
+      .catch(() => {
+        if (!didCancel) setFontsReady(true);
+      });
+    const t = setTimeout(() => {
+      if (!didCancel) setFontsReady(true);
+    }, 1500);
+    return () => {
+      didCancel = true;
+      clearTimeout(t);
+    };
   }, []);
 
   // Continuous update for smooth hands
@@ -97,9 +115,11 @@ export default function EdgeClockWithHands() {
         height: "100dvh",
         position: "relative",
         overflow: "hidden",
-        backgroundColor: "#06413AFF",
+        backgroundColor: "#05322DFF",
         border: "6px solid #72FF06FF", // Component border
         boxSizing: "border-box",
+        opacity: fontsReady ? 1 : 0,
+        transition: "opacity 0.2s ease-out",
       }}
     >
       {/* Yellow rectangle, 50px smaller than viewport, centered */}
@@ -111,7 +131,7 @@ export default function EdgeClockWithHands() {
             height: `${rectHeight}px`,
             top: `${(viewport.height - rectHeight) / 2}px`, // Center vertically
             left: `${(viewport.width - rectWidth) / 2}px`, // Center horizontally
-            border: "11px solid #2B1309FF", // Yellow border
+            border: "11px solid #1A3D02FF", // Yellow border
             boxSizing: "border-box",
             zIndex: 1, // Behind numbers and hands
           }}
