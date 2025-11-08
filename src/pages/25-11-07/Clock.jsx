@@ -193,6 +193,7 @@ export default function PanicAnalogClock() {
       "0 1.6vh 2.8vh rgba(0,0,0,0.9)",          // ambient thickness
     ].join(", "),
     filter: "saturate(0.95) contrast(1.12)",
+    opacity: 0.8,
   };
 
   const rockPunctStyle = {
