@@ -7,7 +7,7 @@ const techFont = "techFont";
 
 export default function BinaryClockWithColumns() {
   const [time, setTime] = useState(new Date());
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(true);
 
   // --- Update time every 50ms for smooth milliseconds ---
   useEffect(() => {
@@ -17,10 +17,22 @@ export default function BinaryClockWithColumns() {
 
   // --- Load fonts and prevent FOUT ---
   useEffect(() => {
-    Promise.all([
-      document.fonts.load(`10pt ${digitalFont}`),
-      document.fonts.load(`10pt ${techFont}`)
-    ]).then(() => setFontsLoaded(true));
+    let cancelled = false;
+    const finish = () => { if (!cancelled) setOverlayVisible(false); };
+
+    if (document && document.fonts && document.fonts.load) {
+      const ready = document.fonts.ready.catch(() => {});
+      const l1 = document.fonts.load(`400 16px "${digitalFont}"`).catch(() => {});
+      const l3 = document.fonts.load(`400 16px "${techFont}"`).catch(() => {});
+      Promise.race([
+        Promise.all([ready, l1, l3]),
+        new Promise((res) => setTimeout(res, 2000)),
+      ]).then(finish);
+      return () => { cancelled = true; };
+    } else {
+      const t = setTimeout(finish, 300);
+      return () => clearTimeout(t);
+    }
   }, []);
 
   const formatBinary = (num) => num.toString(2).padStart(8, "0").split("");
@@ -55,8 +67,6 @@ export default function BinaryClockWithColumns() {
     textSizeAdjust: "100%",
   };
 
-  // Background removed per request
-
   const columnsWrapperStyle = {
     display: "flex",
     flexDirection: "row",
@@ -77,7 +87,6 @@ export default function BinaryClockWithColumns() {
     flex: 1,
     height: "100%",
   };
-
 
   const binaryContainerStyle = {
     display: "flex",
@@ -141,13 +150,26 @@ export default function BinaryClockWithColumns() {
   const milliseconds = Math.floor(time.getMilliseconds() / 10); // 0-99
   const msBits = formatBinary(milliseconds);
 
-  // --- Don't render until fonts are ready ---
-  if (!fontsLoaded) return null;
-
   return (
     <>
       <style>{globalFontFaces}</style>
       <div style={containerStyle}>
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100svh",
+            backgroundColor: "#000",
+            opacity: overlayVisible ? 1 : 0,
+            transition: "opacity 400ms ease-out",
+            pointerEvents: "none",
+            zIndex: 9999,
+            willChange: "opacity",
+            transform: "translateZ(0)",
+          }}
+        />
         <div style={columnsWrapperStyle}>
           {renderColumn("H", hours, time.getHours())}
           {renderColumn("M", minutes, time.getMinutes())}
