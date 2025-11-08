@@ -1,110 +1,110 @@
-import React, { useEffect, useState } from 'react';
-
-// Import background and digit images
-import bgImage from './bg.gif';
-import digit0 from './0-6.webp';
-import digit1 from './1-6.webp';
-import digit2 from './2-6.webp';
-import digit3 from './3-6.webp';
-import digit4 from './4-6.webp';
-import digit5 from './5-6.webp';
-import digit6 from './6-6.webp';
-import digit7 from './7-6.webp';
-import digit8 from './8-6.webp';
-import digit9 from './9-6.webp';
-
-const digitImages = {
-  '0': digit0,
-  '1': digit1,
-  '2': digit2,
-  '3': digit3,
-  '4': digit4,
-  '5': digit5,
-  '6': digit6,
-  '7': digit7,
-  '8': digit8,
-  '9': digit9,
-};
+import React, { useState, useEffect } from 'react';
+import orbitronFont from './laika.ttf'; // Yourquo vadis
+import featuredImage from './Laika.jpeg'; // Your local image file
 
 const DigitalClock = () => {
-  const [time, setTime] = useState(getTimeParts());
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(getTimeParts());
-    }, 1000);
-    return () => clearInterval(interval);
+    const timer = setInterval(() => setTime(new Date()), 50);
+    return () => clearInterval(timer);
   }, []);
 
-  function getTimeParts() {
-    const date = new Date();
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    hours = hours % 12 || 12;
-    return {
-      hours: String(hours),
-      minutes: String(minutes).padStart(2, '0'),
-    };
-  }
+  const formatTime = (date) => {
+    const h = date.getHours().toString().padStart(2, '0');
+    const m = date.getMinutes().toString().padStart(2, '0');
+    const s = date.getSeconds().toString().padStart(2, '0');
+    const ms = Math.floor(date.getMilliseconds() / 10)
+      .toString()
+      .padStart(2, '0');
+    return `${h}${m}${s}${ms}`;
+  };
 
-  const renderDigits = (text) =>
-    [...text].map((char, index) => (
-      <img
-        key={index}
-        src={digitImages[char]}
-        alt={char}
-        style={{
-          height: '14vh',
-          // margin: '0 0.3vw',
-          filter: 'brightness(1.6)', // <<< Brightness filter on digit images
-        }}
-      />
-    ));
+  const splitTimeGroups = (date) => {
+    const t = formatTime(date); // HHMMSSMS
+    return [t.slice(0, 2), t.slice(2, 4), t.slice(4, 6), t.slice(6, 8)];
+  };
+
+  const styles = {
+    container: {
+      display: 'flex',
+      flexDirection: 'row',
+      height: '100dvh',
+      width: '100vw',
+      backgroundColor: '#111010FF',
+      fontFamily: `'Orbitron', monospace`,
+      color: '#ff0000',
+    },
+    imageContainer: {
+      width: '60%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    image: {
+      width: '100%',
+      height: '100vh',
+      objectFit: 'cover',
+    },
+    clockContainer: {
+      width: '40%',
+      backgroundColor: 'rgba(0,0,0,0.8)',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    timeVertical: {
+      fontWeight: 900,
+      fontSize: '4rem',
+      letterSpacing: '0.25rem',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      userSelect: 'none',
+      color: '#ff0000',
+    },
+    timeGroup: {
+      fontSize: '4rem',
+      fontWeight: 900,
+      letterSpacing: '0.25rem',
+      marginBottom: '1rem',
+      textAlign: 'center',
+      color: '#ff0000',
+    },
+  };
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Background with filter */}
-      <div
-        style={{
-          backgroundImage: `url(${bgImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'brightness(0.7) contrast(1.6)', // <<< Filter on background
-          width: '100%',
-          height: '100%',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          zIndex: 0,
-        }}
-      />
+    <>
+      <style>{`
+        @font-face {
+          font-family: 'Orbitron';
+          src: url(${orbitronFont}) format('truetype');
+          font-weight: 400;
+          font-style: normal;
+          font-display: swap;
+        }
+      `}</style>
 
-      {/* Clock content on top */}
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 1,
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          {renderDigits(time.hours)}
-          <div style={{ width: '0.1vw' }} />
-          {renderDigits(time.minutes)}
+      <div style={styles.container}>
+        <div style={styles.imageContainer}>
+          <img
+            src={featuredImage}
+            alt="Featured content"
+            style={styles.image}
+          />
+        </div>
+        <div style={styles.clockContainer}>
+          <div style={styles.timeVertical}>
+            {splitTimeGroups(time).map((group, i) => (
+              <div key={i} style={styles.timeGroup}>
+                {group}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
