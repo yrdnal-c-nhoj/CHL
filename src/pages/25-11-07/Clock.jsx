@@ -177,7 +177,7 @@ export default function PanicAnalogClock() {
     position: "absolute",
     top: 0,
     height: "100%",
-    width: "auto",
+    width: "100%",
     objectFit: "contain",
     pointerEvents: "none",
     transition: `opacity ${fadeDuration}ms ease-out`,
@@ -274,8 +274,7 @@ export default function PanicAnalogClock() {
           ...baseImgStyle,
           left: 0,
           opacity: showLeft ? leftOpacity : 0,
-          objectPosition: "left center",
-          marginLeft: -edgeInset,
+          objectPosition: "center center",
           zIndex: 2,
         }}
       />
@@ -289,19 +288,6 @@ export default function PanicAnalogClock() {
           ...baseImgStyle,
           right: 0,
           opacity: showRight ? rightOpacity : 0,
-          objectPosition: "right center",
-          transform: "scaleX(-1)",
-          marginRight: -edgeInset,
-          zIndex: 1,
-        }}
-      />
-      {/* Black overlays covering non-overlap (exactly-one) regions */}
-      {nonOverlapMasks.left && nonOverlapMasks.left.width > 0 && (
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: nonOverlapMasks.left.left,
             width: nonOverlapMasks.left.width,
             height: "100%",
             backgroundColor: "#000",
