@@ -1,6 +1,6 @@
 /** @jsxImportSource react */
 import React, { useEffect, useState } from "react";
-import customFont from "./vp.ttf"; // 🟩 Local font
+import customFont from "./edgecase.ttf"; // 🟩 Local font
 
 export default function EdgeClockWithHands() {
   const [time, setTime] = useState(new Date());
