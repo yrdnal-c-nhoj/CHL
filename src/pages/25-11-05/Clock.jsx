@@ -31,7 +31,8 @@ function Rulers({ viewportWidth, viewportHeight }) {
   const labelStyle = {
     fontSize: "3.4vh",
     color: "#BBBBC7FF",
-    textShadow: "0 0.2vh 0.4vh rgba(233,0,0)",
+    textShadow: "0 0.2vh 0.4vh rgba(233,90,0)",
+    
     fontWeight: 700,
     fontFamily: "'Teko', sans-serif",
   };
@@ -87,7 +88,7 @@ function Rulers({ viewportWidth, viewportHeight }) {
           bottom: 0,
           left: 0,
           width: "2.4vw",
-          background: "#D20B0BFF",
+          background: "#D20B0B38",
           borderRight: "0.3vh solid rgba(255,255,2)",
           pointerEvents: "none",
         }}
