@@ -207,7 +207,8 @@ export default function Clock251106() {
         fontFamily: LABEL_TYPEFACE,
         opacity: fontsReady ? 1 : 0,
         transition: "opacity 300ms ease-out",
-        border: "2px solid #ccff00",
+        border: "2px solid transparent",
+        borderImage: "repeating-linear-gradient(90deg, #ff1493 0 6px, #ccff00 6px 12px) 1",
         outlineOffset: 0,
         boxSizing: "border-box",
       }}
