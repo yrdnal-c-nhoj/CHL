@@ -55,7 +55,7 @@ export default function AnalogClock() {
           letterSpacing: "0.2em",
         }}
       >
-        Loading...
+        
       </div>
     );
 
