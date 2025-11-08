@@ -207,7 +207,7 @@ export default function Clock251106() {
         fontFamily: LABEL_TYPEFACE,
         opacity: fontsReady ? 1 : 0,
         transition: "opacity 300ms ease-out",
-        border: "3px solid #fff",
+        border: "2px solid #ccff00",
         outlineOffset: 0,
         boxSizing: "border-box",
       }}
