@@ -155,7 +155,7 @@ export default function PanicAnalogClock() {
     zIndex: 4,
     fontFamily: fontUrl ? `"${fontName}", Menlo, Monaco, Consolas, monospace` : "Menlo, Monaco, Consolas, monospace",
     fontWeight: 900,
-    fontSize: "14vh",
+    fontSize: "10vh",
     lineHeight: 1,
     letterSpacing: "0.6vh",
     opacity: 0.9,
