@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import bgImageUrl_2025_11_10 from './eye.gif';
-import digitFont_2025_11_10 from './eye2.ttf';
+import digitFont_2025_11_10 from './eye3.ttf';
 // Import a new font for the timer
 import timerFont from './eye.ttf'; // Replace with your timer font file
 
@@ -36,6 +36,7 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
   hours = hours % 12;
   hours = hours ? hours : 12; // Convert 0 to 12 for 12 AM
   
+  // Show normal clock time
   const clock = `${hours}:${pad2(now.getMinutes())} ${ampm}`;
 
   const digitsFontFamilyName = 'DigitsFont-2025-11-10';
@@ -46,7 +47,7 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
     position: 'absolute',
     top: '1vh',
     right: '2vw',
-    color: '#666666',
+    color: '#F7F0F0FF',
     fontSize: 'min(4vw, 2.5vh)',
     fontFamily: `'${digitsFontFamilyName}', monospace`,
     fontWeight: 'normal',
@@ -246,8 +247,7 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
     const hStr = h > 0 ? h.toString().padStart(2, '0') : '';
     const mStr = m.toString().padStart(2, '0');
     const sStr = s.toString().padStart(2, '0');
-    const msStr = msPart.toString().padStart(3, '0');
-    
+    // Get only the last two digits of milliseconds
     const parts = [];
     
     // Add hours if they exist
@@ -268,14 +268,6 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
     
     // Add seconds (always show with leading zero)
     sStr.split('').forEach(d => {
-      parts.push({ ch: d, type: 'digit', visible: true });
-    });
-    
-    // Add decimal point and milliseconds
-    parts.push({ ch: '.', type: 'dot', visible: true });
-    
-    // Add milliseconds (always show with leading zeros)
-    msStr.split('').forEach(d => {
       parts.push({ ch: d, type: 'digit', visible: true });
     });
     
