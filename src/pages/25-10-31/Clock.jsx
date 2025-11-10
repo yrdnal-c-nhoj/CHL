@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import videoFile from "./mids.mp4";
 import fallbackImg from "./midsun.webp";
 import fontFile_2025_10_31 from "./mi.otf";
 
 export default function VideoClock() {
   const [ready, setReady] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
+  const [showPlayButton, setShowPlayButton] = useState(false);
   const [time, setTime] = useState(new Date());
+  const videoRef = useRef(null);
 
   // Time update loop
   useEffect(() => {
@@ -12,30 +16,30 @@ export default function VideoClock() {
     return () => clearInterval(interval);
   }, []);
 
-  // Preload assets: image and font (no video)
+  // Preload assets: video, fallback image, and font
   useEffect(() => {
     let fontLoaded = false;
     let imageLoaded = false;
+    let videoLoaded = false;
 
     const checkReady = () => {
-      if (imageLoaded && fontLoaded) {
+      if ((videoLoaded || videoFailed) && imageLoaded && fontLoaded) {
         setTimeout(() => setReady(true), 100);
       }
     };
 
+    // Load font
     const font = new FontFace("CustomFont", `url(${fontFile_2025_10_31})`);
-    font
-      .load()
-      .then(() => {
-        document.fonts.add(font);
-        fontLoaded = true;
-        checkReady();
-      })
-      .catch(() => {
-        fontLoaded = true;
-        checkReady();
-      });
+    font.load().then(() => {
+      document.fonts.add(font);
+      fontLoaded = true;
+      checkReady();
+    }).catch(() => {
+      fontLoaded = true;
+      checkReady();
+    });
 
+    // Load fallback image
     const img = new Image();
     img.src = fallbackImg;
     img.onload = () => {
@@ -46,8 +50,45 @@ export default function VideoClock() {
       imageLoaded = true;
       checkReady();
     };
-  }, []);
 
+    // Handle video loading / failure
+    const v = videoRef.current;
+    if (v) {
+      const onLoadedData = () => {
+        videoLoaded = true;
+        checkReady();
+      };
+      const onError = () => {
+        setVideoFailed(true);
+        setShowPlayButton(true);
+        videoLoaded = false;
+        checkReady();
+      };
+      v.addEventListener("loadeddata", onLoadedData);
+      v.addEventListener("error", onError);
+      v.addEventListener("stalled", onError);
+
+      const playPromise = v.play?.();
+      if (playPromise) {
+        playPromise.catch(() => setShowPlayButton(true));
+      }
+
+      return () => {
+        v.removeEventListener("loadeddata", onLoadedData);
+        v.removeEventListener("error", onError);
+        v.removeEventListener("stalled", onError);
+      };
+    }
+  }, [videoFailed]);
+
+  const handlePlayClick = () => {
+    const v = videoRef.current;
+    if (v) {
+      v.play()
+        .then(() => setShowPlayButton(false))
+        .catch(() => console.error("Manual play failed"));
+    }
+  };
 
   // Time formatting
   const formatTime = () => {
@@ -73,6 +114,17 @@ export default function VideoClock() {
     opacity: ready ? 1 : 0,
   };
 
+  const videoStyle = {
+    position: "absolute",
+    inset: 0,
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    zIndex: 0,
+    display: videoFailed ? "none" : "block",
+    pointerEvents: "none",
+    filter: "brightness(1.1) contrast(0.8) hue-rotate(15deg) saturate(1.2)",
+  };
 
   const fallbackStyle = {
     position: "absolute",
@@ -80,7 +132,7 @@ export default function VideoClock() {
     backgroundImage: `url(${fallbackImg})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
-    display: "block",
+    display: videoFailed ? "block" : "none",
     filter: "brightness(1.3) contrast(1.4) hue-rotate(-10deg) saturate(1.2)",
   };
 
@@ -103,6 +155,21 @@ export default function VideoClock() {
     MozOsxFontSmoothing: "grayscale",
   };
 
+  const playButtonStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    zIndex: 3,
+    padding: "10px 20px",
+    fontSize: "1rem",
+    cursor: "pointer",
+    backgroundColor: "rgba(0, 30, 60, 0.8)",
+    color: "#e6f2ff",
+    border: "1px solid rgba(100, 180, 255, 0.5)",
+    borderRadius: "5px",
+    textShadow: "0 0 4px rgba(100, 180, 255, 0.5)",
+  };
 
   return (
     <div style={containerStyle}>
@@ -116,7 +183,23 @@ export default function VideoClock() {
           font-display: swap;
         }
       `}</style>
-      <div style={fallbackStyle} aria-hidden={false} />
+      <video
+        ref={videoRef}
+        style={videoStyle}
+        loop
+        muted
+        playsInline
+        autoPlay
+        preload="auto"
+      >
+        <source src={videoFile} type="video/mp4" />
+      </video>
+      <div style={fallbackStyle} aria-hidden />
+      {showPlayButton && ready && (
+        <button style={playButtonStyle} onClick={handlePlayClick}>
+          Play Video
+        </button>
+      )}
       {ready && (
         <div style={clockStyle}>
           {digits.map((d, i) => (
