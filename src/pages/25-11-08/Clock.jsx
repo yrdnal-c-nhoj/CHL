@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import bgImageUrl_2025_11_10 from './eye.gif';
-import digitFont_2025_11_10 from './eye.ttf';
+import digitFont_2025_11_10 from './eye2.ttf';
 // Import a new font for the timer
-import timerFont from './eye2.ttf'; // Replace with your timer font file
+import timerFont from './eye.ttf'; // Replace with your timer font file
 
 export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
   const [now, setNow] = useState(() => new Date());
@@ -55,7 +55,7 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
     padding: '0.5vh 1vw',
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
     borderRadius: '5px',
-    opacity: 0.7,
+    opacity: 0.9,
     textAlign: 'center',
     transition: 'all 0.3s ease',
     ':hover': {
@@ -68,11 +68,11 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     position: 'relative',
     overflow: 'hidden',
-    backgroundColor: '#0a0a0a',
+    // backgroundColor: '#0a0a0a',
   };
 
   const bgStyle = {
@@ -83,9 +83,9 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
     bottom: 0,
     zIndex: 0,
     pointerEvents: 'none',
-    backgroundColor: '#0a0a0a',
+    // backgroundColor: '#0a0a0a',
     overflow: 'hidden',
-    opacity: 0.3, // Make background more subtle
+    opacity: 1.0, // Make background more subtle
   };
 
   const bgGridStyle = {
@@ -133,13 +133,13 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
   const panelStyle = {
     position: 'relative',
     zIndex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'rgba(220, 20, 220, 0.)',
     borderRadius: '1.2vh',
     padding: '3vh 4vh',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    gap: '2vh',
+    gap: '12vh',
   };
 
 
@@ -195,8 +195,8 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
 
   const timerColonBoxStyle = {
     ...timerDigitBoxStyle,
-    width: '0.3em',
-    minWidth: '0.3em',
+    width: '0.03em',
+    minWidth: '0.03em',
     padding: 0,
     backgroundColor: 'transparent',
     boxShadow: 'none',
@@ -210,14 +210,14 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
 
   const dotBoxStyle = {
     ...digitBoxStyle,
-    width: '2.6vh',
-    fontSize: '6vh',
+     width: '0.03em',
+    fontSize: '0.03em',
   };
 
   const timerDotBoxStyle = {
     ...timerDigitBoxStyle,
-    width: '0.4em',
-    minWidth: '0.4em',
+    width: '0.04em',
+    minWidth: '0.04em',
     padding: 0,
     backgroundColor: 'transparent',
     boxShadow: 'none',
@@ -293,11 +293,11 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
         padding: '3vh 4vw',
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
         borderRadius: '15px',
-        border: '2px solid rgba(255, 0, 0, 0.3)',
-        boxShadow: '0 0 20px rgba(255, 0, 0, 0.2)',
+        border: '2px solid rgba(255, 0, 0, 0.7)',
+        boxShadow: '0 0 20px rgba(255, 0, 0, 0.7)',
         '@media (max-width: 600px)': {
           padding: '2vh 3vw',
-          borderRadius: '12px',
+          borderRadius: '22px',
         },
       }}>
         {parts.map((p, i) => (
