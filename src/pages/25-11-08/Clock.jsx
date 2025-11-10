@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import bgImageUrl_2025_11_10 from './eye.gif';
 import digitFont_2025_11_10 from './eye3.ttf';
-// Import a new font for the timer
 import timerFont from './eye.ttf'; // Replace with your timer font file
 
 export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
@@ -23,7 +22,6 @@ export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
       const h = Math.floor(totalSeconds / 3600);
       const m = Math.floor((totalSeconds % 3600) / 60);
       const s = Math.floor(totalSeconds % 60);
-      const msPart = Math.floor(ms % 1000);
       return `${h}:${m}:${s}.${msPart}`;
     };
   }, []);
@@ -73,7 +71,6 @@ export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
     width: '100vw',
     position: 'relative',
     overflow: 'hidden',
-    // backgroundColor: '#0a0a0a',
   };
 
   const bgStyle = {
@@ -84,7 +81,6 @@ export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
     bottom: 0,
     zIndex: 0,
     pointerEvents: 'none',
-    // backgroundColor: '#0a0a0a',
     overflow: 'hidden',
     opacity: 1.0, // Make background more subtle
   };
@@ -170,7 +166,7 @@ export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
   const timerDigitBoxStyle = {
     ...digitBoxStyle,
     fontFamily: `'${timerFontFamilyName}', monospace`,
-    fontSize: 'min(12vw, 15vh)',  // Slightly smaller on mobile
+    fontSize: 'min(16vw, 22vh)',  // Slightly smaller on mobile
     lineHeight: '1',
     width: 'auto',
     minWidth: '0.4em',  // Slightly smaller min-width
@@ -182,7 +178,7 @@ export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
     boxShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
     margin: '0 0.03em',  // Reduced margin
     '@media (max-width: 600px)': {
-      fontSize: '14vw',  // Larger on very small screens
+      // fontSize: '14vw',  // Larger on very small screens
       minWidth: '0.35em',
       margin: '0 0.02em',
     },
@@ -209,23 +205,6 @@ export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
     },
   };
 
-  const dotBoxStyle = {
-    ...digitBoxStyle,
-     width: '0.03em',
-    fontSize: '0.03em',
-  };
-
-  const timerDotBoxStyle = {
-    ...timerDigitBoxStyle,
-    width: '0.04em',
-    minWidth: '0.04em',
-    padding: 0,
-    backgroundColor: 'transparent',
-    boxShadow: 'none',
-    color: '#ff0000',
-    textShadow: '0 0 15px rgba(255, 0, 0, 0.7)'
-  };
-
   const renderBoxed = (text) => (
     <span style={digitsRowStyle}>
       {text.split('').map((ch, i) => (
@@ -241,7 +220,6 @@ export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
     const h = Math.floor(totalSeconds / 3600);
     const m = Math.floor((totalSeconds % 3600) / 60);
     const s = Math.floor(totalSeconds % 60);
-    const msPart = Math.floor(ms % 1000);
     
     // Always show hours with leading zero if needed
     const hStr = h > 0 ? h.toString().padStart(2, '0') : '';
