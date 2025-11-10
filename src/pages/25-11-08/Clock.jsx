@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import bgImageUrl_2025_11_10 from './eye.gif';
 import digitFont_2025_11_10 from './eye.ttf';
+// Import a new font for the timer
+import timerFont from './eye2.ttf'; // Replace with your timer font file
 
 export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
   const [now, setNow] = useState(() => new Date());
@@ -27,9 +29,40 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
   }, []);
 
   const pad2 = (n) => n.toString().padStart(2, '0');
-  const clock = `${pad2(now.getHours())}:${pad2(now.getMinutes())}:${pad2(now.getSeconds())}`;
+  
+  // Convert to 12-hour format and get AM/PM
+  let hours = now.getHours();
+  const ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // Convert 0 to 12 for 12 AM
+  
+  const clock = `${hours}:${pad2(now.getMinutes())} ${ampm}`;
 
   const digitsFontFamilyName = 'DigitsFont-2025-11-10';
+  const timerFontFamilyName = 'TimerFont-2025-11-10';
+
+  // Style for the clock in the upper right corner (subtle and small)
+  const clockStyle = {
+    position: 'absolute',
+    top: '1vh',
+    right: '2vw',
+    color: '#666666',
+    fontSize: 'min(4vw, 2.5vh)',
+    fontFamily: `'${digitsFontFamilyName}', monospace`,
+    fontWeight: 'normal',
+    whiteSpace: 'nowrap',
+    zIndex: 1,
+    padding: '0.5vh 1vw',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    borderRadius: '5px',
+    opacity: 0.7,
+    textAlign: 'center',
+    transition: 'all 0.3s ease',
+    ':hover': {
+      opacity: 1,
+      backgroundColor: 'rgba(0, 0, 0, 0.3)'
+    }
+  };
 
   const wrapperStyle = {
     display: 'flex',
@@ -39,6 +72,7 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
     width: '100vw',
     position: 'relative',
     overflow: 'hidden',
+    backgroundColor: '#0a0a0a',
   };
 
   const bgStyle = {
@@ -49,8 +83,9 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
     bottom: 0,
     zIndex: 0,
     pointerEvents: 'none',
-    backgroundColor: '#0b0b0d',
+    backgroundColor: '#0a0a0a',
     overflow: 'hidden',
+    opacity: 0.3, // Make background more subtle
   };
 
   const bgGridStyle = {
@@ -131,16 +166,63 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
     justifyContent: 'center',
   };
 
+  const timerDigitBoxStyle = {
+    ...digitBoxStyle,
+    fontFamily: `'${timerFontFamilyName}', monospace`,
+    fontSize: 'min(12vw, 15vh)',  // Slightly smaller on mobile
+    lineHeight: '1',
+    width: 'auto',
+    minWidth: '0.4em',  // Slightly smaller min-width
+    padding: '0 0.05em',  // Reduced padding
+    color: '#ff0000',
+    textShadow: '0 0 10px rgba(255, 0, 0, 0.7)',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    borderRadius: '8px',
+    boxShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
+    margin: '0 0.03em',  // Reduced margin
+    '@media (max-width: 600px)': {
+      fontSize: '14vw',  // Larger on very small screens
+      minWidth: '0.35em',
+      margin: '0 0.02em',
+    },
+  };
+
   const colonBoxStyle = {
     ...digitBoxStyle,
     width: '2.6vh',
     fontSize: '6vh',
   };
 
+  const timerColonBoxStyle = {
+    ...timerDigitBoxStyle,
+    width: '0.3em',
+    minWidth: '0.3em',
+    padding: 0,
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
+    color: '#ff0000',
+    textShadow: '0 0 10px rgba(255, 0, 0, 0.7)',
+    '@media (max-width: 600px)': {
+      width: '0.25em',
+      minWidth: '0.25em',
+    },
+  };
+
   const dotBoxStyle = {
     ...digitBoxStyle,
     width: '2.6vh',
     fontSize: '6vh',
+  };
+
+  const timerDotBoxStyle = {
+    ...timerDigitBoxStyle,
+    width: '0.4em',
+    minWidth: '0.4em',
+    padding: 0,
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
+    color: '#ff0000',
+    textShadow: '0 0 15px rgba(255, 0, 0, 0.7)'
   };
 
   const renderBoxed = (text) => (
@@ -159,64 +241,109 @@ export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
     const m = Math.floor((totalSeconds % 3600) / 60);
     const s = Math.floor(totalSeconds % 60);
     const msPart = Math.floor(ms % 1000);
+    
+    // Always show hours with leading zero if needed
+    const hStr = h > 0 ? h.toString().padStart(2, '0') : '';
     const mStr = m.toString().padStart(2, '0');
     const sStr = s.toString().padStart(2, '0');
     const msStr = msPart.toString().padStart(3, '0');
+    
     const parts = [];
+    
+    // Add hours if they exist
     if (h > 0) {
-      h.toString().split('').forEach((d) => {
+      hStr.split('').forEach(d => {
         parts.push({ ch: d, type: 'digit', visible: true });
       });
       parts.push({ ch: ':', type: 'colon', visible: true });
     }
-    mStr.split('').forEach((d, i) => {
-      const leading = (i === 0 && d === '0') || (i === 1 && m === 0 && h === 0);
-      parts.push({ ch: d, type: 'digit', visible: !leading });
+    
+    // Add minutes (always show with leading zero)
+    mStr.split('').forEach(d => {
+      parts.push({ ch: d, type: 'digit', visible: true });
     });
-    parts.push({ ch: ':', type: 'colon', visible: h > 0 || m > 0 });
-    sStr.split('').forEach((d, i) => {
-      const leading = i === 0 && d === '0' && s < 10 && h === 0 && m === 0;
-      parts.push({ ch: d, type: 'digit', visible: !leading });
+    
+    // Add colon between minutes and seconds
+    parts.push({ ch: ':', type: 'colon', visible: true });
+    
+    // Add seconds (always show with leading zero)
+    sStr.split('').forEach(d => {
+      parts.push({ ch: d, type: 'digit', visible: true });
     });
+    
+    // Add decimal point and milliseconds
     parts.push({ ch: '.', type: 'dot', visible: true });
-    msStr.split('').forEach((d, i) => {
-      const leading = (i === 0 && d === '0' && msPart < 100) || (i === 1 && d === '0' && msPart < 10);
-      parts.push({ ch: d, type: 'digit', visible: !leading });
+    
+    // Add milliseconds (always show with leading zeros)
+    msStr.split('').forEach(d => {
+      parts.push({ ch: d, type: 'digit', visible: true });
     });
+    
     return (
-      <span style={digitsRowStyle}>
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 'auto',
+        maxWidth: '95vw',  // Prevent overflow on small screens
+        padding: '3vh 4vw',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        borderRadius: '15px',
+        border: '2px solid rgba(255, 0, 0, 0.3)',
+        boxShadow: '0 0 20px rgba(255, 0, 0, 0.2)',
+        '@media (max-width: 600px)': {
+          padding: '2vh 3vw',
+          borderRadius: '12px',
+        },
+      }}>
         {parts.map((p, i) => (
           <span
             key={i}
             style={{
-              ...(p.type === 'colon' ? colonBoxStyle : p.type === 'dot' ? dotBoxStyle : digitBoxStyle),
+              ...(p.type === 'colon' ? timerColonBoxStyle : 
+                  p.type === 'dot' ? timerDotBoxStyle : timerDigitBoxStyle),
               opacity: p.visible ? 1 : 0,
             }}
           >
             {p.ch}
           </span>
         ))}
-      </span>
+      </div>
     );
   };
 
 
   return (
     <div style={wrapperStyle}>
-      <div style={bgStyle}>{renderCheckerboardBG()}</div>
-      <style>{`
-        @font-face {
-          font-family: '${digitsFontFamilyName}';
-          src: url(${digitFont_2025_11_10}) format('truetype');
-          font-weight: 100 900;
-          font-style: normal;
-          font-display: swap;
-        }
-      `}</style>
-      <div style={panelStyle}>
-        {renderBoxed(clock)}
-        {renderTimerBoxed(elapsedMs)}
+      <style>
+        {`
+          @font-face {
+            font-family: '${digitsFontFamilyName}';
+            src: url(${digitFont_2025_11_10}) format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+          }
+          @font-face {
+            font-family: '${timerFontFamilyName}';
+            src: url(${timerFont}) format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+          }
+        `}
+      </style>
+      <div style={bgStyle}>
+        {renderCheckerboardBG()}
       </div>
+      <div style={clockStyle}>
+        {clock}
+      </div>
+      {renderTimerBoxed(elapsedMs)}
     </div>
   );
 }
