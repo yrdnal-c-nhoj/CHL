@@ -205,6 +205,23 @@ export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
     },
   };
 
+  const timerDotBoxStyle = {
+    ...timerDigitBoxStyle,
+    width: '0.04em',
+    minWidth: '0.04em',
+    padding: 0,
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
+    color: '#ff0000',
+    textShadow: '0 0 15px rgba(255, 0, 0, 0.7)'
+  };
+
+  const dotBoxStyle = {
+    ...digitBoxStyle,
+    width: '0.03em',
+    fontSize: '0.03em',
+  };
+
   const renderBoxed = (text) => (
     <span style={digitsRowStyle}>
       {text.split('').map((ch, i) => (
@@ -220,12 +237,14 @@ export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
     const h = Math.floor(totalSeconds / 3600);
     const m = Math.floor((totalSeconds % 3600) / 60);
     const s = Math.floor(totalSeconds % 60);
+    const hundredths = Math.floor((ms % 1000) / 10); // Get hundredths of a second (0-99)
     
     // Always show hours with leading zero if needed
     const hStr = h > 0 ? h.toString().padStart(2, '0') : '';
     const mStr = m.toString().padStart(2, '0');
     const sStr = s.toString().padStart(2, '0');
-    // Get only the last two digits of milliseconds
+    const hundredthsStr = hundredths.toString().padStart(2, '0');
+    
     const parts = [];
     
     // Add hours if they exist
@@ -236,16 +255,22 @@ export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
       parts.push({ ch: ':', type: 'colon', visible: true });
     }
     
-    // Add minutes (always show with leading zero)
-    mStr.split('').forEach(d => {
-      parts.push({ ch: d, type: 'digit', visible: true });
-    });
-    
-    // Add colon between minutes and seconds
-    parts.push({ ch: ':', type: 'colon', visible: true });
+    // Add minutes (always show with leading zero) if hours exist
+    if (h > 0) {
+      mStr.split('').forEach(d => {
+        parts.push({ ch: d, type: 'digit', visible: true });
+      });
+      parts.push({ ch: ':', type: 'colon', visible: true });
+    }
     
     // Add seconds (always show with leading zero)
     sStr.split('').forEach(d => {
+      parts.push({ ch: d, type: 'digit', visible: true });
+    });
+    
+    // Add decimal point and hundredths of a second
+    parts.push({ ch: '.', type: 'dot', visible: true });
+    hundredthsStr.split('').forEach(d => {
       parts.push({ ch: d, type: 'digit', visible: true });
     });
     
