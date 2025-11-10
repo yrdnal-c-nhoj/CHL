@@ -4,7 +4,7 @@ import digitFont_2025_11_10 from './eye3.ttf';
 // Import a new font for the timer
 import timerFont from './eye.ttf'; // Replace with your timer font file
 
-export default function Clock({ imageWidth = '14vw', imageHeight = '11vw' }) {
+export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
   const [now, setNow] = useState(() => new Date());
   const [elapsedMs, setElapsedMs] = useState(0);
 
