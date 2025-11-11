@@ -1,27 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import bgImage from "./birds.webp";
-import todayFont from "./twobirds.ttf"; // Font import for TTF file
+import todayFont from "./twobirds.ttf";
 
 export default function PanicAnalogClock() {
-  // === CONFIGURATION ===
-  const rightImageDelay = 500; // 0.5s delay
+  const rightImageDelay = 500; // 0.5s delay for right image
   const bottomImageOpacity = 1.0;
   const topImageOpacity = 0.5;
-  const fontName = "CustomClockFont"; // Custom font name for @font-face
-
-  // === STATE ===
+  const fontName = "CustomClockFont";
   const [leftSrc, setLeftSrc] = useState(null);
   const [rightSrc, setRightSrc] = useState(null);
   const [fontUrl, setFontUrl] = useState(null);
-  const [showImages, setShowImages] = useState({ left: false, right: false });
-  const [startOverlayFade, setStartOverlayFade] = useState(false); // State for overlay fade
-
-  // Refs for cleanup of object URLs and timers
+  const [showImages, setShowImages] = useState({ left: false, right: false }); // Restore staggered image timing
+  const [fadeBlack, setFadeBlack] = useState(false); // Black overlay fade
+  const [rightImageLoaded, setRightImageLoaded] = useState(false); // Track right image load
   const urlsRef = useRef({ left: null, right: null, font: null });
   const timerRef = useRef(null);
-
-  // === CLOCK LOGIC (UNTOUCHED) ===
   const [timeStr, setTimeStr] = useState("");
+
   const formatTime = (d) => {
     let h = d.getHours();
     const m = d.getMinutes();
@@ -48,12 +43,10 @@ export default function PanicAnalogClock() {
     };
   }, []);
 
-  // === IMAGE AND FONT FETCH EFFECT ===
   useEffect(() => {
     let aborted = false;
     (async () => {
       try {
-        // Fetch the image
         const imgRes = await fetch(bgImage, { cache: "no-store" });
         const imgBuf = await imgRes.arrayBuffer();
         const imgBlobType = imgRes.headers.get("content-type") || "image/gif";
@@ -61,8 +54,6 @@ export default function PanicAnalogClock() {
         const blobRight = new Blob([imgBuf], { type: imgBlobType });
         const urlLeft = URL.createObjectURL(blobLeft);
         const urlRight = URL.createObjectURL(blobRight);
-
-        // Fetch the font
         const fontRes = await fetch(todayFont, { cache: "no-store" });
         const fontBuf = await fontRes.arrayBuffer();
         const fontBlobType = fontRes.headers.get("content-type") || "font/ttf";
@@ -79,27 +70,33 @@ export default function PanicAnalogClock() {
         urlsRef.current = { left: urlLeft, right: urlRight, font: urlFont };
         setLeftSrc(urlLeft);
         setRightSrc(urlRight);
-        setFontUrl(urlFont); // Set font URL
-
-        // Show left image immediately
+        setFontUrl(urlFont);
         setShowImages({ left: true, right: false });
 
-        // Show right image after delay
         timerRef.current = setTimeout(() => {
-          if (!aborted) setShowImages((prev) => ({ ...prev, right: true }));
+          if (!aborted) {
+            setShowImages({ left: true, right: true });
+            // Only fade black overlay after right image is shown and loaded
+            if (rightImageLoaded) {
+              setFadeBlack(true);
+            }
+          }
         }, rightImageDelay);
       } catch (e) {
-        if (aborted) return;
         console.error("Fetch failed, using direct URLs:", e);
-        // Fallback for images
         setLeftSrc(`${bgImage}?l=${Date.now()}`);
         setRightSrc(`${bgImage}?r=${Date.now()}`);
         setShowImages({ left: true, right: false });
-        timerRef.current = setTimeout(() => {
-          if (!aborted) setShowImages((prev) => ({ ...prev, right: true }));
-        }, rightImageDelay);
-        // Fallback for font
         setFontUrl(null);
+        timerRef.current = setTimeout(() => {
+          if (!aborted) {
+            setShowImages({ left: true, right: true });
+            // Only fade black overlay after right image is shown and loaded
+            if (rightImageLoaded) {
+              setFadeBlack(true);
+            }
+          }
+        }, rightImageDelay);
       }
     })();
 
@@ -110,9 +107,8 @@ export default function PanicAnalogClock() {
       if (urlsRef.current.right) URL.revokeObjectURL(urlsRef.current.right);
       if (urlsRef.current.font) URL.revokeObjectURL(urlsRef.current.font);
     };
-  }, []);
+  }, [rightImageLoaded]);
 
-  // === STYLES ===
   const baseImgStyle = {
     position: "absolute",
     top: 0,
@@ -121,7 +117,7 @@ export default function PanicAnalogClock() {
     objectFit: "cover",
     objectPosition: "top center",
     pointerEvents: "none",
-    transition: "opacity 0ms", // Immediate appearance
+    transition: "opacity 0ms",
   };
 
   const stoneClockStyle = {
@@ -131,7 +127,9 @@ export default function PanicAnalogClock() {
     right: 0,
     textAlign: "center",
     zIndex: 4,
-    fontFamily: fontUrl ? `"${fontName}", Menlo, Monaco, Consolas, monospace` : "Menlo, Monaco, Consolas, monospace",
+    fontFamily: fontUrl
+      ? `"${fontName}", Menlo, Monaco, Consolas, monospace`
+      : "Menlo, Monaco, Consolas, monospace",
     fontWeight: 900,
     fontSize: "10vh",
     lineHeight: 1,
@@ -173,23 +171,8 @@ export default function PanicAnalogClock() {
     padding: "0 0.05em",
   };
 
-  // Handler for when the first image loads
-  const handleLeftImageLoad = () => {
-    // Start the overlay fade once the first background image is loaded
-    setStartOverlayFade(true);
-  };
-
   return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100dvh",
-        backgroundColor: "transparent",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* 1. Inline @font-face for custom font */}
+    <div style={{ width: "100vw", height: "100dvh", position: "relative", overflow: "hidden" }}>
       {fontUrl && (
         <style>
           {`
@@ -200,76 +183,43 @@ export default function PanicAnalogClock() {
               font-style: normal;
               font-display: swap;
             }
+            @keyframes digitFade {
+              from { opacity: 0; -webkit-text-fill-color: black; }
+              to { opacity: 0.8; -webkit-text-fill-color: transparent; }
+            }
           `}
         </style>
       )}
-      <style>
-        {`
-          @keyframes digitFade {
-            from {
-              opacity: 0;
-              -webkit-text-fill-color: black;
-            }
-            to {
-              opacity: 0.8;
-              -webkit-text-fill-color: transparent;
-            }
-          }
-          @keyframes overlayFadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-          }
-        `}
-      </style>
-      
-      {/* 2. Black overlay - fades out over 0.75s */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundColor: "#000",
-          zIndex: 10,
-          pointerEvents: "none",
-          // Set duration to 0.75s
-          animation: startOverlayFade ? "overlayFadeOut 0.75s ease forwards" : "none",
-          willChange: "opacity",
-        }}
-      />
-      
-      {/* 3. Left image (bottom layer, triggers fade on load) */}
+      {/* Left background */}
       <img
         src={leftSrc || undefined}
         alt="background"
-        onLoad={handleLeftImageLoad}
-        style={{
-          ...baseImgStyle,
-          opacity: showImages.left ? bottomImageOpacity : 0,
-          zIndex: 2,
-        }}
+        style={{ ...baseImgStyle, opacity: showImages.left ? bottomImageOpacity : 0, zIndex: 1 }}
       />
-      
-      {/* 4. Right image (top layer, reversed, shows after delay) */}
+      {/* Right background */}
       <img
         src={rightSrc || undefined}
         alt="reversed background"
+        onLoad={() => {
+          setRightImageLoaded(true);
+          // If right image is already shown (post-delay), fade black now
+          if (showImages.right) {
+            setFadeBlack(true);
+          }
+        }}
         style={{
           ...baseImgStyle,
           opacity: showImages.right ? topImageOpacity : 0,
-          transform: "scaleX(-1)", // Reverse the image
-          zIndex: 2,
+          transform: "scaleX(-1)",
+          zIndex: 1,
         }}
       />
-      
-      {/* 5. Clock display - RENDERED ONLY WHEN FONT IS LOADED */}
-      {fontUrl && (
+      {/* Clock */}
+      {fontUrl && showImages.right && (
         <div style={stoneClockStyle}>
           {Array.from(timeStr).map((ch, idx) => {
             const isAlnum = /[0-9A-Za-z]/.test(ch);
-            if (!isAlnum) {
-              return (
-                <span key={idx} style={rockPunctStyle}>{ch}</span>
-              );
-            }
+            if (!isAlnum) return <span key={idx} style={rockPunctStyle}>{ch}</span>;
             const rot = (Math.random() * 4 - 2).toFixed(2);
             const lift = (Math.random() * 0.2 - 0.1).toFixed(2);
             const bright = (0.95 + Math.random() * 0.1).toFixed(2);
@@ -278,12 +228,22 @@ export default function PanicAnalogClock() {
               transform: `translateY(${lift}em) rotate(${rot}deg)`,
               filter: `${rockDigitStyle.filter} brightness(${bright})`,
             };
-            return (
-              <span key={idx} style={perDigitStyle}>{ch}</span>
-            );
+            return <span key={idx} style={perDigitStyle}>{ch}</span>;
           })}
         </div>
       )}
+      {/* Black overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundColor: "#000",
+          zIndex: 10,
+          pointerEvents: "none",
+          opacity: fadeBlack ? 0 : 1,
+          transition: "opacity 0.2s ease-in",
+        }}
+      />
     </div>
   );
 }
