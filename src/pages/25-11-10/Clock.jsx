@@ -18,8 +18,9 @@ import pageBackground from './ponggg.gif';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Smooth continuous update using requestAnimationFrame
+  // Continuous time updates
   useEffect(() => {
     let frameId;
     const updateTime = () => {
@@ -30,7 +31,29 @@ const Clock = () => {
     return () => cancelAnimationFrame(frameId);
   }, []);
 
-  // Smooth time calculations
+  // Preload all images before revealing the page
+  useEffect(() => {
+    const imageSources = [
+      one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve,
+      hourHand, minuteHand, secondHand, pageBackground
+    ];
+
+    let loadedCount = 0;
+    const total = imageSources.length;
+
+    imageSources.forEach(src => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === total) {
+          setTimeout(() => setIsLoaded(true), 300); // small delay for smoother fade
+        }
+      };
+    });
+  }, []);
+
+  // Time calculations
   const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
   const minutes = time.getMinutes() + seconds / 60;
   const hours = (time.getHours() % 12) + minutes / 60;
@@ -64,33 +87,34 @@ const Clock = () => {
   return (
     <div
       style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        position: 'relative',
         height: '100dvh',
         width: '100vw',
         overflow: 'hidden',
-        position: 'relative',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'black',
       }}
     >
-      {/* Full-screen, no-clip, stretching background */}
+      {/* Page background */}
       <div
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           backgroundImage: `url(${pageBackground})`,
           backgroundSize: '100% 100%',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          backgroundAttachment: 'fixed',
           filter: 'invert(10%)',
           opacity: 0.8,
           zIndex: 0,
         }}
       />
+
       {/* Clock container */}
       <div
         style={{
@@ -102,7 +126,6 @@ const Clock = () => {
           zIndex: 1,
         }}
       >
-        {/* Number images around the circle */}
         {numberPositions.map(({ src, angle }, index) => {
           const rad = (angle * Math.PI) / 180;
           const x = `calc(50% + ${radius} * ${Math.sin(rad)} - ${numberSize} / 2)`;
@@ -128,6 +151,7 @@ const Clock = () => {
             />
           );
         })}
+
         {/* Hour hand */}
         <img
           src={hourHand}
@@ -145,6 +169,7 @@ const Clock = () => {
             opacity: 0.8,
           }}
         />
+
         {/* Minute hand */}
         <img
           src={minuteHand}
@@ -162,6 +187,7 @@ const Clock = () => {
             opacity: 0.8,
           }}
         />
+
         {/* Smooth second hand */}
         <img
           src={secondHand}
@@ -180,6 +206,22 @@ const Clock = () => {
           }}
         />
       </div>
+
+      {/* Fade overlay (black screen) */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: 'black',
+          transition: 'opacity 1.5s ease',
+          opacity: isLoaded ? 0 : 1,
+          pointerEvents: isLoaded ? 'none' : 'auto',
+          zIndex: 10,
+        }}
+      />
     </div>
   );
 };
