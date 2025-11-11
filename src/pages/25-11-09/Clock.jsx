@@ -83,8 +83,8 @@ const DarkRomanClock = () => {
           transform: `translate(-50%, -50%) rotate(${angle + 90}deg)`,
           fontFamily: isActive ? 'ActiveFont20251111, serif' : 'RomanFont20251111, serif',
           fontSize: isActive ? '9.2vh' : '1.3vh',
-          color: isActive ? '#EBC715FF' : '#333333',
-          textShadow: isActive ? '1px 1px 0vh #F4EEF1FF, 31px -21px 0vh #110E09FF' : '0 0.2vh #0CECE5FF',
+          color: isActive ? '#FFFF07FF' : '#F1D7D7FF',
+          textShadow: isActive ? '3px 3px 0vh #F4EEF1FF, 31px -21px 0vh #110E09FF' : '1px 0.0vh #540811FF',
           transition: 'all 0.12s linear',
           whiteSpace: 'nowrap',
           opacity: 0.8,                 // <-- set opacity
@@ -140,7 +140,7 @@ const DarkRomanClock = () => {
   return (
     <div
       style={{
-        background: 'linear-gradient(185deg, #601B78FF 0%, #5F6B49FF 100%)',
+        background: 'linear-gradient(185deg, #690ABBFF 0%, #474C37FF 100%)',
 
         width: '100vw',
         height: '100vh',
