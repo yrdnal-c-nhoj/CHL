@@ -3,14 +3,13 @@ import videoFile from "./esp.mp4";
 import videoWebM from "./esp.webp";
 import fallbackImg from "./esp.jpeg";
 import fontFile251024 from "./esp.ttf";
-import cornerUL from "./ul.webp"; // 🟩 upper-left decorative image
-import cornerLR from "./lr.webp"; // 🟩 lower-right decorative image
+import cornerUL from "./ul.webp";
+import cornerLR from "./lr.webp";
 
 export default function VictorianEsperantoClock() {
   const videoRef = useRef(null);
   const [videoFailed, setVideoFailed] = useState(false);
   const [time, setTime] = useState(new Date());
-
   const textAndOrnamentColor = "#110116FF";
   const textAndOrnamentShadow = "-1px 1px 0px #F1E7D8FF";
 
@@ -35,36 +34,27 @@ export default function VictorianEsperantoClock() {
     };
   }, []);
 
-  const capitalizeWords = (phrase) => {
-    const words = phrase.split(" ");
-    if (words.length === 0) return phrase;
-    return [
-      words[0].charAt(0).toUpperCase() + words[0].slice(1).toLowerCase(),
-      ...words.slice(1).map((word) => word.toLowerCase()),
-    ].join(" ");
-  };
-
   const hoursWords = [
-    "nul","unu","du","tri","kvar","kvin","ses","sep","ok","naŭ","dek",
-    "dek unu","dek du","dek tri","dek kvar","dek kvin","dek ses","dek sep",
-    "dek ok","dek naŭ","dudek","dudek unu","dudek du","dudek tri"
+    "nula", "unua", "dua", "tria", "kvara", "kvina", "sesa", "sepa", "oka", "naŭa", "deka",
+    "dek unua", "dek dua", "dek tria", "dek kvara", "dek kvina", "dek sesa", "dek sepa",
+    "dek oka", "dek naŭa", "dudeka", "dudek unua", "dudek dua", "dudek tria"
   ];
 
   const minutesAndSecondsWords = [
-    "nul","unu","du","tri","kvar","kvin","ses","sep","ok","naŭ","dek",
-    "dek unu","dek du","dek tri","dek kvar","dek kvin","dek ses","dek sep",
-    "dek ok","dek naŭ","dudek","dudek unu","dudek du","dudek tri","dudek kvar",
-    "dudek kvin","dudek ses","dudek sep","dudek ok","dudek naŭ","tridek",
-    "tridek unu","tridek du","tridek tri","tridek kvar","tridek kvin","tridek ses",
-    "tridek sep","tridek ok","tridek naŭ","kvardek","kvardek unu","kvardek du",
-    "kvardek tri","kvardek kvar","kvardek kvin","kvardek ses","kvardek sep",
-    "kvardek ok","kvardek naŭ","kvindek","kvindek unu","kvindek du","kvindek tri",
-    "kvindek kvar","kvindek kvin","kvindek ses","kvindek sep","kvindek ok","kvindek naŭ"
+    "nul", "unu", "du", "tri", "kvar", "kvin", "ses", "sep", "ok", "naŭ", "dek",
+    "dek unu", "dek du", "dek tri", "dek kvar", "dek kvin", "dek ses", "dek sep",
+    "dek ok", "dek naŭ", "dudek", "dudek unu", "dudek du", "dudek tri", "dudek kvar",
+    "dudek kvin", "dudek ses", "dudek sep", "dudek ok", "dudek naŭ", "tridek",
+    "tridek unu", "tridek du", "tridek tri", "tridek kvar", "tridek kvin", "tridek ses",
+    "tridek sep", "tridek ok", "tridek naŭ", "kvardek", "kvardek unu", "kvardek du",
+    "kvardek tri", "kvardek kvar", "kvardek kvin", "kvardek ses", "kvardek sep",
+    "kvardek ok", "kvardek naŭ", "kvindek", "kvindek unu", "kvindek du", "kvindek tri",
+    "kvindek kvar", "kvindek kvin", "kvindek ses", "kvindek sep", "kvindek ok", "kvindek naŭ"
   ];
 
-  const hourWord = capitalizeWords(hoursWords[time.getHours()]);
-  const minuteWord = capitalizeWords(minutesAndSecondsWords[time.getMinutes()]);
-  const secondWord = capitalizeWords(minutesAndSecondsWords[time.getSeconds()]);
+  const hourWord = hoursWords[time.getHours()];
+  const minuteWord = minutesAndSecondsWords[time.getMinutes()];
+  const secondWord = minutesAndSecondsWords[time.getSeconds()];
 
   const containerStyle = {
     fontFamily: "'CustomzzzFont', serif",
@@ -84,7 +74,7 @@ export default function VictorianEsperantoClock() {
     height: "100%",
     objectFit: "cover",
     zIndex: 0,
-     opacity: 0.7,
+    opacity: 0.7,
     filter: "saturate(0.4) brightness(2.9) contrast(0.3) sepia(0.2) hue-rotate(-30deg)",
   };
 
@@ -98,7 +88,7 @@ export default function VictorianEsperantoClock() {
     backgroundPosition: "center",
     display: videoFailed ? "block" : "none",
     zIndex: 0,
-     opacity: 0.7,
+    opacity: 0.7,
     filter: "sepia(0.3) contrast(0.4) brightness(1.9)",
   };
 
@@ -114,23 +104,23 @@ export default function VictorianEsperantoClock() {
     whiteSpace: "nowrap",
     top: "0",
     textShadow: textAndOrnamentShadow,
-    fontWeight: "normal", // ✅ explicitly ensure no bold
+    fontWeight: "normal",
   };
 
   const numberStyle = { textAlign: "left", flexShrink: 0, fontWeight: "normal" };
   const labelStyle = { textAlign: "right", flexShrink: 0, fontWeight: "normal" };
+
   const dotsStyle = {
     flexGrow: 1,
     height: "1px",
     backgroundImage: `repeating-linear-gradient(to right, ${textAndOrnamentColor} 0 2px, transparent 2px 6px)`,
     margin: "0 1vw",
     opacity: 0.6,
-    // boxShadow: textAndOrnamentShadow,
   };
 
   const renderRow = (number, label, top) => (
     <div style={{ ...rowStyle, top }}>
-      <div style={numberStyle}>{number}</div>
+      <div style={numberStyle}>La {number}</div>
       <div style={dotsStyle} />
       <div style={labelStyle}>{label}</div>
     </div>
@@ -149,7 +139,7 @@ export default function VictorianEsperantoClock() {
     position: "absolute",
     width: "16vh",
     height: "auto",
-   tint: textAndOrnamentColor,
+    tint: textAndOrnamentColor,
   };
 
   return (
@@ -164,19 +154,19 @@ export default function VictorianEsperantoClock() {
           }
         `}
       </style>
-{/* Decorative Victorian Frame */}
-<div className="victorian-frame" style={frameStyle}>
-  <img
-    src={cornerUL}
-    alt="Victorian corner upper-left"
-    style={{ ...cornerImageStyle, top: "0", left: "0", opacity: 0.6 }}
-  />
-  <img
-    src={cornerLR}
-    alt="Victorian corner lower-right"
-    style={{ ...cornerImageStyle, bottom: "0", right: "0", opacity: 0.6 }}
-  />
-</div>
+
+      <div className="victorian-frame" style={frameStyle}>
+        <img
+          src={cornerUL}
+          alt="Victorian corner upper-left"
+          style={{ ...cornerImageStyle, top: "0", left: "0", opacity: 0.6 }}
+        />
+        <img
+          src={cornerLR}
+          alt="Victorian corner lower-right"
+          style={{ ...cornerImageStyle, bottom: "0", right: "0", opacity: 0.6 }}
+        />
+      </div>
 
       <video
         ref={videoRef}
@@ -201,15 +191,15 @@ export default function VictorianEsperantoClock() {
           textAlign: "center",
           fontSize: "5vh",
           textShadow: textAndOrnamentShadow,
-          fontWeight: "normal", // ✅ ensure heading not bold
+          fontWeight: "normal",
         }}
       >
-        Bonvenon al <br />la Esperanta <br />Horloĝo!
+        Bonvenon al <br /> la Esperanta <br /> Horloĝo!
       </div>
 
-      {renderRow(hourWord, capitalizeWords("horoj"), "40%")}
-      {renderRow(minuteWord, capitalizeWords("minutoj"), "55%")}
-      {renderRow(secondWord, capitalizeWords("sekundoj"), "70%")}
+      {renderRow(hourWord, "Horo", "40%")}
+      {renderRow(minuteWord, "Minutoj", "55%")}
+      {renderRow(secondWord, "Sekundoj", "70%")}
     </div>
   );
 }
