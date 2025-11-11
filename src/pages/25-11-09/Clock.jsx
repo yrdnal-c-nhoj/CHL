@@ -1,145 +1,154 @@
-/** @jsxImportSource react */
-import React, { useEffect, useState } from "react";
-import customFont20251103 from "./dia.otf"; // 🟩 Local font
+// src/components/DarkRomanClock.jsx
+import React, { useState, useEffect, useMemo } from 'react';
+import Font20251111 from './disc.ttf';       // main Roman font
+import ActiveFont20251111 from './ddisc.ttf'; // active digit font
 
-export default function EdgeClockWithHands() {
+const ROMAN_NUMERALS = [
+  'I','II','III','IV','V','VI','VII','VIII','IX','X',
+  'XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX',
+  'XXI','XXII','XXIII','XXIV','XXV','XXVI','XXVII','XXVIII','XXIX','XXX',
+  'XXXI','XXXII','XXXIII','XXXIV','XXXV','XXXVI','XXXVII','XXXVIII','XXXIX','XL',
+  'XLI','XLII','XLIII','XLIV','XLV','XLVI','XLVII','XLVIII','XLIX','L',
+  'LI','LII','LIII','LIV','LV','LVI','LVII','LVIII','LIX','LX'
+];
+
+// Helpers
+const romanByIndex = (i) => ROMAN_NUMERALS[i];
+const timeValueToIndex = (value, max) => (value + max - 1) % max;
+
+const DarkRomanClock = () => {
   const [time, setTime] = useState(new Date());
-  const [viewport, setViewport] = useState({ width: 0, height: 0 });
-  const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-  const numberAndHandColor = "#0C0C0BFF";
-
-  // Inject font-face dynamically
+  // ~60fps update
   useEffect(() => {
-    const style = document.createElement("style");
-    style.innerHTML = `
+    const id = setInterval(() => setTime(new Date()), 16);
+    return () => clearInterval(id);
+  }, []);
+
+  const totalSeconds = time.getHours() * 3600 + time.getMinutes() * 60 + time.getSeconds() + time.getMilliseconds() / 1000;
+  const ALIGNMENT_DEGREE = 180;
+
+  const hourAngle = useMemo(() => ((totalSeconds / 3600) / 24) * -360 + ALIGNMENT_DEGREE, [totalSeconds]);
+  const minuteAngle = useMemo(() => ((totalSeconds / 60) / 60) * -360 + ALIGNMENT_DEGREE, [totalSeconds]);
+  const secondAngle = useMemo(() => ((totalSeconds % 60) / 60) * -360 + ALIGNMENT_DEGREE, [totalSeconds]);
+
+  const currentH = time.getHours();
+  const currentM = time.getMinutes();
+  const currentS = time.getSeconds();
+
+  const hoursActiveIndex = timeValueToIndex(currentH, 24);
+  const minutesActiveIndex = timeValueToIndex(currentM, 60);
+  const secondsActiveIndex = timeValueToIndex(currentS, 60);
+
+  // Inject fonts
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
       @font-face {
-        font-family: 'CustomFont';
-        src: url(${customFont20251103}) format('truetype');
-        font-weight: normal;
-        font-style: normal;
+        font-family: 'RomanFont20251111';
+        src: url(${Font20251111}) format('truetype');
+      }
+      @font-face {
+        font-family: 'ActiveFont20251111';
+        src: url(${ActiveFont20251111}) format('truetype');
       }
     `;
     document.head.appendChild(style);
     return () => document.head.removeChild(style);
   }, []);
 
-  // Continuous update for smooth hands
-  useEffect(() => {
-    const tick = () => {
-      setTime(new Date());
-      const id = requestAnimationFrame(tick);
-      return () => cancelAnimationFrame(id);
-    };
-    const id = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(id);
-  }, []);
+  const renderNumerals = (count, activeIndex, radiusVH, keyPrefix) => {
+    const numerals = [];
+    const innerRadiusVH = radiusVH * 0.3;
+    const radiusStep = (radiusVH - innerRadiusVH) / Math.max(1, count / 4);
 
-  // Track viewport size
-  useEffect(() => {
-    const updateSize = () =>
-      setViewport({ width: window.innerWidth, height: window.innerHeight });
-    updateSize();
-    window.addEventListener("resize", updateSize);
-    return () => window.removeEventListener("resize", updateSize);
-  }, []);
+    for (let i = 0; i < count; i++) {
+      const angle = 90 + (i * (360 / count));
+      const angleRad = angle * Math.PI / 180;
+      const isActive = i === activeIndex;
+      const numPerSpoke = Math.ceil(count / 12);
+      const spokeIndex = i % numPerSpoke;
+      const r = innerRadiusVH + spokeIndex * radiusStep;
+      const x = r * Math.cos(angleRad);
+      const y = r * Math.sin(angleRad);
 
-  const centerX = viewport.width / 2;
-  const centerY = viewport.height / 2;
-
-  // Time calculations
-  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
-  const minutes = time.getMinutes() + seconds / 60;
-  const hours = time.getHours() % 12 + minutes / 60;
-
-  const secondDeg = seconds * 6;
-  const minuteDeg = minutes * 6;
-  const hourDeg = hours * 30;
-
-  // Hands style
-  const handStyle = (widthPx, lengthPx, color, rotation) => ({
-    position: "absolute",
-    width: `${widthPx}px`,
-    height: `${lengthPx}px`,
-    backgroundColor: color,
-    transformOrigin: "50% 100%",
-    top: `${centerY - lengthPx}px`,
-    left: `${centerX - widthPx / 2}px`,
-    transform: `rotate(${rotation}deg)`,
-    borderRadius: "2px",
-    zIndex: 3,
-  });
-
-  // Place numbers at edges
-  const numberStyle = (num) => {
-    const margin = 20; // pixels from edge
-    let x, y;
-
-    if (num === 12) {
-      x = centerX;
-      y = margin;
-    } else if (num === 3) {
-      x = viewport.width - margin;
-      y = centerY;
-    } else if (num === 6) {
-      x = centerX;
-      y = viewport.height - margin;
-    } else if (num === 9) {
-      x = margin;
-      y = centerY;
-    } else if (num === 1 || num === 2) {
-      const t = num === 1 ? 0.33 : 0.67;
-      x = centerX + (viewport.width - centerX - margin) * t;
-      y = margin + (centerY - margin) * t;
-    } else if (num === 4 || num === 5) {
-      const t = num === 4 ? 0.33 : 0.67;
-      x = viewport.width - margin - (viewport.width - centerX - margin) * t;
-      y = centerY + (viewport.height - centerY - margin) * t;
-    } else if (num === 7 || num === 8) {
-      const t = num === 7 ? 0.33 : 0.67;
-      x = centerX - (centerX - margin) * t;
-      y = viewport.height - margin - (viewport.height - centerY - margin) * t;
-    } else {
-      const t = num === 11 ? 0.33 : 0.67;
-      x = margin + (centerX - margin) * t;
-      y = centerY - (centerY - margin) * t;
+      numerals.push(
+        <div
+          key={`${keyPrefix}-${i}`}
+          style={{
+            position: 'absolute',
+            left: `calc(50% + ${x}vh)`,
+            top: `calc(50% + ${y}vh)`,
+            transform: `translate(-50%, -50%) rotate(${angle + 90}deg)`,
+            fontFamily: isActive ? 'ActiveFont20251111, serif' : 'RomanFont20251111, serif',
+            fontSize: isActive ? '2.2vh' : '1.2vh',
+            color: isActive ? '#ffffff' : 'rgba(255, 100, 255)',
+            textShadow: isActive ? '1px 1px 0vh #F2157CFF, -1px -1px 0vh #faaa0f' : '0 0 0.2vh rgba(255, 44, 255)',
+            transition: 'all 0.12s linear',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {romanByIndex(i)}
+        </div>
+      );
     }
-
-    return {
-      position: "absolute",
-      left: `${x}px`,
-      top: `${y}px`,
-      transform: "translate(-50%, -50%)",
-      fontSize: "14vh",
-      color: numberAndHandColor,
-      fontFamily: "CustomFont, Arial, sans-serif", // Use custom font
-      fontWeight: "bold",
-      zIndex: 2,
-    };
+    return numerals;
   };
+
+  const renderRing = (sizeVH, rotationAngle, numerals) => (
+    <div
+      style={{
+        position: 'absolute',
+        width: `${sizeVH}vh`,
+        height: `${sizeVH}vh`,
+        left: '50%',
+        top: '50%',
+        transform: `translate(-50%, -50%) rotate(${rotationAngle}deg)`,
+        borderRadius: '50%',
+        transition: 'transform 0.016s linear',
+      }}
+    >
+      {numerals}
+    </div>
+  );
+
+  const hourRadiusVH = 14;
+  const minuteRadiusVH = 24;
+  const secondRadiusVH = 44;
+
+  const hoursRing = renderRing(
+    hourRadiusVH * 2.2,
+    hourAngle,
+    renderNumerals(24, hoursActiveIndex, hourRadiusVH, 'h')
+  );
+
+  const minutesRing = renderRing(
+    minuteRadiusVH * 2.2,
+    minuteAngle,
+    renderNumerals(60, minutesActiveIndex, minuteRadiusVH, 'm')
+  );
+
+  const secondsRing = renderRing(
+    secondRadiusVH * 2.2,
+    secondAngle,
+    renderNumerals(60, secondsActiveIndex, secondRadiusVH, 's')
+  );
 
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100dvh",
-        position: "relative",
-        overflow: "hidden",
-        backgroundColor: "#CBE1DFFF",
-        boxSizing: "border-box",
+        backgroundColor: '#6E6404FF',
+        width: '100vw',
+        height: '100vh',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      {viewport.width > 0 &&
-        numbers.map((n) => (
-          <div key={n} style={numberStyle(n)}>
-            {n}
-          </div>
-        ))}
-
-      {/* Clock hands */}
-      <div style={handStyle(6, 100, numberAndHandColor, hourDeg)} />
-      <div style={handStyle(4, 130, numberAndHandColor, minuteDeg)} />
-      <div style={handStyle(2, 135, numberAndHandColor, secondDeg)} />
+      {hoursRing}
+      {minutesRing}
+      {secondsRing}
     </div>
   );
-}
+};
+
+export default DarkRomanClock;
