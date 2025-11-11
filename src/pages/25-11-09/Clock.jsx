@@ -141,9 +141,8 @@ const DarkRomanClock = () => {
     <div
       style={{
         background: 'linear-gradient(185deg, #690ABBFF 0%, #474C37FF 100%)',
-
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         position: 'relative',
         overflow: 'hidden',
       }}
