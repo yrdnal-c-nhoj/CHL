@@ -62,7 +62,7 @@ const Clock = () => {
   const hourDeg = hours * 30;
 
   const clockSize = '90vh';
-  const numberSize = '20vh';
+  const numberSize = '15vh';
   const handWidth = '10vmin';
   const hourHandLength = '30vmin';
   const minuteHandLength = '38vmin';
