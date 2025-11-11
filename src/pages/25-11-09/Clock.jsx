@@ -57,43 +57,46 @@ const DarkRomanClock = () => {
     return () => document.head.removeChild(style);
   }, []);
 
-  const renderNumerals = (count, activeIndex, radiusVH, keyPrefix) => {
-    const numerals = [];
-    const innerRadiusVH = radiusVH * 0.3;
-    const radiusStep = (radiusVH - innerRadiusVH) / Math.max(1, count / 4);
+ 
+     const renderNumerals = (count, activeIndex, radiusVH, keyPrefix) => {
+  const numerals = [];
+  const innerRadiusVH = radiusVH * 0.3;
+  const radiusStep = (radiusVH - innerRadiusVH) / Math.max(1, count / 4);
 
-    for (let i = 0; i < count; i++) {
-      const angle = 90 + (i * (360 / count));
-      const angleRad = angle * Math.PI / 180;
-      const isActive = i === activeIndex;
-      const numPerSpoke = Math.ceil(count / 12);
-      const spokeIndex = i % numPerSpoke;
-      const r = innerRadiusVH + spokeIndex * radiusStep;
-      const x = r * Math.cos(angleRad);
-      const y = r * Math.sin(angleRad);
+  for (let i = 0; i < count; i++) {
+    const angle = 90 + (i * (360 / count));
+    const angleRad = angle * Math.PI / 180;
+    const isActive = i === activeIndex;
+    const numPerSpoke = Math.ceil(count / 12);
+    const spokeIndex = i % numPerSpoke;
+    const r = innerRadiusVH + spokeIndex * radiusStep;
+    const x = r * Math.cos(angleRad);
+    const y = r * Math.sin(angleRad);
 
-      numerals.push(
-        <div
-          key={`${keyPrefix}-${i}`}
-          style={{
-            position: 'absolute',
-            left: `calc(50% + ${x}vh)`,
-            top: `calc(50% + ${y}vh)`,
-            transform: `translate(-50%, -50%) rotate(${angle + 90}deg)`,
-            fontFamily: isActive ? 'ActiveFont20251111, serif' : 'RomanFont20251111, serif',
-            fontSize: isActive ? '2.2vh' : '1.2vh',
-            color: isActive ? '#E63636FF' : '#333333',
-            textShadow: isActive ? '1px 1px 0vh #F4EEF1FF, -1px -1px 0vh #110E09FF' : '0 0 0.2vh rgba(255, 44, 255)',
-            transition: 'all 0.12s linear',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {romanByIndex(i)}
-        </div>
-      );
-    }
-    return numerals;
-  };
+    numerals.push(
+      <div
+        key={`${keyPrefix}-${i}`}
+        style={{
+          position: 'absolute',
+          left: `calc(50% + ${x}vh)`,
+          top: `calc(50% + ${y}vh)`,
+          transform: `translate(-50%, -50%) rotate(${angle + 90}deg)`,
+          fontFamily: isActive ? 'ActiveFont20251111, serif' : 'RomanFont20251111, serif',
+          fontSize: isActive ? '9.2vh' : '1.3vh',
+          color: isActive ? '#EBC715FF' : '#333333',
+          textShadow: isActive ? '1px 1px 0vh #F4EEF1FF, 31px -21px 0vh #110E09FF' : '0 0.2vh #0CECE5FF',
+          transition: 'all 0.12s linear',
+          whiteSpace: 'nowrap',
+          opacity: 0.8,                 // <-- set opacity
+          zIndex: isActive ? 1 : 2,     // <-- set z-index
+        }}
+      >
+        {romanByIndex(i)}
+      </div>
+    );
+  }
+  return numerals;
+};
 
   const renderRing = (sizeVH, rotationAngle, numerals) => (
     <div
@@ -137,7 +140,8 @@ const DarkRomanClock = () => {
   return (
     <div
       style={{
-        backgroundColor: '#BBEA69FF',
+        background: 'linear-gradient(185deg, #601B78FF 0%, #5F6B49FF 100%)',
+
         width: '100vw',
         height: '100vh',
         position: 'relative',
