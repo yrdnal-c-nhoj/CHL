@@ -83,7 +83,7 @@ const DarkRomanClock = () => {
             fontFamily: isActive ? 'ActiveFont20251111, serif' : 'RomanFont20251111, serif',
             fontSize: isActive ? '2.2vh' : '1.2vh',
             color: isActive ? '#E63636FF' : '#333333',
-            textShadow: isActive ? '1px 1px 0vh #F2157CFF, -1px -1px 0vh #faaa0f' : '0 0 0.2vh rgba(255, 44, 255)',
+            textShadow: isActive ? '1px 1px 0vh #F4EEF1FF, -1px -1px 0vh #110E09FF' : '0 0 0.2vh rgba(255, 44, 255)',
             transition: 'all 0.12s linear',
             whiteSpace: 'nowrap',
           }}
