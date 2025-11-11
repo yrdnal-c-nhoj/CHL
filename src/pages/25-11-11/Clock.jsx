@@ -52,9 +52,9 @@ export default function CustomFontMirroredClock() {
 
   const mirroredClockStyle = {
     fontFamily: "TodayFont, monospace",
-    fontSize: "10vw",
-    color: "#37FA0B92",
-    textShadow: "1.5px 1px 0px #FF0011FF, -1px -1px 0px #00f, 0 0 2px #E80DE8C2",
+    fontSize: "9vw",
+    color: "#37FA0BC5",
+    textShadow: "1px 1px 0px #F1EAEBFF, -1px -1px 0px #000000f",
     transform: "scaleX(-1) translateX(-1vw)",
     textAlign: "center",
     zIndex: 2,
@@ -67,3 +67,5 @@ export default function CustomFontMirroredClock() {
     </div>
   );
 }
+
+
