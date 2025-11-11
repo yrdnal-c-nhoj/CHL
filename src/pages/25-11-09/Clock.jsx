@@ -82,9 +82,9 @@ const DarkRomanClock = () => {
           top: `calc(50% + ${y}vh)`,
           transform: `translate(-50%, -50%) rotate(${angle + 90}deg)`,
           fontFamily: isActive ? 'ActiveFont20251111, serif' : 'RomanFont20251111, serif',
-          fontSize: isActive ? '9.2vh' : '1.3vh',
+          fontSize: isActive ? '3.2vh' : '1.3vh',
           color: isActive ? '#FFFF07FF' : '#F1D7D7FF',
-          textShadow: isActive ? '3px 3px 0vh #F4EEF1FF, 31px -21px 0vh #110E09FF' : '1px 0.0vh #540811FF',
+          textShadow: isActive ? '1px 1px 0vh #F4EEF1FF, 2px -2px 0vh #110E09FF' : '1px 0.0vh #540811FF',
           transition: 'all 0.12s linear',
           whiteSpace: 'nowrap',
           opacity: 0.8,                 // <-- set opacity
