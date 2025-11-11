@@ -31,8 +31,8 @@ export default function CustomFontMirroredClock() {
     }
   `;
 
-  const topImageSize = "70% auto";   // front image size
-  const backImageSize = "220% auto"; // back image size
+  const topImageSize = "90% auto";   // front image size
+  const backImageSize = "380% auto"; // back image size
 
   const containerStyle = {
     position: "relative",
@@ -52,7 +52,7 @@ export default function CustomFontMirroredClock() {
 
   const mirroredClockStyle = {
     fontFamily: "TodayFont, monospace",
-    fontSize: "11vw",
+    fontSize: "13vw",
     color: "#5EF5397D",
     textShadow: "1px 1px 0px #F1EAEBA0, -1px -1px 0px #0E0D0DFF",
     transform: "scaleX(-1) translateX(-1vw)",
