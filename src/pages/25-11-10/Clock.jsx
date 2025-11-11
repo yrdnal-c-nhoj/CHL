@@ -86,7 +86,7 @@ const Clock = () => {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           backgroundAttachment: 'fixed',
-          filter: 'invert(100%)',
+          filter: 'invert(10%)',
           opacity: 0.8,
           zIndex: 0,
         }}
@@ -121,6 +121,7 @@ const Clock = () => {
                 transform: `rotate(${angle}deg)`,
                 transformOrigin: 'center center',
                 objectFit: 'contain',
+                filter: 'saturate(1.5)',
                 zIndex: 2,
                 opacity: 0.8,
               }}
