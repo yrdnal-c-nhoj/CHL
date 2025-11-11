@@ -184,18 +184,21 @@ export default function VictorianEsperantoClock() {
       <div style={fallbackStyle} aria-hidden={!videoFailed} />
 
       <div
-        style={{
-          position: "absolute",
-          top: "8%",
-          width: "100%",
-          textAlign: "center",
-          fontSize: "5vh",
-          textShadow: textAndOrnamentShadow,
-          fontWeight: "normal",
-        }}
-      >
-        Bonvenon al <br /> la Esperanta <br /> Horloĝo!
-      </div>
+  style={{
+    position: "absolute",
+    top: "8%",
+    width: "100%",
+    textAlign: "center",
+    fontSize: "5vh",
+    textShadow: textAndOrnamentShadow,
+    fontWeight: "normal",
+    lineHeight: "1.2",
+  }}
+>
+  Bonvenon al <br />
+  via Esperanta Horloĝo!
+</div>
+
 
       {renderRow(hourWord, "Horo", "40%")}
       {renderRow(minuteWord, "Minutoj", "55%")}
