@@ -1,74 +1,110 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
+import * as THREE from 'three';
+import backgroundImage from './bg1.jpg';
+import customFont from './oct.ttf'; // Vite will handle this as a blob
 
-export default function NestedDiscsClock() {
-  const [time, setTime] = useState(new Date());
-  const animationRef = useRef();
+export default function OctahedronWithOverlay() {
+  const mountRef = useRef(null);
 
   useEffect(() => {
+    // --- Inject font for overlay text only ---
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @font-face {
+        font-family: 'CustomFundy';
+        src: url('${customFont}') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }
+      .overlay-text {
+        font-family: 'CustomFundy', sans-serif;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // --- THREE.js setup ---
+    const scene = new THREE.Scene();
+    scene.background = null;
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
+    mountRef.current.appendChild(renderer.domElement);
+
+    const geometry = new THREE.OctahedronGeometry(2);
+    const material = new THREE.MeshPhongMaterial({ color: 0x00ff88, shininess: 100, transparent: true, opacity: 0.7 });
+    const octahedron = new THREE.Mesh(geometry, material);
+    scene.add(octahedron);
+
+    const wireframe = new THREE.LineSegments(new THREE.WireframeGeometry(geometry));
+    wireframe.material.color.setHex(0x000000);
+    wireframe.material.transparent = true;
+    wireframe.material.opacity = 0.3;
+    octahedron.add(wireframe);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(5, 5, 5);
+    scene.add(directionalLight);
+
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+    scene.add(ambientLight);
+
+    camera.position.z = 5;
+
     const animate = () => {
-      setTime(new Date());
-      animationRef.current = requestAnimationFrame(animate);
+      requestAnimationFrame(animate);
+      octahedron.rotation.x += 0.01;
+      octahedron.rotation.y += 0.01;
+      renderer.render(scene, camera);
     };
-    animationRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationRef.current);
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      geometry.dispose();
+      material.dispose();
+      wireframe.geometry.dispose();
+      renderer.dispose();
+      document.head.removeChild(style);
+      if (mountRef.current) mountRef.current.removeChild(renderer.domElement);
+    };
   }, []);
 
-  const hours = time.getHours();
-  const minutes = time.getMinutes();
-  const seconds = time.getSeconds();
-  const milliseconds = time.getMilliseconds();
-
-  // Continuous rotation degrees (counterclockwise)
-  const hourDeg = -((hours % 12) * 30 + minutes * 0.5 + (seconds / 60) * 0.5);
-  const minuteDeg = -(minutes * 6 + seconds * 0.1 + (milliseconds / 1000) * 0.1);
-  const secondDeg = -(seconds * 6 + (milliseconds / 1000) * 6);
-
-  // Disc style with gradient and subtle inner shadow
-  const discStyle = (sizeVh, deg, colorStart, colorEnd) => ({
-    width: `${sizeVh}vh`,
-    height: `${sizeVh}vh`,
-    borderRadius: "50%",
-    border: `0.3vh solid ${colorEnd}`,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    transform: `rotate(${deg}deg)`,
-    position: "absolute",
-    background: `radial-gradient(circle at center, ${colorStart}, ${colorEnd})`,
-    boxShadow: "inset -0.5vh -0.5vh 1vh rgba(0,0,0,0.2)",
-  });
-
-  const containerStyle = {
-    position: "relative",
-    width: "50vh",
-    height: "50vh",
-    margin: "auto",
-    top: "10vh",
-  };
-
-  const digitalClockStyle = {
-    position: "absolute",
-    right: "5vh",
-    top: "10vh",
-    fontSize: "4vh",
-    fontFamily: "monospace",
-    color: "#000",
-  };
-
   return (
-    <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
-      <div style={containerStyle}>
-        {/* Outer disc: seconds */}
-        <div style={discStyle(50, secondDeg, "#FFA07A", "#FF6347")} />
-        {/* Middle disc: minutes */}
-        <div style={discStyle(35, minuteDeg, "#87CEFA", "#4682B4")} />
-        {/* Inner disc: hours */}
-        <div style={discStyle(20, hourDeg, "#90EE90", "#32CD32")} />
-      </div>
-
-      {/* Digital clock on the right */}
-      <div style={digitalClockStyle}>
-        {time.toLocaleTimeString()}
+    <div
+      ref={mountRef}
+      style={{
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+        position: 'relative',
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      {/* Overlay HTML text */}
+      <div
+        className="overlay-text"
+        style={{
+          position: 'absolute',
+          top: '2rem',
+          left: '2rem',
+          color: '#00ff88',
+          fontSize: '2rem',
+          zIndex: 10,
+          pointerEvents: 'none', // ensures clicks go through to canvas if needed
+        }}
+      >
+        ✨ Windsurf Command ⭐
       </div>
     </div>
   );
