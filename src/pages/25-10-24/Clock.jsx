@@ -13,6 +13,9 @@ export default function VictorianEsperantoClock() {
   const textAndOrnamentColor = "#110116FF";
   const textAndOrnamentShadow = "-1px 1px 0px #F1E7D8FF";
 
+  // Capitalization helper
+  const capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
@@ -52,9 +55,10 @@ export default function VictorianEsperantoClock() {
     "kvindek kvar", "kvindek kvin", "kvindek ses", "kvindek sep", "kvindek ok", "kvindek naŭ"
   ];
 
-  const hourWord = hoursWords[time.getHours()];
-  const minuteWord = minutesAndSecondsWords[time.getMinutes()];
-  const secondWord = minutesAndSecondsWords[time.getSeconds()];
+  // Prefix "LA " for hours, capitalize minutes/seconds
+  const hourWord = "La " + hoursWords[time.getHours()];
+  const minuteWord = capitalizeFirst(minutesAndSecondsWords[time.getMinutes()]);
+  const secondWord = capitalizeFirst(minutesAndSecondsWords[time.getSeconds()]);
 
   const containerStyle = {
     fontFamily: "'CustomzzzFont', serif",
@@ -102,7 +106,6 @@ export default function VictorianEsperantoClock() {
     transform: "translateX(-50%)",
     fontSize: "4vh",
     whiteSpace: "nowrap",
-    top: "0",
     textShadow: textAndOrnamentShadow,
     fontWeight: "normal",
   };
@@ -120,7 +123,7 @@ export default function VictorianEsperantoClock() {
 
   const renderRow = (number, label, top) => (
     <div style={{ ...rowStyle, top }}>
-      <div style={numberStyle}>La {number}</div>
+      <div style={numberStyle}>{number}</div>
       <div style={dotsStyle} />
       <div style={labelStyle}>{label}</div>
     </div>
@@ -184,21 +187,20 @@ export default function VictorianEsperantoClock() {
       <div style={fallbackStyle} aria-hidden={!videoFailed} />
 
       <div
-  style={{
-    position: "absolute",
-    top: "8%",
-    width: "100%",
-    textAlign: "center",
-    fontSize: "5vh",
-    textShadow: textAndOrnamentShadow,
-    fontWeight: "normal",
-    lineHeight: "1.2",
-  }}
->
-  Bonvenon al <br />
-  via Esperanta Horloĝo!
-</div>
-
+        style={{
+          position: "absolute",
+          top: "8%",
+          width: "100%",
+          textAlign: "center",
+          fontSize: "5vh",
+          textShadow: textAndOrnamentShadow,
+          fontWeight: "normal",
+          lineHeight: "1.2",
+        }}
+      >
+        Bonvenon al <br />
+        via Esperanta Horloĝo!
+      </div>
 
       {renderRow(hourWord, "Horo", "40%")}
       {renderRow(minuteWord, "Minutoj", "55%")}
