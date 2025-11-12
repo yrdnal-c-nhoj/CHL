@@ -16,21 +16,52 @@ export default function VideoBackgroundWithOctahedron() {
     const v = videoRef.current;
     if (!v) return;
     const onError = () => {
+      console.error("Video error:", v.error);
       setVideoFailed(true);
       setShowPlayButton(true);
     };
-    const onStalled = () => setShowPlayButton(true);
+    const onStalled = () => {
+      console.warn("Video stalled");
+      setShowPlayButton(true);
+    };
+    const onCanPlay = () => {
+      console.log("Video can play");
+      v.play()
+        .then(() => {
+          console.log("Video playing");
+          setShowPlayButton(false);
+        })
+        .catch((err) => {
+          console.error("Autoplay failed:", err);
+          setShowPlayButton(true);
+        });
+    };
     v.addEventListener("error", onError);
     v.addEventListener("stalled", onStalled);
-    v.play()?.catch(() => setShowPlayButton(true));
+    v.addEventListener("canplay", onCanPlay);
+    v.play()
+      .then(() => {
+        console.log("Initial play succeeded");
+        setShowPlayButton(false);
+      })
+      .catch((err) => {
+        console.error("Initial play failed:", err);
+      });
     return () => {
       v.removeEventListener("error", onError);
       v.removeEventListener("stalled", onStalled);
+      v.removeEventListener("canplay", onCanPlay);
     };
   }, []);
 
-  const handlePlayClick = () =>
-    videoRef.current?.play().then(() => setShowPlayButton(false));
+  const handlePlayClick = () => {
+    const v = videoRef.current;
+    if (v) {
+      v.play()
+        .then(() => setShowPlayButton(false))
+        .catch((err) => console.error("Manual play failed:", err));
+    }
+  };
 
   // THREE.js Octahedron
   useEffect(() => {
@@ -41,7 +72,7 @@ export default function VideoBackgroundWithOctahedron() {
     const camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
-      0.1,
+      0.01, // Adjusted near plane to prevent clipping
       1000
     );
     camera.position.z = 1;
@@ -49,7 +80,6 @@ export default function VideoBackgroundWithOctahedron() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     mount.appendChild(renderer.domElement);
 
-    // Clock canvas setup
     const canvas = document.createElement("canvas");
     canvas.width = 256;
     canvas.height = 256;
@@ -57,7 +87,6 @@ export default function VideoBackgroundWithOctahedron() {
     const texture = new THREE.CanvasTexture(canvas);
     texture.needsUpdate = true;
 
-    // Function to update clock
     const fontName = "MyCustomFont";
     const updateClock = () => {
       const now = new Date();
@@ -78,7 +107,6 @@ export default function VideoBackgroundWithOctahedron() {
       texture.needsUpdate = true;
     };
 
-    // Load custom font
     const font = new FontFace(fontName, `url(${customFontFile})`);
     font
       .load()
@@ -95,7 +123,6 @@ export default function VideoBackgroundWithOctahedron() {
     updateClock();
     const clockInterval = setInterval(updateClock, 1000);
 
-    // Octahedron
     const geometry = new THREE.OctahedronGeometry(2);
     const uvAttribute = geometry.attributes.uv;
     const uvArray = uvAttribute.array;
@@ -112,44 +139,27 @@ export default function VideoBackgroundWithOctahedron() {
       color: 0x2f20f0,
       shininess: 100,
       transparent: true,
-      opacity: 0.4,
+      opacity: 0.5, // Reduced opacity to make mesh less dominant
       side: THREE.DoubleSide,
       map: texture,
     });
     const octahedron = new THREE.Mesh(geometry, material);
     scene.add(octahedron);
 
-    // Define wireframe color
-    const wireframeColor = 0xfff0f0; // Red, can be changed to any hex color
-
-    // Outer wireframe
-    const wireframeOuter = new THREE.LineSegments(
+    const wireframeColor = 0xffffff; // Changed to white for better contrast
+    // Single wireframe
+    const wireframe = new THREE.LineSegments(
       new THREE.WireframeGeometry(geometry),
       new THREE.LineBasicMaterial({
         color: wireframeColor,
-        transparent: true,
-        opacity: 0.95,
+        transparent: false, // Removed transparency for maximum visibility
+        opacity: 1.0,
+        depthTest: false,
         depthWrite: false,
       })
     );
-    octahedron.add(wireframeOuter);
+    scene.add(wireframe);
 
-    // Inner wireframe (slightly smaller)
-    const innerGeometry = geometry.clone();
-    innerGeometry.scale(0.95, 0.95, 0.95); // Scale down slightly
-    const wireframeInner = new THREE.LineSegments(
-      new THREE.WireframeGeometry(innerGeometry),
-      new THREE.LineBasicMaterial({
-        color: wireframeColor,
-        transparent: true,
-        opacity: 0.95,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-      })
-    );
-    octahedron.add(wireframeInner);
-
-    // Lights
     const keyLight = new THREE.DirectionalLight(0xffffff, 1);
     keyLight.position.set(5, 5, 5);
     scene.add(keyLight);
@@ -158,28 +168,26 @@ export default function VideoBackgroundWithOctahedron() {
     scene.add(fillLight);
     scene.add(new THREE.AmbientLight(0xffffff, 0.4));
 
-    // Animate with smooth Z movement
     const clockTime = new THREE.Clock();
     const animate = () => {
       requestAnimationFrame(animate);
-      // Rotation
       octahedron.rotation.x += 0.003;
       octahedron.rotation.y += 0.005;
-      // Smooth Z motion
-      const t = clockTime.getElapsedTime(); // elapsed seconds
-      const cycleDuration = 25; // Full oscillation in 25 seconds
-      const zStart = -15; // Farthest back
-      const zEnd = 2; // Farthest forward
-      const zAmplitude = (zEnd - zStart) / 2; // Amplitude
-      const zCenter = (zStart + zEnd) / 2; // Center
-      // Smooth sine wave for Z position
+      wireframe.rotation.x += 0.003;
+      wireframe.rotation.y += 0.005;
+      const t = clockTime.getElapsedTime();
+      const cycleDuration = 25;
+      const zStart = -15;
+      const zEnd = 2;
+      const zAmplitude = (zEnd - zStart) / 2;
+      const zCenter = (zStart + zEnd) / 2;
       const zProgress = Math.sin((t / cycleDuration) * 2 * Math.PI);
       octahedron.position.z = zCenter + zProgress * zAmplitude;
+      wireframe.position.z = zCenter + zProgress * zAmplitude;
       renderer.render(scene, camera);
     };
     animate();
 
-    // Resize
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -187,13 +195,11 @@ export default function VideoBackgroundWithOctahedron() {
     };
     window.addEventListener("resize", handleResize);
 
-    // Cleanup
     return () => {
       clearInterval(clockInterval);
       window.removeEventListener("resize", handleResize);
       mount.removeChild(renderer.domElement);
       geometry.dispose();
-      innerGeometry.dispose();
       material.dispose();
       texture.dispose();
       renderer.dispose();
@@ -226,7 +232,7 @@ export default function VideoBackgroundWithOctahedron() {
         muted
         playsInline
         autoPlay
-        preload="metadata"
+        preload="auto"
       >
         <source src={videoFile} type="video/mp4" />
       </video>
@@ -240,7 +246,10 @@ export default function VideoBackgroundWithOctahedron() {
           display: videoFailed ? "block" : "none",
         }}
       />
-      <div ref={threeRef} style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none" }} />
+      <div
+        ref={threeRef}
+        style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none" }}
+      />
       {showPlayButton && (
         <button
           style={{
