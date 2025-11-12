@@ -11,10 +11,25 @@ export default function VideoBackgroundWithOctahedron() {
   const threeRef = useRef(null);
   const fontLoadedRef = useRef(false);
 
-  // Video setup
+  // Video setup - MODIFIED for more reliable autoplay check
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
+
+    // 1. Initial play attempt (most reliable method for modern browsers)
+    v.play()
+      .then(() => {
+        console.log("Initial play succeeded");
+        // Only hide the play button if play actually worked
+        setShowPlayButton(false); 
+      })
+      .catch((err) => {
+        // This is triggered if the browser (especially mobile) blocks autoplay
+        console.warn("Autoplay blocked/failed. Showing play button:", err);
+        setShowPlayButton(true);
+      });
+
+    // 2. Error/Stalled Handlers (Keep these for robustness)
     const onError = () => {
       console.error("Video error:", v.error);
       setVideoFailed(true);
@@ -24,35 +39,18 @@ export default function VideoBackgroundWithOctahedron() {
       console.warn("Video stalled");
       setShowPlayButton(true);
     };
-    const onCanPlay = () => {
-      console.log("Video can play");
-      v.play()
-        .then(() => {
-          console.log("Video playing");
-          setShowPlayButton(false);
-        })
-        .catch((err) => {
-          console.error("Autoplay failed:", err);
-          setShowPlayButton(true);
-        });
-    };
+
     v.addEventListener("error", onError);
     v.addEventListener("stalled", onStalled);
-    v.addEventListener("canplay", onCanPlay);
-    v.play()
-      .then(() => {
-        console.log("Initial play succeeded");
-        setShowPlayButton(false);
-      })
-      .catch((err) => {
-        console.error("Initial play failed:", err);
-      });
+    
+    // NOTE: Removed the 'canplay' listener as the direct v.play() attempt 
+    // is now the primary trigger, and its promise handles success/failure.
+    
     return () => {
       v.removeEventListener("error", onError);
       v.removeEventListener("stalled", onStalled);
-      v.removeEventListener("canplay", onCanPlay);
     };
-  }, []);
+  }, []); // Depend on nothing so it runs only on mount
 
   const handlePlayClick = () => {
     const v = videoRef.current;
@@ -63,7 +61,7 @@ export default function VideoBackgroundWithOctahedron() {
     }
   };
 
-  // THREE.js Octahedron
+  // THREE.js Octahedron (Kept unchanged)
   useEffect(() => {
     const mount = threeRef.current;
     if (!mount) return;
@@ -72,7 +70,7 @@ export default function VideoBackgroundWithOctahedron() {
     const camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
-      0.01, // Adjusted near plane to prevent clipping
+      0.01,
       1000
     );
     camera.position.z = 1;
@@ -139,20 +137,19 @@ export default function VideoBackgroundWithOctahedron() {
       color: 0x2f20f0,
       shininess: 100,
       transparent: true,
-      opacity: 0.5, // Reduced opacity to make mesh less dominant
+      opacity: 0.5,
       side: THREE.DoubleSide,
       map: texture,
     });
     const octahedron = new THREE.Mesh(geometry, material);
     scene.add(octahedron);
 
-    const wireframeColor = 0xffffff; // Changed to white for better contrast
-    // Single wireframe
+    const wireframeColor = 0xffffff;
     const wireframe = new THREE.LineSegments(
       new THREE.WireframeGeometry(geometry),
       new THREE.LineBasicMaterial({
         color: wireframeColor,
-        transparent: false, // Removed transparency for maximum visibility
+        transparent: false,
         opacity: 1.0,
         depthTest: false,
         depthWrite: false,
@@ -231,7 +228,7 @@ export default function VideoBackgroundWithOctahedron() {
         loop
         muted
         playsInline
-        autoPlay
+        // autoPlay REMOVED - The useEffect hook handles the initial play attempt
         preload="auto"
       >
         <source src={videoFile} type="video/mp4" />
