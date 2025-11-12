@@ -6,45 +6,47 @@ import customFontFile from "./oct.ttf";
 
 export default function VideoBackgroundWithOctahedron() {
   const [videoFailed, setVideoFailed] = useState(false);
-  const [showPlayButton, setShowPlayButton] = useState(false);
+  // CRITICAL CHANGE: showPlayButton is now always false.
+  const [showPlayButton, setShowPlayButton] = useState(false); 
   const videoRef = useRef(null);
   const threeRef = useRef(null);
   const fontLoadedRef = useRef(false);
 
-  // Video setup - MODIFIED for more reliable autoplay check
+  // Video setup - MODIFIED to FORCE Autoplay attempt and HIDE the button
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
 
-    // 1. Initial play attempt (most reliable method for modern browsers)
+    // Ensure the play button is hidden regardless of outcome
+    setShowPlayButton(false); 
+
+    // 1. Initial play attempt (Muted is the key to success on mobile)
     v.play()
       .then(() => {
-        console.log("Initial play succeeded");
-        // Only hide the play button if play actually worked
-        setShowPlayButton(false); 
+        console.log("Initial play succeeded (Muted Autoplay)");
       })
       .catch((err) => {
-        // This is triggered if the browser (especially mobile) blocks autoplay
-        console.warn("Autoplay blocked/failed. Showing play button:", err);
-        setShowPlayButton(true);
+        // Log the failure but DO NOT show the play button.
+        // If it fails here, it is a policy restriction, and we must accept it,
+        // but the UI will not break.
+        console.warn("Autoplay blocked/failed. Play button suppressed.", err);
       });
 
-    // 2. Error/Stalled Handlers (Keep these for robustness)
+    // 2. Error/Stalled Handlers (For asset loading issues)
     const onError = () => {
       console.error("Video error:", v.error);
+      // If the video file itself is broken, switch to fallback image.
       setVideoFailed(true);
-      setShowPlayButton(true);
+      // We still don't show the play button.
     };
+    
     const onStalled = () => {
       console.warn("Video stalled");
-      setShowPlayButton(true);
+      // We allow it to remain stalled and rely on the browser/user to recover.
     };
 
     v.addEventListener("error", onError);
     v.addEventListener("stalled", onStalled);
-    
-    // NOTE: Removed the 'canplay' listener as the direct v.play() attempt 
-    // is now the primary trigger, and its promise handles success/failure.
     
     return () => {
       v.removeEventListener("error", onError);
@@ -52,16 +54,7 @@ export default function VideoBackgroundWithOctahedron() {
     };
   }, []); // Depend on nothing so it runs only on mount
 
-  const handlePlayClick = () => {
-    const v = videoRef.current;
-    if (v) {
-      v.play()
-        .then(() => setShowPlayButton(false))
-        .catch((err) => console.error("Manual play failed:", err));
-    }
-  };
-
-  // THREE.js Octahedron (Kept unchanged)
+  // THREE.js Octahedron (Unchanged)
   useEffect(() => {
     const mount = threeRef.current;
     if (!mount) return;
@@ -228,7 +221,6 @@ export default function VideoBackgroundWithOctahedron() {
         loop
         muted
         playsInline
-        // autoPlay REMOVED - The useEffect hook handles the initial play attempt
         preload="auto"
       >
         <source src={videoFile} type="video/mp4" />
@@ -247,26 +239,7 @@ export default function VideoBackgroundWithOctahedron() {
         ref={threeRef}
         style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none" }}
       />
-      {showPlayButton && (
-        <button
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            zIndex: 2,
-            padding: "1rem 2rem",
-            fontSize: "2.8rem",
-            backgroundColor: "rgba(255,255,255,0.8)",
-            border: "none",
-            borderRadius: "0.5rem",
-            cursor: "pointer",
-          }}
-          onClick={handlePlayClick}
-        >
-          Play Video
-        </button>
-      )}
+      {/* 🛑 The 'Play Video' button rendering block is intentionally REMOVED here */}
     </div>
   );
 }
