@@ -98,9 +98,9 @@ const DarkRomanClock = () => {
               ? 'ActiveFont20251111, serif'
               : 'RomanFont20251111, serif',
             fontSize: isActive ? '20.0vh' : '1.5vh',
-            color: isActive ? '#F068E7FF' : '#DAF858FF',
+            color: isActive ? '#F068E7FF' : '#CDF52EFF',
             textShadow: isActive
-              ? '1px 1px 0vh #EFE9ECFF, 2px -2px 0vh #110E09FF'
+              ? '3px 1px 0vh #EFE9ECFF, 2px -2px 0vh #110E09FF'
               : '1px 1px 0.1vh #080102FF',
             transition: 'all 0.12s linear',
             whiteSpace: 'nowrap',
@@ -157,7 +157,7 @@ const DarkRomanClock = () => {
   return (
     <div
       style={{
-        background: 'linear-gradient(185deg, #690ABBFF 0%, #312802FF 100%)',
+        background: 'linear-gradient(185deg, #3B056AFF 70%, #3F3402FF 100%)',
         width: '100vw',
         height: '100dvh',
         position: 'relative',
