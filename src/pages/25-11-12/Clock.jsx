@@ -94,7 +94,7 @@ export default function VideoBackgroundWithOctahedron() {
       const timeString = `${hours}:${minutes < 10 ? "0" + minutes : minutes}`;
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.font = `110px ${fontLoadedRef.current ? fontName : "Arial"}`;
-      context.fillStyle = "#00ffff";
+      context.fillStyle = "#043D91FF";
       context.textAlign = "center";
       context.textBaseline = "middle";
       const xOffset = 0;
@@ -134,10 +134,10 @@ export default function VideoBackgroundWithOctahedron() {
     }
     uvAttribute.needsUpdate = true;
     const material = new THREE.MeshPhongMaterial({
-      color: 0x2f20f0,
+      color: 0xfff0f0,
       shininess: 100,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.6,
       side: THREE.DoubleSide,
       map: texture,
     });
@@ -160,7 +160,7 @@ export default function VideoBackgroundWithOctahedron() {
     const keyLight = new THREE.DirectionalLight(0xffffff, 1);
     keyLight.position.set(5, 5, 5);
     scene.add(keyLight);
-    const fillLight = new THREE.DirectionalLight(0x00ffcc, 0.5);
+    const fillLight = new THREE.DirectionalLight(0x000fcc, 0.5);
     fillLight.position.set(-3, -2, 4);
     scene.add(fillLight);
     scene.add(new THREE.AmbientLight(0xffffff, 0.4));
@@ -208,6 +208,8 @@ export default function VideoBackgroundWithOctahedron() {
       style={{
         width: "100vw",
         height: "100dvh",
+                  filter: "brightness(110%) contrast(130%) saturate(130%) hue-rotate(10deg)",
+
         position: "relative",
         overflow: "hidden",
         backgroundColor: "#000",
