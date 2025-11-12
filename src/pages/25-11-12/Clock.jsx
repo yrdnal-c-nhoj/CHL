@@ -6,13 +6,12 @@ import customFontFile from "./oct.ttf";
 
 export default function VideoBackgroundWithOctahedron() {
   const [videoFailed, setVideoFailed] = useState(false);
-  // CRITICAL CHANGE: showPlayButton is now always false.
-  const [showPlayButton, setShowPlayButton] = useState(false); 
+  const [showPlayButton, setShowPlayButton] = useState(false); // Kept false per user request
   const videoRef = useRef(null);
   const threeRef = useRef(null);
   const fontLoadedRef = useRef(false);
 
-  // Video setup - MODIFIED to FORCE Autoplay attempt and HIDE the button
+  // Video setup - MODIFIED for reliable Autoplay AND reliable Fallback
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -20,39 +19,47 @@ export default function VideoBackgroundWithOctahedron() {
     // Ensure the play button is hidden regardless of outcome
     setShowPlayButton(false); 
 
-    // 1. Initial play attempt (Muted is the key to success on mobile)
+    // --- Handlers ---
+    const onError = () => {
+      console.error("Video asset failed to load or has format issues (Error event).");
+      // This is the direct trigger for the fallback image
+      setVideoFailed(true); 
+    };
+    
+    // A proactive failure check if the video hasn't loaded (ready state)
+    const checkReadiness = () => {
+        // readyState < 4 means the video hasn't loaded enough data to play through
+        if (v.readyState < 4) {
+            console.warn("Video did not reach 'canplaythrough' state within timeout. Forcing fallback.");
+            setVideoFailed(true);
+        } else {
+             // Optional: Log success if it passed the check
+             console.log("Video loaded and ready to play (Passed readiness check).");
+        }
+    }
+
+    // --- Execution ---
+    v.addEventListener("error", onError);
+
+    // 1. Attempt initial play (for autoplay policy)
     v.play()
       .then(() => {
         console.log("Initial play succeeded (Muted Autoplay)");
       })
       .catch((err) => {
         // Log the failure but DO NOT show the play button.
-        // If it fails here, it is a policy restriction, and we must accept it,
-        // but the UI will not break.
         console.warn("Autoplay blocked/failed. Play button suppressed.", err);
       });
-
-    // 2. Error/Stalled Handlers (For asset loading issues)
-    const onError = () => {
-      console.error("Video error:", v.error);
-      // If the video file itself is broken, switch to fallback image.
-      setVideoFailed(true);
-      // We still don't show the play button.
-    };
     
-    const onStalled = () => {
-      console.warn("Video stalled");
-      // We allow it to remain stalled and rely on the browser/user to recover.
-    };
+    // 2. Set a timeout to check if the video has loaded properly (Asset check)
+    // 3000ms (3 seconds) is usually enough time for most files to load initial chunks.
+    const readinessTimeout = setTimeout(checkReadiness, 3000); 
 
-    v.addEventListener("error", onError);
-    v.addEventListener("stalled", onStalled);
-    
     return () => {
+      clearTimeout(readinessTimeout);
       v.removeEventListener("error", onError);
-      v.removeEventListener("stalled", onStalled);
     };
-  }, []); // Depend on nothing so it runs only on mount
+  }, []); 
 
   // THREE.js Octahedron (Unchanged)
   useEffect(() => {
@@ -239,7 +246,6 @@ export default function VideoBackgroundWithOctahedron() {
         ref={threeRef}
         style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none" }}
       />
-      {/* 🛑 The 'Play Video' button rendering block is intentionally REMOVED here */}
     </div>
   );
 }
