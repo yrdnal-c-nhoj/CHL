@@ -4,23 +4,22 @@
 
 vite v7.1.6 building for production...
 transforming...
-✓ 37 modules transformed.
-✗ Build failed in 187ms
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+✓ 1560 modules transformed.
+✗ Build failed in 920ms
 error during build:
-[vite:json] [plugin vite:json] src/context/testclock.json (228:1): Failed to parse JSON file, invalid JSON syntax found at position 15824
-file: /Users/john/Desktop/CHL/src/context/testclock.json:228:1
-
-226:   { "path": "25-11-11", "date": "25-11-11", "title": "Reflect" },
-227:   { "path": "25-11-12", "date": "25-11-12", "title": "Octahedron" }
-228:   { "path": "25-11-13", "date": "25-11-13", "title": "xxxxxx" },
-      ^
-229:   { "path": "25-11-14", "date": "25-11-14", "title": "xxxxxx" },
-230:   { "path": "25-11-15", "date": "25-11-15", "title": "xxxxxx" },
-
+Could not resolve "./oct.ttf" from "src/pages/25-11-16/Clock.jsx"
+file: /Users/john/Desktop/CHL/src/pages/25-11-16/Clock.jsx
     at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
     at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
-    at Object.error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:22029:20)
-    at Object.error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21091:42)
-    at Object.handler (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:8832:11)
-    at Object.handler (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:34051:13)
-    at file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:22351:40
+    at ModuleLoader.handleInvalidResolvedId (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21490:24)
+    at file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21450:26
