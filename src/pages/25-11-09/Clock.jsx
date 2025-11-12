@@ -1,7 +1,7 @@
 // src/components/DarkRomanClock.jsx
 import React, { useState, useEffect, useMemo } from 'react';
 import Font20251111 from './disc.ttf';       // main Roman font
-import ActiveFont20251111 from './ddisc.ttf'; // active digit font
+import ActiveFont20251111 from './pin.ttf'; // active digit font
 
 const ROMAN_NUMERALS = [
   'I','II','III','IV','V','VI','VII','VIII','IX','X',
@@ -25,12 +25,26 @@ const DarkRomanClock = () => {
     return () => clearInterval(id);
   }, []);
 
-  const totalSeconds = time.getHours() * 3600 + time.getMinutes() * 60 + time.getSeconds() + time.getMilliseconds() / 1000;
+  const totalSeconds =
+    time.getHours() * 3600 +
+    time.getMinutes() * 60 +
+    time.getSeconds() +
+    time.getMilliseconds() / 1000;
+
   const ALIGNMENT_DEGREE = 180;
 
-  const hourAngle = useMemo(() => ((totalSeconds / 3600) / 24) * -360 + ALIGNMENT_DEGREE, [totalSeconds]);
-  const minuteAngle = useMemo(() => ((totalSeconds / 60) / 60) * -360 + ALIGNMENT_DEGREE, [totalSeconds]);
-  const secondAngle = useMemo(() => ((totalSeconds % 60) / 60) * -360 + ALIGNMENT_DEGREE, [totalSeconds]);
+  const hourAngle = useMemo(
+    () => ((totalSeconds / 3600) / 24) * -360 + ALIGNMENT_DEGREE,
+    [totalSeconds]
+  );
+  const minuteAngle = useMemo(
+    () => ((totalSeconds / 60) / 60) * -360 + ALIGNMENT_DEGREE,
+    [totalSeconds]
+  );
+  const secondAngle = useMemo(
+    () => ((totalSeconds % 60) / 60) * -360 + ALIGNMENT_DEGREE,
+    [totalSeconds]
+  );
 
   const currentH = time.getHours();
   const currentM = time.getMinutes();
@@ -57,46 +71,49 @@ const DarkRomanClock = () => {
     return () => document.head.removeChild(style);
   }, []);
 
- 
-     const renderNumerals = (count, activeIndex, radiusVH, keyPrefix) => {
-  const numerals = [];
-  const innerRadiusVH = radiusVH * 0.3;
-  const radiusStep = (radiusVH - innerRadiusVH) / Math.max(1, count / 4);
+  const renderNumerals = (count, activeIndex, radiusVH, keyPrefix) => {
+    const numerals = [];
+    const innerRadiusVH = radiusVH * 0.3;
+    const radiusStep = (radiusVH - innerRadiusVH) / Math.max(1, count / 4);
 
-  for (let i = 0; i < count; i++) {
-    const angle = 90 + (i * (360 / count));
-    const angleRad = angle * Math.PI / 180;
-    const isActive = i === activeIndex;
-    const numPerSpoke = Math.ceil(count / 12);
-    const spokeIndex = i % numPerSpoke;
-    const r = innerRadiusVH + spokeIndex * radiusStep;
-    const x = r * Math.cos(angleRad);
-    const y = r * Math.sin(angleRad);
+    for (let i = 0; i < count; i++) {
+      const angle = 90 + i * (360 / count);
+      const angleRad = (angle * Math.PI) / 180;
+      const isActive = i === activeIndex;
+      const numPerSpoke = Math.ceil(count / 12);
+      const spokeIndex = i % numPerSpoke;
+      const r = innerRadiusVH + spokeIndex * radiusStep;
+      const x = r * Math.cos(angleRad);
+      const y = r * Math.sin(angleRad);
 
-    numerals.push(
-      <div
-        key={`${keyPrefix}-${i}`}
-        style={{
-          position: 'absolute',
-          left: `calc(50% + ${x}vh)`,
-          top: `calc(50% + ${y}vh)`,
-          transform: `translate(-50%, -50%) rotate(${angle + 90}deg)`,
-          fontFamily: isActive ? 'ActiveFont20251111, serif' : 'RomanFont20251111, serif',
-          fontSize: isActive ? '3.0vh' : '1.5vh',
-          color: isActive ? '#FFFF07FF' : '#F4E508FF',
-          textShadow: isActive ? '1px 1px 0vh #7F3158FF, 2px -2px 0vh #110E09FF' : '1px 0.0vh #540811FF',
-          transition: 'all 0.12s linear',
-          whiteSpace: 'nowrap',
-          opacity: 0.8,                 // <-- set opacity
-          zIndex: isActive ? 1 : 2,     // <-- set z-index
-        }}
-      >
-        {romanByIndex(i)}
-      </div>
-    );
-  }
-  return numerals;
-};
+      numerals.push(
+        <div
+          key={`${keyPrefix}-${i}`}
+          style={{
+            position: 'absolute',
+            left: `calc(50% + ${x}vh)`,
+            top: `calc(50% + ${y}vh)`,
+            transform: `translate(-50%, -50%) rotate(${angle + 90}deg)`,
+            fontFamily: isActive
+              ? 'ActiveFont20251111, serif'
+              : 'RomanFont20251111, serif',
+            fontSize: isActive ? '20.0vh' : '1.5vh',
+            color: isActive ? '#F068E7FF' : '#DAF858FF',
+            textShadow: isActive
+              ? '1px 1px 0vh #EFE9ECFF, 2px -2px 0vh #110E09FF'
+              : '1px 1px 0.1vh #080102FF',
+            transition: 'all 0.12s linear',
+            whiteSpace: 'nowrap',
+            opacity: isActive ? 0.5 : 1.0, // active digit opacity updated here
+            zIndex: isActive ? 1 : 2,
+          }}
+        >
+          {romanByIndex(i)}
+        </div>
+      );
+    }
+    return numerals;
+  };
 
   const renderRing = (sizeVH, rotationAngle, numerals) => (
     <div
@@ -115,9 +132,9 @@ const DarkRomanClock = () => {
     </div>
   );
 
-  const hourRadiusVH = 14;
-  const minuteRadiusVH = 24;
-  const secondRadiusVH = 44;
+  const hourRadiusVH = 17;
+  const minuteRadiusVH = 44;
+  const secondRadiusVH = 84;
 
   const hoursRing = renderRing(
     hourRadiusVH * 2.2,
@@ -140,7 +157,7 @@ const DarkRomanClock = () => {
   return (
     <div
       style={{
-        background: 'linear-gradient(185deg, #690ABBFF 0%, #474C37FF 100%)',
+        background: 'linear-gradient(185deg, #690ABBFF 0%, #312802FF 100%)',
         width: '100vw',
         height: '100dvh',
         position: 'relative',
