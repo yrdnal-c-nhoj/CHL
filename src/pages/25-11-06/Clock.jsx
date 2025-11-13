@@ -6,7 +6,7 @@ const Clock = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(new Date());
-    }, 1000); // update every 1 second
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -35,10 +35,10 @@ const Clock = () => {
       }
     }
 
-    // Hour markers (spelled-out names, centered)
+    // Hour markers (Esperanto names)
     const hourNames = [
-      'TWELVE', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE',
-      'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN', 'ELEVEN'
+      'DEKKDU', 'UNU', 'DU', 'TRI', 'KVAR', 'KVIN',
+      'SES', 'SEP', 'OK', 'NAŬ', 'DEK', 'DEKUNU'
     ];
     for (let i = 0; i < 12; i++) {
       const angle = (i * 30 - 90) * (Math.PI / 180);
