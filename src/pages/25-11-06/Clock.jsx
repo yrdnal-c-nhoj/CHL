@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
+  const [hourTextData, setHourTextData] = useState([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -23,7 +24,9 @@ const Clock = () => {
     const centerY = 18;
     const radius = 22;
 
-    const display = Array(41).fill(null).map(() => Array(81).fill(' '));
+    const display = Array(41)
+      .fill(null)
+      .map(() => Array(81).fill(" "));
 
     // Clock circle
     for (let angle = 0; angle < 360; angle += 2) {
@@ -31,22 +34,37 @@ const Clock = () => {
       const x = Math.round(centerX + radius * Math.cos(rad));
       const y = Math.round(centerY + radius * Math.sin(rad) * 0.5);
       if (y >= 0 && y < 41 && x >= 0 && x < 81) {
-        display[y][x] = '&';
+        display[y][x] = "&";
       }
     }
 
-    // Hour markers (Esperanto names)
+    // Hour markers (Esperanto words)
     const hourNames = [
-      'DEKKDU', 'UNU', 'DU', 'TRI', 'KVAR', 'KVIN',
-      'SES', 'SEP', 'OK', 'NAŬ', 'DEK', 'DEKUNU'
+      "DEKKDU",
+      "UNU",
+      "DU",
+      "TRI",
+      "KVAR",
+      "KVIN",
+      "SES",
+      "SEP",
+      "OK",
+      "NAŬ",
+      "DEK",
+      "DEKUNU",
     ];
+
+    const wordData = []; // collect word positions for overlay
+
     for (let i = 0; i < 12; i++) {
       const angle = (i * 30 - 90) * (Math.PI / 180);
       const x = Math.round(centerX + (radius - 2) * Math.cos(angle));
       const y = Math.round(centerY + (radius - 2) * Math.sin(angle) * 0.5);
       const text = hourNames[i];
       const startX = x - Math.floor(text.length / 2);
+
       if (y >= 0 && y < 41) {
+        wordData.push({ x: startX, y, text });
         for (let j = 0; j < text.length; j++) {
           const xx = startX + j;
           if (xx >= 0 && xx < 81) {
@@ -56,31 +74,36 @@ const Clock = () => {
       }
     }
 
+    // Store red-word positions for overlay
+    setHourTextData(wordData);
+
     // Hour hand
     for (let i = 0; i <= 8; i++) {
       const x = Math.round(centerX + i * Math.cos(hourAngle));
       const y = Math.round(centerY + i * Math.sin(hourAngle) * 0.5);
-      if (y >= 0 && y < 41 && x >= 0 && x < 81) display[y][x] = '@';
+      if (y >= 0 && y < 41 && x >= 0 && x < 81) display[y][x] = "@";
     }
 
     // Minute hand
     for (let i = 0; i <= 14; i++) {
       const x = Math.round(centerX + i * Math.cos(minuteAngle));
       const y = Math.round(centerY + i * Math.sin(minuteAngle) * 0.5);
-      if (y >= 0 && y < 41 && x >= 0 && x < 81) display[y][x] = '%';
+      if (y >= 0 && y < 41 && x >= 0 && x < 81) display[y][x] = "%";
     }
 
     // Second hand
     for (let i = 0; i <= 16; i++) {
       const x = Math.round(centerX + i * Math.cos(secondAngle));
       const y = Math.round(centerY + i * Math.sin(secondAngle) * 0.5);
-      if (y >= 0 && y < 41 && x >= 0 && x < 81) display[y][x] = '#';
+      if (y >= 0 && y < 41 && x >= 0 && x < 81) display[y][x] = "#";
     }
 
-    display[centerY][centerX] = '+';
+    display[centerY][centerX] = "+";
 
-    return display.map(row => row.join('')).join('\n');
+    return display.map((row) => row.join("")).join("\n");
   };
+
+  const ascii = drawClock();
 
   return (
     <div
@@ -93,13 +116,30 @@ const Clock = () => {
         justifyContent: "center",
         alignItems: "center",
         fontFamily: "monospace",
-        whiteSpace: "pre",
-        overflow: "auto",
+        position: "relative",
         fontSize: "clamp(8px, 1.5vh, 16px)",
         lineHeight: "1",
+        whiteSpace: "pre",
       }}
     >
-      {drawClock()}
+      {/* Main ASCII clock (black text) */}
+      <pre style={{ margin: 0 }}>{ascii}</pre>
+
+      {/* Overlay the Esperanto words in red */}
+      {hourTextData.map((w, i) => (
+        <pre
+          key={i}
+          style={{
+            position: "absolute",
+            top: `calc(50% - 20vh + ${w.y * 1.1}vh)`,
+            left: `calc(50% - 40vw + ${w.x * 1.25}vw)`,
+            color: "red",
+            margin: 0,
+          }}
+        >
+          {w.text}
+        </pre>
+      ))}
     </div>
   );
 };
