@@ -3,45 +3,60 @@ import font20250924 from "./cora.ttf";
 
 const HorizontalProportionalGradientClock = () => {
   const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [fontReady, setFontReady] = useState(false);
 
-  // Load the font before rendering
+  // Load and persist font once
   useEffect(() => {
-    const font = new FontFace("CustomFont", `url(${font20250924})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontLoaded(true);
-    });
+    let cancelled = false;
+
+    const loadFont = async () => {
+      try {
+        const font = new FontFace("CustomFont", `url(${font20250924})`);
+        const loaded = await font.load();
+
+        if (!cancelled) {
+          document.fonts.add(loaded);
+          setFontReady(true);
+        }
+      } catch (err) {
+        console.error("Font failed to load:", err);
+      }
+    };
+
+    loadFont();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  // Clock ticking
+  // Clock tick animation
   useEffect(() => {
-    if (!fontLoaded) return; // Don't tick until font is loaded
+    if (!fontReady) return;
+
     let frame;
     const tick = () => {
       setTime(new Date());
       frame = requestAnimationFrame(tick);
     };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [fontLoaded]);
 
-  if (!fontLoaded) {
-    // Optionally render nothing or a placeholder
-    return null;
-  }
+    tick();
+    return () => cancelAnimationFrame(frame);
+  }, [fontReady]);
+
+  if (!fontReady) return null;
 
   let hours = time.getHours() % 12;
   if (hours === 0) hours = 12;
+
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
 
   const numbers = [
     { value: hours, max: 12, isHour: true },
-    { value: Math.floor(minutes / 10), max: 5, isHour: false },
-    { value: minutes % 10, max: 9, isHour: false },
-    { value: Math.floor(seconds / 10), max: 5, isHour: false },
-    { value: seconds % 10, max: 9, isHour: false },
+    { value: Math.floor(minutes / 10), max: 5 },
+    { value: minutes % 10, max: 9 },
+    { value: Math.floor(seconds / 10), max: 5 },
+    { value: seconds % 10, max: 9 },
   ];
 
   const scaleFactor = 29;
@@ -62,12 +77,8 @@ const HorizontalProportionalGradientClock = () => {
   const containerStyle = {
     width: "100vw",
     height: "100vh",
-    margin: 0,
-    padding: 0,
     display: "flex",
     flexDirection: "row",
-    alignItems: "stretch",
-    boxSizing: "border-box",
   };
 
   const styles = `
