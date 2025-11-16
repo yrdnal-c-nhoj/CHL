@@ -1,98 +1,164 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useMemo } from "react";
+import font_25_10_09 from "./rain.otf";
+import bgImage from "./fall.webp"; // local background image
 
-export default function RockClock() {
-  const [time, setTime] = useState(new Date());
+export default function DigitRain() {
+  const canvasRef = useRef(null);
+  const rafRef = useRef(null);
+  const timeDigitsRef = useRef([]);
+  const bgRef = useRef(null);
 
+  const GRAVITY = 0.005;
+  const WIND_BASE = 0.0005;
+  const SPAWN_CHANCE = 0.15;
+  const INITIAL_PARTICLES = 30;
+  const MAX_FALL_SPEED = 0.5;
+  const DRAG = 0.99;
+  const HORIZONTAL_SWAY_STRENGTH = 0.05;
+
+  // Update digits every second
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    const updateTimeDigits = () => {
+      const now = new Date();
+      let hours = now.getHours() % 12 || 12;
+      let minutes = now.getMinutes();
+      timeDigitsRef.current = `${hours}${minutes.toString().padStart(2, "0")}`.split("");
+    };
+    updateTimeDigits();
+    const interval = setInterval(updateTimeDigits, 1000);
+    return () => clearInterval(interval);
   }, []);
 
-  // Calculate rotation angles
-  const seconds = time.getSeconds();
-  const minutes = time.getMinutes() + seconds / 60;
-  const hours = time.getHours() % 12 + minutes / 60;
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d", { alpha: false });
 
-  const secDeg = (seconds / 60) * 360;
-  const minDeg = (minutes / 60) * 360;
-  const hourDeg = (hours / 12) * 360;
+    // Load font
+    const fontFace = new FontFace("DigitFont_25_10_09", `url(${font_25_10_09})`);
+    fontFace.load().then((loaded) => document.fonts.add(loaded));
 
-  // Clock center and hand lengths in vh
-  const clockSize = 50; // 50vh diameter
-  const center = clockSize / 2;
-  const handStyles = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transformOrigin: "bottom center",
-    borderRadius: "0.5vh",
-  };
+    // Load background image
+    const bg = new Image();
+    bg.src = bgImage;
+    bg.onload = () => {
+      bgRef.current = bg;
+    };
 
-  return (
-    <div
-      style={{
-        position: "relative",
-        width: `${clockSize}vh`,
-        height: `${clockSize}vh`,
-        borderRadius: "50%",
-        border: "0.5vh solid #888",
-        margin: "5vh auto",
-        background:
-          "linear-gradient(to bottom, #d9c9b1 0%, #c7b299 100%)", // sedimentary feel
-      }}
-    >
-      {/* Hours Hand - Sedimentary */}
-      <div
-        style={{
-          ...handStyles,
-          width: "0.8vh",
-          height: "20vh",
-          background:
-            "linear-gradient(to top, #c7b299 0%, #d9c9b1 50%, #c7b299 100%)",
-          transform: `translate(-50%, -100%) rotate(${hourDeg}deg)`,
-          zIndex: 1,
-        }}
-      />
+    class Vector {
+      constructor(x = 0, y = 0) { this.x = x; this.y = y; }
+      add(v) { this.x += v.x; this.y += v.y; return this; }
+    }
 
-      {/* Minutes Hand - Composite */}
-      <div
-        style={{
-          ...handStyles,
-          width: "0.6vh",
-          height: "28vh",
-          background:
-            "repeating-linear-gradient(45deg, #999 0%, #bbb 5%, #888 10%)",
-          transform: `translate(-50%, -100%) rotate(${minDeg}deg)`,
-          zIndex: 2,
-        }}
-      />
+    const AUTUMN_COLORS = ["#F3541BFF", "#FF9C42", "#FFB84C", "#F98E47FF", "#CB2904FF", "#FFD27F"];
 
-      {/* Seconds Hand - Igneous */}
-      <div
-        style={{
-          ...handStyles,
-          width: "0.4vh",
-          height: "30vh",
-          background: "linear-gradient(to top, #222 0%, #555 50%, #900 100%)",
-          transform: `translate(-50%, -100%) rotate(${secDeg}deg)`,
-          zIndex: 3,
-        }}
-      />
+    class DigitParticle {
+      constructor(value, width, height) {
+        this.value = value;
+        this.pos = new Vector(Math.random() * width, Math.random() * -height);
+        this.vel = new Vector((Math.random() - 0.5) * 0.05, Math.random() * 0.1);
+        this.fontSize = Math.random() * 2 + 2.5;
+        this.alpha = 1;
+        this.scaleX = 1;
+        this.scaleY = 1;
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+        this.color = AUTUMN_COLORS[Math.floor(Math.random() * AUTUMN_COLORS.length)];
+      }
 
-      {/* Center Pin */}
-      <div
-        style={{
-          position: "absolute",
-          width: "2vh",
-          height: "2vh",
-          backgroundColor: "#555",
-          borderRadius: "50%",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 4,
-        }}
-      />
-    </div>
+      update(width, height) {
+        this.vel.y += GRAVITY;
+        this.vel.x = Math.sin(this.pos.y * 0.005) * HORIZONTAL_SWAY_STRENGTH + ((Math.random() - 0.5) * WIND_BASE);
+        this.vel.x *= DRAG;
+        this.vel.y = Math.min(this.vel.y * DRAG, MAX_FALL_SPEED);
+        this.pos.add(this.vel);
+
+        this.rotation += this.rotationSpeed;
+        this.scaleX = 0.9 + Math.sin(Date.now() * 0.002 + this.pos.y) * 0.15;
+        this.scaleY = 0.9 + Math.cos(Date.now() * 0.002 + this.pos.x) * 0.15;
+
+        if (this.pos.y > height + 10) this.pos.y = -10;
+        if (this.pos.x > width + 10) this.pos.x = -10;
+        if (this.pos.x < -10) this.pos.x = width + 10;
+      }
+
+      draw(ctx) {
+        ctx.save();
+        ctx.translate(this.pos.x, this.pos.y);
+        ctx.rotate(this.rotation);
+        ctx.scale(this.scaleX, this.scaleY);
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = this.color;
+        ctx.font = `${this.fontSize}rem "DigitFont_25_10_09"`;
+        ctx.textAlign = "center";
+        ctx.fillText(this.value, 0, 0);
+        ctx.restore();
+      }
+    }
+
+    const resizeCanvas = () => {
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      const width = canvas.clientWidth * dpr;
+      const height = canvas.clientHeight * dpr;
+      if (canvas.width !== width || canvas.height !== height) {
+        canvas.width = width;
+        canvas.height = height;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+    };
+
+    const digits = Array.from({ length: INITIAL_PARTICLES }, () => {
+      const randomDigit = timeDigitsRef.current[Math.floor(Math.random() * timeDigitsRef.current.length)];
+      return new DigitParticle(randomDigit, canvas.clientWidth, canvas.clientHeight);
+    });
+
+    const update = () => {
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+
+      // Draw background flush left at natural size
+      if (bgRef.current) {
+        ctx.clearRect(0, 0, width, height);
+        ctx.drawImage(bgRef.current, 0, 0); // top-left corner
+      } else {
+        ctx.fillStyle = "#BDE4F0FF";
+        ctx.fillRect(0, 0, width, height);
+      }
+
+      for (let d of digits) {
+        d.update(width, height);
+        d.draw(ctx);
+      }
+
+      if (digits.length < 100 && Math.random() < SPAWN_CHANCE) {
+        const randomDigit = timeDigitsRef.current[Math.floor(Math.random() * timeDigitsRef.current.length)];
+        digits.push(new DigitParticle(randomDigit, width, height));
+      }
+
+      rafRef.current = requestAnimationFrame(update);
+    };
+
+    resizeCanvas();
+    rafRef.current = requestAnimationFrame(update);
+    window.addEventListener("resize", resizeCanvas);
+    window.addEventListener("orientationchange", resizeCanvas);
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("resize", resizeCanvas);
+      window.removeEventListener("orientationchange", resizeCanvas);
+    };
+  }, []);
+
+  const canvasStyle = useMemo(
+    () => ({
+      display: "block",
+      width: "100vw",
+      height: "100dvh",
+      margin: 0,
+    }),
+    []
   );
+
+  return <canvas ref={canvasRef} style={canvasStyle} aria-label="Digit leaf animation" />;
 }
