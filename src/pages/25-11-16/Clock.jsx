@@ -35,7 +35,7 @@ export default function AnalogClock() {
   // Main container
   const containerStyle = {
     width: "100%",
-    minHeight: "100vh",
+    minHeight: "100dvh",
     position: "relative", // IMPORTANT
     display: "flex",
     alignItems: "center",
