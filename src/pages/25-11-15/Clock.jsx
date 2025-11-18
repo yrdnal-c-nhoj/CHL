@@ -50,7 +50,7 @@ export default function DigitRain() {
       add(v) { this.x += v.x; this.y += v.y; return this; }
     }
 
-    const AUTUMN_COLORS = ["#F3541BFF", "#FF9C42", "#FFB84C", "#F98E47FF", "#CB2904FF", "#FFD27F"];
+    const AUTUMN_COLORS = ["#EE4305FF", "#FFCD04F2", "#DA0505FF", "#FCD80FFF", "#CB2904FF", "#FFD27F"];
 
     class DigitParticle {
       constructor(value, width, height) {
