@@ -56,11 +56,11 @@ export default function AnalogClock() {
   };
 
   const clockStyle = {
-    width: clockDiameter,
-    height: clockDiameter,
+    width: "80vh",
+    height: "80vh",
     borderRadius: "50%",
     position: "relative",
-    background: "rgba(255,255,255,0.2)",
+    background: "rgba(255,255,255,0.15)",
     overflow: "hidden",
     display: "flex",
     alignItems: "center",
