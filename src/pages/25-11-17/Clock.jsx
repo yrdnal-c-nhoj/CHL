@@ -153,6 +153,7 @@ export default function MarsDigitalClock() {
       alignItems: "center",
       justifyContent: "center",
       fontSize: "23vh",
+      color: "#03410EFF",
       lineHeight: 1,
       whiteSpace: "nowrap",
     },
