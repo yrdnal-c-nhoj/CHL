@@ -30,7 +30,9 @@ export default function MarsDigitalClock() {
   const msStr = two(Math.floor(time.getMilliseconds() / 10));
 
   const DigitBox = ({ children }) => (
-    <div style={styles.digitBox}>{children}</div>
+    <div className="digitBox" style={styles.digitBox}>
+      {children}
+    </div>
   );
 
   const styles = {
