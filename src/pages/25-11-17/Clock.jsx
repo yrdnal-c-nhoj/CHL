@@ -60,7 +60,7 @@ export default function MarsDigitalClock() {
       left: 0,
       width: "100%",
       height: "100%",
-      background: "linear-gradient(185deg, #ff0000, #CE3A0DFF)",
+      background: "linear-gradient(185deg, #F80606FF, #CE3A0DFF)",
       zIndex: 0,
     },
     background1: {
