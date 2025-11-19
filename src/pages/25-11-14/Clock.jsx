@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 
-// Replace these with your real images in the same folder
 import num1 from "./1.jpg";
 import num2 from "./2.webp";
 import num3 from "./3.png";
@@ -37,14 +36,17 @@ export default function ImageAnalogClock() {
       const mDeg = m * 6;
       const hDeg = h * 30;
 
-      hourRef.current.style.transform = 
-        `translate(-50%, -100%) rotate(${hDeg}deg)`;
+      if (hourRef.current)
+        hourRef.current.style.transform =
+          `translate(-50%, -100%) rotate(${hDeg}deg)`;
 
-      minuteRef.current.style.transform = 
-        `translate(-50%, -100%) rotate(${mDeg}deg)`;
+      if (minuteRef.current)
+        minuteRef.current.style.transform =
+          `translate(-50%, -100%) rotate(${mDeg}deg)`;
 
-      secondRef.current.style.transform = 
-        `translate(-50%, -100%) rotate(${sDeg}deg)`;
+      if (secondRef.current)
+        secondRef.current.style.transform =
+          `translate(-50%, -100%) rotate(${sDeg}deg)`;
 
       rafRef.current = requestAnimationFrame(update);
     }
@@ -53,26 +55,23 @@ export default function ImageAnalogClock() {
     return () => cancelAnimationFrame(rafRef.current);
   }, []);
 
-  // ---- RESPONSIVE MAX SIZE ----
   const clockSize = "min(190vw, 190vh)";
 
   const wrapper = {
     width: clockSize,
     height: clockSize,
     borderRadius: "50%",
-    position: "relative",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-
-    // FULLSCREEN CENTERING
-    margin: "0",
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
 
-    background: "#FFFFFFFF",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+
+    // ⭐ Gradient background behind the numbers
+    // background: "radial-gradient(circle, #, #000, #000)",
   };
 
   const numberStyle = (index) => {
@@ -87,8 +86,10 @@ export default function ImageAnalogClock() {
       top: `${top}%`,
       left: `${left}%`,
       transform: "translate(-50%, -50%)",
+
       width: "15vh",
       height: "auto",
+
       userSelect: "none",
       pointerEvents: "none",
     };
@@ -99,8 +100,8 @@ export default function ImageAnalogClock() {
     left: "50%",
     top: "50%",
     transformOrigin: "50% 100%",
-    background: "#C8E0EFFF",
     borderRadius: "1vh",
+    background: "#C8E0EF",
   };
 
   const hourHand = {
@@ -121,29 +122,20 @@ export default function ImageAnalogClock() {
     ...handCommon,
     width: "0.35vh",
     height: "25vh",
-    background: "#C8E0EFFF",
     zIndex: 12,
+    background: "#C8E0EF",
   };
 
-  // const centerDot = {
-  //   position: "absolute",
-  //   width: "3vh",
-  //   height: "3vh",
-  //   borderRadius: "50%",
-  //   background: "black",
-  //   left: "50%",
-  //   top: "50%",
-  //   transform: "translate(-50%, -50%)",
-  //   zIndex: 20,
-  // };
-
   return (
-    <div style={{
-      width: "100vw",
-      height: "100dvh",
-      position: "relative",
-      overflow: "hidden",
-    }}>
+    <div
+      style={{
+        width: "100vw",
+        height: "100dvh",
+        position: "relative",
+        overflow: "hidden",
+        background: "white",
+      }}
+    >
       <div style={wrapper}>
         {numberImages.map((src, index) => (
           <img key={index} src={src} alt="" style={numberStyle(index)} />
@@ -152,8 +144,6 @@ export default function ImageAnalogClock() {
         <div ref={hourRef} style={hourHand}></div>
         <div ref={minuteRef} style={minuteHand}></div>
         <div ref={secondRef} style={secondHand}></div>
-
-        {/* <div style={centerDot}></div> */}
       </div>
     </div>
   );
