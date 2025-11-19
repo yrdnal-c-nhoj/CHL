@@ -1,72 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import videoFile from "./octo.mp4";
-import fallbackImg from "./octo.webp";
+
+import bgFull from "./octo.webp";     // full-size background
+import bgTile from "./octoh.webp";     // repeating/tiled background
 import customFontFile from "./oct.ttf";
 
-export default function VideoBackgroundWithOctahedron() {
-  const [videoFailed, setVideoFailed] = useState(false);
-  const [showPlayButton, setShowPlayButton] = useState(false); // Kept false per user request
-  const videoRef = useRef(null);
+export default function TwoBackgroundOctahedron() {
   const threeRef = useRef(null);
   const fontLoadedRef = useRef(false);
 
-  // Video setup - MODIFIED for reliable Autoplay AND reliable Fallback
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-
-    // Ensure the play button is hidden regardless of outcome
-    setShowPlayButton(false); 
-
-    // --- Handlers ---
-    const onError = () => {
-      console.error("Video asset failed to load or has format issues (Error event).");
-      // This is the direct trigger for the fallback image
-      setVideoFailed(true); 
-    };
-    
-    // A proactive failure check if the video hasn't loaded (ready state)
-    const checkReadiness = () => {
-        // readyState < 4 means the video hasn't loaded enough data to play through
-        if (v.readyState < 4) {
-            console.warn("Video did not reach 'canplaythrough' state within timeout. Forcing fallback.");
-            setVideoFailed(true);
-        } else {
-             // Optional: Log success if it passed the check
-             console.log("Video loaded and ready to play (Passed readiness check).");
-        }
-    }
-
-    // --- Execution ---
-    v.addEventListener("error", onError);
-
-    // 1. Attempt initial play (for autoplay policy)
-    v.play()
-      .then(() => {
-        console.log("Initial play succeeded (Muted Autoplay)");
-      })
-      .catch((err) => {
-        // Log the failure but DO NOT show the play button.
-        console.warn("Autoplay blocked/failed. Play button suppressed.", err);
-      });
-    
-    // 2. Set a timeout to check if the video has loaded properly (Asset check)
-    // 3000ms (3 seconds) is usually enough time for most files to load initial chunks.
-    const readinessTimeout = setTimeout(checkReadiness, 3000); 
-
-    return () => {
-      clearTimeout(readinessTimeout);
-      v.removeEventListener("error", onError);
-    };
-  }, []); 
-
-  // THREE.js Octahedron (Unchanged)
+  // THREE.js Octahedron (unchanged)
   useEffect(() => {
     const mount = threeRef.current;
     if (!mount) return;
+
     const scene = new THREE.Scene();
     scene.background = null;
+
     const camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
@@ -74,6 +24,7 @@ export default function VideoBackgroundWithOctahedron() {
       1000
     );
     camera.position.z = 1;
+
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     mount.appendChild(renderer.domElement);
@@ -81,106 +32,85 @@ export default function VideoBackgroundWithOctahedron() {
     const canvas = document.createElement("canvas");
     canvas.width = 256;
     canvas.height = 256;
-    const context = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d");
     const texture = new THREE.CanvasTexture(canvas);
-    texture.needsUpdate = true;
 
     const fontName = "MyCustomFont";
+
     const updateClock = () => {
       const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes();
-      hours = hours % 12 || 12;
-      const timeString = `${hours}:${minutes < 10 ? "0" + minutes : minutes}`;
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      context.font = `110px ${fontLoadedRef.current ? fontName : "Arial"}`;
-      context.fillStyle = "#043D91FF";
-      context.textAlign = "center";
-      context.textBaseline = "middle";
-      const xOffset = 0;
-      const yOffset = 0.2;
-      const xPos = canvas.width / 2 + xOffset * canvas.width;
-      const yPos = canvas.height / 2 + yOffset * canvas.height;
-      context.fillText(timeString, xPos, yPos);
+      let h = now.getHours() % 12 || 12;
+      let m = now.getMinutes();
+      const txt = `${h}:${m < 10 ? "0" + m : m}`;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.font = `110px ${fontLoadedRef.current ? fontName : "Arial"}`;
+      ctx.fillStyle = "#043D91FF";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(txt, canvas.width / 2, canvas.height / 2 + canvas.height * 0.2);
+
       texture.needsUpdate = true;
     };
 
     const font = new FontFace(fontName, `url(${customFontFile})`);
-    font
-      .load()
-      .then((loadedFont) => {
-        document.fonts.add(loadedFont);
-        fontLoadedRef.current = true;
-        console.log(`${fontName} loaded`);
-        updateClock();
-      })
-      .catch((err) => {
-        console.warn(`Failed to load font: ${err}`);
-      });
+    font.load().then((loaded) => {
+      document.fonts.add(loaded);
+      fontLoadedRef.current = true;
+      updateClock();
+    });
 
     updateClock();
     const clockInterval = setInterval(updateClock, 1000);
 
     const geometry = new THREE.OctahedronGeometry(2);
-    const uvAttribute = geometry.attributes.uv;
-    const uvArray = uvAttribute.array;
-    for (let i = 0; i < uvArray.length; i += 6) {
-      uvArray[i] = 0;
-      uvArray[i + 1] = 0;
-      uvArray[i + 2] = 1;
-      uvArray[i + 3] = 0;
-      uvArray[i + 4] = 0.5;
-      uvArray[i + 5] = 1;
+
+    // reassign UVs (unchanged)
+    const uv = geometry.attributes.uv.array;
+    for (let i = 0; i < uv.length; i += 6) {
+      uv[i] = 0; uv[i + 1] = 0;
+      uv[i + 2] = 1; uv[i + 3] = 0;
+      uv[i + 4] = 0.5; uv[i + 5] = 1;
     }
-    uvAttribute.needsUpdate = true;
+    geometry.attributes.uv.needsUpdate = true;
+
     const material = new THREE.MeshPhongMaterial({
       color: 0xfff0f0,
       shininess: 100,
       transparent: true,
-      opacity: 0.6,
+      // opacity: 0.6,
       side: THREE.DoubleSide,
       map: texture,
     });
-    const octahedron = new THREE.Mesh(geometry, material);
-    scene.add(octahedron);
 
-    const wireframeColor = 0xffffff;
+    const oct = new THREE.Mesh(geometry, material);
+    scene.add(oct);
+
     const wireframe = new THREE.LineSegments(
       new THREE.WireframeGeometry(geometry),
-      new THREE.LineBasicMaterial({
-        color: wireframeColor,
-        transparent: false,
-        opacity: 1.0,
-        depthTest: false,
-        depthWrite: false,
-      })
+      new THREE.LineBasicMaterial({ color: 0xffffff })
     );
     scene.add(wireframe);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1);
-    keyLight.position.set(5, 5, 5);
-    scene.add(keyLight);
-    const fillLight = new THREE.DirectionalLight(0x000fcc, 0.5);
-    fillLight.position.set(-3, -2, 4);
-    scene.add(fillLight);
+    scene.add(new THREE.DirectionalLight(0xffffff, 1));
     scene.add(new THREE.AmbientLight(0xffffff, 0.4));
 
-    const clockTime = new THREE.Clock();
+    const clock = new THREE.Clock();
     const animate = () => {
       requestAnimationFrame(animate);
-      octahedron.rotation.x += 0.003;
-      octahedron.rotation.y += 0.005;
+
+      oct.rotation.x += 0.003;
+      oct.rotation.y += 0.005;
       wireframe.rotation.x += 0.003;
       wireframe.rotation.y += 0.005;
-      const t = clockTime.getElapsedTime();
-      const cycleDuration = 25;
-      const zStart = -15;
-      const zEnd = 2;
-      const zAmplitude = (zEnd - zStart) / 2;
-      const zCenter = (zStart + zEnd) / 2;
-      const zProgress = Math.sin((t / cycleDuration) * 2 * Math.PI);
-      octahedron.position.z = zCenter + zProgress * zAmplitude;
-      wireframe.position.z = zCenter + zProgress * zAmplitude;
+
+      const t = clock.getElapsedTime();
+      const zStart = -15, zEnd = 2;
+      const z = ((zEnd + zStart) / 2) +
+                Math.sin((t / 25) * Math.PI * 2) * ((zEnd - zStart) / 2);
+
+      oct.position.z = wireframe.position.z = z;
+
       renderer.render(scene, camera);
     };
     animate();
@@ -194,12 +124,12 @@ export default function VideoBackgroundWithOctahedron() {
 
     return () => {
       clearInterval(clockInterval);
-      window.removeEventListener("resize", handleResize);
-      mount.removeChild(renderer.domElement);
+      renderer.dispose();
       geometry.dispose();
       material.dispose();
       texture.dispose();
-      renderer.dispose();
+      mount.removeChild(renderer.domElement);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -208,46 +138,54 @@ export default function VideoBackgroundWithOctahedron() {
       style={{
         width: "100vw",
         height: "100dvh",
-                  filter: "brightness(110%) contrast(130%) saturate(130%) hue-rotate(10deg)",
-
         position: "relative",
         overflow: "hidden",
         backgroundColor: "#000",
       }}
     >
-      <video
-        ref={videoRef}
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          zIndex: 0,
-          pointerEvents: "none",
-          display: videoFailed ? "none" : "block",
-        }}
-        loop
-        muted
-        playsInline
-        preload="auto"
-      >
-        <source src={videoFile} type="video/mp4" />
-      </video>
+
+      {/* FULL IMAGE BACKGROUND */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: `url(${fallbackImg})`,
+          backgroundImage: `url(${bgFull})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          display: videoFailed ? "block" : "none",
+          // opacity: 0.55,          // <--- adjust
+          zIndex: 0,
         }}
       />
+
+      {/* FLOATING TILED BACKGROUND */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `url(${bgTile})`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "100px 100px",
+          animation: "floatUp 45s linear infinite",
+          opacity: 0.7,          // <--- adjust
+          zIndex: 0,
+        }}
+      />
+
+      {/* THREE.JS OCTAHEDRON */}
       <div
         ref={threeRef}
         style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none" }}
       />
+
+      {/* FLOATING ANIMATION KEYFRAME */}
+      <style>
+        {`
+          @keyframes floatUp {
+            0% { background-position-y: 0px; }
+            100% { background-position-y: -1000px; }
+          }
+        `}
+      </style>
     </div>
   );
 }
