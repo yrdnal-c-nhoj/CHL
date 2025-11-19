@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
+import bg from "./ice.jpg"; // background image in same folder
+
 import num1 from "./1.jpg";
 import num2 from "./2.webp";
 import num3 from "./3.png";
@@ -133,7 +135,10 @@ export default function ImageAnalogClock() {
         height: "100dvh",
         position: "relative",
         overflow: "hidden",
-        background: "white",
+        backgroundImage: `url(${bg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
       <div style={wrapper}>
