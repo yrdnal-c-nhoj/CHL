@@ -6,7 +6,32 @@ import font2025_11_18 from "./mars.ttf";
 
 export default function MarsDigitalClock() {
   const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
   const rafRef = useRef(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const font = new FontFace("ClockFont", `url(${font2025_11_18})`, {
+      style: "normal",
+      weight: "400",
+    });
+
+    font
+      .load()
+      .then((loaded) => {
+        if (cancelled) return;
+        document.fonts.add(loaded);
+        setFontLoaded(true);
+      })
+      .catch(() => {
+        // In case of error, still show the clock with fallback font
+        if (!cancelled) setFontLoaded(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -55,6 +80,8 @@ export default function MarsDigitalClock() {
       padding: "2vh",
       boxSizing: "border-box",
       color: "rgba(25, 25, 25, 0.6)",
+      opacity: fontLoaded ? 1 : 0,
+      transition: "opacity 0.35s ease-out",
     },
     gradientBackground: {
       position: "absolute",
