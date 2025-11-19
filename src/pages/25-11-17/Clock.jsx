@@ -44,7 +44,7 @@ export default function MarsDigitalClock() {
       }
     `,
     root: {
-      minHeight: "100vh",
+      minHeight: "100dvh",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -76,6 +76,7 @@ export default function MarsDigitalClock() {
       backgroundPosition: "center",
       filter: "hue-rotate(-20deg) saturate(1.8) contrast(1.8) brightness(1.2)",
       zIndex: 1,
+      // opacity: 0.3, // 60% opacity
     },
     background2: {
       position: "absolute",
@@ -86,7 +87,8 @@ export default function MarsDigitalClock() {
       backgroundImage: `url(${bg2})`,
       backgroundSize: "cover",
       backgroundPosition: "center",
-      opacity: 0.65,
+         opacity: 0.6, // 60% opacity
+   
       zIndex: 2,
     },
     background3: {
@@ -99,7 +101,7 @@ export default function MarsDigitalClock() {
       backgroundSize: "cover",
       backgroundPosition: "center",
       transform: "rotate(180deg)",
-      opacity: 0.55,
+      opacity: 0.6, // 60% opacity
       zIndex: 3,
     },
     content: {
