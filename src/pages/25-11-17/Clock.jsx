@@ -51,10 +51,10 @@ export default function MarsDigitalClock() {
       position: "relative",
       fontFamily:
         "ClockFont, Inter, Roboto, system-ui, -apple-system, 'Segoe UI', sans-serif",
-      color: "rgba(25, 25, 25, 0.6)",
       overflow: "hidden",
       padding: "2vh",
       boxSizing: "border-box",
+      color: "rgba(25, 25, 25, 0.6)",
     },
     gradientBackground: {
       position: "absolute",
@@ -63,7 +63,7 @@ export default function MarsDigitalClock() {
       width: "100%",
       height: "100%",
       background: "linear-gradient(185deg, #F80606FF, #D34C23FF)",
-      zIndex: 0,
+      zIndex: 0, // gradient behind everything
     },
     background1: {
       position: "absolute",
@@ -86,7 +86,8 @@ export default function MarsDigitalClock() {
       backgroundImage: `url(${bg2})`,
       backgroundSize: "cover",
       backgroundPosition: "center",
-      zIndex: 1,
+      opacity: 0.65,
+      zIndex: 2,
     },
     background3: {
       position: "absolute",
@@ -98,11 +99,12 @@ export default function MarsDigitalClock() {
       backgroundSize: "cover",
       backgroundPosition: "center",
       transform: "rotate(180deg)",
-      zIndex: 1,
+      opacity: 0.55,
+      zIndex: 3,
     },
     content: {
       position: "relative",
-      zIndex: 2,
+      zIndex: 4, // above all backgrounds
       display: "flex",
       flexDirection: "row",
       flexWrap: "wrap",
@@ -135,9 +137,6 @@ export default function MarsDigitalClock() {
           .content {
             flex-direction: column !important;
           }
-          .group {
-            flex-direction: row;
-          }
           .digitBox {
             font-size: 18vw !important;
             width: 18vw !important;
@@ -147,15 +146,11 @@ export default function MarsDigitalClock() {
       `}</style>
 
       <div style={styles.root}>
-        {/* Gradient background */}
         <div style={styles.gradientBackground}></div>
-
-        {/* Background layers */}
         <div style={styles.background1}></div>
         <div style={styles.background2}></div>
         <div style={styles.background3}></div>
 
-        {/* Clock content */}
         <div className="content" style={styles.content}>
           <div className="group" style={styles.group}>
             <DigitBox>{hoursStr[0]}</DigitBox>
