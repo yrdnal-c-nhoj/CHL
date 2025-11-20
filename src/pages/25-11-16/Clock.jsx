@@ -1,6 +1,7 @@
 // AnalogClock.jsx
 import React, { useEffect, useRef, useCallback } from "react";
 import bgImg from "./ray.webp";
+import clockBg from "./ray2.webp"; // <-- Background ONLY for clock face
 
 export default function AnalogClock() {
   const rafRef = useRef(null);
@@ -30,20 +31,18 @@ export default function AnalogClock() {
     return () => cancelAnimationFrame(rafRef.current);
   }, [tick]);
 
-  const clockDiameter = "60vh";
-
   // Main container
   const containerStyle = {
     width: "100%",
     minHeight: "100dvh",
-    position: "relative", // IMPORTANT
+    position: "relative",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
   };
 
-  // Background layer (now visible!)
+  // Page background image
   const bgStyle = {
     position: "absolute",
     inset: 0,
@@ -52,29 +51,44 @@ export default function AnalogClock() {
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     transform: "scaleY(-1)", // flip vertically
-    zIndex: 0,               // IMPORTANT: must be above page paint
+    zIndex: 0,
   };
 
+  // Clock container
   const clockStyle = {
-    width: "70vh",
-    height: "70vh",
-    // borderRadius: "50%",
+    width: "40vw",
+    height: "80vh",
     position: "relative",
     background: "rgba(255,255,255,0.35)",
     overflow: "hidden",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    zIndex: 1,               // clock stays above background
+    zIndex: 1,
   };
 
+  // NEW: Inner clock face background
+  const clockBackgroundStyle = {
+    position: "absolute",
+    inset: 0,
+    backgroundImage: `url(${clockBg})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    opacity: 0.05,                // <-- Your request
+    filter: "brightness(0.8) contrast(4)", // <-- Also your request
+    zIndex: 0,                   // Below clock hands
+  };
+
+  // Hand styles
   const handBase = {
     position: "absolute",
     left: "50%",
     top: "50%",
     transformOrigin: "50% 100%",
+     background: "rgba(12,12,112,0.2)",
     transform: "translate(-50%,-100%)",
     borderRadius: "0.6vh",
+    zIndex: 1, // above clock background
   };
 
   return (
@@ -82,9 +96,36 @@ export default function AnalogClock() {
       <div style={bgStyle} aria-hidden="true" />
 
       <div style={clockStyle}>
-        <div ref={hourRef} style={{ ...handBase, width: "0.8vh", height: "18vh", background: "rgba(12,12,12,0.6)" }} />
-        <div ref={minuteRef} style={{ ...handBase, width: "0.5vh", height: "26vh", background: "rgba(18,18,18,0.6)" }} />
-        <div ref={secondRef} style={{ ...handBase, width: "0.2vh", height: "28vh", background: "rgba(200,40,40,0.45)" }} />
+        {/* NEW background image behind clock hands */}
+        <div style={clockBackgroundStyle} aria-hidden="true" />
+
+        <div
+          ref={hourRef}
+          style={{
+            ...handBase,
+            width: "0.4vh",
+            height: "7vh",
+           
+          }}
+        />
+        <div
+          ref={minuteRef}
+          style={{
+            ...handBase,
+            width: "0.3vh",
+            height: "13vh",
+    
+          }}
+        />
+        <div
+          ref={secondRef}
+          style={{
+            ...handBase,
+            width: "0.1vh",
+            height: "98vh",
+            background: "rgba(200,40,40)",
+          }}
+        />
       </div>
     </div>
   );
