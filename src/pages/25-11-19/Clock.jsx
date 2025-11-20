@@ -1,97 +1,110 @@
+// AnalogClock.jsx
 import React, { useEffect, useState } from "react";
-import riverFont_2025_11_11 from "./diag.ttf"; // your custom font file
+import bgImg from "./apple.gif";        // Main background
+import tileImg from  "./ap.webp";      // Tiled background
+import overlayImg from "./appl.jpg"; // Full-cover overlay
+import customFontFile from "./apple.ttf";
 
-export default function RiverClock() {
-  const [side, setSide] = useState("left");
-  const [time, setTime] = useState(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+export default function AnalogClock() {
+  const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
 
-  // Handle screen resizing to switch river side
+  // Load custom font
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < window.innerHeight) {
-        setSide("right");
-      } else {
-        setSide("left");
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    const font = new FontFace("CustomClockFont", `url(${customFontFile})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      setFontLoaded(true);
+    });
   }, []);
 
-  // Update clock every second
+  // Update time every second
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
-    }, 1000);
+    const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // Inject @font-face and keyframes to avoid leakage
-  useEffect(() => {
-    const styleTag = document.createElement("style");
-    styleTag.textContent = `
-      @font-face {
-        font-family: 'RiverFont';
-        src: url(${riverFont_2025_11_11}) format('woff2');
-      }
-      @keyframes flow {
-        0% { background-position-y: 0vh; }
-        100% { background-position-y: -100vh; }
-      }
-    `;
-    document.head.appendChild(styleTag);
-    return () => document.head.removeChild(styleTag);
-  }, []);
+  const containerStyle = {
+    fontFamily: fontLoaded ? "CustomClockFont" : "sans-serif",
+    width: "100vw",
+    height: "100dvh",
+    position: "relative",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+  };
 
-  const styles = {
-    wrapper: {
-      height: "100vh",
-      width: "100vw",
-      overflow: "hidden",
-      position: "relative",
-      background: "linear-gradient(to top, #b6e2f2 0%, #eaf9ff 100%)",
-    },
-    river: {
-      position: "absolute",
-      [side]: "0",
-      top: "0",
-      width: "22vw",
-      height: "100vh",
-      background: `
-        repeating-linear-gradient(
-          90deg,
-          rgba(0, 95, 135, 0.9) 0%,
-          rgba(0, 155, 205, 0.9) 50%,
-          rgba(0, 95, 135, 0.9) 100%
-        )
-      `,
-      backgroundSize: "200% 200%",
-      animation: "flow 6s linear infinite",
-      clipPath: "polygon(0 0, 100% 10%, 100% 90%, 0 100%)",
-      boxShadow: side === "left" 
-        ? "2vw 0 4vw rgba(0,0,0,0.2)" 
-        : "-2vw 0 4vw rgba(0,0,0,0.2)",
-    },
-    clock: {
-      position: "absolute",
-      top: "50%",
-      left: side === "left" ? "25vw" : "55vw",
-      transform: "translateY(-50%)",
-      fontFamily: "RiverFont, sans-serif",
-      fontSize: "10vh",
-      letterSpacing: "0.5vw",
-      color: "#004f6e",
-      textShadow: "0 0 1vh rgba(0,0,0,0.3)",
-      whiteSpace: "nowrap",
-      userSelect: "none",
-    },
+  const mainBgStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundImage: `url(${bgImg})`,
+    backgroundSize: "cover",
+      backgroundPosition: "center",
+    opacity: 0.9,
+     filter: "brightness(1.2) contrast(0.9) saturate(1.9) hue-rotate(-10deg)",
+    zIndex: 4,
+  };
+
+  const tiledBgStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundImage: `url(${tileImg})`,
+      backgroundRepeat: "repeat",
+    opacity: 0.6,
+    filter: "brightness(1.1) contrast(1.2) saturate(2.5)",    
+    backgroundSize: "10vh 10vh", // <- tile size
+    zIndex: 3,
+  };
+
+  const overlayBgStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundImage: `url(${overlayImg})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    opacity: 0.6,
+    filter: "brightness(1.5) contrast(1.8) saturate(2.0)",
+    zIndex: 2,
+  };
+
+  const clockStyle = {
+    position: "relative",
+    zIndex: 4,
+    width: "40vh",
+    height: "40vh",
+    borderRadius: "50%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#E1F3DDFF",
+      fontSize: "4rem",
+        zIndex: 5,
+    textAlign: "center",
+    textShadow: "1px 1px rgba(0,0,0)",
+  };
+
+  const formatTime = (date) => {
+    const h = String(date.getHours()).padStart(2, "0");
+    const m = String(date.getMinutes()).padStart(2, "0");
+    return `${h}${m}`;
   };
 
   return (
-    <div style={styles.wrapper}>
-      <div style={styles.river}></div>
-      <div style={styles.clock}>{time}</div>
+    <div style={containerStyle}>
+      <div style={mainBgStyle}></div>
+      <div style={tiledBgStyle}></div>
+      <div style={overlayBgStyle}></div>
+      <div style={clockStyle}>{formatTime(time)}</div>
     </div>
   );
 }

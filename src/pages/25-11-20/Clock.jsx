@@ -1,98 +1,93 @@
-import React, { useEffect, useState } from "react";
+// DigitalClock.jsx
+import React, { useState, useEffect } from "react";
+import bgImg from "./eyes.jpg"; // Background image
+import font2025_11_20 from "./apple.ttf"; // Font file with today's date in variable name
 
-export default function RockClock() {
+export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    // Load font via FontFace
+    const font = new FontFace("CustomDigital", `url(${font2025_11_20})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      setFontLoaded(true);
+    });
+    
+    const interval = setInterval(() => setTime(new Date()), 10); // update every 10ms
+    return () => clearInterval(interval);
   }, []);
 
-  // Calculate rotation angles
-  const seconds = time.getSeconds();
-  const minutes = time.getMinutes() + seconds / 60;
-  const hours = time.getHours() % 12 + minutes / 60;
+  if (!fontLoaded) return null;
 
-  const secDeg = (seconds / 60) * 360;
-  const minDeg = (minutes / 60) * 360;
-  const hourDeg = (hours / 12) * 360;
+  const hours = String(time.getHours()).padStart(2, "0");
+  const minutes = String(time.getMinutes()).padStart(2, "0");
+  const seconds = String(time.getSeconds()).padStart(2, "0");
+  const milliseconds = String(time.getMilliseconds()).padStart(3, "0"); // e.g., 045
+  const msColumns = [milliseconds[0] + milliseconds[1], milliseconds[2]]; // split into two columns
 
-  // Clock center and hand lengths in vh
-  const clockSize = 50; // 50vh diameter
-  const center = clockSize / 2;
-  const handStyles = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transformOrigin: "bottom center",
-    borderRadius: "0.5vh",
-  };
+  // Example meetings array (hours 9, 12, 15)
+  const meetings = [9, 12, 15];
+  const isMeetingHour = meetings.includes(time.getHours());
 
   return (
     <div
       style={{
         position: "relative",
-        width: `${clockSize}vh`,
-        height: `${clockSize}vh`,
-        borderRadius: "50%",
-        border: "0.5vh solid #888",
-        margin: "5vh auto",
-        background:
-          "linear-gradient(to bottom, #d9c9b1 0%, #c7b299 100%)", // sedimentary feel
+        width: "100vw",
+        height: "100vh",
+        fontFamily: "CustomDigital, monospace",
+        color: "#00FF00",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundImage: `url(${bgImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
-      {/* Hours Hand - Sedimentary */}
       <div
         style={{
-          ...handStyles,
-          width: "0.8vh",
-          height: "20vh",
-          background:
-            "linear-gradient(to top, #c7b299 0%, #d9c9b1 50%, #c7b299 100%)",
-          transform: `translate(-50%, -100%) rotate(${hourDeg}deg)`,
-          zIndex: 1,
+          fontSize: "8vh",
+          display: "flex",
+          gap: "2vh",
+          textShadow: "0.2vh 0.2vh 0.1vh #000",
         }}
-      />
+      >
+        <span>{hours}</span>
+        <span>:</span>
+        <span>{minutes}</span>
+        <span>:</span>
+        <span>{seconds}</span>
+      </div>
 
-      {/* Minutes Hand - Composite */}
       <div
         style={{
-          ...handStyles,
-          width: "0.6vh",
-          height: "28vh",
-          background:
-            "repeating-linear-gradient(45deg, #999 0%, #bbb 5%, #888 10%)",
-          transform: `translate(-50%, -100%) rotate(${minDeg}deg)`,
-          zIndex: 2,
+          fontSize: "5vh",
+          display: "flex",
+          gap: "2vh",
+          marginTop: "2vh",
+          textShadow: "0.2vh 0.2vh 0.1vh #000",
         }}
-      />
+      >
+        <span>{msColumns[0]}</span>
+        <span>{msColumns[1]}</span>
+      </div>
 
-      {/* Seconds Hand - Igneous */}
-      <div
-        style={{
-          ...handStyles,
-          width: "0.4vh",
-          height: "30vh",
-          background: "linear-gradient(to top, #222 0%, #555 50%, #900 100%)",
-          transform: `translate(-50%, -100%) rotate(${secDeg}deg)`,
-          zIndex: 3,
-        }}
-      />
-
-      {/* Center Pin */}
-      <div
-        style={{
-          position: "absolute",
-          width: "2vh",
-          height: "2vh",
-          backgroundColor: "#555",
-          borderRadius: "50%",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 4,
-        }}
-      />
+      {isMeetingHour && (
+        <div
+          style={{
+            marginTop: "3vh",
+            fontSize: "4vh",
+            color: "#FF0000",
+            textShadow: "0.2vh 0.2vh 0.1vh #000",
+          }}
+        >
+          Meeting!
+        </div>
+      )}
     </div>
   );
 }
