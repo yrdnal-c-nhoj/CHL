@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useMemo } from "react";
 import font_25_10_09 from "./rain.otf";
 import bgImage from "./fall.webp"; // local background image
 
-export default function DigitRain() {
+export default function FallClock() {
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
   const timeDigitsRef = useRef([]);
@@ -119,7 +119,16 @@ export default function DigitRain() {
       // Draw background flush left at natural size
       if (bgRef.current) {
         ctx.clearRect(0, 0, width, height);
-        ctx.drawImage(bgRef.current, 0, 0); // top-left corner
+        const img = bgRef.current;
+        const iw = img.naturalWidth || img.width;
+        const ih = img.naturalHeight || img.height;
+        // scale to 'cover' the canvas (no blank space), centered
+        const scale = Math.max(width / iw, height / ih);
+        const dw = iw * scale;
+        const dh = ih * scale;
+        const dx = (width - dw) / 2;
+        const dy = (height - dh) / 2;
+        ctx.drawImage(img, dx, dy, dw, dh);
       } else {
         ctx.fillStyle = "#BDE4F0FF";
         ctx.fillRect(0, 0, width, height);
