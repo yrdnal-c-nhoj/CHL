@@ -1,171 +1,143 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import customFont2025_11_20 from "./cat.ttf";
+import bgImg2025_11_20 from "./eyes.webp";   // ← background image import
 
-const TimeRing = ({ count, size, currentRotation, isHour = false }) => {
-    const step = 360 / count;
-    const radius = size * 0.4;
+export default function DigitalClockGrid() {
+  const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const [rotations, setRotations] = useState({});
 
-    const ringStyle = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: `${size}px`,
-        height: `${size}px`,
-    };
+  const seconds = time.getSeconds();
+  const secondsOnes = seconds % 10;
+  const fiveSecBucket = Math.floor(seconds / 5);
 
-    const numberContainerStyle = {
-        position: 'relative',
-        width: '100%',
-        height: '100%',
-        transform: `rotate(${currentRotation}deg)`,
-        transition: 'transform 0.1s linear',
-    };
-
-    const numberStyle = (angle) => {
-        const rad = (angle - 90) * (Math.PI / 180);
-        const x = 50 + radius * Math.cos(rad);
-        const y = 50 + radius * Math.sin(rad);
-        
-        return {
-            position: 'absolute',
-            left: `${x}%`,
-            top: `${y}%`,
-            transform: 'translate(-50%, -50%)',
-            fontSize: isHour ? '2.5vmin' : '1.8vmin',
-            fontWeight: isHour ? '600' : '400',
-            color: isHour ? '#2c3e50' : (count === 60 ? '#34495e' : '#7f8c8d'),
-            backgroundColor: isHour ? 'rgba(255, 255, 255, 0.7)' : 'transparent',
-            borderRadius: '50%',
-            padding: '0.3vmin',
-            whiteSpace: 'nowrap',
-        };
-    };
-
-    return (
-        <div style={ringStyle}>
-            <div style={numberContainerStyle}>
-                {Array.from({ length: count }).map((_, i) => {
-                    const angle = i * step;
-                    const value = isHour ? (i === 0 ? 12 : i) : i;
-                    return (
-                        <div key={i} style={numberStyle(angle)}>
-                            {value}
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
+  // LOAD FONT
+  useEffect(() => {
+    const font = new FontFace(
+      "ClockFont2025_11_20",
+      `url(${customFont2025_11_20})`
     );
-};
-
-const Clock = () => {
-    const [time, setTime] = useState(new Date());
-    const [dimensions, setDimensions] = useState({ 
-        width: window.innerWidth, 
-        height: window.innerHeight 
+    font.load().then((f) => {
+      document.fonts.add(f);
+      setFontLoaded(true);
     });
+  }, []);
 
-    useEffect(() => {
-        const handleResize = () => {
-            setDimensions({
-                width: window.innerWidth,
-                height: window.innerHeight
-            });
-        };
+  // CLOCK TICK (every second)
+  useEffect(() => {
+    const t = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(t);
+  }, []);
 
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+  // ROTATION GRID (update only every 5 sec)
+  useEffect(() => {
+    const newRot = {};
+    const rows = 60;
+    const cols = 52;
 
-    useEffect(() => {
-        const timerId = setInterval(() => {
-            setTime(new Date());
-        }, 50);
-        return () => clearInterval(timerId);
-    }, []);
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        for (let d = 0; d < 6; d++) {
+          newRot[`${r}-${c}-${d}`] = Math.random() * 90 - 45;
+        }
+      }
+    }
+    setRotations(newRot);
+  }, [fiveSecBucket]);
 
-    const currentMs = time.getMilliseconds();
-    const currentSecond = time.getSeconds();
-    const currentMinute = time.getMinutes();
-    const currentHour = time.getHours() % 12;
+  if (!fontLoaded) return null;
 
-    const totalSeconds = currentSecond + currentMs / 1000;
-    const totalMinutes = currentMinute + totalSeconds / 60;
-    const totalHours = currentHour + totalMinutes / 60;
+  // DIGIT LOGIC
+  const hh = String(time.getHours()).padStart(2, "0");
+  const mm = String(time.getMinutes()).padStart(2, "0");
 
-    const secondsRotation = -totalSeconds * 6;
-    const minutesRotation = -totalMinutes * 6;
-    const hoursRotation = -totalHours * 30;
+  const digitH0 = hh[0];
+  const digitH1 = hh[1];
+  const digitM0 = mm[0];
+  const digitM1 = mm[1];
+  const digitS0 = String(Math.floor(seconds / 10));
+  const digitS1 = String(secondsOnes);
 
-    const size = Math.min(dimensions.width, dimensions.height) * 0.9;
-    const secondRingSize = size;
-    const minuteRingSize = size * 0.7;
-    const hourRingSize = size * 0.5;
+  const base = [digitH0, digitH1, digitM0, digitM1, digitS0, digitS1];
 
-    const containerStyle = {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#ecf0f1',
-        overflow: 'hidden',
-    };
+  const pattern0 = base;
+  const pattern3 = [...base.slice(3), ...base.slice(0, 3)];
 
-    const targetLineStyle = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        width: '50%',
-        height: '2px',
-        backgroundColor: '#e74c3c',
-        transform: 'translateY(-50%)',
-        transformOrigin: 'left center',
-        zIndex: 10,
-    };
+  const digitStyle = (r, c, d) => ({
+    display: "inline-block",
+    width: "11vh",
+    height: "14vh",
+    lineHeight: "14vh",
+    textAlign: "center",
+    fontFamily: "ClockFont2025_11_20, monospace",
+    fontSize: "16vh",
+    color: "#851BE7FF",
+    userSelect: "none",
+    margin: "-0.2vh -1.8vw",
+    letterSpacing: "-1vw",
+    transform: `rotate(${rotations[`${r}-${c}-${d}`] || 0}deg)`,
+    transformOrigin: "center center",
+    transition: "transform 0.6s cubic-bezier(0.2, 0.8, 0.4, 1)",
+    willChange: "transform",
+  });
 
-    const centerDotStyle = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        width: '3vmin',
-        height: '3vmin',
-        borderRadius: '50%',
-        backgroundColor: '#2c3e50',
-        transform: 'translate(-50%, -50%)',
-        zIndex: 20,
-        boxShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
-    };
+  const rowStyle = {
+    display: "flex",
+    justifyContent: "center",
+    whiteSpace: "nowrap",
+    margin: "-4vh 0",
+  };
 
-    return (
-        <div style={containerStyle}>
-            <div style={{ position: 'relative', width: size, height: size }}>
-                <div style={targetLineStyle}></div>
-                
-                <TimeRing
-                    count={60}
-                    size={secondRingSize}
-                    currentRotation={secondsRotation}
-                />
-                <TimeRing
-                    count={60}
-                    size={minuteRingSize}
-                    currentRotation={minutesRotation}
-                />
-                <TimeRing
-                    count={12}
-                    size={hourRingSize}
-                    currentRotation={hoursRotation}
-                    isHour={true}
-                />
-                
-                <div style={centerDotStyle}></div>
-            </div>
-        </div>
-    );
-};
+  const gridWrapperStyle = {
+    position: "fixed",
+    inset: 0,
+    overflow: "hidden",
+    transform: "rotate(17deg) scale(1.8)",
+    transformOrigin: "center center",
+    pointerEvents: "none",
+  };
 
-export default Clock;
+  const Row = React.memo(({ rowIndex }) => (
+    <div style={rowStyle}>
+      {Array.from({ length: 52 }, (_, colIndex) => {
+        const pattern =
+          (colIndex + rowIndex) % 2 === 0 ? pattern0 : pattern3;
+        return (
+          <div key={colIndex}>
+            {pattern.map((digit, digitIdx) => (
+              <span
+                key={digitIdx}
+                style={digitStyle(rowIndex, colIndex, digitIdx)}
+              >
+                {digit}
+              </span>
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  ));
+
+  return (
+    <>
+      {/* Background image using imported file */}
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          backgroundImage: `url(${bgImg2025_11_20})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          filter: "saturate(0.2) brightness(1.4) contrast(0.5)",
+        }}
+      />
+
+      <div style={gridWrapperStyle}>
+        {Array.from({ length: 60 }, (_, idx) => (
+          <Row key={idx} rowIndex={idx} />
+        ))}
+      </div>
+    </>
+  );
+}
