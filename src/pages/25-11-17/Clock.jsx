@@ -79,7 +79,6 @@ export default function MarsDigitalClock() {
       overflow: "hidden",
       padding: "2vh",
       boxSizing: "border-box",
-      color: "rgba(25, 25, 25, 0.6)",
       opacity: fontLoaded ? 1 : 0,
       transition: "opacity 0.35s ease-out",
     },
@@ -89,7 +88,7 @@ export default function MarsDigitalClock() {
       left: 0,
       width: "100%",
       height: "100%",
-      background: "linear-gradient(188deg, #F80606FF, #D34C23FF)",
+      background: "linear-gradient(188deg, #DF0623FF, #F35B0FFF)",
       zIndex: 0, // gradient behind everything
     },
     background1: {
@@ -106,31 +105,32 @@ export default function MarsDigitalClock() {
       // opacity: 0.3, // 60% opacity
     },
     background2: {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundImage: `url(${bg2})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-         opacity: 0.6, // 60% opacity
-   
-      zIndex: 2,
-    },
-    background3: {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundImage: `url(${bg3})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      transform: "rotate(180deg)",
-      opacity: 0.6, // 60% opacity
-      zIndex: 3,
-    },
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  backgroundImage: `url(${bg2})`,
+  backgroundSize: "100% 100%",   // <— Stretch to fill container
+  backgroundPosition: "center",
+  opacity: 0.6,
+  zIndex: 2,
+},
+
+background3: {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  backgroundImage: `url(${bg3})`,
+  backgroundSize: "100% 100%",   // <— Stretch to fill container
+  backgroundPosition: "center",
+  transform: "rotate(180deg)",
+  opacity: 0.6,
+  zIndex: 3,
+},
+
     content: {
       position: "relative",
       zIndex: 4, // above all backgrounds
@@ -147,13 +147,13 @@ export default function MarsDigitalClock() {
       gap: "1vh",
     },
     digitBox: {
-      width: "16vh",
-      height: "16vh",
+      width: "11vh",
+      height: "11vh",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      fontSize: "23vh",
-      color: "#03410EFF",
+      fontSize: "13vh",
+      color: "#061908A0",
       lineHeight: 1,
       whiteSpace: "nowrap",
     },
@@ -168,9 +168,9 @@ export default function MarsDigitalClock() {
             flex-direction: column !important;
           }
           .digitBox {
-            font-size: 18vw !important;
-            width: 18vw !important;
-            height: 18vw !important;
+            font-size: 12vw !important;
+            width: 12vw !important;
+            height: 12vw !important;
           }
         }
       `}</style>
