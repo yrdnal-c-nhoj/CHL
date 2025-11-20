@@ -113,7 +113,7 @@ export default function MarsDigitalClock() {
   backgroundImage: `url(${bg2})`,
   backgroundSize: "100% 100%",   // <— Stretch to fill container
   backgroundPosition: "center",
-  opacity: 0.6,
+  opacity: 0.5,
   zIndex: 2,
 },
 
@@ -127,7 +127,7 @@ background3: {
   backgroundSize: "100% 100%",   // <— Stretch to fill container
   backgroundPosition: "center",
   transform: "rotate(180deg)",
-  opacity: 0.6,
+  opacity: 0.5,
   zIndex: 3,
 },
 
@@ -153,9 +153,10 @@ background3: {
       alignItems: "center",
       justifyContent: "center",
       fontSize: "13vh",
-      color: "#061908A0",
+      color: "#EF2005FF",
       lineHeight: 1,
       whiteSpace: "nowrap",
+textShadow: "-1px -1px 0 #040404FF, 1px 1px 0 #F7F8BFFF",
     },
   };
 
