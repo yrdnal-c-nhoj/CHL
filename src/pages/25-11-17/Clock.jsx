@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import bg1 from "./mars2.webp";
 import bg2 from "./mars1.gif";
 import bg3 from "./mars1.gif";
+import bg4 from "./mars4.webp"; // ← added Mars four import
 import font2025_11_18 from "./mars.ttf";
 
 export default function MarsDigitalClock() {
@@ -68,6 +69,24 @@ export default function MarsDigitalClock() {
         font-display: swap;
       }
     `,
+    /* Mars four - behind everything else */
+   background4: {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  backgroundImage: `url(${bg4})`,
+  backgroundSize: "100% 100%",
+  opacity: 0.7,
+  backgroundBlendMode: "multiply",
+  backgroundColor: "red",
+  filter: "brightness(1.7) contrast(1.4)",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center",
+  zIndex: 1,
+},
+
     root: {
       minHeight: "100dvh",
       display: "flex",
@@ -105,31 +124,31 @@ export default function MarsDigitalClock() {
       // opacity: 0.3, // 60% opacity
     },
     background2: {
-  position: "absolute",
-  top: 0,
-  left: 0,
-  width: "100%",
-  height: "100%",
-  backgroundImage: `url(${bg2})`,
-  backgroundSize: "100% 100%",   // <— Stretch to fill container
-  backgroundPosition: "center",
-  opacity: 0.5,
-  zIndex: 2,
-},
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      backgroundImage: `url(${bg2})`,
+      backgroundSize: "100% 100%",   // <— Stretch to fill container
+      backgroundPosition: "center",
+      opacity: 0.5,
+      zIndex: 2,
+    },
 
-background3: {
-  position: "absolute",
-  top: 0,
-  left: 0,
-  width: "100%",
-  height: "100%",
-  backgroundImage: `url(${bg3})`,
-  backgroundSize: "100% 100%",   // <— Stretch to fill container
-  backgroundPosition: "center",
-  transform: "rotate(180deg)",
-  opacity: 0.5,
-  zIndex: 3,
-},
+    background3: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      backgroundImage: `url(${bg3})`,
+      backgroundSize: "100% 100%",   // <— Stretch to fill container
+      backgroundPosition: "center",
+      transform: "rotate(180deg)",
+      opacity: 0.5,
+      zIndex: 3,
+    },
 
     content: {
       position: "relative",
@@ -156,7 +175,7 @@ background3: {
       color: "#EF2005FF",
       lineHeight: 1,
       whiteSpace: "nowrap",
-textShadow: "-1px -1px 0 #040404FF, 1px 1px 0 #F7F8BFFF",
+      textShadow: "-1px -1px 0 #040404FF, 1px 1px 0 #F7F8BFFF",
     },
   };
 
@@ -177,6 +196,7 @@ textShadow: "-1px -1px 0 #040404FF, 1px 1px 0 #F7F8BFFF",
       `}</style>
 
       <div style={styles.root}>
+        <div style={styles.background4} aria-hidden="true"></div>
         <div style={styles.gradientBackground}></div>
         <div style={styles.background1}></div>
         <div style={styles.background2}></div>
