@@ -56,8 +56,8 @@ export default function AnalogClock() {
 
   // Clock container
   const clockStyle = {
-    width: "40vw",
-    height: "80vh",
+    width: "30vw",
+    height: "100vh",
     position: "relative",
     background: "rgba(255,255,255,0.35)",
     overflow: "hidden",
