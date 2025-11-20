@@ -3,18 +3,34 @@ import sss47wert from "./disc.ttf";
 import bgOuter from "./water.webp";
 import bgInner from "./disc.gif";
 
-const AnalogClock = () => {
+const TempestClock
+ = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    // Load font
-    const fontFace92725 = new FontFace("CustomClockFont", `url(${sss47wert})`);
-    const fontPromise = fontFace92725.load().then((loadedFace) => {
-      document.fonts.add(loadedFace);
-    });
+    // Inject a SCOPED @font-face that only applies to .scoped-clock
+    const style = document.createElement("style");
+    style.textContent = `
+      @font-face {
+        font-family: "ScopedClockFont";
+        src: url("${sss47wert}") format("truetype");
+        font-display: swap;
+      }
 
-    // Load images
+      .scoped-clock * {
+        font-family: "ScopedClockFont", sans-serif !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Load images (font loads automatically from injected CSS)
     const images = [bgOuter, bgInner];
     const imagePromises = images.map(
       (src) =>
@@ -22,24 +38,19 @@ const AnalogClock = () => {
           const img = new Image();
           img.src = src;
           img.onload = resolve;
-          img.onerror = resolve; // avoid blocking if one fails
+          img.onerror = resolve;
         })
     );
 
-    // Wait for font + images
-    Promise.all([fontPromise, ...imagePromises]).then(() => {
-      setLoaded(true);
-    });
+    Promise.all([...imagePromises]).then(() => setLoaded(true));
   }, []);
 
-  // Update time once loaded
   useEffect(() => {
     if (!loaded) return;
     const timer = setInterval(() => setCurrentTime(new Date()), 50);
     return () => clearInterval(timer);
   }, [loaded]);
 
-  // Loader (overlay until everything is ready)
   if (!loaded) {
     return (
       <div
@@ -52,15 +63,11 @@ const AnalogClock = () => {
           background: "black",
           color: "white",
           fontSize: "2rem",
-          fontFamily: "sans-serif",
         }}
-      >
-      
-      </div>
+      />
     );
   }
 
-  // Time calculations
   const hours24 = currentTime.getHours();
   const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12;
   const minutes = currentTime.getMinutes();
@@ -131,7 +138,6 @@ const AnalogClock = () => {
               textAnchor: "middle",
               alignmentBaseline: "middle",
               fontSize: fontSize,
-              fontFamily: `'CustomClockFont', sans-serif`,
               fill: i === activeIndex ? "#ED0B0BFF" : "#CCC8CDFF",
               fontWeight: "bold",
               textShadow:
@@ -150,82 +156,86 @@ const AnalogClock = () => {
         </g>
       );
     }
+
     return sections;
   };
 
   return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100dvh",
-        position: "relative",
-        overflow: "hidden",
-        backgroundImage: `url(${bgOuter})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        filter: "contrast(0.8) opacity(0.9) saturate(5.2) hue-rotate(90deg)",
-        transform: "scaleX(-1)",
-      }}
-    >
+    <div className="scoped-clock">
       <div
         style={{
-          position: "absolute",
-          inset: 0,
-          backgroundColor: "rgba(0,0,0,0.4)",
-          zIndex: 1,
-        }}
-      />
-
-      <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%) scaleX(-1)",
-          width: "90vmin",
-          height: "90vmin",
-          borderRadius: "50%",
-          backgroundImage: `url(${bgInner})`,
+          width: "100vw",
+          height: "100dvh",
+          position: "relative",
+          overflow: "hidden",
+          backgroundImage: `url(${bgOuter})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "contrast(2.4)",
-          zIndex: 2,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          filter: "contrast(0.8) opacity(0.9) saturate(5.2) hue-rotate(90deg)",
+          transform: "scaleX(-1)",
         }}
       >
         <div
           style={{
             position: "absolute",
             inset: 0,
-            borderRadius: "50%",
-            backgroundColor: "rgba(0,0,0,0.3)",
+            backgroundColor: "rgba(0,0,0,0.4)",
             zIndex: 1,
           }}
         />
 
-        <svg viewBox="0 0 100 100" style={{ width: "100%", height: "100%", zIndex: 2 }}>
-          <g transform={`rotate(${hoursRotation}, 50, 50)`}>
-            {createRing(12, 48, 38, hours12, "hours", "0.7rem")}
-          </g>
-          <g transform={`rotate(${minutesTensRotation}, 50, 50)`}>
-            {createRing(6, 38, 30, minutesTens, "minutesTens", "0.6rem")}
-          </g>
-          <g transform={`rotate(${minutesOnesRotation}, 50, 50)`}>
-            {createRing(10, 30, 22, minutesOnes, "minutesOnes", "0.5rem")}
-          </g>
-          <g transform={`rotate(${secondsTensRotation}, 50, 50)`}>
-            {createRing(6, 22, 14, secondsTens, "secondsTens", "0.4rem")}
-          </g>
-          <g transform={`rotate(${secondsOnesRotation}, 50, 50)`}>
-            {createRing(10, 14, 6, secondsOnes, "secondsOnes", "0.3rem")}
-          </g>
-          <circle cx="50" cy="50" r="6" fill="transparent" />
-        </svg>
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%) scaleX(-1)",
+            width: "90vmin",
+            height: "90vmin",
+            borderRadius: "50%",
+            backgroundImage: `url(${bgInner})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "contrast(2.4)",
+            zIndex: 2,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              borderRadius: "50%",
+              backgroundColor: "rgba(0,0,0,0.3)",
+              zIndex: 1,
+            }}
+          />
+
+          <svg viewBox="0 0 100 100" style={{ width: "100%", height: "100%", zIndex: 2 }}>
+            <g transform={`rotate(${hoursRotation}, 50, 50)`}>
+              {createRing(12, 48, 38, hours12, "hours", "0.7rem")}
+            </g>
+            <g transform={`rotate(${minutesTensRotation}, 50, 50)`}>
+              {createRing(6, 38, 30, minutesTens, "minutesTens", "0.6rem")}
+            </g>
+            <g transform={`rotate(${minutesOnesRotation}, 50, 50)`}>
+              {createRing(10, 30, 22, minutesOnes, "minutesOnes", "0.5rem")}
+            </g>
+            <g transform={`rotate(${secondsTensRotation}, 50, 50)`}>
+              {createRing(6, 22, 14, secondsTens, "secondsTens", "0.4rem")}
+            </g>
+            <g transform={`rotate(${secondsOnesRotation}, 50, 50)`}>
+              {createRing(10, 14, 6, secondsOnes, "secondsOnes", "0.3rem")}
+            </g>
+            <circle cx="50" cy="50" r="6" fill="transparent" />
+          </svg>
+        </div>
       </div>
     </div>
   );
 };
 
-export default AnalogClock;
+export default TempestClock
+;
