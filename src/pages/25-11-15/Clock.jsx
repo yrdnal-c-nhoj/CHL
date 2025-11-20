@@ -8,13 +8,13 @@ export default function DigitRain() {
   const timeDigitsRef = useRef([]);
   const bgRef = useRef(null);
 
-  const GRAVITY = 1.5;
-  const WIND_BASE = 0.5;
+  const GRAVITY = 6.0;
+  const WIND_BASE = 0.01;
   const SPAWN_CHANCE = 0.15;
-  const INITIAL_PARTICLES = 30;
-  const MAX_FALL_SPEED = 2;
-  const DRAG = 1.39;
-  const HORIZONTAL_SWAY_STRENGTH = 0.05;
+  const INITIAL_PARTICLES = 2;
+  const MAX_FALL_SPEED = 1.8;
+  const DRAG = 0.1;
+  const HORIZONTAL_SWAY_STRENGTH = 6.5;
 
   // Update digits every second
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function DigitRain() {
       add(v) { this.x += v.x; this.y += v.y; return this; }
     }
 
-    const AUTUMN_COLORS = ["#F28585FF", "#FE6208F2", "#F81010FF", "#FCD80FFF", "#D6F605FF", "#F2C05CFF"];
+    const AUTUMN_COLORS = ["#DA0E0EFF", "#FE6208F2", "#F81010FF", "#FCD80FFF", "#FFEB10FF", "#F71B07FF"];
 
     class DigitParticle {
       constructor(value, width, height) {
