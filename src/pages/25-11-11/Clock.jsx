@@ -53,7 +53,7 @@ export default function CustomFontMirroredClock() {
   const mirroredClockStyle = {
     fontFamily: "TodayFont, monospace",
     fontSize: "13vw",
-    color: "#5EF5397D",
+    color: "#F70E12E5",
     textShadow: "1px 1px 0px #F1EAEBA0, -1px -1px 0px #0E0D0DFF",
     transform: "scaleX(-1) translateX(-1vw)",
     textAlign: "center",
