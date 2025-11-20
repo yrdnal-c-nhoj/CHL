@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import bg1 from "./mars.webp";
+import bg1 from "./mars2.webp";
 import bg2 from "./mars1.gif";
 import bg3 from "./mars1.gif";
 import font2025_11_18 from "./mars.ttf";
