@@ -28,30 +28,44 @@ export default function PixelInverseClock() {
     const video = videoRef.current;
     let animationFrame;
 
+    // ensure canvas fills the actual viewport (and updates on resize/orientation)
+    const resizeCanvas = () => {
+      const w = Math.floor(window.innerWidth);
+      const h = Math.floor(window.innerHeight);
+      // set CSS size to exact viewport pixels to avoid layout rounding/offsets
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+      // set internal pixel buffer to match CSS pixels (no DPR upscale here)
+      canvas.width = w;
+      canvas.height = h;
+    };
+
+    const getPixel = (x, y, w, data) => {
+      const i = (Math.floor(y) * w + Math.floor(x)) * 4;
+      return { r: data[i], g: data[i + 1], b: data[i + 2], a: data[i + 3] };
+    };
+
     const drawClock = () => {
+      resizeCanvas(); // keep in sync each frame (cheap)
       const now = new Date();
       const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
       const minutes = now.getMinutes() + seconds / 60;
       const hours = (now.getHours() % 12) + minutes / 60;
 
-      const w = canvas.width = window.innerWidth;
-      const h = canvas.height = window.innerHeight;
+      const w = canvas.width;
+      const h = canvas.height;
       const cx = w / 2;
       const cy = h / 2;
       const radius = Math.min(w, h) * 0.36;
 
-      // Draw video frame
+      // draw current video frame stretched to cover the canvas
       ctx.drawImage(video, 0, 0, w, h);
 
-      // Grab pixel data for inversion
+      // grab pixel data (device pixels)
       const imageData = ctx.getImageData(0, 0, w, h);
       const data = imageData.data;
-      const getPixel = (x, y) => {
-        const i = (Math.floor(y) * w + Math.floor(x)) * 4;
-        return { r: data[i], g: data[i + 1], b: data[i + 2], a: data[i + 3] };
-      };
 
-      // Draw radially aligned numbers with pixel inversion
+      // numbers
       const numberOffset = radius * 0.85;
       ctx.font = `${radius * 0.3}px "${FONT_FAMILY}", sans-serif`;
       ctx.textAlign = "center";
@@ -62,7 +76,7 @@ export default function PixelInverseClock() {
         const x = cx + Math.cos(angle) * numberOffset;
         const y = cy + Math.sin(angle) * numberOffset;
 
-        const pixel = getPixel(x, y);
+        const pixel = getPixel(x, y, w, data);
         const invColor = `rgb(${255 - pixel.r}, ${255 - pixel.g}, ${255 - pixel.b})`;
 
         ctx.save();
@@ -73,16 +87,15 @@ export default function PixelInverseClock() {
         ctx.restore();
       }
 
-      // Draw clock hands pixel-inverted
-      const drawHand = (length, width, angleRad) => {
+      const drawHand = (length, widthPx, angleRad) => {
         const x = cx + Math.cos(angleRad) * length;
         const y = cy + Math.sin(angleRad) * length;
 
-        const pixel = getPixel(x, y);
-        const invColor = `rgb(${255 - pixel.r}, ${255 - pixel.g}, ${255 - pixel.b})`;
+        const px = getPixel(x, y, w, data);
+        const invColor = `rgb(${255 - px.r}, ${255 - px.g}, ${255 - px.b})`;
 
         ctx.strokeStyle = invColor;
-        ctx.lineWidth = width;
+        ctx.lineWidth = widthPx;
         ctx.lineCap = "round";
         ctx.beginPath();
         ctx.moveTo(cx, cy);
@@ -90,12 +103,12 @@ export default function PixelInverseClock() {
         ctx.stroke();
       };
 
-      drawHand(radius * 0.5, radius * 0.03, hours * Math.PI / 6);
-      drawHand(radius * 1.1, radius * 0.02, minutes * Math.PI / 30);
-      drawHand(radius * 1.4, radius * 0.01, seconds * Math.PI / 30);
+      drawHand(radius * 0.5, Math.max(1, Math.floor(radius * 0.03)), (hours * Math.PI) / 6);
+      drawHand(radius * 1.1, Math.max(1, Math.floor(radius * 0.02)), (minutes * Math.PI) / 30);
+      drawHand(radius * 1.4, Math.max(1, Math.floor(radius * 0.01)), (seconds * Math.PI) / 30);
 
-      // Draw center dot pixel-inverted
-      const centerPixel = getPixel(cx, cy);
+      // center dot
+      const centerPixel = getPixel(cx, cy, w, data);
       const centerColor = `rgb(${255 - centerPixel.r}, ${255 - centerPixel.g}, ${255 - centerPixel.b})`;
       ctx.fillStyle = centerColor;
       ctx.beginPath();
@@ -105,10 +118,25 @@ export default function PixelInverseClock() {
       animationFrame = requestAnimationFrame(drawClock);
     };
 
+    // start
+    const onResize = () => {
+      resizeCanvas();
+    };
+    window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onResize);
+
+    // ensure video plays (silent autoplay)
     video.play().catch(() => {});
+
+    // initial resize then start loop
+    resizeCanvas();
     drawClock();
 
-    return () => cancelAnimationFrame(animationFrame);
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", onResize);
+    };
   }, [fontLoaded]);
 
   return (
