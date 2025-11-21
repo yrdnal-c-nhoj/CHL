@@ -1,144 +1,186 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import customFont2025_11_20 from "./cat.ttf";
-import bgImg2025_11_20 from "./eyes.webp";   // ← background image import
+import bgImg2025_11_20 from "./eyes.webp";
+
+const ROWS = 60;
+const COLS = 52;
+const DIGITS = 6;
+const TOTAL_CELLS = ROWS * COLS * DIGITS;
+
+const rotationArray = new Float32Array(TOTAL_CELLS);
 
 export default function DigitalClockGrid() {
   const [time, setTime] = useState(new Date());
+  const [bucket, setBucket] = useState(0);
   const [fontLoaded, setFontLoaded] = useState(false);
-  const [rotations, setRotations] = useState({});
 
-  const seconds = time.getSeconds();
-  const secondsOnes = seconds % 10;
-  const fiveSecBucket = Math.floor(seconds / 5);
-
-  // LOAD FONT
+  // -----------------------------
+  // FONT LOAD
+  // -----------------------------
   useEffect(() => {
-    const font = new FontFace(
+    const f = new FontFace(
       "ClockFont2025_11_20",
       `url(${customFont2025_11_20})`
     );
-    font.load().then((f) => {
-      document.fonts.add(f);
+    f.load().then((ff) => {
+      document.fonts.add(ff);
       setFontLoaded(true);
     });
   }, []);
 
-  // CLOCK TICK (every second)
+  // -----------------------------
+  // UPDATE TIME ONCE PER SECOND
+  // -----------------------------
   useEffect(() => {
-    const t = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(t);
+    const id = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+    return () => clearInterval(id);
   }, []);
 
-  // ROTATION GRID (update only every 5 sec)
-  useEffect(() => {
-    const newRot = {};
-    const rows = 60;
-    const cols = 52;
+  const seconds = time.getSeconds();
+  const fiveSecBucket = Math.floor(seconds / 5);
 
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        for (let d = 0; d < 6; d++) {
-          newRot[`${r}-${c}-${d}`] = Math.random() * 90 - 45;
+  // -----------------------------
+  // ROTATIONS UPDATE EVERY 5 SEC
+  // -----------------------------
+  useEffect(() => {
+    let i = 0;
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        for (let d = 0; d < DIGITS; d++) {
+          rotationArray[i++] = Math.random() * 90 - 45;
         }
       }
     }
-    setRotations(newRot);
+    setBucket(fiveSecBucket);
   }, [fiveSecBucket]);
 
   if (!fontLoaded) return null;
 
-  // DIGIT LOGIC
-  const hh = String(time.getHours()).padStart(2, "0");
-  const mm = String(time.getMinutes()).padStart(2, "0");
+  // -----------------------------
+  // DIGIT PATTERNS (memo)
+  // -----------------------------
+  const digitPatterns = useMemo(() => {
+    const hh = String(time.getHours()).padStart(2, "0");
+    const mm = String(time.getMinutes()).padStart(2, "0");
+    const ss = String(time.getSeconds()).padStart(2, "0");
 
-  const digitH0 = hh[0];
-  const digitH1 = hh[1];
-  const digitM0 = mm[0];
-  const digitM1 = mm[1];
-  const digitS0 = String(Math.floor(seconds / 10));
-  const digitS1 = String(secondsOnes);
+    const base = [hh[0], hh[1], mm[0], mm[1], ss[0], ss[1]];
 
-  const base = [digitH0, digitH1, digitM0, digitM1, digitS0, digitS1];
+    return {
+      p0: base,
+      p3: [...base.slice(3), ...base.slice(0, 3)],
+    };
+  }, [time]);
 
-  const pattern0 = base;
-  const pattern3 = [...base.slice(3), ...base.slice(0, 3)];
+  // -----------------------------
+  // MEMO ROW LIST
+  // -----------------------------
+  const rowsArray = useMemo(() => {
+    return Array.from({ length: ROWS }, (_, r) => r);
+  }, []);
 
-  const digitStyle = (r, c, d) => ({
-    display: "inline-block",
-    width: "11vh",
-    height: "14vh",
-    lineHeight: "14vh",
-    textAlign: "center",
-    fontFamily: "ClockFont2025_11_20, monospace",
-    fontSize: "13vh",
-    color: "#851BE7FF",
-    textShadow: "0.5vh 0.2vh 0.8vh #000000, -0.5px -0.5px 0 #F6F4DDFF",
-    userSelect: "none",
-    margin: "-0.2vh -1.8vw",
-    letterSpacing: "-1vw",
-    transform: `rotate(${rotations[`${r}-${c}-${d}`] || 0}deg)`,
-    transformOrigin: "center center",
-    transition: "transform 0.6s cubic-bezier(0.2, 0.8, 0.4, 1)",
-    willChange: "transform",
-  });
+  // -----------------------------
+  // ROW COMPONENT (memo)
+  // -----------------------------
+  const Row = useMemo(
+    () =>
+      React.memo(function Row({ r }) {
+        const cols = new Array(COLS);
 
-  const rowStyle = {
-    display: "flex",
-    justifyContent: "center",
-    whiteSpace: "nowrap",
-    margin: "-4vh 0",
-  };
+        for (let c = 0; c < COLS; c++) {
+          const pattern = (c + r) % 2 === 0 ? digitPatterns.p0 : digitPatterns.p3;
 
-  const gridWrapperStyle = {
-    position: "fixed",
-    inset: 0,
-    overflow: "hidden",
-    transform: "rotate(17deg) scale(1.8)",
-    transformOrigin: "center center",
-    pointerEvents: "none",
-  };
+          cols[c] = (
+            <div key={c} className="digit-col">
+              {pattern.map((digit, d) => {
+                const rot = rotationArray[r * COLS * DIGITS + c * DIGITS + d];
+                return (
+                  <span
+                    key={d}
+                    className="digit-cell"
+                    style={{ "--rot": `${rot}deg` }}
+                  >
+                    {digit}
+                  </span>
+                );
+              })}
+            </div>
+          );
+        }
 
-  const Row = React.memo(({ rowIndex }) => (
-    <div style={rowStyle}>
-      {Array.from({ length: 52 }, (_, colIndex) => {
-        const pattern =
-          (colIndex + rowIndex) % 2 === 0 ? pattern0 : pattern3;
-        return (
-          <div key={colIndex}>
-            {pattern.map((digit, digitIdx) => (
-              <span
-                key={digitIdx}
-                style={digitStyle(rowIndex, colIndex, digitIdx)}
-              >
-                {digit}
-              </span>
-            ))}
-          </div>
-        );
-      })}
-    </div>
-  ));
+        return <div className="digit-row">{cols}</div>;
+      }),
+    [digitPatterns, bucket]
+  );
 
+  // -----------------------------
+  // RENDER
+  // -----------------------------
   return (
     <>
-      {/* Background image using imported file */}
       <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          backgroundImage: `url(${bgImg2025_11_20})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          filter: "saturate(0.2) brightness(1.4) contrast(0.5)",
-        }}
+        className="clock-bg"
+        style={{ backgroundImage: `url(${bgImg2025_11_20})` }}
       />
 
-      <div style={gridWrapperStyle}>
-        {Array.from({ length: 60 }, (_, idx) => (
-          <Row key={idx} rowIndex={idx} />
+      <div className="grid-wrapper">
+        {rowsArray.map((r) => (
+          <Row key={r} r={r} />
         ))}
       </div>
+
+      {/* CSS */}
+      <style>{`
+        .clock-bg {
+          position: fixed;
+          inset: 0;
+          background-size: cover;
+          background-position: center;
+          filter: saturate(0.2) brightness(1.4) contrast(0.5);
+          z-index: -1;
+        }
+
+        .grid-wrapper {
+          position: fixed;
+          inset: 0;
+          overflow: hidden;
+          transform: rotate(17deg) scale(1.8);
+          pointer-events: none;
+        }
+
+        .digit-row {
+          display: flex;
+          justify-content: center;
+          margin: -4vh 0;
+          white-space: nowrap;
+        }
+
+        .digit-col {
+          display: inline-flex;
+        }
+
+        .digit-cell {
+          font-family: ClockFont2025_11_20, monospace;
+          font-size: 13vh;
+          width: 11vh;
+          height: 14vh;
+          line-height: 14vh;
+          text-align: center;
+          display: inline-block;
+          color: #851BE7FF;
+          text-shadow: 0.5vh 0.2vh 0.8vh #000000,
+                       -0.5px -0.5px 0 #F6F4DDFF;
+          margin: -0.2vh -1.8vw;
+          letter-spacing: -1vw;
+          transform-origin: center;
+          transform: rotate(var(--rot));
+          transition: transform 0.6s cubic-bezier(0.2,0.8,0.4,1);
+          will-change: transform;
+          user-select: none;
+        }
+      `}</style>
     </>
   );
 }
