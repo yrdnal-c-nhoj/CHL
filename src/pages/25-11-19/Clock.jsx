@@ -11,25 +11,12 @@ export default function AnalogClock() {
 
   // Load custom font
   useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const font = new FontFace("CustomClockFont", `url(${customFontFile})`);
-        await font.load();
-        document.fonts.add(font);
-        setFontLoaded(true);
-      } catch (error) {
-        console.error('Failed to load font:', error);
-        setFontLoaded(true); // Continue rendering with fallback font if loading fails
-      }
-    };
-
-    loadFont();
+    const font = new FontFace("CustomClockFont", `url(${customFontFile})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      setFontLoaded(true);
+    });
   }, []);
-
-  // Don't render anything until font is loaded
-  if (!fontLoaded) {
-    return null; // Or a loading spinner/skeleton
-  }
 
   // Update time every second
   useEffect(() => {
