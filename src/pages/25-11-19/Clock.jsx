@@ -91,6 +91,10 @@ export default function AnalogClock() {
         zIndex: 5,
     textAlign: "center",
     textShadow: "1px 1px rgba(0,0,0)",
+    // Avoid flash of unstyled text: hide until font is loaded
+    opacity: fontLoaded ? 1 : 0,
+    transition: "opacity 120ms linear",
+    pointerEvents: fontLoaded ? "auto" : "none",
   };
 
   const formatTime = (date) => {
