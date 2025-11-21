@@ -4,6 +4,7 @@ import bgImg from "./eyes.webp";
 
 export default function RotatedClockGrid() {
   const [now, setNow] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
   
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 200);
@@ -71,6 +72,30 @@ export default function RotatedClockGrid() {
   
   const fontFaceCSS = `@font-face{font-family: '${FONT_FAMILY}'; src: url('${font_2025_11_21}'); font-weight:400; font-style:normal; font-display:swap;}`;
 
+  // Load font programmatically to detect when it's ready and avoid FOUT
+  useEffect(() => {
+    let mounted = true;
+    try {
+      const f = new FontFace(FONT_FAMILY, `url(${font_2025_11_21})`);
+      f.load().then((loaded) => {
+        if (!mounted) return;
+        // add to document fonts so CSS uses it
+        document.fonts.add(loaded);
+        setFontLoaded(true);
+      }).catch(() => {
+        // If loading fails, still show content
+        if (!mounted) return;
+        setFontLoaded(true);
+      });
+    } catch (e) {
+      // Fallback: mark loaded so UI doesn't remain hidden
+      setFontLoaded(true);
+    }
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   const rowsNeeded = Math.ceil(100 / (digitSize + gap)) + 4 + extraTop;
   const clocksPerRow = Math.ceil(100 / ((digitSize + gap) * 3)) + 4 + extraLeft;
 
@@ -114,6 +139,10 @@ export default function RotatedClockGrid() {
           gap: `${gap}vh`,
           alignItems: "center",
           justifyItems: "center",
+          // Prevent flash of unstyled text: hide until font is loaded
+          opacity: fontLoaded ? 1 : 0,
+          transition: "opacity 160ms linear",
+          pointerEvents: fontLoaded ? "auto" : "none",
         }}
       >
         {Array.from({ length: rowsNeeded }).map((_, rowIndex) => {
