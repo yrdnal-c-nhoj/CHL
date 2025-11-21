@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import bg1 from "./mars2.webp";
 import bg2 from "./mars1.gif";
 import bg3 from "./mars1.gif";
-import bg4 from "./mars4.webp"; // ← added Mars four import
+import bg4 from "./mars5.webp"; // ← added Mars four import
 import font2025_11_18 from "./mars.ttf";
 
 export default function MarsDigitalClock() {
@@ -77,12 +77,12 @@ export default function MarsDigitalClock() {
   width: "100%",
   height: "100%",
   backgroundImage: `url(${bg4})`,
-  backgroundSize: "100% 100%",
+  backgroundSize: "130% 130%",
   opacity: 0.7,
   backgroundBlendMode: "multiply",
   backgroundColor: "red",
-  filter: "brightness(1.7) contrast(1.4)",
-  backgroundRepeat: "no-repeat",
+  filter: "brightness(1.7) contrast(1.2)",
+  // backgroundRepeat: "no-repeat",
   backgroundPosition: "center",
   zIndex: 1,
 },
@@ -107,7 +107,7 @@ export default function MarsDigitalClock() {
       left: 0,
       width: "100%",
       height: "100%",
-      background: "linear-gradient(188deg, #F5924FFF, #181717FF)",
+      background: "linear-gradient(188deg, #F3061AFF, #181717FF)",
       zIndex: 0, // gradient behind everything
     },
     background1: {
@@ -168,12 +168,12 @@ export default function MarsDigitalClock() {
       gap: "1vh",
     },
     digitBox: {
-      width: "11vh",
+      width: "10vh",
       height: "11vh",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      fontSize: "13vh",
+      fontSize: "11vh",
       color: "#EF2005FF",
       lineHeight: 1,
       whiteSpace: "nowrap",
