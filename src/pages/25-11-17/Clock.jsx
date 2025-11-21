@@ -107,7 +107,7 @@ export default function MarsDigitalClock() {
       left: 0,
       width: "100%",
       height: "100%",
-      background: "linear-gradient(188deg, #DF0623FF, #F35B0FFF)",
+      background: "linear-gradient(188deg, #F5924FFF, #181717FF)",
       zIndex: 0, // gradient behind everything
     },
     background1: {
@@ -117,7 +117,8 @@ export default function MarsDigitalClock() {
       width: "100%",
       height: "100%",
       backgroundImage: `url(${bg1})`,
-      backgroundSize: "cover",
+      backgroundSize: "contain",
+    
       backgroundPosition: "center",
       filter: "hue-rotate(-20deg) saturate(1.8) contrast(1.8) brightness(1.2)",
       zIndex: 1,
@@ -129,6 +130,7 @@ export default function MarsDigitalClock() {
       left: 0,
       width: "100%",
       height: "100%",
+      backgroundRepeat: "no-repeat",
       backgroundImage: `url(${bg2})`,
       backgroundSize: "100% 100%",   // <— Stretch to fill container
       backgroundPosition: "center",
