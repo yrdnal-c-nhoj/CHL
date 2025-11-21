@@ -85,18 +85,19 @@ export default function RotatedClockGrid() {
       }}
     >
       {/* Background image with filter applied only to this layer */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `url(${bgImg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "right",
-          /* Apply only saturation to the background so the clock stays unaffected */
-          filter: "saturate(2)",
-          zIndex: 0,
-        }}
-      />
+     <div
+  style={{
+    position: "absolute",
+    inset: 0, // top:0; right:0; bottom:0; left:0
+    backgroundImage: `url(${bgImg})`,
+    backgroundSize: "cover",      // covers entire viewport
+    backgroundPosition: "right", // center the image
+    backgroundRepeat: "no-repeat",
+    filter: "saturate(0.01) contrast(1.4) brightness(0.4)", // subtle enhancement
+    zIndex: 0, // make sure clock is above
+  }}
+/>
+
 
       {/* Load the font */}
       <style dangerouslySetInnerHTML={{ __html: fontFaceCSS }} />
