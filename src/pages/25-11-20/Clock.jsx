@@ -56,7 +56,13 @@ export default function PixelInverseClock() {
       const cy = h / 2;
 
       // STRETCH VIDEO EXACTLY (no crop, no bars)
+      // Draw the video mirrored horizontally, but keep subsequent
+      // drawing (numbers/hands) in normal orientation.
+      ctx.save();
+      ctx.translate(w, 0);
+      ctx.scale(-1, 1);
       ctx.drawImage(video, 0, 0, w, h);
+      ctx.restore();
 
       // Get background pixels for inverse sampling
       const image = ctx.getImageData(0, 0, w, h);
