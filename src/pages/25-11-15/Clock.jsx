@@ -116,18 +116,18 @@ export default function FallClock() {
       const width = canvas.clientWidth;
       const height = canvas.clientHeight;
 
-      // Draw background flush left at natural size
+      // Draw background flush left, maintaining aspect ratio and covering full height
       if (bgRef.current) {
         ctx.clearRect(0, 0, width, height);
         const img = bgRef.current;
         const iw = img.naturalWidth || img.width;
         const ih = img.naturalHeight || img.height;
-        // scale to 'cover' the canvas (no blank space), centered
-        const scale = Math.max(width / iw, height / ih);
+        // Calculate scale to cover full height while maintaining aspect ratio
+        const scale = height / ih;
         const dw = iw * scale;
-        const dh = ih * scale;
-        const dx = (width - dw) / 2;
-        const dy = (height - dh) / 2;
+        const dh = height; // Full viewport height
+        const dx = 0; // Flush left
+        const dy = 0; // Align to top
         ctx.drawImage(img, dx, dy, dw, dh);
       } else {
         ctx.fillStyle = "#BDE4F0FF";
