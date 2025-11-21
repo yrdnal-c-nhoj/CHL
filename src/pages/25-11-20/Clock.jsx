@@ -141,7 +141,7 @@ export default function PixelInverseClock() {
           inset: 0,
           display: "block",
           zIndex: 1,
-          filter: "saturate(3) contrast(1.5) brightness(1.2)",
+          filter: "saturate(3) contrast(1.5) brightness(0.8)",
           touchAction: "none",
         }}
       />
