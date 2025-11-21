@@ -8,11 +8,11 @@ export default function FallClock() {
   const timeDigitsRef = useRef([]);
   const bgRef = useRef(null);
 
-  const GRAVITY = 6.0;
+  const GRAVITY = 9.0;
   const WIND_BASE = 0.01;
   const SPAWN_CHANCE = 0.15;
   const INITIAL_PARTICLES = 2;
-  const MAX_FALL_SPEED = 1.8;
+  const MAX_FALL_SPEED = 2.8;
   const DRAG = 0.1;
   const HORIZONTAL_SWAY_STRENGTH = 6.5;
 

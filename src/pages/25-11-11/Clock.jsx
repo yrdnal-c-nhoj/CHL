@@ -6,6 +6,7 @@ import bgBack from "./bg1.jpg";  // back layer
 
 export default function CustomFontMirroredClock() {
   const [time, setTime] = useState(getCurrentTime());
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   function getCurrentTime() {
     const now = new Date();
@@ -28,8 +29,32 @@ export default function CustomFontMirroredClock() {
       src: url(${todayFont251125}) format('truetype');
       font-weight: normal;
       font-style: normal;
+      font-display: swap;
     }
   `;
+
+  // Load font programmatically to avoid flash-of-unstyled-text (FOUT)
+  useEffect(() => {
+    let mounted = true;
+    try {
+      const f = new FontFace("TodayFont", `url(${todayFont251125})`);
+      f.load()
+        .then((loaded) => {
+          if (!mounted) return;
+          document.fonts.add(loaded);
+          setFontLoaded(true);
+        })
+        .catch(() => {
+          if (!mounted) return;
+          setFontLoaded(true);
+        });
+    } catch (e) {
+      setFontLoaded(true);
+    }
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const topImageSize = "90% auto";   // front image size
   const backImageSize = "380% auto"; // back image size
@@ -58,6 +83,10 @@ export default function CustomFontMirroredClock() {
     transform: "scaleX(-1) translateX(-1vw)",
     textAlign: "center",
     zIndex: 2,
+    // prevent flash: hide until the custom font is ready
+    opacity: fontLoaded ? 1 : 0,
+    transition: "opacity 160ms linear",
+    pointerEvents: fontLoaded ? "auto" : "none",
   };
 
   return (
