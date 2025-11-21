@@ -113,9 +113,10 @@ export default function PixelInverseClock() {
         ctx.stroke();
       };
 
-      drawHand(radius * 0.46, 0.04, (hr * Math.PI) / 6);       // Hour
-      drawHand(radius * 1.0, 0.025, (min * Math.PI) / 30);     // Minute
-      drawHand(radius * 1.4, 0.012, (sec * Math.PI) / 30);     // Second
+      // Subtract Math.PI/2 so 0 points to 12 o'clock (top of dial)
+      drawHand(radius * 0.46, 0.04, (hr * Math.PI) / 6 - Math.PI / 2);       // Hour
+      drawHand(radius * 1.0, 0.025, (min * Math.PI) / 30 - Math.PI / 2);     // Minute
+      drawHand(radius * 1.4, 0.012, (sec * Math.PI) / 30 - Math.PI / 2);     // Second
 
       // CENTER DOT
       const center = getPixel(cx, cy, w, data);
