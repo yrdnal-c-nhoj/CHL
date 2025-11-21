@@ -1,186 +1,115 @@
-import React, { useState, useEffect, useMemo } from "react";
-import customFont2025_11_20 from "./cat.ttf";
-import bgImg2025_11_20 from "./eyes.webp";
+import React, { useEffect, useState } from "react";
+import font_2025_11_21 from "./cat.ttf";
+import bgImg from "./eyes.webp";
 
-const ROWS = 60;
-const COLS = 52;
-const DIGITS = 6;
-const TOTAL_CELLS = ROWS * COLS * DIGITS;
-
-const rotationArray = new Float32Array(TOTAL_CELLS);
-
-export default function DigitalClockGrid() {
-  const [time, setTime] = useState(new Date());
-  const [bucket, setBucket] = useState(0);
-  const [fontLoaded, setFontLoaded] = useState(false);
-
-  // -----------------------------
-  // FONT LOAD
-  // -----------------------------
+export default function RotatedClockGrid() {
+  const [now, setNow] = useState(new Date());
+  
   useEffect(() => {
-    const f = new FontFace(
-      "ClockFont2025_11_20",
-      `url(${customFont2025_11_20})`
-    );
-    f.load().then((ff) => {
-      document.fonts.add(ff);
-      setFontLoaded(true);
-    });
+    const t = setInterval(() => setNow(new Date()), 200);
+    return () => clearInterval(t);
   }, []);
 
-  // -----------------------------
-  // UPDATE TIME ONCE PER SECOND
-  // -----------------------------
-  useEffect(() => {
-    const id = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-    return () => clearInterval(id);
-  }, []);
+  const hours24 = now.getHours();
+  const hoursStr = String(hours24).padStart(2, "0");
+  const minsStr = String(now.getMinutes()).padStart(2, "0");
+  const secsStr = String(now.getSeconds()).padStart(2, "0");
+  
+  const slots = [
+    hoursStr[0],
+    hoursStr[1],
+    minsStr[0],
+    minsStr[1],
+    secsStr[0],
+    secsStr[1],
+  ];
 
-  const seconds = time.getSeconds();
-  const fiveSecBucket = Math.floor(seconds / 5);
+  const digitSize = 8; // in vh
+  const gap = 1; // in vh - gap between all digits
+  const FONT_FAMILY = "ClockFont_2025_11_21";
+  
+  const fontFaceCSS = `@font-face{font-family: '${FONT_FAMILY}'; src: url('${font_2025_11_21}'); font-weight:400; font-style:normal; font-display:swap;}`;
 
-  // -----------------------------
-  // ROTATIONS UPDATE EVERY 5 SEC
-  // -----------------------------
-  useEffect(() => {
-    let i = 0;
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < COLS; c++) {
-        for (let d = 0; d < DIGITS; d++) {
-          rotationArray[i++] = Math.random() * 90 - 45;
-        }
-      }
-    }
-    setBucket(fiveSecBucket);
-  }, [fiveSecBucket]);
+  // Create enough rows to fill viewport vertically and extend beyond
+  const rowsNeeded = Math.ceil(100 / (digitSize + gap)) + 4;
+  
+  // For horizontal, we need enough clocks to fill the width
+  // Each clock is 6 digits wide, offset by 3 digits
+  const clocksPerRow = Math.ceil(100 / ((digitSize + gap) * 3)) + 4;
 
-  if (!fontLoaded) return null;
-
-  // -----------------------------
-  // DIGIT PATTERNS (memo)
-  // -----------------------------
-  const digitPatterns = useMemo(() => {
-    const hh = String(time.getHours()).padStart(2, "0");
-    const mm = String(time.getMinutes()).padStart(2, "0");
-    const ss = String(time.getSeconds()).padStart(2, "0");
-
-    const base = [hh[0], hh[1], mm[0], mm[1], ss[0], ss[1]];
-
-    return {
-      p0: base,
-      p3: [...base.slice(3), ...base.slice(0, 3)],
-    };
-  }, [time]);
-
-  // -----------------------------
-  // MEMO ROW LIST
-  // -----------------------------
-  const rowsArray = useMemo(() => {
-    return Array.from({ length: ROWS }, (_, r) => r);
-  }, []);
-
-  // -----------------------------
-  // ROW COMPONENT (memo)
-  // -----------------------------
-  const Row = useMemo(
-    () =>
-      React.memo(function Row({ r }) {
-        const cols = new Array(COLS);
-
-        for (let c = 0; c < COLS; c++) {
-          const pattern = (c + r) % 2 === 0 ? digitPatterns.p0 : digitPatterns.p3;
-
-          cols[c] = (
-            <div key={c} className="digit-col">
-              {pattern.map((digit, d) => {
-                const rot = rotationArray[r * COLS * DIGITS + c * DIGITS + d];
-                return (
-                  <span
-                    key={d}
-                    className="digit-cell"
-                    style={{ "--rot": `${rot}deg` }}
-                  >
-                    {digit}
-                  </span>
-                );
-              })}
-            </div>
-          );
-        }
-
-        return <div className="digit-row">{cols}</div>;
-      }),
-    [digitPatterns, bucket]
-  );
-
-  // -----------------------------
-  // RENDER
-  // -----------------------------
   return (
-    <>
+    <div
+      style={{
+        height: "100vh",
+        width: "100vw",
+        boxSizing: "border-box",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundImage: `url(${bgImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        overflow: "hidden",
+      }}
+    >
+      <style dangerouslySetInnerHTML={{ __html: fontFaceCSS }} />
+      
+      {/* Main grid container */}
       <div
-        className="clock-bg"
-        style={{ backgroundImage: `url(${bgImg2025_11_20})` }}
-      />
-
-      <div className="grid-wrapper">
-        {rowsArray.map((r) => (
-          <Row key={r} r={r} />
-        ))}
+        style={{
+          transform: "rotate(17deg)",
+          display: "grid",
+          gridTemplateColumns: `repeat(auto-fill, ${digitSize}vh)`,
+          gridAutoRows: `${digitSize}vh`,
+          gap: `${gap}vh`,
+          alignItems: "center",
+          justifyItems: "center",
+        }}
+      >
+        {/* Generate rows */}
+        {Array.from({ length: rowsNeeded }).map((_, rowIndex) => {
+          // Each row starts offset by 3 digits (half a clock) from the previous
+          const startOffset = (rowIndex * 3) % 6;
+          
+          return Array.from({ length: clocksPerRow }).map((_, clockIndex) => {
+            // Generate digits for this row
+            return slots.map((ch, digitIndex) => {
+              const globalIndex = rowIndex * clocksPerRow * 6 + clockIndex * 6 + digitIndex;
+              const columnPosition = clockIndex * 6 + digitIndex + startOffset;
+              
+              return (
+                <div
+                  key={`${rowIndex}-${clockIndex}-${digitIndex}`}
+                  style={{
+                    gridRow: rowIndex + 1,
+                    gridColumn: columnPosition + 1,
+                    height: `${digitSize}vh`,
+                    width: `${digitSize}vh`,
+                    boxSizing: "border-box",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: "rgba(255,255,255,0.06)",
+                    border: "0.35vh solid rgba(255,255,255,0.06)",
+                    borderRadius: "0.8vh",
+                    fontFamily: FONT_FAMILY + ", monospace",
+                    fontSize: `12vh`,
+                    lineHeight: 1,
+                    letterSpacing: "0.2vh",
+                    color: "#0B22F2FF",
+                    textAlign: "center",
+                    userSelect: "none",
+                    WebkitFontSmoothing: "antialiased",
+                    MozOsxFontSmoothing: "grayscale",
+                  }}
+                >
+                  {ch}
+                </div>
+              );
+            });
+          });
+        })}
       </div>
-
-      {/* CSS */}
-      <style>{`
-        .clock-bg {
-          position: fixed;
-          inset: 0;
-          background-size: cover;
-          background-position: center;
-          filter: saturate(0.2) brightness(1.4) contrast(0.5);
-          z-index: -1;
-        }
-
-        .grid-wrapper {
-          position: fixed;
-          inset: 0;
-          overflow: hidden;
-          transform: rotate(17deg) scale(1.8);
-          pointer-events: none;
-        }
-
-        .digit-row {
-          display: flex;
-          justify-content: center;
-          margin: -4vh 0;
-          white-space: nowrap;
-        }
-
-        .digit-col {
-          display: inline-flex;
-        }
-
-        .digit-cell {
-          font-family: ClockFont2025_11_20, monospace;
-          font-size: 13vh;
-          width: 11vh;
-          height: 14vh;
-          line-height: 14vh;
-          text-align: center;
-          display: inline-block;
-          color: #851BE7FF;
-          text-shadow: 0.5vh 0.2vh 0.8vh #000000,
-                       -0.5px -0.5px 0 #F6F4DDFF;
-          margin: -0.2vh -1.8vw;
-          letter-spacing: -1vw;
-          transform-origin: center;
-          transform: rotate(var(--rot));
-          transition: transform 0.6s cubic-bezier(0.2,0.8,0.4,1);
-          will-change: transform;
-          user-select: none;
-        }
-      `}</style>
-    </>
+    </div>
   );
 }
