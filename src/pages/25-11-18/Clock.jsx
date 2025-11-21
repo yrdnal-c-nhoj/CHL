@@ -92,7 +92,8 @@ export default function RotatedClockGrid() {
           backgroundImage: `url(${bgImg})`,
           backgroundSize: "cover",
           backgroundPosition: "right",
-          filter: "brightness(1.6) contrast(0.8) saturate(0.3)",
+          /* Apply only saturation to the background so the clock stays unaffected */
+          filter: "saturate(2)",
           zIndex: 0,
         }}
       />
