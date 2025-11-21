@@ -57,7 +57,7 @@ export default function RotatedClockGrid() {
       {/* Main grid container */}
       <div
         style={{
-          transform: "rotate(17deg)",
+          transform: "rotate(-11deg)",
           display: "grid",
           gridTemplateColumns: `repeat(auto-fill, ${digitSize}vh)`,
           gridAutoRows: `${digitSize}vh`,
