@@ -42,7 +42,7 @@ export default function PixelInverseClock() {
     window.addEventListener("resize", resizeCanvas);
     window.addEventListener("orientationchange", resizeCanvas);
 
-    const CLOCK_SCALE = 0.5;
+    const CLOCK_SCALE = 0.7;
 
     const getPixel = (x, y, w, data) => {
       const i = (Math.floor(y) * w + Math.floor(x)) * 4;
