@@ -1,8 +1,8 @@
 // AnalogClock.jsx
 import React, { useEffect, useState } from "react";
-import bgImg from "./apple.gif";        // Main background
+import bgImg from "./apple.webp";        // Main background
 import tileImg from  "./ap.webp";      // Tiled background
-import overlayImg from "./appl.jpg"; // Full-cover overlay
+import overlayImg from "./app.webp"; // Full-cover overlay
 import customFontFile from "./apple.ttf";
 
 export default function AnalogClock() {
