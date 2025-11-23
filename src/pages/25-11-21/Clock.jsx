@@ -103,7 +103,7 @@ const DigitalGridClock = () => {
   return (
     <div
       style={{
-        height: '100vh',
+        height: '100dvh', // Changed from 100vh to 100dvh to respect mobile browser bars
         width: '100vw',
         backgroundColor: '#CFCAD1FF',
         display: 'flex',
@@ -120,10 +120,12 @@ const DigitalGridClock = () => {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: isDesktop ? 'repeat(14, 1fr)' : 'repeat(6, 1fr)',
-          gridTemplateRows: isDesktop ? 'repeat(6, 1fr)' : 'repeat(14, 1fr)',
+          // Using minmax(0, 1fr) forces rows/cols to shrink to fit the screen 
+          // preventing them from being pushed out by internal content size.
+          gridTemplateColumns: isDesktop ? 'repeat(14, minmax(0, 1fr))' : 'repeat(6, minmax(0, 1fr))',
+          gridTemplateRows: isDesktop ? 'repeat(6, minmax(0, 1fr))' : 'repeat(14, minmax(0, 1fr))',
           width: '100vw',
-          height:  '100dvh',
+          height: '100dvh',
         }}
       >
         {/* Hours (0-23) */}
