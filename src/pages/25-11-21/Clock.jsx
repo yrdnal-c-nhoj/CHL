@@ -123,7 +123,7 @@ const DigitalGridClock = () => {
           gridTemplateColumns: isDesktop ? 'repeat(14, 1fr)' : 'repeat(6, 1fr)',
           gridTemplateRows: isDesktop ? 'repeat(6, 1fr)' : 'repeat(14, 1fr)',
           width: '100vw',
-          height:  '100dvh',
+          height:  '100vh',
         }}
       >
         {/* Hours (0-23) */}
