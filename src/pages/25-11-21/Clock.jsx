@@ -39,10 +39,8 @@ const DigitalGridClock = () => {
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
-
     const handleResize = () => setWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
-
     return () => {
       clearInterval(timer);
       window.removeEventListener('resize', handleResize);
@@ -62,13 +60,11 @@ const DigitalGridClock = () => {
       setMinuteImage(newMinuteImage);
     };
 
-    // Calculate ms until next full minute
     const now = new Date();
     const delay = (60 - now.getSeconds()) * 1000;
 
     const timeout = setTimeout(() => {
       changeImages();
-      // Then update every full minute
       const interval = setInterval(changeImages, 60000);
       return () => clearInterval(interval);
     }, delay);
@@ -80,16 +76,19 @@ const DigitalGridClock = () => {
   const minutes = time.getMinutes();
   const isDesktop = width >= 768;
 
+  const cellFontSize = isDesktop ? '6vmin' : '4vmin';
+
   const cellStyle = (active) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: isDesktop ? '9vmin' : '9vmin',
+    fontSize: cellFontSize,
     backgroundColor: '#2A0433FF',
     color: '#F9E8C8FF',
     transition: 'all 0.5s ease',
     fontFamily: 'ClockFont_sdfsdfsdfsd',
     overflow: 'hidden',
+    border: '1px solid #00000033',
   });
 
   const activeCellStyle = (image) => ({
@@ -97,8 +96,12 @@ const DigitalGridClock = () => {
     backgroundImage: `url(${image})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    color: 'transparent', // hide the number
+    color: 'transparent',
   });
+
+  // Calculate grid columns dynamically
+  const hourColumns = isDesktop ? 12 : 6;
+  const minuteColumns = isDesktop ? 12 : 10;
 
   return (
     <div
@@ -107,28 +110,25 @@ const DigitalGridClock = () => {
         width: '100vw',
         backgroundColor: '#CFCAD1FF',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        overflow: 'hidden',
-        position: 'relative',
+        overflow: 'auto',
         fontFamily: 'ClockFont_sdfsdfsdfsd',
       }}
     >
-      {/* Inject your @font-face safely */}
       <style>{fontStyle}</style>
 
+      {/* Hours Grid */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: isDesktop ? 'repeat(14, 1fr)' : 'repeat(6, 1fr)',
-          gridTemplateRows: isDesktop ? 'repeat(6, 1fr)' : 'repeat(14, 1fr)',
-          width: '100%',
-          height: '100%',
-          maxWidth: '100vw',
-          maxHeight: '100vh',
+          gridTemplateColumns: `repeat(${hourColumns}, 1fr)`,
+          width: '90%',
+          marginBottom: '2vh',
+          gap: '0.2vh',
         }}
       >
-        {/* Hours (0-23) */}
         {Array.from({ length: 24 }, (_, i) => (
           <div
             key={`hour-${i}`}
@@ -137,8 +137,17 @@ const DigitalGridClock = () => {
             {String(i).padStart(2, '0')}
           </div>
         ))}
+      </div>
 
-        {/* Minutes (0-59) */}
+      {/* Minutes Grid */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: `repeat(${minuteColumns}, 1fr)`,
+          width: '90%',
+          gap: '0.2vh',
+        }}
+      >
         {Array.from({ length: 60 }, (_, i) => (
           <div
             key={`min-${i}`}
