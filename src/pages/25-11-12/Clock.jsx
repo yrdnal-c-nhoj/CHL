@@ -166,7 +166,7 @@ export default function TwoBackgroundOctahedron() {
           backgroundRepeat: "repeat",
           backgroundSize: "100px 100px",
           animation: "floatUp 45s linear infinite",
-          opacity: 0.5,          // <--- adjust
+          opacity: 0.3,          // <--- adjust
           zIndex: 0,
         }}
       />
