@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import videoFile from "./sput.mp4";
 import videoWebM from "./sput.mp4";
 import fallbackImg from "./sput.webp";
-import secondHandImg from "./sputnik.png";
+import secondHandImg from "./spu.webp";
 import fontFile from "./spu.ttf";
 
 export default function Clock() {
@@ -209,25 +209,30 @@ export default function Clock() {
             }}
           />
 
-          {/* Second hand — Sputnik */}
-          <img
-            src={secondHandImg}
-            alt="second hand"
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              height: "90vmin",
-              width: "auto",
-              transform: `translate(-50%, -100%) rotate(${seconds}deg)`,
-              transformOrigin: "center bottom",
-              pointerEvents: "none",
-              filter: "drop-shadow(0 0 1.5vmin rgba(255,100,100,0.6))",
-              zIndex: 9,
-        
-                   opacity: 0.9,
-            }}
-          />
+ {/* Second hand — Sputnik */}
+<img
+  src={secondHandImg}
+  alt="second hand"
+  style={{
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    height: "90vmin",
+    width: "auto",
+    transform: "translate(-50%, -50%)", // Centers the image
+    transformOrigin: "center center",   // Rotates around the center of the image
+    pointerEvents: "none",
+    filter: "drop-shadow(0 0 1.5vmin rgba(255,100,100,0.6))",
+    zIndex: 9,
+    opacity: 0.9,
+  }}
+  // Apply rotation separately to avoid transform conflicts
+  ref={(el) => {
+    if (el) {
+      el.style.transform = `translate(-50%, -50%) rotate(${seconds}deg)`;
+    }
+  }}
+/>
         </div>
       </div>
     </div>
