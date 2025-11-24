@@ -2,8 +2,8 @@ import React, { useRef, useEffect, useState } from "react";
 import videoFile from "./sput.mp4";
 import videoWebM from "./sput.mp4";
 import fallbackImg from "./sput.webp";
-import secondHandImg from "./sputnik.png"; // <- image for second hand
-import fontFile from "./day.ttf"; // single font
+import secondHandImg from "./sputnik.png";
+import fontFile from "./spu.ttf";
 
 export default function BackgroundVideo() {
   const videoRef = useRef(null);
@@ -11,16 +11,19 @@ export default function BackgroundVideo() {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
 
-  // Load single font
+  // Load font
   useEffect(() => {
     const fontFace = new FontFace("CustomClock", `url(${fontFile})`);
-    fontFace.load().then((loadedFace) => {
-      document.fonts.add(loadedFace);
-      setFontLoaded(true);
-    }).catch(() => setFontLoaded(true));
+    fontFace
+      .load()
+      .then((loadedFace) => {
+        document.fonts.add(loadedFace);
+        setFontLoaded(true);
+      })
+      .catch(() => setFontLoaded(true));
   }, []);
 
-  // Smooth clock tick
+  // Smooth time update
   useEffect(() => {
     const update = () => setTime(new Date());
     const timer = requestAnimationFrame(function tick() {
@@ -30,7 +33,7 @@ export default function BackgroundVideo() {
     return () => cancelAnimationFrame(timer);
   }, []);
 
-  // Video handling
+  // Video fallback handling
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -40,13 +43,13 @@ export default function BackgroundVideo() {
     return () => v.removeEventListener("error", handleError);
   }, []);
 
-  // Angles
+  // Clock angles
   const ms = time.getMilliseconds();
-  const seconds = (time.getSeconds() + ms / 1000) * 6; // smooth
+  const seconds = (time.getSeconds() + ms / 1000) * 6;
   const minutes = time.getMinutes() * 6 + time.getSeconds() * 0.1;
   const hours = (time.getHours() % 12) * 30 + time.getMinutes() * 0.5;
 
-  const radius = 23; // vh
+  const radius = 19; // vh
 
   return (
     <div
@@ -59,9 +62,17 @@ export default function BackgroundVideo() {
         backgroundColor: "#000",
       }}
     >
+      {/* Video background */}
       <video
         ref={videoRef}
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0 }}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
+        }}
         loop
         muted
         playsInline
@@ -72,6 +83,7 @@ export default function BackgroundVideo() {
         <source src={videoWebM} type="video/webm" />
       </video>
 
+      {/* Static fallback image */}
       <div
         style={{
           position: "absolute",
@@ -84,7 +96,28 @@ export default function BackgroundVideo() {
         }}
       />
 
-      {/* ANALOG CLOCK */}
+      {/* NEW — Soft radial overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 5,
+          pointerEvents: "none",
+
+          background: `
+            radial-gradient(
+              circle,
+              rgba(0,0,0,0) 40%,      
+              // rgba(0,0,0,0.15) 55%,
+              // rgba(0,0,0,0.30) 70%,
+              rgba(0,0,220,0.30) 100%   
+            )
+          `,
+
+        }}
+      />
+
+      {/* CLOCK */}
       <div
         style={{
           position: "absolute",
@@ -93,18 +126,13 @@ export default function BackgroundVideo() {
           width: "50vh",
           height: "50vh",
           borderRadius: "50%",
-          // background: "rgba(0, 0, 0, 0.45)",
-          // backdropFilter: "blur(16px)",
-          // WebkitBackdropFilter: "blur(16px)",
-          // border: "1.4vh solid rgba(255, 255, 255, 0.22)",
-          // boxShadow: "0 3vh 6vh rgba(0,0,0,0.8)",
           transform: "translate(-50%, -50%)",
           zIndex: 10,
           fontFamily: fontLoaded ? "'CustomClock', sans-serif" : "sans-serif",
         }}
       >
-        {/* Numbers 1–12 */}
-        {[1,2,3,4,5,6,7,8,9,10,11,12].map((num) => {
+        {/* NUMBERS */}
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((num) => {
           const angle = num * 30 - 90;
           const x = radius * Math.cos((angle * Math.PI) / 180) + "vh";
           const y = radius * Math.sin((angle * Math.PI) / 180) + "vh";
@@ -117,7 +145,6 @@ export default function BackgroundVideo() {
                 left: "50%",
                 top: "50%",
                 fontSize: "6vh",
-                // fontWeight: "400",
                 color: "#F1F0D3FF",
                 textShadow: "0 0.3vh 1.5vh rgba(220,220,220,0.9)",
                 transform: `translate(calc(-50% + ${x}), calc(-50% + ${y}))`,
@@ -130,58 +157,55 @@ export default function BackgroundVideo() {
           );
         })}
 
-        {/* Hour hand */}
-        <div style={{
-          position: "absolute",
-          bottom: "50%",
-          left: "50%",
-          width: "1.4vh",
-          height: "15vh",
-          background: "white",
-          marginLeft: "-0.7vh",
-          borderRadius: "0.8vh",
-          transform: `rotate(${hours}deg)`,
-          transformOrigin: "bottom center",
-          // boxShadow: "0 0.5vh 1.5vh rgba(0,0,0,0.7)"
-        }}/>
+        {/* HOUR HAND */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: "50%",
+            left: "50%",
+            width: "0.4vh",
+            height: "17vh",
+            background: "white",
+            marginLeft: "-0.7vh",
+            borderRadius: "0.8vh",
+            transform: `rotate(${hours}deg)`,
+            transformOrigin: "bottom center",
+          }}
+        />
 
-        {/* Minute hand */}
-        <div style={{
-          position: "absolute",
-          bottom: "50%",
-          left: "50%",
-          width: "1vh",
-          height: "21vh",
-          background: "#f0f0f0",
-          marginLeft: "-0.5vh",
-          borderRadius: "0.6vh",
-          transform: `rotate(${minutes}deg)`,
-          transformOrigin: "bottom center",
-          // boxShadow: "0 0.5vh 1.5vh rgba(0,0,0,0.6)"
-        }}/>
+        {/* MINUTE HAND */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: "50%",
+            left: "50%",
+            width: "0.3vh",
+            height: "26vh",
+            background: "#F5F1E0FF",
+            marginLeft: "-0.5vh",
+            borderRadius: "0.6vh",
+            transform: `rotate(${minutes}deg)`,
+            transformOrigin: "bottom center",
+          }}
+        />
 
-        {/* Second hand as image */}
-       {/* Second hand as image */}
-<img 
-  src={secondHandImg} 
-  alt="second hand" 
-  style={{
-    position: "absolute",
-    bottom: "50%",       // pivot point at the center
-    left: "50%",
-    height: "82vh",       // length of the hand
-    width: "auto",
-    transform: `translateX(-50%) rotate(${seconds}deg)`, // center image horizontally
-    transformOrigin: "bottom center", // rotate around bottom
-    pointerEvents: "none",
-    zIndex: 5,
-  }}
-/>
-
-
-
-        {/* Center */}
-       
+        {/* SECOND HAND (IMAGE) */}
+        <img
+          src={secondHandImg}
+          alt="second hand"
+          style={{
+            position: "absolute",
+            bottom: "13vh",
+            left: "50%",
+            height: "84vh",
+            width: "auto",
+            transform: `translateX(-50%) rotate(${seconds}deg)`,
+            transformOrigin: "center 85%",
+            pointerEvents: "none",
+            zIndex: 5,
+            filter: "drop-shadow(0 0 8px rgba(255,100,100,0.3))",
+          }}
+        />
       </div>
     </div>
   );

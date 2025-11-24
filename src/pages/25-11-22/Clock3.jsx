@@ -151,7 +151,7 @@ export default function AnalogClock() {
     top: '50%',
     left: '50%',
     width: '12vmin',
-    height: '1.2vmin',
+    height: '0.7vmin',
     background: '#f0f0f0',
     transform: `translate(0, -50%) rotate(${hourAngle}deg)`,
     transformOrigin: 'left center',
