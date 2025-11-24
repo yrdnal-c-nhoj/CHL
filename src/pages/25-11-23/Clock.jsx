@@ -1,198 +1,134 @@
+// File: DigitalStackClock.jsx
 import React, { useEffect, useState } from "react";
-import pageBgImgBase from "./skin.jpg"; // new single background
-import pageBgImg from "./sss.webp";            // tiled background
-import clockFaceImg from "./sn.gif";          // clock face
-import hourHandImg from "./sn5.webp";
-import minuteHandImg from "./sfsd.webp";
-import secondHandImg from "./sn1.webp";
-import fontFile from "./snake.ttf";
+import bgImg from "./gs.png";          // background image in same folder
+import font2025_11_24 from "./gal.ttf";  // today's font (TTF)
 
-export default function AnalogClock() {
-  const [time, setTime] = useState(new Date());
+export default function DigitalStackClock() {
+  const [now, setNow] = useState(new Date());
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
+    const id = setInterval(() => setNow(new Date()), 250);
+    return () => clearInterval(id);
   }, []);
 
-  const hours = time.getHours() % 12;
-  const minutes = time.getMinutes();
-  const seconds = time.getSeconds();
+  // Format numbers
+  const hh = String(now.getHours()).padStart(2, "0");
+  const mm = String(now.getMinutes()).padStart(2, "0");
+  const ss = String(now.getSeconds()).padStart(2, "0");
 
-  const hourAngle = (hours + minutes / 60) * 30;
-  const minuteAngle = (minutes + seconds / 60) * 6;
-  const secondAngle = seconds * 6;
-
-  const unit = "vmin"; 
-  const clockSize = 80; 
-  const tileSize = 20;
-
-  const pageWrapperStyle = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100vw',
-    height: '100vh',
-    overflow: 'hidden',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  };
-
-  // Base background (full screen, not tiled)
-  const pageBackgroundBase = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${pageBgImgBase})`,
-    backgroundSize: 'cover',
-        filter: "saturate(2.7) contrast(0.4) brightness(0.7)",
-
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    zIndex: -1,
-  };
-
-  // Tiled layers
-  const pageBackgroundLayer1 = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${pageBgImg})`,
-    backgroundRepeat: 'repeat',
-    backgroundSize: `${tileSize}vmin ${tileSize}vmin`,
-    backgroundPosition: 'center',
-    zIndex: 0,
-  };
-
-  const pageBackgroundLayer2 = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${pageBgImg})`,
-    backgroundRepeat: 'repeat',
-    backgroundSize: `${tileSize}vmin ${tileSize}vmin`,
-    backgroundPosition: `calc(50% + ${tileSize / 2}vmin) calc(50% + ${tileSize / 2}vmin)`,
-    transform: 'scaleX(-1)',
-    zIndex: 0,
-  };
-
+  // Outer container
   const containerStyle = {
-    position: "relative",
-    width: `${clockSize}${unit}`,
-    height: `${clockSize}${unit}`,
-    borderRadius: "50%",
-    overflow: "visible",
-    textAlign: "center",
-    zIndex: 1,
-  };
-
-  const backgroundStyle = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    borderRadius: "50%",
-    backgroundImage: `url(${clockFaceImg})`,
+    minHeight: "100vh",
+    width: "100vw",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "4vh 2vw",
+    boxSizing: "border-box",
+    backgroundImage: `url(${bgImg})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
-    filter: "saturate(0.7) contrast(1.4) brightness(0.7)",
-    zIndex: 1,
+    backgroundRepeat: "no-repeat",
+    fontFamily: "CustomClock, system-ui",
   };
 
-  const handStyle = (angle, length) => ({
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    width: "auto",
-    height: `${length}${unit}`,
-    transform: `translate(-50%, -100%) rotate(${angle}deg)`,
-    transformOrigin: "50% 100%",
-    zIndex: 2,
-  });
-
-  const fontBlob = `@font-face {
-    font-family: 'customFont';
-    src: url(${fontFile}) format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }`;
-
-  const digits = Array.from({ length: 12 }, (_, i) => i + 1);
-
-  const digitStyle = (num) => {
-    const angle = (num * 30 - 90) * (Math.PI / 180);
-    const radius = clockSize / 2 - 7;
-    const x = radius * Math.cos(angle);
-    const y = radius * Math.sin(angle);
-    
-    return {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: `translate(${x}${unit}, ${y}${unit}) translate(-50%, -50%)`,
-      fontFamily: "customFont",
-      fontSize: `9${unit}`,
-      color: "#E3F3C277",
-      userSelect: "none",
-      zIndex: 2,
-    };
+  // Panel (mobile = stacked / desktop = horizontal)
+  const panelStyle = {
+    display: "flex",
+    flexDirection: "column", // overridden to row on desktop by media query
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "3vh",
+    width: "min(92vw, 70vh)",
+    padding: "3vh 2.5vw",
+    borderRadius: "2vh",
+    // background: "rgba(0,0,0,0.35)",
+    backdropFilter: "blur(4px)",
+    WebkitBackdropFilter: "blur(4px)",
   };
 
-  const hourHandLen = 36;
-  const minuteHandLen = 46;
-  const secondHandLen = 58;
+  // Each row of digits
+  const digitRow = {
+    display: "flex",
+    flexDirection: "row",
+    gap: "1vh",
+  };
+
+  // Each individual digit (fixed box → no jumping)
+  const digitStyle = {
+    width: "14vh",
+    height: "18vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "24vh",
+    fontFamily: "CustomClock, monospace",
+    fontVariantNumeric: "tabular-nums",
+    color: "# #00457C",
+    borderRadius: "1vh",
+    textShadow: "0.2vh 0.2vh 0.8vh rgba(0,0,0,0.6)",
+    userSelect: "none",
+  };
 
   return (
-    <div style={pageWrapperStyle}>
-      <div style={pageBackgroundBase}></div> {/* full-screen base image */}
-      <div style={pageBackgroundLayer1}></div> {/* main centered grid */}
-      <div style={pageBackgroundLayer2}></div> {/* offset + flipped grid */}
-      
-      <div style={containerStyle}>
-        <style>{fontBlob}</style>
-        <div style={backgroundStyle}></div> {/* clock face */}
+    <div style={containerStyle}>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            @font-face {
+              font-family: "CustomClock";
+              src: url("${font2025_11_24}") format("truetype");
+              font-weight: 100 900;
+              font-style: normal;
+              font-display: swap;
+            }
 
-        {digits.map((d) => (
-          <div key={d} style={digitStyle(d)}>
-            {d}
-          </div>
-        ))}
+            /* Desktop: horizontal layout */
+            @media (min-width: 800px) {
+              .clock-layout {
+                flex-direction: row !important;
+              }
+            }
 
-        <img 
-          src={hourHandImg} 
-          alt="hour" 
-          style={{ 
-            ...handStyle(hourAngle, hourHandLen),
-            zIndex: 8,
-            filter: "saturate(3.6) contrast(1.2) brightness(0.8)" 
-          }} 
-        />
-        <img 
-          src={minuteHandImg} 
-          alt="minute" 
-          style={{ 
-            ...handStyle(minuteAngle, minuteHandLen),
-            zIndex: 6,
-            filter: "saturate(1.8) contrast(1.1) brightness(0.9)" 
-          }} 
-        />
-        <img 
-          src={secondHandImg} 
-          alt="second" 
-          style={{ 
-            ...handStyle(secondAngle, secondHandLen),
-            zIndex: 3,
-            filter: "grayscale(100%) sepia(100%) hue-rotate(-50deg) saturate(330%) contrast(1.7) brightness(0.9)" 
-          }} 
-        />
+            /* Very short screens */
+            @media (max-height: 420px) {
+              .digit-box {
+                width: 6vh !important;
+                height: 9vh !important;
+                font-size: 7vh !important;
+              }
+            }
+          `,
+        }}
+      />
+
+      <div className="clock-layout" style={panelStyle}>
+        {/* HOURS */}
+        <div style={digitRow}>
+          {[...hh].map((d, i) => (
+            <div key={i} className="digit-box" style={digitStyle}>
+              {d}
+            </div>
+          ))}
+        </div>
+
+        {/* MINUTES */}
+        <div style={digitRow}>
+          {[...mm].map((d, i) => (
+            <div key={i} className="digit-box" style={digitStyle}>
+              {d}
+            </div>
+          ))}
+        </div>
+
+        {/* SECONDS */}
+        <div style={digitRow}>
+          {[...ss].map((d, i) => (
+            <div key={i} className="digit-box" style={digitStyle}>
+              {d}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
