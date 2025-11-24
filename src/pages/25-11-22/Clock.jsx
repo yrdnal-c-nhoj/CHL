@@ -100,7 +100,7 @@ export default function Clock() {
           inset: 0,
           pointerEvents: "none",
           background:
-            "radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(0,0,220,0.3) 100%)",
+            "radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,220,0.2) 100%)",
           zIndex: 5,
         }}
       />
@@ -160,13 +160,14 @@ export default function Clock() {
               position: "absolute",
               top: "50%",
               left: "50%",
-              width: "3.5vmin",
-              height: "3.5vmin",
-              background: "#fff",
+              width: "22.5vmin",
+              height: "22.5vmin",
+              background: "#C9CEF5FF",
               borderRadius: "50%",
+              opacity: 0.2,
               transform: "translate(-50%, -50%)",
-              boxShadow: "0 0 2.5vmin rgba(255,255,255,0.9)",
-              zIndex: 20,
+              boxShadow: "0 0 2.5vmin rgba(25,25,255,0.4)",
+              zIndex: 5,
             }}
           />
 
@@ -218,7 +219,7 @@ export default function Clock() {
               transformOrigin: "center bottom",
               pointerEvents: "none",
               filter: "drop-shadow(0 0 1.5vmin rgba(255,100,100,0.6))",
-              zIndex: 5,
+              zIndex: 9,
             }}
           />
         </div>
