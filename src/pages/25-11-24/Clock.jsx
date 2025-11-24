@@ -1,187 +1,198 @@
-import { useState, useEffect } from 'react';
-import backgroundImg from './app.webp';
-import font2025_11_23 from './day.ttf';
+import React, { useEffect, useState } from "react";
+import pageBgImgBase from "./skin.jpg"; // new single background
+import pageBgImg from "./sss.webp";            // tiled background
+import clockFaceImg from "./sn.gif";          // clock face
+import hourHandImg from "./sn5.webp";
+import minuteHandImg from "./sfsd.webp";
+import secondHandImg from "./sn1.webp";
+import fontFile from "./snake.ttf";
 
-// Create blob URL and inject @font-face
-let fontBlobUrl = null;
-let styleSheet = null;
+export default function AnalogClock() {
+  const [time, setTime] = useState(new Date());
 
-const DigitBox = ({ children, twist = 0, curve = 0, scaleX = 1, scaleY = 1 }) => {
-  const distortStyle = {
-    display: 'inline-block',
-    fontFamily: '"DigitalBlobFont", monospace',
-    fontSize: '12vh',
-    color: '#0ff',
-    // textShadow: '0 0 20px #0ff, 0 0 40px #0ff, 0 0 80px #0ff',
-    background: 'rgba(0, 255, 255, 0.1)',
-    padding: '2vh 1.5vw',
-    margin: '0.5vh',
-    borderRadius: '3vh',
-    transform: `rotate(${twist}deg) skew(${curve}deg) scaleX(${scaleX}) scaleY(${scaleY})`,
-    boxShadow: 'inset 0 0 30px rgba(0, 255, 255, 0.4), 0 0 30px rgba(0, 255, 255, 0.6)',
-    border: '2px solid rgba(0, 255, 255, 0.5)',
-    lineHeight: '1',
+  useEffect(() => {
+    const interval = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const hours = time.getHours() % 12;
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds();
+
+  const hourAngle = (hours + minutes / 60) * 30;
+  const minuteAngle = (minutes + seconds / 60) * 6;
+  const secondAngle = seconds * 6;
+
+  const unit = "vmin"; 
+  const clockSize = 80; 
+  const tileSize = 20;
+
+  const pageWrapperStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   };
 
-  return <span style={distortStyle}>{children}</span>;
-};
+  // Base background (full screen, not tiled)
+  const pageBackgroundBase = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundImage: `url(${pageBgImgBase})`,
+    backgroundSize: 'cover',
+        filter: "saturate(2.7) contrast(0.4) brightness(0.7)",
 
-export default function DigitalClock() {
-  const [time, setTime] = useState('');
-  const [twistString, setTwistString] = useState('50, -40, 60, -35');
-  const [curveString, setCurveString] = useState('-70, 60, -80, 70');
-  const [scaleXString, setScaleXString] = useState('1.5, 0.7, 1.8, 0.6');
-  const [scaleYString, setScaleYString] = useState('0.5, 1.6, 0.8, 1.4');
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    zIndex: -1,
+  };
 
-  const maxChars = 9;
-  const [distortedTwists, setDistortedTwists] = useState(new Array(maxChars).fill(0));
-  const [distortedCurves, setDistortedCurves] = useState(new Array(maxChars).fill(0));
-  const [distortedScaleXs, setDistortedScaleXs] = useState(new Array(maxChars).fill(1));
-  const [distortedScaleYs, setDistortedScaleYs] = useState(new Array(maxChars).fill(1));
-  const [isDistorting, setIsDistorting] = useState(false);
-  const [distortProgress, setDistortProgress] = useState(0);
-  const [animationStartTime, setAnimationStartTime] = useState(0);
+  // Tiled layers
+  const pageBackgroundLayer1 = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundImage: `url(${pageBgImg})`,
+    backgroundRepeat: 'repeat',
+    backgroundSize: `${tileSize}vmin ${tileSize}vmin`,
+    backgroundPosition: 'center',
+    zIndex: 0,
+  };
 
-  useEffect(() => {
-    // Fetch font and create blob URL
-    fetch(font2025_11_23)
-      .then(res => res.blob())
-      .then(blob => {
-        fontBlobUrl = URL.createObjectURL(blob);
-        styleSheet = document.createElement('style');
-        styleSheet.textContent = `
-          @font-face {
-            font-family: "DigitalBlobFont";
-            src: url("${fontBlobUrl}") format("truetype");
-            font-display: swap;
-          }
-        `;
-        document.head.appendChild(styleSheet);
-      });
+  const pageBackgroundLayer2 = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundImage: `url(${pageBgImg})`,
+    backgroundRepeat: 'repeat',
+    backgroundSize: `${tileSize}vmin ${tileSize}vmin`,
+    backgroundPosition: `calc(50% + ${tileSize / 2}vmin) calc(50% + ${tileSize / 2}vmin)`,
+    transform: 'scaleX(-1)',
+    zIndex: 0,
+  };
 
+  const containerStyle = {
+    position: "relative",
+    width: `${clockSize}${unit}`,
+    height: `${clockSize}${unit}`,
+    borderRadius: "50%",
+    overflow: "visible",
+    textAlign: "center",
+    zIndex: 1,
+  };
+
+  const backgroundStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    borderRadius: "50%",
+    backgroundImage: `url(${clockFaceImg})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    filter: "saturate(0.7) contrast(1.4) brightness(0.7)",
+    zIndex: 1,
+  };
+
+  const handStyle = (angle, length) => ({
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    width: "auto",
+    height: `${length}${unit}`,
+    transform: `translate(-50%, -100%) rotate(${angle}deg)`,
+    transformOrigin: "50% 100%",
+    zIndex: 2,
+  });
+
+  const fontBlob = `@font-face {
+    font-family: 'customFont';
+    src: url(${fontFile}) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }`;
+
+  const digits = Array.from({ length: 12 }, (_, i) => i + 1);
+
+  const digitStyle = (num) => {
+    const angle = (num * 30 - 90) * (Math.PI / 180);
+    const radius = clockSize / 2 - 7;
+    const x = radius * Math.cos(angle);
+    const y = radius * Math.sin(angle);
     
-    
-    const updateClock = () => {
-  const now = new Date();
-  let hours = now.getHours() % 12 || 12;
-  const minutes = now.getMinutes();
-
-  // Remove the 'h' and 'm' markers and colons — use space-separated time
-  const formatted = `${hours} ${minutes.toString().padStart(2, '0')}`;
-  setTime(formatted);
-};
-    
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    
-    return () => {
-      clearInterval(interval);
-      if (fontBlobUrl) URL.revokeObjectURL(fontBlobUrl);
-      if (styleSheet) styleSheet.remove();
+    return {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: `translate(${x}${unit}, ${y}${unit}) translate(-50%, -50%)`,
+      fontFamily: "customFont",
+      fontSize: `9${unit}`,
+      color: "#E3F3C277",
+      userSelect: "none",
+      zIndex: 2,
     };
-  }, []);
+  };
 
-  useEffect(() => {
-    const generateRandom = () => {
-      const newTwists = new Array(maxChars).fill().map(() => Math.random() * 180 - 90);
-      const newCurves = new Array(maxChars).fill().map(() => Math.random() * 180 - 90);
-      const newScaleXs = new Array(maxChars).fill().map(() => Math.random() * 2.5 + 0.5);
-      const newScaleYs = new Array(maxChars).fill().map(() => Math.random() * 2.5 + 0.5);
-      setDistortedTwists(newTwists);
-      setDistortedCurves(newCurves);
-      setDistortedScaleXs(newScaleXs);
-      setDistortedScaleYs(newScaleYs);
-    };
-
-    const startDistort = () => {
-      generateRandom();
-      setIsDistorting(true);
-      setAnimationStartTime(Date.now());
-    };
-
-    const firstTimer = setTimeout(startDistort, 2000);
-    const interval = setInterval(startDistort, 7000);
-
-    return () => {
-      clearTimeout(firstTimer);
-      clearInterval(interval);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isDistorting) {
-      const animate = () => {
-        const progress = Math.min(1, (Date.now() - animationStartTime) / 3000);
-        setDistortProgress(progress);
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          setIsDistorting(false);
-          setDistortProgress(0);
-        }
-      };
-      animate();
-    }
-  }, [isDistorting, animationStartTime]);
-
-  const parseNumbers = (str) => str.split(',').map(s => parseFloat(s.trim()) || 0);
-
-  const characters = time.split('');
-
-  const twistValues = parseNumbers(twistString);
-  const curveValues = parseNumbers(curveString);
-  const scaleXValues = parseNumbers(scaleXString);
-  const scaleYValues = parseNumbers(scaleYString);
+  const hourHandLen = 36;
+  const minuteHandLen = 46;
+  const secondHandLen = 58;
 
   return (
-    <div
-      style={{
-        height: '100vh',
-        width: '100vw',
-        backgroundImage: `url(${backgroundImg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        imageRendering: '-webkit-optimize-contrast',
-      }}
-    >
+    <div style={pageWrapperStyle}>
+      <div style={pageBackgroundBase}></div> {/* full-screen base image */}
+      <div style={pageBackgroundLayer1}></div> {/* main centered grid */}
+      <div style={pageBackgroundLayer2}></div> {/* offset + flipped grid */}
+      
+      <div style={containerStyle}>
+        <style>{fontBlob}</style>
+        <div style={backgroundStyle}></div> {/* clock face */}
 
-      <div style={{ textAlign: 'center' }}>
-        {characters.map((char, i) => {
-          if (char === ' ') {
-            return <span key={i} style={{ display: 'inline-block', width: '4vw' }} />;
-          }
-
-          return (
-            <DigitBox
-              key={i}
-              twist={twistValues[i % twistValues.length] || 0}
-              curve={curveValues[i % curveValues.length] || 0}
-              scaleX={scaleXValues[i % scaleXValues.length] || 1}
-              scaleY={scaleYValues[i % scaleYValues.length] || 1}
-            >
-              {char}
-            </DigitBox>
-          );
-        })}
-      </div>
-
-      <div style={{ marginTop: '5vh' }}>
-        {''.split('').map((c, i) => (
-          <DigitBox
-            key={`sub${i}`}
-            twist={30 + i * 5}
-            curve={-25 + i * 3}
-            scaleX={1.4}
-            scaleY={0.7}
-          >
-            {c}
-          </DigitBox>
+        {digits.map((d) => (
+          <div key={d} style={digitStyle(d)}>
+            {d}
+          </div>
         ))}
+
+        <img 
+          src={hourHandImg} 
+          alt="hour" 
+          style={{ 
+            ...handStyle(hourAngle, hourHandLen),
+            zIndex: 8,
+            filter: "saturate(3.6) contrast(1.2) brightness(0.8)" 
+          }} 
+        />
+        <img 
+          src={minuteHandImg} 
+          alt="minute" 
+          style={{ 
+            ...handStyle(minuteAngle, minuteHandLen),
+            zIndex: 6,
+            filter: "saturate(1.8) contrast(1.1) brightness(0.9)" 
+          }} 
+        />
+        <img 
+          src={secondHandImg} 
+          alt="second" 
+          style={{ 
+            ...handStyle(secondAngle, secondHandLen),
+            zIndex: 3,
+            filter: "grayscale(100%) sepia(100%) hue-rotate(-50deg) saturate(330%) contrast(1.7) brightness(0.9)" 
+          }} 
+        />
       </div>
     </div>
   );

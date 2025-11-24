@@ -3,7 +3,7 @@ import videoFile from "./sput.mp4";
 import videoWebM from "./sput.mp4";
 import fallbackImg from "./sput.webp";
 import secondHandImg from "./spu.webp";
-import fontFile from "./spu.ttf";
+import font112425sput from "./spu.ttf";
 
 export default function Clock() {
   const videoRef = useRef(null);
@@ -13,7 +13,7 @@ export default function Clock() {
 
   // Load custom font
   useEffect(() => {
-    const font = new FontFace("CustomClock", `url(${fontFile})`);
+    const font = new FontFace("CustomClock", `url(${font112425sput})`);
     font
       .load()
       .then((loaded) => {
