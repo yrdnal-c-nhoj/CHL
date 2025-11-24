@@ -206,9 +206,8 @@ export default function Clock() {
     transform: "translate(-50%, -50%)", // Centers the image
     transformOrigin: "center center",   // Rotates around the center of the image
     pointerEvents: "none",
-    filter: "drop-shadow(0 0 1.5vmin rgba(255,100,100,0.2))",
+    filter: "brightness(1.2) contrast(0.8) drop-shadow(0 0 1.5vmin rgba(255,100,100,0.2))",
     zIndex: 9,
-    opacity: 0.9,
   }}
   // Apply rotation separately to avoid transform conflicts
   ref={(el) => {
