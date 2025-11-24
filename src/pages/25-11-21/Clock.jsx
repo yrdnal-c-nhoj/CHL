@@ -84,7 +84,7 @@ const DigitalGridClock = () => {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: isDesktop ? '3vmin' : '3vmin',
+    fontSize: isDesktop ? '5vmin' : '5vmin',
     backgroundColor: '#2A0433FF',
     color: '#F9E8C8FF',
     transition: 'all 0.5s ease',
