@@ -29,7 +29,7 @@ export default function DigitalStackClock() {
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
-    fontFamily: "CustomClock, system-ui",
+    fontFamily: "CustomClock",
   };
 
   // Panel (mobile = stacked / desktop = horizontal)
@@ -62,7 +62,7 @@ export default function DigitalStackClock() {
     alignItems: "center",
     justifyContent: "center",
     fontSize: "24vh",
-    fontFamily: "CustomClock, monospace",
+    fontFamily: "CustomClock",
     fontVariantNumeric: "tabular-nums",
     color: "# #00457C",
     borderRadius: "1vh",
