@@ -147,6 +147,7 @@ export default function Clock() {
         color: "#F1F0D3",
         transform: "translate(-50%, -50%)", // Center the number on the calculated point
         userSelect: "none",
+        opacity: 0.7,
       }}
     >
       {n}
@@ -162,7 +163,7 @@ export default function Clock() {
               left: "50%",
               width: "2.5vmin",
               height: "2.5vmin",
-              background: "#C9CEF5FF",
+              background: "#F0ECD5FF",
               borderRadius: "50%",
               opacity: 0.8,
               transform: "translate(-50%, -50%)",
@@ -179,6 +180,7 @@ export default function Clock() {
               left: "50%",
               width: "2.2vmin",
               height: "22vmin",
+                   background: "#F5EED3FF",
               background: "white",
               marginLeft: "-1.1vmin",
               borderRadius: "1.5vmin",
@@ -223,6 +225,7 @@ export default function Clock() {
               filter: "drop-shadow(0 0 1.5vmin rgba(255,100,100,0.6))",
               zIndex: 9,
         
+                   opacity: 0.9,
             }}
           />
         </div>
