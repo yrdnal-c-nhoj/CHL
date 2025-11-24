@@ -160,11 +160,11 @@ export default function Clock() {
               position: "absolute",
               top: "50%",
               left: "50%",
-              width: "22.5vmin",
-              height: "22.5vmin",
+              width: "2.5vmin",
+              height: "2.5vmin",
               background: "#C9CEF5FF",
               borderRadius: "50%",
-              opacity: 0.2,
+              opacity: 0.8,
               transform: "translate(-50%, -50%)",
               boxShadow: "0 0 2.5vmin rgba(25,25,255,0.4)",
               zIndex: 5,
@@ -185,6 +185,7 @@ export default function Clock() {
               transform: `translateX(-50%) rotate(${hours}deg)`,
               transformOrigin: "center bottom",
               zIndex: 2,
+                   opacity: 0.4,
             }}
           />
 
@@ -202,6 +203,7 @@ export default function Clock() {
               transform: `translateX(-50%) rotate(${minutes}deg)`,
               transformOrigin: "center bottom",
               zIndex: 3,
+                   opacity: 0.4,
             }}
           />
 
@@ -220,6 +222,7 @@ export default function Clock() {
               pointerEvents: "none",
               filter: "drop-shadow(0 0 1.5vmin rgba(255,100,100,0.6))",
               zIndex: 9,
+        
             }}
           />
         </div>
