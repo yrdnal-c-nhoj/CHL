@@ -155,23 +155,7 @@ export default function Clock() {
   );
 })}
 
-          {/* Center dot */}
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: "2.5vmin",
-              height: "2.5vmin",
-              background: "#F0ECD5FF",
-              borderRadius: "50%",
-              opacity: 0.8,
-              transform: "translate(-50%, -50%)",
-              boxShadow: "0 0 2.5vmin rgba(25,25,255,0.4)",
-              zIndex: 5,
-            }}
-          />
-
+         
           {/* Hour hand */}
           <div
             style={{
@@ -217,12 +201,12 @@ export default function Clock() {
     position: "absolute",
     top: "50%",
     left: "50%",
-    height: "90vmin",
+    height: "190vmin",
     width: "auto",
     transform: "translate(-50%, -50%)", // Centers the image
     transformOrigin: "center center",   // Rotates around the center of the image
     pointerEvents: "none",
-    filter: "drop-shadow(0 0 1.5vmin rgba(255,100,100,0.6))",
+    filter: "drop-shadow(0 0 1.5vmin rgba(255,100,100,0.2))",
     zIndex: 9,
     opacity: 0.9,
   }}
