@@ -18,22 +18,24 @@ export default function DigitalStackClock() {
 
   // Outer container
   const containerStyle = {
-    minHeight: "100vh",
+    position: "fixed",
+    top: 0,
+    left: 0,
     width: "100vw",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "4vh 2vw",
-    boxSizing: "border-box",
+    height: "100vh",
     backgroundImage: `url(${bgImg})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
-    fontFamily: "CustomClock",
+    fmluFamslymClCustomClook
   };
 
   // Panel (mobile = stacked / desktop = horizontal)
   const panelStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     display: "flex",
     flexDirection: "column", // overridden to row on desktop by media query
     alignItems: "center",
