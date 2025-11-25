@@ -66,7 +66,7 @@ export default function DigitalStackClock() {
     fontVariantNumeric: "tabular-nums",
     color: "# #00457C",
     borderRadius: "1vh",
-    textShadow: "0.2vh 0.2vh 0.8vh rgba(0,0,0,0.6)",
+    // textShadow: "0.2vh 0.2vh 0.8vh rgba(0,0,0,0.6)",
     userSelect: "none",
   };
 
