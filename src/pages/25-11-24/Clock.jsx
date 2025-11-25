@@ -107,7 +107,7 @@ export default function AnalogClock() {
     backgroundSize: "cover",
     backgroundPosition: "center",
     filter: "saturate(0.7) contrast(1.4) brightness(0.7)",
-    opacity: 0.8,
+    opacity: 0.6,
     zIndex: 1,
   };
 
