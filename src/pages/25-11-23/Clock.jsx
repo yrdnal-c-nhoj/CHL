@@ -32,10 +32,6 @@ export default function DigitalStackClock() {
 
   // Panel (mobile = stacked / desktop = horizontal)
   const panelStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
     display: "flex",
     flexDirection: "column", // overridden to row on desktop by media query
     alignItems: "center",
