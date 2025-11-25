@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import pageBgImgBase from "./skin.jpg"; // full-screen background
-import pageBgImg from "./sss.webp";      // tiled background
-import clockFaceImg from "./sn.gif";    // clock face
+import React, { useEffect, useState, useRef } from "react";
+import pageBgImgBase from "./skin.jpg";
+import pageBgImg from "./sss.webp";
+import clockFaceImg from "./sn.gif";
 import hourHandImg from "./sn5.webp";
 import minuteHandImg from "./sfsd.webp";
 import secondHandImg from "./sn1.webp";
@@ -9,39 +9,43 @@ import fontFile from "./snake.ttf";
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
+  const requestRef = useRef();
+
+  // Smooth update with requestAnimationFrame
+  const updateTime = () => {
+    setTime(new Date());
+    requestRef.current = requestAnimationFrame(updateTime);
+  };
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
+    requestRef.current = requestAnimationFrame(updateTime);
+    return () => cancelAnimationFrame(requestRef.current);
   }, []);
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
-  const ms = time.getMilliseconds();
-  const seconds = time.getSeconds() + ms / 1000;
+  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
 
   const hourAngle = (hours + minutes / 60) * 30;
   const minuteAngle = (minutes + seconds / 60) * 6;
   const secondAngle = seconds * 6;
 
   const unit = "vmin"; 
-  const clockSize = 100; 
-  const tileSize = 20;
+  const clockSize = 60; // smaller size now
+  const tileSize = 15;
 
-  // Wrapper flex container to center everything
   const pageWrapperStyle = {
     position: 'fixed',
     top: 0,
     left: 0,
     width: '100vw',
     height: '100vh',
-    overflow: 'hidden',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
   };
 
-  // Base background (full-screen, not tiled)
   const pageBackgroundBase = {
     position: 'absolute',
     top: 0,
@@ -56,7 +60,6 @@ export default function AnalogClock() {
     zIndex: -3,
   };
 
-  // Tiled layers
   const pageBackgroundLayer1 = {
     position: 'absolute',
     top: 0,
@@ -79,13 +82,13 @@ export default function AnalogClock() {
     backgroundImage: `url(${pageBgImg})`,
     backgroundRepeat: 'repeat',
     backgroundSize: `${tileSize}${unit} ${tileSize}${unit}`,
-    backgroundPosition: `center`,
+    backgroundPosition: 'center',
     transform: 'scaleX(-1)',
     zIndex: -1,
   };
 
   const containerStyle = {
-    position: 'relative', // relative to flex parent
+    position: 'relative',
     width: `${clockSize}${unit}`,
     height: `${clockSize}${unit}`,
     borderRadius: "50%",
