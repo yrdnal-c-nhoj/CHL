@@ -68,8 +68,8 @@ export default function AnalogClock() {
     height: '100%',
     backgroundImage: `url(${pageBgImg})`,
     backgroundRepeat: 'repeat',
-        filter: "saturate(2.7)",
-
+    filter: "saturate(2.7)",
+    opacity: 0.6,
     backgroundSize: `${tileSize}${unit} ${tileSize}${unit}`,
     backgroundPosition: 'center',
     zIndex: -2,
@@ -85,7 +85,8 @@ export default function AnalogClock() {
     backgroundRepeat: 'repeat',
     backgroundSize: `${tileSize}${unit} ${tileSize}${unit}`,
     backgroundPosition: 'center',
-       filter: "saturate(2.7)",
+    filter: "saturate(2.7)",
+    opacity: 0.6,
     transform: 'scaleX(-1)',
     zIndex: -1,
   };
@@ -147,7 +148,7 @@ export default function AnalogClock() {
       transform: `translate(${x}${unit}, ${y}${unit}) translate(-50%, -50%)`,
       fontFamily: "customFont",
       fontSize: `10${unit}`,
-      color: "#61532DD0",
+      color: "#6C5D35D0",
       textShadow: "1px 1px rgba(220, 220, 220, 0.9), -1px -1px rgba(0, 0, 0, 0.9)",
       userSelect: "none",
       zIndex: 2,
@@ -162,7 +163,7 @@ export default function AnalogClock() {
     <div style={pageWrapperStyle}>
       <div style={pageBackgroundBase}></div>
       <div style={pageBackgroundLayer1}></div>
-      <div style={pageBackgroundLayer2}></div>
+      {/* <div style={pageBackgroundLayer2}></div> */}
       
       <div style={containerStyle}>
         <style>{fontBlob}</style>
