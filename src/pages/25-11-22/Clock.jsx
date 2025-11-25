@@ -13,7 +13,7 @@ export default function Clock() {
 
   // Load custom font
   useEffect(() => {
-    const font = new FontFace("CustomClock-112425", `url(${font112425sput})`);
+    const font = new FontFace("CustomClock-112425", `url(${font112425sput})`, { display: 'block' });
     font
       .load()
       .then((loaded) => {
