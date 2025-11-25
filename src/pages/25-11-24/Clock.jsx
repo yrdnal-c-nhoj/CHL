@@ -5,6 +5,7 @@ import clockFaceImg from "./sn.gif";
 import hourHandImg from "./sn5.webp";
 import minuteHandImg from "./sfsd.webp";
 import secondHandImg from "./sn1.webp";
+import clockCenterImg from "./center.webp"; // <-- your new center image
 import fontFile from "./snake.ttf";
 
 export default function AnalogClock() {
@@ -39,7 +40,7 @@ export default function AnalogClock() {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100dvh', // <-- dynamic viewport height fixes mobile vertical centering
+    height: '100dvh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -75,22 +76,6 @@ export default function AnalogClock() {
     zIndex: -2,
   };
 
-  const pageBackgroundLayer2 = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${pageBgImg})`,
-    backgroundRepeat: 'repeat',
-    backgroundSize: `${tileSize}${unit} ${tileSize}${unit}`,
-    backgroundPosition: 'center',
-    filter: "saturate(2.7)",
-    opacity: 0.6,
-    transform: 'scaleX(-1)',
-    zIndex: -1,
-  };
-
   const containerStyle = {
     position: 'relative',
     width: `${clockSize}${unit}`,
@@ -123,7 +108,6 @@ export default function AnalogClock() {
     height: `${length}${unit}`,
     transform: `translate(-50%, -100%) rotate(${angle}deg)`,
     transformOrigin: "50% 100%",
-    zIndex: 2,
   });
 
   const fontBlob = `@font-face {
@@ -149,22 +133,21 @@ export default function AnalogClock() {
       fontFamily: "customFont",
       fontSize: `10${unit}`,
       color: "#6C5D35D0",
-      textShadow: "1px 1px rgba(220, 122, 122, 0.9), -1px -1px rgba(0, 0, 0, 0.9)",
+      textShadow: "1px 1px rgba(220,192,192,0.9), -1px -1px rgba(0,0,0,0.9)",
       userSelect: "none",
       zIndex: 2,
     };
   };
 
-  const hourHandLen = 36;
-  const minuteHandLen = 46;
+  const hourHandLen = 42;
+  const minuteHandLen = 50;
   const secondHandLen = 58;
 
   return (
     <div style={pageWrapperStyle}>
       <div style={pageBackgroundBase}></div>
       <div style={pageBackgroundLayer1}></div>
-      {/* <div style={pageBackgroundLayer2}></div> */}
-      
+
       <div style={containerStyle}>
         <style>{fontBlob}</style>
         <div style={backgroundStyle}></div>
@@ -175,33 +158,58 @@ export default function AnalogClock() {
           </div>
         ))}
 
+        {/* Center image */}
+        <img
+          src={clockCenterImg}
+          alt="center"
+          style={{
+            position: "absolute",
+            top: "52%",
+            left: "50%",
+            width: "22vmin",
+            height: "16vmin",
+            transform: "translate(-50%, -50%)",
+            zIndex: 9,
+            filter:
+              "saturate(1.2) contrast(1.9) brightness(0.8) drop-shadow(0 1px 0.5vmin rgba(222,211,210))",
+     
+            pointerEvents: "none"
+          }}
+        />
+
         <img 
           src={hourHandImg} 
           alt="hour" 
           style={{ 
             ...handStyle(hourAngle, hourHandLen),
             zIndex: 8,
-            filter: "saturate(1.2) contrast(1.2) brightness(0.8)" 
+            filter:
+              "saturate(1.2) contrast(1.9) brightness(0.8) drop-shadow(0 1px 0.5vmin rgba(222,211,210))"
           }} 
         />
+
         <img 
           src={minuteHandImg} 
           alt="minute" 
           style={{ 
             ...handStyle(minuteAngle, minuteHandLen),
             zIndex: 6,
-            filter: "saturate(1.1) contrast(1.1) brightness(0.9)" 
+            filter:
+              "saturate(1.1) contrast(0.8) brightness(0.9) drop-shadow(0 1px 0.5vmin rgba(222,211,210))"
           }} 
         />
+
         <img 
           src={secondHandImg} 
           alt="second" 
           style={{ 
             ...handStyle(secondAngle, secondHandLen),
             zIndex: 3,
-            filter: "grayscale(100%) sepia(100%) hue-rotate(-50deg) saturate(100%) contrast(1.7) brightness(0.9)" 
+            filter:
+              "grayscale(100%) sepia(100%) hue-rotate(-50deg) saturate(100%) contrast(1.7) brightness(0.9) drop-shadow(0 1px 0.5vmin rgba(222,211,210))"
           }} 
         />
+
       </div>
     </div>
   );
