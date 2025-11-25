@@ -1,60 +1,64 @@
 // File: DigitalStackClock.jsx
 import React, { useEffect, useState } from "react";
-import bgImg from "./gs.png";          // background image in same folder
-import font2025_11_24 from "./gal.ttf";  // today's font (TTF)
+import bgImg from "./gs.png";           // your background
+import font2025_11_24 from "./gal.ttf"; // your custom font
 
 export default function DigitalStackClock() {
   const [now, setNow] = useState(new Date());
+  const [fontReady, setFontReady] = useState(false);
 
+  // Update time every 250 ms
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 250);
     return () => clearInterval(id);
   }, []);
 
-  // Format numbers
+  // Wait for custom font → eliminates FOUC completely
+  useEffect(() => {
+    document.fonts.ready.then(() => {
+      document.fonts
+        .load('100 1em CustomClock') // load at least one weight
+        .then(() => setFontReady(true));
+    });
+  }, []);
+
+  // Format time
   const hh = String(now.getHours()).padStart(2, "0");
   const mm = String(now.getMinutes()).padStart(2, "0");
   const ss = String(now.getSeconds()).padStart(2, "0");
 
-  // Outer container
+  // Styles
   const containerStyle = {
-    minHeight: "100vh",
+    minHeight: "100dvh",           // fixes mobile Chrome centering
     width: "100vw",
+    margin: 0,
+    padding: "4dvh 2vw",
+    boxSizing: "border-box",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "4vh 2vw",
-    boxSizing: "border-box",
-    backgroundImage: `url(${bgImg})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    fontFamily: "CustomClock, system-ui",
+    background: `url(${bgImg}) center/cover no-repeat`,
+    fontFamily: '"CustomClock", system-ui, monospace',
   };
 
-  // Panel (mobile = stacked / desktop = horizontal)
   const panelStyle = {
     display: "flex",
-    flexDirection: "column", // overridden to row on desktop by media query
+    flexDirection: "column",       // mobile = stacked
     alignItems: "center",
     justifyContent: "center",
     gap: "3vh",
     width: "min(92vw, 70vh)",
     padding: "3vh 2.5vw",
     borderRadius: "2vh",
-    // background: "rgba(0,0,0,0.35)",
     backdropFilter: "blur(4px)",
     WebkitBackdropFilter: "blur(4px)",
   };
 
-  // Each row of digits
   const digitRow = {
     display: "flex",
-    flexDirection: "row",
     gap: "1vh",
   };
 
-  // Each individual digit (fixed box → no jumping)
   const digitStyle = {
     width: "14vh",
     height: "18vh",
@@ -62,74 +66,89 @@ export default function DigitalStackClock() {
     alignItems: "center",
     justifyContent: "center",
     fontSize: "24vh",
-    fontFamily: "CustomClock, monospace",
     fontVariantNumeric: "tabular-nums",
-    color: "# #00457C",
+    color: "#00457C",
+    textShadow: "0 0.4vh 1.6vh rgba(0,0,0,0.7)",
     borderRadius: "1vh",
-    // textShadow: "0.2vh 0.2vh 0.8vh rgba(0,0,0,0.6)",
     userSelect: "none",
+    background: "rgba(255,255,255,0.05)",
   };
 
   return (
-    <div style={containerStyle}>
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-            @font-face {
-              font-family: "CustomClock";
-              src: url("${font2025_11_24}") format("truetype");
-              font-weight: 100 900;
-              font-style: normal;
-              font-display: swap;
-            }
-
-            /* Desktop: horizontal layout */
-            @media (min-width: 800px) {
-              .clock-layout {
-                flex-direction: row !important;
-              }
-            }
-
-            /* Very short screens */
-            @media (max-height: 420px) {
-              .digit-box {
-                width: 6vh !important;
-                height: 9vh !important;
-                font-size: 7vh !important;
-              }
-            }
-          `,
-        }}
+    <>
+      {/* Preload font instantly */}
+      <link
+        rel="preload"
+        href={font2025_11_24}
+        as="font"
+        type="font/ttf"
+        crossOrigin=""
       />
 
-      <div className="clock-layout" style={panelStyle}>
-        {/* HOURS */}
-        <div style={digitRow}>
-          {[...hh].map((d, i) => (
-            <div key={i} className="digit-box" style={digitStyle}>
-              {d}
-            </div>
-          ))}
-        </div>
+      <div style={containerStyle}>
+        {/* Global styles + font-face */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              @font-face {
+                font-family: "CustomClock";
+                src: url("${font2025_11_24}") format("truetype");
+                font-weight: 100 900;
+                font-display: swap;
+              }
+              /* Hide until font is ready → zero flash */
+              .clock-root { opacity: 0; transition: opacity 300ms ease; }
+              .clock-root.font-ready { opacity: 1; }
 
-        {/* MINUTES */}
-        <div style={digitRow}>
-          {[...mm].map((d, i) => (
-            <div key={i} className="digit-box" style={digitStyle}>
-              {d}
-            </div>
-          ))}
-        </div>
+              /* Desktop → horizontal */
+              @media (min-width: 800px) {
+                .clock-layout { flex-direction: row !important; }
+              }
 
-        {/* SECONDS */}
-        <div style={digitRow}>
-          {[...ss].map((d, i) => (
-            <div key={i} className="digit-box" style={digitStyle}>
-              {d}
+              /* Tiny screens / landscape phones */
+              @media (max-height: 420px) {
+                .digit-box {
+                  width: 6vh !important;
+                  height: 9vh !important;
+                  font-size: 7vh !important;
+                }
+              }
+            `,
+          }}
+        />
+
+        {/* Clock becomes visible only when font is loaded */}
+        <div className={`clock-root ${fontReady ? "font-ready" : ""}`}>
+          <div className="clock-layout" style={panelStyle}>
+            {/* HOURS */}
+            <div style={digitRow}>
+              {[...hh].map((d, i) => (
+                <div key={`h${i}`} className="digit-box" style={digitStyle}>
+                  {d}
+                </div>
+              ))}
             </div>
-          ))}
+
+            {/* MINUTES */}
+            <div style={digitRow}>
+              {[...mm].map((d, i) => (
+                <div key={`m${i}`} className="digit-box" style={digitStyle}>
+                  {d}
+                </div>
+              ))}
+            </div>
+
+            {/* SECONDS */}
+            <div style={digitRow}>
+              {[...ss].map((d, i) => (
+                <div key={`s${i}`} className="digit-box" style={digitStyle}>
+                  {d}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
