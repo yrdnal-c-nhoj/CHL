@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import pageBgImgBase from "./skin.jpg"; // new single background
-import pageBgImg from "./sss.webp";            // tiled background
-import clockFaceImg from "./sn.gif";          // clock face
+import pageBgImgBase from "./skin.jpg"; // full-screen background
+import pageBgImg from "./sss.webp";      // tiled background
+import clockFaceImg from "./sn.gif";    // clock face
 import hourHandImg from "./sn5.webp";
 import minuteHandImg from "./sfsd.webp";
 import secondHandImg from "./sn1.webp";
@@ -28,6 +28,7 @@ export default function AnalogClock() {
   const clockSize = 80; 
   const tileSize = 20;
 
+  // Wrapper flex container to center everything
   const pageWrapperStyle = {
     position: 'fixed',
     top: 0,
@@ -40,7 +41,7 @@ export default function AnalogClock() {
     alignItems: 'center',
   };
 
-  // Base background (full screen, not tiled)
+  // Base background (full-screen, not tiled)
   const pageBackgroundBase = {
     position: 'absolute',
     top: 0,
@@ -49,11 +50,10 @@ export default function AnalogClock() {
     height: '100%',
     backgroundImage: `url(${pageBgImgBase})`,
     backgroundSize: 'cover',
-        filter: "saturate(2.7) contrast(0.4) brightness(0.7)",
-
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    zIndex: -1,
+    filter: "saturate(2.7) contrast(0.4) brightness(0.7)",
+    zIndex: -3,
   };
 
   // Tiled layers
@@ -65,9 +65,9 @@ export default function AnalogClock() {
     height: '100%',
     backgroundImage: `url(${pageBgImg})`,
     backgroundRepeat: 'repeat',
-    backgroundSize: `${tileSize}vmin ${tileSize}vmin`,
+    backgroundSize: `${tileSize}${unit} ${tileSize}${unit}`,
     backgroundPosition: 'center',
-    zIndex: 0,
+    zIndex: -2,
   };
 
   const pageBackgroundLayer2 = {
@@ -78,24 +78,19 @@ export default function AnalogClock() {
     height: '100%',
     backgroundImage: `url(${pageBgImg})`,
     backgroundRepeat: 'repeat',
-    backgroundSize: `${tileSize}vmin ${tileSize}vmin`,
-    backgroundPosition: `calc(50% + ${tileSize / 2}vmin) calc(50% + ${tileSize / 2}vmin)`,
+    backgroundSize: `${tileSize}${unit} ${tileSize}${unit}`,
+    backgroundPosition: `center`,
     transform: 'scaleX(-1)',
-    zIndex: 0,
+    zIndex: -1,
   };
 
   const containerStyle = {
-    position: "relative",
+    position: 'relative', // relative to flex parent
     width: `${clockSize}${unit}`,
     height: `${clockSize}${unit}`,
     borderRadius: "50%",
     overflow: "visible",
     textAlign: "center",
-    zIndex: 1,
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
   };
 
   const backgroundStyle = {
@@ -157,13 +152,13 @@ export default function AnalogClock() {
 
   return (
     <div style={pageWrapperStyle}>
-      <div style={pageBackgroundBase}></div> {/* full-screen base image */}
-      <div style={pageBackgroundLayer1}></div> {/* main centered grid */}
-      <div style={pageBackgroundLayer2}></div> {/* offset + flipped grid */}
+      <div style={pageBackgroundBase}></div>
+      <div style={pageBackgroundLayer1}></div>
+      <div style={pageBackgroundLayer2}></div>
       
       <div style={containerStyle}>
         <style>{fontBlob}</style>
-        <div style={backgroundStyle}></div> {/* clock face */}
+        <div style={backgroundStyle}></div>
 
         {digits.map((d) => (
           <div key={d} style={digitStyle(d)}>
@@ -195,7 +190,7 @@ export default function AnalogClock() {
           style={{ 
             ...handStyle(secondAngle, secondHandLen),
             zIndex: 3,
-            filter: "grayscale(100%) sepia(100%) hue-rotate(-50deg) saturate(330%) contrast(1.7) brightness(0.9)" 
+            filter: "grayscale(100%) sepia(100%) hue-rotate(-50deg) saturate(130%) contrast(1.7) brightness(0.9)" 
           }} 
         />
       </div>
