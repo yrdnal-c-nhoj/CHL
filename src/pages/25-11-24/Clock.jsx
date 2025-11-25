@@ -17,7 +17,8 @@ export default function AnalogClock() {
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
-  const seconds = time.getSeconds();
+  const ms = time.getMilliseconds();
+  const seconds = time.getSeconds() + ms / 1000;
 
   const hourAngle = (hours + minutes / 60) * 30;
   const minuteAngle = (minutes + seconds / 60) * 6;
