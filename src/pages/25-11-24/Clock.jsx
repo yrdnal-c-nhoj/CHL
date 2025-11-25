@@ -31,8 +31,8 @@ export default function AnalogClock() {
   const secondAngle = seconds * 6;
 
   const unit = "vmin"; 
-  const clockSize = 100; // larger size
-  const tileSize = 15;
+  const clockSize = 100; // smaller size now
+  const tileSize = 35;
 
   const pageWrapperStyle = {
     position: 'fixed',
@@ -107,6 +107,7 @@ export default function AnalogClock() {
     backgroundSize: "cover",
     backgroundPosition: "center",
     filter: "saturate(0.7) contrast(1.4) brightness(0.7)",
+    opacity: 0.8,
     zIndex: 1,
   };
 
