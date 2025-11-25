@@ -25,7 +25,7 @@ export default function AnalogClock() {
   const secondAngle = seconds * 6;
 
   const unit = "vmin"; 
-  const clockSize = 80; 
+  const clockSize = 100; 
   const tileSize = 20;
 
   // Wrapper flex container to center everything
@@ -52,7 +52,7 @@ export default function AnalogClock() {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    filter: "saturate(2.7) contrast(0.4) brightness(0.7)",
+    filter: "saturate(2.7) contrast(0.4) brightness(0.4)",
     zIndex: -3,
   };
 
