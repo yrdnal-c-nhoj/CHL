@@ -49,9 +49,6 @@ export default function DigitalStackClock() {
     gap: "3vh",
     width: "min(92vw, 70vh)",
     padding: "3vh 2.5vw",
-    borderRadius: "2vh",
-    backdropFilter: "blur(4px)",
-    WebkitBackdropFilter: "blur(4px)",
   };
 
   const digitRow = {
@@ -67,11 +64,11 @@ export default function DigitalStackClock() {
     justifyContent: "center",
     fontSize: "24vh",
     fontVariantNumeric: "tabular-nums",
-    color: "#00457C",
-    textShadow: "0 0.4vh 1.6vh rgba(0,0,0,0.7)",
+    color: "#07487DFF",
+
     borderRadius: "1vh",
     userSelect: "none",
-    background: "rgba(255,255,255,0.05)",
+
   };
 
   return (
