@@ -171,8 +171,8 @@ export default function AnalogClock() {
             transform: "translate(-50%, -50%)",
             zIndex: 9,
             filter:
-              "saturate(1.2) contrast(1.9) brightness(0.8) drop-shadow(0 1px 0.5vmin rgba(222,211,210))",
-     
+              "saturate(1.2) contrast(1.2) hue-rotate(44deg)  brightness(0.8) drop-shadow(0 1px 0.5vmin rgba(222,211,210))",
+
             pointerEvents: "none"
           }}
         />
@@ -195,7 +195,7 @@ export default function AnalogClock() {
             ...handStyle(minuteAngle, minuteHandLen),
             zIndex: 6,
             filter:
-              "saturate(1.1) contrast(0.8) brightness(0.9) drop-shadow(0 1px 0.5vmin rgba(222,211,210))"
+              "saturate(1.1) contrast(1.2) brightness(0.9) drop-shadow(0 1px 0.5vmin rgba(222,211,210))"
           }} 
         />
 
@@ -206,7 +206,7 @@ export default function AnalogClock() {
             ...handStyle(secondAngle, secondHandLen),
             zIndex: 3,
             filter:
-              "grayscale(100%) sepia(100%) hue-rotate(-50deg) saturate(100%) contrast(1.7) brightness(0.9) drop-shadow(0 1px 0.5vmin rgba(222,211,210))"
+              "grayscale(100%) sepia(100%) hue-rotate(44deg) saturate(50%) contrast(1.7) brightness(0.9) drop-shadow(0 1px 0.5vmin rgba(222,211,210))"
           }} 
         />
 
