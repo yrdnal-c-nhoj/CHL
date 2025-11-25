@@ -31,7 +31,7 @@ export default function AnalogClock() {
   const secondAngle = seconds * 6;
 
   const unit = "vmin"; 
-  const clockSize = 60; // smaller size now
+  const clockSize = 100; // larger size
   const tileSize = 15;
 
   const pageWrapperStyle = {
@@ -143,7 +143,7 @@ export default function AnalogClock() {
       transform: `translate(${x}${unit}, ${y}${unit}) translate(-50%, -50%)`,
       fontFamily: "customFont",
       fontSize: `9${unit}`,
-      color: "#E3F3C277",
+      color: "#E3F3C2AA",
       userSelect: "none",
       zIndex: 2,
     };
