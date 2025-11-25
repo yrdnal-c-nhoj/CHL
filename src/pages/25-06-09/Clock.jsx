@@ -200,7 +200,7 @@ export default function IonosphereClock() {
           left: 0,
           width: "100vw",
           height: "100vh",
-          objectFit: "cover",
+          objectFit: "fill",
           filter: "contrast(90%) saturate(200%)",
           zIndex: 1,
           pointerEvents: "none",
