@@ -80,7 +80,7 @@ export default function DigitalStackClock() {
               src: url("${font2025_11_24}") format("truetype");
               font-weight: 100 900;
               font-style: normal;
-              font-display: swap;
+              font-display: block;
             }
 
             /* Desktop: horizontal layout */
