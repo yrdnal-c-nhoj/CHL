@@ -68,6 +68,8 @@ export default function AnalogClock() {
     height: '100%',
     backgroundImage: `url(${pageBgImg})`,
     backgroundRepeat: 'repeat',
+        filter: "saturate(2.7)",
+
     backgroundSize: `${tileSize}${unit} ${tileSize}${unit}`,
     backgroundPosition: 'center',
     zIndex: -2,
@@ -83,6 +85,7 @@ export default function AnalogClock() {
     backgroundRepeat: 'repeat',
     backgroundSize: `${tileSize}${unit} ${tileSize}${unit}`,
     backgroundPosition: 'center',
+       filter: "saturate(2.7)",
     transform: 'scaleX(-1)',
     zIndex: -1,
   };
@@ -143,8 +146,9 @@ export default function AnalogClock() {
       left: "50%",
       transform: `translate(${x}${unit}, ${y}${unit}) translate(-50%, -50%)`,
       fontFamily: "customFont",
-      fontSize: `9${unit}`,
-      color: "#E3F3C2AA",
+      fontSize: `10${unit}`,
+      color: "#61532DD0",
+      textShadow: "1px 1px rgba(220, 220, 220, 0.9), -1px -1px rgba(0, 0, 0, 0.9)",
       userSelect: "none",
       zIndex: 2,
     };
@@ -176,7 +180,7 @@ export default function AnalogClock() {
           style={{ 
             ...handStyle(hourAngle, hourHandLen),
             zIndex: 8,
-            filter: "saturate(3.6) contrast(1.2) brightness(0.8)" 
+            filter: "saturate(1.2) contrast(1.2) brightness(0.8)" 
           }} 
         />
         <img 
@@ -185,7 +189,7 @@ export default function AnalogClock() {
           style={{ 
             ...handStyle(minuteAngle, minuteHandLen),
             zIndex: 6,
-            filter: "saturate(1.8) contrast(1.1) brightness(0.9)" 
+            filter: "saturate(1.1) contrast(1.1) brightness(0.9)" 
           }} 
         />
         <img 
@@ -194,7 +198,7 @@ export default function AnalogClock() {
           style={{ 
             ...handStyle(secondAngle, secondHandLen),
             zIndex: 3,
-            filter: "grayscale(100%) sepia(100%) hue-rotate(-50deg) saturate(130%) contrast(1.7) brightness(0.9)" 
+            filter: "grayscale(100%) sepia(100%) hue-rotate(-50deg) saturate(100%) contrast(1.7) brightness(0.9)" 
           }} 
         />
       </div>
