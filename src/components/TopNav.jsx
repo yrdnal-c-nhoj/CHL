@@ -21,7 +21,7 @@ export default function TopNav() {
         </div>
 
         <div className="topnavtag">
-          a new clock every day, made from internet stuff
+          a new clock every day, made from recycled internet stuff
         </div>
       </div>
 
