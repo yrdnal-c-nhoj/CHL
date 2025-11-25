@@ -32,7 +32,7 @@ export default function AnalogClock() {
 
   const unit = "vmin"; 
   const clockSize = 100; // smaller size now
-  const tileSize = 35;
+  const tileSize = 25;
 
   const pageWrapperStyle = {
     position: 'fixed',
@@ -149,7 +149,7 @@ export default function AnalogClock() {
       fontFamily: "customFont",
       fontSize: `10${unit}`,
       color: "#6C5D35D0",
-      textShadow: "1px 1px rgba(220, 220, 220, 0.9), -1px -1px rgba(0, 0, 0, 0.9)",
+      textShadow: "1px 1px rgba(220, 122, 122, 0.9), -1px -1px rgba(0, 0, 0, 0.9)",
       userSelect: "none",
       zIndex: 2,
     };
