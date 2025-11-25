@@ -18,16 +18,18 @@ export default function DigitalStackClock() {
 
   // Outer container
   const containerStyle = {
-    position: "fixed",
-    top: 0,
-    left: 0,
+    minHeight: "100vh",
     width: "100vw",
-    height: "100vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "4vh 2vw",
+    boxSizing: "border-box",
     backgroundImage: `url(${bgImg})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
-    fmluFamslymClCustomClook
+    fontFamily: "CustomClock, system-ui",
   };
 
   // Panel (mobile = stacked / desktop = horizontal)
@@ -60,7 +62,7 @@ export default function DigitalStackClock() {
     alignItems: "center",
     justifyContent: "center",
     fontSize: "24vh",
-    fontFamily: "CustomClock",
+    fontFamily: "CustomClock, monospace",
     fontVariantNumeric: "tabular-nums",
     color: "# #00457C",
     borderRadius: "1vh",
@@ -78,7 +80,7 @@ export default function DigitalStackClock() {
               src: url("${font2025_11_24}") format("truetype");
               font-weight: 100 900;
               font-style: normal;
-              font-display: block;
+              font-display: swap;
             }
 
             /* Desktop: horizontal layout */
