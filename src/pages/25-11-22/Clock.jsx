@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import videoFile from "./sput.mp4";
-// import videoWebM from "./sput.webm"; // Ensure you have a real webm if you use it
 import fallbackImg from "./sput.webp";
 import secondHandImg from "./spu.webp";
 import font112425sput from "./spu.ttf";
@@ -19,17 +18,21 @@ export default function Clock() {
 
     let active = true;
 
-    font.load().then((loaded) => {
-      if (active) {
-        document.fonts.add(loaded);
-        setFontLoaded(true);
-      }
-    }).catch((err) => {
-      console.warn("Font load failed, falling back", err);
-      if (active) setFontLoaded(true); // Render anyway
-    });
+    font
+      .load()
+      .then((loaded) => {
+        if (active) {
+          document.fonts.add(loaded);
+          setFontLoaded(true);
+        }
+      })
+      .catch(() => {
+        if (active) setFontLoaded(true);
+      });
 
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, []);
 
   // 2. Ultra-smooth clock loop
@@ -49,13 +52,12 @@ export default function Clock() {
     if (!v) return;
 
     const fail = () => setVideoFailed(true);
-    
-    // Attempt play, handle browser autoplay policies
+
     const playPromise = v.play();
     if (playPromise !== undefined) {
       playPromise.catch(fail);
     }
-    
+
     v.addEventListener("error", fail);
     return () => v.removeEventListener("error", fail);
   }, []);
@@ -80,24 +82,34 @@ export default function Clock() {
     >
       {/* BACKGROUND VIDEO layer */}
       {!videoFailed && (
-        <video
-          ref={videoRef}
+        <div
           style={{
             position: "absolute",
-            width: "100%",
-            height: "100%",
-            objectFit: "cover", // This replaces all the manual resize JS
+            inset: 0,
             zIndex: 1,
+            overflow: "hidden",
           }}
-          loop
-          muted
-          playsInline
-          autoPlay
-          preload="auto"
         >
-          <source src={videoFile} type="video/mp4" />
-          {/* <source src={videoWebM} type="video/webm" /> */}
-        </video>
+          <video
+            ref={videoRef}
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              height: "100vw", // swap axes for rotated fill
+              width: "100vh",
+              objectFit: "cover",
+              transform: "translate(-50%, -50%) rotate(-90deg)",
+            }}
+            loop
+            muted
+            playsInline
+            autoPlay
+            preload="auto"
+          >
+            <source src={videoFile} type="video/mp4" />
+          </video>
+        </div>
       )}
 
       {/* FALLBACK IMAGE layer */}
@@ -106,10 +118,24 @@ export default function Clock() {
           style={{
             position: "absolute",
             inset: 0,
-            background: `url(${fallbackImg}) center/cover no-repeat`,
+            overflow: "hidden",
             zIndex: 1,
           }}
-        />
+        >
+          <img
+            src={fallbackImg}
+            alt=""
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              height: "100vw",
+              width: "100vh",
+              objectFit: "cover",
+              transform: "translate(-50%, -50%) rotate(-90deg)",
+            }}
+          />
+        </div>
       )}
 
       {/* GRADIENT OVERLAY layer */}
@@ -118,7 +144,8 @@ export default function Clock() {
           position: "absolute",
           inset: 0,
           pointerEvents: "none",
-          background: "radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,220,0.2) 100%)",
+          background:
+            "radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,220,0.2) 100%)",
           zIndex: 5,
         }}
       />
@@ -148,7 +175,7 @@ export default function Clock() {
             {[...Array(12)].map((_, i) => {
               const n = i + 1;
               const angle = n * 30 - 90;
-              const radius = 42; // Percentage radius
+              const radius = 42;
               const x = 50 + radius * Math.cos((angle * Math.PI) / 180);
               const y = 50 + radius * Math.sin((angle * Math.PI) / 180);
               return (
@@ -212,12 +239,13 @@ export default function Clock() {
                 position: "absolute",
                 top: "50%",
                 left: "50%",
-                height: "190vmin", // Preserved your specific sizing
+                height: "190vmin",
                 width: "auto",
                 transformOrigin: "center center",
                 transform: `translate(-50%, -50%) rotate(${seconds}deg)`,
                 pointerEvents: "none",
-                filter: "brightness(1.2) contrast(0.8) drop-shadow(0 0 1.5vmin rgba(255,100,100,0.2))",
+                filter:
+                  "brightness(1.2) contrast(0.8) drop-shadow(0 0 1.5vmin rgba(255,100,100,0.2))",
                 zIndex: 9,
               }}
             />
