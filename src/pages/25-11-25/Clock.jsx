@@ -1,254 +1,251 @@
-// ---  GEMINI   
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useLayoutEffect, useMemo, useCallback, useRef } from "react";
+// Assuming these imports are correct and available in your environment
+import fontClockUrl_20251126 from "./ntp.ttf";
+import marqueeFontUrl from "./n2.ttf";
+import backgroundImg from "./npt.webp";
 
-// --- Imports ---   GEMINI   
+// --- Constants (Keep as is) ---
+const NTP_EPOCH_OFFSET = 2208988800;
+const MS_PER_SECOND = 1000;
+const SECONDS_PER_DAY = 86400;
 
-// 1. Background Image Import (assuming 'background.jpg' is in the same folder)
-import backgroundImage from './app.webp'; // or .png, .webp etc.
-
-// 2. Font Import with date variable (Vite handles the blob URL via import)
-// The variable name must contain today's date (November 23, 2025)
-import font_2025_11_23 from './day.ttf'; 
-
-// --- Custom Font Definition ---
-const fontFaceStyle = `@font-face {
-  font-family: 'DigitalDistortion';
-  src: url('${font_2025_11_23}') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}`;
-
-// Helper to inject the font-face style globally since inline styles can't do @font-face
-const injectFontFace = () => {
-  if (!document.getElementById('digital-distortion-font')) {
-    const style = document.createElement('style');
-    style.id = 'digital-distortion-font';
-    style.textContent = fontFaceStyle;
-    document.head.appendChild(style);
-  }
-};
-
-// Inject the font on component load
-injectFontFace();
-
-// --- Clock Component ---
-
-/**
- * CurvyClock Component
- * Displays a digital clock with individually styled, distorted, and curved characters.
- */
-const CurvyClock = () => {
-  const [time, setTime] = useState(new Date());
+// --- Custom Hooks (Keep as is) ---
+function useNtpOffset() {
+  const [offset, setOffset] = useState(0);
+  const [isSynced, setIsSynced] = useState(false);
 
   useEffect(() => {
-    const timerId = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timerId); // Cleanup
+    let isMounted = true;
+    
+    const fetchTime = async () => {
+      try {
+        const start = performance.now();
+        // Using Etc/UTC as a reliable, non-DST time source
+        const res = await fetch("https://worldtimeapi.org/api/timezone/Etc/UTC");
+        const data = await res.json();
+        const end = performance.now();
+        if (!isMounted) return;
+
+        // Calculate offset (network latency compensated)
+        const networkDelay = (end - start) / 2;
+        const serverTime = new Date(data.utc_datetime).getTime();
+        const newOffset = serverTime - (Date.now() + networkDelay);
+
+        setOffset(newOffset);
+        setIsSynced(true);
+      } catch (e) {
+        if (isMounted) {
+          console.error("Failed to load NTP time:", e);
+          setIsSynced(true); 
+        }
+      }
+    };
+    
+    fetchTime();
+    return () => { isMounted = false; };
   }, []);
 
-  // --- Time Formatting ---
-  const formatTime = useCallback((date) => {
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
+  return { offset, isSynced };
+}
 
-    // 12-hour format, no leading zeros
-    hours = hours % 12;
-    hours = hours ? hours : 12; // The hour '0' should be '12'
+// --- Utility Functions (Keep as is) ---
+const calculateClockAngles = (ntpSeconds) => {
+    // ... (logic remains the same)
+    const timeOfDay = ntpSeconds % SECONDS_PER_DAY;
+    const hours = Math.floor(timeOfDay / 3600);
+    const minutes = Math.floor((timeOfDay % 3600) / 60);
+    const seconds = timeOfDay % 60;
+    const secAngle = seconds * 6 - 90;
+    const minAngle = minutes * 6 + seconds * 0.1 - 90;
+    const hourAngle = ((hours % 12) * 30) + minutes * 0.5 - 90;
+    return { secAngle, minAngle, hourAngle };
+};
 
-    // French standard separators: 'h' for hours/minutes, 'm' for minutes/seconds
-    // I will use simple colons as the common standard is more readable unless explicitly enforced
-    // For this example, I'll use a space and a colon for a unique look and better distortion control.
-    // e.g., '10: 35: 59 PM'
-    return {
-      H: String(hours),
-      M: String(minutes).padStart(2, '0'),
-      S: String(seconds).padStart(2, '0'),
-      AMPM: ampm
+const generateDigitColors = (numDigits) => {
+    return Array.from({ length: numDigits }, () => {
+        const h = Math.random() * 360;
+        const shadowH = (h + 180) % 360; // Complementary color for shadow
+        return {
+            color: `hsl(${h}, 200%, 50%)`,
+            shadowColor: `hsl(${shadowH}, 200%, 60%)`,
+        };
+    });
+};
+
+// --- Component ---
+export default function NtpClock() {
+  const { offset, isSynced } = useNtpOffset();
+  const [ntpSeconds, setNtpSeconds] = useState(0);
+  const [digitColors, setDigitColors] = useState([]);
+  const [marqueePos, setMarqueePos] = useState(0);
+  // displayTime shows local time for the marquee text
+  const [displayTime, setDisplayTime] = useState(new Date().toLocaleString([], { timeZoneName: 'short' }));
+  const marqueeRef = useRef(null);
+
+  // --- Font Loading (Keep as is) ---
+  useLayoutEffect(() => {
+    const fontFace = `
+      @font-face {
+        font-family: 'ClockFont';
+        src: url('${fontClockUrl_20251126}') format('woff2');
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'MarqueeFont';
+        src: url('${marqueeFontUrl}') format('truetype');
+        font-style: normal;
+        font-display: swap;
+      }
+    `;
+    const styleEl = document.createElement("style");
+    styleEl.id = "dynamic-fonts";
+    styleEl.innerHTML = fontFace;
+    document.head.appendChild(styleEl);
+    return () => {
+      const existingEl = document.getElementById("dynamic-fonts");
+      if (existingEl) document.head.removeChild(existingEl);
     };
   }, []);
 
-  const { H, M, S, AMPM } = useMemo(() => formatTime(time), [time, formatTime]);
 
-  // Create an array of all display characters (H, M, S, AMPM plus separators)
-  // Display structure: H: M: S AM/PM
-  const displayCharacters = [
-    ...H.split(''), 
-    'sep1', // Separator 1 (colon)
-    ...M.split(''), 
-    'sep2', // Separator 2 (colon)
-    ...S.split(''), 
-    'sep3', // Separator 3 (space)
-    ...AMPM.split('')
-  ];
-
-  // --- Custom Distortion Settings ---
-  // These objects define the unique distortion for each logical element (H, M, S, AMPM)
-  // They are applied to the parent box of each character/separator.
-  const distortionSettings = {
-    // Hour digits (H)
-    H: { 
-      transform: 'rotate(-5deg) skewX(5deg) scale(1.1)', 
-      position: 'relative', top: '-1vh', 
-      color: '#ff4d4d' // Redish
-    },
-    // Separator 1 (:)
-    sep1: { 
-      transform: 'rotate(10deg) scaleY(1.3)', 
-      color: '#ffffff',
-      fontSize: '8vh' // Taller separator
-    }, 
-    // Minute digits (M)
-    M: { 
-      transform: 'rotate(15deg) skewY(-5deg) scale(0.9)', 
-      position: 'relative', top: '1vh', 
-      color: '#4dff4d' // Greenish
-    },
-    // Separator 2 (:)
-    sep2: { 
-      transform: 'rotate(-10deg) scale(1.1)', 
-      color: '#ffffff',
-      fontSize: '7vh' // Smaller separator
-    },
-    // Second digits (S)
-    S: { 
-      transform: 'rotate(-20deg) skewX(-10deg) scale(1.2)', 
-      position: 'relative', top: '-2vh', 
-      color: '#4d4dff' // Bluish
-    },
-    // Separator 3 (AM/PM space)
-    sep3: {
-      transform: 'scale(0.8)',
-      color: 'transparent',
-      width: '1vw'
-    },
-    // AM/PM indicator
-    AMPM: { 
-      transform: 'rotate(5deg) skewX(2deg) scale(1.05)', 
-      position: 'relative', top: '0.5vh', 
-      color: '#ffff4d', // Yellowish
-      fontSize: '4vh' // Smaller text
+  // --- **Core Change 1 & 2: Update Time & Colors Every Second** ---
+  useEffect(() => {
+    if (!isSynced) return;
+    
+    // Function to calculate time and generate colors
+    const updatePerSecond = () => {
+      // 1. Calculate the synchronized time
+      const nowTime = Date.now() + offset;
+      const newSeconds = Math.floor(nowTime / MS_PER_SECOND) + NTP_EPOCH_OFFSET;
+      
+      // 2. Update NTP seconds (for clock display)
+      setNtpSeconds(newSeconds);
+      
+      // 3. Generate new colors every second (randomly)
+      setDigitColors(generateDigitColors(String(newSeconds).length)); 
+      
+      // 4. Update local display time for marquee
+      setDisplayTime(new Date().toLocaleString([], { timeZoneName: 'short' }));
     }
+
+    // Run once immediately
+    updatePerSecond();
+    
+    // Set up the interval to run every 1000ms (1 second)
+    const tick = setInterval(updatePerSecond, MS_PER_SECOND); 
+    
+    return () => clearInterval(tick);
+  }, [isSynced, offset]); // Only re-runs if sync status or offset changes
+
+
+  // --- Marquee Animation (Keep as is / Independent) ---
+  useEffect(() => {
+    let frame;
+    const step = () => {
+      setMarqueePos(prev => {
+        const speed = 0.3; // vh per frame
+        // This is a simple linear animation, you might want to reset 'prev'
+        // based on the size of the marqueeRef content if you want it to loop properly
+        return prev + speed;
+      });
+      frame = requestAnimationFrame(step);
+    };
+    frame = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(frame);
+  }, []); // Only runs once on mount
+
+  // --- Styles and Rendering (Keep as is / Independent) ---
+  const isPortrait = window.innerHeight > window.innerWidth;
+
+  const wrapperStyle = useMemo(() => ({
+    width: "100vw",
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#111",
+    // **Background Image is independent of the timing logic**
+    backgroundImage: `
+      url(${backgroundImg}),
+      linear-gradient(to right, rgba(200,200,200,0.05) 0.1vh, transparent 0.1vh),
+      linear-gradient(to bottom, rgba(200,200,200,0.05) 0.1vh, transparent 0.1vh)
+    `,
+    backgroundSize: "25vh 15vh, 25vh 15vh, 25vh 15vh",
+    backgroundPosition: "center",
+    filter: "invert(1) saturate(7)",
+    overflow: "hidden",
+    position: "relative",
+  }), []);
+
+  const baseClockStyle = { fontFamily: "ClockFont, monospace", textAlign: "center" };
+
+  const clockStyle = useMemo(() => ({
+    ...baseClockStyle,
+    fontSize: isPortrait ? "13vh" : "15vh",
+    lineHeight: "0.75",
+    display: "flex",
+    flexDirection: isPortrait ? "column" : "row",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 2,
+  }), [isPortrait]);
+
+  const staticText = `{{time}} NTP, or Network Time Protocol, is a system that keeps computers’ clocks accurate by checking the time from trusted servers and adjusting them as needed. `;
+
+  const marqueeText = Array(10).fill(staticText).join(" ");
+
+  const marqueeStyle = {
+    position: "absolute",
+    whiteSpace: "nowrap",
+    fontSize: "49vh",
+    fontFamily: "MarqueeFont, serif, sans-serif",
+    color: "#110101FF",
+    textShadow: "#6EE612FF 1px 0",
+    zIndex: 1,
+    // opacity: 0.9,
+    pointerEvents: "none",
+    // Marquee position is updated by requestAnimationFrame, making it independent
+    ...(isPortrait ? {
+      top: "50%",
+      left: `${100 - marqueePos}vw`,
+      transform: "translate(-50%, -50%)",
+    } : {
+      left: "50%",
+      top: `${100 - marqueePos}vh`,
+      transform: "translate(-50%, 0) rotate(90deg)",
+    }),
   };
 
-  // Function to determine the style key for a character based on its index and value
-  const getStyleKey = useCallback((index, value) => {
-    if (value === 'sep1') return 'sep1';
-    if (value === 'sep2') return 'sep2';
-    if (value === 'sep3') return 'sep3';
+  // Although you're not rendering the hands, the angles are still calculated.
+  // We'll keep this as it doesn't hurt performance much.
+  const { secAngle, minAngle, hourAngle } = useMemo(() => calculateClockAngles(ntpSeconds), [ntpSeconds]);
 
-    // The logic below identifies which part of the time (H, M, S, AMPM) the character belongs to.
-    const hLen = H.length;
-    const mLen = M.length;
-    const sLen = S.length;
-    
-    if (index < hLen) return 'H'; // Hours
-    if (index === hLen) return 'sep1'; 
-    if (index > hLen && index <= hLen + mLen + 1) return 'M'; // Minutes
-    if (index === hLen + mLen + 2) return 'sep2';
-    if (index > hLen + mLen + 2 && index <= hLen + mLen + sLen + 3) return 'S'; // Seconds
-    if (index === hLen + mLen + sLen + 4) return 'sep3';
-    
-    return 'AMPM'; // AM/PM
-  }, [H, M, S]);
-  
-  // --- Inline Styles for Scoping and Layout ---
-
-  // 1. Overall Container (View Height/Width, Background)
-  const containerStyle = useMemo(() => ({
-    minHeight: '100vh', 
-    minWidth: '100vw', 
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    // Background Image
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    // Scoping for distortion visibility (no overflow)
-    overflow: 'hidden', 
-    fontFamily: 'sans-serif' // Fallback
-  }), []);
-
-  // 2. Clock Display Area
-  const clockContainerStyle = useMemo(() => ({
-    display: 'flex',
-    alignItems: 'center',
-    padding: '2vh',
-    backdropFilter: 'blur(5px) brightness(0.7)', // Visual Scoping/Leakage Avoidance
-    borderRadius: '2vh',
-    border: '0.5vh solid rgba(255, 255, 255, 0.3)',
-    boxShadow: '0 0 5vh rgba(0, 0, 0, 0.8)',
-  }), []);
-
-  // 3. Style for each Character Box (to be distorted)
-  const characterBoxBaseStyle = useMemo(() => ({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '10vw', // Use viewport width for responsive boxes
-    height: '15vh', // Use viewport height
-    margin: '0 0.5vw',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Distinct box for each
-    borderRadius: '1vh',
-    transition: 'transform 0.5s ease-out', // Smooth transition for visual effect
-  }), []);
-
-  // 4. Style for the Character itself
-  const characterBaseStyle = useMemo(() => ({
-    fontFamily: 'DigitalDistortion, monospace',
-    fontSize: '12vh',
-    fontWeight: 'bold',
-    textShadow: '0 0 1vh rgba(255, 255, 255, 0.5)',
-    color: '#ffffff',
-  }), []);
-
-  // --- Render ---
   return (
-    <div style={containerStyle}>
-      <div style={clockContainerStyle}>
-        {displayCharacters.map((charOrSep, index) => {
-          const styleKey = getStyleKey(index, charOrSep);
-          const customDistortion = distortionSettings[styleKey];
-          
-          // Determine the actual character to display
-          let charToDisplay;
-          if (charOrSep === 'sep1' || charOrSep === 'sep2') {
-            charToDisplay = ':';
-          } else if (charOrSep === 'sep3') {
-            charToDisplay = ' ';
-          } else {
-            charToDisplay = charOrSep;
-          }
-          
-          // Combine base style with custom distortion style for the box
-          const finalBoxStyle = {
-            ...characterBoxBaseStyle,
-            ...customDistortion,
-            // Ensure no style leakage by having distinct box styles
-            backgroundColor: customDistortion.backgroundColor || characterBoxBaseStyle.backgroundColor 
-          };
+    <div style={wrapperStyle}>
+      {/* Clock Display */}
+      <div style={clockStyle}>
+        {isSynced ? (
+          String(ntpSeconds).split("").map((digit, i) => (
+            <span
+              key={i}
+              style={{
+                color: digitColors[i]?.color || "#00ffff",
+                textShadow: `1.0vh 0 0 ${digitColors[i]?.shadowColor || "#00ffff"}, -1.0vh 0 0 ${digitColors[i]?.shadowColor || "#00ffff"}, 1.1vh 0 0 ${digitColors[i]?.shadowColor || "#00ffff"}, -1.1vh 0 0 ${digitColors[i]?.shadowColor || "#00ffff"}, 1px 0 black, 0 -1px 0 black, 1px 0 0 black, -1px 0 0 black`,
+              }}
+            >
+              {digit}
+            </span>
+          ))
+        ) : (
+          <span style={{ fontSize: "6vh", opacity: 0.0 }}>Syncing...</span>
+        )}
+      </div>
 
-          // Combine base style with custom color/size for the character text
-          const finalCharStyle = {
-            ...characterBaseStyle,
-            color: customDistortion.color || characterBaseStyle.color,
-            fontSize: customDistortion.fontSize || characterBaseStyle.fontSize,
-          };
-
-          return (
-            // Each character/separator is in its own box
-            <div key={index} style={finalBoxStyle}>
-              <span style={finalCharStyle}>
-                {charToDisplay}
-              </span>
-            </div>
-          );
-        })}
+      {/* Marquee */}
+      <div ref={marqueeRef} style={marqueeStyle}>
+        {marqueeText.replace(/\{\{time\}\}/g, displayTime)}
       </div>
     </div>
   );
-};
-
-export default CurvyClock;
+}
