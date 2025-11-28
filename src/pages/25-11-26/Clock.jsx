@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import videoFile from "./esp.mp4";
 import videoWebM from "./esp.mp4";
 import fallbackImg from "./birds.webp";
-
-// Import your font from the same folder
 import fontUrl_20251128 from "./bird.ttf"; // <-- today's date in variable name
 
+// --- Digital Time Component ---
 function DigitalTime() {
   const [timeText, setTimeText] = useState("");
   const [letters, setLetters] = useState([]);
 
-  const ANIMATION_DURATION = 10000;
-  const STAGGER_DELAY = 150;
+  const ANIMATION_DURATION = 10000; // 10 seconds
+  const STAGGER_DELAY = 800;
 
   const updateTime = () => {
     const now = new Date();
@@ -23,9 +22,7 @@ function DigitalTime() {
     let hour12 = hours24 % 12;
     if (hour12 === 0) hour12 = 12;
 
-    // Format time without AM/PM
     const formattedTime = `${String(hour12).padStart(2, "0")}${String(minutes).padStart(2, "0")}${String(seconds).padStart(2, "0")}`;
-
     setTimeText(formattedTime);
   };
 
@@ -43,40 +40,42 @@ function DigitalTime() {
     const TOTAL_FLY_IN_TIME = charCount * STAGGER_DELAY;
     const SIT_DURATION = ANIMATION_DURATION - TOTAL_FLY_IN_TIME - charCount * STAGGER_DELAY;
 
-    const lettersArr = chars.map((char) => ({
-      char,
-      style: {
-        display: "inline-block",
-        opacity: 0,
-        transform: "translate(120vw, -25vh)",
-        transition: "transform 0.8s ease-out, opacity 0.8s ease-out",
-      },
-    }));
+    const lettersArr = chars.map((char) => {
+      const enterFromRight = Math.random() > 0.5;
+      return {
+        char,
+        enterFromRight,
+        style: {
+          display: "inline-block",
+          opacity: 0,
+          transform: `translate(${enterFromRight ? "120vw" : "-120vw"}, -25vh)`,
+          transition: "transform 0.8s ease-out, opacity 0.8s ease-out",
+        },
+      };
+    });
     setLetters(lettersArr);
 
+    // Fly in
     lettersArr.forEach((_, i) => {
       setTimeout(() => {
         setLetters((prev) => {
           const newArr = [...prev];
-          newArr[i].style = {
-            ...newArr[i].style,
-            opacity: 1,
-            transform: "translate(0, 0)",
-          };
+          newArr[i].style = { ...newArr[i].style, opacity: 1, transform: "translate(0, 0)" };
           return newArr;
         });
       }, i * STAGGER_DELAY);
     });
 
+    // Fly out
     const flyOutDelay = TOTAL_FLY_IN_TIME + SIT_DURATION;
-    lettersArr.forEach((_, i) => {
+    lettersArr.forEach((letter, i) => {
       setTimeout(() => {
         setLetters((prev) => {
           const newArr = [...prev];
           newArr[i].style = {
             ...newArr[i].style,
             opacity: 0,
-            transform: "translate(-120vw, -25vh)",
+            transform: `translate(${letter.enterFromRight ? "-120vw" : "120vw"}, -25vh)`,
           };
           return newArr;
         });
@@ -94,7 +93,7 @@ function DigitalTime() {
     fontSize: "10vh",
     textAlign: "center",
     letterSpacing: "0.05em",
-    textShadow: "1px 0 0 white", // 1px left-side black shadow
+    textShadow: "1px 0 0 white",
     width: "100%",
     whiteSpace: "nowrap",
     overflow: "visible",
@@ -124,13 +123,15 @@ function DigitalTime() {
   );
 }
 
+// --- Background Video Component ---
 export default function BackgroundVideo() {
   const [videoFailed, setVideoFailed] = useState(false);
-  const videoRef = React.useRef(null);
+  const videoRef = useRef(null);
 
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
+
     const onError = () => setVideoFailed(true);
     const onCanPlay = () => setVideoFailed(false);
 
