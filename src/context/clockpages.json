@@ -236,5 +236,6 @@
   { "path": "25-11-21", "date": "25-11-21", "title": "Ommission" },
   { "path": "25-11-22", "date": "25-11-22", "title": "Sputnik" },
   { "path": "25-11-23", "date": "25-11-23", "title": "Hands" },
-  { "path": "25-11-24", "date": "25-11-24", "title": "Coil" }
+  { "path": "25-11-24", "date": "25-11-24", "title": "Coil" },
+  { "path": "25-11-25", "date": "25-11-25", "title": "Network Protocol" }
   ]
