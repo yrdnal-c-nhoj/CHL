@@ -149,7 +149,7 @@ export default function Clock() {
     width: '9.3vh',
     height: '24vh',
     zIndex: 9,
-    opacity: 0.5,
+    opacity: 0.7,
     backgroundImage: `url(${secondHandImg})`,
     backgroundSize: '100% 100%', 
     backgroundPosition: 'center',
