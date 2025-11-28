@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import videoFile from "./esp.mp4";
 import videoWebM from "./esp.mp4";
-import fallbackImg from "./words.jpg";
+import fallbackImg from "./birds.webp";
 
 // Import your font from the same folder
 import fontUrl_20251128 from "./bird.ttf"; // <-- today's date in variable name
