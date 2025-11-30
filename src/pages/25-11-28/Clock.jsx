@@ -17,6 +17,7 @@ const fontStyles = `
 export default function TimelineClock() {
   const [now, setNow] = useState(new Date());
   const [isVertical, setIsVertical] = useState(false);
+  const [flash, setFlash] = useState(false); // flash state
 
   // live clock
   useEffect(() => {
@@ -32,6 +33,15 @@ export default function TimelineClock() {
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // flash every 3 seconds
+  useEffect(() => {
+    const flashInterval = setInterval(() => {
+      setFlash(true);
+      setTimeout(() => setFlash(false), 300); // flash duration
+    }, 3000);
+    return () => clearInterval(flashInterval);
   }, []);
 
   const seconds =
@@ -111,9 +121,14 @@ export default function TimelineClock() {
     nowDot: {
       width: isVertical ? "99vw" : "0.3vh",
       height: isVertical ? "0.3vh" : "99vh",
-      background: "linear-gradient(180deg,#ff6b6b,#d93535)",
+      background: flash
+        ? "linear-gradient(180deg,#ffb3b3,#0F0404FF)" // brighter flash
+        : "linear-gradient(180deg,#ff6b6b,#0F0404FF)",
       border: "0.3vh solid rgba(255,255,255,0.9)",
-      boxShadow: "0 0.4vh 1.4vh rgba(255,80,80,0.3)",
+      boxShadow: flash
+        ? "0 0.6vh 2vh rgba(255,120,120,0.6)" // more intense shadow during flash
+        : "0 0.4vh 1.4vh rgba(255,80,80,0.3)",
+      transition: "all 0.3s ease",
     },
   };
 
@@ -130,7 +145,6 @@ export default function TimelineClock() {
 
         {ticks.map((t) => (
           <div key={t.hour} style={s.tick(t.pos)}>
-            {/* <div style={s.tickLine} /> */}
             <div style={s.tickLabel}>{String(t.hour).padStart(2, "0")}</div>
           </div>
         ))}
