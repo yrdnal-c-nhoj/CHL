@@ -57,7 +57,7 @@ export default function TimelineClock() {
   //
   const s = {
     page: {
-      height: "100vh",
+      height: "100dvh",
       width: "100vw",
       position: "relative",
       fontFamily: "'LineFont', system-ui, sans-serif",
