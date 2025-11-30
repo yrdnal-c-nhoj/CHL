@@ -1,25 +1,112 @@
+// AnalogClock.jsx
+import React, { useEffect, useState } from "react";
+import bgImg from "./apple.webp";        // Main background
+import tileImg from "./ap.webp";         // Tiled background
+import overlayImg from "./app.webp";     // Full-cover overlay
+import customFontFile from "./apple.ttf";
 
-> daily-clock-app@0.0.0 build
-> vite build
+export default function AnalogClock() {
+  const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
 
-vite v7.1.6 building for production...
-transforming...
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-✓ 1560 modules transformed.
-✗ Build failed in 920ms
-error during build:
-Could not resolve "./oct.ttf" from "src/pages/25-11-16/Clock.jsx"
-file: /Users/john/Desktop/CHL/src/pages/25-11-16/Clock.jsx
-    at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
-    at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
-    at ModuleLoader.handleInvalidResolvedId (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21490:24)
-    at file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21450:26
+  // Load custom font
+  useEffect(() => {
+    const font = new FontFace("CustomClockFont", `url(${customFontFile})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      setFontLoaded(true);
+    });
+  }, []);
+
+  // Update time every second
+  useEffect(() => {
+    const interval = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const containerStyle = {
+    fontFamily: fontLoaded ? "CustomClockFont" : "sans-serif",
+    width: "100vw",
+    height: "100dvh",
+    position: "relative",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+  };
+
+  const tiledBgStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundImage: `url(${tileImg})`,
+    backgroundRepeat: "repeat",
+    backgroundSize: "10vh 10vh",
+    opacity: 0.6,
+    filter: "brightness(1.1) contrast(1.2) saturate(2.5)",
+    zIndex: 2,
+  };
+
+  const overlayBgStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundImage: `url(${overlayImg})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    opacity: 0.6,
+    filter: "brightness(1.5) contrast(1.8) saturate(2.0)",
+    zIndex: 3,
+  };
+
+  const mainBgStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundImage: `url(${bgImg})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    opacity: 0.9,
+    filter: "brightness(1.2) contrast(0.9) saturate(1.9) hue-rotate(-10deg)",
+    zIndex: 4,
+  };
+
+  const clockStyle = {
+    position: "relative",
+    width: "40vh",
+    height: "40vh",
+    borderRadius: "50%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#E1F3DDFF",
+    fontSize: "4rem",
+    textAlign: "center",
+    textShadow: "0.2vh 0.2vh rgba(0,0,0,0.7)",   // no px
+    opacity: fontLoaded ? 1 : 0,
+    transition: "opacity 200ms linear",
+    pointerEvents: fontLoaded ? "auto" : "none",
+    zIndex: 5,
+  };
+
+  const formatTime = (date) => {
+    const h = String(date.getHours()).padStart(2, "0");
+    const m = String(date.getMinutes()).padStart(2, "0");
+    return `${h}${m}`;
+  };
+
+  return (
+    <div style={containerStyle}>
+      <div style={tiledBgStyle}></div>
+      <div style={overlayBgStyle}></div>
+      <div style={mainBgStyle}></div>
+      <div style={clockStyle}>{formatTime(time)}</div>
+    </div>
+  );
+}

@@ -1,206 +1,131 @@
-// DonutClock.jsx
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import backgroundImg from "./fr.jpg";
+import fontUrl_20251128 from "./rococo.ttf";
 
-export default function DonutClock() {
-  const [time, setTime] = useState(new Date());
+export default function RococoDigitalClock() {
+  const [now, setNow] = useState(new Date());
+  const [morph, setMorph] = useState(0);        // global 5-second pulse
+  const [ampmMorph, setAmpmMorph] = useState(0); // separate life for AM/PM
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
+    const timeInterval = setInterval(() => setNow(new Date()), 1000);
+
+    const morphInterval = setInterval(() => {
+      setMorph(m => m + 1);
+      setAmpmMorph(a => a + 1.337); // slightly different rhythm = more chaos
+    }, 5000);
+
+    return () => {
+      clearInterval(timeInterval);
+      clearInterval(morphInterval);
+    };
   }, []);
 
-  const seconds = time.getSeconds();
-  const minutes = time.getMinutes();
-  const hours = time.getHours() % 12; // 12-hour format for hand movement
+  let hours = now.getHours();
+  const isPM = hours >= 12;
+  hours = hours % 12 || 12;
+  const minutes = now.getMinutes().toString().padStart(2, "0");
+  const timeStr = `${hours}:${minutes}`;
 
-  // Angles (clockwise from 12 o'clock)
-  const secondAngle = (seconds / 60) * 360;
-  const minuteAngle = ((minutes + seconds / 60) / 60) * 360;
-  const hourAngle = ((hours + minutes / 60) / 12) * 360;
+  const rand = (seed) => {
+    let x = Math.sin(seed) * 12345;
+    return x - Math.floor(x);
+  };
 
-  // 24-hour progress (full circle = 24h)
-  const totalSecondsInDay = 24 * 60 * 60;
-  const secondsSoFar =
-    time.getHours() * 3600 + time.getMinutes() * 60 + time.getSeconds();
-  const dayProgress = (secondsSoFar / totalSecondsInDay) * 360;
+  // Digits distortion
+  const distortLetter = (char, i) => {
+    const s = (morph + i + char.charCodeAt(0)) * 13.37;
+    return {
+      transform: `
+        rotate(${-50 + rand(s) * 100}deg)
+        skewX(${-65 + rand(s + 1) * 130}deg)
+        skewY(${-50 + rand(s + 2) * 100}deg)
+        scale(${0.5 + rand(s + 3) * 1.3}, ${0.7 + rand(s + 4) * 0.9})
+        translateY(${-4 + rand(s + 5) * 8}vh)
+      `,
+      transition: "transform 4.2s cubic-bezier(0.22, 0.88, 0.34, 0.98)",
+    };
+  };
+
+  // Independent AM/PM distortion — lives its own pee-soaked rococo dream
+  const distortAmpm = () => {
+    const s = ampmMorph * 17.77;
+    const r1 = rand(s);
+    const r2 = rand(s + 1);
+    const r3 = rand(s + 2);
+    const r4 = rand(s + 3);
+    return {
+      transform: `
+        rotate(${-40 + r1 * 80}deg)
+        skewX(${-50 + r2 * 100}deg)
+        scale(${0.8 + r3 * 1.1}, ${0.9 + r4 * 0.9})
+        translate(${ -8 + r1 * 16 }vh, ${ -6 + r2 * 12 }vh)
+      `,
+      transition: "transform 4.6s cubic-bezier(0.15, 0.92, 0.32, 0.99)",
+    };
+  };
 
   return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        backgroundColor: "#0f172a",
+    <div style={{
+      width: "100vw", height: "100vh",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      backgroundImage: `url(${backgroundImg})`,
+      backgroundSize: "cover", backgroundPosition: "center",
+      fontFamily: "'RococoBlob', serif",
+      overflow: "hidden",
+    }}>
+      <style>{`
+        @font-face {
+          font-family: 'RococoBlob';
+          src: url(${fontUrl_20251128}) format('truetype');
+          font-weight: 800;
+          font-display: swap;
+        }
+      `}</style>
+
+      <div style={{
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
-        margin: 0,
-        padding: 0,
-        overflow: "hidden",
-        fontFamily: "system-ui, sans-serif",
-      }}
-    >
-      <div
-        style={{
-          position: "relative",
-          width: "80vmin",
-          height: "80vmin",
-          borderRadius: "50%",
-          backgroundColor: "#1e293b",
-          boxShadow: "0 0 30px rgba(0,0,0,0.8)",
-        }}
-      >
-        {/* 24-hour Donut Progress Ring */}
-        <svg
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            transform: "rotate(-90deg)",
-          }}
-          viewBox="0 0 100 100"
-        >
-          {/* Background ring */}
-          <circle
-            cx="50"
-            cy="50"
-            r="45"
-            fill="none"
-            stroke="#334155"
-            strokeWidth="10"
-          />
-          {/* Progress ring */}
-          <circle
-            cx="50"
-            cy="50"
-            r="45"
-            fill="none"
-            stroke="#8b5cf6"
-            strokeWidth="10"
-            strokeDasharray={`${dayProgress} ${360 - dayProgress}`}
-            strokeLinecap="round"
-            style={{
-              transition: "stroke-dasharray 1s linear",
-            }}
-          />
-        </svg>
+        gap: "6vh",
+        padding: "8vh 10vh",
+        borderRadius: "10vh",
+        background: "linear-gradient(135deg, #f7c6d3 0%, #b7e4c7 100%)",
+        transform: "translateX(-12vh) rotate(-4deg)",
+      }}>
+        {/* Time — breathing decadently */}
+        <div style={{ display: "flex", alignItems: "center", gap: "1vh" }}>
+          {timeStr.split("").map((char, i) => (
+            <span
+              key={i}
+              style={{
+                display: "inline-block",
+                fontSize: char === ":" ? "12vh" : "14.5vh",
+                fontWeight: 800,
+                lineHeight: "0.88",
+                color: "#111",
+                ...(char === ":" 
+                  ? { transform: "translateY(-3vh) rotate(-22deg) scale(1.4, 2.2)", transition: "transform 4.2s cubic-bezier(0.22, 0.88, 0.34, 0.98)" }
+                  : distortLetter(char, i)
+                ),
+              }}
+            >
+              {char}
+            </span>
+          ))}
+        </div>
 
-        {/* Clock Face */}
-        <div
-          style={{
-            position: "absolute",
-            inset: "8vmin",
-            borderRadius: "50%",
-            backgroundColor: "#020617",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {/* Hour Marks */}
-          {[...Array(12)].map((_, i) => {
-            const angle = (i * 30) * (Math.PI / 180);
-            const x = 50 + 38 * Math.cos(angle);
-            const y = 50 + 38 * Math.sin(angle);
-            return (
-              <div
-                key={i}
-                style={{
-                  position: "absolute",
-                  left: `${x}%`,
-                  top: `${y}%`,
-                  transform: "translate(-50%, -50%)",
-                  color: i === 0 ? "#ec4899" : "#94a3b8",
-                  fontSize: "4vmin",
-                  fontWeight: i === 0 ? "bold" : "normal",
-                }}
-              >
-                {i === 0 ? 12 : i}
-              </div>
-            );
-          })}
-
-          {/* Center Dot */}
-          <div
-            style={{
-              position: "absolute",
-              width: "4vmin",
-              height: "4vmin",
-              backgroundColor: "#ec4899",
-              borderRadius: "50%",
-              zIndex: 10,
-            }}
-          />
-
-          {/* Hour Hand */}
-          <div
-            style={{
-              position: "absolute",
-              width: "2vmin",
-              height: "20vmin",
-              backgroundColor: "#e2e8f0",
-              borderRadius: "1vmin",
-              transformOrigin: "bottom center",
-              transform: `translateX(-50%) rotate(${hourAngle}deg)`,
-              left: "50%",
-              bottom: "50%",
-              transition: "transform 1s cubic-bezier(0.4, 0, 0.2, 1)",
-              zIndex: 3,
-            }}
-          />
-
-          {/* Minute Hand */}
-          <div
-            style={{
-              position: "absolute",
-              width: "1.5vmin",
-              height: "30vmin",
-              backgroundColor: "#94a3b8",
-              borderRadius: "1vmin",
-              transformOrigin: "bottom center",
-              transform: `translateX(-50%) rotate(${minuteAngle}deg)`,
-              left: "50%",
-              bottom: "50%",
-              transition: "transform 1s cubic-bezier(0.4, 0, 0.2, 1)",
-              zIndex: 4,
-            }}
-          />
-
-          {/* Second Hand */}
-          <div
-            style={{
-              position: "absolute",
-              width: "0.5vmin",
-              height: "35vmin",
-              backgroundColor: "#ec4899",
-              transformOrigin: "bottom center",
-              transform: `translateX(-50%) rotate(${secondAngle}deg)`,
-              left: "50%",
-              bottom: "50%",
-              transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-              zIndex: 5,
-            }}
-          />
-
-          {/* Digital Time (optional) */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: "10vmin",
-              color: "#e2e8f0",
-              fontSize: "4vmin",
-              letterSpacing: "0.2ch",
-              fontWeight: "300",
-            }}
-          >
-            {time.toLocaleTimeString("en-US", {
-              hour12: false,
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-            })}
-          </div>
+        {/* The sacred, independently drunken AM/PM */}
+        <div style={{
+          fontSize: "5.5vh",
+          fontWeight: 900,
+          background: "rgba(255,255,255,0.28)",
+          padding: "2.5vh 5vh",
+          borderRadius: "6vh",
+          letterSpacing: "0.6vh",
+          boxShadow: "inset 0 1vh 2vh rgba(255,255,255,0.4), 0 2vh 4vh rgba(0,0,0,0.2)",
+          ...distortAmpm(),
+        }}>
+          {isPM ? "PM" : "AM"}
         </div>
       </div>
     </div>
