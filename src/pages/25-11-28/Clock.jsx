@@ -1,6 +1,7 @@
 // TimelineClock.jsx
 import React, { useEffect, useState } from "react";
-import lineFont from './line.otf';
+import lineFont from "./line.otf";
+import patternImg from "./line.webp"; // your tiled background image
 
 // Add font-face styles
 const fontStyles = `
@@ -37,12 +38,9 @@ export default function TimelineClock() {
     now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
   const percent = (seconds / 86400) * 100;
 
-  // Background pattern
-  const backgroundStyle = {
-    backgroundColor: "#eaecea",
-    backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='12' viewBox='0 0 20 12'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='charlie-brown' fill='%23818b83' fill-opacity='0.75'%3E%3Cpath d='M9.8 12L0 2.2V.8l10 10 10-10v1.4L10.2 12h-.4zm-4 0L0 6.2V4.8L7.2 12H5.8zm8.4 0L20 6.2V4.8L12.8 12h1.4zM9.8 0l.2.2.2-.2h-.4zm-4 0L10 4.2 14.2 0h-1.4L10 2.8 7.2 0H5.8z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
-    backgroundAttachment: 'fixed'
-  };
+  // Tile size control
+  const tileWidth = "12vh"; // horizontal tile size
+  const tileHeight = "12vh"; // vertical tile size
 
   //
   // STYLES
@@ -68,11 +66,12 @@ export default function TimelineClock() {
 
     bar: {
       position: "absolute",
-      background: backgroundStyle.backgroundColor,
-      backgroundImage: backgroundStyle.backgroundImage,
-      backgroundAttachment: backgroundStyle.backgroundAttachment,
       width: "100vw",
       height: "100vh",
+      backgroundImage: `url(${patternImg})`,
+      backgroundRepeat: "repeat",
+      backgroundPosition: "center center",
+      backgroundSize: `${tileWidth} ${tileHeight}`,
     },
 
     tick: (pos) => ({
@@ -81,7 +80,7 @@ export default function TimelineClock() {
       left: `${pos}%`,
       top: `${pos}%`,
       transform: "translate(-50%, -50%)",
-      textAlign: "center"
+      textAlign: "center",
     }),
 
     tickLine: {
@@ -94,7 +93,7 @@ export default function TimelineClock() {
       userSelect: "none",
       fontFamily: "'LineFont', system-ui, sans-serif",
       lineHeight: 1,
-      textAlign: "center"
+      textAlign: "center",
     },
 
     nowIndicator: {
