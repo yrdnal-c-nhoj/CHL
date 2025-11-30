@@ -144,7 +144,7 @@ export default function NtpClock() {
     let frame;
     const step = () => {
       setMarqueePos(prev => {
-        const speed = 0.3; // vh per frame
+        const speed = 0.7; // vh per frame
         // This is a simple linear animation, you might want to reset 'prev'
         // based on the size of the marqueeRef content if you want it to loop properly
         return prev + speed;
