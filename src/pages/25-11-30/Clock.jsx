@@ -81,33 +81,19 @@ export default function DigitalClock() {
     justifyContent: "center",
     fontFamily: `'${fontFamily}', monospace`,
     fontSize: isPhone ? "18vw" : "12vw",
-    color: "#00ffcc",
-    background: "rgba(0,0,0,0.4)",
+    color: "#071A16FF",
+    // background: "rgba(0,0,0,0.4)",
     borderRadius: "8px",
     textShadow: `
-      0 0 10px #00ffcc,
-      0 0 20px #00ffcc,
-      0 0 0 40px #00ffcc,
-      -1px -1px 0 #000,
-      1px -1px 0 #000,
-      -1px 1px 0 #000,
-      1px 1px 0 #000
+  
+      -1px -1px 0 #F98016FF,
+      1px -1px 0 #F98016FF,
+      -1px 1px 0 #F98016FF,
+      1px 1px 0   #F9800FFF
     `,
     userSelect: "none",
   };
 
-  const colonBox = {
-    width: isPhone ? "4vw" : "2vw",
-    height: isPhone ? "24vw" : "16vw",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: isPhone ? "18vw" : "12vw",
-    color: "#00ffcc",
-    fontWeight: "bold",
-    textShadow: "0 0 20px #00ffcc",
-    animation: "blink 2s infinite",
-  };
 
   const container = {
     width: "100vw",
@@ -165,9 +151,7 @@ export default function DigitalClock() {
         ) : (
           <div style={row}>
             {renderPair(HH)}
-            <div style={colonBox}>:</div>
             {renderPair(MM)}
-            <div style={colonBox}>:</div>
             {renderPair(SS)}
           </div>
         )}
