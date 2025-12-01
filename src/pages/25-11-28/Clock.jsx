@@ -63,8 +63,8 @@ export default function TimelineClock() {
       width: "100vw",
       position: "relative",
       fontFamily: "'LineFont', system-ui, sans-serif",
-      background:
-        "linear-gradient(180deg, rgba(5,5,10,0.03), rgba(255,255,255,0.02))",
+      // background:
+      //   "linear-gradient(180deg, rgba(5,5,10,0.03), rgba(255,255,255,0.02))",
       overflow: "auto", // **MODIFIED:** Allow scrolling to prevent clipping
     },
 
@@ -100,7 +100,7 @@ export default function TimelineClock() {
     },
 
     tickLabel: {
-      fontSize: "5vh",
+      fontSize: "5.5vh",
       color: "#333",
       userSelect: "none",
       fontFamily: "'LineFont', system-ui, sans-serif",
