@@ -4,7 +4,7 @@ import lineFont from './french.ttf';
 import hourHandImg from './fre.webp';
 import minuteHandImg from './fren.webp';
 import secondHandImg from './fren.png';
-import backgroundImg from './fr.jpg'; // your background image
+import backgroundImg from './fr.jpg';
 
 // --- Font Setup ---
 const injectFont = (id, fontFace) => {
@@ -36,65 +36,6 @@ const fontFaceLine = `
   }
 `;
 
-// --- Styles ---
-const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100vw',
-    height: '100vh',
-    maxHeight: '100dvh',
-    position: 'relative',
-    overflow: 'hidden',
-    backgroundImage: `url(${backgroundImg})`,
-    backgroundPosition: 'center center',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundColor: '#000000',
-    transform: 'rotate(-2.5deg)',           // 2.5° counterclockwise
-    transformOrigin: 'center center',
-  },
-  topDigits: {
-    position: 'absolute',
-    top:  '58%',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    fontSize: '7.5vh',
-    fontFamily: 'LineFont, sans-serif',
-    zIndex: 20,
-    display: 'flex',
-    gap: '1vh',
-    color: '#694006FF',
-    textShadow: '0 0 0.5vh rgba(255,255,255,1), -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white',
-  },
-  dial: {
-    position: 'relative',
-    width: '90vmin',
-    height: '90vmin',
-    borderRadius: '50%',
-    backgroundColor: 'rgba(255,255,245,0.8)',
-    border: '0.6vh solid #880000',           // FIXED
-    boxShadow: '0 0 3vh rgba(0,0,0,0.7)',
-    fontFamily: 'RevolutionaryClockFont, sans-serif',
-    zIndex: 10,
-  },
-  handBase: {
-    position: 'absolute',
-    left: '50%',
-    bottom: '50%',
-    transformOrigin: 'bottom center',
-    borderRadius: '0.2vh',
-    filter: 'drop-shadow(1px 0 0 rgba(0,0,0,0.9))',
-  },
-};
-
-const handConfig = [
-  { img: hourHandImg,    size: ['12.8vh', '31vh'], zIndex: 5, getDeg: (h, m) => (h / 10) * 360 + (m / 10) },
-  { img: minuteHandImg,  size: ['15.5vh', '40vh'], zIndex: 7, getDeg: (h, m, s) => (m / 100) * 360 + s / 100 },
-  { img: secondHandImg,  size: ['14.3vh', '43vh'], zIndex: 9, opacity: 0.7, getDeg: (h, m, s) => (s / 100) * 360 },
-];
-
 export default function Clock() {
   const [time, setTime] = useState(new Date());
   const requestRef = useRef();
@@ -115,7 +56,11 @@ export default function Clock() {
 
   // Decimal time calculation
   const totalStandardSeconds =
-    time.getHours() * 3600 + time.getMinutes() * 60 + time.getSeconds() + time.getMilliseconds() / 1000;
+    time.getHours() * 3600 +
+    time.getMinutes() * 60 +
+    time.getSeconds() +
+    time.getMilliseconds() / 1000;
+
   const totalDecimalSeconds = (totalStandardSeconds / 86400) * 100000;
   const decimalHours = Math.floor(totalDecimalSeconds / 10000);
   const decimalMinutes = Math.floor((totalDecimalSeconds % 10000) / 100);
@@ -123,36 +68,131 @@ export default function Clock() {
 
   const decimalHoursArray = Array.from({ length: 10 }, (_, i) => i + 1);
 
+  // --- Responsive Styles ---
+  const dialSize = "min(90vw, 90vh)"; // makes dial max size without clipping
+
+  const styles = {
+    container: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
+      height: "100vh",
+      overflow: "hidden",
+      backgroundImage: `url(${backgroundImg})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundColor: "#000",
+    },
+    innerContainer: {
+      transform: "rotate(-2.5deg)",
+      transformOrigin: "center center",
+      width: "100%",
+      height: "100%",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+
+    topDigits: {
+      position: "absolute",
+      top: "60%",
+      left: "50%",
+      transform: "translateX(-50%)",
+      display: "flex",
+      gap: "1vh",
+      fontFamily: "LineFont, sans-serif",
+      fontSize: "clamp(2rem, 6vh, 7rem)", // scales smoothly
+      zIndex: 20,
+      color: "#694006FF",
+      textShadow:
+        "0 0 1vh rgba(255,255,255,1), 0 0 1px white, 0 0 2px white",
+    },
+
+    dial: {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: dialSize,
+      height: dialSize,
+      borderRadius: "50%",
+      backgroundColor: "rgba(255,255,245,0.85)",
+      border: "0.6vh solid #880000",
+      boxShadow: "0 0 3vh rgba(0,0,0,0.7)",
+      fontFamily: "RevolutionaryClockFont, sans-serif",
+      zIndex: 10,
+    },
+
+    handBase: {
+      position: "absolute",
+      left: "50%",
+      bottom: "50%",
+      transformOrigin: "bottom center",
+      filter: "drop-shadow(0.3vh 0 0 rgba(0,0,0,0.8))",
+    },
+
+    hourNumber: {
+      position: "absolute",
+      top: "2%",
+      left: "50%",
+      transform: "translateX(-50%)",
+      fontSize: "clamp(1rem, 8vh, 8rem)", // responsive hour numbers
+      color: "#000080",
+    },
+  };
+
+  const handConfig = [
+    {
+      img: hourHandImg,
+      size: ["12vh", "28vh"],
+      zIndex: 5,
+      getDeg: (h, m) => (h / 10) * 360 + m / 10,
+    },
+    {
+      img: minuteHandImg,
+      size: ["14vh", "36vh"],
+      zIndex: 7,
+      getDeg: (h, m, s) => (m / 100) * 360 + s / 100,
+    },
+    {
+      img: secondHandImg,
+      size: ["13vh", "39vh"],
+      zIndex: 9,
+      opacity: 0.7,
+      getDeg: (h, m, s) => (s / 100) * 360,
+    },
+  ];
+
   return (
     <div style={styles.container}>
-      {/* 1793 */}
-      <div style={styles.topDigits}>
-        {['1', '7', '9', '3'].map((d, i) => (
-          <span key={i}>{d}</span>
-        ))}
-      </div>
+      <div style={styles.innerContainer}>
+        {/* 1793 */}
+        <div style={styles.topDigits}>
+          {["1"," ", "7"," ", "9"," ", "3"].map((d, i) => (
+            <span key={i}>{d}</span>
+          ))}
+        </div>
 
-      {/* Clock face */}
+      {/* Clock Dial */}
       <div style={styles.dial}>
         {/* Hour markers 1–10 */}
-        {decimalHoursArray.map(hour => (
+        {decimalHoursArray.map((hour) => (
           <div
             key={hour}
             style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
+              position: "absolute",
+              width: "100%",
+              height: "100%",
               transform: `rotate(${(hour / 10) * 360}deg)`,
             }}
           >
             <div
               style={{
-                position: 'absolute',
-                top: '0vh',
-                left: '50%',
-                transform: `translateX(-50%) rotate(-${(hour / 10) * 360}deg)`,
-                fontSize: '10vh',
-                color: '#000080',
+                ...styles.hourNumber,
+                transform: `translateX(-50%) rotate(-${
+                  (hour / 10) * 360
+                }deg)`,
               }}
             >
               {hour}
@@ -171,14 +211,17 @@ export default function Clock() {
               zIndex,
               opacity,
               backgroundImage: `url(${img})`,
-              backgroundSize: '100% 100%',
-              backgroundRepeat: 'no-repeat',
-              transform: `translateX(-50%) rotate(${getDeg(decimalHours, decimalMinutes, decimalSeconds)}deg)`,
+              backgroundSize: "100% 100%",
+              backgroundRepeat: "no-repeat",
+              transform: `translateX(-50%) rotate(${getDeg(
+                decimalHours,
+                decimalMinutes,
+                decimalSeconds
+              )}deg)`,
             }}
           />
         ))}
-
-        <div style={styles.centerDot} />
+        </div>
       </div>
     </div>
   );
