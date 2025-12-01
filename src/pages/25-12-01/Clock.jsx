@@ -1,28 +1,22 @@
 // DigitalClock.jsx
 import React, { useState, useEffect } from "react";
-
-// --- Local imports (same folder) ---
 import bgImg from "./shark.webp";
-
-// Import font with today's date in variable name
 import clockFont_2025_12_01 from "./shark.ttf";
 
 export default function DigitalClock() {
   const [time, setTime] = useState(() => new Date());
 
-  // Update clock every second
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // Format hours, minutes, seconds with leading zeros
   const formatTime = (num) => num.toString().padStart(2, "0");
   const hours = formatTime(time.getHours());
   const minutes = formatTime(time.getMinutes());
   const seconds = formatTime(time.getSeconds());
 
-  // --- Inject font-face inline ---
+  // Inject font-face inline
   useEffect(() => {
     if (!document.getElementById("ClockFont_2025_12_01")) {
       const style = document.createElement("style");
@@ -40,7 +34,6 @@ export default function DigitalClock() {
     }
   }, []);
 
-  // --- Inline styles ---
   const containerStyle = {
     width: "100vw",
     height: "100vh",
@@ -53,17 +46,29 @@ export default function DigitalClock() {
     fontFamily: "ClockFont_2025_12_01, sans-serif",
   };
 
-  const timeStyle = {
-    fontSize: "12vh",
-    color: "#ffffff",
-    letterSpacing: "1rem",
-    textShadow: "0 0 1vh rgba(0,0,0,0.7)",
+  const digitStyle = {
+    display: "inline-flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "0.6em",           // fixed width = no jumping
+    fontSize: "10vh",
+    color: "#EE4747FF",
+      paddingTop: "45vh",        
+    letterSpacing: "normal",
+
+    textShadow: "0 0 1vh rgba(0,0,0,0.9)",
   };
+
+  const digits = `${hours}${minutes}${seconds}`;
 
   return (
     <div style={containerStyle}>
-      <div style={timeStyle}>
-        {hours}{minutes}{seconds}
+      <div style={{ display: "flex", gap: "0.4rem" }}>
+        {digits.split("").map((d, i) => (
+          <div key={i} style={digitStyle}>
+            {d}
+          </div>
+        ))}
       </div>
     </div>
   );
