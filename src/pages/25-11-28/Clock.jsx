@@ -1,9 +1,8 @@
 // TimelineClock.jsx
 import React, { useEffect, useState } from "react";
 import lineFont from "./line.otf";
-import patternImg from "./line.webp"; // your tiled background image
+import patternImg from "./line.webp";
 
-// Add font-face styles
 const fontStyles = `
   @font-face {
     font-family: 'LineFont';
@@ -12,161 +11,147 @@ const fontStyles = `
     font-style: normal;
     font-display: swap;
   }
+  html, body, #root { height: 100dvh; margin: 0; overflow: hidden; }
 `;
 
 export default function TimelineClock() {
   const [now, setNow] = useState(new Date());
   const [isVertical, setIsVertical] = useState(false);
-  const [flash, setFlash] = useState(false); // flash state
+  const [flash, setFlash] = useState(false);
+  const [comet, setComet] = useState(-100); // -100 = off-screen
 
-  // live clock
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
 
-  // detect phone vs laptop
   useEffect(() => {
-    function check() {
-      setIsVertical(window.innerWidth < window.innerHeight);
-    }
+    const check = () => setIsVertical(window.innerWidth < window.innerHeight);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // flash every 3 seconds
+  // Random comet sweep every 4–9 seconds
   useEffect(() => {
-    const flashInterval = setInterval(() => {
-      setFlash(true);
-      setTimeout(() => setFlash(false), 300); // flash duration
-    }, 3000);
-    return () => clearInterval(flashInterval);
+    const triggerComet = () => {
+      setComet(-20);
+      const duration = 800 + Math.random() * 700; // 0.8–1.5s sweep
+      const timer = setTimeout(() => setComet(120), 50);
+      setTimeout(() => setComet(-100), duration + 100);
+      return () => clearTimeout(timer);
+    };
+
+    triggerComet(); // initial
+    const interval = setInterval(triggerComet, 4000 + Math.random() * 5000);
+    return () => clearInterval(interval);
   }, []);
 
-  const seconds =
-    now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+  const seconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
   const percent = (seconds / 86400) * 100;
 
-  // Tile size control
-  const tileWidth = "24vh"; // horizontal tile size
-  const tileHeight = "18vh"; // vertical tile size
-
-  //
-  // STYLES
-  //
   const s = {
     page: {
-      // **MODIFIED:** Changed height and overflow for mobile compatibility
-      minHeight: "100vh", // Use minHeight to ensure it covers the screen
-      height: "100%",     // Ensure it fills the parent if it has defined height
       width: "100vw",
-      position: "relative",
-      fontFamily: "'LineFont', system-ui, sans-serif",
-      // background:
-      //   "linear-gradient(180deg, rgba(5,5,10,0.03), rgba(255,255,255,0.02))",
-      overflow: "auto", // **MODIFIED:** Allow scrolling to prevent clipping
-    },
-
-    timeline: {
-      position: "relative",
-      width: "100vw",
-      height: "100%", // **MODIFIED:** Set to 100% of parent height
+      height: "100dvh",
+      position: "fixed",
       top: 0,
       left: 0,
+      background: "#0f0404",
+      fontFamily: "'LineFont', system-ui, sans-serif",
+      overflow: "hidden",
     },
-
+    timeline: { position: "relative", width: "100%", height: "100%" },
     bar: {
       position: "absolute",
-      width: "100vw",
-      height: "100%", // **MODIFIED:** Set to 100% of parent height
+      inset: 0,
       backgroundImage: `url(${patternImg})`,
       backgroundRepeat: "repeat",
-      backgroundPosition: "center center",
-      backgroundSize: `${tileWidth} ${tileHeight}`,
+      backgroundSize: isVertical ? "18vh 24vh" : "24vh 18vh",
     },
-
     tick: (pos) => ({
       position: "absolute",
-      pointerEvents: "none",
-      left: `${pos}%`,
-      top: `${pos}%`,
+      left: isVertical ? "50%" : `${pos}%`,
+      top: isVertical ? `${pos}%` : "50%",
       transform: "translate(-50%, -50%)",
-      textAlign: "center",
+      pointerEvents: "none",
+      fontSize: "5.5vh",
+      fontWeight: "bold",
+      color: "#333",
+      textShadow: `
+        -1.5px -1.5px 0 red, 1.5px -1.5px 0 red,
+        -1.5px 1.5px 0 red, 1.5px 1.5px 0 red,
+        -2px 0 0 red, 2px 0 0 red, 0 -2px 0 red, 0 2px 0 red
+      `,
+      userSelect: "none",
     }),
 
-    tickLine: {
-      display: "none",
-    },
-
-   tickLabel: {
-  fontSize: "5.3vh",
-  color: "#333",
-  userSelect: "none",
-  fontFamily: "'LineFont', system-ui, sans-serif",
-  lineHeight: 1,
-  textAlign: "center",
-
-  // 1px red outline in all directions
-  textShadow: `
-    -1px -1px 0 red,
-     1px -1px 0 red,
-    -1px  1px 0 red,
-     1px  1px 0 red,
-    -1px  0px 0 red,
-     1px  0px 0 red,
-     0px -1px 0 red,
-     0px  1px 0 red
-  `,
-},
-
-
-    nowIndicator: {
+    // MAIN RED LINE (always visible + pulsing)
+    nowLine: {
       position: "absolute",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+      top: isVertical ? `${percent}%` : 0,
+      left: isVertical ? 0 : `${percent}%`,
+      width: isVertical ? "100%" : "2.4px",
+      height: isVertical ? "2.4px" : "100%",
+      transform: isVertical ? "translateY(-50%)" : "translateX(-50%)",
       pointerEvents: "none",
-      transition: isVertical ? "top 1s linear" : "left 1s linear",
-      ...(isVertical
-        ? { top: percent + "%", left: "0", transform: "translateY(-50%)" }
-        : { left: percent + "%", top: "0", transform: "translateX(-50%)" }),
+      background: flash
+        ? "linear-gradient(90deg, #ff2222, #ff6b6b)"
+        : "linear-gradient(90deg, #ff4444, #ff1111)",
+      boxShadow: flash
+        ? "0 0 40px #ff0000, 0 0 80px #ff3333"
+        : "0 0 20px #ff0000, 0 0 40px #ff2222",
+      zIndex: 10,
+      transition: "all 0.4s ease",
     },
 
-    nowDot: {
-      width: isVertical ? "99vw" : "0.3vh",
-      height: isVertical ? "0.3vh" : "99vh",
-      background: flash
-        ? "linear-gradient(180deg,#ffb3b3,#0F0404FF)" // brighter flash
-        : "linear-gradient(180deg,#ff6b6b,#0F0404FF)",
-      border: "0.3vh solid rgba(255,255,255,0.9)",
-      boxShadow: flash
-        ? "0 0.6vh 2vh rgba(255,120,120,0.6)" // more intense shadow during flash
-        : "0 0.4vh 1.4vh rgba(255,80,80,0.3)",
-      transition: "all 0.3s ease",
+    // COMET HIGHLIGHT that flies across the line
+    comet: {
+      position: "absolute",
+      top: isVertical ? "50%" : `${comet}%`,
+      left: isVertical ? `${comet}%` : "50%",
+      width: isVertical ? "60px" : "8px",
+      height: isVertical ? "8px" : "60px",
+      background: "radial-gradient(circle, #ffffff 10%, #ff9999 30%, transparent 70%)",
+      borderRadius: "50%",
+      transform: isVertical ? "translate(-50%, -50%)" : "translate(-50%, -50%)",
+      boxShadow: "0 0 60px 20px #ffffff, 0 0 100px 40px #ff0088",
+      pointerEvents: "none",
+      zIndex: 20,
+      opacity: comet >= -20 && comet <= 120 ? 1 : 0,
+      transition: "opacity 0.2s ease",
     },
   };
 
-  const ticks = Array.from({ length: 25 }).map((_, h) => ({
-    hour: h,
-    pos: (h / 24) * 100,
-  }));
+  const ticks = Array.from({ length: 25 }, (_, h) => ({ hour: h, pos: (h / 24) * 100 }));
+
+  // Flash whole line every 3s (subtle heartbeat)
+  useEffect(() => {
+    const iv = setInterval(() => {
+      setFlash(true);
+      setTimeout(() => setFlash(false), 300);
+    }, 3000);
+    return () => clearInterval(iv);
+  }, []);
 
   return (
     <div style={s.page}>
-      <style>{fontStyles}</style>
+      <style jsx>{fontStyles}</style>
       <div style={s.timeline}>
         <div style={s.bar} />
 
+        {/* Hour ticks */}
         {ticks.map((t) => (
           <div key={t.hour} style={s.tick(t.pos)}>
-            <div style={s.tickLabel}>{String(t.hour).padStart(2, "0")}</div>
+            {String(t.hour).padStart(2, "0")}
           </div>
         ))}
 
-        <div style={s.nowIndicator}>
-          <div style={s.nowDot} />
-        </div>
+        {/* Main glowing red line */}
+        <div style={s.nowLine} />
+
+        {/* Flying comet highlight */}
+        <div style={s.comet} />
       </div>
     </div>
   );
