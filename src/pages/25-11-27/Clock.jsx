@@ -105,13 +105,13 @@ export default function Clock() {
       height: '100%',
       borderRadius: '50%',
       backgroundColor: 'rgba(255, 255, 245, 0.88)',
-      border: '0.6vh solid #880000',
+      border: '0.6vh solid #FA0F0FFF',
       boxShadow: '0 0 4vh rgba(0,0,0,0.8)',
       fontFamily: 'RevolutionaryClockFont, sans-serif',
     },
     topDigits: {
       position: 'absolute',
-      top: '12%',                    // moved up — no longer near bottom
+      top: '55%',                    // moved up — no longer near bottom
       left: '50%',
       transform: 'translateX(-50%)',
       display: 'flex',
