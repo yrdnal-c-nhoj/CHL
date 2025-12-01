@@ -99,14 +99,27 @@ export default function TimelineClock() {
       display: "none",
     },
 
-    tickLabel: {
-      fontSize: "5.5vh",
-      color: "#333",
-      userSelect: "none",
-      fontFamily: "'LineFont', system-ui, sans-serif",
-      lineHeight: 1,
-      textAlign: "center",
-    },
+   tickLabel: {
+  fontSize: "5.5vh",
+  color: "#333",
+  userSelect: "none",
+  fontFamily: "'LineFont', system-ui, sans-serif",
+  lineHeight: 1,
+  textAlign: "center",
+
+  // 1px red outline in all directions
+  textShadow: `
+    -1px -1px 0 red,
+     1px -1px 0 red,
+    -1px  1px 0 red,
+     1px  1px 0 red,
+    -1px  0px 0 red,
+     1px  0px 0 red,
+     0px -1px 0 red,
+     0px  1px 0 red
+  `,
+},
+
 
     nowIndicator: {
       position: "absolute",
