@@ -5,18 +5,13 @@ import backgroundImg from "./crax.jpg";
 
 export default function DigitalClock() {
   const [now, setNow] = useState(() => new Date());
-
   const fontFamily = "ClockFont_2025_12_01";
   const styleId = "ClockFontStyle_2025_12_01";
   const injected = useRef(false);
 
-  // Inject @font-face once
+  // Inject @font-face + mobile viewport fix ONCE
   useEffect(() => {
     if (injected.current) return;
-    if (document.getElementById(styleId)) {
-      injected.current = true;
-      return;
-    }
 
     const css = `
       @font-face {
@@ -24,34 +19,52 @@ export default function DigitalClock() {
         src: url('${font_2025_12_01}') format('truetype');
         font-display: swap;
       }
+
+      /* Fix 100vh clipping on mobile browsers (2025 best practice) */
+      html, body {
+        height: 100%;
+        height: 100dvh;
+        height: -webkit-fill-available;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      body {
+        min-height: 100dvh;
+        min-height: -webkit-fill-available;
+      }
     `;
+
     const tag = document.createElement("style");
     tag.id = styleId;
     tag.appendChild(document.createTextNode(css));
     document.head.appendChild(tag);
+
     injected.current = true;
   }, []);
 
-  // Tick every second
+  // Update time every second
   useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(t);
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
   }, []);
 
-  // Digit substitution map
+  // Leetspeak digit substitution
   const digitMap = {
-    "0": "1",
-    "1": "T",
-    "2": "n",
-    "3": "8",
-    "4": "F",
-    "5": "r",
-    "6": "C",
-    "7": "e",
-    "8": "q",
-    "9": "k",
+    "0": "O",
+    "1": "I",
+    "2": "Z",
+    "3": "E",
+    "4": "h",
+    "5": "S",
+    "6": "g",
+    "7": "L",
+    "8": "B",
+    "9": "g",
   };
-  const sub = (str) => str.split("").map((d) => digitMap[d] ?? d).join("");
+
+  const sub = (str) => str.split("").map((d) => digitMap[d] || d).join("");
 
   const HH = sub(String(now.getHours()).padStart(2, "0"));
   const MM = sub(String(now.getMinutes()).padStart(2, "0"));
@@ -59,59 +72,70 @@ export default function DigitalClock() {
 
   const isPhone = window.innerWidth < 600;
 
-  // ----- STYLES -----
+  // STYLES
   const digitBox = {
     width: isPhone ? "15vw" : "10vw",
     height: isPhone ? "24vw" : "16vw",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontFamily,
+    fontFamily: `'${fontFamily}', monospace`,
     fontSize: isPhone ? "18vw" : "12vw",
-    color: "#180204FF",
-    background: "transparent",
-    border: "none",
-    textShadow: "-1px -1px 0 orange, 1px -1px 0 orange, -1px 1px 0 orange, 1px 1px 0 orange, -1px 0 0 orange, 0 -1px 0 orange, 0 1px 0 orange, 1px 0 0 orange",
+    color: "#00ffcc",
+    background: "rgba(0,0,0,0.4)",
+    borderRadius: "8px",
+    textShadow: `
+      0 0 10px #00ffcc,
+      0 0 20px #00ffcc,
+      0 0 0 40px #00ffcc,
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000
+    `,
+    userSelect: "none",
   };
 
   const colonBox = {
-    width: isPhone ? "1.8vw" : "0.6vw",
+    width: isPhone ? "4vw" : "2vw",
     height: isPhone ? "24vw" : "16vw",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontFamily: "system-ui, sans-serif",
     fontSize: isPhone ? "18vw" : "12vw",
-    color: "#1F041FFF",
-    padding: 0,
-    margin: 0,
-  };
-
-  const row = {
-    display: "flex",
-    flexDirection: "row",
-    gap: isPhone ? "2vw" : "1vw",
-    alignItems: "center",
-    justifyContent: "center",
-  };
-
-  const column = {
-    display: "flex",
-    flexDirection: "column",
-    gap: "1vh",
-    alignItems: "center",
-    justifyContent: "center",
+    color: "#00ffcc",
+    fontWeight: "bold",
+    textShadow: "0 0 20px #00ffcc",
+    animation: "blink 2s infinite",
   };
 
   const container = {
     width: "100vw",
-    height: "100vh",
+    height: "100dvh",                    // This fixes the clipping!
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     backgroundImage: `url(${backgroundImg})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    margin: 0,
+    padding: isPhone ? "2vh 0" : "0",
+    boxSizing: "border-box",
+  };
+
+  const row = {
+    display: "flex",
+    flexDirection: "row",
+    gap: isPhone ? "3vw" : "2vw",
+    alignItems: "center",
+  };
+
+  const column = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "4vh",
+    alignItems: "center",
   };
 
   const renderPair = (digits) => (
@@ -122,24 +146,32 @@ export default function DigitalClock() {
   );
 
   return (
-    <div style={container}>
-      {isPhone ? (
-        <div style={column}>
-          {renderPair(HH)}
-          {renderPair(MM)}
-          {renderPair(SS)}
-        </div>
-      ) : (
-        <div style={row}>
-          {renderPair(HH)}
-          <div style={colonBox}>:</div>
+    <>
+      {/* Optional blinking colon animation */}
+      <style jsx>{`
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
+        }
+      `}</style>
 
-          {renderPair(MM)}
-          <div style={colonBox}>:</div>
-
-          {renderPair(SS)}
-        </div>
-      )}
-    </div>
+      <div style={container}>
+        {isPhone ? (
+          <div style={column}>
+            {renderPair(HH)}
+            {renderPair(MM)}
+            {renderPair(SS)}
+          </div>
+        ) : (
+          <div style={row}>
+            {renderPair(HH)}
+            <div style={colonBox}>:</div>
+            {renderPair(MM)}
+            <div style={colonBox}>:</div>
+            {renderPair(SS)}
+          </div>
+        )}
+      </div>
+    </>
   );
 }
