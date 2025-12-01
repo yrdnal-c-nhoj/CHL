@@ -129,7 +129,7 @@ export default function Clock() {
       left: "50%",
       bottom: "50%",
       transformOrigin: "bottom center",
-      filter: "drop-shadow(0.3vh 0 0 rgba(0,0,0,0.8))",
+      filter: "drop-shadow(0.3vh 0 0 rgba(222,0,0,0.8))",
     },
 
     hourNumber: {
