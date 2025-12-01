@@ -151,7 +151,7 @@ export default function Clock() {
                 top: '0vh',
                 left: '50%',
                 transform: `translateX(-50%) rotate(-${(hour / 10) * 360}deg)`,
-                fontSize: '13vh',
+                fontSize: '8vh',
                 color: '#000080',
               }}
             >
