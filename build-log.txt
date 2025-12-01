@@ -25,7 +25,7 @@ The glob option "as" has been deprecated in favour of "query". Please update `as
 ✓ 1646 modules transformed.
 ✗ Build failed in 1.01s
 error during build:
-Could not resolve "./nono.ttf" from "src/pages/25-12-07/Clock.jsx"
+Could not resolve "./background.jpg" from "src/pages/25-12-07/Clock.jsx"
 file: /Users/john/Desktop/CHL/src/pages/25-12-07/Clock.jsx
     at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
     at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
