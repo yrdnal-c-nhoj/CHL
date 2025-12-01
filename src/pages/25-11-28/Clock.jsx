@@ -49,8 +49,8 @@ export default function TimelineClock() {
   const percent = (seconds / 86400) * 100;
 
   // Tile size control
-  const tileWidth = "12vh"; // horizontal tile size
-  const tileHeight = "12vh"; // vertical tile size
+  const tileWidth = "24vh"; // horizontal tile size
+  const tileHeight = "18vh"; // vertical tile size
 
   //
   // STYLES
