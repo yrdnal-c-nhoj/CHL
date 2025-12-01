@@ -240,11 +240,19 @@
   { "path": "25-11-25", "date": "25-11-25", "title": "Network Protocol" },
   { "path": "25-11-26", "date": "25-11-26", "title": "Murmuration" },
   { "path": "25-11-27", "date": "25-11-27", "title": "L'Heure Décimale" },
-  { "path": "25-11-28", "date": "25-11-28", "title": "Dancing" },
-  { "path": "25-11-29", "date": "25-11-29", "title": "Kaleidoscope" },  
+  { "path": "25-11-28", "date": "25-11-28", "title": "Timeline" },
+  { "path": "25-11-29", "date": "25-11-29", "title": "Brush" },
   { "path": "25-11-30", "date": "25-11-30", "title": "Dancing" },
   { "path": "25-12-01", "date": "25-12-01", "title": "Dancing" },
   { "path": "25-12-02", "date": "25-12-02", "title": "Dancing" },
-  { "path": "25-12-03", "date": "25-12-03", "title": "Dancing" },23
+  { "path": "25-12-03", "date": "25-12-03", "title": "Dancing" },
+  { "path": "25-12-04", "date": "25-12-04", "title": "Dancing" },
+  { "path": "25-12-05", "date": "25-12-05", "title": "Dancing" },
+  { "path": "25-12-06", "date": "25-12-06", "title": "Dancing" },
+  { "path": "25-12-07", "date": "25-12-07", "title": "Dancing" },
+  { "path": "25-12-08", "date": "25-12-08", "title": "Dancing" },
+  { "path": "25-12-09", "date": "25-12-09", "title": "Dancing" },
+  { "path": "25-12-10", "date": "25-12-10", "title": "Dancing" },
+  { "path": "25-12-11", "date": "25-12-11", "title": "Dancing" }
 
   ]
