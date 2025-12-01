@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 
 // --- Local imports (same folder) ---
-import bgImg from "./background.jpg";
+import bgImg from "./shark.webp";
 
 // Import font with today's date in variable name
 import clockFont_2025_12_01 from "./nono.ttf";
