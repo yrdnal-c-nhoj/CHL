@@ -80,7 +80,7 @@ export default function Clock() {
     justifyContent: 'center',
     alignItems: 'center',
     width: '100vw',
-    height: '100vh',
+    height: '100dvh', // Use dynamic viewport height for better mobile support
     position: 'relative',
     overflow: 'hidden',
     backgroundColor: '#000',
@@ -88,11 +88,11 @@ export default function Clock() {
 
   const backgroundStyle = {
     position: 'absolute',
-    top: '-11%', 
+    top: '-11%',
     left: '52%',
     transform: 'translateX(-50%) rotate(-2.5deg)',
-    width: '112vw',
-    height: '112vh',
+    width: '120vw', // Slightly larger for mobile coverage
+    height: '120dvh', // Use dynamic viewport height
     backgroundImage: `url(${backgroundImg})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
