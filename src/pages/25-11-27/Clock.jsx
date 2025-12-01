@@ -80,7 +80,8 @@ export default function Clock() {
     justifyContent: 'center',
     alignItems: 'center',
     width: '100vw',
-    height: '100dvh', // Use dynamic viewport height for better mobile support
+    height: '100vh', // Use standard vh with better mobile handling
+    maxHeight: '100dvh', // Fallback for dynamic viewport
     position: 'relative',
     overflow: 'hidden',
     backgroundColor: '#000',
@@ -91,8 +92,9 @@ export default function Clock() {
     top: '-11%',
     left: '52%',
     transform: 'translateX(-50%) rotate(-2.5deg)',
-    width: '120vw', // Slightly larger for mobile coverage
-    height: '120dvh', // Use dynamic viewport height
+    width: '110vw',
+    height: '110vh',
+    maxHeight: '110dvh',
     backgroundImage: `url(${backgroundImg})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -102,8 +104,8 @@ export default function Clock() {
 
   const clockDialStyle = {
     position: 'relative',
-    width: '50vh',
-    height: '50vh',
+    width: 'min(50vh, 50dvh)',
+    height: 'min(50vh, 50dvh)',
     borderRadius: '50%',
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
     border: '0.6vh solid #880000',
