@@ -82,7 +82,7 @@ export default function DigitalClock() {
     justifyContent: "center",
     fontFamily: "system-ui, sans-serif",
     fontSize: isPhone ? "18vw" : "12vw",
-    color: "#0C010CFF",
+    color: "#1F041FFF",
     padding: 0,
     margin: 0,
   };
