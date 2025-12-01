@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import bgImg from "./shark.webp";
 
 // Import font with today's date in variable name
-import clockFont_2025_12_01 from "./nono.ttf";
+import clockFont_2025_12_01 from "./shark.ttf";
 
 export default function DigitalClock() {
   const [time, setTime] = useState(() => new Date());
