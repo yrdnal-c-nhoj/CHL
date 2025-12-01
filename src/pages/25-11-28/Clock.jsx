@@ -100,7 +100,7 @@ export default function TimelineClock() {
     },
 
    tickLabel: {
-  fontSize: "5.5vh",
+  fontSize: "5.3vh",
   color: "#333",
   userSelect: "none",
   fontFamily: "'LineFont', system-ui, sans-serif",
