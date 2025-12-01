@@ -83,6 +83,8 @@ export default function DigitalClock() {
     fontFamily: "system-ui, sans-serif",
     fontSize: isPhone ? "18vw" : "12vw",
     color: "#1F041FFF",
+     textShadow: "-1px -1px 0 orange, 1px -1px 0 orange, -1px 1px 0 orange, 1px 1px 0 orange, -1px 0 0 orange, 0 -1px 0 orange, 0 1px 0 orange, 1px 0 0 orange",
+
     padding: 0,
     margin: 0,
   };
