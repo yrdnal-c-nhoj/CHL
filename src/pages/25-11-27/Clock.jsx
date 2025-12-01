@@ -1,37 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import revolutionFont from "./french.ttf"; 
+import lineFont from './dec.ttf';
 import backgroundImg from "./fr.jpg";      
 import hourHandImg from "./fre.webp";      
 import minuteHandImg from "./fren.webp";   
 import secondHandImg from "./fren.png";   
-import { ObjectSpaceNormalMap } from 'three';
 
-// --- Font Setup Variables ---
-const today = new Date();
-const dateString = today.toISOString().split('T')[0].replace(/-/g, '_');
-const fontImports = {};
-const importedFont = `url("${revolutionFont}") format('truetype')`;
-const fontVariableName = `font_${dateString}`;
-fontImports[fontVariableName] = importedFont;
-
-// @font-face string definition
-const fontFaceStyle = `@font-face {
+// --- Font Setup ---
+const fontFaceRevolution = `
+  @font-face {
     font-family: 'RevolutionaryClockFont';
-    src: ${fontImports[fontVariableName]};
+    src: url(${revolutionFont}) format('truetype');
     font-weight: normal;
     font-style: normal;
-}`;
+    font-display: swap;
+  }
+`;
+
+const fontFaceLine = `
+  @font-face {
+    font-family: 'LineFont';
+    src: url(${lineFont}) format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+`;
 
 export default function Clock() {
   const [time, setTime] = useState(new Date());
 
-  // Inject custom font
+  // Inject fonts into document head
   useEffect(() => {
-      const styleTagId = 'custom-font-style';
-      if (!document.getElementById(styleTagId)) {
+      const styleTagIdRev = 'revolution-font-style';
+      if (!document.getElementById(styleTagIdRev)) {
           const style = document.createElement('style');
-          style.id = styleTagId;
-          style.innerHTML = fontFaceStyle;
+          style.id = styleTagIdRev;
+          style.innerHTML = fontFaceRevolution;
+          document.head.appendChild(style);
+      }
+
+      const styleTagIdLine = 'line-font-style';
+      if (!document.getElementById(styleTagIdLine)) {
+          const style = document.createElement('style');
+          style.id = styleTagIdLine;
+          style.innerHTML = fontFaceLine;
           document.head.appendChild(style);
       }
   }, []);
@@ -113,21 +126,21 @@ export default function Clock() {
   };
 
   const handBaseStyle = {
-  position: 'absolute',
-  left: '50%', 
-  bottom: '50%',
-  transformOrigin: 'bottom center',
-  borderRadius: '0.2vh',
-  filter: 'drop-shadow(1px 0 0 rgba(0,0,0,0.9))',
-};
+    position: 'absolute',
+    left: '50%', 
+    bottom: '50%',
+    transformOrigin: 'bottom center',
+    borderRadius: '0.2vh',
+    filter: 'drop-shadow(1px 0 0 rgba(0,0,0,0.9))',
+  };
 
   const hourHandStyle = {
     ...handBaseStyle,
     width: '5.8vh',
-    height: '19vh',
+    height: '22vh',
     zIndex: 5,
     backgroundImage: `url(${hourHandImg})`,
-    backgroundSize: '100% 100%', 
+    backgroundSize: '100% 100%',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     transform: `translateX(-50%) rotate(${hourDeg}deg)`,
@@ -136,10 +149,10 @@ export default function Clock() {
   const minuteHandStyle = {
     ...handBaseStyle,
     width: '7.5vh',
-    height: '25vh',
+    height: '27vh',
     zIndex: 7,
     backgroundImage: `url(${minuteHandImg})`,
-    backgroundSize: '100% 100%', 
+    backgroundSize: '100% 100%',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     transform: `translateX(-50%) rotate(${minuteDeg}deg)`,
@@ -148,7 +161,7 @@ export default function Clock() {
   const secondHandStyle = {
     ...handBaseStyle,
     width: '9.3vh',
-    height: '24vh',
+    height: '25vh',
     zIndex: 9,
     opacity: 0.7,
     backgroundImage: `url(${secondHandImg})`,
@@ -163,16 +176,18 @@ export default function Clock() {
   return (
     <div style={clockContainerStyle}>
       <div style={backgroundStyle}></div> {/* Rotated background */}
+      
+      {/* Top digits with LineFont */}
       <div style={{
         position: 'absolute',
         top: '2vh',
         left: '50%',
         transform: 'translateX(-50%)',
         fontSize: '8.5vh',
-        fontFamily: 'RevolutionaryClockFont, sans-serif',
+        fontFamily: 'LineFont, sans-serif', // ← new font applied
         zIndex: 20,
         display: 'flex',
-        gap: '1vh', // Add some spacing between digits
+        gap: '1vh',
       }}>
         {['1', '7', '9', '3'].map((digit, index) => (
           <span
@@ -186,6 +201,8 @@ export default function Clock() {
           </span>
         ))}
       </div>
+
+      {/* Clock Dial */}
       <div style={clockDialStyle}>
         {/* Hour Markers */}
         {decimalHoursArray.map(hour => (
@@ -204,9 +221,8 @@ export default function Clock() {
                 top: '1vh', 
                 left: '50%',
                 transform: `translateX(-50%) rotate(${-(hour / 10) * 360}deg)`, 
-                fontSize: '10vh',
+                fontSize: '12vh',
                 color: '#000080',
-                textShadow: '0 0 0.5vh rgba(255, 255, 255, 0.8)',
               }}
             >
               {hour}
