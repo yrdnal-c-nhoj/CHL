@@ -105,7 +105,7 @@ export default function Clock() {
       height: '100%',
       borderRadius: '50%',
       backgroundColor: 'rgba(255, 255, 245, 0.88)',
-      border: '0.6vh solid #FA0F0FFF',
+      border: '0.6vh solid #B50909FF',
       boxShadow: '0 0 4vh rgba(0,0,0,0.8)',
       fontFamily: 'RevolutionaryClockFont, sans-serif',
     },
