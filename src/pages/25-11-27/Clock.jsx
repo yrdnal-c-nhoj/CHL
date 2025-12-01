@@ -90,9 +90,9 @@ const styles = {
 };
 
 const handConfig = [
-  { img: hourHandImg,    size: ['12.8vh', '31vh'], zIndex: 5, getDeg: (h, m) => (h / 10) * 360 + (m / 10) },
-  { img: minuteHandImg,  size: ['15.5vh', '40vh'], zIndex: 7, getDeg: (h, m, s) => (m / 100) * 360 + s / 100 },
-  { img: secondHandImg,  size: ['14.3vh', '43vh'], zIndex: 9, opacity: 0.7, getDeg: (h, m, s) => (s / 100) * 360 },
+  { img: hourHandImg,    size: ['8.8vh', '21vh'], zIndex: 5, getDeg: (h, m) => (h / 10) * 360 + (m / 10) },
+  { img: minuteHandImg,  size: ['11.5vh', '30vh'], zIndex: 7, getDeg: (h, m, s) => (m / 100) * 360 + s / 100 },
+  { img: secondHandImg,  size: ['11.3vh', '33vh'], zIndex: 9, opacity: 0.7, getDeg: (h, m, s) => (s / 100) * 360 },
 ];
 
 export default function Clock() {
