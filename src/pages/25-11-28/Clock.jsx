@@ -57,19 +57,21 @@ export default function TimelineClock() {
   //
   const s = {
     page: {
-      height: "100dvh",
+      // **MODIFIED:** Changed height and overflow for mobile compatibility
+      minHeight: "100vh", // Use minHeight to ensure it covers the screen
+      height: "100%",     // Ensure it fills the parent if it has defined height
       width: "100vw",
       position: "relative",
       fontFamily: "'LineFont', system-ui, sans-serif",
       background:
         "linear-gradient(180deg, rgba(5,5,10,0.03), rgba(255,255,255,0.02))",
-      overflow: "hidden",
+      overflow: "auto", // **MODIFIED:** Allow scrolling to prevent clipping
     },
 
     timeline: {
       position: "relative",
       width: "100vw",
-      height: "100vh",
+      height: "100%", // **MODIFIED:** Set to 100% of parent height
       top: 0,
       left: 0,
     },
@@ -77,7 +79,7 @@ export default function TimelineClock() {
     bar: {
       position: "absolute",
       width: "100vw",
-      height: "100vh",
+      height: "100%", // **MODIFIED:** Set to 100% of parent height
       backgroundImage: `url(${patternImg})`,
       backgroundRepeat: "repeat",
       backgroundPosition: "center center",
