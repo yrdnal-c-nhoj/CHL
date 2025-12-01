@@ -163,6 +163,29 @@ export default function Clock() {
   return (
     <div style={clockContainerStyle}>
       <div style={backgroundStyle}></div> {/* Rotated background */}
+      <div style={{
+        position: 'absolute',
+        top: '2vh',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        fontSize: '8.5vh',
+        fontFamily: 'RevolutionaryClockFont, sans-serif',
+        zIndex: 20,
+        display: 'flex',
+        gap: '1vh', // Add some spacing between digits
+      }}>
+        {['1', '7', '9', '3'].map((digit, index) => (
+          <span
+            key={index}
+            style={{
+              color: '#030303FF',
+              textShadow: '0 0 0.5vh rgba(255, 255, 255), -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white',
+            }}
+          >
+            {digit}
+          </span>
+        ))}
+      </div>
       <div style={clockDialStyle}>
         {/* Hour Markers */}
         {decimalHoursArray.map(hour => (
@@ -181,7 +204,7 @@ export default function Clock() {
                 top: '1vh', 
                 left: '50%',
                 transform: `translateX(-50%) rotate(${-(hour / 10) * 360}deg)`, 
-                fontSize: '8.5vh',
+                fontSize: '10vh',
                 color: '#000080',
                 textShadow: '0 0 0.5vh rgba(255, 255, 255, 0.8)',
               }}
