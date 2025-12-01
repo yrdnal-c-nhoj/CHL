@@ -75,11 +75,11 @@ export default function Clock() {
 
   const backgroundStyle = {
     position: 'absolute',
-    top: '-5%', 
-    left: '50%',
-    transform: 'translateX(-50%) rotate(-3deg)',
-    width: '110vw',
-    height: '110vh',
+    top: '-11%', 
+    left: '52%',
+    transform: 'translateX(-50%) rotate(-2.5deg)',
+    width: '112vw',
+    height: '112vh',
     backgroundImage: `url(${backgroundImg})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
