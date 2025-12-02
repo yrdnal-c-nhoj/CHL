@@ -41,6 +41,15 @@ export default function DigitalClock() {
 
       body {
         min-height: 100dvh;
+        min-height: -webkit-fill-available;
+      }
+    `;
+
+    const tag = document.createElement("style");
+    tag.id = styleId;
+    tag.appendChild(document.createTextNode(css));
+    document.head.appendChild(tag);
+
     injected.current = true;
   }, []);
 
@@ -74,13 +83,13 @@ export default function DigitalClock() {
 
   // STYLES
   const digitBox = {
-    width: isPhone ? "15vw" : "10vw",
+    width: isPhone ? "22vw" : "14vw",
     height: isPhone ? "24vw" : "16vw",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     fontFamily: `'${fontFamily}', monospace`,
-    fontSize: isPhone ? "18vw" : "12vw",
+    fontSize: isPhone ? "24vw" : "16vw",
     color: "#071A16FF",
     // background: "rgba(0,0,0,0.4)",
     borderRadius: "8px",
@@ -113,7 +122,7 @@ export default function DigitalClock() {
   const row = {
     display: "flex",
     flexDirection: "row",
-    gap: isPhone ? "3vw" : "2vw",
+    gap: isPhone ? "3vw" : "3vw",
     alignItems: "center",
   };
 
@@ -133,14 +142,6 @@ export default function DigitalClock() {
 
   return (
     <>
-      {/* Optional blinking colon animation */}
-      <style jsx>{`
-        @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.3; }
-        }
-      `}</style>
-
       <div style={container}>
         {isPhone ? (
           <div style={column}>
