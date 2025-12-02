@@ -1,7 +1,7 @@
 // DigitalClock.jsx
 import React, { useState, useEffect } from "react";
 import bgImg from "./shark.webp";
-import clockFont_2025_12_01 from "./shark.ttf";
+import clockfoont12012 from "./shark.ttf";
 
 export default function DigitalClock() {
   const [time, setTime] = useState(() => new Date());
@@ -24,7 +24,7 @@ export default function DigitalClock() {
       style.textContent = `
         @font-face {
           font-family: 'ClockFont_2025_12_01';
-          src: url(${clockFont_2025_12_01}) format('truetype');
+          src: url(${clockfoont12012}) format('truetype');
           font-weight: normal;
           font-style: normal;
           font-display: swap;
