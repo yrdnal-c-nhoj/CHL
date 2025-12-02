@@ -6,8 +6,14 @@ export default function RococoDigitalClock() {
   const [now, setNow] = useState(new Date());
   const [morph, setMorph] = useState(0);
   const [isVertical, setIsVertical] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
+    // Wait for font to load before showing content
+    document.fonts.ready.then(() => {
+      setFontLoaded(true);
+    });
+
     const timeInterval = setInterval(() => setNow(new Date()), 1000);
 
     const morphInterval = setInterval(() => {
@@ -62,7 +68,7 @@ export default function RococoDigitalClock() {
       <div
         style={{
           width: "100vw",
-          height: "100vh",
+          height: "100dvh",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -73,7 +79,9 @@ export default function RococoDigitalClock() {
           filter: "brightness(1.2) contrast(1.4)",
           fontFamily: "'RococoBlob', serif",
           overflow: "hidden",
-          gap: "3vh",
+          gap: "2vh",
+          opacity: fontLoaded ? 1 : 0,
+          transition: "opacity 0.3s ease-in",
         }}
       >
         <style>{`
@@ -107,6 +115,7 @@ export default function RococoDigitalClock() {
                   opacity: 0.6,
                   color: "#352904FF",
                   userSelect: "none",
+                  willChange: "transform",
                   ...distortLetter(char, i),
                 }}
               >
@@ -138,6 +147,7 @@ export default function RococoDigitalClock() {
                   opacity: 0.6,
                   color: "#352904FF",
                   userSelect: "none",
+                  willChange: "transform",
                   ...distortLetter(char, i + 2),
                 }}
               >
@@ -169,6 +179,7 @@ export default function RococoDigitalClock() {
                   opacity: 0.6,
                   color: "#352904FF",
                   userSelect: "none",
+                  willChange: "transform",
                   ...distortLetter(char, i + 4),
                 }}
               >
@@ -185,7 +196,7 @@ export default function RococoDigitalClock() {
     <div
       style={{
         width: "100vw",
-        height: "100vh",
+        height: "100dvh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -195,6 +206,8 @@ export default function RococoDigitalClock() {
         filter: "brightness(1.2) contrast(1.4)",
         fontFamily: "'RococoBlob', serif",
         overflow: "hidden",
+        opacity: fontLoaded ? 1 : 0,
+        transition: "opacity 0.3s ease-in",
       }}
     >
       <style>{`
@@ -234,6 +247,7 @@ export default function RococoDigitalClock() {
                 opacity: 0.6, 
                 color: "#352904FF",
                 userSelect: "none",
+                willChange: "transform",
                 ...distortLetter(char, i),
               }}
             >
