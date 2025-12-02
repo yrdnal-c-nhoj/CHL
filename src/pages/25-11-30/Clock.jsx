@@ -13,6 +13,15 @@ export default function DigitalClock() {
   useEffect(() => {
     if (injected.current) return;
 
+    // Preload the font to avoid flash of unstyled content
+    const preloadLink = document.createElement("link");
+    preloadLink.rel = "preload";
+    preloadLink.as = "font";
+    preloadLink.href = font_2025_12_01;
+    preloadLink.type = "font/ttf";
+    preloadLink.crossOrigin = "anonymous";
+    document.head.appendChild(preloadLink);
+
     const css = `
       @font-face {
         font-family: '${fontFamily}';
@@ -80,7 +89,7 @@ export default function DigitalClock() {
     alignItems: "center",
     justifyContent: "center",
     fontFamily: `'${fontFamily}', monospace`,
-    fontSize: isPhone ? "18vw" : "12vw",
+    fontSize: isPhone ? "24vw" : "16vw",
     color: "#071A16FF",
     // background: "rgba(0,0,0,0.4)",
     borderRadius: "8px",
@@ -133,14 +142,6 @@ export default function DigitalClock() {
 
   return (
     <>
-      {/* Optional blinking colon animation */}
-      <style jsx>{`
-        @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.3; }
-        }
-      `}</style>
-
       <div style={container}>
         {isPhone ? (
           <div style={column}>
