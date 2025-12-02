@@ -41,15 +41,6 @@ export default function DigitalClock() {
 
       body {
         min-height: 100dvh;
-        min-height: -webkit-fill-available;
-      }
-    `;
-
-    const tag = document.createElement("style");
-    tag.id = styleId;
-    tag.appendChild(document.createTextNode(css));
-    document.head.appendChild(tag);
-
     injected.current = true;
   }, []);
 
@@ -89,7 +80,7 @@ export default function DigitalClock() {
     alignItems: "center",
     justifyContent: "center",
     fontFamily: `'${fontFamily}', monospace`,
-    fontSize: isPhone ? "24vw" : "16vw",
+    fontSize: isPhone ? "18vw" : "12vw",
     color: "#071A16FF",
     // background: "rgba(0,0,0,0.4)",
     borderRadius: "8px",
@@ -142,6 +133,14 @@ export default function DigitalClock() {
 
   return (
     <>
+      {/* Optional blinking colon animation */}
+      <style jsx>{`
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
+        }
+      `}</style>
+
       <div style={container}>
         {isPhone ? (
           <div style={column}>
