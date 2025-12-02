@@ -1,254 +1,145 @@
-// ---  GEMINI   
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import backgroundImage from './bg.webp';
 
-// --- Imports ---   GEMINI   
+const ROTATION_DURATION = 60; // seconds for a full 360° rotation
+const ZOOM_MULTIPLIER = 1.5;  // Zoom factor
 
-// 1. Background Image Import (assuming 'background.jpg' is in the same folder)
-import backgroundImage from './app.webp'; // or .png, .webp etc.
-
-// 2. Font Import with date variable (Vite handles the blob URL via import)
-// The variable name must contain today's date (November 23, 2025)
-import font_2025_11_23 from './day.ttf'; 
-
-// --- Custom Font Definition ---
-const fontFaceStyle = `@font-face {
-  font-family: 'DigitalDistortion';
-  src: url('${font_2025_11_23}') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}`;
-
-// Helper to inject the font-face style globally since inline styles can't do @font-face
-const injectFontFace = () => {
-  if (!document.getElementById('digital-distortion-font')) {
-    const style = document.createElement('style');
-    style.id = 'digital-distortion-font';
-    style.textContent = fontFaceStyle;
-    document.head.appendChild(style);
-  }
-};
-
-// Inject the font on component load
-injectFontFace();
-
-// --- Clock Component ---
-
-/**
- * CurvyClock Component
- * Displays a digital clock with individually styled, distorted, and curved characters.
- */
-const CurvyClock = () => {
+const RotatingBackground = () => {
+  const [rotationAngle, setRotationAngle] = useState(0);
+  const [sideLength, setSideLength] = useState(0);
   const [time, setTime] = useState(new Date());
 
+  // ... (unchanged useEffect for computeSize and rotation)
   useEffect(() => {
-    const timerId = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timerId); // Cleanup
-  }, []);
-
-  // --- Time Formatting ---
-  const formatTime = useCallback((date) => {
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-
-    // 12-hour format, no leading zeros
-    hours = hours % 12;
-    hours = hours ? hours : 12; // The hour '0' should be '12'
-
-    // French standard separators: 'h' for hours/minutes, 'm' for minutes/seconds
-    // I will use simple colons as the common standard is more readable unless explicitly enforced
-    // For this example, I'll use a space and a colon for a unique look and better distortion control.
-    // e.g., '10: 35: 59 PM'
-    return {
-      H: String(hours),
-      M: String(minutes).padStart(2, '0'),
-      S: String(seconds).padStart(2, '0'),
-      AMPM: ampm
+    const computeSize = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const diagonal = Math.sqrt(w * w + h * h) * ZOOM_MULTIPLIER;
+      setSideLength(diagonal);
     };
+
+    computeSize();
+    window.addEventListener('resize', computeSize);
+    return () => window.removeEventListener('resize', computeSize);
   }, []);
 
-  const { H, M, S, AMPM } = useMemo(() => formatTime(time), [time, formatTime]);
+  useEffect(() => {
+    let startTime = null;
 
-  // Create an array of all display characters (H, M, S, AMPM plus separators)
-  // Display structure: H: M: S AM/PM
-  const displayCharacters = [
-    ...H.split(''), 
-    'sep1', // Separator 1 (colon)
-    ...M.split(''), 
-    'sep2', // Separator 2 (colon)
-    ...S.split(''), 
-    'sep3', // Separator 3 (space)
-    ...AMPM.split('')
-  ];
+    const rotate = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = (timestamp - startTime) / 1000; // seconds
+      const angle = (-360 * (elapsed / ROTATION_DURATION)) % 360; // counter-clockwise
+      setRotationAngle(angle);
+      requestAnimationFrame(rotate);
+    };
 
-  // --- Custom Distortion Settings ---
-  // These objects define the unique distortion for each logical element (H, M, S, AMPM)
-  // They are applied to the parent box of each character/separator.
-  const distortionSettings = {
-    // Hour digits (H)
-    H: { 
-      transform: 'rotate(-5deg) skewX(5deg) scale(1.1)', 
-      position: 'relative', top: '-1vh', 
-      color: '#ff4d4d' // Redish
-    },
-    // Separator 1 (:)
-    sep1: { 
-      transform: 'rotate(10deg) scaleY(1.3)', 
-      color: '#ffffff',
-      fontSize: '8vh' // Taller separator
-    }, 
-    // Minute digits (M)
-    M: { 
-      transform: 'rotate(15deg) skewY(-5deg) scale(0.9)', 
-      position: 'relative', top: '1vh', 
-      color: '#4dff4d' // Greenish
-    },
-    // Separator 2 (:)
-    sep2: { 
-      transform: 'rotate(-10deg) scale(1.1)', 
-      color: '#ffffff',
-      fontSize: '7vh' // Smaller separator
-    },
-    // Second digits (S)
-    S: { 
-      transform: 'rotate(-20deg) skewX(-10deg) scale(1.2)', 
-      position: 'relative', top: '-2vh', 
-      color: '#4d4dff' // Bluish
-    },
-    // Separator 3 (AM/PM space)
-    sep3: {
-      transform: 'scale(0.8)',
-      color: 'transparent',
-      width: '1vw'
-    },
-    // AM/PM indicator
-    AMPM: { 
-      transform: 'rotate(5deg) skewX(2deg) scale(1.05)', 
-      position: 'relative', top: '0.5vh', 
-      color: '#ffff4d', // Yellowish
-      fontSize: '4vh' // Smaller text
-    }
+    const frameId = requestAnimationFrame(rotate);
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+  // ... (unchanged useEffect for time update)
+  useEffect(() => {
+    const interval = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // ... (unchanged styles)
+  const viewportContainerStyle = {
+    height: '100dvh',
+    width: '100vw',
+    overflow: 'hidden',
+    margin: 0,
+    padding: 0,
+    position: 'relative',
   };
 
-  // Function to determine the style key for a character based on its index and value
-  const getStyleKey = useCallback((index, value) => {
-    if (value === 'sep1') return 'sep1';
-    if (value === 'sep2') return 'sep2';
-    if (value === 'sep3') return 'sep3';
+  const rotatingImageStyle = {
+    width: sideLength,
+    height: sideLength,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: `translate(-50%, -50%) rotate(${rotationAngle}deg)`,
 
-    // The logic below identifies which part of the time (H, M, S, AMPM) the character belongs to.
-    const hLen = H.length;
-    const mLen = M.length;
-    const sLen = S.length;
-    
-    if (index < hLen) return 'H'; // Hours
-    if (index === hLen) return 'sep1'; 
-    if (index > hLen && index <= hLen + mLen + 1) return 'M'; // Minutes
-    if (index === hLen + mLen + 2) return 'sep2';
-    if (index > hLen + mLen + 2 && index <= hLen + mLen + sLen + 3) return 'S'; // Seconds
-    if (index === hLen + mLen + sLen + 4) return 'sep3';
-    
-    return 'AMPM'; // AM/PM
-  }, [H, M, S]);
-  
-  // --- Inline Styles for Scoping and Layout ---
-
-  // 1. Overall Container (View Height/Width, Background)
-  const containerStyle = useMemo(() => ({
-    minHeight: '100vh', 
-    minWidth: '100vw', 
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    // Background Image
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    // Scoping for distortion visibility (no overflow)
-    overflow: 'hidden', 
-    fontFamily: 'sans-serif' // Fallback
-  }), []);
+  };
 
-  // 2. Clock Display Area
-  const clockContainerStyle = useMemo(() => ({
-    display: 'flex',
-    alignItems: 'center',
-    padding: '2vh',
-    backdropFilter: 'blur(5px) brightness(0.7)', // Visual Scoping/Leakage Avoidance
-    borderRadius: '2vh',
-    border: '0.5vh solid rgba(255, 255, 255, 0.3)',
-    boxShadow: '0 0 5vh rgba(0, 0, 0, 0.8)',
-  }), []);
+  const clockRadius = 150; // px
+  const tickLength = 10;   // px
+  const tickWidth = 2;     // px
 
-  // 3. Style for each Character Box (to be distorted)
-  const characterBoxBaseStyle = useMemo(() => ({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '10vw', // Use viewport width for responsive boxes
-    height: '15vh', // Use viewport height
-    margin: '0 0.5vw',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Distinct box for each
-    borderRadius: '1vh',
-    transition: 'transform 0.5s ease-out', // Smooth transition for visual effect
-  }), []);
+  // 1. ADD mix-blend-mode TO THE CLOCK CONTAINER
+  const clockStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: `${clockRadius * 5}px`,
+    height: `${clockRadius * 5}px`,
+    transform: 'translate(-50%, -50%)',
+    borderRadius: '50%',
+    pointerEvents: 'none',
+    // KEY CHANGE: Apply blend mode to the entire clock
+    mixBlendMode: 'difference', // Tries to achieve a visually inverse color
+  };
 
-  // 4. Style for the Character itself
-  const characterBaseStyle = useMemo(() => ({
-    fontFamily: 'DigitalDistortion, monospace',
-    fontSize: '12vh',
-    fontWeight: 'bold',
-    textShadow: '0 0 1vh rgba(255, 255, 255, 0.5)',
-    color: '#ffffff',
-  }), []);
+  const handStyle = (length, width, color, angle) => ({
+    position: 'absolute',
+    bottom: '50%',
+    left: '50%',
+    transformOrigin: '50% 100%',
+    transform: `translateX(-50%) rotate(${angle}deg)`,
+    width: `${width}px`,
+    height: `${length}px`,
+    backgroundColor: color,
+    borderRadius: '2px',
+  });
 
-  // --- Render ---
+  const hour = time.getHours() % 12;
+  const minute = time.getMinutes();
+  const second = time.getSeconds();
+
+  const hourAngle = (hour + minute / 60) * 30; // 360/12 = 30
+  const minuteAngle = (minute + second / 60) * 6; // 360/60 = 6
+  const secondAngle = second * 6;
+
   return (
-    <div style={containerStyle}>
-      <div style={clockContainerStyle}>
-        {displayCharacters.map((charOrSep, index) => {
-          const styleKey = getStyleKey(index, charOrSep);
-          const customDistortion = distortionSettings[styleKey];
-          
-          // Determine the actual character to display
-          let charToDisplay;
-          if (charOrSep === 'sep1' || charOrSep === 'sep2') {
-            charToDisplay = ':';
-          } else if (charOrSep === 'sep3') {
-            charToDisplay = ' ';
-          } else {
-            charToDisplay = charOrSep;
-          }
-          
-          // Combine base style with custom distortion style for the box
-          const finalBoxStyle = {
-            ...characterBoxBaseStyle,
-            ...customDistortion,
-            // Ensure no style leakage by having distinct box styles
-            backgroundColor: customDistortion.backgroundColor || characterBoxBaseStyle.backgroundColor 
+    <div style={viewportContainerStyle}>
+      <div style={rotatingImageStyle} />
+      <div style={clockStyle}>
+        {/* Ticks */}
+        {Array.from({ length: 60 }).map((_, i) => {
+          const angle = i * 6; // 360 / 60
+          // 2. SET TICK COLOR TO PURE WHITE (or black) to maximize the blending effect
+          const tickStyle = {
+            position: 'absolute',
+            width: `${tickWidth}px`,
+            height: `${tickLength}px`,
+            backgroundColor: 'white', // Changed to solid color
+            top: '50%',
+            left: '50%',
+            transform: `rotate(${angle}deg) translateY(-${clockRadius}px)`,
+            transformOrigin: 'center bottom',
           };
-
-          // Combine base style with custom color/size for the character text
-          const finalCharStyle = {
-            ...characterBaseStyle,
-            color: customDistortion.color || characterBaseStyle.color,
-            fontSize: customDistortion.fontSize || characterBaseStyle.fontSize,
-          };
-
-          return (
-            // Each character/separator is in its own box
-            <div key={index} style={finalBoxStyle}>
-              <span style={finalCharStyle}>
-                {charToDisplay}
-              </span>
-            </div>
-          );
+          return <div key={i} style={tickStyle} />;
         })}
+
+        {/* Hour hand */}
+        {/* 3. SET HAND COLOR TO PURE WHITE (or black) */}
+        <div style={handStyle(clockRadius * 0.5, 6, 'white', hourAngle)} />
+
+        {/* Minute hand */}
+        {/* 4. SET HAND COLOR TO PURE WHITE (or black) */}
+        <div style={handStyle(clockRadius * 0.7, 4, 'white', minuteAngle)} />
+
+        {/* Second hand */}
+        {/* 5. SET HAND COLOR TO PURE WHITE (or black) */}
+        <div style={handStyle(clockRadius * 0.9, 2, 'white', secondAngle)} />
       </div>
     </div>
   );
 };
 
-export default CurvyClock;
+export default RotatingBackground;
