@@ -61,16 +61,16 @@ export default function DigitalClock() {
 
   // Leetspeak digit substitution
   const digitMap = {
-    "0": "O",
-    "1": "I",
-    "2": "Z",
+    "0": "1",
+    "1": "T",
+    "2": "m",
     "3": "E",
-    "4": "h",
-    "5": "S",
-    "6": "g",
-    "7": "L",
-    "8": "B",
-    "9": "g",
+    "4": "F",
+    "5": "r",
+    "6": "L",
+    "7": "2",
+    "8": "q",
+    "9": "C",
   };
 
   const sub = (str) => str.split("").map((d) => digitMap[d] || d).join("");
