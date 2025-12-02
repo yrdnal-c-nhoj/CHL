@@ -115,8 +115,8 @@ const handConfig = [
   // Hour hand configuration
   {
     img: hourHandImg,
-    size: (isMobile) => isMobile ? ['7vw', '16vw'] : ['4.5vw', '11vw'],
-    maxSize: ['60px', '150px'],
+    size: (isMobile) => isMobile ? ['17vw', '30vw'] : ['4.5vw', '11vw'],
+    maxSize: ['80px', '200px'],
     zIndex: 5,
     getDeg: (h, m) => (h / 10) * 360 + (m / 10)
   },
