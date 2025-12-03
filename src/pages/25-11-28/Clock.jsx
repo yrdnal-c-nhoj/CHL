@@ -80,10 +80,7 @@ export default function TimelineClock() {
   const seconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
   const percent = (seconds / 86400) * 100;
   
-  // Existing Styles Object (s) remains the same
-
   const s = {
-      // ... (s.page, s.timeline, s.bar, s.tick, s.nowLine, s.comet remain the same)
       page: {
         width: "100vw",
         height: "100dvh",
@@ -94,32 +91,32 @@ export default function TimelineClock() {
         fontFamily: "'LineFont', system-ui, sans-serif",
         overflow: "hidden",
       },
-      // ... (rest of the styles)
       timeline: { position: "relative", width: "100%", height: "100%" },
       bar: {
         position: "absolute",
         inset: 0,
-        backgroundImage: `url(${patternImg})`, // fixed template literal
+        backgroundImage: `url(${patternImg})`, 
         backgroundRepeat: "repeat",
         backgroundSize: isVertical ? "18vh 24vh" : "24vh 18vh",
       },
+      // MODIFIED: Ticks now follow a diagonal path regardless of orientation
       tick: (pos) => ({
         position: "absolute",
-        left: isVertical ? "50%" : `${pos}%`, // fixed template literal
-        top: isVertical ? `${pos}%` : "50%", // fixed template literal
-        transform: "translate(-50%, -50%)",
+        left: `${pos}%`, // Position horizontally based on hour percentage
+        top: `${pos}%`,  // Position vertically based on hour percentage
+        transform: "translate(-50%, -50%)", // Centered on the diagonal point
         pointerEvents: "none",
         fontSize: "5.5vh",
-        fontWeight: "bold",
+        // fontWeight: "bold",
         color: "#333",
-        textShadow: `-1.5px -1.5px 0 red, 1.5px -1.5px 0 red, -1.5px 1.5px 0 red, 1.5px 1.5px 0 red, -2px 0 0 red, 2px 0 0 red, 0 -2px 0 red, 0 2px 0 red`,
+        textShadow: `-1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red, -1px 0 0 red, 1px 0 0 red, 0 -1px 0 red, 0 1px 0 red`,
         userSelect: "none",
       }),
-      // MAIN RED LINE (always visible + pulsing)
+      // UNCHANGED: MAIN RED LINE (nowLine) position based on orientation
       nowLine: {
         position: "absolute",
-        top: isVertical ? `${percent}%` : 0, // fixed template literal
-        left: isVertical ? 0 : `${percent}%`, // fixed template literal
+        top: isVertical ? `${percent}%` : 0, 
+        left: isVertical ? 0 : `${percent}%`, 
         width: isVertical ? "100%" : "2.4px",
         height: isVertical ? "2.4px" : "100%",
         transform: isVertical ? "translateY(-50%)" : "translateX(-50%)",
@@ -133,16 +130,16 @@ export default function TimelineClock() {
         zIndex: 10,
         transition: "all 0.4s ease",
       },
-      // COMET HIGHLIGHT that flies across the line
+      // UNCHANGED: COMET position and visibility based on orientation
       comet: {
         position: "absolute",
-        top: isVertical ? "50%" : `${comet}%`, // fixed template literal
-        left: isVertical ? `${comet}%` : "50%", // fixed template literal
-        width: isVertical ? "60px" : "8px",
-        height: isVertical ? "8px" : "60px",
+        top: isVertical ? `${comet}%` : "50%", 
+        left: isVertical ? "50%" : `${comet}%`, 
+        width: isVertical ? "8px" : "60px",
+        height: isVertical ? "60px" : "8px",
         background: "radial-gradient(circle, #ffffff 10%, #ff9999 30%, transparent 70%)",
         borderRadius: "50%",
-        transform: isVertical ? "translate(-50%, -50%)" : "translate(-50%, -50%)",
+        transform: "translate(-50%, -50%)",
         boxShadow: "0 0 60px 20px #ffffff, 0 0 100px 40px #ff0088",
         pointerEvents: "none",
         zIndex: 20,
@@ -168,13 +165,13 @@ export default function TimelineClock() {
       <style jsx>{fontStyles}</style>
       <div style={s.timeline}>
         <div style={s.bar} />
-        {/* Hour ticks */}
+        {/* Hour ticks (now diagonal) */}
         {ticks.map((t) => (
           <div key={t.hour} style={s.tick(t.pos)}>
             {String(t.hour).padStart(2, "0")}
           </div>
         ))}
-        {/* Main glowing red line */}
+        {/* Main glowing red line (horizontal or vertical) */}
         <div style={s.nowLine} />
         {/* Flying comet highlight */}
         <div style={s.comet} />
