@@ -63,6 +63,26 @@ export default function RococoDigitalClock() {
     };
   };
 
+  // Show black loading screen until font is loaded
+  if (!fontLoaded) {
+    return (
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: '#000',
+        zIndex: 9999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        {/* Optional: Add a loading spinner or text here if desired */}
+      </div>
+    );
+  }
+
   if (isVertical) {
     return (
       <div
@@ -80,8 +100,7 @@ export default function RococoDigitalClock() {
           fontFamily: "'RococoBlob', serif",
           overflow: "hidden",
           gap: "2vh",
-          opacity: fontLoaded ? 1 : 0,
-          transition: "opacity 0.3s ease-in",
+          opacity: 1,
         }}
       >
         <style>{`
