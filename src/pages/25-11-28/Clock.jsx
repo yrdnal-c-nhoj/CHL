@@ -1,11 +1,11 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import lineFont from "./line.otf";
+import font251128 from "./line.otf";
 import patternImg from "./line.webp";
 
 const fontCSS = `
   @font-face {
     font-family: 'LineFont';
-    src: url(${lineFont}) format('opentype');
+    src: url(${font251128}) format('opentype');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -110,7 +110,7 @@ export default function TimelineClock() {
       inset: 0,
       backgroundImage: `url(${patternImg})`,
       backgroundRepeat: "repeat",
-      backgroundSize: isVertical ? "18vh 24vh" : "24vh 18vh",
+      backgroundSize: isVertical ? "22vh 22vh" : "24vh 18vh",
     },
     tick: (pos) => ({
       position: "absolute",
@@ -118,13 +118,13 @@ export default function TimelineClock() {
       top: isVertical ? `${pos}%` : `${pos}%`,
       transform: "translate(-50%, -50%)",
       pointerEvents: "none",
-      fontSize: "5.5vh",
+      fontSize: "5vh",
       fontWeight: "bold",
       color: "#333",
       textShadow: `
-        -1.5px -1.5px 0 red, 1.5px -1.5px 0 red,
-        -1.5px 1.5px 0 red, 1.5px 1.5px 0 red,
-        -2px 0 0 red, 2px 0 0 red, 0 -2px 0 red, 0 2px 0 red
+        -1px -1px 0 red, 1px -1px 0 red,
+        -1px 1px 0 red, 1px 1px 0 red,
+        -1px 0 0 red, 2px 0 0 red, 0 -1px 0 red, 0 1px 0 red
       `,
       userSelect: "none",
     }),
