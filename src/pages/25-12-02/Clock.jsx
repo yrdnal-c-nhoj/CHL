@@ -5,21 +5,49 @@ const ROTATION_DURATION = 60; // seconds for a full rotation
 const ZOOM_MULTIPLIER = 1.5;
 
 const RotatingBackground = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [rotationAngle, setRotationAngle] = useState(0);
   const [sideLength, setSideLength] = useState(0);
   const [time, setTime] = useState(new Date());
 
-  // Compute viewport diagonal for zoomed background
+  // Preload the background image and compute sizes
   useEffect(() => {
-    const computeSize = () => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      const diagonal = Math.sqrt(w * w + h * h) * ZOOM_MULTIPLIER;
-      setSideLength(diagonal);
+    let isMounted = true;
+    
+    const loadImage = () => {
+      const img = new Image();
+      img.src = backgroundImage;
+      
+      img.onload = () => {
+        if (isMounted) {
+          const computeSize = () => {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const diagonal = Math.sqrt(w * w + h * h) * ZOOM_MULTIPLIER;
+            setSideLength(diagonal);
+          };
+          
+          computeSize();
+          window.addEventListener('resize', computeSize);
+          setIsLoading(false);
+          
+          return () => window.removeEventListener('resize', computeSize);
+        }
+      };
+      
+      img.onerror = () => {
+        if (isMounted) {
+          console.error('Failed to load background image');
+          setIsLoading(false);
+        }
+      };
     };
-    computeSize();
-    window.addEventListener('resize', computeSize);
-    return () => window.removeEventListener('resize', computeSize);
+    
+    loadImage();
+    
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // Smooth rotation of background
@@ -110,6 +138,25 @@ const RotatingBackground = () => {
   const hourAngle = (hour + minute / 60) * 30;
   const minuteAngle = (minute + second / 60) * 6;
   const secondAngle = second * 6;
+
+  if (isLoading) {
+    return (
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: '#000',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 9999
+      }}>
+        {/* Optional: Add a loading spinner or text here if desired */}
+      </div>
+    );
+  }
 
   return (
     <div style={viewportContainerStyle}>
