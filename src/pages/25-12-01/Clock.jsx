@@ -88,18 +88,24 @@ export default function DigitalClock() {
   if (isLoading) {
     return (
       <div style={{
+        ...containerStyle,
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
         backgroundColor: '#000',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         zIndex: 9999
       }}>
-        {/* Optional: Add a loading spinner or text here if desired */}
+        <div style={{ 
+          ...digitStyle, 
+          color: '#333',
+          fontSize: '10vh',
+          width: 'auto',
+          visibility: 'hidden' 
+        }}>
+          00:00:00
+        </div>
       </div>
     );
   }
