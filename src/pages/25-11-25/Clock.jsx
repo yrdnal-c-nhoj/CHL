@@ -20,13 +20,11 @@ function useNtpOffset() {
     const fetchTime = async () => {
       try {
         const start = performance.now();
-        // Using Etc/UTC as a reliable, non-DST time source
         const res = await fetch("https://worldtimeapi.org/api/timezone/Etc/UTC");
         const data = await res.json();
         const end = performance.now();
         if (!isMounted) return;
 
-        // Calculate offset (network latency compensated)
         const networkDelay = (end - start) / 2;
         const serverTime = new Date(data.utc_datetime).getTime();
         const newOffset = serverTime - (Date.now() + networkDelay);
@@ -50,7 +48,6 @@ function useNtpOffset() {
 
 // --- Utility Functions (Keep as is) ---
 const calculateClockAngles = (ntpSeconds) => {
-    // ... (logic remains the same)
     const timeOfDay = ntpSeconds % SECONDS_PER_DAY;
     const hours = Math.floor(timeOfDay / 3600);
     const minutes = Math.floor((timeOfDay % 3600) / 60);
@@ -64,7 +61,7 @@ const calculateClockAngles = (ntpSeconds) => {
 const generateDigitColors = (numDigits) => {
     return Array.from({ length: numDigits }, () => {
         const h = Math.random() * 360;
-        const shadowH = (h + 180) % 360; // Complementary color for shadow
+        const shadowH = (h + 180) % 360;
         return {
             color: `hsl(${h}, 200%, 50%)`,
             shadowColor: `hsl(${shadowH}, 200%, 60%)`,
@@ -77,13 +74,13 @@ export default function NtpClock() {
   const { offset, isSynced } = useNtpOffset();
   const [ntpSeconds, setNtpSeconds] = useState(0);
   const [digitColors, setDigitColors] = useState([]);
-  const [marqueePos, setMarqueePos] = useState(0);
-  // displayTime shows local time for the marquee text
+  const [marqueeProgress, setMarqueeProgress] = useState(0); // Tracks fraction of loop
   const [displayTime, setDisplayTime] = useState(new Date().toLocaleString([], { timeZoneName: 'short' }));
   const marqueeRef = useRef(null);
 
-  // --- Font Loading (Keep as is) ---
+  // --- 1. Viewport Fix & Font Loading (MODIFIED) ---
   useLayoutEffect(() => {
+    // Font Face Definitions (as before)
     const fontFace = `
       @font-face {
         font-family: 'ClockFont';
@@ -98,74 +95,107 @@ export default function NtpClock() {
         font-display: swap;
       }
     `;
+    
+    // **Mobile Viewport Height Fix**
+    const setAppHeight = () => {
+        // Sets a CSS variable on the root to the true inner height of the window
+        document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+    }
+
+    setAppHeight(); // Set on initial load
+    window.addEventListener('resize', setAppHeight); // Update on resize/orientation change
+
+    // Style injection for fonts
     const styleEl = document.createElement("style");
     styleEl.id = "dynamic-fonts";
     styleEl.innerHTML = fontFace;
     document.head.appendChild(styleEl);
+
     return () => {
       const existingEl = document.getElementById("dynamic-fonts");
       if (existingEl) document.head.removeChild(existingEl);
+      window.removeEventListener('resize', setAppHeight); // Cleanup listener
     };
   }, []);
 
 
-  // --- **Core Change 1 & 2: Update Time & Colors Every Second** ---
+  // --- Core Change 1 & 2: Update Time & Colors Every Second (AS IS) ---
   useEffect(() => {
     if (!isSynced) return;
     
-    // Function to calculate time and generate colors
     const updatePerSecond = () => {
-      // 1. Calculate the synchronized time
       const nowTime = Date.now() + offset;
       const newSeconds = Math.floor(nowTime / MS_PER_SECOND) + NTP_EPOCH_OFFSET;
       
-      // 2. Update NTP seconds (for clock display)
       setNtpSeconds(newSeconds);
-      
-      // 3. Generate new colors every second (randomly)
       setDigitColors(generateDigitColors(String(newSeconds).length)); 
-      
-      // 4. Update local display time for marquee
       setDisplayTime(new Date().toLocaleString([], { timeZoneName: 'short' }));
     }
 
-    // Run once immediately
     updatePerSecond();
     
-    // Set up the interval to run every 1000ms (1 second)
     const tick = setInterval(updatePerSecond, MS_PER_SECOND); 
     
     return () => clearInterval(tick);
-  }, [isSynced, offset]); // Only re-runs if sync status or offset changes
+  }, [isSynced, offset]);
 
 
-  // --- Marquee Animation (Keep as is / Independent) ---
+  // --- 3. Marquee Animation (MODIFIED: Time-Based) ---
   useEffect(() => {
     let frame;
-    const step = () => {
-      setMarqueePos(prev => {
-        const speed = 0.7; // vh per frame
-        // This is a simple linear animation, you might want to reset 'prev'
-        // based on the size of the marqueeRef content if you want it to loop properly
-        return prev + speed;
+    let lastTimestamp = 0;
+    const MARQUEE_SPEED_PX_PER_SECOND = 200; // Define a physical speed
+    
+    const step = (timestamp) => {
+      if (!lastTimestamp) {
+        lastTimestamp = timestamp;
+      }
+
+      // Time elapsed since the last frame in seconds
+      const deltaTime = (timestamp - lastTimestamp) / MS_PER_SECOND;
+
+      // Calculate the distance the marquee *should* have traveled
+      const distanceTraveled = deltaTime * MARQUEE_SPEED_PX_PER_SECOND;
+
+      setMarqueeProgress(prevProgress => {
+        // Calculate the current position based on the component's size
+        const element = marqueeRef.current;
+        if (!element) return 0;
+
+        const maxOffset = element.offsetWidth; // Assuming horizontal marquee for simplicity
+
+        // Update the total distance traveled
+        let newPos = prevProgress + distanceTraveled;
+
+        // Reset the position to loop when it exceeds one full loop (maxOffset)
+        if (newPos >= maxOffset) {
+            newPos = newPos % maxOffset;
+        }
+
+        return newPos;
       });
+
+      lastTimestamp = timestamp;
       frame = requestAnimationFrame(step);
     };
+
     frame = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frame);
-  }, []); // Only runs once on mount
+  }, []); // Runs once on mount
 
-  // --- Styles and Rendering (Keep as is / Independent) ---
+
+  // --- Styles and Rendering (MODIFIED: wrapperStyle, marqueeStyle) ---
   const isPortrait = window.innerHeight > window.innerWidth;
 
   const wrapperStyle = useMemo(() => ({
     width: "100vw",
-    height: "100vh",
+    // 🚨 FIX: Use the CSS variable for mobile-safe height
+    height: "var(--app-height, 100vh)", 
+    minHeight: "-webkit-fill-available", // Fallback for some iOS/WebKit versions
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#111",
-    // **Background Image is independent of the timing logic**
     backgroundImage: `
       url(${backgroundImg}),
       linear-gradient(to right, rgba(200,200,200,0.05) 0.1vh, transparent 0.1vh),
@@ -193,9 +223,10 @@ export default function NtpClock() {
 
   const staticText = `{{time}} NTP, or Network Time Protocol, is a system that keeps computers’ clocks accurate by checking the time from trusted servers and adjusting them as needed. `;
 
-  const marqueeText = Array(10).fill(staticText).join(" ");
+  // Ensure enough text for seamless looping
+  const marqueeText = Array(20).fill(staticText).join(" "); 
 
-  const marqueeStyle = {
+  const marqueeStyle = useMemo(() => ({
     position: "absolute",
     whiteSpace: "nowrap",
     fontSize: "49vh",
@@ -203,22 +234,20 @@ export default function NtpClock() {
     color: "#110101FF",
     textShadow: "#6EE612FF 1px 0",
     zIndex: 1,
-    // opacity: 0.9,
     pointerEvents: "none",
-    // Marquee position is updated by requestAnimationFrame, making it independent
+    // **CALCULATED POSITION: Use marqueeProgress for deterministic position**
     ...(isPortrait ? {
       top: "50%",
-      left: `${100 - marqueePos}vw`,
+      left: `calc(100vw - ${marqueeProgress}px)`, // Marquee moves left from 100vw
       transform: "translate(-50%, -50%)",
     } : {
       left: "50%",
-      top: `${100 - marqueePos}vh`,
+      top: `calc(100vh - ${marqueeProgress}px)`, // Marquee moves up from 100vh
       transform: "translate(-50%, 0) rotate(90deg)",
     }),
-  };
+  }), [isPortrait, marqueeProgress]);
 
   // Although you're not rendering the hands, the angles are still calculated.
-  // We'll keep this as it doesn't hurt performance much.
   const { secAngle, minAngle, hourAngle } = useMemo(() => calculateClockAngles(ntpSeconds), [ntpSeconds]);
 
   return (
@@ -243,6 +272,10 @@ export default function NtpClock() {
       </div>
 
       {/* Marquee */}
+      {/* NOTE: For proper looping in a time-based/linear animation, the marquee 
+           text should be duplicated within the element or via CSS/Web Animations API 
+           to fill the empty space when one section scrolls out. The implementation 
+           above only ensures a constant speed. */}
       <div ref={marqueeRef} style={marqueeStyle}>
         {marqueeText.replace(/\{\{time\}\}/g, displayTime)}
       </div>
