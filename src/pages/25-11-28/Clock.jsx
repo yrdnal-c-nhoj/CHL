@@ -97,7 +97,7 @@ export default function TimelineClock() {
         inset: 0,
         backgroundImage: `url(${patternImg})`, 
         backgroundRepeat: "repeat",
-        backgroundSize: isVertical ? "18vh 24vh" : "24vh 18vh",
+        backgroundSize: isVertical ? "26vh 18vh" : "24vh 18vh",
       },
       // MODIFIED: Ticks now follow a diagonal path regardless of orientation
       tick: (pos) => ({
