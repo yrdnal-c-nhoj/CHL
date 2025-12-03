@@ -118,8 +118,8 @@ export default function TimelineClock() {
       top: isVertical ? `${pos}%` : `${pos}%`,
       transform: "translate(-50%, -50%)",
       pointerEvents: "none",
-      fontSize: "5vh",
-      fontWeight: "bold",
+      fontSize: "5.2vh",
+      // fontWeight: "bold",
       color: "#333",
       textShadow: `
         -1px -1px 0 red, 1px -1px 0 red,
