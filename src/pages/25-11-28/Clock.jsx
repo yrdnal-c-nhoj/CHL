@@ -110,7 +110,7 @@ export default function TimelineClock() {
       inset: 0,
       backgroundImage: `url(${patternImg})`,
       backgroundRepeat: "repeat",
-      backgroundSize: isVertical ? "22vh 22vh" : "24vh 18vh",
+      backgroundSize: isVertical ? "26vh 20vh" : "24vh 18vh",
     },
     tick: (pos) => ({
       position: "absolute",
