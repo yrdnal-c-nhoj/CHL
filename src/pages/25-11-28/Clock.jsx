@@ -142,7 +142,7 @@ export default function TimelineClock() {
       boxShadow: flash
         ? "0 0 40px #ff0000, 0 0 80px #ff3333"
         : "0 0 20px #ff0000, 0 0 40px #ff2222",
-      zIndex: 10,
+      zIndex: 9,
       transition: "all 0.4s ease",
     },
     comet: {
@@ -156,7 +156,7 @@ export default function TimelineClock() {
       transform: "translate(-50%, -50%)",
       boxShadow: "0 0 60px 20px #ffffff, 0 0 100px 40px #ff0088",
       pointerEvents: "none",
-      zIndex: 20,
+      zIndex: 10,
       opacity: comet >= -20 && comet <= 120 ? 1 : 0,
       transition: "opacity 0.2s ease",
     },
