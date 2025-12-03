@@ -41,7 +41,7 @@ export default function TimelineClock() {
   useEffect(() => {
     if (document.fonts) {
       // Load the font and wait for it to be ready
-      document.fonts.load("5.5vh 'LineFont'").then(() => {
+      document.fonts.load("5.3vh 'LineFont'").then(() => {
         setFontLoaded(true);
       }).catch(err => {
         // Fallback: If loading fails, render anyway to avoid infinite blank screen
@@ -106,7 +106,7 @@ export default function TimelineClock() {
         top: `${pos}%`,  // Position vertically based on hour percentage
         transform: "translate(-50%, -50%)", // Centered on the diagonal point
         pointerEvents: "none",
-        fontSize: "5.5vh",
+        fontSize: "5.3vh",
         // fontWeight: "bold",
         color: "#333",
         textShadow: `-1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red, -1px 0 0 red, 1px 0 0 red, 0 -1px 0 red, 0 1px 0 red`,
