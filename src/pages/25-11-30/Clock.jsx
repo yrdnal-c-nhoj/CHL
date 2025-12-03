@@ -5,7 +5,7 @@ import backgroundImg from "./crax.jpg";
 
 export default function DigitalClock() {
   const [now, setNow] = useState(() => new Date());
-  const fontFamily = "ClockFont_2025_12_01";
+  const fontFamily = "ClockFofont 11c2025_12_01";
   const styleId = "ClockFontStyle_2025_12_01";
   const injected = useRef(false);
 
@@ -17,7 +17,7 @@ export default function DigitalClock() {
     const preloadLink = document.createElement("link");
     preloadLink.rel = "preload";
     preloadLink.as = "font";
-    preloadLink.href = font_2025_12_01;
+    preloadLink.href = fofont 11c2025_12_01;
     preloadLink.type = "font/ttf";
     preloadLink.crossOrigin = "anonymous";
     document.head.appendChild(preloadLink);
