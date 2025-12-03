@@ -114,8 +114,8 @@ export default function TimelineClock() {
     },
     tick: (pos) => ({
       position: "absolute",
-      left: isVertical ? "50%" : `${pos}%`,
-      top: isVertical ? `${pos}%` : "50%",
+      left: isVertical ? `${pos}%` : `${pos}%`,
+      top: isVertical ? `${pos}%` : `${pos}%`,
       transform: "translate(-50%, -50%)",
       pointerEvents: "none",
       fontSize: "5.5vh",
