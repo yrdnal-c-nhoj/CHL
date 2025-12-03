@@ -1,22 +1,20 @@
-import React, { useEffect, useState, useLayoutEffect, useMemo, useCallback, useRef } from "react";
-// Assuming these imports are correct and available in your environment
+import React, { useEffect, useState, useLayoutEffect, useMemo, useRef } from "react";
 import fontClockUrl_20251126 from "./ntp.ttf";
 import marqueeFontUrl from "./n2.ttf";
 import backgroundImg from "./npt.webp";
 
-// --- Constants (Keep as is) ---
+// --- Constants ---
 const NTP_EPOCH_OFFSET = 2208988800;
 const MS_PER_SECOND = 1000;
 const SECONDS_PER_DAY = 86400;
 
-// --- Custom Hooks (Keep as is) ---
+// --- Custom Hook: NTP Offset ---
 function useNtpOffset() {
   const [offset, setOffset] = useState(0);
   const [isSynced, setIsSynced] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
-    
     const fetchTime = async () => {
       try {
         const start = performance.now();
@@ -34,11 +32,10 @@ function useNtpOffset() {
       } catch (e) {
         if (isMounted) {
           console.error("Failed to load NTP time:", e);
-          setIsSynced(true); 
+          setIsSynced(true);
         }
       }
     };
-    
     fetchTime();
     return () => { isMounted = false; };
   }, []);
@@ -46,27 +43,27 @@ function useNtpOffset() {
   return { offset, isSynced };
 }
 
-// --- Utility Functions (Keep as is) ---
+// --- Utility Functions ---
 const calculateClockAngles = (ntpSeconds) => {
-    const timeOfDay = ntpSeconds % SECONDS_PER_DAY;
-    const hours = Math.floor(timeOfDay / 3600);
-    const minutes = Math.floor((timeOfDay % 3600) / 60);
-    const seconds = timeOfDay % 60;
-    const secAngle = seconds * 6 - 90;
-    const minAngle = minutes * 6 + seconds * 0.1 - 90;
-    const hourAngle = ((hours % 12) * 30) + minutes * 0.5 - 90;
-    return { secAngle, minAngle, hourAngle };
+  const timeOfDay = ntpSeconds % SECONDS_PER_DAY;
+  const hours = Math.floor(timeOfDay / 3600);
+  const minutes = Math.floor((timeOfDay % 3600) / 60);
+  const seconds = timeOfDay % 60;
+  const secAngle = seconds * 6 - 90;
+  const minAngle = minutes * 6 + seconds * 0.1 - 90;
+  const hourAngle = ((hours % 12) * 30) + minutes * 0.5 - 90;
+  return { secAngle, minAngle, hourAngle };
 };
 
 const generateDigitColors = (numDigits) => {
-    return Array.from({ length: numDigits }, () => {
-        const h = Math.random() * 360;
-        const shadowH = (h + 180) % 360;
-        return {
-            color: `hsl(${h}, 200%, 50%)`,
-            shadowColor: `hsl(${shadowH}, 200%, 60%)`,
-        };
-    });
+  return Array.from({ length: numDigits }, () => {
+    const h = Math.random() * 360;
+    const shadowH = (h + 180) % 360;
+    return {
+      color: `hsl(${h}, 200%, 50%)`,
+      shadowColor: `hsl(${shadowH}, 200%, 60%)`,
+    };
+  });
 };
 
 // --- Component ---
@@ -74,13 +71,12 @@ export default function NtpClock() {
   const { offset, isSynced } = useNtpOffset();
   const [ntpSeconds, setNtpSeconds] = useState(0);
   const [digitColors, setDigitColors] = useState([]);
-  const [marqueeProgress, setMarqueeProgress] = useState(0); // Tracks fraction of loop
+  const [marqueeProgress, setMarqueeProgress] = useState(0);
   const [displayTime, setDisplayTime] = useState(new Date().toLocaleString([], { timeZoneName: 'short' }));
   const marqueeRef = useRef(null);
 
-  // --- 1. Viewport Fix & Font Loading (MODIFIED) ---
+  // --- Font Loading & Mobile Viewport Fix ---
   useLayoutEffect(() => {
-    // Font Face Definitions (as before)
     const fontFace = `
       @font-face {
         font-family: 'ClockFont';
@@ -95,17 +91,14 @@ export default function NtpClock() {
         font-display: swap;
       }
     `;
-    
-    // **Mobile Viewport Height Fix**
+
     const setAppHeight = () => {
-        // Sets a CSS variable on the root to the true inner height of the window
-        document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
-    }
+      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+    };
 
-    setAppHeight(); // Set on initial load
-    window.addEventListener('resize', setAppHeight); // Update on resize/orientation change
+    setAppHeight();
+    window.addEventListener('resize', setAppHeight);
 
-    // Style injection for fonts
     const styleEl = document.createElement("style");
     styleEl.id = "dynamic-fonts";
     styleEl.innerHTML = fontFace;
@@ -114,64 +107,46 @@ export default function NtpClock() {
     return () => {
       const existingEl = document.getElementById("dynamic-fonts");
       if (existingEl) document.head.removeChild(existingEl);
-      window.removeEventListener('resize', setAppHeight); // Cleanup listener
+      window.removeEventListener('resize', setAppHeight);
     };
   }, []);
 
-
-  // --- Core Change 1 & 2: Update Time & Colors Every Second (AS IS) ---
+  // --- Update NTP Time Every Second ---
   useEffect(() => {
     if (!isSynced) return;
-    
+
     const updatePerSecond = () => {
       const nowTime = Date.now() + offset;
       const newSeconds = Math.floor(nowTime / MS_PER_SECOND) + NTP_EPOCH_OFFSET;
-      
+
       setNtpSeconds(newSeconds);
-      setDigitColors(generateDigitColors(String(newSeconds).length)); 
+      setDigitColors(generateDigitColors(String(newSeconds).length));
       setDisplayTime(new Date().toLocaleString([], { timeZoneName: 'short' }));
-    }
+    };
 
     updatePerSecond();
-    
-    const tick = setInterval(updatePerSecond, MS_PER_SECOND); 
-    
+    const tick = setInterval(updatePerSecond, MS_PER_SECOND);
+
     return () => clearInterval(tick);
   }, [isSynced, offset]);
 
-
-  // --- 3. Marquee Animation (MODIFIED: Time-Based) ---
+  // --- Marquee Animation ---
   useEffect(() => {
     let frame;
     let lastTimestamp = 0;
-    const MARQUEE_SPEED_PX_PER_SECOND = 200; // Define a physical speed
-    
+    const MARQUEE_SPEED_PX_PER_SECOND = 200;
+
     const step = (timestamp) => {
-      if (!lastTimestamp) {
-        lastTimestamp = timestamp;
-      }
-
-      // Time elapsed since the last frame in seconds
+      if (!lastTimestamp) lastTimestamp = timestamp;
       const deltaTime = (timestamp - lastTimestamp) / MS_PER_SECOND;
-
-      // Calculate the distance the marquee *should* have traveled
       const distanceTraveled = deltaTime * MARQUEE_SPEED_PX_PER_SECOND;
 
-      setMarqueeProgress(prevProgress => {
-        // Calculate the current position based on the component's size
+      setMarqueeProgress(prev => {
         const element = marqueeRef.current;
         if (!element) return 0;
-
-        const maxOffset = element.offsetWidth; // Assuming horizontal marquee for simplicity
-
-        // Update the total distance traveled
-        let newPos = prevProgress + distanceTraveled;
-
-        // Reset the position to loop when it exceeds one full loop (maxOffset)
-        if (newPos >= maxOffset) {
-            newPos = newPos % maxOffset;
-        }
-
+        const maxOffset = element.offsetWidth;
+        let newPos = prev + distanceTraveled;
+        if (newPos >= maxOffset) newPos = newPos % maxOffset;
         return newPos;
       });
 
@@ -181,20 +156,20 @@ export default function NtpClock() {
 
     frame = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frame);
-  }, []); // Runs once on mount
+  }, []);
 
-
-  // --- Styles and Rendering (MODIFIED: wrapperStyle, marqueeStyle) ---
   const isPortrait = window.innerHeight > window.innerWidth;
 
+  // --- Styles ---
   const wrapperStyle = useMemo(() => ({
     width: "100vw",
-    // 🚨 FIX: Use the CSS variable for mobile-safe height
-    height: "var(--app-height, 100vh)", 
-    minHeight: "-webkit-fill-available", // Fallback for some iOS/WebKit versions
+    height: "var(--app-height, 100vh)",
+    minHeight: "-webkit-fill-available",
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    overflow: "visible",
     backgroundColor: "#111",
     backgroundImage: `
       url(${backgroundImg}),
@@ -204,15 +179,15 @@ export default function NtpClock() {
     backgroundSize: "25vh 15vh, 25vh 15vh, 25vh 15vh",
     backgroundPosition: "center",
     filter: "invert(1) saturate(7)",
-    overflow: "hidden",
     position: "relative",
   }), []);
 
   const baseClockStyle = { fontFamily: "ClockFont, monospace", textAlign: "center" };
-
   const clockStyle = useMemo(() => ({
     ...baseClockStyle,
-    fontSize: isPortrait ? "13vh" : "15vh",
+    fontSize: isPortrait
+      ? "min(13vh, calc(var(--app-height, 100vh) * 0.8))"
+      : "15vh",
     lineHeight: "0.75",
     display: "flex",
     flexDirection: isPortrait ? "column" : "row",
@@ -222,9 +197,7 @@ export default function NtpClock() {
   }), [isPortrait]);
 
   const staticText = `{{time}} NTP, or Network Time Protocol, is a system that keeps computers’ clocks accurate by checking the time from trusted servers and adjusting them as needed. `;
-
-  // Ensure enough text for seamless looping
-  const marqueeText = Array(20).fill(staticText).join(" "); 
+  const marqueeText = Array(20).fill(staticText).join(" ");
 
   const marqueeStyle = useMemo(() => ({
     position: "absolute",
@@ -235,19 +208,17 @@ export default function NtpClock() {
     textShadow: "#6EE612FF 1px 0",
     zIndex: 1,
     pointerEvents: "none",
-    // **CALCULATED POSITION: Use marqueeProgress for deterministic position**
     ...(isPortrait ? {
       top: "50%",
-      left: `calc(100vw - ${marqueeProgress}px)`, // Marquee moves left from 100vw
-      transform: "translate(-50%, -50%)",
+      left: `calc(100vw - ${marqueeProgress}px)`,
+      transform: "translateX(-50%)",
     } : {
       left: "50%",
-      top: `calc(100vh - ${marqueeProgress}px)`, // Marquee moves up from 100vh
-      transform: "translate(-50%, 0) rotate(90deg)",
+      top: `calc(100vh - ${marqueeProgress}px)`,
+      transform: "translateX(-50%) rotate(90deg)",
     }),
   }), [isPortrait, marqueeProgress]);
 
-  // Although you're not rendering the hands, the angles are still calculated.
   const { secAngle, minAngle, hourAngle } = useMemo(() => calculateClockAngles(ntpSeconds), [ntpSeconds]);
 
   return (
@@ -267,15 +238,11 @@ export default function NtpClock() {
             </span>
           ))
         ) : (
-          <span style={{ fontSize: "6vh", opacity: 0.0 }}>Syncing...</span>
+          <span style={{ fontSize: "6vh", opacity: 0 }}>Syncing...</span>
         )}
       </div>
 
       {/* Marquee */}
-      {/* NOTE: For proper looping in a time-based/linear animation, the marquee 
-           text should be duplicated within the element or via CSS/Web Animations API 
-           to fill the empty space when one section scrolls out. The implementation 
-           above only ensures a constant speed. */}
       <div ref={marqueeRef} style={marqueeStyle}>
         {marqueeText.replace(/\{\{time\}\}/g, displayTime)}
       </div>
