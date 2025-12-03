@@ -8,24 +8,71 @@ export default function RococoDigitalClock() {
   const [isVertical, setIsVertical] = useState(false);
   const [fontLoaded, setFontLoaded] = useState(false);
 
+  // Preload font and set up font face
   useEffect(() => {
-    // Wait for font to load before showing content
-    document.fonts.ready.then(() => {
-      setFontLoaded(true);
-    });
+    // Add preload link for font
+    const preloadLink = document.createElement('link');
+    preloadLink.href = fontUrl_20251128;
+    preloadLink.rel = 'preload';
+    preloadLink.as = 'font';
+    preloadLink.type = 'font/ttf';
+    preloadLink.crossOrigin = 'anonymous';
+    document.head.appendChild(preloadLink);
 
+    // Add font face
+    const style = document.createElement('style');
+    style.id = 'rococo-font';
+    style.textContent = `
+      @font-face {
+        font-family: 'RococoBlob';
+        src: url(${fontUrl_20251128}) format('truetype');
+        font-weight: 800;
+        font-display: block; // Prevent FOUT
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Check if font is loaded
+    const checkFont = async () => {
+      try {
+        // Load the font using the FontFace API
+        const font = new FontFace('RococoBlob', `url(${fontUrl_20251128})`, {
+          weight: '800',
+          style: 'normal',
+          display: 'block'
+        });
+        
+        // Wait for the font to load
+        await font.load();
+        document.fonts.add(font);
+        
+        // Small delay to ensure all resources are ready
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        setFontLoaded(true);
+      } catch (e) {
+        console.error('Failed to load font:', e);
+        setFontLoaded(true); // Continue even if font fails to load
+      }
+    };
+
+    checkFont();
+
+    // Set up time and morph intervals
     const timeInterval = setInterval(() => setNow(new Date()), 1000);
-
     const morphInterval = setInterval(() => {
       setMorph((m) => m + 1);
-      setNow(new Date()); // snap seconds exactly on morph
+      setNow(new Date());
     }, 5000);
+    setMorph(1);
 
-    setMorph(1); // kickstart morph immediately
-
+    // Cleanup
     return () => {
       clearInterval(timeInterval);
       clearInterval(morphInterval);
+      document.head.removeChild(preloadLink);
+      const existingStyle = document.getElementById('rococo-font');
+      if (existingStyle) document.head.removeChild(existingStyle);
     };
   }, []);
 
@@ -63,7 +110,7 @@ export default function RococoDigitalClock() {
     };
   };
 
-  // Show black loading screen until font is loaded
+  // Show loading state that matches the final layout
   if (!fontLoaded) {
     return (
       <div style={{
@@ -73,12 +120,29 @@ export default function RococoDigitalClock() {
         right: 0,
         bottom: 0,
         backgroundColor: '#000',
+        backgroundImage: `url(${backgroundImg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        filter: 'brightness(1.2) contrast(1.4)',
         zIndex: 9999,
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        gap: '2vh',
+        opacity: 1,
       }}>
-        {/* Optional: Add a loading spinner or text here if desired */}
+        {/* Invisible placeholder that matches the clock's layout */}
+        <div style={{ 
+          width: '100vw',
+          height: '18vh',
+          display: 'flex',
+          justifyContent: 'center',
+          visibility: 'hidden'
+        }}>
+          <div style={{ width: '10vh', height: '18vh' }} />
+          <div style={{ width: '10vh', height: '18vh' }} />
+        </div>
       </div>
     );
   }
@@ -103,14 +167,7 @@ export default function RococoDigitalClock() {
           opacity: 1,
         }}
       >
-        <style>{`
-          @font-face {
-            font-family: 'RococoBlob';
-            src: url(${fontUrl_20251128}) format('truetype');
-            font-weight: 800;
-            font-display: swap;
-          }
-        `}</style>
+        {/* Font face is now loaded in the main effect */}
         <div style={{ display: "flex", position: "relative" }}>
           {hours.split("").map((char, i) => (
             <div
