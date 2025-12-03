@@ -1,35 +1,37 @@
 // DigitalClock.jsx
 import React, { useState, useEffect, useRef } from "react";
-import font_2025_12_01 from "./nono.ttf";
+import font251130 from "./nono.ttf";
 import backgroundImg from "./crax.jpg";
 
 export default function DigitalClock() {
   const [now, setNow] = useState(() => new Date());
-  const fontFamily = "ClockFofont 11c2025_12_01";
-  const styleId = "ClockFontStyle_2025_12_01";
   const injected = useRef(false);
 
-  // Inject @font-face + mobile viewport fix ONCE
+  // Use a simple, safe font-family name
+  const fontFamily = "ClockFont2025_12_01";
+  const styleId = "ClockFontStyle_2025_12_01";
+
+  // Inject @font-face + viewport fix ONCE
   useEffect(() => {
     if (injected.current) return;
 
-    // Preload the font to avoid flash of unstyled content
+    // --- PRELOAD FONT (fixed reference) ---
     const preloadLink = document.createElement("link");
     preloadLink.rel = "preload";
     preloadLink.as = "font";
-    preloadLink.href = fofont 11c2025_12_01;
+    preloadLink.href = font251130; // FIXED
     preloadLink.type = "font/ttf";
     preloadLink.crossOrigin = "anonymous";
     document.head.appendChild(preloadLink);
 
+    // --- Inject style block ---
     const css = `
       @font-face {
         font-family: '${fontFamily}';
-        src: url('${font_2025_12_01}') format('truetype');
+        src: url('${font251130}') format('truetype');
         font-display: swap;
       }
 
-      /* Fix 100vh clipping on mobile browsers (2025 best practice) */
       html, body {
         height: 100%;
         height: 100dvh;
@@ -53,13 +55,13 @@ export default function DigitalClock() {
     injected.current = true;
   }, []);
 
-  // Update time every second
+  // Update clock every second
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // Leetspeak digit substitution
+  // Leetspeak mapping
   const digitMap = {
     "0": "1",
     "1": "T",
@@ -91,22 +93,19 @@ export default function DigitalClock() {
     fontFamily: `'${fontFamily}', monospace`,
     fontSize: isPhone ? "24vw" : "16vw",
     color: "#071A16FF",
-    // background: "rgba(0,0,0,0.4)",
     borderRadius: "8px",
     textShadow: `
-  
       -1px -1px 0 #F98016FF,
-      1px -1px 0 #F98016FF,
-      -1px 1px 0 #F98016FF,
-      1px 1px 0   #F9800FFF
+       1px -1px 0 #F98016FF,
+      -1px  1px 0 #F98016FF,
+       1px  1px 0 #F9800FFF
     `,
     userSelect: "none",
   };
 
-
   const container = {
     width: "100vw",
-    height: "100dvh",                    // This fixes the clipping!
+    height: "100dvh",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -141,22 +140,20 @@ export default function DigitalClock() {
   );
 
   return (
-    <>
-      <div style={container}>
-        {isPhone ? (
-          <div style={column}>
-            {renderPair(HH)}
-            {renderPair(MM)}
-            {renderPair(SS)}
-          </div>
-        ) : (
-          <div style={row}>
-            {renderPair(HH)}
-            {renderPair(MM)}
-            {renderPair(SS)}
-          </div>
-        )}
-      </div>
-    </>
+    <div style={container}>
+      {isPhone ? (
+        <div style={column}>
+          {renderPair(HH)}
+          {renderPair(MM)}
+          {renderPair(SS)}
+        </div>
+      ) : (
+        <div style={row}>
+          {renderPair(HH)}
+          {renderPair(MM)}
+          {renderPair(SS)}
+        </div>
+      )}
+    </div>
   );
 }
