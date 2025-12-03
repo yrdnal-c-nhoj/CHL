@@ -10,7 +10,15 @@ const fontCSS = `
     font-style: normal;
     font-display: block;
   }
-  html, body, #root { height: 100dvh; margin: 0; overflow: hidden; }
+  html, body, #root { 
+    height: 100dvh; 
+    margin: 0; 
+    overflow: hidden;
+    visibility: hidden;
+  }
+  .font-loaded {
+    visibility: visible !important;
+  }
 `;
 
 export default function TimelineClock() {
@@ -22,9 +30,15 @@ export default function TimelineClock() {
     style.innerHTML = fontCSS;
     document.head.appendChild(style);
 
-    document.fonts.ready.then(() => setFontReady(true));
+    document.fonts.ready.then(() => {
+      document.documentElement.classList.add('font-loaded');
+      setFontReady(true);
+    });
 
-    return () => document.head.removeChild(style);
+    return () => {
+      document.head.removeChild(style);
+      document.documentElement.classList.remove('font-loaded');
+    };
   }, []);
 
   // --- Other hooks (always run) ---
