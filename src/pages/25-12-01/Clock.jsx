@@ -4,6 +4,7 @@ import bgImg from "./shark.webp";
 import clockfoont12012 from "./shark.ttf";
 
 export default function DigitalClock() {
+  const [isLoading, setIsLoading] = useState(true);
   const [time, setTime] = useState(() => new Date());
 
   useEffect(() => {
@@ -16,22 +17,42 @@ export default function DigitalClock() {
   const minutes = formatTime(time.getMinutes());
   const seconds = formatTime(time.getSeconds());
 
-  // Font injection (unchanged)
+  // Font loading and initialization
   useEffect(() => {
-    if (!document.getElementById("ClockFont_2025_12_01")) {
-      const style = document.createElement("style");
-      style.id = "ClockFont_2025_12_01";
-      style.textContent = `
-        @font-face {
-          font-family: 'ClockFont_2025_12_01';
-          src: url(${clockfoont12012}) format('truetype');
-          font-weight: normal;
-          font-style: normal;
-          font-display: swap;
-        }
-      `;
-      document.head.appendChild(style);
-    }
+    let mounted = true;
+    
+    const loadFonts = async () => {
+      if (!document.getElementById("ClockFont_2025_12_01")) {
+        const style = document.createElement("style");
+        style.id = "ClockFont_2025_12_01";
+        style.textContent = `
+          @font-face {
+            font-family: 'ClockFont_2025_12_01';
+            src: url(${clockfoont12012}) format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
+      // Wait for fonts to be loaded
+      await document.fonts.ready;
+      
+      // Small delay to ensure all resources are ready
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      if (mounted) {
+        setIsLoading(false);
+      }
+    };
+
+    loadFonts();
+    
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const containerStyle = {
@@ -63,6 +84,16 @@ export default function DigitalClock() {
   };
 
   const digits = `${hours}${minutes}${seconds}`;
+
+  if (isLoading) {
+    return (
+      <div style={{
+        ...containerStyle,
+        backgroundColor: '#000',
+        visibility: 'hidden'
+      }} />
+    );
+  }
 
   return (
     <div style={containerStyle}>
