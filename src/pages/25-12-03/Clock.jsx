@@ -15,6 +15,7 @@ export default function EyeChart() {
   const minutes = ("0" + time.getMinutes()).slice(-2);
   const ampm = time.getHours() >= 12 ? "PM" : "AM";
 
+  const seconds = ("0" + time.getSeconds()).slice(-2);
   const lines = [
     ["O", "20/200", "6/60", "#e63946"],           // Red
     [ampm, "20/100", "6/30", "#f77f00"],          // Orange
@@ -23,7 +24,7 @@ export default function EyeChart() {
     ["KOVRS", "20/40", "6/12", "#118ab2"],        // Blue
     [`${minutes}MINS`, "20/30", "6/9", "#073b4c"], // Navy
     ["HOSRDN", "20/25", "6/7.5", "#6a4c93"],      // Purple
-    ["CSVKORHZ", "20/20", "6/6", "#2a9d8f"],      // Green
+    [`${seconds}SCNDS`, "20/20", "6/6", "#2a9d8f"], // Green
   ];
 
   const fontSizeForIndex = (i) => {
