@@ -28,7 +28,7 @@ export default function EyeChart() {
 
   const fontSizeForIndex = (i) => {
     // Scale larger for tall chart look
-    const sizes = [15, 12, 10, 8, 6.5, 5.5, 4.5, 3.5];
+    const sizes = [15, 12, 10, 8, 6.5, 5.4, 4.5, 3.5];
     return `${sizes[i]}vh`;
   };
 
