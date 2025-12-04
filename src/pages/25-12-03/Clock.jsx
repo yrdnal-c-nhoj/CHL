@@ -4,7 +4,6 @@ import sloanFont_2025_1204 from "./ichart.otf";
 export default function EyeChart() {
   const fontFamilyName = "SloanOptotype_2025_1204";
 
-  // Live clock state
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -12,12 +11,10 @@ export default function EyeChart() {
     return () => clearInterval(timer);
   }, []);
 
-  // Format hours (12-hour clock with leading zero) and AM/PM
   const hours = ("0" + (time.getHours() % 12 || 12)).slice(-2);
   const minutes = ("0" + time.getMinutes()).slice(-2);
   const ampm = time.getHours() >= 12 ? "PM" : "AM";
 
-  // Each line now includes: [letters, twentyFeet, meters, colorCode]
   const lines = [
     ["O", "20/200", "6/60", "#e63946"],           // Red
     [ampm, "20/100", "6/30", "#f77f00"],          // Orange
@@ -30,18 +27,17 @@ export default function EyeChart() {
   ];
 
   const fontSizeForIndex = (i) => {
-    const sizes = [12, 9.5, 7.5, 6.2, 5.2, 4.4, 3.8, 3.2];
+    // Scale larger for tall chart look
+    const sizes = [15, 12, 10, 8, 6.5, 5.5, 4.5, 3.5];
     return `${sizes[i]}vh`;
   };
 
   const outer = {
     minHeight: "100vh",
     display: "flex",
-    alignItems: "center",
     justifyContent: "center",
     background: "#f7f5ef",
-    padding: "4vh",
-    boxSizing: "border-box",
+    padding: "1vh",
     fontFamily:
       fontFamilyName +
       ", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue'",
@@ -49,64 +45,53 @@ export default function EyeChart() {
   };
 
   const card = {
-    width: "60vh",
+    width: "40vh",       // narrow width like real eye chart
     maxWidth: "90vw",
-    padding: "5vh 4vh",
+    padding: "2vh 0",
     background: "rgba(255,255,255,0.97)",
-    borderRadius: "1.2vh",
+    borderRadius: "1vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-evenly",
     boxShadow: "0 0.8vh 2vh rgba(0,0,0,0.06)",
-    position: "relative",
     boxSizing: "border-box",
   };
-
 
   const lineBase = {
     display: "flex",
     alignItems: "center",
-    width: "100%",
-    margin: "1.6vh 0",
     justifyContent: "center",
+    width: "100%",
     position: "relative",
+    margin: "0.5vh 0", // closer together for realism
   };
-
-  // NEW: Function to create colored bar styles
-  const colorBar = (color) => ({
-    position: "absolute",
-    left: "3vh",
-    width: "0.6vh",
-    height: "80%",
-    backgroundColor: color,
-    borderRadius: "0.3vh",
-  });
 
   const letterStyle = {
     fontFamily: fontFamilyName,
     textTransform: "uppercase",
     lineHeight: 1,
-    letterSpacing: "0.25vh",
+    letterSpacing: "0.1vh",
     margin: 0,
     padding: 0,
   };
 
   const leftLabel = {
     position: "absolute",
-    left: "5vh",  // CHANGED: moved right to make room for color bar
-    fontSize: "1.6vh",
+    left: "-8vh",
+    fontSize: "2vh",
     opacity: 0.55,
     letterSpacing: "0.15vh",
   };
 
   const rightLabel = {
     position: "absolute",
-    right: "0",
+    right: "-8vh",
     textAlign: "right",
-    fontSize: "1.6vh",
+    fontSize: "2vh",
     opacity: 0.55,
     letterSpacing: "0.15vh",
-    lineHeight: 1.4,
   };
-
- 
 
   return (
     <>
@@ -127,27 +112,17 @@ export default function EyeChart() {
 
       <div style={outer} className="eyechart-root">
         <div style={card} role="img" aria-label="Snellen Sloan eye chart">
-        
-
-          {lines.map(([letters, twenty, six, color], i) => {
-            const size = fontSizeForIndex(i);
-            return (
-              <div key={i} style={{ ...lineBase, fontSize: size }}>
-                {/* NEW: Colored bar on the left */}
-                <div style={colorBar(color)} />
-                
-                <div style={leftLabel}>{twenty}</div>
-                <p style={{ ...letterStyle, fontSize: "inherit" }}>{letters}</p>
-                <div style={rightLabel}>
-                  {twenty}
-                  <br />
-                  {six}
-                </div>
+          {lines.map(([letters, twenty, six, color], i) => (
+            <div key={i} style={{ ...lineBase, fontSize: fontSizeForIndex(i) }}>
+              <div style={leftLabel}>{twenty}</div>
+              <p style={{ ...letterStyle, fontSize: "inherit" }}>{letters}</p>
+              <div style={rightLabel}>
+                {twenty}
+                <br />
+                {six}
               </div>
-            );
-          })}
-
-         
+            </div>
+          ))}
         </div>
       </div>
     </>
