@@ -2,16 +2,19 @@
 > daily-clock-app@0.0.0 build
 > vite build
 
-failed to load config from /Users/john/Desktop/CHL/vite.config.js
+vite v7.1.6 building for production...
+transforming...
+✓ 4 modules transformed.
+✗ Build failed in 48ms
 error during build:
-Error: Dynamic require of "file:///Users/john/Desktop/CHL/node_modules/tailwindcss/dist/lib.mjs" is not supported
-    at file:///Users/john/Desktop/CHL/node_modules/.vite-temp/vite.config.js.timestamp-1764857242074-a0b56b7f3441a.mjs:5:9
-    at file:///Users/john/Desktop/CHL/node_modules/.vite-temp/vite.config.js.timestamp-1764857242074-a0b56b7f3441a.mjs:20:9
+[vite:css] Failed to load PostCSS config (searchPath: ./postcss.config.js): [ReferenceError] module is not defined in ES module scope
+This file is being treated as an ES module because it has a '.js' file extension and '/Users/john/Desktop/CHL/package.json' contains "type": "module". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.
+ReferenceError: module is not defined in ES module scope
+This file is being treated as an ES module because it has a '.js' file extension and '/Users/john/Desktop/CHL/package.json' contains "type": "module". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.
+    at file:///Users/john/Desktop/CHL/postcss.config.js?t=1764857920770:1:1
     at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
-    at async loadConfigFromBundledFile (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:36230:12)
-    at async bundleAndLoadConfigFile (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:36116:17)
-    at async loadConfigFromFile (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:36083:42)
-    at async resolveConfig (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:35732:22)
-    at async createBuilder (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:34195:19)
-    at async CAC.<anonymous> (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/cli.js:641:10)
+    at async req$3 (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:8455:12)
+    at async Object.search (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:8265:24)
+file: /Users/john/Desktop/CHL/src/index.css
+
