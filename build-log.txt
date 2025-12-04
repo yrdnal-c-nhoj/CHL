@@ -2,32 +2,16 @@
 > daily-clock-app@0.0.0 build
 > vite build
 
-vite v7.1.6 building for production...
-transforming...
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-[plugin vite:esbuild] src/pages/25-11-19/Clock.jsx: Duplicate key "zIndex" in object literal
-89 |      color: "#E1F3DDFF",
-90 |        fontSize: "4rem",
-91 |          zIndex: 5,
-   |          ^
-92 |      textAlign: "center",
-93 |      textShadow: "1px 1px rgba(0,0,0)",
-
-✓ 1647 modules transformed.
-✗ Build failed in 1.00s
+failed to load config from /Users/john/Desktop/CHL/vite.config.js
 error during build:
-Could not resolve "./nono.ttf" from "src/pages/25-12-07/Clock.jsx"
-file: /Users/john/Desktop/CHL/src/pages/25-12-07/Clock.jsx
-    at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
-    at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
-    at ModuleLoader.handleInvalidResolvedId (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21490:24)
-    at file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21450:26
+Error: Dynamic require of "file:///Users/john/Desktop/CHL/node_modules/tailwindcss/dist/lib.mjs" is not supported
+    at file:///Users/john/Desktop/CHL/node_modules/.vite-temp/vite.config.js.timestamp-1764857242074-a0b56b7f3441a.mjs:5:9
+    at file:///Users/john/Desktop/CHL/node_modules/.vite-temp/vite.config.js.timestamp-1764857242074-a0b56b7f3441a.mjs:20:9
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
+    at async loadConfigFromBundledFile (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:36230:12)
+    at async bundleAndLoadConfigFile (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:36116:17)
+    at async loadConfigFromFile (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:36083:42)
+    at async resolveConfig (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:35732:22)
+    at async createBuilder (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:34195:19)
+    at async CAC.<anonymous> (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/cli.js:641:10)
