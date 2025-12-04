@@ -5,13 +5,13 @@
 vite v7.1.6 building for production...
 transforming...
 ✓ 4 modules transformed.
-✗ Build failed in 48ms
+✗ Build failed in 49ms
 error during build:
 [vite:css] Failed to load PostCSS config (searchPath: ./postcss.config.js): [ReferenceError] module is not defined in ES module scope
 This file is being treated as an ES module because it has a '.js' file extension and '/Users/john/Desktop/CHL/package.json' contains "type": "module". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.
 ReferenceError: module is not defined in ES module scope
 This file is being treated as an ES module because it has a '.js' file extension and '/Users/john/Desktop/CHL/package.json' contains "type": "module". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.
-    at file:///Users/john/Desktop/CHL/postcss.config.js?t=1764857920770:1:1
+    at file:///Users/john/Desktop/CHL/postcss.config.js?t=1764858258786:1:1
     at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
     at async req$3 (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/dep-D5b0Zz6C.js:8455:12)
