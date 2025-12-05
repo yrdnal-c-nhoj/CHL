@@ -96,7 +96,7 @@ export default function EyeChart() {
               src: url('${sloanFont_2025_1204}') format('opentype');
               font-weight: 700;
               font-style: normal;
-              font-display: swap;
+              font-display: block;
             }
             .eyechart-root * { box-sizing: border-box; }
           `,
