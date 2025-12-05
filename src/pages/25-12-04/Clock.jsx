@@ -83,6 +83,7 @@ const PuppyClockComponent = () => {
       src: url(${font_2024_12_05}) format('woff2');
       font-weight: normal;
       font-style: normal;
+      font-display: block;
     }
   `;
 
