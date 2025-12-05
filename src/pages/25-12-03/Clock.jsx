@@ -38,7 +38,7 @@ export default function EyeChart() {
     display: "flex",
     justifyContent: "center",
     background: "#FDF5DDFF",
-    padding: "1vh",
+    // padding: "1vh",
     fontFamily:
       fontFamilyName +
       ", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue'",
@@ -48,7 +48,7 @@ export default function EyeChart() {
   const card = {
     width: "40vh",       // narrow width like real eye chart
     maxWidth: "65vw",
-    padding: "2vh 0",
+    // padding: "2vh 0",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
