@@ -115,8 +115,6 @@ export default function EyeChart() {
               <div style={leftLabel}>{twenty}</div>
               <p style={{ ...letterStyle, fontSize: "inherit" }}>{letters}</p>
               <div style={rightLabel}>
-                {twenty}
-                <br />
                 {six}
               </div>
             </div>
