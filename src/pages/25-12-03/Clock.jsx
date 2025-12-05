@@ -5,7 +5,6 @@ export default function EyeChart() {
   const fontFamilyName = "SloanOptotype_2025_1204";
 
   const [time, setTime] = useState(new Date());
-
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
@@ -14,21 +13,21 @@ export default function EyeChart() {
   const hours = ("0" + (time.getHours() % 12 || 12)).slice(-2);
   const minutes = ("0" + time.getMinutes()).slice(-2);
   const ampm = time.getHours() >= 12 ? "PM" : "AM";
-
   const seconds = ("0" + time.getSeconds()).slice(-2);
+
+  // Removed unused colors
   const lines = [
-    ["O", "20/200", "6/60", "#e63946"],           // Red
-    [ampm, "20/100", "6/30", "#f77f00"],          // Orange
-    ["RSV", "20/70", "6/21", "#fcbf49"],          // Yellow
-    [`${hours}HR`, "20/50", "6/15", "#06d6a0"],   // Teal
-    ["KOVRS", "20/40", "6/12", "#118ab2"],        // Blue
-    [`${minutes}MINS`, "20/30", "6/9", "#073b4c"], // Navy
-    ["HOSRDN", "20/25", "6/7.5", "#6a4c93"],      // Purple
-    [`${seconds}SCNDS`, "20/20", "6/6", "#2a9d8f"], // Green
+    ["O", "20/200", "6/60"],
+    [ampm, "20/100", "6/30"],
+    ["RSV", "20/70", "6/21"],
+    [`${hours}HR`, "20/50", "6/15"],
+    ["KOVRS", "20/40", "6/12"],
+    [`${minutes}MINS`, "20/30", "6/9"],
+    ["HOSRDN", "20/25", "6/7.5"],
+    [`${seconds}SCNDS`, "20/20", "6/6"],
   ];
 
   const fontSizeForIndex = (i) => {
-    // Scale larger for tall chart look
     const sizes = [15, 12, 10, 8, 6.5, 5.5, 4.5, 3.5];
     return `${sizes[i]}vh`;
   };
@@ -38,7 +37,6 @@ export default function EyeChart() {
     display: "flex",
     justifyContent: "center",
     background: "#FDF5DDFF",
-    // padding: "1vh",
     fontFamily:
       fontFamilyName +
       ", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue'",
@@ -46,14 +44,12 @@ export default function EyeChart() {
   };
 
   const card = {
-    width: "40vh",       // narrow width like real eye chart
+    width: "40vh",
     maxWidth: "65vw",
-    // padding: "2vh 0",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-evenly",
-    boxSizing: "border-box",
   };
 
   const lineBase = {
@@ -62,7 +58,7 @@ export default function EyeChart() {
     justifyContent: "center",
     width: "100%",
     position: "relative",
-    margin: "0.5vh 0", // closer together for realism
+    margin: "0.5vh 0",
   };
 
   const letterStyle = {
@@ -85,7 +81,6 @@ export default function EyeChart() {
   const rightLabel = {
     position: "absolute",
     right: "-8vh",
-    textAlign: "right",
     fontSize: "2vh",
     opacity: 0.55,
     letterSpacing: "0.15vh",
@@ -110,13 +105,11 @@ export default function EyeChart() {
 
       <div style={outer} className="eyechart-root">
         <div style={card} role="img" aria-label="Snellen Sloan eye chart">
-          {lines.map(([letters, twenty, six, color], i) => (
+          {lines.map(([letters, twenty, six], i) => (
             <div key={i} style={{ ...lineBase, fontSize: fontSizeForIndex(i) }}>
               <div style={leftLabel}>{twenty}</div>
               <p style={{ ...letterStyle, fontSize: "inherit" }}>{letters}</p>
-              <div style={rightLabel}>
-                {six}
-              </div>
+              <div style={rightLabel}>{six}</div>
             </div>
           ))}
         </div>
