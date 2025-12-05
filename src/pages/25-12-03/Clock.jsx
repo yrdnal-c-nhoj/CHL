@@ -34,7 +34,7 @@ export default function EyeChart() {
   };
 
   const outer = {
-    minHeight: "100vh",
+    minHeight: "100dvh",
     display: "flex",
     justifyContent: "center",
     background: "#f7f5ef",
