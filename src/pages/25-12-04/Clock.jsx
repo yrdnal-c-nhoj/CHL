@@ -69,9 +69,9 @@ const PuppyClockComponent = () => {
 
   const clockStyle = {
     fontFamily: 'CustomFont, sans-serif',
-    fontSize: '10vh',
-    color: 'white',
-    textShadow: '0.3vh 0.3vh 0.6vh rgba(0,0,0,0.8)',
+    fontSize: '6vh',
+    color: '#F9EBE5FF',
+    textShadow: '0.3vh 0.3vh 0.6vh rgba(0,0,0,0.9)',
     fontWeight: 'bold',
     userSelect: 'none',
     transform: 'translateY(10vh)' // Slightly below center
