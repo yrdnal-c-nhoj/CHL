@@ -47,15 +47,15 @@ export default function EyeChart() {
 
   const card = {
     width: "40vh",       // narrow width like real eye chart
-    maxWidth: "90vw",
+    maxWidth: "65vw",
     padding: "2vh 0",
-    background: "rgba(255,255,255,0.97)",
-    borderRadius: "1vh",
+    // background: "rgba(255,255,255,0.97)",
+    // borderRadius: "1vh",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-evenly",
-    boxShadow: "0 0.8vh 2vh rgba(0,0,0,0.06)",
+    // boxShadow: "0 0.8vh 2vh rgba(0,0,0,0.06)",
     boxSizing: "border-box",
   };
 
