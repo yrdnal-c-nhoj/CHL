@@ -37,7 +37,7 @@ export default function EyeChart() {
     minHeight: "100dvh",
     display: "flex",
     justifyContent: "center",
-    background: "#f7f5ef",
+    background: "#FDF5DDFF",
     padding: "1vh",
     fontFamily:
       fontFamilyName +
@@ -49,13 +49,10 @@ export default function EyeChart() {
     width: "40vh",       // narrow width like real eye chart
     maxWidth: "65vw",
     padding: "2vh 0",
-    // background: "rgba(255,255,255,0.97)",
-    // borderRadius: "1vh",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-evenly",
-    // boxShadow: "0 0.8vh 2vh rgba(0,0,0,0.06)",
     boxSizing: "border-box",
   };
 
