@@ -6,6 +6,7 @@ import hourHandImg from "./hand3.gif";
 import minuteHandImg from "./hand1.gif";
 import secondHandImg from "./hand2.gif";
 import customFont_2025_1206 from "./gir.otf";
+import { color } from "three/tsl";
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
@@ -51,8 +52,8 @@ export default function AnalogClock() {
   };
 
   const clockContainerStyle = {
-    width: "80vmin",
-    height: "80vmin",
+    width: "95vmin",
+    height: "95vmin",
     borderRadius: "50%",
     position: "relative",
     margin: "0 auto",
@@ -77,18 +78,19 @@ export default function AnalogClock() {
   const numbers = Array.from({ length: 12 }, (_, i) => i + 1);
   const numberStyle = (num) => {
     const angle = ((num - 3) * 30) * (Math.PI / 180);
-    const radius = 30;
+    const radius = 45;
     const x = radius * Math.cos(angle);
     const y = radius * Math.sin(angle);
     return {
       position: "absolute",
       left: `calc(50% + ${x}vmin)`,
       top: `calc(50% + ${y}vmin)`,
-      fontSize: "clamp(4rem, 5vw, 5.5rem)",
+      fontSize: "clamp(8rem, 9vh, 9.5rem)",
       fontFamily: "CustomClockFont",
       userSelect: "none",
       textAlign: "center",
       transform: "translate(-50%, -50%)",
+      textShadow: "1px 1px 0 white",
     };
   };
 
