@@ -1,109 +1,137 @@
 import React, { useEffect, useState } from "react";
 
-export default function AnalogClock() {
-  const [time, setTime] = useState(new Date());
+// Import today's date font
+import font_2025_12_06 from "./magic.ttf";
 
+// Import background image
+import bgImage from "./magic.webp";
+
+export default function BoxedDigitalClock() {
+  const [time, setTime] = useState(new Date());
+  const [visible, setVisible] = useState(false); // Clock visibility for glitch
+  const [randomOpacity, setRandomOpacity] = useState(0.2); // Random opacity for glitches
+
+  // -------------------------------
+  // Update clock every second
+  // -------------------------------
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
-  // Clock hands
-  const seconds = time.getSeconds();
-  const minutes = time.getMinutes();
-  const hours = time.getHours() % 12;
+  // -------------------------------
+  // Random glitch in/out
+  // -------------------------------
+  useEffect(() => {
+    // Start after 1 second
+    const startTimeout = setTimeout(() => {
+      const glitchLoop = () => {
+        // Random delay ~0-500ms for next glitch
+        const delay = 500 + Math.random() * 500;
 
-  const secondDeg = (seconds / 60) * 360;
-  const minuteDeg = (minutes / 60) * 360 + (seconds / 60) * 6;
-  const hourDeg = (hours / 12) * 360 + (minutes / 60) * 30;
+        // Set random opacity for this glitch
+        setRandomOpacity(Math.random() * 0.8);
 
-  // Styles
+        // Show clock briefly (~1/16 second)
+        setVisible(true);
+        setTimeout(() => setVisible(false), 62); // 1/16 second
+
+        // Schedule next glitch
+        setTimeout(glitchLoop, delay);
+      };
+      glitchLoop();
+    }, 1000);
+
+    return () => clearTimeout(startTimeout);
+  }, []);
+
+  const hours = time.getHours().toString().padStart(2, "0").split("");
+  const minutes = time.getMinutes().toString().padStart(2, "0").split("");
+  const seconds = time.getSeconds().toString().padStart(2, "0").split("");
+
   const containerStyle = {
+    fontFamily: "CustomFont_2025_12_06",
+    height: "100vh",
+    width: "100vw",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "100vh",
-    width: "100vw",
-    background: "#f0f0f0",
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: "contain",
+    backgroundPosition: "center",
+    flexDirection: "column",
+    color: "#fff",
+    boxSizing: "border-box",
+    overflow: "hidden",
+    fontFeatureSettings: "'tnum'",
+    position: "relative"
+  };
+
+  const overlayStyle = {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%",
+    background: "radial-gradient(circle,  rgba(18, 110, 128, 0.3) 0%,  rgba(128, 0, 128, 0.2) 100%)",
+    pointerEvents: "none"
   };
 
   const clockStyle = {
-    position: "relative",
-    height: "40vh",
-    width: "40vh",
-    borderRadius: "50%",
-    border: "0.5vh solid #333",
-    background: "#fff",
-    boxShadow: "0 0 2vh rgba(0,0,0,0.2)",
+    display: visible ? "flex" : "none", // Show only during glitch
+    gap: "1vw",
+    alignItems: "center",
+    fontSize: "8vh",
+    opacity: randomOpacity,
+    transform: visible ? `translateX(${Math.random() * 4 - 2}px)` : "translateX(0)", // slight horizontal jitter
+    filter: visible ? `blur(${Math.random() * 1.5}px) brightness(${1 + Math.random() * 0.5})` : "none",
+    transition: "all 0.05s linear"
   };
 
-  const handStyle = (width, height, bgColor, deg) => ({
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    width: `${width}vh`,
-    height: `${height}vh`,
-    backgroundColor: bgColor,
-    transformOrigin: "bottom center",
-    transform: `translate(-50%, -100%) rotate(${deg}deg)`,
-    borderRadius: "0.25vh",
-  });
-
-  const centerDotStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    width: "1.5vh",
-    height: "1.5vh",
-    backgroundColor: "#333",
-    borderRadius: "50%",
-    transform: "translate(-50%, -50%)",
-    zIndex: 10,
+  const digitBoxStyle = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    width: "6vh",
+    height: "8vh",
+    borderRadius: "1vh"
   };
 
-  // Roman numerals
-  const romanNumerals = [
-    "I", "II", "III", "IV", "V", "VI",
-    "VII", "VIII", "IX", "X", "XI", "XII"
-  ];
-
-  const numberStyle = (num) => {
-    const clockRadius = 20; // half of clock's 40vh
-    const offset = 3; // push numbers outside by 3vh
-    const radius = clockRadius + offset; // total distance from center
-    const angle = ((num - 3) / 12) * 2 * Math.PI; // align 12 at top
-    const x = 50 + radius * Math.cos(angle);
-    const y = 50 + radius * Math.sin(angle);
-    const rotateDeg = (angle * 180) / Math.PI; // tangent rotation
-
-    return {
-      position: "absolute",
-      left: `${x}%`,
-      top: `${y}%`,
-      transform: `translate(-50%, -50%) rotate(${rotateDeg}deg)`,
-      transformOrigin: "center center",
-      fontSize: "3vh",
-      fontWeight: "bold",
-      color: "#333",
-    };
+  const separatorStyle = {
+    margin: "0 1vw"
   };
 
   return (
     <div style={containerStyle}>
+      <style>
+        {`
+          @font-face {
+            font-family: 'CustomFont_2025_12_06';
+            src: url(${font_2025_12_06}) format('truetype');
+            font-weight: normal;
+            font-style: normal;
+          }
+        `}
+      </style>
+
+      <div style={overlayStyle}></div>
+
       <div style={clockStyle}>
-        {/* Hour hand */}
-        <div style={handStyle(0.8, 12, "#333", hourDeg)} />
-        {/* Minute hand */}
-        <div style={handStyle(0.5, 16, "#666", minuteDeg)} />
-        {/* Second hand */}
-        <div style={handStyle(0.2, 18, "red", secondDeg)} />
-        {/* Center dot */}
-        <div style={centerDotStyle} />
-        {/* Numbers */}
-        {romanNumerals.map((num, i) => (
-          <div key={i} style={numberStyle(i + 1)}>
-            {num}
-          </div>
+        {hours.map((digit, i) => (
+          <div key={`h${i}`} style={digitBoxStyle}>{digit}</div>
+        ))}
+
+        <div style={separatorStyle}>:</div>
+
+        {minutes.map((digit, i) => (
+          <div key={`m${i}`} style={digitBoxStyle}>{digit}</div>
+        ))}
+
+        <div style={separatorStyle}>:</div>
+
+        {seconds.map((digit, i) => (
+          <div key={`s${i}`} style={digitBoxStyle}>{digit}</div>
         ))}
       </div>
     </div>

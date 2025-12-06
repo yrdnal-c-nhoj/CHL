@@ -1,119 +1,102 @@
-import React, { useState, useEffect } from "react";
-import sloanFont_2025_1204 from "./ichart.otf";
+import { useState, useEffect } from 'react';
 
-export default function EyeChart() {
-  const fontFamilyName = "SloanOptotype_2025_1204";
+// Import font with today's date variable name
+import font_2024_12_05 from './dog.ttf';
 
+const PuppyClockComponent = () => {
+  const [currentImage, setCurrentImage] = useState('');
   const [time, setTime] = useState(new Date());
+
+  const getRandomPuppyImage = async () => {
+    try {
+      const response = await fetch('https://dog.ceo/api/breeds/image/random');
+      const data = await response.json();
+      if (data.status === 'success') {
+        setCurrentImage(data.message);
+      }
+    } catch (error) {
+      console.error('Error fetching puppy image:', error);
+    }
+  };
+
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    getRandomPuppyImage();
+
+    const clockInterval = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    const imageInterval = setInterval(() => {
+      getRandomPuppyImage();
+    }, 3000);
+
+    return () => {
+      clearInterval(clockInterval);
+      clearInterval(imageInterval);
+    };
   }, []);
 
-  const hours = ("0" + (time.getHours() % 12 || 12)).slice(-2);
-  const minutes = ("0" + time.getMinutes()).slice(-2);
-  const ampm = time.getHours() >= 12 ? "PM" : "AM";
-  const seconds = ("0" + time.getSeconds()).slice(-2);
+  const formatTime = (date) => {
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'pm' : 'am';
 
-  // Removed unused colors
-  const lines = [
-    ["O", "20/200", "6/60"],
-    [ampm, "20/100", "6/30"],
-    ["RSV", "20/70", "6/21"],
-    [`${hours}HR`, "20/50", "6/15"],
-    ["KOVRS", "20/40", "6/12"],
-    [`${minutes}MINS`, "20/30", "6/9"],
-    ["HOSRDN", "20/25", "6/7.5"],
-    [`${seconds}SCNDS`, "20/20", "6/6"],
-  ];
+    hours = hours % 12;
+    hours = hours ? hours : 12;
 
-  const fontSizeForIndex = (i) => {
-    const sizes = [15, 12, 10, 8, 6.5, 5.5, 4.5, 3.5];
-    return `${sizes[i]}vh`;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    const timeString = `${hours}${formattedMinutes} ${ampm}`;
+
+    // Insert spaces between all characters
+    return timeString.split('').join(' ');
   };
 
-  const outer = {
-    minHeight: "100dvh",
-    display: "flex",
-    justifyContent: "center",
-    background: "#FDF5DDFF",
-    fontFamily:
-      fontFamilyName +
-      ", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue'",
-    WebkitFontSmoothing: "antialiased",
-  };
-
-  const card = {
-    width: "40vh",
-    maxWidth: "65vw",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-evenly",
-  };
-
-  const lineBase = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    position: "relative",
-    margin: "0.5vh 0",
-  };
-
-  const letterStyle = {
-    fontFamily: fontFamilyName,
-    textTransform: "uppercase",
-    lineHeight: 1,
-    letterSpacing: "0.1vh",
+  const containerStyle = {
+    width: '100vw',
+    height: '100vh',
+    backgroundImage: currentImage ? `url(${currentImage})` : 'none',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: 0,
-    padding: 0,
+    overflow: 'hidden',
+    backgroundColor: '#333'
   };
 
-  const leftLabel = {
-    position: "absolute",
-    left: "-8vh",
-    fontSize: "2vh",
-    opacity: 0.55,
-    letterSpacing: "0.15vh",
+  const clockStyle = {
+    fontFamily: 'CustomFont, sans-serif',
+    fontSize: '6vh',
+    color: '#F9EBE5FF',
+    textShadow: '0.3vh 0.3vh 0.6vh rgba(0,0,0,0.9)',
+    fontWeight: 'bold',
+    userSelect: 'none',
+    transform: 'translateY(10vh)' // Slightly below center
   };
 
-  const rightLabel = {
-    position: "absolute",
-    right: "-8vh",
-    fontSize: "2vh",
-    opacity: 0.55,
-    letterSpacing: "0.15vh",
-  };
+  const fontFaceStyle = `
+    @font-face {
+      font-family: 'CustomFont';
+      src: url(${font_2024_12_05}) format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: block;
+    }
+  `;
 
   return (
     <>
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-            @font-face {
-              font-family: '${fontFamilyName}';
-              src: url('${sloanFont_2025_1204}') format('opentype');
-              font-weight: 700;
-              font-style: normal;
-              font-display: block;
-            }
-            .eyechart-root * { box-sizing: border-box; }
-          `,
-        }}
-      />
-
-      <div style={outer} className="eyechart-root">
-        <div style={card} role="img" aria-label="Snellen Sloan eye chart">
-          {lines.map(([letters, twenty, six], i) => (
-            <div key={i} style={{ ...lineBase, fontSize: fontSizeForIndex(i) }}>
-              <div style={leftLabel}>{twenty}</div>
-              <p style={{ ...letterStyle, fontSize: "inherit" }}>{letters}</p>
-              <div style={rightLabel}>{six}</div>
-            </div>
-          ))}
+      <style>{fontFaceStyle}</style>
+      <div style={containerStyle}>
+        <div style={clockStyle}>
+          {formatTime(time)}
         </div>
       </div>
     </>
   );
-}
+};
+
+export default PuppyClockComponent;
