@@ -128,7 +128,7 @@ export default function AnalogClock() {
       textAlign: "center",
       color: "white",
       transform: "translate(-50%, -50%)",
-      textShadow: "1px 1px 0 red, -1px -1px 0 black",
+      textShadow: "1px 1px 0 #970909FF, -1px -1px 0 black",
     };
   };
 
@@ -166,6 +166,7 @@ export default function AnalogClock() {
     filter: "drop-shadow(2px 2px 2px rgba(0,0,0,0.9)) drop-shadow(-2px -2px 2px rgba(255,255,255,0.7))",
     maskImage: "linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 3%, rgba(0,0,0,1) 5%)",
     WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 3%, rgba(0,0,0,1) 5%)",
+    opacity: 0.8,
   });
 
   const rowContainerStyle = (position) => ({
@@ -205,7 +206,9 @@ export default function AnalogClock() {
     transform: `translate(-50%, -50%) rotate(${centerDeg}deg)`,
     transformOrigin: "50% 50%",
     zIndex: 15,
+    opacity: 0.7,
     pointerEvents: "none",
+    opacity: 0.7,
   };
 
   return (
