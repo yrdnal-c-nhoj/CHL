@@ -8,6 +8,7 @@ import secondHandImg from "./hand2.gif";
 import customFont_2025_1206 from "./gir.otf";
 import tileImg from "./run.webp"; // single tiling image
 import centerImg from "./walk.webp"; // new center image
+import { color } from "three/tsl";
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
@@ -125,8 +126,9 @@ export default function AnalogClock() {
       fontFamily: "CustomClockFont",
       userSelect: "none",
       textAlign: "center",
+      color: "white",
       transform: "translate(-50%, -50%)",
-      textShadow: "1px 1px 0 white",
+      textShadow: "1px 1px 0 red, -1px -1px 0 black",
     };
   };
 
@@ -192,14 +194,14 @@ export default function AnalogClock() {
   });
 
   // Rotation of center image (counterclockwise one revolution per minute)
-  const centerDeg = -(totalSeconds * 6); // 6° per second = 360° per minute, negative for counterclockwise
+  const centerDeg = -(totalSeconds * 12); // 6° per second = 360° per minute, negative for counterclockwise
 
   const centerImageStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
-    width: "20vmin",
-    height: "20vmin",
+    width: "25vmin",
+    height: "25vmin",
     transform: `translate(-50%, -50%) rotate(${centerDeg}deg)`,
     transformOrigin: "50% 50%",
     zIndex: 15,
