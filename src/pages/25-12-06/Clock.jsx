@@ -52,8 +52,8 @@ export default function AnalogClock() {
   };
 
   const clockContainerStyle = {
-    width: "95vmin",
-    height: "95vmin",
+    width: "85vmin",
+    height: "85vmin",
     borderRadius: "50%",
     position: "relative",
     margin: "0 auto",
@@ -71,6 +71,8 @@ export default function AnalogClock() {
     imageRendering: "auto",
     transition: "transform 0.0625s linear",
     zIndex: 10,
+    filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9)) drop-shadow(-2px -2px 2px rgba(255, 255, 255, 0.7))",
+    WebkitFilter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9)) drop-shadow(-2px -2px 2px rgba(255, 255, 255, 0.7))",
     maskImage: "linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 10%)",
     WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 10%)",
   });
@@ -85,7 +87,7 @@ export default function AnalogClock() {
       position: "absolute",
       left: `calc(50% + ${x}vmin)`,
       top: `calc(50% + ${y}vmin)`,
-      fontSize: "clamp(8rem, 9vh, 9.5rem)",
+      fontSize: "clamp(7rem, 8vh, 8.5rem)",
       fontFamily: "CustomClockFont",
       userSelect: "none",
       textAlign: "center",
@@ -102,10 +104,10 @@ export default function AnalogClock() {
             {num}
           </div>
         ))}
-        <img src={hourHandImg} alt="hour" style={handStyle(hourHandImg, hourDeg, 28, 44)} />
         <img src={minuteHandImg} alt="minute" style={handStyle(minuteHandImg, minuteDeg, 25, 52)} />
-        <img src={secondHandImg} alt="second" style={handStyle(secondHandImg, secondDeg, 26, 58)} />
-      </div>
+         <img src={hourHandImg} alt="hour" style={handStyle(hourHandImg, hourDeg, 28, 44)} />
+           <img src={secondHandImg} alt="second" style={handStyle(secondHandImg, secondDeg, 26, 58)} />
+  </div>
     </div>
   );
 }
