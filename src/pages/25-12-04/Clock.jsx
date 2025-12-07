@@ -19,7 +19,7 @@ export default function EyeChart() {
   const lines = [
     ["O", "20/200", "6/60"],
     [ampm, "20/100", "6/30"],
-    ["RSV", "20/70", "6/21"],
+    ["CHL", "20/70", "6/21"],
     [`${hours}HR`, "20/50", "6/15"],
     ["KOVRS", "20/40", "6/12"],
     [`${minutes}MINS`, "20/30", "6/9"],
