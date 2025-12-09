@@ -34,6 +34,7 @@ export default function AnalogClock () {
         src: url(${customFont_2025_1206}) format('truetype');
         font-weight: normal;
         font-style: normal;
+        font-display: swap;
       }
     `
     document.head.appendChild(style)
