@@ -3,67 +3,85 @@ import React, { useRef, useMemo, useState, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Html } from '@react-three/drei'
 import * as THREE from 'three'
-import backgroundImage from './h2o.webp' // Make sure to add your image file
-import font251209 from './water.otf' // Import the custom font file
+import backgroundImage from './h2o.webp'
+import fontFile from './water.otf' // ← make sure this is .woff2 (or .woff)
 
 export default function IcosahedronScene () {
+  // Proper font preloading + @font-face
   useEffect(() => {
+    const link = document.createElement('link')
+    link.rel = 'preload'
+    link.as = 'font'
+    link.type = 'font/woff2'
+    link.crossOrigin = 'anonymous'
+    link.href = fontFile
+    document.head.appendChild(link)
+
     const style = document.createElement('style')
     style.textContent = `
       @font-face {
-        font-family: 'CustomFont251209';
-        src: url('${font251209}') format('woff');
+        font-family: 'WaterFont';
+        src: url('${fontFile}') format('woff2');
+        font-display: swap;
+      }
+      @keyframes ripple {
+        0%   { background-position: 0% 0%; }
+        100% { background-position: 100% 100%; }
       }
     `
     document.head.appendChild(style)
-    return () => document.head.removeChild(style)
+
+    return () => {
+      document.head.removeChild(style)
+    }
   }, [])
 
-  const containerStyle = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    overflow: 'hidden',
-    backgroundColor: 'blue'
-  }
-
-  const backgroundStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    filter: 'contrast(60%) brightness(133%) hue-rotate(44deg) saturate(900%)',
-    opacity: 0.7,
-    zIndex: 0
-  }
-
   return (
-    <div style={containerStyle}>
-      {/* Background with filters */}
-      <div style={backgroundStyle}></div>
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        background: '#000814',
+        overflow: 'hidden'
+      }}
+    >
+      {/* Animated water background */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter:
+            'contrast(65%) brightness(135%) hue-rotate(44deg) saturate(800%)',
+          opacity: 0.78,
+          animation: 'ripple 48s linear infinite',
+          zIndex: 0
+        }}
+      />
 
       <Canvas
-        style={{
-          position: 'relative',
-          zIndex: 1,
-          width: '100%',
-          height: '100%',
-          background: 'transparent'
-        }}
-        camera={{ position: [0, 0, 3.6], fov: 45 }}
+        camera={{ position: [0, 0, 3.8], fov: 45 }}
+        style={{ position: 'relative', zIndex: 1 }}
       >
-        <ambientLight intensity={0.45} />
-        <pointLight intensity={0.9} position={[5, 5, 5]} />
-        <pointLight intensity={0.5} position={[-5, -5, -5]} />
+        <ambientLight intensity={0.5} />
+        <pointLight position={[10, 10, 10]} intensity={1.2} color='#a0c0ff' />
+        <pointLight
+          position={[-10, -10, -10]}
+          intensity={0.6}
+          color='#204080'
+        />
 
         <FloatingIcosahedron />
-        <OrbitControls enablePan={false} enableZoom={true} />
+        <OrbitControls
+          enablePan={false}
+          enableZoom={true}
+          minDistance={2}
+          maxDistance={8}
+          autoRotate
+          autoRotateSpeed={0.3}
+        />
       </Canvas>
     </div>
   )
@@ -71,115 +89,112 @@ export default function IcosahedronScene () {
 
 function FloatingIcosahedron () {
   const groupRef = useRef()
-  const formatTime = () => {
-    const now = new Date()
-    const h = now.getHours().toString().padStart(2, '0')
-    const m = now.getMinutes().toString().padStart(2, '0')
-    return `${h}:${m}`
-  }
+  const [time, setTime] = useState('')
 
-  const [time, setTime] = useState(formatTime())
-
+  // Live clock
   useEffect(() => {
-    const interval = setInterval(() => setTime(formatTime()), 1000)
-    return () => clearInterval(interval)
+    const update = () =>
+      setTime(
+        new Date().toLocaleTimeString('en-GB', {
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      )
+    update()
+    const id = setInterval(update, 1000)
+    return () => clearInterval(id)
   }, [])
 
-  const { meshGeometry } = useMemo(() => {
-    const geom = new THREE.IcosahedronGeometry(1.2, 0)
-    const nonIndexed = geom.toNonIndexed()
-    const pos = nonIndexed.getAttribute('position')
-    const count = pos.count
-    const colors = new Float32Array(count * 3)
+  // Geometry + vertex colors (20 triangles → 20 colors)
+  const { geometry, edges } = useMemo(() => {
+    const geo = new THREE.IcosahedronGeometry(1.2, 0).toNonIndexed()
+    const pos = geo.getAttribute('position')
+    const colors = new Float32Array(pos.count * 3)
     const color = new THREE.Color()
-    const selectedColors = ['#A198EEFF', '#E4ECF0FF', '#2A2AE8FF', '#065555FF']
-    const colorIndices = [
-      0,
-      1,
-      2,
-      0,
-      3, // 0
-      1,
-      2,
-      3,
-      1,
-      0, // 5
-      2,
-      3,
-      0,
-      2,
-      1, // 10
-      3,
-      0,
-      1,
-      3,
-      2 // 15
-    ] // 20 values, ensure no two adjacent triangles have same color
 
-    for (let v = 0; v < count; v += 3) {
-      const triangleIndex = v / 3
-      if (triangleIndex >= colorIndices.length) continue
-      color.setHex(
-        selectedColors[colorIndices[triangleIndex]].replace('#', '0x')
-      )
+    const palette = ['#A198EE', '#E4ECF0', '#2A2AE8', '#065555']
+    const assignment = [
+      0, 1, 2, 0, 3, 1, 2, 3, 1, 0, 2, 3, 0, 2, 1, 3, 0, 1, 3, 2
+    ]
+
+    for (let i = 0; i < pos.count; i += 3) {
+      const triIdx = Math.floor(i / 3)
+      const col = palette[assignment[triIdx % 20]]
+      color.set(col)
       for (let k = 0; k < 3; k++) {
-        const idx = v + k
-        colors[idx * 3] = color.r
-        colors[idx * 3 + 1] = color.g
-        colors[idx * 3 + 2] = color.b
+        const idx = (i + k) * 3
+        colors[idx] = color.r
+        colors[idx + 1] = color.g
+        colors[idx + 2] = color.b
       }
     }
-    nonIndexed.setAttribute('color', new THREE.BufferAttribute(colors, 3))
-    return { meshGeometry: nonIndexed }
+
+    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+    const edgesGeo = new THREE.EdgesGeometry(geo)
+
+    return { geometry: geo, edges: edgesGeo }
   }, [])
 
   useFrame((state, delta) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.x += 0.12 * delta
-      groupRef.current.rotation.y += 0.08 * delta
-      groupRef.current.rotation.z += 0.06 * delta
-      // Move in a circle, starting from the rear
-      const speed = 0.3
-      const radius = 1.2
-      const offset = Math.PI
-      groupRef.current.position.x =
-        Math.sin(state.clock.elapsedTime * speed + offset) * radius
-      groupRef.current.position.z =
-        Math.cos(state.clock.elapsedTime * speed + offset) * radius
-    }
+    if (!groupRef.current) return
+    const t = state.clock.elapsedTime
+
+    groupRef.current.rotation.x += delta * 0.12
+    groupRef.current.rotation.y += delta * 0.08
+    groupRef.current.rotation.z += delta * 0.06
+
+    // Gentle orbital drift
+    const radius = 1.25
+    groupRef.current.position.x = Math.sin(t * 0.3 + Math.PI) * radius
+    groupRef.current.position.z = Math.cos(t * 0.3 + Math.PI) * radius
   })
 
   return (
     <group ref={groupRef}>
-      <mesh geometry={meshGeometry}>
+      {/* Main translucent faces */}
+      <mesh geometry={geometry}>
         <meshStandardMaterial
-          vertexColors={true}
+          vertexColors
           side={THREE.DoubleSide}
-          flatShading={true}
-          metalness={0.15}
-          roughness={0.5}
-          transparent={true}
-          opacity={0.3}
+          flatShading
+          metalness={0.2}
+          roughness={0.4}
+          transparent
+          opacity={0.38}
         />
       </mesh>
-      <mesh geometry={meshGeometry} scale={1.002}>
+
+      {/* Subtle inner glow */}
+      <mesh geometry={geometry} scale={0.97}>
+        <meshBasicMaterial color='#4088ff' opacity={0.12} transparent />
+      </mesh>
+
+      {/* Wireframe overlay */}
+      <mesh geometry={geometry} scale={1.004}>
         <meshBasicMaterial
-          wireframe={true}
-          side={THREE.DoubleSide}
-          polygonOffset={true}
-          polygonOffsetFactor={-1}
-          polygonOffsetUnits={1}
+          wireframe
+          color='#6993E6FF'
+          opacity={0.9}
+          transparent
         />
       </mesh>
-      <lineSegments geometry={new THREE.EdgesGeometry(meshGeometry)}>
-        <lineBasicMaterial attach='material' linewidth={1.5} color='black' />
+
+      {/* Crisp black edges */}
+      <lineSegments geometry={edges}>
+        <lineBasicMaterial color='#000814' linewidth={2} />
       </lineSegments>
-      <Html scale={0.3} position={[0, 0, 0]} transform>
+
+      {/* Clock */}
+      <Html center scale={0.36} position={[0, 0, 0]} transform>
         <div
           style={{
-            color: '#8095E6FF',
-            fontSize: '90px',
-            fontFamily: 'CustomFont251209, monospace'
+            color: '#88bbff',
+            fontSize: '66px',
+            // fontWeight: 100,
+            letterSpacing: '3px',
+            fontFamily: "'WaterFont', monospace",
+            userSelect: 'none',
+            pointerEvents: 'none'
           }}
         >
           {time}
