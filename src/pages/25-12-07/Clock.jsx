@@ -25,7 +25,8 @@ export default function IcosahedronScene () {
     margin: 0,
     padding: 0,
     position: 'relative',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    backgroundColor: 'blue'
   }
 
   const backgroundStyle = {
@@ -38,6 +39,7 @@ export default function IcosahedronScene () {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     filter: 'contrast(60%) brightness(133%) hue-rotate(44deg) saturate(900%)',
+    opacity: 0.7,
     zIndex: 0
   }
 
@@ -90,7 +92,7 @@ function FloatingIcosahedron () {
     const count = pos.count
     const colors = new Float32Array(count * 3)
     const color = new THREE.Color()
-    const selectedColors = ['#6965EDFF', '#04628BFF', '#0000ff', '#12EEEEFF']
+    const selectedColors = ['#A198EEFF', '#E4ECF0FF', '#2A2AE8FF', '#065555FF']
     const colorIndices = [
       0,
       1,
@@ -168,7 +170,7 @@ function FloatingIcosahedron () {
         <div
           style={{
             color: '#8095E6FF',
-            fontSize: '50px',
+            fontSize: '90px',
             fontFamily: 'CustomFont251209, monospace'
           }}
         >
