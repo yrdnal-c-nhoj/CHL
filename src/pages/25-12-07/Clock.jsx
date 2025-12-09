@@ -155,7 +155,7 @@ function FloatingIcosahedron () {
       <mesh geometry={geometry}>
         <meshStandardMaterial
           vertexColors
-          side={THREE.DoubleSide}
+          side={THREE.FrontSide}
           flatShading
           metalness={0.2}
           roughness={0.4}
@@ -166,7 +166,7 @@ function FloatingIcosahedron () {
 
       {/* Subtle inner glow */}
       <mesh geometry={geometry} scale={0.97}>
-        <meshBasicMaterial color='#4088ff' opacity={0.22} transparent />
+        <meshBasicMaterial color='#4088ff' opacity={0} transparent />
       </mesh>
 
       {/* Wireframe overlay */}
@@ -174,28 +174,30 @@ function FloatingIcosahedron () {
         <meshBasicMaterial
           wireframe
           color='#6993E6FF'
-          opacity={0.9}
+          opacity={0}
           transparent
         />
       </mesh>
 
       {/* Crisp black edges */}
       <lineSegments geometry={edges}>
-        <lineBasicMaterial color='#F1F3F6FF' linewidth={5} />
+        <lineBasicMaterial color='#F1F3F6FF' linewidth={0} />
       </lineSegments>
 
       {/* Clock */}
       <Html center scale={0.36} position={[0, 0, 0]} transform>
         <div
           style={{
-            color: '#E4EBF4FF',
-            fontSize: '66px',
+            color: '#162CEAFF',
+            fontSize: '70px',
             // fontWeight: 100,
             letterSpacing: '3px',
-            opacity: 0.3,
+            opacity: 0.6,
             fontFamily: "'WaterFont', monospace",
             userSelect: 'none',
-            pointerEvents: 'none'
+            pointerEvents: 'none',
+            textShadow:
+              '-1px -1px 0 #0F0219FF, 1px -1px 0 #E22333FF, -1px 1px 0 #F6EFEFFF, 1px 1px 0 #E7EBE6FF'
           }}
         >
           {time}
