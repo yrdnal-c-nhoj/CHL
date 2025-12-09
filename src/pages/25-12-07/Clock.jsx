@@ -20,11 +20,11 @@ export default function IcosahedronScene () {
   }, [])
 
   const containerStyle = {
-    width: '100vw',
-    height: '100vh',
-    margin: 0,
-    padding: 0,
-    position: 'relative',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     overflow: 'hidden',
     backgroundColor: 'blue'
   }
@@ -138,6 +138,14 @@ function FloatingIcosahedron () {
       groupRef.current.rotation.x += 0.12 * delta
       groupRef.current.rotation.y += 0.08 * delta
       groupRef.current.rotation.z += 0.06 * delta
+      // Move in a circle, starting from the rear
+      const speed = 0.3
+      const radius = 1.2
+      const offset = Math.PI
+      groupRef.current.position.x =
+        Math.sin(state.clock.elapsedTime * speed + offset) * radius
+      groupRef.current.position.z =
+        Math.cos(state.clock.elapsedTime * speed + offset) * radius
     }
   })
 
