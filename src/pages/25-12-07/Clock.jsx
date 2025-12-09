@@ -139,9 +139,9 @@ function FloatingIcosahedron () {
     if (!groupRef.current) return
     const t = state.clock.elapsedTime
 
-    groupRef.current.rotation.x += delta * 0.12
-    groupRef.current.rotation.y += delta * 0.08
-    groupRef.current.rotation.z += delta * 0.06
+    groupRef.current.rotation.x += delta * -0.22
+    groupRef.current.rotation.y += delta * -0.18
+    groupRef.current.rotation.z += delta * 0.26
 
     // Gentle orbital drift
     const radius = 1.25
@@ -166,7 +166,7 @@ function FloatingIcosahedron () {
 
       {/* Subtle inner glow */}
       <mesh geometry={geometry} scale={0.97}>
-        <meshBasicMaterial color='#4088ff' opacity={0.12} transparent />
+        <meshBasicMaterial color='#4088ff' opacity={0.22} transparent />
       </mesh>
 
       {/* Wireframe overlay */}
@@ -181,7 +181,7 @@ function FloatingIcosahedron () {
 
       {/* Crisp black edges */}
       <lineSegments geometry={edges}>
-        <lineBasicMaterial color='#000814' linewidth={2} />
+        <lineBasicMaterial color='#F1F3F6FF' linewidth={5} />
       </lineSegments>
 
       {/* Clock */}
