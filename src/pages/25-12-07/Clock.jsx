@@ -4,7 +4,8 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Html } from '@react-three/drei'
 import * as THREE from 'three'
 import backgroundImage from './h2o.webp'
-import fontFile from './water.otf' // ← make sure this is .woff2 (or .woff)
+import backgroundImage2 from './water.gif' // ← NEW secondary background
+import fontFile from './water.otf' // (should ideally be .woff2)
 
 export default function IcosahedronScene () {
   // Proper font preloading + @font-face
@@ -45,7 +46,23 @@ export default function IcosahedronScene () {
         overflow: 'hidden'
       }}
     >
-      {/* Animated water background */}
+      {/* ████████████ NEW BACKGROUND LAYER (Behind everything) ████████████ */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url(${backgroundImage2})`,
+          backgroundSize: 'cover',
+          filter:
+            'contrast(265%) brightness(100%) hue-rotate(44deg) saturate(180%)',
+
+          backgroundPosition: 'center',
+          opacity: 0.6, // ← your requirement
+          zIndex: -1 // ← sits BEHIND the blue water bg
+        }}
+      />
+
+      {/* Existing animated water background */}
       <div
         style={{
           position: 'absolute',
@@ -105,7 +122,7 @@ function FloatingIcosahedron () {
     return () => clearInterval(id)
   }, [])
 
-  // Geometry + vertex colors (20 triangles → 20 colors)
+  // Geometry + vertex colors
   const { geometry, edges } = useMemo(() => {
     const geo = new THREE.IcosahedronGeometry(1.2, 0).toNonIndexed()
     const pos = geo.getAttribute('position')
@@ -140,10 +157,9 @@ function FloatingIcosahedron () {
     const t = state.clock.elapsedTime
 
     groupRef.current.rotation.x += delta * -0.22
-    groupRef.current.rotation.y += delta * -0.18
-    groupRef.current.rotation.z += delta * 0.26
+    groupRef.current.rotation.y += delta * 0.18
+    groupRef.current.rotation.z += delta * -0.26
 
-    // Gentle orbital drift
     const radius = 1.25
     groupRef.current.position.x = Math.sin(t * 0.3 + Math.PI) * radius
     groupRef.current.position.z = Math.cos(t * 0.3 + Math.PI) * radius
@@ -151,7 +167,6 @@ function FloatingIcosahedron () {
 
   return (
     <group ref={groupRef}>
-      {/* Main translucent faces */}
       <mesh geometry={geometry}>
         <meshStandardMaterial
           vertexColors
@@ -164,12 +179,10 @@ function FloatingIcosahedron () {
         />
       </mesh>
 
-      {/* Subtle inner glow */}
       <mesh geometry={geometry} scale={0.97}>
         <meshBasicMaterial color='#4088ff' opacity={0} transparent />
       </mesh>
 
-      {/* Wireframe overlay */}
       <mesh geometry={geometry} scale={1.004}>
         <meshBasicMaterial
           wireframe
@@ -179,25 +192,22 @@ function FloatingIcosahedron () {
         />
       </mesh>
 
-      {/* Crisp black edges */}
       <lineSegments geometry={edges}>
         <lineBasicMaterial color='#F1F3F6FF' linewidth={0} />
       </lineSegments>
 
-      {/* Clock */}
       <Html center scale={0.36} position={[0, 0, 0]} transform>
         <div
           style={{
             color: '#4153F5FF',
             fontSize: '70px',
-            // fontWeight: 100,
             letterSpacing: '3px',
             opacity: 0.4,
             fontFamily: "'WaterFont', monospace",
             userSelect: 'none',
             pointerEvents: 'none',
             textShadow:
-              '-1px -1px 0 #0F0219FF, 1px -1px 0 #E22333FF, -1px 1px 0 #F6EFEFFF, 1px 1px 0 #E7EBE6FF'
+              '-2px -1px 0 #0F0219FF, 1px -1px 0 #E22333FF, -3px 1px 0 #F6EFEFFF, 1px 3px 0 #E7EBE6FF'
           }}
         >
           {time}
