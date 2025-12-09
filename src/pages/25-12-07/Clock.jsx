@@ -54,7 +54,7 @@ export default function IcosahedronScene () {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           filter:
-            'contrast(65%) brightness(135%) hue-rotate(44deg) saturate(800%)',
+            'contrast(65%) brightness(185%) hue-rotate(44deg) saturate(1800%)',
           opacity: 0.78,
           animation: 'ripple 48s linear infinite',
           zIndex: 0
