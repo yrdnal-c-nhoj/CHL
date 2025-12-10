@@ -1,8 +1,8 @@
 // AnalogClock.jsx
 import React, { useEffect, useState } from 'react'
 // Import local assets
-import bg1 from './jupi.webp'
-import bg2 from './crak.webp'
+import bg1 from './j.webp'
+import bg2 from './cr.webp'
 import portImg from './eagle.webp'
 import hourHandImg from './oa.gif'
 import minuteHandImg from './oak.gif'
@@ -85,7 +85,7 @@ export default function AnalogClock () {
             backgroundPosition: 'center',
             opacity: 0.5,
             filter:
-              'saturate(700%) hue-rotate(222deg) contrast(70%) brightness(3.5)',
+              'saturate(700%) hue-rotate(202deg) contrast(70%) brightness(3.0)',
             transform: flip ? 'scaleX(-1)' : 'none',
             left: startLeft + j * tileSize,
             top: startTop + i * tileSize,
@@ -101,7 +101,11 @@ export default function AnalogClock () {
     width: '100vw',
     height: '100vh',
     position: 'relative',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    background: 'linear-gradient(to top, #08A4F2FF, #0454F5FF)',
+    backgroundSize: '100%',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'bottom'
   }
 
   const bgStyle1 = {
@@ -115,7 +119,10 @@ export default function AnalogClock () {
     backgroundPosition: 'center',
     filter: 'saturate(200%) contrast(130%)',
     opacity: 0.8,
-    zIndex: 0
+    zIndex: 0,
+    animation: 'spin 60s linear infinite',
+    transformOrigin: 'center center',
+    willChange: 'transform'
   }
 
   const bgStyle2 = {
@@ -125,7 +132,7 @@ export default function AnalogClock () {
     width: '100%',
     height: '110%',
     backgroundImage: `url(${bg2})`,
-    backgroundSize: 'cover',
+    backgroundSize: 'contain',
     backgroundPosition: 'center',
     opacity: 0.5,
     filter: 'saturate(300%) contrast(630%)',
@@ -146,8 +153,16 @@ export default function AnalogClock () {
     zIndex: 2
   }
 
+  const spin = `
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(-360deg); }
+    }
+  `;
+
   return (
     <div style={containerStyle}>
+      <style>{spin}</style>
       <div
         style={{
           position: 'absolute',
@@ -155,7 +170,7 @@ export default function AnalogClock () {
           left: 0,
           width: '100%',
           height: '100%',
-          backgroundColor: 'dodgerblue',
+          background: 'linear-gradient(to top, white, skyblue)',
           zIndex: -2
         }}
       />
