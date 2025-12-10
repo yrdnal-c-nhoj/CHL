@@ -169,17 +169,17 @@ export default function AnalogClock () {
           <img
             src={hourHandImg}
             alt='Hour Hand'
-            style={goldHandStyle(hourDeg, '18vh')}
+            style={goldHandStyle(hourDeg, '16vh')}
           />
           <img
             src={minuteHandImg}
             alt='Minute Hand'
-            style={goldHandStyle(minuteDeg, '18vh')}
+            style={goldHandStyle(minuteDeg, '14vh')}
           />
           <img
             src={secondHandImg}
             alt='Second Hand'
-            style={goldHandStyle(secondDeg, '20vh')}
+            style={goldHandStyle(secondDeg, '12vh')}
           />
         </div>
       </div>
