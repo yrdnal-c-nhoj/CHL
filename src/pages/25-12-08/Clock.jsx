@@ -1,222 +1,123 @@
-// src/pages/25-12-07/Clock.jsx
-import React, { useRef } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
-import * as THREE from 'three'
-import plaidImage from './h2o.webp'
+import React, { useEffect, useState } from 'react'
 
-const Icosahedron = () => {
-  const size = 2.5
-  const groupRef = useRef()
+// Import assets
+import bgImage from './giraffe.webp'
+import hourHandImg from './hand3.gif'
+import minuteHandImg from './hand.gif'
+import secondHandImg from './hand2.gif'
+import centerImg from './walk.webp'
 
-  // Add time state for analog clock
-  const [time, setTime] = React.useState(() => new Date())
+export default function AnalogClock () {
+  const [time, setTime] = useState(new Date())
 
-  React.useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000)
-    return () => clearInterval(interval)
+  // Smooth update
+  useEffect(() => {
+    let frameId
+    const animate = () => {
+      setTime(new Date())
+      frameId = requestAnimationFrame(animate)
+    }
+    animate()
+    return () => cancelAnimationFrame(frameId)
   }, [])
 
-  // Calculate clock hand rotations
-  const secondsDegrees = (time.getSeconds() / 60) * 360
-  const minutesDegrees =
-    ((time.getMinutes() * 60 + time.getSeconds()) / 3600) * 360
-  const hoursDegrees =
-    ((time.getHours() % 12) / 12) * 360 + (time.getMinutes() / 60) * 30
+  const now = time
 
-  useFrame((state, delta) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.x += delta * 0.5
-      groupRef.current.rotation.y += delta * 0.7
-      groupRef.current.rotation.z += delta * 0.3
-    }
+  // Degrees
+  const totalHours =
+    now.getHours() +
+    now.getMinutes() / 60 +
+    now.getSeconds() / 3600 +
+    now.getMilliseconds() / 3600000
+
+  const totalMinutes =
+    now.getMinutes() + now.getSeconds() / 60 + now.getMilliseconds() / 60000
+
+  const totalSeconds = now.getSeconds() + now.getMilliseconds() / 1000
+
+  const hourDeg = totalHours * 30
+  const minuteDeg = totalMinutes * 6
+  const secondDeg = totalSeconds * 6
+
+  // Container
+  const outerContainerStyle = {
+    height: '100dvh',
+    width: '100vw',
+    position: 'relative',
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+
+  const clockContainerStyle = {
+    width: '85vmin',
+    height: '85vmin',
+    borderRadius: '50%',
+    position: 'relative',
+    zIndex: 5
+  }
+
+  const handStyle = (deg, width, height, transitionDuration) => ({
+    position: 'absolute',
+    width: `${width}vmin`,
+    height: `${height}vmin`,
+    transform: `translate(-50%, -100%) rotate(${deg}deg)`,
+    transformOrigin: '50% 100%',
+    top: '50%',
+    left: '50%',
+    transition: transitionDuration
+      ? `transform ${transitionDuration}s linear`
+      : 'none',
+    opacity: 0.85,
+    zIndex: 10
   })
 
-  // Create different colors for each triangular face
-  const coloredGeometry = React.useMemo(() => {
-    const geometry = new THREE.IcosahedronGeometry(size, 0)
+  const centerDeg = -(totalSeconds * 12)
 
-    // Create 20 clearly different colors - all different hues
-    const distinctColors = [
-      '#FF0000',
-      '#FF6600',
-      '#FFD700',
-      '#FFFF00',
-      '#ADFF2F',
-      '#00FF00',
-      '#00FFFF',
-      '#0000FF',
-      '#8A2BE2',
-      '#FF1493',
-      '#FF69B4',
-      '#DC143C',
-      '#FF6347',
-      '#FFA07A',
-      '#FA8072',
-      '#F0E68C',
-      '#90EE90',
-      '#87CEEB',
-      '#9370DB',
-      '#DDA0DD'
-    ]
-
-    // For icosahedron (20 faces), each triangle gets its own material
-    // Create groups to assign different materials to different faces
-    const groups = []
-    for (let i = 0; i < 20; i++) {
-      groups.push({
-        start: i * 3, // Each triangle has 3 vertices/indices
-        count: 3,
-        materialIndex: i
-      })
-    }
-    geometry.groups = groups
-
-    // Create materials for each group - all facets at 30% opacity
-    const materials = distinctColors.map(
-      color =>
-        new THREE.MeshStandardMaterial({
-          color: color,
-          side: THREE.DoubleSide,
-          transparent: true,
-          opacity: 0.3
-        })
-    )
-
-    return { geometry, materials }
-  }, [])
+  const centerImageStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: '25vmin',
+    height: '25vmin',
+    transform: `translate(-50%, -50%) rotate(${centerDeg}deg)`,
+    transformOrigin: '50% 50%',
+    zIndex: 15,
+    opacity: 0.75,
+    pointerEvents: 'none'
+  }
 
   return (
-    <group ref={groupRef}>
-      {/* Icosahedron with 20 different colored triangular faces */}
-      <mesh
-        geometry={coloredGeometry.geometry}
-        material={coloredGeometry.materials}
-      />
-
-      {/* Create a completely opaque, full-color interior version */}
-      <mesh
-        geometry={coloredGeometry.geometry}
-        material={coloredGeometry.materials}
-        scale={[0.98, 0.98, 0.98]}
-        renderOrder={1}
-      />
-
-      {/* Wireframe edges for visibility */}
-      <lineSegments scale={1.01}>
-        <edgesGeometry args={[coloredGeometry.geometry]} />
-        <lineBasicMaterial
-          color='black'
-          linewidth={2}
-          transparent
-          opacity={0.6}
+    <div style={outerContainerStyle}>
+      <div style={clockContainerStyle}>
+        {/* Hour hand */}
+        <img
+          src={hourHandImg}
+          alt='hour'
+          style={handStyle(hourDeg, 28, 44, 12 * 3600)}
         />
-      </lineSegments>
 
-      {/* Analog Clock in the center */}
-      <group>
-        {/* Clock face background */}
-        <mesh position={[0, 0, 0.1]}>
-          <cylinderGeometry args={[0.8, 0.8, 0.02, 32]} />
-          <meshBasicMaterial color='#ffffff' />
-        </mesh>
+        {/* Minute hand (restored) */}
+        <img
+          src={minuteHandImg}
+          alt='minute'
+          style={handStyle(minuteDeg, 26, 52, 3600)}
+        />
 
-        {/* Main hour markers: 12, 3, 6 - made big */}
-        {[0, 3, 6].map(i => {
-          const angle = (i * 30 * Math.PI) / 180
-          const radius = 0.65
-          const x = Math.sin(angle) * radius
-          const z = Math.cos(angle) * radius
+        {/* Second hand */}
+        <img
+          src={secondHandImg}
+          alt='second'
+          style={handStyle(secondDeg, 26, 58, null)}
+        />
 
-          return (
-            <mesh key={i} position={[x, 0, z + 0.01]}>
-              <boxGeometry args={[0.12, 0.08, 0.01]} />
-              <meshBasicMaterial color='black' />
-            </mesh>
-          )
-        })}
-
-        {/* Clock Hands */}
-        <mesh
-          position={[0, 0, 0.12]}
-          rotation={[0, 0, (secondsDegrees * Math.PI) / 180]}
-        >
-          <boxGeometry args={[0.005, 0.65, 0.005]} />
-          <meshBasicMaterial color='red' />
-        </mesh>
-
-        <mesh
-          position={[0, 0, 0.13]}
-          rotation={[0, 0, (minutesDegrees * Math.PI) / 180]}
-        >
-          <boxGeometry args={[0.02, 0.55, 0.01]} />
-          <meshBasicMaterial color='black' />
-        </mesh>
-
-        <mesh
-          position={[0, 0, 0.14]}
-          rotation={[0, 0, (hoursDegrees * Math.PI) / 180]}
-        >
-          <boxGeometry args={[0.03, 0.4, 0.01]} />
-          <meshBasicMaterial color='black' />
-        </mesh>
-
-        {/* Center hub */}
-        <mesh position={[0, 0, 0.15]}>
-          <cylinderGeometry args={[0.05, 0.05, 0.02, 16]} />
-          <meshBasicMaterial color='black' />
-        </mesh>
-      </group>
-    </group>
-  )
-}
-
-export default function Clock () {
-  return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100vh',
-        margin: 0,
-        padding: 0,
-        overflow: 'hidden',
-        position: 'relative'
-      }}
-    >
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundImage: `url(${plaidImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter:
-            'contrast(0.1) brightness(1.8) hue-rotate(35deg) saturate(6.2)',
-          zIndex: 0
-        }}
-      />
-
-      <Canvas
-        camera={{ position: [0, 0, 7], fov: 50 }}
-        gl={{ antialias: true, alpha: true }}
-        style={{
-          background: 'transparent',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          zIndex: 1
-        }}
-      >
-        <ambientLight intensity={0.8} />
-        <pointLight position={[10, 10, 10]} intensity={1.5} color='#6CF373FF' />
-
-        <Icosahedron />
-
-        <OrbitControls enableZoom={false} enablePan={false} />
-      </Canvas>
+        {/* Center rotating image */}
+        <img src={centerImg} alt='center' style={centerImageStyle} />
+      </div>
     </div>
   )
 }
