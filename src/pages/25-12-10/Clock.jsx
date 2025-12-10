@@ -55,16 +55,15 @@ export default function AnalogClock () {
     top: 0,
     left: 0,
     width: width,
-    opacity: 0.6,
     transform: `translate(-50%, -70%) rotate(${deg}deg)`,
     transformOrigin: '50% 100%',
     filter:
-      'drop-shadow(0 0 12px #FFD700) drop-shadow(0 0 20px gold) brightness(1.7) contrast(1.1) saturate(1) hue-rotate(25deg)'
+      'drop-shadow(0 0 12px #FFD700) drop-shadow(0 0 20px gold) brightness(1.5) contrast(1.1) saturate(1) hue-rotate(25deg)'
   })
 
   // ──────────────────────── REST OF YOUR CODE 100% UNCHANGED ────────────────────────
 
-  const tileSize = 120
+  const tileSize = 150
   const numCols = Math.ceil(viewport.width / tileSize) + 2
   const numRows = Math.ceil(viewport.height / tileSize) + 2
   const startLeft = viewport.width / 2 - (numCols * tileSize) / 2
