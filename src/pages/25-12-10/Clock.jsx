@@ -1,7 +1,7 @@
 // AnalogClock.jsx
 import React, { useEffect, useState } from 'react'
 // Import local assets
-import bg1 from './j.webp'
+import bg1 from './joop.webp'
 import bg2 from './cr.webp'
 import portImg from './eagle.webp'
 import hourHandImg from './oa.gif'
@@ -158,7 +158,7 @@ export default function AnalogClock () {
       from { transform: rotate(0deg); }
       to { transform: rotate(-360deg); }
     }
-  `;
+  `
 
   return (
     <div style={containerStyle}>
