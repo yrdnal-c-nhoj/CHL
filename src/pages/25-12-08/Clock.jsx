@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
 // Import assets
-import bgImage from './giraffe.webp'
-import hourHandImg from './hand3.gif'
-import minuteHandImg from './hand.gif'
-import secondHandImg from './hand2.gif'
-import centerImg from './walk.webp'
+import bgImage from './plate.webp'
+import hourHandImg from './hand.gif'
+import minuteHandImg from './han.gif'
+import secondHandImg from './ha.gif'
 
 export default function AnalogClock () {
   const [time, setTime] = useState(new Date())
@@ -72,24 +71,11 @@ export default function AnalogClock () {
     transition: transitionDuration
       ? `transform ${transitionDuration}s linear`
       : 'none',
-    opacity: 0.85,
+    // opacity: 0.85,
     zIndex: 10
   })
 
   const centerDeg = -(totalSeconds * 12)
-
-  const centerImageStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '25vmin',
-    height: '25vmin',
-    transform: `translate(-50%, -50%) rotate(${centerDeg}deg)`,
-    transformOrigin: '50% 50%',
-    zIndex: 15,
-    opacity: 0.75,
-    pointerEvents: 'none'
-  }
 
   return (
     <div style={outerContainerStyle}>
@@ -98,25 +84,22 @@ export default function AnalogClock () {
         <img
           src={hourHandImg}
           alt='hour'
-          style={handStyle(hourDeg, 28, 44, 12 * 3600)}
+          style={handStyle(hourDeg, 18, 24, 12 * 3600)}
         />
 
         {/* Minute hand (restored) */}
         <img
           src={minuteHandImg}
           alt='minute'
-          style={handStyle(minuteDeg, 26, 52, 3600)}
+          style={handStyle(minuteDeg, 20, 32, 3600)}
         />
 
         {/* Second hand */}
         <img
           src={secondHandImg}
           alt='second'
-          style={handStyle(secondDeg, 26, 58, null)}
+          style={handStyle(secondDeg, 16, 33, null)}
         />
-
-        {/* Center rotating image */}
-        <img src={centerImg} alt='center' style={centerImageStyle} />
       </div>
     </div>
   )
