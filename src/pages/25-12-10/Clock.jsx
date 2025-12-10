@@ -1,116 +1,189 @@
-import React from 'react';
+// AnalogClock.jsx
+import React, { useEffect, useState } from 'react'
+// Import local assets
+import bg1 from './jupi.webp'
+import bg2 from './crak.gif'
+import portImg from './eagle.webp'
+import hourHandImg from './oa.gif'
+import minuteHandImg from './oak.gif'
+import secondHandImg from './nk.gif'
 
-const FlightTicket = () => {
+export default function AnalogClock () {
+  const [time, setTime] = useState(new Date())
+  const [viewport, setViewport] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  })
+
+  useEffect(() => {
+    const handleResize = () =>
+      setViewport({ width: window.innerWidth, height: window.innerHeight })
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  useEffect(() => {
+    const id = requestAnimationFrame(function update () {
+      setTime(new Date())
+      requestAnimationFrame(update)
+    })
+    return () => cancelAnimationFrame(id)
+  }, [])
+
+  const seconds = time.getSeconds() + time.getMilliseconds() / 1000
+  const minutes = time.getMinutes() + seconds / 60
+  const hours = (time.getHours() % 12) + minutes / 60
+
+  const hourDeg = hours * 30
+  const minuteDeg = minutes * 6
+  const secondDeg = seconds * 6
+
+  // ──────────────────────── ONLY THESE TWO CHANGES BELOW ────────────────────────
+
+  const handsContainerStyle = {
+    position: 'absolute',
+    top: '35%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)', // center the hands at clock center
+    width: 0,
+    height: 0,
+    zIndex: 4
+  }
+
+  const goldHandStyle = (deg, width) => ({
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: width,
+    opacity: 0.6,
+    transform: `translate(-50%, -70%) rotate(${deg}deg)`,
+    transformOrigin: '50% 100%',
+    filter:
+      'drop-shadow(0 0 12px #FFD700) drop-shadow(0 0 20px gold) brightness(1.7) contrast(1.1) saturate(1) hue-rotate(25deg)'
+  })
+
+  // ──────────────────────── REST OF YOUR CODE 100% UNCHANGED ────────────────────────
+
+  const tileSize = 120
+  const numCols = Math.ceil(viewport.width / tileSize) + 2
+  const numRows = Math.ceil(viewport.height / tileSize) + 2
+  const startLeft = viewport.width / 2 - (numCols * tileSize) / 2
+  const startTop = viewport.height / 2 - (numRows * tileSize) / 2
+
+  const tiles = []
+  for (let i = 0; i < numRows; i++) {
+    for (let j = 0; j < numCols; j++) {
+      const flip = (i + j) % 2 !== 0
+      tiles.push(
+        <div
+          key={`${i}-${j}`}
+          style={{
+            position: 'absolute',
+            width: tileSize,
+            height: tileSize,
+            backgroundImage: `url(${portImg})`,
+            backgroundSize: 'contain',
+            backgroundPosition: 'center',
+            opacity: 0.5,
+            filter:
+              'saturate(700%) hue-rotate(222deg) contrast(70%) brightness(3.5)',
+            transform: flip ? 'scaleX(-1)' : 'none',
+            left: startLeft + j * tileSize,
+            top: startTop + i * tileSize,
+            zIndex: 1
+          }}
+        />
+      )
+    }
+  }
+
   const containerStyle = {
-    minHeight: '100vh',
+    fontFamily: 'sans-serif',
+    width: '100vw',
+    height: '100vh',
+    position: 'relative',
+    overflow: 'hidden'
+  }
+
+  const bgStyle1 = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundImage: `url(${bg1})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    filter: 'saturate(200%) contrast(130%)',
+    opacity: 0.8,
+    zIndex: 0
+  }
+
+  const bgStyle2 = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundImage: `url(${bg2})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    opacity: 0.5,
+    filter: 'saturate(300%) contrast(630%)',
+    zIndex: 1
+  }
+
+  const clockStyle = {
+    position: 'absolute',
+    width: '70vh',
+    height: '70vh',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    borderRadius: '50%',
     display: 'flex',
-    alignItems: 'center',
     justifyContent: 'center',
-    background: 'linear-gradient(90deg, #008abf, #005d85)',
-    fontFamily: 'system-ui',
-    padding: '5vh 5vw',
-    margin: 0,
-  };
-
-  const ticketStyle = {
-    background: '#fff',
-    borderRadius: '2rem',
-    width: '90vw',
-    maxWidth: '40rem',
-    margin: '0 auto',
-    clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8rem), calc(100% - 3rem) calc(100% - 8rem), calc(100% - 3rem) 100%, 0 100%)'
-  };
-
-  const ticketBodyStyle = {
-    padding: '3rem 2.5rem 4rem',
-  };
-
-  const flyStyle = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    fontSize: '2rem',
-    fontWeight: 300,
-    margin: '0 0 2rem 0',
-  };
-
-  const infoContainerStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: '1rem',
-    textAlign: 'center',
-  };
-
-  const infoItemStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-  };
-
-  const labelStyle = {
-    fontSize: '0.75rem',
-    fontWeight: 600,
-    letterSpacing: '0.05em',
-    textTransform: 'uppercase',
-    color: '#666',
-    marginBottom: '0.5rem',
-  };
-
-  const valueStyle = {
-    fontSize: '1.1rem',
-    fontWeight: 500,
-  };
-
-  const tearOffStyle = {
-    borderTop: '2px dashed #ddd',
-    padding: '2rem 3rem',
-    textAlign: 'center',
-  };
-
-  const barcodeStyle = {
-    height: '3rem',
-    background: 'repeating-linear-gradient(90deg, #000 0, #000 2px, transparent 2px, transparent 5px)',
-    marginBottom: '1rem',
-  };
+    alignItems: 'center',
+    zIndex: 2
+  }
 
   return (
     <div style={containerStyle}>
-      <div style={ticketStyle}>
-        <div style={ticketBodyStyle}>
-          <div style={flyStyle}>
-            <span>ZRH <span style={{ margin: '0 0.5rem' }}>✈</span> OSL</span>
-          </div>
-          
-          <div style={{ marginBottom: '2rem' }}>
-            <div style={labelStyle}>Passenger</div>
-            <div style={{ ...valueStyle, fontSize: '1.25rem' }}>MEGAFRY MR</div>
-          </div>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'dodgerblue',
+          zIndex: -2
+        }}
+      />
+      <div style={bgStyle1}></div>
+      <div style={bgStyle2}></div>
+      {tiles}
 
-          <div style={infoContainerStyle}>
-            <div style={infoItemStyle}>
-              <span style={labelStyle}>Gate</span>
-              <span style={valueStyle}>B24</span>
-            </div>
-            <div style={infoItemStyle}>
-              <span style={labelStyle}>Departure</span>
-              <span style={valueStyle}>14:35</span>
-            </div>
-            <div style={infoItemStyle}>
-              <span style={labelStyle}>Speedy</span>
-              <span style={valueStyle}>Yes</span>
-            </div>
-            <div style={infoItemStyle}>
-              <span style={labelStyle}>Boarding</span>
-              <span style={valueStyle}>14:05</span>
-            </div>
-          </div>
-        </div>
-
-        <div style={tearOffStyle}>
-          <div style={barcodeStyle}></div>
-          <div style={{ fontSize: '0.9rem', letterSpacing: '0.1em' }}>43596885365490358</div>
+      <div style={clockStyle}>
+        {/* ← NEW: all hands wrapped in one container → moved up together */}
+        <div style={handsContainerStyle}>
+          <img
+            src={hourHandImg}
+            alt='Hour Hand'
+            style={goldHandStyle(hourDeg, '18vh')}
+          />
+          <img
+            src={minuteHandImg}
+            alt='Minute Hand'
+            style={goldHandStyle(minuteDeg, '18vh')}
+          />
+          <img
+            src={secondHandImg}
+            alt='Second Hand'
+            style={goldHandStyle(secondDeg, '20vh')}
+          />
         </div>
       </div>
     </div>
-  );
-};
-
-export default FlightTicket;
+  )
+}

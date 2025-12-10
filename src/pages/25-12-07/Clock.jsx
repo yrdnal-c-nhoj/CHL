@@ -5,7 +5,7 @@ import { OrbitControls, Html } from '@react-three/drei'
 import * as THREE from 'three'
 import backgroundImage from './h2o.webp'
 import backgroundImage2 from './water.gif' // ← NEW secondary background
-import fontFile from './water.otf' // (should ideally be .woff2)
+import fontFile from './isoca.ttf' // (should ideally be .woff2)
 
 export default function IcosahedronScene () {
   // Proper font preloading + @font-face
