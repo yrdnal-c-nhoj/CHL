@@ -58,7 +58,7 @@ export default function AnalogClock () {
     transform: `translate(-50%, -70%) rotate(${deg}deg)`,
     transformOrigin: '50% 100%',
     filter:
-      'drop-shadow(0 0 12px #FFD700) drop-shadow(0 0 20px gold) brightness(1.5) contrast(1.1) saturate(1) hue-rotate(25deg)'
+      'drop-shadow(0 0 12px #FF5900FF) drop-shadow(0 0 20px #DE3711FF) brightness(1.5) contrast(1.1) saturate(1) hue-rotate(25deg)'
   })
 
   // ──────────────────────── REST OF YOUR CODE 100% UNCHANGED ────────────────────────
