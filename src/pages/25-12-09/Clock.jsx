@@ -10,7 +10,7 @@ const fontFaceStyle = {
   }
 }
 
-const elementColor = '#A13597FF'
+const elementColor = '#AE6AA7FF'
 
 const digitBoxStyle = {
   position: 'relative',
