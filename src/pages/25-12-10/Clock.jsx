@@ -68,7 +68,7 @@ const BackgroundImage = memo(() => (
       backgroundPosition: 'center',
       zIndex: 1,
       opacity: 0.8,
-      filter: 'hue-rotate(-190deg)',
+      filter: 'hue-rotate(-190deg) contrast(1.5)',
       pointerEvents: 'none'
     }}
   />
@@ -84,7 +84,7 @@ const BackgroundImage2 = memo(() => (
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
       zIndex: 10,
-      filter: 'saturate(3.5) contrast(1.5) brightness(7.5)',
+      filter: 'saturate(3.5) contrast(1.5) brightness(17.5)',
       pointerEvents: 'none'
     }}
   />
