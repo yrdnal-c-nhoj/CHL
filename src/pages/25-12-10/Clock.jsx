@@ -63,7 +63,7 @@ const BackgroundImage = memo(() => (
       position: 'fixed',
       inset: 0,
       backgroundImage: `url(${bg1})`,
-      backgroundSize: 'cover',
+      backgroundSize: '130% auto', // 50% width, auto height to maintain aspect ratio
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
       zIndex: 1,
