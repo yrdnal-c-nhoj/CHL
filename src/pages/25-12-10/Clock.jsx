@@ -158,6 +158,7 @@ export default function AnalogClock () {
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
           opacity: 0.8,
+          filter: 'saturate(150%) contrast(170%)',
           zIndex: 0,
           animation: 'spin 60s linear infinite',
           transformOrigin: 'center center'
