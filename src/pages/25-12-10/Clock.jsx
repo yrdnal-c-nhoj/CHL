@@ -56,17 +56,33 @@ const GlobalStyles = memo(() => (
   `}</style>
 ))
 
-// --- BACKGROUND LAYER ---
-const BackgroundLayer = memo(({ image, z }) => (
+// --- BACKGROUND IMAGE ---
+const BackgroundImage = memo(() => (
   <div
     style={{
       position: 'fixed',
       inset: 0,
-      backgroundImage: `url(${image})`,
+      backgroundImage: `url(${bg1})`,
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
-      zIndex: z,
+      zIndex: 1,
+      opacity: 0.5,
+      pointerEvents: 'none'
+    }}
+  />
+))
+
+const BackgroundImage2 = memo(() => (
+  <div
+    style={{
+      position: 'fixed',
+      inset: 0,
+      backgroundImage: `url(${bg2})`,
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      zIndex: 2,
       opacity: 0.5,
       pointerEvents: 'none'
     }}
@@ -91,11 +107,11 @@ const TiledBackground = memo(() => {
             width: tileSize,
             height: tileSize,
             background: `url(${portImg}) center/contain no-repeat`,
-            opacity: 1,
+            opacity: 0.5,
             transform: flip ? 'scaleX(-1)' : 'none',
             left: c * tileSize - tileSize,
             top: r * tileSize - tileSize,
-            zIndex: 1,
+            zIndex: 3,
             pointerEvents: 'none'
           }}
         />
@@ -114,7 +130,7 @@ const ClockNumeral = memo(({ text, x, y }) => (
       left: `${x}%`,
       top: `${y}%`,
       transform: 'translate(-50%, -50%)',
-      color: 'black',
+      color: 'gold',
       fontFamily: 'CustomFont251211, serif',
       fontSize: 'clamp(2rem, 5vw, 3.5rem)',
       fontWeight: 'bold',
@@ -141,7 +157,8 @@ const ClockHand = memo(({ img, width, max, rotation, z }) => (
       transformOrigin: 'bottom center',
       zIndex: z,
       pointerEvents: 'none',
-      userSelect: 'none'
+      userSelect: 'none',
+      opacity: 0.8 // slightly more visible over gradient
     }}
   />
 ))
@@ -195,22 +212,6 @@ const ClockFace = memo(({ angles }) => {
           />
         ))}
       </div>
-
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '10vw',
-          height: '10vw',
-          maxWidth: '50px',
-          maxHeight: '50px',
-          background: 'gray',
-          borderRadius: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 7
-        }}
-      />
     </div>
   )
 })
@@ -221,21 +222,30 @@ export default function AnalogClock () {
   const angles = useClockAngles(time)
 
   useEffect(() => {
-    ;[bg1, bg2, portImg, hourHandImg, minuteHandImg, secondHandImg].forEach(
-      src => {
-        const img = new Image()
-        img.src = src
-      }
-    )
+    ;[hourHandImg, minuteHandImg, secondHandImg].forEach(src => {
+      const img = new Image()
+      img.src = src
+    })
   }, [])
 
   return (
     <>
       <GlobalStyles />
 
-      <BackgroundLayer image={bg1} z={0} />
+      {/* --- Gradient background --- */}
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'linear-gradient(to bottom, navy, lightblue)',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }}
+      />
+
+      <BackgroundImage />
+      <BackgroundImage2 />
       <TiledBackground />
-      <BackgroundLayer image={bg2} z={1} />
 
       <ClockFace angles={angles} />
     </>
