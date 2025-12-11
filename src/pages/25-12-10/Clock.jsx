@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react'
 
 // Import local assets (Assuming these paths are correct and necessary)
 import bg1 from './joop.webp'
-import bg2 from './crak.webp'
+import bg2 from './cr.webp'
 import portImg from './eagle.webp'
 import hourHandImg from './oa.gif'
 import minuteHandImg from './oak.gif'
