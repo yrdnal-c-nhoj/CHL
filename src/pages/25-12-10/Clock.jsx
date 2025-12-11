@@ -68,6 +68,7 @@ const BackgroundImage = memo(() => (
       backgroundPosition: 'center',
       zIndex: 1,
       opacity: 0.8,
+      filter: 'hue-rotate(-190deg)',
       pointerEvents: 'none'
     }}
   />
@@ -82,8 +83,8 @@ const BackgroundImage2 = memo(() => (
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
-      zIndex: 2,
-      // opacity: 0.8,
+      zIndex: 10,
+      filter: 'saturate(3.5) contrast(1.5) brightness(7.5)',
       pointerEvents: 'none'
     }}
   />
@@ -91,7 +92,7 @@ const BackgroundImage2 = memo(() => (
 
 // --- TILE LAYER ---
 const TiledBackground = memo(() => {
-  const tileSize = 140
+  const tileSize = 100
   const cols = Math.ceil(window.innerWidth / tileSize) + 3
   const rows = Math.ceil(window.innerHeight / tileSize) + 3
 
@@ -108,6 +109,7 @@ const TiledBackground = memo(() => {
             height: tileSize,
             background: `url(${portImg}) center/contain no-repeat`,
             opacity: 0.5,
+            filter: 'hue-rotate(90deg)',
             transform: flip ? 'scaleX(-1)' : 'none',
             left: c * tileSize - tileSize,
             top: r * tileSize - tileSize,
@@ -130,7 +132,7 @@ const ClockNumeral = memo(({ text, x, y }) => (
       left: `${x}%`,
       top: `${y}%`,
       transform: 'translate(-50%, -50%)',
-      color: '#C4BFBBFF',
+      color: '#EAC555FF',
       fontFamily: 'CustomFont251211, serif',
       fontSize: 'clamp(2rem, 5vw, 3.5rem)',
 
