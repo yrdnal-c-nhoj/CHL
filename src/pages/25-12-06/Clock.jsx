@@ -73,8 +73,9 @@ export default function AnalogClock() {
   const tileSize = 10; // vmin
   const vmin = Math.min(viewport.width, viewport.height);
   const tileSizePx = (tileSize / 100) * vmin;
-  const calculatedHorizontalTileCount = Math.ceil(viewport.width / tileSizePx);
-  const calculatedVerticalTileCount = Math.ceil(viewport.height / tileSizePx) + 1;
+  // Add 2 to ensure full coverage on all devices
+  const calculatedHorizontalTileCount = Math.ceil(viewport.width / tileSizePx) + 2;
+  const calculatedVerticalTileCount = Math.ceil(viewport.height / tileSizePx) + 3;
 
   const renderRowTiles = (rotationDeg) =>
     Array.from({ length: calculatedHorizontalTileCount }).map((_, i) => (
@@ -115,58 +116,75 @@ export default function AnalogClock() {
   const numbers = Array.from({ length: 12 }, (_, i) => i + 1);
   const numberStyle = (num) => {
     const angle = ((num - 3) * 30) * (Math.PI / 180);
-    const radius = 45;
+    const radius = 42; // Slightly reduced radius to ensure numbers stay within bounds
     const x = radius * Math.cos(angle);
     const y = radius * Math.sin(angle);
     return {
-      position: "absolute",
-      left: `calc(50% + ${x}vmin)`,
-      top: `calc(50% + ${y}vmin)`,
-      fontSize: "clamp(7rem, 8vh, 8.5rem)",
-      fontFamily: "CustomClockFont",
-      userSelect: "none",
-      textAlign: "center",
-      color: "white",
-      transform: "translate(-50%, -50%)",
-      textShadow: "1px 1px 0 #970909FF, -1px -1px 0 black",
+      position: 'absolute',
+      left: `calc(50% + ${x}%)`,
+      top: `calc(50% + ${y}%)`,
+      fontSize: 'clamp(5rem, 8vw, 8.5rem)',
+      fontFamily: 'CustomClockFont',
+      userSelect: 'none',
+      textAlign: 'center',
+      color: 'white',
+      transform: 'translate(-50%, -50%)',
+      textShadow: '1px 1px 0 #970909FF, -1px -1px 0 black',
+      pointerEvents: 'none',
+      willChange: 'transform'
     };
   };
 
   const outerContainerStyle = {
-    height: "100vh",
-    width: "100vw",
-    position: "relative",
+    height: '100%',
+    minHeight: '100vh',
+    width: '100%',
+    position: 'fixed',
+    top: 0,
+    left: 0,
     backgroundImage: `url(${bgImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    overflow: "hidden",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    touchAction: 'none',
+    WebkitOverflowScrolling: 'touch',
+    overscrollBehavior: 'none'
   };
 
   const clockContainerStyle = {
-    width: "85vmin",
-    height: "85vmin",
-    borderRadius: "50%",
-    position: "relative",
+    width: 'min(85vmin, 95vw)',
+    height: 'min(85vmin, 95vh)',
+    borderRadius: '50%',
+    position: 'relative',
     zIndex: 5,
+    margin: 'auto',
+    maxWidth: '100%',
+    maxHeight: '100%',
+    aspectRatio: '1/1'
   };
 
   const handStyle = (deg, width, height, transitionDuration) => ({
-    position: "absolute",
-    width: `${width}vmin`,
-    height: `${height}vmin`,
+    position: 'absolute',
+    width: `${width}%`,
+    height: 'auto',
+    maxHeight: '90%',
     transform: `translate(-50%, -100%) rotate(${deg}deg)`,
-    transformOrigin: "50% 100%",
-    top: "50%",
-    left: "50%",
-    transition: transitionDuration ? `transform ${transitionDuration}s linear` : "none",
+    transformOrigin: '50% 100%',
+    top: '50%',
+    left: '50%',
+    transition: transitionDuration ? `transform ${transitionDuration}s linear` : 'none',
     zIndex: 10,
-    filter: "drop-shadow(2px 2px 2px rgba(0,0,0,0.9)) drop-shadow(-2px -2px 2px rgba(255,255,255,0.7))",
-    maskImage: "linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 3%, rgba(0,0,0,1) 5%)",
-    WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 3%, rgba(0,0,0,1) 5%)",
+    filter: 'drop-shadow(2px 2px 2px rgba(0,0,0,0.9)) drop-shadow(-2px -2px 2px rgba(255,255,255,0.7))',
+    maskImage: 'linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 3%, rgba(0,0,0,1) 5%)',
+    WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 3%, rgba(0,0,0,1) 5%)',
     opacity: 0.8,
+    willChange: 'transform',
+    pointerEvents: 'none',
+    backfaceVisibility: 'hidden',
+    imageRendering: 'crisp-edges'
   });
 
   const rowContainerStyle = (position) => ({
