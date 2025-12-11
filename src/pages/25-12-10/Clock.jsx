@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, memo } from 'react'
 
 // --- Image Imports ---
 import bg1 from './joop.webp'
-import bg2 from './cr.webp'
+import bg2 from './jj.webp'
 import portImg from './eagle.webp'
 import hourHandImg from './oa.gif'
 import minuteHandImg from './oak.gif'
@@ -67,7 +67,7 @@ const BackgroundImage = memo(() => (
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
       zIndex: 1,
-      opacity: 0.5,
+      opacity: 0.8,
       pointerEvents: 'none'
     }}
   />
@@ -83,7 +83,7 @@ const BackgroundImage2 = memo(() => (
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
       zIndex: 2,
-      opacity: 0.5,
+      // opacity: 0.8,
       pointerEvents: 'none'
     }}
   />
@@ -130,10 +130,10 @@ const ClockNumeral = memo(({ text, x, y }) => (
       left: `${x}%`,
       top: `${y}%`,
       transform: 'translate(-50%, -50%)',
-      color: 'gold',
+      color: '#C4AB49FF',
       fontFamily: 'CustomFont251211, serif',
       fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-      fontWeight: 'bold',
+
       zIndex: 3,
       pointerEvents: 'none'
     }}
