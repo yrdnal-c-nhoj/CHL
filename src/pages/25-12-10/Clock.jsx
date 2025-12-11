@@ -109,19 +109,23 @@ export default function AnalogClock () {
 
   const bgStyle1 = {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
+    top: '50%',
+    left: '50%',
+    width: '100vmax',
+    height: '100vmax',
+    margin: '-50vmax 0 0 -50vmax',
     backgroundImage: `url(${bg1})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundSize: 'contain',
+    backgroundPosition: 'center center',
+    backgroundRepeat: 'no-repeat',
     filter: 'saturate(200%) contrast(130%)',
     opacity: 0.8,
     zIndex: 0,
     animation: 'spin 60s linear infinite',
     transformOrigin: 'center center',
-    willChange: 'transform'
+    willChange: 'transform',
+    overflow: 'visible',
+    pointerEvents: 'none'
   }
 
   const bgStyle2 = {
@@ -131,7 +135,7 @@ export default function AnalogClock () {
     width: '100%',
     height: '115%',
     backgroundImage: `url(${bg2})`,
-    backgroundSize: 'contain',
+    backgroundSize: 'cover',
     backgroundPosition: 'center',
     opacity: 0.5,
     filter: 'saturate(300%) contrast(630%)',
