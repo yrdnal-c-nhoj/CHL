@@ -14,9 +14,9 @@ const CONFIG = {
   clockSize: 'min(90vw, 90vh)',
   numeralRadius: 43,
   hands: [
-    { img: secondHandImg, width: '10vw', max: '50px', z: 6 },
-    { img: minuteHandImg, width: '13vw', max: '65px', z: 5 },
-    { img: hourHandImg, width: '15vw', max: '75px', z: 4 }
+    { img: secondHandImg, width: '15vw', max: '75px', z: 6 },
+    { img: minuteHandImg, width: '18vw', max: '90px', z: 5 },
+    { img: hourHandImg, width: '20vw', max: '100px', z: 4 }
   ],
   numerals: [
     { text: 'XII', deg: 0 },
@@ -130,7 +130,7 @@ const ClockNumeral = memo(({ text, x, y }) => (
       left: `${x}%`,
       top: `${y}%`,
       transform: 'translate(-50%, -50%)',
-      color: '#C4AB49FF',
+      color: '#C4BFBBFF',
       fontFamily: 'CustomFont251211, serif',
       fontSize: 'clamp(2rem, 5vw, 3.5rem)',
 
