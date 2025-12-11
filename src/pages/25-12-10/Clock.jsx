@@ -181,11 +181,6 @@ export default function AnalogClock () {
         {/* ← NEW: all hands wrapped in one container → moved up together */}
         <div style={handsContainerStyle}>
           <img
-            src={hourHandImg}
-            alt='Hour Hand'
-            style={goldHandStyle(hourDeg, '16vh')}
-          />
-          <img
             src={minuteHandImg}
             alt='Minute Hand'
             style={goldHandStyle(minuteDeg, '14vh')}
@@ -194,6 +189,12 @@ export default function AnalogClock () {
             src={secondHandImg}
             alt='Second Hand'
             style={goldHandStyle(secondDeg, '12vh')}
+          />
+          ;
+          <img
+            src={hourHandImg}
+            alt='Hour Hand'
+            style={goldHandStyle(hourDeg, '16vh')}
           />
         </div>
       </div>
