@@ -240,7 +240,7 @@ export default function AnalogClock () {
         style={{
           position: 'fixed',
           inset: 0,
-          background: 'linear-gradient(to bottom, navy, lightblue)',
+          background: 'linear-gradient(to bottom, #124CDEFF, #1380CDFF)',
           zIndex: 0,
           pointerEvents: 'none'
         }}
