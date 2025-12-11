@@ -14,13 +14,13 @@ const elementColor = '#AE6AA7FF'
 
 const digitBoxStyle = {
   position: 'relative',
-  width: '40px',
+  width: 'clamp(20px, 8vw, 40px)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   // margin: '0 2px',
   fontFamily: 'MuybridgeFont, serif',
-  fontSize: '48px',
+  fontSize: 'clamp(24px, 10vw, 48px)',
   color: elementColor,
   textShadow: '0.5px 0.5px 0px black, -0.5px -0.5px 0px white'
 }
@@ -53,7 +53,7 @@ export default function DigitalClock () {
   }
 
   const separatorStyle = {
-    fontSize: '48px',
+    fontSize: 'clamp(24px, 10vw, 48px)',
     color: elementColor,
     // margin: '0 10px',
     fontWeight: 'bold'
