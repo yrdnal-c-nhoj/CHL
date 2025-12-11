@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import bgImage from './muybridge.webp'
-import customFont_2025_1210 from './muyb.otf' // font imported as a blob via Vite
+import customFont_2025_1210 from './muy.ttf' // font imported as a blob via Vite
 
 // Create a style for the font-face dynamically
 const fontFaceStyle = {
@@ -10,17 +10,16 @@ const fontFaceStyle = {
   }
 }
 
-const elementColor = '#AE6AA7FF'
+const elementColor = '#BE83E6FF'
 
 const digitBoxStyle = {
   position: 'relative',
-  width: 'clamp(20px, 10vw, 50px)',
-  aspectRatio: '0.7',
+  width: 'clamp(20px, 7vw, 40px)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   fontFamily: 'MuybridgeFont, serif',
-  fontSize: 'clamp(24px, 12vw, 48px)',
+  fontSize: 'clamp(44px, 32vw, 68px)',
   color: elementColor,
   textShadow: '0.5px 0.5px 0px black, -0.5px -0.5px 0px white',
   flexShrink: 1,
@@ -65,18 +64,19 @@ export default function DigitalClock () {
     fontFamily: 'MuybridgeFont, serif',
     width: '100%',
     maxWidth: '100vw',
-    padding: '0 10px',
     boxSizing: 'border-box',
-    transform: 'scale(0.9)'
+    transform: 'scale(0.9)',
+    position: 'absolute',
+    bottom: '25vh',
+    left: 0,
+    right: 0
   }
 
   const separatorStyle = {
-    fontSize: 'clamp(24px, 12vw, 48px)',
+    fontSize: 'clamp(34px, 22vw, 58px)',
     color: elementColor,
-    margin: '0 1vw',
-    fontWeight: 'bold',
     lineHeight: 1,
-    paddingBottom: '0.5vw',
+    paddingBottom: '1.5vw',
     flexShrink: 0
   }
 
@@ -101,14 +101,30 @@ export default function DigitalClock () {
         }
       `}</style>
       <div style={clockContainerStyle}>
-        <div style={digitBoxStyle} aria-hidden="true">{hours[0]}</div>
-        <div style={digitBoxStyle} aria-hidden="true">{hours[1]}</div>
-        <div style={separatorStyle} aria-hidden="true">:</div>
-        <div style={digitBoxStyle} aria-hidden="true">{minutes[0]}</div>
-        <div style={digitBoxStyle} aria-hidden="true">{minutes[1]}</div>
-        <div style={separatorStyle} aria-hidden="true">:</div>
-        <div style={digitBoxStyle} aria-hidden="true">{seconds[0]}</div>
-        <div style={digitBoxStyle} aria-hidden="true">{seconds[1]}</div>
+        <div style={digitBoxStyle} aria-hidden='true'>
+          {hours[0]}
+        </div>
+        <div style={digitBoxStyle} aria-hidden='true'>
+          {hours[1]}
+        </div>
+        <div style={separatorStyle} aria-hidden='true'>
+          :
+        </div>
+        <div style={digitBoxStyle} aria-hidden='true'>
+          {minutes[0]}
+        </div>
+        <div style={digitBoxStyle} aria-hidden='true'>
+          {minutes[1]}
+        </div>
+        <div style={separatorStyle} aria-hidden='true'>
+          :
+        </div>
+        <div style={digitBoxStyle} aria-hidden='true'>
+          {seconds[0]}
+        </div>
+        <div style={digitBoxStyle} aria-hidden='true'>
+          {seconds[1]}
+        </div>
       </div>
     </div>
   )
