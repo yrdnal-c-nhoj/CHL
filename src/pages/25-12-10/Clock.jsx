@@ -8,7 +8,7 @@ import portImg from './eagle.webp'
 import hourHandImg from './oa.gif'
 import minuteHandImg from './oak.gif'
 import secondHandImg from './nk.gif'
-import font251211 from './jup.ttf'
+import font251211 from './jup.ttf?url'
 
 // Constants for configuration
 const CLOCK_SIZE = '70vh'
@@ -91,8 +91,7 @@ export default function AnalogClock () {
       width: '100vw',
       height: '100vh', // Simplified to 100vh
       position: 'relative',
-      background: 'linear-gradient(to top, #08A4F2FF, #04369BFF)',
-      overflow: 'hidden' // Added to prevent tile overflow from causing scrollbars
+      background: 'linear-gradient(to top, #08A4F2FF, #04369BFF)'
     }),
     []
   )
