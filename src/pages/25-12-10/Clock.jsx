@@ -101,7 +101,6 @@ export default function AnalogClock () {
     width: '100vw',
     height: '100vh',
     position: 'relative',
-    overflow: 'hidden',
     background: 'linear-gradient(to top, #08A4F2FF, #0454F5FF)',
     backgroundSize: '100%',
     backgroundRepeat: 'no-repeat',
