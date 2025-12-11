@@ -135,7 +135,7 @@ const ClockNumeral = memo(({ text, x, y }) => (
       color: '#EAC555FF',
       fontFamily: 'CustomFont251211, serif',
       fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-
+      textShadow: '2px 2px 0px rgba(120,120,230)',
       zIndex: 3,
       pointerEvents: 'none'
     }}
