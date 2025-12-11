@@ -152,17 +152,14 @@ export default function AnalogClock () {
     left: 0,
     width: '100%',
     height: '100%',
-    // Full coverage for centered rotation
+    // Full coverage for centered static background
     backgroundImage: `url(${bg1})`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     opacity: 0.8,
     filter: 'saturate(150%) contrast(170%)',
-    zIndex: 0,
-    animation: 'spin 60s linear infinite',
-    // Rotates around the center of the component
-    transformOrigin: 'center center'
+    zIndex: 0
   }
 
   return (
