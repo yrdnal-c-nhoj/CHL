@@ -9,25 +9,14 @@ import minuteHandImg from './oak.gif'
 import secondHandImg from './nk.gif'
 import font251211 from './jup.ttf?url'
 
-// --- Configuration ---
+// --- CONFIG ---
 const CONFIG = {
-  clock: {
-    size: '40vh',
-    numeralRadius: 45,
-    updateInterval: 100
-  },
-  tile: {
-    size: 150,
-    opacity: 0.7,
-    filter: 'saturate(300%) hue-rotate(202deg) contrast(70%) brightness(1.5)'
-  },
-  effects: {
-    goldFilter: 'drop-shadow(0 0 5px #FFD700)'
-  },
+  clockSize: 'min(90vw, 90vh)',
+  numeralRadius: 43,
   hands: [
-    { img: secondHandImg, width: '12vh', zIndex: 6, alt: 'Second Hand' },
-    { img: minuteHandImg, width: '14vh', zIndex: 5, alt: 'Minute Hand' },
-    { img: hourHandImg, width: '16vh', zIndex: 4, alt: 'Hour Hand' }
+    { img: secondHandImg, width: '10vw', max: '50px', z: 6 },
+    { img: minuteHandImg, width: '13vw', max: '65px', z: 5 },
+    { img: hourHandImg, width: '15vw', max: '75px', z: 4 }
   ],
   numerals: [
     { text: 'XII', deg: 0 },
@@ -37,119 +26,87 @@ const CONFIG = {
   ]
 }
 
-// --- Hooks ---
-function useTime (interval = 100) {
-  const [time, setTime] = useState(new Date())
-
+// --- HOOKS ---
+function useTime () {
+  const [time, setTime] = useState(() => new Date())
   useEffect(() => {
-    const id = setInterval(() => setTime(new Date()), interval)
+    const id = setInterval(() => setTime(new Date()), 1000)
     return () => clearInterval(id)
-  }, [interval])
-
-  return time
-}
-
-function useViewport () {
-  const [viewport, setViewport] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight
-  })
-
-  useEffect(() => {
-    const handleResize = () => {
-      setViewport({ width: window.innerWidth, height: window.innerHeight })
-    }
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
   }, [])
-
-  return viewport
+  return time
 }
 
 function useClockAngles (time) {
   return useMemo(() => {
-    const ms = time.getMilliseconds()
-    const s = time.getSeconds() + ms / 1000
+    const s = time.getSeconds() + time.getMilliseconds() / 1000
     const m = time.getMinutes() + s / 60
     const h = (time.getHours() % 12) + m / 60
-
-    return {
-      second: s * 6,
-      minute: m * 6,
-      hour: h * 30
-    }
+    return { second: s * 6, minute: m * 6, hour: h * 30 }
   }, [time])
 }
 
-// --- Components ---
+// --- GLOBAL FONT ---
 const GlobalStyles = memo(() => (
-  <style>{`
+  <style jsx global>{`
     @font-face {
       font-family: 'CustomFont251211';
-      src: url(${font251211});
+      src: url(${font251211}) format('truetype');
+      font-display: swap;
     }
   `}</style>
 ))
 
-const BackgroundLayer = memo(({ image, opacity, filter, zIndex }) => (
+// --- BACKGROUND LAYER ---
+const BackgroundLayer = memo(({ image, z }) => (
   <div
     style={{
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
+      position: 'fixed',
+      inset: 0,
       backgroundImage: `url(${image})`,
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
-      opacity,
-      filter,
-      zIndex
+      zIndex: z,
+      opacity: 0.5,
+      pointerEvents: 'none'
     }}
   />
 ))
 
-const TiledBackground = memo(({ viewport }) => {
-  const tiles = useMemo(() => {
-    const { width, height } = viewport
-    const { size, opacity, filter } = CONFIG.tile
+// --- TILE LAYER ---
+const TiledBackground = memo(() => {
+  const tileSize = 140
+  const cols = Math.ceil(window.innerWidth / tileSize) + 3
+  const rows = Math.ceil(window.innerHeight / tileSize) + 3
 
-    const cols = Math.ceil(width / size) + 2
-    const rows = Math.ceil(height / size) + 2
-    const startX = width / 2 - (cols * size) / 2
-    const startY = height / 2 - (rows * size) / 2
-
-    return Array.from({ length: rows * cols }, (_, idx) => {
-      const row = Math.floor(idx / cols)
-      const col = idx % cols
-
-      return (
+  const tiles = []
+  for (let r = -2; r < rows; r++) {
+    for (let c = -2; c < cols; c++) {
+      const flip = (r + c) % 2 === 1
+      tiles.push(
         <div
-          key={idx}
+          key={`${r}-${c}`}
           style={{
-            position: 'absolute',
-            width: size,
-            height: size,
-            backgroundImage: `url(${portImg})`,
-            backgroundSize: 'contain',
-            backgroundPosition: 'center',
-            opacity,
-            filter,
-            transform: (row + col) % 2 !== 0 ? 'scaleX(-1)' : 'none',
-            left: startX + col * size,
-            top: startY + row * size,
+            position: 'fixed',
+            width: tileSize,
+            height: tileSize,
+            background: `url(${portImg}) center/contain no-repeat`,
+            opacity: 1,
+            transform: flip ? 'scaleX(-1)' : 'none',
+            left: c * tileSize - tileSize,
+            top: r * tileSize - tileSize,
             zIndex: 1,
-            willChange: 'transform, opacity'
+            pointerEvents: 'none'
           }}
         />
       )
-    })
-  }, [viewport])
+    }
+  }
 
   return <>{tiles}</>
 })
 
+// --- NUMERAL ---
 const ClockNumeral = memo(({ text, x, y }) => (
   <div
     style={{
@@ -157,67 +114,64 @@ const ClockNumeral = memo(({ text, x, y }) => (
       left: `${x}%`,
       top: `${y}%`,
       transform: 'translate(-50%, -50%)',
-      color: '#FFD37B',
-      fontSize: '4vh',
-      opacity: 0.8,
-      fontFamily: 'CustomFont251211',
-      filter: CONFIG.effects.goldFilter,
+      color: 'black',
+      fontFamily: 'CustomFont251211, serif',
+      fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+      fontWeight: 'bold',
       zIndex: 3,
-      textAlign: 'center',
-      lineHeight: 1
+      pointerEvents: 'none'
     }}
   >
     {text}
   </div>
 ))
 
-const ClockHand = memo(({ image, width, rotation, zIndex, alt }) => (
+// --- CLOCK HAND ---
+const ClockHand = memo(({ img, width, max, rotation, z }) => (
   <img
-    src={image}
-    alt={alt}
+    src={img}
+    alt=''
+    draggable={false}
     style={{
       position: 'absolute',
-      top: 0,
-      left: 0,
-      width,
-      transform: `translate(-50%, -80%) rotate(${rotation}deg)`,
-      transformOrigin: '50% 100%',
-      filter: CONFIG.effects.goldFilter,
-      zIndex
+      top: '50%',
+      left: '50%',
+      width: `clamp(30px, ${width}, ${max})`,
+      transform: `translate(-50%, -100%) rotate(${rotation}deg)`,
+      transformOrigin: 'bottom center',
+      zIndex: z,
+      pointerEvents: 'none',
+      userSelect: 'none'
     }}
   />
 ))
 
+// --- CLOCK FACE ---
 const ClockFace = memo(({ angles }) => {
-  const numeralPositions = useMemo(() => {
-    return CONFIG.numerals.map(({ text, deg }) => {
-      const rad = (deg - 90) * (Math.PI / 180)
-      return {
-        text,
-        x: 50 + CONFIG.clock.numeralRadius * Math.cos(rad),
-        y: 50 + CONFIG.clock.numeralRadius * Math.sin(rad)
-      }
-    })
-  }, [])
+  const positions = CONFIG.numerals.map(({ text, deg }) => {
+    const rad = (deg - 90) * (Math.PI / 180)
+    return {
+      text,
+      x: 50 + CONFIG.numeralRadius * Math.cos(rad),
+      y: 50 + CONFIG.numeralRadius * Math.sin(rad)
+    }
+  })
 
   return (
     <div
       style={{
-        position: 'absolute',
-        width: CONFIG.clock.size,
-        height: CONFIG.clock.size,
+        position: 'fixed',
         top: '50%',
         left: '50%',
+        width: CONFIG.clockSize,
+        height: CONFIG.clockSize,
         transform: 'translate(-50%, -50%)',
         borderRadius: '50%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 2
+        zIndex: 10
       }}
     >
-      {numeralPositions.map(({ text, x, y }, i) => (
-        <ClockNumeral key={i} text={text} x={x} y={y} />
+      {positions.map((p, i) => (
+        <ClockNumeral key={i} text={p.text} x={p.x} y={p.y} />
       ))}
 
       <div
@@ -225,79 +179,65 @@ const ClockFace = memo(({ angles }) => {
           position: 'absolute',
           top: '50%',
           left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 0,
-          height: 0,
-          zIndex: 4
+          transform: 'translate(-50%, -50%)'
         }}
       >
-        {CONFIG.hands.map(({ img, width, zIndex, alt }, i) => {
-          const rotations = [angles.second, angles.minute, angles.hour]
-          return (
-            <ClockHand
-              key={i}
-              image={img}
-              width={width}
-              rotation={rotations[i]}
-              zIndex={zIndex}
-              alt={alt}
-            />
-          )
-        })}
+        {CONFIG.hands.map((h, i) => (
+          <ClockHand
+            key={i}
+            img={h.img}
+            width={h.width}
+            max={h.max}
+            rotation={
+              i === 0 ? angles.second : i === 1 ? angles.minute : angles.hour
+            }
+            z={h.z}
+          />
+        ))}
       </div>
+
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '10vw',
+          height: '10vw',
+          maxWidth: '50px',
+          maxHeight: '50px',
+          background: 'gray',
+          borderRadius: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 7
+        }}
+      />
     </div>
   )
 })
 
-// --- Main Component ---
+// --- MAIN COMPONENT ---
 export default function AnalogClock () {
-  const time = useTime(CONFIG.clock.updateInterval)
-  const viewport = useViewport()
+  const time = useTime()
   const angles = useClockAngles(time)
 
+  useEffect(() => {
+    ;[bg1, bg2, portImg, hourHandImg, minuteHandImg, secondHandImg].forEach(
+      src => {
+        const img = new Image()
+        img.src = src
+      }
+    )
+  }, [])
+
   return (
-    <div
-      style={{
-        fontFamily: 'sans-serif',
-        width: '100vw',
-        height: `${viewport.height}px`,
-        position: 'relative',
-        background: 'linear-gradient(to top, #08A4F2FF, #04369BFF)',
-        overflow: 'hidden'
-      }}
-    >
+    <>
       <GlobalStyles />
 
-      {/* Gradient Base */}
-      <div
-        style={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          background: 'linear-gradient(to top, white, skyblue)',
-          zIndex: -2
-        }}
-      />
+      <BackgroundLayer image={bg1} z={0} />
+      <TiledBackground />
+      <BackgroundLayer image={bg2} z={1} />
 
-      {/* Background Layers */}
-      <BackgroundLayer
-        image={bg1}
-        opacity={0.8}
-        filter='saturate(150%) contrast(170%)'
-        zIndex={0}
-      />
-
-      <TiledBackground viewport={viewport} />
-
-      <BackgroundLayer
-        image={bg2}
-        opacity={0.5}
-        filter='saturate(300%) contrast(630%)'
-        zIndex={1}
-      />
-
-      {/* Clock */}
       <ClockFace angles={angles} />
-    </div>
+    </>
   )
 }
