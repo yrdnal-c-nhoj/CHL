@@ -14,9 +14,9 @@ const CONFIG = {
   clockSize: 'min(90vw, 90vh)',
   numeralRadius: 43,
   hands: [
-    { img: secondHandImg, width: '15vw', max: '75px', z: 6 },
-    { img: minuteHandImg, width: '18vw', max: '90px', z: 5 },
-    { img: hourHandImg, width: '20vw', max: '100px', z: 4 }
+    { img: secondHandImg, width: '18vw', max: '175px', z: 4 },
+    { img: minuteHandImg, width: '22vw', max: '160px', z: 5 },
+    { img: hourHandImg, width: '20vw', max: '120px', z: 6 }
   ],
   numerals: [
     { text: 'XII', deg: 0 },
@@ -160,7 +160,8 @@ const ClockHand = memo(({ img, width, max, rotation, z }) => (
       zIndex: z,
       pointerEvents: 'none',
       userSelect: 'none',
-      opacity: 0.8 // slightly more visible over gradient
+      opacity: 1,
+      filter: 'drop-shadow(2px 2px 0px rgba(120,120,230)'
     }}
   />
 ))
