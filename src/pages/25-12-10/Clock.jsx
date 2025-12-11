@@ -130,7 +130,7 @@ export default function AnalogClock () {
     top: 0,
     left: 0,
     width: '100%',
-    height: '1150%',
+    height: '115%',
     backgroundImage: `url(${bg2})`,
     backgroundSize: 'contain',
     backgroundPosition: 'center',
