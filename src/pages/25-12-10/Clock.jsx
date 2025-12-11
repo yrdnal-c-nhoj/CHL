@@ -14,10 +14,15 @@ export default function AnalogClock () {
     width: window.innerWidth,
     height: window.innerHeight
   })
+  const [containerHeight, setContainerHeight] = useState(
+    window.innerHeight + 'px'
+  )
 
   useEffect(() => {
-    const handleResize = () =>
+    const handleResize = () => {
       setViewport({ width: window.innerWidth, height: window.innerHeight })
+      setContainerHeight(window.innerHeight + 'px')
+    }
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
@@ -99,9 +104,9 @@ export default function AnalogClock () {
   const containerStyle = {
     fontFamily: 'sans-serif',
     width: '100vw',
-    height: '100vh',
+    height: containerHeight,
     position: 'relative',
-    background: 'linear-gradient(to top, #08A4F2FF, #0454F5FF)',
+    background: 'linear-gradient(to top, #08A4F2FF, #04369BFF)',
     backgroundSize: '100%',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'bottom'
