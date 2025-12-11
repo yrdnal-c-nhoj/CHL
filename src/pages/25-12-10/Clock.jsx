@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 // Import local assets
 import bg1 from './joop.webp'
-import bg2 from './cr.webp'
+import bg2 from './crak.webp'
 import portImg from './eagle.webp'
 import hourHandImg from './oa.gif'
 import minuteHandImg from './oak.gif'
