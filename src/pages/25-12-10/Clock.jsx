@@ -178,7 +178,7 @@ const ClockHand = memo(({ img, width, max, rotation, z }) => (
       width: `clamp(30px, ${width}, ${max})`,
       transform: `translate(-50%, -100%) rotate(${rotation}deg)`,
       transformOrigin: 'bottom center',
-      zIndex: z,
+      zIndex: 7,
       pointerEvents: 'none',
       userSelect: 'none',
       filter: 'drop-shadow(2px 2px 0px rgba(120,120,230))'
