@@ -1,29 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 
 // Import assets
-import bgImage from "./giraffe.webp";
-import hourHandImg from "./hand3.gif";
-import minuteHandImg from "./hand1.gif";
-import secondHandImg from "./hand2.gif";
-import customFont_2025_1206 from "./gir.otf";
-import tileImg from "./run.webp"; // single tiling image
-import centerImg from "./walk.webp"; // new center image
-import { color } from "three/tsl";
+import bgImage from './giraffe.webp'
+import hourHandImg from './hand3.gif'
+import minuteHandImg from './hand1.gif'
+import secondHandImg from './hand2.gif'
+import customFont_2025_1206 from './gir.otf'
+import tileImg from './run.webp'
+import centerImg from './walk.webp'
 
-export default function AnalogClock() {
-  const [time, setTime] = useState(new Date());
-  const [viewport, setViewport] = useState({ width: window.innerWidth, height: window.innerHeight });
+export default function AnalogClock () {
+  const [time, setTime] = useState(new Date())
+  const [viewport, setViewport] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  })
 
-  // Update viewport size
+  // Handle resize + recalculate vmin
   useEffect(() => {
-    const handleResize = () => setViewport({ width: window.innerWidth, height: window.innerHeight });
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    const handleResize = () => {
+      setViewport({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
-  // Custom font
+  // Inject custom font + mobile viewport fix
   useEffect(() => {
-    const style = document.createElement("style");
+    const style = document.createElement('style')
     style.innerHTML = `
       @font-face {
         font-family: 'CustomClockFont';
@@ -31,94 +39,119 @@ export default function AnalogClock() {
         font-weight: normal;
         font-style: normal;
       }
-    `;
-    document.head.appendChild(style);
-    return () => document.head.removeChild(style);
-  }, []);
 
-  // Update clock using requestAnimationFrame for smooth animation
-  useEffect(() => {
-    let animationFrameId;
-    let running = true;
-
-    const animate = () => {
-      if (running) {
-        setTime(new Date());
-        animationFrameId = requestAnimationFrame(animate);
+      html, body, #root {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
       }
-    };
 
-    animate();
-
+      /* Critical mobile fix */
+      body {
+        height: 100dvh;
+      }
+    `
+    document.head.appendChild(style)
     return () => {
-      running = false;
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
+      if (document.head.contains(style)) {
+        document.head.removeChild(style)
       }
-    };
-  }, []);
+    }
+  }, [])
 
-  const now = time;
+  // Smooth clock animation with requestAnimationFrame
+  useEffect(() => {
+    let rafId
+    const tick = () => {
+      setTime(new Date())
+      rafId = requestAnimationFrame(tick)
+    }
+    rafId = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafId)
+  }, [])
 
-  // Calculate total time in units needed for rotation
-  const totalHours = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600 + now.getMilliseconds() / 3600000;
-  const totalMinutes = now.getMinutes() + now.getSeconds() / 60 + now.getMilliseconds() / 60000;
-  const totalSeconds = now.getSeconds() + now.getMilliseconds() / 1000;
+  const now = time
 
-  const hourDeg = totalHours * 30;
-  const minuteDeg = totalMinutes * 6;
-  const secondDeg = totalSeconds * 6;
+  // Precise angles including milliseconds
+  const totalHours =
+    now.getHours() +
+    now.getMinutes() / 60 +
+    now.getSeconds() / 3600 +
+    now.getMilliseconds() / 3600000
+  const totalMinutes =
+    now.getMinutes() + now.getSeconds() / 60 + now.getMilliseconds() / 60000
+  const totalSeconds = now.getSeconds() + now.getMilliseconds() / 1000
 
-  // Tile settings
-  const tileSize = 10; // vmin
-  const vmin = Math.min(viewport.width, viewport.height);
-  const tileSizePx = (tileSize / 100) * vmin;
-  // Add 2 to ensure full coverage on all devices
-  const calculatedHorizontalTileCount = Math.ceil(viewport.width / tileSizePx) + 2;
-  const calculatedVerticalTileCount = Math.ceil(viewport.height / tileSizePx) + 3;
+  const hourDeg = totalHours * 30 // 360° / 12 = 30° per hour
+  const minuteDeg = totalMinutes * 6 // 360° / 60 = 6° per minute
+  const secondDeg = totalSeconds * 6 // 360° / 60 = 6° per second
 
-  const renderRowTiles = (rotationDeg) =>
-    Array.from({ length: calculatedHorizontalTileCount }).map((_, i) => (
-      <div key={i} style={{ height: `${tileSize}vmin`, width: `${tileSize}vmin`, overflow: "hidden" }}>
+  // Tiling system
+  const tileSize = 10 // vmin
+  const vmin = Math.min(viewport.width, viewport.height)
+  const tileSizePx = (tileSize / 100) * vmin
+
+  const horizontalTiles = Math.ceil(viewport.width / tileSizePx) + 3
+  const verticalTiles = Math.ceil(viewport.height / tileSizePx) + 6 // extra buffer
+
+  const renderRowTiles = rotationDeg =>
+    Array.from({ length: horizontalTiles }, (_, i) => (
+      <div
+        key={`row-${i}`}
+        style={{
+          height: `${tileSize}vmin`,
+          width: `${tileSize}vmin`,
+          overflow: 'hidden'
+        }}
+      >
         <div
           style={{
-            height: "100%",
-            width: "100%",
+            height: '100%',
+            width: '100%',
             backgroundImage: `url(${tileImg})`,
-            backgroundSize: "contain",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
+            backgroundSize: 'contain',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
             transform: `rotate(${rotationDeg}deg)`,
-            transformOrigin: "center",
+            transformOrigin: 'center'
           }}
         />
       </div>
-    ));
+    ))
 
-  const renderColumnTiles = (rotationDeg) =>
-    Array.from({ length: calculatedVerticalTileCount }).map((_, i) => (
-      <div key={i} style={{ height: `${tileSize}vmin`, width: `${tileSize}vmin`, overflow: "hidden" }}>
+  const renderColumnTiles = rotationDeg =>
+    Array.from({ length: verticalTiles }, (_, i) => (
+      <div
+        key={`col-${i}`}
+        style={{
+          height: `${tileSize}vmin`,
+          width: `${tileSize}vmin`,
+          overflow: 'hidden'
+        }}
+      >
         <div
           style={{
-            height: "100%",
-            width: "100%",
+            height: '100%',
+            width: '100%',
             backgroundImage: `url(${tileImg})`,
-            backgroundSize: "contain",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
+            backgroundSize: 'contain',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
             transform: `rotate(${rotationDeg}deg)`,
-            transformOrigin: "center",
+            transformOrigin: 'center'
           }}
         />
       </div>
-    ));
+    ))
 
-  const numbers = Array.from({ length: 12 }, (_, i) => i + 1);
-  const numberStyle = (num) => {
-    const angle = ((num - 3) * 30) * (Math.PI / 180);
-    const radius = 42; // Slightly reduced radius to ensure numbers stay within bounds
-    const x = radius * Math.cos(angle);
-    const y = radius * Math.sin(angle);
+  // Clock numbers (1–12)
+  const numbers = Array.from({ length: 12 }, (_, i) => i + 1)
+  const numberStyle = num => {
+    const angle = (num - 3) * 30 * (Math.PI / 180)
+    const radius = 42
+    const x = radius * Math.cos(angle)
+    const y = radius * Math.sin(angle)
     return {
       position: 'absolute',
       left: `calc(50% + ${x}%)`,
@@ -126,18 +159,56 @@ export default function AnalogClock() {
       fontSize: 'clamp(5rem, 8vw, 8.5rem)',
       fontFamily: 'CustomClockFont',
       userSelect: 'none',
-      textAlign: 'center',
       color: 'white',
+      textAlign: 'center',
       transform: 'translate(-50%, -50%)',
-      textShadow: '1px 1px 0 #970909FF, -1px -1px 0 black',
+      textShadow: '1px 1px 0 #970909, -1px -1px 0 black',
       pointerEvents: 'none',
       willChange: 'transform'
-    };
-  };
+    }
+  }
 
+  // Hand style factory
+  const handStyle = (deg, width, transitionDuration = null) => ({
+    position: 'absolute',
+    width: `${width}%`,
+    height: 'auto',
+    maxHeight: '90%',
+    transform: `translate(-50%, -100%) rotate(${deg}deg)`,
+    transformOrigin: '50% 100%',
+    top: '50%',
+    left: '50%',
+    transition: transitionDuration
+      ? `transform ${transitionDuration}s linear`
+      : 'none',
+    zIndex: 10,
+    filter:
+      'drop-shadow(2px 2px 4px rgba(0,0,0,0.9)) drop-shadow(-2px -2px 4px rgba(255,255,255,0.7))',
+    opacity: 0.85,
+    pointerEvents: 'none',
+    backfaceVisibility: 'hidden',
+    imageRendering: 'crisp-edges'
+  })
+
+  // Center spinning image (counterclockwise, 1 full turn per minute)
+  const centerDeg = -totalSeconds * 6 // 360° per 60s → -6° per second
+
+  const centerImageStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: '25vmin',
+    height: '25vmin',
+    transform: `translate(-50%, -50%) rotate(${centerDeg}deg)`,
+    transformOrigin: '50% 50%',
+    zIndex: 15,
+    opacity: 0.75,
+    pointerEvents: 'none'
+  }
+
+  // Main container styles (THE FIX IS HERE)
   const outerContainerStyle = {
-    height: '100%',
-    minHeight: '100vh',
+    height: '100dvh', // This is the magic line
     width: '100%',
     position: 'fixed',
     top: 0,
@@ -150,9 +221,8 @@ export default function AnalogClock() {
     justifyContent: 'center',
     alignItems: 'center',
     touchAction: 'none',
-    WebkitOverflowScrolling: 'touch',
     overscrollBehavior: 'none'
-  };
+  }
 
   const clockContainerStyle = {
     width: 'min(85vmin, 95vw)',
@@ -160,96 +230,68 @@ export default function AnalogClock() {
     borderRadius: '50%',
     position: 'relative',
     zIndex: 5,
-    margin: 'auto',
-    maxWidth: '100%',
-    maxHeight: '100%',
     aspectRatio: '1/1'
-  };
+  }
 
-  const handStyle = (deg, width, height, transitionDuration) => ({
+  const rowContainerStyle = position => ({
     position: 'absolute',
-    width: `${width}%`,
-    height: 'auto',
-    maxHeight: '90%',
-    transform: `translate(-50%, -100%) rotate(${deg}deg)`,
-    transformOrigin: '50% 100%',
-    top: '50%',
-    left: '50%',
-    transition: transitionDuration ? `transform ${transitionDuration}s linear` : 'none',
-    zIndex: 10,
-    filter: 'drop-shadow(2px 2px 2px rgba(0,0,0,0.9)) drop-shadow(-2px -2px 2px rgba(255,255,255,0.7))',
-    maskImage: 'linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 3%, rgba(0,0,0,1) 5%)',
-    WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 3%, rgba(0,0,0,1) 5%)',
-    opacity: 0.8,
-    willChange: 'transform',
-    pointerEvents: 'none',
-    backfaceVisibility: 'hidden',
-    imageRendering: 'crisp-edges'
-  });
-
-  const rowContainerStyle = (position) => ({
-    position: "absolute",
-    top: position === "top" ? 0 : "auto",
-    bottom: position === "bottom" ? 0 : "auto",
+    top: position === 'top' ? 0 : 'auto',
+    bottom: position === 'bottom' ? 0 : 'auto',
     left: 0,
-    width: "100%",
-    display: "flex",
-    justifyContent: "flex-start",
+    width: '100%',
+    display: 'flex',
     gap: 0,
-    zIndex: 3,
-  });
+    zIndex: 3
+  })
 
-  const columnContainerStyle = (side) => ({
-    position: "absolute",
-    left: side === "left" ? 0 : "auto",
-    right: side === "right" ? 0 : "auto",
+  const columnContainerStyle = side => ({
+    position: 'absolute',
+    left: side === 'left' ? 0 : 'auto',
+    right: side === 'right' ? 0 : 'auto',
     top: 0,
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
     gap: 0,
-    zIndex: 3,
-  });
-
-  // Rotation of center image (counterclockwise one revolution per minute)
-  const centerDeg = -(totalSeconds * 12); // 6° per second = 360° per minute, negative for counterclockwise
-
-  const centerImageStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    width: "25vmin",
-    height: "25vmin",
-    transform: `translate(-50%, -50%) rotate(${centerDeg}deg)`,
-    transformOrigin: "50% 50%",
-    zIndex: 15,
-    opacity: 0.7,
-    pointerEvents: "none",
-    opacity: 0.7,
-  };
+    zIndex: 3
+  })
 
   return (
     <div style={outerContainerStyle}>
-      <div style={rowContainerStyle("top")}>{renderRowTiles(180)}</div>
-      <div style={rowContainerStyle("bottom")}>{renderRowTiles(360)}</div>
-      <div style={columnContainerStyle("left")}>{renderColumnTiles(90)}</div>
-      <div style={columnContainerStyle("right")}>{renderColumnTiles(270)}</div>
+      {/* Tiling borders */}
+      <div style={rowContainerStyle('top')}>{renderRowTiles(180)}</div>
+      <div style={rowContainerStyle('bottom')}>{renderRowTiles(0)}</div>
+      <div style={columnContainerStyle('left')}>{renderColumnTiles(90)}</div>
+      <div style={columnContainerStyle('right')}>{renderColumnTiles(270)}</div>
 
+      {/* Clock face */}
       <div style={clockContainerStyle}>
-        {numbers.map((num) => (
+        {numbers.map(num => (
           <div key={num} style={numberStyle(num)}>
             {num}
           </div>
         ))}
 
-        <img src={minuteHandImg} alt="minute" style={handStyle(minuteDeg, 25, 52, 60)} />
-        <img src={hourHandImg} alt="hour" style={handStyle(hourDeg, 28, 44, 12 * 3600)} />
-        <img src={secondHandImg} alt="second" style={handStyle(secondDeg, 26, 58, null)} />
+        {/* Hands */}
+        <img
+          src={minuteHandImg}
+          alt='minute'
+          style={handStyle(minuteDeg, 25, 60)}
+        />
+        <img
+          src={hourHandImg}
+          alt='hour'
+          style={handStyle(hourDeg, 28, 43200)}
+        />
+        <img
+          src={secondHandImg}
+          alt='second'
+          style={handStyle(secondDeg, 26)}
+        />
 
-        {/* Center spinning image */}
-        <img src={centerImg} alt="center" style={centerImageStyle} />
+        {/* Spinning center */}
+        <img src={centerImg} alt='center' style={centerImageStyle} />
       </div>
     </div>
-  );
+  )
 }
