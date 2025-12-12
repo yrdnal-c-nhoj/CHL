@@ -90,11 +90,11 @@ export default function GeologicTimeClock () {
 
       <main
         style={{
-          height: '100vh',
+          height: '100dvh',
           width: '100vw',
           margin: 0,
-          // REFACTOR: Adjusted vertical padding to budget height
-          padding: '4vh 1rem',
+          padding:
+            'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
           background: 'linear-gradient(90deg, #F5C280 0%, #F0E983FF 100%)',
           display: 'flex',
           flexDirection: 'column',
