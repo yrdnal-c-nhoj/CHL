@@ -135,7 +135,7 @@ export default function ClockPage () {
   return (
     <div
       className={styles.container}
-      style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}
+      style={{ width: '100vw', height: '100dvh', overflow: 'hidden' }}
     >
       {pageError && <div className={styles.error}>{pageError}</div>}
 
@@ -164,7 +164,7 @@ export default function ClockPage () {
           position: 'fixed',
           inset: 0,
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           backgroundColor: '#000',
           zIndex: 9999,
           pointerEvents: 'none',
