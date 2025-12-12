@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, memo } from 'react'
 
 // --- Image Imports ---
-import bg1 from './joop.webp'
+import bg1 from './j.webp'
 import bg2 from './jj.webp'
 import portImg from './eagle.webp'
 import hourHandImg from './oa.gif'
@@ -56,24 +56,46 @@ const GlobalStyles = memo(() => (
   `}</style>
 ))
 
-// --- BACKGROUND IMAGE ---
-const BackgroundImage = memo(() => (
-  <div
-    style={{
-      position: 'fixed',
-      inset: 0,
-      backgroundImage: `url(${bg1})`,
-      backgroundSize: '130% auto', // 50% width, auto height to maintain aspect ratio
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-      zIndex: 1,
-      opacity: 0.8,
-      filter: 'hue-rotate(-190deg) contrast(1.5)',
-      pointerEvents: 'none'
-    }}
-  />
-))
+// --- INFINITE UPWARD SCROLLING BG1 (JOOP) ---
+const InfiniteScrollingBG = memo(() => {
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        overflow: 'hidden',
+        zIndex: 1,
+        pointerEvents: 'none'
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '300%',
+          backgroundImage: `url(${bg1})`,
+          backgroundSize: '130% auto',
+          backgroundRepeat: 'repeat-y',
+          backgroundPosition: 'center top',
+          animation: 'scrollUp 36s linear infinite',
+          opacity: 0.8
+        }}
+      />
+      <style jsx>{`
+        @keyframes scrollUp {
+          from {
+            transform: translateY(0);
+          }
+          to {
+            transform: translateY(-66.66%);
+          }
+        }
+      `}</style>
+    </div>
+  )
+})
 
+// --- STATIC BG2 (JJ) ---
 const BackgroundImage2 = memo(() => (
   <div
     style={{
@@ -90,13 +112,13 @@ const BackgroundImage2 = memo(() => (
   />
 ))
 
-// --- TILE LAYER ---
+// --- TILED EAGLE LAYER ---
 const TiledBackground = memo(() => {
   const tileSize = 100
   const cols = Math.ceil(window.innerWidth / tileSize) + 3
   const rows = Math.ceil(window.innerHeight / tileSize) + 3
-
   const tiles = []
+
   for (let r = -2; r < rows; r++) {
     for (let c = -2; c < cols; c++) {
       const flip = (r + c) % 2 === 1
@@ -109,7 +131,7 @@ const TiledBackground = memo(() => {
             height: tileSize,
             background: `url(${portImg}) center/contain no-repeat`,
             opacity: 0.5,
-            filter: 'hue-rotate(90deg)',
+            filter: 'hue-rotate(190deg) saturate(7.5)',
             transform: flip ? 'scaleX(-1)' : 'none',
             left: c * tileSize - tileSize,
             top: r * tileSize - tileSize,
@@ -120,7 +142,6 @@ const TiledBackground = memo(() => {
       )
     }
   }
-
   return <>{tiles}</>
 })
 
@@ -160,8 +181,7 @@ const ClockHand = memo(({ img, width, max, rotation, z }) => (
       zIndex: z,
       pointerEvents: 'none',
       userSelect: 'none',
-      opacity: 1,
-      filter: 'drop-shadow(2px 2px 0px rgba(120,120,230)'
+      filter: 'drop-shadow(2px 2px 0px rgba(120,120,230))'
     }}
   />
 ))
@@ -224,6 +244,7 @@ export default function AnalogClock () {
   const time = useTime()
   const angles = useClockAngles(time)
 
+  // Preload hand images
   useEffect(() => {
     ;[hourHandImg, minuteHandImg, secondHandImg].forEach(src => {
       const img = new Image()
@@ -235,7 +256,7 @@ export default function AnalogClock () {
     <>
       <GlobalStyles />
 
-      {/* --- Gradient background --- */}
+      {/* Gradient base */}
       <div
         style={{
           position: 'fixed',
@@ -246,10 +267,16 @@ export default function AnalogClock () {
         }}
       />
 
-      <BackgroundImage />
+      {/* Infinite scrolling Joop background */}
+      <InfiniteScrollingBG />
+
+      {/* JJ overlay */}
       <BackgroundImage2 />
+
+      {/* Eagle tiles */}
       <TiledBackground />
 
+      {/* Clock */}
       <ClockFace angles={angles} />
     </>
   )
