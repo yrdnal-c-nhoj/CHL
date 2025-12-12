@@ -74,10 +74,10 @@ const InfiniteScrollingBG = memo(() => {
           width: '100%',
           height: '300%',
           backgroundImage: `url(${bg1})`,
-          backgroundSize: '130% auto',
+          backgroundSize: '100% auto',
           backgroundRepeat: 'repeat-y',
           backgroundPosition: 'center top',
-          animation: 'scrollUp 36s linear infinite',
+          animation: 'scrollUp 19s linear infinite',
           opacity: 0.8
         }}
       />
