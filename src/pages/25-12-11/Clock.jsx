@@ -50,9 +50,8 @@ export default function GeologicTimeClock () {
     { label: 'Current Millisecond', value: time.ms }
   ]
 
-  // Estimated height taken up by non-item elements (main padding, gap)
-  // Reduced to 8vh since the <h1> was removed.
-  const staticHeightVh = 8
+  // Estimated height taken up by non-item elements (main padding, gap, safe areas)
+  const staticHeightVh = 6
   const totalItems = timeline.length
 
   // Calculate the maximum available vh for each item's content area
