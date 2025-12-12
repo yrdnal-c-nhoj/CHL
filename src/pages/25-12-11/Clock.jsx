@@ -35,12 +35,12 @@ export default function GeologicTimeClock () {
   )
 
   const timeline = [
-    { label: 'Formation of Earth', value: '4.540 Billion Years Ago' },
-    { label: 'Phanerozoic Eon Begins', value: '541 Million Years Ago' },
-    { label: 'Cenozoic Era Begins', value: '66 Million Years Ago' },
-    { label: 'Quaternary Period', value: '2.58 Million Years Ago' },
-    { label: 'Holocene Epoch', value: '11,700 Years Ago' },
-    { label: 'Proposed Anthropocene', value: '~75 Years Ago' },
+    { label: 'Formation of Earth', value: '4.540 Billion Years' },
+    { label: 'Phanerozoic Eon Begins', value: '541 Million Years' },
+    { label: 'Cenozoic Era Begins', value: '66 Million Years' },
+    { label: 'Quaternary Period', value: '2.58 Million Years' },
+    { label: 'Holocene Epoch', value: '11,700 Years' },
+    { label: 'Proposed Anthropocene', value: '~75 Years' },
     { label: 'Current Year', value: `${time.year} C.E.` },
     { label: 'Current Month', value: time.month },
     { label: 'Current Day', value: time.day },
