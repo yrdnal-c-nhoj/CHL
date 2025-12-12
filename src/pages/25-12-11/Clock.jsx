@@ -70,13 +70,13 @@ export default function GeologicTimeClock () {
       <style
         dangerouslySetInnerHTML={{
           __html: `
-        html, body, #root { 
-          margin: 0; 
-          padding: 0; 
-          height: 100vh;
+        html, body, #root {
+          margin: 0;
+          padding: 0;
+          height: 100dvh;
           width: 100vw;
           /* CRITICAL: Disallow scrolling */
-          overflow: hidden; 
+          overflow: hidden;
           box-sizing: border-box;
         }
       `
