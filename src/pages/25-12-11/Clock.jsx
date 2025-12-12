@@ -50,15 +50,19 @@ export default function GeologicTimeClock () {
     { label: 'Current Millisecond', value: time.ms }
   ]
 
-  // Calculate the total number of items to determine height scaling
+  // Estimated height taken up by non-item elements (main padding, gap)
+  // Reduced to 8vh since the <h1> was removed.
+  const staticHeightVh = 8
   const totalItems = timeline.length
-  // Estimated height taken up by non-item elements (header, main padding, gap)
-  // We use vh units to ensure these scale proportionally with the viewport height.
-  const staticHeightVh = 15 // Estimate 15vh for Header + top/bottom padding + overall gap
 
   // Calculate the maximum available vh for each item's content area
-  // This value will be used to clamp the font-size/padding/height of each item.
+  // This value ensures the total height fits within 100vh.
   const maxItemHeightVh = (100 - staticHeightVh) / totalItems
+
+  // Calculate the maximum font size based on the available horizontal space (vw)
+  // We allocate ~85vw of space for the Label (40%) and Value (60%) combined.
+  const maxTextFontSizeVh = maxItemHeightVh * 0.4
+  const maxTextFontSizeVw = 0.85 * 0.4 // Maximize horizontal shrinking based on available viewport width (85vw)
 
   return (
     <>
@@ -86,22 +90,19 @@ export default function GeologicTimeClock () {
 
       <main
         style={{
-          // CRITICAL: Ensure main fills the viewport and prevents internal scroll
           height: '100vh',
           width: '100vw',
           margin: 0,
-          // REFACTOR: Use vh for top/bottom padding to contribute to the height budget
+          // REFACTOR: Adjusted vertical padding to budget height
           padding: '4vh 1rem',
           background: 'linear-gradient(90deg, #F5C280 0%, #F0E983FF 100%)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           boxSizing: 'border-box',
-          // CRITICAL: Prevents main content from scrolling
-          overflow: 'hidden',
+          overflow: 'hidden', // Prevents main content from scrolling
           fontFamily: 'system-ui, -apple-system, sans-serif',
-          // REFACTOR: Use vh for vertical gap to budget for height
-          gap: '1vh'
+          gap: '0.5vh' // Tighter vertical gap for maximum vertical space
         }}
       >
         {timeline.map((item, i) => (
@@ -111,18 +112,18 @@ export default function GeologicTimeClock () {
               width: '100%',
               maxWidth: '800px',
               display: 'flex',
-              alignItems: 'flex-start',
+              alignItems: 'center', // Changed to 'center' for better single-line alignment
               justifyContent: 'space-between',
-              // REFACTOR: Use vh for vertical padding to budget for height
-              padding: `clamp(0.25vh, ${maxItemHeightVh * 0.1}vh, 1vh) 0`,
+              // Padding based on vertical budget
+              padding: `clamp(0.2vh, ${maxItemHeightVh * 0.15}vh, 1vh) 0`,
               // Set a flex-basis to ensure all items share the remaining height equally
               flex: `1 1 ${maxItemHeightVh}vh`,
-              minHeight: '0', // Allows the item to shrink
+              minHeight: '0',
               borderBottom:
                 i < timeline.length - 1
                   ? '1px solid rgba(17,58,102,0.2)'
                   : 'none',
-              overflow: 'hidden', // Hide any potential overflow *within* the row
+              overflow: 'hidden',
               flexWrap: 'nowrap'
             }}
           >
@@ -133,13 +134,19 @@ export default function GeologicTimeClock () {
                 textAlign: 'right',
                 paddingRight: '1rem',
                 fontFamily: '"Playfair Display", Georgia, serif',
-                // CRITICAL: Font size must shrink based on viewport height (vh)
-                // We use vh units to ensure the text shrinks/grows perfectly with the screen
-                fontSize: `clamp(0.6rem, ${maxItemHeightVh * 0.4}vh, 1.4rem)`,
+                // CRITICAL: Font size clamps based on VW (horizontal space) and VH (vertical budget)
+                // The minimum is still constrained by the overall VH budget for safety.
+                fontSize: `clamp(0.6rem, ${Math.min(
+                  maxTextFontSizeVw * 4,
+                  maxTextFontSizeVh
+                )}vh, 1.4rem)`,
                 fontWeight: 500,
                 color: '#113A66',
-                whiteSpace: 'normal',
-                wordBreak: 'break-word',
+                // CRITICAL: Prevent Line Breaks and rely on font shrinking
+                whiteSpace: 'nowrap',
+                // CRITICAL: Allow text to be cut off if it still exceeds container
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
                 minWidth: '30%'
               }}
             >
@@ -150,7 +157,7 @@ export default function GeologicTimeClock () {
             <div
               style={{
                 width: '0.4vmin',
-                // CRITICAL: Height based on the allocated item height
+                // Height based on the allocated item height
                 height: `clamp(1.5em, ${maxItemHeightVh * 0.7}vh, 4rem)`,
                 minHeight: '1.5em',
                 background: 'linear-gradient(to bottom, #113A66, #3D1759)',
@@ -166,12 +173,18 @@ export default function GeologicTimeClock () {
                 flex: '1 1 60%',
                 paddingLeft: '1rem',
                 fontFamily: '"Roboto Mono", monospace',
-                // CRITICAL: Font size must shrink based on viewport height (vh)
-                fontSize: `clamp(0.6rem, ${maxItemHeightVh * 0.4}vh, 1.4rem)`,
+                // CRITICAL: Font size clamps based on VW (horizontal space) and VH (vertical budget)
+                fontSize: `clamp(0.6rem, ${Math.min(
+                  maxTextFontSizeVw * 6,
+                  maxTextFontSizeVh
+                )}vh, 1.4rem)`,
                 color: '#3D1759',
                 textAlign: 'left',
-                whiteSpace: 'normal',
-                wordBreak: 'break-word',
+                // CRITICAL: Prevent Line Breaks and rely on font shrinking
+                whiteSpace: 'nowrap',
+                // CRITICAL: Allow text to be cut off if it still exceeds container
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
                 minWidth: '50%'
               }}
             >
