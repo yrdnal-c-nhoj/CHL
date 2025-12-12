@@ -133,7 +133,7 @@
   { "path": "25-08-10", "date": "25-08-10", "title":  "Bonfire" },
   { "path": "25-08-11", "date": "25-08-11", "title": "Washing Machine" },
   { "path": "25-08-12", "date": "25-08-12", "title": "Hexahedron" },
-  { "path": "25-08-13", "date": "25-08-13", "title":            "Tiny" },
+  { "path": "25-08-13", "date": "25-08-13", "title": "Tiny" },
   { "path": "25-08-14", "date": "25-08-14", "title": "Birthstone" },
   { "path": "25-08-15", "date": "25-08-15", "title": "Dominoes" },
   { "path": "25-08-16", "date": "25-08-16", "title": "Palm Trees" },
@@ -145,7 +145,7 @@
   { "path": "25-08-22", "date": "25-08-22", "title": "Random Color" },
   { "path": "25-08-23", "date": "25-08-23", "title": "Signal Pennants" },
   { "path": "25-08-24", "date": "25-08-24", "title": "Digital Roman" },
-  { "path": "25-08-25", "date": "25-08-25", "title":           "Barcode" },
+  { "path": "25-08-25", "date": "25-08-25", "title": "Barcode" },
   { "path": "25-08-26", "date": "25-08-26", "title": "Rooted" },
   { "path": "25-08-27", "date": "25-08-27", "title": "X to the Enth" },
   { "path": "25-08-28", "date": "25-08-28", "title": "Goblin" },
@@ -252,5 +252,6 @@
   { "path": "25-12-07", "date": "25-12-07", "title": "Icosahedron" },
   { "path": "25-12-08", "date": "25-12-08", "title": "Paper Plate" },
   { "path": "25-12-09", "date": "25-12-09", "title": "Muybridge" },
-  { "path": "25-12-10", "date": "25-12-10", "title": "Jupiter" }
+  { "path": "25-12-10", "date": "25-12-10", "title": "Jupiter" },
+  { "path": "25-12-11", "date": "25-12-11", "title": "Geological" }
   ]
