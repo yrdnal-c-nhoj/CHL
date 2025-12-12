@@ -155,14 +155,6 @@ export default function ClockPage () {
               <ClockComponent />
             </div>
           </div>
-
-          <ClockPageNav
-            prevItem={prevItem}
-            nextItem={nextItem}
-            currentItem={currentItem}
-            formatTitle={t => t?.replace(/clock/i, '').trim() || 'Home'}
-            formatDate={d => d.replace(/-/g, '.')}
-          />
         </>
       )}
 
