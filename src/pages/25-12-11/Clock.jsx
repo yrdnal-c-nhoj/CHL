@@ -1,116 +1,131 @@
-import React from 'react';
+// GeologicTimeClock.jsx
+import React, { useEffect, useState, useMemo } from 'react'
 
-const FlightTicket = () => {
-  const containerStyle = {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'linear-gradient(90deg, #008abf, #005d85)',
-    fontFamily: 'system-ui',
-    padding: '5vh 5vw',
-    margin: 0,
-  };
+export default function GeologicTimeClock () {
+  const [now, setNow] = useState(() => new Date())
 
-  const ticketStyle = {
-    background: '#fff',
-    borderRadius: '2rem',
-    width: '90vw',
-    maxWidth: '40rem',
-    margin: '0 auto',
-    clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8rem), calc(100% - 3rem) calc(100% - 8rem), calc(100% - 3rem) 100%, 0 100%)'
-  };
+  // Update every millisecond
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 1)
+    return () => clearInterval(id)
+  }, [])
 
-  const ticketBodyStyle = {
-    padding: '3rem 2.5rem 4rem',
-  };
+  // Helper functions for present-time hierarchy
+  const currentYear = now.getFullYear()
+  const currentMonthName = now.toLocaleString('en', { month: 'long' })
+  const currentDay = now.getDate()
+  const currentHour = now.getHours()
+  const currentMinute = now.getMinutes()
+  const currentSecond = now.getSeconds()
+  const currentMillisecond = now.getMilliseconds()
 
-  const flyStyle = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    fontSize: '2rem',
-    fontWeight: 300,
-    margin: '0 0 2rem 0',
-  };
+  // Unified dataset
+  const timeline = useMemo(
+    () => [
+      { label: 'Formation of Earth', display: '4.540 Billion' },
+      { label: 'Start of Phanerozoic Eon', display: '541 Million' },
+      { label: 'Start of Cenozoic Era', display: '66 Million' },
+      { label: 'Start of Quaternary Period', display: '2.58 Million' },
+      { label: 'Start of Holocene Epoch', display: '11.7 Thousand' },
+      { label: 'Proposed Anthropocene', display: '~75' },
+      // --- HUMAN SCALE ---
+      {
+        label: `Year`,
+        display: `${currentYear} C.E.`
+      },
+      { label: `Month `, display: currentMonthName },
+      { label: 'Day', display: String(currentDay).padStart(2, '0') },
+      {
+        label: 'Hour',
+        display: `${String(currentHour).padStart(2, '0')}`
+      },
+      {
+        label: 'Minute',
+        display: `${String(currentMinute).padStart(2, '0')}`
+      },
+      {
+        label: 'Second',
+        display: `${String(currentSecond).padStart(2, '0')} `
+      },
+      {
+        label: 'Millisecond',
+        display: `${String(currentMillisecond).padStart(3, '0')} `
+      }
+    ],
+    [now]
+  )
 
-  const infoContainerStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: '1rem',
-    textAlign: 'center',
-  };
+  // Updated styles with center dividing line
+  const styles = {
+    container: {
+      height: '100vh',
+      width: '100vw',
+      padding: 0,
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+      background: 'linear-gradient(90deg, #F5C280FF 0%, #E6E78FFF 100%)',
+      color: '#e0e7ff',
+      display: 'flex',
+      flexDirection: 'column'
+    },
 
-  const infoItemStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-  };
+    timelineContainer: {
+      position: 'relative',
+      width: '100%',
+      height: '100%'
+    },
 
-  const labelStyle = {
-    fontSize: '0.75rem',
-    fontWeight: 600,
-    letterSpacing: '0.05em',
-    textTransform: 'uppercase',
-    color: '#666',
-    marginBottom: '0.5rem',
-  };
-
-  const valueStyle = {
-    fontSize: '1.1rem',
-    fontWeight: 500,
-  };
-
-  const tearOffStyle = {
-    borderTop: '2px dashed #ddd',
-    padding: '2rem 3rem',
-    textAlign: 'center',
-  };
-
-  const barcodeStyle = {
-    height: '3rem',
-    background: 'repeating-linear-gradient(90deg, #000 0, #000 2px, transparent 2px, transparent 5px)',
-    marginBottom: '1rem',
-  };
+    list: {
+      display: 'flex',
+      flexDirection: 'column',
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      zIndex: 2
+    },
+    item: {
+      flex: 1,
+      display: 'grid',
+      gridTemplateColumns: '1fr auto 1fr',
+      alignItems: 'center',
+      overflow: 'hidden',
+      borderBottom: '1px solid rgba(0,0,0,0.2)'
+    },
+    label: {
+      color: '#113A66FF',
+      fontSize: '3vh',
+      fontFamily: "'Playfair Display', serif",
+      textAlign: 'right',
+      padding: '0 1vh'
+    },
+    value: {
+      color: '#3D1759FF',
+      fontSize: '3vh',
+      fontFamily: "'Roboto Mono', monospace",
+      fontVariantNumeric: 'tabular-nums',
+      textAlign: 'left'
+      // padding: '0 1vh'
+    },
+    spacer: {
+      width: '100%',
+      position: 'relative'
+    }
+  }
 
   return (
-    <div style={containerStyle}>
-      <div style={ticketStyle}>
-        <div style={ticketBodyStyle}>
-          <div style={flyStyle}>
-            <span>ZRH <span style={{ margin: '0 0.5rem' }}>✈</span> OSL</span>
-          </div>
-          
-          <div style={{ marginBottom: '2rem' }}>
-            <div style={labelStyle}>Passenger</div>
-            <div style={{ ...valueStyle, fontSize: '1.25rem' }}>MEGAFRY MR</div>
-          </div>
-
-          <div style={infoContainerStyle}>
-            <div style={infoItemStyle}>
-              <span style={labelStyle}>Gate</span>
-              <span style={valueStyle}>B24</span>
+    <main style={styles.container}>
+      <div style={styles.timelineContainer}>
+        <div style={styles.list}>
+          {timeline.map((item, i) => (
+            <div key={i} style={styles.item}>
+              <div style={styles.label}>{item.label}</div>
+              <div style={styles.spacer} />
+              <div style={styles.value}>{item.display}</div>
             </div>
-            <div style={infoItemStyle}>
-              <span style={labelStyle}>Departure</span>
-              <span style={valueStyle}>14:35</span>
-            </div>
-            <div style={infoItemStyle}>
-              <span style={labelStyle}>Speedy</span>
-              <span style={valueStyle}>Yes</span>
-            </div>
-            <div style={infoItemStyle}>
-              <span style={labelStyle}>Boarding</span>
-              <span style={valueStyle}>14:05</span>
-            </div>
-          </div>
-        </div>
-
-        <div style={tearOffStyle}>
-          <div style={barcodeStyle}></div>
-          <div style={{ fontSize: '0.9rem', letterSpacing: '0.1em' }}>43596885365490358</div>
+          ))}
         </div>
       </div>
-    </div>
-  );
-};
-
-export default FlightTicket;
+    </main>
+  )
+}
