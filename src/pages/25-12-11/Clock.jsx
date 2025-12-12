@@ -94,14 +94,14 @@ export default function GeologicTimeClock () {
     },
     label: {
       color: '#113A66FF',
-      fontSize: '3vh',
+      fontSize: '2vh',
       fontFamily: "'Playfair Display', serif",
       textAlign: 'right',
       padding: '0 1vh'
     },
     value: {
       color: '#3D1759FF',
-      fontSize: '3vh',
+      fontSize: '2vh',
       fontFamily: "'Roboto Mono', monospace",
       fontVariantNumeric: 'tabular-nums',
       textAlign: 'left'
