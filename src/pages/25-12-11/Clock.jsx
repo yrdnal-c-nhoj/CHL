@@ -1,6 +1,7 @@
 // GeologicTimeClock.jsx
 import React, { useEffect, useState, useMemo } from 'react'
 
+// The component logic remains the same for data calculation
 export default function GeologicTimeClock () {
   const [now, setNow] = useState(() => new Date())
 
@@ -55,7 +56,7 @@ export default function GeologicTimeClock () {
     [now]
   )
 
-  // Updated styles with center dividing line
+  // Updated styles with center dividing line and responsive text
   const styles = {
     container: {
       height: '100vh',
@@ -84,32 +85,48 @@ export default function GeologicTimeClock () {
       right: 0,
       zIndex: 2
     },
+
     item: {
       flex: 1,
+      // Define columns to prevent content from pushing the center line
+      gridTemplateColumns: '1fr 1px 1fr',
       display: 'grid',
-      gridTemplateColumns: '1fr auto 1fr',
       alignItems: 'center',
       overflow: 'hidden',
       borderBottom: '1px solid rgba(0,0,0,0.2)'
     },
+
+    // --- RESPONSIVE FONT SIZE AND NO WRAP ---
     label: {
       color: '#113A66FF',
-      fontSize: '2vh',
+      // Preferred size is 2.5vw, clamped between 12px and 3vh for bounds
+      fontSize: 'clamp(12px, 2.5vw, 3vh)',
       fontFamily: "'Playfair Display', serif",
       textAlign: 'right',
-      padding: '0 1vh'
+      padding: '0 1vh',
+      whiteSpace: 'nowrap', // Crucial: Prevents wrapping
+      overflow: 'hidden', // Hides content that exceeds container
+      textOverflow: 'ellipsis' // Fallback for visibility
     },
     value: {
       color: '#3D1759FF',
-      fontSize: '2vh',
+      // Same clamp for proportional scaling
+      fontSize: 'clamp(12px, 2.5vw, 3vh)',
       fontFamily: "'Roboto Mono', monospace",
       fontVariantNumeric: 'tabular-nums',
-      textAlign: 'left'
+      textAlign: 'left',
+      whiteSpace: 'nowrap', // Crucial: Prevents wrapping
+      overflow: 'hidden', // Hides content that exceeds container
+      textOverflow: 'ellipsis' // Fallback for visibility
       // padding: '0 1vh'
     },
+
     spacer: {
-      width: '100%',
-      position: 'relative'
+      // This is now just a 1px separator column
+      width: '1px',
+      backgroundColor: 'rgba(0,0,0,0.4)',
+      height: '80%', // Visual
+      margin: '0 auto'
     }
   }
 
@@ -120,8 +137,9 @@ export default function GeologicTimeClock () {
           {timeline.map((item, i) => (
             <div key={i} style={styles.item}>
               <div style={styles.label}>{item.label}</div>
+              {/* Spacer is now a visual dividing line */}
               <div style={styles.spacer} />
-              <div style={styles.value}>{item.display}</div>
+              <div style={styles.value}>&nbsp;{item.display}</div>
             </div>
           ))}
         </div>
