@@ -91,8 +91,8 @@ export default function DigitalClock () {
     filter: 'contrast(1.15) brightness(1.05)',
 
     textShadow: `
-    -0.08vh -0.08vh 0.18vh rgba(255,255,255,0.35),
-     0.08vh  0.08vh 0.22vh rgba(0,0,0,0.55)
+    -0.28vh -0.28vh 0.1vh rgba(255,255,255,0.35),
+     0.28vh  0.28vh 0.1vh rgba(0,0,0,0.55)
   `
   }
 
