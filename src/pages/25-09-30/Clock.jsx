@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
-import customFont1001 from "./stt.ttf";
+import React, { useState, useEffect } from 'react'
+import cus250930 from './stt.ttf'
 
-export default function StripedClock() {
-  const [time, setTime] = useState([]);
+export default function StripedClock () {
+  const [time, setTime] = useState([])
 
-  function getClockTime() {
-    const now = new Date();
-    const h = now.getHours().toString().padStart(2, "0");
-    const m = now.getMinutes().toString().padStart(2, "0");
-    return (h + m).split("");
+  function getClockTime () {
+    const now = new Date()
+    const h = now.getHours().toString().padStart(2, '0')
+    const m = now.getMinutes().toString().padStart(2, '0')
+    return (h + m).split('')
   }
 
   useEffect(() => {
-    setTime(getClockTime());
-    const id = setInterval(() => setTime(getClockTime()), 1000);
-    return () => clearInterval(id);
-  }, []);
+    setTime(getClockTime())
+    const id = setInterval(() => setTime(getClockTime()), 1000)
+    return () => clearInterval(id)
+  }, [])
 
   const stripeGradient = `
     linear-gradient(
@@ -25,14 +25,14 @@ export default function StripedClock() {
        #7E054EFF 50%,  #7E054EFF 74.9%,
       #A0E418FF  75%, #0BF82BFF 100%
     )
-  `;
+  `
 
   return (
     <>
       <style>{`
         @font-face {
-          font-family: 'CustomFont1001';
-          src: url(${customFont1001}) format('truetype');
+          font-family: 'Cus250930';
+          src: url(${cus250930}) format('truetype');
           font-weight: normal;
           font-style: normal;
         }
@@ -54,7 +54,7 @@ export default function StripedClock() {
         .animated-text {
           animation: slideStripes 6040s linear infinite;
           display: flex;
-          font-family: 'CustomFont1001', sans-serif;
+          font-family: 'Cus250930', sans-serif;
           font-size: 43vw;
           color: transparent;
           background: ${stripeGradient};
@@ -74,25 +74,25 @@ export default function StripedClock() {
       `}</style>
 
       <div
-        className="animated-bg"
+        className='animated-bg'
         style={{
-          width: "100vw",
-          height: "100dvh",
+          width: '100vw',
+          height: '100dvh',
           backgroundImage: stripeGradient,
-          backgroundSize: "0.8rem 0.8rem",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          backgroundSize: '0.8rem 0.8rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
         }}
       >
-        <div className="animated-text">
+        <div className='animated-text'>
           {time.map((digit, i) => (
-            <span key={i} className="digit-box">
+            <span key={i} className='digit-box'>
               {digit}
             </span>
           ))}
         </div>
       </div>
     </>
-  );
+  )
 }
