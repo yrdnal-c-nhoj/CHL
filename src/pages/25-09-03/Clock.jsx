@@ -1,32 +1,32 @@
-import { useState, useEffect } from 'react';
-import customFont from './mau.ttf';
-import cornerImage from './corner.gif';
-import backgroundImage from './mau.gif'; // <-- your background image
+import { useState, useEffect } from 'react'
+import cus250903font from './mau.ttf'
+import cornerImage from './corner.gif'
+import backgroundImage from './mau.gif' // <-- your background image
 
-function DigitalClock() {
-  const [time, setTime] = useState(new Date());
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+function DigitalClock () {
+  const [time, setTime] = useState(new Date())
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    const t = setTimeout(() => setLoaded(true), 100);
-    return () => clearTimeout(t);
-  }, []);
+    const timer = setInterval(() => setTime(new Date()), 1000)
+    return () => clearInterval(timer)
+  }, [])
 
-  const getTimeParts = (date) => {
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-    return { hours, minutes: formattedMinutes, ampm };
-  };
+  useEffect(() => {
+    const t = setTimeout(() => setLoaded(true), 100)
+    return () => clearTimeout(t)
+  }, [])
 
-  const { hours, minutes, ampm } = getTimeParts(time);
+  const getTimeParts = date => {
+    let hours = date.getHours()
+    const minutes = date.getMinutes()
+    const ampm = hours >= 12 ? 'PM' : 'AM'
+    hours = hours % 12 || 12
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes
+    return { hours, minutes: formattedMinutes, ampm }
+  }
+
+  const { hours, minutes, ampm } = getTimeParts(time)
 
   const containerStyle = {
     display: 'flex',
@@ -45,8 +45,8 @@ function DigitalClock() {
     position: 'relative',
     overflow: 'hidden',
     opacity: loaded ? 1 : 0,
-    transition: 'opacity 0.5s ease-in-out',
-  };
+    transition: 'opacity 0.5s ease-in-out'
+  }
 
   const clockStyle = {
     fontFamily: 'Digital7, sans-serif',
@@ -59,27 +59,51 @@ function DigitalClock() {
     alignItems: 'center',
     lineHeight: 1.25,
     letterSpacing: '0.05em',
-    textShadow: '1px 1px 2px rgba(0,0,0,0.4)',
-  };
+    textShadow: '1px 1px 2px rgba(0,0,0,0.4)'
+  }
 
   const ampmStyle = {
-    fontSize: '16vw',
-  };
+    fontSize: '16vw'
+  }
 
-  const cornerStyle = (position) => {
+  const cornerStyle = position => {
     switch (position) {
       case 'top-left':
-        return { position: 'absolute', top: 0, left: 0, width: '12rem', transform: 'rotate(0deg)' };
+        return {
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '12rem',
+          transform: 'rotate(0deg)'
+        }
       case 'top-right':
-        return { position: 'absolute', top: 0, right: 0, width: '12rem', transform: 'rotate(90deg)' };
+        return {
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: '12rem',
+          transform: 'rotate(90deg)'
+        }
       case 'bottom-left':
-        return { position: 'absolute', bottom: 0, left: 0, width: '12rem', transform: 'rotate(-90deg)' };
+        return {
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: '12rem',
+          transform: 'rotate(-90deg)'
+        }
       case 'bottom-right':
-        return { position: 'absolute', bottom: 0, right: 0, width: '12rem', transform: 'rotate(180deg)' };
+        return {
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          width: '12rem',
+          transform: 'rotate(180deg)'
+        }
       default:
-        return {};
+        return {}
     }
-  };
+  }
 
   return (
     <>
@@ -87,7 +111,7 @@ function DigitalClock() {
         {`
           @font-face {
             font-family: 'Digital7';
-            src: url(${customFont}) format('truetype');
+            src: url(${cus250903font}) format('truetype');
             font-weight: normal;
             font-style: normal;
           }
@@ -104,19 +128,29 @@ function DigitalClock() {
         `}
       </style>
       <div style={containerStyle}>
-        <img src={cornerImage} alt="Corner" style={cornerStyle('top-left')} />
-        <img src={cornerImage} alt="Corner" style={cornerStyle('top-right')} />
-        <img src={cornerImage} alt="Corner" style={cornerStyle('bottom-left')} />
-        <img src={cornerImage} alt="Corner" style={cornerStyle('bottom-right')} />
+        <img src={cornerImage} alt='Corner' style={cornerStyle('top-left')} />
+        <img src={cornerImage} alt='Corner' style={cornerStyle('top-right')} />
+        <img
+          src={cornerImage}
+          alt='Corner'
+          style={cornerStyle('bottom-left')}
+        />
+        <img
+          src={cornerImage}
+          alt='Corner'
+          style={cornerStyle('bottom-right')}
+        />
 
-        <div style={clockStyle} className="clock-text">
+        <div style={clockStyle} className='clock-text'>
           <div>{hours}</div>
           <div>{minutes}</div>
-          <div style={ampmStyle} className="clock-ampm">{ampm}</div>
+          <div style={ampmStyle} className='clock-ampm'>
+            {ampm}
+          </div>
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default DigitalClock;
+export default DigitalClock
