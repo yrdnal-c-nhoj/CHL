@@ -5,7 +5,7 @@ import { OrbitControls, Html } from '@react-three/drei'
 import * as THREE from 'three'
 import backgroundImage from './h2o.webp'
 import backgroundImage2 from './water.gif' // ← NEW secondary background
-import fontFile from './isoca.ttf' // (should ideally be .woff2)
+import font251207 from './isoca.ttf' // (should ideally be .woff2)
 
 export default function IcosahedronScene () {
   // Proper font preloading + @font-face
@@ -15,14 +15,14 @@ export default function IcosahedronScene () {
     link.as = 'font'
     link.type = 'font/woff2'
     link.crossOrigin = 'anonymous'
-    link.href = fontFile
+    link.href = font251207
     document.head.appendChild(link)
 
     const style = document.createElement('style')
     style.textContent = `
       @font-face {
         font-family: 'WaterFont';
-        src: url('${fontFile}') format('woff2');
+        src: url('${font251207}') format('woff2');
         font-display: swap;
       }
       @keyframes ripple {
