@@ -1,231 +1,294 @@
-import React, { useEffect, useState } from "react";
-import customFont from "./ele.ttf?url";
-import stripe1 from "./fire.gif?url";
-import stripe2 from "./air.gif?url";
-import stripe3 from "./h2o.gif?url";
-import stripe4 from "./earth.webp?url";
+import React, { useEffect, useState } from 'react'
+import cust250921font from './ele.ttf?url'
+import stripe1 from './fire.gif?url'
+import stripe2 from './air.gif?url'
+import stripe3 from './h2o.gif?url'
+import stripe4 from './earth.webp?url'
 
-export default function AnalogClock() {
-  const [ready, setReady] = useState(false);
-  const [time, setTime] = useState(new Date());
-  const [fontVar] = useState(`font${new Date().getTime()}`);
+export default function AnalogClock () {
+  const [ready, setReady] = useState(false)
+  const [time, setTime] = useState(new Date())
+  const [fontVar] = useState(`font${new Date().getTime()}`)
 
   useEffect(() => {
-    const styleEl = document.createElement("style");
+    const styleEl = document.createElement('style')
     styleEl.innerHTML = `
       @font-face {
         font-family: '${fontVar}';
-        src: url(${customFont}) format('truetype');
+        src: url(${cust250921font}) format('truetype');
         font-display: swap;
       }
-    `;
-    document.head.appendChild(styleEl);
+    `
+    document.head.appendChild(styleEl)
 
-    const font = new FontFace(fontVar, `url(${customFont})`);
-    const images = [stripe1, stripe2, stripe3, stripe4];
-    let loadedCount = 0;
-    let fontLoaded = false;
+    const font = new FontFace(fontVar, `url(${cust250921font})`)
+    const images = [stripe1, stripe2, stripe3, stripe4]
+    let loadedCount = 0
+    let fontLoaded = false
 
     const checkReady = () => {
-      if (fontLoaded && loadedCount === images.length) setReady(true);
-    };
+      if (fontLoaded && loadedCount === images.length) setReady(true)
+    }
 
-    font.load()
+    font
+      .load()
       .then(() => {
-        document.fonts.add(font);
-        fontLoaded = true;
-        checkReady();
+        document.fonts.add(font)
+        fontLoaded = true
+        checkReady()
       })
       .catch(() => {
-        fontLoaded = true;
-        checkReady();
-      });
+        fontLoaded = true
+        checkReady()
+      })
 
-    images.forEach((src) => {
-      const img = new Image();
-      img.src = src;
+    images.forEach(src => {
+      const img = new Image()
+      img.src = src
       img.onload = img.onerror = () => {
-        loadedCount++;
-        checkReady();
-      };
-    });
+        loadedCount++
+        checkReady()
+      }
+    })
 
-    const timeout = setTimeout(() => setReady(true), 5000);
+    const timeout = setTimeout(() => setReady(true), 5000)
 
     return () => {
-      document.head.removeChild(styleEl);
-      clearTimeout(timeout);
-    };
-  }, [fontVar]);
+      document.head.removeChild(styleEl)
+      clearTimeout(timeout)
+    }
+  }, [fontVar])
 
   useEffect(() => {
-    if (!ready) return;
-    const interval = setInterval(() => setTime(new Date()), 16);
-    return () => clearInterval(interval);
-  }, [ready]);
+    if (!ready) return
+    const interval = setInterval(() => setTime(new Date()), 16)
+    return () => clearInterval(interval)
+  }, [ready])
 
   if (!ready) {
-    return <div style={{ width: "100vw", height: "100dvh", backgroundColor: "black" }} />;
+    return (
+      <div
+        style={{ width: '100vw', height: '100dvh', backgroundColor: 'black' }}
+      />
+    )
   }
 
-  const hour = time.getHours() % 12;
-  const minute = time.getMinutes();
-  const second = time.getSeconds();
-  const millisecond = time.getMilliseconds();
+  const hour = time.getHours() % 12
+  const minute = time.getMinutes()
+  const second = time.getSeconds()
+  const millisecond = time.getMilliseconds()
 
-  const hourDeg = (hour + minute / 60 + second / 3600) * 30;
-  const minuteDeg = (minute + second / 60 + millisecond / 60000) * 6;
-  const secondDeg = (second + millisecond / 1000) * 6;
+  const hourDeg = (hour + minute / 60 + second / 3600) * 30
+  const minuteDeg = (minute + second / 60 + millisecond / 60000) * 6
+  const secondDeg = (second + millisecond / 1000) * 6
 
-  const stripes = [stripe1, stripe2, stripe3, stripe4];
+  const stripes = [stripe1, stripe2, stripe3, stripe4]
 
   // Hand style helper
   const handStyle = (width, height, top, rotateDeg) => ({
-    position: "absolute",
+    position: 'absolute',
     width: width,
     height: height,
     top: top,
-    left: "50%",
-    transformOrigin: "50% 100%",
+    left: '50%',
+    transformOrigin: '50% 100%',
     transform: `rotate(${rotateDeg}deg)`,
-    backgroundColor: "transparent",
-    borderRadius: "0.25rem",
+    backgroundColor: 'transparent',
+    borderRadius: '0.25rem',
     zIndex: 5, // lower than numbers
     boxShadow: `
       0.05rem 0.05rem 0 rgba(255, 250, 230, 0.8),
       -0.05rem -0.05rem 0 rgba(0,0,0,0.8)
-    `,
-  });
+    `
+  })
 
   const numberStyle = {
-    position: "absolute",
-    fontSize: "4rem",
+    position: 'absolute',
+    fontSize: '4rem',
     fontFamily: fontVar,
-    color: "transparent",
-    WebkitTextFillColor: "transparent",
+    color: 'transparent',
+    WebkitTextFillColor: 'transparent',
     textShadow: `
       0.05rem 0.05rem 0 rgba(255, 250, 230),
       -0.05rem -0.05rem 0 rgba(0,0,0)
     `,
     zIndex: 10,
-    display: "flex",
+    display: 'flex',
     opacity: 0.3,
-    alignItems: "center",
-    justifyContent: "center",
-  };
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100dvh",
-        position: "relative",
-        overflow: "hidden",
-        backgroundColor: "#EFE9E9FF",
-        fontFamily: fontVar,
+        width: '100vw',
+        height: '100dvh',
+        position: 'relative',
+        overflow: 'hidden',
+        backgroundColor: '#EFE9E9FF',
+        fontFamily: fontVar
       }}
     >
       {/* Clock layers container (pointer-events disabled) */}
-      <div style={{ width: "100%", height: "100%", pointerEvents: "none" }}>
+      <div style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
         {/* Stripes */}
         {stripes.map((src, idx) => {
-          let mask = "";
-          if (idx === 0) mask = "linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)";
-          else if (idx === 3) mask = "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%)";
-          else mask = "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)";
+          let mask = ''
+          if (idx === 0)
+            mask =
+              'linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)'
+          else if (idx === 3)
+            mask =
+              'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%)'
+          else
+            mask =
+              'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)'
 
-          let filter = "hue-rotate(0deg) saturate(1) brightness(1) contrast(0.8)";
-          if (idx === 0) filter = "hue-rotate(-40deg) saturate(2.2) brightness(1.1) contrast(1.1)";
-          if (idx === 1) filter = "hue-rotate(220deg) saturate(1.9) brightness(1.0) contrast(1.9)";
-          if (idx === 2) filter = "hue-rotate(-19deg) saturate(1.1) brightness(1.05) contrast(1.3)";
-          if (idx === 3) filter = "sepia(1) hue-rotate(20deg) saturate(1.2) brightness(1.1) contrast(0.7)";
+          let filter =
+            'hue-rotate(0deg) saturate(1) brightness(1) contrast(0.8)'
+          if (idx === 0)
+            filter =
+              'hue-rotate(-40deg) saturate(2.2) brightness(1.1) contrast(1.1)'
+          if (idx === 1)
+            filter =
+              'hue-rotate(220deg) saturate(1.9) brightness(1.0) contrast(1.9)'
+          if (idx === 2)
+            filter =
+              'hue-rotate(-19deg) saturate(1.1) brightness(1.05) contrast(1.3)'
+          if (idx === 3)
+            filter =
+              'sepia(1) hue-rotate(20deg) saturate(1.2) brightness(1.1) contrast(0.7)'
 
           return (
             <div
               key={idx}
               style={{
-                position: "absolute",
-                top: idx === 0 ? "0" : idx === 1 ? "15dvh" : idx === 2 ? "49dvh" : "calc(100dvh - 28dvh)",
+                position: 'absolute',
+                top:
+                  idx === 0
+                    ? '0'
+                    : idx === 1
+                    ? '15dvh'
+                    : idx === 2
+                    ? '49dvh'
+                    : 'calc(100dvh - 28dvh)',
                 left: 0,
-                width: "100vw",
-                height: idx === 1 ? "50dvh" : idx === 2 ? "40dvh" : "28dvh",
-                zIndex: idx,
+                width: '100vw',
+                height: idx === 1 ? '50dvh' : idx === 2 ? '40dvh' : '28dvh',
+                zIndex: idx
               }}
             >
               {[false, true].map((flipped, i) => (
                 <div
                   key={`${idx}-${i}`}
                   style={{
-                    position: "absolute",
+                    position: 'absolute',
                     top: 0,
                     left: 0,
-                    width: "100%",
-                    height: "100%",
+                    width: '100%',
+                    height: '100%',
                     backgroundImage: `url(${src})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
                     WebkitMaskImage: mask,
                     maskImage: mask,
                     filter: filter,
                     opacity: 0.5,
-                    transform: flipped ? "scaleX(-1)" : "none",
+                    transform: flipped ? 'scaleX(-1)' : 'none'
                   }}
                 />
               ))}
             </div>
-          );
+          )
         })}
 
         {/* Numbers */}
-        <div style={{ ...numberStyle, top: "2vh", left: "50%", transform: "translateX(-50%) scaleX(-1)" }}>8</div>
-        <div style={{ ...numberStyle, bottom: "2vh", left: "50%", transform: "translateX(-50%)" }}>6</div>
-        <div style={{ ...numberStyle, top: "50%", right: "2vw", transform: "translateY(-50%)" }}>3</div>
-        <div style={{ ...numberStyle, top: "50%", left: "2vw", transform: "translateY(-50%)" }}>9</div>
+        <div
+          style={{
+            ...numberStyle,
+            top: '2vh',
+            left: '50%',
+            transform: 'translateX(-50%) scaleX(-1)'
+          }}
+        >
+          8
+        </div>
+        <div
+          style={{
+            ...numberStyle,
+            bottom: '2vh',
+            left: '50%',
+            transform: 'translateX(-50%)'
+          }}
+        >
+          6
+        </div>
+        <div
+          style={{
+            ...numberStyle,
+            top: '50%',
+            right: '2vw',
+            transform: 'translateY(-50%)'
+          }}
+        >
+          3
+        </div>
+        <div
+          style={{
+            ...numberStyle,
+            top: '50%',
+            left: '2vw',
+            transform: 'translateY(-50%)'
+          }}
+        >
+          9
+        </div>
 
         {/* Clock face + hands */}
         <div
           style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "70vw",
-            height: "70vw",
-            borderRadius: "50%",
-            opacity: "0.8",
-            background: "transparent",
-            zIndex: 5,
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '70vw',
+            height: '70vw',
+            borderRadius: '50%',
+            opacity: '0.8',
+            background: 'transparent',
+            zIndex: 5
           }}
         >
           {/* Full viewport second hand */}
           <div
             style={{
-              position: "absolute",
-              width: "0.2rem",
-              height: "50dvh",
-              top: "50%",
-              left: "50%",
-              transformOrigin: "50% 0%",
+              position: 'absolute',
+              width: '0.2rem',
+              height: '50dvh',
+              top: '50%',
+              left: '50%',
+              transformOrigin: '50% 0%',
               transform: `rotate(${secondDeg}deg)`,
-              backgroundColor: "transparent",
+              backgroundColor: 'transparent',
               boxShadow: `
                 0.05rem 0.05rem 0 rgba(255, 250, 230, 0.8),
                 -0.05rem -0.05rem 0 rgba(0,0,0,0.8)
-              `,
+              `
             }}
           />
 
           {/* Hour hand */}
-          <div style={handStyle("0.5rem", "25%", "25%", hourDeg)} />
+          <div style={handStyle('0.5rem', '25%', '25%', hourDeg)} />
 
           {/* Minute hand */}
-          <div style={handStyle("0.35rem", "35%", "15%", minuteDeg)} />
+          <div style={handStyle('0.35rem', '35%', '15%', minuteDeg)} />
 
           {/* Second hand */}
-          <div style={handStyle("0.2rem", "40%", "10%", secondDeg)} />
+          <div style={handStyle('0.2rem', '40%', '10%', secondDeg)} />
         </div>
       </div>
     </div>
-  );
+  )
 }
