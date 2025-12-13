@@ -253,5 +253,6 @@
   { "path": "25-12-08", "date": "25-12-08", "title": "Paper Plate" },
   { "path": "25-12-09", "date": "25-12-09", "title": "Muybridge" },
   { "path": "25-12-10", "date": "25-12-10", "title": "Jupiter" },
-  { "path": "25-12-11", "date": "25-12-11", "title": "Geological" }
+  { "path": "25-12-11", "date": "25-12-11", "title": "Geological" },
+  { "path": "25-12-12", "date": "25-12-12", "title": "RGB" }
   ]
