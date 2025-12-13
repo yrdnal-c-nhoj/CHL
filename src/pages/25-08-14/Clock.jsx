@@ -37,18 +37,50 @@ const AnalogClock = () => {
     requestAnimationFrame(update);
   }, []);
 
-  // Load custom font
+  // Enhanced font loading with error handling
   useEffect(() => {
+    const fontName = 'CustomClockFont';
+    
+    // Check if font is already loaded
+    if (document.fonts) {
+      document.fonts.ready.then(() => {
+        if (!document.fonts.check(`12px ${fontName}`)) {
+          console.warn(`Font ${fontName} failed to load, using fallback`);
+        }
+      });
+    }
+
+    // Create and inject @font-face
     const style = document.createElement('style');
-    style.innerHTML = `
+    style.setAttribute('data-font', 'custom-clock-font');
+    style.textContent = `
       @font-face {
-        font-family: 'CustomClockFont';
+        font-family: '${fontName}';
         src: url(${customFont}) format('truetype');
+        font-display: swap; /* Better font loading behavior */
+        font-weight: normal;
+        font-style: normal;
+      }
+      
+      /* Fallback font stack */
+      .month-text {
+        font-family: '${fontName}', 'Arial Narrow', Arial, sans-serif;
+        font-smooth: always;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
     `;
+    
     document.head.appendChild(style);
-    return () => document.head.removeChild(style);
-  }, []);
+    
+    // Cleanup
+    return () => {
+      const existingStyle = document.head.querySelector('style[data-font="custom-clock-font"]');
+      if (existingStyle) {
+        document.head.removeChild(existingStyle);
+      }
+    };
+  }, [customFont]);
 
   // Calculate angles
   const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
@@ -144,7 +176,7 @@ const AnalogClock = () => {
                   transformOrigin: 'left center',
                   color: '#C8C1C1FF',
                   fontSize: '1.6rem',   // bigger font
-                  fontFamily: 'CustomClockFont, sans-serif',
+                  className: 'month-text',
                   textAlign: 'right',
                   letterSpacing: '0.1em',
                   whiteSpace: 'nowrap',
