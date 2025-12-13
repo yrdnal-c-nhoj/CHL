@@ -45,12 +45,12 @@ export default function AnalogBackgroundClock () {
 
   const clockSize = 80
 
+  const hue = ((Date.now() / 30000) * 360) % 360
+  const gradient = `hsl(${hue}, 100%, 50%)`
+
   const containerStyle = {
     position: 'fixed',
     inset: 0,
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'contain',
-    backgroundPosition: 'center',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -103,12 +103,38 @@ export default function AnalogBackgroundClock () {
   }
 
   return (
-    <div style={containerStyle}>
-      <div style={clockStyle}>
-        <div style={hourHand} />
-        <div style={minuteHand} />
-        <div style={secondHand} />
+    <>
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 1,
+          background: gradient
+        }}
+      />
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 2,
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: 'contain',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
+      <div
+        style={{
+          ...containerStyle,
+          zIndex: 3
+        }}
+      >
+        <div style={clockStyle}>
+          <div style={hourHand} />
+          <div style={minuteHand} />
+          <div style={secondHand} />
+        </div>
       </div>
-    </div>
+    </>
   )
 }
