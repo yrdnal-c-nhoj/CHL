@@ -1,89 +1,136 @@
-import React, { useEffect, useState } from "react";
+import { useState, useEffect } from 'react'
+import bgImage from './steel.webp'
+import digitTexture from './steel2.webp'
+import screw251214 from './screw.ttf'
 
-export default function Sundial() {
-  const [time, setTime] = useState(new Date());
+export default function DigitalClock () {
+  const [time, setTime] = useState(new Date())
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+    const timer = setInterval(() => {
+      setTime(new Date())
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [])
 
-  // Get hour as angle for shadow (12 hours = 360deg)
-  const hours = time.getHours() + time.getMinutes() / 60;
-  const shadowAngle = (hours / 12) * 360; // degrees
+  const hours = time.getHours().toString().padStart(2, '0')
+  const minutes = time.getMinutes().toString().padStart(2, '0')
+  const seconds = time.getSeconds().toString().padStart(2, '0')
 
-  // Inline styles
+  const hoursDigits = hours.split('')
+  const minutesDigits = minutes.split('')
+  const secondsDigits = seconds.split('')
+
+  const allDigits = [...hoursDigits, ...minutesDigits, ...secondsDigits]
+
+  // Stable per-digit random texture offsets
+  const [textureOffsets] = useState(() =>
+    allDigits.map(() => ({
+      x: Math.floor(Math.random() * 100),
+      y: Math.floor(Math.random() * 100)
+    }))
+  )
+
   const containerStyle = {
-    position: "relative",
-    width: "100vw",
-    height: "100vh",
-    background: "linear-gradient(to top, #fceabb, #f8b500)", // sunlit sky
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-  };
-
-  const dialStyle = {
-    position: "relative",
-    width: "50vh",
-    height: "50vh",
-    borderRadius: "50%",
-    background: "#e0dcd0",
-    boxShadow: "inset 0 0 2vh rgba(0,0,0,0.2)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  };
-
-  const gnomonStyle = {
-    position: "absolute",
-    width: "2vh",
-    height: "20vh",
-    background: "#333",
-    transformOrigin: "bottom center",
-    bottom: "50%",
-    borderRadius: "0.5vh",
-    zIndex: 2,
-  };
-
-  const shadowStyle = {
-    position: "absolute",
-    width: "0.5vh",
-    height: "25vh",
-    background: "rgba(0,0,0,0.3)",
-    bottom: "50%",
-    transformOrigin: "bottom center",
-    transform: `rotate(${shadowAngle}deg) translateY(-2.5vh)`,
-    borderRadius: "0.25vh",
-    zIndex: 1,
-  };
-
-  // Hour markers
-  const markers = [];
-  for (let i = 0; i < 12; i++) {
-    const angle = (i / 12) * 360;
-    const markerStyle = {
-      position: "absolute",
-      width: "0.5vh",
-      height: "2vh",
-      background: "#555",
-      top: "2%",
-      left: "50%",
-      transformOrigin: "bottom center",
-      transform: `rotate(${angle}deg) translateY(-23vh)`,
-      borderRadius: "0.2vh",
-    };
-    markers.push(<div key={i} style={markerStyle}></div>);
+    width: '100vw',
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    overflow: 'hidden'
   }
+
+  const clockStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '6vh',
+    alignItems: 'center'
+  }
+
+  const rowStyle = {
+    display: 'flex',
+    gap: '2vw',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+
+  // Transparent digit container (no plate)
+  const digitBox = {
+    width: '15vh',
+    height: '15vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+
+  // Machined steel digit
+  const digitStyle = {
+    fontSize: '16vh',
+    fontFamily: 'screw251214',
+    lineHeight: '1',
+
+    display: 'inline-block',
+    whiteSpace: 'nowrap',
+    transform: 'translateZ(0)',
+
+    fontVariantNumeric: 'tabular-nums',
+    fontFeatureSettings: '"tnum"',
+
+    backgroundImage: `url(${digitTexture})`,
+    backgroundSize: '320% 320%',
+    backgroundRepeat: 'no-repeat',
+
+    color: 'transparent',
+    backgroundClip: 'text',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+
+    filter: 'contrast(1.15) brightness(1.05)',
+
+    textShadow: `
+    -0.08vh -0.08vh 0.18vh rgba(255,255,255,0.35),
+     0.08vh  0.08vh 0.22vh rgba(0,0,0,0.55)
+  `
+  }
+
+  let textureIndex = 0
+
+  const renderDigits = (digits, prefix) =>
+    digits.map((digit, i) => {
+      const o = textureOffsets[textureIndex++]
+      return (
+        <span key={`${prefix}${i}`} style={digitBox}>
+          <span
+            style={{
+              ...digitStyle,
+              backgroundPosition: `${o.x}% ${o.y}%`
+            }}
+          >
+            {digit}
+          </span>
+        </span>
+      )
+    })
 
   return (
     <div style={containerStyle}>
-      <div style={dialStyle}>
-        {markers}
-        <div style={shadowStyle}></div>
-        <div style={gnomonStyle}></div>
+      <style>
+        {`
+          @font-face {
+            font-family: 'screw251214';
+            src: url(${screw251214});
+          }
+        `}
+      </style>
+
+      <div style={clockStyle}>
+        <div style={rowStyle}>{renderDigits(hoursDigits, 'h')}</div>
+        <div style={rowStyle}>{renderDigits(minutesDigits, 'm')}</div>
+        <div style={rowStyle}>{renderDigits(secondsDigits, 's')}</div>
       </div>
     </div>
-  );
+  )
 }
