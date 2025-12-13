@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import bgImage from './wheel.svg'
-import clockFont_251213 from './wheel.otf' // ← today’s date in variable name
 
 export default function AnalogBackgroundClock () {
   const [now, setNow] = useState(() => new Date())
@@ -13,17 +12,6 @@ export default function AnalogBackgroundClock () {
   const seconds = now.getSeconds() + now.getMilliseconds() / 1000
   const minutes = now.getMinutes() + seconds / 60
   const hours = (now.getHours() % 12) + minutes / 60
-
-  /* ---------------- FONT INJECTION ---------------- */
-
-  const fontStyle = `
-    @font-face {
-      font-family: 'ClockDigits251213';
-      src: url(${clockFont_251213}) format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-  `
 
   /* ---------------- COLOR CYCLING ---------------- */
 
@@ -54,48 +42,11 @@ export default function AnalogBackgroundClock () {
 
   /* ---------------- BACKGROUND ---------------- */
 
-  const hue = ((Date.now() / 30000) * 360) % 360
+  const hue = ((Date.now() / 60000) * 360) % 360
   const gradient = `hsl(${hue}, 100%, 50%)`
-
-  /* ---------------- LETTERS ---------------- */
-
-  const letters = 'ABCDEFGHIJKL'.split('')
-  const numbers = []
-  for (let i = 0; i < 12; i++) {
-    const angle = (i * 30 - 90) * (Math.PI / 180)
-    const x = 35 * Math.cos(angle)
-    const y = 35 * Math.sin(angle)
-
-    numbers.push(
-      <div
-        key={i}
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: `translate(${x}vh, ${y}vh) translate(-50%, -50%)`,
-          fontSize: '4vh',
-          fontFamily: 'ClockDigits251213',
-          fontWeight: 'normal',
-
-          /* 🔥 TRUE OPPOSITE COLOR OF WHAT’S UNDER IT */
-          color: 'white',
-          mixBlendMode: 'difference',
-
-          userSelect: 'none',
-          pointerEvents: 'none'
-        }}
-      >
-        {letters[i]}
-      </div>
-    )
-  }
 
   return (
     <>
-      {/* Inject font-face */}
-      <style>{fontStyle}</style>
-
       {/* Gradient */}
       <div
         style={{
@@ -105,8 +56,7 @@ export default function AnalogBackgroundClock () {
           zIndex: 1
         }}
       />
-
-      {/* Wheel image */}
+      Wheel image
       <div
         style={{
           position: 'fixed',
@@ -118,8 +68,7 @@ export default function AnalogBackgroundClock () {
           zIndex: 2
         }}
       />
-
-      {/* Clock */}
+      {/* Clock hands */}
       <div
         style={{
           position: 'fixed',
@@ -138,7 +87,6 @@ export default function AnalogBackgroundClock () {
             borderRadius: '50%'
           }}
         >
-          {numbers}
           <div style={hourHand} />
           <div style={minuteHand} />
           <div style={secondHand} />
