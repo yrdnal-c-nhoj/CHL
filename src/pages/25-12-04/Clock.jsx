@@ -1,8 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import sloanFont_2025_1204 from './ichart.otf'
 
+const fontFamilyName = 'SloanOptotype_2025_1204'
+
+// Define the font face
+const fontFace = new FontFace(
+  fontFamilyName,
+  `url(${sloanFont_2025_1204})`
+)
+
 export default function EyeChart () {
-  const fontFamilyName = 'SloanOptotype_2025_1204'
+  const [fontLoaded, setFontLoaded] = useState(false)
+  
+  useEffect(() => {
+    // Load the font
+    fontFace.load().then(() => {
+      document.fonts.add(fontFace)
+      setFontLoaded(true)
+    }).catch(error => {
+      console.error('Failed to load font:', error)
+      setFontLoaded(true) // Continue rendering even if font fails to load
+    })
+  }, [])
 
   const [time, setTime] = useState(new Date())
   useEffect(() => {
@@ -28,28 +47,45 @@ export default function EyeChart () {
   ]
 
   const fontSizeForIndex = i => {
+    // Use viewport units but cap the size for better mobile display
     const sizes = [15, 12, 10, 8, 6.5, 5.5, 4.5, 3.5]
-    return `${sizes[i]}vh`
+    const viewportHeight = window.innerHeight
+    const viewportWidth = window.innerWidth
+    const minDimension = Math.min(viewportHeight, viewportWidth)
+    // Scale down the font size for very small screens
+    const scale = Math.min(1, minDimension / 500)
+    return `calc(${sizes[i] * scale} * 1vmin)`
   }
 
   const outer = {
     minHeight: '100dvh',
     display: 'flex',
     justifyContent: 'center',
+    alignItems: 'center',
+    padding: '1rem',
     background: '#FDF5DDFF',
     fontFamily:
       fontFamilyName +
       ", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue'",
-    WebkitFontSmoothing: 'antialiased'
+    WebkitFontSmoothing: 'antialiased',
+    WebkitTextSizeAdjust: '100%',
+    textSizeAdjust: '100%',
+    overflow: 'hidden',
+    boxSizing: 'border-box'
   }
 
   const card = {
-    width: '40vh',
-    maxWidth: '65vw',
+    width: '100%',
+    maxWidth: '90vw',
+    maxHeight: '90vh',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-between',
+    gap: '0.5rem',
+    padding: '1rem 0',
+    overflow: 'hidden',
+    boxSizing: 'border-box'
   }
 
   const lineBase = {
@@ -58,7 +94,10 @@ export default function EyeChart () {
     justifyContent: 'center',
     width: '100%',
     position: 'relative',
-    margin: '0.5vh 0'
+    margin: '0.5rem 0',
+    flexShrink: 1,
+    minHeight: 0,
+    overflow: 'hidden'
   }
 
   const letterStyle = {
@@ -72,18 +111,40 @@ export default function EyeChart () {
 
   const leftLabel = {
     position: 'absolute',
-    left: '-8vh',
-    fontSize: '2vh',
+    left: '0.5rem',
+    fontSize: '0.9rem',
     opacity: 0.55,
-    letterSpacing: '0.15vh'
+    letterSpacing: '0.05rem',
+    whiteSpace: 'nowrap',
+    transform: 'translateX(-100%)',
+    paddingRight: '0.5rem'
   }
 
   const rightLabel = {
     position: 'absolute',
-    right: '-8vh',
-    fontSize: '2vh',
+    right: '0.5rem',
+    fontSize: '0.9rem',
     opacity: 0.55,
-    letterSpacing: '0.15vh'
+    letterSpacing: '0.05rem',
+    whiteSpace: 'nowrap',
+    transform: 'translateX(100%)',
+    paddingLeft: '0.5rem'
+  }
+
+  // Show loading state until font is loaded
+  if (!fontLoaded) {
+    return (
+      <div style={{
+        minHeight: '100dvh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#FDF5DDFF',
+        fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue'"
+      }}>
+        <div style={{ fontSize: '1.5rem' }}>Loading...</div>
+      </div>
+    )
   }
 
   return (
@@ -91,13 +152,6 @@ export default function EyeChart () {
       <style
         dangerouslySetInnerHTML={{
           __html: `
-            @font-face {
-              font-family: '${fontFamilyName}';
-              src: url('${sloanFont_2025_1204}') format('opentype');
-              font-weight: 700;
-              font-style: normal;
-              font-display: swap;
-            }
             .eyechart-root * { box-sizing: border-box; }
           `
         }}
