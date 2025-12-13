@@ -7,11 +7,12 @@ export default function AnalogBackgroundClock () {
   const [now, setNow] = useState(() => new Date())
 
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000)
+    const id = setInterval(() => setNow(new Date()), 100)
     return () => clearInterval(id)
   }, [])
 
-  const seconds = now.getSeconds()
+  const milliseconds = now.getMilliseconds()
+  const seconds = now.getSeconds() + milliseconds / 1000
   const minutes = now.getMinutes() + seconds / 60
   const hours = (now.getHours() % 12) + minutes / 60
 

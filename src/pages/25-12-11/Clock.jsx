@@ -1,22 +1,45 @@
 // GeologicTimeClock.jsx
 import React, { useEffect, useState, useRef, useMemo } from 'react'
 
-export default function GeologicTimeClock () {
+export default function GeologicTimeClock() {
   const [now, setNow] = useState(() => new Date())
   const rafRef = useRef(null)
+  const secondHandRef = useRef(null)
+  const minuteHandRef = useRef(null)
+  const hourHandRef = useRef(null)
 
-  // Smooth real-time clock (timing logic is fine)
+  // Smooth real-time clock with CSS transitions
   useEffect(() => {
-    const tick = () => {
-      setNow(new Date())
-      rafRef.current = requestAnimationFrame(tick)
+    const updateClock = () => {
+      const now = new Date()
+      setNow(now)
+      
+      const seconds = now.getSeconds()
+      const minutes = now.getMinutes()
+      const hours = now.getHours() % 12
+      
+      // Calculate rotation degrees
+      const secondDegrees = (seconds / 60) * 360 + 90
+      const minuteDegrees = ((minutes + seconds / 60) / 60) * 360 + 90
+      const hourDegrees = ((hours + minutes / 60) / 12) * 360 + 90
+      
+      // Apply smooth transitions
+      if (secondHandRef.current) {
+        secondHandRef.current.style.transform = `rotate(${secondDegrees}deg)`
+      }
+      if (minuteHandRef.current) {
+        minuteHandRef.current.style.transform = `rotate(${minuteDegrees}deg)`
+      }
+      if (hourHandRef.current) {
+        hourHandRef.current.style.transform = `rotate(${hourDegrees}deg)`
+      }
+      
+      rafRef.current = requestAnimationFrame(updateClock)
     }
-    const timeoutId = setTimeout(() => {
-      rafRef.current = requestAnimationFrame(tick)
-    }, 0)
-
+    
+    rafRef.current = requestAnimationFrame(updateClock)
+    
     return () => {
-      clearTimeout(timeoutId)
       cancelAnimationFrame(rafRef.current)
     }
   }, [])
@@ -65,7 +88,7 @@ export default function GeologicTimeClock () {
 
   return (
     <>
-      {/* 1. Global styles to ensure NO SCROLLING on the document root */}
+      {/* 1. Global styles to ensure NO SCROLLING and smooth rendering */}
       <style
         dangerouslySetInnerHTML={{
           __html: `
@@ -74,9 +97,31 @@ export default function GeologicTimeClock () {
           padding: 0;
           height: 100dvh;
           width: 100vw;
-          /* CRITICAL: Disallow scrolling */
           overflow: hidden;
           box-sizing: border-box;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          text-rendering: optimizeLegibility;
+        }
+        
+        /* Smooth transitions for clock hands */
+        .clock-hand {
+          transition: transform 0.3s cubic-bezier(0.4, 2.1, 0.4, 2.1);
+          transform-origin: 100%;
+          position: absolute;
+          background: #113A66;
+          border-radius: 10px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Prevent text selection for better mobile experience */
+        * {
+          -webkit-touch-callout: none;
+          -webkit-user-select: none;
+          -khtml-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
         }
       `
         }}
