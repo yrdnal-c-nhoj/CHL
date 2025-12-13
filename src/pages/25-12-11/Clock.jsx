@@ -100,8 +100,8 @@ export default function GeologicTimeClock () {
           alignItems: 'center',
           boxSizing: 'border-box',
           overflow: 'hidden', // Prevents main content from scrolling
-          fontFamily: 'system-ui, -apple-system, sans-serif',
-          gap: '0.5vh' // Tighter vertical gap for maximum vertical space
+          fontFamily: 'system-ui, -apple-system, sans-serif'
+          // gap: '0.5vh' // Tighter vertical gap for maximum vertical space
         }}
       >
         {timeline.map((item, i) => (
@@ -161,8 +161,8 @@ export default function GeologicTimeClock () {
                 minHeight: '1.5em',
                 background: 'linear-gradient(to bottom, #113A66, #3D1759)',
                 borderRadius: '3px',
-                flexShrink: 0,
-                margin: '0 0.5rem'
+                flexShrink: 0
+                // margin: '0 0.5rem'
               }}
             />
 
