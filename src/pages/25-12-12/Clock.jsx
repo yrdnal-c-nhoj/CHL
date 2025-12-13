@@ -102,6 +102,30 @@ export default function AnalogBackgroundClock () {
     transform: `translate(-50%, -100%) rotate(${seconds * 6}deg)`
   }
 
+  const numbers = []
+  for (let i = 1; i <= 12; i++) {
+    const angle = (i * 30 - 90) * (Math.PI / 180)
+    const x = 35 * Math.cos(angle)
+    const y = 35 * Math.sin(angle)
+    numbers.push(
+      <div
+        key={i}
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: `translate(${x}vh, ${y}vh) translate(-50%, -50%)`,
+          fontSize: '4vh',
+          fontWeight: 'bold',
+          color: 'white',
+          textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+        }}
+      >
+        {i}
+      </div>
+    )
+  }
+
   return (
     <>
       <div
@@ -130,6 +154,7 @@ export default function AnalogBackgroundClock () {
         }}
       >
         <div style={clockStyle}>
+          {numbers}
           <div style={hourHand} />
           <div style={minuteHand} />
           <div style={secondHand} />
