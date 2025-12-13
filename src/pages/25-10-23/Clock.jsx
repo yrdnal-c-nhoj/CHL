@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import fontUrl from './gr.ttf';
-import bgImage from './bg.gif'; 
+import React, { useEffect, useState, useMemo } from 'react'
+import f251023 from './gr.ttf'
+import bgImage from './bg.gif'
 
 const Clockgrid = () => {
   const [time, setTime] = useState({
@@ -8,90 +8,90 @@ const Clockgrid = () => {
     minutes: '',
     seconds: '',
     millis: '',
-    ampm: '',
-  });
+    ampm: ''
+  })
 
   const [viewport, setViewport] = useState({
     width: window.innerWidth,
-    height: window.innerHeight,
-  });
+    height: window.innerHeight
+  })
 
   useEffect(() => {
     const updateClock = () => {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
-      const millis = Math.floor(now.getMilliseconds() / 10);
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12 || 12;
+      const now = new Date()
+      let hours = now.getHours()
+      const minutes = now.getMinutes()
+      const seconds = now.getSeconds()
+      const millis = Math.floor(now.getMilliseconds() / 10)
+      const ampm = hours >= 12 ? 'PM' : 'AM'
+      hours = hours % 12 || 12
 
       setTime({
         hours: String(hours).padStart(2, '0'),
         minutes: String(minutes).padStart(2, '0'),
         seconds: String(seconds).padStart(2, '0'),
         millis: String(millis).padStart(2, '0'),
-        ampm,
-      });
-    };
+        ampm
+      })
+    }
 
-    updateClock();
-    const interval = setInterval(updateClock, 10);
-    return () => clearInterval(interval);
-  }, []);
+    updateClock()
+    const interval = setInterval(updateClock, 10)
+    return () => clearInterval(interval)
+  }, [])
 
   useEffect(() => {
     const handleResize = () => {
       setViewport({
         width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+        height: window.innerHeight
+      })
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const timeCharacters = useMemo(() => {
     const timeString =
-      time.hours + time.minutes + time.seconds + time.millis + time.ampm;
-    return timeString.toUpperCase().split('');
-  }, [time]);
+      time.hours + time.minutes + time.seconds + time.millis + time.ampm
+    return timeString.toUpperCase().split('')
+  }, [time])
 
-  const patternLength = timeCharacters.length;
+  const patternLength = timeCharacters.length
 
-  const CELL_VH = 10;
-  const ROWS = Math.ceil(viewport.height / (CELL_VH / 100 * viewport.height)) + 2;
-  const COLUMNS = Math.ceil(viewport.width / (CELL_VH / 100 * viewport.height)) + 2;
-  const totalCells = ROWS * COLUMNS;
-  const repeatCount = Math.ceil(totalCells / patternLength);
-  const totalCharactersToRender = repeatCount * patternLength;
+  const CELL_VH = 10
+  const ROWS =
+    Math.ceil(viewport.height / ((CELL_VH / 100) * viewport.height)) + 2
+  const COLUMNS =
+    Math.ceil(viewport.width / ((CELL_VH / 100) * viewport.height)) + 2
+  const totalCells = ROWS * COLUMNS
+  const repeatCount = Math.ceil(totalCells / patternLength)
+  const totalCharactersToRender = repeatCount * patternLength
 
   const fontFace = `
     @font-face {
       font-family: 'mult';
-      src: url(${fontUrl}) format('truetype');
+      src: url(${f251023}) format('truetype');
     }
-  `;
+  `
 
   const styles = {
-  htmlBody: {
-  margin: 0,
-  padding: 0,
-  height: '100vh',
-  width: '100vw',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  overflow: 'hidden',
-  backgroundImage: `url(${bgImage})`,
-  backgroundRepeat: 'repeat',                     // tile the image
-  backgroundSize: `${CELL_VH * 9}vh ${CELL_VH * 10}vh`, // width = 3 digits, height = 1 digit
-  backgroundPosition: 'center center',           // start tiling from the middle
-  fontFamily: 'mult, monospace',
-  position: 'relative',
-},
-
-
+    htmlBody: {
+      margin: 0,
+      padding: 0,
+      height: '100vh',
+      width: '100vw',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      overflow: 'hidden',
+      backgroundImage: `url(${bgImage})`,
+      backgroundRepeat: 'repeat', // tile the image
+      backgroundSize: `${CELL_VH * 9}vh ${CELL_VH * 10}vh`, // width = 3 digits, height = 1 digit
+      backgroundPosition: 'center center', // start tiling from the middle
+      fontFamily: 'mult, monospace',
+      position: 'relative'
+    },
 
     clockGrid: {
       display: 'grid',
@@ -101,7 +101,7 @@ const Clockgrid = () => {
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
-      gap: '0',
+      gap: '0'
     },
 
     characterCell: {
@@ -112,29 +112,28 @@ const Clockgrid = () => {
       justifyContent: 'center',
       alignItems: 'center',
       textTransform: 'uppercase',
-      lineHeight: 1,
-    },
-  };
+      lineHeight: 1
+    }
+  }
 
   const allCharacters = Array.from(
     { length: totalCharactersToRender },
     (_, i) => {
-      const char = timeCharacters[i % patternLength];
+      const char = timeCharacters[i % patternLength]
       return (
         <div key={i} style={styles.characterCell}>
           {char}
         </div>
-      );
+      )
     }
-  );
+  )
 
   return (
     <div style={styles.htmlBody}>
-     
       <div style={styles.clockGrid}>{allCharacters}</div>
-       <style>{fontFace}</style>
+      <style>{fontFace}</style>
     </div>
-  );
-};
+  )
+}
 
-export default Clockgrid;
+export default Clockgrid

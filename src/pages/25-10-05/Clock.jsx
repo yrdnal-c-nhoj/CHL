@@ -1,63 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import bgImage from './16a.png';
-import clockBgImage from './16.png';
-import digitalFontUrl from './dode.ttf';
-import analogFontUrl from './do.ttf';
+import React, { useState, useEffect } from 'react'
+import bgImage from './16a.png'
+import clockBgImage from './16.png'
+import diigi251005 from './dode.ttf'
+import ana251005font from './do.ttf'
 
-export default function HexAnalogClock() {
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [ready, setReady] = useState(false);
+export default function HexAnalogClock () {
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [ready, setReady] = useState(false)
   const [viewport, setViewport] = useState({
     width: window.innerWidth,
-    height: window.innerHeight,
-  });
+    height: window.innerHeight
+  })
 
   // Update viewport on resize/orientation
   useEffect(() => {
     const updateSize = () =>
-      setViewport({ width: window.innerWidth, height: window.innerHeight });
-    window.addEventListener('resize', updateSize);
-    window.addEventListener('orientationchange', updateSize);
-    updateSize();
+      setViewport({ width: window.innerWidth, height: window.innerHeight })
+    window.addEventListener('resize', updateSize)
+    window.addEventListener('orientationchange', updateSize)
+    updateSize()
     return () => {
-      window.removeEventListener('resize', updateSize);
-      window.removeEventListener('orientationchange', updateSize);
-    };
-  }, []);
+      window.removeEventListener('resize', updateSize)
+      window.removeEventListener('orientationchange', updateSize)
+    }
+  }, [])
 
   // Load assets (fonts + images)
   useEffect(() => {
-    async function loadAssets() {
+    async function loadAssets () {
       try {
-        const digitalFont = new FontFace('DigitalFont', `url(${digitalFontUrl})`);
-        const analogFont = new FontFace('AnalogFont', `url(${analogFontUrl})`);
-        await Promise.all([digitalFont.load(), analogFont.load()]);
-        document.fonts.add(digitalFont);
-        document.fonts.add(analogFont);
+        const digitalFont = new FontFace('DigitalFont', `url(${diigi251005})`)
+        const analogFont = new FontFace('AnalogFont', `url(${ana251005font})`)
+        await Promise.all([digitalFont.load(), analogFont.load()])
+        document.fonts.add(digitalFont)
+        document.fonts.add(analogFont)
 
-        const loadImage = (src) =>
-          new Promise((resolve) => {
-            const img = new Image();
-            img.src = src;
-            img.onload = resolve;
-          });
-        await Promise.all([loadImage(bgImage), loadImage(clockBgImage)]);
+        const loadImage = src =>
+          new Promise(resolve => {
+            const img = new Image()
+            img.src = src
+            img.onload = resolve
+          })
+        await Promise.all([loadImage(bgImage), loadImage(clockBgImage)])
 
-        setReady(true);
+        setReady(true)
       } catch (err) {
-        console.error('Asset load error:', err);
-        setReady(true);
+        console.error('Asset load error:', err)
+        setReady(true)
       }
     }
-    loadAssets();
-  }, []);
+    loadAssets()
+  }, [])
 
   // Clock tick
   useEffect(() => {
-    if (!ready) return;
-    const timer = setInterval(() => setCurrentTime(new Date()), 100);
-    return () => clearInterval(timer);
-  }, [ready]);
+    if (!ready) return
+    const timer = setInterval(() => setCurrentTime(new Date()), 100)
+    return () => clearInterval(timer)
+  }, [ready])
 
   if (!ready) {
     return (
@@ -71,40 +71,39 @@ export default function HexAnalogClock() {
           background: '#000',
           color: '#fff',
           fontSize: '4vh',
-          fontFamily: 'sans-serif',
+          fontFamily: 'sans-serif'
         }}
-      >
-        
-      </div>
-    );
+      ></div>
+    )
   }
 
-  const unixTime = Math.floor(currentTime.getTime() / 1000);
-  const hexTime = unixTime.toString(16).toUpperCase();
+  const unixTime = Math.floor(currentTime.getTime() / 1000)
+  const hexTime = unixTime.toString(16).toUpperCase()
 
-  const hours = currentTime.getHours();
-  const minutes = currentTime.getMinutes();
-  const seconds = currentTime.getSeconds();
-  const milliseconds = currentTime.getMilliseconds();
+  const hours = currentTime.getHours()
+  const minutes = currentTime.getMinutes()
+  const seconds = currentTime.getSeconds()
+  const milliseconds = currentTime.getMilliseconds()
 
-  const clockSize = Math.min(viewport.width, viewport.height) * 0.8;
-  const center = clockSize / 2;
-  const radius = center - 29;
+  const clockSize = Math.min(viewport.width, viewport.height) * 0.8
+  const center = clockSize / 2
+  const radius = center - 29
 
   const totalSecondsInDay =
-    hours * 3600 + minutes * 60 + seconds + milliseconds / 1000;
-  const fractionOfDay = totalSecondsInDay / 86400;
-  const hexHours = fractionOfDay * 16;
-  const hexMinutes = (hexHours % 1) * 256;
-  const hexSeconds = (hexMinutes % 1) * 256;
+    hours * 3600 + minutes * 60 + seconds + milliseconds / 1000
+  const fractionOfDay = totalSecondsInDay / 86400
+  const hexHours = fractionOfDay * 16
+  const hexMinutes = (hexHours % 1) * 256
+  const hexSeconds = (hexMinutes % 1) * 256
 
-  const hourAngle = (360 / 16) * hexHours;
-  const minuteAngle = (360 / 256) * hexMinutes;
-  const secondAngle = (360 / 256) * hexSeconds;
+  const hourAngle = (360 / 16) * hexHours
+  const minuteAngle = (360 / 256) * hexMinutes
+  const secondAngle = (360 / 256) * hexSeconds
 
-  const hexLabels = Array.from({ length: 16 }, (_, i) =>
-    `0x${i.toString(16).toUpperCase().padStart(2, '0')}`
-  );
+  const hexLabels = Array.from(
+    { length: 16 },
+    (_, i) => `0x${i.toString(16).toUpperCase().padStart(2, '0')}`
+  )
 
   const styles = {
     root: {
@@ -122,7 +121,7 @@ export default function HexAnalogClock() {
       backgroundImage: `url(${bgImage})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-      margin: 0,
+      margin: 0
     },
     card: {
       background: '#fff',
@@ -135,14 +134,14 @@ export default function HexAnalogClock() {
       fontSize: '6vh',
       zIndex: 2,
       maxWidth: '95vw',
-      transform: 'translateY(-3vh)', // <-- moves digital clock up
+      transform: 'translateY(-3vh)' // <-- moves digital clock up
     },
     progressContainer: {
       width: '100%',
       height: '6vh',
       background: 'rgba(204, 187, 170, 0.2)',
       borderRadius: '12px',
-      overflow: 'hidden',
+      overflow: 'hidden'
     },
     progressBar: {
       height: '100%',
@@ -150,7 +149,7 @@ export default function HexAnalogClock() {
       background: 'linear-gradient(90deg, #0b8d49, #EC2308FF, #0533ea)',
       transition: 'width 0.1s linear',
       border: '0.5px solid #000',
-      boxSizing: 'border-box',
+      boxSizing: 'border-box'
     },
     styleTag: `
       @keyframes gradientShift {
@@ -159,13 +158,18 @@ export default function HexAnalogClock() {
         100% { background-position: 0% 50%; }
       }
     `,
-    svg: { width: clockSize, height: clockSize, zIndex: 2, position: 'relative' },
+    svg: {
+      width: clockSize,
+      height: clockSize,
+      zIndex: 2,
+      position: 'relative'
+    },
     markingText: {
       fontFamily: 'AnalogFont',
       fill: '#5B07A0FF',
       fontSize: Math.max(12, clockSize * 0.07),
       textAnchor: 'middle',
-      dominantBaseline: 'middle',
+      dominantBaseline: 'middle'
     },
     clockFaceBackground: {
       position: 'absolute',
@@ -177,7 +181,7 @@ export default function HexAnalogClock() {
       backgroundImage: `url(${clockBgImage})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-      zIndex: 1,
+      zIndex: 1
     },
     clockContainer: {
       position: 'relative',
@@ -185,9 +189,9 @@ export default function HexAnalogClock() {
       height: '80dvw',
       maxWidth: '80dvh',
       maxHeight: '80dvh',
-      borderRadius: '50%',
+      borderRadius: '50%'
     },
-    hexDigitBox: (index) => ({
+    hexDigitBox: index => ({
       width: '8vw',
       height: '6vh',
       display: 'flex',
@@ -201,10 +205,10 @@ export default function HexAnalogClock() {
       backgroundSize: '300% 100%',
       animation: 'gradientShift 1.5s linear infinite',
       animationDelay: `${index * 0.2}s`,
-      textShadow: '1px 0px 0 #000',
+      textShadow: '1px 0px 0 #000'
     }),
-    centerDot: { fill: '#E04807FF' },
-  };
+    centerDot: { fill: '#E04807FF' }
+  }
 
   return (
     <div style={styles.root}>
@@ -232,55 +236,73 @@ export default function HexAnalogClock() {
             cx={center}
             cy={center}
             r={radius}
-            fill="rgba(225, 214, 196, 0.3)"
-            stroke="rgba(204,187,170,0.5)"
-            strokeWidth="2"
+            fill='rgba(225, 214, 196, 0.3)'
+            stroke='rgba(204,187,170,0.5)'
+            strokeWidth='2'
           />
 
           {hexLabels.map((label, i) => {
-            const angle = (i / 16) * 2 * Math.PI - Math.PI / 2;
-            const x = center + Math.cos(angle) * (radius - 20);
-            const y = center + Math.sin(angle) * (radius - 20);
+            const angle = (i / 16) * 2 * Math.PI - Math.PI / 2
+            const x = center + Math.cos(angle) * (radius - 20)
+            const y = center + Math.sin(angle) * (radius - 20)
             return (
               <text key={i} x={x} y={y} style={styles.markingText}>
                 {label}
               </text>
-            );
+            )
           })}
 
           <line
             x1={center}
             y1={center}
-            x2={center + Math.cos((hourAngle - 90) * (Math.PI / 180)) * (radius - 60)}
-            y2={center + Math.sin((hourAngle - 90) * (Math.PI / 180)) * (radius - 60)}
-            stroke="#0b8d49"
-            strokeWidth="6"
-            strokeLinecap="round"
+            x2={
+              center +
+              Math.cos((hourAngle - 90) * (Math.PI / 180)) * (radius - 60)
+            }
+            y2={
+              center +
+              Math.sin((hourAngle - 90) * (Math.PI / 180)) * (radius - 60)
+            }
+            stroke='#0b8d49'
+            strokeWidth='6'
+            strokeLinecap='round'
           />
 
           <line
             x1={center}
             y1={center}
-            x2={center + Math.cos((minuteAngle - 90) * (Math.PI / 180)) * (radius - 40)}
-            y2={center + Math.sin((minuteAngle - 90) * (Math.PI / 180)) * (radius - 40)}
-            stroke="#9f5a05"
-            strokeWidth="4"
-            strokeLinecap="round"
+            x2={
+              center +
+              Math.cos((minuteAngle - 90) * (Math.PI / 180)) * (radius - 40)
+            }
+            y2={
+              center +
+              Math.sin((minuteAngle - 90) * (Math.PI / 180)) * (radius - 40)
+            }
+            stroke='#9f5a05'
+            strokeWidth='4'
+            strokeLinecap='round'
           />
 
           <line
             x1={center}
             y1={center}
-            x2={center + Math.cos((secondAngle - 90) * (Math.PI / 180)) * (radius - 30)}
-            y2={center + Math.sin((secondAngle - 90) * (Math.PI / 180)) * (radius - 30)}
-            stroke="#0533ea"
-            strokeWidth="2"
-            strokeLinecap="round"
+            x2={
+              center +
+              Math.cos((secondAngle - 90) * (Math.PI / 180)) * (radius - 30)
+            }
+            y2={
+              center +
+              Math.sin((secondAngle - 90) * (Math.PI / 180)) * (radius - 30)
+            }
+            stroke='#0533ea'
+            strokeWidth='2'
+            strokeLinecap='round'
           />
 
-          <circle cx={center} cy={center} r="6" style={styles.centerDot} />
+          <circle cx={center} cy={center} r='6' style={styles.centerDot} />
         </svg>
       </div>
     </div>
-  );
+  )
 }

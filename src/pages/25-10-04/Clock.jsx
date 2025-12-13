@@ -1,50 +1,50 @@
-import React, { useEffect, useState, useRef } from 'react';
-import clockFont from './iss.ttf';
-import bgMp4 from './waterfall.mp4';
-import bgWebp from './waterfall.webp';
+import React, { useEffect, useState, useRef } from 'react'
+import c251004font from './iss.ttf'
+import bgMp4 from './waterfall.mp4'
+import bgWebp from './waterfall.webp'
 
 const ClockVideoBackground = () => {
-  const [time, setTime] = useState(new Date());
-  const [loaded, setLoaded] = useState(false);
-  const [fontLoaded, setFontLoaded] = useState(false);
-  const videoRef = useRef(null);
+  const [time, setTime] = useState(new Date())
+  const [loaded, setLoaded] = useState(false)
+  const [fontLoaded, setFontLoaded] = useState(false)
+  const videoRef = useRef(null)
 
   // Load the font
   useEffect(() => {
-    const font = new FontFace('iss', `url(${clockFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontLoaded(true);
-    });
-  }, []);
+    const font = new FontFace('iss', `url(${c251004font})`)
+    font.load().then(loadedFont => {
+      document.fonts.add(loadedFont)
+      setFontLoaded(true)
+    })
+  }, [])
 
   // Smooth clock updates using requestAnimationFrame
   useEffect(() => {
-    let animationFrame;
+    let animationFrame
 
     const updateClock = () => {
-      setTime(new Date());
-      animationFrame = requestAnimationFrame(updateClock);
-    };
+      setTime(new Date())
+      animationFrame = requestAnimationFrame(updateClock)
+    }
 
-    animationFrame = requestAnimationFrame(updateClock);
-    return () => cancelAnimationFrame(animationFrame);
-  }, []);
+    animationFrame = requestAnimationFrame(updateClock)
+    return () => cancelAnimationFrame(animationFrame)
+  }, [])
 
   // Fade-in effect for video
   useEffect(() => {
-    const timeout = setTimeout(() => setLoaded(true), 100);
-    return () => clearTimeout(timeout);
-  }, []);
+    const timeout = setTimeout(() => setLoaded(true), 100)
+    return () => clearTimeout(timeout)
+  }, [])
 
   const formatDigits = (value, length = 2) =>
-    String(value).padStart(length, '0').split('');
+    String(value).padStart(length, '0').split('')
 
-  const hDigits = formatDigits(time.getHours());
-  const mDigits = formatDigits(time.getMinutes());
-  const sDigits = formatDigits(time.getSeconds());
+  const hDigits = formatDigits(time.getHours())
+  const mDigits = formatDigits(time.getMinutes())
+  const sDigits = formatDigits(time.getSeconds())
   // Show 2 digits of milliseconds smoothly
-  const msDigits = formatDigits(Math.floor(time.getMilliseconds() / 10));
+  const msDigits = formatDigits(Math.floor(time.getMilliseconds() / 10))
 
   const styles = {
     root: {
@@ -55,7 +55,7 @@ const ClockVideoBackground = () => {
       height: '100dvh',
       backgroundColor: '#000000',
       position: 'relative',
-      fontFamily: fontLoaded ? 'iss, sans-serif' : 'sans-serif',
+      fontFamily: fontLoaded ? 'iss, sans-serif' : 'sans-serif'
     },
     video: {
       position: 'fixed',
@@ -67,7 +67,7 @@ const ClockVideoBackground = () => {
       zIndex: 0,
       opacity: loaded ? 1 : 0,
       transition: 'opacity 0.2s ease-in-out',
-      backgroundColor: '#000000',
+      backgroundColor: '#000000'
     },
     wrapper: {
       position: 'absolute',
@@ -78,14 +78,14 @@ const ClockVideoBackground = () => {
       display: loaded && fontLoaded ? 'flex' : 'none',
       flexDirection: 'column',
       gap: '0rem',
-      alignItems: 'center',
+      alignItems: 'center'
     },
     group: {
       display: 'flex',
       flexDirection: 'row',
       gap: '0.01vh',
       justifyContent: 'center',
-      alignItems: 'center',
+      alignItems: 'center'
     },
     digitBox: {
       color: '#0946C1FF',
@@ -100,9 +100,9 @@ const ClockVideoBackground = () => {
       width: '14vh',
       height: '19vh',
       textAlign: 'center',
-      boxSizing: 'border-box',
-    },
-  };
+      boxSizing: 'border-box'
+    }
+  }
 
   return (
     <div style={styles.root}>
@@ -116,32 +116,48 @@ const ClockVideoBackground = () => {
         playsInline
         onError={() => {
           if (videoRef.current) {
-            videoRef.current.src = bgWebp;
-            videoRef.current.play();
+            videoRef.current.src = bgWebp
+            videoRef.current.play()
           }
         }}
       >
-        <source src={bgMp4} type="video/mp4" />
-        <source src={bgWebp} type="image/webp" />
+        <source src={bgMp4} type='video/mp4' />
+        <source src={bgWebp} type='image/webp' />
       </video>
 
       {/* Clock Overlay */}
       <div style={styles.wrapper}>
         <div style={styles.group}>
-          {hDigits.map((d, i) => <div key={i} style={styles.digitBox}>{d}</div>)}
+          {hDigits.map((d, i) => (
+            <div key={i} style={styles.digitBox}>
+              {d}
+            </div>
+          ))}
         </div>
         <div style={styles.group}>
-          {mDigits.map((d, i) => <div key={i} style={styles.digitBox}>{d}</div>)}
+          {mDigits.map((d, i) => (
+            <div key={i} style={styles.digitBox}>
+              {d}
+            </div>
+          ))}
         </div>
         <div style={styles.group}>
-          {sDigits.map((d, i) => <div key={i} style={styles.digitBox}>{d}</div>)}
+          {sDigits.map((d, i) => (
+            <div key={i} style={styles.digitBox}>
+              {d}
+            </div>
+          ))}
         </div>
         <div style={styles.group}>
-          {msDigits.map((d, i) => <div key={i} style={styles.digitBox}>{d}</div>)}
+          {msDigits.map((d, i) => (
+            <div key={i} style={styles.digitBox}>
+              {d}
+            </div>
+          ))}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ClockVideoBackground;
+export default ClockVideoBackground
