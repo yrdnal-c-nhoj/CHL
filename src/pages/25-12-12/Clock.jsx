@@ -64,7 +64,7 @@ export default function AnalogBackgroundClock () {
     ...handBase,
     width: '0.5vh',
     height: '34vh',
-    background: 'red',
+    background: 'black',
     transform: `translate(-50%, -100%) rotate(${seconds * 6}deg)`
   }
 
