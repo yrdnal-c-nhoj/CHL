@@ -28,9 +28,9 @@ export default function RococoClock () {
         display: 'inline-block',
         fontFamily: `'Roco Revival', serif`,
         fontSize: `${5 + Math.random() * 29}vh`,
-        color: '#F0C1B1FF',
+        color: '#F1E3DFFF',
         textShadow: `
-          2px 2px 4px rgba(255, 20, 147, 0.9),
+          2px 2px 4px rgba(255, 20, 147, 0.7),
           4px 4px 8px rgba(50, 205, 50, 0.8),
           0 0 12px rgba(255, 20, 147, 0.6),
           0 0 20px rgba(50, 205, 50, 0.4)
