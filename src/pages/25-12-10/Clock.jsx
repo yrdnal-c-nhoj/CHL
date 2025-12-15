@@ -182,7 +182,7 @@ const ClockHand = memo(({ img, width, max, rotation, z }) => (
       pointerEvents: 'none',
       userSelect: 'none',
       filter:
-        'hue-rotate(20deg) saturate(3) brightness(1.2) drop-shadow(2px 2px 0px #0E63EBFF)'
+        'hue-rotate(20deg) saturate(2) brightness(1.2) drop-shadow(2px 2px 0px #0E63EBFF)'
     }}
   />
 ))
