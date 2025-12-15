@@ -77,8 +77,7 @@ const InfiniteScrollingBG = memo(() => {
           backgroundSize: '100% auto',
           backgroundRepeat: 'repeat-y',
           backgroundPosition: 'center top',
-          animation: 'scrollUp 19s linear infinite',
-          opacity: 0.8
+          animation: 'scrollUp 19s linear infinite'
         }}
       />
       <style jsx>{`
@@ -153,11 +152,11 @@ const ClockNumeral = memo(({ text, x, y }) => (
       left: `${x}%`,
       top: `${y}%`,
       transform: 'translate(-50%, -50%)',
-      color: '#EAC555FF',
+      color: '#1D97F4FF',
       fontFamily: 'CustomFont251211, serif',
-      fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-      textShadow: '2px 2px 0px rgba(120,120,230)',
-      zIndex: 3,
+      fontSize: 'clamp(5rem, 8vw, 6.5rem)',
+      textShadow: '2px 2px 0px #FAC72DFF',
+      zIndex: 1,
       pointerEvents: 'none'
     }}
   >
@@ -256,17 +255,6 @@ export default function AnalogClock () {
   return (
     <>
       <GlobalStyles />
-
-      {/* Gradient base */}
-      <div
-        style={{
-          position: 'fixed',
-          inset: 0,
-          background: 'linear-gradient(to bottom, #124CDEFF, #1380CDFF)',
-          zIndex: 0,
-          pointerEvents: 'none'
-        }}
-      />
 
       {/* Infinite scrolling Joop background */}
       <InfiniteScrollingBG />
