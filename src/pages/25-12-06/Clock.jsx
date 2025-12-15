@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 // Import assets
 import bgImage from './giraffe.webp'
-import hourHandImg from './hand3.gif'
+import hourHandImggir from './hand3.gif'
 import minnnuteHandImg from './hand1.gif'
 import secondHandImg from './hand2.gif'
 import customFont_2025_1206 from './gir.otf'
@@ -279,7 +279,7 @@ export default function AnalogClock () {
           style={handStyle(minuteDeg, 25, 60)}
         />
         <img
-          src={hourHandImg}
+          src={hourHandImggir}
           alt='hour'
           style={handStyle(hourDeg, 28, 43200)}
         />
