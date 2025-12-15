@@ -30,16 +30,33 @@ const CONFIG = {
 // --- HOOKS ---
 function useTime () {
   const [time, setTime] = useState(() => new Date())
+  
   useEffect(() => {
-    const id = setInterval(() => setTime(new Date()), 1000)
-    return () => clearInterval(id)
+    let animationFrameId
+    
+    const updateTime = () => {
+      setTime(new Date())
+      animationFrameId = requestAnimationFrame(updateTime)
+    }
+    
+    // Start the animation loop
+    animationFrameId = requestAnimationFrame(updateTime)
+    
+    // Cleanup function to cancel the animation frame when component unmounts
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId)
+      }
+    }
   }, [])
+  
   return time
 }
 
 function useClockAngles (time) {
   return useMemo(() => {
-    const s = time.getSeconds() + time.getMilliseconds() / 1000
+    const ms = time.getMilliseconds()
+    const s = time.getSeconds() + ms / 1000
     const m = time.getMinutes() + s / 60
     const h = (time.getHours() % 12) + m / 60
     return { second: s * 6, minute: m * 6, hour: h * 30 }
@@ -164,7 +181,7 @@ const ClockNumeral = memo(({ text, x, y }) => (
       fontFamily: 'CustomFont251211, serif',
       fontSize: 'clamp(5rem, 8vw, 6.5rem)',
       textShadow: '2px 2px 0px #FAC72DFF',
-      zIndex: 1,
+      zIndex: 0,
       pointerEvents: 'none'
     }}
   >
