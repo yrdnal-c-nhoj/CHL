@@ -30,10 +30,10 @@ export default function RococoClock () {
         fontSize: `${5 + Math.random() * 29}vh`,
         color: '#D3C4C0FF',
         textShadow: `
-          2px 2px 4px rgba(255, 20, 147, 0.7),
-          4px 4px 8px rgba(50, 205, 50, 0.8),
-          0 0 12px rgba(255, 20, 147, 0.6),
-          0 0 20px rgba(50, 205, 50, 0.4)
+          2px 2px 4px rgba(255, 20, 147, 0.4),
+          4px 4px 8px rgba(50, 205, 50, 0.4),
+          0 0 8px rgba(255, 20, 147, 0.6),
+          0 0 7px rgba(50, 205, 50, 0.4)
         `,
         padding: `${0.1 + Math.random() * 11.3}vh ${
           0.1 + Math.random() * 0.4
@@ -68,9 +68,13 @@ export default function RococoClock () {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: '33.33% center',
-    overflow: 'hidden'
+    backgroundSize: 'auto 100%', // Height 100%, width auto to maintain aspect ratio
+    backgroundPosition: 'center', // Center the background
+    backgroundRepeat: 'no-repeat',
+    backgroundColor: '#000', // Black background to fill any empty space
+    overflow: 'hidden',
+    position: 'relative', // For potential absolute positioning of children
+    backgroundAttachment: 'fixed' // Optional: keeps the background fixed during scroll
   }
 
   const rowStyle = {
