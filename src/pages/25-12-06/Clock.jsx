@@ -206,9 +206,9 @@ export default function AnalogClock () {
     pointerEvents: 'none'
   }
 
-  // Main container styles (THE FIX IS HERE)
+  // Main container styles (THE FIX IS APPLIED HERE)
   const outerContainerStyle = {
-    height: '100dvh', // This is the magic line
+    height: '100%', // Changed from '100dvh' to '100%'
     width: '100%',
     position: 'fixed',
     top: 0,
