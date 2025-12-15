@@ -26,7 +26,7 @@ export default function RococoClock () {
       const y = (1 - Math.cos((baseAngle * Math.PI) / 180)) * radius
 
       // Adjust sizes based on device
-      const baseSize = isMobile ? 5 : 7
+      const baseSize = isMobile ? 7 : 7
       const maxSize = isMobile ? 17 : 31
       const scaleFactor = isMobile ? 0.7 : 1
 
