@@ -19,20 +19,33 @@ export default function RococoClock () {
     const spacing = isMobile ? 8 : 12 // Vertical spacing between digits
 
     for (let i = 0; i < totalDigits; i++) {
-      // Calculate vertical position for straight line (top to bottom)
+      // Calculate curved position (gentle curve drifting right at top)
       const y = i * spacing
+      // Create a gentle curve: higher digits (bottom) more left, lower digits (top) drift right
+      const curveOffset = (totalDigits - 1 - i) * (isMobile ? 1.5 : 2.5) // Adjust curve strength
+      const x = curveOffset
 
-      // Determine z-index based on time component (hours+minutes grouped, ampm lowest)
+      // Determine z-index based on time component (hours highest, minutes middle, ampm lowest)
       let zIndex
-      if (i >= 4) {
+      if (i < 2) {
+        zIndex = 30 // Hours - highest
+      } else if (i >= 4) {
         zIndex = 5 // AM/PM - lowest
       } else {
-        zIndex = 20 // Hours and Minutes - higher
+        zIndex = 15 // Minutes - middle
       }
 
-      // Adjust sizes based on device
-      const baseSize = isMobile ? 9 : 11
-      const maxSize = isMobile ? 26 : 38
+      // Adjust sizes based on device and component type
+      let baseSize, maxSize
+      if (i >= 4) {
+        // AM/PM - smaller
+        baseSize = isMobile ? 7 : 9
+        maxSize = isMobile ? 18 : 25
+      } else {
+        // Hours and Minutes - normal size
+        baseSize = isMobile ? 9 : 11
+        maxSize = isMobile ? 26 : 38
+      }
       const scaleFactor = isMobile ? 0.7 : 1
 
       styles.push({
@@ -53,7 +66,7 @@ export default function RococoClock () {
         position: 'absolute',
         zIndex: zIndex,
         transform: `
-          translate(0vh, ${y}vh)
+          translate(${x}vh, ${y}vh)
           rotate(${(Math.random() * 60 - 30) * scaleFactor}deg)
           skew(${(Math.random() * 15 - 7.5) * scaleFactor}deg, ${
           (Math.random() * 15 - 7.5) * scaleFactor
@@ -84,7 +97,7 @@ export default function RococoClock () {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-start',
-    paddingTop: '20vh',
+    paddingTop: '15vh',
     backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover', // Cover the entire container
     backgroundPosition: 'left', // Center the background
