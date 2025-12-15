@@ -51,7 +51,8 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)'
+    padding:
+      'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)'
   },
   clockContainer: {
     display: 'flex',
@@ -65,7 +66,7 @@ const styles = {
   },
   digitBox: {
     fontFamily: 'ClockFont251215, serif',
-    fontSize: 'min(10vh, 7vw)',
+    fontSize: 'min(15vh, 26vw)',
     fontVariantNumeric: 'tabular-nums',
     fontFeatureSettings: '"tnum"',
     color: '#52CFF5FF',
