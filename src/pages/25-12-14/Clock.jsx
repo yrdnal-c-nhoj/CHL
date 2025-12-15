@@ -16,18 +16,23 @@ export default function RococoClock () {
     const isMobile = window.innerWidth <= 768 // Check if mobile device
     const styles = []
     const totalDigits = 6
-    const radius = isMobile ? -8 : -11 // Smaller radius on mobile
+    const spacing = isMobile ? 8 : 12 // Vertical spacing between digits
 
     for (let i = 0; i < totalDigits; i++) {
-      // Calculate position along the curve with 15° clockwise tilt
-      const baseAngle = (i - (totalDigits - 1) / 2) * (isMobile ? 31 : 36) // Tighter angle on mobile
-      const tiltedAngle = baseAngle + 50 // Add 30° clockwise tilt to entire curve
-      const x = Math.sin((tiltedAngle * Math.PI) / 180) * Math.abs(radius)
-      const y = (1 - Math.cos((baseAngle * Math.PI) / 180)) * radius
+      // Calculate vertical position for straight line (top to bottom)
+      const y = i * spacing
+
+      // Determine z-index based on time component (hours+minutes grouped, ampm lowest)
+      let zIndex
+      if (i >= 4) {
+        zIndex = 5 // AM/PM - lowest
+      } else {
+        zIndex = 20 // Hours and Minutes - higher
+      }
 
       // Adjust sizes based on device
-      const baseSize = isMobile ? 7 : 9
-      const maxSize = isMobile ? 17 : 31
+      const baseSize = isMobile ? 9 : 11
+      const maxSize = isMobile ? 26 : 38
       const scaleFactor = isMobile ? 0.7 : 1
 
       styles.push({
@@ -46,8 +51,9 @@ export default function RococoClock () {
         }vh`,
         margin: `${0.01 + Math.random() * (isMobile ? 1.2 : 2.4)}vh`,
         position: 'absolute',
+        zIndex: zIndex,
         transform: `
-          translate(${x}vh, ${y}vh)
+          translate(0vh, ${y}vh)
           rotate(${(Math.random() * 60 - 30) * scaleFactor}deg)
           skew(${(Math.random() * 15 - 7.5) * scaleFactor}deg, ${
           (Math.random() * 15 - 7.5) * scaleFactor
@@ -134,7 +140,10 @@ export default function RococoClock () {
             </div>
           ))}
           {ampm.map((letter, idx) => (
-            <div key={`ampm-${idx}`} style={digitStyles[4 + idx]}>
+            <div
+              key={`ampm-${idx}`}
+              style={digitStyles[hourDigits.length + minuteDigits.length + idx]}
+            >
               {letter}
             </div>
           ))}
