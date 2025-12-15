@@ -33,7 +33,8 @@ export default function DigitalClock () {
 
   const containerStyle = {
     width: '100vw',
-    height: '100vh',
+    height: '100dvh', // Dynamic viewport height — adjusts for mobile UI bars
+    fallback: '100vh', // Fallback for very old browsers
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -46,58 +47,49 @@ export default function DigitalClock () {
   const clockStyle = {
     display: 'flex',
     flexDirection: 'column',
-    gap: '6vh',
+    gap: '4vmin', // Reduced gap, scales with screen
     alignItems: 'center'
   }
 
   const rowStyle = {
     display: 'flex',
-    gap: '2vw',
+    gap: '1.5vmin', // Scaled spacing between digits
     justifyContent: 'center',
     alignItems: 'center'
   }
 
-  // Transparent digit container (no plate)
   const digitBox = {
-    width: '15vh',
-    height: '15vh',
+    width: '14vmin', // Slightly smaller for mobile fit
+    height: '14vmin',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
   }
 
-  // Machined steel digit
   const digitStyle = {
-    fontSize: '16vh',
+    fontSize: '14vmin', // Key change: vmin scales perfectly on mobile
     fontFamily: 'screw251214',
     lineHeight: '1',
-
     display: 'inline-block',
     whiteSpace: 'nowrap',
     transform: 'translateZ(0)',
-
     fontVariantNumeric: 'tabular-nums',
     fontFeatureSettings: '"tnum"',
-
     backgroundImage: `url(${digitTexture})`,
     backgroundSize: '320% 320%',
     backgroundRepeat: 'no-repeat',
-
     color: 'transparent',
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
-
     filter: 'contrast(1.15) brightness(1.05)',
-
     textShadow: `
-    -0.08vh -0.08vh 0.18vh rgba(255,255,255,0.35),
-     0.08vh  0.08vh 0.22vh rgba(0,0,0,0.55)
-  `
+      -0.08vh -0.08vh 0.18vh rgba(255,255,255,0.35),
+       0.08vh 0.08vh 0.22vh rgba(0,0,0,0.55)
+    `
   }
 
   let textureIndex = 0
-
   const renderDigits = (digits, prefix) =>
     digits.map((digit, i) => {
       const o = textureOffsets[textureIndex++]
@@ -125,7 +117,6 @@ export default function DigitalClock () {
           }
         `}
       </style>
-
       <div style={clockStyle}>
         <div style={rowStyle}>{renderDigits(hoursDigits, 'h')}</div>
         <div style={rowStyle}>{renderDigits(minutesDigits, 'm')}</div>
