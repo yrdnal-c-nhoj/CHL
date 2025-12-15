@@ -40,30 +40,39 @@ export default function VerticalDigitalClock () {
 
 const styles = {
   root: {
-    minHeight: '100vh',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: 'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)'
   },
   clockContainer: {
     display: 'flex',
-    flexDirection: 'column', // stack digits vertically
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '-2vh'
+    gap: '0.5vh',
+    maxHeight: '100%',
+    padding: '20px',
+    boxSizing: 'border-box'
   },
   digitBox: {
     fontFamily: 'ClockFont251215, serif',
-    fontSize: '15vh',
+    fontSize: 'min(10vh, 7vw)',
     fontVariantNumeric: 'tabular-nums',
     fontFeatureSettings: '"tnum"',
     color: '#52CFF5FF',
     textShadow: '1px 1px 0px #000000, -1px -1px 0px #F6C6C6FF',
     WebkitFontSmoothing: 'antialiased',
     MozOsxFontSmoothing: 'grayscale',
-    lineHeight: 1
+    lineHeight: 1,
+    flexShrink: 0
   }
 }
