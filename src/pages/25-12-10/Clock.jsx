@@ -131,7 +131,7 @@ const TiledBackground = memo(() => {
             height: tileSize,
             background: `url(${portImg}) center/contain no-repeat`,
             opacity: 0.5,
-            filter: 'hue-rotate(190deg) saturate(7.5)',
+            filter: 'hue-rotate(190deg) saturate(9.5)',
             transform: flip ? 'scaleX(-1)' : 'none',
             left: c * tileSize - tileSize,
             top: r * tileSize - tileSize,
@@ -181,7 +181,8 @@ const ClockHand = memo(({ img, width, max, rotation, z }) => (
       zIndex: 7,
       pointerEvents: 'none',
       userSelect: 'none',
-      filter: 'drop-shadow(2px 2px 0px rgba(120,120,230))'
+      filter:
+        'hue-rotate(20deg) saturate(3) brightness(1.2) drop-shadow(2px 2px 0px #0E63EBFF)'
     }}
   />
 ))
