@@ -15,12 +15,12 @@ export default function RococoClock () {
   useEffect(() => {
     const styles = []
     const totalDigits = 6
-    const radius = -30 // Negative radius for downward curve, increased for more spread
+    const radius = -11 // Reduced radius for closer spacing
 
     for (let i = 0; i < totalDigits; i++) {
       // Calculate position along the curve with 15° clockwise tilt
-      const baseAngle = (i - (totalDigits - 1) / 2) * 18 // Spread across 18 degrees per digit
-      const tiltedAngle = baseAngle + 30 // Add 30° clockwise tilt to entire curve
+      const baseAngle = (i - (totalDigits - 1) / 2) * 33 // Reduced spread to 12 degrees per digit
+      const tiltedAngle = baseAngle + 50 // Add 30° clockwise tilt to entire curve
       const x = Math.sin((tiltedAngle * Math.PI) / 180) * Math.abs(radius)
       const y = (1 - Math.cos((baseAngle * Math.PI) / 180)) * radius
 
@@ -28,7 +28,7 @@ export default function RococoClock () {
         display: 'inline-block',
         fontFamily: `'Roco Revival', serif`,
         fontSize: `${5 + Math.random() * 29}vh`,
-        color: '#F1E3DFFF',
+        color: '#D3C4C0FF',
         textShadow: `
           2px 2px 4px rgba(255, 20, 147, 0.7),
           4px 4px 8px rgba(50, 205, 50, 0.8),
@@ -69,7 +69,7 @@ export default function RococoClock () {
     alignItems: 'center',
     backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundPosition: '33.33% center',
     overflow: 'hidden'
   }
 
