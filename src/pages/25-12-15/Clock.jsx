@@ -69,8 +69,9 @@ const styles = {
     fontSize: 'min(15vh, 26vw)',
     fontVariantNumeric: 'tabular-nums',
     fontFeatureSettings: '"tnum"',
-    color: '#DCEFF5FF',
-    textShadow: '1px 1px 0px #000000, -1px -1px 0px #0D42F3FF',
+    color: '#C2D2F5FF',
+    textShadow:
+      '0px 3px 0px #095477FF, 0px -3px 0px #F8F9FAFF, -1px -1px 3px #050009FF',
     WebkitFontSmoothing: 'antialiased',
     MozOsxFontSmoothing: 'grayscale',
     lineHeight: 1,
