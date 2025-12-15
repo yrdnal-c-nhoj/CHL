@@ -32,59 +32,43 @@ export default function DigitalClock () {
   )
 
   const containerStyle = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: '100%',
-    height: '100%',
+    width: '100vw',
+    height: '100vh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    overflow: 'hidden',
-    padding: 'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)'
+    overflow: 'hidden'
   }
 
   const clockStyle = {
     display: 'flex',
     flexDirection: 'column',
-    gap: 'min(4vh, 4vw)',
-    alignItems: 'center',
-    padding: '20px',
-    maxHeight: '100%',
-    boxSizing: 'border-box',
-    overflow: 'hidden',
-    justifyContent: 'center',
-    flex: '1 1 auto'
+    gap: '6vh',
+    alignItems: 'center'
   }
 
   const rowStyle = {
     display: 'flex',
-    gap: 'min(2vw, 2vh)',
+    gap: '2vw',
     justifyContent: 'center',
     alignItems: 'center'
   }
 
   // Transparent digit container (no plate)
   const digitBox = {
-    width: 'min(12vh, 12vw)',
-    height: 'min(12vh, 12vw)',
-    minWidth: '40px',
-    minHeight: '40px',
+    width: '15vh',
+    height: '15vh',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    flexShrink: 0
+    justifyContent: 'center'
   }
 
   // Machined steel digit
   const digitStyle = {
-    fontSize: 'min(12vh, 12vw)',
+    fontSize: '16vh',
     fontFamily: 'screw251214',
     lineHeight: '1',
 
@@ -107,8 +91,8 @@ export default function DigitalClock () {
     filter: 'contrast(1.15) brightness(1.05)',
 
     textShadow: `
-    -0.28vh -0.28vh 0.1vh rgba(255,255,255,0.35),
-     0.28vh  0.28vh 0.1vh rgba(0,0,0,0.55)
+    -0.08vh -0.08vh 0.18vh rgba(255,255,255,0.35),
+     0.08vh  0.08vh 0.22vh rgba(0,0,0,0.55)
   `
   }
 
