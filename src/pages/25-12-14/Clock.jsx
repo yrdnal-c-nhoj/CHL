@@ -1,167 +1,127 @@
-import React, { useState, useEffect } from 'react'
-import bgImage from './roc.webp' // Background image in same folder
-import rococoFont_251214 from './roc.ttf' // Font imported with today's date
+import { useState, useEffect } from 'react'
+import bgImage from './steel.webp'
+import digitTexture from './steel2.webp'
+import screw251214 from './screw.ttf'
 
-export default function RococoClock () {
-  const [now, setNow] = useState(new Date())
-  const [digitStyles, setDigitStyles] = useState([])
+export default function DigitalClock () {
+  const [time, setTime] = useState(new Date())
 
   useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 60000) // Update every minute
-    return () => clearInterval(interval)
+    const timer = setInterval(() => {
+      setTime(new Date())
+    }, 1000)
+    return () => clearInterval(timer)
   }, [])
 
-  // Generate styles once when component mounts
-  useEffect(() => {
-    const isMobile = window.innerWidth <= 768 // Check if mobile device
-    const styles = []
-    const totalDigits = 6
-    const spacing = isMobile ? 8 : 12 // Vertical spacing between digits
+  const hours = time.getHours().toString().padStart(2, '0')
+  const minutes = time.getMinutes().toString().padStart(2, '0')
+  const seconds = time.getSeconds().toString().padStart(2, '0')
 
-    for (let i = 0; i < totalDigits; i++) {
-      // Calculate curved position (gentle curve drifting right at top)
-      const y = i * spacing
-      // Create a gentle curve: higher digits (bottom) more left, lower digits (top) drift right
-      const curveOffset = (totalDigits - 1 - i) * (isMobile ? 1.5 : 2.5) // Adjust curve strength
-      const x = curveOffset
+  const hoursDigits = hours.split('')
+  const minutesDigits = minutes.split('')
+  const secondsDigits = seconds.split('')
 
-      // Determine z-index based on time component (hours highest, minutes middle, ampm lowest)
-      let zIndex
-      if (i < 2) {
-        zIndex = 30 // Hours - highest
-      } else if (i >= 4) {
-        zIndex = 5 // AM/PM - lowest
-      } else {
-        zIndex = 15 // Minutes - middle
-      }
+  const allDigits = [...hoursDigits, ...minutesDigits, ...secondsDigits]
 
-      // Adjust sizes based on device and component type
-      let baseSize, maxSize
-      if (i >= 4) {
-        // AM/PM - smaller
-        baseSize = isMobile ? 7 : 9
-        maxSize = isMobile ? 18 : 25
-      } else {
-        // Hours and Minutes - normal size
-        baseSize = isMobile ? 9 : 11
-        maxSize = isMobile ? 26 : 38
-      }
-      const scaleFactor = isMobile ? 0.7 : 1
-
-      styles.push({
-        display: 'inline-block',
-        fontFamily: `'Roco Revival', serif`,
-        fontSize: `${baseSize + Math.random() * maxSize}vh`,
-        color: '#D3C4C0FF',
-        textShadow: `
-          2px 2px 4px rgba(255, 20, 147, 0.4),
-          4px 4px 8px rgba(50, 205, 50, 0.4),
-          0 0 8px rgba(255, 20, 147, 0.6),
-          0 0 7px rgba(50, 205, 50, 0.4)
-        `,
-        padding: `${0.1 + Math.random() * (isMobile ? 5 : 11.3)}vh ${
-          0.1 + Math.random() * 0.4
-        }vh`,
-        margin: `${0.01 + Math.random() * (isMobile ? 1.2 : 2.4)}vh`,
-        position: 'absolute',
-        zIndex: zIndex,
-        transform: `
-          translate(${x}vh, ${y}vh)
-          rotate(${(Math.random() * 60 - 30) * scaleFactor}deg)
-          skew(${(Math.random() * 15 - 7.5) * scaleFactor}deg, ${
-          (Math.random() * 15 - 7.5) * scaleFactor
-        }deg)
-          scale(${0.8 + Math.random() * 0.4 * scaleFactor}, ${
-          0.8 + Math.random() * 0.4 * scaleFactor
-        })
-        `,
-        transformOrigin: 'center center',
-        transition: 'all 0.3s ease' // Smooth transition on resize
-      })
-    }
-    setDigitStyles(styles)
-  }, [])
-
-  const hours = now.getHours()
-  const minutes = now.getMinutes()
-  const isPM = hours >= 12
-  const displayHours = hours % 12 === 0 ? 12 : hours % 12
-
-  const hourDigits = displayHours.toString().split('')
-  const minuteDigits = minutes.toString().padStart(2, '0').split('')
+  // Stable per-digit random texture offsets
+  const [textureOffsets] = useState(() =>
+    allDigits.map(() => ({
+      x: Math.floor(Math.random() * 100),
+      y: Math.floor(Math.random() * 100)
+    }))
+  )
 
   const containerStyle = {
-    fontFamily: `'Roco Revival', serif`,
-    height: '100vh',
     width: '100vw',
+    height: '100dvh', // Dynamic viewport height — adjusts for mobile UI bars
+    fallback: '100vh', // Fallback for very old browsers
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'flex-start',
-    paddingTop: '15vh',
+    alignItems: 'center',
     backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'cover', // Cover the entire container
-    backgroundPosition: 'left', // Center the background
-    backgroundRepeat: 'no-repeat',
-    backgroundColor: '#000', // Black background to fill any empty space
-    overflow: 'hidden',
-    position: 'relative',
-    backgroundAttachment: 'fixed',
-    '@media (max-width: 768px)': {
-      backgroundSize: 'contain', // Use contain on mobile to ensure full visibility
-      backgroundPosition: 'center center'
-    }
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    overflow: 'hidden'
+  }
+
+  const clockStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4vmin', // Reduced gap, scales with screen
+    alignItems: 'center'
   }
 
   const rowStyle = {
     display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
+    gap: '1.5vmin', // Scaled spacing between digits
     justifyContent: 'center',
-    alignItems: 'center',
-    '@media (max-width: 768px)': {
-      transform: 'scale(0.8)' // Slightly reduce size on mobile
-    },
-    '@media (max-width: 480px)': {
-      transform: 'scale(0.6)' // Even smaller on very small devices
-    }
+    alignItems: 'center'
   }
 
-  const ampm = (isPM ? 'pm' : 'am').split('')
+  const digitBox = {
+    width: '14vmin', // Slightly smaller for mobile fit
+    height: '14vmin',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+
+  const digitStyle = {
+    fontSize: '14vmin', // Key change: vmin scales perfectly on mobile
+    fontFamily: 'screw251214',
+    lineHeight: '1',
+    display: 'inline-block',
+    whiteSpace: 'nowrap',
+    transform: 'translateZ(0)',
+    fontVariantNumeric: 'tabular-nums',
+    fontFeatureSettings: '"tnum"',
+    backgroundImage: `url(${digitTexture})`,
+    backgroundSize: '320% 320%',
+    backgroundRepeat: 'no-repeat',
+    color: 'transparent',
+    backgroundClip: 'text',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    filter: 'contrast(1.15) brightness(1.05)',
+    textShadow: `
+      -0.08vh -0.08vh 0.18vh rgba(255,255,255,0.35),
+       0.08vh 0.08vh 0.22vh rgba(0,0,0,0.55)
+    `
+  }
+
+  let textureIndex = 0
+  const renderDigits = (digits, prefix) =>
+    digits.map((digit, i) => {
+      const o = textureOffsets[textureIndex++]
+      return (
+        <span key={`${prefix}${i}`} style={digitBox}>
+          <span
+            style={{
+              ...digitStyle,
+              backgroundPosition: `${o.x}% ${o.y}%`
+            }}
+          >
+            {digit}
+          </span>
+        </span>
+      )
+    })
 
   return (
-    <>
+    <div style={containerStyle}>
       <style>
         {`
           @font-face {
-            font-family: 'Roco Revival';
-            src: url(${rococoFont_251214}) format('truetype');
-            font-weight: normal;
-            font-style: normal;
+            font-family: 'screw251214';
+            src: url(${screw251214});
           }
         `}
       </style>
-      <div style={containerStyle}>
-        <div style={rowStyle}>
-          {hourDigits.map((digit, idx) => (
-            <div key={`h-${idx}`} style={digitStyles[idx]}>
-              {digit}
-            </div>
-          ))}
-          {minuteDigits.map((digit, idx) => (
-            <div key={`m-${idx}`} style={digitStyles[hourDigits.length + idx]}>
-              {digit}
-            </div>
-          ))}
-          {ampm.map((letter, idx) => (
-            <div
-              key={`ampm-${idx}`}
-              style={digitStyles[hourDigits.length + minuteDigits.length + idx]}
-            >
-              {letter}
-            </div>
-          ))}
-        </div>
+      <div style={clockStyle}>
+        <div style={rowStyle}>{renderDigits(hoursDigits, 'h')}</div>
+        <div style={rowStyle}>{renderDigits(minutesDigits, 'm')}</div>
+        <div style={rowStyle}>{renderDigits(secondsDigits, 's')}</div>
       </div>
-    </>
+    </div>
   )
 }
