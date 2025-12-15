@@ -14,9 +14,9 @@ const CONFIG = {
   clockSize: 'min(90vw, 90vh)',
   numeralRadius: 43,
   hands: [
-    { img: secondHandImg, width: '18vw', max: '175px' },
-    { img: minuteHandImg, width: '22vw', max: '160px' },
-    { img: hourHandImg, width: '20vw', max: '120px' }
+    { img: secondHandImg, width: '22vw', max: '200px' },
+    { img: minuteHandImg, width: '28vw', max: '200px' },
+    { img: hourHandImg, width: '26vw', max: '166px' }
   ],
   numerals: [
     { text: 'XII', deg: 0 },
@@ -30,18 +30,18 @@ const CONFIG = {
 // --- HOOKS ---
 function useTime () {
   const [time, setTime] = useState(() => new Date())
-  
+
   useEffect(() => {
     let animationFrameId
-    
+
     const updateTime = () => {
       setTime(new Date())
       animationFrameId = requestAnimationFrame(updateTime)
     }
-    
+
     // Start the animation loop
     animationFrameId = requestAnimationFrame(updateTime)
-    
+
     // Cleanup function to cancel the animation frame when component unmounts
     return () => {
       if (animationFrameId) {
@@ -49,7 +49,7 @@ function useTime () {
       }
     }
   }, [])
-  
+
   return time
 }
 
@@ -151,7 +151,7 @@ const TiledBackground = memo(() => {
               width: tileSize,
               height: tileSize,
               background: `url(${portImg}) center/contain no-repeat`,
-              opacity: 0.5,
+              opacity: 0.7,
               filter: 'hue-rotate(190deg) saturate(9.5)',
               transform: flip ? 'scaleX(-1)' : 'none',
               left: c * tileSize - tileSize,
