@@ -46,21 +46,21 @@ export default function DigitalClock () {
   const clockStyle = {
     display: 'flex',
     flexDirection: 'column',
-    gap: '6vh',
+    gap: 'min(6vh, 6vw)',
     alignItems: 'center'
   }
 
   const rowStyle = {
     display: 'flex',
-    gap: '2vw',
+    gap: 'min(2vw, 2vh)',
     justifyContent: 'center',
     alignItems: 'center'
   }
 
   // Transparent digit container (no plate)
   const digitBox = {
-    width: '15vh',
-    height: '15vh',
+    width: 'min(15vh, 15vw)',
+    height: 'min(15vh, 15vw)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
@@ -68,7 +68,7 @@ export default function DigitalClock () {
 
   // Machined steel digit
   const digitStyle = {
-    fontSize: '16vh',
+    fontSize: 'min(16vh, 16vw)',
     fontFamily: 'screw251214',
     lineHeight: '1',
 
