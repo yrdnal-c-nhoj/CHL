@@ -69,7 +69,7 @@ const QuadClock = () => {
         {numbers.map(num => {
           const angle = num * 30 * (Math.PI / 180)
           // Position numbers with slight offset up and to the right
-          const x = 47 + NUMBER_RADIUS * Math.sin(angle) // 2% to the right
+          const x = 52 + NUMBER_RADIUS * Math.sin(angle) // 2% to the right
           const y = 48 - NUMBER_RADIUS * Math.cos(angle) // 2% up
 
           return (
