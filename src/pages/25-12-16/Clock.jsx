@@ -26,8 +26,8 @@ const QuadClock = () => {
   const sDeg = seconds * 6
 
   // Configuration for scaling
-  const CLOCK_SIZE = 90 // Reduced from 100 to ensure padding
-  const NUMBER_RADIUS = 30 // Reduced from 35 to fit better
+  const CLOCK_SIZE = 130 // Made a little bigger again
+  const NUMBER_RADIUS = 35 // Increased to fit better
 
   const containerStyle = {
     display: 'flex',
@@ -38,13 +38,14 @@ const QuadClock = () => {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#754C09FF',
+    backgroundColor: '#576702FF',
     backgroundImage:
-      "url(\"data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c8.284 0 15-6.716 15-15zM0 15c0 8.284 6.716 15 15 15 0-8.284-6.716-15-15-15zm30 0c0-8.284-6.716-15-15-15 0 8.284 6.716 15 15 15zm0 0c0 8.284-6.716 15-15 15 0-8.284 6.716-15 15-15z' fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E\")",
+      "url(\"data:image/svg+xml,%3Csvg width='13' height='13' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c8.284 0 15-6.716 15-15zM0 15c0 8.284 6.716 15 15 15 0-8.284-6.716-15-15-15zm30 0c0-8.284-6.716-15-15-15 0 8.284 6.716 15 15 15zm0 0c0 8.284-6.716 15-15 15 0-8.284 6.716-15 15-15z' fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E\")",
     backgroundPosition: 'center',
     backgroundRepeat: 'repeat',
     margin: 0,
-    padding: 'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
+    padding:
+      'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
     boxSizing: 'border-box',
     overflow: 'hidden',
     fontFamily: 'font_2025_12_16, system-ui, sans-serif'
@@ -70,8 +71,8 @@ const QuadClock = () => {
       transform: transform,
       opacity: opacity,
       pointerEvents: 'none',
-      boxSizing: 'border-box',
-      padding: '2vmin'
+      boxSizing: 'border-box'
+      // padding: '2vmin'
     }
 
     const numbers = Array.from({ length: 12 }, (_, i) => i + 1)
@@ -92,7 +93,7 @@ const QuadClock = () => {
                 left: `${x}%`,
                 top: `${y}%`,
                 transform: 'translate(-50%, -50%)',
-                fontSize: `${CLOCK_SIZE * 0.16}vmin`, // Scaled font size
+                fontSize: `${CLOCK_SIZE * 0.09}vmin`, // Scaled font size
                 color: '#333333',
                 lineHeight: 1,
                 textShadow: '1px 1px 0px white'
@@ -142,7 +143,7 @@ const QuadClock = () => {
     width: width,
     backgroundColor: color,
     borderRadius: '1vmin',
-    boxShadow: `1px 1px 2px rgba(0,0,0,0.8), 0 0 1vmin ${color}`,
+    boxShadow: `1px 1px 2px rgba(0,0,0,0.8), -1px -1px 1px rgba(255,255,255,0.5), 0 0 1vmin ${color}`,
     zIndex: 5
   })
 
