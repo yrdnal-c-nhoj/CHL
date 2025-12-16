@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 // Assuming the font import path remains the same
-import font_2025_12_16 from './four.ttf'
+import font_2025_12_16 from './fou.ttf'
 
 const QuadClock = () => {
   const [time, setTime] = useState(Date.now())
@@ -38,7 +38,7 @@ const QuadClock = () => {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#576702FF',
+    backgroundColor: '#475502FF',
     backgroundImage:
       "url(\"data:image/svg+xml,%3Csvg width='13' height='13' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c8.284 0 15-6.716 15-15zM0 15c0 8.284 6.716 15 15 15 0-8.284-6.716-15-15-15zm30 0c0-8.284-6.716-15-15-15 0 8.284 6.716 15 15 15zm0 0c0 8.284-6.716 15-15 15 0-8.284 6.716-15 15-15z' fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E\")",
     backgroundPosition: 'center',
@@ -94,9 +94,9 @@ const QuadClock = () => {
                 top: `${y}%`,
                 transform: 'translate(-50%, -50%)',
                 fontSize: `${CLOCK_SIZE * 0.09}vmin`, // Scaled font size
-                color: '#333333',
+                color: '#F7F8CEFF',
                 lineHeight: 1,
-                textShadow: '1px 1px 0px white'
+                textShadow: '1px 2px 0px #333333, -1px -1px 0px #333333'
               }}
             >
               {num}
@@ -110,7 +110,7 @@ const QuadClock = () => {
             hDeg,
             `${CLOCK_SIZE * 0.25}vmin`,
             `${CLOCK_SIZE * 0.03}vmin`,
-            '#06BA03FF'
+            '#EB31F5FF'
           )}
         />
         <div
@@ -118,7 +118,7 @@ const QuadClock = () => {
             mDeg,
             `${CLOCK_SIZE * 0.38}vmin`,
             `${CLOCK_SIZE * 0.02}vmin`,
-            '#5555F4FF'
+            '#41F6EDFF'
           )}
         />
         <div
@@ -143,7 +143,7 @@ const QuadClock = () => {
     width: width,
     backgroundColor: color,
     borderRadius: '1vmin',
-    boxShadow: `1px 1px 2px rgba(0,0,0,0.8), -1px -1px 1px rgba(255,255,255,0.5), 0 0 1vmin ${color}`,
+    boxShadow: `2px 2px 0px rgba(0,0,0), -0px -0px 3px rgba(255,255,255), 0 0 1vmin ${color}`,
     zIndex: 5
   })
 
@@ -160,7 +160,7 @@ const QuadClock = () => {
             top: '0',
             bottom: '0',
             width: '1px',
-            backgroundColor: '#BEBCBCFF'
+            backgroundColor: '#111010FF'
             // zIndex: 1
           }}
         />
@@ -171,7 +171,7 @@ const QuadClock = () => {
             left: '0',
             right: '0',
             height: '1px',
-            backgroundColor: '#B0ADADFF'
+            backgroundColor: '#100303FF'
             // zIndex: 1
           }}
         />
@@ -189,7 +189,7 @@ const QuadClock = () => {
             backgroundColor: 'white',
             borderRadius: '50%',
             zIndex: 10,
-            boxShadow: '0 0 1vmin rgba(0,0,0,0.5)'
+            boxShadow: '0 0 1vmin rgba(0,0,0,0.8)'
           }}
         />
       </div>
