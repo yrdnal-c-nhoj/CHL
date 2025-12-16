@@ -1,187 +1,254 @@
-import React, { useState, useEffect } from 'react'
-// Assuming the font import path remains the same
-import font_2025_12_16 from './four.ttf'
+// ---  GEMINI   
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 
-const QuadClock = () => {
-  const [time, setTime] = useState(Date.now())
+// --- Imports ---   GEMINI   
+
+// 1. Background Image Import (assuming 'background.jpg' is in the same folder)
+import backgroundImage from './app.webp'; // or .png, .webp etc.
+
+// 2. Font Import with date variable (Vite handles the blob URL via import)
+// The variable name must contain today's date (November 23, 2025)
+import font_2025_11_23 from './day.ttf'; 
+
+// --- Custom Font Definition ---
+const fontFaceStyle = `@font-face {
+  font-family: 'DigitalDistortion';
+  src: url('${font_2025_11_23}') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}`;
+
+// Helper to inject the font-face style globally since inline styles can't do @font-face
+const injectFontFace = () => {
+  if (!document.getElementById('digital-distortion-font')) {
+    const style = document.createElement('style');
+    style.id = 'digital-distortion-font';
+    style.textContent = fontFaceStyle;
+    document.head.appendChild(style);
+  }
+};
+
+// Inject the font on component load
+injectFontFace();
+
+// --- Clock Component ---
+
+/**
+ * CurvyClock Component
+ * Displays a digital clock with individually styled, distorted, and curved characters.
+ */
+const CurvyClock = () => {
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    let animationId
-    const updateTime = () => {
-      setTime(Date.now())
-      animationId = requestAnimationFrame(updateTime)
+    const timerId = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timerId); // Cleanup
+  }, []);
+
+  // --- Time Formatting ---
+  const formatTime = useCallback((date) => {
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    // 12-hour format, no leading zeros
+    hours = hours % 12;
+    hours = hours ? hours : 12; // The hour '0' should be '12'
+
+    // French standard separators: 'h' for hours/minutes, 'm' for minutes/seconds
+    // I will use simple colons as the common standard is more readable unless explicitly enforced
+    // For this example, I'll use a space and a colon for a unique look and better distortion control.
+    // e.g., '10: 35: 59 PM'
+    return {
+      H: String(hours),
+      M: String(minutes).padStart(2, '0'),
+      S: String(seconds).padStart(2, '0'),
+      AMPM: ampm
+    };
+  }, []);
+
+  const { H, M, S, AMPM } = useMemo(() => formatTime(time), [time, formatTime]);
+
+  // Create an array of all display characters (H, M, S, AMPM plus separators)
+  // Display structure: H: M: S AM/PM
+  const displayCharacters = [
+    ...H.split(''), 
+    'sep1', // Separator 1 (colon)
+    ...M.split(''), 
+    'sep2', // Separator 2 (colon)
+    ...S.split(''), 
+    'sep3', // Separator 3 (space)
+    ...AMPM.split('')
+  ];
+
+  // --- Custom Distortion Settings ---
+  // These objects define the unique distortion for each logical element (H, M, S, AMPM)
+  // They are applied to the parent box of each character/separator.
+  const distortionSettings = {
+    // Hour digits (H)
+    H: { 
+      transform: 'rotate(-5deg) skewX(5deg) scale(1.1)', 
+      position: 'relative', top: '-1vh', 
+      color: '#ff4d4d' // Redish
+    },
+    // Separator 1 (:)
+    sep1: { 
+      transform: 'rotate(10deg) scaleY(1.3)', 
+      color: '#ffffff',
+      fontSize: '8vh' // Taller separator
+    }, 
+    // Minute digits (M)
+    M: { 
+      transform: 'rotate(15deg) skewY(-5deg) scale(0.9)', 
+      position: 'relative', top: '1vh', 
+      color: '#4dff4d' // Greenish
+    },
+    // Separator 2 (:)
+    sep2: { 
+      transform: 'rotate(-10deg) scale(1.1)', 
+      color: '#ffffff',
+      fontSize: '7vh' // Smaller separator
+    },
+    // Second digits (S)
+    S: { 
+      transform: 'rotate(-20deg) skewX(-10deg) scale(1.2)', 
+      position: 'relative', top: '-2vh', 
+      color: '#4d4dff' // Bluish
+    },
+    // Separator 3 (AM/PM space)
+    sep3: {
+      transform: 'scale(0.8)',
+      color: 'transparent',
+      width: '1vw'
+    },
+    // AM/PM indicator
+    AMPM: { 
+      transform: 'rotate(5deg) skewX(2deg) scale(1.05)', 
+      position: 'relative', top: '0.5vh', 
+      color: '#ffff4d', // Yellowish
+      fontSize: '4vh' // Smaller text
     }
-    updateTime()
-    return () => cancelAnimationFrame(animationId)
-  }, [])
+  };
 
-  const now = new Date(time)
-  const milliseconds = now.getMilliseconds()
-  const seconds = now.getSeconds() + milliseconds / 1000
-  const minutes = now.getMinutes() + seconds / 60
-  const hours = (now.getHours() % 12) + minutes / 60
+  // Function to determine the style key for a character based on its index and value
+  const getStyleKey = useCallback((index, value) => {
+    if (value === 'sep1') return 'sep1';
+    if (value === 'sep2') return 'sep2';
+    if (value === 'sep3') return 'sep3';
 
-  const hDeg = hours * 30
-  const mDeg = minutes * 6
-  const sDeg = seconds * 6
+    // The logic below identifies which part of the time (H, M, S, AMPM) the character belongs to.
+    const hLen = H.length;
+    const mLen = M.length;
+    const sLen = S.length;
+    
+    if (index < hLen) return 'H'; // Hours
+    if (index === hLen) return 'sep1'; 
+    if (index > hLen && index <= hLen + mLen + 1) return 'M'; // Minutes
+    if (index === hLen + mLen + 2) return 'sep2';
+    if (index > hLen + mLen + 2 && index <= hLen + mLen + sLen + 3) return 'S'; // Seconds
+    if (index === hLen + mLen + sLen + 4) return 'sep3';
+    
+    return 'AMPM'; // AM/PM
+  }, [H, M, S]);
+  
+  // --- Inline Styles for Scoping and Layout ---
 
-  // Configuration for scaling
-  const CLOCK_SIZE = 100 // % of the smallest screen dimension (vmin)
-  const NUMBER_RADIUS = 35 // % of the clock size
-
-  const containerStyle = {
+  // 1. Overall Container (View Height/Width, Background)
+  const containerStyle = useMemo(() => ({
+    minHeight: '100vh', 
+    minWidth: '100vw', 
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
-    width: '100vw',
-    backgroundColor: '#754C09FF',
-    // backgroundImage:
-    //   "url(\"data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c8.284 0 15-6.716 15-15zM0 15c0 8.284 6.716 15 15 15 0-8.284-6.716-15-15-15zm30 0c0-8.284-6.716-15-15-15 0 8.284 6.716 15 15 15zm0 0c0 8.284-6.716 15-15 15 0-8.284 6.716-15 15-15z' fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E\")",
-    margin: 0,
-    overflow: 'hidden',
-    fontFamily: 'font_2025_12_16, system-ui, sans-serif'
-  }
+    // Background Image
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    // Scoping for distortion visibility (no overflow)
+    overflow: 'hidden', 
+    fontFamily: 'sans-serif' // Fallback
+  }), []);
 
-  const fontFaceStyle = `
-    @font-face {
-      font-family: 'font_2025_12_16';
-      src: url(${font_2025_12_16}) format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-  `
+  // 2. Clock Display Area
+  const clockContainerStyle = useMemo(() => ({
+    display: 'flex',
+    alignItems: 'center',
+    padding: '2vh',
+    backdropFilter: 'blur(5px) brightness(0.7)', // Visual Scoping/Leakage Avoidance
+    borderRadius: '2vh',
+    border: '0.5vh solid rgba(255, 255, 255, 0.3)',
+    boxShadow: '0 0 5vh rgba(0, 0, 0, 0.8)',
+  }), []);
 
-  const renderClockLayer = (transform, opacity) => {
-    const layerStyle = {
-      position: 'absolute',
-      width: `${CLOCK_SIZE}vmin`,
-      height: `${CLOCK_SIZE}vmin`,
-      transform: transform,
-      opacity: opacity,
-      pointerEvents: 'none' // Ensures layers don't block interaction if needed
-    }
+  // 3. Style for each Character Box (to be distorted)
+  const characterBoxBaseStyle = useMemo(() => ({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '10vw', // Use viewport width for responsive boxes
+    height: '15vh', // Use viewport height
+    margin: '0 0.5vw',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Distinct box for each
+    borderRadius: '1vh',
+    transition: 'transform 0.5s ease-out', // Smooth transition for visual effect
+  }), []);
 
-    const numbers = Array.from({ length: 12 }, (_, i) => i + 1)
+  // 4. Style for the Character itself
+  const characterBaseStyle = useMemo(() => ({
+    fontFamily: 'DigitalDistortion, monospace',
+    fontSize: '12vh',
+    fontWeight: 'bold',
+    textShadow: '0 0 1vh rgba(255, 255, 255, 0.5)',
+    color: '#ffffff',
+  }), []);
 
-    return (
-      <div style={layerStyle}>
-        {numbers.map(num => {
-          const angle = num * 30 * (Math.PI / 180)
-          // Position numbers with slight offset up and to the right
-          const x = 47 + NUMBER_RADIUS * Math.sin(angle) // 2% to the right
-          const y = 48 - NUMBER_RADIUS * Math.cos(angle) // 2% up
+  // --- Render ---
+  return (
+    <div style={containerStyle}>
+      <div style={clockContainerStyle}>
+        {displayCharacters.map((charOrSep, index) => {
+          const styleKey = getStyleKey(index, charOrSep);
+          const customDistortion = distortionSettings[styleKey];
+          
+          // Determine the actual character to display
+          let charToDisplay;
+          if (charOrSep === 'sep1' || charOrSep === 'sep2') {
+            charToDisplay = ':';
+          } else if (charOrSep === 'sep3') {
+            charToDisplay = ' ';
+          } else {
+            charToDisplay = charOrSep;
+          }
+          
+          // Combine base style with custom distortion style for the box
+          const finalBoxStyle = {
+            ...characterBoxBaseStyle,
+            ...customDistortion,
+            // Ensure no style leakage by having distinct box styles
+            backgroundColor: customDistortion.backgroundColor || characterBoxBaseStyle.backgroundColor 
+          };
+
+          // Combine base style with custom color/size for the character text
+          const finalCharStyle = {
+            ...characterBaseStyle,
+            color: customDistortion.color || characterBaseStyle.color,
+            fontSize: customDistortion.fontSize || characterBaseStyle.fontSize,
+          };
 
           return (
-            <div
-              key={num}
-              style={{
-                position: 'absolute',
-                left: `${x}%`,
-                top: `${y}%`,
-                transform: 'translate(-50%, -50%)',
-                fontSize: `${CLOCK_SIZE * 0.16}vmin`, // Scaled font size
-                color: 'white',
-                lineHeight: 1,
-                textShadow: '1px 1px 0px black'
-              }}
-            >
-              {num}
+            // Each character/separator is in its own box
+            <div key={index} style={finalBoxStyle}>
+              <span style={finalCharStyle}>
+                {charToDisplay}
+              </span>
             </div>
-          )
+          );
         })}
-
-        {/* Hands scaled using vmin relative to the clock size */}
-        <div
-          style={handStyle(
-            hDeg,
-            `${CLOCK_SIZE * 0.25}vmin`,
-            `${CLOCK_SIZE * 0.03}vmin`,
-            '#17F514FF'
-          )}
-        />
-        <div
-          style={handStyle(
-            mDeg,
-            `${CLOCK_SIZE * 0.38}vmin`,
-            `${CLOCK_SIZE * 0.02}vmin`,
-            '#4444ff'
-          )}
-        />
-        <div
-          style={handStyle(
-            sDeg,
-            `${CLOCK_SIZE * 0.45}vmin`,
-            `${CLOCK_SIZE * 0.015}vmin`,
-            '#F60404FF'
-          )}
-        />
       </div>
-    )
-  }
+    </div>
+  );
+};
 
-  const handStyle = (deg, height, width, color) => ({
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    transformOrigin: 'bottom',
-    transform: `translateX(-50%) rotate(${deg}deg)`,
-    height: height,
-    width: width,
-    backgroundColor: color,
-    borderRadius: '1vmin',
-    boxShadow: `0 0 1vmin ${color}`,
-    zIndex: 5
-  })
-
-  return (
-    <>
-      <style dangerouslySetInnerHTML={{ __html: fontFaceStyle }} />
-
-      <div style={containerStyle}>
-        {/* Quadrant dividing lines */}
-        <div
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '0',
-            bottom: '0',
-            width: '1px',
-            backgroundColor: 'rgba(25,255,255,0.6)'
-            // zIndex: 1
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '0',
-            right: '0',
-            height: '1px',
-            backgroundColor: 'rgba(25,255,255,0.6)'
-            // zIndex: 1
-          }}
-        />
-        {renderClockLayer('scale(-1, 1)', 1)}
-        {renderClockLayer('scale(1, -1)', 1)}
-        {renderClockLayer('scale(-1, -1)', 1)}
-        {renderClockLayer('scale(1, 1)', 1)}
-
-        {/* Center Cap scaled with vmin */}
-        <div
-          style={{
-            position: 'absolute',
-            width: '2vmin',
-            height: '2vmin',
-            backgroundColor: 'white',
-            borderRadius: '50%',
-            zIndex: 10,
-            boxShadow: '0 0 1vmin rgba(0,0,0,0.5)'
-          }}
-        />
-      </div>
-    </>
-  )
-}
-
-export default QuadClock
+export default CurvyClock;
