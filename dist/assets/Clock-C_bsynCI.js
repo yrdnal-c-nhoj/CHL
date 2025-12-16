@@ -1,0 +1,10 @@
+import{r as a,j as e}from"./index-37WBs3jL.js";const j="/assets/ichart-CEXIQMAj.otf";function F(){const s="SloanOptotype_2025_1204",[n,l]=a.useState(new Date);a.useEffect(()=>{const t=setInterval(()=>l(new Date),1e3);return()=>clearInterval(t)},[]);const r=("0"+(n.getHours()%12||12)).slice(-2),c=("0"+n.getMinutes()).slice(-2),h=n.getHours()>=12?"PM":"AM",f=("0"+n.getSeconds()).slice(-2),m=[["O","20/200","6/60"],[h,"20/100","6/30"],["CHL","20/70","6/21"],[`${r}HR`,"20/50","6/15"],["KOVRS","20/40","6/12"],[`${c}MINS`,"20/30","6/9"],["HOSRDN","20/25","6/7.5"],[`${f}SCNDS`,"20/20","6/6"]],y=t=>`${[15,12,10,8,6.5,5.5,4.5,3.5][t]}vh`,d={minHeight:"100dvh",display:"flex",justifyContent:"center",background:"#FDF5DDFF",fontFamily:s+", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue'",WebkitFontSmoothing:"antialiased"},p={width:"40vh",maxWidth:"65vw",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-evenly"},u={display:"flex",alignItems:"center",justifyContent:"center",width:"100%",position:"relative",margin:"0.5vh 0"},g={fontFamily:s,textTransform:"uppercase",lineHeight:1,letterSpacing:"0.1vh",margin:0,padding:0},v={position:"absolute",left:"-8vh",fontSize:"2vh",opacity:.55,letterSpacing:"0.15vh"},S={position:"absolute",right:"-8vh",fontSize:"2vh",opacity:.55,letterSpacing:"0.15vh"};return e.jsxs(e.Fragment,{children:[e.jsx("style",{dangerouslySetInnerHTML:{__html:`
+            @font-face {
+              font-family: '${s}';
+              src: url('${j}') format('opentype');
+              font-weight: 700;
+              font-style: normal;
+              font-display: swap;
+            }
+            .eyechart-root * { box-sizing: border-box; }
+          `}}),e.jsx("div",{style:d,className:"eyechart-root",children:e.jsx("div",{style:p,role:"img","aria-label":"Snellen Sloan eye chart",children:m.map(([t,o,x],i)=>e.jsxs("div",{style:{...u,fontSize:y(i)},children:[e.jsx("div",{style:v,children:o}),e.jsx("p",{style:{...g,fontSize:"inherit"},children:t}),e.jsx("div",{style:S,children:x})]},i))})})]})}export{F as default};
