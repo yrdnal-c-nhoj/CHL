@@ -26,21 +26,26 @@ const QuadClock = () => {
   const sDeg = seconds * 6
 
   // Configuration for scaling
-  const CLOCK_SIZE = 100 // % of the smallest screen dimension (vmin)
-  const NUMBER_RADIUS = 35 // % of the clock size
+  const CLOCK_SIZE = 90 // Reduced from 100 to ensure padding
+  const NUMBER_RADIUS = 30 // Reduced from 35 to fit better
 
   const containerStyle = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
-    width: '100vw',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundColor: '#754C09FF',
     backgroundImage:
       "url(\"data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c8.284 0 15-6.716 15-15zM0 15c0 8.284 6.716 15 15 15 0-8.284-6.716-15-15-15zm30 0c0-8.284-6.716-15-15-15 0 8.284 6.716 15 15 15zm0 0c0 8.284-6.716 15-15 15 0-8.284 6.716-15 15-15z' fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E\")",
     backgroundPosition: 'center',
     backgroundRepeat: 'repeat',
     margin: 0,
+    padding: 'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
+    boxSizing: 'border-box',
     overflow: 'hidden',
     fontFamily: 'font_2025_12_16, system-ui, sans-serif'
   }
@@ -57,11 +62,16 @@ const QuadClock = () => {
   const renderClockLayer = (transform, opacity) => {
     const layerStyle = {
       position: 'absolute',
-      width: `${CLOCK_SIZE}vmin`,
-      height: `${CLOCK_SIZE}vmin`,
+      width: `calc(${CLOCK_SIZE}vmin - 4vmin)`,
+      height: `calc(${CLOCK_SIZE}vmin - 4vmin)`,
+      maxWidth: '96vw',
+      maxHeight: '96vh',
+      margin: 'auto',
       transform: transform,
       opacity: opacity,
-      pointerEvents: 'none' // Ensures layers don't block interaction if needed
+      pointerEvents: 'none',
+      boxSizing: 'border-box',
+      padding: '2vmin'
     }
 
     const numbers = Array.from({ length: 12 }, (_, i) => i + 1)
