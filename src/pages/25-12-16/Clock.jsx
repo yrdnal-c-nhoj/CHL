@@ -35,9 +35,9 @@ const QuadClock = () => {
     alignItems: 'center',
     height: '100vh',
     width: '100vw',
-    backgroundColor: '#754C09FF',
-    // backgroundImage:
-    //   "url(\"data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c8.284 0 15-6.716 15-15zM0 15c0 8.284 6.716 15 15 15 0-8.284-6.716-15-15-15zm30 0c0-8.284-6.716-15-15-15 0 8.284 6.716 15 15 15zm0 0c0 8.284-6.716 15-15 15 0-8.284 6.716-15 15-15z' fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E\")",
+    backgroundColor: '#F1E870FF',
+    backgroundImage:
+      "url(\"data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c8.284 0 15-6.716 15-15zM0 15c0 8.284 6.716 15 15 15 0-8.284-6.716-15-15-15zm30 0c0-8.284-6.716-15-15-15 0 8.284 6.716 15 15 15zm0 0c0 8.284-6.716 15-15 15 0-8.284 6.716-15 15-15z' fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E\")",
     margin: 0,
     overflow: 'hidden',
     fontFamily: 'font_2025_12_16, system-ui, sans-serif'
@@ -81,9 +81,9 @@ const QuadClock = () => {
                 top: `${y}%`,
                 transform: 'translate(-50%, -50%)',
                 fontSize: `${CLOCK_SIZE * 0.16}vmin`, // Scaled font size
-                color: 'white',
+                color: '#333333',
                 lineHeight: 1,
-                textShadow: '1px 1px 0px black'
+                textShadow: '1px 1px 0px white'
               }}
             >
               {num}
@@ -97,7 +97,7 @@ const QuadClock = () => {
             hDeg,
             `${CLOCK_SIZE * 0.25}vmin`,
             `${CLOCK_SIZE * 0.03}vmin`,
-            '#17F514FF'
+            '#06BA03FF'
           )}
         />
         <div
