@@ -88,7 +88,7 @@ export default function AnalogClock () {
     alignItems: 'center',
     color: '#E1F3DDFF',
     fontSize: '4rem',
-    zIndex: 5,
+    // zIndex: 5,
     textAlign: 'center',
     textShadow: '1px 1px rgba(0,0,0)',
     // Avoid flash of unstyled text: hide until font is loaded
