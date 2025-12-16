@@ -105,7 +105,7 @@ const QuadClock = () => {
             mDeg,
             `${CLOCK_SIZE * 0.38}vmin`,
             `${CLOCK_SIZE * 0.02}vmin`,
-            '#4444ff'
+            '#5555F4FF'
           )}
         />
         <div
@@ -130,7 +130,7 @@ const QuadClock = () => {
     width: width,
     backgroundColor: color,
     borderRadius: '1vmin',
-    boxShadow: `0 0 1vmin ${color}`,
+    boxShadow: `1px 1px 2px rgba(0,0,0,0.8), 0 0 1vmin ${color}`,
     zIndex: 5
   })
 
