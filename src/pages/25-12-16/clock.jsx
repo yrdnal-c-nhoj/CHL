@@ -1,187 +1,116 @@
-import React, { useState, useEffect } from 'react'
-// Assuming the font import path remains the same
-import font_2025_12_16 from './four.ttf'
+import React from 'react';
 
-const QuadClock = () => {
-  const [time, setTime] = useState(Date.now())
-
-  useEffect(() => {
-    let animationId
-    const updateTime = () => {
-      setTime(Date.now())
-      animationId = requestAnimationFrame(updateTime)
-    }
-    updateTime()
-    return () => cancelAnimationFrame(animationId)
-  }, [])
-
-  const now = new Date(time)
-  const milliseconds = now.getMilliseconds()
-  const seconds = now.getSeconds() + milliseconds / 1000
-  const minutes = now.getMinutes() + seconds / 60
-  const hours = (now.getHours() % 12) + minutes / 60
-
-  const hDeg = hours * 30
-  const mDeg = minutes * 6
-  const sDeg = seconds * 6
-
-  // Configuration for scaling
-  const CLOCK_SIZE = 100 // % of the smallest screen dimension (vmin)
-  const NUMBER_RADIUS = 35 // % of the clock size
-
+const FlightTicket = () => {
   const containerStyle = {
+    minHeight: '100vh',
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
-    width: '100vw',
-    backgroundColor: '#754C09FF',
-    // backgroundImage:
-    //   "url(\"data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c8.284 0 15-6.716 15-15zM0 15c0 8.284 6.716 15 15 15 0-8.284-6.716-15-15-15zm30 0c0-8.284-6.716-15-15-15 0 8.284 6.716 15 15 15zm0 0c0 8.284-6.716 15-15 15 0-8.284 6.716-15 15-15z' fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E\")",
+    justifyContent: 'center',
+    background: 'linear-gradient(90deg, #008abf, #005d85)',
+    fontFamily: 'system-ui',
+    padding: '5vh 5vw',
     margin: 0,
-    overflow: 'hidden',
-    fontFamily: 'font_2025_12_16, system-ui, sans-serif'
-  }
+  };
 
-  const fontFaceStyle = `
-    @font-face {
-      font-family: 'font_2025_12_16';
-      src: url(${font_2025_12_16}) format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-  `
+  const ticketStyle = {
+    background: '#fff',
+    borderRadius: '2rem',
+    width: '90vw',
+    maxWidth: '40rem',
+    margin: '0 auto',
+    clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8rem), calc(100% - 3rem) calc(100% - 8rem), calc(100% - 3rem) 100%, 0 100%)'
+  };
 
-  const renderClockLayer = (transform, opacity) => {
-    const layerStyle = {
-      position: 'absolute',
-      width: `${CLOCK_SIZE}vmin`,
-      height: `${CLOCK_SIZE}vmin`,
-      transform: transform,
-      opacity: opacity,
-      pointerEvents: 'none' // Ensures layers don't block interaction if needed
-    }
+  const ticketBodyStyle = {
+    padding: '3rem 2.5rem 4rem',
+  };
 
-    const numbers = Array.from({ length: 12 }, (_, i) => i + 1)
+  const flyStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    fontSize: '2rem',
+    fontWeight: 300,
+    margin: '0 0 2rem 0',
+  };
 
-    return (
-      <div style={layerStyle}>
-        {numbers.map(num => {
-          const angle = num * 30 * (Math.PI / 180)
-          // Position numbers with slight offset up and to the right
-          const x = 47 + NUMBER_RADIUS * Math.sin(angle) // 2% to the right
-          const y = 48 - NUMBER_RADIUS * Math.cos(angle) // 2% up
+  const infoContainerStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: '1rem',
+    textAlign: 'center',
+  };
 
-          return (
-            <div
-              key={num}
-              style={{
-                position: 'absolute',
-                left: `${x}%`,
-                top: `${y}%`,
-                transform: 'translate(-50%, -50%)',
-                fontSize: `${CLOCK_SIZE * 0.16}vmin`, // Scaled font size
-                color: 'white',
-                lineHeight: 1,
-                textShadow: '1px 1px 0px black'
-              }}
-            >
-              {num}
-            </div>
-          )
-        })}
+  const infoItemStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+  };
 
-        {/* Hands scaled using vmin relative to the clock size */}
-        <div
-          style={handStyle(
-            hDeg,
-            `${CLOCK_SIZE * 0.25}vmin`,
-            `${CLOCK_SIZE * 0.03}vmin`,
-            '#17F514FF'
-          )}
-        />
-        <div
-          style={handStyle(
-            mDeg,
-            `${CLOCK_SIZE * 0.38}vmin`,
-            `${CLOCK_SIZE * 0.02}vmin`,
-            '#4444ff'
-          )}
-        />
-        <div
-          style={handStyle(
-            sDeg,
-            `${CLOCK_SIZE * 0.45}vmin`,
-            `${CLOCK_SIZE * 0.015}vmin`,
-            '#F60404FF'
-          )}
-        />
-      </div>
-    )
-  }
+  const labelStyle = {
+    fontSize: '0.75rem',
+    fontWeight: 600,
+    letterSpacing: '0.05em',
+    textTransform: 'uppercase',
+    color: '#666',
+    marginBottom: '0.5rem',
+  };
 
-  const handStyle = (deg, height, width, color) => ({
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    transformOrigin: 'bottom',
-    transform: `translateX(-50%) rotate(${deg}deg)`,
-    height: height,
-    width: width,
-    backgroundColor: color,
-    borderRadius: '1vmin',
-    boxShadow: `0 0 1vmin ${color}`,
-    zIndex: 5
-  })
+  const valueStyle = {
+    fontSize: '1.1rem',
+    fontWeight: 500,
+  };
+
+  const tearOffStyle = {
+    borderTop: '2px dashed #ddd',
+    padding: '2rem 3rem',
+    textAlign: 'center',
+  };
+
+  const barcodeStyle = {
+    height: '3rem',
+    background: 'repeating-linear-gradient(90deg, #000 0, #000 2px, transparent 2px, transparent 5px)',
+    marginBottom: '1rem',
+  };
 
   return (
-    <>
-      <style dangerouslySetInnerHTML={{ __html: fontFaceStyle }} />
+    <div style={containerStyle}>
+      <div style={ticketStyle}>
+        <div style={ticketBodyStyle}>
+          <div style={flyStyle}>
+            <span>ZRH <span style={{ margin: '0 0.5rem' }}>✈</span> OSL</span>
+          </div>
+          
+          <div style={{ marginBottom: '2rem' }}>
+            <div style={labelStyle}>Passenger</div>
+            <div style={{ ...valueStyle, fontSize: '1.25rem' }}>MEGAFRY MR</div>
+          </div>
 
-      <div style={containerStyle}>
-        {/* Quadrant dividing lines */}
-        <div
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '0',
-            bottom: '0',
-            width: '1px',
-            backgroundColor: 'rgba(25,255,255,0.6)'
-            // zIndex: 1
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '0',
-            right: '0',
-            height: '1px',
-            backgroundColor: 'rgba(25,255,255,0.6)'
-            // zIndex: 1
-          }}
-        />
-        {renderClockLayer('scale(-1, 1)', 1)}
-        {renderClockLayer('scale(1, -1)', 1)}
-        {renderClockLayer('scale(-1, -1)', 1)}
-        {renderClockLayer('scale(1, 1)', 1)}
+          <div style={infoContainerStyle}>
+            <div style={infoItemStyle}>
+              <span style={labelStyle}>Gate</span>
+              <span style={valueStyle}>B24</span>
+            </div>
+            <div style={infoItemStyle}>
+              <span style={labelStyle}>Departure</span>
+              <span style={valueStyle}>14:35</span>
+            </div>
+            <div style={infoItemStyle}>
+              <span style={labelStyle}>Speedy</span>
+              <span style={valueStyle}>Yes</span>
+            </div>
+            <div style={infoItemStyle}>
+              <span style={labelStyle}>Boarding</span>
+              <span style={valueStyle}>14:05</span>
+            </div>
+          </div>
+        </div>
 
-        {/* Center Cap scaled with vmin */}
-        <div
-          style={{
-            position: 'absolute',
-            width: '2vmin',
-            height: '2vmin',
-            backgroundColor: 'white',
-            borderRadius: '50%',
-            zIndex: 10,
-            boxShadow: '0 0 1vmin rgba(0,0,0,0.5)'
-          }}
-        />
+        <div style={tearOffStyle}>
+          <div style={barcodeStyle}></div>
+          <div style={{ fontSize: '0.9rem', letterSpacing: '0.1em' }}>43596885365490358</div>
+        </div>
       </div>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default QuadClock
+export default FlightTicket;
