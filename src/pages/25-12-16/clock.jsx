@@ -1,191 +1,187 @@
-import { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
+// Assuming the font import path remains the same
+import font_2025_12_16 from './four.ttf'
 
-const FlipNumber = ({ value }) => {
-  const [displayedValue, setDisplayedValue] = useState(value)
-  const [prevValue, setPrevValue] = useState(value)
-  const [isFlipping, setIsFlipping] = useState(false)
+const QuadClock = () => {
+  const [time, setTime] = useState(Date.now())
 
   useEffect(() => {
-    if (value !== displayedValue) {
-      setPrevValue(displayedValue)
-      setIsFlipping(true)
-
-      // After animation completes, update the displayed value
-      const timer = setTimeout(() => {
-        setDisplayedValue(value)
-        setIsFlipping(false)
-      }, 600) // matches animation duration
-
-      return () => clearTimeout(timer)
+    let animationId
+    const updateTime = () => {
+      setTime(Date.now())
+      animationId = requestAnimationFrame(updateTime)
     }
-  }, [value, displayedValue])
-
-  const formattedValue = String(displayedValue).padStart(2, '0')
-  const formattedPrev = String(prevValue).padStart(2, '0')
-
-  return (
-    <div className='flip-container'>
-      <div className={`flip-card ${isFlipping ? 'flipping' : ''}`}>
-        {/* Top half - stays visible */}
-        <div className='top-half'>
-          <span>{formattedValue}</span>
-        </div>
-
-        {/* Bottom half - stays visible */}
-        <div className='bottom-half'>
-          <span>{formattedValue}</span>
-        </div>
-
-        {/* Flipping top (shows previous value flipping out) */}
-        <div className='flipping-top'>
-          <span>{formattedPrev}</span>
-        </div>
-
-        {/* Flipping bottom (shows new value flipping in) */}
-        <div className='flipping-bottom'>
-          <span>{formattedValue}</span>
-        </div>
-      </div>
-
-      <style jsx>{`
-        .flip-container {
-          position: relative;
-          width: 80px;
-          height: 120px;
-          perspective: 1000px;
-          margin: 0 8px;
-        }
-
-        .flip-card {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          transform-style: preserve-3d;
-        }
-
-        .top-half,
-        .bottom-half,
-        .flipping-top,
-        .flipping-bottom {
-          position: absolute;
-          width: 100%;
-          height: 50%;
-          overflow: hidden;
-          background: #1a1a1a;
-          border-radius: 10px;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-          backface-visibility: hidden;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          font-size: 80px;
-          font-weight: bold;
-          font-family: 'Arial Narrow', Arial, sans-serif;
-        }
-
-        .top-half {
-          top: 0;
-          border-bottom: 1px solid #000;
-          transform-origin: bottom;
-        }
-
-        .bottom-half {
-          bottom: 0;
-          border-top: 1px solid #333;
-          transform-origin: top;
-          align-items: flex-start;
-          padding-top: 12px;
-        }
-
-        .bottom-half span {
-          transform: translateY(-50%);
-        }
-
-        .flipping-top {
-          top: 0;
-          border-bottom: 1px solid #000;
-          transform-origin: bottom;
-          transform: rotateX(0deg);
-          animation: ${isFlipping ? 'flipTop 0.6s ease-in forwards' : 'none'};
-        }
-
-        .flipping-bottom {
-          bottom: 0;
-          border-top: 1px solid #333;
-          transform-origin: top;
-          transform: rotateX(90deg);
-          animation: ${isFlipping
-            ? 'flipBottom 0.6s ease-out forwards'
-            : 'none'};
-        }
-
-        @keyframes flipTop {
-          0% {
-            transform: rotateX(0deg);
-          }
-          100% {
-            transform: rotateX(-90deg);
-          }
-        }
-
-        @keyframes flipBottom {
-          0% {
-            transform: rotateX(90deg);
-          }
-          100% {
-            transform: rotateX(0deg);
-          }
-        }
-      `}</style>
-    </div>
-  )
-}
-
-const FlipClock = () => {
-  const [time, setTime] = useState(new Date())
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date())
-    }, 1000)
-    return () => clearInterval(timer)
+    updateTime()
+    return () => cancelAnimationFrame(animationId)
   }, [])
 
-  const hours = time.getHours().toString().padStart(2, '0')
-  const minutes = time.getMinutes().toString().padStart(2, '0')
+  const now = new Date(time)
+  const milliseconds = now.getMilliseconds()
+  const seconds = now.getSeconds() + milliseconds / 1000
+  const minutes = now.getMinutes() + seconds / 60
+  const hours = (now.getHours() % 12) + minutes / 60
+
+  const hDeg = hours * 30
+  const mDeg = minutes * 6
+  const sDeg = seconds * 6
+
+  // Configuration for scaling
+  const CLOCK_SIZE = 100 // % of the smallest screen dimension (vmin)
+  const NUMBER_RADIUS = 35 // % of the clock size
+
+  const containerStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    width: '100vw',
+    backgroundColor: '#754C09FF',
+    // backgroundImage:
+    //   "url(\"data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c8.284 0 15-6.716 15-15zM0 15c0 8.284 6.716 15 15 15 0-8.284-6.716-15-15-15zm30 0c0-8.284-6.716-15-15-15 0 8.284 6.716 15 15 15zm0 0c0 8.284-6.716 15-15 15 0-8.284 6.716-15 15-15z' fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E\")",
+    margin: 0,
+    overflow: 'hidden',
+    fontFamily: 'font_2025_12_16, system-ui, sans-serif'
+  }
+
+  const fontFaceStyle = `
+    @font-face {
+      font-family: 'font_2025_12_16';
+      src: url(${font_2025_12_16}) format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+  `
+
+  const renderClockLayer = (transform, opacity) => {
+    const layerStyle = {
+      position: 'absolute',
+      width: `${CLOCK_SIZE}vmin`,
+      height: `${CLOCK_SIZE}vmin`,
+      transform: transform,
+      opacity: opacity,
+      pointerEvents: 'none' // Ensures layers don't block interaction if needed
+    }
+
+    const numbers = Array.from({ length: 12 }, (_, i) => i + 1)
+
+    return (
+      <div style={layerStyle}>
+        {numbers.map(num => {
+          const angle = num * 30 * (Math.PI / 180)
+          // Position numbers with slight offset up and to the right
+          const x = 47 + NUMBER_RADIUS * Math.sin(angle) // 2% to the right
+          const y = 48 - NUMBER_RADIUS * Math.cos(angle) // 2% up
+
+          return (
+            <div
+              key={num}
+              style={{
+                position: 'absolute',
+                left: `${x}%`,
+                top: `${y}%`,
+                transform: 'translate(-50%, -50%)',
+                fontSize: `${CLOCK_SIZE * 0.16}vmin`, // Scaled font size
+                color: 'white',
+                lineHeight: 1,
+                textShadow: '1px 1px 0px black'
+              }}
+            >
+              {num}
+            </div>
+          )
+        })}
+
+        {/* Hands scaled using vmin relative to the clock size */}
+        <div
+          style={handStyle(
+            hDeg,
+            `${CLOCK_SIZE * 0.25}vmin`,
+            `${CLOCK_SIZE * 0.03}vmin`,
+            '#17F514FF'
+          )}
+        />
+        <div
+          style={handStyle(
+            mDeg,
+            `${CLOCK_SIZE * 0.38}vmin`,
+            `${CLOCK_SIZE * 0.02}vmin`,
+            '#4444ff'
+          )}
+        />
+        <div
+          style={handStyle(
+            sDeg,
+            `${CLOCK_SIZE * 0.45}vmin`,
+            `${CLOCK_SIZE * 0.015}vmin`,
+            '#F60404FF'
+          )}
+        />
+      </div>
+    )
+  }
+
+  const handStyle = (deg, height, width, color) => ({
+    position: 'absolute',
+    bottom: '50%',
+    left: '50%',
+    transformOrigin: 'bottom',
+    transform: `translateX(-50%) rotate(${deg}deg)`,
+    height: height,
+    width: width,
+    backgroundColor: color,
+    borderRadius: '1vmin',
+    boxShadow: `0 0 1vmin ${color}`,
+    zIndex: 5
+  })
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        backgroundColor: '#111',
-        fontFamily: 'Arial, sans-serif'
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <FlipNumber value={parseInt(hours[0])} />
-        <FlipNumber value={parseInt(hours[1])} />
+    <>
+      <style dangerouslySetInnerHTML={{ __html: fontFaceStyle }} />
 
+      <div style={containerStyle}>
+        {/* Quadrant dividing lines */}
         <div
           style={{
-            color: '#444',
-            fontSize: '80px',
-            margin: '0 20px',
-            fontWeight: 'bold'
+            position: 'absolute',
+            left: '50%',
+            top: '0',
+            bottom: '0',
+            width: '1px',
+            backgroundColor: 'rgba(25,255,255,0.6)'
+            // zIndex: 1
           }}
-        >
-          :
-        </div>
+        />
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '0',
+            right: '0',
+            height: '1px',
+            backgroundColor: 'rgba(25,255,255,0.6)'
+            // zIndex: 1
+          }}
+        />
+        {renderClockLayer('scale(-1, 1)', 1)}
+        {renderClockLayer('scale(1, -1)', 1)}
+        {renderClockLayer('scale(-1, -1)', 1)}
+        {renderClockLayer('scale(1, 1)', 1)}
 
-        <FlipNumber value={parseInt(minutes[0])} />
-        <FlipNumber value={parseInt(minutes[1])} />
+        {/* Center Cap scaled with vmin */}
+        <div
+          style={{
+            position: 'absolute',
+            width: '2vmin',
+            height: '2vmin',
+            backgroundColor: 'white',
+            borderRadius: '50%',
+            zIndex: 10,
+            boxShadow: '0 0 1vmin rgba(0,0,0,0.5)'
+          }}
+        />
       </div>
-    </div>
+    </>
   )
 }
 
-export default FlipClock
+export default QuadClock
