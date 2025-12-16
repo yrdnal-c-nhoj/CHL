@@ -175,19 +175,22 @@ export default function AnalogClock () {
     height: 'auto',
     maxHeight: '90%',
     transform: `translate(-50%, -100%) rotate(${deg}deg)`,
-    transformOrigin: '50% 100%',
+    transformOrigin: '50% 90%',
     top: '50%',
     left: '50%',
     transition: transitionDuration
       ? `transform ${transitionDuration}s linear`
-      : 'none',
+      : 'transform 0.1s linear',
     zIndex: 10,
     filter:
       'drop-shadow(2px 2px 4px rgba(0,0,0,0.9)) drop-shadow(-2px -2px 4px rgba(255,255,255,0.7))',
     opacity: 0.85,
     pointerEvents: 'none',
     backfaceVisibility: 'hidden',
-    imageRendering: 'crisp-edges'
+    imageRendering: 'crisp-edges',
+    willChange: 'transform',
+    margin: 0,
+    padding: 0
   })
 
   // Center spinning image (counterclockwise, 1 full turn per minute)
