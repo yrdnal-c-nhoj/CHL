@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react'
-// Assuming the font import path remains the same
 import font_2025_12_16 from './fou.ttf'
 
 const QuadClock = () => {
   const [time, setTime] = useState(Date.now())
+  const [fontLoaded, setFontLoaded] = useState(false)
 
   useEffect(() => {
+    // 1. Check if the font is already loaded or wait for it
+    document.fonts.ready.then(() => {
+      setFontLoaded(true)
+    })
+
+    // 2. Animation loop
     let animationId
     const updateTime = () => {
       setTime(Date.now())
@@ -25,9 +31,8 @@ const QuadClock = () => {
   const mDeg = minutes * 6
   const sDeg = seconds * 6
 
-  // Configuration for scaling
-  const CLOCK_SIZE = 130 // Made a little bigger again
-  const NUMBER_RADIUS = 35 // Increased to fit better
+  const CLOCK_SIZE = 130 
+  const NUMBER_RADIUS = 35 
 
   const containerStyle = {
     display: 'flex',
@@ -39,15 +44,14 @@ const QuadClock = () => {
     right: 0,
     bottom: 0,
     backgroundColor: '#475502FF',
-    backgroundImage: `radial-gradient(circle, #D0CC71CA, transparent), url("data:image/svg+xml,%3Csvg width='13' height='13' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c8.284 0 15-6.716 15-15zM0 15c0 8.284 6.716 15 15 15 0-8.284-6.716-15-15-15zm30 0c0-8.284-6.716-15-15-15 0 8.284 6.716 15 15 15zm0 0c0 8.284-6.716 15-15 15 0-8.284 6.716-15 15-15z' fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+    backgroundImage: `radial-gradient(circle, #D0CC71CA, transparent), url("data:image/svg+xml,%3Csvg width='13' height='13' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c8.284 0 15-6.716 15-15zM0 15c0 8.284 6.716 15 15 15 0-8.284-6.716-15-15-15zm30 0c0-8.284-6.716-15-15-15 0 8.284 6.716 15 15 15zm0 0c0 8.284-6.716 15-15 15 0-8.284-6.716-15-15-15z' fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E")`,
     backgroundPosition: 'center',
     backgroundRepeat: 'repeat',
     margin: 0,
-    padding:
-      'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
+    padding: 'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
     boxSizing: 'border-box',
     overflow: 'hidden',
-    fontFamily: 'font_2025_12_16, system-ui, sans-serif'
+    fontFamily: "'font_2025_12_16', system-ui, sans-serif"
   }
 
   const fontFaceStyle = `
@@ -56,6 +60,7 @@ const QuadClock = () => {
       src: url(${font_2025_12_16}) format('truetype');
       font-weight: normal;
       font-style: normal;
+      font-display: block; /* Hides text until font is loaded */
     }
   `
 
@@ -71,7 +76,6 @@ const QuadClock = () => {
       opacity: opacity,
       pointerEvents: 'none',
       boxSizing: 'border-box'
-      // padding: '2vmin'
     }
 
     const numbers = Array.from({ length: 12 }, (_, i) => i + 1)
@@ -80,9 +84,8 @@ const QuadClock = () => {
       <div style={layerStyle}>
         {numbers.map(num => {
           const angle = num * 30 * (Math.PI / 180)
-          // Position numbers with slight offset up and to the right
-          const x = 52 + NUMBER_RADIUS * Math.sin(angle) // 2% to the right
-          const y = 48 - NUMBER_RADIUS * Math.cos(angle) // 2% up
+          const x = 52 + NUMBER_RADIUS * Math.sin(angle)
+          const y = 48 - NUMBER_RADIUS * Math.cos(angle)
 
           return (
             <div
@@ -92,10 +95,12 @@ const QuadClock = () => {
                 left: `${x}%`,
                 top: `${y}%`,
                 transform: 'translate(-50%, -50%)',
-                fontSize: `${CLOCK_SIZE * 0.09}vmin`, // Scaled font size
+                fontSize: `${CLOCK_SIZE * 0.09}vmin`,
                 color: '#F7F8CEFF',
                 lineHeight: 1,
-                textShadow: '1px 2px 0px #333333, -1px -1px 0px #333333'
+                textShadow: '1px 2px 0px #333333, -1px -1px 0px #333333',
+                // Keep numbers invisible until the font file is ready
+                visibility: fontLoaded ? 'visible' : 'hidden'
               }}
             >
               {num}
@@ -103,31 +108,9 @@ const QuadClock = () => {
           )
         })}
 
-        {/* Hands scaled using vmin relative to the clock size */}
-        <div
-          style={handStyle(
-            hDeg,
-            `${CLOCK_SIZE * 0.25}vmin`,
-            `${CLOCK_SIZE * 0.03}vmin`,
-            '#EB31F5FF'
-          )}
-        />
-        <div
-          style={handStyle(
-            mDeg,
-            `${CLOCK_SIZE * 0.38}vmin`,
-            `${CLOCK_SIZE * 0.02}vmin`,
-            '#41F6EDFF'
-          )}
-        />
-        <div
-          style={handStyle(
-            sDeg,
-            `${CLOCK_SIZE * 0.45}vmin`,
-            `${CLOCK_SIZE * 0.015}vmin`,
-            '#FB6712FF'
-          )}
-        />
+        <div style={handStyle(hDeg, `${CLOCK_SIZE * 0.25}vmin`, `${CLOCK_SIZE * 0.03}vmin`, '#EB31F5FF')} />
+        <div style={handStyle(mDeg, `${CLOCK_SIZE * 0.38}vmin`, `${CLOCK_SIZE * 0.02}vmin`, '#41F6EDFF')} />
+        <div style={handStyle(sDeg, `${CLOCK_SIZE * 0.45}vmin`, `${CLOCK_SIZE * 0.015}vmin`, '#FB6712FF')} />
       </div>
     )
   }
@@ -149,48 +132,16 @@ const QuadClock = () => {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: fontFaceStyle }} />
-
       <div style={containerStyle}>
-        {/* Quadrant dividing lines */}
-        <div
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '0',
-            bottom: '0',
-            width: '1px',
-            backgroundColor: '#111010FF'
-            // zIndex: 1
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '0',
-            right: '0',
-            height: '1px',
-            backgroundColor: '#100303FF'
-            // zIndex: 1
-          }}
-        />
+        <div style={{ position: 'absolute', left: '50%', top: '0', bottom: '0', width: '1px', backgroundColor: '#111010FF' }} />
+        <div style={{ position: 'absolute', top: '50%', left: '0', right: '0', height: '1px', backgroundColor: '#100303FF' }} />
+        
         {renderClockLayer('scale(-1, 1)', 1)}
         {renderClockLayer('scale(1, -1)', 1)}
         {renderClockLayer('scale(-1, -1)', 1)}
         {renderClockLayer('scale(1, 1)', 1)}
 
-        {/* Center Cap scaled with vmin */}
-        <div
-          style={{
-            position: 'absolute',
-            width: '2vmin',
-            height: '2vmin',
-            backgroundColor: 'white',
-            borderRadius: '50%',
-            zIndex: 10,
-            boxShadow: '0 0 1vmin rgba(0,0,0,0.8)'
-          }}
-        />
+        <div style={{ position: 'absolute', width: '2vmin', height: '2vmin', backgroundColor: 'white', borderRadius: '50%', zIndex: 10, boxShadow: '0 0 1vmin rgba(0,0,0,0.8)' }} />
       </div>
     </>
   )
