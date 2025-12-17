@@ -26,7 +26,7 @@ const DigitalClock = () => {
     return pad(time.getHours()) + pad(time.getMinutes()) + pad(time.getSeconds());
   }, [time]);
 
-  const digitToLetter = (d) => 'EcJpLhVMkB'[d];
+  const digitToLetter = (d) => 'EcJpLhkMVB'[d];
 
   return (
     <>
