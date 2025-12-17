@@ -57,7 +57,7 @@ const DigitalClock = () => {
 
           .digit {
             font-family: 'TodayFont';
-            color: #AE096AFF;
+            color: #1277EBFF;
             font-size: 30vh;
             text-align: center;
             line-height: 1;
@@ -72,7 +72,7 @@ const DigitalClock = () => {
             position: fixed;
             inset: 0;
             background: url(${backgroundImg}) center/cover no-repeat;
-            filter: contrast(0.7) brightness(1.8) saturate(1.9) hue-rotate(299deg);
+            filter: contrast(0.3) brightness(1.6) saturate(2.7) hue-rotate(9deg);
             z-index: 1;
           }
 
