@@ -34,15 +34,15 @@ const DigitalClock = () => {
     width: '100%',
     boxSizing: 'border-box',
     margin: 0,
-    padding: 'env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0)',
+    // padding: 'env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0)',
     position: 'relative',
     zIndex: 1,
     overflow: 'hidden',
-    backgroundColor: 'rgba(0,0,0,0.5)' // Fallback background
+    // backgroundColor: 'rgba(0,0,0,0.5)' // Fallback background
   }
 
   const clockContentStyle = {
-    padding: '20px',
+    padding: '70px',
     borderRadius: '10px',
     width: '100%',
     maxWidth: '100%',
@@ -54,7 +54,7 @@ const DigitalClock = () => {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: '#B90E9FFF',
+    color: '#AE096AFF',
     fontFamily: 'TodayFont, monospace',
     textRendering: 'optimizeLegibility',
     WebkitFontSmoothing: 'antialiased',
@@ -66,7 +66,8 @@ const DigitalClock = () => {
     textShadow: '1px 1px 0px #000000C0, -1px -1px 0px #F1F1F5FF',
     lineHeight: '1',
     display: 'inline-block',
-    minWidth: '0.4em' // Prevents layout shift during font loading
+    width: '0.6em',
+    textAlign: 'center'
   }
 
   return (
@@ -86,7 +87,7 @@ const DigitalClock = () => {
           }
           .large-layout .digit-box {
             width: 22vh;
-            height: 12vh;
+            height: 18vh;
           }
           .small-layout {
             display: none;
@@ -98,8 +99,8 @@ const DigitalClock = () => {
             justify-content: center;
           }
           .small-layout .digit-box {
-            width: 22vw;
-            height: 28vw;
+            width: 33vw;
+            height: 40vw;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -122,7 +123,7 @@ const DigitalClock = () => {
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            filter: contrast(0.5) saturate(0.3); /* Adjust values as needed */
+            filter: contrast(0.7) brightness(1.8) saturate(1.9) hue-rotate(299deg); /* Adjust values as needed */
             z-index: 1;
           }
         `}
