@@ -62,8 +62,10 @@ const DigitalClock = () => {
             text-align: center;
             line-height: 1;
             text-shadow:
-              1px 1px 0px #000000C0,
-              -1px -1px 0px #F1F1F5FF;
+            1px 0 0 #E2EDF0FF,
+ -1px 0 0 #000,
+  0 1px 0 #000,
+  0 -1px 0 #000;
           }
 
           .bg-layer {
