@@ -1,122 +1,106 @@
-import { useState, useEffect, useMemo, memo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
+import fontFile from './fa.ttf';
+import backgroundImg from './swagr.webp';
 
-import bgImage from './steel.webp';
-import digitTexture from './steel2.webp';
-import screwFont from './screw.ttf?url';
-
-// Constants moved outside to prevent re-creation
-const FONT_NAME = 'screw251214';
-
-// Memoized individual digit to prevent re-renders of hours when minutes change
-const Digit = memo(({ value, offset }) => {
-  const style = {
-    fontSize: '18vmin',
-    fontFamily: 'inherit',
-    lineHeight: '1',
-    fontVariantNumeric: 'tabular-nums',
-    backgroundImage: `url(${digitTexture})`,
-    backgroundSize: '320% 320%',
-    backgroundPosition: `${offset.x}% ${offset.y}%`,
-    backgroundRepeat: 'no-repeat',
-    backgroundClip: 'text',
-    WebkitBackgroundClip: 'text',
-    color: 'transparent',
-    WebkitTextFillColor: 'transparent',
-    filter: 'contrast(1.15) brightness(1.05)',
-    textShadow: `
-      -0.08vh -0.08vh 0.18vh rgba(255,255,255,0.35),
-       0.08vh  0.08vh 0.22vh rgba(0,0,0,0.55)
-    `,
-    display: 'inline-block',
-    whiteSpace: 'nowrap',
-  };
-
-  return (
-    <div style={{ width: '20vmin', height: '20vmin', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <span style={style}>{value}</span>
-    </div>
-  );
-});
-
-export default function DigitalClock() {
+const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [fontReady, setFontReady] = useState(false);
 
-  // 1. Stable Texture Offsets (Fixed for 4 positions: HH:MM)
-  const textureOffsets = useMemo(() => 
-    Array.from({ length: 4 }, () => ({
-      x: Math.floor(Math.random() * 100),
-      y: Math.floor(Math.random() * 100),
-    })), []
-  );
+  // Load font explicitly (prevents FOUT)
+  useEffect(() => {
+    const font = new FontFace('TodayFont', `url(${fontFile})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      setFontReady(true);
+    });
+  }, []);
 
-  // 2. Timer Logic
+  // Update every second
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // 3. Simplified Font Detection
-  useEffect(() => {
-    if (!document.fonts) {
-      setFontLoaded(true);
-      return;
-    }
-    document.fonts.ready.then(() => {
-      if (document.fonts.check(`1em ${FONT_NAME}`)) {
-        setFontLoaded(true);
-      }
-    });
-  }, []);
+  const timeString = useMemo(() => {
+    const pad = (n) => n.toString().padStart(2, '0');
+    return pad(time.getHours()) + pad(time.getMinutes()) + pad(time.getSeconds());
+  }, [time]);
 
-  // 4. Time Formatting
-  const hours = time.getHours().toString().padStart(2, '0').split('');
-  const minutes = time.getMinutes().toString().padStart(2, '0').split('');
-
-  // 5. Layout Styles
-  const containerStyle = useMemo(() => ({
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    overflow: 'hidden',
-    fontFamily: fontLoaded ? `"${FONT_NAME}", monospace` : 'monospace',
-    opacity: fontLoaded ? 1 : 0,
-    transition: 'opacity 0.3s ease-in',
-  }), [fontLoaded]);
-
-  const rowStyle = {
-    display: 'flex',
-    gap: '1vmin',
-    justifyContent: 'center',
-    alignItems: 'center',
-  };
+  const digitToLetter = (d) => 'EcJpLhkMVB'[d];
 
   return (
-    <div style={containerStyle}>
+    <>
       <style>
         {`
           @font-face {
-            font-family: '${FONT_NAME}';
-            src: url(${screwFont}) format('truetype');
-            font-display: swap;
+            font-family: "TodayFont";
+            src: url(${fontFile}) format("truetype");
+            font-display: block;
+          }
+
+          .clock-container {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+          }
+
+          .digit-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.1vh;
+            width: 100%;
+            max-width: 90vw;
+          }
+
+          .digit {
+            font-family: 'TodayFont';
+            color: #AE096AFF;
+            font-size: 30vh;
+            text-align: center;
+            line-height: 1;
+            text-shadow:
+            1px 0 0 #E2EDF0FF,
+ -1px 0 0 #000,
+  0 1px 0 #000,
+  0 -1px 0 #000;
+          }
+
+          .bg-layer {
+            position: fixed;
+            inset: 0;
+            background: url(${backgroundImg}) center/cover no-repeat;
+            filter: contrast(0.7) brightness(1.8) saturate(1.9) hue-rotate(299deg);
+            z-index: 1;
+          }
+
+          @media (max-width: 768px) and (orientation: portrait) {
+            .digit-grid {
+              grid-template-columns: repeat(2, 1fr);
+              gap: 0.1vh;
+            }
           }
         `}
       </style>
 
-      <div style={rowStyle}>
-        <Digit value={hours[0]} offset={textureOffsets[0]} />
-        <Digit value={hours[1]} offset={textureOffsets[1]} />
-      </div>
-      <div style={rowStyle}>
-        <Digit value={minutes[0]} offset={textureOffsets[2]} />
-        <Digit value={minutes[1]} offset={textureOffsets[3]} />
-      </div>
-    </div>
+      <div className="bg-layer" />
+
+      {/* 🔒 Gate rendering until font is ready */}
+      {fontReady && (
+        <main className="clock-container">
+          <div className="digit-grid">
+            {timeString.split('').map((char, i) => (
+              <div key={i} className="digit">
+                {digitToLetter(char)}
+              </div>
+            ))}
+          </div>
+        </main>
+      )}
+    </>
   );
-}
+};
+
+export default DigitalClock;

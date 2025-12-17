@@ -45,13 +45,11 @@ export default function DigitalClock() {
 
   const hours = time.getHours().toString().padStart(2, '0')
   const minutes = time.getMinutes().toString().padStart(2, '0')
-  const seconds = time.getSeconds().toString().padStart(2, '0')
 
   const hoursDigits = hours.split('')
   const minutesDigits = minutes.split('')
-  const secondsDigits = seconds.split('')
 
-  const allDigits = [...hoursDigits, ...minutesDigits, ...secondsDigits]
+  const allDigits = [...hoursDigits, ...minutesDigits]
 
   const [textureOffsets] = useState(() =>
     allDigits.map(() => ({
@@ -78,7 +76,7 @@ export default function DigitalClock() {
   const clockStyle = {
     display: 'flex',
     flexDirection: 'column',
-    gap: '4vmin',
+    gap: '2vmin',
     alignItems: 'center',
     opacity: fontLoaded ? 1 : 0, // hide until font is ready (avoids FOUC)
     transition: 'opacity 0.2s ease-in',
@@ -91,35 +89,14 @@ export default function DigitalClock() {
   }
 
   const digitBoxStyle = {
-    width: '14vmin',
-    height: '14vmin',
+    width: '24vmin',
+    height: '24vmin',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   }
 
-  const digitStyle = {
-    fontSize: '14vmin',
-    fontFamily: 'inherit',
-    lineHeight: '1',
-    fontVariantNumeric: 'tabular-nums',
-    fontFeatureSettings: '"tnum"',
-    backgroundImage: `url(${digitTexture})`,
-    backgroundSize: '320% 320%',
-    backgroundRepeat: 'no-repeat',
-    backgroundClip: 'text',
-    WebkitBackgroundClip: 'text',
-    color: 'transparent',
-    WebkitTextFillColor: 'transparent',
-    filter: 'contrast(1.15) brightness(1.05)',
-    textShadow: `
-      -0.08vh -0.08vh 0.18vh rgba(255,255,255,0.35),
-       0.08vh  0.08vh 0.22vh rgba(0,0,0,0.55)
-    `,
-    transform: 'translateZ(0)',
-    display: 'inline-block',
-    whiteSpace: 'nowrap',
-  }
+
 
   let textureIndex = 0
 
@@ -129,8 +106,9 @@ export default function DigitalClock() {
       return (
         <span key={`${prefix}-${i}`} style={digitBoxStyle}>
           <span
+            className="digit-text"
             style={{
-              ...digitStyle,
+              backgroundImage: `url(${digitTexture})`,
               backgroundPosition: `${offset.x}% ${offset.y}%`,
             }}
           >
@@ -142,7 +120,10 @@ export default function DigitalClock() {
 
   return (
     <div style={containerStyle}>
-      {/* @font-face declared inline with Vite blob URL + font-display: swap */}
+      <div style={clockStyle}>
+        <div style={rowStyle}>{renderDigits(hoursDigits, 'hours')}</div>
+        <div style={rowStyle}>{renderDigits(minutesDigits, 'minutes')}</div>
+      </div>
       <style>
         {`
           @font-face {
@@ -152,14 +133,28 @@ export default function DigitalClock() {
             font-style: normal;
             font-display: swap;
           }
+
+          .digit-text {
+            font-size: 28vmin;
+            font-family: inherit;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: "tnum";
+            background-size: 320% 320%;
+            background-repeat: no-repeat;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            filter: contrast(1.15) brightness(1.05);
+            text-shadow: -0.3vh -0.3vh 0.0vh rgba(255,255,255,0.35),
+                         0.3vh  0.3vh 0.0vh rgba(0,0,0,0.55);
+            transform: translateZ(0);
+            display: inline-block;
+            white-space: nowrap;
+          }
         `}
       </style>
-
-      <div style={clockStyle}>
-        <div style={rowStyle}>{renderDigits(hoursDigits, 'h')}</div>
-        <div style={rowStyle}>{renderDigits(minutesDigits, 'm')}</div>
-        <div style={rowStyle}>{renderDigits(secondsDigits, 's')}</div>
-      </div>
     </div>
   )
 }
