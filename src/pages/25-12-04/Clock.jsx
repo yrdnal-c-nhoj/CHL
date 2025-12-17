@@ -1,9 +1,30 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import sloanFont_2025_1204 from './ichart.otf'
 
 export default function EyeChart () {
+  const [fontLoaded, setFontLoaded] = useState(false)
   const fontFamilyName = 'SloanOptotype_2025_1204'
 
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const font = new FontFace(
+          fontFamilyName,
+          `url(${sloanFont_2025_1204})`,
+          { display: 'swap' }
+        )
+        
+        await font.load()
+        document.fonts.add(font)
+        setFontLoaded(true)
+      } catch (error) {
+        console.error('Error loading font:', error)
+        setFontLoaded(true) // Continue rendering even if font fails to load
+      }
+    }
+
+    loadFont()
+  }, [fontFamilyName])
   const [time, setTime] = useState(new Date())
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000)
@@ -86,14 +107,29 @@ export default function EyeChart () {
     letterSpacing: '0.15vh'
   }
 
+  if (!fontLoaded) {
+    return (
+      <div style={{
+        ...outer,
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: 'sans-serif',
+        fontSize: '1rem',
+        color: '#666'
+      }}>
+        Loading...
+      </div>
+    )
+  }
+
   return (
-    <>
+    <div style={outer} className='eyechart-root'>
       <style
         dangerouslySetInnerHTML={{
           __html: `
             @font-face {
-              font-family: '${fontFamilyName}';
-              src: url('${sloanFont_2025_1204}') format('opentype');
+              font-family: "${fontFamilyName}";
+              src: url("${sloanFont_2025_1204}") format("opentype");
               font-weight: 700;
               font-style: normal;
               font-display: swap;
@@ -102,18 +138,15 @@ export default function EyeChart () {
           `
         }}
       />
-
-      <div style={outer} className='eyechart-root'>
-        <div style={card} role='img' aria-label='Snellen Sloan eye chart'>
-          {lines.map(([letters, twenty, six], i) => (
-            <div key={i} style={{ ...lineBase, fontSize: fontSizeForIndex(i) }}>
-              <div style={leftLabel}>{twenty}</div>
-              <p style={{ ...letterStyle, fontSize: 'inherit' }}>{letters}</p>
-              <div style={rightLabel}>{six}</div>
-            </div>
-          ))}
-        </div>
+      <div style={card} role='img' aria-label='Snellen Sloan eye chart'>
+        {lines.map(([letters, twenty, six], i) => (
+          <div key={i} style={{ ...lineBase, fontSize: fontSizeForIndex(i) }}>
+            <div style={leftLabel}>{twenty}</div>
+            <p style={{ ...letterStyle, fontSize: 'inherit' }}>{letters}</p>
+            <div style={rightLabel}>{six}</div>
+          </div>
+        ))}
       </div>
-    </>
+    </div>
   )
 }
