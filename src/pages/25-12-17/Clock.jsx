@@ -30,31 +30,43 @@ const DigitalClock = () => {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
-    width: '100vw',
+    minHeight: '100vh',
+    width: '100%',
     boxSizing: 'border-box',
     margin: 0,
-    padding: '10vh 0 0 0',
+    padding: 'env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0)',
     position: 'relative',
-    zIndex: 1 // Ensures content is above background
+    zIndex: 1,
+    overflow: 'hidden',
+    backgroundColor: 'rgba(0,0,0,0.5)' // Fallback background
   }
 
   const clockContentStyle = {
-    padding: '25px',
-    borderRadius: '10px'
+    padding: '20px',
+    borderRadius: '10px',
+    width: '100%',
+    maxWidth: '100%',
+    overflow: 'hidden',
+    boxSizing: 'border-box'
   }
 
   const digitBoxStyle = {
     display: 'flex',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'center',
     color: '#B90E9FFF',
-    fontFamily: 'TodayFont, sans-serif'
+    fontFamily: 'TodayFont, monospace',
+    textRendering: 'optimizeLegibility',
+    WebkitFontSmoothing: 'antialiased',
+    MozOsxFontSmoothing: 'grayscale'
   }
 
   const encodedStyle = {
     fontSize: '35vh',
-    textShadow: '1px 1px 0px #000000C0, -1px -1px 0px #F1F1F5FF'
+    textShadow: '1px 1px 0px #000000C0, -1px -1px 0px #F1F1F5FF',
+    lineHeight: '1',
+    display: 'inline-block',
+    minWidth: '0.4em' // Prevents layout shift during font loading
   }
 
   return (
@@ -66,6 +78,7 @@ const DigitalClock = () => {
             src: url(${font251217z}) format("truetype");
             font-weight: normal;
             font-style: normal;
+            font-display: swap;
           }
           .large-layout {
             display: flex;
@@ -85,10 +98,13 @@ const DigitalClock = () => {
             justify-content: center;
           }
           .small-layout .digit-box {
-            width: 25vw;
-            height: 32vw;
+            width: 22vw;
+            height: 28vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
-          @media (max-width: 768px) {
+          @media (max-width: 768px) and (orientation: portrait) {
             .large-layout {
               display: none;
             }
@@ -145,7 +161,7 @@ const DigitalClock = () => {
                     className='digit-box'
                     style={digitBoxStyle}
                   >
-                    <span style={{ ...encodedStyle, fontSize: '40vw' }}>
+                    <span style={{ ...encodedStyle, fontSize: '25vh' }}>
                       {digitToLetter(d)}
                     </span>
                   </div>
