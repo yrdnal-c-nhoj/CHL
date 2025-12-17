@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import bgImage from './muybridge.webp'
-import customFont_2025_1210 from './muy.ttf' // font imported as a blob via Vite
+import customFont_2025_1210 from './muy.ttf'
 
-// Create a style for the font-face dynamically
-const fontFaceStyle = {
-  '@font-face': {
-    fontFamily: 'MuybridgeFont',
-    src: `url(${customFont_2025_1210}) format('opentype')`
-  }
-}
-
-const elementColor = '#BE83E6FF'
+const elementColor = '#BBA8C8FF'
 
 const digitBoxStyle = {
   position: 'relative',
-  width: 'clamp(20px, 7vw, 40px)',
+  width: 'clamp(28px, 8vw, 48px)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -27,13 +19,28 @@ const digitBoxStyle = {
   overflow: 'hidden'
 }
 
-export default function DigitalClock () {
+export default function DigitalClock() {
   const [time, setTime] = useState(new Date())
+  const [fontLoaded, setFontLoaded] = useState(false)
 
   useEffect(() => {
+    // Load font before showing content
+    const font = new FontFace('MuybridgeFont', `url(${customFont_2025_1210})`)
+    
+    font.load().then(() => {
+      document.fonts.add(font)
+      setFontLoaded(true)
+    }).catch(err => {
+      console.error('Font loading failed:', err)
+      setFontLoaded(true) // Show content anyway after error
+    })
+  }, [])
+
+  useEffect(() => {
+    if (!fontLoaded) return
     const interval = setInterval(() => setTime(new Date()), 100)
     return () => clearInterval(interval)
-  }, [])
+  }, [fontLoaded])
 
   const containerStyle = {
     position: 'fixed',
@@ -54,7 +61,9 @@ export default function DigitalClock () {
     overflow: 'hidden',
     touchAction: 'manipulation',
     WebkitOverflowScrolling: 'touch',
-    overscrollBehavior: 'none'
+    overscrollBehavior: 'none',
+    opacity: fontLoaded ? 1 : 0,
+    transition: 'opacity 0.3s ease-in'
   }
 
   const clockContainerStyle = {
@@ -67,7 +76,7 @@ export default function DigitalClock () {
     boxSizing: 'border-box',
     transform: 'scale(0.9)',
     position: 'absolute',
-    bottom: '25vh',
+    bottom: '18vh',
     left: 0,
     right: 0
   }
@@ -90,8 +99,8 @@ export default function DigitalClock () {
         @font-face {
           font-family: 'MuybridgeFont';
           src: url(${customFont_2025_1210}) format('opentype');
+          font-display: block;
         }
-        /* Prevent font boosting on mobile */
         @media screen and (-webkit-min-device-pixel-ratio: 0) {
           * {
             -webkit-text-size-adjust: 100%;
