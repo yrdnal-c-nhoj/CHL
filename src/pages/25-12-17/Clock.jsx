@@ -1,74 +1,32 @@
-import React, { useEffect, useState } from 'react'
-import font251217z from './fa.ttf'
-import bacbg251217 from './swagr.webp'
+import React, { useEffect, useState, useMemo } from 'react';
+import fontFile from './fa.ttf';
+import backgroundImg from './swagr.webp';
 
 const DigitalClock = () => {
-  const [time, setTime] = useState(getCurrentTime())
+  const [time, setTime] = useState(new Date());
+  const [fontReady, setFontReady] = useState(false);
 
-  const digitToLetter = d => 'EVJpLhcMkB'[parseInt(d)]
-
-  function getCurrentTime () {
-    const now = new Date()
-    let hours = now.getHours()
-    let minutes = now.getMinutes()
-    let seconds = now.getSeconds()
-    hours = hours < 10 ? '0' + hours : '' + hours
-    minutes = minutes < 10 ? '0' + minutes : '' + minutes
-    seconds = seconds < 10 ? '0' + seconds : '' + seconds
-    return { hours, minutes, seconds }
-  }
-
+  // Load font explicitly (prevents FOUT)
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(getCurrentTime())
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [])
+    const font = new FontFace('TodayFont', `url(${fontFile})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      setFontReady(true);
+    });
+  }, []);
 
-  const containerStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100vh',
-    width: '100%',
-    boxSizing: 'border-box',
-    margin: 0,
-    // padding: 'env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0)',
-    position: 'relative',
-    zIndex: 1,
-    overflow: 'hidden',
-    // backgroundColor: 'rgba(0,0,0,0.5)' // Fallback background
-  }
+  // Update every second
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
-  const clockContentStyle = {
-    padding: '70px',
-    borderRadius: '10px',
-    width: '100%',
-    maxWidth: '100%',
-    overflow: 'hidden',
-    boxSizing: 'border-box'
-  }
+  const timeString = useMemo(() => {
+    const pad = (n) => n.toString().padStart(2, '0');
+    return pad(time.getHours()) + pad(time.getMinutes()) + pad(time.getSeconds());
+  }, [time]);
 
-  const digitBoxStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#AE096AFF',
-    fontFamily: 'TodayFont, monospace',
-    textRendering: 'optimizeLegibility',
-    WebkitFontSmoothing: 'antialiased',
-    MozOsxFontSmoothing: 'grayscale'
-  }
-
-  const encodedStyle = {
-    fontSize: '35vh',
-    textShadow: '1px 1px 0px #000000C0, -1px -1px 0px #F1F1F5FF',
-    lineHeight: '1',
-    display: 'inline-block',
-    width: '0.6em',
-    textAlign: 'center'
-  }
+  const digitToLetter = (d) => 'EVJpLhcMkB'[d];
 
   return (
     <>
@@ -76,104 +34,71 @@ const DigitalClock = () => {
         {`
           @font-face {
             font-family: "TodayFont";
-            src: url(${font251217z}) format("truetype");
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
+            src: url(${fontFile}) format("truetype");
+            font-display: block;
           }
-          .large-layout {
-            display: flex;
-            justify-content: center;
-          }
-          .large-layout .digit-box {
-            width: 22vh;
-            height: 18vh;
-          }
-          .small-layout {
-            display: none;
-            flex-direction: column;
-            gap: 3vh;
-          }
-          .small-layout .time-row {
-            display: flex;
-            justify-content: center;
-          }
-          .small-layout .digit-box {
-            width: 33vw;
-            height: 40vw;
+
+          .clock-container {
+            position: fixed;
+            inset: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 2;
           }
-          @media (max-width: 768px) and (orientation: portrait) {
-            .large-layout {
-              display: none;
-            }
-            .small-layout {
-              display: flex;
-            }
+
+          .digit-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.1vh;
+            width: 100%;
+            max-width: 90vw;
           }
-          .background-filter {
+
+          .digit {
+            font-family: 'TodayFont';
+            color: #AE096AFF;
+            font-size: 30vh;
+            text-align: center;
+            line-height: 1;
+            text-shadow:
+              1px 1px 0px #000000C0,
+              -1px -1px 0px #F1F1F5FF;
+          }
+
+          .bg-layer {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-image: url(${bacbg251217});
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            filter: contrast(0.7) brightness(1.8) saturate(1.9) hue-rotate(299deg); /* Adjust values as needed */
+            inset: 0;
+            background: url(${backgroundImg}) center/cover no-repeat;
+            filter: contrast(0.7) brightness(1.8) saturate(1.9) hue-rotate(299deg);
             z-index: 1;
+          }
+
+          @media (max-width: 768px) and (orientation: portrait) {
+            .digit-grid {
+              grid-template-columns: repeat(2, 1fr);
+              gap: 0.1vh;
+            }
           }
         `}
       </style>
 
-      {/* Filtered background layer */}
-      <div className='background-filter'></div>
+      <div className="bg-layer" />
 
-      {/* Clock content overlay */}
-      <div style={containerStyle}>
-        <div style={clockContentStyle}>
-          {/* Large screen */}
-          <div className='large-layout'>
-            {[
-              ...time.hours.split(''),
-              ...time.minutes.split(''),
-              ...time.seconds.split('')
-            ].map((d, i) => (
-              <div key={i} className='digit-box' style={digitBoxStyle}>
-                <span style={encodedStyle}>{digitToLetter(d)}</span>
+      {/* 🔒 Gate rendering until font is ready */}
+      {fontReady && (
+        <main className="clock-container">
+          <div className="digit-grid">
+            {timeString.split('').map((char, i) => (
+              <div key={i} className="digit">
+                {digitToLetter(char)}
               </div>
             ))}
           </div>
-
-          {/* Small screen */}
-          <div className='small-layout'>
-            {[
-              time.hours.split(''),
-              time.minutes.split(''),
-              time.seconds.split('')
-            ].map((group, gi) => (
-              <div key={gi} className='time-row'>
-                {group.map((d, i) => (
-                  <div
-                    key={`${gi}-${i}`}
-                    className='digit-box'
-                    style={digitBoxStyle}
-                  >
-                    <span style={{ ...encodedStyle, fontSize: '25vh' }}>
-                      {digitToLetter(d)}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+        </main>
+      )}
     </>
-  )
-}
+  );
+};
 
-export default DigitalClock
+export default DigitalClock;
