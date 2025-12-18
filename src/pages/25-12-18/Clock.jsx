@@ -90,8 +90,8 @@ const TiltedReverseClock = () => {
       <div
         style={{
           position: 'absolute',
-          top: '3vh',
-          right: '0.1vh',
+          top: '4vh',
+          right: '0vh',
           display: 'flex',
           alignItems: 'center',
           transformStyle: 'preserve-3d',
