@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useLayoutEffect } from 'react'
 
 // Import assets
 import bgImage from './giraffe.webp'
@@ -9,15 +9,15 @@ import customFont_2025_1206 from './gir.otf'
 import tileImg from './run.webp'
 import centerImg from './walk.webp'
 
-export default function AnalogClock () {
+export default function AnalogClock() {
   const [time, setTime] = useState(new Date())
   const [viewport, setViewport] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight
+    width: typeof window !== 'undefined' ? window.innerWidth : 1200,
+    height: typeof window !== 'undefined' ? window.innerHeight : 800
   })
 
-  // Handle resize + recalculate vmin
-  useEffect(() => {
+  // useLayoutEffect prevents the "flash" of incorrect positions on first mount
+  useLayoutEffect(() => {
     const handleResize = () => {
       setViewport({
         width: window.innerWidth,
@@ -29,38 +29,31 @@ export default function AnalogClock () {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  // Inject custom font + mobile viewport fix
+  // Inject styles including the custom font
   useEffect(() => {
     const style = document.createElement('style')
     style.innerHTML = `
       @font-face {
         font-family: 'CustomClockFont';
         src: url(${customFont_2025_1206}) format('truetype');
-        font-weight: normal;
-        font-style: normal;
       }
-
       html, body, #root {
         margin: 0;
         padding: 0;
         height: 100%;
+        width: 100%;
         overflow: hidden;
+        background: #000;
       }
-
-      /* Critical mobile fix */
-      body {
-        height: 100dvh;
-      }
+      body { height: 100dvh; }
     `
     document.head.appendChild(style)
     return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style)
-      }
+      if (document.head.contains(style)) document.head.removeChild(style)
     }
   }, [])
 
-  // Smooth clock animation with requestAnimationFrame
+  // Animation Loop
   useEffect(() => {
     let rafId
     const tick = () => {
@@ -71,229 +64,131 @@ export default function AnalogClock () {
     return () => cancelAnimationFrame(rafId)
   }, [])
 
+  // Time Calculations
   const now = time
-
-  // Precise angles including milliseconds
-  const totalHours =
-    now.getHours() +
-    now.getMinutes() / 60 +
-    now.getSeconds() / 3600 +
-    now.getMilliseconds() / 3600000
-  const totalMinutes =
-    now.getMinutes() + now.getSeconds() / 60 + now.getMilliseconds() / 60000
+  const totalHours = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600
+  const totalMinutes = now.getMinutes() + now.getSeconds() / 60
   const totalSeconds = now.getSeconds() + now.getMilliseconds() / 1000
 
-  const hourDeg = totalHours * 30 // 360° / 12 = 30° per hour
-  const minuteDeg = totalMinutes * 6 // 360° / 60 = 6° per minute
-  const secondDeg = totalSeconds * 6 // 360° / 60 = 6° per second
+  const hourDeg = totalHours * 30
+  const minuteDeg = totalMinutes * 6
+  const secondDeg = totalSeconds * 6
+  const centerDeg = -totalSeconds * 6
 
-  // Tiling system
-  const tileSize = 10 // vmin
+  // Tiling logic
   const vmin = Math.min(viewport.width, viewport.height)
+  const tileSize = 10 // vmin
   const tileSizePx = (tileSize / 100) * vmin
+  const horizontalTiles = Math.ceil(viewport.width / tileSizePx) + 2
+  const verticalTiles = Math.ceil(viewport.height / tileSizePx) + 2
 
-  const horizontalTiles = Math.ceil(viewport.width / tileSizePx) + 3
-  const verticalTiles = Math.ceil(viewport.height / tileSizePx) + 6 // extra buffer
-
-  const renderRowTiles = rotationDeg =>
-    Array.from({ length: horizontalTiles }, (_, i) => (
-      <div
-        key={`row-${i}`}
-        style={{
-          height: `${tileSize}vmin`,
-          width: `${tileSize}vmin`,
-          overflow: 'hidden'
-        }}
-      >
-        <div
-          style={{
-            height: '100%',
-            width: '100%',
-            backgroundImage: `url(${tileImg})`,
-            backgroundSize: 'contain',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            transform: `rotate(${rotationDeg}deg)`,
-            transformOrigin: 'center'
-          }}
-        />
+  const renderTiles = (count, rotation, isRow) =>
+    Array.from({ length: count }, (_, i) => (
+      <div key={i} style={{ height: `${tileSize}vmin`, width: `${tileSize}vmin`, overflow: 'hidden' }}>
+        <div style={{
+          height: '100%', width: '100%',
+          backgroundImage: `url(${tileImg})`,
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          transform: `rotate(${rotation}deg)`
+        }} />
       </div>
     ))
 
-  const renderColumnTiles = rotationDeg =>
-    Array.from({ length: verticalTiles }, (_, i) => (
-      <div
-        key={`col-${i}`}
-        style={{
-          height: `${tileSize}vmin`,
-          width: `${tileSize}vmin`,
-          overflow: 'hidden'
-        }}
-      >
-        <div
-          style={{
-            height: '100%',
-            width: '100%',
-            backgroundImage: `url(${tileImg})`,
-            backgroundSize: 'contain',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            transform: `rotate(${rotationDeg}deg)`,
-            transformOrigin: 'center'
-          }}
-        />
-      </div>
-    ))
-
-  // Clock numbers (1–12)
-  const numbers = Array.from({ length: 12 }, (_, i) => i + 1)
-  const numberStyle = num => {
-    const angle = (num - 3) * 30 * (Math.PI / 180)
-    const radius = 42
-    const x = radius * Math.cos(angle)
-    const y = radius * Math.sin(angle)
-    return {
-      position: 'absolute',
-      left: `calc(50% + ${x}%)`,
-      top: `calc(50% + ${y}%)`,
-      fontSize: 'clamp(5rem, 8vw, 8.5rem)',
-      fontFamily: 'CustomClockFont',
-      userSelect: 'none',
-      color: 'white',
-      textAlign: 'center',
-      transform: 'translate(-50%, -50%)',
-      textShadow: '1px 1px 0 #970909, -1px -1px 0 black',
-      pointerEvents: 'none',
-      willChange: 'transform'
-    }
-  }
-
-  // Hand style factory
-  const handStyle = (deg, width, transitionDuration = null) => ({
-    position: 'absolute',
-    width: `${width}%`,
-    height: 'auto',
-    maxHeight: '90%',
-    transform: `translate(-50%, -100%) rotate(${deg}deg)`,
-    transformOrigin: '50% 90%',
-    top: '50%',
-    left: '50%',
-    transition: transitionDuration
-      ? `transform ${transitionDuration}s linear`
-      : 'transform 0.1s linear',
-    zIndex: 10,
-    filter:
-      'drop-shadow(2px 2px 4px rgba(0,0,0,0.9)) drop-shadow(-2px -2px 4px rgba(255,255,255,0.7))',
-    opacity: 0.85,
-    pointerEvents: 'none',
-    backfaceVisibility: 'hidden',
-    imageRendering: 'crisp-edges',
-    willChange: 'transform',
-    margin: 0,
-    padding: 0
-  })
-
-  // Center spinning image (counterclockwise, 1 full turn per minute)
-  const centerDeg = -totalSeconds * 6 // 360° per 60s → -6° per second
-
-  const centerImageStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '25vmin',
-    height: '25vmin',
-    transform: `translate(-50%, -50%) rotate(${centerDeg}deg)`,
-    transformOrigin: '50% 50%',
-    zIndex: 15,
-    opacity: 0.75,
-    pointerEvents: 'none'
-  }
-
-  // Main container styles (THE FIX IS APPLIED HERE)
+  // Component Styles
   const outerContainerStyle = {
-    height: '100%', // Changed from '100dvh' to '100%'
-    width: '100%',
+    height: '100dvh',
+    width: '100vw',
     position: 'fixed',
     top: 0,
     left: 0,
     backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    overflow: 'hidden',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    touchAction: 'none',
-    overscrollBehavior: 'none'
+    touchAction: 'none'
   }
 
   const clockContainerStyle = {
-    width: 'min(85vmin, 95vw)',
-    height: 'min(85vmin, 95vh)',
-    borderRadius: '50%',
+    width: 'min(80vmin, 90vw)',
+    height: 'min(80vmin, 90vw)',
     position: 'relative',
-    zIndex: 5,
-    aspectRatio: '1/1'
+    zIndex: 10
   }
 
-  const rowContainerStyle = position => ({
-    position: 'absolute',
-    top: position === 'top' ? 0 : 'auto',
-    bottom: position === 'bottom' ? 0 : 'auto',
-    left: 0,
-    width: '100%',
-    display: 'flex',
-    gap: 0,
-    zIndex: 3
-  })
+  const numberStyle = (num) => {
+    const angle = (num - 3) * 30 * (Math.PI / 180)
+    const radius = 42 
+    return {
+      position: 'absolute',
+      left: `calc(50% + ${radius * Math.cos(angle)}%)`,
+      top: `calc(50% + ${radius * Math.sin(angle)}%)`,
+      transform: 'translate(-50%, -50%)',
+      fontSize: 'clamp(3rem, 10vmin, 6rem)',
+      fontFamily: 'CustomClockFont, sans-serif',
+      color: 'white',
+      textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
+      userSelect: 'none',
+      zIndex: 5
+    }
+  }
 
-  const columnContainerStyle = side => ({
+  const handStyle = (deg, width, zIndex) => ({
     position: 'absolute',
-    left: side === 'left' ? 0 : 'auto',
-    right: side === 'right' ? 0 : 'auto',
-    top: 0,
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 0,
-    zIndex: 3
+    top: '50%',
+    left: '50%',
+    width: `${width}%`,
+    height: 'auto',
+    // translate(-50%, -90%) ensures the pivot point of the image sits exactly in the center
+    transform: `translate(-50%, -90%) rotate(${deg}deg)`,
+    transformOrigin: '50% 90%',
+    zIndex: zIndex,
+    filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.5))',
+    pointerEvents: 'none',
+    willChange: 'transform'
   })
 
   return (
     <div style={outerContainerStyle}>
-      {/* Tiling borders */}
-      <div style={rowContainerStyle('top')}>{renderRowTiles(180)}</div>
-      <div style={rowContainerStyle('bottom')}>{renderRowTiles(0)}</div>
-      <div style={columnContainerStyle('left')}>{renderColumnTiles(90)}</div>
-      <div style={columnContainerStyle('right')}>{renderColumnTiles(270)}</div>
+      {/* Border Tiling */}
+      <div style={{ position: 'absolute', top: 0, width: '100%', display: 'flex', zIndex: 3 }}>
+        {renderTiles(horizontalTiles, 180, true)}
+      </div>
+      <div style={{ position: 'absolute', bottom: 0, width: '100%', display: 'flex', zIndex: 3 }}>
+        {renderTiles(horizontalTiles, 0, true)}
+      </div>
+      <div style={{ position: 'absolute', left: 0, height: '100%', display: 'flex', flexDirection: 'column', zIndex: 3 }}>
+        {renderTiles(verticalTiles, 90, false)}
+      </div>
+      <div style={{ position: 'absolute', right: 0, height: '100%', display: 'flex', flexDirection: 'column', zIndex: 3 }}>
+        {renderTiles(verticalTiles, 270, false)}
+      </div>
 
-      {/* Clock face */}
+      {/* Clock Face */}
       <div style={clockContainerStyle}>
-        {numbers.map(num => (
-          <div key={num} style={numberStyle(num)}>
-            {num}
-          </div>
+        {[...Array(12)].map((_, i) => (
+          <div key={i + 1} style={numberStyle(i + 1)}>{i + 1}</div>
         ))}
 
-        {/* Hands */}
-        <img
-          src={minnnuteHandImg}
-          alt='minute'
-          style={handStyle(minuteDeg, 25, 60)}
-        />
-        <img
-          src={hourHandImggir}
-          alt='hour'
-          style={handStyle(hourDeg, 28, 43200)}
-        />
-        <img
-          src={secondHandImg}
-          alt='second'
-          style={handStyle(secondDeg, 26)}
-        />
-
-        {/* Spinning center */}
-        <img src={centerImg} alt='center' style={centerImageStyle} />
+        <img src={minnnuteHandImg} style={handStyle(minuteDeg, 37, 9)} alt="minute" />
+        <img src={secondHandImg} style={handStyle(secondDeg, 40, 10)} alt="second" />
+        <img src={hourHandImggir} style={handStyle(hourDeg, 37, 11)} alt="hour" /> 
+      
+        {/* Spinning Center Image */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '29vmin',
+          height: '29vmin',
+          transform: `translate(-50%, -50%) rotate(${centerDeg}deg)`,
+          zIndex: 15
+        }}>
+          <img src={centerImg} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="center" />
+        </div>
       </div>
     </div>
   )
