@@ -127,7 +127,7 @@ export default function AnalogClock() {
       left: `calc(50% + ${radius * Math.cos(angle)}%)`,
       top: `calc(50% + ${radius * Math.sin(angle)}%)`,
       transform: 'translate(-50%, -50%)',
-      fontSize: 'clamp(3rem, 10vmin, 6rem)',
+      fontSize: 'clamp(7rem, 13vmin, 10rem)',
       fontFamily: 'CustomClockFont, sans-serif',
       color: 'white',
       textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
