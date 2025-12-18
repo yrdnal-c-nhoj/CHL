@@ -24,12 +24,14 @@ const TiltedReverseClock = () => {
     <div
       className="flicker"
       style={{
-        width: '10vh',
-        height: '18vh',
+        width: '8vw',
+        minWidth: '40px',
+        height: '14vh',
+        minHeight: '80px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: '16vh',
+        fontSize: 'min(16vh, 14vw)',
         lineHeight: 1,
         color: '#FBE6C5FF',
         transform: 'rotateX(180deg)', // flip each digit around on horizontal axis 180°
@@ -43,12 +45,14 @@ const TiltedReverseClock = () => {
   return (
     <div
       style={{
-        width: '100vw',
-        height: '100vh',
+        width: '100%',
+        height: '100%',
+        minHeight: '100vh',
         background: 'black',
         position: 'relative',
-        overflow: 'hidden',
+        overflow: 'visible',
         fontFamily: 'ClockFont',
+        WebkitOverflowScrolling: 'touch',
       }}
     >
       {/* font face */}
@@ -95,16 +99,30 @@ const TiltedReverseClock = () => {
       <div
         style={{
           position: 'absolute',
-          top: '10vh',
-          right: '3vh',
+          top: '50%',
+          right: '50%',
+          transform: 'translate(50%, -50%) scale(0.8)',
           display: 'flex',
           alignItems: 'center',
           transformStyle: 'preserve-3d',
+          transformOrigin: 'center center',
+          perspective: '1000px',
           transform: `
-            perspective(220vh)
-            rotateX(222deg)
-            rotateY(-148deg)
+            translate(50%, -50%)
+            perspective(1000px)
+            rotateX(60deg)
+            rotateY(-30deg)
+            scale(0.8)
           `,
+          '@media (max-width: 768px)': {
+            transform: `
+              translate(50%, -50%)
+              perspective(800px)
+              rotateX(60deg)
+              rotateY(-30deg)
+              scale(0.6)
+            `,
+          },
         }}
       >
         {/* hours */}
