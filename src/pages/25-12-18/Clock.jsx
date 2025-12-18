@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-
 // local assets (same folder)
 import backgroundImage from './bg.webp'
 import font_2025_12_17 from './movie.ttf'
@@ -44,14 +43,14 @@ const TiltedReverseClock = () => {
     <div
       style={{
         width: '100vw',
-        height: '100vh',
+        height: '100dvh', // Modern fix: uses dynamic viewport height (adjusts for mobile UI bars)
         background: 'black',
         position: 'relative',
         overflow: 'hidden',
         fontFamily: 'ClockFont',
       }}
     >
-      {/* font face */}
+      {/* font face + flicker animation */}
       <style>{`
         @font-face {
           font-family: 'ClockFont';
@@ -59,7 +58,6 @@ const TiltedReverseClock = () => {
           font-weight: normal;
           font-style: normal;
         }
-
         @keyframes flicker {
           0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
             opacity: 1;
@@ -68,30 +66,27 @@ const TiltedReverseClock = () => {
             opacity: 0.4;
           }
         }
-
         .flicker {
           animation: flicker 1s infinite linear;
         }
       `}</style>
 
-      {/* bottom image */}
+      {/* bottom background image */}
       <div
         style={{
           position: 'absolute',
           bottom: 0,
           left: 0,
-          // color: 'white',
           width: '100vw',
-          height: '100vh',
+          height: '100dvh', // Also use 100dvh here to match container
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
           backgroundPosition: '55% bottom',
           filter: 'brightness(1.4) contrast(1) saturate(0.7) hue-rotate(30deg)',
-          // opacity: 0.9,
         }}
       />
 
-      {/* clock */}
+      {/* clock (tilted & reversed) */}
       <div
         style={{
           position: 'absolute',
@@ -112,7 +107,7 @@ const TiltedReverseClock = () => {
           <DigitBox key={`h-${i}`} value={d} />
         ))}
 
-        {/* colon */}
+        {/* colon (mirrored) */}
         <div
           style={{
             fontSize: '0.1vh',
@@ -128,7 +123,6 @@ const TiltedReverseClock = () => {
         {minuteDigits.split('').map((d, i) => (
           <DigitBox key={`m-${i}`} value={d} />
         ))}
-
       </div>
     </div>
   )
