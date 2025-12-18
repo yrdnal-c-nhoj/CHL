@@ -85,7 +85,7 @@ const TiltedReverseClock = () => {
           height: '100vh',
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
-          backgroundPosition: '70% bottom',
+          backgroundPosition: '55% bottom',
           filter: 'brightness(1.4) contrast(1) saturate(0.7) hue-rotate(30deg)',
           // opacity: 0.9,
         }}
