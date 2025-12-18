@@ -81,7 +81,7 @@ const TiltedReverseClock = () => {
           height: '100dvh', // Also use 100dvh here to match container
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
-          backgroundPosition: '55% bottom',
+          backgroundPosition: '60% bottom',
           filter: 'brightness(1.4) contrast(1) saturate(0.7) hue-rotate(30deg)',
         }}
       />
@@ -90,8 +90,8 @@ const TiltedReverseClock = () => {
       <div
         style={{
           position: 'absolute',
-          top: '10vh',
-          right: '3vh',
+          top: '3vh',
+          right: '0.1vh',
           display: 'flex',
           alignItems: 'center',
           transformStyle: 'preserve-3d',
