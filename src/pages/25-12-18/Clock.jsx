@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 // local assets (same folder)
-import backgroundImage from './bg.webp'
+import backgroundImage from './cine.webp'
 import font_2025_12_17 from './movie.ttf'
 
 const TiltedReverseClock = () => {
@@ -30,7 +30,7 @@ const TiltedReverseClock = () => {
         justifyContent: 'center',
         fontSize: '16vh',
         lineHeight: 1,
-        color: '#FBE6C5FF',
+        color: '#F9DEB0FF',
         transform: 'rotateX(180deg)', // flip each digit around on horizontal axis 180°
         filter: 'blur(1px)',
       }}
@@ -107,17 +107,8 @@ const TiltedReverseClock = () => {
           <DigitBox key={`h-${i}`} value={d} />
         ))}
 
-        {/* colon (mirrored) */}
-        <div
-          style={{
-            fontSize: '0.1vh',
-            lineHeight: 1,
-            transform: 'scaleX(-1)',
-            opacity: 0.9,
-          }}
-        >
-          :
-        </div>
+    
+    
 
         {/* minutes */}
         {minuteDigits.split('').map((d, i) => (
