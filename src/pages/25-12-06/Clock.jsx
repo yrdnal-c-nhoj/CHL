@@ -147,6 +147,8 @@ export default function AnalogClock() {
     transformOrigin: '50% 90%',
     zIndex: zIndex,
     filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.5))',
+    maskImage: 'linear-gradient(to top, transparent 10%, rgba(0,0,0,1) 30%)',
+    WebkitMaskImage: 'linear-gradient(to top, transparent 10%, rgba(0,0,0,1) 30%)',
     pointerEvents: 'none',
     willChange: 'transform'
   })
