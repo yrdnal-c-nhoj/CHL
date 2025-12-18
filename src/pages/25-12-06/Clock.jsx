@@ -175,7 +175,7 @@ export default function AnalogClock() {
 
         <img src={minnnuteHandImg} style={handStyle(minuteDeg, 37, 9)} alt="minute" />
         <img src={secondHandImg} style={handStyle(secondDeg, 40, 10)} alt="second" />
-        <img src={hourHandImggir} style={handStyle(hourDeg, 37, 11)} alt="hour" /> 
+        <img src={hourHandImggir} style={handStyle(hourDeg, 45, 11)} alt="hour" /> 
       
         {/* Spinning Center Image */}
         <div style={{
