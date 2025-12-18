@@ -31,7 +31,7 @@ const TiltedReverseClock = () => {
         justifyContent: 'center',
         fontSize: '16vh',
         lineHeight: 1,
-        color: '#F3D197FF',
+        color: '#F3D197E1',
         transform: 'rotateX(180deg)', // flip each digit around on horizontal axis 180°
       }}
     >
@@ -85,7 +85,7 @@ const TiltedReverseClock = () => {
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
           backgroundPosition: '60% 20%',
-          filter: 'brightness(1.4) contrast(1) saturate()',
+          filter: 'brightness(1.4) contrast(1) saturate() hue-rotate(30deg)',
           // opacity: 0.9,
         }}
       />
