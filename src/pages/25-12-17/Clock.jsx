@@ -37,7 +37,6 @@ const DigitalClock = () => {
             src: url(${fontFile}) format("truetype");
             font-display: block;
           }
-
           .clock-container {
             position: fixed;
             inset: 0;
@@ -46,7 +45,6 @@ const DigitalClock = () => {
             justify-content: center;
             z-index: 2;
           }
-
           .digit-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -54,7 +52,6 @@ const DigitalClock = () => {
             width: 100%;
             max-width: 90vw;
           }
-
           .digit {
             font-family: 'TodayFont';
             color: #1277EBFF;
@@ -62,12 +59,11 @@ const DigitalClock = () => {
             text-align: center;
             line-height: 1;
             text-shadow:
-            1px 0 0 #E2EDF0FF,
- -1px 0 0 #000,
-  0 1px 0 #000,
-  0 -1px 0 #000;
+              1px 0 0 #E2EDF0FF,
+              -1px 0 0 #000,
+              0 1px 0 #000,
+              0 -1px 0 #000;
           }
-
           .bg-layer {
             position: fixed;
             inset: 0;
@@ -75,18 +71,19 @@ const DigitalClock = () => {
             filter: contrast(0.3) brightness(1.6) saturate(2.7) hue-rotate(9deg);
             z-index: 1;
           }
-
           @media (max-width: 768px) and (orientation: portrait) {
             .digit-grid {
               grid-template-columns: repeat(2, 1fr);
               gap: 0.1vh;
             }
+            .bg-layer {
+              background-position: 70% 100%;
+              background-size: cover;
+            }
           }
         `}
       </style>
-
       <div className="bg-layer" />
-
       {/* 🔒 Gate rendering until font is ready */}
       {fontReady && (
         <main className="clock-container">
