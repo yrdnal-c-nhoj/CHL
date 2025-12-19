@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 // Define paths as constants. In Vite, files in /public are served from the root /
-const FONT_PATH = '/assets/ice.ttf';
-const BG_IMAGE_PATH = '/assets/forest.jpeg';
+const FONT_PATH = '/ice.ttf';
+const BG_IMAGE_PATH = '/forest.jpeg';
 const FONT_FAMILY = 'ClockFont251215';
 
 export default function VerticalDigitalClock() {
