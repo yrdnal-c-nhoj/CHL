@@ -1,10 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import dripFontUrl from './drip.ttf?url';  // ← Add ?url here
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import dripFontUrl from './drip.ttf?url';
 import backgroundImage from './ci.webp';
 
 const TiltedReverseClock = () => {
   const [time, setTime] = useState(new Date());
 
+  // ✅ Inject font BEFORE first paint (critical for production)
+  useLayoutEffect(() => {
+    if (document.getElementById('drip-font-style')) return;
+
+    const style = document.createElement('style');
+    style.id = 'drip-font-style';
+    style.textContent = `
+      @font-face {
+        font-family: 'DripFont';
+        src: url('${dripFontUrl}') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+    `;
+    document.head.appendChild(style);
+  }, []);
+
+  // Clock tick
   useEffect(() => {
     const id = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(id);
@@ -13,6 +32,7 @@ const TiltedReverseClock = () => {
   const hours24 = time.getHours();
   const hours12 = hours24 % 12 || 12;
   const minutes = time.getMinutes();
+
   const hourDigits = String(hours12);
   const minuteDigits = String(minutes).padStart(2, '0');
 
@@ -49,15 +69,8 @@ const TiltedReverseClock = () => {
         overflow: 'hidden',
       }}
     >
-      {/* Inject font-face + flicker animation */}
+      {/* Animation only — font already registered */}
       <style>{`
-        @font-face {
-          font-family: 'DripFont';
-          src: url('${dripFontUrl}') format('truetype');
-          font-weight: normal;
-          font-style: normal;
-          font-display: swap;
-        }
         @keyframes flicker {
           0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
           20%, 24%, 55% { opacity: 0.4; }
@@ -67,7 +80,7 @@ const TiltedReverseClock = () => {
         }
       `}</style>
 
-      {/* Bottom background image */}
+      {/* Background */}
       <div
         style={{
           position: 'absolute',
@@ -79,11 +92,12 @@ const TiltedReverseClock = () => {
           backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'left bottom',
-          filter: 'brightness(1.4) contrast(1) saturate(0.7) hue-rotate(30deg)',
+          filter:
+            'brightness(1.4) contrast(1) saturate(0.7) hue-rotate(30deg)',
         }}
       />
 
-      {/* Clock (tilted & reversed) */}
+      {/* Clock */}
       <div
         style={{
           position: 'absolute',
