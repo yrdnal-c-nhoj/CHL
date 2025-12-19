@@ -2,25 +2,27 @@ import { useState, useEffect } from 'react';
 import background from './swagr.webp';
 import fontDate20251219 from './fa.ttf';
 
-const styleInject = () => {
-  const style = document.createElement('style');
-  style.textContent = `
-    @font-face {
-      font-family: 'CustomFont';
-      src: url('${fontDate20251219}') format('truetype');
-    }
-    .clock-container, .time-part {
-      font-family: 'CustomFont', sans-serif;
-    }
-  `;
-  document.head.appendChild(style);
-};
-
 export default function App() {
   const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
-    styleInject();
+    // Create @font-face with the imported blob URL
+    const font = new FontFace('CustomFont', `url(${fontDate20251219})`);
+
+    font.load()
+      .then((loadedFont) => {
+        document.fonts.add(loadedFont);
+        setFontLoaded(true);
+      })
+      .catch((error) => {
+        console.error('Font failed to load:', error);
+      });
+
+    // Cleanup (optional, but good practice)
+    return () => {
+      document.fonts.delete(font);
+    };
   }, []);
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export default function App() {
   const isLargeScreen = window.innerWidth > 768;
 
   useEffect(() => {
-    const handleResize = () => setTime(new Date()); // Force re-render to recalculate layout
+    const handleResize = () => setTime(new Date());
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -53,7 +55,7 @@ export default function App() {
         overflow: 'hidden',
       }}
     >
-      {/* Background with dark overlay filter */}
+      {/* Background image */}
       <div
         style={{
           position: 'absolute',
@@ -63,18 +65,16 @@ export default function App() {
           backgroundPosition: 'center',
         }}
       />
+      {/* Dark overlay filter */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust opacity/value for desired darkness
-          // Alternative options you can swap or combine:
-          // backdropFilter: 'blur(4px)', // if you want a blur effect instead/additionally
-          // background: 'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6))',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust as needed
         }}
       />
 
-      {/* Clock content - unaffected by the filter */}
+      {/* Clock content */}
       <div
         style={{
           position: 'relative',
@@ -88,7 +88,6 @@ export default function App() {
         }}
       >
         <div
-          className="clock-container"
           style={{
             display: 'flex',
             flexDirection: isLargeScreen ? 'row' : 'column',
@@ -99,19 +98,22 @@ export default function App() {
             fontSize: isLargeScreen ? '15vw' : '20vw',
             fontWeight: 'normal',
             letterSpacing: '0.5vw',
+            fontFamily: fontLoaded ? 'CustomFont, sans-serif' : 'sans-serif',
+            opacity: fontLoaded ? 1 : 0.8, // Slight visual feedback while loading
+            transition: 'opacity 0.3s ease',
           }}
         >
-          <div className="time-part" style={{ display: 'flex' }}>
+          <div style={{ display: 'flex' }}>
             <span>{hours[0]}</span>
             <span>{hours[1]}</span>
           </div>
           {!isLargeScreen && <div style={{ height: '2vh' }}></div>}
-          <div className="time-part" style={{ display: 'flex' }}>
+          <div style={{ display: 'flex' }}>
             <span>{minutes[0]}</span>
             <span>{minutes[1]}</span>
           </div>
           {!isLargeScreen && <div style={{ height: '2vh' }}></div>}
-          <div className="time-part" style={{ display: 'flex' }}>
+          <div style={{ display: 'flex' }}>
             <span>{seconds[0]}</span>
             <span>{seconds[1]}</span>
           </div>
