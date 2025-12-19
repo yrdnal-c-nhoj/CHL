@@ -1,6 +1,8 @@
 // src/analytics.js
 export const pageview = (url) => {
-  window.gtag('config', 'G-497702120', {
-    page_path: url,
-  });
+  if (typeof window.gtag === 'function') {
+    window.gtag('config', 'G-24VJ4G2H48', {
+      page_path: url,
+    });
+  }
 };
