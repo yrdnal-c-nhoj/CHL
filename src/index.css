@@ -1,20 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
 
-/* Custom Fonts */
-@font-face {
-  font-family: 'Roco Revival';
-  src: url('/roc.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'ClockFont';
-  src: url('./pages/25-12-18/movie.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -36,3 +21,4 @@ html, body {
   display: flex;    /* makes body a flex container */
   flex-direction: column;
 }
+
