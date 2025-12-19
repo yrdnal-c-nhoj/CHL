@@ -8,6 +8,10 @@ const TiltedReverseClock = () => {
     return () => clearInterval(id)
   }, [])
 
+  // Font injection with today's date in variable name
+  const fontDate = new Date().toISOString().slice(0, 10).replace(/-/g, '')
+  const dripFontUrl = '/fonts/MortifiedDrip.ttf'
+
   const hours24 = time.getHours()
   const hours12 = hours24 % 12 || 12
   const minutes = time.getMinutes()
@@ -27,7 +31,7 @@ const TiltedReverseClock = () => {
         fontSize: '16vh',
         lineHeight: 1,
         color: '#F9DEB0FF',
-        fontFamily: "'Drip', 'Courier New', monospace",
+        fontFamily: `'Drip${fontDate}', 'Courier New', monospace`,
         letterSpacing: '-0.1em',
         textShadow: '0 0 5px rgba(249, 222, 176, 0.7)',
         fontSmooth: 'never',
@@ -48,14 +52,13 @@ const TiltedReverseClock = () => {
         background: 'black',
         position: 'relative',
         overflow: 'hidden',
-        fontFamily: 'Drip, monospace',
       }}
     >
       {/* font + flicker injection */}
       <style>{`
         @font-face {
-          font-family: 'Drip';
-          src: url('/fonts/MortifiedDrip.ttf') format('truetype');
+          font-family: 'Drip${fontDate}';
+          src: url('${dripFontUrl}') format('truetype');
           font-weight: normal;
           font-style: normal;
           font-display: swap;
