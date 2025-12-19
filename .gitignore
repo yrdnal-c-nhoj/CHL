@@ -483,4 +483,6 @@ FodyWeavers.xsd
 screenshots/
 scripts/
 .idea/
-utils/
+
+# Keep utils/analytics
+test/
