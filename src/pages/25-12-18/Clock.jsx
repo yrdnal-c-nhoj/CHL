@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-// 1. This import tells Vite to process the file and include it in /dist/assets
-import dripFont from './drip.ttf' 
+import dripFont from './drip.ttf'
 import backgroundImage from './ci.webp'
 
 const TiltedReverseClock = () => {
@@ -18,6 +17,9 @@ const TiltedReverseClock = () => {
   const hourDigits = String(hours12)
   const minuteDigits = String(minutes).padStart(2, '0')
 
+  // Resolve font URL safely for production
+  const dripFontUrl = new URL('./drip.ttf', import.meta.url).href
+
   const DigitBox = ({ value }) => (
     <div
       className="flicker"
@@ -30,7 +32,7 @@ const TiltedReverseClock = () => {
         fontSize: '16vh',
         fontFamily: 'DripFont, sans-serif',
         lineHeight: 1,
-        color: '#FAE0B4FF',
+        color: '#FBDEABFF',
         letterSpacing: '-0.1em',
         textShadow: '0 0 5px rgba(249, 222, 176, 0.7)',
         transform: 'rotateX(180deg)',
@@ -51,11 +53,11 @@ const TiltedReverseClock = () => {
         overflow: 'hidden',
       }}
     >
-      {/* 2. Use the 'dripFont' variable directly in the template literal */}
+      {/* Inject font-face + flicker animation */}
       <style>{`
         @font-face {
           font-family: 'DripFont';
-          src: url('${dripFont}') format('truetype');
+          src: url('${dripFontUrl}') format('truetype');
           font-weight: normal;
           font-style: normal;
           font-display: swap;
@@ -71,7 +73,7 @@ const TiltedReverseClock = () => {
         }
       `}</style>
 
-      {/* Background and Clock code remains the same... */}
+      {/* Bottom background image */}
       <div
         style={{
           position: 'absolute',
@@ -87,6 +89,7 @@ const TiltedReverseClock = () => {
         }}
       />
 
+      {/* Clock (tilted & reversed) */}
       <div
         style={{
           position: 'absolute',
