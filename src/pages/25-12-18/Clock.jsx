@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import dripFont from './drip.ttf'
+import backgroundImage from './ci.webp'
 
 const TiltedReverseClock = () => {
   const [time, setTime] = useState(new Date())
@@ -9,14 +10,15 @@ const TiltedReverseClock = () => {
     return () => clearInterval(id)
   }, [])
 
-  // Font injection with today's date in variable name
-
   const hours24 = time.getHours()
   const hours12 = hours24 % 12 || 12
   const minutes = time.getMinutes()
 
   const hourDigits = String(hours12)
   const minuteDigits = String(minutes).padStart(2, '0')
+
+  // Resolve font URL safely for production
+  const dripFontUrl = new URL('./drip.ttf', import.meta.url).href
 
   const DigitBox = ({ value }) => (
     <div
@@ -33,10 +35,8 @@ const TiltedReverseClock = () => {
         color: '#F9DEB0FF',
         letterSpacing: '-0.1em',
         textShadow: '0 0 5px rgba(249, 222, 176, 0.7)',
-        fontSmooth: 'never',
-        WebkitFontSmoothing: 'none',
         transform: 'rotateX(180deg)',
-        filter: 'blur(1px)'
+        filter: 'blur(1px)',
       }}
     >
       {value}
@@ -53,13 +53,14 @@ const TiltedReverseClock = () => {
         overflow: 'hidden',
       }}
     >
-      {/* font + flicker injection */}
+      {/* Inject font-face + flicker animation */}
       <style>{`
         @font-face {
           font-family: 'DripFont';
-          src: url(${dripFont}) format('truetype');
+          src: url('${dripFontUrl}') format('truetype');
           font-weight: normal;
           font-style: normal;
+          font-display: swap;
         }
 
         @keyframes flicker {
@@ -72,7 +73,7 @@ const TiltedReverseClock = () => {
         }
       `}</style>
 
-      {/* bottom background image */}
+      {/* Bottom background image */}
       <div
         style={{
           position: 'absolute',
@@ -80,7 +81,7 @@ const TiltedReverseClock = () => {
           left: 0,
           width: '100vw',
           height: '100dvh',
-          backgroundImage: `url(/ci.webp)`,
+          backgroundImage: `url(${backgroundImage})`,
           backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'left bottom',
@@ -88,7 +89,7 @@ const TiltedReverseClock = () => {
         }}
       />
 
-      {/* clock (tilted & reversed) */}
+      {/* Clock (tilted & reversed) */}
       <div
         style={{
           position: 'absolute',
