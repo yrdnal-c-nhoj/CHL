@@ -17,8 +17,8 @@ const TiltedReverseClock = () => {
   const hourDigits = String(hours12)
   const minuteDigits = String(minutes).padStart(2, '0')
 
-  // Resolve font URL safely for production
-  const dripFontUrl = new URL('./drip.ttf', import.meta.url).href
+  // Use the imported font URL
+  const dripFontUrl = dripFont
 
   const DigitBox = ({ value }) => (
     <div
