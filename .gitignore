@@ -463,6 +463,7 @@ Thumbs.db
 screenshots/
 scripts/
 utils/
+public/
 
 # Windows Installer files
 *.cab
@@ -470,4 +471,6 @@ utils/
 *.msix
 *.msm
 *.msp
-public/
+
+testclock.json
+
