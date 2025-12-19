@@ -1,72 +1,132 @@
-import React, { useState, useEffect, useRef } from 'react';
-import bgImage from './roc.webp';
-import rococoFont_251214 from './roc.ttf';
+import React, { useState, useEffect } from 'react'
+import bgImage from './roc.webp' // Background image in same folder
+import rococoFont_251214 from './roc.ttf' // Font imported with today's date
 
-export default function RococoClock() {
-  const [now, setNow] = useState(new Date());
-  const containerRef = useRef(null);
-  const animationRef = useRef();
-  const digitsRef = useRef([]);
+export default function RococoClock () {
+  const [now, setNow] = useState(new Date())
+  const [digitStyles, setDigitStyles] = useState([])
 
-  // 1. Time Update (Every minute)
   useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 60000);
-    return () => clearInterval(timer);
-  }, []);
+    const interval = setInterval(() => setNow(new Date()), 5000) // Update every 5 seconds
+    return () => clearInterval(interval)
+  }, [])
 
-  // 2. Format Data
-  const hours = now.getHours();
-  const displayHours = hours % 12 === 0 ? 12 : hours % 12;
-  const ampm = hours >= 12 ? 'pm' : 'am';
-  const timeString = `${displayHours}${now.getMinutes().toString().padStart(2, '0')}${ampm}`;
-  const digits = timeString.split('');
-
-  // 3. High-Performance Animation Loop
+  // Generate styles once when component mounts
   useEffect(() => {
-    let lastTime = 0;
-    const digitData = digits.map((_, i) => ({
-      x: (Math.random() - 0.5) * 20,
-      y: (Math.random() - 0.5) * 20,
-      vx: (Math.random() - 0.5) * 0.05,
-      vy: (Math.random() - 0.5) * 0.05,
-      rot: Math.random() * 360,
-      rotV: (Math.random() - 0.5) * 0.05,
-    }));
+    const isMobile = window.innerWidth <= 768 // Check if mobile device
+    const styles = []
+    const totalDigits = 6
+    const spacing = isMobile ? 8 : 12 // Vertical spacing between digits
 
-    const animate = (timestamp) => {
-      const dt = timestamp - lastTime;
-      lastTime = timestamp;
+    for (let i = 0; i < totalDigits; i++) {
+      // Calculate curved position (gentle curve drifting right at top)
+      const y = i * spacing
+      // Create a gentle curve: higher digits (bottom) more left, lower digits (top) drift right
+      const curveOffset = (totalDigits - 1 - i) * (isMobile ? 1.5 : 2.5) // Adjust curve strength
+      const x = curveOffset
 
-      digitsRef.current.forEach((el, i) => {
-        if (!el || !digitData[i]) return;
+      // Determine z-index based on time component (hours highest, minutes middle, ampm lowest)
+      let zIndex
+      if (i < 2) {
+        zIndex = 30 // Hours - highest
+      } else if (i >= 4) {
+        zIndex = 5 // AM/PM - lowest
+      } else {
+        zIndex = 15 // Minutes - middle
+      }
 
-        const data = digitData[i];
-        // Physics update
-        data.x += data.vx * dt;
-        data.y += data.vy * dt;
-        data.rot += data.rotV * dt;
+      // Adjust sizes based on device and component type
+      let baseSize, maxSize
+      if (i >= 4) {
+        // AM/PM - smaller
+        baseSize = isMobile ? 7 : 9
+        maxSize = isMobile ? 18 : 25
+      } else {
+        // Hours and Minutes - normal size
+        baseSize = isMobile ? 9 : 11
+        maxSize = isMobile ? 26 : 38
+      }
+      const scaleFactor = isMobile ? 0.7 : 1
 
-        // Bouncing logic
-        if (Math.abs(data.x) > 15) data.vx *= -1;
-        if (Math.abs(data.y) > 15) data.vy *= -1;
+      styles.push({
+        display: 'inline-block',
+        fontFamily: `'Roco Revival', serif`,
+        fontSize: `${baseSize + Math.random() * maxSize}vh`,
+        color: '#D3C4C0FF',
+        textShadow: `
+          2px 2px 4px rgba(255, 20, 147, 0.4),
+          4px 4px 8px rgba(50, 205, 50, 0.4),
+          0 0 8px rgba(255, 20, 147, 0.6),
+          0 0 7px rgba(50, 205, 50, 0.4)
+        `,
+        padding: `${0.1 + Math.random() * (isMobile ? 5 : 11.3)}vh ${
+          0.1 + Math.random() * 0.4
+        }vh`,
+        margin: `${0.01 + Math.random() * (isMobile ? 1.2 : 2.4)}vh`,
+        position: 'absolute',
+        zIndex: zIndex,
+        transform: `
+          translate(${x}vh, ${y}vh)
+          rotate(${(Math.random() * 60 - 30) * scaleFactor}deg)
+          skew(${(Math.random() * 15 - 7.5) * scaleFactor}deg, ${
+          (Math.random() * 15 - 7.5) * scaleFactor
+        }deg)
+          scale(${0.8 + Math.random() * 0.4 * scaleFactor}, ${
+          0.8 + Math.random() * 0.4 * scaleFactor
+        })
+        `,
+        transformOrigin: 'center center',
+        transition: 'all 2s ease' // Smooth transition on resize
+      })
+    }
+    setDigitStyles(styles)
+  }, [])
 
-        // Dynamic Scaling (Pulse)
-        const scale = 1 + Math.sin(timestamp * 0.002 + i) * 0.1;
-        const floatY = Math.sin(timestamp * 0.001 + i) * 5;
+  const hours = now.getHours()
+  const minutes = now.getMinutes()
+  const isPM = hours >= 12
+  const displayHours = hours % 12 === 0 ? 12 : hours % 12
 
-        // Apply directly to DOM via CSS Variables for 60fps
-        el.style.setProperty('--tx', `${data.x}vh`);
-        el.style.setProperty('--ty', `${data.y + floatY}vh`);
-        el.style.setProperty('--rot', `${data.rot}deg`);
-        el.style.setProperty('--scale', scale);
-      });
+  const hourDigits = displayHours.toString().split('')
+  const minuteDigits = minutes.toString().padStart(2, '0').split('')
 
-      animationRef.current = requestAnimationFrame(animate);
-    };
+  const containerStyle = {
+    fontFamily: `'Roco Revival', serif`,
+    height: '100vh',
+    width: '100vw',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    paddingTop: '15vh',
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: 'cover', // Cover the entire container
+    backgroundPosition: 'left', // Center the background
+    backgroundRepeat: 'no-repeat',
+    backgroundColor: '#000', // Black background to fill any empty space
+    overflow: 'hidden',
+    position: 'relative',
+    backgroundAttachment: 'fixed',
+    '@media (max-width: 768px)': {
+      backgroundSize: 'contain', // Use contain on mobile to ensure full visibility
+      backgroundPosition: 'center center'
+    }
+  }
 
-    animationRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationRef.current);
-  }, [digits.length]); // Re-init physics only if number of digits change
+  const rowStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '@media (max-width: 768px)': {
+      transform: 'scale(0.8)' // Slightly reduce size on mobile
+    },
+    '@media (max-width: 480px)': {
+      transform: 'scale(0.6)' // Even smaller on very small devices
+    }
+  }
+
+  const ampm = (isPM ? 'pm' : 'am').split('')
 
   return (
     <>
@@ -75,50 +135,33 @@ export default function RococoClock() {
           @font-face {
             font-family: 'Roco Revival';
             src: url(${rococoFont_251214}) format('truetype');
-          }
-
-          .clock-container {
-            height: 100vh; width: 100vw;
-            display: flex; justify-content: center; align-items: center;
-            background: black url(${bgImage}) no-repeat center center / cover;
-            overflow: hidden; position: relative;
-          }
-
-          .rococo-digit {
-            font-family: 'Roco Revival', serif;
-            display: inline-block;
-            position: relative;
-            color: #D3C4C0FF;
-            font-size: 15vw;
-            margin: 0 1vw;
-            will-change: transform;
-            text-shadow: 
-              2px 2px 4px rgba(255, 20, 147, 0.4),
-              0 0 15px rgba(50, 205, 50, 0.3);
-            /* This handles the heavy lifting */
-            transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(var(--scale));
-          }
-
-          @media (max-width: 768px) {
-            .rococo-digit { font-size: 20vw; }
-            .clock-container { background-size: contain; }
+            font-weight: normal;
+            font-style: normal;
           }
         `}
       </style>
-
-      <div className="clock-container" ref={containerRef}>
-        <div style={{ display: 'flex' }}>
-          {digits.map((char, i) => (
+      <div style={containerStyle}>
+        <div style={rowStyle}>
+          {hourDigits.map((digit, idx) => (
+            <div key={`h-${idx}`} style={digitStyles[idx]}>
+              {digit}
+            </div>
+          ))}
+          {minuteDigits.map((digit, idx) => (
+            <div key={`m-${idx}`} style={digitStyles[hourDigits.length + idx]}>
+              {digit}
+            </div>
+          ))}
+          {ampm.map((letter, idx) => (
             <div
-              key={`${i}-${char}`}
-              ref={el => (digitsRef.current[i] = el)}
-              className="rococo-digit"
+              key={`ampm-${idx}`}
+              style={digitStyles[hourDigits.length + minuteDigits.length + idx]}
             >
-              {char}
+              {letter}
             </div>
           ))}
         </div>
       </div>
     </>
-  );
+  )
 }
