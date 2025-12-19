@@ -24,22 +24,14 @@
     <meta property="og:url" content="https://www.cubistheart.com/" />
     <meta property="og:type" content="website" />
 
-    <!-- ✅ Google Analytics -->
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-24VJ4G2H48"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() { dataLayer.push(arguments); }
       gtag('js', new Date());
+      // Disable automatic page view as we're handling it manually in analytics.jsx
       gtag('config', 'G-24VJ4G2H48', { send_page_view: false });
-    </script>
-
-    <!-- ❓ Optional: remove duplicate tracking if only using one tag -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3F5E9ZFKM"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', 'G-S3F5E9ZFKM');
     </script>
   </head>
 
