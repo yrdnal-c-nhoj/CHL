@@ -1,54 +1,73 @@
-import React, { useEffect, useState } from 'react'
-import bgImage from './forest.jpeg'
-import clockFont_251215 from './ice.ttf'
+import React, { useEffect, useState } from 'react';
 
-export default function VerticalDigitalClock () {
-  const [now, setNow] = useState(new Date())
-  const [fontLoaded, setFontLoaded] = useState(false)
+// Define paths as constants. In Vite, files in /public are served from the root /
+const FONT_PATH = '/assets/ice.ttf';
+const BG_IMAGE_PATH = '/assets/forest.jpeg';
+const FONT_FAMILY = 'ClockFont251215';
 
+export default function VerticalDigitalClock() {
+  const [now, setNow] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
+
+  // 1. Clock Timer
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000)
-    return () => clearInterval(id)
-  }, [])
+    const id = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
 
+  // 2. Robust Font Loading
   useEffect(() => {
-    const font = new FontFace('ClockFont251215', `url(${clockFont_251215})`)
-    font.load().then(() => {
-      document.fonts.add(font)
-      setFontLoaded(true)
-    }).catch(err => {
-      console.error('Font loading failed:', err)
-      setFontLoaded(true) // Show clock anyway
-    })
-  }, [])
+    const loadFont = async () => {
+      try {
+        // Use the FontFace API to load the font from the public folder
+        const font = new FontFace(FONT_FAMILY, `url(${FONT_PATH})`);
+        const loadedFace = await font.load();
+        document.fonts.add(loadedFace);
+        setFontLoaded(true);
+      } catch (err) {
+        console.error('Font loading failed, falling back to system font:', err);
+        setFontLoaded(true); // Reveal clock anyway so it's not invisible
+      }
+    };
 
-  const pad = num => String(num).padStart(2, '0')
-  const hours = pad(now.getHours())
-  const minutes = pad(now.getMinutes())
-  const seconds = pad(now.getSeconds())
-  const allDigits = [...hours, ...minutes, ...seconds]
+    loadFont();
+  }, []);
+
+  const pad = (num) => String(num).padStart(2, '0');
+  const hours = pad(now.getHours());
+  const minutes = pad(now.getMinutes());
+  const seconds = pad(now.getSeconds());
+  const allDigits = [...hours, ...minutes, ...seconds];
 
   return (
-    <div style={styles.root}>
-      <style>{`
-        @font-face {
-          font-family: 'ClockFont251215';
-          src: url(${clockFont_251215});
-        }
-      `}</style>
+    <div style={{ ...styles.root, backgroundImage: `url(${BG_IMAGE_PATH})` }}>
+      {/* Global Style Injection for the @font-face */}
+      <style>
+        {`
+          @font-face {
+            font-family: '${FONT_FAMILY}';
+            src: url('${FONT_PATH}') format('truetype');
+            font-display: block;
+          }
+        `}
+      </style>
+
       <div style={styles.clockContainer}>
         {allDigits.map((digit, i) => (
-          <div key={i} style={{
-            ...styles.digitBox,
-            opacity: fontLoaded ? 1 : 0,
-            transition: 'opacity 0.2s ease-in'
-          }}>
+          <div
+            key={i}
+            style={{
+              ...styles.digitBox,
+              opacity: fontLoaded ? 1 : 0,
+              transition: 'opacity 0.4s ease-in',
+            }}
+          >
             {digit}
           </div>
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 const styles = {
@@ -58,13 +77,13 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)'
+    // Added safe area insets for mobile notched devices
+    padding: 'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
   },
   clockContainer: {
     display: 'flex',
@@ -74,10 +93,10 @@ const styles = {
     gap: '0.5vh',
     maxHeight: '100%',
     padding: '20px',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
   },
   digitBox: {
-    fontFamily: 'ClockFont251215, serif',
+    fontFamily: `${FONT_FAMILY}, serif`,
     fontSize: 'min(15vh, 26vw)',
     fontVariantNumeric: 'tabular-nums',
     fontFeatureSettings: '"tnum"',
@@ -86,6 +105,6 @@ const styles = {
     WebkitFontSmoothing: 'antialiased',
     MozOsxFontSmoothing: 'grayscale',
     lineHeight: 1,
-    flexShrink: 0
-  }
-}
+    flexShrink: 0,
+  },
+};
