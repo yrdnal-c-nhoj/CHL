@@ -6,12 +6,35 @@ const QuadClock = () => {
   const [fontLoaded, setFontLoaded] = useState(false)
 
   useEffect(() => {
-    // 1. Check if the font is already loaded or wait for it
-    document.fonts.ready.then(() => {
-      setFontLoaded(true)
-    })
+    // Load font programmatically for better cross-browser support
+    const loadFont = async () => {
+      try {
+        const font = new FontFace('font_2025_12_16', `url(${font_2025_12_16})`, {
+          style: 'normal',
+          weight: '400',
+          display: 'swap'
+        });
+        
+        // Wait for the font to be loaded
+        await font.load();
+        
+        // Add font to document
+        document.fonts.add(font);
+        
+        // Verify font is loaded
+        await document.fonts.ready;
+        
+        setFontLoaded(true);
+      } catch (error) {
+        console.error('Error loading font:', error);
+        // Fallback to system font if loading fails
+        setFontLoaded(true);
+      }
+    };
 
-    // 2. Animation loop
+    loadFont();
+
+    // Animation loop
     let animationId
     const updateTime = () => {
       setTime(Date.now())
@@ -60,7 +83,12 @@ const QuadClock = () => {
       src: url(${font_2025_12_16}) format('truetype');
       font-weight: normal;
       font-style: normal;
-      font-display: block; /* Hides text until font is loaded */
+      font-display: swap; /* Better for production */
+    }
+    
+    /* Fallback font stack */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     }
   `
 
