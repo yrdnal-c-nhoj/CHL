@@ -32,7 +32,7 @@ const TiltedReverseClock = () => {
         fontSize: '16vh',
         fontFamily: 'DripFont, sans-serif',
         lineHeight: 1,
-        color: '#ECD09FFF',
+        color: '#F6DDB2FF',
         letterSpacing: '-0.1em',
         textShadow: '0 0 5px rgba(249, 222, 176, 0.7)',
         transform: 'rotateX(180deg)',
