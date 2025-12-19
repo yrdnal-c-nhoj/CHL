@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import fontFile from './fa.ttf';
 import backgroundImg from './swagr.webp';
 
@@ -6,16 +6,24 @@ const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
   const [fontReady, setFontReady] = useState(false);
 
-  // Load font explicitly (prevents FOUT)
+  // Load font explicitly with better error handling
   useEffect(() => {
-    const font = new FontFace('TodayFont', `url(${fontFile})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontReady(true);
-    });
+    const loadFont = async () => {
+      try {
+        const font = new FontFace('TodayFont', `url(${fontFile}) format('truetype')`);
+        await font.load();
+        document.fonts.add(font);
+      } catch (error) {
+        console.error('Failed to load font:', error);
+      } finally {
+        setFontReady(true);
+      }
+    };
+
+    loadFont();
   }, []);
 
-  // Update every second
+  // Update time every second
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
@@ -87,12 +95,22 @@ const DigitalClock = () => {
       {/* 🔒 Gate rendering until font is ready */}
       {fontReady && (
         <main className="clock-container">
-          <div className="digit-grid">
-            {timeString.split('').map((char, i) => (
-              <div key={i} className="digit">
-                {digitToLetter(char)}
-              </div>
-            ))}
+          <div style={{
+            fontFamily: "'TodayFont', monospace",
+            fontSize: '10vw',
+            color: '#ffffff',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            backgroundImage: `url(${backgroundImg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
+            opacity: fontReady ? 1 : 0.7,
+            transition: 'opacity 0.3s ease'
+          }}>
+            {`${hours}:${minutes}:${seconds}`}
           </div>
         </main>
       )}
