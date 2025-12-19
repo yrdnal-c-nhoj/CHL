@@ -11,13 +11,12 @@ export default function RococoClock () {
     return () => clearInterval(interval)
   }, [])
 
-  // Generate styles when component mounts or time updates
+  // Generate styles once when component mounts
   useEffect(() => {
     const isMobile = window.innerWidth <= 768 // Check if mobile device
     const styles = []
     const totalDigits = 6
     const spacing = isMobile ? 8 : 12 // Vertical spacing between digits
-    const maxRotation = 15 // Reduced from 30 degrees for more subtle movement
 
     for (let i = 0; i < totalDigits; i++) {
       // Calculate curved position (gentle curve drifting right at top)
@@ -68,20 +67,20 @@ export default function RococoClock () {
         zIndex: zIndex,
         transform: `
           translate(${x}vh, ${y}vh)
-          rotate(${(Math.random() * maxRotation * 2 - maxRotation) * scaleFactor}deg)
-          skew(${(Math.random() * 10 - 5) * scaleFactor}deg, ${
-          (Math.random() * 10 - 5) * scaleFactor
+          rotate(${(Math.random() * 60 - 30) * scaleFactor}deg)
+          skew(${(Math.random() * 15 - 7.5) * scaleFactor}deg, ${
+          (Math.random() * 15 - 7.5) * scaleFactor
         }deg)
-          scale(${0.9 + Math.random() * 0.2 * scaleFactor}, ${
-          0.9 + Math.random() * 0.2 * scaleFactor
+          scale(${0.8 + Math.random() * 0.4 * scaleFactor}, ${
+          0.8 + Math.random() * 0.4 * scaleFactor
         })
         `,
         transformOrigin: 'center center',
-        transition: 'all 3s cubic-bezier(0.2, 0.8, 0.2, 1)' // Smoother, more gradual transition
+        transition: 'all 0.3s ease' // Smooth transition on resize
       })
     }
     setDigitStyles(styles)
-  }, [now]) // Regenerate styles when time updates
+  }, [])
 
   const hours = now.getHours()
   const minutes = now.getMinutes()
