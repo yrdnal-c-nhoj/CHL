@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import styles from './Clock.module.css'
 
 const TiltedReverseClock = () => {
   const [time, setTime] = useState(new Date())
@@ -17,9 +16,22 @@ const TiltedReverseClock = () => {
   const minuteDigits = String(minutes).padStart(2, '0')
 
   const DigitBox = ({ value }) => (
-    <div 
-      className={`flicker ${styles.clockDigit}`}
+    <div
+      className="flicker"
       style={{
+        width: '10vh',
+        height: '18vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '16vh',
+        lineHeight: 1,
+        color: '#F9DEB0FF',
+        fontFamily: "'Drip', 'Courier New', monospace",
+        letterSpacing: '-0.1em',
+        textShadow: '0 0 5px rgba(249, 222, 176, 0.7)',
+        fontSmooth: 'never',
+        WebkitFontSmoothing: 'none',
         transform: 'rotateX(180deg)',
         filter: 'blur(1px)'
       }}
@@ -36,14 +48,14 @@ const TiltedReverseClock = () => {
         background: 'black',
         position: 'relative',
         overflow: 'hidden',
-        fontFamily: 'ClockFont, monospace',
+        fontFamily: 'Drip, monospace',
       }}
     >
       {/* font + flicker injection */}
       <style>{`
         @font-face {
-          font-family: 'ClockFont';
-          src: url('/movie.ttf') format('truetype');
+          font-family: 'Drip';
+          src: url('/fonts/MortifiedDrip.ttf') format('truetype');
           font-weight: normal;
           font-style: normal;
           font-display: swap;
