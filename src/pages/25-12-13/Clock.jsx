@@ -1,30 +1,45 @@
 import React, { useState, useEffect } from 'react'
 import bgImage from './roc.webp' 
-import customFontUrl from './roc.ttf' 
+import fontFile from './roc.ttf' 
 
 export default function RococoClock() {
   const [now, setNow] = useState(new Date())
   const [digitStyles, setDigitStyles] = useState([])
+  const [fontLoaded, setFontLoaded] = useState(false)
   
-  const fontId = `font_${new Date().toISOString().slice(0, 10).replace(/-/g, '_')}`
+  const fontFamily = 'RococoFont'
 
+  // Load the font when component mounts
   useEffect(() => {
-    const styleTag = document.createElement('style')
-    styleTag.innerHTML = `
-      @font-face {
-        font-family: '${fontId}';
-        src: url('${customFontUrl}') format('woff2');
-        font-display: swap;
+    const loadFont = async () => {
+      try {
+        const font = new FontFace(fontFamily, `url(${fontFile}) format('truetype')`)
+        await font.load()
+        document.fonts.add(font)
+        setFontLoaded(true)
+      } catch (error) {
+        console.error('Failed to load font:', error)
+        setFontLoaded(true) // Continue even if font fails to load
       }
-    `
-    document.head.appendChild(styleTag)
-
-    const interval = setInterval(() => setNow(new Date()), 3000)
-    return () => {
-      clearInterval(interval)
-      document.head.removeChild(styleTag)
     }
-  }, [fontId])
+
+    loadFont()
+    
+    const interval = setInterval(() => setNow(new Date()), 3000)
+    return () => clearInterval(interval)
+  }, [fontFamily])
+
+  // Show loading state until font is ready
+  if (!fontLoaded) {
+    return <div style={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      height: '100vh',
+      backgroundColor: '#000',
+      color: '#D3C4C0FF'
+    }}>Loading...</div>
+  }
 
   useEffect(() => {
     const isMobile = window.innerWidth <= 768
@@ -52,7 +67,7 @@ export default function RococoClock() {
 
       styles.push({
         display: 'inline-block',
-        fontFamily: `'${fontId}', serif`,
+        fontFamily: `'${fontFamily}', serif`,
         fontSize: `${baseSize + Math.random() * maxSize}vh`,
         color: '#D3C4C0FF',
         textShadow: `
