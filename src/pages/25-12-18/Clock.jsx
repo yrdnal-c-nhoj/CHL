@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import styles from './Clock.module.css'
 
 const TiltedReverseClock = () => {
   const [time, setTime] = useState(new Date())
@@ -16,20 +17,11 @@ const TiltedReverseClock = () => {
   const minuteDigits = String(minutes).padStart(2, '0')
 
   const DigitBox = ({ value }) => (
-    <div
-      className="flicker"
+    <div 
+      className={`flicker ${styles.clockDigit}`}
       style={{
-        width: '10vh',
-        height: '18vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '16vh',
-        lineHeight: 1,
-        color: '#F9DEB0FF',
-        fontFamily: 'ClockFont, monospace',
         transform: 'rotateX(180deg)',
-        filter: 'blur(1px)',
+        filter: 'blur(1px)'
       }}
     >
       {value}

@@ -1,0 +1,19 @@
+@font-face {
+  font-family: 'ClockFont';
+  src: url('../../../public/movie.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.clockDigit {
+  width: 10vh;
+  height: 18vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16vh;
+  line-height: 1;
+  color: #F9DEB0FF;
+  font-family: 'ClockFont', monospace;
+}
