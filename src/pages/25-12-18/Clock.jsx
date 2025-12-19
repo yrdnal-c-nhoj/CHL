@@ -27,6 +27,7 @@ const TiltedReverseClock = () => {
         fontSize: '16vh',
         lineHeight: 1,
         color: '#F9DEB0FF',
+        fontFamily: 'ClockFont, monospace',
         transform: 'rotateX(180deg)',
         filter: 'blur(1px)',
       }}
@@ -43,7 +44,7 @@ const TiltedReverseClock = () => {
         background: 'black',
         position: 'relative',
         overflow: 'hidden',
-        fontFamily: '"ClockFont", "Digital-7", "Courier New", monospace, sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+        fontFamily: 'ClockFont, monospace',
       }}
     >
       {/* font + flicker injection */}
