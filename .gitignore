@@ -495,7 +495,6 @@ Thumbs.db
 screenshots/
 scripts/
 utils/
-public/
 
 # Windows Installer files
 *.cab
