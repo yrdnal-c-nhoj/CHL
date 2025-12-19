@@ -7,16 +7,17 @@ export default function RococoClock () {
   const [digitStyles, setDigitStyles] = useState([])
 
   useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 5000) // Update every 5 seconds
+    const interval = setInterval(() => setNow(new Date()), 3000) // Update every 3 seconds
     return () => clearInterval(interval)
   }, [])
 
-  // Generate styles once when component mounts
+  // Generate styles when component mounts or time updates
   useEffect(() => {
     const isMobile = window.innerWidth <= 768 // Check if mobile device
     const styles = []
     const totalDigits = 6
     const spacing = isMobile ? 8 : 12 // Vertical spacing between digits
+    const maxRotation = 15 // Reduced from 30 degrees for more subtle movement
 
     for (let i = 0; i < totalDigits; i++) {
       // Calculate curved position (gentle curve drifting right at top)
@@ -67,20 +68,20 @@ export default function RococoClock () {
         zIndex: zIndex,
         transform: `
           translate(${x}vh, ${y}vh)
-          rotate(${(Math.random() * 60 - 30) * scaleFactor}deg)
-          skew(${(Math.random() * 15 - 7.5) * scaleFactor}deg, ${
-          (Math.random() * 15 - 7.5) * scaleFactor
+          rotate(${(Math.random() * maxRotation * 2 - maxRotation) * scaleFactor}deg)
+          skew(${(Math.random() * 10 - 5) * scaleFactor}deg, ${
+          (Math.random() * 10 - 5) * scaleFactor
         }deg)
-          scale(${0.8 + Math.random() * 0.4 * scaleFactor}, ${
-          0.8 + Math.random() * 0.4 * scaleFactor
+          scale(${0.9 + Math.random() * 0.2 * scaleFactor}, ${
+          0.9 + Math.random() * 0.2 * scaleFactor
         })
         `,
         transformOrigin: 'center center',
-        transition: 'all 2s ease' // Smooth transition on resize
+        transition: 'all 3s cubic-bezier(0.2, 0.8, 0.2, 1)' // Smoother, more gradual transition
       })
     }
     setDigitStyles(styles)
-  }, [])
+  }, [now]) // Regenerate styles when time updates
 
   const hours = now.getHours()
   const minutes = now.getMinutes()
