@@ -3,6 +3,38 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Vercel
+.vercel/
+
+# Local development
+.local/
+.parcel-cache/
+.cache/
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Large media files (consider using Git LFS for these)
+# *.mp4
+# *.mov
+# *.wav
+# *.mp3
+# *.zip
+# *.7z
+
 # User-specific files
 *.rsuser
 *.suo
