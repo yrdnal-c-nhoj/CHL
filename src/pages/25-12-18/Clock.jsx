@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 // local assets (same folder)
 import backgroundImage from './ci.webp'
-import font_2025_12_17 from './movie.ttf'
 
 const TiltedReverseClock = () => {
   const [time, setTime] = useState(new Date())
@@ -50,14 +49,8 @@ const TiltedReverseClock = () => {
         fontFamily: 'ClockFont',
       }}
     >
-      {/* font face + flicker animation */}
+      {/* flicker animation */}
       <style>{`
-        @font-face {
-          font-family: 'ClockFont';
-          src: url(${font_2025_12_17}) format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
         @keyframes flicker {
           0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
             opacity: 1;
