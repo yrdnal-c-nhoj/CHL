@@ -1,7 +1,8 @@
 
 @font-face {
   font-family: 'Drip';
-  src: url('/fonts/MortifiedDrip.ttf') format('truetype');
+  src: local('Drip'),
+       url('drip.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -16,7 +17,7 @@
   font-size: 16vh;
   line-height: 1;
   color: #F9DEB0FF;
-  font-family: 'Drip', sans-serif;
+  font-family: 'Drip', 'Courier New', monospace;
   letter-spacing: -0.1em;
   text-shadow: 0 0 5px rgba(249, 222, 176, 0.7);
   font-smooth: never;
