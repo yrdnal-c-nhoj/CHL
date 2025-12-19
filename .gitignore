@@ -183,6 +183,66 @@ AutoTest.Net/
 # Installshield output folder
 [Ee]xpress/
 
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+# Next.js
+.next/
+out/
+
+# Vercel
+.vercel
+
+# Build outputs
+.next
+out
+
+# Debug logs
+.pnpm-debug.log*
+
+# Local development
+.local-*
+
+# Build tool specific
+.eslintcache
+.next
+.nuxt
+.nuxt-proxy
+.nuxt-types
+
+# Misc
+.cache/
+.temp/
+.tmp/
+.temp*
+tmp/
+temp/
+
+# Testing
+.nyc_output/
+coverage/
+
+# Storybook
+.storybook-out/
+storybook-static/
+
+# Production
+build/
+dist/
+
+# Optional
+.cache/
+.parcel-cache/
+
+# Optional REPL history
+.node_repl_history
+
 # DocProject is a documentation generator add-in
 DocProject/buildhelp/
 DocProject/Help/*.HxT
@@ -422,3 +482,5 @@ FodyWeavers.xsd
 
 screenshots/
 scripts/
+.idea/
+utils/
