@@ -6,4 +6,10 @@ export default defineConfig({
   css: {
     postcss: './postcss.config.js', // use separate PostCSS config
   },
+  server: {
+    headers: {
+      'Cross-Origin-Embedder-Policy': 'credentialless',
+      'Cross-Origin-Opener-Policy': 'same-origin',
+    },
+  },
 });

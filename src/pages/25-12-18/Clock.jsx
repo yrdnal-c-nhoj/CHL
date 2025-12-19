@@ -43,17 +43,17 @@ const TiltedReverseClock = () => {
         background: 'black',
         position: 'relative',
         overflow: 'hidden',
-        fontFamily: 'ClockFont',
+        fontFamily: '"ClockFont", "Digital-7", "Courier New", monospace, sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
       }}
     >
       {/* font + flicker injection */}
       <style>{`
         @font-face {
           font-family: 'ClockFont';
-          src: url(/movie.ttf) format('truetype');
+          src: url('/movie.ttf') format('truetype');
           font-weight: normal;
           font-style: normal;
-          font-display: block;
+          font-display: swap;
         }
 
         @keyframes flicker {
