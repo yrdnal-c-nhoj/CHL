@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-// local assets (same folder)
-import backgroundImage from './ci.webp'
-import clockFont_2025_12_19 from './movie.ttf' // 👈 date-stamped font import
-
 const TiltedReverseClock = () => {
   const [time, setTime] = useState(new Date())
 
@@ -54,7 +50,7 @@ const TiltedReverseClock = () => {
       <style>{`
         @font-face {
           font-family: 'ClockFont';
-          src: url(${clockFont_2025_12_19}) format('truetype');
+          src: url(/movie.ttf) format('truetype');
           font-weight: normal;
           font-style: normal;
           font-display: block;
@@ -78,7 +74,7 @@ const TiltedReverseClock = () => {
           left: 0,
           width: '100vw',
           height: '100dvh',
-          backgroundImage: `url(${backgroundImage})`,
+          backgroundImage: `url(/ci.webp)`,
           backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'left bottom',
