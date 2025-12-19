@@ -1,6 +1,7 @@
+
 @font-face {
-  font-family: 'ClockFont';
-  src: url('data:font/truetype;charset=utf-8;base64,AAEAAAAQAQAABAAATFRTSHNbW70AAAEMAAAAaE9TLzJfdCrIAAABdAAAAE5jbWFwgAQvrwAAAcQAAAFSY3Z0IAL/AD8AAAMYAAAAEGZwZ23JoLGbAAADKAAAAVNnbHlm0/X/cAAABHwAAb/0aGRteAT2l4sAAcRwAAAGiGhlYWTL/6tzAAHK+AAAADZoaGVhBuAB0AAByzAAAAAkaG10eNl0A7kAActUAAABkGtlcm4adB+fAAHM5AAAQzJsb2NhLOPBBAACEBgAAADKbWF4cAKBBZ8AAhDkAAAAIG5hbWUabFTkAAIRBAAAAnZwb3N0eHl9awACE3wAAADwcHJlcHYAB1YAAhRsAAAADAAAAGQZARkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZ') format('truetype');
+  font-family: 'Drip';
+  src: url('./drip.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -15,5 +16,20 @@
   font-size: 16vh;
   line-height: 1;
   color: #F9DEB0FF;
-  font-family: 'ClockFont', monospace !important;
+  font-family: 'Drip', sans-serif;
+  letter-spacing: -0.1em;
+  text-shadow: 0 0 5px rgba(249, 222, 176, 0.7);
+  font-smooth: never;
+  -webkit-font-smoothing: none;
+}
+
+/* Optional: Add a subtle animation for the digits */
+@keyframes flicker {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+.flicker {
+  animation: flicker 0.5s infinite alternate;
 }
