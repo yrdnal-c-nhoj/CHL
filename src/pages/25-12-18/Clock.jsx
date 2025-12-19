@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import dripFont from './drip.ttf'
 
 const TiltedReverseClock = () => {
   const [time, setTime] = useState(new Date())
@@ -9,8 +10,6 @@ const TiltedReverseClock = () => {
   }, [])
 
   // Font injection with today's date in variable name
-  const fontDate = new Date().toISOString().slice(0, 10).replace(/-/g, '')
-  const dripFontUrl = '/fonts/MortifiedDrip.ttf'
 
   const hours24 = time.getHours()
   const hours12 = hours24 % 12 || 12
@@ -29,9 +28,9 @@ const TiltedReverseClock = () => {
         alignItems: 'center',
         justifyContent: 'center',
         fontSize: '16vh',
+        fontFamily: 'DripFont, sans-serif',
         lineHeight: 1,
         color: '#F9DEB0FF',
-        fontFamily: `'Drip${fontDate}', 'Courier New', monospace`,
         letterSpacing: '-0.1em',
         textShadow: '0 0 5px rgba(249, 222, 176, 0.7)',
         fontSmooth: 'never',
@@ -57,11 +56,10 @@ const TiltedReverseClock = () => {
       {/* font + flicker injection */}
       <style>{`
         @font-face {
-          font-family: 'Drip${fontDate}';
-          src: url('${dripFontUrl}') format('truetype');
+          font-family: 'DripFont';
+          src: url(${dripFont}) format('truetype');
           font-weight: normal;
           font-style: normal;
-          font-display: swap;
         }
 
         @keyframes flicker {
