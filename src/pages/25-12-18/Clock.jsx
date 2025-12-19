@@ -1,24 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import dripFont from './drip.ttf'
-import backgroundImage from './ci.webp'
+import React, { useEffect, useState } from 'react';
+import dripFontUrl from './drip.ttf?url';  // ← Add ?url here
+import backgroundImage from './ci.webp';
 
 const TiltedReverseClock = () => {
-  const [time, setTime] = useState(new Date())
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const id = setInterval(() => setTime(new Date()), 1000)
-    return () => clearInterval(id)
-  }, [])
+    const id = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
 
-  const hours24 = time.getHours()
-  const hours12 = hours24 % 12 || 12
-  const minutes = time.getMinutes()
-
-  const hourDigits = String(hours12)
-  const minuteDigits = String(minutes).padStart(2, '0')
-
-  // Use the imported font URL
-  const dripFontUrl = dripFont
+  const hours24 = time.getHours();
+  const hours12 = hours24 % 12 || 12;
+  const minutes = time.getMinutes();
+  const hourDigits = String(hours12);
+  const minuteDigits = String(minutes).padStart(2, '0');
 
   const DigitBox = ({ value }) => (
     <div
@@ -41,7 +37,7 @@ const TiltedReverseClock = () => {
     >
       {value}
     </div>
-  )
+  );
 
   return (
     <div
@@ -62,12 +58,10 @@ const TiltedReverseClock = () => {
           font-style: normal;
           font-display: swap;
         }
-
         @keyframes flicker {
           0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
           20%, 24%, 55% { opacity: 0.4; }
         }
-
         .flicker {
           animation: flicker 1s infinite linear;
         }
@@ -113,7 +107,7 @@ const TiltedReverseClock = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TiltedReverseClock
+export default TiltedReverseClock;
