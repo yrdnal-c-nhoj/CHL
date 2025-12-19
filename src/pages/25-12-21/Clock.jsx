@@ -114,7 +114,7 @@ const CurvyClock = () => {
     S: { 
       transform: 'rotate(-20deg) skewX(-10deg) scale(1.2)', 
       position: 'relative', top: '-2vh', 
-      color: '#4d4dff' // Bluish
+      color: '#5E5EEEFF' // Bluish
     },
     // Separator 3 (AM/PM space)
     sep3: {
