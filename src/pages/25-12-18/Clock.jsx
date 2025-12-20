@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import './TiltedReverseClock.css'     // ✅ font registered here
 import backgroundImage from './ci.webp'
+import fontFile from './cine.ttf'
 
 const TiltedReverseClock = () => {
   const [time, setTime] = useState(new Date())
@@ -10,35 +10,24 @@ const TiltedReverseClock = () => {
     return () => clearInterval(id)
   }, [])
 
+  // Load local font
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: 'IceFont';
+        src: url('${fontFile}');
+      }
+    `;
+    document.head.appendChild(style);
+  }, []);
+
   const hours24 = time.getHours()
   const hours12 = hours24 % 12 || 12
   const minutes = time.getMinutes()
 
   const hourDigits = String(hours12)
   const minuteDigits = String(minutes).padStart(2, '0')
-
-  const DigitBox = ({ value }) => (
-    <div
-      className="flicker"
-      style={{
-        width: '10vh',
-        height: '18vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '16vh',
-        fontFamily: 'DripFont, sans-serif',
-        lineHeight: 1,
-        color: '#F0DBB6FF',
-        letterSpacing: '-0.1em',
-        textShadow: '0 0 5px rgba(249, 222, 176, 0.7)',
-        transform: 'rotateX(180deg)',
-        filter: 'blur(1px)',
-      }}
-    >
-      {value}
-    </div>
-  )
 
   return (
     <div
@@ -72,8 +61,7 @@ const TiltedReverseClock = () => {
           backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'left bottom',
-          filter:
-            'brightness(1.4) contrast(1) saturate(0.7) hue-rotate(30deg)',
+          filter: 'brightness(1.5) contrast(1.2) saturate(0.7) hue-rotate(45deg)',
         }}
       />
 
@@ -94,10 +82,50 @@ const TiltedReverseClock = () => {
         }}
       >
         {hourDigits.split('').map((d, i) => (
-          <DigitBox key={`h-${i}`} value={d} />
+          <div
+            key={`h-${i}`}
+            className="flicker"
+            style={{
+              width: '7vh',
+              height: '22vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '8vh',
+              fontFamily: "'IceFont', 'Courier New', monospace",
+              lineHeight: 1,
+              color: '#F0DBB6FF',
+              letterSpacing: '-0.1em',
+              textShadow: '0 0 5px rgba(249, 222, 176, 0.7)',
+              transform: 'rotateX(180deg)',
+              filter: 'blur(1px)',
+            }}
+          >
+            {d}
+          </div>
         ))}
         {minuteDigits.split('').map((d, i) => (
-          <DigitBox key={`m-${i}`} value={d} />
+          <div
+            key={`m-${i}`}
+            className="flicker"
+            style={{
+              width: '7vh',
+              height: '22vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '8vh',
+              fontFamily: "'IceFont', 'Courier New', monospace",
+              lineHeight: 1,
+              color: '#F0DBB6FF',
+              letterSpacing: '-0.1em',
+              textShadow: '0 0 5px rgba(249, 222, 176, 0.7)',
+              transform: 'rotateX(180deg)',
+              filter: 'blur(1px)',
+            }}
+          >
+            {d}
+          </div>
         ))}
       </div>
     </div>

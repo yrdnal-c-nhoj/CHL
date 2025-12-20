@@ -1,36 +1,43 @@
 import React, { useEffect, useState } from 'react';
+import iceFont from './ice.ttf'; // import font as module
+import BG_IMAGE_PATH from './forest.jpeg';
 
-// Define paths as constants. In Vite, files in /public are served from the root /
-const FONT_PATH = '/ice.ttf';
-const BG_IMAGE_PATH = '/forest.jpeg';
-const FONT_FAMILY = 'ClockFont251215';
+const FONT_FAMILY = 'DigitalClock';
 
 export default function VerticalDigitalClock() {
   const [now, setNow] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
 
-  // 1. Clock Timer
+  // 1️⃣ Clock Timer
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
 
-  // 2. Robust Font Loading
+  // 2️⃣ Font loading
   useEffect(() => {
-    const loadFont = async () => {
-      try {
-        // Use the FontFace API to load the font from the public folder
-        const font = new FontFace(FONT_FAMILY, `url(${FONT_PATH})`);
-        const loadedFace = await font.load();
-        document.fonts.add(loadedFace);
-        setFontLoaded(true);
-      } catch (err) {
-        console.error('Font loading failed, falling back to system font:', err);
-        setFontLoaded(true); // Reveal clock anyway so it's not invisible
+    // Inject the font-face
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: '${FONT_FAMILY}';
+        src: url('${iceFont}') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
       }
-    };
+    `;
+    document.head.appendChild(style);
 
-    loadFont();
+    // Wait for the font to load
+    document.fonts
+      .load(`16px '${FONT_FAMILY}'`)
+      .then(() => setFontLoaded(true))
+      .catch(() => setFontLoaded(true)); // fallback even if load fails
+
+    return () => {
+      if (style.parentNode) style.parentNode.removeChild(style);
+    };
   }, []);
 
   const pad = (num) => String(num).padStart(2, '0');
@@ -39,27 +46,22 @@ export default function VerticalDigitalClock() {
   const seconds = pad(now.getSeconds());
   const allDigits = [...hours, ...minutes, ...seconds];
 
-  return (
-    <div style={{ ...styles.root, backgroundImage: `url(${BG_IMAGE_PATH})` }}>
-      {/* Global Style Injection for the @font-face */}
-      <style>
-        {`
-          @font-face {
-            font-family: '${FONT_FAMILY}';
-            src: url('${FONT_PATH}') format('truetype');
-            font-display: block;
-          }
-        `}
-      </style>
+  if (!fontLoaded) return null; // don't render until font is loaded
 
+  return (
+    <div
+      style={{
+        ...styles.root,
+        backgroundImage: `url(${BG_IMAGE_PATH})`,
+      }}
+    >
       <div style={styles.clockContainer}>
         {allDigits.map((digit, i) => (
           <div
             key={i}
             style={{
               ...styles.digitBox,
-              opacity: fontLoaded ? 1 : 0,
-              transition: 'opacity 0.4s ease-in',
+              fontFamily: `'${FONT_FAMILY}', monospace`,
             }}
           >
             {digit}
@@ -73,30 +75,24 @@ export default function VerticalDigitalClock() {
 const styles = {
   root: {
     position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    inset: 0,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    // Added safe area insets for mobile notched devices
-    padding: 'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
+    padding: 'env(safe-area-inset)',
   },
   clockContainer: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
     gap: '0.5vh',
     maxHeight: '100%',
     padding: '20px',
     boxSizing: 'border-box',
   },
   digitBox: {
-    fontFamily: `${FONT_FAMILY}, serif`,
     fontSize: 'min(15vh, 26vw)',
     fontVariantNumeric: 'tabular-nums',
     fontFeatureSettings: '"tnum"',
