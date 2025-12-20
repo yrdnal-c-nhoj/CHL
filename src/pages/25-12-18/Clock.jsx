@@ -1,40 +1,21 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import dripFontUrl from './drip.ttf?url';
-import backgroundImage from './ci.webp';
+import React, { useEffect, useState } from 'react'
+import './TiltedReverseClock.css'     // ✅ font registered here
+import backgroundImage from './ci.webp'
 
 const TiltedReverseClock = () => {
-  const [time, setTime] = useState(new Date());
+  const [time, setTime] = useState(new Date())
 
-  // ✅ Inject font BEFORE first paint (critical for production)
-  useLayoutEffect(() => {
-    if (document.getElementById('drip-font-style')) return;
-
-    const style = document.createElement('style');
-    style.id = 'drip-font-style';
-    style.textContent = `
-      @font-face {
-        font-family: 'DripFont';
-        src: url('${dripFontUrl}') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
-      }
-    `;
-    document.head.appendChild(style);
-  }, []);
-
-  // Clock tick
   useEffect(() => {
-    const id = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(id);
-  }, []);
+    const id = setInterval(() => setTime(new Date()), 1000)
+    return () => clearInterval(id)
+  }, [])
 
-  const hours24 = time.getHours();
-  const hours12 = hours24 % 12 || 12;
-  const minutes = time.getMinutes();
+  const hours24 = time.getHours()
+  const hours12 = hours24 % 12 || 12
+  const minutes = time.getMinutes()
 
-  const hourDigits = String(hours12);
-  const minuteDigits = String(minutes).padStart(2, '0');
+  const hourDigits = String(hours12)
+  const minuteDigits = String(minutes).padStart(2, '0')
 
   const DigitBox = ({ value }) => (
     <div
@@ -57,7 +38,7 @@ const TiltedReverseClock = () => {
     >
       {value}
     </div>
-  );
+  )
 
   return (
     <div
@@ -69,7 +50,6 @@ const TiltedReverseClock = () => {
         overflow: 'hidden',
       }}
     >
-      {/* Animation only — font already registered */}
       <style>{`
         @keyframes flicker {
           0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
@@ -121,7 +101,7 @@ const TiltedReverseClock = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TiltedReverseClock;
+export default TiltedReverseClock
