@@ -25,7 +25,7 @@ export default function Clock ({ imageWidth = '24vw', imageHeight = '16vw' }) {
   const clock = `${hours}:${pad2(now.getMinutes())} ${ampm}`
 
   const digitsFontFamilyName = 'DigitsFont-2025-11-10'
-  const ti251108FamilyName = 'Ti251108-2025-11-10'
+  const timerFontFamilyName = 'Ti251108-2025-11-10'
 
   const clockStyle = {
     position: 'absolute',
@@ -52,7 +52,8 @@ export default function Clock ({ imageWidth = '24vw', imageHeight = '16vw' }) {
     height: '100dvh',
     width: '100vw',
     position: 'relative',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    backgroundColor: 'white'
   }
 
   const bgStyle = {
@@ -85,6 +86,7 @@ export default function Clock ({ imageWidth = '24vw', imageHeight = '16vw' }) {
     backgroundImage: `url(${bgImageUrl})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: '100% 100%',
+    backgroundColor: 'lightgray',
     willChange: 'transform'
   }
 
@@ -193,7 +195,7 @@ export default function Clock ({ imageWidth = '24vw', imageHeight = '16vw' }) {
           }
           @font-face {
             font-family: '${timerFontFamilyName}';
-            src: url(${timerFont}) format('truetype');
+            src: url(${ti251108}) format('truetype');
             font-weight: normal;
             font-style: normal;
             font-display: swap;
