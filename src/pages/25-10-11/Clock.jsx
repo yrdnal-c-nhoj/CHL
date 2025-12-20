@@ -37,7 +37,7 @@ export default function FancyClock() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (!fontLoaded || !alphabetFontLoaded) return null;
+
 
   const hours = time.getHours() % 12 || 12;
   const minutes = time.getMinutes();

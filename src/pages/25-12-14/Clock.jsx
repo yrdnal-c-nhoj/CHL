@@ -4,7 +4,7 @@ import bgImage from './steel.webp'
 import digitTexture from './steel2.webp'
 
 // Font imported with today's date (December 16, 2025)
-import screw251214 from './screw.ttf?url'
+import screw251214 from './steel.ttf?url'
 
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date())

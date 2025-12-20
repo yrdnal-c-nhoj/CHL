@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import bgImage from './roc.webp' 
-import fontFile from './roc.ttf' 
+import fontFile from './cherub.ttf' 
 
 export default function RococoClock() {
   const [now, setNow] = useState(new Date())
@@ -29,19 +29,8 @@ export default function RococoClock() {
     return () => clearInterval(interval)
   }, [fontFamily])
 
-  // Show loading state until font is ready
-  if (!fontLoaded) {
-    return <div style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      height: '100vh',
-      backgroundColor: '#000',
-      color: '#D3C4C0FF'
-    }}>Loading...</div>
-  }
-
   useEffect(() => {
+    if (!fontLoaded) return
     const isMobile = window.innerWidth <= 768
     const styles = []
     const totalDigits = 6
@@ -49,12 +38,12 @@ export default function RococoClock() {
 
     for (let i = 0; i < totalDigits; i++) {
       // Logic for positioning relative to the TOP
-      const y = i * spacing 
+      const y = i * spacing
       const curveOffset = (totalDigits - 1 - i) * (isMobile ? 1.5 : 2.5)
       const x = curveOffset
 
       let zIndex = i < 2 ? 30 : i >= 4 ? 5 : 15
-      
+
       let baseSize, maxSize
       if (i >= 4) {
         baseSize = isMobile ? 7 : 9
@@ -65,15 +54,21 @@ export default function RococoClock() {
       }
       const scaleFactor = isMobile ? 0.7 : 1
 
+      // Random movement, scaling, and rotation
+      const randomX = (Math.random() - 0.5) * (isMobile ? 4 : 8) // -2 to 2 vh on mobile, -4 to 4 on desktop
+      const randomY = (Math.random() - 0.5) * (isMobile ? 4 : 8)
+      const randomScale = 0.8 + Math.random() * 0.4 // 0.8 to 1.2
+      const randomRotation = (Math.random() - 0.5) * 40 // -20 to 20 degrees
+
       styles.push({
         display: 'inline-block',
-        fontFamily: `'${fontFamily}', serif`,
+        fontFamily: `'${fontFamily}', 'Arial', sans-serif`,
         fontSize: `${baseSize + Math.random() * maxSize}vh`,
-        color: '#D3C4C0FF',
+        color: 'white',
         textShadow: `
           0.2vh 0.2vh 0.4vh rgba(255, 20, 147, 0.4),
           0.4vh 0.4vh 0.8vh rgba(50, 205, 50, 0.4),
-          0 0 0.8vh rgba(255, 20, 147, 0.6),
+          0  0 0.8vh rgba(255, 20, 147, 0.6),
           0 0 0.7vh rgba(50, 205, 50, 0.4)
         `,
         padding: `${0.1 + Math.random() * (isMobile ? 3 : 6)}vh ${ // Reduced padding
@@ -82,23 +77,26 @@ export default function RococoClock() {
         margin: `${0.01 + Math.random() * (isMobile ? 1.2 : 2.4)}vh`,
         position: 'absolute',
         zIndex: zIndex,
-        transform: `
-          translate(${x}vh, ${y}vh) 
-          rotate(${(Math.random() * 60 - 30) * scaleFactor}deg)
-          skew(${(Math.random() * 15 - 7.5) * scaleFactor}deg, ${
-          (Math.random() * 15 - 7.5) * scaleFactor
-        }deg)
-          scale(${0.8 + Math.random() * 0.4 * scaleFactor}, ${
-          0.8 + Math.random() * 0.4 * scaleFactor
-        })
-        `,
+        transform: `translate(${x + randomX}vh, ${y + randomY}vh) scale(${randomScale}) rotate(${randomRotation}deg)`,
         transformOrigin: 'center center',
-        transition: 'all 0.3s ease',
+        transition: 'all 2s ease',
         boxSizing: 'border-box'
       })
     }
     setDigitStyles(styles)
-  }, [fontId])
+  }, [fontLoaded, now])
+
+  // Show loading state until font is ready and styles are set
+  if (!fontLoaded || digitStyles.length === 0) {
+    return <div style={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      height: '100vh',
+      backgroundColor: '#000',
+      color: '#D3C4C0FF'
+    }}>Loading...</div>
+  }
 
   const hours = now.getHours()
   const minutes = now.getMinutes()
@@ -121,7 +119,7 @@ export default function RococoClock() {
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     backgroundColor: '#000',
-    overflow: 'hidden',
+    overflow: 'visible',
     position: 'relative',
     backgroundAttachment: 'fixed',
     boxSizing: 'border-box'

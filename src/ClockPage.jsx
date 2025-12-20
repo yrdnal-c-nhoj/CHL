@@ -69,24 +69,24 @@ export default function ClockPage() {
         const Component = mod.default;
 
         // Preload images exported from module
-        const images = Object.values(mod).filter(
-          (v) =>
-            typeof v === "string" &&
-            (v.endsWith(".jpg") || v.endsWith(".png") || v.endsWith(".webp") || v.endsWith(".gif"))
-        );
-        await Promise.all(
-          images.map(
-            (src) =>
-              new Promise((resolve) => {
-                const img = new Image();
-                img.src = src;
-                img.onload = img.onerror = resolve;
-              })
-          )
-        );
+        // const images = Object.values(mod).filter(
+        //   (v) =>
+        //     typeof v === "string" &&
+        //     (v.endsWith(".jpg") || v.endsWith(".png") || v.endsWith(".webp") || v.endsWith(".gif"))
+        // );
+        // await Promise.all(
+        //   images.map(
+        //     (src) =>
+        //       new Promise((resolve) => {
+        //         const img = new Image();
+        //         img.src = src;
+        //         img.onload = img.onerror = resolve;
+        //       })
+        //   )
+        // );
 
         // Wait for fonts to load
-        await document.fonts.ready;
+        // await document.fonts.ready;
 
         setClockComponent(() => Component);
         setIsReady(true);
@@ -131,7 +131,7 @@ export default function ClockPage() {
                 fontFamily: "CustomFont, system-ui, sans-serif",
                 display: "block",
                 width: "100%",
-                height: "100%",
+                height: "100vh",
               }}
             >
               <ClockComponent />
