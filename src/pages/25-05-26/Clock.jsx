@@ -3,6 +3,7 @@ import './Sprout.css';
 import spr from './spr.gif';
 import sprou from './sprou.gif';
 import sprout from './sprout.gif';
+import sproutFont from './sprout.ttf';
 
 const styles = {
   container: {
@@ -101,7 +102,7 @@ export default function SproutClock() {
   const [time, setTime] = useState({ h: [], m: [], s: [], ms: [] });
 
   useEffect(() => {
-    const font = new FontFace('sprout', 'url(/sprout.ttf)');
+    const font = new FontFace('sprout', `url(${sproutFont})`);
     font.load().then(loaded => document.fonts.add(loaded));
   }, []);
 
