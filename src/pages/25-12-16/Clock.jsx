@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-const font_2025_12_16 = '/ice.ttf';
+import font_2025_12_16 from '../../assets/ice.ttf';
 
 const QuadClock = () => {
   const [time, setTime] = useState(Date.now());
