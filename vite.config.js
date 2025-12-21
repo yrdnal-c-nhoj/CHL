@@ -58,4 +58,6 @@ export default defineConfig({
       },
     },
   },
+  // Ensure font files are properly handled
+  assetsInclude: ['**/*.ttf', '**/*.woff', '**/*.woff2', '**/*.eot', '**/*.otf']
 });
