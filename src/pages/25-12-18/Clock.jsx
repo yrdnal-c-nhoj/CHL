@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import backgroundImage from './ci.webp'
+import cineFont from '/fonts/cine.ttf'
 
 const TiltedReverseClock = () => {
   const [time, setTime] = useState(new Date())
@@ -15,22 +16,22 @@ const TiltedReverseClock = () => {
     style.textContent = `
       @font-face {
         font-family: 'IceFont';
-        src: url('/fonts/cine.ttf') format('truetype');
+        src: url(${cineFont}) format('truetype');
         font-weight: normal;
         font-style: normal;
         font-display: swap;
       }
     `;
     document.head.appendChild(style);
-    
+
     // Preload the font to ensure it's available
     const link = document.createElement('link');
-    link.href = '/fonts/cine.ttf';
+    link.href = cineFont;
     link.rel = 'preload';
     link.as = 'font';
     link.crossOrigin = 'anonymous';
     document.head.appendChild(link);
-    
+
     return () => {
       document.head.removeChild(style);
       document.head.removeChild(link);
