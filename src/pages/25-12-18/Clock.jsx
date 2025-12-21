@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import backgroundImage from './ci.webp'
-import iceFont from '../../assets/ice.ttf'
+import speedFont from '../../assets/speed.ttf'
 
 const TiltedReverseClock = () => {
   const [time, setTime] = useState(new Date())
@@ -15,8 +15,8 @@ const TiltedReverseClock = () => {
     const style = document.createElement('style');
     style.textContent = `
       @font-face {
-        font-family: 'IceFont';
-        src: url(${iceFont}) format('truetype');
+        font-family: 'speed';
+        src: url(${speedFont}) format('truetype');
         font-weight: normal;
         font-style: normal;
         font-display: swap;
@@ -26,7 +26,7 @@ const TiltedReverseClock = () => {
 
     // Preload the font to ensure it's available
     const link = document.createElement('link');
-    link.href = iceFont;
+    link.href = speedFont;
     link.rel = 'preload';
     link.as = 'font';
     link.crossOrigin = 'anonymous';
@@ -108,7 +108,7 @@ const TiltedReverseClock = () => {
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '8vh',
-              fontFamily: "'IceFont', 'Courier New', monospace",
+              fontFamily: "'speed', 'Courier New', monospace",
               lineHeight: 1,
               color: '#F0DBB6FF',
               letterSpacing: '-0.1em',
@@ -131,7 +131,7 @@ const TiltedReverseClock = () => {
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '8vh',
-              fontFamily: "'IceFont', 'Courier New', monospace",
+              fontFamily: "'speed', 'Courier New', monospace",
               lineHeight: 1,
               color: '#F0DBB6FF',
               letterSpacing: '-0.1em',
