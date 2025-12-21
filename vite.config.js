@@ -26,21 +26,35 @@ export default defineConfig({
   },
 
   build: {
-    // 🔹 4. Keep assets in a dedicated folder
+    // Keep assets in a dedicated folder
     assetsDir: 'assets',
 
-    // 🔹 5. Disable inlining for fonts/images
+    // Disable inlining for fonts/images
     assetsInlineLimit: 0, 
 
-    // 🔹 6. Clean build folder
+    // Clean build folder
     outDir: 'dist',
     emptyOutDir: true,
 
-    // 🔹 7. Optional: control chunking
+    // Configure asset handling
     rollupOptions: {
       output: {
-        // keep asset filenames predictable
-        assetFileNames: 'assets/[name]-[hash][extname]',
+        // Better organization for different asset types
+        assetFileNames: (assetInfo) => {
+          // Put fonts in a dedicated fonts directory
+          if (/\.(woff|woff2|eot|ttf|otf)$/i.test(assetInfo.name)) {
+            return 'assets/fonts/[name]-[hash][extname]';
+          }
+          // Put images in an images directory
+          if (/\.(png|jpe?g|gif|svg|webp|avif)$/i.test(assetInfo.name)) {
+            return 'assets/images/[name]-[hash][extname]';
+          }
+          // Default asset path
+          return 'assets/[name]-[hash][extname]';
+        },
+        // Keep chunk files organized
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
       },
     },
   },
