@@ -24,7 +24,7 @@ const TiltedReverseClock = () => {
     `;
     document.head.appendChild(style);
 
-    // Preload the font to ensure it's available
+    // Preload thhe font to ensure it's available
     const link = document.createElement('link');
     link.href = speedFont;
     link.rel = 'preload';
