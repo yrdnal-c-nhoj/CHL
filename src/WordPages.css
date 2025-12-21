@@ -26,7 +26,7 @@ body {
 }
 
 .centeredContent h1 {
-  font-family: "Ice", serif;
+  font-family: "Roboto Slab", sans-serif;
   color: #850404;
   letter-spacing: 0.1rem;
   font-size: clamp(1.7rem, 2vw, 3rem); /* responsive font size */
@@ -42,7 +42,7 @@ body {
 }
 
 .epigraph {
-  font-family: "Ice", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: clamp(0.9rem, 1vw, 1rem);
   margin: 0.6rem 0;
   text-align: left;
@@ -70,18 +70,18 @@ body {
 }
 
 .hat {
-  font-family: "Ice", serif;
+  font-family: "Roboto Slab", sans-serif;
   font-size: 1.1rem;
   letter-spacing: 0.02em;
   font-weight: bold;
   color: #850404;
   line-height: 1.2rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: -1.9rem;
   display: block;
 }
 
 .smallcaps {
-  font-family: "Ice", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 0.75rem;
   font-weight: bold;
   letter-spacing: 0.041em;
@@ -89,7 +89,7 @@ body {
 }
 
 p {
-  font-family: "Ice", sans-serif;
+  font-family: "Manrope", sans-serif;
 }
 
 .translate {
@@ -160,7 +160,7 @@ a:hover {
   background-color: #6e6c6c;
   color: white;
   font-weight: bold;
-  font-family: "Ice", sans-serif;
+    font-family: "Manrope", sans-serif;
   border: none;
   border-radius: 4px;
   padding: 0.6rem 1rem;
@@ -172,7 +172,7 @@ a:hover {
   background-color: #585656;
 }
 .email-link {
-  font-family: "Ice", sans-serif;
+   font-family: "Manrope", sans-serif;
   color: #04406a;
   text-decoration: none;
 }
