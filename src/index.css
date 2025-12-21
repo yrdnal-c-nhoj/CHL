@@ -1,4 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
+/* Custom font definitions */
+@font-face {
+  font-family: 'Ice';
+  src: url('./assets/ice.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
