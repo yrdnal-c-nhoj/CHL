@@ -494,7 +494,6 @@ Thumbs.db
 # Local development
 screenshots/
 scripts/
-utils/
 
 # Windows Installer files
 *.cab
@@ -505,5 +504,5 @@ utils/
 
 testclock.json
 
-an
+
 
