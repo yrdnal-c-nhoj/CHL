@@ -5,7 +5,7 @@ import background from './swagr.webp';
 
 // Font is now placed in public/fonts/custom-face.ttf
 // This ensures the same path works in both dev and production
-const FONT_URL = '/fonts/face.ttf';
+const FONT_URL = '../../public/fonts/face.ttf';
 
 const styleInject = () => {
   // Avoid injecting multiple times
