@@ -53,7 +53,7 @@ const SpinningDodecahedronClock = () => {
 
     // --- Blue translucent surface ---
     const surfaceMaterial = new THREE.MeshStandardMaterial({
-      color: 0x7f00ff, // vivid blue
+      color: 0x7f03ff, // vivid blue
       transparent: true,
       opacity: 0.3, // mostly transparent
       roughness: 0.3,
