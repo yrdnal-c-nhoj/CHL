@@ -31,7 +31,7 @@ const styleInject = () => {
       width: 0.9em;
       text-align: center;
       color: #276CE3;
-      filter: drop-shadow(0 1px 0px rgba(220, 0, 0, 1));
+      filter: drop-shadow(0 1px 0px rgba(220, 1, 0, 1));
     }
   `;
   document.head.appendChild(style);
