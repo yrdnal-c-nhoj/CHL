@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import background from './swagr.webp';
-import fontDate20251219 from './face.ttf';
+import fontDate20251219 from '../../../public/face.ttf';
 
 const styleInject = () => {
   const style = document.createElement('style');
