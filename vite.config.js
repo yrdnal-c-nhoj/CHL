@@ -2,8 +2,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  // FIX: Use relative base so assets are found in subfolders
-  base: './', 
+  // Use absolute base for production compatibility
+  base: '/',
 
   plugins: [react()],
 
