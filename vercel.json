@@ -1,7 +1,7 @@
 {
   "headers": [
     {
-      "source": "/fonts/:path*",
+      "source": "/fonts/(.*)",
       "headers": [
         {
           "key": "Content-Type",
@@ -14,11 +14,15 @@
       ]
     },
     {
-      "source": "/fonts/face.ttf",
+      "source": "/assets/fonts/(.*)",
       "headers": [
         {
           "key": "Content-Type",
           "value": "font/ttf"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     }
