@@ -580,7 +580,6 @@ dist/assets/4-BZ18n5NF.gif                                                      
 dist/assets/gg-DWCsvt99.webp                                                                                                                                                                             18.76 kB
 dist/assets/mars1-D5alMHr7.gif                                                                                                                                                                           18.80 kB
 dist/assets/hh-B3pbLJt8.jpeg                                                                                                                                                                             18.82 kB
-dist/assets/hh-B3pbLJt8.jpeg                                                                                                                                                                             18.82 kB
 dist/assets/fonts/sph-Cj25SHxs.ttf                                                                                                                                                                       18.85 kB
 dist/assets/cand-DoufoY9Q.webp                                                                                                                                                                           19.03 kB
 dist/assets/h-Bzbf0nmq.jpeg                                                                                                                                                                              19.04 kB
@@ -593,7 +592,7 @@ dist/assets/k-DDzjioYl.jpeg                                                     
 dist/assets/2erg2erfer-C-ftWLPJ.jpg                                                                                                                                                                      19.84 kB
 dist/assets/3-DZ_fe1DH.gif                                                                                                                                                                               19.86 kB
 dist/assets/fonts/webs3-DlvzcY4r.ttf                                                                                                                                                                     20.04 kB
-dist/assets/afadfb-DY2nDTy-.jpg                                                                                                                                                                          20.05 kB
+dist/assets/adfadfb-DY2nDTy-.jpg                                                                                                                                                                         20.05 kB
 dist/assets/gun-C8xGq_tx.gif                                                                                                                                                                             20.31 kB
 dist/assets/2-DgRANz9e.webp                                                                                                                                                                              20.36 kB
 dist/assets/3-BYMHMzzO.gif                                                                                                                                                                               20.36 kB
@@ -887,6 +886,7 @@ dist/assets/fonts/Petal-D_B7m9gd.ttf                                            
 dist/assets/pngtree-silver-pirate-hook-3d-object-png-image_11098846-t9WyPLFb.png                                                                                                                         62.10 kB
 dist/assets/mu-CGV3ESk5.jpg                                                                                                                                                                              62.37 kB
 dist/assets/fr-MxU86B32.jpg                                                                                                                                                                              62.70 kB
+dist/assets/hand3-ByekX3fQ.gif                                                                                                                                                                           62.81 kB
 dist/assets/hand3-ByekX3fQ.gif                                                                                                                                                                           62.81 kB
 dist/assets/fonts/Michroma-CAi-HuEq.ttf                                                                                                                                                                  62.97 kB
 dist/assets/sdswrf-DTr98DhI.gif                                                                                                                                                                          63.08 kB
