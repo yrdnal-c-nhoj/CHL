@@ -887,7 +887,6 @@ dist/assets/pngtree-silver-pirate-hook-3d-object-png-image_11098846-t9WyPLFb.png
 dist/assets/mu-CGV3ESk5.jpg                                                                                                                                                                              62.37 kB
 dist/assets/fr-MxU86B32.jpg                                                                                                                                                                              62.70 kB
 dist/assets/hand3-ByekX3fQ.gif                                                                                                                                                                           62.81 kB
-dist/assets/hand3-ByekX3fQ.gif                                                                                                                                                                           62.81 kB
 dist/assets/fonts/Michroma-CAi-HuEq.ttf                                                                                                                                                                  62.97 kB
 dist/assets/sdswrf-DTr98DhI.gif                                                                                                                                                                          63.08 kB
 dist/assets/arm-DpzJLxDb.gif                                                                                                                                                                             63.38 kB
@@ -921,6 +920,7 @@ dist/assets/conf-Crfs_opg.jpg                                                   
 dist/assets/sta-DBTSDb_D.gif                                                                                                                                                                             68.89 kB
 dist/assets/pirate_foam-D8RK0IdH.gif                                                                                                                                                                     69.36 kB
 dist/assets/nnnn-AiGmbB5k.webp                                                                                                                                                                           69.71 kB
+dist/assets/1-ChyXxYnI.webp                                                                                                                                                                              69.85 kB
 dist/assets/1-ChyXxYnI.webp                                                                                                                                                                              69.85 kB
 dist/assets/fonts/not-BahwupoK.otf                                                                                                                                                                       70.36 kB
 dist/assets/la-DdAAh18E.gif                                                                                                                                                                              71.00 kB
