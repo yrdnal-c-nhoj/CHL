@@ -13,8 +13,8 @@ export default defineConfig({
     postcss: './postcss.config.js',
   },
 
-  // 🔹 2. Ensure Vite recognizes .ttf, images, etc.
-  assetsInclude: ['**/*.ttf', '**/*.woff', '**/*.woff2', '**/*.jpeg', '**/*.jpg', '**/*.webp'],
+  // 🔹 2. Ensure Vite recognizes .ttf, .otf, images, etc.
+  assetsInclude: ['**/*.ttf', '**/*.otf', '**/*.woff', '**/*.woff2', '**/*.jpeg', '**/*.jpg', '**/*.webp'],
 
   // 🔹 3. Server headers (dev only)
   server: {

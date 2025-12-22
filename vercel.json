@@ -1,15 +1,29 @@
 {
   "headers": [
     {
-      "source": "/(fonts|assets/fonts)/:path*",
+      "source": "/assets/fonts/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/assets/fonts/*.ttf",
       "headers": [
         {
           "key": "Content-Type",
           "value": "font/ttf"
-        },
+        }
+      ]
+    },
+    {
+      "source": "/assets/fonts/*.otf",
+      "headers": [
         {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "key": "Content-Type",
+          "value": "font/otf"
         }
       ]
     }
