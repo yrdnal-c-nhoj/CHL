@@ -4,9 +4,6 @@
   "framework": "vite",
   "rewrites": [
     {
-      "handle": "filesystem"
-    },
-    {
       "source": "/assets/(.*)",
       "destination": "/assets/$1"
     },
