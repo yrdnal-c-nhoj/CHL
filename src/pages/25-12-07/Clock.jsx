@@ -1,41 +1,16 @@
-// IcosahedronScene.jsx
 import React, { useRef, useMemo, useState, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Html } from '@react-three/drei'
 import * as THREE from 'three'
+
 import backgroundImage from './h2o.webp'
-import backgroundImage2 from './water.gif' // ← NEW secondary background
-import font251207 from './isoca.ttf' // (should ideally be .woff2)
+import backgroundImage2 from './water.gif'
+import font251207 from './isoca.ttf'
+import useFontLoader from './useFontLoader'
 
-export default function IcosahedronScene () {
-  // Proper font preloading + @font-face
-  useEffect(() => {
-    const link = document.createElement('link')
-    link.rel = 'preload'
-    link.as = 'font'
-    link.type = 'font/woff2'
-    link.crossOrigin = 'anonymous'
-    link.href = font251207
-    document.head.appendChild(link)
-
-    const style = document.createElement('style')
-    style.textContent = `
-      @font-face {
-        font-family: 'WaterFont';
-        src: url('${font251207}') format('woff2');
-        font-display: swap;
-      }
-      @keyframes ripple {
-        0%   { background-position: 0% 0%; }
-        100% { background-position: 100% 100%; }
-      }
-    `
-    document.head.appendChild(style)
-
-    return () => {
-      document.head.removeChild(style)
-    }
-  }, [])
+export default function IcosahedronScene() {
+  // Load font safely
+  useFontLoader('WaterFont', font251207, 'truetype')
 
   return (
     <div
@@ -46,23 +21,21 @@ export default function IcosahedronScene () {
         overflow: 'hidden'
       }}
     >
-      {/* ████████████ NEW BACKGROUND LAYER (Behind everything) ████████████ */}
+      {/* Secondary background */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           backgroundImage: `url(${backgroundImage2})`,
           backgroundSize: 'cover',
-          filter:
-            'contrast(265%) brightness(100%) hue-rotate(44deg) saturate(180%)',
-
+          filter: 'contrast(265%) brightness(100%) hue-rotate(44deg) saturate(180%)',
           backgroundPosition: 'center',
-          opacity: 0.6, // ← your requirement
-          zIndex: -1 // ← sits BEHIND the blue water bg
+          opacity: 0.6,
+          zIndex: -1
         }}
       />
 
-      {/* Existing animated water background */}
+      {/* Animated water background */}
       <div
         style={{
           position: 'absolute',
@@ -70,8 +43,7 @@ export default function IcosahedronScene () {
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          filter:
-            'contrast(65%) brightness(185%) hue-rotate(44deg) saturate(1800%)',
+          filter: 'contrast(65%) brightness(185%) hue-rotate(44deg) saturate(1800%)',
           opacity: 0.78,
           animation: 'ripple 48s linear infinite',
           zIndex: 0
@@ -84,11 +56,7 @@ export default function IcosahedronScene () {
       >
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} intensity={1.2} color='#a0c0ff' />
-        <pointLight
-          position={[-10, -10, -10]}
-          intensity={0.6}
-          color='#204080'
-        />
+        <pointLight position={[-10, -10, -10]} intensity={0.6} color='#204080' />
 
         <FloatingIcosahedron />
         <OrbitControls
@@ -104,11 +72,10 @@ export default function IcosahedronScene () {
   )
 }
 
-function FloatingIcosahedron () {
+function FloatingIcosahedron() {
   const groupRef = useRef()
   const [time, setTime] = useState('')
 
-  // Live clock
   useEffect(() => {
     const update = () =>
       setTime(
@@ -122,17 +89,13 @@ function FloatingIcosahedron () {
     return () => clearInterval(id)
   }, [])
 
-  // Geometry + vertex colors
   const { geometry, edges } = useMemo(() => {
     const geo = new THREE.IcosahedronGeometry(1.2, 0).toNonIndexed()
     const pos = geo.getAttribute('position')
     const colors = new Float32Array(pos.count * 3)
     const color = new THREE.Color()
-
     const palette = ['#A198EE', '#E4ECF0', '#2A2AE8', '#065555']
-    const assignment = [
-      0, 1, 2, 0, 3, 1, 2, 3, 1, 0, 2, 3, 0, 2, 1, 3, 0, 1, 3, 2
-    ]
+    const assignment = [0, 1, 2, 0, 3, 1, 2, 3, 1, 0, 2, 3, 0, 2, 1, 3, 0, 1, 3, 2]
 
     for (let i = 0; i < pos.count; i += 3) {
       const triIdx = Math.floor(i / 3)
@@ -147,19 +110,15 @@ function FloatingIcosahedron () {
     }
 
     geo.setAttribute('color', new THREE.BufferAttribute(colors, 3))
-    const edgesGeo = new THREE.EdgesGeometry(geo)
-
-    return { geometry: geo, edges: edgesGeo }
+    return { geometry: geo, edges: new THREE.EdgesGeometry(geo) }
   }, [])
 
   useFrame((state, delta) => {
     if (!groupRef.current) return
     const t = state.clock.elapsedTime
-
     groupRef.current.rotation.x += delta * -0.22
     groupRef.current.rotation.y += delta * 0.18
     groupRef.current.rotation.z += delta * -0.26
-
     const radius = 1.25
     groupRef.current.position.x = Math.sin(t * 0.3 + Math.PI) * radius
     groupRef.current.position.z = Math.cos(t * 0.3 + Math.PI) * radius
@@ -184,12 +143,7 @@ function FloatingIcosahedron () {
       </mesh>
 
       <mesh geometry={geometry} scale={1.004}>
-        <meshBasicMaterial
-          wireframe
-          color='#6993E6FF'
-          opacity={0}
-          transparent
-        />
+        <meshBasicMaterial wireframe color='#6993E6FF' opacity={0} transparent />
       </mesh>
 
       <lineSegments geometry={edges}>
