@@ -2,10 +2,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  // 🔹 1. Set base to match deployment path
-  // If deploying at root domain, leave '/'
-  // If deploying to a subfolder, e.g., '/25-12-18/', set that
-  base: '/', // <-- change to './' or '/subfolder/' if needed
+  // FIX: Use relative base so assets are found in subfolders
+  base: './', 
 
   plugins: [react()],
 
@@ -13,46 +11,22 @@ export default defineConfig({
     postcss: './postcss.config.js',
   },
 
-  // 🔹 2. Ensure Vite recognizes .ttf, .otf, images, etc.
-  assetsInclude: ['**/*.ttf', '**/*.otf', '**/*.woff', '**/*.woff2', '**/*.jpeg', '**/*.jpg', '**/*.webp'],
-
-  // 🔹 3. Server headers (dev only)
-  server: {
-    // Temporarily remove headers if blocking assets
-    // headers: {
-    //   'Cross-Origin-Embedder-Policy': 'credentialless',
-    //   'Cross-Origin-Opener-Policy': 'same-origin',
-    // },
-  },
+  assetsInclude: ['**/*.otf', '**/*.ttf', '**/*.woff2'],
 
   build: {
-    // Keep assets in a dedicated folder
     assetsDir: 'assets',
-
-    // Disable inlining for fonts/images
-    assetsInlineLimit: 0, 
-
-    // Clean build folder
+    assetsInlineLimit: 0, // Ensures fonts are always separate files
     outDir: 'dist',
     emptyOutDir: true,
-
-    // Configure asset handling
     rollupOptions: {
       output: {
-        // Better organization for different asset types
+        // Keeps your assets organized in the dist folder
         assetFileNames: (assetInfo) => {
-          // Put fonts in a dedicated fonts directory
           if (/\.(woff|woff2|eot|ttf|otf)$/i.test(assetInfo.name)) {
             return 'assets/fonts/[name]-[hash][extname]';
           }
-          // Put images in an images directory
-          if (/\.(png|jpe?g|gif|svg|webp|avif)$/i.test(assetInfo.name)) {
-            return 'assets/images/[name]-[hash][extname]';
-          }
-          // Default asset path
           return 'assets/[name]-[hash][extname]';
         },
-        // Keep chunk files organized
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
       },
