@@ -47,7 +47,7 @@ export default function Clock () {
     opacity: 0.9,
     color: '#F3D889FF',
     textShadow: `
-      0px 1px 0 #ff00ff,
+      0px 1px 0 #FF09FFFF,
       0px -1px 0 #0BCFCFFF
     `,
     margin: '0', // tighter spacing
