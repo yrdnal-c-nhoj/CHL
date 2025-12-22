@@ -72,7 +72,7 @@ const styles = {
     gap: '1vh',
     color: '#694006FF',
     textShadow:
-      '0 0 0.5vh rgba(255,255,255,1), -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white',
+      '0 0 0.5vh rgba(255,255,254,1), -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white',
     fontSize: '8vw',
     '@media (min-width: 1024px)': {
       fontSize: '5vw'
