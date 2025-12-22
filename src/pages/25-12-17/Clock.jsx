@@ -1,43 +1,29 @@
-// src/components/Clock.jsx (or wherever you keep it)
-
 import { useState, useEffect } from 'react';
 import background from './swagr.webp';
-
-// Font is now placed in public/fonts/custom-face.ttf
-// This ensures the same path works in both dev and production
-const FONT_URL = '../fonts/face.ttf';
+import fontDate20251219 from './face.ttf';
 
 const styleInject = () => {
-  // Avoid injecting multiple times
-  if (document.getElementById('custom-font-style')) return;
-
   const style = document.createElement('style');
-  style.id = 'custom-font-style';
   style.textContent = `
     @font-face {
       font-family: 'CustomFont';
-      src: url('${FONT_URL}') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap; /* Improves perceived performance */
+      src: url('${fontDate20251219}') format('truetype');
     }
-
     .clock-container, .time-part, .digit {
       font-family: 'CustomFont', sans-serif;
     }
-
     .digit {
       display: inline-block;
       width: 0.9em;
       text-align: center;
-      color: #276CE3;
-      filter: drop-shadow(0 1px 0px rgba(220, 0, 0, 1));
+      color: #276CE3FF;
+      filter: drop-shadow(0 1px 0px rgba(220, 0, 0));
     }
   `;
   document.head.appendChild(style);
 };
 
-export default function Clock() {
+export default function App() {
   const [time, setTime] = useState(new Date());
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 768);
 
@@ -52,23 +38,24 @@ export default function Clock() {
 
   useEffect(() => {
     const handleResize = () => {
+      setTime(new Date()); // Trigger re-render to recalculate layout
       setIsLargeScreen(window.innerWidth > 768);
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Map digits to your custom letters
   const digitToLetter = (digit) => {
     const letters = ['E', 'c', 'J', 'h', 'L', 'M', 'p', 'k', 'V', 'B'];
-    return letters[digit] ?? digit;
+    return letters[digit] || digit;
   };
 
-  const formatWithLetters = (value) => {
-    return String(value)
+  const formatWithLetters = (timeValue) => {
+    return timeValue
+      .toString()
       .padStart(2, '0')
       .split('')
-      .map(d => digitToLetter(Number(d)));
+      .map(d => digitToLetter(parseInt(d, 10)));
   };
 
   const hours = formatWithLetters(time.getHours());
@@ -94,7 +81,6 @@ export default function Clock() {
         overflow: 'hidden',
       }}
     >
-      {/* Background Image */}
       <div
         style={{
           position: 'absolute',
@@ -105,17 +91,14 @@ export default function Clock() {
           filter: 'brightness(1.3) saturate(2) contrast(0.8) hue-rotate(-15deg)',
         }}
       />
-
-      {/* Dark Overlay */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    
         }}
       />
-
-      {/* Clock Content */}
       <div
         style={{
           position: 'relative',
