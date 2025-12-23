@@ -6,7 +6,7 @@ import bg3 from './merg.gif';
 import bgImage from './mmm.gif';
 import hourImg from './mercc.gif';
 import minuteImg from './memm.gif';
-import secondImg from './mmmm.png';
+import secondImg from './mmmm.webp';
 
 const MercuryClock = () => {
   const hourRef = useRef();
