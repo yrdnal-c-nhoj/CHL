@@ -89,7 +89,7 @@ const IndecisiveClock = () => {
 
   const digitStyle2 = {
     fontFamily: '"Black Han Sans", sans-serif',
-    color: "rgb(251, 224, 224)",
+    color: "rgb(251, 223, 224)",
     fontSize: "8rem",
     lineHeight: "7rem",
   };
