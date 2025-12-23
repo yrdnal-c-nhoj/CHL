@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import videoFile from "./sput.mp4";
 import fallbackImg from "./sput.webp";
 import secondHandImg from "./spu.webp";
-import font112425sput from "./spu.ttf";
+const font112425sput = '/fonts/25-11-22-spu.ttf';
 
 export default function Clock() {
   const videoRef = useRef(null);

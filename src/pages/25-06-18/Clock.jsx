@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import bgImage from './cis.jpg';
-import cisFont from './cis.ttf';
+const cisFont = '/fonts/25-06-18-cis.ttf';
 
 const CistercianClock = () => {
   const [time, setTime] = useState(new Date());

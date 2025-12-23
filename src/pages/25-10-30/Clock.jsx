@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import bgImage from "./turq.webp";
 import clockFaceImage from "./tur.jpg";
-import customFont2025_10_31 from "./turqs.ttf";
+const customFont2025_10_31 = '/fonts/25-10-30-turqs.ttf';
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());

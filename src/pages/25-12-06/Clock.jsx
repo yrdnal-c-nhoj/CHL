@@ -5,7 +5,7 @@ import bgImage from './giraffe.webp'
 import hourHandImggir from './hand3.gif'
 import minnnuteHandImg from './hand1.gif'
 import secondHandImg from './hand2.gif'
-import customFont_2025_1206 from './gir.otf'
+const customFont_2025_1206 = '/fonts/25-12-06-gir.otf';
 import tileImg from './run.webp'
 import centerImg from './walk.webp'
 

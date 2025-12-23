@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import c251004font from './iss.ttf'
+const c251004font = '/fonts/25-10-04-iss.ttf';
 import bgMp4 from './waterfall.mp4'
 import bgWebp from './waterfall.webp'
 

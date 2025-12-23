@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import bgImage from './shrub.jpeg';      // Your background image file
-import myFont from './Tr.ttf';          // Your custom font file
+const myFont = '/fonts/25-08-04-Tr.ttf';          // Your custom font file
 
 const getRandomPosition = () => ({
   top: `${Math.random() * 80 + 10}%`,

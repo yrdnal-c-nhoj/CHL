@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import backgroundImageUrl from './plaid.jpg'
-import m250915font from './plaid.ttf'
+const m250915font = '/fonts/25-09-15-plaid.ttf';
 
 const SkewFlatClock = ({
   horizontalColors = ['#BB100AFF', '#FFFFFF', '#026033FF'],

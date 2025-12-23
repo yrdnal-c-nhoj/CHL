@@ -6,7 +6,7 @@ import hourHandImg from './sn5.webp'
 import minuteHandImg from './sfsd.webp'
 import secondHandImg from './sn1.webp'
 import clockCenterImg from './center.webp' // <-- your new center image
-import fon251124 from './snake.ttf'
+const fon251124 = '/fonts/25-11-24-snake.ttf';
 
 export default function AnalogClock () {
   const [time, setTime] = useState(new Date())

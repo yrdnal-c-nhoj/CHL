@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as DigitalClock from './ChinaClock.module.css';
-import NotoSerifCJKSC from './NotoSerif.ttf';
+const NotoSerifCJKSC = '/fonts/25-09-01-NotoSerif.ttf';
 import bgImage from './clo.webp';
 import cornerImage from './seal.png';
 

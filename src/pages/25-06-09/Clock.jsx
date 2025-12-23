@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import ionFont from "./ion.ttf";
+const ionFont = '/fonts/25-06-09-ion.ttf';
 import ionJpeg from "./ion.jpeg";
 import iskyWebp from "./isky.webp";
 

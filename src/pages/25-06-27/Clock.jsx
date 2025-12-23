@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import morseFont from "./morse.ttf";
+const morseFont = '/fonts/25-06-27-morse.ttf';
 import birdsGif from "./birds.gif";
 
 const colors = [

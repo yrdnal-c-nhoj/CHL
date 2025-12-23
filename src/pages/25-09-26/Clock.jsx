@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import bgImage926 from "./wall.webp";
-import font20250926A from "./not.otf";   // give date-specific names
-import font20250926B from "./not2.otf";
+const font20250926A = '/fonts/25-09-26-not.otf';   // give date-specific names
+const font20250926B = '/fonts/25-09-26-not2.otf';
 
 export default function DualFontClock() {
   const [ready, setReady] = useState(false);

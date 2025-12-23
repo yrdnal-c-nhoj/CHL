@@ -3,7 +3,7 @@ import bg3 from "./target.gif";
 import bg1 from "./arrows.gif";
 import bg2 from "./ar.gif";
 import bg4 from "./bul.gif";
-import fontFileUrl from "./targ.otf";
+const fontFileUrl = '/fonts/25-08-18-targ.otf';
 import hourHandImg from "./aro.gif";
 import minuteHandImg from "./arrr.gif";
 import secondHandImg from "./ar9.gif";

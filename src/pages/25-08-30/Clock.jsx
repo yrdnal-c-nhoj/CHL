@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Cu250830 from './mem.ttf' // your font file
+const Cu250830 = '/fonts/25-08-30-mem.ttf'; // your font file
 import bgImage from './mem.gif' // your background image
 
 export default function MessyClock () {

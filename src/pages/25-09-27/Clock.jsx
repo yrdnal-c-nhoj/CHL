@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import sss47wert from "./disc.ttf";
+const sss47wert = '/fonts/25-09-27-disc.ttf';
 import bgOuter from "./water.webp";
 import bgInner from "./disc.gif";
 

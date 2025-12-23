@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import iceFont from './ice.ttf'; // import font as module
+const iceFont = '/fonts/25-12-15-ice.ttf'; // import font as module
 import BG_IMAGE_PATH from './forest.jpeg';
 
 const FONT_FAMILY = 'DigitalClock';

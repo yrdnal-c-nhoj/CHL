@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import mintFont from './mint.ttf';
+const mintFont = '/fonts/25-07-08-mint.ttf';
 import hourImg from './mint.png';
 import minuteImg from './minty.webp';
 import secondImg from './min.png';

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import braiFont from './brai.ttf'; // Ensure this path is correct and processed by your bundler
+const braiFont = '/fonts/25-05-16-brai.ttf'; // Ensure this path is correct and processed by your bundler
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());

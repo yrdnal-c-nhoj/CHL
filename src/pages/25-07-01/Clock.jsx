@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import bgImage from './mu.jpg';
-import fontUrl from './mult.ttf';
+const fontUrl = '/fonts/25-07-01-mult.ttf';
 
 const CinemaClock = () => {
   const [time, setTime] = useState({ hours: '', minutes: '' });

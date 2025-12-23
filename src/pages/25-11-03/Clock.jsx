@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import digi251103font from './bin3.ttf'
-import tec251103font from './bin1.otf'
+const digi251103font = '/fonts/25-11-03-bin3.ttf';
+const tec251103font = '/fonts/25-11-03-bin1.otf';
 
 const digitalFont = 'digitalFont'
 const techFont = 'techFont'

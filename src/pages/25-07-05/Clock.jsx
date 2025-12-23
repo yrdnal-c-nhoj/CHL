@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import vegasFontUrl from './vegas.ttf';
+const vegasFontUrl = '/fonts/25-07-05-vegas.ttf';
 
 const VegasClock = () => {
   const [fontLoaded, setFontLoaded] = useState(false);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
-import rai251027font from './wish.otf'
-import sfont251027 from './wish.ttf'
+const rai251027font = '/fonts/25-10-27-wish.otf';
+const sfont251027 = '/fonts/25-10-27-wish.ttf';
 
 export default function SkyClock () {
   const [localTime, setLocalTime] = useState('')

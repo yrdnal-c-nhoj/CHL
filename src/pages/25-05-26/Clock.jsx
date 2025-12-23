@@ -3,7 +3,7 @@ import './Sprout.css';
 import spr from './spr.gif';
 import sprou from './sprou.gif';
 import sprout from './sprout.gif';
-import sproutFont from './sprout.ttf';
+const sproutFont = '/fonts/25-05-26-sprout.ttf';
 
 const styles = {
   container: {

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import boneFont from './bone.ttf';
+const boneFont = '/fonts/25-06-25-bone.ttf';
 import bone from './bone.png';
 import bone1 from './bone1.png';
 import bone2 from './bone2.png';

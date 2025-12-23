@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import antFontUrl from './Ant.ttf';
+const antFontUrl = '/fonts/25-05-19-Ant.ttf';
 import bg1 from "./ants.gif";
 import bg2 from "./ants1.gif";
 

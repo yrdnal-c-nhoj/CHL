@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import customFontpawww from './anim.ttf';
+const customFontpawww = '/fonts/25-09-13-anim.ttf';
 import bgImage from './anim.jpg';
 
 const DigitalClock = () => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import watchFont from "./watch.ttf";
+const watchFont = '/fonts/25-05-29-watch.ttf';
 import gearsGif from "./gears-13950_128.gif";
 
 const Clock = () => {

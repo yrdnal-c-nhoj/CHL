@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import coffeeFont from "./cof.ttf";
+const coffeeFont = '/fonts/25-06-04-cof.ttf';
 import bgStill from "./coff.png";
 import bgAnimated from "./coff.gif";
 

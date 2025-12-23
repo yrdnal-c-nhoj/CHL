@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import A3ui from './A3ui.gif';
-import leoFont from './leo.ttf';
+const leoFont = '/fonts/25-05-12-leo.ttf';
 
 const CheetahClock = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);

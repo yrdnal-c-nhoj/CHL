@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import './MoneyMoney-Regular.ttf';
+
 import coinGif from "./images/coin.gif";
 import spinWebp from "./images/spin.webp";
 

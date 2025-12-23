@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import flaFont from './fla.ttf'; // Import the font file from the same folder
+const flaFont = '/fonts/25-05-20-fla.ttf'; // Import the font file from the same folder
 
 const Clock = () => {
   const mountRef = useRef(null);

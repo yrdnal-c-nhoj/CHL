@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import ufoImg from './ufo.webp'
 import skyImg from './stars.gif'
 import nebulaImg from './sta.gif'
-import cu250928fontont from './cow.ttf'
+const cu250928fontont = '/fonts/25-09-28-cow.ttf';
 
 function getClockTime () {
   const now = new Date()

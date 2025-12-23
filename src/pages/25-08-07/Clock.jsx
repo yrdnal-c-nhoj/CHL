@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import myFontUrl from './rope.ttf';
+const myFontUrl = '/fonts/25-08-07-rope.ttf';
 import backgroundImageUrl from './wes.webp';
 import hourHandImageUrl from './gunn.gif';
 import minuteHandImageUrl from './gun.gif';

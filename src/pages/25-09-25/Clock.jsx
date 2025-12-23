@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import bgVideo from "./unix-optimized.mp4"; // Optimized video for mobile compatibility
 import fallbackImage from "./unix.webp";
-import FontOne_2025_09_25 from "./unix.otf";
-import FontTwo_2025_09_25 from "./unix2.otf";
-import FontThree_2025_09_25 from "./un.otf";
-import FontFour_2025_09_25 from "./uunix.ttf";
+const FontOne_2025_09_25 = '/fonts/25-09-25-unix.otf';
+const FontTwo_2025_09_25 = '/fonts/25-09-25-unix2.otf';
+const FontThree_2025_09_25 = '/fonts/25-09-25-un.otf';
+const FontFour_2025_09_25 = '/fonts/25-09-25-uunix.ttf';
 
 const today = new Date().toISOString().slice(0, 10).replace(/-/g, "_");
 
