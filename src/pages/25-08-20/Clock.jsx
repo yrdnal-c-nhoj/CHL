@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import myFontUrl from "./go.otf";
+const myFontUrl = '/fonts/25-08-20-go.otf';
 import bgImage from "./24.webp"; // background image
 
 const TIMEZONES = [

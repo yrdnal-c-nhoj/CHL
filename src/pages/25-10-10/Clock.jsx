@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 // === Local assets ===
 import bgWebp from './roma.webp';
 import bgVideo from './ro.mp4';
-import font_20251007 from './roma.ttf';
+const font_20251007 = '/fonts/25-10-10-roma.ttf';
 
 export default function ProcessingCounterClock() {
   const [time, setTime] = useState(new Date());

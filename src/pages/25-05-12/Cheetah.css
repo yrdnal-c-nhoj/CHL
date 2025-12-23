@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: 'leo';
-    src: url('/leo.ttf') format('truetype');
+    src: url('/fonts/25-05-12-leo.ttf') format('truetype');
 }
 
 :root {

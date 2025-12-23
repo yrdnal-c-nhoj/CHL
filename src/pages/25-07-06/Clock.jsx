@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import polFont from './pol.otf';
+const polFont = '/fonts/25-07-06-pol.otf';
 import polarisGif from './polaris.gif';
 
 const CLOCK_NUMBERS = [

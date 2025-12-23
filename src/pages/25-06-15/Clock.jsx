@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import fontUrl from "./ZombieStitch.ttf";
+const fontUrl = '/fonts/25-06-15-ZombieStitch.ttf';
 import bgImageUrl from "./stin.webp";
 import overlayImageUrl from "./stit.jpeg";
 

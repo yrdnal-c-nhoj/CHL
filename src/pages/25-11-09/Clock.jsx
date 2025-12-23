@@ -1,7 +1,7 @@
 // src/components/DarkRomanClock.jsx
 import React, { useState, useEffect, useMemo } from 'react';
-import Font20251111 from './disc.ttf';       // main Roman font
-import ActiveFont20251111 from './pin.ttf'; // active digit font
+const Font20251111 = '/fonts/25-11-09-disc.ttf';       // main Roman font
+const ActiveFont20251111 = '/fonts/25-11-09-pin.ttf'; // active digit font
 
 const ROMAN_NUMERALS = [
   'I','II','III','IV','V','VI','VII','VIII','IX','X',

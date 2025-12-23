@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import bluFont from './blu.otf'; // local font
+const bluFont = '/fonts/25-05-18-blu.otf'; // local font
 import image1 from './8mMt.gif'; // bottom layer
 import image2 from './13966281486_Volantis_Tumblr.gif'; // middle layer
 import image3 from './bloo.gif'; // top layer

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import bardImg from './bard.webp';
 import barrsImg from './barrs.webp';
-import berFont from './ber.otf';
+const berFont = '/fonts/25-07-22-ber.otf';
 
 const BarrelrollClock = () => {
   useEffect(() => {

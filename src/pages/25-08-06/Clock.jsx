@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import orbitronFont from './laika.ttf'; // Yourquo vadis
+const orbitronFont = '/fonts/25-08-06-laika.ttf'; // Yourquo vadis
 import featuredImage from './Laika.jpeg'; // Your local image file
 
 const DigitalClock = () => {

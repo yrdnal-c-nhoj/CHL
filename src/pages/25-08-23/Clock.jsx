@@ -17,7 +17,7 @@ import backgroundImage from "./g.webp";
 import overlayImage from "./fog.gif";
 
 // Custom font (imported as module)
-import fogFont from "./fog.ttf";
+const fogFont = '/fonts/25-08-23-fog.ttf';
 
 // Map digits to their respective images
 const digitImages = {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 // --- FONT IMPORT (same folder) ---
-import font_sdfsdfsdfsd from './omission.otf'
+const font_sdfsdfsdfsd = '/fonts/25-11-21-omission.otf';
 
 // --- IMAGE IMPORTS (same folder) ---
 import img1 from './1.jpg'

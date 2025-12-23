@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import bgImage from './roc.webp' 
-import fontFile from './cherub.ttf' 
+const fontFile = '/fonts/25-12-13-cherub.ttf'; 
 
 export default function RococoClock() {
   const [now, setNow] = useState(new Date())

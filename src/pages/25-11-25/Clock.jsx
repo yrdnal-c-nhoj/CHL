@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useLayoutEffect, useMemo, useCallback, useRef } from "react";
 // Assuming these imports are correct and available in your environment
-import fontClockUrl_20251126 from "./ntp.ttf";
-import marqueeFontUrl from "./n2.ttf";
+const fontClockUrl_20251126 = '/fonts/25-11-25-ntp.ttf';
+const marqueeFontUrl = '/fonts/25-11-25-n2.ttf';
 import backgroundImg from "./npt.webp";
 
 // --- Constants (Keep as is) ---

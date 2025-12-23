@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import squFontUrl from './squ.ttf'; // Adjust path or use ?url for bundlers
+const squFontUrl = '/fonts/25-06-24-squ.ttf'; // Adjust path or use ?url for bundlers
 import bgImageUrl from './tho.webp'; // Ensure this file exists
 
 const ThoughtBalloonClock = () => {

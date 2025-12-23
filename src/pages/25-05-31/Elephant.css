@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'fat';
-  src: url('./fat.otf') format('opentype');
+  src: url('/fonts/25-05-31-fat.otf') format('opentype');
 }
 
 .fat-font {

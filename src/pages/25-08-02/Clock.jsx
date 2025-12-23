@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import myFontWoff2 from './hea.ttf';
+const myFontWoff2 = '/fonts/25-08-02-hea.ttf';
 import bg1 from './la.gif';
 import bg2 from './em.webp';
 import bg3 from './la.gif'; // copy of bg1 for flipping

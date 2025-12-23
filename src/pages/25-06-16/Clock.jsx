@@ -3,7 +3,7 @@ import kla from './kla.webp';
 import klax from './klax.png';
 import klaxon from './klaxon.png';
 import klaHand from './kla.png';
-import klaxFont from './klax.ttf';
+const klaxFont = '/fonts/25-06-16-klax.ttf';
 import overlayImage from './klax.webp';
 
 

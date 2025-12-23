@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import font_06_09_2025 from './boom.ttf';
+const font_06_09_2025 = '/fonts/25-09-06-boom.ttf';
 import bgImage from './boo.jpg';
 import hourHandImg from './b1.gif';
 import minuteHandImg from './b2.gif';

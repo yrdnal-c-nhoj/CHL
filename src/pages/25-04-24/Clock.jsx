@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import lava1 from "./lava.webp";
 import lava2 from "./vp2OVr.gif";
 import lava3 from "./lava.webp";
-import lavaFont from "./lava.ttf";
+const lavaFont = '/fonts/25-04-24-lava.ttf';
 
 const LavaClock = () => {
   const [time, setTime] = useState({ hours: "00", minutes: "00" });

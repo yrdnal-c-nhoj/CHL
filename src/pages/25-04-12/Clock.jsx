@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import angFont from "./ang.ttf";
+const angFont = '/fonts/25-04-12-ang.ttf';
 
 const digitFontSizes = {
   0: "51vh",

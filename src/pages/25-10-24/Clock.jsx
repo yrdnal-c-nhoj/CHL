@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import videoFile from "./esp.mp4";
 import videoWebM from "./esp.webp";
 import fallbackImg from "./esp.jpeg";
-import fontFile251024 from "./esp.ttf";
+const fontFile251024 = '/fonts/25-10-24-esp.ttf';
 import cornerUL from "./ul.webp";
 import cornerLR from "./lr.webp";
 

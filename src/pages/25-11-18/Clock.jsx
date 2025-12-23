@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import font_2025_11_21 from "./cat.ttf";
+const font_2025_11_21 = '/fonts/25-11-18-cat.ttf';
 import bgImg from "./eyes.webp";
 
 export default function RotatedClockGrid() {

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import hummFont from './humm.ttf';
+const hummFont = '/fonts/25-06-14-humm.ttf';
 import hmmGif from './hmm.gif';
 import hummPng from './humm.png';
 import hum1 from './hum1.webp';
