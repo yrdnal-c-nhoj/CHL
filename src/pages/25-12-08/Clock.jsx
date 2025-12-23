@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 // Import assets
 import bgImage from './plate.webp'
 import hourHandImg from './hand.gif'
-import minuteHandImg from './han.gif'
+import minuteHandImg from './hand2.gif'
 import secondHandImg from './ha.gif'
 
 export default function AnalogClock () {
