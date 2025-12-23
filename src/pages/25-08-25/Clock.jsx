@@ -70,7 +70,7 @@ export default function DigitalClock() {
       0 1px #4a3a28, 
       0 -1px #4a3a28
     `, // "bleed" edges
-    backgroundImage: 'url("./cardboard_texture.jpg")', // add local corrugated cardboard texture
+
     backgroundSize: 'cover',
     WebkitBackgroundClip: 'text',
     filter: 'contrast(85%) brightness(95%)', // slightly faded print
