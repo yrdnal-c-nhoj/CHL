@@ -15,7 +15,7 @@ export default defineConfig({
 
   build: {
     assetsDir: 'assets',
-    assetsInlineLimit: 0, // Ensures fonts are always separate files
+    assetsInlineLimit: 0, // Ensures all assets are always separate files
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
