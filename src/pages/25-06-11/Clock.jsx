@@ -4,7 +4,7 @@ import spinningBanana from './yellow-spinning-banana.gif';
 import hourHand from './baaa.png';
 import minuteHand from './bana.png';
 import secondHand from './ban.png';
-import banFont from './Ban.ttf';
+const banFont = '/fonts/25-06-11-Ban.ttf';
 
 const BananaClock = () => {
   useEffect(() => {

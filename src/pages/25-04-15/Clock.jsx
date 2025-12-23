@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import horizonFontUrl from './hori.otf';
+const horizonFontUrl = '/fonts/25-04-15-hori.otf';
 import layer1 from './images/4c558c5dbff1828f2b87582dc49526e8.gif';
 import layer2 from './images/sdfwef.gif';
 import layer3 from './images/ewfsdfsd.gif';

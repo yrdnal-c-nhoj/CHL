@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import mat250918font from './matrix.ttf' // Your Matrix-style font
+const mat250918font = '/fonts/25-09-18-matrix.ttf'; // Your Matrix-style font
 
 export default function MatrixRain () {
   const canvasRef = useRef(null)

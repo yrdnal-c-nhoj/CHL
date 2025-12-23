@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import bgImage from './muybridge.webp'
-import customFont_2025_1210 from './muy.ttf'
+const customFont_2025_1210 = '/fonts/25-12-09-muy.ttf';
 
 const elementColor = '#BBA8C8FF'
 

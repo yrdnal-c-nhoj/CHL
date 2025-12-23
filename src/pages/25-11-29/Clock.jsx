@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import backgroundImg from "./rococo.webp";
-import fontUrl_20251128 from "./roc.ttf";
+const fontUrl_20251128 = '/fonts/25-11-29-roc.ttf';
 
 export default function RococoDigitalClock() {
   const [now, setNow] = useState(new Date());

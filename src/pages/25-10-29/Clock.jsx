@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import bgVideo from "./tilt.mp4";
 import fallbackImg from "./tilt.webp";
-import romanFont2025_10_27 from "./tilt.ttf";
+const romanFont2025_10_27 = '/fonts/25-10-29-tilt.ttf';
 
 export default function MonarchClock() {
   const [mediaReady, setMediaReady] = useState(false);

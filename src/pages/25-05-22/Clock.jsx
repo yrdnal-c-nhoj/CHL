@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import sunGif from './sun.gif';
-import dirFontUrl from './Dir.ttf'; // ✅ import the font
+const dirFontUrl = '/fonts/25-05-22-Dir.ttf'; // ✅ import the font
 
 const romanNumerals = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"];
 

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import myFontWoff2 from './zod.ttf';
+const myFontWoff2 = '/fonts/25-08-01-zod.ttf';
 import bg1 from './sta.gif';
 import bg2 from './stars.webp';
 import htmlLogo from './zod.gif';

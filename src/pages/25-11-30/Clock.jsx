@@ -1,6 +1,6 @@
 // DigitalClock.jsx (Optimized for FOUT Prevention)
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import font251130 from './nono.ttf'
+const font251130 = '/fonts/25-11-30-nono.ttf';
 import backgroundImg from './crax.jpg'
 
 export default function DigitalClock () {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import circleFont from './circle.ttf'; // Local font file
+const circleFont = '/fonts/25-05-28-circle.ttf'; // Local font file
 
 const Clock = () => {
   const [fontLoaded, setFontLoaded] = useState(false);

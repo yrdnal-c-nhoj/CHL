@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useMemo } from 'react';
 import bgImage from './sta.gif';
 import overlay1 from './cur.webp';
 import overlay2 from './pro.gif';
-import clockFont from './st.ttf';
+const clockFont = '/fonts/25-08-03-st.ttf';
 
 const goldGradient = 'linear-gradient(135deg, #ffd700, #ffec85, #b8860b, #f5d742)';
 

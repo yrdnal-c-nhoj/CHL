@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import cinzel20251010 from './d1.ttf'
-import roboto20251010 from './d2.ttf'
-import orbitron20251010 from './d3.otf'
+const cinzel20251010 = '/fonts/25-10-09-d1.ttf';
+const roboto20251010 = '/fonts/25-10-09-d2.ttf';
+const orbitron20251010 = '/fonts/25-10-09-d3.otf';
 
 export default function ConcentricClock () {
   const [currentTime, setCurrentTime] = useState({ h: 0, m: 0, s: 0 })

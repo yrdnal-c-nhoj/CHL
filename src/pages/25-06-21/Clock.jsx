@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import fontUrl from './merc.ttf';
+const fontUrl = '/fonts/25-06-21-merc.ttf';
 import bg1 from './MercuryResonancePrecession001.gif';
 import bg2 from './mmmmm.gif';
 import bg3 from './merg.gif';

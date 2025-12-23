@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import backgroundImage from "./rootsu.gif";
-import dodecahedronFontFile from "./root.ttf"; // renamed import
+const dodecahedronFontFile = '/fonts/25-08-27-root.ttf'; // renamed import
 
 export default function TwelfthRootsOfUnityWithClock() {
   const canvasRef = useRef(null);

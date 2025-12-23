@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import background2 from './bb.webp';   // front
 import background1 from './bam.webp';  // back
 import background3 from './bambu.gif'; // static background
-import customFont from './bamboo.ttf';
+const customFont = '/fonts/25-07-25-bamboo.ttf';
 
 const Clock = () => {
   const [time, setTime] = useState(() => new Date());

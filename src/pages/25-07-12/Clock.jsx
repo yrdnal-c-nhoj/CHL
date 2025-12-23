@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import fibFont from './fib.otf';
+const fibFont = '/fonts/25-07-12-fib.otf';
 import fibImage from './fib.gif';
 
 const FibonacciClock = () => {

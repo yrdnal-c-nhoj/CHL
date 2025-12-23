@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import backgroundImage from './crush.jpg'
-import f250917fontt from './crush.ttf'
+const f250917fontt = '/fonts/25-09-17-crush.ttf';
 import centerImage from './crush.gif' // middle image
 import topImage from './crr.gif' // top overlay image
 import overlay1 from './ccr.gif'

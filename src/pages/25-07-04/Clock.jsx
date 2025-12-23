@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import kalFont from './kal.otf';
+const kalFont = '/fonts/25-07-04-kal.otf';
 import bgImage from './7ZAx.webp';
 
 const Clock = () => {

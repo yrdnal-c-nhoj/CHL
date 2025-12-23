@@ -9,7 +9,7 @@ import sno from "./sno.gif";
 import snow7 from "./snow-gif-7.gif";
 import flakes from "./flakes.gif";
 import eref from "./eref.gif";
-import amaticRegular from "./amati.ttf";
+const amaticRegular = '/fonts/25-06-07-amati.ttf';
 
 export default function BlizzardClock() {
   const clockRef = useRef(null);

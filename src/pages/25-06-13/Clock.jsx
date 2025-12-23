@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import cloudyFont from './cloudy.ttf';
+const cloudyFont = '/fonts/25-06-13-cloudy.ttf';
 import cmoon from './cmoon.webp';
 import clouGif from './clou.gif';
 import clll from './clll.webp';

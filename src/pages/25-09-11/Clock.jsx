@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import medievalFont from './ren.ttf';
+const medievalFont = '/fonts/25-09-11-ren.ttf';
 import backgroundImage from './ren.jpg';
 import MedievalSVG from './MedievalSVG';
 

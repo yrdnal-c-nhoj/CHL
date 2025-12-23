@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import customFont from './gol.ttf'; // Import your custom font
+const customFont = '/fonts/25-07-28-gol.ttf'; // Import your custom font
 import backgroundImage from './go.gif';
 
 const Clock = () => {

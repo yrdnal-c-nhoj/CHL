@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import lightningImg from "./images/lightning.webp"; // adjust path as needed
-import innerFontTTF from "./fonts/Inner.ttf"; // You'll need to load this font locally or via CSS
+const innerFontTTF = '/fonts/25-05-01-Inner.ttf'; // You'll need to load this font locally or via CSS
 
 export default function SlowLightningClock() {
   const [time, setTime] = useState({ hours: "--", minutes: "--" });

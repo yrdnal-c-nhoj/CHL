@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import myCustomFont from './som.ttf';
+const myCustomFont = '/fonts/25-07-27-som.ttf';
 import backgroundImage from './met.jpg'; // Import your background image
 
 const Clock = () => {

@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react'
-import WebFonnov25ufuf from './webs1.ttf'
-import Webfont2511055 from './webs2.ttf'
-import w251105font from './webs3.ttf'
+const WebFonnov25ufuf = '/fonts/25-11-05-webs1.ttf';
+const Webfont2511055 = '/fonts/25-11-05-webs2.ttf';
+const w251105font = '/fonts/25-11-05-webs3.ttf';
 
 // Helper function remains the same
 function makeColumnsBackground (columns, gutterVw, marginVw) {

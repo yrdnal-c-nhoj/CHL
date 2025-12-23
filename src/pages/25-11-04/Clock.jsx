@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import bgVideo from './sea.mp4'
 import fallbackImg from './sea.webp'
-import cu251104font from './naut.ttf' // Nautical font
+const cu251104font = '/fonts/25-11-04-naut.ttf'; // Nautical font
 
 export default function OceanStorm () {
   const videoRef = useRef(null)

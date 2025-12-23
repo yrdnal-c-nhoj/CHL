@@ -1,7 +1,7 @@
 // File: DigitalStackClock.jsx
 import React, { useEffect, useState } from "react";
 import bgImg from "./gs.png";           // your background
-import font2025_11_24 from "./gal.ttf"; // your custom font
+const font2025_11_24 = '/fonts/25-11-23-gal.ttf'; // your custom font
 
 export default function DigitalStackClock() {
   const [now, setNow] = useState(new Date());

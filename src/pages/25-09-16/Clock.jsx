@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import bgImage from './bg.jpg'
-import d250916font from './baud.ttf'
+const d250916font = '/fonts/25-09-16-baud.ttf';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date())

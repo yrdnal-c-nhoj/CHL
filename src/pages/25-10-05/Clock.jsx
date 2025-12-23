@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import bgImage from './16a.png'
 import clockBgImage from './16.png'
-import diigi251005 from './dode.ttf'
-import ana251005font from './do.ttf'
+const diigi251005 = '/fonts/25-10-05-dode.ttf';
+const ana251005font = '/fonts/25-10-05-do.ttf';
 
 export default function HexAnalogClock () {
   const [currentTime, setCurrentTime] = useState(new Date())

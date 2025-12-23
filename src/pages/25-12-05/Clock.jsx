@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 // Import today's date font
-import font_2025_12_06 from './magic.ttf'
+const font_2025_12_06 = '/fonts/25-12-05-magic.ttf';
 
 // Import background image
 import bgImage from './magic.webp'

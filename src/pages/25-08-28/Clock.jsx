@@ -1,7 +1,7 @@
 // src/components/DigitalClock.jsx
 import { useState, useEffect } from "react";
 import backgroundImage from "./gob.jpg"; 
-import clockFontFile from "./gob.ttf";   
+const clockFontFile = '/fonts/25-08-28-gob.ttf';   
 
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date());

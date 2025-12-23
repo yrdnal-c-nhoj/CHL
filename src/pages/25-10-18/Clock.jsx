@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import bgVideo from "./total.mp4";
 import fallbackImg from "./tot.webp";
-import font_20251018 from "./tot.ttf";
+const font_20251018 = '/fonts/25-10-18-tot.ttf';
 
 export default function MediaClock() {
   const [mediaReady, setMediaReady] = useState(false);

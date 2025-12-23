@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import bgVideo from "./swim.mp4";
 import fallbackImg from "./swim.webp";
-import fontFile2025_11_04 from "./sperm.ttf"; // Custom scientific font
+const fontFile2025_11_04 = '/fonts/25-11-02-sperm.ttf'; // Custom scientific font
 
 export default function MonarchScene() {
   const videoRef = useRef(null);

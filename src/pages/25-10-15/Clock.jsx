@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import font20251016 from "./brahmi.ttf";
+const font20251016 = '/fonts/25-10-15-brahmi.ttf';
 import image1 from "./palm.webp";
 import image2 from "./brahmi.webp";
 

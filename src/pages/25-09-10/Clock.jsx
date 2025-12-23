@@ -7,7 +7,7 @@ import minuteHand from "./min.gif";
 import secondHand from "./sec.gif";
 
 // Local font
-import customLavaFont from "./lava.otf";
+const customLavaFont = '/fonts/25-09-10-lava.otf';
 
 const Clock = () => {
   const hourRef = useRef(null);

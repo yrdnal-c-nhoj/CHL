@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import './zzzz.ttf';
-import './ccccc.ttf';
-import './eee.ttf';
-import './bbbbb.ttf';
+
+
+
+
 
 const UnrulyClock = () => {
   const digitRefs = useRef([]);

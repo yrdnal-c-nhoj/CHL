@@ -7,7 +7,7 @@ import portImg from './eagle.webp'
 import hourHandImg from './oa.gif'
 import minuteHandImg from './oak.gif'
 import secondHandImg from './nk.gif'
-import font251211 from './jup.ttf?url'
+const font251211 = '/fonts/25-12-10-jup.ttf';
 
 // --- CONFIG ---
 const CONFIG = {
