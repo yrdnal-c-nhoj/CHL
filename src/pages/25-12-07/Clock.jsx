@@ -17,7 +17,7 @@ export default function IcosahedronScene() {
       style={{
         position: 'fixed',
         inset: 0,
-        background: '#000814',
+        background: '#020B18FF',
         overflow: 'hidden'
       }}
     >
