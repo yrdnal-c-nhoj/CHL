@@ -259,11 +259,5 @@
   { "path": "25-12-15", "date": "25-12-15", "title": "Froze" },
   { "path": "25-12-16", "date": "25-12-16", "title": "Quartile" },
   { "path": "25-12-17", "date": "25-12-17", "title": "Swagger" },
-  { "path": "25-12-18", "date": "25-12-18", "title": "Special Effects" },
-  { "path": "25-12-19", "date": "25-12-19", "title": "xxxApple" },
-  { "path": "25-12-20", "date": "25-12-20", "title": "xxxxTrajectories" },
-  { "path": "25-12-21", "date": "25-12-21", "title": "xxLiminal" },
-  { "path": "25-12-22", "date": "25-12-22", "title": "xxxSputnik" },
-  { "path": "25-12-23", "date": "25-12-23", "title": "xxxHands" },
-  { "path": "25-12-24", "date": "25-12-24", "title": "xxxxCoil" }
-  ]
+  { "path": "25-12-18", "date": "25-12-18", "title": "Special Effects" }
+]
