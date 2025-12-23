@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import fontLatin from './word.ttf'
-import fontcjk251017 from './CJK.ttf'
-import fontarabic251017 from './NotoNaskhArabic-Regular.ttf'
-import devanagari251017 from './NotoSansDevanagari-Regular.ttf'
+const fontLatin = '/fonts/25-10-17-word.ttf';
+const fontcjk251017 = '/fonts/25-10-17-CJK.ttf';
+const fontarabic251017 = '/fonts/25-10-17-NotoNaskhArabic-Regular.ttf';
+const devanagari251017 = '/fonts/25-10-17-NotoSansDevanagari-Regular.ttf';
 import backgroundImage from './words.jpg'
 
 export default function TimeWordsClock () {

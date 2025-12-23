@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import revolution251127font from './dec.ttf'
-import line251127font from './french.ttf'
+const revolution251127font = '/fonts/25-11-27-dec.ttf';
+const line251127font = '/fonts/25-11-27-french.ttf';
 import hourHandImg from './fre.webp'
 import minuteHandImg from './fren.webp'
 import secondHandImg from './fren.png'

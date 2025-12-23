@@ -3,7 +3,7 @@ import bg1 from "./mars2.webp";
 import bg2 from "./mars1.gif";
 import bg3 from "./mars1.gif";
 import bg4 from "./mars5.webp"; // ← added Mars four import
-import font2025_11_18 from "./mars.ttf";
+const font2025_11_18 = '/fonts/25-11-17-mars.ttf';
 
 export default function MarsDigitalClock() {
   const [time, setTime] = useState(new Date());

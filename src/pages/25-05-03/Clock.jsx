@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import fontUrl from './Petal.ttf';
+const fontUrl = '/fonts/25-05-03-Petal.ttf';
 import bg1 from './petals.gif';
 import bg2 from './talos.gif';
 import bg3 from './petalos.gif';

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import fontUrl from './bang.ttf';
+const fontUrl = '/fonts/25-04-29-bang.ttf';
 import gif1 from './fw.webp';
 import gif2 from './giphy.gif';
 import gif3 from './84298.gif';

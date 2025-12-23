@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import stretchFont from './stretch.ttf';
+const stretchFont = '/fonts/25-06-29-stretch.ttf';
 
 const StretchClock = () => {
   const [time, setTime] = useState({ hours: '', minutes: '', seconds: '' });

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import camFont from './cam.otf';
+const camFont = '/fonts/25-07-20-cam.otf';
 import bg1 from './cam.webp';
 import bg2 from './camr.webp';
 import bg3 from './ca.webp';

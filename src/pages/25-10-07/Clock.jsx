@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 // === Local assets ===
 import backgroundVideo from './big.mp4'
 import fallbackGif from './big.webp'
-import O251007font from './str.ttf'
+const O251007font = '/fonts/25-10-07-str.ttf';
 
 export default function ImageAnalogClock () {
   const [time, setTime] = useState(new Date())

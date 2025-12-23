@@ -5,7 +5,7 @@ import * as THREE from 'three'
 
 import backgroundImage from './h2o.webp'
 import backgroundImage2 from './water.gif'
-import font251207 from './isoca.ttf'
+const font251207 = '/fonts/25-12-07-isoca.ttf';
 import useFontLoader from './useFontLoader'
 
 export default function IcosahedronScene() {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import airFontUrl from './air.ttf';
+const airFontUrl = '/fonts/25-06-01-air.ttf';
 import stampImg from './stamp.png';
 import stamp2Img from './stamp2.png';
 import stamp3Img from './stamp3.png';

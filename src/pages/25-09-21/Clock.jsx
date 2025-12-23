@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import cust250921font from './ele.ttf?url'
+const cust250921font = '/fonts/25-09-21-ele.ttf';
 import stripe1 from './fire.gif?url'
 import stripe2 from './air.gif?url'
 import stripe3 from './h2o.gif?url'

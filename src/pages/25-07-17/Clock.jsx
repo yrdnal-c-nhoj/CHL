@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 // Import font and images as modules from the same folder
-import animFont from "./ani.ttf";
+const animFont = '/fonts/25-07-17-ani.ttf';
 
 import num1Img from "./pngtree-a-beautiful-saltwater-crocodile-png-image_13409821-ezgif.com-rotate.gif";
 import num2Img from "./nbvfghj-ezgif.com-effects.gif";

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
-import OrbitronFont20251012 from "./air.ttf";
+const OrbitronFont20251012 = '/fonts/25-10-14-air.ttf';
 import bgImage from "./air.webp";
 
 const SpinningDodecahedronClock = () => {

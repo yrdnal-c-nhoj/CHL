@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import suvFont from './suv.ttf';
+const suvFont = '/fonts/25-07-07-suv.ttf';
 import suvImage from './suv.gif';
 import suvBackground from './suvx.jpg';
 

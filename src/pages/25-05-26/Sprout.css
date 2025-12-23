@@ -1,7 +1,7 @@
 /* clock.css */
 @font-face {
   font-family: 'sprout';
-  src: url('./sprout.ttf') format('truetype');
+  src: url('/fonts/25-05-26-sprout.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }

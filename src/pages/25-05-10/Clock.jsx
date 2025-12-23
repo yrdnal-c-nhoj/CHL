@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import michromaFont from './Michroma.ttf';
-import economicaFont from './Economica.ttf';
-import questrialFont from './Questrial.ttf';
+const michromaFont = '/fonts/25-05-10-Michroma.ttf';
+const economicaFont = '/fonts/25-05-10-Economica.ttf';
+const questrialFont = '/fonts/25-05-10-Questrial.ttf';
 
 const fonts = [
   "'michroma'",

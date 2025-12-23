@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import fontUrl from './cas.ttf';
+const fontUrl = '/fonts/25-08-19-cas.ttf';
 import bgUrl from './ap.jpeg';
 
 const Pendulum = () => {

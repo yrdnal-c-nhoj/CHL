@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import bottomBackgroundImg from "./ch.jpg"; // New bottom background image
 import backgroundImg from "./ches.jpg";          // Original background image
-import customFont20251011 from "./ch.ttf";
-import alphabetFont20251011 from "./chess.ttf";
+const customFont20251011 = '/fonts/25-10-11-ch.ttf';
+const alphabetFont20251011 = '/fonts/25-10-11-chess.ttf';
 
 export default function FancyClock() {
   const [time, setTime] = useState(new Date());

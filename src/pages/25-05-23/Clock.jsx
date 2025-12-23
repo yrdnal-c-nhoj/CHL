@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import backgroundImage from './blank.jpg';
-import crossFont from './Cross.otf';
+const crossFont = '/fonts/25-05-23-Cross.otf';
 
 const CrossClock = () => {
   const [time, setTime] = useState(new Date());

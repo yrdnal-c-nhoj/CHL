@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import clockFont from "./root.ttf";
+const clockFont = '/fonts/25-08-26-root.ttf';
 import bg0 from "./rrr.webp"; // bottom-most
 import bg1 from "./ro.gif";   // middle
 import bg3 from "./root.webp"; // top foreground

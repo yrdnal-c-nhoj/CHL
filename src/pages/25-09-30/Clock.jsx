@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import cus250930 from './stt.ttf'
+const cus250930 = '/fonts/25-09-30-stt.ttf';
 
 export default function StripedClock () {
   const [time, setTime] = useState([])

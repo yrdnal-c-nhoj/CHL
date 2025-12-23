@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import KinaFont from './Kina.ttf';
+const KinaFont = '/fonts/25-05-09-Kina.ttf';
 import swurl from './swurl.gif';
 
 const importantNumbers = [12, 3, 6, 9];

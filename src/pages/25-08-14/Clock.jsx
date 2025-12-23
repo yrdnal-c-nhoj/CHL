@@ -13,7 +13,7 @@ import digit9 from './9.gif';
 import digit10 from './10.gif';
 import digit11 from './11.gif';
 import digit12 from './12.gif';
-import customFont from './bir.ttf';
+const customFont = '/fonts/25-08-14-bir.ttf';
 
 const digitImages = [
   digit1, digit2, digit3, digit4, digit5, digit6,

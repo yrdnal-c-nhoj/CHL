@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import bgImage from './roundhay.webp'
 import bgImage2 from './ro.jpeg' // second background
-import roundhayFont from './rou.ttf'
-import ifont25100013 from './line.otf'
+const roundhayFont = '/fonts/25-10-13-rou.ttf';
+const ifont25100013 = '/fonts/25-10-13-line.otf';
 
 export default function Clock () {
   const [ready, setReady] = useState(false)

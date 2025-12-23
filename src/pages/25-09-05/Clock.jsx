@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import DigitalClockFont from './swi.ttf';
+const DigitalClockFont = '/fonts/25-09-05-swi.ttf';
 import DigitalClockBg from './swiss.jpg';
 import MovingImg from './mouse.gif';
 

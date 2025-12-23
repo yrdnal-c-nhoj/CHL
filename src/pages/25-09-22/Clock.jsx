@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import bgVideo from "./deex.mp4";
 import fallbackImage from "./deex.gif";
-import customFontmmm from "./disney.ttf";
+const customFontmmm = '/fonts/25-09-22-disney.ttf';
 
 export default function DigitalClockVideo() {
   const [videoFailed, setVideoFailed] = useState(false);

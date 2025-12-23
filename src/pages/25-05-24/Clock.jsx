@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import torGif from './tor.gif';
-import speedFont from './speed.ttf';
+const speedFont = '/fonts/25-05-24-speed.ttf';
 
 const Clock = () => {
   useEffect(() => {

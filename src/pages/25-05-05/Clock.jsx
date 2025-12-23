@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import mapFont from './Map.ttf';
+const mapFont = '/fonts/25-05-05-Map.ttf';
 
 const WarholGraveCamClock = () => {
   const [time, setTime] = useState({

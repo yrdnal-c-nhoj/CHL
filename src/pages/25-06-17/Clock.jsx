@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import backFont from './back.ttf';
+const backFont = '/fonts/25-06-17-back.ttf';
 
 const BackslantClock = () => {
   const ids = ['h0', 'h1', 'm0', 'm1', 's0', 's1'];

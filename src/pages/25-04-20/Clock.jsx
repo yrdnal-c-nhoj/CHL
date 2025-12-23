@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import clouds from "./clouds.gif";
-import cloFont from "./clo.ttf";
+const cloFont = '/fonts/25-04-20-clo.ttf';
 
 const CloudClock = () => {
   const [hoursHTML, setHoursHTML] = useState("");

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import customFont from './wash.otf';
+const customFont = '/fonts/25-08-11-wash.otf';
 import bgImage from './mach.gif';
 import topImage from './wash.gif';
 import img1 from './a.gif';

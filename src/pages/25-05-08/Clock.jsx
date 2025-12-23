@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import shinyFont from './Shiny.ttf';
+const shinyFont = '/fonts/25-05-08-Shiny.ttf';
 import bgGif from './d7e781b32269a8a82b500c1a9dc97733-ezgif.com-optimize.gif';
 
 const GoldenHourClock = () => {

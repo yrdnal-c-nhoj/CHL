@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import cunFont from './cun.ttf';
+const cunFont = '/fonts/25-07-19-cun.ttf';
 import bgOverlay from './cun1.webp';
 
 const CuneiformClock = () => {

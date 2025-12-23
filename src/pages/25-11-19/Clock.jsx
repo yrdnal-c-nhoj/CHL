@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import bgImg from './apple.webp' // Main background
 import tileImg from './ap.webp' // Tiled background
 import overlayImg from './app.webp' // Full-cover overlay
-import custo251119font from './apple.ttf'
+const custo251119font = '/fonts/25-11-19-apple.ttf';
 
 export default function AnalogClock () {
   const [time, setTime] = useState(new Date())

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, memo } from "react";
-import font250909 from "./van.ttf";
+const font250909 = '/fonts/25-09-09-van.ttf';
 import bgImage2 from "./skull.jpg"; 
 import bgImage from "./va.webp"; 
 import bgImage3 from "./cand.webp"; 

@@ -1,7 +1,7 @@
 /* clock.css */
 @font-face {
   font-family: 'bot';
-  src: url('./bot.ttf') format('truetype');
+  src: url('/fonts/25-05-25-bot.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }

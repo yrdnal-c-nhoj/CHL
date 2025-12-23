@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import orbitronFont from './line.ttf'; // Your local font file
+const orbitronFont = '/fonts/25-08-11-line.ttf'; // Your local font file
 import featuredImage from './f.gif'; // Your local image file
 
 // Create a style tag with font-face scoped inside component using a React style element + a unique class

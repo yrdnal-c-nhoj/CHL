@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import sloanFont_2025_1204 from './ichart.otf'
+const sloanFont_2025_1204 = '/fonts/25-12-04-ichart.otf';
 
 export default function EyeChart () {
   const [fontLoaded, setFontLoaded] = useState(false)

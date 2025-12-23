@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import bg1 from "./co.png";
 import bg2 from "./cos.png";
-import wheFont from "./whe.ttf";
+const wheFont = '/fonts/25-06-26-whe.ttf';
 
 const CosmicWheelClock = () => {
   useEffect(() => {

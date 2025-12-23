@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import bgImage from './558074085193-ezgif.com-optiwebp-1.webp';
-import xrayFontUrl from './xray.ttf';
+const xrayFontUrl = '/fonts/25-07-18-xray.ttf';
 
 const HospitalClock = () => {
   const [time, setTime] = useState('');

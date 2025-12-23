@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useMemo } from 'react'
-import font_25251115j from './rain.otf'
+const font_25251115j = '/fonts/25-11-15-rain.otf';
 import bgImage from './fall.webp' // local background image
 
 export default function FallClock () {

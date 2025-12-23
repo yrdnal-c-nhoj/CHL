@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import dotsFont from "./dots.otf";         // Import custom font
+const dotsFont = '/fonts/25-05-27-dots.otf';         // Import custom font
 import backgroundImage from "./dot.jpg"; // Import background image
 
 function Clock() {

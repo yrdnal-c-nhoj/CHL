@@ -3,7 +3,7 @@ import * as THREE from 'three'
 
 import bgFull from './octo.webp' // full-size background
 import bgTile from './octoh.webp' // repeating/tiled background
-import custom251112tz from './oct.ttf'
+const custom251112tz = '/fonts/25-11-12-oct.ttf';
 
 export default function TwoBackgroundOctahedron () {
   const threeRef = useRef(null)

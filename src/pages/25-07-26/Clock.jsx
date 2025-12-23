@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import bg1 from './tum.gif';
 import bg2 from './tum2.gif';
-import myFontUrl from './sec.ttf';
+const myFontUrl = '/fonts/25-07-26-sec.ttf';
 
 const COLORS = ['#CB0BEDFF', '#25E90CFF', '#F58E0FFF'];
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import mobyFont from './moby.ttf';
+const mobyFont = '/fonts/25-04-03-moby.ttf';
 import waves from './waves.gif';
 
 const MobyDickClock = () => {

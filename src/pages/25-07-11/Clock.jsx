@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import penFontUrl from './Pen.ttf';
+const penFontUrl = '/fonts/25-07-11-Pen.ttf';
 
 const PenmanshipClock = () => {
   const [timeString, setTimeString] = useState('--:--');

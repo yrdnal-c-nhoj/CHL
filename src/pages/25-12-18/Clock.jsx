@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import backgroundImage from './ci.webp'
-import speedFont from '../../../public/fonts/cine.ttf'
 
 const TiltedReverseClock = () => {
   const [time, setTime] = useState(new Date())

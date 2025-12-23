@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import clockBg from './ca.gif';
 import fullBg from './ca.gif';
-import myFont from './Cam.ttf'; // Import font
+const myFont = '/fonts/25-07-30-Cam.ttf'; // Import font
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());

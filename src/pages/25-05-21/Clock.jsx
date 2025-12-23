@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import background from './signals.jpg';
-import semFont from './sem.ttf';
+const semFont = '/fonts/25-05-21-sem.ttf';
 
 // Inject font-face using JS
 const injectFont = () => {

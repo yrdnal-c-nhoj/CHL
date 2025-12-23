@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import asciiFontUrl from './ascii.ttf';
+const asciiFontUrl = '/fonts/25-07-15-ascii.ttf';
 import asciiImageUrl from './ascii.jpg';
 
 const DIGITS = {

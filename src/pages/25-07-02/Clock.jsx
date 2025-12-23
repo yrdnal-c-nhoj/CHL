@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import bakFont from './bak.ttf';
+const bakFont = '/fonts/25-07-02-bak.ttf';
 import backgroundGif from './bk.gif';
 
 export default function Clock() {

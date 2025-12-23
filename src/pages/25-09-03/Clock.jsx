@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import cus250903font from './mau.ttf'
+const cus250903font = '/fonts/25-09-03-mau.ttf';
 import cornerImage from './corner.gif'
 import backgroundImage from './mau.gif' // <-- your background image
 
