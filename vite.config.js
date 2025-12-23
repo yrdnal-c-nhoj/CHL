@@ -11,7 +11,7 @@ export default defineConfig({
     postcss: './postcss.config.js',
   },
 
-  assetsInclude: ['**/*.otf', '**/*.ttf', '**/*.woff2', '**/*.gif'],
+  assetsInclude: ['**/*.otf', '**/*.ttf', '**/*.woff2', '**/*.gif', '**/*.jpg', '**/*.jpeg', '**/*.png'],
 
   build: {
     assetsDir: 'assets',
