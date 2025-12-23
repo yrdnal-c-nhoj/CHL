@@ -6,6 +6,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ### Prerequisites
 - Node.js >= 18 (see `package.json` `engines.node`).
+- Use `npm` for scripts; there is no yarn/pnpm lockfile.
 
 ### Install dependencies
 ```bash
@@ -25,16 +26,26 @@ npm run build
 ```
 
 ### Preview the production build
-Serves the built `dist/` output locally via Vite.
+Serves the built `dist` output locally via Vite.
 ```bash
 npm run preview
 ```
 
+### Data source selection
+`DataContext` chooses between the main and test clock datasets based on `VITE_ENVIRONMENT`:
+```bash
+# Use main clock data (default)
+npm run dev
+
+# Use testclock.json instead of clockpages.json
+VITE_ENVIRONMENT=testing npm run dev
+```
+
 ### Tests and linting
 - There are **no test or lint scripts** defined in `package.json` as of this version of the repo.
-- An `eslint.config.js` file exists but is actually a React clock component, not a real ESLint configuration.
+- An `eslint.config.js` file exists but is actually a React clock component (`Clockgrid`), not a real ESLint configuration.
 
-If you add tests or a linter in the future, prefer to expose them via `package.json` scripts.
+If you add tests or a linter in the future, prefer to expose them via `package.json` scripts so they can be run via `npm test`, `npm run lint`, etc.
 
 ### Other scripts
 `package.json` defines a `screenshot` script:
@@ -51,6 +62,11 @@ This is a Vite + React single-page application for **BorrowedTime**, a daily clo
 - A JSON data source describes each day's clock (date, path, title).
 - Each clock is implemented as its own React component under `src/pages/<yy-mm-dd>/Clock.jsx` with colocated assets.
 - The router loads the appropriate clock dynamically based on the URL.
+
+At a high level, there are three layers:
+- **Shell / routing** – `main.jsx`, `App.jsx`, and high-level layout components.
+- **Data layer** – `DataContext` and JSON clock metadata.
+- **Per-day clock implementations** – independent React components under `src/pages/**/Clock.jsx` plus their local assets.
 
 ### Entry point and shell
 - `src/main.jsx` is the React entry point. It:
@@ -77,7 +93,7 @@ This is a Vite + React single-page application for **BorrowedTime**, a daily clo
 ### Data and configuration
 
 Clock metadata is centralized in `src/context`:
-- `src/context/clockpages.json` – primary list of clocks.
+- `src/context/clockpages.json` – primary list of clocks (used by default).
 - `src/context/testclock.json` – alternative test dataset with the same structure.
 
 `src/context/DataContext.jsx`:
@@ -101,6 +117,7 @@ Per‑day clock implementations live under `src/pages`:
 - Directory naming convention: `src/pages/<yy-mm-dd>/`.
 - Each directory contains a `Clock.jsx` plus any fonts (`.ttf`, `.otf`, etc.), images (`.gif`, `.webp`, `.jpg`, `.png`), and styles it needs.
 - The binding between JSON data and the physical folder is via the `path` field in `clockpages.json` / `testclock.json`.
+- Individual clocks are free-form React components and may use any of the visual / animation libraries declared in `package.json` (e.g., `three` / `@react-three/fiber` / `@react-three/drei`, `gsap`, `styled-components`, Tailwind via PostCSS).
 
 #### Dynamic loading via `ClockPage`
 
@@ -126,13 +143,14 @@ UX details handled by `ClockPage`:
 
 `src/Today.jsx` renders a clock for "today" (or the most recent available):
 - Uses `DataContext` to get `items`.
-- Computes today's date in `yy-mm-dd` form.
-- Tries to find a matching `item` by date; if not found, it falls back to the last clock in chronological order.
+- Computes today's date in `yy-mm-dd` form, then tries to find a matching `item` by date.
+- If no exact match exists, it falls back to the last clock in chronological order.
 - Dynamically loads the `Clock.jsx` for that `item` using the same `import.meta.glob('./pages/**/Clock.jsx')` approach.
 - Manages its own header and footer visibility:
   - Header fades out after 1.5 seconds.
   - Footer (`ClockPageNav`) auto‑hides after a short period of inactivity and reappears on mouse/touch.
 - Prevents page scrolling while mounted by locking `document.body.style.overflow`.
+- Formats the "today" date for display as `MM/DD/YY` instead of the `yy-mm-dd` route format.
 
 ### Home and static content pages
 
@@ -241,4 +259,5 @@ Key shared components in `src/components`:
 - **ESLint config name collision:** `eslint.config.js` is actually a `Clockgrid` React component, not a real ESLint configuration file. Do not treat it as linter config; if you introduce ESLint later, use a different filename or relocate this component.
 - **PostCSS config path mismatch:** Vite expects `./postcss.config.js` but the repo currently has `postcss.config.cjs`. If CSS processing behaves unexpectedly, check that configuration first.
 - **Route date format:** Many parts of the app assume dates are strings in the `yy-mm-dd` format (e.g., `25-04-02`). When adding new entries to `clockpages.json` / `testclock.json` or new folders to `src/pages`, keep this format consistent.
+- **Data source switching:** `DataContext`'s behavior depends on `VITE_ENVIRONMENT`; make sure you set it intentionally when running in non-default modes.
 - **Scroll locking:** Both `ClockPage` and `Today` manually set `document.body.style.overflow = 'hidden'` on mount. If you add new overlays or modals around these pages, be aware of this interaction.
