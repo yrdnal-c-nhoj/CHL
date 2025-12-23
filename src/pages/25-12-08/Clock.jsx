@@ -6,6 +6,42 @@ import hourHandImg from './hand.gif'
 import minuteHandImg from './hand2.gif'
 import secondHandImg from './ha.gif'
 
+// Styles moved outside the component to avoid recreation on every render (60fps)
+const outerContainerStyle = {
+  height: '100dvh',
+  width: '100vw',
+  position: 'relative',
+  backgroundImage: `url(${bgImage})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  overflow: 'hidden',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center'
+}
+
+const clockContainerStyle = {
+  width: '85vmin',
+  height: '85vmin',
+  borderRadius: '50%',
+  position: 'relative',
+  zIndex: 5
+}
+
+const handStyle = (deg, width, height) => ({
+  position: 'absolute',
+  width: `${width}vmin`,
+  height: `${height}vmin`,
+  transform: `translate(-50%, -100%) rotate(${deg}deg)`,
+  transformOrigin: '50% 100%',
+  top: '50%',
+  left: '50%',
+  transition: 'none',
+  zIndex: 10,
+  filter:
+    'brightness(0.8) drop-shadow(-1px -1px 0px rgba(0,0,0,0.5)) drop-shadow(-2px -2px 2px rgba(0,0,0,0.5)) drop-shadow(-3px -3px 4px rgba(0,0,0,0.3)) drop-shadow(0px 0px 10px rgba(50,50,50,0.2))'
+})
+
 export default function AnalogClock () {
   const [time, setTime] = useState(new Date())
 
@@ -37,44 +73,6 @@ export default function AnalogClock () {
   const hourDeg = totalHours * 30
   const minuteDeg = totalMinutes * 6
   const secondDeg = totalSeconds * 6
-
-  // Container
-  const outerContainerStyle = {
-    height: '100dvh',
-    width: '100vw',
-    position: 'relative',
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    overflow: 'hidden',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-
-  const clockContainerStyle = {
-    width: '85vmin',
-    height: '85vmin',
-    borderRadius: '50%',
-    position: 'relative',
-    zIndex: 5
-  }
-
-  const handStyle = (deg, width, height) => ({
-    position: 'absolute',
-    width: `${width}vmin`,
-    height: `${height}vmin`,
-    transform: `translate(-50%, -100%) rotate(${deg}deg)`,
-    transformOrigin: '50% 100%',
-    top: '50%',
-    left: '50%',
-    transition: 'none',
-    zIndex: 10,
-    filter:
-      'brightness(0.8) drop-shadow(-1px -1px 0px rgba(0,0,0,0.5)) drop-shadow(-2px -2px 2px rgba(0,0,0,0.5)) drop-shadow(-3px -3px 4px rgba(0,0,0,0.3)) drop-shadow(0px 0px 10px rgba(50,50,50,0.2))'
-  })
-
-  const centerDeg = -(totalSeconds * 12)
 
   return (
     <div style={outerContainerStyle}>
