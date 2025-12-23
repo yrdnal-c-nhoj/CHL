@@ -10,8 +10,6 @@ export default defineConfig({
     postcss: './postcss.config.js',
   },
 
-  assetsInclude: ['**/*.otf', '**/*.ttf', '**/*.woff2', '**/*.gif', '**/*.jpg', '**/*.jpeg', '**/*.png'],
-
   build: {
     assetsDir: 'assets',
     assetsInlineLimit: 0, // Ensures all assets are always separate files
