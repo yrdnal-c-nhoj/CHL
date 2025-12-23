@@ -22,7 +22,8 @@ export default defineConfig({
           if (/\.(woff|woff2|eot|ttf|otf)$/i.test(assetInfo.name)) {
             return 'assets/fonts/[name]-[hash][extname]';
           }
-          if (/\.(gif)$/i.test(assetInfo.name)) {
+          // Group all common image types into the assets/images folder
+          if (/\.(gif|jpe?g|png|svg|webp|avif)$/i.test(assetInfo.name)) {
             return 'assets/images/[name]-[hash][extname]';
           }
           return 'assets/[name]-[hash][extname]';
