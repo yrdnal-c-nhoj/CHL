@@ -11,7 +11,7 @@ export default defineConfig({
     postcss: './postcss.config.js',
   },
 
-  assetsInclude: ['**/*.otf', '**/*.ttf', '**/*.woff2'],
+  assetsInclude: ['**/*.otf', '**/*.ttf', '**/*.woff2', '**/*.gif'],
 
   build: {
     assetsDir: 'assets',
@@ -24,6 +24,9 @@ export default defineConfig({
         assetFileNames: (assetInfo) => {
           if (/\.(woff|woff2|eot|ttf|otf)$/i.test(assetInfo.name)) {
             return 'assets/fonts/[name]-[hash][extname]';
+          }
+          if (/\.(gif)$/i.test(assetInfo.name)) {
+            return 'assets/images/[name]-[hash][extname]';
           }
           return 'assets/[name]-[hash][extname]';
         },
