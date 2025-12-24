@@ -45,9 +45,11 @@ export default function BoxedDigitalClock () {
     return () => clearTimeout(startTimeout)
   }, [])
 
-  const hours = time.getHours().toString().padStart(2, '0').split('')
+  // Convert to 12-hour format without leading zeros
+  const hours12 = time.getHours() % 12 || 12 // Convert 0 to 12 for midnight
+  const hours = hours12.toString().split('')
   const minutes = time.getMinutes().toString().padStart(2, '0').split('')
-  const seconds = time.getSeconds().toString().padStart(2, '0').split('')
+  const ampm = time.getHours() >= 12 ? 'PM' : 'AM'
 
   const containerStyle = {
     fontFamily: 'CustomFont_2025_12_06',
@@ -167,13 +169,9 @@ export default function BoxedDigitalClock () {
           </div>
         ))}
 
-        <div style={separatorStyle} className="digit">:</div>
-
-        {seconds.map((digit, i) => (
-          <div key={`s${i}`} style={digitBoxStyle} className="digit">
-            {digit}
-          </div>
-        ))}
+        <div style={{ ...separatorStyle, marginLeft: '2vw' }} className="digit">
+          {ampm}
+        </div>
       </div>
     </div>
   )
