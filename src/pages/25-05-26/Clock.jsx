@@ -7,7 +7,7 @@ const sproutFont = '/fonts/25-05-26-sprout.ttf';
 
 const styles = {
   container: {
-    fontFamily: "'sprout', monospace",
+    fontFamily: "'sprout', monospace !important",
     height: '100dvh',
     width: '100vw',
     margin: 0,
@@ -69,7 +69,7 @@ const styles = {
   digit: {
     color: 'rgb(184, 244, 172)',
     textShadow: 'rgb(55, 4, 10) 2px 2px',
-    fontFamily: 'sprout, monospace',
+    fontFamily: 'sprout, monospace !important',
     padding: '0.1vh 0.1vw',
     fontSize: '16vh',
     minWidth: '14vh',

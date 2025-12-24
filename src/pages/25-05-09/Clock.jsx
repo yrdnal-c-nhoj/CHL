@@ -52,7 +52,7 @@ const Clock = () => {
           height: '100dvh',
           overflow: 'hidden',
           position: 'relative',
-          fontFamily: "'Kina', sans-serif",
+          fontFamily: "'Kina', sans-serif !important",
         }}
       >
         {/* Background image */}
@@ -125,7 +125,7 @@ const Clock = () => {
                   color: '#f199c8',
                   textShadow:
                     '5px 5px #100f10, -2px -2px white, 6px 6px white',
-                  fontFamily: "'Kina', sans-serif",
+                  fontFamily: "'Kina', sans-serif !important",
                   pointerEvents: 'none',
                   zIndex: 1,
                   opacity: 0.7,

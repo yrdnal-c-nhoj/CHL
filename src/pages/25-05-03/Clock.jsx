@@ -28,7 +28,7 @@ const FlyingPetalsClock = () => {
   const digits = getTimeParts();
 
   const containerStyle = {
-    fontFamily: 'Petal, sans-serif',
+    fontFamily: 'Petal, sans-serif !important',
     margin: 0,
     padding: 0,
     overflow: 'hidden',
@@ -82,6 +82,7 @@ const FlyingPetalsClock = () => {
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: '9vw',
+    fontFamily: 'Petal, sans-serif !important',
     width: '8vw',
     height: '6vw',
     minWidth: '5vw',

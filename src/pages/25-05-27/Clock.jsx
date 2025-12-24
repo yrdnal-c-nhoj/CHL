@@ -61,7 +61,7 @@ function Clock() {
     alignItems: "center",
     justifyContent: "center",
     fontSize: "11rem",
-    fontFamily: "'dots', monospace",
+    fontFamily: "'dots', monospace !important",
     backgroundColor: "rgba(251, 148, 5, 0.1)",
     borderRadius: "0.2em",
     color: "rgb(4, 2, 109)",

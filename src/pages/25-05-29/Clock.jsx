@@ -92,7 +92,7 @@ const Clock = () => {
     >
       <style>{`
         .clock {
-          font-family: 'watch', sans-serif;
+          font-family: 'watch', sans-serif !important;
           color: rgb(29, 2, 84);
           text-shadow: rgb(238, 87, 5) 1px 1px 0px, white -1px 0px 0px;
           display: flex;
