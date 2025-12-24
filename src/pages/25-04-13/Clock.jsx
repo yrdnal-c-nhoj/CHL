@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import backgroundImage from './images/pattern.jpeg';
-import pizzaFace from './images/pie.png';
+import pizzaFace from './images/pie.webp';
 import hourSlice from './images/slice3.png';
 import minuteSlice from './images/slice2.png';
 import secondSlice from './images/slice1.png';
