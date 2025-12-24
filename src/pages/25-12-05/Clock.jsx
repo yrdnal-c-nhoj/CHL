@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 // Import today's date font
-const font_2025_12_06 = '/fonts/25-12-05-magic.ttf';
+const font_2025_12_06 = '/fonts/25-12-05-magic.ttf'; // This path is correct as it's relative to the public directory
 
 // Import background image
 import bgImage from './magic.webp'
@@ -107,16 +107,45 @@ export default function BoxedDigitalClock () {
     margin: '0 1vw'
   }
 
+  // Debug font loading
+  useEffect(() => {
+    const fontFace = new FontFace(
+      'CustomFont_2025_12_06',
+      `url('${font_2025_12_06}') format('truetype')`,
+      {
+        style: 'normal',
+        weight: '400',
+        display: 'swap',
+      }
+    );
+
+    fontFace.load().then(
+      () => {
+        console.log('Font loaded successfully');
+        document.fonts.add(fontFace);
+      },
+      (err) => {
+        console.error('Failed to load font:', err);
+      }
+    );
+  }, []);
+
   return (
     <div style={containerStyle}>
       <style>
         {`
           @font-face {
             font-family: 'CustomFont_2025_12_06';
-            src: url(${font_2025_12_06}) format('truetype');
+            src: url('${font_2025_12_06}') format('truetype');
             font-weight: normal;
             font-style: normal;
             font-display: swap;
+            unicode-range: U+0030-0039; /* Only load numbers */
+          }
+          
+          /* Fallback font stack */
+          .digit {
+            font-family: 'CustomFont_2025_12_06', 'Courier New', monospace;
           }
         `}
       </style>
@@ -125,23 +154,23 @@ export default function BoxedDigitalClock () {
 
       <div style={clockStyle}>
         {hours.map((digit, i) => (
-          <div key={`h${i}`} style={digitBoxStyle}>
+          <div key={`h${i}`} style={digitBoxStyle} className="digit">
             {digit}
           </div>
         ))}
 
-        <div style={separatorStyle}>:</div>
+        <div style={separatorStyle} className="digit">:</div>
 
         {minutes.map((digit, i) => (
-          <div key={`m${i}`} style={digitBoxStyle}>
+          <div key={`m${i}`} style={digitBoxStyle} className="digit">
             {digit}
           </div>
         ))}
 
-        <div style={separatorStyle}>:</div>
+        <div style={separatorStyle} className="digit">:</div>
 
         {seconds.map((digit, i) => (
-          <div key={`s${i}`} style={digitBoxStyle}>
+          <div key={`s${i}`} style={digitBoxStyle} className="digit">
             {digit}
           </div>
         ))}
