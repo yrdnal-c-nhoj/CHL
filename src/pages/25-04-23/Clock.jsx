@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import pirateHook from "./images/pngtree-silver-pirate-hook-3d-object-png-image_11098846.png";
+import pirateHook from "./images/hook.webp";
 import pirateCutlass from "./images/pirate_foam.gif";
 import pirateKnife from "./images/cut.gif";
 import pirateOverlay from "./images/sasasd.gif";
-import pirateBackground from "./images/2afe90c0ee6f32a3c59f29e2418047fd.gif";
+import pirateBackground from "./images/water.webp";
 
 const PirateClock = () => {
   useEffect(() => {
