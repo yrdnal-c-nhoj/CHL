@@ -3,18 +3,32 @@ import scorpImage from './sand.webp';
 import hourHandImage from './giphy1-ezgif.com-rotate(2).gif';
 import minuteHandImage from './giphy1-ezgif.com-rotate(1).gif';
 import secondHandImage from './giphy1-ezgif.com-rotate(3).gif';
-const bangFont_2025_11_01 = '/fonts/25-05-02-scorp.ttf'; // font variable includes today's date
 
 export default function Clock() {
   useEffect(() => {
-    const styleTag = document.createElement('style');
-    styleTag.textContent = `
-      @font-face {
-        font-family: 'bang';
-        src: url(${bangFont_2025_11_01}) format('truetype');
-      }
-    `;
-    document.head.appendChild(styleTag);
+    // Check if font is already loaded
+    if (!document.fonts.check('16px bang')) {
+      const styleTag = document.createElement('style');
+      styleTag.textContent = `
+        @font-face {
+          font-family: 'bang';
+          src: url('/fonts/25-05-02-scorp.ttf') format('truetype');
+          font-display: swap;
+        }
+        .clock-number {
+          font-family: 'bang', sans-serif !important;
+        }
+      `;
+      document.head.appendChild(styleTag);
+      
+      // Force font loading
+      const font = new FontFace('bang', `url('/fonts/25-05-02-scorp.ttf')`);
+      font.load().then(() => {
+        document.fonts.add(font);
+      }).catch(err => {
+        console.error('Font loading failed:', err);
+      });
+    }
 
     const updateClock = () => {
       const now = new Date();
@@ -36,13 +50,13 @@ export default function Clock() {
       const hourHand = document.querySelector('.hour-hand');
 
       if (secondHand) {
-        secondHand.style.transform = `translate(-50%, 0) rotate(${secondDeg}deg) scaleY(${secondScale})`;
+        secondHand.style.transform = `translate(-50%, -50%) rotate(${secondDeg}deg) scaleY(${secondScale})`;
       }
       if (minuteHand) {
-        minuteHand.style.transform = `translate(-50%, 0) rotate(${minuteDeg}deg) scaleY(${minuteScale})`;
+        minuteHand.style.transform = `translate(-50%, -50%) rotate(${minuteDeg}deg) scaleY(${minuteScale})`;
       }
       if (hourHand) {
-        hourHand.style.transform = `translate(-50%, 0) rotate(${hourDeg}deg) scaleY(${hourScale})`;
+        hourHand.style.transform = `translate(-50%, -50%) rotate(${hourDeg}deg) scaleY(${hourScale})`;
       }
     };
 
@@ -115,6 +129,7 @@ export default function Clock() {
             }}
           >
             <div
+              className="clock-number"
               style={{
                 position: 'absolute',
                 width: '100%',
@@ -131,9 +146,9 @@ export default function Clock() {
           className="hour-hand"
           style={{
             position: 'absolute',
-            bottom: '50%',
+            top: '50%',
             left: '50%',
-            transformOrigin: 'bottom',
+            transformOrigin: 'center',
             zIndex: 4,
           }}
         >
@@ -149,9 +164,9 @@ export default function Clock() {
           className="minute-hand"
           style={{
             position: 'absolute',
-            bottom: '50%',
+            top: '50%',
             left: '50%',
-            transformOrigin: 'bottom',
+            transformOrigin: 'center',
             zIndex: 5,
           }}
         >
@@ -167,9 +182,9 @@ export default function Clock() {
           className="second-hand"
           style={{
             position: 'absolute',
-            bottom: '50%',
+            top: '50%',
             left: '50%',
-            transformOrigin: 'bottom',
+            transformOrigin: 'center',
             zIndex: 6,
           }}
         >
