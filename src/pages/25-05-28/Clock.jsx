@@ -51,7 +51,7 @@ const Clock = () => {
   const clockSize = '82vh';
 
   const clockStyle = {
-    fontFamily: 'circle, sans-serif',
+    fontFamily: 'circle, sans-serif !important',
     position: 'absolute',
     width: clockSize,
     height: clockSize,
@@ -138,7 +138,7 @@ const Clock = () => {
     fill: '#9de2ac',
     textAnchor: 'middle',
     dominantBaseline: 'middle',
-    fontFamily: 'circle, sans-serif',
+    fontFamily: 'circle, sans-serif !important',
   };
 
   const renderClock = (id, index) => (
@@ -170,7 +170,7 @@ const Clock = () => {
         height: '100dvh',
         width: '100vw',
         position: 'relative',
-        fontFamily: 'circle, sans-serif',
+        fontFamily: 'circle, sans-serif !important',
       }}
     >
       {clockPositions.map((clock, index) => renderClock(clock.id, index))}

@@ -32,7 +32,7 @@ const WarholGraveCamClock = () => {
 
   const digitStyle = {
     color: '#ef1337',
-    fontFamily: "'Map', sans-serif",
+    fontFamily: "'Map', sans-serif !important",
     fontSize: '4rem',
     width: '2rem',
     height: '6rem',
