@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from "react";
 const permanentMarkerFont = '/fonts/25-04-19-sph.ttf'; 
 
 const BALL_SIZES = {
-  hours: 18,
-  minutes: 10,
-  seconds: 5,
+  hours: 19,
+  minutes: 12,
+  seconds: 8,
 };
 
 const GRAVITIES = {
@@ -88,7 +88,7 @@ const SphereDropClock = () => {
       ball.innerText = getNextNumber(room);
       ball.style.width = `${size}vh`;
       ball.style.height = `${size}vh`;
-      ball.style.fontSize = `${size / 2.5}vh`;
+      ball.style.fontSize = `${size / 1.5}vh`;
 
       let posX = Math.random() * (roomWidth - size);
       let posY = -30;
@@ -238,7 +238,7 @@ const SphereDropClock = () => {
         body,html {
           width: 100%;
           height: 100%;
-          background: #a10d0d;
+          background: #5B032EFF;
           overflow: hidden;
           margin: 0;
         }
