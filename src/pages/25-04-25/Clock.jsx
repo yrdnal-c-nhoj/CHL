@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import backgroundImage from './bad.png';
+import backgroundImage from './bad.webp';
 const boldFont = '/fonts/25-04-25-Oswald-Bold.ttf';
 import hourHandImage from './ban.webp';
 import minuteHandImage from './ba.gif';
