@@ -109,7 +109,7 @@ export default function BoxedDigitalClock () {
     margin: '0 1vw'
   }
 
-  // Debug font loading
+  // Font loading
   useEffect(() => {
     const fontFace = new FontFace(
       'CustomFont_2025_12_06',
@@ -123,11 +123,10 @@ export default function BoxedDigitalClock () {
 
     fontFace.load().then(
       () => {
-        console.log('Font loaded successfully');
         document.fonts.add(fontFace);
       },
-      (err) => {
-        console.error('Failed to load font:', err);
+      () => {
+        // Font loading failed, but we'll continue without it
       }
     );
   }, []);
