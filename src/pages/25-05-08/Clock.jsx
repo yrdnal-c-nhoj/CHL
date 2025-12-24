@@ -71,7 +71,7 @@ const GoldenHourClock = () => {
         }
 
         .clock {
-          font-family: 'Shiny';
+          font-family: 'Shiny !important';
           color: #f8e9be;
           text-shadow: rgb(213, 102, 80) 1px 1px 1px;
           display: flex;

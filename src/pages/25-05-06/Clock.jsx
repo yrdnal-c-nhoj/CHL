@@ -44,7 +44,7 @@ const UnrulyClock = () => {
         el.textContent = val;
         animations.forEach((anim) => el.classList.remove(anim));
 
-        el.style.fontFamily = getRandomFont();
+        el.style.fontFamily = `${getRandomFont()} !important`;
         el.style.fontSize = getRandomSize();
         el.style.color = getRandomColor();
 

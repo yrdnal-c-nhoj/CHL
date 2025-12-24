@@ -59,7 +59,7 @@ export default function Clock() {
   return (
     <div
       style={{
-        fontFamily: 'bang, sans-serif',
+        fontFamily: 'bang, sans-serif !important',
         margin: 0,
         padding: 0,
         background: 'rgb(9,9,9)',
@@ -111,7 +111,7 @@ export default function Clock() {
               color: '#c5c53e',
               textShadow: '#09f745 0.1rem 0.1rem, #080808 -0.1rem 0.1rem',
               transform: `rotate(${num.rotation}deg)`,
-              fontFamily: 'bang, sans-serif',
+              fontFamily: 'bang, sans-serif !important',
             }}
           >
             <div
