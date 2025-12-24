@@ -57,7 +57,7 @@ export default function AnalogClock() {
   // Clock container
   const clockStyle = {
     width: "30vw",
-    height: "100vh",
+    height: "165vh",
     position: "relative",
     background: "rgba(255,255,255,0.35)",
     overflow: "hidden",
@@ -85,7 +85,7 @@ export default function AnalogClock() {
     left: "50%",
     top: "50%",
     transformOrigin: "50% 100%",
-     background: "rgba(12,12,112,0.2)",
+     background: "rgba(12,12,112,0.3)",
     transform: "translate(-50%,-100%)",
     borderRadius: "0.6vh",
     zIndex: 1, // above clock background
@@ -121,7 +121,7 @@ export default function AnalogClock() {
           ref={secondRef}
           style={{
             ...handBase,
-            width: "0.1vh",
+            width: "0.3vh",
             height: "98vh",
             background: "rgba(200,40,40)",
           }}
