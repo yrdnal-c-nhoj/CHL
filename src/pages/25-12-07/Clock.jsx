@@ -153,15 +153,13 @@ function FloatingIcosahedron() {
       <Html center scale={0.36} position={[0, 0, 0]} transform>
         <div
           style={{
-            color: '#3E50F6FF',
+            color: '#C6EBF8FF',
             fontSize: '70px',
             letterSpacing: '3px',
-            opacity: 0.4,
+            // opacity: 0.4,
             fontFamily: "'WaterFont', monospace",
             userSelect: 'none',
             pointerEvents: 'none',
-            textShadow:
-              '-2px -1px 0 #0F0219FF, 1px -1px 0 #E22333FF, -3px 1px 0 #F6EFEFFF, 1px 3px 0 #E7EBE6FF'
           }}
         >
           {time}
