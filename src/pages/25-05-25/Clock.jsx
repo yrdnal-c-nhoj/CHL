@@ -76,7 +76,7 @@ const Clock = () => {
     fontSize: "7vh",
     transform: "translate(-50%, -50%)",
     textShadow: "#f4d6f4 6px 6px",
-    fontFamily: "'bot', sans-serif",
+    fontFamily: "'bot', sans-serif !important",
   };
 
   const handBaseStyle = {

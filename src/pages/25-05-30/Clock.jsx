@@ -49,7 +49,7 @@ iframe: {
       alignItems: 'center',
       flexDirection: 'row',
       gap: '1vh',
-      fontFamily: 'iss, sans-serif',
+      fontFamily: 'iss, sans-serif !important',
     },
     digitBox: {
       color: 'transparent',
