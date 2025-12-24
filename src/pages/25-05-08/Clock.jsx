@@ -37,6 +37,7 @@ const GoldenHourClock = () => {
         @font-face {
           font-family: 'Shiny';
           src: url(${shinyFont}) format('truetype');
+          font-display: swap;
         }
 
         body, html, #root {
