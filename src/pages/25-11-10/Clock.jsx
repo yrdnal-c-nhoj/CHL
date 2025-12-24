@@ -1,25 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import one from './1.gif';
-import two from './2.webp';
-import three from './3.webp';
-import four from './4.webp';
-import five from './5.webp';
-import six from './6.webp';
-import seven from './7.webp';
-import eight from './8.webp';
-import nine from './9.webp';
-import ten from './10.png';
-import eleven from './11.webp';
-import twelve from './12.webp';
-import hourHand from './hour.webp';
-import minuteHand from './min.webp';
-import secondHand from './sec.webp';
-import pageBackground from './pong.webp';
-import extraBg from './bg.webp';   // ⭐ NEW BACKGROUND IMPORT
+
+// Dynamic imports with proper URL handling for production
+const one = new URL('./1.gif', import.meta.url).href;
+const two = new URL('./2.webp', import.meta.url).href;
+const three = new URL('./3.webp', import.meta.url).href;
+const four = new URL('./4.webp', import.meta.url).href;
+const five = new URL('./5.webp', import.meta.url).href;
+const six = new URL('./6.webp', import.meta.url).href;
+const seven = new URL('./7.webp', import.meta.url).href;
+const eight = new URL('./8.webp', import.meta.url).href;
+const nine = new URL('./9.webp', import.meta.url).href;
+const ten = new URL('./10.png', import.meta.url).href;
+const eleven = new URL('./11.webp', import.meta.url).href;
+const twelve = new URL('./12.webp', import.meta.url).href;
+const hourHand = new URL('./hour.webp', import.meta.url).href;
+const minuteHand = new URL('./min.webp', import.meta.url).href;
+const secondHand = new URL('./sec.webp', import.meta.url).href;
+const pageBackground = new URL('./pong.webp', import.meta.url).href;
+const extraBg = new URL('./bg.webp', import.meta.url).href;
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
   const [isLoaded, setIsLoaded] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loadingError, setLoadingError] = useState(null);
 
   // Continuous smooth time updates
   useEffect(() => {
@@ -32,22 +36,57 @@ const Clock = () => {
     return () => cancelAnimationFrame(frameId);
   }, []);
 
-  // Preload all images
+  // Preload all images with better error handling
   useEffect(() => {
     const imageSources = [
-      one, two, three, four, five, six, seven, eight, nine, ten,
-      eleven, twelve, hourHand, minuteHand, secondHand,
-      pageBackground, extraBg
+      { name: 'one', src: one },
+      { name: 'two', src: two },
+      { name: 'three', src: three },
+      { name: 'four', src: four },
+      { name: 'five', src: five },
+      { name: 'six', src: six },
+      { name: 'seven', src: seven },
+      { name: 'eight', src: eight },
+      { name: 'nine', src: nine },
+      { name: 'ten', src: ten },
+      { name: 'eleven', src: eleven },
+      { name: 'twelve', src: twelve },
+      { name: 'hourHand', src: hourHand },
+      { name: 'minuteHand', src: minuteHand },
+      { name: 'secondHand', src: secondHand },
+      { name: 'pageBackground', src: pageBackground },
+      { name: 'extraBg', src: extraBg }
     ];
+    
     let loadedCount = 0;
     const total = imageSources.length;
+    const loadedImages = {};
 
-    imageSources.forEach(src => {
+    imageSources.forEach(({ name, src }) => {
       const img = new Image();
       img.src = src;
       img.onload = () => {
+        console.log(`✅ Loaded image: ${name}`, src);
+        loadedImages[name] = src;
         loadedCount++;
+        const progress = Math.round((loadedCount / total) * 100);
+        setLoadingProgress(progress);
+        
         if (loadedCount === total) {
+          console.log('🎉 All images loaded successfully!', loadedImages);
+          setTimeout(() => setIsLoaded(true), 300);
+        }
+      };
+      
+      img.onerror = (error) => {
+        console.error(`❌ Failed to load image: ${name}`, { src, error });
+        setLoadingError(`Failed to load image: ${name}`);
+        loadedCount++;
+        const progress = Math.round((loadedCount / total) * 100);
+        setLoadingProgress(progress);
+        
+        if (loadedCount === total) {
+          console.warn('⚠️ Some images failed to load, but continuing...');
           setTimeout(() => setIsLoaded(true), 300);
         }
       };
@@ -247,7 +286,7 @@ const Clock = () => {
         />
       </div>
 
-      {/* Fade-in overlay */}
+      {/* Enhanced loading overlay */}
       <div
         style={{
           position: 'fixed',
@@ -256,12 +295,59 @@ const Clock = () => {
           width: '100vw',
           height: '100vh',
           backgroundColor: 'black',
-          transition: 'opacity 0.1s ease',
+          transition: 'opacity 0.5s ease',
           opacity: isLoaded ? 0 : 1,
           pointerEvents: isLoaded ? 'none' : 'auto',
-          zIndex: 10,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: 'white',
+          fontFamily: 'monospace',
+          textAlign: 'center',
+          padding: '20px',
+          zIndex: 1000
         }}
-      />
+      >
+        <h2 style={{ marginBottom: '20px' }}>Loading Clock...</h2>
+        <div style={{
+          width: '80%',
+          maxWidth: '400px',
+          height: '20px',
+          backgroundColor: '#333',
+          borderRadius: '10px',
+          margin: '20px 0',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            width: `${loadingProgress}%`,
+            height: '100%',
+            backgroundColor: loadingError ? '#ff4444' : '#4CAF50',
+            transition: 'width 0.3s ease',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'white',
+            fontSize: '12px',
+            fontWeight: 'bold'
+          }}>
+            {loadingProgress}%
+          </div>
+        </div>
+        {loadingError && (
+          <div style={{ 
+            color: '#ff4444', 
+            marginTop: '10px',
+            padding: '10px',
+            backgroundColor: 'rgba(255, 68, 68, 0.1)',
+            borderRadius: '4px',
+            maxWidth: '80%',
+            wordBreak: 'break-word'
+          }}>
+            {loadingError}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
