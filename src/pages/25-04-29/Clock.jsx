@@ -146,6 +146,10 @@ const FireworksClock = () => {
             transform: scale(5) translate(var(--dx), var(--dy)) rotate(var(--rot));
           }
         }
+
+        #clock {
+          font-family: bang, sans-serif !important;
+        }
       `}</style>
     </div>
   );

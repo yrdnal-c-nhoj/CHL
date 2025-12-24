@@ -265,7 +265,7 @@ const SphereDropClock = () => {
         }
 
         .ball {
-          font-family: 'SphFont', sans-serif;
+          font-family: 'SphFont', sans-serif !important;
           border-radius: 50%;
           position: absolute;
           transform-style: preserve-3d;
