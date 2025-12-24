@@ -3,7 +3,7 @@ import scorpImage from './sand.webp';
 import hourHandImage from './giphy1-ezgif.com-rotate(2).gif';
 import minuteHandImage from './giphy1-ezgif.com-rotate(1).gif';
 import secondHandImage from './giphy1-ezgif.com-rotate(3).gif';
-const bangFont_2025_11_01 = '/fonts/25-05-02-bang.ttf'; // font variable includes today's date
+const bangFont_2025_11_01 = '/fonts/25-05-02-scorp.ttf'; // font variable includes today's date
 
 export default function Clock() {
   useEffect(() => {
