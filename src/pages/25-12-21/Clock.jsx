@@ -1,48 +1,9 @@
 import { useState, useEffect } from 'react';
 import background from './cass.jpg';
-import fontDate20251219zz from '../../../public/fonts/cas.ttf';
-
-const styleInject = () => {
-  const style = document.createElement('style');
-  style.textContent = `
-    @font-face {
-      font-family: 'CustomFont';
-      src: url('${fontDate20251219zz}') format('truetype');
-    }
-
-    .clock-container,
-    .time-part,
-    .digit {
-      font-family: 'CustomFont', sans-serif;
-    }
-
-    .digit {
-      display: inline-block;
-      width: 3vh;           
-      text-align: center;
-      color: #473803FF;
-      filter: drop-shadow(0 0.4vh 0.3vh rgba(220, 222, 220));
-      transform: rotate(90deg);
-      transform-origin: center center;
-      font-size: 6vh;
-      line-height: 1;
-      user-select: none;
-    }
-
-    @keyframes rotateGrid {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(-360deg); }
-    }
-  `;
-  document.head.appendChild(style);
-};
+import styles from './Clock.module.css';
 
 export default function App() {
   const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    styleInject();
-  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -62,41 +23,18 @@ export default function App() {
       .map(d => digitToLetter(parseInt(d, 10)));
 
   const renderTimePart = (chars) => (
-    <div
-      className="time-part"
-      style={{
-        display: 'flex',
-        gap: '4vh',        /* digit spacing */
-      }}
-    >
+    <div className={styles.timePart}>
       {chars.map((char, i) => (
-        <span key={i} className="digit">{char}</span>
+        <span key={i} className={styles.digit}>{char}</span>
       ))}
     </div>
   );
 
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
-      {/* background */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: '-100%', // Extend far beyond viewport to prevent any gaps during rotation
-          backgroundImage: `url(${background})`,
-          backgroundSize: '300px auto', // Size control - maintains aspect ratio
-          backgroundRepeat: 'repeat',
-          backgroundPosition: 'center center',
-          filter: 'brightness(1.4) saturate(1.2) contrast(0.8) hue-rotate(-25deg)',
-          animation: 'rotateGrid 360s linear infinite',
-          transformOrigin: 'center center',
-        }}
+    <div className={styles.clockContainer}>
+      <div 
+        className={styles.background}
+        style={{ '--bg-image': `url(${background})` }}
       />
 
 
