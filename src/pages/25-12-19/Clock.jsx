@@ -1,191 +1,124 @@
-import { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react';
 
-const FlipNumber = ({ value }) => {
-  const [displayedValue, setDisplayedValue] = useState(value)
-  const [prevValue, setPrevValue] = useState(value)
-  const [isFlipping, setIsFlipping] = useState(false)
+const HourglassTimer = () => {
+  const [percentDayPassed, setPercentDayPassed] = useState(0);
 
   useEffect(() => {
-    if (value !== displayedValue) {
-      setPrevValue(displayedValue)
-      setIsFlipping(true)
+    const updateSand = () => {
+      const now = new Date();
+      const totalSecondsInDay = 86400;
+      const secondsPassed = 
+        (now.getHours() * 3600) + 
+        (now.getMinutes() * 60) + 
+        now.getSeconds();
+      
+      // Calculate how much sand should be in the bottom (0 to 100)
+      setPercentDayPassed((secondsPassed / totalSecondsInDay) * 100);
+    };
 
-      // After animation completes, update the displayed value
-      const timer = setTimeout(() => {
-        setDisplayedValue(value)
-        setIsFlipping(false)
-      }, 600) // matches animation duration
+    updateSand();
+    const interval = setInterval(updateSand, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
-      return () => clearTimeout(timer)
-    }
-  }, [value, displayedValue])
+  // Inline Style Objects to avoid leakage
+  const containerStyle = {
+    width: '100vw',
+    height: '100dvh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1a1a1a',
+    margin: 0,
+    overflow: 'hidden',
+    fontFamily: 'sans-serif'
+  };
 
-  const formattedValue = String(displayedValue).padStart(2, '0')
-  const formattedPrev = String(prevValue).padStart(2, '0')
+  const frameStyle = {
+    position: 'relative',
+    width: '30vw',
+    height: '60vh',
+    border: '0.5vh solid #d4af37',
+    borderRadius: '2vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding: '1vh'
+  };
+
+  const glassBulbStyle = {
+    position: 'relative',
+    width: '100%',
+    height: '48%',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    clipPath: 'polygon(0% 0%, 100% 0%, 50% 100%)', // Top Bulb Shape
+    overflow: 'hidden'
+  };
+
+  const bottomBulbStyle = {
+    ...glassBulbStyle,
+    clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)', // Bottom Bulb Shape
+  };
+
+  const topSandStyle = {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: `${100 - percentDayPassed}%`,
+    backgroundColor: '#edc9af',
+    transition: 'height 1s linear'
+  };
+
+  const bottomSandStyle = {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: `${percentDayPassed}%`,
+    backgroundColor: '#edc9af',
+    transition: 'height 1s linear'
+  };
+
+  const streamStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    width: '0.5vw',
+    height: '10%',
+    backgroundColor: '#edc9af',
+    zIndex: 2,
+    display: percentDayPassed < 100 ? 'block' : 'none'
+  };
+
+  const timeLabelStyle = {
+    color: '#d4af37',
+    marginTop: '2vh',
+    fontSize: '2rem'
+  };
 
   return (
-    <div className='flip-container'>
-      <div className={`flip-card ${isFlipping ? 'flipping' : ''}`}>
-        {/* Top half - stays visible */}
-        <div className='top-half'>
-          <span>{formattedValue}</span>
+    <div style={containerStyle}>
+      <div style={frameStyle}>
+        {/* Top Bulb */}
+        <div style={glassBulbStyle}>
+          <div style={topSandStyle} />
         </div>
 
-        {/* Bottom half - stays visible */}
-        <div className='bottom-half'>
-          <span>{formattedValue}</span>
-        </div>
+        {/* Falling Sand Stream */}
+        <div style={streamStyle} />
 
-        {/* Flipping top (shows previous value flipping out) */}
-        <div className='flipping-top'>
-          <span>{formattedPrev}</span>
-        </div>
-
-        {/* Flipping bottom (shows new value flipping in) */}
-        <div className='flipping-bottom'>
-          <span>{formattedValue}</span>
+        {/* Bottom Bulb */}
+        <div style={bottomBulbStyle}>
+          <div style={bottomSandStyle} />
         </div>
       </div>
 
-      <style jsx>{`
-        .flip-container {
-          position: relative;
-          width: 80px;
-          height: 120px;
-          perspective: 1000px;
-          margin: 0 8px;
-        }
-
-        .flip-card {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          transform-style: preserve-3d;
-        }
-
-        .top-half,
-        .bottom-half,
-        .flipping-top,
-        .flipping-bottom {
-          position: absolute;
-          width: 100%;
-          height: 50%;
-          overflow: hidden;
-          background: #1a1a1a;
-          border-radius: 10px;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-          backface-visibility: hidden;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          font-size: 80px;
-          font-weight: bold;
-          font-family: 'Arial Narrow', Arial, sans-serif;
-        }
-
-        .top-half {
-          top: 0;
-          border-bottom: 1px solid #000;
-          transform-origin: bottom;
-        }
-
-        .bottom-half {
-          bottom: 0;
-          border-top: 1px solid #333;
-          transform-origin: top;
-          align-items: flex-start;
-          padding-top: 12px;
-        }
-
-        .bottom-half span {
-          transform: translateY(-50%);
-        }
-
-        .flipping-top {
-          top: 0;
-          border-bottom: 1px solid #000;
-          transform-origin: bottom;
-          transform: rotateX(0deg);
-          animation: ${isFlipping ? 'flipTop 0.6s ease-in forwards' : 'none'};
-        }
-
-        .flipping-bottom {
-          bottom: 0;
-          border-top: 1px solid #333;
-          transform-origin: top;
-          transform: rotateX(90deg);
-          animation: ${isFlipping
-            ? 'flipBottom 0.6s ease-out forwards'
-            : 'none'};
-        }
-
-        @keyframes flipTop {
-          0% {
-            transform: rotateX(0deg);
-          }
-          100% {
-            transform: rotateX(-90deg);
-          }
-        }
-
-        @keyframes flipBottom {
-          0% {
-            transform: rotateX(90deg);
-          }
-          100% {
-            transform: rotateX(0deg);
-          }
-        }
-      `}</style>
+     
+      
+   
     </div>
-  )
-}
+  );
+};
 
-const FlipClock = () => {
-  const [time, setTime] = useState(new Date())
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date())
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [])
-
-  const hours = time.getHours().toString().padStart(2, '0')
-  const minutes = time.getMinutes().toString().padStart(2, '0')
-
-  return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        backgroundColor: '#111',
-        fontFamily: 'Arial, sans-serif'
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <FlipNumber value={parseInt(hours[0])} />
-        <FlipNumber value={parseInt(hours[1])} />
-
-        <div
-          style={{
-            color: '#444',
-            fontSize: '80px',
-            margin: '0 20px',
-            fontWeight: 'bold'
-          }}
-        >
-          :
-        </div>
-
-        <FlipNumber value={parseInt(minutes[0])} />
-        <FlipNumber value={parseInt(minutes[1])} />
-      </div>
-    </div>
-  )
-}
-
-export default FlipClock
+export default HourglassTimer;
