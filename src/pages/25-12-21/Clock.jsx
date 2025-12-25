@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import background from './cass.jpg';
-import fontDate20251219 from '../../../public/fonts/cas.ttf';
+import fontDate20251219zz from '../../../public/fonts/cas.ttf';
 
 const styleInject = () => {
   const style = document.createElement('style');
   style.textContent = `
     @font-face {
       font-family: 'CustomFont';
-      src: url('${fontDate20251219}') format('truetype');
+      src: url('${fontDate20251219zz}') format('truetype');
     }
 
     .clock-container,
