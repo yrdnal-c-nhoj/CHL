@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import background from './cass.jpg';
+import background from './cass.webp';
+import backgroundImage from './tape.gif'; // Use the same image for now, replace with your desired background image
 
 export default function App() {
   const [time, setTime] = useState(new Date());
@@ -15,9 +16,9 @@ export default function App() {
         console.error('Failed to load Haunt font:', error);
       }
     };
-    
+
     loadFont();
-    
+
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
@@ -39,7 +40,7 @@ export default function App() {
     width: '3vh',
     textAlign: 'center',
     color: '#473803FF',
-    filter: 'drop-shadow(0 0.4vh 0.3vh rgba(220, 222, 220))',
+    filter: 'drop-shadow(1px 1px 2px  rgba(220, 222, 20))',
     transform: 'rotate(90deg)',
     transformOrigin: 'center center',
     fontSize: '6vh',
@@ -73,10 +74,11 @@ export default function App() {
     position: 'absolute',
     inset: '-100%',
     backgroundImage: `url(${background})`,
-    backgroundSize: '300px auto',
+    backgroundSize: '400px auto',
     backgroundRepeat: 'repeat',
+    opacity: 0.7,
     backgroundPosition: 'center center',
-    filter: 'brightness(1.4) saturate(1.2) contrast(0.8) hue-rotate(-25deg)',
+    filter: 'brightness(1.4) saturate(4.8) contrast(0.3) hue-rotate(-25deg)',
     animation: 'rotateGrid 360s linear infinite',
     transformOrigin: 'center center'
   };
@@ -88,7 +90,7 @@ export default function App() {
     }
   `;
 
-  // Inject keyframes into a style element
+  // Inject keyframes
   useEffect(() => {
     const styleElement = document.createElement('style');
     styleElement.textContent = keyframesStyle;
@@ -98,23 +100,46 @@ export default function App() {
 
   return (
     <div style={containerStyle}>
-      <div style={backgroundStyle} />
+      {/* 1. Background image - bottom layer */}
       <div
         style={{
-          position: 'relative',
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: 'auto', // Maintain original aspect ratio
+          backgroundRepeat: 'repeat',
+          backgroundPosition: 'center', // Center the tiling
           zIndex: 1,
+        }}
+      />
+
+      {/* 2. Solid black overlay - middle layer */}
+     
+
+      {/* 3. Rotating grid - middle layer */}
+      <div
+        style={{
+          ...backgroundStyle,
+          zIndex: 3,
+        }}
+      />
+
+      {/* 4. Clock - top layer */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 4,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          width: '100vw',
-          height: '100dvh',
         }}
       >
         <div
           style={{
             display: 'flex',
             flexDirection: 'row',
-            gap: '4vh'
+            gap: '4vh',
           }}
         >
           {renderTimePart(formatWithLetters(time.getHours()))}
