@@ -1,34 +1,27 @@
 import { useState, useEffect } from 'react';
 import background from './swagr.webp';
-import fontDate20251217 from '../../../public/fonts/face.ttf';
-
-const styleInject = () => {
-  const style = document.createElement('style');
-  style.textContent = `
-    @font-face {
-      font-family: 'CustomFont';
-      src: url('${fontDate20251217}') format('truetype');
-    }
-    .clock-container, .time-part, .digit {
-      font-family: 'CustomFont', sans-serif;
-    }
-    .digit {
-      display: inline-block;
-      width: 0.9em;
-      text-align: center;
-      color: #276CE3FF;
-      filter: drop-shadow(0 1px 0px rgba(220, 0, 0));
-    }
-  `;
-  document.head.appendChild(style);
-};
+import fontDate20251217 from '../../../public/fonts/facexxxx.ttf';
 
 export default function App() {
   const [time, setTime] = useState(new Date());
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 768);
 
   useEffect(() => {
-    styleInject();
+    // Load font using FontFace API instead of injecting global styles
+    const loadFont = async () => {
+      try {
+        const font = new FontFace('CustomFont', `url(${fontDate20251217})`, {
+          style: 'normal',
+          weight: '400',
+          display: 'swap',
+        });
+        const loadedFont = await font.load();
+        document.fonts.add(loadedFont);
+      } catch (err) {
+        console.warn('Custom font failed to load, falling back to system font', err);
+      }
+    };
+    loadFont();
   }, []);
 
   useEffect(() => {
@@ -62,69 +55,92 @@ export default function App() {
   const minutes = formatWithLetters(time.getMinutes());
   const seconds = formatWithLetters(time.getSeconds());
 
+  const digitStyle = {
+    display: 'inline-block',
+    width: '0.9em',
+    textAlign: 'center',
+    color: '#276CE3FF',
+    filter: 'drop-shadow(0 1px 0px rgba(220, 0, 0))',
+    fontFamily: 'CustomFont, sans-serif',
+    fontSize: 'inherit',
+    fontWeight: 'normal',
+    lineHeight: 1,
+    letterSpacing: 'normal',
+    textTransform: 'none',
+    textDecoration: 'none',
+    textShadow: 'none',
+    background: 'transparent',
+    border: 'none',
+    padding: 0,
+    margin: 0
+  };
+
+  const timePartStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  };
+
   const renderTimePart = (chars) => (
-    <div className="time-part" style={{ display: 'flex' }}>
+    <div style={timePartStyle}>
       {chars.map((char, i) => (
-        <span key={i} className="digit">
+        <span key={i} style={digitStyle}>
           {char}
         </span>
       ))}
     </div>
   );
 
+  const containerStyle = {
+    width: '100vw',
+    height: '100dvh',
+    position: 'relative',
+    overflow: 'hidden'
+  };
+
+  const backgroundStyle = {
+    position: 'absolute',
+    inset: 0,
+    backgroundImage: `url(${background})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    filter: 'brightness(1.9) saturate(2) contrast(0.8) hue-rotate(-15deg)'
+  };
+
+  const overlayStyle = {
+    position: 'absolute',
+    inset: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)'
+  };
+
+  const clockContainerStyle = {
+    position: 'relative',
+    zIndex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    color: 'white',
+    fontSize: isLargeScreen ? '15vw' : '40vw',
+    fontFamily: 'CustomFont, sans-serif',
+    fontWeight: 'normal',
+    lineHeight: 1,
+    textAlign: 'center',
+    whiteSpace: 'nowrap',
+    flexDirection: isLargeScreen ? 'row' : 'column',
+    gap: isLargeScreen ? '2vw' : '4vh',
+    letterSpacing: '0.5vw',
+  };
+
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${background})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'brightness(1.3) saturate(2) contrast(0.8) hue-rotate(-15deg)',
-        }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    
-        }}
-      />
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 1,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100vw',
-          height: '100dvh',
-        }}
-      >
-        <div
-          className="clock-container"
-          style={{
-            display: 'flex',
-            flexDirection: isLargeScreen ? 'row' : 'column',
-            gap: isLargeScreen ? '2vw' : '4vh',
-            color: 'white',
-            fontSize: isLargeScreen ? '15vw' : '20vw',
-            letterSpacing: '0.5vw',
-          }}
-        >
-          {renderTimePart(hours)}
-          {renderTimePart(minutes)}
-          {renderTimePart(seconds)}
-        </div>
+    <div style={containerStyle}>
+      <div style={backgroundStyle} />
+      <div style={overlayStyle} />
+      <div style={clockContainerStyle}>
+        {renderTimePart(hours)}
+        {renderTimePart(minutes)}
+        {renderTimePart(seconds)}
       </div>
     </div>
   );

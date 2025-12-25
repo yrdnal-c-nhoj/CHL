@@ -29,7 +29,7 @@ const HourglassTimer = () => {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#6C767CFF',
     margin: 0,
     overflow: 'hidden',
     fontFamily: 'sans-serif'
@@ -39,7 +39,7 @@ const HourglassTimer = () => {
     position: 'relative',
     width: '30vw',
     height: '60vh',
-    border: '0.5vh solid #d4af37',
+    border: '0.5vh solid #230E0EFF',
     borderRadius: '2vh',
     display: 'flex',
     flexDirection: 'column',
@@ -91,11 +91,7 @@ const HourglassTimer = () => {
     display: percentDayPassed < 100 ? 'block' : 'none'
   };
 
-  const timeLabelStyle = {
-    color: '#d4af37',
-    marginTop: '2vh',
-    fontSize: '2rem'
-  };
+
 
   return (
     <div style={containerStyle}>
