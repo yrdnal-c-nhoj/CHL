@@ -1,0 +1,48 @@
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/fonts/cas.ttf') format('truetype');
+}
+
+.clockContainer {
+  width: 100vw;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+}
+
+.background {
+  position: absolute;
+  inset: -100%;
+  background-image: var(--bg-image);
+  background-size: 300px auto;
+  background-repeat: repeat;
+  background-position: center center;
+  filter: brightness(1.4) saturate(1.2) contrast(0.8) hue-rotate(-25deg);
+  animation: rotateGrid 360s linear infinite;
+  transform-origin: center center;
+}
+
+.timePart {
+  display: flex;
+  gap: 4vh;
+}
+
+.digit {
+  display: inline-block;
+  width: 3vh;
+  text-align: center;
+  color: #473803FF;
+  filter: drop-shadow(0 0.4vh 0.3vh rgba(220, 222, 220));
+  transform: rotate(90deg);
+  transform-origin: center center;
+  font-size: 6vh;
+  line-height: 1;
+  -webkit-user-select: none;
+  user-select: none;
+  font-family: 'CustomFont', sans-serif;
+}
+
+@keyframes rotateGrid {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
