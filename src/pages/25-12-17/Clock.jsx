@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import background from './swagr.webp';
-import fontDate20251219 from '../../../public/fonts/face.ttf';
+import fontDate20251217 from '../../../public/fonts/face.ttf';
 
 const styleInject = () => {
   const style = document.createElement('style');
   style.textContent = `
     @font-face {
       font-family: 'CustomFont';
-      src: url('${fontDate20251219}') format('truetype');
+      src: url('${fontDate20251217}') format('truetype');
     }
     .clock-container, .time-part, .digit {
       font-family: 'CustomFont', sans-serif;
