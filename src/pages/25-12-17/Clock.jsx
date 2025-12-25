@@ -59,8 +59,8 @@ export default function App() {
     display: 'inline-block',
     width: '0.9em',
     textAlign: 'center',
-    color: '#276CE3FF',
-    filter: 'drop-shadow(0 1px 0px rgba(220, 0, 0))',
+    color: '#070809FF',
+    filter: 'drop-shadow(1px 2px 0  #D862F2FF)',
     fontFamily: 'CustomFont, sans-serif',
     fontSize: 'inherit',
     fontWeight: 'normal',
@@ -105,13 +105,13 @@ export default function App() {
     backgroundImage: `url(${background})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    filter: 'brightness(1.9) saturate(2) contrast(0.8) hue-rotate(-15deg)'
+    filter: 'brightness(1.6) saturate(2) contrast(2.8) hue-rotate(-155deg)'
   };
 
   const overlayStyle = {
     position: 'absolute',
     inset: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)'
+    backgroundColor: 'rgba(0, 123, 255, 0.4)'
   };
 
   const clockContainerStyle = {
