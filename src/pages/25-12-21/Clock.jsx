@@ -40,14 +40,21 @@ export default function App() {
     width: '3vh',
     textAlign: 'center',
     color: '#473803FF',
-    filter: 'drop-shadow(1px 1px 2px  rgba(220, 222, 20))',
+    textShadow: [
+      // White shadow to the right (1px right, 0px down, 1px blur)
+      '1px 0 1px rgba(255, 255, 255, 0.8)',
+      // Black shadow to the left (-1px left, 0px down, 1px blur)
+      '-1px 0 1px rgba(0, 0, 0, 0.8)'
+    ].join(','),
     transform: 'rotate(90deg)',
     transformOrigin: 'center center',
     fontSize: '6vh',
     lineHeight: 1,
     WebkitUserSelect: 'none',
     userSelect: 'none',
-    fontFamily: 'Haunt, sans-serif'
+    fontFamily: 'Haunt, sans-serif',
+    position: 'relative',
+    zIndex: 1
   };
 
   const timePartStyle = {
