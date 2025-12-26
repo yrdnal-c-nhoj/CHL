@@ -1,194 +1,123 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react';
 
-const xxx251120 = '/fonts/25-12-22-candle.ttf'
-const FONT_FAMILY = 'MyClockFont_20251120'
-const fontUrl = new URL(xxx251120, import.meta.url).href
+const ConcentricClock = () => {
+  const [time, setTime] = useState(new Date());
 
-export default function PixelInverseClock() {
-  const canvasRef = useRef(null)
-  const videoRef = useRef(null)
-  const animationRef = useRef(null)
-  
-  // We use a Ref for the video status because the draw loop 
-  // needs the "live" value without waiting for a React re-render.
-  const isVideoReady = useRef(false)
-  const [fontLoaded, setFontLoaded] = useState(false)
-
-  /* ================= FONT LOAD ================= */
   useEffect(() => {
-    const font = new FontFace(FONT_FAMILY, `url(${fontUrl})`)
-    font.load().then(loaded => {
-      document.fonts.add(loaded)
-      setFontLoaded(true)
-    }).catch(err => {
-      console.error("Font loading failed:", err)
-      setFontLoaded(true) // Continue anyway with fallback font
-    })
-  }, [])
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
-  /* ================= MAIN EFFECT ================= */
-  useEffect(() => {
-    if (!fontLoaded) return
+  const seconds = time.getSeconds();
+  const minutes = time.getMinutes();
+  const hours = time.getHours() % 12;
 
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d', { alpha: false })
-    const video = videoRef.current
-    const fallbackImg = new Image()
+  // Calculate rotations in degrees
+  const secRev = (seconds / 60) * 360;
+  const minRev = ((minutes + seconds / 60) / 60) * 360;
+  const hrRev = ((hours + minutes / 60) / 12) * 360;
 
-    /* ---------- VIDEO LOGIC ---------- */
-    const onCanPlay = () => {
-      video.play()
-        .then(() => { isVideoReady.current = true })
-        .catch(() => { isVideoReady.current = false })
-    }
+  const containerStyle = {
+    width: '100vw',
+    height: '100dvh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#0f172a',
+    margin: 0,
+    padding: 0,
+    overflow: 'hidden',
+    fontFamily: 'sans-serif'
+  };
 
-    video.addEventListener('canplay', onCanPlay)
-    // If video is already cached/loaded
-    if (video.readyState >= 3) onCanPlay()
+  const clockFaceStyle = {
+    position: 'relative',
+    width: '80vmin',
+    height: '80vmin',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  };
 
-    /* ---------- RESIZE & DPI SCALING ---------- */
-    const resize = () => {
-      const dpr = window.devicePixelRatio || 1
-      const w = window.innerWidth
-      const h = window.innerHeight
-      
-      // Set physical pixels
-      canvas.width = w * dpr
-      canvas.height = h * dpr
-      
-      // Set logical CSS pixels
-      canvas.style.width = `${w}px`
-      canvas.style.height = `${h}px`
-      
-      // Scale context to match DPI
-      ctx.scale(dpr, dpr)
-    }
+  const discBaseStyle = {
+    position: 'absolute',
+    borderRadius: '50%',
+    display: 'flex',
+    justifyContent: 'center',
+    transition: 'transform 0.5s cubic-bezier(0.4, 2.08, 0.55, 0.44)',
+    border: '0.2vmin solid rgba(255, 255, 255, 0.1)'
+  };
 
-    window.addEventListener('resize', resize)
-    resize()
-
-    /* ================= DRAW LOOP ================= */
-    const draw = () => {
-      const w = window.innerWidth
-      const h = window.innerHeight
-      const cx = w / 2
-      const cy = h / 2
-      const radius = Math.min(w, h) * 0.45
-
-      // 1. Draw Background
-      ctx.save()
-      ctx.filter = 'contrast(0.7) brightness(1.1)'
-      
-      // Check the Ref and the actual video buffer
-      if (isVideoReady.current && video.readyState >= 2) {
-        // Draw mirrored video
-        ctx.translate(w, 0)
-        ctx.scale(-1, 1)
-        ctx.drawImage(video, 0, 0, w, h)
-      } else if (fallbackImg.complete) {
-        ctx.drawImage(fallbackImg, 0, 0, w, h)
-      } else {
-        ctx.fillStyle = '#111'
-        ctx.fillRect(0, 0, w, h)
-      }
-      ctx.restore()
-
-      // 2. Setup Clock Styling
-      const now = new Date()
-      const ms = now.getMilliseconds()
-      const sec = now.getSeconds() + ms / 1000
-      const min = now.getMinutes() + sec / 60
-      const hr = (now.getHours() % 12) + min / 60
-
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'middle'
-      
-      // 3. Draw Numbers
-      const offset = radius * 0.85
-      ctx.font = `${radius * 0.3}px "${FONT_FAMILY}", sans-serif`
-      
-      for (let n = 1; n <= 12; n++) {
-        const a = (n / 12) * Math.PI * 2 - Math.PI / 2
-        const x = cx + Math.cos(a) * offset
-        const y = cy + Math.sin(a) * offset
-
-        ctx.save()
-        ctx.translate(x, y)
-        ctx.rotate(a + Math.PI / 2)
-        
-        // Shadow/Outline for readability
-        ctx.fillStyle = 'white'
-        ctx.fillText(n, 1, 0)
-        ctx.fillStyle = 'rgba(0,0,0,0.5)'
-        ctx.fillText(n, 2, 2)
-        ctx.fillStyle = 'white'
-        ctx.fillText(n, 0, 0)
-        ctx.restore()
-      }
-
-      /* ---- HANDS ---- */
-      const drawHand = (len, thick, ang, color) => {
-        ctx.strokeStyle = color
-        ctx.lineWidth = thick
-        ctx.lineCap = 'round'
-        ctx.beginPath()
-        ctx.moveTo(cx, cy)
-        ctx.lineTo(cx + Math.cos(ang) * len, cy + Math.sin(ang) * len)
-        ctx.stroke()
-      }
-
-      // Hour Hand
-      drawHand(radius * 0.5, 8, hr * Math.PI / 6 - Math.PI / 2, 'black')
-      // Minute Hand
-      drawHand(radius * 0.8, 5, min * Math.PI / 30 - Math.PI / 2, 'black')
-      // Second Hand
-      drawHand(radius * 0.9, 2, sec * Math.PI / 30 - Math.PI / 2, '#ff4444')
-
-      // Center Dot
-      ctx.fillStyle = 'black'
-      ctx.beginPath()
-      ctx.arc(cx, cy, 6, 0, Math.PI * 2)
-      ctx.fill()
-
-      animationRef.current = requestAnimationFrame(draw)
-    }
-
-    draw()
-
-    return () => {
-      cancelAnimationFrame(animationRef.current)
-      window.removeEventListener('resize', resize)
-      video.removeEventListener('canplay', onCanPlay)
-    }
-  }, [fontLoaded])
+  const markerStyle = {
+    width: '1vmin',
+    height: '4vmin',
+    backgroundColor: '#38bdf8',
+    borderRadius: '1vmin'
+  };
 
   return (
-    <>
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 1,
-          background: '#000'
-        }}
-      />
-      {/* Keep video "visible" to the browser but hidden from user 
-          to prevent the browser from pausing the stream.
-      */}
-      <video
-        ref={videoRef}
-        muted
-        loop
-        playsInline
-        style={{
+    <div style={containerStyle}>
+      <div style={clockFaceStyle}>
+        
+        {/* Seconds Ring - Outer */}
+        <div style={{
+          ...discBaseStyle,
+          width: '75vmin',
+          height: '75vmin',
+          transform: `rotate(${secRev}deg)`,
+          zIndex: 1
+        }}>
+          <div style={{ ...markerStyle, backgroundColor: '#f43f5e' }} />
+        </div>
+
+        {/* Minutes Ring - Middle */}
+        <div style={{
+          ...discBaseStyle,
+          width: '50vmin',
+          height: '50vmin',
+          transform: `rotate(${minRev}deg)`,
+          zIndex: 2,
+          backgroundColor: '#1e293b'
+        }}>
+          <div style={{ ...markerStyle, backgroundColor: '#fbbf24' }} />
+        </div>
+
+        {/* Hours Ring - Inner */}
+        <div style={{
+          ...discBaseStyle,
+          width: '25vmin',
+          height: '25vmin',
+          transform: `rotate(${hrRev}deg)`,
+          zIndex: 3,
+          backgroundColor: '#334155',
+          boxShadow: '0 0 5vmin rgba(0,0,0,0.5)'
+        }}>
+          <div style={markerStyle} />
+        </div>
+
+        {/* Center Point */}
+        <div style={{
           position: 'absolute',
-          width: '1px',
-          height: '1px',
-          opacity: 0.01, 
-          pointerEvents: 'none'
-        }}
-      />
-    </>
-  )
-}
+          width: '2vmin',
+          height: '2vmin',
+          backgroundColor: '#f8fafc',
+          borderRadius: '50%',
+          zIndex: 4
+        }} />
+
+        {/* Static 12 o'clock Guide */}
+        <div style={{
+          position: 'absolute',
+          top: '0',
+          color: 'white',
+          fontSize: '3vmin',
+          fontWeight: 'bold',
+          opacity: 0.5
+        }}>▼</div>
+
+      </div>
+    </div>
+  );
+};
+
+export default ConcentricClock;
