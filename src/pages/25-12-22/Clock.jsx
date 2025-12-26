@@ -108,7 +108,7 @@ export default function PixelInverseClock() {
       
       // 3. Draw Numbers
       const offset = radius * 0.85
-      ctx.font = `${radius * 0.6}px "${FONT_FAMILY}", sans-serif`
+      ctx.font = `${radius * 0.5}px "${FONT_FAMILY}", sans-serif`
       
       for (let n = 1; n <= 12; n++) {
         const a = (n / 12) * Math.PI * 2 - Math.PI / 2
