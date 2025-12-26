@@ -111,7 +111,7 @@ export default function App() {
   const overlayStyle = {
     position: 'absolute',
     inset: 0,
-    backgroundColor: 'rgba(0, 123, 255, 0.4)'
+    backgroundColor: 'rgba(0, 123, 253, 0.4)'
   };
 
   const clockContainerStyle = {
