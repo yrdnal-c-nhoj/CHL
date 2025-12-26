@@ -6,13 +6,15 @@ const xxx251120 = '/fonts/25-12-22-candle.ttf'
 const FONT_FAMILY = 'MyClockFont_20251120'
 const fontUrl = new URL(xxx251120, import.meta.url).href
 
-export default function PixelInverseClock () {
+export default function PixelInverseClock() {
   const canvasRef = useRef(null)
   const videoRef = useRef(null)
   const animationRef = useRef(null)
-
+  
+  // We use a Ref for the video status because the draw loop 
+  // needs the "live" value without waiting for a React re-render.
+  const isVideoReady = useRef(false)
   const [fontLoaded, setFontLoaded] = useState(false)
-  const [videoReady, setVideoReady] = useState(false)
 
   /* ================= FONT LOAD ================= */
   useEffect(() => {
@@ -20,6 +22,9 @@ export default function PixelInverseClock () {
     font.load().then(loaded => {
       document.fonts.add(loaded)
       setFontLoaded(true)
+    }).catch(err => {
+      console.error("", err)
+      setFontLoaded(true) // Continue anyway with fallback font
     })
   }, [])
 
@@ -29,71 +34,82 @@ export default function PixelInverseClock () {
 
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d', { alpha: false })
-    ctx.imageSmoothingEnabled = false
-
     const video = videoRef.current
-
-    /* ---------- FALLBACK IMAGE ---------- */
     const fallbackImg = new Image()
     fallbackImg.src = fallbackImage
 
-    /* ---------- VIDEO EVENTS ---------- */
-    const onCanPlay = () => setVideoReady(true)
-    const onError = () => setVideoReady(false)
-
-    video.addEventListener('canplay', onCanPlay)
-    video.addEventListener('error', onError)
-
-    video.play().catch(() => setVideoReady(false))
-
-    /* ---------- RESIZE ---------- */
-    const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+    /* ---------- VIDEO LOGIC ---------- */
+    const onCanPlay = () => {
+      video.play()
+        .then(() => { isVideoReady.current = true })
+        .catch(() => { isVideoReady.current = false })
     }
 
-    resize()
-    window.addEventListener('resize', resize)
-    window.addEventListener('orientationchange', resize)
+    video.addEventListener('canplay', onCanPlay)
+    // If video is already cached/loaded
+    if (video.readyState >= 3) onCanPlay()
 
-    const CLOCK_SCALE = 0.9
+    /* ---------- RESIZE & DPI SCALING ---------- */
+    const resize = () => {
+      const dpr = window.devicePixelRatio || 1
+      const w = window.innerWidth
+      const h = window.innerHeight
+      
+      // Set physical pixels
+      canvas.width = w * dpr
+      canvas.height = h * dpr
+      
+      // Set logical CSS pixels
+      canvas.style.width = `${w}px`
+      canvas.style.height = `${h}px`
+      
+      // Scale context to match DPI
+      ctx.scale(dpr, dpr)
+    }
+
+    window.addEventListener('resize', resize)
+    resize()
 
     /* ================= DRAW LOOP ================= */
     const draw = () => {
-      const w = canvas.width
-      const h = canvas.height
+      const w = window.innerWidth
+      const h = window.innerHeight
       const cx = w / 2
       const cy = h / 2
+      const radius = Math.min(w, h) * 0.45
 
-      /* ---- BACKGROUND (VIDEO OR WEBP) ---- */
+      // 1. Draw Background with filter
       ctx.save()
-      ctx.translate(w, 0)
-      ctx.scale(-1, 1)
-      ctx.filter = 'contrast(0.5) saturate(1.5) brightness(1.1)'
-
-      if (videoReady && video.readyState >= 2) {
+      ctx.filter = 'contrast(0.7) brightness(2.9) saturate(4.8)'
+      
+      // Check the Ref and the actual video buffer
+      if (isVideoReady.current && video.readyState >= 2) {
+        // Draw mirrored video
+        ctx.translate(w, 0)
+        ctx.scale(-1, 1)
         ctx.drawImage(video, 0, 0, w, h)
       } else if (fallbackImg.complete) {
         ctx.drawImage(fallbackImg, 0, 0, w, h)
+      } else {
+        ctx.fillStyle = '#111'
+        ctx.fillRect(0, 0, w, h)
       }
-
       ctx.restore()
 
-      /* ---- TIME ---- */
+      // 2. Setup Clock Styling
       const now = new Date()
-      const sec = now.getSeconds() + now.getMilliseconds() / 1000
+      const ms = now.getMilliseconds()
+      const sec = now.getSeconds() + ms / 1000
       const min = now.getMinutes() + sec / 60
       const hr = (now.getHours() % 12) + min / 60
 
-      const radius = Math.min(w, h) * CLOCK_SCALE * 0.5
-      const clockColor = '#000000FF'
-
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
-      ctx.font = `${radius * 0.5}px "${FONT_FAMILY}", sans-serif`
-
-      /* ---- NUMBERS ---- */
+      
+      // 3. Draw Numbers
       const offset = radius * 0.85
+      ctx.font = `${radius * 0.6}px "${FONT_FAMILY}", sans-serif`
+      
       for (let n = 1; n <= 12; n++) {
         const a = (n / 12) * Math.PI * 2 - Math.PI / 2
         const x = cx + Math.cos(a) * offset
@@ -102,41 +118,37 @@ export default function PixelInverseClock () {
         ctx.save()
         ctx.translate(x, y)
         ctx.rotate(a + Math.PI / 2)
-
-        ctx.fillStyle = 'white'
-        ctx.fillText(n, 1, 1)
-
-        ctx.fillStyle = 'black'
-        ctx.fillText(n, -1, -1)
-
-        ctx.fillStyle = clockColor
-        ctx.fillText(n, 0, 0)
-
+        
+        // Shadow/Outline for readability
+        ctx.fillStyle = 'rgba(0,0,0)'
+        ctx.fillText(n, 2, 2)
+        // ctx.fillStyle = '#110C05FF'
+        // ctx.fillText(n, 0, 0)
         ctx.restore()
       }
 
       /* ---- HANDS ---- */
       const drawHand = (len, thick, ang, color) => {
-        const x = cx + Math.cos(ang) * len
-        const y = cy + Math.sin(ang) * len
-
         ctx.strokeStyle = color
-        ctx.lineWidth = Math.max(1, radius * thick)
+        ctx.lineWidth = thick
         ctx.lineCap = 'round'
         ctx.beginPath()
         ctx.moveTo(cx, cy)
-        ctx.lineTo(x, y)
+        ctx.lineTo(cx + Math.cos(ang) * len, cy + Math.sin(ang) * len)
         ctx.stroke()
       }
 
-      drawHand(radius * 0.46, 0.04, hr * Math.PI / 6 - Math.PI / 2, clockColor)
-      drawHand(radius * 1.0, 0.025, min * Math.PI / 30 - Math.PI / 2, clockColor)
-      drawHand(radius * 1.4, 0.012, sec * Math.PI / 30 - Math.PI / 2, '#E64545FF')
+      // Hour Hand
+      drawHand(radius * 0.5, 8, hr * Math.PI / 6 - Math.PI / 2, 'black')
+      // Minute Hand
+      drawHand(radius * 0.8, 5, min * Math.PI / 30 - Math.PI / 2, 'black')
+      // Second Hand
+      drawHand(radius * 0.9, 2, sec * Math.PI / 30 - Math.PI / 2, '#ff4444')
 
-      /* ---- CENTER DOT ---- */
-      ctx.fillStyle = clockColor
+      // Center Dot
+      ctx.fillStyle = 'black'
       ctx.beginPath()
-      ctx.arc(cx, cy, radius * 0.06, 0, Math.PI * 2)
+      ctx.arc(cx, cy, 6, 0, Math.PI * 2)
       ctx.fill()
 
       animationRef.current = requestAnimationFrame(draw)
@@ -144,17 +156,13 @@ export default function PixelInverseClock () {
 
     draw()
 
-    /* ================= CLEANUP ================= */
     return () => {
       cancelAnimationFrame(animationRef.current)
-      video.removeEventListener('canplay', onCanPlay)
-      video.removeEventListener('error', onError)
       window.removeEventListener('resize', resize)
-      window.removeEventListener('orientationchange', resize)
+      video.removeEventListener('canplay', onCanPlay)
     }
   }, [fontLoaded])
 
-  /* ================= JSX ================= */
   return (
     <>
       <canvas
@@ -162,22 +170,25 @@ export default function PixelInverseClock () {
         style={{
           position: 'fixed',
           inset: 0,
-          display: 'block',
           zIndex: 1,
-          touchAction: 'none'
+          background: '#000'
         }}
       />
-
+      {/* Keep video "visible" to the browser but hidden from user 
+          to prevent the browser from pausing the stream.
+      */}
       <video
         ref={videoRef}
         src={videoFile}
         muted
         loop
         playsInline
-        preload="auto"
         style={{
-          display: 'none',
-          imageRendering: 'pixelated'
+          position: 'absolute',
+          width: '1px',
+          height: '1px',
+          opacity: 0.01, 
+          pointerEvents: 'none'
         }}
       />
     </>
