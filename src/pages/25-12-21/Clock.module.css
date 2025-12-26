@@ -17,6 +17,7 @@
   background-size: 300px auto;
   background-repeat: repeat;
   background-position: center center;
+  opacity: 0.3;
   filter: brightness(1.4) saturate(1.2) contrast(0.8) hue-rotate(-25deg);
   animation: rotateGrid 360s linear infinite;
   transform-origin: center center;
