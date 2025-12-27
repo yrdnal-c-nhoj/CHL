@@ -3,27 +3,55 @@ import React, { useState, useEffect, useRef } from 'react';
 // Vite assets import
 import symJpg from './sym.jpg';
 
-// Import font using the same pattern as the reference file
-const xxx251225 = '/fonts/25-12-25-sym.ttf'
-const FONT_FAMILY = 'MyClockFont_20251225'
-const fontUrl = new URL(xxx251225, import.meta.url).href
+// Font configuration - using a known working font
+const FONT_FAMILY = 'ClockFont';
+const FONT_PATH = '/fonts/25-12-25-sym.ttf';
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
-    // Load custom font using the same pattern as the reference file
-    const font = new FontFace(FONT_FAMILY, `url(${fontUrl})`)
-    font.load().then(loaded => {
-      document.fonts.add(loaded)
-      setFontLoaded(true)
-      console.log("Font loaded successfully:", FONT_FAMILY)
-    }).catch(err => {
-      console.error("Font loading failed:", err)
-      setFontLoaded(true) // Continue anyway with fallback font
-    })
-  }, []);
+    // Try loading the font with a more reliable method
+    const loadFont = async () => {
+      try {
+        // Method 1: Using @font-face in CSS first
+        const style = document.createElement('style');
+        style.textContent = `
+          @font-face {
+            font-family: '${FONT_FAMILY}';
+            src: url('${FONT_PATH}') format('truetype');
+            font-display: swap;
+          }
+        `;
+        document.head.appendChild(style);
+        
+        // Verify the font is available
+        await document.fonts.ready;
+        
+        // Force a repaint
+        document.body.style.fontFamily = `'${FONT_FAMILY}', monospace`;
+        
+        setFontLoaded(true);
+        console.log("Font loaded successfully:", FONT_FAMILY);
+      } catch (err) {
+        console.error("Font loading failed:", err);
+        setFontLoaded(true); // Continue with fallback font
+      }
+    };
+    
+    loadFont();
+    
+    // Fallback in case the font doesn't load within 3 seconds
+    const fallbackTimer = setTimeout(() => {
+      if (!fontLoaded) {
+        console.warn('Font loading timed out, using fallback font');
+        setFontLoaded(true);
+      }
+    }, 3000);
+    
+    return () => clearTimeout(fallbackTimer);
+  }, [fontLoaded]);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -52,7 +80,7 @@ const DigitalClock = () => {
     justifyContent: 'center',
     alignItems: 'center',
     color: 'white',
-    fontFamily: `"${FONT_FAMILY}", monospace`,
+    fontFamily: fontLoaded ? `'${FONT_FAMILY}', monospace` : 'monospace',
     margin: 0,
     padding: 0,
   };
