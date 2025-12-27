@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import background from './swagr.webp';
-import fontDate20251217 from '../../../public/fonts/facexxxx.ttf';
+import fontDate20251217 from '/public/fonts/facexxxx.ttf';
 
 export default function App() {
   const [time, setTime] = useState(new Date());
@@ -130,7 +130,7 @@ export default function App() {
     whiteSpace: 'nowrap',
     flexDirection: isLargeScreen ? 'row' : 'column',
     gap: isLargeScreen ? '2vw' : '4vh',
-    letterSpacing: '0.5vw',
+    letterSpacing: '0.3vw',
   };
 
   return (
