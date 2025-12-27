@@ -36,9 +36,13 @@ const DigitalClock = () => {
 
   // Inline Style Objects to avoid leakage
   const containerStyle = {
-    position: 'relative',
-    width: '100vw',
-    height: '100dvh',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: '100%',
+    height: '100%',
     backgroundImage: `url(${symJpg})`,
     backgroundSize: '30px 15px',
     backgroundPosition: 'center',
@@ -49,6 +53,8 @@ const DigitalClock = () => {
     alignItems: 'center',
     color: 'white',
     fontFamily: `"${FONT_FAMILY}", monospace`,
+    margin: 0,
+    padding: 0,
   };
 
   const Layer = ({ value, size, zIndex, opacity }) => {
@@ -66,11 +72,30 @@ const DigitalClock = () => {
         opacity: opacity,
         pointerEvents: 'none',
         display: 'flex',
+        justifyContent: 'center',
         alignItems: 'center',
-        gap: '0.02em'
+        textAlign: 'center',
+        whiteSpace: 'nowrap',
+        margin: 0,
+        padding: 0,
+        width: 'auto',
+        minWidth: size * 1.2 + 'px',
+        lineHeight: 1
       }}>
-        <div style={{ textAlign: 'right', width: '40%' }}>{leftPart}</div>
-        <div style={{ textAlign: 'left', width: '40%' }}>{rightPart}</div>
+        <div style={{ 
+          display: 'inline-block',
+          textAlign: 'right',
+          width: '50%',
+          margin: 0,
+          padding: 0
+        }}>{leftPart}</div>
+        <div style={{ 
+          display: 'inline-block',
+          textAlign: 'left',
+          width: '50%',
+          margin: 0,
+          padding: 0
+        }}>{rightPart}</div>
       </div>
     );
   };
