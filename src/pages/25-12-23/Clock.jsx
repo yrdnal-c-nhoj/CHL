@@ -148,7 +148,8 @@ const RefactoredCentricClock = () => {
                 textAlign: 'center',
                 marginTop: '9vmin', // Padding from the edge
                 fontSize: '10vmin', // Made smaller from 10vmin
-                color: '#1C23EDDD',
+                color: '#060A81DD',
+                textShadow: '1px 1px 0px red', // 1-pixel black tech shadow
                 transform: `rotate(${number * -30}deg)`, // Keep numbers upright
               }}>
                 {displayNumber}
