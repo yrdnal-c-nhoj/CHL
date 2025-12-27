@@ -23,7 +23,7 @@ export default function PixelInverseClock() {
       document.fonts.add(loaded)
       setFontLoaded(true)
     }).catch(err => {
-      console.error("", err)
+      console.error("Font load error:", err)
       setFontLoaded(true) // Continue anyway with fallback font
     })
   }, [])
@@ -80,15 +80,17 @@ export default function PixelInverseClock() {
 
       // 1. Draw Background with filter
       ctx.save()
-      ctx.filter = 'contrast(0.7) brightness(2.9) saturate(4.8)'
       
       // Check the Ref and the actual video buffer
       if (isVideoReady.current && video.readyState >= 2) {
-        // Draw mirrored video
+        // Draw mirrored video with filter
+        ctx.filter = 'contrast(0.7) brightness(2.9) saturate(4.8)'
         ctx.translate(w, 0)
         ctx.scale(-1, 1)
         ctx.drawImage(video, 0, 0, w, h)
       } else if (fallbackImg.complete) {
+        // Draw fallback image with same filter
+        ctx.filter = 'contrast(0.7) brightness(2.9) saturate(4.8)'
         ctx.drawImage(fallbackImg, 0, 0, w, h)
       } else {
         ctx.fillStyle = '#111'
@@ -120,10 +122,9 @@ export default function PixelInverseClock() {
         ctx.rotate(a + Math.PI / 2)
         
         // Shadow/Outline for readability
-        ctx.fillStyle = 'rgba(0,0,0)'
+        ctx.fillStyle = 'rgba(0,0,0,0.8)'
         ctx.fillText(n, 2, 2)
-        // ctx.fillStyle = '#110C05FF'
-        // ctx.fillText(n, 0, 0)
+        
         ctx.restore()
       }
 
