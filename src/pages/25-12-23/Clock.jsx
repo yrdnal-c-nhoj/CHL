@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 // Font configuration
-const FONT_FAMILY = 'ForgotFont';
-const FONT_PATH = '/fonts/25-12-23-forgot.ttf';
+const FONT_FAMILY = 'Newla';
+const FONT_PATH = '/fonts/lapse.otf';
 
 const RefactoredCentricClock = () => {
+  const [fontLoaded, setFontLoaded] = useState(false);
+
   // Load custom font
   useEffect(() => {
     const loadFont = async () => {
@@ -12,8 +14,10 @@ const RefactoredCentricClock = () => {
       try {
         await font.load();
         document.fonts.add(font);
+        setFontLoaded(true);
       } catch (error) {
         console.error('Failed to load font:', error);
+        setFontLoaded(false);
       }
     };
     
@@ -29,7 +33,7 @@ const RefactoredCentricClock = () => {
 
   const msInCycle = (Date.now() - startTime) % 70000;
   const isErasing = msInCycle < 60000;
-  const isWaiting = msInCycle >= 60000 && msInCycle < 70000;
+  const isWaiting = msInCycle >= 60000 && msInCycle < 700;
 
   const trueSeconds = now.getSeconds() + now.getMilliseconds() / 1000;
   const trueMinutes = now.getMinutes() + trueSeconds / 60;
@@ -40,7 +44,23 @@ const RefactoredCentricClock = () => {
   const sweepProgressDegrees = (msInCycle / 60000) * 360;
   const currentEraserAngle = (startAngle + sweepProgressDegrees) % 360;
 
-  const clockOpacity = msInCycle > 68000 ? (msInCycle - 68000) / 2000 : 1;
+  const secondAngle = (trueSeconds / 60) * 360 - 90;
+  const minuteAngle = (trueMinutes / 60) * 360 - 90;
+  const hourAngle = (trueHours / 12) * 360 - 90;
+
+  // Clock opacity logic: fade in over 5 seconds after erasing
+  let clockOpacity;
+  if (isErasing) {
+    clockOpacity = 0.8; // During erasing phase
+  } else if (isWaiting) {
+    // During waiting phase (last 10 seconds), fade in over 5 seconds
+    const waitProgress = (msInCycle - 60000) / 10000; // 0 to 1 during waiting phase
+    const fadeInDuration = 5000; // 5 seconds
+    const fadeInProgress = Math.min(waitProgress / (fadeInDuration / 10000), 1); // 0 to 1 during fade in
+    clockOpacity = fadeInProgress; // Fade from 0 to 1 over 5 seconds
+  } else {
+    clockOpacity = 1; // Fully visible during normal operation
+  }
 
   // Base style for centering anything within the clock face
   const absoluteCenter = {
@@ -57,15 +77,15 @@ const RefactoredCentricClock = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000',
+    backgroundColor: '#0F3D3AFF',
     color: '#fff',
-    fontFamily: `'${FONT_FAMILY}', monospace`,
-    overflow: 'hidden',
+    fontFamily: fontLoaded ? `'${FONT_FAMILY}', monospace` : 'monospace',
+    overflow: 'hidden'
   };
 
   const faceStyle = {
-    width: '85vmin',
-    height: '85vmin',
+    width: '90vmin',
+    height: '90vmin',
     backgroundColor: 'white',
     borderRadius: '50%',
     position: 'relative',
@@ -75,7 +95,7 @@ const RefactoredCentricClock = () => {
 
   const handStyle = (angle, width, length, color, zIndex) => ({
     ...absoluteCenter,
-    width: `${width}vmin`,
+    width: `${width / 2}vmin`,
     height: `${length}vmin`,
     backgroundColor: color,
     // We translate back by -50% horizontally, and adjust the vertical transform 
@@ -113,25 +133,29 @@ const RefactoredCentricClock = () => {
               margin: '0 auto',
               backgroundColor: 'black',
               width: i % 5 === 0 ? '0.6vmin' : '0.2vmin',
-              height: i % 5 === 0 ? '4vmin' : '2vmin',
+              height: i % 5 === 0 ? '6vmin' : '3vmin',
             }} />
           </div>
         ))}
 
         {/* Numbers - Positioned at the top of a full-rotation container */}
-        {[...Array(12)].map((_, i) => (
-          <div key={`num-${i + 1}`} style={numberContainerStyle(i + 1)}>
-            <div style={{
-              textAlign: 'center',
-              marginTop: '4vmin', // Padding from the edge
-              fontSize: '8vmin',
-              color: 'blue',
-              transform: `rotate(${(i + 1) * -30}deg)`, // Keep numbers upright
-            }}>
-              {i + 1}
+        {[...Array(12)].map((_, i) => {
+          const number = i + 1;
+          const displayNumber = number <= 9 ? `0${number}` : number;
+          return (
+            <div key={`num-${number}`} style={numberContainerStyle(number)}>
+              <div style={{
+                textAlign: 'center',
+                marginTop: '9vmin', // Padding from the edge
+                fontSize: '10vmin', // Made smaller from 10vmin
+                color: '#4146ECDD',
+                transform: `rotate(${number * -30}deg)`, // Keep numbers upright
+              }}>
+                {displayNumber}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {/* Hands */}
         <div style={handStyle(trueHours * 30, 2, 22, 'black', 3)} />
@@ -140,8 +164,8 @@ const RefactoredCentricClock = () => {
         {/* Eraser Mask */}
         <div style={{
           ...absoluteCenter,
-          width: '101%', // Slight overlap to prevent sub-pixel gaps
-          height: '101%',
+          width: '100%', // Slight overlap to prevent sub-pixel gaps
+          height: '100%',
           borderRadius: '50%',
           zIndex: 10,
           background: isWaiting 
@@ -151,18 +175,18 @@ const RefactoredCentricClock = () => {
 
         {/* Second Hand Eraser Edge */}
         {isErasing && (
-          <div style={handStyle(currentEraserAngle, 0.2, 42.5, 'red', 11)} />
+          <div style={handStyle(currentEraserAngle, 0.2, 42.5, '#FFFFFFFF', 11)} />
         )}
 
         {/* Center Pin - Perfectly Centered */}
         <div style={{
           ...absoluteCenter,
-          width: '3vmin',
-          height: '3vmin',
+          width: '4vmin',
+          height: '4vmin',
           backgroundColor: 'red',
           borderRadius: '50%',
           zIndex: 12,
-          border: '0.5vmin solid white'
+          border: '0.5vmin solid black'
         }} />
       </div>
     </div>
