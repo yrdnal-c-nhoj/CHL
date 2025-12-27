@@ -129,7 +129,7 @@ export default function App() {
     alignItems: 'center',
     height: '100%',
     color: 'white',
-    fontSize: isLargeScreen ? '15vw' : '40vw',
+    fontSize: isLargeScreen ? '15vw' : '20vh',
     fontFamily: fontLoaded ? 'CustomFont, sans-serif' : 'monospace',
     opacity: fontLoaded ? 1 : 0.8,
     transition: 'opacity 0.3s ease',
@@ -138,8 +138,8 @@ export default function App() {
     textAlign: 'center',
     whiteSpace: 'nowrap',
     flexDirection: isLargeScreen ? 'row' : 'column',
-    gap: isLargeScreen ? '2vw' : '4vh',
-    letterSpacing: '0.3vw',
+    gap: isLargeScreen ? '0.1vh' : '0.5vh',
+    letterSpacing: '0.3vh',
   };
 
   return (

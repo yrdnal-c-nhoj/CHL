@@ -1,176 +1,153 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react';
 
-export default function PixelInverseClock() {
-  const canvasRef = useRef(null)
-  const videoRef = useRef(null)
-  const animationRef = useRef(null)
-  const isVideoReady = useRef(false)
-  const backgroundColor = useRef('#ffffff')
+const RefactoredCentricClock = () => {
+  const [now, setNow] = useState(new Date());
+  const [startTime] = useState(Date.now());
 
-  // Track start time of current cycle
-  const cycleStartTime = useRef(Date.now())
-  // Current opacity of the clock (1 = fully visible, 0 = invisible)
-  const [clockOpacity, setClockOpacity] = useState(1)
-
-  /* ================= MAIN EFFECT ================= */
   useEffect(() => {
-    // Generate a random bright color for the background
-    const r = Math.floor(Math.random() * 256)
-    const g = Math.floor(Math.random() * 256)
-    const b = Math.floor(Math.random() * 256)
-    backgroundColor.current = `rgb(${r}, ${g}, ${b})`
+    const timer = setInterval(() => setNow(new Date()), 16);
+    return () => clearInterval(timer);
+  }, []);
 
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d', { alpha: false })
-    const video = videoRef.current
-    const fallbackImg = new Image()
+  const msInCycle = (Date.now() - startTime) % 70000;
+  const isErasing = msInCycle < 60000;
+  const isWaiting = msInCycle >= 60000 && msInCycle < 70000;
 
-    /* ---------- VIDEO LOGIC ---------- */
-    const onCanPlay = () => {
-      video.play().then(() => {
-        isVideoReady.current = true
-      }).catch(() => {
-        isVideoReady.current = false
-      })
-    }
-    video.addEventListener('canplay', onCanPlay)
-    if (video.readyState >= 3) onCanPlay()
+  const trueSeconds = now.getSeconds() + now.getMilliseconds() / 1000;
+  const trueMinutes = now.getMinutes() + trueSeconds / 60;
+  const trueHours = (now.getHours() % 12) + trueMinutes / 60;
 
-    /* ---------- RESIZE & DPI SCALING ---------- */
-    const resize = () => {
-      const dpr = window.devicePixelRatio || 1
-      const w = window.innerWidth
-      const h = window.innerHeight
-      canvas.width = w * dpr
-      canvas.height = h * dpr
-      canvas.style.width = `${w}px`
-      canvas.style.height = `${h}px`
-      ctx.scale(dpr, dpr)
-    }
-    window.addEventListener('resize', resize)
-    resize()
+  const initialSecondAtStart = (new Date(startTime).getSeconds() + new Date(startTime).getMilliseconds() / 1000);
+  const startAngle = initialSecondAtStart * 6;
+  const sweepProgressDegrees = (msInCycle / 60000) * 360;
+  const currentEraserAngle = (startAngle + sweepProgressDegrees) % 360;
 
-    /* ================= DRAW LOOP ================= */
-    const draw = () => {
-      const w = window.innerWidth
-      const h = window.innerHeight
-      const cx = w / 2
-      const cy = h / 2
-      const radius = Math.min(w, h) * 0.45
+  const clockOpacity = msInCycle > 68000 ? (msInCycle - 68000) / 2000 : 1;
 
-      // Calculate elapsed time in current cycle
-      const elapsedMs = Date.now() - cycleStartTime.current
-      const elapsedSeconds = elapsedMs / 1000
+  // Base style for centering anything within the clock face
+  const absoluteCenter = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  };
 
-      // Determine clock opacity
-      let opacity = 1
-      if (elapsedSeconds >= 65) {
-        // Fade out over 5 seconds (from 65s to 70s)
-        opacity = Math.max(0, 1 - (elapsedSeconds - 65) / 5)
-      }
-      setClockOpacity(opacity)
+  const containerStyle = {
+    width: '100vw',
+    height: '100dvh',
+    backgroundColor: 'black',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 0,
+    overflow: 'hidden',
+    fontFamily: "'Times New Roman', Times, serif",
+  };
 
-      // If fully faded out, reset the cycle
-      if (elapsedSeconds >= 70) {
-        cycleStartTime.current = Date.now()
-        // Generate new random background
-        const r = Math.floor(Math.random() * 256)
-        const g = Math.floor(Math.random() * 256)
-        const b = Math.floor(Math.random() * 256)
-        backgroundColor.current = `rgb(${r}, ${g}, ${b})`
-        setClockOpacity(1)
-      }
+  const faceStyle = {
+    width: '85vmin',
+    height: '85vmin',
+    backgroundColor: 'white',
+    borderRadius: '50%',
+    position: 'relative',
+    opacity: clockOpacity,
+    transition: msInCycle < 500 ? 'none' : 'opacity 0.8s ease-in-out',
+  };
 
-      // 1. Draw Background
-      ctx.save()
-      ctx.filter = 'contrast(0.7) brightness(1.1)'
-      if (isVideoReady.current && video.readyState >= 2) {
-        ctx.translate(w, 0)
-        ctx.scale(-1, 1)
-        ctx.drawImage(video, 0, 0, w, h)
-      } else if (fallbackImg.complete) {
-        ctx.drawImage(fallbackImg, 0, 0, w, h)
-      } else {
-        ctx.fillStyle = backgroundColor.current
-        ctx.fillRect(0, 0, w, h)
-      }
-      ctx.restore()
+  const handStyle = (angle, width, length, color, zIndex) => ({
+    ...absoluteCenter,
+    width: `${width}vmin`,
+    height: `${length}vmin`,
+    backgroundColor: color,
+    // We translate back by -50% horizontally, and adjust the vertical transform 
+    // to pivot from the bottom of the hand (the center of the clock)
+    transform: `translate(-50%, -100%) rotate(${angle}deg)`,
+    transformOrigin: 'bottom center',
+    zIndex: zIndex,
+    borderRadius: '1vmin',
+  });
 
-      // 2. Draw Clock with opacity
-      if (opacity > 0) {
-        ctx.save()
-        ctx.globalAlpha = opacity // Apply fade
+  const tickContainerStyle = (i) => ({
+    ...absoluteCenter,
+    width: '100%',
+    height: '100%',
+    transform: `translate(-50%, -50%) rotate(${i * 6}deg)`,
+    zIndex: 1,
+  });
 
-        const now = new Date()
-        const ms = now.getMilliseconds()
-        const sec = now.getSeconds() + ms / 1000
-        const min = now.getMinutes() + sec / 60
-        const hr = (now.getHours() % 12) + min / 60
-
-        ctx.textAlign = 'center'
-        ctx.textBaseline = 'middle'
-
-        const drawHand = (len, thick, ang, color) => {
-          ctx.strokeStyle = color
-          ctx.lineWidth = thick
-          ctx.lineCap = 'round'
-          ctx.beginPath()
-          ctx.moveTo(cx, cy)
-          ctx.lineTo(cx + Math.cos(ang) * len, cy + Math.sin(ang) * len)
-          ctx.stroke()
-        }
-
-        // Hour Hand
-        drawHand(radius * 0.5, 8, hr * Math.PI / 6 - Math.PI / 2, 'white')
-        // Minute Hand
-        drawHand(radius * 0.8, 5, min * Math.PI / 30 - Math.PI / 2, 'white')
-        // Second Hand
-        drawHand(radius * 0.9, 2, sec * Math.PI / 30 - Math.PI / 2, 'white')
-        // Center Dot
-        ctx.fillStyle = 'white'
-        ctx.beginPath()
-        ctx.arc(cx, cy, 6, 0, Math.PI * 2)
-        ctx.fill()
-
-        ctx.restore()
-      }
-
-      animationRef.current = requestAnimationFrame(draw)
-    }
-
-    draw()
-
-    return () => {
-      cancelAnimationFrame(animationRef.current)
-      window.removeEventListener('resize', resize)
-      video.removeEventListener('canplay', onCanPlay)
-    }
-  }, [])
+  const numberContainerStyle = (i) => ({
+    ...absoluteCenter,
+    width: '100%',
+    height: '100%',
+    transform: `translate(-50%, -50%) rotate(${i * 30}deg)`,
+    zIndex: 2,
+  });
 
   return (
-    <>
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 1,
-          background: backgroundColor.current
-        }}
-      />
-      <video
-        ref={videoRef}
-        muted
-        loop
-        playsInline
-        style={{
-          position: 'absolute',
-          width: '1px',
-          height: '1px',
-          opacity: 0.01,
-          pointerEvents: 'none'
-        }}
-      />
-    </>
-  )
-}
+    <div style={containerStyle}>
+      <div style={faceStyle}>
+        
+        {/* Ticks - Centered by rotating full-size transparent containers */}
+        {[...Array(60)].map((_, i) => (
+          <div key={`tick-${i}`} style={tickContainerStyle(i)}>
+            <div style={{
+              margin: '0 auto',
+              backgroundColor: 'black',
+              width: i % 5 === 0 ? '0.6vmin' : '0.2vmin',
+              height: i % 5 === 0 ? '4vmin' : '2vmin',
+            }} />
+          </div>
+        ))}
+
+        {/* Numbers - Positioned at the top of a full-rotation container */}
+        {[...Array(12)].map((_, i) => (
+          <div key={`num-${i + 1}`} style={numberContainerStyle(i + 1)}>
+            <div style={{
+              textAlign: 'center',
+              marginTop: '4vmin', // Padding from the edge
+              fontSize: '8vmin',
+              color: 'blue',
+              transform: `rotate(${(i + 1) * -30}deg)`, // Keep numbers upright
+            }}>
+              {i + 1}
+            </div>
+          </div>
+        ))}
+
+        {/* Hands */}
+        <div style={handStyle(trueHours * 30, 2, 22, 'black', 3)} />
+        <div style={handStyle(trueMinutes * 6, 1.2, 35, 'black', 4)} />
+
+        {/* Eraser Mask */}
+        <div style={{
+          ...absoluteCenter,
+          width: '101%', // Slight overlap to prevent sub-pixel gaps
+          height: '101%',
+          borderRadius: '50%',
+          zIndex: 10,
+          background: isWaiting 
+            ? 'white' 
+            : `conic-gradient(from ${startAngle}deg, white 0deg, white ${sweepProgressDegrees}deg, transparent ${sweepProgressDegrees}deg)`,
+        }} />
+
+        {/* Second Hand Eraser Edge */}
+        {isErasing && (
+          <div style={handStyle(currentEraserAngle, 0.2, 42.5, 'red', 11)} />
+        )}
+
+        {/* Center Pin - Perfectly Centered */}
+        <div style={{
+          ...absoluteCenter,
+          width: '3vmin',
+          height: '3vmin',
+          backgroundColor: 'red',
+          borderRadius: '50%',
+          zIndex: 12,
+          border: '0.5vmin solid white'
+        }} />
+      </div>
+    </div>
+  );
+};
+
+export default RefactoredCentricClock;
