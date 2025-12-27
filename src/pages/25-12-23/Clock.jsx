@@ -1,6 +1,24 @@
 import React, { useState, useEffect } from 'react';
 
+// Font configuration
+const FONT_FAMILY = 'ForgotFont';
+const FONT_PATH = '/fonts/25-12-23-forgot.ttf';
+
 const RefactoredCentricClock = () => {
+  // Load custom font
+  useEffect(() => {
+    const loadFont = async () => {
+      const font = new FontFace(FONT_FAMILY, `url(${FONT_PATH})`);
+      try {
+        await font.load();
+        document.fonts.add(font);
+      } catch (error) {
+        console.error('Failed to load font:', error);
+      }
+    };
+    
+    loadFont();
+  }, []);
   const [now, setNow] = useState(new Date());
   const [startTime] = useState(Date.now());
 
@@ -33,15 +51,16 @@ const RefactoredCentricClock = () => {
   };
 
   const containerStyle = {
+    position: 'relative',
     width: '100vw',
-    height: '100dvh',
-    backgroundColor: 'black',
+    height: '100vh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 0,
+    backgroundColor: '#000',
+    color: '#fff',
+    fontFamily: `'${FONT_FAMILY}', monospace`,
     overflow: 'hidden',
-    fontFamily: "'Times New Roman', Times, serif",
   };
 
   const faceStyle = {
