@@ -1,27 +1,32 @@
 import { useState, useEffect } from 'react';
 import background from './swagr.webp';
-import fontDate20251217 from '/public/fonts/facexxxx.ttf';
 
 export default function App() {
   const [time, setTime] = useState(new Date());
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 768);
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
-    // Load font using FontFace API instead of injecting global styles
+    // Load font using FontFace API
     const loadFont = async () => {
       try {
-        const font = new FontFace('CustomFont', `url(${fontDate20251217})`, {
+        const font = new FontFace('CustomFont', 'url(/fonts/facexxxx.ttf)', {
           style: 'normal',
           weight: '400',
           display: 'swap',
         });
         const loadedFont = await font.load();
         document.fonts.add(loadedFont);
+        setFontLoaded(true);
       } catch (err) {
         console.warn('Custom font failed to load, falling back to system font', err);
+        setFontLoaded(true);
       }
     };
-    loadFont();
+    
+    if (!fontLoaded) {
+      loadFont();
+    }
   }, []);
 
   useEffect(() => {
@@ -61,7 +66,9 @@ export default function App() {
     textAlign: 'center',
     color: '#070809FF',
     filter: 'drop-shadow(1px 2px 0  #D862F2FF)',
-    fontFamily: 'CustomFont, sans-serif',
+    fontFamily: fontLoaded ? 'CustomFont, sans-serif' : 'monospace',
+    opacity: fontLoaded ? 1 : 0.8,
+    transition: 'opacity 0.3s ease',
     fontSize: 'inherit',
     fontWeight: 'normal',
     lineHeight: 1,
@@ -123,7 +130,9 @@ export default function App() {
     height: '100%',
     color: 'white',
     fontSize: isLargeScreen ? '15vw' : '40vw',
-    fontFamily: 'CustomFont, sans-serif',
+    fontFamily: fontLoaded ? 'CustomFont, sans-serif' : 'monospace',
+    opacity: fontLoaded ? 1 : 0.8,
+    transition: 'opacity 0.3s ease',
     fontWeight: 'normal',
     lineHeight: 1,
     textAlign: 'center',
