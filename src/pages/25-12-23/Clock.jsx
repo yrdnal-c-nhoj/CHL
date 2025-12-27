@@ -89,7 +89,7 @@ const RefactoredCentricClock = () => {
     backgroundColor: 'white',
     borderRadius: '50%',
     position: 'relative',
-    opacity: clockOpacity,
+    // opacity: clockOpacity,
     transition: msInCycle < 500 ? 'none' : 'opacity 0.8s ease-in-out',
   };
 
@@ -148,7 +148,7 @@ const RefactoredCentricClock = () => {
                 textAlign: 'center',
                 marginTop: '9vmin', // Padding from the edge
                 fontSize: '10vmin', // Made smaller from 10vmin
-                color: '#4146ECDD',
+                color: '#1C23EDDD',
                 transform: `rotate(${number * -30}deg)`, // Keep numbers upright
               }}>
                 {displayNumber}
