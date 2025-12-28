@@ -54,7 +54,8 @@ const HourglassTimer = () => {
     boxSizing: 'border-box',
     fontFamily: fontLoaded ? `'${FONT_FAMILY}', monospace` : 'monospace',
     color: '#C8C5C2FF',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    visibility: fontLoaded ? 'visible' : 'hidden'
   };
 
   const bulbStyle = {
