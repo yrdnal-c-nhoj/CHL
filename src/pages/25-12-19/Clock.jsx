@@ -61,7 +61,7 @@ const HourglassTimer = () => {
     position: 'relative',
     width: 'min(70vw, 45vh)',
     height: '48vh',
-    backgroundColor: ' #8B8668FF',
+    backgroundColor: ' #B8CCDAFF',
     overflow: 'hidden',
   };
 
