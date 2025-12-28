@@ -56,7 +56,8 @@ const HourglassTimer = () => {
     color: '#C8C5C2FF',
     overflow: 'hidden',
     opacity: fontLoaded ? 1 : 0,
-    transition: 'opacity 0.3s ease-in-out'
+    transition: 'opacity 0.3s ease-in-out',
+    pointerEvents: fontLoaded ? 'auto' : 'none'
   };
 
   const bulbStyle = {
