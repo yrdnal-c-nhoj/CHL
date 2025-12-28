@@ -55,7 +55,8 @@ const HourglassTimer = () => {
     fontFamily: fontLoaded ? `'${FONT_FAMILY}', monospace` : 'monospace',
     color: '#C8C5C2FF',
     overflow: 'hidden',
-    visibility: fontLoaded ? 'visible' : 'hidden'
+    opacity: fontLoaded ? 1 : 0,
+    transition: 'opacity 0.3s ease-in-out'
   };
 
   const bulbStyle = {
