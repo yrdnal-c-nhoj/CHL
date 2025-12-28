@@ -62,21 +62,23 @@ const HourglassTimer = () => {
     width: 'min(70vw, 45vh)',
     height: '45vh',
     backgroundColor: 'rgba(2, 2, 2, 0.9)',
-    overflow: 'hidden',
+    overflow: 'hidden', // Essential to crop the sand rectangle
   };
 
-  // Sand style with texture
   const sandStyle = {
     position: 'absolute',
     bottom: 0,
+    left: 0,
     width: '100%',
     backgroundImage: `url(${sandTexture})`,
     backgroundSize: 'cover',
     backgroundRepeat: 'repeat',
     transition: 'height 1s linear',
-    backgroundColor: '#F5E1CEFF', // Fallback color in case image fails to load
+    backgroundColor: '#F5E1CEFF',
     backgroundBlendMode: 'multiply',
-    opacity: 0.9
+    opacity: 0.9,
+    backgroundPosition: 'bottom',
+    zIndex: 5
   };
 
   const timeLabelStyle = {
@@ -91,30 +93,24 @@ const HourglassTimer = () => {
     borderRadius: '4px',
   };
 
-  // Render hour markings for top bulb
-  // 12AM at top (0%) descending to 12AM next day at bottom (100%)
   const renderTopBulbMarkings = () => {
     const markers = [];
     for (let hour = 0; hour <= 24; hour += 2) {
       const topPosition = (hour / 24) * 100;
-      
       markers.push(
-        <div
-          key={hour}
-          style={{
-            position: 'absolute',
-            top: `${topPosition}%`,
-            left: 0,
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 10,
-            pointerEvents: 'none',
-            mixBlendMode: 'difference',
-            transform: 'translateY(-50%)',
-          }}
-        >
+        <div key={hour} style={{
+          position: 'absolute',
+          top: `${topPosition}%`,
+          left: 0,
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10,
+          pointerEvents: 'none',
+          mixBlendMode: 'difference',
+          transform: 'translateY(-50%)',
+        }}>
           <div style={{ flex: 1, borderBottom: '1px solid #FD720FFF', opacity: 0.4 }} />
           <span style={timeLabelStyle}>{formatTimeLabel(hour)}</span>
           <div style={{ flex: 1, borderBottom: '1px solid #FD720FFF', opacity: 0.4 }} />
@@ -124,30 +120,24 @@ const HourglassTimer = () => {
     return markers;
   };
 
-  // Render hour markings for bottom bulb
-  // 12AM at bottom (100%) ascending to 12AM next day at top (0%)
   const renderBottomBulbMarkings = () => {
     const markers = [];
     for (let hour = 0; hour <= 24; hour += 2) {
       const bottomPosition = (hour / 24) * 100;
-      
       markers.push(
-        <div
-          key={hour}
-          style={{
-            position: 'absolute',
-            bottom: `${bottomPosition}%`,
-            left: 0,
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 10,
-            pointerEvents: 'none',
-            mixBlendMode: 'difference',
-            transform: 'translateY(50%)',
-          }}
-        >
+        <div key={hour} style={{
+          position: 'absolute',
+          bottom: `${bottomPosition}%`,
+          left: 0,
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10,
+          pointerEvents: 'none',
+          mixBlendMode: 'difference',
+          transform: 'translateY(50%)',
+        }}>
           <div style={{ flex: 1, borderBottom: '1px solid #FD720FFF', opacity: 0.4 }} />
           <span style={timeLabelStyle}>{formatTimeLabel(hour)}</span>
           <div style={{ flex: 1, borderBottom: '1px solid #FD720FFF', opacity: 0.4 }} />
@@ -160,15 +150,17 @@ const HourglassTimer = () => {
   return (
     <div style={containerStyle}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {/* TOP BULB */}
-        <div style={{ ...bulbStyle, clipPath: 'polygon(0% 0%, 100% 0%, 50% 100%)' }}>
+        
+        {/* TOP BULB: Drains from 100% to 0% */}
+        <div style={{ 
+          ...bulbStyle, 
+          clipPath: 'polygon(0% 0%, 100% 0%, 50% 100%)' 
+        }}>
           {renderTopBulbMarkings()}
           <div
             style={{
               ...sandStyle,
               height: `${100 - percentDayPassed}%`,
-              clipPath: 'polygon(0% 0%, 100% 0%, 50% 100%)',
-              backgroundPosition: 'bottom'
             }}
           />
         </div>
@@ -184,18 +176,20 @@ const HourglassTimer = () => {
           <div style={{ width: '3px', height: '100%', backgroundColor: '#F5E1CEFF' }} />
         </div>
 
-        {/* BOTTOM BULB */}
-        <div style={{ ...bulbStyle, clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }}>
+        {/* BOTTOM BULB: Fills from 0% to 100% */}
+        <div style={{ 
+          ...bulbStyle, 
+          clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' 
+        }}>
           {renderBottomBulbMarkings()}
           <div
             style={{
               ...sandStyle,
               height: `${percentDayPassed}%`,
-              clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-              backgroundPosition: 'top'
             }}
           />
         </div>
+
       </div>
     </div>
   );
