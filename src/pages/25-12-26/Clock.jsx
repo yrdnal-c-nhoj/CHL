@@ -1,54 +1,94 @@
 import { useEffect, useState } from 'react'
 
-// ⏳ Background image (same folder)
+// Asset paths
 import bgImage from './sat.webp'
-// 🖼️ Overlay image (same folder)
 import overlayImage from './scythe.webp'
-// 🔤 Font file (same folder)
 const FONT_PATH = './sat.ttf'
 const FONT_FAMILY = 'SaturnFont'
 
-export default function SaturnClock() {
-  const [fontReady, setFontReady] = useState(false)
-  const [now, setNow] = useState(new Date())
+// Custom hook for font loading
+function useFontLoader(fontPath, fontFamily) {
+  const [isReady, setIsReady] = useState(false)
 
-  // ⏱ Clock tick
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000)
-    return () => clearInterval(id)
-  }, [])
-
-  // 🔤 Font injection + load blocking
-  useEffect(() => {
-    const fontUrl = new URL(FONT_PATH, import.meta.url).href
+    const fontUrl = new URL(fontPath, import.meta.url).href
     const style = document.createElement('style')
+    
     style.textContent = `
       @font-face {
-        font-family: '${FONT_FAMILY}';
+        font-family: '${fontFamily}';
         src: url('${fontUrl}') format('truetype');
         font-weight: normal;
         font-style: normal;
       }
     `
+    
     document.head.appendChild(style)
-
-    // Fixed: Changed backtick to parenthesis
-    document.fonts.load(`1rem ${FONT_FAMILY}`).then(() => {
-      setFontReady(true)
+    
+    document.fonts.load(`1rem ${fontFamily}`).then(() => {
+      setIsReady(true)
     })
 
     return () => {
       document.head.removeChild(style)
     }
+  }, [fontPath, fontFamily])
+
+  return isReady
+}
+
+// Custom hook for clock
+function useClock() {
+  const [time, setTime] = useState(new Date())
+
+  useEffect(() => {
+    const interval = setInterval(() => setTime(new Date()), 1000)
+    return () => clearInterval(interval)
   }, [])
 
-  // 🚫 Block rendering until font is ready
+  return time
+}
+
+// Format time with padding
+function formatTime(date) {
+  const pad = (n) => String(n).padStart(2, '0')
+  return {
+    hours: pad(date.getHours()),
+    minutes: pad(date.getMinutes()),
+    seconds: pad(date.getSeconds())
+  }
+}
+
+// Overlay component
+function ScytheOverlay({ rotation = 0, top = '40%' }) {
+  return (
+    <img
+      src={overlayImage}
+      alt=""
+      style={{
+        position: 'absolute',
+        top,
+        left: '50%',
+        transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
+        width: '90vw',
+        height: '100vw',
+        objectFit: 'contain',
+        pointerEvents: 'none',
+        zIndex: 1,
+        opacity: 0.6,
+      }}
+    />
+  )
+}
+
+// Main component
+export default function SaturnClock() {
+  const fontReady = useFontLoader(FONT_PATH, FONT_FAMILY)
+  const now = useClock()
+
   if (!fontReady) return null
 
-  // ⌛ Time formatting
-  const hh = String(now.getHours()).padStart(2, '0')
-  const mm = String(now.getMinutes()).padStart(2, '0')
-  const ss = String(now.getSeconds()).padStart(2, '0')
+  const { hours, minutes } = formatTime(now)
 
   return (
     <div
@@ -66,43 +106,9 @@ export default function SaturnClock() {
         position: 'relative',
       }}
     >
-      {/* Overlay image */}
-      <img
-        src={overlayImage}
-        alt="Overlay"
-        style={{
-          position: 'absolute',
-          top: '40%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '90vw',
-          height: '100vw',
-          objectFit: 'contain',
-          pointerEvents: 'none',
-          zIndex: 1,
-          opacity: 0.6,
-        }}
-      />
+      <ScytheOverlay rotation={0} top="40%" />
+      <ScytheOverlay rotation={180} top="60%" />
 
-      {/* Overlay image rotated 180° */}
-      <img
-        src={overlayImage}
-        alt="Overlay Rotated"
-        style={{
-          position: 'absolute',
-          top: '60%',
-          left: '50%',
-          transform: 'translate(-50%, -50%) rotate(180deg)',
-          width: '90vw',
-          height: '100vw',
-          objectFit: 'contain',
-          pointerEvents: 'none',
-          zIndex: 1,
-          opacity: 0.6,
-        }}
-      />
-
-      {/* Saturn containment ring */}
       <div
         style={{
           width: '100vw',
@@ -115,7 +121,6 @@ export default function SaturnClock() {
           position: 'relative',
         }}
       >
-        {/* Time */}
         <div
           style={{
             fontFamily: FONT_FAMILY,
@@ -128,7 +133,7 @@ export default function SaturnClock() {
             textShadow: '1px 1px 0 white, -1px -1px 0 black',
           }}
         >
-          {hh}{mm}
+          {hours}{minutes}
         </div>
       </div>
     </div>
