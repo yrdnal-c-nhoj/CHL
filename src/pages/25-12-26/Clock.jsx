@@ -1,191 +1,147 @@
 import { useEffect, useState } from 'react'
 
-const FlipNumber = ({ value }) => {
-  const [displayedValue, setDisplayedValue] = useState(value)
-  const [prevValue, setPrevValue] = useState(value)
-  const [isFlipping, setIsFlipping] = useState(false)
+// ⏳ Background image (same folder)
+import bgImage from './sat.webp'
 
+// 🖼️ Overlay image (same folder)
+import overlayImage from './scythe.webp'
+
+// 🔤 Font file (same folder)
+const FONT_PATH = './sat.ttf'
+const FONT_FAMILY = 'SaturnFont'
+
+export default function SaturnClock() {
+  const [fontReady, setFontReady] = useState(false)
+  const [now, setNow] = useState(new Date())
+
+  // ⏱ Clock tick
   useEffect(() => {
-    if (value !== displayedValue) {
-      setPrevValue(displayedValue)
-      setIsFlipping(true)
-
-      // After animation completes, update the displayed value
-      const timer = setTimeout(() => {
-        setDisplayedValue(value)
-        setIsFlipping(false)
-      }, 600) // matches animation duration
-
-      return () => clearTimeout(timer)
-    }
-  }, [value, displayedValue])
-
-  const formattedValue = String(displayedValue).padStart(2, '0')
-  const formattedPrev = String(prevValue).padStart(2, '0')
-
-  return (
-    <div className='flip-container'>
-      <div className={`flip-card ${isFlipping ? 'flipping' : ''}`}>
-        {/* Top half - stays visible */}
-        <div className='top-half'>
-          <span>{formattedValue}</span>
-        </div>
-
-        {/* Bottom half - stays visible */}
-        <div className='bottom-half'>
-          <span>{formattedValue}</span>
-        </div>
-
-        {/* Flipping top (shows previous value flipping out) */}
-        <div className='flipping-top'>
-          <span>{formattedPrev}</span>
-        </div>
-
-        {/* Flipping bottom (shows new value flipping in) */}
-        <div className='flipping-bottom'>
-          <span>{formattedValue}</span>
-        </div>
-      </div>
-
-      <style jsx>{`
-        .flip-container {
-          position: relative;
-          width: 80px;
-          height: 120px;
-          perspective: 1000px;
-          margin: 0 8px;
-        }
-
-        .flip-card {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          transform-style: preserve-3d;
-        }
-
-        .top-half,
-        .bottom-half,
-        .flipping-top,
-        .flipping-bottom {
-          position: absolute;
-          width: 100%;
-          height: 50%;
-          overflow: hidden;
-          background: #1a1a1a;
-          border-radius: 10px;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-          backface-visibility: hidden;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          font-size: 80px;
-          font-weight: bold;
-          font-family: 'Arial Narrow', Arial, sans-serif;
-        }
-
-        .top-half {
-          top: 0;
-          border-bottom: 1px solid #000;
-          transform-origin: bottom;
-        }
-
-        .bottom-half {
-          bottom: 0;
-          border-top: 1px solid #333;
-          transform-origin: top;
-          align-items: flex-start;
-          padding-top: 12px;
-        }
-
-        .bottom-half span {
-          transform: translateY(-50%);
-        }
-
-        .flipping-top {
-          top: 0;
-          border-bottom: 1px solid #000;
-          transform-origin: bottom;
-          transform: rotateX(0deg);
-          animation: ${isFlipping ? 'flipTop 0.6s ease-in forwards' : 'none'};
-        }
-
-        .flipping-bottom {
-          bottom: 0;
-          border-top: 1px solid #333;
-          transform-origin: top;
-          transform: rotateX(90deg);
-          animation: ${isFlipping
-            ? 'flipBottom 0.6s ease-out forwards'
-            : 'none'};
-        }
-
-        @keyframes flipTop {
-          0% {
-            transform: rotateX(0deg);
-          }
-          100% {
-            transform: rotateX(-90deg);
-          }
-        }
-
-        @keyframes flipBottom {
-          0% {
-            transform: rotateX(90deg);
-          }
-          100% {
-            transform: rotateX(0deg);
-          }
-        }
-      `}</style>
-    </div>
-  )
-}
-
-const FlipClock = () => {
-  const [time, setTime] = useState(new Date())
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date())
-    }, 1000)
-    return () => clearInterval(timer)
+    const id = setInterval(() => setNow(new Date()), 1000)
+    return () => clearInterval(id)
   }, [])
 
-  const hours = time.getHours().toString().padStart(2, '0')
-  const minutes = time.getMinutes().toString().padStart(2, '0')
+  // 🔤 Font injection + load blocking
+  useEffect(() => {
+    const fontUrl = new URL(FONT_PATH, import.meta.url).href
+
+    const style = document.createElement('style')
+    style.textContent = `
+      @font-face {
+        font-family: '${FONT_FAMILY}';
+        src: url('${fontUrl}') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }
+    `
+    document.head.appendChild(style)
+
+    document.fonts.load(`1rem ${FONT_FAMILY}`).then(() => {
+      setFontReady(true)
+    })
+
+    return () => {
+      document.head.removeChild(style)
+    }
+  }, [])
+
+  // 🚫 Block rendering until font is ready
+  if (!fontReady) return null
+
+  // ⌛ Time formatting
+  const hh = String(now.getHours()).padStart(2, '0')
+  const mm = String(now.getMinutes()).padStart(2, '0')
+  const ss = String(now.getSeconds()).padStart(2, '0')
 
   return (
     <div
       style={{
+        width: '100vw',
+        height: '100dvh',
         display: 'flex',
-        justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '100vh',
-        backgroundColor: '#111',
-        fontFamily: 'Arial, sans-serif'
+        justifyContent: 'center',
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        overflow: 'hidden',
+        position: 'relative',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <FlipNumber value={parseInt(hours[0])} />
-        <FlipNumber value={parseInt(hours[1])} />
-
+      {/* Overlay image */}
+      <img
+        src={overlayImage}
+        alt="Overlay"
+        style={{
+          position: 'absolute',
+          top: '40%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '90vw',
+          height: '100vw',
+          // maxWidth: '60dvh',
+          // maxHeight: '60dvh',
+          objectFit: 'contain',
+          pointerEvents: 'none',
+          zIndex: 1,
+          opacity: 0.6,
+        }}
+      />
+      
+      {/* Overlay image rotated 180° */}
+      <img
+        src={overlayImage}
+        alt="Overlay Rotated"
+        style={{
+          position: 'absolute',
+          top: '60%',
+          left: '50%',
+          transform: 'translate(-50%, -50%) rotate(180deg)',
+        width: '90vw',
+          height: '100vw',
+          // maxWidth: '60dvh',
+          // maxHeight: '60dvh',
+          objectFit: 'contain',
+          pointerEvents: 'none',
+          zIndex: 1,
+          opacity: 0.6,
+        }}
+      />
+      
+      {/* Saturn containment ring */}
+      <div
+        style={{
+          width: '100vw',
+          height: '100vw',
+          // maxWidth: '70dvh',
+          // maxHeight: '70dvh',
+          borderRadius: '50%',
+          // border: '0.25vw solid rgba(255,255,255,0.2)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          // backdropFilter: 'blur(0.4vw)',
+          zIndex: 2,
+          position: 'relative',
+        }}
+      >
+        {/* Time */}
         <div
           style={{
-            color: '#444',
-            fontSize: '80px',
-            margin: '0 20px',
-            fontWeight: 'bold'
+            fontFamily: FONT_FAMILY,
+            fontSize: '18vh',
+            letterSpacing: '0.4vw',
+            color: '#7C9497',
+            textAlign: 'center',
+            lineHeight: '1',
+            opacity: 0.5,
+            textShadow: '1px 1px 0 white, -1px -1px 0 black',
           }}
         >
-          :
+          {hh}{mm}
+         
         </div>
-
-        <FlipNumber value={parseInt(minutes[0])} />
-        <FlipNumber value={parseInt(minutes[1])} />
       </div>
     </div>
   )
 }
-
-export default FlipClock
