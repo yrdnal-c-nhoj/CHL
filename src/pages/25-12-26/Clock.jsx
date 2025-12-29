@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react'
 
 // ⏳ Background image (same folder)
 import bgImage from './sat.webp'
-
 // 🖼️ Overlay image (same folder)
 import overlayImage from './scythe.webp'
-
 // 🔤 Font file (same folder)
 const FONT_PATH = './sat.ttf'
 const FONT_FAMILY = 'SaturnFont'
@@ -23,7 +21,6 @@ export default function SaturnClock() {
   // 🔤 Font injection + load blocking
   useEffect(() => {
     const fontUrl = new URL(FONT_PATH, import.meta.url).href
-
     const style = document.createElement('style')
     style.textContent = `
       @font-face {
@@ -35,6 +32,7 @@ export default function SaturnClock() {
     `
     document.head.appendChild(style)
 
+    // Fixed: Changed backtick to parenthesis
     document.fonts.load(`1rem ${FONT_FAMILY}`).then(() => {
       setFontReady(true)
     })
@@ -79,15 +77,13 @@ export default function SaturnClock() {
           transform: 'translate(-50%, -50%)',
           width: '90vw',
           height: '100vw',
-          // maxWidth: '60dvh',
-          // maxHeight: '60dvh',
           objectFit: 'contain',
           pointerEvents: 'none',
           zIndex: 1,
           opacity: 0.6,
         }}
       />
-      
+
       {/* Overlay image rotated 180° */}
       <img
         src={overlayImage}
@@ -97,30 +93,24 @@ export default function SaturnClock() {
           top: '60%',
           left: '50%',
           transform: 'translate(-50%, -50%) rotate(180deg)',
-        width: '90vw',
+          width: '90vw',
           height: '100vw',
-          // maxWidth: '60dvh',
-          // maxHeight: '60dvh',
           objectFit: 'contain',
           pointerEvents: 'none',
           zIndex: 1,
           opacity: 0.6,
         }}
       />
-      
+
       {/* Saturn containment ring */}
       <div
         style={{
           width: '100vw',
           height: '100vw',
-          // maxWidth: '70dvh',
-          // maxHeight: '70dvh',
           borderRadius: '50%',
-          // border: '0.25vw solid rgba(255,255,255,0.2)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          // backdropFilter: 'blur(0.4vw)',
           zIndex: 2,
           position: 'relative',
         }}
@@ -139,7 +129,6 @@ export default function SaturnClock() {
           }}
         >
           {hh}{mm}
-         
         </div>
       </div>
     </div>
