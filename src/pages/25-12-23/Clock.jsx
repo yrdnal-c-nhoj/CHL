@@ -104,7 +104,6 @@ const DigitalClock = () => {
         width: '100%',
         margin: 0,
         padding: 0,
-        width: 'auto',
         lineHeight: 0.8, // Tighter line height
         letterSpacing: '-0.15em', // Even tighter letter spacing
         wordSpacing: '-0.5em', // Reduce space between words (if any)
