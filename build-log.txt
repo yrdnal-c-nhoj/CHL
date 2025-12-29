@@ -14,11 +14,19 @@ The glob option "as" has been deprecated in favour of "query". Please update `as
 The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
 The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
 The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-✓ 1468 modules transformed.
-✗ Build failed in 1.55s
+[plugin vite:esbuild] src/pages/25-12-23/Clock.jsx: Duplicate key "width" in object literal
+105 |          margin: 0,
+106 |          padding: 0,
+107 |          width: 'auto',
+    |          ^
+108 |          lineHeight: 0.8, // Tighter line height
+109 |          letterSpacing: '-0.15em', // Even tighter letter spacing
+
+✓ 1481 modules transformed.
+✗ Build failed in 1.22s
 error during build:
-Could not resolve "./nest.jpg" from "src/pages/25-12-25/Clock.jsx"
-file: /Users/john/Desktop/CHL/src/pages/25-12-25/Clock.jsx
+Could not resolve "./sat.webp" from "src/pages/25-12-28/Clock.jsx"
+file: /Users/john/Desktop/CHL/src/pages/25-12-28/Clock.jsx
     at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
     at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
     at ModuleLoader.handleInvalidResolvedId (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21490:24)
