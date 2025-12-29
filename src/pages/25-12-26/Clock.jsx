@@ -98,6 +98,7 @@ function ScytheOverlay({ rotation = 0, top = '40%' }) {
         objectFit: 'contain',
         pointerEvents: 'none',
         zIndex: 1,
+        filter: 'saturate(0.7) hue-rotate(-190deg) brightness(0.9)', // Example filters
         opacity: 0.6,
       }}
     />
@@ -143,43 +144,68 @@ export default function SaturnClock() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
         overflow: 'hidden',
         opacity: 0,
         animation: 'fadeIn 0.5s ease-in forwards',
       }}
     >
-      <ScytheOverlay rotation={0} top="40%" />
-      <ScytheOverlay rotation={180} top="60%" />
-
+      {/* Background image with filters applied only to it */}
       <div
         style={{
-          width: '100vw',
-          height: '100vw',
-          borderRadius: '50%',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          filter: 'saturate(0.5) hue-rotate(140deg) brightness(1.9)', // Example filters
+          zIndex: 0,
+        }}
+      />
+      
+      {/* Content layer - no filters applied */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          width: '100%',
+          height: '100%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 2,
-          position: 'relative',
         }}
       >
+        <ScytheOverlay rotation={0} top="40%" />
+        <ScytheOverlay rotation={180} top="60%" />
+
         <div
           style={{
-            fontFamily: FONT_FAMILY,
-            fontSize: '18vh',
-            letterSpacing: '0.4vw',
-            color: '#7C9497',
-            textAlign: 'center',
-            lineHeight: '1',
-            opacity: 0.5,
-            textShadow: '1px 1px 0 white, -1px -1px 0 black',
+            width: '100vw',
+            height: '100vw',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
           }}
         >
-          {hours}{minutes}
+          <div
+            style={{
+              fontFamily: FONT_FAMILY,
+              fontSize: '18vh',
+              letterSpacing: '0.4vw',
+              color: '#7C9497',
+              textAlign: 'center',
+              lineHeight: '1',
+              opacity: 0.5,
+              textShadow: '1px 1px 0 white, -1px -1px 0 black',
+            }}
+          >
+            {hours}{minutes}
+          </div>
         </div>
       </div>
     </div>
