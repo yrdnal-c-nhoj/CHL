@@ -86,9 +86,6 @@ const DigitalClock = () => {
   };
 
   const Layer = ({ value, size, zIndex, opacity }) => {
-    const leftPart = value.substring(0, 1);
-    const rightPart = value.substring(1);
-    
     return (
       <div style={{
         position: 'absolute',
@@ -104,26 +101,17 @@ const DigitalClock = () => {
         alignItems: 'center',
         textAlign: 'center',
         whiteSpace: 'nowrap',
+        width: '100%',
         margin: 0,
         padding: 0,
         width: 'auto',
-        minWidth: size * 1.2 + 'px',
-        lineHeight: 1
+        lineHeight: 0.8, // Tighter line height
+        letterSpacing: '-0.15em', // Even tighter letter spacing
+        wordSpacing: '-0.5em', // Reduce space between words (if any)
+        fontKerning: 'none',
+        fontFeatureSettings: '"tnum" 1, "kern" 0', // Disable kerning and enable tabular numbers
       }}>
-        <div style={{ 
-          display: 'inline-block',
-          textAlign: 'right',
-          width: '50%',
-          margin: 0,
-          padding: 0
-        }}>{leftPart}</div>
-        <div style={{ 
-          display: 'inline-block',
-          textAlign: 'left',
-          width: '50%',
-          margin: 0,
-          padding: 0
-        }}>{rightPart}</div>
+        {value}
       </div>
     );
   };
