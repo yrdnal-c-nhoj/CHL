@@ -1,0 +1,28 @@
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.clock-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  z-index: 0; /* Keep the clock behind other overlays */
+}
+
+.clock-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  opacity: 0;
+  animation: fadeIn 1s ease-in forwards;
+  animation-delay: 0.5s; /* Small delay to ensure the black background is shown first */
+  z-index: 0; /* Ensure canvas stays with its container */
+  pointer-events: none; /* Allow clicks to pass through to elements below */
+}

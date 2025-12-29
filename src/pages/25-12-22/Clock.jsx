@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import videoFile from './candle.mp4'
 import fallbackImage from './candle.webp'
+import './Clock.css'
 
 const xxx251120 = '/fonts/25-12-22-candle.ttf'
 const FONT_FAMILY = 'MyClockFont_20251120'
@@ -164,34 +165,25 @@ export default function PixelInverseClock() {
     }
   }, [fontLoaded])
 
+  // Don't render anything until font is loaded
+  if (!fontLoaded) {
+    return null;
+  }
+
   return (
-    <>
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 1,
-          background: '#000'
-        }}
-      />
-      {/* Keep video "visible" to the browser but hidden from user 
-          to prevent the browser from pausing the stream.
-      */}
+    <div className="clock-container">
       <video
         ref={videoRef}
         src={videoFile}
-        muted
         loop
+        muted
         playsInline
-        style={{
-          position: 'absolute',
-          width: '1px',
-          height: '1px',
-          opacity: 0.01, 
-          pointerEvents: 'none'
-        }}
+        style={{ display: 'none' }}
       />
-    </>
+      <canvas
+        ref={canvasRef}
+        className="clock-canvas"
+      />
+    </div>
   )
 }
