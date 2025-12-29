@@ -1,38 +1,61 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
-// Asset paths
+// Add global styles for fade-in animation
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// Asset imports
 import bgImage from './sat.webp'
 import overlayImage from './scythe.webp'
-const FONT_PATH = './sat.ttf'
+import fontFile from './sat.ttf?url'  // ?url tells Vite to copy the file to output
+
 const FONT_FAMILY = 'SaturnFont'
 
 // Custom hook for font loading
-function useFontLoader(fontPath, fontFamily) {
+function useFontLoader(fontUrl, fontFamily) {
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
-    const fontUrl = new URL(fontPath, import.meta.url).href
-    const style = document.createElement('style')
-    
-    style.textContent = `
-      @font-face {
-        font-family: '${fontFamily}';
-        src: url('${fontUrl}') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-      }
-    `
-    
-    document.head.appendChild(style)
-    
-    document.fonts.load(`1rem ${fontFamily}`).then(() => {
-      setIsReady(true)
-    })
+    const loadFont = async () => {
+      try {
+        // Create a new FontFace instance
+        const font = new FontFace(
+          fontFamily,
+          `url('${fontUrl}') format('truetype')`,
+          {
+            style: 'normal',
+            weight: '400',
+            display: 'swap'
+          }
+        )
 
-    return () => {
-      document.head.removeChild(style)
+        // Add to document.fonts
+        document.fonts.add(font)
+
+        // Load the font
+        await font.load()
+        
+        // Mark as ready
+        setIsReady(true)
+      } catch (error) {
+        console.error('Failed to load font:', error)
+        // Continue with fallback font
+        setIsReady(true)
+      }
     }
-  }, [fontPath, fontFamily])
+
+    loadFont()
+
+    // No need to clean up FontFace as it's generally safe to keep it
+  }, [fontUrl, fontFamily])
 
   return isReady
 }
@@ -83,18 +106,40 @@ function ScytheOverlay({ rotation = 0, top = '40%' }) {
 
 // Main component
 export default function SaturnClock() {
-  const fontReady = useFontLoader(FONT_PATH, FONT_FAMILY)
+  const fontReady = useFontLoader(fontFile, FONT_FAMILY)
   const now = useClock()
 
-  if (!fontReady) return null
+  // Show loading state with black background
+  if (!fontReady) {
+    return (
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: '#000',
+        zIndex: 1000,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'rgba(255,255,255,0.7)'
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   const { hours, minutes } = formatTime(now)
 
   return (
     <div
       style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
         width: '100vw',
-        height: '100dvh',
+        height: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -103,7 +148,8 @@ export default function SaturnClock() {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         overflow: 'hidden',
-        position: 'relative',
+        opacity: 0,
+        animation: 'fadeIn 0.5s ease-in forwards',
       }}
     >
       <ScytheOverlay rotation={0} top="40%" />
