@@ -1,12 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const FlightTicket = () => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (date) => {
+    return date.toLocaleTimeString('en-US', {
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+  };
+
+  const formatTimeNoSeconds = (date) => {
+    return date.toLocaleTimeString('en-US', {
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
   const containerStyle = {
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: 'linear-gradient(90deg, #008abf, #005d85)',
+    background: 'linear-gradient(90deg, #9A0621FF, #632709FF)',
     fontFamily: 'system-ui',
     padding: '5vh 5vw',
     margin: 0,
@@ -19,6 +45,17 @@ const FlightTicket = () => {
     maxWidth: '40rem',
     margin: '0 auto',
     clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8rem), calc(100% - 3rem) calc(100% - 8rem), calc(100% - 3rem) 100%, 0 100%)'
+  };
+
+  const ticketCornerStyle = {
+    position: 'absolute',
+    bottom: '0',
+    right: '0',
+    width: '3rem',
+    height: '8rem',
+    background: '#fff',
+    clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 3rem))',
+    zIndex: 1,
   };
 
   const ticketBodyStyle = {
@@ -74,24 +111,25 @@ const FlightTicket = () => {
   return (
     <div style={containerStyle}>
       <div style={ticketStyle}>
+        <div style={ticketCornerStyle}></div>
         <div style={ticketBodyStyle}>
           <div style={flyStyle}>
-            <span>ZRH <span style={{ margin: '0 0.5rem' }}>✈</span> OSL</span>
+            <span>BOS<span style={{ margin: '0 0.5rem' }}>✈</span>CDG</span>
           </div>
           
           <div style={{ marginBottom: '2rem' }}>
             <div style={labelStyle}>Passenger</div>
-            <div style={{ ...valueStyle, fontSize: '1.25rem' }}>MEGAFRY MR</div>
+            <div style={{ ...valueStyle, fontSize: '1.25rem' }}>HEART CUBIST</div>
           </div>
 
           <div style={infoContainerStyle}>
             <div style={infoItemStyle}>
               <span style={labelStyle}>Gate</span>
-              <span style={valueStyle}>B24</span>
+              <span style={valueStyle}>C19</span>
             </div>
             <div style={infoItemStyle}>
               <span style={labelStyle}>Departure</span>
-              <span style={valueStyle}>14:35</span>
+              <span style={valueStyle}>{formatTimeNoSeconds(currentTime)}</span>
             </div>
             <div style={infoItemStyle}>
               <span style={labelStyle}>Speedy</span>
@@ -99,14 +137,16 @@ const FlightTicket = () => {
             </div>
             <div style={infoItemStyle}>
               <span style={labelStyle}>Boarding</span>
-              <span style={valueStyle}>14:05</span>
+              <span style={valueStyle}>
+                {formatTimeNoSeconds(new Date(currentTime.getTime() - 20 * 60000))}
+              </span>
             </div>
           </div>
         </div>
 
         <div style={tearOffStyle}>
           <div style={barcodeStyle}></div>
-          <div style={{ fontSize: '0.9rem', letterSpacing: '0.1em' }}>43596885365490358</div>
+          <div style={{ fontSize: '0.9rem', letterSpacing: '0.1em' }}>946283989e4048282</div>
         </div>
       </div>
     </div>
