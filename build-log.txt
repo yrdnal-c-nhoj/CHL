@@ -14,20 +14,28 @@ The glob option "as" has been deprecated in favour of "query". Please update `as
 The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
 The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
 The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-[plugin vite:esbuild] src/pages/25-12-23/Clock.jsx: Duplicate key "width" in object literal
-105 |          margin: 0,
-106 |          padding: 0,
-107 |          width: 'auto',
-    |          ^
-108 |          lineHeight: 0.8, // Tighter line height
-109 |          letterSpacing: '-0.15em', // Even tighter letter spacing
-
-✓ 1481 modules transformed.
-✗ Build failed in 1.19s
+✓ 882 modules transformed.
+✗ Build failed in 1.08s
 error during build:
-Could not resolve "./sat.webp" from "src/pages/25-12-28/Clock.jsx"
-file: /Users/john/Desktop/CHL/src/pages/25-12-28/Clock.jsx
-    at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
-    at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
-    at ModuleLoader.handleInvalidResolvedId (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21490:24)
-    at file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21450:26
+[vite:esbuild] Transform failed with 1 error:
+/Users/john/Desktop/CHL/src/pages/25-12-28/Clock.jsx:147:6: ERROR: Expected ")" but found "{"
+file: /Users/john/Desktop/CHL/src/pages/25-12-28/Clock.jsx:147:6
+
+Expected ")" but found "{"
+145 |        </div>
+146 |  
+147 |        {/* 2. Overlay Images (Scythes) */}
+    |        ^
+148 |        <img
+149 |          src={overlayImage}
+
+    at failureErrorWithLog (/Users/john/Desktop/CHL/node_modules/esbuild/lib/main.js:1467:15)
+    at /Users/john/Desktop/CHL/node_modules/esbuild/lib/main.js:736:50
+    at responseCallbacks.<computed> (/Users/john/Desktop/CHL/node_modules/esbuild/lib/main.js:603:9)
+    at handleIncomingPacket (/Users/john/Desktop/CHL/node_modules/esbuild/lib/main.js:658:12)
+    at Socket.readFromStdout (/Users/john/Desktop/CHL/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)

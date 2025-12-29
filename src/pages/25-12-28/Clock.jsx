@@ -1,8 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react';
+
+// Global styles for fade-in effect
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
+}
 
 // ⏳ Assets (ensure these are in your /src folder)
-import bgImage from './sat.webp'
-import overlayImage from './scythe.webp'
+import bgImage from './sat.webp';
+import overlayImage from './scythe.webp';
 
 // 🔤 Font configuration
 const FONT_PATH = './sat.ttf'
@@ -18,31 +30,72 @@ export default function SaturnClock() {
     return () => clearInterval(id)
   }, [])
 
-  // 🔤 Font injection
-  useEffect(() => {
-    const fontUrl = new URL(FONT_PATH, import.meta.url).href
-    const style = document.createElement('style')
-    style.textContent = `
-      @font-face {
-        font-family: '${FONT_FAMILY}';
-        src: url('${fontUrl}') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
+  // 🔤 Font loading with fallback
+  const loadFont = useCallback(async () => {
+    if (typeof document === 'undefined') return;
+    
+    try {
+      const fontUrl = new URL(FONT_PATH, import.meta.url).href;
+      const style = document.createElement('style');
+      style.textContent = `
+        @font-face {
+          font-family: '${FONT_FAMILY}';
+          src: url('${fontUrl}') format('truetype');
+          font-weight: normal;
+          font-style: normal;
+          font-display: optional;
+        }
+      `;
+      
+      document.head.appendChild(style);
+      
+      // Use FontFace API for better control
+      const font = new FontFace(FONT_FAMILY, `url(${fontUrl})`, {
+        style: 'normal',
+        weight: '400',
+        display: 'optional'
+      });
+      
+      try {
+        await font.load();
+        document.fonts.add(font);
+        setFontReady(true);
+      } catch (e) {
+        console.error('Font loading failed:', e);
+        setFontReady(true); // Continue with fallback
       }
-    `
-    document.head.appendChild(style)
-
-    document.fonts.load(`1rem ${FONT_FAMILY}`).then(() => {
-      setFontReady(true)
-    })
-
-    return () => {
-      document.head.removeChild(style)
+      
+      return () => {
+        document.head.removeChild(style);
+      };
+    } catch (e) {
+      console.error('Font setup error:', e);
+      setFontReady(true); // Continue with fallback
     }
-  }, [])
+  }, []);
 
-  if (!fontReady) return null
+  useEffect(() => {
+    loadFont();
+  }, [loadFont]);
+
+  // Show loading state with black background
+  if (!fontReady) {
+    return (
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: '#000',
+        zIndex: 1000,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'rgba(255,255,255,0.7)'
+      }} />
+    );
+  }
 
   // ⌛ Time formatting
   const hh = String(now.getHours()).padStart(2, '0')
@@ -51,14 +104,21 @@ export default function SaturnClock() {
   return (
     <div
       style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
         width: '100vw',
-        height: '100dvh',
+        height: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         overflow: 'hidden',
-        position: 'relative',
-        backgroundColor: '#000',
+        opacity: 0,
+        animation: 'fadeIn 0.5s ease-in forwards',
       }}
     >
       {/* 1. Background Image Layer */}
@@ -68,6 +128,7 @@ export default function SaturnClock() {
           inset: 0,
           zIndex: 0,
         }}
+      />
       >
         <img
           src={bgImage}
