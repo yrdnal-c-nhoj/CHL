@@ -1,138 +1,197 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
-// Vite assets import
-import symJpg from './sym.jpg';
+// Font configuration
+const FONT_FAMILY = 'Newla';
+const FONT_PATH = '/fonts/lapse.otf';
 
-// Font configuration - using a known working font
-const FONT_FAMILY = 'ClockFont';
-const FONT_PATH = '/fonts/25-12-25-sym.ttf';
-
-const DigitalClock = () => {
-  const [time, setTime] = useState(new Date());
+const RefactoredCentricClock = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
 
+  // Load custom font
   useEffect(() => {
-    // Try loading the font with a more reliable method
     const loadFont = async () => {
+      const font = new FontFace(FONT_FAMILY, `url(${FONT_PATH})`);
       try {
-        // Method 1: Using @font-face in CSS first
-        const style = document.createElement('style');
-        style.textContent = `
-          @font-face {
-            font-family: '${FONT_FAMILY}';
-            src: url('${FONT_PATH}') format('truetype');
-            font-display: swap;
-          }
-        `;
-        document.head.appendChild(style);
-        
-        // Verify the font is available
-        await document.fonts.ready;
-        
-        // Force a repaint
-        document.body.style.fontFamily = `'${FONT_FAMILY}', monospace`;
-        
+        await font.load();
+        document.fonts.add(font);
         setFontLoaded(true);
-        console.log("Font loaded successfully:", FONT_FAMILY);
-      } catch (err) {
-        console.error("Font loading failed:", err);
-        setFontLoaded(true); // Continue with fallback font
+      } catch (error) {
+        console.error('Failed to load font:', error);
+        setFontLoaded(false);
       }
     };
     
     loadFont();
-    
-    // Fallback in case the font doesn't load within 3 seconds
-    const fallbackTimer = setTimeout(() => {
-      if (!fontLoaded) {
-        console.warn('Font loading timed out, using fallback font');
-        setFontLoaded(true);
-      }
-    }, 3000);
-    
-    return () => clearTimeout(fallbackTimer);
-  }, [fontLoaded]);
+  }, []);
+  const [now, setNow] = useState(new Date());
+  const [startTime] = useState(Date.now());
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
+    const timer = setInterval(() => setNow(new Date()), 16);
     return () => clearInterval(timer);
   }, []);
 
-  const hours = time.getHours().toString().padStart(2, '0');
-  const minutes = time.getMinutes().toString().padStart(2, '0');
-  const seconds = time.getSeconds().toString().padStart(2, '0');
+  const msInCycle = (Date.now() - startTime) % 70000;
+  const isErasing = msInCycle < 60000;
+  const isWaiting = msInCycle >= 60000 && msInCycle < 700;
 
-  // Inline Style Objects to avoid leakage
+  const trueSeconds = now.getSeconds() + now.getMilliseconds() / 1000;
+  const trueMinutes = now.getMinutes() + trueSeconds / 60;
+  const trueHours = (now.getHours() % 12) + trueMinutes / 60;
+
+  const initialSecondAtStart = (new Date(startTime).getSeconds() + new Date(startTime).getMilliseconds() / 1000);
+  const startAngle = initialSecondAtStart * 6;
+  const sweepProgressDegrees = (msInCycle / 60000) * 360;
+  const currentEraserAngle = (startAngle + sweepProgressDegrees) % 360;
+
+  const secondAngle = (trueSeconds / 60) * 360 - 90;
+  const minuteAngle = (trueMinutes / 60) * 360 - 90;
+  const hourAngle = (trueHours / 12) * 360 - 90;
+
+  // Clock opacity logic: fade in over 5 seconds after erasing
+  let clockOpacity;
+  if (isErasing) {
+    clockOpacity = 0.8; // During erasing phase
+  } else if (isWaiting) {
+    // During waiting phase (last 10 seconds), fade in over 5 seconds
+    const waitProgress = (msInCycle - 60000) / 10000; // 0 to 1 during waiting phase
+    const fadeInDuration = 5000; // 5 seconds
+    const fadeInProgress = Math.min(waitProgress / (fadeInDuration / 10000), 1); // 0 to 1 during fade in
+    clockOpacity = fadeInProgress; // Fade from 0 to 1 over 5 seconds
+  } else {
+    clockOpacity = 1; // Fully visible during normal operation
+  }
+
+  // Base style for centering anything within the clock face
+  const absoluteCenter = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  };
+
   const containerStyle = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${symJpg})`,
-    backgroundSize: '30px 15px',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'repeat',
-    overflow: 'hidden',
+    position: 'relative',
+    width: '100vw',
+    height: '100vh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    color: 'white',
+    backgroundColor: '#0F3D3AFF',
+    color: '#fff',
     fontFamily: fontLoaded ? `'${FONT_FAMILY}', monospace` : 'monospace',
-    margin: 0,
-    padding: 0,
+    overflow: 'hidden'
   };
 
-  const Layer = ({ value, size, zIndex, opacity }) => {
-    return (
-      <div style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        fontSize: size,
-        zIndex: zIndex,
-        opacity: opacity,
-        pointerEvents: 'none',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        whiteSpace: 'nowrap',
-        width: '100%',
-        margin: 0,
-        padding: 0,
-        width: 'auto',
-        lineHeight: 0.8, // Tighter line height
-        letterSpacing: '-0.15em', // Even tighter letter spacing
-        wordSpacing: '-0.5em', // Reduce space between words (if any)
-        fontKerning: 'none',
-        fontFeatureSettings: '"tnum" 1, "kern" 0', // Disable kerning and enable tabular numbers
-      }}>
-        {value}
-      </div>
-    );
+  const faceStyle = {
+    width: '90vmin',
+    height: '90vmin',
+    backgroundColor: 'white',
+    borderRadius: '50%',
+    position: 'relative',
+    // opacity: clockOpacity,
+    transition: msInCycle < 500 ? 'none' : 'opacity 0.8s ease-in-out',
   };
 
+  const handStyle = (angle, width, length, color, zIndex) => ({
+    ...absoluteCenter,
+    width: `${width / 2}vmin`,
+    height: `${length}vmin`,
+    backgroundColor: color,
+    // We translate back by -50% horizontally, and adjust the vertical transform 
+    // to pivot from the bottom of the hand (the center of the clock)
+    transform: `translate(-50%, -100%) rotate(${angle}deg)`,
+    transformOrigin: 'bottom center',
+    zIndex: zIndex,
+    borderRadius: '1vmin',
+  });
+
+  const tickContainerStyle = (i) => ({
+    ...absoluteCenter,
+    width: '100%',
+    height: '100%',
+    transform: `translate(-50%, -50%) rotate(${i * 6}deg)`,
+    zIndex: 1,
+  });
+
+  const numberContainerStyle = (i) => ({
+    ...absoluteCenter,
+    width: '100%',
+    height: '100%',
+    transform: `translate(-50%, -50%) rotate(${i * 30}deg)`,
+    zIndex: 2,
+  });
 
   return (
     <div style={containerStyle}>
-      {/* Z-Index Layout:
-          Seconds (Back/Largest) -> Minutes (Middle) -> Hours (Front/Smallest)
-      */}
-      
-      {/* Seconds: 80% of screen height */}
-      <Layer value={seconds} size="70vh" zIndex={1} opacity={0.7} />
-      
-      {/* Minutes: Half of seconds (40% of screen height) */}
-      <Layer value={minutes} size="60vh" zIndex={2} opacity={0.8} />
-      
-      {/* Hours: Half of minutes (20% of screen height) */}
-      <Layer value={hours} size="50vh" zIndex={3} opacity={1} />
+      <div style={faceStyle}>
+        
+        {/* Ticks - Centered by rotating full-size transparent containers */}
+        {[...Array(60)].map((_, i) => (
+          <div key={`tick-${i}`} style={tickContainerStyle(i)}>
+            <div style={{
+              margin: '0 auto',
+              backgroundColor: 'black',
+              width: i % 5 === 0 ? '0.6vmin' : '0.2vmin',
+              height: i % 5 === 0 ? '6vmin' : '3vmin',
+            }} />
+          </div>
+        ))}
+
+        {/* Numbers - Positioned at the top of a full-rotation container */}
+        {[...Array(12)].map((_, i) => {
+          const number = i + 1;
+          const displayNumber = number <= 9 ? `0${number}` : number;
+          return (
+            <div key={`num-${number}`} style={numberContainerStyle(number)}>
+              <div style={{
+                textAlign: 'center',
+                marginTop: '9vmin', // Padding from the edge
+                fontSize: '10vmin', // Made smaller from 10vmin
+                color: '#0B10B2DD',
+                textShadow: '1px 1px 0px red', // 1-pixel black tech shadow
+                transform: `rotate(${number * -30}deg)`, // Keep numbers upright
+              }}>
+                {displayNumber}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Hands */}
+        <div style={handStyle(trueHours * 30, 2, 22, 'black', 3)} />
+        <div style={handStyle(trueMinutes * 6, 1.2, 35, 'black', 4)} />
+
+        {/* Eraser Mask */}
+        <div style={{
+          ...absoluteCenter,
+          width: '100%', // Slight overlap to prevent sub-pixel gaps
+          height: '100%',
+          borderRadius: '50%',
+          zIndex: 10,
+          background: isWaiting 
+            ? 'white' 
+            : `conic-gradient(from ${startAngle}deg, white 0deg, white ${sweepProgressDegrees}deg, transparent ${sweepProgressDegrees}deg)`,
+        }} />
+
+        {/* Second Hand Eraser Edge */}
+        {isErasing && (
+          <div style={handStyle(currentEraserAngle, 0.2, 42.5, '#FFFFFFFF', 11)} />
+        )}
+
+        {/* Center Pin - Perfectly Centered */}
+        <div style={{
+          ...absoluteCenter,
+          width: '4vmin',
+          height: '4vmin',
+          backgroundColor: 'red',
+          borderRadius: '50%',
+          zIndex: 12,
+          border: '0.5vmin solid black'
+        }} />
+      </div>
     </div>
   );
 };
 
-export default DigitalClock;
+export default RefactoredCentricClock;
