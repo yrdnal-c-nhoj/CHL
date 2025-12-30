@@ -74,7 +74,7 @@ const ErasingClock = () => {
   const container = {
     width: '100vw',
     height: '100dvh',
-    backgroundColor: '#0F3D3AFF',
+    backgroundColor: '#604604',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -143,7 +143,8 @@ const ErasingClock = () => {
                 style={{
                   transform: `rotate(${-n * 30}deg)`,
                   fontSize: '9vmin',
-                  color: '#0B10B2DD',
+                  color: '#F65808DD',
+                  textShadow: ' 1px -1px 0 black, -1px 1px 0 black',
                 }}
               >
                 {n < 10 ? `0${n}` : n}
@@ -161,7 +162,7 @@ const ErasingClock = () => {
           <div
             style={{
               position: 'absolute',
-              inset: '-1px', // Prevents sub-pixel flickering
+              inset: '0px', // Prevents sub-pixel flickering
               borderRadius: '50%',
               zIndex: 10,
               background: `conic-gradient(
