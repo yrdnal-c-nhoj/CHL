@@ -1,121 +1,81 @@
-// DigitalClock.jsx
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default function DigitalClock() {
-  const [time, setTime] = useState(() => {
-    const now = new Date();
-    return {
-      hours: now.getHours().toString().padStart(2, '0'),
-      minutes: now.getMinutes().toString().padStart(2, '0'),
-    };
-  });
+const StretchedClock = () => {
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      setTime({
-        hours: now.getHours().toString().padStart(2, '0'),
-        minutes: now.getMinutes().toString().padStart(2, '0'),
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
+  const formatTime = (date) => {
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return { hours, minutes };
+  };
+
+  const { hours, minutes } = formatTime(time);
+
+  // Responsive logic: 
+  // We use a CSS Media Query via a JS constant to handle the layout switch
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsLargeScreen(window.innerWidth > 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const containerStyle = {
+    width: '100vw',
+    height: '100dvh',
+    display: 'flex',
+    flexDirection: isLargeScreen ? 'row' : 'column',
+    overflow: 'hidden',
+    backgroundColor: '#000', // Black background for high contrast
+    margin: 0,
+    padding: 0,
+  };
+
+  const segmentStyle = {
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  };
+
+  const textStyle = {
+    color: '#fff',
+    fontFamily: 'sans-serif',
+    fontWeight: '900',
+    lineHeight: '1',
+    // These units ensure the font scales with the viewport
+    fontSize: isLargeScreen ? '50vw' : '50dvh',
+    // This forces the "stretch" effect to fill the container
+    transform: 'scale(1.2, 1.5)', 
+    width: '100%',
+    textAlign: 'center',
+    userSelect: 'none',
+  };
+
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        margin: 0,
-        padding: 0,
-        backgroundColor: '#000',
-        color: '#fff',
-        fontFamily: 'monospace',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        touchAction: 'manipulation', // better mobile feel
-      }}
-    >
-      {/* Mobile / narrow layout: hours on top, minutes below */}
-      <div
-        style={{
-          width: '100%',
-          height: '50dvh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 'min(45dvh, 45vw)',
-          fontWeight: 'bold',
-          letterSpacing: '-0.04em',
-          // hide on wide screens
-          '@media (min-aspect-ratio: 1 / 1)': { display: 'none' },
-        }}
-      >
-        {time.hours}
-      </div>
-
-      <div
-        style={{
-          width: '100%',
-          height: '50dvh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 'min(45dvh, 45vw)',
-          fontWeight: 'bold',
-          letterSpacing: '-0.04em',
-          // hide on wide screens
-          '@media (min-aspect-ratio: 1 / 1)': { display: 'none' },
-        }}
-      >
-        {time.minutes}
-      </div>
-
-      {/* Wide / landscape / desktop layout: hours left | minutes right */}
-      <div
-        style={{
-          width: '100%',
-          height: '100dvh',
-          display: 'none',
-          flexDirection: 'row',
-          // show only on wider screens
-          '@media (min-aspect-ratio: 1 / 1)': {
-            display: 'flex',
-          },
-        }}
-      >
-        <div
-          style={{
-            width: '50%',
-            height: '100dvh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 'min(90dvh, 45vw)',
-            fontWeight: 'bold',
-            letterSpacing: '-0.04em',
-          }}
-        >
-          {time.hours}
+    <div style={containerStyle}>
+      {/* Hours Section */}
+      <div style={segmentStyle}>
+        <div style={textStyle}>
+          {hours}
         </div>
+      </div>
 
-        <div
-          style={{
-            width: '50%',
-            height: '100dvh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 'min(90dvh, 45vw)',
-            fontWeight: 'bold',
-            letterSpacing: '-0.04em',
-          }}
-        >
-          {time.minutes}
+      {/* Minutes Section */}
+      <div style={segmentStyle}>
+        <div style={textStyle}>
+          {minutes}
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default StretchedClock;
