@@ -12,10 +12,9 @@ export default function PixelInverseClock() {
   const videoRef = useRef(null)
   const animationRef = useRef(null)
   
-  // We use a Ref for the video status because the draw loop 
-  // needs the "live" value without waiting for a React re-render.
   const isVideoReady = useRef(false)
   const [fontLoaded, setFontLoaded] = useState(false)
+  const [useFallback, setUseFallback] = useState(false)
 
   /* ================= FONT LOAD ================= */
   useEffect(() => {
@@ -25,7 +24,7 @@ export default function PixelInverseClock() {
       setFontLoaded(true)
     }).catch(err => {
       console.error("Font load error:", err)
-      setFontLoaded(true) // Continue anyway with fallback font
+      setFontLoaded(true) 
     })
   }, [])
 
@@ -39,32 +38,34 @@ export default function PixelInverseClock() {
     const fallbackImg = new Image()
     fallbackImg.src = fallbackImage
 
-    /* ---------- VIDEO LOGIC ---------- */
-    const onCanPlay = () => {
-      video.play()
-        .then(() => { isVideoReady.current = true })
-        .catch(() => { isVideoReady.current = false })
+    /* ---------- VIDEO LOGIC WITH SILENT FALLBACK ---------- */
+    const attemptPlay = async () => {
+      try {
+        await video.play()
+        isVideoReady.current = true
+        setUseFallback(false)
+      } catch (err) {
+        console.warn("Autoplay blocked, using WebP:", err)
+        isVideoReady.current = false
+        setUseFallback(true)
+      }
     }
 
-    video.addEventListener('canplay', onCanPlay)
-    // If video is already cached/loaded
-    if (video.readyState >= 3) onCanPlay()
+    video.addEventListener('canplay', attemptPlay)
+    // Mobile Chrome sometimes requires load() to kickstart the element
+    video.load()
+
+    if (video.readyState >= 3) attemptPlay()
 
     /* ---------- RESIZE & DPI SCALING ---------- */
     const resize = () => {
       const dpr = window.devicePixelRatio || 1
       const w = window.innerWidth
       const h = window.innerHeight
-      
-      // Set physical pixels
       canvas.width = w * dpr
       canvas.height = h * dpr
-      
-      // Set logical CSS pixels
       canvas.style.width = `${w}px`
       canvas.style.height = `${h}px`
-      
-      // Scale context to match DPI
       ctx.scale(dpr, dpr)
     }
 
@@ -79,27 +80,27 @@ export default function PixelInverseClock() {
       const cy = h / 2
       const radius = Math.min(w, h) * 0.45
 
-      // 1. Draw Background with filter
+      // 1. Background Logic
       ctx.save()
-      
-      // Check the Ref and the actual video buffer
-      if (isVideoReady.current && video.readyState >= 2) {
-        // Draw mirrored video with filter
-        ctx.filter = 'contrast(0.7) brightness(2.9) saturate(4.8)'
+      ctx.filter = 'contrast(0.7) brightness(2.9) saturate(4.8)'
+
+      if (isVideoReady.current && video.readyState >= 2 && !useFallback) {
+        // Draw Video (Mirrored)
         ctx.translate(w, 0)
         ctx.scale(-1, 1)
         ctx.drawImage(video, 0, 0, w, h)
-      } else if (fallbackImg.complete) {
-        // Draw fallback image with same filter
-        ctx.filter = 'contrast(0.7) brightness(2.9) saturate(4.8)'
-        ctx.drawImage(fallbackImg, 0, 0, w, h)
       } else {
-        ctx.fillStyle = '#111'
-        ctx.fillRect(0, 0, w, h)
+        // Draw WebP Fallback
+        if (fallbackImg.complete) {
+          ctx.drawImage(fallbackImg, 0, 0, w, h)
+        } else {
+          ctx.fillStyle = '#111'
+          ctx.fillRect(0, 0, w, h)
+        }
       }
       ctx.restore()
 
-      // 2. Setup Clock Styling
+      // 2. Clock Logic
       const now = new Date()
       const ms = now.getMilliseconds()
       const sec = now.getSeconds() + ms / 1000
@@ -109,7 +110,7 @@ export default function PixelInverseClock() {
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
       
-      // 3. Draw Numbers
+      // 3. Numbers
       const offset = radius * 0.85
       ctx.font = `${radius * 0.5}px "${FONT_FAMILY}", sans-serif`
       
@@ -117,15 +118,11 @@ export default function PixelInverseClock() {
         const a = (n / 12) * Math.PI * 2 - Math.PI / 2
         const x = cx + Math.cos(a) * offset
         const y = cy + Math.sin(a) * offset
-
         ctx.save()
         ctx.translate(x, y)
         ctx.rotate(a + Math.PI / 2)
-        
-        // Shadow/Outline for readability
         ctx.fillStyle = 'rgba(0,0,0,0.8)'
         ctx.fillText(n, 2, 2)
-        
         ctx.restore()
       }
 
@@ -140,14 +137,11 @@ export default function PixelInverseClock() {
         ctx.stroke()
       }
 
-      // Hour Hand
       drawHand(radius * 0.5, 8, hr * Math.PI / 6 - Math.PI / 2, 'black')
-      // Minute Hand
       drawHand(radius * 0.8, 5, min * Math.PI / 30 - Math.PI / 2, 'black')
-      // Second Hand
       drawHand(radius * 0.9, 2, sec * Math.PI / 30 - Math.PI / 2, '#ff4444')
 
-      // Center Dot
+      // Center Pin
       ctx.fillStyle = 'black'
       ctx.beginPath()
       ctx.arc(cx, cy, 6, 0, Math.PI * 2)
@@ -161,14 +155,11 @@ export default function PixelInverseClock() {
     return () => {
       cancelAnimationFrame(animationRef.current)
       window.removeEventListener('resize', resize)
-      video.removeEventListener('canplay', onCanPlay)
+      video.removeEventListener('canplay', attemptPlay)
     }
-  }, [fontLoaded])
+  }, [fontLoaded, useFallback]) // useFallback included to ensure state consistency
 
-  // Don't render anything until font is loaded
-  if (!fontLoaded) {
-    return null;
-  }
+  if (!fontLoaded) return null
 
   return (
     <div className="clock-container">
@@ -178,7 +169,13 @@ export default function PixelInverseClock() {
         loop
         muted
         playsInline
-        style={{ display: 'none' }}
+        autoPlay
+        style={{ 
+          display: 'none', 
+          opacity: 0, 
+          position: 'absolute', 
+          pointerEvents: 'none' 
+        }}
       />
       <canvas
         ref={canvasRef}
