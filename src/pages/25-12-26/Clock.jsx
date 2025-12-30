@@ -118,7 +118,7 @@ export default function SaturnClock() {
         top: 0,
         left: 0,
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         backgroundColor: '#000',
         zIndex: 1000,
         display: 'flex',
@@ -140,7 +140,7 @@ export default function SaturnClock() {
         top: 0,
         left: 0,
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -183,8 +183,8 @@ export default function SaturnClock() {
 
         <div
           style={{
-            width: '100vw',
-            height: '100vw',
+            width: 'min(90vw, 90dvh)',
+            height: 'min(90vw, 90dvh)',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
@@ -195,8 +195,8 @@ export default function SaturnClock() {
           <div
             style={{
               fontFamily: FONT_FAMILY,
-              fontSize: '18vh',
-              letterSpacing: '0.4vw',
+              fontSize: 'min(8vw, 8dvh)',
+              letterSpacing: '0.04em',
               color: '#7C9497',
               textAlign: 'center',
               lineHeight: '1',
