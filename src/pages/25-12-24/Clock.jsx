@@ -1,197 +1,203 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-// Font configuration
+/* ---------- Font ---------- */
 const FONT_FAMILY = 'Newla';
 const FONT_PATH = '/fonts/lapse.otf';
 
-const RefactoredCentricClock = () => {
-  const [fontLoaded, setFontLoaded] = useState(false);
+/* ---------- Timing ---------- */
+const ERASE = 60000;
+const HOLD = 1000;
+const FADE = 3000;
+const CYCLE = ERASE + HOLD + FADE;
 
-  // Load custom font
-  useEffect(() => {
-    const loadFont = async () => {
-      const font = new FontFace(FONT_FAMILY, `url(${FONT_PATH})`);
-      try {
-        await font.load();
-        document.fonts.add(font);
-        setFontLoaded(true);
-      } catch (error) {
-        console.error('Failed to load font:', error);
-        setFontLoaded(false);
-      }
-    };
-    
-    loadFont();
-  }, []);
+const ErasingClock = () => {
   const [now, setNow] = useState(new Date());
-  const [startTime] = useState(Date.now());
 
+  /* Fixed epoch */
+  const epochRef = useRef(performance.now());
+  const cycleIndexRef = useRef(0);
+  const startSecondAngleRef = useRef(0);
+
+  /* ---------- Font Loading ---------- */
   useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 16);
-    return () => clearInterval(timer);
+    if (typeof window === 'undefined') return;
+    const f = new FontFace(FONT_FAMILY, `url(${FONT_PATH})`);
+    f.load().then(font => document.fonts.add(font)).catch(() => {});
   }, []);
 
-  const msInCycle = (Date.now() - startTime) % 70000;
-  const isErasing = msInCycle < 60000;
-  const isWaiting = msInCycle >= 60000 && msInCycle < 700;
+  /* ---------- Tick Loop (60fps) ---------- */
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 16);
+    return () => clearInterval(id);
+  }, []);
 
-  const trueSeconds = now.getSeconds() + now.getMilliseconds() / 1000;
-  const trueMinutes = now.getMinutes() + trueSeconds / 60;
-  const trueHours = (now.getHours() % 12) + trueMinutes / 60;
+  /* ---------- Cycle Calculation ---------- */
+  const perfNow = performance.now() - epochRef.current;
+  const cycleIndex = Math.floor(perfNow / CYCLE);
+  const elapsed = perfNow % CYCLE;
 
-  const initialSecondAtStart = (new Date(startTime).getSeconds() + new Date(startTime).getMilliseconds() / 1000);
-  const startAngle = initialSecondAtStart * 6;
-  const sweepProgressDegrees = (msInCycle / 60000) * 360;
-  const currentEraserAngle = (startAngle + sweepProgressDegrees) % 360;
-
-  const secondAngle = (trueSeconds / 60) * 360 - 90;
-  const minuteAngle = (trueMinutes / 60) * 360 - 90;
-  const hourAngle = (trueHours / 12) * 360 - 90;
-
-  // Clock opacity logic: fade in over 5 seconds after erasing
-  let clockOpacity;
-  if (isErasing) {
-    clockOpacity = 0.8; // During erasing phase
-  } else if (isWaiting) {
-    // During waiting phase (last 10 seconds), fade in over 5 seconds
-    const waitProgress = (msInCycle - 60000) / 10000; // 0 to 1 during waiting phase
-    const fadeInDuration = 5000; // 5 seconds
-    const fadeInProgress = Math.min(waitProgress / (fadeInDuration / 10000), 1); // 0 to 1 during fade in
-    clockOpacity = fadeInProgress; // Fade from 0 to 1 over 5 seconds
-  } else {
-    clockOpacity = 1; // Fully visible during normal operation
+  /* Capture second angle ONCE per cycle start to begin erase from there */
+  if (cycleIndex !== cycleIndexRef.current) {
+    cycleIndexRef.current = cycleIndex;
+    const s = now.getSeconds() + now.getMilliseconds() / 1000;
+    startSecondAngleRef.current = s * 6;
   }
 
-  // Base style for centering anything within the clock face
-  const absoluteCenter = {
+  const isErasing = elapsed < ERASE;
+  const isHolding = elapsed >= ERASE && elapsed < ERASE + HOLD;
+  const isFading = elapsed >= ERASE + HOLD;
+
+  let opacity = 1;
+  if (isHolding) opacity = 0;
+  if (isFading) opacity = (elapsed - (ERASE + HOLD)) / FADE;
+
+  /* ---------- REAL TIME MATH ---------- */
+  const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+  const minutes = now.getMinutes() + seconds / 60;
+  const hours = (now.getHours() % 12) + minutes / 60;
+
+  const hourAngle = hours * 30;
+  const minuteAngle = minutes * 6;
+
+  /* Erase logic */
+  const eraseProgress = Math.min(elapsed / ERASE, 1);
+  const eraseAngle = (startSecondAngleRef.current + eraseProgress * 360) % 360;
+
+  /* ---------- Styles ---------- */
+  const center = {
     position: 'absolute',
-    top: '50%',
     left: '50%',
+    top: '50%',
     transform: 'translate(-50%, -50%)',
   };
 
-  const containerStyle = {
-    position: 'relative',
+  const container = {
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
+    backgroundColor: '#0F3D3AFF',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0F3D3AFF',
-    color: '#fff',
-    fontFamily: fontLoaded ? `'${FONT_FAMILY}', monospace` : 'monospace',
-    overflow: 'hidden'
+    fontFamily: `'${FONT_FAMILY}', monospace`,
+    overflow: 'hidden',
   };
 
-  const faceStyle = {
+  const face = {
     width: '90vmin',
     height: '90vmin',
-    backgroundColor: 'white',
     borderRadius: '50%',
+    backgroundColor: 'white',
     position: 'relative',
-    // opacity: clockOpacity,
-    transition: msInCycle < 500 ? 'none' : 'opacity 0.8s ease-in-out',
+    opacity,
   };
 
-  const handStyle = (angle, width, length, color, zIndex) => ({
-    ...absoluteCenter,
-    width: `${width / 2}vmin`,
-    height: `${length}vmin`,
+  // Fixed: CSS rotate(0deg) is 12 o'clock, so we removed the -90 offset.
+  const hand = (angle, w, h, z, color = 'black') => ({
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    width: `${w}vmin`,
+    height: `${h}vmin`,
     backgroundColor: color,
-    // We translate back by -50% horizontally, and adjust the vertical transform 
-    // to pivot from the bottom of the hand (the center of the clock)
+    transformOrigin: '50% 100%',
     transform: `translate(-50%, -100%) rotate(${angle}deg)`,
-    transformOrigin: 'bottom center',
-    zIndex: zIndex,
     borderRadius: '1vmin',
-  });
-
-  const tickContainerStyle = (i) => ({
-    ...absoluteCenter,
-    width: '100%',
-    height: '100%',
-    transform: `translate(-50%, -50%) rotate(${i * 6}deg)`,
-    zIndex: 1,
-  });
-
-  const numberContainerStyle = (i) => ({
-    ...absoluteCenter,
-    width: '100%',
-    height: '100%',
-    transform: `translate(-50%, -50%) rotate(${i * 30}deg)`,
-    zIndex: 2,
+    zIndex: z,
   });
 
   return (
-    <div style={containerStyle}>
-      <div style={faceStyle}>
-        
-        {/* Ticks - Centered by rotating full-size transparent containers */}
+    <div style={container}>
+      <div style={face}>
+
+        {/* Hour/Minute Ticks */}
         {[...Array(60)].map((_, i) => (
-          <div key={`tick-${i}`} style={tickContainerStyle(i)}>
-            <div style={{
-              margin: '0 auto',
-              backgroundColor: 'black',
-              width: i % 5 === 0 ? '0.6vmin' : '0.2vmin',
-              height: i % 5 === 0 ? '6vmin' : '3vmin',
-            }} />
+          <div
+            key={i}
+            style={{
+              ...center,
+              transform: `translate(-50%, -50%) rotate(${i * 6}deg) translateY(-42vmin)`,
+            }}
+          >
+            <div
+              style={{
+                width: i % 5 === 0 ? '0.6vmin' : '0.2vmin',
+                height: i % 5 === 0 ? '6vmin' : '3vmin',
+                backgroundColor: 'black',
+              }}
+            />
           </div>
         ))}
 
-        {/* Numbers - Positioned at the top of a full-rotation container */}
+        {/* Numbers */}
         {[...Array(12)].map((_, i) => {
-          const number = i + 1;
-          const displayNumber = number <= 9 ? `0${number}` : number;
+          const n = i + 1;
           return (
-            <div key={`num-${number}`} style={numberContainerStyle(number)}>
-              <div style={{
-                textAlign: 'center',
-                marginTop: '9vmin', // Padding from the edge
-                fontSize: '10vmin', // Made smaller from 10vmin
-                color: '#0B10B2DD',
-                textShadow: '1px 1px 0px red', // 1-pixel black tech shadow
-                transform: `rotate(${number * -30}deg)`, // Keep numbers upright
-              }}>
-                {displayNumber}
+            <div
+              key={n}
+              style={{
+                ...center,
+                transform: `translate(-50%, -50%) rotate(${n * 30}deg) translateY(-34vmin)`,
+              }}
+            >
+              <div
+                style={{
+                  transform: `rotate(${-n * 30}deg)`,
+                  fontSize: '9vmin',
+                  color: '#0B10B2DD',
+                }}
+              >
+                {n < 10 ? `0${n}` : n}
               </div>
             </div>
           );
         })}
 
-        {/* Hands */}
-        <div style={handStyle(trueHours * 30, 2, 22, 'black', 3)} />
-        <div style={handStyle(trueMinutes * 6, 1.2, 35, 'black', 4)} />
+        {/* Hands — REAL TIME */}
+        <div style={hand(hourAngle, 1.8, 22, 4)} />
+        <div style={hand(minuteAngle, 1.2, 35, 5)} />
 
-        {/* Eraser Mask */}
-        <div style={{
-          ...absoluteCenter,
-          width: '100%', // Slight overlap to prevent sub-pixel gaps
-          height: '100%',
-          borderRadius: '50%',
-          zIndex: 10,
-          background: isWaiting 
-            ? 'white' 
-            : `conic-gradient(from ${startAngle}deg, white 0deg, white ${sweepProgressDegrees}deg, transparent ${sweepProgressDegrees}deg)`,
-        }} />
-
-        {/* Second Hand Eraser Edge */}
+        {/* Erase mask — Fixed: Uses conic-gradient to follow the eraser hand */}
         {isErasing && (
-          <div style={handStyle(currentEraserAngle, 0.2, 42.5, '#FFFFFFFF', 11)} />
+          <div
+            style={{
+              position: 'absolute',
+              inset: '-1px', // Prevents sub-pixel flickering
+              borderRadius: '50%',
+              zIndex: 10,
+              background: `conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                transparent ${startSecondAngleRef.current}deg,
+                white ${startSecondAngleRef.current}deg,
+                white ${eraseAngle}deg,
+                transparent ${eraseAngle}deg
+              )`,
+              pointerEvents: 'none',
+            }}
+          />
         )}
 
-        {/* Center Pin - Perfectly Centered */}
-        <div style={{
-          ...absoluteCenter,
-          width: '4vmin',
-          height: '4vmin',
-          backgroundColor: 'red',
-          borderRadius: '50%',
-          zIndex: 12,
-          border: '0.5vmin solid black'
-        }} />
+        {/* Eraser second hand */}
+        {isErasing && (
+          <div style={hand(eraseAngle, 0.4, 45, 11, 'white')} />
+        )}
+
+        {/* Center pin */}
+        <div
+          style={{
+            ...center,
+            width: '4vmin',
+            height: '4vmin',
+            backgroundColor: 'red',
+            borderRadius: '50%',
+            border: '0.5vmin solid black',
+            zIndex: 12,
+          }}
+        />
+
       </div>
     </div>
   );
 };
 
-export default RefactoredCentricClock;
+export default ErasingClock;
