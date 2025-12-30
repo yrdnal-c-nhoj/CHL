@@ -21,8 +21,8 @@
   height: 100vh;
   display: block;
   opacity: 0;
-  animation: fadeIn 1s ease-in forwards;
-  animation-delay: 0.5s; /* Small delay to ensure the black background is shown first */
+  animation: fadeIn 0.2s ease-in forwards;
+  animation-delay: 0.1s; /* Small delay to ensure the black background is shown first */
   z-index: 0; /* Ensure canvas stays with its container */
   pointer-events: none; /* Allow clicks to pass through to elements below */
 }
