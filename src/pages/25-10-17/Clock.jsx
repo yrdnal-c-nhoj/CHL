@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
 const fontLatin = '/fonts/25-10-17-word.ttf';
-const fontcjk251017 = '/fonts/25-10-17-CJK.ttf';
-const fontarabic251017 = '/fonts/25-10-17-NotoNaskhArabic-Regular.ttf';
-const devanagari251017 = '/fonts/25-10-17-NotoSansDevanagari-Regular.ttf';
 import backgroundImage from './words.jpg'
 
 export default function TimeWordsClock () {
@@ -381,27 +378,17 @@ export default function TimeWordsClock () {
     }
   }
 
-  // --- Font detection by script ---
-  const detectFontByScript = lang => {
-    const arabicLangs = ['ar', 'fa', 'ur', 'he']
-    const cjkLangs = ['zh', 'ja', 'ko']
-    const devanagariLangs = ['hi', 'bn', 'ta', 'mr', 'gu', 'pa']
-    if (arabicLangs.includes(lang)) return 'ArabicFont'
-    if (cjkLangs.includes(lang)) return 'CJKFont'
-    if (devanagariLangs.includes(lang)) return 'DevanagariFont'
-    return 'LatinFont'
-  }
 
   // --- Font and background preloading ---
   useEffect(() => {
     let cancelled = false
 
     const fonts = [
-      { name: 'LatinFont', url: fontLatin },
-      { name: 'CJKFont', url: fontcjk251017 },
-      { name: 'ArabicFont', url: fontarabic251017 },
-      { name: 'DevanagariFont', url: devanagari251017 }
+      { name: 'LatinFont', url: fontLatin }
     ]
+
+    // Log font loading for debugging
+    console.log('Loading fonts:', fonts.map(f => `${f.name}: ${f.url}`))
 
     const styleTag = document.createElement('style')
     styleTag.textContent = fonts
@@ -411,6 +398,21 @@ export default function TimeWordsClock () {
       )
       .join('\n')
     document.head.appendChild(styleTag)
+    
+    // Add font validation
+    const validateFont = (fontName) => {
+      const testElement = document.createElement('span')
+      testElement.style.fontFamily = fontName
+      testElement.textContent = 'Test'
+      testElement.style.visibility = 'hidden'
+      testElement.style.position = 'absolute'
+      document.body.appendChild(testElement)
+      
+      const computedFont = window.getComputedStyle(testElement).fontFamily
+      console.log(`${fontName} loaded:`, computedFont.includes(fontName))
+      
+      document.body.removeChild(testElement)
+    }
 
     const image = new Image()
     image.src = backgroundImage
@@ -421,6 +423,8 @@ export default function TimeWordsClock () {
           const ff = new FontFace(f.name, `url(${f.url})`)
           return ff.load().then(loaded => {
             document.fonts.add(loaded)
+            validateFont(f.name)
+            return loaded
           })
         } else {
           return document.fonts?.ready || Promise.resolve()
@@ -438,9 +442,11 @@ export default function TimeWordsClock () {
         if (!cancelled) {
           setNow(new Date())
           setReady(true)
+          console.log('All fonts loaded successfully')
         }
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error('Font loading error:', error)
         if (!cancelled) {
           setNow(new Date())
           setReady(true)
@@ -524,7 +530,7 @@ export default function TimeWordsClock () {
 
   const lang = languages[langIndex]
   const dir = translations[lang]?.dir || 'ltr'
-  const fontFamily = detectFontByScript(lang)
+  const fontFamily = 'LatinFont'
 
   const containerStyle = {
     width: '100vw',
