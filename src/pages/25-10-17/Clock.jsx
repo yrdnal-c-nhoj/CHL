@@ -569,7 +569,7 @@ export default function TimeWordsClock () {
     lineHeight: '1.4',
     borderRadius: '0.2vh',
     textShadow:
-      '0.02em 0.02em #DF1414FF, -0.02em -0.02em 0 rgba(255,255,255,0.9)',
+      '0.02em 0.02em #DF1414, -0.02em -0.02em 0 rgba(255,255,255,0.9)',
     padding: '2vh 4vw',
     border: '0.2vh solid rgba(255,255,255,0.3)',
     direction: dir
