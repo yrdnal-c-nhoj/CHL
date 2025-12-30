@@ -1,156 +1,104 @@
 import React, { useState, useEffect } from 'react';
 
-const FlightTicket = () => {
-  const [currentTime, setCurrentTime] = useState(new Date());
+const ConcentricClock = () => {
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
+    const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (date) => {
-    return date.toLocaleTimeString('en-US', {
-      hour12: false,
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
-  };
+  const seconds = time.getSeconds();
+  const minutes = time.getMinutes();
+  const hours = time.getHours() % 12;
 
-  const formatTimeNoSeconds = (date) => {
-    return date.toLocaleTimeString('en-US', {
-      hour12: false,
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
+  // Calculate rotations in degrees
+  const secRev = (seconds / 60) * 360;
+  const minRev = ((minutes + seconds / 60) / 60) * 360;
+  const hrRev = ((hours + minutes / 60) / 12) * 360;
+
   const containerStyle = {
-    minHeight: '100vh',
+    width: '100vw',
+    height: '100dvh',
     display: 'flex',
-    alignItems: 'center',
     justifyContent: 'center',
-    background: 'linear-gradient(90deg, #9A0621FF, #632709FF)',
-    fontFamily: 'system-ui',
-    padding: '5vh 5vw',
+    alignItems: 'center',
+    backgroundColor: '#535457',
     margin: 0,
+    padding: 0,
+    overflow: 'hidden',
+    fontFamily: 'sans-serif'
   };
 
-  const ticketStyle = {
-    background: '#fff',
-    borderRadius: '2rem',
-    width: '90vw',
-    maxWidth: '40rem',
-    margin: '0 auto',
-    clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8rem), calc(100% - 3rem) calc(100% - 8rem), calc(100% - 3rem) 100%, 0 100%)'
+  const clockFaceStyle = {
+    position: 'relative',
+    width: '90vmin',
+    height: '90vmin',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   };
 
-  const ticketCornerStyle = {
+  const discBaseStyle = {
     position: 'absolute',
-    bottom: '0',
-    right: '0',
-    width: '3rem',
-    height: '8rem',
-    background: '#fff',
-    clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 3rem))',
-    zIndex: 1,
-  };
-
-  const ticketBodyStyle = {
-    padding: '3rem 2.5rem 4rem',
-  };
-
-  const flyStyle = {
+    borderRadius: '50%',
     display: 'flex',
-    justifyContent: 'space-between',
-    fontSize: '2rem',
-    fontWeight: 300,
-    margin: '0 0 2rem 0',
+    justifyContent: 'center',
+    transition: 'transform 0.5s cubic-bezier(0.4, 2.08, 0.55, 0.44)',
   };
 
-  const infoContainerStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: '1rem',
-    textAlign: 'center',
-  };
-
-  const infoItemStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-  };
-
-  const labelStyle = {
-    fontSize: '0.75rem',
-    fontWeight: 600,
-    letterSpacing: '0.05em',
-    textTransform: 'uppercase',
-    color: '#666',
-    marginBottom: '0.5rem',
-  };
-
-  const valueStyle = {
-    fontSize: '1.1rem',
-    fontWeight: 500,
-  };
-
-  const tearOffStyle = {
-    borderTop: '2px dashed #ddd',
-    padding: '2rem 3rem',
-    textAlign: 'center',
-  };
-
-  const barcodeStyle = {
-    height: '3rem',
-    background: 'repeating-linear-gradient(90deg, #000 0, #000 2px, transparent 2px, transparent 5px)',
-    marginBottom: '1rem',
+  const markerStyle = {
+    width: '1vmin',
+    height: '4vmin',
+    backgroundColor: '#38bdf8',
+    borderRadius: '1vmin'
   };
 
   return (
     <div style={containerStyle}>
-      <div style={ticketStyle}>
-        <div style={ticketCornerStyle}></div>
-        <div style={ticketBodyStyle}>
-          <div style={flyStyle}>
-            <span>BOS<span style={{ margin: '0 0.5rem' }}>✈</span>CDG</span>
-          </div>
-          
-          <div style={{ marginBottom: '2rem' }}>
-            <div style={labelStyle}>Passenger</div>
-            <div style={{ ...valueStyle, fontSize: '1.25rem' }}>HEART CUBIST</div>
-          </div>
-
-          <div style={infoContainerStyle}>
-            <div style={infoItemStyle}>
-              <span style={labelStyle}>Gate</span>
-              <span style={valueStyle}>C19</span>
-            </div>
-            <div style={infoItemStyle}>
-              <span style={labelStyle}>Departure</span>
-              <span style={valueStyle}>{formatTimeNoSeconds(currentTime)}</span>
-            </div>
-            <div style={infoItemStyle}>
-              <span style={labelStyle}>Speedy</span>
-              <span style={valueStyle}>Yes</span>
-            </div>
-            <div style={infoItemStyle}>
-              <span style={labelStyle}>Boarding</span>
-              <span style={valueStyle}>
-                {formatTimeNoSeconds(new Date(currentTime.getTime() - 20 * 60000))}
-              </span>
-            </div>
-          </div>
+      <div style={clockFaceStyle}>
+        
+        {/* Seconds Ring - Outer */}
+        <div style={{
+          ...discBaseStyle,
+          width: '95vmin',
+          height: '95vmin',
+          transform: `rotate(${secRev}deg)`,
+          zIndex: 1
+        }}>
+          <div style={{ ...markerStyle, backgroundColor: '#F50F35' }} />
         </div>
 
-        <div style={tearOffStyle}>
-          <div style={barcodeStyle}></div>
-          <div style={{ fontSize: '0.9rem', letterSpacing: '0.1em' }}>946283989e4048282</div>
+        {/* Minutes Ring - Middle */}
+        <div style={{
+          ...discBaseStyle,
+          width: '70vmin',
+          height: '70vmin',
+          transform: `rotate(${minRev}deg)`,
+          zIndex: 2,
+        }}>
+          <div style={{ ...markerStyle, backgroundColor: '#fbbf24' }} />
         </div>
+
+        {/* Hours Ring - Inner */}
+        <div style={{
+          ...discBaseStyle,
+          width: '30vmin',
+          height: '40vmin',
+          transform: `rotate(${hrRev}deg)`,
+          zIndex: 3,
+          // backgroundColor: '#334155',
+          // boxShadow: '0 0 5vmin rgba(0,0,0,0.5)'
+        }}>
+          <div style={markerStyle} />
+        </div>
+
+       
+
+
       </div>
     </div>
   );
 };
 
-export default FlightTicket;
+export default ConcentricClock;
