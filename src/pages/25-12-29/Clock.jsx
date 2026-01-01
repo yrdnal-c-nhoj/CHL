@@ -107,7 +107,7 @@ const DynamicClockComponent = () => {
   };
 
   const clockStyle = {
-    fontSize: '12vh',
+    fontSize: '10vh',
     writingMode: 'vertical-rl',
     textOrientation: 'mixed',
     color: 'white',
