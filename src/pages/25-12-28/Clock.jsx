@@ -83,7 +83,7 @@ export default function Clock() {
     transform: "translate(-50%, -50%)",
     zIndex: 10,
     color: "#ABA193",
-    fontSize: "5vh",
+    fontSize: "7vw",
     textAlign: "center",
     letterSpacing: "0.05em",
     textShadow: "1px 0 0 white",

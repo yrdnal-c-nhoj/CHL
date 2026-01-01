@@ -58,19 +58,36 @@ export default function PixelInverseClock() {
     if (video.readyState >= 3) attemptPlay()
 
     /* ---------- RESIZE & DPI SCALING ---------- */
-    const resize = () => {
-      const dpr = window.devicePixelRatio || 1
-      const w = window.innerWidth
-      const h = window.innerHeight
-      canvas.width = w * dpr
-      canvas.height = h * dpr
+    const handleResize = () => {
+      // Use visualViewport if available (better for mobile)
+      const visualViewport = window.visualViewport || window
+      const w = Math.max(document.documentElement.clientWidth || 0, visualViewport.width || 0)
+      
+      // For mobile, use the larger of window.innerHeight or document.documentElement.clientHeight
+      // to account for the URL bar appearing/disappearing
+      const h = Math.max(
+        document.documentElement.clientHeight || 0,
+        window.innerHeight || 0,
+        visualViewport.height || 0
+      )
+      
+      // Set canvas dimensions
+      canvas.width = w
+      canvas.height = h
+      
+      // Set CSS dimensions
       canvas.style.width = `${w}px`
       canvas.style.height = `${h}px`
-      ctx.scale(dpr, dpr)
+      
+      // Force a redraw after resize
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+      animationRef.current = requestAnimationFrame(draw)
     }
 
-    window.addEventListener('resize', resize)
-    resize()
+    window.addEventListener('resize', handleResize)
+    handleResize()
 
     /* ================= DRAW LOOP ================= */
     const draw = () => {
