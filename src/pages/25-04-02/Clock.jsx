@@ -1,9 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
+// Import images with explicit file extensions
 import stars from "./stars.webp";
 import backgroundGif from "./437cb739d14912acd84d65ee853b9067.gif";
 import overlay1 from "./OzJtZ3Z.gif";
 import overlay2 from "./2556744_d34a4.webp";
 import pixelGif from "./sdswrf.gif";
+
+// Create a map of image names to their imported values for better debugging
+const images = {
+  stars,
+  backgroundGif,
+  overlay1,
+  overlay2,
+  pixelGif
+};
 
 const digits = {
   "0": [
@@ -87,23 +97,13 @@ function DeepSpaceClock() {
   const second2 = useRef();
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Preload images
+  // Preload images in the background
   useEffect(() => {
-    const images = [stars, backgroundGif, overlay1, overlay2, pixelGif];
-    let loadedCount = 0;
-
-    const handleImageLoad = () => {
-      loadedCount += 1;
-      if (loadedCount === images.length) {
-        setIsLoaded(true);
-      }
-    };
-
-    images.forEach((src) => {
+    const imageUrls = Object.values(images);
+    
+    imageUrls.forEach((src) => {
       const img = new Image();
-      img.src = src;
-      img.onload = handleImageLoad;
-      img.onerror = handleImageLoad; // Handle errors to avoid blocking
+      img.src = typeof src === 'string' ? src : src.default || src;
     });
   }, []);
 
@@ -119,7 +119,8 @@ function DeepSpaceClock() {
           div.style.gridColumn = `${j + 1}`;
           div.style.height = "4vmin";
           div.style.width = "4vmin";
-          div.style.backgroundImage = `url(${pixelGif})`;
+          const pixelSrc = typeof pixelGif === 'string' ? pixelGif : pixelGif.default || pixelGif;
+          div.style.backgroundImage = `url(${pixelSrc})`;
           div.style.backgroundSize = "220% 250%";
           container.appendChild(div);
         }
@@ -128,7 +129,6 @@ function DeepSpaceClock() {
   };
 
   useEffect(() => {
-    if (!isLoaded) return; // Only start clock when assets are loaded
 
     let shownHours = -1,
       shownMinutes = -1,
@@ -162,16 +162,13 @@ function DeepSpaceClock() {
     updateClock();
     const interval = setInterval(updateClock, 1000);
     return () => clearInterval(interval);
-  }, [isLoaded]);
+  }, []);
 
-  if (!isLoaded) {
-    return null; // Render nothing until assets are loaded
-  }
 
   return (
     <div
       style={{
-        backgroundImage: `url(${stars})`,
+        backgroundImage: `url(${typeof stars === 'string' ? stars : stars.default || stars})`,
         backgroundSize: "cover",
         overflow: "hidden",
         height: "100dvh",
@@ -183,7 +180,7 @@ function DeepSpaceClock() {
     >
       <div
         style={{
-          backgroundImage: `url(${backgroundGif})`,
+          backgroundImage: `url(${typeof backgroundGif === 'string' ? backgroundGif : backgroundGif.default || backgroundGif})`,
           backgroundSize: "cover",
           position: "absolute",
           inset: 0,
@@ -191,7 +188,7 @@ function DeepSpaceClock() {
       />
       <div
         style={{
-          backgroundImage: `url(${overlay1})`,
+          backgroundImage: `url(${typeof overlay1 === 'string' ? overlay1 : overlay1.default || overlay1})`,
           backgroundSize: "cover",
           position: "fixed",
           inset: 0,
@@ -201,7 +198,7 @@ function DeepSpaceClock() {
       />
       <div
         style={{
-          backgroundImage: `url(${overlay2})`,
+          backgroundImage: `url(${typeof overlay2 === 'string' ? overlay2 : overlay2.default || overlay2})`,
           backgroundSize: "cover",
           position: "fixed",
           inset: 0,
