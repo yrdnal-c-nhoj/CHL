@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import backgroundImage from './images/photo-1495578942200-c5f5d2137def.avif';
+import backgroundImage from '/assets/clocks/25-04-14/bricks.avif';
 
 const BlueBrickClock = () => {
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
