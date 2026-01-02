@@ -144,7 +144,7 @@ export default function VideoClock() {
     zIndex: 2,
     fontFamily: "CustomFont, Arial, sans-serif",
     fontSize: "24vw",
-    color: "#e6f2ff",
+    color: "#E6F2FF",
     userSelect: "none",
     textAlign: "center",
     textShadow: `
