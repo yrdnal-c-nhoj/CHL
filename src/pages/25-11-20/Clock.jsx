@@ -158,12 +158,21 @@ export default function PixelInverseClock () {
       <video
         ref={videoRef}
         src={videoFile}
+        autoPlay
         muted
         loop
         playsInline
+        preload="auto"
         style={{
-          display: 'none',
-          imageRendering: 'pixelated' // <-- critical for crispness
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          objectFit: 'cover',
+          zIndex: 0,
+          imageRendering: 'pixelated',
+          backgroundColor: '#000' // Fallback background color
         }}
       />
     </>
