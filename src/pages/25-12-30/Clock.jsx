@@ -123,10 +123,10 @@ const RotatingAnalemmaClock = () => {
       writingMode: 'vertical-rl',
       fontSize: '2.5vh',
       color: '#FDFEFE',
-      letterSpacing: '0.2em',
+      letterSpacing: '0.2vh',
       fontFamily: 'AnaFont, sans-serif',
       fontSize: '3.3vh',
-      letterSpacing: '0.2em',
+      // letterSpacing: '0.2em',
       zIndex: 10
     },
     sideLabelRight: {
@@ -138,7 +138,7 @@ const RotatingAnalemmaClock = () => {
       fontFamily: 'AnaFont, sans-serif',
       fontSize: '3.3vh',
       color: '#F7FBFB',
-      letterSpacing: '0.2em',
+       letterSpacing: '0.2vh',
       zIndex: 10
     },
     clockContainer: {
@@ -165,7 +165,7 @@ const RotatingAnalemmaClock = () => {
       zIndex: 1 // Lower z-index so side labels stay interactive/visible
     },
     svg: {
-      height: '80%',
+      height: '100%',
       width: 'auto',
       maxWidth: '95vw',
       overflow: 'visible' // Key for preventing clipping
@@ -219,8 +219,8 @@ const RotatingAnalemmaClock = () => {
               strokeWidth="2" 
             />
             
-            <text x="150" y="10" textAnchor="middle" fill="#F29380" fontSize="18" fontWeight="bold">SOMERO</text>
-            <text x="150" y="300" textAnchor="middle" fill="#83F7FB" fontSize="18" fontWeight="bold" transform="rotate(180 150 295)">VINTRO</text>
+            <text x="150" y="10" textAnchor="middle" fill="#F29380" fontSize="32" fontWeight="bold">SOMERO</text>
+            <text x="150" y="300" textAnchor="middle" fill="#83F7FB" fontSize="32" fontWeight="bold" transform="rotate(180 150 295)">VINTRO</text>
             
             {/* The dot is placed last so it has the "highest z-index" in the SVG */}
             <circle 
