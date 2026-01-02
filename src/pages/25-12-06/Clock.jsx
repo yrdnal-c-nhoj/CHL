@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react'
 
-// Import assets
-import bgImage from './giraffe.webp'
-import hourHandImggir from './hand3.gif'
-import minnnuteHandImg from './hand1.gif'
-import secondHandImg from './hand2.gif'
+// Image paths in public folder
+const bgImage = '/assets/clocks/25-12-06/giraffe.webp';
+const hourHandImggir = '/assets/clocks/25-12-06/hand3.gif';
+const minnnuteHandImg = '/assets/clocks/25-12-06/hand1.gif';
+const secondHandImg = '/assets/clocks/25-12-06/hand2.gif';
+const tileImg = '/assets/clocks/25-12-06/run.webp';
+const centerImg = '/assets/clocks/25-12-06/walk.webp';
 const customFont_2025_1206 = '/fonts/25-12-06-gir.otf';
-import tileImg from './run.webp'
-import centerImg from './walk.webp'
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date())
