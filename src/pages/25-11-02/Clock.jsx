@@ -22,15 +22,10 @@ export default function MonarchScene() {
     });
   }, []);
 
-  // Adjust background video scaling
+  // Adjust background video scaling to ensure full coverage
   const adjustVideoPosition = () => {
     const video = videoRef.current;
     if (!video) return;
-
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const videoAspect = video.videoWidth / video.videoHeight;
-    const viewportAspect = vw / vh;
 
     const filterSettings = `
       hue-rotate(105deg)
@@ -39,22 +34,20 @@ export default function MonarchScene() {
       contrast(1.2)
     `;
 
-    const baseStyle = {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
+    // Always cover the entire viewport
+    setVideoStyle({
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
       objectFit: "cover",
       zIndex: 0,
       filter: filterSettings,
       transition: "filter 0.5s ease",
-    };
-
-    if (viewportAspect < videoAspect) {
-      setVideoStyle({ ...baseStyle, height: "100dvh", width: "auto" });
-    } else {
-      setVideoStyle({ ...baseStyle, width: "100dvw", height: "auto" });
-    }
+      minWidth: "100%",
+      minHeight: "100%"
+    });
   };
 
   const handleVideoLoaded = () => adjustVideoPosition();
@@ -79,10 +72,12 @@ export default function MonarchScene() {
   return (
     <div
       style={{
-        height: "100dvh",
-        width: "100dvw",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
         overflow: "hidden",
-        position: "relative",
         backgroundColor: "#000",
         fontFamily: "'MedTech2025_11_04', monospace",
       }}
@@ -105,13 +100,21 @@ export default function MonarchScene() {
           src={fallbackImg}
           alt=""
           style={{
-            ...videoStyle,
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            zIndex: 0,
             filter: `
               hue-rotate(125deg)
               saturate(1.6)
               brightness(1.1)
               contrast(1.2)
             `,
+            minWidth: "100%",
+            minHeight: "100%"
           }}
         />
       )}
