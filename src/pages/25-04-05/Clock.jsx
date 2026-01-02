@@ -45,17 +45,17 @@ const TallClock = () => {
   const hourHandStyle = { 
     backgroundImage: `url(${hourHandSource})`, 
     transform: `translateX(-50%) rotate(${hourRotation}deg)`,
-    filter: 'drop-shadow(2px 4px 6px rgba(168, 18, 18, 0.4))'
+    filter: 'drop-shadow(2px 4px 6px rgba(24, 23, 23, 0.56))'
   };
   const minuteHandStyle = { 
     backgroundImage: `url(${minuteHandSource})`, 
     transform: `translateX(-50%) rotate(${minuteRotation}deg)`,
-    filter: 'drop-shadow(2px 4px 6px rgba(155, 6, 6, 0.9))'
+    filter: 'drop-shadow(2px 4px 6px rgba(12, 11, 11, 0.9))'
   };
   const secondHandStyle = { 
     backgroundImage: `url(${secondHandSource})`, 
     transform: `translateX(-50%) rotate(${secondRotation}deg)`,
-    filter: 'drop-shadow(2px 4px 6px rgba(163, 6, 6, 0.4))'
+    filter: 'drop-shadow(2px 4px 6px rgba(23, 22, 22, 0.53))'
   };
 
   return (
