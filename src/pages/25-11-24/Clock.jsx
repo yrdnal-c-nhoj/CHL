@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react'
-import pageBgImgBase from './skin.jpg'
-import pageBgImg from './sss.webp'
-import clockFaceImg from './sn.gif'
-import hourHandImg from './sn5.webp'
-import minuteHandImg from './sfsd.webp'
-import secondHandImg from './sn1.webp'
-import clockCenterImg from './center.webp' // <-- your new center image
+import React, { useEffect, useState, useRef } from 'react';
+
+// Image paths in public folder
+const pageBgImgBase = '/assets/clocks/25-11-24/skin.jpg';
+const pageBgImg = '/assets/clocks/25-11-24/sss.webp';
+const clockFaceImg = '/assets/clocks/25-11-24/sn.gif';
+const hourHandImg = '/assets/clocks/25-11-24/sn5.webp';
+const minuteHandImg = '/assets/clocks/25-11-24/sfsd.webp';
+const secondHandImg = '/assets/clocks/25-11-24/sn1.webp';
+const clockCenterImg = '/assets/clocks/25-11-24/center.webp';
 const fon251124 = '/fonts/25-11-24-snake.ttf';
 
 export default function AnalogClock () {
