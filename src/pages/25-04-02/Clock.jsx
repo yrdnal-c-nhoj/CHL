@@ -1,18 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-// Import images with explicit file extensions
-import stars from "./stars.webp";
-import backgroundGif from "./437cb739d14912acd84d65ee853b9067.gif";
-import overlay1 from "./OzJtZ3Z.gif";
-import overlay2 from "./2556744_d34a4.webp";
-import pixelGif from "./sdswrf.gif";
 
-// Create a map of image names to their imported values for better debugging
+// Image paths in public folder
 const images = {
-  stars,
-  backgroundGif,
-  overlay1,
-  overlay2,
-  pixelGif
+  stars: '/assets/clocks/25-04-02/stars.webp',
+  backgroundGif: '/assets/clocks/25-04-02/437cb739d14912acd84d65ee853b9067.gif',
+  overlay1: '/assets/clocks/25-04-02/OzJtZ3Z.gif',
+  overlay2: '/assets/clocks/25-04-02/2556744_d34a4.webp',
+  pixelGif: '/assets/clocks/25-04-02/sdswrf.gif'
 };
 
 const digits = {
@@ -119,8 +113,7 @@ function DeepSpaceClock() {
           div.style.gridColumn = `${j + 1}`;
           div.style.height = "4vmin";
           div.style.width = "4vmin";
-          const pixelSrc = typeof pixelGif === 'string' ? pixelGif : pixelGif.default || pixelGif;
-          div.style.backgroundImage = `url(${pixelSrc})`;
+          div.style.backgroundImage = `url(${images.pixelGif})`;
           div.style.backgroundSize = "220% 250%";
           container.appendChild(div);
         }
@@ -168,7 +161,7 @@ function DeepSpaceClock() {
   return (
     <div
       style={{
-        backgroundImage: `url(${typeof stars === 'string' ? stars : stars.default || stars})`,
+        backgroundImage: `url(${images.stars})`,
         backgroundSize: "cover",
         overflow: "hidden",
         height: "100dvh",
@@ -176,19 +169,22 @@ function DeepSpaceClock() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        position: "relative",
+        backgroundColor: "#333" // Fallback background color
       }}
     >
       <div
         style={{
-          backgroundImage: `url(${typeof backgroundGif === 'string' ? backgroundGif : backgroundGif.default || backgroundGif})`,
+          backgroundImage: `url(${images.backgroundGif})`,
           backgroundSize: "cover",
           position: "absolute",
           inset: 0,
+          zIndex: 1
         }}
       />
       <div
         style={{
-          backgroundImage: `url(${typeof overlay1 === 'string' ? overlay1 : overlay1.default || overlay1})`,
+          backgroundImage: `url(${images.overlay1})`,
           backgroundSize: "cover",
           position: "fixed",
           inset: 0,
@@ -198,7 +194,7 @@ function DeepSpaceClock() {
       />
       <div
         style={{
-          backgroundImage: `url(${typeof overlay2 === 'string' ? overlay2 : overlay2.default || overlay2})`,
+          backgroundImage: `url(${images.overlay2})`,
           backgroundSize: "cover",
           position: "fixed",
           inset: 0,
