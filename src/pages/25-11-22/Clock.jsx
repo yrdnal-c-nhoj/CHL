@@ -107,7 +107,7 @@ export default function Clock() {
             autoPlay
             preload="auto"
           >
-            <source src={videoFile} type="video/mp4" />
+            <source src={process.env.NODE_ENV === 'production' ? `${process.env.PUBLIC_URL || ''}${videoFile}` : videoFile} type="video/mp4" />
           </video>
         </div>
       )}
@@ -123,7 +123,7 @@ export default function Clock() {
           }}
         >
           <img
-            src={fallbackImg}
+            src={process.env.NODE_ENV === 'production' ? `${process.env.PUBLIC_URL || ''}${fallbackImg}` : fallbackImg}
             alt=""
             style={{
               position: "absolute",
