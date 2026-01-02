@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 const overlayImg = "/assets/clocks/25-04-05/gfccc.gif";
 const hourHandSource = "/assets/clocks/25-04-05/gr4.gif";
 const minuteHandSource = "/assets/clocks/25-04-05/gr5.gif";
-const secondHandSource = "/assets/clocks/25-04-05/gr9.png";
+const secondHandSource = "/assets/clocks/25-04-05/gr9.webp";
 // ------------------------------------
 
 // --- Clock Logic Functions (Unchanged) ---
