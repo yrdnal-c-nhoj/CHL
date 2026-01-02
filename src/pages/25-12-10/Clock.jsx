@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useMemo, memo, useRef } from 'react'
 
 // --- Image Imports ---
-import bg1 from './j.webp'
-import bg2 from './jj.webp'
-import portImg from './eagle.webp'
-import hourHandImg from './oa.gif'
-import minuteHandImg from './oak.gif'
-import secondHandImg from './nk.gif';
-// Convert the imported image to a URL that works in production
-const secondHandUrl = typeof secondHandImg === 'string' ? secondHandImg : secondHandImg.src || '';
+import bg1 from './j.webp';
+import bg2 from './jj.webp';
+import portImg from './eagle.webp';
+
+// Public paths for clock hands (using absolute paths from public folder)
+const hourHandImg = '/assets/clocks/25-12-10/oa.gif';
+const minuteHandImg = '/assets/clocks/25-12-10/oak.gif';
+const secondHandImg = '/assets/clocks/25-12-10/nk.gif';
 const font251211 = '/fonts/25-12-10-jup.ttf';
 
 // --- CONFIG ---
@@ -16,7 +16,7 @@ const CONFIG = {
   clockSize: 'min(90vw, 90vh)',
   numeralRadius: 43,
   hands: [
-    { img: secondHandUrl, width: '22vw', max: '200px' },
+    { img: secondHandImg, width: '22vw', max: '200px' },
     { img: minuteHandImg, width: '28vw', max: '200px' },
     { img: hourHandImg, width: '26vw', max: '166px' }
   ],
@@ -264,15 +264,13 @@ export default function AnalogClock () {
   // Preload hand images once
   useEffect(() => {
     if (!preloadedRef.current) {
-      [hourHandImg, minuteHandImg, secondHandUrl].forEach(src => {
-        if (src) {
-          const img = new Image();
-          img.src = typeof src === 'string' ? src : src.src || '';
-        }
+      [hourHandImg, minuteHandImg, secondHandImg].forEach(src => {
+        const img = new Image();
+        img.src = src;
       });
       preloadedRef.current = true;
     }
-  }, [secondHandUrl])
+  }, [])
 
   return (
     <>
