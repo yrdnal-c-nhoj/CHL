@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import roomImage from './images/room.webp';
+
+// Image path in public folder
+const roomImage = '/assets/clocks/25-04-09/images/room.webp';
 
 const EmptyRoomClock = () => {
   const hourRef = useRef();
