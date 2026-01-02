@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import lava1 from "./lava.webp";
-import lava2 from "./vp2OVr.gif";
-import lava3 from "./lava.webp";
+import lava1 from "/assets/clocks/25-04-24/lava.webp";
+import lava2 from "/assets/clocks/25-04-24/vp2OVr.gif";
+import lava3 from "/assets/clocks/25-04-24/lava.webp";
 const lavaFont = '/fonts/25-04-24-lava.ttf';
 
 const LavaClock = () => {
