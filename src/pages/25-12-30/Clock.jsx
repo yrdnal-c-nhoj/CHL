@@ -105,7 +105,7 @@ const RotatingAnalemmaClock = () => {
       alignItems: 'center',
       justifyContent: 'space-between',
       backgroundColor: '#414343',
-      color: '#050505',
+      color: '#F9E82D',
       fontFamily: 'monospace',
       margin: 0,
       padding: '2dvh 0',
@@ -125,7 +125,7 @@ const RotatingAnalemmaClock = () => {
       color: '#FDFEFE',
       letterSpacing: '0.2em',
       fontFamily: 'AnaFont, sans-serif',
-      fontSize: '2.5vh',
+      fontSize: '3.3vh',
       letterSpacing: '0.2em',
       zIndex: 10
     },
@@ -136,16 +136,15 @@ const RotatingAnalemmaClock = () => {
       transform: 'translateY(-50%)',
       writingMode: 'vertical-lr',
       fontFamily: 'AnaFont, sans-serif',
-      fontSize: '2.5vh',
+      fontSize: '3.3vh',
       color: '#F7FBFB',
       letterSpacing: '0.2em',
       zIndex: 10
     },
     clockContainer: {
-      width: '100%',
-      padding: '0 2vw',
+      width: '100%',  // padding: '0 2vw',
       boxSizing: 'border-box',
-      marginTop: '2vh',
+      // marginTop: '2vh',
       zIndex: 5
     },
     clock: {
@@ -154,7 +153,7 @@ const RotatingAnalemmaClock = () => {
       width: '100%',
       fontFamily: `'${fontFamilyName}', monospace`,
       letterSpacing: '0.1em',
-      fontSize: 'clamp(1rem, 10vw, 8rem)'
+      // fontSize: 'clamp(1rem, 10vw, 8rem)'
     },
     svgWrapper: {
       flex: 1,
@@ -176,11 +175,11 @@ const RotatingAnalemmaClock = () => {
   return (
     <div style={styles.container}>
       <div style={styles.sideLabelLeft}>
-        EQUATION OF TIME: {currentPos.rawEot.toFixed(2)} MIN
+       ekvacio de tempo: {currentPos.rawEot.toFixed(2)} min
       </div>
 
       <div style={styles.sideLabelRight}>
-        SUN DECLINATION: {currentPos.rawDec.toFixed(2)}°
+        sun-deklinacio: {currentPos.rawDec.toFixed(2)}°
       </div>
 
       <div style={styles.clockContainer}>
@@ -220,8 +219,8 @@ const RotatingAnalemmaClock = () => {
               strokeWidth="2" 
             />
             
-            <text x="150" y="10" textAnchor="middle" fill="#F29380" fontSize="18" fontWeight="bold">SUMMER</text>
-            <text x="150" y="300" textAnchor="middle" fill="#83F7FB" fontSize="18" fontWeight="bold" transform="rotate(180 150 295)">WINTER</text>
+            <text x="150" y="10" textAnchor="middle" fill="#F29380" fontSize="18" fontWeight="bold">SOMERO</text>
+            <text x="150" y="300" textAnchor="middle" fill="#83F7FB" fontSize="18" fontWeight="bold" transform="rotate(180 150 295)">VINTRO</text>
             
             {/* The dot is placed last so it has the "highest z-index" in the SVG */}
             <circle 
