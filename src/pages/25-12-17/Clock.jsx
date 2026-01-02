@@ -5,18 +5,28 @@ export default function App() {
   const [time, setTime] = useState(new Date());
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 768);
   const [fontLoaded, setFontLoaded] = useState(false);
+  const fontFamilyName = 'ClockComponentFont';
 
   useEffect(() => {
-    // Load font using FontFace API
-    const loadFont = async () => {
+    // Create a style element for the font-face
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: '${fontFamilyName}';
+        src: url('/fonts/facexxxx.ttf') format('truetype');
+        font-display: swap;
+        font-weight: 400;
+        font-style: normal;
+      }
+    `;
+    
+    // Add the style to the document head
+    document.head.appendChild(style);
+    
+    // Check if font is loaded
+    const checkFont = async () => {
       try {
-        const font = new FontFace('CustomFont', 'url(/fonts/facexxxx.ttf)', {
-          style: 'normal',
-          weight: '400',
-          display: 'swap',
-        });
-        const loadedFont = await font.load();
-        document.fonts.add(loadedFont);
+        await document.fonts.load(`12px "${fontFamilyName}"`);
         setFontLoaded(true);
       } catch (err) {
         console.warn('Custom font failed to load, falling back to system font', err);
@@ -24,10 +34,13 @@ export default function App() {
       }
     };
     
-    if (!fontLoaded) {
-      loadFont();
-    }
-  }, []);
+    checkFont();
+    
+    // Cleanup function to remove the style element
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, [fontFamilyName]);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -66,7 +79,7 @@ export default function App() {
     textAlign: 'center',
     color: '#070809FF',
     filter: 'drop-shadow(1px 2px 0  #D862F2FF)',
-    fontFamily: fontLoaded ? 'CustomFont, sans-serif' : 'monospace',
+    fontFamily: fontLoaded ? `${fontFamilyName}, monospace` : 'monospace',
     opacity: fontLoaded ? 1 : 0.8,
     transition: 'opacity 0.3s ease',
     fontSize: 'inherit',
@@ -130,7 +143,7 @@ export default function App() {
     height: '100%',
     color: 'white',
     fontSize: isLargeScreen ? '15vw' : '20vh',
-    fontFamily: fontLoaded ? 'CustomFont, sans-serif' : 'monospace',
+    fontFamily: fontLoaded ? `${fontFamilyName}, monospace` : 'monospace',
     opacity: fontLoaded ? 1 : 0.8,
     transition: 'opacity 0.3s ease',
     fontWeight: 'normal',
