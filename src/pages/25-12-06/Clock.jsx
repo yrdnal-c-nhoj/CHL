@@ -130,7 +130,7 @@ export default function AnalogClock() {
       fontSize: 'clamp(7rem, 13vmin, 10rem)',
       fontFamily: 'CustomClockFont, sans-serif',
       color: 'white',
-      textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
+      textShadow: '2px 2px 4px rgba(0, 0, 0, 0.83)',
       userSelect: 'none',
       zIndex: 5
     }
