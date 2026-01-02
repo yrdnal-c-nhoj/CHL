@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-const mapFont = '/fonts/25-05-05-Map.ttf';
+const mapFont = '/assets/clocks/25-05-05/25-05-05-Map.ttf';
 
 const WarholGraveCamClock = () => {
   const [time, setTime] = useState({
@@ -24,17 +24,37 @@ const WarholGraveCamClock = () => {
 
   // Inject font-face once
   useEffect(() => {
+    // Check if font is already loaded
+    if (document.fonts.check('12px "Map"')) {
+      return;
+    }
+
+    // Method 1: FontFace API
     const font = new FontFace('Map', `url(${mapFont})`);
     font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
+    }).catch((error) => {
+      console.error('Font loading failed:', error);
+      // Method 2: CSS injection as fallback
+      if (!document.getElementById('map-font-style')) {
+        const style = document.createElement('style');
+        style.id = 'map-font-style';
+        style.innerHTML = `
+          @font-face {
+            font-family: 'Map';
+            src: url(${mapFont}) format('truetype');
+          }
+        `;
+        document.head.appendChild(style);
+      }
     });
   }, []);
 
   const digitStyle = {
     color: '#ef1337',
-    fontFamily: "'Map', sans-serif !important",
-    fontSize: '4rem',
-    width: '2rem',
+    fontFamily: "'Map', sans-serif", // removed !important from inline style
+    fontSize: '6rem',
+    width: '3rem',
     height: '6rem',
     display: 'flex',
     justifyContent: 'center',
@@ -47,6 +67,16 @@ const WarholGraveCamClock = () => {
 
   return (
     <>
+      {/* Ensure CSS @font-face + class that can use !important */}
+      <style>{`
+        @font-face {
+          font-family: 'Map';
+          src: url(${mapFont}) format('truetype');
+          font-display: swap;
+        }
+        .digit { font-family: 'Map', sans-serif !important; }
+      `}</style>
+
       <iframe
         src="https://www.youtube.com/embed/JHpJvvn9hvk?autoplay=1&mute=1"
         title="Live YouTube Stream"
@@ -80,7 +110,7 @@ const WarholGraveCamClock = () => {
         {Object.values(time).map((unit, i) => (
           <div key={i} style={{ display: 'flex', gap: '0.5vmin' }}>
             {unit.split('').map((digit, j) => (
-              <div key={j} style={digitStyle}>
+              <div key={j} className="digit" style={digitStyle}>
                 {digit}
               </div>
             ))}
