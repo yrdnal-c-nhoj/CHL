@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 const confFont = '/fonts/25-04-06-conf.ttf';
-import confettiBg from "./conf2.gif";
+import confettiBg from "/assets/clocks/25-04-06/conf2.gif";
 
 const TOTAL_DIGITS = 160;
 
