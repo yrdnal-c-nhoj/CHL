@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 const overlayImg = "/assets/clocks/25-04-05/gfccc.gif";
 const hourHandSource = "/assets/clocks/25-04-05/gr4.gif";
 const minuteHandSource = "/assets/clocks/25-04-05/gr5.gif";
-const secondHandSource = "/assets/clocks/25-04-05/gr9.webp";
+const secondHandSource = "/assets/clocks/25-04-05/gr99.webp";
 // ------------------------------------
 
 // --- Clock Logic Functions (Unchanged) ---
@@ -44,15 +44,18 @@ const TallClock = () => {
   // Set image URLs using the imported source variables
   const hourHandStyle = { 
     backgroundImage: `url(${hourHandSource})`, 
-    transform: `translateX(-50%) rotate(${hourRotation}deg)` 
+    transform: `translateX(-50%) rotate(${hourRotation}deg)`,
+    filter: 'drop-shadow(2px 4px 6px rgba(168, 18, 18, 0.4))'
   };
   const minuteHandStyle = { 
     backgroundImage: `url(${minuteHandSource})`, 
-    transform: `translateX(-50%) rotate(${minuteRotation}deg)` 
+    transform: `translateX(-50%) rotate(${minuteRotation}deg)`,
+    filter: 'drop-shadow(2px 4px 6px rgba(155, 6, 6, 0.9))'
   };
   const secondHandStyle = { 
     backgroundImage: `url(${secondHandSource})`, 
-    transform: `translateX(-50%) rotate(${secondRotation}deg)` 
+    transform: `translateX(-50%) rotate(${secondRotation}deg)`,
+    filter: 'drop-shadow(2px 4px 6px rgba(163, 6, 6, 0.4))'
   };
 
   return (
@@ -123,8 +126,8 @@ const styles = {
   clockContainer: {
     position: "relative",
     zIndex: 9,
-    width: "80vmin",
-    height: "80vmin",
+    width: "99vmin",
+    height: "99vmin",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -134,17 +137,6 @@ const styles = {
     height: "100%",
     borderRadius: "50%",
     position: "relative",
-  },
-  centerDot: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    width: "15px",
-    height: "15px",
-    borderRadius: "50%",
-    backgroundColor: "#333",
-    transform: "translate(-50%, -50%)",
-    zIndex: 10,
   },
   
   // General hand properties
