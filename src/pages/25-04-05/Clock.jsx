@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 // Using public folder paths - these images need to exist in public/assets/clocks/25-04-05/
 const overlayImg = "/assets/clocks/25-04-05/gfccc.gif";
 const hourHandSource = "/assets/clocks/25-04-05/gr4.gif";
-const minuteHandSource = "/assets/clocks/25-04-05/gr5.gif";
-const secondHandSource = "/assets/clocks/25-04-05/gr99.webp";
+const secondHandSource = "/assets/clocks/25-04-05/gr5.gif";
+const minuteHandSource = "/assets/clocks/25-04-05/gr99.webp";
 // ------------------------------------
 
 // --- Clock Logic Functions (Unchanged) ---
@@ -55,7 +55,7 @@ const TallClock = () => {
   const secondHandStyle = { 
     backgroundImage: `url(${secondHandSource})`, 
     transform: `translateX(-50%) rotate(${secondRotation}deg)`,
-    filter: 'drop-shadow(2px 4px 6px rgba(23, 22, 22, 0.53))'
+    filter: 'drop-shadow(2px 4px 6px rgba(23, 22, 22, 0.53)) contrast(0.8) saturate(1.7)  brightness(0.8)'
   };
 
   return (
@@ -158,19 +158,19 @@ const styles = {
 
   // Hand Sizing 
   hourHand: {
-    width: "10%",
+    width: "26%",
     height: "35%", 
     top: "15%",
     zIndex: 8,
   },
   minuteHand: {
-    width: "8%",
-    height: "45%",
+    width: "38%",
+    height: "49%",
     top: "5%",
     zIndex: 9,
   },
   secondHand: {
-    width: "50%",
+    width: "20%",
     height: "50%",
     top: "0%",
     zIndex: 11,
