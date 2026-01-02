@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import pirateHook from "./images/hook.webp";
-import pirateCutlass from "./images/pirate_foam.gif";
-import pirateKnife from "./images/cut.gif";
-import pirateOverlay from "./images/sasasd.gif";
-import pirateBackground from "./images/water.webp";
+import pirateHook from "/assets/clocks/25-04-23/hook.webp";
+import pirateCutlass from "/assets/clocks/25-04-23/pirate_foam.gif";
+import pirateKnife from "/assets/clocks/25-04-23/cut.gif";
+import pirateOverlay from "/assets/clocks/25-04-23/sasasd.gif";
+import pirateBackground from "/assets/clocks/25-04-23/water.webp";
 
 const PirateClock = () => {
   useEffect(() => {
