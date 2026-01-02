@@ -3,7 +3,7 @@ const revolution251127font = '/fonts/25-11-27-dec.ttf';
 const line251127font = '/fonts/25-11-27-french.ttf';
 import hourHandImg from './fre.webp'
 import minuteHandImg from './fren.webp'
-import secondHandImg from './fren.png'
+import secondHandImg from './french.webp'
 import backgroundImg from './fr.jpg' // your background image
 
 // --- 251127font Setup ---
