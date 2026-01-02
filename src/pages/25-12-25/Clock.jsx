@@ -35,7 +35,7 @@ const BoardingPass = () => {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: redDark,
-    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    fontFamily: 'Helvetica, Arial, "Helvetica Neue", sans-serif',
     fontSize: '0.5625rem',
     margin: 0,
     padding: 0
