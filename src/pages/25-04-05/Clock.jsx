@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-// Import main background image
-import overlayImg from "./images/gfccc.gif"; 
 
-// --- 🖼️ CORRECT IMAGE IMPORTS ---
-// Assuming gr4.gif, gr5.gif, and gr6.gif are in the same folder as the main component file, 
-// or adjust the paths as necessary (e.g., if they are in './images/').
-// I'll assume they are imported from the same place as overlayImg based on your original structure.
-import hourHandSource from "./images/gr4.gif";
-import minuteHandSource from "./images/gr5.gif";
-import secondHandSource from "./images/gr9.png";
+// --- 🖼️ IMAGE PATHS FROM PUBLIC FOLDER ---
+// Using public folder paths - these images need to exist in public/assets/clocks/25-04-05/
+const overlayImg = "/assets/clocks/25-04-05/gfccc.gif";
+const hourHandSource = "/assets/clocks/25-04-05/gr4.gif";
+const minuteHandSource = "/assets/clocks/25-04-05/gr5.gif";
+const secondHandSource = "/assets/clocks/25-04-05/gr9.png";
 // ------------------------------------
 
 // --- Clock Logic Functions (Unchanged) ---
