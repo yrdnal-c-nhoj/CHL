@@ -23,7 +23,7 @@ const RotatingAnalemmaClock = () => {
         font-display: block;
       }
       @font-face {
-        font-family: 'AnaFont';
+        font-family: 'AnalemmaText';
         src: url('/fonts/25-12-27-ana.ttf') format('truetype');
         font-display: block;
       }
