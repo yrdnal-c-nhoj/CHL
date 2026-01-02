@@ -123,7 +123,7 @@ export default function Clock() {
           }}
         >
           <img
-            src={process.env.NODE_ENV === 'production' ? `${process.env.PUBLIC_URL || ''}${fallbackImg}` : fallbackImg}
+            src={fallbackImg}
             alt=""
             style={{
               position: "absolute",
