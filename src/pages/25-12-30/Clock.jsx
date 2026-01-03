@@ -230,8 +230,8 @@ const RotatingAnalemmaClock = () => {
               strokeWidth="2" 
             />
             
-            <text x="150" y="10" textAnchor="middle" fill="#F29380" fontSize="32" fontWeight="bold">SOMERO</text>
-            <text x="150" y="300" textAnchor="middle" fill="#83F7FB" fontSize="32" fontWeight="bold" transform="rotate(180 150 295)">VINTRO</text>
+            <text x="150" y="10" textAnchor="middle" fill="#F29380" fontSize="22" >SOMERO</text>
+            <text x="150" y="300" textAnchor="middle" fill="#83F7FB" fontSize="22" transform="rotate(180 150 295)">VINTRO</text>
             
             {/* The dot is placed last so it has the "highest z-index" in the SVG */}
             <circle 
