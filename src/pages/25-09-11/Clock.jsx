@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-const medievalFont = '/fonts/25-09-11-ren.ttf';
-import backgroundImage from './ren.jpg';
-import MedievalSVG from './MedievalSVG';
+import medievalFont from '../../assets/fonts/25-09-11-ren.ttf';
+import backgroundImage from '../../assets/clocks/25-09-11/ren.jpg';
+import MedievalSVG from '../../assets/clocks/25-09-11/MedievalSVG.jsx';
 
 const MedievalBanner = () => {
   const [time, setTime] = useState(new Date());

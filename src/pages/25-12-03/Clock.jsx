@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // Import font with today's date variable name
-const font_2024_12_05 = '/fonts/25-12-03-dog.ttf';
+import font_2024_12_05 from '../../assets/fonts/25-12-03-dog.ttf?url';
 
 const PuppyClockComponent = () => {
   const [currentImage, setCurrentImage] = useState('');

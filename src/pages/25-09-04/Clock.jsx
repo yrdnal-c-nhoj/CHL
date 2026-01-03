@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import centerImage from './sky.gif';
-import bgImage from './wood.jpeg';
+import centerImage from '../../assets/clocks/25-09-04/sky.gif';
+import bgImage from '../../assets/clocks/25-09-04/wood.jpeg';
 
 const AnalogClock = () => {
   const [time, setTime] = useState(new Date());

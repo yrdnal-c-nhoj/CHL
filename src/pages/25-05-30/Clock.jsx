@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-const issFont = '/fonts/25-05-30-iss.ttf';
+import issFont from '../../assets/fonts/25-05-30-iss.ttf';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());

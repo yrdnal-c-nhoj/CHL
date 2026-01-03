@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-const cus250903font = '/fonts/25-09-03-mau.ttf';
-import cornerImage from './corner.gif'
-import backgroundImage from './mau.gif' // <-- your background image
+import cus250903font from '../../assets/fonts/25-09-03-mau.ttf';
+import cornerImage from '../../assets/clocks/25-09-03/corner.gif'
+import backgroundImage from '../../assets/clocks/25-09-03/mau.gif' // <-- your background image
 
 function DigitalClock () {
   const [time, setTime] = useState(new Date())

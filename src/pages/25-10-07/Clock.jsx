@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 
 // === Local assets ===
-import backgroundVideo from '/assets/clocks/25-10-07/big.mp4'
-import fallbackGif from '/assets/clocks/25-10-07/big.webp'
-const O251007font = '/fonts/25-10-07-str.ttf';
+import backgroundVideo from '../../assets/clocks/25-10-07/big.mp4'
+import fallbackGif from '../../assets/clocks/25-10-07/big.webp'
+import O251007font from '../../assets/fonts/25-10-07-str.ttf';
 
 export default function ImageAnalogClock () {
   const [time, setTime] = useState(new Date())

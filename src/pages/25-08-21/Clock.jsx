@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-const customFont821 = '/fonts/25-08-21-wide.ttf'; // Your font file
+import customFont821 from '../../assets/fonts/25-08-21-wide.ttf'; // Your font file
 
 const NumberLineClock = () => {
   const hoursRef = useRef(null);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import backgroundImage from './shrine.webp'; // Ensure this exists in the same directory
+import backgroundImage from '../../assets/clocks/25-12-29/shrine.webp'; // Correct path to the image
 
 const DynamicClockComponent = () => {
   const [time, setTime] = useState(new Date());
@@ -20,7 +20,7 @@ const DynamicClockComponent = () => {
     styleElement.innerHTML = `
       @font-face {
         font-family: '${fontFamilyName}';
-        src: url('/fonts/25-12-29.ttf') format('truetype');
+        src: url('${new URL('../../assets/fonts/25-12-29-shrine.ttf', import.meta.url).href}') format('truetype');
         font-display: block;
       }
       * {

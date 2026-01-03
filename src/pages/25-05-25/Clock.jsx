@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import arm from "./arm.gif";
-import arm2 from "./arm2.gif";
-import arm3 from "./arm3.gif";
-const botFont = '/fonts/25-05-25-bot.ttf'; // Import the font file
+import arm from '../../assets/clocks/25-05-25/arm.gif';
+import arm2 from '../../assets/clocks/25-05-25/arm2.gif';
+import arm3 from '../../assets/clocks/25-05-25/arm3.gif';
+import botFont from '../../assets/fonts/25-05-25-bot.ttf'; // Import the font file
 
 const Clock = () => {
   useEffect(() => {

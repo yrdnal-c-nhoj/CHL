@@ -1,7 +1,7 @@
 // DigitalClock.jsx (Optimized for FOUT Prevention)
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-const font251130 = '/fonts/25-11-30-nono.ttf';
-import backgroundImg from './crax.jpg'
+import font251130 from '../../assets/fonts/25-11-30-nono.ttf?url';
+import backgroundImg from '../../assets/clocks/25-11-30/crax.jpg'
 
 export default function DigitalClock () {
   const [now, setNow] = useState(() => new Date())

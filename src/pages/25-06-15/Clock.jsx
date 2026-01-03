@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-const fontUrl = '/fonts/25-06-15-ZombieStitch.ttf';
-import bgImageUrl from "./stin.webp";
-import overlayImageUrl from "./stit.jpeg";
+import fontUrl from '../../assets/fonts/25-06-15-ZombieStitch.ttf';
+import bgImageUrl from "../../assets/clocks/25-06-15/stin.webp";
+import overlayImageUrl from "../../assets/clocks/25-06-15/stit.jpeg";
 
 const StitchesClock = () => {
   useEffect(() => {

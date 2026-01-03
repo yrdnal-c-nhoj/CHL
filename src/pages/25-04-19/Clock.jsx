@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-const permanentMarkerFont = '/fonts/25-04-19-sph.ttf'; 
+import permanentMarkerFont from '../../assets/fonts/25-04-19-sph.ttf';
 
 const BALL_SIZES = {
   hours: 19,

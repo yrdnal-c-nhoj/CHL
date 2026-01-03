@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import anglerfishIdle from './anglerfish-gif_anglerfish_idle_swim.webp';
-import anglerfishFuse from './Deep-Sea-Anglerfish-Fuse.webp';
-import patternOverlay from './qsxwwd.webp';
-import spinGif from './spin.gif';
+import anglerfishIdle from '../../assets/clocks/25-07-21/anglerfish-gif_anglerfish_idle_swim.webp';
+import anglerfishFuse from '../../assets/clocks/25-07-21/Deep-Sea-Anglerfish-Fuse.webp';
+import patternOverlay from '../../assets/clocks/25-07-21/qsxwwd.webp';
+import spinGif from '../../assets/clocks/25-07-21/spin.gif';
 
 const AnglerfishClock = () => {
   const [time, setTime] = useState('');

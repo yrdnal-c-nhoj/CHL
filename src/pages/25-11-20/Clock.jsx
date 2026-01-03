@@ -1,7 +1,7 @@
 // PixelInverseClock.jsx
 import React, { useRef, useEffect, useState } from 'react'
-import videoFile from '/assets/clocks/25-11-20/day.mp4'
-const xxx251120 = '/fonts/25-11-20-day.ttf';
+import videoFile from '../../assets/clocks/25-11-20/day.mp4'
+const xxx251120 = '../../assets/fonts/25-11-20-day.ttf';
 
 const FONT_FAMILY = 'MyClockFont_20251120'
 const fontUrl = new URL(xxx251120, import.meta.url).href

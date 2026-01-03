@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import bgImage from "./q.webp";
-const fontFile_2025_11_01 = '/fonts/25-08-08-q.otf';
+import bgImage from "../../assets/clocks/25-08-08/q.webp";
+import fontFile_2025_11_01 from '../../assets/fonts/25-08-08-q.otf';
 
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date());

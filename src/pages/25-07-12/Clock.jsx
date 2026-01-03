@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-const fibFont = '/fonts/25-07-12-fib.otf';
-import fibImage from './fib.gif';
+import fibFont from '../../assets/fonts/25-07-12-fib.otf';
+import fibImage from '../../assets/clocks/25-07-12/fib.gif';
 
 const FibonacciClock = () => {
   useEffect(() => {

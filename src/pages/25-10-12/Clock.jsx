@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import bgVideo from "./rose.mp4";
-import bgFallback from "./rose.webp";
+import bgVideo from "../../assets/clocks/25-10-12/rose.mp4";
+import bgFallback from "../../assets/clocks/25-10-12/rose.webp";
 
 export default function AnalogClock() {
   const [videoPlayable, setVideoPlayable] = useState(false);

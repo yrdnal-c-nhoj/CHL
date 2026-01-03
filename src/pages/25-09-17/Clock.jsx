@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import backgroundImage from './crush.jpg'
-const f250917fontt = '/fonts/25-09-17-crush.ttf';
-import centerImage from './crush.gif' // middle image
-import topImage from './crr.gif' // top overlay image
-import overlay1 from './ccr.gif'
-import overlay2 from './cr.gif'
-import overlay3 from './crush2.gif'
+import backgroundImage from '../../assets/clocks/25-09-17/crush.jpg'
+import f250917fontt from '../../assets/fonts/25-09-17-crush.ttf?url';
+import centerImage from '../../assets/clocks/25-09-17/cr.gif' // middle image
+import topImage from '../../assets/clocks/25-09-17/crr.gif' // top overlay image
+import overlay1 from '../../assets/clocks/25-09-17/ccr.gif'
+import overlay2 from '../../assets/clocks/25-09-17/cru.gif'
+import overlay3 from '../../assets/clocks/25-09-17/crush2.gif'
 
 const pad = n => n.toString().padStart(2, '0')
 
@@ -177,7 +177,7 @@ const DigitalClock = () => {
           transform: 'translate(-50%, -50%) rotate(-32deg)',
           width: '35vw',
           height: '35vh',
-          opacity: 0.5,
+          // opacity: 0.5,
           filter: 'saturate(120%) hue-rotate(290deg)',
           zIndex: 2
         }}
@@ -198,7 +198,7 @@ const DigitalClock = () => {
           transform: 'translate(-50%, -50%) rotate(20deg)',
           width: '30vw',
           height: '30vh',
-          opacity: 0.3,
+          // opacity: 0.3,
           filter: 'saturate(150%) hue-rotate(10deg)',
           zIndex: 4
         }}

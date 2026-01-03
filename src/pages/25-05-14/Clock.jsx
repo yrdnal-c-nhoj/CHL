@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-const dottedFont = '/fonts/25-05-14-dotted.ttf'; // Custom dotted font for clock display
+import dottedFont from '../../assets/fonts/25-05-14-dotted.ttf'; // Custom dotted font for clock display
 
 export default function Clock() {
   useEffect(() => {

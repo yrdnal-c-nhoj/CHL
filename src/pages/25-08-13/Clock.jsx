@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import bgImage from "./bg.webp";
-import secondBgImage from "./loop.webp";
-import thirdBgImage from "./tiny.gif"; // new background image
+import bgImage from "../../assets/clocks/25-08-13/bg.webp";
+import secondBgImage from "../../assets/clocks/25-08-13/loop.webp";
+import thirdBgImage from "../../assets/clocks/25-08-13/tiny.gif"; // new background image
 
 export default function AnalogClock() {
   const canvasRef = useRef(null);

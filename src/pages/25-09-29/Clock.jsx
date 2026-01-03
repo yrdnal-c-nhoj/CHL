@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-const c250929 = '/fonts/25-09-29-actionj.ttf';
+import c250929 from '../../assets/fonts/25-09-29-actionj.ttf?url';
 
 export default function ComicClock () {
   const [fontLoaded, setFontLoaded] = useState(false)

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-const kalFont = '/fonts/25-07-04-kal.otf';
-import bgImage from './7ZAx.webp';
+import kalFont from '../../assets/fonts/25-07-04-kal.otf';
+import bgImage from '../../assets/clocks/25-07-04/7ZAx.webp';
 
 const Clock = () => {
   const [fontLoaded, setFontLoaded] = useState(false);

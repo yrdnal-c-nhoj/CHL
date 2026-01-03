@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import bgImage from './birds.webp'
-const font251107kdvsf = '/fonts/25-11-07-twobirds.ttf';
+import bgImage from '../../assets/clocks/25-11-07/birds.webp'
+const font251107kdvsf = '../../assets/fonts/25-11-07-twobirds.ttf';
 
 export default function PanicAnalogClock () {
   const rightImageDelay = 500 // 0.5s delay for right image

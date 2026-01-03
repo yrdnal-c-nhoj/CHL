@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
-import cakeGif from "/assets/clocks/25-04-16/cake.gif";
-import minuteImg from "/assets/clocks/25-04-16/200w.webp";
-import hourImg from "/assets/clocks/25-04-16/2hhj.webp";
-import secondImg from "/assets/clocks/25-04-16/20.webp";
-import confGif from "/assets/clocks/25-04-16/conf.gif";
-import confJpg from "/assets/clocks/25-04-16/conf.jpg";
+import cakeGif from "../../assets/clocks/25-04-16/cake.gif";
+import minuteImg from "../../assets/clocks/25-04-16/200w.webp";
+import hourImg from "../../assets/clocks/25-04-16/2hhj.webp";
+import secondImg from "../../assets/clocks/25-04-16/20.webp";
+import confGif from "../../assets/clocks/25-04-16/conf.gif";
+import confJpg from "../../assets/clocks/25-04-16/conf.jpg";
 
 const BirthdayCakeClock = () => {
   const hourHandRef = useRef(null);

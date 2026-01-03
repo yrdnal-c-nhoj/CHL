@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-const stickFont = '/fonts/25-04-26-Stick.ttf';
+import stickFont from '../../assets/fonts/25-04-26-Stick.ttf';
 
 const SkewClock = () => {
   const canvasRef = useRef(null);

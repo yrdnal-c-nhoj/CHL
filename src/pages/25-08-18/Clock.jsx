@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
-import bg3 from "./target.gif";
-import bg1 from "./arrows.gif";
-import bg2 from "./ar.gif";
-import bg4 from "./bul.gif";
-const fontFileUrl = '/fonts/25-08-18-targ.otf';
-import hourHandImg from "./aro.gif";
-import minuteHandImg from "./arrr.gif";
-import secondHandImg from "./ar9.gif";
+import bg3 from "../../assets/clocks/25-08-18/target.gif";
+import bg1 from "../../assets/clocks/25-08-18/arrows.gif";
+import bg2 from "../../assets/clocks/25-08-18/ar.gif";
+import bg4 from "../../assets/clocks/25-08-18/bul.gif";
+import fontFileUrl from '../../assets/fonts/25-08-18-targ.otf';
+import hourHandImg from "../../assets/clocks/25-08-18/aro.gif";
+import minuteHandImg from "../../assets/clocks/25-08-18/arrr.gif";
+import secondHandImg from "../../assets/clocks/25-08-18/ar9.gif";
 
 const CLOCK_FONT_FAMILY = "ClockFont__Scoped_7t3";
 

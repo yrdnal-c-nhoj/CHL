@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import scorpImage from './sand.webp';
-import hourHandImage from './giphy1-ezgif.com-rotate(2).gif';
-import minuteHandImage from './giphy1-ezgif.com-rotate(1).gif';
-import secondHandImage from './giphy1-ezgif.com-rotate(3).gif';
+import scorpImage from '../../assets/clocks/25-05-02/sand.webp';
+import hourHandImage from '../../assets/clocks/25-05-02/giphy1-ezgif.com-rotate(1).gif';
+import minuteHandImage from '../../assets/clocks/25-05-02/giphy1-ezgif.com-rotate(2).gif';
+import secondHandImage from '../../assets/clocks/25-05-02/giphy1-ezgif.com-rotate(3).gif';
+import scorpFont from '../../assets/fonts/25-05-02-scorp.ttf';
 
 export default function Clock() {
   useEffect(() => {
@@ -12,7 +13,7 @@ export default function Clock() {
       styleTag.textContent = `
         @font-face {
           font-family: 'bang';
-          src: url('/fonts/25-05-02-scorp.ttf') format('truetype');
+          src: url(${scorpFont}) format('truetype');
           font-display: swap;
         }
         .clock-number {
@@ -22,7 +23,7 @@ export default function Clock() {
       document.head.appendChild(styleTag);
       
       // Force font loading
-      const font = new FontFace('bang', `url('/fonts/25-05-02-scorp.ttf')`);
+      const font = new FontFace('bang', `url(${scorpFont})`);
       font.load().then(() => {
         document.fonts.add(font);
       }).catch(err => {
@@ -73,7 +74,7 @@ export default function Clock() {
   return (
     <div
       style={{
-        fontFamily: 'bang, sans-serif !important',
+        fontFamily: 'bang, sans-serif',
         margin: 0,
         padding: 0,
         background: 'rgb(9,9,9)',
@@ -116,7 +117,7 @@ export default function Clock() {
         {numbers.map((num) => (
           <div
             key={num.value}
-            style={{
+              style={{
               position: 'absolute',
               width: '100%',
               height: '100%',
@@ -124,8 +125,8 @@ export default function Clock() {
               fontSize: '16.5vmin',
               color: '#c5c53e',
               textShadow: '#09f745 0.1rem 0.1rem, #080808 -0.1rem 0.1rem',
-              transform: `rotate(${num.rotation}deg)`,
-              fontFamily: 'bang, sans-serif !important',
+                transform: `rotate(${num.rotation}deg)`,
+                fontFamily: 'bang, sans-serif',
             }}
           >
             <div

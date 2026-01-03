@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 // === Local assets ===
-import bgWebp from './roma.webp';
-import bgVideo from './ro.mp4';
-const font_20251007 = '/fonts/25-10-10-roma.ttf';
+import bgWebp from '../../assets/clocks/25-10-10/roma.webp';
+import bgVideo from '../../assets/clocks/25-10-10/ro.mp4';
+import font_20251007 from '../../assets/fonts/25-10-10-roma.ttf';
 
 export default function ProcessingCounterClock() {
   const [time, setTime] = useState(new Date());

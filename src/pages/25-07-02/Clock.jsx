@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-const bakFont = '/fonts/25-07-02-bak.ttf';
-import backgroundGif from './bk.gif';
+import bakFont from '../../assets/fonts/25-07-02-bak.ttf';
+import backgroundGif from '../../assets/clocks/25-07-02/ba.gif';
 
 export default function Clock() {
   const hourRef = useRef(null);

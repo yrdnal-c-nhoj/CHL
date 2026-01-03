@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import bgImage from "./oort.jpg";
+import bgImage from "../../assets/clocks/25-09-19/oort.jpg";
 
 export default function AnalogClock() {
   const [ready, setReady] = useState(false);

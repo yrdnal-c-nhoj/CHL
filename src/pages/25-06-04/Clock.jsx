@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-const coffeeFont = '/fonts/25-06-04-cof.ttf';
-import bgStill from "./coff.png";
-import bgAnimated from "./coff.gif";
+import coffeeFont from '../../assets/fonts/25-06-04-cof.ttf';
+import bgStill from "../../assets/clocks/25-06-04/coff.png";
+import bgAnimated from "../../assets/clocks/25-06-04/coff.gif";
 
 const CoffeeClock = () => {
   const [isReady, setIsReady] = useState(false);

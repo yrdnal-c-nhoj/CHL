@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-const customFont = '/fonts/25-08-11-wash.otf';
-import bgImage from './mach.gif';
-import topImage from './wash.gif';
-import img1 from './a.gif';
-import img2 from './b.png';
-import img3 from './c.gif';
-import img4 from './e.gif';
-import img5 from './f.gif';
-import img6 from './z.png';
-import img7 from './y.gif';
-import img8 from './i.png';
-import img9 from './q.gif';
-import img10 from './aa.gif';
-import img11 from './bb.webp';
+import customFont from '../../assets/fonts/25-08-11-wash.otf';
+import bgImage from '../../assets/clocks/25-08-11/wash.gif';
+import topImage from '../../assets/clocks/25-08-11/mach.gif';
+import img1 from '../../assets/clocks/25-08-11/a.gif';
+import img2 from '../../assets/clocks/25-08-11/aa.gif';
+import img3 from '../../assets/clocks/25-08-11/b.png';
+import img4 from '../../assets/clocks/25-08-11/bb.webp';
+import img5 from '../../assets/clocks/25-08-11/c.gif';
+import img6 from '../../assets/clocks/25-08-11/e.gif';
+import img7 from '../../assets/clocks/25-08-11/f.gif';
+import img8 from '../../assets/clocks/25-08-11/i.png';
+import img9 from '../../assets/clocks/25-08-11/q.gif';
+import img10 from '../../assets/clocks/25-08-11/x.webp';
+import img11 from '../../assets/clocks/25-08-11/y.gif';
 
 const SwirlingImages = () => {
   const imageSizes = [9, 8, 10, 11, 9, 9, 9, 11, 9, 9, 8];

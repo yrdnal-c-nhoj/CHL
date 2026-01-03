@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-const slotFont = '/fonts/25-07-29-slot.otf';
-import bgImage from './IMAGE_1688551792.webp';
+import slotFont from '../../assets/fonts/25-07-29-slot.otf';
+import bgImage from '../../assets/clocks/25-07-29/IMAGE_1688551792.webp';
 
 // Define font-face globally
 const style = document.createElement('style');

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
-const c251004font = '/fonts/25-10-04-iss.ttf';
-import bgMp4 from './waterfall.mp4'
-import bgWebp from './waterfall.webp'
+import c251004font from '../../assets/fonts/25-10-04-iss.ttf';
+import bgMp4 from '../../assets/clocks/25-10-04/waterfall.mp4'
+import bgWebp from '../../assets/clocks/25-10-04/waterfall.webp'
 
 const ClockVideoBackground = () => {
   const [time, setTime] = useState(new Date())

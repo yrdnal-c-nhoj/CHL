@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-const sliFont = '/fonts/25-07-10-sli.otf';
-const sli2Font = '/fonts/25-07-10-sli2.ttf';
+import sliFont from '../../assets/fonts/25-07-10-sli.otf';
+import sli2Font from '../../assets/fonts/25-07-10-sli2.ttf';
 
 const Clock = () => {
   const digitGroups = ['hour-tens', 'hour-ones', 'minute-tens', 'minute-ones', 'second-tens', 'second-ones'];

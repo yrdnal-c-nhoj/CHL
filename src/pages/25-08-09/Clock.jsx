@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-const customFont = '/fonts/25-08-09-box.ttf'; // Custom font file
+import customFont from '../../assets/fonts/25-08-09-box.ttf'; // Custom font file
 
 const RectangularAnalogClock = () => {
   const [time, setTime] = useState(new Date());

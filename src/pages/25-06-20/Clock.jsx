@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-const LiuJianMaoCaoFontUrl = '/fonts/25-06-20-LiuJianMaoCao.ttf';
-const BlackHanSansFontUrl = '/fonts/25-06-20-BlackHanSans.ttf';
+import LiuJianMaoCaoFontUrl from '../../assets/fonts/25-06-20-LiuJianMaoCao.ttf';
+import BlackHanSansFontUrl from '../../assets/fonts/25-06-20-BlackHanSans.ttf';
 
 const IndecisiveClock = () => {
   const [time, setTime] = useState({ h: "", m: "", s: "" });

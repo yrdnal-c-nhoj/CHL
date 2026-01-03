@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import './Sprout.css';
-import spr from './spr.gif';
-import sprou from './sprou.gif';
-import sprout from './sprout.gif';
-const sproutFont = '/fonts/25-05-26-sprout.ttf';
+import spr from '../../assets/clocks/25-05-26/spr.gif';
+import sprou from '../../assets/clocks/25-05-26/sprou.gif';
+import sprout from '../../assets/clocks/25-05-26/sprout.gif';
+import sproutFont from '../../assets/fonts/25-05-26-sprout.ttf';
 
 const styles = {
   container: {
