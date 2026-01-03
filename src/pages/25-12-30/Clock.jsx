@@ -36,15 +36,17 @@ const RotatingAnalemmaClock = () => {
     `;
     document.head.appendChild(styleElement);
 
-    // 3. Wait for Font Loading
-    document.fonts.load(`1em ${fontFamilyName}`)
+    // 3. Wait for Font Loading (both injected faces)
+    Promise.all([
+      document.fonts.load(`1em ${fontFamilyName}`),
+      document.fonts.load(`1em AnalemmaText`),
+    ])
       .then(() => {
-        // Successful load
         setIsReady(true);
       })
       .catch((err) => {
         console.error("Font failed to load:", err);
-        setIsReady(true); // Proceed with fallback font
+        setIsReady(true);
       });
 
     // 4. Clock Interval: keep `time` updated once per second (used for labels)
@@ -135,7 +137,7 @@ const RotatingAnalemmaClock = () => {
       fontSize: '2.5vh',
       color: '#FDFEFE',
       letterSpacing: '0.2vh',
-      fontFamily: 'AnaFont, sans-serif',
+      fontFamily: `AnalemmaText, ${fontFamilyName}, sans-serif`,
       fontSize: '3.3vh',
       // letterSpacing: '0.2em',
       zIndex: 10
@@ -146,7 +148,7 @@ const RotatingAnalemmaClock = () => {
       top: '50%',
       transform: 'translateY(-50%)',
       writingMode: 'vertical-lr',
-      fontFamily: 'AnaFont, sans-serif',
+      fontFamily: `AnalemmaText, ${fontFamilyName}, sans-serif`,
       fontSize: '3.3vh',
       color: '#F7FBFB',
        letterSpacing: '0.2vh',
