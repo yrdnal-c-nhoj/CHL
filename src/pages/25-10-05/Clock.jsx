@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import bgImage from './16a.png'
-import clockBgImage from './16.png'
+import bgImage from '/assets/clocks/25-10-05/6a.png'
+import clockBgImage from '/assets/clocks/25-10-05/6.png'
 const diigi251005 = '/fonts/25-10-05-dode.ttf';
 const ana251005font = '/fonts/25-10-05-do.ttf';
 
