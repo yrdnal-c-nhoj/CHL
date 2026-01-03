@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import backgroundImage from '../../assets/clocks/25-12-29/shrine.webp';
-import shrineFont from '../../assets/fonts/25-12-29-shrine.ttf?url';
 
+const fontPath = '../../assets/fonts/25-12-29-shrine.ttf';
 const FONT_FAMILY = 'ShrineFont_20251229';
+const fontUrl = new URL(fontPath, import.meta.url).href;
 
 const DynamicClockComponent = () => {
   const [time, setTime] = useState(new Date());
@@ -10,7 +11,7 @@ const DynamicClockComponent = () => {
 
   // Load the custom font
   useEffect(() => {
-    const font = new FontFace(FONT_FAMILY, `url(${shrineFont})`);
+    const font = new FontFace(FONT_FAMILY, `url(${fontUrl})`);
     font.load().then(loaded => {
       document.fonts.add(loaded);
       setFontLoaded(true);
@@ -74,36 +75,24 @@ const DynamicClockComponent = () => {
   if (!fontLoaded) return null;
 
   return (
-    <>
-      <style>
-        {`
-          @font-face {
-            font-family: "${FONT_FAMILY}";
-            src: url(${shrineFont}) format("truetype");
-            font-weight: normal;
-            font-style: normal;
-          }
-        `}
-      </style>
-      <div style={styles.container}>
-        <div style={styles.background} />
+    <div style={styles.container}>
+      <div style={styles.background} />
 
-        <div style={{ 
-          ...styles.clockBase, 
-          writingMode: 'vertical-rl', 
-          transform: 'rotate(180deg)'
-        }}>
-          {formattedTime}
-        </div>
-
-        <div style={{ 
-          ...styles.clockBase, 
-          writingMode: 'vertical-lr'
-        }}>
-          {formattedTime}
-        </div>
+      <div style={{ 
+        ...styles.clockBase, 
+        writingMode: 'vertical-rl', 
+        transform: 'rotate(180deg)'
+      }}>
+        {formattedTime}
       </div>
-    </>
+
+      <div style={{ 
+        ...styles.clockBase, 
+        writingMode: 'vertical-lr'
+      }}>
+        {formattedTime}
+      </div>
+    </div>
   );
 };
 
