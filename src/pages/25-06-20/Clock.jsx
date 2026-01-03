@@ -1,29 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import LiuJianMaoCaoFontUrl from '../../assets/fonts/25-06-20-LiuJianMaoCao.ttf';
-import BlackHanSansFontUrl from '../../assets/fonts/25-06-20-BlackHanSans.ttf';
 
 const IndecisiveClock = () => {
   const [time, setTime] = useState({ h: "", m: "", s: "" });
   const [showFirst, setShowFirst] = useState(true);
-
-  // Load fonts on mount
-  useEffect(() => {
-    const liuFont = new FontFace(
-      "Liu Jian Mao Cao",
-      `url(${LiuJianMaoCaoFontUrl})`
-    );
-    const blackHanFont = new FontFace(
-      "Black Han Sans",
-      `url(${BlackHanSansFontUrl})`
-    );
-
-    liuFont.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-    });
-    blackHanFont.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-    });
-  }, []);
 
   // Update time every second and toggle visible block
   useEffect(() => {
@@ -82,13 +61,13 @@ const IndecisiveClock = () => {
   };
 
   const digitStyle1 = {
-    fontFamily: '"Liu Jian Mao Cao", cursive',
+    fontFamily: '"Segoe UI", Roboto, Helvetica, Arial, sans-serif',
     color: "rgb(250, 212, 212)",
     fontSize: "8rem",
   };
 
   const digitStyle2 = {
-    fontFamily: '"Black Han Sans", sans-serif',
+    fontFamily: '"Segoe UI", Roboto, Helvetica, Arial, sans-serif',
     color: "rgb(251, 223, 224)",
     fontSize: "8rem",
     lineHeight: "7rem",

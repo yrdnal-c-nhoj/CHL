@@ -23,20 +23,16 @@ export default function PixelInverseClock() {
     right: 0,
     bottom: 0,
     width: '100%',
-    height: '100%',
+    height: '100dvh',
     margin: 0,
     padding: 0,
     overflow: 'hidden',
     backgroundColor: '#000',
     zIndex: 0,
-    // Handle different viewport heights
-    height: '100dvh',
-    '@supports not (height: 100dvh)': {
-      height: '100vh'
-    },
-    '@supports (-webkit-touch-callout: none)': {
-      height: '-webkit-fill-available'
-    }
+    // Fallback for browsers that don't support dvh
+    minHeight: '100vh',
+    // Handle mobile Safari viewport issues
+    WebkitOverflowScrolling: 'touch'
   }
 
   const canvasStyle = {
@@ -50,7 +46,10 @@ export default function PixelInverseClock() {
     animation: 'fadeIn 0.2s ease-in forwards 0.1s',
     zIndex: 0,
     pointerEvents: 'none',
-    objectFit: 'cover'
+    objectFit: 'cover',
+    // Ensure canvas fills container properly
+    minWidth: '100%',
+    minHeight: '100%'
   }
 
   const videoStyle = {
