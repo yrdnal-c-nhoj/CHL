@@ -4,30 +4,12 @@
 
 vite v7.2.7 building client environment for production...
 transforming...
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-✓ 854 modules transformed.
-✗ Build failed in 1.59s
+✓ 330 modules transformed.
+✗ Build failed in 922ms
 error during build:
-[vite]: Rollup failed to resolve import "/assets/clocks/25-10-23/bg.jpg" from "/Users/john/Desktop/CHL/src/pages/25-10-21/Clock.jsx".
-This is most likely unintended because it can break your application at runtime.
-If you do want to externalize this module explicitly add it to
-`build.rollupOptions.external`
-    at viteLog (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/config.js:33634:57)
-    at file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/config.js:33668:73
-    at onwarn (file:///Users/john/Desktop/CHL/node_modules/@vitejs/plugin-react/dist/index.js:90:7)
-    at file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/config.js:33668:28
-    at onRollupLog (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/config.js:33663:63)
-    at onLog (file:///Users/john/Desktop/CHL/node_modules/vite/dist/node/chunks/config.js:33466:4)
-    at file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:20866:32
-    at Object.logger [as onLog] (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:22748:9)
-    at ModuleLoader.handleInvalidResolvedId (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21492:26)
+Could not resolve "../../assets/clocks/25-05-07/3ce69531311986a8a78f1e093f53df3d-ezgif.com-optiwebp.webp" from "src/pages/25-05-07/Clock.jsx"
+file: /Users/john/Desktop/CHL/src/pages/25-05-07/Clock.jsx
+    at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
+    at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
+    at ModuleLoader.handleInvalidResolvedId (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21490:24)
     at file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21450:26
