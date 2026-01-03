@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 
 const RotatingAnalemmaClock = () => {
   const [time, setTime] = useState(new Date());
-  const [rotation, setRotation] = useState(0);
+  const rotationRef = useRef(0);
+  const rotatingGroupRef = useRef(null);
   const [isReady, setIsReady] = useState(false);
 
   // 1. Generate Unique Font Family Name
@@ -46,19 +47,29 @@ const RotatingAnalemmaClock = () => {
         setIsReady(true); // Proceed with fallback font
       });
 
-    // 4. Clock Interval
+    // 4. Clock Interval: keep `time` updated once per second (used for labels)
     const timer = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    // Smooth RAF-based rotation: update SVG transform directly to avoid React re-renders
+    let rafId = null;
+    const animate = () => {
       const now = new Date();
-      setTime(now);
-      
-      // Calculate rotation: 360 degrees over 60 seconds (counter-clockwise)
       const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
-      setRotation(-(seconds / 60) * 360);
-    }, 100);
+      const rot = -(seconds / 60) * 360;
+      rotationRef.current = rot;
+      if (rotatingGroupRef.current) {
+        rotatingGroupRef.current.setAttribute('transform', `rotate(${rot}, 150, 150)`);
+      }
+      rafId = requestAnimationFrame(animate);
+    };
+    rafId = requestAnimationFrame(animate);
 
     // 5. Cleanup on Unmount
     return () => {
       clearInterval(timer);
+      if (rafId) cancelAnimationFrame(rafId);
       const injectedStyle = document.getElementById(`style-${fontFamilyName}`);
       if (injectedStyle) injectedStyle.remove();
     };
@@ -210,8 +221,8 @@ const RotatingAnalemmaClock = () => {
           <line x1="150" y1="0" x2="150" y2="300" stroke="#222" strokeWidth="1" />
           <line x1="0" y1="150" x2="300" y2="150" stroke="#222" strokeWidth="1" />
 
-          {/* Rotating Group - Pivoting on 150, 150 */}
-          <g transform={`rotate(${rotation}, 150, 150)`}>
+          {/* Rotating Group - Pivoting on 150, 150 (transform updated via RAF for smoothness) */}
+          <g ref={rotatingGroupRef} transform={`rotate(${rotationRef.current || 0}, 150, 150)`}>
             <path 
               d={pathData} 
               fill="none" 
