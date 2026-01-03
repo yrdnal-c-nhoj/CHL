@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
-import videoFile from "./esp.mp4";
-import videoWebM from "./esp.webp";
-import fallbackImg from "./esp.jpeg";
+import videoFile from "/assets/clocks/25-10-24/esp.mp4";
+import videoWebM from "/assets/clocks/25-10-24/esp.webp";
+import fallbackImg from "/assets/clocks/25-10-24/esp.jpeg";
 const fontFile251024 = '/fonts/25-10-24-esp.ttf';
-import cornerUL from "./ul.webp";
-import cornerLR from "./lr.webp";
+import cornerUL from "/assets/clocks/25-10-24/ul.webp";
+import cornerLR from "/assets/clocks/25-10-24/lr.webp";
 
 export default function VictorianEsperantoClock() {
   const videoRef = useRef(null);
