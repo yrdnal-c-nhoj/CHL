@@ -151,7 +151,7 @@ const RotatingAnalemmaClock = () => {
       fontFamily: `AnalemmaText, ${fontFamilyName}, sans-serif`,
       fontSize: '3.3vh',
       color: '#F7FBFB',
-       letterSpacing: '0.2vh',
+      letterSpacing: '0.2vh',
       zIndex: 10
     },
     clockContainer: {
