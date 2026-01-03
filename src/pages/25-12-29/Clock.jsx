@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import backgroundImage from '../../assets/clocks/25-12-29/shrine.webp';
 
-const fontPath = '../../assets/fonts/25-12-29-shrine.ttf';
-const FONT_FAMILY = 'ShrineFont_20251229';
-const fontUrl = new URL(fontPath, import.meta.url).href;
-
 const DynamicClockComponent = () => {
+  const FONT_FAMILY = 'ShrineFont_20251229';
+  const fontPath = '../../assets/fonts/25-12-29-shrine.ttf';
+  const fontUrl = new URL(fontPath, import.meta.url).href;
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
 
