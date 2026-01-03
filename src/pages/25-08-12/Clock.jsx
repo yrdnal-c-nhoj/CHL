@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-const customFontUrl = '/fonts/25-08-12-cubic.ttf'; // local font file
-import backgroundImage from "./earth.webp"; // local background image
+import customFontUrl from '../../assets/fonts/25-08-12-cubic.ttf'; // local font file
+import backgroundImage from "../../assets/clocks/25-08-12/earth.webp"; // local background image
 
 const faceColors = [
   "rgba(102, 51, 0, 0.75)",

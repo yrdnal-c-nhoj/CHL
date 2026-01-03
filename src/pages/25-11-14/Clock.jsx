@@ -1,19 +1,19 @@
 import React, { useEffect, useRef } from "react";
 
-import bg from "./ice.jpg"; // background image in same folder
+import bg from "../../assets/clocks/25-11-14/ice.jpg"; // background image in same folder
 
-import num1 from "./1.jpg";
-import num2 from "./2.webp";
-import num3 from "./3.webp";
-import num4 from "./4.jpg";
-import num5 from "./5.jpg";
-import num6 from "./6.jpg";
-import num7 from "./7.jpg";
-import num8 from "./8.jpg";
-import num9 from "./9.webp";
-import num10 from "./10.jpg";
-import num11 from "./11.webp";
-import num12 from "./12.webp";
+import num1 from "../../assets/clocks/25-11-14/1.jpg";
+import num2 from "../../assets/clocks/25-11-14/2.webp";
+import num3 from "../../assets/clocks/25-11-14/3.webp";
+import num4 from "../../assets/clocks/25-11-14/4.jpg";
+import num5 from "../../assets/clocks/25-11-14/5.jpg";
+import num6 from "../../assets/clocks/25-11-14/6.jpg";
+import num7 from "../../assets/clocks/25-11-14/7.jpg";
+import num8 from "../../assets/clocks/25-11-14/8.jpg";
+import num9 from "../../assets/clocks/25-11-14/9.webp";
+import num10 from "../../assets/clocks/25-11-14/10.jpg";
+import num11 from "../../assets/clocks/25-11-14/11.webp";
+import num12 from "../../assets/clocks/25-11-14/12.webp";
 
 const numberImages = [
   num12, num1, num2, num3, num4, num5,

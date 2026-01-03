@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import gridImage from './lan.gif';
+import gridImage from '../../assets/clocks/25-10-02/lan.gif';
 
 // Counting rod digit map
 const digitMap = {

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import lava1 from "/assets/clocks/25-04-24/lava.webp";
-import lava2 from "/assets/clocks/25-04-24/vp2OVr.gif";
-import lava3 from "/assets/clocks/25-04-24/lava.webp";
-const lavaFont = '/fonts/25-04-24-lava.ttf';
+import lava1 from "../../assets/clocks/25-04-24/lava.webp";
+import lava2 from "../../assets/clocks/25-04-24/vp2OVr.gif";
+import lava3 from "../../assets/clocks/25-04-24/lava.webp";
+import lavaFont from "../../assets/fonts/25-04-24-lava.ttf";
 
 const LavaClock = () => {
   const [time, setTime] = useState({ hours: "00", minutes: "00" });

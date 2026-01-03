@@ -1,8 +1,8 @@
 /** @jsxImportSource react */
 import React, { useEffect, useRef, useState } from "react";
-import bgVideo from "./tilt.mp4";
-import fallbackImg from "./tilt.webp";
-const romanFont2025_10_27 = '/fonts/25-10-29-tilt.ttf';
+import bgVideo from "../../assets/clocks/25-10-29/tilt.mp4";
+import fallbackImg from "../../assets/clocks/25-10-29/tilt.webp";
+import romanFont2025_10_27 from '../../assets/fonts/25-10-29-tilt.ttf';
 
 export default function MonarchClock() {
   const [mediaReady, setMediaReady] = useState(false);
@@ -19,7 +19,7 @@ export default function MonarchClock() {
   }, []);
 
   /* ------------------------------------------------------------------
-     2. Preload and load font
+     2. Preload and load font with scoping
   ------------------------------------------------------------------ */
   useEffect(() => {
     const link = document.createElement("link");
@@ -30,22 +30,31 @@ export default function MonarchClock() {
     link.crossOrigin = "anonymous";
     document.head.appendChild(link);
 
+    // Generate unique ID for this component instance
+    const uniqueId = `font-${Math.random().toString(36).substr(2, 9)}`;
+    const scopedFontName = `RomanClockFont_2025_10_27_${uniqueId}`;
+
     const font = new FontFace(
-      "RomanClockFont_2025_10_27",
+      scopedFontName,
       `url(${romanFont2025_10_27}) format('truetype')`
     );
     font
       .load()
       .then(() => {
+        // Add to document fonts for global availability during component lifetime
         document.fonts.add(font);
-        setFontLoaded(true);
+        setFontLoaded(scopedFontName);
       })
-      .catch(() => setFontLoaded(true));
+      .catch(() => setFontLoaded("'Courier New', monospace"));
 
-    const timeout = setTimeout(() => setFontLoaded(true), 3000);
+    const timeout = setTimeout(() => setFontLoaded("'Courier New', monospace"), 3000);
     return () => {
       clearTimeout(timeout);
       document.head.removeChild(link);
+      // Remove font when component unmounts
+      if (font.family === scopedFontName) {
+        document.fonts.delete(font);
+      }
     };
   }, []);
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
-const d250914 = '/fonts/25-09-14-swi.ttf';
-import bgImageSrc from './bg.gif'
+import d250914 from '../../assets/fonts/25-09-14-swi.ttf?url';
+import bgImageSrc from '../../assets/clocks/25-09-14/bg.gif'
 
 const GoldenChordsClock = () => {
   const canvasRef = useRef(null)

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
-const OrbitronFont20251012 = '/fonts/25-10-14-air.ttf';
-import bgImage from "./air.webp";
+import OrbitronFont20251012 from '../../assets/fonts/25-10-14-air.ttf';
+import bgImage from "../../assets/clocks/25-10-14/air.webp";
 
 const SpinningDodecahedronClock = () => {
   const containerRef = useRef(null);

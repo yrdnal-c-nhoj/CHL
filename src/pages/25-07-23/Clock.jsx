@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import backgroundImg from './bay01s52djxo1_400.webp';
-const bayFont = '/fonts/25-07-23-bay.ttf';
+import backgroundImg from '../../assets/clocks/25-07-23/bay01s52djxo1_400.webp';
+import bayFont from '../../assets/fonts/25-07-23-bay.ttf';
 
 const Clock = () => {
   const [timeStr, setTimeStr] = useState('');

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-const antFontUrl = '/fonts/25-05-19-Ant.ttf';
-import bg1 from "./ants.gif";
-import bg2 from "./ants1.gif";
+import antFontUrl from '../../assets/fonts/25-05-19-Ant.ttf';
+import bg1 from "../../assets/clocks/25-05-19/ants.gif";
+import bg2 from "../../assets/clocks/25-05-19/ants1.gif";
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());

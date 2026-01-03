@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-const font1 = '/fonts/25-08-25-code.ttf';
-const font2 = '/fonts/25-08-25-bar.ttf';
-import bgImage2 from './bgpo.webp';   // Bottom background
-import bgImage from './wh.webp'; // Top background
+import font1 from '../../assets/fonts/25-08-25-code.ttf';
+import font2 from '../../assets/fonts/25-08-25-bar.ttf';
+import bgImage2 from '../../assets/clocks/25-08-25/bgla.webp';   // Bottom background
+import bgImage from '../../assets/clocks/25-08-25/wh.webp'; // Top background
 
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date());

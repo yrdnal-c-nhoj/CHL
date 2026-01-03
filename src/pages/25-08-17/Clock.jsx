@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-const customFontUrl = '/fonts/25-08-17-scr.otf';
-import pageBg from "./bg.webp"; // full-screen background image
+import customFontUrl from '../../assets/fonts/25-08-17-scr.otf';
+import pageBg from "../../assets/clocks/25-08-17/bg.webp"; // full-screen background image
 
 const CLOCK_FONT_FAMILY = "DigitalClockFont__Scoped";
 

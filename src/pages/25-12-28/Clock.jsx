@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import videoFile from "./coaster.mp4";
-import videoWebM from "./coaster.mp4";
-import fallbackImg from "./coaster.webp";
-const fontUrl_20251128 = '/fonts/25-12-28-coaster.ttf';
+import videoFile from "../../assets/clocks/25-12-28/coaster.mp4";
+import videoWebM from "../../assets/clocks/25-12-28/coaster.mp4";
+import fallbackImg from "../../assets/clocks/25-12-28/coaster.webp";
+import fontUrl_20251128 from '../../assets/fonts/25-12-28-coaster.ttf?url';
 
 export default function Clock() {
   const [timeText, setTimeText] = useState("");
@@ -195,7 +195,7 @@ export default function Clock() {
         {`
           @font-face {
             font-family: "CustomFont_20251128";
-            src: url(${fontUrl_20251128}) format("woff2");
+            src: url(${fontUrl_20251128}) format("truetype");
             font-weight: normal;
             font-style: normal;
           }

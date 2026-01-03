@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import background from './signals.jpg';
-const semFont = '/fonts/25-05-21-sem.ttf';
+import background from '../../assets/clocks/25-05-21/signals.jpg';
+import semFont from '../../assets/fonts/25-05-21-sem.ttf';
 
 // Inject font-face using JS
 const injectFont = () => {
@@ -20,6 +20,15 @@ const Clock = () => {
 
   useEffect(() => {
     injectFont(); // Inject the font when component mounts
+    // Ensure the font is loaded and apply class when ready
+    if (document && document.fonts) {
+      document.fonts.load('1rem sem').then(() => {
+        document.documentElement.classList.add('fonts-loaded-sem');
+      }).catch(() => {
+        // ignore
+      });
+    }
+
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);

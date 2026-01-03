@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 
-import backgroundImg from './1.webp';
-import digit1 from './1.gif';
-import digit2 from './2.gif';
-import digit3 from './3.gif';
-import digit4 from './4.gif';
-import digit5 from './5.gif';
-import digit6 from './6.gif';
-import digit7 from './7.gif';
-import digit8 from './8.gif';
-import digit9 from './9.gif';
-import digit10 from './10.gif';
-import digit11 from './11.gif';
-import digit12 from './12.gif';
-const customFont = '/fonts/25-08-14-bir.ttf';
+import backgroundImg from '../../assets/clocks/25-08-14/1.webp';
+import digit1 from '../../assets/clocks/25-08-14/1.gif';
+import digit2 from '../../assets/clocks/25-08-14/2.gif';
+import digit3 from '../../assets/clocks/25-08-14/3.gif';
+import digit4 from '../../assets/clocks/25-08-14/4.gif';
+import digit5 from '../../assets/clocks/25-08-14/5.gif';
+import digit6 from '../../assets/clocks/25-08-14/6.gif';
+import digit7 from '../../assets/clocks/25-08-14/7.gif';
+import digit8 from '../../assets/clocks/25-08-14/8.gif';
+import digit9 from '../../assets/clocks/25-08-14/9.gif';
+import digit10 from '../../assets/clocks/25-08-14/10.gif';
+import digit11 from '../../assets/clocks/25-08-14/11.gif';
+import digit12 from '../../assets/clocks/25-08-14/12.gif';
+import customFont from '../../assets/fonts/25-08-14-bir.ttf';
 
 const digitImages = [
   digit1, digit2, digit3, digit4, digit5, digit6,

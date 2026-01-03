@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-const suvFont = '/fonts/25-07-07-suv.ttf';
-import suvImage from './suv.gif';
-import suvBackground from './suvx.jpg';
+import suvFont from '../../assets/fonts/25-07-07-suv.ttf';
+import suvImage from '../../assets/clocks/25-07-07/suv.gif';
+import suvBackground from '../../assets/clocks/25-07-07/suvx.jpg';
 
 const Clock = () => {
   const [time, setTime] = useState({

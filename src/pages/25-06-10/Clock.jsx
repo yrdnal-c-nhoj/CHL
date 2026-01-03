@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-const shaFont = '/fonts/25-06-10-sha.ttf';
+import shaFont from '../../assets/fonts/25-06-10-sha.ttf';
 
 const ShapesClock = () => {
   const [time, setTime] = useState({

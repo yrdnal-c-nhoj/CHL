@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import elWebp from './el.webp';
-import el1 from './el1.png';
-import el2 from './el2.png';
-import el3 from './el3.png';
-import eleGif from './ele.gif';
+import elWebp from '../../assets/clocks/25-05-31/el.webp';
+import el1 from '../../assets/clocks/25-05-31/el1.png';
+import el2 from '../../assets/clocks/25-05-31/el2.png';
+import el3 from '../../assets/clocks/25-05-31/el3.png';
+import eleGif from '../../assets/clocks/25-05-31/ele.gif';
 
 const ElephantClock = () => {
   const hourRef = useRef();

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import spin from './20206.gif';
-import bubl from './bubl.gif';
-import fish from './fish.gif';
-import gfish from './gfish.gif';
-import aquarium from './aquarium.gif';
+import spin from '../../assets/clocks/25-05-11/20206.gif';
+import bubl from '../../assets/clocks/25-05-11/bubl.gif';
+import fish from '../../assets/clocks/25-05-11/fish.gif';
+import gfish from '../../assets/clocks/25-05-11/gfish.gif';
+import aquarium from '../../assets/clocks/25-05-11/aquarium.gif';
 
 const AquariumClock = () => {
   useEffect(() => {

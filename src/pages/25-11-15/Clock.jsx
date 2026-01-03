@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useMemo } from 'react'
-const font_25251115j = '/fonts/25-11-15-rain.otf';
-import bgImage from './fall.webp' // local background image
+import font_25251115j from '../../assets/fonts/25-11-15-rain.otf?url';
+import bgImage from '../../assets/clocks/25-11-15/fall.webp' // local background image
 
 export default function FallClock () {
   const canvasRef = useRef(null)

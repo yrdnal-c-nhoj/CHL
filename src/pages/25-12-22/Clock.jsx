@@ -1,9 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react'
-import videoFile from './candle.mp4'
-import fallbackImage from './candle.webp'
-import './Clock.css'
+import videoFile from '../../assets/clocks/25-12-22/candle.mp4'
+import fallbackImage from '../../assets/clocks/25-12-22/candle.webp'
 
-const xxx251120 = '/fonts/25-12-22-candle.ttf'
+const xxx251120 = '../../assets/fonts/25-12-22-candle.ttf'
 const FONT_FAMILY = 'MyClockFont_20251120'
 const fontUrl = new URL(xxx251120, import.meta.url).href
 
@@ -16,6 +15,51 @@ export default function PixelInverseClock() {
   const [fontLoaded, setFontLoaded] = useState(false)
   const [useFallback, setUseFallback] = useState(false)
 
+  // Inline styles
+  const containerStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: '100%',
+    height: '100%',
+    margin: 0,
+    padding: 0,
+    overflow: 'hidden',
+    backgroundColor: '#000',
+    zIndex: 0,
+    // Handle different viewport heights
+    height: '100dvh',
+    '@supports not (height: 100dvh)': {
+      height: '100vh'
+    },
+    '@supports (-webkit-touch-callout: none)': {
+      height: '-webkit-fill-available'
+    }
+  }
+
+  const canvasStyle = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    display: 'block',
+    opacity: 0,
+    animation: 'fadeIn 0.2s ease-in forwards 0.1s',
+    zIndex: 0,
+    pointerEvents: 'none',
+    objectFit: 'cover'
+  }
+
+  const videoStyle = {
+    display: 'none',
+    opacity: 0,
+    position: 'absolute',
+    pointerEvents: 'none'
+  }
+
   /* ================= FONT LOAD ================= */
   useEffect(() => {
     const font = new FontFace(FONT_FAMILY, `url(${fontUrl})`)
@@ -26,6 +70,22 @@ export default function PixelInverseClock() {
       console.error("Font load error:", err)
       setFontLoaded(true) 
     })
+
+    // Inject keyframes for fade-in animation
+    const styleElement = document.createElement('style')
+    styleElement.textContent = `
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+    `
+    document.head.appendChild(styleElement)
+
+    return () => {
+      if (document.head.contains(styleElement)) {
+        document.head.removeChild(styleElement)
+      }
+    }
   }, [])
 
   /* ================= MAIN EFFECT ================= */
@@ -162,7 +222,7 @@ export default function PixelInverseClock() {
   if (!fontLoaded) return null
 
   return (
-    <div className="clock-container">
+    <div style={containerStyle}>
       <video
         ref={videoRef}
         src={videoFile}
@@ -170,16 +230,11 @@ export default function PixelInverseClock() {
         muted
         playsInline
         autoPlay
-        style={{ 
-          display: 'none', 
-          opacity: 0, 
-          position: 'absolute', 
-          pointerEvents: 'none' 
-        }}
+        style={videoStyle}
       />
       <canvas
         ref={canvasRef}
-        className="clock-canvas"
+        style={canvasStyle}
       />
     </div>
   )

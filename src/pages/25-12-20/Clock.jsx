@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useMemo, memo, useRef } from 'react'
 
 // --- Image Imports ---
-import bg1 from './nest.jpg'
-import hourHandImg from './fea1.webp'
-import minuteHandImg from './fea2.webp'
-import secondHandImg from './fea3.webp'
-const font251211 = '/fonts/feather.otf';
+import bg1 from '../../assets/clocks/25-12-20/nest.jpg'
+import hourHandImg from '../../assets/clocks/25-12-20/fea1.webp'
+import minuteHandImg from '../../assets/clocks/25-12-20/fea2.webp'
+import secondHandImg from '../../assets/clocks/25-12-20/fea3.webp'
+import font251211 from '../../assets/fonts/feather.otf?url';
 
 // --- CONFIG ---
 const CONFIG = {

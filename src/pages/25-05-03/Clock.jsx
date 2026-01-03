@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-const fontUrl = '/fonts/25-05-03-Petal.ttf';
-import bg1 from './petals.gif';
-import bg2 from './talos.gif';
-import bg3 from './petalos.gif';
-import bg4 from './petals.gif';
+import fontUrl from '../../assets/fonts/25-05-03-Petal.ttf';
+import bg1 from '../../assets/clocks/25-05-03/petalos.gif';
+import bg2 from '../../assets/clocks/25-05-03/petals.gif';
+import bg3 from '../../assets/clocks/25-05-03/sakura-leaves.gif';
+import bg4 from '../../assets/clocks/25-05-03/talos.gif';
 
 const FlyingPetalsClock = () => {
   const [time, setTime] = useState(new Date());
@@ -28,7 +28,7 @@ const FlyingPetalsClock = () => {
   const digits = getTimeParts();
 
   const containerStyle = {
-    fontFamily: 'Petal, sans-serif !important',
+    fontFamily: 'Petal, sans-serif',
     margin: 0,
     padding: 0,
     overflow: 'hidden',
@@ -82,7 +82,7 @@ const FlyingPetalsClock = () => {
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: '9vw',
-    fontFamily: 'Petal, sans-serif !important',
+    fontFamily: 'Petal, sans-serif',
     width: '8vw',
     height: '6vw',
     minWidth: '5vw',

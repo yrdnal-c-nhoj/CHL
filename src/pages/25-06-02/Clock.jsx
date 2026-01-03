@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 
 // Images
-import bg1Img from "./bg1.png";
-import bg2Img from "./bg2.gif";
-import bg3Img from "./bg3.webp";
-import bg4Img from "./bg4.webp";
+import bg1Img from "../../assets/clocks/25-06-02/bg1.png";
+import bg2Img from "../../assets/clocks/25-06-02/bg2.gif";
+import bg3Img from "../../assets/clocks/25-06-02/bg3.webp";
+import bg4Img from "../../assets/clocks/25-06-02/bg4.webp";
 
-import number1Img from "./num1.webp";
-import number2Img from "./num2.webp";
-import number3Img from "./num3.webp";
-import number4Img from "./num4.webp";
-import number5Img from "./num5.webp";
-import number6Img from "./num6.webp";
-import number7Img from "./num7.webp";
-import number8Img from "./num8.webp";
-import number9Img from "./num9.webp";
-import number10Img from "./num10.webp";
-import number11Img from "./num11.webp";
-import number12Img from "./num12.webp";
+import number1Img from "../../assets/clocks/25-06-02/num1.webp";
+import number2Img from "../../assets/clocks/25-06-02/num2.webp";
+import number3Img from "../../assets/clocks/25-06-02/num3.webp";
+import number4Img from "../../assets/clocks/25-06-02/num4.webp";
+import number5Img from "../../assets/clocks/25-06-02/num5.webp";
+import number6Img from "../../assets/clocks/25-06-02/num6.webp";
+import number7Img from "../../assets/clocks/25-06-02/num7.webp";
+import number8Img from "../../assets/clocks/25-06-02/num8.webp";
+import number9Img from "../../assets/clocks/25-06-02/num9.webp";
+import number10Img from "../../assets/clocks/25-06-02/num10.webp";
+import number11Img from "../../assets/clocks/25-06-02/num11.webp";
+import number12Img from "../../assets/clocks/25-06-02/num12.webp";
 
-import hourHandImg from "./min.png";
-import minuteHandImg from "./min.png";
-import secondHandImg from "./min.png";
+import hourHandImg from "../../assets/clocks/25-06-02/hour.png";
+import minuteHandImg from "../../assets/clocks/25-06-02/min.png";
+import secondHandImg from "../../assets/clocks/25-06-02/min.png";
 
 export default function AnalogImageClock() {
   const [time, setTime] = useState(new Date());

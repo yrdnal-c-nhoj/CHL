@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-const watchFont = '/fonts/25-05-29-watch.ttf';
-import gearsGif from "./gears-13950_128.gif";
+import gearsGif from "../../assets/clocks/25-05-29/gears-13950_128.gif";
 
 const Clock = () => {
   const [loaded, setLoaded] = useState(false);
@@ -44,21 +43,10 @@ const Clock = () => {
       setSecondsDigits(substituteDigit(seconds));
     };
 
-    const loadFont = async () => {
-      try {
-        const font = new FontFace("watch", `url(${watchFont})`);
-        await font.load();
-        document.fonts.add(font);
-        updateClock(); // initial render
-        setLoaded(true);
-        const interval = setInterval(updateClock, 1000);
-        return () => clearInterval(interval);
-      } catch (err) {
-        console.error("Font failed to load", err);
-      }
-    };
-
-    loadFont();
+    updateClock(); // initial render
+    setLoaded(true);
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   if (!loaded) return null;
@@ -91,6 +79,12 @@ const Clock = () => {
       }}
     >
       <style>{`
+        @font-face {
+          font-family: 'watch';
+          src: url('../../assets/fonts/25-05-29-watch.ttf') format('truetype');
+          font-display: swap;
+        }
+
         .clock {
           font-family: 'watch', sans-serif !important;
           color: rgb(29, 2, 84);

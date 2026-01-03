@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 // --- Imports ---   GEMINI   
 
 // 1. Background Image Import (assuming 'background.jpg' is in the same folder)
-import backgroundImage from './sat.jpg'; // or .png, .webp etc.
+import backgroundImage from '../../assets/clocks/26-01-03/'; // or .png, .webp etc.
 
 // 2. Font Import with date variable (Vite handles the blob URL via import)
 // The variable name must contain today's date (November 23, 2025)

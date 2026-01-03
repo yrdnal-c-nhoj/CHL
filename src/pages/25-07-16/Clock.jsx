@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry.js';
-const mobFontUrl = '/fonts/25-07-16-mob.otf';
+import mobFontUrl from '../../assets/fonts/25-07-16-mob.otf';
 
 const MobiusStripClock = () => {
   const containerRef = useRef();

@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from "react";
 
 // Import number images
-import one from "./1.png";
-import two from "./12.png";
-import three from "./11.png";
-import four from "./10.png";
-import five from "./9.png";
-import six from "./8.png";
-import seven from "./7.png";
-import eight from "./6.png";
-import nine from "./5.png";
-import ten from "./4.png";
-import eleven from "./3.png";
-import twelve from "./2.png";
+import one from "../../assets/clocks/25-10-01/1.png";
+import two from "../../assets/clocks/25-10-01/12.png";
+import three from "../../assets/clocks/25-10-01/11.png";
+import four from "../../assets/clocks/25-10-01/10.png";
+import five from "../../assets/clocks/25-10-01/9.png";
+import six from "../../assets/clocks/25-10-01/8.png";
+import seven from "../../assets/clocks/25-10-01/7.png";
+import eight from "../../assets/clocks/25-10-01/6.png";
+import nine from "../../assets/clocks/25-10-01/5.png";
+import ten from "../../assets/clocks/25-10-01/4.png";
+import eleven from "../../assets/clocks/25-10-01/3.png";
+import twelve from "../../assets/clocks/25-10-01/2.png";
 
 // Clock face
-import clockFace from "./gears.webp";
+import clockFace from "../../assets/clocks/25-10-01/gears.webp";
 
 // Background video and fallback
-import backgroundVideo from "./small.mp4";
-import fallbackGif from "./small.webp";
+import backgroundVideo from "../../assets/clocks/25-10-01/small.mp4";
+import fallbackGif from "../../assets/clocks/25-10-01/small.webp";
 
 export default function ImageAnalogClock() {
   const [time, setTime] = useState(new Date());

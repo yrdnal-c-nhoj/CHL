@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import rocketGif from './rocket.gif';
-const rockFont = '/fonts/25-07-03-rock.ttf';
+import rocketGif from '../../assets/clocks/25-07-03/rocket.gif';
+import rockFont from '../../assets/fonts/25-07-03-rock.ttf';
 
 const Clock = () => {
   const clockRef = useRef(null);

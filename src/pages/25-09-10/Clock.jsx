@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 
 // Local images
-import bgImage from "./bg.webp";
-import hourHand from "./hour.gif";
-import minuteHand from "./min.gif";
-import secondHand from "./sec.gif";
+import bgImage from "../../assets/clocks/25-09-10/bg.webp";
+import hourHand from "../../assets/clocks/25-09-10/hour.gif";
+import minuteHand from "../../assets/clocks/25-09-10/min.gif";
+import secondHand from "../../assets/clocks/25-09-10/sec.gif";
 
 // Local font
-const customLavaFont = '/fonts/25-09-10-lava.otf';
+import customLavaFont from '../../assets/fonts/25-09-10-lava.otf?url';
 
 const Clock = () => {
   const hourRef = useRef(null);

@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-// Image paths in public folder
-const pageBgImgBase = '/assets/clocks/25-11-24/skin.jpg';
-const pageBgImg = '/assets/clocks/25-11-24/sss.webp';
-const clockFaceImg = '/assets/clocks/25-11-24/sn.gif';
-const hourHandImg = '/assets/clocks/25-11-24/sn5.webp';
-const minuteHandImg = '/assets/clocks/25-11-24/sfsd.webp';
-const secondHandImg = '/assets/clocks/25-11-24/sn1.webp';
-const clockCenterImg = '/assets/clocks/25-11-24/center.webp';
-const fon251124 = '/fonts/25-11-24-snake.ttf';
+// Image imports with Vite ?url suffix
+import pageBgImgBase from '../../assets/clocks/25-11-24/skin.jpg?url';
+import pageBgImg from '../../assets/clocks/25-11-24/sss.webp?url';
+import clockFaceImg from '../../assets/clocks/25-11-24/sn.gif?url';
+import hourHandImg from '../../assets/clocks/25-11-24/sn5.webp?url';
+import minuteHandImg from '../../assets/clocks/25-11-24/sfsd.webp?url';
+import secondHandImg from '../../assets/clocks/25-11-24/sn1.webp?url';
+import clockCenterImg from '../../assets/clocks/25-11-24/center.webp?url';
+import fon251124 from '../../assets/fonts/25-11-24-snake.ttf?url';
 
 export default function AnalogClock () {
   const [time, setTime] = useState(new Date())

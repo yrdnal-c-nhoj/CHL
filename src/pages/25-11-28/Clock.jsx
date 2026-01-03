@@ -1,7 +1,7 @@
 // TimelineClock.jsx
 import React, { useEffect, useState } from 'react'
-const li251128font = '/fonts/25-11-28-line.otf';
-import patternImg from './line.webp'
+import li251128font from '../../assets/fonts/25-11-28-line.otf?url';
+import patternImg from '../../assets/clocks/25-11-28/line.webp'
 
 // 1. Keep fontStyles for global CSS injection
 const fontStyles = `

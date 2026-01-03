@@ -1,7 +1,7 @@
 // AnalogClock.jsx
 import React, { useEffect, useRef, useCallback } from "react";
-import bgImg from "./ray.webp";
-import clockBg from "./ray2.webp"; // <-- Background ONLY for clock face
+import bgImg from "../../assets/clocks/25-11-16/ray.webp";
+import clockBg from "../../assets/clocks/25-11-16/ray2.webp"; // <-- Background ONLY for clock face
 
 export default function AnalogClock() {
   const rafRef = useRef(null);

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-const rorFontUrl = '/fonts/25-07-13-ror.ttf';
+import rorFontUrl from '../../assets/fonts/25-07-13-ror.ttf';
 
 const RorschachClock = () => {
   const clockRef = useRef();

@@ -1,23 +1,23 @@
 import React, { useEffect, useRef } from 'react';
 
 // Hands
-import hourHand from './cart.gif';
-import minHand from './ca.gif';
-import secHand from './car.gif';
+import hourHand from '../../assets/clocks/25-07-14/ca.gif';
+import minHand from '../../assets/clocks/25-07-14/car.gif';
+import secHand from '../../assets/clocks/25-07-14/cart.gif';
 
 // Digits
-import img1 from './digits/1.webp';
-import img2 from './digits/number-two.gif';
-import img3 from './digits/dancing-number-dancing-letter.gif';
-import img4 from './digits/kochstrasse-fussball.gif';
-import img5 from './digits/2to5-rolling.gif';
-import img6 from './digits/6.gif';
-import img7 from './digits/agenturleben-agencylife.gif';
-import img8 from './digits/number-8-gif.gif';
-import img9 from './digits/numero-9.gif';
-import img10 from './digits/tv10-sweden-tv3-sweden.gif';
-import img11 from './digits/11.gif';
-import img12 from './digits/goura-goura12.gif';
+import img1 from '../../assets/clocks/25-07-14/1.webp';
+import img2 from '../../assets/clocks/25-07-14/number-two.gif';
+import img3 from '../../assets/clocks/25-07-14/6.gif';
+import img4 from '../../assets/clocks/25-07-14/number-8-gif.gif';
+import img5 from '../../assets/clocks/25-07-14/numero-9.gif';
+import img6 from '../../assets/clocks/25-07-14/11.gif';
+import img7 from '../../assets/clocks/25-07-14/1650437258_50659_gif-url-3537927050.gif';
+import img8 from '../../assets/clocks/25-07-14/2to5-rolling.gif';
+import img9 from '../../assets/clocks/25-07-14/dancing-number-dancing-letter.gif';
+import img10 from '../../assets/clocks/25-07-14/goura-goura12.gif';
+import img11 from '../../assets/clocks/25-07-14/agencylife-kochstrasse.gif';
+import img12 from '../../assets/clocks/25-07-14/agenturleben-agencylife.gif';
 
 const digitImages = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12];
 const sizes = [6.5, 7.1, 7.2, 7.7, 6.3, 10.5, 7.3, 7.5, 7.4, 6.7, 7.3, 7.3]; // rem units

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-const fontLatin = '/fonts/25-10-17-word.ttf';
-import backgroundImage from './words.jpg'
+const fontLatin = '../../assets/fonts/25-10-17-word.ttf';
+import backgroundImage from '../../assets/clocks/25-10-17/words.jpg'
 
 export default function TimeWordsClock () {
   const [ready, setReady] = useState(false)

@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
 
 // Asset URLs (Vite-safe)
-const one = new URL('./1.gif', import.meta.url).href;
-const two = new URL('./2.webp', import.meta.url).href;
-const three = new URL('./3.webp', import.meta.url).href;
-const four = new URL('./4.webp', import.meta.url).href;
-const five = new URL('./5.webp', import.meta.url).href;
-const six = new URL('./6.webp', import.meta.url).href;
-const seven = new URL('./7.webp', import.meta.url).href;
-const eight = new URL('./8.webp', import.meta.url).href;
-const nine = new URL('./9.webp', import.meta.url).href;
-const ten = new URL('./10.webp', import.meta.url).href;
-const eleven = new URL('./11.webp', import.meta.url).href;
-const twelve = new URL('./12.webp', import.meta.url).href;
+const one = new URL('../../assets/clocks/25-11-10/1.gif', import.meta.url).href;
+const two = new URL('../../assets/clocks/25-11-10/2.webp', import.meta.url).href;
+const three = new URL('../../assets/clocks/25-11-10/3.webp', import.meta.url).href;
+const four = new URL('../../assets/clocks/25-11-10/4.webp', import.meta.url).href;
+const five = new URL('../../assets/clocks/25-11-10/5.webp', import.meta.url).href;
+const six = new URL('../../assets/clocks/25-11-10/6.webp', import.meta.url).href;
+const seven = new URL('../../assets/clocks/25-11-10/7.webp', import.meta.url).href;
+const eight = new URL('../../assets/clocks/25-11-10/8.webp', import.meta.url).href;
+const nine = new URL('../../assets/clocks/25-11-10/9.webp', import.meta.url).href;
+const ten = new URL('../../assets/clocks/25-11-10/10.webp', import.meta.url).href;
+const eleven = new URL('../../assets/clocks/25-11-10/11.webp', import.meta.url).href;
+const twelve = new URL('../../assets/clocks/25-11-10/12.webp', import.meta.url).href;
 
-const hourHand = new URL('./hour.webp', import.meta.url).href;
-const minuteHand = new URL('./min.webp', import.meta.url).href;
-const secondHand = new URL('./sec.webp', import.meta.url).href;
+const hourHand = new URL('../../assets/clocks/25-11-10/hour.webp', import.meta.url).href;
+const minuteHand = new URL('../../assets/clocks/25-11-10/min.webp', import.meta.url).href;
+const secondHand = new URL('../../assets/clocks/25-11-10/sec.webp', import.meta.url).href;
 
-const pageBackground = new URL('./pong.webp', import.meta.url).href;
-const extraBg = new URL('./bg.webp', import.meta.url).href;
+const pageBackground = new URL('../../assets/clocks/25-11-10/pong.webp', import.meta.url).href;
+const extraBg = new URL('../../assets/clocks/25-11-10/bg.webp', import.meta.url).href;
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
