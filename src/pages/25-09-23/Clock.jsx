@@ -1,23 +1,23 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 
 // digits
-import digit1 from "./z.gif";
-import digit2 from "./z2.gif";
-import digit10 from "./z3.gif";
-import digit12 from "./z4.gif";
-import digit5 from "./z5.gif";
-import digit6 from "./z6.gif";
-import digit7 from "./z7.gif";
-import digit8 from "./z8.webp";
-import digit9 from "./z9.webp";
-import digit11 from "./z10.gif";
-import digit3 from "./z11.gif";
-import digit4 from "./z12.gif";
+import digit1 from "/assets/clocks/25-09-23/z.gif";
+import digit2 from "/assets/clocks/25-09-23/z2.gif";
+import digit10 from "/assets/clocks/25-09-23/z3.gif";
+import digit12 from "/assets/clocks/25-09-23/z4.gif";
+import digit5 from "/assets/clocks/25-09-23/z5.gif";
+import digit6 from "/assets/clocks/25-09-23/z6.gif";
+import digit7 from "/assets/clocks/25-09-23/z7.gif";
+import digit8 from "/assets/clocks/25-09-23/z8.webp";
+import digit9 from "/assets/clocks/25-09-23/z9.webp";
+import digit11 from "/assets/clocks/25-09-23/z10.gif";
+import digit3 from "/assets/clocks/25-09-23/z11.gif";
+import digit4 from "/assets/clocks/25-09-23/z12.gif";
 
 // hands
-import hourHandImg from "./steth.png";
-import minuteHandImg from "./sss.webp";
-import secondHandImg from "./ste.gif";
+import hourHandImg from "/assets/clocks/25-09-23/steth.png";
+import minuteHandImg from "/assets/clocks/25-09-23/sss.webp";
+import secondHandImg from "/assets/clocks/25-09-23/ste.gif";
 
 export default function AnalogClock() {
   const hourRef = useRef(null);
