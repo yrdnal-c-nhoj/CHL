@@ -134,7 +134,6 @@ const RotatingAnalemmaClock = () => {
       top: '50%',
       transform: 'translateY(-50%) rotate(180deg)',
       writingMode: 'vertical-rl',
-      fontSize: '2.5vh',
       color: '#FDFEFE',
       letterSpacing: '0.2vh',
       fontFamily: `AnalemmaText, ${fontFamilyName}, sans-serif`,
