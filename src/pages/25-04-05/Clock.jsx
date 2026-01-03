@@ -22,7 +22,7 @@ const getMinuteRotation = (date) => {
 };
 
 const getSecondRotation = (date) => {
-  const seconds = date.getSeconds();
+  const seconds = date.getSeconds() + (date.getMilliseconds() / 1000);
   return seconds * 6;
 };
 
@@ -31,10 +31,15 @@ const TallClock = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const timerId = setInterval(() => {
+    let rafId = null;
+    const loop = () => {
       setTime(new Date());
-    }, 1000);
-    return () => clearInterval(timerId);
+      rafId = requestAnimationFrame(loop);
+    };
+    rafId = requestAnimationFrame(loop);
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const hourRotation = getHourRotation(time);
@@ -55,7 +60,7 @@ const TallClock = () => {
   const secondHandStyle = { 
     backgroundImage: `url(${secondHandSource})`, 
     transform: `translateX(-50%) rotate(${secondRotation}deg)`,
-    filter: 'drop-shadow(2px 4px 6px rgba(23, 22, 22, 0.53)) contrast(0.8) saturate(1.7)  brightness(0.8)'
+    filter: 'drop-shadow(2px 4px 6px rgba(23, 22, 22, 0.53)) contrast(1.7) saturate(1.7)  brightness(0.8)'
   };
 
   return (
@@ -144,7 +149,6 @@ const styles = {
     position: "absolute",
     left: "50%",
     transformOrigin: "bottom center",
-    transition: "all 0.1s cubic-bezier(0, 0, 0.58, 1)", 
   },
   
   // Properties for hands that use images
@@ -162,18 +166,21 @@ const styles = {
     height: "35%", 
     top: "15%",
     zIndex: 8,
+    transition: "transform 0.12s cubic-bezier(0, 0, 0.58, 1)",
   },
   minuteHand: {
     width: "38%",
     height: "49%",
     top: "5%",
     zIndex: 9,
+    transition: "transform 0.12s cubic-bezier(0, 0, 0.58, 1)",
   },
   secondHand: {
     width: "20%",
     height: "50%",
     top: "0%",
     zIndex: 11,
+    // no transition so it follows RAF updates smoothly without snapping
   },
   
   // Overlay Styles
