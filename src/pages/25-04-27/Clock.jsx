@@ -1,11 +1,18 @@
 import React, { useEffect } from "react";
 
-import coinGif from "./images/coin.gif";
-import spinWebp from "./images/spin.webp";
+import coinGif from "/assets/clocks/25-04-27/coin.gif";
+import spinWebp from "/assets/clocks/25-04-27/spin.webp";
 
 const SpinningCoinClock = () => {
   useEffect(() => {
     const clock = document.getElementById("clock");
+    if (!clock) return;
+
+    // Remove any existing numbers or hands to prevent duplicates on remount
+    const existingNumbers = clock.querySelectorAll('.number');
+    existingNumbers.forEach(n => n.remove());
+    const existingHands = clock.querySelectorAll('.hand');
+    existingHands.forEach(h => h.remove());
 
     // Create hour markers
     for (let i = 1; i <= 12; i++) {
@@ -13,8 +20,15 @@ const SpinningCoinClock = () => {
       const number = document.createElement("div");
       number.className = "number";
       number.textContent = i;
-      number.style.left = `calc(50% + ${Math.sin(angle) * 19}vw - 1vw)`;
-      number.style.top = `calc(50% - ${Math.cos(angle) * 19}vw - 1vw)`;
+        // position at the circle point and center the element with translate
+        number.style.left = `calc(50% + ${Math.sin(angle) * 19}vw)`;
+        number.style.top = `calc(50% - ${Math.cos(angle) * 19}vw)`;
+        number.style.transform = 'translate(-50%, -50%)';
+        number.style.display = 'flex';
+        number.style.alignItems = 'center';
+        number.style.justifyContent = 'center';
+        number.style.width = 'auto';
+        number.style.lineHeight = '1';
       clock.appendChild(number);
     }
 
@@ -119,7 +133,7 @@ const SpinningCoinClock = () => {
           position: absolute;
           bottom: 50%;
           left: 50%;
-          transform-origin: bottom;
+          transform-origin: bottom center;
           background-color: #d3ad62;
         }
 
@@ -137,17 +151,18 @@ const SpinningCoinClock = () => {
 
         .second-hand {
           width: 0.2vw;
-          height: 2000vw;
+          height: 18vw;
           transform: translateX(-50%);
         }
 
         .number {
           font-family: 'MoneyMoney-Regular', sans-serif;
           position: absolute;
-          font-size: 7.6vw;
+          font-size: 6.2vw;
           color: #d3ad62;
           text-align: center;
-          width: 2vw;
+          width: auto;
+          pointer-events: none;
         }
       `}</style>
     </div>
