@@ -7,6 +7,23 @@ const fontUrl = new URL(fontPath, import.meta.url).href;
 
 const DynamicClockComponent = () => {
   const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
+
+  // Load the custom font
+  useEffect(() => {
+    const font = new FontFace(FONT_FAMILY, `url(${fontUrl})`);
+    font.load().then(loaded => {
+      document.fonts.add(loaded);
+      setFontLoaded(true);
+    }).catch(err => {
+      console.error("Font load error:", err);
+      setFontLoaded(true); // Still show clock even if font fails
+    });
+
+    return () => {
+      // Cleanup if needed
+    };
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -54,6 +71,8 @@ const DynamicClockComponent = () => {
       fontFamily: `"${FONT_FAMILY}", sans-serif`,
     }
   };
+
+  if (!fontLoaded) return null;
 
   return (
     <>
