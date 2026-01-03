@@ -1,8 +1,8 @@
 import React, { useEffect, useState, memo } from "react";
-const font250909 = '/fonts/25-09-09-van.ttf';
-import bgImage2 from "./skull.jpg"; 
-import bgImage from "./va.webp"; 
-import bgImage3 from "./cand.webp"; 
+import font250909 from '../../assets/fonts/25-09-09-van.ttf?url';
+import bgImage2 from "../../assets/clocks/25-09-09/skull.jpg"; 
+import bgImage from "../../assets/clocks/25-09-09/va.webp"; 
+import bgImage3 from "../../assets/clocks/25-09-09/cand.webp"; 
 
 const CONFIG = {
   font: "VanFont",

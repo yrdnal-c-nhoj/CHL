@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import bgImage from "./orange.webp";
-import img1 from "./1.webp";
-import img2 from "./2.jpg";
-import img3 from "./3.jpg";
-import img4 from "./4.jpg";
-import img5 from "./5.jpg";
-import img6 from "./6.jpg";
-import img7 from "./7.jpg";
-import img8 from "./8.jpg";
-import img9 from "./9.jpg";
-import img10 from "./10.jpg";
-import img11 from "./11.jpg";
-import img12 from "./12.webp";
+import bgImage from "../../assets/clocks/25-09-08/orange.webp";
+import img1 from "../../assets/clocks/25-09-08/1.webp";
+import img2 from "../../assets/clocks/25-09-08/2.jpg";
+import img3 from "../../assets/clocks/25-09-08/3.jpg";
+import img4 from "../../assets/clocks/25-09-08/4.jpg";
+import img5 from "../../assets/clocks/25-09-08/5.jpg";
+import img6 from "../../assets/clocks/25-09-08/6.jpg";
+import img7 from "../../assets/clocks/25-09-08/7.jpg";
+import img8 from "../../assets/clocks/25-09-08/8.jpg";
+import img9 from "../../assets/clocks/25-09-08/9.jpg";
+import img10 from "../../assets/clocks/25-09-08/10.jpg";
+import img11 from "../../assets/clocks/25-09-08/11.jpg";
+import img12 from "../../assets/clocks/25-09-08/12.webp";
 
 export default function ImageAnalogClock() {
   const [time, setTime] = useState(new Date());

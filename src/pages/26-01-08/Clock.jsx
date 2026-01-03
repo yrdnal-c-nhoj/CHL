@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import videoFile from "./coaster.mp4";
-import videoWebM from "./coaster.mp4";
-import fallbackImg from "./coaster.webp";
-const fontUrl_20251128 = '/fonts/25-12-28-coaster.ttf';
+import videoFile from "../../assets/clocks/26-01-08/coaster.mp4";
+import videoWebM from "../../assets/clocks/26-01-08/coaster.mp4";
+import fallbackImg from "../../assets/clocks/26-01-08/coaster.webp";
+const fontUrl_20251128 = '../../assets/fonts/25-12-28-coaster.ttf';
 
 export default function Clock() {
   const [timeText, setTimeText] = useState("");

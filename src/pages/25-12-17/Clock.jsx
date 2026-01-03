@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import background from './swagr.webp';
+import background from '../../assets/clocks/25-12-17/swagr.webp';
+import FONT_PATH from '../../assets/fonts/facexxxx.ttf?url';
 
 export default function App() {
   const [time, setTime] = useState(new Date());
@@ -13,7 +14,7 @@ export default function App() {
     style.textContent = `
       @font-face {
         font-family: '${fontFamilyName}';
-        src: url('/fonts/facexxxx.ttf') format('truetype');
+        src: url(${FONT_PATH}) format('truetype');
         font-display: swap;
         font-weight: 400;
         font-style: normal;

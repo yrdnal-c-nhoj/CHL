@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-const sageFontUrl = '/fonts/25-04-08-sage.ttf'; // Adjust path if needed
+import sageFontUrl from "../../assets/fonts/25-04-08-sage.ttf";
 
 const TripleCactusClock = () => {
   const hoursRef = useRef();

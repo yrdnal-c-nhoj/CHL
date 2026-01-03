@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 /* ---------- Font ---------- */
 const FONT_FAMILY = 'Newla';
-const FONT_PATH = '/fonts/lapse.otf';
+import FONT_PATH from '../../assets/fonts/lapse.otf?url';
 
 /* ---------- Timing ---------- */
 const ERASE = 60000;
@@ -21,7 +21,7 @@ const ErasingClock = () => {
   /* ---------- Font Loading ---------- */
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const f = new FontFace(FONT_FAMILY, `url(${FONT_PATH})`);
+    const f = new FontFace(FONT_FAMILY, `url(${FONT_PATH}) format('opentype')`);
     f.load().then(font => document.fonts.add(font)).catch(() => {});
   }, []);
 

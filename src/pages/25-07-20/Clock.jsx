@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-const camFont = '/fonts/25-07-20-cam.otf';
-import bg1 from './cam.webp';
-import bg2 from './camr.webp';
-import bg3 from './ca.webp';
-import bg4 from './camer.webp';
+import camFont from '../../assets/fonts/25-07-20-cam.otf';
+import bg1 from '../../assets/clocks/25-07-20/ca.webp';
+import bg2 from '../../assets/clocks/25-07-20/cam.webp';
+import bg3 from '../../assets/clocks/25-07-20/camer.webp';
+import bg4 from '../../assets/clocks/25-07-20/camr.webp';
 
 const FStopClock = () => {
   useEffect(() => {

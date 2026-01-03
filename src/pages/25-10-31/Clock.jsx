@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import videoFile from "/assets/clocks/25-10-31/mids.mp4";
-import fallbackImg from "/assets/clocks/25-10-31/midsun.webp";
-const fontFile_2025_10_31 = '/fonts/25-10-31-mi.otf';
+import videoFile from "../../assets/clocks/25-10-31/mids.mp4";
+import fallbackImg from "../../assets/clocks/25-10-31/midsun.webp";
+import fontFile_2025_10_31 from '../../assets/fonts/25-10-31-mi.otf?url';
 
 export default function VideoClock() {
   const [ready, setReady] = useState(false);

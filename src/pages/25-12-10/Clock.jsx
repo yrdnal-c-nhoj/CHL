@@ -1,15 +1,13 @@
 import React, { useEffect, useState, useMemo, memo, useRef } from 'react'
 
 // --- Image Imports ---
-import bg1 from './j.webp';
-import bg2 from './jj.webp';
-import portImg from './eagle.webp';
-
-// Public paths for clock hands (using absolute paths from public folder)
-const hourHandImg = '/assets/clocks/25-12-10/oa.gif';
-const minuteHandImg = '/assets/clocks/25-12-10/oak.gif';
-const secondHandImg = '/assets/clocks/25-12-10/nk.gif';
-const font251211 = '/fonts/25-12-10-jup.ttf';
+import bg1 from '../../assets/clocks/25-12-10/j.webp';
+import bg2 from  '../../assets/clocks/25-12-10/jj.webp';
+import portImg from  '../../assets/clocks/25-12-10/eagle.webp';
+import hourHandImg from '../../assets/clocks/25-12-10/oa.gif';
+import minuteHandImg from '../../assets/clocks/25-12-10/oak.gif';
+import secondHandImg from '../../assets/clocks/25-12-10/nk.gif';
+const font251211 = '../../assets/fonts/25-12-10-jup.ttf';
 
 // --- CONFIG ---
 const CONFIG = {

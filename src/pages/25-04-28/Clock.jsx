@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-const SkaterFont = '/fonts/25-04-28-Skater.ttf';
+import SkaterFont from '../../assets/fonts/25-04-28-Skater.ttf';
 
 const fontFaceStyle = `
   @font-face {

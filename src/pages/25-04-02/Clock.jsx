@@ -1,12 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 
-// Image paths in public folder
+import stars from "../../assets/clocks/25-04-02/stars.webp";
+import backgroundGif from "../../assets/clocks/25-04-02/437cb739d14912acd84d65ee853b9067.gif";
+import overlay1 from "../../assets/clocks/25-04-02/OzJtZ3Z.gif";
+import overlay2 from "../../assets/clocks/25-04-02/2556744_d34a4.webp";
+import pixelGif from "../../assets/clocks/25-04-02/sdswrf.gif";
+
+// Image imports from src/assets
 const images = {
-  stars: '/assets/clocks/25-04-02/stars.webp',
-  backgroundGif: '/assets/clocks/25-04-02/437cb739d14912acd84d65ee853b9067.gif',
-  overlay1: '/assets/clocks/25-04-02/OzJtZ3Z.gif',
-  overlay2: '/assets/clocks/25-04-02/2556744_d34a4.webp',
-  pixelGif: '/assets/clocks/25-04-02/sdswrf.gif'
+  stars,
+  backgroundGif,
+  overlay1,
+  overlay2,
+  pixelGif,
 };
 
 const digits = {

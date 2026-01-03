@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-const shinyFont = '/fonts/25-05-08-Shiny.ttf';
-import bgGif from './d7e781b32269a8a82b500c1a9dc97733-ezgif.com-optimize.gif';
+import shinyFont from '../../assets/fonts/25-05-08-Shiny.ttf';
+import bgGif from '../../assets/clocks/25-05-08/d7e781b32269a8a82b500c1a9dc97733-ezgif.com-optimize.gif';
 
 const GoldenHourClock = () => {
   useEffect(() => {
@@ -72,7 +72,7 @@ const GoldenHourClock = () => {
         }
 
         .clock {
-          font-family: 'Shiny !important';
+          font-family: 'Shiny', sans-serif !important;
           color: #f8e9be;
           text-shadow: rgb(213, 102, 80) 1px 1px 1px;
           display: flex;

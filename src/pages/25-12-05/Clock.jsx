@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
 // Import today's date font
-const font_2025_12_06 = '/fonts/25-12-05-magic.ttf'; // This path is correct as it's relative to the public directory
+import font_2025_12_06 from '../../assets/fonts/25-12-05-magic.ttf?url'; // This path is correct as it's relative to the public directory
 
 // Import background image
-import bgImage from './magic.webp'
+import bgImage from '../../assets/clocks/25-12-05/magic.webp'
 
 export default function BoxedDigitalClock () {
   const [time, setTime] = useState(new Date())

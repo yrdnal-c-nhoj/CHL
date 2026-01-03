@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
+import plateImage from '../../assets/clocks/25-12-08/plate.webp'
+import hourHand from '../../assets/clocks/25-12-08/hand.gif'
+import minuteHand from '../../assets/clocks/25-12-08/hand2.gif'
+import secondHand from '../../assets/clocks/25-12-08/ha.gif'
 
 // Styles moved outside the component to avoid recreation on every render (60fps)
 const outerContainerStyle = {
   height: '100dvh',
   width: '100vw',
   position: 'relative',
-  backgroundImage: `url(/images/clocks/25-12-08/plate.webp)`,
+  backgroundImage: `url(${plateImage})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   overflow: 'hidden',
@@ -72,18 +76,18 @@ export default function AnalogClock () {
     <div style={outerContainerStyle}>
       <div style={clockContainerStyle}>
         {/* Hour hand */}
-        <img src="/images/clocks/25-12-08/hand.gif" alt='hour' style={handStyle(hourDeg, 18, 24)} />
+        <img src={hourHand} alt='hour' style={handStyle(hourDeg, 18, 24)} />
 
         {/* Minute hand (restored) */}
         <img
-          src="/images/clocks/25-12-08/hand2.gif"
+          src={minuteHand}
           alt='minute'
           style={handStyle(minuteDeg, 20, 32)}
         />
 
         {/* Second hand */}
         <img
-          src="/images/clocks/25-12-08/ha.gif"
+          src={secondHand}
           alt='second'
           style={handStyle(secondDeg, 16, 33)}
         />

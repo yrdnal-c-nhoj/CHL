@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-const font_06_09_2025 = '/fonts/25-09-06-boom.ttf';
-import bgImage from './boo.jpg';
-import hourHandImg from './b1.gif';
-import minuteHandImg from './b2.gif';
-import secondHandImg from './b3.gif';
-import tickImg from './b.gif';
+import font_06_09_2025 from '../../assets/fonts/25-09-06-boom.ttf';
+import bgImage from '../../assets/clocks/25-09-06/boo.jpg';
+import hourHandImg from '../../assets/clocks/25-09-06/b.gif';
+import minuteHandImg from '../../assets/clocks/25-09-06/b1.gif';
+import secondHandImg from '../../assets/clocks/25-09-06/b2.gif';
+import tickImg from '../../assets/clocks/25-09-06/b3.gif';
 
 const AnalogClock = () => {
   const [time, setTime] = useState(new Date());

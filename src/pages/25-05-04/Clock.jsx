@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import tumbGif from "./images/tumb-ezgif.com-optimize.gif";
-import spinnGif from "./images/spinn.gif";
-import edGif from "./images/ed-ezgif.com-optimize.gif";
-import wallpaperGif from "./images/wallpapaer-ezgif.com-optimize.gif"; 
+import tumbGif from "../../assets/clocks/25-05-04/tumb-ezgif.com-optimize.gif";
+import spinnGif from "../../assets/clocks/25-05-04/spinn.gif";
+import edGif from "../../assets/clocks/25-05-04/ed-ezgif.com-optimize.gif";
+import wallpaperGif from "../../assets/clocks/25-05-04/wallpapaer-ezgif.com-optimize.gif"; 
 
 const Clock = () => {
   useEffect(() => {

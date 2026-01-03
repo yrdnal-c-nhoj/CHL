@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
-import coinGif from "/assets/clocks/25-04-27/coin.gif";
-import spinWebp from "/assets/clocks/25-04-27/spin.webp";
+import coinGif from "../../assets/clocks/25-04-27/coin.gif";
+import spinWebp from "../../assets/clocks/25-04-27/spin.webp";
 
 const SpinningCoinClock = () => {
   useEffect(() => {

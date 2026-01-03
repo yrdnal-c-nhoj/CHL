@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 
-// --- 🖼️ IMAGE PATHS FROM PUBLIC FOLDER ---
-// Using public folder paths - these images need to exist in public/assets/clocks/25-04-05/
-const overlayImg = "/assets/clocks/25-04-05/gfccc.gif";
-const hourHandSource = "/assets/clocks/25-04-05/gr4.gif";
-const secondHandSource = "/assets/clocks/25-04-05/gr5.gif";
-const minuteHandSource = "/assets/clocks/25-04-05/gr99.webp";
-// ------------------------------------
+import overlayImg from "../../assets/clocks/25-04-05/gfccc.gif";
+import hourHandSource from "../../assets/clocks/25-04-05/gr4.gif";
+import secondHandSource from "../../assets/clocks/25-04-05/gr5.gif";
+import minuteHandSource from "../../assets/clocks/25-04-05/gr99.webp";
 
 // --- Clock Logic Functions (Unchanged) ---
 const getHourRotation = (date) => {

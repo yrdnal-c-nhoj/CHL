@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import backgroundImage from './ci.webp'
+import backgroundImage from '../../assets/clocks/25-12-18/ci.webp'
+import FONT_PATH from '../../assets/fonts/cine.ttf?url'
 
 const TiltedReverseClock = () => {
   const [time, setTime] = useState(new Date())
@@ -15,7 +16,7 @@ const TiltedReverseClock = () => {
     style.textContent = `
       @font-face {
         font-family: 'speed';
-        src: url('/fonts/cine.ttf') format('truetype');
+        src: url(${FONT_PATH}) format('truetype');
         font-weight: normal;
         font-style: normal;
         font-display: swap;

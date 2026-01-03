@@ -1,19 +1,32 @@
 import { useState, useEffect } from 'react';
-import background from './cass.webp';
-import backgroundImage from './tape.gif'; // Use the same image for now, replace with your desired background image
+import background from '../../assets/clocks/25-12-21/cass.webp';
+import backgroundImage from '../../assets/clocks/25-12-21/tape.gif';
+import FONT_PATH from '../../assets/fonts/cas.ttf?url';
 
 export default function App() {
   const [time, setTime] = useState(new Date());
+  const [scopedFontName, setScopedFontName] = useState('');
 
   useEffect(() => {
-    // Load custom font
+    // Load custom font (scoped to this component only)
     const loadFont = async () => {
       try {
-        const font = new FontFace('Haunt', 'url(/fonts/cas.ttf)');
-        await font.load();
-        document.fonts.add(font);
+        // Create unique font name for this component instance
+        const uniqueFontName = `CustomFont-${Date.now()}`;
+        setScopedFontName(uniqueFontName);
+        
+        // Create scoped font-face using style tag
+        const style = document.createElement('style');
+        style.textContent = `
+          @font-face {
+            font-family: '${uniqueFontName}';
+            src: url(${FONT_PATH}) format('truetype');
+            font-display: swap;
+          }
+        `;
+        document.head.appendChild(style);
       } catch (error) {
-        console.error('Failed to load Haunt font:', error);
+        console.error('Failed to load CustomFont:', error);
       }
     };
 
@@ -52,7 +65,7 @@ export default function App() {
     lineHeight: 1,
     WebkitUserSelect: 'none',
     userSelect: 'none',
-    fontFamily: 'Haunt, sans-serif',
+    fontFamily: scopedFontName ? `${scopedFontName}, sans-serif` : 'sans-serif',
     position: 'relative',
     zIndex: 1
   };

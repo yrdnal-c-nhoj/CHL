@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-const customFont = '/fonts/25-07-28-gol.ttf'; // Import your custom font
-import backgroundImage from './go.gif';
+import customFont from '../../assets/fonts/25-07-28-gol.ttf'; // Import your custom font
+import backgroundImage from '../../assets/clocks/25-07-28/go.gif';
 
 const Clock = () => {
   const [time, setTime] = useState(() => new Date());

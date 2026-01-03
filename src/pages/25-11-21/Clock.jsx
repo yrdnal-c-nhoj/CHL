@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
 
 // --- FONT IMPORT (same folder) ---
-const font_sdfsdfsdfsd = '/fonts/25-11-21-omission.otf';
+import font_sdfsdfsdfsd from '../../assets/fonts/25-11-21-omission.otf?url';
 
 // --- IMAGE IMPORTS (same folder) ---
-import img1 from './1.jpg'
-import img2 from './2.jpg'
-import img3 from './3.jpg'
-import img4 from './4.jpg'
-import img5 from './5.jpg'
-import img6 from './6.jpg'
+import img1 from '../../assets/clocks/25-11-21/1.jpg'
+import img2 from '../../assets/clocks/25-11-21/2.jpg'
+import img3 from '../../assets/clocks/25-11-21/3.jpg'
+import img4 from '../../assets/clocks/25-11-21/4.jpg'
+import img5 from '../../assets/clocks/25-11-21/5.jpg'
+import img6 from '../../assets/clocks/25-11-21/6.jpg'
 
 const images = [img1, img2, img3, img4, img5, img6]
 

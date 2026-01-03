@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-const iceFont = '/fonts/25-12-15-ice.ttf'; // import font as module
-import BG_IMAGE_PATH from './forest.jpeg';
+import iceFont from '../../assets/fonts/25-12-15-ice.ttf?url'; // import font as module
+import BG_IMAGE_PATH from '../../assets/clocks/25-12-15/forest.jpeg';
 
 const FONT_FAMILY = 'DigitalClock';
 
@@ -21,7 +21,7 @@ export default function VerticalDigitalClock() {
     style.textContent = `
       @font-face {
         font-family: '${FONT_FAMILY}';
-        src: url('${iceFont}') format('truetype');
+        src: url(${iceFont}) format('truetype');
         font-weight: normal;
         font-style: normal;
         font-display: swap;

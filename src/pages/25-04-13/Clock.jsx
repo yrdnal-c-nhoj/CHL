@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import backgroundImage from './images/pattern.jpeg';
-import pizzaFace from './images/pie.webp';
-import hourSlice from './images/s3.webp';
-import minuteSlice from './images/s2.webp';
-import secondSlice from './images/s1.webp';
+import backgroundImage from '../../assets/clocks/25-04-13/pattern.jpeg';
+import pizzaFace from '../../assets/clocks/25-04-13/pie.webp';
+import hourSlice from '../../assets/clocks/25-04-13/s3.webp';
+import minuteSlice from '../../assets/clocks/25-04-13/s2.webp';
+import secondSlice from '../../assets/clocks/25-04-13/s1.webp';
 
 const PizzaClock = () => {
   const hourRef = useRef(null);

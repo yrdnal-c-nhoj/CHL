@@ -1,22 +1,46 @@
 // AnalogClock.jsx
 import React, { useEffect, useState } from 'react'
-import bgImg from './apple.webp' // Main background
-import tileImg from './ap.webp' // Tiled background
-import overlayImg from './app.webp' // Full-cover overlay
-const custo251119font = '/fonts/25-11-19-apple.ttf';
+import bgImg from '../../assets/clocks/25-11-19/apple.webp' // Main background
+import tileImg from '../../assets/clocks/25-11-19/app.webp' // Tiled background
+import overlayImg from '../../assets/clocks/25-11-19/ap.webp' // Full-cover overlay
+import custo251119font from '../../assets/fonts/25-11-19-apple.ttf?url';
 
 export default function AnalogClock () {
   const [time, setTime] = useState(new Date())
   const [fontLoaded, setFontLoaded] = useState(false)
+  const fontId = `custom-font-${Math.random().toString(36).substr(2, 9)}`
 
-  // Load custom font
+  // Load custom font with scoped CSS
   useEffect(() => {
-    const font = new FontFace('CustomClockFont', `url(${custo251119font})`)
-    font.load().then(loadedFont => {
-      document.fonts.add(loadedFont)
-      setFontLoaded(true)
-    })
-  }, [])
+    const style = document.createElement('style')
+    style.id = fontId
+    style.textContent = `
+      @font-face {
+        font-family: 'CustomClockFont-${fontId}';
+        src: url(${custo251119font}) format('truetype');
+        font-display: swap;
+      }
+      #${fontId}-container {
+        font-family: 'CustomClockFont-${fontId}', sans-serif;
+      }
+    `
+    document.head.appendChild(style)
+    
+    // Check if font is loaded
+    const checkFont = async () => {
+      try {
+        await document.fonts.load(`1rem 'CustomClockFont-${fontId}'`)
+        setFontLoaded(true)
+      } catch (e) {
+        setFontLoaded(true) // Fallback to show content even if font fails
+      }
+    }
+    checkFont()
+
+    return () => {
+      document.head.removeChild(style)
+    }
+  }, [fontId])
 
   // Update time every second
   useEffect(() => {
@@ -25,14 +49,14 @@ export default function AnalogClock () {
   }, [])
 
   const containerStyle = {
-    fontFamily: fontLoaded ? 'CustomClockFont' : 'sans-serif',
     width: '100vw',
     height: '100dvh',
     position: 'relative',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    fontFamily: fontLoaded ? `'CustomClockFont-${fontId}', sans-serif` : 'sans-serif'
   }
 
   const mainBgStyle = {

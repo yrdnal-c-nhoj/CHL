@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-const cylFont = '/fonts/25-06-03-cyl.ttf';
+import cylFont from '../../assets/fonts/25-06-03-cyl.ttf';
 
 const FiligreeClock = () => {
   const [digits, setDigits] = useState(Array(16).fill("0"));

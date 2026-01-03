@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-const squFontUrl = '/fonts/25-06-23-squ.ttf';
+import squFontUrl from '../../assets/fonts/25-06-23-squ.ttf';
 
 const SquigglingClock = () => {
   const canvasRef = useRef(null);

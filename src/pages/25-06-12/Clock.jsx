@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import bgImage from './auth.jpg';
-const cattleFont = '/fonts/25-06-12-cattle.ttf';
+import bgImage from '../../assets/clocks/25-06-12/auth.jpg';
+import cattleFont from '../../assets/fonts/25-06-12-cattle.ttf';
 
 const CattleBrandClock = () => {
   const [time, setTime] = useState({ hours: 12, minutes: '00' });

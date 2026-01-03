@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-const twentyFont = '/fonts/25-06-28-twenty.otf';
+import twentyFont from '../../assets/fonts/25-06-28-twenty.otf';
 
 const Clock24 = () => {
   const hourRef = useRef();

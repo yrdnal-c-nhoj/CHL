@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-const monofettFont = '/fonts/25-04-10-Monofett.ttf';
+import monofettFont from "../../assets/fonts/25-04-10-Monofett.ttf";
 
 const BarGraphClock = () => {
   const [time, setTime] = useState(new Date());

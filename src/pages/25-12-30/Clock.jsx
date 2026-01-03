@@ -20,12 +20,12 @@ const RotatingAnalemmaClock = () => {
     styleElement.innerHTML = `
       @font-face {
         font-family: '${fontFamilyName}';
-        src: url('/fonts/25-12-30-analemma.ttf') format('truetype');
+        src: url('${new URL('../../assets/fonts/25-12-30-analemma.ttf', import.meta.url).href}') format('truetype');
         font-display: block;
       }
       @font-face {
         font-family: 'AnalemmaText';
-        src: url('/fonts/25-12-30-ana.ttf') format('truetype');
+        src: url('${new URL('../../assets/fonts/25-12-30-ana.ttf', import.meta.url).href}') format('truetype');
         font-display: block;
       }
       * {

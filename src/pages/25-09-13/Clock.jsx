@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-const customFontpawww = '/fonts/25-09-13-anim.ttf';
-import bgImage from './anim.jpg';
+import customFontpawww from '../../assets/fonts/25-09-13-anim.ttf?url';
+import bgImage from '../../assets/clocks/25-09-13/anim.jpg';
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());

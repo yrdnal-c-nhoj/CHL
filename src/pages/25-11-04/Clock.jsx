@@ -1,11 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
-import bgVideo from './sea.mp4'
-import fallbackImg from './sea.webp'
-const cu251104font = '/fonts/25-11-04-naut.ttf'; // Nautical font
+import React, { useEffect, useState, useRef } from 'react'
+// import bgVideo from './sea.mp4' // Video file not found in current directory
+import fallbackImg from '../../assets/clocks/25-11-04/sea.webp'
+import cu251104font from '../../assets/fonts/25-11-04-naut.ttf?url'; // Nautical font
 
 export default function OceanStorm () {
-  const videoRef = useRef(null)
-  const [videoFailed, setVideoFailed] = useState(false)
   const [vh, setVh] = useState(window.innerHeight)
   const [fontLoaded, setFontLoaded] = useState(false)
 
@@ -20,10 +18,6 @@ export default function OceanStorm () {
       document.fonts.add(loadedFont)
       setFontLoaded(true)
     })
-
-    // Play video
-    const video = videoRef.current
-    if (video) video.play().catch(() => setVideoFailed(true))
 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
@@ -40,47 +34,22 @@ export default function OceanStorm () {
         // backgroundColor: "#001f33",
       }}
     >
-      {/* Background video */}
-      {!videoFailed && (
-        <video
-          ref={videoRef}
-          src={bgVideo}
-          poster={fallbackImg}
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            zIndex: 0,
-            filter: 'brightness(1.5) contrast(1.4) hue-rotate(-10deg)'
-          }}
-          onError={() => setVideoFailed(true)}
-        />
-      )}
-
-      {/* Fallback image */}
-      {videoFailed && (
-        <img
-          src={fallbackImg}
-          alt='Sea Fallback'
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            zIndex: 0,
-            filter: 'brightness(1.4) contrast(1.4)'
-          }}
-        />
-      )}
+      {/* Background image instead of video */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url(${fallbackImg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          zIndex: 0,
+          filter: 'brightness(1.5) contrast(1.4) hue-rotate(-10deg)'
+        }}
+      />
 
       {/* Stormy rocking clock */}
       <div

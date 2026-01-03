@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import backgroundImg from "./Antarctica.jpg"; // Make sure this file exists in the same folder
+import backgroundImg from "../../assets/clocks/25-04-18/Antarctica.jpg";
 
 const AntarcticaClock = () => {
   const clockRef = useRef(null);

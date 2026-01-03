@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import bgImage from './fried-egg.gif';
-import img1 from './1.gif';
-import img2 from './2.gif';
-import img3 from './3.gif';
-import img4 from './4.gif';
-import img5 from './5.gif';
-import img6 from './6.gif';
-import img7 from './7.gif';
-import img8 from './8.gif';
-import img9 from './9.gif';
-import img10 from './10.gif';
-import img11 from './11.gif';
-import img12 from './12.gif';
-import hourHand from './whi.gif';
-import minuteHand from './whis.gif';
-import secondHand from './w.gif';
+import bgImage from '../../assets/clocks/25-06-30/whis.jpg';
+import img1 from '../../assets/clocks/25-06-30/1.gif';
+import img2 from '../../assets/clocks/25-06-30/2.gif';
+import img3 from '../../assets/clocks/25-06-30/3.gif';
+import img4 from '../../assets/clocks/25-06-30/4.gif';
+import img5 from '../../assets/clocks/25-06-30/5.gif';
+import img6 from '../../assets/clocks/25-06-30/6.gif';
+import img7 from '../../assets/clocks/25-06-30/7.gif';
+import img8 from '../../assets/clocks/25-06-30/8.gif';
+import img9 from '../../assets/clocks/25-06-30/9.gif';
+import img10 from '../../assets/clocks/25-06-30/10.gif';
+import img11 from '../../assets/clocks/25-06-30/11.gif';
+import img12 from '../../assets/clocks/25-06-30/12.gif';
+import hourHand from '../../assets/clocks/25-06-30/fried-egg.gif';
+import minuteHand from '../../assets/clocks/25-06-30/w.gif';
+import secondHand from '../../assets/clocks/25-06-30/whi.gif';
 
 const allImages = [
   bgImage,

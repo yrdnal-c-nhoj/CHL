@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-const myFontUrl = '/fonts/25-08-07-rope.ttf';
-import backgroundImageUrl from './wes.webp';
-import hourHandImageUrl from './gunn.gif';
-import minuteHandImageUrl from './gun.gif';
-import secondHandImageUrl from './ggg.gif';
+import myFontUrl from '../../assets/fonts/25-08-07-rope.ttf';
+import backgroundImageUrl from '../../assets/clocks/25-08-07/wes.webp';
+import hourHandImageUrl from '../../assets/clocks/25-08-07/ggg.gif';
+import minuteHandImageUrl from '../../assets/clocks/25-08-07/gun.gif';
+import secondHandImageUrl from '../../assets/clocks/25-08-07/gunn.gif';
 
 const AnalogClock = () => {
   const canvasRef = useRef(null);

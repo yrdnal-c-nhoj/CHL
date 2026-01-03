@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-const ionFont = '/fonts/25-06-09-ion.ttf';
-import ionJpeg from "./ion.jpeg";
-import iskyWebp from "./isky.webp";
+import ionFont from '../../assets/fonts/25-06-09-ion.ttf';
+import ionJpeg from "../../assets/clocks/25-06-09/ion.jpeg";
+import iskyWebp from "../../assets/clocks/25-06-09/isky.webp";
 
 const CLOCK_BACKGROUND = "rgba(0, 255, 255, 0.0)";
 const CLOCK_COUNT_PER_DIRECTION = 2;

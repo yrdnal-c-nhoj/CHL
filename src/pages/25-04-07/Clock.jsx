@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import sys1 from "/assets/clocks/25-04-07/sys1.gif";
-import sys2 from "/assets/clocks/25-04-07/sys2.gif";
-import sys3 from "/assets/clocks/25-04-07/sys3.gif";
+import sys1 from "../../assets/clocks/25-04-07/sys1.gif";
+import sys2 from "../../assets/clocks/25-04-07/sys2.gif";
+import sys3 from "../../assets/clocks/25-04-07/sys3.gif";
 
 const SolarSystemClock = ({ backgroundColor = "#0C0D53FF" }) => {
   const hourRef = useRef(null);

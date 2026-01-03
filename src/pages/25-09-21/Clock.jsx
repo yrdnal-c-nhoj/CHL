@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-const cust250921font = '/fonts/25-09-21-ele.ttf';
-import stripe1 from './fire.gif?url'
-import stripe2 from './air.gif?url'
-import stripe3 from './h2o.gif?url'
-import stripe4 from './earth.webp?url'
+import cust250921font from '../../assets/fonts/25-09-21-ele.ttf?url';
+import stripe1 from '../../assets/clocks/25-09-21/fire.gif?url'
+import stripe2 from '../../assets/clocks/25-09-21/air.gif?url'
+import stripe3 from '../../assets/clocks/25-09-21/h2o.gif?url'
+import stripe4 from '../../assets/clocks/25-09-21/earth.webp?url'
 
 export default function AnalogClock () {
   const [ready, setReady] = useState(false)

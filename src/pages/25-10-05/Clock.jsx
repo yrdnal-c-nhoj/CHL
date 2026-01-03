@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import bgImage from '/assets/clocks/25-10-05/6a.png'
-import clockBgImage from '/assets/clocks/25-10-05/6.png'
-const diigi251005 = '/fonts/25-10-05-dode.ttf';
-const ana251005font = '/fonts/25-10-05-do.ttf';
+import bgImage from '../../assets/clocks/25-10-05/16a.webp'
+import clockBgImage from '../../assets/clocks/25-10-05/16.webp'
+import diigi251005 from '../../assets/fonts/25-10-05-dode.ttf';
+import ana251005font from '../../assets/fonts/25-10-05-do.ttf';
 
 export default function HexAnalogClock () {
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -31,16 +31,22 @@ export default function HexAnalogClock () {
       try {
         const digitalFont = new FontFace('DigitalFont', `url(${diigi251005})`)
         const analogFont = new FontFace('AnalogFont', `url(${ana251005font})`)
-        await Promise.all([digitalFont.load(), analogFont.load()])
+        
+        // Load fonts with error handling
+        await digitalFont.load()
+        await analogFont.load()
+        
         document.fonts.add(digitalFont)
         document.fonts.add(analogFont)
 
         const loadImage = src =>
-          new Promise(resolve => {
+          new Promise((resolve, reject) => {
             const img = new Image()
+            img.onload = () => resolve(img)
+            img.onerror = reject
             img.src = src
-            img.onload = resolve
           })
+        
         await Promise.all([loadImage(bgImage), loadImage(clockBgImage)])
 
         setReady(true)

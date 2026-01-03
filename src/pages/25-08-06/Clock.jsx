@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-const orbitronFont = '/fonts/25-08-06-laika.ttf'; // Yourquo vadis
-import featuredImage from './Laika.jpeg'; // Your local image file
+import orbitronFont from '../../assets/fonts/25-08-06-laika.ttf'; // Yourquo vadis
+import featuredImage from '../../assets/clocks/25-08-06/Laika.jpeg'; // Your local image file
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());

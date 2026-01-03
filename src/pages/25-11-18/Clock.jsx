@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-const font_2025_11_21 = '/fonts/25-11-18-cat.ttf';
-import bgImg from "./eyes.webp";
+import font_2025_11_21 from '../../assets/fonts/25-11-18-cat.ttf?url';
+import bgImg from "../../assets/clocks/25-11-18/eyes.webp";
 
 export default function RotatedClockGrid() {
   const [now, setNow] = useState(new Date());

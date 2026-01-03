@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-const mintFont = '/fonts/25-07-08-mint.ttf';
-import hourImg from './mint.png';
-import minuteImg from './minty.webp';
-import secondImg from './min.png';
-import bgImage from './candy.jpg';
+import mintFont from '../../assets/fonts/25-07-08-mint.ttf';
+import hourImg from '../../assets/clocks/25-07-08/min.png';
+import minuteImg from '../../assets/clocks/25-07-08/min.png';
+import secondImg from '../../assets/clocks/25-07-08/min.png';
+import bgImage from '../../assets/clocks/25-07-08/minty.webp';
 
 const MintClock = () => {
   useEffect(() => {

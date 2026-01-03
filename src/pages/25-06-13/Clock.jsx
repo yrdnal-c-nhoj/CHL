@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-const cloudyFont = '/fonts/25-06-13-cloudy.ttf';
-import cmoon from './cmoon.webp';
-import clouGif from './clou.gif';
-import clll from './clll.webp';
+import cloudyFont from '../../assets/fonts/25-06-13-cloudy.ttf';
+import cmoon from '../../assets/clocks/25-06-13/cmoon.webp';
+import clouGif from '../../assets/clocks/25-06-13/clou.gif';
+import clll from '../../assets/clocks/25-06-13/clll.webp';
 
 const CloudyNightClock = () => {
   const clockRef = useRef();

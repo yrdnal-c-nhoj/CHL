@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-const dotsFont = '/fonts/25-05-27-dots.otf';         // Import custom font
-import backgroundImage from "./dot.jpg"; // Import background image
+import dotsFont from '../../assets/fonts/25-05-27-dots.otf';         // Import custom font
+import backgroundImage from "../../assets/clocks/25-05-27/dot.jpg"; // Import background image
 
 function Clock() {
   const [time, setTime] = useState(new Date());

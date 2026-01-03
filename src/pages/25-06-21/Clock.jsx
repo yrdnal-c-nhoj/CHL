@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
-const fontUrl = '/fonts/25-06-21-merc.ttf';
-import bg1 from './MercuryResonancePrecession001.gif';
-import bg2 from './mmmmm.gif';
-import bg3 from './merg.gif';
-import bgImage from './mmm.gif';
-import hourImg from './mercc.gif';
-import minuteImg from './memm.gif';
-import secondImg from './mmmm.webp';
+import fontUrl from '../../assets/fonts/25-06-21-merc.ttf';
+import bg1 from '../../assets/clocks/25-06-21/MercuryResonancePrecession001.gif';
+import bg2 from '../../assets/clocks/25-06-21/memm.gif';
+import bg3 from '../../assets/clocks/25-06-21/mercc.gif';
+import bgImage from '../../assets/clocks/25-06-21/merg.gif';
+import hourImg from '../../assets/clocks/25-06-21/mmm.gif';
+import minuteImg from '../../assets/clocks/25-06-21/mmmm.png';
+import secondImg from '../../assets/clocks/25-06-21/mmmm.webp';
 
 const MercuryClock = () => {
   const hourRef = useRef();

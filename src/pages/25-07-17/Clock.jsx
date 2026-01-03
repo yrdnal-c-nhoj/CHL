@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 
 // Import font and images as modules from the same folder
-const animFont = '/fonts/25-07-17-ani.ttf';
+import animFont from '../../assets/fonts/25-07-17-ani.ttf';
 
-import num1Img from "./pngtree-a-beautiful-saltwater-crocodile-png-image_13409821-ezgif.com-rotate.gif";
-import num2Img from "./nbvfghj-ezgif.com-effects.gif";
-import num3Img from "./Kodiak-Brown-Bear-PNG-Isolated-HD-ezgif.com-optimize.gif";
-import num4Img from "./jhgf.gif";
-import num5Img from "./pngtree-harpy-eagle-vulture-animal-flying-isolated-on-white-background-png-image_15617474-ezgif.com-apng-to-gif-converter.gif";
-import num6Img from "./Green-Anaconda-PNG-Photos-ezgif.com-apng-to-gif-converter.gif";
-import num7Img from "./m0149_7_cover-ezgif.com-optimize(1).gif";
-import num8Img from "./jhgfd(1).gif";
-import num9Img from "./myo.gif";
-import num10Img from "./dgffcir-93f9489c-305d-45b7-81d4-eb9622481af9-ezgif.com-apng-to-gif-converter.gif";
-import num11Img from "./African-Elephant-PNG-File-ezgif.com-optimize.gif";
-import num12Img from "./gergfeds.gif";
+import num1Img from "../../assets/clocks/25-07-17/pngtree-a-beautiful-saltwater-crocodile-png-image_13409821-ezgif.com-rotate.gif";
+import num2Img from "../../assets/clocks/25-07-17/nbvfghj-ezgif.com-effects.gif";
+import num3Img from "../../assets/clocks/25-07-17/Kodiak-Brown-Bear-PNG-Isolated-HD-ezgif.com-optimize.gif";
+import num4Img from "../../assets/clocks/25-07-17/jhgf.gif";
+import num5Img from "../../assets/clocks/25-07-17/pngtree-harpy-eagle-vulture-animal-flying-isolated-on-white-background-png-image_15617474-ezgif.com-apng-to-gif-converter.gif";
+import num6Img from "../../assets/clocks/25-07-17/Green-Anaconda-PNG-Photos-ezgif.com-apng-to-gif-converter.gif";
+import num7Img from "../../assets/clocks/25-07-17/m0149_7_cover-ezgif.com-optimize(1).gif";
+import num8Img from "../../assets/clocks/25-07-17/jhgfd(1).gif";
+import num9Img from "../../assets/clocks/25-07-17/myo.gif";
+import num10Img from "../../assets/clocks/25-07-17/dgffcir-93f9489c-305d-45b7-81d4-eb9622481af9-ezgif.com-apng-to-gif-converter.gif";
+import num11Img from "../../assets/clocks/25-07-17/African-Elephant-PNG-File-ezgif.com-optimize.gif";
+import num12Img from "../../assets/clocks/25-07-17/gergfeds.gif";
 
-import bgImage from "./anim.webp";
+import bgImage from "../../assets/clocks/25-07-17/anim.webp";
 
 // Inject font-face and background rotation styles
 const fontFaceStyle = `

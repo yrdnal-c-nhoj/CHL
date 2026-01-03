@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useLayoutEffect, useMemo, useCallback, useRef } from "react";
 // Assuming these imports are correct and available in your environment
-const fontClockUrl_20251126 = '/fonts/25-11-25-ntp.ttf';
-const marqueeFontUrl = '/fonts/25-11-25-n2.ttf';
-import backgroundImg from "./npt.webp";
+import fontClockUrl_20251126 from '../../assets/fonts/25-11-25-ntp.ttf?url';
+import marqueeFontUrl from '../../assets/fonts/25-11-25-n2.ttf?url';
+import backgroundImg from "../../assets/clocks/25-11-25/npt.webp";
 
 // --- Constants (Keep as is) ---
 const NTP_EPOCH_OFFSET = 2208988800;

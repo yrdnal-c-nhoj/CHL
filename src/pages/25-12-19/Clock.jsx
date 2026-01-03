@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import sandTexture from './sand.webp';
+import sandTexture from '../../assets/clocks/25-12-19/sand.webp';
 
 const FONT_FAMILY = 'DateFont';
-const FONT_PATH = '/fonts/hour.ttf';
+import FONT_PATH from '../../assets/fonts/hour.ttf?url';
 
 const HourglassTimer = () => {
   const [fontLoaded, setFontLoaded] = useState(false);

@@ -1,15 +1,15 @@
 import React, { useEffect, useRef } from "react";
-import backgroundImage from "./1937.696_print-scaled.jpg";
-import flakesGif from "./Z3ut.gif";
-import sgSnow from "./sg-snow.gif";
-import snow659 from "./659.gif";
-import snow01 from "./snow01.gif";
-import snow02 from "./snow02.gif";
-import sno from "./sno.gif";
-import snow7 from "./snow-gif-7.gif";
-import flakes from "./flakes.gif";
-import eref from "./eref.gif";
-const amaticRegular = '/fonts/25-06-07-amati.ttf';
+import backgroundImage from "../../assets/clocks/25-06-07/1937.696_print-scaled.jpg";
+import flakesGif from "../../assets/clocks/25-06-07/Z3ut.gif";
+import sgSnow from "../../assets/clocks/25-06-07/sg-snow.gif";
+import snow659 from "../../assets/clocks/25-06-07/659.gif";
+import snow01 from "../../assets/clocks/25-06-07/snow01.gif";
+import snow02 from "../../assets/clocks/25-06-07/snow02.gif";
+import sno from "../../assets/clocks/25-06-07/sno.gif";
+import snow7 from "../../assets/clocks/25-06-07/snow-gif-7.gif";
+import flakes from "../../assets/clocks/25-06-07/flakes.gif";
+import eref from "../../assets/clocks/25-06-07/eref.gif";
+import amaticRegular from '../../assets/fonts/25-06-07-amati.ttf';
 
 export default function BlizzardClock() {
   const clockRef = useRef(null);

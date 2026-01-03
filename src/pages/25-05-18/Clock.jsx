@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-const bluFont = '/fonts/25-05-18-blu.otf'; // local font
-import image1 from './8mMt.gif'; // bottom layer
-import image2 from './13966281486_Volantis_Tumblr.gif'; // middle layer
-import image3 from './bloo.gif'; // top layer
+import bluFont from '../../assets/fonts/25-05-18-blu.otf'; // local font
+import image1 from '../../assets/clocks/25-05-18/13966281486_Volantis_Tumblr.gif'; // bottom layer
+import image2 from '../../assets/clocks/25-05-18/8mMt.gif'; // middle layer
+import image3 from '../../assets/clocks/25-05-18/bloo.gif'; // top layer
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());

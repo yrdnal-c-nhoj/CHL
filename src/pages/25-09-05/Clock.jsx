@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-const DigitalClockFont = '/fonts/25-09-05-swi.ttf';
-import DigitalClockBg from './swiss.jpg';
-import MovingImg from './mouse.gif';
+import DigitalClockFont from '../../assets/fonts/25-09-05-swi.ttf';
+import DigitalClockBg from '../../assets/clocks/25-09-05/swiss.jpg';
+import MovingImg from '../../assets/clocks/25-09-05/mouse.gif';
 
 export default function DigitalClock() {
   const [now, setNow] = useState(new Date());
