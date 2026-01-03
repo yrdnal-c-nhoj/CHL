@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
-import videoFile from "./sput.mp4";
-import fallbackImg from "./sput.webp";
-import secondHandImg from "./spu.webp";
+import videoFile from "/assets/clocks/25-11-22/sput.mp4";
+import fallbackImg from "/assets/clocks/25-11-22/sput.webp";
+import secondHandImg from "/assets/clocks/25-11-22/spu.webp";
 const font112425sput = '/fonts/25-11-22-spu.ttf';
 
 export default function Clock() {
