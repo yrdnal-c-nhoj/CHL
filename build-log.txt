@@ -14,18 +14,10 @@ The glob option "as" has been deprecated in favour of "query". Please update `as
 The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
 The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
 The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-[plugin vite:esbuild] src/pages/25-12-30/Clock.jsx: Duplicate key "fontSize" in object literal
-139 |        letterSpacing: '0.2vh',
-140 |        fontFamily: `AnalemmaText, ${fontFamilyName}, sans-serif`,
-141 |        fontSize: '3.3vh',
-    |        ^
-142 |        // letterSpacing: '0.2em',
-143 |        zIndex: 10
-
-✓ 1418 modules transformed.
-✗ Build failed in 1.82s
+✓ 866 modules transformed.
+✗ Build failed in 1.57s
 error during build:
-[vite]: Rollup failed to resolve import "/assets/clocks/25-10-23/hour.gif" from "/Users/john/Desktop/CHL/src/pages/25-10-21/Clock.jsx".
+[vite]: Rollup failed to resolve import "/assets/clocks/25-10-23/bg.jpg" from "/Users/john/Desktop/CHL/src/pages/25-10-21/Clock.jsx".
 This is most likely unintended because it can break your application at runtime.
 If you do want to externalize this module explicitly add it to
 `build.rollupOptions.external`
