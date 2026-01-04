@@ -42,16 +42,27 @@ export default function Clock() {
       const minuteDeg = minutes * 6 + seconds / 10 + jitter() * 0.02;
       const hourDeg = hours * 30 + minutes / 2 + jitter() * 0.005;
 
+      const secondScale = 1 + Math.sin(seconds * Math.PI / 30) * 0.05;
+      const minuteScale = 1 + Math.sin(minutes * Math.PI / 30) * 0.03;
+      const hourScale = 1 + Math.sin(hours * Math.PI / 6) * 0.02;
+
       const secondHand = document.querySelector('.second-hand');
       const minuteHand = document.querySelector('.minute-hand');
       const hourHand = document.querySelector('.hour-hand');
 
-      if (secondHand) secondHand.style.transform = `translate(-50%, -50%) rotate(${secondDeg}deg)`;
-      if (minuteHand) minuteHand.style.transform = `translate(-50%, -50%) rotate(${minuteDeg}deg)`;
-      if (hourHand) hourHand.style.transform = `translate(-50%, -50%) rotate(${hourDeg}deg)`;
+      if (secondHand) {
+        secondHand.style.transform = `translate(-50%, -50%) rotate(${secondDeg}deg) scaleY(${secondScale})`;
+      }
+      if (minuteHand) {
+        minuteHand.style.transform = `translate(-50%, -50%) rotate(${minuteDeg}deg) scaleY(${minuteScale})`;
+      }
+      if (hourHand) {
+        hourHand.style.transform = `translate(-50%, -50%) rotate(${hourDeg}deg) scaleY(${hourScale})`;
+      }
     };
 
     const interval = setInterval(updateClock, 50);
+    updateClock();
     return () => {
       clearInterval(interval);
       // Font cleanup is handled automatically when component unmounts
@@ -109,34 +120,72 @@ export default function Clock() {
               transform: `rotate(${num.rotation}deg)`,
             }}
           >
-            <div style={{ position: 'absolute', width: '100%', top: '5%' }}>
+            <div
+              className="clock-number"
+              style={{
+                position: 'absolute',
+                width: '100%',
+                top: '5%',
+              }}
+            >
               {num.value}
             </div>
           </div>
         ))}
 
-        {/* Hands Container (Simplified for visibility) */}
-        {[
-          { className: 'hour-hand', img: hourHandImage, size: '50vmin', z: 4 },
-          { className: 'minute-hand', img: minuteHandImage, size: '70vmin', z: 5 },
-          { className: 'second-hand', img: secondHandImage, size: '80vmin', z: 6 }
-        ].map(hand => (
-          <div
-            key={hand.className}
-            className={hand.className}
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              width: hand.size,
-              height: hand.size,
-              zIndex: hand.z,
-              pointerEvents: 'none'
-            }}
-          >
-            <img src={hand.img} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-          </div>
-        ))}
+        {/* Hour Hand */}
+        <div
+          className="hour-hand"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transformOrigin: 'center',
+            zIndex: 4,
+          }}
+        >
+          <img
+            src={hourHandImage}
+            alt="Hour Hand"
+            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+          />
+        </div>
+
+        {/* Minute Hand */}
+        <div
+          className="minute-hand"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transformOrigin: 'center',
+            zIndex: 5,
+          }}
+        >
+          <img
+            src={minuteHandImage}
+            alt="Minute Hand"
+            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+          />
+        </div>
+
+        {/* Second Hand */}
+        <div
+          className="second-hand"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transformOrigin: 'center',
+            zIndex: 6,
+          }}
+        >
+          <img
+            src={secondHandImage}
+            alt="Second Hand"
+            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+          />
+        </div>
       </div>
     </div>
   );
