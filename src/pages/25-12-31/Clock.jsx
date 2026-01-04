@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import bgImage from '../../assets/clocks/25-12-31/shadow.jpg'
-import d250916font from '../../assets/fonts/25-12-31-shadow.otf?url';
+import d250916font from '../../assets/fonts/25-12-31-shadow.otf';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date())
@@ -23,12 +23,12 @@ const Clock = () => {
     style.textContent = `
       @font-face {
         font-family: 'MyD250916font';
-        src: url(${d250916font}) format('truetype');
-        font-display: swap;
+        src: url(${d250916font}) format('opentype');
+        font-display: block;
       }
     `
     document.head.appendChild(style)
-    const fontPromise = document.fonts.load('10rem MyD250916font')
+    const fontPromise = document.fonts.load('22vh MyD250916font')
     const imagePromise = new Promise((resolve, reject) => {
       const img = new Image()
       img.src = bgImage
