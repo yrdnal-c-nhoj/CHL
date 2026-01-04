@@ -1,10 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react'
 import videoFile from '../../assets/clocks/25-12-22/candle.mp4'
 import fallbackImage from '../../assets/clocks/25-12-22/candle.webp'
+import fontFile from '../../assets/fonts/25-12-22-candle.ttf'
 
-const xxx251120 = '../../assets/fonts/25-12-22-candle.ttf'
 const FONT_FAMILY = 'MyClockFont_20251120'
-const fontUrl = new URL(xxx251120, import.meta.url).href
 
 export default function PixelInverseClock() {
   const canvasRef = useRef(null)
@@ -61,7 +60,7 @@ export default function PixelInverseClock() {
 
   /* ================= FONT LOAD ================= */
   useEffect(() => {
-    const font = new FontFace(FONT_FAMILY, `url(${fontUrl})`)
+    const font = new FontFace(FONT_FAMILY, `url(${fontFile})`)
     font.load().then(loaded => {
       document.fonts.add(loaded)
       setFontLoaded(true)
