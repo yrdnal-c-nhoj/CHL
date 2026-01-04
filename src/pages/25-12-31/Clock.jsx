@@ -14,7 +14,8 @@ const Clock = () => {
   };
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000)
+    setTime(new Date())
+    const timer = setInterval(() => setTime(new Date()), 100)
     return () => clearInterval(timer)
   }, [])
 
@@ -82,7 +83,7 @@ const Clock = () => {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'black',
-    backgroundImage: isLoaded ? `url(${bgImage})` : 'none',
+    backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     overflow: 'hidden',
@@ -114,8 +115,7 @@ const Clock = () => {
   )
 
   
-  if (!isLoaded) return <div style={{ height: '100dvh', backgroundColor: 'black' }} />
-
+  
   return (
     <div style={containerStyle}>
       <div style={layoutStyle}>
