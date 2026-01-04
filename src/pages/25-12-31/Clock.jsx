@@ -1,113 +1,130 @@
-// FullScreenTallyClock.jsx
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react'
+import bgImage from '../../assets/clocks/25-12-31/shadow.jpg'
+import d250916font from '../../assets/fonts/25-12-31-shadow.otf?url';
 
-const FullScreenTallyClock = () => {
-  const [time, setTime] = useState(() => new Date());
+const Clock = () => {
+  const [time, setTime] = useState(new Date())
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 768)
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-    // Prevent mobile bounce/overscroll
-    document.body.style.margin = '0';
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.height = '100%';
-
-    return () => {
-      clearInterval(timer);
-      // Minimal cleanup — most style resets not strictly needed in SPA
-      document.body.style.overflow = '';
-    };
-  }, []);
-
-  // Extract time parts with leading zeros
-  const hours = time.getHours().toString().padStart(2, '0');
-  const minutes = time.getMinutes().toString().padStart(2, '0');
-  const seconds = time.getSeconds().toString().padStart(2, '0');
-
-  const tallyGroup = (digit) => {
-    const num = parseInt(digit, 10);
-    const groupsOf5 = Math.floor(num / 5);
-    const remainder = num % 5;
-
-    return (
-      <>
-        {'𝍩'.repeat(groupsOf5)}
-        {'𝍪𝍫𝍬𝍭'[remainder] || ''}
-      </>
-    );
+  // 1. LETTER MAPPING: Change these letters to your preference
+  const digitToLetter = {
+    '0': 'Y', '1': 'I', '2': 'K', '3': 'F', '4': 'E',
+    '5': 'F', '6': 'H', '7': 'E', '8': 'D', '9': 'C'
   };
 
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  useEffect(() => {
+    const style = document.createElement('style')
+    style.textContent = `
+      @font-face {
+        font-family: 'MyD250916font';
+        src: url(${d250916font}) format('truetype');
+        font-display: swap;
+      }
+    `
+    document.head.appendChild(style)
+    const fontPromise = document.fonts.load('10rem MyD250916font')
+    const imagePromise = new Promise((resolve, reject) => {
+      const img = new Image()
+      img.src = bgImage
+      img.onload = resolve
+      img.onerror = reject
+    })
+
+    Promise.all([fontPromise, imagePromise])
+      .then(() => setIsLoaded(true))
+      .catch(() => setIsLoaded(true))
+
+    return () => { document.head.removeChild(style) }
+  }, [])
+
+  useEffect(() => {
+    const handleResize = () => setIsLargeScreen(window.innerWidth > 768)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const hours = String(((time.getHours() + 11) % 12) + 1).padStart(2, '0')
+  const minutes = String(time.getMinutes()).padStart(2, '0')
+  const seconds = String(time.getSeconds()).padStart(2, '0')
+
+  // 2. STYLES: Using fixed widths to prevent "jumping"
+  const digitBoxStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: "'MyD250916font', sans-serif",
+    fontSize: '22vh',
+    color: 'rgba(0, 0, 0, 0.4)',
+    // Fixed width ensures 'I' takes as much space as 'W'
+    width: '20vh', 
+    height: '20vh',
+    textAlign: 'center',
+    textShadow: `
+      2px 2px 8px rgba(0, 0, 0, 0.1),
+      4px 4px 16px rgba(0, 0, 0, 0.1),
+      8px 8px 32px rgba(0, 0, 0, 0.1),
+      16px 16px 64px rgba(0, 0, 0, 0.1)
+    `,
+    // filter: 'blur(0.5px)',
+    // opacity: 0.8
+  }
+
+  const containerStyle = {
+    height: '100dvh',
+    width: '100vw',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'black',
+    backgroundImage: isLoaded ? `url(${bgImage})` : 'none',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    overflow: 'hidden',
+    filter: 'contrast(0.8) brightness(1.5)'
+  }
+
+  const layoutStyle = {
+    display: 'flex',
+    flexDirection: isLargeScreen ? 'row' : 'column',
+    alignItems: 'center',
+    gap: isLargeScreen ? '2vw' : '1vh'
+  }
+
+  const groupStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  }
+
+  // 3. RENDER HELPERS
+  const renderUnit = (value) => (
+    <div style={groupStyle}>
+      {value.split('').map((digit, i) => (
+        <div key={i} style={digitBoxStyle}>
+          {digitToLetter[digit] || digit}
+        </div>
+      ))}
+    </div>
+  )
+
+  
+  if (!isLoaded) return <div style={{ height: '100dvh', backgroundColor: 'black' }} />
+
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        margin: 0,
-        padding: 0,
-        backgroundColor: '#000',
-        color: '#0f0',
-        fontFamily: 'monospace',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        overflow: 'hidden',
-        touchAction: 'manipulation',
-        WebkitTapHighlightColor: 'transparent',
-        boxSizing: 'border-box',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 'min(6vw, 40px)',
-          fontSize: 'min(22vmin, 180px)',
-          lineHeight: 1,
-          fontWeight: 'normal',
-          letterSpacing: '0.05em',
-          userSelect: 'none',
-        }}
-      >
-        {/* Hours */}
-        <div style={{ display: 'flex' }}>
-          {tallyGroup(hours[0])}
-          {tallyGroup(hours[1])}
-        </div>
-
-        {/* Minutes */}
-        <div style={{ display: 'flex' }}>
-          {tallyGroup(minutes[0])}
-          {tallyGroup(minutes[1])}
-        </div>
-
-        {/* Seconds */}
-        <div style={{ display: 'flex' }}>
-          {tallyGroup(seconds[0])}
-          {tallyGroup(seconds[1])}
-        </div>
-      </div>
-
-      {/* Very small debug/current time (optional – remove if not wanted) */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '2vh',
-          right: '2vw',
-          fontSize: 'min(3vmin, 14px)',
-          color: '#444',
-          opacity: 0.4,
-          pointerEvents: 'none',
-        }}
-      >
-        {hours}:{minutes}:{seconds}
+    <div style={containerStyle}>
+      <div style={layoutStyle}>
+        {renderUnit(hours)}
+        {renderUnit(minutes)}
+        {renderUnit(seconds)}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FullScreenTallyClock;
+export default Clock
