@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import bgLayer1 from "../../assets/clocks/25-10-16/venus.gif";
 import bgLayer2 from "../../assets/clocks/25-10-16/venus.webp";
 import fullBg from "../../assets/clocks/25-10-16/ve.jpg";
-const font20251015 = '../../assets/fonts/25-10-16-venus.ttf';
+import font20251015 from '../../assets/fonts/25-10-16-venus.ttf';
 
 export default function VenusClock() {
   const [ready, setReady] = useState(false);
