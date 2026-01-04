@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-const font20251027 = '../../assets/fonts/25-10-25-fall.ttf'; // Local font file
+import font20251027 from '../../assets/fonts/25-10-25-fall.ttf'; // Local font file
 
 const EntropyClock = () => {
   const [time, setTime] = useState(new Date());

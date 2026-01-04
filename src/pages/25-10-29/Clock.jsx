@@ -74,7 +74,7 @@ export default function MonarchClock() {
   ------------------------------------------------------------------ */
   const counterFont = {
     fontFamily: fontLoaded
-      ? "RomanClockFont_2025_10_27, 'Courier New', monospace"
+      ? `${fontLoaded}, 'Courier New', monospace`
       : "'Courier New', monospace",
     fontWeight: 700,
     color: "#D1D9D1FF",
