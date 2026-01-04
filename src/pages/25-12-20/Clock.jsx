@@ -5,7 +5,7 @@ import bg1 from '../../assets/clocks/25-12-20/nest.jpg'
 import hourHandImg from '../../assets/clocks/25-12-20/fea1.webp'
 import minuteHandImg from '../../assets/clocks/25-12-20/fea2.webp'
 import secondHandImg from '../../assets/clocks/25-12-20/fea3.webp'
-import font251211 from '../../assets/fonts/feather.otf?url';
+import font251211 from '../../assets/fonts/feather.otf';
 
 // --- CONFIG ---
 const CONFIG = {
