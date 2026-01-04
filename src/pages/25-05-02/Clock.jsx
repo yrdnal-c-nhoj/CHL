@@ -7,21 +7,21 @@ import scorpFont from '../../assets/fonts/25-05-02-scorp.ttf';
 
 export default function Clock() {
   useEffect(() => {
-    // Check if font is already loaded
-    if (!document.fonts.check('16px bang')) {
-      const styleTag = document.createElement('style');
-      styleTag.textContent = `
-        @font-face {
-          font-family: 'bang';
-          src: url(${scorpFont}) format('truetype');
-          font-display: swap;
-        }
-        .clock-number {
-          font-family: 'bang', sans-serif !important;
-        }
-      `;
-      document.head.appendChild(styleTag);
-      
+    const updateClock = () => {
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const minutes = now.getMinutes();
+      const hours = now.getHours() % 12;
+
+      const jitter = () => Math.random() * 2 - 1;
+      const secondDeg = seconds * 6 + jitter() * 0.3;
+      const minuteDeg = minutes * 6 + seconds / 10 + jitter() * 0.02;
+      const hourDeg = hours * 30 + minutes / 2 + jitter() * 0.005;
+
+      const secondScale = 1 + Math.sin(seconds * Math.PI / 30) * 0.05;
+      const minuteScale = 1 + Math.sin(minutes * Math.PI / 30) * 0.03;
+      const hourScale = 1 + Math.sin(hours * Math.PI / 6) * 0.02;
+
       // Force font loading
       const font = new FontFace('bang', `url(${scorpFont})`);
       font.load().then(() => {

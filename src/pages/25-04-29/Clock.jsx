@@ -6,6 +6,7 @@ import gif3 from '../../assets/clocks/25-04-29/giphy.gif';
 
 const FireworksClock = () => {
   const clockRef = useRef(null);
+  const componentId = `fireworks-clock-${Math.random().toString(36).substr(2, 9)}`;
 
   useEffect(() => {
     const font = new FontFace('bang', `url(${fontUrl})`);
@@ -24,7 +25,7 @@ const FireworksClock = () => {
       clock.innerHTML = '';
       clock.style.animation = 'none';
       void clock.offsetWidth;
-      clock.style.animation = 'riseUp 1.5s ease-out forwards';
+      clock.style.animation = `${componentId}-riseUp 1.5s ease-out forwards`;
 
       for (const char of timeString) {
         const span = document.createElement('span');
@@ -46,7 +47,7 @@ const FireworksClock = () => {
 
       setTimeout(() => {
         for (const digit of clock.children) {
-          digit.style.animation = 'explodeWild 1.5s ease-out forwards';
+          digit.style.animation = `${componentId}-explodeWild 1.5s ease-out forwards`;
         }
       }, 1500);
     };
@@ -54,7 +55,7 @@ const FireworksClock = () => {
     showClock();
     const interval = setInterval(showClock, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [componentId]);
 
   const getRandomBrightColor = () => {
     const hue = Math.floor(Math.random() * 360);
@@ -95,7 +96,6 @@ const FireworksClock = () => {
     objectFit: 'cover',
     opacity: 0.7,
     filter: 'saturate(1.3)',
-    animation: 'pulse 3s infinite alternate ease-in-out',
     zIndex: 0,
   };
 
@@ -107,16 +107,17 @@ const FireworksClock = () => {
     justifyContent: 'center',
     alignItems: 'center',
     gap: '0.5rem',
+    fontFamily: 'bang, sans-serif !important',
   };
 
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} data-component={componentId}>
       <img src={gif1} alt="bg1" style={bgStyle} />
       <img src={gif2} alt="bg2" style={bgStyle} />
       <img src={gif3} alt="bg3" style={bgStyle} />
-      <div ref={clockRef} id="clock" style={clockStyle} />
+      <div ref={clockRef} style={clockStyle} />
       <style>{`
-        @keyframes pulse {
+        @keyframes ${componentId}-pulse {
           from {
             transform: scale(1);
             opacity: 0.6;
@@ -127,7 +128,7 @@ const FireworksClock = () => {
           }
         }
 
-        @keyframes riseUp {
+        @keyframes ${componentId}-riseUp {
           0% {
             transform: translateY(100vh);
           }
@@ -136,7 +137,7 @@ const FireworksClock = () => {
           }
         }
 
-        @keyframes explodeWild {
+        @keyframes ${componentId}-explodeWild {
           0% {
             opacity: 1;
             transform: scale(1) translate(0, 0) rotate(0deg);
@@ -147,8 +148,8 @@ const FireworksClock = () => {
           }
         }
 
-        #clock {
-          font-family: bang, sans-serif !important;
+        [data-component="${componentId}"] img {
+          animation: ${componentId}-pulse 3s infinite alternate ease-in-out;
         }
       `}</style>
     </div>

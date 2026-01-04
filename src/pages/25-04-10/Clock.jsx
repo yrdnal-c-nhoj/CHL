@@ -53,25 +53,28 @@ const BarGraphClock = () => {
 
   const labelBaseStyle = {
     fontSize: '28vw',
+    // lineHeight: '2',
+    marginBottom: '50vh',
+    textAlign: 'center',
   };
 
   return (
     <div style={containerStyle}>
       <div style={segmentContainerStyle}>
         <div style={{ ...baseSegmentStyle, height: hourHeight, backgroundColor: '#FF5733' }}>
-          <div style={{ ...labelBaseStyle, color: 'rgb(168, 60, 14)' }}>{hours}</div>
+          <div style={{ ...labelBaseStyle, color: 'rgba(168, 60, 14, 0.71)' }}>{hours}</div>
         </div>
       </div>
 
       <div style={segmentContainerStyle}>
         <div style={{ ...baseSegmentStyle, height: minuteHeight, backgroundColor: '#90fe0a' }}>
-          <div style={{ ...labelBaseStyle, color: 'rgb(51, 162, 34)' }}>{minutes}</div>
+          <div style={{ ...labelBaseStyle, color: 'rgba(51, 162, 34, 0.69)' }}>{minutes}</div>
         </div>
       </div>
 
       <div style={segmentContainerStyle}>
         <div style={{ ...baseSegmentStyle, height: secondHeight, backgroundColor: '#91dfdb' }}>
-          <div style={{ ...labelBaseStyle, color: '#61AAA6FF' }}>{seconds}</div>
+          <div style={{ ...labelBaseStyle, color: '#61AAA6BB' }}>{seconds}</div>
         </div>
       </div>
     </div>
