@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import backgroundImage from '../../assets/clocks/25-12-29/shrine.webp';
+import shrineFont from '../../assets/fonts/25-12-29-shrine.ttf?url';
 
 const DynamicClockComponent = () => {
   const FONT_FAMILY = 'ShrineFont_20251229';
-  const fontPath = '../../assets/fonts/25-12-29-shrine.ttf';
-  const fontUrl = new URL(fontPath, import.meta.url).href;
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
 
   // Load the custom font
   useEffect(() => {
-    const font = new FontFace(FONT_FAMILY, `url(${fontUrl})`);
+    const font = new FontFace(FONT_FAMILY, `url(${shrineFont})`);
     font.load().then(loaded => {
       document.fonts.add(loaded);
       setFontLoaded(true);
