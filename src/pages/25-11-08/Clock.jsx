@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import bgImageUrl from '../../assets/clocks/25-11-08/eye.gif'
-const dig2511088 = '../../assets/fonts/25-11-08-eye3.ttf';
-const ti251108 = '../../assets/fonts/25-11-08-eye.ttf';
+import dig2511088 from '../../assets/fonts/25-11-08-eye3.ttf'
+import ti251108 from '../../assets/fonts/25-11-08-eye.ttf'
 
 export default function Clock ({ imageWidth = '24vw', imageHeight = '16vw' }) {
   const [now, setNow] = useState(() => new Date())
