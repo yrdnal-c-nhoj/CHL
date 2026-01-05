@@ -14,14 +14,17 @@ const ten = new URL('../../assets/clocks/26-01-02/10.webp', import.meta.url).hre
 const eleven = new URL('../../assets/clocks/26-01-02/11.webp', import.meta.url).href;
 const twelve = new URL('../../assets/clocks/26-01-02/12.webp', import.meta.url).href;
 
-// The single background image
 const pageBackground = new URL('../../assets/clocks/26-01-02/swi.jpg', import.meta.url).href;
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  
+  // State for the background flicker
+  const [overlayOpacity, setOverlayOpacity] = useState(0);
 
+  // Clock movement
   useEffect(() => {
     let raf;
     const tick = () => {
@@ -32,12 +35,26 @@ const Clock = () => {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  // Smoother, less frequent flicker logic
   useEffect(() => {
-    const sources = [
-      one, two, three, four, five, six, 
-      seven, eight, nine, ten, eleven, twelve, 
-      pageBackground
-    ];
+    let timeoutId;
+
+    const triggerFlicker = () => {
+      // 50/50 chance of being dark/light
+      setOverlayOpacity(Math.random() > 0.7 ? 0.9 : 0);
+
+      // Frequency: Longer delays (300ms to 1000ms) for a less frantic feel
+      const nextDelay = 300 + Math.random() * 700;
+      timeoutId = setTimeout(triggerFlicker, nextDelay);
+    };
+
+    triggerFlicker();
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  // Asset Preloading
+  useEffect(() => {
+    const sources = [one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, pageBackground];
     let loaded = 0;
     sources.forEach(src => {
       const img = new Image();
@@ -52,13 +69,12 @@ const Clock = () => {
 
   if (!isLoaded) {
     return (
-      <div style={{ height: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', background: '#000' }}>
+      <div style={{ height: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', background: '#000', fontFamily: 'sans-serif' }}>
         Loading… {loadingProgress}%
       </div>
     );
   }
 
-  // Time calculations
   const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
   const minutes = time.getMinutes() + seconds / 60;
   const hours = (time.getHours() % 12) + minutes / 60;
@@ -74,7 +90,6 @@ const Clock = () => {
     { src: nine, angle: 270 }, { src: ten, angle: 300 }, { src: eleven, angle: 330 },
   ];
 
-  // Hand Style Helper
   const handStyle = (width, height, color, deg, zIndex) => ({
     position: 'absolute',
     bottom: '50%',
@@ -86,29 +101,39 @@ const Clock = () => {
     transformOrigin: 'bottom center',
     transform: `translateX(-50%) rotate(${deg}deg)`,
     zIndex: zIndex,
-    boxShadow: '0 0 15px 5px rgba(0,0,0,0.3), 0 0 13px 10px rgba(0,0,0,0.2), 0 0 50px 15px rgba(0,0,0,0.2)',
-    filter: 'drop-shadow(0 0 13px rgba(0,0,0,0.4)) drop-shadow(0 0 12px rgba(0,0,0,0.2))',
+    boxShadow: '0 0 15px 5px rgba(0,0,0,0.3)',
   });
 
   return (
     <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', background: '#000' }}>
       
-      {/* Background Layer */}
+      {/* 1. Background Image Layer */}
       <div style={{ 
         position: 'absolute', 
         inset: 0, 
         backgroundImage: `url(${pageBackground})`, 
-        backgroundSize: 'cover', // Cover the entire area
-        backgroundRepeat: 'no-repeat', // No tiling
-        backgroundPosition: 'center', // Center the image
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         zIndex: 1 
       }} />
 
-      {/* Clock Face Container */}
+      {/* 2. Smoother Gradient Overlay: Darker in middle, fading to black/neutral */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        // Radial gradient: Darkest (80% black) in the center, slightly lighter at edges
+        background: 'radial-gradient(circle, rgb(0, 0, 0) 0%, rgba(4, 12, 62, 0.8) 100%)',
+        opacity: overlayOpacity,
+        // Longer transition for a "smooth" light-dimming effect
+        transition: 'opacity 0.4s ease-in-out', 
+        zIndex: 2,
+        pointerEvents: 'none'
+      }} />
+
+      {/* 3. Clock Face Layer */}
       <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 5 }}>
         <div style={{ width: clockSize, height: clockSize, position: 'relative' }}>
           
-          {/* Numbers */}
           {numbers.map(({ src, angle }, i) => {
             const rad = (angle * Math.PI) / 180;
             return (
@@ -122,25 +147,17 @@ const Clock = () => {
                   height: numberSize,
                   left: `calc(50% + ${radius} * ${Math.sin(rad)} - ${numberSize} / 2)`,
                   top: `calc(50% - ${radius} * ${Math.cos(rad)} - ${numberSize} / 2)`,
-                  filter: 'drop-shadow(2px 2px 8px rgba(0,0,0,0.8)) drop-shadow(-2px -2px 10px rgba(0,0,0,0.8))',
-                  // Additional strong shadows for extra emphasis
-                  textShadow: '2px 2px 20px rgba(0,0,0,0.9), -2px -2px 20px rgba(0,0,0,0.9), 0 0 30px rgba(0,0,0,0.8)',
+                  opacity: 1, 
+                  filter: 'drop-shadow(2px 2px 8px rgba(0,0,0,0.8))',
                 }}
               />
             );
           })}
 
-          {/* Clock Hands */}
-          {/* Hour Hand */}
           <div style={handStyle('1.5vmin', '25vmin', '#fff', hours * 30, 10)} />
-          
-          {/* Minute Hand */}
           <div style={handStyle('1vmin', '35vmin', '#eee', minutes * 6, 11)} />
-          
-          {/* Second Hand */}
           <div style={handStyle('0.5vmin', '40vmin', '#EBE7E7', seconds * 6, 12)} />
 
-          {/* Center Pin */}
           <div style={{
             position: 'absolute',
             top: '50%',
@@ -150,8 +167,7 @@ const Clock = () => {
             backgroundColor: '#fff',
             borderRadius: '50%',
             transform: 'translate(-50%, -50%)',
-            zIndex: 15,
-            boxShadow: '0 0 10px rgba(0,0,0,0.5)'
+            zIndex: 15
           }} />
         </div>
       </div>
