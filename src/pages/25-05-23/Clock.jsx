@@ -4,23 +4,71 @@ import crossFont from '../../assets/fonts/25-05-23-Cross.otf';
 
 const CrossClock = () => {
   const [time, setTime] = useState(new Date());
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  useEffect(() => {
+    // Asset Preloading
+    const sources = [backgroundImage];
+    let loaded = 0;
+    
+    sources.forEach(src => {
+      const img = new Image();
+      img.src = src;
+      img.onload = img.onerror = () => {
+        loaded++;
+        if (loaded === sources.length) {
+          setIsLoaded(true);
+        }
+      };
+    });
+  }, []);
 
   useEffect(() => {
     const font = new FontFace('Cross', `url(${crossFont})`);
     font.load().then((loaded) => {
       document.fonts.add(loaded);
+      setFontsLoaded(true);
+    }).catch(() => {
+      setFontsLoaded(true); // Still show content if font fails
     });
 
     const interval = setInterval(() => {
       setTime(new Date());
     }, 1000);
 
-    return () => clearInterval(interval);
+    // Fallback timeout to ensure content appears
+    const fallbackTimeout = setTimeout(() => {
+      setIsLoaded(true);
+      setFontsLoaded(true);
+    }, 2000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(fallbackTimeout);
+    };
   }, []);
+
+  // Combined loading check
+  const everythingLoaded = isLoaded && fontsLoaded;
+
+  if (!everythingLoaded) {
+    return (
+      <div style={{ 
+        height: '100dvh', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        color: '#fff', 
+        background: '#000'
+      }}>
+      </div>
+    );
+  }
 
   const getRandomBrightColor = () => {
     const hue = Math.floor(Math.random() * 360);
-    return `hsl(${hue}, 100%, 70%)`; // brighter saturation & lightness
+    return `hsl(${hue}, 85%, 60%)`; // Good saturation and moderate lightness for actual colors
   };
 
   const formatTime = () => {
@@ -44,6 +92,7 @@ const CrossClock = () => {
     textAlign: 'center',
     transition: 'color 0.3s ease',
     userSelect: 'none',
+    textShadow: '1px 1px 2px rgba(0,0,0,0.7)',
   };
 
   const unitStyle = {
@@ -78,6 +127,20 @@ const CrossClock = () => {
     >
       <style>
         {`
+          body { margin: 0; padding: 0; overflow: hidden; background: '#000'; }
+        
+          /* Ensure smooth transitions */
+          * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+          }
+        
+          /* Hide content until ready */
+          .clock-content {
+            opacity: ${everythingLoaded ? 1 : 0};
+            transition: opacity 0.1s ease-in-out;
+          }
+          
           @font-face {
             font-family: 'Cross';
             src: url(${crossFont}) format('opentype');
@@ -113,25 +176,27 @@ const CrossClock = () => {
         `}
       </style>
 
-      <img
-        src={backgroundImage}
-        alt="Background"
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          objectFit: 'cover',
-          zIndex: 0,
-        }}
-      />
+      <div className="clock-content">
+        <img
+          src={backgroundImage}
+          alt="Background"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            objectFit: 'cover',
+            zIndex: 0,
+          }}
+        />
 
-      <div className="clock-container">
-        {renderUnit(hours)}
-        {renderUnit(minutes)}
-        {renderUnit(seconds)}
-        <div className="am-pm">{ampm}</div>
+        <div className="clock-container" style={{ position: 'relative', zIndex: 5 }}>
+          {renderUnit(hours)}
+          {renderUnit(minutes)}
+          {renderUnit(seconds)}
+          <div className="am-pm">{ampm}</div>
+        </div>
       </div>
     </div>
   );
