@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import backgroundImg from "../../assets/clocks/25-11-29/rococo.webp";
+import backgroundImg from "../../assets/clocks/25-11-29/squ.jpg";
 import fontUrl_20251128 from '../../assets/fonts/25-11-29-roc.ttf?url';
 
 export default function RococoDigitalClock() {
@@ -252,8 +252,8 @@ export default function RococoDigitalClock() {
                   justifyContent: "center",
                   fontSize: "15vh",
                   lineHeight: "0.88",
-                  opacity: 0.6,
-                  color: "#352904FF",
+                  opacity: 0.9,
+                  color: "#746A4D",
                   userSelect: "none",
                   willChange: "transform",
                   ...distortLetter(char, i + 4),
@@ -279,7 +279,7 @@ export default function RococoDigitalClock() {
         backgroundImage: `url(${backgroundImg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        filter: "brightness(1.2) contrast(1.4)",
+        // filter: "brightness(1.2) contrast(1.4)",
         fontFamily: "'RococoBlob', serif",
         overflow: "hidden",
         opacity: fontLoaded ? 1 : 0,
@@ -320,8 +320,8 @@ export default function RococoDigitalClock() {
                 justifyContent: "center",
                 fontSize: char === ":" ? "10vh" : "12vh",
                 lineHeight: "0.88",
-                opacity: 0.6, 
-                color: "#352904FF",
+                opacity: 0.9, 
+                color: "#806107",
                 userSelect: "none",
                 willChange: "transform",
                 ...distortLetter(char, i),
