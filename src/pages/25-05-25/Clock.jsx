@@ -32,14 +32,35 @@ const Clock = () => {
     style.innerHTML = `
       @font-face {
         font-family: 'bot';
-        src: url(${botFont}) format('truetype');
+        src: url('${botFont}') format('truetype');
         font-weight: normal;
         font-style: normal;
+        font-display: swap;
       }
     `;
     document.head.appendChild(style);
+    
+    // Force font reload
+    const font = new FontFace('bot', `url(${botFont}) format('truetype')`);
+    font.load().then(() => {
+      document.fonts.add(font);
+      console.log('Bot font loaded successfully');
+      // Force reflow to apply font
+      document.body.style.display = 'none';
+      document.body.offsetHeight; // Trigger reflow
+      document.body.style.display = '';
+    }).catch(err => {
+      console.error('Bot font failed to load:', err);
+    });
+    
     return () => {
       document.head.removeChild(style);
+      // Fix: check if font exists and remove properly
+      try {
+        document.fonts.delete(font);
+      } catch (e) {
+        // Ignore cleanup errors
+      }
     };
   }, []);
 
