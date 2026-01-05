@@ -15,7 +15,7 @@ const eleven = new URL('../../assets/clocks/26-01-02/11.webp', import.meta.url).
 const twelve = new URL('../../assets/clocks/26-01-02/12.webp', import.meta.url).href;
 
 // The single background image
-const pageBackground = new URL('../../assets/clocks/26-01-02/pong.webp', import.meta.url).href;
+const pageBackground = new URL('../../assets/clocks/26-01-02/swi.jpg', import.meta.url).href;
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
@@ -64,7 +64,7 @@ const Clock = () => {
   const hours = (time.getHours() % 12) + minutes / 60;
 
   const clockSize = '90vh';
-  const numberSize = '15vh';
+  const numberSize = '12vh';
   const radius = '32vmin';
 
   const numbers = [
@@ -86,18 +86,21 @@ const Clock = () => {
     transformOrigin: 'bottom center',
     transform: `translateX(-50%) rotate(${deg}deg)`,
     zIndex: zIndex,
+    boxShadow: '0 0 15px 5px rgba(0,0,0,0.3), 0 0 13px 10px rgba(0,0,0,0.2), 0 0 50px 15px rgba(0,0,0,0.2)',
+    filter: 'drop-shadow(0 0 13px rgba(0,0,0,0.4)) drop-shadow(0 0 12px rgba(0,0,0,0.2))',
   });
 
   return (
     <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', background: '#000' }}>
       
-      {/* Single Background Layer */}
+      {/* Background Layer */}
       <div style={{ 
         position: 'absolute', 
         inset: 0, 
         backgroundImage: `url(${pageBackground})`, 
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundSize: 'cover', // Cover the entire area
+        backgroundRepeat: 'no-repeat', // No tiling
+        backgroundPosition: 'center', // Center the image
         zIndex: 1 
       }} />
 
@@ -119,6 +122,9 @@ const Clock = () => {
                   height: numberSize,
                   left: `calc(50% + ${radius} * ${Math.sin(rad)} - ${numberSize} / 2)`,
                   top: `calc(50% - ${radius} * ${Math.cos(rad)} - ${numberSize} / 2)`,
+                  filter: 'drop-shadow(2px 2px 8px rgba(0,0,0,0.8)) drop-shadow(-2px -2px 10px rgba(0,0,0,0.8))',
+                  // Additional strong shadows for extra emphasis
+                  textShadow: '2px 2px 20px rgba(0,0,0,0.9), -2px -2px 20px rgba(0,0,0,0.9), 0 0 30px rgba(0,0,0,0.8)',
                 }}
               />
             );
@@ -132,7 +138,7 @@ const Clock = () => {
           <div style={handStyle('1vmin', '35vmin', '#eee', minutes * 6, 11)} />
           
           {/* Second Hand */}
-          <div style={handStyle('0.5vmin', '40vmin', '#ff4444', seconds * 6, 12)} />
+          <div style={handStyle('0.5vmin', '40vmin', '#EBE7E7', seconds * 6, 12)} />
 
           {/* Center Pin */}
           <div style={{
