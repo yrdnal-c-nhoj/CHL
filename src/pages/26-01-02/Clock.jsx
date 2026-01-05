@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import fontFile from '../../assets/fonts/26-01-02-cram.ttf';
 
 const StretchedClock = () => {
   const [time, setTime] = useState(new Date());
@@ -46,12 +47,12 @@ const StretchedClock = () => {
   };
 
   const textStyle = {
-    color: '#fff',
-    fontFamily: 'sans-serif',
+    color: '#f222ff',
+    fontFamily: 'Cram260102, sans-serif',
     fontWeight: '900',
     lineHeight: '1',
     // These units ensure the font scales with the viewport
-    fontSize: isLargeScreen ? '50vw' : '50dvh',
+    fontSize: isLargeScreen ? '30vw' : '40dvh',
     // This forces the "stretch" effect to fill the container
     transform: 'scale(1.2, 1.5)', 
     width: '100%',
@@ -61,6 +62,12 @@ const StretchedClock = () => {
 
   return (
     <div style={containerStyle}>
+      <style>{`
+        @font-face {
+          font-family: 'Cram260102';
+          src: url(${fontFile}) format('truetype');
+        }
+      `}</style>
       {/* Hours Section */}
       <div style={segmentStyle}>
         <div style={textStyle}>
