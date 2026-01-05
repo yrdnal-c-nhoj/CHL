@@ -44,13 +44,13 @@ const Clock = () => {
       // Stop shaking shortly after the "click"
       setTimeout(() => setIsShaking(false), 150);
 
-      // Randomize the "on" vs "off" duration for a human feel (approx 50/50)
-      const nextInterval = 400 + Math.random() * 800;
+      // Randomize the "on" vs "off" duration for a human feel (longer intervals)
+      const nextInterval = 800 + Math.random() * 1200; // Increased from 400-800 to 800-1200ms
       timeout = setTimeout(toggleLights, nextInterval);
     };
 
     // Start the first flicker within 1 second
-    timeout = setTimeout(toggleLights, 800);
+    timeout = setTimeout(toggleLights, 1200); // Increased from 800 to 1200ms
 
     return () => clearTimeout(timeout);
   }, [isLoaded]);
