@@ -9,7 +9,8 @@ function App() {
     width: '100vw',
     overflow: 'hidden',
     fontFamily: 'sans-serif',
-    background: 'linear-gradient(to top, #DCD5B4, #D6F1F1)'
+    background: 'linear-gradient(to top, #DCD5B4, #D6F1F1)',
+    position: 'relative'
   };
 
   const titleContainerStyle = {
@@ -30,7 +31,8 @@ function App() {
     overflow: 'hidden',
     position: 'absolute',
     inset: 0,
-    zIndex: 10
+    zIndex: 10,
+    boxSizing: 'border-box'
   };
 
   const getClockStyle = (size, color) => ({
@@ -112,8 +114,12 @@ function App() {
         velocity += gravity;
         y += velocity;
 
-        if (y > window.innerHeight / 16 - size / 16) {
-          y = window.innerHeight / 16 - size / 16;
+        // Use the actual container height instead of window.innerHeight
+        const containerHeight = room.offsetHeight / 16; // Convert to rem
+        const clockHeight = size / 16;
+        
+        if (y > containerHeight - clockHeight) {
+          y = containerHeight - clockHeight;
           velocity *= -bounce;
         }
 
