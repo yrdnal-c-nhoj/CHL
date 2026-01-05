@@ -30,22 +30,22 @@ const CrossClock = () => {
       document.fonts.add(loaded);
       setFontsLoaded(true);
     }).catch(() => {
-      setFontsLoaded(true); // Still show content if font fails
+      setFontsLoaded(true);
     });
 
     const interval = setInterval(() => {
       setTime(new Date());
     }, 1000);
 
-    // Fallback timeout to ensure content appears
-    const fallbackTimeout = setTimeout(() => {
+    // Show content after a short delay regardless
+    const showTimeout = setTimeout(() => {
       setIsLoaded(true);
       setFontsLoaded(true);
-    }, 2000);
+    }, 500);
 
     return () => {
       clearInterval(interval);
-      clearTimeout(fallbackTimeout);
+      clearTimeout(showTimeout);
     };
   }, []);
 
