@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import customFont from '../../assets/fonts/25-08-11-wash.otf';
-import bgImage from '../../assets/clocks/25-08-11/wash.gif';
-import topImage from '../../assets/clocks/25-08-11/mach.gif';
+import bgImage from '../../assets/clocks/25-08-11/mach.gif';
+import topImage from '../../assets/clocks/25-08-11/wash.gif';
 import img1 from '../../assets/clocks/25-08-11/a.gif';
 import img2 from '../../assets/clocks/25-08-11/aa.gif';
 import img3 from '../../assets/clocks/25-08-11/b.png';
