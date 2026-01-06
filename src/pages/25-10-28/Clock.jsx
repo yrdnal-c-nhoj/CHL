@@ -6,16 +6,16 @@ import React, { useEffect, useState, useMemo, useRef } from "react";
    ------------------------------------------------------------------ */
 function loadAllDigitImages() {
   const globs = {
-    0: import.meta.glob("./digits/0/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
-    1: import.meta.glob("./digits/1/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
-    2: import.meta.glob("./digits/2/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
-    3: import.meta.glob("./digits/3/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
-    4: import.meta.glob("./digits/4/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
-    5: import.meta.glob("./digits/5/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
-    6: import.meta.glob("./digits/6/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
-    7: import.meta.glob("./digits/7/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
-    8: import.meta.glob("./digits/8/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
-    9: import.meta.glob("./digits/9/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    0: import.meta.glob("../../assets/clocks/25-10-28/digits/0/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    1: import.meta.glob("../../assets/clocks/25-10-28/digits/1/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    2: import.meta.glob("../../assets/clocks/25-10-28/digits/2/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    3: import.meta.glob("../../assets/clocks/25-10-28/digits/3/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    4: import.meta.glob("../../assets/clocks/25-10-28/digits/4/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    5: import.meta.glob("../../assets/clocks/25-10-28/digits/5/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    6: import.meta.glob("../../assets/clocks/25-10-28/digits/6/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    7: import.meta.glob("../../assets/clocks/25-10-28/digits/7/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    8: import.meta.glob("../../assets/clocks/25-10-28/digits/8/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+    9: import.meta.glob("../../assets/clocks/25-10-28/digits/9/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
   };
 
   const folders = {};
