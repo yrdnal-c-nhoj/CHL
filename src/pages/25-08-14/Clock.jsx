@@ -176,11 +176,14 @@ const AnalogClock = () => {
                   transformOrigin: 'left center',
                   color: '#C8C1C1FF',
                   fontSize: '1.6rem',   // bigger font
-                  className: 'month-text',
+                  fontFamily: 'CustomClockFont',
                   textAlign: 'right',
                   letterSpacing: '0.1em',
                   whiteSpace: 'nowrap',
-                  pointerEvents: 'none'
+                  pointerEvents: 'none',
+                  fontSmooth: 'always',
+                  WebkitFontSmoothing: 'antialiased',
+                  MozOsxFontSmoothing: 'grayscale'
                 }}
               >
                 {word}
