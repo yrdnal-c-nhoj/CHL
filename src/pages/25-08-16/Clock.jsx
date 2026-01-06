@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import imageLeft from '../../assets/clocks/25-08-16/p1.gif';
-import clockFace from '../../assets/clocks/25-08-16/pal.webp';
+import imageLeft from '../../assets/clocks/25-08-16/pal.webp';  
+import clockFace from '../../assets/clocks/25-08-16/palm.webp';
 import customFontUrl from '../../assets/fonts/25-08-16-palm.ttf';
-import hourHandImage from '../../assets/clocks/25-08-16/p2.webp';
-import minuteHandImage from '../../assets/clocks/25-08-16/p3.gif';
-import secondHandImage from '../../assets/clocks/25-08-16/palm.webp';
+import hourHandImage from  '../../assets/clocks/25-08-16/p1.gif';
+import minuteHandImage from '../../assets/clocks/25-08-16/p2.webp';
+import secondHandImage from '../../assets/clocks/25-08-16/p3.gif';
 
 const CLOCK_FONT_FAMILY = 'ClockFont__Scoped_9k2';
 
