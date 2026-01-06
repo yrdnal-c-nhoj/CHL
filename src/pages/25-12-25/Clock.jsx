@@ -2,14 +2,34 @@ import React, { useState, useEffect } from 'react';
 
 const BoardingPass = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
+    // Load Google Font - Oxanium
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Oxanium:wght@600;700&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+
+    // Wait a bit for font to load
+    setTimeout(() => {
+      setFontLoaded(true);
+    }, 1000);
+
     const timer = setInterval(() => {
       setCurrentDate(new Date());
     }, 1000);
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+      // Clean up link element
+      if (link.parentNode) {
+        link.parentNode.removeChild(link);
+      }
+    };
   }, []);
+
+  // Show content immediately, font will load in background
 
   const formatDate = (date) => {
     const options = { month: 'short', day: 'numeric' };
@@ -23,7 +43,7 @@ const BoardingPass = () => {
       minute: '2-digit'
     });
   };
-  const red = '#1489F0FF';
+  const red = '#2892F0';
   const redDark = '#57605AFF';
   const grey = '#666';
   const greyLight = '#999';
@@ -51,15 +71,17 @@ const BoardingPass = () => {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '1.25rem 2.1875rem',
+    padding: '1.15rem 2.1875rem',
     borderRadius: '0.625rem 0.625rem 0 0',
     color: 'white',
     backgroundColor: red
   };
 
   const logoStyle = {
-    fontSize: '1.25rem',
-    fontWeight: '700'
+    fontSize: '2.2rem',
+    fontWeight: '400',
+    fontStyle: 'italic',
+    fontFamily: fontLoaded ? 'Oxanium, sans-serif' : 'sans-serif'
   };
 
   const flightStyle = {
