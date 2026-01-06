@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import myFontWoff2 from '../../assets/fonts/25-08-02-hea.ttf';
-import bg1 from '../../assets/clocks/25-08-02/em.webp';
-import bg2 from '../../assets/clocks/25-08-02/la.gif';
-import bg3 from '../../assets/clocks/25-08-02/em.webp'; // copy of bg1 for flipping
+import bg2 from '../../assets/clocks/25-08-02/em.webp';
+import bg1 from '../../assets/clocks/25-08-02/la.gif';
+import bg3 from '../../assets/clocks/25-08-02/la.gif'; // copy of bg1 for flipping
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());

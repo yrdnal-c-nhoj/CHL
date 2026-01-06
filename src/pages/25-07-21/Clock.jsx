@@ -27,11 +27,12 @@ const AnglerfishClock = () => {
       height: '100dvh',
       width: '100vw',
       overflow: 'hidden',
-      backgroundColor: '#093063',
       position: 'relative',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
+      // Added linear gradient background here
+      background: 'linear-gradient(to bottom, #1C6179 0%, #3F1395 100%)',
     }}>
       {/* Overlays */}
       <div style={{
@@ -43,7 +44,7 @@ const AnglerfishClock = () => {
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center',
         backgroundSize: '100% 100%',
-        opacity: 0.9,
+        opacity: 0.4,
         zIndex: 1,
       }} />
       <div style={{
@@ -77,6 +78,7 @@ const AnglerfishClock = () => {
         height: '100vh',
         backgroundImage: `url(${spinGif})`,
         backgroundRepeat: 'no-repeat',
+         backgroundSize: '100% 100%',
         backgroundPosition: 'center center',
         backgroundAttachment: 'fixed',
         transform: 'scaleX(-1)',
@@ -96,14 +98,13 @@ const AnglerfishClock = () => {
         WebkitBackgroundClip: 'text',
         WebkitTextFillColor: 'transparent',
         animation: 'animate 3s linear infinite',
-        opacity: 0.3,
+        opacity: 0.6,
         zIndex: 9,
         position: 'relative',
       }}>
         {time}
       </div>
 
-      {/* Keyframes */}
       <style>
         {`
           @keyframes animate {
