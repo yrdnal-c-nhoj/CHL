@@ -3,20 +3,46 @@ import kalFont from '../../assets/fonts/25-07-04-kal.otf';
 import bgImage from '../../assets/clocks/25-07-04/7ZAx.webp';
 
 const Clock = () => {
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [fontState, setFontState] = useState({ loading: true, error: null });
 
-  // Load custom font first
+  // Load custom font with better error handling
   useEffect(() => {
-    const font = new FontFace('kal', `url(${kalFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontLoaded(true);
-    });
+    let isMounted = true;
+    
+    const loadFont = async () => {
+      try {
+        const font = new FontFace('kal', `url(${kalFont})`);
+        
+        // Set display: swap to ensure text remains visible during font load
+        font.display = 'swap';
+        
+        // Load the font
+        await font.load();
+        
+        // Only update state if component is still mounted
+        if (isMounted) {
+          document.fonts.add(font);
+          setFontState({ loading: false, error: null });
+        }
+      } catch (error) {
+        console.error('Failed to load font:', error);
+        if (isMounted) {
+          setFontState({ loading: false, error: 'Failed to load font' });
+        }
+      }
+    };
+
+    loadFont();
+    
+    // Cleanup function
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // Only start clock animation after font is loaded
   useEffect(() => {
-    if (!fontLoaded) return;
+    if (fontState.loading || fontState.error) return;
 
     const SEGMENTS = 12;
     const colors = [
