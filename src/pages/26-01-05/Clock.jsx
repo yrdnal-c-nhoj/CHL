@@ -32,17 +32,14 @@ const PyramidzBackground = () => {
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      
       const time = now.toLocaleTimeString('en-US', {
         hour12: true,
         hour: 'numeric',
         minute: '2-digit'
       });
-
       const formattedTime = time
         .replace(/^0/, '')
         .replace(/\s+/g, ''); 
-
       setTimeString(formattedTime);
     };
 
@@ -71,7 +68,6 @@ const PyramidzBackground = () => {
           width: '100%',
           height: '100%',
           display: 'flex',
-          /* We align to the top so we can push it down with precision */
           alignItems: 'flex-start',
           overflow: 'hidden',
           pointerEvents: 'none',
@@ -91,12 +87,9 @@ const PyramidzBackground = () => {
         .marquee-wrapper {
           display: flex;
           width: fit-content;
-          /* This 'padding-top' is what moves the text down. 
-             Adjust 15vh to be larger (e.g., 25vh) to move it further down. */
-          padding-top: 0vh; 
-          animation: marquee 500s linear infinite;
+          animation: marquee 100s linear infinite;
+          margin-top: -18vh;
         }
-
         .marquee-group {
           flex-shrink: 0;
           display: flex;
@@ -104,11 +97,9 @@ const PyramidzBackground = () => {
           white-space: nowrap;
           color: #6F696957;
           font-family: ${fontLoaded ? '"Giza"' : '"system-ui"'}, -apple-system, sans-serif;
-          font-size: 120vh;
-          line-height: 1;
+          font-size: 130vh;
           letter-spacing: -3vh; 
         }
-
         @keyframes marquee {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
