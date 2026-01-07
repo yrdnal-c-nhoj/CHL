@@ -1,46 +1,95 @@
-import backgroundImageURL from "../../assets/clocks/26-01-08/pyr.webp";
-import gizaFont from "../../assets/fonts/26-01-05-giza.otf";
+// src/components/PyramidzBackground.jsx
 import { useState, useEffect } from 'react';
+// Vite public folder imports (root-relative → auto-hashed in prod)
+import backgroundImage from '../../assets/clocks/26-01-05/pyr.webp';
+import gizaFont from '../../assets/fonts/26-01-05-giza.otf';
 
-// Global font injection
-const fontStyles = `
-  @font-face {
-    font-family: 'Giza';
-    src: url(${gizaFont}) format('opentype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
-`;
-
-try {
-  const style = document.createElement('style');
-  style.textContent = fontStyles;
-  document.head.appendChild(style);
-} catch (error) {
-  console.error('Error adding font styles:', error);
-}
-
-const PyramidzBackground = () => {
-  const [fontLoaded, setFontLoaded] = useState(false);
+export default function PyramidzBackground() {
+  const [fontReady, setFontReady] = useState(false);
   const [timeString, setTimeString] = useState('');
 
-  useEffect(() => {
-    setFontLoaded(true);
-  }, []);
+  // Generate unique font-family name: Giza_20260107
+  const dateStr = '20260107'; // January 07, 2026
+  const uniqueFontFamily = `Giza_${dateStr}`;
 
+  // 1. Inject @font-face once + marquee styles (cleaned up on unmount)
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: '${uniqueFontFamily}';
+        src: url(${gizaFont}) format('opentype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+      .pz-marquee-wrapper {
+        display: flex;
+        width: fit-content;
+        animation: pz-marquee 1000s linear infinite;
+        margin-top: -18vh;
+      }
+      .pz-marquee-group {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        color: #6F696957;
+        font-family: '${uniqueFontFamily}', system-ui, sans-serif;
+        font-size: 130vh;
+        letter-spacing: -3vh;
+      }
+      @keyframes pz-marquee {
+        0%   { transform: translateX(0);    }
+        100% { transform: translateX(-50%); }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Cleanup
+    return () => {
+      if (style.parentNode) {
+        style.parentNode.removeChild(style);
+      }
+    };
+  }, [uniqueFontFamily]);
+
+  // 2. Wait for font to be usable
+  useEffect(() => {
+    if (!document.fonts) {
+      setFontReady(true);
+      return;
+    }
+
+    let mounted = true;
+    document.fonts
+      .load(`12px ${uniqueFontFamily}`)
+      .then(() => {
+        if (mounted) setFontReady(true);
+      })
+      .catch((err) => {
+        console.warn('Font load failed:', err);
+        if (mounted) setFontReady(true);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, [uniqueFontFamily]);
+
+  // 3. Clock update
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
       const time = now.toLocaleTimeString('en-US', {
         hour12: true,
         hour: 'numeric',
-        minute: '2-digit'
+        minute: '2-digit',
       });
-      const formattedTime = time
+      const formatted = time
         .replace(/^0/, '')
-        .replace(/\s+/g, ''); 
-      setTimeString(formattedTime);
+        .replace(/\s+/g, '');
+      setTimeString(formatted);
     };
 
     updateTime();
@@ -48,65 +97,53 @@ const PyramidzBackground = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Block render until font is confirmed loaded
+  if (!fontReady) return null;
+
   return (
     <div
       style={{
+        position: 'fixed',
+        inset: 0,
         width: '100vw',
         height: '100dvh',
+        margin: 0,
+        padding: 0,
         overflow: 'hidden',
-        backgroundImage: `url('${backgroundImageURL}')`,
+        backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        position: 'relative',
+        backgroundRepeat: 'no-repeat',
+        // Fade in once ready
+        animation: 'pzFadeIn 125ms ease-out forwards',
       }}
     >
+      <style>{`
+        @keyframes pzFadeIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+      `}</style>
+
       <div
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
+          inset: 0,
           display: 'flex',
           alignItems: 'flex-start',
           overflow: 'hidden',
           pointerEvents: 'none',
         }}
       >
-        <div className="marquee-wrapper">
-          <div className="marquee-group">
-            {timeString.repeat(10)}
+        <div className="pz-marquee-wrapper">
+          <div className="pz-marquee-group">
+            {timeString.repeat(20)}
           </div>
-          <div className="marquee-group">
-            {timeString.repeat(10)}
+          <div className="pz-marquee-group">
+            {timeString.repeat(20)}
           </div>
         </div>
       </div>
-
-      <style jsx="true">{`
-        .marquee-wrapper {
-          display: flex;
-          width: fit-content;
-          animation: marquee 1000s linear infinite;
-          margin-top: -18vh;
-        }
-        .marquee-group {
-          flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          white-space: nowrap;
-          color: #6F696957;
-          font-family: ${fontLoaded ? '"Giza"' : '"system-ui"'}, -apple-system, sans-serif;
-          font-size: 130vh;
-          letter-spacing: -3vh; 
-        }
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-      `}</style>
     </div>
   );
-};
-
-export default PyramidzBackground;
+}
