@@ -1,26 +1,9 @@
 import { useState, useEffect } from 'react';
-import backgroundImage from '../../assets/clocks/26-01-06/aa.jpg';
-import gizaFont from '../../assets/fonts/26-01-06-aa.ttf';
-import aaaImage from '../../assets/clocks/26-01-06/aaa.webp';
+import backgroundImage from '../../assets/clocks/26-01-08/tang.jpeg';
 
 export default function AardvarkClock() {
   const [time, setTime] = useState(new Date());
-  const uniqueFontFamily = `Giza_20260107`;
-
   const clockLabels = ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'AA', 'AA', 'AA'];
-
-  // Inject font
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: '${uniqueFontFamily}';
-        src: url(${gizaFont}) format('opentype');
-      }
-    `;
-    document.head.appendChild(style);
-    return () => style.parentNode?.removeChild(style);
-  }, [uniqueFontFamily]);
 
   // Smooth animation loop
   useEffect(() => {
@@ -38,18 +21,11 @@ export default function AardvarkClock() {
   const minDeg = ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360;
   const hourDeg = ((time.getHours() % 12 + time.getMinutes() / 60) / 12) * 360;
 
-  const textOutline = `
-    -2px 0 0 #fff,
-     2px 0 0 #fff,
-     0 -2px 0 #24D671,
-     0  2px 0 #151415
-  `;
-
   return (
     <div style={{
       backgroundImage: `url(${backgroundImage})`,
-      backgroundSize: '300px 200px', // Adjust this value to change the size of each tile
-      backgroundRepeat: 'repeat',
+      backgroundSize: 'cover', // Adjust this value to change the size of each tile
+      backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
       backgroundAttachment: 'fixed',
       width: '100%',
@@ -61,24 +37,12 @@ export default function AardvarkClock() {
       color: 'white',
       position: 'relative',
     }}>
-      {/* Image in lower right corner */}
-      <img 
-        src={aaaImage} 
-        alt="" 
-        style={{
-          position: 'absolute',
-          bottom: '0',
-          right: '0',
-          maxWidth: '300px',
-          maxHeight: '900px',
-          objectFit: 'contain'
-        }}
-      />
+      
       <div style={{
         position: 'relative',
         width: '400px',
         height: '400px',
-        fontFamily: `'${uniqueFontFamily}', serif`,
+        fontFamily: 'Arial, sans-serif',
         color: '#C65408',
       }}>
 

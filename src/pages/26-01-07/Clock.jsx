@@ -1,152 +1,205 @@
-import { useState, useEffect } from 'react';
-import backgroundImage from '../../assets/clocks/26-01-07/aa.jpg';
-import gizaFont from '../../assets/fonts/26-01-07-aa.ttf';
-import aaaImage from '../../assets/clocks/26-01-07/aaa.webp';
+import React, { useEffect, useRef } from 'react';
+import spin from '../../assets/clocks/26-01-07/20206.gif';
+import bubl from '../../assets/clocks/26-01-07/bubl.gif';
+import fish from '../../assets/clocks/26-01-07/fish.gif';
+import gfish from '../../assets/clocks/26-01-07/gfish.gif';
+import aquarium from '../../assets/clocks/26-01-07/aquarium.gif';
 
-export default function AardvarkClock() {
-  const [time, setTime] = useState(new Date());
-  const uniqueFontFamily = `Giza_20260107`;
+const AquariumClock = () => {
+  // Refs for clock hands
+  const hourHandRef = useRef(null);
+  const minHandRef = useRef(null);
+  const secondHandRef = useRef(null);
 
-  const clockLabels = ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'AA', 'AA', 'AA'];
-
-  // Inject font
   useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: '${uniqueFontFamily}';
-        src: url(${gizaFont}) format('opentype');
+    let lastSecond = -1;
+
+    const setDate = () => {
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const mins = now.getMinutes();
+      const hour = now.getHours();
+
+      const secondsDegrees = (seconds / 60) * 360 + 90;
+      const minsDegrees = (mins / 60) * 360 + (seconds / 60) * 6 + 90;
+      const hourDegrees = (hour / 12) * 360 + (mins / 60) * 30 + 90;
+
+      if (secondHandRef.current) {
+        // Prevent jump at 0 seconds
+        if (seconds === 0 && lastSecond === 59) {
+          secondHandRef.current.style.transition = 'none';
+        } else {
+          secondHandRef.current.style.transition = 'transform 0.05s ease-in-out';
+        }
+        secondHandRef.current.style.transform = `rotate(${secondsDegrees}deg)`;
       }
-    `;
-    document.head.appendChild(style);
-    return () => style.parentNode?.removeChild(style);
-  }, [uniqueFontFamily]);
 
-  // Smooth animation loop
-  useEffect(() => {
-    let rafId;
-    const update = () => {
-      setTime(new Date());
-      rafId = requestAnimationFrame(update);
+      if (minHandRef.current) minHandRef.current.style.transform = `rotate(${minsDegrees}deg)`;
+      if (hourHandRef.current) hourHandRef.current.style.transform = `rotate(${hourDegrees}deg)`;
+
+      lastSecond = seconds;
     };
-    rafId = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(rafId);
+
+    const interval = setInterval(setDate, 1000);
+    setDate(); // initialize immediately
+
+    return () => clearInterval(interval);
   }, []);
 
-  const ms = time.getMilliseconds();
-  const secDeg = ((time.getSeconds() + ms / 1000) / 60) * 360;
-  const minDeg = ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360;
-  const hourDeg = ((time.getHours() % 12 + time.getMinutes() / 60) / 12) * 360;
+  // Shared styles
+  const sharedImageStyle = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+  };
 
-  const textOutline = `
-    -1px 0 0 #fff,
-     1px 0 0 #fff,
-     0 -1px 0 #fff,
-     0  1px 0 #fff
-  `;
+  const handFilter =
+    'drop-shadow(2px 1px 3px rgb(0, 3, 2)) ' +
+    'drop-shadow(-1px 1px 1px rgb(6, 85, 31)) ' +
+    'drop-shadow(1px -1px 1px rgb(10, 154, 109)) ' +
+    'drop-shadow(-1px -1px 1px rgb(214, 227, 216))';
 
   return (
-    <div style={{
-      position: 'fixed',
-      inset: 0,
-      backgroundImage: `url(${backgroundImage})`,
-      backgroundRepeat: 'repeat',
-      backgroundPosition: 'center',
-      backgroundSize: '500px 300px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}>
-      <div style={{
-        position: 'relative',
-        width: '400px',
-        height: '400px',
-        fontFamily: `'${uniqueFontFamily}', serif`,
-        color: '#F40707',
-      }}>
+    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}>
+      {/* Background Aquarium */}
+      <img src={aquarium} style={{ ...sharedImageStyle, opacity: 0.5, zIndex: 0 }} alt="aquarium forward" />
+      <img
+        src={aquarium}
+        style={{ ...sharedImageStyle, opacity: 0.9, transform: 'scaleX(-1)', zIndex: 1 }}
+        alt="aquarium mirrored"
+      />
 
-        {/* Clock Face Labels */}
-        {clockLabels.map((label, i) => {
-          const angle = (i + 1) * 30;
-          const radius = 160;
-          const x = Math.sin(angle * Math.PI / 180) * radius;
-          const y = -Math.cos(angle * Math.PI / 180) * radius;
+      {/* Spin effects */}
+      <img
+        src={spin}
+        style={{
+          ...sharedImageStyle,
+          opacity: 0.6,
+          height: '80vh',
+          zIndex: 2,
+          filter: 'sepia(100%) hue-rotate(-30deg) brightness(120%) contrast(110%) saturate(400%)',
+        }}
+        alt="spin"
+      />
+      <img
+        src={spin}
+        style={{
+          ...sharedImageStyle,
+          transform: 'scaleX(-1)',
+          opacity: 0.6,
+          height: '80vh',
+          zIndex: 3,
+          filter: 'sepia(100%) hue-rotate(-30deg) brightness(120%) contrast(110%) saturate(400%)',
+        }}
+        alt="spin mirrored"
+      />
 
-          return (
-            <div
-              key={i}
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-                fontSize: '9vh',
-                textShadow: textOutline,
-                userSelect: 'none'
-              }}
-            >
-              {label}
-            </div>
-          );
-        })}
-
-        {/* Hour Hand */}
-        <div style={{
+      {/* Floating bubbles */}
+      <img
+        src={bubl}
+        style={{
           position: 'absolute',
-          bottom: '50%',
-          left: '50%',
-          width: '8px',
-          height: '80px',
-          backgroundColor: '#F40707',
-          border: '1px solid #fff',
-          boxSizing: 'border-box',
-          transformOrigin: 'bottom',
-          transform: `translateX(-50%) rotate(${hourDeg}deg)`,
-          borderRadius: '10px'
-        }} />
-
-        {/* Minute Hand */}
-        <div style={{
+          top: 0,
+          left: '-22vw',
+          width: '100%',
+          height: '110%',
+          zIndex: 4,
+          pointerEvents: 'none',
+        }}
+        alt="bubbles"
+      />
+      <img
+        src={bubl}
+        style={{
           position: 'absolute',
-          bottom: '50%',
-          left: '50%',
-          width: '4px',
-          height: '120px',
-          backgroundColor: '#F40707',
-          border: '1px solid #fff',
-          boxSizing: 'border-box',
-          transformOrigin: 'bottom',
-          transform: `translateX(-50%) rotate(${minDeg}deg)`,
-          borderRadius: '10px'
-        }} />
+          bottom: 0,
+          zIndex: 5,
+           left: '22vw',
+          width: '100%',
+          height: '110%',
+        }}
+        alt="bubbles 2"
+      />
 
-        {/* Second Hand */}
-        <div style={{
-          position: 'absolute',
-          bottom: '50%',
-          left: '50%',
-          width: '2px',
-          height: '140px',
-          backgroundColor: '#F40707',
-          border: '1px solid #fff',
-          boxSizing: 'border-box',
-          transformOrigin: 'bottom',
-          transform: `translateX(-50%) rotate(${secDeg}deg)`
-        }} />
-
-        {/* Center Nut */}
-        <div style={{
+      {/* Clock hands */}
+      <div
+        style={{
+          width: '80vw',
+          height: '100vh',
           position: 'absolute',
           top: '50%',
           left: '50%',
-          width: '14px',
-          height: '14px',
-          backgroundColor: '#fff',
-          borderRadius: '50%',
-          transform: 'translate(-50%, -50%)'
-        }} />
-
+          transform: 'translate(-50%, -50%)',
+          zIndex: 6,
+        }}
+      >
+        <img
+          src={fish}
+          ref={hourHandRef}
+          className="hand hour-hand"
+          style={{
+            position: 'absolute',
+            width: '20%',
+            height: '30%',
+            right: '43%',
+            top: '20%',
+            transformOrigin: '100%',
+            rotate: '30deg',
+            filter: handFilter,
+          }}
+          alt="hour hand"
+        />
+        <img
+          src={fish}
+          ref={minHandRef}
+          className="hand min-hand"
+          style={{
+            position: 'absolute',
+            width: '40%',
+            height: '30%',
+            right: '50%',
+            top: '40%',
+            transformOrigin: '100%',
+            filter: handFilter,
+          }}
+          alt="minute hand"
+        />
+        <img
+          src={fish}
+          ref={secondHandRef}
+          className="hand second-hand"
+          style={{
+            position: 'absolute',
+            width: '65%',
+            height: '20%',
+            right: '50%',
+            top: '40%',
+            transformOrigin: '100%',
+            filter: handFilter,
+          }}
+          alt="second hand"
+        />
       </div>
+
+      {/* Foreground fish */}
+      <img
+        src={gfish}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '180vw',
+          height: '100vh',
+          opacity: 0.8,
+          transform: 'scaleX(-1)',
+          zIndex: 7,
+        }}
+        alt="gfish"
+      />
     </div>
   );
-}
+};
+
+export default AquariumClock;
