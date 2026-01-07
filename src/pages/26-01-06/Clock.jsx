@@ -36,7 +36,7 @@ export default function PyramidzBackground() {
         white-space: nowrap;
         
         /* 1. LOWER TEXT OPACITY: Reduced from 58 to 15 (hex) */
-        color: rgba(242, 208, 38, 0.36); 
+        color: rgba(242, 208, 38, 0.04); 
         
         font-family: '${uniqueFontFamily}', system-ui, sans-serif;
         font-size: 130vh;
@@ -44,7 +44,7 @@ export default function PyramidzBackground() {
 
         /* 2. STRONGER SHADOWS: Increased alpha values significantly */
         text-shadow:
-          -1vh -1vh 0vh rgba(6, 61, 242, 0.49),   /* Deep Blue - 80% opaque */
+          -1vh -1vh 0vh rgba(65, 106, 241, 0.29),   /* Deep Blue - 80% opaque */
           1vh 1vh 0vh rgba(249, 200, 23, 0.12);   /* Red - 60% opaque */
       }
       @keyframes pz-marquee {
