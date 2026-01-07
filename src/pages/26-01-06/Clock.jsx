@@ -1,191 +1,170 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react';
+import backgroundImage from '../../assets/clocks/26-01-07/aa.jpg';
+import gizaFont from '../../assets/fonts/26-01-07-aa.ttf';
+import aaaImage from '../../assets/clocks/26-01-07/aaa.webp';
 
-const FlipNumber = ({ value }) => {
-  const [displayedValue, setDisplayedValue] = useState(value)
-  const [prevValue, setPrevValue] = useState(value)
-  const [isFlipping, setIsFlipping] = useState(false)
+export default function AardvarkClock() {
+  const [time, setTime] = useState(new Date());
+  const uniqueFontFamily = `Giza_20260107`;
 
+  const clockLabels = ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'AA', 'AA', 'AA'];
+
+  // Inject font
   useEffect(() => {
-    if (value !== displayedValue) {
-      setPrevValue(displayedValue)
-      setIsFlipping(true)
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: '${uniqueFontFamily}';
+        src: url(${gizaFont}) format('opentype');
+      }
+    `;
+    document.head.appendChild(style);
+    return () => style.parentNode?.removeChild(style);
+  }, [uniqueFontFamily]);
 
-      // After animation completes, update the displayed value
-      const timer = setTimeout(() => {
-        setDisplayedValue(value)
-        setIsFlipping(false)
-      }, 600) // matches animation duration
+  // Smooth animation loop
+  useEffect(() => {
+    let rafId;
+    const update = () => {
+      setTime(new Date());
+      rafId = requestAnimationFrame(update);
+    };
+    rafId = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
 
-      return () => clearTimeout(timer)
-    }
-  }, [value, displayedValue])
+  const ms = time.getMilliseconds();
+  const secDeg = ((time.getSeconds() + ms / 1000) / 60) * 360;
+  const minDeg = ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360;
+  const hourDeg = ((time.getHours() % 12 + time.getMinutes() / 60) / 12) * 360;
 
-  const formattedValue = String(displayedValue).padStart(2, '0')
-  const formattedPrev = String(prevValue).padStart(2, '0')
+  const textOutline = `
+    -2px 0 0 #fff,
+     2px 0 0 #fff,
+     0 -2px 0 #24D671,
+     0  2px 0 #151415
+  `;
 
   return (
-    <div className='flip-container'>
-      <div className={`flip-card ${isFlipping ? 'flipping' : ''}`}>
-        {/* Top half - stays visible */}
-        <div className='top-half'>
-          <span>{formattedValue}</span>
-        </div>
+    <div style={{
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundSize: '300px 200px', // Adjust this value to change the size of each tile
+      backgroundRepeat: 'repeat',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+      width: '100%',
+      height: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: 'white',
+      position: 'relative',
+    }}>
+      {/* Image in lower right corner */}
+      <img 
+        src={aaaImage} 
+        alt="" 
+        style={{
+          position: 'absolute',
+          bottom: '0',
+          right: '0',
+          maxWidth: '300px',
+          maxHeight: '900px',
+          objectFit: 'contain'
+        }}
+      />
+      <div style={{
+        position: 'relative',
+        width: '400px',
+        height: '400px',
+        fontFamily: `'${uniqueFontFamily}', serif`,
+        color: '#C65408',
+      }}>
 
-        {/* Bottom half - stays visible */}
-        <div className='bottom-half'>
-          <span>{formattedValue}</span>
-        </div>
+        {/* Clock Face Labels */}
+        {clockLabels.map((label, i) => {
+          const angle = (i + 1) * 30;
+          const radius = 160;
+          const x = Math.sin(angle * Math.PI / 180) * radius;
+          const y = -Math.cos(angle * Math.PI / 180) * radius;
 
-        {/* Flipping top (shows previous value flipping out) */}
-        <div className='flipping-top'>
-          <span>{formattedPrev}</span>
-        </div>
+          return (
+            <div
+              key={i}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+                fontSize: '9vh',
+                textShadow: textOutline,
+                userSelect: 'none'
+              }}
+            >
+              {label}
+            </div>
+          );
+        })}
 
-        {/* Flipping bottom (shows new value flipping in) */}
-        <div className='flipping-bottom'>
-          <span>{formattedValue}</span>
-        </div>
-      </div>
+        {/* Hour Hand */}
+        <div style={{
+          position: 'absolute',
+          bottom: '50%',
+          left: '50%',
+          width: '11px',
+          height: '70px',
+         backgroundColor:  '#C65408',
+          border: '1px solid #fff',
+          boxSizing: 'border-box',
+          transformOrigin: 'bottom',
+          transform: `translateX(-50%) rotate(${hourDeg}deg)`,
+          borderRadius: '10px'
+        }} />
 
-      <style jsx>{`
-        .flip-container {
-          position: relative;
-          width: 80px;
-          height: 120px;
-          perspective: 1000px;
-          margin: 0 8px;
-        }
+        {/* Minute Hand */}
+        <div style={{
+          position: 'absolute',
+          bottom: '50%',
+          left: '50%',
+          width: '8px',
+          height: '120px',
+          backgroundColor:  '#C65408',
+          border: '1px solid #fff',
+          boxSizing: 'border-box',
+          transformOrigin: 'bottom',
+          transform: `translateX(-50%) rotate(${minDeg}deg)`,
+          borderRadius: '10px'
+        }} />
 
-        .flip-card {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          transform-style: preserve-3d;
-        }
+        {/* Second Hand */}
+        <div style={{
+          position: 'absolute',
+          bottom: '50%',
+          left: '50%',
+          width: '4px',
+          height: '140px',
+      backgroundColor:  '#C65408',
+          border: '1px solid #fff',
+          boxSizing: 'border-box',
+          transformOrigin: 'bottom',
+          transform: `translateX(-50%) rotate(${secDeg}deg)`
+        }} />
 
-        .top-half,
-        .bottom-half,
-        .flipping-top,
-        .flipping-bottom {
-          position: absolute;
-          width: 100%;
-          height: 50%;
-          overflow: hidden;
-          background: #1a1a1a;
-          border-radius: 10px;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-          backface-visibility: hidden;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          font-size: 80px;
-          font-weight: bold;
-          font-family: 'Arial Narrow', Arial, sans-serif;
-        }
+        {/* Center Nut */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '14px',
+          height: '14px',
+                  backgroundColor: '#C65408',
+            border: '1px solid #fff',
+          borderRadius: '50%',
+          transform: 'translate(-50%, -50%)'
+        }} />
 
-        .top-half {
-          top: 0;
-          border-bottom: 1px solid #000;
-          transform-origin: bottom;
-        }
-
-        .bottom-half {
-          bottom: 0;
-          border-top: 1px solid #333;
-          transform-origin: top;
-          align-items: flex-start;
-          padding-top: 12px;
-        }
-
-        .bottom-half span {
-          transform: translateY(-50%);
-        }
-
-        .flipping-top {
-          top: 0;
-          border-bottom: 1px solid #000;
-          transform-origin: bottom;
-          transform: rotateX(0deg);
-          animation: ${isFlipping ? 'flipTop 0.6s ease-in forwards' : 'none'};
-        }
-
-        .flipping-bottom {
-          bottom: 0;
-          border-top: 1px solid #333;
-          transform-origin: top;
-          transform: rotateX(90deg);
-          animation: ${isFlipping
-            ? 'flipBottom 0.6s ease-out forwards'
-            : 'none'};
-        }
-
-        @keyframes flipTop {
-          0% {
-            transform: rotateX(0deg);
-          }
-          100% {
-            transform: rotateX(-90deg);
-          }
-        }
-
-        @keyframes flipBottom {
-          0% {
-            transform: rotateX(90deg);
-          }
-          100% {
-            transform: rotateX(0deg);
-          }
-        }
-      `}</style>
-    </div>
-  )
-}
-
-const FlipClock = () => {
-  const [time, setTime] = useState(new Date())
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date())
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [])
-
-  const hours = time.getHours().toString().padStart(2, '0')
-  const minutes = time.getMinutes().toString().padStart(2, '0')
-
-  return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        backgroundColor: '#111',
-        fontFamily: 'Arial, sans-serif'
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <FlipNumber value={parseInt(hours[0])} />
-        <FlipNumber value={parseInt(hours[1])} />
-
-        <div
-          style={{
-            color: '#444',
-            fontSize: '80px',
-            margin: '0 20px',
-            fontWeight: 'bold'
-          }}
-        >
-          :
-        </div>
-
-        <FlipNumber value={parseInt(minutes[0])} />
-        <FlipNumber value={parseInt(minutes[1])} />
       </div>
     </div>
-  )
+  );
 }
-
-export default FlipClock
