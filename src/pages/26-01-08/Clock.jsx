@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 // Background imports
 import backgroundImage from '../../assets/clocks/26-01-08/tang.jpeg';
-import bgLayerTile from '../../assets/clocks/26-01-08/tangg.webp'; 
+import bgLayerTile from '../../assets/clocks/26-01-08/tan.webp'; 
 
 // Number images
 import num12 from '../../assets/clocks/26-01-08/12.webp';
@@ -102,10 +102,10 @@ export default function TangerineClock() {
           position: 'absolute',
           inset: 0,
           backgroundImage: `url(${bgLayerTile})`,
-          backgroundSize: '35% auto', // Slightly larger tile
+          // backgroundSize: '35% auto', // Slightly larger tile
           backgroundRepeat: 'repeat',
           backgroundPosition: '90px 90px', // Offset to prevent overlap with layer 1
-          opacity: 0.1,
+          opacity: 0.9,
           zIndex: 2,
           pointerEvents: 'none'
         }}
