@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
-import backgroundImage from '../../assets/clocks/26-01-08/tang.jpeg';
 
-// Number images (12 → 11 in clockwise order)
+// Background imports
+import backgroundImage from '../../assets/clocks/26-01-08/tang.jpeg';
+import bgLayerTile from '../../assets/clocks/26-01-08/tangg.webp'; 
+
+// Number images
 import num12 from '../../assets/clocks/26-01-08/12.webp';
 import num1 from '../../assets/clocks/26-01-08/1.webp';
 import num2 from '../../assets/clocks/26-01-08/2.webp';
@@ -20,13 +23,12 @@ import hourHandImg from '../../assets/clocks/26-01-08/hour.webp';
 import minuteHandImg from '../../assets/clocks/26-01-08/min.webp';
 import secondHandImg from '../../assets/clocks/26-01-08/sec.webp';
 
-// Clock configuration
 const clockConfig = {
   colors: {
-    centerDot: '#F2850037'
+    centerDot: '#F2850037',
+    border: 'rgba(0,0,0,0.1)'
   },
   sizes: {
-    // Relative to clockSize
     hourHand:   { width: 0.42,  height: 0.70 },
     minuteHand: { width: 1.80,  height: 1.20 },
     secondHand: { width: 0.68,  height: 1.00 },
@@ -49,18 +51,15 @@ export default function TangerineClock() {
     return () => cancelAnimationFrame(rafId);
   }, []);
 
-  // Time calculations (smooth seconds + ms)
   const ms      = time.getMilliseconds();
-  const secDeg  = ((time.getSeconds()  + ms / 1000) / 60) * 360;
-  const minDeg  = ((time.getMinutes()  + time.getSeconds() / 60) / 60) * 360;
+  const secDeg  = ((time.getSeconds() + ms / 1000) / 60) * 360;
+  const minDeg  = ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360;
   const hourDeg = ((time.getHours() % 12 + time.getMinutes() / 60) / 12) * 360;
 
   const clockSize = Math.min(window.innerWidth, window.innerHeight) * 0.5;
   const radius    = clockSize * 0.8;
-
   const { colors, sizes } = clockConfig;
 
-  // Shared hand container style (pivot at bottom center)
   const handStyle = (deg, sizeObj, z) => ({
     position: 'absolute',
     bottom: '50%',
@@ -72,15 +71,18 @@ export default function TangerineClock() {
     zIndex: z,
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+    pointerEvents: 'none'
   });
 
-  // Drop-shadow style used for all hands & numbers (strong black outline)
   const shadowFilter = 'drop-shadow(0 0 6px rgba(45, 18, 3, 0.9)) drop-shadow(0 0 12px rgba(236, 10, 10, 0.7))';
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden' }}>
-      {/* Tiled background */}
+    <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', backgroundColor: '#1a0a02' }}>
+      
+      {/* --- TILED BACKGROUND LAYERS --- */}
+      
+      {/* Layer 1: Base Tiled Image */}
       <div
         style={{
           position: 'absolute',
@@ -89,11 +91,42 @@ export default function TangerineClock() {
           backgroundSize: '25% auto',
           backgroundRepeat: 'repeat',
           backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-          transform: 'scale(1.1)'
+          transform: 'scale(1.1)',
+          zIndex: 1
         }}
       />
 
+      {/* Layer 2: Middle Tiled Image (with Offset or different size for depth) */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url(${bgLayerTile})`,
+          backgroundSize: '35% auto', // Slightly larger tile
+          backgroundRepeat: 'repeat',
+          backgroundPosition: '90px 90px', // Offset to prevent overlap with layer 1
+          opacity: 0.1,
+          zIndex: 2,
+          pointerEvents: 'none'
+        }}
+      />
+
+      {/* Layer 3: Top Tiled Image */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url(${bgLayerTile})`,
+          backgroundSize: '15% auto', // Smaller tile for variety
+          backgroundRepeat: 'repeat',
+          backgroundPosition: 'center',
+          // opacity: 0.3,
+          zIndex: 3,
+          pointerEvents: 'none'
+        }}
+      />
+
+      {/* --- CLOCK FACE --- */}
       <div
         style={{
           position: 'relative',
@@ -101,13 +134,13 @@ export default function TangerineClock() {
           height: '100%',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          zIndex: 10
         }}
       >
         <div style={{ position: 'relative', width: clockSize, height: clockSize }}>
-          {/* Number labels (12 at top, clockwise) */}
           {clockLabels.map((label, i) => {
-            const angle = (i + 1) * 30;           // 12 → 0°, 1 → 30°, ..., 11 → 330°
+            const angle = (i + 1) * 30;
             const x = Math.sin(angle * Math.PI / 180) * radius;
             const y = -Math.cos(angle * Math.PI / 180) * radius;
 
@@ -131,20 +164,10 @@ export default function TangerineClock() {
             );
           })}
 
-           {/* Minute Hand */}
           <div style={handStyle(minDeg, sizes.minuteHand, 20)}>
-            <img
-              src={minuteHandImg}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain',
-                filter: shadowFilter
-              }}
-              alt="minute hand"
-            />
+            <img src={minuteHandImg} style={{ width: '100%', height: '100%', objectFit: 'contain', filter: shadowFilter }} alt="minute hand" />
           </div>
-          {/* Hour Hand */}
+
           <div style={handStyle(hourDeg, sizes.hourHand, 10)}>
             <img
               src={hourHandImg}
@@ -158,23 +181,10 @@ export default function TangerineClock() {
             />
           </div>
 
-         
-
-          {/* Second Hand */}
           <div style={handStyle(secDeg, sizes.secondHand, 30)}>
-            <img
-              src={secondHandImg}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain',
-                filter: shadowFilter
-              }}
-              alt="second hand"
-            />
+            <img src={secondHandImg} style={{ width: '100%', height: '100%', objectFit: 'contain', filter: shadowFilter }} alt="second hand" />
           </div>
 
-          {/* Center dot */}
           <div
             style={{
               position: 'absolute',
