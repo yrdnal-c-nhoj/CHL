@@ -1,164 +1,151 @@
-// src/components/PyramidzBackground.jsx
 import { useState, useEffect } from 'react';
-// Vite public folder imports (root-relative → auto-hashed in prod)
-import backgroundImage from '../../assets/clocks/26-01-05/pyr.webp';
-import gizaFont from '../../assets/fonts/26-01-05-giza.otf';
+import backgroundImage from '../../assets/clocks/26-01-07/aa.jpg';
+import gizaFont from '../../assets/fonts/26-01-07-aa.ttf';
+import aaaImage from '../../assets/clocks/26-01-07/aaa.webp';
 
-export default function PyramidzBackground() {
-  const [fontReady, setFontReady] = useState(false);
-  const [timeString, setTimeString] = useState('');
+export default function AardvarkClock() {
+  const [time, setTime] = useState(new Date());
+  const uniqueFontFamily = `Giza_20260107`;
 
-  // Generate unique font-family name: Giza_20260107
-  const dateStr = '20260107'; // January 07, 2026
-  const uniqueFontFamily = `Giza_${dateStr}`;
+  const clockLabels = ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'AA', 'AA', 'AA'];
 
-  // 1. Inject @font-face once + marquee styles (cleaned up on unmount)
+  // Inject font
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
       @font-face {
         font-family: '${uniqueFontFamily}';
         src: url(${gizaFont}) format('opentype');
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
-      }
-      .pz-marquee-wrapper {
-        display: flex;
-        width: fit-content;
-        animation: pz-marquee 1000s linear infinite;
-        margin-top: -18vh;
-      }
-      .pz-marquee-group {
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        white-space: nowrap;
-        
-        /* 1. LOWER TEXT OPACITY: Reduced from 58 to 15 (hex) */
-        color: rgba(242, 208, 38, 0.36); 
-        
-        font-family: '${uniqueFontFamily}', system-ui, sans-serif;
-        font-size: 130vh;
-        letter-spacing: -3vh;
-
-        /* 2. STRONGER SHADOWS: Increased alpha values significantly */
-        text-shadow:
-          -1vh -1vh 0vh rgba(6, 61, 242, 0.49),   /* Deep Blue - 80% opaque */
-          1vh 1vh 0vh rgba(249, 200, 23, 0.12);   /* Red - 60% opaque */
-      }
-      @keyframes pz-marquee {
-        0%   { transform: translateX(0);    }
-        100% { transform: translateX(-50%); }
       }
     `;
     document.head.appendChild(style);
-
-    // Cleanup
-    return () => {
-      if (style.parentNode) {
-        style.parentNode.removeChild(style);
-      }
-    };
+    return () => style.parentNode?.removeChild(style);
   }, [uniqueFontFamily]);
 
-  // 2. Wait for font to be usable
+  // Smooth animation loop
   useEffect(() => {
-    if (!document.fonts) {
-      setFontReady(true);
-      return;
-    }
-
-    let mounted = true;
-    document.fonts
-      .load(`12px ${uniqueFontFamily}`)
-      .then(() => {
-        if (mounted) setFontReady(true);
-      })
-      .catch((err) => {
-        console.warn(' ', err);
-        if (mounted) setFontReady(true);
-      });
-
-    return () => {
-      mounted = false;
+    let rafId;
+    const update = () => {
+      setTime(new Date());
+      rafId = requestAnimationFrame(update);
     };
-  }, [uniqueFontFamily]);
-
-  // 3. Clock update
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const time = now.toLocaleTimeString('en-US', {
-        hour12: true,
-        hour: 'numeric',
-        minute: '2-digit',
-      });
-      const formatted = time
-        .replace(/^0/, '')
-        .replace(/\s+/g, '');
-      setTimeString(formatted);
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
+    rafId = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(rafId);
   }, []);
 
-  // Block render until font is confirmed loaded
-  if (!fontReady) return null;
+  const ms = time.getMilliseconds();
+  const secDeg = ((time.getSeconds() + ms / 1000) / 60) * 360;
+  const minDeg = ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360;
+  const hourDeg = ((time.getHours() % 12 + time.getMinutes() / 60) / 12) * 360;
+
+  const textOutline = `
+    -1px 0 0 #fff,
+     1px 0 0 #fff,
+     0 -1px 0 #fff,
+     0  1px 0 #fff
+  `;
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        width: '100vw',
-        height: '100dvh',
-        margin: 0,
-        padding: 0,
-        overflow: 'hidden',
-        // Fade in once ready
-        animation: 'pzFadeIn 125ms ease-out forwards',
-      }}
-    >
-      <style>{`
-        @keyframes pzFadeIn {
-          from { opacity: 0; }
-          to   { opacity: 1; }
-        }
-        .pz-background::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background-image: url(${backgroundImage});
-          background-size: cover;
-          background-position: center;
-          background-repeat: no-repeat;
-          /* Filter applied ONLY to background image */
-          filter: brightness(0.7) contrast(1.5);
-        }
-      `}</style>
-      <div className="pz-background" style={{ position: 'absolute', inset: 0 }}></div>
+    <div style={{
+      position: 'fixed',
+      inset: 0,
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundRepeat: 'repeat',
+      backgroundPosition: 'center',
+      backgroundSize: '500px 300px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <div style={{
+        position: 'relative',
+        width: '400px',
+        height: '400px',
+        fontFamily: `'${uniqueFontFamily}', serif`,
+        color: '#F40707',
+      }}>
 
-      <div
-        style={{
+        {/* Clock Face Labels */}
+        {clockLabels.map((label, i) => {
+          const angle = (i + 1) * 30;
+          const radius = 160;
+          const x = Math.sin(angle * Math.PI / 180) * radius;
+          const y = -Math.cos(angle * Math.PI / 180) * radius;
+
+          return (
+            <div
+              key={i}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+                fontSize: '9vh',
+                textShadow: textOutline,
+                userSelect: 'none'
+              }}
+            >
+              {label}
+            </div>
+          );
+        })}
+
+        {/* Hour Hand */}
+        <div style={{
           position: 'absolute',
-          inset: 0,
-          display: 'flex',
-          alignItems: 'flex-start',
-          overflow: 'hidden',
-          pointerEvents: 'none',
-        }}
-      >
-        <div className="pz-marquee-wrapper">
-          <div className="pz-marquee-group">
-            {timeString.repeat(20)}
-          </div>
-          <div className="pz-marquee-group">
-            {timeString.repeat(20)}
-          </div>
-        </div>
+          bottom: '50%',
+          left: '50%',
+          width: '8px',
+          height: '80px',
+          backgroundColor: '#F40707',
+          border: '1px solid #fff',
+          boxSizing: 'border-box',
+          transformOrigin: 'bottom',
+          transform: `translateX(-50%) rotate(${hourDeg}deg)`,
+          borderRadius: '10px'
+        }} />
+
+        {/* Minute Hand */}
+        <div style={{
+          position: 'absolute',
+          bottom: '50%',
+          left: '50%',
+          width: '4px',
+          height: '120px',
+          backgroundColor: '#F40707',
+          border: '1px solid #fff',
+          boxSizing: 'border-box',
+          transformOrigin: 'bottom',
+          transform: `translateX(-50%) rotate(${minDeg}deg)`,
+          borderRadius: '10px'
+        }} />
+
+        {/* Second Hand */}
+        <div style={{
+          position: 'absolute',
+          bottom: '50%',
+          left: '50%',
+          width: '2px',
+          height: '140px',
+          backgroundColor: '#F40707',
+          border: '1px solid #fff',
+          boxSizing: 'border-box',
+          transformOrigin: 'bottom',
+          transform: `translateX(-50%) rotate(${secDeg}deg)`
+        }} />
+
+        {/* Center Nut */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '14px',
+          height: '14px',
+          backgroundColor: '#fff',
+          borderRadius: '50%',
+          transform: 'translate(-50%, -50%)'
+        }} />
+
       </div>
     </div>
   );
