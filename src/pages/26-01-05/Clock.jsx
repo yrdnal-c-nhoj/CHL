@@ -87,7 +87,7 @@ const PyramidzBackground = () => {
         .marquee-wrapper {
           display: flex;
           width: fit-content;
-          animation: marquee 2000s linear infinite;
+          animation: marquee 1000s linear infinite;
           margin-top: -18vh;
         }
         .marquee-group {
