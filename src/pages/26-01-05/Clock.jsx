@@ -5,11 +5,12 @@ import aaaImage from '../../assets/clocks/26-01-06/aaa.webp';
 
 export default function AardvarkClock() {
   const [time, setTime] = useState(new Date());
+  const [totalSeconds, setTotalSeconds] = useState(0);
+
   const uniqueFontFamily = `Giza_20260107`;
+  const clockLabels = ['A','A','A','A','A','A','A','A','A','Aa','Aa','Aa'];
 
-  const clockLabels = ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'AA', 'AA', 'AA'];
-
-  // Inject font
+  /* Inject font */
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
@@ -19,73 +20,81 @@ export default function AardvarkClock() {
       }
     `;
     document.head.appendChild(style);
-    return () => style.parentNode?.removeChild(style);
-  }, [uniqueFontFamily]);
-
-  // Smooth animation loop
-  useEffect(() => {
-    let rafId;
-    const update = () => {
-      setTime(new Date());
-      rafId = requestAnimationFrame(update);
-    };
-    rafId = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(rafId);
+    return () => style.remove();
   }, []);
 
-  const ms = time.getMilliseconds();
-  const secDeg = ((time.getSeconds() + ms / 1000) / 60) * 360;
-  const minDeg = ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360;
+  /* Clock tick */
+  useEffect(() => {
+    const now = new Date();
+    setTime(now);
+    setTotalSeconds(
+      now.getHours() * 3600 +
+      now.getMinutes() * 60 +
+      now.getSeconds()
+    );
+
+    const timer = setInterval(() => {
+      setTime(new Date());
+      setTotalSeconds(s => s + 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const secDeg  = (totalSeconds / 60) * 360;
+  const minDeg  = ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360;
   const hourDeg = ((time.getHours() % 12 + time.getMinutes() / 60) / 12) * 360;
 
   const textOutline = `
-    -2px 0 0 #fff,
-     2px 0 0 #fff,
-     0 -2px 0 #24D671,
-     0  2px 0 #151415
+    -0.3vh 0 0 #08C43A,
+     0.3vh 0 0 #f222ff,
+     0 -0.3vh 0 #EFEAE8,
+     0  0.3vh 0 #151415
   `;
 
   return (
     <div style={{
       backgroundImage: `url(${backgroundImage})`,
-      backgroundSize: '300px 200px', // Adjust this value to change the size of each tile
+      backgroundSize: '50vh 40vh',
       backgroundRepeat: 'repeat',
       backgroundPosition: 'center',
       backgroundAttachment: 'fixed',
-      width: '100%',
+      width: '100vw',
       height: '100vh',
       display: 'flex',
-      flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      color: 'white',
       position: 'relative',
+      overflow: 'hidden'
     }}>
-      {/* Image in lower right corner */}
-      <img 
-        src={aaaImage} 
-        alt="" 
+
+      {/* Corner image */}
+      <img
+        src={aaaImage}
+        alt=""
         style={{
           position: 'absolute',
           bottom: '0',
           right: '0',
-          maxWidth: '300px',
-          maxHeight: '900px',
+          width: '45vh',
+          maxHeight: '90vh',
           objectFit: 'contain'
         }}
       />
+
+      {/* CLOCK */}
       <div style={{
         position: 'relative',
-        width: '400px',
-        height: '400px',
+        width: 'min(90vh, 90vw)',
+        height: 'min(90vh, 90vw)',
         fontFamily: `'${uniqueFontFamily}', serif`,
-        color: '#C65408',
+        color: '#C65408'
       }}>
 
-        {/* Clock Face Labels */}
+        {/* Labels */}
         {clockLabels.map((label, i) => {
           const angle = (i + 1) * 30;
-          const radius = 160;
+          const radius = 38; // vh-based via container scaling
           const x = Math.sin(angle * Math.PI / 180) * radius;
           const y = -Math.cos(angle * Math.PI / 180) * radius;
 
@@ -96,10 +105,11 @@ export default function AardvarkClock() {
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+                transform: `translate(calc(-50% + ${x}vh), calc(-50% + ${y}vh))`,
                 fontSize: '9vh',
                 textShadow: textOutline,
-                userSelect: 'none'
+                userSelect: 'none',
+                lineHeight: 1
               }}
             >
               {label}
@@ -107,61 +117,62 @@ export default function AardvarkClock() {
           );
         })}
 
-        {/* Hour Hand */}
+        {/* Hour */}
         <div style={{
           position: 'absolute',
           bottom: '50%',
           left: '50%',
-          width: '11px',
-          height: '70px',
-         backgroundColor:  '#C65408',
-          border: '1px solid #fff',
-          boxSizing: 'border-box',
+          width: '1.4vh',
+          height: '14vh',
+          background: '#C65408',
+          border: '0.15vh solid #fff',
           transformOrigin: 'bottom',
           transform: `translateX(-50%) rotate(${hourDeg}deg)`,
-          borderRadius: '10px'
+          borderRadius: '1vh',
+          transition: 'transform 0.5s ease-in-out'
         }} />
 
-        {/* Minute Hand */}
+        {/* Minute */}
         <div style={{
           position: 'absolute',
           bottom: '50%',
           left: '50%',
-          width: '8px',
-          height: '120px',
-          backgroundColor:  '#C65408',
-          border: '1px solid #fff',
-          boxSizing: 'border-box',
+          width: '0.9vh',
+          height: '24vh',
+          background: '#C65408',
+          border: '0.15vh solid #fff',
           transformOrigin: 'bottom',
           transform: `translateX(-50%) rotate(${minDeg}deg)`,
-          borderRadius: '10px'
+          borderRadius: '1vh',
+          transition: 'transform 0.5s ease-in-out'
         }} />
 
-        {/* Second Hand */}
+        {/* Second */}
         <div style={{
           position: 'absolute',
           bottom: '50%',
           left: '50%',
-          width: '4px',
-          height: '140px',
-      backgroundColor:  '#C65408',
-          border: '1px solid #fff',
-          boxSizing: 'border-box',
+          width: '0.5vh',
+          height: '28vh',
+          background: '#C65408',
+          border: '0.12vh solid #fff',
           transformOrigin: 'bottom',
-          transform: `translateX(-50%) rotate(${secDeg}deg)`
+          transform: `translateX(-50%) rotate(${secDeg}deg)`,
+          transition: 'transform 0.4s cubic-bezier(0.68,-0.6,0.32,1.6)'
         }} />
 
-        {/* Center Nut */}
+        {/* Center */}
         <div style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
-          width: '14px',
-          height: '14px',
-                  backgroundColor: '#C65408',
-            border: '1px solid #fff',
+          width: '2.2vh',
+          height: '2.2vh',
+          background: '#C65408',
+          border: '0.15vh solid #fff',
           borderRadius: '50%',
-          transform: 'translate(-50%, -50%)'
+          transform: 'translate(-50%, -50%)',
+          zIndex: 5
         }} />
 
       </div>
