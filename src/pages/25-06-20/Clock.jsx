@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useRef, useMemo, memo } from "react";
+import React, { useEffect, useState } from "react";
 
-// Font imports
-const font1Path = '../../assets/fonts/25-12-22-candle.ttf';
-const font2Path = '../../assets/fonts/25-12-29-shrine.ttf';
+const font1Path = '/src/assets/fonts/25-06-20-inde2.ttf';
+const font2Path = '/src/assets/fonts/25-06-20-inde1.ttf';
 
 const IndecisiveClock = () => {
   const [time, setTime] = useState({ h: "", m: "", s: "" });
   const [showFirst, setShowFirst] = useState(true);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
   // Update time every second
   useEffect(() => {
@@ -21,7 +21,7 @@ const IndecisiveClock = () => {
     updateClock();
     const timeInterval = setInterval(updateClock, 1000);
 
-    // Toggle font every 2 seconds for better visibility
+    // Toggle font every 2 seconds for equal visibility
     const fontInterval = setInterval(() => {
       setShowFirst(prev => !prev);
     }, 2000);
@@ -32,7 +32,44 @@ const IndecisiveClock = () => {
     };
   }, []);
 
-  // Styles as objects
+  // Load fonts on component mount
+  useEffect(() => {
+    const loadFonts = async () => {
+      try {
+        const font1 = new FontFace('ClockFont1', `url(${font1Path})`);
+        const font2 = new FontFace('ClockFont2', `url(${font2Path})`);
+        
+        await Promise.all([font1.load(), font2.load()]);
+        document.fonts.add(font1);
+        document.fonts.add(font2);
+        
+        setFontsLoaded(true);
+      } catch (error) {
+        console.error('Error loading fonts:', error);
+        setFontsLoaded(true);
+      }
+    };
+    
+    loadFonts();
+  }, []);
+
+  const bodyStyle = {
+    margin: 0,
+    backgroundColor: "#8A8E8A",
+    backgroundImage:
+      `linear-gradient(30deg, #888888 12%, transparent 12.5%, transparent 87%, #888888 87.5%, #888888),
+       linear-gradient(150deg, #888888 12%, transparent 12.5%, transparent 87%, #888888 87.5%, #888888),
+       linear-gradient(30deg, #888888 12%, transparent 12.5%, transparent 87%, #888888 87.5%, #888888),
+       linear-gradient(150deg, #888888 12%, transparent 12.5%, transparent 87%, #888888 87.5%, #888888),
+       linear-gradient(60deg, #7B7E7A77 25%, transparent 25.5%, transparent 75%, #75787477 75%, #21351a77),
+       linear-gradient(60deg, #71737077 25%, transparent 25.5%, transparent 75%, #6C6E6B77 75%, #21351a77)`,
+    backgroundSize: "24vw 42vh",
+    backgroundPosition: "0 0, 0 0, 12vw 21vh, 12vw 21vh, 0 0, 12vw 21vh",
+    overflow: "hidden",
+    height: "100dvh",
+    width: "100vw",
+  };
+
   const containerStyle = {
     position: "absolute",
     top: 0,
@@ -55,88 +92,15 @@ const IndecisiveClock = () => {
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
-    transition: "opacity 0.8s ease, filter 0.8s ease",
     userSelect: "none",
+    transition: "opacity 1s ease-in-out",
   };
 
-  const visibleStyle = {
-    opacity: 1,
-    filter: "blur(0rem)",
-    pointerEvents: "auto",
-  };
-
-  const hiddenStyle = {
-    opacity: 0,
-    filter: "blur(0.5rem)",
-    pointerEvents: "none",
-  };
-
-  const digitStyle1 = useMemo(() => ({
-    fontFamily: `'${showFirst ? 'ClockFont1' : 'ClockFont2'}', sans-serif`,
-    color: "rgb(250, 212, 212)",
-    fontSize: "8rem",
-    opacity: 0,
-    animation: 'fadeIn 0.125s ease-in forwards',
-    transition: 'font-family 0.8s ease',
-  }), [showFirst]);
-
-  const digitStyle2 = useMemo(() => ({
-    fontFamily: `'${showFirst ? 'ClockFont2' : 'ClockFont1'}', sans-serif`,
-    color: "rgb(251, 223, 224)",
+  const digitStyle = {
     fontSize: "8rem",
     lineHeight: "7rem",
-    opacity: 0,
-    animation: 'fadeIn 0.125s ease-in forwards',
-    transition: 'font-family 0.8s ease',
-  }), [showFirst]);
-
-  const bodyStyle = {
-    margin: 0,
-    backgroundColor: "#111e0f",
-    backgroundImage:
-      `linear-gradient(30deg, #21351a 12%, transparent 12.5%, transparent 87%, #21351a 87.5%, #21351a),
-       linear-gradient(150deg, #21351a 12%, transparent 12.5%, transparent 87%, #21351a 87.5%, #21351a),
-       linear-gradient(30deg, #21351a 12%, transparent 12.5%, transparent 87%, #21351a 87.5%, #21351a),
-       linear-gradient(150deg, #21351a 12%, transparent 12.5%, transparent 87%, #21351a 87.5%, #21351a),
-       linear-gradient(60deg, #21351a77 25%, transparent 25.5%, transparent 75%, #21351a77 75%, #21351a77),
-       linear-gradient(60deg, #21351a77 25%, transparent 25.5%, transparent 75%, #21351a77 75%, #21351a77)`,
-    backgroundSize: "24vw 42vh",
-    backgroundPosition: "0 0, 0 0, 12vw 21vh, 12vw 21vh, 0 0, 12vw 21vh",
-    overflow: "hidden",
-    height: "100dvh",
-    width: "100vw",
   };
 
-  // Responsive style fallback for mobile (column layout)
-  // Can be handled via CSS media queries or with JS resize listeners,
-  // but for brevity, here just keep flexDirection: row.
-  
-  // Font loading state
-  const [fontsLoaded, setFontsLoaded] = useState(false);
-  
-  // Load fonts on component mount
-  useEffect(() => {
-    const loadFonts = async () => {
-      try {
-        // Using FontFace API for better control
-        const font1 = new FontFace('ClockFont1', `url(${font1Path})`);
-        const font2 = new FontFace('ClockFont2', `url(${font2Path})`);
-        
-        await Promise.all([font1.load(), font2.load()]);
-        document.fonts.add(font1);
-        document.fonts.add(font2);
-        
-        setFontsLoaded(true);
-      } catch (error) {
-        console.error('Error loading fonts:', error);
-        setFontsLoaded(true); // Continue even if font loading fails
-      }
-    };
-    
-    loadFonts();
-  }, []);
-  
-  // Don't render until fonts are loaded
   if (!fontsLoaded) {
     return null;
   }
@@ -145,26 +109,25 @@ const IndecisiveClock = () => {
     <>
       <style>
         {`
-        @font-face {
-          font-family: 'ClockFont1';
-          src: url('${font1Path}') format('truetype');
-          font-display: swap;
-        }
-        @font-face {
-          font-family: 'ClockFont2';
-          src: url('${font2Path}') format('truetype');
-          font-display: swap;
-        }
+          @font-face {
+            font-family: 'ClockFont1';
+            src: url('${font1Path}') format('truetype');
+            font-display: swap;
+          }
+          @font-face {
+            font-family: 'ClockFont2';
+            src: url('${font2Path}') format('truetype');
+            font-display: swap;
+          }
+          
           @media (max-width: 768px) {
             .time-block {
               flex-direction: column !important;
               gap: 0.5rem !important;
             }
-          }
-          
-          @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            .digit {
+              font-size: 6rem !important;
+            }
           }
         `}
       </style>
@@ -172,39 +135,37 @@ const IndecisiveClock = () => {
       <div style={bodyStyle}>
         <div id="container" style={containerStyle}>
           <div
-            id="time1"
             className="time-block"
             style={{
               ...timeBlockBase,
-              ...(showFirst ? visibleStyle : hiddenStyle),
+              opacity: showFirst ? 1 : 0,
             }}
           >
-            <span className="digit" style={digitStyle1}>
+            <span className="digit" style={{...digitStyle, fontFamily: "'ClockFont1', sans-serif", color: "white"}}>
               {time.h}
             </span>
-            <span className="digit" style={digitStyle1}>
+            <span className="digit" style={{...digitStyle, fontFamily: "'ClockFont1', sans-serif", color: "white"}}>
               {time.m}
             </span>
-            <span className="digit" style={digitStyle1}>
+            <span className="digit" style={{...digitStyle, fontFamily: "'ClockFont1', sans-serif", color: "white"}}>
               {time.s}
             </span>
           </div>
 
           <div
-            id="time2"
             className="time-block"
             style={{
               ...timeBlockBase,
-              ...(showFirst ? hiddenStyle : visibleStyle),
+              opacity: showFirst ? 0 : 1,
             }}
           >
-            <span className="digit" style={digitStyle2}>
+            <span className="digit" style={{...digitStyle, fontFamily: "'ClockFont2', sans-serif", color: "black"}}>
               {time.h}
             </span>
-            <span className="digit" style={digitStyle2}>
+            <span className="digit" style={{...digitStyle, fontFamily: "'ClockFont2', sans-serif", color: "black"}}>
               {time.m}
             </span>
-            <span className="digit" style={digitStyle2}>
+            <span className="digit" style={{...digitStyle, fontFamily: "'ClockFont2', sans-serif", color: "black"}}>
               {time.s}
             </span>
           </div>
