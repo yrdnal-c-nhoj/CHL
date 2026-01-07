@@ -34,13 +34,18 @@ export default function PyramidzBackground() {
         display: flex;
         align-items: center;
         white-space: nowrap;
-        color: #F2D02658;
+        
+        /* 1. LOWER TEXT OPACITY: Reduced from 58 to 15 (hex) */
+        color: rgba(242, 208, 38, 0.36); 
+        
         font-family: '${uniqueFontFamily}', system-ui, sans-serif;
         font-size: 130vh;
         letter-spacing: -3vh;
-          text-shadow:
-    -1vh -1vh 0vh rgba(4, 24, 88, 0.15),
-    0 0 1vh rgba(241, 14, 44, 0.13);
+
+        /* 2. STRONGER SHADOWS: Increased alpha values significantly */
+        text-shadow:
+          -1vh -1vh 0vh rgba(6, 61, 242, 0.49),   /* Deep Blue - 80% opaque */
+          1vh 1vh 0vh rgba(249, 200, 23, 0.12);   /* Red - 60% opaque */
       }
       @keyframes pz-marquee {
         0%   { transform: translateX(0);    }
@@ -71,7 +76,7 @@ export default function PyramidzBackground() {
         if (mounted) setFontReady(true);
       })
       .catch((err) => {
-        console.warn('Font load failed:', err);
+        console.warn(' ', err);
         if (mounted) setFontReady(true);
       });
 
@@ -113,10 +118,6 @@ export default function PyramidzBackground() {
         margin: 0,
         padding: 0,
         overflow: 'hidden',
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
         // Fade in once ready
         animation: 'pzFadeIn 125ms ease-out forwards',
       }}
@@ -126,7 +127,19 @@ export default function PyramidzBackground() {
           from { opacity: 0; }
           to   { opacity: 1; }
         }
+        .pz-background::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background-image: url(${backgroundImage});
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          /* Filter applied ONLY to background image */
+          filter: brightness(0.7) contrast(1.5);
+        }
       `}</style>
+      <div className="pz-background" style={{ position: 'absolute', inset: 0 }}></div>
 
       <div
         style={{
