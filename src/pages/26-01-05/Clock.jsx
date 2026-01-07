@@ -34,10 +34,13 @@ export default function PyramidzBackground() {
         display: flex;
         align-items: center;
         white-space: nowrap;
-        color: #6F696957;
+        color: #F2D02658;
         font-family: '${uniqueFontFamily}', system-ui, sans-serif;
         font-size: 130vh;
         letter-spacing: -3vh;
+          text-shadow:
+    -1vh -1vh 0vh rgba(4, 24, 88, 0.15),
+    0 0 1vh rgba(241, 14, 44, 0.13);
       }
       @keyframes pz-marquee {
         0%   { transform: translateX(0);    }
