@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+
 import spin from '../../assets/clocks/26-01-07/20206.gif';
 import bubl from '../../assets/clocks/26-01-07/bubl.gif';
 import fish from '../../assets/clocks/26-01-07/fish.gif';
@@ -6,53 +7,56 @@ import gfish from '../../assets/clocks/26-01-07/gfish.gif';
 import aquarium from '../../assets/clocks/26-01-07/aquarium.gif';
 
 const AquariumClock = () => {
-  // Refs for clock hands
   const hourHandRef = useRef(null);
   const minHandRef = useRef(null);
   const secondHandRef = useRef(null);
 
   useEffect(() => {
-    let lastSecond = -1;
-
     const setDate = () => {
       const now = new Date();
       const seconds = now.getSeconds();
       const mins = now.getMinutes();
       const hour = now.getHours();
 
-      const secondsDegrees = (seconds / 60) * 360 + 90;
-      const minsDegrees = (mins / 60) * 360 + (seconds / 60) * 6 + 90;
-      const hourDegrees = (hour / 12) * 360 + (mins / 60) * 30 + 90;
+      // -90 degrees shifts the 0 position from 3 o'clock to 12 o'clock
+      const secondsDeg = (seconds / 60) * 360 - 90;
+      const minsDeg = (mins / 60) * 360 + (seconds / 60) * 6 - 90;
+      const hourDeg = ((hour % 12) / 12) * 360 + (mins / 60) * 30 - 90;
 
+      // Handle the 354° -> -90° jump to prevent the hand from spinning backwards
       if (secondHandRef.current) {
-        // Prevent jump at 0 seconds
-        if (seconds === 0 && lastSecond === 59) {
-          secondHandRef.current.style.transition = 'none';
-        } else {
-          secondHandRef.current.style.transition = 'transform 0.05s ease-in-out';
-        }
-        secondHandRef.current.style.transform = `rotate(${secondsDegrees}deg)`;
+        secondHandRef.current.style.transition = seconds === 0 ? 'none' : 'all 0.5s cubic-bezier(0.1, 2.7, 0.58, 1)';
+        secondHandRef.current.style.transform = `translateY(-50%) rotate(${secondsDeg}deg)`;
       }
 
-      if (minHandRef.current) minHandRef.current.style.transform = `rotate(${minsDegrees}deg)`;
-      if (hourHandRef.current) hourHandRef.current.style.transform = `rotate(${hourDegrees}deg)`;
+      if (minHandRef.current) {
+        minHandRef.current.style.transform = `translateY(-50%) rotate(${minsDeg}deg)`;
+      }
 
-      lastSecond = seconds;
+      if (hourHandRef.current) {
+        hourHandRef.current.style.transform = `translateY(-50%) rotate(${hourDeg}deg)`;
+      }
     };
 
     const interval = setInterval(setDate, 1000);
-    setDate(); // initialize immediately
-
+    setDate();
     return () => clearInterval(interval);
   }, []);
 
-  // Shared styles
   const sharedImageStyle = {
     position: 'absolute',
-    top: 0,
-    left: 0,
+    inset: 0,
     width: '100vw',
     height: '100vh',
+    objectFit: 'cover'
+  };
+
+  const handStyle = {
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    transformOrigin: 'left center', // This pins the "tail" of the fish to the center
+    transition: 'transform 0.5s cubic-bezier(0.1, 2.7, 0.58, 1)',
   };
 
   const handFilter =
@@ -62,142 +66,42 @@ const AquariumClock = () => {
     'drop-shadow(-1px -1px 1px rgb(214, 227, 216))';
 
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}>
-      {/* Background Aquarium */}
-      <img src={aquarium} style={{ ...sharedImageStyle, opacity: 0.5, zIndex: 0 }} alt="aquarium forward" />
-      <img
-        src={aquarium}
-        style={{ ...sharedImageStyle, opacity: 0.9, transform: 'scaleX(-1)', zIndex: 1 }}
-        alt="aquarium mirrored"
-      />
+    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', background: '#000' }}>
+      {/* Background Layers */}
+      <img src={aquarium} style={{ ...sharedImageStyle, opacity: 0.5, zIndex: 0 }} alt="" />
+      <img src={aquarium} style={{ ...sharedImageStyle, opacity: 0.9, transform: 'scaleX(-1)', zIndex: 1 }} alt="" />
 
-      {/* Spin effects */}
-      <img
-        src={spin}
-        style={{
-          ...sharedImageStyle,
-          opacity: 0.6,
-          height: '80vh',
-          zIndex: 2,
-          filter: 'sepia(100%) hue-rotate(-30deg) brightness(120%) contrast(110%) saturate(400%)',
-        }}
-        alt="spin"
-      />
-      <img
-        src={spin}
-        style={{
-          ...sharedImageStyle,
-          transform: 'scaleX(-1)',
-          opacity: 0.6,
-          height: '80vh',
-          zIndex: 3,
-          filter: 'sepia(100%) hue-rotate(-30deg) brightness(120%) contrast(110%) saturate(400%)',
-        }}
-        alt="spin mirrored"
-      />
+      {/* Rotating Background GIFs */}
+      <img src={spin} style={{ ...sharedImageStyle, height: '80vh', opacity: 0.6, zIndex: 2, filter: 'sepia(100%) hue-rotate(-30deg) saturate(400%)' }} alt="" />
 
-      {/* Floating bubbles */}
-      <img
-        src={bubl}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: '-22vw',
-          width: '100%',
-          height: '110%',
-          zIndex: 4,
-          pointerEvents: 'none',
-        }}
-        alt="bubbles"
-      />
-      <img
-        src={bubl}
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          zIndex: 5,
-           left: '22vw',
-          width: '100%',
-          height: '110%',
-        }}
-        alt="bubbles 2"
-      />
-
-      {/* Clock hands */}
-      <div
-        style={{
-          width: '80vw',
-          height: '100vh',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 6,
-        }}
-      >
+      {/* Clock Hands Container */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 6, pointerEvents: 'none' }}>
+        {/* Hour Hand (Smallest/Thickest) */}
         <img
           src={fish}
           ref={hourHandRef}
-          className="hand hour-hand"
-          style={{
-            position: 'absolute',
-            width: '20%',
-            height: '30%',
-            right: '43%',
-            top: '20%',
-            transformOrigin: '100%',
-            rotate: '30deg',
-            filter: handFilter,
-          }}
-          alt="hour hand"
+          style={{ ...handStyle, width: '30vh', height: 'auto', filter: handFilter }}
+          alt="hour"
         />
+        {/* Minute Hand (Medium) */}
         <img
           src={fish}
           ref={minHandRef}
-          className="hand min-hand"
-          style={{
-            position: 'absolute',
-            width: '40%',
-            height: '30%',
-            right: '50%',
-            top: '40%',
-            transformOrigin: '100%',
-            filter: handFilter,
-          }}
-          alt="minute hand"
+          style={{ ...handStyle, width: '45vh', height: 'auto', filter: handFilter }}
+          alt="minute"
         />
+        {/* Second Hand (Longest/Thinnest) */}
         <img
           src={fish}
           ref={secondHandRef}
-          className="hand second-hand"
-          style={{
-            position: 'absolute',
-            width: '65%',
-            height: '20%',
-            right: '50%',
-            top: '40%',
-            transformOrigin: '100%',
-            filter: handFilter,
-          }}
-          alt="second hand"
+          style={{ ...handStyle, width: '48vh', height: 'auto', filter: handFilter, opacity: 0.8 }}
+          alt="second"
         />
       </div>
 
-      {/* Foreground fish */}
-      <img
-        src={gfish}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '180vw',
-          height: '100vh',
-          opacity: 0.8,
-          transform: 'scaleX(-1)',
-          zIndex: 7,
-        }}
-        alt="gfish"
-      />
+      {/* Foreground Bubbles & Fish */}
+      <img src={bubl} style={{ position: 'absolute', top: 0, left: '-22vw', width: '100%', height: '110%', zIndex: 4 }} alt="" />
+      <img src={gfish} style={{ ...sharedImageStyle, width: '180vw', opacity: 0.8, transform: 'scaleX(-1)', zIndex: 7 }} alt="" />
     </div>
   );
 };
