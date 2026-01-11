@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 
 // Background imports
 import backgroundImage from '../../assets/clocks/26-01-08/tang.jpeg';
@@ -23,7 +24,7 @@ import hourHandImg from '../../assets/clocks/26-01-08/hour.webp';
 import minuteHandImg from '../../assets/clocks/26-01-08/min.webp';
 import secondHandImg from '../../assets/clocks/26-01-08/sec.webp';
 
-const clockConfig = {
+const clockConfigTangerine = {
   colors: {
     centerDot: '#F2850037',
     border: 'rgba(0,0,0,0.1)'
@@ -58,11 +59,11 @@ export default function TangerineClock() {
 
   // Use 90% of the minimum viewport dimension with a maximum size of 500px for better mobile display
   const clockSize = Math.min(
-    Math.min(window.innerWidth, window.innerHeight) * 0.9,
+    Math.min(window.innerWidth, window.innerHeight) * 0.7,
     500 // max size
   );
-  const radius    = clockSize * 0.8;
-  const { colors, sizes } = clockConfig;
+  const radius    = clockSize * 0.5;
+  const { colors, sizes } = clockConfigTangerine;
 
   const handStyle = (deg, sizeObj, z) => ({
     position: 'absolute',
@@ -82,12 +83,17 @@ export default function TangerineClock() {
   const shadowFilter = 'drop-shadow(0 0 6px rgba(45, 18, 3, 0.9)) drop-shadow(0 0 12px rgba(236, 10, 10, 0.7))';
 
   return (
-    <div style={{
+    <>
+      <Helmet>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      </Helmet>
+      <div style={{
       position: 'relative',
       width: '100%',
       minHeight: '100vh',
       height: '100%',
       overflow: 'hidden',
+      touchAction: 'manipulation',
       backgroundColor: '#1a0a02',
       display: 'flex',
       flexDirection: 'column',
@@ -174,8 +180,8 @@ export default function TangerineClock() {
                   top: '50%',
                   left: '50%',
                   transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-                  width: clockSize * 0.425,
-                  height: clockSize * 0.425,
+                  width: clockSize * 0.30,
+                  height: clockSize * 0.30,
                   objectFit: 'contain',
                   userSelect: 'none',
                   filter: shadowFilter
@@ -222,5 +228,6 @@ export default function TangerineClock() {
         </div>
       </div>
     </div>
+    </>
   );
 }
