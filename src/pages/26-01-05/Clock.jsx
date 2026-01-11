@@ -110,7 +110,7 @@ export default function AardvarkClock() {
                 top: '50%',
                 left: '50%',
                 transform: `translate(calc(-50% + ${x}vmin), calc(-50% + ${y}vmin))`,
-                fontSize: 'min(9vmin, 8vw)',
+                fontSize: 'min(13vmin, 12vw)',
                 textShadow: textOutline,
                 userSelect: 'none',
                 lineHeight: 1
