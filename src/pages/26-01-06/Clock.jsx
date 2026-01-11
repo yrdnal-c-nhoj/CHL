@@ -27,7 +27,10 @@ export default function PyramidzBackground() {
         display: flex;
         width: fit-content;
         animation: pz-marquee 1000s linear infinite;
-        margin-top: -18vh;
+        margin-top: 0;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
       }
       .pz-marquee-group {
         flex-shrink: 0;
@@ -39,7 +42,7 @@ export default function PyramidzBackground() {
         color: rgba(242, 208, 38, 0.04); 
         
         font-family: '${uniqueFontFamily}', system-ui, sans-serif;
-        font-size: 130vh;
+        font-size: min(30vw, 30vh);
         letter-spacing: -3vh;
 
         /* 2. STRONGER SHADOWS: Increased alpha values significantly */
@@ -105,6 +108,26 @@ export default function PyramidzBackground() {
     return () => clearInterval(interval);
   }, []);
 
+  // Set a CSS variable to handle mobile viewport height
+  useEffect(() => {
+    const updateViewportHeight = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    // Set initial height
+    updateViewportHeight();
+    
+    // Update on resize or orientation change
+    window.addEventListener('resize', updateViewportHeight);
+    window.addEventListener('orientationchange', updateViewportHeight);
+    
+    return () => {
+      window.removeEventListener('resize', updateViewportHeight);
+      window.removeEventListener('orientationchange', updateViewportHeight);
+    };
+  }, []);
+
   // Block render until font is confirmed loaded
   if (!fontReady) return null;
 
@@ -112,9 +135,12 @@ export default function PyramidzBackground() {
     <div
       style={{
         position: 'fixed',
-        inset: 0,
-        width: '100vw',
-        height: '100dvh',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: '100%',
+        height: 'var(--app-height, 100vh)',
         margin: 0,
         padding: 0,
         overflow: 'hidden',
