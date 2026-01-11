@@ -55,17 +55,20 @@ export default function AardvarkClock() {
   return (
     <div style={{
       backgroundImage: `url(${backgroundImage})`,
-      backgroundSize: '50vh 40vh',
+      backgroundSize: '50vmin 40vmin',
       backgroundRepeat: 'repeat',
       backgroundPosition: 'center',
       backgroundAttachment: 'fixed',
-      width: '100vw',
-      height: '100vh',
+      width: '100%',
+      minHeight: '100vh',
+      minHeight: '100dvh',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       position: 'relative',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      padding: '20px',
+      boxSizing: 'border-box'
     }}>
 
       {/* Corner image */}
@@ -76,17 +79,18 @@ export default function AardvarkClock() {
           position: 'absolute',
           bottom: '0',
           right: '0',
-          width: '45vh',
-          maxHeight: '90vh',
-          objectFit: 'contain'
+          width: 'min(45vmin, 300px)',
+          maxHeight: '90%',
+          objectFit: 'contain',
+          pointerEvents: 'none'
         }}
       />
 
       {/* CLOCK */}
       <div style={{
         position: 'relative',
-        width: 'min(90vh, 90vw)',
-        height: 'min(90vh, 90vw)',
+        width: 'min(80vmin, 90%)',
+        height: 'min(80vmin, 90%)',
         fontFamily: `'${uniqueFontFamily}', serif`,
         color: '#F45309'
       }}>
@@ -94,7 +98,7 @@ export default function AardvarkClock() {
         {/* Labels */}
         {clockLabels.map((label, i) => {
           const angle = (i + 1) * 30;
-          const radius = 38; // vh-based via container scaling
+          const radius = 38; // vmin-based via container scaling
           const x = Math.sin(angle * Math.PI / 180) * radius;
           const y = -Math.cos(angle * Math.PI / 180) * radius;
 
@@ -105,8 +109,8 @@ export default function AardvarkClock() {
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                transform: `translate(calc(-50% + ${x}vh), calc(-50% + ${y}vh))`,
-                fontSize: '9vh',
+                transform: `translate(calc(-50% + ${x}vmin), calc(-50% + ${y}vmin))`,
+                fontSize: 'min(9vmin, 8vw)',
                 textShadow: textOutline,
                 userSelect: 'none',
                 lineHeight: 1
@@ -122,13 +126,13 @@ export default function AardvarkClock() {
           position: 'absolute',
           bottom: '50%',
           left: '50%',
-          width: '1.4vh',
-          height: '14vh',
+          width: '1.4vmin',
+          height: '14vmin',
           background: '#F45309',
-          border: '0.5vh solid #fff',
+          border: '0.5vmin solid #fff',
           transformOrigin: 'bottom',
           transform: `translateX(-50%) rotate(${hourDeg}deg)`,
-          borderRadius: '1vh',
+          borderRadius: '1vmin',
           transition: 'transform 0.5s ease-in-out'
         }} />
 
@@ -137,13 +141,13 @@ export default function AardvarkClock() {
           position: 'absolute',
           bottom: '50%',
           left: '50%',
-          width: '0.9vh',
-          height: '24vh',
+          width: '0.9vmin',
+          height: '24vmin',
           background: '#F45309',
-          border: '0.5vh solid #fff',
+          border: '0.5vmin solid #fff',
           transformOrigin: 'bottom',
           transform: `translateX(-50%) rotate(${minDeg}deg)`,
-          borderRadius: '1vh',
+          borderRadius: '1vmin',
           transition: 'transform 0.5s ease-in-out'
         }} />
 
@@ -152,10 +156,10 @@ export default function AardvarkClock() {
           position: 'absolute',
           bottom: '50%',
           left: '50%',
-          width: '0.5vh',
-          height: '28vh',
+          width: '0.5vmin',
+          height: '28vmin',
           background: '#F45309',
-          border: '0.5vh solid #fff',
+          border: '0.5vmin solid #fff',
           transformOrigin: 'bottom',
           transform: `translateX(-50%) rotate(${secDeg}deg)`,
           transition: 'transform 0.4s cubic-bezier(0.68,-0.6,0.32,1.6)'
