@@ -143,7 +143,7 @@ const ErasingClock = () => {
                 style={{
                   transform: `rotate(${-n * 30}deg)`,
                   fontSize: '9vmin',
-                  color: '#F65808DD',
+                  color: '#EF5A0FDD',
                   textShadow: ' 1px -1px 0 black, -1px 1px 0 black',
                 }}
               >
