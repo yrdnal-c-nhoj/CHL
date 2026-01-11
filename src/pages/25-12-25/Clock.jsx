@@ -487,7 +487,8 @@ const styles = {
     backgroundImage: `url(${topoImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat'
+    backgroundRepeat: 'no-repeat',
+    overflow: 'hidden'
   },
   ticket: {
     width: '90vw',
@@ -495,7 +496,9 @@ const styles = {
     color: COLORS.textLight,
     boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
     borderRadius: '0.625rem',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    maxHeight: '90dvh',
+    overflowY: 'auto'
   },
   header: {
     display: 'flex',
