@@ -45,9 +45,10 @@ const AquariumClock = () => {
 
   const sharedImageStyle = {
     position: 'absolute',
-    inset: 0,
-    width: '100vw',
-    height: '100vh',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
     objectFit: 'cover'
   };
 
@@ -55,8 +56,10 @@ const AquariumClock = () => {
     position: 'absolute',
     left: '50%',
     top: '50%',
-    transformOrigin: 'left center', // This pins the "tail" of the fish to the center
+    transformOrigin: 'left center',
     transition: 'transform 0.5s cubic-bezier(0.1, 2.7, 0.58, 1)',
+    maxWidth: 'none',
+    willChange: 'transform'
   };
 
   const handFilter =
@@ -65,43 +68,111 @@ const AquariumClock = () => {
     'drop-shadow(1px -1px 1px rgb(10, 154, 109)) ' +
     'drop-shadow(-1px -1px 1px rgb(214, 227, 216))';
 
+  // Calculate the size based on viewport dimensions
+  const containerStyle = {
+    position: 'relative',
+    width: '100%',
+    height: '100vh',
+    height: '100dvh',
+    overflow: 'hidden',
+    background: '#000',
+    margin: 0,
+    padding: 0,
+    boxSizing: 'border-box'
+  };
+
+  // Adjust hand sizes based on viewport size
+  const handSizes = {
+    hour: 'min(30vw, 30vh)',
+    minute: 'min(45vw, 45vh)',
+    second: 'min(48vw, 48vh)'
+  };
+
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', background: '#000' }}>
+    <div style={containerStyle}>
       {/* Background Layers */}
       <img src={aquarium} style={{ ...sharedImageStyle, opacity: 0.5, zIndex: 0 }} alt="" />
       <img src={aquarium} style={{ ...sharedImageStyle, opacity: 0.9, transform: 'scaleX(-1)', zIndex: 1 }} alt="" />
 
       {/* Rotating Background GIFs */}
-      <img src={spin} style={{ ...sharedImageStyle, height: '80vh', opacity: 0.6, zIndex: 2, filter: 'sepia(100%) hue-rotate(-30deg) saturate(400%)' }} alt="" />
+      <img 
+        src={spin} 
+        style={{ 
+          ...sharedImageStyle, 
+          height: '80%', 
+          width: 'auto', 
+          left: '50%',
+          transform: 'translateX(-50%)',
+          opacity: 0.6, 
+          zIndex: 2, 
+          filter: 'sepia(100%) hue-rotate(-30deg) saturate(400%)',
+          maxHeight: '80vh'
+        }} 
+        alt="" 
+      />
 
       {/* Clock Hands Container */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 6, pointerEvents: 'none' }}>
+      <div style={{ 
+        position: 'absolute', 
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '100%',
+        height: '100%',
+        maxWidth: '100%',
+        maxHeight: '100%',
+        zIndex: 6, 
+        pointerEvents: 'none' 
+      }}>
         {/* Hour Hand (Smallest/Thickest) */}
         <img
           src={fish}
           ref={hourHandRef}
-          style={{ ...handStyle, width: '30vh', height: 'auto', filter: handFilter }}
+          style={{ ...handStyle, width: handSizes.hour, height: 'auto', filter: handFilter }}
           alt="hour"
         />
         {/* Minute Hand (Medium) */}
         <img
           src={fish}
           ref={minHandRef}
-          style={{ ...handStyle, width: '45vh', height: 'auto', filter: handFilter }}
+          style={{ ...handStyle, width: handSizes.minute, height: 'auto', filter: handFilter }}
           alt="minute"
         />
         {/* Second Hand (Longest/Thinnest) */}
         <img
           src={fish}
           ref={secondHandRef}
-          style={{ ...handStyle, width: '48vh', height: 'auto', filter: handFilter, opacity: 0.8 }}
+          style={{ ...handStyle, width: handSizes.second, height: 'auto', filter: handFilter, opacity: 0.8 }}
           alt="second"
         />
       </div>
 
       {/* Foreground Bubbles & Fish */}
-      <img src={bubl} style={{ position: 'absolute', top: 0, left: '-22vw', width: '100%', height: '110%', zIndex: 4 }} alt="" />
-      <img src={gfish} style={{ ...sharedImageStyle, width: '180vw', opacity: 0.8, transform: 'scaleX(-1)', zIndex: 7 }} alt="" />
+      <img 
+        src={bubl} 
+        style={{ 
+          position: 'absolute', 
+          top: 0, 
+          left: '-22%', 
+          width: '144%', 
+          height: '110%', 
+          zIndex: 4,
+          maxWidth: 'none'
+        }} 
+        alt="" 
+      />
+      <img 
+        src={gfish} 
+        style={{ 
+          ...sharedImageStyle, 
+          width: '180%', 
+          opacity: 0.8, 
+          transform: 'scaleX(-1)', 
+          zIndex: 7,
+          maxWidth: 'none'
+        }} 
+        alt="" 
+      />
     </div>
   );
 };
