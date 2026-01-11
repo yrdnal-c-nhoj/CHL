@@ -69,8 +69,8 @@ const InvertedClock = () => {
 
   const clockFaceStyle = {
     position: 'relative',
-    width: '30vh', // Larger container to accommodate numbers without clipping
-    height: '30vh',
+    width: '50vh', // Larger container to accommodate numbers without clipping
+    height: '50vh',
   };
 
   const handBaseStyle = {
@@ -137,7 +137,7 @@ const InvertedClock = () => {
           />
           
           {/* Optional: Center Pin to hide the joint */}
-          <div style={{
+           <div style={{
             position: 'absolute',
             top: '50%',
             left: '50%',
@@ -147,7 +147,7 @@ const InvertedClock = () => {
             borderRadius: '50%',
             backgroundColor: 'white',
             zIndex: 15
-          }} />
+          }} /> 
         </div>
       </div>
     </div>
