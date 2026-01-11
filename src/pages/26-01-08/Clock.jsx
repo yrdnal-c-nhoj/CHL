@@ -56,7 +56,11 @@ export default function TangerineClock() {
   const minDeg  = ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360;
   const hourDeg = ((time.getHours() % 12 + time.getMinutes() / 60) / 12) * 360;
 
-  const clockSize = Math.min(window.innerWidth, window.innerHeight) * 0.5;
+  // Use 90% of the minimum viewport dimension with a maximum size of 500px for better mobile display
+  const clockSize = Math.min(
+    Math.min(window.innerWidth, window.innerHeight) * 0.9,
+    500 // max size
+  );
   const radius    = clockSize * 0.8;
   const { colors, sizes } = clockConfig;
 
@@ -78,7 +82,18 @@ export default function TangerineClock() {
   const shadowFilter = 'drop-shadow(0 0 6px rgba(45, 18, 3, 0.9)) drop-shadow(0 0 12px rgba(236, 10, 10, 0.7))';
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', backgroundColor: '#1a0a02' }}>
+    <div style={{
+      position: 'relative',
+      width: '100%',
+      minHeight: '100vh',
+      height: '100%',
+      overflow: 'hidden',
+      backgroundColor: '#1a0a02',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      padding: '20px 0' // Add some padding to prevent clipping
+    }}>
       
       {/* --- TILED BACKGROUND LAYERS --- */}
       
@@ -138,7 +153,12 @@ export default function TangerineClock() {
           zIndex: 10
         }}
       >
-        <div style={{ position: 'relative', width: clockSize, height: clockSize }}>
+        <div style={{
+        position: 'relative',
+        width: clockSize,
+        height: clockSize,
+        margin: '0 auto' // Center the clock horizontally
+      }}>
           {clockLabels.map((label, i) => {
             const angle = (i + 1) * 30;
             const x = Math.sin(angle * Math.PI / 180) * radius;
