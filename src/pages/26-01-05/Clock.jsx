@@ -46,8 +46,8 @@ export default function AardvarkClock() {
   const hourDeg = ((time.getHours() % 12 + time.getMinutes() / 60) / 12) * 360;
 
   const textOutline = `
-    -0.3vh 0 0 #08C43A,
-     0.3vh 0 0 #f222ff,
+    -0.5vh 0 0 #F5F9F6,
+     0.3vh 0 0 #E7EDE7,
      0 -0.3vh 0 #EFEAE8,
      0  0.3vh 0 #151415
   `;
@@ -88,7 +88,7 @@ export default function AardvarkClock() {
         width: 'min(90vh, 90vw)',
         height: 'min(90vh, 90vw)',
         fontFamily: `'${uniqueFontFamily}', serif`,
-        color: '#C65408'
+        color: '#F45309'
       }}>
 
         {/* Labels */}
@@ -124,8 +124,8 @@ export default function AardvarkClock() {
           left: '50%',
           width: '1.4vh',
           height: '14vh',
-          background: '#C65408',
-          border: '0.15vh solid #fff',
+          background: '#F45309',
+          border: '0.5vh solid #fff',
           transformOrigin: 'bottom',
           transform: `translateX(-50%) rotate(${hourDeg}deg)`,
           borderRadius: '1vh',
@@ -139,8 +139,8 @@ export default function AardvarkClock() {
           left: '50%',
           width: '0.9vh',
           height: '24vh',
-          background: '#C65408',
-          border: '0.15vh solid #fff',
+          background: '#F45309',
+          border: '0.5vh solid #fff',
           transformOrigin: 'bottom',
           transform: `translateX(-50%) rotate(${minDeg}deg)`,
           borderRadius: '1vh',
@@ -154,26 +154,13 @@ export default function AardvarkClock() {
           left: '50%',
           width: '0.5vh',
           height: '28vh',
-          background: '#C65408',
-          border: '0.12vh solid #fff',
+          background: '#F45309',
+          border: '0.5vh solid #fff',
           transformOrigin: 'bottom',
           transform: `translateX(-50%) rotate(${secDeg}deg)`,
           transition: 'transform 0.4s cubic-bezier(0.68,-0.6,0.32,1.6)'
         }} />
 
-        {/* Center */}
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '2.2vh',
-          height: '2.2vh',
-          background: '#C65408',
-          border: '0.15vh solid #fff',
-          borderRadius: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 5
-        }} />
 
       </div>
     </div>
