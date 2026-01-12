@@ -180,7 +180,7 @@ function TangerineClock() {
                 width: '120%',
                 height: '120%',
                 objectFit: 'contain',
-                filter: 'brightness(0.9) contrast(1.2) hue-rotate(20deg) saturate(0.8) ' + shadowFilter
+                filter: 'brightness(0.8) contrast(1.2) hue-rotate(-20deg) saturate(0.8) ' + shadowFilter
               }}
               alt="hour hand"
             />
