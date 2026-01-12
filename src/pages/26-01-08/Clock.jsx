@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 
-// Background imports
+// Background & Assets
 import backgroundImage from '../../assets/clocks/26-01-08/tang.jpeg';
 import bgLayerTile from '../../assets/clocks/26-01-08/tan.webp'; 
-
-// Number images
 import num12 from '../../assets/clocks/26-01-08/12.webp';
 import num1 from '../../assets/clocks/26-01-08/1.webp';
 import num2 from '../../assets/clocks/26-01-08/2.webp';
@@ -18,34 +16,31 @@ import num8 from '../../assets/clocks/26-01-08/8.webp';
 import num9 from '../../assets/clocks/26-01-08/9.webp';
 import num10 from '../../assets/clocks/26-01-08/10.webp';
 import num11 from '../../assets/clocks/26-01-08/11.webp';
-
-// Hand images
 import hourHandImg from '../../assets/clocks/26-01-08/hour.webp';
 import minuteHandImg from '../../assets/clocks/26-01-08/min.webp';
 import secondHandImg from '../../assets/clocks/26-01-08/sec.webp';
 
-const clockConfigTangerine = {
+// --- CONSTANTS ---
+const CLOCK_LABELS = [num12, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11];
+const SHADOW_FILTER = 'drop-shadow(0 0 6px rgba(45, 18, 3, 0.9)) drop-shadow(0 0 12px rgba(236, 10, 10, 0.7))';
+
+const CONFIG = {
   colors: {
     centerDot: '#F2850037',
     border: 'rgba(0,0,0,0.1)'
   },
   sizes: {
-    hourHand:   { width: 0.42,  height: 0.70 },
-    minuteHand: { width: 1.80,  height: 1.20 },
-    secondHand: { width: 0.68,  height: 1.00 },
+    hourHand:   { width: 0.42,  height: 0.70, z: 10 },
+    minuteHand: { width: 1.80,  height: 1.20, z: 20 },
+    secondHand: { width: 0.68,  height: 1.00, z: 30 },
     centerDot:  { width: 0.005, height: 0.005 }
   }
 };
 
-// Clock labels array
-const clockLabels = [num12, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11];
-
-// Shadow filter for clock elements
-const shadowFilter = 'drop-shadow(0 0 6px rgba(45, 18, 3, 0.9)) drop-shadow(0 0 12px rgba(236, 10, 10, 0.7))';
-
 function TangerineClock() {
   const [time, setTime] = useState(new Date());
 
+  // Smooth animation using RAF
   useEffect(() => {
     let rafId;
     const update = () => {
@@ -56,158 +51,148 @@ function TangerineClock() {
     return () => cancelAnimationFrame(rafId);
   }, []);
 
-  const ms      = time.getMilliseconds();
-  const secDeg  = ((time.getSeconds() + ms / 1000) / 60) * 360;
-  const minDeg  = ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360;
+  // Calculate rotations
+  const ms = time.getMilliseconds();
+  const secDeg = ((time.getSeconds() + ms / 1000) / 60) * 360;
+  const minDeg = ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360;
   const hourDeg = ((time.getHours() % 12 + time.getMinutes() / 60) / 12) * 360;
 
-  const clockSize = Math.min(
-    Math.min(window.innerWidth, window.innerHeight) * 0.7,
-    500 
-  );
-  const radius    = clockSize * 0.5;
-  const { colors, sizes } = clockConfigTangerine;
+  // Responsive sizing
+  const clockSize = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.7, 500);
+  const radius = clockSize * 0.45; // Adjusted slightly inward for label padding
 
-  const handStyle = (deg, sizeObj, z) => ({
+  // Shared Hand Styles
+  const getHandStyle = (deg, sizeObj) => ({
     position: 'absolute',
     bottom: '50%',
     left: '50%',
-    width:  clockSize * sizeObj.width,
+    width: clockSize * sizeObj.width,
     height: clockSize * sizeObj.height,
     transformOrigin: 'bottom center',
     transform: `translateX(-50%) rotate(${deg}deg)`,
-    zIndex: z,
+    zIndex: sizeObj.z,
+    pointerEvents: 'none',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'flex-end',
-    pointerEvents: 'none'
+    alignItems: 'flex-end'
   });
 
-  const shadowFilter = 'drop-shadow(0 0 6px rgba(45, 18, 3, 0.9)) drop-shadow(0 0 12px rgba(236, 10, 10, 0.7))';
-
   return (
-    <>
+    <div style={{
+      position: 'relative',
+      width: '100vw',
+      height: '100vh',
+      overflow: 'hidden',
+      backgroundColor: '#1a0a02',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      touchAction: 'none'
+    }}>
       <Helmet>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
       </Helmet>
-      
-      {/* MAIN WRAPPER: Centered via Flexbox */}
+
+      {/* --- BACKGROUND LAYERS --- */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
+        <div style={{
+          position: 'absolute',
+          inset: -20, // Small bleed to prevent edges showing during scale
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: '25% auto',
+          backgroundRepeat: 'repeat',
+          backgroundPosition: 'center',
+          transform: 'scale(1.1)',
+        }} />
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url(${bgLayerTile})`,
+          backgroundRepeat: 'repeat',
+          backgroundPosition: '90px 90px',
+          opacity: 0.9,
+        }} />
+      </div>
+
+      {/* --- CLOCK FACE CONTAINER --- */}
       <div style={{
         position: 'relative',
-        width: '100vw',
-        height: '100vh',
-        overflow: 'hidden', // Prevents scrolling issues
-        backgroundColor: '#1a0a02',
+        width: clockSize,
+        height: clockSize,
+        zIndex: 10,
         display: 'flex',
-        justifyContent: 'center', // Horizontal center
-        alignItems: 'center',     // Vertical center
-        touchAction: 'none'
+        justifyContent: 'center',
+        alignItems: 'center'
       }}>
         
-        {/* --- BACKGROUND LAYERS --- */}
-        <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: `url(${backgroundImage})`,
-            backgroundSize: '25% auto',
-            backgroundRepeat: 'repeat',
-            backgroundPosition: 'center',
-            transform: 'scale(1.1)',
-          }} />
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: `url(${bgLayerTile})`,
-            backgroundRepeat: 'repeat',
-            backgroundPosition: '90px 90px',
-            opacity: 0.9,
-          }} />
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: `url(${bgLayerTile})`,
-            backgroundSize: '15% auto',
-            backgroundRepeat: 'repeat',
-            backgroundPosition: 'center',
-          }} />
-        </div>
+        {/* Numbers */}
+        {CLOCK_LABELS.map((label, i) => {
+          const angle = (i + 1) * 30;
+          const x = Math.sin(angle * Math.PI / 180) * radius;
+          const y = -Math.cos(angle * Math.PI / 180) * radius;
 
-        {/* --- CLOCK FACE CONTAINER --- */}
-        <div style={{
-          position: 'relative',
-          width: clockSize,
-          height: clockSize,
-          zIndex: 10,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
-          {clockLabels.map((label, i) => {
-            const angle = (i + 1) * 30;
-            const x = Math.sin(angle * Math.PI / 180) * radius;
-            const y = -Math.cos(angle * Math.PI / 180) * radius;
-
-            return (
-              <img
-                key={i}
-                src={label}
-                alt={`${(i + 1) % 12 || 12}`}
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-                  width: clockSize * 0.30,
-                  height: clockSize * 0.30,
-                  objectFit: 'contain',
-                  userSelect: 'none',
-                  filter: shadowFilter
-                }}
-              />
-            );
-          })}
-
-          {/* Hands */}
-          <div style={handStyle(minDeg, sizes.minuteHand, 20)}>
-            <img src={minuteHandImg} style={{ width: '100%', height: '100%', objectFit: 'contain', filter: shadowFilter }} alt="minute hand" />
-          </div>
-
-          <div style={handStyle(hourDeg, sizes.hourHand, 10)}>
+          return (
             <img
-              src={hourHandImg}
+              key={i}
+              src={label}
+              alt=""
               style={{
-                width: '120%',
-                height: '120%',
+                position: 'absolute',
+                transform: `translate(${x}px, ${y}px)`,
+                width: clockSize * 0.22,
+                height: clockSize * 0.22,
                 objectFit: 'contain',
-                filter: 'brightness(0.8) contrast(1.2) hue-rotate(-20deg) saturate(0.8) ' + shadowFilter
+                filter: SHADOW_FILTER,
+                userSelect: 'none'
               }}
-              alt="hour hand"
             />
-          </div>
+          );
+        })}
 
-          <div style={handStyle(secDeg, sizes.secondHand, 30)}>
-            <img src={secondHandImg} style={{ width: '100%', height: '100%', objectFit: 'contain', filter: shadowFilter }} alt="second hand" />
-          </div>
-
-          {/* Center Dot */}
-          <div
+        {/* Hour Hand */}
+        <div style={getHandStyle(hourDeg, CONFIG.sizes.hourHand)}>
+          <img
+            src={hourHandImg}
             style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              width: clockSize * sizes.centerDot.width,
-              height: clockSize * sizes.centerDot.height,
-              backgroundColor: colors.centerDot,
-              border: `1px solid ${colors.border}`,
-              borderRadius: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 40
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              filter: `brightness(0.8) contrast(1.2) hue-rotate(-20deg) saturate(0.8) ${SHADOW_FILTER}`
             }}
+            alt=""
           />
         </div>
+
+        {/* Minute Hand */}
+        <div style={getHandStyle(minDeg, CONFIG.sizes.minuteHand)}>
+          <img 
+            src={minuteHandImg} 
+            style={{ width: '100%', height: '100%', objectFit: 'contain', filter: SHADOW_FILTER }} 
+            alt="" 
+          />
+        </div>
+
+        {/* Second Hand */}
+        <div style={getHandStyle(secDeg, CONFIG.sizes.secondHand)}>
+          <img 
+            src={secondHandImg} 
+            style={{ width: '100%', height: '100%', objectFit: 'contain', filter: SHADOW_FILTER }} 
+            alt="" 
+          />
+        </div>
+
+        {/* Center Dot */}
+        <div style={{
+            position: 'absolute',
+            width: clockSize * CONFIG.sizes.centerDot.width,
+            height: clockSize * CONFIG.sizes.centerDot.height,
+            backgroundColor: CONFIG.colors.centerDot,
+            border: `1px solid ${CONFIG.colors.border}`,
+            borderRadius: '50%',
+            zIndex: 100
+        }} />
       </div>
-    </>
+    </div>
   );
 }
 
