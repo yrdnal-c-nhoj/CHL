@@ -37,10 +37,14 @@ const clockConfigTangerine = {
   }
 };
 
-export default function TangerineClock() {
-  const [time, setTime] = useState(new Date());
+// Clock labels array
+const clockLabels = [num12, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11];
 
-  const clockLabels = [num12, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11];
+// Shadow filter for clock elements
+const shadowFilter = 'drop-shadow(0 0 6px rgba(45, 18, 3, 0.9)) drop-shadow(0 0 12px rgba(236, 10, 10, 0.7))';
+
+function TangerineClock() {
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
     let rafId;
@@ -57,10 +61,9 @@ export default function TangerineClock() {
   const minDeg  = ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360;
   const hourDeg = ((time.getHours() % 12 + time.getMinutes() / 60) / 12) * 360;
 
-  // Use 90% of the minimum viewport dimension with a maximum size of 500px for better mobile display
   const clockSize = Math.min(
     Math.min(window.innerWidth, window.innerHeight) * 0.7,
-    500 // max size
+    500 
   );
   const radius    = clockSize * 0.5;
   const { colors, sizes } = clockConfigTangerine;
@@ -87,84 +90,59 @@ export default function TangerineClock() {
       <Helmet>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
       </Helmet>
+      
+      {/* MAIN WRAPPER: Centered via Flexbox */}
       <div style={{
-      position: 'relative',
-      width: '100%',
-      minHeight: '100vh',
-      height: '100%',
-      overflow: 'hidden',
-      touchAction: 'manipulation',
-      backgroundColor: '#1a0a02',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      padding: '20px 0' // Add some padding to prevent clipping
-    }}>
-      
-      {/* --- TILED BACKGROUND LAYERS --- */}
-      
-      {/* Layer 1: Base Tiled Image */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: '25% auto',
-          backgroundRepeat: 'repeat',
-          backgroundPosition: 'center',
-          transform: 'scale(1.1)',
-          zIndex: 1
-        }}
-      />
+        position: 'relative',
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden', // Prevents scrolling issues
+        backgroundColor: '#1a0a02',
+        display: 'flex',
+        justifyContent: 'center', // Horizontal center
+        alignItems: 'center',     // Vertical center
+        touchAction: 'none'
+      }}>
+        
+        {/* --- BACKGROUND LAYERS --- */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundSize: '25% auto',
+            backgroundRepeat: 'repeat',
+            backgroundPosition: 'center',
+            transform: 'scale(1.1)',
+          }} />
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: `url(${bgLayerTile})`,
+            backgroundRepeat: 'repeat',
+            backgroundPosition: '90px 90px',
+            opacity: 0.9,
+          }} />
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: `url(${bgLayerTile})`,
+            backgroundSize: '15% auto',
+            backgroundRepeat: 'repeat',
+            backgroundPosition: 'center',
+          }} />
+        </div>
 
-      {/* Layer 2: Middle Tiled Image (with Offset or different size for depth) */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${bgLayerTile})`,
-          // backgroundSize: '35% auto', // Slightly larger tile
-          backgroundRepeat: 'repeat',
-          backgroundPosition: '90px 90px', // Offset to prevent overlap with layer 1
-          opacity: 0.9,
-          zIndex: 2,
-          pointerEvents: 'none'
-        }}
-      />
-
-      {/* Layer 3: Top Tiled Image */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${bgLayerTile})`,
-          backgroundSize: '15% auto', // Smaller tile for variety
-          backgroundRepeat: 'repeat',
-          backgroundPosition: 'center',
-          // opacity: 0.3,
-          zIndex: 3,
-          pointerEvents: 'none'
-        }}
-      />
-
-      {/* --- CLOCK FACE --- */}
-      <div
-        style={{
+        {/* --- CLOCK FACE CONTAINER --- */}
+        <div style={{
           position: 'relative',
-          width: '100%',
-          height: '100%',
+          width: clockSize,
+          height: clockSize,
+          zIndex: 10,
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 10
-        }}
-      >
-        <div style={{
-        position: 'relative',
-        width: clockSize,
-        height: clockSize,
-        margin: '0 auto' // Center the clock horizontally
-      }}>
+          alignItems: 'center'
+        }}>
           {clockLabels.map((label, i) => {
             const angle = (i + 1) * 30;
             const x = Math.sin(angle * Math.PI / 180) * radius;
@@ -190,6 +168,7 @@ export default function TangerineClock() {
             );
           })}
 
+          {/* Hands */}
           <div style={handStyle(minDeg, sizes.minuteHand, 20)}>
             <img src={minuteHandImg} style={{ width: '100%', height: '100%', objectFit: 'contain', filter: shadowFilter }} alt="minute hand" />
           </div>
@@ -211,6 +190,7 @@ export default function TangerineClock() {
             <img src={secondHandImg} style={{ width: '100%', height: '100%', objectFit: 'contain', filter: shadowFilter }} alt="second hand" />
           </div>
 
+          {/* Center Dot */}
           <div
             style={{
               position: 'absolute',
@@ -227,7 +207,8 @@ export default function TangerineClock() {
           />
         </div>
       </div>
-    </div>
     </>
   );
 }
+
+export default TangerineClock;
