@@ -27,7 +27,7 @@ export default function PyramidzBackground() {
         display: flex;
         width: fit-content;
         animation: pz-marquee 1000s linear infinite;
-        margin-top: -18vh;
+        margin-top: -12vh;
       }
       .pz-marquee-group {
         flex-shrink: 0;
