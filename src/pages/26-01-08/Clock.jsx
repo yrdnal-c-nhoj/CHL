@@ -18,7 +18,7 @@ import num10 from '../../assets/clocks/26-01-08/10.webp';
 import num11 from '../../assets/clocks/26-01-08/11.webp';
 import hourHandImg from '../../assets/clocks/26-01-08/hour.webp';
 import minuteHandImg from '../../assets/clocks/26-01-08/min.webp';
-import secondHandImg from '../../assets/clocks/26-01-08/sec.webp';
+import secondHandImg from '../../assets/clocks/26-01-08/seco.webp';
 
 // --- CONSTANTS ---
 const CLOCK_LABELS = [num12, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11];
@@ -155,9 +155,9 @@ function TangerineClock() {
             src={hourHandImg}
             style={{
               width: '100%',
-              height: '100%',
+              height: '50%',
               objectFit: 'contain',
-              filter: `brightness(0.8) contrast(1.2) hue-rotate(-20deg) saturate(0.8) ${SHADOW_FILTER}`
+              filter: `brightness(0.9) contrast(1.2) hue-rotate(-20deg) saturate(0.9) ${SHADOW_FILTER}`
             }}
             alt=""
           />
@@ -167,7 +167,7 @@ function TangerineClock() {
         <div style={getHandStyle(minDeg, CONFIG.sizes.minuteHand)}>
           <img 
             src={minuteHandImg} 
-            style={{ width: '100%', height: '100%', objectFit: 'contain', filter: SHADOW_FILTER }} 
+            style={{ width: '100%', height: '70%', objectFit: 'contain', filter: SHADOW_FILTER }} 
             alt="" 
           />
         </div>
@@ -176,7 +176,7 @@ function TangerineClock() {
         <div style={getHandStyle(secDeg, CONFIG.sizes.secondHand)}>
           <img 
             src={secondHandImg} 
-            style={{ width: '100%', height: '100%', objectFit: 'contain', filter: SHADOW_FILTER }} 
+            style={{ width: '100%', height: '80%', objectFit: 'contain', filter: SHADOW_FILTER }} 
             alt="" 
           />
         </div>
