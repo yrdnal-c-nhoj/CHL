@@ -68,21 +68,33 @@ const Clock = () => {
     textAlign: 'center',
   }
 
+  const backgroundStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100dvh',
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    overflow: 'hidden',
+    // Flip horizontally and apply brightness, hue, and saturation filters
+    transform: 'scaleX(-1)',
+    filter: 'brightness(1.2) hue-rotate(30deg) saturate(2.5)',
+    zIndex: 1,
+  };
+
   const containerStyle = {
     height: '100dvh',
     width: '100vw',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'black',
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundColor: 'transparent', // Make background transparent to see the filtered background
     overflow: 'hidden',
-    // Flip horizontally and apply saturation/brightness filter
-    transform: 'scaleX(-1)',
-    filter: 'saturate(7.5) brightness(0.8) hue-rotate(-30deg)',
-  }
+    position: 'relative',
+    zIndex: 10,
+  };
 
   const layoutStyle = {
     display: 'flex',
@@ -111,13 +123,19 @@ const Clock = () => {
   
   
   return (
-    <div style={containerStyle}>
-      <div style={layoutStyle}>
-        {renderUnit(hours)}
-        {renderUnit(minutes)}
-        {renderUnit(seconds)}
+    <>
+      {/* Background layer with filters and flip */}
+      <div style={backgroundStyle} />
+      
+      {/* Clock content layer */}
+      <div style={containerStyle}>
+        <div style={layoutStyle}>
+          {renderUnit(hours)}
+          {renderUnit(minutes)}
+          {renderUnit(seconds)}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
