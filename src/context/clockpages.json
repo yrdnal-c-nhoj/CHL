@@ -279,5 +279,7 @@
   { "path": "26-01-06", "date": "26-01-06", "title": "Necropolis"},
   { "path": "26-01-07", "date": "26-01-07", "title": "Aquarium" },
   { "path": "26-01-08", "date": "26-01-08", "title": "Tangerine" },
-  { "path": "26-01-09", "date": "26-01-09", "title": "Tic-Tac-Toe" }
+  { "path": "26-01-09", "date": "26-01-09", "title": "Tic-Tac-Toe" },
+  { "path": "26-01-10", "date": "26-01-10", "title": "Luna" },
+  { "path": "26-01-11", "date": "26-01-11", "title": "Flamingo" }
 ]
