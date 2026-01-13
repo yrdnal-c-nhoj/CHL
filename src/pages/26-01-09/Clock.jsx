@@ -1,194 +1,187 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-// Asset URLs
-const one = new URL('../../assets/clocks/26-01-02/1.webp', import.meta.url).href;
-const two = new URL('../../assets/clocks/26-01-02/2.webp', import.meta.url).href;
-const three = new URL('../../assets/clocks/26-01-02/3.webp', import.meta.url).href;
-const four = new URL('../../assets/clocks/26-01-02/4.webp', import.meta.url).href;
-const five = new URL('../../assets/clocks/26-01-02/5.webp', import.meta.url).href;
-const six = new URL('../../assets/clocks/26-01-02/6.webp', import.meta.url).href;
-const seven = new URL('../../assets/clocks/26-01-02/7.webp', import.meta.url).href;
-const eight = new URL('../../assets/clocks/26-01-02/8.webp', import.meta.url).href;
-const nine = new URL('../../assets/clocks/26-01-02/9.webp', import.meta.url).href;
-const ten = new URL('../../assets/clocks/26-01-02/10.webp', import.meta.url).href;
-const eleven = new URL('../../assets/clocks/26-01-02/11.webp', import.meta.url).href;
-const twelve = new URL('../../assets/clocks/26-01-02/12.webp', import.meta.url).href;
+// Explicit module-based imports for the background
+import gifOne from '../../assets/clocks/26-01-12/tic.webp';
+import gifTwo from '../../assets/clocks/26-01-12/tic2.gif';
+import gifThree from '../../assets/clocks/26-01-12/tic3.gif';
+import gifFour from '../../assets/clocks/26-01-12/tic4.gif';
+import customFont from '../../assets/fonts/26-01-12-tic.ttf';
 
-// The single background image
-const pageBackground = new URL('../../assets/clocks/26-01-02/swi.jpg', import.meta.url).href;
+const BackgroundGrid = ({ children }) => {
+  const containerStyle = {
+    width: '100vw',
+    height: '100dvh',
+    margin: 0,
+    padding: 0,
+    overflow: 'hidden',
+    boxSizing: 'border-box',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)', 
+    gridTemplateRows: 'repeat(4, 1fr)',
+    gap: 0,
+    backgroundColor: '#000',
+    position: 'fixed', // Fixed to ensure it stays in background
+    top: 0,
+    left: 0,
+    zIndex: 1,
+  };
 
-const Clock = () => {
-  const [time, setTime] = useState(new Date());
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const [flickeringNumbers, setFlickeringNumbers] = useState({});
+  const gridItemStyle = {
+    width: '100%',
+    height: '100%',
+    backgroundPosition: 'center',
+    backgroundSize: 'cover', // Changed to cover for a more seamless grid
+    backgroundRepeat: 'no-repeat',
+  };
 
-  useEffect(() => {
-    let raf;
-    const tick = () => {
-      setTime(new Date());
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
-  // Flickering effect - update randomly every 100-300ms
-  useEffect(() => {
-    const flicker = () => {
-      setFlickeringNumbers(prev => {
-        const newFlickering = {};
-        // Randomly flicker each number with 1/3 chance of being dark
-        for (let i = 0; i < 12; i++) {
-          newFlickering[i] = Math.random() > 0.33; // 67% visible, 33% dark
-        }
-        return newFlickering;
-      });
-    };
-
-    // Initial flicker
-    flicker();
+  const gridCells = Array.from({ length: 16 }).map((_, index) => {
+    const row = Math.floor(index / 4);
+    const col = index % 4;
+    const imageIndex = (row + col) % 4;
     
-    // Set up random interval between 100-300ms
-    const scheduleNextFlicker = () => {
-      const delay = 100 + Math.random() * 200; // Random delay between 100-300ms
-      setTimeout(() => {
-        flicker();
-        scheduleNextFlicker();
-      }, delay);
-    };
-    
-    scheduleNextFlicker();
-  }, []);
+    let backgroundImage;
+    switch(imageIndex) {
+      case 0: backgroundImage = gifOne; break;
+      case 1: backgroundImage = gifTwo; break;
+      case 2: backgroundImage = gifThree; break;
+      case 3: backgroundImage = gifFour; break;
+      default: backgroundImage = gifOne;
+    }
 
-  useEffect(() => {
-    const sources = [
-      one, two, three, four, five, six, 
-      seven, eight, nine, ten, eleven, twelve, 
-      pageBackground
-    ];
-    let loaded = 0;
-    sources.forEach(src => {
-      const img = new Image();
-      img.src = src;
-      img.onload = img.onerror = () => {
-        loaded++;
-        setLoadingProgress(Math.round((loaded / sources.length) * 100));
-        if (loaded === sources.length) setTimeout(() => setIsLoaded(true), 200);
-      };
-    });
-  }, []);
-
-  if (!isLoaded) {
     return (
-      <div style={{ height: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', background: '#000' }}>
-        Loading… {loadingProgress}%
-      </div>
+      <div
+        key={index}
+        style={{
+          ...gridItemStyle,
+          backgroundImage: `url(${backgroundImage})`,
+        }}
+      />
     );
-  }
-
-  // Time calculations
-  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
-  const minutes = time.getMinutes() + seconds / 60;
-  const hours = (time.getHours() % 12) + minutes / 60;
-
-  const clockSize = '90vh';
-  const numberSize = '12vh';
-  const radius = '32vmin';
-
-  const numbers = [
-    { src: twelve, angle: 0 }, { src: one, angle: 30 }, { src: two, angle: 60 },
-    { src: three, angle: 90 }, { src: four, angle: 120 }, { src: five, angle: 150 },
-    { src: six, angle: 180 }, { src: seven, angle: 210 }, { src: eight, angle: 240 },
-    { src: nine, angle: 270 }, { src: ten, angle: 300 }, { src: eleven, angle: 330 },
-  ];
-
-  // Hand Style Helper
-  const handStyle = (width, height, color, deg, zIndex) => ({
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    width: width,
-    height: height,
-    backgroundColor: color,
-    borderRadius: '10px',
-    transformOrigin: 'bottom center',
-    transform: `translateX(-50%) rotate(${deg}deg)`,
-    zIndex: zIndex,
-    boxShadow: '0 0 15px 5px rgba(0,0,0,0.3), 0 0 13px 10px rgba(0,0,0,0.2), 0 0 50px 15px rgba(0,0,0,0.2)',
-    filter: 'drop-shadow(0 0 13px rgba(0,0,0,0.4)) drop-shadow(0 0 12px rgba(0,0,0,0.2))',
   });
 
   return (
-    <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', background: '#000' }}>
-      
-      {/* Background Layer */}
-      <div style={{ 
-        position: 'absolute', 
-        inset: 0, 
-        backgroundImage: `url(${pageBackground})`, 
-        backgroundSize: 'cover', // Cover the entire area
-        backgroundRepeat: 'no-repeat', // No tiling
-        backgroundPosition: 'center', // Center the image
-        zIndex: 1 
-      }} />
-
-      {/* Clock Face Container */}
-      <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 5 }}>
-        <div style={{ width: clockSize, height: clockSize, position: 'relative' }}>
-          
-          {/* Numbers */}
-          {numbers.map(({ src, angle }, i) => {
-            const rad = (angle * Math.PI) / 180;
-            const isVisible = flickeringNumbers[i] !== false; // Default to visible if not set
-            return (
-              <img
-                key={i}
-                src={src}
-                alt=""
-                style={{
-                  position: 'absolute',
-                  width: numberSize,
-                  height: numberSize,
-                  left: `calc(50% + ${radius} * ${Math.sin(rad)} - ${numberSize} / 2)`,
-                  top: `calc(50% - ${radius} * ${Math.cos(rad)} - ${numberSize} / 2)`,
-                  opacity: isVisible ? 1 : 0.1, // Dark when flickering off
-                  transition: 'opacity 0.1s ease-in-out', // Smooth transition
-                  filter: 'drop-shadow(2px 2px 8px rgba(0,0,0,0.8)) drop-shadow(-2px -2px 10px rgba(0,0,0,0.8))',
-                  // Additional strong shadows for extra emphasis
-                  textShadow: '2px 2px 20px rgba(0,0,0,0.9), -2px -2px 20px rgba(0,0,0,0.9), 0 0 30px rgba(0,0,0,0.8)',
-                }}
-              />
-            );
-          })}
-
-          {/* Clock Hands */}
-          {/* Hour Hand */}
-          <div style={handStyle('1.5vmin', '25vmin', '#fff', hours * 30, 10)} />
-          
-          {/* Minute Hand */}
-          <div style={handStyle('1vmin', '35vmin', '#eee', minutes * 6, 11)} />
-          
-          {/* Second Hand */}
-          <div style={handStyle('0.5vmin', '40vmin', '#EBE7E7', seconds * 6, 12)} />
-
-          {/* Center Pin */}
-          <div style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            width: '2.5vmin',
-            height: '2.5vmin',
-            backgroundColor: '#fff',
-            borderRadius: '50%',
-            transform: 'translate(-50%, -50%)',
-            zIndex: 15,
-            boxShadow: '0 0 10px rgba(0,0,0,0.5)'
-          }} />
-        </div>
+    <>
+      <div style={containerStyle}>
+        {gridCells}
       </div>
-    </div>
+      {/* This container sits on top of the grid */}
+      <div style={{ position: 'relative', zIndex: 10 }}>
+        {children}
+      </div>
+    </>
   );
 };
 
-export default Clock;
+export default function TicTacToeClock() {
+  const [time, setTime] = useState(new Date());
+  const [mounted, setMounted] = useState(false);
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    // Load custom font
+    const font = new FontFace('CustomClockFont', `url(${customFont})`, {
+      display: 'swap',
+    });
+
+    font.load()
+      .then((loadedFont) => {
+        document.fonts.add(loadedFont);
+        setIsFontLoaded(true);
+      })
+      .catch((err) => {
+        console.error('Font loading failed, falling back to sans-serif', err);
+        setIsFontLoaded(true);
+      });
+
+    setMounted(true);
+    const interval = setInterval(() => {
+      setTime(new Date());
+    }, 10);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (date) => {
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    const ms = date.getMilliseconds();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    
+    return {
+      h1: Math.floor(hours / 10),
+      h2: hours % 10,
+      m1: Math.floor(minutes / 10),
+      m2: minutes % 10,
+      s1: Math.floor(seconds / 10),
+      s2: seconds % 10,
+      ms1: Math.floor((ms % 100) / 10),
+      ampm: ampm
+    };
+  };
+
+  const t = formatTime(time);
+
+  const clockContainerStyle = {
+    width: '100vw',
+    height: '100dvh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    opacity: mounted ? 1 : 0,
+    transition: 'opacity 0.3s ease-in-out',
+    fontFamily: 'sans-serif',
+    position: 'relative',
+    zIndex: 10,
+  };
+
+const gridStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gridTemplateRows: 'repeat(3, 1fr)',
+    gap: '1px',
+    width: 'min(95vw, 95vh)',
+    height: 'min(95vw, 95vh)',
+    // maxWidth: '500px',
+    // maxHeight: '500px',
+  };
+
+  const cellStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center', // Added to center digits vertically
+    fontSize: 'clamp(32px, 40vmin,144px)',
+    color: '#00ff88',
+    fontVariantNumeric: 'tabular-nums',
+    fontFamily: isFontLoaded ? 'CustomClockFont, sans-serif' : 'sans-serif',
+    };
+
+  // Array of time values to render
+  const timeValues = [
+    t.h1, t.h2, t.m1,
+    t.m2, t.s1, t.s2,
+    t.ms1, t.ampm.charAt(0), t.ampm.charAt(1)
+  ];
+
+  return (
+    <BackgroundGrid>
+      <div style={clockContainerStyle}>
+        <div style={gridStyle}>
+          {timeValues.map((value, index) => (
+            <div 
+              key={index}
+              style={{
+                ...cellStyle,
+                color: index % 2 === 0 ? '#ff4444' : '#4444ff', // Alternate red and blue
+                textShadow: `0 0 10px rgba(${index % 2 === 0 ? '255, 68, 68' : '68, 68, 255'}, 0.5)`
+              }}
+            >
+              {value}
+            </div>
+          ))}
+        </div>
+      </div>
+    </BackgroundGrid>
+  );
+}
