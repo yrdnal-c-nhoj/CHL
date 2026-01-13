@@ -8,6 +8,28 @@ import gifFour from '../../assets/clocks/26-01-12/tic4.gif';
 import customFont from '../../assets/fonts/26-01-12-tic.ttf';
 
 const BackgroundGrid = ({ children }) => {
+  const [isBackgroundLoaded, setIsBackgroundLoaded] = useState(false);
+
+  useEffect(() => {
+    // Preload all background images
+    const images = [gifOne, gifTwo, gifThree, gifFour];
+    const imagePromises = images.map(src => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = src;
+      });
+    });
+
+    Promise.all(imagePromises)
+      .then(() => setIsBackgroundLoaded(true))
+      .catch((err) => {
+        console.error('Background image loading failed', err);
+        setIsBackgroundLoaded(true); // Show content anyway if images fail
+      });
+  }, []);
+
   const containerStyle = {
     width: '100vw',
     height: '100dvh',
@@ -24,6 +46,8 @@ const BackgroundGrid = ({ children }) => {
     top: 0,
     left: 0,
     zIndex: 1,
+    opacity: isBackgroundLoaded ? 1 : 0,
+    transition: 'opacity 0.5s ease-in-out',
   };
 
   const gridItemStyle = {

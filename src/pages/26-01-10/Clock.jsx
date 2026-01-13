@@ -5,7 +5,7 @@ import d250916font from '../../assets/fonts/26-01-10-bit.ttf';
 const Clock = () => {
   const [time, setTime] = useState(new Date())
   const [isLoaded, setIsLoaded] = useState(false)
-  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 768)
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 700)
 
   // 1. LETTER MAPPING: Change these letters to your preference
   const digitToLetter = {
@@ -45,7 +45,7 @@ const Clock = () => {
   }, [])
 
   useEffect(() => {
-    const handleResize = () => setIsLargeScreen(window.innerWidth > 768)
+    const handleResize = () => setIsLargeScreen(window.innerWidth > 600)
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
@@ -60,11 +60,11 @@ const Clock = () => {
     justifyContent: 'center',
     alignItems: 'center',
     fontFamily: "'MyD250916font', sans-serif",
-    fontSize: '33vh',
-    color: 'rgb(215, 242, 248)',
+    fontSize: '28vh',
+    color: 'rgba(66, 142, 241, 0.82)',
     // Fixed width ensures 'I' takes as much space as 'W'
-    width: '25vh', 
-    height: '25vh',
+    width: '20vh', 
+    height: '20vh',
     textAlign: 'center',
   }
 
@@ -83,12 +83,12 @@ const Clock = () => {
     top: 0,
     left: 0,
     width: '50vw',
-    height: '100%',
+    height: '117%',
     backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'right', // Align to center edge
     overflow: 'hidden',
-    filter: 'brightness(1.2) hue-rotate(10deg) saturate(1.5)',
+    filter: 'brightness(1.2) hue-rotate(10deg) saturate(2.5)',
     zIndex: 1,
   };
 
@@ -97,7 +97,7 @@ const Clock = () => {
     top: 0,
     right: 0,
     width: '50vw',
-    height: '100%',
+    height: '117%',
     backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'right center', // Keep the same alignment as left side
