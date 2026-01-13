@@ -74,13 +74,36 @@ const Clock = () => {
     left: 0,
     width: '100vw',
     height: '100dvh',
+    overflow: 'hidden',
+    zIndex: 1,
+  };
+
+  const leftBackgroundStyle = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '50vw',
+    height: '100%',
     backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundPosition: 'right', // Align to center edge
     overflow: 'hidden',
-    // Flip horizontally and apply brightness, hue, and saturation filters
-    transform: 'scaleX(-1)',
-    filter: 'brightness(1.2) hue-rotate(50deg) saturate(0.9)',
+    filter: 'brightness(1.2) hue-rotate(10deg) saturate(1.5)',
+    zIndex: 1,
+  };
+
+  const rightBackgroundStyle = {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: '50vw',
+    height: '100%',
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'right center', // Keep the same alignment as left side
+    overflow: 'hidden',
+    transform: 'scaleX(-1)', // Flip horizontally
+    filter: 'brightness(1.2) hue-rotate(10deg) saturate(1.5)',
     zIndex: 1,
   };
 
@@ -124,8 +147,11 @@ const Clock = () => {
   
   return (
     <>
-      {/* Background layer with filters and flip */}
-      <div style={backgroundStyle} />
+      {/* Mirror background effect */}
+      <div style={backgroundStyle}>
+        <div style={leftBackgroundStyle} />
+        <div style={rightBackgroundStyle} />
+      </div>
       
       {/* Clock content layer */}
       <div style={containerStyle}>
