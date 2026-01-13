@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import bgImage from '../../assets/clocks/26-01-10/moo.gif'
+import bgImage from '../../assets/clocks/26-01-10/garage.webp';
 import d250916font from '../../assets/fonts/26-01-10-bit.ttf';
 
 const Clock = () => {
@@ -9,7 +9,7 @@ const Clock = () => {
 
   // 1. LETTER MAPPING: Change these letters to your preference
   const digitToLetter = {
-    '0': ' ', '1': 'c', '2': 'a', '3': 'M', '4': 'x',
+    '0': ' ', '1': 'd', '2': 'a', '3': 'M', '4': 'x',
     '5': 'k', '6': 'm', '7': 'n', '8': 'o', '9': 't'
   };
 
@@ -61,7 +61,7 @@ const Clock = () => {
     alignItems: 'center',
     fontFamily: "'MyD250916font', sans-serif",
     fontSize: '33vh',
-    color: 'rgb(215, 242, 248)',
+    color: 'rgb(9, 145, 175)',
     // Fixed width ensures 'I' takes as much space as 'W'
     width: '25vh', 
     height: '25vh',
