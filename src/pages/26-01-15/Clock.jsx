@@ -110,7 +110,9 @@ const StaticBackground = memo(() => (
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        filter: 'hue-rotate(-30deg) saturate(0.7)',
+        filter: 'hue-rotate(-40deg) saturate(0.7)',
+        opacity: 0.5,
+        zIndex: 5 
       }}
     />
     
@@ -122,7 +124,7 @@ const StaticBackground = memo(() => (
         height: '100%',
         backgroundImage: `url(${bg1})`,
         backgroundSize: 'cover',
-        opacity: 0.7,
+        // opacity: 0.7,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         filter: 'brightness(1.7) contrast(0.8) hue-rotate(-40deg)'
@@ -142,9 +144,9 @@ const ClockNumeral = memo(({ text, x, y }) => (
       color: '#FC8EAC',
       opacity: 0.5,
       fontFamily: 'CustomFont251211, serif',
-      fontSize: '66vh',
-      textShadow: '-4vh -4vh 0px #3B020681, 4vh 4vh 0px #F2C3CB',
-      zIndex: 0,
+      fontSize: '31vh',
+      textShadow: '-4vh -4vh 0px #3B020652, 4vh 4vh 0px #F5E5E8A8',
+      zIndex: 1 ,
       pointerEvents: 'none'
     }}
   >
