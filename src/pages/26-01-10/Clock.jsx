@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import bgImage from '../../assets/clocks/26-01-10/garage.webp';
+import bgImage from '../../assets/clocks/26-01-10/moo.gif'
 import d250916font from '../../assets/fonts/26-01-10-bit.ttf';
 
 const Clock = () => {
@@ -61,7 +61,7 @@ const Clock = () => {
     alignItems: 'center',
     fontFamily: "'MyD250916font', sans-serif",
     fontSize: '33vh',
-    color: 'rgb(9, 145, 175)',
+    color: 'rgb(215, 242, 248)',
     // Fixed width ensures 'I' takes as much space as 'W'
     width: '25vh', 
     height: '25vh',
@@ -80,7 +80,7 @@ const Clock = () => {
     overflow: 'hidden',
     // Flip horizontally and apply brightness, hue, and saturation filters
     transform: 'scaleX(-1)',
-    filter: 'brightness(1.2) hue-rotate(30deg) saturate(2.5)',
+    filter: 'brightness(1.2) hue-rotate(50deg) saturate(0.9)',
     zIndex: 1,
   };
 
