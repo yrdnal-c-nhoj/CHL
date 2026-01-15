@@ -1,191 +1,105 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from "react";
+import bgVideo from "../../assets/clocks/26-01-14/kuro.mp4";
+import fallbackImg from "../../assets/clocks/26-01-14/kuro.webp";
+import romanFont from '../../assets/fonts/26-01-14-kuro.otf';
 
-const FlipNumber = ({ value }) => {
-  const [displayedValue, setDisplayedValue] = useState(value)
-  const [prevValue, setPrevValue] = useState(value)
-  const [isFlipping, setIsFlipping] = useState(false)
+const FONT_NAME = "RomanClockFont";
+const CLOCK_GRADIENT = "linear-gradient(180deg, #E1DDD7, #EA273E)";
+
+export default function MonarchClock() {
+  const [now, setNow] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
   useEffect(() => {
-    if (value !== displayedValue) {
-      setPrevValue(displayedValue)
-      setIsFlipping(true)
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
-      // After animation completes, update the displayed value
-      const timer = setTimeout(() => {
-        setDisplayedValue(value)
-        setIsFlipping(false)
-      }, 600) // matches animation duration
+  useEffect(() => {
+    const font = new FontFace(FONT_NAME, `url(${romanFont})`);
+    font.load().then((loaded) => {
+      document.fonts.add(loaded);
+      setFontLoaded(true);
+    }).catch(() => setFontLoaded(true));
+  }, []);
 
-      return () => clearTimeout(timer)
+  // 1. Filter out colons so only digits remain (HHMMSS)
+  const digits = useMemo(() => {
+    const timeString = now.toLocaleTimeString('en-GB', {
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+    return timeString.replace(/:/g, "").split("");
+  }, [now]);
+
+  const styles = {
+    wrapper: {
+      height: "100dvh",
+      width: "100dvw",
+      overflow: "hidden",
+      position: "relative",
+      backgroundColor: "#000",
+    },
+    media: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      objectFit: "cover",
+      zIndex: 0,
+    },
+    container: {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      display: "flex",
+      gap: "0", // 2. Ensure no gap between flex items
+      zIndex: 5,
+      pointerEvents: "none",
+    },
+    digit: {
+      // 3. Adjust width to match the font's visual footprint 
+      // Note: You may need to tweak this 10dvh to 12dvh depending on the font's kerning
+      width: "8dvh", 
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontFamily: `${FONT_NAME}, sans-serif`,
+      fontSize: "10dvh",
+      background: CLOCK_GRADIENT,
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+      textAlign: "center",
     }
-  }, [value, displayedValue])
-
-  const formattedValue = String(displayedValue).padStart(2, '0')
-  const formattedPrev = String(prevValue).padStart(2, '0')
+  };
 
   return (
-    <div className='flip-container'>
-      <div className={`flip-card ${isFlipping ? 'flipping' : ''}`}>
-        {/* Top half - stays visible */}
-        <div className='top-half'>
-          <span>{formattedValue}</span>
+    <main style={styles.wrapper} aria-label={now.toLocaleTimeString()}>
+      {!videoError ? (
+        <video
+          src={bgVideo}
+          muted autoPlay loop playsInline
+          onError={() => setVideoError(true)}
+          style={styles.media}
+        />
+      ) : (
+        <img src={fallbackImg} alt="" style={styles.media} />
+      )}
+
+      {fontLoaded && (
+        <div style={styles.container} aria-hidden="true">
+          {digits.map((digit, index) => (
+            <div key={`${index}-${digit}`} style={styles.digit}>
+              {digit}
+            </div>
+          ))}
         </div>
-
-        {/* Bottom half - stays visible */}
-        <div className='bottom-half'>
-          <span>{formattedValue}</span>
-        </div>
-
-        {/* Flipping top (shows previous value flipping out) */}
-        <div className='flipping-top'>
-          <span>{formattedPrev}</span>
-        </div>
-
-        {/* Flipping bottom (shows new value flipping in) */}
-        <div className='flipping-bottom'>
-          <span>{formattedValue}</span>
-        </div>
-      </div>
-
-      <style jsx>{`
-        .flip-container {
-          position: relative;
-          width: 80px;
-          height: 120px;
-          perspective: 1000px;
-          margin: 0 8px;
-        }
-
-        .flip-card {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          transform-style: preserve-3d;
-        }
-
-        .top-half,
-        .bottom-half,
-        .flipping-top,
-        .flipping-bottom {
-          position: absolute;
-          width: 100%;
-          height: 50%;
-          overflow: hidden;
-          background: #1a1a1a;
-          border-radius: 10px;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-          backface-visibility: hidden;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          font-size: 80px;
-          font-weight: bold;
-          font-family: 'Arial Narrow', Arial, sans-serif;
-        }
-
-        .top-half {
-          top: 0;
-          border-bottom: 1px solid #000;
-          transform-origin: bottom;
-        }
-
-        .bottom-half {
-          bottom: 0;
-          border-top: 1px solid #333;
-          transform-origin: top;
-          align-items: flex-start;
-          padding-top: 12px;
-        }
-
-        .bottom-half span {
-          transform: translateY(-50%);
-        }
-
-        .flipping-top {
-          top: 0;
-          border-bottom: 1px solid #000;
-          transform-origin: bottom;
-          transform: rotateX(0deg);
-          animation: ${isFlipping ? 'flipTop 0.6s ease-in forwards' : 'none'};
-        }
-
-        .flipping-bottom {
-          bottom: 0;
-          border-top: 1px solid #333;
-          transform-origin: top;
-          transform: rotateX(90deg);
-          animation: ${isFlipping
-            ? 'flipBottom 0.6s ease-out forwards'
-            : 'none'};
-        }
-
-        @keyframes flipTop {
-          0% {
-            transform: rotateX(0deg);
-          }
-          100% {
-            transform: rotateX(-90deg);
-          }
-        }
-
-        @keyframes flipBottom {
-          0% {
-            transform: rotateX(90deg);
-          }
-          100% {
-            transform: rotateX(0deg);
-          }
-        }
-      `}</style>
-    </div>
-  )
+      )}
+    </main>
+  );
 }
-
-const FlipClock = () => {
-  const [time, setTime] = useState(new Date())
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date())
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [])
-
-  const hours = time.getHours().toString().padStart(2, '0')
-  const minutes = time.getMinutes().toString().padStart(2, '0')
-
-  return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        backgroundColor: '#111',
-        fontFamily: 'Arial, sans-serif'
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <FlipNumber value={parseInt(hours[0])} />
-        <FlipNumber value={parseInt(hours[1])} />
-
-        <div
-          style={{
-            color: '#444',
-            fontSize: '80px',
-            margin: '0 20px',
-            fontWeight: 'bold'
-          }}
-        >
-          :
-        </div>
-
-        <FlipNumber value={parseInt(minutes[0])} />
-        <FlipNumber value={parseInt(minutes[1])} />
-      </div>
-    </div>
-  )
-}
-
-export default FlipClock
