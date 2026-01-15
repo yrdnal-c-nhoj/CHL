@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import bgImage from '../../assets/clocks/26-01-19/lala.jpg'
 import customFont_2025_1210 from '../../assets/fonts/26-01-19-lala.ttf?url';
 
-const elementColor = '#8B474A'
+const elementColor = '#885B5D'
 
 const digitBoxStyle = {
   position: 'relative',
@@ -10,7 +10,7 @@ const digitBoxStyle = {
   alignItems: 'center',
   justifyContent: 'center',
   fontFamily: 'MuybridgeFont, serif',
-  fontSize: 'clamp(44px, 32vw, 68px)',
+  fontSize: '8vh',
   color: elementColor,
   textShadow: '0.5px 0.5px 0px white, -0.5px -0.5px 0px white',
   flexShrink: 1,
@@ -80,14 +80,7 @@ export default function DigitalClock() {
     right: 0
   }
 
-  const separatorStyle = {
-    fontSize: 'clamp(34px, 22vw, 58px)',
-    color: elementColor,
-    lineHeight: 1,
-    paddingBottom: '1.5vw',
-    flexShrink: 0
-  }
-
+ 
   const hours = String(time.getHours()).padStart(2, '0')
   const minutes = String(time.getMinutes()).padStart(2, '0')
   const seconds = String(time.getSeconds()).padStart(2, '0')
