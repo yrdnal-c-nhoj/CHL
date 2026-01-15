@@ -1,5 +1,19 @@
-import { useState, useEffect, useMemo } from 'react';
-import { Helmet } from 'react-helmet';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+
+// Preload images
+const preloadImages = (urls) => {
+  return Promise.all(
+    urls.map(
+      (url) =>
+        new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = resolve;
+          img.onerror = reject;
+          img.src = url;
+        })
+    )
+  );
+};
 
 // Background & Assets
 import backgroundImage from '../../assets/clocks/26-01-08/tang.jpeg';
@@ -38,28 +52,90 @@ const CONFIG = {
 };
 
 function TangerineClock() {
-  const [time, setTime] = useState(new Date());
+  const [time, setTime] = useState(() => new Date());
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [clockSize, setClockSize] = useState(300); // Default size, will be updated
+  const [isClient, setIsClient] = useState(false);
+
+  // Preload all images and set up resize handler
+  useEffect(() => {
+    setIsClient(true);
+    
+    // Preload all images
+    const allImages = [
+      backgroundImage, 
+      bgLayerTile, 
+      ...CLOCK_LABELS, 
+      hourHandImg, 
+      minuteHandImg, 
+      secondHandImg
+    ];
+    
+    const loadAssets = async () => {
+      try {
+        await preloadImages(allImages);
+        setIsLoaded(true);
+      } catch (err) {
+        console.error('Error loading assets:', err);
+        setIsLoaded(true); // Continue even if some assets fail to load
+      }
+    };
+    
+    loadAssets();
+    
+    // Set initial size
+    updateClockSize();
+    
+    // Handle window resize with debounce
+    let resizeTimer;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(updateClockSize, 100);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(resizeTimer);
+    };
+  }, []);
+  
+  const updateClockSize = () => {
+    if (typeof window !== 'undefined') {
+      const size = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.7, 500);
+      setClockSize(size);
+    }
+  };
 
   // Smooth animation using RAF
   useEffect(() => {
+    if (!isClient) return;
+    
     let rafId;
-    const update = () => {
-      setTime(new Date());
+    let lastUpdate = 0;
+    
+    const update = (timestamp) => {
+      if (!lastUpdate || timestamp - lastUpdate >= 16) { // ~60fps
+        setTime(new Date());
+        lastUpdate = timestamp;
+      }
       rafId = requestAnimationFrame(update);
     };
+    
     rafId = requestAnimationFrame(update);
     return () => cancelAnimationFrame(rafId);
-  }, []);
+  }, [isClient]);
 
   // Calculate rotations
-  const ms = time.getMilliseconds();
-  const secDeg = ((time.getSeconds() + ms / 1000) / 60) * 360;
-  const minDeg = ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360;
-  const hourDeg = ((time.getHours() % 12 + time.getMinutes() / 60) / 12) * 360;
-
-  // Responsive sizing
-  const clockSize = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.7, 500);
-  const radius = clockSize * 0.45; // Adjusted slightly inward for label padding
+  const { secDeg, minDeg, hourDeg, radius } = useMemo(() => {
+    const ms = time.getMilliseconds();
+    return {
+      secDeg: ((time.getSeconds() + ms / 1000) / 60) * 360,
+      minDeg: ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360,
+      hourDeg: ((time.getHours() % 12 + time.getMinutes() / 60) / 12) * 360,
+      radius: clockSize * 0.45
+    };
+  }, [time, clockSize]);
 
   // Shared Hand Styles
   const getHandStyle = (deg, sizeObj) => ({
@@ -77,24 +153,63 @@ function TangerineClock() {
     alignItems: 'flex-end'
   });
 
+  // Set viewport meta tag
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      let viewportMeta = document.querySelector('meta[name="viewport"]');
+      if (!viewportMeta) {
+        viewportMeta = document.createElement('meta');
+        viewportMeta.name = 'viewport';
+        viewportMeta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no';
+        document.head.appendChild(viewportMeta);
+      }
+    }
+  }, []);
+
+  if (!isClient) {
+    return (
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: '#1a0a02',
+        zIndex: 1
+      }} />
+    );
+  }
+
   return (
     <div style={{
-      position: 'relative',
-      width: '100vw',
-      height: '100vh',
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
       overflow: 'hidden',
       backgroundColor: '#1a0a02',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      touchAction: 'none'
+      touchAction: 'none',
+      WebkitTapHighlightColor: 'transparent',
+      WebkitTouchCallout: 'none',
+      WebkitUserSelect: 'none',
+      userSelect: 'none',
+      opacity: isLoaded ? 1 : 0,
+      transition: 'opacity 0.5s ease-in-out'
     }}>
-      <Helmet>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-      </Helmet>
 
       {/* --- BACKGROUND LAYERS --- */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
+      <div style={{ 
+        position: 'absolute', 
+        inset: 0, 
+        zIndex: 1,
+        opacity: isLoaded ? 1 : 0,
+        transition: 'opacity 0.3s ease-in-out',
+        willChange: 'opacity'
+      }}>
         <div style={{
           position: 'absolute',
           inset: -20, // Small bleed to prevent edges showing during scale
@@ -122,7 +237,11 @@ function TangerineClock() {
         zIndex: 10,
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        opacity: isLoaded ? 1 : 0,
+        transform: isLoaded ? 'scale(1)' : 'scale(0.95)',
+        transition: 'opacity 0.5s ease-out, transform 0.5s ease-out',
+        willChange: 'opacity, transform'
       }}>
         
         {/* Numbers */}
