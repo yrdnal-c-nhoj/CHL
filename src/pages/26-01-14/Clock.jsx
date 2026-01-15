@@ -4,9 +4,9 @@ import fallbackImg from "../../assets/clocks/26-01-14/kuro.webp";
 import romanFont from '../../assets/fonts/26-01-14-kuro.otf';
 
 const FONT_NAME = "RomanClockFont";
-const CLOCK_GRADIENT = "linear-gradient(180deg, #E1DDD7, #EA273E)";
+const CLOCK_GRADIENT = "linear-gradient(180deg, #F0CEF3, #C0DEF6)";
 
-export default function MonarchClock() {
+export default function KurosawaClock() {
   const [now, setNow] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
@@ -54,9 +54,9 @@ export default function MonarchClock() {
     },
     container: {
       position: "absolute",
-      top: "50%",
+      top: "-2dvh",
       left: "50%",
-      transform: "translate(-50%, -50%)",
+      transform: "translate(-50%, 0)",
       display: "flex",
       gap: "0", // 2. Ensure no gap between flex items
       zIndex: 5,
