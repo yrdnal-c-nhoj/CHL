@@ -60,7 +60,6 @@ export default function AardvarkClock() {
       backgroundPosition: 'center',
       backgroundAttachment: 'fixed',
       width: '100%',
-      minHeight: '100vh',
       minHeight: '100dvh',
       display: 'flex',
       justifyContent: 'center',
