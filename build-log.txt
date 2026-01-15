@@ -4,28 +4,50 @@
 
 vite v7.2.7 building client environment for production...
 transforming...
-✓ 1031 modules transformed.
-✗ Build failed in 1.74s
+[plugin vite:esbuild] src/pages/26-01-05/Clock.jsx: Duplicate key "minHeight" in object literal
+62 |        width: '100%',
+63 |        minHeight: '100vh',
+64 |        minHeight: '100dvh',
+   |        ^
+65 |        display: 'flex',
+66 |        justifyContent: 'center',
+
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+[plugin vite:esbuild] src/pages/26-01-07/Clock.jsx: Duplicate key "height" in object literal
+74 |      width: '100%',
+75 |      height: '100vh',
+76 |      height: '100dvh',
+   |      ^
+77 |      overflow: 'hidden',
+78 |      background: '#000',
+
+
+new URL("../../assets/clocks/26-01-02/1.webp", import.meta.url) doesn't exist at build time, it will remain unchanged to be resolved at runtime. If this is intended, you can use the /* @vite-ignore */ comment to suppress this warning.
+
+new URL("../../assets/clocks/26-01-02/2.webp", import.meta.url) doesn't exist at build time, it will remain unchanged to be resolved at runtime. If this is intended, you can use the /* @vite-ignore */ comment to suppress this warning.
+
+new URL("../../assets/clocks/26-01-02/3.webp", import.meta.url) doesn't exist at build time, it will remain unchanged to be resolved at runtime. If this is intended, you can use the /* @vite-ignore */ comment to suppress this warning.
+
+new URL("../../assets/clocks/26-01-02/4.webp", import.meta.url) doesn't exist at build time, it will remain unchanged to be resolved at runtime. If this is intended, you can use the /* @vite-ignore */ comment to suppress this warning.
+
+new URL("../../assets/clocks/26-01-02/5.webp", import.meta.url) doesn't exist at build time, it will remain unchanged to be resolved at runtime. If this is intended, you can use the /* @vite-ignore */ comment to suppress this warning.
+
+new URL("../../assets/clocks/26-01-02/6.webp", import.meta.url) doesn't exist at build time, it will remain unchanged to be resolved at runtime. If this is intended, you can use the /* @vite-ignore */ comment to suppress this warning.
+✓ 1908 modules transformed.
+✗ Build failed in 1.38s
 error during build:
-[vite:esbuild] Transform failed with 1 error:
-/Users/john/Desktop/CHL/src/pages/25-12-25/Clock.jsx:670:6: ERROR: The symbol "BoardingPass" has already been declared
-file: /Users/john/Desktop/CHL/src/pages/25-12-25/Clock.jsx:670:6
-
-The symbol "BoardingPass" has already been declared
-668 |  
-669 |  // Main component
-670 |  const BoardingPass = () => {
-    |        ^
-671 |    const [currentDate, setCurrentDate] = useState(new Date());
-672 |    const [fontLoaded, setFontLoaded] = useState(false);
-
-    at failureErrorWithLog (/Users/john/Desktop/CHL/node_modules/esbuild/lib/main.js:1467:15)
-    at /Users/john/Desktop/CHL/node_modules/esbuild/lib/main.js:736:50
-    at responseCallbacks.<computed> (/Users/john/Desktop/CHL/node_modules/esbuild/lib/main.js:603:9)
-    at handleIncomingPacket (/Users/john/Desktop/CHL/node_modules/esbuild/lib/main.js:658:12)
-    at Socket.readFromStdout (/Users/john/Desktop/CHL/node_modules/esbuild/lib/main.js:581:7)
-    at Socket.emit (node:events:519:28)
-    at addChunk (node:internal/streams/readable:561:12)
-    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
-    at Readable.push (node:internal/streams/readable:392:5)
-    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+Could not resolve "../../assets/clocks/26-01-15/flam4.webp" from "src/pages/26-01-11/Clock.jsx"
+file: /Users/john/Desktop/CHL/src/pages/26-01-11/Clock.jsx
+    at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
+    at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
+    at ModuleLoader.handleInvalidResolvedId (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21490:24)
+    at file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21450:26
