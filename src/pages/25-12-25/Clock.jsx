@@ -311,6 +311,7 @@ const getRandomAirports = () => {
 
 const BoardingPass = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [isReady, setIsReady] = useState(false);
   const [fontLoaded, setFontLoaded] = useState(false);
   const [flightData, setFlightData] = useState(() => {
     const randomAirports = getRandomAirports();
@@ -344,25 +345,41 @@ const BoardingPass = () => {
     updateFlightData();
     
     // Update current time every second
-    const timeTimer = setInterval(() => setCurrentDate(new Date()), 1000);
+    const timeTimer = setInterval(() => {
+      setCurrentDate(new Date());
+      updateFlightData(); // Update flight data every second along with time
+    }, 1000);
     
-    // Update flight data every 3 seconds (less jarring than every second)
-    const flightTimer = setInterval(updateFlightData, 3000);
+    // Initial flight data load
+    updateFlightData();
     
-    // Load font
-    const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Oxanium:wght@600;700&family=Roboto:wght@400;500;700&display=swap';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
+    // Load font with FontFace API for better control
+    const loadFonts = async () => {
+      try {
+        // Preload fonts
+        const font = new FontFace('Oxanium', 'url(https://fonts.gstatic.com/s/oxanium/v19/RrQPboN_4yJ0JmiM3N0-14HLVnA.woff2)');
+        await font.load();
+        document.fonts.add(font);
+        
+        const roboto = new FontFace('Roboto', 'url(https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2)');
+        await roboto.load();
+        document.fonts.add(roboto);
+        
+        setFontLoaded(true);
+        setIsReady(true);
+      } catch (error) {
+        console.error('Failed to load fonts:', error);
+        // Fallback to system fonts if loading fails
+        setFontLoaded(true);
+        setIsReady(true);
+      }
+    };
     
-    const fontTimer = setTimeout(() => setFontLoaded(true), 1000);
+    loadFonts();
 
     // Cleanup
     return () => {
-      clearInterval(flightTimer);
       clearInterval(timeTimer);
-      clearTimeout(fontTimer);
-      if (link.parentNode) link.parentNode.removeChild(link);
     };
   }, []);
 
@@ -383,6 +400,22 @@ const BoardingPass = () => {
 
   const arrivalTime = addMinutes(currentDate, flightData.flightDuration);
   const boardingTime = addMinutes(currentDate, flightData.boardingTime);
+
+  // Don't render until fonts are loaded
+  if (!isReady) {
+    return (
+      <div style={{
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: COLORS.white
+      }}>
+        <div>Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div style={styles.container}>
