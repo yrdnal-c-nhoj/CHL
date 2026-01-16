@@ -4,7 +4,7 @@ import fallbackImg from "../../assets/clocks/26-01-14/kuro.webp";
 import romanFont from '../../assets/fonts/26-01-14-kuro.otf';
 
 const FONT_NAME = "RomanClockFont";
-const CLOCK_GRADIENT = "linear-gradient(180deg, #F0CEF3, #C0DEF6)";
+const CLOCK_GRADIENT = "linear-gradient(180deg, #DCCFE1, #AFB1B3)";
 
 export default function KurosawaClock() {
   const [now, setNow] = useState(new Date());
