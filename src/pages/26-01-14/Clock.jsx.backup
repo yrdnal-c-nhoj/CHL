@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import bgVideo from "../../assets/clocks/26-01-14/kuro.mp4";
 import fallbackImg from "../../assets/clocks/26-01-14/kuro.webp";
-import romanFont from "../../assets/fonts/26-01-14-kuro.otf";
+import romanFont from '../../assets/fonts/26-01-14-kuro.otf';
 
 const FONT_NAME = "RomanClockFont";
 const CLOCK_GRADIENT = "linear-gradient(180deg, #DCCFE1, #AFB1B3)";
@@ -24,36 +24,53 @@ export default function KurosawaClock() {
     }).catch(() => setFontLoaded(true));
   }, []);
 
+  // 1. Filter out colons so only digits remain (HHMMSS)
+  const digits = useMemo(() => {
+    const timeString = now.toLocaleTimeString('en-GB', {
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+    return timeString.replace(/:/g, "").split("");
+  }, [now]);
+
   const styles = {
     wrapper: {
       height: "100dvh",
       width: "100dvw",
       overflow: "hidden",
       position: "relative",
-      background: "#000",
+      backgroundColor: "#000",
     },
     media: {
       position: "absolute",
+      top: 0,
       left: 0,
       width: "100%",
       height: "100%",
       objectFit: "cover",
       zIndex: 0,
     },
-    // CHANGED: The container no longer uses absolute positioning to center itself.
-    // It now behaves like a normal flex child within the clock instance.
     container: {
+      position: "absolute",
+      top: "-2dvh",
+      left: "50%",
+      transform: "translate(-50%, 0)",
       display: "flex",
-      gap: "0", 
+      gap: "0", // 2. Ensure no gap between flex items
+      zIndex: 5,
       pointerEvents: "none",
     },
     digit: {
-      width: "9.5dvh", // Slightly narrower to fit 18 digits across the screen
+      // 3. Adjust width to match the font's visual footprint 
+      // Note: You may need to tweak this 10dvh to 12dvh depending on the font's kerning
+      width: "8dvh", 
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
       fontFamily: `${FONT_NAME}, sans-serif`,
-      fontSize: "12dvh",
+      fontSize: "10dvh",
       background: CLOCK_GRADIENT,
       WebkitBackgroundClip: "text",
       WebkitTextFillColor: "transparent",
@@ -61,50 +78,8 @@ export default function KurosawaClock() {
     }
   };
 
-  const clocksWrapper = {
-    display: 'flex',
-    justifyContent: 'center', // Centers the row of clocks
-    alignItems: 'flex-start', // Pin to top
-    width: '100%',
-    position: 'absolute',
-    top: -15,
-    left: 0,
-    zIndex: 10,
-    gap: '0', // No space between the three clocks
-    // paddingTop: '-2dvh',
-  };
-
-  const Clock = ({ time }) => {
-    const clockDigits = useMemo(() => {
-      const timeString = time.toLocaleTimeString('en-GB', {
-        hour12: false,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      });
-      return timeString.replace(/:/g, "").split("");
-    }, [time]);
-
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        {fontLoaded && (
-          <div style={styles.container} aria-hidden="true">
-            {clockDigits.map((digit, index) => (
-              <div key={`${index}-${digit}`} style={styles.digit}>
-                {digit}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  const leftTime = new Date(now.getTime() - 3600000);
-  const rightTime = new Date(now.getTime() + 3600000);
-
   return (
-    <main style={styles.wrapper}>
+    <main style={styles.wrapper} aria-label={now.toLocaleTimeString()}>
       {!videoError ? (
         <video
           src={bgVideo}
@@ -115,12 +90,16 @@ export default function KurosawaClock() {
       ) : (
         <img src={fallbackImg} alt="" style={styles.media} />
       )}
-      
-      <div style={clocksWrapper}>
-        <Clock time={leftTime} />
-        <Clock time={now} />
-        <Clock time={rightTime} />
-      </div>
+
+      {fontLoaded && (
+        <div style={styles.container} aria-hidden="true">
+          {digits.map((digit, index) => (
+            <div key={`${index}-${digit}`} style={styles.digit}>
+              {digit}
+            </div>
+          ))}
+        </div>
+      )}
     </main>
   );
 }
