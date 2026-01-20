@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
-// Font imports
+// Font imports (assuming these paths are correct in your build env)
 import font20250119_primary from '../../assets/fonts/26-01-16-leap.ttf';
 import font20250119_secondary from '../../assets/fonts/25-04-25-Oswald-Bold.ttf';
 import font20250119_mono from '../../assets/fonts/25-05-10-Questrial.ttf';
 
-// ----------------------------------------------------------------------
-// Constants & Data
-// ----------------------------------------------------------------------
 const LEAP_SECOND_DATES = [
   '1972-06-30T23:59:59Z', '1972-12-31T23:59:59Z', '1973-12-31T23:59:59Z',
   '1974-12-31T23:59:59Z', '1975-12-31T23:59:59Z', '1976-12-31T23:59:59Z',
@@ -21,9 +18,6 @@ const LEAP_SECOND_DATES = [
   '2026-12-31T23:59:59Z'
 ].map(d => new Date(d).getTime());
 
-// ----------------------------------------------------------------------
-// Component
-// ----------------------------------------------------------------------
 const LeapClock = () => {
   const [now, setNow] = useState(new Date());
 
@@ -44,8 +38,8 @@ const LeapClock = () => {
       if (ts <= currentMs) { last = ts; count++; } 
       else if (!next) { next = ts; }
     }
-    const isLeapSecondActive = now.getUTCHours() === 23 && now.getUTCMinutes() === 59 && now.getUTCSeconds() === 59;
-    return { count, last, next, isLeapSecondActive };
+    const isLeapActive = now.getUTCHours() === 23 && now.getUTCMinutes() === 59 && now.getUTCSeconds() === 59;
+    return { count, last, next, isLeapActive };
   }, [now.getSeconds()]);
 
   const formatUTC = (ts) => ts ? new Date(ts).toUTCString().replace('GMT', 'UTC') : 'N/A';
@@ -57,88 +51,82 @@ const LeapClock = () => {
   `;
 
   return (
-    <div style={{ position: 'relative', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden' }}>
       <style>{fontStyles}</style>
       
       <main style={{
         display: 'flex',
         flexDirection: 'column',
+        // justifyContent: 'space-between', // Elements are pushed to Top, Center, and Bottom
         alignItems: 'center',
-        // justifyContent: 'center', // Exact vertical center
-        height: '100vh',
-        width: '100vw',
+        height: '100%',
         backgroundColor: '#E1E2E8',
-        color: '#113B65',
-        margin: 0,
-        padding: 0,
-        position: 'relative'
+        color: '#233603',
+        padding: '5vh 2rem' // Consistent padding for top/bottom
       }}>
         
-        {/* Top Header Section - Positioned Absolutely to not affect clock center */}
-        <div style={{
-          position: 'absolute',
-          top: '5vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          width: '90%',
+        {/* SECTION 1: HEADER */}
+        <header style={{
+          textAlign: 'center',
           maxWidth: '600px',
-          textAlign: 'center'
+          zIndex: 2
         }}>
-          <div style={{ fontFamily: '"Questrial", sans-serif', fontSize: '1rem', marginBottom: '1.5rem', opacity: 0.8 }}>
-            A <strong>leap second</strong> adjustment keeps UTC synchronized with Earth's slowing rotation.
+          <div style={{ fontFamily: '"Questrial", sans-serif', fontSize: '1rem', marginBottom: '1rem', opacity: 0.8 }}>
+                      A <span style={styles.highlight}>leap second</span> is a one-second adjustment 
+            occasionally applied to Coordinated Universal Time (UTC) to keep it synchronized 
+            with the Earth's gradually slowing rotation.  International Earth Rotation and Reference Systems Service (IERS)
           </div>
-          <div style={{ display: 'flex', gap: '2rem', fontSize: '1.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', fontSize: '1.5rem' }}>
             <span>🌍</span><span>⏳</span><span>🐌</span><span>⚙️</span><span>🕒</span>
           </div>
-        </div>
+        </header>
 
-        {/* CLOCK CENTERPIECE - All digits same size & font */}
-        <div style={{ 
-          textAlign: 'center',
+        {/* SECTION 2: CLOCK (The "Flex: 1" forces this to take all remaining space) */}
+        <section style={{ 
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          width: '100%',
-                position: 'relative'
+          // flex: 1, // This makes the clock "expand" to fill the middle
+          width: '100%'
         }}>
-          <span style={{
-            fontSize: '10vh',
+          <div style={{
+            fontSize: 'min(15vw, 12vh)', // Fluid sizing based on screen dimensions
             color: '#0D0101',
             fontFamily: '"LeapFont", monospace',
-            fontVariantNumeric: 'tabular-nums', // Keeps digit widths identical
-            lineHeight: 1,
+            fontVariantNumeric: 'tabular-nums',
+            letterSpacing: '-0.02em',
             whiteSpace: 'nowrap'
           }}>
+            <span style={{ opacity: 0.4, fontSize: '4vh' }}>  
             {now.getHours().toString().padStart(2, '0')}
-       
             {now.getMinutes().toString().padStart(2, '0')}
-    
+            </span>
             {now.getSeconds().toString().padStart(2, '0')}
-       
             {Math.floor(now.getMilliseconds() / 10).toString().padStart(2, '0')}
-          </span>
-        </div>
+ 
+          </div>
+        </section>
 
-        {/* Footer Data Grid - Positioned Absolutely to not affect clock center */}
-        <div style={{
-          position: 'absolute',
-          bottom: '5vh',
+        {/* SECTION 3: FOOTER GRID */}
+        <footer style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
           gap: '1rem',
-          width: '95%',
-          maxWidth: '1200px'
+          width: '100%',
+          maxWidth: '1200px',
+          zIndex: 2
         }}>
           <InfoTile label="Total Since 1972" value={`${leapData.count}s`} />
           <InfoTile label="Next Date" value={formatUTC(leapData.next)} />
           <InfoTile label="Last Date" value={formatUTC(leapData.last)} />
           <InfoTile 
             label="Sync Status" 
-            value={leapData.isLeapSecondActive ? "ADJUSTING" : "STABLE"} 
-            color={leapData.isLeapSecondActive ? "#fbbf24" : "#2D0506"}
+            value={leapData.isLeapActive ? "ADJUSTING" : "STABLE"} 
+            color={leapData.isLeapActive ? "#fbbf24" : "#2D0506"}
           />
-        </div>
+        </footer>
+
       </main>
     </div>
   );
@@ -146,15 +134,32 @@ const LeapClock = () => {
 
 const InfoTile = ({ label, value, color = "#2F5F9E" }) => (
   <div style={{
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    backdropFilter: 'blur(10px)',
-    borderRadius: '8px',
-    padding: '1rem',
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    backdropFilter: 'blur(12px)',
+    borderRadius: '12px',
+    padding: '1.25rem',
     textAlign: 'center',
-    border: '1px solid rgba(255, 255, 255, 0.4)'
+    border: '1px solid rgba(255, 255, 255, 0.5)',
+    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
   }}>
-    <div style={{ fontSize: '0.7rem', color: '#113B65', textTransform: 'uppercase', letterSpacing: '0.1em', fontFamily: "'Oswald', sans-serif" }}>{label}</div>
-    <div style={{ fontSize: '1.1rem', color: color, fontFamily: "'Questrial', sans-serif", fontWeight: 'bold', marginTop: '0.4rem' }}>{value}</div>
+    <div style={{ 
+      fontSize: '0.7rem', 
+      color: '#113B65', 
+      textTransform: 'uppercase', 
+      letterSpacing: '0.12em', 
+      fontFamily: "'Oswald', sans-serif",
+      marginBottom: '0.5rem'
+    }}>
+      {label}
+    </div>
+    <div style={{ 
+      fontSize: '1rem', 
+      color: color, 
+      fontFamily: "'Questrial', sans-serif", 
+      fontWeight: 'bold' 
+    }}>
+      {value}
+    </div>
   </div>
 );
 
