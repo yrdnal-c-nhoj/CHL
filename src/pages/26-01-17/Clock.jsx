@@ -1,164 +1,279 @@
-import { useState, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from "react";
+import videoFile from "../../assets/clocks/26-01-17/swww.mp4";
+import fallbackImg from "../../assets/clocks/26-01-17/sw.webp";
+import overlayImage from "../../assets/clocks/26-01-17/sw22.webp"; // Add your overlay image path here
+import font112425sput from "../../assets/fonts/26-01-17-sw.ttf?url";
 
-export default function DesertClock() {
+export default function Clock() {
+  const videoRef = useRef(null);
+  const [videoFailed, setVideoFailed] = useState(false);
   const [time, setTime] = useState(new Date());
-  const [particles, setParticles] = useState([]);
+  const [fontLoaded, setFontLoaded] = useState(false);
 
+  // 1. Load custom font
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
+    const font = new FontFace("CustomClock-112425", `url(${font112425sput})`, {
+      display: "block",
+    });
 
-    // Generate floating dust particles
-    const particleArray = Array.from({ length: 20 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 3 + 1,
-      duration: Math.random() * 20 + 15,
-      delay: Math.random() * -20
-    }));
-    setParticles(particleArray);
+    let active = true;
 
-    return () => clearInterval(timer);
+    font
+      .load()
+      .then((loaded) => {
+        if (active) {
+          document.fonts.add(loaded);
+          setFontLoaded(true);
+        }
+      })
+      .catch(() => {
+        if (active) setFontLoaded(true);
+      });
+
+    return () => {
+      active = false;
+    };
   }, []);
 
-  const hours = String(time.getHours()).padStart(2, '0');
-  const minutes = String(time.getMinutes()).padStart(2, '0');
-  const seconds = String(time.getSeconds()).padStart(2, '0');
+  // 2. Ultra-smooth clock loop
+  useEffect(() => {
+    let raf;
+    const tick = () => {
+      setTime(new Date());
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
-  const containerStyle = {
-    width: '100vw',
-    height: '100dvh',
-    margin: 0,
-    padding: 0,
-    boxSizing: 'border-box',
-    overflow: 'hidden',
-    background: 'linear-gradient(135deg, #3d2817 0%, #5c3d2e 25%, #8b5a3c 50%, #5c3d2e 75%, #3d2817 100%)',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    fontFamily: 'monospace'
-  };
+  // 3. Video error handling
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
 
-  const overlayStyle = {
-    position: 'absolute',
-    inset: 0,
-    background: 'radial-gradient(ellipse at center, transparent 0%, rgba(61, 40, 23, 0.4) 100%)',
-    pointerEvents: 'none'
-  };
+    const fail = () => setVideoFailed(true);
 
-  const clockContainerStyle = {
-    position: 'relative',
-    zIndex: 10,
-    display: 'flex',
-    gap: 'clamp(0.5rem, 2vw, 1rem)',
-    alignItems: 'center'
-  };
+    const playPromise = v.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(fail);
+    }
 
-  const digitStyle = {
-    fontSize: 'clamp(4rem, 20vw, 12rem)',
-    fontWeight: 'bold',
-    color: '#d4846a',
-    textShadow: `
-      0 0 20px rgba(212, 132, 106, 0.5),
-      0 0 40px rgba(212, 132, 106, 0.3),
-      0 0 60px rgba(212, 132, 106, 0.2),
-      2px 2px 4px rgba(0, 0, 0, 0.8)
-    `,
-    fontFamily: 'monospace',
-    letterSpacing: '0.05em',
-    lineHeight: 1
-  };
+    v.addEventListener("error", fail);
+    return () => v.removeEventListener("error", fail);
+  }, []);
 
-  const separatorStyle = {
-    fontSize: 'clamp(4rem, 20vw, 12rem)',
-    fontWeight: 'bold',
-    color: '#c97a5f',
-    opacity: time.getSeconds() % 2 === 0 ? 1 : 0.3,
-    transition: 'opacity 0.3s ease',
-    textShadow: `
-      0 0 20px rgba(201, 122, 95, 0.5),
-      2px 2px 4px rgba(0, 0, 0, 0.8)
-    `,
-    lineHeight: 1
-  };
-
-  const dateStyle = {
-    position: 'absolute',
-    bottom: 'clamp(2rem, 10vh, 4rem)',
-    fontSize: 'clamp(0.9rem, 2.5vw, 1.2rem)',
-    color: '#a8735e',
-    textTransform: 'uppercase',
-    letterSpacing: '0.2em',
-    textShadow: '1px 1px 2px rgba(0, 0, 0, 0.8)',
-    zIndex: 10
-  };
-
-  const particleStyle = (particle) => ({
-    position: 'absolute',
-    left: `${particle.x}%`,
-    top: `${particle.y}%`,
-    width: `${particle.size}px`,
-    height: `${particle.size}px`,
-    backgroundColor: 'rgba(212, 132, 106, 0.3)',
-    borderRadius: '50%',
-    animation: `float ${particle.duration}s linear infinite`,
-    animationDelay: `${particle.delay}s`,
-    pointerEvents: 'none',
-    boxShadow: '0 0 4px rgba(212, 132, 106, 0.5)'
-  });
-
-  const dateString = time.toLocaleDateString('en-US', { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  });
+  // Math for hands
+  const ms = time.getMilliseconds();
+  const seconds = (time.getSeconds() + ms / 1000) * 6;
+  const minutes = time.getMinutes() * 6 + time.getSeconds() * 0.1;
+  const hours = ((time.getHours() % 12) + time.getMinutes() / 60) * 30;
 
   return (
-    <div style={containerStyle}>
-      <style>
-        {`
-          @keyframes float {
-            0% {
-              transform: translate(0, 0) rotate(0deg);
-              opacity: 0;
-            }
-            10% {
-              opacity: 0.6;
-            }
-            90% {
-              opacity: 0.6;
-            }
-            100% {
-              transform: translate(${Math.random() * 100 - 50}vw, 100vh) rotate(360deg);
-              opacity: 0;
-            }
-          }
-          * {
-            box-sizing: border-box;
-          }
-        `}
-      </style>
-      
-      <div style={overlayStyle} />
-      
-      {particles.map(particle => (
-        <div key={particle.id} style={particleStyle(particle)} />
-      ))}
-      
-      <div style={clockContainerStyle}>
-        <span style={digitStyle}>{hours}</span>
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{minutes}</span>
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{seconds}</span>
+    <main
+      aria-label={`Current time is ${time.toLocaleTimeString()}`}
+      style={{
+        position: "fixed",
+        inset: 0,
+        width: "100vw",
+        height: "100dvh",
+        background: "#000",
+        overflow: "hidden",
+      }}
+    >
+      {/* BACKGROUND VIDEO layer */}
+      {!videoFailed && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            zIndex: 1,
+            overflow: "hidden"
+          }}
+        >
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              filter: "saturate(2.5) brightness(0.9) contrast(0.9) hue-rotate(185deg)",
+            }}
+            preload="auto"
+          >
+            <source src={process.env.NODE_ENV === 'production' ? `${process.env.PUBLIC_URL || ''}${videoFile}` : videoFile} type="video/mp4" />
+          </video>
+        </div>
+      )}
+
+      {/* FALLBACK IMAGE layer */}
+      {videoFailed && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            overflow: "hidden",
+            zIndex: 1,
+          }}
+        >
+          <img
+            src={fallbackImg}
+            alt=""
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              filter: "saturate(2.5)"
+            }}
+          />
+        </div>
+      )}
+
+      {/* OVERLAY IMAGE layer */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          zIndex: 8,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+      >
+        <img 
+          src={overlayImage} 
+          alt="" 
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            opacity: 0.6,
+            zIndex: 9,
+            mixBlendMode: "overlay",
+            filter: "hue-rotate(40deg)"
+          }}
+        />
       </div>
-      
-      <div style={dateStyle}>{dateString}</div>
-    </div>
+
+      {/* GRADIENT OVERLAY layer */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          background:
+            "radial-gradient(circle, rgba(183, 127, 7, 0.52) 60%, rgba(236, 99, 26, 0.56) 100%)",
+          zIndex: 10, // Keep this above the overlay image
+        }}
+      />
+
+      {/* CLOCK FACE layer */}
+      {fontLoaded && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            pointerEvents: "none",
+            zIndex: 10,
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+              width: "92vmin",
+              height: "92vmin",
+              fontFamily: "'CustomClock-112425', sans-serif",
+            }}
+          >
+            {/* Numbers */}
+            {[...Array(12)].map((_, i) => {
+              const n = i + 1;
+              const angle = n * 30 - 90;
+              const radius = 42;
+              const x = 50 + radius * Math.cos((angle * Math.PI) / 180);
+              const y = 50 + radius * Math.sin((angle * Math.PI) / 180);
+              return (
+                <div
+                  key={n}
+                  style={{
+                    position: "absolute",
+                    left: `${x}%`,
+                    top: `${y}%`,
+                    fontSize: "5vh",
+                    color: "#E9BB7A",
+                    fontStyle: "italic",
+                    fontVariationSettings: "'slnt' -15, 'ital' 1",
+                    transform: "translate(-50%, -50%) skewX(-10deg)",
+                    userSelect: "none",
+                    opacity: 0.5,
+                       zIndex: 1,
+                    textShadow: "1px 1px 0px rgba(50, 21, 3, 0.99), -1px -1px 0 rgba(0, 0, 0, 0.3)"
+                  }}
+                >
+                  {n}
+                </div>
+              );
+            })}
+
+            {/* Hour hand */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: "50%",
+                left: "50%",
+                width: "2.2vmin",
+                height: "22vmin",
+                backgroundColor: "white",
+                borderRadius: "1.5vmin",
+                       backgroundColor: "#DD4108",
+                transformOrigin: "center bottom",
+                transform: `translateX(-50%) rotate(${hours}deg)`,
+                zIndex: 2,
+                opacity: 0.4,
+              }}
+            />
+
+            {/* Minute hand */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: "50%",
+                left: "50%",
+                width: "1.4vmin",
+                height: "34vmin",
+                backgroundColor: "#DF3A03",
+                borderRadius: "1vmin",
+                transformOrigin: "center bottom",
+                transform: `translateX(-50%) rotate(${minutes}deg)`,
+                zIndex: 3,
+                opacity: 0.4,
+              }}
+            />
+
+        
+            
+          </div>
+        </div>
+      )}
+    </main>
   );
 }
