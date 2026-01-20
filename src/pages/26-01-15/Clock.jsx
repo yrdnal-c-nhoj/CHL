@@ -11,9 +11,6 @@ const handColors = {
   centerBorder: '#F39191B3',
 };
 
-// Adjust these to change the "tint" globally
-const GLOBAL_TINT = 'hue-rotate(15deg) saturate(980%)';
-
 const Clock = () => {
   const [time, setTime] = useState(new Date());
   const requestRef = useRef();
@@ -57,10 +54,7 @@ const Clock = () => {
 
   return (
     <main style={styles.wrapper}>
-      {/* Base background with tint */}
-      <div style={{...styles.baseBackground}} />
-      
-      {/* Repeating GIF layers with tint */}
+      <div style={styles.baseBackground} />
       {overlayLayers.map((layer, index) => (
         <div 
           key={index} 
@@ -69,8 +63,7 @@ const Clock = () => {
             backgroundColor: layer.color,
             backgroundImage: `url(${overlayBg})`,
             backgroundSize: layer.size,
-            zIndex: layer.z,
-            // filter: `${GLOBAL_TINT} drop-shadow(0 0 10px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 20px rgba(0, 0, 0, 0.6))`
+            zIndex: layer.z
           }} 
         />
       ))}
@@ -89,9 +82,9 @@ const Hand = memo(({ type, rotation }) => {
   const isSecond = type === 'second';
   
   const config = {
-    hour:   { width: '0.4vh', height: '4.5vh', z: 2, tail: '0vh' },
-    minute: { width: '0.25vh', height: '7.5vh', z: 2, tail: '0vh' },
-    second: { width: '0.15vh', height: '10vh', z: 2, tail: '2.9vh' },
+    hour:   { width: '0.4vh', height: '4.5vh', z: 5, tail: '0vh' },
+    minute: { width: '0.25vh', height: '7.5vh', z: 4, tail: '0vh' },
+    second: { width: '0.15vh', height: '10vh', z: 6, tail: '2.5vh' },
   };
 
   const { width, height, z, tail } = config[type];
@@ -111,6 +104,7 @@ const Hand = memo(({ type, rotation }) => {
     borderRadius: '1px',
   };
 
+  // The spearhead (tip of the hand)
   const spearHeadStyle = {
     position: 'absolute',
     top: '-0.8vh',
@@ -123,6 +117,7 @@ const Hand = memo(({ type, rotation }) => {
     borderBottom: `1.2vh solid ${handColors.second}`,
   };
 
+  // The sphere/circle on the tail
   const tailSphereStyle = {
     position: 'absolute',
     bottom: '-0.5vh',
@@ -142,25 +137,6 @@ const Hand = memo(({ type, rotation }) => {
   );
 });
 
-
-
-
-{overlayLayers.map((layer, index) => (
-  <div 
-    key={index} 
-    style={{
-      ...styles.overlayBase,
-      backgroundColor: layer.color,
-      backgroundImage: `url(${overlayBg})`,
-      backgroundSize: layer.size,
-      zIndex: layer.z,
-      // filter: `${GLOBAL_TINT} drop-shadow(0 3px 0px rgb(42, 2, 2))` // Combined filters
-    }} 
-  />
-))}
-
-
-
 const styles = {
   wrapper: {
     position: 'relative',
@@ -179,18 +155,16 @@ const styles = {
     backgroundBlendMode: 'overlay',
     backgroundRepeat: 'repeat',
     pointerEvents: 'none',
-    // filter: 'drop-shadow(0 0 12px rgba(0, 0, 0, 0.93)) drop-shadow(0 0 25px rgb(0, 0, 0))',
   },
   baseBackground: {
     position: 'absolute',
     inset: 0,
-    backgroundColor: 'rgba(255, 0, 0, 0.05)',
+    backgroundColor: '#FF000035',
     backgroundImage: `url(${baseBg})`,
     backgroundSize: '60vh',
     backgroundPosition: 'center center',
     backgroundBlendMode: 'overlay',
     backgroundRepeat: 'repeat',
-    // filter: 'drop-shadow(0 0 15px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 30px rgba(0, 0, 0, 0.3))',
     zIndex: 1,
   },
   clockContainer: {
