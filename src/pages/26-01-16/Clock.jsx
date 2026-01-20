@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
-
-// Font imports (assuming these paths are correct in your build env)
-import font20250119_primary from '../../assets/fonts/26-01-16-leap.ttf';
+// Font imports
+import font20250119_primary from '../../assets/fonts/26-01-16-leap.otf';
 import font20250119_secondary from '../../assets/fonts/25-04-25-Oswald-Bold.ttf';
 import font20250119_mono from '../../assets/fonts/25-05-10-Questrial.ttf';
+import '@fontsource/roboto-mono';
 
 const LEAP_SECOND_DATES = [
   '1972-06-30T23:59:59Z', '1972-12-31T23:59:59Z', '1973-12-31T23:59:59Z',
@@ -35,130 +35,220 @@ const LeapClock = () => {
     const currentMs = now.getTime();
     let last = null, next = null, count = 0;
     for (const ts of LEAP_SECOND_DATES) {
-      if (ts <= currentMs) { last = ts; count++; } 
+      if (ts <= currentMs) { last = ts; count++; }
       else if (!next) { next = ts; }
     }
     const isLeapActive = now.getUTCHours() === 23 && now.getUTCMinutes() === 59 && now.getUTCSeconds() === 59;
     return { count, last, next, isLeapActive };
   }, [now.getSeconds()]);
 
-  const formatUTC = (ts) => ts ? new Date(ts).toUTCString().replace('GMT', 'UTC') : 'N/A';
+  const formatUTC = (ts) => ts 
+    ? new Date(ts).toUTCString().replace('GMT', 'UTC').split(' ').slice(1, 4).join(' ') 
+    : 'N/A';
 
   const fontStyles = `
-    @font-face { font-family: 'LeapFont'; src: url(${font20250119_primary}) format('truetype'); font-display: swap; }
-    @font-face { font-family: 'Oswald'; src: url(${font20250119_secondary}) format('truetype'); font-display: swap; }
-    @font-face { font-family: 'Questrial'; src: url(${font20250119_mono}) format('truetype'); font-display: swap; }
+    @font-face {
+      font-family: 'LeapFont';
+      src: url(${font20250119_primary}) format('opentype');
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Oswald';
+      src: url(${font20250119_secondary}) format('truetype');
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Questrial';
+      src: url(${font20250119_mono}) format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
   `;
 
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden' }}>
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: '#E1E2E8',
+      overflow: 'hidden',
+      color: '#233603',
+      boxSizing: 'border-box'
+    }}>
       <style>{fontStyles}</style>
-      
+
       <main style={{
         display: 'flex',
         flexDirection: 'column',
-        // justifyContent: 'space-between', // Elements are pushed to Top, Center, and Bottom
-        alignItems: 'center',
         height: '100%',
-        backgroundColor: '#E1E2E8',
-        color: '#233603',
-        padding: '5vh 2rem' // Consistent padding for top/bottom
+        width: '100%',
+        maxWidth: '100%',
+        margin: 0,
+        padding: '2vh 4vw',
+        boxSizing: 'border-box',
+        overflow: 'hidden'
       }}>
-        
-        {/* SECTION 1: HEADER */}
+        {/* HEADER */}
         <header style={{
-          textAlign: 'center',
-          maxWidth: '600px',
-          zIndex: 2
+          flexShrink: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginBottom: '1vh',
+          textAlign: 'center'
         }}>
-          <div style={{ fontFamily: '"Questrial", sans-serif', fontSize: '1rem', marginBottom: '1rem', opacity: 0.8 }}>
-                      A <span style={styles.highlight}>leap second</span> is a one-second adjustment 
-            occasionally applied to Coordinated Universal Time (UTC) to keep it synchronized 
-            with the Earth's gradually slowing rotation.  International Earth Rotation and Reference Systems Service (IERS)
+          <div style={{
+            width: '100%',
+            maxWidth: '500px',
+            fontFamily: 'Questrial, sans-serif',
+            fontSize: '2vh',
+            lineHeight: '1.3',
+            margin: '0 auto 1.9vh',
+            padding: '0 20px',
+            boxSizing: 'border-box'
+          }}>
+            A <strong>leap second</strong> is a one-second adjustment
+            occasionally applied to Coordinated Universal Time (UTC) to keep it synchronized
+            with the Earth's gradually slowing rotation.
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', fontSize: '1.5rem' }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '0.25rem',
+            fontSize: ' 8vh'
+          }}>
             <span>🌍</span><span>⏳</span><span>🐌</span><span>⚙️</span><span>🕒</span>
           </div>
         </header>
 
-        {/* SECTION 2: CLOCK (The "Flex: 1" forces this to take all remaining space) */}
-        <section style={{ 
+        {/* CLOCK */}
+        <section style={{
+          flex: '1 1 auto',
           display: 'flex',
-          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          // flex: 1, // This makes the clock "expand" to fill the middle
-          width: '100%'
+          padding: '1vh 0',
+          minHeight: '30vh',
+          width: '100%',
+          overflow: 'hidden',
+          boxSizing: 'border-box'
         }}>
           <div style={{
-            fontSize: 'min(15vw, 12vh)', // Fluid sizing based on screen dimensions
-            color: '#0D0101',
-            fontFamily: '"LeapFont", monospace',
-            fontVariantNumeric: 'tabular-nums',
-            letterSpacing: '-0.02em',
-            whiteSpace: 'nowrap'
+            display: 'flex',
+            flexWrap: 'nowrap',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontFamily: 'LeapFont, monospace',
+            color: '#262424',
+            fontSize: 'min(25vw, 14vh)',
+            lineHeight: 1,
+            letterSpacing: '-0.3em',
+            width: '100%',
+            padding: '0 4%',
+            boxSizing: 'border-box',
+            transform: 'scale(0.95)'
           }}>
-            <span style={{ opacity: 0.4, fontSize: '4vh' }}>  
-            {now.getHours().toString().padStart(2, '0')}
-            {now.getMinutes().toString().padStart(2, '0')}
-            </span>
-            {now.getSeconds().toString().padStart(2, '0')}
-            {Math.floor(now.getMilliseconds() / 10).toString().padStart(2, '0')}
- 
+            <div style={{ display: 'flex', opacity: 0.3 }}>
+              <DigitBox>{now.getHours().toString().padStart(2, '0')[0]}</DigitBox>
+              <DigitBox>{now.getHours().toString().padStart(2, '0')[1]}</DigitBox>
+            </div>
+            <div style={{ display: 'flex', opacity: 0.5 }}>
+              <DigitBox>{now.getMinutes().toString().padStart(2, '0')[0]}</DigitBox>
+              <DigitBox>{now.getMinutes().toString().padStart(2, '0')[1]}</DigitBox>
+            </div>
+            <div style={{ display: 'flex' }}>
+              <DigitBox>{now.getSeconds().toString().padStart(2, '0')[0]}</DigitBox>
+              <DigitBox>{now.getSeconds().toString().padStart(2, '0')[1]}</DigitBox>
+              <div style={{ display: 'flex' }}>
+                <DigitBox>{Math.floor(now.getMilliseconds() / 10).toString().padStart(2, '0')[0]}</DigitBox>
+                <DigitBox>{Math.floor(now.getMilliseconds() / 10).toString().padStart(2, '0')[1]}</DigitBox>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* SECTION 3: FOOTER GRID */}
+        {/* FOOTER */}
         <footer style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: '1rem',
+          flexShrink: 0,
           width: '100%',
-          maxWidth: '1200px',
-          zIndex: 2
+          padding: '1vh 0',
+          marginTop: 'auto'
         }}>
+          <div style={{
+            display: 'grid',
+            gap: '1vh',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            maxWidth: '100%',
+            margin: '0 auto',
+            padding: '0 2%',
+            transform: 'scale(0.9)',
+            transformOrigin: 'center bottom'
+          }}>
+           <InfoTile label="Last Adjustment" value={`${formatUTC(leapData.last)} 23:59:59 UTC`} />
+            <InfoTile label="Next Date" value={`${formatUTC(leapData.next)} 23:59:59 UTC`} />
           <InfoTile label="Total Since 1972" value={`${leapData.count}s`} />
-          <InfoTile label="Next Date" value={formatUTC(leapData.next)} />
-          <InfoTile label="Last Date" value={formatUTC(leapData.last)} />
-          <InfoTile 
-            label="Sync Status" 
-            value={leapData.isLeapActive ? "ADJUSTING" : "STABLE"} 
-            color={leapData.isLeapActive ? "#fbbf24" : "#2D0506"}
-          />
+               <InfoTile
+              label="Sync Status"
+              value={leapData.isLeapActive ? "ADJUSTING" : "STABLE"}
+              color={leapData.isLeapActive ? "#fbbf24" : "#086143"}
+              isStatus
+            />
+          </div>
         </footer>
-
       </main>
     </div>
   );
 };
 
-const InfoTile = ({ label, value, color = "#2F5F9E" }) => (
+const DigitBox = ({ children }) => (
   <div style={{
-    backgroundColor: 'rgba(255, 255, 255, 0.4)',
-    backdropFilter: 'blur(12px)',
-    borderRadius: '12px',
-    padding: '1.25rem',
+    display: 'inline-block',
+    width: '0.5em',
     textAlign: 'center',
-    border: '1px solid rgba(255, 255, 255, 0.5)',
-    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
+    fontVariantNumeric: 'tabular-nums',
+    letterSpacing: '0',
+    fontFeatureSettings: '"tnum" 1'
   }}>
-    <div style={{ 
-      fontSize: '0.7rem', 
-      color: '#113B65', 
-      textTransform: 'uppercase', 
-      letterSpacing: '0.12em', 
-      fontFamily: "'Oswald', sans-serif",
-      marginBottom: '0.5rem'
-    }}>
-      {label}
-    </div>
-    <div style={{ 
-      fontSize: '1rem', 
-      color: color, 
-      fontFamily: "'Questrial', sans-serif", 
-      fontWeight: 'bold' 
-    }}>
-      {value}
+    {children}
+  </div>
+);
+
+const InfoTile = ({ label, value, color = "#086143", isStatus = false }) => (
+  <div style={{
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    backdropFilter: 'blur(10px)',
+    borderRadius: '1rem',
+    border: '1px solid rgba(255, 255, 255, 0.4)',
+    padding: '0.8rem',
+    margin: '0.2rem',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+  }}>
+    <div style={{ textAlign: 'center' }}>
+      <div style={{
+        opacity: 0.8,
+        marginBottom: '0.3rem',
+        fontFamily: 'Oswald, sans-serif',
+        fontSize: '0.7rem',
+        textTransform: 'uppercase',
+        letterSpacing: '0.05em'
+      }}>
+        {label}
+      </div>
+      <div style={{
+        color,
+        fontFamily: 'Questrial, sans-serif',
+        fontWeight: 'bold',
+        fontSize: '0.9rem',
+        ...(isStatus && { letterSpacing: '0.05em' })
+      }}>
+        {value}
+      </div>
     </div>
   </div>
 );

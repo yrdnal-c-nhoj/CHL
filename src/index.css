@@ -1,12 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
 
-@font-face {
-  font-family: 'Giza';
-  src: url('./assets/fonts/26-01-05-giza.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+
 
 @tailwind base;
 @tailwind components;
