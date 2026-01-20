@@ -107,7 +107,7 @@ const LeapClock = () => {
             width: '100%',
             maxWidth: '500px',
             fontFamily: 'Questrial, sans-serif',
-            fontSize: '2vh',
+            fontSize: '2.5vh',
             lineHeight: '1.3',
             margin: '0 auto 1.9vh',
             padding: '0 20px',
