@@ -4,35 +4,45 @@
 
 vite v7.2.7 building client environment for production...
 transforming...
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
-The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+[plugin vite:esbuild] src/pages/26-01-16/Clock.jsx: Duplicate key "maxWidth" in object literal
+223 |              transform: 'scale(0.95)',
+224 |              transformOrigin: 'center bottom',
+225 |              maxWidth: '500px',
+    |              ^
+226 |              margin: '0 auto'
+227 |            }}>
 
-new URL("../../assets/clocks/26-01-02/1.webp", import.meta.url) doesn't exist at build time, it will remain unchanged to be resolved at runtime. If this is intended, you can use the /* @vite-ignore */ comment to suppress this warning.
+[plugin vite:esbuild] src/pages/26-01-16/Clock.jsx: Duplicate key "margin" in object literal
+224 |              transformOrigin: 'center bottom',
+225 |              maxWidth: '500px',
+226 |              margin: '0 auto'
+    |              ^
+227 |            }}>
+228 |             <InfoTile label="Last Adjustment" value={`${formatUTC(leapData.last)} 23:59:59 UTC`} />
 
-new URL("../../assets/clocks/26-01-02/2.webp", import.meta.url) doesn't exist at build time, it will remain unchanged to be resolved at runtime. If this is intended, you can use the /* @vite-ignore */ comment to suppress this warning.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'url'` to `query: '?url', import: 'default'`.
+[plugin vite:esbuild] src/pages/26-01-17/Clock.jsx: Duplicate key "backgroundColor" in object literal
+245 |                  backgroundColor: "white",
+246 |                  borderRadius: "1.5vmin",
+247 |                         backgroundColor: "#DD4108",
+    |                         ^
+248 |                  transformOrigin: "center bottom",
+249 |                  transform: `translateX(-50%) rotate(${hours}deg)`,
 
-new URL("../../assets/clocks/26-01-02/3.webp", import.meta.url) doesn't exist at build time, it will remain unchanged to be resolved at runtime. If this is intended, you can use the /* @vite-ignore */ comment to suppress this warning.
-
-new URL("../../assets/clocks/26-01-02/4.webp", import.meta.url) doesn't exist at build time, it will remain unchanged to be resolved at runtime. If this is intended, you can use the /* @vite-ignore */ comment to suppress this warning.
-
-new URL("../../assets/clocks/26-01-02/5.webp", import.meta.url) doesn't exist at build time, it will remain unchanged to be resolved at runtime. If this is intended, you can use the /* @vite-ignore */ comment to suppress this warning.
-
-new URL("../../assets/clocks/26-01-02/6.webp", import.meta.url) doesn't exist at build time, it will remain unchanged to be resolved at runtime. If this is intended, you can use the /* @vite-ignore */ comment to suppress this warning.
-
-new URL("../../assets/clocks/26-01-02/7.webp", import.meta.url) doesn't exist at build time, it will remain unchanged to be resolved at runtime. If this is intended, you can use the /* @vite-ignore */ comment to suppress this warning.
-✓ 1905 modules transformed.
-✗ Build failed in 1.32s
+✓ 1283 modules transformed.
+✗ Build failed in 1.27s
 error during build:
-Could not resolve "../../assets/clocks/26-01-11/flam4.webp" from "src/pages/26-01-11/Clock.jsx"
-file: /Users/john/Desktop/CHL/src/pages/26-01-11/Clock.jsx
+Could not resolve "../../assets/clocks/26-01-19/lala.jpg" from "src/pages/26-01-12/Clock.jsx"
+file: /Users/john/Desktop/CHL/src/pages/26-01-12/Clock.jsx
     at getRollupError (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
     at error (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
     at ModuleLoader.handleInvalidResolvedId (file:///Users/john/Desktop/CHL/node_modules/rollup/dist/es/shared/node-entry.js:21490:24)
