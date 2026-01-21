@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-/**
- * UTILITY: Enhanced IsoEngine
- */
+
 class IsoEngine {
   constructor(canvas) {
     this.ctx = canvas.getContext('2d');
@@ -65,7 +63,7 @@ const GLYPH_MAP = {
   'M': [[0,0,0,1,1,5],[4,0,0,1,1,5],[1,0,3,1,1,1],[2,0,2,1,1,1],[3,0,3,1,1,1]],
 };
 
-const IsometricClock = () => {
+const OrtogonalClock = () => {
   const canvasRef = useRef(null);
   const clockColor = { r: 255, g: 140, b: 0 };
 
@@ -86,7 +84,7 @@ const IsometricClock = () => {
         engine.scale = 50;
       }
       
-      engine.angle = (time / 5000); 
+      engine.angle = (time / 3000); 
       engine.clear();
 
       const now = new Date();
@@ -135,7 +133,6 @@ const IsometricClock = () => {
   return (
     <div style={{
       width: '100vw', height: '100dvh',
-      // UPDATED: Linear gradient with a 135-degree tilt
       background: 'linear-gradient(180deg, #185591 0%, #835CD7 100%)',
       display: 'flex', justifyContent: 'center', alignItems: 'center',
       overflow: 'hidden'
@@ -150,4 +147,4 @@ const IsometricClock = () => {
   );
 };
 
-export default IsometricClock;
+export default OrtogonalClock;
