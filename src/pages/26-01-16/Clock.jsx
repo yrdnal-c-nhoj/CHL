@@ -69,6 +69,30 @@ const LeapClock = () => {
 
   `;
 
+  // Calculate dynamic viewport units for mobile
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial call
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Use dynamic viewport units that account for mobile browser UI
+  const vh = windowSize.height * 0.01;
+  const vw = windowSize.width * 0.01;
+  const safeAreaInsetBottom = 'env(safe-area-inset-bottom, 0px)';
+
   return (
     <div style={{
       position: 'fixed',
@@ -79,7 +103,11 @@ const LeapClock = () => {
       backgroundColor: '#E1E2E8',
       overflow: 'hidden',
       color: '#233603',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      WebkitOverflowScrolling: 'touch',
+      touchAction: 'manipulation',
+      overscrollBehavior: 'contain',
+      paddingBottom: `max(${safeAreaInsetBottom}, env(safe-area-inset-bottom, 0px))`
     }}>
       <style>{fontStyles}</style>
 
@@ -90,9 +118,11 @@ const LeapClock = () => {
         width: '100%',
         maxWidth: '100%',
         margin: 0,
-        padding: '2vh 4vw',
+        padding: `${Math.min(2 * vh, 16)}px ${Math.min(4 * vw, 16)}px`,
         boxSizing: 'border-box',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        position: 'relative',
+        WebkitOverflowScrolling: 'touch'
       }}>
         {/* HEADER */}
         <header style={{
@@ -100,14 +130,15 @@ const LeapClock = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          marginBottom: '1vh',
-          textAlign: 'center'
+          marginBottom: `${Math.min(1 * vh, 8)}px`,
+          textAlign: 'center',
+          paddingTop: 'env(safe-area-inset-top, 0px)'
         }}>
           <div style={{
             width: '100%',
             maxWidth: '500px',
             fontFamily: 'Questrial, sans-serif',
-            fontSize: '2.5vh',
+            fontSize: `${Math.min(2.5 * vh, 18)}px`,
             lineHeight: '1.3',
             margin: '0 auto 1.9vh',
             padding: '0 20px',
@@ -121,7 +152,7 @@ const LeapClock = () => {
             display: 'flex',
             justifyContent: 'center',
             gap: '0.25rem',
-            fontSize: ' 8vh'
+            fontSize: `${Math.min(8 * vh, 48)}px`
           }}>
             <span>🌍</span><span>⏳</span><span>🐌</span><span>⚙️</span><span>🕒</span>
           </div>
@@ -133,11 +164,12 @@ const LeapClock = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: '1vh 0',
-          minHeight: '30vh',
+          padding: `${Math.min(1 * vh, 8)}px 0`,
+          minHeight: '0', // Allow content to shrink below 30vh if needed
           width: '100%',
           overflow: 'hidden',
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
+          flexShrink: 1
         }}>
           <div style={{
             display: 'flex',
@@ -146,7 +178,7 @@ const LeapClock = () => {
             alignItems: 'center',
             fontFamily: 'LeapFont, monospace',
             color: '#262424',
-            fontSize: 'min(25vw, 14vh)',
+            fontSize: `${Math.min(25 * vw, 14 * vh, 48)}px`,
             lineHeight: 1,
             letterSpacing: '-0.3em',
             width: '100%',
@@ -177,18 +209,21 @@ const LeapClock = () => {
         <footer style={{
           flexShrink: 0,
           width: '100%',
-          padding: '1vh 0',
-          marginTop: 'auto'
+          padding: `${Math.min(1 * vh, 8)}px 0`,
+          marginTop: 'auto',
+          paddingBottom: `calc(${Math.min(1 * vh, 8)}px + ${safeAreaInsetBottom})`
         }}>
           <div style={{
             display: 'grid',
-            gap: '1vh',
-            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '8px',
+            gridTemplateColumns: 'repeat(2, minmax(120px, 1fr))',
             maxWidth: '100%',
             margin: '0 auto',
-            padding: '0 2%',
-            transform: 'scale(0.9)',
-            transformOrigin: 'center bottom'
+            padding: '0',
+            transform: 'scale(0.95)',
+            transformOrigin: 'center bottom',
+            maxWidth: '500px',
+            margin: '0 auto'
           }}>
            <InfoTile label="Last Adjustment" value={`${formatUTC(leapData.last)} 23:59:59 UTC`} />
             <InfoTile label="Next Date" value={`${formatUTC(leapData.next)} 23:59:59 UTC`} />
