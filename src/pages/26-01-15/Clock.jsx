@@ -104,35 +104,9 @@ const Hand = memo(({ type, rotation }) => {
     borderRadius: '1px',
   };
 
-  // The spearhead (tip of the hand)
-  const spearHeadStyle = {
-    position: 'absolute',
-    top: '-0.8vh',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    width: 0,
-    height: 0,
-    borderLeft: '0.6vh solid transparent',
-    borderRight: '0.6vh solid transparent',
-    borderBottom: `1.2vh solid ${handColors.second}`,
-  };
-
-  // The sphere/circle on the tail
-  const tailSphereStyle = {
-    position: 'absolute',
-    bottom: '-0.5vh',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    width: '1.2vh',
-    height: '1.2vh',
-    backgroundColor: handColors.second,
-    borderRadius: '50%',
-  };
 
   return (
     <div style={containerStyle}>
-      {isSecond && <div style={spearHeadStyle} />}
-      {isSecond && <div style={tailSphereStyle} />}
     </div>
   );
 });
