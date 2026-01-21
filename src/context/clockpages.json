@@ -289,5 +289,6 @@
   { "path": "26-01-16", "date": "26-01-16", "title": "Leap Second" },
   { "path": "26-01-17", "date": "26-01-17", "title": "220° Southwest" },
   { "path": "26-01-18", "date": "26-01-18", "title": "Orthogonal" }, 
-  { "path": "26-01-19", "date": "26-01-19", "title": "Handsy" }
+  { "path": "26-01-19", "date": "26-01-19", "title": "Handsy" },
+  { "path": "26-01-20", "date": "26-01-20", "title": "Acconciatura" }
 ]

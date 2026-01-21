@@ -286,21 +286,26 @@
   { "path": "26-01-13", "date": "26-01-13", "title": "Greyscale"  },
   { "path": "26-01-14", "date": "26-01-14", "title":"Tenno"  },
   { "path": "26-01-15", "date": "26-01-15", "title": "Reddish Circle" },
-  { "path": "26-01-16", "date": "26-01-16", "title": "Kaleidoscope" },
-  { "path": "26-01-17", "date": "26-01-17", "title": "Vegas" },
-  { "path": "26-01-18", "date": "26-01-18", "title": "Chimera" },
-  { "path": "26-01-19", "date": "26-01-19", "title": "Polaris" },
-  { "path": "26-01-20", "date": "26-01-20", "title": "SUV" },
-  { "path": "26-01-21", "date": "26-01-21", "title": "Mint" },
-  { "path": "26-01-22", "date": "26-01-22", "title": "Blob" },  
-  { "path": "26-01-23", "date": "26-01-23", "title": "Sliding" },   
-  { "path": "26-01-24", "date": "26-01-24", "title": "Penmanship" },   
-  { "path": "26-01-25", "date": "26-01-25", "title": "Squiggle" },    
-  { "path": "26-01-26", "date": "26-01-26", "title": "Bone" },    
-  { "path": "26-01-27", "date": "26-01-27", "title": "Cosmic Wheels" },    
-  { "path": "26-01-28", "date": "26-01-28", "title": "Morse Code" },    
-  { "path": "26-01-29", "date": "26-01-29", "title": "Stretch" },    
-  { "path": "26-01-30", "date": "26-01-30", "title": "Egg" },    
-  { "path": "26-01-31", "date": "26-01-31", "title": "Cinema" }     
-        
+  { "path": "26-01-16", "date": "26-01-16", "title": "Leap Second" },
+  { "path": "26-01-17", "date": "26-01-17", "title": "220° Southwest" },
+  { "path": "26-01-18", "date": "26-01-18", "title": "Orthogonal" }, 
+  { "path": "26-01-19", "date": "26-01-19", "title": "Handsy" },
+  { "path": "26-01-20", "date": "26-01-20", "title": "Bullseye" },
+  { "path": "26-01-21", "date": "26-01-21", "title": "Lunar Eclipse" },
+  { "path": "26-01-22", "date": "26-01-22", "title": "Lunar Eclipse" },
+  { "path": "26-01-23", "date": "26-01-23", "title": "Lunar Eclipse" },
+  { "path": "26-01-24", "date": "26-01-24", "title": "Lunar Eclipse" },
+  { "path": "26-01-25", "date": "26-01-25", "title": "Lunar Eclipse" },
+  { "path": "26-01-26", "date": "26-01-26", "title": "Lunar Eclipse" },
+  { "path": "26-01-27", "date": "26-01-27", "title": "Lunar Eclipse" },
+  { "path": "26-01-28", "date": "26-01-28", "title": "Lunar Eclipse" },
+  { "path": "26-01-29", "date": "26-01-29", "title": "Lunar Eclipse" },
+  { "path": "26-01-30", "date": "26-01-30", "title": "Lunar Eclipse" },
+  { "path": "26-01-31", "date": "26-01-31", "title": "Lunar Eclipse" },
+  { "path": "26-02-01", "date": "26-02-01", "title": "Lunar Eclipse" },
+  { "path": "26-02-02", "date": "26-02-02", "title": "Lunar Eclipse" }  
+
+
+
+
 ]
