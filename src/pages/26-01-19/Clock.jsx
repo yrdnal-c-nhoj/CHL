@@ -124,11 +124,16 @@ const ManyHandClock = () => {
     const updateSize = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      // Use the smaller dimension and scale to 122% to maximize size
-      const size = Math.min(vw / vh, vh / vw) < 1 
-        ? Math.min(155, (vw / vh) * 155)  // Portrait - constrain by width
-        : 155;  // Landscape or square - use full height
-      setClockSize(size);
+      // Calculate size based on viewport dimensions with safe margins
+      const isPortrait = vh > vw;
+      const safeMargin = 32; // 16px on each side
+      const maxSize = isPortrait 
+        ? Math.min(vw - safeMargin, (vh - safeMargin) * 0.9) // 90% of height to prevent clipping
+        : Math.min(vh - safeMargin, (vw - safeMargin) * 0.9); // 90% of width in landscape
+      
+      // Convert to vh units for consistent scaling
+      const sizeInVh = (maxSize / vh) * 100;
+      setClockSize(Math.min(155, sizeInVh));
     };
     
     updateSize();
@@ -247,8 +252,11 @@ const ManyHandClock = () => {
 
   return (
     <div style={{
-      width: '100vw',
-      height: '100vh',
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -261,15 +269,21 @@ const ManyHandClock = () => {
         ),
         url(${bgImage})
       `,
-      backgroundSize: '120%',
-      backgroundPosition: 'center, center',
-      backgroundRepeat: 'no-repeat, no-repeat',
-      overflow: 'hidden'
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      overflow: 'hidden',
+      WebkitOverflowScrolling: 'touch', // Smooth scrolling on iOS
+      touchAction: 'manipulation', // Prevent double-tap zoom on mobile
+      overscrollBehavior: 'contain' // Prevent pull-to-refresh and overscroll glow
     }}>
       <div style={{ 
         position: 'relative', 
-        width: `min(${clockSize}vh, ${clockSize}vw)`, 
-        height: `min(${clockSize}vh, ${clockSize}vw)`
+        width: `${clockSize * 0.9}vh`, // Slightly smaller to ensure it fits
+        height: `${clockSize * 0.9}vh`,
+        maxWidth: '90vw', // Ensure it doesn't exceed viewport width
+        maxHeight: '90vh', // Ensure it doesn't exceed viewport height
+        aspectRatio: '1/1' // Maintain square aspect ratio
       }}>
         {/* Hour hand */}
         <div style={{
