@@ -100,7 +100,7 @@ const Clock = () => {
 
 const digitBoxStyle = {
     fontFamily: "'MyD250916font', sans-serif",
-    fontSize: isLargeScreen ? '30vh' : '20vh',
+    fontSize: isLargeScreen ? '30vh' : '22vh',
     color: '#B80A0A',
     display: 'flex',
     justifyContent: 'center',
