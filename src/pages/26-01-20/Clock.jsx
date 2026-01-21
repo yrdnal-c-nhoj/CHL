@@ -46,12 +46,12 @@ const Clock = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const hours = String(((time.getHours() + 11) % 12) + 1).padStart(2, '0');
+  // --- UPDATED 24 HOUR LOGIC ---
+  const hours = String(time.getHours()).padStart(2, '0');
   const minutes = String(time.getMinutes()).padStart(2, '0');
   const seconds = String(time.getSeconds()).padStart(2, '0');
 
   // --- STYLES ---
-
   const containerStyle = {
     position: 'relative',
     height: '100dvh',
@@ -81,7 +81,6 @@ const Clock = () => {
     top: 0,
     left: 0,
     width: '100%',
-    // --- RESTRICT TO TOP THIRD ---
     height: '66dvh', 
     background: `linear-gradient(to bottom, rgba(73, 74, 6, 0.81), rgba(0, 0, 0, 0))`,
     zIndex: 1.5,
@@ -98,7 +97,7 @@ const Clock = () => {
     justifyContent: 'center'
   };
 
-const digitBoxStyle = {
+  const digitBoxStyle = {
     fontFamily: "'MyD250916font', sans-serif",
     fontSize: isLargeScreen ? '30vh' : '22vh',
     color: '#B80A0A',
@@ -108,9 +107,7 @@ const digitBoxStyle = {
     width: '0.8em',
     lineHeight: isLargeScreen ? '1.2' : '0.7',
     textAlign: 'center',
-    // --- UPDATED SHADOW STRATEGY ---
     filter: 'drop-shadow(0px 0px 15px rgb(255, 255, 255))',
-    // Optional: Keep a small text-shadow for a sharper core glow
     textShadow: '0 0 5px #FFFFFF' 
   };
 
