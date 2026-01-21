@@ -1,194 +1,371 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import bgImage from '../../assets/clocks/26-01-18/hands.webp';
 
-// Asset URLs
-const one = new URL('../../assets/clocks/26-01-02/1.webp', import.meta.url).href;
-const two = new URL('../../assets/clocks/26-01-02/2.webp', import.meta.url).href;
-const three = new URL('../../assets/clocks/26-01-02/3.webp', import.meta.url).href;
-const four = new URL('../../assets/clocks/26-01-02/4.webp', import.meta.url).href;
-const five = new URL('../../assets/clocks/26-01-02/5.webp', import.meta.url).href;
-const six = new URL('../../assets/clocks/26-01-02/6.webp', import.meta.url).href;
-const seven = new URL('../../assets/clocks/26-01-02/7.webp', import.meta.url).href;
-const eight = new URL('../../assets/clocks/26-01-02/8.webp', import.meta.url).href;
-const nine = new URL('../../assets/clocks/26-01-02/9.webp', import.meta.url).href;
-const ten = new URL('../../assets/clocks/26-01-02/10.webp', import.meta.url).href;
-const eleven = new URL('../../assets/clocks/26-01-02/11.webp', import.meta.url).href;
-const twelve = new URL('../../assets/clocks/26-01-02/12.webp', import.meta.url).href;
+const COLORS = {
+  bg: '#FFFFFF',
+  secondHand: '#FF2306', 
+  mainHands: '#1E293B',   
+  border: '#000000',
+};
 
-// The single background image
-const pageBackground = new URL('../../assets/clocks/26-01-02/swi.jpg', import.meta.url).href;
+// Physics deviation functions
+const getJumpOvershoot = (f) => f < 0.2 ? f * 10 : (f < 0.5 ? 2 : 0);
+const getSlowWiggle = (f) => Math.sin(f * Math.PI * 2) * 12;
+const getElasticStretch = (f) => f < 0.7 ? -f * 8 : -5.6 + (f - 0.7) * 40;
+const getHeavyTwitch = (f) => (f > 0.4 && f < 0.6 ? 6 : 0);
+const getDelayedRush = (f) => f < 0.6 ? -10 : (f - 0.6) * 25;
 
-const Clock = () => {
-  const [time, setTime] = useState(new Date());
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const [flickeringNumbers, setFlickeringNumbers] = useState({});
+const ComplexRedHand = ({ rotation, zIndex, transition = 'none', size }) => {
+  const scale = size / 100;
+  
+  return (
+    <div style={{
+      position: 'absolute',
+      bottom: '50%',
+      left: '50%',
+      width: `${0.5 * scale}vh`,
+      height: '0px',
+      transformOrigin: 'bottom center',
+      transform: `translateX(-50%) rotate(${rotation}deg)`,
+      zIndex,
+      transition
+    }}>
+      {/* Arrow head border */}
+      <div style={{
+        width: 0,
+        height: 0,
+        borderLeft: `${2 * scale}vh solid transparent`,
+        borderRight: `${2 * scale}vh solid transparent`,
+        borderBottom: `${3.6 * scale}vh solid ${COLORS.border}`,
+        position: 'absolute',
+        bottom: `${23 * scale}vh`,
+        left: `${-2 * scale}vh`,
+      }} />
+      
+      {/* Arrow head fill */}
+      <div style={{
+        width: 0,
+        height: 0,
+        borderLeft: `${1.8 * scale}vh solid transparent`,
+        borderRight: `${1.8 * scale}vh solid transparent`,
+        borderBottom: `${3.2 * scale}vh solid ${COLORS.secondHand}`,
+        position: 'absolute',
+        bottom: `${23.15 * scale}vh`,
+        left: `${-1.8 * scale}vh`,
+      }} />
+      
+      {/* Main blade */}
+      <div style={{
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        height: `${19 * scale}vh`,
+        background: COLORS.secondHand,
+        border: `${0.1 * scale}vh solid ${COLORS.border}`,
+        borderBottom: 'none',
+        boxSizing: 'border-box',
+      }} />
+      
+      {/* Tail */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        width: '100%',
+        height: `${8 * scale}vh`,
+        background: COLORS.secondHand,
+        border: `${0.1 * scale}vh solid ${COLORS.border}`,
+        borderTop: 'none',
+        boxSizing: 'border-box',
+      }} />
+      
+      {/* Tail ball */}
+      <div style={{
+        position: 'absolute',
+        top: `${9 * scale}vh`,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: `${3 * scale}vh`,
+        height: `${3 * scale}vh`,
+        borderRadius: '50%',
+        background: COLORS.secondHand,
+        border: `${0.1 * scale}vh solid ${COLORS.border}`,
+        boxSizing: 'border-box',
+      }} />
+    </div>
+  );
+};
 
+const ManyHandClock = () => {
+  const [now, setNow] = useState(new Date());
+  const [fraction, setFraction] = useState(0);
+  const [forgetfulPos, setForgetfulPos] = useState(0);
+  const [sleepyPos1, setSleepyPos1] = useState(0);
+  const [sleepyPos2, setSleepyPos2] = useState(0);
+  const [clockSize, setClockSize] = useState(90);
+  
+  const nextChangeRef = useRef(0);
+  const isFrozenRef = useRef(false);
+  const frozenAtRef = useRef(0);
+  
+  const nextSleepy1Ref = useRef(0);
+  const isSleepy1FrozenRef = useRef(false);
+  const sleepy1FrozenAtRef = useRef(0);
+  const sleepy1ShakingRef = useRef(false);
+  const sleepy1ShakeStartRef = useRef(0);
+  
+  const nextSleepy2Ref = useRef(0);
+  const isSleepy2FrozenRef = useRef(false);
+  const sleepy2FrozenAtRef = useRef(0);
+  const sleepy2ShakingRef = useRef(false);
+  const sleepy2ShakeStartRef = useRef(0);
+
+  // Calculate responsive clock size
   useEffect(() => {
-    let raf;
-    const tick = () => {
-      setTime(new Date());
-      raf = requestAnimationFrame(tick);
+    const updateSize = () => {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      // Use the smaller dimension and scale to 122% to maximize size
+      const size = Math.min(vw / vh, vh / vw) < 1 
+        ? Math.min(155, (vw / vh) * 155)  // Portrait - constrain by width
+        : 155;  // Landscape or square - use full height
+      setClockSize(size);
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
   }, []);
 
-  // Flickering effect - update randomly every 100-300ms
+  // Time and animation logic
   useEffect(() => {
-    const flicker = () => {
-      setFlickeringNumbers(prev => {
-        const newFlickering = {};
-        // Randomly flicker each number with 1/3 chance of being dark
-        for (let i = 0; i < 12; i++) {
-          newFlickering[i] = Math.random() > 0.33; // 67% visible, 33% dark
+    const id = setInterval(() => {
+      const t = new Date();
+      const currentTime = t.getTime();
+      const sFraction = t.getSeconds() + t.getMilliseconds() / 1000;
+      
+      setNow(t);
+      setFraction(sFraction);
+
+      // Forgetful hand logic
+      if (currentTime > nextChangeRef.current) {
+        if (isFrozenRef.current) {
+          isFrozenRef.current = false;
+          nextChangeRef.current = currentTime + (Math.random() * 3000 + 1000);
+        } else {
+          isFrozenRef.current = true;
+          frozenAtRef.current = (sFraction / 60) * 360;
+          nextChangeRef.current = currentTime + (Math.random() * 2000 + 1000);
         }
-        return newFlickering;
-      });
-    };
+      }
+      
+      if (isFrozenRef.current) {
+        setForgetfulPos(frozenAtRef.current);
+      } else {
+        setForgetfulPos((sFraction / 60) * 360);
+      }
 
-    // Initial flicker
-    flicker();
+      // Sleepy hand 1 logic
+      if (currentTime > nextSleepy1Ref.current) {
+        if (isSleepy1FrozenRef.current) {
+          // Start shaking
+          sleepy1ShakingRef.current = true;
+          sleepy1ShakeStartRef.current = currentTime;
+          isSleepy1FrozenRef.current = false;
+          nextSleepy1Ref.current = currentTime + (Math.random() * 6000 + 1000); // 1-7 seconds
+        } else {
+          // Start sleeping
+          isSleepy1FrozenRef.current = true;
+          sleepy1FrozenAtRef.current = (sFraction / 60) * 360;
+          nextSleepy1Ref.current = currentTime + (Math.random() * 6000 + 1000);
+        }
+      }
+      
+      if (sleepy1ShakingRef.current && currentTime - sleepy1ShakeStartRef.current > 300) {
+        sleepy1ShakingRef.current = false;
+      }
+      
+      if (isSleepy1FrozenRef.current) {
+        setSleepyPos1(sleepy1FrozenAtRef.current);
+      } else if (sleepy1ShakingRef.current) {
+        const shakeAmount = Math.sin(currentTime * 0.05) * 8;
+        setSleepyPos1(sleepy1FrozenAtRef.current + shakeAmount);
+      } else {
+        setSleepyPos1((sFraction / 60) * 360);
+      }
+
+      // Sleepy hand 2 logic
+      if (currentTime > nextSleepy2Ref.current) {
+        if (isSleepy2FrozenRef.current) {
+          // Start shaking
+          sleepy2ShakingRef.current = true;
+          sleepy2ShakeStartRef.current = currentTime;
+          isSleepy2FrozenRef.current = false;
+          nextSleepy2Ref.current = currentTime + (Math.random() * 6000 + 1000); // 1-7 seconds
+        } else {
+          // Start sleeping
+          isSleepy2FrozenRef.current = true;
+          sleepy2FrozenAtRef.current = (sFraction / 60) * 360;
+          nextSleepy2Ref.current = currentTime + (Math.random() * 6000 + 1000);
+        }
+      }
+      
+      if (sleepy2ShakingRef.current && currentTime - sleepy2ShakeStartRef.current > 300) {
+        sleepy2ShakingRef.current = false;
+      }
+      
+      if (isSleepy2FrozenRef.current) {
+        setSleepyPos2(sleepy2FrozenAtRef.current);
+      } else if (sleepy2ShakingRef.current) {
+        const shakeAmount = Math.sin(currentTime * 0.06) * 8;
+        setSleepyPos2(sleepy2FrozenAtRef.current + shakeAmount);
+      } else {
+        setSleepyPos2((sFraction / 60) * 360);
+      }
+    }, 16);
     
-    // Set up random interval between 100-300ms
-    const scheduleNextFlicker = () => {
-      const delay = 100 + Math.random() * 200; // Random delay between 100-300ms
-      setTimeout(() => {
-        flicker();
-        scheduleNextFlicker();
-      }, delay);
-    };
-    
-    scheduleNextFlicker();
+    return () => clearInterval(id);
   }, []);
 
-  useEffect(() => {
-    const sources = [
-      one, two, three, four, five, six, 
-      seven, eight, nine, ten, eleven, twelve, 
-      pageBackground
-    ];
-    let loaded = 0;
-    sources.forEach(src => {
-      const img = new Image();
-      img.src = src;
-      img.onload = img.onerror = () => {
-        loaded++;
-        setLoadingProgress(Math.round((loaded / sources.length) * 100));
-        if (loaded === sources.length) setTimeout(() => setIsLoaded(true), 200);
-      };
-    });
-  }, []);
+  const h = now.getHours();
+  const m = now.getMinutes();
+  const s = fraction;
 
-  if (!isLoaded) {
-    return (
-      <div style={{ height: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', background: '#000' }}>
-        Loading… {loadingProgress}%
-      </div>
-    );
-  }
+  const hourRot = (((h % 12) + m / 60) / 12) * 360;
+  const minuteRot = ((m + s / 60) / 60) * 360;
+  const baseSecondRot = (s / 60) * 360;
+  const tickingRot = Math.floor(s) * 6;
 
-  // Time calculations
-  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
-  const minutes = time.getMinutes() + seconds / 60;
-  const hours = (time.getHours() % 12) + minutes / 60;
-
-  const clockSize = '90vh';
-  const numberSize = '12vh';
-  const radius = '32vmin';
-
-  const numbers = [
-    { src: twelve, angle: 0 }, { src: one, angle: 30 }, { src: two, angle: 60 },
-    { src: three, angle: 90 }, { src: four, angle: 120 }, { src: five, angle: 150 },
-    { src: six, angle: 180 }, { src: seven, angle: 210 }, { src: eight, angle: 240 },
-    { src: nine, angle: 270 }, { src: ten, angle: 300 }, { src: eleven, angle: 330 },
+  const deviations = [
+    getSlowWiggle(s % 1),
+    getJumpOvershoot(s % 1),
+    getElasticStretch(s % 1),
+    getHeavyTwitch(s % 1),
+    getDelayedRush(s % 1)
   ];
 
-  // Hand Style Helper
-  const handStyle = (width, height, color, deg, zIndex) => ({
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    width: width,
-    height: height,
-    backgroundColor: color,
-    borderRadius: '10px',
-    transformOrigin: 'bottom center',
-    transform: `translateX(-50%) rotate(${deg}deg)`,
-    zIndex: zIndex,
-    boxShadow: '0 0 15px 5px rgba(0,0,0,0.3), 0 0 13px 10px rgba(0,0,0,0.2), 0 0 50px 15px rgba(0,0,0,0.2)',
-    filter: 'drop-shadow(0 0 13px rgba(0,0,0,0.4)) drop-shadow(0 0 12px rgba(0,0,0,0.2))',
-  });
+  const scale = clockSize / 100;
 
   return (
-    <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', background: '#000' }}>
-      
-      {/* Background Layer */}
+    <div style={{
+      width: '100vw',
+      height: '100vh',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: COLORS.bg,
+      backgroundImage: `
+        radial-gradient(circle at center, 
+          rgba(135, 168, 126, 0.68) 0%, 
+          rgba(120, 141, 120, 0.45) 40%, 
+          rgba(123, 135, 87, 0.61) 100%
+        ),
+        url(${bgImage})
+      `,
+      backgroundSize: '120%',
+      backgroundPosition: 'center, center',
+      backgroundRepeat: 'no-repeat, no-repeat',
+      overflow: 'hidden'
+    }}>
       <div style={{ 
-        position: 'absolute', 
-        inset: 0, 
-        backgroundImage: `url(${pageBackground})`, 
-        backgroundSize: 'cover', // Cover the entire area
-        backgroundRepeat: 'no-repeat', // No tiling
-        backgroundPosition: 'center', // Center the image
-        zIndex: 1 
-      }} />
+        position: 'relative', 
+        width: `min(${clockSize}vh, ${clockSize}vw)`, 
+        height: `min(${clockSize}vh, ${clockSize}vw)`
+      }}>
+        {/* Hour hand */}
+        <div style={{
+          position: 'absolute',
+          bottom: '50%',
+          left: '50%',
+          height: `${12 * scale}vh`,
+          width: `${1.2 * scale}vh`,
+          border: `${0.1 * scale}vh solid ${COLORS.border}`,
+          background: COLORS.mainHands,
+          transform: `translateX(-50%) rotate(${hourRot}deg)`,
+          transformOrigin: 'bottom center',
+          boxSizing: 'border-box',
+          zIndex: 10
+        }} />
+        
+        {/* Minute hand */}
+        <div style={{
+          position: 'absolute',
+          bottom: '50%',
+          left: '50%',
+          height: `${20 * scale}vh`,
+          width: `${0.8 * scale}vh`,
+          border: `${0.1 * scale}vh solid ${COLORS.border}`,
+          background: COLORS.mainHands,
+          transform: `translateX(-50%) rotate(${minuteRot}deg)`,
+          transformOrigin: 'bottom center',
+          boxSizing: 'border-box',
+          zIndex: 11
+        }} />
 
-      {/* Clock Face Container */}
-      <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 5 }}>
-        <div style={{ width: clockSize, height: clockSize, position: 'relative' }}>
-          
-          {/* Numbers */}
-          {numbers.map(({ src, angle }, i) => {
-            const rad = (angle * Math.PI) / 180;
-            const isVisible = flickeringNumbers[i] !== false; // Default to visible if not set
-            return (
-              <img
-                key={i}
-                src={src}
-                alt=""
-                style={{
-                  position: 'absolute',
-                  width: numberSize,
-                  height: numberSize,
-                  left: `calc(50% + ${radius} * ${Math.sin(rad)} - ${numberSize} / 2)`,
-                  top: `calc(50% - ${radius} * ${Math.cos(rad)} - ${numberSize} / 2)`,
-                  opacity: isVisible ? 1 : 0.1, // Dark when flickering off
-                  transition: 'opacity 0.1s ease-in-out', // Smooth transition
-                  filter: 'drop-shadow(2px 2px 8px rgba(0,0,0,0.8)) drop-shadow(-2px -2px 10px rgba(0,0,0,0.8))',
-                  // Additional strong shadows for extra emphasis
-                  textShadow: '2px 2px 20px rgba(0,0,0,0.9), -2px -2px 20px rgba(0,0,0,0.9), 0 0 30px rgba(0,0,0,0.8)',
-                }}
-              />
-            );
-          })}
+        {/* Forgetful hand */}
+        <ComplexRedHand 
+          rotation={forgetfulPos} 
+          size={clockSize}
+          zIndex={40} 
+          transition="transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)" 
+        />
+        
+        {/* Sleepy hands */}
+        <ComplexRedHand 
+          rotation={sleepyPos1} 
+          size={clockSize}
+          zIndex={41} 
+          transition="transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)" 
+        />
+        <ComplexRedHand 
+          rotation={sleepyPos2} 
+          size={clockSize}
+          zIndex={42} 
+          transition="transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)" 
+        />
+        
+        {/* Deviation hands */}
+        {deviations.map((dev, i) => (
+          <ComplexRedHand 
+            key={i} 
+            rotation={baseSecondRot + dev} 
+            size={clockSize}
+            zIndex={20 + i} 
+            transition="transform 0.1s ease-out" 
+          />
+        ))}
 
-          {/* Clock Hands */}
-          {/* Hour Hand */}
-          <div style={handStyle('1.5vmin', '25vmin', '#fff', hours * 30, 10)} />
-          
-          {/* Minute Hand */}
-          <div style={handStyle('1vmin', '35vmin', '#eee', minutes * 6, 11)} />
-          
-          {/* Second Hand */}
-          <div style={handStyle('0.5vmin', '40vmin', '#EBE7E7', seconds * 6, 12)} />
+        {/* Ticking hand */}
+        <ComplexRedHand 
+          rotation={tickingRot} 
+          size={clockSize}
+          zIndex={90} 
+          transition="transform 0.15s cubic-bezier(0.2, 2, 0.4, 1)" 
+        />
+        
+        {/* Smooth second hand */}
+        <ComplexRedHand 
+          rotation={baseSecondRot} 
+          size={clockSize}
+          zIndex={100} 
+          transition="none" 
+        />
 
-          {/* Center Pin */}
-          <div style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            width: '2.5vmin',
-            height: '2.5vmin',
-            backgroundColor: '#fff',
-            borderRadius: '50%',
-            transform: 'translate(-50%, -50%)',
-            zIndex: 15,
-            boxShadow: '0 0 10px rgba(0,0,0,0.5)'
-          }} />
-        </div>
+        {/* Center dot */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          translate: '-50% -50%',
+          width: `${0.8 * scale}vh`,
+          height: `${0.8 * scale}vh`,
+          background: '#EFD73C',
+          border: `${0.15 * scale}vh solid #333`,
+          borderRadius: '50%',
+          zIndex: 200
+        }} />
       </div>
     </div>
   );
 };
 
-export default Clock;
+export default ManyHandClock;
