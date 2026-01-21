@@ -7,52 +7,36 @@ import fontflam251211 from '../../assets/fonts/26-01-11-flam.ttf'
 import hourHandImg from '../../assets/clocks/26-01-11/leg1.webp'
 import minuteHandImg from '../../assets/clocks/26-01-11/leg2.webp'
 import secondHandImg from '../../assets/clocks/26-01-11/flam.webp'
-import fontflam211211 from '../../assets/fonts/26-01-11-flam.ttf'
 
 // --- CONFIG ---
 const CONFIG = {
   clockSize: 'min(90vw, 90vh)',
   numeralRadius: 43,
   hands: [
-    { img: secondHandImg,  height: 'clamp(200px, 55vw, 350px)', zIndex: 8 },  // second hand - longest & on top
-    { img: minuteHandImg,  height: 'clamp(150px, 48vw, 300px)', zIndex: 7 },  // minute hand
-    { img: hourHandImg,    height: 'clamp(100px, 29vw, 180px)', zIndex: 6 }   // hour hand - shortest
+    { img: secondHandImg,  height: 'clamp(200px, 55vw, 350px)', zIndex: 12 }, 
+    { img: minuteHandImg,  height: 'clamp(150px, 48vw, 300px)', zIndex: 11 },  
+    { img: hourHandImg,    height: 'clamp(100px, 29vw, 180px)', zIndex: 10 }   
   ],
   numerals: [
-    { text: '12', deg: 0 },
-    { text: '1',  deg: 30 },
-    { text: '2',  deg: 60 },
-    { text: '3',  deg: 90 },
-    { text: '4',  deg: 120 },
-    { text: '5',  deg: 150 },
-    { text: '6',  deg: 180 },
-    { text: '7',  deg: 210 },
-    { text: '8',  deg: 240 },
-    { text: '9',  deg: 270 },
-    { text: '10', deg: 300 },
-    { text: '11', deg: 330 }
-  ],
-  tileSize: 100
+    { text: '12', deg: 0 }, { text: '1',  deg: 30 }, { text: '2',  deg: 60 },
+    { text: '3',  deg: 90 }, { text: '4',  deg: 120 }, { text: '5',  deg: 150 },
+    { text: '6',  deg: 180 }, { text: '7',  deg: 210 }, { text: '8',  deg: 240 },
+    { text: '9',  deg: 270 }, { text: '10', deg: 300 }, { text: '11', deg: 330 }
+  ]
 }
 
 // --- HOOKS ---
 function useTime() {
   const [time, setTime] = useState(() => new Date())
-
   useEffect(() => {
     let animationFrameId
     const updateTime = () => {
       setTime(new Date())
       animationFrameId = requestAnimationFrame(updateTime)
     }
-
     animationFrameId = requestAnimationFrame(updateTime)
-
-    return () => {
-      if (animationFrameId) cancelAnimationFrame(animationFrameId)
-    }
+    return () => cancelAnimationFrame(animationFrameId)
   }, [])
-
   return time
 }
 
@@ -66,7 +50,6 @@ function useClockAngles(time) {
   }, [time])
 }
 
-// Pre-calculate numeral positions (only once)
 const NUMERAL_POSITIONS = CONFIG.numerals.map(({ text, deg }) => {
   const rad = (deg - 90) * (Math.PI / 180)
   return {
@@ -76,7 +59,7 @@ const NUMERAL_POSITIONS = CONFIG.numerals.map(({ text, deg }) => {
   }
 })
 
-// --- GLOBAL FONT ---
+// --- STYLES ---
 const GlobalStyles = memo(() => (
   <style>{`
     @font-face {
@@ -84,78 +67,37 @@ const GlobalStyles = memo(() => (
       src: url(${fontflam251211}) format('truetype');
       font-display: swap;
     }
-    @keyframes scrollUp {
-      from { transform: translateY(0); }
-      to { transform: translateY(-66.66%); }
-    }
   `}</style>
 ))
 
-// --- STATIC BG ---
 const StaticBackground = memo(() => (
-  <div
-    style={{
-      position: 'fixed',
-      inset: 0,
-      zIndex: 1,
-      pointerEvents: 'none'
-    }}
-  >
-    {/* Background image without filter */}
-    <div
-      style={{
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        backgroundImage: `url(${bg2})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        filter: 'hue-rotate(-40deg) saturate(0.7)',
-        opacity: 0.5,
-        zIndex: 5 
-      }}
-    />
-    
-    {/* Foreground image with filter */}
-    <div
-      style={{
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        backgroundImage: `url(${bg1})`,
-        backgroundSize: 'cover',
-        // opacity: 0.7,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        filter: 'brightness(1.7) contrast(0.8) hue-rotate(-40deg)'
-      }}
-    />
+  <div style={{ position: 'fixed', inset: 0, zIndex: 1, pointerEvents: 'none' }}>
+    <div style={{
+      position: 'absolute', width: '100%', height: '100%',
+      backgroundImage: `url(${bg2})`, backgroundSize: 'cover', backgroundPosition: 'center',
+      filter: 'hue-rotate(-40deg) saturate(0.7)', opacity: 0.5, zIndex: 5 
+    }} />
+    <div style={{
+      position: 'absolute', width: '100%', height: '100%',
+      backgroundImage: `url(${bg1})`, backgroundSize: 'cover', backgroundPosition: 'center',
+      filter: 'brightness(1.7) contrast(0.8) hue-rotate(-40deg)'
+    }} />
   </div>
 ))
 
-// --- NUMERAL ---
 const ClockNumeral = memo(({ text, x, y }) => (
-  <div
-    style={{
-      position: 'absolute',
-      left: `${x}%`,
-      top: `${y}%`,
-      transform: 'translate(-50%, -50%)',
-      color: '#FC8EAC',
-      opacity: 0.5,
-      fontFamily: 'CustomFont251211, serif',
-      fontSize: '31vh',
-      textShadow: '-4vh -4vh 0px #3B020652, 4vh 4vh 0px #F5E5E8A8',
-      zIndex: 1 ,
-      pointerEvents: 'none'
-    }}
-  >
+  <div style={{
+    position: 'absolute', left: `${x}%`, top: `${y}%`,
+    transform: 'translate(-50%, -50%)', color: '#FC8EAC', opacity: 0.5,
+    fontFamily: 'CustomFont251211, serif', fontSize: '31vh',
+    textShadow: '-4vh -4vh 0px #3B020652, 4vh 4vh 0px #F5E5E8A8',
+    zIndex: 1, pointerEvents: 'none'
+  }}>
     {text}
   </div>
 ))
 
-// --- CLOCK HAND ---
+// --- CLOCK HAND COMPONENT ---
 const ClockHand = memo(({ img, height, rotation, flip, reverse, zIndex }) => (
   <img
     src={img}
@@ -167,57 +109,48 @@ const ClockHand = memo(({ img, height, rotation, flip, reverse, zIndex }) => (
       left: '50%',
       height: height,
       width: 'auto',
-      maxWidth: '100%', // safety
-      transform: `translate(-50%, -100%) ${flip ? 'scaleX(-1)' : ''} rotate(${reverse ? -rotation : rotation}deg)`,
+      zIndex: zIndex,
       transformOrigin: 'bottom center',
+      transform: `translate(-50%, -100%) ${flip ? 'scaleX(-1)' : ''} rotate(${reverse ? -rotation : rotation}deg)`,
       pointerEvents: 'none',
       userSelect: 'none',
-      willChange: 'transform'
+      willChange: 'transform',
+      
+      /* FIXED MASKING: 
+         - to top: Starts at the bottom (clock center) and goes to the top (hand tip).
+         - 0% (Bottom): 0.1 opacity
+         - 100% (Top): 1.0 opacity
+      */
+      WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,1) 50%)',
+      maskImage: 'linear-gradient(to top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,1) 50%)',
+      WebkitMaskSize: '100% 100%',
+      maskSize: '100% 100%',
+      WebkitMaskRepeat: 'no-repeat',
+      maskRepeat: 'no-repeat'
     }}
   />
 ))
 
-// --- CLOCK FACE ---
 const ClockFace = memo(({ angles }) => (
-  <div
-    style={{
-      position: 'fixed',
-      top: '50%',
-      left: '50%',
-      width: CONFIG.clockSize,
-      height: CONFIG.clockSize,
-      transform: 'translate(-50%, -50%)',
-      borderRadius: '50%',
-      zIndex: 10
-    }}
-  >
+  <div style={{
+    position: 'fixed', top: '50%', left: '50%',
+    width: CONFIG.clockSize, height: CONFIG.clockSize,
+    transform: 'translate(-50%, -50%)', zIndex: 10
+  }}>
     {NUMERAL_POSITIONS.map((p, i) => (
       <ClockNumeral key={i} text={p.text} x={p.x} y={p.y} />
     ))}
 
-    <div
-      style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '100%',
-        height: '100%'
-      }}
-    >
+    <div style={{ position: 'absolute', inset: 0 }}>
       {CONFIG.hands.map((hand, i) => (
         <ClockHand
           key={i}
           img={hand.img}
           height={hand.height}
           zIndex={hand.zIndex}
-          rotation={
-            i === 0 ? angles.second :
-            i === 1 ? angles.minute :
-            angles.hour
-          }
-          flip={i === 0}      // second hand flip
-          reverse={i === 0}   // second hand reverse direction
+          rotation={i === 0 ? angles.second : i === 1 ? angles.minute : angles.hour}
+          flip={i === 0}
+          reverse={i === 0}
         />
       ))}
     </div>
@@ -230,7 +163,7 @@ export default function AnalogClock() {
   const angles = useClockAngles(time)
   const preloadedRef = useRef(false)
 
-  // Preload images
+  // Preload images for smooth initial render
   useEffect(() => {
     if (!preloadedRef.current) {
       [hourHandImg, minuteHandImg, secondHandImg].forEach(src => {
