@@ -69,7 +69,7 @@ const DiscClock = () => {
     <div style={containerStyle}>
       <div style={clockBase}>
         {/* Hour Disc - Cyan */}
-        <div style={getDiscStyle('100%', hDeg, '#272829', 1)}>
+        <div style={getDiscStyle('50%', hDeg, '#272829', 1)}>
           <div style={leadLineStyle('#323435')} />
         </div>
 
@@ -79,7 +79,7 @@ const DiscClock = () => {
         </div>
 
         {/* Second Disc - Rose */}
-        <div style={getDiscStyle('50%', sDeg, '#201F1F', 3)}>
+        <div style={getDiscStyle('100%', sDeg, '#201F1F', 3)}>
           <div style={leadLineStyle('#111010')} />
         </div>
 
