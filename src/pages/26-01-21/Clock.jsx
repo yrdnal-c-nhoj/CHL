@@ -93,7 +93,7 @@ wrapper: {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  background: 'linear-gradient(180deg, #0D3BF3 0%, #798158A2 100%)', // Blue to Dark Blue
+  background: 'linear-gradient(180deg, #4C6DF3 0%, #798158A2 100%)', // Blue to Dark Blue
 },
   gpuAcceleratedLayer: {
     position: 'absolute',
