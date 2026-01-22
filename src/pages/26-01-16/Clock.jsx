@@ -90,10 +90,9 @@ const LeapClock = () => {
         width: '100%',
         maxWidth: '100%',
         margin: 0,
-        padding: '1.5vh 3vw',
+        padding: '2vh 4vw',
         boxSizing: 'border-box',
-        overflow: 'hidden',
-        minHeight: '100vh'
+        overflow: 'hidden'
       }}>
         {/* HEADER */}
         <header style={{
@@ -135,8 +134,7 @@ const LeapClock = () => {
           justifyContent: 'center',
           alignItems: 'center',
           padding: '1vh 0',
-          minHeight: '25vh',
-          maxHeight: '45vh',
+          minHeight: '30vh',
           width: '100%',
           overflow: 'hidden',
           boxSizing: 'border-box'
@@ -147,25 +145,14 @@ const LeapClock = () => {
             justifyContent: 'center',
             alignItems: 'center',
             fontFamily: 'LeapFont, monospace',
-            color: '#8B5CF6',
-            fontSize: 'min(20vw, 12vh)',
+            color: '#262424',
+            fontSize: 'min(25vw, 14vh)',
             lineHeight: 1,
             letterSpacing: '-0.3em',
             width: '100%',
             padding: '0 4%',
             boxSizing: 'border-box',
-            transform: 'scale(0.95)',
-            textShadow: `
-              0 0 10px #8B5CF6,
-              0 0 20px #8B5CF6,
-              0 0 30px #8B5CF6,
-              0 0 40px #6366F1,
-              0 0 70px #6366F1,
-              0 0 80px #6366F1,
-              0 0 100px #4F46E5,
-              0 0 150px #4F46E5
-            `,
-            filter: 'brightness(1.2) contrast(1.1)'
+            transform: 'scale(0.95)'
           }}>
             <div style={{ display: 'flex', opacity: 0.3 }}>
               <DigitBox>{now.getHours().toString().padStart(2, '0')[0]}</DigitBox>
@@ -190,19 +177,17 @@ const LeapClock = () => {
         <footer style={{
           flexShrink: 0,
           width: '100%',
-          padding: '0.5vh 0',
-          marginTop: 'auto',
-          maxHeight: '30vh',
-          overflow: 'hidden'
+          padding: '1vh 0',
+          marginTop: 'auto'
         }}>
           <div style={{
             display: 'grid',
-            gap: '0.8vh',
+            gap: '1vh',
             gridTemplateColumns: 'repeat(2, 1fr)',
             maxWidth: '100%',
             margin: '0 auto',
             padding: '0 2%',
-            transform: 'scale(0.85)',
+            transform: 'scale(0.9)',
             transformOrigin: 'center bottom'
           }}>
            <InfoTile label="Last Adjustment" value={`${formatUTC(leapData.last)} 23:59:59 UTC`} />
@@ -228,24 +213,9 @@ const DigitBox = ({ children }) => (
     textAlign: 'center',
     fontVariantNumeric: 'tabular-nums',
     letterSpacing: '0',
-    fontFeatureSettings: '"tnum" 1',
-    position: 'relative',
-    textShadow: `
-      0 0 5px #A855F7,
-      0 0 10px #A855F7,
-      0 0 15px #8B5CF6,
-      0 0 20px #7C3AED
-    `,
-    filter: 'drop-shadow(0 0 8px #8B5CF6) brightness(1.3)',
-    animation: 'uvPulse 2s ease-in-out infinite alternate'
+    fontFeatureSettings: '"tnum" 1'
   }}>
     {children}
-    <style jsx>{`
-      @keyframes uvPulse {
-        0% { filter: drop-shadow(0 0 8px #8B5CF6) brightness(1.3); }
-        100% { filter: drop-shadow(0 0 15px #A855F7) brightness(1.5); }
-      }
-    `}</style>
   </div>
 );
 
@@ -253,18 +223,18 @@ const InfoTile = ({ label, value, color = "#086143", isStatus = false }) => (
   <div style={{
     backgroundColor: 'rgba(255, 255, 255, 0.6)',
     backdropFilter: 'blur(10px)',
-    borderRadius: '0.8rem',
+    borderRadius: '1rem',
     border: '1px solid rgba(255, 255, 255, 0.4)',
-    padding: '0.6rem',
-    margin: '0.1rem',
+    padding: '0.8rem',
+    margin: '0.2rem',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
   }}>
     <div style={{ textAlign: 'center' }}>
       <div style={{
         opacity: 0.8,
-        marginBottom: '0.2rem',
+        marginBottom: '0.3rem',
         fontFamily: 'Oswald, sans-serif',
-        fontSize: '0.6rem',
+        fontSize: '0.7rem',
         textTransform: 'uppercase',
         letterSpacing: '0.05em'
       }}>
@@ -274,7 +244,7 @@ const InfoTile = ({ label, value, color = "#086143", isStatus = false }) => (
         color,
         fontFamily: 'Questrial, sans-serif',
         fontWeight: 'bold',
-        fontSize: '0.8rem',
+        fontSize: '0.9rem',
         ...(isStatus && { letterSpacing: '0.05em' })
       }}>
         {value}

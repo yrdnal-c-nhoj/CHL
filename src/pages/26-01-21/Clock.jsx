@@ -1,23 +1,23 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
 // Explicit Asset Imports
-import backgroundImage from '../../assets/clocks/26-01-21/h2o.gif';
+import backgroundImage from '../../assets/clocks/26-01-21/fllap.webp';
 import tileImage from '../../assets/clocks/26-01-21/flap.webp'; 
 import customFontFile from '../../assets/fonts/26-01-21-migrate.ttf';
 
-const AnalogClockDisplay = () => {
+const AnalogBirdMigrateClock = () => {
   const [isReady, setIsReady] = useState(false);
   const [time, setTime] = useState(new Date());
 
-  // --- SINGLE CONTROL VARIABLE ---
-  // Format: #RRGGBBAA (Red, Green, Blue, Alpha)
-  // Current: #B026FF (Color) + 80 (50% Opacity)
-  const themeColor = '#B026FF80'; 
+  const themeFlapColor = '#830DD2'; 
   
-  // We use the full color (without alpha) for the glow to keep it vibrant
-  const baseColor = themeColor.slice(0, 7); 
-  const glowShadow = `0 0 1px ${baseColor}, 0 0 2px ${baseColor}`;
-  // -------------------------------
+  const uvGlow = `
+    0 0 5px #fff,
+    0 0 12px #8B5CF6,
+    0 0 25px #8B5CF6,
+    0 0 45px #6366F1,
+    0 0 70px #4F46E5
+  `;
 
   const fontFamilyName = useMemo(() => {
     const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
@@ -78,7 +78,7 @@ const AnalogClockDisplay = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#000',
+      background: `linear-gradient(180deg, #0B5BA7, #6D6E4E)`,
       opacity: isReady ? 1 : 0,
       transition: 'opacity 0.5s ease-in-out',
     },
@@ -89,7 +89,7 @@ const AnalogClockDisplay = () => {
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       zIndex: 1,
-      filter: 'brightness(0.6) saturate(0.2)',
+      filter: 'brightness(0.35) saturate(0.6)', 
     },
     tileBase: {
       position: 'absolute',
@@ -97,16 +97,16 @@ const AnalogClockDisplay = () => {
       backgroundImage: `url(${tileImage})`,
       backgroundRepeat: 'repeat',
       backgroundPosition: 'center',
-      filter: 'brightness(1.4) contrast(1.9) saturate(2.2)',
+      filter: 'brightness(1.1) contrast(1.4) saturate(1.6)',
       zIndex: 2,
       pointerEvents: 'none',
-      opacity: 0.9,
+      opacity: 0.55,
     },
     clockFace: {
       position: 'relative',
       zIndex: 10,
-      width: 'min(99vw, 99vh)',
-      height: 'min(99vw, 99vh)',
+      width: 'min(92vw, 92vh)',
+      height: 'min(92vw, 92vh)',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -117,10 +117,20 @@ const AnalogClockDisplay = () => {
       left: '50%',
       transformOrigin: 'bottom center',
       borderRadius: '4px',
-      backgroundColor: themeColor, // Transparency applied here
-      boxShadow: glowShadow,
+      backgroundColor: themeFlapColor,
+      boxShadow: uvGlow,
+      filter: 'brightness(1.5) saturate(2)',
       zIndex: 15,
     },
+    number: {
+      fontFamily: fontFamilyName,
+      fontSize: 'min(11vw, 11vh)', 
+      color: themeFlapColor,
+      textShadow: uvGlow,
+      userSelect: 'none',
+      filter: 'brightness(1.5) saturate(2)',
+      display: 'inline-block',
+    }
   };
 
   return (
@@ -139,20 +149,14 @@ const AnalogClockDisplay = () => {
               position: 'absolute',
               width: '100%',
               height: '100%',
-              transform: `rotate(${i * 30}deg)`,
+              transform: `rotate(${i * 30}deg)`, // Parent rotates the slot
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'flex-start',
-              paddingTop: '2%'
-            }}
+           }}
           >
-            <span style={{ 
-                fontFamily: fontFamilyName,
-                fontSize: 'min(12vw, 12vh)', 
-                fontWeight: 'bold',
-                color: themeColor, // Transparency applied here
-                textShadow: glowShadow,
-            }}>
+            {/* The span now stays aligned with the rotation of its parent container */}
+            <span style={styles.number}>
               {i === 0 ? 12 : i}
             </span>
           </div>
@@ -161,21 +165,23 @@ const AnalogClockDisplay = () => {
         {/* Hour Hand */}
         <div style={{ 
           ...styles.hand, 
-          width: 'min(2vw, 12px)', 
-          height: '28%', 
+          width: 'min(1.6vw, 0.4vh)', 
+          height: '22%', 
           transform: `translateX(-50%) rotate(${hourDeg}deg)` 
         }} />
         
         {/* Minute Hand */}
         <div style={{ 
           ...styles.hand, 
-          width: 'min(1.2vw, 7px)', 
-          height: '42%', 
+          width: 'min(1.4vw, 0.3vh)', 
+          height: '36%', 
           transform: `translateX(-50%) rotate(${minuteDeg}deg)` 
         }} />
+
+        
       </div>
     </div>
   );
 };
 
-export default AnalogClockDisplay;
+export default AnalogBirdMigrateClock;
