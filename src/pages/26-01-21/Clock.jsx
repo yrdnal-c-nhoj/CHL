@@ -66,15 +66,15 @@ const AnalogBirdMigrateClock = () => {
         <div style={{ 
           ...styles.hand, 
           height: '24%', 
-          width: 'min(1.8vw, 7px)',
+          width: 'min(1.8vw, 3px)',
           transform: `translateX(-50%) rotate(${hourDeg}deg)` 
         }} />
         
         {/* Minute Hand */}
         <div style={{ 
           ...styles.hand, 
-          height: '38%', 
-          width: 'min(1.2vw, 4px)',
+          height: '45%', 
+          width: 'min(1.2vw, 2px)',
           transform: `translateX(-50%) rotate(${minuteDeg}deg)` 
         }} />
 
@@ -148,17 +148,6 @@ wrapper: {
     backgroundColor: '#830DD2',
     boxShadow: '0 0 20px #8B5CF6',
     zIndex: 15,
-  },
-  pin: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '12px',
-    height: '12px',
-    borderRadius: '50%',
-    backgroundColor: '#830DD2',
-    transform: 'translate(-50%, -50%)',
-    zIndex: 20,
   }
 };
 
