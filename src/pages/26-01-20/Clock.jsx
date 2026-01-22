@@ -99,7 +99,7 @@ const Clock = () => {
     },
     digit: {
       fontFamily: "'MyD250916font', sans-serif",
-      fontSize: isLargeScreen ? '28vh' : '20vh',
+      fontSize: isLargeScreen ? '28vh' : '18vh',
       color: '#B80A0A',
       width: '0.75em',
       textAlign: 'center',
