@@ -8,7 +8,7 @@ export default function AardvarkClock() {
   const [totalSeconds, setTotalSeconds] = useState(0);
 
   const uniqueFontFamily = `Giza_20260107`;
-  const clockLabels = ['A','A','A','A','A','A','A','A','A','Aa','Aa','Aa'];
+  const clockLabels = ['a','a','a','a','a','a','a','a','a','Aa','Aa','Aa'];
 
   /* Inject font */
   useEffect(() => {
