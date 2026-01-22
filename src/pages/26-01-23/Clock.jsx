@@ -1,191 +1,130 @@
-import { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react';
 
-const FlipNumber = ({ value }) => {
-  const [displayedValue, setDisplayedValue] = useState(value)
-  const [prevValue, setPrevValue] = useState(value)
-  const [isFlipping, setIsFlipping] = useState(false)
+// Asset imports
+import clockDigitImage from '../../assets/clocks/26-01-22/eye.webp';
+// Replace this with your actual background image path
+import clockBackground from '../../assets/clocks/26-01-22/eye.webp';
+
+const Clock = () => {
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    if (value !== displayedValue) {
-      setPrevValue(displayedValue)
-      setIsFlipping(true)
+    let animationFrame;
+    const update = () => {
+      setTime(new Date());
+      animationFrame = requestAnimationFrame(update);
+    };
+    animationFrame = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(animationFrame);
+  }, []);
 
-      // After animation completes, update the displayed value
-      const timer = setTimeout(() => {
-        setDisplayedValue(value)
-        setIsFlipping(false)
-      }, 600) // matches animation duration
+  // Calculate rotations
+  const seconds = time.getSeconds();
+  const minutes = time.getMinutes();
+  const hours = time.getHours();
 
-      return () => clearTimeout(timer)
+  const secDeg = (seconds / 60) * 360;
+  const minDeg = ((minutes + seconds / 60) / 60) * 360;
+  const hourDeg = ((hours % 12 + minutes / 60) / 12) * 360;
+
+  const styles = {
+    container: {
+      width: '100vw',
+      height: '100dvh',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#000000',
+      margin: 0,
+      padding: 0,
+      overflow: 'hidden',
+    },
+    clockFace: {
+      position: 'relative',
+      width: 'min(90vw, 90vh)',
+      height: 'min(90vw, 90vh)',
+      borderRadius: '50%',
+      // Background Image implementation
+      backgroundImage: `url(${clockBackground})`,
+      backgroundSize: '60%',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    },
+    hand: (deg, width, length, color, zIndex) => ({
+      position: 'absolute',
+      bottom: '50%',
+      left: '50%',
+      transformOrigin: 'bottom',
+      transform: `translateX(-50%) rotate(${deg}deg)`,
+      width: width,
+      height: length,
+      backgroundColor: color,
+      borderRadius: '10px',
+      zIndex: zIndex,
+      // Prevents the "snap back" spin at 60s/0s
+      transition: seconds === 0 ? 'none' : 'transform 0.05s cubic-bezier(0.4, 2.08, 0.55, 0.44)',
+      filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.79))',
+    }),
+    digitContainer: (rotation) => ({
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      transform: `rotate(${rotation}deg)`,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+    }),
+    digitImage: {
+      width: 'min(15vw, 15vh)',
+      height: 'min(15vw, 15vh)',
+      objectFit: 'contain',
+      transform: `translateY(-20%)`, 
+    },
+    centerDot: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      width: '18px',
+      height: '18px',
+      backgroundColor: '#f8fafc',
+      borderRadius: '50%',
+      transform: 'translate(-50%, -50%)',
+      zIndex: 10,
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.88)',
     }
-  }, [value, displayedValue])
-
-  const formattedValue = String(displayedValue).padStart(2, '0')
-  const formattedPrev = String(prevValue).padStart(2, '0')
+  };
 
   return (
-    <div className='flip-container'>
-      <div className={`flip-card ${isFlipping ? 'flipping' : ''}`}>
-        {/* Top half - stays visible */}
-        <div className='top-half'>
-          <span>{formattedValue}</span>
-        </div>
+    <div style={styles.container}>
+      <div style={styles.clockFace}>
+        
+        {/* Render 12 digits */}
+        {[...Array(12)].map((_, i) => {
+          const rotation = (i + 1) * 30;
+          return (
+            <div key={i} style={styles.digitContainer(rotation)}>
+              <img 
+                src={clockDigitImage} 
+                alt={`digit-${i + 1}`} 
+                style={styles.digitImage} 
+              />
+            </div>
+          );
+        })}
 
-        {/* Bottom half - stays visible */}
-        <div className='bottom-half'>
-          <span>{formattedValue}</span>
-        </div>
-
-        {/* Flipping top (shows previous value flipping out) */}
-        <div className='flipping-top'>
-          <span>{formattedPrev}</span>
-        </div>
-
-        {/* Flipping bottom (shows new value flipping in) */}
-        <div className='flipping-bottom'>
-          <span>{formattedValue}</span>
-        </div>
-      </div>
-
-      <style jsx>{`
-        .flip-container {
-          position: relative;
-          width: 80px;
-          height: 120px;
-          perspective: 1000px;
-          margin: 0 8px;
-        }
-
-        .flip-card {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          transform-style: preserve-3d;
-        }
-
-        .top-half,
-        .bottom-half,
-        .flipping-top,
-        .flipping-bottom {
-          position: absolute;
-          width: 100%;
-          height: 50%;
-          overflow: hidden;
-          background: #1a1a1a;
-          border-radius: 10px;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-          backface-visibility: hidden;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          font-size: 80px;
-          font-weight: bold;
-          font-family: 'Arial Narrow', Arial, sans-serif;
-        }
-
-        .top-half {
-          top: 0;
-          border-bottom: 1px solid #000;
-          transform-origin: bottom;
-        }
-
-        .bottom-half {
-          bottom: 0;
-          border-top: 1px solid #333;
-          transform-origin: top;
-          align-items: flex-start;
-          padding-top: 12px;
-        }
-
-        .bottom-half span {
-          transform: translateY(-50%);
-        }
-
-        .flipping-top {
-          top: 0;
-          border-bottom: 1px solid #000;
-          transform-origin: bottom;
-          transform: rotateX(0deg);
-          animation: ${isFlipping ? 'flipTop 0.6s ease-in forwards' : 'none'};
-        }
-
-        .flipping-bottom {
-          bottom: 0;
-          border-top: 1px solid #333;
-          transform-origin: top;
-          transform: rotateX(90deg);
-          animation: ${isFlipping
-            ? 'flipBottom 0.6s ease-out forwards'
-            : 'none'};
-        }
-
-        @keyframes flipTop {
-          0% {
-            transform: rotateX(0deg);
-          }
-          100% {
-            transform: rotateX(-90deg);
-          }
-        }
-
-        @keyframes flipBottom {
-          0% {
-            transform: rotateX(90deg);
-          }
-          100% {
-            transform: rotateX(0deg);
-          }
-        }
-      `}</style>
-    </div>
-  )
-}
-
-const FlipClock = () => {
-  const [time, setTime] = useState(new Date())
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date())
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [])
-
-  const hours = time.getHours().toString().padStart(2, '0')
-  const minutes = time.getMinutes().toString().padStart(2, '0')
-
-  return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        backgroundColor: '#111',
-        fontFamily: 'Arial, sans-serif'
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <FlipNumber value={parseInt(hours[0])} />
-        <FlipNumber value={parseInt(hours[1])} />
-
-        <div
-          style={{
-            color: '#444',
-            fontSize: '80px',
-            margin: '0 20px',
-            fontWeight: 'bold'
-          }}
-        >
-          :
-        </div>
-
-        <FlipNumber value={parseInt(minutes[0])} />
-        <FlipNumber value={parseInt(minutes[1])} />
+        {/* Hands */}
+        {/* Hour Hand */}
+        <div style={styles.hand(hourDeg, '8px', '25%', '#ffffff', 3)} />
+        {/* Minute Hand */}
+        <div style={styles.hand(minDeg, '5px', '37%', '#cbd5e1', 4)} />
+        {/* Second Hand */}
+        <div style={styles.hand(secDeg, '2px', '52%', '#ef4444', 5)} />
+        
+        {/* Center Pivot */}
+        <div style={styles.centerDot} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FlipClock
+export default Clock;
