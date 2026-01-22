@@ -12,7 +12,7 @@ const AnalogBirdMigrateClock = () => {
   const themeFlapColor = '#830DD2'; 
   
   const uvGlow = `
-    0 0 5px #fff,
+  
     0 0 12px #8B5CF6,
     0 0 25px #8B5CF6,
     0 0 45px #6366F1,
