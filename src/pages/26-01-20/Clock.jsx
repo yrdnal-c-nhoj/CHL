@@ -136,12 +136,12 @@ const Clock = () => {
     digit: {
       fontFamily: "'MyD250916font', sans-serif",
       fontSize: isLargeScreen ? '28vh' : '18vh',
-      color: '#B80A0A',
+      color: '#F12929',
       width: '0.75em',
       textAlign: 'center',
       lineHeight: isLargeScreen ? '1.1' : '0.8',
       // filter: 'drop-shadow(0px 0px 12px rgba(255, 255, 255, 0.8))',
-      textShadow: '1px 1px 3px #FFFFFF',
+      textShadow: '1px 1px 3px #FFFFFF, -1px -1px 3px #FFFFFF, 1px -1px 3px #FFFFFF',
     }
   };
 
