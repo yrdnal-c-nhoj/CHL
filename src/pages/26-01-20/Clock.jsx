@@ -28,26 +28,62 @@ const Clock = () => {
 
   // 3. Asset Preloading & Font Injection
   useEffect(() => {
+    // Create style element with font-face
     const style = document.createElement('style');
     style.textContent = `
       @font-face {
         font-family: 'MyD250916font';
         src: url(${d250916font}) format('truetype');
-        font-display: swap;
+        font-display: block;
+        font-weight: normal;
+        font-style: normal;
+      }
+      
+      /* Prevent FOUC with fallback styles */
+      .clock-container {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+      }
+      
+      .clock-container.loaded {
+        opacity: 1;
+      }
+      
+      /* Fallback font styles */
+      .clock-digit {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        visibility: hidden;
+      }
+      
+      .clock-font-loaded .clock-digit {
+        font-family: 'MyD250916font', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        visibility: visible;
       }
     `;
     document.head.appendChild(style);
 
+    // Preload image
     const img = new Image();
     img.src = bgImage;
 
+    // Load font explicitly
+    const font = new FontFace('MyD250916font', `url(${d250916font})`);
+    
     Promise.all([
-      document.fonts.ready,
+      font.load().then(() => {
+        document.fonts.add(font);
+        return document.fonts.ready;
+      }),
       new Promise(res => { img.onload = res; img.onerror = res; })
-    ]).then(() => setIsLoaded(true));
+    ]).then(() => {
+      // Add font-loaded class to document
+      document.documentElement.classList.add('clock-font-loaded');
+      setIsLoaded(true);
+    });
 
     return () => {
       if (document.head.contains(style)) document.head.removeChild(style);
+      document.documentElement.classList.remove('clock-font-loaded');
     };
   }, []);
 
@@ -112,7 +148,14 @@ const Clock = () => {
   const renderUnit = (value) => (
     <div style={{ display: 'flex' }}>
       {value.split('').map((digit, i) => (
-        <span key={i} style={styles.digit}>
+        <span 
+          key={i} 
+          className="clock-digit"
+          style={{
+            ...styles.digit,
+            fontFamily: "'MyD250916font', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+          }}
+        >
           {DIGIT_MAP[digit] || digit}
         </span>
       ))}
@@ -124,7 +167,10 @@ const Clock = () => {
   }
 
   return (
-    <main style={styles.container}>
+    <main 
+      style={styles.container} 
+      className={`clock-container ${isLoaded ? 'loaded' : ''}`}
+    >
       <div style={styles.background} aria-hidden="true" />
       <div style={styles.gradient} aria-hidden="true" />
       
