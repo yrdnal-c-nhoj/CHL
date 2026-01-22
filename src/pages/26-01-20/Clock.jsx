@@ -92,7 +92,7 @@ const Clock = () => {
     zIndex: 2,
     display: 'flex', 
     flexDirection: isLargeScreen ? 'row' : 'column',
-    gap: isLargeScreen ? '1vw' : '15px', 
+    gap: isLargeScreen ? '1vw' : '0.1vh', 
     alignItems: 'center',
     justifyContent: 'center'
   };
