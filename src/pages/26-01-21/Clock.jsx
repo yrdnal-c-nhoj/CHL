@@ -78,7 +78,7 @@ const AnalogBirdMigrateClock = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      background: `linear-gradient(180deg, #0B5BA7, #6D6E4E)`,
+      background: `linear-gradient(180deg, #1289F8, #575A04D2)`,
       opacity: isReady ? 1 : 0,
       transition: 'opacity 0.5s ease-in-out',
     },
@@ -110,6 +110,7 @@ const AnalogBirdMigrateClock = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
+      opacity: 0.6,
     },
     hand: {
       position: 'absolute',
@@ -137,7 +138,7 @@ const AnalogBirdMigrateClock = () => {
     <div style={styles.wrapper}>
       <div style={styles.backgroundLayer} />
 
-      {[925, 650, 425, 250].map(size => (
+      {[ 725,  400].map(size => (
         <div key={size} style={{ ...styles.tileBase, backgroundSize: `${size}px` }} />
       ))}
       
