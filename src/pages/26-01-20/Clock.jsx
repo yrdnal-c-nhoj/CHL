@@ -85,13 +85,13 @@ const Clock = () => {
       left: 0,
       width: '100%',
       height: '66dvh',
-      background: 'linear-gradient(to bottom, rgba(35, 36, 2, 0.93), rgba(220, 13, 13, 0.96))',
-      zIndex: 1.5,
+      background: 'linear-gradient(to bottom, rgba(35, 36, 2, 0.93), rgba(220, 13, 13, 0))',
+      zIndex: 2,
       pointerEvents: 'none',
     },
     content: {
       position: 'relative',
-      zIndex: 2,
+      zIndex: 3,
       display: 'flex',
       flexDirection: isLargeScreen ? 'row' : 'column',
       gap: isLargeScreen ? '1.5vw' : '0.5vh',
@@ -104,8 +104,8 @@ const Clock = () => {
       width: '0.75em',
       textAlign: 'center',
       lineHeight: isLargeScreen ? '1.1' : '0.8',
-      filter: 'drop-shadow(0px 0px 12px rgba(255, 255, 255, 0.8))',
-      textShadow: '0 0 5px #FFFFFF',
+      // filter: 'drop-shadow(0px 0px 12px rgba(255, 255, 255, 0.8))',
+      textShadow: '1px 1px 3px #FFFFFF',
     }
   };
 
