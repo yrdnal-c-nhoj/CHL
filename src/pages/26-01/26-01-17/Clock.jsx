@@ -9,6 +9,7 @@ export default function Clock() {
   const [videoFailed, setVideoFailed] = useState(false);
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
+  const [contentReady, setContentReady] = useState(false);
 
   // 1. Load custom font
   useEffect(() => {
@@ -24,10 +25,14 @@ export default function Clock() {
         if (active) {
           document.fonts.add(loaded);
           setFontLoaded(true);
+          setContentReady(true);
         }
       })
       .catch(() => {
-        if (active) setFontLoaded(true);
+        if (active) {
+          setFontLoaded(true);
+          setContentReady(true);
+        }
       });
 
     return () => {
@@ -80,6 +85,21 @@ export default function Clock() {
         overflow: "hidden",
       }}
     >
+      {/* Loading state - prevents flash of unstyled content */}
+      {!contentReady && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "#000",
+            zIndex: 100,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        />
+      )}
+
       {/* BACKGROUND VIDEO layer */}
       {!videoFailed && (
         <div
@@ -184,7 +204,7 @@ export default function Clock() {
       />
 
       {/* CLOCK FACE layer */}
-      {fontLoaded && (
+      {contentReady && (
         <div
           style={{
             position: "absolute",
