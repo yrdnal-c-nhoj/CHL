@@ -1,143 +1,130 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { SoftShadows, Text, Plane, PerspectiveCamera } from '@react-three/drei';
-import * as THREE from 'three';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 
-const SEGMENTS = {
-  '0': [1,1,1,0,1,1,1], '1': [0,0,1,0,0,1,0], '2': [1,0,1,1,1,0,1],
-  '3': [1,0,1,1,0,1,1], '4': [0,1,1,1,0,1,0], '5': [1,1,0,1,0,1,1],
-  '6': [1,1,0,1,1,1,1], '7': [1,0,1,0,0,1,0], '8': [1,1,1,1,1,1,1],
-  '9': [1,1,1,1,0,1,1], 'A': [1,1,1,1,1,1,0], 'P': [1,1,1,1,0,1,1],
-};
+// Asset imports
+import backgroundUrl from '../../../assets/clocks/26-01-22/1974.jpg';
+import digitTextureUrl from '../../../assets/clocks/26-01-22/liq.gif';
+import fontUrl from '../../../assets/fonts/26-01-22-1974.ttf';
 
-const Segment = ({ position, rotation = [0,0,0], active }) => {
-  const meshRef = useRef();
-  
-  useFrame((state, delta) => {
-    if (!meshRef.current) return;
-    // Smooth movement on Z axis
-    const targetZ = active ? 0.4 : -0.1;
-    meshRef.current.position.z = THREE.MathUtils.lerp(meshRef.current.position.z, targetZ, 0.1);
+const FONT_FAMILY = '1974';
 
-    // Emissive intensity animation
-    if (meshRef.current.material) {
-      const targetIntensity = active ? 1.5 : 0.02;
-      meshRef.current.material.emissiveIntensity = THREE.MathUtils.lerp(
-        meshRef.current.material.emissiveIntensity,
-        targetIntensity,
-        0.1
-      );
-    }
-  });
-
-  return (
-    <mesh ref={meshRef} position={position} rotation={rotation} castShadow receiveShadow>
-      <boxGeometry args={[0.9, 0.25, 0.2]} />
-      <meshStandardMaterial
-        color={active ? "#0066ff" : "#111111"}
-        roughness={0.3}
-        metalness={0.8}
-        emissive="#0044cc"
-      />
-    </mesh>
-  );
-};
-
-const Digit = ({ val, xOffset }) => {
-  const seg = useMemo(() => SEGMENTS[val] || [0,0,0,0,0,0,0], [val]);
-  return (
-    <group position={[xOffset, 0, 0]}>
-      <Segment active={seg[0]} position={[0, 1.1, 0]} />
-      <Segment active={seg[1]} position={[0.55, 0.55, 0]} rotation={[0, 0, Math.PI / 2]} />
-      <Segment active={seg[2]} position={[0.55, -0.55, 0]} rotation={[0, 0, Math.PI / 2]} />
-      <Segment active={seg[3]} position={[0, -1.1, 0]} />
-      <Segment active={seg[4]} position={[-0.55, -0.55, 0]} rotation={[0, 0, Math.PI / 2]} />
-      <Segment active={seg[5]} position={[-0.55, 0.55, 0]} rotation={[0, 0, Math.PI / 2]} />
-      <Segment active={seg[6]} position={[0, 0, 0]} />
-    </group>
-  );
-};
-
-const Scene = () => {
+const DynamicClock = () => {
+  const [isReady, setIsReady] = useState(false);
   const [time, setTime] = useState(new Date());
-  const lightRef = useRef();
-  const clockGroupRef = useRef();
 
+  // Update time every second
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
-  // Time String Logic
-  const h = time.getHours();
-  const h12 = h % 12 || 12;
-  const timeStr = [
-    h12.toString().padStart(2, '0'),
-    time.getMinutes().toString().padStart(2, '0'),
-    time.getSeconds().toString().padStart(2, '0')
-  ].join('');
-  
-  const offsets = [-4.5, -3.1, -1.2, 0.2, 2.1, 3.5];
+  // Load font + background image
+  useLayoutEffect(() => {
+    let mounted = true;
 
-  useFrame((state) => {
-    // Camera movement
-    const t = state.clock.elapsedTime;
-    state.camera.position.x = Math.sin(t * 0.4) * 0.5;
-    state.camera.lookAt(0, 0, 0);
+    const loadAssets = async () => {
+      const fontFace = new FontFace(FONT_FAMILY, `url(${fontUrl})`);
+      document.fonts.add(fontFace);
 
-    // Light Flicker & Target
-    if (lightRef.current && clockGroupRef.current) {
-      lightRef.current.target = clockGroupRef.current; // Critical for shadows
-      lightRef.current.intensity = 1500 + Math.random() * 200;
-    }
-  });
+      try {
+        await Promise.all([
+          fontFace.load(),
+          new Promise((resolve) => {
+            const img = new Image();
+            img.src = backgroundUrl;
+            img.onload = resolve;
+            img.onerror = resolve;
+          }),
+        ]);
+        if (mounted) setIsReady(true);
+      } catch (err) {
+        console.error('Asset loading failed:', err);
+        if (mounted) setIsReady(true);
+      }
+    };
+
+    loadAssets();
+
+    return () => { mounted = false; };
+  }, []);
+
+  if (!isReady) return null;
+
+  const timeString = [
+    time.getHours(),
+    time.getMinutes(),
+    time.getSeconds(),
+  ].map((n) => n.toString().padStart(2, '0')).join('');
+
+  // ────────────────────────────────────────────────
+  // Styles
+  // ────────────────────────────────────────────────
+
+  const containerStyle = {
+    width: '100vw',
+    height: '100dvh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundImage: `url(${backgroundUrl})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    filter: 'contrast(0.7) brightness(1.15)',
+    fontFamily: `'${FONT_FAMILY}', sans-serif`,
+  };
+
+  const digitsRowStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 'clamp(1.3vw, 4vw, 5vw)',   // space between boxes
+    padding: '0 3vw',
+    width: '100%',
+    maxWidth: '99vw',
+    marginTop: '-45vh',
+  };
+
+  const digitBoxStyle = {
+    width: 'clamp(22vw, 22vw, 222px)',     // fixed width — biggest factor in preventing jump
+    height: 'clamp(23vw, 24vw, 240px)',    // fixed height
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: 'rgba(0, 0, 0, 0.15)',     // subtle box background (optional — remove or change)
+    borderRadius: '12px',                  // soft rounded corners (optional)
+    overflow: 'hidden',                    // keeps content inside
+    boxShadow: '0 4px 15px rgba(0,0,0,0.3)', // optional depth
+  };
+
+  const digitStyle = {
+    fontSize: 'clamp(20vw, 26vw, 260px)',  // large enough to mostly fill the box
+    // fontWeight: 'bold',
+    lineHeight: '1',
+    backgroundImage: `url(${digitTextureUrl})`,
+    backgroundSize: '180% 180%',
+    backgroundPosition: 'center',
+    backgroundClip: 'text',
+    WebkitBackgroundClip: 'text',
+    color: 'transparent',
+    WebkitTextFillColor: 'transparent',
+    filter: 'contrast(2.2) brightness(1.1)',
+    // WebkitTextStroke: '1.5px rgba(255, 255, 255, 0.5)',
+    userSelect: 'none',
+    textAlign: 'center',
+  };
 
   return (
-    <>
-      <color attach="background" args={['#020202']} />
-      <SoftShadows size={25} samples={10} focus={0} />
-      
-      <ambientLight intensity={0.2} />
-      
-      <spotLight
-        ref={lightRef}
-        position={[10, 15, 10]}
-        angle={0.3}
-        penumbra={1}
-        intensity={1500}
-        castShadow
-        shadow-mapSize={[2048, 2048]}
-        shadow-bias={-0.0005}
-      />
-
-      <group ref={clockGroupRef} rotation={[-0.2, 0, 0]} position={[0, 0.5, 0]}>
-        {/* Time Digits */}
-        {timeStr.split('').map((char, i) => (
-          <Digit key={i} val={char} xOffset={offsets[i]} />
+    <div style={containerStyle}>
+      <div style={digitsRowStyle}>
+        {timeString.split('').map((char, i) => (
+          <div key={i} style={digitBoxStyle}>
+            <div style={digitStyle}>
+              {char}
+            </div>
+          </div>
         ))}
-
-        {/* AM/PM Indicator */}
-        <group position={[5.5, 0, 0]}>
-          <Digit val={h >= 12 ? 'P' : 'A'} xOffset={0} />
-          <Text position={[0, -1.8, 0.2]} fontSize={0.3} color="#222">MODE: 12H</Text>
-        </group>
-
-        {/* Ground Plane (The shadow catcher) */}
-        <Plane args={[100, 100]} receiveShadow position={[0, 0, -1.2]}>
-          <meshStandardMaterial color="#0a0a0a" roughness={1} />
-        </Plane>
-      </group>
-    </>
+      </div>
+    </div>
   );
 };
 
-export default function App() {
-  return (
-    <div style={{ width: '100vw', height: '100vh', background: '#000' }}>
-      <Canvas shadows dpr={[1, 2]}>
-        <PerspectiveCamera makeDefault position={[0, 0, 15]} fov={40} />
-        <Scene />
-      </Canvas>
-    </div>
-  );
-}
+export default DynamicClock;

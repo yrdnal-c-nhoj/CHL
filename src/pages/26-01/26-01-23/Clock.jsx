@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 // Asset imports
-import clockDigitImage from '../../../assets/clocks/26-01-22/eye.gif';
+import clockDigitImage from '../../../assets/clocks/26-01-23/eye.gif';
 // Replace this with your actual background image path
-import clockBackground from '../../../assets/clocks/26-01-22/eye.webp';
+import clockBackground from '../../../assets/clocks/26-01-23/eye.webp';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());

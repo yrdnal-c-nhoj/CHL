@@ -56,6 +56,7 @@ const AnalogBirdMigrateClock = () => {
       {/* PERFORMANCE FIX: Isolated Background Layer */}
       <div style={styles.gpuAcceleratedLayer}>
         <div style={styles.backgroundLayer} />
+        <div style={styles.backgroundLayer2} />
         <div style={{ ...styles.tileBase, backgroundSize: '600px', opacity: 0.8 }} />
       </div>
 
@@ -105,6 +106,14 @@ wrapper: {
     pointerEvents: 'none',
   },
   backgroundLayer: {
+    position: 'absolute',
+    inset: 0,
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    filter: 'brightness(0.5)', 
+  },
+   backgroundLayer2: {
     position: 'absolute',
     inset: 0,
     backgroundImage: `url(${backgroundImage})`,
