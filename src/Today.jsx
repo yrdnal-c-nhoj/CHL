@@ -8,6 +8,28 @@ import styles from './ClockPage.module.css';
 // Preload all Clock.jsx files under /pages/**/Clock.jsx using Vite's glob import
 const clockModules = import.meta.glob('./pages/**/Clock.jsx');
 
+// Resolve the correct module key for a given item, supporting both:
+// - New structure: ./pages/YY-MM/YY-MM-DD/Clock.jsx
+// - Old structure: ./pages/YY-MM-DD/Clock.jsx (fallback)
+const getClockModuleKey = (item) => {
+  const date = item?.date || item?.path;
+  if (!date) return null;
+
+  const [yy, mm] = date.split('-');
+  if (!yy || !mm) return null;
+
+  const candidates = [
+    `./pages/${yy}-${mm}/${item.path}/Clock.jsx`, // month/day structure
+    `./pages/${item.path}/Clock.jsx`,             // legacy flat structure
+  ];
+
+  for (const key of candidates) {
+    if (clockModules[key]) return key;
+  }
+
+  return null;
+};
+
 const formatTitle = (title) => title?.replace(/clock/i, '').trim() || 'Home';
 const formatDate = (dateStr) => {
   if (!dateStr) return '';
@@ -59,13 +81,13 @@ const TodayClockPage = () => {
     setCurrentItem(item);
     setClockComponent(null);
 
-    const key = `./pages/${item.path}/Clock.jsx`;
-    if (clockModules[key]) {
+    const key = getClockModuleKey(item);
+    if (key && clockModules[key]) {
       clockModules[key]()
         .then((mod) => setClockComponent(() => mod.default))
         .catch((err) => setPageError(`Failed to load clock for ${item.date}: ${err.message}`));
     } else {
-      setPageError(`No clock found at path: ${key}`);
+      setPageError(`No clock found for date: ${item.date}`);
     }
   }, [items, loading]);
 

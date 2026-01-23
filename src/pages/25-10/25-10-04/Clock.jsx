@@ -1,0 +1,163 @@
+import React, { useEffect, useState, useRef } from 'react'
+import c251004font from '../../../assets/fonts/25-10-04-iss.ttf';
+import bgMp4 from '../../../assets/clocks/25-10-04/waterfall.mp4'
+import bgWebp from '../../../assets/clocks/25-10-04/waterfall.webp'
+
+const ClockVideoBackground = () => {
+  const [time, setTime] = useState(new Date())
+  const [loaded, setLoaded] = useState(false)
+  const [fontLoaded, setFontLoaded] = useState(false)
+  const videoRef = useRef(null)
+
+  // Load the font
+  useEffect(() => {
+    const font = new FontFace('iss', `url(${c251004font})`)
+    font.load().then(loadedFont => {
+      document.fonts.add(loadedFont)
+      setFontLoaded(true)
+    })
+  }, [])
+
+  // Smooth clock updates using requestAnimationFrame
+  useEffect(() => {
+    let animationFrame
+
+    const updateClock = () => {
+      setTime(new Date())
+      animationFrame = requestAnimationFrame(updateClock)
+    }
+
+    animationFrame = requestAnimationFrame(updateClock)
+    return () => cancelAnimationFrame(animationFrame)
+  }, [])
+
+  // Fade-in effect for video
+  useEffect(() => {
+    const timeout = setTimeout(() => setLoaded(true), 100)
+    return () => clearTimeout(timeout)
+  }, [])
+
+  const formatDigits = (value, length = 2) =>
+    String(value).padStart(length, '0').split('')
+
+  const hDigits = formatDigits(time.getHours())
+  const mDigits = formatDigits(time.getMinutes())
+  const sDigits = formatDigits(time.getSeconds())
+  // Show 2 digits of milliseconds smoothly
+  const msDigits = formatDigits(Math.floor(time.getMilliseconds() / 10))
+
+  const styles = {
+    root: {
+      margin: 0,
+      padding: 0,
+      overflow: 'hidden',
+      width: '100vw',
+      height: '100dvh',
+      backgroundColor: '#000000',
+      position: 'relative',
+      fontFamily: fontLoaded ? 'iss, sans-serif' : 'sans-serif'
+    },
+    video: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100vw',
+      height: '100dvh',
+      objectFit: 'cover',
+      zIndex: 0,
+      opacity: loaded ? 1 : 0,
+      transition: 'opacity 0.2s ease-in-out',
+      backgroundColor: '#000000'
+    },
+    wrapper: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      zIndex: 10,
+      display: loaded && fontLoaded ? 'flex' : 'none',
+      flexDirection: 'column',
+      gap: '0rem',
+      alignItems: 'center'
+    },
+    group: {
+      display: 'flex',
+      flexDirection: 'row',
+      gap: '0.01vh',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    digitBox: {
+      color: '#0946C1FF',
+      textShadow: `
+        0.1vh 0.1vh rgba(0,0,0,0.8),
+        -0.1vh -0.1vh rgba(255,220,220,0.9)
+      `,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontSize: '33vh',
+      width: '14vh',
+      height: '19vh',
+      textAlign: 'center',
+      boxSizing: 'border-box'
+    }
+  }
+
+  return (
+    <div style={styles.root}>
+      {/* Background Video */}
+      <video
+        ref={videoRef}
+        style={styles.video}
+        autoPlay
+        loop
+        muted
+        playsInline
+        onError={() => {
+          if (videoRef.current) {
+            videoRef.current.src = bgWebp
+            videoRef.current.play()
+          }
+        }}
+      >
+        <source src={bgMp4} type='video/mp4' />
+        <source src={bgWebp} type='image/webp' />
+      </video>
+
+      {/* Clock Overlay */}
+      <div style={styles.wrapper}>
+        <div style={styles.group}>
+          {hDigits.map((d, i) => (
+            <div key={i} style={styles.digitBox}>
+              {d}
+            </div>
+          ))}
+        </div>
+        <div style={styles.group}>
+          {mDigits.map((d, i) => (
+            <div key={i} style={styles.digitBox}>
+              {d}
+            </div>
+          ))}
+        </div>
+        <div style={styles.group}>
+          {sDigits.map((d, i) => (
+            <div key={i} style={styles.digitBox}>
+              {d}
+            </div>
+          ))}
+        </div>
+        <div style={styles.group}>
+          {msDigits.map((d, i) => (
+            <div key={i} style={styles.digitBox}>
+              {d}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default ClockVideoBackground

@@ -9,6 +9,28 @@ import styles from "./ClockPage.module.css";
 // Preload all Clock.jsx files under /pages/**/Clock.jsx
 const clockModules = import.meta.glob("./pages/**/Clock.jsx");
 
+// Resolve the correct module key for a given item, supporting both:
+// - New structure: ./pages/YY-MM/YY-MM-DD/Clock.jsx
+// - Old structure: ./pages/YY-MM-DD/Clock.jsx (fallback)
+const getClockModuleKey = (item) => {
+  const date = item?.date || item?.path;
+  if (!date) return null;
+
+  const [yy, mm] = date.split("-");
+  if (!yy || !mm) return null;
+
+  const candidates = [
+    `./pages/${yy}-${mm}/${item.path}/Clock.jsx`, // month/day structure
+    `./pages/${item.path}/Clock.jsx`,             // legacy flat structure
+  ];
+
+  for (const key of candidates) {
+    if (clockModules[key]) return key;
+  }
+
+  return null;
+};
+
 const normalizeDate = (d) => d.split("-").map((n) => n.padStart(2, "0")).join("-");
 
 export default function ClockPage() {
@@ -59,9 +81,9 @@ export default function ClockPage() {
           return;
         }
 
-        const key = `./pages/${item.path}/Clock.jsx`;
-        if (!clockModules[key]) {
-          setPageError(`No clock found at path: ${key}`);
+        const key = getClockModuleKey(item);
+        if (!key) {
+          setPageError(`No clock found for date: ${item.date}`);
           return;
         }
 
