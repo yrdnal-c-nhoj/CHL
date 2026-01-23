@@ -89,14 +89,14 @@ const LeapClock = () => {
       <main style={{
         display: 'flex',
         flexDirection: 'column',
-        height: '100%',
+        height: '75%',
         width: '100%',
         maxWidth: '100%',
         margin: 0,
         padding: 'clamp(8px, 2vh, 16px) clamp(12px, 4vw, 24px)',
         boxSizing: 'border-box',
         overflow: 'hidden',
-        minHeight: '100dvh'
+        minHeight: '75dvh'
       }}>
         {/* HEADER */}
         <header style={{
@@ -137,10 +137,10 @@ const LeapClock = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: '1vh 0',
-          minHeight: '30vh',
+          padding: 'clamp(4px, 1vh, 8px) 0',
+          minHeight: '0',
           width: '100%',
-          overflow: 'hidden',
+          overflow: 'visible',
           boxSizing: 'border-box'
         }}>
           <div style={{
@@ -150,13 +150,13 @@ const LeapClock = () => {
             alignItems: 'center',
             fontFamily: 'LeapFont, monospace',
             color: '#262424',
-            fontSize: 'clamp(20px, 7vw, 80px)',
+            fontSize: 'clamp(16px, 6vw, 60px)',
             lineHeight: 1,
             letterSpacing: '-0.3em',
             width: '100%',
             padding: '0 clamp(2%, 4%, 8%)',
             boxSizing: 'border-box',
-            transform: 'scale(0.95)',
+            transform: 'scale(0.85)',
             willChange: 'transform'
           }}>
             <div style={{ display: 'flex', opacity: 0.3 }}>
@@ -182,17 +182,17 @@ const LeapClock = () => {
         <footer style={{
           flexShrink: 0,
           width: '100%',
-          padding: '1vh 0',
-          marginTop: 'auto'
+          padding: 'clamp(4px, 0.5vh, 8px) 0',
+          marginTop: '0'
         }}>
           <div style={{
             display: 'grid',
-            gap: 'clamp(4px, 1vh, 12px)',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+            gap: 'clamp(2px, 0.5vh, 6px)',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
             maxWidth: '100%',
             margin: '0 auto',
             padding: '0 clamp(1%, 2%, 4%)',
-            transform: 'scale(0.9)',
+            transform: 'scale(0.75)',
             transformOrigin: 'center bottom'
           }}>
            <InfoTile label="Last Adjustment" value={`${formatUTC(leapData.last)} 23:59:59 UTC`} />
