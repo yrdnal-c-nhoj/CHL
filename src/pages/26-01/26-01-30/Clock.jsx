@@ -144,13 +144,14 @@ const LeapClock = () => {
       alignItems: 'center',
       justifyContent: 'center',
       width: '100vw',
-      height: '100dvh',
+      minHeight: '100dvh',
       backgroundColor: '#0f172a',
       color: '#f8fafc',
       margin: 0,
-      padding: '20px',
+      padding: '16px',
       boxSizing: 'border-box',
-      overflow: 'auto', // Allow scrolling if content is too long
+      overflowX: 'hidden',
+      overflowY: 'auto',
       fontFamily: 'system-ui, -apple-system, sans-serif',
       textAlign: 'center',
     },
@@ -162,17 +163,19 @@ const LeapClock = () => {
       fontVariantNumeric: 'tabular-nums', // Prevents jittering digits
     },
     logo: {
-      width: '60px',
+      width: 'clamp(48px, 12vw, 72px)',
       marginBottom: '1rem',
     },
     infoCard: {
+      width: '100%',
       maxWidth: '500px',
-      padding: '1.5rem',
+      padding: '1.25rem',
       backgroundColor: 'rgba(255, 255, 255, 0.05)',
       borderRadius: '12px',
       fontSize: '0.9rem',
       lineHeight: '1.6',
       border: '1px solid rgba(255, 255, 255, 0.1)',
+      boxSizing: 'border-box',
     },
     highlight: {
       color: '#38bdf8',
@@ -221,7 +224,7 @@ const LeapClock = () => {
         
         <div style={{ 
           display: 'grid', 
-          gridTemplateColumns: '1fr 1fr', 
+          gridTemplateColumns: 'minmax(0, 1fr)',
           gap: '1rem',
           textAlign: 'left',
           marginBottom: '1rem'
