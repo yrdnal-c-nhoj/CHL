@@ -35,6 +35,20 @@
       // Disable automatic page view as we're handling it manually in analytics.jsx
       gtag('config', 'G-24VJ4G2H48', { send_page_view: false });
     </script>
+    <script>
+      // Avoid FOUC: hide content while fonts are loading
+      document.documentElement.classList.add('fonts-loading');
+
+      if ('fonts' in document) {
+        document.fonts.ready.finally(() => {
+          document.documentElement.classList.remove('fonts-loading');
+        });
+      } else {
+        window.addEventListener('load', () => {
+          document.documentElement.classList.remove('fonts-loading');
+        });
+      }
+    </script>
   </head>
 
   <body>
