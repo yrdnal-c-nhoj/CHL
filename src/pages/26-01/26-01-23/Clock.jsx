@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 // Asset imports
 import clockDigitImage from '../../../assets/clocks/26-01-23/eye.gif';
-// Replace this with your actual background image path
 import clockBackground from '../../../assets/clocks/26-01-23/eye.webp';
 
 const Clock = () => {
@@ -18,14 +17,19 @@ const Clock = () => {
     return () => cancelAnimationFrame(animationFrame);
   }, []);
 
-  // Calculate rotations
-  const seconds = time.getSeconds();
-  const minutes = time.getMinutes();
-  const hours = time.getHours();
+  // Calculate time values including milliseconds for smooth movement
+  const ms = time.getMilliseconds();
+  const seconds = time.getSeconds() + ms / 1000;
+  const minutes = time.getMinutes() + seconds / 60;
+  const hours = time.getHours() + minutes / 60;
 
+  // Rotations
   const secDeg = (seconds / 60) * 360;
-  const minDeg = ((minutes + seconds / 60) / 60) * 360;
-  const hourDeg = ((hours % 12 + minutes / 60) / 12) * 360;
+  const minDeg = (minutes / 60) * 360;
+  const hourDeg = ((hours % 12) / 12) * 360;
+
+  // Background rotation: Counter-clockwise (-), once per 60 seconds
+  const bgRotation = -(seconds / 60) * 360;
 
   const styles = {
     container: {
@@ -38,22 +42,39 @@ const Clock = () => {
       margin: 0,
       padding: 0,
       overflow: 'hidden',
-      touchAction: 'pan-y',
       position: 'fixed',
       top: 0,
       left: 0
     },
-    clockFace: {
-      position: 'relative',
-      width: 'min(85vw, 85vh, 400px)',
-      height: 'min(85vw, 85vh, 400px)',
-      borderRadius: '50%',
-      // Background Image implementation
+   clockFace: {
+  position: 'relative',
+  // Takes up the smaller of the two viewport dimensions
+  width: '95vmin', 
+  // Keeps it a perfect circle regardless of content
+  aspectRatio: '1 / 1', 
+  // Caps the size so it doesn't get comically large on monitors
+  maxWidth: '800px', 
+  
+  borderRadius: '50%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  // Optional: ensures it stays centered if the parent is larger
+  margin: 'auto', 
+},
+    bgLayer: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
       backgroundImage: `url(${clockBackground})`,
       backgroundSize: '60%',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
-      willChange: 'transform'
+      transform: `rotate(${bgRotation}deg)`,
+      willChange: 'transform',
+      zIndex: 1,
     },
     hand: (deg, width, length, color, zIndex) => ({
       position: 'absolute',
@@ -66,8 +87,6 @@ const Clock = () => {
       backgroundColor: color,
       borderRadius: '10px',
       zIndex: zIndex,
-      // Prevents the "snap back" spin at 60s/0s
-      transition: seconds === 0 ? 'none' : 'transform 0.05s cubic-bezier(0.4, 2.08, 0.55, 0.44)',
       filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.79))',
     }),
     digitContainer: (rotation) => ({
@@ -78,13 +97,13 @@ const Clock = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'flex-start',
+      zIndex: 2,
     }),
     digitImage: {
       width: 'min(12vw, 12vh, 48px)',
       height: 'min(12vw, 12vh, 48px)',
       objectFit: 'contain',
       transform: `translateY(-20%)`, 
-      willChange: 'transform'
     },
     centerDot: {
       position: 'absolute',
@@ -104,7 +123,10 @@ const Clock = () => {
     <div style={styles.container}>
       <div style={styles.clockFace}>
         
-        {/* Render 12 digits */}
+        {/* Rotating Background Layer */}
+        <div style={styles.bgLayer} />
+
+        {/* Static Digits Layer */}
         {[...Array(12)].map((_, i) => {
           const rotation = (i + 1) * 30;
           return (
@@ -119,11 +141,8 @@ const Clock = () => {
         })}
 
         {/* Hands */}
-        {/* Hour Hand */}
         <div style={styles.hand(hourDeg, '8px', '25%', '#ffffff', 3)} />
-        {/* Minute Hand */}
         <div style={styles.hand(minDeg, '5px', '37%', '#cbd5e1', 4)} />
-        {/* Second Hand */}
         <div style={styles.hand(secDeg, '2px', '52%', '#ef4444', 5)} />
         
         {/* Center Pivot */}
