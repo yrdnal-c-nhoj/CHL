@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import bgImage from '../../../assets/clocks/26-01-20/hairdo.webp';
-import d250120ffont from '../../../assets/fonts/26-01-20-hairdo.ttf';
+import d250916font from '../../../assets/fonts/26-01-20-hairdo.ttf';
 
 // Defined outside to prevent re-allocation on every second tick
 const DIGIT_MAP = {
@@ -32,8 +32,8 @@ const Clock = () => {
     const style = document.createElement('style');
     style.textContent = `
       @font-face {
-        font-family: 'MyD250120ffont';
-        src: url(${d250120ffont}) format('truetype');
+        font-family: 'MyD250916font';
+        src: url(${d250916font}) format('truetype');
         font-display: block;
         font-weight: normal;
         font-style: normal;
