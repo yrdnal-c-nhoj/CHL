@@ -3,17 +3,32 @@ const path = require('path');
 
 const pagesDir = 'src/pages';
 
-const pages = fs.readdirSync(pagesDir).filter(f => f.startsWith('25') || f.startsWith('26'));
+// Recursively find all Clock.jsx files under src/pages (supports month/day nesting)
+const findClockFiles = (dir) => {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  const results = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      results.push(...findClockFiles(fullPath));
+    } else if (entry.isFile() && entry.name === 'Clock.jsx') {
+      results.push(fullPath);
+    }
+  }
+
+  return results;
+};
+
+const clockFiles = findClockFiles(pagesDir);
 
 let issues = [];
 
-pages.forEach(page => {
-  const clockJsx = path.join(pagesDir, page, 'Clock.jsx');
-  if (!fs.existsSync(clockJsx)) return;
-  
+clockFiles.forEach(clockJsx => {
+  const page = path.basename(path.dirname(clockJsx));
   const content = fs.readFileSync(clockJsx, 'utf-8');
   
-  const assetRegex = /from\s+['"]([^'"]+)['"]/g;
+  const assetRegex = /from\s+['"]([^'\"]+)['\"]/g;
   let match;
   
   while ((match = assetRegex.exec(content)) !== null) {
