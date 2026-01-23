@@ -27,10 +27,11 @@ export default function KurosawaClock() {
   const styles = {
     wrapper: {
       height: "100dvh",
-      width: "100dvw",
+      width: "100vw",
       overflow: "hidden",
       position: "relative",
       background: "#000",
+      boxSizing: "border-box",
     },
     media: {
       position: "absolute",
@@ -48,12 +49,12 @@ export default function KurosawaClock() {
       pointerEvents: "none",
     },
     digit: {
-      width: "9.5dvh", // Slightly narrower to fit 18 digits across the screen
+      width: "calc(100vw / 18)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
       fontFamily: `${FONT_NAME}, sans-serif`,
-      fontSize: "12dvh",
+      fontSize: "min(12dvh, 8vw)",
       background: CLOCK_GRADIENT,
       WebkitBackgroundClip: "text",
       WebkitTextFillColor: "transparent",

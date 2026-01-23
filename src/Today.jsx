@@ -172,11 +172,24 @@ const TodayClockPage = () => {
   // Render
   // -------------------------------
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}
+    >
       <Header visible={headerVisible} />
       <div className={styles.content}>
         {ClockComponent ? (
-          <ClockComponent />
+          <div
+            style={{
+              all: 'initial',
+              fontFamily: 'CustomFont, system-ui, sans-serif',
+              display: 'block',
+              width: '100%',
+              height: '100vh',
+            }}
+          >
+            <ClockComponent />
+          </div>
         ) : (
           <div className={styles.loading}>Loading clock...</div>
         )}
