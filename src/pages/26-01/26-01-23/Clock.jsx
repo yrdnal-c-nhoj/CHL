@@ -38,17 +38,22 @@ const Clock = () => {
       margin: 0,
       padding: 0,
       overflow: 'hidden',
+      touchAction: 'pan-y',
+      position: 'fixed',
+      top: 0,
+      left: 0
     },
     clockFace: {
       position: 'relative',
-      width: 'min(90vw, 90vh)',
-      height: 'min(90vw, 90vh)',
+      width: 'min(85vw, 85vh, 400px)',
+      height: 'min(85vw, 85vh, 400px)',
       borderRadius: '50%',
       // Background Image implementation
       backgroundImage: `url(${clockBackground})`,
       backgroundSize: '60%',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
+      willChange: 'transform'
     },
     hand: (deg, width, length, color, zIndex) => ({
       position: 'absolute',
@@ -75,17 +80,18 @@ const Clock = () => {
       alignItems: 'flex-start',
     }),
     digitImage: {
-      width: 'min(15vw, 15vh)',
-      height: 'min(15vw, 15vh)',
+      width: 'min(12vw, 12vh, 48px)',
+      height: 'min(12vw, 12vh, 48px)',
       objectFit: 'contain',
       transform: `translateY(-20%)`, 
+      willChange: 'transform'
     },
     centerDot: {
       position: 'absolute',
       top: '50%',
       left: '50%',
-      width: '18px',
-      height: '18px',
+      width: 'clamp(12px, 4vw, 18px)',
+      height: 'clamp(12px, 4vw, 18px)',
       backgroundColor: '#f8fafc',
       borderRadius: '50%',
       transform: 'translate(-50%, -50%)',

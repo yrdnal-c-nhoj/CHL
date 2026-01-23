@@ -79,7 +79,10 @@ const LeapClock = () => {
       backgroundColor: '#E1E2E8',
       overflow: 'hidden',
       color: '#233603',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      minHeight: '100dvh',
+      maxHeight: '100dvh',
+      touchAction: 'pan-y'
     }}>
       <style>{fontStyles}</style>
 
@@ -90,9 +93,10 @@ const LeapClock = () => {
         width: '100%',
         maxWidth: '100%',
         margin: 0,
-        padding: '2vh 4vw',
+        padding: 'clamp(8px, 2vh, 16px) clamp(12px, 4vw, 24px)',
         boxSizing: 'border-box',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        minHeight: '100dvh'
       }}>
         {/* HEADER */}
         <header style={{
@@ -107,10 +111,10 @@ const LeapClock = () => {
             width: '100%',
             maxWidth: '500px',
             fontFamily: 'Questrial, sans-serif',
-            fontSize: '2.5vh',
+            fontSize: 'clamp(12px, 2.5vh, 16px)',
             lineHeight: '1.3',
-            margin: '0 auto 1.9vh',
-            padding: '0 20px',
+            margin: '0 auto clamp(8px, 1.9vh, 16px)',
+            padding: '0 clamp(8px, 2vw, 20px)',
             boxSizing: 'border-box'
           }}>
             A <strong>leap second</strong> is a one-second adjustment
@@ -121,7 +125,7 @@ const LeapClock = () => {
             display: 'flex',
             justifyContent: 'center',
             gap: '0.25rem',
-            fontSize: ' 8vh'
+            fontSize: 'clamp(24px, 8vh, 48px)'
           }}>
             <span>🌍</span><span>⏳</span><span>🐌</span><span>⚙️</span><span>🕒</span>
           </div>
@@ -146,13 +150,14 @@ const LeapClock = () => {
             alignItems: 'center',
             fontFamily: 'LeapFont, monospace',
             color: '#262424',
-            fontSize: 'min(25vw, 14vh)',
+            fontSize: 'clamp(20px, 7vw, 80px)',
             lineHeight: 1,
             letterSpacing: '-0.3em',
             width: '100%',
-            padding: '0 4%',
+            padding: '0 clamp(2%, 4%, 8%)',
             boxSizing: 'border-box',
-            transform: 'scale(0.95)'
+            transform: 'scale(0.95)',
+            willChange: 'transform'
           }}>
             <div style={{ display: 'flex', opacity: 0.3 }}>
               <DigitBox>{now.getHours().toString().padStart(2, '0')[0]}</DigitBox>
@@ -182,11 +187,11 @@ const LeapClock = () => {
         }}>
           <div style={{
             display: 'grid',
-            gap: '1vh',
-            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: 'clamp(4px, 1vh, 12px)',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
             maxWidth: '100%',
             margin: '0 auto',
-            padding: '0 2%',
+            padding: '0 clamp(1%, 2%, 4%)',
             transform: 'scale(0.9)',
             transformOrigin: 'center bottom'
           }}>
@@ -213,7 +218,8 @@ const DigitBox = ({ children }) => (
     textAlign: 'center',
     fontVariantNumeric: 'tabular-nums',
     letterSpacing: '0',
-    fontFeatureSettings: '"tnum" 1'
+    fontFeatureSettings: '"tnum" 1',
+    minWidth: '0.4em'
   }}>
     {children}
   </div>
@@ -225,16 +231,17 @@ const InfoTile = ({ label, value, color = "#086143", isStatus = false }) => (
     backdropFilter: 'blur(10px)',
     borderRadius: '1rem',
     border: '1px solid rgba(255, 255, 255, 0.4)',
-    padding: '0.8rem',
-    margin: '0.2rem',
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+    padding: 'clamp(8px, 0.8rem, 16px)',
+    margin: 'clamp(2px, 0.2rem, 6px)',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+    minWidth: '0'
   }}>
     <div style={{ textAlign: 'center' }}>
       <div style={{
         opacity: 0.8,
-        marginBottom: '0.3rem',
+        marginBottom: 'clamp(2px, 0.3rem, 6px)',
         fontFamily: 'Oswald, sans-serif',
-        fontSize: '0.7rem',
+        fontSize: 'clamp(10px, 0.7rem, 14px)',
         textTransform: 'uppercase',
         letterSpacing: '0.05em'
       }}>
@@ -244,7 +251,8 @@ const InfoTile = ({ label, value, color = "#086143", isStatus = false }) => (
         color,
         fontFamily: 'Questrial, sans-serif',
         fontWeight: 'bold',
-        fontSize: '0.9rem',
+        fontSize: 'clamp(11px, 0.9rem, 18px)',
+        wordBreak: 'break-word',
         ...(isStatus && { letterSpacing: '0.05em' })
       }}>
         {value}
