@@ -1,0 +1,8 @@
+@font-face {
+  font-family: 'fat';
+  src: url('../../../assets/fonts/25-05-31-fat.otf') format('opentype');
+}
+
+.fat-font {
+  font-family: 'fat', sans-serif;
+}
