@@ -141,9 +141,9 @@ const Clock = () => {
         })}
 
         {/* Hands */}
-        <div style={styles.hand(hourDeg, '8px', '25%', '#ffffff', 3)} />
-        <div style={styles.hand(minDeg, '5px', '37%', '#cbd5e1', 4)} />
-        <div style={styles.hand(secDeg, '2px', '52%', '#ef4444', 5)} />
+        <div style={styles.hand(hourDeg, '8px', '11%', '#ffffff', 3)} />
+        <div style={styles.hand(minDeg, '5px', '25%', '#cbd5e1', 4)} />
+        <div style={styles.hand(secDeg, '2px', '25%', '#ef4444', 5)} />
         
         {/* Center Pivot */}
         <div style={styles.centerDot} />
