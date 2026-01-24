@@ -76,23 +76,20 @@ const DynamicClock = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 'clamp(1.3vw, 4vw, 5vw)',   // space between boxes
-    padding: '0 3vw',
+    gap: 'clamp(1.0vw, 2vw, 4vw)',   // space between boxes
+    padding: '0 2vw',
     width: '100%',
     maxWidth: '99vw',
-    marginTop: '-45vh',
+    marginTop: '-65vh',
   };
 
   const digitBoxStyle = {
     width: 'clamp(22vw, 22vw, 222px)',     // fixed width — biggest factor in preventing jump
-    height: 'clamp(23vw, 24vw, 240px)',    // fixed height
+    height: 'clamp(29vw, 29vw, 340px)',    // fixed height
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
-    background: 'rgba(0, 0, 0, 0.15)',     // subtle box background (optional — remove or change)
-    borderRadius: '12px',                  // soft rounded corners (optional)
-    overflow: 'hidden',                    // keeps content inside
-    boxShadow: '0 4px 15px rgba(0,0,0,0.3)', // optional depth
+    alignItems: 'center',     
+    overflow: 'hidden',                    // keeps content insideoptional depth
   };
 
   const digitStyle = {
