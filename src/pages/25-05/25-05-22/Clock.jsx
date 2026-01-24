@@ -39,21 +39,9 @@ const Clock = () => {
   // Combined loading check
   const everythingLoaded = isLoaded && (fontsLoaded || !document.fonts);
 
-  if (!everythingLoaded) {
-    return (
-      <div style={{ 
-        height: '100dvh', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        color: '#fff', 
-        background: '#000'
-      }}>
-      </div>
-    );
-  }
-
   useEffect(() => {
+    if (!everythingLoaded) return;
+    
     const updateClock = () => {
       const now = new Date();
       const sec = now.getSeconds();
@@ -72,7 +60,21 @@ const Clock = () => {
     const interval = setInterval(updateClock, 1000);
     updateClock();
     return () => clearInterval(interval);
-  }, []);
+  }, [everythingLoaded]);
+
+  if (!everythingLoaded) {
+    return (
+      <div style={{ 
+        height: '100dvh', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        color: '#fff', 
+        background: '#000'
+      }}>
+      </div>
+    );
+  }
 
   return (
     <div style={{
