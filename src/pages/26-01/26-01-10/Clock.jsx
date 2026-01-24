@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import bgImage from '../../../assets/clocks/26-01-10/moo.gif'
-import d250901ffffont from '../../../assets/fonts/26-01-10-bit.ttf';
+import d25090116font from '../../../assets/fonts/26-01-10-bit.ttf';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date())
@@ -23,13 +23,13 @@ const Clock = () => {
     const style = document.createElement('style')
     style.textContent = `
       @font-face {
-        font-family: 'MyD250901ffffont';
-        src: url(${d250901ffffont}) format('opentype');
+        font-family: 'MyD25090116font';
+        src: url(${d25090116font}) format('truetype');
         font-display: block;
       }
     `
     document.head.appendChild(style)
-    const fontPromise = document.fonts.load('22vh MyD250901ffffont')
+    const fontPromise = document.fonts.load('22vh MyD25090116font')
     const imagePromise = new Promise((resolve, reject) => {
       const img = new Image()
       img.src = bgImage
@@ -59,7 +59,7 @@ const Clock = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontFamily: "'MyD2509ffffont', sans-serif",
+    fontFamily: "'MyD25090116font', sans-serif",
     fontSize: '28vh',
     color: 'rgba(66, 142, 241, 0.82)',
     // Fixed width ensures 'I' takes as much space as 'W'
