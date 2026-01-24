@@ -7,7 +7,7 @@ const Clock = () => {
     typeof window !== 'undefined' ? window.innerWidth > 768 : true
   );
 
-  const tileSize = 180;
+  const tileSize = 60;
 
   // Memoize the emoji list so it's only created once
   const allEmojis = useMemo(() => {
@@ -45,7 +45,7 @@ const Clock = () => {
   const backgroundLayerStyle = useMemo(() => {
     const svgString = `
       <svg xmlns="http://www.w3.org/2000/svg" width="${tileSize}" height="${tileSize}">
-        <text x="50%" y="55%" font-size="${tileSize * 0.4}" text-anchor="middle" dominant-baseline="middle">
+        <text x="50%" y="55%" font-size="${tileSize * 0.9}" text-anchor="middle" dominant-baseline="middle">
           ${currentEmoji}
         </text>
       </svg>`.trim();
