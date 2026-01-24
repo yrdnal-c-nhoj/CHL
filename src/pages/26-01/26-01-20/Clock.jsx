@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import bgImage from '../../../assets/clocks/26-01-20/hairdo.webp';
-import d250916font from '../../../assets/fonts/26-01-20-hairdo.ttf';
+import d25090120font from '../../../assets/fonts/26-01-20-hairdo.ttf';
 
 // Defined outside to prevent re-allocation on every second tick
 const DIGIT_MAP = {
@@ -32,8 +32,8 @@ const Clock = () => {
     const style = document.createElement('style');
     style.textContent = `
       @font-face {
-        font-family: 'MyD250916font';
-        src: url(${d250916font}) format('truetype');
+        font-family: 'MyD25090120font';
+        src: url(${d25090120font}) format('truetype');
         font-display: block;
         font-weight: normal;
         font-style: normal;
@@ -56,7 +56,7 @@ const Clock = () => {
       }
       
       .clock-font-loaded .clock-digit {
-        font-family: 'MyD250916font', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-family: 'MyD25090120font', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         visibility: visible;
       }
     `;
@@ -67,7 +67,7 @@ const Clock = () => {
     img.src = bgImage;
 
     // Load font explicitly
-    const font = new FontFace('MyD250916font', `url(${d250916font})`);
+    const font = new FontFace('MyD25090120font', `url(${d25090120font})`);
     
     Promise.all([
       font.load().then(() => {
@@ -134,7 +134,7 @@ const Clock = () => {
       alignItems: 'center',
     },
     digit: {
-      fontFamily: "'MyD250916font', sans-serif",
+      fontFamily: "'MyD25090120font', sans-serif",
       fontSize: isLargeScreen ? '28vh' : '18vh',
       color: '#F12929',
       width: '0.75em',
@@ -152,7 +152,7 @@ const Clock = () => {
           className="clock-digit"
           style={{
             ...styles.digit,
-            fontFamily: "'MyD250916font', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+            fontFamily: "'MyD25090120font', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
           }}
         >
           {DIGIT_MAP[digit] || digit}
