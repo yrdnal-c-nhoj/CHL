@@ -47,16 +47,19 @@ const DynamicComponent = () => {
     });
   }, []);
 
-  const timeString = time.getHours().toString().padStart(2, '0') + 
-                     time.getMinutes().toString().padStart(2, '0') + 
-                     time.getSeconds().toString().padStart(2, '0');
+  const timeString = time.toLocaleTimeString('en-US', {
+    hour12: true,
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit'
+  }).replace(/[: ]/g, ''); // Remove colons and spaces
 
   const DigitBox = ({ digit }) => (
     <div style={{
       display: 'inline-flex',
       alignItems: 'center',
       justifyContent: 'center',
-      minWidth: '7vh',
+      minWidth: '6vh',
       fontFamily: 'inherit',
       fontSize: 'inherit',
       // The massive scale can cause blurriness; translateZ(0) helps sharpen it
@@ -91,7 +94,7 @@ const DynamicComponent = () => {
       justifyContent: 'center',
       alignItems: 'center',
       color: '#ECCFEE',
-      fontSize: '7vh',
+      fontSize: '6vh',
       // Add padding to ensure shadows don't clip
       padding: '10vh 0',
       boxSizing: 'border-box',
@@ -102,10 +105,10 @@ const DynamicComponent = () => {
       alignItems: 'center',
     },
     leftClockShadow: {
-      textShadow: '-0px 36vh 2.5vh rgba(0, 0, 0, 0.9), 0px 2px 12px rgb(240, 7, 7)',
+      textShadow: '-0px 34.5vh 2.2vh rgba(0, 0, 0, 0.9), 0px 2px 12px rgb(240, 7, 7)',
     },
     rightClockShadow: {
-      textShadow: '0px -36vh 2.5vh rgba(0, 0, 0, 0.9), 0px -2px 12px rgb(238, 9, 9)',
+      textShadow: '0px -34.5vh 2.2vh rgba(0, 0, 0, 0.9), 0px -2px 12px rgb(238, 9, 9)',
     }
   };
 
