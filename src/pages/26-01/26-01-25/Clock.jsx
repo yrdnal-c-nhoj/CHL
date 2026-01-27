@@ -5,10 +5,7 @@ import analogMirageFont from '../../../assets/fonts/25-09-10-lava.otf?url';
 import analogBgImage from '../../../assets/clocks/26-01-25/mirage.webp';
 import { materialOpacity } from 'three/tsl';
 
-const STYLE_CONFIG = {
-  tickColor: '#EA81E0FF',
-  faceOverlayColor: 'rgba(0, 0, 0, 0.25)',
-};
+
 
 const AnalogClockTemplate = () => {
   const [time, setTime] = useState(new Date());
@@ -53,14 +50,7 @@ const AnalogClockTemplate = () => {
     fontFamily: fontReady ? "'BorrowedAnalog', system-ui, sans-serif" : 'system-ui, sans-serif',
   };
 
-  const faceOverlayStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    background: STYLE_CONFIG.faceOverlayColor,
-  };
+  
 
   const faceContainerStyle = {
     position: 'absolute',
@@ -107,11 +97,9 @@ const handBaseStyle = {
 
   return (
     <div style={containerStyle}>
-      <div style={faceOverlayStyle} />
       <div style={faceContainerStyle}>
         <div style={hourHandStyle} />
         <div style={minuteHandStyle} />
-      
       </div>
     </div>
   );
