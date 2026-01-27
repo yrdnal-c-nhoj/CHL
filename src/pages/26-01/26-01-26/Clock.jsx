@@ -37,9 +37,10 @@ const DynamicComponent = () => {
     `;
 
     Promise.all([
-      document.fonts.load('1em TopFont'),
-      document.fonts.load('1em BottomFont')
+      document.fonts.load('1vh TopFont'),
+      document.fonts.load('1vh BottomFont')
     ]).then(() => {
+      // Small delay to ensure layout is ready
       setTimeout(() => setIsLoaded(true), 125);
     }).catch(() => {
       setIsLoaded(true); 
@@ -55,12 +56,13 @@ const DynamicComponent = () => {
       display: 'inline-flex',
       alignItems: 'center',
       justifyContent: 'center',
-      minWidth: '1.4em', 
-      height: '1em',
+      minWidth: '7vh',
       fontFamily: 'inherit',
       fontSize: 'inherit',
-      transform: 'scaleX(3)',
+      // The massive scale can cause blurriness; translateZ(0) helps sharpen it
+      transform: 'scaleY(1) translateZ(0)',
       transformOrigin: 'center',
+      willChange: 'transform',
     }}>
       {digit}
     </div>
@@ -71,27 +73,31 @@ const DynamicComponent = () => {
       width: '100vw',
       height: '100dvh',
       display: 'flex',
-      justifyContent: 'space-between',
+      flexDirection: 'column',
+      // space-between keeps them at the poles, but we use heights to prevent clipping
+      justifyContent: 'space-between', 
       alignItems: 'center',
-      background: 'linear-gradient(90deg, #606360 0%, #7E7EA5 30%,#ECCFEE 50%,#8686AB 70%, #515351 100%)',
+      background: 'linear-gradient(180deg, #606360 0%, #7E7EA5 30%,#ECCFEE 50%,#8686AB 70%, #515351 100%)',
       opacity: isLoaded ? 1 : 0,
       transition: 'opacity 0.2s ease-in',
       overflow: 'hidden',
     },
-    sideWrapper: {
+    clockWrapper: {
       zIndex: 2,
-      height: '100%',
+      width: '100%',
+      // Defining a height of ~40-45% of the screen gives the 15x scale 
+      // enough room to exist without being clipped by the screen edge.
+      height: '42dvh', 
       display: 'flex',
+      justifyContent: 'center',
       alignItems: 'center',
       color: '#ECCFEE',
+      fontSize: '7vh',
+      overflow: 'visible', // Crucial to let the scale expand beyond the wrapper div
     },
-    verticalClock: {
-      writingMode: 'vertical-rl',
-      textOrientation: 'mixed',
-      fontSize: '15vh',
+    horizontalClock: {
       display: 'flex',
       alignItems: 'center',
-      transform: 'rotate(180deg)',
     }
   };
 
@@ -99,19 +105,24 @@ const DynamicComponent = () => {
 
   return (
     <div style={styles.container}>
-      {/* Left Clock */}
-      <div style={styles.sideWrapper}>
-        <div style={{...styles.verticalClock, fontFamily: 'TopFont', marginLeft: '4vw'}}>
-          {timeString.split('').map((d, i) => <DigitBox key={`l-${i}`} digit={d} />)}
+      {/* Top Clock Section */}
+      <div style={styles.clockWrapper}>
+        <div style={{...styles.horizontalClock, fontFamily: 'TopFont'}}>
+          {timeString.split('').map((d, i) => (
+            <DigitBox key={`top-${i}`} digit={d} />
+          ))}
         </div>
       </div>
 
+      {/* Spacer to push them to the top and bottom */}
       <div style={{ flex: 1 }} />
 
-      {/* Right Clock */}
-      <div style={styles.sideWrapper}>
-        <div style={{...styles.verticalClock, fontFamily: 'BottomFont', marginRight: '1vw'}}>
-          {timeString.split('').map((d, i) => <DigitBox key={`r-${i}`} digit={d} />)}
+      {/* Bottom Clock Section */}
+      <div style={styles.clockWrapper}>
+        <div style={{...styles.horizontalClock, fontFamily: 'BottomFont'}}>
+          {timeString.split('').map((d, i) => (
+            <DigitBox key={`bot-${i}`} digit={d} />
+          ))}
         </div>
       </div>
     </div>
