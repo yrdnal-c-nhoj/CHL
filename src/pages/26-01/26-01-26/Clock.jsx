@@ -77,7 +77,7 @@ const DynamicComponent = () => {
       // space-between keeps them at the poles, but we use heights to prevent clipping
       justifyContent: 'space-between', 
       alignItems: 'center',
-      background: 'linear-gradient(180deg, #606360 0%, #7E7EA5 30%,#ECCFEE 50%,#8686AB 70%, #515351 100%)',
+      background: 'linear-gradient(180deg, #383A38 0%, #7E7EA5 30%,#ECCFEE 50%,#8686AB 70%, #393B39 100%)',
       opacity: isLoaded ? 1 : 0,
       transition: 'opacity 0.2s ease-in',
       overflow: 'hidden',
@@ -93,11 +93,18 @@ const DynamicComponent = () => {
       alignItems: 'center',
       color: '#ECCFEE',
       fontSize: '7vh',
+      
       overflow: 'visible', // Crucial to let the scale expand beyond the wrapper div
     },
     horizontalClock: {
       display: 'flex',
       alignItems: 'center',
+    },
+    leftClockShadow: {
+      textShadow: '-0px 32vh 2vh rgba(0, 0, 0, 0.9), 0px 2px 12px rgb(240, 7, 7)',
+    },
+    rightClockShadow: {
+      textShadow: '0px -32vh 2vh rgba(0, 0, 0, 0.9), 0px -2px 12px rgb(238, 9, 9)',
     }
   };
 
@@ -107,22 +114,17 @@ const DynamicComponent = () => {
     <div style={styles.container}>
       {/* Top Clock Section */}
       <div style={styles.clockWrapper}>
-        <div style={{...styles.horizontalClock, fontFamily: 'TopFont'}}>
-          {timeString.split('').map((d, i) => (
-            <DigitBox key={`top-${i}`} digit={d} />
-          ))}
+        <div style={{...styles.horizontalClock, fontFamily: 'TopFont', ...styles.leftClockShadow}}>
+          {timeString.split('').map((d, i) => <DigitBox key={`l-${i}`} digit={d} />)}
         </div>
       </div>
 
-      {/* Spacer to push them to the top and bottom */}
       <div style={{ flex: 1 }} />
 
       {/* Bottom Clock Section */}
       <div style={styles.clockWrapper}>
-        <div style={{...styles.horizontalClock, fontFamily: 'BottomFont'}}>
-          {timeString.split('').map((d, i) => (
-            <DigitBox key={`bot-${i}`} digit={d} />
-          ))}
+        <div style={{...styles.horizontalClock, fontFamily: 'BottomFont', ...styles.rightClockShadow}}>
+          {timeString.split('').map((d, i) => <DigitBox key={`r-${i}`} digit={d} />)}
         </div>
       </div>
     </div>
