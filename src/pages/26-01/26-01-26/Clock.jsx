@@ -85,26 +85,27 @@ const DynamicComponent = () => {
     clockWrapper: {
       zIndex: 2,
       width: '100%',
-      // Defining a height of ~40-45% of the screen gives the 15x scale 
-      // enough room to exist without being clipped by the screen edge.
-      height: '42dvh', 
+      // Reduced height to prevent shadow clipping
+      height: '35dvh', 
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       color: '#ECCFEE',
       fontSize: '7vh',
-      
-      overflow: 'visible', // Crucial to let the scale expand beyond the wrapper div
+      // Add padding to ensure shadows don't clip
+      padding: '10vh 0',
+      boxSizing: 'border-box',
+      overflow: 'visible',
     },
     horizontalClock: {
       display: 'flex',
       alignItems: 'center',
     },
     leftClockShadow: {
-      textShadow: '-0px 32vh 3.3vh rgba(0, 0, 0, 0.9), 0px 2px 12px rgb(240, 7, 7)',
+      textShadow: '-0px 36vh 2.5vh rgba(0, 0, 0, 0.9), 0px 2px 12px rgb(240, 7, 7)',
     },
     rightClockShadow: {
-      textShadow: '0px -32vh 3.3vh rgba(0, 0, 0, 0.9), 0px -2px 12px rgb(238, 9, 9)',
+      textShadow: '0px -36vh 2.5vh rgba(0, 0, 0, 0.9), 0px -2px 12px rgb(238, 9, 9)',
     }
   };
 
