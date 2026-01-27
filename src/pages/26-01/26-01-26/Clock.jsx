@@ -73,7 +73,7 @@ const DynamicComponent = () => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      background: 'linear-gradient(180deg, #498644 0%, #0a5511 50%, #2B362C 100%)',
+      background: 'linear-gradient(90deg, #606360 0%, #7E7EA5 30%,#ECCFEE 50%,#8686AB 70%, #515351 100%)',
       opacity: isLoaded ? 1 : 0,
       transition: 'opacity 0.2s ease-in',
       overflow: 'hidden',
@@ -88,7 +88,7 @@ const DynamicComponent = () => {
     verticalClock: {
       writingMode: 'vertical-rl',
       textOrientation: 'mixed',
-      fontSize: '18vh',
+      fontSize: '15vh',
       display: 'flex',
       alignItems: 'center',
       transform: 'rotate(180deg)',
