@@ -79,7 +79,7 @@ const handBaseStyle = {
     left: '50%',
     transformOrigin: '50% 100%',
     borderRadius: '999px',
-    // Applying global opacity to all hands here, or individually below
+    // Static opacity
     opacity: 0.1, 
   };
 
