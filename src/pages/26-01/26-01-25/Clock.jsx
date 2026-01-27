@@ -3,27 +3,19 @@ import React, { useEffect, useState } from 'react';
 // Assets
 import analogMirageFont from '../../../assets/fonts/25-09-10-lava.otf?url';
 import analogBgImage from '../../../assets/clocks/26-01-25/mirage.webp';
-import { materialOpacity } from 'three/tsl';
-
-
 
 const AnalogClockTemplate = () => {
   const [time, setTime] = useState(new Date());
   const [fontReady, setFontReady] = useState(false);
 
-  // Load custom font (kept in case you add other text elements later)
   useEffect(() => {
     const font = new FontFace('BorrowedAnalog', `url(${analogMirageFont})`);
-    font
-      .load()
-      .then((loadedFont) => {
-        document.fonts.add(loadedFont);
-        setFontReady(true);
-      })
-      .catch(() => setFontReady(true));
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      setFontReady(true);
+    }).catch(() => setFontReady(true));
   }, []);
 
-  // Time ticker
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
@@ -33,73 +25,83 @@ const AnalogClockTemplate = () => {
   const minutes = time.getMinutes() + seconds / 60;
   const hours = (time.getHours() % 12) + minutes / 60;
 
-  const secondDeg = (seconds / 60) * 360;
   const minuteDeg = (minutes / 60) * 360;
   const hourDeg = (hours / 12) * 360;
+
+  // --- Animation Logic ---
+  const fadeInOutKeyframes = `
+    @keyframes fadeInOut {
+      0% { opacity: 0; }
+      10% { opacity: 0.05; }
+      20% { opacity: 0.1; }
+      30% { opacity: 0.02; }
+      40% { opacity: 0; }
+      50% { opacity: 0.08; }
+      60% { opacity: 0.12; }
+      70% { opacity: 0.02; }
+      80% { opacity: 0.1; }
+      90% { opacity: 0.0; }
+      100% { opacity: 0.04; }
+    }
+  `;
 
   const containerStyle = {
     position: 'relative',
     width: '100vw',
     height: '100dvh',
-    margin: 0,
-    padding: 0,
     overflow: 'hidden',
     backgroundImage: `url(${analogBgImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+    backgroundColor: '#000', // Solid back for when it's invisible
     fontFamily: fontReady ? "'BorrowedAnalog', system-ui, sans-serif" : 'system-ui, sans-serif',
   };
-
-  
 
   const faceContainerStyle = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '95vmin',
-    height: '95vmin',
+    width: '110vmin',
+    height: '110vmin',
     borderRadius: '50%',
-    overflow: 'hidden',
+    // Apply animation here: 3 seconds duration, ease-in-out, infinite loop, alternates direction
+    animation: 'fadeInOut 13s ease-in-out infinite alternate',
   };
 
-const handBaseStyle = {
+  const handBaseStyle = {
     position: 'absolute',
     bottom: '50%',
     left: '50%',
     transformOrigin: '50% 100%',
     borderRadius: '999px',
-    // Static opacity
-    opacity: 0.1, 
-  };
-
-  const hourHandStyle = {
-    ...handBaseStyle,
-    width: '1.2vmin',
-    height: '25vmin',
-    background: 'linear-gradient(to top, #888787, #ffffff, #FCF8F8EE)',
-    transform: `translate(-50%, 0) rotate(${hourDeg}deg)`,
-    boxShadow: '0 0.2rem 0.5rem rgba(0,0,0,0.5)',
-    zIndex: 2,
-    // opacity: 0.3, // You can also place it here
-  };
-
-  const minuteHandStyle = {
-    ...handBaseStyle,
-    width: '0.8vmin',
-    height: '35vmin',
-    background: 'linear-gradient(to top, #ADADAD, #ffffff, #F8F5F5E4)',
-    transform: `translate(-50%, 0) rotate(${minuteDeg}deg)`,
-    boxShadow: '0 0.2rem 0.4rem rgba(0,0,0,0.4)',
-    zIndex: 3,
-    // opacity: 0.3, // Ensure this is set to 0.3
   };
 
   return (
     <div style={containerStyle}>
+      {/* Injecting keyframes into the head */}
+      <style>{fadeInOutKeyframes}</style>
+      
       <div style={faceContainerStyle}>
-        <div style={hourHandStyle} />
-        <div style={minuteHandStyle} />
+        {/* Hour Hand */}
+        <div style={{
+          ...handBaseStyle,
+          width: '1.2vmin',
+          height: '20vmin',
+          background: 'linear-gradient(to top, #888787, #FFFFFFA0, #FCEEC7D8)',
+          transform: `translate(-50%, 0) rotate(${hourDeg}deg)`,
+          zIndex: 2,
+        }} />
+        
+        {/* Minute Hand */}
+        <div style={{
+          ...handBaseStyle,
+          width: '0.8vmin',
+          height: '35vmin',
+          background: 'linear-gradient(to top, #ADADAD, #FFFFFFAD, #F8EED5F4)',
+          transform: `translate(-50%, 0) rotate(${minuteDeg}deg)`,
+          zIndex: 3,
+        }} />
       </div>
     </div>
   );
