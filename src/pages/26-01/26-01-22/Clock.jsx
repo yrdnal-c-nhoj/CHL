@@ -2,7 +2,7 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 
 // Asset imports
 import backgroundUrl from '../../../assets/clocks/26-01-22/1974.jpg';
-import digitTextureUrl from '../../../assets/clocks/26-01-22/liq.gif';
+import digitTextureUrl from '../../../assets/clocks/26-01-22/liq.webp';
 import fontUrl from '../../../assets/fonts/26-01-22-1974.ttf';
 
 const FONT_FAMILY = '1974';
