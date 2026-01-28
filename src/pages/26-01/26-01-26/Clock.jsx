@@ -105,10 +105,10 @@ const DynamicComponent = () => {
       alignItems: 'center',
     },
     leftClockShadow: {
-      textShadow: '-0px 34.5vh 2.2vh rgba(0, 0, 0, 0.9), 0px 2px 12px rgb(240, 7, 7)',
+      textShadow: '-0px 34.5vh 2.0vh rgba(0, 0, 0, 0.9), 0px 2px 12px rgb(240, 7, 7)',
     },
     rightClockShadow: {
-      textShadow: '0px -34.5vh 2.2vh rgba(0, 0, 0, 0.9), 0px -2px 12px rgb(238, 9, 9)',
+      textShadow: '0px -34.5vh 2.0vh rgba(0, 0, 0, 0.9), 0px -2px 12px rgb(238, 9, 9)',
     }
   };
 
