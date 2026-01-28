@@ -7,7 +7,7 @@ import pano260127font from "../../../assets/fonts/26-01-27-pan.ttf";
  */
 const Panorama = () => {
   // Replace this with your seamless panoramic image source
-  const imageUrl = "../../../src/assets/clocks/26-01-27/pan.jpg";
+  const imageUrl = "../../../assets/clocks/26-01-27/pan.jpg";
   
   const [time, setTime] = useState(new Date());
 
