@@ -1,14 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import backgroundImage from '../../../assets/clocks/26-01-27/pan.jpg';
 import gizaFont from '../../../assets/fonts/26-01-27-pan.ttf';
 
 export default function PanoramaClock() {
   const [fontReady, setFontReady] = useState(false);
   const [timeString, setTimeString] = useState('');
+  const [bgDuration, setBgDuration] = useState(0);
+  const imgRef = useRef(null);
 
   const dateStr = '20260107';
   const uniqueFontFamily = `Giza_${dateStr}`;
 
+  // 1. Calculate Background Speed based on Image Width
+  const handleImageLoad = () => {
+    if (imgRef.current) {
+      const width = imgRef.current.offsetWidth;
+      const speed = 9; // Pixels per second (very slow scrolling)
+      setBgDuration(width / speed);
+    }
+  };
+
+  // 2. Inject Styles (including reversed clock animation)
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
@@ -20,58 +32,51 @@ export default function PanoramaClock() {
         font-display: swap;
       }
 
-      /* Background Container: Exactly 200% width of viewport */
+      /* Background scrolls LEFT (0 to -50%) */
       .pz-bg-container {
         display: flex;
-        height: 100%;
-        width: 200vw; 
-        animation: pz-bg-scroll 30s linear infinite;
+        height: 100dvh;
+        width: max-content;
+        animation: pz-bg-scroll  linear infinite;
         will-change: transform;
-      }
-
-      .pz-bg-half {
-        width: 100vw;
-        height: 100%;
-        background-image: url(${backgroundImage});
-        background-size: cover; 
-        background-repeat: no-repeat;
-        background-position: center center;
       }
 
       @keyframes pz-bg-scroll {
         0%   { transform: translateX(0); }
-        100% { transform: translateX(-100vw); }
+        100% { transform: translateX(-50%); }
+      }
+
+      /* Clock scrolls RIGHT (-50% to 0) */
+      .pz-clock-wrapper {
+        display: flex;
+        width: max-content;
+        animation: clockScroll 120s linear infinite;
+        will-change: transform;
+      }
+
+      @keyframes clockScroll {
+        0%   { transform: translateX(-50%); } 
+        100% { transform: translateX(0); }
       }
 
       .pz-clock-display {
         color: rgba(10, 152, 168, 0.9);
         font-family: '${uniqueFontFamily}', monospace;
-        font-size: 10vh; 
-        padding-right: 5vh; /* Spacing between time instances */
+        font-size: 15vh; 
+        padding-right: 1vh;
         text-shadow:
-          -1px -1px 0vh rgba(235, 236, 240, 0.99),
-          1px 1px  0vh rgba(247, 247, 245, 0.98);
+          0px 2px 0vh rgba(235, 236, 240, 0.99),
+          0px -2px 0vh rgba(247, 247, 245, 0.98);
         user-select: none;
         white-space: nowrap;
-      }
-
-      /* Infinite Text Ribbon */
-      .pz-clock-wrapper {
-        display: flex;
-        width: max-content;
-        animation: clockScroll 40s linear infinite;
-        will-change: transform;
-      }
-
-      @keyframes clockScroll {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); } 
+        opacity: 0.8;
       }
     `;
     document.head.appendChild(style);
     return () => { if (style.parentNode) document.head.removeChild(style); };
   }, [uniqueFontFamily]);
 
+  // 3. Load Font
   useEffect(() => {
     const loadFont = async () => {
       try {
@@ -85,6 +90,7 @@ export default function PanoramaClock() {
     loadFont();
   }, [uniqueFontFamily]);
 
+  // 4. Update Time
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
@@ -101,10 +107,9 @@ export default function PanoramaClock() {
 
   if (!fontReady) return null;
 
-  // Render a few instances to fill the width
   const clockGroup = (
     <div style={{ display: 'flex' }}>
-      {Array.from({ length: 8 }, (_, i) => (
+      {Array.from({ length: 10 }, (_, i) => (
         <div key={i} className="pz-clock-display">{timeString}</div>
       ))}
     </div>
@@ -122,14 +127,27 @@ export default function PanoramaClock() {
       }}
     >
       {/* BACKGROUND LAYER */}
-      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-        <div className="pz-bg-container">
-          <div className="pz-bg-half" />
-          <div className="pz-bg-half" />
+      <div style={{ position: 'absolute', inset: 0 }}>
+        <div 
+          className="pz-bg-container"
+          style={{ animationDuration: `${bgDuration}s` }}
+        >
+          <img 
+            ref={imgRef}
+            onLoad={handleImageLoad}
+            src={backgroundImage} 
+            alt="panorama-1" 
+            style={{ height: '100%', display: 'block' }} 
+          />
+          <img 
+            src={backgroundImage} 
+            alt="panorama-2" 
+            style={{ height: '100%', display: 'block' }} 
+          />
         </div>
       </div>
 
-      {/* CLOCK LAYER */}
+      {/* CLOCK LAYER (Opposite Direction) */}
       <div
         style={{
           position: 'absolute',
