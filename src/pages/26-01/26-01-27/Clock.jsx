@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import panFont from "../../../assets/fonts/26-01-27-pan.ttf";
+import pano260127font from "../../../assets/fonts/26-01-27-pan.ttf";
 
 /**
  * Panorama Component
@@ -19,7 +19,7 @@ const Panorama = () => {
   }, []);
 
   useEffect(() => {
-    const font = new FontFace("pan", `url(${panFont})`);
+    const font = new FontFace("pan", `url(${pano260127font})`);
     font.load().then(() => {
       document.fonts.add(font);
     });
