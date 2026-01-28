@@ -20,24 +20,17 @@ export default function PanoramaClock() {
         font-display: swap;
       }
 
-      .pz-bg-wrapper {
-        position: absolute;
-        inset: 0;
-        overflow: hidden;
-        background-color: #000;
-      }
-
+      /* Background Container: Exactly 200% width of viewport */
       .pz-bg-container {
         display: flex;
         height: 100%;
-        /* Use 200% width of the container to hold two images side-by-side */
-        width: 200%; 
+        width: 200vw; 
         animation: pz-bg-scroll 30s linear infinite;
         will-change: transform;
       }
 
       .pz-bg-half {
-        flex: 0 0 100%;
+        width: 100vw;
         height: 100%;
         background-image: url(${backgroundImage});
         background-size: cover; 
@@ -47,24 +40,32 @@ export default function PanoramaClock() {
 
       @keyframes pz-bg-scroll {
         0%   { transform: translateX(0); }
-        100% { transform: translateX(-50%); } /* Move by half the container width (one full image) */
+        100% { transform: translateX(-100vw); }
       }
 
       .pz-clock-display {
-        color: rgba(4, 198, 220, 0.9);
+        color: rgba(10, 152, 168, 0.9);
         font-family: '${uniqueFontFamily}', monospace;
         font-size: 10vh; 
-        letter-spacing: 1vh;
+        padding-right: 5vh; /* Spacing between time instances */
         text-shadow:
           -1px -1px 0vh rgba(235, 236, 240, 0.99),
-          1px 1px  0vh rgba(246, 213, 22, 0.98);
+          1px 1px  0vh rgba(247, 247, 245, 0.98);
         user-select: none;
         white-space: nowrap;
       }
 
+      /* Infinite Text Ribbon */
+      .pz-clock-wrapper {
+        display: flex;
+        width: max-content;
+        animation: clockScroll 40s linear infinite;
+        will-change: transform;
+      }
+
       @keyframes clockScroll {
         0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
+        100% { transform: translateX(-50%); } 
       }
     `;
     document.head.appendChild(style);
@@ -100,10 +101,14 @@ export default function PanoramaClock() {
 
   if (!fontReady) return null;
 
-  // We only need enough instances to cover 200% of the screen width for a seamless loop
-  const clockInstances = Array.from({ length: 10 }, (_, i) => (
-    <div key={i} className="pz-clock-display">{timeString}</div>
-  ));
+  // Render a few instances to fill the width
+  const clockGroup = (
+    <div style={{ display: 'flex' }}>
+      {Array.from({ length: 8 }, (_, i) => (
+        <div key={i} className="pz-clock-display">{timeString}</div>
+      ))}
+    </div>
+  );
 
   return (
     <div
@@ -116,26 +121,27 @@ export default function PanoramaClock() {
         backgroundColor: '#000',
       }}
     >
-      <div className="pz-bg-wrapper">
+      {/* BACKGROUND LAYER */}
+      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
         <div className="pz-bg-container">
           <div className="pz-bg-half" />
           <div className="pz-bg-half" />
         </div>
       </div>
 
+      {/* CLOCK LAYER */}
       <div
         style={{
           position: 'absolute',
-          bottom: 0,
+          bottom: '5vh',
           left: 0,
-          display: 'flex',
-          animation: 'clockScroll 20s linear infinite',
           zIndex: 10,
         }}
       >
-        {/* Render twice to create the infinite loop effect */}
-        <div style={{ display: 'flex' }}>{clockInstances}</div>
-        <div style={{ display: 'flex' }}>{clockInstances}</div>
+        <div className="pz-clock-wrapper">
+          {clockGroup}
+          {clockGroup}
+        </div>
       </div>
     </div>
   );
