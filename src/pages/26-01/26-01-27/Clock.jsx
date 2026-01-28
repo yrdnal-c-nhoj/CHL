@@ -1,156 +1,148 @@
-import React, { useMemo, useState, useEffect } from 'react';
-import pano260127font from "../../../assets/fonts/26-01-27-pan.ttf";
+import { useState, useEffect } from 'react';
+import backgroundImage from '../../../assets/clocks/26-01-27/pan.jpg';
+import gizaFont from '../../../assets/fonts/26-01-27-pan.ttf';
 
-/**
- * Panorama Component
- * Creates a seamless, infinite horizontal scroll using a single tileable image.
- */
-const Panorama = () => {
-  // Replace this with your seamless panoramic image source
-  const imageUrl = "../../../assets/clocks/26-01-27/pan.jpg";
-  
-  const [time, setTime] = useState(new Date());
+export default function PanoramaClock() {
+  const [fontReady, setFontReady] = useState(false);
+  const [timeString, setTimeString] = useState('');
+
+  const dateStr = '20260107';
+  const uniqueFontFamily = `Giza_${dateStr}`;
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: '${uniqueFontFamily}';
+        src: url(${gizaFont}) format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      /* Background Container: Exactly 200% width of viewport */
+      .pz-bg-container {
+        display: flex;
+        height: 100%;
+        width: 200vw; 
+        animation: pz-bg-scroll 30s linear infinite;
+        will-change: transform;
+      }
+
+      .pz-bg-half {
+        width: 100vw;
+        height: 100%;
+        background-image: url(${backgroundImage});
+        background-size: cover; 
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
+
+      @keyframes pz-bg-scroll {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-100vw); }
+      }
+
+      .pz-clock-display {
+        color: rgba(10, 152, 168, 0.9);
+        font-family: '${uniqueFontFamily}', monospace;
+        font-size: 10vh; 
+        padding-right: 5vh; /* Spacing between time instances */
+        text-shadow:
+          -1px -1px 0vh rgba(235, 236, 240, 0.99),
+          1px 1px  0vh rgba(247, 247, 245, 0.98);
+        user-select: none;
+        white-space: nowrap;
+      }
+
+      /* Infinite Text Ribbon */
+      .pz-clock-wrapper {
+        display: flex;
+        width: max-content;
+        animation: clockScroll 40s linear infinite;
+        will-change: transform;
+      }
+
+      @keyframes clockScroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); } 
+      }
+    `;
+    document.head.appendChild(style);
+    return () => { if (style.parentNode) document.head.removeChild(style); };
+  }, [uniqueFontFamily]);
 
   useEffect(() => {
-    const font = new FontFace("pan", `url(${pano260127font})`);
-    font.load().then(() => {
-      document.fonts.add(font);
-    });
+    const loadFont = async () => {
+      try {
+        if (document.fonts) await document.fonts.load(`12px ${uniqueFontFamily}`);
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setFontReady(true);
+      }
+    };
+    loadFont();
+  }, [uniqueFontFamily]);
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setTimeString(now.toLocaleTimeString('en-US', {
+        hour12: true, 
+        hour: 'numeric', 
+        minute: '2-digit'
+      }).replace(' ', ''));
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
   }, []);
 
-  const formatTime = (date) => {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const displayHours = hours % 12 || 12;
-    const displayMinutes = minutes.toString().padStart(2, '0');
-    return `${displayHours}:${displayMinutes}${ampm}`;
-  };
+  if (!fontReady) return null;
 
-  const styles = useMemo(() => ({
-    wrapper: {
-      width: '100vw',
-      height: '100dvh',
-      overflow: 'hidden',
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      backgroundColor: '#000',
-      display: 'flex',
-      alignItems: 'center',
-      boxSizing: 'border-box',
-    },
-    // The track moves left. Once it hits -50%, it resets to 0% instantly.
-    // Since the image is tileable, the reset is invisible.
-    track: {
-      display: 'flex',
-      flexDirection: 'row',
-      width: 'fit-content',
-      height: '100%',
-      willChange: 'transform',
-      animation: 'pan-scroll 60s linear infinite',
-    },
-    image: {
-      height: '100dvh',
-      width: 'auto', // Keeps the original aspect ratio
-      minWidth: '101vw', // Slight overlap to prevent sub-pixel gaps
-      display: 'block',
-      objectFit: 'cover',
-      flexShrink: 0,
-      pointerEvents: 'none',
-      userSelect: 'none',
-    },
-    clockContainer: {
-      position: 'fixed',
-      bottom: '20px',
-      left: '0',
-      width: '100%',
-      display: 'flex',
-      gap: '20px',
-      zIndex: 10,
-      animation: 'scroll-clocks 20s linear infinite',
-    },
-    digitalClock: {
-      fontFamily: "'pan', sans-serif",
-      fontSize: '12vh',
-      color: '#0DBEC1',
-      textShadow: '0 -1px 0 white, 0 1px 0 white',
-    },
-  }), []);
+  // Render a few instances to fill the width
+  const clockGroup = (
+    <div style={{ display: 'flex' }}>
+      {Array.from({ length: 8 }, (_, i) => (
+        <div key={i} className="pz-clock-display">{timeString}</div>
+      ))}
+    </div>
+  );
 
   return (
-    <div style={styles.wrapper}>
-      {/* Injecting the keyframes directly. 
-        Moving to -50% works because we have two identical images.
-      */}
-      <style>
-        {`
-          @keyframes pan-scroll {
-            from { transform: translate3d(0, 0, 0); }
-            to { transform: translate3d(-50%, 0, 0); }
-          }
-          @keyframes scroll-clocks {
-            from { transform: translate3d(-100%, 0, 0); }
-            to { transform: translate3d(0, 0, 0); }
-          }
-          body, html { 
-            margin: 0; 
-            padding: 0; 
-            overflow: hidden; 
-            width: 100%; 
-            height: 100%; 
-          }
-        `}
-      </style>
-
-      <div style={styles.track}>
-        <img 
-          src={imageUrl} 
-          style={styles.image} 
-          alt="Panoramic view part A" 
-          loading="eager"
-        />
-        <img 
-          src={imageUrl} 
-          style={styles.image} 
-          alt="Panoramic view part B" 
-          aria-hidden="true"
-          loading="eager"
-        />
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        width: '100vw',
+        height: '100dvh',
+        overflow: 'hidden',
+        backgroundColor: '#000',
+      }}
+    >
+      {/* BACKGROUND LAYER */}
+      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+        <div className="pz-bg-container">
+          <div className="pz-bg-half" />
+          <div className="pz-bg-half" />
+        </div>
       </div>
-      
-      {/* Digital Clock Display - continuous scrolling at bottom */}
-      <div style={styles.clockContainer}>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
-        <div style={styles.digitalClock}>{formatTime(time)}</div>
+
+      {/* CLOCK LAYER */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '5vh',
+          left: 0,
+          zIndex: 10,
+        }}
+      >
+        <div className="pz-clock-wrapper">
+          {clockGroup}
+          {clockGroup}
+        </div>
       </div>
     </div>
   );
-};
-
-export default Panorama;
+}
