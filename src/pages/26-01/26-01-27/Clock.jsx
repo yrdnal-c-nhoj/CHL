@@ -151,7 +151,7 @@ export default function PanoramaClock() {
       <div
         style={{
           position: 'absolute',
-          bottom: '5vh',
+          bottom: '1vh',
           left: 0,
           zIndex: 10,
         }}
