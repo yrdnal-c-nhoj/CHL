@@ -51,7 +51,7 @@ export default function PanoramaClock() {
       }
 
       .pz-clock-display {
-        color: rgba(4, 137, 220, 0.9);
+        color: rgba(4, 198, 220, 0.9);
         font-family: '${uniqueFontFamily}', monospace;
         font-size: 10vh; 
         letter-spacing: 1vh;
@@ -126,10 +126,9 @@ export default function PanoramaClock() {
       <div
         style={{
           position: 'absolute',
-          top: '50%',
+          bottom: 0,
           left: 0,
           display: 'flex',
-          transform: 'translateY(-50%)',
           animation: 'clockScroll 20s linear infinite',
           zIndex: 10,
         }}
