@@ -63,7 +63,7 @@ export default function PanoramaClock() {
         color: rgba(10, 152, 168, 0.9);
         font-family: '${uniqueFontFamily}', monospace;
         font-size: 15vh; 
-        padding-right: 1vh;
+        padding-right: 2vh;
         text-shadow:
           0px 2px 0vh rgba(235, 236, 240, 0.99),
           0px -2px 0vh rgba(247, 247, 245, 0.98);
