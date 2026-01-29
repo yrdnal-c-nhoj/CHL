@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 function useClockAngles() {
   const [now, setNow] = useState(new Date());
@@ -17,12 +17,12 @@ function useClockAngles() {
     const ms = now.getMilliseconds();
     const s = now.getSeconds() + ms / 1000;
     const m = now.getMinutes() + s / 60;
-    const h = now.getHours() % 24 + m / 60; // 24-hour support
+    const h = (now.getHours() % 24) + m / 60;
 
     return {
-      // 360 / 24 = 15 degrees per hour
-      hourAngle: h * 15,
-      // 360 / 60 = 6 degrees per unit
+      // 24-hour: 360 / 24 = 15 deg/hr. 12-hour: 360 / 12 = 30 deg/hr.
+      // Using 15 for your original 24-hour logic
+      hourAngle: h * 15, 
       minAngle: m * 6,
       secAngle: s * 6,
     };
@@ -34,69 +34,33 @@ export default function ThreeSingleHandClocks() {
   const [layout, setLayout] = useState('row');
   const [clockSize, setClockSize] = useState(0);
   const [fontLoaded, setFontLoaded] = useState(false);
-  const font260128 = 'Big Shoulders Inline Text';
+  const fontName = 'Big Shoulders Inline Text';
 
-  // Load Google Fonts Big Shoulders Inline Text
   useEffect(() => {
     const loadGoogleFont = async () => {
       try {
-        // Create and inject Google Fonts link
         const link = document.createElement('link');
-        link.rel = 'preconnect';
-        link.href = 'https://fonts.googleapis.com';
+        link.rel = 'stylesheet';
+        link.href = 'https://fonts.googleapis.com/css2?family=Big+Shoulders+Inline+Text:wght@500;800&display=swap';
         document.head.appendChild(link);
-
-        const link2 = document.createElement('link');
-        link2.rel = 'preconnect';
-        link2.href = 'https://fonts.gstatic.com';
-        link2.crossOrigin = 'anonymous';
-        document.head.appendChild(link2);
-
-        const fontLink = document.createElement('link');
-        fontLink.rel = 'stylesheet';
-        fontLink.href = 'https://fonts.googleapis.com/css2?family=Big+Shoulders+Inline+Text:wght@500&display=swap';
-        document.head.appendChild(fontLink);
-
-        // Wait for font to load
-        await document.fonts.load('500 12px "Big Shoulders Inline Text"');
+        await document.fonts.load('800 12px "Big Shoulders Inline Text"');
         setFontLoaded(true);
-
-        return () => {
-          // Cleanup links on unmount
-          if (link.parentNode) document.head.removeChild(link);
-          if (link2.parentNode) document.head.removeChild(link2);
-          if (fontLink.parentNode) document.head.removeChild(fontLink);
-        };
-      } catch (error) {
-        console.warn('Google Font loading failed:', error);
-        setFontLoaded(true); // Continue without custom font
-      }
+      } catch (e) { setFontLoaded(true); }
     };
-
     loadGoogleFont();
   }, []);
 
   useEffect(() => {
     const handleResize = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-
-      const nextLayout = width < 900 ? 'column' : 'row';
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const nextLayout = w < 900 ? 'column' : 'row';
       setLayout(nextLayout);
-
-      let diameter;
-      if (nextLayout === 'row') {
-          const maxDiameterByWidth = (width / 3) * 0.9;
-        const maxDiameterByHeight = height * 0.9;
-        diameter = Math.min(maxDiameterByWidth, maxDiameterByHeight);
-      } else {
-        const maxDiameterByWidth = width * 0.9;
-        const maxDiameterByHeight = (height / 3) * 0.9;
-        diameter = Math.min(maxDiameterByWidth, maxDiameterByHeight);
-      }
+      const diameter = nextLayout === 'row' 
+        ? Math.min((w / 3) * 0.9, h * 0.99) 
+        : Math.min(w * 0.9, (h / 3) * 0.99);
       setClockSize(diameter);
     };
-
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -104,58 +68,63 @@ export default function ThreeSingleHandClocks() {
 
   return (
     <main style={containerStyle}>
-      {!fontLoaded && (
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          color: 'white',
-          fontSize: '1.2rem',
-          font260128: 'monospace'
-        }}>
-        </div>
-      )}
       <div style={{
         ...clockGridStyle,
         flexDirection: layout,
         gap: layout === 'column' ? '1vh' : '1vw',
         opacity: fontLoaded ? 1 : 0,
-        transition: 'opacity 0.3s ease'
+        transition: 'opacity 0.5s ease'
       }}>
-        <Clock label="HOURS" angle={hourAngle} color="#FF0000" thickness="8vh" maxUnits={24} step={1} clockSize={clockSize} font260128={font260128} />
-        <Clock label="SECONDS" angle={secAngle} color="#FAD903" thickness="6vh" maxUnits={60} step={5} smooth={false} clockSize={clockSize} font260128={font260128} />      
-        <Clock label="MINUTES" angle={minAngle} color="#1693FA" thickness="7vh" maxUnits={60} step={5} clockSize={clockSize} font260128={font260128} />
+        <Clock label="HOURS" angle={hourAngle} color="#FF0000" thickness="18%" maxUnits={24} step={1} clockSize={clockSize} fontName={fontName} />
+        <Clock label="SECONDS" angle={secAngle} color="#FAD903" thickness="14%" maxUnits={60} step={5} smooth={false} clockSize={clockSize} fontName={fontName} />      
+        <Clock label="MINUTES" angle={minAngle} color="#1693FA" thickness="16%" maxUnits={60} step={5} clockSize={clockSize} fontName={fontName} />
       </div>
     </main>
   );
 }
 
-function Clock({ angle, color, thickness, smooth = true, maxUnits, step, label, clockSize, font260128 }) {
+function Clock({ angle, color, thickness, smooth = true, maxUnits, step, clockSize, fontName }) {
   const markers = useMemo(() => {
     const arr = [];
-    // Start from step, include maxUnits (e.g., 24 or 60 at the top)
-    for (let i = step; i <= maxUnits; i += step) {
-      if (i !== 0) arr.push(i); // Skip zeros
-    }
+    for (let i = step; i <= maxUnits; i += step) arr.push(i);
     return arr;
   }, [maxUnits, step]);
 
+  const transitionStyle = smooth ? 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)' : 'none';
+
   return (
-    <div
-      style={{
-        ...faceStyle,
-        width: clockSize,
-        height: clockSize,
-      }}
-    >
-    
+    <div style={{ ...faceStyle, width: clockSize, height: clockSize }}>
       
-      {/* Markers */}
+      {/* 1. THE WHITE SHADOW/BORDER LAYER (Behind the hand) */}
+      <div
+        style={{
+          ...handStyle,
+          width: `calc(${thickness} + 12px)`, // Slightly wider
+          height: '500%',
+          backgroundColor: '#F7F3F3', // Your white color
+          transform: `translateX(-50%) rotate(${angle}deg)`,
+          transition: transitionStyle,
+          zIndex: 1,
+        //   filter: 'blur(1px)', // Softens the "shadow" look
+        }}
+      />
+
+      {/* 2. THE COLORED HAND LAYER */}
+      <div
+        style={{
+          ...handStyle,
+          width: thickness,
+          height: '500%',
+          backgroundColor: color,
+          transform: `translateX(-50%) rotate(${angle}deg)`,
+          transition: transitionStyle,
+          zIndex: 2,
+        }}
+      />
+
+      {/* 3. THE DIGITS (On top of everything) */}
       {markers.map((num) => {
-        // -90deg offset so that 'maxUnits' (24 or 60) appears at the top (12 o'clock position)
         const rotation = (num * (360 / maxUnits)) - 90;
-        // Position numbers at 82% of the radius to keep them inside the face
         const radius = (clockSize / 2) * 0.82;
 
         return (
@@ -165,47 +134,23 @@ function Clock({ angle, color, thickness, smooth = true, maxUnits, step, label, 
               position: 'absolute',
               left: '50%',
               top: '50%',
-              // 1. Center the div on the parent
-              // 2. Rotate the path
-              // 3. Move out along the rotated path
-              // 4. Counter-rotate the text so it stays upright
               transform: `translate(-50%, -50%) rotate(${rotation}deg) translateX(${radius}px) rotate(${-rotation}deg)`,
-              fontSize: `calc(${clockSize}px * 0.08)`,
-              fontWeight: '500',
-              color: 'rgb(7, 6, 6)',
-              pointerEvents: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '50px',
-              height: '50px',
-              font260128: `'${font260128}', sans-serif`,
+              fontSize: `calc(${clockSize}px * 0.11)`,
+              fontFamily: `'${fontName}', sans-serif`,
+            //   fontWeight: '800',
+              color: '#FFFFFF',
+              mixBlendMode: 'difference', // Makes text black when over light colors
               zIndex: 10,
+              pointerEvents: 'none',
             }}
           >
             {num}
           </div>
         );
       })}
-   
-      {/* Hand */}
-      <div
-        style={{
-          ...handStyle,
-          width: thickness,
-          height: '500%',
-          backgroundColor: color,
-          border: '10px solid black',
-        //   boxShadow: `0 0 12px ${color}88`,
-          transform: `translateX(-50%) rotate(${angle}deg)`,
-          transition: smooth ? 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
-        }}
-      />
     </div>
   );
 }
-
-// --- Styles ---
 
 const containerStyle = {
   width: '100vw',
@@ -213,37 +158,27 @@ const containerStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  background: '#DED4D0',
+  background: '#242423',
   margin: 0,
-  padding: 0,
-  boxSizing: 'border-box',
   overflow: 'hidden',
-  font260128: 'system-ui, -apple-system, sans-serif'
 };
 
 const clockGridStyle = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  width: '100%',
-  height: '100%',
 };
 
 const faceStyle = {
   position: 'relative',
   borderRadius: '50%',
-//   background: 'radial-gradient(circle at center, #1A1A1A0D 0%, #0A990031 100%)',
-//   border: '1px solid #333',
-  flexShrink: 0,
-//   boxShadow: '0 2px 50px rgba(14, 90, 4, 0.38)',
+  background: 'transparent',
 };
-
 
 const handStyle = {
   position: 'absolute',
   left: '50%',
   bottom: '50%',
   transformOrigin: '50% 100%',
-  borderRadius: '10px',
-  zIndex: 1,
+  borderRadius: '12px 12px 0 0',
 };
