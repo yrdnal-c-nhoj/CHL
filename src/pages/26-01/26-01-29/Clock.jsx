@@ -1,18 +1,16 @@
 import React, { useState, useEffect, useMemo, memo } from 'react';
 
-import backgroundGif2 from '../../../assets/clocks/26-01-29/uu.gif';
+import backgroundGif2 from '../../../assets/clocks/26-01-29/ur.gif';
 import backgroundGif from '../../../assets/clocks/26-01-29/uranu.gif';
 import tileOverlay from '../../../assets/clocks/26-01-29/uran.webp';
-import customFontUrl from '../../../assets/fonts/26-01-29-ura.ttf';
 
-// Memoized static hour letters (A, B, C, ..., L)
-const ClockNumbers = memo(({ fontFamily }) => (
+// Memoized static hour images using backgroundGif2
+const ClockNumbers = memo(() => (
   <>
     {[...Array(12)].map((_, i) => {
-      const letter = String.fromCharCode(65 + i); // A=65, B=66, etc.
       return (
         <div
-          key={letter}
+          key={i}
           style={{
             position: 'absolute',
             inset: 0,
@@ -23,17 +21,17 @@ const ClockNumbers = memo(({ fontFamily }) => (
             transform: `rotate(${i * 30}deg)`,
           }}
         >
-          <span
+          <div
             style={{
-              fontSize: 'min(21vw, 21vh)',
-              color: '#7A7EEF00',
-              textShadow: '0 0 20x #DEF171',
-              fontFamily,
+              width: 'min(33vw, 33vh)',
+              height: 'min(33vw, 33vh)',
+              backgroundImage: `url(${backgroundGif2})`,
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
               userSelect: 'none',
             }}
-          >
-            {letter}
-          </span>
+          />
         </div>
       );
     })}
@@ -41,43 +39,18 @@ const ClockNumbers = memo(({ fontFamily }) => (
 ));
 
 const AnalogUranusClock = () => {
-  const [ready, setReady] = useState(false);
   const [now, setNow] = useState(() => new Date());
   const [bgRotation, setBgRotation] = useState(0);
 
-  // Unique font family name (generated only once)
-  const fontFamily = useMemo(
-    () => `migrate-${Math.random().toString(36).slice(2, 9)}`,
-    []
-  );
-
   useEffect(() => {
-    let mounted = true;
     let animationFrameId;
     let lastTime = Date.now();
-
-    // Load custom font
-    const loadFont = async () => {
-      try {
-        const font = new FontFace(fontFamily, `url(${customFontUrl})`);
-        await font.load();
-        document.fonts.add(font);
-      } catch (err) {
-        console.warn('Custom font failed to load', err);
-      } finally {
-        if (mounted) setReady(true);
-      }
-    };
-
-    loadFont();
 
     // Clock tick
     const timer = setInterval(() => setNow(new Date()), 1000);
 
     // Smooth background rotation - counterclockwise once per minute
     const animate = () => {
-      if (!mounted) return;
-      
       const currentTime = Date.now();
       const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
       lastTime = currentTime;
@@ -91,15 +64,12 @@ const AnalogUranusClock = () => {
     animationFrameId = requestAnimationFrame(animate);
 
     return () => {
-      mounted = false;
       clearInterval(timer);
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
       }
     };
-  }, [fontFamily]);
-
-  if (!ready) return null;
+  }, []);
 
   // Time calculations
   const hours = now.getHours() % 12;
@@ -135,7 +105,25 @@ const AnalogUranusClock = () => {
         }}
           >
                 {/* Third background layer - add your image import and use here */}
+       
+       
         <div
+          style={{
+            position: 'absolute',
+            top: '-50%',
+            left: '-50%',
+            right: '-50%',
+            bottom: '-50%',
+            backgroundImage: `url(${tileOverlay})`,
+            backgroundSize: '40% 40%',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            opacity: 0.5,
+          }}
+        />
+      
+      </div>
+ <div
           style={{
             position: 'absolute',
             top: '-50%',
@@ -146,37 +134,19 @@ const AnalogUranusClock = () => {
             backgroundSize: '70px 70px',
             backgroundRepeat: 'repeat',
             backgroundPosition: 'center',
-            opacity: 0.4,
+            // opacity: 0.4,
           }}
         />
-       
-        <div
-          style={{
-            position: 'absolute',
-            top: '-50%',
-            left: '-50%',
-            right: '-50%',
-            bottom: '-50%',
-            backgroundImage: `url(${tileOverlay})`,
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            opacity: 0.5,
-          }}
-        />
-      
-      </div>
-
       {/* Clock face container */}
       <div
         style={{
           position: 'relative',
           zIndex: 10,
-          width: 'min(95vw, 95vh)',
-          height: 'min(95vw, 95vh)',
+          width: 'min(110vw, 110vh)',
+          height: 'min(110vw, 110vh)',
         }}
       >
-        <ClockNumbers fontFamily={fontFamily} />
+        <ClockNumbers />
 
         {/* Hour hand */}
         <div
@@ -227,7 +197,7 @@ const AnalogUranusClock = () => {
             backgroundPosition: 'center',
             // opacity: 0.3,
             transform: `rotate(${bgRotation}deg)`,
-            filter: ' contrast(0.8) brightness(2.8) saturate(0.0) hue-rotate(-30deg)',
+            filter: ' contrast(0.8) brightness(2.8) saturate(0.0)',
           }}
         />
     </div>
