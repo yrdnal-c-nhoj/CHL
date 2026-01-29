@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo, memo } from 'react';
 // Explicit Asset Imports
 import backgroundImage from '../../../assets/clocks/26-01-21/fllap.webp';
 import tileImage from '../../../assets/clocks/26-01-21/flap.webp'; 
-import customFontFile from '../../../assets/fonts/26-01-21-migrate.ttf';
+import custom260121Font from '../../../assets/fonts/26-01-21-migrate.ttf';
 
 // Memoize the Numbers so they don't re-render every second
 const ClockNumbers = memo(({ fontFamily }) => (
@@ -34,7 +34,7 @@ const AnalogBirdMigrateClock = () => {
     let isMounted = true;
     const loadFont = async () => {
       try {
-        const fontFace = new FontFace(fontFamilyName, `url(${customFontFile})`);
+        const fontFace = new FontFace(fontFamilyName, `url(${custom260121Font})`);
         await fontFace.load().then(loaded => document.fonts.add(loaded));
         if (isMounted) setIsReady(true);
       } catch (e) {
