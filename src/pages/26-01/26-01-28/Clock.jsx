@@ -1,57 +1,64 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import backgroundImage from '../../../assets/clocks/26-01-28/three.webp';
 
-// --- Background Logic with Dual-Axis Mirroring ---
+// --- Background Logic with Centered Dual-Axis Mirroring ---
 function CheckerboardBackground() {
-  const [dimensions, setDimensions] = useState({ 
-    cols: typeof window !== 'undefined' ? Math.ceil(window.innerWidth / 200) + 1 : 10, 
-    rows: typeof window !== 'undefined' ? Math.ceil(window.innerHeight / 200) + 1 : 10 
-  });
+  const tileSize = 200;
+  const [dimensions, setDimensions] = useState({ cols: 0, rows: 0 });
 
   useEffect(() => {
     const handleResize = () => {
       setDimensions({
-        cols: Math.ceil(window.innerWidth / 200) + 1,
-        rows: Math.ceil(window.innerHeight / 200) + 1
+        cols: Math.ceil(window.innerWidth / tileSize) + 2,
+        rows: Math.ceil(window.innerHeight / tileSize) + 2
       });
     };
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Memoize tiles so they don't re-render when the clock ticks
   const renderedTiles = useMemo(() => {
     const tiles = [];
+    const startCol = -Math.floor(dimensions.cols / 2);
+    const startRow = -Math.floor(dimensions.rows / 2);
+
     for (let r = 0; r < dimensions.rows; r++) {
       for (let c = 0; c < dimensions.cols; c++) {
-        const flipH = c % 2 === 1;
-        const flipV = r % 2 === 1;
+        const currCol = startCol + c;
+        const currRow = startRow + r;
+        const flipH = Math.abs(currCol) % 2 === 1;
+        const flipV = Math.abs(currRow) % 2 === 1;
         const transform = `scale(${flipH ? -1 : 1}, ${flipV ? -1 : 1})`;
 
         tiles.push(
           <div
-            key={`${r}-${c}`}
+            key={`${currRow}-${currCol}`}
             style={{
-              width: 200,
-              height: 200,
+              width: tileSize,
+              height: tileSize,
               backgroundImage: `url(${backgroundImage})`,
               backgroundSize: 'cover',
               transform: transform,
-              opacity: 0.9, // Allows the gradient to bleed through the tiles
+              opacity: 0.6,
             }}
           />
         );
       }
     }
     return tiles;
-  }, [dimensions, backgroundImage]);
+  }, [dimensions]);
 
   return (
     <div style={backgroundWrapperStyle}>
       <div style={{
         display: 'grid',
-        gridTemplateColumns: `repeat(${dimensions.cols}, 200px)`,
-        gridTemplateRows: `repeat(${dimensions.rows}, 200px)`,
+        gridTemplateColumns: `repeat(${dimensions.cols}, ${tileSize}px)`,
+        gridTemplateRows: `repeat(${dimensions.rows}, ${tileSize}px)`,
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
       }}>
         {renderedTiles}
       </div>
@@ -80,13 +87,14 @@ function useClockAngles() {
     const h = (now.getHours() % 24) + m / 60;
 
     return {
-      hourAngle: h * 15, 
+      hourAngle: h * 15,
       minAngle: m * 6,
       secAngle: s * 6,
     };
   }, [now]);
 }
 
+// --- Main Component ---
 export default function ThreeSingleHandClocks() {
   const { hourAngle, minAngle, secAngle } = useClockAngles();
   const [layout, setLayout] = useState('row');
@@ -115,8 +123,8 @@ export default function ThreeSingleHandClocks() {
       const nextLayout = w < 900 ? 'column' : 'row';
       setLayout(nextLayout);
       const diameter = nextLayout === 'row' 
-        ? Math.min((w / 3) * 0.9, h * 0.9) 
-        : Math.min(w * 0.9, (h / 3) * 0.9);
+        ? Math.min((w / 3) * 0.8, h * 0.7) 
+        : Math.min(w * 0.8, (h / 3) * 0.7);
       setClockSize(diameter);
     };
     handleResize();
@@ -130,19 +138,23 @@ export default function ThreeSingleHandClocks() {
       <div style={{
         ...clockGridStyle,
         flexDirection: layout,
-        gap: layout === 'column' ? '1vh' : '1vw',
+        gap: layout === 'column' ? '0vh' : '0vw',
         opacity: fontLoaded ? 1 : 0,
         transition: 'opacity 0.5s ease',
         zIndex: 10 
       }}>
+
+        <Clock label="SECONDS" angle={secAngle} color="#FAD903" thickness="14%" maxUnits={60} step={1} smooth={false} clockSize={clockSize} fontName={fontName} />      
+  
         <Clock label="HOURS" angle={hourAngle} color="#FF0000" thickness="18%" maxUnits={24} step={1} clockSize={clockSize} fontName={fontName} />
-        <Clock label="SECONDS" angle={secAngle} color="#FAD903" thickness="14%" maxUnits={60} step={5} smooth={false} clockSize={clockSize} fontName={fontName} />      
-        <Clock label="MINUTES" angle={minAngle} color="#1693FA" thickness="16%" maxUnits={60} step={5} clockSize={clockSize} fontName={fontName} />
-      </div>
+ 
+          <Clock label="MINUTES" angle={minAngle} color="#1693FA" thickness="16%" maxUnits={60} step={1} clockSize={clockSize} fontName={fontName} />
+             </div>
     </main>
   );
 }
 
+// --- Clock Sub-component ---
 function Clock({ angle, color, thickness, smooth = true, maxUnits, step, clockSize, fontName }) {
   const markers = useMemo(() => {
     const arr = [];
@@ -151,34 +163,46 @@ function Clock({ angle, color, thickness, smooth = true, maxUnits, step, clockSi
   }, [maxUnits, step]);
 
   const transitionStyle = smooth ? 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)' : 'none';
+  
+  // Set the "padding" for the white border (e.g., 6px even on all sides)
+  const borderWeight = 6; 
+  const massiveHeight = '200vh'; 
 
   return (
     <div style={{ ...faceStyle, width: clockSize, height: clockSize }}>
+      {/* 1. Outer Hand (White + 1px Black Border) */}
       <div
         style={{
           ...handStyle,
-          width: `calc(${thickness} + 12px)`,
-          height: '500%',
+          width: `calc(${thickness} + ${borderWeight * 2}px)`,
+          height: massiveHeight,
           backgroundColor: '#F7F3F3',
+          border: '1px solid #000000',
+          borderRadius: '18px',
           transform: `translateX(-50%) rotate(${angle}deg)`,
           transition: transitionStyle,
           zIndex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          padding: `${borderWeight}px`, // This creates the even white border
         }}
-      />
-      <div
-        style={{
-          ...handStyle,
-          width: thickness,
-          height: '500%',
-          backgroundColor: color,
-          transform: `translateX(-50%) rotate(${angle}deg)`,
-          transition: transitionStyle,
-          zIndex: 2,
-        }}
-      />
+      >
+        {/* 2. Inner Hand (The color fill nested inside) */}
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundColor: color,
+            borderRadius: '18px',
+          }}
+        />
+      </div>
+
+      {/* 3. Numbers */}
       {markers.map((num) => {
         const rotation = (num * (360 / maxUnits)) - 90;
-        const radius = (clockSize / 2) * 0.82;
+        const radius = (clockSize / 2) * 1.8;
         return (
           <div
             key={num}
@@ -187,12 +211,13 @@ function Clock({ angle, color, thickness, smooth = true, maxUnits, step, clockSi
               left: '50%',
               top: '50%',
               transform: `translate(-50%, -50%) rotate(${rotation}deg) translateX(${radius}px) rotate(${-rotation}deg)`,
-              fontSize: `calc(${clockSize}px * 0.11)`,
+              fontSize: `calc(${clockSize}px * 0.13)`,
               fontFamily: `'${fontName}', sans-serif`,
-              color: '#65A055',
+              color: '#1A6804',
               mixBlendMode: 'difference',
-              zIndex: 100,
+              zIndex: 22,
               pointerEvents: 'none',
+              // fontWeight: 800
             }}
           >
             {num}
@@ -203,15 +228,14 @@ function Clock({ angle, color, thickness, smooth = true, maxUnits, step, clockSi
   );
 }
 
-// --- Styles ---
+// --- Final Styles ---
 const containerStyle = {
   width: '100vw',
   height: '100dvh',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  // LINEAR GRADIENT BACKGROUND
-  background: 'linear-gradient(135deg, #0f0c29 0%, #79797F 50%, #24243e 100%)',
+  background: 'linear-gradient(90deg, #000000 0%, #BEC1F3 50% , #000000 100%)',
   margin: 0,
   padding: 0,
   overflow: 'hidden',
@@ -244,7 +268,7 @@ const faceStyle = {
 const handStyle = {
   position: 'absolute',
   left: '50%',
-  bottom: '50%',
+  bottom: '50%', 
   transformOrigin: '50% 100%',
-  borderRadius: '12px 12px 0 0',
+  boxSizing: 'border-box',
 };
