@@ -37,7 +37,7 @@ function CheckerboardBackground() {
               backgroundImage: `url(${backgroundImage})`,
               backgroundSize: 'cover',
               transform: transform,
-              opacity: 0.6, // Allows the gradient to bleed through the tiles
+              opacity: 0.9, // Allows the gradient to bleed through the tiles
             }}
           />
         );
