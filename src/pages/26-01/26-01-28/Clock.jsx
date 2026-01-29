@@ -100,7 +100,7 @@ export default function ThreeSingleHandClocks() {
   const [layout, setLayout] = useState('row');
   const [clockSize, setClockSize] = useState(0);
   const [fontLoaded, setFontLoaded] = useState(false);
-  const fontName = 'Big Shoulders Inline Text';
+  const font260128Name = 'Big Shoulders Inline Text';
 
   useEffect(() => {
     const loadGoogleFont = async () => {
@@ -144,18 +144,18 @@ export default function ThreeSingleHandClocks() {
         zIndex: 10 
       }}>
 
-        <Clock label="SECONDS" angle={secAngle} color="#FAD903" thickness="14%" maxUnits={60} step={1} smooth={false} clockSize={clockSize} fontName={fontName} />      
+        <Clock label="SECONDS" angle={secAngle} color="#FAD903" thickness="14%" maxUnits={60} step={1} smooth={false} clockSize={clockSize} font260128Name={font260128Name} />      
   
-        <Clock label="HOURS" angle={hourAngle} color="#FF0000" thickness="18%" maxUnits={24} step={1} clockSize={clockSize} fontName={fontName} />
+        <Clock label="HOURS" angle={hourAngle} color="#FF0000" thickness="18%" maxUnits={24} step={1} clockSize={clockSize} font260128Name={font260128Name} />
  
-          <Clock label="MINUTES" angle={minAngle} color="#1693FA" thickness="16%" maxUnits={60} step={1} clockSize={clockSize} fontName={fontName} />
+          <Clock label="MINUTES" angle={minAngle} color="#1693FA" thickness="16%" maxUnits={60} step={1} clockSize={clockSize} font260128Name={font260128Name} />
              </div>
     </main>
   );
 }
 
 // --- Clock Sub-component ---
-function Clock({ angle, color, thickness, smooth = true, maxUnits, step, clockSize, fontName }) {
+function Clock({ angle, color, thickness, smooth = true, maxUnits, step, clockSize, font260128Name }) {
   const markers = useMemo(() => {
     const arr = [];
     for (let i = step; i <= maxUnits; i += step) arr.push(i);
@@ -212,7 +212,7 @@ function Clock({ angle, color, thickness, smooth = true, maxUnits, step, clockSi
               top: '50%',
               transform: `translate(-50%, -50%) rotate(${rotation}deg) translateX(${radius}px) rotate(${-rotation}deg)`,
               fontSize: `calc(${clockSize}px * 0.13)`,
-              fontFamily: `'${fontName}', sans-serif`,
+              fontFamily: `'${font260128Name}', sans-serif`,
               color: '#1A6804',
               mixBlendMode: 'difference',
               zIndex: 22,
