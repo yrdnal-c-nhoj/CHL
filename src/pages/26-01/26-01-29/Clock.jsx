@@ -56,7 +56,7 @@ const AnalogUranusClock = () => {
       lastTime = currentTime;
       
       // Rotate -6 degrees per second (counterclockwise)
-      setBgRotation(prev => prev - (6 * deltaTime));
+      setBgRotation(prev => prev - (1 * deltaTime));
       
       animationFrameId = requestAnimationFrame(animate);
     };
@@ -118,7 +118,7 @@ const AnalogUranusClock = () => {
             backgroundSize: '40% 40%',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
-            opacity: 0.5,
+            opacity: 0.3,
           }}
         />
       
@@ -156,12 +156,12 @@ const AnalogUranusClock = () => {
             bottom: '50%',
             transform: `translateX(-50%) rotate(${hourDeg}deg)`,
             transformOrigin: 'bottom center',
-            width: 'min(1.8vw, 3px)',
-            height: '24%',
-            backgroundColor: '#8D98EAC6',
+            width: 'min(2vw, 3px)',
+            height: '124%',
+            backgroundColor: '#08E4ECC4',
             borderRadius: '10px',
-            boxShadow: '0 0 20px #C2C7E6',
-            zIndex: 15,
+            boxShadow: '0 0 2px #C2C7E6',
+            zIndex: 5,
           }}
         />
 
@@ -173,12 +173,12 @@ const AnalogUranusClock = () => {
             bottom: '50%',
             transform: `translateX(-50%) rotate(${minuteDeg}deg)`,
             transformOrigin: 'bottom center',
-            width: 'min(1.2vw, 2px)',
+            width: 'min(1.5vw, 2px)',
             height: '45%',
-            backgroundColor: '#8D98EADA',
+            backgroundColor: '#08E4ECC4',
             borderRadius: '10px',
-            boxShadow: '0 0 20px #C4C8EF',
-            zIndex: 15,
+            boxShadow: '0 0 2px #C4C8EF',
+            zIndex: 5,
           }}
         />
 
@@ -194,8 +194,9 @@ const AnalogUranusClock = () => {
             backgroundImage: `url(${backgroundGif})`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            // opacity: 0.3,
+                  backgroundPosition: 'center',
+            zIndex: 8,
+            opacity: 0.7,
             transform: `rotate(${bgRotation}deg)`,
             filter: ' contrast(0.8) brightness(2.8) saturate(0.0)',
           }}
