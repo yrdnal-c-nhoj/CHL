@@ -189,12 +189,10 @@ function Clock({ angle, color, thickness, smooth = true, maxUnits, step, clockSi
               transform: `translate(-50%, -50%) rotate(${rotation}deg) translateX(${radius}px) rotate(${-rotation}deg)`,
               fontSize: `calc(${clockSize}px * 0.11)`,
               fontFamily: `'${fontName}', sans-serif`,
-              fontWeight: '800',
-              color: '#FFFFFF',
+              color: '#65A055',
               mixBlendMode: 'difference',
               zIndex: 100,
               pointerEvents: 'none',
-            //   textShadow: '0px 0px 2px rgba(0,0,0,0.2)'
             }}
           >
             {num}
@@ -213,7 +211,7 @@ const containerStyle = {
   alignItems: 'center',
   justifyContent: 'center',
   // LINEAR GRADIENT BACKGROUND
-  background: 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)',
+  background: 'linear-gradient(135deg, #0f0c29 0%, #79797F 50%, #24243e 100%)',
   margin: 0,
   padding: 0,
   overflow: 'hidden',
