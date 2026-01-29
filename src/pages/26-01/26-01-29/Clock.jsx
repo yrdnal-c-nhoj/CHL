@@ -227,7 +227,7 @@ const AnalogUranusClock = () => {
             backgroundPosition: 'center',
             // opacity: 0.3,
             transform: `rotate(${bgRotation}deg)`,
-            filter: ' contrast(1.9) brightness(2.8) saturate(0.0) hue-rotate(-30deg)',
+            filter: ' contrast(0.8) brightness(2.8) saturate(0.0) hue-rotate(-30deg)',
           }}
         />
     </div>
