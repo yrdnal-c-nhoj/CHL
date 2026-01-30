@@ -7,9 +7,20 @@ import bgLayer2 from "../../../assets/clocks/26-01-30/ne.gif";
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
+    
+    // Load font and prevent FOUT
+    const font = new FontFace('MyCustomFont', `url(${clockFont}) format('truetype')`);
+    font.load().then(() => {
+      document.fonts.add(font);
+      setFontLoaded(true);
+    }).catch(() => {
+      setFontLoaded(true); // Show fallback if font fails
+    });
+    
     return () => clearInterval(timer);
   }, []);
 
@@ -20,24 +31,13 @@ const DigitalClock = () => {
 
   return (
     <div style={styles.container}>
-      {/* Injecting Font-Face once */}
-      <style>
-        {`
-          @font-face {
-            font-family: 'MyCustomFont';
-            src: url(${clockFont}) format('truetype');
-            font-display: swap;
-          }
-        `}
-      </style>
-
       {/* Background Layers */}
       <img src={bgLayer1} alt="" style={styles.imageLayer1} />
       <img src={bgLayer2} alt="" style={styles.imageLayer2} />
       
       {/* Clock UI */}
       <div style={styles.uiWrapper}>
-        <div style={styles.timeText}>
+        <div style={{...styles.timeText, opacity: fontLoaded ? 1 : 0, transition: 'opacity 0.3s ease-in-out'}}>
           {hours}:{minutes} <span style={styles.ampmText}>{ampm}</span>
         </div>
       </div>
