@@ -137,10 +137,10 @@ const AnalogUranusClock = () => {
             backgroundImage: `url(${backgroundGif3})`,
             backgroundSize: '50vh 50vh',
             backgroundRepeat: 'repeat',
-          backgroundPosition: 'center',
-                filter: ' contrast(1.8) brightness(1.0) saturate(4.0)',
-     
-            // opacity: 0.9,
+            backgroundPosition: 'center',
+            filter: 'contrast(1.8) brightness(0.5) saturate(8.0)',
+            zIndex: 5,
+            opacity: 0.5,
           }}
         />
       {/* Clock face container */}
