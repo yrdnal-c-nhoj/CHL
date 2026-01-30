@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, memo } from 'react';
 
 import backgroundGif2 from '../../../assets/clocks/26-01-29/ur.gif';
 import backgroundGif from '../../../assets/clocks/26-01-29/uranu.gif';
-import tileOverlay from '../../../assets/clocks/26-01-29/uran.webp';
+import tileOverlay from '../../../assets/clocks/26-01-29/u.webp';
 
 // Memoized static hour images using backgroundGif2
 const ClockNumbers = memo(() => (
@@ -158,7 +158,7 @@ const AnalogUranusClock = () => {
             transformOrigin: 'bottom center',
             width: 'min(2vw, 3px)',
             height: '24%',
-            backgroundColor: '#08E4ECC4',
+            backgroundColor: '#085557C4',
             borderRadius: '10px',
             boxShadow: '0 0 2px #C2C7E6',
             zIndex: 5,
@@ -175,7 +175,7 @@ const AnalogUranusClock = () => {
             transformOrigin: 'bottom center',
             width: 'min(1.5vw, 2px)',
             height: '45%',
-            backgroundColor: '#08E4ECC4',
+            backgroundColor: '#021D1EC4',
             borderRadius: '10px',
             boxShadow: '0 0 2px #C4C8EF',
             zIndex: 5,
@@ -194,7 +194,7 @@ const AnalogUranusClock = () => {
             backgroundImage: `url(${backgroundGif})`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
+            backgroundPosition: 'center',
             zIndex: 1,
             opacity: 0.3,
             transform: `rotate(${bgRotation}deg)`,
