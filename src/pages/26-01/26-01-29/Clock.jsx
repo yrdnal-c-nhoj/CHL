@@ -138,7 +138,7 @@ const AnalogUranusClock = () => {
             backgroundSize: '50vh 50vh',
             backgroundRepeat: 'repeat',
             backgroundPosition: 'center',
-            filter: 'contrast(1.8) brightness(0.5) saturate(8.0)',
+            filter: 'contrast(1.8) brightness(0.5) saturate(2.0)',
             zIndex: 5,
             opacity: 0.5,
           }}
