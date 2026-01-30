@@ -1,152 +1,105 @@
-import { useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
-// === Local assets (module-based, fingerprinted by Vite) ===
-import wallTexture from '../../../assets/clocks/26-01-01/fan.gif';       // subtle plaster / stone texture
-import brassTexture from '../../../assets/clocks/26-01-01/fan.gif';     // optional brass grain
-import watchFontUrl from '../../../assets/fonts/26-01-01-fan.otf';
+// Explicit Asset Imports
+import clockFont from '../../../assets/fonts/26-01-30-ne.ttf';
+import bgLayer1 from "../../../assets/clocks/26-01-30/new.gif"; 
+import bgLayer2 from "../../../assets/clocks/26-01-30/ne.gif";
 
+const DigitalClock = () => {
+  const [time, setTime] = useState(new Date());
 
-
-import bg1 from '../../../assets/clocks/26-01-01/fan.gif';
-import myFontUrl from '../../../assets/fonts/26-01-01-fan.otf';
-
-
-
-export default function NichePocketWatch() {
-  const watchRef = useRef(null);
-
-  // === Load font (Vite-modern behavior) ===
   useEffect(() => {
-    const font = new FontFace(
-      'WatchNumerals',
-      `url(${watchFontUrl})`
-    );
-
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-    });
-
-    return () => {
-      // FontFace cleanup is handled by browser; nothing persistent added
-    };
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
-  // === Subtle pendulum swing ===
-  useEffect(() => {
-    let rafId;
-    let start;
-
-    const animate = (t) => {
-      if (!start) start = t;
-      const elapsed = (t - start) / 1000;
-
-      // gentle, slow swing
-      const angle = Math.sin(elapsed * 0.9) * 3;
-
-      if (watchRef.current) {
-        watchRef.current.style.transform =
-          `translateX(-50%) rotate(${angle}deg)`;
-      }
-
-      rafId = requestAnimationFrame(animate);
-    };
-
-    rafId = requestAnimationFrame(animate);
-
-    return () => cancelAnimationFrame(rafId);
-  }, []);
-
-  // === Shared sizing ===
-  const nicheWidth = '70vw';
-  const nicheMaxWidth = '420px';
+  const rawHours = time.getHours();
+  const hours = rawHours % 12 || 12;
+  const minutes = time.getMinutes().toString().padStart(2, '0');
+  const ampm = rawHours >= 12 ? 'PM' : 'AM';
 
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        boxSizing: 'border-box',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundImage: `url(${wallTexture})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        fontFamily: 'WatchNumerals, serif'
-      }}
-    >
-      {/* === Niche === */}
-      <div
-        style={{
-          position: 'relative',
-          width: nicheWidth,
-          maxWidth: nicheMaxWidth,
-          aspectRatio: '1 / 1.25',
-          borderTopLeftRadius: '100% 100%',
-          borderTopRightRadius: '100% 100%',
-          borderBottomLeftRadius: '1.5rem',
-          borderBottomRightRadius: '1.5rem',
-          background: 'linear-gradient(180deg, #e6ded2, #cfc6b8)',
-          boxShadow:
-            'inset 0 1.5rem 2.5rem rgba(0,0,0,0.25), inset 0 -0.5rem 1rem rgba(255,255,255,0.3)',
-          display: 'flex',
-          justifyContent: 'center',
-          overflow: 'hidden'
-        }}
-      >
-        {/* === Chain === */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '0.75rem',
-            width: '2px',
-            height: '25%',
-            background:
-              'linear-gradient(180deg, #b08d57, #6e542e)',
-            boxShadow: '0 0 2px rgba(0,0,0,0.4)'
-          }}
-        />
+    <div style={styles.container}>
+      {/* Injecting Font-Face once */}
+      <style>
+        {`
+          @font-face {
+            font-family: 'MyCustomFont';
+            src: url(${clockFont}) format('truetype');
+            font-display: swap;
+          }
+        `}
+      </style>
 
-        {/* === Pocket Watch === */}
-        <div
-          ref={watchRef}
-          style={{
-            position: 'absolute',
-            top: '25%',
-            left: '50%',
-            transformOrigin: 'top center',
-            width: '38%',
-            aspectRatio: '1 / 1',
-            borderRadius: '50%',
-            backgroundImage: `url(${brassTexture})`,
-            backgroundSize: 'cover',
-            boxShadow:
-              '0 1.5rem 2.5rem rgba(0,0,0,0.35), inset 0 0 0.25rem rgba(255,255,255,0.6)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          {/* Watch face */}
-          <div
-            style={{
-              width: '85%',
-              height: '85%',
-              borderRadius: '50%',
-              background: '#f7f3ee',
-              boxShadow: 'inset 0 0 0.5rem rgba(0,0,0,0.25)',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              fontSize: 'clamp(1rem, 3vw, 1.6rem)',
-              color: '#2e2a24'
-            }}
-          >
-            XII
-          </div>
+      {/* Background Layers */}
+      <img src={bgLayer1} alt="" style={styles.imageLayer1} />
+      <img src={bgLayer2} alt="" style={styles.imageLayer2} />
+      
+      {/* Clock UI */}
+      <div style={styles.uiWrapper}>
+        <div style={styles.timeText}>
+          {hours}:{minutes} <span style={styles.ampmText}>{ampm}</span>
         </div>
       </div>
     </div>
   );
-}
+};
+
+const styles = {
+  container: {
+    width: '100vw',
+    height: '100dvh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // paddingTop: '33.33%',
+    position: 'relative',
+    backgroundColor: '#000',
+    overflow: 'hidden',
+  },
+  imageLayer1: {
+    position: 'absolute',
+    inset: 0,
+    width: '100%',
+    height: '130%',
+    objectFit: 'cover',
+    opacity: 0.7,
+    zIndex: 3,
+    filter: 'contrast(180%) brightness(1.1) hue-rotate(12deg) saturate(50%)',
+    pointerEvents: 'none',
+  },
+  imageLayer2: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    opacity: 0.6,
+    zIndex: 2,
+    filter: 'contrast(370%) brightness(1.1) hue-rotate(45deg) saturate(20%)',
+    pointerEvents: 'none',
+  },
+ uiWrapper: {
+    position: 'relative',
+    zIndex: 10,
+    textAlign: 'center',
+    color: '#C2D4E6B3',
+    textShadow: '0 0 20px rgba(168, 180, 225, 0.99)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center', // Add this line
+  },
+  timeText: {
+    fontFamily: 'MyCustomFont, sans-serif', 
+    fontSize: 'clamp(4rem, 18vw, 12rem)',
+    lineHeight: 1,
+    fontStyle: 'italic',
+    transform: 'skewX(-40deg)',
+  },
+  ampmText: {
+    fontSize: '0.9em',
+  }
+};
+
+export default DigitalClock;
