@@ -131,7 +131,7 @@ const AnalogUranusClock = () => {
             right: '-50%',
             bottom: '-50%',
             backgroundImage: `url(${backgroundGif2})`,
-            backgroundSize: '33vh 33vh',
+            backgroundSize: '70px 70px',
             backgroundRepeat: 'repeat',
             backgroundPosition: 'center',
             // opacity: 0.4,
@@ -196,9 +196,9 @@ const AnalogUranusClock = () => {
             backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center',
             zIndex: 1,
-            opacity: 0.2,
+            opacity: 0.3,
             transform: `rotate(${bgRotation}deg)`,
-            filter: ' contrast(1.8) brightness(2.8) saturate(0.0)',
+            filter: ' contrast(0.8) brightness(1.8) saturate(0.0)',
           }}
         />
     </div>
