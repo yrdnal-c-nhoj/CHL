@@ -157,7 +157,7 @@ const AnalogUranusClock = () => {
             transform: `translateX(-50%) rotate(${hourDeg}deg)`,
             transformOrigin: 'bottom center',
             width: 'min(2vw, 3px)',
-            height: '124%',
+            height: '24%',
             backgroundColor: '#08E4ECC4',
             borderRadius: '10px',
             boxShadow: '0 0 2px #C2C7E6',
