@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo, memo } from 'react';
 
+
+import backgroundGif3 from '../../../assets/clocks/26-01-29/ur.png';
 import backgroundGif2 from '../../../assets/clocks/26-01-29/ur.gif';
 import backgroundGif from '../../../assets/clocks/26-01-29/uranu.gif';
 import tileOverlay from '../../../assets/clocks/26-01-29/u.webp';
@@ -107,20 +109,22 @@ const AnalogUranusClock = () => {
                 {/* Third background layer - add your image import and use here */}
        
        
-        <div
-          style={{
-            position: 'absolute',
-            top: '-50%',
-            left: '-50%',
-            right: '-50%',
-            bottom: '-50%',
-            backgroundImage: `url(${tileOverlay})`,
-            backgroundSize: '40% 40%',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            opacity: 0.3,
-          }}
-        />
+       <div
+  style={{
+    position: 'absolute',
+    top: '-50%',
+    left: '-50%',
+    right: '-50%',
+    bottom: '-50%',
+    backgroundImage: `url(${tileOverlay})`,
+    // Change this line:
+    backgroundSize: 'contain', 
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    opacity: 0.7,
+    pointerEvents: 'none', // Good practice for overlays so they don't block clicks
+  }}
+/>
       
       </div>
  <div
@@ -130,11 +134,13 @@ const AnalogUranusClock = () => {
             left: '-50%',
             right: '-50%',
             bottom: '-50%',
-            backgroundImage: `url(${backgroundGif2})`,
-            backgroundSize: '70px 70px',
+            backgroundImage: `url(${backgroundGif3})`,
+            backgroundSize: '50vh 50vh',
             backgroundRepeat: 'repeat',
-            backgroundPosition: 'center',
-            // opacity: 0.4,
+          backgroundPosition: 'center',
+                filter: ' contrast(1.8) brightness(1.0) saturate(4.0)',
+     
+            // opacity: 0.9,
           }}
         />
       {/* Clock face container */}
@@ -196,7 +202,7 @@ const AnalogUranusClock = () => {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             zIndex: 1,
-            opacity: 0.3,
+            opacity: 0.4,
             transform: `rotate(${bgRotation}deg)`,
             filter: ' contrast(0.8) brightness(1.8) saturate(0.0)',
           }}
