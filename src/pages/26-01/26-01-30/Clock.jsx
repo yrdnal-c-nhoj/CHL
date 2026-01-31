@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 // Explicit Asset Imports
 import clockFont from '../../../assets/fonts/26-01-30-ne.ttf';
-import bgLayer1 from "../../../assets/clocks/26-01-30/new.gif"; 
+import bgLayer1 from "../../../assets/clocks/26-01-30/new.webp"; 
 import bgLayer2 from "../../../assets/clocks/26-01-30/ne.gif";
 
 const DigitalClock = () => {
@@ -68,18 +68,24 @@ const styles = {
     filter: 'contrast(180%) brightness(1.1) hue-rotate(12deg) saturate(50%)',
     pointerEvents: 'none',
   },
-  imageLayer2: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    opacity: 0.9,
-    zIndex: 2,
-    filter: 'contrast(370%) brightness(1.1) hue-rotate(45deg) saturate(20%)',
-    pointerEvents: 'none',
-  },
+imageLayer2: {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  zIndex: 2,
+  pointerEvents: 'none',
+  
+  // Tiling logic
+  backgroundImage: 'url("your-image-path.jpg")',
+  backgroundRepeat: 'repeat', // This enables the tiling
+  backgroundSize: '200px 200px', // Adjust this to control tile size
+  
+  // Your original filters and blending
+  opacity: 0.9,
+  filter: 'contrast(370%) brightness(2.1) hue-rotate(45deg) saturate(70%)',
+},
  uiWrapper: {
     position: 'relative',
     zIndex: 10,
