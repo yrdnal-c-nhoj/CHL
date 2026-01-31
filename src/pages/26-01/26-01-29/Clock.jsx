@@ -7,7 +7,7 @@ import backgroundGif from '../../../assets/clocks/26-01-29/uranu.gif';
 import tileOverlay from '../../../assets/clocks/26-01-29/u.webp';
 
 // Memoized static hour images using backgroundGif2
-const ClockNumbers = memo(() => (
+const ClockUranus = memo(() => (
   <>
     {[...Array(12)].map((_, i) => {
       return (
@@ -152,7 +152,7 @@ const AnalogUranusClock = () => {
           height: 'min(110vw, 110vh)',
         }}
       >
-        <ClockNumbers />
+        <ClockUranus />
 
         {/* Hour hand */}
         <div
