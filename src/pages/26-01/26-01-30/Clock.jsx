@@ -91,7 +91,7 @@ const styles = {
     position: 'relative',
     zIndex: 10,
     textAlign: 'center',
-    color: '#EFF2F5B3',
+    color: '#EFF2F530',
     textShadow: '0 0 20px rgba(168, 180, 225, 0.99)',
     display: 'flex',
     justifyContent: 'center',
