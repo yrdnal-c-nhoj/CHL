@@ -7,7 +7,7 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
 
   // Auto-hide footer after inactivity
   useEffect(() => {
-    const footerFadeMs = 1000;
+    const footerFadeMs = 300;
     let footerTimer;
 
     const resetTimer = () => {
