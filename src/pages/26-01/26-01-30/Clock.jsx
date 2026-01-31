@@ -79,8 +79,8 @@ imageLayer2: {
   // Tiling logic
   backgroundImage: `url(${bgLayer2})`,
   backgroundRepeat: 'repeat', // This enables the tiling
-  backgroundSize: '200px 200px', // Adjust this to control tile size
-  animation: 'tileMove 1s linear infinite', // Continuous movement animation
+  backgroundSize: '300px 300px', // Adjust this to control tile size
+  animation: 'tileMove 3s linear infinite', // Continuous movement animation
   
   // Your original filters and blending
   opacity: 0.3,
