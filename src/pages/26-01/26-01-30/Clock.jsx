@@ -80,12 +80,11 @@ imageLayer2: {
   backgroundImage: `url(${bgLayer2})`,
   backgroundRepeat: 'repeat', // This enables the tiling
   backgroundSize: '200px 200px', // Adjust this to control tile size
-  animation: 'tileMove 10s linear infinite', // Continuous movement animation
+  animation: 'tileMove 1s linear infinite', // Continuous movement animation
   
   // Your original filters and blending
   opacity: 0.3,
-  filter: 'contrast(370%) brightness(2.1) hue-rotate(45deg) saturate(70%)',
-},
+ },
  uiWrapper: {
     position: 'relative',
     zIndex: 10,
