@@ -83,12 +83,12 @@ const styles = {
     // Tiling logic
     backgroundImage: `url(${bgLayer2})`,
     backgroundRepeat: 'repeat', // This enables the tiling
-    backgroundSize: '200px 200px', // Adjust this to control tile size
+    backgroundSize: '100px 100px', // Adjust this to control tile size
     animation: 'tileMove 10s linear infinite', // Continuous movement animation
     
     // Your original filters and blending
-    opacity: 0.3,
-    filter: 'drop-shadow(-100px -100px 0 white) drop-shadow(100px 100px 0 white) drop-shadow(100px -100px 0 white)',
+    opacity: 0.4,
+    filter: 'drop-shadow(5px -5px 0 white) ',
   },
 
   imageLayer3: {
