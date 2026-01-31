@@ -155,8 +155,8 @@ const styles = {
     position: 'relative',
     zIndex: 10,
     textAlign: 'center',
-    color: '#352C3C',
-    textShadow: '0 0 4px rgb(156, 175, 246)',
+    color: '#CFDEEA7B',
+    textShadow: '0 1px 0 rgb(5, 14, 45)',
     willChange: 'transform',
     transition: 'transform 0.1s linear', // Adds a tiny bit of lag/drag to the jitter
   },
