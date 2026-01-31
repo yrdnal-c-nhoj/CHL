@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import clockFont from '../../../assets/fonts/26-01-30-ne.ttf';
 import bgLayer1 from "../../../assets/clocks/26-01-30/new.webp"; 
 import bgLayer2 from "../../../assets/clocks/26-01-30/nes.gif";
-
+import bgLayer3 from "../../../assets/clocks/26-01-30/ne3.gif";
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
@@ -35,7 +35,8 @@ const DigitalClock = () => {
       {/* Background Layers */}
       <img src={bgLayer1} alt="" style={styles.imageLayer1} />
       <div style={styles.imageLayer2} />
-      <div style={styles.imageLayer3} />
+      <img src={bgLayer3} alt="" style={styles.imageLayer3} />
+
       
       {/* Clock UI */}
       <div style={styles.uiWrapper}>
@@ -65,7 +66,7 @@ const styles = {
     width: '100%',
     height: '130%',
     objectFit: 'cover',
-    zIndex: 3,
+    zIndex: 2,
     opacity: 0.5,
     filter: 'contrast(140%) brightness(1.3) hue-rotate(15deg) saturate(170%)',
     pointerEvents: 'none',
@@ -76,7 +77,7 @@ const styles = {
     left: 0,
     width: '100%',
     height: '100%',
-    zIndex: 5,
+    zIndex: 3,
     pointerEvents: 'none',
     
     // Tiling logic
@@ -87,7 +88,22 @@ const styles = {
     
     // Your original filters and blending
     opacity: 0.3,
-    filter: ' drop-shadow(-100px -100px 0 white) drop-shadow(100px 100px 0 white) drop-shadow(100px -100px 0 white)',
+    filter: 'drop-shadow(-100px -100px 0 white) drop-shadow(100px 100px 0 white) drop-shadow(100px -100px 0 white)',
+  },
+
+  imageLayer3: {
+     position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '80%',
+    height: '80%',
+    objectFit: 'contain',
+    zIndex: 5,
+    opacity: 0.1,
+
+    filter: 'drop-shadow(5px -5px 0 white)',
+    pointerEvents: 'none',
   },
 
   uiWrapper: {
