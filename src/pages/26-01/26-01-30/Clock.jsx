@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 // Explicit Asset Imports
 import clockFont from '../../../assets/fonts/26-01-30-ne.ttf';
 import bgLayer1 from "../../../assets/clocks/26-01-30/new.webp"; 
-import bgLayer2 from "../../../assets/clocks/26-01-30/ne3.gif";
+import bgLayer2 from "../../../assets/clocks/26-01-30/nes.gif";
+
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
@@ -34,6 +35,7 @@ const DigitalClock = () => {
       {/* Background Layers */}
       <img src={bgLayer1} alt="" style={styles.imageLayer1} />
       <div style={styles.imageLayer2} />
+      <div style={styles.imageLayer3} />
       
       {/* Clock UI */}
       <div style={styles.uiWrapper}>
@@ -55,7 +57,7 @@ const styles = {
     // paddingTop: '33.33%',
     position: 'relative',
     backgroundColor: '#000',
-    overflow: 'hidden',
+    overflow: 'visible', // Changed from 'hidden' to allow shadows to extend
   },
   imageLayer1: {
     position: 'absolute',
@@ -84,10 +86,11 @@ const styles = {
     animation: 'tileMove 10s linear infinite', // Continuous movement animation
     
     // Your original filters and blending
-    opacity: 0.2,
-    filter: 'contrast(370%) brightness(2.1) hue-rotate(45deg) saturate(70%) drop-shadow(-100px -100px 0 white) drop-shadow(100px 100px 0 white)drop-shadow(100px -100px 0 white) drop-shadow(-100px 100px 0 white)',
+    opacity: 0.3,
+    filter: ' drop-shadow(-100px -100px 0 white) drop-shadow(100px 100px 0 white) drop-shadow(100px -100px 0 white)',
   },
- uiWrapper: {
+
+  uiWrapper: {
     position: 'relative',
     zIndex: 10,
     textAlign: 'center',
