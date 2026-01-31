@@ -18,6 +18,18 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
     setVisible(false);
   }, []);
 
+  const handleTouchStart = useCallback(() => {
+    setVisible(true);
+    if (footerTimer) {
+      clearTimeout(footerTimer);
+      setFooterTimer(null);
+    }
+  }, [footerTimer]);
+
+  const handleTouchEnd = useCallback(() => {
+    setVisible(false);
+  }, []);
+
   // Show footer initially
   useEffect(() => {
     setVisible(true);
@@ -35,6 +47,8 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
       className={`${styles.footerStrip} ${visible ? styles.visible : styles.hidden}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       <Link
         to={prevItem ? `/${prevItem.date}` : '/'}
