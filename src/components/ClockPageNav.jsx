@@ -1,36 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './ClockPageNav.module.css'; // keep using the same styles
 
 const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate }) => {
   const [visible, setVisible] = useState(true);
+  const [footerTimer, setFooterTimer] = useState(null);
 
-  // Auto-hide footer after inactivity
-  useEffect(() => {
-    const footerFadeMs = 300;
-    let footerTimer;
-
-    const resetTimer = () => {
-      setVisible(true);
+  const handleMouseEnter = useCallback(() => {
+    setVisible(true);
+    if (footerTimer) {
       clearTimeout(footerTimer);
-      footerTimer = setTimeout(() => setVisible(false), footerFadeMs);
-    };
+      setFooterTimer(null);
+    }
+  }, [footerTimer]);
 
-    resetTimer();
-    window.addEventListener('mousemove', resetTimer);
-    window.addEventListener('touchstart', resetTimer);
-
-    return () => {
-      clearTimeout(footerTimer);
-      window.removeEventListener('mousemove', resetTimer);
-      window.removeEventListener('touchstart', resetTimer);
-    };
+  const handleMouseLeave = useCallback(() => {
+    setVisible(false);
   }, []);
+
+  // Show footer initially
+  useEffect(() => {
+    setVisible(true);
+    return () => {
+      if (footerTimer) {
+        clearTimeout(footerTimer);
+      }
+    };
+  }, [footerTimer]);
 
   if (!currentItem) return null;
 
   return (
-    <div className={`${styles.footerStrip} ${visible ? styles.visible : styles.hidden}`}>
+    <div 
+      className={`${styles.footerStrip} ${visible ? styles.visible : styles.hidden}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <Link
         to={prevItem ? `/${prevItem.date}` : '/'}
         className={styles.navButton}
