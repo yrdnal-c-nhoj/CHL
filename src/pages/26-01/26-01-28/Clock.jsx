@@ -40,7 +40,7 @@ function CheckerboardBackground() {
               backgroundImage: `url(${backgroundImage})`,
               backgroundSize: 'cover',
               transform: transform,
-              opacity: 0.6,
+              opacity: 0.2,
             }}
           />
         );
@@ -235,7 +235,7 @@ const containerStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  background: 'linear-gradient(90deg, #000000 0%, #BEC1F3 50% , #000000 100%)',
+  background: 'linear-gradient(90deg, #696767 0%, #BEC1F3 50% , #7C7C7C 100%)',
   margin: 0,
   padding: 0,
   overflow: 'hidden',
