@@ -64,27 +64,29 @@ const styles = {
     height: '130%',
     objectFit: 'cover',
     zIndex: 3,
-    filter: 'contrast(180%) brightness(1.1) hue-rotate(12deg) saturate(50%)',
+    opacity: 0.5,
+    filter: 'contrast(140%) brightness(1.3) hue-rotate(15deg) saturate(170%)',
     pointerEvents: 'none',
   },
-imageLayer2: {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '100%',
-  zIndex: 5,
-  pointerEvents: 'none',
-  
-  // Tiling logic
-  backgroundImage: `url(${bgLayer2})`,
-  backgroundRepeat: 'repeat', // This enables the tiling
-  backgroundSize: '300px 300px', // Adjust this to control tile size
-  animation: 'tileMove 3s linear infinite', // Continuous movement animation
-  
-  // Your original filters and blending
-  opacity: 0.3,
- },
+  imageLayer2: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: 5,
+    pointerEvents: 'none',
+    
+    // Tiling logic
+    backgroundImage: `url(${bgLayer2})`,
+    backgroundRepeat: 'repeat', // This enables the tiling
+    backgroundSize: '200px 200px', // Adjust this to control tile size
+    animation: 'tileMove 10s linear infinite', // Continuous movement animation
+    
+    // Your original filters and blending
+    opacity: 0.2,
+    filter: 'contrast(370%) brightness(2.1) hue-rotate(45deg) saturate(70%) drop-shadow(-100px -100px 0 white) drop-shadow(100px 100px 0 white)drop-shadow(100px -100px 0 white) drop-shadow(-100px 100px 0 white)',
+  },
  uiWrapper: {
     position: 'relative',
     zIndex: 10,
@@ -92,7 +94,7 @@ imageLayer2: {
     color: '#EFF2F5B3',
     textShadow: '0 0 20px rgba(168, 180, 225, 0.99)',
     display: 'flex',
-   justifyContent: 'center',
+    justifyContent: 'center',
     zIndex: 4,
     alignItems: 'center', // Add this line
   },
