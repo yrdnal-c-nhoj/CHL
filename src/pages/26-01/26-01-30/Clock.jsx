@@ -10,63 +10,57 @@ const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
   
-  // Physics Refs for "Confused" behavior
+  // Physics Refs - Tuned for ultra-slow movement
   const pos = useRef({ x: 0, y: 0 });
   const brain = useRef({
     angle: Math.random() * Math.PI * 2,
     targetAngle: Math.random() * Math.PI * 2,
-    speed: 0.1,
-    turnStrength: 0.02,
+    speed: 0.008,          // Initial slow speed
+    turnStrength: 0.005,   // Very gradual turning
     confusionTimer: 0
   });
   
   const requestRef = useRef();
-  const [displayPos, setDisplayPos] = useState({ x: 0, y: 0 });
+  const [bgPos, setBgPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     
     const font = new FontFace('MyCustomFont', `url(${clockFont}) format('truetype')`);
-    font.load().then((f) => { document.fonts.add(f); setFontLoaded(true); })
-      .catch(() => setFontLoaded(true));
+    font.load().then((f) => { 
+      document.fonts.add(f); 
+      setFontLoaded(true); 
+    }).catch(() => setFontLoaded(true));
 
     const animate = () => {
       const b = brain.current;
 
-      // 1. "Decision Making" logic
       b.confusionTimer--;
       if (b.confusionTimer <= 0) {
-        // Pick a new random target direction every 1-3 seconds
+        // Pick a new direction and a very low speed range
         b.targetAngle = Math.random() * Math.PI * 2;
-        b.speed = 0.05 + Math.random() * 0.15; // Randomize speed (sometimes pauses, sometimes scurries)
-        b.confusionTimer = Math.floor(Math.random() * 200) + 50; 
+        b.speed = 0.005 + Math.random() * 0.012; 
+        // Stay on this path for a long time (300-700 frames)
+        b.confusionTimer = Math.floor(Math.random() * 400) + 300; 
       }
 
-      // 2. Smoothly rotate toward the target angle (Drunken walk)
+      // Smoothly rotate toward the target angle
       let angleDiff = b.targetAngle - b.angle;
       while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
       while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
       b.angle += angleDiff * b.turnStrength;
 
-      // 3. Add a tiny "shiver" jitter
-      const jitterX = (Math.random() - 0.5) * 0.05;
-      const jitterY = (Math.random() - 0.5) * 0.05;
+      // Update Position
+      pos.current.x += Math.cos(b.angle) * b.speed;
+      pos.current.y += Math.sin(b.angle) * b.speed;
 
-      // 4. Update Position
-      pos.current.x += Math.cos(b.angle) * b.speed + jitterX;
-      pos.current.y += Math.sin(b.angle) * b.speed + jitterY;
-
-      // 5. Hard Boundary - Panic and turn around
-      const limitX = 30; 
-      const limitY = 25;
-      if (Math.abs(pos.current.x) > limitX || Math.abs(pos.current.y) > limitY) {
-        // Point back to center + heavy randomness
-        b.targetAngle = Math.atan2(-pos.current.y, -pos.current.x) + (Math.random() - 0.5);
-        b.angle = b.targetAngle; // Instant snap on collision
-        b.speed *= 1.5; // "Scare" it away from the edge
+      // Soft Boundary Logic: if drifting too far, head back to center (0,0)
+      const limit = 12; 
+      if (Math.abs(pos.current.x) > limit || Math.abs(pos.current.y) > limit) {
+        b.targetAngle = Math.atan2(-pos.current.y, -pos.current.x);
       }
 
-      setDisplayPos({ x: pos.current.x, y: pos.current.y });
+      setBgPos({ x: pos.current.x, y: pos.current.y });
       requestRef.current = requestAnimationFrame(animate);
     };
 
@@ -84,18 +78,28 @@ const DigitalClock = () => {
 
   return (
     <div style={styles.container}>
+      {/* Base Layer */}
       <img src={bgLayer1} alt="" style={styles.imageLayer1} />
+      
+      {/* Tiled Animated Layer */}
       <div style={styles.imageLayer2} />
-      <img src={bgLayer3} alt="" style={styles.imageLayer3} />
+      
+      {/* Wandering Layer 3 - Optimized for Sub-pixel movement */}
+      <img 
+        src={bgLayer3} 
+        alt="" 
+        style={{
+          ...styles.imageLayer3,
+          transform: `translate(calc(-50% + ${bgPos.x}vw), calc(-50% + ${bgPos.y}vh)) rotate(0.02deg)`
+        }} 
+      />
 
-      <div style={{
-        ...styles.uiWrapper,
-        transform: `translate(${displayPos.x}vw, ${displayPos.y}vh)`
-      }}>
+      {/* Clock UI */}
+      <div style={styles.uiWrapper}>
         <div style={{
           ...styles.timeText, 
           opacity: fontLoaded ? 1 : 0, 
-          transition: 'opacity 0.3s ease-in-out'
+          transition: 'opacity 0.5s ease-in-out'
         }}>
           {hours}:{minutes} <span style={styles.ampmText}>{ampm}</span>
         </div>
@@ -134,7 +138,7 @@ const styles = {
     backgroundImage: `url(${bgLayer2})`,
     backgroundRepeat: 'repeat',
     backgroundSize: '100px 100px',
-    animation: 'tileMove 10s linear infinite',
+    animation: 'tileMove 15s linear infinite', // Slowed down the tile movement too
     opacity: 0.4,
     filter: 'drop-shadow(5px -5px 0 white)',
   },
@@ -142,36 +146,36 @@ const styles = {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: 'translate(-50%, -50%)',
     width: '80%',
     height: '80%',
     objectFit: 'contain',
-    zIndex: 1,
-    opacity: 0.3,
+    zIndex: 7,
+    opacity: 0.2,
     filter: 'drop-shadow(1px -1px 0 white)',
     pointerEvents: 'none',
+    willChange: 'transform',
   },
   uiWrapper: {
     position: 'relative',
     zIndex: 10,
     textAlign: 'center',
-    color: '#CFDEEA7B',
-    textShadow: '0 1px 0 rgb(5, 14, 45)',
-    willChange: 'transform',
-    transition: 'transform 0.1s linear', // Adds a tiny bit of lag/drag to the jitter
+    color: '#CFDEEAA1',
+    textShadow: '0 2px 4px rgba(0,0,0,0.5)',
   },
   timeText: {
     fontFamily: 'MyCustomFont, sans-serif', 
     fontSize: 'clamp(3rem, 15vw, 10rem)',
     lineHeight: 1,
     fontStyle: 'italic',
-    transform: 'skewX(-35deg)',
+    transform: 'skewX(-25deg)', // Slightly less aggressive skew for readability
   },
   ampmText: {
-    fontSize: '0.8em',
+    fontSize: '0.6em',
+    verticalAlign: 'middle',
   }
 };
 
+// Global Animation Keyframes
 if (typeof document !== 'undefined') {
   const styleSheet = document.createElement('style');
   styleSheet.textContent = `
