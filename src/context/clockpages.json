@@ -300,5 +300,8 @@
   { "path": "26-01-27", "date": "26-01-27", "title": "Panorama" },
   { "path": "26-01-28", "date": "26-01-28", "title": "Trifurcate" },
   { "path": "26-01-29", "date": "26-01-29", "title": "Uranus" },
-  { "path": "26-01-30", "date": "26-01-30", "title": "45° Northeast" }
+  { "path": "26-01-30", "date": "26-01-30", "title": "45° Northeast" },
+  { "path": "26-01-31", "date": "26-01-31", "title": "Lemon" },
+  { "path": "26-02-01", "date": "26-02-01", "title": "Drip" },
+  { "path": "26-02-02", "date": "26-02-02", "title": "Mach 1" }
 ]
