@@ -112,19 +112,19 @@ const Clock = () => {
       backgroundImage: `url(${bgImage})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-      filter: 'brightness(0.6) contrast(1.6) saturate(1.3)',
+      filter: 'contrast(1.6) saturate(1.3)',
       zIndex: 1,
     },
-    gradient: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '66dvh',
-      background: 'linear-gradient(to bottom, rgba(35, 36, 2, 0.93), rgba(220, 13, 13, 0))',
-      zIndex: 2,
-      pointerEvents: 'none',
-    },
+    // gradient: {
+    //   position: 'absolute',
+    //   top: 0,
+    //   left: 0,
+    //   width: '100%',
+    //   height: '66dvh',
+    //   // background: 'linear-gradient(to bottom, rgba(35, 36, 2, 0.93), rgba(220, 13, 13, 0))',
+    //   zIndex: 2,
+    //   pointerEvents: 'none',
+    // },
     content: {
       position: 'relative',
       zIndex: 3,
@@ -162,7 +162,7 @@ const Clock = () => {
   );
 
   if (!isLoaded) {
-    return <div style={{ ...styles.container, color: '#fff' }}>Loading...</div>;
+    return <div style={{ ...styles.container, color: '#fff' }}></div>;
   }
 
   return (

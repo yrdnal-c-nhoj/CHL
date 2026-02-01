@@ -12,6 +12,7 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@fontsource/roboto-mono": "^5.2.8",
+    "@fontsource/share-tech-mono": "^5.2.7",
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.18.0",
     "@types/three": "^0.179.0",
