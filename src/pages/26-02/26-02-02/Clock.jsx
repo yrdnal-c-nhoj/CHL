@@ -81,8 +81,11 @@ const SonicBoomClock = () => {
         padding: 0,
         overflow: 'hidden',
         backgroundImage: `url(${digitalBgImage})`,
-        backgroundSize: 'cover',
+        backgroundSize: 'auto', // Use original image size for repeating
         backgroundPosition: 'center',
+        backgroundRepeat: 'repeat', // Repeat the image to fill space
+        backgroundAttachment: 'scroll',
+        filter: 'saturate(3.5) contrast(1.2)',
         fontFamily: fontReady 
           ? `'${FONT_CONFIG.name}', system-ui, sans-serif` 
           : 'system-ui, sans-serif',
