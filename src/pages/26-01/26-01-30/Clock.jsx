@@ -15,7 +15,7 @@ const DigitalClock = () => {
   const brain = useRef({
     angle: Math.random() * Math.PI * 2,
     targetAngle: Math.random() * Math.PI * 2,
-    speed: 0.008,          // Initial slow speed
+    speed: 0.0008,          // Initial slow speed
     turnStrength: 0.005,   // Very gradual turning
     confusionTimer: 0
   });
