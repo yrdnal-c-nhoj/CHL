@@ -1,157 +1,149 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
-// === Local assets ===
-import bg1 from '../../../assets/clocks/26-01-01/fan.gif';
-import myFontUrl from '../../../assets/fonts/26-01-01-fan.otf';
+// Assets
+import analogFontUrl from '../../../assets/fonts/26-01-31-cond.ttf?url';
+import analogBgImage from '../../../assets/clocks/26-01-31/rain.webp';
 
-const InvertedClock = () => {
+const STYLE_CONFIG = {
+  tickColor: '#F1F0F18F',
+  // faceOverlayColor: 'rgba(0, 0, 0, 0.25)',
+  centerDotColor: '#5F5B5B8C',
+};
+
+const AnalogClockTemplate = () => {
   const [time, setTime] = useState(new Date());
-  const secondHandRef = useRef(null);
-  const minHandRef = useRef(null);
-  const hourHandRef = useRef(null);
+  const [fontReady, setFontReady] = useState(false);
 
+  // Load custom font
   useEffect(() => {
-    const t = setInterval(() => {
-      const now = new Date();
-      setTime(now);
-      
-      const ms = now.getMilliseconds();
-      const seconds = now.getSeconds() + ms / 1000;
-      const minutes = now.getMinutes() + seconds / 60;
-      const hours = now.getHours() + minutes / 60;
-
-      // Note: Added -90 to the degree calculation to account for 
-      // the CSS 'right: 50%' starting position (which points to 9 o'clock)
-      const secondsDegrees = (seconds / 60) * 360 - 90;
-      const minsDegrees = (minutes / 60) * 360 - 90;
-      const hourDegrees = (hours / 12) * 360 - 90;
-
-      if (secondHandRef.current) secondHandRef.current.style.transform = `translateY(-50%) rotate(${secondsDegrees}deg)`;
-      if (minHandRef.current) minHandRef.current.style.transform = `translateY(-50%) rotate(${minsDegrees}deg)`;
-      if (hourHandRef.current) hourHandRef.current.style.transform = `translateY(-50%) rotate(${hourDegrees}deg)`;
-    }, 50);
-    return () => clearInterval(t);
+    const font = new FontFace('BorrowedAnalog', `url(${analogFontUrl})`);
+    font.load()
+      .then((loadedFont) => {
+        document.fonts.add(loadedFont);
+        setFontReady(true);
+      })
+      .catch(() => setFontReady(true));
   }, []);
 
-  const containerStyle = {
-    position: 'relative',
-    width: '100vw',
-    height: '100dvh',
-    overflow: 'hidden',
-    backgroundColor: '#000',
-    display: 'flex',        // Added for layout centering
-    alignItems: 'center',    // Centers vertically
-    justifyContent: 'center', // Centers horizontally
+  // Time ticker
+  useEffect(() => {
+    const interval = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Calculations
+  const s = time.getSeconds();
+  const m = time.getMinutes() + s / 60;
+  const h = (time.getHours() % 12) + m / 60;
+
+  const rotations = {
+    sec: (s / 60) * 360,
+    min: (m / 60) * 360,
+    hour: (h / 12) * 360,
   };
 
-  const bgMediaStyle = {
-    position: 'absolute',
-    inset: 0,
-    backgroundImage: `url(${bg1})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    zIndex: 0,
-      filter: 'grayscale(1) brightness(1.2) sepia(1) hue-rotate(-50deg) saturate(9)',
-    // filter: 'contrast(1.7)', // Add contrast and brightness filters to background only
-  };
-
-  const clockOverlayStyle = {
-    position: 'relative',   // Relative to the flex container
-    zIndex: 1,
-    mixBlendMode: 'difference',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    pointerEvents: 'none',
-    width: '100%',
-    height: '100%',
-  };
-
-  const clockFaceStyle = {
-    position: 'relative',
-    width: '50vh', // Larger container to accommodate numbers without clipping
-    height: '50vh',
-  };
-
-  const handBaseStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    backgroundColor: 'white',
-    transformOrigin: '0% 50%', // Rotate from the center of the clock
-    borderRadius: '10px',
-  };
-
-  const numberStyle = (i) => {
-    // Math.PI / 6 = 30 degrees per number
-    const angle = (i * 30 - 90) * (Math.PI / 180);
-    const radius = 18; // Reduced distance from center in vh to move digits closer
-    const x = radius * Math.cos(angle);
-    const y = radius * Math.sin(angle);
-
-    return {
+  // Styles
+  const styles = {
+    container: {
+      position: 'relative',
+      width: '100vw',
+      height: '100dvh',
+      overflow: 'hidden',
+      backgroundImage: `url(${analogBgImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      fontFamily: fontReady ? "'BorrowedAnalog', system-ui, sans-serif" : 'system-ui, sans-serif',
+    },
+    overlay: {
       position: 'absolute',
-      top: `calc(50% + ${y}vh)`,
-      left: `calc(50% + ${x}vh)`,
+      inset: 0,
+      // background: STYLE_CONFIG.faceOverlayColor,
+    },
+    face: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
       transform: 'translate(-50%, -50%)',
-      fontFamily: 'MyFontScoped, sans-serif',
-      fontSize: '7vh',
-      color: 'white',
-      lineHeight: 1,
-      userSelect: 'none',
-    };
+      width: '80vmin',
+      height: '80vmin',
+    },
+    hand: {
+      position: 'absolute',
+      bottom: '50%',
+      left: '50%',
+      transformOrigin: '50% 100%',
+      borderRadius: '999px',
+    }
   };
 
   return (
-    <div style={containerStyle}>
-      <style>{`
-        @font-face {
-          font-family: 'MyFontScoped';
-          src: url(${myFontUrl}) format('truetype');
-        }
-      `}</style>
-
-      <div style={bgMediaStyle} />
-
-      <div style={clockOverlayStyle}>
-        <div style={clockFaceStyle}>
-          {/* Numbers 1-12 */}
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((num) => (
-            <div key={num} style={numberStyle(num)}>
+    <div style={styles.container}>
+      <div style={styles.overlay} />
+      
+      <div style={styles.face}>
+        {/* Numerals */}
+        {Array.from({ length: 12 }, (_, i) => i + 1).map((num) => {
+          const angle = (num / 12) * 2 * Math.PI;
+          const radius = 40; // percent
+          return (
+            <div
+              key={num}
+              style={{
+                position: 'absolute',
+                left: `${50 + radius * Math.sin(angle)}%`,
+                top: `${50 - radius * Math.cos(angle)}%`,
+                transform: 'translate(-50%, -50%)',
+                color: STYLE_CONFIG.tickColor,
+                fontSize: '8vh',
+                textShadow: '0 0.2rem 0.5rem rgba(0,0,0,0.8)',
+              }}
+            >
               {num}
             </div>
-          ))}
+          );
+        })}
 
-          {/* Hands centered with transformOrigin at the center of the face */}
-          <div 
-            ref={hourHandRef} 
-            style={{ ...handBaseStyle, width: '18vh', height: '2vh', zIndex: 10 }} 
-          />
-          <div 
-            ref={minHandRef} 
-            style={{ ...handBaseStyle, width: '24vh', height: '1.2vh', zIndex: 11 }} 
-          />
-          <div 
-            ref={secondHandRef} 
-            style={{ ...handBaseStyle, width: '28vh', height: '0.4vh', zIndex: 12 }} 
-          />
-          
-          {/* Optional: Center Pin to hide the joint */}
-           <div style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '2vh',
-            height: '2vh',
-            borderRadius: '50%',
-            backgroundColor: 'white',
-            zIndex: 15
-          }} /> 
-        </div>
+        {/* Hands */}
+        <div style={{ 
+          ...styles.hand, 
+          width: '1vmin', height: '22vmin', 
+          background: 'linear-gradient(to top, #A5A2A2, #A6A3A3)',
+          transform: `translate(-50%, 0) rotate(${rotations.hour}deg)`,
+          boxShadow: '0 0.2rem 0.5rem rgba(0,0,0,0.5)'
+        }} />
+        
+        <div style={{ 
+          ...styles.hand, 
+          width: '0.8vmin', height: '30vmin', 
+          background: 'linear-gradient(to top, #908C8C, #B1AFAF)',
+          transform: `translate(-50%, 0) rotate(${rotations.min}deg)`,
+          boxShadow: '0 0.2rem 0.4rem rgba(0,0,0,0.4)'
+        }} />
+        
+        <div style={{ 
+          ...styles.hand, 
+          width: '0.4vmin', height: '34vmin', 
+          background: '#8F8C8C',
+          transform: `translate(-50%, 0) rotate(${rotations.sec}deg)`,
+          zIndex: 1
+        }} />
+
+        {/* Center Pin */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '1.5vmin',
+          height: '1.5vmin',
+          transform: 'translate(-50%, -50%)',
+          borderRadius: '50%',
+          background: STYLE_CONFIG.centerDotColor,
+          boxShadow: '0 0.2rem 0.5rem rgba(0,0,0,0.5)',
+          zIndex: 2
+        }} />
       </div>
     </div>
   );
 };
 
-export default InvertedClock;
+export default AnalogClockTemplate;
