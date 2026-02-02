@@ -31,7 +31,7 @@ const SonicBoomClock = () => {
     <div style={{
       position: 'fixed',
       inset: 0,
-      backgroundColor: '#8FA2C5',
+      backgroundColor: '#5470A3',
       backgroundImage: `url(${digitalBgImage})`,
       backgroundSize: 'contain',
       backgroundPosition: 'center',
