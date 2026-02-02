@@ -31,17 +31,23 @@ const SonicBoomClock = () => {
     <div style={{
       position: 'fixed',
       inset: 0,
-      backgroundColor: '#5470A3',
-      backgroundImage: `url(${digitalBgImage})`,
-      backgroundSize: 'contain',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      filter: 'hue-rotate(10deg) saturate(3.5)',
+      backgroundColor: '#5669C8',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       overflow: 'hidden'
     }}>
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundImage: `url(${digitalBgImage})`,
+        backgroundSize: 'contain',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        filter: 'hue-rotate(10deg) saturate(3.5)',
+        pointerEvents: 'none',
+        zIndex: 1
+      }} />
       <div style={{
         // APPLY FONT IMMEDIATELY - fallback to monospace while loading
         fontFamily: `"${FONT_NAME}", monospace`,
