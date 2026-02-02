@@ -148,7 +148,7 @@ const styles = {
     position: 'absolute',
     transform: 'translate(-50%, -50%)',
     fontSize: 'clamp(7rem, 18vw, 9rem)',
-    fontWeight: '900',
+    // fontWeight: '900',
     // Metallic Silver Effect
     background: CLOCK_CONFIG.COLORS.silverText,
     WebkitBackgroundClip: 'text',
