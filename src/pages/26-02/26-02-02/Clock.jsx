@@ -43,24 +43,39 @@ const SonicBoomClock = () => {
         backgroundImage: `url(${digitalBgImage})`,
         backgroundSize: 'contain',
         backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        filter: 'hue-rotate(10deg) saturate(3.5)',
+        backgroundRepeat: 'repeat',
+        filter: 'contrast(1.5) saturate(2.5)',
         pointerEvents: 'none',
         zIndex: 1
       }} />
       <div style={{
-        // APPLY FONT IMMEDIATELY - fallback to monospace while loading
         fontFamily: `"${FONT_NAME}", monospace`,
-        fontSize: '14vmin',
-        color: '#D0D6F2',
-        // Text is invisible until font is ready to prevent "jump"
-        opacity: fontLoaded ? 0.8 : 0, 
-        transition: 'opacity 0.3s ease-in',
-        textShadow: '0 0 15px rgba(138, 165, 255, 0.4)',
-        letterSpacing: '0.05em',
+        display: 'flex',
+        alignItems: 'center',
         zIndex: 10
       }}>
-        {timeString}
+        {timeString.split('').map((digit, index) => {
+          const digitIndex = timeString.length - index - 1; // Reverse index for progressive sizing
+          const fontSize = 25 + (digitIndex * -2.5); // Each digit larger than the next, more dramatic difference
+          const opacity = 1.0 - (digitIndex * 0.15); // More dramatic opacity drop
+          
+          return (
+            <span
+              key={index}
+              style={{
+                fontSize: `${fontSize}vmin`,
+                opacity: fontLoaded ? Math.max(opacity, 0.3) : 0, // Minimum opacity of 0.3
+                transition: 'opacity 0.3s ease-in',
+                color: '#D0D6F2',
+                textShadow: '0 0 15px rgba(10, 63, 240, 0.4)',
+                letterSpacing: '0.05em',
+                display: 'inline-block'
+              }}
+            >
+              {digit}
+            </span>
+          );
+        })}
       </div>
 
       <style>{`body { margin: 0; background: black; }`}</style>
