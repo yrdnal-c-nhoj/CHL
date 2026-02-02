@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import lemonBg from '../../../assets/clocks/26-01-31/lemon.webp';
 import rainBg from '../../../assets/clocks/26-01-31/lu.webp';
 import lemGif from '../../../assets/clocks/26-01-31/lem.gif';
+import lemons2Bg from '../../../assets/clocks/26-01-31/lemons2.jpg';
 import lemonFont from '../../../assets/fonts/26-01-31-lemon.otf';
 
 const containerStyle = {
@@ -64,7 +65,6 @@ const getImageStyle = (index) => {
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     zIndex: -1,
-    opacity: 0.4,
   };
 
   // Define rotations for each cell (clockwise from top-left)
@@ -133,7 +133,7 @@ const SimpleBackground = () => {
     return [
       hours[0],   hours[1],   minutes[0],
       minutes[1], seconds[0], seconds[1],
-      ms,         isPm ? 'P' : 'A', 'M'
+      ms,         isPm ? 'p' : 'a', 'm'
     ];
   };
 
@@ -166,11 +166,10 @@ const SimpleBackground = () => {
         ...layerBaseStyle, 
         backgroundColor: '#F6F20D', 
         zIndex: 0,
-        // opacity: 0.8
       }} />
 
       {/* LAYER 2: Rain Image (Middle) */}
-     <div style={{ 
+    <div style={{ 
     ...layerBaseStyle, 
     backgroundImage: `url(${rainBg})`, 
     backgroundPosition: 'center center',
@@ -181,12 +180,11 @@ const SimpleBackground = () => {
     position: 'fixed',            // Keeps it there even if you scroll
     top: 0,
     left: 0,
-        zIndex: 3,
-        opacity: 0.8
-    
-      }} />
+    zIndex: 3,
+    opacity: 0.8
+    }} />
 
-     <div style={{ 
+    <div style={{ 
     ...layerBaseStyle, 
     backgroundImage: `url(${rainBg})`, 
     backgroundPosition: 'center center',
@@ -207,11 +205,22 @@ const SimpleBackground = () => {
         ...layerBaseStyle, 
         backgroundImage: `url(${lemonBg})`, 
          backgroundPosition: 'center center',
+        zIndex: 2,
+        opacity: 0.8
+      }} />
+
+      {/* LAYER 4: Lemons2 Tiling Image */}
+      <div style={{ 
+        ...layerBaseStyle, 
+        backgroundImage: `url(${lemons2Bg})`, 
+        backgroundSize: 'auto auto',
+        backgroundPosition: 'top left',
+        backgroundRepeat: 'repeat',
         zIndex: 1,
         opacity: 0.8
       }} />
 
-      {/* LAYER 4: The Time Grid */}
+      {/* LAYER 5: The Time Grid */}
       <div style={gridStyle}>
         {cells.map((char, i) => (
           <div key={i} style={getCellStyle(i)}>
