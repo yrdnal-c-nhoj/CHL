@@ -56,7 +56,7 @@ const SonicBoomClock = () => {
       }}>
         {timeString.split('').map((digit, index) => {
           const digitIndex = timeString.length - index - 1; // Reverse index for progressive sizing
-          const fontSize = 25 + (digitIndex * -2.5); // Each digit larger than the next, more dramatic difference
+          const fontSize = 40 + (digitIndex * -4.5); // Each digit larger than the next, more dramatic difference
           const opacity = 1.0 - (digitIndex * 0.15); // More dramatic opacity drop
           
           return (
@@ -68,8 +68,9 @@ const SonicBoomClock = () => {
                 transition: 'opacity 0.3s ease-in',
                 color: '#D0D6F2',
                 textShadow: '0 0 15px rgba(10, 63, 240, 0.4)',
-                letterSpacing: '0.05em',
-                display: 'inline-block'
+                letterSpacing: '-0.1em', // Negative letter spacing to bring digits closer
+                display: 'inline-block',
+                marginLeft: index > 0 ? '-0.2em' : '0' // Additional negative margin between digits
               }}
             >
               {digit}
