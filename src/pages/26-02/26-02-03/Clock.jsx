@@ -82,7 +82,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FEFBBF',
+    background: 'radial-gradient(circle at center, #F5F3D0 0%, #F5E6A3 40%, #E8D590 70%, #F5DE99 100%)',
     margin: 0,
     overflow: 'hidden',
     fontFamily: '"Fraunces", serif',
