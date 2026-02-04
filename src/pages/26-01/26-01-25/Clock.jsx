@@ -1,28 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
-// Assets
-import analogMirageFont from '../../../assets/fonts/25-09-10-lava.otf?url';
 import analogBgImage from '../../../assets/clocks/26-01-25/mirage.webp';
 
 const AnalogClockTemplate = () => {
   const [time, setTime] = useState(new Date());
-  const [fontReady, setFontReady] = useState(false);
   const [opacity, setOpacity] = useState(0.06);
 
   const rafRef = useRef(null);
   const lastTimeRef = useRef(performance.now());
   const noiseSeedRef = useRef(Math.random() * 10000);
-
-  // Font loading
-  useEffect(() => {
-    const font = new FontFace('BorrowedAnalog', `url(${analogMirageFont})`);
-    font
-      .load()
-      .then((loadedFont) => {
-        document.fonts.add(loadedFont);
-        setFontReady(true);
-      })
-      .catch(() => setFontReady(true));
-  }, []);
 
   // Clock update every second
   useEffect(() => {
@@ -37,27 +22,22 @@ const AnalogClockTemplate = () => {
     const animate = (now) => {
       if (!mounted) return;
 
-      const dt = (now - lastTimeRef.current) / 1000; // time delta in seconds
+      const dt = (now - lastTimeRef.current) / 1000;
       lastTimeRef.current = now;
 
-      // Time-based value with different frequencies for organic feel
       const t = now * 0.0003 + noiseSeedRef.current;
 
       // Low frequency base wave
       const base = Math.sin(t * 1.1) * 0.5 + Math.sin(t * 0.7) * 0.5;
-
       // Medium frequency flutter
       const flutter = Math.sin(t * 8.4 + 13.7) * 0.3 + Math.sin(t * 12.2 + 41.9) * 0.2;
-
       // Fast noise / sparkle
       const noise = (Math.sin(t * 47.1 + 19.3) * 0.5 + Math.sin(t * 73.8 + 88.2) * 0.5) * 0.18;
 
-      // Combine and scale to subtle range (~0.02–0.25)
       let targetOpacity = base + flutter + noise;
-      targetOpacity = Math.max(0, Math.min(0.28, targetOpacity * 0.45 + 0.04));
+      targetOpacity = Math.max(0.1, Math.min(0.28, targetOpacity * 0.45 + 0.04));
 
-      // Smooth easing toward target
-      setOpacity((prev) => prev + (targetOpacity - prev) * 8 * dt);
+      setOpacity((prev) => prev + (targetOpacity - prev) * 28 * dt);
 
       rafRef.current = requestAnimationFrame(animate);
     };
@@ -86,7 +66,6 @@ const AnalogClockTemplate = () => {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundColor: '#000',
-    fontFamily: fontReady ? "'BorrowedAnalog', system-ui, sans-serif" : 'system-ui, sans-serif',
   };
 
   const faceContainerStyle = {
@@ -116,9 +95,9 @@ const AnalogClockTemplate = () => {
         <div
           style={{
             ...handBaseStyle,
-            width: '1.2vmin',
+            width: '1.4vmin',
             height: '20vmin',
-            background: 'linear-gradient(to top, #888787, #F2D38F1D, #F5D67F)',
+            background: 'linear-gradient(to top, #D4CECE, #F2D38F7E, #F5D67F)',
             transform: `translate(-50%, 0) rotate(${hourDeg}deg)`,
             zIndex: 2,
           }}
@@ -128,9 +107,9 @@ const AnalogClockTemplate = () => {
         <div
           style={{
             ...handBaseStyle,
-            width: '0.6vmin',
+            width: '0.9vmin',
             height: '35vmin',
-            background: 'linear-gradient(to top, #ADADAD, #F3DD9B0C, #F0CF7D)',
+            background: 'linear-gradient(to top, #C4C0C0, #F3DD9B69, #F0CF7D)',
             transform: `translate(-50%, 0) rotate(${minuteDeg}deg)`,
             zIndex: 3,
           }}
