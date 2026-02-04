@@ -1,152 +1,126 @@
-import { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-// === Local assets (module-based, fingerprinted by Vite) ===
-import wallTexture from '../../../assets/clocks/26-01-01/fan.gif';       // subtle plaster / stone texture
-import brassTexture from '../../../assets/clocks/26-01-01/fan.gif';     // optional brass grain
-import watchFontUrl from '../../../assets/fonts/26-01-01-fan.otf';
+const DiscClock = () => {
+  const [rotation, setRotation] = useState({ h: 0, m: 0, s: 0 });
+  const requestRef = useRef();
 
+  // Use requestAnimationFrame for buttery smooth movement
+  const animate = () => {
+    const now = new Date();
+    const ms = now.getMilliseconds();
+    const s = now.getSeconds();
+    const m = now.getMinutes();
+    const h = now.getHours();
 
-
-import bg1 from '../../../assets/clocks/26-01-01/fan.gif';
-import myFontUrl from '../../../assets/fonts/26-01-01-fan.otf';
-
-
-
-export default function NichePocketWatch() {
-  const watchRef = useRef(null);
-
-  // === Load font (Vite-modern behavior) ===
-  useEffect(() => {
-    const font = new FontFace(
-      'WatchNumerals',
-      `url(${watchFontUrl})`
-    );
-
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
+    // Calculate degrees including partial progress for smoothness
+    // This creates a "sweeping" motion rather than a "ticking" one
+    setRotation({
+      s: (s + ms / 1000) * 6, // 360 / 60
+      m: (m + s / 60) * 6,
+      h: ((h % 12) + m / 60) * 30, // 360 / 12
     });
 
-    return () => {
-      // FontFace cleanup is handled by browser; nothing persistent added
-    };
-  }, []);
+    requestRef.current = requestAnimationFrame(animate);
+  };
 
-  // === Subtle pendulum swing ===
   useEffect(() => {
-    let rafId;
-    let start;
-
-    const animate = (t) => {
-      if (!start) start = t;
-      const elapsed = (t - start) / 1000;
-
-      // gentle, slow swing
-      const angle = Math.sin(elapsed * 0.9) * 3;
-
-      if (watchRef.current) {
-        watchRef.current.style.transform =
-          `translateX(-50%) rotate(${angle}deg)`;
-      }
-
-      rafId = requestAnimationFrame(animate);
-    };
-
-    rafId = requestAnimationFrame(animate);
-
-    return () => cancelAnimationFrame(rafId);
+    requestRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(requestRef.current);
   }, []);
-
-  // === Shared sizing ===
-  const nicheWidth = '70vw';
-  const nicheMaxWidth = '420px';
 
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        boxSizing: 'border-box',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundImage: `url(${wallTexture})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        fontFamily: 'WatchNumerals, serif'
-      }}
-    >
-      {/* === Niche === */}
-      <div
-        style={{
-          position: 'relative',
-          width: nicheWidth,
-          maxWidth: nicheMaxWidth,
-          aspectRatio: '1 / 1.25',
-          borderTopLeftRadius: '100% 100%',
-          borderTopRightRadius: '100% 100%',
-          borderBottomLeftRadius: '1.5rem',
-          borderBottomRightRadius: '1.5rem',
-          background: 'linear-gradient(180deg, #e6ded2, #cfc6b8)',
-          boxShadow:
-            'inset 0 1.5rem 2.5rem rgba(0,0,0,0.25), inset 0 -0.5rem 1rem rgba(255,255,255,0.3)',
-          display: 'flex',
-          justifyContent: 'center',
-          overflow: 'hidden'
-        }}
-      >
-        {/* === Chain === */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '0.75rem',
-            width: '2px',
-            height: '25%',
-            background:
-              'linear-gradient(180deg, #b08d57, #6e542e)',
-            boxShadow: '0 0 2px rgba(0,0,0,0.4)'
-          }}
-        />
+    <div style={styles.container}>
+      <div style={styles.clockBase}>
+        {/* Center Pin */}
+        <div style={styles.centerPin} />
 
-        {/* === Pocket Watch === */}
-        <div
-          ref={watchRef}
-          style={{
-            position: 'absolute',
-            top: '25%',
-            left: '50%',
-            transformOrigin: 'top center',
-            width: '38%',
-            aspectRatio: '1 / 1',
-            borderRadius: '50%',
-            backgroundImage: `url(${brassTexture})`,
-            backgroundSize: 'cover',
-            boxShadow:
-              '0 1.5rem 2.5rem rgba(0,0,0,0.35), inset 0 0 0.25rem rgba(255,255,255,0.6)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          {/* Watch face */}
-          <div
-            style={{
-              width: '85%',
-              height: '85%',
-              borderRadius: '50%',
-              background: '#f7f3ee',
-              boxShadow: 'inset 0 0 0.5rem rgba(0,0,0,0.25)',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              fontSize: 'clamp(1rem, 3vw, 1.6rem)',
-              color: '#2e2a24'
-            }}
-          >
-            XII
-          </div>
-        </div>
+        <Disc size="85vmin" degrees={rotation.s} color="#ff3366" label="S" />
+        <Disc size="65vmin" degrees={rotation.m} color="#00f2ff" label="M" />
+        <Disc size="45vmin" degrees={rotation.h} color="#7000ff" label="H" />
       </div>
     </div>
   );
-}
+};
+
+
+
+
+const Disc = ({ size, degrees, color, label }) => (
+  <div
+    style={{
+      ...styles.disc,
+      width: size,
+      height: size,
+      transform: `rotate(${degrees}deg)`,
+      border: `1px solid ${color}33`,
+      background: `conic-gradient(from 0deg, transparent 0%, ${color}05 80%, ${color}aa 100%)`,
+    }}
+  >
+    {/* The Lead Line (Hand) */}
+    <div style={{ ...styles.leadLine, backgroundColor: color, boxShadow: `0 0 15px ${color}` }}>
+      {/* 1. Positioned at the very top (perimeter)
+          2. Rotated 90deg so the base of the letter sits on the line
+      */}
+      <span style={{ 
+        ...styles.label, 
+        color, 
+        transform: `translate(-50%, -100%) rotate(90deg)` 
+      }}>
+        {label}
+      </span>
+    </div>
+  </div>
+);
+
+
+const styles = {
+  container: {
+    width: '100vw',
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#7D7979',
+    margin: 0,
+    overflow: 'hidden',
+    fontFamily: 'sans-serif',
+  },
+  clockBase: {
+    position: 'relative',
+    width: '90vmin',
+    height: '90vmin',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  disc: {
+    position: 'absolute',
+    borderRadius: '50%',
+    display: 'flex',
+    justifyContent: 'center',
+    willChange: 'transform', // Optimization for animations
+  },
+  leadLine: {
+    height: '50%',
+    width: '2px',
+    position: 'absolute',
+    top: 0,
+  },
+  label: {
+    position: 'absolute',
+    top: '10px',
+    fontSize: '10.8rem',
+    fontWeight: 'bold',
+    opacity: 0.8,
+  },
+  centerPin: {
+    width: '4px',
+    height: '4px',
+    backgroundColor: '#fff',
+    borderRadius: '50%',
+    zIndex: 10,
+    boxShadow: '0 0 10px #fff',
+  }
+};
+
+export default DiscClock;
