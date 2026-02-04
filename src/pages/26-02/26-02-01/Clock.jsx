@@ -14,7 +14,7 @@ const CLOCK_CONFIG = {
     // Metallic hands using gradients for depth
     hourHand: 'linear-gradient(to right, #959595, #ffffff, #959595)',
     minuteHand: 'linear-gradient(to right, #B0B0B0, #ffffff, #B0B0B0)',
-    secondHand: 'linear-gradient(to top, #FF4B2B, #FF416C)', // Keeping the "pop" of red/orange
+    secondHand: 'linear-gradient(to top, #0F4DF8, #6F8FF7)', // Keeping the "pop" of red/orange
   }
 };
 
