@@ -4,41 +4,58 @@ import styles from './ClockPageNav.module.css'; // keep using the same styles
 
 const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate }) => {
   const [visible, setVisible] = useState(true);
-  const [footerTimer, setFooterTimer] = useState(null);
+  const [inactivityTimer, setInactivityTimer] = useState(null);
+
+  const clearInactivityTimer = useCallback(() => {
+    if (inactivityTimer) {
+      clearTimeout(inactivityTimer);
+      setInactivityTimer(null);
+    }
+  }, [inactivityTimer]);
+
+  const startInactivityTimer = useCallback(() => {
+    clearInactivityTimer();
+    const timer = setTimeout(() => {
+      setVisible(false);
+    }, 1000); // 1 second
+    setInactivityTimer(timer);
+  }, [clearInactivityTimer]);
 
   const handleMouseEnter = useCallback(() => {
     setVisible(true);
-    if (footerTimer) {
-      clearTimeout(footerTimer);
-      setFooterTimer(null);
-    }
-  }, [footerTimer]);
+    clearInactivityTimer();
+  }, [clearInactivityTimer]);
 
   const handleMouseLeave = useCallback(() => {
     setVisible(false);
-  }, []);
+    clearInactivityTimer();
+  }, [clearInactivityTimer]);
+
+  const handleMouseMove = useCallback(() => {
+    setVisible(true);
+    startInactivityTimer();
+  }, [startInactivityTimer]);
 
   const handleTouchStart = useCallback(() => {
     setVisible(true);
-    if (footerTimer) {
-      clearTimeout(footerTimer);
-      setFooterTimer(null);
-    }
-  }, [footerTimer]);
+    clearInactivityTimer();
+  }, [clearInactivityTimer]);
 
   const handleTouchEnd = useCallback(() => {
     setVisible(false);
-  }, []);
+    clearInactivityTimer();
+  }, [clearInactivityTimer]);
 
-  // Show footer initially
+  // Show footer initially and start inactivity timer
   useEffect(() => {
     setVisible(true);
+    startInactivityTimer();
+    
     return () => {
-      if (footerTimer) {
-        clearTimeout(footerTimer);
-      }
+      clearInactivityTimer();
     };
-  }, [footerTimer]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!currentItem) return null;
 
@@ -47,6 +64,7 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
       className={`${styles.footerStrip} ${visible ? styles.visible : styles.hidden}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
