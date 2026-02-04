@@ -5,10 +5,10 @@ const Disc260203Clock = () => {
   const requestRef = useRef();
 
   useEffect(() => {
-    // 1. Updated link to include italic variants with weights 100 (Thin), 400 (Regular), and 900 (Boldest)
+    // Inject Google Font link directly into document head
     const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100;0,9..144,400;0,9..144,900;1,9..144,100;1,9..144,400;1,9..144,900&display=swap';
-    link.rel = 'stylesheet';
+    link.href = "https://fonts.googleapis.com/css2?family=Taviraj:wght@100;500;900&display=swap";
+    link.rel = "stylesheet";
     document.head.appendChild(link);
 
     const animate = () => {
@@ -33,7 +33,8 @@ const Disc260203Clock = () => {
     requestRef.current = requestAnimationFrame(animate);
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
-      document.head.removeChild(link);
+      // Clean up the font link if the component unmounts
+      if (document.head.contains(link)) document.head.removeChild(link);
     };
   }, []);
 
@@ -42,20 +43,20 @@ const Disc260203Clock = () => {
       <div style={styles.clockBase}>
         <div style={styles.centerPin} />
         
-        {/* Seconds: Thin (100) */}
-        <Disc size="90vmin" rotationVar="--s-rot" color="#E20606" label="s" weight={100} italic />
+        {/* Seconds - Taviraj 100 */}
+        <Disc size="85vmin" rotationVar="--s-rot" color="#E20606" label="s" weight={100} />
         
-        {/* Minutes: Regular (400) */}
-        <Disc size="67vmin" rotationVar="--m-rot" color="#0D74FB" label="m" weight={400} italic />
+        {/* Minutes - Taviraj 500 */}
+        <Disc size="60vmin" rotationVar="--m-rot" color="#0D74FB" label="m" weight={500} />
         
-        {/* Hours: Boldest (900) */}
-        <Disc size="35vmin" rotationVar="--h-rot" color="#08B308" label="h" weight={900} italic />
+        {/* Hours - Taviraj 900 */}
+        <Disc size="35vmin" rotationVar="--h-rot" color="#08B308" label="h" weight={900} />
       </div>
     </div>
   );
 };
 
-const Disc = ({ size, rotationVar, color, label, weight, italic }) => (
+const Disc = ({ size, rotationVar, color, label, weight }) => (
   <div
     style={{
       ...styles.disc,
@@ -67,8 +68,7 @@ const Disc = ({ size, rotationVar, color, label, weight, italic }) => (
     <span style={{ 
       ...styles.label, 
       color,
-      fontWeight: weight, // Applying the specific weight here
-      fontStyle: italic ? 'italic' : 'normal', // Apply italic styling
+      fontWeight: weight,
     }}>
       {label}
     </span>
@@ -85,7 +85,6 @@ const styles = {
     background: 'radial-gradient(circle at center, #F5F3D0 0%, #F5E6A3 40%, #E8D590 70%, #F5DE99 100%)',
     margin: 0,
     overflow: 'hidden',
-    fontFamily: '"Fraunces", serif',
   },
   clockBase: {
     position: 'relative',
@@ -109,6 +108,7 @@ const styles = {
     fontSize: '18vh',
     transform: 'translateY(-50%)', 
     lineHeight: 1,
+    fontFamily: '"Taviraj", serif',
   },
   centerPin: {
     width: '3vw',
