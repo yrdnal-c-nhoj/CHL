@@ -34,15 +34,13 @@ const DiscClock = () => {
         {/* Center Pin */}
         <div style={styles.centerPin} />
 
-        <Disc size="85vmin" degrees={rotation.s} color="#ff3366" label="S" />
+        <Disc size="85vmin" degrees={rotation.s} color="#F50622" label="S" />
         <Disc size="65vmin" degrees={rotation.m} color="#00f2ff" label="M" />
         <Disc size="45vmin" degrees={rotation.h} color="#7000ff" label="H" />
       </div>
     </div>
   );
 };
-
-
 
 
 const Disc = ({ size, degrees, color, label }) => (
@@ -58,13 +56,11 @@ const Disc = ({ size, degrees, color, label }) => (
   >
     {/* The Lead Line (Hand) */}
     <div style={{ ...styles.leadLine, backgroundColor: color, boxShadow: `0 0 15px ${color}` }}>
-      {/* 1. Positioned at the very top (perimeter)
-          2. Rotated 90deg so the base of the letter sits on the line
-      */}
+      {/* Rotate the label by 180° */}
       <span style={{ 
         ...styles.label, 
         color, 
-        transform: `translate(-50%, -100%) rotate(90deg)` 
+        transform: `translate(-50%, -100%) rotate(270deg)` 
       }}>
         {label}
       </span>
@@ -100,17 +96,12 @@ const styles = {
     justifyContent: 'center',
     willChange: 'transform', // Optimization for animations
   },
-  leadLine: {
-    height: '50%',
-    width: '2px',
-    position: 'absolute',
-    top: 0,
-  },
+
   label: {
     position: 'absolute',
-    top: '10px',
+    top: '10vh',
     fontSize: '10.8rem',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     opacity: 0.8,
   },
   centerPin: {
