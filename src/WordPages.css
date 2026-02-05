@@ -40,7 +40,7 @@ body {
   line-height: 1.6;
   text-align: left;
 }
-
+/* 
 .epigraph {
   font-family: "Manrope", sans-serif;
   font-size: clamp(0.9rem, 1vw, 1rem);
@@ -67,7 +67,7 @@ body {
 .epigraph .source {
   color: #6b6969;
   font-size: 0.8rem;
-}
+} */
 
 .hat {
   font-family: "Roboto Slab", sans-serif;
@@ -78,6 +78,7 @@ body {
   line-height: 1.2rem;
   margin-bottom: -1.9rem;
   display: block;
+  margin-top: 1rem;
 }
 
 .smallcaps {
@@ -86,10 +87,11 @@ body {
   font-weight: bold;
   letter-spacing: 0.041em;
   text-transform: uppercase;
+
 }
 
 p {
-  font-family: "Manrope", sans-serif;
+  font-family: "Manrope", sans-serif;  margin-top: 2rem;
 }
 
 .translate {
@@ -175,4 +177,50 @@ a:hover {
    font-family: "Manrope", sans-serif;
   color: #04406a;
   text-decoration: none;
+}
+
+/* Footer styles */
+.footer {
+  width: 100%;
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+  margin-top: auto;
+  padding: 1rem 0;
+}
+
+.footer-content {
+  text-align: center;
+  font-family: "Manrope", sans-serif;
+  font-size: 0.9rem;
+  color: #666;
+}
+.social-links {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centers the icons */
+  gap: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+.social-icon {
+  width: 2rem;
+  height: 2rem;
+  transition: opacity 0.2s ease;
+}
+
+.social-icon:hover {
+  opacity: 0.7;
+}
+
+.section {
+  margin-bottom: 1rem;
+}
+
+/* Make the button look a bit more polished */
+.embeddable-buttondown-form input[type="submit"] {
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-left: 10px;
 }
