@@ -25,7 +25,7 @@ function Contact() {
  
           <span className="hat">Get the Lab's Monthly Newsletter</span>
           <p>
-            Stay connected with the lab's updates and insights.
+           
             <span className="smallcaps">Subscribe</span>  to receive the lab's monthly newsletter. 
             <br />
             We will never sell or release your email address.
@@ -50,11 +50,11 @@ function Contact() {
         {/* Email contact */}
         <section className="section">
           <span className="hat">Send an eMail to the Lab</span>
-          <p>Reach out with any inquiries or feedback.</p>
-          <p><span className="smallcaps">Questions?</span>  Comments? Suggestions?</p>
+           <p><span className="smallcaps">Questions?</span>  Comments? Suggestions?</p>
+          <p>Send to:
           <a className="email-link" href="mailto:cubistheart@gmail.com?subject=🧊🫀🔭">
             cubistheart@gmail.com
-          </a>
+          </a></p>
         </section>
       </main>
 
