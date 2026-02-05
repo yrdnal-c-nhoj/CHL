@@ -16,22 +16,49 @@ const DigitalClockTemplate = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const fontName = 'BorrowedDigital';
-    if (!document.fonts.check(`12px ${fontName}`)) {
-      const font = new FontFace(fontName, `url(${digitalFontUrl})`);
-      font.load().then((loadedFont) => {
+    const font = new FontFace('BorrowedDigital', `url(${digitalFontUrl})`);
+
+    font
+      .load()
+      .then((loadedFont) => {
         document.fonts.add(loadedFont);
         setFontReady(true);
-      }).catch(() => setFontReady(true));
-    } else {
-      setFontReady(true);
-    }
+      })
+      .catch(() => {
+        // Fall back silently if font fails to load
+        setFontReady(true);
+      });
 
-    const checkDevice = () => setIsMobile(window.innerWidth <= 768);
-    window.addEventListener('resize', checkDevice);
+    // Detect mobile vs laptop
+    const checkDevice = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
     checkDevice();
+    window.addEventListener('resize', checkDevice);
+    
     return () => window.removeEventListener('resize', checkDevice);
   }, []);
+
+  // Prevent flash of unstyled text (FOIT)
+  useEffect(() => {
+    if (!fontReady) return;
+    
+    const style = document.createElement('style');
+    style.textContent = `
+      body {
+        font-family: 'BorrowedDigital', monospace;
+        visibility: visible;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
+    };
+  }, [fontReady]);
 
   useEffect(() => {
     const tickRate = CONFIG.showSeconds ? 250 : 1000;
