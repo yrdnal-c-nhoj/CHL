@@ -1,21 +1,14 @@
+import React from 'react';
+import '../WordPages.css';
 
-import './Footer.css'
-export default function Footer() {
-    return (
-
-        <>
-            <div className="footer">
-             
-    &nbsp;<br />
-        ©{new Date().getFullYear()} Cubist Heart Laboratories.All rights reserved.
-         <br /><div className='chl_logo'>🧊🫀🔭</div> <br />   &nbsp;
-      
-    
-    
-        
-
-         </div>
-        </>
-
-    );
+function Footer() {
+  return (
+    <footer className="footer">
+      <div className="footer-content">
+        <p>&copy; 2026 Cubist Heart Labs. All rights reserved.</p>
+      </div>
+    </footer>
+  );
 }
+
+export default Footer;
