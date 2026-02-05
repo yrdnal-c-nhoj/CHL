@@ -2,8 +2,9 @@ import React from 'react';
 import TopNav from './components/TopNav';
 import Footer from './components/Footer';
 import './WordPages.css';
-import instaImg from './assets/i.png';
+import instaImg from './assets/insta.png';
 import elonImg from './assets/x.png';
+import fbookImg from './assets/fbook.png';
 
 function Contact() {
   return (
@@ -20,6 +21,9 @@ function Contact() {
             </a>
             <a href="https://x.com/cubistheartlabs" target="_blank" rel="noopener noreferrer">
               <img src={elonImg} alt="X (Twitter)" className="social-icon" />
+          </a>
+           <a href="https://www.facebook.com/profile.php?id=100090369371981" target="_blank" rel="noopener noreferrer">
+              <img src={fbookImg} alt="X (Twitter)" className="social-icon" />
             </a>
           </div>
  
