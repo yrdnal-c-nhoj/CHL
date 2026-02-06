@@ -45,11 +45,13 @@ const AnalogClock = () => {
     height: '300px',
     borderRadius: '50%',
   };
+const handStyle = (height, width, image, angle) => {
+  // Define how much of the hand should hang over the center point (in pixels)
+  const overlap = 5; 
 
-  // Helper for centering and rotating hands
-  const handStyle = (height, width, image, angle) => ({
+  return {
     position: 'absolute',
-    bottom: '50%', // Starts at center
+    bottom: '50%', 
     left: '50%',
     width: `${width}px`,
     height: `${height}px`,
@@ -57,20 +59,24 @@ const AnalogClock = () => {
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
-filter: 'saturate(1.2) contrast(1.8) brightness(1.2)  drop-shadow(2px 2px 8px rgba(20, 35, 80, 0.87))',
-    marginLeft: `-${width / 2}px`, // Horizontally centers hand
-    transformOrigin: 'bottom center',
-    transform: `rotate(${angle}deg)`,
-    // Removed transition for second hand to keep animation smooth via RAF
-  });
+    filter: 'saturate(1.2) contrast(1.8) brightness(1.2) drop-shadow(2px 2px 8px rgba(20, 35, 80, 0.87))',
+    marginLeft: `-${width / 2}px`,
+    
+    /* 1. Change origin to account for the overlap 
+       2. Rotate first, then translate downward 
+    */
+    transformOrigin: `center ${height - overlap}px`,
+    transform: `rotate(${angle}deg) translateY(${overlap}px)`,
+  };
+};
 
 
   return (
     <div style={containerStyle}>
       <div style={clockFaceStyle}>
      
-        <div style={handStyle(110, 40, hand1Img, hourAngle)} />
-        <div style={handStyle(200, 50, hand2Img, minuteAngle)} />
+        <div style={handStyle(110, 40, hand1Img, hourAngle, 5)} />
+        <div style={handStyle(200, 50, hand2Img, minuteAngle, 8)} />
   
         
    
