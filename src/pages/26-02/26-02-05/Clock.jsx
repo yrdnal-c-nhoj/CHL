@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
+import busterImg from '../../../assets/clocks/26-02-05/buster.webp';
+import hand1Img from '../../../assets/clocks/26-02-05/hand1.webp';
+import hand2Img from '../../../assets/clocks/26-02-05/hand2.webp';
 
-const DigitalClock = () => {
+const AnalogClock = () => {
   const [time, setTime] = useState(new Date());
   const requestRef = useRef();
 
-  // Update time for the digits and the rotation
   const animate = () => {
     setTime(new Date());
     requestRef.current = requestAnimationFrame(animate);
@@ -15,88 +17,66 @@ const DigitalClock = () => {
     return () => cancelAnimationFrame(requestRef.current);
   }, []);
 
-  const formatTime = (date) => {
-    const h = date.getHours().toString().padStart(2, '0');
-    const m = date.getMinutes().toString().padStart(2, '0');
-    const s = date.getSeconds().toString().padStart(2, '0');
-    const ms = date.getMilliseconds().toString().padStart(3, '0');
-    // Combine into one string to map over
-    return `${h}:${m}:${s}:${ms}`.split('');
-  };
+  const hours = time.getHours() % 12;
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds();
+  const ms = time.getMilliseconds();
+  
+  const minuteAngle = ((minutes + seconds / 60) / 60) * 360;
+  const hourAngle = ((hours + minutes / 60) / 12) * 360;
 
-  const digits = formatTime(time);
-  const radius = 120; // Distance from center in pixels
-
-  // Rotation logic: 1 full turn (360deg) per 60 seconds
-  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
-  const rotation = (seconds / 60) * 360;
-
-  // Inline Style Objects
   const containerStyle = {
     width: '100vw',
-    height: '100dvh',
+    height: '100vh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#0f172a',
-    color: '#38bdf8',
+    backgroundImage: `url(${busterImg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
     margin: 0,
-    padding: 0,
     overflow: 'hidden',
-    boxSizing: 'border-box',
-    fontFamily: 'monospace',
   };
 
-  const ringStyle = {
+  const clockFaceStyle = {
     position: 'relative',
-    width: '0px',
-    height: '0px',
-    transform: `rotate(${rotation}deg)`,
-    transition: 'transform 0.05s linear', // Smoothes out the frame updates
+    width: '300px',
+    height: '300px',
+    borderRadius: '50%',
   };
+
+  // Helper for centering and rotating hands
+  const handStyle = (height, width, image, angle) => ({
+    position: 'absolute',
+    bottom: '50%', // Starts at center
+    left: '50%',
+    width: `${width}px`,
+    height: `${height}px`,
+    backgroundImage: `url(${image})`,
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+filter: 'saturate(1.2) contrast(1.8) brightness(1.2)  drop-shadow(2px 2px 8px rgba(20, 35, 80, 0.87))',
+    marginLeft: `-${width / 2}px`, // Horizontally centers hand
+    transformOrigin: 'bottom center',
+    transform: `rotate(${angle}deg)`,
+    // Removed transition for second hand to keep animation smooth via RAF
+  });
+
 
   return (
     <div style={containerStyle}>
-      <div style={ringStyle}>
-        {digits.map((char, i) => {
-          // Distribute characters evenly in a circle
-          const angle = (i / digits.length) * (2 * Math.PI);
-          const x = Math.cos(angle) * radius;
-          const y = Math.sin(angle) * radius;
-          
-          // Convert angle to degrees for individual digit rotation
-          const rotationDeg = (angle * 180) / Math.PI;
-
-          return (
-            <div
-              key={i}
-              style={{
-                position: 'absolute',
-                left: `${x}px`,
-                top: `${y}px`,
-                fontSize: '2rem',
-                fontWeight: 'bold',
-                // Rotate 90deg extra so they face "outward" from the center
-                transform: `translate(-50%, -50%) rotate(${rotationDeg + 90}deg)`,
-                userSelect: 'none',
-              }}
-            >
-              {char}
-            </div>
-          );
-        })}
+      <div style={clockFaceStyle}>
+     
+        <div style={handStyle(110, 40, hand1Img, hourAngle)} />
+        <div style={handStyle(200, 50, hand2Img, minuteAngle)} />
+  
+        
+   
       </div>
-      
-      {/* Visual Center Point (Optional) */}
-      <div style={{
-        position: 'absolute',
-        width: '4px',
-        height: '4px',
-        backgroundColor: '#f472b6',
-        borderRadius: '50%'
-      }} />
     </div>
   );
 };
 
-export default DigitalClock;
+export default AnalogClock;
