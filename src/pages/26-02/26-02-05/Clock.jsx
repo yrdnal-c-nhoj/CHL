@@ -3,7 +3,7 @@ import busterImg from '../../../assets/clocks/26-02-05/buster.webp';
 import hand1Img from '../../../assets/clocks/26-02-05/hand1.webp';
 import hand2Img from '../../../assets/clocks/26-02-05/hand2.webp';
 
-const AnalogClock = () => {
+const Analog260205Clock = () => {
   const [time, setTime] = useState(new Date());
   const requestRef = useRef();
 
@@ -85,4 +85,4 @@ const handStyle = (height, width, image, angle) => {
   );
 };
 
-export default AnalogClock;
+export default Analog260205Clock;
