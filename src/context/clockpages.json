@@ -306,5 +306,6 @@
   { "path": "26-02-02", "date": "26-02-02", "title": "Mach 1" },
   { "path": "26-02-03", "date": "26-02-03", "title": "SMH" },
   { "path": "26-02-04", "date": "26-02-04", "title": "Flux" },
-  { "path": "26-02-05", "date": "26-02-05", "title": "Buster" }
+  { "path": "26-02-05", "date": "26-02-05", "title": "Buster" },
+  { "path": "26-02-06", "date": "26-02-06", "title": "Enigma" }
 ]
