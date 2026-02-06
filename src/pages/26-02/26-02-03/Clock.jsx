@@ -82,7 +82,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    background: 'radial-gradient(circle at center, #F5F3D0 0%, #F5E6A3 40%, #E8D590 70%, #F5DE99 100%)',
+    background: 'radial-gradient(circle at center, #F5F3D0 0%, #F5E6A3 40%, #B5A25C 65%, #B79D4E 100%)',
     margin: 0,
     overflow: 'hidden',
   },
@@ -105,7 +105,7 @@ const styles = {
   label: {
     position: 'absolute',
     top: '0',
-    fontSize: '18vh',
+    fontSize: '8vh',
     transform: 'translateY(-50%)', 
     lineHeight: 1,
     fontFamily: '"Taviraj", serif',
