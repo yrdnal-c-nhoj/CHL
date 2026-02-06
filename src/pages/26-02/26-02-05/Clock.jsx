@@ -48,7 +48,10 @@ const Analog260205Clock = () => {
 const handStyle = (height, width, image, angle) => {
   // Define how much of the hand should hang over the center point (in pixels)
   const overlap = 5; 
-
+  
+  // Calculate skew based on angle - more skew when pointing up (taller/narrower)
+  const skewAmount = Math.sin((angle * Math.PI) / 180) * 15; // Max 15px skew
+  
   return {
     position: 'absolute',
     bottom: '50%', 
@@ -64,9 +67,10 @@ const handStyle = (height, width, image, angle) => {
     
     /* 1. Change origin to account for the overlap 
        2. Rotate first, then translate downward 
+       3. Add skew transformation for perspective effect
     */
     transformOrigin: `center ${height - overlap}px`,
-    transform: `rotate(${angle}deg) translateY(${overlap}px)`,
+    transform: `rotate(${angle}deg) translateY(${overlap}px) skewY(${skewAmount}deg)`,
   };
 };
 
