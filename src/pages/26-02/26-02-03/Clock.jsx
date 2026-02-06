@@ -50,7 +50,7 @@ const Disc260203Clock = () => {
         <Disc size="60vmin" rotationVar="--m-rot" color="#0D74FB" label="m" weight={500} />
         
         {/* Hours - Taviraj 900 */}
-        <Disc size="35vmin" rotationVar="--h-rot" color="#08B308" label="h" weight={900} />
+        <Disc size="25vmin" rotationVar="--h-rot" color="#08B308" label="h" weight={900} />
       </div>
     </div>
   );
@@ -82,7 +82,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    background: 'radial-gradient(circle at center, #F5F3D0 0%, #F5E6A3 40%, #B5A25C 65%, #B79D4E 100%)',
+    background: 'radial-gradient(circle at center, #F5F3D0 0%, #F5E6A3 55%, #B5A25C 75%, #B79D4E 100%)',
     margin: 0,
     overflow: 'hidden',
   },
@@ -105,14 +105,14 @@ const styles = {
   label: {
     position: 'absolute',
     top: '0',
-    fontSize: '8vh',
+    fontSize: 'clamp(5vw, 20vmin, 10vw)',
     transform: 'translateY(-50%)', 
     lineHeight: 1,
     fontFamily: '"Taviraj", serif',
   },
   centerPin: {
-    width: '3vw',
-    height: '3vw',
+    width: '2vw',
+    height: '2vw',
     backgroundColor: '#F26AD7',
     borderRadius: '50%',
     zIndex: 10,
