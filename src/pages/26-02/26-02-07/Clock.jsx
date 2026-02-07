@@ -93,8 +93,8 @@ const FullscreenClock = () => {
         <style>
           {`
             @keyframes rotate {
-              from { transform: rotate(0deg); }
-              to { transform: rotate(360deg); }
+              from { transform: rotateY(0deg); }
+              to { transform: rotateY(360deg); }
             }
             
             .clock-digit {
@@ -105,14 +105,34 @@ const FullscreenClock = () => {
               line-height: 1;
               animation: rotate 60s linear infinite;
               will-change: transform;
-              /* Prevents flickering on shadow updates */
-              backface-visibility: hidden; 
+              transform-style: preserve-3d;
+              position: relative;
               
               text-shadow: 
                 15vh 15vh 0px rgb(0, 0, 0),
                 -15vh 15vh 0px rgb(0, 0, 0),
                 15vh -15vh 0px rgb(0, 0, 0),
                 -15vh -15vh 0px rgb(0, 0, 0); 
+            }
+
+            .clock-digit::before {
+              content: attr(data-char);
+              position: absolute;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              text-align: center;
+              line-height: 1;
+              width: 100%;
+              height: 100%;
+              transform: rotateY(180deg);
+              backface-visibility: hidden;
+              color: #08EEFA;
+              text-shadow: 
+                15vh 15vh 0px #270B05,
+                -15vh 15vh 0px #270B05,
+                15vh -15vh 0px #270B05,
+                -15vh -15vh 0px #270B05;
             }
 
             @media (min-width: 1024px) {
@@ -137,7 +157,7 @@ const FullscreenClock = () => {
              This keeps the div element alive across renders so the 
              CSS animation is never interrupted. 
           */
-          <div key={`digit-${i}`} className="clock-digit">
+          <div key={`digit-${i}`} className="clock-digit" data-char={char}>
             {char}
           </div>
         ))}
