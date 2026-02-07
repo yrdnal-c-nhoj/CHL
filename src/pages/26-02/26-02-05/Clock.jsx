@@ -33,7 +33,7 @@ const OutwardDistortedClock = () => {
     const h = (time.getHours() % 12 || 12).toString().padStart(2, '0');
     const m = time.getMinutes().toString().padStart(2, '0');
     const s = time.getSeconds().toString().padStart(2, '0');
-    const p = time.getHours() >= 12 ? 'pm' : 'am';
+    const p = time.getHours() >= 12 ? 'PM' : 'AM';
     
     return {
       digits: `${h}${m}${s}${p}`.split(''),
