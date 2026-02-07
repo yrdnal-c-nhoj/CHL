@@ -144,13 +144,15 @@ const FullscreenClock = () => {
          
 
 
+{digits.map((char, i) => (
+  // Using only the index 'i' as the key ensures the 
+  // DOM element persists even when 'char' changes.
+  <div key={i} className="clock-digit">
+    {char}
+  </div>
+))}
 
-
-        {digits.map((char, i) => (
-          <div key={`${i}-${char}`} className="clock-digit">
-            {char}
-          </div>
-        ))}
+ 
       </div>
     </div>
   );
