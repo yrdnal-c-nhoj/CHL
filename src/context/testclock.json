@@ -306,15 +306,13 @@
   { "path": "26-02-02", "date": "26-02-02", "title": "Mach 1" },
   { "path": "26-02-03", "date": "26-02-03", "title": "SMH" },
   { "path": "26-02-04", "date": "26-02-04", "title": "Flux" },
-  { "path": "26-02-05", "date": "26-02-05", "title": "Buster" },
-  { "path": "26-02-06", "date": "26-02-06", "title": "Enigma" },
-  { "path": "26-02-07", "date": "26-02-07", "title": "xxxxx" },
-  { "path": "26-02-08", "date": "26-02-08", "title": "xxxxx" },
-  { "path": "26-02-09", "date": "26-02-09", "title": "xxxxx" },
-  { "path": "26-02-10", "date": "26-02-10", "title": "xxxxx" },
-  { "path": "26-02-11", "date": "26-02-11", "title": "xxxxx" },
-  { "path": "26-02-12", "date": "26-02-12", "title": "xxxxx" },
-  { "path": "26-02-13", "date": "26-02-13", "title": "xxxxx" },
-  { "path": "26-02-14", "date": "26-02-14", "title": "xxxxx" }
-
+  { "path": "26-02-05", "date": "26-02-05", "title": "Enigma" },
+  { "path": "26-02-06", "date": "26-02-06", "title":  "Buster" },
+  { "path": "26-02-07", "date": "26-02-07", "title": "Planetary Gear" },
+  { "path": "26-02-08", "date": "26-02-08", "title": "zzzzzzz" },
+  { "path": "26-02-09", "date": "26-02-09", "title": "zzzzzzz" },
+  { "path": "26-02-10", "date": "26-02-10", "title": "zzzzzzz" },
+  { "path": "26-02-11", "date": "26-02-11", "title": "zzzzzzz" },
+  { "path": "26-02-12", "date": "26-02-12", "title": "zzzzzzz" },
+  { "path": "26-02-13", "date": "26-02-13", "title": "zzzzzzz" }
 ]
