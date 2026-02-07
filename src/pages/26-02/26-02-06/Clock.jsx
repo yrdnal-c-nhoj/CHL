@@ -1,125 +1,92 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
-import ci2602Font from '../../../assets/fonts/pin.ttf?url';
+import React, { useState, useEffect, useRef } from 'react';
+import busterImg from '../../../assets/clocks/26-02-05/buster.webp';
+import hand1Img from '../../../assets/clocks/26-02-05/hand1.webp';
+import hand2Img from '../../../assets/clocks/26-02-05/hand2.webp';
 
-// Constants moved outside to prevent re-allocation
-const OVAL = {
-  RADIUS_X: 800,
-  RADIUS_Z: 600,
-  OFFSET_Z: -300,
-  SPEED: 0.05,
-};
-
-const OutwardDistortedClock = () => {
+const Analog260205Clock = () => {
   const [time, setTime] = useState(new Date());
   const requestRef = useRef();
 
-  // 1. One-time setup for Font
+  const animate = () => {
+    setTime(new Date());
+    requestRef.current = requestAnimationFrame(animate);
+  };
+
   useEffect(() => {
-    const fontFace = new FontFace('Cine', `url(${ci2602Font})`);
-    fontFace.load().then((loaded) => document.fonts.add(loaded)).catch(console.error);
-    
-    // 2. High-performance animation loop
-    const animate = () => {
-      setTime(new Date());
-      requestRef.current = requestAnimationFrame(animate);
-    };
-    
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current);
   }, []);
 
-  // 3. Memoize the digit array to avoid splitting strings every 16ms
-  const { digits, phase } = useMemo(() => {
-    const h = (time.getHours() % 12 || 12).toString().padStart(2, '0');
-    const m = time.getMinutes().toString().padStart(2, '0');
-    const s = time.getSeconds().toString().padStart(2, '0');
-    const p = time.getHours() >= 12 ? 'pm' : 'am';
+  const hours = time.getHours() % 12;
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds();
+  const ms = time.getMilliseconds();
+  
+  const minuteAngle = ((minutes + seconds / 60) / 60) * 360;
+  const hourAngle = ((hours + minutes / 60) / 12) * 360;
+
+  const containerStyle = {
+    width: '100vw',
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#0f172a',
+    backgroundImage: `url(${busterImg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    margin: 0,
+    overflow: 'hidden',
+  };
+
+  const clockFaceStyle = {
+    position: 'relative',
+    width: '300px',
+    height: '300px',
+    borderRadius: '50%',
+  };
+const handStyle = (height, width, image, angle) => {
+  // Define how much of the hand should hang over the center point (in pixels)
+  const overlap = 5; 
+  
+  // Calculate skew based on angle - more skew when pointing up (taller/narrower)
+  const skewAmount = Math.sin((angle * Math.PI) / 180) * 15; // Max 15px skew
+  
+  return {
+    position: 'absolute',
+    bottom: '50%', 
+    left: '50%',
+    width: `${width}px`,
+    height: `${height}px`,
+    backgroundImage: `url(${image})`,
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    filter: 'saturate(1.2) contrast(1.8) brightness(1.2) drop-shadow(2px 2px 8px rgba(20, 35, 80, 0.87))',
+    marginLeft: `-${width / 2}px`,
     
-    return {
-      digits: `${h}${m}${s}${p}`.split(''),
-      phase: (time.getTime() / 1000) * OVAL.SPEED * 2 * Math.PI
-    };
-  }, [time]);
+    /* 1. Change origin to account for the overlap 
+       2. Rotate first, then translate downward 
+       3. Add skew transformation for perspective effect
+    */
+    transformOrigin: `center ${height - overlap}px`,
+    transform: `rotate(${angle}deg) translateY(${overlap}px) skewY(${skewAmount}deg)`,
+  };
+};
+
 
   return (
     <div style={containerStyle}>
-      <div style={ringStyle}>
-        {digits.map((char, i) => (
-          <Digit 
-            key={i} 
-            char={char} 
-            index={i} 
-            total={digits.length} 
-            phase={phase} 
-          />
-        ))}
+      <div style={clockFaceStyle}>
+     
+        <div style={handStyle(110, 40, hand1Img, hourAngle, 5)} />
+        <div style={handStyle(200, 50, hand2Img, minuteAngle, 8)} />
+  
+        
+   
       </div>
     </div>
   );
 };
 
-// 4. Sub-component to offload logic from the main loop
-const Digit = ({ char, index, total, phase }) => {
-  const angle = ((index / total) * 2 * Math.PI) - phase;
-  const x = Math.sin(angle) * OVAL.RADIUS_X;
-  const z = Math.cos(angle) * OVAL.RADIUS_Z + OVAL.OFFSET_Z;
-  const rotationY = (angle * 180) / Math.PI;
-  const isBack = Math.cos(angle) < 0;
-  
-  // Scale based on Z position (further = bigger)
-  const distance = Math.abs(z - OVAL.OFFSET_Z);
-  const scaleFactor = 1 + (distance / OVAL.RADIUS_Z) * 0.5; // Grow up to 1.5x size
-  const fontSize = `${29 * scaleFactor}vh`;
-
-  const style = {
-    ...digitBaseStyle,
-    color: isBack ? '#08EEFA' : '#18080D',
-    textShadow: isBack 
-      ? '15px 0 0px #270B05, 2px 2px 0 #0055ff' 
-      : '5px 52px 0px #A95C6100',
-    zIndex: Math.round(z),
-    opacity: isBack ? 0.9 : 0.2,
-    transform: `translate(-50%, -50%) translate3d(${x}px, 0px, ${z}px) rotateY(${rotationY}deg)`,
-    fontSize,
-  };
-
-  return <div style={style}>{char}</div>;
-};
-
-// --- Static Styles ---
-const containerStyle = {
-  width: '100vw',
-  height: '100vh',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  background: 'linear-gradient(180deg, #782D3A 0%, #4F0546 100%)',
-  overflow: 'hidden',
-  perspective: '1200px',
-  fontFamily: '"Cine", "Arial Black", sans-serif',
-};
-
-const ringStyle = {
-  position: 'relative',
-  transformStyle: 'preserve-3d',
-  width: '100%',
-  height: '100%',
-  transform: 'rotateX(10deg)', 
-};
-
-const digitBaseStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  fontSize: '29vh',
-  backfaceVisibility: 'visible',
-  WebkitBackfaceVisibility: 'visible',
-  whiteSpace: 'pre',
-  pointerEvents: 'none',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  transition: 'color 0.1s ease, text-shadow 0.1s ease',
-};
-
-export default OutwardDistortedClock;
+export default Analog260205Clock;
