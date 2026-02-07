@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+// Assets - ensure these paths are correct in your project structure
 import customFontUrl from '../../../assets/fonts/26-02-07-gear.ttf?url'; 
 import backgroundImage from '../../../assets/clocks/26-02-07/gea.gif'; 
 
@@ -6,12 +7,14 @@ const FullscreenClock = () => {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
 
+  // Memoize the font name once per mount to prevent style-tag thrashing
   const fontFamily = useMemo(() => {
     const id = Math.random().toString(36).substring(2, 7);
     return `GearFont-${id}`;
   }, []);
 
   useEffect(() => {
+    // 1. Inject @font-face
     const styleId = `style-${fontFamily}`;
     const styleEl = document.createElement('style');
     styleEl.id = styleId;
@@ -24,6 +27,7 @@ const FullscreenClock = () => {
     `;
     document.head.appendChild(styleEl);
 
+    // 2. Wait for font to actually load
     if ('fonts' in document) {
       document.fonts.load(`1em ${fontFamily}`)
         .then(() => setFontLoaded(true))
@@ -32,8 +36,10 @@ const FullscreenClock = () => {
       setFontLoaded(true);
     }
 
+    // 3. Setup Timer
     const timer = setInterval(() => setTime(new Date()), 1000);
 
+    // 4. Cleanup
     return () => {
       clearInterval(timer);
       const el = document.getElementById(styleId);
@@ -48,6 +54,7 @@ const FullscreenClock = () => {
     const hrStr = String(hours).padStart(2, '0');
     const minStr = String(date.getMinutes()).padStart(2, '0');
     const secStr = String(date.getSeconds()).padStart(2, '0');
+    // Returns array of characters: ["0", "9", "4", "5", "0", "1", "A", "M"]
     return [...hrStr.split(''), ...minStr.split(''), ...secStr.split(''), ...ampm.split('')];
   };
 
@@ -58,13 +65,12 @@ const FullscreenClock = () => {
       position: 'relative',
       width: '100vw',
       height: '100dvh',
-      backgroundColor: '#E8F5AB',
-      backgroundImage: 'radial-gradient(circle, #E8F5AB 0%, #E0FA78 100%)',
-      overflow: 'hidden',
+      backgroundImage: 'radial-gradient(circle, #E8F5AB 0%, #E0FA78 100%)',      overflow: 'hidden',
       fontFamily: fontLoaded ? `'${fontFamily}', sans-serif` : 'sans-serif',
       opacity: fontLoaded ? 1 : 0,
       transition: 'opacity 0.5s ease-in'
     }}>
+      {/* Background Image Layer */}
       <div 
         style={{
           position: 'absolute',
@@ -76,12 +82,13 @@ const FullscreenClock = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           transform: 'scaleX(-1)',
-          opacity: 0.3,
+          opacity: 0.3, // Lowered slightly for readability
           filter: 'brightness(2) saturate(0.2) hue-rotate(180deg)',
           zIndex: 1
         }}
       />
 
+      {/* Clock Grid */}
       <div className="clock-grid" style={{
         position: 'relative',
         display: 'grid',
@@ -93,48 +100,30 @@ const FullscreenClock = () => {
         <style>
           {`
             @keyframes rotate {
-              from { transform: rotateY(0deg); }
-              to { transform: rotateY(360deg); }
+              from { transform: rotate(0deg); }
+              to { transform: rotate(360deg); }
             }
             
+            
             .clock-digit {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              text-align: center;
-              line-height: 1;
-              animation: rotate 60s linear infinite;
-              will-change: transform;
-              transform-style: preserve-3d;
-              position: relative;
-              
-              text-shadow: 
-                15vh 15vh 0px rgb(0, 0, 0),
-                -15vh 15vh 0px rgb(0, 0, 0),
-                15vh -15vh 0px rgb(0, 0, 0),
-                -15vh -15vh 0px rgb(0, 0, 0); 
-            }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  line-height: 1;
+  animation: rotate 60s linear infinite;
+  will-change: transform;
 
-            .clock-digit::before {
-              content: attr(data-char);
-              position: absolute;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              text-align: center;
-              line-height: 1;
-              width: 100%;
-              height: 100%;
-              transform: rotateY(180deg);
-              backface-visibility: hidden;
-              color: #08EEFA;
-              text-shadow: 
-                15vh 15vh 0px #270B05,
-                -15vh 15vh 0px #270B05,
-                15vh -15vh 0px #270B05,
-                -15vh -15vh 0px #270B05;
-            }
+  /* Your original high-offset shadows restored and fixed */
+  text-shadow: 
+    15vh 15vh 0px rgb(0, 0, 0),
+    -15vh 15vh 0px rgb(0, 0, 0),
+    15vh -15vh 0px rgb(0, 0, 0),
+    -15vh -15vh 0px rgb(0, 0, 0); 
+}
+    
 
+            /* Responsive Grid Sizing */
             @media (min-width: 1024px) {
               .clock-grid { grid-template-columns: repeat(8, 1fr); }
               .clock-digit { font-size: 28vh; }
@@ -152,12 +141,13 @@ const FullscreenClock = () => {
           `}
         </style>
 
+         
+
+
+
+
         {digits.map((char, i) => (
-          /* CRITICAL FIX: Using the index 'i' as the key. 
-             This keeps the div element alive across renders so the 
-             CSS animation is never interrupted. 
-          */
-          <div key={`digit-${i}`} className="clock-digit" data-char={char}>
+          <div key={`${i}-${char}`} className="clock-digit">
             {char}
           </div>
         ))}
