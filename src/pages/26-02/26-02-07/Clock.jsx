@@ -65,7 +65,7 @@ const FullscreenClock = () => {
       position: 'relative',
       width: '100vw',
       height: '100dvh',
-      backgroundImage: 'radial-gradient(circle, #F3F7C8 0%, #E5E3B2 100%)',      overflow: 'hidden',
+      backgroundImage: 'radial-gradient(circle, #E9F7AB 0%, #CDF296 100%)',      overflow: 'hidden',
       fontFamily: fontLoaded ? `'${fontFamily}', sans-serif` : 'sans-serif',
       opacity: fontLoaded ? 1 : 0,
       transition: 'opacity 0.5s ease-in'
@@ -101,13 +101,35 @@ const FullscreenClock = () => {
           backgroundPosition: 'center center',
           backgroundRepeat: 'repeat',
           transform: 'scaleX(-1)',
-          // opacity: 0.3,
+          opacity: 0.3,
           zIndex: 2,
        filter: 'brightness(3)  contrast(8.5) saturate(0.2) hue-rotate(183deg)',
        
           zIndex: 0
         }}
       />
+ <div 
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: '270px 270px',
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'repeat',
+          transform: 'scaleX(-1)',
+          opacity: 0.3,
+          zIndex: 3,
+       filter: 'brightness(3)  contrast(8.5) saturate(0.2) hue-rotate(183deg)',
+       
+          zIndex: 0
+        }}
+      />
+
+
+
 
       {/* Clock Grid */}
       <div className="clock-grid" style={{
