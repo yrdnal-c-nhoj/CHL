@@ -79,12 +79,12 @@ const FullscreenClock = () => {
           width: '100%',
           height: '100%',
           backgroundImage: `url(${backgroundImage})`,
-           backgroundSize: '400px 400px',
+           backgroundSize: '90px 90px',
           backgroundPosition: 'center center',
           backgroundRepeat: 'repeat',
           transform: 'scaleX(-1)',
           opacity: 0.3,
-          filter: 'brightness(3)  contrast(2.5) saturate(0.2) hue-rotate(183deg)',
+          filter: 'brightness(3)  contrast(8.5) saturate(0.2) hue-rotate(183deg)',
           zIndex: 1
         }}
       />
@@ -97,13 +97,13 @@ const FullscreenClock = () => {
           width: '100%',
           height: '100%',
           backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: '200px 200px',
+          backgroundSize: '30px 30px',
           backgroundPosition: 'center center',
           backgroundRepeat: 'repeat',
           transform: 'scaleX(-1)',
-          opacity: 0.4,
+          // opacity: 0.3,
           zIndex: 2,
-       filter: 'brightness(3)  contrast(2.5) saturate(0.2) hue-rotate(183deg)',
+       filter: 'brightness(3)  contrast(8.5) saturate(0.2) hue-rotate(183deg)',
        
           zIndex: 0
         }}
