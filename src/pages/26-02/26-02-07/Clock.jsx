@@ -33,19 +33,19 @@ const FullscreenClock = () => {
         line-height: 1;
         animation: rotate 60s linear infinite;
         will-change: transform;
-        text-shadow: 15vh 15vh 0px rgb(0, 0, 0), -15vh 15vh 0px rgb(0, 0, 0), 15vh -15vh 0px rgb(0, 0, 0), -15vh -15vh 0px rgb(0, 0, 0); 
+        text-shadow: 8vh 8vh 0px rgb(0, 0, 0), -8vh 8vh 0px rgb(0, 0, 0), 8vh -8vh 0px rgb(0, 0, 0), -8vh -8vh 0px rgb(0, 0, 0); 
       }
       @media (min-width: 1024px) {
         .clock-grid { grid-template-columns: repeat(8, 1fr); }
-        .clock-digit { font-size: 28vh; }
+        .clock-digit { font-size: 18vh; }
       }
       @media (min-width: 600px) and (max-width: 1023px) {
         .clock-grid { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); }
-        .clock-digit { font-size: 26vh; }
+        .clock-digit { font-size: 16vh; }
       }
       @media (max-width: 599px) {
         .clock-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(4, 1fr); }
-        .clock-digit { font-size: 22vh; }
+        .clock-digit { font-size: 12vh; }
       }
     `;
     document.head.appendChild(styleEl);
@@ -81,7 +81,7 @@ const FullscreenClock = () => {
     <div style={{
       position: 'relative',
       width: '100vw',
-      height: '100dvh',
+      height: '100vh',
       backgroundColor: '#E9F7AB',
       backgroundImage: 'radial-gradient(circle, #E9F7AB 0%, #CDF296 100%)',
       overflow: 'hidden',
