@@ -100,7 +100,7 @@ const FullscreenClock = () => {
   backgroundPosition: 'center', // This anchors the tiling to the center
   transform: 'scaleX(-1)',
   opacity: 0.4,
-  filter: 'brightness(3) contrast(8.5) saturate(0.2) hue-rotate(183deg)',
+  filter: 'brightness(3) contrast(3.5) saturate(0.4) hue-rotate(183deg)',
   zIndex: 1
 }} />
       
