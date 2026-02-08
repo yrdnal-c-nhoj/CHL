@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 // Assets - ensure these paths are correct in your project structure
 import customFontUrl from '../../../assets/fonts/26-02-07-gear.ttf?url'; 
-import backgroundImage from '../../../assets/clocks/26-02-07/gear.webp'; 
+import backgroundImage from '../../../assets/clocks/26-02-07/gear.gif'; 
 
 const FullscreenClock = () => {
   const [time, setTime] = useState(new Date());
@@ -79,8 +79,9 @@ const FullscreenClock = () => {
           width: '100%',
           height: '100%',
           backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'contain',
-          backgroundPosition: 'center',
+           backgroundSize: '400px 400px',
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'repeat',
           transform: 'scaleX(-1)',
           opacity: 0.3,
           filter: 'brightness(3)  contrast(2.5) saturate(0.2) hue-rotate(183deg)',
@@ -99,6 +100,7 @@ const FullscreenClock = () => {
           backgroundSize: '200px 200px',
           backgroundPosition: 'center center',
           backgroundRepeat: 'repeat',
+          transform: 'scaleX(-1)',
           opacity: 0.4,
           zIndex: 2,
        filter: 'brightness(3)  contrast(2.5) saturate(0.2) hue-rotate(183deg)',
