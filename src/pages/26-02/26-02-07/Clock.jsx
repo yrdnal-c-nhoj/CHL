@@ -90,17 +90,19 @@ const FullscreenClock = () => {
       transition: 'opacity 0.5s ease-in'
     }}>
       {/* Unified Background Layers */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: '45px 45px',
-        backgroundRepeat: 'repeat',
-        transform: 'scaleX(-1)',
-        opacity: 0.4,
-        filter: 'brightness(3) contrast(8.5) saturate(0.2) hue-rotate(183deg)',
-        zIndex: 1
-      }} />
+   {/* Unified Background Layers */}
+<div style={{
+  position: 'absolute',
+  inset: 0,
+  backgroundImage: `url(${backgroundImage})`,
+  backgroundSize: '15vh 15vh',
+  backgroundRepeat: 'repeat',
+  backgroundPosition: 'center', // This anchors the tiling to the center
+  transform: 'scaleX(-1)',
+  opacity: 0.4,
+  filter: 'brightness(3) contrast(8.5) saturate(0.2) hue-rotate(183deg)',
+  zIndex: 1
+}} />
       
       <div className="clock-grid" style={{
         position: 'relative',
