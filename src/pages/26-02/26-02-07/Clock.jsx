@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 // Assets - ensure these paths are correct in your project structure
 import customFontUrl from '../../../assets/fonts/26-02-07-gear.ttf?url'; 
-import backgroundImage from '../../../assets/clocks/26-02-07/gea.gif'; 
+import backgroundImage from '../../../assets/clocks/26-02-07/gear.webp'; 
 
 const FullscreenClock = () => {
   const [time, setTime] = useState(new Date());
@@ -65,7 +65,7 @@ const FullscreenClock = () => {
       position: 'relative',
       width: '100vw',
       height: '100dvh',
-      backgroundImage: 'radial-gradient(circle, #E8F5AB 0%, #E0FA78 100%)',      overflow: 'hidden',
+      backgroundImage: 'radial-gradient(circle, #F3F7C8 0%, #E5E3B2 100%)',      overflow: 'hidden',
       fontFamily: fontLoaded ? `'${fontFamily}', sans-serif` : 'sans-serif',
       opacity: fontLoaded ? 1 : 0,
       transition: 'opacity 0.5s ease-in'
@@ -79,12 +79,31 @@ const FullscreenClock = () => {
           width: '100%',
           height: '100%',
           backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
+          backgroundSize: 'contain',
           backgroundPosition: 'center',
           transform: 'scaleX(-1)',
-          opacity: 0.3, // Lowered slightly for readability
-          filter: 'brightness(2) saturate(0.2) hue-rotate(180deg)',
+          opacity: 0.3,
+          filter: 'brightness(3)  contrast(2.5) saturate(0.2) hue-rotate(183deg)',
           zIndex: 1
+        }}
+      />
+      
+      <div 
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: '200px 200px',
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'repeat',
+          opacity: 0.4,
+          zIndex: 2,
+       filter: 'brightness(3)  contrast(2.5) saturate(0.2) hue-rotate(183deg)',
+       
+          zIndex: 0
         }}
       />
 
@@ -95,6 +114,7 @@ const FullscreenClock = () => {
         width: '100%',
         height: '100%',
         zIndex: 2,
+        
         color: '#000000'
       }}>
         <style>
