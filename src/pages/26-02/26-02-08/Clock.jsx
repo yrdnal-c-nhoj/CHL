@@ -55,7 +55,7 @@ const AnalogClockTemplate = () => {
     backgroundSize: 'con',
     backgroundPosition: 'center',
     // Apply filters ONLY here
-    filter: 'brightness(0.7) saturate(0.9) contrast(0.9)',
+    filter: 'brightness(0.9) saturate(0.9) contrast(0.9)',
     zIndex: 0,
   };
 
