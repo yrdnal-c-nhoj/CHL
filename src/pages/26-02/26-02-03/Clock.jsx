@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const Disc260203Clock = () => {
   const clockRef = useRef(null);
   const requestRef = useRef();
+  const [fontReady, setFontReady] = useState(false);
 
   useEffect(() => {
     // Inject Google Font link directly into document head
@@ -10,6 +11,17 @@ const Disc260203Clock = () => {
     link.href = "https://fonts.googleapis.com/css2?family=Taviraj:wght@100;500;900&display=swap";
     link.rel = "stylesheet";
     document.head.appendChild(link);
+
+    // Ensure font is ready before revealing UI to prevent FOUC
+    const fontPromise = document.fonts
+      .load('1em "Taviraj"')
+      .then(() => true)
+      .catch(() => true); // fall back to showing even if font fails
+
+    // Safety timeout so we never stay hidden
+    const timeoutPromise = new Promise((resolve) => setTimeout(resolve, 1200, true));
+
+    Promise.race([fontPromise, timeoutPromise]).then(() => setFontReady(true));
 
     const animate = () => {
       const now = new Date();
@@ -39,7 +51,15 @@ const Disc260203Clock = () => {
   }, []);
 
   return (
-    <div style={styles.container} ref={clockRef}>
+    <div
+      style={{
+        ...styles.container,
+        opacity: fontReady ? 1 : 0,
+        visibility: fontReady ? 'visible' : 'hidden',
+        transition: 'opacity 0.3s ease',
+      }}
+      ref={clockRef}
+    >
       <div style={styles.clockBase}>
         <div style={styles.centerPin} />
         

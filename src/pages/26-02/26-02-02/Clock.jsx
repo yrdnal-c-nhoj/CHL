@@ -35,7 +35,10 @@ const SonicBoomClock = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      opacity: fontLoaded ? 1 : 0,
+      visibility: fontLoaded ? 'visible' : 'hidden',
+      transition: 'opacity 0.3s ease',
     }}>
       <div style={{
         position: 'absolute',

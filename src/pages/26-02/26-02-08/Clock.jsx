@@ -15,6 +15,7 @@ const STYLE_CONFIG = {
 const AnalogClockTemplate = () => {
   const [time, setTime] = useState(new Date());
   const [fontReady, setFontReady] = useState(false);
+  const [bgReady, setBgReady] = useState(false);
 
   useEffect(() => {
     const font = new FontFace('BorrowedAnalog', `url(${analogFontUrl})`);
@@ -22,6 +23,18 @@ const AnalogClockTemplate = () => {
       document.fonts.add(loadedFont);
       setFontReady(true);
     }).catch(() => setFontReady(true));
+  }, []);
+
+  useEffect(() => {
+    // Preload the background image to avoid a flash when it appears
+    const img = new Image();
+    img.src = analogBgImage;
+    const done = () => setBgReady(true);
+    img.onload = done;
+    img.onerror = done; // Show UI even if image fails
+    // Safety timeout
+    const timeoutId = setTimeout(done, 1200);
+    return () => clearTimeout(timeoutId);
   }, []);
 
   useEffect(() => {
@@ -43,7 +56,9 @@ const AnalogClockTemplate = () => {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#000', // Solid base color while image loads
-    visibility: fontReady ? 'visible' : 'hidden', // Prevent FOUC for custom font
+    opacity: fontReady && bgReady ? 1 : 0,
+    visibility: fontReady && bgReady ? 'visible' : 'hidden', // Prevent FOUC for custom font & bg
+    transition: 'opacity 0.35s ease',
   };
 
   const backgroundLayerStyle = {

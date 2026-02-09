@@ -75,6 +75,9 @@ const DigitalClockTemplate = () => {
     height: '100dvh',
     overflow: 'hidden',
     position: 'relative',
+    opacity: fontReady ? 1 : 0,
+    visibility: fontReady ? 'visible' : 'hidden',
+    transition: 'opacity 0.3s ease',
   };
 
   const bgBaseStyle = {
