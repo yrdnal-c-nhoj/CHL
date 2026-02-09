@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import lemonBg from '../../../assets/clocks/26-01-31/lemon.webp';
+import lemonBg from '../../../assets/clocks/26-01-31/lemon.gif';
 import rainBg from '../../../assets/clocks/26-01-31/lu.webp';
-import lemGif from '../../../assets/clocks/26-01-31/lem.gif';
+import lemGif from '../../../assets/clocks/26-01-31/lemslo.gif';
 import lemons2Bg from '../../../assets/clocks/26-01-31/lemons2.jpg';
 import lemonFont from '../../../assets/fonts/26-01-31-lemon.otf';
+import centerImage from '../../../assets/clocks/26-01-31/lem.gif';
 
 const containerStyle = {
   position: 'fixed',
@@ -31,7 +32,7 @@ const gridStyle = {
   gridTemplateRows: 'repeat(3, 30vmin)',
   gap: '2.2vmin',
   zIndex: 10, // Sits above all background layers
-  opacity: 0.8,
+  // opacity: 0.8,
 };
 
 const getCellStyle = (index) => {
@@ -41,9 +42,9 @@ const getCellStyle = (index) => {
     justifyContent: 'center',
     fontSize: '8vmin',
     fontFamily: 'LemonFont, monospace',
-    color: '#24954A',
+    color: '#FCDC0A',
     position: 'relative',
-    opacity: 0.8,
+    // opacity: 0.8,
   };
 
   // Center cell (index 4) gets rotating background image
@@ -60,38 +61,26 @@ const getImageStyle = (index) => {
   const baseImageStyle = {
     position: 'absolute',
     inset: 0,
-    backgroundImage: `url(${lemGif})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     zIndex: -1,
   };
 
-  // Define rotations for each cell (clockwise from top-left)
-  const rotations = [
-    0,    // index 0: top-left (remains same)
-    45,   // index 1: top-center
-    90,   // index 2: top-right
-    135,  // index 3: middle-right
-    0,    // index 4: center (rotating animation)
-    225,  // index 5: middle-left
-    270,  // index 6: bottom-left
-    315,  // index 7: bottom-center
-    0     // index 8: bottom-right (completes the pattern)
-  ];
-
-  // Center cell (index 4) gets rotation animation
+  // Center cell (index 4) gets new center image
   if (index === 4) {
     return {
       ...baseImageStyle,
+      backgroundImage: `url(${centerImage})`,
       animation: 'rotateCounterClockwise 15s linear infinite',
     };
   }
 
-  // Apply rotation to outer cells
+  // Other cells get the original lem.gif with rotation
   return {
     ...baseImageStyle,
-    transform: `rotate(${rotations[index]}deg)`,
+    backgroundImage: `url(${lemGif})`,
+    transform: `rotate(${[0, 45, 90, 135, 0, 225, 270, 315, 0][index]}deg)`,
   };
 };
 
@@ -164,7 +153,7 @@ const SimpleBackground = () => {
       {/* LAYER 1: The Solid Color (Bottom) */}
       <div style={{ 
         ...layerBaseStyle, 
-        backgroundColor: '#F6F20D', 
+        backgroundColor: '#FFFB04', 
         zIndex: 0,
       }} />
 
@@ -181,7 +170,7 @@ const SimpleBackground = () => {
     top: 0,
     left: 0,
     zIndex: 3,
-    opacity: 0.8
+    opacity: 0.7
     }} />
 
     <div style={{ 
@@ -197,7 +186,7 @@ const SimpleBackground = () => {
     left: 0,
     zIndex: 4,
     transform: 'scale(-1, -1)', // This performs the double flip
-    opacity: 0.8
+    opacity: 0.7
 }} />
 
       {/* LAYER 3: Lemon Image (Top) */}

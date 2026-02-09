@@ -33,7 +33,7 @@ const FullscreenClock = () => {
         line-height: 1;
         animation: rotate 60s linear infinite;
         will-change: transform;
-        text-shadow: 16vh 16vh 0px rgb(0, 0, 0), -16vh 16vh 0px rgb(0, 0, 0), 16vh -16vh 0px rgb(0, 0, 0), -16vh -16vh 0px rgb(0, 0, 0); 
+        text-shadow: 16vh 16vh 0px #1111aa, -16vh 16vh 0px #1111aa, 16vh -16vh 0px #1111aa, -16vh -16vh 0px #1111aa; 
       }
       @media (min-width: 1024px) {
         .clock-grid { grid-template-columns: repeat(8, 1fr); }
@@ -89,19 +89,30 @@ const FullscreenClock = () => {
       opacity: fontLoaded ? 1 : 0,
       transition: 'opacity 0.5s ease-in'
     }}>
-      {/* Unified Background Layers */}
-   {/* Unified Background Layers */}
-<div style={{
+      
+      {/* SVG Filter to fix Mobile Chrome rendering issues */}
+      <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+        <filter id="gear-fix" colorInterpolationFilters="sRGB">
+          <feColorMatrix type="matrix" values="
+             -0.81  2.13  0.18  0  0
+              0.18 -0.81  2.13  0  0
+              2.13  0.18 -0.81  0  0
+              0     0     0     0.4 0" />
+        </filter>
+      </svg>
+
+     <div style={{
   position: 'absolute',
   inset: 0,
   backgroundImage: `url(${backgroundImage})`,
   backgroundSize: '15vh 15vh',
   backgroundRepeat: 'repeat',
-  backgroundPosition: 'center', // This anchors the tiling to the center
-  transform: 'scaleX(-1)',
-  opacity: 0.4,
-  filter: 'brightness(3) contrast(3.5) saturate(0.4) hue-rotate(183deg)',
-  zIndex: 1
+  backgroundPosition: 'center',
+  transform: 'scaleX(-1) translateZ(0)',
+  // Chain your existing SVG filter with brightness and contrast
+  filter: 'url(#gear-fix) brightness(2.8) contrast(1.9)', 
+  zIndex: 1,
+  pointerEvents: 'none'
 }} />
       
       <div className="clock-grid" style={{
@@ -110,7 +121,7 @@ const FullscreenClock = () => {
         width: '100%',
         height: '100%',
         zIndex: 2,
-        color: '#000000'
+        color: '#3E0A0A'
       }}>
         {digits.map((char, i) => (
           <div key={i} className="clock-digit">
