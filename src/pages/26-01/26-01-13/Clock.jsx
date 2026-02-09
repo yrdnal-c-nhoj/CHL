@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 const DiscClock = () => {
   const [rotation, setRotation] = useState({ h: 0, m: 0, s: 0 });
   const requestRef = useRef();
+  const [ready, setReady] = useState(false);
 
   // Use requestAnimationFrame for buttery smooth movement
   const animate = () => {
@@ -28,8 +29,20 @@ const DiscClock = () => {
     return () => cancelAnimationFrame(requestRef.current);
   }, []);
 
+  useEffect(() => {
+    const t = setTimeout(() => setReady(true), 50);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
-    <div style={styles.container}>
+    <div
+      style={{
+        ...styles.container,
+        opacity: ready ? 1 : 0,
+        visibility: ready ? 'visible' : 'hidden',
+        transition: 'opacity 0.25s ease'
+      }}
+    >
       <div style={styles.clockBase}>
         {/* Center Pin */}
         <div style={styles.centerPin} />

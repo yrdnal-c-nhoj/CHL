@@ -6,6 +6,8 @@ import aaaImage from '../../../assets/clocks/26-01-06/aaa.webp';
 export default function AardvarkClock() {
   const [time, setTime] = useState(new Date());
   const [totalSeconds, setTotalSeconds] = useState(0);
+  const [fontReady, setFontReady] = useState(false);
+  const [bgReady, setBgReady] = useState(false);
 
   const uniqueFontFamily = `Giza_20260107`;
   const clockLabels = ['a','a','a','a','a','a','a','a','a','Aa','Aa','Aa'];
@@ -41,6 +43,29 @@ export default function AardvarkClock() {
     return () => clearInterval(timer);
   }, []);
 
+  // Track font readiness
+  useEffect(() => {
+    let cancelled = false;
+    document.fonts
+      .load(`1em '${uniqueFontFamily}'`)
+      .then(() => !cancelled && setFontReady(true))
+      .catch(() => !cancelled && setFontReady(true));
+    return () => {
+      cancelled = true;
+    };
+  }, [uniqueFontFamily]);
+
+  // Preload background
+  useEffect(() => {
+    const img = new Image();
+    const done = () => setBgReady(true);
+    img.onload = done;
+    img.onerror = done;
+    img.src = backgroundImage;
+    const timeout = setTimeout(done, 1200);
+    return () => clearTimeout(timeout);
+  }, []);
+
   const secDeg  = (totalSeconds / 60) * 360;
   const minDeg  = ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360;
   const hourDeg = ((time.getHours() % 12 + time.getMinutes() / 60) / 12) * 360;
@@ -67,7 +92,10 @@ export default function AardvarkClock() {
       position: 'relative',
       overflow: 'hidden',
       padding: '20px',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      opacity: fontReady && bgReady ? 1 : 0,
+      visibility: fontReady && bgReady ? 'visible' : 'hidden',
+      transition: 'opacity 0.35s ease',
     }}>
 
       {/* Corner image */}

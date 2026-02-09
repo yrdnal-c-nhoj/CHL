@@ -27,6 +27,7 @@ const ClockNumbers = memo(({ fontFamily }) => (
 const AnalogBirdMigrateClock = () => {
   const [isReady, setIsReady] = useState(false);
   const [time, setTime] = useState(new Date());
+  const [bgReady, setBgReady] = useState(false);
 
   const fontFamilyName = useMemo(() => `Font-${Math.random().toString(36).slice(2, 7)}`, []);
 
@@ -46,10 +47,27 @@ const AnalogBirdMigrateClock = () => {
     return () => { isMounted = false; clearInterval(timer); };
   }, [fontFamilyName]);
 
+  useEffect(() => {
+    const images = [backgroundImage, tileImage];
+    let loaded = 0;
+    const done = () => {
+      loaded += 1;
+      if (loaded >= images.length) setBgReady(true);
+    };
+    images.forEach(src => {
+      const img = new Image();
+      img.onload = done;
+      img.onerror = done;
+      img.src = src;
+    });
+    const timeout = setTimeout(() => setBgReady(true), 1200);
+    return () => clearTimeout(timeout);
+  }, []);
+
   const hourDeg = (time.getHours() % 12) * 30 + time.getMinutes() * 0.5;
   const minuteDeg = time.getMinutes() * 6;
 
-  if (!isReady) return null;
+  if (!isReady || !bgReady) return null;
 
   return (
     <div style={styles.wrapper}>

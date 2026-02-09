@@ -10,6 +10,7 @@ const FONT_FAMILY = '1974';
 const DynamicClock = () => {
   const [isReady, setIsReady] = useState(false);
   const [time, setTime] = useState(new Date());
+  const [bgReady, setBgReady] = useState(false);
 
   // Update time every second
   useEffect(() => {
@@ -47,7 +48,17 @@ const DynamicClock = () => {
     return () => { mounted = false; };
   }, []);
 
-  if (!isReady) return null;
+  useEffect(() => {
+    const img = new Image();
+    const done = () => setBgReady(true);
+    img.onload = done;
+    img.onerror = done;
+    img.src = backgroundUrl;
+    const timeout = setTimeout(done, 1200);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  if (!isReady || !bgReady) return null;
 
   const timeString = [
     time.getHours(),
