@@ -55,7 +55,7 @@ const AnalogClockTemplate = () => {
     backgroundSize: 'con',
     backgroundPosition: 'center',
     // Apply filters ONLY here
-    filter: 'brightness(0.5) saturate(0.9) contrast(0.9)',
+    filter: 'brightness(0.7) saturate(0.9) contrast(0.9)',
     zIndex: 0,
   };
 
@@ -166,10 +166,10 @@ const AnalogClockTemplate = () => {
         width: '100%',
         height: '100%',
         backgroundImage: `url(${eifGif})`,
-        backgroundSize: '100px 100px',
+        backgroundSize: '50px 100px',
         backgroundRepeat: 'repeat',
         backgroundPosition: 'center',
-        opacity: 0.9,
+        opacity: 0.5,
     filter: 'brightness(1.7) hue-rotate(180deg) contrast(1.9) drop-shadow(0.4vmin 0.4vmin 0.5vmin rgba(0,0,0,0.4))',
 
         zIndex: 1, // Between background (0) and clock face (1)
