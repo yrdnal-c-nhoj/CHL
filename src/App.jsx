@@ -1,8 +1,8 @@
 // App.jsx
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { DataProvider, DataContext } from './context/DataContext';
+import { DataProvider } from './context/DataContext';
 import Home from './Home';
 import ClockPage from './ClockPage';
 import Manifesto from './Manifesto';
@@ -11,11 +11,10 @@ import Today from './Today';
 import Contact from './Contact';
 import { pageview } from './analytics';
 
-console.log('📦 [App.jsx] File loaded.');
+const BASE_URL = 'https://www.cubistheart.com';
 
 const AnalyticsAndSEO = () => {
   const location = useLocation();
-  console.log('🧭 [AnalyticsAndSEO] useLocation called:', location.pathname);
 
   const path = location.pathname === '/index.html' ? '/' : location.pathname;
   const dynamicClockRoute = /^\/\d{2}-\d{2}-\d{2}$/;
@@ -31,11 +30,8 @@ const AnalyticsAndSEO = () => {
       };
 
   useEffect(() => {
-    console.log('📊 [AnalyticsAndSEO] pageview() triggered for path:', path + location.search);
     pageview(path + location.search);
   }, [path, location.search]);
-
-  console.log('🧠 [AnalyticsAndSEO] Meta prepared:', meta);
 
   return (
     <Helmet>
@@ -43,27 +39,19 @@ const AnalyticsAndSEO = () => {
       <meta name="description" content={meta.description} />
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
-      <meta property="og:url" content={`https://yourdomain.com${path}`} />
+      <meta property="og:url" content={`${BASE_URL}${path}`} />
       <meta property="og:type" content="website" />
+      <link rel="canonical" href={`${BASE_URL}${path}`} />
     </Helmet>
   );
 };
 
 const App = () => {
-  console.log('🧩 [App] Component rendering...');
-
-  useEffect(() => {
-    console.log('✅ [App] Mounted successfully.');
-    return () => console.log('🧹 [App] Unmounted.');
-  }, []);
-
   return (
     <DataProvider>
-      {console.log('🌐 [App] Router starting...')}
       <Router>
         <AnalyticsAndSEO />
         <Routes>
-          {console.log('🗺️ [App] Defining routes...')}
           <Route path="/" element={<Home />} />
           <Route path="/:date" element={<ClockPage />} />
           <Route path="/about" element={<About />} />

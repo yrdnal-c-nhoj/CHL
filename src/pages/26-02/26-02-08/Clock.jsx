@@ -43,6 +43,7 @@ const AnalogClockTemplate = () => {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#000', // Solid base color while image loads
+    visibility: fontReady ? 'visible' : 'hidden', // Prevent FOUC for custom font
   };
 
   const backgroundLayerStyle = {

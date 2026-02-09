@@ -5,7 +5,42 @@ import hand2Img from '../../../assets/clocks/26-02-05/hand2.webp';
 
 const Analog260205Clock = () => {
   const [time, setTime] = useState(new Date());
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const requestRef = useRef();
+
+  useEffect(() => {
+    // Preload images to prevent FOUC
+    const preloadImages = async () => {
+      try {
+        await Promise.all([
+          new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = busterImg;
+            img.onload = resolve;
+            img.onerror = reject;
+          }),
+          new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = hand1Img;
+            img.onload = resolve;
+            img.onerror = reject;
+          }),
+          new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = hand2Img;
+            img.onload = resolve;
+            img.onerror = reject;
+          })
+        ]);
+        setImagesLoaded(true);
+      } catch (error) {
+        console.warn('Some images failed to load:', error);
+        setImagesLoaded(true); // Show content even if images fail
+      }
+    };
+
+    preloadImages();
+  }, []);
 
   const animate = () => {
     setTime(new Date());
@@ -37,6 +72,9 @@ const Analog260205Clock = () => {
     backgroundPosition: 'center',
     margin: 0,
     overflow: 'hidden',
+    opacity: imagesLoaded ? 1 : 0,
+    transition: 'opacity 0.3s ease-in',
+    visibility: imagesLoaded ? 'visible' : 'hidden', // Prevent FOUC for images
   };
 
   const clockFaceStyle = {

@@ -20,6 +20,16 @@ html.fonts-loading body {
   visibility: hidden;
 }
 
+/* Prevent FOUC during React hydration */
+html:not(.react-hydrated):not(.dom-loaded) body {
+  visibility: hidden;
+}
+
+/* Smooth transition for when content becomes visible */
+body {
+  transition: visibility 0s linear;
+}
+
 :root {
   font-synthesis: none;
   text-rendering: optimizeLegibility;
