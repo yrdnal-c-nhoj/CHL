@@ -41,7 +41,8 @@ const FullscreenClock = () => {
       overflow: 'hidden',
       fontFamily: fontLoaded ? `'${FONT_NAME}', sans-serif` : 'sans-serif',
       opacity: fontLoaded ? 1 : 0,
-      transition: 'opacity 0.5s ease-in'
+      transition: 'opacity 0.5s ease-in',
+      visibility: fontLoaded ? 'visible' : 'hidden', // Prevent FOUC for custom font
     }}>
       
       <style>{`

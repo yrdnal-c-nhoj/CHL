@@ -26,15 +26,7 @@
     <meta property="og:url" content="https://www.cubistheart.com/" />
     <meta property="og:type" content="website" />
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-24VJ4G2H48"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag('js', new Date());
-      // Disable automatic page view as we're handling it manually in analytics.jsx
-      gtag('config', 'G-24VJ4G2H48', { send_page_view: false });
-    </script>
+    <!-- Google Analytics is injected at runtime (see src/analytics.jsx) when env + DNT guards pass -->
     <script>
       // Avoid FOUC: hide content while fonts are loading
       document.documentElement.classList.add('fonts-loading');
@@ -48,6 +40,11 @@
           document.documentElement.classList.remove('fonts-loading');
         });
       }
+
+      // Prevent flash before React hydrates
+      document.addEventListener('DOMContentLoaded', () => {
+        document.documentElement.classList.add('dom-loaded');
+      });
     </script>
   </head>
 
