@@ -56,6 +56,7 @@ function TangerineClock() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [clockSize, setClockSize] = useState(300); // Default size, will be updated
   const [isClient, setIsClient] = useState(false);
+  const [bgReady, setBgReady] = useState(false);
 
   // Preload all images and set up resize handler
   useEffect(() => {
@@ -98,6 +99,24 @@ function TangerineClock() {
       window.removeEventListener('resize', handleResize);
       clearTimeout(resizeTimer);
     };
+  }, []);
+
+  // Separate preload for backgrounds to avoid flash
+  useEffect(() => {
+    const imgs = [backgroundImage, bgLayerTile];
+    let loaded = 0;
+    const done = () => {
+      loaded += 1;
+      if (loaded >= imgs.length) setBgReady(true);
+    };
+    imgs.forEach(src => {
+      const img = new Image();
+      img.onload = done;
+      img.onerror = done;
+      img.src = src;
+    });
+    const timeout = setTimeout(() => setBgReady(true), 1200);
+    return () => clearTimeout(timeout);
   }, []);
   
   const updateClockSize = () => {
@@ -180,6 +199,8 @@ function TangerineClock() {
     );
   }
 
+  const ready = isLoaded && bgReady;
+
   return (
     <div style={{
       position: 'fixed',
@@ -197,7 +218,8 @@ function TangerineClock() {
       WebkitTouchCallout: 'none',
       WebkitUserSelect: 'none',
       userSelect: 'none',
-      opacity: isLoaded ? 1 : 0,
+      opacity: ready ? 1 : 0,
+      visibility: ready ? 'visible' : 'hidden',
       transition: 'opacity 0.5s ease-in-out'
     }}>
 
@@ -206,7 +228,7 @@ function TangerineClock() {
         position: 'absolute', 
         inset: 0, 
         zIndex: 1,
-        opacity: isLoaded ? 1 : 0,
+        opacity: ready ? 1 : 0,
         transition: 'opacity 0.3s ease-in-out',
         willChange: 'opacity'
       }}>
@@ -238,8 +260,8 @@ function TangerineClock() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        opacity: isLoaded ? 1 : 0,
-        transform: isLoaded ? 'scale(1)' : 'scale(0.95)',
+        opacity: ready ? 1 : 0,
+        transform: ready ? 'scale(1)' : 'scale(0.95)',
         transition: 'opacity 0.5s ease-out, transform 0.5s ease-out',
         willChange: 'opacity, transform'
       }}>

@@ -20,6 +20,7 @@ const Clock = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [lightsOff, setLightsOff] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
+  const [assetsReady, setAssetsReady] = useState(false);
 
   // 1. Clock Motion
   useEffect(() => {
@@ -69,7 +70,15 @@ const Clock = () => {
     });
   }, []);
 
-  if (!isLoaded) return <div style={{ height: '100dvh', background: '#000' }} />;
+  // Separate gate to ensure we don't render until assets flag is on
+  useEffect(() => {
+    if (isLoaded) {
+      const t = setTimeout(() => setAssetsReady(true), 50);
+      return () => clearTimeout(t);
+    }
+  }, [isLoaded]);
+
+  if (!assetsReady) return <div style={{ height: '100dvh', background: '#000' }} />;
 
   const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
   const minutes = time.getMinutes() + seconds / 60;

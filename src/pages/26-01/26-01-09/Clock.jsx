@@ -10,6 +10,7 @@ import customFont from '../../../assets/fonts/26-01-12-tic.ttf';
 const BackgroundGrid = ({ children, isFontLoaded }) => {
   const [isBackgroundLoaded, setIsBackgroundLoaded] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [fontReady, setFontReady] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -26,23 +27,22 @@ const BackgroundGrid = ({ children, isFontLoaded }) => {
     });
 
     let mounted = true;
-    
-    Promise.all([
-      new Promise(resolve => {
-        if (document.fonts.check('1px CustomClockFont') || !isFontLoaded) {
-          resolve();
-        } else {
-          const checkFont = () => {
-            if (document.fonts.check('1px CustomClockFont')) {
-              resolve();
-              document.fonts.removeEventListener('loadingdone', checkFont);
-            }
-          };
-          document.fonts.addEventListener('loadingdone', checkFont);
-        }
-      }),
-      ...imagePromises
-    ])
+
+    const fontPromise = new Promise(resolve => {
+      if (document.fonts.check('1px CustomClockFont') || !isFontLoaded) {
+        resolve();
+      } else {
+        const checkFont = () => {
+          if (document.fonts.check('1px CustomClockFont')) {
+            resolve();
+            document.fonts.removeEventListener('loadingdone', checkFont);
+          }
+        };
+        document.fonts.addEventListener('loadingdone', checkFont);
+      }
+    }).then(() => mounted && setFontReady(true));
+
+    Promise.all([fontPromise, ...imagePromises])
       .then(() => {
         if (mounted) setIsBackgroundLoaded(true);
       })
@@ -142,7 +142,7 @@ const BackgroundGrid = ({ children, isFontLoaded }) => {
         height: '100%',
         zIndex: 10,
         pointerEvents: 'none',
-        opacity: isBackgroundLoaded ? 1 : 0,
+        opacity: isBackgroundLoaded && fontReady ? 1 : 0,
         transition: 'opacity 0.3s ease-in-out'
       }}>
         {children}

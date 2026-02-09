@@ -5,6 +5,8 @@ import backgroundImage from '../../../assets/clocks/26-01-02/brick.webp';
 const StretchedClock = () => {
   const [time, setTime] = useState(new Date());
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 768);
+  const [fontReady, setFontReady] = useState(false);
+  const [bgReady, setBgReady] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -14,6 +16,28 @@ const StretchedClock = () => {
     return () => {
       clearInterval(timer);
       window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // Load font & background to avoid FOUC
+  useEffect(() => {
+    let cancelled = false;
+
+    document.fonts
+      .load("1em 'Cram260102'")
+      .then(() => !cancelled && setFontReady(true))
+      .catch(() => !cancelled && setFontReady(true));
+
+    const img = new Image();
+    const done = () => !cancelled && setBgReady(true);
+    img.onload = done;
+    img.onerror = done;
+    img.src = backgroundImage;
+    const timeout = setTimeout(done, 1200);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeout);
     };
   }, []);
 
@@ -35,6 +59,9 @@ const StretchedClock = () => {
     margin: 0,
     padding: 0,
     backgroundColor: '#C9C7AF',
+    opacity: fontReady && bgReady ? 1 : 0,
+    visibility: fontReady && bgReady ? 'visible' : 'hidden',
+    transition: 'opacity 0.35s ease',
   };
 
   const segmentStyle = {

@@ -10,6 +10,7 @@ export default function Clock() {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
   const [contentReady, setContentReady] = useState(false);
+  const [mediaReady, setMediaReady] = useState(false);
 
   // 1. Load custom font
   useEffect(() => {
@@ -51,12 +52,13 @@ export default function Clock() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  // 3. Video error handling
+  // 3. Video error handling & readiness
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
 
     const fail = () => setVideoFailed(true);
+    const canplay = () => setMediaReady(true);
 
     const playPromise = v.play();
     if (playPromise !== undefined) {
@@ -64,7 +66,20 @@ export default function Clock() {
     }
 
     v.addEventListener("error", fail);
+    v.addEventListener("canplaythrough", canplay);
+    v.addEventListener("loadeddata", canplay);
     return () => v.removeEventListener("error", fail);
+  }, []);
+
+  // Fallback image readiness in case video fails
+  useEffect(() => {
+    const img = new Image();
+    const done = () => setMediaReady(true);
+    img.onload = done;
+    img.onerror = done;
+    img.src = fallbackImg;
+    const timeout = setTimeout(done, 1500);
+    return () => clearTimeout(timeout);
   }, []);
 
   // Math for hands
@@ -86,7 +101,7 @@ export default function Clock() {
       }}
     >
       {/* Loading state - prevents flash of unstyled content */}
-      {!contentReady && (
+      {!(contentReady && mediaReady) && (
         <div
           style={{
             position: "fixed",
@@ -204,7 +219,7 @@ export default function Clock() {
       />
 
       {/* CLOCK FACE layer */}
-      {contentReady && (
+      {contentReady && mediaReady && (
         <div
           style={{
             position: "absolute",

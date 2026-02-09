@@ -6,6 +6,7 @@ const Clock = () => {
   const [time, setTime] = useState(new Date())
   const [isLoaded, setIsLoaded] = useState(false)
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 700)
+  const [bgReady, setBgReady] = useState(false)
 
   // 1. LETTER MAPPING: Change these letters to your preference
   const digitToLetter = {
@@ -42,6 +43,17 @@ const Clock = () => {
       .catch(() => setIsLoaded(true))
 
     return () => { document.head.removeChild(style) }
+  }, [])
+
+  // Separate background readiness
+  useEffect(() => {
+    const img = new Image()
+    const done = () => setBgReady(true)
+    img.onload = done
+    img.onerror = done
+    img.src = bgImage
+    const timeout = setTimeout(done, 1200)
+    return () => clearTimeout(timeout)
   }, [])
 
   useEffect(() => {
@@ -117,6 +129,9 @@ const Clock = () => {
     overflow: 'hidden',
     position: 'relative',
     zIndex: 10,
+    opacity: isLoaded && bgReady ? 1 : 0,
+    visibility: isLoaded && bgReady ? 'visible' : 'hidden',
+    transition: 'opacity 0.3s ease'
   };
 
   const layoutStyle = {
@@ -145,10 +160,12 @@ const Clock = () => {
 
   
   
+  const ready = isLoaded && bgReady
+
   return (
     <>
       {/* Mirror background effect */}
-      <div style={backgroundStyle}>
+      <div style={{ ...backgroundStyle, opacity: ready ? 1 : 0, transition: 'opacity 0.3s ease' }}>
         <div style={leftBackgroundStyle} />
         <div style={rightBackgroundStyle} />
       </div>

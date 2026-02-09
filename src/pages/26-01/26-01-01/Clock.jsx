@@ -9,6 +9,8 @@ const InvertedClock = () => {
   const secondHandRef = useRef(null);
   const minHandRef = useRef(null);
   const hourHandRef = useRef(null);
+  const [fontReady, setFontReady] = useState(false);
+  const [bgReady, setBgReady] = useState(false);
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -33,6 +35,29 @@ const InvertedClock = () => {
     return () => clearInterval(t);
   }, []);
 
+  // Ensure font is loaded to avoid FOUC
+  useEffect(() => {
+    let cancelled = false;
+    document.fonts
+      .load("1em 'MyFontScoped'")
+      .then(() => !cancelled && setFontReady(true))
+      .catch(() => !cancelled && setFontReady(true));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Preload background to avoid flashing
+  useEffect(() => {
+    const img = new Image();
+    const done = () => setBgReady(true);
+    img.onload = done;
+    img.onerror = done;
+    img.src = bg1;
+    const timeout = setTimeout(done, 1200);
+    return () => clearTimeout(timeout);
+  }, []);
+
   const containerStyle = {
     position: 'relative',
     width: '100vw',
@@ -42,6 +67,9 @@ const InvertedClock = () => {
     display: 'flex',        // Added for layout centering
     alignItems: 'center',    // Centers vertically
     justifyContent: 'center', // Centers horizontally
+    opacity: fontReady && bgReady ? 1 : 0,
+    visibility: fontReady && bgReady ? 'visible' : 'hidden',
+    transition: 'opacity 0.35s ease',
   };
 
   const bgMediaStyle = {

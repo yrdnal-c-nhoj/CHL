@@ -4,6 +4,7 @@ const Clock = () => {
   const [time, setTime] = useState(() => new Date());
   const [currentEmoji, setCurrentEmoji] = useState('🎲');
   const [isLargeScreen, setIsLargeScreen] = useState(true);
+  const [bgReady, setBgReady] = useState(false);
 
   const allEmojis = useMemo(() => {
     const rawList = [
@@ -40,6 +41,12 @@ const Clock = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, [allEmojis]);
+
+  // Ensure background tile svg is ready (simple timeout to avoid flash)
+  useEffect(() => {
+    const t = setTimeout(() => setBgReady(true), 80);
+    return () => clearTimeout(t);
+  }, []);
 
   const tileSize = 60;
 
@@ -90,7 +97,10 @@ const Clock = () => {
     <div style={{
       height: '100dvh', width: '100vw', backgroundColor: '#E9DBF0',
       position: 'relative', overflow: 'hidden', display: 'flex',
-      justifyContent: 'center', alignItems: 'center', fontFamily: 'sans-serif'
+      justifyContent: 'center', alignItems: 'center', fontFamily: 'sans-serif',
+      opacity: bgReady ? 1 : 0,
+      visibility: bgReady ? 'visible' : 'hidden',
+      transition: 'opacity 0.2s ease'
     }}>
       <div style={backgroundLayerStyle} />
       <div style={{

@@ -7,6 +7,7 @@ import gizaFont from '../../../assets/fonts/26-01-05-giza.otf';
 export default function PyramidzBackground() {
   const [fontReady, setFontReady] = useState(false);
   const [timeString, setTimeString] = useState('');
+  const [bgReady, setBgReady] = useState(false);
 
   // Generate unique font-family name: Giza_20260107
   const dateStr = '20260107'; // January 07, 2026
@@ -85,6 +86,17 @@ export default function PyramidzBackground() {
     };
   }, [uniqueFontFamily]);
 
+  // 2b. Preload background to avoid flash
+  useEffect(() => {
+    const img = new Image();
+    const done = () => setBgReady(true);
+    img.onload = done;
+    img.onerror = done;
+    img.src = backgroundImage;
+    const timeout = setTimeout(done, 1200);
+    return () => clearTimeout(timeout);
+  }, []);
+
   // 3. Clock update
   useEffect(() => {
     const updateTime = () => {
@@ -106,7 +118,7 @@ export default function PyramidzBackground() {
   }, []);
 
   // Block render until font is confirmed loaded
-  if (!fontReady) return null;
+  if (!fontReady || !bgReady) return null;
 
   return (
     <div

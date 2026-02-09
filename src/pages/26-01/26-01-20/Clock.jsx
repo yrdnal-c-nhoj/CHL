@@ -12,6 +12,7 @@ const Clock = () => {
   const [time, setTime] = useState(new Date());
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 768);
+  const [bgReady, setBgReady] = useState(false);
 
   // 1. Manage Timer
   useEffect(() => {
@@ -85,6 +86,17 @@ const Clock = () => {
       if (document.head.contains(style)) document.head.removeChild(style);
       document.documentElement.classList.remove('clock-font-loaded');
     };
+  }, []);
+
+  // Separate background gate to prevent flash
+  useEffect(() => {
+    const img = new Image();
+    const done = () => setBgReady(true);
+    img.onload = done;
+    img.onerror = done;
+    img.src = bgImage;
+    const timeout = setTimeout(done, 1200);
+    return () => clearTimeout(timeout);
   }, []);
 
   // 4. Time Formatting
@@ -161,7 +173,7 @@ const Clock = () => {
     </div>
   );
 
-  if (!isLoaded) {
+  if (!isLoaded || !bgReady) {
     return <div style={{ ...styles.container, color: '#fff' }}></div>;
   }
 
