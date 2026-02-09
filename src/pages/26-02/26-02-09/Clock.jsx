@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // === Local assets (module-based, fingerprinted by Vite) ===
 import wallTexture from '../../../assets/clocks/26-01-01/fan.gif';       // subtle plaster / stone texture
@@ -14,6 +14,7 @@ import myFontUrl from '../../../assets/fonts/26-01-01-fan.otf';
 
 export default function NichePocketWatch() {
   const watchRef = useRef(null);
+  const [fontReady, setFontReady] = useState(false);
 
   // === Load font (Vite-modern behavior) ===
   useEffect(() => {
@@ -22,9 +23,13 @@ export default function NichePocketWatch() {
       `url(${watchFontUrl})`
     );
 
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-    });
+    font
+      .load()
+      .then((loaded) => {
+        document.fonts.add(loaded);
+        setFontReady(true);
+      })
+      .catch(() => setFontReady(true));
 
     return () => {
       // FontFace cleanup is handled by browser; nothing persistent added
@@ -73,7 +78,10 @@ export default function NichePocketWatch() {
         backgroundImage: `url(${wallTexture})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        fontFamily: 'WatchNumerals, serif'
+        fontFamily: 'WatchNumerals, serif',
+        opacity: fontReady ? 1 : 0,
+        visibility: fontReady ? 'visible' : 'hidden',
+        transition: 'opacity 0.3s ease',
       }}
     >
       {/* === Niche === */}

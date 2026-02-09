@@ -78,7 +78,14 @@ const AnalogClock = () => {
   }, []);
 
   return (
-    <div style={styles.container}>
+    <div
+      style={{
+        ...styles.container,
+        opacity: fontReady ? 1 : 0,
+        visibility: fontReady ? 'visible' : 'hidden',
+        transition: 'opacity 0.3s ease',
+      }}
+    >
       {/* FILTERED BACKGROUND LAYER 
           By placing the filter here, it only affects the image, not the clock.
       */}
