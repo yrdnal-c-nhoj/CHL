@@ -43,6 +43,7 @@ export default function DigitClock() {
   const [currentImageUrls, setCurrentImageUrls] = useState(["", "", "", "", "", ""]);
   const intervalRef = useRef(null);
   const lastUsedRef = useRef({}); // Fixed: Now actually used to prevent repetition across seconds
+  const [assetsReady, setAssetsReady] = useState(false);
 
   const orderedImages = useMemo(() => {
     const raw = loadAllDigitImages();
@@ -128,6 +129,12 @@ export default function DigitClock() {
     return () => clearInterval(intervalRef.current);
   }, [orderedImages]);
 
+  // Gate render until initial tick completes
+  useEffect(() => {
+    const t = setTimeout(() => setAssetsReady(true), 80);
+    return () => clearTimeout(t);
+  }, []);
+
   /* ------------------------------------------------------------------
      4. Styles and Rendering - YOUR ORIGINAL DESIGN
      ------------------------------------------------------------------ */
@@ -170,6 +177,8 @@ export default function DigitClock() {
   };
 
   const timeDigits = getTimeDigits(new Date());
+
+  if (!assetsReady) return <div style={{ minHeight: '100dvh', background: '#000' }} />;
 
   return (
     <div style={container}>

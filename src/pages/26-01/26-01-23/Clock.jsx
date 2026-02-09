@@ -6,6 +6,7 @@ import clockBackground from '../../../assets/clocks/26-01-23/eye.webp';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
+  const [bgReady, setBgReady] = useState(false);
 
   useEffect(() => {
     let animationFrame;
@@ -15,6 +16,24 @@ const Clock = () => {
     };
     animationFrame = requestAnimationFrame(update);
     return () => cancelAnimationFrame(animationFrame);
+  }, []);
+
+  // Preload background and digit asset to avoid flash
+  useEffect(() => {
+    const imgs = [clockDigitImage, clockBackground];
+    let loaded = 0;
+    const done = () => {
+      loaded += 1;
+      if (loaded >= imgs.length) setBgReady(true);
+    };
+    imgs.forEach(src => {
+      const img = new Image();
+      img.onload = done;
+      img.onerror = done;
+      img.src = src;
+    });
+    const timeout = setTimeout(() => setBgReady(true), 1200);
+    return () => clearTimeout(timeout);
   }, []);
 
   // Calculate time values including milliseconds for smooth movement
@@ -121,7 +140,12 @@ const Clock = () => {
   };
 
   return (
-    <div style={styles.container}>
+    <div style={{
+      ...styles.container,
+      opacity: bgReady ? 1 : 0,
+      visibility: bgReady ? 'visible' : 'hidden',
+      transition: 'opacity 0.3s ease'
+    }}>
       <div style={styles.clockFace}>
         
         {/* Rotating Background Layer */}

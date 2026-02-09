@@ -20,6 +20,8 @@ const LEAP_SECOND_DATES = [
 
 const LeapClock = () => {
   const [now, setNow] = useState(new Date());
+  const [fontsReady, setFontsReady] = useState(false);
+  const [gateReady, setGateReady] = useState(false);
 
   useEffect(() => {
     let frameId;
@@ -29,6 +31,19 @@ const LeapClock = () => {
     };
     frameId = requestAnimationFrame(update);
     return () => cancelAnimationFrame(frameId);
+  }, []);
+
+  useEffect(() => {
+    const fontPromises = [
+      document.fonts.load("1em 'LeapFont'"),
+      document.fonts.load("1em 'Oswald'"),
+      document.fonts.load("1em 'Questrial'")
+    ];
+    Promise.all(fontPromises)
+      .then(() => setFontsReady(true))
+      .catch(() => setFontsReady(true));
+    const t = setTimeout(() => setGateReady(true), 150);
+    return () => clearTimeout(t);
   }, []);
 
   const leapData = useMemo(() => {
@@ -69,6 +84,8 @@ const LeapClock = () => {
 
   `;
 
+  const ready = fontsReady && gateReady;
+
   return (
     <div style={{
       position: 'fixed',
@@ -82,7 +99,10 @@ const LeapClock = () => {
       boxSizing: 'border-box',
       minHeight: '100dvh',
       maxHeight: '100dvh',
-      touchAction: 'pan-y'
+      touchAction: 'pan-y',
+      opacity: ready ? 1 : 0,
+      visibility: ready ? 'visible' : 'hidden',
+      transition: 'opacity 0.3s ease'
     }}>
       <style>{fontStyles}</style>
 

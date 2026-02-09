@@ -10,6 +10,7 @@ export default function KurosawaClock() {
   const [now, setNow] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [mediaReady, setMediaReady] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 1000);
@@ -22,6 +23,17 @@ export default function KurosawaClock() {
       document.fonts.add(loaded);
       setFontLoaded(true);
     }).catch(() => setFontLoaded(true));
+  }, []);
+
+  useEffect(() => {
+    // Preload video fallback image to avoid flash if video errors or is slow
+    const img = new Image();
+    const done = () => setMediaReady(true);
+    img.onload = done;
+    img.onerror = done;
+    img.src = fallbackImg;
+    const timeout = setTimeout(done, 1500);
+    return () => clearTimeout(timeout);
   }, []);
 
   const styles = {
@@ -104,8 +116,10 @@ export default function KurosawaClock() {
   const leftTime = new Date(now.getTime() - 3600000);
   const rightTime = new Date(now.getTime() + 3600000);
 
+  const ready = fontLoaded && (mediaReady || videoError);
+
   return (
-    <main style={styles.wrapper}>
+    <main style={{ ...styles.wrapper, opacity: ready ? 1 : 0, visibility: ready ? 'visible' : 'hidden', transition: 'opacity 0.35s ease' }}>
       {!videoError ? (
         <video
           src={bgVideo}

@@ -162,6 +162,7 @@ export default function AnalogClock() {
   const time = useTime()
   const angles = useClockAngles(time)
   const preloadedRef = useRef(false)
+  const [ready, setReady] = useState(false)
 
   // Preload images for smooth initial render
   useEffect(() => {
@@ -174,11 +175,19 @@ export default function AnalogClock() {
     }
   }, [])
 
+  // Gate visibility until next tick (gives time for font swap and background) 
+  useEffect(() => {
+    const t = setTimeout(() => setReady(true), 80)
+    return () => clearTimeout(t)
+  }, [])
+
   return (
     <>
       <GlobalStyles />
-      <StaticBackground />
-      <ClockFace angles={angles} />
+      <div style={{ opacity: ready ? 1 : 0, visibility: ready ? 'visible' : 'hidden', transition: 'opacity 0.3s ease' }}>
+        <StaticBackground />
+        <ClockFace angles={angles} />
+      </div>
     </>
   )
 }

@@ -94,6 +94,7 @@ const ManyHandClock = () => {
   const [now, setNow] = useState(new Date());
   const [fraction, setFraction] = useState(0);
   const [clockSize, setClockSize] = useState(90);
+  const [bgReady, setBgReady] = useState(false);
   
   // Hand positions
   const [forgetfulPos, setForgetfulPos] = useState(0);
@@ -120,6 +121,17 @@ const ManyHandClock = () => {
     updateSize();
     window.addEventListener('resize', updateSize);
     return () => window.removeEventListener('resize', updateSize);
+  }, []);
+
+  // Preload background to avoid flash
+  useEffect(() => {
+    const img = new Image();
+    const done = () => setBgReady(true);
+    img.onload = done;
+    img.onerror = done;
+    img.src = bgImage;
+    const timeout = setTimeout(done, 1200);
+    return () => clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
@@ -196,7 +208,10 @@ const ManyHandClock = () => {
       display: 'flex', justifyContent: 'center', alignItems: 'center',
       backgroundColor: '#FFFFFF',
       backgroundImage: `radial-gradient(circle at center, rgba(135, 168, 126, 0.73) 0%, rgba(123, 135, 87, 0.4) 100%), url(${bgImage})`,
-      backgroundSize: 'cover', backgroundPosition: 'center', overflow: 'hidden'
+      backgroundSize: 'cover', backgroundPosition: 'center', overflow: 'hidden',
+      opacity: bgReady ? 1 : 0,
+      visibility: bgReady ? 'visible' : 'hidden',
+      transition: 'opacity 0.3s ease'
     }}>
       <div style={{ position: 'relative', width: `${clockSize}vh`, height: `${clockSize}vh` }}>
         

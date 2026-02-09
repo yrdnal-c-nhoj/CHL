@@ -72,13 +72,12 @@ const AquariumClock = () => {
   const containerStyle = {
     position: 'relative',
     width: '100%',
-
     height: '100dvh',
     overflow: 'hidden',
     background: '#000',
     margin: 0,
     padding: 0,
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
   };
 
   // Adjust hand sizes based on viewport size
@@ -89,7 +88,14 @@ const AquariumClock = () => {
   };
 
   return (
-    <div style={containerStyle}>
+    <div
+      style={{
+        ...containerStyle,
+        opacity: 0,
+        visibility: 'hidden',
+        animation: 'aquariumFadeIn 180ms ease-out forwards'
+      }}
+    >
       {/* Background Layers */}
       <img src={aquarium} style={{ ...sharedImageStyle, opacity: 0.5, zIndex: 0 }} alt="" />
       <img src={aquarium} style={{ ...sharedImageStyle, opacity: 0.9, transform: 'scaleX(-1)', zIndex: 1 }} alt="" />
@@ -173,6 +179,12 @@ const AquariumClock = () => {
         }} 
         alt="" 
       />
+      <style>{`
+        @keyframes aquariumFadeIn {
+          from { opacity: 0; visibility: hidden; }
+          to { opacity: 1; visibility: visible; }
+        }
+      `}</style>
     </div>
   );
 };

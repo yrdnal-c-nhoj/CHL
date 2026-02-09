@@ -21,6 +21,7 @@ const digitBoxStyle = {
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date())
   const [fontLoaded, setFontLoaded] = useState(false)
+  const [bgReady, setBgReady] = useState(false)
 
   useEffect(() => {
     // Load font before showing content
@@ -40,6 +41,17 @@ export default function DigitalClock() {
     const interval = setInterval(() => setTime(new Date()), 100)
     return () => clearInterval(interval)
   }, [fontLoaded])
+
+  // Preload background to avoid flash
+  useEffect(() => {
+    const img = new Image()
+    const done = () => setBgReady(true)
+    img.onload = done
+    img.onerror = done
+    img.src = bgImage
+    const timeout = setTimeout(done, 1200)
+    return () => clearTimeout(timeout)
+  }, [])
 
   const containerStyle = {
     position: 'fixed',
@@ -61,7 +73,8 @@ export default function DigitalClock() {
     touchAction: 'manipulation',
     WebkitOverflowScrolling: 'touch',
     overscrollBehavior: 'none',
-    opacity: fontLoaded ? 1 : 0,
+    opacity: fontLoaded && bgReady ? 1 : 0,
+    visibility: fontLoaded && bgReady ? 'visible' : 'hidden',
     transition: 'opacity 0.3s ease-in'
   }
 
