@@ -49,7 +49,7 @@ const StretchedClock = () => {
   const textStyle = {
     position: 'relative', // Ensures text stays above the background layer
     zIndex: 2,
-    color: '#F6CE06',
+    color: '#FCD409',
     fontFamily: 'Cram260102, sans-serif',
     lineHeight: '1',
     fontSize: isLargeScreen ? '25vw' : '35dvh',
