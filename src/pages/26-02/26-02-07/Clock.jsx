@@ -5,64 +5,18 @@ import backgroundImage from '../../../assets/clocks/26-02-07/gear.gif';
 const FullscreenClock = () => {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
-
-  const fontFamily = useMemo(() => {
-    const id = Math.random().toString(36).substring(2, 7);
-    return `GearFont-${id}`;
-  }, []);
+  const FONT_NAME = 'GearFont';
 
   useEffect(() => {
-    const styleId = `style-${fontFamily}`;
-    const styleEl = document.createElement('style');
-    styleEl.id = styleId;
-    styleEl.innerHTML = `
-      @font-face {
-        font-family: '${fontFamily}';
-        src: url('${customFontUrl}') format('truetype');
-        font-display: block;
-      }
-      @keyframes rotate {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
-      .clock-digit {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        line-height: 1;
-        animation: rotate 60s linear infinite;
-        will-change: transform;
-        text-shadow: 16vh 16vh 0px #1111aa, -16vh 16vh 0px #1111aa, 16vh -16vh 0px #1111aa, -16vh -16vh 0px #1111aa; 
-      }
-      @media (min-width: 1024px) {
-        .clock-grid { grid-template-columns: repeat(8, 1fr); }
-        .clock-digit { font-size: 28vh; }
-      }
-      @media (min-width: 600px) and (max-width: 1023px) {
-        .clock-grid { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); }
-        .clock-digit { font-size: 22vh; }
-      }
-      @media (max-width: 599px) {
-        .clock-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(4, 1fr); }
-        .clock-digit { font-size: 18vh; }
-      }
-    `;
-    document.head.appendChild(styleEl);
-
-    if ('fonts' in document) {
-      document.fonts.load(`1em ${fontFamily}`).finally(() => setFontLoaded(true));
-    } else {
+    const font = new FontFace(FONT_NAME, `url(${customFontUrl})`);
+    font.load().then((loaded) => {
+      document.fonts.add(loaded);
       setFontLoaded(true);
-    }
+    }).catch(() => setFontLoaded(true));
 
     const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => {
-      clearInterval(timer);
-      const el = document.getElementById(styleId);
-      if (el) el.remove();
-    };
-  }, [fontFamily]);
+    return () => clearInterval(timer);
+  }, []);
 
   const digits = useMemo(() => {
     let hours = time.getHours();
@@ -85,14 +39,68 @@ const FullscreenClock = () => {
       backgroundColor: '#E9F7AB',
       backgroundImage: 'radial-gradient(circle, #E9F7AB 0%, #CDF296 100%)',
       overflow: 'hidden',
-      fontFamily: fontLoaded ? `'${fontFamily}', sans-serif` : 'sans-serif',
+      fontFamily: fontLoaded ? `'${FONT_NAME}', sans-serif` : 'sans-serif',
       opacity: fontLoaded ? 1 : 0,
       transition: 'opacity 0.5s ease-in'
     }}>
       
-      {/* SVG Filter to fix Mobile Chrome rendering issues */}
+      <style>{`
+        @keyframes rotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        .clock-grid {
+          position: relative;
+          display: grid;
+          width: 100%;
+          height: 100%;
+          z-index: 2;
+          color: #7B0404;
+        }
+
+        .clock-digit {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          line-height: 1;
+          animation: rotate 60s linear infinite;
+          will-change: transform;
+          /* Restored your exact original 16vh tech shadows */
+          text-shadow: 16vh 16vh 0px #1111aa, -16vh 16vh 0px #1111aa, 16vh -16vh 0px #1111aa, -16vh -16vh 0px #1111aa; 
+        }
+
+        /* Laptop: 2 rows of 4 digits */
+        @media (min-width: 1024px) {
+          .clock-grid { 
+            grid-template-columns: repeat(4, 1fr); 
+            grid-template-rows: repeat(2, 1fr); 
+          }
+          .clock-digit { font-size: 28vh; }
+        }
+
+        /* Tablet/Medium: Keep 4 columns */
+        @media (min-width: 600px) and (max-width: 1023px) {
+          .clock-grid { 
+            grid-template-columns: repeat(4, 1fr); 
+            grid-template-rows: repeat(2, 1fr); 
+          }
+          .clock-digit { font-size: 22vh; }
+        }
+
+        /* Phone: 4 rows of 2 digits */
+        @media (max-width: 599px) {
+          .clock-grid { 
+            grid-template-columns: repeat(2, 1fr); 
+            grid-template-rows: repeat(4, 1fr); 
+          }
+          .clock-digit { font-size: 18vh; }
+        }
+      `}</style>
+
       <svg style={{ position: 'absolute', width: 0, height: 0 }}>
-        <filter id="gear-fix" colorInterpolationFilters="sRGB">
+        <filter id="gear-fix">
           <feColorMatrix type="matrix" values="
              -0.81  2.13  0.18  0  0
               0.18 -0.81  2.13  0  0
@@ -101,29 +109,22 @@ const FullscreenClock = () => {
         </filter>
       </svg>
 
-     <div style={{
-  position: 'absolute',
-  inset: 0,
-  backgroundImage: `url(${backgroundImage})`,
-  backgroundSize: '15vh 15vh',
-  backgroundRepeat: 'repeat',
-  backgroundPosition: 'center',
-  transform: 'scaleX(-1) translateZ(0)',
-  // Chain your existing SVG filter with brightness and contrast
-  filter: 'url(#gear-fix) brightness(2.8) contrast(1.9)', 
-  zIndex: 1,
-  pointerEvents: 'none'
-}} />
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: '15vh 15vh',
+        backgroundRepeat: 'repeat',
+        backgroundPosition: 'center',
+        transform: 'scaleX(-1) translateZ(0)',
+        filter: 'url(#gear-fix) brightness(2.8) contrast(0.8)', 
+        zIndex: 1,
+        pointerEvents: 'none'
+      }} />
       
-      <div className="clock-grid" style={{
-        position: 'relative',
-        display: 'grid',
-        width: '100%',
-        height: '100%',
-        zIndex: 2,
-        color: '#3E0A0A'
-      }}>
+      <div className="clock-grid">
         {digits.map((char, i) => (
+          /* key={i} ensures the DIV is not re-mounted, so rotation is continuous */
           <div key={i} className="clock-digit">
             {char}
           </div>
