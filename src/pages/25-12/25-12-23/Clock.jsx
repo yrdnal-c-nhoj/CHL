@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import symJpg from '../../../assets/clocks/25-12-23/sym.jpg';
+import symJpg from '../../../assets/images/25-12-23/sym.jpg';
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());

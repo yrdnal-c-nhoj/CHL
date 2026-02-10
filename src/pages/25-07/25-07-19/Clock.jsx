@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import cunFont from '../../../assets/fonts/25-07-19-cun.ttf';
-import bgOverlay from '../../../assets/clocks/25-07-19/cun1.webp';
+import bgOverlay from '../../../assets/images/25-07-19/cun1.webp';
 
 const CuneiformClock = () => {
   const [time, setTime] = useState('');

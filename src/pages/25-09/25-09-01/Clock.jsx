@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as DigitalClock from './ChinaClock.module.css';
-import bgImage from '../../../assets/clocks/25-09-01/clo.webp';
-import cornerImage from '../../../assets/clocks/25-09-01/seal.png';
+import bgImage from '../../../assets/images/25-09-01/clo.webp';
+import cornerImage from '../../../assets/images/25-09-01/seal.png';
 
 const chineseDigits = {
   0: '零', 1: '一', 2: '二', 3: '三', 4: '四',

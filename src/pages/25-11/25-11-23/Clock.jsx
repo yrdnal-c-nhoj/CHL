@@ -1,6 +1,6 @@
 // File: DigitalStackClock.jsx
 import React, { useEffect, useState } from "react";
-import bgImg from "../../../assets/clocks/25-11-23/gs.webp";           // your background
+import bgImg from "../../../assets/images/25-11-23/gs.webp";           // your background
 import font2025_11_24 from "../../../assets/fonts/25-11-23-gal.ttf?url"; // your custom font
 
 export default function DigitalStackClock() {

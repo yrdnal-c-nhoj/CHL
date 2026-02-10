@@ -1,6 +1,6 @@
 // DigitalClock.jsx
 import React, { useState, useEffect } from "react";
-import bgImg from "../../../assets/clocks/25-12-01/shark.webp";
+import bgImg from "../../../assets/images/25-12-01/shark.webp";
 import clockfoont12012 from '../../../assets/fonts/25-12-01-shark.ttf?url';
 
 export default function DigitalClock() {

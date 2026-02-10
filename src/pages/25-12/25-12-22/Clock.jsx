@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
-import videoFile from '../../../assets/clocks/25-12-22/candle.mp4'
-import fallbackImage from '../../../assets/clocks/25-12-22/candle.webp'
+import videoFile from '../../../assets/images/25-12-22/candle.mp4'
+import fallbackImage from '../../../assets/images/25-12-22/candle.webp'
 import fontFile from '../../../assets/fonts/25-12-22-candle.ttf'
 
 const FONT_FAMILY = 'MyClockFont_20251120'

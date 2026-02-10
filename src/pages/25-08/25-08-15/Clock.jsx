@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import customFontUrl from '../../../assets/fonts/25-08-15-dom.ttf';
-import backgroundImg from '../../../assets/clocks/25-08-15/tabl.webp';
+import backgroundImg from '../../../assets/images/25-08-15/tabl.webp';
 
 const fontFamily = "'dom', monospace";
 

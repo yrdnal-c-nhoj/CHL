@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
-import videoFile from "../../../assets/clocks/26-01-17/swww.mp4";
-import fallbackImg from "../../../assets/clocks/26-01-17/sw.webp";
-import overlayImage from "../../../assets/clocks/26-01-17/sw22.webp"; // Add your overlay image path here
+import videoFile from "../../../assets/images/26-01-17/swww.mp4";
+import fallbackImg from "../../../assets/images/26-01-17/sw.webp";
+import overlayImage from "../../../assets/images/26-01-17/sw22.webp"; // Add your overlay image path here
 import font112425sput from "../../../assets/fonts/26-01-17-sw.ttf?url";
 
 export default function Clock() {

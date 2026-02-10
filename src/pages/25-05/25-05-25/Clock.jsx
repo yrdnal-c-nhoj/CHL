@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import arm from '../../../assets/clocks/25-05-25/arm.gif';
-import arm2 from '../../../assets/clocks/25-05-25/arm2.gif';
-import arm3 from '../../../assets/clocks/25-05-25/arm3.gif';
+import arm from '../../../assets/images/25-05-25/arm.gif';
+import arm2 from '../../../assets/images/25-05-25/arm2.gif';
+import arm3 from '../../../assets/images/25-05-25/arm3.gif';
 import botFont from '../../../assets/fonts/25-05-25-bot.ttf'; // Import the font file
 
 const Clock = () => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import sss47wert from '../../../assets/fonts/25-09-27-disc.ttf?url';
-import bgOuter from "../../../assets/clocks/25-09-27/water.webp";
-import bgInner from "../../../assets/clocks/25-09-27/disc.gif";
+import bgOuter from "../../../assets/images/25-09-27/water.webp";
+import bgInner from "../../../assets/images/25-09-27/disc.gif";
 
 const TempestClock
  = () => {

@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
 import fontUrl from '../../../assets/fonts/25-06-21-merc.ttf';
-import bg1 from '../../../assets/clocks/25-06-21/MercuryResonancePrecession001.gif';
-import bg2 from '../../../assets/clocks/25-06-21/mmmmm.gif';
-import bg3 from '../../../assets/clocks/25-06-21/merg.gif';
-import bgImage from '../../../assets/clocks/25-06-21/mmm.gif';
-import hourImg from '../../../assets/clocks/25-06-21/mercc.gif';
-import minuteImg from '../../../assets/clocks/25-06-21/memm.gif';
-import secondImg from '../../../assets/clocks/25-06-21/mmmm.png';
+import bg1 from '../../../assets/images/25-06-21/MercuryResonancePrecession001.gif';
+import bg2 from '../../../assets/images/25-06-21/mmmmm.gif';
+import bg3 from '../../../assets/images/25-06-21/merg.gif';
+import bgImage from '../../../assets/images/25-06-21/mmm.gif';
+import hourImg from '../../../assets/images/25-06-21/mercc.gif';
+import minuteImg from '../../../assets/images/25-06-21/memm.gif';
+import secondImg from '../../../assets/images/25-06-21/mmmm.png';
 
 const MercuryClock = () => {
   const hourRef = useRef();

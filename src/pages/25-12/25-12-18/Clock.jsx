@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import backgroundImage from '../../../assets/clocks/25-12-18/ci.webp'
+import backgroundImage from '../../../assets/images/25-12-18/ci.webp'
 import FONT_PATH from '../../../assets/fonts/cine.ttf?url'
 
 const TiltedReverseClock = () => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import analogBgImage from '../../../assets/clocks/26-01-25/mirage.webp';
+import analogBgImage from '../../../assets/images/26-01-25/mirage.webp';
 
 const AnalogClockTemplate = () => {
   const [time, setTime] = useState(new Date());

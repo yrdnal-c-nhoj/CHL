@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import background2 from '../../../assets/clocks/25-07-25/bb.webp';   // front
-import background1 from '../../../assets/clocks/25-07-25/bam.webp';  // back
-import background3 from '../../../assets/clocks/25-07-25/bambu.gif'; // static background
+import background2 from '../../../assets/images/25-07-25/bb.webp';   // front
+import background1 from '../../../assets/images/25-07-25/bam.webp';  // back
+import background3 from '../../../assets/images/25-07-25/bambu.gif'; // static background
 import customFont from '../../../assets/fonts/25-07-25-bamboo.ttf';
 
 const Clock = () => {

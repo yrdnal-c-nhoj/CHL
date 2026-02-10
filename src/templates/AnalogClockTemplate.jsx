@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 
 // --- Assets ---
 import analogRainFont from '../../../assets/fonts/26-01-31-cond.ttf?url';
-import analogBgImage from '../../../assets/clocks/26-01-31/rain.webp';
+import analogBgImage from '../../../assets/images/26-01-31/rain.webp';
 
 // --- Configuration ---
 const CLOCK_CONFIG = {

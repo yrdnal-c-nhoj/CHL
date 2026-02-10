@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import gearsGif from "../../../assets/clocks/25-05-29/gears-13950_128.gif";
+import gearsGif from "../../../assets/images/25-05-29/gears-13950_128.gif";
 
 const Clock = () => {
   const [loaded, setLoaded] = useState(false);

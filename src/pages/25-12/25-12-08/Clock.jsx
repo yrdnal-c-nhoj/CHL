@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import plateImage from '../../../assets/clocks/25-12-08/plate.webp'
-import hourHand from '../../../assets/clocks/25-12-08/hand.gif'
-import minuteHand from '../../../assets/clocks/25-12-08/hand2.gif'
-import secondHand from '../../../assets/clocks/25-12-08/ha.gif'
+import plateImage from '../../../assets/images/25-12-08/plate.webp'
+import hourHand from '../../../assets/images/25-12-08/hand.gif'
+import minuteHand from '../../../assets/images/25-12-08/hand2.gif'
+import secondHand from '../../../assets/images/25-12-08/ha.gif'
 
 // Styles moved outside the component to avoid recreation on every render (60fps)
 const outerContainerStyle = {

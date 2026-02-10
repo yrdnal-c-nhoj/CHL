@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import kalFont from '../../../assets/fonts/25-07-04-kal.otf';
-import bgImage from '../../../assets/clocks/25-07-04/7ZAx.webp';
+import bgImage from '../../../assets/images/25-07-04/7ZAx.webp';
 
 const SEGMENTS = 12;
 const COLORS = [

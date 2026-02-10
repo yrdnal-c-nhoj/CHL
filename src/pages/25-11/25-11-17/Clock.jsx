@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import bg1 from "../../../assets/clocks/25-11-17/mars2.webp";
-import bg2 from "../../../assets/clocks/25-11-17/mars1.gif";
-import bg3 from "../../../assets/clocks/25-11-17/mars1.gif";
-import bg4 from "../../../assets/clocks/25-11-17/mars5.webp"; // ← added Mars four import
+import bg1 from "../../../assets/images/25-11-17/mars2.webp";
+import bg2 from "../../../assets/images/25-11-17/mars1.gif";
+import bg3 from "../../../assets/images/25-11-17/mars1.gif";
+import bg4 from "../../../assets/images/25-11-17/mars5.webp"; // ← added Mars four import
 import font2025_11_18 from '../../../assets/fonts/25-11-17-mars.ttf?url';
 
 export default function MarsDigitalClock() {

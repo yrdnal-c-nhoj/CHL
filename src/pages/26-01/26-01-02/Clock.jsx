@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import fontFile from '../../../assets/fonts/26-01-02-cram.ttf';
-import backgroundImage from '../../../assets/clocks/26-01-02/brick.webp';
+import backgroundImage from '../../../assets/images/26-01-02/brick.webp';
 
 const StretchedClock = () => {
   const [time, setTime] = useState(new Date());

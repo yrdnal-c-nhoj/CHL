@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import squFontUrl from '../../../assets/fonts/25-06-24-squ.ttf'; // Adjust path or use ?url for bundlers
-import bgImageUrl from '../../../assets/clocks/25-06-24/tho.webp'; // Ensure this file exists
+import bgImageUrl from '../../../assets/images/25-06-24/tho.webp'; // Ensure this file exists
 
 const ThoughtBalloonClock = () => {
   const [time, setTime] = useState(new Date());

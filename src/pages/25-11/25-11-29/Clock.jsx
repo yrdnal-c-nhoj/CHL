@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import backgroundImg from "../../../assets/clocks/25-11-29/squ.jpg";
+import backgroundImg from "../../../assets/images/25-11-29/squ.jpg";
 import fontUrl_20251128 from '../../../assets/fonts/25-11-29-roc.ttf?url';
 
 export default function RococoDigitalClock() {

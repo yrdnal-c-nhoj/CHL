@@ -1,8 +1,8 @@
 // AnalogClock.jsx
 import React, { useEffect, useState } from 'react'
-import bgImg from '../../../assets/clocks/25-11-19/apple.webp' // Main background
-import tileImg from '../../../assets/clocks/25-11-19/app.webp' // Tiled background
-import overlayImg from '../../../assets/clocks/25-11-19/ap.webp' // Full-cover overlay
+import bgImg from '../../../assets/images/25-11-19/apple.webp' // Main background
+import tileImg from '../../../assets/images/25-11-19/app.webp' // Tiled background
+import overlayImg from '../../../assets/images/25-11-19/ap.webp' // Full-cover overlay
 import custo251119font from '../../../assets/fonts/25-11-19-apple.ttf?url';
 
 export default function AnalogClock () {

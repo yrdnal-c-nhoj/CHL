@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import fontUrl from '../../../assets/fonts/25-05-03-Petal.ttf';
-import bg1 from '../../../assets/clocks/25-05-03/petalos.gif';
-import bg2 from '../../../assets/clocks/25-05-03/petals.gif';
-import bg3 from '../../../assets/clocks/25-05-03/sakura-leaves.gif';
-import bg4 from '../../../assets/clocks/25-05-03/talos.gif';
+import bg1 from '../../../assets/images/25-05-03/petalos.gif';
+import bg2 from '../../../assets/images/25-05-03/petals.gif';
+import bg3 from '../../../assets/images/25-05-03/sakura-leaves.gif';
+import bg4 from '../../../assets/images/25-05-03/talos.gif';
 
 const FlyingPetalsClock = () => {
   const [time, setTime] = useState(new Date());

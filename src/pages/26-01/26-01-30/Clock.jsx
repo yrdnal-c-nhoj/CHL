@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 
 // Explicit Asset Imports
 import clockFont from '../../../assets/fonts/26-01-30-ne.ttf';
-import bgLayer1 from "../../../assets/clocks/26-01-30/new.webp"; 
-import bgLayer2 from "../../../assets/clocks/26-01-30/nes.gif";
-import bgLayer3 from "../../../assets/clocks/26-01-30/ne3.gif";
+import bgLayer1 from "../../../assets/images/26-01-30/new.webp"; 
+import bgLayer2 from "../../../assets/images/26-01-30/nes.gif";
+import bgLayer3 from "../../../assets/images/26-01-30/ne3.gif";
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());

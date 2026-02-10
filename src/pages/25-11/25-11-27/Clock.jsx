@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import revolution251127font from '../../../assets/fonts/25-11-27-dec.ttf?url';
 import line251127font from '../../../assets/fonts/25-11-27-french.ttf?url';
-import hourHandImg from '../../../assets/clocks/25-11-27/fre.webp'
-import minuteHandImg from '../../../assets/clocks/25-11-27/fren.webp'
-import secondHandImg from '../../../assets/clocks/25-11-27/french.webp' 
-import backgroundImg from '../../../assets/clocks/25-11-27/fr.jpg' // your background image
+import hourHandImg from '../../../assets/images/25-11-27/fre.webp'
+import minuteHandImg from '../../../assets/images/25-11-27/fren.webp'
+import secondHandImg from '../../../assets/images/25-11-27/french.webp' 
+import backgroundImg from '../../../assets/images/25-11-27/fr.jpg' // your background image
 
 // --- 251127font Setup ---
 const inject251127font = (id, fontFace) => {

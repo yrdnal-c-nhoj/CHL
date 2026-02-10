@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 
 // Media file paths in public folder
-import videoFile from "../../../assets/clocks/25-11-26/esp.mp4";
-import videoWebM from "../../../assets/clocks/25-11-26/esp.mp4";
-import fallbackImg from "../../../assets/clocks/25-11-26/birds.webp";
+import videoFile from "../../../assets/images/25-11-26/esp.mp4";
+import videoWebM from "../../../assets/images/25-11-26/esp.mp4";
+import fallbackImg from "../../../assets/images/25-11-26/birds.webp";
 import fontUrl_20251128 from '../../../assets/fonts/25-11-26-bird.ttf?url';
 
 // --- Digital Time Component ---

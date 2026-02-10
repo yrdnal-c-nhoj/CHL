@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, memo } from 'react';
-import overlayBg from "../../../assets/clocks/26-01-15/red.gif";
-import baseBg from "../../../assets/clocks/26-01-15/sph.gif";
+import overlayBg from "../../../assets/images/26-01-15/red.gif";
+import baseBg from "../../../assets/images/26-01-15/sph.gif";
 
 // Centralized color control for all clock hands
 const handColors = {

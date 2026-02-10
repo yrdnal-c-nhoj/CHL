@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo, memo } from 'react';
 
 
-import backgroundGif3 from '../../../assets/clocks/26-01-29/ur.png';
-import backgroundGif2 from '../../../assets/clocks/26-01-29/ur.gif';
-import backgroundGif from '../../../assets/clocks/26-01-29/uranu.gif';
-import tileOverlay from '../../../assets/clocks/26-01-29/u.webp';
+import backgroundGif3 from '../../../assets/images/26-01-29/ur.png';
+import backgroundGif2 from '../../../assets/images/26-01-29/ur.gif';
+import backgroundGif from '../../../assets/images/26-01-29/uranu.gif';
+import tileOverlay from '../../../assets/images/26-01-29/u.webp';
 
 // Memoized static hour images using backgroundGif2
 const ClockUranus = memo(() => (

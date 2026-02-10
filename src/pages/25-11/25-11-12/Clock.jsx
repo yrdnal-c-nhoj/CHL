@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 
-import bgFull from '../../../assets/clocks/25-11-12/octo.webp' // full-size background
-import bgTile from '../../../assets/clocks/25-11-12/octoh.webp' // repeating/tiled background
+import bgFull from '../../../assets/images/25-11-12/octo.webp' // full-size background
+import bgTile from '../../../assets/images/25-11-12/octoh.webp' // repeating/tiled background
 import custom251112tz from '../../../assets/fonts/25-11-12-oct.ttf?url';
 
 export default function TwoBackgroundOctahedron () {

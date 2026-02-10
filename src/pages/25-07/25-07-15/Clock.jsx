@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import asciiFontUrl from '../../../assets/fonts/25-07-15-ascii.ttf';
-import asciiImageUrl from '../../../assets/clocks/25-07-15/ascii.jpg';
+import asciiImageUrl from '../../../assets/images/25-07-15/ascii.jpg';
 
 const DIGITS = {
   '0': [" 00000 ","00   00","00   00","00   00","00   00","00   00"," 00000 ","       "],

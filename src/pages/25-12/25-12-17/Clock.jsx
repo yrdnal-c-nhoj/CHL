@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import background from '../../../assets/clocks/25-12-17/swagr.webp';
+import background from '../../../assets/images/25-12-17/swagr.webp';
 import FONT_PATH from '../../../assets/fonts/facexxxx.ttf?url';
 
 export default function App() {
