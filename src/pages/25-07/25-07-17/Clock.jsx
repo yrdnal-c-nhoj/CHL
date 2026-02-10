@@ -90,16 +90,10 @@ const AnalogClock = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    let animationFrameId;
-
-    const update = () => {
+    const interval = setInterval(() => {
       setTime(new Date());
-      animationFrameId = requestAnimationFrame(update);
-    };
-
-    animationFrameId = requestAnimationFrame(update);
-
-    return () => cancelAnimationFrame(animationFrameId);
+    }, 100); // Update every 100ms for smooth time display
+    return () => clearInterval(interval);
   }, []);
 
   const ms = time.getMilliseconds();

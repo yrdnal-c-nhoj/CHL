@@ -14,15 +14,14 @@ export default function AnalogClock () {
   const [time, setTime] = useState(new Date())
   const requestRef = useRef()
 
-  // Smooth update with requestAnimationFrame
+  // Smooth update with setInterval
   const updateTime = () => {
     setTime(new Date())
-    requestRef.current = requestAnimationFrame(updateTime)
   }
 
   useEffect(() => {
-    requestRef.current = requestAnimationFrame(updateTime)
-    return () => cancelAnimationFrame(requestRef.current)
+    const interval = setInterval(updateTime, 50); // Update every 50ms for smooth motion
+    return () => clearInterval(interval)
   }, [])
 
   const hours = time.getHours() % 12

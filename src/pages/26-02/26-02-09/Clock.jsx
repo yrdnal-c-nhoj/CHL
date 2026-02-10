@@ -44,7 +44,7 @@ export default function CenteredLightClock() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let animationFrameId;
+    let animationIntervalId;
     let lastTime = performance.now();
     let spawnAccumulator = 0;
     const glyphs = [];
@@ -123,7 +123,8 @@ export default function CenteredLightClock() {
       }
     };
 
-    const drawScene = (timestamp) => {
+    const drawScene = () => {
+      const timestamp = performance.now();
       const dt = timestamp - lastTime;
       lastTime = timestamp;
       spawnAccumulator += dt;
@@ -188,8 +189,6 @@ export default function CenteredLightClock() {
 
         if (g.x < -canvas.width) glyphs.splice(i, 1);
       }
-
-      animationFrameId = requestAnimationFrame(drawScene);
     };
 
     resizeCanvas();
@@ -199,11 +198,11 @@ export default function CenteredLightClock() {
       spawnGlyph(types[i % 3], Math.random() * canvas.width * 1.2);
     }
 
-    animationFrameId = requestAnimationFrame(drawScene);
+    animationIntervalId = setInterval(drawScene, 16); // ~60fps equivalent
     window.addEventListener("resize", resizeCanvas);
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      clearInterval(animationIntervalId);
       window.removeEventListener("resize", resizeCanvas);
     };
   }, [fontLoaded]);

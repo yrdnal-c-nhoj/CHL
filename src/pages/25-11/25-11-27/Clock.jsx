@@ -169,10 +169,9 @@ export default function Clock () {
   useEffect(() => {
     const animate = () => {
       setTime(new Date())
-      requestRef.current = requestAnimationFrame(animate)
     }
-    requestRef.current = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(requestRef.current)
+    const interval = setInterval(animate, 50)
+    return () => clearInterval(interval)
   }, [])
 
   // Decimal time calculation: Convert standard time to French decimal time

@@ -38,13 +38,10 @@ export default function EdgeClockWithHands () {
 
   // Continuous update for smooth hands
   useEffect(() => {
-    const tick = () => {
+    const interval = setInterval(() => {
       setTime(new Date())
-      const id = requestAnimationFrame(tick)
-      return () => cancelAnimationFrame(id)
-    }
-    const id = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(id)
+    }, 50); // Update every 50ms for smooth hand movement
+    return () => clearInterval(interval)
   }, [])
 
   // Track viewport size

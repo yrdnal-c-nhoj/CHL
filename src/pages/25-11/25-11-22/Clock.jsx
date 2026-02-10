@@ -37,13 +37,10 @@ export default function Clock() {
 
   // 2. Ultra-smooth clock loop
   useEffect(() => {
-    let raf;
-    const tick = () => {
+    const interval = setInterval(() => {
       setTime(new Date());
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    }, 100); // Update every 100ms for smooth time display
+    return () => clearInterval(interval);
   }, []);
 
   // 3. Video error handling

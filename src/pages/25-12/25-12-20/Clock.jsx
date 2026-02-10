@@ -38,21 +38,16 @@ function useTime () {
   const [time, setTime] = useState(() => new Date())
 
   useEffect(() => {
-    let animationFrameId
-
     const updateTime = () => {
       setTime(new Date())
-      animationFrameId = requestAnimationFrame(updateTime)
     }
 
-    // Start the animation loop
-    animationFrameId = requestAnimationFrame(updateTime)
+    // Start the interval loop
+    const intervalId = setInterval(updateTime, 50)
 
-    // Cleanup function to cancel the animation frame when component unmounts
+    // Cleanup function to clear the interval when component unmounts
     return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId)
-      }
+      clearInterval(intervalId)
     }
   }, [])
 

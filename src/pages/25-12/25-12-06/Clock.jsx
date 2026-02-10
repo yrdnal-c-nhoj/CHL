@@ -55,13 +55,12 @@ export default function AnalogClock() {
 
   // Animation Loop
   useEffect(() => {
-    let rafId
+    let intervalId
     const tick = () => {
       setTime(new Date())
-      rafId = requestAnimationFrame(tick)
     }
-    rafId = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(rafId)
+    intervalId = setInterval(tick, 50)
+    return () => clearInterval(intervalId)
   }, [])
 
   // Time Calculations

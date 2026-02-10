@@ -18,11 +18,11 @@ const Clock = () => {
 
   const animate = () => {
     setTime(new Date());
-    requestRef.current = requestAnimationFrame(animate);
+    requestRef.current = setInterval(() => setTime(new Date()), 100);
   };
 
   useEffect(() => {
-    requestRef.current = requestAnimationFrame(animate);
+    requestRef.current = setInterval(() => setTime(new Date()), 100);
     return () => cancelAnimationFrame(requestRef.current);
   }, []);
 

@@ -45,13 +45,12 @@ export default function AnalogClock () {
 
   // Smooth update
   useEffect(() => {
-    let frameId
+    let intervalId
     const animate = () => {
       setTime(new Date())
-      frameId = requestAnimationFrame(animate)
     }
-    animate()
-    return () => cancelAnimationFrame(frameId)
+    intervalId = setInterval(animate, 50)
+    return () => clearInterval(intervalId)
   }, [])
 
   const now = time

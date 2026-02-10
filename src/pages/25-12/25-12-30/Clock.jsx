@@ -64,9 +64,9 @@ const RotatingAnalemmaClock = () => {
       if (rotatingGroupRef.current) {
         rotatingGroupRef.current.setAttribute('transform', `rotate(${rot}, 150, 150)`);
       }
-      rafId = requestAnimationFrame(animate);
+      rafId = setInterval(() => setTime(new Date()), 100);
     };
-    rafId = requestAnimationFrame(animate);
+    rafId = setInterval(() => setTime(new Date()), 100);
 
     // 5. Cleanup on Unmount
     return () => {

@@ -59,24 +59,19 @@ const RotatingBackground = () => {
       const elapsed = (timestamp - startTime) / 1000; // seconds
       const angle = (-360 * (elapsed / ROTATION_DURATION)) % 360;
       setRotationAngle(angle);
-      requestAnimationFrame(rotate);
+      setInterval(() => setTime(new Date()), 100);
     };
 
-    const frameId = requestAnimationFrame(rotate);
+    const frameId = setInterval(() => setTime(new Date()), 100);
     return () => cancelAnimationFrame(frameId);
   }, []);
 
   // Smooth time updates (for second hand)
   useEffect(() => {
-    let animationFrameId;
-
-    const update = () => {
+    const interval = setInterval(() => {
       setTime(new Date());
-      animationFrameId = requestAnimationFrame(update);
-    };
-
-    animationFrameId = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(animationFrameId);
+    }, 100); // Update every 100ms for smooth time display
+    return () => clearInterval(interval);
   }, []);
 
   const viewportContainerStyle = {
