@@ -47,7 +47,7 @@ const DigitalClockTemplate = () => {
 
   // Time ticker
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), CONFIG.showSeconds ? 250 : 1000);
+    const interval = setInterval(() => setTime(new Date()), CONFIG.showSeconds ? 100 : 1000);
     return () => clearInterval(interval);
   }, []);
 

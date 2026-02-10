@@ -138,10 +138,10 @@ function TangerineClock() {
         setTime(new Date());
         lastUpdate = timestamp;
       }
-      rafId = requestAnimationFrame(update);
+      rafId = setInterval(() => setTime(new Date()), 100);
     };
     
-    rafId = requestAnimationFrame(update);
+    rafId = setInterval(() => setTime(new Date()), 100);
     return () => cancelAnimationFrame(rafId);
   }, [isClient]);
 

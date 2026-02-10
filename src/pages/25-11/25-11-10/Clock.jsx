@@ -29,13 +29,10 @@ const Clock = () => {
 
   // Smooth animation loop
   useEffect(() => {
-    let raf;
-    const tick = () => {
+    const interval = setInterval(() => {
       setTime(new Date());
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    }, 100); // Update every 100ms for smooth time display
+    return () => clearInterval(interval);
   }, []);
 
   // Preload images

@@ -64,10 +64,10 @@ export default function Clock() {
         rotate
       });
       
-      animationFrameId.current = requestAnimationFrame(animate);
+      animationFrameId.current = setInterval(() => setTime(new Date()), 100);
     };
     
-    animationFrameId.current = requestAnimationFrame(animate);
+    animationFrameId.current = setInterval(() => setTime(new Date()), 100);
     
     return () => {
       if (animationFrameId.current) {

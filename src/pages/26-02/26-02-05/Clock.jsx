@@ -21,10 +21,10 @@ const OutwardDistortedClock = () => {
     // 2. High-performance animation loop
     const animate = () => {
       setTime(new Date());
-      requestRef.current = requestAnimationFrame(animate);
+      requestRef.current = setInterval(() => setTime(new Date()), 100);
     };
     
-    requestRef.current = requestAnimationFrame(animate);
+    requestRef.current = setInterval(() => setTime(new Date()), 100);
     return () => cancelAnimationFrame(requestRef.current);
   }, []);
 

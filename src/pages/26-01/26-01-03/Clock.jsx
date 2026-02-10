@@ -24,13 +24,10 @@ const Clock = () => {
 
   // 1. Clock Motion
   useEffect(() => {
-    let raf;
-    const tick = () => {
+    const interval = setInterval(() => {
       setTime(new Date());
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    }, 100); // Update every 100ms for smooth time display
+    return () => clearInterval(interval);
   }, []);
 
   // 2. Light Switch Logic (Smooth rhythm)

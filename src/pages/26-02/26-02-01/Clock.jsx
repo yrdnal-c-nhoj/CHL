@@ -23,13 +23,10 @@ const useClock = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    let frameId;
-    const update = () => {
+    const interval = setInterval(() => {
       setTime(new Date());
-      frameId = requestAnimationFrame(update);
-    };
-    frameId = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(frameId);
+    }, 100); // Update every 100ms for smooth time display
+    return () => clearInterval(interval);
   }, []);
 
   return time;

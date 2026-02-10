@@ -29,13 +29,12 @@ const CONFIG = {
 function useTime() {
   const [time, setTime] = useState(() => new Date())
   useEffect(() => {
-    let animationFrameId
+    let intervalId
     const updateTime = () => {
       setTime(new Date())
-      animationFrameId = requestAnimationFrame(updateTime)
     }
-    animationFrameId = requestAnimationFrame(updateTime)
-    return () => cancelAnimationFrame(animationFrameId)
+    intervalId = setInterval(updateTime, 50)
+    return () => clearInterval(intervalId)
   }, [])
   return time
 }
