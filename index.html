@@ -31,13 +31,22 @@
       // Avoid FOUC: hide content while fonts are loading
       document.documentElement.classList.add('fonts-loading');
 
+      const removeFontsLoading = () => {
+        document.documentElement.classList.remove('fonts-loading');
+      };
+
+      // Hard timeout to ensure we never stay hidden indefinitely
+      const fontsLoadingTimeout = setTimeout(removeFontsLoading, 4500);
+
       if ('fonts' in document) {
         document.fonts.ready.finally(() => {
-          document.documentElement.classList.remove('fonts-loading');
+          clearTimeout(fontsLoadingTimeout);
+          removeFontsLoading();
         });
       } else {
         window.addEventListener('load', () => {
-          document.documentElement.classList.remove('fonts-loading');
+          clearTimeout(fontsLoadingTimeout);
+          removeFontsLoading();
         });
       }
 
