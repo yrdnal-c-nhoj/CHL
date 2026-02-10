@@ -1,25 +1,12 @@
 // src/components/DigitalClock.jsx
 import { useState, useEffect } from "react";
+import { useFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from "../../../assets/images/25-08-28/gob.jpg"; 
 import clockFontFile from '../../../assets/fonts/25-08-28-gob.ttf';   
 
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState(false);
-
-  // Load font
-  useEffect(() => {
-    const font = new FontFace("ClockFontScoped", `url(${clockFontFile})`);
-    font.load()
-      .then((loadedFont) => {
-        document.fonts.add(loadedFont);
-        setFontLoaded(true);
-      })
-      .catch((err) => {
-        console.error("Font load failed:", err);
-        setFontLoaded(true); // fallback
-      });
-  }, []);
+  const fontLoaded = useFontLoader('ClockFontScoped', clockFontFile, { fallback: true, timeout: 3500 });
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -40,7 +27,7 @@ export default function DigitalClock() {
     justifyContent: "center",
     height: "100dvh",
     width: "100vw",
-    fontFamily: "'ClockFontScoped', monospace",
+    fontFamily: fontLoaded ? "'ClockFontScoped', monospace" : 'monospace',
     overflow: "hidden",
   };
 
@@ -62,6 +49,8 @@ export default function DigitalClock() {
     display: "flex",
     zIndex: 1,
     visibility: fontLoaded ? "visible" : "hidden", // hide until font ready
+    opacity: fontLoaded ? 1 : 0,
+    transition: 'opacity 0.3s ease'
   };
 
   const goldShimmerStyle = {

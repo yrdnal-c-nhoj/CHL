@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import myFontWoff2 from '../../../assets/fonts/25-08-01-zod.ttf';
 import bg1 from '../../../assets/images/25-08-01/stars.webp';
 import bg2 from '../../../assets/images/25-08-01/zod.gif';
@@ -19,6 +20,7 @@ const AnalogClock = () => {
 
   const numeralsRef = useRef(numerals);
   numeralsRef.current = numerals;
+  const fontLoaded = useFontLoader('MyCustomFont', myFontWoff2, { fallback: true, timeout: 3500 });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -143,11 +145,6 @@ const AnalogClock = () => {
     `;
     document.head.appendChild(styleSheet);
 
-    const font = new FontFace('MyCustomFont', `url(${myFontWoff2}) format('woff2')`);
-    font.load().then(() => {
-      document.fonts.add(font);
-    }).catch(console.error);
-
     return () => {
       Object.assign(document.body.style, originalStyle);
       document.head.removeChild(styleSheet);
@@ -206,18 +203,7 @@ const AnalogClock = () => {
 
   return (
     <>
-      <style>
-        {`
-          @font-face {
-            font-family: 'MyCustomFont';
-            src: url(${myFontWoff2}) format('woff2');
-            font-weight: normal;
-            font-style: normal;
-          }
-        `}
-      </style>
-
-      <div style={wrapperStyle}>
+      <div style={{ ...wrapperStyle, opacity: fontLoaded ? 1 : 0, transition: 'opacity 0.35s ease', fontFamily: fontLoaded ? 'MyCustomFont, sans-serif' : 'sans-serif' }}>
         <div style={containerStyle}>
           <div
             style={{
