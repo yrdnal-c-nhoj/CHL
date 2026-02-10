@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import vegasFontUrl from '../../../assets/fonts/25-07-05-vegas.ttf';
 
 const VegasClock = () => {

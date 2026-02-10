@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import circleFont from '../../../assets/fonts/25-05-28-circle.ttf'; // Local font file
 
 const Clock = () => {

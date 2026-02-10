@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import DigitalClockFont from '../../../assets/fonts/25-09-05-swi.ttf';
 import DigitalClockBg from '../../../assets/images/25-09-05/swiss.jpg';
 import MovingImg from '../../../assets/images/25-09-05/mouse.gif';

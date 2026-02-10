@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 // --- Assets ---
 import analogRainFont from '../../../assets/fonts/26-01-31-cond.ttf?url';

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import customFontUrl from '../../../assets/fonts/25-08-15-dom.ttf';
 import backgroundImg from '../../../assets/images/25-08-15/tabl.webp';
 

@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import { useFontLoader } from '../../../utils/fontLoader';
 import * as THREE from "three";
 import OrbitronFont20251012 from '../../../assets/fonts/25-10-14-air.ttf';
 import bgImage from "../../../assets/images/25-10-14/air.webp";

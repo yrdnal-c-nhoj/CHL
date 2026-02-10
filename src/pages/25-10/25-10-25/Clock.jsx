@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import font20251027 from '../../../assets/fonts/25-10-25-fall.ttf'; // Local font file
 
 const EntropyClock = () => {
   const [time, setTime] = useState(new Date());
   const [animationKey, setAnimationKey] = useState(0); // triggers animation restart
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const fontLoaded = useFontLoader('EntropyFont', font20251027);
   const [showClock, setShowClock] = useState(false);  // controls fade-in
   const [mountedClockKey, setMountedClockKey] = useState(0); // unique key for each cycle
   const numbersRef = useRef([]);
@@ -12,29 +13,6 @@ const EntropyClock = () => {
   const dotRef = useRef(null);
   const clockContainerRef = useRef(null);
   const styleElementRef = useRef(null);
-
-  // --- Inject local font ---
-  useEffect(() => {
-    const styleElement = document.createElement("style");
-    styleElement.innerHTML = `
-      @font-face {
-        font-family: "EntropyFont";
-        src: url(${font20251027}) format("truetype");
-        font-weight: normal;
-        font-style: normal;
-      }
-    `;
-    document.head.appendChild(styleElement);
-    styleElementRef.current = styleElement;
-
-    setTimeout(() => setFontLoaded(true), 100); // small delay to ensure font is loaded
-
-    return () => {
-      if (styleElementRef.current && document.head.contains(styleElementRef.current)) {
-        document.head.removeChild(styleElementRef.current);
-      }
-    };
-  }, []);
 
   // --- Update time every second ---
   useEffect(() => {

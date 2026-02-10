@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../utils/fontLoader';
 
 // Template uses existing project assets so it looks consistent with other clocks.
 // Swap these imports for different fonts / images when making a new clock.
@@ -27,23 +28,7 @@ const CONFIG = {
 
 const DigitalClockTemplate = () => {
   const [time, setTime] = useState(new Date());
-  const [fontReady, setFontReady] = useState(false);
-
-  // Load custom font once on mount
-  useEffect(() => {
-    const font = new FontFace('BorrowedDigital', `url(${digitalFontUrl})`);
-
-    font
-      .load()
-      .then((loadedFont) => {
-        document.fonts.add(loadedFont);
-        setFontReady(true);
-      })
-      .catch(() => {
-        // Fall back silently if the font fails to load
-        setFontReady(true);
-      });
-  }, []);
+  const fontReady = useFontLoader('BorrowedDigital', digitalFontUrl);
 
   // Time ticker
   useEffect(() => {

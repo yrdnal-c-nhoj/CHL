@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useFontLoader } from '../../../utils/fontLoader';
 import lava1 from "../../../assets/images/25-04-24/lava.webp";
 import lava2 from "../../../assets/images/25-04-24/vp2OVr.gif";
 import lava3 from "../../../assets/images/25-04-24/lava.webp";

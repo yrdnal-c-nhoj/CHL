@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import bgImage from '../../../assets/images/25-06-18/cis.jpg';
 import cisFont from '../../../assets/fonts/25-06-18-cis.ttf';
 
