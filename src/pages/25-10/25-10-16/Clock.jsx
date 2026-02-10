@@ -1,8 +1,8 @@
 // VenusClock.jsx
 import React, { useEffect, useState } from "react";
-import bgLayer1 from "../../../assets/clocks/25-10-16/venus.gif";
-import bgLayer2 from "../../../assets/clocks/25-10-16/venus.webp";
-import fullBg from "../../../assets/clocks/25-10-16/ve.jpg";
+import bgLayer1 from "../../../assets/images/25-10-16/venus.gif";
+import bgLayer2 from "../../../assets/images/25-10-16/venus.webp";
+import fullBg from "../../../assets/images/25-10-16/ve.jpg";
 import font20251015 from '../../../assets/fonts/25-10-16-venus.ttf';
 
 export default function VenusClock() {

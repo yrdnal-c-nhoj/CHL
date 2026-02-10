@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useCallback } from "react";
-import bgImg from "../../../assets/clocks/25-11-16/ray.webp";
-import clockBg from "../../../assets/clocks/25-11-16/ray2.webp";
+import bgImg from "../../../assets/images/25-11-16/ray.webp";
+import clockBg from "../../../assets/images/25-11-16/ray2.webp";
 
 export default function AnalogClock() {
   const rafRef = useRef(null);

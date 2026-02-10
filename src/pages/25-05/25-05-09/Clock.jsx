@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import KinaFont from '../../../assets/fonts/25-05-09-Kina.ttf';
-import swurl from '../../../assets/clocks/25-05-09/swurl.gif';
+import swurl from '../../../assets/images/25-05-09/swurl.gif';
 
 const importantNumbers = [12, 3, 6, 9];
 

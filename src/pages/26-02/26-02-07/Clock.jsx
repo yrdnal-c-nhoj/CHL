@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import customFontUrl from '../../../assets/fonts/26-02-07-gear.ttf?url'; 
-import backgroundImage from '../../../assets/clocks/26-02-07/gear.gif'; 
+import backgroundImage from '../../../assets/images/26-02-07/gear.gif'; 
 
 const FullscreenClock = () => {
   const [time, setTime] = useState(new Date());

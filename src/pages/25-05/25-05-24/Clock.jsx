@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import torGif from '../../../assets/clocks/25-05-24/tor.gif';
+import torGif from '../../../assets/images/25-05-24/tor.gif';
 import speedFont from '../../../assets/fonts/25-05-24-speed.ttf';
 
 const Clock = () => {

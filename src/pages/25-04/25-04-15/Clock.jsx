@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import horizonFontUrl from '../../../assets/fonts/25-04-15-hori.otf';
-import layer1 from '../../../assets/clocks/25-04-15/4c558c5dbff1828f2b87582dc49526e8.gif';
-import layer2 from '../../../assets/clocks/25-04-15/sdfwef.gif';
-import layer3 from '../../../assets/clocks/25-04-15/ewfsdfsd.gif';
+import layer1 from '../../../assets/images/25-04-15/4c558c5dbff1828f2b87582dc49526e8.gif';
+import layer2 from '../../../assets/images/25-04-15/sdfwef.gif';
+import layer3 from '../../../assets/images/25-04-15/ewfsdfsd.gif';
 
 const HorizonClock = () => {
   const [time, setTime] = useState('');

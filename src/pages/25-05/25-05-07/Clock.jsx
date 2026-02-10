@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import bgImage from '../../../assets/clocks/25-05-07/3ce69531311986a8a78f1e093f53df3d-ezgif.com-optiwebp.webp';
+import bgImage from '../../../assets/images/25-05-07/3ce69531311986a8a78f1e093f53df3d-ezgif.com-optiwebp.webp';
 
 const Clock = () => {
   useEffect(() => {

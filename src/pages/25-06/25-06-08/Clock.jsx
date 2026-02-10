@@ -1,18 +1,18 @@
 import React, { useEffect, useRef } from 'react';
-import bgImage from '../../../assets/clocks/25-06-08/bg.webp';
+import bgImage from '../../../assets/images/25-06-08/bg.webp';
 
-import img12 from '../../../assets/clocks/25-06-08/qspades.jpg';
-import img1 from '../../../assets/clocks/25-06-08/JSpades.png';
-import img2 from '../../../assets/clocks/25-06-08/Jclu.gif';
-import img3 from '../../../assets/clocks/25-06-08/Jdi.gif';
-import img4 from '../../../assets/clocks/25-06-08/Jheart.jpeg';
-import img5 from '../../../assets/clocks/25-06-08/Kclubs.webp';
-import img6 from '../../../assets/clocks/25-06-08/Kdi.gif';
-import img7 from '../../../assets/clocks/25-06-08/Khea.gif';
-import img8 from '../../../assets/clocks/25-06-08/Kspa.gif';
-import img9 from '../../../assets/clocks/25-06-08/Qclu.gif';
-import img10 from '../../../assets/clocks/25-06-08/Qdi.gif';
-import img11 from '../../../assets/clocks/25-06-08/Qhea.gif';
+import img12 from '../../../assets/images/25-06-08/qspades.jpg';
+import img1 from '../../../assets/images/25-06-08/JSpades.png';
+import img2 from '../../../assets/images/25-06-08/Jclu.gif';
+import img3 from '../../../assets/images/25-06-08/Jdi.gif';
+import img4 from '../../../assets/images/25-06-08/Jheart.jpeg';
+import img5 from '../../../assets/images/25-06-08/Kclubs.webp';
+import img6 from '../../../assets/images/25-06-08/Kdi.gif';
+import img7 from '../../../assets/images/25-06-08/Khea.gif';
+import img8 from '../../../assets/images/25-06-08/Kspa.gif';
+import img9 from '../../../assets/images/25-06-08/Qclu.gif';
+import img10 from '../../../assets/images/25-06-08/Qdi.gif';
+import img11 from '../../../assets/images/25-06-08/Qhea.gif';
 
 const images = [img12, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import videoFile from "../../../assets/clocks/25-12-28/coaster.mp4";
-import videoWebM from "../../../assets/clocks/25-12-28/coaster.mp4";
-import fallbackImg from "../../../assets/clocks/25-12-28/coaster.webp";
+import videoFile from "../../../assets/images/25-12-28/coaster.mp4";
+import videoWebM from "../../../assets/images/25-12-28/coaster.mp4";
+import fallbackImg from "../../../assets/images/25-12-28/coaster.webp";
 import fontUrl_20251128 from '../../../assets/fonts/25-12-28-coaster.ttf?url';
 
 export default function Clock() {

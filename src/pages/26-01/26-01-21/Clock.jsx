@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo, memo } from 'react';
 
 // Explicit Asset Imports
-import backgroundImage from '../../../assets/clocks/26-01-21/fllap.webp';
-import tileImage from '../../../assets/clocks/26-01-21/flap.webp'; 
+import backgroundImage from '../../../assets/images/26-01-21/fllap.webp';
+import tileImage from '../../../assets/images/26-01-21/flap.webp'; 
 import custom260121Font from '../../../assets/fonts/26-01-21-migrate.ttf';
 
 // Memoize the Numbers so they don't re-render every second

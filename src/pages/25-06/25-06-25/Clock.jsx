@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import boneFont from '../../../assets/fonts/25-06-25-bone.ttf';
-import bone from '../../../assets/clocks/25-06-25/bone.png';
-import bone1 from '../../../assets/clocks/25-06-25/bone1.png';
-import bone2 from '../../../assets/clocks/25-06-25/bone2.png';
-import bgImage from '../../../assets/clocks/25-06-25/bon.png';
+import bone from '../../../assets/images/25-06-25/bone.png';
+import bone1 from '../../../assets/images/25-06-25/bone1.png';
+import bone2 from '../../../assets/images/25-06-25/bone2.png';
+import bgImage from '../../../assets/images/25-06-25/bon.png';
 
 const BoneClock = () => {
   const hourRef = useRef(null);

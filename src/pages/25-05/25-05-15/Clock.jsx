@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import roulGif from '../../../assets/clocks/25-05-15/roul.gif';
-import rouleGif from '../../../assets/clocks/25-05-15/roule.gif';
-import rouletteSvg from '../../../assets/clocks/25-05-15/Roulette_french.svg';
+import roulGif from '../../../assets/images/25-05-15/roul.gif';
+import rouleGif from '../../../assets/images/25-05-15/roule.gif';
+import rouletteSvg from '../../../assets/images/25-05-15/Roulette_french.svg';
 import loraFont from '../../../assets/fonts/25-05-15-lora.ttf'; // Assuming you have Lora.ttf in the same folder
 
 const RouletteClock = () => {

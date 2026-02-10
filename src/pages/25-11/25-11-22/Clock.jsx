@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
-import videoFile from "../../../assets/clocks/25-11-22/sput.mp4";
-import fallbackImg from "../../../assets/clocks/25-11-22/sput.webp";
-import secondHandImg from "../../../assets/clocks/25-11-22/spu.webp";
+import videoFile from "../../../assets/images/25-11-22/sput.mp4";
+import fallbackImg from "../../../assets/images/25-11-22/sput.webp";
+import secondHandImg from "../../../assets/images/25-11-22/spu.webp";
 import font112425sput from "../../../assets/fonts/25-11-22-spu.ttf?url";
 
 export default function Clock() {

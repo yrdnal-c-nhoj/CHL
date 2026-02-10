@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import digitalBgImage from '../../../assets/clocks/26-02-02/boom.webp';
+import digitalBgImage from '../../../assets/images/26-02-02/boom.webp';
 
 // Try the explicit 400 weight import if index.css fails
 import "@fontsource/share-tech-mono/400.css";

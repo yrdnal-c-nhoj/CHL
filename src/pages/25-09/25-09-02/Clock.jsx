@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import bgImage from '../../../assets/clocks/25-09-02/lp.webp';
-import hourHandImage from '../../../assets/clocks/25-09-02/arm1.gif';
-import minuteHandImage from '../../../assets/clocks/25-09-02/arm2.gif';
-import secondHandImage from '../../../assets/clocks/25-09-02/arm3.gif';
+import bgImage from '../../../assets/images/25-09-02/lp.webp';
+import hourHandImage from '../../../assets/images/25-09-02/arm1.gif';
+import minuteHandImage from '../../../assets/images/25-09-02/arm2.gif';
+import secondHandImage from '../../../assets/images/25-09-02/arm3.gif';
 
 export default function FullViewportRectangularAnalogClock({
   showSeconds = true,

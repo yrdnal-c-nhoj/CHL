@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import bgImage from '../../../assets/clocks/25-07-18/558074085193-ezgif.com-optiwebp-1.webp';
+import bgImage from '../../../assets/images/25-07-18/558074085193-ezgif.com-optiwebp-1.webp';
 import xrayFontUrl from '../../../assets/fonts/25-07-18-xray.ttf';
 
 const HospitalClock = () => {

@@ -4,12 +4,12 @@ import React, { useState, useEffect } from 'react'
 import font_sdfsdfsdfsd from '../../../assets/fonts/25-11-21-omission.otf?url';
 
 // --- IMAGE IMPORTS (same folder) ---
-import img1 from '../../../assets/clocks/25-11-21/1.jpg'
-import img2 from '../../../assets/clocks/25-11-21/2.jpg'
-import img3 from '../../../assets/clocks/25-11-21/3.jpg'
-import img4 from '../../../assets/clocks/25-11-21/4.jpg'
-import img5 from '../../../assets/clocks/25-11-21/5.jpg'
-import img6 from '../../../assets/clocks/25-11-21/6.jpg'
+import img1 from '../../../assets/images/25-11-21/1.jpg'
+import img2 from '../../../assets/images/25-11-21/2.jpg'
+import img3 from '../../../assets/images/25-11-21/3.jpg'
+import img4 from '../../../assets/images/25-11-21/4.jpg'
+import img5 from '../../../assets/images/25-11-21/5.jpg'
+import img6 from '../../../assets/images/25-11-21/6.jpg'
 
 const images = [img1, img2, img3, img4, img5, img6]
 

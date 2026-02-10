@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import background from '../../../assets/clocks/25-05-21/signals.jpg';
+import background from '../../../assets/images/25-05-21/signals.jpg';
 import semFont from '../../../assets/fonts/25-05-21-sem.ttf';
 
 // Inject font-face using JS

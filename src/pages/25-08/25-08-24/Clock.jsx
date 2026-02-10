@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import castelImage from "../../../assets/clocks/25-08-24/castel.jpg";
+import castelImage from "../../../assets/images/25-08-24/castel.jpg";
 import viaFont from '../../../assets/fonts/25-08-24-via.ttf'; // Make sure this path is correct
 
 const toRoman = (num) => {

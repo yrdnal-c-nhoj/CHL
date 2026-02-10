@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import clouds from "../../../assets/clocks/25-04-20/clouds.gif";
+import clouds from "../../../assets/images/25-04-20/clouds.gif";
 import cloFont from "../../../assets/fonts/25-04-20-clo.ttf";
 
 const CloudClock = () => {

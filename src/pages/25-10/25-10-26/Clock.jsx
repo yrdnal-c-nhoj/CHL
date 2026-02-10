@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import bgVideo from "../../../assets/clocks/25-10-26/monarch.mp4";
-import fallbackImg from "../../../assets/clocks/25-10-26/monarch.webp";
+import bgVideo from "../../../assets/images/25-10-26/monarch.mp4";
+import fallbackImg from "../../../assets/images/25-10-26/monarch.webp";
 import romanFont2025_10_27 from '../../../assets/fonts/25-10-26-roman.otf'; // Optimized OTF
 
 export default function MonarchClock() {

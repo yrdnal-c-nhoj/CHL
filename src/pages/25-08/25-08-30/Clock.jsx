@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Cu250830 from '../../../assets/fonts/25-08-30-mem.ttf'; // your font file
-import bgImage from '../../../assets/clocks/25-08-30/mem.gif' // your background image
+import bgImage from '../../../assets/images/25-08-30/mem.gif' // your background image
 
 export default function MessyClock () {
   const [time, setTime] = useState(new Date())

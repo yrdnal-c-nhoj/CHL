@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import myCustomFont from '../../../assets/fonts/25-07-27-som.ttf';
-import backgroundImage from '../../../assets/clocks/25-07-27/met.jpg'; // Import your background image
+import backgroundImage from '../../../assets/images/25-07-27/met.jpg'; // Import your background image
 
 const Clock = () => {
   const [digits, setDigits] = useState([]);

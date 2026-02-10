@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 
 // Asset URLs
-const one = new URL('../../../assets/clocks/26-01-03/1.webp', import.meta.url).href;
-const two = new URL('../../../assets/clocks/26-01-03/2.webp', import.meta.url).href;
-const three = new URL('../../../assets/clocks/26-01-03/3.webp', import.meta.url).href;
-const four = new URL('../../../assets/clocks/26-01-03/4.webp', import.meta.url).href;
-const five = new URL('../../../assets/clocks/26-01-03/5.webp', import.meta.url).href;
-const six = new URL('../../../assets/clocks/26-01-03/6.webp', import.meta.url).href;
-const seven = new URL('../../../assets/clocks/26-01-03/7.webp', import.meta.url).href;
-const eight = new URL('../../../assets/clocks/26-01-03/8.webp', import.meta.url).href;
-const nine = new URL('../../../assets/clocks/26-01-03/9.webp', import.meta.url).href;
-const ten = new URL('../../../assets/clocks/26-01-03/10.webp', import.meta.url).href;
-const eleven = new URL('../../../assets/clocks/26-01-03/11.webp', import.meta.url).href;
-const twelve = new URL('../../../assets/clocks/26-01-03/12.webp', import.meta.url).href;
-const pageBackground = new URL('../../../assets/clocks/26-01-03/swi.jpg', import.meta.url).href;
+const one = new URL('../../../assets/images/26-01-03/1.webp', import.meta.url).href;
+const two = new URL('../../../assets/images/26-01-03/2.webp', import.meta.url).href;
+const three = new URL('../../../assets/images/26-01-03/3.webp', import.meta.url).href;
+const four = new URL('../../../assets/images/26-01-03/4.webp', import.meta.url).href;
+const five = new URL('../../../assets/images/26-01-03/5.webp', import.meta.url).href;
+const six = new URL('../../../assets/images/26-01-03/6.webp', import.meta.url).href;
+const seven = new URL('../../../assets/images/26-01-03/7.webp', import.meta.url).href;
+const eight = new URL('../../../assets/images/26-01-03/8.webp', import.meta.url).href;
+const nine = new URL('../../../assets/images/26-01-03/9.webp', import.meta.url).href;
+const ten = new URL('../../../assets/images/26-01-03/10.webp', import.meta.url).href;
+const eleven = new URL('../../../assets/images/26-01-03/11.webp', import.meta.url).href;
+const twelve = new URL('../../../assets/images/26-01-03/12.webp', import.meta.url).href;
+const pageBackground = new URL('../../../assets/images/26-01-03/swi.jpg', import.meta.url).href;
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());

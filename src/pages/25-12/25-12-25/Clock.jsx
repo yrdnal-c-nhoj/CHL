@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import topoImage from '../../../assets/clocks/25-12-25/topo.jpg';
+import topoImage from '../../../assets/images/25-12-25/topo.jpg';
 
 // Constants
 const COLORS = {

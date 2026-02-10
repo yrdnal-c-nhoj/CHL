@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import backgroundImageUrl from '../../../assets/clocks/25-09-15/plaid.jpg'
+import backgroundImageUrl from '../../../assets/images/25-09-15/plaid.jpg'
 import m250915font from '../../../assets/fonts/25-09-15-plaid.ttf?url';
 
 const SkewFlatClock = ({

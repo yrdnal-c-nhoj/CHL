@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import backgroundImage from '../../../assets/clocks/26-01-27/pan.jpg';
+import backgroundImage from '../../../assets/images/26-01-27/pan.jpg';
 import gizaFont from '../../../assets/fonts/26-01-27-pan.ttf';
 
 export default function PanoramaClock() {

@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 
 // Digit images (imported as modules)
-import digit0 from "../../../assets/clocks/25-08-23/0.gif";
-import digit1 from "../../../assets/clocks/25-08-23/1.gif";
-import digit2 from "../../../assets/clocks/25-08-23/2.gif";
-import digit3 from "../../../assets/clocks/25-08-23/3.gif";
-import digit4 from "../../../assets/clocks/25-08-23/4.gif";
-import digit5 from "../../../assets/clocks/25-08-23/5.gif";
-import digit6 from "../../../assets/clocks/25-08-23/6.gif";
-import digit7 from "../../../assets/clocks/25-08-23/7.gif";
-import digit8 from "../../../assets/clocks/25-08-23/8.gif";
-import digit9 from "../../../assets/clocks/25-08-23/9.gif";
+import digit0 from "../../../assets/images/25-08-23/0.gif";
+import digit1 from "../../../assets/images/25-08-23/1.gif";
+import digit2 from "../../../assets/images/25-08-23/2.gif";
+import digit3 from "../../../assets/images/25-08-23/3.gif";
+import digit4 from "../../../assets/images/25-08-23/4.gif";
+import digit5 from "../../../assets/images/25-08-23/5.gif";
+import digit6 from "../../../assets/images/25-08-23/6.gif";
+import digit7 from "../../../assets/images/25-08-23/7.gif";
+import digit8 from "../../../assets/images/25-08-23/8.gif";
+import digit9 from "../../../assets/images/25-08-23/9.gif";
 
 // Background and overlay images
-import backgroundImage from "../../../assets/clocks/25-08-23/g.webp";
-import overlayImage from "../../../assets/clocks/25-08-23/fog.gif";
+import backgroundImage from "../../../assets/images/25-08-23/g.webp";
+import overlayImage from "../../../assets/images/25-08-23/fog.gif";
 
 // Custom font (imported as module)
 import fogFont from '../../../assets/fonts/25-08-23-fog.ttf';

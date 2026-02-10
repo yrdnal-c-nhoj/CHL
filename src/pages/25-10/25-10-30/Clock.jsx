@@ -1,7 +1,7 @@
 /** @jsxImportSource react */
 import { useEffect, useState } from "react";
-import bgImage from "../../../assets/clocks/25-10-30/turq.webp";
-import clockFaceImage from "../../../assets/clocks/25-10-30/tur.jpg";
+import bgImage from "../../../assets/images/25-10-30/turq.webp";
+import clockFaceImage from "../../../assets/images/25-10-30/tur.jpg";
 import customFont2025_10_31 from '../../../assets/fonts/25-10-30-turqs.ttf?url';
 
 export default function AnalogClock() {

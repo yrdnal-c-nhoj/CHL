@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import bgImage from '../../../assets/clocks/25-08-04/shrub.jpeg';      // Your background image file
+import bgImage from '../../../assets/images/25-08-04/shrub.jpeg';      // Your background image file
 import myFont from '../../../assets/fonts/25-08-04-Tr.ttf';          // Your custom font file
 
 const getRandomPosition = () => ({

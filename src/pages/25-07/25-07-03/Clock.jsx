@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import rocketGif from '../../../assets/clocks/25-07-03/rocket.gif';
+import rocketGif from '../../../assets/images/25-07-03/rocket.gif';
 import rockFont from '../../../assets/fonts/25-07-03-rock.ttf';
 
 const Clock = () => {

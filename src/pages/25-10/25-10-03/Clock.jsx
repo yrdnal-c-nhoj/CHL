@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 
 // Import your 12 number images
-import num1 from "../../../assets/clocks/25-10-03/1.gif";
-import num2 from "../../../assets/clocks/25-10-03/6.webp";
-import num3 from "../../../assets/clocks/25-10-03/4.gif";
-import num4 from "../../../assets/clocks/25-10-03/10.gif";
-import num5 from "../../../assets/clocks/25-10-03/3.gif";
-import num6 from "../../../assets/clocks/25-10-03/5.webp";
-import num7 from "../../../assets/clocks/25-10-03/8.webp";
-import num8 from "../../../assets/clocks/25-10-03/12.gif";
-import num9 from "../../../assets/clocks/25-10-03/2.gif";
-import num10 from "../../../assets/clocks/25-10-03/9.gif";
-import num11 from "../../../assets/clocks/25-10-03/7.gif";
-import num12 from "../../../assets/clocks/25-10-03/11.webp";
+import num1 from "../../../assets/images/25-10-03/1.gif";
+import num2 from "../../../assets/images/25-10-03/6.webp";
+import num3 from "../../../assets/images/25-10-03/4.gif";
+import num4 from "../../../assets/images/25-10-03/10.gif";
+import num5 from "../../../assets/images/25-10-03/3.gif";
+import num6 from "../../../assets/images/25-10-03/5.webp";
+import num7 from "../../../assets/images/25-10-03/8.webp";
+import num8 from "../../../assets/images/25-10-03/12.gif";
+import num9 from "../../../assets/images/25-10-03/2.gif";
+import num10 from "../../../assets/images/25-10-03/9.gif";
+import num11 from "../../../assets/images/25-10-03/7.gif";
+import num12 from "../../../assets/images/25-10-03/11.webp";
 
 // Import hand images
-import hourHand from "../../../assets/clocks/25-10-03/hannd.gif";
-import minuteHand from "../../../assets/clocks/25-10-03/haa.gif";
-import secondHand from "../../../assets/clocks/25-10-03/han.gif";
+import hourHand from "../../../assets/images/25-10-03/hannd.gif";
+import minuteHand from "../../../assets/images/25-10-03/haa.gif";
+import secondHand from "../../../assets/images/25-10-03/han.gif";
 
 const numberImages = [
   num12, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11
