@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 // Import your images as before
 import scorpImage from '../../../assets/images/25-05-02/sand.webp';
 import hourHandImage from '../../../assets/images/25-05-02/giphy1-ezgif.com-rotate(1).gif';
@@ -12,24 +13,9 @@ const randomStr = Math.random().toString(36).substring(2, 7).toUpperCase();
 const uniqueFontName = `Font_${dateStr}_${randomStr}`;
 
 export default function Clock() {
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const fontLoaded = useFontLoader(uniqueFontName, fontFile);
 
   useEffect(() => {
-    // Use the pre-generated unique font name
-    const fontUrl = fontFile;
-
-    // Create FontFace and load it
-    const font = new FontFace(uniqueFontName, `url(${fontUrl})`);
-    font.load().then(loaded => {
-      document.fonts.add(loaded);
-      console.log(`${uniqueFontName} loaded successfully`);
-      setFontLoaded(true);
-    }).catch((err) => {
-      console.error('Font loading failed:', err);
-      // Fallback to true so the app doesn't stay blank forever
-      setFontLoaded(true); 
-    });
-
     // Clock Animation Logic
     const updateClock = () => {
       const now = new Date();

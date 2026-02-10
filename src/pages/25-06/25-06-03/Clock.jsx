@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useFontLoader } from '../../../utils/fontLoader';
 import cylFont from '../../../assets/fonts/25-06-03-cyl.ttf';
 
 const FiligreeClock = () => {
   const [digits, setDigits] = useState(Array(16).fill("0"));
-  const [fontLoaded, setFontLoaded] = useState(false);
-
-  // Load font dynamically and mark when loaded
-  useEffect(() => {
-    const font = new FontFace("cyl", `url(${cylFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontLoaded(true); // only render digits when font is ready
-    });
-  }, []);
+  const fontLoaded = useFontLoader('cyl', cylFont);
 
   // Update time digits every second
   useEffect(() => {

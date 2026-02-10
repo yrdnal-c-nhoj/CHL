@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import fontUrl from '../../../assets/fonts/25-04-29-bang.ttf';
 import gif1 from '../../../assets/images/25-04-29/fw.webp';
 import gif2 from '../../../assets/images/25-04-29/84298.gif';

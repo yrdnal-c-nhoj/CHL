@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 // Assets
 import analogFontUrl from '../../../assets/fonts/26-02-08-eiffel.ttf?url';

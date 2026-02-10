@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import mapFont from '../../../assets/fonts/25-05-05-Map.ttf';
 
 const WarholGraveCamClock = () => {

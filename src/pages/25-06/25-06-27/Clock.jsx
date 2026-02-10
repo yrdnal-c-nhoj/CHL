@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useFontLoader } from '../../../utils/fontLoader';
 import morseFont from '../../../assets/fonts/25-06-27-morse.ttf';
 import birdsGif from "../../../assets/images/25-06-27/birds.gif";
 

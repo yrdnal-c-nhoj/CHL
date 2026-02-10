@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import asciiFontUrl from '../../../assets/fonts/25-07-15-ascii.ttf';
 import asciiImageUrl from '../../../assets/images/25-07-15/ascii.jpg';
 

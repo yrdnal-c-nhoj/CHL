@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import A3ui from '../../../assets/images/25-05-12/A3ui.gif';
 import leoFont from '../../../assets/fonts/25-05-12-leo.ttf';
 

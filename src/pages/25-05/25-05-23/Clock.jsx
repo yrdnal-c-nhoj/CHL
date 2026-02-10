@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from '../../../assets/images/25-05-23/blank.jpg';
 import crossFont from '../../../assets/fonts/25-05-23-Cross.otf';
 

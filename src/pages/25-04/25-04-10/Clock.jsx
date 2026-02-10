@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import monofettFont from "../../../assets/fonts/25-04-10-Monofett.ttf";
 
 const BarGraphClock = () => {

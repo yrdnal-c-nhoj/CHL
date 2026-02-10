@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import font20251006 from '../../../assets/fonts/25-10-06-shado.ttf';
 
 export default function DigitalClock() {

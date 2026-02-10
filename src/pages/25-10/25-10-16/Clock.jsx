@@ -1,5 +1,6 @@
 // VenusClock.jsx
 import React, { useEffect, useState } from "react";
+import { useFontLoader } from '../../../utils/fontLoader';
 import bgLayer1 from "../../../assets/images/25-10-16/venus.gif";
 import bgLayer2 from "../../../assets/images/25-10-16/venus.webp";
 import fullBg from "../../../assets/images/25-10-16/ve.jpg";

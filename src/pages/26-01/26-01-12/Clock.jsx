@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import bgImage from '../../../assets/images/26-01-12/lala.jpg'
 import customFont_2025_1210 from '../../../assets/fonts/26-01-19-lala.ttf?url';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 const elementColor = '#885B5D'
 
