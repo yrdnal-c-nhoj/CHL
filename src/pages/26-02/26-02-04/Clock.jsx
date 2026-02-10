@@ -80,14 +80,14 @@ const DigitalClockTemplate = () => {
     visibility: fontReady ? 'visible' : 'hidden',
     transition: 'opacity 0.3s ease',
   };
-
-  const bgBaseStyle = {
+const bgBaseStyle = {
     position: 'absolute',
     top: 0,
     left: 0,
     width: '100vw',
     height: '100dvh',
-    backgroundSize: 'cover',
+    backgroundSize: '100% 100%', // Forces the image to stretch to both edges
+    backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
   };
 
