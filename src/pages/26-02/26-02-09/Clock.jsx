@@ -2,9 +2,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import customFont from '../../../assets/fonts/26-02-09-spin.otf?url';
 
 const COLORS = {
-  hour: "#4E0A46",
-  minute: "#60060E",
-  period: "#4B530A",
+  hour: "#FFFFFF",
+  minute: "#FFFFFF",
+  period: "#FFFFFF",
 };
 
 // Refined constants for the "Steady Stream" and Parallax
@@ -20,7 +20,7 @@ export default function CenteredLightClock() {
     width: "100vw",
     height: "100dvh",
     display: "block",
-    backgroundColor: "#DDE3EB",
+    backgroundColor: "#4F5B6D",
     overflow: "hidden",
     margin: 0,
   }), []);
@@ -142,8 +142,8 @@ export default function CenteredLightClock() {
 
       // Background
       const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, CENTER_LIGHT_RADIUS);
-      grad.addColorStop(0, "#CFD7E6");
-      grad.addColorStop(1, "#BFCADE");
+      grad.addColorStop(0, "#828A99");
+      grad.addColorStop(1, "#4A628E");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
