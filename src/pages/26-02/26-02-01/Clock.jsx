@@ -35,16 +35,7 @@ const useClock = () => {
 
 const AnalogClock = () => {
   const now = useClock();
-  const [fontReady, setFontReady] = useState(false);
-
-  // Load Custom Font
-  useEffect(() => {
-    const font = new FontFace('BorrowedAnalog', `url(${analogRainFont})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-      setFontReady(true);
-    }).catch(() => setFontReady(true));
-  }, []);
+  const fontReady = useFontLoader('BorrowedAnalog', analogRainFont, { fallback: true, timeout: 3500 });
 
   // Time Calculations (including sub-second fractions for smooth motion)
   const msec = now.getMilliseconds();

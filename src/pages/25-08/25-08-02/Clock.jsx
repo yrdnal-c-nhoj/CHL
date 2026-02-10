@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import myFontWoff2 from '../../../assets/fonts/25-08-02-hea.ttf';
 import bg2 from '../../../assets/images/25-08-02/em.webp';
 import bg1 from '../../../assets/images/25-08-02/la.gif';
@@ -6,6 +7,7 @@ import bg3 from '../../../assets/images/25-08-02/la.gif'; // copy of bg1 for fli
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
+  const fontReady = useFontLoader('MyCustomFont', myFontWoff2, { fallback: true, timeout: 3500 });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -41,13 +43,16 @@ const DigitalClock = () => {
   const clockContainerStyle = {
     position: 'relative',
     zIndex: 10,
-    fontFamily: 'MyCustomFont, monospace',
+    fontFamily: fontReady ? 'MyCustomFont, monospace' : 'monospace',
     fontSize: '0.5rem',
     color: '#2C2D2D',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
+    opacity: fontReady ? 1 : 0,
+    visibility: fontReady ? 'visible' : 'hidden',
+    transition: 'opacity 0.3s ease'
   };
 
   return (
@@ -99,18 +104,6 @@ const DigitalClock = () => {
 
       {/* Clock Display */}
       <div style={clockContainerStyle}>{formatTime(time)}</div>
-
-      {/* Font Face */}
-      <style>
-        {`
-          @font-face {
-            font-family: 'MyCustomFont';
-            src: url(${myFontWoff2}) format('woff2');
-            font-weight: normal;
-            font-style: normal;
-          }
-        `}
-      </style>
     </>
   );
 };
