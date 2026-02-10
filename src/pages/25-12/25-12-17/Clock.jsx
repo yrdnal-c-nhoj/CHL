@@ -1,47 +1,13 @@
 import { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import background from '../../../assets/images/25-12-17/swagr.webp';
 import FONT_PATH from '../../../assets/fonts/facexxxx.ttf?url';
 
 export default function App() {
   const [time, setTime] = useState(new Date());
-  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 768);
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(typeof window !== 'undefined' ? window.innerWidth > 768 : true);
   const fontFamilyName = 'ClockComponentFont';
-
-  useEffect(() => {
-    // Create a style element for the font-face
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: '${fontFamilyName}';
-        src: url(${FONT_PATH}) format('truetype');
-        font-display: swap;
-        font-weight: 400;
-        font-style: normal;
-      }
-    `;
-    
-    // Add the style to the document head
-    document.head.appendChild(style);
-    
-    // Check if font is loaded
-    const checkFont = async () => {
-      try {
-        await document.fonts.load(`12px "${fontFamilyName}"`);
-        setFontLoaded(true);
-      } catch (err) {
-        console.warn('Custom font failed to load, falling back to system font', err);
-        setFontLoaded(true);
-      }
-    };
-    
-    checkFont();
-    
-    // Cleanup function to remove the style element
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, [fontFamilyName]);
+  const fontLoaded = useFontLoader(fontFamilyName, FONT_PATH, { fallback: true, timeout: 3500 });
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
