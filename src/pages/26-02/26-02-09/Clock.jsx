@@ -2,14 +2,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import customFont from '../../../assets/fonts/26-02-09-spin.otf?url';
 
 const COLORS = {
-  hour: "#31F5D7",
-  minute: "#E42737",
-  period: "#D8F30F",
+  hour: "#4E0A46",
+  minute: "#60060E",
+  period: "#4B530A",
 };
 
 // Refined constants for the "Steady Stream" and Parallax
 const SPAWN_INTERVAL_MS = 1800; // New glyph every 1.8 seconds
-const CENTER_LIGHT_RADIUS = 1200;
+const CENTER_LIGHT_RADIUS = 12000;
 const SHADOW_LENGTH = 2000;
 
 export default function CenteredLightClock() {
@@ -20,7 +20,7 @@ export default function CenteredLightClock() {
     width: "100vw",
     height: "100dvh",
     display: "block",
-    backgroundColor: "#1a1f26",
+    backgroundColor: "#DDE3EB",
     overflow: "hidden",
     margin: 0,
   }), []);
@@ -78,7 +78,7 @@ export default function CenteredLightClock() {
         baseY: y,
         speed: (0.04 + Math.random() * 0.05) * z, // Farther = Slower
         spin: Math.random() * Math.PI * 2,
-        spinSpeed: (0.005 + Math.random() * 0.008) * (Math.random() > 0.5 ? 1 : -1),
+        spinSpeed: (0.001 + Math.random() * 0.008) * (Math.random() > 0.5 ? 1 : -1),
         wobbleAmp: (8 + Math.random() * 15) * z,
         wobbleFreq: 0.0008 + Math.random() * 0.001,
         wobblePhase: Math.random() * Math.PI * 2,
@@ -103,7 +103,7 @@ export default function CenteredLightClock() {
       const lightAngle = Math.atan2(lightY - y, lightX - x);
       // Shadow gets more transparent the "farther" (smaller z) it is
       const shadowAlpha = (0.2 + (z - 0.4) * 0.5).toFixed(2);
-      ctx.fillStyle = `rgba(10, 12, 16, ${shadowAlpha})`;
+      ctx.fillStyle = `rgba(255, 255, 255, ${shadowAlpha})`;
 
       for (let i = 0; i < 4; i++) {
         const a = rotatedCorners[i];
@@ -142,8 +142,8 @@ export default function CenteredLightClock() {
 
       // Background
       const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, CENTER_LIGHT_RADIUS);
-      grad.addColorStop(0, "#3a4454");
-      grad.addColorStop(1, "#0f1217");
+      grad.addColorStop(0, "#CFD7E6");
+      grad.addColorStop(1, "#BFCADE");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -165,7 +165,7 @@ export default function CenteredLightClock() {
         const fontSize = (
           g.type === "hour" ? baseFontSize :
           g.type === "minute" ? baseFontSize * 0.8 :
-          baseFontSize * 0.4
+          baseFontSize * 0.6
         ) * g.z;
 
         // Apply Depth of Field (Blur far away objects)
