@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo, memo, useRef } from 'react'
+import { useFontLoader } from '../../../utils/fontLoader'
 
 // --- Image Imports ---
 import bg1 from '../../../assets/images/25-12-20/nest.jpg'
@@ -74,21 +75,6 @@ const NUMERAL_POSITIONS = CONFIG.numerals.map(({ text, deg }) => {
   }
 })
 
-// --- GLOBAL FONT ---
-const GlobalStyles = memo(() => (
-  <style>{`
-    @font-face {
-      font-family: 'CustomFont251211';
-      src: url(${font251211}) format('truetype');
-      font-display: swap;
-    }
-    @keyframes scrollUp {
-      from { transform: translateY(0); }
-      to { transform: translateY(-66.66%); }
-    }
-  `}</style>
-))
-
 // --- STATIC BG1 ---
 const StaticBackground = memo(() => (
   <div
@@ -117,7 +103,7 @@ const StaticBackground = memo(() => (
 
 
 // --- NUMERAL ---
-const ClockNumeral = memo(({ text, x, y }) => (
+const ClockNumeral = memo(({ text, x, y, fontReady }) => (
   <div
     style={{
       position: 'absolute',
@@ -125,7 +111,9 @@ const ClockNumeral = memo(({ text, x, y }) => (
       top: `${y}%`,
       transform: 'translate(-50%, -50%)',
       color: '#05121CFF',
-      fontFamily: 'CustomFont251211, serif',
+      fontFamily: fontReady ? 'CustomFont251211, serif' : 'serif',
+      opacity: fontReady ? 1 : 0,
+      transition: 'opacity 0.3s ease',
       fontSize: 'clamp(7rem, 9vw, 8.5rem)',
       textShadow: '1px 1px 0px #B48811FF',
       zIndex: 0,
@@ -158,7 +146,7 @@ const ClockHand = memo(({ img, width, max, rotation }) => (
 ))
 
 // --- CLOCK FACE ---
-const ClockFace = memo(({ angles }) => (
+const ClockFace = memo(({ angles, fontReady }) => (
   <div
     style={{
       position: 'fixed',
@@ -172,7 +160,7 @@ const ClockFace = memo(({ angles }) => (
     }}
   >
     {NUMERAL_POSITIONS.map((p, i) => (
-      <ClockNumeral key={i} text={p.text} x={p.x} y={p.y} />
+      <ClockNumeral key={i} text={p.text} x={p.x} y={p.y} fontReady={fontReady} />
     ))}
 
     <div
@@ -203,6 +191,7 @@ export default function AnalogClock () {
   const time = useTime()
   const angles = useClockAngles(time)
   const preloadedRef = useRef(false)
+  const fontReady = useFontLoader('CustomFont251211', font251211, { fallback: true, timeout: 3500 })
 
   // Preload hand images once
   useEffect(() => {
@@ -216,10 +205,9 @@ export default function AnalogClock () {
   }, [])
 
   return (
-    <>
-      <GlobalStyles />
+    <div style={{ opacity: fontReady ? 1 : 0, transition: 'opacity 0.35s ease' }}>
       <StaticBackground />
-      <ClockFace angles={angles} />
-    </>
+      <ClockFace angles={angles} fontReady={fontReady} />
+    </div>
   )
 }
