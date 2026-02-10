@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 // Template uses existing project assets so it looks consistent with other clocks.
 // Swap these imports for different fonts / images when making a new clock.
 import digitalFontUrl from '../../../assets/fonts/25-08-15-dom.ttf';
-import digitalBgImage from '../../../assets/clocks/25-08-15/tabl.webp';
+import digitalBgImage from '../../../assets/images/25-08-15/tabl.webp';
 
 /**
  * DigitalClockTemplate

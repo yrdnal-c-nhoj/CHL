@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useMemo } from 'react';
-import bgImage from '../../../assets/clocks/25-08-03/sta.gif';
-import overlay2 from '../../../assets/clocks/25-08-03/pro.gif';
-import overlay1 from '../../../assets/clocks/25-08-03/cur.webp';
+import bgImage from '../../../assets/images/25-08-03/sta.gif';
+import overlay2 from '../../../assets/images/25-08-03/pro.gif';
+import overlay1 from '../../../assets/images/25-08-03/cur.webp';
 import clockFont from '../../../assets/fonts/25-08-03-st.ttf';
 
 const goldGradient = 'linear-gradient(135deg, #ffd700, #ffec85, #b8860b, #f5d742)';

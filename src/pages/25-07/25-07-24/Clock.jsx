@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import bgImage from '../../../assets/clocks/25-07-24/em.png';
-import hourHandImgSrc from '../../../assets/clocks/25-07-24/ha.gif';
-import minuteHandImgSrc from '../../../assets/clocks/25-07-24/had.gif';
-import secondHandImgSrc from '../../../assets/clocks/25-07-24/hand.gif';
+import bgImage from '../../../assets/images/25-07-24/em.png';
+import hourHandImgSrc from '../../../assets/images/25-07-24/ha.gif';
+import minuteHandImgSrc from '../../../assets/images/25-07-24/had.gif';
+import secondHandImgSrc from '../../../assets/images/25-07-24/hand.gif';
 
 const Clock = () => {
   const faceRef = useRef(null);

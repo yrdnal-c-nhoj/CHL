@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import bgImageUrl from '../../../assets/clocks/25-11-08/eye.gif'
+import bgImageUrl from '../../../assets/images/25-11-08/eye.gif'
 import dig2511088 from '../../../assets/fonts/25-11-08-eye3.ttf'
 import ti251108 from '../../../assets/fonts/25-11-08-eye.ttf'
 

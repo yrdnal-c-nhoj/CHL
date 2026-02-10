@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import backgroundImg from "../../../assets/clocks/25-04-18/Antarctica.jpg";
+import backgroundImg from "../../../assets/images/25-04-18/Antarctica.jpg";
 
 const AntarcticaClock = () => {
   const clockRef = useRef(null);

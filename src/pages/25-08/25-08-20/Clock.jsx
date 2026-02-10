@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import myFontUrl from '../../../assets/fonts/25-08-20-go.otf';
-import bgImage from "../../../assets/clocks/25-08-20/24.webp"; // background image
+import bgImage from "../../../assets/images/25-08-20/24.webp"; // background image
 
 const TIMEZONES = [
   "UTC", "America/New_York", "America/Chicago", "America/Denver",

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import mobyFont from "../../../assets/fonts/25-04-03-moby.ttf";
-import waves from "../../../assets/clocks/25-04-03/waves.gif";
+import waves from "../../../assets/images/25-04-03/waves.gif";
 
 const MobyDickClock = () => {
   const clockRef = useRef(null);

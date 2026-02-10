@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import backgroundImage from '../../../assets/clocks/26-01-06/aa.jpg';
+import backgroundImage from '../../../assets/images/26-01-06/aa.jpg';
 import gizaFont from '../../../assets/fonts/26-01-06-aa.ttf';
-import aaaImage from '../../../assets/clocks/26-01-06/aaa.webp';
+import aaaImage from '../../../assets/images/26-01-06/aaa.webp';
 
 export default function AardvarkClock() {
   const [time, setTime] = useState(new Date());

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import sunGif from '../../../assets/clocks/25-05-22/sun.gif'; // Use static import
+import sunGif from '../../../assets/images/25-05-22/sun.gif'; // Use static import
 import dirFontUrl from '../../../assets/fonts/25-05-22-Dir.ttf'; // Use static import
 
 const romanNumerals = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"];

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import bgImage from '../../../assets/clocks/25-11-07/birds.webp'
+import bgImage from '../../../assets/images/25-11-07/birds.webp'
 const font251107kdvsf = '../../../assets/fonts/25-11-07-twobirds.ttf';
 
 export default function PanicAnalogClock () {

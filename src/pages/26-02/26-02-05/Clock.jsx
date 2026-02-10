@@ -1,143 +1,182 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
-import ci2602Font from '../../../assets/fonts/pin.ttf?url';
+import { useEffect, useMemo, useRef } from "react";
 
-// Constants moved outside to prevent re-allocation
-const OVAL = {
-  RADIUS_X: 800,
-  RADIUS_Z: 600,
-  OFFSET_Z: -300,
-  SPEED: 0.05,
-};
+export default function FragmentedClockStream() {
+  const canvasRef = useRef(null);
 
-const OutwardDistortedClock = () => {
-  const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState(false);
-  const requestRef = useRef();
+  const style = useMemo(
+    () => ({
+      width: "100vw",
+      height: "100dvh",
+      display: "block",
+      backgroundColor: "#134080",
+      overflow: "hidden",
+      margin: 0,
+    }),
+    []
+  );
 
-  // 1. One-time setup for Font
   useEffect(() => {
-    const fontFace = new FontFace('Cine', `url(${ci2602Font})`);
-    fontFace.load().then((loaded) => {
-      document.fonts.add(loaded);
-      setFontLoaded(true);
-    }).catch(console.error);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    const colors = { hour: "#DC0AF3", minute: "#EC091C", period: "#068EEF" };
+    const shadowLength = 3000;
     
-    // 2. High-performance animation loop
-    const animate = () => {
-      setTime(new Date());
-      requestRef.current = requestAnimationFrame(animate);
+    let fragments = [];
+    const MAX_FRAGMENTS = 15; // Total number of floating elements
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
-    
-    requestRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(requestRef.current);
+
+    class TimeFragment {
+      constructor() {
+        this.reset();
+        // Randomize initial start position so they don't all spawn at once
+        this.x = Math.random() * canvas.width;
+      }
+
+      reset() {
+        const now = new Date();
+        const types = ["hour", "minute", "period"];
+        this.type = types[Math.floor(Math.random() * types.length)];
+        
+        // Determine Value
+        if (this.type === "hour") {
+          this.value = (now.getHours() % 12 || 12).toString();
+          this.fontSize = Math.max(canvas.width * 0.12, 80);
+        } else if (this.type === "minute") {
+          this.value = now.getMinutes().toString().padStart(2, "0");
+          this.fontSize = Math.max(canvas.width * 0.07, 50);
+        } else {
+          this.value = now.getHours() >= 12 ? "PM" : "AM";
+          this.fontSize = Math.max(canvas.width * 0.04, 30);
+        }
+
+        // Random trajectory and rotation
+        this.x = canvas.width + 200; // Start outside right
+        this.y = Math.random() * canvas.height;
+        this.angle = (Math.random() - 0.5) * 0.5; // Random flight angle
+        this.speed = Math.random() * 1.5 + 1;
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+        this.color = colors[this.type];
+      }
+
+      update() {
+        this.x -= this.speed;
+        this.y += Math.sin(this.angle);
+        this.rotation += this.rotationSpeed;
+
+        // Reset if it leaves the viewport (left, top, or bottom)
+        if (this.x < -200 || this.y < -200 || this.y > canvas.height + 200) {
+          this.reset();
+        }
+      }
+
+      getDots() {
+        const hw = (this.fontSize * 0.6) / 2;
+        const hh = this.fontSize / 2;
+        const corners = [
+          { x: -hw, y: -hh }, { x: hw, y: -hh },
+          { x: hw, y: hh }, { x: -hw, y: hh }
+        ];
+
+        return corners.map(p => {
+          const rx = p.x * Math.cos(this.rotation) - p.y * Math.sin(this.rotation);
+          const ry = p.x * Math.sin(this.rotation) + p.y * Math.cos(this.rotation);
+          return { x: this.x + rx, y: this.y + ry };
+        });
+      }
+
+      drawShadow() {
+        const dots = this.getDots();
+        const lightX = canvas.width / 2;
+        const lightY = canvas.height / 2;
+
+        ctx.fillStyle = "rgba(20, 25, 30, 0.7)";
+
+        dots.forEach((dot, i) => {
+          const next = dots[(i + 1) % dots.length];
+          const angle1 = Math.atan2(lightY - dot.y, lightX - dot.x);
+          const angle2 = Math.atan2(lightY - next.y, lightX - next.x);
+
+          const end1X = dot.x + shadowLength * Math.sin(-angle1 - Math.PI / 2);
+          const end1Y = dot.y + shadowLength * Math.cos(-angle1 - Math.PI / 2);
+          const end2X = next.x + shadowLength * Math.sin(-angle2 - Math.PI / 2);
+          const end2Y = next.y + shadowLength * Math.cos(-angle2 - Math.PI / 2);
+
+          ctx.beginPath();
+          ctx.moveTo(dot.x, dot.y);
+          ctx.lineTo(next.x, next.y);
+          ctx.lineTo(end2X, end2Y);
+          ctx.lineTo(end1X, end1Y);
+          ctx.fill();
+        });
+      }
+
+      drawText() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        ctx.fillStyle = this.color;
+        ctx.font = `bold ${this.fontSize}px "Inter", sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(this.value, 0, 0);
+        ctx.restore();
+      }
+    }
+
+    const init = () => {
+      fragments = Array.from({ length: MAX_FRAGMENTS }, () => new TimeFragment());
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      const lx = canvas.width / 2;
+      const ly = canvas.height / 2;
+
+      // Background Gradient
+      const grad = ctx.createRadialGradient(lx, ly, 0, lx, ly, canvas.width * 0.7);
+      grad.addColorStop(0, "#3b4654");
+      grad.addColorStop(1, "#2c343f");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Shadow Pass
+      fragments.forEach(f => {
+        f.update();
+        f.drawShadow();
+      });
+
+      // Text Pass
+      fragments.forEach(f => f.drawText());
+
+      // Center light point
+      ctx.fillStyle = "#fff";
+      ctx.beginPath();
+      ctx.arc(lx, ly, 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      animationFrameId = requestAnimationFrame(draw);
+    };
+
+    let animationFrameId;
+    resize();
+    init();
+    draw();
+
+    window.addEventListener("resize", () => { resize(); init(); });
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("resize", resize);
+    };
   }, []);
 
-  // 3. Memoize the digit array to avoid splitting strings every 16ms
-  const { digits, phase } = useMemo(() => {
-    const h = (time.getHours() % 12 || 12).toString().padStart(2, '0');
-    const m = time.getMinutes().toString().padStart(2, '0');
-    const s = time.getSeconds().toString().padStart(2, '0');
-    const p = time.getHours() >= 12 ? 'pm' : 'am';
-    
-    return {
-      digits: `${h}${m}${s}${p}`.split(''),
-      phase: (time.getTime() / 1000) * OVAL.SPEED * 2 * Math.PI
-    };
-  }, [time]);
-
-  return (
-    <div style={containerStyle}>
-      {!fontLoaded && (
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          background: 'linear-gradient(180deg, #782D3A 0%, #4F0546 100%)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 1000
-        }} />
-      )}
-      <div style={ringStyle}>
-        {digits.map((char, i) => (
-          <Digit 
-            key={i} 
-            char={char} 
-            index={i} 
-            total={digits.length} 
-            phase={phase} 
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// 4. Sub-component to offload logic from the main loop
-const Digit = ({ char, index, total, phase }) => {
-  const angle = ((index / total) * 2 * Math.PI) - phase;
-  const x = Math.sin(angle) * OVAL.RADIUS_X;
-  const z = Math.cos(angle) * OVAL.RADIUS_Z + OVAL.OFFSET_Z;
-  const rotationY = (angle * 180) / Math.PI;
-  const isBack = Math.cos(angle) < 0;
-  
-  // Scale based on Z position (further = bigger)
-  const distance = Math.abs(z - OVAL.OFFSET_Z);
-  const scaleFactor = 1 + (distance / OVAL.RADIUS_Z) * 0.5; // Grow up to 1.5x size
-  const fontSize = `${29 * scaleFactor}vh`;
-
-  const style = {
-    ...digitBaseStyle,
-    color: isBack ? '#08EEFA' : '#18080D',
-    textShadow: isBack 
-      ? '15px 0 0px #270B05, 2px 2px 0 #0055ff' 
-      : '5px 52px 0px #A95C6100',
-    zIndex: Math.round(z),
-    opacity: isBack ? 0.9 : 0.2,
-    transform: `translate(-50%, -50%) translate3d(${x}px, 0px, ${z}px) rotateY(${rotationY}deg)`,
-    fontSize,
-  };
-
-  return <div style={style}>{char}</div>;
-};
-
-// --- Static Styles ---
-const containerStyle = {
-  width: '100vw',
-  height: '100vh',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  background: 'linear-gradient(180deg, #782D3A 0%, #4F0546 100%)',
-  overflow: 'hidden',
-  perspective: '1200px',
-  fontFamily: '"Cine", "Arial Black", sans-serif',
-};
-
-const ringStyle = {
-  position: 'relative',
-  transformStyle: 'preserve-3d',
-  width: '100%',
-  height: '100%',
-  transform: 'rotateX(10deg)', 
-};
-
-const digitBaseStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  fontSize: '29vh',
-  backfaceVisibility: 'visible',
-  WebkitBackfaceVisibility: 'visible',
-  whiteSpace: 'pre',
-  pointerEvents: 'none',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  transition: 'color 0.1s ease, text-shadow 0.1s ease',
-};
-
-export default OutwardDistortedClock;
+  return <canvas ref={canvasRef} style={style} />;
+}

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import kla from '../../../assets/clocks/25-06-16/kla.webp';
-import klax from '../../../assets/clocks/25-06-16/klax.webp';
-import klaxon from '../../../assets/clocks/25-06-16/klaxon.png';
-import klaHand from '../../../assets/clocks/25-06-16/kla.png';
+import kla from '../../../assets/images/25-06-16/kla.webp';
+import klax from '../../../assets/images/25-06-16/klax.webp';
+import klaxon from '../../../assets/images/25-06-16/klaxon.png';
+import klaHand from '../../../assets/images/25-06-16/kla.png';
 import klaxFont from '../../../assets/fonts/25-06-16-klax.ttf';
-import overlayImage from '../../../assets/clocks/25-06-16/klax.png';
+import overlayImage from '../../../assets/images/25-06-16/klax.png';
 
 
 const romanNumerals = ["xii", "i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "xi"];

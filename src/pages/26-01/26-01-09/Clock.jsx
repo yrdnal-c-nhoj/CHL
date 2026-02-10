@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 // Explicit module-based imports for the background
-import gifOne from '../../../assets/clocks/26-01-12/tic.webp';
-import gifTwo from '../../../assets/clocks/26-01-12/tic2.gif';
-import gifThree from '../../../assets/clocks/26-01-12/tic3.gif';
-import gifFour from '../../../assets/clocks/26-01-12/tic4.gif';
+import gifOne from '../../../assets/images/26-01-12/tic.webp';
+import gifTwo from '../../../assets/images/26-01-12/tic2.gif';
+import gifThree from '../../../assets/images/26-01-12/tic3.gif';
+import gifFour from '../../../assets/images/26-01-12/tic4.gif';
 import customFont from '../../../assets/fonts/26-01-12-tic.ttf';
 
 const BackgroundGrid = ({ children, isFontLoaded }) => {

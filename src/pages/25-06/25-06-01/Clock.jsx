@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import airFontUrl from '../../../assets/fonts/25-06-01-air.ttf';
-import stampImg from '../../../assets/clocks/25-06-01/stamp.png';
-import stamp2Img from '../../../assets/clocks/25-06-01/stamp2.png';
-import stamp3Img from '../../../assets/clocks/25-06-01/stamp3.png';
-import frameImg from '../../../assets/clocks/25-06-01/frame.jpg';
+import stampImg from '../../../assets/images/25-06-01/stamp.png';
+import stamp2Img from '../../../assets/images/25-06-01/stamp2.png';
+import stamp3Img from '../../../assets/images/25-06-01/stamp3.png';
+import frameImg from '../../../assets/images/25-06-01/frame.jpg';
 
 // Inject @font-face with fallback and enhanced media queries
 const styleSheet = new CSSStyleSheet();

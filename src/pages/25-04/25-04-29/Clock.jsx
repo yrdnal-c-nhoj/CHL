@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import fontUrl from '../../../assets/fonts/25-04-29-bang.ttf';
-import gif1 from '../../../assets/clocks/25-04-29/fw.webp';
-import gif2 from '../../../assets/clocks/25-04-29/84298.gif';
-import gif3 from '../../../assets/clocks/25-04-29/giphy.gif';
+import gif1 from '../../../assets/images/25-04-29/fw.webp';
+import gif2 from '../../../assets/images/25-04-29/84298.gif';
+import gif3 from '../../../assets/images/25-04-29/giphy.gif';
 
 const FireworksClock = () => {
   const clockRef = useRef(null);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import bgVideo from "../../../assets/clocks/25-09-25/unix-optimized.mp4"; // Optimized video for mobile compatibility
-import fallbackImage from "../../../assets/clocks/25-09-25/unix.webp";
+import bgVideo from "../../../assets/images/25-09-25/unix-optimized.mp4"; // Optimized video for mobile compatibility
+import fallbackImage from "../../../assets/images/25-09-25/unix.webp";
 import FontOne_2025_09_25 from '../../../assets/fonts/25-09-25-unix.otf?url';
 import FontTwo_2025_09_25 from '../../../assets/fonts/25-09-25-unix2.otf?url';
 import FontThree_2025_09_25 from '../../../assets/fonts/25-09-25-un.otf?url';

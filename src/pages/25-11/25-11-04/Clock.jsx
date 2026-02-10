@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 // import bgVideo from './sea.mp4' // Video file not found in current directory
-import fallbackImg from '../../../assets/clocks/25-11-04/sea.webp'
+import fallbackImg from '../../../assets/images/25-11-04/sea.webp'
 import cu251104font from '../../../assets/fonts/25-11-04-naut.ttf?url'; // Nautical font
 
 export default function OceanStorm () {

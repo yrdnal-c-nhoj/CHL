@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import backgroundImage from '../../../assets/clocks/26-01-28/three.webp';
+import backgroundImage from '../../../assets/images/26-01-28/three.webp';
 
 // --- Background Logic with Centered Dual-Axis Mirroring ---
 function CheckerboardBackground() {

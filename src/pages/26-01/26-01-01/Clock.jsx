@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 // === Local assets ===
-import bg1 from '../../../assets/clocks/26-01-01/fan.gif';
+import bg1 from '../../../assets/images/26-01-01/fan.gif';
 import myFontUrl from '../../../assets/fonts/26-01-01-fan.otf';
 
 const InvertedClock = () => {

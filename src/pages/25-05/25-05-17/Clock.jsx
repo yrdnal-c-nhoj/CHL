@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import bgGif from '../../../assets/clocks/25-05-17/2501912_2ddac-564534539.gif';
-import layer5Gif from '../../../assets/clocks/25-05-17/e0435fd452bbed155b5b3c5128b4f7c5.gif';
-import layer3Gif from '../../../assets/clocks/25-05-17/giphy-3181726992.webp';
-import rectangleGif from '../../../assets/clocks/25-05-17/tumblr_53c27c64cc9f17a0880aff18b8f6d934_d138a0cd_500.gif';
+import bgGif from '../../../assets/images/25-05-17/2501912_2ddac-564534539.gif';
+import layer5Gif from '../../../assets/images/25-05-17/e0435fd452bbed155b5b3c5128b4f7c5.gif';
+import layer3Gif from '../../../assets/images/25-05-17/giphy-3181726992.webp';
+import rectangleGif from '../../../assets/images/25-05-17/tumblr_53c27c64cc9f17a0880aff18b8f6d934_d138a0cd_500.gif';
 
 const PrimaryClock = () => {
   useEffect(() => {

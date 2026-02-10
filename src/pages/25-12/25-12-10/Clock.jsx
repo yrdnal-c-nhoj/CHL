@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useMemo, memo, useRef } from 'react'
 
 // --- Image Imports ---
-import bg1 from '../../../assets/clocks/25-12-10/j.webp';
-import bg2 from  '../../../assets/clocks/25-12-10/jj.webp';
-import portImg from  '../../../assets/clocks/25-12-10/eagle.webp';
-import hourHandImg from '../../../assets/clocks/25-12-10/oa.gif';
-import minuteHandImg from '../../../assets/clocks/25-12-10/oak.gif';
-import secondHandImg from '../../../assets/clocks/25-12-10/nk.gif';
+import bg1 from '../../../assets/images/25-12-10/j.webp';
+import bg2 from  '../../../assets/images/25-12-10/jj.webp';
+import portImg from  '../../../assets/images/25-12-10/eagle.webp';
+import hourHandImg from '../../../assets/images/25-12-10/oa.gif';
+import minuteHandImg from '../../../assets/images/25-12-10/oak.gif';
+import secondHandImg from '../../../assets/images/25-12-10/nk.gif';
 const font251211 = '../../../assets/fonts/25-12-10-jup.ttf';
 
 // --- CONFIG ---

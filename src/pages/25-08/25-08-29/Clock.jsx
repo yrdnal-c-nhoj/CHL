@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import bgImage from "../../../assets/clocks/25-08-29/sun.jpg";      // background image
-import digitImage from "../../../assets/clocks/25-08-29/sun.gif";  // image for all 12 numbers + center
+import bgImage from "../../../assets/images/25-08-29/sun.jpg";      // background image
+import digitImage from "../../../assets/images/25-08-29/sun.gif";  // image for all 12 numbers + center
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());

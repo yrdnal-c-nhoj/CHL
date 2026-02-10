@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import './Sprout.css';
-import spr from '../../../assets/clocks/25-05-26/spr.gif';
-import sprou from '../../../assets/clocks/25-05-26/sprou.gif';
-import sprout from '../../../assets/clocks/25-05-26/sprout.gif';
+import spr from '../../../assets/images/25-05-26/spr.gif';
+import sprou from '../../../assets/images/25-05-26/sprou.gif';
+import sprout from '../../../assets/images/25-05-26/sprout.gif';
 import sproutFont from '../../../assets/fonts/25-05-26-sprout.ttf';
 
 const styles = {

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 // Assets
 import analogFontUrl from '../../../assets/fonts/26-02-08-eiffel.ttf?url';
-import analogBgImage from '../../../assets/clocks/26-02-08/tower.webp';
-import eifGif from '../../../assets/clocks/26-02-08/eif.gif';
+import analogBgImage from '../../../assets/images/26-02-08/tower.webp';
+import eifGif from '../../../assets/images/26-02-08/eif.gif';
 
 const STYLE_CONFIG = {
   ironColor: '#8DA3A4', 

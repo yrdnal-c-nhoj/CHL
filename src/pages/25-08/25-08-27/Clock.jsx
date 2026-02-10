@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import backgroundImage from "../../../assets/clocks/25-08-27/rootsu.gif";
+import backgroundImage from "../../../assets/images/25-08-27/rootsu.gif";
 import dodecahedronFontFile from '../../../assets/fonts/25-08-27-root.ttf'; // renamed import
 
 export default function TwelfthRootsOfUnityWithClock() {

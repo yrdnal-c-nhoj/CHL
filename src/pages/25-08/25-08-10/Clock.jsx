@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 
 // Import background and digit images
-import bgImage from '../../../assets/clocks/25-08-10/bg.gif';
-import digit0 from '../../../assets/clocks/25-08-10/0-6.webp';
-import digit1 from '../../../assets/clocks/25-08-10/1-6.webp';
-import digit2 from '../../../assets/clocks/25-08-10/2-6.webp';
-import digit3 from '../../../assets/clocks/25-08-10/3-6.webp';
-import digit4 from '../../../assets/clocks/25-08-10/4-6.webp';
-import digit5 from '../../../assets/clocks/25-08-10/5-6.webp';
-import digit6 from '../../../assets/clocks/25-08-10/6-6.webp';
-import digit7 from '../../../assets/clocks/25-08-10/7-6.webp';
-import digit8 from '../../../assets/clocks/25-08-10/8-6.webp';
-import digit9 from '../../../assets/clocks/25-08-10/9-6.webp';
+import bgImage from '../../../assets/images/25-08-10/bg.gif';
+import digit0 from '../../../assets/images/25-08-10/0-6.webp';
+import digit1 from '../../../assets/images/25-08-10/1-6.webp';
+import digit2 from '../../../assets/images/25-08-10/2-6.webp';
+import digit3 from '../../../assets/images/25-08-10/3-6.webp';
+import digit4 from '../../../assets/images/25-08-10/4-6.webp';
+import digit5 from '../../../assets/images/25-08-10/5-6.webp';
+import digit6 from '../../../assets/images/25-08-10/6-6.webp';
+import digit7 from '../../../assets/images/25-08-10/7-6.webp';
+import digit8 from '../../../assets/images/25-08-10/8-6.webp';
+import digit9 from '../../../assets/images/25-08-10/9-6.webp';
 
 const digitImages = {
   '0': digit0,

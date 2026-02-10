@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import ufoImg from '../../../assets/clocks/25-09-28/ufo.webp'
-import skyImg from '../../../assets/clocks/25-09-28/stars.gif'
-import nebulaImg from '../../../assets/clocks/25-09-28/sta.gif'
+import ufoImg from '../../../assets/images/25-09-28/ufo.webp'
+import skyImg from '../../../assets/images/25-09-28/stars.gif'
+import nebulaImg from '../../../assets/images/25-09-28/sta.gif'
 import cu250928fontont from '../../../assets/fonts/25-09-28-cow.ttf?url';
 
 function getClockTime () {

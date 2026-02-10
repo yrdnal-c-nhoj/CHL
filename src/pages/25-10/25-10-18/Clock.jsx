@@ -1,7 +1,7 @@
 // MediaClock.jsx
 import React, { useEffect, useRef, useState } from "react";
-import bgVideo from "../../../assets/clocks/25-10-18/total.mp4";
-import fallbackImg from "../../../assets/clocks/25-10-18/tot.webp";
+import bgVideo from "../../../assets/images/25-10-18/total.mp4";
+import fallbackImg from "../../../assets/images/25-10-18/tot.webp";
 import font_20251018 from '../../../assets/fonts/25-10-18-tot.ttf';
 
 export default function MediaClock() {

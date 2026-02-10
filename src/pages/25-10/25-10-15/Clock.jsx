@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import font20251016 from '../../../assets/fonts/25-10-15-brahmi.ttf';
-import image1 from "../../../assets/clocks/25-10-15/palm.webp";
-import image2 from "../../../assets/clocks/25-10-15/brahmi.webp";
+import image1 from "../../../assets/images/25-10-15/palm.webp";
+import image2 from "../../../assets/images/25-10-15/brahmi.webp";
 
 const brahmiDigits = ["𑁦","𑁧","𑁨","𑁩","𑁪","𑁫","𑁬","𑁭","𑁮","𑁯"];
 

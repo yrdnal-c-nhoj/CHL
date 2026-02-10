@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import polFont from '../../../assets/fonts/25-07-06-pol.otf';
-import polarisGif from '../../../assets/clocks/25-07-06/polaris.gif';
+import polarisGif from '../../../assets/images/25-07-06/polaris.gif';
 
 const CLOCK_NUMBERS = [
   { num: '12', top: '5%', left: '50%' },

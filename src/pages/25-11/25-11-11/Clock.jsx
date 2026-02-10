@@ -1,8 +1,8 @@
 // src/components/CustomFontMirroredClock.jsx
 import React, { useState, useEffect } from "react";
 import todayFont251125 from '../../../assets/fonts/25-11-11-digi.ttf?url';
-import bgFront from "../../../assets/clocks/25-11-11/bg.webp"; // top layer
-import bgBack from "../../../assets/clocks/25-11-11/bg1.jpg";  // back layer
+import bgFront from "../../../assets/images/25-11-11/bg.webp"; // top layer
+import bgBack from "../../../assets/images/25-11-11/bg1.jpg";  // back layer
 
 export default function CustomFontMirroredClock() {
   const [time, setTime] = useState(getCurrentTime());

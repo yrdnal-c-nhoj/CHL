@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import bgImage from '../../../assets/clocks/25-09-16/bg.jpg'
+import bgImage from '../../../assets/images/25-09-16/bg.jpg'
 import d250916font from '../../../assets/fonts/25-09-16-baud.ttf?url';
 
 const Clock = () => {

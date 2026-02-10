@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import woodImg from '../../../assets/clocks/25-05-13/wood.jpg';
-import tilesImg from '../../../assets/clocks/25-05-13/tiles.jpg';
+import woodImg from '../../../assets/images/25-05-13/wood.jpg';
+import tilesImg from '../../../assets/images/25-05-13/tiles.jpg';
 import hydFont from '../../../assets/fonts/25-05-13-hyd.ttf';
 
 const FlatClock = () => {

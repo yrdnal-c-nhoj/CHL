@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import bgImage from '../../../assets/clocks/25-09-07/wall.jpg' // local background image
+import bgImage from '../../../assets/images/25-09-07/wall.jpg' // local background image
 import f250907 from '../../../assets/fonts/25-09-07-wall.ttf'; // local font file
 
 const fontVar = 'CustomFont20250908' // custom variable name

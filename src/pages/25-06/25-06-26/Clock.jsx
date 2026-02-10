@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import bg1 from "../../../assets/clocks/25-06-26/co.png";
-import bg2 from "../../../assets/clocks/25-06-26/cos.png";
+import bg1 from "../../../assets/images/25-06-26/co.png";
+import bg2 from "../../../assets/images/25-06-26/cos.png";
 import wheFont from '../../../assets/fonts/25-06-26-whe.ttf';
 
 const CosmicWheelClock = () => {

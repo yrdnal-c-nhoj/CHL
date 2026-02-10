@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import f251023 from '../../../assets/fonts/25-10-23-gr.ttf';
-import bgImage from '../../../assets/clocks/25-10-23/bg.gif';
+import bgImage from '../../../assets/images/25-10-23/bg.gif';
 
 const Clockgrid = () => {
   const [time, setTime] = useState({

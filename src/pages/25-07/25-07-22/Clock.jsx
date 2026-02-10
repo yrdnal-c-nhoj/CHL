@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import bardImg from '../../../assets/clocks/25-07-22/bard.webp';
-import barrsImg from '../../../assets/clocks/25-07-22/barrs.webp';
+import bardImg from '../../../assets/images/25-07-22/bard.webp';
+import barrsImg from '../../../assets/images/25-07-22/barrs.webp';
 import berFont from '../../../assets/fonts/25-07-22-ber.otf';
 
 const BarrelrollClock = () => {

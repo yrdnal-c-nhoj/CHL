@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import lightningImg from "../../../assets/clocks/25-05-01/lightning.webp";
+import lightningImg from "../../../assets/images/25-05-01/lightning.webp";
 import innerFontTTF from "../../../assets/fonts/25-05-01-Inner.ttf";
 
 export default function SlowLightningClock() {

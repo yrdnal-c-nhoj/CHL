@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import bananaGif from '../../../assets/clocks/25-06-11/banana.gif';
-import spinningBanana from '../../../assets/clocks/25-06-11/yellow-spinning-banana.gif';
-import hourHand from '../../../assets/clocks/25-06-11/ban.png';
-import minuteHand from '../../../assets/clocks/25-06-11/ban.png';
-import secondHand from '../../../assets/clocks/25-06-11/ban.png';
+import bananaGif from '../../../assets/images/25-06-11/banana.gif';
+import spinningBanana from '../../../assets/images/25-06-11/yellow-spinning-banana.gif';
+import hourHand from '../../../assets/images/25-06-11/ban.png';
+import minuteHand from '../../../assets/images/25-06-11/ban.png';
+import secondHand from '../../../assets/images/25-06-11/ban.png';
 import banFont from '../../../assets/fonts/25-06-11-Ban.ttf';
 
 const BananaClock = () => {

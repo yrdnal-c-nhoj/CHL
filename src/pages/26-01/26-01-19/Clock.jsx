@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import bgImage from '../../../assets/clocks/26-01-19/hands.webp';
+import bgImage from '../../../assets/images/26-01-19/hands.webp';
 
 const COLORS = {
   bg: '#FFFFFF',

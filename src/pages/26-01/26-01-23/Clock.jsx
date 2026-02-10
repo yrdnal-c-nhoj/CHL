@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 // Asset imports
-import clockDigitImage from '../../../assets/clocks/26-01-23/eye.gif';
-import clockBackground from '../../../assets/clocks/26-01-23/eye.webp';
+import clockDigitImage from '../../../assets/images/26-01-23/eye.gif';
+import clockBackground from '../../../assets/images/26-01-23/eye.webp';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());

@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import hummFont from '../../../assets/fonts/25-06-14-humm.ttf';
-import hmmGif from '../../../assets/clocks/25-06-14/hmm.gif';
-import hummPng from '../../../assets/clocks/25-06-14/humm.png';
-import hum1 from '../../../assets/clocks/25-06-14/hum1.webp';
-import hum2 from '../../../assets/clocks/25-06-14/hum2.webp';
-import hum3 from '../../../assets/clocks/25-06-14/hum3.webp';
-import hum4 from '../../../assets/clocks/25-06-14/hum4.gif';
-import hum7 from '../../../assets/clocks/25-06-14/hum7.webp';
-import hum8 from '../../../assets/clocks/25-06-14/hum8.gif';
-import hum9 from '../../../assets/clocks/25-06-14/hum9.webp';
+import hmmGif from '../../../assets/images/25-06-14/hmm.gif';
+import hummPng from '../../../assets/images/25-06-14/humm.png';
+import hum1 from '../../../assets/images/25-06-14/hum1.webp';
+import hum2 from '../../../assets/images/25-06-14/hum2.webp';
+import hum3 from '../../../assets/images/25-06-14/hum3.webp';
+import hum4 from '../../../assets/images/25-06-14/hum4.gif';
+import hum7 from '../../../assets/images/25-06-14/hum7.webp';
+import hum8 from '../../../assets/images/25-06-14/hum8.gif';
+import hum9 from '../../../assets/images/25-06-14/hum9.webp';
 
 const floatingImages = [
   { src: hum1, animation: 'motion1' },

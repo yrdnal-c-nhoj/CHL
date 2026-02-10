@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import myFontWoff2 from '../../../assets/fonts/25-08-01-zod.ttf';
-import bg1 from '../../../assets/clocks/25-08-01/stars.webp';
-import bg2 from '../../../assets/clocks/25-08-01/zod.gif';
-import htmlLogo from '../../../assets/clocks/25-08-01/st.gif';
+import bg1 from '../../../assets/images/25-08-01/stars.webp';
+import bg2 from '../../../assets/images/25-08-01/zod.gif';
+import htmlLogo from '../../../assets/images/25-08-01/st.gif';
 
 const romanNumerals = ['l', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'];
 
