@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
 import ci2602Font from '../../../assets/fonts/pin.ttf?url';
 
 // Constants moved outside to prevent re-allocation
@@ -22,10 +21,10 @@ const OutwardDistortedClock = () => {
     // 2. High-performance animation loop
     const animate = () => {
       setTime(new Date());
-      requestRef.current = setInterval(() => setTime(new Date()), 100);
+      requestRef.current = requestAnimationFrame(animate);
     };
     
-    requestRef.current = setInterval(() => setTime(new Date()), 100);
+    requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current);
   }, []);
 
