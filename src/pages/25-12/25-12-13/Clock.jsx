@@ -1,24 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react'
+import { useFontLoader } from '../../../utils/fontLoader'
 import bgImage from '../../../assets/images/25-12-13/roc.webp' 
 import fontFile from '../../../assets/fonts/25-12-13-cherub.ttf?url'; 
 
 export default function RococoClock() {
   const [now, setNow] = useState(new Date())
-  const [fontLoaded, setFontLoaded] = useState(false)
   const fontFamily = 'RococoFont'
+  const fontLoaded = useFontLoader(fontFamily, fontFile, { fallback: true, timeout: 3500 })
 
   useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const font = new FontFace(fontFamily, `url(${fontFile}) format('truetype')`)
-        await font.load()
-        document.fonts.add(font)
-        setFontLoaded(true)
-      } catch (error) {
-        setFontLoaded(true)
-      }
-    }
-    loadFont()
     const interval = setInterval(() => setNow(new Date()), 1000)
     return () => clearInterval(interval)
   }, [])
@@ -40,8 +30,6 @@ export default function RococoClock() {
     }))
   }, [])
 
-  if (!fontLoaded) return null
-
   const hours = now.getHours()
   const displayHours = hours % 12 === 0 ? 12 : hours % 12
   const hourDigits = displayHours.toString().split('')
@@ -50,7 +38,7 @@ export default function RococoClock() {
   const allChars = [...hourDigits, ...minuteDigits, ...ampmDigits]
 
   return (
-    <div style={containerStyle}>
+    <div style={{ ...containerStyle, opacity: fontLoaded ? 1 : 0, transition: 'opacity 0.4s ease' }}>
       <style>
         {`
           @keyframes rococoFloat {
@@ -75,7 +63,7 @@ export default function RococoClock() {
               key={i}
               style={{
                 ...baseDigitStyle,
-                fontFamily: `'${fontFamily}', serif`,
+                fontFamily: fontLoaded ? `'${fontFamily}', serif` : 'serif',
                 fontSize: config.fontSize,
                 // Using a "slow-in, slow-out" bezier curve for gracefulness
                 animation: `rococoFloat ${config.duration}s infinite cubic-bezier(0.45, 0, 0.55, 1)`,
