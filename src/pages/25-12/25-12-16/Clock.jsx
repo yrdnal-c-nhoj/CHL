@@ -32,7 +32,7 @@ const QuadClock = () => {
     let animationId;
     const updateTime = () => {
       setTime(Date.now());
-      animationId = requestAnimationFrame(updateTime);
+      animationId = setInterval(() => setTime(new Date()), 100);
     };
     updateTime();
 

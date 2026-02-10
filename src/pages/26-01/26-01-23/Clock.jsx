@@ -9,13 +9,10 @@ const Clock = () => {
   const [bgReady, setBgReady] = useState(false);
 
   useEffect(() => {
-    let animationFrame;
-    const update = () => {
+    const interval = setInterval(() => {
       setTime(new Date());
-      animationFrame = requestAnimationFrame(update);
-    };
-    animationFrame = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(animationFrame);
+    }, 100); // Update every 100ms for smooth time display
+    return () => clearInterval(interval);
   }, []);
 
   // Preload background and digit asset to avoid flash

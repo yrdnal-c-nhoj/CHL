@@ -43,13 +43,10 @@ const AnalogClockWithImages = () => {
 
   // Smooth time updates with requestAnimationFrame
   useEffect(() => {
-    let frameId;
-    const tick = () => {
+    const interval = setInterval(() => {
       setTime(new Date());
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
+    }, 100); // Update every 100ms for smooth time display
+    return () => clearInterval(interval);
   }, []);
 
   if (!ready) {

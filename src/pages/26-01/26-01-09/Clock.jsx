@@ -209,10 +209,10 @@ export default function TicTacToeClock() {
         setTime(new Date());
         lastUpdate = timestamp;
       }
-      animationFrameId = requestAnimationFrame(updateTime);
+      animationFrameId = setInterval(() => setTime(new Date()), 100);
     };
     
-    animationFrameId = requestAnimationFrame(updateTime);
+    animationFrameId = setInterval(() => setTime(new Date()), 100);
     
     return () => {
       if (animationFrameId) {

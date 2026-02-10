@@ -39,9 +39,9 @@ export default function MarsDigitalClock() {
     const loop = () => {
       if (!mounted) return;
       setTime(new Date());
-      rafRef.current = requestAnimationFrame(loop);
+      rafRef.current = setInterval(() => setTime(new Date()), 100);
     };
-    rafRef.current = requestAnimationFrame(loop);
+    rafRef.current = setInterval(() => setTime(new Date()), 100);
     return () => {
       mounted = false;
       if (rafRef.current) cancelAnimationFrame(rafRef.current);

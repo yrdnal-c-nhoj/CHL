@@ -12,15 +12,10 @@ const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    let animationFrameId;
-
-    const updateClock = () => {
+    const interval = setInterval(() => {
       setTime(new Date());
-      animationFrameId = requestAnimationFrame(updateClock);
-    };
-
-    animationFrameId = requestAnimationFrame(updateClock);
-    return () => cancelAnimationFrame(animationFrameId);
+    }, 10); // Update every 10ms for millisecond precision
+    return () => clearInterval(interval);
   }, []);
 
   // Format time into individual digits
