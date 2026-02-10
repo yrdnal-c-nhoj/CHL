@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import rorFontUrl from '../../../assets/fonts/25-07-13-ror.ttf';
 
 const RorschachClock = () => {

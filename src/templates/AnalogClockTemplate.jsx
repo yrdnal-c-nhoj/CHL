@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useFontLoader } from '../../utils/fontLoader';
 
 // --- Assets ---
 import analogRainFont from '../../../assets/fonts/26-01-31-cond.ttf?url';
@@ -34,16 +35,7 @@ const useClock = () => {
 
 const AnalogClock = () => {
   const now = useClock();
-  const [fontReady, setFontReady] = useState(false);
-
-  // Load Custom Font
-  useEffect(() => {
-    const font = new FontFace('BorrowedAnalog', `url(${analogRainFont})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-      setFontReady(true);
-    }).catch(() => setFontReady(true));
-  }, []);
+  const fontReady = useFontLoader('BorrowedAnalog', analogRainFont);
 
   // Time Calculations (including sub-second fractions for smooth motion)
   const msec = now.getMilliseconds();

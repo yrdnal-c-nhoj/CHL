@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import sageFontUrl from "../../../assets/fonts/25-04-08-sage.ttf";
 
 const TripleCactusClock = () => {

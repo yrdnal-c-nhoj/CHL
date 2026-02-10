@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from '../../../assets/images/25-04-25/bad.webp';
 import boldFont from '../../../assets/fonts/25-04-25-Oswald-Bold.ttf';
 import hourHandImage from '../../../assets/images/25-04-25/ban.webp';

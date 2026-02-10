@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { useFontLoader } from '../../../utils/fontLoader';
 import confFont from "../../../assets/fonts/25-04-06-conf.ttf";
 import confettiBg from "../../../assets/images/25-04-06/conf2.gif";
 
@@ -7,13 +8,7 @@ const TOTAL_DIGITS = 160;
 const ConfettiClock = () => {
   const containerRef = useRef(null);
   const digitsRef = useRef([]);
-
-  useEffect(() => {
-    const font = new FontFace("conf", `url(${confFont})`);
-    font.load().then(() => {
-      document.fonts.add(font);
-    });
-  }, []);
+  const fontLoaded = useFontLoader('conf', confFont);
 
   const getCurrentTimeDigits = () => {
     const now = new Date();

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import stretchFont from '../../../assets/fonts/25-06-29-stretch.ttf';
 
 const StretchClock = () => {

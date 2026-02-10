@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useFontLoader } from '../../../utils/fontLoader';
 import videoFile from "../../../assets/images/25-10-31/mids.mp4";
 import fallbackImg from "../../../assets/images/25-10-31/midsun.webp";
 import fontFile_2025_10_31 from '../../../assets/fonts/25-10-31-mi.otf?url';

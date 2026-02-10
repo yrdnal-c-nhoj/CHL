@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import penFontUrl from '../../../assets/fonts/25-07-11-Pen.ttf';
 
 const PenmanshipClock = () => {
