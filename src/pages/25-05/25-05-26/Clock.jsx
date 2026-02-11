@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import './Sprout.css';
+import { useFontLoader } from '../../../utils/fontLoader';
+// import './Sprout.css';
 import spr from '../../../assets/images/25-05-26/spr.gif';
 import sprou from '../../../assets/images/25-05-26/sprou.gif';
 import sprout from '../../../assets/images/25-05-26/sprout.gif';
@@ -74,6 +75,8 @@ const styles = {
     fontSize: '16vh',
     minWidth: '14vh',
     textAlign: 'center',
+    // Debug styles
+    border: fontReady ? '2px solid green' : '2px solid red',
   },
   imageBase: {
     position: 'fixed',
@@ -100,11 +103,30 @@ function pad(num, length) {
 
 export default function SproutClock() {
   const [time, setTime] = useState({ h: [], m: [], s: [], ms: [] });
-
+  const fontReady = useFontLoader('sprout', sproutFont, { timeout: 3000 });
+  
+  // Debug font loading
+  console.log('Font ready:', fontReady);
+  console.log('Font URL:', sproutFont);
+  
+  // Add CSS font-face declaration
   useEffect(() => {
-    const font = new FontFace('sprout', `url(${sproutFont})`);
-    font.load().then(loaded => document.fonts.add(loaded));
-  }, []);
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: 'sprout';
+        src: url(${sproutFont}) format('truetype');
+        font-display: block;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
+    };
+  }, [sproutFont]);
 
   useEffect(() => {
     const update = () => {
@@ -127,7 +149,7 @@ export default function SproutClock() {
     ));
 
   return (
-    <div style={styles.container}>
+    <div style={{...styles.container, opacity: fontReady ? 1 : 0, transition: 'opacity 0.3s ease'}}>
       <div style={styles.bgTiled}></div>
       <div style={styles.bgCover}></div>
 

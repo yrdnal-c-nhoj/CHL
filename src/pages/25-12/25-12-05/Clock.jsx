@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-
+import { useFontLoader } from '../../../utils/fontLoader';
 // Import today's date font
 import font_2025_12_06 from '../../../assets/fonts/25-12-05-magic.ttf?url'; // This path is correct as it's relative to the public directory
 

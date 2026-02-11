@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import kalFont from '../../../assets/fonts/25-07-04-kal.otf';
+import { useFontLoader } from '../../../utils/fontLoader';import kalFont from '../../../assets/fonts/25-07-04-kal.otf';
 import bgImage from '../../../assets/images/25-07-04/7ZAx.webp';
 
 const SEGMENTS = 12;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import backgroundImage from '../../../assets/images/25-12-29/shrine.webp';
+import { useFontLoader } from '../../../utils/fontLoader';import backgroundImage from '../../../assets/images/25-12-29/shrine.webp';
 import shrineFont from '../../../assets/fonts/25-12-29-shrine.ttf?url';
 
 const DynamicClockComponent = () => {

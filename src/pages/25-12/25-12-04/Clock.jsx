@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import sloanFont_2025_1204 from '../../../assets/fonts/25-12-04-ichart.otf?url';
+import { useFontLoader } from '../../../utils/fontLoader';import sloanFont_2025_1204 from '../../../assets/fonts/25-12-04-ichart.otf?url';
 
 export default function EyeChart () {
   const [fontLoaded, setFontLoaded] = useState(false)
