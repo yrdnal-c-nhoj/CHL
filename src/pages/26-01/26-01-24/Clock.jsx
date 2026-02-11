@@ -1,38 +1,34 @@
 import React, { useEffect, useState, useMemo } from 'react';
 
 const Clock = () => {
+  // --- STATE MANAGEMENT ---
   const [time, setTime] = useState(() => new Date());
   const [isLargeScreen, setIsLargeScreen] = useState(true);
   const [bgReady, setBgReady] = useState(false);
-  const [bgVisible, setBgVisible] = useState(true);
 
+  // --- EMOJI POOL ---
   const allEmojis = useMemo(() => {
-    const rawList = [
-      '🏀','🏈','🎾','🏉','🥏','🪀','🏓','🏸','🏒','🏑','🥍','🏏','🪃','🥅','⛳️','🪁','🏹','🎣','🤿','🥊','🎽',
-      '🛹','🛼','🛷','🥌','🎿','🎭','🎨','🎬','🎤','🎧','🎹','🥁','🪘','🪇','🎷','🎺','🪗','🎸','🪕','🎻','🪈','🎯',
-      '🐶','🐱','🐹','🦊','🐯','🦁','🐸','🦆','🦅','🦉','🦇','🦄','🐝','🪱','🐛','🦋','🐌','🐢','🐍',
-      '🦎','🦖','🦕','🐙','🦑','🦐','🦞','🦀','🪼','🪸','🐡','🐠','🐬','🐳','🐋','🦈','🐊','🐅','🐆','🦓','🦧','🦣','🐘','🦛',
-      '🦏','🐪','🐫','🦒','🦘','🐄','🐎','🦌','🫎','🐩','🦮','🐈','🪶','🐓','🦃','🦤','🦚','🦜','🦩','🦨','🦥','🐿',
-      '🐾','🐉','🐲','🐦‍🔥','🌵','🌴','🪺','🪵','🌱','🌿','🪴','🎋','🍁','🍄','🌾','💐','🪷','🌹','🥀','🌸','🪻','🌼',
-      '🚗','🚌','🚎','🏎','🚒','🛻','🚚','🚜','🚲','🛵','🚍','🚘','🚖','🛞','🚡','🚠','🚋','🚞','🚈','🚂','🚇','🚊','✈️',
-      '💺','🛰','🚀','🛸','🚁','🛶','⛵️','🚤','🚢','🛟','🪝','⛽️','🚏','🗺','🗿','🗽','🗼','🏰','🏯','🏟','🎡','🎢','🛝',
-      '🎠','⛲️','⛱','🏖','🏝','🏜','🌋','🏔','🏕','🛖','🏘','🏗','🎳'
+    const rawList = ['🏓','🏸','🏒','🏑','🏏','🥅','🎣','🥊','🎽','🛹','🛷','🥌','🎿','🎭','🎨','🎬','🎹','🥁','🎸','🎯','🐶','🐱','🐹','🦊','🐯','🦁','🐸','🦄','🐄','🐎','🐩','🐈','🐅','🦓','🦒','🦘','🐛','🦋','🐌','🐢','🐍','🦎','🐙','🦑','🦐','🦀','🐡','🐠','🐬','🐳','🐋','🦈','🦃','🦚','🦜','🦩','🐾','🐉','🐲','🌵','🌴','🌱','🌿','🎋','🍁','🍄','🌾','💐','🌹','🌸','🌼','🚗','🚌','🚎','🏎','🚒','🚚','🚜','🚲','🛵','🚍','🚘','🚋','🚞','🚂','🚇','🚊','🚀','🚁','🛶','🚤','🚢','🗿','🗽','🗼','🏰','🏟','🎡','🎢','🎠','🏖','🏜','🌋','🏔','🏕','🏘','🏗','🗺','💺','🎳'
     ];
     return [...new Set(rawList)].filter(Boolean);
   }, []);
 
-  const [currentEmoji, setCurrentEmoji] = useState(() => {
-    const list = [...new Set([
-      '🏀','🏈','🥎','🎾','🏉','🥏','🎱','🪀','🏓','🏸','🐶','🐱','🐯','🦁','🐮','🐷','🐸','🐵','🐔','🐬','🚗','🚀','🌸'
-    ])];
-    return list[Math.floor(Math.random() * list.length)];
-  });
+  // --- NON-REPEATING CYCLE SYSTEM ---
+  const [emojiCycle] = useState(() => [...allEmojis].sort(() => Math.random() - 0.5));
+  const [emojiIndex, setEmojiIndex] = useState(0);
 
+  // --- DOUBLE BUFFER SYSTEM ---
+  const [activeBuffer, setActiveBuffer] = useState(1); 
+  const [buffer1Emoji, setBuffer1Emoji] = useState(emojiCycle[0]);
+  const [buffer2Emoji, setBuffer2Emoji] = useState('');
+
+  // --- DIGIT MAPPING ---
   const digitToEmoji = {
     '0': '🕳️', '1': '📍', '2': '🥈', '3': '🔱', '4': '🍀',
     '5': '⭐', '6': '🐝', '7': '🎰', '8': '🎱', '9': '☁️',
   };
 
+  // --- MAIN EFFECT LOOP ---
   useEffect(() => {
     let secondsCounter = 0;
 
@@ -41,14 +37,19 @@ const Clock = () => {
       secondsCounter++;
 
       if (secondsCounter % 3 === 0) {
-        setBgVisible(false);
-        setTimeout(() => {
-          setCurrentEmoji(prev => {
-            const next = allEmojis[Math.floor(Math.random() * allEmojis.length)];
-            return next || prev;
-          });
-          setBgVisible(true);
-        }, 600);
+        setEmojiIndex(prevIndex => {
+          const nextIndex = (prevIndex + 1) % emojiCycle.length;
+          const nextEmoji = emojiCycle[nextIndex];
+
+          if (activeBuffer === 1) {
+            setBuffer2Emoji(nextEmoji);
+            setActiveBuffer(2);
+          } else {
+            setBuffer1Emoji(nextEmoji);
+            setActiveBuffer(1);
+          }
+          return nextIndex;
+        });
       }
     }, 1000);
 
@@ -60,56 +61,60 @@ const Clock = () => {
       clearInterval(timer);
       window.removeEventListener('resize', handleResize);
     };
-  }, [allEmojis]);
+  }, [emojiCycle, activeBuffer]);
 
-  // Small delay to avoid flash on mount
   useEffect(() => {
-    const t = setTimeout(() => setBgReady(true), 80);
+    const t = setTimeout(() => setBgReady(true), 100);
     return () => clearTimeout(t);
   }, []);
 
   const tileSize = 60;
 
-  // Grid size that covers any viewport (tiles are 60px)
-  const gridCols = 25;
-  const gridRows = 20;
-  const backgroundTiles = useMemo(() => {
-    const cells = [];
-    for (let r = 0; r < gridRows; r++) {
-      for (let c = 0; c < gridCols; c++) {
-        cells.push({ key: `${r}-${c}` });
-      }
-    }
-    return cells;
-  }, []);
+  const getLayerStyle = (emoji, isVisible) => {
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="${tileSize}" height="${tileSize}">
+        <text x="50%" y="55%" font-size="${tileSize * 0.7}" text-anchor="middle" dominant-baseline="middle">
+          ${emoji}
+        </text>
+      </svg>`.trim();
+
+    return {
+      position: 'absolute',
+      inset: 0,
+      backgroundImage: `url("data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}")`,
+      backgroundRepeat: 'repeat',
+      backgroundSize: `${tileSize}px ${tileSize}px`,
+      backgroundPosition: 'center',
+      opacity: isVisible ? 1 : 0,
+      transition: 'opacity 2s cubic-bezier(0.4, 0, 0.2, 1)', 
+      zIndex: 1,
+      willChange: 'opacity',
+    };
+  };
 
   const format = (val) => String(val).padStart(2, '0');
   const h = format(((time.getHours() + 11) % 12) + 1);
   const m = format(time.getMinutes());
   const s = format(time.getSeconds());
 
-
-
-const renderDigits = (str) => (
+  const renderDigits = (str) => (
     <div style={{ display: 'flex' }}>
       {str.split('').map((d, i) => (
         <div
           key={i}
           style={{
-            width: isLargeScreen ? '12vw' : '25vh',
-            fontSize: isLargeScreen ? '12vw' : '25vh',
+            width: isLargeScreen ? '12vw' : '20vh',
+            fontSize: isLargeScreen ? '12vw' : '20vh',
             textAlign: 'center',
-            transition: 'all 0.2s ease-in-out',
-            // Layering multiple offsets with 0 blur creates a solid "lifted" look
+            // Interactivity removed: transitions, cursor, and transform-based effects are gone.
             textShadow: `
-              -2px -2px 0px rgba(220, 248, 210, 0.62),
-              2px 2px 3px rgba(0, 0, 0, 0.48),
-              4px 4px 3px rgba(0, 0, 0, 0.41),
-              6px 6px 3px rgba(0, 0, 0, 0.4),
-              8px 8px 3px rgba(0, 0, 0, 0.34)
+              0 -1px 5px rgba(255, 255, 255, 0.9),
+              -1px -1px 0px #fff,
+              1px 1px 0px rgba(0, 0, 0, 0.67),
+              3px 3px 3px rgba(0, 0, 0, 0.3),
+              15px 15px 35px rgba(0, 0, 0, 0.2)
             `,
-            // Optional: slight filter to boost foreground saturation
-            filter: 'drop-shadow(2px 2px 0px white)', 
+            // filter: 'drop-shadow(0px 4px 2px rgba(0, 0, 0, 0.92))',
           }}
         >
           {digitToEmoji[d]}
@@ -118,94 +123,31 @@ const renderDigits = (str) => (
     </div>
   );
 
-
-
-
-  // const renderDigits = (str) => (
-  //   <div style={{ display: 'flex' }}>
-  //     {str.split('').map((d, i) => (
-  //       <div
-  //         key={i}
-  //         style={{
-  //           width: isLargeScreen ? '12vw' : '25vh',
-  //           fontSize: isLargeScreen ? '12vw' : '25vh',
-  //           textAlign: 'center',
-  //           transition: 'all 0.2s ease-in-out',
-  //           // Added drop shadow using multiple offsets for a solid, non-blurred edge
-  //           textShadow: `
-  //             4px 4px 0px rgba(0, 0, 0, 0.34),
-  //             8px 8px 0px rgba(10, 108, 20, 0.17)
-  //           `,
-  //         }}
-  //       >
-  //         {digitToEmoji[d]}
-  //       </div>
-  //     ))}
-  //   </div>
-  // );
-
-
   return (
-    <div
-      style={{
-        height: '100dvh',
-        width: '100vw',
-        backgroundColor: '#D4CDD7',
+    <div style={{
+      height: '100dvh',
+      width: '100vw',
+      backgroundColor: '#E9DBF0',
+      overflow: 'hidden',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+      opacity: bgReady ? 1 : 0,
+      transition: 'opacity 0.8s ease'
+    }}>
+      <div style={getLayerStyle(buffer1Emoji, activeBuffer === 1)} />
+      <div style={getLayerStyle(buffer2Emoji, activeBuffer === 2)} />
+      
+      <div style={{
         position: 'relative',
-        overflow: 'hidden',
+        zIndex: 2,
         display: 'flex',
-        justifyContent: 'center',
+        flexDirection: isLargeScreen ? 'row' : 'column',
         alignItems: 'center',
-        fontFamily: 'sans-serif',
-        opacity: bgReady ? 1 : 0,
-        visibility: bgReady ? 'visible' : 'hidden',
-        transition: 'opacity 0.2s ease'
-      }}
-    >
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 1,
-          opacity: bgVisible ? 1 : 0,
-          transition: 'opacity 0.8s ease-in-out',
-          display: 'grid',
-          gridTemplateColumns: `repeat(${gridCols}, ${tileSize}px)`,
-          gridTemplateRows: `repeat(${gridRows}, ${tileSize}px)`,
-          justifyContent: 'center',
-          alignContent: 'center',
-          overflow: 'hidden',
-        }}
-      >
-        {backgroundTiles.map(({ key }) => (
-          <div
-            key={key}
-            style={{
-              width: tileSize,
-              height: tileSize,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: tileSize * 0.7,
-              lineHeight: 1,
-            }}
-          >
-            {currentEmoji}
-          </div>
-        ))}
-      </div>
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 2,
-          display: 'flex',
-          flexDirection: isLargeScreen ? 'row' : 'column',
-          alignItems: 'center',
-          gap: isLargeScreen ? '2rem' : '0.5rem',
-          padding: '2rem',
-          borderRadius: '3rem',
-        }}
-      >
+        gap: isLargeScreen ? '2rem' : '1rem',
+        padding: isLargeScreen ? '3rem 5rem' : '2rem',
+      }}>
         {renderDigits(h)}
         {renderDigits(m)}
         {renderDigits(s)}
