@@ -151,6 +151,7 @@ const styles = {
     backgroundPosition: 'center',
     filter: 'saturate(10%) contrast(0.4) brightness(1.6)',
     zIndex: 2,
+    opacity: 0.5,
   },
 
   additionalBackgroundLayer: {
