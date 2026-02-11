@@ -111,11 +111,9 @@ export default function NtpClock() {
 
   // --- **Core Change 1 & 2: Update Time & Colors Every Second** ---
   useEffect(() => {
-    if (!isSynced) return;
-    
     // Function to calculate time and generate colors
     const updatePerSecond = () => {
-      // 1. Calculate the synchronized time
+      // 1. Calculate the synchronized time (falls back to local if not yet synced)
       const nowTime = Date.now() + offset;
       const newSeconds = Math.floor(nowTime / MS_PER_SECOND) + NTP_EPOCH_OFFSET;
       
@@ -136,7 +134,7 @@ export default function NtpClock() {
     const tick = setInterval(updatePerSecond, MS_PER_SECOND); 
     
     return () => clearInterval(tick);
-  }, [isSynced, offset]); // Only re-runs if sync status or offset changes
+  }, [offset]); // Runs whenever offset updates
 
 
   // --- Marquee Animation (Keep as is / Independent) ---
@@ -225,22 +223,39 @@ export default function NtpClock() {
     <div style={wrapperStyle}>
       {/* Clock Display */}
       <div style={clockStyle}>
-        {isSynced ? (
-          String(ntpSeconds).split("").map((digit, i) => (
-            <span
-              key={i}
-              style={{
-                color: digitColors[i]?.color || "#00ffff",
-                textShadow: `1.0vh 0 0 ${digitColors[i]?.shadowColor || "#00ffff"}, -1.0vh 0 0 ${digitColors[i]?.shadowColor || "#00ffff"}, 1.1vh 0 0 ${digitColors[i]?.shadowColor || "#00ffff"}, -1.1vh 0 0 ${digitColors[i]?.shadowColor || "#00ffff"}, 1px 0 black, 0 -1px 0 black, 1px 0 0 black, -1px 0 0 black`,
-              }}
-            >
-              {digit}
-            </span>
-          ))
-        ) : (
-          <span style={{ fontSize: "6vh", opacity: 0.0 }}>Syncing...</span>
-        )}
+        {String(ntpSeconds).split("").map((digit, i) => (
+          <span
+            key={i}
+            style={{
+              color: digitColors[i]?.color || "#00ffff",
+              textShadow: `1.0vh 0 0 ${digitColors[i]?.shadowColor || "#00ffff"}, -1.0vh 0 0 ${digitColors[i]?.shadowColor || "#00ffff"}, 1.1vh 0 0 ${digitColors[i]?.shadowColor || "#00ffff"}, -1.1vh 0 0 ${digitColors[i]?.shadowColor || "#00ffff"}, 1px 0 black, 0 -1px 0 black, 1px 0 0 black, -1px 0 0 black`,
+            }}
+          >
+            {digit}
+          </span>
+        ))}
       </div>
+
+      {/* Sync indicator to explain fallback state */}
+      {!isSynced && (
+        <div
+          style={{
+            position: "absolute",
+            top: "2vh",
+            right: "2vh",
+            padding: "1vh 2vh",
+            background: "rgba(0,0,0,0.6)",
+            color: "#c8ff00",
+            fontFamily: "monospace",
+            fontSize: "2vh",
+            border: "1px solid #c8ff00",
+            borderRadius: "1vh",
+            zIndex: 3,
+          }}
+        >
+          Syncing time...
+        </div>
+      )}
 
       {/* Marquee */}
       <div ref={marqueeRef} style={marqueeStyle}>

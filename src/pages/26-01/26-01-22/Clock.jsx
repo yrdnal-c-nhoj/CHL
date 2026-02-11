@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-
+import { useFontLoader } from '../../../utils/fontLoader';
 // Asset imports
 import backgroundUrl from '../../../assets/images/26-01-22/1974.jpg';
 import digitTextureUrl from '../../../assets/images/26-01-22/liq.webp';

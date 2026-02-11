@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import sandTexture from '../../../assets/images/25-12-19/sand.webp';
+import { useFontLoader } from '../../../utils/fontLoader';import sandTexture from '../../../assets/images/25-12-19/sand.webp';
 
 const FONT_FAMILY = 'DateFont';
 import FONT_PATH from '../../../assets/fonts/hour.ttf?url';

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-
+import { useFontLoader } from '../../../utils/fontLoader';
 /* ---------- Font ---------- */
 const FONT_FAMILY = 'Newla';
 import FONT_PATH from '../../../assets/fonts/lapse.otf?url';

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import bgImage2 from '../../../assets/images/25-10-13/ro.jpeg'
+import { useFontLoader } from '../../../utils/fontLoader';import bgImage2 from '../../../assets/images/25-10-13/ro.jpeg'
 import bgImage from '../../../assets/images/25-10-13/roundhay.webp' // second background
 import roundhayFont from '../../../assets/fonts/25-10-13-rou.ttf';
 import ifont25100013 from '../../../assets/fonts/25-10-13-line.otf';
