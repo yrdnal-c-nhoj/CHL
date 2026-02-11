@@ -91,7 +91,7 @@ const Clock = () => {
     padding: 0,
     height: "100dvh",
     width: "100vw",
-    background: "radial-gradient(circle at center, #dfeb6f, #ff6a06)",
+    background: "radial-gradient(circle at center, #DFEB6F, #ff6a06)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
