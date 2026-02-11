@@ -33,6 +33,14 @@ const useClock = () => {
 const DigitalClock = () => {
   const now = useClock();
   const fontReady = useFontLoader('BorrowedAnalog', teeVeeLoungeFont);
+  const [textReady, setTextReady] = useState(false);
+
+  // Prevent flash by only showing text when font is loaded
+  useEffect(() => {
+    if (fontReady) {
+      setTextReady(true);
+    }
+  }, [fontReady]);
 
   // 12-hour format with no leading zeros
   const hours = now.getHours();
@@ -54,12 +62,14 @@ const DigitalClock = () => {
 
       {/* DIGITAL CLOCK DISPLAY */}
       <div style={styles.digitalFace}>
-        <div style={{
-          ...styles.digitalDisplay,
-          fontFamily: fontReady ? "'BorrowedAnalog', sans-serif" : 'sans-serif'
-        }}>
-          {timeString}
-        </div>
+        {textReady && (
+          <div style={{
+            ...styles.digitalDisplay,
+            fontFamily: fontReady ? "'BorrowedAnalog', sans-serif" : 'sans-serif'
+          }}>
+            {timeString}
+          </div>
+        )}
       </div>
     </div>
   );
