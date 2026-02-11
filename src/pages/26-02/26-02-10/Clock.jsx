@@ -14,10 +14,10 @@ const CLOCK_CONFIG = {
 };
 
 /**
- * Custom Hook: useClock
+ * Custom Hook: teeVeeLoungeClock
  * Updates every second for digital display
  */
-const useClock = () => {
+const teeVeeLoungeClock = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const useClock = () => {
 };
 
 const DigitalClock = () => {
-  const now = useClock();
+  const now = teeVeeLoungeClock();
   const fontReady = useFontLoader('TeeVeeFont', teeVeeLoungeFont);
   const [textReady, setTextReady] = useState(false);
 
