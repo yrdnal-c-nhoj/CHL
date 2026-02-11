@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
-import circleFont from '../../../assets/fonts/25-05-28-circle.ttf'; // Local font file
+import circleFont from '../../../assets/fonts/25-05-28-circle.woff2'; // Prefer woff2 for better loading
 
 const Clock = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
+  const fontReady = useFontLoader('circle', circleFont, { fallback: true, timeout: 5000 });
 
   useEffect(() => {
-    // Load the font
-    const font = new FontFace('circle', `url(${circleFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontLoaded(true); // Set state to true when font is loaded
-    }).catch((error) => {
-      console.error('Font loading failed:', error);
-      setFontLoaded(true); // Fallback to render even if font fails
-    });
+    if (!fontReady) return;
+
+    let animationFrameId;
 
     const updateClocks = () => {
       const now = new Date();
@@ -32,19 +27,25 @@ const Clock = () => {
         const m = document.getElementById(`minute${i}`);
         const s = document.getElementById(`second${i}`);
 
-        if (h) h.setAttribute("transform", `rotate(${hourAngle} 50 50)`);
-        if (m) m.setAttribute("transform", `rotate(${minuteAngle} 50 50)`);
-        if (s) s.setAttribute("transform", `rotate(${secondAngle} 50 50)`);
+        if (h) h.setAttribute('transform', `rotate(${hourAngle} 50 50)`);
+        if (m) m.setAttribute('transform', `rotate(${minuteAngle} 50 50)`);
+        if (s) s.setAttribute('transform', `rotate(${secondAngle} 50 50)`);
       }
 
-      requestAnimationFrame(updateClocks);
+      animationFrameId = requestAnimationFrame(updateClocks);
     };
 
     updateClocks();
-    return () => cancelAnimationFrame(updateClocks);
-  }, []);
+    setFontLoaded(true);
 
-  // Don't render until font is loaded
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [fontReady]);
+
+  // Don't render until font is ready (loaded or fallback)
   if (!fontLoaded) {
     return null; // or a loading placeholder if desired
   }
@@ -52,7 +53,7 @@ const Clock = () => {
   const clockSize = '82vh';
 
   const clockStyle = {
-    fontFamily: 'circle, sans-serif !important',
+    fontFamily: 'circle, sans-serif',
     position: 'absolute',
     width: clockSize,
     height: clockSize,
@@ -139,7 +140,7 @@ const Clock = () => {
     fill: '#9de2ac',
     textAnchor: 'middle',
     dominantBaseline: 'middle',
-    fontFamily: 'circle, sans-serif !important',
+    fontFamily: 'circle, sans-serif',
   };
 
   const renderClock = (id, index) => (
@@ -171,7 +172,7 @@ const Clock = () => {
         height: '100dvh',
         width: '100vw',
         position: 'relative',
-        fontFamily: 'circle, sans-serif !important',
+        fontFamily: 'circle, sans-serif',
       }}
     >
       {clockPositions.map((clock, index) => renderClock(clock.id, index))}
