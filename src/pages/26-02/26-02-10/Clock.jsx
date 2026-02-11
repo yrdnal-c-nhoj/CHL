@@ -79,7 +79,7 @@ const styles = {
     inset: 0,
     backgroundSize: 'cover',
     backgroundPosition: '72% center',
-    filter: 'saturate(120%) hue-rotate(-10deg) ',
+    filter: 'saturate(120%) hue-rotate(-20deg) ',
     zIndex: 1,
   },
   digitalFace: {
@@ -90,7 +90,7 @@ const styles = {
     zIndex: 2,
   },
   digitalDisplay: {
-    fontSize: 'clamp(2rem, 10vw, 6rem)',
+    fontSize: 'clamp(3rem, 12vw, 6rem)',
     color: CLOCK_CONFIG.COLORS.silverText,
     textAlign: 'center',
     letterSpacing: '0.05em',
