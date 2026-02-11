@@ -1,10 +1,35 @@
 import React, { useState, useEffect } from "react";
+import { useFontLoader } from '../../../utils/fontLoader';
 import dotsFont from '../../../assets/fonts/25-05-27-dots.otf';         // Import custom font
 import backgroundImage from "../../../assets/images/25-05-27/dot.jpg"; // Import background image
 
 function Clock() {
   const [time, setTime] = useState(new Date());
   const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
+  const fontReady = useFontLoader('dots', dotsFont, { timeout: 3000 });
+  
+  // Debug font loading
+  console.log('Dots font ready:', fontReady);
+  console.log('Dots font URL:', dotsFont);
+  
+  // Add CSS font-face declaration
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: 'dots';
+        src: url(${dotsFont}) format('opentype');
+        font-display: block;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
+    };
+  }, [dotsFont]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -65,6 +90,8 @@ function Clock() {
     backgroundColor: "rgba(251, 148, 5, 0.1)",
     borderRadius: "0.2em",
     color: "rgb(4, 2, 109)",
+    // Debug styles
+    border: fontReady ? '2px solid green' : '2px solid red',
     textShadow: `
       #f6320b 1px 1px 20px,
       #94f00b -1px 1px 20px,
@@ -105,7 +132,7 @@ function Clock() {
   return (
     <>
       <style>{globalStyle}</style>
-      <div style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
+      <div style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden", opacity: fontReady ? 1 : 0.5, transition: 'opacity 0.3s ease' }}>
         {/* Static Background Layer */}
         <div
           style={{
