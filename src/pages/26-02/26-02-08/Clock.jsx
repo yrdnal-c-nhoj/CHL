@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 
 // Assets
-import analogFontUrl from '../../../assets/fonts/26-02-08-eiffel.ttf?url';
+import trocaderoFont from '../../../assets/fonts/26-02-08-eiffel.ttf?url';
 import analogBgImage from '../../../assets/images/26-02-08/tower.webp';
 import eifGif from '../../../assets/images/26-02-08/eif.gif';
 
@@ -19,7 +19,7 @@ const AnalogClockTemplate = () => {
   const [bgReady, setBgReady] = useState(false);
 
   useEffect(() => {
-    const font = new FontFace('BorrowedAnalog', `url(${analogFontUrl})`);
+    const font = new FontFace('BorrowedAnalog', `url(${trocaderoFont})`);
     font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
       setFontReady(true);
