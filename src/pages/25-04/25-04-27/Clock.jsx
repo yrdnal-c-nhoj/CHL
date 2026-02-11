@@ -151,7 +151,7 @@ const SpinningCoinClock = () => {
 
         .second-hand {
           width: 0.2vw;
-          height: 718vw;
+          height: 818vw;
           transform: translateX(-50%);
         }
 
