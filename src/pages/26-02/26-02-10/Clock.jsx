@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 
 // --- Assets ---
-import analogRainFont from '../../../assets/fonts/26-02-10-tv.ttf?url';
+import teeVeeLoungeFont from '../../../assets/fonts/26-02-10-tv.ttf?url';
 import analogBgImage from '../../../assets/images/26-02-10/tv.jpg';
 
 // --- Configuration ---
@@ -32,7 +32,7 @@ const useClock = () => {
 
 const DigitalClock = () => {
   const now = useClock();
-  const fontReady = useFontLoader('BorrowedAnalog', analogRainFont);
+  const fontReady = useFontLoader('BorrowedAnalog', teeVeeLoungeFont);
 
   // 12-hour format with no leading zeros
   const hours = now.getHours();
