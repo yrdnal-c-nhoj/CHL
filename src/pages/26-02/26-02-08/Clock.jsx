@@ -13,7 +13,7 @@ const STYLE_CONFIG = {
   glowColor: 'rgb(255, 253, 208)',
 };
 
-const AnalogClockTemplate = () => {
+const TrocClock = () => {
   const [time, setTime] = useState(new Date());
   const [fontReady, setFontReady] = useState(false);
   const [bgReady, setBgReady] = useState(false);
@@ -204,4 +204,4 @@ const AnalogClockTemplate = () => {
   );
 };
 
-export default AnalogClockTemplate;
+export default TrocClock;
