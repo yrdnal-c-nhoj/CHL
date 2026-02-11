@@ -1,62 +1,69 @@
-import React, { useEffect } from 'react';
-import bgImage from '../../../assets/images/25-05-07/3ce69531311986a8a78f1e093f53df3d-ezgif.com-optiwebp.webp';
+import React, { useEffect, useRef } from 'react';
+import bgImage from '../../../assets/images/25-05-07/water.webp';
 
 const Clock = () => {
+  const requestRef = useRef();
+
+  const updateClock = () => {
+    const now = new Date();
+    const ms = now.getMilliseconds();
+    const seconds = now.getSeconds();
+    const minutes = now.getMinutes();
+    const hours = now.getHours();
+
+    const secondsDeg = ((seconds + ms / 1000) / 60) * 360;
+    const minutesDeg = ((minutes + seconds / 60) / 60) * 360;
+    const hoursDeg = ((hours % 12 + minutes / 60) / 12) * 360;
+
+    const sHand = document.querySelector('.second-hand');
+    const mHand = document.querySelector('.minute-hand');
+    const hHand = document.querySelector('.hour-hand');
+    const sweep = document.querySelector('.radar-sweep');
+
+    if (sHand) sHand.style.transform = `translateX(-50%) rotate(${secondsDeg}deg)`;
+    if (sweep) sweep.style.transform = `translate(-50%, -50%) rotate(${secondsDeg}deg)`;
+    if (mHand) mHand.style.transform = `translateX(-50%) rotate(${minutesDeg}deg)`;
+    if (hHand) hHand.style.transform = `translateX(-50%) rotate(${hoursDeg}deg)`;
+
+    requestRef.current = requestAnimationFrame(updateClock);
+  };
+
   useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      const seconds = now.getSeconds();
-      const minutes = now.getMinutes();
-      const hours = now.getHours();
-
-      const secondsDeg = (seconds / 60) * 360;
-      const minutesDeg = (minutes / 60) * 360 + (seconds / 60) * 6;
-      const hoursDeg = (hours % 12 / 12) * 360 + (minutes / 60) * 30;
-
-      document.querySelector('.second-hand').style.transform = `translateX(-50%) rotate(${secondsDeg}deg)`;
-      document.querySelector('.minute-hand').style.transform = `translateX(-50%) rotate(${minutesDeg}deg)`;
-      document.querySelector('.hour-hand').style.transform = `translateX(-50%) rotate(${hoursDeg}deg)`;
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
+    requestRef.current = requestAnimationFrame(updateClock);
+    return () => cancelAnimationFrame(requestRef.current);
   }, []);
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <img decoding="async" loading="lazy" src={bgImage} alt="background" className="full-page-image" />
+    <div style={{
+      position: 'relative',
+      width: '100vw',
+      height: '100dvh',
+      overflow: 'hidden',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}>
+      <img src={bgImage} alt="background" className="full-page-image" />
+      
       <div className="clock">
         <div id="radar">
+          {/* The trailing glow effect */}
+          <div className="radar-sweep"></div>
+          
           <div className="clock-face">
             <div className="hand hour-hand"></div>
             <div className="hand minute-hand"></div>
-            <div className="hand second-hand"></div>
-            <div className="center"></div>
+            {/* <div className="hand second-hand"></div> */}
+            {/* <div className="center"></div> */}
           </div>
         </div>
       </div>
 
       <style>{`
         :root {
-          --g: rgb(14, 238, 14);
-          --bg-lines: rgb(2, 67, 2);
-          --bg-screen: #000100;
-          --line-opacity: 1.0;
-          --radial-opacity: 1.0;
-          --trail-length: 90deg;
-          --blend: color-dodge;
-          --speed: 60s;
+          --hand-color: #0bf226;
+          --clock-gray: #1a1a1a; 
+          --line-color: rgba(255, 255, 255, 0.1);
         }
 
         .full-page-image {
@@ -65,105 +72,83 @@ const Clock = () => {
           left: 0;
           width: 100vw;
           height: 100vh;
-          background-size: cover;
-          background-position: center;
-          background-repeat: no-repeat;
-          filter: contrast(200%) brightness(40%);
+          object-fit: cover;
+          filter: contrast(230%) brightness(50%);
           z-index: 1;
-        }
-
-        .clock {
-          position: relative;
-          z-index: 4;
         }
 
         #radar {
           position: relative;
-          width: 99vmin;
+          width: 85vmin;
           aspect-ratio: 1;
-          opacity: 90%;
+          background-color: var(--clock-gray);
+          border: 1vmin solid var(--clock-gray); 
+          border-radius: 50%;
+          z-index: 3;
           display: flex;
           justify-content: center;
           align-items: center;
-          background-color: #72706a;
-          border-radius: 50%;
-          z-index: 3;
+          overflow: hidden;
+          box-shadow: 0 0 40px rgba(0,0,0,0.8);
         }
 
-        #radar::before,
-        #radar::after {
+        /* Subtle Grid Overlay */
+        #radar::before {
           content: '';
+          position: absolute;
+          inset: 0;
+          background-image:
+            linear-gradient(to bottom, transparent 49.8%, var(--line-color) 50%, transparent 50.2%),
+            linear-gradient(to right, transparent 49.8%, var(--line-color) 50%, transparent 50.2%),
+            repeating-radial-gradient(circle, transparent 0, transparent 9.8%, var(--line-color) 10%);
+          z-index: 2;
+          pointer-events: none;
+        }
+
+        /* The Sonar Trail */
+        .radar-sweep {
           position: absolute;
           top: 50%;
           left: 50%;
-          transform: translate(-50%, -50%);
-          width: 95%;
-          aspect-ratio: 1;
-          border-radius: 50%;
-          transition: all 0.3s ease;
+          width: 100%;
+          height: 100%;
+          /* Starts transparent, ends at hand-color, sweeping backwards 90 degrees */
+          background: conic-gradient(
+            from -90deg at 50% 50%,
+            rgba(11, 242, 38, 0) 270deg,
+            rgba(11, 242, 38, 0.4) 360deg
+          );
+          z-index: 1;
+          pointer-events: none;
         }
 
-        #radar::before {
-          z-index: -1;
-          background-color: var(--bg-screen);
-          background-image:
-            linear-gradient(to bottom, transparent 50%, hsl(from var(--bg-lines) h s l / var(--line-opacity)), transparent calc(50% + 1px)),
-            linear-gradient(to right, transparent 50%, hsl(from var(--bg-lines) h s l / var(--line-opacity)), transparent calc(50% + 1px)),
-            linear-gradient(45deg, transparent 50%, hsl(from var(--bg-lines) h s l / var(--line-opacity)), transparent calc(50% + 1px)),
-            linear-gradient(-45deg, transparent 50%, hsl(from var(--bg-lines) h s l / var(--line-opacity)), transparent calc(50% + 1px)),
-            repeating-radial-gradient(hsl(from var(--bg-lines) h s l / var(--radial-opacity)) 0, transparent 1px 2.5vmin, hsl(from var(--bg-lines) h s l / var(--radial-opacity)) calc(2.5vmin + 1px));
-        }
-
-        #radar::after {
-          background-image: conic-gradient(#000 var(--trail-length), var(--g) 360deg);
-          mix-blend-mode: var(--blend);
-          animation: rotate var(--speed) linear infinite;
-        }
-
-        @keyframes rotate {
-          to {
-            transform: translate(-50%, -50%) rotate(1turn);
-          }
+        .clock-face {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          z-index: 10;
         }
 
         .hand {
           position: absolute;
           bottom: 50%;
           left: 50%;
-          transform-origin: bottom;
-          background-color: #0bf226;
+          transform-origin: bottom center;
+          background-color: var(--hand-color);
         }
 
         .hour-hand {
-          width: 2vh;
-          height: 15vh;
-          border-radius: 3px;
-        }
-
-        .minute-hand {
-          width: 1vh;
-          height: 25vh;
+          width: 1.8vmin;
+          height: 25%;
           border-radius: 2px;
         }
 
-        .second-hand {
-          width: 0.5vh;
-          height: 30vh;
-          border-radius: 1px;
-          background-color: transparent;
+        .minute-hand {
+          width: 1.2vmin;
+          height: 38%;
+          border-radius: 2px;
         }
 
-        .center {
-          position: absolute;
-          width: 1.5vh;
-          height: 1.5vh;
-          background-color: transparent;
-          border-radius: 50%;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          z-index: 5;
-        }
       `}</style>
     </div>
   );
