@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import arm from '../../../assets/images/25-05-25/arm.gif';
 import arm2 from '../../../assets/images/25-05-25/arm2.gif';
 import arm3 from '../../../assets/images/25-05-25/arm3.gif';
-import botFont from '../../../assets/fonts/25-05-25-bot.ttf'; // Import the font file
+// Use the optimized woff2 font (with ?url so Vite returns the resolved asset URL)
+import botFontUrl from '../../../assets/fonts/25-05-25-bot.woff2?url';
 
 const Clock = () => {
   useEffect(() => {
@@ -32,7 +33,7 @@ const Clock = () => {
     style.innerHTML = `
       @font-face {
         font-family: 'bot';
-        src: url('${botFont}') format('truetype');
+        src: url('${botFontUrl}') format('woff2');
         font-weight: normal;
         font-style: normal;
         font-display: swap;
@@ -41,7 +42,7 @@ const Clock = () => {
     document.head.appendChild(style);
     
     // Force font reload
-    const font = new FontFace('bot', `url(${botFont}) format('truetype')`);
+    const font = new FontFace('bot', `url(${botFontUrl}) format('woff2')`);
     font.load().then(() => {
       document.fonts.add(font);
       console.log('Bot font loaded successfully');
@@ -97,7 +98,7 @@ const Clock = () => {
     fontSize: "7vh",
     transform: "translate(-50%, -50%)",
     textShadow: "#f4d6f4 6px 6px",
-    fontFamily: "'bot', sans-serif !important",
+    fontFamily: "'bot', sans-serif",
   };
 
   const handBaseStyle = {
