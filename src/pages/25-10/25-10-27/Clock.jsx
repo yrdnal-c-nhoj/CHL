@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import rai251027font from '../../../assets/fonts/25-10-27-wish.otf';
+import { useFontLoader } from '../../../utils/fontLoader';import rai251027font from '../../../assets/fonts/25-10-27-wish.otf';
 import sfont251027 from '../../../assets/fonts/25-10-27-wish.ttf';
 
 export default function SkyClock () {

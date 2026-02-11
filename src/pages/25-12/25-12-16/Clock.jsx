@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import font_2025_12_16 from '../../../assets/fonts/25-12-16-four.ttf?url';
+import { useFontLoader } from '../../../utils/fontLoader';import font_2025_12_16 from '../../../assets/fonts/25-12-16-four.ttf?url';
 
 const QuadClock = () => {
   const [time, setTime] = useState(Date.now());

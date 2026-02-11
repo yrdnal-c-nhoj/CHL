@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-
+import { useFontLoader } from '../../../utils/fontLoader';
 // === Local assets ===
 import bgWebp from '../../../assets/images/25-10-10/roma.webp';
 import bgVideo from '../../../assets/images/25-10-10/ro.mp4';

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import d250914 from '../../../assets/fonts/25-09-14-swi.ttf?url';
+import { useFontLoader } from '../../../utils/fontLoader';import d250914 from '../../../assets/fonts/25-09-14-swi.ttf?url';
 import bgImageSrc from '../../../assets/images/25-09-14/bg.gif'
 
 const GoldenChordsClock = () => {

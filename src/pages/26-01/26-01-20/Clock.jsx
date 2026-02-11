@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import bgImage from '../../../assets/images/26-01-20/hairdo.webp';
+import { useFontLoader } from '../../../utils/fontLoader';import bgImage from '../../../assets/images/26-01-20/hairdo.webp';
 import d25090120font from '../../../assets/fonts/26-01-20-hairdo.ttf';
 
 // Defined outside to prevent re-allocation on every second tick

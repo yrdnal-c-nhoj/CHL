@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import ci2602Font from '../../../assets/fonts/pin.ttf?url';
+import { useFontLoader } from '../../../utils/fontLoader';import ci2602Font from '../../../assets/fonts/pin.ttf?url';
 
 // Constants moved outside to prevent re-allocation
 const OVAL = {

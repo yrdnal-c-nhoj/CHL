@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import lemonBg from '../../../assets/images/26-01-31/lemon.gif';
+import { useFontLoader } from '../../../utils/fontLoader';import lemonBg from '../../../assets/images/26-01-31/lemon.gif';
 import rainBg from '../../../assets/images/26-01-31/lu.webp';
 import lemGif from '../../../assets/images/26-01-31/lemslo.gif';
 import lemons2Bg from '../../../assets/images/26-01-31/lemons2.jpg';

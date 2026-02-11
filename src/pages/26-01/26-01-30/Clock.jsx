@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-// Asset Imports
+import { useFontLoader } from '../../../utils/fontLoader';// Asset Imports
 import clockFont from '../../../assets/fonts/26-01-30-ne.ttf';
 import bgLayer1 from "../../../assets/images/26-01-30/new.webp";
 import bgLayer2 from "../../../assets/images/26-01-30/nes.gif";

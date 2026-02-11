@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import customFontUrl from '../../../assets/fonts/26-02-07-gear.ttf?url'; 
+import { useFontLoader } from '../../../utils/fontLoader';import customFontUrl from '../../../assets/fonts/26-02-07-gear.ttf?url'; 
 import backgroundImage from '../../../assets/images/26-02-07/gear.gif'; 
 
 const FullscreenClock = () => {
