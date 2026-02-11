@@ -1,160 +1,182 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
-// === Local assets (module-based, fingerprinted by Vite) ===
-import wallTexture from '../../../assets/images/26-01-01/fan.gif';       // subtle plaster / stone texture
-import brassTexture from '../../../assets/images/26-01-01/fan.gif';     // optional brass grain
-import watchFontUrl from '../../../assets/fonts/26-01-01-fan.otf';
+// --- Assets ---
+import analogBgImage from '../../../assets/images/26-02-11/bell.webp';
 
+// --- Configuration ---
+const CLOCK_CONFIG = {
+  NUMERAL_RADIUS: 40,
+  COLORS: {
+    silverText: 'linear-gradient(180deg, #FFFFFF 0%, #C0C0C0 45%, #C5C1C1 50%, #D3D8F3 100%)',
+    hourHand: 'linear-gradient(to right, #959595, #ffffff, #959595)',
+    minuteHand: 'linear-gradient(to right, #B0B0B0, #ffffff, #B0B0B0)',
+    secondHand: 'linear-gradient(to top, #5F709F, #889AD4)', 
+  }
+};
 
+/**
+ * Custom Hook: useClock
+ * High-precision time for smooth "sweeping" motion
+ */
+const useClock = () => {
+  const [time, setTime] = useState(new Date());
 
-import bg1 from '../../../assets/images/26-01-01/fan.gif';
-import myFontUrl from '../../../assets/fonts/26-01-01-fan.otf';
-
-
-
-export default function NichePocketWatch() {
-  const watchRef = useRef(null);
-  const [fontReady, setFontReady] = useState(false);
-
-  // === Load font (Vite-modern behavior) ===
   useEffect(() => {
-    const font = new FontFace(
-      'WatchNumerals',
-      `url(${watchFontUrl})`
-    );
-
-    font
-      .load()
-      .then((loaded) => {
-        document.fonts.add(loaded);
-        setFontReady(true);
-      })
-      .catch(() => setFontReady(true));
-
-    return () => {
-      // FontFace cleanup is handled by browser; nothing persistent added
-    };
+    const interval = setInterval(() => {
+      setTime(new Date());
+    }, 50); // Update every 50ms for smooth motion
+    return () => clearInterval(interval);
   }, []);
 
-  // === Subtle pendulum swing ===
-  useEffect(() => {
-    let rafId;
-    let start;
+  return time;
+};
 
-    const animate = (t) => {
-      if (!start) start = t;
-      const elapsed = (t - start) / 1000;
+const AnalogClock = () => {
+  const now = useClock();
 
-      // gentle, slow swing
-      const angle = Math.sin(elapsed * 0.9) * 3;
+  // Time Calculations (including sub-second fractions for smooth motion)
+  const msec = now.getMilliseconds();
+  const sec = now.getSeconds() + msec / 1000;
+  const min = now.getMinutes() + sec / 60;
+  const hr = (now.getHours() % 12) + min / 60;
 
-      if (watchRef.current) {
-        watchRef.current.style.transform =
-          `translateX(-50%) rotate(${angle}deg)`;
-      }
+  // Memoized Numerals – all 12 hours around the perimeter
+  const renderedNumerals = useMemo(() => {
+    const numbersToShow = Array.from({ length: 12 }, (_, i) => i + 1); // 1–12
+    return numbersToShow.map((num) => {
+      const angle = (num / 12) * 2 * Math.PI;
+      const angleDeg = (num / 12) * 360; // for text rotation
+      const x = 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angle);
+      const y = 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angle);
 
-      rafId = requestAnimationFrame(animate);
-    };
-
-    rafId = requestAnimationFrame(animate);
-
-    return () => cancelAnimationFrame(rafId);
-  }, []);
-
-  // === Shared sizing ===
-  const nicheWidth = '70vw';
-  const nicheMaxWidth = '420px';
-
-  return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        boxSizing: 'border-box',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundImage: `url(${wallTexture})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        fontFamily: 'WatchNumerals, serif',
-        opacity: fontReady ? 1 : 0,
-        visibility: fontReady ? 'visible' : 'hidden',
-        transition: 'opacity 0.3s ease',
-      }}
-    >
-      {/* === Niche === */}
-      <div
-        style={{
-          position: 'relative',
-          width: nicheWidth,
-          maxWidth: nicheMaxWidth,
-          aspectRatio: '1 / 1.25',
-          borderTopLeftRadius: '100% 100%',
-          borderTopRightRadius: '100% 100%',
-          borderBottomLeftRadius: '1.5rem',
-          borderBottomRightRadius: '1.5rem',
-          background: 'linear-gradient(180deg, #e6ded2, #cfc6b8)',
-          boxShadow:
-            'inset 0 1.5rem 2.5rem rgba(0,0,0,0.25), inset 0 -0.5rem 1rem rgba(255,255,255,0.3)',
-          display: 'flex',
-          justifyContent: 'center',
-          overflow: 'hidden'
-        }}
-      >
-        {/* === Chain === */}
+      return (
         <div
+          key={num}
           style={{
-            position: 'absolute',
-            top: '0.75rem',
-            width: '2px',
-            height: '25%',
-            background:
-              'linear-gradient(180deg, #b08d57, #6e542e)',
-            boxShadow: '0 0 2px rgba(0,0,0,0.4)'
-          }}
-        />
-
-        {/* === Pocket Watch === */}
-        <div
-          ref={watchRef}
-          style={{
-            position: 'absolute',
-            top: '25%',
-            left: '50%',
-            transformOrigin: 'top center',
-            width: '38%',
-            aspectRatio: '1 / 1',
-            borderRadius: '50%',
-            backgroundImage: `url(${brassTexture})`,
-            backgroundSize: 'cover',
-            boxShadow:
-              '0 1.5rem 2.5rem rgba(0,0,0,0.35), inset 0 0 0.25rem rgba(255,255,255,0.6)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
+            ...styles.numeralBase,
+            left: `${x}%`,
+            top: `${y}%`,
+            // Rotate so each digit follows the clock's perimeter, not upright
+            transform: `translate(-50%, -50%) rotate(${angleDeg + 90}deg)`,
           }}
         >
-          {/* Watch face */}
-          <div
-            style={{
-              width: '85%',
-              height: '85%',
-              borderRadius: '50%',
-              background: '#f7f3ee',
-              boxShadow: 'inset 0 0 0.5rem rgba(0,0,0,0.25)',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              fontSize: 'clamp(1rem, 3vw, 1.6rem)',
-              color: '#2e2a24'
-            }}
-          >
-            XII
-          </div>
+          {num}
         </div>
+      );
+    });
+  }, []);
+
+  return (
+    <div style={styles.container}>
+      {/* FILTERED BACKGROUND LAYER 
+          By placing the filter here, it only affects the image, not the clock.
+      */}
+      <div style={{ 
+        ...styles.backgroundLayer, 
+        backgroundImage: `url(${analogBgImage})` 
+      }} />
+
+      {/* CLOCK FACE LAYER */}
+      <div style={styles.face}>
+        {renderedNumerals}
+        
+        {/* Hour Hand */}
+        <div style={{ 
+          ...styles.hand, 
+          ...styles.hourHand, 
+          transform: `translate(-50%, 0) rotate(${hr * 30}deg)` 
+        }} />
+        
+        {/* Minute Hand */}
+        <div style={{ 
+          ...styles.hand, 
+          ...styles.minHand, 
+          transform: `translate(-50%, 0) rotate(${min * 6}deg)` 
+        }} />
+        
+        {/* Second Hand */}
+        <div style={{ 
+          ...styles.hand, 
+          ...styles.secHand, 
+          transform: `translate(-50%, 0) rotate(${sec * 6}deg)` 
+        }} />
+        
+        {/* Center Cap */}
+        <div style={styles.centerDot} />
       </div>
     </div>
   );
-}
+};
+
+// --- Styles ---
+const styles = {
+  container: {
+    position: 'relative',
+    width: '100vw',
+    height: '100dvh',
+    overflow: 'hidden',
+    backgroundColor: '#050505',
+  },
+  backgroundLayer: {
+    position: 'absolute',
+    inset: 0,
+    // Tile the bell image across the viewport
+    backgroundSize: '220px auto',
+    backgroundRepeat: 'repeat',
+    backgroundPosition: 'center',
+    // Color treatment applied only to the image layer
+    filter: 'saturate(620%) hue-rotate(-20deg) contrast(0.6) brightness(1.8)',
+    zIndex: 1,
+  },
+  face: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '100vmin',
+    height: '100vmin',
+    zIndex: 2,
+    fontFamily: "'Bellefair', serif",
+  },
+  numeralBase: {
+    position: 'absolute',
+    transform: 'translate(-50%, -50%)',
+    fontSize: 'clamp(7rem, 28vh 9rem)',
+    background: CLOCK_CONFIG.COLORS.silverText,
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    filter: 'drop-shadow(0px 1px 0px rgb(0, 0, 0))',
+    // opacity: 0.4,
+  },
+  hand: {
+    position: 'absolute',
+    bottom: '50%',
+    left: '50%',
+    transformOrigin: '50% 100%',
+    borderRadius: '10px',
+    willChange: 'transform',
+  },
+  hourHand: {
+    width: '1.2vmin',
+    height: '24vmin',
+    background: CLOCK_CONFIG.COLORS.hourHand,
+    boxShadow: '0 0 10px rgba(0,0,0,0.5)',
+    zIndex: 3,
+  },
+  minHand: {
+    width: '0.8vmin',
+    height: '32vmin',
+    background: CLOCK_CONFIG.COLORS.minuteHand,
+    boxShadow: '0 0 8px rgba(0,0,0,0.4)',
+    zIndex: 4,
+  },
+  secHand: {
+    width: '0.4vmin',
+    height: '38vmin',
+    background: CLOCK_CONFIG.COLORS.secondHand,
+    boxShadow: '0 0 12px rgba(15, 77, 248, 0.4)',
+    zIndex: 5,
+  },
+};
+
+export default AnalogClock;
