@@ -19,7 +19,7 @@ const AnalogClockTemplate = () => {
   const [bgReady, setBgReady] = useState(false);
 
   useEffect(() => {
-    const font = new FontFace('BorrowedAnalog', `url(${trocaderoFont})`);
+    const font = new FontFace('TrocaderoFont', `url(${trocaderoFont})`);
     font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
       setFontReady(true);
@@ -52,7 +52,7 @@ const AnalogClockTemplate = () => {
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
-    fontFamily: fontReady ? "'BorrowedAnalog', serif" : "'Playfair Display', serif",
+    fontFamily: fontReady ? "'TrocaderoFont', serif" : "'Playfair Display', serif",
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

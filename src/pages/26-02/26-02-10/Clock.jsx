@@ -32,7 +32,7 @@ const useClock = () => {
 
 const DigitalClock = () => {
   const now = useClock();
-  const fontReady = useFontLoader('BorrowedAnalog', teeVeeLoungeFont);
+  const fontReady = useFontLoader('TeeVeeFont', teeVeeLoungeFont);
   const [textReady, setTextReady] = useState(false);
 
   // Prevent flash by only showing text when font is loaded
@@ -65,7 +65,7 @@ const DigitalClock = () => {
         {textReady && (
           <div style={{
             ...styles.digitalDisplay,
-            fontFamily: fontReady ? "'BorrowedAnalog', sans-serif" : 'sans-serif'
+            fontFamily: fontReady ? "'TeeVeeFont', sans-serif" : 'sans-serif'
           }}>
             {timeString}
           </div>
