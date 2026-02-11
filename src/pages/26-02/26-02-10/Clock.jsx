@@ -49,8 +49,8 @@ const DigitalClock = () => {
   const seconds = now.getSeconds();
   const ampm = hours >= 12 ? 'PM' : 'AM';
 
-  // Format with leading zeros on minutes only
-  const timeString = `${twelveHour}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+  // Format with leading zeros on minutes only, all on one line
+  const timeString = `${twelveHour}:${minutes.toString().padStart(2, '0')}${ampm}`;
 
   return (
     <div style={styles.container}>
