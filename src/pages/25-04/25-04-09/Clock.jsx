@@ -55,7 +55,7 @@ const EmptyRoomClock = () => {
         backgroundColor: '#000',
       }}
     >
-      <img
+      <img decoding="async" loading="lazy"
         src={roomImage}
         alt="Room background"
         style={{

@@ -67,7 +67,7 @@ function RomanClock() {
 
   return (
     <div style={styles.container}>
-      <img src={castelImage} alt="Background" style={styles.bgImage} />
+      <img decoding="async" loading="lazy" src={castelImage} alt="Background" style={styles.bgImage} />
       <div
         style={{
           ...styles.clock,

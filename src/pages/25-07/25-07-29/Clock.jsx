@@ -153,7 +153,7 @@ const SlotMachineClock = () => {
       margin: 0,
       backgroundColor: '#080808'
     }}>
-      <img src={bgImage} style={{
+      <img decoding="async" loading="lazy" src={bgImage} style={{
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         position: 'absolute',

@@ -192,8 +192,8 @@ export default function SlowLightningClock() {
       `}</style>
 
       {/* Background images */}
-      <img src={lightningImg} alt="lightning" style={styles.bgimage} draggable={false} />
-      <img src={lightningImg} alt="lightning mirrored" style={{ ...styles.bgimage, transform: "translate(-50%, -50%) scaleX(-1)", zIndex: 2 }} draggable={false} />
+      <img decoding="async" loading="lazy" src={lightningImg} alt="lightning" style={styles.bgimage} draggable={false} />
+      <img decoding="async" loading="lazy" src={lightningImg} alt="lightning mirrored" style={{ ...styles.bgimage, transform: "translate(-50%, -50%) scaleX(-1)", zIndex: 2 }} draggable={false} />
 
       <div style={styles.clockContainer}>
         <div id="clock" ref={clockRef} style={styles.clock}>

@@ -143,7 +143,7 @@ export default function ImageAnalogClock() {
     >
       <div style={wrapper}>
         {numberImages.map((src, index) => (
-          <img key={index} src={src} alt="" style={numberStyle(index)} />
+          <img decoding="async" loading="lazy" key={index} src={src} alt="" style={numberStyle(index)} />
         ))}
 
         <div ref={hourRef} style={hourHand}></div>

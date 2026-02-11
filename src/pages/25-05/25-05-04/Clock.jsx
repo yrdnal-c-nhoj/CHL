@@ -90,7 +90,7 @@ const Clock = () => {
     <div style={containerStyle}>
       <div style={slideshowStyle}>
         {[tumbGif, spinnGif, edGif].map((src, i) => (
-          <img key={i} src={src} alt={`frame-${i}`} style={imageStyle(i)} />
+          <img decoding="async" loading="lazy" key={i} src={src} alt={`frame-${i}`} style={imageStyle(i)} />
         ))}
       </div>
 
@@ -100,7 +100,7 @@ const Clock = () => {
         <div id="second" style={{ ...handStyle, height: "1px", background: "rgb(65, 69, 69)" }}></div>
       </div>
 
-      <img src={wallpaperGif} alt="background" style={wallpaperStyle} />
+      <img decoding="async" loading="lazy" src={wallpaperGif} alt="background" style={wallpaperStyle} />
 
       <style>{`
         @keyframes fade {

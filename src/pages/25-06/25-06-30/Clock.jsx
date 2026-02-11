@@ -147,7 +147,7 @@ export default function Clock() {
         </div>
       )}
 
-      <img src={bgImage} alt="Egg background" style={eggBackground} />
+      <img decoding="async" loading="lazy" src={bgImage} alt="Egg background" style={eggBackground} />
 
       <div style={clockStyle}>
         {[img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12].map((img, i) => {
@@ -166,7 +166,7 @@ export default function Clock() {
             { top: '10%', left: '50%' },
           ];
           return (
-            <img
+            <img decoding="async" loading="lazy"
               key={i}
               src={img}
               alt={`Number ${i + 1}`}
@@ -174,9 +174,9 @@ export default function Clock() {
             />
           );
         })}
-        <img id="hour" src={hourHand} alt="Hour hand" style={{ ...handStyle, height: '18vh', width: '12.8rem', zIndex: 2 }} />
-        <img id="minute" src={minuteHand} alt="Minute hand" style={{ ...handStyle, height: '25vh', width: '5rem', zIndex: 1 }} />
-        <img id="second" src={secondHand} alt="Second hand" style={{ ...handStyle, height: '30vh', width: '7.2rem', zIndex: 3, filter: 'brightness(120%)' }} />
+        <img decoding="async" loading="lazy" id="hour" src={hourHand} alt="Hour hand" style={{ ...handStyle, height: '18vh', width: '12.8rem', zIndex: 2 }} />
+        <img decoding="async" loading="lazy" id="minute" src={minuteHand} alt="Minute hand" style={{ ...handStyle, height: '25vh', width: '5rem', zIndex: 1 }} />
+        <img decoding="async" loading="lazy" id="second" src={secondHand} alt="Second hand" style={{ ...handStyle, height: '30vh', width: '7.2rem', zIndex: 3, filter: 'brightness(120%)' }} />
       </div>
 
       <style>

@@ -35,7 +35,7 @@ const Clock = () => {
         alignItems: 'center',
       }}
     >
-      <img src={bgImage} alt="background" className="full-page-image" />
+      <img decoding="async" loading="lazy" src={bgImage} alt="background" className="full-page-image" />
       <div className="clock">
         <div id="radar">
           <div className="clock-face">

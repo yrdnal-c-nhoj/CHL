@@ -99,7 +99,7 @@ export default function AardvarkClock() {
     }}>
 
       {/* Corner image */}
-      <img
+      <img decoding="async" loading="lazy"
         src={aaaImage}
         alt=""
         style={{

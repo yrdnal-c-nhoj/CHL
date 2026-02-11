@@ -143,7 +143,7 @@ const RouletteClock = () => {
         }}
       ></div>
 
-      <img
+      <img decoding="async" loading="lazy"
         src={rouleGif}
         alt="bg1"
         style={{
@@ -159,7 +159,7 @@ const RouletteClock = () => {
           opacity: 0.9,
         }}
       />
-      <img
+      <img decoding="async" loading="lazy"
         src={rouletteSvg}
         alt="bg2"
         style={{

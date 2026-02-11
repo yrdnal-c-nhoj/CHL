@@ -152,7 +152,7 @@ const Clock = () => {
           {numbers.map(({ src, angle }, i) => {
             const rad = angle * Math.PI / 180;
             return (
-              <img
+              <img decoding="async" loading="lazy"
                 key={i}
                 src={src}
                 style={{
@@ -166,7 +166,7 @@ const Clock = () => {
             );
           })}
 
-          <img src={hourHand} style={{
+          <img decoding="async" loading="lazy" src={hourHand} style={{
             position: 'absolute',
             width: handWidth,
             height: hourHandLength,
@@ -176,7 +176,7 @@ const Clock = () => {
             transformOrigin: 'center 75%'
           }} />
 
-          <img src={minuteHand} style={{
+          <img decoding="async" loading="lazy" src={minuteHand} style={{
             position: 'absolute',
             width: handWidth,
             height: minuteHandLength,
@@ -186,7 +186,7 @@ const Clock = () => {
             transformOrigin: 'center 75%'
           }} />
 
-          <img src={secondHand} style={{
+          <img decoding="async" loading="lazy" src={secondHand} style={{
             position: 'absolute',
             width: handWidth,
             height: secondHandLength,

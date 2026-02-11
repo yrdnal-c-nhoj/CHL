@@ -178,7 +178,7 @@ const CrossClock = () => {
       </style>
 
       <div className="clock-content">
-        <img
+        <img decoding="async" loading="lazy"
           src={backgroundImage}
           alt="Background"
           style={{

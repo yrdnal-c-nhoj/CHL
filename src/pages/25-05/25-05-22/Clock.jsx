@@ -112,7 +112,7 @@ const Clock = () => {
       </style>
 
       <div className="clock-content">
-        <img
+        <img decoding="async" loading="lazy"
           src={sunGif}
           alt="Sun"
           style={{

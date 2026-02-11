@@ -41,7 +41,7 @@ const CattleBrandClock = () => {
         `}
       </style>
 
-      <img
+      <img decoding="async" loading="lazy"
         src={bgImage}
         alt="Background"
         style={{

@@ -75,7 +75,7 @@ export default function Clock() {
       alignItems: 'center', 
       overflow: 'hidden'
     }}>
-      <img
+      <img decoding="async" loading="lazy"
         src={scorpImage}
         alt="Background"
         style={{
@@ -130,7 +130,7 @@ export default function Clock() {
             zIndex: 4,
           }}
         >
-          <img
+          <img decoding="async" loading="lazy"
             src={hourHandImage}
             alt="Hour Hand"
             style={{ width: '100%', height: '100%', objectFit: 'contain' }}
@@ -148,7 +148,7 @@ export default function Clock() {
             zIndex: 5,
           }}
         >
-          <img
+          <img decoding="async" loading="lazy"
             src={minuteHandImage}
             alt="Minute Hand"
             style={{ width: '100%', height: '100%', objectFit: 'contain' }}
@@ -166,7 +166,7 @@ export default function Clock() {
             zIndex: 6,
           }}
         >
-          <img
+          <img decoding="async" loading="lazy"
             src={secondHandImage}
             alt="Second Hand"
             style={{ width: '100%', height: '100%', objectFit: 'contain' }}

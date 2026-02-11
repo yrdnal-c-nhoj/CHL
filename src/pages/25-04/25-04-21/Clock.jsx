@@ -145,14 +145,14 @@ export default function AnalogImageClock() {
 
       {/* Clock */}
       <div className="clock-face" aria-label="Analog clock">
-        <img ref={hourRef} src={hourHand} alt="hour hand" className="hand hour-hand" />
-        <img ref={minuteRef} src={minuteHand} alt="minute hand" className="hand minute-hand" />
-        <img ref={secondRef} src={secondHand} alt="second hand" className="hand second-hand" />
+        <img decoding="async" loading="lazy" ref={hourRef} src={hourHand} alt="hour hand" className="hand hour-hand" />
+        <img decoding="async" loading="lazy" ref={minuteRef} src={minuteHand} alt="minute hand" className="hand minute-hand" />
+        <img decoding="async" loading="lazy" ref={secondRef} src={secondHand} alt="second hand" className="hand second-hand" />
       </div>
 
       {/* Overlay images */}
-      <img src={overlayTopLeft} alt="top left overlay" className="overlay top-left" />
-      <img src={overlayBottomRight} alt="bottom right overlay" className="overlay bottom-right" />
+      <img decoding="async" loading="lazy" src={overlayTopLeft} alt="top left overlay" className="overlay top-left" />
+      <img decoding="async" loading="lazy" src={overlayBottomRight} alt="bottom right overlay" className="overlay bottom-right" />
     </div>
   );
 }

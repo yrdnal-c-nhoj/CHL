@@ -111,9 +111,9 @@ const LavaClock = () => {
     <div style={{ backgroundColor: "#f70f07", width: "100vw", height: "100vh", overflow: "hidden", position: "relative" }}>
       <div style={screenStyle}></div>
 
-      <img src={lava2} style={bgImageStyle3} alt="Lava Layer 3" />
-      <img src={lava1} style={bgImageStyle2} alt="Lava Layer 2" />
-      <img src={lava3} style={bgImageStyle1} alt="Lava Layer 1" />
+      <img decoding="async" loading="lazy" src={lava2} style={bgImageStyle3} alt="Lava Layer 3" />
+      <img decoding="async" loading="lazy" src={lava1} style={bgImageStyle2} alt="Lava Layer 2" />
+      <img decoding="async" loading="lazy" src={lava3} style={bgImageStyle1} alt="Lava Layer 1" />
 
       <div style={containerStyle}>
         <div style={timePartStyle}>{time.hours}</div>

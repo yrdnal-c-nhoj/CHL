@@ -207,7 +207,7 @@ export default function DigitalClockVideo() {
           type="video/mp4"
         />
       ) : (
-        <img style={mediaStyle} src={fallbackImage} alt="Background fallback" />
+        <img decoding="async" loading="lazy" style={mediaStyle} src={fallbackImage} alt="Background fallback" />
       )}
       <div style={clockStyle}>
         {isPhone ? (

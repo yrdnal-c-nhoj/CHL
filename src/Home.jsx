@@ -159,10 +159,10 @@ const formatDate = (dateStr) => {
           padding: "0.1rem",
         }}>
           <a href="https://www.instagram.com/cubist_heart_labs/" target="_blank" rel="noopener noreferrer">
-            <img src={instaImg} alt="Instagram" style={{ width: "2rem", height: "2rem" }} />
+            <img decoding="async" loading="lazy" src={instaImg} alt="Instagram" style={{ width: "2rem", height: "2rem" }} />
           </a>
           <a href="https://x.com/cubistheartlabs" target="_blank" rel="noopener noreferrer">
-            <img src={elonImg} alt="X" style={{ width: "2rem", height: "2rem" }} />
+            <img decoding="async" loading="lazy" src={elonImg} alt="X" style={{ width: "2rem", height: "2rem" }} />
           </a>
         </div>
 

@@ -105,7 +105,7 @@ export default function Clock() {
   return (
     <div style={containerStyle}>
       {/* Background */}
-      <img
+      <img decoding="async" loading="lazy"
         src={backgroundGif}
         alt="background"
         style={{

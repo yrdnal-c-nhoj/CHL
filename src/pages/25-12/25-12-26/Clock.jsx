@@ -85,7 +85,7 @@ function formatTime(date) {
 // Overlay component
 function ScytheOverlay({ rotation = 0, top = '40%' }) {
   return (
-    <img
+    <img decoding="async" loading="lazy"
       src={overlayImage}
       alt=""
       style={{

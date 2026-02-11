@@ -199,7 +199,7 @@ export default function PanicAnalogClock () {
         </style>
       )}
       {/* Left background */}
-      <img
+      <img decoding="async" loading="lazy"
         src={leftSrc || undefined}
         alt='background'
         style={{
@@ -209,7 +209,7 @@ export default function PanicAnalogClock () {
         }}
       />
       {/* Right background */}
-      <img
+      <img decoding="async" loading="lazy"
         src={rightSrc || undefined}
         alt='reversed background'
         onLoad={() => {

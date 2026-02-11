@@ -133,7 +133,7 @@ const CloudClock = () => {
           <div id="ampm" dangerouslySetInnerHTML={{ __html: ampmHTML }} />
         </div>
 
-        <img
+        <img decoding="async" loading="lazy"
           src={clouds}
           alt="Clouds Background"
           style={{
@@ -146,7 +146,7 @@ const CloudClock = () => {
             objectFit: "cover",
           }}
         />
-        <img
+        <img decoding="async" loading="lazy"
           src={clouds}
           alt="Clouds Background Mirrored"
           style={{

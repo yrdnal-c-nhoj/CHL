@@ -182,7 +182,7 @@ const DigitalClock = () => {
           zIndex: 2
         }}
       >
-        <img
+        <img decoding="async" loading="lazy"
           src={centerImage}
           alt='Center'
           style={{ width: '100%', height: '100%', objectFit: 'contain' }}
@@ -203,7 +203,7 @@ const DigitalClock = () => {
           zIndex: 4
         }}
       >
-        <img
+        <img decoding="async" loading="lazy"
           src={topImage}
           alt='Top overlay'
           style={{ width: '100%', height: '100%', objectFit: 'contain' }}
@@ -226,7 +226,7 @@ const DigitalClock = () => {
             zIndex: img.zIndex
           }}
         >
-          <img
+          <img decoding="async" loading="lazy"
             src={img.src}
             alt={`overlay-${i}`}
             style={{ width: '100%', height: '100%', objectFit: 'contain' }}

@@ -144,7 +144,7 @@ const HummingbirdClock = () => {
     <div style={styles.body}>
       <div style={{ ...styles.bgImageLayer, backgroundImage: `url(${hmmGif})`, zIndex: 1 }} />
       <div style={{ ...styles.bgImageLayer, backgroundImage: `url(${hmmGif})`, transform: 'scaleX(-1) rotate(90deg)', zIndex: 2 }} />
-      <img src={hummPng} alt="BG" style={styles.bgImageFlipped} />
+      <img decoding="async" loading="lazy" src={hummPng} alt="BG" style={styles.bgImageFlipped} />
 
       <div style={styles.clock}>
         <div style={{ ...styles.number, ...styles.numTwelve }}>twelve</div>
@@ -158,7 +158,7 @@ const HummingbirdClock = () => {
       </div>
 
       {floatingImages.map((img, i) => (
-        <img
+        <img decoding="async" loading="lazy"
           key={i}
           id={`float-${i}`}
           src={img.src}

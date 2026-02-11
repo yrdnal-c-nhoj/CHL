@@ -75,17 +75,17 @@ export default function AnalogClock () {
     <div style={outerContainerStyle}>
       <div style={clockContainerStyle}>
         {/* Hour hand */}
-        <img src={hourHand} alt='hour' style={handStyle(hourDeg, 18, 24)} />
+        <img decoding="async" loading="lazy" src={hourHand} alt='hour' style={handStyle(hourDeg, 18, 24)} />
 
         {/* Minute hand (restored) */}
-        <img
+        <img decoding="async" loading="lazy"
           src={minuteHand}
           alt='minute'
           style={handStyle(minuteDeg, 20, 32)}
         />
 
         {/* Second hand */}
-        <img
+        <img decoding="async" loading="lazy"
           src={secondHand}
           alt='second'
           style={handStyle(secondDeg, 16, 33)}

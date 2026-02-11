@@ -146,7 +146,7 @@ const AnalogClock = () => {
           const angle = (i * 360) / 60;
           const tickLength = i % 5 === 0 ? 2 : 1;
           return (
-            <img
+            <img decoding="async" loading="lazy"
               key={i}
               src={tickImg}
               alt="tick"
@@ -164,7 +164,7 @@ const AnalogClock = () => {
         })}
 
         {/* Hour Hand */}
-        <img
+        <img decoding="async" loading="lazy"
           src={hourHandImg}
           alt="hour"
           style={{
@@ -181,7 +181,7 @@ const AnalogClock = () => {
         />
 
         {/* Minute Hand */}
-        <img
+        <img decoding="async" loading="lazy"
           src={minuteHandImg}
           alt="minute"
           style={{
@@ -198,7 +198,7 @@ const AnalogClock = () => {
         />
 
         {/* Second Hand */}
-        <img
+        <img decoding="async" loading="lazy"
           src={secondHandImg}
           alt="second"
           style={{

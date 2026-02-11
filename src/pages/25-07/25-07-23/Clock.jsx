@@ -33,7 +33,7 @@ const Clock = () => {
 
 
      
-      <img src={backgroundImg} alt="background" style={styles.bgimage} />
+      <img decoding="async" loading="lazy" src={backgroundImg} alt="background" style={styles.bgimage} />
 
       <div style={styles.clock}>
         {timeStr.split('').map((char, index) => (

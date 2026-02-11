@@ -78,7 +78,7 @@ export default function QuadrantClock() {
         }}
       >
         {grid.flat().map((val, idx) => (
-          <img
+          <img decoding="async" loading="lazy"
             key={idx}
             src={val ? blackImg : pinkImg}
             alt=""

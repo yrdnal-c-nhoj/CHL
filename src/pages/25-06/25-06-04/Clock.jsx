@@ -201,8 +201,8 @@ const CoffeeClock = () => {
   // Actual clock render
   return (
     <div style={containerStyle}>
-      <img src={bgStill} alt="Still Background" style={bgStillStyle} />
-      <img src={bgAnimated} alt="Animated Overlay" style={bgAnimStyle} />
+      <img decoding="async" loading="lazy" src={bgStill} alt="Still Background" style={bgStillStyle} />
+      <img decoding="async" loading="lazy" src={bgAnimated} alt="Animated Overlay" style={bgAnimStyle} />
 
       <div style={clockStyle}>
         {[...Array(12)].map((_, i) => {

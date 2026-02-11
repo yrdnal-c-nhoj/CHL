@@ -170,7 +170,7 @@ const Clock = () => {
           {numbers.map(({ src, angle }, i) => {
             const rad = (angle * Math.PI) / 180;
             return (
-              <img
+              <img decoding="async" loading="lazy"
                 key={i}
                 src={src}
                 alt=""

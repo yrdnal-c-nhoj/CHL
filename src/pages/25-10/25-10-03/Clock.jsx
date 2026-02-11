@@ -129,17 +129,17 @@ const AnalogClockWithImages = () => {
           }}
         >
           {/* Hour hand */}
-          <img src={hourHand} alt="Hour hand" style={handImageStyle(hourAngle, "5%")} />
+          <img decoding="async" loading="lazy" src={hourHand} alt="Hour hand" style={handImageStyle(hourAngle, "5%")} />
 
           {/* Minute hand */}
-          <img src={minuteHand} alt="Minute hand" style={handImageStyle(minuteAngle, "6%")} />
+          <img decoding="async" loading="lazy" src={minuteHand} alt="Minute hand" style={handImageStyle(minuteAngle, "6%")} />
 
           {/* Second hand */}
-          <img src={secondHand} alt="Second hand" style={handImageStyle(secondAngle, "9%")} />
+          <img decoding="async" loading="lazy" src={secondHand} alt="Second hand" style={handImageStyle(secondAngle, "9%")} />
 
           {/* Numbers */}
           {Array.from({ length: 12 }).map((_, i) => (
-            <img
+            <img decoding="async" loading="lazy"
               key={i}
               src={numberImages[i]}
               alt={`Number ${i + 1}`}

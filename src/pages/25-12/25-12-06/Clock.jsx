@@ -174,9 +174,9 @@ export default function AnalogClock() {
           <div key={i + 1} style={numberStyle(i + 1)}>{i + 1}</div>
         ))}
 
-        <img src={minnnuteHandImg} style={handStyle(minuteDeg, 37, 9)} alt="minute" />
-        <img src={secondHandImg} style={handStyle(secondDeg, 40, 10)} alt="second" />
-        <img src={hourHandImggir} style={handStyle(hourDeg, 45, 11)} alt="hour" /> 
+        <img decoding="async" loading="lazy" src={minnnuteHandImg} style={handStyle(minuteDeg, 37, 9)} alt="minute" />
+        <img decoding="async" loading="lazy" src={secondHandImg} style={handStyle(secondDeg, 40, 10)} alt="second" />
+        <img decoding="async" loading="lazy" src={hourHandImggir} style={handStyle(hourDeg, 45, 11)} alt="hour" /> 
       
         {/* Spinning Center Image */}
         <div style={{
@@ -188,7 +188,7 @@ export default function AnalogClock() {
           transform: `translate(-50%, -50%) rotate(${centerDeg}deg)`,
           zIndex: 15
         }}>
-          <img src={centerImg} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="center" />
+          <img decoding="async" loading="lazy" src={centerImg} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="center" />
         </div>
       </div>
     </div>

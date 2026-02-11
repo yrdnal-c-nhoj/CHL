@@ -96,7 +96,7 @@ export default function MonarchScene() {
           style={videoStyle}
         />
       ) : (
-        <img
+        <img decoding="async" loading="lazy"
           src={fallbackImg}
           alt=""
           style={{

@@ -35,12 +35,12 @@ const BoringClock = () => {
   return (
     <div style={styles.body}>
   
-      <img src={inst} alt="border" style={styles.borer2} />
+      <img decoding="async" loading="lazy" src={inst} alt="border" style={styles.borer2} />
 
       <div style={styles.clock}>
-        <img src={hand2} alt="second hand" ref={secondRef} style={{ ...styles.hand, ...styles.secondHand }} />
-        <img src={hand1} alt="hour hand" ref={hourRef} style={{ ...styles.hand, ...styles.hourHand }} />
-        <img src={hand3} alt="minute hand" ref={minuteRef} style={{ ...styles.hand, ...styles.minHand }} />
+        <img decoding="async" loading="lazy" src={hand2} alt="second hand" ref={secondRef} style={{ ...styles.hand, ...styles.secondHand }} />
+        <img decoding="async" loading="lazy" src={hand1} alt="hour hand" ref={hourRef} style={{ ...styles.hand, ...styles.hourHand }} />
+        <img decoding="async" loading="lazy" src={hand3} alt="minute hand" ref={minuteRef} style={{ ...styles.hand, ...styles.minHand }} />
       </div>
     </div>
   );

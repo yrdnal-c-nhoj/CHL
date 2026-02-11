@@ -191,7 +191,7 @@ export default function IonosphereClock() {
 
   return (
     <>
-      <img
+      <img decoding="async" loading="lazy"
         src={iskyWebp}
         alt="Sky background"
         style={{
@@ -206,7 +206,7 @@ export default function IonosphereClock() {
           pointerEvents: "none",
         }}
       />
-      <img
+      <img decoding="async" loading="lazy"
         src={ionJpeg}
         alt="Ion background"
         style={{

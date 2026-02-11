@@ -210,7 +210,7 @@ svg: {
 
   return (
     <div style={styles.container}>
-      <img src={birdsGif} alt="Background" style={styles.bgImage} draggable={false} />
+      <img decoding="async" loading="lazy" src={birdsGif} alt="Background" style={styles.bgImage} draggable={false} />
       <svg
         ref={svgRef}
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}

@@ -212,7 +212,7 @@ const GoldenHourClock = () => {
         }
       `}</style>
 
-      <img src={bgGif} alt="Background" className="bgimage" />
+      <img decoding="async" loading="lazy" src={bgGif} alt="Background" className="bgimage" />
 
       <div className="frame">
         <div className="clock">

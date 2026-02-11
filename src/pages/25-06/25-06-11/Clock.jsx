@@ -31,7 +31,7 @@ const BananaClock = () => {
   // Create banana tiles dynamically
   const tileCount = 8 * 8;
   const tiles = Array.from({ length: tileCount }, (_, i) => (
-    <img
+    <img decoding="async" loading="lazy"
       key={i}
       src={bananaGif}
       alt="banana tile"
@@ -93,7 +93,7 @@ const BananaClock = () => {
           pointerEvents: 'none',
         }}
       >
-        <img src={hourHand} alt="hour" className="hand hour-hand" id="hourHand"
+        <img decoding="async" loading="lazy" src={hourHand} alt="hour" className="hand hour-hand" id="hourHand"
           style={{
             position: 'absolute',
             top: '50%',
@@ -105,7 +105,7 @@ const BananaClock = () => {
             filter: 'brightness(160%)',
           }}
         />
-        <img src={minuteHand} alt="minute" className="hand minute-hand" id="minuteHand"
+        <img decoding="async" loading="lazy" src={minuteHand} alt="minute" className="hand minute-hand" id="minuteHand"
           style={{
             position: 'absolute',
             top: '50%',
@@ -117,7 +117,7 @@ const BananaClock = () => {
             filter: 'contrast(150%)',
           }}
         />
-        <img src={secondHand} alt="second" className="hand second-hand" id="secondHand"
+        <img decoding="async" loading="lazy" src={secondHand} alt="second" className="hand second-hand" id="secondHand"
           style={{
             position: 'absolute',
             top: '50%',

@@ -83,12 +83,12 @@ export default function AnalogClock() {
 
     return (
       <div style={wrapperStyle}>
-        <img src={backgroundImg} alt="Clock Background" style={backgroundStyle} />
+        <img decoding="async" loading="lazy" src={backgroundImg} alt="Clock Background" style={backgroundStyle} />
         <div style={handStyle(hourHandImg, hourAngle, 0.33, -22)}>
-          <img src={hourHandImg} alt="Hour Hand" style={handImage({ contrast: 80, brightness: 200 })} />
+          <img decoding="async" loading="lazy" src={hourHandImg} alt="Hour Hand" style={handImage({ contrast: 80, brightness: 200 })} />
         </div>
         <div style={handStyle(minuteHandImg, minuteAngle, 0.56, -31)}>
-          <img src={minuteHandImg} alt="Minute Hand" style={handImage({ contrast: 80, brightness: 190 })} />
+          <img decoding="async" loading="lazy" src={minuteHandImg} alt="Minute Hand" style={handImage({ contrast: 80, brightness: 190 })} />
         </div>
       </div>
     );

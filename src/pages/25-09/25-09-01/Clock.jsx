@@ -110,7 +110,7 @@ const ChinaClock = () => {
       </div>
 
       {/* Upper Right Corner Image */}
-      <img
+      <img decoding="async" loading="lazy"
         src={cornerImage}
         alt="Corner"
         style={{

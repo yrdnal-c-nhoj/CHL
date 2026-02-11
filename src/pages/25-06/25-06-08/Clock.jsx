@@ -114,7 +114,7 @@ const FaceCardClock = () => {
         position: 'relative',
       }}
     >
-      <img src={bgImage} style={bgStyle} alt="Background" />
+      <img decoding="async" loading="lazy" src={bgImage} style={bgStyle} alt="Background" />
 
       <div style={clockContainer}>
         {images.map((src, i) => {
@@ -127,7 +127,7 @@ const FaceCardClock = () => {
                 transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-39vmin)`,
               }}
             >
-              <img src={src} alt={`card-${i}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+              <img decoding="async" loading="lazy" src={src} alt={`card-${i}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
           );
         })}

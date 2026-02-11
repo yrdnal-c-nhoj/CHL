@@ -93,7 +93,7 @@ export default function MediaClock() {
           }}
         />
       ) : (
-        <img
+        <img decoding="async" loading="lazy"
           src={fallbackImg}
           alt=""
           onLoad={handleImageLoad}

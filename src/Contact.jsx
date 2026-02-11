@@ -17,13 +17,13 @@ function Contact() {
           <span className="hat">Follow on Social</span>
           <div className="social-links">
             <a href="https://www.instagram.com/cubist_heart_labs/" target="_blank" rel="noopener noreferrer">
-              <img src={instaImg} alt="Instagram" className="social-icon" />
+              <img decoding="async" loading="lazy" src={instaImg} alt="Instagram" className="social-icon" />
             </a>
             <a href="https://x.com/cubistheartlabs" target="_blank" rel="noopener noreferrer">
-              <img src={elonImg} alt="X (Twitter)" className="social-icon" />
+              <img decoding="async" loading="lazy" src={elonImg} alt="X (Twitter)" className="social-icon" />
           </a>
            <a href="https://www.facebook.com/profile.php?id=100090369371981" target="_blank" rel="noopener noreferrer">
-              <img src={fbookImg} alt="X (Twitter)" className="social-icon" />
+              <img decoding="async" loading="lazy" src={fbookImg} alt="X (Twitter)" className="social-icon" />
             </a>
           </div>
  

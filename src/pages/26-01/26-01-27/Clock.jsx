@@ -132,14 +132,14 @@ export default function PanoramaClock() {
           className="pz-bg-container"
           style={{ animationDuration: `${bgDuration}s` }}
         >
-          <img 
+          <img decoding="async" loading="lazy" 
             ref={imgRef}
             onLoad={handleImageLoad}
             src={backgroundImage} 
             alt="panorama-1" 
             style={{ height: '100%', display: 'block' }} 
           />
-          <img 
+          <img decoding="async" loading="lazy" 
             src={backgroundImage} 
             alt="panorama-2" 
             style={{ height: '100%', display: 'block' }} 
