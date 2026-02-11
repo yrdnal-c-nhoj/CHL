@@ -1,53 +1,71 @@
 import React, { useEffect, useState, useMemo } from 'react';
 
 // --- Assets ---
-import analogBgImage from '../../../assets/images/26-02-11/bell.webp';
+import bellImage2 from '../../../assets/images/26-02-11/bell.webp';
+import bellImage1 from '../../../assets/images/26-02-11/bell.gif';
 
 // --- Configuration ---
 const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 40,
   COLORS: {
-    silverText: 'linear-gradient(180deg, #FFFFFF 0%, #C0C0C0 45%, #C5C1C1 50%, #D3D8F3 100%)',
-    hourHand: 'linear-gradient(to right, #959595, #ffffff, #959595)',
-    minuteHand: 'linear-gradient(to right, #B0B0B0, #ffffff, #B0B0B0)',
-    secondHand: 'linear-gradient(to top, #5F709F, #889AD4)', 
-  }
+    silverText:
+      'linear-gradient(180deg, #24058B 0%, #000000 45%, #232222 50%, #062D79 100%)',
+    hourHand: 'linear-gradient(to right, #4E4D4D, #282727, #4D4949)',
+    minuteHand: 'linear-gradient(to right, #3B3939, #383636, #484444)',
+    secondHand: 'linear-gradient(to top, #4B4C4F, #4F4F52)',
+  },
 };
 
-/**
- * Custom Hook: useClock
- * High-precision time for smooth "sweeping" motion
- */
-const useClock = () => {
-  const [time, setTime] = useState(new Date());
+// --- Hook: Load Google Font Safely ---
+const useGoogleFont = () => {
+  useEffect(() => {
+    const id = 'gilda-display-font';
+    if (document.getElementById(id)) return;
+
+    const link = document.createElement('link');
+    link.id = id;
+    link.rel = 'stylesheet';
+    link.href =
+      'https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap';
+
+    document.head.appendChild(link);
+  }, []);
+};
+
+// --- Hook: Smooth Time Engine ---
+const useBellClock = (intervalMs = 50) => {
+  const [time, setTime] = useState(() => new Date());
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const id = setInterval(() => {
       setTime(new Date());
-    }, 50); // Update every 50ms for smooth motion
-    return () => clearInterval(interval);
-  }, []);
+    }, intervalMs);
+
+    return () => clearInterval(id);
+  }, [intervalMs]);
 
   return time;
 };
 
 const AnalogClock = () => {
-  const now = useClock();
+  useGoogleFont();
+  const now = useBellClock(50);
 
-  // Time Calculations (including sub-second fractions for smooth motion)
+  // Smooth time calculations
   const msec = now.getMilliseconds();
   const sec = now.getSeconds() + msec / 1000;
   const min = now.getMinutes() + sec / 60;
   const hr = (now.getHours() % 12) + min / 60;
 
-  // Memoized Numerals – all 12 hours around the perimeter
-  const renderedNumerals = useMemo(() => {
-    const numbersToShow = Array.from({ length: 12 }, (_, i) => i + 1); // 1–12
-    return numbersToShow.map((num) => {
-      const angle = (num / 12) * 2 * Math.PI;
-      const angleDeg = (num / 12) * 360; // for text rotation
-      const x = 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angle);
-      const y = 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angle);
+  // Memoized numerals
+  const numerals = useMemo(() => {
+    return Array.from({ length: 12 }, (_, i) => {
+      const num = i + 1;
+      const angleRad = (num / 12) * 2 * Math.PI;
+      const angleDeg = (num / 12) * 360;
+
+      const x = 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angleRad);
+      const y = 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angleRad);
 
       return (
         <div
@@ -56,8 +74,7 @@ const AnalogClock = () => {
             ...styles.numeralBase,
             left: `${x}%`,
             top: `${y}%`,
-            // Rotate so each digit follows the clock's perimeter, not upright
-            transform: `translate(-50%, -50%) rotate(${angleDeg + 90}deg)`,
+            transform: `translate(-50%, -50%) rotate(${angleDeg}deg)`,
           }}
         >
           {num}
@@ -68,40 +85,48 @@ const AnalogClock = () => {
 
   return (
     <div style={styles.container}>
-      {/* FILTERED BACKGROUND LAYER 
-          By placing the filter here, it only affects the image, not the clock.
-      */}
-      <div style={{ 
-        ...styles.backgroundLayer, 
-        backgroundImage: `url(${analogBgImage})` 
-      }} />
+      {/* Tiled Background */}
+      <div
+        style={{
+          ...styles.backgroundLayer,
+          backgroundImage: `url(${bellImage1})`,
+        }}
+      />
 
-      {/* CLOCK FACE LAYER */}
+      {/* Overlay Bell Image */}
+      <div style={styles.additionalBackgroundLayer} />
+
+      {/* Clock Face */}
       <div style={styles.face}>
-        {renderedNumerals}
-        
+        {numerals}
+
         {/* Hour Hand */}
-        <div style={{ 
-          ...styles.hand, 
-          ...styles.hourHand, 
-          transform: `translate(-50%, 0) rotate(${hr * 30}deg)` 
-        }} />
-        
+        <div
+          style={{
+            ...styles.hand,
+            ...styles.hourHand,
+            transform: `translate(-50%, 0) rotate(${hr * 30}deg)`,
+          }}
+        />
+
         {/* Minute Hand */}
-        <div style={{ 
-          ...styles.hand, 
-          ...styles.minHand, 
-          transform: `translate(-50%, 0) rotate(${min * 6}deg)` 
-        }} />
-        
+        <div
+          style={{
+            ...styles.hand,
+            ...styles.minHand,
+            transform: `translate(-50%, 0) rotate(${min * 6}deg)`,
+          }}
+        />
+
         {/* Second Hand */}
-        <div style={{ 
-          ...styles.hand, 
-          ...styles.secHand, 
-          transform: `translate(-50%, 0) rotate(${sec * 6}deg)` 
-        }} />
-        
-        {/* Center Cap */}
+        <div
+          style={{
+            ...styles.hand,
+            ...styles.secHand,
+            transform: `translate(-50%, 0) rotate(${sec * 6}deg)`,
+          }}
+        />
+
         <div style={styles.centerDot} />
       </div>
     </div>
@@ -115,19 +140,31 @@ const styles = {
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
-    backgroundColor: '#050505',
+    backgroundColor: '#BFA7A7',
   },
+
   backgroundLayer: {
     position: 'absolute',
     inset: 0,
-    // Tile the bell image across the viewport
-    backgroundSize: '220px auto',
+    backgroundSize: '200px auto',
     backgroundRepeat: 'repeat',
     backgroundPosition: 'center',
-    // Color treatment applied only to the image layer
-    filter: 'saturate(620%) hue-rotate(-20deg) contrast(0.6) brightness(1.8)',
+    filter: 'saturate(10%) contrast(0.4) brightness(1.6)',
+    zIndex: 2,
+  },
+
+  additionalBackgroundLayer: {
+    position: 'absolute',
+    inset: 0,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundImage: `url(${bellImage2})`,
+    filter:
+      'saturate(220%) hue-rotate(-120deg) contrast(0.4) brightness(1.6)',
     zIndex: 1,
   },
+
   face: {
     position: 'absolute',
     top: '50%',
@@ -135,19 +172,19 @@ const styles = {
     transform: 'translate(-50%, -50%)',
     width: '100vmin',
     height: '100vmin',
-    zIndex: 2,
-    fontFamily: "'Bellefair', serif",
+    zIndex: 7,
+    fontFamily: "'Gilda Display', serif",
   },
+
   numeralBase: {
     position: 'absolute',
-    transform: 'translate(-50%, -50%)',
-    fontSize: 'clamp(7rem, 28vh 9rem)',
+    fontSize: 'clamp(4rem, 10vw, 19rem)',
     background: CLOCK_CONFIG.COLORS.silverText,
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
-    filter: 'drop-shadow(0px 1px 0px rgb(0, 0, 0))',
-    // opacity: 0.4,
+    userSelect: 'none',
   },
+
   hand: {
     position: 'absolute',
     bottom: '50%',
@@ -156,26 +193,38 @@ const styles = {
     borderRadius: '10px',
     willChange: 'transform',
   },
+
   hourHand: {
     width: '1.2vmin',
     height: '24vmin',
     background: CLOCK_CONFIG.COLORS.hourHand,
-    boxShadow: '0 0 10px rgba(0,0,0,0.5)',
     zIndex: 3,
   },
+
   minHand: {
     width: '0.8vmin',
     height: '32vmin',
     background: CLOCK_CONFIG.COLORS.minuteHand,
-    boxShadow: '0 0 8px rgba(0,0,0,0.4)',
     zIndex: 4,
   },
+
   secHand: {
     width: '0.4vmin',
     height: '38vmin',
     background: CLOCK_CONFIG.COLORS.secondHand,
-    boxShadow: '0 0 12px rgba(15, 77, 248, 0.4)',
     zIndex: 5,
+  },
+
+  centerDot: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: '2vmin',
+    height: '2vmin',
+    background: '#565856',
+    borderRadius: '50%',
+    transform: 'translate(-50%, -50%)',
+    zIndex: 10,
   },
 };
 
