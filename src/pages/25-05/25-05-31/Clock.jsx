@@ -110,7 +110,7 @@ const ElephantClock = () => {
         fontFamily: 'sans-serif',
       }}
     >
-      <img
+      <img decoding="async" loading="lazy"
         src={elWebp}
         alt="Background"
         style={{
@@ -147,7 +147,7 @@ const ElephantClock = () => {
           {numbers}
 
           <div style={handStyle}>
-            <img
+            <img decoding="async" loading="lazy"
               ref={hourRef}
               src={el2}
               alt="Hour Hand"
@@ -163,7 +163,7 @@ const ElephantClock = () => {
             />
           </div>
           <div style={handStyle}>
-            <img
+            <img decoding="async" loading="lazy"
               ref={minuteRef}
               src={el1}
               alt="Minute Hand"
@@ -179,7 +179,7 @@ const ElephantClock = () => {
             />
           </div>
           <div style={handStyle}>
-            <img
+            <img decoding="async" loading="lazy"
               ref={secondRef}
               src={el3}
               alt="Second Hand"
@@ -195,7 +195,7 @@ const ElephantClock = () => {
             />
           </div>
 
-          <img
+          <img decoding="async" loading="lazy"
             ref={orbitRef}
             src={eleGif}
             alt=""

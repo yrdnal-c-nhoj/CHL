@@ -69,9 +69,9 @@ const SolarSystemClock = ({ backgroundColor = "#0C0D53FF" }) => {
       }}
     >
       <div style={styles.body}>
-        <img src={sys1} alt="Layer 1" style={styles.image1} />
-        <img src={sys2} alt="Layer 2" style={styles.image2} />
-        <img src={sys3} alt="Layer 3" style={styles.image3} />
+        <img decoding="async" loading="lazy" src={sys1} alt="Layer 1" style={styles.image1} />
+        <img decoding="async" loading="lazy" src={sys2} alt="Layer 2" style={styles.image2} />
+        <img decoding="async" loading="lazy" src={sys3} alt="Layer 3" style={styles.image3} />
         <div className="clock unique-solar-clock" style={styles.clock} ref={clockRef}>
           <div
             className="ball hour unique-solar-clock"

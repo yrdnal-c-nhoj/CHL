@@ -216,10 +216,10 @@ const FStopClock = () => {
         .fstop-bgimage4 { z-index: 4; opacity: 0.2; width: 104vw; }
       `}</style>
 
-      <img src={bg4} className="fstop-bgimage4" alt="bg4" />
-      <img src={bg3} className="fstop-bgimage3" alt="bg3" />
-      <img src={bg1} className="fstop-bgimage" alt="bg1" />
-      <img src={bg2} className="fstop-bgimage2" alt="bg2" />
+      <img decoding="async" loading="lazy" src={bg4} className="fstop-bgimage4" alt="bg4" />
+      <img decoding="async" loading="lazy" src={bg3} className="fstop-bgimage3" alt="bg3" />
+      <img decoding="async" loading="lazy" src={bg1} className="fstop-bgimage" alt="bg1" />
+      <img decoding="async" loading="lazy" src={bg2} className="fstop-bgimage2" alt="bg2" />
 
       <div className="fstop-clock">
         <div className="fstop-hand fstop-hour" id="fstop-hourHand"></div>

@@ -134,7 +134,7 @@ const Clock = () => {
       }}
     >
       {/* Background */}
-      <img
+      <img decoding="async" loading="lazy"
         src={bgImage}
         alt="Background"
         style={{

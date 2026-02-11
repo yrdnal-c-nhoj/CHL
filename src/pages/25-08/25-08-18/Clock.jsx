@@ -387,14 +387,14 @@ export default function ClockLetters({
               {ticks}
               {lettersNodes}
               <div style={handContainerStyle(hourDeg, sizeVmin * 0.37, 3)}>
-                <img src={hourHandImg} style={handImageStyle} alt="Hour hand" />
+                <img decoding="async" loading="lazy" src={hourHandImg} style={handImageStyle} alt="Hour hand" />
               </div>
               <div style={handContainerStyle(minDeg, sizeVmin * 0.53, 4)}>
-                <img src={minuteHandImg} style={handImageStyle} alt="Minute hand" />
+                <img decoding="async" loading="lazy" src={minuteHandImg} style={handImageStyle} alt="Minute hand" />
               </div>
               {showSecondHand && (
                 <div style={handContainerStyle(secDeg, sizeVmin * 0.6, 5)}>
-                  <img src={secondHandImg} style={handImageStyle} alt="Second hand" />
+                  <img decoding="async" loading="lazy" src={secondHandImg} style={handImageStyle} alt="Second hand" />
                 </div>
               )}
             </>

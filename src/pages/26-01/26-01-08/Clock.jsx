@@ -273,7 +273,7 @@ function TangerineClock() {
           const y = -Math.cos(angle * Math.PI / 180) * radius;
 
           return (
-            <img
+            <img decoding="async" loading="lazy"
               key={i}
               src={label}
               alt=""
@@ -292,7 +292,7 @@ function TangerineClock() {
 
         {/* Hour Hand */}
         <div style={getHandStyle(hourDeg, CONFIG.sizes.hourHand)}>
-          <img
+          <img decoding="async" loading="lazy"
             src={hourHandImg}
             style={{
               width: '100%',
@@ -306,7 +306,7 @@ function TangerineClock() {
 
         {/* Minute Hand */}
         <div style={getHandStyle(minDeg, CONFIG.sizes.minuteHand)}>
-          <img 
+          <img decoding="async" loading="lazy" 
             src={minuteHandImg} 
             style={{ width: '100%', height: '70%', objectFit: 'contain', filter: SHADOW_FILTER }} 
             alt="" 
@@ -315,7 +315,7 @@ function TangerineClock() {
 
         {/* Second Hand */}
         <div style={getHandStyle(secDeg, CONFIG.sizes.secondHand)}>
-          <img 
+          <img decoding="async" loading="lazy" 
             src={secondHandImg} 
             style={{ width: '100%', height: '80%', objectFit: 'contain', filter: SHADOW_FILTER }} 
             alt="" 

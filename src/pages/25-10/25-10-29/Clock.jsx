@@ -193,7 +193,7 @@ export default function MonarchClock() {
           }}
         />
       ) : (
-        <img
+        <img decoding="async" loading="lazy"
           src={fallbackImg}
           alt=""
           onLoad={() => setMediaReady(true)}

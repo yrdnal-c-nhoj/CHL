@@ -167,7 +167,7 @@ export default function AnalogClock() {
         loop
         preload="auto"
       />
-      <img src={bgFallback} alt="" style={backgroundImageStyle} />
+      <img decoding="async" loading="lazy" src={bgFallback} alt="" style={backgroundImageStyle} />
       <div style={handsContainerStyle}>
         <div style={hourStyle} />
         <div style={minuteStyle} />

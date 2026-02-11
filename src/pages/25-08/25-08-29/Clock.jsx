@@ -107,7 +107,7 @@ export default function AnalogClock() {
         {/* Number images */}
         {[...Array(12)].map((_, i) => {
           const deg = (i / 12) * 360;
-          return <img key={i} src={digitImage} alt="digit" style={numberStyle(deg)} />;
+          return <img decoding="async" loading="lazy" key={i} src={digitImage} alt="digit" style={numberStyle(deg)} />;
         })}
 
         {/* Hour hand */}
@@ -121,7 +121,7 @@ export default function AnalogClock() {
         <div style={counterweightStyle} />
 
         {/* Center image */}
-        <img src={digitImage} alt="center" style={centerImageStyle} />
+        <img decoding="async" loading="lazy" src={digitImage} alt="center" style={centerImageStyle} />
       </div>
     </div>
   );

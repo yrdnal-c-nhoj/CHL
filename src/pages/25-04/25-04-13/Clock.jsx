@@ -43,7 +43,7 @@ const PizzaClock = () => {
       overflow: 'hidden',
       position: 'relative',
     }}>
-      <img
+      <img decoding="async" loading="lazy"
         src={backgroundImage}
         alt="Background"
         style={{
@@ -83,7 +83,7 @@ const PizzaClock = () => {
             zIndex: 6,
           }}
         >
-          <img
+          <img decoding="async" loading="lazy"
             src={minuteSlice}
             alt="Minute Hand"
             style={{
@@ -111,7 +111,7 @@ const PizzaClock = () => {
             zIndex: 9,
           }}
         >
-          <img
+          <img decoding="async" loading="lazy"
             src={hourSlice}
             alt="Hour Hand"
             style={{
@@ -139,7 +139,7 @@ const PizzaClock = () => {
             zIndex: 5,
           }}
         >
-          <img
+          <img decoding="async" loading="lazy"
             src={secondSlice}
             alt="Second Hand"
             style={{

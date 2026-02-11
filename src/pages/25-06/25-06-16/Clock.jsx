@@ -112,9 +112,9 @@ const KlaxonClock = () => {
 
       <div style={styles.clockWrapper}>
         <div style={styles.clock} id="clock">
-          <img src={klax} alt="Hour Hand" className="hand hour" id="hour" style={styles.handHour} />
-          <img src={klaxon} alt="Minute Hand" className="hand minute" id="minute" style={styles.handMinute} />
-          <img src={klaHand} alt="Second Hand" className="hand second" id="second" style={styles.handSecond} />
+          <img decoding="async" loading="lazy" src={klax} alt="Hour Hand" className="hand hour" id="hour" style={styles.handHour} />
+          <img decoding="async" loading="lazy" src={klaxon} alt="Minute Hand" className="hand minute" id="minute" style={styles.handMinute} />
+          <img decoding="async" loading="lazy" src={klaHand} alt="Second Hand" className="hand second" id="second" style={styles.handSecond} />
         </div>
       </div>
 

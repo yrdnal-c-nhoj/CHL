@@ -47,7 +47,7 @@ const StitchesClock = () => {
       <div
         style={{ ...styles.bgImage, backgroundImage: `url(${bgImageUrl})` }}
       />
-      <img
+      <img decoding="async" loading="lazy"
         src={overlayImageUrl}
         alt="stitched overlay"
         style={styles.bgOverlay}

@@ -126,7 +126,7 @@ const ClockNumeral = memo(({ text, x, y, fontReady }) => (
 
 // --- CLOCK HAND ---
 const ClockHand = memo(({ img, width, max, rotation }) => (
-  <img
+  <img decoding="async" loading="lazy"
     src={img}
     alt=''
     draggable={false}

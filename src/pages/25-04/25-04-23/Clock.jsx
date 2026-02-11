@@ -124,7 +124,7 @@ const PirateClock = () => {
           opacity: 0.4,
           zIndex: 1
         }} />
-        <img
+        <img decoding="async" loading="lazy"
           src={pirateBackground}
           alt="Background"
           style={{
@@ -148,7 +148,7 @@ const PirateClock = () => {
             zIndex: 2
           }}
         >
-          <img
+          <img decoding="async" loading="lazy"
             className="hand hour"
             src={pirateHook}
             alt="Hour hand"
@@ -163,7 +163,7 @@ const PirateClock = () => {
               zIndex: 5
             }}
           />
-          <img
+          <img decoding="async" loading="lazy"
             className="hand minute"
             src={pirateCutlass}
             alt="Minute hand"
@@ -178,7 +178,7 @@ const PirateClock = () => {
               zIndex: 3
             }}
           />
-          <img
+          <img decoding="async" loading="lazy"
             className="hand second"
             src={pirateKnife}
             alt="Second hand"

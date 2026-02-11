@@ -171,7 +171,7 @@ const adjustVideoPosition = () => {
           style={videoStyle}
         />
       ) : (
-        <img
+        <img decoding="async" loading="lazy"
           src={fallbackImg}
           alt=""
           onLoad={handleImageLoad}

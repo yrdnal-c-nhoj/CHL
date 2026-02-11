@@ -186,7 +186,7 @@ export default function TwelfthRootsOfUnityWithClock() {
           alignItems: "center",
         }}
       >
-        <img
+        <img decoding="async" loading="lazy"
           src={backgroundImage}
           alt="Background"
           style={{

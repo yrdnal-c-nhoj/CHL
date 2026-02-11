@@ -114,7 +114,7 @@ const MobyDickClock = () => {
           opacity: 0,
         }}
       />
-      <img
+      <img decoding="async" loading="lazy"
         src={waves}
         alt="waves"
         style={{

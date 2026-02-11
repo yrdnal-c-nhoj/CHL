@@ -154,25 +154,25 @@ const BirthdayCakeClock = () => {
         <div style={clockWrapperStyle}>
           <div style={clockStyle}>
             <div style={circleStyle}>
-              <img src={cakeGif} alt="Rotating Image" style={circleImgStyle} />
+              <img decoding="async" loading="lazy" src={cakeGif} alt="Rotating Image" style={circleImgStyle} />
             </div>
 
             <div ref={minuteHandRef} style={{ ...handBaseStyle, zIndex: 9 }} className="minute">
-              <img src={minuteImg} alt="Minute hand" style={minuteImgStyle} />
+              <img decoding="async" loading="lazy" src={minuteImg} alt="Minute hand" style={minuteImgStyle} />
             </div>
 
             <div ref={hourHandRef} style={{ ...handBaseStyle, zIndex: 9 }} className="hour">
-              <img src={hourImg} alt="Hour hand" style={hourImgStyle} />
+              <img decoding="async" loading="lazy" src={hourImg} alt="Hour hand" style={hourImgStyle} />
             </div>
 
             <div ref={secondHandRef} style={handBaseStyle} className="second">
-              <img src={secondImg} alt="Second hand" style={secondImgStyle} />
+              <img decoding="async" loading="lazy" src={secondImg} alt="Second hand" style={secondImgStyle} />
             </div>
           </div>
         </div>
 
-        <img src={confGif} alt="Confetti gif" style={fullPageImageStyle} />
-        <img src={confJpg} alt="Confetti background" style={fullPageImage2Style} />
+        <img decoding="async" loading="lazy" src={confGif} alt="Confetti gif" style={fullPageImageStyle} />
+        <img decoding="async" loading="lazy" src={confJpg} alt="Confetti background" style={fullPageImage2Style} />
       </div>
     </>
   );

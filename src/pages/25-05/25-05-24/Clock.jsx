@@ -203,7 +203,7 @@ const Clock = () => {
         `}
       </style>
 
-      <img src={torGif} className="tornado-clock__bgimage" alt="Tornado Background" />
+      <img decoding="async" loading="lazy" src={torGif} className="tornado-clock__bgimage" alt="Tornado Background" />
       <div id="tornado-clock__flash-overlay"></div>
     </div>
   );

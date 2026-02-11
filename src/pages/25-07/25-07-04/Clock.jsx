@@ -84,7 +84,7 @@ const Clock = () => {
 
   return (
     <div style={{ margin: 0, padding: 0, background: 'black', height: '100vh', overflow: 'hidden', position: 'relative' }}>
-      <img src={bgImage} alt="background" style={bgStyle} />
+      <img decoding="async" loading="lazy" src={bgImage} alt="background" style={bgStyle} />
       
       {/* Top UI Overlay */}
       <div style={headerStyle}>

@@ -151,10 +151,10 @@ export default function Clock() {
 
   return (
     <div style={styles.body} role="timer" aria-live="polite">
-      <img src={frameImg} alt="Background frame" style={styles.bgimage} />
-      <img src={stamp3Img} alt="Stamp 3" style={{ ...styles.stamp3, ...styles.jostle }} />
-      <img src={stamp2Img} alt="Stamp 2" style={{ ...styles.stamp2, ...styles.jostle }} />
-      <img src={stampImg} alt="Stamp 1" style={{ ...styles.stamp, ...styles.jostle }} />
+      <img decoding="async" loading="lazy" src={frameImg} alt="Background frame" style={styles.bgimage} />
+      <img decoding="async" loading="lazy" src={stamp3Img} alt="Stamp 3" style={{ ...styles.stamp3, ...styles.jostle }} />
+      <img decoding="async" loading="lazy" src={stamp2Img} alt="Stamp 2" style={{ ...styles.stamp2, ...styles.jostle }} />
+      <img decoding="async" loading="lazy" src={stampImg} alt="Stamp 1" style={{ ...styles.stamp, ...styles.jostle }} />
       <div style={styles.clock}>
         {format.map((type, idx) => {
           if (type === 'colon') {

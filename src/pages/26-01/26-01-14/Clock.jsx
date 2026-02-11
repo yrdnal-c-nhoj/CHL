@@ -128,7 +128,7 @@ export default function KurosawaClock() {
           style={styles.media}
         />
       ) : (
-        <img src={fallbackImg} alt="" style={styles.media} />
+        <img decoding="async" loading="lazy" src={fallbackImg} alt="" style={styles.media} />
       )}
       
       <div style={clocksWrapper}>

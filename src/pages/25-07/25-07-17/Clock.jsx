@@ -202,13 +202,13 @@ const AnalogClock = () => {
       <style>{fontFaceStyle}</style>
 
       <div style={globalStyle}>
-        <img src={bgImage} alt="Background" className="bg-rotate" style={bgImageStyle} />
+        <img decoding="async" loading="lazy" src={bgImage} alt="Background" className="bg-rotate" style={bgImageStyle} />
 
         <div style={clockStyle}>
           {images.map(({ img, className, style }, i) => {
             const sizeStyle = numberSizes[className] || {};
             return (
-              <img
+              <img decoding="async" loading="lazy"
                 key={i}
                 src={img}
                 alt={`number${i + 1}`}

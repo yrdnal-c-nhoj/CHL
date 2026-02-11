@@ -71,7 +71,7 @@ const HorizonClock = () => {
       </div>
 
       {/* LAYER 1: Top half, taking up exactly 15% height */}
-      <img 
+      <img decoding="async" loading="lazy" 
         src={layer1} 
         style={{ 
           position: 'absolute',
@@ -87,7 +87,7 @@ const HorizonClock = () => {
       />
 
       {/* LAYER 2: Bottom half, 50% height, 0.5 opacity */}
-      <img 
+      <img decoding="async" loading="lazy" 
         src={layer2} 
         style={{ 
           position: 'absolute',
@@ -104,7 +104,7 @@ const HorizonClock = () => {
       />
 
       {/* LAYER 3: Bottom half, 50% height, 0.5 opacity */}
-      <img 
+      <img decoding="async" loading="lazy" 
         src={layer3} 
         style={{ 
           position: 'absolute',

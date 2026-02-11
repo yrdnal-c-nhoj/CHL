@@ -79,7 +79,7 @@ const MercuryClock = () => {
     }}>
       <style>{`@font-face { font-family: 'merc'; src: url(${fontUrl}) format('truetype'); }`}</style>
 
-      <img src={bgImage} style={{
+      <img decoding="async" loading="lazy" src={bgImage} style={{
         position: 'fixed',
         top: 0,
         left: 0,
@@ -109,7 +109,7 @@ const MercuryClock = () => {
           zIndex: 6,
           filter: 'hue-rotate(-10deg) brightness(100%) saturate(10%) contrast(200%)'
         }}>
-          <img src={hourImg} style={{ width: '100%', height: '100%', display: 'block' }} />
+          <img decoding="async" loading="lazy" src={hourImg} style={{ width: '100%', height: '100%', display: 'block' }} />
         </div>
 
         <div ref={minuteRef} style={{
@@ -122,7 +122,7 @@ const MercuryClock = () => {
           zIndex: 6,
           filter: 'sepia(10%) hue-rotate(-10deg) brightness(120%) saturate(10%)'
         }}>
-          <img src={minuteImg} style={{ width: '100%', height: '100%', display: 'block' }} />
+          <img decoding="async" loading="lazy" src={minuteImg} style={{ width: '100%', height: '100%', display: 'block' }} />
         </div>
 
         <div ref={secondRef} style={{
@@ -135,7 +135,7 @@ const MercuryClock = () => {
           zIndex: 6,
           filter: 'sepia(100%) hue-rotate(-10deg) brightness(180%) saturate(10%)'
         }}>
-          <img src={secondImg} style={{ width: '100%', height: '100%', display: 'block' }} />
+          <img decoding="async" loading="lazy" src={secondImg} style={{ width: '100%', height: '100%', display: 'block' }} />
         </div>
 
         <div style={{

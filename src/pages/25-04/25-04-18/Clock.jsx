@@ -143,7 +143,7 @@ const AntarcticaClock = () => {
           position: "relative",
         }}
       >
-        <img src={backgroundImg} alt="Antarctica" className="bgimage" />
+        <img decoding="async" loading="lazy" src={backgroundImg} alt="Antarctica" className="bgimage" />
         <div
           ref={clockRef}
           className="clock"

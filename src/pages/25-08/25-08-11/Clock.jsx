@@ -246,13 +246,13 @@ const SwirlingImages = () => {
   return (
     <div style={containerStyle}>
       <div style={backgroundStyle} />
-      <img src={topImage} alt="Top image overlay" style={topImageStyle} />
+      <img decoding="async" loading="lazy" src={topImage} alt="Top image overlay" style={topImageStyle} />
 
       <div style={imageContainerStyle}>
         {images.map((img) => (
           <div key={img.id} style={getOrbitWrapperStyle(img)}>
             <div style={getInnerWrapperStyle(img)}>
-              <img src={img.src} alt={`Swirling image ${img.id + 1}`} style={getImageStyle(img)} />
+              <img decoding="async" loading="lazy" src={img.src} alt={`Swirling image ${img.id + 1}`} style={getImageStyle(img)} />
             </div>
           </div>
         ))}

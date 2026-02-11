@@ -137,9 +137,9 @@ const MintClock = () => {
       </style>
       <div className="bgimage"></div>
       <div className="clock" id="clock">
-        <img className="hand hour" src={hourImg} alt="Hour Hand" />
-        <img className="hand minute" src={minuteImg} alt="Minute Hand" />
-        <img className="hand second" src={secondImg} alt="Second Hand" />
+        <img decoding="async" loading="lazy" className="hand hour" src={hourImg} alt="Hour Hand" />
+        <img decoding="async" loading="lazy" className="hand minute" src={minuteImg} alt="Minute Hand" />
+        <img decoding="async" loading="lazy" className="hand second" src={secondImg} alt="Second Hand" />
         <div className="center-dot"></div>
       </div>
     </div>

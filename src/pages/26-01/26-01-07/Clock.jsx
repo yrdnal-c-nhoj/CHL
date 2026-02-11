@@ -97,11 +97,11 @@ const AquariumClock = () => {
       }}
     >
       {/* Background Layers */}
-      <img src={aquarium} style={{ ...sharedImageStyle, opacity: 0.5, zIndex: 0 }} alt="" />
-      <img src={aquarium} style={{ ...sharedImageStyle, opacity: 0.9, transform: 'scaleX(-1)', zIndex: 1 }} alt="" />
+      <img decoding="async" loading="lazy" src={aquarium} style={{ ...sharedImageStyle, opacity: 0.5, zIndex: 0 }} alt="" />
+      <img decoding="async" loading="lazy" src={aquarium} style={{ ...sharedImageStyle, opacity: 0.9, transform: 'scaleX(-1)', zIndex: 1 }} alt="" />
 
       {/* Rotating Background GIFs */}
-      <img 
+      <img decoding="async" loading="lazy" 
         src={spin} 
         style={{ 
           ...sharedImageStyle, 
@@ -131,21 +131,21 @@ const AquariumClock = () => {
         pointerEvents: 'none' 
       }}>
         {/* Hour Hand (Smallest/Thickest) */}
-        <img
+        <img decoding="async" loading="lazy"
           src={fish}
           ref={hourHandRef}
           style={{ ...handStyle, width: handSizes.hour, height: 'auto', filter: handFilter }}
           alt="hour"
         />
         {/* Minute Hand (Medium) */}
-        <img
+        <img decoding="async" loading="lazy"
           src={fish}
           ref={minHandRef}
           style={{ ...handStyle, width: handSizes.minute, height: 'auto', filter: handFilter }}
           alt="minute"
         />
         {/* Second Hand (Longest/Thinnest) */}
-        <img
+        <img decoding="async" loading="lazy"
           src={fish}
           ref={secondHandRef}
           style={{ ...handStyle, width: handSizes.second, height: 'auto', filter: handFilter, opacity: 0.8 }}
@@ -154,7 +154,7 @@ const AquariumClock = () => {
       </div>
 
       {/* Foreground Bubbles & Fish */}
-      <img 
+      <img decoding="async" loading="lazy" 
         src={bubl} 
         style={{ 
           position: 'absolute', 
@@ -167,7 +167,7 @@ const AquariumClock = () => {
         }} 
         alt="" 
       />
-      <img 
+      <img decoding="async" loading="lazy" 
         src={gfish} 
         style={{ 
           ...sharedImageStyle, 

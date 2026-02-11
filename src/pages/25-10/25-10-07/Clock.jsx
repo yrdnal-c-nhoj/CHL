@@ -150,7 +150,7 @@ export default function ImageAnalogClock () {
         }}
       >
         <source src={backgroundVideo} type='video/mp4' />
-        <img
+        <img decoding="async" loading="lazy"
           src={fallbackGif}
           alt='Fallback background'
           style={{

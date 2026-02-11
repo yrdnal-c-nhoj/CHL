@@ -61,7 +61,7 @@ const Clock = () => {
       overflow: 'hidden',
       position: 'relative'
     }}>
-      <img
+      <img decoding="async" loading="lazy"
         src={polarisGif}
         alt="Background"
         style={{

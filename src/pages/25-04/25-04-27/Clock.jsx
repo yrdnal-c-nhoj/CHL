@@ -81,7 +81,7 @@ const SpinningCoinClock = () => {
         position: "relative",
       }}
     >
-      <img
+      <img decoding="async" loading="lazy"
         src={coinGif}
         alt="coin background"
         style={{

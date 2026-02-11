@@ -162,7 +162,7 @@ const CloudyNightClock = () => {
   return (
     <div style={containerStyle}>
 
-      <img src={clll} alt="bg" style={bgImageStyle} />
+      <img decoding="async" loading="lazy" src={clll} alt="bg" style={bgImageStyle} />
 
       <div style={moonStyle}>
         <div style={clockRef ? clockStyle : {}} ref={clockRef}>12:00</div>

@@ -192,7 +192,7 @@ export default function ImageAnalogClock() {
       </video>
 
       {/* Fallback */}
-      <img
+      <img decoding="async" loading="lazy"
         src={fallbackGif}
         alt="Fallback background"
         style={{
@@ -243,7 +243,7 @@ export default function ImageAnalogClock() {
           const y = center.y + radius * Math.sin(angleRad);
 
           return (
-            <img
+            <img decoding="async" loading="lazy"
               key={idx}
               src={num.src}
               alt={`number ${idx + 1}`}

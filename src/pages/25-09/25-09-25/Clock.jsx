@@ -231,7 +231,7 @@ const UnixEpochClock = () => {
           poster={fallbackImage}
         />
       ) : (
-        <img
+        <img decoding="async" loading="lazy"
           style={{
             position: "absolute",
             top: 0,

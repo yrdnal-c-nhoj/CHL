@@ -69,7 +69,7 @@ export default function AnalogImageClock() {
       const x = 50 + radius * Math.cos(angle);
       const y = 50 + radius * Math.sin(angle);
       return (
-        <img
+        <img decoding="async" loading="lazy"
           key={i}
           src={img}
           alt={`number-${i}`}
@@ -115,7 +115,7 @@ export default function AnalogImageClock() {
     >
       {/* Backgrounds */}
       {backgrounds.map((bg, idx) => (
-        <img
+        <img decoding="async" loading="lazy"
           key={idx}
           src={bg.src}
           alt={`background-${idx}`}
@@ -148,9 +148,9 @@ export default function AnalogImageClock() {
         }}
       >
         {renderNumbers()}
-        <img src={hourHandImg} alt="hour-hand" style={handStyle(hourDeg, 2, 25)} />
-        <img src={minuteHandImg} alt="minute-hand" style={handStyle(minuteDeg, 1.5, 35)} />
-        <img src={secondHandImg} alt="second-hand" style={handStyle(secondDeg, 1, 40)} />
+        <img decoding="async" loading="lazy" src={hourHandImg} alt="hour-hand" style={handStyle(hourDeg, 2, 25)} />
+        <img decoding="async" loading="lazy" src={minuteHandImg} alt="minute-hand" style={handStyle(minuteDeg, 1.5, 35)} />
+        <img decoding="async" loading="lazy" src={secondHandImg} alt="second-hand" style={handStyle(secondDeg, 1, 40)} />
       </div>
     </div>
   );

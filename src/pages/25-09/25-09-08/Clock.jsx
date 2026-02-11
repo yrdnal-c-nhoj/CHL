@@ -126,7 +126,7 @@ export default function ImageAnalogClock() {
                 boxShadow: intenseShadow,
               }}
             >
-              <img
+              <img decoding="async" loading="lazy"
                 src={img}
                 alt={`Hour marker for ${i || 12}`}
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
