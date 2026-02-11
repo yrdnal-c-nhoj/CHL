@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
-// import './Sprout.css';
+import { useEffect, useState, useMemo } from 'react';
 import spr from '../../../assets/images/25-05-26/spr.gif';
 import sprou from '../../../assets/images/25-05-26/sprou.gif';
 import sprout from '../../../assets/images/25-05-26/sprout.gif';
-import sproutFont from '../../../assets/fonts/25-05-26-sprout.ttf';
+import sproutFontWoff2 from '../../../assets/fonts/25-05-26-sprout.woff2';
+import sproutFontTtf from '../../../assets/fonts/25-05-26-sprout.ttf';
 
-const styles = {
+const baseStyles = {
   container: {
-    fontFamily: "'sprout', monospace !important",
+    fontFamily: "'sprout', monospace",
     height: '100dvh',
     width: '100vw',
     margin: 0,
@@ -70,13 +69,11 @@ const styles = {
   digit: {
     color: 'rgb(184, 244, 172)',
     textShadow: 'rgb(55, 4, 10) 2px 2px',
-    fontFamily: 'sprout, monospace !important',
+    fontFamily: "'sprout', monospace",
     padding: '0.1vh 0.1vw',
     fontSize: '16vh',
     minWidth: '14vh',
     textAlign: 'center',
-    // Debug styles
-    border: fontReady ? '2px solid green' : '2px solid red',
   },
   imageBase: {
     position: 'fixed',
@@ -103,30 +100,34 @@ function pad(num, length) {
 
 export default function SproutClock() {
   const [time, setTime] = useState({ h: [], m: [], s: [], ms: [] });
-  const fontReady = useFontLoader('sprout', sproutFont, { timeout: 3000 });
-  
-  // Debug font loading
-  console.log('Font ready:', fontReady);
-  console.log('Font URL:', sproutFont);
-  
-  // Add CSS font-face declaration
+  const [fontReady, setFontReady] = useState(false);
+
+  // Inline FontFace loading with woff2 primary and ttf fallback (no external CSS file)
   useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'sprout';
-        src: url(${sproutFont}) format('truetype');
-        font-display: block;
-      }
-    `;
-    document.head.appendChild(style);
-    
-    return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
+    let cancelled = false;
+
+    const load = async () => {
+      try {
+        const face = new FontFace('sprout', `url(${sproutFontWoff2}) format('woff2'), url(${sproutFontTtf}) format('truetype')`);
+        const loaded = await face.load();
+        if (!cancelled) {
+          document.fonts.add(loaded);
+          setFontReady(true);
+        }
+      } catch (err) {
+        console.error('Sprout font load failed, using fallback', err);
+        if (!cancelled) {
+          // Allow render even if font fails
+          setFontReady(true);
+        }
       }
     };
-  }, [sproutFont]);
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     const update = () => {
@@ -142,6 +143,15 @@ export default function SproutClock() {
     update();
     return () => clearInterval(interval);
   }, []);
+
+  const styles = useMemo(() => ({
+    ...baseStyles,
+    digit: {
+      ...baseStyles.digit,
+      // Uncomment for debugging borders
+      // border: fontReady ? '2px solid green' : '2px solid red',
+    },
+  }), [fontReady]);
 
   const renderDigits = (digits) =>
     digits.map((d, i) => (
