@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
-import beat4 from "../../../assets/images/25-04-04/images/beat4.webp";
-import tumblrImg from "../../../assets/images/25-04-04/images/tumblr_eb7034da88f87c02b8539374dca9c92e_746715e1_500.webp";
+import beat4 from "../../../assets/images/25-04-04/beat4.webp";
+import tumblrImg from "../../../assets/images/25-04-04/heart.webp";
 
 const HeartbeatClock = () => {
   const hourRef = useRef(null);
