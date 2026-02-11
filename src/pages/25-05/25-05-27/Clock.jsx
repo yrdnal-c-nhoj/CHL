@@ -1,35 +1,49 @@
 import React, { useState, useEffect } from "react";
-import { useFontLoader } from '../../../utils/fontLoader';
-import dotsFont from '../../../assets/fonts/25-05-27-dots.otf';         // Import custom font
+import dotsFontWoff2 from '../../../assets/fonts/25-05-27-dots.woff2'; // Preferred format
+import dotsFontOtf from '../../../assets/fonts/25-05-27-dots.otf';    // Fallback format
 import backgroundImage from "../../../assets/images/25-05-27/dot.jpg"; // Import background image
 
 function Clock() {
   const [time, setTime] = useState(new Date());
   const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
-  const fontReady = useFontLoader('dots', dotsFont, { timeout: 3000 });
-  
-  // Debug font loading
-  console.log('Dots font ready:', fontReady);
-  console.log('Dots font URL:', dotsFont);
-  
-  // Add CSS font-face declaration
+  const [fontReady, setFontReady] = useState(false);
+
+  // Inline FontFace loading with woff2 primary and otf fallback (no external CSS file)
   useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'dots';
-        src: url(${dotsFont}) format('opentype');
-        font-display: block;
-      }
-    `;
-    document.head.appendChild(style);
-    
-    return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
+    let cancelled = false;
+
+    const preload = document.createElement('link');
+    preload.rel = 'preload';
+    preload.as = 'font';
+    preload.type = 'font/woff2';
+    preload.crossOrigin = 'anonymous';
+    preload.href = dotsFontWoff2;
+    document.head.appendChild(preload);
+
+    const load = async () => {
+      try {
+        const face = new FontFace('dots', `url(${dotsFontWoff2}) format('woff2'), url(${dotsFontOtf}) format('opentype')`);
+        const loaded = await face.load();
+        if (!cancelled) {
+          document.fonts.add(loaded);
+          setFontReady(true);
+        }
+      } catch (err) {
+        console.error('Dots font load failed, using fallback', err);
+        if (!cancelled) {
+          setFontReady(true); // allow render even if font fails
+        }
       }
     };
-  }, [dotsFont]);
+
+    load();
+    return () => {
+      cancelled = true;
+      if (document.head.contains(preload)) {
+        document.head.removeChild(preload);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -86,12 +100,12 @@ function Clock() {
     alignItems: "center",
     justifyContent: "center",
     fontSize: "11rem",
-    fontFamily: "'dots', monospace !important",
+    fontFamily: "'dots', monospace",
     backgroundColor: "rgba(251, 148, 5, 0.1)",
     borderRadius: "0.2em",
     color: "rgb(4, 2, 109)",
-    // Debug styles
-    border: fontReady ? '2px solid green' : '2px solid red',
+    // Uncomment for debugging
+    // border: fontReady ? '2px solid green' : '2px solid red',
     textShadow: `
       #f6320b 1px 1px 20px,
       #94f00b -1px 1px 20px,
@@ -110,28 +124,8 @@ function Clock() {
     </div>
   );
 
-  const globalStyle = `
-    @font-face {
-      font-family: 'dots';
-      src: url(${dotsFont}) format('opentype');
-    }
-
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-
-    *, *::before, *::after {
-      box-sizing: inherit;
-    }
-  `;
-
   return (
     <>
-      <style>{globalStyle}</style>
       <div style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden", opacity: fontReady ? 1 : 0.5, transition: 'opacity 0.3s ease' }}>
         {/* Static Background Layer */}
         <div
