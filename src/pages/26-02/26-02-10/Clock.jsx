@@ -79,7 +79,7 @@ const styles = {
     inset: 0,
     backgroundSize: 'cover',
     backgroundPosition: '72% center',
-    filter: 'saturate(120%) hue-rotate(-20deg) ',
+    filter: 'saturate(120%) hue-rotate(-10deg) ',
     zIndex: 1,
   },
   digitalFace: {
@@ -91,10 +91,7 @@ const styles = {
   },
   digitalDisplay: {
     fontSize: 'clamp(2rem, 10vw, 6rem)',
-    // fontWeight: 'bold',
     color: CLOCK_CONFIG.COLORS.silverText,
-    // filter: 'drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.8))',
-    // textShadow: CLOCK_CONFIG.COLORS.digitalGlow,
     textAlign: 'center',
     letterSpacing: '0.05em',
     lineHeight: 1,
