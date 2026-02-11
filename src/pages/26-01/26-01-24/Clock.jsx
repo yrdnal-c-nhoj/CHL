@@ -127,7 +127,7 @@ const Clock = () => {
     <div style={{
       height: '100dvh',
       width: '100vw',
-      backgroundColor: '#E9DBF0',
+      backgroundColor: '#DAD3DE',
       overflow: 'hidden',
       display: 'flex',
       justifyContent: 'center',
