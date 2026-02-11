@@ -1,11 +1,49 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useFontLoader } from '../../../utils/fontLoader';
 import arm from '../../../assets/images/25-05-25/arm.gif';
 import arm2 from '../../../assets/images/25-05-25/arm2.gif';
 import arm3 from '../../../assets/images/25-05-25/arm3.gif';
-// Use the optimized woff2 font (with ?url so Vite returns the resolved asset URL)
-import botFontUrl from '../../../assets/fonts/25-05-25-bot.woff2?url';
+// Use the ttf font instead of corrupted woff2
+import botFontUrl from '../../../assets/fonts/25-05-25-bot.ttf';
 
 const Clock = () => {
+  const fontReady = useFontLoader('bot', botFontUrl, { timeout: 3000 });
+  
+  // Debug font loading
+  console.log('Bot font ready:', fontReady);
+  console.log('Bot font URL:', botFontUrl);
+  console.log('Font file exists:', !!botFontUrl);
+  
+  // Force font loading with direct CSS injection
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'font';
+    link.type = 'font/ttf';
+    link.crossOrigin = 'anonymous';
+    link.href = botFontUrl;
+    document.head.appendChild(link);
+    
+    console.log('Font preload added:', botFontUrl);
+    
+    return () => {
+      if (document.head.contains(link)) {
+        document.head.removeChild(link);
+      }
+    };
+  }, [botFontUrl]);
+  
+  // Test font loading directly
+  useEffect(() => {
+    const testFont = new FontFace('bot', `url(${botFontUrl})`);
+    testFont.load().then(() => {
+      console.log('Direct font load SUCCESS');
+      document.fonts.add(testFont);
+    }).catch(err => {
+      console.error('Direct font load FAILED:', err);
+    });
+  }, [botFontUrl]);
+  
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
@@ -33,7 +71,7 @@ const Clock = () => {
     style.innerHTML = `
       @font-face {
         font-family: 'bot';
-        src: url('${botFontUrl}') format('woff2');
+        src: url('${botFontUrl}') format('truetype');
         font-weight: normal;
         font-style: normal;
         font-display: swap;
@@ -41,29 +79,12 @@ const Clock = () => {
     `;
     document.head.appendChild(style);
     
-    // Force font reload
-    const font = new FontFace('bot', `url(${botFontUrl}) format('woff2')`);
-    font.load().then(() => {
-      document.fonts.add(font);
-      console.log('Bot font loaded successfully');
-      // Force reflow to apply font
-      document.body.style.display = 'none';
-      document.body.offsetHeight; // Trigger reflow
-      document.body.style.display = '';
-    }).catch(err => {
-      console.error('Bot font failed to load:', err);
-    });
-    
     return () => {
-      document.head.removeChild(style);
-      // Fix: check if font exists and remove properly
-      try {
-        document.fonts.delete(font);
-      } catch (e) {
-        // Ignore cleanup errors
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
       }
     };
-  }, []);
+  }, [botFontUrl]);
 
   const containerStyle = {
     margin: 0,
@@ -99,6 +120,8 @@ const Clock = () => {
     transform: "translate(-50%, -50%)",
     textShadow: "#f4d6f4 6px 6px",
     fontFamily: "'bot', sans-serif",
+    // Debug styles
+    // border: fontReady ? '2px solid green' : '2px solid red',
   };
 
   const handBaseStyle = {
@@ -111,7 +134,7 @@ const Clock = () => {
   };
 
   return (
-    <div style={containerStyle}>
+    <div style={{...containerStyle, opacity: fontReady ? 1 : 0.5, transition: 'opacity 0.3s ease'}}>
       <div style={clockContainerStyle}>
         <div style={clockStyle} id="clock">
           {/* Numbers */}
