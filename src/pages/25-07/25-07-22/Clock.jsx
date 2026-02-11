@@ -181,10 +181,10 @@ const BarrelrollClock = () => {
       <div className="container">
         <div className="spin-wrapper">
           <div className="half left">
-            <img src={bardImg} alt="Left Image" />
+            <img decoding="async" loading="lazy" src={bardImg} alt="Left Image" />
           </div>
           <div className="half right">
-            <img src={barrsImg} alt="Right Image" />
+            <img decoding="async" loading="lazy" src={barrsImg} alt="Right Image" />
           </div>
           <div className="center-line"></div>
         </div>

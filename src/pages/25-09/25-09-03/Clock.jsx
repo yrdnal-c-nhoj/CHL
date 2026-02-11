@@ -128,14 +128,14 @@ function DigitalClock () {
         `}
       </style>
       <div style={containerStyle}>
-        <img src={cornerImage} alt='Corner' style={cornerStyle('top-left')} />
-        <img src={cornerImage} alt='Corner' style={cornerStyle('top-right')} />
-        <img
+        <img decoding="async" loading="lazy" src={cornerImage} alt='Corner' style={cornerStyle('top-left')} />
+        <img decoding="async" loading="lazy" src={cornerImage} alt='Corner' style={cornerStyle('top-right')} />
+        <img decoding="async" loading="lazy"
           src={cornerImage}
           alt='Corner'
           style={cornerStyle('bottom-left')}
         />
-        <img
+        <img decoding="async" loading="lazy"
           src={cornerImage}
           alt='Corner'
           style={cornerStyle('bottom-right')}

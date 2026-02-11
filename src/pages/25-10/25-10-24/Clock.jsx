@@ -159,12 +159,12 @@ export default function VictorianEsperantoClock() {
       </style>
 
       <div className="victorian-frame" style={frameStyle}>
-        <img
+        <img decoding="async" loading="lazy"
           src={cornerUL}
           alt="Victorian corner upper-left"
           style={{ ...cornerImageStyle, top: "0", left: "0", opacity: 0.6 }}
         />
-        <img
+        <img decoding="async" loading="lazy"
           src={cornerLR}
           alt="Victorian corner lower-right"
           style={{ ...cornerImageStyle, bottom: "0", right: "0", opacity: 0.6 }}

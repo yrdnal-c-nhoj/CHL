@@ -150,7 +150,7 @@ const Clock = () => {
       </div>
 
       {/* Clock hands */}
-      <img
+      <img decoding="async" loading="lazy"
         ref={hourRef}
         src={hourHand}
         alt="hour hand"
@@ -164,7 +164,7 @@ const Clock = () => {
           zIndex: 4,
         }}
       />
-      <img
+      <img decoding="async" loading="lazy"
         ref={minuteRef}
         src={minuteHand}
         alt="minute hand"
@@ -178,7 +178,7 @@ const Clock = () => {
           zIndex: 5,
         }}
       />
-      <img
+      <img decoding="async" loading="lazy"
         ref={secondRef}
         src={secondHand}
         alt="second hand"

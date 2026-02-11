@@ -153,7 +153,7 @@ const Clock = () => {
           const rotation = (i + 1) * 30;
           return (
             <div key={i} style={styles.digitContainer(rotation)}>
-              <img 
+              <img decoding="async" loading="lazy" 
                 src={clockDigitImage} 
                 alt={`digit-${i + 1}`} 
                 style={styles.digitImage} 

@@ -142,7 +142,7 @@ export default function DigitalClock() {
         );
       })}
 
-      <img src={MovingImg} alt="moving" style={movingStyle} />
+      <img decoding="async" loading="lazy" src={MovingImg} alt="moving" style={movingStyle} />
     </div>
   );
 }

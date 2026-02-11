@@ -51,7 +51,7 @@ const Clock = () => {
         }}
       >
         {/* Background image */}
-        <img
+        <img decoding="async" loading="lazy"
           src={swurl}
           alt="Swirling background"
           style={{

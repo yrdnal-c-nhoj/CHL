@@ -59,7 +59,7 @@ export default function AnalogClock() {
       const y = 50 - radius * Math.cos(angle);
 
       return (
-        <img
+        <img decoding="async" loading="lazy"
           key={i}
           src={src}
           alt={`digit-${i}`}
@@ -121,9 +121,9 @@ export default function AnalogClock() {
       <div className="clock-face">
         {digitElements}
 
-        <img ref={hourRef} src={hourHandImg} alt="hour-hand" className="hour-hand" />
-        <img ref={minuteRef} src={minuteHandImg} alt="minute-hand" className="minute-hand" />
-        <img ref={secondRef} src={secondHandImg} alt="second-hand" className="second-hand" />
+        <img decoding="async" loading="lazy" ref={hourRef} src={hourHandImg} alt="hour-hand" className="hour-hand" />
+        <img decoding="async" loading="lazy" ref={minuteRef} src={minuteHandImg} alt="minute-hand" className="minute-hand" />
+        <img decoding="async" loading="lazy" ref={secondRef} src={secondHandImg} alt="second-hand" className="second-hand" />
       </div>
 
       <style>{`

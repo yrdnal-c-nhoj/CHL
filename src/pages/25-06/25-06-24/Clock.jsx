@@ -74,7 +74,7 @@ const ThoughtBalloonClock = () => {
 
       {/* Background Image */}
       {bgImageUrl && !bgImageError ? (
-        <img
+        <img decoding="async" loading="lazy"
           src={bgImageUrl}
           alt="background"
           style={{

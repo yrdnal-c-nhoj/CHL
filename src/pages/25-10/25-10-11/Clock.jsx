@@ -145,7 +145,7 @@ export default function FancyClock() {
       }}
     >
       {/* Bottom background image */}
-      <img
+      <img decoding="async" loading="lazy"
         src={bottomBackgroundImg}
         alt="Bottom Background"
         style={{
@@ -160,7 +160,7 @@ export default function FancyClock() {
       />
 
       {/* Original background image */}
-      <img
+      <img decoding="async" loading="lazy"
         src={backgroundImg}
         alt="Background"
         style={{

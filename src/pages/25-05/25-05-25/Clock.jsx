@@ -135,7 +135,7 @@ const Clock = () => {
 
           {/* Hands */}
           <div className="hand second" id="second-hand" style={handBaseStyle}>
-            <img
+            <img decoding="async" loading="lazy"
               src={arm2}
               alt="Second Hand"
               style={{
@@ -146,7 +146,7 @@ const Clock = () => {
           </div>
 
           <div className="hand minute" id="minute-hand" style={handBaseStyle}>
-            <img
+            <img decoding="async" loading="lazy"
               src={arm3}
               alt="Minute Hand"
               style={{
@@ -157,7 +157,7 @@ const Clock = () => {
           </div>
 
           <div className="hand hour" id="hour-hand" style={handBaseStyle}>
-            <img
+            <img decoding="async" loading="lazy"
               src={arm}
               alt="Hour Hand"
               style={{

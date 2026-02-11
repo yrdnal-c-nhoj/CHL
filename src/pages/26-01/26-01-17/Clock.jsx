@@ -160,7 +160,7 @@ export default function Clock() {
             zIndex: 1,
           }}
         >
-          <img
+          <img decoding="async" loading="lazy"
             src={fallbackImg}
             alt=""
             style={{
@@ -188,7 +188,7 @@ export default function Clock() {
           justifyContent: "center"
         }}
       >
-        <img 
+        <img decoding="async" loading="lazy" 
           src={overlayImage} 
           alt="" 
           style={{

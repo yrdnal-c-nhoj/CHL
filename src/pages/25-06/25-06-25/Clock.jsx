@@ -81,7 +81,7 @@ const BoneClock = () => {
         }
       `}</style>
 
-      <img src={bgImage} className="bgImage" alt="background" />
+      <img decoding="async" loading="lazy" src={bgImage} className="bgImage" alt="background" />
 
       <div style={{
         position: 'relative',
@@ -90,7 +90,7 @@ const BoneClock = () => {
         borderRadius: '50%',
         zIndex: 5,
       }}>
-        <img src={bone2} ref={hourRef} className="hand-img" alt="hour hand"
+        <img decoding="async" loading="lazy" src={bone2} ref={hourRef} className="hand-img" alt="hour hand"
           style={{
             position: 'absolute',
             bottom: '50%',
@@ -102,7 +102,7 @@ const BoneClock = () => {
             pointerEvents: 'none',
           }} />
 
-        <img src={bone1} ref={minuteRef} className="hand-img" alt="minute hand"
+        <img decoding="async" loading="lazy" src={bone1} ref={minuteRef} className="hand-img" alt="minute hand"
           style={{
             position: 'absolute',
             bottom: '50%',
@@ -114,7 +114,7 @@ const BoneClock = () => {
             pointerEvents: 'none',
           }} />
 
-        <img src={bone} ref={secondRef} className="hand-img" alt="second hand"
+        <img decoding="async" loading="lazy" src={bone} ref={secondRef} className="hand-img" alt="second hand"
           style={{
             position: 'absolute',
             bottom: '50%',

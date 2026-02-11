@@ -134,7 +134,7 @@ export default function DigitalClock() {
             </span>
 
             {/* Digit image */}
-            <img
+            <img decoding="async" loading="lazy"
               src={digitImages[digit]}
               alt={`Digit ${digit}`}
               style={{

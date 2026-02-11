@@ -152,7 +152,7 @@ const AnalogClock = () => {
                   transform: `translate(-50%, -50%) rotate(${angle}deg) translate(0, -35vmin) rotate(-${angle}deg)`,
                 }}
               >
-                <img
+                <img decoding="async" loading="lazy"
                   src={digit}
                   alt={`${index + 1}`}
                   style={{ width: '100%', height: '100%' }}

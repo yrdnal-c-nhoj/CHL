@@ -113,9 +113,9 @@ const FireworksClock = () => {
 
   return (
     <div style={containerStyle} data-component={componentId}>
-      <img src={gif1} alt="bg1" style={bgStyle} />
-      <img src={gif2} alt="bg2" style={bgStyle} />
-      <img src={gif3} alt="bg3" style={bgStyle} />
+      <img decoding="async" loading="lazy" src={gif1} alt="bg1" style={bgStyle} />
+      <img decoding="async" loading="lazy" src={gif2} alt="bg2" style={bgStyle} />
+      <img decoding="async" loading="lazy" src={gif3} alt="bg3" style={bgStyle} />
       <div ref={clockRef} style={clockStyle} />
       <style>{`
         @keyframes ${componentId}-pulse {

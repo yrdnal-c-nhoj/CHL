@@ -89,9 +89,9 @@ const TreehouseClock = () => {
 
   return (
     <div style={bodyStyle}>
-      <img src={tree1Img} alt="tree1" style={treeStyle1} />
-      <img src={tree2Img} alt="tree2" style={treeStyle2} />
-      <img src={tree2Img} alt="tree2" style={treeStyle2a} />
+      <img decoding="async" loading="lazy" src={tree1Img} alt="tree1" style={treeStyle1} />
+      <img decoding="async" loading="lazy" src={tree2Img} alt="tree2" style={treeStyle2} />
+      <img decoding="async" loading="lazy" src={tree2Img} alt="tree2" style={treeStyle2a} />
       <div style={clockStyle}>
         {hourStr.length === 2 ? (
           <>

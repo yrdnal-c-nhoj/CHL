@@ -236,7 +236,7 @@ const AnalogClock = () => {
             }}
           />
 
-          <img src={htmlLogo} alt="HTML Logo" className="html-image" />
+          <img decoding="async" loading="lazy" src={htmlLogo} alt="HTML Logo" className="html-image" />
 
           <div style={centerDotStyle} />
           <div style={handStyle('0.25rem', '4rem', '#556389FF', hourDeg, 5)} />

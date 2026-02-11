@@ -139,8 +139,8 @@ const CosmicWheelClock = () => {
 
     
 
-      <img src={bg1} alt="Background 1" style={bgImgStyle} />
-      <img src={bg2} alt="Background 2" style={bgImg2Style} />
+      <img decoding="async" loading="lazy" src={bg1} alt="Background 1" style={bgImgStyle} />
+      <img decoding="async" loading="lazy" src={bg2} alt="Background 2" style={bgImg2Style} />
 
       <div style={clockContainer}>
         {["hours", "minutes", "seconds"].map((section) => (

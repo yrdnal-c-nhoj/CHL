@@ -168,7 +168,7 @@ export default function ProcessingCounterClock() {
 
       {/* === Fallback image === */}
       {(!videoReady || videoFailed) && (
-        <img
+        <img decoding="async" loading="lazy"
           src={bgWebp}
           alt="background"
           style={{

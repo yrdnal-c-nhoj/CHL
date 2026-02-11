@@ -232,7 +232,7 @@ export default function VenusClock() {
 
   return (
     <div style={outerWrapperStyle}>
-      <img
+      <img decoding="async" loading="lazy"
         src={fullBg}
         alt="background"
         style={{

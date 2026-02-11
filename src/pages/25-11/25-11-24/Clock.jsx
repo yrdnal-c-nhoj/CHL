@@ -160,7 +160,7 @@ export default function AnalogClock () {
         ))}
 
         {/* Center image */}
-        <img
+        <img decoding="async" loading="lazy"
           src={clockCenterImg}
           alt='center'
           style={{
@@ -178,7 +178,7 @@ export default function AnalogClock () {
           }}
         />
 
-        <img
+        <img decoding="async" loading="lazy"
           src={hourHandImg}
           alt='hour'
           style={{
@@ -189,7 +189,7 @@ export default function AnalogClock () {
           }}
         />
 
-        <img
+        <img decoding="async" loading="lazy"
           src={minuteHandImg}
           alt='minute'
           style={{
@@ -200,7 +200,7 @@ export default function AnalogClock () {
           }}
         />
 
-        <img
+        <img decoding="async" loading="lazy"
           src={secondHandImg}
           alt='second'
           style={{

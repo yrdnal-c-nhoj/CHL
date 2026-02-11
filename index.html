@@ -36,7 +36,7 @@
       };
 
       // Hard timeout to ensure we never stay hidden indefinitely
-      const fontsLoadingTimeout = setTimeout(removeFontsLoading, 4500);
+      const fontsLoadingTimeout = setTimeout(removeFontsLoading, 3000);
 
       if ('fonts' in document) {
         document.fonts.ready.finally(() => {

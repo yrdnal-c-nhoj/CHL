@@ -49,7 +49,7 @@ const DigitalClock = () => {
 
   const renderDigits = (text) =>
     [...text].map((char, index) => (
-      <img
+      <img decoding="async" loading="lazy"
         key={index}
         src={digitImages[char]}
         alt={char}

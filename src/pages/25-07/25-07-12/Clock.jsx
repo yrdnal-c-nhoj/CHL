@@ -59,7 +59,7 @@ const FibonacciClock = () => {
       position: 'relative'
     }}>
       <style>{fontFace}</style>
-      <img
+      <img decoding="async" loading="lazy"
         src={fibImage}
         alt="background"
         style={{

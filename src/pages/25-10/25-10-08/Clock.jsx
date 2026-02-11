@@ -157,12 +157,12 @@ export default function DigitalImageClock() {
                         isMobile && idx !== arr.length - 1 ? "1px" : "0px",
                     }}
                   >
-                    <img
+                    <img decoding="async" loading="lazy"
                       src={digitMap[prevDigit] || digitMap[digit]}
                       alt={prevDigit}
                       style={digitStyle}
                     />
-                    <img
+                    <img decoding="async" loading="lazy"
                       src={digitMap[digit]}
                       alt={digit}
                       style={digitStyle}

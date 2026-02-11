@@ -404,7 +404,7 @@ export default function DesertUFOSequence () {
         )}
 
         {/* UFO on top */}
-        <img
+        <img decoding="async" loading="lazy"
           src={ufoImg}
           alt='UFO'
           style={{

@@ -199,7 +199,7 @@ export default function DigitClock() {
         {/* HOURS (Positions 0 and 1) */}
         <div style={section}>
           {currentImageUrls.slice(0, 2).map((url, i) => (
-            <img
+            <img decoding="async" loading="lazy"
               key={`h${i}`}
               src={url}
               alt={`hour ${timeDigits[i]}`}
@@ -212,7 +212,7 @@ export default function DigitClock() {
         {/* MINUTES (Positions 2 and 3) */}
         <div style={section}>
           {currentImageUrls.slice(2, 4).map((url, i) => (
-            <img
+            <img decoding="async" loading="lazy"
               key={`m${i}`}
               src={url}
               alt={`minute ${timeDigits[i + 2]}`}
@@ -225,7 +225,7 @@ export default function DigitClock() {
         {/* SECONDS (Positions 4 and 5) */}
         <div style={section}>
           {currentImageUrls.slice(4, 6).map((url, i) => (
-            <img
+            <img decoding="async" loading="lazy"
               key={`s${i}`}
               src={url}
               alt={`second ${timeDigits[i + 4]}`}

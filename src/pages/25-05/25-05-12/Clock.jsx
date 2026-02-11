@@ -108,7 +108,7 @@ const CheetahClock = () => {
      
 
       {/* Background */}
-      <img
+      <img decoding="async" loading="lazy"
         src={A3ui}
         alt="Background"
         style={{

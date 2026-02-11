@@ -91,7 +91,7 @@ const Clock = () => {
                 inset: 0,
               }}
             >
-              <img
+              <img decoding="async" loading="lazy"
                 src={img}
                 alt={`digit-${i + 1}`}
                 style={{
@@ -117,9 +117,9 @@ const Clock = () => {
               pointerEvents: 'none',
             }}
           >
-            <img ref={hourRef} src={hourHand} alt="hour" style={handStyle(16)} />
-            <img ref={minRef} src={minHand} alt="minute" style={handStyle(19)} />
-            <img ref={secRef} src={secHand} alt="second" style={handStyle(24)} />
+            <img decoding="async" loading="lazy" ref={hourRef} src={hourHand} alt="hour" style={handStyle(16)} />
+            <img decoding="async" loading="lazy" ref={minRef} src={minHand} alt="minute" style={handStyle(19)} />
+            <img decoding="async" loading="lazy" ref={secRef} src={secHand} alt="second" style={handStyle(24)} />
           </div>
         </div>
       </div>

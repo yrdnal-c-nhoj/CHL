@@ -93,10 +93,10 @@ const FlyingPetalsClock = () => {
 
   return (
     <div style={containerStyle}>
-      <img src={bg1} alt="background1" style={imageStyles[0]} />
-      <img src={bg2} alt="background2" style={imageStyles[1]} />
-      <img src={bg3} alt="background3" style={imageStyles[2]} />
-      <img src={bg4} alt="background4" style={imageStyles[3]} />
+      <img decoding="async" loading="lazy" src={bg1} alt="background1" style={imageStyles[0]} />
+      <img decoding="async" loading="lazy" src={bg2} alt="background2" style={imageStyles[1]} />
+      <img decoding="async" loading="lazy" src={bg3} alt="background3" style={imageStyles[2]} />
+      <img decoding="async" loading="lazy" src={bg4} alt="background4" style={imageStyles[3]} />
       <div style={wrapperStyle}>
         <div style={clockContainerStyle}>
           <div style={digitGroupStyle}>

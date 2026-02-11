@@ -192,9 +192,9 @@ const DigitalClock = () => {
 
   return (
     <div style={styles.container}>
-      <img src={bgLayer1} alt="" style={styles.imageLayer1} />
+      <img decoding="async" loading="lazy" src={bgLayer1} alt="" style={styles.imageLayer1} />
       <div style={styles.imageLayer2} />
-      <img src={bgLayer3} alt="" style={styles.imageLayer3} />
+      <img decoding="async" loading="lazy" src={bgLayer3} alt="" style={styles.imageLayer3} />
       <div style={styles.uiWrapper}>
         <div style={styles.timeText}>
           {hours}:{minutes} <span style={styles.ampmText}>{ampm}</span>

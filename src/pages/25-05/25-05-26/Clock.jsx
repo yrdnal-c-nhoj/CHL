@@ -133,7 +133,7 @@ export default function SproutClock() {
 
       <div style={styles.content}>
         {imagePositions.map((pos, i) => (
-          <img
+          <img decoding="async" loading="lazy"
             key={i}
             src={sprou}
             alt=""
