@@ -52,7 +52,7 @@ const EntropyClock = () => {
     // Numbers tremble then fall
     const numbersOrder = shuffle([...Array(12).keys()]);
     numbersOrder.forEach((i) => {
-      const trembleDelay = 500 + Math.random() * 500;
+      const trembleDelay = 50 + Math.random() * 500;
       cumulativeDelay += trembleDelay;
       timers.push(setTimeout(() => trembleNumber(i), cumulativeDelay));
       timers.push(setTimeout(() => fallNumber(i), cumulativeDelay + 1500));
