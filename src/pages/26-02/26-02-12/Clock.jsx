@@ -1,128 +1,91 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import './style.css';
 
-// Explicit asset imports for Vite optimization
-// Vite will fingerprint these files (e.g., custom-font.hash.woff2)
-import clockFont from '../../../assets/fonts/pin.ttf';
+const NUM_CLOCKS = 8; // Adjust for more or fewer clocks
 
-/**
- * DigitalClock Component
- * Features: 24-hour format, detached digits, 100dvh layout.
- */
-const DigitalClock = () => {
+const ClockInstance = ({ offset }) => {
   const [time, setTime] = useState(new Date());
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const requestRef = useRef();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 10); // Update every 10ms for millisecond precision
-    return () => clearInterval(interval);
-  }, []);
+  // Spirograph Parameters
+  const R = 150; // Outer radius
+  const r = 52;  // Inner radius
+  const d = 60;  // Offset distance
 
-  // Format time into individual digits
-  const timeData = useMemo(() => {
-    const h = String(time.getHours()).padStart(2, '0');
-    const m = String(time.getMinutes()).padStart(2, '0');
-    const s = String(time.getSeconds()).padStart(2, '0');
-    const ms = String(Math.floor(time.getMilliseconds() / 100)); // Single digit ms
+  const animate = (t) => {
+    // 't' is timestamp in ms. We use it as the angle 'theta'
+    const angle = (t / 1000) + offset;
+    
+    const x = (R - r) * Math.cos(angle) + d * Math.cos(((R - r) / r) * angle);
+    const y = (R - r) * Math.sin(angle) - d * Math.sin(((R - r) / r) * angle);
 
-    return {
-      hours: h.split(''),
-      minutes: m.split(''),
-      seconds: s.split(''),
-      ms: ms
-    };
-  }, [time]);
-
-  // --- Inline Styles ---
-  const styles = {
-    container: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100vw',
-      height: '100dvh', // Dynamic Viewport Height
-      backgroundColor: '#0a0a0a',
-      color: '#00ff41', // Matrix Green
-      margin: 0,
-      padding: 0,
-      boxSizing: 'border-box',
-      overflow: 'hidden',
-      fontFamily: 'monospace', // Fallback
-    },
-    clockWrapper: {
-      display: 'flex',
-      gap: '12px',
-      alignItems: 'center',
-      fontSize: 'clamp(2rem, 10vw, 8rem)',
-    },
-    digitGroup: {
-      display: 'flex',
-      gap: '4px',
-    },
-    digit: {
-      backgroundColor: '#1a1a1a',
-      padding: '10px 15px',
-      borderRadius: '4px',
-      border: '1px solid #333',
-      minWidth: '1ch',
-      textAlign: 'center',
-      boxShadow: '0 0 15px rgba(0, 255, 65, 0.2)',
-    },
-    separator: {
-      fontWeight: 'bold',
-      opacity: 0.8,
-    },
-    msDigit: {
-      fontSize: '0.6em',
-      color: '#ff3e3e', // Red for milliseconds
-      alignSelf: 'flex-end',
-      marginBottom: '10px'
-    }
+    setPosition({ x, y });
+    requestRef.current = requestAnimationFrame(animate);
   };
 
-  const Digit = ({ value }) => (
-    <div style={styles.digit}>{value}</div>
-  );
+  useEffect(() => {
+    // Timer for the clock display
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    // Loop for the movement
+    requestRef.current = requestAnimationFrame(animate);
+    
+    return () => {
+      clearInterval(timer);
+      cancelAnimationFrame(requestRef.current);
+    };
+  }, []);
+
+  const formatTime = (date) => date.toLocaleTimeString('en-US', {
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+  });
+
+  const blobPath = "M43.1,-68.5C56.2,-58.6,67.5,-47.3,72.3,-33.9C77.2,-20.5,75.5,-4.9,74.2,11.3C72.9,27.6,71.9,44.5,63.8,57.2C55.7,69.8,40.6,78.2,25.5,79.2C10.4,80.1,-4.7,73.6,-20.9,69.6C-37.1,65.5,-54.5,63.9,-66,54.8C-77.5,45.8,-83.2,29.3,-85.7,12.3C-88.3,-4.8,-87.7,-22.3,-79.6,-34.8C-71.5,-47.3,-55.8,-54.9,-41.3,-64.2C-26.7,-73.6,-13.4,-84.7,0.8,-86C15,-87.2,29.9,-78.5,43.1,-68";
 
   return (
-    <div style={styles.container}>
-      {/* Dynamic Font Injection (Vite Optimized) */}
-      <style>
-        {`@font-face { font-family: 'ClockFont'; src: url(${clockFont}); }`}
-      </style>
+    <div 
+      className="clock-wrapper"
+      style={{
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        position: 'absolute'
+      }}
+    >
+      <svg viewBox="0 0 200 200" width="150" height="150">
+        <defs>
+          <clipPath id={`clip-${offset}`}>
+            <path d={blobPath} transform="translate(100 100)"/>
+          </clipPath>
+        </defs>
 
-      <div style={{ ...styles.clockWrapper, fontFamily: 'ClockFont, monospace' }}>
-        {/* Hours */}
-        <div style={styles.digitGroup}>
-          <Digit value={timeData.hours[0]} />
-          <Digit value={timeData.hours[1]} />
-        </div>
+        <image 
+          href="https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&w=764&q=80"
+          width="200" height="200"
+          preserveAspectRatio="xMidYMid slice"
+          clipPath={`url(#clip-${offset})`}
+        />
 
-        <span style={styles.separator}>:</span>
+        <path id={`textPath-${offset}`} d={blobPath} transform="translate(100 100)" fill="none" />
 
-        {/* Minutes */}
-        <div style={styles.digitGroup}>
-          <Digit value={timeData.minutes[0]} />
-          <Digit value={timeData.minutes[1]} />
-        </div>
-
-        <span style={styles.separator}>:</span>
-
-        {/* Seconds */}
-        <div style={styles.digitGroup}>
-          <Digit value={timeData.seconds[0]} />
-          <Digit value={timeData.seconds[1]} />
-        </div>
-
-        <span style={styles.separator}>.</span>
-
-        {/* Milliseconds (Single Column) */}
-        <div style={{ ...styles.digit, ...styles.msDigit }}>
-          {timeData.ms}
-        </div>
-      </div>
+        <text className="text-content-static">
+          <textPath href={`#textPath-${offset}`} startOffset="0%">
+            {formatTime(time)} ❤ {formatTime(time)} ❤
+            <animate attributeName="startOffset" from="0%" to="100%" dur="10s" repeatCount="indefinite" />
+          </textPath>
+        </text>
+      </svg>
     </div>
   );
 };
 
-export default DigitalClock;
+const SpirographClocks = () => {
+  return (
+    <div className="spiro-container">
+      {/* Centered origin for the clocks */}
+      {[...Array(NUM_CLOCKS)].map((_, i) => (
+        <ClockInstance key={i} offset={i * (Math.PI * 2 / NUM_CLOCKS)} />
+      ))}
+    </div>
+  );
+};
+
+export default SpirographClocks;
