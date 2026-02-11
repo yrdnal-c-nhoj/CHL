@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 
 // --- Assets ---
-import analogRainFont from '../../../assets/fonts/26-01-31-cond.ttf?url';
+import dripFont from '../../../assets/fonts/26-01-31-cond.ttf?url';
 import analogBgImage from '../../../assets/images/26-02-01/rain.webp';
 
 // --- Configuration ---
@@ -35,7 +35,7 @@ const useClock = () => {
 
 const AnalogClock = () => {
   const now = useClock();
-  const fontReady = useFontLoader('BorrowedAnalog', analogRainFont, { fallback: true, timeout: 3500 });
+  const fontReady = useFontLoader('BorrowedAnalog', dripFont, { fallback: true, timeout: 3500 });
 
   // Time Calculations (including sub-second fractions for smooth motion)
   const msec = now.getMilliseconds();
