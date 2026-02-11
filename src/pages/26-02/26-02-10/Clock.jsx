@@ -90,7 +90,7 @@ const styles = {
     zIndex: 2,
   },
   digitalDisplay: {
-    fontSize: 'clamp(4rem, 15vw, 8rem)',
+    fontSize: 'clamp(2rem, 10vw, 6rem)',
     // fontWeight: 'bold',
     color: CLOCK_CONFIG.COLORS.silverText,
     // filter: 'drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.8))',
