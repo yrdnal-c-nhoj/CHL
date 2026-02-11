@@ -154,7 +154,7 @@ const styles = {
     inset: 0,
     backgroundColor: '#FF000035',
     backgroundImage: `url(${baseBg})`,
-    backgroundSize: '60vh',
+    backgroundSize: '50vh',
     backgroundPosition: 'center center',
     backgroundBlendMode: 'overlay',
     backgroundRepeat: 'repeat',

@@ -80,7 +80,7 @@ export default function KurosawaClock() {
     alignItems: 'flex-start', // Pin to top
     width: '100%',
     position: 'absolute',
-    top: -15,
+    top: -10,
     left: 0,
     zIndex: 10,
     gap: '0', // No space between the three clocks
