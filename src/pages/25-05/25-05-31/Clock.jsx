@@ -1,15 +1,45 @@
 import React, { useEffect, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import elWebp from '../../../assets/images/25-05-31/el.webp';
 import el1 from '../../../assets/images/25-05-31/el1.png';
 import el2 from '../../../assets/images/25-05-31/el2.png';
 import el3 from '../../../assets/images/25-05-31/el3.png';
 import eleGif from '../../../assets/images/25-05-31/ele.gif';
+import fatFont from '../../../assets/fonts/25-05-31-fat.otf';
 
 const ElephantClock = () => {
   const hourRef = useRef();
   const minuteRef = useRef();
   const secondRef = useRef();
   const orbitRef = useRef();
+  
+  const fontReady = useFontLoader('fat', fatFont, { timeout: 3000 });
+  
+  // Debug font loading
+  console.log('Fat font ready:', fontReady);
+  console.log('Fat font URL:', fatFont);
+  console.log('Font file exists:', !!fatFont);
+  
+  // Add CSS font-face declaration
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: 'fat';
+        src: url(${fatFont}) format('opentype');
+        font-display: block;
+        font-weight: normal;
+        font-style: normal;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
+    };
+  }, [fatFont]);
 
   useEffect(() => {
     const hourHand = hourRef.current;
@@ -86,6 +116,7 @@ const ElephantClock = () => {
           top: `${y}%`,
           transform: 'translate(-50%, -50%)',
           fontSize: '8vmin',
+          fontFamily: 'fat, sans-serif',
           color: '#949393',
           textShadow: '#0a0909 -1px 0px 0px',
           width: '10vmin',
@@ -108,6 +139,8 @@ const ElephantClock = () => {
         background: '#7e7c79',
         position: 'relative',
         fontFamily: 'sans-serif',
+        opacity: fontReady ? 1 : 0.3,
+        transition: 'opacity 0.3s ease',
       }}
     >
       <img decoding="async" loading="lazy"
