@@ -94,9 +94,9 @@ const Clock = () => {
       width: '0.8em', 
       height: '1.2em',
       
-      color: '#615E5E',
+      color: '#8D6E6E',
       fontFamily: "'iss', monospace",
-      fontSize: 'clamp(5rem, 18vh, 25vh)', 
+      fontSize: 'clamp(3rem, 8vw, 12rem)', 
       fontWeight: 400,
       lineHeight: 1,
       textAlign: 'center',
@@ -107,9 +107,9 @@ const Clock = () => {
       textShadow: `
         0 0 20px #F1C120,
         0 0 40px #CB5F26,
-        
+        0 0 80px #F1C120,
         0 0 60px #f3f7f8,
-        0 0 10px #D4D6E0
+        0 1px 1px #D4D6E0
       `,
     },
   };
