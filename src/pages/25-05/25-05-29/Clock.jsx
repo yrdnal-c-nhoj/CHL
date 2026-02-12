@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import gearsGif from "../../../assets/images/25-05-29/gears-13950_128.gif";
+import watchWoff2 from "../../../assets/fonts/25-05-29-watch.woff2";
+import watchTtf from "../../../assets/fonts/25-05-29-watch.ttf";
 
 const Clock = () => {
   const [loaded, setLoaded] = useState(false);
@@ -81,7 +83,7 @@ const Clock = () => {
       <style>{`
         @font-face {
           font-family: 'watch';
-          src: url('../../../assets/fonts/25-05-29-watch.ttf') format('truetype');
+          src: url(${watchWoff2}) format('woff2'), url(${watchTtf}) format('truetype');
           font-display: swap;
         }
 

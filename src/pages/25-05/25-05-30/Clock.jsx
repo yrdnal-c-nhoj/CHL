@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import issFont from '../../../assets/fonts/25-05-30-iss.ttf';
 
 const Clock = () => {
@@ -9,11 +9,12 @@ const Clock = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const digits = useMemo(() => {
-    const pad = (n) => String(n).padStart(2, '0');
-    return (pad(time.getHours()) + pad(time.getMinutes()) + pad(time.getSeconds())).split('');
-  }, [time]);
+  const formatTime = (value) => String(value).padStart(2, '0').split('');
+  const [h1, h2] = formatTime(time.getHours());
+  const [m1, m2] = formatTime(time.getMinutes());
+  const [s1, s2] = formatTime(time.getSeconds());
 
+  // Styles
   const styles = {
     fontFace: `
       @font-face {
@@ -21,40 +22,34 @@ const Clock = () => {
         src: url(${issFont}) format('truetype');
       }
     `,
-    // Main background container
-    container: {
-      position: 'relative',
-      width: '100vw',
-      height: '100vh',
-      backgroundColor: 'black', // Black background for letterboxing
-      overflow: 'hidden',
-    },
-    // The "Whole Window" Video
-    iframe: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      border: 'none',
-      zIndex: 0,
-      pointerEvents: 'none',
-    },
+  // Inside styles
+iframe: {
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%) scale(1.2)', // increased scale
+  width: '120vw',  // larger than viewport width
+  height: '140vh', // taller than viewport height
+  border: 'none',
+  zIndex: 0,
+  pointerEvents: 'none',
+},
+
     wrapper: {
       position: 'absolute',
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
       zIndex: 10,
-      width: '100%',
-      pointerEvents: 'none', // Allows clicking "through" the clock if needed
     },
     clockContainer: {
       display: 'flex',
+      flexWrap: 'nowrap',
       justifyContent: 'center',
       alignItems: 'center',
-      gap: '1.5vw',
-      fontFamily: 'iss, sans-serif',
+      flexDirection: 'row',
+      gap: '1vh',
+      fontFamily: 'iss, sans-serif !important',
     },
     digitBox: {
       color: 'transparent',
@@ -68,28 +63,37 @@ const Clock = () => {
         #80a2a7 3px 3px 0px,
         #10100f -3px -3px 0px
       `,
-      fontSize: '14vw',
-      width: '12vw',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontSize: '18vw',
+      width: '14vw',
+      height: '20vw',
       textAlign: 'center',
+      boxSizing: 'border-box',
+      zIndex: 19,
     },
   };
 
   return (
-    <div style={styles.container}>
+    <div style={{ margin: 0, padding: 0, overflow: 'hidden', width: '10vw', height: '100vh' }}>
       <style>{styles.fontFace}</style>
 
-      {/* YouTube Video with no clipping */}
+      {/* Background YouTube Video */}
       <iframe
         src="https://www.youtube.com/embed/iYmvCUonukw?autoplay=1&mute=1&controls=0&loop=1&playlist=iYmvCUonukw"
         title="YouTube video player"
-        allow="autoplay; encrypted-media"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
         style={styles.iframe}
       ></iframe>
 
       {/* Clock overlay */}
       <div style={styles.wrapper}>
         <div style={styles.clockContainer}>
-          {digits.map((digit, i) => (
+          {[h1, h2, m1, m2, s1, s2].map((digit, i) => (
             <div key={i} style={styles.digitBox}>{digit}</div>
           ))}
         </div>
