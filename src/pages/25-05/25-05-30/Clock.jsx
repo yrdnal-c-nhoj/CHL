@@ -56,7 +56,7 @@ const Clock = () => {
       width: '100%',
       height: '100%',
       objectFit: 'cover',
-      transform: 'scale(1.15)',
+      transform: 'scale(1.1)',
       transformOrigin: 'center',
       pointerEvents: 'none',
       zIndex: 1,
@@ -82,6 +82,8 @@ const Clock = () => {
       // Consistent spacing between digit "boxes"
       gap: '1.5vw', 
       padding: '0 2vw',
+      // Move clock slightly left
+      marginLeft: '-3vw',
     },
 
     digitBox: {
