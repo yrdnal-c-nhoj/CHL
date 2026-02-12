@@ -9,10 +9,10 @@ const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 40,
   COLORS: {
     silverText:
-      'linear-gradient(180deg, #248B05 0%, #000000 45%, #232223 50%, #790625 100%)',
-    hourHand: 'linear-gradient(to right, #4D4E4D, #282727, #570303)',
-    minuteHand: 'linear-gradient(to right, #3B3939, #383636, #540303)',
-    secondHand: 'linear-gradient(to top, #4C4F4B, #3E0117)',
+      'linear-gradient(180deg, #24058B 0%, #000000 45%, #232222 50%, #062D79 100%)',
+    hourHand: 'linear-gradient(to right, #4E4D4D, #282727, #4D4949)',
+    minuteHand: 'linear-gradient(to right, #3B3939, #383636, #484444)',
+    secondHand: 'linear-gradient(to top, #4B4C4F, #4F4F52)',
   },
 };
 
@@ -157,12 +157,12 @@ const styles = {
   additionalBackgroundLayer: {
     position: 'absolute',
     inset: 0,
-    backgroundSize: 'contain',
+    backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundRepeat: 'repeat',
+    backgroundRepeat: 'no-repeat',
     backgroundImage: `url(${bellImage2})`,
     filter:
-      'saturate(400%) hue-rotate(-70deg) contrast(0.4) brightness(1.6)',
+      'saturate(520%) hue-rotate(-120deg) contrast(0.4) brightness(1.6)',
     zIndex: 1,
   },
 
