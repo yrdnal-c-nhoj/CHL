@@ -177,12 +177,13 @@ const styles = {
     fontFamily: "'Gilda Display', serif",
   },
 
-  numeralBase: {
+numeralBase: {
     position: 'absolute',
     fontSize: 'clamp(4rem, 10vw, 19rem)',
     background: CLOCK_CONFIG.COLORS.silverText,
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
+    filter: 'drop-shadow(1px 1px 0px white)', 
     userSelect: 'none',
   },
 
@@ -191,13 +192,15 @@ const styles = {
     bottom: '50%',
     left: '50%',
     transformOrigin: '50% 100%',
+
+    filter: 'drop-shadow(1px 1px 0px white)', 
     borderRadius: '10px',
     willChange: 'transform',
   },
 
   hourHand: {
     width: '1.2vmin',
-    height: '24vmin',
+    height: '20vmin',
     background: CLOCK_CONFIG.COLORS.hourHand,
     zIndex: 3,
   },
