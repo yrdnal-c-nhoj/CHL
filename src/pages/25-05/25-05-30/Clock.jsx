@@ -44,7 +44,7 @@ const Clock = () => {
       width: '100vw',
       height: '100vh',
       backgroundColor: 'black',
-      overflow: 'hidden',
+      overflow: 'visible',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -60,6 +60,7 @@ const Clock = () => {
       transformOrigin: 'center',
       pointerEvents: 'none',
       zIndex: 1,
+      overflow: 'visible',
     },
 
     clockWrapper: {
