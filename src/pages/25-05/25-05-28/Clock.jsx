@@ -1,10 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
-import circleFont from '../../../assets/fonts/25-05-28-circle.woff2'; // Prefer woff2 for better loading
+import circleFont from '../../../assets/fonts/25-05-28-circle.ttf'; // Use working ttf file
 
 const Clock = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
-  const fontReady = useFontLoader('circle', circleFont, { fallback: true, timeout: 5000 });
+  const fontReady = useFontLoader('circle-local', circleFont, { fallback: true, timeout: 5000 });
+  
+  // Debug font loading
+  console.log('Circle font ready:', fontReady);
+  console.log('Circle font URL:', circleFont);
+  console.log('Font file exists:', !!circleFont);
+  
+  // Force CSS font-face declaration to override any cached references
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: 'circle-local';
+        src: url(${circleFont}) format('truetype');
+        font-display: block;
+        font-weight: normal;
+        font-style: normal;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
+    };
+  }, [circleFont]);
 
   useEffect(() => {
     if (!fontReady) return;
@@ -53,7 +79,7 @@ const Clock = () => {
   const clockSize = '82vh';
 
   const clockStyle = {
-    fontFamily: 'circle, sans-serif',
+    fontFamily: 'circle-local, sans-serif',
     position: 'absolute',
     width: clockSize,
     height: clockSize,
@@ -140,7 +166,7 @@ const Clock = () => {
     fill: '#9de2ac',
     textAnchor: 'middle',
     dominantBaseline: 'middle',
-    fontFamily: 'circle, sans-serif',
+    fontFamily: 'circle-local, sans-serif',
   };
 
   const renderClock = (id, index) => (
@@ -172,7 +198,7 @@ const Clock = () => {
         height: '100dvh',
         width: '100vw',
         position: 'relative',
-        fontFamily: 'circle, sans-serif',
+        fontFamily: 'circle-local, sans-serif',
       }}
     >
       {clockPositions.map((clock, index) => renderClock(clock.id, index))}
