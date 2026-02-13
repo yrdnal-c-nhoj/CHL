@@ -10,11 +10,10 @@ import extraBg3 from '../../../assets/images/26-02-12/ball.webp';
 
 const DISCO_COLORS = [
   '#FF00FF', // Neon Magenta
-  '#00FFFF', // Cyan
   '#FFFB00', // Neon Yellow
   '#FF3131', // Neon Red
   '#39FF14', // Neon Green
-  '#8A2BE2', // Blue Violet
+  '#B473F1', // Blue Violet
   '#FF5E00', // Neon Orange
 ];
 
