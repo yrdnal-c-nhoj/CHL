@@ -8,7 +8,7 @@ import analogBgImage from '../../../assets/images/26-02-10/tv.jpg';
 // --- Configuration ---
 const CLOCK_CONFIG = {
   COLORS: {
-    silverText: '#5B83F3',
+    silverText: '#58D5C0',
 
   }
 };
