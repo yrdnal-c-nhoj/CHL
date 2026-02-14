@@ -1,160 +1,194 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
-// === Local assets (module-based, fingerprinted by Vite) ===
-import wallTexture from '../../../assets/images/26-01-01/fan.gif';       // subtle plaster / stone texture
-import brassTexture from '../../../assets/images/26-01-01/fan.gif';     // optional brass grain
-import watchFontUrl from '../../../assets/fonts/26-01-01-fan.otf';
+/* ================= CONFIG ================= */
 
+const CONFIG = {
+  UPDATE_INTERVAL: 1000,
+  FADE_DURATION: '0.8s',
+  COLORS: {
+    highlight: '#e74c3c', // Your original red
+    subtle: '#A5A8AA',    // Your original gray
+    background: '#0f0f0f',
+  },
+};
 
+/* ================= MATRIX ================= */
 
-import bg1 from '../../../assets/images/26-01-01/fan.gif';
-import myFontUrl from '../../../assets/fonts/26-01-01-fan.otf';
+const MATRIX = [
+  ['I','T','L','I','S','A','S','Q','U','A','R','T','E','R','C'],
+  ['T','W','E','N','T','Y','F','I','V','E','H','A','L','F','S'],
+  ['P','A','S','T','O','R','X','X','X','X','X','X','T','O','D'],
+  ['S','E','V','E','N','E','I','G','H','T','N','I','N','E','T'],
+  ['O','N','E','T','W','O','T','H','R','E','E','L','W','K','N'],
+  ['F','O','U','R','F','I','V','E','S','I','X','D','J','B','P'],
+  ['T','E','N','E','L','E','V','E','N','T','W','E','L','V','E'],
+  ['X','X','X','X','O','C','L','O','C','K','X','X','X','X','X'], // O'CLOCK at the bottom
+];
 
+/* ================= WORD MAP ================= */
 
+const WORDS = {
+  IT: [[0,0],[0,1]],
+  IS: [[0,3],[0,4]],
 
-export default function NichePocketWatch() {
-  const watchRef = useRef(null);
-  const [fontReady, setFontReady] = useState(false);
+  FIVE_MIN: [[1,6],[1,7],[1,8],[1,9]],
+  TEN_MIN: [[6,0],[6,1],[6,2]],
+  QUARTER: [[0,7],[0,8],[0,9],[0,10],[0,11],[0,12],[0,13]],
+  TWENTY: [[1,0],[1,1],[1,2],[1,3],[1,4],[1,5]],
+  HALF: [[1,10],[1,11],[1,12],[1,13]],
 
-  // === Load font (Vite-modern behavior) ===
+  PAST: [[2,0],[2,1],[2,2],[2,3]],
+  TO: [[2,12],[2,13]],
+
+  OCLOCK: [[7,4],[7,5],[7,6],[7,7],[7,8],[7,9]], // Bottom row coordinates
+
+  HOURS: {
+    1:[[4,0],[4,1],[4,2]],
+    2:[[4,3],[4,4],[4,5]],
+    3:[[4,6],[4,7],[4,8],[4,9],[4,10]],
+    4:[[5,0],[5,1],[5,2],[5,3]],
+    5:[[5,4],[5,5],[5,6],[5,7]],
+    6:[[5,8],[5,9],[5,10]],
+    7:[[3,0],[3,1],[3,2],[3,3],[3,4]],
+    8:[[3,5],[3,6],[3,7],[3,8],[3,9]],
+    9:[[3,10],[3,11],[3,12],[3,13]],
+    10:[[6,0],[6,1],[6,2]],
+    11:[[6,3],[6,4],[6,5],[6,6],[6,7],[6,8]],
+    12:[[6,9],[6,10],[6,11],[6,12],[6,13],[6,14]],
+  }
+};
+
+/* ================= HELPERS ================= */
+
+function normalizeTime(date) {
+  let h = date.getHours();
+  let m = date.getMinutes();
+  let snapped = Math.round(m / 5) * 5;
+
+  if (snapped === 60) {
+    snapped = 0;
+    h++;
+  }
+
+  const isTo = snapped > 30;
+  const displayMinutes = isTo ? 60 - snapped : snapped;
+  let displayHour = h % 12 || 12;
+
+  if (isTo) displayHour = (displayHour % 12) + 1;
+
+  return { displayHour, displayMinutes, isTo };
+}
+
+function addWord(set, coords) {
+  if (!coords) return;
+  coords.forEach(([r,c]) => set.add(`${r}-${c}`));
+}
+
+/* ================= COMPONENT ================= */
+
+export default function WordClock() {
+  const [time, setTime] = useState(new Date());
+
   useEffect(() => {
-    const font = new FontFace(
-      'WatchNumerals',
-      `url(${watchFontUrl})`
-    );
-
-    font
-      .load()
-      .then((loaded) => {
-        document.fonts.add(loaded);
-        setFontReady(true);
-      })
-      .catch(() => setFontReady(true));
-
-    return () => {
-      // FontFace cleanup is handled by browser; nothing persistent added
-    };
+    const interval = setInterval(() => setTime(new Date()), CONFIG.UPDATE_INTERVAL);
+    return () => clearInterval(interval);
   }, []);
 
-  // === Subtle pendulum swing ===
-  useEffect(() => {
-    let rafId;
-    let start;
+  const highlighted = useMemo(() => {
+    const active = new Set();
+    const { displayHour, displayMinutes, isTo } = normalizeTime(time);
 
-    const animate = (t) => {
-      if (!start) start = t;
-      const elapsed = (t - start) / 1000;
+    addWord(active, WORDS.IT);
+    addWord(active, WORDS.IS);
 
-      // gentle, slow swing
-      const angle = Math.sin(elapsed * 0.9) * 3;
-
-      if (watchRef.current) {
-        watchRef.current.style.transform =
-          `translateX(-50%) rotate(${angle}deg)`;
-      }
-
-      rafId = requestAnimationFrame(animate);
+    const MINUTE_MAP = {
+      5:[WORDS.FIVE_MIN],
+      10:[WORDS.TEN_MIN],
+      15:[WORDS.QUARTER],
+      20:[WORDS.TWENTY],
+      25:[WORDS.TWENTY, WORDS.FIVE_MIN],
+      30:[WORDS.HALF],
     };
 
-    rafId = requestAnimationFrame(animate);
+    if (displayMinutes === 0) {
+      // Order: IT IS -> HOUR -> OCLOCK
+      addWord(active, WORDS.HOURS[displayHour]);
+      addWord(active, WORDS.OCLOCK);
+    } else {
+      // Order: IT IS -> MINS -> PAST/TO -> HOUR
+      MINUTE_MAP[displayMinutes]?.forEach(w => addWord(active, w));
+      addWord(active, isTo ? WORDS.TO : WORDS.PAST);
+      addWord(active, WORDS.HOURS[displayHour]);
+    }
 
-    return () => cancelAnimationFrame(rafId);
-  }, []);
-
-  // === Shared sizing ===
-  const nicheWidth = '70vw';
-  const nicheMaxWidth = '420px';
+    return active;
+  }, [time]);
 
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        boxSizing: 'border-box',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundImage: `url(${wallTexture})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        fontFamily: 'WatchNumerals, serif',
-        opacity: fontReady ? 1 : 0,
-        visibility: fontReady ? 'visible' : 'hidden',
-        transition: 'opacity 0.3s ease',
-      }}
-    >
-      {/* === Niche === */}
-      <div
-        style={{
-          position: 'relative',
-          width: nicheWidth,
-          maxWidth: nicheMaxWidth,
-          aspectRatio: '1 / 1.25',
-          borderTopLeftRadius: '100% 100%',
-          borderTopRightRadius: '100% 100%',
-          borderBottomLeftRadius: '1.5rem',
-          borderBottomRightRadius: '1.5rem',
-          background: 'linear-gradient(180deg, #e6ded2, #cfc6b8)',
-          boxShadow:
-            'inset 0 1.5rem 2.5rem rgba(0,0,0,0.25), inset 0 -0.5rem 1rem rgba(255,255,255,0.3)',
-          display: 'flex',
-          justifyContent: 'center',
-          overflow: 'hidden'
-        }}
-      >
-        {/* === Chain === */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '0.75rem',
-            width: '2px',
-            height: '25%',
-            background:
-              'linear-gradient(180deg, #b08d57, #6e542e)',
-            boxShadow: '0 0 2px rgba(0,0,0,0.4)'
-          }}
-        />
+    <div style={styles.container}>
+      <style>
+        {`@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Nanum+Pen+Script&display=swap');`}
+      </style>
 
-        {/* === Pocket Watch === */}
-        <div
-          ref={watchRef}
-          style={{
-            position: 'absolute',
-            top: '25%',
-            left: '50%',
-            transformOrigin: 'top center',
-            width: '38%',
-            aspectRatio: '1 / 1',
-            borderRadius: '50%',
-            backgroundImage: `url(${brassTexture})`,
-            backgroundSize: 'cover',
-            boxShadow:
-              '0 1.5rem 2.5rem rgba(0,0,0,0.35), inset 0 0 0.25rem rgba(255,255,255,0.6)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          {/* Watch face */}
-          <div
-            style={{
-              width: '85%',
-              height: '85%',
-              borderRadius: '50%',
-              background: '#f7f3ee',
-              boxShadow: 'inset 0 0 0.5rem rgba(0,0,0,0.25)',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              fontSize: 'clamp(1rem, 3vw, 1.6rem)',
-              color: '#2e2a24'
-            }}
-          >
-            XII
+      <div style={styles.grid}>
+        {MATRIX.map((row, r) => (
+          <div key={r} style={styles.row}>
+            {row.map((letter, c) => {
+              const key = `${r}-${c}`;
+              const on = highlighted.has(key);
+
+              return (
+                <div
+                  key={key}
+                  style={{
+                    ...styles.cell,
+                    color: on ? CONFIG.COLORS.highlight : CONFIG.COLORS.subtle,
+                    fontFamily: on ? "'Nanum Pen Script', cursive" : "'Cinzel Decorative', cursive",
+                    transform: on ? 'scale(1.8)' : 'scale(1)',
+                    opacity: on ? 1 : 0.7,
+                    transition: `all ${CONFIG.FADE_DURATION}`
+                  }}
+                >
+                  {letter}
+                </div>
+              );
+            })}
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
 }
+
+/* ================= STYLES ================= */
+
+const styles = {
+  container: {
+    width: '100vw',
+    height: '100vh',
+    background: CONFIG.COLORS.background,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden'
+  },
+  grid: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'clamp(2px,0.8vh,8px)'
+  },
+  row: {
+    display: 'flex',
+    gap: 'clamp(2px,0.8vw,8px)',
+    justifyContent: 'center'
+  },
+  cell: {
+    width: 'clamp(18px,5vw,45px)',
+    height: 'clamp(18px,5vw,45px)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: 'clamp(11px,8vw,42px)',
+    userSelect: 'none'
+  }
+};

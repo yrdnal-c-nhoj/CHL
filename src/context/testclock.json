@@ -309,10 +309,14 @@
   { "path": "26-02-05", "date": "26-02-05", "title": "Enigma" },
   { "path": "26-02-06", "date": "26-02-06", "title":  "Buster" },
   { "path": "26-02-07", "date": "26-02-07", "title": "Planetary Gear" },
-  { "path": "26-02-08", "date": "26-02-08", "title": "zzzzzzz" },
-  { "path": "26-02-09", "date": "26-02-09", "title": "zzzzzzz" },
-  { "path": "26-02-10", "date": "26-02-10", "title": "zzzzzzz" },
-  { "path": "26-02-11", "date": "26-02-11", "title": "zzzzzzz" },
-  { "path": "26-02-12", "date": "26-02-12", "title": "zzzzzzz" },
-  { "path": "26-02-13", "date": "26-02-13", "title": "zzzzzzz" }
+  { "path": "26-02-08", "date": "26-02-08", "title": "Le Trocadéro" },
+  { "path": "26-02-09", "date": "26-02-09", "title": "White Shadow" },
+  { "path": "26-02-10", "date": "26-02-10", "title": "TeeVee Lounge" },
+  { "path": "26-02-11", "date": "26-02-11", "title": "Bell" },
+  { "path": "26-02-12", "date": "26-02-12", "title": "Extended Mix" },
+  { "path": "26-02-13", "date": "26-02-13", "title": "The Final Countdown" },
+  { "path": "26-02-14", "date": "26-02-14", "title": "The Final Countdown" },
+  { "path": "26-02-15", "date": "26-02-15", "title": "The Final Countdown" },
+  { "path": "26-02-16", "date": "26-02-16", "title": "The Final Countdown" },
+  { "path": "26-02-17", "date": "26-02-17", "title": "The Final Countdown" }
 ]
