@@ -1,152 +1,218 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 
-/* ================= CONFIG ================= */
-
-const CONFIG = {
-  UPDATE_INTERVAL: 1000,
-  FADE_DURATION: '0.8s',
-  COLORS: {
-    highlight: '#e74c3c', // Your original red
-    subtle: '#A5A8AA',    // Your original gray
-    background: '#0f0f0f',
-  },
-};
-
-/* ================= MATRIX ================= */
-
-const MATRIX = [
-  ['I','T','L','I','S','A','S','Q','U','A','R','T','E','R','C'],
-  ['T','W','E','N','T','Y','F','I','V','E','H','A','L','F','S'],
-  ['P','A','S','T','O','R','X','X','X','X','X','X','T','O','D'],
-  ['S','E','V','E','N','E','I','G','H','T','N','I','N','E','T'],
-  ['O','N','E','T','W','O','T','H','R','E','E','L','W','K','N'],
-  ['F','O','U','R','F','I','V','E','S','I','X','D','J','B','P'],
-  ['T','E','N','E','L','E','V','E','N','T','W','E','L','V','E'],
-  ['X','X','X','X','O','C','L','O','C','K','X','X','X','X','X'], // O'CLOCK at the bottom
-];
-
-/* ================= WORD MAP ================= */
-
-const WORDS = {
-  IT: [[0,0],[0,1]],
-  IS: [[0,3],[0,4]],
-
-  FIVE_MIN: [[1,6],[1,7],[1,8],[1,9]],
-  TEN_MIN: [[6,0],[6,1],[6,2]],
-  QUARTER: [[0,7],[0,8],[0,9],[0,10],[0,11],[0,12],[0,13]],
-  TWENTY: [[1,0],[1,1],[1,2],[1,3],[1,4],[1,5]],
-  HALF: [[1,10],[1,11],[1,12],[1,13]],
-
-  PAST: [[2,0],[2,1],[2,2],[2,3]],
-  TO: [[2,12],[2,13]],
-
-  OCLOCK: [[7,4],[7,5],[7,6],[7,7],[7,8],[7,9]], // Bottom row coordinates
-
-  HOURS: {
-    1:[[4,0],[4,1],[4,2]],
-    2:[[4,3],[4,4],[4,5]],
-    3:[[4,6],[4,7],[4,8],[4,9],[4,10]],
-    4:[[5,0],[5,1],[5,2],[5,3]],
-    5:[[5,4],[5,5],[5,6],[5,7]],
-    6:[[5,8],[5,9],[5,10]],
-    7:[[3,0],[3,1],[3,2],[3,3],[3,4]],
-    8:[[3,5],[3,6],[3,7],[3,8],[3,9]],
-    9:[[3,10],[3,11],[3,12],[3,13]],
-    10:[[6,0],[6,1],[6,2]],
-    11:[[6,3],[6,4],[6,5],[6,6],[6,7],[6,8]],
-    12:[[6,9],[6,10],[6,11],[6,12],[6,13],[6,14]],
-  }
-};
-
-/* ================= HELPERS ================= */
-
-function normalizeTime(date) {
-  let h = date.getHours();
-  let m = date.getMinutes();
-  let snapped = Math.round(m / 5) * 5;
-
-  if (snapped === 60) {
-    snapped = 0;
-    h++;
-  }
-
-  const isTo = snapped > 30;
-  const displayMinutes = isTo ? 60 - snapped : snapped;
-  let displayHour = h % 12 || 12;
-
-  if (isTo) displayHour = (displayHour % 12) + 1;
-
-  return { displayHour, displayMinutes, isTo };
-}
-
-function addWord(set, coords) {
-  if (!coords) return;
-  coords.forEach(([r,c]) => set.add(`${r}-${c}`));
-}
-
-/* ================= COMPONENT ================= */
-
-export default function WordClock() {
+const WordClock = () => {
   const [time, setTime] = useState(new Date());
+  const [activeClasses, setActiveClasses] = useState(new Set());
+
+  // Word matrix structure
+  const wordMatrix = [
+    { letters: ['I', 'T', 'E', 'I', 'S', 'F', 'A', 'L', 'V', 'N', 'E'], classes: ['it', 'it', '', 'is', 'is', '', 'a', '', '', '', ''] },
+    { letters: ['J', 'Q', 'U', 'A', 'R', 'T', 'E', 'R', 'C', 'K', 'O'], classes: ['', 'quarter', 'quarter', 'quarter', 'quarter', 'quarter', 'quarter', 'quarter', '', '', ''] },
+    { letters: ['T', 'W', 'E', 'N', 'T', 'Y', 'X', 'F', 'I', 'V', 'E'], classes: ['twenty', 'twenty', 'twenty', 'twenty', 'twenty', 'twenty', '', 'five', 'five', 'five', 'five'] },
+    { letters: ['H', 'A', 'L', 'F', 'C', 'T', 'E', 'N', 'G', 'T', 'O'], classes: ['half', 'half', 'half', 'half', '', 'ten', 'ten', 'ten', '', 'to', 'to'] },
+    { letters: ['P', 'A', 'S', 'T', 'B', 'S', 'E', 'V', 'E', 'N', 'L'], classes: ['past', 'past', 'past', 'past', '', '7', '7', '7', '7', '7', ''] },
+    { letters: ['O', 'N', 'E', 'T', 'W', 'O', 'T', 'H', 'R', 'E', 'E'], classes: ['1', '1', '1', '2', '2', '2', '3', '3', '3', '3', '3'] },
+    { letters: ['F', 'O', 'U', 'R', 'F', 'I', 'V', 'E', 'S', 'I', 'X'], classes: ['4', '4', '4', '4', '5', '5', '5', '5', '6', '6', '6'] },
+    { letters: ['N', 'I', 'N', 'E', 'K', 'T', 'W', 'E', 'L', 'V', 'E'], classes: ['9', '9', '9', '9', '', '12', '12', '12', '12', '12', '12'] },
+    { letters: ['E', 'I', 'G', 'H', 'T', 'E', 'L', 'E', 'V', 'E', 'N'], classes: ['8', '8', '8', '8', '8', '11', '11', '11', '11', '11', '11'] },
+    { letters: ['T', 'E', 'N', 'P', 'Y', 'O', 'C', 'L', 'O', 'C', 'K'], classes: ['10', '10', '10', '', '', 'oclock', 'oclock', 'oclock', 'oclock', 'oclock', 'oclock'] }
+  ];
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), CONFIG.UPDATE_INTERVAL);
-    return () => clearInterval(interval);
-  }, []);
-
-  const highlighted = useMemo(() => {
-    const active = new Set();
-    const { displayHour, displayMinutes, isTo } = normalizeTime(time);
-
-    addWord(active, WORDS.IT);
-    addWord(active, WORDS.IS);
-
-    const MINUTE_MAP = {
-      5:[WORDS.FIVE_MIN],
-      10:[WORDS.TEN_MIN],
-      15:[WORDS.QUARTER],
-      20:[WORDS.TWENTY],
-      25:[WORDS.TWENTY, WORDS.FIVE_MIN],
-      30:[WORDS.HALF],
+    const updateTime = () => {
+      const currentTime = new Date();
+      setTime(currentTime);
+      
+      const hour = currentTime.getHours() >= 12 ? currentTime.getHours() - 12 : currentTime.getHours();
+      const minute = currentTime.getMinutes();
+      
+      const newActiveClasses = new Set();
+      
+      // Always show "IT IS"
+      newActiveClasses.add('it');
+      newActiveClasses.add('is');
+      
+      // Time logic
+      if (minute >= 58) {
+        // On the hour
+        newActiveClasses.add('oclock');
+        newActiveClasses.add((hour + 1).toString());
+      } else if (minute >= 52) {
+        // Five to
+        newActiveClasses.add('five');
+        newActiveClasses.add('to');
+        newActiveClasses.add((hour + 1).toString());
+      } else if (minute >= 49) {
+        // Ten to
+        newActiveClasses.add('ten');
+        newActiveClasses.add('to');
+        newActiveClasses.add((hour + 1).toString());
+      } else if (minute >= 45) {
+        // Quarter to
+        newActiveClasses.add('quarter');
+        newActiveClasses.add('to');
+        newActiveClasses.add((hour + 1).toString());
+      } else if (minute >= 42) {
+        // Twenty to
+        newActiveClasses.add('twenty');
+        newActiveClasses.add('to');
+        newActiveClasses.add((hour + 1).toString());
+      } else if (minute >= 37) {
+        // Twenty five to
+        newActiveClasses.add('twenty');
+        newActiveClasses.add('five');
+        newActiveClasses.add('to');
+        newActiveClasses.add((hour + 1).toString());
+      } else if (minute >= 32) {
+        // Half past
+        newActiveClasses.add('half');
+        newActiveClasses.add('past');
+        newActiveClasses.add((hour === 0 ? 12 : hour).toString());
+      } else if (minute >= 27) {
+        // Twenty five past
+        newActiveClasses.add('twenty');
+        newActiveClasses.add('five');
+        newActiveClasses.add('past');
+        newActiveClasses.add((hour === 0 ? 12 : hour).toString());
+      } else if (minute >= 22) {
+        // Twenty past
+        newActiveClasses.add('twenty');
+        newActiveClasses.add('past');
+        newActiveClasses.add((hour === 0 ? 12 : hour).toString());
+      } else if (minute >= 17) {
+        // Quarter past
+        newActiveClasses.add('quarter');
+        newActiveClasses.add('past');
+        newActiveClasses.add((hour === 0 ? 12 : hour).toString());
+      } else if (minute >= 12) {
+        // Ten past
+        newActiveClasses.add('ten');
+        newActiveClasses.add('past');
+        newActiveClasses.add((hour === 0 ? 12 : hour).toString());
+      } else if (minute >= 7) {
+        // Five past
+        newActiveClasses.add('five');
+        newActiveClasses.add('past');
+        newActiveClasses.add((hour === 0 ? 12 : hour).toString());
+      } else if (minute >= 2) {
+        // Past (but not five)
+        newActiveClasses.add('past');
+        newActiveClasses.add((hour === 0 ? 12 : hour).toString());
+      } else {
+        // On the hour
+        newActiveClasses.add('oclock');
+        newActiveClasses.add((hour === 0 ? 12 : hour).toString());
+      }
+      
+      setActiveClasses(newActiveClasses);
     };
 
-    if (displayMinutes === 0) {
-      // Order: IT IS -> HOUR -> OCLOCK
-      addWord(active, WORDS.HOURS[displayHour]);
-      addWord(active, WORDS.OCLOCK);
-    } else {
-      // Order: IT IS -> MINS -> PAST/TO -> HOUR
-      MINUTE_MAP[displayMinutes]?.forEach(w => addWord(active, w));
-      addWord(active, isTo ? WORDS.TO : WORDS.PAST);
-      addWord(active, WORDS.HOURS[displayHour]);
-    }
+    // Initial update
+    updateTime();
+    
+    // Update every minute
+    const interval = setInterval(updateTime, 60000);
+    
+    // Update after remaining seconds to next minute
+    const secondsToNextMinute = 60 - new Date().getSeconds();
+    const timeout = setTimeout(() => {
+      updateTime();
+      // Then set up the minute interval
+    }, secondsToNextMinute * 1000);
+    
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, []);
 
-    return active;
-  }, [time]);
+  // Single font size variable for all text
+  const baseFontSize = 'clamp(2vw, 4vh, 24px)';
+  const styles = {
+    container: {
+      backgroundColor: '#C2D8C8',
+      minHeight: '100vh',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontFamily: "'Monda', Arial, sans-serif",
+      padding: '2vh 2vw',
+      boxSizing: 'border-box'
+    },
+    clockContainer: {
+      width: '90vw',
+      maxWidth: '660px',
+      margin: '0 auto',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+    },
+    row: {
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center'
+    },
+    letter: {
+      width: 'clamp(4vw, 8vh, 60px)',
+      height: 'clamp(4vw, 8vh, 60px)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: '#ACAEAC',
+      fontFamily: "'Cinzel Decorative', cursive",
+      fontWeight: 700,
+      fontSize: baseFontSize,
+      lineHeight: 'clamp(4vw, 8vh, 60px)',
+      textAlign: 'center',
+      transition: 'all 0.3s ease'
+    },
+    active: {
+      color: '#ff333f',
+      fontFamily: "'Nanum Pen Script', cursive",
+      fontWeight: 400,
+      fontSize: `calc(${baseFontSize} * 3.3)`, // 30% bigger for highlighted text
+      textShadow: '0 0 12px #EDD6EF'
+    }
+  };
 
   return (
     <div style={styles.container}>
-      <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Nanum+Pen+Script&display=swap');`}
-      </style>
-
-      <div style={styles.grid}>
-        {MATRIX.map((row, r) => (
-          <div key={r} style={styles.row}>
-            {row.map((letter, c) => {
-              const key = `${r}-${c}`;
-              const on = highlighted.has(key);
-
+      <style>{
+        `@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Nanum+Pen+Script&display=swap');
+        
+        @media (max-width: 768px) {
+          .clock-letter {
+            width: clamp(3.5vw, 7vh, 40px) !important;
+            height: clamp(3.5vw, 7vh, 40px) !important;
+            font-size: clamp(1.5vw, 3vh, 18px) !important;
+            line-height: clamp(3.5vw, 7vh, 40px) !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .clock-letter {
+            width: clamp(2.5vw, 5vh, 30px) !important;
+            height: clamp(2.5vw, 5vh, 30px) !important;
+            font-size: clamp(1.2vw, 4.5vh, 24px) !important;
+            line-height: clamp(2.5vw, 5vh, 30px) !important;
+          }
+        }`
+      }</style>
+      <div style={styles.clockContainer}>
+        {wordMatrix.map((row, rowIndex) => (
+          <div key={rowIndex} style={styles.row}>
+            {row.letters.map((letter, letterIndex) => {
+              const letterClass = row.classes[letterIndex];
+              const isActive = activeClasses.has(letterClass);
+              
               return (
                 <div
-                  key={key}
+                  key={`${rowIndex}-${letterIndex}`}
+                  className="clock-letter"
                   style={{
-                    ...styles.cell,
-                    color: on ? CONFIG.COLORS.highlight : CONFIG.COLORS.subtle,
-                    fontFamily: on ? "'Nanum Pen Script', cursive" : "'Cinzel Decorative', cursive",
-                    transform: on ? 'scale(1.8)' : 'scale(1)',
-                    opacity: on ? 1 : 0.7,
-                    transition: `all ${CONFIG.FADE_DURATION}`
+                    ...styles.letter,
+                    ...(isActive && styles.active)
                   }}
                 >
                   {letter}
@@ -158,37 +224,6 @@ export default function WordClock() {
       </div>
     </div>
   );
-}
-
-/* ================= STYLES ================= */
-
-const styles = {
-  container: {
-    width: '100vw',
-    height: '100vh',
-    background: CONFIG.COLORS.background,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden'
-  },
-  grid: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'clamp(2px,0.8vh,8px)'
-  },
-  row: {
-    display: 'flex',
-    gap: 'clamp(2px,0.8vw,8px)',
-    justifyContent: 'center'
-  },
-  cell: {
-    width: 'clamp(18px,5vw,45px)',
-    height: 'clamp(18px,5vw,45px)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: 'clamp(11px,8vw,42px)',
-    userSelect: 'none'
-  }
 };
+
+export default WordClock;
