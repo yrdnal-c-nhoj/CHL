@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 const WordClock = () => {
   const [time, setTime] = useState(new Date());
-  const [activeClasses, setActiveClasses] = useState(new Set());
+  const [activeClasses, setActiveClasses] = useState(new Set(['it', 'is']));
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Word matrix structure
   const wordMatrix = [
@@ -26,11 +27,7 @@ const WordClock = () => {
       const hour = currentTime.getHours() >= 12 ? currentTime.getHours() - 12 : currentTime.getHours();
       const minute = currentTime.getMinutes();
       
-      const newActiveClasses = new Set();
-      
-      // Always show "IT IS"
-      newActiveClasses.add('it');
-      newActiveClasses.add('is');
+      const newActiveClasses = new Set(['it', 'is']);
       
       // Time logic
       if (minute >= 58) {
@@ -109,6 +106,7 @@ const WordClock = () => {
 
     // Initial update
     updateTime();
+    setIsInitialized(true);
     
     // Update every minute
     const interval = setInterval(updateTime, 60000);
@@ -178,7 +176,20 @@ const WordClock = () => {
 
   return (
     <div style={styles.container}>
-      <style>{
+      {!isInitialized ? (
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          color: '#ACAEAC',
+          fontSize: baseFontSize
+        }}>
+          Loading...
+        </div>
+      ) : (
+        <>
+        <style>{
         `@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Nanum+Pen+Script&display=swap');
         
         @media (max-width: 768px) {
@@ -222,6 +233,8 @@ const WordClock = () => {
           </div>
         ))}
       </div>
+      </>
+      )}
     </div>
   );
 };

@@ -1,0 +1,57 @@
+@import 'https://fonts.googleapis.com/css?family=Ubuntu:400,500';
+body {
+  background: #02010A;
+  font-weight: 400;
+  overflow: hidden;
+  font-family: "Ubuntu", sans-serif;
+  text-transform: uppercase;
+}
+body:before {
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background: url(http://vignette2.wikia.nocookie.net/uncyclopedia/images/1/17/Static.gif/revision/latest?cb=20051028174517);
+  content: "";
+  position: absolute;
+  opacity: 0.015;
+}
+
+.clock {
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: auto;
+  height: auto;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+.clock .row {
+  float: left;
+  clear: both;
+  display: block;
+  position: relative;
+}
+.clock .row .letter {
+  float: left;
+  text-align: center;
+  width: 2.5vw;
+  height: 2.5vw;
+  font-size: 1vw;
+  line-height: 2.5vw;
+  display: inline-block;
+  -webkit-transition: 0.365s;
+  -moz-transition: 0.365s;
+  transition: 0.365s;
+  color: rgba(255, 255, 255, 0.075);
+}
+.clock .row .letter.active {
+  color: white;
+}
+@media (max-width: 600px) {
+  .clock .row .letter {
+    width: 4.375vw;
+    height: 4.375vw;
+    font-size: 1.75vw;
+    line-height: 4.375vw;
+  }
+}
