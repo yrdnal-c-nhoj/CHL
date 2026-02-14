@@ -167,9 +167,10 @@ const WordClock = () => {
     },
     active: {
       color: '#ff333f',
-      fontFamily: "'Nanum Pen Script', cursive",
-      fontWeight: 400,
-      fontSize: `calc(${baseFontSize} * 3.3)`, // 30% bigger for highlighted text
+      fontFamily: "'Cinzel Decorative', cursive",
+      // fontFamily: "'Nanum Pen Script', cursive",
+      fontWeight: 800,
+      fontSize: `calc(${baseFontSize} * 1.4)`, // 30% bigger for highlighted text
       textShadow: '0 0 12px #EDD6EF'
     }
   };
@@ -192,23 +193,23 @@ const WordClock = () => {
         <style>{
         `@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Nanum+Pen+Script&display=swap');
         
-        @media (max-width: 768px) {
-          .clock-letter {
-            width: clamp(3.5vw, 7vh, 40px) !important;
-            height: clamp(3.5vw, 7vh, 40px) !important;
-            font-size: clamp(1.5vw, 3vh, 18px) !important;
-            line-height: clamp(3.5vw, 7vh, 40px) !important;
-          }
-        }
+        // @media (max-width: 768px) {
+        //   .clock-letter {
+        //     width: clamp(3.5vw, 7vh, 40px) !important;
+        //     height: clamp(3.5vw, 7vh, 40px) !important;
+        //     font-size: clamp(1.5vw, 3vh, 18px) !important;
+        //     line-height: clamp(3.5vw, 7vh, 40px) !important;
+        //   }
+        // }
         
-        @media (max-width: 480px) {
-          .clock-letter {
-            width: clamp(2.5vw, 5vh, 30px) !important;
-            height: clamp(2.5vw, 5vh, 30px) !important;
-            font-size: clamp(1.2vw, 4.5vh, 24px) !important;
-            line-height: clamp(2.5vw, 5vh, 30px) !important;
-          }
-        }`
+        // @media (max-width: 480px) {
+        //   .clock-letter {
+        //     width: clamp(2.5vw, 5vh, 30px) !important;
+        //     height: clamp(2.5vw, 5vh, 30px) !important;
+        //     font-size: clamp(1.2vw, 4.5vh, 24px) !important;
+        //     line-height: clamp(2.5vw, 5vh, 30px) !important;
+        //   }
+        // }`
       }</style>
       <div style={styles.clockContainer}>
         {wordMatrix.map((row, rowIndex) => (
