@@ -18,6 +18,8 @@ const CLOCK_CONFIG = {
 
 // --- Hook: Load Google Font Safely ---
 const useGoogleFont = () => {
+  const [fontReady, setFontReady] = useState(false);
+  
   useEffect(() => {
     const id = 'gilda-display-font';
     if (document.getElementById(id)) return;
@@ -29,7 +31,14 @@ const useGoogleFont = () => {
       'https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap';
 
     document.head.appendChild(link);
+    
+    // Check when font is ready
+    document.fonts.load('1em "Gilda Display"').then(() => {
+      setFontReady(true);
+    }).catch(() => setFontReady(true)); // Fallback
   }, []);
+  
+  return fontReady;
 };
 
 // --- Hook: Smooth Time Engine ---
@@ -48,7 +57,7 @@ const useBellClock = (intervalMs = 50) => {
 };
 
 const AnalogClock = () => {
-  useGoogleFont();
+  const fontReady = useGoogleFont();
   const now = useBellClock(50);
 
   // Smooth time calculations
@@ -84,7 +93,12 @@ const AnalogClock = () => {
   }, []);
 
   return (
-    <div style={styles.container}>
+    <div style={{
+      ...styles.container,
+      opacity: fontReady ? 1 : 0,
+      visibility: fontReady ? 'visible' : 'hidden',
+      transition: 'opacity 0.3s ease',
+    }}>
       {/* Tiled Background */}
       <div
         style={{

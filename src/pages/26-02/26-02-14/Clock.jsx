@@ -5,6 +5,7 @@ import backgroundGif from '../../../assets/images/26-02-14/prop.gif';
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
   const [isInitialized, setIsInitialized] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
     const updateTime = () => {
@@ -13,7 +14,21 @@ const DigitalClock = () => {
       setIsInitialized(true);
     };
 
+    // Load custom font
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace('Airport', `url(${airportFont})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.error('Font loading failed:', error);
+        setFontLoaded(true); // Continue with fallback font
+      }
+    };
+
     updateTime();
+    loadFont();
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -115,6 +130,22 @@ const DigitalClock = () => {
 
   return (
     <div style={styles.container}>
+      {/* Loading overlay to prevent flash of unstyled content */}
+      {!fontLoaded && (
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100dvh',
+          backgroundImage: `url(${backgroundGif})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          zIndex: 100
+        }} />
+      )}
+      
       <style>
         {`
           @font-face {
