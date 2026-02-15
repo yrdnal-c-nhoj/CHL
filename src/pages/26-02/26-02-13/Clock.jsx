@@ -125,7 +125,7 @@ const WordClock = () => {
   }, []);
 
   // Single font size variable for all text
-  const baseFontSize = 'clamp(2vw, 4vh, 24px)';
+  const baseFontSize = 'clamp(2.5vw, 4vh, 20px)';
   const styles = {
     container: {
       backgroundColor: '#E89077',
@@ -134,12 +134,13 @@ const WordClock = () => {
       justifyContent: 'center',
       alignItems: 'center',
       fontFamily: "'Monda', Arial, sans-serif",
-      padding: '2vh 2vw',
-      boxSizing: 'border-box'
+      padding: '1vh 1vw',
+      boxSizing: 'border-box',
+      overflow: 'hidden' // Prevent horizontal scroll
     },
     clockContainer: {
-      width: '90vw',
-      maxWidth: '660px',
+      width: '95vw',
+      maxWidth: '600px',
       margin: '0 auto',
       display: 'flex',
       flexDirection: 'column',
@@ -149,11 +150,12 @@ const WordClock = () => {
       width: '100%',
       display: 'flex',
       flexDirection: 'row',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      flexWrap: 'nowrap' // Prevent wrapping on small screens
     },
     letter: {
-      width: 'clamp(4vw, 8vh, 60px)',
-      height: 'clamp(4vw, 8vh, 60px)',
+      width: 'clamp(3vw, 6vh, 45px)',
+      height: 'clamp(3vw, 6vh, 45px)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -161,17 +163,17 @@ const WordClock = () => {
       fontFamily: "'Cinzel Decorative', cursive",
       fontWeight: 700,
       fontSize: baseFontSize,
-      lineHeight: 'clamp(4vw, 8vh, 60px)',
+      lineHeight: 'clamp(3vw, 6vh, 45px)',
       textAlign: 'center',
-      transition: 'all 0.3s ease'
+      transition: 'all 0.3s ease',
+      flexShrink: 0 // Prevent shrinking
     },
     active: {
       color: '#ff333f',
       fontFamily: "'Cinzel Decorative', cursive",
-      // fontFamily: "'Nanum Pen Script', cursive",
       fontWeight: 800,
-      fontSize: `calc(${baseFontSize} * 1.4)`, // 30% bigger for highlighted text
-      textShadow: '0 0 12px #EDD6EF'
+      fontSize: `calc(${baseFontSize} * 1.3)`, // Slightly smaller multiplier for mobile
+      textShadow: '0 0 8px #EDD6EF'
     }
   };
 
@@ -190,27 +192,35 @@ const WordClock = () => {
         </div>
       ) : (
         <>
-        <style>{
-        `@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Nanum+Pen+Script&display=swap');
+        <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Nanum+Pen+Script&display=swap');
         
-        // @media (max-width: 768px) {
-        //   .clock-letter {
-        //     width: clamp(3.5vw, 7vh, 40px) !important;
-        //     height: clamp(3.5vw, 7vh, 40px) !important;
-        //     font-size: clamp(1.5vw, 3vh, 18px) !important;
-        //     line-height: clamp(3.5vw, 7vh, 40px) !important;
-        //   }
-        // }
+        @media (max-width: 768px) {
+          .clock-letter {
+            width: clamp(2.5vw, 5vh, 35px) !important;
+            height: clamp(2.5vw, 5vh, 35px) !important;
+            font-size: clamp(1.8vw, 3.5vh, 16px) !important;
+            line-height: clamp(2.5vw, 5vh, 35px) !important;
+          }
+        }
         
-        // @media (max-width: 480px) {
-        //   .clock-letter {
-        //     width: clamp(2.5vw, 5vh, 30px) !important;
-        //     height: clamp(2.5vw, 5vh, 30px) !important;
-        //     font-size: clamp(1.2vw, 4.5vh, 24px) !important;
-        //     line-height: clamp(2.5vw, 5vh, 30px) !important;
-        //   }
-        // }`
-      }</style>
+        @media (max-width: 480px) {
+          .clock-letter {
+            width: clamp(2vw, 4vh, 28px) !important;
+            height: clamp(2vw, 4vh, 28px) !important;
+            font-size: clamp(1.5vw, 3vh, 14px) !important;
+            line-height: clamp(2vw, 4vh, 28px) !important;
+          }
+        }
+        
+        @media (max-width: 360px) {
+          .clock-letter {
+            width: clamp(1.8vw, 3.5vh, 24px) !important;
+            height: clamp(1.8vw, 3.5vh, 24px) !important;
+            font-size: clamp(1.2vw, 2.5vh, 12px) !important;
+            line-height: clamp(1.8vw, 3.5vh, 24px) !important;
+          }
+        }`}</style>
       <div style={styles.clockContainer}>
         {wordMatrix.map((row, rowIndex) => (
           <div key={rowIndex} style={styles.row}>
