@@ -90,8 +90,8 @@ const WordClock = () => {
       <style>{`
         :root {
           --bg: #E89077;
-          --inactive: rgba(255, 255, 255, 0.18);
-          --active: #FFFFFF;
+          --inactive: rgba(233, 247, 234, 0.54);
+          --active: #AC0909;
         }
 
         .clock-wrapper {
