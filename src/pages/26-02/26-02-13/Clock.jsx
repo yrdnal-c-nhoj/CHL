@@ -128,7 +128,7 @@ const WordClock = () => {
   const baseFontSize = 'clamp(2vw, 4vh, 24px)';
   const styles = {
     container: {
-      backgroundColor: '#C2D8C8',
+      backgroundColor: '#E89077',
       minHeight: '100vh',
       display: 'flex',
       justifyContent: 'center',
@@ -157,7 +157,7 @@ const WordClock = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      color: '#ACAEAC',
+      color: '#787B78',
       fontFamily: "'Cinzel Decorative', cursive",
       fontWeight: 700,
       fontSize: baseFontSize,
