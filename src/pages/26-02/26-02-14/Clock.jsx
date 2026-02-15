@@ -73,7 +73,7 @@ const DigitalClock = () => {
       boxSizing: 'border-box',
       overflow: 'hidden',
       backgroundImage: `url(${backgroundGif})`,
-      backgroundSize: 'cover',
+      backgroundSize: '100% 100%',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       display: 'flex',
