@@ -96,7 +96,34 @@ const FullscreenClock = () => {
             grid-template-columns: repeat(2, 1fr); 
             grid-template-rows: repeat(4, 1fr); 
           }
-          .clock-digit { font-size: 18vh; }
+          .clock-digit { 
+            font-size: 14vh; 
+            text-shadow: 8vh 8vh 0px #1111aa, -8vh 8vh 0px #1111aa, 8vh -8vh 0px #1111aa, -8vh -8vh 0px #1111aa;
+          }
+        }
+
+        /* Small phones: 4 rows of 2 digits with smaller sizes */
+        @media (max-width: 400px) {
+          .clock-grid { 
+            grid-template-columns: repeat(2, 1fr); 
+            grid-template-rows: repeat(4, 1fr); 
+          }
+          .clock-digit { 
+            font-size: 12vh; 
+            text-shadow: 6vh 6vh 0px #1111aa, -6vh 6vh 0px #1111aa, 6vh -6vh 0px #1111aa, -6vh -6vh 0px #1111aa;
+          }
+        }
+
+        /* Very small phones: 4 rows of 2 digits with minimal sizes */
+        @media (max-width: 320px) {
+          .clock-grid { 
+            grid-template-columns: repeat(2, 1fr); 
+            grid-template-rows: repeat(4, 1fr); 
+          }
+          .clock-digit { 
+            font-size: 10vh; 
+            text-shadow: 4vh 4vh 0px #1111aa, -4vh 4vh 0px #1111aa, 4vh -4vh 0px #1111aa, -4vh -4vh 0px #1111aa;
+          }
         }
       `}</style>
 
