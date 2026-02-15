@@ -8,7 +8,7 @@ import fontUrl from '../../../assets/fonts/26-01-22-1974.ttf';
 const FONT_FAMILY = '1974';
 
 const DynamicClock = () => {
-  const [isReady, setIsReady] = useState(false);
+  const fontReady = useFontLoader(FONT_FAMILY, fontUrl);
   const [time, setTime] = useState(new Date());
   const [bgReady, setBgReady] = useState(false);
 
@@ -18,37 +18,8 @@ const DynamicClock = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Load font + background image
+  // Load background image
   useLayoutEffect(() => {
-    let mounted = true;
-
-    const loadAssets = async () => {
-      const fontFace = new FontFace(FONT_FAMILY, `url(${fontUrl})`);
-      document.fonts.add(fontFace);
-
-      try {
-        await Promise.all([
-          fontFace.load(),
-          new Promise((resolve) => {
-            const img = new Image();
-            img.src = backgroundUrl;
-            img.onload = resolve;
-            img.onerror = resolve;
-          }),
-        ]);
-        if (mounted) setIsReady(true);
-      } catch (err) {
-        console.error('Asset loading failed:', err);
-        if (mounted) setIsReady(true);
-      }
-    };
-
-    loadAssets();
-
-    return () => { mounted = false; };
-  }, []);
-
-  useEffect(() => {
     const img = new Image();
     const done = () => setBgReady(true);
     img.onload = done;
@@ -58,7 +29,7 @@ const DynamicClock = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  if (!isReady || !bgReady) return null;
+  if (!fontReady || !bgReady) return null;
 
   const timeString = [
     time.getHours(),
