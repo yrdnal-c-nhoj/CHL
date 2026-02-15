@@ -35,7 +35,7 @@ const FullscreenClock = () => {
     <div style={{
       position: 'relative',
       width: '100vw',
-      height: '100vh',
+      height: '100dvh',
       backgroundColor: '#E9F7AB',
       backgroundImage: 'radial-gradient(circle, #E9F7AB 0%, #CDF296 100%)',
       overflow: 'hidden',
