@@ -68,8 +68,8 @@ const FullscreenClock = () => {
           line-height: 1;
           animation: rotate 60s linear infinite;
           will-change: transform;
-          /* Restored your exact original 16vh tech shadows */
-          text-shadow: 16vh 16vh 0px #1111aa, -16vh 16vh 0px #1111aa, 16vh -16vh 0px #1111aa, -16vh -16vh 0px #1111aa; 
+          /* Restored your exact original 14vh tech shadows */
+          text-shadow: 14vh 14vh 0px #1111aa, -14vh 14vh 0px #1111aa, 14vh -14vh 0px #1111aa, -14vh -14vh 0px #1111aa; 
         }
 
         /* Laptop: 2 rows of 4 digits */
@@ -98,7 +98,7 @@ const FullscreenClock = () => {
           }
           .clock-digit { 
             font-size: 14vh; 
-            text-shadow: 8vh 8vh 0px #1111aa, -8vh 8vh 0px #1111aa, 8vh -8vh 0px #1111aa, -8vh -8vh 0px #1111aa;
+            text-shadow: 14vh 14vh 0px #1111aa, -14vh 14vh 0px #1111aa, 14vh -14vh 0px #1111aa, -14vh -14vh 0px #1111aa;
           }
         }
 
@@ -110,7 +110,7 @@ const FullscreenClock = () => {
           }
           .clock-digit { 
             font-size: 12vh; 
-            text-shadow: 6vh 6vh 0px #1111aa, -6vh 6vh 0px #1111aa, 6vh -6vh 0px #1111aa, -6vh -6vh 0px #1111aa;
+            text-shadow: 8vh 8vh 0px #1111aa, -8vh 8vh 0px #1111aa, 8vh -8vh 0px #1111aa, -8vh -8vh 0px #1111aa;
           }
         }
 
