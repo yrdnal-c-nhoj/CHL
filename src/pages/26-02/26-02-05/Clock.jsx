@@ -11,12 +11,19 @@ const OVAL = {
 
 const OutwardDistortedClock = () => {
   const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
   const requestRef = useRef();
 
   // 1. One-time setup for Font
   useEffect(() => {
     const fontFace = new FontFace('Cine', `url(${ci2602Font})`);
-    fontFace.load().then((loaded) => document.fonts.add(loaded)).catch(console.error);
+    fontFace.load().then((loaded) => {
+      document.fonts.add(loaded);
+      setFontLoaded(true);
+    }).catch((error) => {
+      console.error(error);
+      setFontLoaded(true); // Continue with fallback
+    });
     
     // 2. High-performance animation loop
     const animate = () => {
@@ -42,7 +49,12 @@ const OutwardDistortedClock = () => {
   }, [time]);
 
   return (
-    <div style={containerStyle}>
+    <div style={{
+      ...containerStyle,
+      opacity: fontLoaded ? 1 : 0,
+      visibility: fontLoaded ? 'visible' : 'hidden',
+      transition: 'opacity 0.3s ease',
+    }}>
       <div style={ringStyle}>
         {digits.map((char, i) => (
           <Digit 
