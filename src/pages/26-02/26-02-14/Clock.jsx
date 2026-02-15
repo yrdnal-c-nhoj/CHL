@@ -61,20 +61,24 @@ const DigitalClock = () => {
       opacity: 0.8,
       filter: 'contrast(1.3) brightness(0.7)', // Individual filter
       zIndex: 1,
-    },
-    // Background 2: Runway GIF
- bgLayer2: {
+    },bgLayer2: {
   position: 'absolute',
-  top: 0, left: 0, right: 0, bottom: 0,
+  inset: 0,
   backgroundImage: `url(${backgroundGif2})`,
   backgroundSize: '100% 100%',
   backgroundPosition: 'center',
-  opacity: 0.6,               // ← lower a bit more if needed
-  filter: 'contrast(4) brightness(1.3)',  // ← tune to taste, lower brightness helps hide darks
+  opacity: 0.6,
+  filter: 'contrast(4) brightness(1.3)',
   zIndex: 2,
   transform: 'scaleX(-1)',
-  mixBlendMode: 'lighten',    // ← key change – or try 'screen'
-  // mixBlendMode: 'screen',  // alternative – often looks nicer with lights
+  mixBlendMode: 'lighten',
+
+  // ── The important part ───────────────────────────────
+  WebkitMaskImage:
+    'linear-gradient(to top, black 15%, transparent 16%)',
+  maskImage:
+    'linear-gradient(to top, black 15%, transparent 15%)',
+  // ───────────────────────────────────────────────────────
 },
     clockContainer: {
       position: 'relative',
