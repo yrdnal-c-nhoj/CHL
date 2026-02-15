@@ -5,7 +5,7 @@ import top260126Font from '../../../assets/fonts/26-01-26-halfb.ttf';
 import bottom260126Font from '../../../assets/fonts/26-01-26-halft.ttf';
 
 const DynamicComponent = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -41,9 +41,9 @@ const DynamicComponent = () => {
       document.fonts.load('1vh BottomFont')
     ]).then(() => {
       // Small delay to ensure layout is ready
-      setTimeout(() => setIsLoaded(true), 125);
+      setTimeout(() => setFontsLoaded(true), 125);
     }).catch(() => {
-      setIsLoaded(true); 
+      setFontsLoaded(true); 
     });
   }, []);
 
@@ -81,7 +81,7 @@ const DynamicComponent = () => {
       justifyContent: 'space-between', 
       alignItems: 'center',
       background: 'linear-gradient(180deg, #383A38 0%, #7E7EA5 30%,#ECCFEE 50%,#8686AB 70%, #393B39 100%)',
-      opacity: isLoaded ? 1 : 0,
+      opacity: fontsLoaded ? 1 : 0,
       transition: 'opacity 0.2s ease-in',
       overflow: 'hidden',
     },
@@ -112,7 +112,7 @@ const DynamicComponent = () => {
     }
   };
 
-  if (!isLoaded) return null;
+  if (!fontsLoaded) return null;
 
   return (
     <div style={styles.container}>
