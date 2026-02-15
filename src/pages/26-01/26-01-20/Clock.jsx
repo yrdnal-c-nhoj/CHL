@@ -10,7 +10,7 @@ const DIGIT_MAP = {
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
-  const [isLoaded, setIsLoaded] = useState(false);
+  const fontReady = useFontLoader('MyD25090120font', d25090120font);
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 768);
   const [bgReady, setBgReady] = useState(false);
 
@@ -27,76 +27,12 @@ const Clock = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // 3. Asset Preloading & Font Injection
-  useEffect(() => {
-    // Create style element with font-face
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'MyD25090120font';
-        src: url(${d25090120font}) format('truetype');
-        font-display: block;
-        font-weight: normal;
-        font-style: normal;
-      }
-      
-      /* Prevent FOUC with fallback styles */
-      .clock-container {
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out;
-      }
-      
-      .clock-container.loaded {
-        opacity: 1;
-      }
-      
-      /* Fallback font styles */
-      .clock-digit {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        visibility: hidden;
-      }
-      
-      .clock-font-loaded .clock-digit {
-        font-family: 'MyD25090120font', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        visibility: visible;
-      }
-    `;
-    document.head.appendChild(style);
-
-    // Preload image
-    const img = new Image();
-    img.src = bgImage;
-
-    // Load font explicitly
-    const font = new FontFace('MyD25090120font', `url(${d25090120font})`);
-    
-    Promise.all([
-      font.load().then(() => {
-        document.fonts.add(font);
-        return document.fonts.ready;
-      }),
-      new Promise(res => { img.onload = res; img.onerror = res; })
-    ]).then(() => {
-      // Add font-loaded class to document
-      document.documentElement.classList.add('clock-font-loaded');
-      setIsLoaded(true);
-    });
-
-    return () => {
-      if (document.head.contains(style)) document.head.removeChild(style);
-      document.documentElement.classList.remove('clock-font-loaded');
-    };
-  }, []);
-
-  // Separate background gate to prevent flash
+  // 3. Background Preloading
   useEffect(() => {
     const img = new Image();
-    const done = () => setBgReady(true);
-    img.onload = done;
-    img.onerror = done;
+    img.onload = () => setBgReady(true);
+    img.onerror = () => setBgReady(true);
     img.src = bgImage;
-    const timeout = setTimeout(done, 1200);
-    return () => clearTimeout(timeout);
   }, []);
 
   // 4. Time Formatting
@@ -173,14 +109,13 @@ const Clock = () => {
     </div>
   );
 
-  if (!isLoaded || !bgReady) {
+  if (!fontReady || !bgReady) {
     return <div style={{ ...styles.container, color: '#fff' }}></div>;
   }
 
   return (
     <main 
       style={styles.container} 
-      className={`clock-container ${isLoaded ? 'loaded' : ''}`}
     >
       <div style={styles.background} aria-hidden="true" />
       <div style={styles.gradient} aria-hidden="true" />

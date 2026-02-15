@@ -25,27 +25,16 @@ const ClockNumbers = memo(({ fontFamily }) => (
 ));
 
 const AnalogBirdMigrateClock = () => {
-  const [isReady, setIsReady] = useState(false);
+  const fontReady = useFontLoader('Custom260121Font', custom260121Font);
   const [time, setTime] = useState(new Date());
   const [bgReady, setBgReady] = useState(false);
 
-  const fontFamilyName = useMemo(() => `Font-${Math.random().toString(36).slice(2, 7)}`, []);
+  const fontFamilyName = 'Custom260121Font';
 
   useEffect(() => {
-    let isMounted = true;
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace(fontFamilyName, `url(${custom260121Font})`);
-        await fontFace.load().then(loaded => document.fonts.add(loaded));
-        if (isMounted) setIsReady(true);
-      } catch (e) {
-        if (isMounted) setIsReady(true);
-      }
-    };
-    loadFont();
     const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => { isMounted = false; clearInterval(timer); };
-  }, [fontFamilyName]);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const images = [backgroundImage, tileImage];
@@ -67,7 +56,7 @@ const AnalogBirdMigrateClock = () => {
   const hourDeg = (time.getHours() % 12) * 30 + time.getMinutes() * 0.5;
   const minuteDeg = time.getMinutes() * 6;
 
-  if (!isReady || !bgReady) return null;
+  if (!fontReady || !bgReady) return null;
 
   return (
     <div style={styles.wrapper}>
