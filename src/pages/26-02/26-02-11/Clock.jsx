@@ -4,86 +4,124 @@ import React, { useEffect, useState, useMemo } from 'react';
 import bellImage2 from '../../../assets/images/26-02-11/bell.webp';
 import bellImage1 from '../../../assets/images/26-02-11/bell.gif';
 
-// --- Configuration ---
+// --- Constants ---
 const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 40,
+  UPDATE_INTERVAL_MS: 50,
+  FONT_FAMILY: "'Gilda Display', serif",
+  FONT_URL: 'https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap',
   COLORS: {
-    silverText:
-      'linear-gradient(180deg, #24058B 0%, #000000 45%, #232222 50%, #062D79 100%)',
+    background: '#BFA7A7',
+    silverText: 'linear-gradient(180deg, #24058B 0%, #000000 45%, #232222 50%, #062D79 100%)',
     hourHand: 'linear-gradient(to right, #4E4D4D, #282727, #4D4949)',
     minuteHand: 'linear-gradient(to right, #3B3939, #383636, #484444)',
     secondHand: 'linear-gradient(to top, #4B4C4F, #4F4F52)',
+    centerDot: '#565856',
   },
 };
 
-// --- Hook: Load Google Font Safely ---
-const useGoogleFont = () => {
+const HAND_DIMENSIONS = {
+  hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
+  minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
+  second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
+};
+
+// --- Utility Functions ---
+const getHandRotation = (value, multiplier) => value * multiplier;
+
+const calculateNumeralPosition = (number) => {
+  const angleRad = (number / 12) * 2 * Math.PI;
+  const angleDeg = (number / 12) * 360;
+  
+  return {
+    x: 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angleRad),
+    y: 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angleRad),
+    angle: angleDeg,
+  };
+};
+
+const calculateTimeValues = (date) => {
+  const msec = date.getMilliseconds();
+  const sec = date.getSeconds() + msec / 1000;
+  const min = date.getMinutes() + sec / 60;
+  const hr = (date.getHours() % 12) + min / 60;
+  
+  return { hr, min, sec };
+};
+
+// --- Custom Hooks ---
+const useGoogleFont = (fontUrl = CLOCK_CONFIG.FONT_URL) => {
   const [fontReady, setFontReady] = useState(false);
   
   useEffect(() => {
-    const id = 'gilda-display-font';
-    if (document.getElementById(id)) return;
+    const fontId = 'gilda-display-font';
+    
+    if (document.getElementById(fontId)) {
+      setFontReady(true);
+      return;
+    }
 
     const link = document.createElement('link');
-    link.id = id;
+    link.id = fontId;
     link.rel = 'stylesheet';
-    link.href =
-      'https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap';
-
+    link.href = fontUrl;
     document.head.appendChild(link);
     
-    // Check when font is ready
-    document.fonts.load('1em "Gilda Display"').then(() => {
-      setFontReady(true);
-    }).catch(() => setFontReady(true)); // Fallback
-  }, []);
+    document.fonts
+      .load('1em "Gilda Display"')
+      .then(() => setFontReady(true))
+      .catch(() => setFontReady(true)); // Fallback on error
+  }, [fontUrl]);
   
   return fontReady;
 };
 
-// --- Hook: Smooth Time Engine ---
-const useBellClock = (intervalMs = 50) => {
+const useSmoothClock = (intervalMs = CLOCK_CONFIG.UPDATE_INTERVAL_MS) => {
   const [time, setTime] = useState(() => new Date());
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setTime(new Date());
-    }, intervalMs);
-
-    return () => clearInterval(id);
+    const intervalId = setInterval(() => setTime(new Date()), intervalMs);
+    return () => clearInterval(intervalId);
   }, [intervalMs]);
 
   return time;
 };
 
-const AnalogClock = () => {
-  const fontReady = useGoogleFont();
-  const now = useBellClock(50);
+// --- Sub-Components ---
+const BackgroundLayers = () => (
+  <>
+    <div
+      style={{
+        ...styles.backgroundLayer,
+        backgroundImage: `url(${bellImage1})`,
+      }}
+    />
+    <div
+      style={{
+        ...styles.backgroundLayer,
+        backgroundImage: `url(${bellImage2})`,
+        backgroundSize: 'cover',
+        filter: 'saturate(520%) hue-rotate(-120deg) contrast(0.4) brightness(1.6)',
+        zIndex: 1,
+      }}
+    />
+  </>
+);
 
-  // Smooth time calculations
-  const msec = now.getMilliseconds();
-  const sec = now.getSeconds() + msec / 1000;
-  const min = now.getMinutes() + sec / 60;
-  const hr = (now.getHours() % 12) + min / 60;
-
-  // Memoized numerals
+const ClockNumerals = () => {
   const numerals = useMemo(() => {
     return Array.from({ length: 12 }, (_, i) => {
       const num = i + 1;
-      const angleRad = (num / 12) * 2 * Math.PI;
-      const angleDeg = (num / 12) * 360;
-
-      const x = 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angleRad);
-      const y = 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angleRad);
+      const { x, y, angle } = calculateNumeralPosition(num);
 
       return (
         <div
           key={num}
           style={{
-            ...styles.numeralBase,
+            ...styles.numeral,
             left: `${x}%`,
             top: `${y}%`,
-            transform: `translate(-50%, -50%) rotate(${angleDeg}deg)`,
+            transform: `translate(-50%, -50%) rotate(${angle}deg)`,
           }}
         >
           {num}
@@ -92,56 +130,53 @@ const AnalogClock = () => {
     });
   }, []);
 
+  return <>{numerals}</>;
+};
+
+const ClockHand = ({ type, rotation }) => {
+  const { width, height, zIndex } = HAND_DIMENSIONS[type];
+  const background = CLOCK_CONFIG.COLORS[`${type}Hand`];
+
   return (
-    <div style={{
-      ...styles.container,
-      opacity: fontReady ? 1 : 0,
-      visibility: fontReady ? 'visible' : 'hidden',
-      transition: 'opacity 0.3s ease',
-    }}>
-      {/* Tiled Background */}
-      <div
-        style={{
-          ...styles.backgroundLayer,
-          backgroundImage: `url(${bellImage1})`,
-        }}
-      />
+    <div
+      style={{
+        ...styles.hand,
+        width,
+        height,
+        background,
+        zIndex,
+        transform: `translate(-50%, 0) rotate(${rotation}deg)`,
+      }}
+    />
+  );
+};
 
-      {/* Overlay Bell Image */}
-      <div style={styles.additionalBackgroundLayer} />
+const CenterDot = () => (
+  <div style={styles.centerDot} />
+);
 
-      {/* Clock Face */}
-      <div style={styles.face}>
-        {numerals}
+// --- Main Component ---
+const AnalogClock = () => {
+  const fontReady = useGoogleFont();
+  const currentTime = useSmoothClock();
+  const { hr, min, sec } = calculateTimeValues(currentTime);
 
-        {/* Hour Hand */}
-        <div
-          style={{
-            ...styles.hand,
-            ...styles.hourHand,
-            transform: `translate(-50%, 0) rotate(${hr * 30}deg)`,
-          }}
-        />
-
-        {/* Minute Hand */}
-        <div
-          style={{
-            ...styles.hand,
-            ...styles.minHand,
-            transform: `translate(-50%, 0) rotate(${min * 6}deg)`,
-          }}
-        />
-
-        {/* Second Hand */}
-        <div
-          style={{
-            ...styles.hand,
-            ...styles.secHand,
-            transform: `translate(-50%, 0) rotate(${sec * 6}deg)`,
-          }}
-        />
-
-        <div style={styles.centerDot} />
+  return (
+    <div
+      style={{
+        ...styles.container,
+        opacity: fontReady ? 1 : 0,
+        visibility: fontReady ? 'visible' : 'hidden',
+      }}
+    >
+      <BackgroundLayers />
+      
+      <div style={styles.clockFace}>
+        <ClockNumerals />
+        <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />
+        <ClockHand type="minute" rotation={getHandRotation(min, 6)} />
+        <ClockHand type="second" rotation={getHandRotation(sec, 6)} />
+        <CenterDot />
       </div>
     </div>
   );
@@ -154,7 +189,8 @@ const styles = {
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
-    backgroundColor: '#BFA7A7',
+    backgroundColor: CLOCK_CONFIG.COLORS.background,
+    transition: 'opacity 0.3s ease',
   },
 
   backgroundLayer: {
@@ -168,19 +204,7 @@ const styles = {
     opacity: 0.5,
   },
 
-  additionalBackgroundLayer: {
-    position: 'absolute',
-    inset: 0,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    backgroundImage: `url(${bellImage2})`,
-    filter:
-      'saturate(520%) hue-rotate(-120deg) contrast(0.4) brightness(1.6)',
-    zIndex: 1,
-  },
-
-  face: {
+  clockFace: {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -188,16 +212,16 @@ const styles = {
     width: '100vmin',
     height: '100vmin',
     zIndex: 7,
-    fontFamily: "'Gilda Display', serif",
+    fontFamily: CLOCK_CONFIG.FONT_FAMILY,
   },
 
-numeralBase: {
+  numeral: {
     position: 'absolute',
     fontSize: 'clamp(4rem, 10vw, 19rem)',
     background: CLOCK_CONFIG.COLORS.silverText,
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
-    filter: 'drop-shadow(1px 1px 0px white)', 
+    filter: 'drop-shadow(1px 1px 0px white)',
     userSelect: 'none',
   },
 
@@ -206,31 +230,9 @@ numeralBase: {
     bottom: '50%',
     left: '50%',
     transformOrigin: '50% 100%',
-
-    filter: 'drop-shadow(1px 1px 0px white)', 
+    filter: 'drop-shadow(1px 1px 0px white)',
     borderRadius: '10px',
     willChange: 'transform',
-  },
-
-  hourHand: {
-    width: '1.2vmin',
-    height: '20vmin',
-    background: CLOCK_CONFIG.COLORS.hourHand,
-    zIndex: 3,
-  },
-
-  minHand: {
-    width: '0.8vmin',
-    height: '32vmin',
-    background: CLOCK_CONFIG.COLORS.minuteHand,
-    zIndex: 4,
-  },
-
-  secHand: {
-    width: '0.4vmin',
-    height: '38vmin',
-    background: CLOCK_CONFIG.COLORS.secondHand,
-    zIndex: 5,
   },
 
   centerDot: {
@@ -239,7 +241,7 @@ numeralBase: {
     left: '50%',
     width: '2vmin',
     height: '2vmin',
-    background: '#565856',
+    background: CLOCK_CONFIG.COLORS.centerDot,
     borderRadius: '50%',
     transform: 'translate(-50%, -50%)',
     zIndex: 10,
