@@ -1,55 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import airportFont from '../../../assets/fonts/26-02-14-airport.ttf';
 import backgroundGif from '../../../assets/images/26-02-14/prop.gif';
+import backgroundGif2 from '../../../assets/images/26-02-14/runway.gif';
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
   const [isInitialized, setIsInitialized] = useState(false);
-  const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
     const updateTime = () => {
-      const now = new Date();
-      setTime(now);
+      setTime(new Date());
       setIsInitialized(true);
     };
 
-    // Load custom font
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace('Airport', `url(${airportFont})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.error('Font loading failed:', error);
-        setFontLoaded(true); // Continue with fallback font
-      }
-    };
-
-    updateTime();
-    loadFont();
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // Custom substitution mapping
+  // Substitution mapping based on your requirements
   const substitutionMap = {
-    0: 'n',
-    1: 't',
-    2: '6',
-    3: 'L',
-    4: '9',
-    5: '1',
-    6: 'J',
-    7: 'S',
-    8: 'E',
-    9: 'm'
+    0: 'n', 1: 't', 2: '6', 3: 'L', 4: '9',
+    5: '1', 6: 'J', 7: 'S', 8: 'E', 9: 'm'
   };
 
-  const numberToLetter = (num) => {
-    return substitutionMap[num] !== undefined ? substitutionMap[num] : num.toString();
-  };
+  const numberToLetter = (num) => substitutionMap[num] ?? num.toString();
 
   const formatTime = (date) => {
     const hours = date.getHours().toString().padStart(2, '0');
@@ -59,93 +33,83 @@ const DigitalClock = () => {
   };
 
   const splitDigitsToLetters = (timeString) => {
-    return timeString.split('').map(digit => numberToLetter(parseInt(digit)));
+    return timeString.split('').map(digit => numberToLetter(parseInt(digit, 10)));
   };
 
   const { hours, minutes, seconds } = formatTime(time);
 
   const styles = {
     container: {
+      position: 'relative',
       width: '100vw',
       height: '100dvh',
       margin: 0,
       padding: 0,
-      boxSizing: 'border-box',
       overflow: 'hidden',
-      backgroundImage: `url(${backgroundGif})`,
-      backgroundSize: '100% 100%',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      fontFamily: "'Airport', monospace"
+      backgroundColor: '#000', // Base black layer
     },
+    // Background 1: Propeller GIF
+    bgLayer1: {
+      position: 'absolute',
+      top: 0, left: 0, right: 0, bottom: 0,
+      backgroundImage: `url(${backgroundGif})`,
+      backgroundSize: '100% 100%',
+      backgroundPosition: 'center',
+      opacity: 0.8,
+      filter: 'contrast(1.3) brightness(0.7)', // Individual filter
+      zIndex: 1,
+    },
+    // Background 2: Runway GIF
+ bgLayer2: {
+  position: 'absolute',
+  top: 0, left: 0, right: 0, bottom: 0,
+  backgroundImage: `url(${backgroundGif2})`,
+  backgroundSize: '100% 100%',
+  backgroundPosition: 'center',
+  opacity: 0.6,               // ← lower a bit more if needed
+  filter: 'contrast(4) brightness(1.3)',  // ← tune to taste, lower brightness helps hide darks
+  zIndex: 2,
+  transform: 'scaleX(-1)',
+  mixBlendMode: 'lighten',    // ← key change – or try 'screen'
+  // mixBlendMode: 'screen',  // alternative – often looks nicer with lights
+},
     clockContainer: {
+      position: 'relative',
+      zIndex: 10,
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       gap: '2vh',
-      padding: '2vh',
       width: '100%',
-      maxWidth: '1200px'
-    },
-    timeDisplay: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      gap: '2vh',
-      padding: '4vh 6vw',
-      borderRadius: '24px',
-    },
-    timeSection: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center'
     },
     digitGroup: {
       display: 'flex',
-      gap: '10px'
+      gap: '8vh',
+      justifyContent: 'center',
     },
     digitBox: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: '12px',
-      width: 'clamp(50px, 32vw, 110px)', 
-      height: 'clamp(70px, 16vh, 140px)',
-      flexShrink: 0, // Prevents the box from squeezing
-      transition: 'all 0.3s ease'
+      width: 'clamp(90px, 22vw, 170px)', 
+      height: 'clamp(80px, 22vh, 180px)',
     },
     digit: {
-      fontSize: 'clamp(40px, 12vh, 100px)',
-      color: '#0933B1',
+      fontSize: 'clamp(50px, 14vh, 140px)',
+      color: '#D4D8E3',
       fontFamily: "'Airport', monospace",
       textAlign: 'center',
-      display: 'block',
-      width: '100%',
-      lineHeight: 1
+      lineHeight: 1,
+      // textShadow: '0 0 15px rgba(9, 51, 177, 0.4)', // Subtle blue glow
     },
   };
 
   return (
     <div style={styles.container}>
-      {/* Loading overlay to prevent flash of unstyled content */}
-      {!fontLoaded && (
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100dvh',
-          backgroundImage: `url(${backgroundGif})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          zIndex: 100
-        }} />
-      )}
-      
+      {/* Global Font Injection */}
       <style>
         {`
           @font-face {
@@ -158,45 +122,44 @@ const DigitalClock = () => {
         `}
       </style>
       
+      {/* Background Layers */}
+      <div style={styles.bgLayer1} />
+      <div style={styles.bgLayer2} />
+
       {!isInitialized ? (
-        <div style={{ color: '#fff', fontSize: '24px' }}> </div>
+        <div style={{ color: '#E3E7F1', zIndex: 11, fontFamily: 'monospace' }}>
+      
+        </div>
       ) : (
         <div style={styles.clockContainer}>
-          <div style={styles.timeDisplay}>
-            
-            {/* HOURS */}
-            <div style={styles.timeSection}>
-        
-              <div style={styles.digitGroup}>
-                {splitDigitsToLetters(hours).map((letter, index) => (
-                  <div key={`hour-${index}`} style={styles.digitBox}>
-                    <span style={styles.digit}>{letter}</span>
-                  </div>
-                ))}
+          
+          {/* HOURS */}
+          <div style={styles.digitGroup}>
+            {splitDigitsToLetters(hours).map((letter, index) => (
+              <div key={`h-${index}`} style={styles.digitBox}>
+                <span style={styles.digit}>{letter}</span>
               </div>
-            </div>
-            
-            <div style={styles.timeSection}>
-              <div style={styles.digitGroup}>
-                {splitDigitsToLetters(minutes).map((letter, index) => (
-                  <div key={`minute-${index}`} style={styles.digitBox}>
-                    <span style={styles.digit}>{letter}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <div style={styles.timeSection}>
-              <div style={styles.digitGroup}>
-                {splitDigitsToLetters(seconds).map((letter, index) => (
-                  <div key={`second-${index}`} style={styles.digitBox}>
-                    <span style={styles.digit}>{letter}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
+            ))}
           </div>
+          
+          {/* MINUTES */}
+          <div style={styles.digitGroup}>
+            {splitDigitsToLetters(minutes).map((letter, index) => (
+              <div key={`m-${index}`} style={styles.digitBox}>
+                <span style={styles.digit}>{letter}</span>
+              </div>
+            ))}
+          </div>
+          
+          {/* SECONDS */}
+          <div style={styles.digitGroup}>
+            {splitDigitsToLetters(seconds).map((letter, index) => (
+              <div key={`s-${index}`} style={styles.digitBox}>
+                <span style={styles.digit}>{letter}</span>
+              </div>
+            ))}
+          </div>
+
         </div>
       )}
     </div>
