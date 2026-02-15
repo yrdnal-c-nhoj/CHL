@@ -67,6 +67,22 @@ const DigitalClockTemplate = () => {
   return (
     <div style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden', backgroundColor: '#000' }}>
       
+      {/* Loading overlay to prevent flash of unstyled content */}
+      {!fontReady && (
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: '#000',
+          zIndex: 100,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }} />
+      )}
+      
       {/* Background Layers */}
       <div style={{ ...layerBase, backgroundImage: `url(${digitalBgImage})`, opacity: 1.0, filter: 'saturate(3.8) brightness(1.5)', zIndex: 1 }} />
       <div style={{ ...layerBase, backgroundImage: `url(${extraBg1})`, opacity: 0.6, filter: 'saturate(3.8) contrast(1.5) brightness(1.5)', mixBlendMode: 'overlay', zIndex: 2 }} />
