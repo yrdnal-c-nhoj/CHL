@@ -21,7 +21,7 @@ html.fonts-loading body {
 }
 
 /* Prevent FOUC during React hydration */
-html:not(.react-hydrated):not(.dom-loaded) body {
+html:not(.dom-loaded):not(.fonts-loaded) body {
   visibility: hidden;
 }
 
