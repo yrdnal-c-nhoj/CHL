@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from "../../../utils/fontLoader";
 
 // Template uses existing project assets so it looks consistent with other clocks.
 // Swap these imports for different fonts / images when making a new clock.
-import digitalFontUrl from '../../../assets/fonts/25-08-15-dom.ttf';
+// For Google Fonts Orbitron, we use the Google Fonts URL directly
 import digitalBgImage from '../../../assets/images/25-08-15/tabl.webp';
+
+// Google Fonts Orbitron - loaded via CSS import in index.html or direct URL
+// To use Orbitron, ensure the font is loaded via index.html or use a custom font file
+const FONT_FAMILY = 'Orbitron, system-ui, sans-serif';
 
 /**
  * DigitalClockTemplate
  *
  * A future-proof, React-first digital clock template that:
- * - Uses the browser FontFace API (no global CSS required)
+ * - Uses Google Fonts Orbitron (imported in index.html)
  * - Updates time with React state (no manual DOM manipulation)
  * - Scales to full viewport and stays responsive
  * - Is easy to customize (colors, layout, 12/24 hr mode, etc.)
  *
  * Usage:
  * - Copy this file when creating a new clock or import the component into a page-level Clock.jsx.
- * - Replace font/background imports above with your own assets.
+ * - Replace the background image import above with your own asset.
  * - Tweak the CONFIG object for quick style changes.
+ * - Orbitron font is loaded via Google Fonts in index.html
  */
 
 const CONFIG = {
@@ -28,7 +32,19 @@ const CONFIG = {
 
 const DigitalClockTemplate = () => {
   const [time, setTime] = useState(new Date());
-  const fontReady = useFontLoader('BorrowedDigital', digitalFontUrl);
+  const [fontReady, setFontReady] = useState(false);
+
+  // Wait for Google Fonts to load before showing content (prevents FOUC)
+  useEffect(() => {
+    if ('fonts' in document) {
+      document.fonts.ready.then(() => {
+        setFontReady(true);
+      });
+    } else {
+      // Fallback for browsers without font loading API
+      setFontReady(true);
+    }
+  }, []);
 
   // Time ticker
   useEffect(() => {
@@ -44,19 +60,17 @@ const DigitalClockTemplate = () => {
 
     const pad = (n) => String(n).padStart(2, '0');
 
-    const parts = {
+    return {
       hh: pad(hours),
       mm: pad(minutes),
       ss: pad(seconds),
-      ampm: hours24 >= 12 ? 'PM' : 'AM',
     };
-
-    return parts;
   };
 
-  const { hh, mm, ss, ampm } = formatTimeParts(time);
+  const { hh, mm, ss } = formatTimeParts(time);
 
   const containerStyle = {
+    boxSizing: 'border-box',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -68,7 +82,7 @@ const DigitalClockTemplate = () => {
     backgroundImage: `url(${digitalBgImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    fontFamily: fontReady ? "'BorrowedDigital', system-ui, sans-serif" : 'system-ui, sans-serif',
+    fontFamily: FONT_FAMILY,
   };
 
   const clockWrapperStyle = {
@@ -118,6 +132,16 @@ const DigitalClockTemplate = () => {
     padding: '0 0.1em',
   };
 
+  // Loading overlay to prevent flash of unstyled content (FOUC)
+  if (!fontReady) {
+    return (
+      <div style={{
+        ...containerStyle,
+        background: '#000',
+      }} />
+    );
+  }
+
   return (
     <div style={containerStyle}>
       <div style={clockWrapperStyle}>
@@ -145,11 +169,7 @@ const DigitalClockTemplate = () => {
               </div>
             </>
           )}
-
-     
         </div>
-
-      
       </div>
     </div>
   );
