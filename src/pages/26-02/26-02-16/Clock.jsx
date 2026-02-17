@@ -33,7 +33,7 @@ const getBackgroundStyle = (isFlipped) => ({
 // --- Sub-Components ---
 const BackgroundLayers = React.memo(() => (
   <>
-    {/* Third layer - video background behind everything */}
+    {/* Third layer - large scaled video that rotates */}
     <video
       autoPlay
       loop
@@ -41,12 +41,14 @@ const BackgroundLayers = React.memo(() => (
       playsInline
       style={{
         position: 'absolute',
-        inset: 0,
-        width: '100%',
-        height: '100%',
+        top: '50%',
+        left: '50%',
+        width: '150vw',
+        height: '150vh',
         objectFit: 'cover',
-        opacity: 0.6,
+        opacity: 0.7,
         zIndex: 0,
+        animation: 'rotate-video 60s linear infinite',
       }}
     >
       <source src={loopVideo} type="video/mp4" />
@@ -147,6 +149,11 @@ const animations = `
   @keyframes colon-blink {
     0%, 49% { opacity: 0.8; }
     50%, 100% { opacity: 0.2; }
+  }
+
+  @keyframes rotate-video {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
   }
 `;
 
