@@ -57,10 +57,9 @@ export default function PixelInverseClock() {
       const vidAspect = video.videoWidth / video.videoHeight;
       const screenAspect = w / h;
 
-      let drawW, drawH;
       // Fit to width to ensure no horizontal gaps
-      drawW = w;
-      drawH = w / vidAspect;
+      let drawW = w;
+      let drawH = w / vidAspect;
 
       const x = (w - drawW) / 2;
       const centerY = (h - drawH) / 2;
@@ -68,13 +67,24 @@ export default function PixelInverseClock() {
       // Calculate number of tiles needed to cover top and bottom
       const tilesNeeded = Math.ceil(h / drawH);
 
+      // Save context state for flip
+      ctx.save();
+      
+      // Flip 180 degrees (rotate around center of canvas)
+      ctx.translate(w / 2, h / 2);
+      ctx.rotate(Math.PI);
+      ctx.translate(-w / 2, -h / 2);
+
       for (let i = -tilesNeeded; i <= tilesNeeded; i++) {
         const yPos = centerY + i * drawH;
-        // Optimization: Only draw if the tile is within the viewport
+        // Optimization: Only draw if tile is within viewport
         if (yPos + drawH > 0 && yPos < h) {
           ctx.drawImage(video, x, yPos, drawW, drawH);
         }
       }
+
+      // Restore context state
+      ctx.restore();
     }
 
     const now = new Date();
