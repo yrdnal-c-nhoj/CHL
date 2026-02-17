@@ -1,160 +1,159 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 
-// === Local assets (module-based, fingerprinted by Vite) ===
-import wallTexture from '../../../assets/images/26-01-01/fan.gif';       // subtle plaster / stone texture
-import brassTexture from '../../../assets/images/26-01-01/fan.gif';     // optional brass grain
-import watchFontUrl from '../../../assets/fonts/26-01-01-fan.otf';
+// --- Assets ---
+import mazeImage from '../../../assets/images/26-02-16/puzzle.gif';
+import mazeFont from '../../../assets/fonts/26-02-16-maze.ttf';
 
+// --- Configuration ---
+const CONFIG = {
+  FONT_FAMILY: 'MazeFont',
+  COLORS: {
+    background: '#0a0005',
+    glow: 'rgba(181, 12, 12, 0)', // #B50C0C88
+    text: '#331A1ABC',
+  },
+};
 
+// --- Styled Components (Logic-based) ---
+const getBackgroundStyle = (isFlipped) => ({
+  position: 'absolute',
+  inset: 0,
+  backgroundImage: `url(${mazeImage})`,
+  backgroundSize: '200px auto',
+  backgroundRepeat: 'repeat',
+  backgroundPosition: 'center',
+  filter: 'contrast(6.4) brightness(1.0)',
+  opacity: isFlipped ? 0.4 : 0.7,
+  transform: isFlipped ? 'scale(-1, -1)' : 'none',
+  zIndex: isFlipped ? 2 : 1,
+});
 
-import bg1 from '../../../assets/images/26-01-01/fan.gif';
-import myFontUrl from '../../../assets/fonts/26-01-01-fan.otf';
+// --- Sub-Components ---
 
+// Memoized to prevent re-renders since the background never changes
+const BackgroundLayers = React.memo(() => (
+  <>
+    <div style={getBackgroundStyle(false)} />
+    <div style={getBackgroundStyle(true)} />
+  </>
+));
 
-
-export default function NichePocketWatch() {
-  const watchRef = useRef(null);
-  const [fontReady, setFontReady] = useState(false);
-
-  // === Load font (Vite-modern behavior) ===
-  useEffect(() => {
-    const font = new FontFace(
-      'WatchNumerals',
-      `url(${watchFontUrl})`
-    );
-
-    font
-      .load()
-      .then((loaded) => {
-        document.fonts.add(loaded);
-        setFontReady(true);
-      })
-      .catch(() => setFontReady(true));
-
-    return () => {
-      // FontFace cleanup is handled by browser; nothing persistent added
-    };
-  }, []);
-
-  // === Subtle pendulum swing ===
-  useEffect(() => {
-    let rafId;
-    let start;
-
-    const animate = (t) => {
-      if (!start) start = t;
-      const elapsed = (t - start) / 1000;
-
-      // gentle, slow swing
-      const angle = Math.sin(elapsed * 0.9) * 3;
-
-      if (watchRef.current) {
-        watchRef.current.style.transform =
-          `translateX(-50%) rotate(${angle}deg)`;
-      }
-
-      rafId = requestAnimationFrame(animate);
-    };
-
-    rafId = requestAnimationFrame(animate);
-
-    return () => cancelAnimationFrame(rafId);
-  }, []);
-
-  // === Shared sizing ===
-  const nicheWidth = '70vw';
-  const nicheMaxWidth = '420px';
-
+const Digit = ({ char }) => {
+  const isColon = char === ':';
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        boxSizing: 'border-box',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundImage: `url(${wallTexture})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        fontFamily: 'WatchNumerals, serif',
-        opacity: fontReady ? 1 : 0,
-        visibility: fontReady ? 'visible' : 'hidden',
-        transition: 'opacity 0.3s ease',
-      }}
-    >
-      {/* === Niche === */}
-      <div
-        style={{
-          position: 'relative',
-          width: nicheWidth,
-          maxWidth: nicheMaxWidth,
-          aspectRatio: '1 / 1.25',
-          borderTopLeftRadius: '100% 100%',
-          borderTopRightRadius: '100% 100%',
-          borderBottomLeftRadius: '1.5rem',
-          borderBottomRightRadius: '1.5rem',
-          background: 'linear-gradient(180deg, #e6ded2, #cfc6b8)',
-          boxShadow:
-            'inset 0 1.5rem 2.5rem rgba(0,0,0,0.25), inset 0 -0.5rem 1rem rgba(255,255,255,0.3)',
-          display: 'flex',
-          justifyContent: 'center',
-          overflow: 'hidden'
-        }}
-      >
-        {/* === Chain === */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '0.75rem',
-            width: '2px',
-            height: '25%',
-            background:
-              'linear-gradient(180deg, #b08d57, #6e542e)',
-            boxShadow: '0 0 2px rgba(0,0,0,0.4)'
-          }}
-        />
-
-        {/* === Pocket Watch === */}
-        <div
-          ref={watchRef}
-          style={{
-            position: 'absolute',
-            top: '25%',
-            left: '50%',
-            transformOrigin: 'top center',
-            width: '38%',
-            aspectRatio: '1 / 1',
-            borderRadius: '50%',
-            backgroundImage: `url(${brassTexture})`,
-            backgroundSize: 'cover',
-            boxShadow:
-              '0 1.5rem 2.5rem rgba(0,0,0,0.35), inset 0 0 0.25rem rgba(255,255,255,0.6)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          {/* Watch face */}
-          <div
-            style={{
-              width: '85%',
-              height: '85%',
-              borderRadius: '50%',
-              background: '#f7f3ee',
-              boxShadow: 'inset 0 0 0.5rem rgba(0,0,0,0.25)',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              fontSize: 'clamp(1rem, 3vw, 1.6rem)',
-              color: '#2e2a24'
-            }}
-          >
-            XII
-          </div>
-        </div>
-      </div>
+    <div style={styles.digitBox}>
+      <span style={{ ...styles.digit, ...(isColon ? styles.colon : {}) }}>
+        {char}
+      </span>
     </div>
   );
-}
+};
+
+// --- Main Component ---
+const DigitalClock = () => {
+  const [fontReady, setFontReady] = useState(false);
+  const [time, setTime] = useState(new Date());
+
+  // 1. Optimized Font Loading
+  useEffect(() => {
+    let isMounted = true;
+    const font = new FontFace(CONFIG.FONT_FAMILY, `url(${mazeFont})`);
+    
+    font.load().then(() => {
+      if (isMounted) {
+        document.fonts.add(font);
+        setFontReady(true);
+      }
+    }).catch(() => setFontReady(true));
+
+    return () => { isMounted = false; };
+  }, []);
+
+  // 2. High-Performance Animation Loop (requestAnimationFrame)
+  useEffect(() => {
+    let frameId;
+    const update = () => {
+      setTime(new Date());
+      frameId = requestAnimationFrame(update);
+    };
+    frameId = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+
+  // 3. Time Formatting Logic
+  const timeParts = useMemo(() => {
+    const h = time.getHours().toString().padStart(2, '0');
+    const m = time.getMinutes().toString().padStart(2, '0');
+    const s = time.getSeconds().toString().padStart(2, '0');
+    return `${h}:${m}:${s}`.split('');
+  }, [time]);
+
+  if (!fontReady) return null;
+
+  return (
+    <main style={styles.container}>
+      <style>{blinkAnimation}</style>
+      <BackgroundLayers />
+      
+      <div style={styles.digitalContainer}>
+        <div style={styles.timeWrapper}>
+          {timeParts.map((char, idx) => (
+            <Digit key={`${idx}-${char}`} char={char} />
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+};
+
+// --- Styles & Animations ---
+const blinkAnimation = `
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 1; text-shadow: 0 0 10px ${CONFIG.COLORS.glow}, 0 0 30px ${CONFIG.COLORS.glow}; }
+    50% { opacity: 0.6; text-shadow: 0 0 5px ${CONFIG.COLORS.glow}; }
+  }
+`;
+
+const styles = {
+  container: {
+    position: 'relative',
+    width: '100vw',
+    height: '100dvh',
+    overflow: 'hidden',
+    // backgroundColor: CONFIG.COLORS.background,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  digitalContainer: {
+    position: 'relative',
+    zIndex: 10,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  timeWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.15em',
+  },
+  digitBox: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '1.1em', // Fixed width prevents jittering
+    height: '1.2em',
+  },
+  digit: {
+    fontFamily: CONFIG.FONT_FAMILY,
+    fontSize: 'clamp(2rem, 4vh, 8rem)',
+    lineHeight: 1,
+    textAlign: 'center',
+    
+  },
+  colon: {    opacity: 0.8,
+  },
+};
+
+export default DigitalClock;
