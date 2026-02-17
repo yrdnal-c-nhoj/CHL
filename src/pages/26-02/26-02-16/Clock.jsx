@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
 // --- Assets ---
 import mazeImage from '../../../assets/images/26-02-16/puzzle.gif';
@@ -9,17 +9,23 @@ const CONFIG = {
   FONT_FAMILY: 'MazeFont',
   COLORS: {
     background: '#0a0005',
-    glow: 'rgba(181, 12, 12, 0)', // #B50C0C88
-    text: '#331A1ABC',
+    glow: '#F2EFEF99',
+    glowFaint: 'rgba(181, 12, 12, 0)',
+    text: '#331A1A80',
   },
 };
 
-// --- Styled Components (Logic-based) ---
+// --- Font Loading ---
+// Loads a custom font from a URL and adds it to the document font set.
+// Replace MAZE_FONT_URL with the actual URL or import path to your font file.
+const MAZE_FONT_URL = '/assets/fonts/26-02-16-maze.ttf'; // <-- update this path
+
+// --- Background Style Helper ---
 const getBackgroundStyle = (isFlipped) => ({
   position: 'absolute',
   inset: 0,
   backgroundImage: `url(${mazeImage})`,
-  backgroundSize: '200px auto',
+  backgroundSize: '250px auto',
   backgroundRepeat: 'repeat',
   backgroundPosition: 'center',
   filter: 'contrast(6.4) brightness(1.0)',
@@ -29,16 +35,15 @@ const getBackgroundStyle = (isFlipped) => ({
 });
 
 // --- Sub-Components ---
-
-// Memoized to prevent re-renders since the background never changes
 const BackgroundLayers = React.memo(() => (
   <>
     <div style={getBackgroundStyle(false)} />
     <div style={getBackgroundStyle(true)} />
   </>
 ));
+BackgroundLayers.displayName = 'BackgroundLayers';
 
-const Digit = ({ char }) => {
+const Digit = React.memo(({ char }) => {
   const isColon = char === ':';
   return (
     <div style={styles.digitBox}>
@@ -47,40 +52,44 @@ const Digit = ({ char }) => {
       </span>
     </div>
   );
-};
+});
+Digit.displayName = 'Digit';
 
 // --- Main Component ---
 const DigitalClock = () => {
   const [fontReady, setFontReady] = useState(false);
   const [time, setTime] = useState(new Date());
 
-  // 1. Optimized Font Loading
+  // 1. Font Loading
   useEffect(() => {
     let isMounted = true;
     const font = new FontFace(CONFIG.FONT_FAMILY, `url(${mazeFont})`);
-    
-    font.load().then(() => {
-      if (isMounted) {
-        document.fonts.add(font);
-        setFontReady(true);
-      }
-    }).catch(() => setFontReady(true));
-
-    return () => { isMounted = false; };
-  }, []);
-
-  // 2. High-Performance Animation Loop (requestAnimationFrame)
-  useEffect(() => {
-    let frameId;
-    const update = () => {
-      setTime(new Date());
-      frameId = requestAnimationFrame(update);
+    font
+      .load()
+      .then(() => {
+        if (isMounted) {
+          document.fonts.add(font);
+          setFontReady(true);
+        }
+      })
+      .catch(() => {
+        // Font failed to load — render with fallback font anyway
+        if (isMounted) setFontReady(true);
+      });
+    return () => {
+      isMounted = false;
     };
-    frameId = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(frameId);
   }, []);
 
-  // 3. Time Formatting Logic
+  // 2. Clock tick — updates once per second via setInterval
+  // (requestAnimationFrame was used originally but is unnecessary for a clock
+  //  and wastes CPU by re-rendering ~60x per second)
+  useEffect(() => {
+    const id = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  // 3. Time Formatting
   const timeParts = useMemo(() => {
     const h = time.getHours().toString().padStart(2, '0');
     const m = time.getMinutes().toString().padStart(2, '0');
@@ -92,9 +101,8 @@ const DigitalClock = () => {
 
   return (
     <main style={styles.container}>
-      <style>{blinkAnimation}</style>
+      <style>{animations}</style>
       <BackgroundLayers />
-      
       <div style={styles.digitalContainer}>
         <div style={styles.timeWrapper}>
           {timeParts.map((char, idx) => (
@@ -106,21 +114,36 @@ const DigitalClock = () => {
   );
 };
 
-// --- Styles & Animations ---
-const blinkAnimation = `
+// --- Animations ---
+const animations = `
   @keyframes pulse-glow {
-    0%, 100% { opacity: 1; text-shadow: 0 0 10px ${CONFIG.COLORS.glow}, 0 0 30px ${CONFIG.COLORS.glow}; }
-    50% { opacity: 0.6; text-shadow: 0 0 5px ${CONFIG.COLORS.glow}; }
+    0%, 100% {
+      opacity: 1;
+      text-shadow:
+        0 0 10px ${CONFIG.COLORS.glow},
+        0 0 30px ${CONFIG.COLORS.glow},
+        0 0 60px ${CONFIG.COLORS.glowFaint};
+    }
+    50% {
+      opacity: 0.6;
+      text-shadow: 0 0 5px ${CONFIG.COLORS.glow};
+    }
+  }
+
+  @keyframes colon-blink {
+    0%, 49% { opacity: 0.8; }
+    50%, 100% { opacity: 0.2; }
   }
 `;
 
+// --- Styles ---
 const styles = {
   container: {
     position: 'relative',
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
-    // backgroundColor: CONFIG.COLORS.background,
+    backgroundColor: CONFIG.COLORS.background,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -142,17 +165,20 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '1.1em', // Fixed width prevents jittering
+    width: '1.1em',
     height: '1.2em',
   },
   digit: {
-    fontFamily: CONFIG.FONT_FAMILY,
-    fontSize: 'clamp(2rem, 4vh, 8rem)',
+    fontFamily: `${CONFIG.FONT_FAMILY}, monospace`,
+    fontSize: 'clamp(2rem, 15vw, 8rem)',
     lineHeight: 1,
     textAlign: 'center',
-    
+    color: CONFIG.COLORS.text,
+    animation: 'pulse-glow 2s ease-in-out infinite',
+    userSelect: 'none',
   },
-  colon: {    opacity: 0.8,
+  colon: {
+    animation: 'colon-blink 1s step-end infinite',
   },
 };
 
