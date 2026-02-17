@@ -1,234 +1,195 @@
-// PixelInverseClock.jsx
-import React, { useRef, useEffect, useState } from 'react'
-import videoFile from '../../../assets/images/26-02-15/caldera.mp4'
-import fontFile from '../../../assets/fonts/26-02-15-fire.ttf'
+import React, { useRef, useEffect, useState, useCallback } from 'react';
+import videoFile from '../../../assets/images/26-02-15/caldera.mp4';
+import fontFile from '../../../assets/fonts/26-02-15-fire.ttf';
 
-const FONT_FAMILY = 'MyClockFont_20251120'
+const FONT_FAMILY = 'MyClockFont_20251120';
 
 export default function PixelInverseClock() {
-  const canvasRef = useRef(null)
-  const videoRef = useRef(null)
-  const animationRef = useRef(null)
-  const [fontLoaded, setFontLoaded] = useState(false)
+  const canvasRef = useRef(null);
+  const videoRef = useRef(null);
+  const animationFrameRef = useRef(null);
+  const [fontLoaded, setFontLoaded] = useState(false);
 
-  // Load the custom font
+  // Load custom font
   useEffect(() => {
-    const font = new FontFace(FONT_FAMILY, `url(${fontFile})`)
-    font.load().then(loaded => {
-      document.fonts.add(loaded)
-      setFontLoaded(true)
-    }).catch(err => console.error("Font loading failed:", err))
-  }, [])
-
-  useEffect(() => {
-    if (!fontLoaded) return
-
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d', { alpha: false })
-    const video = videoRef.current
-
-    // Disable smoothing for sharp pixel look
-    ctx.imageSmoothingEnabled = false
-
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
-
-    resizeCanvas()
-    window.addEventListener('resize', resizeCanvas)
-    window.addEventListener('orientationchange', resizeCanvas)
-
-    const getPixel = (x, y, w, data) => {
-      const i = (Math.floor(y) * w + Math.floor(x)) * 4
-      return { r: data[i], g: data[i + 1], b: data[i + 2] }
-    }
-
-    const draw = () => {
-      const w = canvas.width
-      const h = canvas.height
-      const cx = w / 2
-      const cy = h / 2
-
-      // ───────────────────────────────────────────────
-      // 1. Draw tiled, mirrored, uncropped background video
-      // ───────────────────────────────────────────────
-      const vidW = video.videoWidth
-      const vidH = video.videoHeight
-
-      if (vidW > 0 && vidH > 0) {
-        const vidAspect = vidW / vidH
-
-        // Size of one video instance — keep original aspect ratio
-        let tileWidth, tileHeight
-
-        // We choose the smaller scale so the whole video is visible (contain behavior)
-        if (w / h > vidAspect) {
-          // Screen wider than video → fit to height
-          tileHeight = h
-          tileWidth = tileHeight * vidAspect
-        } else {
-          // Screen taller or same → fit to width
-          tileWidth = w
-          tileHeight = tileWidth / vidAspect
-        }
-
-        // Center offset for a single centered copy
-        const offsetX = (w - tileWidth) / 2
-        const offsetY = (h - tileHeight) / 2
-
-        ctx.save()
-        // Mirror the entire scene horizontally
-        ctx.translate(w, 0)
-        ctx.scale(-1, 1)
-
-        // Calculate how many tiles needed in each direction (with overlap margin)
-        const tilesX = Math.ceil((w + Math.abs(offsetX) * 2) / tileWidth) + 2
-        const tilesY = Math.ceil((h + Math.abs(offsetY) * 2) / tileHeight) + 2
-
-        // Tile the video
-        for (let ty = -2; ty < tilesY; ty++) {
-          for (let tx = -2; tx < tilesX; tx++) {
-            const x = offsetX + tx * tileWidth
-            const y = offsetY + ty * tileHeight
-
-            // Because context is mirrored, draw at mirrored position
-            ctx.drawImage(video, -x - tileWidth, y, tileWidth, tileHeight)
-          }
-        }
-
-        ctx.restore()
-      } else {
-        // Video not ready → black background
-        ctx.fillStyle = '#000'
-        ctx.fillRect(0, 0, w, h)
-      }
-
-      // ───────────────────────────────────────────────
-      // Get pixels after background is drawn
-      // ───────────────────────────────────────────────
-      const image = ctx.getImageData(0, 0, w, h)
-      const data = image.data
-
-      const now = new Date()
-      const ms = now.getMilliseconds()
-      const sec = now.getSeconds() + ms / 1000
-      const min = now.getMinutes() + sec / 60
-      const hr = (now.getHours() % 12) + min / 60
-
-      // Clock Dimensions
-      const radiusX = w * 0.5
-      const radiusY = Math.min(w, h) * 0.15
-
-      // ───────────────────────────────────────────────
-      // 2. Render Numbers (Opacity 0.8)
-      // ───────────────────────────────────────────────
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'middle'
-      ctx.font = `${radiusY * 0.4}px "${FONT_FAMILY}", sans-serif`
-
-      const numOffsetX = radiusX * 0.85
-      const numOffsetY = radiusY * 0.85
-
-      for (let n = 1; n <= 12; n++) {
-        const angle = (n / 12) * Math.PI * 2 - Math.PI / 2
-        const x = cx + Math.cos(angle) * numOffsetX
-        const y = cy + Math.sin(angle) * numOffsetY
-        const p = getPixel(x, y, w, data)
-
-        ctx.save()
-        ctx.globalAlpha = 0.8
-        ctx.fillStyle = `rgb(${255 - p.r},${255 - p.g},${255 - p.b})`
-        ctx.translate(x, y)
-        ctx.rotate(angle + Math.PI / 2)
-        ctx.fillText(n.toString(), 0, 0)
-        ctx.restore()
-      }
-
-      // ───────────────────────────────────────────────
-      // 3. Render Hands (Opacity 0.7)
-      // ───────────────────────────────────────────────
-      const drawHand = (lenX, lenY, thick, ang) => {
-        const x = cx + Math.cos(ang) * lenX
-        const y = cy + Math.sin(ang) * lenY
-        const p = getPixel(x, y, w, data)
-
-        ctx.save()
-        ctx.globalAlpha = 0.7
-        ctx.strokeStyle = `rgb(${255 - p.r},${255 - p.g},${255 - p.b})`
-        ctx.lineWidth = Math.max(1, Math.min(radiusX, radiusY) * thick)
-        ctx.lineCap = 'round'
-        ctx.beginPath()
-        ctx.moveTo(cx, cy)
-        ctx.lineTo(x, y)
-        ctx.stroke()
-        ctx.restore()
-      }
-
-      // Hour Hand
-      drawHand(radiusX * 0.3, radiusY * 0.46, 0.04, (hr * Math.PI) / 6 - Math.PI / 2)
-      // Minute Hand
-      drawHand(radiusX * 0.8, radiusY * 1.0, 0.025, (min * Math.PI) / 30 - Math.PI / 2)
-      // Second Hand
-      drawHand(radiusX * 1.0, radiusY * 1.4, 0.012, (sec * Math.PI) / 30 - Math.PI / 2)
-
-      // ───────────────────────────────────────────────
-      // 4. Center Dot (Solid 1.0)
-      // ───────────────────────────────────────────────
-      const center = getPixel(cx, cy, w, data)
-      ctx.fillStyle = `rgb(${255 - center.r},${255 - center.g},${255 - center.b})`
-      ctx.beginPath()
-      ctx.arc(cx, cy, Math.min(radiusX, radiusY) * 0.06, 0, Math.PI * 2)
-      ctx.fill()
-
-      animationRef.current = requestAnimationFrame(draw)
-    }
-
-    // Start video and drawing
-    video.play().catch(() => {})
-    draw()
+    const font = new FontFace(FONT_FAMILY, `url(${fontFile})`);
+    font
+      .load()
+      .then((loadedFont) => {
+        document.fonts.add(loadedFont);
+        setFontLoaded(true);
+      })
+      .catch((err) => console.error('Custom font failed to load:', err));
 
     return () => {
-      cancelAnimationFrame(animationRef.current)
-      window.removeEventListener('resize', resizeCanvas)
-      window.removeEventListener('orientationchange', resizeCanvas)
+      // Optional: try to remove font on unmount (not always necessary)
+      document.fonts.delete(font);
+    };
+  }, []);
+
+  const getInvertedColor = useCallback((ctx, x, y) => {
+    if (x < 0 || x >= ctx.canvas.width || y < 0 || y >= ctx.canvas.height) {
+      return '#ffffff';
     }
-  }, [fontLoaded])
+    try {
+      const [r, g, b] = ctx.getImageData(Math.floor(x), Math.floor(y), 1, 1).data;
+      return `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
+    } catch (err) {
+      console.warn('getImageData failed at', x, y);
+      return '#ffffff';
+    }
+  }, []);
+
+  const drawClock = useCallback(() => {
+    const canvas = canvasRef.current;
+    const video = videoRef.current;
+    if (!canvas || !video) return;
+
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    if (!ctx) return;
+
+    const w = canvas.width;
+    const h = canvas.height;
+    const cx = w / 2;
+    const cy = h / 2;
+
+    // 1. Draw video background (cover + centered)
+    if (video.readyState >= video.HAVE_CURRENT_DATA) {
+      const vidAspect = video.videoWidth / video.videoHeight;
+      const screenAspect = w / h;
+
+      let drawW = w;
+      let drawH = h;
+
+      if (screenAspect > vidAspect) {
+        drawH = h;
+        drawW = h * vidAspect;
+      } else {
+        drawW = w;
+        drawH = w / vidAspect;
+      }
+
+      const x = (w - drawW) / 2;
+      const y = (h - drawH) / 2;
+
+      ctx.drawImage(video, x, y, drawW, drawH);
+    }
+
+    const now = new Date();
+    const seconds = now.getSeconds();
+    const minutes = now.getMinutes() + seconds / 60;
+    const hours = (now.getHours() % 12) + minutes / 60;
+
+    const baseSize = Math.min(w, h);
+    const radiusX = w * 0.45;
+    const radiusY = h * 0.08;
+
+    // 2. Draw numbers (1–12)
+    ctx.font = `${baseSize * 0.08}px "${FONT_FAMILY}"`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    for (let n = 1; n <= 12; n++) {
+      const angle = (n / 12) * Math.PI * 2 - Math.PI / 2;
+      const x = cx + Math.cos(angle) * radiusX;
+      const y = cy + Math.sin(angle) * radiusY;
+
+      ctx.fillStyle = getInvertedColor(ctx, x, y);
+      ctx.fillText(String(n), x, y);
+    }
+
+    // 3. Draw clock hands
+    const drawHand = (
+      lengthRatio,
+      thickness,
+      angleRad
+    ) => {
+      const length = baseSize * lengthRatio;
+      const targetX = cx + Math.cos(angleRad) * length;
+      const targetY = cy + Math.sin(angleRad) * length;
+
+      ctx.strokeStyle = getInvertedColor(ctx, targetX, targetY);
+      ctx.lineWidth = thickness;
+      ctx.lineCap = 'round';
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(targetX, targetY);
+      ctx.stroke();
+    };
+
+    // Hour hand
+    drawHand(0.08, 8, (hours * Math.PI) / 6 - Math.PI / 2);
+    // Minute hand
+    drawHand(0.16, 6, (minutes * Math.PI) / 30 - Math.PI / 2);
+    // Second hand
+    drawHand(0.20, 2, (seconds * Math.PI) / 30 - Math.PI / 2);
+
+    animationFrameRef.current = requestAnimationFrame(drawClock);
+  }, [fontLoaded, getInvertedColor]);
+
+  // Canvas setup + animation loop
+  useEffect(() => {
+    if (!fontLoaded) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    if (!ctx) return;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      ctx.imageSmoothingEnabled = false;
+    };
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Start video
+    const video = videoRef.current;
+    if (video) {
+      video.play().catch((e) => console.log('Autoplay prevented:', e));
+    }
+
+    // Start drawing
+    drawClock();
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      window.removeEventListener('resize', resize);
+    };
+  }, [fontLoaded, drawClock]);
 
   return (
-    <>
+    <div
+      style={{
+        backgroundColor: '#000',
+        width: '100vw',
+        height: '100vh',
+        margin: 0,
+        overflow: 'hidden',
+      }}
+    >
       <canvas
         ref={canvasRef}
         style={{
-          position: 'fixed',
-          inset: 0,
           display: 'block',
-          zIndex: 1,
-          filter: 'saturate(3.9) contrast(1.0)',
-          touchAction: 'none'
+          filter: 'saturate(3.5) contrast(1.5)',
+          imageRendering: 'pixelated', // optional – may help crispness
         }}
       />
       <video
         ref={videoRef}
         src={videoFile}
-        autoPlay
-        muted
         loop
+        muted
         playsInline
-        preload="auto"
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          objectFit: 'contain',     // helps during loading
-          zIndex: 0,
-          imageRendering: 'pixelated',
-          backgroundColor: '#000',
-          display: 'none'           // we draw it to canvas
-        }}
+        style={{ display: 'none' }}
       />
-    </>
-  )
+    </div>
+  );
 }
