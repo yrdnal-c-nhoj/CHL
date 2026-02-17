@@ -67,13 +67,13 @@ export default function PixelInverseClock() {
       // Calculate number of tiles needed to cover top and bottom
       const tilesNeeded = Math.ceil(h / drawH);
 
-      // Save context state for flip
+      // Save context state for normal orientation
       ctx.save();
       
-      // Flip 180 degrees (rotate around center of canvas)
-      ctx.translate(w / 2, h / 2);
-      ctx.rotate(Math.PI);
-      ctx.translate(-w / 2, -h / 2);
+      // No rotation - normal orientation
+      // ctx.translate(w / 2, h / 2);
+      // ctx.rotate(0);
+      // ctx.translate(-w / 2, -h / 2);
 
       for (let i = -tilesNeeded; i <= tilesNeeded; i++) {
         const yPos = centerY + i * drawH;
