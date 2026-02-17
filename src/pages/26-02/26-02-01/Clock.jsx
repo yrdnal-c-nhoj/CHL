@@ -18,16 +18,20 @@ const CLOCK_CONFIG = {
 
 /**
  * Custom Hook: useClock
- * High-precision time for smooth "sweeping" motion
+ * Uses requestAnimationFrame for a "liquid" sweep motion 
+ * (much smoother than setInterval)
  */
 const useClock = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    let frameId;
+    const update = () => {
       setTime(new Date());
-    }, 100); // Update every 100ms for smooth time display
-    return () => clearInterval(interval);
+      frameId = requestAnimationFrame(update);
+    };
+    frameId = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   return time;
@@ -47,6 +51,7 @@ const AnalogClock = () => {
   const renderedNumerals = useMemo(() => {
     const numbersToShow = [12, 3, 6, 9];
     return numbersToShow.map((num) => {
+      // Calculate position using Polar to Cartesian conversion
       const angle = (num / 12) * 2 * Math.PI;
       const x = 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angle);
       const y = 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angle);
@@ -72,18 +77,16 @@ const AnalogClock = () => {
         ...styles.container,
         opacity: fontReady ? 1 : 0,
         visibility: fontReady ? 'visible' : 'hidden',
-        transition: 'opacity 0.3s ease',
+        transition: 'opacity 0.5s ease',
       }}
     >
-      {/* FILTERED BACKGROUND LAYER 
-          By placing the filter here, it only affects the image, not the clock.
-      */}
+      {/* Background Layer */}
       <div style={{ 
         ...styles.backgroundLayer, 
         backgroundImage: `url(${analogBgImage})` 
       }} />
 
-      {/* CLOCK FACE LAYER */}
+      {/* Clock Face Layer */}
       <div style={{ 
         ...styles.face, 
         fontFamily: fontReady ? "'BorrowedAnalog', sans-serif" : 'sans-serif' 
@@ -130,18 +133,20 @@ const styles = {
   backgroundLayer: {
     position: 'absolute',
     inset: 0,
-    backgroundSize: 'cover',
+    backgroundSize: '100% 100%',
     backgroundPosition: 'center',
-    filter: 'saturate(220%) hue-rotate(-20deg) brightness(0.8) contrast(0.9)',
+    filter: 'saturate(120%) hue-rotate(-40deg) brightness(1.3) contrast(0.4)',
     zIndex: 1,
+    transform: 'rotate(180deg)',
+    pointerEvents: 'none',
   },
   face: {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '100vmin',
-    height: '100vmin',
+    width: '90vmin',
+    height: '90vmin',
     zIndex: 2,
   },
   numeralBase: {
@@ -151,8 +156,9 @@ const styles = {
     background: CLOCK_CONFIG.COLORS.silverText,
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
-    filter: 'drop-shadow(0px 1px 0px rgb(0, 0, 0))',
+    filter: 'drop-shadow(0px -4px 0px rgb(0, 0, 0))',
     opacity: 0.4,
+    userSelect: 'none',
   },
   hand: {
     position: 'absolute',
@@ -180,9 +186,21 @@ const styles = {
     width: '0.4vmin',
     height: '38vmin',
     background: CLOCK_CONFIG.COLORS.secondHand,
-    boxShadow: '0 0 12px rgba(15, 77, 248, 0.4)',
+    boxShadow: '0 0 12px rgba(90, 184, 213, 0.4)',
     zIndex: 5,
   },
+  centerDot: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: '2.5vmin',
+    height: '2.5vmin',
+    backgroundColor: '#fff',
+    borderRadius: '50%',
+    transform: 'translate(-50%, -50%)',
+    zIndex: 10,
+    boxShadow: '0 0 5px rgba(0,0,0,0.8)',
+  }
 };
 
 export default AnalogClock;
