@@ -49,7 +49,7 @@ const AnalyticsAndSEO = () => {
 const App = () => {
   return (
     <DataProvider>
-      <Router>
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <AnalyticsAndSEO />
         <Routes>
           <Route path="/" element={<Home />} />
