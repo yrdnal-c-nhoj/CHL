@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import bgImage from '../../../assets/images/25-05-07/water.webp';
+import bgImage from '../../../assets/images/25-05/25-05-07/water.webp';
 
 const Clock = () => {
   const requestRef = useRef();

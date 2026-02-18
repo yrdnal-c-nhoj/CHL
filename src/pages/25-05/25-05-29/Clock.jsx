@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import gearsGif from "../../../assets/images/25-05-29/gears-13950_128.gif";
+import gearsGif from "../../../assets/images/25-05/25-05-29/gears-13950_128.gif";
 import watchWoff2 from "../../../assets/fonts/25-05-29-watch.woff2";
 import watchTtf from "../../../assets/fonts/25-05-29-watch.ttf";
 

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 // Import your images as before
-import scorpImage from '../../../assets/images/25-05-02/sand.webp';
-import hourHandImage from '../../../assets/images/25-05-02/giphy1-ezgif.com-rotate(1).gif';
-import minuteHandImage from '../../../assets/images/25-05-02/giphy1-ezgif.com-rotate(2).gif';
-import secondHandImage from '../../../assets/images/25-05-02/giphy1-ezgif.com-rotate(3).gif';
+import scorpImage from '../../../assets/images/25-05/25-05-02/sand.webp';
+import hourHandImage from '../../../assets/images/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif';
+import minuteHandImage from '../../../assets/images/25-05/25-05-02/giphy1-ezgif.com-rotate(2).gif';
+import secondHandImage from '../../../assets/images/25-05/25-05-02/giphy1-ezgif.com-rotate(3).gif';
 import fontFile from '../../../assets/fonts/25-05-02-scorp.ttf';
 
 // Generate unique font name once, outside the component
