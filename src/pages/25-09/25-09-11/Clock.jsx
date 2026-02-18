@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 import medievalFont from '../../../assets/fonts/25-09-11-ren.ttf';
-import backgroundImage from '../../../assets/images/25-09-11/ren.jpg';
-import MedievalSVG from '../../../assets/images/25-09-11/MedievalSVG.jsx';
+import backgroundImage from '../../../assets/images/25-09/25-09-11/ren.jpg';
+import MedievalSVG from '../../../assets/images/25-09/25-09-11/MedievalSVG.jsx';
 
 const MedievalBanner = () => {
   const [time, setTime] = useState(new Date());
