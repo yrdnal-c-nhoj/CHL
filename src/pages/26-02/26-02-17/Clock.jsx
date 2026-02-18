@@ -265,7 +265,7 @@ const AsteriskClock = () => {
                   top: `${y}%`,
                   transform: 'translate(-50%, -50%)',
                   fontFamily: 'AsteriskFont2',
-                  fontSize: 'clamp(3rem, 15vw, 8rem)',
+                  fontSize: 'clamp(3rem, 15vh, 8rem)',
                   color: '#1C1C19',
                   textShadow: '2px 2px 0px #FBEF05',
                   userSelect: 'none'
