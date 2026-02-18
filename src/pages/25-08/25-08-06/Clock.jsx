@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import orbitronFont from '../../../assets/fonts/25-08-06-laika.ttf'; // Yourquo vadis
-import featuredImage from '../../../assets/images/25-08-06/Laika.jpeg'; // Your local image file
+import laikaFont from '../../../assets/fonts/25-08-06-laika.ttf'; // Yourquo vadis
+import featuredImage from '../../../assets/images/25-08/25-08-06/Laika.jpeg'; // Your local image file
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
@@ -32,7 +32,7 @@ const DigitalClock = () => {
       height: '100dvh',
       width: '100vw',
       backgroundColor: '#111010FF',
-      fontFamily: `'Orbitron', monospace`,
+      fontFamily: `'laika', monospace`,
       color: '#ff0000',
     },
     imageContainer: {
@@ -78,9 +78,16 @@ const DigitalClock = () => {
     <>
       <style>{`
         @font-face {
-          font-family: 'Orbitron';
-          src: url(${orbitronFont}) format('truetype');
+          font-family: 'laika';
+          src: url(${laikaFont}) format('truetype');
           font-weight: 400;
+          font-style: normal;
+          font-display: swap;
+        }
+        @font-face {
+          font-family: 'laika';
+          src: url(${laikaFont}) format('truetype');
+          font-weight: 900;
           font-style: normal;
           font-display: swap;
         }
