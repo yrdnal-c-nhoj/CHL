@@ -3,7 +3,7 @@ import { useFontLoader } from '../../../utils/fontLoader';
 
 // --- Assets ---
 import dripFont from '../../../assets/fonts/26-01-31-cond.ttf?url';
-import analogBgImage from '../../../assets/images/26-02-01/rain.webp';
+import analogBgImage from '../../../assets/images/26-02/26-02-01/rain.webp';
 
 // --- Configuration ---
 const CLOCK_CONFIG = {

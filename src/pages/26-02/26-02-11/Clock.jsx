@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
 
 // --- Assets ---
-import bellImage2 from '../../../assets/images/26-02-11/bell.webp';
-import bellImage1 from '../../../assets/images/26-02-11/bell.gif';
+import bellImage2 from '../../../assets/images/26-02/26-02-11/bell.webp';
+import bellImage1 from '../../../assets/images/26-02/26-02-11/bell.gif';
 
 // --- Constants ---
 const CLOCK_CONFIG = {

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
 
 // --- Assets ---
-import mazeImage from '../../../assets/images/26-02-16/puzzle.gif';
-import loopVideo from '../../../assets/images/26-02-16/loop.mp4';
+import mazeImage from '../../../assets/images/26-02/26-02-16/puzzle.gif';
+import loopVideo from '../../../assets/images/26-02/26-02-16/loop.mp4';
 import mazeFont from '../../../assets/fonts/26-02-16-maze.ttf';
 
 // --- Configuration ---

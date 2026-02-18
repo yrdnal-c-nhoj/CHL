@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import videoFile from '../../../assets/images/26-02-15/caldera.mp4';
+import videoFile from '../../../assets/images/26-02/26-02-15/caldera.mp4';
 import fontFile from '../../../assets/fonts/26-02-15-fire.ttf';
 
 const FONT_FAMILY = 'MyClockFont_20251120';

@@ -3,10 +3,10 @@ import { useFontLoader } from "../../../utils/fontLoader";
 
 // Asset Imports (keeping your existing imports)
 import digitalFontUrl from '../../../assets/fonts/26-02-12-disco.otf';
-import digitalBgImage from '../../../assets/images/26-02-12/lit.webp';
-import extraBg1 from '../../../assets/images/26-02-12/light.webp';
-import extraBg2 from '../../../assets/images/26-02-12/li.gif';
-import extraBg3 from '../../../assets/images/26-02-12/ball.webp';
+import digitalBgImage from '../../../assets/images/26-02/26-02-12/lit.webp';
+import extraBg1 from '../../../assets/images/26-02/26-02-12/light.webp';
+import extraBg2 from '../../../assets/images/26-02/26-02-12/li.gif';
+import extraBg3 from '../../../assets/images/26-02/26-02-12/ball.webp';
 
 const DISCO_COLORS = [
   '#FF00FF', // Neon Magenta
