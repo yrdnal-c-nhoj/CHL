@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 // 🎯 Import the background image
-import backgroundImageURL from "../../../assets/images/25-11-13/bg.webp"; 
+import backgroundImageURL from "../../../assets/images/25-11/25-11-13/bg.webp"; 
 
 // A unique ID generator for each rolling clock
 let nextId = 0;

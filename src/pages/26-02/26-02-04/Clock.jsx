@@ -3,8 +3,8 @@ import { useFontLoader } from '../../../utils/fontLoader';
 
 // Assets
 import digitalFontUrl from '../../../assets/fonts/26-02-04-trans.ttf';
-import digitalBgImage from '../../../assets/images/26-02-04/trans.webp';
-import backgroundImage from '../../../assets/images/26-02-04/tran.jpg';
+import digitalBgImage from '../../../assets/images/26-02/26-02-04/trans.webp';
+import backgroundImage from '../../../assets/images/26-02/26-02-04/tran.jpg';
 
 const CONFIG = {
   use24Hour: false,
