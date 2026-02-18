@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 import treeFont from '../../../assets/fonts/25-06-05-tree.ttf';
-import tree1Img from '../../../assets/images/25-06-05/tree1.webp';
-import tree2Img from '../../../assets/images/25-06-05/tree2.webp';
+import tree1Img from '../../../assets/images/25-06/25-06-05/tree1.webp';
+import tree2Img from '../../../assets/images/25-06/25-06-05/tree2.webp';
 
 const TreehouseClock = () => {
   const [time, setTime] = useState(new Date());
