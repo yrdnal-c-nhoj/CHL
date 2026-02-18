@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 
-import overlayImg from "../../../assets/images/25-04-05/gfccc.gif";
-import hourHandSource from "../../../assets/images/25-04-05/gr4.gif";
-import secondHandSource from "../../../assets/images/25-04-05/gr5.gif";
-import minuteHandSource from "../../../assets/images/25-04-05/gr99.webp";
+import overlayImg from '../../../assets/images/25-04/25-04-05/gfccc.gif';
+import hourHandSource from '../../../assets/images/25-04/25-04-05/gr4.gif';
+import secondHandSource from '../../../assets/images/25-04/25-04-05/gr5.gif';
+import minuteHandSource from '../../../assets/images/25-04/25-04-05/gr99.webp';
 
 // --- Clock Logic Functions (Unchanged) ---
 const getHourRotation = (date) => {
