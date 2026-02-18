@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
-import backgroundImage from '../../../assets/images/25-04-25/bad.webp';
+import backgroundImage from '../../../assets/images/25-04/25-04-25/bad.webp';
 import boldFont from '../../../assets/fonts/25-04-25-Oswald-Bold.ttf';
-import hourHandImage from '../../../assets/images/25-04-25/ban.webp';
-import minuteHandImage from '../../../assets/images/25-04-25/ba.gif';
-import secondHandImage from '../../../assets/images/25-04-25/band.gif';
+import hourHandImage from '../../../assets/images/25-04/25-04-25/ban.webp';
+import minuteHandImage from '../../../assets/images/25-04/25-04-25/ba.gif';
+import secondHandImage from '../../../assets/images/25-04/25-04-25/band.gif';
 
 const MyClock = () => {
   const canvasRef = useRef(null);

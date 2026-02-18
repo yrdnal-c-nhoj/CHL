@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
-import spr from '../../../assets/images/25-05-26/spr.gif';
-import sprou from '../../../assets/images/25-05-26/sprou.gif';
-import sprout from '../../../assets/images/25-05-26/sprout.gif';
+import spr from '../../../assets/images/25-05/25-05-26/spr.gif';
+import sprou from '../../../assets/images/25-05/25-05-26/sprou.gif';
+import sprout from '../../../assets/images/25-05/25-05-26/sprout.gif';
 import sproutFontWoff2 from '../../../assets/fonts/25-05-26-sprout.woff2';
 import sproutFontTtf from '../../../assets/fonts/25-05-26-sprout.ttf';
 
