@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useFontLoader } from '../../../utils/fontLoader';
 
 // Local images
-import bgImage from "../../../assets/images/25-09-10/bg.webp";
-import hourHand from "../../../assets/images/25-09-10/hour.gif";
-import minuteHand from "../../../assets/images/25-09-10/min.gif";
-import secondHand from "../../../assets/images/25-09-10/sec.gif";
+import bgImage from "../../../assets/images/25-09/25-09-10/bg.webp";
+import hourHand from "../../../assets/images/25-09/25-09-10/hour.gif";
+import minuteHand from "../../../assets/images/25-09/25-09-10/min.gif";
+import secondHand from "../../../assets/images/25-09/25-09-10/sec.gif";
 
 // Local font
 import customLavaFont from '../../../assets/fonts/25-09-10-lava.otf?url';
