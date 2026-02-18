@@ -4,7 +4,7 @@ import { useFontLoader } from '../../../utils/fontLoader';
 import font_2025_12_06 from '../../../assets/fonts/25-12-05-magic.ttf?url'; // This path is correct as it's relative to the public directory
 
 // Import background image
-import bgImage from '../../../assets/images/25-12-05/magic.webp'
+import bgImage from '../../../assets/images/25-12/25-12-05/magic.webp'
 
 export default function BoxedDigitalClock () {
   const [time, setTime] = useState(new Date())

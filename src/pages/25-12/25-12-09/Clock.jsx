@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import bgImage from '../../../assets/images/25-12-09/muybridge.webp'
+import bgImage from '../../../assets/images/25-12/25-12-09/muybridge.webp'
 import customFont_2025_1210 from '../../../assets/fonts/25-12-09-muy.ttf?url';
 import { useFontLoader } from '../../../utils/fontLoader';
 

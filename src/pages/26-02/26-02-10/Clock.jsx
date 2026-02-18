@@ -3,7 +3,7 @@ import { useFontLoader } from '../../../utils/fontLoader';
 
 // --- Assets ---
 import teeVeeLoungeFont from '../../../assets/fonts/26-02-10-tv.ttf?url';
-import analogBgImage from '../../../assets/images/26-02-10/tv.jpg';
+import analogBgImage from '../../../assets/images/26-02/26-02-10/tv.jpg';
 
 // --- Configuration ---
 const CLOCK_CONFIG = {
