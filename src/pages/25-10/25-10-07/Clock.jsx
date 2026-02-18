@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useFontLoader } from '../../../utils/fontLoader';
 // === Local assets ===
-import backgroundVideo from '../../../assets/images/25-10-07/big.mp4'
-import fallbackGif from '../../../assets/images/25-10-07/big.webp'
+import backgroundVideo from '../../../assets/images/25-10/25-10-07/big.mp4'
+import fallbackGif from '../../../assets/images/25-10/25-10-07/big.webp'
 import O251007font from '../../../assets/fonts/25-10-07-str.ttf';
 
 export default function ImageAnalogClock () {
