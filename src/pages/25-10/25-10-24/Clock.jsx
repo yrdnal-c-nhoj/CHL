@@ -11,7 +11,7 @@ export default function VictorianEsperantoClock() {
   const [videoFailed, setVideoFailed] = useState(false);
   const [time, setTime] = useState(new Date());
   const textAndOrnamentColor = "#110116FF";
-  const textAndOrnamentShadow = "-1px 1px 0px #F1E7D8FF";
+  const textAndOrnamentShadow = "-1px 1px 0px #F9EBD8";
 
   // Capitalization helper
   const capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
