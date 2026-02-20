@@ -121,7 +121,7 @@ const ImageDisplay = () => {
         }
 
         /* DESKTOP OVERRIDES */
-        @media (min-width: 1024px) {
+        @media (min-width: 600px) {
           .main-container {
             flex-direction: row;
             justify-content: space-between;
