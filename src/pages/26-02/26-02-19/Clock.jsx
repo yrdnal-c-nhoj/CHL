@@ -98,7 +98,7 @@ const ImageDisplay = () => {
 
         /* ANALOG SECTION */
         .analog-section {
-          margin-top: 15vh;
+          margin-top: 6vh;
           perspective: 1200px;
           display: flex;
           justify-content: center;
@@ -121,7 +121,7 @@ const ImageDisplay = () => {
         }
 
         /* DESKTOP OVERRIDES */
-        @media (min-width: 768px) {
+        @media (min-width: 1024px) {
           .main-container {
             flex-direction: row;
             justify-content: space-between;
