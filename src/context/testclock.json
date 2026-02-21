@@ -316,10 +316,14 @@
   { "path": "26-02-12", "date": "26-02-12", "title": "Extended Mix" }, 
   { "path": "26-02-13", "date": "26-02-13", "title": "Words" },
   { "path": "26-02-14", "date": "26-02-14", "title": "Concourse" },
-  { "path": "26-02-15", "date": "26-02-15", "title": "xxx" },
-  { "path": "26-02-16", "date": "26-02-16", "title": "xxx" },
-  { "path": "26-02-17", "date": "26-02-17", "title": "xxx" },
-  { "path": "26-02-18", "date": "26-02-18", "title": "xxx" },
-  { "path": "26-02-19", "date": "26-02-19", "title": "xxx" },
-  { "path": "26-02-20", "date": "26-02-20", "title": "xxx" }
+  { "path": "26-02-15", "date": "26-02-15", "title": "Caldera" },
+  { "path": "26-02-16", "date": "26-02-16", "title": "Maze" },
+  { "path": "26-02-17", "date": "26-02-17", "title": "Asterisk" },        
+  { "path": "26-02-18", "date": "26-02-18", "title": "Jellyfish" },
+  { "path": "26-02-19", "date": "26-02-19", "title": "Sachplakat" },
+  { "path": "26-02-20", "date": "26-02-20", "title": "x" },
+  { "path": "26-02-21", "date": "26-02-21", "title": "x" },
+  { "path": "26-02-22", "date": "26-02-22", "title": "Polaris" },
+  { "path": "26-02-23", "date": "26-02-23", "title": "Mars" },
+  { "path": "26-02-24", "date": "26-02-24", "title": "Eye Color" }
 ]
