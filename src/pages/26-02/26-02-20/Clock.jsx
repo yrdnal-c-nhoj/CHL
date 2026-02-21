@@ -96,14 +96,23 @@ export default function ClockTemplate() {
     
     window.addEventListener('resize', checkMobile);
     
+    // Preload font to prevent FOUC
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Vast+Shadow&display=swap';
     link.rel = 'stylesheet';
+    link.media = 'print'; // Initially hide to prevent FOUC
     document.head.appendChild(link);
+    
+    // Trigger font loading after a short delay
+    setTimeout(() => {
+      link.media = 'all';
+    }, 0);
     
     return () => {
       window.removeEventListener('resize', checkMobile);
-      document.head.removeChild(link);
+      if (document.head.contains(link)) {
+        document.head.removeChild(link);
+      }
     };
   }, []);
 
@@ -131,6 +140,8 @@ export default function ClockTemplate() {
     overflow: 'hidden',
     opacity: isReady ? 1 : 0,
     transition: 'opacity 0.4s ease',
+    // Prevent FOUC
+    visibility: isReady ? 'visible' : 'hidden',
   };
 
   const topImageStyle = {
@@ -181,9 +192,17 @@ export default function ClockTemplate() {
   ========================= */
   if (!isReady) {
     return (
-      <div style={{ ...containerStyle, opacity: 1, backgroundColor: '#000', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div style={{ 
+        ...containerStyle, 
+        opacity: 1, 
+        visibility: 'visible',
+        backgroundColor: '#000', 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+      }}>
         <div style={{ color: '#444', fontSize: '3rem', fontFamily: 'monospace' }}>
- 
+          Loading...
         </div>
       </div>
     );
