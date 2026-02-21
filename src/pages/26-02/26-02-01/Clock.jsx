@@ -129,6 +129,10 @@ const styles = {
     height: '100dvh',
     overflow: 'hidden',
     backgroundColor: '#050505',
+    // Superior FOUC prevention from 26-02-18
+    opacity: fontReady ? 1 : 0,
+    transition: 'opacity 0.3s ease-in-out',
+    visibility: fontReady ? 'visible' : 'hidden',
   },
   backgroundLayer: {
     position: 'absolute',
