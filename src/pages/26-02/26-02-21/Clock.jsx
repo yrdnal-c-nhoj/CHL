@@ -105,8 +105,10 @@ export default function RefactoredClock() {
 
   // 3. Time Formatting
   const timeStrings = useMemo(() => {
-    const h = time.getHours().toString().padStart(2, '0');
-    const m = time.getMinutes().toString().padStart(2, '0');
+    const hours24 = time.getHours();
+    const hours12 = hours24 % 12 || 12; // Convert to 12-hour format
+    const h = hours12.toString(); // No leading zeros
+    const m = time.getMinutes().toString().padStart(2, '0'); // Keep leading zeros for minutes
     return { h, m };
   }, [time]);
 
