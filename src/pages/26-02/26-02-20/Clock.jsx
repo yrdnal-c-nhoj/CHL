@@ -96,7 +96,7 @@ export default function ClockTemplate() {
     
     window.addEventListener('resize', checkMobile);
     
-    // Preload font to prevent FOUC
+    // Preload font to prevent FOUC - Better approach
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Vast+Shadow&display=swap';
     link.rel = 'stylesheet';
@@ -132,15 +132,17 @@ export default function ClockTemplate() {
   const containerStyle = {
     width: '100vw',
     height: '100dvh',
+    minHeight: '100dvh',
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#000',
     margin: 0,
     padding: 0,
+    boxSizing: 'border-box',
     overflow: 'hidden',
+    // Superior FOUC prevention from 26-02-18 - Simple & Effective
     opacity: isReady ? 1 : 0,
-    transition: 'opacity 0.4s ease',
-    // Prevent FOUC
+    transition: 'opacity 0.3s ease-in-out',
     visibility: isReady ? 'visible' : 'hidden',
   };
 
