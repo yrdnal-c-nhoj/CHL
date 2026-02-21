@@ -69,18 +69,20 @@ const DigitalClockTemplate = () => {
   // ────────────────────────────────────────────────
 
   const containerStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    position: 'fixed',
+    inset: 0,
     width: '100vw',
     height: '100dvh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     overflow: 'hidden',
-    position: 'relative',
+    // Superior FOUC prevention from 26-02-18
     opacity: fontReady ? 1 : 0,
-    visibility: fontReady ? 'visible' : 'hidden',
     transition: 'opacity 0.3s ease',
+    visibility: fontReady ? 'visible' : 'hidden',
   };
-const bgBaseStyle = {
+  const bgBaseStyle = {
     position: 'absolute',
     top: 0,
     left: 0,

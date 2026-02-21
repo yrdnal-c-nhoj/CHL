@@ -67,9 +67,9 @@ const InvertedClock = () => {
     display: 'flex',        // Added for layout centering
     alignItems: 'center',    // Centers vertically
     justifyContent: 'center', // Centers horizontally
-    opacity: fontReady && bgReady ? 1 : 0,
-    visibility: fontReady && bgReady ? 'visible' : 'hidden',
-    transition: 'opacity 0.35s ease',
+    opacity: isReady ? 1 : 0,
+    transition: 'opacity 0.3s ease-in-out',
+    visibility: isReady ? 'visible' : 'hidden',
   };
 
   const bgMediaStyle = {

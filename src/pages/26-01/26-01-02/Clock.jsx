@@ -54,14 +54,14 @@ const StretchedClock = () => {
     width: '100vw',
     height: '100dvh',
     display: 'flex',
-    flexDirection: isLargeScreen ? 'row' : 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
     overflow: 'hidden',
-    margin: 0,
     padding: 0,
     backgroundColor: '#C9C7AF',
     opacity: fontReady && bgReady ? 1 : 0,
-    visibility: fontReady && bgReady ? 'visible' : 'hidden',
     transition: 'opacity 0.35s ease',
+    visibility: fontReady && bgReady ? 'visible' : 'hidden',
   };
 
   const segmentStyle = {
