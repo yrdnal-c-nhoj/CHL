@@ -153,12 +153,11 @@ export default function ClockTemplate() {
     flexShrink: 0,
   };
 
-  const redLineStyle = {
+  const combinedStripeStyle = {
     width: '100%',
-    // Expand stripe height on mobile, keep 60px on laptop
-    height: isMobile ? 'auto' : '60px',
+    height: isMobile ? 'auto' : '60px', // Full height for combined stripe
     padding: isMobile ? '1.5rem 0' : '0',
-    backgroundColor: '#66023C',
+    background: `linear-gradient(to bottom, #66023C 50%, #18368E 50%)`, // Blue union on top, red on bottom
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -215,8 +214,8 @@ export default function ClockTemplate() {
       {/* Top decorative image */}
       <img src={topImage} alt="" style={topImageStyle} />
 
-      {/* Red bar + clock */}
-      <div style={redLineStyle}>
+      {/* Combined blue union + red stripe with clock on top */}
+      <div style={combinedStripeStyle}>
         <div style={clockRowStyle}>
           {/* Text broken into three parts for column stacking */}
           <span>{spelledHours} HORAE</span>
