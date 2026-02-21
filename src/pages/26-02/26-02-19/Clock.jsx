@@ -78,8 +78,8 @@ const ImageDisplay = () => {
           /* 24vw ensures 4 digits + gaps stay within 100vw */
           font-size: 24vw; 
           color: #ACA99F;
-          text-shadow: 0.6vw 0px 0px #B67423, -0.6vw 0px 0px #B67423, 
-                       0px 0.6vw 0px #B67423, 0px -0.6vw 0px #B67423;
+          text-shadow: 0.9vw 0px 0px #B67423, -0.9vw 0px 0px #B67423, 
+                       0px 0.9vw 0px #B67423, 0px -0.9vw 0px #B67423;
           line-height: 1.9;
           text-align: center;
           flex: 1; /* Allows digits to grow into available space */
@@ -89,8 +89,8 @@ const ImageDisplay = () => {
           font-family: 'PlatFont', sans-serif;
           font-size: 18vw; /* Smaller than digits */
           color: #ACA99F;
-          text-shadow: 0.6vw 0px 0px #B67423, -0.6vw 0px 0px #B67423, 
-                       0px 0.6vw 0px #B67423, 0px -0.6vw 0px #B67423;
+          text-shadow: 0.9vw 0px 0px #B67423, -0.9vw 0px 0px #B67423, 
+                       0px 0.9vw 0px #B67423, 0px -0.9vw 0px #B67423;
           align-self: flex-start;
           margin-left: 5vw; /* Flush left relative to the digits */
           margin-top: -1vh;
@@ -109,15 +109,15 @@ const ImageDisplay = () => {
           width: 35vh;
           height: 35vh;
           border-radius: 50%;
-          backgroundColor: #F7F5E8;
-          border: 1.5vh solid #C7BA59;
+          backgroundColor: #FFFEFA;
+          border: 1.5vh solid #EAD534;
           position: relative;
           display: flex;
           justify-content: center;
           align-items: center;
-          transform: rotateX(-25deg) rotateY(-20deg);
+          transform: rotateX(-25deg) rotateY(40deg);
           transform-style: preserve-3d;
-          box-shadow: 20px 20px 50px rgba(0,0,0,0.3);
+          // box-shadow: 20px 20px 50px rgba(0,0,0,0.3);
         }
 
         /* DESKTOP OVERRIDES */
