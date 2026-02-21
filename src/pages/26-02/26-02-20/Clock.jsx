@@ -25,7 +25,7 @@ const getTimeDigits = (date) => {
   const seconds = formatTime(date.getSeconds());
   const isPM = hours24 >= 12;
   return {
-    hours: formatTime(hours12),
+    hours: hours12.toString(), // No leading zeros for hours
     minutes,
     seconds,
     isPM,
