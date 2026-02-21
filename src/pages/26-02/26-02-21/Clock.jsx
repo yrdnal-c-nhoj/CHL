@@ -122,6 +122,9 @@ export default function RefactoredClock() {
     position: 'relative',
     color: '#fff',
     fontFamily: fontLoaded ? `'${CONFIG.FONT_FAMILY}', sans-serif` : 'sans-serif',
+    opacity: fontLoaded ? 1 : 0,
+    transition: 'opacity 0.4s ease',
+    visibility: fontLoaded ? 'visible' : 'hidden',
   };
 
   const digitGroupStyle = {
