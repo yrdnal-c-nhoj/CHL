@@ -1,299 +1,127 @@
-/** @jsxImportSource react */
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 
-/* =========================
-   CONFIGURATION
-========================= */
+// Asset imports
+import backgroundUrl from '../../../assets/images/26-01/26-01-22/1974.jpg';
+import digitTextureUrl from '../../../assets/images/26-01/26-01-22/liq.webp';
+import fontUrl from '../../../assets/fonts/26-01-22-1974.ttf';
 
-const UPDATE_INTERVAL = 1000; // Update frequency in ms
-const FONT_LOAD_TIMEOUT = 2000; // Font loading timeout in ms
+const FONT_FAMILY = '1974';
 
-/* =========================
-   ASSETS (Update paths as needed)
-========================= */
+const DynamicClock = () => {
+  const [isReady, setIsReady] = useState(false);
+  const [time, setTime] = useState(new Date());
 
-// Uncomment and update paths for your assets
-import backgroundImage from '../../../assets/images/your-folder/your-image.webp';
-// import customFont from '../../../assets/fonts/your-font.ttf';
-
-/* =========================
-   UTILITY FUNCTIONS
-========================= */
-
-const formatTime = (num) => num.toString().padStart(2, '0');
-
-const getTimeDigits = (date) => {
-  const hours = formatTime(date.getHours());
-  const minutes = formatTime(date.getMinutes());
-  const seconds = formatTime(date.getSeconds());
-  return { hours, minutes, seconds };
-};
-
-/* =========================
-   CUSTOM HOOKS
-========================= */
-
-function useClock(updateInterval = UPDATE_INTERVAL) {
-  const [time, setTime] = useState(() => new Date());
-
+  // Update time every second
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, updateInterval);
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
-    return () => clearInterval(interval);
-  }, [updateInterval]);
-
-  return time;
-}
-
-function useFontLoader(fontUrl, fontName = 'CustomClockFont') {
-  const [isFontReady, setIsFontReady] = useState(false);
-  const fontLoadTimeoutRef = useRef(null);
-
-  useEffect(() => {
+  // Load font + background image
+  useLayoutEffect(() => {
     let mounted = true;
 
-    const loadFont = async () => {
+    const loadAssets = async () => {
+      const fontFace = new FontFace(FONT_FAMILY, `url(${fontUrl})`);
+      document.fonts.add(fontFace);
+
       try {
-        // Create font face
-        const font = new FontFace(fontName, `url(${fontUrl})`);
-        await font.load();
-        
-        if (!mounted) return;
-        
-        document.fonts.add(font);
-        await document.fonts.load(`1rem "${fontName}"`);
-        
-        if (mounted) setIsFontReady(true);
-      } catch (error) {
-        console.warn(`Failed to load font ${fontName}:`, error);
-        if (mounted) setIsFontReady(true); // Continue without custom font
+        await Promise.all([
+          fontFace.load(),
+          new Promise((resolve) => {
+            const img = new Image();
+            img.src = backgroundUrl;
+            img.onload = resolve;
+            img.onerror = resolve;
+          }),
+        ]);
+        if (mounted) setIsReady(true);
+      } catch (err) {
+        console.error('Asset loading failed:', err);
+        if (mounted) setIsReady(true);
       }
     };
 
-    if (fontUrl) {
-      loadFont();
-      
-      // Fallback timeout
-      fontLoadTimeoutRef.current = setTimeout(() => {
-        if (mounted) setIsFontReady(true);
-      }, FONT_LOAD_TIMEOUT);
-    } else {
-      setIsFontReady(true); // No font to load
-    }
+    loadAssets();
 
-    return () => {
-      mounted = false;
-      if (fontLoadTimeoutRef.current) {
-        clearTimeout(fontLoadTimeoutRef.current);
-      }
-    };
-  }, [fontUrl, fontName]);
+    return () => { mounted = false; };
+  }, []);
 
-  return isFontReady;
-}
+  if (!isReady) return null;
 
-function useImagePreload(imageUrl) {
-  const [isImageReady, setIsImageReady] = useState(false);
-  const imageLoadTimeoutRef = useRef(null);
+  const timeString = [
+    time.getHours(),
+    time.getMinutes(),
+    time.getSeconds(),
+  ].map((n) => n.toString().padStart(2, '0')).join('');
 
-  useEffect(() => {
-    if (!imageUrl) {
-      setIsImageReady(true);
-      return;
-    }
-
-    let mounted = true;
-    const img = new Image();
-
-    const handleLoad = () => {
-      if (mounted) setIsImageReady(true);
-    };
-
-    const handleError = () => {
-      console.warn(`Failed to load image: ${imageUrl}`);
-      if (mounted) setIsImageReady(true);
-    };
-
-    img.onload = handleLoad;
-    img.onerror = handleError;
-    img.src = imageUrl;
-
-    // Fallback timeout
-    imageLoadTimeoutRef.current = setTimeout(() => {
-      if (mounted) setIsImageReady(true);
-    }, FONT_LOAD_TIMEOUT);
-
-    return () => {
-      mounted = false;
-      if (imageLoadTimeoutRef.current) {
-        clearTimeout(imageLoadTimeoutRef.current);
-      }
-    };
-  }, [imageUrl]);
-
-  return isImageReady;
-}
-
-/* =========================
-   MAIN COMPONENT
-========================= */
-
-export default function ClockTemplate() {
-  const time = useClock();
-  
-  // Uncomment and update for your assets
-  // const isFontReady = useFontLoader(customFont, 'TemplateFont');
-  // const isImageReady = useImagePreload(backgroundImage);
-  
-  const isFontReady = true; // Set to true when not using custom fonts
-  const isImageReady = true; // Set to true when not using background images
-  
-  const { hours, minutes, seconds } = useMemo(() => getTimeDigits(time), [time]);
-  const isReady = isFontReady && isImageReady;
-
-  /* =========================
-     STYLES
-  ========================= */
+  // ────────────────────────────────────────────────
+  // Styles
+  // ────────────────────────────────────────────────
 
   const containerStyle = {
     width: '100vw',
     height: '100dvh',
-    minHeight: '100dvh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000', // Update as needed
-    // Uncomment for background image
-    // backgroundImage: `url(${backgroundImage})`,
-    // backgroundSize: 'cover',
-    // backgroundPosition: 'center',
-    margin: 0,
-    padding: 0,
-    boxSizing: 'border-box',
-    opacity: isReady ? 1 : 0,
-    transition: 'opacity 0.3s ease-in-out',
+    backgroundImage: `url(${backgroundUrl})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    filter: 'contrast(0.7) brightness(1.15)',
+    fontFamily: `'${FONT_FAMILY}', sans-serif`,
   };
 
-  const clockContainerStyle = {
+  const digitsRowStyle = {
     display: 'flex',
-    gap: '0.5rem',
+    justifyContent: 'center',
     alignItems: 'center',
-    // fontFamily: isFontReady ? "'TemplateFont', sans-serif" : 'sans-serif', // Uncomment for custom font
-    fontFamily: 'monospace',
+    gap: 'clamp(1.0vw, 2vw, 4vw)',   // space between boxes
+    padding: '0 2vw',
+    width: '100%',
+    maxWidth: '99vw',
+    marginTop: '-65vh',
+  };
+
+  const digitBoxStyle = {
+    width: 'clamp(22vw, 22vw, 222px)',     // fixed width — biggest factor in preventing jump
+    height: 'clamp(29vw, 29vw, 340px)',    // fixed height
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',     
+    overflow: 'hidden',                    // keeps content insideoptional depth
   };
 
   const digitStyle = {
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: 'clamp(4rem, 15vw, 12rem)', // Responsive font size
-    color: '#fff', // Update as needed
-    textShadow: '0 0 1rem rgba(0,0,0,0.8)',
-    minWidth: '0.8em',
-    lineHeight: 1,
+    fontSize: 'clamp(20vw, 26vw, 260px)',  // large enough to mostly fill the box
+    // fontWeight: 'bold',
+    lineHeight: '1',
+    backgroundImage: `url(${digitTextureUrl})`,
+    backgroundSize: '180% 180%',
+    backgroundPosition: 'center',
+    backgroundClip: 'text',
+    WebkitBackgroundClip: 'text',
+    color: 'transparent',
+    WebkitTextFillColor: 'transparent',
+    filter: 'contrast(2.2) brightness(1.1)',
+    // WebkitTextStroke: '1.5px rgba(255, 255, 255, 0.5)',
+    userSelect: 'none',
+    textAlign: 'center',
   };
-
-  const separatorStyle = {
-    ...digitStyle,
-    fontSize: 'clamp(3rem, 12vw, 10rem)',
-    opacity: 0.8,
-  };
-
-  /* =========================
-     LOADING STATE
-  ========================= */
-
-  if (!isReady) {
-    return (
-      <div style={{
-        ...containerStyle,
-        opacity: 1,
-        backgroundColor: '#000',
-      }}>
-        <div style={{ ...digitStyle, color: '#333' }}>
-          00:00:00
-        </div>
-      </div>
-    );
-  }
-
-  /* =========================
-     RENDER
-  ========================= */
 
   return (
     <div style={containerStyle}>
-      {/* Uncomment for font loading */}
-      {/* <style>{`
-        @font-face {
-          font-family: 'TemplateFont';
-          src: url(${customFont}) format('truetype');
-          font-weight: normal;
-          font-style: normal;
-          font-display: swap;
-        }
-      `}</style> */}
-      
-      <div style={clockContainerStyle}>
-        <span style={digitStyle}>{hours[0]}</span>
-        <span style={digitStyle}>{hours[1]}</span>
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{minutes[0]}</span>
-        <span style={digitStyle}>{minutes[1]}</span>
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{seconds[0]}</span>
-        <span style={digitStyle}>{seconds[1]}</span>
+      <div style={digitsRowStyle}>
+        {timeString.split('').map((char, i) => (
+          <div key={i} style={digitBoxStyle}>
+            <div style={digitStyle}>
+              {char}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
-}
+};
 
-/* =========================
-   USAGE NOTES
-========================= */
-
-/*
-This template includes best practices observed from the project:
-
-1. **React Structure**: Uses functional components with hooks
-2. **Performance**: 
-   - useMemo for expensive calculations
-   - Proper cleanup in useEffect
-   - Optimized update intervals
-
-3. **Asset Loading**:
-   - Font loading with fallbacks
-   - Image preloading
-   - Loading states with smooth transitions
-
-4. **Responsive Design**:
-   - Uses clamp() for fluid typography
-   - viewport units (vw, vh, dvh)
-   - Mobile-friendly scaling
-
-5. **Error Handling**:
-   - Timeout fallbacks for asset loading
-   - Graceful degradation
-   - Console warnings for debugging
-
-6. **Code Organization**:
-   - Clear section comments
-   - Separated utilities and hooks
-   - Configurable constants
-
-To customize:
-1. Update asset import paths
-2. Modify colors and styles
-3. Add your custom font names
-4. Adjust timing and animation parameters
-5. Add additional features (date, timezone, etc.)
-
-Example with assets:
-import backgroundImage from '../../../assets/images/26-01/26-01-01/fan.webp';
-import customFont from '../../../assets/fonts/26-01-01-fan.otf';
-
-const isFontReady = useFontLoader(customFont, 'MyClockFont');
-const isImageReady = useImagePreload(backgroundImage);
-*/
+export default DynamicClock;
