@@ -13,7 +13,7 @@ const FONT_LOAD_TIMEOUT = 2000; // Font loading timeout in ms
 ========================= */
 
 // Uncomment and update paths for your assets
-import backgroundImage from '../../../assets/images/your-folder/your-image.webp';
+// import backgroundImage from '../../../assets/images/your-folder/your-image.webp';
 // import customFont from '../../../assets/fonts/your-font.ttf';
 
 /* =========================
