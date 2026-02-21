@@ -109,7 +109,7 @@ const ImageDisplay = () => {
           width: 35vh;
           height: 35vh;
           border-radius: 50%;
-          backgroundColor: #ECE7C9;
+          backgroundColor: #F7F5E8;
           border: 1.5vh solid #C7BA59;
           position: relative;
           display: flex;
@@ -177,7 +177,7 @@ const ImageDisplay = () => {
 
         {/* Analog Clock */}
         <div className="analog-section">
-          <div className="clock-face" style={{ backgroundColor: '#B1AD98' }}>
+          <div className="clock-face" style={{ backgroundColor: '#F1E9C2' }}>
             {/* Ticks */}
             {[...Array(12)].map((_, i) => {
               const isMainHour = [0, 3, 6, 9].includes(i);
@@ -188,7 +188,7 @@ const ImageDisplay = () => {
                   position: 'absolute',
                   width: isMainHour ? '1.2vh' : '0.8vh',
                   height: isMainHour ? '4vh' : '2vh',
-                  backgroundColor: isMainHour ? '#B67423' : '#131613',   
+                  backgroundColor: isMainHour ? '#B67423' : '#FFFFFF',   
                   top: '0.5vh',
                   left: 'calc(50% - ' + (isMainHour ? '0.6vh' : '0.4vh') + ')',
                   transformOrigin: '50% 17.25vh',
