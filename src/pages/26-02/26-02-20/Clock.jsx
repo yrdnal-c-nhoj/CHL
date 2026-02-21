@@ -1,111 +1,211 @@
-import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+/** @jsxImportSource react */
+import React, { useState, useEffect, useMemo } from 'react';
 
-// --- Assets ---
-import teeVeeLoungeFont from '../../../assets/fonts/26-02-10-tv.ttf?url';
-import analogBgImage from '../../../assets/images/26-02/26-02-20/forum.jpeg';
+/* =========================
+   CONFIGURATION
+========================= */
+const UPDATE_INTERVAL = 1000; // ms
+const MOBILE_BREAKPOINT = 768;
 
-// --- Configuration ---
-const CLOCK_CONFIG = {
-  COLORS: {
-    silverText: '#58D5C0',
+/* =========================
+   ASSETS
+========================= */
+import backgroundImage from '../../../assets/images/26-02/26-02-20/forum2.webp';
+import topImage from '../../../assets/images/26-02/26-02-20/forum.webp';
 
-  }
+/* =========================
+   UTILITY FUNCTIONS
+========================= */
+const formatTime = (num) => num.toString().padStart(2, '0');
+
+const getTimeDigits = (date) => {
+  const hours24 = date.getHours();
+  const hours12 = hours24 % 12 || 12;
+  const minutes = formatTime(date.getMinutes());
+  const seconds = formatTime(date.getSeconds());
+  const isPM = hours24 >= 12;
+  return {
+    hours: formatTime(hours12),
+    minutes,
+    seconds,
+    isPM,
+  };
 };
 
-/**
- * Custom Hook: teeVeeLoungeClock
- * Updates every second for digital display
- */
-const teeVeeLoungeClock = () => {
-  const [time, setTime] = useState(new Date());
+const spellNumber = (num) => {
+  const ones = ['', 'UNUS', 'DUO', 'TRES', 'QUATTUOR', 'QUINQUE', 'SEX', 'SEPTEM', 'OCTO', 'NOVEM'];
+  const teens = ['DECEM', 'UNDECIM', 'DUODECIM', 'TREDECIM', 'QUATTUORDECIM', 'QUINDECIM', 'SEDECIM', 'SEPTEDECIM', 'DUODEVIGINTI', 'UNDEVIGINTI'];
+  const tens = ['', '', 'VIGINTI', 'TRIGINTA', 'QUADRAGINTA', 'QUINQUAGINTA', 'SEXAGINTA', 'SEPTUAGINTA', 'OCTOGINTA', 'NONAGINTA'];
 
+  if (num === 0) return 'NULLUS';
+  if (num < 10) return ones[num];
+  if (num < 20) return teens[num - 10];
+  if (num < 100) {
+    const ten = Math.floor(num / 10);
+    const one = num % 10;
+    return tens[ten] + (one > 0 ? ' ' + ones[one] : '');
+  }
+  return num.toString();
+};
+
+const spellTwoDigitNumber = (twoDigitStr) => {
+  const num = parseInt(twoDigitStr, 10);
+  if (twoDigitStr.startsWith('0') && num !== 0) {
+    return 'NULLA ' + spellNumber(num);
+  }
+  return spellNumber(num);
+};
+
+/* =========================
+   CUSTOM HOOKS
+========================= */
+function useClock(updateInterval = UPDATE_INTERVAL) {
+  const [time, setTime] = useState(() => new Date());
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 1000); // Update every second for digital clock
+    const interval = setInterval(() => setTime(new Date()), updateInterval);
     return () => clearInterval(interval);
+  }, [updateInterval]);
+  return time;
+}
+
+function useImagePreload(imageUrl) {
+  const [isReady, setIsReady] = useState(!imageUrl);
+  useEffect(() => {
+    if (!imageUrl) return;
+    let mounted = true;
+    const img = new Image();
+    img.onload = () => mounted && setIsReady(true);
+    img.onerror = () => mounted && setIsReady(true);
+    img.src = imageUrl;
+    return () => { mounted = false; };
+  }, [imageUrl]);
+  return isReady;
+}
+
+/* =========================
+   MAIN COMPONENT
+========================= */
+export default function ClockTemplate() {
+  const time = useClock();
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Handle Responsiveness & Font
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    checkMobile(); // Initial check
+    
+    window.addEventListener('resize', checkMobile);
+    
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Vast+Shadow&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      document.head.removeChild(link);
+    };
   }, []);
 
-  return time;
-};
+  const isBgReady    = useImagePreload(backgroundImage);
+  const isTopReady   = useImagePreload(topImage);
+  const isReady      = isBgReady && isTopReady;
 
-const DigitalClock = () => {
-  const now = teeVeeLoungeClock();
-  const fontReady = useFontLoader('TeeVeeFont', teeVeeLoungeFont);
-  const [textReady, setTextReady] = useState(false);
+  const { hours, minutes, isPM } = useMemo(() => getTimeDigits(time), [time]);
 
-  // Prevent flash by only showing text when font is loaded
-  useEffect(() => {
-    if (fontReady) {
-      setTextReady(true);
-    }
-  }, [fontReady]);
+  const spelledHours   = spellTwoDigitNumber(hours);
+  const spelledMinutes = spellTwoDigitNumber(minutes);
+  const ampm           = isPM ? 'POST MERIDIEM' : 'ANTE MERIDIAN';
 
-  // 12-hour format with no leading zeros
-  const hours = now.getHours();
-  const twelveHour = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
-  const minutes = now.getMinutes();
-  const seconds = now.getSeconds();
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-
-  // Format with leading zeros on minutes only, all on one line
-  const timeString = `${twelveHour}:${minutes.toString().padStart(2, '0')}${ampm}`;
-
-  return (
-    <div style={styles.container}>
-      {/* FILTERED BACKGROUND LAYER */}
-      <div style={{ 
-        ...styles.backgroundLayer, 
-        backgroundImage: `url(${analogBgImage})` 
-      }} />
-
-      {/* DIGITAL CLOCK DISPLAY */}
-      <div style={styles.digitalFace}>
-        {textReady && (
-          <div style={{
-            ...styles.digitalDisplay,
-            fontFamily: fontReady ? "'TeeVeeFont', sans-serif" : 'sans-serif'
-          }}>
-            {timeString}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-// --- Styles ---
-const styles = {
-  container: {
-    position: 'relative',
+  /* =========================
+      STYLES
+  ========================= */
+  const containerStyle = {
     width: '100vw',
     height: '100dvh',
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: '#000',
+    margin: 0,
+    padding: 0,
     overflow: 'hidden',
-    backgroundColor: '#050505',
-  },
-  backgroundLayer: {
-    position: 'absolute',
-    inset: 0,
-    backgroundSize: 'cover',
-    backgroundPosition: '72% center',
-    filter: 'saturate(120%) hue-rotate(-20deg) ',
-    zIndex: 1,
-  },
-  digitalFace: {
-    position: 'absolute',
-    top: '10%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    zIndex: 2,
-  },
-  digitalDisplay: {
-    fontSize: 'clamp(3rem, 12vw, 6rem)',
-    color: CLOCK_CONFIG.COLORS.silverText,
-    textAlign: 'center',
-    letterSpacing: '0.05em',
-    lineHeight: 1,
-  },
-};
+    opacity: isReady ? 1 : 0,
+    transition: 'opacity 0.4s ease',
+  };
 
-export default DigitalClock;
+  const topImageStyle = {
+    width: '100%',
+    height: '20vh',
+    objectFit: '100% auto',
+    flexShrink: 0,
+  };
+
+  const redLineStyle = {
+    width: '100%',
+    // Expand stripe height on mobile, keep 60px on laptop
+    height: isMobile ? 'auto' : '60px',
+    padding: isMobile ? '1.5rem 0' : '0',
+    backgroundColor: '#66023C',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+    transition: 'height 0.3s ease',
+  };
+
+  const clockRowStyle = {
+    display: 'flex',
+    // Vertical stack on mobile, horizontal row on laptop
+    flexDirection: isMobile ? 'column' : 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: isMobile ? '0.5rem' : '0.9rem',
+    fontFamily: '"Vast Shadow", cursive, sans-serif',
+    color: '#fff',
+    textShadow: '0 0 12px rgba(0,0,0,0.9)',
+    fontSize: isMobile ? 'clamp(16px, 5vw, 24px)' : 'clamp(14px, 2.1vw, 22px)',
+    whiteSpace: 'nowrap',
+    textAlign: 'center',
+  };
+
+  const bottomStyle = {
+    flex: 1,
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: '100% 100%',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+  };
+
+  /* =========================
+      LOADING / RENDER
+  ========================= */
+  if (!isReady) {
+    return (
+      <div style={{ ...containerStyle, opacity: 1, backgroundColor: '#000', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ color: '#444', fontSize: '3rem', fontFamily: 'monospace' }}>
+ 
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={containerStyle}>
+      {/* Top decorative image */}
+      <img src={topImage} alt="" style={topImageStyle} />
+
+      {/* Red bar + clock */}
+      <div style={redLineStyle}>
+        <div style={clockRowStyle}>
+          {/* Text broken into three parts for column stacking */}
+          <span>{spelledHours} HORAE</span>
+          <span>{spelledMinutes} MINUTA</span>
+          <span>{ampm}</span>
+        </div>
+      </div>
+
+      {/* Bottom background image */}
+      <div style={bottomStyle} />
+    </div>
+  );
+}
