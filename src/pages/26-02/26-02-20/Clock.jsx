@@ -203,6 +203,9 @@ const clockRowStyle = {
 };
 
 
+
+
+
   const bottomStyle = {
     flex: 1,
     backgroundImage: `url(${backgroundImage})`,
