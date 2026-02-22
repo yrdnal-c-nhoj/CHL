@@ -152,7 +152,7 @@ export default function ClockTemplate() {
     width: '100%',
     height: isMobile ? 'auto' : '50px', // Full height for combined stripe
     // padding: isMobile ? '1.5rem 0' : '0',
-    background: `linear-gradient(to bottom, #66023C 50%, #18368E 50%)`, // Blue union on top, red on bottom
+    background: `linear-gradient(to bottom, #18368E 50%, #66023C 50%)`, // Blue union on top, red on bottom
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -160,21 +160,48 @@ export default function ClockTemplate() {
     transition: 'height 0.3s ease',
   };
 
-  const clockRowStyle = {
-    display: 'flex',
-    // Vertical stack on mobile, horizontal row on laptop
-    flexDirection: isMobile ? 'column' : 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: isMobile ? '0.5rem' : '0.9rem',
-    fontFamily: `'${FONT_NAME}', serif`,
-    color: '#F7DC83',
-    textShadow: '0 0 12px rgba(0,0,0,0.9)',
-    letterSpacing: '0.15em',
-    fontSize: isMobile ? 'clamp(16px, 5vw, 24px)' : 'clamp(14px, 2.1vw, 22px)',
-    whiteSpace: 'nowrap',
-    textAlign: 'center',
-  };
+
+
+
+const clockRowStyle = {
+  display: 'flex',
+  flexDirection: isMobile ? 'column' : 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: isMobile ? '0.5rem' : '0.9rem',
+  fontFamily: `'${FONT_NAME}', serif`,
+  
+  // ─── Brass metallic look ───────────────────────────────────────
+  background: 'linear-gradient(135deg, #3a2c0f 0%, #8b6914 20%, #d4a017 40%, #f0d08a 50%, #d4a017 60%, #b8860b 80%, #3a2c0f 100%)',
+  WebkitBackgroundClip: 'text',
+  backgroundClip: 'text',
+  color: 'transparent',                    // required for gradient text
+  
+  // Thick / raised / embossed 3D effect
+  textShadow: `
+    0 1px 0 #f0e68c,
+    0 2px 0 #deb887,
+    0 3px 0 #cd853f,
+    0 4px 0 #b8860b,
+    0 5px 6px rgba(0,0,0,0.7),
+    0 8px 12px rgba(0,0,0,0.5)
+  `,
+  
+  // Extra definition & slight glow (brass often has subtle shine)
+  WebkitTextStroke: '0.5px #4a2c0a',       // thin dark outline → makes it pop & look thicker
+  textStroke: '0.5px #4a2c0a',
+  
+  letterSpacing: '0.18em',
+  fontSize: isMobile ? 'clamp(18px, 5.5vw, 28px)' : 'clamp(16px, 2.4vw, 26px)',
+  fontWeight: '600',                        // slightly bolder if Forum supports it
+  whiteSpace: 'nowrap',
+  textAlign: 'center',
+  
+  // Optional: subtle shine animation (uncomment if you like movement)
+  // backgroundSize: '200% 200%',
+  // animation: 'brassShine 8s ease-in-out infinite',
+};
+
 
   const bottomStyle = {
     flex: 1,
