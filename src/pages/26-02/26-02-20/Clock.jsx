@@ -6,12 +6,14 @@ import React, { useState, useEffect, useMemo } from 'react';
 ========================= */
 const UPDATE_INTERVAL = 1000; // ms
 const MOBILE_BREAKPOINT = 768;
+const FONT_NAME = 'Forum';
 
 /* =========================
    ASSETS
 ========================= */
 import backgroundImage from '../../../assets/images/26-02/26-02-20/forum2.webp';
 import topImage from '../../../assets/images/26-02/26-02-20/forum.webp';
+import forumFont from '../../../assets/fonts/26-02-20-forum.otf';
 
 /* =========================
    UTILITY FUNCTIONS
@@ -96,23 +98,16 @@ export default function ClockTemplate() {
     
     window.addEventListener('resize', checkMobile);
     
-    // Preload font to prevent FOUC - Better approach
-    const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Vast+Shadow&display=swap';
-    link.rel = 'stylesheet';
-    link.media = 'print'; // Initially hide to prevent FOUC
-    document.head.appendChild(link);
-    
-    // Trigger font loading after a short delay
-    setTimeout(() => {
-      link.media = 'all';
-    }, 0);
+    // Load Forum font using FontFace API
+    const font = new FontFace(FONT_NAME, `url(${forumFont})`);
+    font.load().then(() => {
+      document.fonts.add(font);
+    }).catch(err => {
+      console.error("Forum font load failed", err);
+    });
     
     return () => {
       window.removeEventListener('resize', checkMobile);
-      if (document.head.contains(link)) {
-        document.head.removeChild(link);
-      }
     };
   }, []);
 
@@ -172,7 +167,7 @@ export default function ClockTemplate() {
     alignItems: 'center',
     justifyContent: 'center',
     gap: isMobile ? '0.5rem' : '0.9rem',
-    fontFamily: '"Vast Shadow", cursive, sans-serif',
+    fontFamily: `'${FONT_NAME}', serif`,
     color: '#fff',
     textShadow: '0 0 12px rgba(0,0,0,0.9)',
     fontSize: isMobile ? 'clamp(16px, 5vw, 24px)' : 'clamp(14px, 2.1vw, 22px)',
