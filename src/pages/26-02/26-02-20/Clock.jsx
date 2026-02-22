@@ -150,8 +150,8 @@ export default function ClockTemplate() {
 
   const combinedStripeStyle = {
     width: '100%',
-    height: isMobile ? 'auto' : '60px', // Full height for combined stripe
-    padding: isMobile ? '1.5rem 0' : '0',
+    height: isMobile ? 'auto' : '50px', // Full height for combined stripe
+    // padding: isMobile ? '1.5rem 0' : '0',
     background: `linear-gradient(to bottom, #66023C 50%, #18368E 50%)`, // Blue union on top, red on bottom
     display: 'flex',
     alignItems: 'center',
@@ -168,8 +168,9 @@ export default function ClockTemplate() {
     justifyContent: 'center',
     gap: isMobile ? '0.5rem' : '0.9rem',
     fontFamily: `'${FONT_NAME}', serif`,
-    color: '#fff',
+    color: '#F7DC83',
     textShadow: '0 0 12px rgba(0,0,0,0.9)',
+    letterSpacing: '0.15em',
     fontSize: isMobile ? 'clamp(16px, 5vw, 24px)' : 'clamp(14px, 2.1vw, 22px)',
     whiteSpace: 'nowrap',
     textAlign: 'center',
