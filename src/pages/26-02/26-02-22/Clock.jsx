@@ -180,8 +180,8 @@ const AnalogDigitalClock = () => {
 
   const digitStyle = (angle) => ({
     position: 'absolute',
-    width: '25vmin',
-    height: '25vmin',
+    width: '22vmin',
+    height: '22vmin',
     top: '50%',
     left: '50%',
     backgroundSize: 'contain',
