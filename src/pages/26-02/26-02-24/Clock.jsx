@@ -6,177 +6,94 @@ const ImageDisplay = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    // 1. Check if fonts are already loaded
-    const fontsAreLoaded = () => {
-      const fonts = [
-        'Krona One',
-        'Anton', 
-        'Playfair Display',
-        'Oswald',
-        'Merriweather',
-        'Roboto Mono',
-        'Josefin Sans',
-        'Bebas Neue'
-      ];
-      
-      return fonts.every(fontName => {
-        return document.fonts.check(`12px "${fontName}"`);
-      });
-    };
-
-    // 2. If fonts are already loaded, set fontLoaded immediately
-    if (fontsAreLoaded()) {
-      setFontLoaded(true);
-      return;
-    }
-
-    // 3. Inject Google Fonts with preload for better performance
+    // 1. Load Google Fonts
     const fontLink = document.createElement('link');
-    fontLink.href = "https://fonts.googleapis.com/css2?family=Anton&family=Josefin+Sans:wght@400;700&family=Krona+One&family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&family=Roboto+Mono:wght@400;700&family=Playfair+Display:wght@400;700&family=Oswald:wght@400;700&family=Merriweather:wght@400;700&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap";
+    fontLink.href = "https://fonts.googleapis.com/css2?family=Anton&family=Josefin+Sans:wght@400;700&family=Krona+One&family=Roboto+Mono:wght@400;700&family=Playfair+Display:wght@400;700&family=Oswald:wght@400;700&family=Merriweather:wght@400;700&family=Bebas+Neue&display=swap";
     fontLink.rel = "stylesheet";
-    fontLink.media = "print"; // Initially load as print to avoid FOUC
     document.head.appendChild(fontLink);
 
-    // 4. Switch media to all to activate fonts
-    setTimeout(() => {
-      fontLink.media = "all";
-    }, 0);
+    // 2. Monitor Font Loading
+    document.fonts.ready.then(() => setFontLoaded(true));
 
-    // 5. Wait for fonts to be ready
-    const checkFonts = setInterval(() => {
-      if (fontsAreLoaded()) {
-        clearInterval(checkFonts);
-        setFontLoaded(true);
-      }
-    }, 50);
-
-    // 6. Fallback timeout
-    const fallbackTimeout = setTimeout(() => {
-      clearInterval(checkFonts);
-      setFontLoaded(true);
-    }, 3000);
-
-    const timer = setInterval(() => setTime(new Date()), 1000);
+    // 3. THE TICKER: Update state every second
+    const timer = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
     
     return () => {
       clearInterval(timer);
-      clearInterval(checkFonts);
-      clearTimeout(fallbackTimeout);
       if (document.head.contains(fontLink)) document.head.removeChild(fontLink);
     };
   }, []);
 
-  // Time Formatting: "02:45:30 PM"
-  const timeString = time.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: true,
-  });
+  // --- Robust Time Logic ---
+  const rawHours = time.getHours();
+  const amPm = rawHours >= 12 ? 'PM' : 'AM';
+  const displayHours = (rawHours % 12 || 12).toString().padStart(2, '0');
+  const displayMinutes = time.getMinutes().toString().padStart(2, '0');
+  const displaySeconds = time.getSeconds().toString().padStart(2, '0');
+  
+  // Array of exactly 6 digits: [H, H, M, M, S, S]
+  const digits = [
+    ...displayHours.split(''), 
+    ...displayMinutes.split(''), 
+    ...displaySeconds.split('')
+  ];
 
-  const [rawTime, amPm] = timeString.split(' ');
-  const allDigits = rawTime.split(''); // e.g., ["0", "2", ":", "4", "5", ":", "3", "0"]
-  const digits = allDigits.filter(char => char !== ':'); // Remove colons: ["0", "2", "4", "5", "3", "0"]
-  const amPmLetters = amPm ? amPm.split('') : [];
-
-  // No loading state - show clock immediately
+  // --- Visual Layout Mapping ---
+  const positions = [
+    { top: '8%', left: '10%', rotate: '-15deg', fontSize: 'clamp(2rem, 8vw, 6rem)', font: "'Krona One'" },      // H1
+    { top: '25%', left: '22%', rotate: '30deg', fontSize: 'clamp(11rem, 44vw, 22rem)', font: "'Anton'" },     // H2
+    { top: '72%', left: '35%', rotate: '-18deg', fontSize: 'clamp(24rem, 64vw, 30rem)', font: "'Playfair Display'" }, // M1
+    { top: '80%', left: '75%', rotate: '25deg', fontSize: 'clamp(2.5rem, 9vw, 7rem)', font: "'Oswald'" },      // M2
+    { top: '15%', left: '75%', rotate: '-35deg', fontSize: 'clamp(5rem, 16vw, 12rem)', font: "'Merriweather'" },  // S1
+    { top: '40%', left: '80%', rotate: '44deg', fontSize: 'clamp(7.5rem, 31vw, 12rem)', font: "'Roboto Mono'" }, // S2
+  ];
 
   return (
     <div style={containerStyle}>
-      {/* Background Image Layer */}
       <div style={backgroundStyle} />
-      
-      {/* Red Overlay Layer */}
       <div style={redOverlayStyle} />
       
-      {/* Clock Content Layer */}
-      {digits.map((char, index) => {
-        // Define positions for each digit (no colons)
-        const positions = [
-          { top: '8%', left: '4%', rotate: '-15deg', fontSize: 'clamp(2rem, 8vw, 6rem)' },  // H1
-          { top: '25%', left: '15%', rotate: '30deg', fontSize: 'clamp(11rem, 44vw, 22rem)' },   // H2
-          { top: '75%', left: '35%', rotate: '-18deg', fontSize: 'clamp(24rem, 64vw, 30rem)' }, // M1
-          { top: '80%', left: '70%', rotate: '25deg', fontSize: 'clamp(2.5rem, 9vw, 7rem)' },   // M2
-          { top: '8%', left: '70%', rotate: '-35deg', fontSize: 'clamp(5rem, 16vw, 12rem)' },    // S1
-          { top: '30%', left: '70%', rotate: '44deg', fontSize: 'clamp(7.5rem, 31vw, 12rem)' },   // S2
-        ];
-
-        const pos = positions[index] || { top: '50%', left: '50%', rotate: '0deg', fontSize: 'clamp(5rem, 20vw, 12rem)' };
-
-        // Font Mapping Logic - each digit gets unique font
-        let fontFamily;
-        if (index === 0) fontFamily = "'Krona One', sans-serif"; // H1
-        else if (index === 1) fontFamily = "'Anton', sans-serif"; // H2
-        else if (index === 2) fontFamily = "'Playfair Display', serif"; // M1
-        else if (index === 3) fontFamily = "'Oswald', sans-serif"; // M2
-        else if (index === 4) fontFamily = "'Merriweather', serif"; // S1
-        else if (index === 5) fontFamily = "'Roboto Mono', monospace"; // S2
-        else fontFamily = "'Space Mono', monospace"; // fallback
-
-        return (
+      {/* Container for digits - ensures they only show up once layout is ready */}
+      <div style={{ opacity: fontLoaded ? 1 : 0, transition: 'opacity 0.8s ease' }}>
+        {digits.map((char, index) => (
           <div
-            key={`${index}-${char}`}
+            key={`${index}-${char}`} // char in key ensures React treats a number change as a new element for transitions
             style={{
               ...digitBox,
               position: 'absolute',
-              top: pos.top,
-              left: pos.left,
-              transform: `translate(-50%, -50%) rotate(${pos.rotate})`,
-              fontFamily,
-              fontSize: pos.fontSize,
-              zIndex: 10, // Ensure digits appear above overlay
+              top: positions[index].top,
+              left: positions[index].left,
+              transform: `translate(-50%, -50%) rotate(${positions[index].rotate})`,
+              fontFamily: `${positions[index].font}, sans-serif`,
+              fontSize: positions[index].fontSize,
+              zIndex: 10,
             }}
           >
             {char}
           </div>
-        );
-      })}
+        ))}
 
-      {/* AM/PM - Corner Characters */}
-      {amPmLetters[0] && (
-        <div style={{
-          ...digitBox,
-          position: 'absolute',
-          bottom: '20vh',
-          right: '1px',
-          fontSize: 'clamp(15rem, 33vw, 18rem)',
-          fontFamily: '"Josefin Sans", sans-serif',
-          transform: 'rotate(-50deg)',
-          zIndex: 10, // Ensure AM/PM appears above overlay
-        }}>
-          {amPmLetters[0]}
+        {/* AM / PM Logic */}
+        <div style={{ ...amPmStyle, bottom: '20%', right: '5%', fontSize: '15vw', fontFamily: '"Josefin Sans"', transform: 'rotate(-50deg)' }}>
+          {amPm[0]}
         </div>
-      )}
-
-      {amPmLetters[1] && (
-        <div style={{
-          ...digitBox,
-          position: 'absolute',
-          bottom: '50px',
-          right: '50px',
-          fontSize: 'clamp(1.5rem, 4vw, 3rem)',
-          fontFamily: '"Bebas Neue", cursive',
-          transform: 'rotate(10deg)',
-          zIndex: 10, // Ensure AM/PM appears above overlay
-        }}>
-          {amPmLetters[1]}
+        <div style={{ ...amPmStyle, bottom: '10%', right: '10%', fontSize: '4vw', fontFamily: '"Bebas Neue"', transform: 'rotate(10deg)' }}>
+          {amPm[1]}
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
 // --- Styles ---
-
 const containerStyle = {
   width: '100vw',
   height: '100dvh',
   position: 'relative',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
   overflow: 'hidden',
-  backgroundColor: '#f0f0f0' // Fallback
+  backgroundColor: '#000',
 };
 
 const backgroundStyle = {
@@ -185,26 +102,30 @@ const backgroundStyle = {
   backgroundImage: `url(${futurBg})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
-  filter: 'brightness(2.8) contrast(0.4)',
+  filter: 'brightness(2.5) contrast(0.6) grayscale(100%)',
   zIndex: 0
 };
 
 const redOverlayStyle = {
   position: 'absolute',
   inset: 0,
-  backgroundColor: 'rgba(249, 9, 9, 0.64)', // Red overlay with 30% opacity
+  backgroundColor: 'rgba(249, 9, 9, 0.7)',
+  mixBlendMode: 'multiply', // Creates a professional "printed" look
   zIndex: 1
 };
 
 const digitBox = {
-  fontSize: 'clamp(3rem, 10vw, 8rem)',
-  color: 'rgb(0, 0, 0)',
-  padding: '10px',
-  minWidth: '1.2em',
-  textAlign: 'center',
-  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)', 
-  userSelect: 'none'
+  color: 'black',
+  pointerEvents: 'none',
+  userSelect: 'none',
+  lineHeight: 0.8,
+  transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)', // Adds a tiny "bounce" to number changes
+};
+
+const amPmStyle = {
+  position: 'absolute',
+  color: 'black',
+  zIndex: 10,
 };
 
 export default ImageDisplay;
