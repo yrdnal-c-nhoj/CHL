@@ -39,10 +39,7 @@ const FullscreenClock = () => {
       backgroundColor: '#E9F7AB',
       backgroundImage: 'radial-gradient(circle, #E9F7AB 0%, #CDF296 100%)',
       overflow: 'hidden',
-      fontFamily: fontLoaded ? `'${FONT_NAME}', sans-serif` : 'sans-serif',
-      opacity: fontLoaded ? 1 : 0,
-      transition: 'opacity 0.5s ease-in',
-      visibility: fontLoaded ? 'visible' : 'hidden', // Prevent FOUC for custom font
+      fontFamily: `'${FONT_NAME}', sans-serif`,
     }}>
       
       <style>{`

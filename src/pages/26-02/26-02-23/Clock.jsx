@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import nepFont from '../../../assets/fonts/26-02-23-nep.ttf';
+import neptuneFont from '../../../assets/fonts/26-02-23-nep.ttf';
 import nepBg from '../../../assets/images/26-02/26-02-23/nept.webp';
 import loopBg from '../../../assets/images/26-02/26-02-23/swirl.gif';
 import triBg from '../../../assets/images/26-02/26-02-23/tri.webp';
@@ -10,19 +10,20 @@ const DigitalClock = () => {
 
   // Load custom font
   useEffect(() => {
-    const font = new FontFace('NepFont', `url(${nepFont})`);
-    font.load().then(() => {
-      document.fonts.add(font);
-      setFontLoaded(true);
-    }).catch(err => console.error('Font loading failed:', err));
-  }, []);
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: 'NeptuneFont';
+        src: url('${neptuneFont}') format('truetype');
+      }
+    `;
+    document.head.appendChild(style);
 
-  // Update time every second
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-    return () => clearInterval(interval);
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => {
+      clearInterval(timer);
+      document.head.removeChild(style);
+    };
   }, []);
 
   const formatTime = (date) => {
@@ -55,7 +56,7 @@ const DigitalClock = () => {
         WebkitBackgroundClip: 'text',
         WebkitTextFillColor: 'transparent',
         animation: 'shimmer 3s ease-in-out infinite, aquaGlow 2s ease-in-out infinite alternate',
-        fontFamily: fontLoaded ? 'NepFont, monospace' : 'monospace',
+        fontFamily: 'NeptuneFont, monospace',
       }}>
         {digit}
       </div>
