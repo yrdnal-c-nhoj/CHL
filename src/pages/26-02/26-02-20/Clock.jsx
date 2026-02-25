@@ -229,7 +229,7 @@ const clockRowStyle = {
         alignItems: 'center' 
       }}>
         <div style={{ color: '#444', fontSize: '3rem', fontFamily: 'monospace' }}>
-          Loading...
+          
         </div>
       </div>
     );
