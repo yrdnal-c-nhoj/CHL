@@ -6,25 +6,62 @@ const ImageDisplay = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    // 1. Inject Google Fonts via Link tag for better browser support
+    // 1. Check if fonts are already loaded
+    const fontsAreLoaded = () => {
+      const fonts = [
+        'Krona One',
+        'Anton', 
+        'Playfair Display',
+        'Oswald',
+        'Merriweather',
+        'Roboto Mono',
+        'Josefin Sans',
+        'Bebas Neue'
+      ];
+      
+      return fonts.every(fontName => {
+        return document.fonts.check(`12px "${fontName}"`);
+      });
+    };
+
+    // 2. If fonts are already loaded, set fontLoaded immediately
+    if (fontsAreLoaded()) {
+      setFontLoaded(true);
+      return;
+    }
+
+    // 3. Inject Google Fonts with preload for better performance
     const fontLink = document.createElement('link');
     fontLink.href = "https://fonts.googleapis.com/css2?family=Anton&family=Josefin+Sans:wght@400;700&family=Krona+One&family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&family=Roboto+Mono:wght@400;700&family=Playfair+Display:wght@400;700&family=Oswald:wght@400;700&family=Merriweather:wght@400;700&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap";
     fontLink.rel = "stylesheet";
+    fontLink.media = "print"; // Initially load as print to avoid FOUC
     document.head.appendChild(fontLink);
 
-    // 2. Wait for fonts to actually be ready to prevent "Layout Shift"
-    fontLink.onload = () => {
-      if (document.fonts) {
-        document.fonts.ready.then(() => setFontLoaded(true));
-      } else {
-        // Fallback for older browsers
-        setTimeout(() => setFontLoaded(true), 500);
+    // 4. Switch media to all to activate fonts
+    setTimeout(() => {
+      fontLink.media = "all";
+    }, 0);
+
+    // 5. Wait for fonts to be ready
+    const checkFonts = setInterval(() => {
+      if (fontsAreLoaded()) {
+        clearInterval(checkFonts);
+        setFontLoaded(true);
       }
-    };
+    }, 50);
+
+    // 6. Fallback timeout
+    const fallbackTimeout = setTimeout(() => {
+      clearInterval(checkFonts);
+      setFontLoaded(true);
+    }, 3000);
 
     const timer = setInterval(() => setTime(new Date()), 1000);
+    
     return () => {
       clearInterval(timer);
+      clearInterval(checkFonts);
+      clearTimeout(fallbackTimeout);
       if (document.head.contains(fontLink)) document.head.removeChild(fontLink);
     };
   }, []);
@@ -42,20 +79,7 @@ const ImageDisplay = () => {
   const digits = allDigits.filter(char => char !== ':'); // Remove colons: ["0", "2", "4", "5", "3", "0"]
   const amPmLetters = amPm ? amPm.split('') : [];
 
-  if (!fontLoaded) {
-    return (
-      <div style={{ 
-        background: '#000', 
-        height: '100dvh', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center',
-        color: '#fff',
-        fontFamily: 'sans-serif' 
-      }}>
-      </div>
-    );
-  }
+  // No loading state - show clock immediately
 
   return (
     <div style={containerStyle}>
