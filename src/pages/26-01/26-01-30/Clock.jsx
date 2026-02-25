@@ -3,7 +3,7 @@ import { useFontLoader } from '../../../utils/fontLoader';// Asset Imports
 import clockFont from '../../../assets/fonts/26-01-30-ne.ttf';
 import bgLayer1 from "../../../assets/images/26-01/26-01-30/new.webp";
 import bgLayer2 from "../../../assets/images/26-01/26-01-30/nes.gif";
-import bgLayer3 from "../../../assets/images/26-01/26-01-30/ne3.gif";
+// import bgLayer3 from "../../../assets/images/26-01/26-01-30/ne3.gif";
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
@@ -16,7 +16,7 @@ const DigitalClock = () => {
   const brain = useRef({
     angle: Math.random() * Math.PI * 2,
     targetAngle: Math.random() * Math.PI * 2,
-    speed: 0.05,
+    speed: 0.005,
     turnStrength: 0.008,
     confusionTimer: 0
   });
@@ -153,20 +153,20 @@ const DigitalClock = () => {
       opacity: 0.4,
       filter: 'drop-shadow(5px -5px 0 white)',
     },
-    imageLayer3: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      width: '30%',
-      height: '30%',
-      objectFit: 'contain',
-      zIndex: 7,
-      opacity: 0.75,
-      filter: 'drop-shadow(1px -1px 0 white)',
-      pointerEvents: 'none',
-      willChange: 'transform',
-      transform: `translate(-50%, -50%) translate(${bgPos.x}vw, ${bgPos.y}vh) rotate(${bgPos.x * 1.6}deg)`,
-    },
+    // imageLayer3: {
+    //   position: 'absolute',
+    //   top: '50%',
+    //   left: '50%',
+    //   width: '30%',
+    //   height: '30%',
+    //   objectFit: 'contain',
+    //   zIndex: 7,
+    //   opacity: 0.75,
+    //   filter: 'drop-shadow(1px -1px 0 white)',
+    //   pointerEvents: 'none',
+    //   willChange: 'transform',
+    //   transform: `translate(-50%, -50%) translate(${bgPos.x}vw, ${bgPos.y}vh) rotate(${bgPos.x * 1.6}deg)`,
+    // },
     uiWrapper: {
       position: 'relative',
       zIndex: 10,
@@ -194,7 +194,7 @@ const DigitalClock = () => {
     <div style={styles.container}>
       <img decoding="async" loading="lazy" src={bgLayer1} alt="" style={styles.imageLayer1} />
       <div style={styles.imageLayer2} />
-      <img decoding="async" loading="lazy" src={bgLayer3} alt="" style={styles.imageLayer3} />
+      {/* <img decoding="async" loading="lazy" src={bgLayer3} alt="" style={styles.imageLayer3} /> */}
       <div style={styles.uiWrapper}>
         <div style={styles.timeText}>
           {hours}:{minutes} <span style={styles.ampmText}>{ampm}</span>
