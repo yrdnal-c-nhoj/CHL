@@ -37,9 +37,7 @@ const ImageDisplay = () => {
     backfaceVisibility: 'hidden',
   };
 
-  if (!fontLoaded) {
-    return <div style={{ background: '#000', height: '100vh' }} />;
-  }
+  // Show content immediately - no loading state
 
   return (
     <div style={{ 

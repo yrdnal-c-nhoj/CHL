@@ -37,7 +37,7 @@ const ImageDisplay = () => {
   const digits = rawTime.replace(/:/g, '').split('');
   const spacedAmPm = amPm.split('').join(' ');
 
-  if (!fontLoaded) return <div style={{ background: '#112D1E', height: '100vh' }} />;
+  // Show content immediately - no loading state
 
   return (
     <>
