@@ -36,9 +36,6 @@ const SonicBoomClock = () => {
       justifyContent: 'center',
       alignItems: 'center',
       overflow: 'hidden',
-      opacity: fontLoaded ? 1 : 0,
-      visibility: fontLoaded ? 'visible' : 'hidden',
-      transition: 'opacity 0.3s ease',
     }}>
       <div style={{
         position: 'absolute',
@@ -67,8 +64,7 @@ const SonicBoomClock = () => {
               key={index}
               style={{
                 fontSize: `${fontSize}vmin`,
-                opacity: fontLoaded ? Math.max(opacity, 0.3) : 0, // Minimum opacity of 0.3
-                transition: 'opacity 0.3s ease-in',
+                opacity: Math.max(opacity, 0.3), // Minimum opacity of 0.3
                 color: '#D0D6F2',
                 textShadow: '0 0 15px rgba(10, 63, 240, 0.4)',
                 letterSpacing: '-0.1em', // Negative letter spacing to bring digits closer

@@ -56,21 +56,52 @@ const useGoogleFont = (fontUrl = CLOCK_CONFIG.FONT_URL) => {
   useEffect(() => {
     const fontId = 'gilda-display-font';
     
+    // Check if font is already loaded
+    const fontIsLoaded = () => {
+      return document.fonts.check('1em "Gilda Display"');
+    };
+
+    if (fontIsLoaded()) {
+      setFontReady(true);
+      return;
+    }
+    
     if (document.getElementById(fontId)) {
       setFontReady(true);
       return;
     }
 
+    // Load font with media="print" technique to prevent FOUC
     const link = document.createElement('link');
     link.id = fontId;
     link.rel = 'stylesheet';
     link.href = fontUrl;
+    link.media = 'print'; // Initially load as print to avoid FOUC
     document.head.appendChild(link);
     
-    document.fonts
-      .load('1em "Gilda Display"')
-      .then(() => setFontReady(true))
-      .catch(() => setFontReady(true)); // Fallback on error
+    // Switch media to all to activate fonts
+    setTimeout(() => {
+      link.media = 'all';
+    }, 0);
+    
+    // Check for font readiness
+    const checkFonts = setInterval(() => {
+      if (fontIsLoaded()) {
+        clearInterval(checkFonts);
+        setFontReady(true);
+      }
+    }, 50);
+    
+    // Fallback timeout
+    const fallbackTimeout = setTimeout(() => {
+      clearInterval(checkFonts);
+      setFontReady(true);
+    }, 3000);
+    
+    return () => {
+      clearInterval(checkFonts);
+      clearTimeout(fallbackTimeout);
+    };
   }, [fontUrl]);
   
   return fontReady;

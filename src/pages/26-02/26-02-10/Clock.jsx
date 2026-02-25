@@ -33,14 +33,6 @@ const teeVeeLoungeClock = () => {
 const DigitalClock = () => {
   const now = teeVeeLoungeClock();
   const fontReady = useFontLoader('TeeVeeFont', teeVeeLoungeFont);
-  const [textReady, setTextReady] = useState(false);
-
-  // Prevent flash by only showing text when font is loaded
-  useEffect(() => {
-    if (fontReady) {
-      setTextReady(true);
-    }
-  }, [fontReady]);
 
   // 12-hour format with no leading zeros
   const hours = now.getHours();
@@ -62,14 +54,12 @@ const DigitalClock = () => {
 
       {/* DIGITAL CLOCK DISPLAY */}
       <div style={styles.digitalFace}>
-        {textReady && (
-          <div style={{
-            ...styles.digitalDisplay,
-            fontFamily: fontReady ? "'TeeVeeFont', sans-serif" : 'sans-serif'
-          }}>
-            {timeString}
-          </div>
-        )}
+        <div style={{
+          ...styles.digitalDisplay,
+          fontFamily: "'TeeVeeFont', sans-serif"
+        }}>
+          {timeString}
+        </div>
       </div>
     </div>
   );
