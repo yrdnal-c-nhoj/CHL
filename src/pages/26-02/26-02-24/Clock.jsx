@@ -2,18 +2,20 @@ import React, { useState, useEffect } from 'react';
 import futurBg from '../../../assets/images/26-02/26-02-24/futur.jpg';
 
 const ImageDisplay = () => {
-  const [fontLoaded, setFontLoaded] = useState(false);
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    // 1. Load Google Fonts
+    // 1. Load Google Fonts with FOUC prevention
     const fontLink = document.createElement('link');
     fontLink.href = "https://fonts.googleapis.com/css2?family=Anton&family=Josefin+Sans:wght@400;700&family=Krona+One&family=Roboto+Mono:wght@400;700&family=Playfair+Display:wght@400;700&family=Oswald:wght@400;700&family=Merriweather:wght@400;700&family=Bebas+Neue&display=swap";
     fontLink.rel = "stylesheet";
+    fontLink.media = "print"; // Initially load as print to avoid FOUC
     document.head.appendChild(fontLink);
 
-    // 2. Monitor Font Loading
-    document.fonts.ready.then(() => setFontLoaded(true));
+    // 2. Switch media to all to activate fonts
+    setTimeout(() => {
+      fontLink.media = "all";
+    }, 0);
 
     // 3. THE TICKER: Update state every second
     const timer = setInterval(() => {
@@ -55,33 +57,31 @@ const ImageDisplay = () => {
       <div style={backgroundStyle} />
       <div style={redOverlayStyle} />
       
-      {/* Container for digits - ensures they only show up once layout is ready */}
-      <div style={{ opacity: fontLoaded ? 1 : 0, transition: 'opacity 0.8s ease' }}>
-        {digits.map((char, index) => (
-          <div
-            key={`${index}-${char}`} // char in key ensures React treats a number change as a new element for transitions
-            style={{
-              ...digitBox,
-              position: 'absolute',
-              top: positions[index].top,
-              left: positions[index].left,
-              transform: `translate(-50%, -50%) rotate(${positions[index].rotate})`,
-              fontFamily: `${positions[index].font}, sans-serif`,
-              fontSize: positions[index].fontSize,
-              zIndex: 10,
-            }}
-          >
-            {char}
-          </div>
-        ))}
+      {/* Clock digits - show immediately with fallback fonts */}
+      {digits.map((char, index) => (
+        <div
+          key={`${index}-${char}`} // char in key ensures React treats a number change as a new element for transitions
+          style={{
+            ...digitBox,
+            position: 'absolute',
+            top: positions[index].top,
+            left: positions[index].left,
+            transform: `translate(-50%, -50%) rotate(${positions[index].rotate})`,
+            fontFamily: `${positions[index].font}, sans-serif`,
+            fontSize: positions[index].fontSize,
+            zIndex: 10,
+          }}
+        >
+          {char}
+        </div>
+      ))}
 
-        {/* AM / PM Logic */}
-        <div style={{ ...amPmStyle, bottom: '20%', right: '5%', fontSize: '15vw', fontFamily: '"Josefin Sans"', transform: 'rotate(-50deg)' }}>
-          {amPm[0]}
-        </div>
-        <div style={{ ...amPmStyle, bottom: '10%', right: '10%', fontSize: '4vw', fontFamily: '"Bebas Neue"', transform: 'rotate(10deg)' }}>
-          {amPm[1]}
-        </div>
+      {/* AM / PM Logic */}
+      <div style={{ ...amPmStyle, bottom: '20%', right: '5%', fontSize: '15vw', fontFamily: '"Josefin Sans"', transform: 'rotate(-50deg)' }}>
+        {amPm[0]}
+      </div>
+      <div style={{ ...amPmStyle, bottom: '10%', right: '10%', fontSize: '4vw', fontFamily: '"Bebas Neue"', transform: 'rotate(10deg)' }}>
+        {amPm[1]}
       </div>
     </div>
   );
