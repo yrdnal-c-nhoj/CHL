@@ -62,9 +62,9 @@ const CocteauClock = () => {
         position: 'relative', zIndex: 10,
         width: 'min(75vw, 75vh)', height: 'min(75vw, 75vh)',
         borderRadius: '52% 48% 51% 49% / 49% 52% 48% 51%', // Organic circle
-        border: '5px solid #222',
+        border: '5px solid #E4E9E4',
               filter: 'url(#cocteau-line)',
-        opacity: 0.8,
+        opacity: 0.2,
       }}>
         
         {/* The Cocteau Star (12 o'clock) */}
@@ -81,8 +81,8 @@ const CocteauClock = () => {
       
 
         {/* Hands */}
-        <div style={handStyle('26%', '8px', '#222', hourAngle)} />
-        <div style={handStyle('42%', '7px', '#222', minuteAngle)} />
+        <div style={handStyle('26%', '8px', '#F7F6F6', hourAngle)} />
+        <div style={handStyle('42%', '7px', '#F1EFEF', minuteAngle)} />
         <div style={handStyle('46%', '5px', '#BB5447', secondAngle, true)} />
       </div>
 
