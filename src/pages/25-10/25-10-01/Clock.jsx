@@ -23,7 +23,6 @@ import fallbackGif from "../../../assets/images/25-10/25-10-01/small.webp";
 
 export default function ImageAnalogClock() {
   const [time, setTime] = useState(new Date());
-  const [ready, setReady] = useState(false);
   const [rotation, setRotation] = useState(0);
 
   // Update time smoothly
@@ -38,33 +37,6 @@ export default function ImageAnalogClock() {
       setRotation((prev) => (prev - 0.1) % 360);
     }, 16);
     return () => clearInterval(rotateInterval);
-  }, []);
-
-  // Preload all images before rendering
-  useEffect(() => {
-    const sources = [
-      one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve,
-      clockFace, fallbackGif
-    ];
-
-    let loaded = 0;
-    sources.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        loaded++;
-        if (loaded === sources.length) {
-          setReady(true); // All assets loaded
-        }
-      };
-      img.onerror = () => {
-        // Even on error, count as loaded (to avoid hang)
-        loaded++;
-        if (loaded === sources.length) {
-          setReady(true);
-        }
-      };
-    });
   }, []);
 
   const clockSize = "min(80vw, 80vh)";
@@ -142,22 +114,6 @@ export default function ImageAnalogClock() {
     `,
     opacity: 0.95,
   });
-
-  // Don’t render until ready
-  if (!ready) {
-    return (
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          height: "100dvh",
-          backgroundColor: "black",
-        }}
-      />
-    );
-  }
 
   return (
     <div
