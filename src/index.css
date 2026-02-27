@@ -14,14 +14,13 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Root element stuff — keep it clean */
 html.fonts-loading body {
   visibility: hidden;
 }
 
 /* Prevent FOUC during React hydration */
-html:not(.dom-loaded):not(.fonts-loaded) body {
+html:not(.dom-loaded) body {
   visibility: hidden;
 }
 
@@ -29,6 +28,8 @@ html:not(.dom-loaded):not(.fonts-loaded) body {
 body {
   transition: visibility 0s linear;
 }
+
+
 
 :root {
   font-synthesis: none;

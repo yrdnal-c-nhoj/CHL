@@ -6,7 +6,6 @@ import stripe3 from '../../../assets/images/25-09/25-09-21/h2o.webp?url'
 import stripe4 from '../../../assets/images/25-09/25-09-21/earth.webp?url'
 
 export default function AnalogClock () {
-  const [ready, setReady] = useState(false)
   const [time, setTime] = useState(new Date())
   const [fontVar] = useState(`font${new Date().getTime()}`)
 
@@ -22,56 +21,24 @@ export default function AnalogClock () {
     document.head.appendChild(styleEl)
 
     const font = new FontFace(fontVar, `url(${cust250921font})`)
-    const images = [stripe1, stripe2, stripe3, stripe4]
-    let loadedCount = 0
-    let fontLoaded = false
-
-    const checkReady = () => {
-      if (fontLoaded && loadedCount === images.length) setReady(true)
-    }
-
     font
       .load()
       .then(() => {
         document.fonts.add(font)
-        fontLoaded = true
-        checkReady()
       })
       .catch(() => {
-        fontLoaded = true
-        checkReady()
+        // Font failed to load, continue anyway
       })
-
-    images.forEach(src => {
-      const img = new Image()
-      img.src = src
-      img.onload = img.onerror = () => {
-        loadedCount++
-        checkReady()
-      }
-    })
-
-    const timeout = setTimeout(() => setReady(true), 5000)
 
     return () => {
       document.head.removeChild(styleEl)
-      clearTimeout(timeout)
     }
   }, [fontVar])
 
   useEffect(() => {
-    if (!ready) return
     const interval = setInterval(() => setTime(new Date()), 16)
     return () => clearInterval(interval)
-  }, [ready])
-
-  if (!ready) {
-    return (
-      <div
-        style={{ width: '100vw', height: '100dvh', backgroundColor: 'black' }}
-      />
-    )
-  }
+  }, [])
 
   const hour = time.getHours() % 12
   const minute = time.getMinutes()

@@ -43,6 +43,7 @@ export default function ClockPage() {
   const [isReady, setIsReady] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(true);
   const [headerOpacity, setHeaderOpacity] = useState(1); // State for header opacity
+  const [allAssetsLoaded, setAllAssetsLoaded] = useState(false);
 
   // Prevent scrolling
   useEffect(() => {
@@ -91,30 +92,34 @@ export default function ClockPage() {
         const Component = mod.default;
 
         // Preload images exported from module
-        // const images = Object.values(mod).filter(
-        //   (v) =>
-        //     typeof v === "string" &&
-        //     (v.endsWith(".jpg") || v.endsWith(".png") || v.endsWith(".webp") || v.endsWith(".gif"))
-        // );
-        // await Promise.all(
-        //   images.map(
-        //     (src) =>
-        //       new Promise((resolve) => {
-        //         const img = new Image();
-        //         img.src = src;
-        //         img.onload = img.onerror = resolve;
-        //       })
-        //   )
-        // );
+        const images = Object.values(mod).filter(
+          (v) =>
+            typeof v === "string" &&
+            (v.endsWith(".jpg") || v.endsWith(".png") || v.endsWith(".webp") || v.endsWith(".gif"))
+        );
+        await Promise.all(
+          images.map(
+            (src) =>
+              new Promise((resolve) => {
+                const img = new Image();
+                img.src = src;
+                img.onload = img.onerror = resolve;
+              })
+          )
+        );
 
         // Wait for fonts to load
-        // await document.fonts.ready;
+        await document.fonts.ready;
 
         setClockComponent(() => Component);
         setIsReady(true);
-
-        // Fade out overlay quickly
-        setTimeout(() => setOverlayVisible(false), 50);
+        
+        // Add extra delay to allow Clock component's internal loading to complete
+        setTimeout(() => {
+          setAllAssetsLoaded(true);
+          // Fade out overlay after setting all assets as loaded
+          setTimeout(() => setOverlayVisible(false), 100);
+        }, 500);
       } catch (err) {
         setPageError(`Failed to load clock: ${err.message}`);
       }
@@ -130,10 +135,10 @@ export default function ClockPage() {
   const nextItem = currentIndex >= 0 && currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
 
   return (
-    <div className={styles.container} style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
+    <div className={`${styles.container} ${allAssetsLoaded ? styles.loaded : ''}`} style={{ width: "100vw", height: "100vh", overflow: "hidden", backgroundColor: "#000" }}>
       {pageError && <div className={styles.error}>{pageError}</div>}
 
-      {ClockComponent && (
+      {allAssetsLoaded && ClockComponent && (
         <>
           <div
             style={{
@@ -154,6 +159,8 @@ export default function ClockPage() {
                 display: "block",
                 width: "100%",
                 height: "100vh",
+                opacity: 0, // Start invisible
+                animation: "fadeIn 0.5s ease-out 0.3s forwards", // Fade in after overlay starts fading
               }}
             >
               <ClockComponent />
@@ -170,7 +177,7 @@ export default function ClockPage() {
         </>
       )}
 
-      {/* Black overlay with quick fade */}
+      {/* Black overlay that covers everything until fully loaded */}
       <div
         style={{
           position: "fixed",
@@ -181,9 +188,17 @@ export default function ClockPage() {
           zIndex: 9999,
           pointerEvents: "none",
           opacity: overlayVisible ? 1 : 0,
-          transition: "opacity 0.2s ease-out",
+          transition: "opacity 0.5s ease-out",
         }}
       />
+
+      {/* Add global styles for fade-in animation */}
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+      `}</style>
     </div>
   );
 }
