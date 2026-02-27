@@ -8,21 +8,22 @@ export default function PixelInverseClock() {
   const canvasRef = useRef(null);
   const videoRef = useRef(null);
   const animationFrameRef = useRef(null);
-  const [fontLoaded, setFontLoaded] = useState(false);
 
-  // Load custom font
+  // Load custom font via CSS injection to prevent FOUC
   useEffect(() => {
-    const font = new FontFace(FONT_FAMILY, `url(${fontFile})`);
-    font
-      .load()
-      .then((loadedFont) => {
-        document.fonts.add(loadedFont);
-        setFontLoaded(true);
-      })
-      .catch((err) => console.error('Custom font failed to load:', err));
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: '${FONT_FAMILY}';
+        src: url('${fontFile}') format('truetype');
+      }
+    `;
+    document.head.appendChild(style);
 
     return () => {
-      document.fonts.delete(font);
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
     };
   }, []);
 
@@ -136,8 +137,6 @@ export default function PixelInverseClock() {
   }, [getInvertedColor]);
 
   useEffect(() => {
-    if (!fontLoaded) return;
-
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -160,7 +159,7 @@ export default function PixelInverseClock() {
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
       window.removeEventListener('resize', resize);
     };
-  }, [fontLoaded, drawClock]);
+  }, [drawClock]);
 
   return (
     <div style={{ backgroundColor: '#A34303', width: '100vw', height: '100vh', overflow: 'hidden' }}>

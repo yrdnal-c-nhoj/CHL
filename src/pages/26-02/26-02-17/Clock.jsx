@@ -96,8 +96,6 @@ const BackgroundGrid = memo(({ windowSize, cellSize }) => {
  */
 const AsteriskClock = () => {
 
-  const [isReady, setIsReady] = useState(false);
-
   const [time, setTime] = useState(new Date());
 
   const [clockChars, setClockChars] = useState(generateChars());
@@ -143,13 +141,6 @@ const AsteriskClock = () => {
     `;
 
     document.head.appendChild(style);
-
-
-    if (document.fonts) {
-      document.fonts.ready.then(() => setIsReady(true));
-    } else {
-      setIsReady(true);
-    }
 
 
     const resize = () => {
@@ -199,9 +190,6 @@ const AsteriskClock = () => {
     return () => clearInterval(interval);
 
   }, []);
-
-
-  if (!isReady) return null;
 
 
   /**

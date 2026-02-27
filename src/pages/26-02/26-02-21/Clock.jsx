@@ -73,7 +73,6 @@ const StaticCollage = memo(({ count }) => {
 export default function RefactoredClock() {
   const [time, setTime] = useState(new Date());
   const [dynamicImages, setDynamicImages] = useState([]);
-  const [fontLoaded, setFontLoaded] = useState(false);
 
   // 1. Clock & Dynamic Image Logic
   useEffect(() => {
@@ -94,13 +93,23 @@ export default function RefactoredClock() {
     return () => clearInterval(ticker);
   }, []);
 
-  // 2. Font Loader
+  // 2. Font Loading via CSS injection to prevent FOUC
   useEffect(() => {
-    const font = new FontFace(CONFIG.FONT_FAMILY, `url(${customFont})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-      setFontLoaded(true);
-    }).catch(() => setFontLoaded(true)); // Fallback
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: '${CONFIG.FONT_FAMILY}';
+        src: url('${customFont}');
+        font-display: swap;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
+    };
   }, []);
 
   // 3. Time Formatting
@@ -123,10 +132,7 @@ export default function RefactoredClock() {
     overflow: 'hidden',
     position: 'relative',
     color: '#fff',
-    fontFamily: fontLoaded ? `'${CONFIG.FONT_FAMILY}', sans-serif` : 'sans-serif',
-    opacity: fontLoaded ? 1 : 0,
-    transition: 'opacity 0.4s ease',
-    visibility: fontLoaded ? 'visible' : 'hidden',
+    fontFamily: `'${CONFIG.FONT_FAMILY}', sans-serif`,
   };
 
   const digitGroupStyle = {

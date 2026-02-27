@@ -75,27 +75,23 @@ Digit.displayName = 'Digit';
 
 // --- Main Component ---
 const DigitalClock = () => {
-  const [fontReady, setFontReady] = useState(false);
   const [time, setTime] = useState(new Date());
 
-  // 1. Font Loading
+  // 1. Font Loading via CSS injection to prevent FOUC
   useEffect(() => {
-    let isMounted = true;
-    const font = new FontFace(CONFIG.FONT_FAMILY, `url(${mazeFont})`);
-    font
-      .load()
-      .then(() => {
-        if (isMounted) {
-          document.fonts.add(font);
-          setFontReady(true);
-        }
-      })
-      .catch(() => {
-        // Font failed to load — render with fallback font anyway
-        if (isMounted) setFontReady(true);
-      });
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: '${CONFIG.FONT_FAMILY}';
+        src: url('${mazeFont}') format('truetype');
+      }
+    `;
+    document.head.appendChild(style);
+
     return () => {
-      isMounted = false;
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
     };
   }, []);
 
@@ -112,8 +108,6 @@ const DigitalClock = () => {
     const s = time.getSeconds().toString().padStart(2, '0');
     return `${h}:${m}:${s}`.split('');
   }, [time]);
-
-  if (!fontReady) return null;
 
   return (
     <main style={styles.container}>
