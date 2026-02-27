@@ -62,9 +62,9 @@ const CocteauClock = () => {
         position: 'relative', zIndex: 10,
         width: 'min(75vw, 75vh)', height: 'min(75vw, 75vh)',
         borderRadius: '52% 48% 51% 49% / 49% 52% 48% 51%', // Organic circle
-        border: '5px solid #E4E9E4',
+        // border: '5px solid #E4E9E4',
               filter: 'url(#cocteau-line)',
-        opacity: 0.2,
+        opacity: 0.7,
       }}>
         
         {/* The Cocteau Star (12 o'clock) */}
