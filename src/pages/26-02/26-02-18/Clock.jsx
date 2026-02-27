@@ -6,19 +6,24 @@ import bg1 from '../../../assets/images/26-02/26-02-18/jel.webp';
 import bg3 from '../../../assets/images/26-02/26-02-18/jelly.webp';
 
 const ImageDisplay = () => {
-  const [fontLoaded, setFontLoaded] = useState(false);
   const [time, setTime] = useState(new Date());
 
-  // Load font via FontFace API
+  // Load font via CSS injection to prevent FOUC
   useEffect(() => {
-    const font = new FontFace('MazeFont', `url(${mazeFont})`);
-    font.load().then(() => {
-      document.fonts.add(font);
-      setFontLoaded(true);
-    }).catch(err => {
-      console.error("Font load failed", err);
-      setFontLoaded(true); // Fallback
-    });
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: 'MazeFont';
+        src: url('${mazeFont}') format('opentype');
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
+    };
   }, []);
 
   useEffect(() => {

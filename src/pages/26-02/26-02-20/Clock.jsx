@@ -98,16 +98,21 @@ export default function ClockTemplate() {
     
     window.addEventListener('resize', checkMobile);
     
-    // Load Forum font using FontFace API
-    const font = new FontFace(FONT_NAME, `url(${forumFont})`);
-    font.load().then(() => {
-      document.fonts.add(font);
-    }).catch(err => {
-      console.error("Forum font load failed", err);
-    });
+    // Load Forum font via CSS injection to prevent FOUC
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: '${FONT_NAME}';
+        src: url('${forumFont}') format('opentype');
+      }
+    `;
+    document.head.appendChild(style);
     
     return () => {
       window.removeEventListener('resize', checkMobile);
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
     };
   }, []);
 
@@ -135,10 +140,7 @@ export default function ClockTemplate() {
     padding: 0,
     boxSizing: 'border-box',
     overflow: 'hidden',
-    // Superior FOUC prevention from 26-02-18 - Simple & Effective
-    opacity: isReady ? 1 : 0,
-    transition: 'opacity 0.3s ease-in-out',
-    visibility: isReady ? 'visible' : 'hidden',
+    // Show immediately - no FOUC prevention needed
   };
 
   const topImageStyle = {
@@ -213,27 +215,6 @@ const clockRowStyle = {
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
   };
-
-  /* =========================
-      LOADING / RENDER
-  ========================= */
-  if (!isReady) {
-    return (
-      <div style={{ 
-        ...containerStyle, 
-        opacity: 1, 
-        visibility: 'visible',
-        backgroundColor: '#000', 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center' 
-      }}>
-        <div style={{ color: '#444', fontSize: '3rem', fontFamily: 'monospace' }}>
-          
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div style={containerStyle}>
