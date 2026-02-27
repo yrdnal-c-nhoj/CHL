@@ -13,29 +13,6 @@ export default function AnalogImageClock() {
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
   const rafRef = useRef(0);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // Track image loading
-  useEffect(() => {
-    const images = [hourHand, minuteHand, secondHand, bgImage, mainBackground, overlayTopLeft, overlayBottomRight];
-    let loadedCount = 0;
-    const totalImages = images.length;
-
-    const handleImageLoad = () => {
-      loadedCount += 1;
-      if (loadedCount === totalImages) {
-        setIsLoaded(true);
-      }
-    };
-
-    // Preload images
-    images.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = handleImageLoad;
-      img.onerror = handleImageLoad; // Count even if an image fails to load
-    });
-  }, []);
 
   // Clock hand animation
   useEffect(() => {
@@ -64,7 +41,7 @@ export default function AnalogImageClock() {
   }, []);
 
   return (
-    <div className={`analog-clock ${isLoaded ? 'loaded' : ''}`}>
+    <div className="analog-clock">
       <style>{`
         .analog-clock {
           position: fixed;
@@ -72,10 +49,6 @@ export default function AnalogImageClock() {
           display: grid;
           place-items: center;
           background: url(${mainBackground}) center/cover no-repeat;
-          opacity: 0;
-          transition: opacity 1s ease-in;
-        }
-        .analog-clock.loaded {
           opacity: 1;
         }
         .background {
@@ -151,8 +124,8 @@ export default function AnalogImageClock() {
       </div>
 
       {/* Overlay images */}
-      <img decoding="async" loading="lazy" src={overlayTopLeft} alt="top left overlay" className="overlay top-left" />
-      <img decoding="async" loading="lazy" src={overlayBottomRight} alt="bottom right overlay" className="overlay bottom-right" />
+      <img decoding="async" loading="lazy" src={overlayTopLeft} alt="top left overlay" className="top-left overlay" />
+      <img decoding="async" loading="lazy" src={overlayBottomRight} alt="bottom right overlay" className="bottom-right overlay" />
     </div>
   );
 }

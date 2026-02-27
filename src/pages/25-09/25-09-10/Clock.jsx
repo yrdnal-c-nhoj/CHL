@@ -15,12 +15,8 @@ const Clock = () => {
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
 
-  const [isReady, setIsReady] = useState(false);
-
   // Clock ticking
   useEffect(() => {
-    if (!isReady) return;
-
     const updateClock = () => {
       const now = new Date();
       const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
@@ -42,36 +38,15 @@ const Clock = () => {
     const interval = setInterval(updateClock, 20);
     updateClock();
     return () => clearInterval(interval);
-  }, [isReady]);
-
-  // Preload font and background
-  useEffect(() => {
-    let fontLoaded = false;
-    let imageLoaded = false;
-
-    const checkReady = () => {
-      if (fontLoaded && imageLoaded) setIsReady(true);
-    };
-
-    // Load font
-    const font = new FontFace("CustomLavaFont_25_09_18", `url(${customLavaFont})`);
-    font.load().then(() => {
-      fontLoaded = true;
-      checkReady();
-    });
-
-    // Load background image
-    const img = new Image();
-    img.src = bgImage;
-    img.onload = () => {
-      imageLoaded = true;
-      checkReady();
-    };
   }, []);
 
-  if (!isReady) {
-    return <div style={{ width: "100vw", height: "100dvh", backgroundColor: "black" }} />;
-  }
+  // Load font
+  useEffect(() => {
+    const font = new FontFace("CustomLavaFont_25_09_18", `url(${customLavaFont})`);
+    font.load().then(() => {
+      document.fonts.add(font);
+    });
+  }, []);
 
   return (
     <div

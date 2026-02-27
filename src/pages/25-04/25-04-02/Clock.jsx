@@ -95,17 +95,6 @@ function DeepSpaceClock() {
   const minute2 = useRef();
   const second1 = useRef();
   const second2 = useRef();
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // Preload images in the background
-  useEffect(() => {
-    const imageUrls = Object.values(images);
-    
-    imageUrls.forEach((src) => {
-      const img = new Image();
-      img.src = typeof src === 'string' ? src : src.default || src;
-    });
-  }, []);
 
   const makeDigit = (target, digitMatrix) => {
     const container = target.current;

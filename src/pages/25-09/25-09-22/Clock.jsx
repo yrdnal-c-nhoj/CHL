@@ -7,27 +7,18 @@ export default function DigitalClockVideo() {
   const [videoFailed, setVideoFailed] = useState(false);
   const [time, setTime] = useState(new Date());
   const [isPhone, setIsPhone] = useState(window.innerWidth <= 768);
-  const [isReady, setIsReady] = useState(false); // prevent FOUC
   const videoRef = useRef(null); // Ref for video element
 
   // Load custom font
   useEffect(() => {
-    console.log("Starting font load for CustomFontmmm");
     const font = new FontFace("CustomFontmmm", `url(${customFontmmm})`);
     font
       .load()
       .then((loadedFont) => {
-        console.log("Font loaded successfully");
         document.fonts.add(loadedFont);
-        return document.fonts.ready;
-      })
-      .then(() => {
-        console.log("Font ready, setting isReady to true");
-        setIsReady(true);
       })
       .catch((error) => {
         console.warn("Custom font failed to load:", error.message);
-        setIsReady(true); // fallback to system font
       });
   }, []);
 
@@ -132,7 +123,7 @@ export default function DigitalClockVideo() {
     justifyContent: "center",
     alignItems: "center",
     fontFamily: "'CustomFontmmm', sans-serif",
-    visibility: isReady ? "visible" : "hidden",
+    visibility: "visible",
   };
 
   const mediaStyle = {
