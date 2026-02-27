@@ -8,47 +8,23 @@ import tickImg from '../../../assets/images/25-09/25-09-06/b3.gif';
 
 const AnalogClock = () => {
   const [time, setTime] = useState(new Date());
-  const [isReady, setIsReady] = useState(false);
 
-  // Preload font + background image
+  // Load font
   useEffect(() => {
-    let fontLoaded = false;
-    let imageLoaded = false;
-
-    const checkReady = () => {
-      if (fontLoaded && imageLoaded) setIsReady(true);
-    };
-
     const font = new FontFace(
       'AnalogClockFont_06_09_2025',
       `url(${font_06_09_2025})`
     );
     font.load().then(() => {
-      fontLoaded = true;
-      checkReady();
+      document.fonts.add(font);
     });
-
-    const img = new Image();
-    img.src = bgImage;
-    img.onload = () => {
-      imageLoaded = true;
-      checkReady();
-    };
   }, []);
 
   // Update clock every second
   useEffect(() => {
-    if (!isReady) return;
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
-  }, [isReady]);
-
-  if (!isReady) {
-    // black screen until everything loaded
-    return (
-      <div style={{ width: '100vw', height: '100dvh', backgroundColor: 'black' }} />
-    );
-  }
+  }, []);
 
   const clockSize = 50; // in vh
   const radius = clockSize / 2;
