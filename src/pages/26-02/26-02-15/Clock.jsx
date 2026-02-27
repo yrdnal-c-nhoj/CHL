@@ -1,200 +1,157 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
-import videoFile from '../../../assets/images/26-02/26-02-15/caldera.mp4';
+import React, { useRef, useEffect, useState } from 'react';
+import backgroundImage from '../../../assets/images/26-02/26-02-15/caldera.webp';
 import fontFile from '../../../assets/fonts/26-02-15-fire.ttf';
 
 const FONT_FAMILY = 'MyClockFont_20251120';
 
 export default function PixelInverseClock() {
   const canvasRef = useRef(null);
-  const videoRef = useRef(null);
-  const animationFrameRef = useRef(null);
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const requestRef = useRef();
+  const [assetsLoaded, setAssetsLoaded] = useState(false);
+  const imageRef = useRef(new Image());
 
-  // Load custom font via CSS injection to prevent FOUC
+  // 1. Assets Loading
   useEffect(() => {
-    const style = document.createElement('style');
-    const cssText = `
-      @font-face {
-        font-family: '${FONT_FAMILY}';
-        src: url('${fontFile}') format('truetype');
-      }
-    `;
-    style.textContent = cssText;
-    document.head.appendChild(style);
-
-    // Wait for font to load before showing content
-    const checkFont = () => {
-      const testFont = '12px ' + FONT_FAMILY;
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      ctx.font = testFont;
-      const metrics = ctx.measureText('test');
-      if (metrics.width > 0) {
-        setFontLoaded(true);
-      } else {
-        setTimeout(checkFont, 100);
-      }
-    };
+    const font = new FontFace(FONT_FAMILY, `url(${fontFile})`);
     
-    checkFont();
+    const loadAssets = async () => {
+      try {
+        const loadedFont = await font.load();
+        document.fonts.add(loadedFont);
+        
+        // Load animated WebP with proper settings
+        await new Promise((resolve, reject) => {
+          imageRef.current.src = backgroundImage;
+          imageRef.current.crossOrigin = 'anonymous'; // Add this for animated WebP
+          imageRef.current.onload = () => {
+            // Force the WebP to start animating
+            imageRef.current.style.display = 'none';
+            document.body.appendChild(imageRef.current);
+            setTimeout(() => {
+              document.body.removeChild(imageRef.current);
+              resolve();
+            }, 100);
+          };
+          imageRef.current.onerror = reject;
+        });
 
-    return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
+        setAssetsLoaded(true);
+      } catch (err) {
+        console.error("Failed to load clock assets:", err);
       }
+    };
+
+    loadAssets();
+    return () => {
+      document.fonts.delete(font);
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
   }, []);
 
-  const getInvertedColor = useCallback((ctx, x, y) => {
-    if (x < 0 || x >= ctx.canvas.width || y < 0 || y >= ctx.canvas.height) {
-      return '#ffffff';
-    }
-    try {
-      // Sample a single pixel at the target coordinate
-      const pixel = ctx.getImageData(Math.floor(x), Math.floor(y), 1, 1).data;
-      return `rgb(${255 - pixel[0]}, ${255 - pixel[1]}, ${255 - pixel[2]})`;
-    } catch (err) {
-      return '#ffffff';
-    }
-  }, []);
+  // 2. Main Render Loop
+  const render = (ctx) => {
+    const { width: w, height: h } = ctx.canvas;
+    const now = new Date();
 
-  const drawClock = useCallback(() => {
-    const canvas = canvasRef.current;
-    const video = videoRef.current;
-    if (!canvas || !video || !fontLoaded) return;
+    // Clear canvas (background is handled by CSS)
+    ctx.clearRect(0, 0, w, h);
+    
+    // Prepare to draw Inverse Elements
+    // We use "difference" blending so anything drawn white (#fff) 
+    // will perfectly invert the pixels underneath it.
+    ctx.save();
+    ctx.globalCompositeOperation = 'difference';
+    ctx.fillStyle = 'white';
+    ctx.strokeStyle = 'white';
+    
+    drawClockUI(ctx, w, h, now);
+    
+    ctx.restore();
+    requestRef.current = requestAnimationFrame(() => render(ctx));
+  };
 
-    const ctx = canvas.getContext('2d', { willReadFrequently: true });
-    if (!ctx) return;
-
-    const w = canvas.width;
-    const h = canvas.height;
+  const drawClockUI = (ctx, w, h, now) => {
     const cx = w / 2;
     const cy = h / 2;
-
-    // --- 1. CENTERED VERTICAL TILING ---
-    if (video.readyState >= video.HAVE_CURRENT_DATA) {
-      const vidAspect = video.videoWidth / video.videoHeight;
-      const screenAspect = w / h;
-
-      // Fit to width to ensure no horizontal gaps
-      let drawW = w;
-      let drawH = w / vidAspect;
-
-      const x = (w - drawW) / 2;
-      const centerY = (h - drawH) / 2;
-
-      // Calculate number of tiles needed to cover top and bottom
-      const tilesNeeded = Math.ceil(h / drawH);
-
-      // Save context state for normal orientation
-      ctx.save();
-      
-      // No rotation - normal orientation
-      // ctx.translate(w / 2, h / 2);
-      // ctx.rotate(0);
-      // ctx.translate(-w / 2, -h / 2);
-
-      for (let i = -tilesNeeded; i <= tilesNeeded; i++) {
-        const yPos = centerY + i * drawH;
-        // Optimization: Only draw if tile is within viewport
-        if (yPos + drawH > 0 && yPos < h) {
-          ctx.drawImage(video, x, yPos, drawW, drawH);
-        }
-      }
-
-      // Restore context state
-      ctx.restore();
-    }
-
-    const now = new Date();
-    const seconds = now.getSeconds();
+    const baseSize = Math.min(w, h);
+    
+    const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
     const minutes = now.getMinutes() + seconds / 60;
     const hours = (now.getHours() % 12) + minutes / 60;
 
-    const baseSize = Math.min(w, h);
-    // Clock geometry
-    const radiusX = w * 0.45;
-    const radiusY = h * 0.08;
-
-    // --- 2. DRAW NUMBERS ---
+    // Numbers
     ctx.font = `${baseSize * 0.08}px "${FONT_FAMILY}"`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
+    
+    const radiusX = w * 0.45;
+    const radiusY = h * 0.15;
 
     for (let n = 1; n <= 12; n++) {
       const angle = (n / 12) * Math.PI * 2 - Math.PI / 2;
-      const x = cx + Math.cos(angle) * radiusX;
-      const y = cy + Math.sin(angle) * radiusY;
-
-      ctx.fillStyle = getInvertedColor(ctx, x, y);
-      ctx.fillText(String(n), x, y);
+      ctx.fillText(n.toString(), cx + Math.cos(angle) * radiusX, cy + Math.sin(angle) * radiusY);
     }
 
-    // --- 3. DRAW HANDS ---
-    const drawHand = (lengthRatio, thickness, angleRad) => {
-      const length = baseSize * lengthRatio;
-      const targetX = cx + Math.cos(angleRad) * length;
-      const targetY = cy + Math.sin(angleRad) * length;
-
-      // Set stroke based on background at the tip of the hand
-      ctx.strokeStyle = getInvertedColor(ctx, targetX, targetY);
-      ctx.lineWidth = thickness;
+    // Hands
+    const drawHand = (angle, length, width) => {
+      ctx.lineWidth = width;
       ctx.lineCap = 'round';
-
       ctx.beginPath();
       ctx.moveTo(cx, cy);
-      ctx.lineTo(targetX, targetY);
+      ctx.lineTo(cx + Math.cos(angle) * length, cy + Math.sin(angle) * length);
       ctx.stroke();
     };
 
-    drawHand(0.08, 8, (hours * Math.PI) / 6 - Math.PI / 2);     // Hour
-    drawHand(0.16, 6, (minutes * Math.PI) / 30 - Math.PI / 2); // Minute
-    drawHand(0.20, 2, (seconds * Math.PI) / 30 - Math.PI / 2); // Second
+    drawHand((hours * Math.PI) / 6 - Math.PI / 2, baseSize * 0.25, 8);   // Hour
+    drawHand((minutes * Math.PI) / 30 - Math.PI / 2, baseSize * 0.35, 5); // Minute
+    drawHand((seconds * Math.PI) / 30 - Math.PI / 2, baseSize * 0.40, 2); // Second
+  };
 
-    animationFrameRef.current = requestAnimationFrame(drawClock);
-  }, [getInvertedColor]);
-
+  // 3. Canvas Setup & Resize
   useEffect(() => {
+    if (!assetsLoaded) return;
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
 
-    const resize = () => {
+    const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
 
-    resize();
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    
+    requestRef.current = requestAnimationFrame(() => render(ctx));
 
-    const video = videoRef.current;
-    if (video && fontLoaded) {
-      video.play().catch((e) => console.log('Autoplay blocked:', e));
-      drawClock();
-    }
-
-    return () => {
-      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
-      window.removeEventListener('resize', resize);
-    };
-  }, [drawClock, fontLoaded]);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [assetsLoaded]);
 
   return (
-    <div style={{ backgroundColor: '#A34303', width: '100vw', height: '100vh', overflow: 'hidden' }}>
+    <div style={{ 
+      backgroundColor: '#000', 
+      width: '100vw', 
+      height: '100vh', 
+      overflow: 'hidden',
+      position: 'relative',
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundSize: 'contain',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'repeat'
+    }}>
       <canvas
         ref={canvasRef}
         style={{
           display: 'block',
           filter: 'saturate(3.5) contrast(1.5)',
           imageRendering: 'pixelated',
+          width: '100%',
+          height: '100%',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          mixBlendMode: 'difference',
+          zIndex: 3
         }}
-      />
-      <video
-        ref={videoRef}
-        src={videoFile}
-        loop
-        muted
-        playsInline
-        style={{ display: 'none' }}
       />
     </div>
   );
