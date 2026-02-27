@@ -8,17 +8,35 @@ export default function PixelInverseClock() {
   const canvasRef = useRef(null);
   const videoRef = useRef(null);
   const animationFrameRef = useRef(null);
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   // Load custom font via CSS injection to prevent FOUC
   useEffect(() => {
     const style = document.createElement('style');
-    style.textContent = `
+    const cssText = `
       @font-face {
         font-family: '${FONT_FAMILY}';
         src: url('${fontFile}') format('truetype');
       }
     `;
+    style.textContent = cssText;
     document.head.appendChild(style);
+
+    // Wait for font to load before showing content
+    const checkFont = () => {
+      const testFont = '12px ' + FONT_FAMILY;
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      ctx.font = testFont;
+      const metrics = ctx.measureText('test');
+      if (metrics.width > 0) {
+        setFontLoaded(true);
+      } else {
+        setTimeout(checkFont, 100);
+      }
+    };
+    
+    checkFont();
 
     return () => {
       if (document.head.contains(style)) {
@@ -43,7 +61,7 @@ export default function PixelInverseClock() {
   const drawClock = useCallback(() => {
     const canvas = canvasRef.current;
     const video = videoRef.current;
-    if (!canvas || !video) return;
+    if (!canvas || !video || !fontLoaded) return;
 
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
@@ -149,17 +167,16 @@ export default function PixelInverseClock() {
     window.addEventListener('resize', resize);
 
     const video = videoRef.current;
-    if (video) {
+    if (video && fontLoaded) {
       video.play().catch((e) => console.log('Autoplay blocked:', e));
+      drawClock();
     }
-
-    drawClock();
 
     return () => {
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
       window.removeEventListener('resize', resize);
     };
-  }, [drawClock]);
+  }, [drawClock, fontLoaded]);
 
   return (
     <div style={{ backgroundColor: '#A34303', width: '100vw', height: '100vh', overflow: 'hidden' }}>
