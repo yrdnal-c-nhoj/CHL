@@ -13,30 +13,10 @@ const MyClock = () => {
     const font = new FontFace('MyFont', `url(${boldFont})`);
     font.load().then(() => {
       document.fonts.add(font);
-      loadImages();
+      drawClock();
     });
 
-    const loadImages = () => {
-      const hourImg = new Image();
-      const minuteImg = new Image();
-      const secondImg = new Image();
-
-      let loadedCount = 0;
-      const checkLoaded = () => {
-        loadedCount++;
-        if (loadedCount === 3) drawClock(hourImg, minuteImg, secondImg);
-      };
-
-      hourImg.onload = checkLoaded;
-      minuteImg.onload = checkLoaded;
-      secondImg.onload = checkLoaded;
-
-      hourImg.src = hourHandImage;
-      minuteImg.src = minuteHandImage;
-      secondImg.src = secondHandImage;
-    };
-
-    const drawClock = (hourImg, minuteImg, secondImg) => {
+    const drawClock = () => {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext('2d');
 
@@ -79,6 +59,14 @@ const MyClock = () => {
           ctx.drawImage(img, -imgW / 2, -imgH * 0.9, imgW, imgH); // base of hand at center
           ctx.restore();
         };
+
+        // Create images on demand since ClockPage preloads them
+        const hourImg = new Image();
+        const minuteImg = new Image(); 
+        const secondImg = new Image();
+        hourImg.src = hourHandImage;
+        minuteImg.src = minuteHandImage;
+        secondImg.src = secondHandImage;
 
         // Customize image hand sizes here:
         drawImageHand(hourImg, (Math.PI / 6) * hour + (Math.PI / 360) * minute, 1.9, 0.5);

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
-  const [isReady, setIsReady] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   const fontVariation = `ultraFont${new Date().getTime()}`;
@@ -31,13 +30,6 @@ const DigitalClock = () => {
     `;
     document.head.appendChild(style);
 
-    const loadAssets = async () => {
-      await new Promise(resolve => setTimeout(resolve, 2500));
-      setIsReady(true);
-    };
-
-    loadAssets();
-
     return () => {
       if (document.head.contains(style)) {
         document.head.removeChild(style);
@@ -46,10 +38,9 @@ const DigitalClock = () => {
   }, [fontVariation]);
 
   useEffect(() => {
-    if (!isReady) return;
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
-  }, [isReady]);
+  }, []);
 
   const formatTime = (date) => {
     let hours = date.getHours();
@@ -122,22 +113,20 @@ const DigitalClock = () => {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    background: isReady
-      ? `
+    background: `
       radial-gradient(ellipse at top left, #667eea 0%, #764ba2 20%, #f093fb 40%, #f5576c 60%, #4facfe 80%, #ec4899 100%),
       radial-gradient(ellipse at top right, #a8edea 0%, #fed6e3 20%, #ffecd2 40%, #fcb69f 60%, #667eea 80%, #f59e0b 100%),
       radial-gradient(ellipse at bottom left, #ff9a9e 0%, #fecfef 20%, #fecfef 40%, #667eea 60%, #764ba2 80%, #8b5cf6 100%),
       radial-gradient(ellipse at bottom right, #667eea 0%, #764ba2 20%, #f093fb 40%, #f5576c 60%, #4facfe 80%, #10b981 100%),
       linear-gradient(45deg, #000000 0%, #1a1a2e 20%, #16213e 40%, #0f0f23 60%, #000000 80%, #1e293b 100%)
-    `
-      : '#000000',
+    `,
     backgroundSize: '500% 500%, 500% 500%, 500% 500%, 500% 500%, 100% 100%',
     backgroundBlendMode: 'overlay, soft-light, color-dodge, multiply, normal',
     margin: 0,
     padding: 0,
     overflow: 'hidden',
     position: 'relative',
-    animation: isReady ? 'aurora 25s ease-in-out infinite, fadeIn 4s ease-out' : 'none',
+    animation: 'aurora 25s ease-in-out infinite, fadeIn 4s ease-out',
   };
 
   const timeContainerStyle = {
@@ -148,7 +137,7 @@ const DigitalClock = () => {
     gap: isMobile ? '1.5rem' : '2rem',
     position: 'relative',
     zIndex: 10,
-    animation: isReady ? 'entrance 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s both' : 'none',
+    animation: 'entrance 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s both',
     transform: 'translateZ(0)',
     perspective: '1200px',
   };
@@ -202,91 +191,6 @@ const DigitalClock = () => {
     animation: 'aurora-sweep 15s ease-in-out infinite',
     zIndex: 2,
   };
-
-  if (!isReady) {
-    return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100dvh',
-          background: 'radial-gradient(circle at center, #1a1a2e 0%, #000000 100%)',
-          margin: 0,
-          padding: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        <div style={{ position: 'relative', width: '8rem', height: '8rem', marginBottom: '2rem' }}>
-          <div
-            style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              border: '4px solid transparent',
-              borderTop: '4px solid rgba(147,51,234,0.9)',
-              borderRight: '4px solid rgba(59,130,246,0.7)',
-              borderRadius: '50%',
-              animation: 'premium-spin 2.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              width: '85%',
-              height: '85%',
-              top: '7.5%',
-              left: '7.5%',
-              border: '3px solid transparent',
-              borderTop: '3px solid rgba(16,185,129,0.9)',
-              borderLeft: '3px solid rgba(245,101,101,0.7)',
-              borderRadius: '50%',
-              animation: 'premium-spin 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite reverse',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              width: '70%',
-              height: '70%',
-              top: '15%',
-              left: '15%',
-              background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%)',
-              borderRadius: '50%',
-              animation: 'pulse 2.5s ease-in-out infinite',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              width: '40%',
-              height: '40%',
-              top: '30%',
-              left: '30%',
-              background: 'radial-gradient(circle, rgba(236,72,153,0.3) 0%, transparent 70%)',
-              borderRadius: '50%',
-              animation: 'pulse 1.5s ease-in-out infinite reverse',
-            }}
-          />
-        </div>
-        <div
-          style={{
-            color: 'rgba(255,255,255,0.8)',
-            fontSize: '1.2rem',
-            fontFamily: 'monospace',
-            letterSpacing: '0.3rem',
-            textTransform: 'uppercase',
-            animation: 'glow-text 2.5s ease-in-out infinite alternate',
-          }}
-        >
-          Initializing Cosmos...
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div style={containerStyle}>
