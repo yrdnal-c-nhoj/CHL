@@ -5,17 +5,24 @@ const ImageDisplay = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    // 1. Load Google Fonts with FOUC prevention
+    // 1. Load Google Fonts with improved FOUC prevention
     const fontLink = document.createElement('link');
     fontLink.href = "https://fonts.googleapis.com/css2?family=Anton&family=Josefin+Sans:wght@400;700&family=Krona+One&family=Roboto+Mono:wght@400;700&family=Playfair+Display:wght@400;700&family=Oswald:wght@400;700&family=Merriweather:wght@400;700&family=Bebas+Neue&display=swap";
     fontLink.rel = "stylesheet";
     fontLink.media = "print"; // Initially load as print to avoid FOUC
+    fontLink.onload = function() {
+      // Switch to all media after load to apply fonts
+      this.media = "all";
+      // Remove fonts-loading class to show content
+      document.documentElement.classList.remove('fonts-loading');
+    };
     document.head.appendChild(fontLink);
 
-    // 2. Switch media to all to activate fonts
-    setTimeout(() => {
+    // 2. Fallback timeout in case font loading fails
+    const fallbackTimeout = setTimeout(() => {
+      document.documentElement.classList.remove('fonts-loading');
       fontLink.media = "all";
-    }, 0);
+    }, 1000);
 
     // 3. THE TICKER: Update state every second
     const timer = setInterval(() => {
@@ -24,6 +31,7 @@ const ImageDisplay = () => {
     
     return () => {
       clearInterval(timer);
+      clearTimeout(fallbackTimeout);
       if (document.head.contains(fontLink)) document.head.removeChild(fontLink);
     };
   }, []);
@@ -67,7 +75,7 @@ const ImageDisplay = () => {
             top: positions[index].top,
             left: positions[index].left,
             transform: `translate(-50%, -50%) rotate(${positions[index].rotate})`,
-            fontFamily: `${positions[index].font}, sans-serif`,
+            fontFamily: `${positions[index].font}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif`,
             fontSize: positions[index].fontSize,
             zIndex: 10,
           }}
@@ -77,10 +85,10 @@ const ImageDisplay = () => {
       ))}
 
       {/* AM / PM Logic */}
-      <div style={{ ...amPmStyle, bottom: '20%', right: '5%', fontSize: '15vw', fontFamily: '"Josefin Sans"', transform: 'rotate(-50deg)' }}>
+      <div style={{ ...amPmStyle, bottom: '20%', right: '5%', fontSize: '15vw', fontFamily: '"Josefin Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', transform: 'rotate(-50deg)' }}>
         {amPm[0]}
       </div>
-      <div style={{ ...amPmStyle, bottom: '10%', right: '10%', fontSize: '4vw', fontFamily: '"Bebas Neue"', transform: 'rotate(10deg)' }}>
+      <div style={{ ...amPmStyle, bottom: '10%', right: '10%', fontSize: '4vw', fontFamily: '"Bebas Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', transform: 'rotate(10deg)' }}>
         {amPm[1]}
       </div>
     </div>

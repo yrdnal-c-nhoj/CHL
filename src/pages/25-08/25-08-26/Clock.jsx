@@ -7,39 +7,17 @@ import bg3 from "../../../assets/images/25-08/25-08-26/root.webp"; // top foregr
 
 export default function DigitalClock() {
   const [time, setTime] = useState(getTimeParts);
-  const [isReady, setIsReady] = useState(false);
 
-  // Preload font and images
+  // Load font for this specific clock
   useEffect(() => {
-    let fontLoaded = false;
-    let imagesLoaded = 0;
-
-    const checkReady = () => {
-      if (fontLoaded && imagesLoaded === 3) setIsReady(true);
-    };
-
-    // Load font
     const font = new FontFace("ClockFontScoped_18_09_25", `url(${clockFont})`);
     font.load().then((loaded) => {
       document.fonts.add(loaded);
-      fontLoaded = true;
-      checkReady();
-    });
-
-    // Preload images
-    [bg0, bg1, bg3].forEach((src) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        imagesLoaded++;
-        checkReady();
-      };
     });
   }, []);
 
   // Clock ticking
   useEffect(() => {
-    if (!isReady) return;
     const tick = () => setTime(getTimeParts());
     const now = Date.now();
     const delay = 1000 - (now % 1000);
@@ -57,12 +35,7 @@ export default function DigitalClock() {
         window.__digitalClockIntervals.clear();
       }
     };
-  }, [isReady]);
-
-  if (!isReady) {
-    // Black screen while font/images load
-    return <div style={{ width: "100vw", height: "100dvh", backgroundColor: "black" }} />;
-  }
+  }, []);
 
   const styles = {
     root: {

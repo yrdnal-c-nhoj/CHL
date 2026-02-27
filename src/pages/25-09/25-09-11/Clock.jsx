@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
 import medievalFont from '../../../assets/fonts/25-09-11-ren.ttf';
 import backgroundImage from '../../../assets/images/25-09/25-09-11/ren.jpg';
 import MedievalSVG from '../../../assets/images/25-09/25-09-11/MedievalSVG.jsx';
 
 const MedievalBanner = () => {
   const [time, setTime] = useState(new Date());
-  const [isReady, setIsReady] = useState(false);
 
   // Clock ticking
   useEffect(() => {
@@ -14,30 +12,12 @@ const MedievalBanner = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Preload font, background image, and optionally SVG
+  // Load font for this specific clock
   useEffect(() => {
-    let fontLoaded = false;
-    let imageLoaded = false;
-
-    const checkReady = () => {
-      if (fontLoaded && imageLoaded) setIsReady(true);
-    };
-
-    // Load font
     const font = new FontFace('ClockFont_25_09_18', `url(${medievalFont})`);
     font.load().then(() => {
-      document.fonts.add(font); // Make sure it’s usable in the page
-      fontLoaded = true;
-      checkReady();
+      document.fonts.add(font);
     });
-
-    // Load background image
-    const img = new Image();
-    img.src = backgroundImage;
-    img.onload = () => {
-      imageLoaded = true;
-      checkReady();
-    };
   }, []);
 
   const formatTime = (date) => {
@@ -47,9 +27,6 @@ const MedievalBanner = () => {
   };
 
   const { hours, minutes } = formatTime(time);
-
-  // Show nothing until everything is loaded
-  if (!isReady) return null;
 
   return (
     <div

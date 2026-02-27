@@ -14,7 +14,6 @@ export default function Clock() {
     const font = new FontFace('bak', `url(${bakFont})`);
     font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
-      document.body.classList.add('font-loaded');
     });
 
     // --- Clock update loop ---
@@ -183,9 +182,6 @@ export default function Clock() {
       {/* Embedded CSS for spin animation */}
       <style>
         {`
-          body { visibility: hidden; }
-          body.font-loaded { visibility: visible; }
-
           @keyframes spin3D {
             0% {
               transform: translate(-50%, -50%) scaleX(-1) rotateX(0deg) rotateY(0deg) rotateZ(0deg);

@@ -3,6 +3,8 @@ import cocteauVideo from '../../../assets/images/26-02/26-02-25/cocteau.mp4';
 import starWebp from '../../../assets/images/26-02/26-02-25/star.webp';
 
 const CocteauClock = () => {
+  // Initializing with new Date() directly ensures the hands are 
+  // positioned correctly on the very first frame.
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -18,28 +20,25 @@ const CocteauClock = () => {
   const minuteAngle = minutes * 6 + seconds * 0.1;
   const hourAngle = hours * 30 + minutes * 0.5;
 
-  // Cocteau-esque styles
-  const handStyle = (length, width, color, angle, isSecond = false) => ({
+  const handStyle = (length, width, color, angle) => ({
     position: 'absolute',
     bottom: '50%',
     left: '50%',
     width: width,
     height: length,
     backgroundColor: color,
-    // Slightly tapered/organic look
     borderRadius: '50% 50% 2px 2px',
     transform: `translateX(-50%) rotate(${angle}deg)`,
     transformOrigin: '50% 100%',
-    filter: 'url(#cocteau-line)', // Applies the "hand-drawn" wobble
-    transition: isSecond ? 'none' : 'transform 0.5s cubic-bezier(0.4, 2.08, 0.55, 0.44)',
-    zIndex: isSecond ? 15 : 12,
+    filter: 'url(#cocteau-line)',
+    // Removed conditional transitions to prevent "winding" flash on load
+    zIndex: 12,
   });
 
   return (
     <div style={{
       width: '100vw', height: '100dvh', position: 'relative',
       overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center',
-    //   backgroundColor: '#f4f1ea' // Parchment background
     }}>
       {/* Background Video */}
       <video
@@ -55,7 +54,7 @@ const CocteauClock = () => {
         <source src={cocteauVideo} type="video/mp4" />
       </video>
 
-      {/* SVG Filters (The Secret Sauce) */}
+      {/* SVG Filters */}
       <svg style={{ position: 'absolute', width: 0, height: 0 }}>
         <filter id="cocteau-line">
           <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise" />
@@ -67,9 +66,8 @@ const CocteauClock = () => {
       <div style={{
         position: 'relative', zIndex: 10,
         width: 'min(75vw, 75vh)', height: 'min(75vw, 75vh)',
-        borderRadius: '52% 48% 51% 49% / 49% 52% 48% 51%', // Organic circle
-        // border: '5px solid #E4E9E4',
-              filter: 'url(#cocteau-line)',
+        borderRadius: '52% 48% 51% 49% / 49% 52% 48% 51%',
+        filter: 'url(#cocteau-line)',
         opacity: 0.7,
       }}>
         
@@ -83,16 +81,11 @@ const CocteauClock = () => {
           backgroundPosition: 'center'
         }} />
 
-
-      
-
         {/* Hands */}
         <div style={handStyle('26%', '8px', '#F7F6F6', hourAngle)} />
         <div style={handStyle('42%', '7px', '#F1EFEF', minuteAngle)} />
-        <div style={handStyle('46%', '5px', '#E6DE3F', secondAngle, true)} />
+        <div style={{...handStyle('46%', '5px', '#E6DE3F', secondAngle), zIndex: 15}} />
       </div>
-
-   
     </div>
   );
 };
