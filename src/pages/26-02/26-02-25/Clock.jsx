@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import cocteauGif from '../../../assets/images/26-02/26-02-25/cocteau.webp';
+import cocteauVideo from '../../../assets/images/26-02/26-02-25/cocteau.mp4';
 import starWebp from '../../../assets/images/26-02/26-02-25/star.webp';
 
 const CocteauClock = () => {
@@ -41,13 +41,19 @@ const CocteauClock = () => {
       overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center',
     //   backgroundColor: '#f4f1ea' // Parchment background
     }}>
-      {/* Background Image with slight opacity to feel like a sketch overlay */}
-      <div style={{
-        position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-        backgroundImage: `url(${cocteauGif})`,
-        backgroundSize: 'cover', backgroundPosition: 'center',
-        opacity: 0.9, zIndex: 1
-      }} />
+      {/* Background Video */}
+      <video
+        style={{
+          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+          objectFit: 'cover', opacity: 0.9, zIndex: 1
+        }}
+        autoPlay
+        loop
+        muted
+        playsInline
+      >
+        <source src={cocteauVideo} type="video/mp4" />
+      </video>
 
       {/* SVG Filters (The Secret Sauce) */}
       <svg style={{ position: 'absolute', width: 0, height: 0 }}>
@@ -83,7 +89,7 @@ const CocteauClock = () => {
         {/* Hands */}
         <div style={handStyle('26%', '8px', '#F7F6F6', hourAngle)} />
         <div style={handStyle('42%', '7px', '#F1EFEF', minuteAngle)} />
-        <div style={handStyle('46%', '5px', '#BB5447', secondAngle, true)} />
+        <div style={handStyle('46%', '5px', '#E6DE3F', secondAngle, true)} />
       </div>
 
    
