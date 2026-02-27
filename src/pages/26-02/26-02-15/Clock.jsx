@@ -85,7 +85,7 @@ export default function PixelInverseClock() {
     ctx.textBaseline = 'middle';
     
     const radiusX = w * 0.45;
-    const radiusY = h * 0.15;
+    const radiusY = h * 0.1;
 
     for (let n = 1; n <= 12; n++) {
       const angle = (n / 12) * Math.PI * 2 - Math.PI / 2;
@@ -102,9 +102,9 @@ export default function PixelInverseClock() {
       ctx.stroke();
     };
 
-    drawHand((hours * Math.PI) / 6 - Math.PI / 2, baseSize * 0.25, 8);   // Hour
-    drawHand((minutes * Math.PI) / 30 - Math.PI / 2, baseSize * 0.35, 5); // Minute
-    drawHand((seconds * Math.PI) / 30 - Math.PI / 2, baseSize * 0.40, 2); // Second
+    drawHand((hours * Math.PI) / 6 - Math.PI / 2, baseSize * 0.3, 8);   // Hour
+    drawHand((minutes * Math.PI) / 30 - Math.PI / 2, baseSize * 0.5, 5); // Minute
+    drawHand((seconds * Math.PI) / 30 - Math.PI / 2, baseSize * 2.90, 2); // Second
   };
 
   // 3. Canvas Setup & Resize
