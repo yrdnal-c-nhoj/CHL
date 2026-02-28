@@ -241,28 +241,14 @@ const Clock = () => {
       `}</style>
       <div style={gridStyle}>
         {Array.from({ length: totalCells }, (_, index) => (
-          <div key={index} style={cellStyle}>
-            <img 
-              src={getAssignedImage(index)} 
-              alt="Grid image" 
-              style={imageStyle(index)}
-              onLoad={() => handleImageLoad(index)}
-            />
-          </div>
-        ))}
-        <img 
-          src="/src/assets/images/26-02/26-02-26/f.webp" 
-          alt="Corner image" 
-          style={cornerImageStyle}
-          onLoad={handleCornerImageLoad}
-          onError={handleCornerImageError}
-        />
-        <div style={clockStyle}>
-          {formatTime(currentTime)}
-        </div>
-      </div>
+      onError={handleCornerImageError}
+    />
+    <div style={clockStyle}>
+      {formatTime(currentTime)}
     </div>
-  );
+  </div>
+</div>
+);
 }
 
 export default Clock;
