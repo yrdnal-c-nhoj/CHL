@@ -1,136 +1,166 @@
 import React, { useState, useEffect } from 'react';
-import { materialOpacity } from 'three/src/nodes/accessors/MaterialNode.js';
+import abuVideo from '../../../assets/images/26-02/26-02-27/abu.mp4';
 
 const Clock = () => {
-  const [videoSrc, setVideoSrc] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    const loadVideo = async () => {
-      try {
-        const videoModules = import.meta.glob('/src/assets/images/26-02/26-02-27/*.{mp4,MP4}', { eager: true });
-        const videoUrls = Object.values(videoModules).map(module => module.default);
-        if (videoUrls.length > 0) setVideoSrc(videoUrls[0]);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error loading video:', error);
-        setLoading(false);
-      }
-    };
-    loadVideo();
-  }, []);
+  const seconds = time.getSeconds();
+  const minutes = time.getMinutes();
+  const hours = time.getHours() % 12;
 
-  const getClockAngles = () => {
-    const hours = currentTime.getHours() % 12;
-    const minutes = currentTime.getMinutes();
-    const seconds = currentTime.getSeconds();
-    return {
-      hourAngle: (hours * 30) + (minutes * 0.5),
-      minuteAngle: (minutes * 6),
-      secondAngle: (seconds * 6)
-    };
+  const egyptianNumbers = {
+    1: '𓏺', 2: '𓏻', 3: '𓏼', 4: '𓏽', 5: '𓏾', 6: '𓏿', 7: '𓐀', 8: '𓐁', 9: '𓐂', 10: '𓎆', 11: '𓎆𓏺', 12: '𓎆𓏻'
   };
 
-  const { hourAngle, minuteAngle, secondAngle } = getClockAngles();
+  const getEgyptianNumber = (num) => egyptianNumbers[num] || num.toString();
 
-  // --- Styles ---
-  const containerStyle = {
-    width: '100vw',
-    height: '100dvh',
-    background: '#000',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    overflow: 'hidden'
-  };
+  const secondAngle = seconds * 6;
+  const minuteAngle = minutes * 6 + seconds * 0.1;
+  const hourAngle = hours * 30 + minutes * 0.5;
 
-  const clockFaceStyle = {
-    position: 'absolute',
-    width: '320px',
-    height: '320px',
-    borderRadius: '50%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-    opacity: '0.2'
-  };
-
-  // Radially aligned digits
-  const digitStyle = (num) => {
-    const rotation = num * 30; // 30 degrees per hour
-    return {
-      position: 'absolute',
-      height: '100%', // Full height of the clock face to rotate from center
-      paddingTop: '10px', // Distance from the outer edge
-      display: 'flex',
-      justifyContent: 'center',
-      transform: `rotate(${rotation}deg)`,
-      color: '#fff',
-      fontFamily: "'Peralta', serif",
-      fontSize: '28px',
-      textShadow: '0 2px 10px rgba(0,0,0,0.8)'
-    };
-  };
-
-  const handStyle = (angle, length, width, color) => ({
+  /**
+   * Enhanced Egyptian Hand Styling
+   * - Uses clip-path for "Spear/Scepter" shapes
+   * - Adds a "heavy" transition for a mechanical feel
+   */
+  const handStyle = (length, width, color, angle, type) => ({
     position: 'absolute',
     bottom: '50%',
     left: '50%',
-    width: `${width}px`,
-    height: `${length}px`,
+    width: width,
+    height: length,
     backgroundColor: color,
-    borderRadius: '10px',
-    transformOrigin: 'bottom center',
     transform: `translateX(-50%) rotate(${angle}deg)`,
+    transformOrigin: 'bottom center',
+    filter: 'url(#cocteau-line)',
+    zIndex: 12,
+    transition: type === 'second' ? 'none' : 'transform 0.5s cubic-bezier(0.4, 2.1, 0.5, 0.5)',
+    boxShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
+    // Shape logic: Tapered for minutes, looped for hours
+    clipPath: type === 'second' 
+      ? 'polygon(50% 0%, 100% 100%, 0% 100%)' 
+      : 'polygon(15% 100%, 85% 100%, 100% 20%, 50% 0%, 0% 20%)',
   });
 
-  if (loading || !videoSrc) {
-    return (
-      <div style={containerStyle}>
-        <div style={{ color: 'white', fontFamily: 'monospace' }}>Loading...</div>
-      </div>
-    );
-  }
-
   return (
-    <div style={containerStyle}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Peralta&display=swap');
-      `}</style>
-
-      <video
-        src={videoSrc}
-        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-        autoPlay loop muted playsInline
-      />
+    <div style={{
+      width: '100vw', 
+      height: '100dvh', 
+      position: 'relative',
+      overflow: 'hidden', 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      backgroundColor: '#000'
+    }}>
+      <style dangerouslySetInnerHTML={{__html: `
+        @font-face {
+          font-family: 'Peralta';
+          src: url('/src/assets/fonts/Peralta-Regular.ttf') format('truetype');
+        }
+      `}} />
       
-      <div style={clockFaceStyle}>
-        {/* Radial Digits */}
-        {[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num) => (
-          <div key={num} style={digitStyle(num)}>
-            {num}
-          </div>
-        ))}
+      {/* Background Video (Untouched) */}
+      <video
+        style={{
+          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+          objectFit: 'cover', opacity: 1.0, zIndex: 1
+        }}
+        autoPlay loop muted playsInline
+      >
+        <source src={abuVideo} type="video/mp4" />
+      </video>
+      
+      {/* SVG Filters */}
+      <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+        <filter id="cocteau-line">
+          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" />
+        </filter>
+      </svg>
+      
+      <div style={{
+        position: 'relative', 
+        zIndex: 10,
+        width: 'min(75vw, 75vh)', 
+        height: 'min(75vw, 75vh)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
         
-        {/* Hands */}
-        <div style={handStyle(hourAngle, 80, 8, '#fff')} />
-        <div style={handStyle(minuteAngle, 120, 5, '#fff')} />
-        <div style={handStyle(secondAngle, 140, 2, '#ff4444')} />
+
+
+        {/* Egyptian Numerals */}
+        {[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num, i) => {
+          const rotation = i * 30;
+          return (
+            <div
+              key={num}
+              style={{
+                position: 'absolute',
+                height: '130%', 
+                width: '30px',
+                textAlign: 'center',
+                transform: `rotate(${rotation}deg)`,
+                fontFamily: "'Peralta', sans-serif",
+                color: '#E2C264', // Golden hue
+                fontSize: '5vh',
+                opacity: 0.5,
+                textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
+                pointerEvents: 'none'
+              }}
+            >
+              <div style={{ transform: `rotate(-${rotation}deg)` }}>
+                {getEgyptianNumber(num)}
+              </div>
+            </div>
+          );
+        })}
         
-        {/* Center Pin */}
+        {/* --- CLOCK HANDS --- */}
+
+        {/* Hour Hand: The "Was-Scepter" Inspired (Egyptian Blue/Turquoise) */}
+        <div style={{...handStyle('28%', '16px', '#E2C264', hourAngle, 'hour'), opacity: 0.2}}>
+            {/* Symbolic "Ankh" loop for the hour hand tip */}
+            <div style={{
+                position: 'absolute', top: '-18px', left: '50%', transform: 'translateX(-50%)',
+                width: '24px', height: '24px', border: '4px solid #E2C264', borderRadius: '50%'
+            }} />
+        </div>
+
+        {/* Minute Hand: The "Spear" (Burnished Gold) */}
+        <div style={{...handStyle('42%', '10px', '#E2C264', minuteAngle, 'minute'), opacity: 0.2}} />
+
+        {/* Second Hand: The "Needle" (Limestone White) */}
+        <div style={{...handStyle('48%', '3px', '#E2C264', secondAngle, 'second'), opacity: 0.2}} />
+
+        {/* Center Pin: The Sun Disc of Ra */}
         <div style={{
-          width: '14px', height: '14px', borderRadius: '50%', 
-          backgroundColor: '#fff', position: 'absolute', zIndex: 6,
-          boxShadow: '0 0 10px rgba(0,0,0,0.5)'
+          position: 'absolute',
+          width: '28px', height: '28px',
+          background: 'radial-gradient(circle, #F3F2EB 0%, #E2C264 40%, #86641A 100%)',
+          borderRadius: '50%',
+          zIndex: 25,
+          border: '1px solid rgba(0,0,0,0.5)',
+          boxShadow: '0 0 15px rgba(226, 194, 100, 0.6)',
+          // opacity: 0.9
         }} />
+
+        {/* Decorative Inner Ring */}
+        <div style={{
+            position: 'absolute',
+            width: '15%', height: '15%',
+            border: '1px dashed rgba(226, 194, 100, 0.12)',
+            borderRadius: '50%',
+            zIndex: 5
+        }} />
+
       </div>
     </div>
   );
