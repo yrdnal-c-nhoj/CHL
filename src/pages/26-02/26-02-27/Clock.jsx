@@ -111,7 +111,7 @@ const Clock = () => {
                 fontFamily: "'Peralta', sans-serif",
                 color: '#E2C264', // Golden hue
                 fontSize: '5vh',
-                opacity: 0.5,
+                opacity: 0.8,
                 textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
                 pointerEvents: 'none'
               }}
