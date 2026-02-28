@@ -9,6 +9,7 @@ import Manifesto from './Manifesto';
 import About from './About';
 import Today from './Today';
 import Contact from './Contact';
+import ImageGridPage from './pages/ImageGridPage';
 import { pageview } from './analytics';
 
 const BASE_URL = 'https://www.cubistheart.com';
@@ -58,6 +59,7 @@ const App = () => {
           <Route path="/manifesto" element={<Manifesto />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/today" element={<Today />} />
+          <Route path="/image-grid" element={<ImageGridPage />} />
           <Route path="/index.html" element={<Navigate to="/" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

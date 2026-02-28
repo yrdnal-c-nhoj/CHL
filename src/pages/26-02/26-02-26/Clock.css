@@ -1,0 +1,144 @@
+.clock-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.image-grid {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.grid-cell {
+  position: relative;
+  overflow: hidden;
+  background: #111;
+  animation: rollIn 0.6s ease-out forwards;
+  opacity: 0;
+  transform: scale(0) rotate(180deg);
+  margin: 0;
+  padding: 0;
+}
+
+.grid-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.grid-cell:hover .grid-image {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
+
+@keyframes rollIn {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(180deg) translate(-50%, -50%);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2) rotate(90deg) translate(-25%, -25%);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg) translate(0, 0);
+  }
+}
+
+.grid-info {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 12px;
+  z-index: 10;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+@font-face {
+  font-family: 'DateFont';
+  src: url('/src/assets/fonts/26-02-26-fu.ttf') format('truetype');
+}
+
+.digital-clock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-family: 'DateFont', 'Courier New', monospace;
+  font-size: 48px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px 30px;
+  border-radius: 10px;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  letter-spacing: 2px;
+}
+
+@media (max-width: 768px) {
+  .digital-clock {
+    font-size: 32px;
+    padding: 15px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .digital-clock {
+    font-size: 24px;
+    padding: 10px 15px;
+  }
+}
+
+.clock-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #000;
+  color: white;
+  font-family: monospace;
+  font-size: 18px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .grid-cell {
+    width: 80px !important;
+    height: 80px !important;
+  }
+  
+  .grid-info {
+    font-size: 10px;
+    padding: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-cell {
+    width: 60px !important;
+    height: 60px !important;
+  }
+}
