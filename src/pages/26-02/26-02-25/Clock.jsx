@@ -82,9 +82,9 @@ const CocteauClock = () => {
         }} />
 
         {/* Hands */}
-        <div style={handStyle('26%', '8px', '#F7F6F6', hourAngle)} />
-        <div style={handStyle('42%', '7px', '#F1EFEF', minuteAngle)} />
-        <div style={{...handStyle('46%', '5px', '#E6DE3F', secondAngle), zIndex: 15}} />
+        <div style={handStyle('26%', '8px', '#8BC7D0', hourAngle)} />
+        <div style={handStyle('42%', '7px', '#E2C264', minuteAngle)} />
+        <div style={{...handStyle('46%', '5px', '#F3F2EB', secondAngle), zIndex: 15}} />
       </div>
     </div>
   );
