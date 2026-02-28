@@ -236,7 +236,7 @@ const Clock = () => {
       <style>{`
         @font-face {
           font-family: 'DateFont';
-          src: url('/src/assets/fonts/26-02-26-fu.ttf') format('truetype');
+          src: url('/26-02-26-fu.ttf') format('truetype');
         }
       `}</style>
       <div style={gridStyle}>
