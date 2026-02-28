@@ -98,7 +98,7 @@ const Clock = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    color: '#82AC52',
+    color: '#557F25',
     fontFamily: "'DateFont', monospace",
     fontSize: '11vh',
     fontWeight: 'bold',
@@ -106,7 +106,7 @@ const Clock = () => {
     letterSpacing: '-1vh',
     whiteSpace: 'nowrap',
     pointerEvents: 'none', // Allows clicking through text
-    textShadow: '0 0 20px rgb(23, 22, 22)'
+    textShadow: '-6px 0 rgb(244, 240, 240), 6px 0 rgb(28, 3, 3),  0 0 20px rgb(244, 240, 240)'
   };
 
   if (imageAssignments.length === 0) return <div style={{background:'#000', height:'100vh'}} />;
@@ -134,7 +134,7 @@ const Clock = () => {
 
       <img 
         src="/26-02-26-f.webp" 
-        style={{ position: 'absolute', top: 0, left: 0, width: '200px', height: '200px', zIndex: 11 }}
+        style={{ position: 'absolute', top: 0, left: 0, width: '30vh', height: '30vh', zIndex: 11, filter: 'drop-shadow(-11px 0 rgb(244, 240, 240)) drop-shadow(11px 0 rgb(28, 3, 3))' }}
         alt="corner"
       />
 
