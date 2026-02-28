@@ -98,7 +98,7 @@ const Clock = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    color: '#58AC52',
+    color: '#82AC52',
     fontFamily: "'DateFont', monospace",
     fontSize: '11vh',
     fontWeight: 'bold',
