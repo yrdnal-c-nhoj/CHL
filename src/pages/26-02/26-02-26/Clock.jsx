@@ -6,6 +6,26 @@ const Clock = () => {
   const [loadedImages, setLoadedImages] = useState(new Set());
   const [imageAssignments, setImageAssignments] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [cornerImageLoaded, setCornerImageLoaded] = useState(false);
+
+  const cornerImageStyle = {
+    position: 'absolute',
+    top: '20px',
+    left: '20px',
+    width: '200px',
+    height: '200px',
+    objectFit: 'cover',
+    zIndex: 15,
+  };
+
+  const handleCornerImageLoad = () => {
+    console.log('Corner image loaded successfully');
+    setCornerImageLoaded(true);
+  };
+
+  const handleCornerImageError = () => {
+    console.error('Corner image failed to load');
+  };
 
   // Update clock every second
   useEffect(() => {
@@ -201,7 +221,7 @@ const Clock = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    color: '#CEEACE',
+    color: '#58AC52',
     fontFamily: "'DateFont', 'Courier New', monospace",
     fontSize: '11vh',
     fontWeight: 'bold',
@@ -209,16 +229,6 @@ const Clock = () => {
     letterSpacing: '-1vh',
     whiteSpace: 'nowrap',
     textAlign: 'center'
-  };
-
-  const cornerImageStyle = {
-    position: 'absolute',
-    top: '20px',
-    left: '20px',
-    width: '30vh',
-    height: '30vh',
-    objectFit: 'cover',
-    zIndex: 15,
   };
 
   return (
@@ -230,45 +240,29 @@ const Clock = () => {
         }
       `}</style>
       <div style={gridStyle}>
-        {Array.from({ length: totalCells }).map((_, index) => {
-          const row = Math.floor(index / gridSize.cols);
-          const col = index % gridSize.cols;
-          const distance = getDistanceFromCenter(row, col);
-          const delay = distance * 0.1; // Delay based on distance from center
-          const imageUrl = getAssignedImage(index);
-          
-          return (
-            <div
-              key={index}
-              style={{
-                ...cellStyle,
-                animationDelay: `${delay}s`,
-                width: '100px',
-                height: '100px'
-              }}
-            >
-              {imageUrl && (
-                <img
-                  src={imageUrl}
-                  alt={`Grid cell ${index}`}
-                  style={imageStyle(index)}
-                  onLoad={() => handleImageLoad(index)}
-                />
-              )}
-            </div>
-          );
-        })}
-      </div>
-      <img 
-        src="/src/assets/images/26-02/26-02-26/f.webp" 
-        alt="Corner image" 
-        style={cornerImageStyle}
-      />
-      <div style={clockStyle}>
-        {formatTime(currentTime)}
+        {Array.from({ length: totalCells }, (_, index) => (
+          <div key={index} style={cellStyle}>
+            <img 
+              src={getAssignedImage(index)} 
+              alt="Grid image" 
+              style={imageStyle(index)}
+              onLoad={() => handleImageLoad(index)}
+            />
+          </div>
+        ))}
+        <img 
+          src="/src/assets/images/26-02/26-02-26/f.webp" 
+          alt="Corner image" 
+          style={cornerImageStyle}
+          onLoad={handleCornerImageLoad}
+          onError={handleCornerImageError}
+        />
+        <div style={clockStyle}>
+          {formatTime(currentTime)}
+        </div>
       </div>
     </div>
   );
-};
+}
 
 export default Clock;
