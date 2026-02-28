@@ -62,19 +62,20 @@ const Clock = () => {
     }
   }, [images, gridSize]);
 
-  // Helper: Format Time (e.g., 5:04 p.m.)
+  // Helper: Format Time (e.g., 5:04p.m.)
   const formatTime = (date) => {
     let hours = date.getHours();
     const minutes = date.getMinutes();
     const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
+    
     hours = hours % 12 || 12; 
-    return `${hours}:${minutes < 10 ? '0' : ''}${minutes} ${ampm}`;
+    return `${hours}:${minutes < 10 ? '0' : ''}${minutes}\u2009${ampm}`;
   };
 
   // Styles
   const containerStyle = {
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     overflow: 'hidden',
     background: '#000',
     position: 'relative'
@@ -82,6 +83,10 @@ const Clock = () => {
 
   const gridStyle = {
     display: 'grid',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     gridTemplateColumns: `repeat(${gridSize.cols}, 100px)`,
     gridTemplateRows: `repeat(${gridSize.rows}, 100px)`,
     width: `${gridSize.cols * 100}px`,
@@ -99,8 +104,9 @@ const Clock = () => {
     fontWeight: 'bold',
     zIndex: 10,
     letterSpacing: '-1vh',
-    pointerEvents: 'none', // Allows clicking through the text
-    textShadow: '0 0 20px rgba(0,0,0,0.8)'
+    whiteSpace: 'nowrap',
+    pointerEvents: 'none', // Allows clicking through text
+    textShadow: '0 0 20px rgb(23, 22, 22)'
   };
 
   if (imageAssignments.length === 0) return <div style={{background:'#000', height:'100vh'}} />;
@@ -128,7 +134,7 @@ const Clock = () => {
 
       <img 
         src="/26-02-26-f.webp" 
-        style={{ position: 'absolute', top: 0, left: 0, width: '100px', height: '100px', zIndex: 11 }}
+        style={{ position: 'absolute', top: 0, left: 0, width: '200px', height: '200px', zIndex: 11 }}
         alt="corner"
       />
 
