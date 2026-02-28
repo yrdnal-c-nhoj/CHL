@@ -127,7 +127,7 @@ const Clock = () => {
       </div>
 
       <img 
-        src="/src/assets/images/26-02/26-02-26/f.webp" 
+        src="/26-02-26-f.webp" 
         style={{ position: 'absolute', top: 0, left: 0, width: '100px', height: '100px', zIndex: 11 }}
         alt="corner"
       />
