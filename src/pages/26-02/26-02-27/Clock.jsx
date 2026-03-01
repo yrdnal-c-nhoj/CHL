@@ -23,11 +23,6 @@ const Clock = () => {
   const minuteAngle = minutes * 6 + seconds * 0.1;
   const hourAngle = hours * 30 + minutes * 0.5;
 
-  /**
-   * Enhanced Egyptian Hand Styling
-   * - Uses clip-path for "Spear/Scepter" shapes
-   * - Adds a "heavy" transition for a mechanical feel
-   */
   const handStyle = (length, width, color, angle, type) => ({
     position: 'absolute',
     bottom: '50%',
@@ -37,11 +32,9 @@ const Clock = () => {
     backgroundColor: color,
     transform: `translateX(-50%) rotate(${angle}deg)`,
     transformOrigin: 'bottom center',
-    filter: 'url(#cocteau-line)',
     zIndex: 12,
     transition: type === 'second' ? 'none' : 'transform 0.5s cubic-bezier(0.4, 2.1, 0.5, 0.5)',
     boxShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
-    // Shape logic: Tapered for minutes, looped for hours
     clipPath: type === 'second' 
       ? 'polygon(50% 0%, 100% 100%, 0% 100%)' 
       : 'polygon(15% 100%, 85% 100%, 100% 20%, 50% 0%, 0% 20%)',
@@ -65,7 +58,6 @@ const Clock = () => {
         }
       `}} />
       
-      {/* Background Video (Untouched) */}
       <video
         style={{
           position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
@@ -75,15 +67,7 @@ const Clock = () => {
       >
         <source src={abuVideo} type="video/mp4" />
       </video>
-      
-      {/* SVG Filters */}
-      <svg style={{ position: 'absolute', width: 0, height: 0 }}>
-        <filter id="cocteau-line">
-          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" />
-        </filter>
-      </svg>
-      
+  
       <div style={{
         position: 'relative', 
         zIndex: 10,
@@ -93,8 +77,6 @@ const Clock = () => {
         alignItems: 'center',
         justifyContent: 'center'
       }}>
-        
-
 
         {/* Egyptian Numerals */}
         {[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num, i) => {
