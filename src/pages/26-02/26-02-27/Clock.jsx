@@ -13,11 +13,14 @@ const Clock = () => {
   const minutes = time.getMinutes();
   const hours = time.getHours() % 12;
 
-  const egyptianNumbers = {
-    1: '𓏺', 2: '𓏻', 3: '𓏼', 4: '𓏽', 5: '𓏾', 6: '𓏿', 7: '𓐀', 8: '𓐁', 9: '𓐂', 10: '𓎆', 11: '𓎆𓏺', 12: '𓎆𓏻'
+  // Hieratic Numerals (Unicode 108E1 - 108EA)
+  const hieraticNumbers = {
+    1: '𐣡', 2: '𐣢', 3: '𐣣', 4: '𐣤', 5: '𐣥', 
+    6: '𐣦', 7: '𐣧', 8: '𐣨', 9: '𐣩', 10: '𐣪', 
+    11: '𐣪𐣡', 12: '𐣪𐣢'
   };
 
-  const getEgyptianNumber = (num) => egyptianNumbers[num] || num.toString();
+  const getEgyptianNumber = (num) => hieraticNumbers[num] || num.toString();
 
   const secondAngle = seconds * 6;
   const minuteAngle = minutes * 6 + seconds * 0.1;
@@ -52,6 +55,8 @@ const Clock = () => {
       backgroundColor: '#000'
     }}>
       <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Egyptian+Hieroglyphs&display=swap');
+        
         @font-face {
           font-family: 'Peralta';
           src: url('/src/assets/fonts/Peralta-Regular.ttf') format('truetype');
@@ -68,17 +73,18 @@ const Clock = () => {
         <source src={abuVideo} type="video/mp4" />
       </video>
   
+      {/* Main Clock Container: Maximized to 92% of the viewport to prevent clipping */}
       <div style={{
         position: 'relative', 
         zIndex: 10,
-        width: 'min(75vw, 75vh)', 
-        height: 'min(75vw, 75vh)',
+        width: 'min(105vw, 105vh)', 
+        height: 'min(105vw, 105vh)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
       }}>
 
-        {/* Egyptian Numerals */}
+        {/* --- NUMERALS --- */}
         {[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num, i) => {
           const rotation = i * 30;
           return (
@@ -86,14 +92,15 @@ const Clock = () => {
               key={num}
               style={{
                 position: 'absolute',
-                height: '130%', 
-                width: '30px',
+                // Using a percentage of the container size keeps them inside the circle
+                height: '100%', 
+                width: '60px',
                 textAlign: 'center',
                 transform: `rotate(${rotation}deg)`,
-                fontFamily: "'Peralta', sans-serif",
-                color: '#E2C264', // Golden hue
-                fontSize: '5vh',
-                opacity: 0.8,
+                fontFamily: "'Noto Sans Egyptian Hieroglyphs', 'Peralta', sans-serif",
+                color: '#E2C264',
+                fontSize: 'clamp(2rem, 6vh, 4rem)', // Responsive font size
+                opacity: 0.6,
                 textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
                 pointerEvents: 'none'
               }}
@@ -105,24 +112,23 @@ const Clock = () => {
           );
         })}
         
-        {/* --- CLOCK HANDS --- */}
+        {/* --- CLOCK HANDS (Reverted to 0.2 opacity) --- */}
 
-        {/* Hour Hand: The "Was-Scepter" Inspired (Egyptian Blue/Turquoise) */}
+        {/* Hour Hand */}
         <div style={{...handStyle('28%', '16px', '#E2C264', hourAngle, 'hour'), opacity: 0.2}}>
-            {/* Symbolic "Ankh" loop for the hour hand tip */}
             <div style={{
                 position: 'absolute', top: '-18px', left: '50%', transform: 'translateX(-50%)',
                 width: '24px', height: '24px', border: '4px solid #E2C264', borderRadius: '50%'
             }} />
         </div>
 
-        {/* Minute Hand: The "Spear" (Burnished Gold) */}
+        {/* Minute Hand */}
         <div style={{...handStyle('42%', '10px', '#E2C264', minuteAngle, 'minute'), opacity: 0.2}} />
 
-        {/* Second Hand: The "Needle" (Limestone White) */}
+        {/* Second Hand */}
         <div style={{...handStyle('48%', '3px', '#E2C264', secondAngle, 'second'), opacity: 0.2}} />
 
-        {/* Center Pin: The Sun Disc of Ra */}
+        {/* Center Pin */}
         <div style={{
           position: 'absolute',
           width: '28px', height: '28px',
@@ -130,14 +136,13 @@ const Clock = () => {
           borderRadius: '50%',
           zIndex: 25,
           border: '1px solid rgba(0,0,0,0.5)',
-          boxShadow: '0 0 15px rgba(226, 194, 100, 0.6)',
-          // opacity: 0.9
+          boxShadow: '0 0 15px rgba(226, 194, 100, 0.6)'
         }} />
 
         {/* Decorative Inner Ring */}
         <div style={{
             position: 'absolute',
-            width: '15%', height: '15%',
+            width: '20%', height: '20%',
             border: '1px dashed rgba(226, 194, 100, 0.12)',
             borderRadius: '50%',
             zIndex: 5
