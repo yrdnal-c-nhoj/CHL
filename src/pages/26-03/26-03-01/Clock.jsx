@@ -99,7 +99,7 @@ const Clock = () => {
       init() {
         this.x = Math.random() * w;
         this.y = 0;
-        this.color = 'hsl(220, 100%, 80%)';
+        this.color = 'hsl(220, 100%, 60%)';
         this.w = 2;
         this.h = 1;
         this.vy = Math.random() * 1 + 4;
@@ -197,7 +197,7 @@ const Clock = () => {
           height: '100%',
           objectFit: 'cover',
           zIndex: 1,
-          filter: 'hue-rotate(-200deg) saturate(1.7) brightness(0.8)'
+          filter: 'hue-rotate(230deg) saturate(1.3) brightness(1.0) contrast(0.6)',
         }}
       >
         <source src={westVideo} type="video/mp4" />
