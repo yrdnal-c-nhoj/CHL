@@ -6,12 +6,34 @@ const Clock = () => {
   const [loadedImages, setLoadedImages] = useState(new Set());
   const [imageAssignments, setImageAssignments] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentImageIndex, setCurrentImageIndex] = useState({});
 
-  // 1. Update clock every second
+  // 1. Update clock and change random images every second
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+      
+      // Change 3 random cells to different images
+      if (imageAssignments.length > 0 && images.length > 1) {
+        setCurrentImageIndex(prev => {
+          const newIndex = { ...prev };
+          const totalCells = imageAssignments.length;
+          
+          // Select 3 random cells to change to next image
+          for (let i = 0; i < 3; i++) {
+            const randomCell = Math.floor(Math.random() * totalCells);
+            const currentIdx = newIndex[randomCell] || 0;
+            // Move to next image in the array, loop back if needed
+            newIndex[randomCell] = (currentIdx + 1) % images.length;
+          }
+          
+          return newIndex;
+        });
+      }
+    }, 1000);
+    
     return () => clearInterval(timer);
-  }, []);
+  }, [imageAssignments.length, images.length]);
 
   // 2. Load images using Vite glob import
   useEffect(() => {
@@ -51,14 +73,19 @@ const Clock = () => {
   useEffect(() => {
     if (images.length > 0 && gridSize.rows > 0) {
       const totalCells = gridSize.rows * gridSize.cols;
-      let assignments = [];
       
-      while (assignments.length < totalCells) {
-        assignments = [...assignments, ...images];
+      // Initialize all cells with random images
+      const initialAssignments = [];
+      const initialIndex = {};
+      
+      for (let i = 0; i < totalCells; i++) {
+        const randomImageIndex = Math.floor(Math.random() * images.length);
+        initialAssignments[i] = images[randomImageIndex];
+        initialIndex[i] = randomImageIndex;
       }
       
-      assignments = assignments.slice(0, totalCells).sort(() => Math.random() - 0.5);
-      setImageAssignments(assignments);
+      setImageAssignments(initialAssignments);
+      setCurrentImageIndex(initialIndex);
     }
   }, [images, gridSize]);
 
@@ -66,7 +93,7 @@ const Clock = () => {
   const formatTime = (date) => {
     let hours = date.getHours();
     const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
+    const ampm = hours >= 12 ? 'P‌M' : 'A‌M';
     
     hours = hours % 12 || 12; 
     return `${hours}:${minutes < 10 ? '0' : ''}${minutes}\u2009${ampm}`;
@@ -77,7 +104,7 @@ const Clock = () => {
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
-    background: '#000',
+    background: 'fuchsia',
     position: 'relative'
   };
 
@@ -119,17 +146,25 @@ const Clock = () => {
       `}</style>
       
       <div style={gridStyle}>
-        {imageAssignments.map((src, i) => (
-          <div key={i} style={{ background: '#111', overflow: 'hidden' }}>
-            <img 
-              src={src} 
-              className="grid-img"
-              style={{ opacity: loadedImages.has(i) ? 1 : 0 }}
-              onLoad={() => setLoadedImages(prev => new Set(prev).add(i))}
-              alt=""
-            />
-          </div>
-        ))}
+        {imageAssignments.map((src, i) => {
+          const imageIndexToShow = currentImageIndex[i] || 0;
+          const imageToShow = images[imageIndexToShow];
+          
+          return (
+            <div key={i} style={{ background: 'fuchsia', overflow: 'hidden' }}>
+              <img 
+                src={imageToShow} 
+                className="grid-img"
+                style={{ 
+                  opacity: loadedImages.has(i) ? 1 : 0,
+                  transition: 'opacity 0.5s ease-in-out'
+                }}
+                onLoad={() => setLoadedImages(prev => new Set(prev).add(i))}
+                alt=""
+              />
+            </div>
+          );
+        })}
       </div>
 
       <img 
