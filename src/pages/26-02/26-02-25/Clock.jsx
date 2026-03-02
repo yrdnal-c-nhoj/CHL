@@ -1,14 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import cocteauVideo from '../../../assets/images/26-02/26-02-25/cocteau.mp4';
 import starWebp from '../../../assets/images/26-02/26-02-25/star.webp';
 
 const CocteauClock = () => {
-  // Initializing with new Date() directly ensures the hands are 
-  // positioned correctly on the very first frame.
   const [time, setTime] = useState(new Date());
+  const videoRef = useRef(null);
 
   useEffect(() => {
+    // 1. Precise Clock Timer
     const timer = setInterval(() => setTime(new Date()), 1000);
+    
+    // 2. Mobile Autoplay Force
+    // React's 'muted' prop can fail on mount; setting it via ref 
+    // guarantees the browser sees it as muted before play() is called.
+    if (videoRef.current) {
+      videoRef.current.muted = true; 
+      videoRef.current.play().catch((err) => {
+        console.warn("Autoplay blocked by browser/battery saver:", err);
+      });
+    }
+
     return () => clearInterval(timer);
   }, []);
 
@@ -31,7 +42,6 @@ const CocteauClock = () => {
     transform: `translateX(-50%) rotate(${angle}deg)`,
     transformOrigin: '50% 100%',
     filter: 'url(#cocteau-line)',
-    // Removed conditional transitions to prevent "winding" flash on load
     zIndex: 12,
   });
 
@@ -39,9 +49,11 @@ const CocteauClock = () => {
     <div style={{
       width: '100vw', height: '100dvh', position: 'relative',
       overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      backgroundColor: '#000' // Prevents white flash while video loads
     }}>
       {/* Background Video */}
       <video
+        ref={videoRef}
         style={{
           position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
           objectFit: 'cover', opacity: 0.9, zIndex: 1
@@ -50,6 +62,7 @@ const CocteauClock = () => {
         loop
         muted
         playsInline
+        preload="auto"
       >
         <source src={cocteauVideo} type="video/mp4" />
       </video>
@@ -82,9 +95,9 @@ const CocteauClock = () => {
         }} />
 
         {/* Hands */}
-         <div style={handStyle('42%', '7px', '#E2C264', minuteAngle)} />
+        <div style={handStyle('42%', '7px', '#E2C264', minuteAngle)} />
         <div style={handStyle('26%', '8px', '#8BC7D0', hourAngle)} />
-       <div style={{...handStyle('46%', '5px', '#F3F2EB', secondAngle), zIndex: 15}} />
+        <div style={{...handStyle('46%', '5px', '#F3F2EB', secondAngle), zIndex: 15}} />
       </div>
     </div>
   );
