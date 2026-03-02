@@ -51,20 +51,12 @@ const ImageGrid = () => {
     const coords = [];
     const cols = Math.ceil(dimensions.width / TILE_SIZE);
     const rows = Math.ceil(dimensions.height / TILE_SIZE);
-    
-    // Calculate center point
-    const centerX = dimensions.width / 2;
-    const centerY = dimensions.height / 2;
-    
-    // Calculate offset to center the grid
-    const offsetX = (cols * TILE_SIZE - dimensions.width) / 2;
-    const offsetY = (rows * TILE_SIZE - dimensions.height) / 2;
 
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         coords.push({
-          x: col * TILE_SIZE - offsetX,
-          y: row * TILE_SIZE - offsetY,
+          x: col * TILE_SIZE,
+          y: row * TILE_SIZE,
           id: `${row}-${col}`
         });
       }
@@ -112,6 +104,7 @@ const styles = {
     height: TILE_SIZE,
     objectFit: 'cover',
     display: 'block',
+    filter: 'hue-rotate(-100deg) saturate(1.8) brightness(1.1)'
   },
   clockContainer: {
     position: 'absolute',
@@ -125,7 +118,7 @@ const styles = {
     justifyContent: 'center',
   },
   clockText: {
-    color: '#9EF817',
+    color: '#F88F17',
     fontFamily: "'AtomicFont', monospace",
     fontSize: '10vw',
     textShadow: '-2px -2px 0px #E01439, 2px 2px 0px #E01439',
