@@ -56,11 +56,6 @@ const Clock = () => {
     }}>
       <style dangerouslySetInnerHTML={{__html: `
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Egyptian+Hieroglyphs&display=swap');
-        
-        @font-face {
-          font-family: 'Peralta';
-          src: url('/src/assets/fonts/Peralta-Regular.ttf') format('truetype');
-        }
       `}} />
       
       <video
@@ -77,8 +72,8 @@ const Clock = () => {
       <div style={{
         position: 'relative', 
         zIndex: 10,
-        width: 'min(105vw, 105vh)', 
-        height: 'min(105vw, 105vh)',
+        width: 'min(100vw, 100vh)', 
+        height: 'min(100vw, 100vh)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
@@ -94,12 +89,12 @@ const Clock = () => {
                 position: 'absolute',
                 // Using a percentage of the container size keeps them inside the circle
                 height: '100%', 
-                width: '60px',
+                width: '60vw',
                 textAlign: 'center',
                 transform: `rotate(${rotation}deg)`,
                 fontFamily: "'Noto Sans Egyptian Hieroglyphs', 'Peralta', sans-serif",
                 color: '#E2C264',
-                fontSize: 'clamp(2rem, 6vh, 4rem)', // Responsive font size
+                fontSize: 'clamp(2rem, 6vw, 4rem)', // Responsive font size
                 opacity: 0.6,
                 textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
                 pointerEvents: 'none'
@@ -139,14 +134,7 @@ const Clock = () => {
           boxShadow: '0 0 15px rgba(226, 194, 100, 0.6)'
         }} />
 
-        {/* Decorative Inner Ring */}
-        <div style={{
-            position: 'absolute',
-            width: '20%', height: '20%',
-            border: '1px dashed rgba(226, 194, 100, 0.12)',
-            borderRadius: '50%',
-            zIndex: 5
-        }} />
+     
 
       </div>
     </div>
