@@ -82,7 +82,7 @@ const AnalogClock = () => {
             top: pos.y,
             transform: 'translate(-50%, -50%)',
             fontFamily: 'PaperFont, sans-serif',
-            fontSize: `${Math.min(width, height) * 0.1}px`,
+            fontSize: `${Math.min(width, height) * 0.15}px`,
             background: 'linear-gradient(135deg, #ff69b4, #ffe4e1)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
@@ -162,7 +162,7 @@ const Clock = () => {
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          opacity: 0.8
+          // opacity: 0.8
         }}
       >
         <source src={paperflowerVideo} type="video/mp4" />
