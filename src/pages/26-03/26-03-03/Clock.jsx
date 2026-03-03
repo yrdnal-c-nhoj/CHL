@@ -1,19 +1,157 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import paperflowerVideo from '../../../assets/images/26-03/26-03-02/paperflower.mp4';
+import paperFont from '../../../assets/fonts/26-03-03-paper.ttf';
+
+const AnalogClock = () => {
+  const [time, setTime] = useState(new Date());
+  const [dimensions, setDimensions] = useState({ width: 300, height: 300 });
+
+  // 1. Optimized Timer (Sweep effect)
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 50);
+    return () => clearInterval(timer);
+  }, []);
+
+  // 2. Responsive Logic
+  useEffect(() => {
+    const handleResize = () => {
+      const { innerWidth: w, innerHeight: h } = window;
+      const isPortrait = h > w;
+      
+      setDimensions(isPortrait 
+        ? { width: w * 0.8, height: h * 0.6 } // Adjusted for mobile visibility
+        : { width: w * 0.6, height: h * 0.8 }
+      );
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // 3. Calculated Constants
+  const { width, height } = dimensions;
+  const cx = width / 2;
+  const cy = height / 2;
+  
+  const timeData = useMemo(() => {
+    const ms = time.getMilliseconds();
+    const s = time.getSeconds();
+    const m = time.getMinutes();
+    const h = time.getHours();
+
+    return {
+      sec: (s + ms / 1000) * 6,
+      min: (m + s / 60) * 6,
+      hr: ((h % 12) + m / 60) * 30,
+    };
+  }, [time]);
+
+  // Helper for Oval placement
+  const getPos = (angleDegrees, inset = 40) => {
+    const rad = (angleDegrees - 90) * (Math.PI / 180);
+    return {
+      x: cx + (width / 2 - inset) * Math.cos(rad),
+      y: cy + (height / 2 - inset) * Math.sin(rad)
+    };
+  };
+
+  return (
+    <div style={{ width, height, position: 'relative', pointerEvents: 'none' }}>
+      <style>{`
+        @font-face {
+          font-family: 'PaperFont';
+          src: url(${paperFont}) format('truetype');
+        }
+        .clock-hand {
+          position: absolute;
+          bottom: 50%;
+          left: 50%;
+          transform-origin: bottom center;
+          transition: transform 0.05s linear;
+        }
+      `}</style>
+
+      {/* Numbers */}
+      {[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num, i) => {
+        const pos = getPos(i * 30);
+        return (
+          <div key={num} style={{
+            position: 'absolute',
+            left: pos.x,
+            top: pos.y,
+            transform: 'translate(-50%, -50%)',
+            fontFamily: 'PaperFont, sans-serif',
+            fontSize: `${Math.min(width, height) * 0.1}px`,
+            background: 'linear-gradient(135deg, #ff69b4, #ffe4e1)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.3))'
+          }}>
+            {num}
+          </div>
+        );
+      })}
+
+      {/* Hands */}
+      {/* Hour Hand (Leaf) */}
+      <div className="clock-hand" style={{
+        width: 14,
+        height: height * 0.25,
+        background: 'linear-gradient(to top, #ff69b4, #ffb6c1)',
+        clipPath: 'path("M7 0 C 15 10, 15 25, 7 35 C -1 25, -1 10, 7 0")', // Organic leaf shape
+        transform: `translateX(-50%) rotate(${timeData.hr}deg)`,
+        zIndex: 3
+      }} />
+
+      {/* Minute Hand (Leaf) */}
+      <div className="clock-hand" style={{
+        width: 10,
+        height: height * 0.38,
+        background: 'linear-gradient(to top, #ffb6c1, #ffe4e1)',
+        clipPath: 'path("M5 0 C 12 15, 12 35, 5 50 C -2 35, -2 15, 5 0")',
+        transform: `translateX(-50%) rotate(${timeData.min}deg)`,
+        zIndex: 4
+      }} />
+
+      {/* Second Hand (Stem) */}
+      <div className="clock-hand" style={{
+        width: 2,
+        height: height * 0.45,
+        backgroundColor: '#90ee90',
+        boxShadow: '0 0 8px rgba(144, 238, 144, 0.8)',
+        transform: `translateX(-50%) rotate(${timeData.sec}deg)`,
+        zIndex: 5
+      }} />
+
+      {/* Center Pin */}
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        width: 12,
+        height: 12,
+        backgroundColor: '#ff69b4',
+        borderRadius: '50%',
+        transform: 'translate(-50%, -50%)',
+        zIndex: 10,
+        border: '2px solid #fff'
+      }} />
+    </div>
+  );
+};
 
 const Clock = () => {
   return (
-    <div style={{
+    <main style={{
       width: '100vw',
       height: '100dvh',
-      position: 'relative',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
       backgroundColor: '#000',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
       overflow: 'hidden'
     }}>
-      {/* Background Video */}
       <video
         autoPlay
         loop
@@ -21,32 +159,19 @@ const Clock = () => {
         playsInline
         style={{
           position: 'absolute',
-          top: '0',
-          left: '0',
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          zIndex: 1
+          opacity: 0.8
         }}
       >
         <source src={paperflowerVideo} type="video/mp4" />
       </video>
       
-      {/* Content Overlay */}
-      <div style={{
-        position: 'relative',
-        zIndex: 10,
-        color: '#fff',
-        fontSize: '4rem',
-        fontFamily: 'monospace',
-        textAlign: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        padding: '20px 40px',
-        borderRadius: '10px'
-      }}>
-        ;lkjhgftghj
+      <div style={{ zIndex: 10 }}>
+        <AnalogClock />
       </div>
-    </div>
+    </main>
   );
 };
 
