@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import westVideo from '../../../assets/images/26-03/26-03-01/west.mp4';
 import cloudGif from '../../../assets/images/26-03/26-03-01/cloud.webp';
 
-const TILE_SIZE = 200;
+const TILE_SIZE = 100;
 
 const AnalogClock = () => {
   const [time, setTime] = useState(new Date());
@@ -82,15 +82,20 @@ const Clock = () => {
     const rows = Math.ceil(dimensions.height / TILE_SIZE);
     const cutoff = dimensions.height * (2 / 3);
     
+    // Calculate center offset to start tiling from middle
+    const centerX = (dimensions.width % TILE_SIZE) / 2;
+    const centerY = (dimensions.height % TILE_SIZE) / 2;
+    
     const grid = [];
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
-        const y = row * TILE_SIZE;
+        const x = col * TILE_SIZE + centerX;
+        const y = row * TILE_SIZE + centerY;
         // Calculate opacity once during memoization
         const opacity = y >= cutoff ? 0 : 0.4 * (1 - y / cutoff);
         
         if (opacity > 0) {
-          grid.push({ x: col * TILE_SIZE, y, opacity, id: `${row}-${col}` });
+          grid.push({ x, y, opacity, id: `${row}-${col}` });
         }
       }
     }
@@ -146,7 +151,7 @@ const styles = {
     height: '100%',
     objectFit: 'fill',
     zIndex: 1,
-    filter: 'hue-rotate(-50deg) saturate(0.3) brightness(1.7) contrast(0.7)',
+    filter: 'hue-rotate(180deg) saturate(1.5) brightness(1.8) contrast(1.2)',
   },
   overlayWrapper: {
     position: 'absolute',
