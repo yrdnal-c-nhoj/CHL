@@ -131,7 +131,7 @@ const styles = {
     position: 'absolute',
     width: '100%',
     height: '100%',
-    objectFit: 'cover',
+    objectFit: 'fill',
     zIndex: 1,
     filter: 'hue-rotate(-20deg) saturate(1.3) brightness(1.3) contrast(0.7)',
   },
