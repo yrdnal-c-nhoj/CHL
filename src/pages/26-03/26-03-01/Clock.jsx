@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import westVideo from '../../../assets/images/26-03/26-03-01/west.mp4';
 import cloudGif from '../../../assets/images/26-03/26-03-01/cloud.webp';
+import westtImage from '../../../assets/images/26-03/26-03-01/westt.webp';
 
 const TILE_SIZE = 100;
 
@@ -126,6 +127,9 @@ const Clock = () => {
         ))}
       </div>
 
+      {/* Westt Image Layer */}
+      <img src={westtImage} alt="" style={styles.westtImage} />
+
       {/* Clock UI Layer */}
       <section style={{ zIndex: 10 }}>
         <AnalogClock />
@@ -166,6 +170,16 @@ const styles = {
     width: TILE_SIZE,
     height: TILE_SIZE,
     transform: 'scaleX(-1)',
+  },
+  westtImage: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    objectFit: 'fill',
+    zIndex: 5,
+    pointerEvents: 'none',
+    opacity: 0.3,
+    filter: 'saturate(1.8) hue-rotate(180deg)',
   },
 };
 
