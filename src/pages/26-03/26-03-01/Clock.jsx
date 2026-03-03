@@ -41,30 +41,20 @@ const AnalogClock = () => {
     transform: `translateX(-50%) rotate(${angle}deg)`,
     boxShadow: '0 0 10px rgba(158, 174, 246, 0.5)',
     zIndex,
+    opacity: 0.4,
     willChange: 'transform', // Optimization for high-frequency updates
   });
 
   return (
     <div style={{ width: '45vw', height: '45vw', position: 'relative' }}>
       {/* Hour Hand */}
-      <div style={getHandStyle('6px', '25%', angles.hr, 3)} />
+      <div style={getHandStyle('3px', '30%', angles.hr, 3)} />
       {/* Minute Hand */}
-      <div style={getHandStyle('4px', '35%', angles.min, 4)} />
+      <div style={getHandStyle('2px', '50%', angles.min, 4)} />
       {/* Second Hand */}
-      <div style={getHandStyle('2px', '40%', angles.sec, 5)} />
+      <div style={getHandStyle('1px', '50%', angles.sec, 5)} />
       
-      {/* Center Pin (Optional aesthetic touch) */}
-      <div style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        width: '12px',
-        height: '12px',
-        backgroundColor: '#9EAEF6',
-        borderRadius: '50%',
-        transform: 'translate(-50%, -50%)',
-        zIndex: 6
-      }} />
+    
     </div>
   );
 };
