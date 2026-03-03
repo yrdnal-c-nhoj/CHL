@@ -146,7 +146,7 @@ const styles = {
     height: '100%',
     objectFit: 'fill',
     zIndex: 1,
-    filter: 'hue-rotate(-20deg) saturate(1.3) brightness(1.3) contrast(0.7)',
+    filter: 'hue-rotate(-50deg) saturate(0.3) brightness(1.7) contrast(0.7)',
   },
   overlayWrapper: {
     position: 'absolute',
