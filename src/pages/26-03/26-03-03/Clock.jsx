@@ -99,7 +99,7 @@ const AnalogClock = () => {
         width: 14,
         height: height * 0.25,
         background: 'linear-gradient(to top, #ff69b4, #ffb6c1)',
-        clipPath: 'path("M7 0 C 15 10, 15 25, 7 35 C -1 25, -1 10, 7 0")', // Organic leaf shape
+        clipPath: 'path("M7 0 C 15 10, 15 25, 7 45 C -1 25, -1 10, 7 0")', // Organic leaf shape
         transform: `translateX(-50%) rotate(${timeData.hr}deg)`,
         zIndex: 3
       }} />
@@ -108,8 +108,8 @@ const AnalogClock = () => {
       <div className="clock-hand" style={{
         width: 10,
         height: height * 0.38,
-        background: 'linear-gradient(to top, #ffb6c1, #ffe4e1)',
-        clipPath: 'path("M5 0 C 12 15, 12 35, 5 50 C -2 35, -2 15, 5 0")',
+        background: 'linear-gradient(to top, #E4DADB, #EF4B9D)',
+        clipPath: 'path("M5 0 C 12 15, 22 45, 5 60 C -2 45, -2 15, 5 0")',
         transform: `translateX(-50%) rotate(${timeData.min}deg)`,
         zIndex: 4
       }} />
