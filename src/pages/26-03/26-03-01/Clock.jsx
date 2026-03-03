@@ -4,22 +4,28 @@ import cloudGif from '../../../assets/images/26-03/26-03-01/cloud.webp';
 
 const TILE_SIZE = 200;
 
-/**
- * AnalogClock Component
- * Cleaned up using a more declarative approach for the hands.
- */
 const AnalogClock = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
+    // 50ms is perfect for "sweep" movement (~20fps)
+    const timer = setInterval(() => setTime(new Date()), 50);
     return () => clearInterval(timer);
   }, []);
 
+  // Calculate rotation degrees
+  const ms = time.getMilliseconds();
+  const s = time.getSeconds();
+  const m = time.getMinutes();
+  const h = time.getHours();
+
   const angles = {
-    hr: (time.getHours() % 12) * 30 + time.getMinutes() * 0.5,
-    min: time.getMinutes() * 6 + time.getSeconds() * 0.1,
-    sec: time.getSeconds() * 6,
+    // Smoothly interpolate between seconds using milliseconds
+    sec: (s + ms / 1000) * 6,
+    // Smoothly interpolate between minutes using seconds
+    min: (m + s / 60) * 6,
+    // Smoothly interpolate between hours using minutes
+    hr: ((h % 12) + m / 60) * 30,
   };
 
   const getHandStyle = (width, height, angle, zIndex) => ({
@@ -31,17 +37,34 @@ const AnalogClock = () => {
     backgroundColor: '#9EAEF6',
     borderRadius: '10px',
     transformOrigin: 'bottom center',
+    // We remove the CSS 'transition' here to prevent the 360 -> 0 snap-back
     transform: `translateX(-50%) rotate(${angle}deg)`,
     boxShadow: '0 0 10px rgba(158, 174, 246, 0.5)',
     zIndex,
-    transition: 'transform 0.5s cubic-bezier(0.4, 2.08, 0.55, 0.44)', // Add a little "tick" bounce
+    willChange: 'transform', // Optimization for high-frequency updates
   });
 
   return (
     <div style={{ width: '45vw', height: '45vw', position: 'relative' }}>
+      {/* Hour Hand */}
       <div style={getHandStyle('6px', '25%', angles.hr, 3)} />
+      {/* Minute Hand */}
       <div style={getHandStyle('4px', '35%', angles.min, 4)} />
+      {/* Second Hand */}
       <div style={getHandStyle('2px', '40%', angles.sec, 5)} />
+      
+      {/* Center Pin (Optional aesthetic touch) */}
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        width: '12px',
+        height: '12px',
+        backgroundColor: '#9EAEF6',
+        borderRadius: '50%',
+        transform: 'translate(-50%, -50%)',
+        zIndex: 6
+      }} />
     </div>
   );
 };
