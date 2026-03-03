@@ -34,14 +34,14 @@ const AnalogClock = () => {
     left: '50%',
     width,
     height,
-    backgroundColor: '#9EAEF6',
+    backgroundColor: '#0933EE',
     borderRadius: '10px',
     transformOrigin: 'bottom center',
     // We remove the CSS 'transition' here to prevent the 360 -> 0 snap-back
     transform: `translateX(-50%) rotate(${angle}deg)`,
     boxShadow: '0 0 10px rgba(158, 174, 246, 0.5)',
     zIndex,
-    opacity: 0.4,
+    // opacity: 0.8,
     willChange: 'transform', // Optimization for high-frequency updates
   });
 
