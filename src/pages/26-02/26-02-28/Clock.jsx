@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import atomicWebp from '../../../assets/images/26-02/26-02-28/atomic.webp';
 import atomicFont from '../../../assets/fonts/26-02-28-atomic.ttf';
 
-const TILE_SIZE = 300;
+const TILE_SIZE = 140;
 
 // Isolated Clock Component to prevent Grid re-renders
 const DigitalClock = () => {
@@ -49,14 +49,18 @@ const ImageGrid = () => {
 
   const tileCoords = useMemo(() => {
     const coords = [];
-    const cols = Math.ceil(dimensions.width / TILE_SIZE);
-    const rows = Math.ceil(dimensions.height / TILE_SIZE);
+    const cols = Math.ceil(dimensions.width / TILE_SIZE) + 1; // Add extra column
+    const rows = Math.ceil(dimensions.height / TILE_SIZE) + 1; // Add extra row
+
+    // Calculate center offset to start tiling from middle
+    const centerX = (dimensions.width % TILE_SIZE) / 2 - TILE_SIZE / 2; // Offset to ensure center coverage
+    const centerY = (dimensions.height % TILE_SIZE) / 2 - TILE_SIZE / 2; // Offset to ensure center coverage
 
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         coords.push({
-          x: col * TILE_SIZE,
-          y: row * TILE_SIZE,
+          x: col * TILE_SIZE + centerX,
+          y: row * TILE_SIZE + centerY,
           id: `${row}-${col}`
         });
       }
