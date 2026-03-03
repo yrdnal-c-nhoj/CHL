@@ -118,8 +118,8 @@ const AnalogClock = () => {
       <div className="clock-hand" style={{
         width: 2,
         height: height * 0.45,
-        backgroundColor: '#90ee90',
-        boxShadow: '0 0 8px rgba(144, 238, 144, 0.8)',
+        backgroundColor: '#52B652',
+        boxShadow: '0 0 8px rgba(69, 144, 69, 0.8)',
         transform: `translateX(-50%) rotate(${timeData.sec}deg)`,
         zIndex: 5
       }} />
