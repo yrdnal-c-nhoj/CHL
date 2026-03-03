@@ -130,7 +130,7 @@ export default function PixelInverseClock() {
     <div style={{ 
       backgroundColor: '#000', 
       width: '100vw', 
-      height: '100vh', 
+      height: '100dvh', 
       overflow: 'hidden',
       position: 'relative',
       backgroundImage: `url(${backgroundImage})`,
