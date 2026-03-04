@@ -122,12 +122,12 @@ const styles = {
     justifyContent: 'center',
   },
   clockText: {
-    color: '#F88F17',
+    color: '#F30C59',
     fontFamily: "'AtomicFont', monospace",
-    fontSize: '10vw',
-    textShadow: '-2px -2px 0px #E01439, 2px 2px 0px #E01439',
+    fontSize: '12vw',
+    textShadow: '-1px -1px 0px #0F0C0D, 1px 1px 0px #FEFBFB',
     // background: 'radial-gradient(circle, #C3BCBC 0%, #ECCDCD 100%)',
-    letterSpacing: '0.05em',
+    letterSpacing: '0.02em',
     
     // Centering Logic
     display: 'flex',
