@@ -58,6 +58,7 @@ ehthumbs.db
 Thumbs.db
 
 # Optional: build logs & editor workflows
+logs/
 build-log.txt
 .windsurf/
 
