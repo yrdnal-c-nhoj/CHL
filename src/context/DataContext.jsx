@@ -16,9 +16,10 @@ export const DataProvider = ({ children }) => {
 
   useEffect(() => {
     try {
-      // Use environment variable to pick JSON
+      // Use test data for local development, production data otherwise
+      const isLocalDev = import.meta.env.DEV;
       const env = import.meta.env.VITE_ENVIRONMENT || 'production';
-      const clockData = env === 'testing' ? testData : prodData;
+      const clockData = isLocalDev ? testData : (env === 'testing' ? testData : prodData);
 
       if (!clockData || clockData.length === 0) {
         throw new Error('No data found in JSON file.');

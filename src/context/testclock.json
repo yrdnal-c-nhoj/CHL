@@ -329,8 +329,11 @@
   { "path": "26-02-25", "date": "26-02-25", "title": "Orpheus" },
   { "path": "26-02-26", "date": "26-02-26", "title": "Fuschia" },
   { "path": "26-02-27", "date": "26-02-27", "title": "Ramses II" },
-  { "path": "26-02-28", "date": "26-02-28", "title": "xxx" },
-  { "path": "26-03-01", "date": "26-03-01", "title": "xxx" },
-  { "path": "26-03-02", "date": "26-03-02", "title": "xxx" },
-  { "path": "26-03-03", "date": "26-03-03", "title": "xxx" }
+  { "path": "26-02-28", "date": "26-02-28", "title": "Cesium Fountain" },
+  { "path": "26-03-01", "date": "26-03-01", "title": "270° West" },
+  { "path": "26-03-02", "date": "26-03-02", "title": "Ripple" },
+  { "path": "26-03-03", "date": "26-03-03", "title": "Paper Flowers" },
+  { "path": "26-03-04", "date": "26-03-04", "title": "xxx" },
+  { "path": "26-03-05", "date": "26-03-05", "title": "xxx" },
+  { "path": "26-03-06", "date": "26-03-036", "title": "xxx" }
 ]
