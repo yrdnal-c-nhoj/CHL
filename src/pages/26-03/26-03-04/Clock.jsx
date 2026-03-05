@@ -1,12 +1,23 @@
 import React from 'react';
-import ShatteringTextAnimation from '../components/ShatteringTextAnimation';
 
-const ShatteringTextDemo = () => {
+const Clock = () => {
   return (
-    <div className="demo-page">
-      <ShatteringTextAnimation />
+    <div style={{
+      width: '100vw',
+      height: '100dvh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#000',
+      color: '#fff',
+      fontSize: '4rem',
+      fontFamily: 'monospace'
+    }}>
+      <div>
+        26-03-04
+      </div>
     </div>
   );
 };
 
-export default ShatteringTextDemo;
+export default Clock;
