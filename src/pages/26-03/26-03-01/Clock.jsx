@@ -202,8 +202,7 @@ const styles = {
   backgroundCloudWrapper: {
     position: 'absolute',
     inset: 0,
-    zIndex: 1.5,
-     zIndex: 5,
+    zIndex: 1,
     pointerEvents: 'none',
     mask: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
     WebkitMask: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
