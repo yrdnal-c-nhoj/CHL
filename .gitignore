@@ -3,15 +3,28 @@ node_modules/
 .pnp
 .pnp.js
 
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
 # Build / output
 build/
 dist/
 .vite/
 
+# Additional build outputs
+*.tgz
+*.tar.gz
+.next/
+.nuxt/
+.vuepress/dist/
+
 # Local development & caches
 .local/
 .parcel-cache/
-.cache/
+.cache
+.eslintcache
 
 # Environment (keep .env.production / .env.test if you commit them)
 .env
@@ -27,10 +40,18 @@ dist/
 # Editor: VS Code (keep shared config, ignore rest)
 .vscode/*
 !.vscode/extensions.json
-!.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/*.code-snippets
+
+# Additional editor files
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
 
 .idea/
 *.suo
@@ -47,6 +68,12 @@ coverage/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
 
 # OS
 .DS_Store
