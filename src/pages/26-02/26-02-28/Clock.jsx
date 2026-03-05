@@ -108,7 +108,7 @@ const styles = {
     height: TILE_SIZE,
     objectFit: 'cover',
     display: 'block',
-    filter: 'hue-rotate(-100deg) saturate(1.8) brightness(1.1)'
+    filter: 'hue-rotate(30deg) saturate(1.8) brightness(1.1)'
   },
   clockContainer: {
     position: 'absolute',
@@ -122,10 +122,10 @@ const styles = {
     justifyContent: 'center',
   },
   clockText: {
-    color: '#F30C59',
+    color: '#D1EF57',
     fontFamily: "'AtomicFont', monospace",
-    fontSize: '12vw',
-    textShadow: '-1px -1px 0px #0F0C0D, 1px 1px 0px #FEFBFB',
+    fontSize: '14vw',
+    textShadow: ' 1px 1px 0px #181616',
     // background: 'radial-gradient(circle, #C3BCBC 0%, #ECCDCD 100%)',
     letterSpacing: '0.02em',
     
