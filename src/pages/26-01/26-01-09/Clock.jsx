@@ -7,10 +7,15 @@ import gifThree from '../../../assets/images/26-01/26-01-12/tic3.gif';
 import gifFour from '../../../assets/images/26-01/26-01-12/tic4.gif';
 import customFont from '../../../assets/fonts/26-01-12-tic.ttf';
 
-const BackgroundGrid = ({ children, isFontLoaded }) => {
+const BackgroundGrid = ({ children }) => {
   const [isBackgroundLoaded, setIsBackgroundLoaded] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const [fontReady, setFontReady] = useState(false);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('CustomClockFont', customFont, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
     setIsClient(true);
@@ -28,21 +33,7 @@ const BackgroundGrid = ({ children, isFontLoaded }) => {
 
     let mounted = true;
 
-    const fontPromise = new Promise(resolve => {
-      if (document.fonts.check('1px CustomClockFont') || !isFontLoaded) {
-        resolve();
-      } else {
-        const checkFont = () => {
-          if (document.fonts.check('1px CustomClockFont')) {
-            resolve();
-            document.fonts.removeEventListener('loadingdone', checkFont);
-          }
-        };
-        document.fonts.addEventListener('loadingdone', checkFont);
-      }
-    }).then(() => mounted && setFontReady(true));
-
-    Promise.all([fontPromise, ...imagePromises])
+    Promise.all([...imagePromises])
       .then(() => {
         if (mounted) setIsBackgroundLoaded(true);
       })
@@ -54,7 +45,7 @@ const BackgroundGrid = ({ children, isFontLoaded }) => {
     return () => {
       mounted = false;
     };
-  }, [isFontLoaded]);
+  }, []);
 
   const containerStyle = {
     position: 'fixed',
@@ -153,8 +144,13 @@ const BackgroundGrid = ({ children, isFontLoaded }) => {
 
 export default function TicTacToeClock() {
   const [time, setTime] = useState(() => new Date());
-  const [isFontLoaded, setIsFontLoaded] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('CustomClockFont', customFont, {
+    timeout: 5000,
+    fallback: true
+  });
 
   // Memoize the time formatter to prevent unnecessary recalculations
   const formatTime = useCallback((date) => {
@@ -179,27 +175,10 @@ export default function TicTacToeClock() {
 
   const [displayTime, setDisplayTime] = useState(() => formatTime(new Date()));
 
-  // Load font and set up animation frame
+  // Set up animation frame
   useEffect(() => {
     setIsClient(true);
     
-    const loadFont = async () => {
-      try {
-        const font = new FontFace('CustomClockFont', `url(${customFont})`, {
-          display: 'swap',
-        });
-        
-        await font.load();
-        document.fonts.add(font);
-        setIsFontLoaded(true);
-      } catch (err) {
-        console.error('Font loading failed, falling back to system font', err);
-        setIsFontLoaded(true);
-      }
-    };
-    
-    loadFont();
-
     // Use requestAnimationFrame for smoother updates
     let animationFrameId;
     let lastUpdate = 0;
@@ -235,7 +214,7 @@ export default function TicTacToeClock() {
     alignItems: 'center',
     opacity: isClient ? 1 : 0,
     transition: 'opacity 0.3s ease-in-out',
-    fontFamily: isFontLoaded ? 'CustomClockFont, monospace' : 'monospace',
+    fontFamily: fontReady ? 'CustomClockFont, monospace' : 'monospace',
     position: 'relative',
     zIndex: 10,
     pointerEvents: 'none',
@@ -295,7 +274,7 @@ export default function TicTacToeClock() {
   }
 
   return (
-    <BackgroundGrid isFontLoaded={isFontLoaded}>
+    <BackgroundGrid>
       <div style={clockContainerStyle}>
         <div style={gridStyle}>
           {timeValues.map((value, index) => {

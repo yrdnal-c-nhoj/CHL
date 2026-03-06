@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from '../../../assets/images/26-01/26-01-06/aa.jpg';
 import gizaFont from '../../../assets/fonts/26-01-06-aa.ttf';
 import aaaImage from '../../../assets/images/26-01/26-01-06/aaa.webp';
@@ -6,24 +7,17 @@ import aaaImage from '../../../assets/images/26-01/26-01-06/aaa.webp';
 export default function AardvarkClock() {
   const [time, setTime] = useState(new Date());
   const [totalSeconds, setTotalSeconds] = useState(0);
-  const [fontReady, setFontReady] = useState(false);
   const [bgReady, setBgReady] = useState(false);
-
+  
   const uniqueFontFamily = `Giza_20260107`;
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader(uniqueFontFamily, gizaFont, {
+    timeout: 5000,
+    fallback: true
+  });
+  
   const clockLabels = ['a','a','a','a','a','a','a','a','a','Aa','Aa','Aa'];
-
-  /* Inject font */
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: '${uniqueFontFamily}';
-        src: url(${gizaFont}) format('opentype');
-      }
-    `;
-    document.head.appendChild(style);
-    return () => style.remove();
-  }, []);
 
   /* Clock tick */
   useEffect(() => {
