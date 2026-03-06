@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';import ci2602Font from '../../../assets/fonts/pin.ttf?url';
+import { useFontLoader } from '../../../utils/fontLoader';
+import ci2602Font from '../../../assets/fonts/pin.ttf?url';
 
 // Constants moved outside to prevent re-allocation
 const OVAL = {
@@ -11,21 +12,16 @@ const OVAL = {
 
 const OutwardDistortedClock = () => {
   const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState(false);
   const requestRef = useRef();
-
-  // 1. One-time setup for Font
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('Cine', ci2602Font, {
+    timeout: 5000,
+    fallback: true
+  });
+  
   useEffect(() => {
-    const fontFace = new FontFace('Cine', `url(${ci2602Font})`);
-    fontFace.load().then((loaded) => {
-      document.fonts.add(loaded);
-      setFontLoaded(true);
-    }).catch((error) => {
-      console.error(error);
-      setFontLoaded(true); // Continue with fallback
-    });
-    
-    // 2. High-performance animation loop
+    // High-performance animation loop
     const animate = () => {
       setTime(new Date());
       requestRef.current = requestAnimationFrame(animate);
@@ -51,8 +47,8 @@ const OutwardDistortedClock = () => {
   return (
     <div style={{
       ...containerStyle,
-      opacity: fontLoaded ? 1 : 0,
-      visibility: fontLoaded ? 'visible' : 'hidden',
+      opacity: fontReady ? 1 : 0,
+      visibility: fontReady ? 'visible' : 'hidden',
       transition: 'opacity 0.3s ease',
     }}>
       <div style={ringStyle}>
