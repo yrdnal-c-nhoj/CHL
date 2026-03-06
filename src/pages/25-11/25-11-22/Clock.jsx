@@ -8,32 +8,12 @@ export default function Clock() {
   const videoRef = useRef(null);
   const [videoFailed, setVideoFailed] = useState(false);
   const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState(false);
-
-  // 1. Load custom font
-  useEffect(() => {
-    const font = new FontFace("CustomClock-112425", `url(${font112425sput})`, {
-      display: "block",
-    });
-
-    let active = true;
-
-    font
-      .load()
-      .then((loaded) => {
-        if (active) {
-          document.fonts.add(loaded);
-          setFontLoaded(true);
-        }
-      })
-      .catch(() => {
-        if (active) setFontLoaded(true);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, []);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('CustomClock-112425', font112425sput, {
+    timeout: 5000,
+    fallback: true
+  });
 
   // 2. Ultra-smooth clock loop
   useEffect(() => {
@@ -148,7 +128,7 @@ export default function Clock() {
       />
 
       {/* CLOCK FACE layer */}
-      {fontLoaded && (
+      {fontReady && (
         <div
           style={{
             position: "absolute",

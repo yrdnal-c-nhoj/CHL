@@ -13,33 +13,10 @@ const ElephantClock = () => {
   const secondRef = useRef();
   const orbitRef = useRef();
   
-  const fontReady = useFontLoader('fat', fatFont, { timeout: 3000 });
-  
-  // Debug font loading
-  console.log('Fat font ready:', fontReady);
-  console.log('Fat font URL:', fatFont);
-  console.log('Font file exists:', !!fatFont);
-  
-  // Add CSS font-face declaration
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'fat';
-        src: url(${fatFont}) format('opentype');
-        font-display: block;
-        font-weight: normal;
-        font-style: normal;
-      }
-    `;
-    document.head.appendChild(style);
-    
-    return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
-    };
-  }, [fatFont]);
+  const fontReady = useFontLoader('fat', fatFont, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
     const hourHand = hourRef.current;

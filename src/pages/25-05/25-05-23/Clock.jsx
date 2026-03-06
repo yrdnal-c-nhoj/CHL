@@ -6,7 +6,12 @@ import crossFont from '../../../assets/fonts/25-05-23-Cross.otf';
 const CrossClock = () => {
   const [time, setTime] = useState(new Date());
   const [isLoaded, setIsLoaded] = useState(false);
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('Cross', crossFont, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
     // Asset Preloading
@@ -26,14 +31,6 @@ const CrossClock = () => {
   }, []);
 
   useEffect(() => {
-    const font = new FontFace('Cross', `url(${crossFont})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-      setFontsLoaded(true);
-    }).catch(() => {
-      setFontsLoaded(true);
-    });
-
     const interval = setInterval(() => {
       setTime(new Date());
     }, 1000);
@@ -41,7 +38,6 @@ const CrossClock = () => {
     // Show content after a short delay regardless
     const showTimeout = setTimeout(() => {
       setIsLoaded(true);
-      setFontsLoaded(true);
     }, 500);
 
     return () => {
@@ -51,7 +47,7 @@ const CrossClock = () => {
   }, []);
 
   // Combined loading check
-  const everythingLoaded = isLoaded && fontsLoaded;
+  const everythingLoaded = isLoaded && fontReady;
 
   if (!everythingLoaded) {
     return (

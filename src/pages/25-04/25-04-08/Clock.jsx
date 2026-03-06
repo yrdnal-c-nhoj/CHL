@@ -7,14 +7,12 @@ const TripleCactusClock = () => {
   const minutesRef = useRef();
   const secondsRef = useRef();
   const millisecondsRef = useRef();
-
-  // Load custom font
-  useEffect(() => {
-    const font = new FontFace('sage', `url(${sageFontUrl})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-    });
-  }, []);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('sage', sageFontUrl, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
     const setDigits = (container, text) => {

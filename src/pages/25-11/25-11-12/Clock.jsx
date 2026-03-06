@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useFontLoader } from '../../../utils/fontLoader';import * as THREE from 'three'
+import { useFontLoader } from '../../../utils/fontLoader';
+import * as THREE from 'three'
 
 import bgFull from '../../../assets/images/25-11/25-11-12/octo.webp' // full-size background
 import bgTile from '../../../assets/images/25-11/25-11-12/octoh.webp' // repeating/tiled background
@@ -7,7 +8,12 @@ import custom251112tz from '../../../assets/fonts/25-11-12-oct.ttf?url';
 
 export default function TwoBackgroundOctahedron () {
   const threeRef = useRef(null)
-  const fontLoadedRef = useRef(false)
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('OctahedronFont', custom251112tz, {
+    timeout: 5000,
+    fallback: true
+  });
 
   // THREE.js Octahedron (unchanged)
   useEffect(() => {
@@ -44,7 +50,7 @@ export default function TwoBackgroundOctahedron () {
       const txt = `${h}:${m < 10 ? '0' + m : m}`
 
       ctx.clearRect(0, 0, canvas.width, canvas.height)
-      ctx.font = `110px ${fontLoadedRef.current ? fontName : 'Arial'}`
+      ctx.font = `110px ${fontReady ? fontName : 'Arial'}`
       ctx.fillStyle = '#043D91FF'
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
@@ -56,13 +62,6 @@ export default function TwoBackgroundOctahedron () {
 
       texture.needsUpdate = true
     }
-
-    const font = new FontFace(fontName, `url(${custom251112tz})`)
-    font.load().then(loaded => {
-      document.fonts.add(loaded)
-      fontLoadedRef.current = true
-      updateClock()
-    })
 
     updateClock()
     const clockInterval = setInterval(updateClock, 1000)

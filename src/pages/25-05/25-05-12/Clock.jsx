@@ -5,11 +5,14 @@ import leoFont from '../../../assets/fonts/25-05-12-leo.ttf';
 
 const CheetahClock = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('leo', leoFont, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
-    const font = new FontFace('leo', `url(${leoFont})`);
-    font.load().then((loadedFont) => document.fonts.add(loadedFont));
-
     const handleResize = () => setIsMobile(window.innerWidth <= 600);
     window.addEventListener('resize', handleResize);
     handleResize();

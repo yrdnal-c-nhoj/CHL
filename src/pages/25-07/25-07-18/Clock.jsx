@@ -5,13 +5,14 @@ import xrayFontUrl from '../../../assets/fonts/25-07-18-xray.ttf';
 
 const HospitalClock = () => {
   const [time, setTime] = useState('');
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('xray', xrayFontUrl, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
-    const font = new FontFace('xray', `url(${xrayFontUrl})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-    });
-
     const updateClock = () => {
       const now = new Date();
       const h = String(now.getHours()).padStart(2, '0');
