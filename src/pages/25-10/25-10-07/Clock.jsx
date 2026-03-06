@@ -8,26 +8,17 @@ import O251007font from '../../../assets/fonts/25-10-07-str.ttf';
 export default function ImageAnalogClock () {
   const [time, setTime] = useState(new Date())
   const [ready, setReady] = useState(false)
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('Oct022025Font', O251007font, {
+    timeout: 5000,
+    fallback: true
+  });
 
   // Update time every second
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000)
     return () => clearInterval(interval)
-  }, [])
-
-  // Preload font
-  useEffect(() => {
-    const font = new FontFace('Oct022025Font', `url(${O251007font})`)
-    font
-      .load()
-      .then(() => {
-        document.fonts.add(font)
-        setTimeout(() => setReady(true), 200)
-      })
-      .catch(() => {
-        console.error('Font failed to load')
-        setReady(true)
-      })
   }, [])
 
   // Force autoplay (iOS sometimes ignores initial play call)
@@ -120,18 +111,6 @@ export default function ImageAnalogClock () {
         backgroundColor: '#111'
       }}
     >
-      {/* Inject font-face */}
-      <style>
-        {`
-          @font-face {
-            font-family: "Oct022025Font";
-            src: url(${O251007font}) format("woff2");
-            font-weight: normal;
-            font-style: normal;
-          }
-        `}
-      </style>
-
       {/* Background video with autoplay + fallback */}
       <video
         autoPlay

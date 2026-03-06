@@ -1,9 +1,16 @@
 import React, { useEffect, useRef } from 'react'
-import { useFontLoader } from '../../../utils/fontLoader';import d250914 from '../../../assets/fonts/25-09-14-swi.ttf?url';
+import { useFontLoader } from '../../../utils/fontLoader';
+import d250914 from '../../../assets/fonts/25-09-14-swi.ttf?url';
 import bgImageSrc from '../../../assets/images/25-09/25-09-14/bg.gif'
 
 const GoldenChordsClock = () => {
   const canvasRef = useRef(null)
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('GoldenChordsFont', d250914, {
+    timeout: 5000,
+    fallback: true
+  });
 
   const R = 180
   const chordLength = 1.9 * R
@@ -12,11 +19,6 @@ const GoldenChordsClock = () => {
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
-
-    // Load custom font
-    const fontName = `CustomFont_${Date.now()}`
-    const font = new FontFace(fontName, `url(${d250914})`)
-    font.load().then(loadedFont => document.fonts.add(loadedFont))
 
     // Load background image
     const bgImage = new Image()

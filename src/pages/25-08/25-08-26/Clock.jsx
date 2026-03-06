@@ -7,14 +7,12 @@ import bg3 from "../../../assets/images/25-08/25-08-26/root.webp"; // top foregr
 
 export default function DigitalClock() {
   const [time, setTime] = useState(getTimeParts);
-
-  // Load font for this specific clock
-  useEffect(() => {
-    const font = new FontFace("ClockFontScoped_18_09_25", `url(${clockFont})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-    });
-  }, []);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('ClockFontScoped_18_09_25', clockFont, {
+    timeout: 5000,
+    fallback: true
+  });
 
   // Clock ticking
   useEffect(() => {
@@ -109,7 +107,6 @@ export default function DigitalClock() {
 
   return (
     <div style={styles.root}>
-      <style>{styles.styleTag.fontFace}</style>
 
       {layers.map((layerProps, i) => {
         if (i === 1) {

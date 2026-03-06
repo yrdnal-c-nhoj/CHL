@@ -1,11 +1,17 @@
 // DigitalClock.jsx
 import React, { useState, useEffect } from "react";
+import { useFontLoader } from '../../../utils/fontLoader';
 import bgImg from "../../../assets/images/25-12/25-12-01/shark.webp";
 import clockfoont12012 from '../../../assets/fonts/25-12-01-shark.ttf?url';
 
 export default function DigitalClock() {
-  const [isLoading, setIsLoading] = useState(true);
   const [time, setTime] = useState(() => new Date());
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('ClockFont_2025_12_01', clockfoont12012, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -16,44 +22,6 @@ export default function DigitalClock() {
   const hours = formatTime(time.getHours());
   const minutes = formatTime(time.getMinutes());
   const seconds = formatTime(time.getSeconds());
-
-  // Font loading and initialization
-  useEffect(() => {
-    let mounted = true;
-    
-    const loadFonts = async () => {
-      if (!document.getElementById("ClockFont_2025_12_01")) {
-        const style = document.createElement("style");
-        style.id = "ClockFont_2025_12_01";
-        style.textContent = `
-          @font-face {
-            font-family: 'ClockFont_2025_12_01';
-            src: url(${clockfoont12012}) format('truetype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-          }
-        `;
-        document.head.appendChild(style);
-      }
-
-      // Wait for fonts to be loaded
-      await document.fonts.ready;
-      
-      // Small delay to ensure all resources are ready
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
-      if (mounted) {
-        setIsLoading(false);
-      }
-    };
-
-    loadFonts();
-    
-    return () => {
-      mounted = false;
-    };
-  }, []);
 
   const containerStyle = {
     width: "100vw",
@@ -85,7 +53,7 @@ export default function DigitalClock() {
 
   const digits = `${hours}${minutes}${seconds}`;
 
-  if (isLoading) {
+  if (!fontReady) {
     return (
       <div style={{
         ...containerStyle,
