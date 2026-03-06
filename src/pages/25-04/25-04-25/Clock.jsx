@@ -8,14 +8,14 @@ import secondHandImage from '../../../assets/images/25-04/25-04-25/band.gif';
 
 const MyClock = () => {
   const canvasRef = useRef(null);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('MyFont', boldFont, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
-    const font = new FontFace('MyFont', `url(${boldFont})`);
-    font.load().then(() => {
-      document.fonts.add(font);
-      drawClock();
-    });
-
     const drawClock = () => {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext('2d');

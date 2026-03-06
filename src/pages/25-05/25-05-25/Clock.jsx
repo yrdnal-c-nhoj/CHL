@@ -7,42 +7,10 @@ import arm3 from '../../../assets/images/25-05/25-05-25/arm3.gif';
 import botFontUrl from '../../../assets/fonts/25-05-25-bot.ttf';
 
 const Clock = () => {
-  const fontReady = useFontLoader('bot', botFontUrl, { timeout: 3000 });
-  
-  // Debug font loading
-  console.log('Bot font ready:', fontReady);
-  console.log('Bot font URL:', botFontUrl);
-  console.log('Font file exists:', !!botFontUrl);
-  
-  // Force font loading with direct CSS injection
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'font';
-    link.type = 'font/ttf';
-    link.crossOrigin = 'anonymous';
-    link.href = botFontUrl;
-    document.head.appendChild(link);
-    
-    console.log('Font preload added:', botFontUrl);
-    
-    return () => {
-      if (document.head.contains(link)) {
-        document.head.removeChild(link);
-      }
-    };
-  }, [botFontUrl]);
-  
-  // Test font loading directly
-  useEffect(() => {
-    const testFont = new FontFace('bot', `url(${botFontUrl})`);
-    testFont.load().then(() => {
-      console.log('Direct font load SUCCESS');
-      document.fonts.add(testFont);
-    }).catch(err => {
-      console.error('Direct font load FAILED:', err);
-    });
-  }, [botFontUrl]);
+  const fontReady = useFontLoader('bot', botFontUrl, {
+    timeout: 5000,
+    fallback: true
+  });
   
   useEffect(() => {
     const updateClock = () => {

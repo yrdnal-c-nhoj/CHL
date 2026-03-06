@@ -9,13 +9,14 @@ const LavaClock = () => {
   const [time, setTime] = useState({ hours: "00", minutes: "00" });
   const [showGif, setShowGif] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('Rubik Burned', lavaFont, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
-    const font = new FontFace("Rubik Burned", `url(${lavaFont})`);
-    font.load().then(() => {
-      document.fonts.add(font);
-    });
-
     const updateClock = () => {
       const now = new Date();
       const hours = String(now.getHours()).padStart(2, "0");
