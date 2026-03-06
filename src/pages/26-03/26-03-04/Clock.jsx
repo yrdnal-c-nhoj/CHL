@@ -49,7 +49,7 @@ const Clock = () => {
   const containerStyle = {
     minHeight: '100dvh',
     width: '100vw',
-    backgroundColor: '#EBDF55',
+    backgroundColor: '#E1D554',
     backgroundImage: `url(${sunBg})`,
     backgroundSize: '180% 180%',
     backgroundPosition: 'center',
