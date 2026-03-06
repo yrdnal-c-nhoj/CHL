@@ -46,7 +46,7 @@ const Clock = () => {
         // Delay the footer appearance slightly
         setTimeout(() => setShowFooter(true), 500);
       }
-    }, 15);
+    }, 35);
 
     return () => clearInterval(typingInterval);
   }, []);
