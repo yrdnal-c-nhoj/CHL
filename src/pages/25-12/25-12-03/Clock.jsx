@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 // Import font with today's date variable name
 import font_2024_12_05 from '../../../assets/fonts/25-12-03-dog.ttf?url';
@@ -6,6 +7,12 @@ import font_2024_12_05 from '../../../assets/fonts/25-12-03-dog.ttf?url';
 const PuppyClockComponent = () => {
   const [currentImage, setCurrentImage] = useState('');
   const [time, setTime] = useState(new Date());
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('CustomFont', font_2024_12_05, {
+    timeout: 5000,
+    fallback: true
+  });
 
   const getRandomPuppyImage = async () => {
     try {
@@ -77,25 +84,12 @@ const PuppyClockComponent = () => {
     transform: 'translateY(10vh)' // Slightly below center
   };
 
-  const fontFaceStyle = `
-    @font-face {
-      font-family: 'CustomFont';
-      src: url(${font_2024_12_05}) format('woff2');
-      font-weight: normal;
-      font-style: normal;
-      font-display: block;
-    }
-  `;
-
   return (
-    <>
-      <style>{fontFaceStyle}</style>
-      <div style={containerStyle}>
-        <div style={clockStyle}>
-          {formatTime(time)}
-        </div>
+    <div style={containerStyle}>
+      <div style={clockStyle}>
+        {formatTime(time)}
       </div>
-    </>
+    </div>
   );
 };
 

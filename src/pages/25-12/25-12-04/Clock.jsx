@@ -1,30 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { useFontLoader } from '../../../utils/fontLoader';import sloanFont_2025_1204 from '../../../assets/fonts/25-12-04-ichart.otf?url';
+import { useFontLoader } from '../../../utils/fontLoader';
+import sloanFont_2025_1204 from '../../../assets/fonts/25-12-04-ichart.otf?url';
 
 export default function EyeChart () {
-  const [fontLoaded, setFontLoaded] = useState(false)
   const fontFamilyName = 'SloanOptotype_2025_1204'
-
-  useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const font = new FontFace(
-          fontFamilyName,
-          `url(${sloanFont_2025_1204})`,
-          { display: 'swap' }
-        )
-        
-        await font.load()
-        document.fonts.add(font)
-        setFontLoaded(true)
-      } catch (error) {
-        console.error('Error loading font:', error)
-        setFontLoaded(true) // Continue rendering even if font fails to load
-      }
-    }
-
-    loadFont()
-  }, [fontFamilyName])
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader(fontFamilyName, sloanFont_2025_1204, {
+    timeout: 5000,
+    fallback: true
+  });
+  
   const [time, setTime] = useState(new Date())
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000)
@@ -107,7 +93,7 @@ export default function EyeChart () {
     letterSpacing: '0.15vh'
   }
 
-  if (!fontLoaded) {
+  if (!fontReady) {
     return (
       <div style={{
         ...outer,

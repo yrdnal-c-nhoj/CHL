@@ -10,6 +10,12 @@ export default function BoxedDigitalClock () {
   const [time, setTime] = useState(new Date())
   const [visible, setVisible] = useState(false) // Clock visibility for glitch
   const [randomOpacity, setRandomOpacity] = useState(0.2) // Random opacity for glitches
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('CustomFont_2025_12_06', font_2025_12_06, {
+    timeout: 5000,
+    fallback: true
+  });
 
   // -------------------------------
   // Update clock every second
@@ -109,41 +115,10 @@ export default function BoxedDigitalClock () {
     margin: '0 1vw'
   }
 
-  // Font loading
-  useEffect(() => {
-    const fontFace = new FontFace(
-      'CustomFont_2025_12_06',
-      `url('${font_2025_12_06}') format('truetype')`,
-      {
-        style: 'normal',
-        weight: '400',
-        display: 'swap',
-      }
-    );
-
-    fontFace.load().then(
-      () => {
-        document.fonts.add(fontFace);
-      },
-      () => {
-        // Font loading failed, but we'll continue without it
-      }
-    );
-  }, []);
-
   return (
     <div style={containerStyle}>
       <style>
         {`
-          @font-face {
-            font-family: 'CustomFont_2025_12_06';
-            src: url('${font_2025_12_06}') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-            unicode-range: U+0030-0039; /* Only load numbers */
-          }
-          
           /* Fallback font stack */
           .digit {
             font-family: 'CustomFont_2025_12_06', 'Courier New', monospace;

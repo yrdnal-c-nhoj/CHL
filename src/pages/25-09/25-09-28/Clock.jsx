@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useFontLoader } from '../../../utils/fontLoader';import ufoImg from '../../../assets/images/25-09/25-09-28/ufo.webp'
+import { useFontLoader } from '../../../utils/fontLoader';
+import ufoImg from '../../../assets/images/25-09/25-09-28/ufo.webp'
 import skyImg from '../../../assets/images/25-09/25-09-28/stars.gif'
 import nebulaImg from '../../../assets/images/25-09/25-09-28/sta.gif'
 import cu250928fontont from '../../../assets/fonts/25-09-28-cow.ttf?url';
@@ -47,19 +48,12 @@ export default function DesertUFOSequence () {
   const [blobOpacity, setBlobOpacity] = useState(0)
   const [blobScale, setBlobScale] = useState(1)
   const [flashOpacity, setFlashOpacity] = useState(0)
-  const [fontLoaded, setFontLoaded] = useState(false)
-
-  // Load font
-  useEffect(() => {
-    const font = new FontFace(cu250928fontontFamily, `url(${cu250928fontont})`)
-    font
-      .load()
-      .then(() => {
-        document.fonts.add(font)
-        setFontLoaded(true)
-      })
-      .catch(() => setFontLoaded(true))
-  }, [])
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader(cu250928fontontFamily, cu250928fontont, {
+    timeout: 5000,
+    fallback: true
+  });
 
   // Clock update
   useEffect(() => {
@@ -220,7 +214,7 @@ export default function DesertUFOSequence () {
     return () => timer && clearTimeout(timer)
   }, [stage])
 
-  if (!fontLoaded)
+  if (!fontReady)
     return (
       <div
         style={{

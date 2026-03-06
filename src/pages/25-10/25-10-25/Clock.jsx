@@ -5,7 +5,10 @@ import font20251027 from '../../../assets/fonts/25-10-25-fall.ttf'; // Local fon
 const EntropyClock = () => {
   const [time, setTime] = useState(new Date());
   const [animationKey, setAnimationKey] = useState(0); // triggers animation restart
-  const fontLoaded = useFontLoader('EntropyFont', font20251027);
+  const fontReady = useFontLoader('EntropyFont', font20251027, {
+    timeout: 5000,
+    fallback: true
+  });
   const [showClock, setShowClock] = useState(false);  // controls fade-in
   const [mountedClockKey, setMountedClockKey] = useState(0); // unique key for each cycle
   const numbersRef = useRef([]);
@@ -22,7 +25,7 @@ const EntropyClock = () => {
 
   // --- Trigger fade-in for each animation cycle ---
   useEffect(() => {
-    if (!fontLoaded) return;
+    if (!fontReady) return;
 
     // Hide clock first
     setShowClock(false);
@@ -30,21 +33,21 @@ const EntropyClock = () => {
     // Mount a new clock div shortly after
     const mountTimeout = setTimeout(() => setMountedClockKey((k) => k + 1), 50);
     return () => clearTimeout(mountTimeout);
-  }, [animationKey, fontLoaded]);
+  }, [animationKey, fontReady]);
 
   // --- Fade in the mounted clock ---
   useEffect(() => {
-    if (!fontLoaded) return;
+    if (!fontReady) return;
     const fadeTimeout = setTimeout(() => setShowClock(true), 50);
     return () => clearTimeout(fadeTimeout);
-  }, [mountedClockKey, fontLoaded]);
+  }, [mountedClockKey, fontReady]);
 
   // --- Helper to shuffle arrays ---
   const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
 
   // --- Animation sequence: numbers → hands → dot → clock ---
   useEffect(() => {
-    if (!fontLoaded) return;
+    if (!fontReady) return;
 
     const timers = [];
     let cumulativeDelay = 2000;
@@ -80,7 +83,7 @@ const EntropyClock = () => {
     timers.push(setTimeout(() => setAnimationKey((k) => k + 1), cumulativeDelay));
 
     return () => timers.forEach(clearTimeout);
-  }, [animationKey, fontLoaded]);
+  }, [animationKey, fontReady]);
 
   // --- Time calculations ---
   const hours = time.getHours() % 12;

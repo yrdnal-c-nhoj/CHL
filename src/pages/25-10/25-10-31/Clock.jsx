@@ -10,6 +10,12 @@ export default function VideoClock() {
   const [showPlayButton, setShowPlayButton] = useState(false);
   const [time, setTime] = useState(new Date());
   const videoRef = useRef(null);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('CustomFont', fontFile_2025_10_31, {
+    timeout: 5000,
+    fallback: true
+  });
 
   // Time update loop
   useEffect(() => {
@@ -17,28 +23,16 @@ export default function VideoClock() {
     return () => clearInterval(interval);
   }, []);
 
-  // Preload assets: video, fallback image, and font
+  // Preload assets: video, fallback image
   useEffect(() => {
-    let fontLoaded = false;
     let imageLoaded = false;
     let videoLoaded = false;
 
     const checkReady = () => {
-      if ((videoLoaded || videoFailed) && imageLoaded && fontLoaded) {
+      if ((videoLoaded || videoFailed) && imageLoaded && fontReady) {
         setTimeout(() => setReady(true), 100);
       }
     };
-
-    // Load font
-    const font = new FontFace("CustomFont", `url(${fontFile_2025_10_31})`);
-    font.load().then(() => {
-      document.fonts.add(font);
-      fontLoaded = true;
-      checkReady();
-    }).catch(() => {
-      fontLoaded = true;
-      checkReady();
-    });
 
     // Load fallback image
     const img = new Image();
@@ -174,16 +168,6 @@ export default function VideoClock() {
 
   return (
     <div style={containerStyle}>
-      {/* Inject @font-face inline to avoid style leakage */}
-      <style>{`
-        @font-face {
-          font-family: 'CustomFont';
-          src: url(${fontFile_2025_10_31}) format('opentype');
-          font-weight: normal;
-          font-style: normal;
-          font-display: swap;
-        }
-      `}</style>
       <video
         ref={videoRef}
         style={videoStyle}
