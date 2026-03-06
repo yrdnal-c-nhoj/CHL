@@ -58,7 +58,8 @@ const Clock = () => {
     backgroundSize: '140% 140%',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    filter: 'saturate(2.7) brightness(3.5) contrast(0.4)', // High saturation and brightness
+    filter: 'saturate(2.7) brightness(3.5) contrast(0.4)',
+    transform: 'rotate(180deg)',
     zIndex: -1,
   };
 
