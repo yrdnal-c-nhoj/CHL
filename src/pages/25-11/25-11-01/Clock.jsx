@@ -1,40 +1,18 @@
 /** @jsxImportSource react */
 import React, { useEffect, useState } from 'react'
-import { useFontLoader } from '../../../utils/fontLoader';import cus251101font from '../../../assets/fonts/25-11-01-edgecase.ttf'; // 🟩 Local font
+import { useFontLoader } from '../../../utils/fontLoader';
+import cus251101font from '../../../assets/fonts/25-11-01-edgecase.ttf'; // 🟩 Local font
 
 export default function EdgeClockWithHands () {
   const [time, setTime] = useState(new Date())
   const [viewport, setViewport] = useState({ width: 0, height: 0 })
-  const [fontsReady, setFontsReady] = useState(false)
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-
-  // Choose a single color for numbers and hands
-  const numberAndHandColor = '#EEF3D0FF'
-
-  // Load custom font
-  useEffect(() => {
-    let didCancel = false
-    const font = new FontFace('CustomClockFont', `url(${cus251101font})`)
-    font
-      .load()
-      .then(loadedFont => {
-        if (didCancel) return
-        document.fonts.add(loadedFont)
-        document.fonts.load('1rem "CustomClockFont"').then(() => {
-          if (!didCancel) setFontsReady(true)
-        })
-      })
-      .catch(() => {
-        if (!didCancel) setFontsReady(true)
-      })
-    const t = setTimeout(() => {
-      if (!didCancel) setFontsReady(true)
-    }, 1500)
-    return () => {
-      didCancel = true
-      clearTimeout(t)
-    }
-  }, [])
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('CustomClockFont', cus251101font, {
+    timeout: 5000,
+    fallback: true
+  });
 
   // Continuous update for smooth hands
   useEffect(() => {
@@ -122,7 +100,7 @@ export default function EdgeClockWithHands () {
         backgroundColor: '#05322DFF',
         border: '6px solid #72FF06FF', // Component border
         boxSizing: 'border-box',
-        opacity: fontsReady ? 1 : 0,
+        opacity: fontReady ? 1 : 0,
         transition: 'opacity 0.2s ease-out'
       }}
     >

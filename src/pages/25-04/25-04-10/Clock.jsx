@@ -4,13 +4,14 @@ import monofettFont from "../../../assets/fonts/25-04-10-Monofett.ttf";
 
 const BarGraphClock = () => {
   const [time, setTime] = useState(new Date());
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('Monofett', monofettFont, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
-    const font = new FontFace('Monofett', `url(${monofettFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-    });
-
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);

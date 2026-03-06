@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';import kalFont from '../../../assets/fonts/25-07-04-kal.otf';
+import { useFontLoader } from '../../../utils/fontLoader';
+import kalFont from '../../../assets/fonts/25-07-04-kal.otf';
 import bgImage from '../../../assets/images/25-07/25-07-04/7ZAx.webp';
 
 const SEGMENTS = 12;
@@ -10,33 +11,14 @@ const COLORS = [
 ];
 
 const Clock = () => {
-  const [fontState, setFontState] = useState({ loading: true, error: null });
   const [time, setTime] = useState(new Date());
   const requestRef = useRef();
 
-  // 1. Font Loading Logic
-  useEffect(() => {
-    let isMounted = true;
-    const loadFont = async () => {
-      try {
-        const font = new FontFace('kal', `url(${kalFont})`);
-        font.display = 'swap';
-        await font.load();
-        if (isMounted) {
-          document.fonts.add(font);
-          setFontState({ loading: false, error: null });
-        }
-      } catch (error) {
-        console.error('Failed to load font:', error);
-        if (isMounted) {
-          // Set loading to false anyway so the clock shows even with a fallback font
-          setFontState({ loading: false, error: 'Failed' });
-        }
-      }
-    };
-    loadFont();
-    return () => { isMounted = false; };
-  }, []);
+  // Use standardized font loader
+  const fontReady = useFontLoader('kal', kalFont, {
+    timeout: 5000,
+    fallback: true
+  });
 
   // 2. Animation Loop
   const animate = () => {

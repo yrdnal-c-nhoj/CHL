@@ -3,7 +3,6 @@ import { useFontLoader } from '../../../utils/fontLoader';
 import vegasFontUrl from '../../../assets/fonts/25-07-05-vegas.ttf';
 
 const VegasClock = () => {
-  const [fontLoaded, setFontLoaded] = useState(false);
   const hour1Ref = useRef(null);
   const hour2Ref = useRef(null);
   const minute1Ref = useRef(null);
@@ -12,15 +11,12 @@ const VegasClock = () => {
   const second2Ref = useRef(null);
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
-
-  // Load font before showing text
-  useEffect(() => {
-    const font = new FontFace('vegas', `url(${vegasFontUrl})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontLoaded(true);
-    });
-  }, []);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('vegas', vegasFontUrl, {
+    timeout: 5000,
+    fallback: true
+  });
 
   // Initialize YouTube IFrame API
   useEffect(() => {
@@ -51,7 +47,7 @@ const VegasClock = () => {
 
   // Clock logic
   useEffect(() => {
-    if (!fontLoaded) return;
+    if (!fontReady) return;
 
     const refs = {
       hour1: hour1Ref.current,
@@ -107,7 +103,7 @@ const VegasClock = () => {
     setTimeout(() => setFlicker('hour1', 4000, 12000), 2000);
 
     return () => clearInterval(interval);
-  }, [fontLoaded]);
+  }, [fontReady]);
 
   const iframeStyle = {
     position: 'fixed',
@@ -129,7 +125,7 @@ const VegasClock = () => {
   };
 
   const clockContainerStyle = {
-    display: fontLoaded ? 'flex' : 'none', // hide until ready
+    display: fontReady ? 'flex' : 'none', // hide until ready
     flexDirection: 'row',
     gap: '1vmin',
     alignItems: 'center',

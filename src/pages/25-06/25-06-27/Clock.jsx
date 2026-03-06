@@ -24,13 +24,11 @@ const MorseClock = () => {
   const wiresRef = useRef([]);
   const svgRef = useRef(null);
 
-  // Load font using FontFace API once
-  useEffect(() => {
-    const font = new FontFace("morse", `url(${morseFont})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-    });
-  }, []);
+  // Use standardized font loader
+  const fontReady = useFontLoader('morse', morseFont, {
+    timeout: 5000,
+    fallback: true
+  });
 
   // Initialize wires on mount
   useEffect(() => {

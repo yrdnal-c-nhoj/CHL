@@ -5,13 +5,14 @@ import cisFont from '../../../assets/fonts/25-06-18-cis.ttf';
 
 const CistercianClock = () => {
   const [time, setTime] = useState(new Date());
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('cis', cisFont, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
-    const font = new FontFace('cis', `url(${cisFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-    });
-
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);

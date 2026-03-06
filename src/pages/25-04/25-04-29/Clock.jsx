@@ -8,13 +8,12 @@ import gif3 from '../../../assets/images/25-04/25-04-29/giphy.gif';
 const FireworksClock = () => {
   const clockRef = useRef(null);
   const componentId = `fireworks-clock-${Math.random().toString(36).substr(2, 9)}`;
-
-  useEffect(() => {
-    const font = new FontFace('bang', `url(${fontUrl})`);
-    font.load().then(() => {
-      document.fonts.add(font);
-    });
-  }, []);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('bang', fontUrl, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
     const showClock = () => {
