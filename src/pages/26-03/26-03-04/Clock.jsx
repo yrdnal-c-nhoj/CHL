@@ -46,27 +46,37 @@ const Clock = () => {
   const boxWidth = isMobile ? '49vw' : '16vw';
   const boxHeight = isMobile ? '22vh' : '40vh';
 
+  // Background layer with high saturation and brightness filter
+  const backgroundStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100dvh',
+    backgroundColor: '#E1D554',
+    backgroundImage: `url(${sunBg})`,
+    backgroundSize: '140% 140%',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    filter: 'saturate(2.7) brightness(3.5) contrast(0.4)', // High saturation and brightness
+    zIndex: -1,
+  };
+
   const containerStyle = {
     minHeight: '100dvh',
     width: '100vw',
-    backgroundColor: '#E1D554',
-    backgroundImage: `url(${sunBg})`,
-    backgroundSize: '180% 180%',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     margin: 0,
     padding: 0,
     boxSizing: 'border-box',
+    position: 'relative',
   };
 
   const clockGridStyle = {
     display: 'grid',
-    // 'auto' allows the grid to shrink-wrap the boxes, 'justifyContent' centers them
     gridTemplateColumns: isMobile ? `repeat(2, auto)` : `repeat(6, auto)`,
-    // gap: isMobile ? '10px' : '0px', 
     justifyContent: 'center',
     alignContent: 'center',
     width: '100%',
@@ -78,30 +88,32 @@ const Clock = () => {
     alignItems: 'center',
     width: boxWidth,
     height: boxHeight,
-    // border: '4px solid #333',
-    // This is the most important line for centering:
     boxSizing: 'border-box', 
     fontFamily: "'SunFont', monospace, sans-serif",
     fontSize: isMobile ? '20vh' : '15vw', 
-    color: '#0723D4',
+    color: '#051160',
     lineHeight: 1,
     textAlign: 'center',
     backgroundColor: 'transparent',
     fontVariantNumeric: 'tabular-nums',
     overflow: 'hidden', 
     whiteSpace: 'nowrap',
+    textShadow: '-1px 0 0 #ffffff', // 1px white shadow to one side
   };
 
   return (
-    <div style={containerStyle}>
-      <div style={clockGridStyle}>
-        {digits.map((digit, index) => (
-          <div key={index} style={digitBoxStyle}>
-            {digitLetters[digit] || digit}
-          </div>
-        ))}
+    <>
+      <div style={backgroundStyle} />
+      <div style={containerStyle}>
+        <div style={clockGridStyle}>
+          {digits.map((digit, index) => (
+            <div key={index} style={digitBoxStyle}>
+              {digitLetters[digit] || digit}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
