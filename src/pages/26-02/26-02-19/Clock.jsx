@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import platFont from '../../../assets/fonts/26-02-19-plat.ttf';
 
 const ImageDisplay = () => {
-  const [fontLoaded, setFontLoaded] = useState(false);
   const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const font = new FontFace('PlatFont', `url(${platFont})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-      setFontLoaded(true);
-    }).catch(() => setFontLoaded(true));
-  }, []);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('PlatFont', platFont, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -37,7 +35,24 @@ const ImageDisplay = () => {
   const digits = rawTime.replace(/:/g, '').split('');
   const spacedAmPm = amPm.split('').join(' ');
 
-  // Show content immediately - no loading state
+  // Show content when font is ready
+  if (!fontReady) {
+    return (
+      <div style={{
+        width: '100vw',
+        height: '100dvh',
+        backgroundColor: '#112D1E',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#ACA99F',
+        fontFamily: 'sans-serif',
+        fontSize: '1.5rem'
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <>

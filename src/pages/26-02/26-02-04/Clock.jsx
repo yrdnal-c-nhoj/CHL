@@ -12,18 +12,16 @@ const CONFIG = {
 
 const DigitalClockTemplate = () => {
   const [time, setTime] = useState(new Date());
-  const [fontReady, setFontReady] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('BorrowedDigital', digitalFontUrl, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
-    // 1. Load Font
-    const font = new FontFace('BorrowedDigital', `url(${digitalFontUrl})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontReady(true);
-    }).catch(() => setFontReady(true));
-
-    // 2. Device Detection
+    // Device Detection
     const checkDevice = () => setIsMobile(window.innerWidth <= 768);
     checkDevice();
     window.addEventListener('resize', checkDevice);
