@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 // === Local assets ===
 import bg1 from '../../../assets/images/26-01/26-01-01/fan.webp';
@@ -9,8 +10,13 @@ const InvertedClock = () => {
   const secondHandRef = useRef(null);
   const minHandRef = useRef(null);
   const hourHandRef = useRef(null);
-  const [fontReady, setFontReady] = useState(false);
   const [bgReady, setBgReady] = useState(false);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('MyFontScoped', myFontUrl, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -33,18 +39,6 @@ const InvertedClock = () => {
       if (hourHandRef.current) hourHandRef.current.style.transform = `translateY(-50%) rotate(${hourDegrees}deg)`;
     }, 50);
     return () => clearInterval(t);
-  }, []);
-
-  // Ensure font is loaded to avoid FOUC
-  useEffect(() => {
-    let cancelled = false;
-    document.fonts
-      .load("1em 'MyFontScoped'")
-      .then(() => !cancelled && setFontReady(true))
-      .catch(() => !cancelled && setFontReady(true));
-    return () => {
-      cancelled = true;
-    };
   }, []);
 
   // Preload background to avoid flashing
