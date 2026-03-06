@@ -1,31 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';import font_2025_12_16 from '../../../assets/fonts/25-12-16-four.ttf?url';
+import { useFontLoader } from '../../../utils/fontLoader';
+import font_2025_12_16 from '../../../assets/fonts/25-12-16-four.ttf?url';
 
 const QuadClock = () => {
   const [time, setTime] = useState(Date.now());
-  const [fontLoaded, setFontLoaded] = useState(false);
-
-  // === Effect 1: Load custom font ===
-  useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const font = new FontFace('font_2025_12_16', `url(${font_2025_12_16})`, {
-          style: 'normal',
-          weight: '400',
-          display: 'swap',
-        });
-
-        const loadedFont = await font.load();
-        document.fonts.add(loadedFont);
-        setFontLoaded(true);
-      } catch (err) {
-        console.warn('Custom font failed to load, falling back to monospace', err);
-        setFontLoaded(true); // Allow rendering with fallback
-      }
-    };
-
-    loadFont();
-  }, []); // Run once on mount
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('font_2025_12_16', font_2025_12_16, {
+    timeout: 5000,
+    fallback: true
+  });
 
   // === Effect 2: Animation loop for smooth clock ===
   useEffect(() => {
@@ -114,8 +98,8 @@ const QuadClock = () => {
               fontSize: `${CLOCK_SIZE * 0.09}vmin`,
               color: '#F7F8CEFF',
               textShadow: '1px 2px 0px #333333, -1px -1px 0px #333333',
-              fontFamily: fontLoaded ? 'font_2025_12_16, monospace' : 'monospace',
-              opacity: fontLoaded ? 1 : 0,
+              fontFamily: fontReady ? 'font_2025_12_16, monospace' : 'monospace',
+              opacity: fontReady ? 1 : 0,
               transition: 'opacity 0.5s ease',
             }}
           >

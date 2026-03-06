@@ -10,17 +10,13 @@ const SpinningDodecahedronClock = () => {
   const animationIdRef = useRef(null);
 
   const [ready, setReady] = useState(false);
-  const [fontLoaded, setFontLoaded] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-
-  // --- Load font ---
-  useEffect(() => {
-    const fontFace = new FontFace("Orbitron20251012", `url(${OrbitronFont20251012})`);
-    fontFace.load().then((loadedFace) => {
-      document.fonts.add(loadedFace);
-      setFontLoaded(true);
-    });
-  }, []);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('Orbitron20251012', OrbitronFont20251012, {
+    timeout: 5000,
+    fallback: true
+  });
 
   // --- Load background image ---
   useEffect(() => {
@@ -31,7 +27,7 @@ const SpinningDodecahedronClock = () => {
 
   // --- Initialize scene once all assets are ready ---
   useEffect(() => {
-    if (!containerRef.current || !fontLoaded || !imageLoaded) return;
+    if (!containerRef.current || !fontReady || !imageLoaded) return;
 
     // --- Scene ---
     const scene = new THREE.Scene();
@@ -222,7 +218,7 @@ const SpinningDodecahedronClock = () => {
       if (containerRef.current && renderer.domElement)
         containerRef.current.removeChild(renderer.domElement);
     };
-  }, [fontLoaded, imageLoaded]);
+  }, [fontReady, imageLoaded]);
 
   // --- Layout ---
   return (
