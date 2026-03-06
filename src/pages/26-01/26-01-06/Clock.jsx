@@ -1,29 +1,28 @@
 // src/components/PyramidzBackground.jsx
 import { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 // Vite public folder imports (root-relative → auto-hashed in prod)
 import backgroundImage from '../../../assets/images/26-01/26-01-05/pyr.webp';
 import gizaFont from '../../../assets/fonts/26-01-05-giza.otf';
 
 export default function PyramidzBackground() {
-  const [fontReady, setFontReady] = useState(false);
   const [timeString, setTimeString] = useState('');
   const [bgReady, setBgReady] = useState(false);
 
   // Generate unique font-family name: Giza_20260107
   const dateStr = '20260107'; // January 07, 2026
   const uniqueFontFamily = `Giza_${dateStr}`;
-
-  // 1. Inject @font-face once + marquee styles (cleaned up on unmount)
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader(uniqueFontFamily, gizaFont, {
+    timeout: 5000,
+    fallback: true
+  });
+  
+  // 2. Inject marquee styles (cleaned up on unmount)
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
-      @font-face {
-        font-family: '${uniqueFontFamily}';
-        src: url(${gizaFont}) format('opentype');
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
-      }
       .pz-marquee-wrapper {
         display: flex;
         width: fit-content;

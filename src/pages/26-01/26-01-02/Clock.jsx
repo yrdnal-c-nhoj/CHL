@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import fontFile from '../../../assets/fonts/26-01-02-cram.ttf';
 import backgroundImage from '../../../assets/images/26-01/26-01-02/brick.webp';
 
 const StretchedClock = () => {
   const [time, setTime] = useState(new Date());
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 768);
-  const [fontReady, setFontReady] = useState(false);
   const [bgReady, setBgReady] = useState(false);
+  
+  // Use standardized font loader
+  const fontReady = useFontLoader('Cram260102', fontFile, {
+    timeout: 5000,
+    fallback: true
+  });
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -19,15 +25,9 @@ const StretchedClock = () => {
     };
   }, []);
 
-  // Load font & background to avoid FOUC
+  // Load background to avoid flashing
   useEffect(() => {
     let cancelled = false;
-
-    document.fonts
-      .load("1em 'Cram260102'")
-      .then(() => !cancelled && setFontReady(true))
-      .catch(() => !cancelled && setFontReady(true));
-
     const img = new Image();
     const done = () => !cancelled && setBgReady(true);
     img.onload = done;
