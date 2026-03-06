@@ -26,7 +26,9 @@ const RetroClock = () => {
     const fullProtocol = `CONNECTING.....................<br/>
       HTTP/1.1 200 OK<br/>
       Server: Apache/2.2.8 (Ubuntu)<br/>
+      CHL: Cubist Heart Laboratories<br/>
       ETag: '45b6-834-49130cc1182c0'<br/>
+      BorrowedTime: 00:00:00<br/>
       Connection: close<br/>
       Content-Type: text/html<br/>`;
 
@@ -65,21 +67,21 @@ const RetroClock = () => {
       height: '95%',
       backgroundColor: '#001a00',
       position: 'relative',
-      borderRadius: '2rem',
+      borderRadius: '2vh',
       border: '20px solid #1a1a1a',
       boxShadow: '0 0 50px rgba(0,0,0,1), inset 0 0 100px rgba(0,0,0,1)',
       overflow: 'hidden',
     },
     output: {
-      padding: '4rem',
+      padding: '4vh',
       height: '100%',
       boxSizing: 'border-box',
       textShadow: '0 0 8px rgba(0, 250, 0, 0.6)',
       animation: 'flicker 0.15s infinite',
     },
     timeHeader: {
-      fontSize: '5rem',
-      margin: '0 0 2rem 0',
+      fontSize: '10vh',
+      margin: '0 0 2vh 0',
       letterSpacing: '2px',
     },
     scanlines: {
@@ -100,7 +102,7 @@ const RetroClock = () => {
     link: {
       color: '#00fa00',
       textDecoration: 'none',
-      borderBottom: '2px solid #00fa00',
+      borderBottom: '1px solid #00fa00',
       transition: 'all 0.2s',
     }
   };
@@ -147,7 +149,7 @@ const RetroClock = () => {
         <div style={styles.output}>
           <h1 style={styles.timeHeader}>{time}</h1>
           
-          <div style={{ fontSize: '1.5rem', lineHeight: '1.4' }}>
+          <div style={{ fontSize: '1.9vh', lineHeight: '1.7' }}>
             <p dangerouslySetInnerHTML={{ __html: bootText }} />
             
             {showEmail && (
@@ -158,7 +160,7 @@ const RetroClock = () => {
             )}
 
             {showFooter && (
-              <p style={{ marginTop: '2rem', color: 'rgba(0, 250, 0, 0.5)' }}>
+              <p style={{ marginTop: '2vh', color: 'rgba(0, 250, 0, 0.5)' }}>
                 PRESS ANY KEY TO EXIT...
               </p>
             )}
