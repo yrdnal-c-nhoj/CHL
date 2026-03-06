@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 
-const RetroClock = () => {
+const Clock = () => {
   const [time, setTime] = useState('');
   const [bootText, setBootText] = useState('');
   const [showEmail, setShowEmail] = useState(false);
   const [showFooter, setShowFooter] = useState(false);
+  
+  // Load VT323 font
+  const fontReady = useFontLoader('VT323', 'https://fonts.gstatic.com/s/vt323/v18/pxiKyp0ihIEF2isfFJA.ttf');
 
   // 1. Clock Logic
   useEffect(() => {
@@ -111,8 +115,6 @@ const RetroClock = () => {
     <div style={styles.container}>
       {/* Global CSS for Animations */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-        
         @keyframes flicker {
           0% { opacity: 0.98; }
           50% { opacity: 1; }
@@ -171,4 +173,4 @@ const RetroClock = () => {
   );
 };
 
-export default RetroClock;
+export default Clock;
