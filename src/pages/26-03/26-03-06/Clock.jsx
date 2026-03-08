@@ -1,119 +1,141 @@
-import React, { useState, useEffect } from 'react';
-// Keep your existing imports
+import React, { useState, useEffect, useRef } from 'react';
 import rocketBg from '../../../assets/images/26-03/26-03-06/rocket.gif';
 import hourHandImg from '../../../assets/images/26-03/26-03-06/hand2.webp';
 import minuteHandImg from '../../../assets/images/26-03/26-03-06/hand1.webp';
 import secondHandImg from '../../../assets/images/26-03/26-03-06/hand3.webp';
 
 const RocketGrid = () => {
-  const [time, setTime] = useState(new Date());
+  const [rotation, setRotation] = useState({ s: 0, m: 0, h: 0 });
+  const requestRef = useRef();
+
+  const animate = () => {
+    const now = new Date();
+    const ms = now.getMilliseconds();
+    const s = now.getSeconds();
+    const m = now.getMinutes();
+    const h = now.getHours();
+
+    const secondsWithMs = s + ms / 1000;
+    const minutesWithSeconds = m + secondsWithMs / 60;
+    const hoursWithMinutes = (h % 12) + minutesWithSeconds / 60;
+
+    setRotation({
+      s: secondsWithMs * 6,
+      m: minutesWithSeconds * 6,
+      h: hoursWithMinutes * 30
+    });
+
+    requestRef.current = requestAnimationFrame(animate);
+  };
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    requestRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(requestRef.current);
   }, []);
 
-  const seconds = time.getSeconds();
-  const minutes = time.getMinutes();
-  const hours = time.getHours();
-
-  // Smooth rotation math
-  const degS = (seconds / 60) * 360;
-  const degM = ((minutes + seconds / 60) / 60) * 360;
-  const degH = (((hours % 12) + minutes / 60) / 12) * 360;
+  // Adjusted for large, full-view rockets
+  const rows = 12; 
+  const cols = 15;
 
   return (
-    <div style={{ 
-      position: 'relative', 
-      width: '100vw', 
-      height: '100dvh', 
-      overflow: 'hidden', 
-      background: '#1F5FAC',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}>
+    <div style={containerStyle}>
       
-      {/* --- INTENSE ROCKET GRID --- */}
-      <div style={{ 
-        position: 'absolute', 
-        inset: '-50px', // Slight overflow to ensure edges are covered
-        display: 'grid',
-        // Creating roughly 15 columns of 80px rockets
-        gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))',
-        gap: '5px',
-        opacity: 0.7,
-        pointerEvents: 'none' // Clicks go through to the clock
-      }}>
-        {/* Generates ~200 rockets to ensure the screen is packed */}
-        {Array.from({ length: 200 }).map((_, i) => {
-          // Logic to alternate direction based on "row" 
-          // (Approximated by index since it's a dynamic grid)
-          const isAltRow = Math.floor(i / 10) % 2 === 0; 
-          return (
-            <img
-              key={i}
-              src={rocketBg}
-              alt="Rocket"
-              style={{ 
-                width: '100%', 
-                height: '120px', 
-                objectFit: 'contain', 
-                transform: `rotate(${isAltRow ? 90 : 270}deg)` 
-              }}
-            />
-          );
-        })}
+      {/* --- UNCLIPPED LARGE ROCKET GRID --- */}
+      <div style={gridWrapperStyle}>
+        {Array.from({ length: rows }).map((_, rowIndex) => (
+          <div key={`row-${rowIndex}`} style={rowStyle}>
+            {Array.from({ length: cols }).map((_, colIndex) => (
+              <div key={`cell-${rowIndex}-${colIndex}`} style={cellStyle}>
+                <img
+                  src={rocketBg}
+                  alt="Rocket"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain', // Ensures the whole rocket is visible
+                    transform: rowIndex % 2 === 0 ? 'rotate(90deg)' : 'rotate(270deg)',
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
 
       {/* --- ANALOG CLOCK OVERLAY --- */}
-      <div style={{
-        position: 'relative',
-        width: '400px',
-        height: '400px',
-        zIndex: 10,
-        // Optional: slight glow to separate clock from busy background
-        filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.5))'
-      }}>
-        
-        {/* Hour Hand */}
+      <div style={clockWrapperStyle}>
         <img src={hourHandImg} alt="Hour" style={{ 
           ...handStyle, 
-          height: '100px', 
-          transform: `translateX(-50%) rotate(${degH}deg)` 
+          height: '110px', 
+          transform: `translateX(-50%) rotate(${rotation.h}deg)` 
         }} />
         
-        {/* Minute Hand */}
         <img src={minuteHandImg} alt="Minute" style={{ 
           ...handStyle, 
-          height: '150px', 
-          transform: `translateX(-50%) rotate(${degM}deg)` 
+          height: '160px', 
+          transform: `translateX(-50%) rotate(${rotation.m}deg)` 
         }} />
         
-        {/* Second Hand */}
         <img src={secondHandImg} alt="Second" style={{ 
           ...handStyle, 
-          height: '180px', 
-          transform: `translateX(-50%) rotate(${degS}deg)`,
-          // Snaps back to 0 without spinning 360 degrees backwards
-          transition: seconds === 0 ? 'none' : 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+          height: '190px', 
+          transform: `translateX(-50%) rotate(${rotation.s}deg)`,
+          transition: 'none'
         }} />
         
-        {/* Center Pin */}
-        <div style={{ 
-          position: 'absolute', 
-          width: '15px', 
-          height: '15px', 
-          background: '#fff', 
-          borderRadius: '50%', 
-          top: '50%', 
-          left: '50%', 
-          transform: 'translate(-50%, -50%)', 
-          zIndex: 20 
-        }} />
+        <div style={centerPinStyle} />
       </div>
     </div>
   );
+};
+
+// --- STYLES ---
+
+const containerStyle = {
+  position: 'relative',
+  width: '100vw',
+  height: '100dvh',
+  overflow: 'hidden',
+  background: '#1F5FAC',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
+};
+
+const gridWrapperStyle = {
+  position: 'absolute',
+  inset: '-150px', 
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  pointerEvents: 'none',
+  opacity: 0.8,
+  // Using gap to keep them close without overlapping/clipping
+  gap: '10px' 
+};
+
+const rowStyle = {
+  display: 'flex',
+  flexDirection: 'row',
+  gap: '15px' // Space between rockets in a row
+};
+
+const cellStyle = {
+  width: '100px',  // Explicit size of the "box"
+  height: '100px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0
+};
+
+const clockWrapperStyle = {
+  position: 'relative',
+  width: '450px',
+  height: '450px',
+  zIndex: 10,
+  filter: 'drop-shadow(0 0 40px rgba(0,0,0,0.8))'
 };
 
 const handStyle = {
@@ -122,7 +144,20 @@ const handStyle = {
   bottom: '50%',
   transformOrigin: 'bottom center',
   zIndex: 15,
-  transition: 'transform 0.5s cubic-bezier(0.4, 2.08, 0.55, 0.44)'
+  willChange: 'transform'
+};
+
+const centerPinStyle = {
+  position: 'absolute',
+  width: '18px',
+  height: '18px',
+  background: '#fff',
+  borderRadius: '50%',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  zIndex: 20,
+  boxShadow: '0 0 10px rgba(255,255,255,0.5)'
 };
 
 export default RocketGrid;
