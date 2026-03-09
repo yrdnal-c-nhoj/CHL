@@ -31,9 +31,11 @@ const Clock = () => {
       HTTP/1.1 200 OK<br/>
       Server: Apache/2.2.8 (Ubuntu)<br/>
       CHL: Cubist Heart Laboratories<br/>
-      ETag: '45b6-834-49130cc1182c0'<br/>
       BorrowedTime: 00:00:00<br/>
-      Connection: close<br/>
+      ETag: '45b6-834-49130cc1182c0'<br/>
+      Plus Ars Citius Omni Tempore Nam Quisque*<br/>
+     Connection: close<br/>
+      *More Art Faster FOr Everybody All The Time<br/>
       Content-Type: text/html<br/>`;
 
     let i = 0;
