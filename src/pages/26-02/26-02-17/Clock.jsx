@@ -1,3 +1,13 @@
+/**
+ * Asterisk Clock Component
+ * 
+ * Features:
+ * - Matrix-style falling character background
+ * - Analog clock with custom font characters
+ * - Smooth animations and transitions
+ * - Responsive design
+ */
+
 import React, { useState, useEffect, useMemo, memo } from 'react';
 import AsteriskFont1 from '../../../assets/fonts/26-02-17-ast.otf';
 import AsteriskFont2 from '../../../assets/fonts/26-02-17-aster.otf';
@@ -115,55 +125,59 @@ const AsteriskClock = () => {
 
 
   /**
-   * Setup fonts, resize, and clock tick
+ * Setup fonts, resize, and clock tick
    */
   useEffect(() => {
+    console.log('AsteriskClock: Component mounting');
+    
+    try {
+      const style = document.createElement('style');
 
-    const style = document.createElement('style');
+      style.textContent = `
+        @font-face {
+          font-family: 'AsteriskFont1';
+          src: url('${AsteriskFont1}');
+          font-display: block;
+        }
 
-    style.textContent = `
-      @font-face {
-        font-family: 'AsteriskFont1';
-        src: url('${AsteriskFont1}');
-        font-display: block;
-      }
+        @font-face {
+          font-family: 'AsteriskFont2';
+          src: url('${AsteriskFont2}');
+          font-display: block;
+        }
 
-      @font-face {
-        font-family: 'AsteriskFont2';
-        src: url('${AsteriskFont2}');
-        font-display: block;
-      }
+        @keyframes rain-rise {
+          0% { transform: translateY(0%); }
+          100% { transform: translateY(-50%); }
+        }
+      `;
 
-      @keyframes rain-rise {
-        0% { transform: translateY(0%); }
-        100% { transform: translateY(-50%); }
-      }
-    `;
+      document.head.appendChild(style);
+      console.log('AsteriskClock: Fonts loaded successfully');
 
-    document.head.appendChild(style);
+      const resize = () => {
+        setWindowSize({
+          width: window.innerWidth,
+          height: window.innerHeight
+        });
+      };
 
+      window.addEventListener('resize', resize);
 
-    const resize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-    };
+      const timer = setInterval(() => {
+        setTime(new Date());
+      }, 1000);
 
-    window.addEventListener('resize', resize);
-
-
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-
-    return () => {
-      clearInterval(timer);
-      window.removeEventListener('resize', resize);
-      document.head.removeChild(style);
-    };
-
+      return () => {
+        clearInterval(timer);
+        window.removeEventListener('resize', resize);
+        if (document.head.contains(style)) {
+          document.head.removeChild(style);
+        }
+      };
+    } catch (error) {
+      console.error('AsteriskClock: Error in useEffect:', error);
+    }
   }, []);
 
 
@@ -205,7 +219,6 @@ const AsteriskClock = () => {
 
 
   return (
-
     <div style={{
       width: '100vw',
       height: '100dvh',
@@ -216,17 +229,29 @@ const AsteriskClock = () => {
       alignItems: 'center',
       justifyContent: 'center'
     }}>
+      {/* Debug info */}
+      <div style={{
+        position: 'absolute',
+        top: '10px',
+        left: '10px',
+        color: '#333',
+        fontFamily: 'monospace',
+        fontSize: '12px',
+        zIndex: 100
+      }}>
+        Debug: {time.toLocaleTimeString()}
+      </div>
 
       <BackgroundGrid windowSize={windowSize} cellSize={cellSize} />
-
 
       <div style={{
         position: 'relative',
         width: 'min(75vw, 75vh)',
         height: 'min(75vw, 75vh)',
-        zIndex: 10
+        zIndex: 10,
+        border: '2px solid rgba(0,0,0,0.1)',
+        borderRadius: '50%'
       }}>
-
 
         {/* Clock Characters */}
         <div style={{
@@ -236,15 +261,11 @@ const AsteriskClock = () => {
           transition: 'opacity 0.4s ease'
         }}>
           {clockChars.map((char, i) => {
-
             const angle = i * 30 - 90;
-
             const x = 50 + 42 * Math.cos(angle * Math.PI / 180);
-
             const y = 50 + 42 * Math.sin(angle * Math.PI / 180);
 
             return (
-
               <div
                 key={i}
                 style={{
@@ -261,16 +282,12 @@ const AsteriskClock = () => {
               >
                 {char}
               </div>
-
             );
-
           })}
         </div>
 
-
         {/* Clock Hands */}
         <svg viewBox="0 0 200 200" style={{ width: '100%', height: '100%' }}>
-
           <line
             x1="100"
             y1="100"
@@ -301,14 +318,10 @@ const AsteriskClock = () => {
             strokeWidth="1.5"
             strokeLinecap="round"
           />
-
         </svg>
 
-
       </div>
-
     </div>
-
   );
 
 };

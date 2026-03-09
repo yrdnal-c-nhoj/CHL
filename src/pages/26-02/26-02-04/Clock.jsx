@@ -29,18 +29,12 @@ const DigitalClockTemplate = () => {
     // 3. Clock Ticker
     const interval = setInterval(() => setTime(new Date()), 1000);
 
-    // 4. Inject Styles (Keyframes & Body Visibility)
+    // 4. Inject Styles (Keyframes only - no global body styles)
     const styleSheet = document.createElement("style");
     styleSheet.textContent = `
       @keyframes copper-shimmer {
         0% { background-position: -200% center; }
         100% { background-position: 200% center; }
-      }
-      body { 
-        font-family: 'BorrowedDigital', monospace; 
-        visibility: visible; 
-        margin: 0;
-        background-color: #0a0a0a;
       }
     `;
     document.head.appendChild(styleSheet);
