@@ -37,17 +37,7 @@ export default function AardvarkClock() {
     return () => clearInterval(timer);
   }, []);
 
-  // Track font readiness
-  useEffect(() => {
-    let cancelled = false;
-    document.fonts
-      .load(`1em '${uniqueFontFamily}'`)
-      .then(() => !cancelled && setFontReady(true))
-      .catch(() => !cancelled && setFontReady(true));
-    return () => {
-      cancelled = true;
-    };
-  }, [uniqueFontFamily]);
+  // Font loading is handled by useFontLoader above - no need for duplicate logic
 
   // Preload background
   useEffect(() => {
