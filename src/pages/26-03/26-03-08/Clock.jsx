@@ -96,7 +96,8 @@ const Clock = () => {
         position: 'absolute', top: 0, left: 0,
         width: '100%', height: '100%',
         objectFit: 'fill', zIndex: 0,
-        transform: 'scaleX(-1)'
+        transform: 'scaleX(-1)',
+        filter: 'hue-rotate(-30deg) saturate(1.5) contrast(1.4) brightness(1.2)',
       }}>
         <source src={dragonVideo} type="video/mp4" />
       </video>
