@@ -34,7 +34,7 @@ const RocketGrid = () => {
   }, []);
 
   // Adjusted for large, full-view rockets
-  const rows = 12; 
+  const rows = 22; 
   const cols = 15;
 
   return (
@@ -82,8 +82,7 @@ const RocketGrid = () => {
           transform: `translateX(-50%) rotate(${rotation.s}deg)`,
           transition: 'none'
         }} />
-        
-        <div style={centerPinStyle} />
+
       </div>
     </div>
   );
@@ -110,15 +109,15 @@ const gridWrapperStyle = {
   justifyContent: 'center',
   alignItems: 'center',
   pointerEvents: 'none',
-  opacity: 0.8,
+  // opacity: 0.8,
   // Using gap to keep them close without overlapping/clipping
-  gap: '10px' 
+  // gap: '10px' 
 };
 
 const rowStyle = {
   display: 'flex',
   flexDirection: 'row',
-  gap: '15px' // Space between rockets in a row
+  // gap: '15px' // Space between rockets in a row
 };
 
 const cellStyle = {
@@ -145,19 +144,6 @@ const handStyle = {
   transformOrigin: 'bottom center',
   zIndex: 15,
   willChange: 'transform'
-};
-
-const centerPinStyle = {
-  position: 'absolute',
-  width: '18px',
-  height: '18px',
-  background: '#fff',
-  borderRadius: '50%',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  zIndex: 20,
-  boxShadow: '0 0 10px rgba(255,255,255,0.5)'
 };
 
 export default RocketGrid;
