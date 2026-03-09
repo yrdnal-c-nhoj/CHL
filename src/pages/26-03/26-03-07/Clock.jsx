@@ -108,26 +108,26 @@ const Clock = () => {
   const clockWrapperStyles = {
     display: 'flex',
     flexDirection: 'column',
-    gap: '10px',
+    // gap: '10px',
     alignItems: 'center',
     '@media (min-width: 769px)': {
       flexDirection: 'row',
-      gap: '30px'
+      // gap: '30px'
     }
   };
 
   const digitalDigitStyles = {
-    fontSize: 'clamp(4rem, 25vw, 15rem)',
+    fontSize: 'clamp(4rem, 20vw, 15rem)',
     fontFamily: "'Silkscreen', monospace",
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     lineHeight: 1,
     display: 'flex',
-    gap: '0.05em',
+    // gap: '0.05em',
     background: 'repeating-conic-gradient(#fff 0 25%, #000 0 50%) 0 0 / 130px 32.5px',
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
     color: 'transparent',
-    filter: 'drop-shadow(1px 0px 0px red) drop-shadow(-1px 0px 0px red)'
+    filter: 'drop-shadow(1px 0px 5px #39A94F5C)'
   };
 
   const digitBoxStyles = {
@@ -140,7 +140,7 @@ const Clock = () => {
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
     color: 'transparent',
-    filter: 'drop-shadow(1px 0px 0px red) drop-shadow(-1px 0px 0px red)'
+    filter: 'drop-shadow(1px 0px 5px #AA11118A)'
   };
 
   // Responsive styles
