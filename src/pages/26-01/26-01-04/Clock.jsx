@@ -257,7 +257,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    background: "radial-gradient(circle, #2c3e50, #000)",
+    background: "radial-gradient(circle, #233343, #000)",
   },
 
   loading: {
