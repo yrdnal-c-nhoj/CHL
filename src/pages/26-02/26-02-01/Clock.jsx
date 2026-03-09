@@ -40,6 +40,7 @@ const useClock = () => {
 const AnalogClock = () => {
   const now = useClock();
   const fontReady = useFontLoader('BorrowedAnalog', dripFont, { fallback: true, timeout: 3500 });
+  const styles = getStyles(fontReady);
 
   // Time Calculations (including sub-second fractions for smooth motion)
   const msec = now.getMilliseconds();
@@ -72,14 +73,7 @@ const AnalogClock = () => {
   }, []);
 
   return (
-    <div
-      style={{
-        ...styles.container,
-        opacity: fontReady ? 1 : 0,
-        visibility: fontReady ? 'visible' : 'hidden',
-        transition: 'opacity 0.5s ease',
-      }}
-    >
+    <div style={styles.container}>
       {/* Background Layer */}
       <div style={{ 
         ...styles.backgroundLayer, 
@@ -122,7 +116,7 @@ const AnalogClock = () => {
 };
 
 // --- Styles ---
-const styles = {
+const getStyles = (fontReady) => ({
   container: {
     position: 'relative',
     width: '100vw',
@@ -205,6 +199,6 @@ const styles = {
     zIndex: 10,
     boxShadow: '0 0 5px rgba(0,0,0,0.8)',
   }
-};
+});
 
 export default AnalogClock;
