@@ -79,7 +79,7 @@ const Clock = () => {
       overflow: 'hidden',
     },
     output: {
-      padding: '4vh',
+      // padding: '4vh',
       height: '100%',
       boxSizing: 'border-box',
       textShadow: '0 0 8px rgba(0, 250, 0, 0.6)',
@@ -153,7 +153,7 @@ const Clock = () => {
         <div style={styles.output}>
           <h1 style={styles.timeHeader}>{time}</h1>
           
-          <div style={{ fontSize: '1.9vh', lineHeight: '1.7' }}>
+          <div style={{ fontSize: '2.3vh', lineHeight: '1.1' }}>
             <p dangerouslySetInnerHTML={{ __html: bootText }} />
             
             {showEmail && (
