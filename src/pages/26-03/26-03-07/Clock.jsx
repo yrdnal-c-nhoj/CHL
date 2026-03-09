@@ -127,7 +127,7 @@ const Clock = () => {
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
     color: 'transparent',
-    filter: 'drop-shadow(1px 0px 0px red) drop-shadow(-1px 0px 0px red) drop-shadow(0px 1px 0px red) drop-shadow(0px -1px 0px red)'
+    filter: 'drop-shadow(1px 0px 0px red) drop-shadow(-1px 0px 0px red)'
   };
 
   const digitBoxStyles = {
@@ -140,7 +140,7 @@ const Clock = () => {
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
     color: 'transparent',
-    filter: 'drop-shadow(1px 0px 0px red) drop-shadow(-1px 0px 0px red) drop-shadow(0px 1px 0px red) drop-shadow(0px -1px 0px red)'
+    filter: 'drop-shadow(1px 0px 0px red) drop-shadow(-1px 0px 0px red)'
   };
 
   // Responsive styles
