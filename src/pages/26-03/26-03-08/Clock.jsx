@@ -3,6 +3,7 @@ import hand1Img from '/src/assets/images/26-03/26-03-08/hand2.png';
 import hand2Img from '/src/assets/images/26-03/26-03-08/hand1.webp';
 import handImg from '/src/assets/images/26-03/26-03-08/hand.webp';
 import dragonFont from '/src/assets/fonts/26-03-08-dragon.ttf';
+import dragonVideo from '/src/assets/images/26-03/26-03-08/dragon.mp4';
 
 // Add font-face CSS
 const fontFace = `
@@ -55,8 +56,8 @@ const Clock = () => {
         transform: `translate(-50%, -50%) rotate(${angle + 90}deg)`,
         fontFamily: `'Dragon', serif`,
         fontSize: '3rem',
-        color: '#83EF90',
-        textShadow: '0 0 12px rgba(131,239,144,0.7)',
+        color: '#83EF907F',
+        // textShadow: '0 0 12px rgba(131,239,144,0.7)',
         userSelect: 'none',
         fontWeight: 'bold'
       }}>{i}</div>
@@ -97,7 +98,7 @@ const Clock = () => {
         objectFit: 'fill', zIndex: 0,
         transform: 'scaleX(-1)'
       }}>
-        <source src="/src/assets/images/26-03/26-03-08/dragon.mp4" type="video/mp4" />
+        <source src={dragonVideo} type="video/mp4" />
       </video>
 
       {/* Clock Face Container */}
