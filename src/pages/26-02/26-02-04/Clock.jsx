@@ -13,6 +13,7 @@ const CONFIG = {
 const DigitalClockTemplate = () => {
   const [time, setTime] = useState(new Date());
   const [isMobile, setIsMobile] = useState(false);
+  const [animationName, setAnimationName] = useState('');
   
   // Use standardized font loader
   const fontReady = useFontLoader('BorrowedDigital', digitalFontUrl, {
@@ -26,23 +27,28 @@ const DigitalClockTemplate = () => {
     checkDevice();
     window.addEventListener('resize', checkDevice);
 
-    // 3. Clock Ticker
+    // Clock Ticker
     const interval = setInterval(() => setTime(new Date()), 1000);
 
-    // 4. Inject Styles (Keyframes only - no global body styles)
-    const styleSheet = document.createElement("style");
-    styleSheet.textContent = `
-      @keyframes copper-shimmer {
+    // Create unique animation name and scoped style element
+    const uniqueAnimationName = `copper-shimmer-${Date.now()}`;
+    setAnimationName(uniqueAnimationName);
+    
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes ${uniqueAnimationName} {
         0% { background-position: -200% center; }
         100% { background-position: 200% center; }
       }
     `;
-    document.head.appendChild(styleSheet);
+    document.head.appendChild(style);
 
     return () => {
       window.removeEventListener('resize', checkDevice);
       clearInterval(interval);
-      document.head.removeChild(styleSheet);
+      if (style && style.parentNode) {
+        style.parentNode.removeChild(style);
+      }
     };
   }, []);
 
@@ -106,7 +112,7 @@ const digitStyle = {
     backgroundSize: '200% auto',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
-    animation: 'copper-shimmer 4s linear infinite',
+    animation: animationName ? `${animationName} 4s linear infinite` : 'none',
 
     // 2. The Border (The Secret Sauce)
     WebkitTextStroke: '0.5vh #43B3AE',
