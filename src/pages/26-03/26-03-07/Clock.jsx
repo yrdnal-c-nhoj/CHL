@@ -93,7 +93,7 @@ const Clock = () => {
   // Styles using regular CSS-in-JS objects
   const containerStyles = {
     '--pixel-size': '130px',
-    background: 'repeating-conic-gradient(#fff 0 25%, #000 0 50%) 0 0 / 130px 32.5px',
+    background: 'repeating-conic-gradient(#fff 0 25%, #000 0 50%) 0 0 / 32.5px 130px',
     margin: 0,
     display: 'grid',
     minHeight: '100vh',
@@ -123,7 +123,7 @@ const Clock = () => {
     lineHeight: 1,
     display: 'flex',
     // gap: '0.05em',
-    background: 'repeating-conic-gradient(#fff 0 25%, #000 0 50%) 0 0 / 130px 32.5px',
+    background: 'repeating-conic-gradient(#fff 0 25%, #000 0 50%) 0 0 / 32.5px 130px',
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
     color: 'transparent',
@@ -136,7 +136,7 @@ const Clock = () => {
     alignItems: 'center',
     minWidth: '0.6em',
     height: '1em',
-    background: 'repeating-conic-gradient(#fff 0 25%, #000 0 50%) 0 0 / 130px 32.5px',
+    background: 'repeating-conic-gradient(#fff 0 25%, #000 0 50%) 0 0 / 32.5px 130px',
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
     color: 'transparent',
