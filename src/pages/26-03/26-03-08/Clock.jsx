@@ -55,11 +55,11 @@ const Clock = () => {
         top: `${y}%`,
         transform: `translate(-50%, -50%) rotate(${angle + 90}deg)`,
         fontFamily: `'Dragon', serif`,
-        fontSize: '3rem',
+        fontSize: '5rem',
         color: '#83EF907F',
         // textShadow: '0 0 12px rgba(131,239,144,0.7)',
         userSelect: 'none',
-        fontWeight: 'bold'
+        // fontWeight: 'bold'
       }}>{i}</div>
     );
   }
