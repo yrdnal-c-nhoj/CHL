@@ -14,25 +14,25 @@ const UPDATE_INTERVAL = 1000;
 
 const digitGlobs = {
 
-  0: import.meta.glob("../../../assets/images/25-10/25-10-28/digits/0/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  0: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/0/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
 
-  1: import.meta.glob("../../../assets/images/25-10/25-10-28/digits/1/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  1: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/1/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
 
-  2: import.meta.glob("../../../assets/images/25-10/25-10-28/digits/2/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  2: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/2/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
 
-  3: import.meta.glob("../../../assets/images/25-10/25-10-28/digits/3/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  3: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/3/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
 
-  4: import.meta.glob("../../../assets/images/25-10/25-10-28/digits/4/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  4: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/4/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
 
-  5: import.meta.glob("../../../assets/images/25-10/25-10-28/digits/5/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  5: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/5/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
 
-  6: import.meta.glob("../../../assets/images/25-10/25-10-28/digits/6/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  6: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/6/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
 
-  7: import.meta.glob("../../../assets/images/25-10/25-10-28/digits/7/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  7: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/7/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
 
-  8: import.meta.glob("../../../assets/images/25-10/25-10-28/digits/8/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  8: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/8/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
 
-  9: import.meta.glob("../../../assets/images/25-10/25-10-28/digits/9/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  9: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/9/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
 
 };
 
