@@ -1,4 +1,3 @@
-// src/components/DigitalClock.jsx
 import { useState, useEffect } from "react";
 import { useFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from "../../../assets/images/25-08/25-08-28/gob.jpg"; 
@@ -51,8 +50,8 @@ export default function DigitalClock() {
     position: "relative",
     display: "flex",
     zIndex: 1,
-    visibility: fontLoaded ? "visible" : "hidden", // hide until font ready
-    opacity: fontLoaded ? 1 : 0,
+    visibility: fontReady ? "visible" : "hidden",
+    opacity: fontReady ? 1 : 0,
     transition: 'opacity 0.3s ease'
   };
 
