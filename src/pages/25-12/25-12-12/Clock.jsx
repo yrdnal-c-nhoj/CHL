@@ -15,6 +15,7 @@ export default function AnalogBackgroundClock () {
 
   /* ---------------- COLOR CYCLING ---------------- */
 
+  const [randomHueOffset] = useState(() => Math.floor(Math.random() * 360)); // Random starting color
   const cycleProgress = (Date.now() % 15000) / 15000
   const getBrightness = offset =>
     (Math.sin((cycleProgress + offset) * Math.PI * 2) + 1) / 2
@@ -42,7 +43,7 @@ export default function AnalogBackgroundClock () {
 
   /* ---------------- BACKGROUND ---------------- */
 
-  const hue = ((Date.now() / 60000) * 360) % 360
+  const hue = ((Date.now() / 60000) * 360 + randomHueOffset[0]) % 360 // Add random offset
   const gradient = `hsl(${hue}, 100%, 50%)`
 
   return (
