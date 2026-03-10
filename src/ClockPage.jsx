@@ -77,6 +77,8 @@ const useClockUtils = () => {
 
 /**
  * Custom hook for asset preloading
+ * Includes defensive handling for mobile browsers where document.fonts.ready
+ * may be unsupported or never resolve, to avoid blank pages.
  */
 const useAssetPreloader = () => {
   const preloadAssets = useCallback(async (module) => {
@@ -96,10 +98,33 @@ const useAssetPreloader = () => {
         })
     );
 
-    // Wait for images and fonts to load
+    // Helper to avoid hanging forever on fonts.ready
+    const fontPromise = (() => {
+      try {
+        if (typeof document !== "undefined" && document.fonts && document.fonts.ready) {
+          return new Promise((resolve) => {
+            let settled = false;
+            const done = () => {
+              if (!settled) {
+                settled = true;
+                resolve();
+              }
+            };
+            document.fonts.ready.then(done).catch(done);
+            // Hard timeout to prevent blank screens on buggy mobile browsers
+            setTimeout(done, 2000);
+          });
+        }
+      } catch {
+        // ignore and fall through to resolved promise
+      }
+      return Promise.resolve();
+    })();
+
+    // Wait for images and (optionally) fonts to load, but never hang
     await Promise.all([
       ...imagePromises,
-      document.fonts.ready
+      fontPromise,
     ]);
 
     return true;
@@ -265,6 +290,8 @@ const ClockPage = () => {
         width: "100%",
         minHeight: "100vh",
         overflowY: "auto",
+        // Reserve space so scrollable content isn't hidden behind fixed footer nav
+        paddingBottom: "80px",
         backgroundColor: "#000",
         position: "relative"
       }}
