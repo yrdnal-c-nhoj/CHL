@@ -114,6 +114,7 @@
 
 /* --- Responsive --- */
 @media (max-width: 600px) {
+  /* Force navigation to be always visible on mobile */
   .footerStrip {
     /* Ensure proper touch target size */
     min-height: 60px;
@@ -121,6 +122,10 @@
     touch-action: manipulation;
     /* Improve touch response */
     -webkit-tap-highlight-color: transparent;
+    /* Always visible on mobile */
+    opacity: 0.9 !important;
+    transform: translateX(-50%) translateY(0) !important;
+    pointer-events: auto !important;
   }
 
   .footerButton,

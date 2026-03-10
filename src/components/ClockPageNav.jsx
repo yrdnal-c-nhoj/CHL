@@ -5,6 +5,20 @@ import styles from './ClockPageNav.module.css'; // keep using the same styles
 const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate }) => {
   const [visible, setVisible] = useState(true);
   const [inactivityTimer, setInactivityTimer] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                           window.innerWidth <= 768;
+      setIsMobile(isMobileDevice);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const clearInactivityTimer = useCallback(() => {
     if (inactivityTimer) {
@@ -43,6 +57,11 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
   }, [clearInactivityTimer]);
 
   const handleTouchEnd = useCallback((e) => {
+    // On mobile, don't hide the navigation at all
+    if (isMobile) {
+      e.preventDefault();
+      return;
+    }
     // Prevent immediate hiding to allow link clicks
     e.preventDefault();
     clearInactivityTimer();
@@ -50,23 +69,25 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
     setTimeout(() => {
       setVisible(false);
     }, 2000);
-  }, [clearInactivityTimer]);
+  }, [clearInactivityTimer, isMobile]);
 
   const handleTouchMove = useCallback(() => {
     setVisible(true);
     startInactivityTimer();
   }, [startInactivityTimer]);
 
-  // Show footer initially and start inactivity timer
+  // Show footer initially and start inactivity timer (only on desktop)
   useEffect(() => {
     setVisible(true);
-    startInactivityTimer();
+    if (!isMobile) {
+      startInactivityTimer();
+    }
     
     return () => {
       clearInactivityTimer();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isMobile]);
 
   if (!currentItem) return null;
 
