@@ -39,12 +39,23 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
   const handleTouchStart = useCallback(() => {
     setVisible(true);
     clearInactivityTimer();
+    // Don't hide immediately on touch end for mobile
   }, [clearInactivityTimer]);
 
-  const handleTouchEnd = useCallback(() => {
-    setVisible(false);
+  const handleTouchEnd = useCallback((e) => {
+    // Prevent immediate hiding to allow link clicks
+    e.preventDefault();
     clearInactivityTimer();
+    // Start timer to hide after a delay
+    setTimeout(() => {
+      setVisible(false);
+    }, 2000);
   }, [clearInactivityTimer]);
+
+  const handleTouchMove = useCallback(() => {
+    setVisible(true);
+    startInactivityTimer();
+  }, [startInactivityTimer]);
 
   // Show footer initially and start inactivity timer
   useEffect(() => {
@@ -67,6 +78,7 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
       onMouseMove={handleMouseMove}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onTouchMove={handleTouchMove}
     >
       <Link
         to={prevItem ? `/${prevItem.date}` : '/'}

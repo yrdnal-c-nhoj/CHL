@@ -114,13 +114,42 @@
 
 /* --- Responsive --- */
 @media (max-width: 600px) {
+  .footerStrip {
+    /* Ensure proper touch target size */
+    min-height: 60px;
+    /* Prevent zoom on double tap */
+    touch-action: manipulation;
+    /* Improve touch response */
+    -webkit-tap-highlight-color: transparent;
+  }
+
   .footerButton,
   .navButton {
-    padding: 0.6rem;
+    padding: 0.8rem;
+    /* Larger touch targets for mobile */
+    min-height: 50px;
+    min-width: 80px;
+    /* Prevent text selection on touch */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* Prevent callout on touch */
+    -webkit-touch-callout: none;
+    /* Improve touch response */
+    touch-action: manipulation;
   }
+  
   .navButton {
     width: 130px;
     font-size: 1.8rem;
+    /* Ensure arrow is easily tappable */
+    padding: 1rem;
+  }
+  
+  .footerCenter {
+    /* Make center section easier to tap */
+    padding: 0.5rem;
   }
  
 }
