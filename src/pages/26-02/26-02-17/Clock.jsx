@@ -229,18 +229,7 @@ const AsteriskClock = () => {
       alignItems: 'center',
       justifyContent: 'center'
     }}>
-      {/* Debug info */}
-      <div style={{
-        position: 'absolute',
-        top: '10px',
-        left: '10px',
-        color: '#333',
-        fontFamily: 'monospace',
-        fontSize: '12px',
-        zIndex: 100
-      }}>
-        Debug: {time.toLocaleTimeString()}
-      </div>
+    
 
       <BackgroundGrid windowSize={windowSize} cellSize={cellSize} />
 

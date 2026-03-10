@@ -31,11 +31,9 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
   const startInactivityTimer = useCallback(() => {
     clearInactivityTimer();
     const timer = setTimeout(() => {
-      console.log('Timer fired - hiding navigation');
       setVisible(false);
     }, 1000); // 1 second
     setInactivityTimer(timer);
-    console.log('Timer started');
   }, [clearInactivityTimer]);
 
   const handleMouseEnter = useCallback(() => {
@@ -92,10 +90,8 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
 
   // Show footer initially and start inactivity timer
   useEffect(() => {
-    console.log('Navigation component mounted, isMobile:', isMobile);
     setVisible(true);
     if (!isMobile) {
-      console.log('Starting initial timer for desktop');
       startInactivityTimer();
     }
     
@@ -192,14 +188,15 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
           justifyContent: 'center',
           alignItems: 'center',
           textAlign: 'center',
-          width: isMobile ? '100px' : '100px',
+          width: '100px',
           fontSize: '2.2rem',
           cursor: 'pointer',
           textDecoration: 'none',
           boxSizing: 'border-box',
           fontFamily: 'Manrope, sans-serif',
           transition: 'background 0.4s ease, color 0.4s ease, opacity 0.4s ease',
-          minHeight: '50px'
+          minHeight: '60px', // Consistent height
+          height: '60px' // Fixed height
         }}
       >
         <span>⇽</span>
@@ -225,7 +222,8 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
           boxSizing: 'border-box',
           fontFamily: 'Manrope, sans-serif',
           transition: 'background 0.4s ease, color 0.4s ease, opacity 0.4s ease',
-          minHeight: '50px'
+          minHeight: '60px', // Consistent height
+          height: '60px' // Fixed height
         }}
       >
         <div style={{
@@ -260,14 +258,15 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
           justifyContent: 'center',
           alignItems: 'center',
           textAlign: 'center',
-          width: isMobile ? '100px' : '100px',
+          width: '100px',
           fontSize: '2.2rem',
           cursor: 'pointer',
           textDecoration: 'none',
           boxSizing: 'border-box',
           fontFamily: 'Manrope, sans-serif',
           transition: 'background 0.4s ease, color 0.4s ease, opacity 0.4s ease',
-          minHeight: '50px'
+          minHeight: '60px', // Consistent height
+          height: '60px' // Fixed height
         }}
       >
         <span>⇾</span>
