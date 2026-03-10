@@ -314,7 +314,7 @@ const ClockPage = () => {
         </div>
       )}
 
-      {/* Clock component with fade-in animation */}
+      {/* Clock component without animation */}
       {allAssetsLoaded && ClockComponent && (
         <div style={{ width: "100%", height: "100%" }}>
           <div
@@ -323,9 +323,8 @@ const ClockPage = () => {
               fontFamily: "CustomFont, system-ui, sans-serif",
               display: "block",
               width: "100%",
-              height: "100%",
-              opacity: 0,
-              animation: "fadeIn 0.5s ease-out 0.3s forwards",
+              height: "100vh",
+              opacity: 1, // Remove animation, start fully visible
             }}
           >
             <ClockComponent />
