@@ -14,19 +14,16 @@ const SkewFlatClock = ({
 
   // Load font and background image
   useEffect(() => {
-    // Inject font-face
-    const style = document.createElement('style')
-    style.textContent = `
-      @font-face {
-        font-family: 'MyCustomFont';
-        src: url(${m250915font}) format('truetype');
-        font-display: swap;
+    // Native font loading without style leaks
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace('MyCustomFont', `url(${m250915font})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback');
       }
-    `
-    document.head.appendChild(style)
-
-    // Font preload
-    const fontPromise = document.fonts.load('10rem MyCustomFont')
+    };
 
     // Background image preload
     const imagePromise = new Promise((resolve, reject) => {
@@ -36,15 +33,14 @@ const SkewFlatClock = ({
       img.onerror = reject
     })
 
-    // Wait for both
-    Promise.all([fontPromise, imagePromise])
+    // Load font and wait for image
+    Promise.all([loadFont(), imagePromise])
       .then(() => setIsLoaded(true))
       .catch(err => {
         console.error('Asset loading error:', err)
         setIsLoaded(true)
       })
 
-    return () => document.head.removeChild(style)
   }, [])
 
   // Update time and hue
