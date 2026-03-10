@@ -1,25 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from './ClockPageNav.module.css'; // keep using the same styles
 
 const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate }) => {
-  const navigate = useNavigate();
   const [visible, setVisible] = useState(true);
   const [inactivityTimer, setInactivityTimer] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Detect mobile device
-  useEffect(() => {
-    const checkMobile = () => {
-      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-                           window.innerWidth <= 768;
-      setIsMobile(isMobileDevice);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   const clearInactivityTimer = useCallback(() => {
     if (inactivityTimer) {
@@ -42,237 +27,84 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
   }, [clearInactivityTimer]);
 
   const handleMouseLeave = useCallback(() => {
-    // Start timer when leaving navigation
-    if (!isMobile) {
-      startInactivityTimer();
-    }
-  }, [clearInactivityTimer, startInactivityTimer, isMobile]);
-
-  const handleMouseMove = useCallback(() => {
-    // Only show navigation, don't reset timer
-    setVisible(true);
-  }, []);
-
-  const handleNavClick = useCallback((path) => {
-    navigate(path);
-  }, [navigate]);
-
-  const handleTouchStart = useCallback(() => {
-    setVisible(true);
+    setVisible(false);
     clearInactivityTimer();
-    // Don't hide immediately on touch end for mobile
   }, [clearInactivityTimer]);
 
-  const handleTouchEnd = useCallback((e) => {
-    // On mobile, allow fading after a longer delay
-    if (isMobile) {
-      e.preventDefault();
-      clearInactivityTimer();
-      // Start timer to hide after 3 seconds on mobile
-      setTimeout(() => {
-        setVisible(false);
-      }, 3000);
-      return;
-    }
-    // Prevent immediate hiding to allow link clicks
-    e.preventDefault();
-    clearInactivityTimer();
-    // Start timer to hide after a delay
-    setTimeout(() => {
-      setVisible(false);
-    }, 2000);
-  }, [clearInactivityTimer, isMobile]);
-
-  const handleTouchMove = useCallback(() => {
+  const handleMouseMove = useCallback(() => {
     setVisible(true);
     startInactivityTimer();
   }, [startInactivityTimer]);
 
+  const handleTouchStart = useCallback(() => {
+    setVisible(true);
+    clearInactivityTimer();
+  }, [clearInactivityTimer]);
+
+  const handleTouchEnd = useCallback(() => {
+    setVisible(false);
+    clearInactivityTimer();
+  }, [clearInactivityTimer]);
+
   // Show footer initially and start inactivity timer
   useEffect(() => {
     setVisible(true);
-    if (!isMobile) {
-      startInactivityTimer();
-    }
+    startInactivityTimer();
     
     return () => {
       clearInactivityTimer();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile]);
+  }, []);
 
   if (!currentItem) return null;
 
   return (
-    <>
-      {/* Hotspot area for desktop - only shows navigation */}
-      {!isMobile && (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '100%',
-            height: '100px',
-            zIndex: 89,
-            pointerEvents: 'auto'
-          }}
-          onMouseEnter={() => {
-            setVisible(true);
-          }}
-        />
-      )}
-      
-      <div 
-        className={`${styles.footerStrip} ${visible ? styles.visible : styles.hidden}`}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onMouseMove={handleMouseMove}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-        onTouchMove={handleTouchMove}
-        style={{
-          // Responsive positioning
-          ...(isMobile ? {
-            // Mobile styling
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            width: '100%',
-            height: '60px',
-            zIndex: 99999,
-            opacity: 1,
-            pointerEvents: 'auto',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '0',
-            boxSizing: 'border-box',
-            background: 'rgba(3, 2, 2, 0.7)',
-            border: '0.5px solid rgba(98, 103, 112, 0.8)',
-            transform: 'none'
-          } : {
-            // Desktop styling - force fade behavior
-            position: 'absolute',
-            bottom: 0,
-            left: '50%',
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'stretch',
-            gap: '2px',
-            boxSizing: 'border-box',
-            zIndex: 90,
-            fontFamily: 'Manrope, sans-serif',
-            pointerEvents: 'auto',
-            // Force fade with inline styles
-            opacity: visible ? 0.7 : 0,
-            transform: visible ? 'translateX(-50%) translateY(0)' : 'translateX(-50%) translateY(100%)',
-            transition: 'opacity 0.7s ease-in-out, transform 0.5s ease-in-out'
-          })
-        }}
-      >
-      <button
-        onClick={() => handleNavClick(prevItem ? `/${prevItem.date}` : '/')}
+    <div 
+      className={`${styles.footerStrip} ${visible ? styles.visible : styles.hidden}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      <Link
+        to={prevItem ? `/${prevItem.date}` : '/'}
         className={styles.navButton}
-        style={{
-          // Use original button styling
-          background: 'rgba(3, 2, 2, 0.7)',
-          border: '0.5px solid rgba(98, 103, 112, 0.8)',
-          color: '#dadbd7',
-          padding: '0.5rem',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          textAlign: 'center',
-          width: '100px',
-          fontSize: '2.2rem',
-          cursor: 'pointer',
-          textDecoration: 'none',
-          boxSizing: 'border-box',
-          fontFamily: 'Manrope, sans-serif',
-          transition: 'background 0.4s ease, color 0.4s ease, opacity 0.4s ease',
-          minHeight: '60px', // Consistent height
-          height: '60px' // Fixed height
-        }}
+        aria-label={prevItem ? `Go to previous clock: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
       >
-        <span>⇽</span>
-      </button>
+        <span aria-hidden="true">⇽</span>
+        <span className={styles.screenReaderText}>
+          {prevItem ? `Previous: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
+        </span>
+      </Link>
 
-      <button
-        onClick={() => handleNavClick('/')}
+      <Link
+        to='/'
         className={styles.footerButton}
-        style={{
-          // Use original footer button styling
-          background: 'rgba(3, 2, 2, 0.7)',
-          border: '0.5px solid rgba(98, 103, 112, 0.8)',
-          color: '#dadbd7',
-          padding: '0.5rem',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          textAlign: 'center',
-          width: '100%',
-          cursor: 'pointer',
-          textDecoration: 'none',
-          boxSizing: 'border-box',
-          fontFamily: 'Manrope, sans-serif',
-          transition: 'background 0.4s ease, color 0.4s ease, opacity 0.4s ease',
-          minHeight: '60px', // Consistent height
-          height: '60px' // Fixed height
-        }}
+        aria-label="Go back to homepage"
       >
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.2rem'
-        }}>
-          <span style={{ fontSize: '1rem', letterSpacing: '-0.05rem' }}>
-            {formatDate(currentItem.date)}
-          </span>
-          <span style={{ fontSize: '1rem', letterSpacing: '0.02rem' }}>
-            {formatTitle(currentItem.title)}
-          </span>
-          <span style={{ fontSize: '1rem', letterSpacing: '-0.05rem' }}>
-            #{currentItem.clockNumber}
-          </span>
+        <div className={styles.footerCenter}>
+          <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
+          <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
+          <span className={styles.footerNumber}>#{currentItem.clockNumber}</span>
         </div>
-      </button>
+        <span className={styles.screenReaderText}>
+          Go back to homepage
+        </span>
+      </Link>
 
-      <button
-        onClick={() => handleNavClick(nextItem ? `/${nextItem.date}` : '/')}
+      <Link
+        to={nextItem ? `/${nextItem.date}` : '/'}
         className={styles.navButton}
-        style={{
-          // Use original button styling
-          background: 'rgba(3, 2, 2, 0.7)',
-          border: '0.5px solid rgba(98, 103, 112, 0.8)',
-          color: '#dadbd7',
-          padding: '0.5rem',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          textAlign: 'center',
-          width: '100px',
-          fontSize: '2.2rem',
-          cursor: 'pointer',
-          textDecoration: 'none',
-          boxSizing: 'border-box',
-          fontFamily: 'Manrope, sans-serif',
-          transition: 'background 0.4s ease, color 0.4s ease, opacity 0.4s ease',
-          minHeight: '60px', // Consistent height
-          height: '60px' // Fixed height
-        }}
+        aria-label={nextItem ? `Go to next clock: ${formatTitle(nextItem.title)}` : 'Go back to homepage'}
       >
-        <span>⇾</span>
-      </button>
-      </div>
-    </>
+        <span aria-hidden="true">⇾</span>
+        <span className={styles.screenReaderText}>
+          {nextItem ? `Next: ${formatTitle(nextItem.title)}` : 'Go back to homepage'}
+        </span>
+      </Link>
+    </div>
   );
 };
 
