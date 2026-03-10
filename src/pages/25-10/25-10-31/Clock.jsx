@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useFontLoader } from '../../../utils/fontLoader';
 import videoFile from "../../../assets/images/25-10/25-10-31/mids.mp4";
 import fallbackImg from "../../../assets/images/25-10/25-10-31/midsun.webp";
 import fontFile_2025_10_31 from '../../../assets/fonts/25-10-31-mi.otf?url';
@@ -9,13 +8,29 @@ export default function VideoClock() {
   const [videoFailed, setVideoFailed] = useState(false);
   const [showPlayButton, setShowPlayButton] = useState(false);
   const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
   const videoRef = useRef(null);
   
-  // Use standardized font loader
-  const fontReady = useFontLoader('CustomFont', fontFile_2025_10_31, {
-    timeout: 5000,
-    fallback: true
-  });
+  // Simple scoped font loading without leaks
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace('CustomFont', `url(${fontFile_2025_10_31})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+        // Trigger ready check when font loads
+        setTimeout(() => setReady(true), 100);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback');
+        setFontLoaded(false);
+        // Still set ready to true even if font fails
+        setTimeout(() => setReady(true), 100);
+      }
+    };
+    
+    loadFont();
+  }, []);
 
   // Time update loop
   useEffect(() => {
@@ -29,7 +44,7 @@ export default function VideoClock() {
     let videoLoaded = false;
 
     const checkReady = () => {
-      if ((videoLoaded || videoFailed) && imageLoaded && fontReady) {
+      if ((videoLoaded || videoFailed) && imageLoaded && fontLoaded) {
         setTimeout(() => setReady(true), 100);
       }
     };
