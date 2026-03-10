@@ -132,15 +132,6 @@ const ClockPage = () => {
     [date, normalizeDate]
   );
 
-  // Prevent scrolling when component mounts
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, []);
-
   // Header fade-out animation
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -268,12 +259,12 @@ const ClockPage = () => {
   }
 
   return (
-    <div 
-      className={`${styles.container} ${allAssetsLoaded ? styles.loaded : ''}`} 
-      style={{ 
-        width: "100vw", 
-        height: "100vh", 
-        overflow: "hidden", 
+    <div
+      className={`${styles.container} ${allAssetsLoaded ? styles.loaded : ''}`}
+      style={{
+        width: "100%",
+        minHeight: "100vh",
+        overflowY: "auto",
         backgroundColor: "#000",
         position: "relative"
       }}
@@ -305,7 +296,7 @@ const ClockPage = () => {
               fontFamily: "CustomFont, system-ui, sans-serif",
               display: "block",
               width: "100%",
-              height: "100vh",
+              height: "100%",
               opacity: 0,
               animation: "fadeIn 0.5s ease-out 0.3s forwards",
             }}
