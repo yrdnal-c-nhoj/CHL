@@ -109,76 +109,119 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
       onTouchEnd={handleTouchEnd}
       onTouchMove={handleTouchMove}
       style={{
-        // Mobile-specific overrides to ensure visibility
-        ...(isMobile && {
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          transform: 'none',
-          width: '100%',
-          zIndex: 10000,
-          opacity: visible ? 0.9 : 0,
-          pointerEvents: 'auto'
-        })
+        // Keep navigation visible and functional
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        width: '100%',
+        height: '60px',
+        zIndex: 99999,
+        opacity: 1,
+        pointerEvents: 'auto',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '0',
+        boxSizing: 'border-box',
+        // Restore original background styling
+        background: 'rgba(3, 2, 2, 0.7)',
+        border: '0.5px solid rgba(98, 103, 112, 0.8)'
       }}
     >
       <button
         onClick={() => handleNavClick(prevItem ? `/${prevItem.date}` : '/')}
         className={styles.navButton}
-        aria-label={prevItem ? `Go to previous clock: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
         style={{
-          background: 'none',
-          border: 'none',
-          padding: 0,
-          margin: 0,
-          cursor: 'pointer'
+          // Use original button styling
+          background: 'rgba(3, 2, 2, 0.7)',
+          border: '0.5px solid rgba(98, 103, 112, 0.8)',
+          color: '#dadbd7',
+          padding: '0.5rem',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
+          width: '100px',
+          fontSize: '2.2rem',
+          cursor: 'pointer',
+          textDecoration: 'none',
+          boxSizing: 'border-box',
+          fontFamily: 'Manrope, sans-serif',
+          transition: 'background 0.4s ease, color 0.4s ease, opacity 0.4s ease',
+          minHeight: '50px'
         }}
       >
-        <span aria-hidden="true">⇽</span>
-        <span className={styles.screenReaderText}>
-          {prevItem ? `Previous: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
-        </span>
+        <span>⇽</span>
       </button>
 
       <button
         onClick={() => handleNavClick('/')}
         className={styles.footerButton}
-        aria-label="Go back to homepage"
         style={{
-          background: 'none',
-          border: 'none',
-          padding: 0,
-          margin: 0,
-          cursor: 'pointer'
+          // Use original footer button styling
+          background: 'rgba(3, 2, 2, 0.7)',
+          border: '0.5px solid rgba(98, 103, 112, 0.8)',
+          color: '#dadbd7',
+          padding: '0.5rem',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
+          width: '100%',
+          cursor: 'pointer',
+          textDecoration: 'none',
+          boxSizing: 'border-box',
+          fontFamily: 'Manrope, sans-serif',
+          transition: 'background 0.4s ease, color 0.4s ease, opacity 0.4s ease',
+          minHeight: '50px'
         }}
       >
-        <div className={styles.footerCenter}>
-          <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
-          <span className={styles.footerTitle}>{formatTitle(currentItem.title)}</span>
-          <span className={styles.footerNumber}>#{currentItem.clockNumber}</span>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.2rem'
+        }}>
+          <span style={{ fontSize: '1rem', letterSpacing: '-0.05rem' }}>
+            {formatDate(currentItem.date)}
+          </span>
+          <span style={{ fontSize: '1rem', letterSpacing: '0.02rem' }}>
+            {formatTitle(currentItem.title)}
+          </span>
+          <span style={{ fontSize: '1rem', letterSpacing: '-0.05rem' }}>
+            #{currentItem.clockNumber}
+          </span>
         </div>
-        <span className={styles.screenReaderText}>
-          Go back to homepage
-        </span>
       </button>
 
       <button
         onClick={() => handleNavClick(nextItem ? `/${nextItem.date}` : '/')}
         className={styles.navButton}
-        aria-label={nextItem ? `Go to next clock: ${formatTitle(nextItem.title)}` : 'Go back to homepage'}
         style={{
-          background: 'none',
-          border: 'none',
-          padding: 0,
-          margin: 0,
-          cursor: 'pointer'
+          // Use original button styling
+          background: 'rgba(3, 2, 2, 0.7)',
+          border: '0.5px solid rgba(98, 103, 112, 0.8)',
+          color: '#dadbd7',
+          padding: '0.5rem',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
+          width: '100px',
+          fontSize: '2.2rem',
+          cursor: 'pointer',
+          textDecoration: 'none',
+          boxSizing: 'border-box',
+          fontFamily: 'Manrope, sans-serif',
+          transition: 'background 0.4s ease, color 0.4s ease, opacity 0.4s ease',
+          minHeight: '50px'
         }}
       >
-        <span aria-hidden="true">⇾</span>
-        <span className={styles.screenReaderText}>
-          {nextItem ? `Next: ${formatTitle(nextItem.title)}` : 'Go back to homepage'}
-        </span>
+        <span>⇾</span>
       </button>
     </div>
   );
