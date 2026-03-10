@@ -305,14 +305,15 @@ const ClockPage = () => {
               fontFamily: "CustomFont, system-ui, sans-serif",
               display: "block",
               width: "100%",
-              height: window.innerWidth <= 768 ? "40vh" : "100vh", // Mobile: 40vh for better fit, Desktop: full height
+              height: window.innerWidth <= 768 ? "60vh" : "100vh", // Mobile: 60vh, Desktop: full height
               opacity: 0,
               animation: "fadeIn 0.5s ease-out 0.3s forwards",
-              // Add mobile scaling to override individual clock sizing
+              // Simple mobile approach - no scaling
               ...(window.innerWidth <= 768 && {
-                transform: "scale(0.6)",
-                transformOrigin: "center center",
-                overflow: "hidden"
+                overflow: "auto", // Allow scrolling if needed
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
               })
             }}
           >
