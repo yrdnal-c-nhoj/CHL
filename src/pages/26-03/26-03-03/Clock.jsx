@@ -152,7 +152,10 @@ const Clock = () => {
       alignItems: 'center',
       overflow: 'hidden'
     }}>
-      <video
+      
+
+
+<video
         autoPlay
         loop
         muted
@@ -162,9 +165,12 @@ const Clock = () => {
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          // opacity: 0.8
+          // ADDED FILTERS HERE:
+          // hue-rotate(90deg) changes the colors (0-360)
+          // saturate(1.5) increases color intensity (1 is default)
+          filter: 'hue-rotate(-195deg) saturate(150%) brightness(0.8)',
         }}
-      >
+      >     
         <source src={paperflowerVideo} type="video/mp4" />
       </video>
       
