@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import bgImage from '../../../assets/images/25-11/25-11-07/birds.webp'
-const font251107kdvsf = '../../../assets/fonts/25-11-07-twobirds.ttf';
+import font251107kdvsf from '../../../assets/fonts/25-11-07-twobirds.ttf';
 
 export default function PanicAnalogClock () {
   const rightImageDelay = 500 // 0.5s delay for right image
@@ -55,23 +55,19 @@ export default function PanicAnalogClock () {
         const blobRight = new Blob([imgBuf], { type: imgBlobType })
         const urlLeft = URL.createObjectURL(blobLeft)
         const urlRight = URL.createObjectURL(blobRight)
-        const fontRes = await fetch(font251107kdvsf, { cache: 'no-store' })
-        const fontBuf = await fontRes.arrayBuffer()
-        const fontBlobType = fontRes.headers.get('content-type') || 'font/ttf'
-        const fontBlob = new Blob([fontBuf], { type: fontBlobType })
-        const urlFont = URL.createObjectURL(fontBlob)
+        // Use imported font directly
+        const fontUrl = font251107kdvsf
 
         if (aborted) {
           URL.revokeObjectURL(urlLeft)
           URL.revokeObjectURL(urlRight)
-          URL.revokeObjectURL(urlFont)
           return
         }
 
-        urlsRef.current = { left: urlLeft, right: urlRight, font: urlFont }
+        urlsRef.current = { left: urlLeft, right: urlRight, font: fontUrl }
         setLeftSrc(urlLeft)
         setRightSrc(urlRight)
-        setFontUrl(urlFont)
+        setFontUrl(fontUrl)
         setShowImages({ left: true, right: false })
 
         timerRef.current = setTimeout(() => {
