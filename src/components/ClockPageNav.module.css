@@ -121,6 +121,15 @@
     touch-action: manipulation;
     /* Improve touch response */
     -webkit-tap-highlight-color: transparent;
+    /* Force visibility on mobile */
+    opacity: 1 !important;
+    transform: translateX(-50%) translateY(0) !important;
+    pointer-events: auto !important;
+    /* Higher z-index to ensure visibility */
+    z-index: 999 !important;
+    /* Ensure it's above other content */
+    position: fixed !important;
+    bottom: 0 !important;
   }
 
   .footerButton,
@@ -138,6 +147,9 @@
     -webkit-touch-callout: none;
     /* Improve touch response */
     touch-action: manipulation;
+    /* Ensure buttons are visible */
+    opacity: 1 !important;
+    background: rgba(3, 2, 2, 0.9) !important;
   }
   
   .navButton {
