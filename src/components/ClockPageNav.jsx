@@ -31,9 +31,11 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
   const startInactivityTimer = useCallback(() => {
     clearInactivityTimer();
     const timer = setTimeout(() => {
+      console.log('Timer fired - hiding navigation');
       setVisible(false);
     }, 1000); // 1 second
     setInactivityTimer(timer);
+    console.log('Timer started');
   }, [clearInactivityTimer]);
 
   const handleMouseEnter = useCallback(() => {
@@ -90,8 +92,10 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
 
   // Show footer initially and start inactivity timer
   useEffect(() => {
+    console.log('Navigation component mounted, isMobile:', isMobile);
     setVisible(true);
     if (!isMobile) {
+      console.log('Starting initial timer for desktop');
       startInactivityTimer();
     }
     
@@ -154,11 +158,10 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
             border: '0.5px solid rgba(98, 103, 112, 0.8)',
             transform: 'none'
           } : {
-            // Desktop styling - use original CSS
+            // Desktop styling - force fade behavior
             position: 'absolute',
             bottom: 0,
             left: '50%',
-            transform: 'translateX(-50%)',
             width: '100%',
             display: 'flex',
             justifyContent: 'space-between',
@@ -167,10 +170,11 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
             boxSizing: 'border-box',
             zIndex: 90,
             fontFamily: 'Manrope, sans-serif',
-            transition: 'opacity 0.7s ease-in-out, transform 0.5s ease-in-out',
             pointerEvents: 'auto',
+            // Force fade with inline styles
             opacity: visible ? 0.7 : 0,
-            transform: visible ? 'translateX(-50%) translateY(0)' : 'translateX(-50%) translateY(100%)'
+            transform: visible ? 'translateX(-50%) translateY(0)' : 'translateX(-50%) translateY(100%)',
+            transition: 'opacity 0.7s ease-in-out, transform 0.5s ease-in-out'
           })
         }}
       >
