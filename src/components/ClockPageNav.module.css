@@ -1,8 +1,11 @@
 .footerStrip {
-  position: absolute;
+  /* Pin navigation to the viewport so it can't be clipped
+     by the scroll container or page content height */
+  position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%) translateY(100%);
+  left: 0;
+  right: 0;
+  transform: translateY(100%);
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -18,12 +21,12 @@
 /* --- Visibility states --- */
 .footerStrip.visible {
   opacity: 0.7;
-  transform: translateX(-50%) translateY(0);
+  transform: translateY(0);
 }
 
 .footerStrip.hidden {
   opacity: 0;
-  transform: translateX(-50%) translateY(0);
+  transform: translateY(0);
   pointer-events: auto;
 }
 
@@ -115,6 +118,8 @@
 /* --- Responsive --- */
 @media (max-width: 600px) {
   .footerStrip {
+    /* Respect safe-area inset on devices with gesture bars */
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), 4px);
     /* Ensure proper touch target size */
     min-height: 60px;
     /* Prevent zoom on double tap */
@@ -123,9 +128,6 @@
     -webkit-tap-highlight-color: transparent;
     /* Higher z-index to ensure visibility above loading overlay */
     z-index: 10000;
-    /* Ensure it's above other content */
-    position: absolute;
-    bottom: 0;
   }
 
   .footerButton,
