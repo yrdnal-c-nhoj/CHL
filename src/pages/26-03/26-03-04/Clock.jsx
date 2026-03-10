@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import sunFont from '../../../assets/fonts/26-03-04-sun.ttf';
-// import sunBg from '../../../assets/images/26-03/26-03-04/sun-40.gif?url';
+import sunBg from '../../../assets/images/26-03/26-03-04/sun-40.gif';
+
+console.log('Background image loaded:', sunBg);
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
@@ -53,8 +55,8 @@ const Clock = () => {
     left: 0,
     width: '100vw',
     height: '100dvh',
-    backgroundColor: '#E1D554',
-    backgroundImage: 'url(../../../assets/images/26-03/26-03-04/sun-40.gif)',
+    backgroundColor: '#0C0B00',
+    backgroundImage: `url(${sunBg})`,
     backgroundSize: '140% 140%',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
