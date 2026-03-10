@@ -42,14 +42,16 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
   }, [clearInactivityTimer]);
 
   const handleMouseLeave = useCallback(() => {
-    setVisible(false);
-    clearInactivityTimer();
-  }, [clearInactivityTimer]);
+    // Start timer when leaving navigation
+    if (!isMobile) {
+      startInactivityTimer();
+    }
+  }, [clearInactivityTimer, startInactivityTimer, isMobile]);
 
   const handleMouseMove = useCallback(() => {
+    // Only show navigation, don't reset timer
     setVisible(true);
-    startInactivityTimer();
-  }, [startInactivityTimer]);
+  }, []);
 
   const handleNavClick = useCallback((path) => {
     navigate(path);
@@ -89,46 +91,89 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
   // Show footer initially and start inactivity timer
   useEffect(() => {
     setVisible(true);
-    startInactivityTimer();
+    if (!isMobile) {
+      startInactivityTimer();
+    }
     
     return () => {
       clearInactivityTimer();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isMobile]);
 
   if (!currentItem) return null;
 
   return (
-    <div 
-      className={`${styles.footerStrip} ${visible ? styles.visible : styles.hidden}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onMouseMove={handleMouseMove}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onTouchMove={handleTouchMove}
-      style={{
-        // Keep navigation visible and functional
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        width: '100%',
-        height: '60px',
-        zIndex: 99999,
-        opacity: 1,
-        pointerEvents: 'auto',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '0',
-        boxSizing: 'border-box',
-        // Restore original background styling
-        background: 'rgba(3, 2, 2, 0.7)',
-        border: '0.5px solid rgba(98, 103, 112, 0.8)'
-      }}
-    >
+    <>
+      {/* Hotspot area for desktop - only shows navigation */}
+      {!isMobile && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '100%',
+            height: '100px',
+            zIndex: 89,
+            pointerEvents: 'auto'
+          }}
+          onMouseEnter={() => {
+            setVisible(true);
+          }}
+        />
+      )}
+      
+      <div 
+        className={`${styles.footerStrip} ${visible ? styles.visible : styles.hidden}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onMouseMove={handleMouseMove}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTouchMove={handleTouchMove}
+        style={{
+          // Responsive positioning
+          ...(isMobile ? {
+            // Mobile styling
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            width: '100%',
+            height: '60px',
+            zIndex: 99999,
+            opacity: 1,
+            pointerEvents: 'auto',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '0',
+            boxSizing: 'border-box',
+            background: 'rgba(3, 2, 2, 0.7)',
+            border: '0.5px solid rgba(98, 103, 112, 0.8)',
+            transform: 'none'
+          } : {
+            // Desktop styling - use original CSS
+            position: 'absolute',
+            bottom: 0,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'stretch',
+            gap: '2px',
+            boxSizing: 'border-box',
+            zIndex: 90,
+            fontFamily: 'Manrope, sans-serif',
+            transition: 'opacity 0.7s ease-in-out, transform 0.5s ease-in-out',
+            pointerEvents: 'auto',
+            opacity: visible ? 0.7 : 0,
+            transform: visible ? 'translateX(-50%) translateY(0)' : 'translateX(-50%) translateY(100%)'
+          })
+        }}
+      >
       <button
         onClick={() => handleNavClick(prevItem ? `/${prevItem.date}` : '/')}
         className={styles.navButton}
@@ -143,7 +188,7 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
           justifyContent: 'center',
           alignItems: 'center',
           textAlign: 'center',
-          width: '100px',
+          width: isMobile ? '100px' : '100px',
           fontSize: '2.2rem',
           cursor: 'pointer',
           textDecoration: 'none',
@@ -211,7 +256,7 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
           justifyContent: 'center',
           alignItems: 'center',
           textAlign: 'center',
-          width: '100px',
+          width: isMobile ? '100px' : '100px',
           fontSize: '2.2rem',
           cursor: 'pointer',
           textDecoration: 'none',
@@ -223,7 +268,8 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
       >
         <span>⇾</span>
       </button>
-    </div>
+      </div>
+    </>
   );
 };
 
