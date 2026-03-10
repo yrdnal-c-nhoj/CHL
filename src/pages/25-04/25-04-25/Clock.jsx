@@ -1,5 +1,4 @@
-import React, { useEffect, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useRef, useState } from 'react';
 import backgroundImage from '../../../assets/images/25-04/25-04-25/bad.webp';
 import boldFont from '../../../assets/fonts/25-04-25-Oswald-Bold.ttf';
 import hourHandImage from '../../../assets/images/25-04/25-04-25/ban.webp';
@@ -8,33 +7,49 @@ import secondHandImage from '../../../assets/images/25-04/25-04-25/band.gif';
 
 const MyClock = () => {
   const canvasRef = useRef(null);
+  const [fontLoaded, setFontLoaded] = useState(false);
   
-  // Use standardized font loader
-  const fontReady = useFontLoader('MyFont', boldFont, {
-    timeout: 5000,
-    fallback: true
-  });
+  // Simple scoped font loading without leaks
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        console.log('Loading font:', boldFont);
+        const fontFace = new FontFace('MyFont', `url(${boldFont})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        console.log('Font loaded successfully');
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback:', error);
+        setFontLoaded(false);
+      }
+    };
+    
+    loadFont();
+  }, []);
 
   useEffect(() => {
-    const drawClock = () => {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext('2d');
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
 
-      const update = () => {
-        const now = new Date();
-        const w = canvas.width = window.innerWidth;
-        const h = canvas.height = window.innerHeight;
-        const r = Math.min(w, h) / 3;
+    const update = () => {
+      const now = new Date();
+      const w = canvas.width = window.innerWidth;
+      const h = canvas.height = window.innerHeight;
+      const r = Math.min(w, h) / 3;
 
-        ctx.clearRect(0, 0, w, h);
-        ctx.save();
-        ctx.translate(w / 2, h / 2);
+      ctx.clearRect(0, 0, w, h);
+      ctx.save();
+      ctx.translate(w / 2, h / 2);
 
         // Draw clock numbers
         ctx.fillStyle = '#FA0820FF';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.font = `${r * 0.5}px MyFont`;
+        const fontToUse = fontLoaded ? 'MyFont' : 'Arial';
+        ctx.font = `${r * 0.5}px ${fontToUse}`;
+        console.log('Using font:', fontToUse, 'Font loaded:', fontLoaded);
 
         for (let i = 1; i <= 12; i++) {
           const angle = (i * Math.PI) / 6;
@@ -78,15 +93,15 @@ const MyClock = () => {
       };
 
       update();
-    };
-  }, []);
+    }, []);
 
   return (
     <div
       style={{
         width: '100vw',
         height: '100dvh',
-        background: `url(${backgroundImage}) center/cover no-repeat`,
+        backgroundColor: '#FFFFFF', // White background color
+        background: `url(${backgroundImage}) center/cover no-repeat`, // Background image
         overflow: 'hidden',
       }}
     >
