@@ -97,7 +97,7 @@ const ImageGrid = () => {
 const styles = {
   container: {
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     position: 'relative',
     overflow: 'hidden',
     backgroundColor: '#000',
