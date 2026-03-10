@@ -13,18 +13,17 @@ const CLOCK_NUMBERS = [
 
 const Clock = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
-  // 1. Move time into state
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    // Font loading logic
+    // Font loading
     const font = new FontFace('pol', `url(${polFont}) format('opentype')`);
     font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
       setFontLoaded(true);
     }).catch(err => console.error("Font load failed", err));
 
-    // 2. Just update the state every second
+    // Time update
     const interval = setInterval(() => {
       setTime(new Date());
     }, 1000);
@@ -32,9 +31,7 @@ const Clock = () => {
     return () => clearInterval(interval);
   }, []);
 
-  if (!fontLoaded) return null;
-
-  // 3. Calculate rotations during render
+  // Calculate rotations
   const minutes = time.getMinutes();
   const hours = time.getHours();
   const minRotation = minutes * 6;
@@ -46,7 +43,7 @@ const Clock = () => {
       alignItems: 'center', height: '100dvh', width: '100vw',
       backgroundColor: 'rgb(3, 3, 61)', overflow: 'hidden', position: 'relative'
     }}>
-      <img 
+      <img
         src={polarisGif}
         alt="Background"
         style={{
@@ -59,12 +56,10 @@ const Clock = () => {
           pointerEvents: 'none',
         }}
       />
-
       <div className="clock" style={{
         position: 'relative', width: '80vmin', height: '80vmin',
         borderRadius: '50%', zIndex: 2,
       }}>
-        {/* 4. Apply transforms via React props */}
         <div className="hand hour-hand" style={{
           position: 'absolute', bottom: '50%', left: '50%',
           width: '0.3rem', height: '30%', backgroundColor: '#6a6c70',
@@ -72,7 +67,6 @@ const Clock = () => {
           transform: `rotate(${hrRotation}deg)`,
           pointerEvents: 'none', zIndex: 6,
         }} />
-        
         <div className="hand minute-hand" style={{
           position: 'absolute', bottom: '50%', left: '50%',
           width: '0.2rem', height: '45%', backgroundColor: '#5d5f64',
@@ -81,9 +75,10 @@ const Clock = () => {
           pointerEvents: 'none', zIndex: 6,
         }} />
 
-        {CLOCK_NUMBERS.map(({ num, top, left }, i) => (
+        {CLOCK_NUMBERS.map(({ num, top, left }) => (
           <div key={num} className="number" style={{
-            position: 'absolute', fontFamily: 'pol', fontSize: '3.2rem',
+            position: 'absolute', fontFamily: fontLoaded ? 'pol' : 'Arial, Helvetica, sans-serif',
+            fontSize: '3.2rem',
             color: 'rgb(3, 3, 61)', textShadow: '#0f5c7a 0.3rem 0.3rem, #0f5c7a -0.3rem -0.3rem',
             width: '3.2rem', height: '3.2rem', display: 'flex',
             alignItems: 'center', justifyContent: 'center',
