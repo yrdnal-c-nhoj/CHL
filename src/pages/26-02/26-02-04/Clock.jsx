@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
 
 // Assets
 import digitalFontUrl from '../../../assets/fonts/26-02-04-trans.ttf';
@@ -14,12 +13,24 @@ const DigitalClockTemplate = () => {
   const [time, setTime] = useState(new Date());
   const [isMobile, setIsMobile] = useState(false);
   const [animationName, setAnimationName] = useState('');
+  const [fontLoaded, setFontLoaded] = useState(false);
   
-  // Use standardized font loader
-  const fontReady = useFontLoader('BorrowedDigital', digitalFontUrl, {
-    timeout: 5000,
-    fallback: true
-  });
+  // Simple scoped font loading without leaks
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace('BorrowedDigital', `url(${digitalFontUrl})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback');
+        setFontLoaded(false);
+      }
+    };
+    
+    loadFont();
+  }, []);
 
   useEffect(() => {
     // Device Detection
@@ -76,9 +87,9 @@ const DigitalClockTemplate = () => {
     alignItems: 'center',
     overflow: 'hidden',
     // Superior FOUC prevention from 26-02-18
-    opacity: fontReady ? 1 : 0,
+    opacity: fontLoaded ? 1 : 0,
     transition: 'opacity 0.3s ease',
-    visibility: fontReady ? 'visible' : 'hidden',
+    visibility: fontLoaded ? 'visible' : 'hidden',
   };
   const bgBaseStyle = {
     position: 'absolute',
@@ -103,7 +114,7 @@ const DigitalClockTemplate = () => {
 const digitStyle = {
     fontSize: isMobile ? '35dvh' : '30vw',
     lineHeight: 1,
-    fontFamily: fontReady ? "'BorrowedDigital', monospace" : 'monospace',
+    fontFamily: fontLoaded ? "'BorrowedDigital', monospace" : 'monospace',
     fontVariantNumeric: 'tabular-nums',
     userSelect: 'none',
     
