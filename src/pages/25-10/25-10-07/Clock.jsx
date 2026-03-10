@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useFontLoader } from '../../../utils/fontLoader';
 // === Local assets ===
 import backgroundVideo from '../../../assets/images/25-10/25-10-07/big.mp4'
 import fallbackGif from '../../../assets/images/25-10/25-10-07/big.webp'
@@ -8,12 +7,28 @@ import O251007font from '../../../assets/fonts/25-10-07-str.ttf';
 export default function ImageAnalogClock () {
   const [time, setTime] = useState(new Date())
   const [ready, setReady] = useState(false)
+  const [fontLoaded, setFontLoaded] = useState(false);
   
-  // Use standardized font loader
-  const fontReady = useFontLoader('Oct022025Font', O251007font, {
-    timeout: 5000,
-    fallback: true
-  });
+  // Simple scoped font loading without leaks
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace('Oct022025Font', `url(${O251007font})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+        // Set ready to true to prevent black page
+        setTimeout(() => setReady(true), 100);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback');
+        setFontLoaded(false);
+        // Still set ready to true even if font fails
+        setTimeout(() => setReady(true), 100);
+      }
+    };
+    
+    loadFont();
+  }, []);
 
   // Update time every second
   useEffect(() => {
