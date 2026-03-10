@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import sunFont from '../../../assets/fonts/26-03-04-sun.ttf';
-import sunBg from '../../../assets/images/26-03/26-03-04/sun-40.gif';
+// import sunBg from '../../../assets/images/26-03/26-03-04/sun-40.gif?url';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
@@ -53,11 +53,13 @@ const Clock = () => {
     left: 0,
     width: '100vw',
     height: '100dvh',
-    backgroundColor: '#E1D554', // Fallback background color
-    backgroundImage: `url(${sunBg})`,
+    backgroundColor: '#E1D554',
+    backgroundImage: 'url(../../../assets/images/26-03/26-03-04/sun-40.gif)',
     backgroundSize: '140% 140%',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
+    filter: 'saturate(2.7) brightness(3.5) contrast(0.4)',
+    transform: 'rotate(180deg)',
     zIndex: -1,
   };
 
@@ -71,7 +73,6 @@ const Clock = () => {
     padding: 0,
     boxSizing: 'border-box',
     position: 'relative',
-    zIndex: 1,
   };
 
   const clockGridStyle = {
