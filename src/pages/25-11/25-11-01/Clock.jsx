@@ -1,18 +1,30 @@
 /** @jsxImportSource react */
 import React, { useEffect, useState } from 'react'
-import { useFontLoader } from '../../../utils/fontLoader';
 import cus251101font from '../../../assets/fonts/25-11-01-edgecase.ttf'; // 🟩 Local font
 
 export default function EdgeClockWithHands () {
   const [time, setTime] = useState(new Date())
   const [viewport, setViewport] = useState({ width: 0, height: 0 })
+  const [fontLoaded, setFontLoaded] = useState(false);
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  const numberAndHandColor = '#FF6B6B'; // Define the missing color variable
   
-  // Use standardized font loader
-  const fontReady = useFontLoader('CustomClockFont', cus251101font, {
-    timeout: 5000,
-    fallback: true
-  });
+  // Simple scoped font loading without leaks
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace('CustomClockFont', `url(${cus251101font})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback');
+        setFontLoaded(false);
+      }
+    };
+    
+    loadFont();
+  }, []);
 
   // Continuous update for smooth hands
   useEffect(() => {
@@ -100,7 +112,7 @@ export default function EdgeClockWithHands () {
         backgroundColor: '#05322DFF',
         border: '6px solid #72FF06FF', // Component border
         boxSizing: 'border-box',
-        opacity: fontReady ? 1 : 0,
+        opacity: fontLoaded ? 1 : 0,
         transition: 'opacity 0.2s ease-out'
       }}
     >
