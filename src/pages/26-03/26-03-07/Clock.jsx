@@ -96,7 +96,7 @@ const Clock = () => {
     background: 'repeating-conic-gradient(#fff 0 25%, #000 0 50%) 0 0 / 32.5px 130px',
     margin: 0,
     display: 'grid',
-    minHeight: '100vh',
+    minHeight: '100dvh',
     placeItems: 'center',
     overflow: 'hidden',
     width: '100vw',
