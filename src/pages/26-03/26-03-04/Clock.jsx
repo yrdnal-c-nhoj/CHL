@@ -53,13 +53,11 @@ const Clock = () => {
     left: 0,
     width: '100vw',
     height: '100dvh',
-    backgroundColor: '#E1D554',
+    backgroundColor: '#E1D554', // Fallback background color
     backgroundImage: `url(${sunBg})`,
     backgroundSize: '140% 140%',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    filter: 'saturate(2.7) brightness(3.5) contrast(0.4)',
-    transform: 'rotate(180deg)',
     zIndex: -1,
   };
 
@@ -73,6 +71,7 @@ const Clock = () => {
     padding: 0,
     boxSizing: 'border-box',
     position: 'relative',
+    zIndex: 1,
   };
 
   const clockGridStyle = {
