@@ -59,14 +59,16 @@ const RotatingAnalemmaClock = () => {
     const animate = () => {
       const now = new Date();
       const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
-      const rot = -(seconds / 60) * 360;
+      const rot = -(seconds / 60) * 360; // Clockwise rotation (negative)
       rotationRef.current = rot;
       if (rotatingGroupRef.current) {
         rotatingGroupRef.current.setAttribute('transform', `rotate(${rot}, 150, 150)`);
       }
-      rafId = setInterval(() => setTime(new Date()), 100);
+      rafId = requestAnimationFrame(animate); // Use RAF for smooth animation
     };
-    rafId = setInterval(() => setTime(new Date()), 100);
+    
+    // Start animation loop
+    rafId = requestAnimationFrame(animate);
 
     // 5. Cleanup on Unmount
     return () => {
