@@ -3,7 +3,7 @@
  * 
  * This component handles the display of individual clock pages with:
  * - Dynamic clock component loading based on date
- * - Asset preloading (images, fonts)
+ * - Assetpreloading (images, fonts)
  * - Smooth loading animations and transitions
  * - Navigation between different clock pages
  * - Error handling and fallbacks
