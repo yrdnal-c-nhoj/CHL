@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from '../../../assets/images/26-01/26-01-06/aa.jpg';
 import gizaFont from '../../../assets/fonts/26-01-06-aa.ttf';
 import aaaImage from '../../../assets/images/26-01/26-01-06/aaa.webp';
@@ -8,14 +7,26 @@ export default function AardvarkClock() {
   const [time, setTime] = useState(new Date());
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [bgReady, setBgReady] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(false);
   
   const uniqueFontFamily = `Giza_20260107`;
   
-  // Use standardized font loader
-  const fontReady = useFontLoader(uniqueFontFamily, gizaFont, {
-    timeout: 5000,
-    fallback: true
-  });
+  // Simple scoped font loading without leaks
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace(uniqueFontFamily, `url(${gizaFont})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback');
+        setFontLoaded(false);
+      }
+    };
+    
+    loadFont();
+  }, []);
   
   const clockLabels = ['a','a','a','a','a','a','a','a','a','Aa','Aa','Aa'];
 
@@ -77,8 +88,8 @@ export default function AardvarkClock() {
       overflow: 'hidden',
       padding: '20px',
       boxSizing: 'border-box',
-      opacity: fontReady && bgReady ? 1 : 0,
-      visibility: fontReady && bgReady ? 'visible' : 'hidden',
+      opacity: fontLoaded && bgReady ? 1 : 0,
+      visibility: fontLoaded && bgReady ? 'visible' : 'hidden',
       transition: 'opacity 0.35s ease',
     }}>
 
