@@ -45,7 +45,7 @@ const DigitalClock = () => {
     zIndex: 10,
     fontFamily: fontReady ? 'MyCustomFont, monospace' : 'monospace',
     fontSize: '0.5rem',
-    color: '#2C2D2D',
+    color: '#CFEAEA',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -63,45 +63,8 @@ const DigitalClock = () => {
           backgroundSize: '100% 100%',
         })}
       />
-{/* Centered Scaled Background for bg1 */}
-<div
-  style={{
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '90vw',
-    height: '90dvh',
-    backgroundImage: `url(${bg1})`,
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    transform: 'translate(-50%, -50%)',
-    filter: bgFilter, // optional
-    zIndex: 0,
-    pointerEvents: 'none',
-  }}
-/>
 
-{/* Flipped and Centered Scaled Background for bg3 */}
-<div
-  style={{
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '90vw',
-    height: '90dvh',
-    backgroundImage: `url(${bg3})`,
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    transform: 'translate(-50%, -50%) scaleX(-1) scaleY(-1)',
-    filter: bgFilter,
-    zIndex: 0,
-    pointerEvents: 'none',
-  }}
-/>
-
-
+ 
       {/* Clock Display */}
       <div style={clockContainerStyle}>{formatTime(time)}</div>
     </>
