@@ -84,7 +84,7 @@ const InvertedClock = () => {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     zIndex: 0,
-      filter: 'grayscale(1) brightness(1.2) sepia(1) hue-rotate(-50deg) saturate(9)',
+      filter: 'grayscale(1) brightness(1.2) sepia(1) hue-rotate(-510deg) saturate(9)',
     // filter: 'contrast(1.7)', // Add contrast and brightness filters to background only
   };
 
