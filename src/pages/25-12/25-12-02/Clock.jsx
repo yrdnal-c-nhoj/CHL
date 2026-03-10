@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import backgroundImage from '../../../assets/images/25-12/25-12-02/bg.webp';
 
-const ROTATION_DURATION = 60; // seconds for a full rotation
+const ROTATION_DURATION = 240; // seconds for a full rotation (quarter speed)
 const ZOOM_MULTIPLIER = 1.5;
 
 const RotatingBackground = () => {
@@ -57,12 +57,13 @@ const RotatingBackground = () => {
     const rotate = (timestamp) => {
       if (!startTime) startTime = timestamp;
       const elapsed = (timestamp - startTime) / 1000; // seconds
-      const angle = (-360 * (elapsed / ROTATION_DURATION)) % 360;
+      const angle = (-360 * (elapsed / ROTATION_DURATION)) % 360; // Clockwise rotation (negative)
       setRotationAngle(angle);
-      setInterval(() => setTime(new Date()), 100);
+      frameId = requestAnimationFrame(rotate); // Use RAF for continuous animation
     };
-
-    const frameId = setInterval(() => setTime(new Date()), 100);
+    
+    // Start animation loop
+    const frameId = requestAnimationFrame(rotate);
     return () => cancelAnimationFrame(frameId);
   }, []);
 
