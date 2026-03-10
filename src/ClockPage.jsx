@@ -305,16 +305,9 @@ const ClockPage = () => {
               fontFamily: "CustomFont, system-ui, sans-serif",
               display: "block",
               width: "100%",
-              height: window.innerWidth <= 768 ? "60vh" : "100vh", // Mobile: 60vh, Desktop: full height
+              height: "100vh",
               opacity: 0,
               animation: "fadeIn 0.5s ease-out 0.3s forwards",
-              // Simple mobile approach - no scaling
-              ...(window.innerWidth <= 768 && {
-                overflow: "auto", // Allow scrolling if needed
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center"
-              })
             }}
           >
             <ClockComponent />
