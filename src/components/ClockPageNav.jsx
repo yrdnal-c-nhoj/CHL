@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './ClockPageNav.module.css'; // keep using the same styles
 
 const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate }) => {
+  const navigate = useNavigate();
   const [visible, setVisible] = useState(true);
   const [inactivityTimer, setInactivityTimer] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -49,6 +50,10 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
     setVisible(true);
     startInactivityTimer();
   }, [startInactivityTimer]);
+
+  const handleNavClick = useCallback((path) => {
+    navigate(path);
+  }, [navigate]);
 
   const handleTouchStart = useCallback(() => {
     setVisible(true);
@@ -118,21 +123,35 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
         })
       }}
     >
-      <Link
-        to={prevItem ? `/${prevItem.date}` : '/'}
+      <button
+        onClick={() => handleNavClick(prevItem ? `/${prevItem.date}` : '/')}
         className={styles.navButton}
         aria-label={prevItem ? `Go to previous clock: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
+        style={{
+          background: 'none',
+          border: 'none',
+          padding: 0,
+          margin: 0,
+          cursor: 'pointer'
+        }}
       >
         <span aria-hidden="true">⇽</span>
         <span className={styles.screenReaderText}>
           {prevItem ? `Previous: ${formatTitle(prevItem.title)}` : 'Go back to homepage'}
         </span>
-      </Link>
+      </button>
 
-      <Link
-        to='/'
+      <button
+        onClick={() => handleNavClick('/')}
         className={styles.footerButton}
         aria-label="Go back to homepage"
+        style={{
+          background: 'none',
+          border: 'none',
+          padding: 0,
+          margin: 0,
+          cursor: 'pointer'
+        }}
       >
         <div className={styles.footerCenter}>
           <span className={styles.footerDate}>{formatDate(currentItem.date)}</span>
@@ -142,18 +161,25 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
         <span className={styles.screenReaderText}>
           Go back to homepage
         </span>
-      </Link>
+      </button>
 
-      <Link
-        to={nextItem ? `/${nextItem.date}` : '/'}
+      <button
+        onClick={() => handleNavClick(nextItem ? `/${nextItem.date}` : '/')}
         className={styles.navButton}
         aria-label={nextItem ? `Go to next clock: ${formatTitle(nextItem.title)}` : 'Go back to homepage'}
+        style={{
+          background: 'none',
+          border: 'none',
+          padding: 0,
+          margin: 0,
+          cursor: 'pointer'
+        }}
       >
         <span aria-hidden="true">⇾</span>
         <span className={styles.screenReaderText}>
           {nextItem ? `Next: ${formatTitle(nextItem.title)}` : 'Go back to homepage'}
         </span>
-      </Link>
+      </button>
     </div>
   );
 };
