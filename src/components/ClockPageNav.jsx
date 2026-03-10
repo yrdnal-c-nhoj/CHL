@@ -57,10 +57,14 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
   }, [clearInactivityTimer]);
 
   const handleTouchEnd = useCallback((e) => {
-    // On mobile, keep navigation visible
+    // On mobile, allow fading after a longer delay
     if (isMobile) {
       e.preventDefault();
-      setVisible(true); // Always keep visible on mobile
+      clearInactivityTimer();
+      // Start timer to hide after 3 seconds on mobile
+      setTimeout(() => {
+        setVisible(false);
+      }, 3000);
       return;
     }
     // Prevent immediate hiding to allow link clicks
@@ -77,18 +81,16 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
     startInactivityTimer();
   }, [startInactivityTimer]);
 
-  // Show footer initially and start inactivity timer (only on desktop)
+  // Show footer initially and start inactivity timer
   useEffect(() => {
     setVisible(true);
-    if (!isMobile) {
-      startInactivityTimer();
-    }
+    startInactivityTimer();
     
     return () => {
       clearInactivityTimer();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile]);
+  }, []);
 
   if (!currentItem) return null;
 
@@ -101,6 +103,20 @@ const ClockPageNav = ({ prevItem, nextItem, currentItem, formatTitle, formatDate
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchMove={handleTouchMove}
+      style={{
+        // Mobile-specific overrides to ensure visibility
+        ...(isMobile && {
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          transform: 'none',
+          width: '100%',
+          zIndex: 10000,
+          opacity: visible ? 0.9 : 0,
+          pointerEvents: 'auto'
+        })
+      }}
     >
       <Link
         to={prevItem ? `/${prevItem.date}` : '/'}
