@@ -1,9 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import coinGif from '../../../assets/images/25-04/25-04-27/coin.gif';
 import spinWebp from '../../../assets/images/25-04/25-04-27/spin.webp';
 
 const SpinningCoinClock = () => {
+  const [fontLoaded, setFontLoaded] = useState(false);
+  
+  // Load Google Fonts Federant
+  useEffect(() => {
+    const loadGoogleFont = async () => {
+      try {
+        // Create link element for Google Fonts
+        const link = document.createElement('link');
+        link.href = 'https://fonts.googleapis.com/css2?family=Federant&display=swap';
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
+        
+        // Wait for font to load
+        const fontFace = new FontFace('Federant', 'url(https://fonts.gstatic.com/s/federant/v13/2sDdZGJYIn2lnlY2JMQ.woff2) format("woff2")');
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        
+        // Also load as 'MoneyMoney-Regular' for CSS compatibility
+        const moneyFont = new FontFace('MoneyMoney-Regular', 'url(https://fonts.gstatic.com/s/federant/v13/2sDdZGJYIn2lnlY2JMQ.woff2) format("woff2")');
+        await moneyFont.load();
+        document.fonts.add(moneyFont);
+        
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Google Font failed to load, using fallback');
+        setFontLoaded(false);
+      }
+    };
+    
+    loadGoogleFont();
+  }, []);
   useEffect(() => {
     const clock = document.getElementById("clock");
     if (!clock) return;
