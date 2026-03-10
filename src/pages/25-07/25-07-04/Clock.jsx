@@ -14,7 +14,8 @@ const Clock = () => {
   const [time, setTime] = useState(new Date());
   const requestRef = useRef();
 
-  // Use standardized font loader
+  // 1. Correct Font Loading Logic
+  // Using the hook you imported; ensure 'useFontLoader' returns a boolean or object
   const fontReady = useFontLoader('kal', kalFont, {
     timeout: 5000,
     fallback: true
@@ -28,14 +29,21 @@ const Clock = () => {
 
   useEffect(() => {
     requestRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(requestRef.current);
+    return () => {
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+    };
   }, []);
 
-  // 3. Early Return (using the correct state variable)
-  if (fontState.loading) {
+  // 3. Proper Guard Clause
+  // Changed from 'fontState.loading' to 'fontReady' to match your hook
+  if (!fontReady) {
     return (
-      <div style={{ background: 'black', height: '100dvh', width: '100vw', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#777', fontFamily: 'sans-serif' }}>
-        Loading…
+      <div style={{ 
+        background: 'black', height: '100dvh', width: '100vw', 
+        display: 'flex', justifyContent: 'center', alignItems: 'center', 
+        color: '#777', fontFamily: 'sans-serif' 
+      }}>
+        Initializing Synchronicity...
       </div>
     );
   }
@@ -51,6 +59,7 @@ const Clock = () => {
   const renderRingSegments = (offset) => {
     return Array.from({ length: SEGMENTS }).map((_, i) => {
       const angle = i * (360 / SEGMENTS);
+      // Logic to rotate colors based on seconds for the "kaleidoscope" effect
       const colorIndex = (i + s + offset) % COLORS.length;
 
       return (
@@ -66,40 +75,85 @@ const Clock = () => {
 
   return (
     <div style={{ margin: 0, padding: 0, background: 'black', height: '100vh', overflow: 'hidden', position: 'relative' }}>
-      <img decoding="async" loading="lazy" src={bgImage} alt="background" style={bgStyle} />
+      {/* Background Layer */}
+      <img 
+        decoding="async" 
+        src={bgImage} 
+        alt="background" 
+        style={bgStyle} 
+      />
       
-      {/* Top UI Overlay */}
-      <div style={headerStyle}>
-        <div style={{ fontFamily: '"Oxanium", serif', fontStyle: 'italic' }}>BorrowedTime</div>
-        <div style={{ fontFamily: '"Roboto Slab", serif', position: 'absolute', right: 0 }}>Cubist Heart Laboratories</div>
-      </div>
+  
 
-      {/* Clockwise Kaleidoscope */}
-      <div className="kaleidoscope spin-cw" style={kaleidoscopeStyle}>
+      {/* Visual Clock Layers */}
+      <div className="kaleidoscope spin-cw">
         {renderRingSegments(0)}
       </div>
 
-      {/* Counter-Clockwise Kaleidoscope */}
-      <div className="kaleidoscope spin-ccw" style={kaleidoscopeStyle}>
+      <div className="kaleidoscope spin-ccw">
         {renderRingSegments(6)}
       </div>
 
       <style>{`
         @keyframes spin-cw { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes spin-ccw { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
-        .kaleidoscope { font-family: 'kal', sans-serif; position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; z-index: 2; }
-        .spin-cw { animation: spin-cw 45s linear infinite; opacity: 0.9; }
-        .spin-ccw { animation: spin-ccw 90s linear infinite; opacity: 0.7; }
-        .segment { position: absolute; font-weight: bold; mix-blend-mode: screen; transition: color 0.5s; font-size: 4.5rem; transform-origin: center; }
-        .minute, .second { font-size: 2.4rem; }
-        .ampm { font-size: 0.8rem; }
+        
+        .kaleidoscope { 
+          font-family: 'kal', sans-serif; 
+          position: absolute; 
+          inset: 0; 
+          display: flex; 
+          justify-content: center; 
+          align-items: center; 
+          z-index: 2; 
+          pointer-events: none;
+        }
+        
+        .spin-cw { animation: spin-cw 60s linear infinite; opacity: 0.8; }
+        .spin-ccw { animation: spin-ccw 120s linear infinite; opacity: 0.5; filter: blur(1px); }
+        
+        .segment { 
+          position: absolute; 
+          font-weight: 900; 
+          mix-blend-mode: screen; 
+          transition: color 0.8s ease; 
+          font-size: 5rem; 
+          white-space: nowrap;
+        }
+        
+        .minute { font-size: 3rem; opacity: 0.8; }
+        .second { font-size: 1.5rem; opacity: 0.6; }
+        .ampm { font-size: 0.7rem; letter-spacing: 1px; }
       `}</style>
     </div>
   );
 };
 
-const bgStyle = { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100dvh', objectFit: 'cover', filter: 'brightness(210%) saturate(400%) hue-rotate(-190deg) blur(4px)', zIndex: 1, pointerEvents: 'none' };
-const headerStyle = { position: 'absolute', top: '5px', left: '50%', transform: 'translateX(-50%)', width: '98%', display: 'flex', color: '#bebcbc', zIndex: 6, fontSize: '2.8vh' };
-const kaleidoscopeStyle = { position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' };
+// Styles defined outside component to prevent re-creation on every tick
+const bgStyle = { 
+  position: 'fixed', 
+  top: 0, 
+  left: 0, 
+  width: '100vw', 
+  height: '100dvh', 
+  objectFit: 'cover', 
+  filter: 'brightness(180%) saturate(200%) hue-rotate(-190deg) blur(2px)', 
+  zIndex: 1, 
+  pointerEvents: 'none' 
+};
+
+const headerStyle = { 
+  position: 'absolute', 
+  top: '15px', 
+  left: '50%', 
+  transform: 'translateX(-50%)', 
+  width: '95%', 
+  display: 'flex', 
+  color: 'rgba(255,255,255,0.7)', 
+  zIndex: 6, 
+  fontSize: '1.2rem',
+  borderTop: '1px solid rgba(255,255,255,0.2)',
+  paddingTop: '5px'
+};
 
 export default Clock;
