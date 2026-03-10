@@ -305,7 +305,7 @@ const ClockPage = () => {
               fontFamily: "CustomFont, system-ui, sans-serif",
               display: "block",
               width: "100%",
-              height: window.innerWidth <= 768 ? "60vh" : "100vh", // Mobile: 60% of viewport, Desktop: full height
+              height: window.innerWidth <= 768 ? "50vh" : "100vh", // Mobile: 50% of viewport for consistency
               opacity: 0,
               animation: "fadeIn 0.5s ease-out 0.3s forwards",
             }}
