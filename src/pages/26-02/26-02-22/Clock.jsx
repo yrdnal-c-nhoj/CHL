@@ -31,13 +31,13 @@ const DIGITS = [
 ];
 
 const SimpleClock = () => {
-  const [hueRotation, setHueRotation] = useState(0);
+  const [hueRotation, setHueRotation] = useState(Math.floor(Math.random() * 360)); // Random starting color
   const [time, setTime] = useState(new Date());
 
-  // Hue rotation
+  // High-degree hue rotation
   useEffect(() => {
     const interval = setInterval(() => {
-      setHueRotation(prev => (prev + 12) % 360);
+      setHueRotation(prev => (prev + 45) % 360); // Increased from 12 to 45 degrees
     }, 1000);
     return () => clearInterval(interval);
   }, []);
