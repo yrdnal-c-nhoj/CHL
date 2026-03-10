@@ -284,16 +284,16 @@ const ClockPage = () => {
   }
 
   return (
-    <div
-      className={`${styles.container} ${allAssetsLoaded ? styles.loaded : ''}`}
-      style={{
-        width: "100%",
-        minHeight: "100vh",
-        overflowY: "auto",
-        // Reserve space so scrollable content isn't hidden behind fixed footer nav
-        paddingBottom: "80px",
+    <div 
+      className={`${styles.container} ${allAssetsLoaded ? styles.loaded : ''}`} 
+      style={{ 
+        width: "100vw", 
+        height: "100vh",
+        overflow: "hidden", 
         backgroundColor: "#000",
-        position: "relative"
+        position: "fixed", 
+        top: 0,
+        left: 0
       }}
     >
       {/* Header with fade animation */}
@@ -316,14 +316,21 @@ const ClockPage = () => {
 
       {/* Clock component without animation */}
       {allAssetsLoaded && ClockComponent && (
-        <div style={{ width: "100%", height: "100%" }}>
+        <div style={{ 
+          width: "100%", 
+          height: "100vh", // Full viewport height
+          position: "absolute",
+          top: 0,
+          left: 0,
+          overflow: "hidden" // Prevent clock overflow
+        }}>
           <div
             style={{
               all: "initial",
               fontFamily: "CustomFont, system-ui, sans-serif",
               display: "block",
               width: "100%",
-              height: "100vh",
+              height: "100%", // Fill full viewport
               opacity: 1, // Remove animation, start fully visible
             }}
           >
