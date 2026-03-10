@@ -308,6 +308,12 @@ const ClockPage = () => {
               height: window.innerWidth <= 768 ? "40vh" : "100vh", // Mobile: 40vh for better fit, Desktop: full height
               opacity: 0,
               animation: "fadeIn 0.5s ease-out 0.3s forwards",
+              // Add mobile scaling to override individual clock sizing
+              ...(window.innerWidth <= 768 && {
+                transform: "scale(0.6)",
+                transformOrigin: "center center",
+                overflow: "hidden"
+              })
             }}
           >
             <ClockComponent />
