@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useFontLoader } from '../../../utils/fontLoader';
 import * as THREE from 'three'
 
 import bgFull from '../../../assets/images/25-11/25-11-12/octo.webp' // full-size background
@@ -8,12 +7,24 @@ import custom251112tz from '../../../assets/fonts/25-11-12-oct.ttf?url';
 
 export default function TwoBackgroundOctahedron () {
   const threeRef = useRef(null)
+  const [fontLoaded, setFontLoaded] = useState(false);
   
-  // Use standardized font loader
-  const fontReady = useFontLoader('OctahedronFont', custom251112tz, {
-    timeout: 5000,
-    fallback: true
-  });
+  // Simple scoped font loading without leaks
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace('OctahedronFont', `url(${custom251112tz})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback');
+        setFontLoaded(false);
+      }
+    };
+    
+    loadFont();
+  }, []);
 
   // THREE.js Octahedron (unchanged)
   useEffect(() => {
@@ -41,7 +52,7 @@ export default function TwoBackgroundOctahedron () {
     const ctx = canvas.getContext('2d')
     const texture = new THREE.CanvasTexture(canvas)
 
-    const fontName = 'MyCustomFont'
+    const fontName = 'OctahedronFont' // Use the same name as the loaded font
 
     const updateClock = () => {
       const now = new Date()
@@ -50,7 +61,7 @@ export default function TwoBackgroundOctahedron () {
       const txt = `${h}:${m < 10 ? '0' + m : m}`
 
       ctx.clearRect(0, 0, canvas.width, canvas.height)
-      ctx.font = `110px ${fontReady ? fontName : 'Arial'}`
+      ctx.font = `110px ${fontLoaded ? fontName : 'Arial'}`
       ctx.fillStyle = '#043D91FF'
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
