@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
 
 // === Local assets ===
 import bg1 from '../../../assets/images/26-01/26-01-01/fan.webp';
@@ -11,12 +10,24 @@ const InvertedClock = () => {
   const minHandRef = useRef(null);
   const hourHandRef = useRef(null);
   const [bgReady, setBgReady] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(false);
   
-  // Use standardized font loader
-  const fontReady = useFontLoader('MyFontScoped', myFontUrl, {
-    timeout: 5000,
-    fallback: true
-  });
+  // Simple scoped font loading without leaks
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace('MyFontScoped', `url(${myFontUrl})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback');
+        setFontLoaded(false);
+      }
+    };
+    
+    loadFont();
+  }, []);
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -61,9 +72,9 @@ const InvertedClock = () => {
     display: 'flex',        // Added for layout centering
     alignItems: 'center',    // Centers vertically
     justifyContent: 'center', // Centers horizontally
-    opacity: isReady ? 1 : 0,
+    opacity: fontLoaded && bgReady ? 1 : 0,
     transition: 'opacity 0.3s ease-in-out',
-    visibility: isReady ? 'visible' : 'hidden',
+    visibility: fontLoaded && bgReady ? 'visible' : 'hidden',
   };
 
   const bgMediaStyle = {
