@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import sunFont from '../../../assets/fonts/26-03-04-sun.ttf';
 import sunBg from '../../../assets/images/26-03/26-03-04/sun-40.gif';
 
-console.log('Background image loaded:', sunBg);
-
 const Clock = () => {
   const [time, setTime] = useState(new Date());
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth < 768);
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   const digitLetters = {
     '0': 'c', '1': 't', '2': 'N', '3': 'W', '4': 'V',
@@ -14,11 +13,17 @@ const Clock = () => {
   };
 
   useEffect(() => {
-    // 1. Load Custom Font
-    const fontFace = new FontFace('SunFont', `url(${sunFont})`);
-    fontFace.load().then((loadedFont) => {
+    // 1. Load Custom Font via FontFace API
+    const font = new FontFace('SunFont', `url(${sunFont})`);
+    
+    font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
-    }).catch(err => console.warn("Font load failed:", err));
+      setFontLoaded(true);
+    }).catch(err => {
+      console.error("Font failed to load", err);
+      // Set to true anyway so the clock eventually shows in a fallback font
+      setFontLoaded(true); 
+    });
 
     // 2. Timer Interval
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -27,10 +32,11 @@ const Clock = () => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
 
-    // 4. Global Margin Reset (Prevents the "Left-Lean")
+    // 4. Global Styles Cleanup
     document.body.style.margin = "0";
     document.body.style.padding = "0";
-    document.body.style.overflowX = "hidden";
+    document.body.style.overflow = "hidden";
+    document.body.style.backgroundColor = "#0C0B00";
 
     return () => {
       clearInterval(timer);
@@ -38,28 +44,21 @@ const Clock = () => {
     };
   }, []);
 
-  // Format: HHMMSS (6 digits)
   const digits = time.toTimeString().split(' ')[0].replace(/:/g, '').split('');
 
-  // ────────────────────────────────────────────────
   // Layout Constants
-  // ────────────────────────────────────────────────
-  // On mobile, 45vw ensures 2 columns + borders fit within 100vw comfortably
-  const boxWidth = isMobile ? '49vw' : '16vw';
-  const boxHeight = isMobile ? '22vh' : '40vh';
+  const boxWidth = isMobile ? '48vw' : '16vw';
+  const boxHeight = isMobile ? '25vh' : '40vh';
 
-  // Background layer with high saturation and brightness filter
   const backgroundStyle = {
     position: 'fixed',
     top: 0,
     left: 0,
     width: '100vw',
     height: '100dvh',
-    backgroundColor: '#0C0B00',
     backgroundImage: `url(${sunBg})`,
-    backgroundSize: '140% 140%',
+    backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
     filter: 'saturate(2.7) brightness(3.5) contrast(0.4)',
     transform: 'rotate(180deg)',
     zIndex: -1,
@@ -71,18 +70,16 @@ const Clock = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 0,
-    padding: 0,
-    boxSizing: 'border-box',
-    position: 'relative',
+    opacity: fontLoaded ? 1 : 0, // Hide until font is ready
+    transition: 'opacity 0.5s ease-in-out',
   };
 
   const clockGridStyle = {
     display: 'grid',
-    gridTemplateColumns: isMobile ? `repeat(2, auto)` : `repeat(6, auto)`,
+    gridTemplateColumns: isMobile ? `repeat(2, ${boxWidth})` : `repeat(6, ${boxWidth})`,
     justifyContent: 'center',
     alignContent: 'center',
-    width: '100%',
+    gap: isMobile ? '10px' : '0',
   };
 
   const digitBoxStyle = {
@@ -91,17 +88,13 @@ const Clock = () => {
     alignItems: 'center',
     width: boxWidth,
     height: boxHeight,
-    boxSizing: 'border-box', 
-    fontFamily: "'SunFont', monospace, sans-serif",
-    fontSize: isMobile ? '20vh' : '15vw', 
+    fontFamily: "'SunFont', monospace",
+    fontSize: isMobile ? '22vh' : '15vw', 
     color: '#051160',
     lineHeight: 1,
     textAlign: 'center',
-    backgroundColor: 'transparent',
-    fontVariantNumeric: 'tabular-nums',
-    overflow: 'hidden', 
-    whiteSpace: 'nowrap',
-    textShadow: '-1px 0 0 #ffffff', // 1px white shadow to one side
+    textShadow: '-1px 0 0 #ffffff',
+    overflow: 'hidden',
   };
 
   return (
