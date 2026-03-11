@@ -1,20 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
-
-// Import font with today's date variable name
 import font_2024_12_05 from '../../../assets/fonts/25-12-03-dog.ttf?url';
 
 const PuppyClockComponent = () => {
   const [currentImage, setCurrentImage] = useState('');
   const [time, setTime] = useState(new Date());
   
-  // Use standardized font loader
   const fontReady = useFontLoader('CustomFont', font_2024_12_05, {
     timeout: 5000,
     fallback: true
   });
 
-  const getRandomPuppyImage = async () => {
+  // Wrapped in useCallback to prevent re-creation on every render
+  const getRandomPuppyImage = useCallback(async () => {
     try {
       const response = await fetch('https://dog.ceo/api/breeds/image/random');
       const data = await response.json();
@@ -24,53 +22,42 @@ const PuppyClockComponent = () => {
     } catch (error) {
       console.error('Error fetching puppy image:', error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     getRandomPuppyImage();
 
-    const clockInterval = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-    const imageInterval = setInterval(() => {
-      getRandomPuppyImage();
-    }, 3000);
+    const clockInterval = setInterval(() => setTime(new Date()), 1000);
+    const imageInterval = setInterval(getRandomPuppyImage, 3000);
 
     return () => {
       clearInterval(clockInterval);
       clearInterval(imageInterval);
     };
-  }, []);
+  }, [getRandomPuppyImage]);
 
   const formatTime = (date) => {
     let hours = date.getHours();
     const minutes = date.getMinutes();
     const ampm = hours >= 12 ? 'pm' : 'am';
 
-    hours = hours % 12;
-    hours = hours ? hours : 12;
+    hours = hours % 12 || 12; // Shortened "hours ? hours : 12" logic
+    const formattedMinutes = minutes.toString().padStart(2, '0');
 
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-
-    const timeString = `${hours}${formattedMinutes} ${ampm}`;
-
-    // Insert spaces between all characters
-    return timeString.split('').join(' ');
+    return `${hours}${formattedMinutes} ${ampm}`.split('').join(' ');
   };
 
+  // Styles remain mostly the same, but we add an opacity transition
   const containerStyle = {
     width: '100vw',
     height: '100vh',
     backgroundImage: currentImage ? `url(${currentImage})` : 'none',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
+    transition: 'background-image 0.5s ease-in-out', // Smoother image swaps
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 0,
-    overflow: 'hidden',
     backgroundColor: '#333'
   };
 
@@ -79,9 +66,11 @@ const PuppyClockComponent = () => {
     fontSize: '6vh',
     color: '#F9EBE5FF',
     textShadow: '0.3vh 0.3vh 0.6vh rgba(0,0,0,0.9)',
-    fontWeight: 'bold',
     userSelect: 'none',
-    transform: 'translateY(10vh)' // Slightly below center
+    transform: 'translateY(10vh)',
+    // Hide text until font is ready to prevent layout shift
+    opacity: fontReady ? 1 : 0,
+    transition: 'opacity 0.3s ease'
   };
 
   return (
