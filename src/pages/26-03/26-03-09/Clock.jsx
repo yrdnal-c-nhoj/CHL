@@ -19,52 +19,59 @@ const Clock = () => {
   const [transform, setTransform] = useState({ scale: 1, rotate: 0 });
 
   useEffect(() => {
-    // 1. Inject Styles ONCE
     const styleBlock = document.createElement('style');
-    const catSvg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 16c-4 0-7 4-7 4s-1-4-5-4-7 5-7 10c0 4 2 8 7 12l12 10 12-10c5-4 7-8 7-12 0-5-3-10-7-10s-1-4-5-4-7 4-7 4z' fill='%23ffcad4' fill-opacity='0.1'/%3E%3C/svg%3E`;
+
+    /* SVG UPDATES:
+      1. Almond Eyes: Created using two curves (Q) meeting at points.
+      2. Slit Pupils: Added vertical lines (M/L) inside the almond shape.
+      3. Proportions: Scaled the facial features to be more "predatory" and less "doll-like."
+    */
+    const catSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23ffcad4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' opacity='0.25'%3E%3Cpath fill='%23ffcad4' fill-opacity='0.1' d='M60 40 L75 20 L85 40 Q95 45 95 60 Q95 80 75 90 L75 105 Q90 110 85 120 Q70 110 60 95 Q50 110 35 120 Q30 110 45 105 L45 90 Q25 80 25 60 Q25 45 35 40 L45 20 Z'/%3E%3Cpath d='M35 58 Q42 50 50 58 Q42 66 35 58'/%3E%3Cpath d='M42.5 54 L42.5 62' stroke-width='1.5'/%3E%3Cpath d='M70 58 Q78 50 85 58 Q78 66 70 58'/%3E%3Cpath d='M77.5 54 L77.5 62' stroke-width='1.5'/%3E%3Cpath fill='%23ffcad4' d='M58 68 L62 68 L60 71 Z'/%3E%3Cpath d='M52 76 Q56 81 60 76 Q64 81 68 76'/%3E%3C/g%3E%3C/svg%3E";
 
     styleBlock.textContent = `
       ${FONT_DATA.map(f => `
-        @font-face { font-family: '${f.name}'; src: url('${f.url}'); font-display: swap; }
+        @font-face {
+          font-family: '${f.name}';
+          src: url('${f.url}');
+          font-display: swap;
+        }
       `).join('\n')}
 
       .cat-background-overlay {
         position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background-image: url("${catSvg}");
-        background-size: 80px 80px;
+        inset: 0;
         pointer-events: none;
         z-index: 0;
-        opacity: 0.5;
+        background-image: url("${catSvg}"), url("${catSvg}");
+        background-size: 160px 160px, 160px 160px;
+        background-position: 0 0, 80px 80px;
       }
 
-      /* Slow drifting animation for the background */
-      @keyframes drift {
-        from { background-position: 0 0; }
-        to { background-position: 80px 80px; }
+      @keyframes driftUp {
+        from { background-position: 0 0, 80px 80px; }
+        to { background-position: 0 -160px, 80px -80px; }
       }
+
       .animate-bg {
-        animation: drift 10s linear infinite;
+        animation: driftUp 20s linear infinite;
       }
     `;
+
     document.head.appendChild(styleBlock);
 
-    // 2. Set the interval for time and randomization
     const timer = setInterval(() => {
       setTime(new Date());
-      setIndex((prev) => (prev + 1) % FONT_DATA.length);
-      
-      const newScale = (Math.random() * (1.4 - 0.8) + 0.8).toFixed(2);
-      const newRotate = (Math.random() * 16 - 8).toFixed(1);
-      
+      setIndex(prev => (prev + 1) % FONT_DATA.length);
+      const newScale = (Math.random() * (1.2 - 0.9) + 0.9).toFixed(2);
+      const newRotate = (Math.random() * 6 - 3).toFixed(1);
       setTransform({ scale: newScale, rotate: newRotate });
     }, 1000);
 
     return () => {
       clearInterval(timer);
-      document.head.removeChild(styleBlock);
+      if (document.head.contains(styleBlock)) document.head.removeChild(styleBlock);
     };
-  }, []); // Empty dependency array ensures this runs once
+  }, []);
 
   const current = FONT_DATA[index];
   const hours = time.getHours().toString().padStart(2, '0');
@@ -72,24 +79,18 @@ const Clock = () => {
 
   return (
     <div style={{
-      width: '100vw', height: '100dvh',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      backgroundColor: '#520850', color: '#ffcad4',
-      margin: 0, padding: 0, overflow: 'hidden',
+      width: '100vw', height: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      backgroundColor: '#520850', color: '#ffcad4', margin: 0, padding: 0, overflow: 'hidden',
       userSelect: 'none', position: 'relative'
     }}>
-      
       <div className="cat-background-overlay animate-bg" />
-    
       <div style={{
-        fontSize: `calc(${transform.scale} * clamp(8rem, 25vw, 18rem))`,
+        fontSize: `calc(${transform.scale} * clamp(8rem, 25vw, 15rem))`,
         fontFamily: `'${current.name}', sans-serif`,
         transform: `rotate(${transform.rotate}deg)`,
-        transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-        lineHeight: 1,
-        letterSpacing: '-0.05em',
-        zIndex: 1,
-        textShadow: '0 10px 40px rgba(0,0,0,0.3)'
+        transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
+        lineHeight: 1, letterSpacing: '-0.02em', zIndex: 1,
+        textShadow: '0 10px 30px rgba(0,0,0,0.5)'
       }}>
         {hours}{minutes}
       </div>
