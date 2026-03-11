@@ -151,8 +151,8 @@ export default function ClockLetters({
   const targetNumberStyle = {
     position: "absolute",
     fontFamily: "Arial, sans-serif",
-    fontWeight: "bold",
-    color: "#393737FF",
+    // fontWeight: "bold",
+    color: "#EA1010",
     fontSize: `${sizeVmin * 0.1}vmin`,
     textShadow: "0 0.2vmin 0.2vmin #FFFFFF", // Fix: Removed extra dot
     userSelect: "none",
