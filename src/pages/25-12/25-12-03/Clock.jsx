@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 import font_2024_12_05 from '../../../assets/fonts/25-12-03-dog.ttf?url';
 
 const PuppyClockComponent = () => {
-  const [currentImage, setCurrentImage] = useState('');
+  const [images, setImages] = useState({ current: '', next: '' });
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const [time, setTime] = useState(new Date());
   
   const fontReady = useFontLoader('CustomFont', font_2024_12_05, {
@@ -11,70 +12,114 @@ const PuppyClockComponent = () => {
     fallback: true
   });
 
-  // Wrapped in useCallback to prevent re-creation on every render
-  const getRandomPuppyImage = useCallback(async () => {
+  const getNewPuppy = useCallback(async () => {
     try {
       const response = await fetch('https://dog.ceo/api/breeds/image/random');
       const data = await response.json();
+      
       if (data.status === 'success') {
-        setCurrentImage(data.message);
+        const nextUrl = data.message;
+
+        // PRELOADER: Create an off-screen image to "warm" the cache
+        const img = new Image();
+        img.src = nextUrl;
+        img.onload = () => {
+          // 1. Set the 'next' image behind the current one
+          setImages(prev => ({ ...prev, next: nextUrl }));
+          
+          // 2. Trigger the fade transition
+          setIsTransitioning(true);
+
+          // 3. After CSS transition finishes (500ms), swap them permanently
+          setTimeout(() => {
+            setImages({ current: nextUrl, next: '' });
+            setIsTransitioning(false);
+          }, 600); 
+        };
       }
     } catch (error) {
-      console.error('Error fetching puppy image:', error);
+      console.error('Error fetching puppy:', error);
     }
   }, []);
 
   useEffect(() => {
-    getRandomPuppyImage();
-
+    getNewPuppy();
     const clockInterval = setInterval(() => setTime(new Date()), 1000);
-    const imageInterval = setInterval(getRandomPuppyImage, 3000);
+    const imageInterval = setInterval(getNewPuppy, 5000); // Increased to 5s for better UX
 
     return () => {
       clearInterval(clockInterval);
       clearInterval(imageInterval);
     };
-  }, [getRandomPuppyImage]);
+  }, [getNewPuppy]);
 
   const formatTime = (date) => {
     let hours = date.getHours();
     const minutes = date.getMinutes();
     const ampm = hours >= 12 ? 'pm' : 'am';
-
-    hours = hours % 12 || 12; // Shortened "hours ? hours : 12" logic
-    const formattedMinutes = minutes.toString().padStart(2, '0');
-
-    return `${hours}${formattedMinutes} ${ampm}`.split('').join(' ');
+    hours = hours % 12 || 12;
+    return `${hours}${minutes.toString().padStart(2, '0')} ${ampm}`.split('').join(' ');
   };
 
-  // Styles remain mostly the same, but we add an opacity transition
+  // --- STYLES ---
+
   const containerStyle = {
+    position: 'relative',
     width: '100vw',
     height: '100vh',
-    backgroundImage: currentImage ? `url(${currentImage})` : 'none',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    transition: 'background-image 0.5s ease-in-out', // Smoother image swaps
+    backgroundColor: '#1a1a1a',
+    overflow: 'hidden',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#333'
+  };
+
+  const layerStyle = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    transition: 'opacity 0.6s ease-in-out',
   };
 
   const clockStyle = {
+    position: 'relative', // Ensure it sits above the background layers
+    zIndex: 10,
     fontFamily: 'CustomFont, sans-serif',
-    fontSize: '6vh',
-    color: '#F9EBE5FF',
-    textShadow: '0.3vh 0.3vh 0.6vh rgba(0,0,0,0.9)',
-    userSelect: 'none',
-    transform: 'translateY(10vh)',
-    // Hide text until font is ready to prevent layout shift
+    fontSize: '7vh',
+    color: '#F9EBE5',
+    textShadow: '0 4px 12px rgba(0,0,0,0.5)',
     opacity: fontReady ? 1 : 0,
-    transition: 'opacity 0.3s ease'
+    transition: 'opacity 0.5s ease',
+    transform: 'translateY(12vh)',
+    pointerEvents: 'none'
   };
 
   return (
     <div style={containerStyle}>
+      {/* BACKGROUND LAYER 1: The "Old" or Static Image */}
+      <div 
+        style={{ 
+          ...layerStyle, 
+          backgroundImage: `url(${images.current})`,
+          zIndex: 1 
+        }} 
+      />
+
+      {/* BACKGROUND LAYER 2: The "New" incoming Image */}
+      <div 
+        style={{ 
+          ...layerStyle, 
+          backgroundImage: `url(${images.next})`,
+          opacity: isTransitioning ? 1 : 0,
+          zIndex: 2 
+        }} 
+      />
+
+      {/* TIME OVERLAY */}
       <div style={clockStyle}>
         {formatTime(time)}
       </div>
