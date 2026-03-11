@@ -82,7 +82,7 @@ const Clock = () => {
       // padding: '4vh',
       height: '100%',
       boxSizing: 'border-box',
-      textShadow: '0 0 8px rgba(0, 250, 0, 0.6)',
+      textShadow: '0 0 8px rgba(0, 250, 0, 0.75)',
       animation: 'flicker 0.15s infinite',
     },
     timeHeader: {
