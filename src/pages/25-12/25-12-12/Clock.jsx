@@ -43,7 +43,7 @@ export default function AnalogBackgroundClock () {
 
   /* ---------------- BACKGROUND ---------------- */
 
-  const hue = ((Date.now() / 60000) * 360 + randomHueOffset[0]) % 360 // Add random offset
+  const hue = ((Date.now() / 60000) * 360 + randomHueOffset) % 360 // Add random offset
   const gradient = `hsl(${hue}, 100%, 50%)`
 
   return (
@@ -57,7 +57,7 @@ export default function AnalogBackgroundClock () {
           zIndex: 1
         }}
       />
-      Wheel image
+      {/* Wheel image */}
       <div
         style={{
           position: 'fixed',
