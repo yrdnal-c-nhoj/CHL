@@ -1,130 +1,113 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
-import font_2024_12_05 from '../../../assets/fonts/25-12-03-dog.ttf?url';
+import React, { useState, useEffect } from 'react';
 
-const PuppyClockComponent = () => {
-  const [images, setImages] = useState({ current: '', next: '' });
-  const [isTransitioning, setIsTransitioning] = useState(false);
+const FONT_DATA = [
+  { name: 'cat', url: '/src/assets/fonts/26-03-09/cat.ttf' },
+  { name: 'Swats', url: '/src/assets/fonts/26-03-09/Swats.ttf' },
+  { name: 'cat1', url: '/src/assets/fonts/26-03-09/cat1.ttf' },
+  { name: 'catz', url: '/src/assets/fonts/26-03-09/catz.otf' },
+  { name: 'kat', url: '/src/assets/fonts/26-03-09/kat.ttf' },
+  { name: 'katzz', url: '/src/assets/fonts/26-03-09/katzz.ttf' },
+  { name: 'Kitties', url: '/src/assets/fonts/26-03-09/Kitties.ttf' },
+  { name: 'me', url: '/src/assets/fonts/26-03-09/me.ttf' },
+  { name: 'Orienight', url: '/src/assets/fonts/26-03-09/Orienight.otf' },
+  { name: 'Purrfect', url: '/src/assets/fonts/26-03-09/Purrfect.ttf' },
+];
+
+const Clock = () => {
   const [time, setTime] = useState(new Date());
-  
-  const fontReady = useFontLoader('CustomFont', font_2024_12_05, {
-    timeout: 5000,
-    fallback: true
-  });
-
-  const getNewPuppy = useCallback(async () => {
-    try {
-      const response = await fetch('https://dog.ceo/api/breeds/image/random');
-      const data = await response.json();
-      
-      if (data.status === 'success') {
-        const nextUrl = data.message;
-
-        // PRELOADER: Create an off-screen image to "warm" the cache
-        const img = new Image();
-        img.src = nextUrl;
-        img.onload = () => {
-          // 1. Set the 'next' image behind the current one
-          setImages(prev => ({ ...prev, next: nextUrl }));
-          
-          // 2. Trigger the fade transition
-          setIsTransitioning(true);
-
-          // 3. After CSS transition finishes (500ms), swap them permanently
-          setTimeout(() => {
-            setImages({ current: nextUrl, next: '' });
-            setIsTransitioning(false);
-          }, 600); 
-        };
-      }
-    } catch (error) {
-      console.error('Error fetching puppy:', error);
-    }
-  }, []);
+  const [index, setIndex] = useState(0);
+  const [transform, setTransform] = useState({ scale: 1, rotate: 0 });
 
   useEffect(() => {
-    getNewPuppy();
-    const clockInterval = setInterval(() => setTime(new Date()), 1000);
-    const imageInterval = setInterval(getNewPuppy, 5000); // Increased to 5s for better UX
+    const styleBlock = document.createElement('style');
+
+    // Clear cat-head SVG
+    const catSvg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20 35 L30 15 L45 30 Q50 28 55 30 L70 15 L80 35 Q85 50 80 65 Q70 85 50 85 Q30 85 20 65 Q15 50 20 35 Z' fill='%23ffcad4' fill-opacity='0.14'/%3E%3Ccircle cx='38' cy='52' r='3' fill='%23ffcad4' fill-opacity='0.14'/%3E%3Ccircle cx='62' cy='52' r='3' fill='%23ffcad4' fill-opacity='0.14'/%3E%3C/svg%3E`;
+
+    styleBlock.textContent = `
+      ${FONT_DATA.map(f => `
+        @font-face {
+          font-family: '${f.name}';
+          src: url('${f.url}');
+          font-display: swap;
+        }
+      `).join('\n')}
+
+      .cat-background-overlay {
+        position: absolute;
+        inset: 0;
+        background-image: url("${catSvg}");
+        background-size: 90px 90px;
+        background-repeat: repeat;
+        pointer-events: none;
+        z-index: 0;
+      }
+    `;
+
+    document.head.appendChild(styleBlock);
+
+    const timer = setInterval(() => {
+      setTime(new Date());
+      setIndex((prev) => (prev + 1) % FONT_DATA.length);
+
+      const newScale = (Math.random() * (1.4 - 0.8) + 0.8).toFixed(2);
+      const newRotate = (Math.random() * 16 - 8).toFixed(1);
+
+      setTransform({
+        scale: newScale,
+        rotate: newRotate
+      });
+    }, 1000);
 
     return () => {
-      clearInterval(clockInterval);
-      clearInterval(imageInterval);
+      clearInterval(timer);
+      document.head.removeChild(styleBlock);
     };
-  }, [getNewPuppy]);
+  }, []);
 
-  const formatTime = (date) => {
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12 || 12;
-    return `${hours}${minutes.toString().padStart(2, '0')} ${ampm}`.split('').join(' ');
-  };
+  const current = FONT_DATA[index];
 
-  // --- STYLES ---
-
-  const containerStyle = {
-    position: 'relative',
-    width: '100vw',
-    height: '100vh',
-    backgroundColor: '#1a1a1a',
-    overflow: 'hidden',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  };
-
-  const layerStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    transition: 'opacity 0.6s ease-in-out',
-  };
-
-  const clockStyle = {
-    position: 'relative', // Ensure it sits above the background layers
-    zIndex: 10,
-    fontFamily: 'CustomFont, sans-serif',
-    fontSize: '7vh',
-    color: '#F9EBE5',
-    textShadow: '0 4px 12px rgba(0,0,0,0.5)',
-    opacity: fontReady ? 1 : 0,
-    transition: 'opacity 0.5s ease',
-    transform: 'translateY(12vh)',
-    pointerEvents: 'none'
-  };
+  const hours = time.getHours().toString().padStart(2, '0');
+  const minutes = time.getMinutes().toString().padStart(2, '0');
 
   return (
-    <div style={containerStyle}>
-      {/* BACKGROUND LAYER 1: The "Old" or Static Image */}
-      <div 
-        style={{ 
-          ...layerStyle, 
-          backgroundImage: `url(${images.current})`,
-          zIndex: 1 
-        }} 
-      />
+    <div
+      style={{
+        width: '100vw',
+        height: '100dvh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#520850',
+        color: '#ffcad4',
+        margin: 0,
+        padding: 0,
+        overflow: 'hidden',
+        userSelect: 'none',
+        position: 'relative'
+      }}
+    >
+      {/* Cat pattern background */}
+      <div className="cat-background-overlay" />
 
-      {/* BACKGROUND LAYER 2: The "New" incoming Image */}
-      <div 
-        style={{ 
-          ...layerStyle, 
-          backgroundImage: `url(${images.next})`,
-          opacity: isTransitioning ? 1 : 0,
-          zIndex: 2 
-        }} 
-      />
-
-      {/* TIME OVERLAY */}
-      <div style={clockStyle}>
-        {formatTime(time)}
+      {/* Clock */}
+      <div
+        style={{
+          fontSize: `calc(${transform.scale} * clamp(8rem, 25vw, 18rem))`,
+          fontFamily: `'${current.name}', sans-serif`,
+          transform: `rotate(${transform.rotate}deg)`,
+          transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          lineHeight: 1,
+          letterSpacing: '-0.05em',
+          zIndex: 1,
+          textShadow: '0 10px 40px rgba(0,0,0,0.2)'
+        }}
+      >
+        {hours}{minutes}
       </div>
     </div>
   );
 };
 
-export default PuppyClockComponent;
+export default Clock;
