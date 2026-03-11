@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const fontVersion = "2026-03-11";
-const FONT_NAME = `AbrilFatface_${fontVersion}`;
+const FONT_NAME = `SpaceMono_${fontVersion}`;
 
 const BorrowedTimeClock = () => {
   const [time, setTime] = useState(new Date());
@@ -12,8 +12,7 @@ const BorrowedTimeClock = () => {
       const now = new Date();
       setTime(now);
       
-      // Update image every second to match your original intent, 
-      // but adding a cache-buster sig to ensure it's "new" time.
+      // Update image every second
       setImageUrl(`https://picsum.photos/800/600?sig=${now.getTime()}`);
     }, 1000);
 
@@ -37,8 +36,7 @@ const BorrowedTimeClock = () => {
     width: '100vw',
     height: '100vh',
     backgroundColor: '#000',
-    overflow: 'hidden',
-    transition: 'background-color 0.5s ease'
+    overflow: 'hidden'
   };
 
   const imageStyle = {
@@ -46,29 +44,29 @@ const BorrowedTimeClock = () => {
     height: '60vmin',
     objectFit: 'cover',
     marginBottom: '4vh',
-    border: '0.1vmin solid #333',
-    transition: 'opacity 0.3s ease-in-out', // Smoothes the swap
-    filter: 'grayscale(30%) brightness(80%)'
+    border: '1px solid #F2F7F1',
+    // filter: 'grayscale(50%) brightness(70%)',
+    transition: 'opacity 0.3s ease-in-out'
   };
 
   const clockStyle = {
-    fontFamily: `"${FONT_NAME}", "Abril Fatface", serif`,
-    fontSize: '15vmin',
-    color: '#ff000f',
-    letterSpacing: '-0.02vw',
+    fontFamily: `"${FONT_NAME}", "Space Mono", monospace`,
+    fontSize: '12vmin', // Sized down slightly for monospace proportions
+    color: '#F7E3E4',
+    letterSpacing: '0.05em', // Monospaced fonts often benefit from a bit of breathing room
     fontWeight: '400',
     lineHeight: '1',
-    textShadow: '0 0 20px rgba(255, 0, 15, 0.3)'
+    textShadow: '0 0 15px rgba(255, 0, 15, 0.4)'
   };
 
   return (
     <>
       <style>
         {`
-          /* We define the font name to match your FONT_NAME variable exactly */
+          /* Importing Space Mono from Google Fonts */
           @font-face {
             font-family: "${FONT_NAME}";
-            src: url('https://fonts.gstatic.com/s/abrilfatface/v19/z76dPrpfSFFBeS29z4MeQ06XYS-d.woff2') format('woff2');
+            src: url('https://fonts.gstatic.com/s/spacemono/v13/i74Mm-92S6pMwwYfKtRfRErv1zqx.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
             font-display: swap;
@@ -77,14 +75,14 @@ const BorrowedTimeClock = () => {
           body {
             margin: 0;
             padding: 0;
-            background: #000;
+            background: #373939;
           }
         `}
       </style>
       
       <div style={containerStyle}>
         <img 
-          key={imageUrl} // Key forces React to treat new URL as a new element for transitions
+          key={imageUrl} 
           src={imageUrl} 
           alt="Generative Stream" 
           style={imageStyle} 
