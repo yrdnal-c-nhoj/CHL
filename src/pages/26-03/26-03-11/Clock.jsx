@@ -45,9 +45,9 @@ const BorrowedTimeClock = () => {
 
   const imageStyle = {
     width: 'min(75vmin, 75%)',
-    height: 'auto', // Maintain aspect ratio
+    height: 'auto',
     maxWidth: '500px',
-    maxHeight: '300px',
+    aspectRatio: '4/3', // Enforce 4:3 aspect ratio (800x600)
     objectFit: 'cover',
     border: '1px solid #F2F7F1',
     // filter: 'grayscale(50%) brightness(70%)',
