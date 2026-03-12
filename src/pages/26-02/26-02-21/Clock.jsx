@@ -73,6 +73,7 @@ const StaticCollage = memo(({ count }) => {
 export default function RefactoredClock() {
   const [time, setTime] = useState(new Date());
   const [dynamicImages, setDynamicImages] = useState([]);
+  const [fontReady, setFontReady] = useState(false);
 
   // 1. Clock & Dynamic Image Logic
   useEffect(() => {
@@ -105,6 +106,14 @@ export default function RefactoredClock() {
     `;
     document.head.appendChild(style);
 
+    // Check if font is loaded
+    const font = new FontFace(CONFIG.FONT_FAMILY, `url(${customFont})`);
+    font.load().then(() => {
+      setFontReady(true);
+    }).catch(() => {
+      setFontReady(true); // Still show content even if font fails
+    });
+
     return () => {
       if (document.head.contains(style)) {
         document.head.removeChild(style);
@@ -120,6 +129,24 @@ export default function RefactoredClock() {
     const m = time.getMinutes().toString().padStart(2, '0'); // Keep leading zeros for minutes
     return { h, m };
   }, [time]);
+
+  if (!fontReady) {
+    return (
+      <div style={{
+        width: '100vw',
+        height: '100dvh',
+        backgroundColor: '#000',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#fff',
+        fontFamily: 'monospace',
+        fontSize: '1.5rem'
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   /* Styles */
   const rootStyle = {
