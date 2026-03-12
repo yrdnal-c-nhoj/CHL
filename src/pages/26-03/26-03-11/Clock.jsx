@@ -39,30 +39,32 @@ const BorrowedTimeClock = () => {
     overflow: 'hidden',
     padding: 'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
     minHeight: '-webkit-fill-available', // Fallback for older browsers
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    gap: '2vmin' // Add gap between image and clock
   };
 
   const imageStyle = {
-    width: 'min(85vmin, 85%)',
-    height: 'min(60vmin, 40vh)',
-    maxWidth: '600px',
-    maxHeight: '400px',
+    width: 'min(75vmin, 75%)',
+    height: 'min(45vmin, 30vh)',
+    maxWidth: '500px',
+    maxHeight: '300px',
     objectFit: 'cover',
-    marginBottom: '3vmin',
     border: '1px solid #F2F7F1',
     // filter: 'grayscale(50%) brightness(70%)',
-    transition: 'opacity 0.3s ease-in-out'
+    transition: 'opacity 0.3s ease-in-out',
+    flexShrink: 0 // Prevent image from shrinking
   };
 
   const clockStyle = {
     fontFamily: `"${FONT_NAME}", "Xanh Mono", monospace`,
-    fontSize: 'min(12vmin, 8vw)', // More responsive sizing
+    fontSize: 'min(10vmin, 6vw)', // Smaller font for mobile
     color: '#F7E3E4',
-    letterSpacing: '0.05em', // Monospaced fonts often benefit from a bit of breathing room
+    letterSpacing: '0.05em',
     fontWeight: '400',
     lineHeight: '1',
     textShadow: '0 0 15px rgba(255, 0, 15, 0.4)',
-    textAlign: 'center'
+    textAlign: 'center',
+    flexShrink: 0 // Prevent clock from shrinking
   };
 
   return (
