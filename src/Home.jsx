@@ -106,6 +106,7 @@ const formatDate = (dateStr) => {
         display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
+        backgroundColor: "#dcd7d8", // Fallback background color
         opacity: fontsReady ? 1 : 0,
         transition: "opacity 0.6s ease-in",
       }}>
