@@ -3,8 +3,12 @@ import futurBg from '../../../assets/images/26-02/26-02-24/futur.jpg';
 
 const ImageDisplay = () => {
   const [time, setTime] = useState(new Date());
+  const [fontsReady, setFontsReady] = useState(false);
 
   useEffect(() => {
+    // Add fonts-loading class initially
+    document.documentElement.classList.add('fonts-loading');
+
     // 1. Load Google Fonts with improved FOUC prevention
     const fontLink = document.createElement('link');
     fontLink.href = "https://fonts.googleapis.com/css2?family=Anton&family=Josefin+Sans:wght@400;700&family=Krona+One&family=Roboto+Mono:wght@400;700&family=Playfair+Display:wght@400;700&family=Oswald:wght@400;700&family=Merriweather:wght@400;700&family=Bebas+Neue&display=swap";
@@ -15,6 +19,7 @@ const ImageDisplay = () => {
       this.media = "all";
       // Remove fonts-loading class to show content
       document.documentElement.classList.remove('fonts-loading');
+      setFontsReady(true);
     };
     document.head.appendChild(fontLink);
 
@@ -22,6 +27,7 @@ const ImageDisplay = () => {
     const fallbackTimeout = setTimeout(() => {
       document.documentElement.classList.remove('fonts-loading');
       fontLink.media = "all";
+      setFontsReady(true);
     }, 1000);
 
     // 3. THE TICKER: Update state every second
@@ -35,6 +41,24 @@ const ImageDisplay = () => {
       if (document.head.contains(fontLink)) document.head.removeChild(fontLink);
     };
   }, []);
+
+  if (!fontsReady) {
+    return (
+      <div style={{
+        width: '100vw',
+        height: '100dvh',
+        backgroundColor: '#000',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'black',
+        fontFamily: 'monospace',
+        fontSize: '1.5rem'
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   // --- Robust Time Logic ---
   const rawHours = time.getHours();
@@ -62,6 +86,11 @@ const ImageDisplay = () => {
 
   return (
     <div style={containerStyle}>
+      <style>{`
+        .fonts-loading * {
+          opacity: 0 !important;
+        }
+      `}</style>
       <div style={backgroundStyle} />
       <div style={redOverlayStyle} />
       
