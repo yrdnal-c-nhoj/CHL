@@ -44,6 +44,26 @@ const DigitalClock = () => {
   // Format with leading zeros on minutes only, all on one line
   const timeString = `${twelveHour}:${minutes.toString().padStart(2, '0')}${ampm}`;
 
+  if (!fontReady) {
+    return (
+      <div style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100dvh',
+        overflow: 'hidden',
+        backgroundColor: '#050505',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: CLOCK_CONFIG.COLORS.silverText,
+        fontFamily: 'monospace',
+        fontSize: '1.5rem'
+      }}>
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div style={styles.container}>
       {/* FILTERED BACKGROUND LAYER */}
