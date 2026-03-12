@@ -27,6 +27,25 @@ const SonicBoomClock = () => {
                      time.getSeconds().toString().padStart(2, '0') +
                      Math.floor(time.getMilliseconds() / 100).toString();
 
+  if (!fontLoaded) {
+    return (
+      <div style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: '#5669C8',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+        color: '#D0D6F2',
+        fontFamily: 'monospace',
+        fontSize: '1.5rem'
+      }}>
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div style={{
       position: 'fixed',
