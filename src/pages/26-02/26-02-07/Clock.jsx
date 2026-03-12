@@ -31,6 +31,26 @@ const FullscreenClock = () => {
     return str.split('');
   }, [time]);
 
+  if (!fontReady) {
+    return (
+      <div style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100dvh',
+        backgroundColor: '#E9F7AB',
+        backgroundImage: 'radial-gradient(circle, #E9F7AB 0%, #CDF296 100%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#7B0404',
+        fontFamily: 'monospace',
+        fontSize: '1.5rem'
+      }}>
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div style={{
       position: 'relative',
