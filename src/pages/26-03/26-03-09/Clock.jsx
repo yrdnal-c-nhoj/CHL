@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
 const FONT_DATA = [
-  { name: 'cat', url: '/fonts/26-03-09/cat.ttf' },
-  { name: 'Swats', url: '/fonts/26-03-09/Swats.ttf' },
-  { name: 'cat1', url: '/fonts/26-03-09/cat1.ttf' },
-  { name: 'catz', url: '/fonts/26-03-09/catz.otf' },
-  { name: 'kat', url: '/fonts/26-03-09/kat.ttf' },
-  { name: 'katzz', url: '/fonts/26-03-09/katzz.ttf' },
-  { name: 'Kitties', url: '/fonts/26-03-09/Kitties.ttf' },
-  { name: 'me', url: '/fonts/26-03-09/me.ttf' },
-  { name: 'Orienight', url: '/fonts/26-03-09/Orienight.otf' },
-  { name: 'Purrfect', url: '/fonts/26-03-09/Purrfect.ttf' },
+  { name: 'cat', url: '/fonts/26-03-09/cat.ttf', maxSize: 1.5 },
+  { name: 'Swats', url: '/fonts/26-03-09/Swats.ttf', maxSize: 2.0 },
+  { name: 'cat1', url: '/fonts/26-03-09/cat1.ttf', maxSize: 1.3 },
+  { name: 'catz', url: '/fonts/26-03-09/catz.otf', maxSize: 1.8 },
+  { name: 'kat', url: '/fonts/26-03-09/kat.ttf', maxSize: 1.6 },
+  { name: 'katzz', url: '/fonts/26-03-09/katzz.ttf', maxSize: 1.7 },
+  { name: 'Kitties', url: '/fonts/26-03-09/Kitties.ttf', maxSize: 1.4 },
+  { name: 'me', url: '/fonts/26-03-09/me.ttf', maxSize: 1.9 },
+  { name: 'Orienight', url: '/fonts/26-03-09/Orienight.otf', maxSize: 2.2 },
+  { name: 'Purrfect', url: '/fonts/26-03-09/Purrfect.ttf', maxSize: 1.5 },
 ];
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
   const [index, setIndex] = useState(0);
-  const [transform, setTransform] = useState({ scale: 1, rotate: 0 });
+  const [transform, setTransform] = useState({ scale: 1, rotate: 0, x: 0, y: 0 });
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
@@ -58,9 +58,12 @@ const Clock = () => {
     const timer = setInterval(() => {
       setTime(new Date());
       setIndex(prev => (prev + 1) % FONT_DATA.length);
-      const newScale = (Math.random() * (1.2 - 0.9) + 0.9).toFixed(2);
-      const newRotate = (Math.random() * 6 - 3).toFixed(1);
-      setTransform({ scale: newScale, rotate: newRotate });
+      const currentFont = FONT_DATA[(index + 1) % FONT_DATA.length];
+      const newScale = (Math.random() * (currentFont.maxSize - 0.6) + 0.6).toFixed(2);
+      const newRotate = (Math.random() * 20 - 10).toFixed(1);
+      const newX = (Math.random() * 40 - 20).toFixed(1); // -20% to +20% horizontal
+      const newY = (Math.random() * 30 - 15).toFixed(1); // -15% to +15% vertical
+      setTransform({ scale: newScale, rotate: newRotate, x: newX, y: newY });
     }, 1000);
 
     return () => {
@@ -83,11 +86,11 @@ const Clock = () => {
       backgroundColor: '#520850', color: '#ffcad4', margin: 0, padding: 0, overflow: 'hidden',
       userSelect: 'none', position: 'relative'
     }}>
-      <div className="cat-background-overlay animate-bg" />
+      <div className="animate-bg cat-background-overlay" />
       <div style={{
         fontSize: `calc(${transform.scale} * clamp(8rem, 25vw, 15rem))`,
         fontFamily: `'${current.name}', sans-serif`,
-        transform: `rotate(${transform.rotate}deg)`,
+        transform: `rotate(${transform.rotate}deg) translate(${transform.x}vw, ${transform.y}vh)`,
         transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
         lineHeight: 1, letterSpacing: '-0.02em', zIndex: 1,
         textShadow: '0 10px 30px rgba(0,0,0,0.5)'
