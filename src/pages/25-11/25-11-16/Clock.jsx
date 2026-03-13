@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
 import bgImg from "../../../assets/images/25-11/25-11-16/ray.webp";
 import clockBg from "../../../assets/images/25-11/25-11-16/ray2.webp";
 
@@ -7,6 +7,19 @@ export default function AnalogClock() {
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isShortScreen, setIsShortScreen] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 768);
+      setIsShortScreen(window.innerHeight <= 600);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const tick = useCallback(() => {
     const now = new Date();
@@ -16,11 +29,11 @@ export default function AnalogClock() {
     const h = (now.getHours() % 12) + m / 60;
 
     if (hourRef.current)
-      hourRef.current.style.transform = `translate(-50%,-100%) rotate(${h * 30}deg)`;
+      hourRef.current.style.transform = `translate(-50%, 0%) rotate(${h * 30}deg)`;
     if (minuteRef.current)
-      minuteRef.current.style.transform = `translate(-50%,-100%) rotate(${m * 6}deg)`;
+      minuteRef.current.style.transform = `translate(-50%, 0%) rotate(${m * 6}deg)`;
     if (secondRef.current)
-      secondRef.current.style.transform = `translate(-50%,-100%) rotate(${s * 6}deg)`;
+      secondRef.current.style.transform = `translate(-50%, 0%) rotate(${s * 6}deg)`;
 
     rafRef.current = requestAnimationFrame(tick);
   }, []);
@@ -33,13 +46,14 @@ export default function AnalogClock() {
   // Main container: Ensures the clock is centered and fits the screen
   const containerStyle = {
     width: "100%",
-    height: "100dvh",
+    height: isMobile ? "100vh" : "100dvh", // Use 100vh on mobile for better compatibility
     position: "relative",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
     backgroundColor: "#000",
+    minHeight: isMobile ? "-webkit-fill-available" : "auto", // iOS Safari fix
   };
 
   // Page background
@@ -55,8 +69,8 @@ export default function AnalogClock() {
 
   // Clock container: Uses 'vmin' to ensure it never exceeds the screen width OR height
   const clockStyle = {
-    width: "90vmin",  // 90% of the smallest screen dimension
-    height: "90vmin", // Keeps it a perfect square
+    width: isShortScreen ? "80vmin" : (isMobile ? "85vmin" : "90vmin"),  // Responsive sizing
+    height: isShortScreen ? "80vmin" : (isMobile ? "85vmin" : "90vmin"), // Keeps it a perfect square
     position: "relative",
     background: "rgba(255,255,255,0.15)",
     backdropFilter: "blur(10px)",
@@ -77,12 +91,12 @@ export default function AnalogClock() {
     zIndex: 0,
   };
 
-  // Hand styles: Now using percentages so they scale WITH the clock
+  // Hand styles: Adjusted to stay within clock bounds
   const handBase = {
     position: "absolute",
     left: "50%",
     top: "50%",
-    transformOrigin: "50% 100%",
+    transformOrigin: "50% 0%", // Changed to rotate from top center
     background: "rgba(255, 255, 255, 0.8)",
     borderRadius: "10px",
     zIndex: 2,
@@ -114,7 +128,7 @@ export default function AnalogClock() {
           style={{
             ...handBase,
             width: "2%",
-            height: "25%",
+            height: "20%", // Reduced from 25%
             background: "rgba(255,255,255,0.9)",
           }}
         />
@@ -124,7 +138,7 @@ export default function AnalogClock() {
           style={{
             ...handBase,
             width: "1.5%",
-            height: "40%",
+            height: "35%", // Reduced from 40%
             background: "rgba(255,255,255,0.7)",
           }}
         />
@@ -134,7 +148,7 @@ export default function AnalogClock() {
           style={{
             ...handBase,
             width: "1%",
-            height: "45%",
+            height: "40%", // Reduced from 45%
             background: "#ff4d4d", // Brighter red for visibility
           }}
         />
