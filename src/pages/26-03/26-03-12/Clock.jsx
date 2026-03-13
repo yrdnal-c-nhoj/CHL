@@ -24,6 +24,7 @@ const Clock = () => {
         try {
           // Try multiple play attempts
           await videoRef.current.play();
+          console.log('Video play attempt successful');
         } catch (error) {
           console.log('Auto-play failed, trying again:', error);
           // Retry after a short delay
@@ -39,11 +40,15 @@ const Clock = () => {
     // Wait for video to load before attempting play
     const videoElement = videoRef.current;
     if (videoElement) {
+      // Multiple event listeners for better reliability
       videoElement.addEventListener('loadeddata', attemptPlay);
       videoElement.addEventListener('canplay', attemptPlay);
+      videoElement.addEventListener('loadedmetadata', attemptPlay);
       
-      // Also try immediately
+      // Try immediately and after delays
+      setTimeout(attemptPlay, 100);
       setTimeout(attemptPlay, 500);
+      setTimeout(attemptPlay, 1000);
     }
 
     // Additional play attempts for mobile Chrome
@@ -55,8 +60,8 @@ const Clock = () => {
       }
     }, 500);
 
-    // Clear interval after 5 seconds
-    setTimeout(() => clearInterval(playInterval), 5000);
+    // Clear interval after 10 seconds
+    setTimeout(() => clearInterval(playInterval), 10000);
 
     return () => {
       clearInterval(timeInterval);
