@@ -1,11 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import abuVideo from '../../../assets/images/26-02/26-02-27/abu.mp4';
+import React, { useState, useEffect, useRef } from 'react';
+import cocteauVideo from '../../../assets/images/26-03/26-03-12/vr.mp4';
 
-const Clock = () => {
+
+const VirtualClock = () => {
   const [time, setTime] = useState(new Date());
+  const videoRef = useRef(null);
 
   useEffect(() => {
+    // 1. Precise Clock Timer
     const timer = setInterval(() => setTime(new Date()), 1000);
+    
+    // 2. Mobile Autoplay Force
+    // React's 'muted' prop can fail on mount; setting it via ref 
+    // guarantees the browser sees it as muted before play() is called.
+    if (videoRef.current) {
+      videoRef.current.muted = true; 
+      videoRef.current.play().catch((err) => {
+        console.warn("Autoplay blocked by browser/battery saver:", err);
+      });
+    }
+
     return () => clearInterval(timer);
   }, []);
 
@@ -13,132 +27,148 @@ const Clock = () => {
   const minutes = time.getMinutes();
   const hours = time.getHours() % 12;
 
-  // Hieratic Numerals (Unicode 108E1 - 108EA)
-  const hieraticNumbers = {
-    1: '𐣡', 2: '𐣢', 3: '𐣣', 4: '𐣤', 5: '𐣥', 
-    6: '𐣦', 7: '𐣧', 8: '𐣨', 9: '𐣩', 10: '𐣪', 
-    11: '𐣪𐣡', 12: '𐣪𐣢'
-  };
-
-  const getEgyptianNumber = (num) => hieraticNumbers[num] || num.toString();
-
   const secondAngle = seconds * 6;
   const minuteAngle = minutes * 6 + seconds * 0.1;
   const hourAngle = hours * 30 + minutes * 0.5;
 
-  const handStyle = (length, width, color, angle, type) => ({
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    width: width,
-    height: length,
-    backgroundColor: color,
-    transform: `translateX(-50%) rotate(${angle}deg)`,
-    transformOrigin: 'bottom center',
-    zIndex: 12,
-    transition: type === 'second' ? 'none' : 'transform 0.5s cubic-bezier(0.4, 2.1, 0.5, 0.5)',
-    boxShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
-    clipPath: type === 'second' 
-      ? 'polygon(50% 0%, 100% 100%, 0% 100%)' 
-      : 'polygon(15% 100%, 85% 100%, 100% 20%, 50% 0%, 0% 20%)',
-  });
 
   return (
     <div style={{
       width: '100vw', 
       height: '100dvh', 
       position: 'relative',
-      overflow: 'hidden', 
-      display: 'flex', 
-      alignItems: 'center', 
-      justifyContent: 'center',
-      backgroundColor: '#000'
+      overflow: 'hidden',
+      backgroundColor: '#000', // Prevents white flash while video loads
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
     }}>
-      <style dangerouslySetInnerHTML={{__html: `
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Egyptian+Hieroglyphs&display=swap');
-      `}} />
+      <style>{`
+        @media (max-width: 768px) {
+          body {
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+          }
+          html, body {
+            margin: 0;
+            padding: 0;
+            height: 100dvh;
+            width: 100vw;
+            overflow: hidden;
+          }
+        }
+      `}</style>
       
+      {/* Background Video */}
       <video
+        ref={videoRef}
         style={{
-          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-          objectFit: 'cover', opacity: 1.0, zIndex: 1
+          position: 'absolute', 
+          top: 0, 
+          left: 0, 
+          width: '100%', 
+          height: '100%',
+          objectFit: 'fill', 
+          opacity: 1.0, 
+          zIndex: 1
         }}
-        autoPlay loop muted playsInline
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
       >
-        <source src={abuVideo} type="video/mp4" />
+        <source src={cocteauVideo} type="video/mp4" />
       </video>
-  
-      {/* Main Clock Container: Maximized to 92% of the viewport to prevent clipping */}
+
+      {/* 1970s Style Analog Clock - Lower Left Corner */}
       <div style={{
-        position: 'relative', 
+        position: 'absolute',
+        bottom: '5%',
+        left: '5%',
+        width: 'min(120px, 15vw)',
+        height: 'min(120px, 15vw)',
         zIndex: 10,
-        width: 'min(100vw, 100vh)', 
-        height: 'min(100vw, 100vh)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
+        pointerEvents: 'none'
       }}>
-
-        {/* --- NUMERALS --- */}
-        {[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num, i) => {
-          const rotation = i * 30;
-          return (
-            <div
-              key={num}
-              style={{
-                position: 'absolute',
-                // Using a percentage of the container size keeps them inside the circle
-                height: '100%', 
-                width: '60vw',
-                textAlign: 'center',
-                transform: `rotate(${rotation}deg)`,
-                fontFamily: "'Noto Sans Egyptian Hieroglyphs', 'Peralta', sans-serif",
-                color: '#E2C264',
-                fontSize: 'clamp(2rem, 6vw, 4rem)', // Responsive font size
-                opacity: 0.6,
-                textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
-                pointerEvents: 'none'
-              }}
-            >
-              <div style={{ transform: `rotate(-${rotation}deg)` }}>
-                {getEgyptianNumber(num)}
-              </div>
-            </div>
-          );
-        })}
-        
-        {/* --- CLOCK HANDS (Reverted to 0.2 opacity) --- */}
-
-        {/* Hour Hand */}
-        <div style={{...handStyle('28%', '16px', '#E2C264', hourAngle, 'hour'), opacity: 0.2}}>
-            <div style={{
-                position: 'absolute', top: '-18px', left: '50%', transform: 'translateX(-50%)',
-                width: '24px', height: '24px', border: '4px solid #E2C264', borderRadius: '50%'
-            }} />
-        </div>
-
-        {/* Minute Hand */}
-        <div style={{...handStyle('42%', '10px', '#E2C264', minuteAngle, 'minute'), opacity: 0.2}} />
-
-        {/* Second Hand */}
-        <div style={{...handStyle('48%', '3px', '#E2C264', secondAngle, 'second'), opacity: 0.2}} />
-
-        {/* Center Pin */}
+        {/* Clock face with 1970s colors - more transparent */}
         <div style={{
           position: 'absolute',
-          width: '28px', height: '28px',
-          background: 'radial-gradient(circle, #F3F2EB 0%, #E2C264 40%, #86641A 100%)',
+          width: '100%',
+          height: '100%',
           borderRadius: '50%',
-          zIndex: 25,
-          border: '1px solid rgba(0,0,0,0.5)',
-          boxShadow: '0 0 15px rgba(226, 194, 100, 0.6)'
+          background: 'radial-gradient(circle, rgba(255,255,200,0.15) 0%, rgba(255,255,150,0.1) 50%, rgba(200,255,200,0.08) 100%)',
+          border: '2px solid rgba(255,255,255,0.25)',
+          filter: 'blur(2px) brightness(1.1)',
+          boxShadow: '0 0 20px rgba(255,255,200,0.2), inset 0 0 15px rgba(200,255,200,0.15)'
         }} />
-
-     
-
+        
+        {/* Hour hand - simple white - more transparent */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '3px',
+          height: '30%',
+          background: 'rgba(255,255,255,0.5)',
+          transform: `translate(-50%, -100%) rotate(${hourAngle}deg)`,
+          transformOrigin: 'center bottom',
+          filter: 'blur(1.5px)',
+          boxShadow: '0 0 8px rgba(255,255,255,0.4)'
+        }} />
+        
+        {/* Minute hand - simple white - more transparent */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '2px',
+          height: '40%',
+          background: 'rgba(255,255,255,0.5)',
+          transform: `translate(-50%, -100%) rotate(${minuteAngle}deg)`,
+          transformOrigin: 'center bottom',
+          filter: 'blur(1.5px)',
+          boxShadow: '0 0 8px rgba(255,255,255,0.4)'
+        }} />
+        
+        {/* Second hand - simple green - more transparent */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '1px',
+          height: '45%',
+          background: 'rgba(200,255,200,0.4)',
+          transform: `translate(-50%, -100%) rotate(${secondAngle}deg)`,
+          transformOrigin: 'center bottom',
+          filter: 'blur(1px)',
+          boxShadow: '0 0 5px rgba(200,255,200,0.3)'
+        }} />
+        
+        {/* Center dot - yellow - more transparent */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '8px',
+          height: '8px',
+          background: 'rgba(255,255,200,0.6)',
+          borderRadius: '50%',
+          transform: 'translate(-50%, -50%)',
+          filter: 'blur(1.5px)',
+          boxShadow: '0 0 8px rgba(255,255,200,0.5)'
+        }} />
+        
+        {/* Simple 1970s animation */}
+        <style>{`
+          @keyframes tick {
+            0%, 100% { transform: translate(-50%, -100%) rotate(${secondAngle}deg); }
+            50% { transform: translate(-50%, -100%) rotate(${secondAngle}deg) scale(1.05); }
+          }
+        `}</style>
       </div>
     </div>
   );
 };
 
-export default Clock;
+export default VirtualClock;
