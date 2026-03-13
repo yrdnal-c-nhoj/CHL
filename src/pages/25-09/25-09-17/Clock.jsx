@@ -304,7 +304,7 @@ const DigitalClock = () => {
             right: '28vw',
             transform: 'rotate(52deg)',
             fontSize: '33vh',
-            color: '#EB0CC5FF',
+            color: '#EB0CC5',
             opacity: getOpacity(4, 0.7),
             transition: 'opacity 0.5s ease-in-out'
           }}
