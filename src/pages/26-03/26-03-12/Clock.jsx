@@ -1,221 +1,142 @@
-import React, { useEffect, useState, useRef } from 'react';
-import vrVideo from '../../../assets/images/26-03/26-03-12/vr.mp4';
+import React, { useState, useEffect, useRef } from 'react';
+import cocteauVideo from '../../../assets/images/26-03/26-03-12/vr.mp4';
 
-const Clock = () => {
-  const [isMobile, setIsMobile] = useState(false);
+
+const VirtualClock = () => {
   const [time, setTime] = useState(new Date());
   const videoRef = useRef(null);
 
   useEffect(() => {
-    // Detect mobile devices
-    const checkMobile = () => {
-      setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-    };
-    checkMobile();
-
-    // Update time for analog clock
-    const timeInterval = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-    // Force auto-play on all platforms
-    const attemptPlay = async () => {
-      if (videoRef.current) {
-        try {
-          // Try multiple play attempts
-          await videoRef.current.play();
-          console.log('Video play attempt successful');
-        } catch (error) {
-          console.log('Auto-play failed, trying again:', error);
-          // Retry after a short delay
-          setTimeout(() => {
-            if (videoRef.current) {
-              videoRef.current.play().catch(e => console.log('Retry failed:', e));
-            }
-          }, 100);
-        }
-      }
-    };
-
-    // Wait for video to load before attempting play
-    const videoElement = videoRef.current;
-    if (videoElement) {
-      // Multiple event listeners for better reliability
-      videoElement.addEventListener('loadeddata', attemptPlay);
-      videoElement.addEventListener('canplay', attemptPlay);
-      videoElement.addEventListener('loadedmetadata', attemptPlay);
-      
-      // Try immediately and after delays
-      setTimeout(attemptPlay, 100);
-      setTimeout(attemptPlay, 500);
-      setTimeout(attemptPlay, 1000);
+    // 1. Precise Clock Timer
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    
+    // 2. Mobile Autoplay Force
+    // React's 'muted' prop can fail on mount; setting it via ref 
+    // guarantees the browser sees it as muted before play() is called.
+    if (videoRef.current) {
+      videoRef.current.muted = true; 
+      videoRef.current.play().catch((err) => {
+        console.warn("Autoplay blocked by browser/battery saver:", err);
+      });
     }
 
-    // Additional play attempts for mobile Chrome
-    const playInterval = setInterval(() => {
-      if (videoRef.current && videoRef.current.paused) {
-        attemptPlay();
-      } else {
-        clearInterval(playInterval);
-      }
-    }, 500);
-
-    // Clear interval after 10 seconds
-    setTimeout(() => clearInterval(playInterval), 10000);
-
-    return () => {
-      clearInterval(timeInterval);
-      clearInterval(playInterval);
-    };
+    return () => clearInterval(timer);
   }, []);
 
-  const handleVideoError = () => {
-    console.log('Video error occurred');
-  };
-
-  // Calculate analog clock hands
-  const hours = time.getHours() % 12;
-  const minutes = time.getMinutes();
   const seconds = time.getSeconds();
-  
-  const hourAngle = (hours * 30) + (minutes * 0.5) - 90;
-  const minuteAngle = (minutes * 6) - 90;
-  const secondAngle = (seconds * 6) - 90;
+  const minutes = time.getMinutes();
+  const hours = time.getHours() % 12;
+
+  const secondAngle = seconds * 6;
+  const minuteAngle = minutes * 6 + seconds * 0.1;
+  const hourAngle = hours * 30 + minutes * 0.5;
+
 
   return (
     <div style={{
-      width: '100vw',
-      height: '100dvh',
-      position: 'relative',
-      backgroundColor: '#000',
-      overflow: 'hidden'
+      width: '100vw', height: '100dvh', position: 'relative',
+      overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      backgroundColor: '#000' // Prevents white flash while video loads
     }}>
-      {/* VR Video */}
+      {/* Background Video */}
       <video
         ref={videoRef}
-        src={vrVideo}
         style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'fill',
-          border: 'none'
+          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+          objectFit: 'fill', opacity: 1.0, zIndex: 1
         }}
         autoPlay
-        muted
         loop
+        muted
         playsInline
         preload="auto"
-        onError={handleVideoError}
-        onLoadStart={() => {
-          // Force play when video starts loading
-          if (videoRef.current) {
-            videoRef.current.play().catch(e => console.log('Load start play failed:', e));
-          }
-        }}
-        onLoadedData={() => {
-          // Force play when data is loaded
-          if (videoRef.current) {
-            videoRef.current.play().catch(e => console.log('Loaded data play failed:', e));
-          }
-        }}
-        onCanPlay={() => {
-          // Force play when video can play
-          if (videoRef.current) {
-            videoRef.current.play().catch(e => console.log('Can play failed:', e));
-          }
-        }}
-        title="VR Video"
-      />
-      
-      {/* 70s Style Analog Clock - Left Side */}
+      >
+        <source src={cocteauVideo} type="video/mp4" />
+      </video>
+
+      {/* 1970s Style Analog Clock - Lower Left Corner */}
       <div style={{
         position: 'absolute',
         bottom: '5%',
         left: '5%',
-        width: 'min(150px, 20vw)',
-        height: 'min(150px, 20vw)',
+        width: 'min(120px, 15vw)',
+        height: 'min(120px, 15vw)',
         zIndex: 10,
         pointerEvents: 'none'
       }}>
-        {/* Clock face with toned down 70s colors including green */}
+        {/* Clock face with 1970s colors - more transparent */}
         <div style={{
           position: 'absolute',
           width: '100%',
           height: '100%',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(200,255,200,0.2) 0%, rgba(150,200,255,0.15) 30%, rgba(255,200,150,0.1) 60%, rgba(200,150,255,0.08) 100%)',
-          border: '2px solid rgba(150,255,150,0.4)',
-          filter: 'blur(2px) brightness(1.1) saturate(1.2)',
-          boxShadow: '0 0 20px rgba(150,255,150,0.5), inset 0 0 15px rgba(200,200,255,0.3), 0 0 10px rgba(255,200,150,0.3)'
+          background: 'radial-gradient(circle, rgba(255,255,200,0.15) 0%, rgba(255,255,150,0.1) 50%, rgba(200,255,200,0.08) 100%)',
+          border: '2px solid rgba(255,255,255,0.25)',
+          filter: 'blur(2px) brightness(1.1)',
+          boxShadow: '0 0 20px rgba(255,255,200,0.2), inset 0 0 15px rgba(200,255,200,0.15)'
         }} />
         
-        {/* Hour hand with toned down colors */}
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '4px',
-          height: '35%',
-          background: 'linear-gradient(45deg, rgba(150,255,150,0.7), rgba(200,200,255,0.6))',
-          transform: `translate(-50%, -100%) rotate(${hourAngle}deg)`,
-          transformOrigin: 'center bottom',
-          filter: 'blur(1.5px) brightness(1.1)',
-          boxShadow: '0 0 6px rgba(150,255,150,0.7), 0 0 3px rgba(200,200,255,0.6)'
-        }} />
-        
-        {/* Minute hand with toned down colors */}
+        {/* Hour hand - simple white - more transparent */}
         <div style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
           width: '3px',
-          height: '45%',
-          background: 'linear-gradient(45deg, rgba(255,220,150,0.7), rgba(200,150,255,0.6))',
+          height: '30%',
+          background: 'rgba(255,255,255,0.5)',
+          transform: `translate(-50%, -100%) rotate(${hourAngle}deg)`,
+          transformOrigin: 'center bottom',
+          filter: 'blur(1.5px)',
+          boxShadow: '0 0 8px rgba(255,255,255,0.4)'
+        }} />
+        
+        {/* Minute hand - simple white - more transparent */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '2px',
+          height: '40%',
+          background: 'rgba(255,255,255,0.5)',
           transform: `translate(-50%, -100%) rotate(${minuteAngle}deg)`,
           transformOrigin: 'center bottom',
-          filter: 'blur(1.5px) brightness(1.1)',
-          boxShadow: '0 0 6px rgba(255,220,150,0.7), 0 0 3px rgba(200,150,255,0.6)'
+          filter: 'blur(1.5px)',
+          boxShadow: '0 0 8px rgba(255,255,255,0.4)'
         }} />
         
-        {/* Second hand with toned down colors */}
+        {/* Second hand - simple green - more transparent */}
         <div style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
-          width: '1.5px',
-          height: '50%',
-          background: 'linear-gradient(45deg, rgba(200,255,200,0.8), rgba(150,200,255,0.7), rgba(255,255,150,0.6))',
+          width: '1px',
+          height: '45%',
+          background: 'rgba(200,255,200,0.4)',
           transform: `translate(-50%, -100%) rotate(${secondAngle}deg)`,
           transformOrigin: 'center bottom',
-          filter: 'blur(1px) brightness(1.2) saturate(1.5)',
-          boxShadow: '0 0 4px rgba(200,255,200,0.8), 0 0 3px rgba(150,200,255,0.7)',
-          animation: 'wobble 2s infinite ease-in-out'
+          filter: 'blur(1px)',
+          boxShadow: '0 0 5px rgba(200,255,200,0.3)'
         }} />
         
-        {/* Center dot with toned down glow */}
+        {/* Center dot - yellow - more transparent */}
         <div style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
-          width: '10px',
-          height: '10px',
-          background: 'radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(200,255,200,0.5) 50%, rgba(150,200,255,0.3) 100%)',
+          width: '8px',
+          height: '8px',
+          background: 'rgba(255,255,200,0.6)',
           borderRadius: '50%',
           transform: 'translate(-50%, -50%)',
-          filter: 'blur(1.5px) brightness(1.1)',
-          boxShadow: '0 0 8px rgba(200,255,200,0.7), 0 0 5px rgba(150,200,255,0.5), 0 0 3px rgba(255,220,150,0.4)'
+          filter: 'blur(1.5px)',
+          boxShadow: '0 0 8px rgba(255,255,200,0.5)'
         }} />
         
-        {/* Toned down 70s animation */}
+        {/* Simple 1970s animation */}
         <style>{`
-          @keyframes wobble {
-            0%, 100% { transform: translate(-50%, -100%) rotate(${secondAngle}deg) scale(1) hue-rotate(0deg); }
-            25% { transform: translate(-50%, -100%) rotate(${secondAngle + 1}deg) scale(1.02) hue-rotate(5deg); }
-            50% { transform: translate(-50%, -100%) rotate(${secondAngle - 1}deg) scale(0.98) hue-rotate(-5deg); }
-            75% { transform: translate(-50%, -100%) rotate(${secondAngle + 0.5}deg) scale(1.01) hue-rotate(2deg); }
+          @keyframes tick {
+            0%, 100% { transform: translate(-50%, -100%) rotate(${secondAngle}deg); }
+            50% { transform: translate(-50%, -100%) rotate(${secondAngle}deg) scale(1.05); }
           }
         `}</style>
       </div>
@@ -223,4 +144,4 @@ const Clock = () => {
   );
 };
 
-export default Clock;
+export default VirtualClock;
