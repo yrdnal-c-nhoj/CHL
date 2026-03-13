@@ -37,8 +37,15 @@ const Clock = () => {
       }
     };
 
-    // Immediate play attempt
-    attemptPlay();
+    // Wait for video to load before attempting play
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      videoElement.addEventListener('loadeddata', attemptPlay);
+      videoElement.addEventListener('canplay', attemptPlay);
+      
+      // Also try immediately
+      setTimeout(attemptPlay, 500);
+    }
 
     // Additional play attempts for mobile Chrome
     const playInterval = setInterval(() => {
@@ -98,7 +105,7 @@ const Clock = () => {
             marginBottom: '2rem',
             fontFamily: 'system-ui, -apple-system, sans-serif'
           }}>
-            Please add vr.mp4 to the assets/images/26-03/26-03-12 folder
+            Please add vr.mp4 to the assets folder
           </div>
           <div style={{
             fontSize: 'clamp(0.8rem, 2vw, 1rem)',
@@ -109,7 +116,7 @@ const Clock = () => {
             borderRadius: '8px',
             textAlign: 'left'
           }}>
-            Place vr.mp4 in: /assets/images/26-03/26-03-12/vr.mp4
+            Place vr.mp4 in: /src/assets/images/26-03/26-03-12/vr.mp4
           </div>
         </div>
       </div>
