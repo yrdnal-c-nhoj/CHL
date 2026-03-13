@@ -3,7 +3,6 @@ import vrVideo from '../../../assets/images/26-03/26-03-12/vr.mp4';
 
 const Clock = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const [videoError, setVideoError] = useState(false);
   const [time, setTime] = useState(new Date());
   const videoRef = useRef(null);
 
@@ -66,7 +65,7 @@ const Clock = () => {
   }, []);
 
   const handleVideoError = () => {
-    setVideoError(true);
+    console.log('Video error occurred');
   };
 
   // Calculate analog clock hands
@@ -77,51 +76,6 @@ const Clock = () => {
   const hourAngle = (hours * 30) + (minutes * 0.5) - 90;
   const minuteAngle = (minutes * 6) - 90;
   const secondAngle = (seconds * 6) - 90;
-
-  if (videoError) {
-    return (
-      <div style={{
-        width: '100vw',
-        height: '100dvh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#000',
-        color: '#fff',
-        textAlign: 'center',
-        padding: '2rem'
-      }}>
-        <div>
-          <div style={{
-            fontSize: 'clamp(1.5rem, 5vw, 3rem)',
-            marginBottom: '1rem',
-            fontFamily: 'system-ui, -apple-system, sans-serif'
-          }}>
-            VR Video Not Found
-          </div>
-          <div style={{
-            fontSize: 'clamp(1rem, 3vw, 1.5rem)',
-            opacity: 0.8,
-            marginBottom: '2rem',
-            fontFamily: 'system-ui, -apple-system, sans-serif'
-          }}>
-            Please add vr.mp4 to the assets folder
-          </div>
-          <div style={{
-            fontSize: 'clamp(0.8rem, 2vw, 1rem)',
-            opacity: 0.6,
-            fontFamily: 'monospace',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            padding: '1rem',
-            borderRadius: '8px',
-            textAlign: 'left'
-          }}>
-            Place vr.mp4 in: /src/assets/images/26-03/26-03-12/vr.mp4
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div style={{
