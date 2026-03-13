@@ -31,34 +31,60 @@ const getBackgroundStyle = (isFlipped) => ({
 });
 
 // --- Sub-Components ---
-const BackgroundLayers = React.memo(() => (
-  <>
-    {/* Third layer - large scaled video that rotates */}
-    <video
-      autoPlay
-      loop
-      muted
-      playsInline
-      style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        width: '150vw',
-        height: '150vh',
-        objectFit: 'cover',
-        opacity: 0.7,
-        zIndex: 0,
-        animation: 'rotate-video 60s linear infinite',
-      }}
-    >
-      <source src={loopVideo} type="video/mp4" />
-    </video>
-    {/* First image - original background */}
-    <div style={getBackgroundStyle(false)} />
-    {/* Second image - flipped background */}
-    <div style={getBackgroundStyle(true)} />
-  </>
-));
+const BackgroundLayers = React.memo(() => {
+  const [videoError, setVideoError] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  
+  const handleVideoError = (e) => {
+    console.error('Video loading error:', e);
+    console.error('Video src:', loopVideo);
+    setVideoError(true);
+  };
+
+  const handleVideoLoad = () => {
+    console.log('Video loaded successfully');
+    setVideoLoaded(true);
+  };
+
+  const handleCanPlay = () => {
+    console.log('Video can play');
+    setVideoLoaded(true);
+  };
+
+  return (
+    <>
+      {/* Third layer - large scaled video that rotates */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        onError={handleVideoError}
+        onLoadStart={handleVideoLoad}
+        onCanPlay={handleCanPlay}
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '150vw',
+          height: '150vh',
+          objectFit: 'cover',
+          opacity: videoError ? 0 : (videoLoaded ? 0.7 : 0),
+          zIndex: 0,
+          animation: videoLoaded ? 'rotate-video 60s linear infinite' : 'none',
+          transition: 'opacity 0.5s ease-in-out',
+        }}
+      >
+        <source src={loopVideo} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      {/* First image - original background */}
+      <div style={getBackgroundStyle(false)} />
+      {/* Second image - flipped background */}
+      <div style={getBackgroundStyle(true)} />
+    </>
+  );
+});
 BackgroundLayers.displayName = 'BackgroundLayers';
 
 const Digit = React.memo(({ char }) => {
