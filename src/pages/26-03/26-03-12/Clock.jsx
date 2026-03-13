@@ -38,24 +38,34 @@ const VirtualClock = () => {
       height: '100dvh', 
       position: 'relative',
       overflow: 'hidden',
-      backgroundColor: '#000', // Prevents white flash while video loads
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
+      backgroundColor: '#000'
     }}>
       <style>{`
         @media (max-width: 768px) {
-          body {
-            -webkit-text-size-adjust: 100%;
-            -webkit-tap-highlight-color: transparent;
-          }
           html, body {
             margin: 0;
             padding: 0;
             height: 100dvh;
             width: 100vw;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
+        }
+        
+        * {
+          -webkit-text-size-adjust: 100%;
+          -webkit-tap-highlight-color: transparent;
+          box-sizing: border-box;
+        }
+        
+        html, body {
+          margin: 0;
+          padding: 0;
+          height: 100dvh;
+          width: 100vw;
+          overflow: hidden;
         }
       `}</style>
       
@@ -64,13 +74,14 @@ const VirtualClock = () => {
         ref={videoRef}
         style={{
           position: 'absolute', 
-          top: 0, 
-          left: 0, 
-          width: '100%', 
-          height: '100%',
+          top: '50%', 
+          left: '50%', 
+          width: '100vw', 
+          height: '100dvh',
           objectFit: 'fill', 
           opacity: 1.0, 
-          zIndex: 1
+          zIndex: 1,
+          transform: 'translate(-50%, -50%)'
         }}
         autoPlay
         loop
