@@ -53,6 +53,7 @@ const RotatingBackground = () => {
   // Smooth rotation of background
   useEffect(() => {
     let startTime = null;
+    let frameId;
 
     const rotate = (timestamp) => {
       if (!startTime) startTime = timestamp;
@@ -63,7 +64,7 @@ const RotatingBackground = () => {
     };
     
     // Start animation loop
-    const frameId = requestAnimationFrame(rotate);
+    frameId = requestAnimationFrame(rotate);
     return () => cancelAnimationFrame(frameId);
   }, []);
 
