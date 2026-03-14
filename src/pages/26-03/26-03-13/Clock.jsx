@@ -66,7 +66,7 @@ const Clock = () => {
     <div
       style={{
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         overflow: 'hidden',
         position: 'relative',
         background: '#000'
@@ -99,15 +99,6 @@ const Clock = () => {
         />
       </div>
 
-      {/* DARK OVERLAY */}
-      <div
-        style={{
-          position:'absolute',
-          inset:0,
-          background:'rgba(0,0,0,.35)',
-          zIndex:1
-        }}
-      />
 
       {/* CLOCK */}
       <div
@@ -131,9 +122,9 @@ const Clock = () => {
           style={{
             fontSize:'clamp(6rem,22vw,20rem)',
             lineHeight:1,
-            fontWeight:'bold',
+            // fontWeight:'bold',
             whiteSpace:'nowrap',
-            background:'linear-gradient(to bottom,#ffffff,#ffd700)',
+            background:'linear-gradient(to bottom,#69EA0D,#ffd700)',
             WebkitBackgroundClip:'text',
             backgroundClip:'text',
             WebkitTextFillColor:'transparent',
@@ -146,10 +137,10 @@ const Clock = () => {
         {/* AM PM */}
         <div
           style={{
-            fontSize:'clamp(2rem,7vw,6rem)',
+            fontSize:'clamp(3rem,9vw,8rem)',
             marginTop:'1rem',
             letterSpacing:'.25em',
-            fontWeight:900,
+            // fontWeight:900,
             background:'linear-gradient(90deg,#ff1493,#00ffff,#ff1493)',
             backgroundSize:'200%',
             WebkitBackgroundClip:'text',
