@@ -162,7 +162,7 @@ const Clock = () => {
           {formatTime(time).split(' ')[0]}
         </div>
         <div style={{
-          fontSize: 'clamp(3rem, 10vw, 8rem)',
+          fontSize: 'clamp(2rem, 6vw, 4rem)',
           textShadow: '3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(255,105,180,0.8), 0 0 60px rgba(0,255,255,0.6), 0 0 90px rgba(255,215,0,0.4), 0 0 120px rgba(138,43,226,0.3)',
           background: 'linear-gradient(90deg, #ff1493, #ff69b4, #ff00ff, #00ffff, #00ff00, #ffff00, #ff4500, #ff1493, #9400d3, #4b0082, #ff1493)',
           WebkitBackgroundClip: 'text',
