@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import veniceFont from '../../../assets/fonts/26-03-13-venice.ttf';
 
 const Clock = () => {
@@ -10,66 +10,6 @@ const Clock = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (date) => {
-    let h = date.getHours();
-    const m = date.getMinutes().toString().padStart(2, '0');
-    const ampm = h >= 12 ? 'P.M.' : 'A.M.';
-    h = h % 12 || 12; // Convert to 12-hour format, 0 becomes 12
-    return `${h}:${m} ${ampm}`;
-  };
-
-  const VideoBackground = useMemo(() => {
-    const videoId = "EO_1LWqsCNE";
-    const src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&cc_load_policy=0&disablekb=1&fs=0&hl=en&enablejsapi=0`;
-
-    return (
-      <div style={{
-        display: 'grid',
-        // Left: fills space | Center: up to 1200px | Right: fills space
-        gridTemplateColumns: '1fr minmax(600px, 1200px) 1fr',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100vw',
-        height: '100vh',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        gap: '20px', // Optional gap between "monitors"
-        padding: '20px',
-        boxSizing: 'border-box',
-        zIndex: 0,
-        backgroundColor: '#000'
-      }}>
-        {/* 1. Left Tile */}
-        <div style={{ height: '50vh', opacity: 0.6 }}>
-          <iframe
-            src={src}
-            title="left-tile"
-            style={{ width: '100%', height: '100%', border: 'none' }}
-          />
-        </div>
-
-        {/* 2. Main Center Tile (The "Hero") */}
-        <div style={{ height: '80vh', boxShadow: '0 0 50px rgba(255, 0, 255, 0.3)' }}>
-          <iframe
-            src={src}
-            title="center-tile"
-            style={{ width: '100%', height: '100%', border: 'none' }}
-          />
-        </div>
-
-        {/* 3. Right Tile */}
-        <div style={{ height: '50vh', opacity: 0.6 }}>
-          <iframe
-            src={src}
-            title="right-tile"
-            style={{ width: '100%', height: '100%', border: 'none' }}
-          />
-        </div>
-      </div>
-    );
-  }, []);
-
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
@@ -78,106 +18,151 @@ const Clock = () => {
         src: url('${veniceFont}') format('truetype');
         font-display: swap;
       }
-      @keyframes venice-rainbow {
-        0%, 100% {
-          background-position: 0% 50%;
-          filter: drop-shadow(0 0 15px rgba(255,105,180,0.8)) drop-shadow(0 0 30px rgba(0,255,255,0.6));
+
+      @keyframes venice-glow {
+        0%,100%{
+          filter: drop-shadow(0 0 20px rgba(255,215,0,.7));
+          transform: scale(1);
         }
-        25% {
-          background-position: 25% 50%;
-          filter: drop-shadow(0 0 20px rgba(255,0,255,0.8)) drop-shadow(0 0 40px rgba(255,215,0,0.6));
-        }
-        50% {
-          background-position: 50% 50%;
-          filter: drop-shadow(0 0 25px rgba(0,255,0,0.8)) drop-shadow(0 0 50px rgba(255,69,0,0.6));
-        }
-        75% {
-          background-position: 75% 50%;
-          filter: drop-shadow(0 0 20px rgba(255,215,0,0.8)) drop-shadow(0 0 40px rgba(138,43,226,0.6));
+        50%{
+          filter: drop-shadow(0 0 40px rgba(0,255,255,.8));
+          transform: scale(1.03);
         }
       }
-      .venice-clock {
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out;
+
+      .venice-clock{
+        opacity:0;
+        transition:opacity 1.2s ease;
       }
-      .venice-clock.loaded {
-        opacity: 1;
+
+      .venice-clock.loaded{
+        opacity:1;
+      }
+
+      .video-background iframe{
+        pointer-events:none;
       }
     `;
     document.head.appendChild(style);
 
-    // Preload the font
-    const font = new FontFace('VeniceFont', `url('${veniceFont}') format('truetype')`);
-    font.load().then(() => {
-      document.fonts.add(font);
-      setFontLoaded(true);
-    }).catch(() => {
-      // Fallback if font fails to load
-      setFontLoaded(true);
-    });
+    document.fonts.ready.then(() => setFontLoaded(true));
 
     return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
+      if (document.head.contains(style)) document.head.removeChild(style);
     };
   }, []);
 
+  const { digits, period } = (() => {
+    let h = time.getHours();
+    const m = time.getMinutes().toString().padStart(2, '0');
+    const ampm = h >= 12 ? 'P.M.' : 'A.M.';
+    h = h % 12 || 12;
+    return { digits: `${h}:${m}`, period: ampm };
+  })();
+
+  const videoId = "EO_1LWqsCNE";
+
   return (
-    <>
-      {VideoBackground}
-      <div className={`venice-clock ${fontLoaded ? 'loaded' : ''}`} style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        fontFamily: 'VeniceFont, monospace',
-        fontSize: 'clamp(3rem, 10vw, 8rem)',
-        color: '#ffffff',
-        textShadow: '2px 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.5)',
-        zIndex: 10,
-        pointerEvents: 'none',
-        userSelect: 'none',
-        WebkitUserSelect: 'none',
-        MozUserSelect: 'none',
-        msUserSelect: 'none',
-        textAlign: 'center',
-        fontWeight: 'bold',
-        letterSpacing: '0.05em',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '0.2em'
-      }}>
-        <div style={{
-          fontSize: 'clamp(3rem, 10vw, 8rem)',
-          textShadow: '3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(255,255,255,0.5), 0 0 60px rgba(255,215,0,0.3)',
-          background: 'linear-gradient(45deg, #ffffff, #ffd700, #ff69b4, #00ffff, #ff1493, #00ff00, #ff4500, #9400d3)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-          filter: 'drop-shadow(0 0 10px rgba(255,215,0,0.5))'
-        }}>
-          {formatTime(time).split(' ')[0]}
-        </div>
-        <div style={{
-          fontSize: 'clamp(2rem, 6vw, 4rem)',
-          textShadow: '3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(255,105,180,0.8), 0 0 60px rgba(0,255,255,0.6), 0 0 90px rgba(255,215,0,0.4), 0 0 120px rgba(138,43,226,0.3)',
-          background: 'linear-gradient(90deg, #ff1493, #ff69b4, #ff00ff, #00ffff, #00ff00, #ffff00, #ff4500, #ff1493, #9400d3, #4b0082, #ff1493)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-          letterSpacing: '0.2em',
-          fontWeight: '900',
-          transform: 'scaleY(1.2)',
-          filter: 'drop-shadow(0 0 15px rgba(255,105,180,0.8)) drop-shadow(0 0 30px rgba(0,255,255,0.6))',
-          animation: 'venice-rainbow 3s ease-in-out infinite'
-        }}>
-          {formatTime(time).split(' ')[1]}
-        </div>
+    <div
+      style={{
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+        position: 'relative',
+        background: '#000'
+      }}
+    >
+
+      {/* VIDEO */}
+      <div
+        className="video-background"
+        style={{
+          position:'absolute',
+          inset:0,
+          zIndex:0,
+          overflow:'hidden'
+        }}
+      >
+        <iframe
+          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0`}
+          title="Venice Beach"
+          frameBorder="0"
+          allow="autoplay; fullscreen"
+          style={{
+            position:'absolute',
+            top:'50%',
+            left:'50%',
+            minWidth:'100%',
+            minHeight:'100%',
+            transform:'translate(-50%,-50%)'
+          }}
+        />
       </div>
-    </>
+
+      {/* DARK OVERLAY */}
+      <div
+        style={{
+          position:'absolute',
+          inset:0,
+          background:'rgba(0,0,0,.35)',
+          zIndex:1
+        }}
+      />
+
+      {/* CLOCK */}
+      <div
+        className={`venice-clock ${fontLoaded ? 'loaded' : ''}`}
+        style={{
+          position:'absolute',
+          inset:0,
+          display:'flex',
+          flexDirection:'column',
+          alignItems:'center',
+          justifyContent:'center',
+          textAlign:'center',
+          fontFamily:'VeniceFont, sans-serif',
+          zIndex:10,
+          pointerEvents:'none'
+        }}
+      >
+
+        {/* DIGITS */}
+        <div
+          style={{
+            fontSize:'clamp(6rem,22vw,20rem)',
+            lineHeight:1,
+            fontWeight:'bold',
+            whiteSpace:'nowrap',
+            background:'linear-gradient(to bottom,#ffffff,#ffd700)',
+            WebkitBackgroundClip:'text',
+            backgroundClip:'text',
+            WebkitTextFillColor:'transparent',
+            animation:'venice-glow 4s ease-in-out infinite'
+          }}
+        >
+          {digits}
+        </div>
+
+        {/* AM PM */}
+        <div
+          style={{
+            fontSize:'clamp(2rem,7vw,6rem)',
+            marginTop:'1rem',
+            letterSpacing:'.25em',
+            fontWeight:900,
+            background:'linear-gradient(90deg,#ff1493,#00ffff,#ff1493)',
+            backgroundSize:'200%',
+            WebkitBackgroundClip:'text',
+            backgroundClip:'text',
+            WebkitTextFillColor:'transparent',
+            animation:'venice-glow 3s ease-in-out infinite'
+          }}
+        >
+          {period}
+        </div>
+
+      </div>
+    </div>
   );
 };
 
