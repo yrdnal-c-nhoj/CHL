@@ -98,3 +98,4 @@ scripts/
 *.pfx
 *.publishsettings
 src/assets/images/26-03/mye.gif
+.vercel
