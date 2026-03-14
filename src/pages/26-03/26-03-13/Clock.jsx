@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import veniceFont from '../../../assets/fonts/26-03-13-venice.ttf';
 
 const Clock = () => {
@@ -18,53 +18,57 @@ const Clock = () => {
     return `${h}:${m} ${ampm}`;
   };
 
-  const createVideoTiles = () => {
-    const tiles = [];
-    const tileWidth = 560;
-    const tileHeight = 315;
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
-    
-    // Calculate center position in pixels
-    const centerPixelX = screenWidth / 2;
-    const centerPixelY = screenHeight / 2;
-    
-    // Calculate how many tiles needed in each direction from center
-    const tilesLeft = Math.ceil(centerPixelX / tileWidth) + 1;
-    const tilesRight = Math.ceil((screenWidth - centerPixelX) / tileWidth) + 1;
-    const tilesUp = Math.ceil(centerPixelY / tileHeight) + 1;
-    const tilesDown = Math.ceil((screenHeight - centerPixelY) / tileHeight) + 1;
-    
-    // Start from center (0,0) and work outward
-    for (let row = -tilesUp; row <= tilesDown; row++) {
-      for (let col = -tilesLeft; col <= tilesRight; col++) {
-        // Calculate position relative to center
-        const x = centerPixelX + (col * tileWidth);
-        const y = centerPixelY + (row * tileHeight);
-        
-        tiles.push(
+  const VideoBackground = useMemo(() => {
+    const videoId = "EO_1LWqsCNE";
+    const src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&cc_load_policy=0&disablekb=1&fs=0&hl=en&enablejsapi=0`;
+
+    return (
+      <div style={{
+        display: 'grid',
+        // Left: fills space | Center: up to 1200px | Right: fills space
+        gridTemplateColumns: '1fr minmax(600px, 1200px) 1fr',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100vw',
+        height: '100vh',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        gap: '20px', // Optional gap between "monitors"
+        padding: '20px',
+        boxSizing: 'border-box',
+        zIndex: 0,
+        backgroundColor: '#000'
+      }}>
+        {/* 1. Left Tile */}
+        <div style={{ height: '50vh', opacity: 0.6 }}>
           <iframe
-            key={`${row}-${col}`}
-            className="video-tile"
-            src="https://www.youtube.com/embed/EO_1LWqsCNE?autoplay=1&mute=1&loop=1&playlist=EO_1LWqsCNE&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&cc_load_policy=0&disablekb=1&fs=0&hl=en&enablejsapi=0"
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            style={{
-              position: 'absolute',
-              top: `${y}px`,
-              left: `${x}px`,
-              width: `${tileWidth}px`,
-              height: `${tileHeight}px`,
-              transform: 'translate(-50%, -50%)', // Center each tile on its position
-            }}
+            src={src}
+            title="left-tile"
+            style={{ width: '100%', height: '100%', border: 'none' }}
           />
-        );
-      }
-    }
-    return tiles;
-  };
+        </div>
+
+        {/* 2. Main Center Tile (The "Hero") */}
+        <div style={{ height: '80vh', boxShadow: '0 0 50px rgba(255, 0, 255, 0.3)' }}>
+          <iframe
+            src={src}
+            title="center-tile"
+            style={{ width: '100%', height: '100%', border: 'none' }}
+          />
+        </div>
+
+        {/* 3. Right Tile */}
+        <div style={{ height: '50vh', opacity: 0.6 }}>
+          <iframe
+            src={src}
+            title="right-tile"
+            style={{ width: '100%', height: '100%', border: 'none' }}
+          />
+        </div>
+      </div>
+    );
+  }, []);
 
   useEffect(() => {
     const style = document.createElement('style');
@@ -99,20 +103,6 @@ const Clock = () => {
       .venice-clock.loaded {
         opacity: 1;
       }
-      .video-tile {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 560px;
-        height: 315px;
-        border: none;
-        outline: none;
-        pointer-events: none;
-        user-select: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-      }
     `;
     document.head.appendChild(style);
 
@@ -134,18 +124,8 @@ const Clock = () => {
   }, []);
 
   return (
-    <div style={{
-      width: '100vw',
-      height: '100vh',
-      margin: 0,
-      padding: 0,
-      overflow: 'hidden',
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      backgroundColor: '#000'
-    }}>
-      {createVideoTiles()}
+    <>
+      {VideoBackground}
       <div className={`venice-clock ${fontLoaded ? 'loaded' : ''}`} style={{
         position: 'absolute',
         top: '50%',
@@ -197,7 +177,7 @@ const Clock = () => {
           {formatTime(time).split(' ')[1]}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
