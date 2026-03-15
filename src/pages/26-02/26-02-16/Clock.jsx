@@ -32,36 +32,55 @@ const getBackgroundStyle = (isFlipped) => ({
 
 // --- Sub-Components ---
 const BackgroundLayers = React.memo(() => {
+  const videoRef = React.useRef(null);
   const [videoError, setVideoError] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   
+
   const handleVideoError = (e) => {
     console.error('Video loading error:', e);
     console.error('Video src:', loopVideo);
     setVideoError(true);
   };
 
-  const handleVideoLoad = () => {
-    console.log('Video loaded successfully');
-    setVideoLoaded(true);
-  };
+  React.useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    let played = false;
+    const playVideo = async () => {
+      if (played) return;
+      played = true;
+      try {
+        await video.play();
+        setVideoLoaded(true);
+      } catch (err) {
+        console.error("Video autoplay was prevented:", err);
+        setVideoError(true);
+      }
+    };
 
-  const handleCanPlay = () => {
-    console.log('Video can play');
-    setVideoLoaded(true);
-  };
+    video.addEventListener('canplay', playVideo);
+
+    // If video is already ready, play it.
+    if (video.readyState >= 4) { // HAVE_ENOUGH_DATA
+      playVideo();
+    }
+
+    return () => {
+      video.removeEventListener('canplay', playVideo);
+    };
+  }, []);
 
   return (
     <>
       {/* Third layer - large scaled video that rotates */}
       <video
+        ref={videoRef}
         autoPlay
         loop
         muted
         playsInline
         onError={handleVideoError}
-        onLoadStart={handleVideoLoad}
-        onCanPlay={handleCanPlay}
         style={{
           position: 'absolute',
           top: '50%',
