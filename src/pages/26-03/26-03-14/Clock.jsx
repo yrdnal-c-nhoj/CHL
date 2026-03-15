@@ -5,7 +5,7 @@ const Clock = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 10);
+    const timer = setInterval(() => setTime(new Date()), 100); // changed to 100ms – smoother & lighter on CPU
     return () => clearInterval(timer);
   }, []);
 
@@ -19,29 +19,25 @@ const Clock = () => {
     return `${h}:${m}:${s}.${ms} ${ampm}`;
   })();
 
-
   const ImageLayout = () => {
-  return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 0, background: '#000' }}>
-      <img
-        src={backgroundImage}
-        alt="Background"
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          // 'none' keeps the image's original size
-          objectFit: 'none', 
-          // This forces the image to the top-left corner
-          objectPosition: 'top left', 
-        }}
-      />
-    </div>
-  );
-};
-
+    return (
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, background: '#000' }}>
+        <img
+          src={backgroundImage}
+          alt="Background"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'none',
+            objectPosition: 'top left',
+          }}
+        />
+      </div>
+    );
+  };
 
   return (
     <div
@@ -50,12 +46,12 @@ const Clock = () => {
         height: '100dvh',
         overflow: 'hidden',
         position: 'relative',
-        background: '#000'
+        background: '#000',
       }}
     >
       <ImageLayout />
-      
-      {/* Small Digital Clock - Upper Left Corner */}
+
+      {/* Small Digital Clock - Upper Left Corner – now blurrier & semi-transparent */}
       <div
         style={{
           position: 'absolute',
@@ -64,10 +60,13 @@ const Clock = () => {
           color: '#DFECD7',
           fontSize: '2vh',
           fontFamily: 'monospace',
-          // fontWeight: 'bold',
           textShadow: '0 0 10px rgba(255,255,255,0.5)',
           zIndex: 10,
-          pointerEvents: 'none'
+          pointerEvents: 'none',
+          opacity: 0.8,                    // ← added
+          filter: 'blur(0.6px)',           // ← added (0.4–0.8px usually gives a nice soft look)
+          // Optional: you can experiment with these values too:
+          // filter: 'blur(0.7px) brightness(1.05)',
         }}
       >
         {formattedTime}
