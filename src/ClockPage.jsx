@@ -35,8 +35,7 @@ const clockModules = import.meta.glob("./pages/**/Clock.jsx");
 // Configuration constants
 const DATE_REGEX = /^\d{2}-\d{2}-\d{2}$/;
 const HEADER_FADE_DELAY = 1500; // 1.5 seconds
-const ASSET_LOAD_DELAY = 500; // 0.5 seconds
-const OVERLAY_FADE_DURATION = 100; // 0.1 seconds
+const OVERLAY_FADE_DURATION = 300; // 0.3 seconds for a smoother fade
 
 /**
  * Custom hook for clock component utilities
@@ -86,15 +85,23 @@ const useAssetPreloader = () => {
     const images = Object.values(module).filter(
       (value) =>
         typeof value === "string" &&
-        /\.(jpg|jpeg|png|webp|gif)$/i.test(value)
+        /\.(jpg|jpeg|png|webp|gif|mp4|webm)$/i.test(value)
     );
 
     const imagePromises = images.map(
       (src) =>
         new Promise((resolve) => {
-          const img = new Image();
-          img.src = src;
-          img.onload = img.onerror = resolve;
+          if (/\.(mp4|webm)$/i.test(src)) {
+            // For videos, we can't use Image(), but the browser will cache them
+            // when the <video> tag with the same src is rendered.
+            // Videos are handled by the video tag's preloading, just resolve.
+            resolve();
+          } else {
+            // Images
+            const img = new Image();
+            img.src = src;
+            img.onload = img.onerror = resolve;
+          }
         })
     );
 
@@ -149,7 +156,6 @@ const ClockPage = () => {
   const [isReady, setIsReady] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(true);
   const [headerOpacity, setHeaderOpacity] = useState(1);
-  const [allAssetsLoaded, setAllAssetsLoaded] = useState(false);
 
   // Memoized normalized date
   const normalizedDate = useMemo(() => 
@@ -224,11 +230,8 @@ const ClockPage = () => {
         setClockComponent(() => Component);
         setIsReady(true);
 
-        // Allow extra time for internal component loading
-        setTimeout(() => {
-          setAllAssetsLoaded(true);
-          setTimeout(() => setOverlayVisible(false), OVERLAY_FADE_DURATION);
-        }, ASSET_LOAD_DELAY);
+        // Assets are preloaded, fade out the overlay
+        setTimeout(() => setOverlayVisible(false), OVERLAY_FADE_DURATION);
 
       } catch (error) {
         console.error("Failed to load clock:", error);
@@ -285,7 +288,7 @@ const ClockPage = () => {
 
   return (
     <div 
-      className={`${styles.container} ${allAssetsLoaded ? styles.loaded : ''}`} 
+      className={`${styles.container} ${isReady ? styles.loaded : ''}`} 
       style={{ 
         width: "100vw", 
         height: "100vh",
@@ -297,7 +300,7 @@ const ClockPage = () => {
       }}
     >
       {/* Header with fade animation */}
-      {allAssetsLoaded && (
+      {isReady && (
         <div
           style={{
             opacity: headerOpacity,
@@ -315,7 +318,7 @@ const ClockPage = () => {
       )}
 
       {/* Clock component without animation */}
-      {allAssetsLoaded && ClockComponent && (
+      {isReady && ClockComponent && (
         <div style={{ 
           width: "100%", 
           height: "100vh", // Full viewport height
@@ -340,7 +343,7 @@ const ClockPage = () => {
       )}
 
       {/* Navigation component */}
-      {allAssetsLoaded && ClockComponent && (
+      {isReady && ClockComponent && (
         <ClockPageNav
           prevItem={navigationItems.prevItem}
           nextItem={navigationItems.nextItem}
@@ -361,7 +364,7 @@ const ClockPage = () => {
           zIndex: 9999,
           pointerEvents: "none",
           opacity: overlayVisible ? 1 : 0,
-          transition: "opacity 0.5s ease-out",
+          transition: `opacity ${OVERLAY_FADE_DURATION}ms ease-out`,
         }}
       />
 
