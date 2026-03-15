@@ -59,7 +59,7 @@ const Clock = () => {
       <div
         style={{
           position: 'absolute',
-          top: '20vh',
+          top: '5px',
           left: '20px',
           color: '#DFECD7',
           fontSize: '2vh',
