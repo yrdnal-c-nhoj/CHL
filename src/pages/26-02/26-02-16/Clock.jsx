@@ -140,10 +140,21 @@ const DigitalClock = () => {
     };
   }, []);
 
-  // 2. Clock tick — updates once per second via setInterval
+  // 2. Clock tick — efficient updates via requestAnimationFrame
   useEffect(() => {
-    const id = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(id);
+    let frameId;
+    const lastSecondRef = React.useRef(null);
+
+    const tick = () => {
+      const now = new Date();
+      if (now.getSeconds() !== lastSecondRef.current) {
+        setTime(now);
+        lastSecondRef.current = now.getSeconds();
+      }
+      frameId = requestAnimationFrame(tick);
+    };
+    tick();
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   // 3. Time Formatting
@@ -207,6 +218,9 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    // Respect safe areas (notches/home bars) from template
+    padding: 'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
+    boxSizing: 'border-box',
   },
   digitalContainer: {
     position: 'relative',
