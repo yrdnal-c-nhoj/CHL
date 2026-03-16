@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useLayoutEffect, useMemo, useCallback, useRef } from "react";
-// Assuming these imports are correct and available in your environment
+import React, { useEffect, useState, useMemo, useRef } from "react";
+
 import fontClockUrl_20251126 from '../../../assets/fonts/25-11-25-ntp.ttf?url';
 import marqueeFontUrl from '../../../assets/fonts/25-11-25-n2.ttf?url';
 import backgroundImg from "../../../assets/images/25-11/25-11-25/npt.webp";
+import { useMultipleFontLoader } from "../../../utils/fontLoader";
 
 // --- Constants (Keep as is) ---
 const NTP_EPOCH_OFFSET = 2208988800;
@@ -75,39 +76,28 @@ const generateDigitColors = (numDigits) => {
 // --- Component ---
 export default function NtpClock() {
   const { offset, isSynced } = useNtpOffset();
+  
+  // Modernization: Use centralized font loader instead of manual DOM injection
+  // This handles caching, prevent FOUC, and cleans up the component body
+  const fontsReady = useMultipleFontLoader(useMemo(() => [
+    { 
+      fontFamily: 'ClockFont', 
+      fontUrl: fontClockUrl_20251126,
+      options: { display: 'swap' }
+    },
+    { 
+      fontFamily: 'MarqueeFont', 
+      fontUrl: marqueeFontUrl,
+      options: { display: 'swap' }
+    }
+  ], []));
+
   const [ntpSeconds, setNtpSeconds] = useState(0);
   const [digitColors, setDigitColors] = useState([]);
   const [marqueePos, setMarqueePos] = useState(0);
   // displayTime shows local time for the marquee text
   const [displayTime, setDisplayTime] = useState(new Date().toLocaleString([], { timeZoneName: 'short' }));
   const marqueeRef = useRef(null);
-
-  // --- Font Loading (Keep as is) ---
-  useLayoutEffect(() => {
-    const fontFace = `
-      @font-face {
-        font-family: 'ClockFont';
-        src: url('${fontClockUrl_20251126}') format('woff2');
-        font-style: normal;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'MarqueeFont';
-        src: url('${marqueeFontUrl}') format('truetype');
-        font-style: normal;
-        font-display: swap;
-      }
-    `;
-    const styleEl = document.createElement("style");
-    styleEl.id = "dynamic-fonts";
-    styleEl.innerHTML = fontFace;
-    document.head.appendChild(styleEl);
-    return () => {
-      const existingEl = document.getElementById("dynamic-fonts");
-      if (existingEl) document.head.removeChild(existingEl);
-    };
-  }, []);
-
 
   // --- **Core Change 1 & 2: Update Time & Colors Every Second** ---
   useEffect(() => {
@@ -218,6 +208,11 @@ export default function NtpClock() {
   // Although you're not rendering the hands, the angles are still calculated.
   // We'll keep this as it doesn't hurt performance much.
   const { secAngle, minAngle, hourAngle } = useMemo(() => calculateClockAngles(ntpSeconds), [ntpSeconds]);
+
+  // Optional: Return simplified loader or null if fonts aren't critical
+  // In this design, fallback fonts are handled by CSS, so we render anyway.
+  // If exact fonts are critical, uncomment below:
+  // if (!fontsReady) return null;
 
   return (
     <div style={wrapperStyle}>
