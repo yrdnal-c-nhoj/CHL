@@ -113,13 +113,13 @@ const rowStyle = {
 
 const baseDigitStyle = {
   display: 'inline-block',
-  color: 'white',
+  color: '#DCD0AD',
   textAlign: 'center',
   pointerEvents: 'none', // Prevents interaction from breaking the immersion
   textShadow: `
-    0 0 10px rgba(255, 255, 255, 0.3),
-    0.2vh 0.2vh 0.4vh rgba(255, 20, 147, 0.3),
-    -0.2vh -0.2vh 0.4vh rgba(50, 205, 50, 0.3)
+    0 0 10px rgb(251, 249, 249),
+    0.2vh 0.2vh 0.4vh rgba(100, 9, 58, 0.63),
+    -0.2vh -0.2vh 0.4vh rgba(50, 205, 50, 0.45)
   `,
   willChange: 'transform' // Optimizes performance for constant motion
 }

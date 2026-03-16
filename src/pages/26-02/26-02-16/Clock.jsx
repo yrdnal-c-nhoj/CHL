@@ -121,6 +121,7 @@ Digit.displayName = 'Digit';
 // --- Main Component ---
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
+  const lastSecondRef = React.useRef(null);
 
   // 1. Font Loading via CSS injection to prevent FOUC
   useEffect(() => {
@@ -143,7 +144,6 @@ const DigitalClock = () => {
   // 2. Clock tick — efficient updates via requestAnimationFrame
   useEffect(() => {
     let frameId;
-    const lastSecondRef = React.useRef(null);
 
     const tick = () => {
       const now = new Date();

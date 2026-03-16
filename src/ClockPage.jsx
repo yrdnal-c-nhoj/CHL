@@ -108,21 +108,20 @@ const useAssetPreloader = () => {
     // Helper to avoid hanging forever on fonts.ready
     const fontPromise = (() => {
       try {
-        if (typeof document !== "undefined" && document.fonts && document.fonts.ready) {
+        // Modern browser check with safety
+        if (typeof document !== "undefined" && 'fonts' in document) {
           return new Promise((resolve) => {
-            let settled = false;
-            const done = () => {
-              if (!settled) {
-                settled = true;
-                resolve();
-              }
-            };
-            document.fonts.ready.then(done).catch(done);
-            // Hard timeout to prevent blank screens on buggy mobile browsers
-            setTimeout(done, 2000);
-          });
-        }
-      } catch {
+            // Use the promise, but don't let it block indefinitely
+            document.fonts.ready
+              .then(() => resolve())
+                   .catch(() => resolve()); // Fail open
+          
+          // Hard timeout to prevent blank screens on buggy mobile browsers
+          setTimeout(resolve, 2000);
+        });
+      }
+    } catch {
+
         // ignore and fall through to resolved promise
       }
       return Promise.resolve();
