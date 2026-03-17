@@ -35,7 +35,7 @@ const Clock = () => {
       ETag: '45b6-834-49130cc1182c0'<br/>
       Plus Ars Citius Omni Tempore Nam Quisque*<br/>
      Connection: close<br/>
-      *More Art Faster FOr Everybody All The Time<br/>
+      *More Art Faster For Everybody All The Time<br/>
       Content-Type: text/html<br/>`;
 
     let i = 0;
