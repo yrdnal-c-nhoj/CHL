@@ -64,7 +64,7 @@ const Clock = () => {
 const styles = {
   container: {
     minHeight: '100dvh',
-    background: 'radial-gradient(circle at center, rgba(221, 131, 131, 0) 0%, rgba(221, 131, 131, 0.8) 50%, rgba(0, 0, 0, 0.9) 100%)',
+    background: 'radial-gradient(circle at center, rgba(221, 131, 131, 0) 0%, rgba(221, 131, 131, 0.4) 90%, rgba(0, 0, 0, 0.41) 100%)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
