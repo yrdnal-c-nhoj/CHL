@@ -17,7 +17,7 @@ const Clock = () => {
     
     return {
       digits: [h[0], h[1], m[0], m[1], s[0], s[1]],
-      rotation: (time.getSeconds() / 60) * 360,
+      rotation: -(time.getSeconds() / 60) * 360,
     };
   }, [time]);
 
@@ -28,7 +28,7 @@ const Clock = () => {
         <filter id="deep-shadow" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blur" />
           <feOffset dx="0" dy="0" result="offsetBlur" />
-          <feFlood floodColor="rgba(0,0,0,1)" result="color" />
+          <feFlood floodColor="#FF69B4" result="color" />
           <feComposite in="color" in2="offsetBlur" operator="in" result="shadow" />
           
           {/* Layering for extreme length and darkness */}
@@ -64,12 +64,12 @@ const Clock = () => {
 const styles = {
   container: {
     minHeight: '100dvh',
-    background: 'radial-gradient(circle at center, rgba(221, 131, 131, 0) 0%, rgba(221, 131, 131, 0.4) 90%, rgba(0, 0, 0, 0.41) 100%)',
+    background: 'radial-gradient(circle at center, #D3AEE7 0%, #CA79A1 30%, #A5DEDF 60%, #DCE77A 80%, #D4A64A 100%)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    border: '5px solid #000',
+    border: '25px solid #FF1493',
     boxSizing: 'border-box',
   },
   wrapper: {
@@ -86,7 +86,7 @@ const styles = {
   },
   text: {
     fontFamily: '"26-03-15-shadow", "Avant Garde", "Century Gothic", sans-serif',
-    color: '#DD8383',
+    color: '#1C0210',
     fontSize: '36vw',
     margin: 0,
     filter: 'url(#deep-shadow)', // Applying the SVG filter here
