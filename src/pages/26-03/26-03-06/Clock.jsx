@@ -34,8 +34,8 @@ const RocketGrid = () => {
   }, []);
 
   // Adjusted for large, full-view rockets
-  const rows = 22; 
-  const cols = 15;
+  const rows = 28; // Increased from 22
+  const cols = 20; // Increased from 15
 
   return (
     <div style={containerStyle}>
@@ -103,7 +103,7 @@ const containerStyle = {
 
 const gridWrapperStyle = {
   position: 'absolute',
-  inset: '-150px', 
+  inset: '-100px', // Reduced inset for bigger rockets
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -121,8 +121,8 @@ const rowStyle = {
 };
 
 const cellStyle = {
-  width: '100px',  // Explicit size of the "box"
-  height: '100px',
+  width: '150px', // Increased from 100px for bigger rockets
+  height: '150px', // Increased from 100px for bigger rockets
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -131,8 +131,8 @@ const cellStyle = {
 
 const clockWrapperStyle = {
   position: 'relative',
-  width: '450px',
-  height: '450px',
+  width: '600px', // Increased from 450px
+  height: '600px', // Increased from 450px
   zIndex: 10,
   filter: 'drop-shadow(0 0 40px rgb(0, 0, 0))'
 };
