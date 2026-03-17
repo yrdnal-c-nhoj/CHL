@@ -1,68 +1,54 @@
-import React, { useMemo } from 'react'
-import { useClock } from '../../../hooks/useClock'
-import { useMultipleFontLoader } from '../../../utils/fontLoader'
+import React, { useState, useEffect, useMemo } from 'react'
+import { useFontLoader } from '../../../utils/fontLoader'
 import bgImage from '../../../assets/images/25-12/25-12-13/roc.webp' 
 import fontFile from '../../../assets/fonts/25-12-13-cherub.ttf?url'; 
 
-// --- Configuration ---
-const CONFIG = {
-  fontFamily: 'RococoFont',
-  bgImage: bgImage,
-  // Animation tweaks
-  minDuration: 8,
-  maxDuration: 14,
-  floatIntensityX: 3, // vw
-  floatIntensityY: 4, // vh
-  rotateIntensity: 15, // deg
-};
-
-// --- Helper: Generate consistent random config for digits ---
-const generateDigitConfig = (index) => ({
-  duration: CONFIG.minDuration + Math.random() * (CONFIG.maxDuration - CONFIG.minDuration), 
-  delay: Math.random() * -10,
-  rangeX: 2 + Math.random() * CONFIG.floatIntensityX, 
-  rangeY: 3 + Math.random() * CONFIG.floatIntensityY,
-  rotate: 5 + Math.random() * CONFIG.rotateIntensity,
-  scale: 1.05 + Math.random() * 0.1
-});
-
 export default function RococoClock() {
-  // 1. Standardized Hooks
-  const { now } = useClock(1000);
-  
-  // 2. Standardized Font Loading
-  const fontsLoaded = useMultipleFontLoader(useMemo(() => [{
-    fontFamily: CONFIG.fontFamily,
-    fontUrl: fontFile,
-    options: { display: 'swap' }
-  }], []));
+  const [now, setNow] = useState(new Date())
+  const fontFamily = 'RococoFont'
+  const fontLoaded = useFontLoader(fontFamily, fontFile, { fallback: true, timeout: 3500 })
 
-  // 3. Memoized Calculations
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  // Graceful configuration
   const digitConfigs = useMemo(() => {
-    return Array.from({ length: 6 }).map((_, i) => generateDigitConfig(i));
-  }, []); // Run once on mount
+    return Array.from({ length: 6 }).map((_, i) => ({
+      // Much slower: 8 to 14 seconds per loop
+      duration: 8 + Math.random() * 6, 
+      delay: Math.random() * -10,
+      // Subtle drift
+      rangeX: 2 + Math.random() * 3, 
+      rangeY: 3 + Math.random() * 4,
+      rotate: 5 + Math.random() * 15,
+      scale: 1.05 + Math.random() * 0.1,
+      // Responsive font sizes using clamp(min, preferred, max)
+      // This ensures text is never too small on mobile or too huge on 4k
+      fontSize: i >= 4 ? 'clamp(4rem, 8vh, 12vh)' : 'clamp(6rem, 15vh, 25vh)'
+    }))
+  }, [])
 
-  // Time processing
-  const hours = now.getHours();
-  const displayHours = hours % 12 === 0 ? 12 : hours % 12;
-  const hourDigits = displayHours.toString().split('');
-  const minuteDigits = now.getMinutes().toString().padStart(2, '0').split('');
-  const ampmDigits = (hours >= 12 ? 'pm' : 'am').split('');
-  const allChars = [...hourDigits, ...minuteDigits, ...ampmDigits];
+  const hours = now.getHours()
+  const displayHours = hours % 12 === 0 ? 12 : hours % 12
+  const hourDigits = displayHours.toString().split('')
+  const minuteDigits = now.getMinutes().toString().padStart(2, '0').split('')
+  const ampmDigits = (hours >= 12 ? 'pm' : 'am').split('')
+  const allChars = [...hourDigits, ...minuteDigits, ...ampmDigits]
 
   return (
-    <div style={{ ...containerStyle, opacity: fontsLoaded ? 1 : 0, transition: 'opacity 0.4s ease' }}>
-      {/* In a pure CSS Module world, this <style> would be in a .module.css file */}
+    <div style={{ ...containerStyle, opacity: fontLoaded ? 1 : 0, transition: 'opacity 0.4s ease' }}>
       <style>
         {`
           @keyframes rococoFloat {
             0%, 100% { 
               transform: translate(0, 0) rotate(0deg) scale(1); 
             }
-            33% {
+            33% { 
               transform: translate(var(--rx), var(--ry)) rotate(var(--rot)) scale(var(--sc)); 
             }
-            66% {
+            66% { 
               transform: translate(calc(var(--rx) * -0.8), calc(var(--ry) * 1.2)) rotate(calc(var(--rot) * -0.5)) scale(0.95); 
             }
           }
@@ -71,21 +57,14 @@ export default function RococoClock() {
 
       <div style={rowStyle}>
         {allChars.map((char, i) => {
-          const config = digitConfigs[i];
-          
-          // Dynamic styling logic that handles single-digit hours (5 chars) vs double (6 chars)
-          const isAmpm = i >= allChars.length - 2;
-          const isHour = i < hourDigits.length;
-          const fontSize = isAmpm ? 'clamp(4rem, 8vh, 12vh)' : 'clamp(6rem, 15vh, 25vh)';
-          const zIndex = isHour ? 30 : isAmpm ? 5 : 15;
-
+          const config = digitConfigs[i]
           return (
             <div
               key={i}
               style={{
                 ...baseDigitStyle,
-                fontFamily: fontsLoaded ? `'${CONFIG.fontFamily}', serif` : 'serif',
-                fontSize: fontSize,
+                fontFamily: fontLoaded ? `'${fontFamily}', serif` : 'serif',
+                fontSize: config.fontSize,
                 // Using a "slow-in, slow-out" bezier curve for gracefulness
                 animation: `rococoFloat ${config.duration}s infinite cubic-bezier(0.45, 0, 0.55, 1)`,
                 animationDelay: `${config.delay}s`,
@@ -93,19 +72,19 @@ export default function RococoClock() {
                 '--ry': `${config.rangeY}vh`,
                 '--rot': `${config.rotate}deg`,
                 '--sc': config.scale,
-                zIndex: zIndex,
+                zIndex: i < 2 ? 30 : i >= 4 ? 5 : 15,
                 // Soft entry to avoid a "pop" on load
-                opacity: fontsLoaded ? 1 : 0,
+                opacity: fontLoaded ? 1 : 0,
                 transition: 'opacity 2s ease-in'
               }}
             >
               {char}
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
+  )
 }
 
 const containerStyle = {
@@ -114,7 +93,7 @@ const containerStyle = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center', // Centered looks more graceful on various screen sizes
-  backgroundImage: `url(${CONFIG.bgImage})`,
+  backgroundImage: `url(${bgImage})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundColor: '#000',
@@ -134,13 +113,13 @@ const rowStyle = {
 
 const baseDigitStyle = {
   display: 'inline-block',
-  color: '#DCD0AD',
+  color: '#F3DBCF',
   textAlign: 'center',
   pointerEvents: 'none', // Prevents interaction from breaking the immersion
   textShadow: `
-    0 0 10px rgb(251, 249, 249),
-    0.2vh 0.2vh 0.4vh rgba(100, 9, 58, 0.63),
-    -0.2vh -0.2vh 0.4vh rgba(50, 205, 50, 0.45)
+    0 0 10px rgba(255, 255, 255, 0.3),
+    0.2vh 0.2vh 0.4vh rgba(255, 20, 147, 0.3),
+    -0.2vh -0.2vh 0.4vh rgba(50, 205, 50, 0.3)
   `,
   willChange: 'transform' // Optimizes performance for constant motion
 }
