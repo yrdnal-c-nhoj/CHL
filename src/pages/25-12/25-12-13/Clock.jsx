@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { useFontLoader } from '../../../utils/fontLoader'
-import bgImage from '../../../assets/images/25-12/25-12-13/roc.webp' 
+import { useFontLoader } from '../../../utils/fontLoader' // This should be useMultipleFontLoader
+import bgImage from '../../../assets/images/25-12/25-12-13/roc.webp'
 import fontFile from '../../../assets/fonts/25-12-13-cherub.ttf?url'; 
 
 export default function RococoClock() {

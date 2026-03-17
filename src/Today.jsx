@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import Header from './components/Header';
@@ -40,6 +40,12 @@ const formatDate = (dateStr) => {
 };
 const normalizeDate = (d) => d.split('-').map((n) => n.padStart(2, '0')).join('-');
 
+const parseDateVal = (dateStr) => {
+  if (!dateStr) return 0;
+  const [yy, mm, dd] = dateStr.split('-').map(Number);
+  return new Date(2000 + yy, mm - 1, dd).getTime();
+};
+
 const getTodayDate = () => {
   const now = new Date();
   const yy = String(now.getFullYear()).slice(-2);
@@ -48,76 +54,125 @@ const getTodayDate = () => {
   return `${yy}-${mm}-${dd}`;
 };
 
+/**
+ * Custom hook for asset preloading (mirrors ClockPage.jsx logic)
+ */
+const useAssetPreloader = () => {
+  const preloadAssets = useCallback(async (module) => {
+    // Preload images exported from module
+    const images = Object.values(module).filter(
+      (value) =>
+        typeof value === "string" &&
+        /\.(jpg|jpeg|png|webp|gif|mp4|webm)$/i.test(value)
+    );
+
+    const imagePromises = images.map(
+      (src) =>
+        new Promise((resolve) => {
+          if (/\.(mp4|webm)$/i.test(src)) {
+            resolve();
+          } else {
+            const img = new Image();
+            img.src = src;
+            img.onload = img.onerror = resolve;
+          }
+        })
+    );
+
+    // Helper to avoid hanging forever on fonts.ready
+    const fontPromise = (() => {
+      try {
+        if (typeof document !== "undefined" && 'fonts' in document) {
+          return new Promise((resolve) => {
+            document.fonts.ready
+              .then(() => resolve())
+              .catch(() => resolve());
+            setTimeout(resolve, 2000);
+          });
+        }
+      } catch {
+        // ignore
+      }
+      return Promise.resolve();
+    })();
+
+    await Promise.all([
+      ...imagePromises,
+      fontPromise,
+    ]);
+
+    return true;
+  }, []);
+
+  return { preloadAssets };
+};
+
 const TodayClockPage = () => {
   const { items, loading, error } = useContext(DataContext);
+  const { preloadAssets } = useAssetPreloader();
 
+  // State management aligned with ClockPage.jsx for consistency
   const [ClockComponent, setClockComponent] = useState(null);
   const [pageError, setPageError] = useState(null);
   const [currentItem, setCurrentItem] = useState(null);
-  const [footerVisible, setFooterVisible] = useState(true);
   const [headerVisible, setHeaderVisible] = useState(true);
+  const [isReady, setIsReady] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(true);
+
+  const OVERLAY_FADE_DURATION = 300;
 
   // -------------------------------
   // Load today's clock
   // -------------------------------
   useEffect(() => {
-    if (loading || !items || items.length === 0) return;
+    const loadClock = async () => {
+      if (loading) return;
 
-    const today = getTodayDate();
-    let item = items.find((i) => normalizeDate(i.date) === normalizeDate(today));
+      try {
+        if (!items || items.length === 0) {
+          throw new Error("No clock data is available.");
+        }
 
-    if (!item) {
-      const sortedItems = [...items].sort((a, b) => new Date(a.date) - new Date(b.date));
-      item = sortedItems[sortedItems.length - 1];
-    }
+        const today = getTodayDate();
+        const todayVal = parseDateVal(today);
 
-    if (!item || !item.path) {
-      setPageError(`Clock path missing for date: ${item?.date || 'N/A'}`);
-      setClockComponent(null);
-      return;
-    }
+        // Sort items descending by date (newest first)
+        const sortedItems = [...items].sort((a, b) => parseDateVal(b.date) - parseDateVal(a.date));
 
-    setPageError(null);
-    setCurrentItem(item);
-    setClockComponent(null);
+        // Find the first item that is today or past AND has a valid component file
+        let item = sortedItems.find((i) => parseDateVal(i.date) <= todayVal && getClockModuleKey(i));
 
-    const key = getClockModuleKey(item);
-    if (key && clockModules[key]) {
-      clockModules[key]()
-        .then((mod) => setClockComponent(() => mod.default))
-        .catch((err) => setPageError(`Failed to load clock for ${item.date}: ${err.message}`));
-    } else {
-      setPageError(`No clock found for date: ${item.date}`);
-    }
-  }, [items, loading]);
+        // Fallback: If no past/today clock found, find the newest available valid clock anywhere
+        if (!item) item = sortedItems.find((i) => getClockModuleKey(i));
 
-  // -------------------------------
-  // Auto-hide footer after inactivity
-  // -------------------------------
-  useEffect(() => {
-    const footerFadeMs = 3000; // slightly longer for better UX
-    let footerTimer;
-    const resetTimer = () => {
-      setFooterVisible(true);
-      clearTimeout(footerTimer);
-      footerTimer = setTimeout(() => setFooterVisible(false), footerFadeMs);
+        if (!item) throw new Error("No valid clock components found.");
+
+        setCurrentItem(item);
+
+        const key = getClockModuleKey(item);
+
+        const mod = await clockModules[key]();
+        
+        // Preload assets to prevent FOUC/black screens on load
+        await preloadAssets(mod);
+
+        setClockComponent(() => mod.default);
+        setIsReady(true);
+      } catch (err) {
+        setPageError(err.message || "Failed to load clock");
+      } finally {
+        setTimeout(() => setOverlayVisible(false), OVERLAY_FADE_DURATION);
+      }
     };
-    resetTimer();
-    window.addEventListener('mousemove', resetTimer);
-    window.addEventListener('touchstart', resetTimer);
-    return () => {
-      clearTimeout(footerTimer);
-      window.removeEventListener('mousemove', resetTimer);
-      window.removeEventListener('touchstart', resetTimer);
-    };
-  }, []);
+
+    loadClock();
+  }, [items, loading, preloadAssets]);
 
   // -------------------------------
   // Auto-hide header shortly after load
   // -------------------------------
   useEffect(() => {
-    setHeaderVisible(true);
-    const headerTimer = setTimeout(() => setHeaderVisible(false), 1500); // slightly longer for visibility
+    const headerTimer = setTimeout(() => setHeaderVisible(false), 1500);
     return () => clearTimeout(headerTimer);
   }, []);
 
@@ -132,55 +187,42 @@ const TodayClockPage = () => {
   // -------------------------------
   // Navigation
   // -------------------------------
-  const currentIndex = currentItem
-    ? items.findIndex((i) => normalizeDate(i.date) === normalizeDate(currentItem.date))
-    : -1;
-  const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
-  const nextItem = currentIndex >= 0 && currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
-
-  // -------------------------------
-  // Loading & error states
-  // -------------------------------
-  if (loading) return <div className={styles.loading}>Loading data...</div>;
-  if (error || pageError) {
-    return (
-      <div className={styles.container}>
-        <Header visible={headerVisible} />
-        <div className={styles.content}>
-          <div className={styles.sheet}>
-            <div className={styles.error}>{error || pageError}</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!currentItem) {
-    return (
-      <div className={styles.container}>
-        <Header visible={headerVisible} />
-        <div className={styles.content}>
-          <div className={styles.sheet}>
-            <div className={styles.error}>No valid clock found.</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const currentIndex = useMemo(() => 
+    currentItem ? items.findIndex((i) => normalizeDate(i.date) === normalizeDate(currentItem.date)) : -1,
+    [currentItem, items]
+  );
+  const prevItem = useMemo(() => currentIndex > 0 ? items[currentIndex - 1] : null, [items, currentIndex]);
+  const nextItem = useMemo(() => currentIndex >= 0 && currentIndex < items.length - 1 ? items[currentIndex + 1] : null, [items, currentIndex]);
 
   // -------------------------------
   // Render
   // -------------------------------
   return (
     <div
-      className={styles.container}
-      style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}
+      className={`${styles.container} ${styles.loaded}`}
+      style={{ width: '100vw', height: '100vh', overflow: 'hidden', backgroundColor: '#000' }}
     >
-      <Header visible={headerVisible} />
-      <div className={styles.content}>
-        {ClockComponent ? (
+      {isReady && <Header visible={headerVisible} />}
+      
+      <div className={styles.content} style={{ position: 'relative', zIndex: 10000, color: '#fff', textAlign: 'center', paddingTop: '40vh' }}>
+        {loading && <div className={styles.loading}>Loading data...</div>}
+        
+        {error || pageError ? (
+          <div className={styles.sheet}><div className={styles.error}>{error || pageError}</div></div>
+        ) : isReady && ClockComponent ? (
+          /* Reset positioning for the clock component */
           <div
             style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100vh',
+              zIndex: 1, /* Below the overlay logic if needed, but above background */
+              backgroundColor: '#000'
+            }}
+          >
+            <div style={{
               all: 'initial',
               fontFamily: 'CustomFont, system-ui, sans-serif',
               display: 'block',
@@ -189,18 +231,37 @@ const TodayClockPage = () => {
             }}
           >
             <ClockComponent />
+            </div>
           </div>
         ) : (
-          <div className={styles.loading}>Loading clock...</div>
+          !loading && <div className={styles.loading}>Finding today's clock...</div>
         )}
       </div>
 
-      <ClockPageNav
-        prevItem={prevItem}
-        nextItem={nextItem}
-        currentItem={currentItem}
-        formatTitle={formatTitle}
-        formatDate={formatDate}
+      {isReady && currentItem && (
+        <ClockPageNav
+          prevItem={prevItem}
+          nextItem={nextItem}
+          currentItem={currentItem}
+          items={items}
+          formatTitle={formatTitle}
+          formatDate={formatDate}
+        />
+      )}
+
+      {/* Loading overlay */}
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          width: "100vw",
+          height: "100vh",
+          backgroundColor: "#000",
+          zIndex: 9999,
+          pointerEvents: "none",
+          opacity: overlayVisible ? 1 : 0,
+          transition: `opacity ${OVERLAY_FADE_DURATION}ms ease-out`,
+        }}
       />
     </div>
   );
