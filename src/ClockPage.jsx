@@ -329,7 +329,6 @@ const ClockPage = () => {
           <div
             style={{
               all: "initial",
-              fontFamily: "CustomFont, system-ui, sans-serif",
               display: "block",
               width: "100%",
               height: "100%", // Fill full viewport

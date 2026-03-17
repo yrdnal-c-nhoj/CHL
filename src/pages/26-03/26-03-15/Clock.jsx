@@ -42,7 +42,7 @@ const Clock = () => {
         </filter>
       </svg>
 
-      <div style={styles.container}>
+      <div className="clock-26-03-15" style={styles.container}>
         <div style={styles.wrapper}>
           {digits.map((digit, i) => (
             <div 
