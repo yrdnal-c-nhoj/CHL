@@ -118,8 +118,8 @@ const baseDigitStyle = {
   pointerEvents: 'none', // Prevents interaction from breaking the immersion
   textShadow: `
     0 0 10px rgba(255, 255, 255, 0.77),
-    0.2vh 0.2vh 0.4vh rgba(255, 20, 145, 0.68),
-    -0.2vh -0.2vh 0.4vh rgba(50, 205, 50, 0.3)
+    0.2vh 0.2vh 0.4vh rgba(169, 19, 99, 0.81),
+    -0.2vh -0.2vh 0.4vh rgba(50, 205, 50, 0.72)
   `,
   willChange: 'transform' // Optimizes performance for constant motion
 }
