@@ -344,5 +344,6 @@
   { "path": "26-03-12", "date": "26-03-12", "title": "Virtual"},
   { "path": "26-03-13", "date": "26-03-13", "title": "Boardwalk" },
   { "path": "26-03-14", "date": "26-03-14", "title": "Motherboard" },
-  { "path": "26-03-15", "date": "26-03-15", "title": "Obliquity" }
+  { "path": "26-03-15", "date": "26-03-15", "title": "Obliquity" },
+  { "path": "26-03-16", "date": "26-03-16", "title": "Fritz" }
 ]
