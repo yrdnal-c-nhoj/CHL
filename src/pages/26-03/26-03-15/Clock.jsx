@@ -2,91 +2,96 @@ import React, { useState, useEffect, useMemo } from 'react';
 import './Clock.css';
 
 const Clock = () => {
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    const timeInterval = setInterval(() => setTime(new Date()), 1000);
-
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      clearInterval(timeInterval);
-    };
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
-  // Format time into parts
-  const t = useMemo(() => {
-    let hours = time.getHours(); // Keep 24-hour format
-    const minutes = time.getMinutes();
-    const seconds = time.getSeconds();
-
-    const fH = hours.toString().padStart(2, '0'); // Always 2 digits with leading zeros
-    const fM = minutes.toString().padStart(2, '0');
-    const fS = seconds.toString().padStart(2, '0');
-
-    return { 
-      h1: fH[0], h2: fH[1], 
-      m1: fM[0], m2: fM[1], 
-      s1: fS[0], s2: fS[1], 
-      seconds 
+  // Compute values once per second
+  const { digits, rotation } = useMemo(() => {
+    const h = time.getHours().toString().padStart(2, '0');
+    const m = time.getMinutes().toString().padStart(2, '0');
+    const s = time.getSeconds().toString().padStart(2, '0');
+    
+    return {
+      digits: [h[0], h[1], m[0], m[1], s[0], s[1]],
+      rotation: (time.getSeconds() / 60) * 360,
     };
   }, [time]);
 
-  // Memoize the shadow string to avoid redundant string concatenation
-  const dynamicShadow = useMemo(() => {
-    const angleRad = ((t.seconds / 60) * 360 * Math.PI) / 180;
-    let layers = [];
-    for (let i = 1; i <= 120; i++) { 
-      const x = Math.round(Math.cos(angleRad) * i * 3); 
-      const y = Math.round(Math.sin(angleRad) * i * 3);
-      const opacity = Math.max(0, 1 - (i / 120));
-      layers.push(`${x}px ${y}px 0 rgba(0,0,0,${opacity * 0.4})`); 
-    }
-    return layers.join(', ');
-  }, [t.seconds]);
+  return (
+    <>
+      {/* High-Performance SVG Shadow Filter */}
+      <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+        <filter id="deep-shadow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blur" />
+          <feOffset dx="0" dy="0" result="offsetBlur" />
+          <feFlood floodColor="rgba(0,0,0,1)" result="color" />
+          <feComposite in="color" in2="offsetBlur" operator="in" result="shadow" />
+          
+          {/* Layering for extreme length and darkness */}
+          <feMorphology operator="dilate" radius="5" in="shadow" result="expandedShadow" />
+          <feGaussianBlur in="expandedShadow" stdDeviation="40" result="finalBlur" />
+          
+          <feMerge>
+            <feMergeNode in="finalBlur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </svg>
 
-  // Styles
-  const containerStyle = {
+      <div style={styles.container}>
+        <div style={styles.wrapper}>
+          {digits.map((digit, i) => (
+            <div 
+              key={i} 
+              style={{ 
+                ...styles.digitBox, 
+                transform: `rotate(${rotation}deg)` 
+              }}
+            >
+              <span style={styles.text}>{digit}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+};
+
+const styles = {
+  container: {
     minHeight: '100dvh',
     background: 'radial-gradient(circle at center, rgba(221, 131, 131, 0) 0%, rgba(221, 131, 131, 0.8) 50%, rgba(0, 0, 0, 0.9) 100%)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    border: '5px solid #000000',
-    boxSizing: 'border-box'
-  };
-
-  const digitBox = {
+    border: '5px solid #000',
+    boxSizing: 'border-box',
+  },
+  wrapper: {
+    display: 'flex',
+    alignItems: 'baseline',
+  },
+  digitBox: {
     display: 'inline-block',
-    width: windowWidth < 600 ? '12vw' : '10vw',
+    width: '11vw', // Responsive baseline
     textAlign: 'center',
-    verticalAlign: 'baseline'
-  };
-
-  const textBase = {
-    fontFamily: '"26-03-15-shadow", "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif',
+    transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)', // Snappy rotation
+    willChange: 'transform',
+    zIndex: 2,
+  },
+  text: {
+    fontFamily: '"26-03-15-shadow", "Avant Garde", "Century Gothic", sans-serif',
     color: '#DD8383',
-    textShadow: dynamicShadow,
-    transition: 'text-shadow 0.5s ease-out',
-    fontSize: windowWidth < 600 ? '44vw' : '36vw',
-    margin: '0'
-  };
-
-  return (
-    <div style={containerStyle}>
-      <div style={{ display: 'flex', alignItems: 'baseline' }}>
-          <div style={digitBox}><span style={textBase}>{t.h1}</span></div>
-          <div style={digitBox}><span style={textBase}>{t.h2}</span></div>
-           <div style={digitBox}><span style={textBase}>{t.m1}</span></div>
-          <div style={digitBox}><span style={textBase}>{t.m2}</span></div>
-          <div style={digitBox}><span style={textBase}>{t.s1}</span></div>
-          <div style={digitBox}><span style={textBase}>{t.s2}</span></div>
-        </div>
-    </div>
-  );
+    fontSize: '36vw',
+    margin: 0,
+    filter: 'url(#deep-shadow)', // Applying the SVG filter here
+    lineHeight: 1,
+  }
 };
 
 export default Clock;
