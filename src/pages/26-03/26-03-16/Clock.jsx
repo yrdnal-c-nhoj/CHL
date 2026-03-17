@@ -61,6 +61,28 @@ const Clock = () => {
           );
         })}
 
+        {/* Minute tick marks — small lines between hour markers */}
+        {[...Array(60)].map((_, i) => {
+          // Skip positions where hour markers already exist
+          if (i % 5 === 0) return null;
+          
+          return (
+            <div
+              key={`tick-${i}`}
+              style={{
+                position: 'absolute',
+                width: '1px',
+                height: '8px',
+                backgroundColor: '#aaa', // lighter gray for minute marks
+                top: '25px',
+                left: '50%',
+                transform: `translateX(-50%) rotate(${i * 6}deg)`,
+                transformOrigin: '50% 165px',
+              }}
+            />
+          );
+        })}
+
       
        
 
