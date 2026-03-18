@@ -22,11 +22,13 @@ import React, {
   useContext,
   useCallback,
   useMemo,
+  Suspense,
 } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import Header from './components/Header';
 import ClockPageNav from './components/ClockPageNav';
+import { ClockLoadingFallback } from './utils/fontLoader';
 import styles from './ClockPage.module.css';
 
 // Preload all Clock.tsx files under /pages/**/Clock.tsx
@@ -325,24 +327,16 @@ const ClockPage = () => {
         <div
           style={{
             width: '100%',
-            height: '100vh', // Full viewport height
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            overflow: 'hidden', // Prevent clock overflow
+            height: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            opacity: 1, // Remove animation, start fully visible
           }}
         >
-          <div
-            style={{
-              all: 'initial',
-              display: 'block',
-              width: '100%',
-              height: '100%', // Fill full viewport
-              opacity: 1, // Remove animation, start fully visible
-            }}
-          >
+          <Suspense fallback={<ClockLoadingFallback />}>
             <ClockComponent />
-          </div>
+          </Suspense>
         </div>
       )}
 
