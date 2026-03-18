@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import clouds from '../../../assets/images/25-04/25-04-20/clouds.gif';
+import clouds from '../../../assets/images/25-04/25-04-20/clouds.webp';
 import cloFont from '../../../assets/fonts/25-04-20-clo.ttf';
 
 const CloudClock: React.FC = () => {
