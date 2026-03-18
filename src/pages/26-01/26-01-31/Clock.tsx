@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useKeyframes } from '../../../utils/enhancedFontLoader';
+import { useGlobalStyles } from '../../../utils/enhancedFontLoader';
+import { useEnhancedFontLoader } from '../../../utils/enhancedFontLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import lemonBg from '../../../assets/images/26-01/26-01-31/lemon.gif';
 import rainBg from '../../../assets/images/26-01/26-01-31/lu.webp';
