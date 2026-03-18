@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 const font1Path = '/src/assets/fonts/25-06-20-inde2.ttf';
 const font2Path = '/src/assets/fonts/25-06-20-inde1.ttf';

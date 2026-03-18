@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import imageLeft from '../../../assets/images/25-08/25-08-16/pal.webp';
 import clockFace from '../../../assets/images/25-08/25-08-16/palm.webp';
 import customFontUrl from '../../../assets/fonts/25-08-16-palm.ttf';

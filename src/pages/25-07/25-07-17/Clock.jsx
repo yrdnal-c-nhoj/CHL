@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 // Import font and images as modules from the same folder
 import animFont from '../../../assets/fonts/25-07-17-ani.ttf';

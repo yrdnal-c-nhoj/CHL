@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import veniceFont from '../../../assets/fonts/26-03-13-venice.ttf';
 
 const Clock = () => {

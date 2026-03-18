@@ -1,16 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import roulGif from '../../../assets/images/25-05/25-05-15/roul.gif';
 import rouleGif from '../../../assets/images/25-05/25-05-15/roule.gif';
 import rouletteSvg from '../../../assets/images/25-05/25-05-15/Roulette_french.svg';
-import loraFont from '../../../assets/fonts/25-05-15-lora.ttf'; // Assuming you have Lora.ttf in the same folder
+import loraFont from '../../../assets/fonts/25-05-15-lora.ttf';
 
 const RouletteClock = () => {
+  // Load Lora font with FOUC prevention
+  const fontReady = useFontLoader('Lora', loraFont, { weight: '900' });
+  const [time, setTime] = useState(new Date());
   useEffect(() => {
     createClock();
     updateClock();
     const interval = setInterval(updateClock, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [fontReady]);
+
+  // Show loading state while font loads
+  if (!fontReady) {
+    return (
+      <div style={{
+        height: '100dvh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#000',
+        color: '#fff',
+        fontFamily: 'serif'
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   const createClock = () => {
     const clock = document.getElementById('clock');

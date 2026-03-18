@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import font20251016 from '../../../assets/fonts/25-10-15-brahmi.ttf';
 import image1 from '../../../assets/images/25-10/25-10-15/palm.webp';
 import image2 from '../../../assets/images/25-10/25-10-15/brahmi.webp';

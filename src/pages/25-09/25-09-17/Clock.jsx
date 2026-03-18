@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from '../../../assets/images/25-09/25-09-17/crush.jpg';
 import f250917fontt from '../../../assets/fonts/25-09-17-crush.ttf?url';
 import centerImage from '../../../assets/images/25-09/25-09-17/cr.gif'; // middle image

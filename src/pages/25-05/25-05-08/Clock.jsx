@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import shinyFont from '../../../assets/fonts/25-05-08-Shiny.ttf';
 import bgGif from '../../../assets/images/25-05/25-05-08/d7e781b32269a8a82b500c1a9dc97733-ezgif.com-optimize.gif';
 

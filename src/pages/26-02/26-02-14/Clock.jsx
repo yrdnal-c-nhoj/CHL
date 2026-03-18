@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import airportFont from '../../../assets/fonts/26-02-14-airport.ttf';
 import backgroundGif from '../../../assets/images/26-02/26-02-14/prop.gif';
 import backgroundGif2 from '../../../assets/images/26-02/26-02-14/runway.gif';

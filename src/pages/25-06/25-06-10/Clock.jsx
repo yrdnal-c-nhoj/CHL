@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import shaFont from '../../../assets/fonts/25-06-10-sha.ttf';
 
 const ShapesClock = () => {

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
   const [isMobile, setIsMobile] = useState(false);
 
+  // System fonts don't need loading - use fallback approach
   const fontVariation = `ultraFont${new Date().getTime()}`;
+  const fontsReady = true; // System fonts are always available
 
   useEffect(() => {
     const checkMobile = () => {
@@ -17,25 +20,22 @@ const DigitalClock = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: '${fontVariation}';
-        src: local('JetBrains Mono'), local('SF Mono'), local('Menlo'), local('Monaco'), local('Consolas'), local('Fira Code'), local('monospace');
-        font-display: block;
-        font-weight: 100 900;
-        font-variation-settings: 'wght' 900;
-      }
-    `;
-    document.head.appendChild(style);
-
-    return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
-    };
-  }, [fontVariation]);
+  // Show loading state while fonts load
+  if (!fontsReady) {
+    return (
+      <div style={{
+        height: '100dvh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(45deg, #000000 0%, #1a1a2e 20%, #16213e 40%, #0f0f23 60%, #000000 80%, #1e293b 100%)',
+        color: '#fff',
+        fontFamily: 'monospace'
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);

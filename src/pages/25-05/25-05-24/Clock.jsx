@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import torGif from '../../../assets/images/25-05/25-05-24/tor.gif';
 import speedFont from '../../../assets/fonts/25-05-24-speed.ttf';
 

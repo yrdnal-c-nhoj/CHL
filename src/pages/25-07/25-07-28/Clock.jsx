@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import customFont from '../../../assets/fonts/25-07-28-gol.ttf'; // Import your custom font
 import backgroundImage from '../../../assets/images/25-07/25-07-28/go.gif';
 

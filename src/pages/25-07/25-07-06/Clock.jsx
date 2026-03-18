@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import polFont from '../../../assets/fonts/25-07-06-pol.otf';
 import polarisGif from '../../../assets/images/25-07/25-07-06/polaris.gif';
 

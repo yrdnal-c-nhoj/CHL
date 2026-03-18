@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo, memo, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 // --- Image Imports ---
 import bg1 from '../../../assets/images/25-12/25-12-10/j.webp';

@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import bgVideo from '../../../assets/images/25-09/25-09-25/unix-optimized.mp4'; // Optimized video for mobile compatibility
 import fallbackImage from '../../../assets/images/25-09/25-09-25/unix.webp';
 import FontOne_2025_09_25 from '../../../assets/fonts/25-09-25-unix.otf?url';

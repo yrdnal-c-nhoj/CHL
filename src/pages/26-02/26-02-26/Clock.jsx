@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 const Clock = () => {
   const [images, setImages] = useState([]);

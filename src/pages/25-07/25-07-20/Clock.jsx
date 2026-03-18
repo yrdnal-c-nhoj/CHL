@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import camFont from '../../../assets/fonts/25-07-20-cam.otf';
 import bg1 from '../../../assets/images/25-07/25-07-20/ca.webp';
 import bg2 from '../../../assets/images/25-07/25-07-20/cam.webp';

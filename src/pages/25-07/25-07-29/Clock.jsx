@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import slotFont from '../../../assets/fonts/25-07-29-slot.otf';
 import bgImage from '../../../assets/images/25-07/25-07-29/IMAGE_1688551792.webp';
 

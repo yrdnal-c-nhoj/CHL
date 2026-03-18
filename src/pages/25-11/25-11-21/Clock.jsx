@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 // --- FONT IMPORT (same folder) ---
 import font_sdfsdfsdfsd from '../../../assets/fonts/25-11-21-omission.otf?url';

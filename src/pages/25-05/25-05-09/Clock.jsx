@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import KinaFont from '../../../assets/fonts/25-05-09-Kina.ttf';
 import swurl from '../../../assets/images/25-05/25-05-09/swurl.gif';
 

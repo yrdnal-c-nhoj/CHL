@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 const FONT_DATA = [
   { name: 'cat', url: '/fonts/26-03-09/cat.ttf', maxSize: 0.4 },

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import fibFont from '../../../assets/fonts/25-07-12-fib.otf';
 import fibImage from '../../../assets/images/25-07/25-07-12/fib.gif';
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 // Digit images (imported as modules)
 import digit0 from '../../../assets/images/25-08/25-08-23/0.gif';

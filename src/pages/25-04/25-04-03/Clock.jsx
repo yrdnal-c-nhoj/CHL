@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import mobyFont from '../../../assets/fonts/25-04-03-moby.ttf';
 import waves from '../../../assets/images/25-04/25-04-03/waves.gif';
 

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import rrrrFont from '../../../assets/fonts/25-06-06-rrrr.ttf';
 
 const RollingClock = () => {

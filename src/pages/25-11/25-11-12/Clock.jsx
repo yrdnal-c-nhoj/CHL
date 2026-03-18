@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import * as THREE from 'three';
 
 import bgFull from '../../../assets/images/25-11/25-11-12/octo.webp'; // full-size background

@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import ionFont from '../../../assets/fonts/25-06-09-ion.ttf';
 import ionJpeg from '../../../assets/images/25-06/25-06-09/ion.jpeg';
 import iskyWebp from '../../../assets/images/25-06/25-06-09/isky.webp';

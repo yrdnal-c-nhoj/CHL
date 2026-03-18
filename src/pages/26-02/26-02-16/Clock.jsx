@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 // --- Assets ---
 import mazeImage from '../../../assets/images/26-02/26-02-16/puzzle.gif';

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import laikaFont from '../../../assets/fonts/25-08-06-laika.ttf'; // Yourquo vadis
 import featuredImage from '../../../assets/images/25-08/25-08-06/Laika.jpeg'; // Your local image file
 
