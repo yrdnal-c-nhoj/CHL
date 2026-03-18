@@ -3,7 +3,7 @@ import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import cust250921font from '../../../assets/fonts/25-09-21-ele.ttf?url';
 import stripe1 from '../../../assets/images/25-09/25-09-21/fire.gif?url';
-import stripe2 from '../../../assets/images/25-09/25-09-21/air.gif?url';
+import stripe2 from '../../../assets/images/25-09/25-09-21/air.webp?url';
 import stripe3 from '../../../assets/images/25-09/25-09-21/h2o.webp?url';
 import stripe4 from '../../../assets/images/25-09/25-09-21/earth.webp?url';
 
