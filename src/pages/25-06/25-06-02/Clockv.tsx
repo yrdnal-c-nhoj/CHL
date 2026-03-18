@@ -134,8 +134,8 @@ const styles = {
   },
 };
 
-export default function Clock() {
-  const [time, setTime] = useState(() => new Date());
+const Clock: React.FC = () => {
+  const [time, setTime] = useState<Date>(() => new Date());
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -215,4 +215,6 @@ export default function Clock() {
       </div>
     </div>
   );
-}
+};
+
+export default Clock;
