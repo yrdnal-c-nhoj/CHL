@@ -2,17 +2,29 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 
+// Import fonts from assets folder
+import catFont from '../../../assets/fonts/cat.ttf';
+import SwatsFont from '../../../assets/fonts/Swats.ttf';
+import cat1Font from '../../../assets/fonts/cat1.ttf';
+import catzFont from '../../../assets/fonts/catz.otf';
+import katFont from '../../../assets/fonts/kat.ttf';
+import katzzFont from '../../../assets/fonts/katzz.ttf';
+import KittiesFont from '../../../assets/fonts/Kitties.ttf';
+import meFont from '../../../assets/fonts/me.ttf';
+import OrienightFont from '../../../assets/fonts/Orienight.otf';
+import PurrfectFont from '../../../assets/fonts/Purrfect.ttf';
+
 const FONT_DATA = [
-  { name: 'cat', url: '/fonts/26-03-09/cat.ttf', maxSize: 0.4 },
-  { name: 'Swats', url: '/fonts/26-03-09/Swats.ttf', maxSize: 4.0 },
-  { name: 'cat1', url: '/fonts/26-03-09/cat1.ttf', maxSize: 2.3 },
-  { name: 'catz', url: '/fonts/26-03-09/catz.otf', maxSize: 2.8 },
-  { name: 'kat', url: '/fonts/26-03-09/kat.ttf', maxSize: 2.6 },
-  { name: 'katzz', url: '/fonts/26-03-09/katzz.ttf', maxSize: 2.7 },
-  { name: 'Kitties', url: '/fonts/26-03-09/Kitties.ttf', maxSize: 2.4 },
-  { name: 'me', url: '/fonts/26-03-09/me.ttf', maxSize: 2.9 },
-  { name: 'Orienight', url: '/fonts/26-03-09/Orienight.otf', maxSize: 2.2 },
-  { name: 'Purrfect', url: '/fonts/26-03-09/Purrfect.ttf', maxSize: 1.5 },
+  { name: 'cat', url: catFont, maxSize: 0.4 },
+  { name: 'Swats', url: SwatsFont, maxSize: 4.0 },
+  { name: 'cat1', url: cat1Font, maxSize: 2.3 },
+  { name: 'catz', url: catzFont, maxSize: 2.8 },
+  { name: 'kat', url: katFont, maxSize: 2.6 },
+  { name: 'katzz', url: katzzFont, maxSize: 2.7 },
+  { name: 'Kitties', url: KittiesFont, maxSize: 2.4 },
+  { name: 'me', url: meFont, maxSize: 2.9 },
+  { name: 'Orienight', url: OrienightFont, maxSize: 2.2 },
+  { name: 'Purrfect', url: PurrfectFont, maxSize: 1.5 },
 ];
 
 const Clock: React.FC = () => {
