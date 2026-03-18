@@ -46,12 +46,21 @@ const RouletteClock = () => {
     }
 
     const hands = [
-      { class: 'hour-hand', img: 'https://placehold.co/8x80/000000/000000/png' },
-      { class: 'minute-hand', img: 'https://placehold.co/6x100/000000/000000/png' },
-      { class: 'second-hand', img: 'https://placehold.co/4x120/FF0000/FF0000/png' },
+      {
+        class: 'hour-hand',
+        img: 'https://placehold.co/8x80/000000/000000/png',
+      },
+      {
+        class: 'minute-hand',
+        img: 'https://placehold.co/6x100/000000/000000/png',
+      },
+      {
+        class: 'second-hand',
+        img: 'https://placehold.co/4x120/FF0000/FF0000/png',
+      },
     ];
 
-    hands.forEach(hand => {
+    hands.forEach((hand) => {
       const div = document.createElement('div');
       div.className = `hand ${hand.class}`;
       div.style.position = 'absolute';
@@ -109,8 +118,10 @@ const RouletteClock = () => {
     const second = document.querySelector('.second-hand');
 
     if (hour) hour.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
-    if (minute) minute.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
-    if (second) second.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
+    if (minute)
+      minute.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
+    if (second)
+      second.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
   };
 
   const fontStyle = `
@@ -123,7 +134,17 @@ const RouletteClock = () => {
   `;
 
   return (
-    <div style={{ height: '100dvh', margin: 0, overflow: 'hidden', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <div
+      style={{
+        height: '100dvh',
+        margin: 0,
+        overflow: 'hidden',
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <style>{fontStyle}</style>
 
       <div
@@ -143,7 +164,9 @@ const RouletteClock = () => {
         }}
       ></div>
 
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={rouleGif}
         alt="bg1"
         style={{
@@ -159,7 +182,9 @@ const RouletteClock = () => {
           opacity: 0.9,
         }}
       />
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={rouletteSvg}
         alt="bg2"
         style={{

@@ -3,6 +3,7 @@
 ## 🔒 API Key Security
 
 ### ✅ What's Been Done
+
 - Removed all actual API keys from `.env`
 - Created `.env.example` as a template
 - `.env` is properly ignored by Git (see `.gitignore`)
@@ -16,6 +17,7 @@
    - [NASA API](https://api.nasa.gov/)
 
 2. **Update Your Local `.env`:**
+
    ```bash
    # Replace the placeholder values with your actual keys
    VITE_PIXABAY_KEY=your_real_pixabay_key
@@ -41,6 +43,7 @@
 ### 🔍 Verification
 
 Check that keys are working:
+
 ```javascript
 console.log(import.meta.env.VITE_PIXABAY_KEY); // Should show your key
 ```

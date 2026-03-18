@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import bgImage from './wheel.svg'
+import React, { useEffect, useState } from 'react';
+import bgImage from './wheel.svg';
 
-export default function AnalogBackgroundClock () {
-  const [now, setNow] = useState(() => new Date())
+export default function AnalogBackgroundClock() {
+  const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 100)
-    return () => clearInterval(id)
-  }, [])
+    const id = setInterval(() => setNow(new Date()), 100);
+    return () => clearInterval(id);
+  }, []);
 
-  const seconds = now.getSeconds() + now.getMilliseconds() / 1000
-  const minutes = now.getMinutes() + seconds / 60
-  const hours = (now.getHours() % 12) + minutes / 60
+  const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+  const minutes = now.getMinutes() + seconds / 60;
+  const hours = (now.getHours() % 12) + minutes / 60;
 
   /* ---------------- COLOR CYCLING ---------------- */
 
   const [randomHueOffset] = useState(() => Math.floor(Math.random() * 360)); // Random starting color
-  const cycleProgress = (Date.now() % 15000) / 15000
-  const getBrightness = offset =>
-    (Math.sin((cycleProgress + offset) * Math.PI * 2) + 1) / 2
+  const cycleProgress = (Date.now() % 15000) / 15000;
+  const getBrightness = (offset) =>
+    (Math.sin((cycleProgress + offset) * Math.PI * 2) + 1) / 2;
 
   const makeHand = (brightness, width, height, rotation) => {
-    const v = Math.round(brightness * 255)
+    const v = Math.round(brightness * 255);
     return {
       position: 'absolute',
       top: '50%',
@@ -33,18 +33,23 @@ export default function AnalogBackgroundClock () {
       transform: `translate(-50%, -100%) rotate(${rotation}deg)`,
       borderRadius: '1vh',
       boxShadow: `0 4px 10px rgb(${255 - v},${255 - v},${255 - v})`,
-      opacity: 0.85
-    }
-  }
+      opacity: 0.85,
+    };
+  };
 
-  const hourHand = makeHand(getBrightness(0), '2vh', '14vh', hours * 30)
-  const minuteHand = makeHand(getBrightness(0.25), '1.5vh', '20vh', minutes * 6)
-  const secondHand = makeHand(getBrightness(0.5), '0.5vh', '30vh', seconds * 6)
+  const hourHand = makeHand(getBrightness(0), '2vh', '14vh', hours * 30);
+  const minuteHand = makeHand(
+    getBrightness(0.25),
+    '1.5vh',
+    '20vh',
+    minutes * 6,
+  );
+  const secondHand = makeHand(getBrightness(0.5), '0.5vh', '30vh', seconds * 6);
 
   /* ---------------- BACKGROUND ---------------- */
 
-  const hue = ((Date.now() / 60000) * 360 + randomHueOffset) % 360 // Add random offset
-  const gradient = `hsl(${hue}, 100%, 50%)`
+  const hue = ((Date.now() / 60000) * 360 + randomHueOffset) % 360; // Add random offset
+  const gradient = `hsl(${hue}, 100%, 50%)`;
 
   return (
     <>
@@ -54,7 +59,7 @@ export default function AnalogBackgroundClock () {
           position: 'fixed',
           inset: 0,
           background: gradient,
-          zIndex: 1
+          zIndex: 1,
         }}
       />
       {/* Wheel image */}
@@ -66,7 +71,7 @@ export default function AnalogBackgroundClock () {
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           backgroundSize: 'contain',
-          zIndex: 2
+          zIndex: 2,
         }}
       />
       {/* Clock hands */}
@@ -77,7 +82,7 @@ export default function AnalogBackgroundClock () {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 3
+          zIndex: 3,
         }}
       >
         <div
@@ -85,7 +90,7 @@ export default function AnalogBackgroundClock () {
             position: 'relative',
             width: '80vh',
             height: '80vh',
-            borderRadius: '50%'
+            borderRadius: '50%',
           }}
         >
           <div style={hourHand} />
@@ -94,5 +99,5 @@ export default function AnalogBackgroundClock () {
         </div>
       </div>
     </>
-  )
+  );
 }

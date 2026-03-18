@@ -20,7 +20,10 @@ const StretchClock = () => {
       setTime((prev) => ({
         hours: prev.hours !== hours.toString() ? hours.toString() : prev.hours,
         minutes: prev.minutes !== minutes ? minutes : prev.minutes,
-        seconds: prev.seconds !== seconds.toString() ? seconds.toString() : prev.seconds,
+        seconds:
+          prev.seconds !== seconds.toString()
+            ? seconds.toString()
+            : prev.seconds,
       }));
     };
 
@@ -35,7 +38,8 @@ const StretchClock = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundImage: 'repeating-linear-gradient(335deg, #07bb4f 0, #e51a8a 0.2px, transparent 0, transparent 50%)',
+    backgroundImage:
+      'repeating-linear-gradient(335deg, #07bb4f 0, #e51a8a 0.2px, transparent 0, transparent 50%)',
     backgroundSize: '1.1vw 1.1vw',
     backgroundColor: '#bbcdc4',
     position: 'relative',
@@ -74,29 +78,17 @@ const StretchClock = () => {
   return (
     <div style={clockStyle}>
       <div style={baseTimeUnitStyle('#090213', 1, 1)}>
-        <span
-          key={time.hours}
-          style={spanStyle}
-          className="morph"
-        >
+        <span key={time.hours} style={spanStyle} className="morph">
           {time.hours}
         </span>
       </div>
       <div style={baseTimeUnitStyle('#76f705', 0.8, 2)}>
-        <span
-          key={time.minutes}
-          style={spanStyle}
-          className="morph"
-        >
+        <span key={time.minutes} style={spanStyle} className="morph">
           {time.minutes}
         </span>
       </div>
       <div style={baseTimeUnitStyle('#eefa03', 0.6, 3)}>
-        <span
-          key={time.seconds}
-          style={spanStyle}
-          className="morph"
-        >
+        <span key={time.seconds} style={spanStyle} className="morph">
           {time.seconds}
         </span>
       </div>

@@ -103,7 +103,13 @@ const CuneiformClock = () => {
       `}</style>
 
       {/* Spinning overlay fills entire screen */}
-      <img decoding="async" loading="lazy" src={bgOverlay} className="cunei-bg-overlay" alt="Spinning Overlay" />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bgOverlay}
+        className="cunei-bg-overlay"
+        alt="Spinning Overlay"
+      />
 
       <div className="cunei-container">
         <div className="cunei-clock">{time}</div>

@@ -1,17 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
-import sageFontUrl from "../../../assets/fonts/25-04-08-sage.ttf";
+import sageFontUrl from '../../../assets/fonts/25-04-08-sage.ttf';
 
 const TripleCactusClock = () => {
   const hoursRef = useRef();
   const minutesRef = useRef();
   const secondsRef = useRef();
   const millisecondsRef = useRef();
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('sage', sageFontUrl, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   useEffect(() => {
@@ -38,7 +38,10 @@ const TripleCactusClock = () => {
       setDigits(hoursRef.current, String(now.getHours()).padStart(2, '0'));
       setDigits(minutesRef.current, String(now.getMinutes()).padStart(2, '0'));
       setDigits(secondsRef.current, String(now.getSeconds()).padStart(2, '0'));
-      setDigits(millisecondsRef.current, String(now.getMilliseconds()).padStart(3, '0'));
+      setDigits(
+        millisecondsRef.current,
+        String(now.getMilliseconds()).padStart(3, '0'),
+      );
       requestAnimationFrame(updateClock);
     };
 
@@ -46,14 +49,16 @@ const TripleCactusClock = () => {
   }, []);
 
   return (
-    <div style={{
-      margin: 0,
-      padding: 0,
-      boxSizing: 'border-box',
-      height: '100%',
-      overflow: 'hidden',
-      background: '#01151d',
-    }}>
+    <div
+      style={{
+        margin: 0,
+        padding: 0,
+        boxSizing: 'border-box',
+        height: '100%',
+        overflow: 'hidden',
+        background: '#01151d',
+      }}
+    >
       <style>{`
         @keyframes skyCycle {
           0% { background: #3bbdf0; }
@@ -71,106 +76,145 @@ const TripleCactusClock = () => {
           100% { top: 90%; opacity: 0; }
         }
       `}</style>
-      <div style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-        flexDirection: 'column',
-        animation: 'skyCycle 20s ease-in-out infinite alternate',
-      }}>
+      <div
+        style={{
+          position: 'relative',
+          width: '100vw',
+          height: '100dvh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'flex-end',
+          flexDirection: 'column',
+          animation: 'skyCycle 20s ease-in-out infinite alternate',
+        }}
+      >
         {/* Sun / Clock */}
-        <div style={{
-          position: 'absolute',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          animation: 'sunVertical 20s linear infinite alternate',
-          zIndex: 2,
-        }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', fontFamily: 'sage' }}>
-            <div style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }} ref={hoursRef}></div>
-            <div style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }} ref={minutesRef}></div>
-            <div style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }} ref={secondsRef}></div>
-            <div style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }} ref={millisecondsRef}></div>
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            animation: 'sunVertical 20s linear infinite alternate',
+            zIndex: 2,
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              fontFamily: 'sage',
+            }}
+          >
+            <div
+              style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
+              ref={hoursRef}
+            ></div>
+            <div
+              style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
+              ref={minutesRef}
+            ></div>
+            <div
+              style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
+              ref={secondsRef}
+            ></div>
+            <div
+              style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
+              ref={millisecondsRef}
+            ></div>
           </div>
         </div>
 
         {/* Mountains */}
-        <div style={{
-          position: 'absolute',
-          bottom: '40vh',
-          width: '100%',
-          height: 0,
-          zIndex: 1,
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '1vw',
-          opacity: 0.6,
-        }}>
-          {[ '#48638f', '#707d93', '#48638f' ].map((color, i) => (
-            <div key={i} style={{
-              width: 0,
-              height: 0,
-              borderLeft: '15vw solid transparent',
-              borderRight: '15vw solid transparent',
-              borderBottom: `15vh solid ${color}`,
-            }} />
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '40vh',
+            width: '100%',
+            height: 0,
+            zIndex: 1,
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '1vw',
+            opacity: 0.6,
+          }}
+        >
+          {['#48638f', '#707d93', '#48638f'].map((color, i) => (
+            <div
+              key={i}
+              style={{
+                width: 0,
+                height: 0,
+                borderLeft: '15vw solid transparent',
+                borderRight: '15vw solid transparent',
+                borderBottom: `15vh solid ${color}`,
+              }}
+            />
           ))}
         </div>
 
         {/* Ground and Cacti */}
-        <div style={{
-          position: 'absolute',
-          bottom: 0,
-          height: '27vh',
-          width: '100%',
-          background: '#c5a770',
-          zIndex: 2,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'flex-end',
-        }}>
-          <div style={{
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            height: '27vh',
+            width: '100%',
+            background: '#c5a770',
+            zIndex: 2,
             display: 'flex',
             justifyContent: 'center',
-            gap: '15vw',
-            marginBottom: '8vh',
-          }}>
+            alignItems: 'flex-end',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '15vw',
+              marginBottom: '8vh',
+            }}
+          >
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} style={{
-                width: '2vw',
-                height: '15vh',
-                background: '#228b22',
-                borderRadius: '1vw',
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                <div style={{
-                  position: 'absolute',
-                  width: '1vw',
-                  height: '6vh',
+              <div
+                key={i}
+                style={{
+                  width: '2vw',
+                  height: '15vh',
                   background: '#228b22',
-                  borderRadius: '50% 50% 0 0',
-                  left: '-1vw',
-                  top: '20%',
-                  transform: 'rotate(-40deg)',
-                  transformOrigin: 'bottom right',
-                }}></div>
-                <div style={{
-                  position: 'absolute',
-                  width: '1vw',
-                  height: '6vh',
-                  background: '#228b22',
-                  borderRadius: '50% 50% 0 0',
-                  right: '-1vw',
-                  top: '10%',
-                  transform: 'rotate(40deg)',
-                  transformOrigin: 'bottom left',
-                }}></div>
+                  borderRadius: '1vw',
+                  position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <div
+                  style={{
+                    position: 'absolute',
+                    width: '1vw',
+                    height: '6vh',
+                    background: '#228b22',
+                    borderRadius: '50% 50% 0 0',
+                    left: '-1vw',
+                    top: '20%',
+                    transform: 'rotate(-40deg)',
+                    transformOrigin: 'bottom right',
+                  }}
+                ></div>
+                <div
+                  style={{
+                    position: 'absolute',
+                    width: '1vw',
+                    height: '6vh',
+                    background: '#228b22',
+                    borderRadius: '50% 50% 0 0',
+                    right: '-1vw',
+                    top: '10%',
+                    transform: 'rotate(40deg)',
+                    transformOrigin: 'bottom left',
+                  }}
+                ></div>
               </div>
             ))}
           </div>

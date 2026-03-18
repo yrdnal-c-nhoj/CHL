@@ -13,15 +13,15 @@ if (typeof document !== 'undefined') {
 }
 
 // Asset imports
-import bgImage from '../../../assets/images/25-12/25-12-26/sat.webp'
-import overlayImage from '../../../assets/images/25-12/25-12-26/scythe.webp'
-import fontFile from '../../../assets/fonts/sat.ttf?url'  // ?url tells Vite to copy the file to output
+import bgImage from '../../../assets/images/25-12/25-12-26/sat.webp';
+import overlayImage from '../../../assets/images/25-12/25-12-26/scythe.webp';
+import fontFile from '../../../assets/fonts/sat.ttf?url'; // ?url tells Vite to copy the file to output
 
-const FONT_FAMILY = 'SaturnFont'
+const FONT_FAMILY = 'SaturnFont';
 
 // Custom hook for font loading
 function useFontLoader(fontUrl, fontFamily) {
-  const [isReady, setIsReady] = useState(false)
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const loadFont = async () => {
@@ -33,59 +33,61 @@ function useFontLoader(fontUrl, fontFamily) {
           {
             style: 'normal',
             weight: '400',
-            display: 'swap'
-          }
-        )
+            display: 'swap',
+          },
+        );
 
         // Add to document.fonts
-        document.fonts.add(font)
+        document.fonts.add(font);
 
         // Load the font
-        await font.load()
-        
-        // Mark as ready
-        setIsReady(true)
-      } catch (error) {
-        console.error('Failed to load font:', error)
-        // Continue with fallback font
-        setIsReady(true)
-      }
-    }
+        await font.load();
 
-    loadFont()
+        // Mark as ready
+        setIsReady(true);
+      } catch (error) {
+        console.error('Failed to load font:', error);
+        // Continue with fallback font
+        setIsReady(true);
+      }
+    };
+
+    loadFont();
 
     // No need to clean up FontFace as it's generally safe to keep it
-  }, [fontUrl, fontFamily])
+  }, [fontUrl, fontFamily]);
 
-  return isReady
+  return isReady;
 }
 
 // Custom hook for clock
 function useClock() {
-  const [time, setTime] = useState(new Date())
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000)
-    return () => clearInterval(interval)
-  }, [])
+    const interval = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
-  return time
+  return time;
 }
 
 // Format time with padding
 function formatTime(date) {
-  const pad = (n) => String(n).padStart(2, '0')
+  const pad = (n) => String(n).padStart(2, '0');
   return {
     hours: pad(date.getHours()),
     minutes: pad(date.getMinutes()),
-    seconds: pad(date.getSeconds())
-  }
+    seconds: pad(date.getSeconds()),
+  };
 }
 
 // Overlay component
 function ScytheOverlay({ rotation = 0, top = '40%' }) {
   return (
-    <img decoding="async" loading="lazy"
+    <img
+      decoding="async"
+      loading="lazy"
       src={overlayImage}
       alt=""
       style={{
@@ -102,36 +104,38 @@ function ScytheOverlay({ rotation = 0, top = '40%' }) {
         opacity: 0.6,
       }}
     />
-  )
+  );
 }
 
 // Main component
 export default function SaturnClock() {
-  const fontReady = useFontLoader(fontFile, FONT_FAMILY)
-  const now = useClock()
+  const fontReady = useFontLoader(fontFile, FONT_FAMILY);
+  const now = useClock();
 
   // Show loading state with black background
   if (!fontReady) {
     return (
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100dvh',
-        backgroundColor: '#000',
-        zIndex: 1000,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: 'rgba(255,255,255,0.7)'
-      }}>
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100dvh',
+          backgroundColor: '#000',
+          zIndex: 1000,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'rgba(255,255,255,0.7)',
+        }}
+      >
         Loading...
       </div>
     );
   }
 
-  const { hours, minutes } = formatTime(now)
+  const { hours, minutes } = formatTime(now);
 
   return (
     <div
@@ -165,7 +169,7 @@ export default function SaturnClock() {
           zIndex: 0,
         }}
       />
-      
+
       {/* Content layer - no filters applied */}
       <div
         style={{
@@ -204,10 +208,11 @@ export default function SaturnClock() {
               textShadow: '1px 1px 0 white, -1px -1px 0 black',
             }}
           >
-            {hours}{minutes}
+            {hours}
+            {minutes}
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

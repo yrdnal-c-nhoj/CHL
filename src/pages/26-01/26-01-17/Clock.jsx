@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, useState } from "react";
-import videoFile from "../../../assets/images/26-01/26-01-17/swww.mp4";
-import fallbackImg from "../../../assets/images/26-01/26-01-17/sw.webp";
-import overlayImage from "../../../assets/images/26-01/26-01-17/sw22.webp"; // Add your overlay image path here
-import font112425sput from "../../../assets/fonts/26-01-17-sw.ttf?url";
+import React, { useRef, useEffect, useState } from 'react';
+import videoFile from '../../../assets/images/26-01/26-01-17/swww.mp4';
+import fallbackImg from '../../../assets/images/26-01/26-01-17/sw.webp';
+import overlayImage from '../../../assets/images/26-01/26-01-17/sw22.webp'; // Add your overlay image path here
+import font112425sput from '../../../assets/fonts/26-01-17-sw.ttf?url';
 
 export default function Clock() {
   const videoRef = useRef(null);
@@ -14,8 +14,8 @@ export default function Clock() {
 
   // 1. Load custom font
   useEffect(() => {
-    const font = new FontFace("CustomClock-112425", `url(${font112425sput})`, {
-      display: "block",
+    const font = new FontFace('CustomClock-112425', `url(${font112425sput})`, {
+      display: 'block',
     });
 
     let active = true;
@@ -62,10 +62,10 @@ export default function Clock() {
       playPromise.catch(fail);
     }
 
-    v.addEventListener("error", fail);
-    v.addEventListener("canplaythrough", canplay);
-    v.addEventListener("loadeddata", canplay);
-    return () => v.removeEventListener("error", fail);
+    v.addEventListener('error', fail);
+    v.addEventListener('canplaythrough', canplay);
+    v.addEventListener('loadeddata', canplay);
+    return () => v.removeEventListener('error', fail);
   }, []);
 
   // Fallback image readiness in case video fails
@@ -89,25 +89,25 @@ export default function Clock() {
     <main
       aria-label={`Current time is ${time.toLocaleTimeString()}`}
       style={{
-        position: "fixed",
+        position: 'fixed',
         inset: 0,
-        width: "100vw",
-        height: "100dvh",
-        background: "#000",
-        overflow: "hidden",
+        width: '100vw',
+        height: '100dvh',
+        background: '#000',
+        overflow: 'hidden',
       }}
     >
       {/* Loading state - prevents flash of unstyled content */}
       {!(contentReady && mediaReady) && (
         <div
           style={{
-            position: "fixed",
+            position: 'fixed',
             inset: 0,
-            background: "#000",
+            background: '#000',
             zIndex: 100,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         />
       )}
@@ -116,13 +116,13 @@ export default function Clock() {
       {!videoFailed && (
         <div
           style={{
-            position: "fixed",
+            position: 'fixed',
             top: 0,
             left: 0,
-            width: "100vw",
-            height: "100vh",
+            width: '100vw',
+            height: '100vh',
             zIndex: 1,
-            overflow: "hidden"
+            overflow: 'hidden',
           }}
         >
           <video
@@ -132,17 +132,25 @@ export default function Clock() {
             loop
             playsInline
             style={{
-              position: "absolute",
+              position: 'absolute',
               top: 0,
               left: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              filter: "saturate(2.5) brightness(0.9) contrast(0.9) hue-rotate(185deg)",
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              filter:
+                'saturate(2.5) brightness(0.9) contrast(0.9) hue-rotate(185deg)',
             }}
             preload="auto"
           >
-            <source src={process.env.NODE_ENV === 'production' ? `${process.env.PUBLIC_URL || ''}${videoFile}` : videoFile} type="video/mp4" />
+            <source
+              src={
+                process.env.NODE_ENV === 'production'
+                  ? `${process.env.PUBLIC_URL || ''}${videoFile}`
+                  : videoFile
+              }
+              type="video/mp4"
+            />
           </video>
         </div>
       )}
@@ -151,26 +159,28 @@ export default function Clock() {
       {videoFailed && (
         <div
           style={{
-            position: "fixed",
+            position: 'fixed',
             top: 0,
             left: 0,
-            width: "100vw",
-            height: "100vh",
-            overflow: "hidden",
+            width: '100vw',
+            height: '100vh',
+            overflow: 'hidden',
             zIndex: 1,
           }}
         >
-          <img decoding="async" loading="lazy"
+          <img
+            decoding="async"
+            loading="lazy"
             src={fallbackImg}
             alt=""
             style={{
-              position: "absolute",
+              position: 'absolute',
               top: 0,
               left: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              filter: "saturate(2.5)"
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              filter: 'saturate(2.5)',
             }}
           />
         </div>
@@ -179,26 +189,28 @@ export default function Clock() {
       {/* OVERLAY IMAGE layer */}
       <div
         style={{
-          position: "absolute",
+          position: 'absolute',
           inset: 0,
-          pointerEvents: "none",
+          pointerEvents: 'none',
           zIndex: 8,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center"
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        <img decoding="async" loading="lazy" 
-          src={overlayImage} 
-          alt="" 
+        <img
+          decoding="async"
+          loading="lazy"
+          src={overlayImage}
+          alt=""
           style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
             opacity: 0.6,
             zIndex: 9,
-            mixBlendMode: "overlay",
-            filter: "hue-rotate(40deg)"
+            mixBlendMode: 'overlay',
+            filter: 'hue-rotate(40deg)',
           }}
         />
       </div>
@@ -206,11 +218,11 @@ export default function Clock() {
       {/* GRADIENT OVERLAY layer */}
       <div
         style={{
-          position: "absolute",
+          position: 'absolute',
           inset: 0,
-          pointerEvents: "none",
+          pointerEvents: 'none',
           background:
-            "radial-gradient(circle, rgba(183, 127, 7, 0.52) 60%, rgba(236, 99, 26, 0.56) 100%)",
+            'radial-gradient(circle, rgba(183, 127, 7, 0.52) 60%, rgba(236, 99, 26, 0.56) 100%)',
           zIndex: 10, // Keep this above the overlay image
         }}
       />
@@ -219,20 +231,20 @@ export default function Clock() {
       {contentReady && mediaReady && (
         <div
           style={{
-            position: "absolute",
+            position: 'absolute',
             inset: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            pointerEvents: "none",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            pointerEvents: 'none',
             zIndex: 10,
           }}
         >
           <div
             style={{
-              position: "relative",
-              width: "92vmin",
-              height: "92vmin",
+              position: 'relative',
+              width: '92vmin',
+              height: '92vmin',
               fontFamily: "'CustomClock-112425', sans-serif",
             }}
           >
@@ -247,18 +259,19 @@ export default function Clock() {
                 <div
                   key={n}
                   style={{
-                    position: "absolute",
+                    position: 'absolute',
                     left: `${x}%`,
                     top: `${y}%`,
-                    fontSize: "5vh",
-                    color: "#E9BB7A",
-                    fontStyle: "italic",
+                    fontSize: '5vh',
+                    color: '#E9BB7A',
+                    fontStyle: 'italic',
                     fontVariationSettings: "'slnt' -15, 'ital' 1",
-                    transform: "translate(-50%, -50%) skewX(-10deg)",
-                    userSelect: "none",
+                    transform: 'translate(-50%, -50%) skewX(-10deg)',
+                    userSelect: 'none',
                     opacity: 0.5,
-                       zIndex: 1,
-                    textShadow: "1px 1px 0px rgba(50, 21, 3, 0.99), -1px -1px 0 rgba(0, 0, 0, 0.3)"
+                    zIndex: 1,
+                    textShadow:
+                      '1px 1px 0px rgba(50, 21, 3, 0.99), -1px -1px 0 rgba(0, 0, 0, 0.3)',
                   }}
                 >
                   {n}
@@ -269,14 +282,14 @@ export default function Clock() {
             {/* Hour hand */}
             <div
               style={{
-                position: "absolute",
-                bottom: "50%",
-                left: "50%",
-                width: "2.2vmin",
-                height: "22vmin",
-                borderRadius: "1.5vmin",
-                backgroundColor: "#DD4108",
-                transformOrigin: "center bottom",
+                position: 'absolute',
+                bottom: '50%',
+                left: '50%',
+                width: '2.2vmin',
+                height: '22vmin',
+                borderRadius: '1.5vmin',
+                backgroundColor: '#DD4108',
+                transformOrigin: 'center bottom',
                 transform: `translateX(-50%) rotate(${hours}deg)`,
                 zIndex: 2,
                 opacity: 0.4,
@@ -286,22 +299,19 @@ export default function Clock() {
             {/* Minute hand */}
             <div
               style={{
-                position: "absolute",
-                bottom: "50%",
-                left: "50%",
-                width: "1.4vmin",
-                height: "34vmin",
-                backgroundColor: "#DF3A03",
-                borderRadius: "1vmin",
-                transformOrigin: "center bottom",
+                position: 'absolute',
+                bottom: '50%',
+                left: '50%',
+                width: '1.4vmin',
+                height: '34vmin',
+                backgroundColor: '#DF3A03',
+                borderRadius: '1vmin',
+                transformOrigin: 'center bottom',
                 transform: `translateX(-50%) rotate(${minutes}deg)`,
                 zIndex: 3,
                 opacity: 0.4,
               }}
             />
-
-        
-            
           </div>
         </div>
       )}

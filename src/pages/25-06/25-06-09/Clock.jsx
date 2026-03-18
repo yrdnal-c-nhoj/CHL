@@ -1,45 +1,57 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from 'react';
 import ionFont from '../../../assets/fonts/25-06-09-ion.ttf';
-import ionJpeg from "../../../assets/images/25-06/25-06-09/ion.jpeg";
-import iskyWebp from "../../../assets/images/25-06/25-06-09/isky.webp";
+import ionJpeg from '../../../assets/images/25-06/25-06-09/ion.jpeg';
+import iskyWebp from '../../../assets/images/25-06/25-06-09/isky.webp';
 
-const CLOCK_BACKGROUND = "rgba(0, 255, 255, 0.0)";
+const CLOCK_BACKGROUND = 'rgba(0, 255, 255, 0.0)';
 const CLOCK_COUNT_PER_DIRECTION = 2;
 const MIN_DURATION = 0.01;
 const MAX_DURATION = 20;
 
 const namedSilverShades = [
-  "silver", "lightgray", "darkgray", "gainsboro", "#b0c4de",
-  "#c0c0c0", "#a9a9a9", "#dcdcdc", "#d3d3d3", "#eeeeee",
-  "#f5f5f5", "#a5b487", "#adcbce",
+  'silver',
+  'lightgray',
+  'darkgray',
+  'gainsboro',
+  '#b0c4de',
+  '#c0c0c0',
+  '#a9a9a9',
+  '#dcdcdc',
+  '#d3d3d3',
+  '#eeeeee',
+  '#f5f5f5',
+  '#a5b487',
+  '#adcbce',
 ];
 
-const spinAnimations = ["spin-a", "spin-b", "spin-c"];
+const spinAnimations = ['spin-a', 'spin-b', 'spin-c'];
 
 function getRandomGrayOrSilver() {
   if (Math.random() < 0.5) {
     const g = Math.floor(100 + Math.random() * 130);
     return `rgb(${g}, ${g}, ${g})`;
   } else {
-    return namedSilverShades[Math.floor(Math.random() * namedSilverShades.length)];
+    return namedSilverShades[
+      Math.floor(Math.random() * namedSilverShades.length)
+    ];
   }
 }
 
 function getCharColor(index) {
   const i = index + 1;
-  if (i % 29 === 0) return "#b99b5b"; // soft gold
-  if (i % 25 === 0) return "#a32934"; // rich red
-  if (i % 24 === 0) return "#861024"; // deep maroon
-  if (i % 13 === 0) return "#d0b35d"; // bright gold
-  if (i % 34 === 0) return "#3e7abc"; // blue steel
+  if (i % 29 === 0) return '#b99b5b'; // soft gold
+  if (i % 25 === 0) return '#a32934'; // rich red
+  if (i % 24 === 0) return '#861024'; // deep maroon
+  if (i % 13 === 0) return '#d0b35d'; // bright gold
+  if (i % 34 === 0) return '#3e7abc'; // blue steel
   return getRandomGrayOrSilver();
 }
 
 function generateTimeString() {
   const now = new Date();
   const hours = now.getHours() % 12 || 12;
-  const minutes = now.getMinutes().toString().padStart(2, "0");
-  const ampm = now.getHours() >= 12 ? "PM" : "AM";
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
   return `${hours} ${minutes} ${ampm}`;
 }
 
@@ -58,8 +70,10 @@ function createClockObject(direction, vw, vh) {
 
   const fontSize = 1 + Math.random() * 2.9; // rem
   const topVh = 5 + Math.random() * 90;
-  const driftDuration = MIN_DURATION + Math.random() * (MAX_DURATION - MIN_DURATION);
-  const spinName = spinAnimations[Math.floor(Math.random() * spinAnimations.length)];
+  const driftDuration =
+    MIN_DURATION + Math.random() * (MAX_DURATION - MIN_DURATION);
+  const spinName =
+    spinAnimations[Math.floor(Math.random() * spinAnimations.length)];
   const spinDuration = 20 + Math.random() * 30;
 
   return {
@@ -81,7 +95,7 @@ export default function IonosphereClock() {
 
   // Font + animations
   useEffect(() => {
-    const styleEl = document.createElement("style");
+    const styleEl = document.createElement('style');
     styleEl.innerHTML = `
       @font-face {
         font-family: 'ion';
@@ -150,18 +164,18 @@ export default function IonosphereClock() {
       setClocks((currentClocks) => {
         const now = Date.now();
         const filteredClocks = currentClocks.filter(
-          (c) => now - c.startTime < c.driftDuration * 1000
+          (c) => now - c.startTime < c.driftDuration * 1000,
         );
-        const lefts = filteredClocks.filter((c) => c.direction === "left");
-        const rights = filteredClocks.filter((c) => c.direction === "right");
+        const lefts = filteredClocks.filter((c) => c.direction === 'left');
+        const rights = filteredClocks.filter((c) => c.direction === 'right');
         const newClocks = [...filteredClocks];
         const vw = window.innerWidth / 100;
         const vh = window.innerHeight / 100;
 
         if (lefts.length < CLOCK_COUNT_PER_DIRECTION)
-          newClocks.push(createClockObject("left", vw, vh));
+          newClocks.push(createClockObject('left', vw, vh));
         if (rights.length < CLOCK_COUNT_PER_DIRECTION)
-          newClocks.push(createClockObject("right", vw, vh));
+          newClocks.push(createClockObject('right', vw, vh));
 
         return newClocks;
       });
@@ -180,7 +194,7 @@ export default function IonosphereClock() {
       setClocks((currentClocks) => {
         const vw = window.innerWidth / 100;
         const vh = window.innerHeight / 100;
-        const direction = Math.random() < 0.5 ? "left" : "right";
+        const direction = Math.random() < 0.5 ? 'left' : 'right';
         return [...currentClocks, createClockObject(direction, vw, vh)];
       });
       launchTimeout = setTimeout(launchRandomClock, 300 + Math.random() * 1500);
@@ -191,35 +205,39 @@ export default function IonosphereClock() {
 
   return (
     <>
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={iskyWebp}
         alt="Sky background"
         style={{
-          position: "fixed",
+          position: 'fixed',
           top: 0,
           left: 0,
-          width: "100vw",
-          height: "100vh",
-          objectFit: "fill",
-          filter: "contrast(90%) saturate(200%)",
+          width: '100vw',
+          height: '100vh',
+          objectFit: 'fill',
+          filter: 'contrast(90%) saturate(200%)',
           zIndex: 1,
-          pointerEvents: "none",
+          pointerEvents: 'none',
         }}
       />
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={ionJpeg}
         alt="Ion background"
         style={{
-          position: "fixed",
+          position: 'fixed',
           top: 0,
           left: 0,
-          width: "100vw",
-          height: "100vh",
-          objectFit: "cover",
-          filter: "contrast(90%) saturate(90%)",
+          width: '100vw',
+          height: '100vh',
+          objectFit: 'cover',
+          filter: 'contrast(90%) saturate(90%)',
           opacity: 0.5,
           zIndex: 2,
-          pointerEvents: "none",
+          pointerEvents: 'none',
         }}
       />
 
@@ -260,7 +278,7 @@ export default function IonosphereClock() {
               </div>
             </div>
           );
-        }
+        },
       )}
     </>
   );

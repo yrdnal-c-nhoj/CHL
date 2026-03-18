@@ -9,7 +9,8 @@ const DigitalClock = () => {
       const link = document.createElement('link');
       link.id = 'google-font-space-mono';
       link.rel = 'stylesheet';
-      link.href = 'https://fonts.googleapis.com/css2?family=Space+Mono&display=swap';
+      link.href =
+        'https://fonts.googleapis.com/css2?family=Space+Mono&display=swap';
       document.head.appendChild(link);
     }
 
@@ -54,25 +55,27 @@ const DigitalClock = () => {
 
   const Layer = ({ value, size, zIndex, opacity }) => {
     const digits = value.split('');
-    
+
     return (
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: size,
-        zIndex: zIndex,
-        opacity: opacity,
-        color: '#F5D9D9',
-        pointerEvents: 'none',
-        lineHeight: 1,
-        fontVariantNumeric: 'tabular-nums',
-      }}>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: size,
+          zIndex: zIndex,
+          opacity: opacity,
+          color: '#F5D9D9',
+          pointerEvents: 'none',
+          lineHeight: 1,
+          fontVariantNumeric: 'tabular-nums',
+        }}
+      >
         {/* Symmetrical squeeze: margins move digits toward the center line */}
         <span style={{ marginRight: '-0.12em' }}>{digits[0]}</span>
         <span style={{ marginLeft: '-0.12em' }}>{digits[1]}</span>

@@ -79,23 +79,20 @@ const Clock = () => {
   return (
     <>
       <style>{styleTag}</style>
-      <div 
-        className="clock" 
-        role="timer" 
-        aria-live="polite" 
+      <div
+        className="clock"
+        role="timer"
+        aria-live="polite"
         aria-label={`Current time is ${hours} hours, ${minutes} minutes, and ${seconds} seconds`}
       >
         <div className="segment">
           <div className="time-part">{hours}</div>
-        
         </div>
         <div className="segment">
           <div className="time-part">{minutes}</div>
-     
         </div>
         <div className="segment">
           <div className="time-part">{seconds}</div>
-       
         </div>
       </div>
     </>

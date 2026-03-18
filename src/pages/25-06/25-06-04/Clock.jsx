@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 import coffeeFont from '../../../assets/fonts/25-06-04-cof.ttf';
-import bgStill from "../../../assets/images/25-06/25-06-04/coff.png";
-import bgAnimated from "../../../assets/images/25-06/25-06-04/coff.gif";
+import bgStill from '../../../assets/images/25-06/25-06-04/coff.png';
+import bgAnimated from '../../../assets/images/25-06/25-06-04/coff.gif';
 
 const CoffeeClock = () => {
   const jitterSettings = useRef([]);
@@ -13,7 +13,7 @@ const CoffeeClock = () => {
 
   // Load font
   useEffect(() => {
-    const font = new FontFace("cof", `url(${coffeeFont})`);
+    const font = new FontFace('cof', `url(${coffeeFont})`);
     font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
     });
@@ -21,7 +21,6 @@ const CoffeeClock = () => {
 
   // Animate numbers jitter
   useEffect(() => {
-
     for (let i = 0; i < 12; i++) {
       jitterSettings.current[i] = {
         phase: Math.random() * Math.PI * 2,
@@ -35,8 +34,8 @@ const CoffeeClock = () => {
     const loop = () => {
       const t = performance.now() / 30;
       jitterSettings.current.forEach((j, idx) => {
-        const dx = Math.sin(t * j.freq + j.phase) * j.ampX + "vw";
-        const dy = Math.cos(t * j.freq + j.phase) * j.ampY + "vh";
+        const dx = Math.sin(t * j.freq + j.phase) * j.ampX + 'vw';
+        const dy = Math.cos(t * j.freq + j.phase) * j.ampY + 'vh';
         const rot = Math.sin(t * j.freq * 0.9 + j.phase) * j.ampR;
         const el = numberRefs.current[idx];
         if (el) {
@@ -50,7 +49,6 @@ const CoffeeClock = () => {
 
   // Clock hands
   useEffect(() => {
-
     const updateClock = () => {
       const now = new Date();
       const sec = now.getSeconds();
@@ -76,68 +74,68 @@ const CoffeeClock = () => {
 
   // Styles
   const numberStyle = {
-    position: "absolute",
-    width: "6vh",
-    height: "6vh",
-    textAlign: "center",
-    lineHeight: "6vh",
-    fontFamily: "cof, sans-serif",
-    fontWeight: "bold",
-    fontSize: "13vh",
-    color: "rgb(235, 190, 7)",
-    textShadow: "#3f2705 0 0.6rem 0, #fdddbc 0 -0.2rem 0",
-    pointerEvents: "none",
+    position: 'absolute',
+    width: '6vh',
+    height: '6vh',
+    textAlign: 'center',
+    lineHeight: '6vh',
+    fontFamily: 'cof, sans-serif',
+    fontWeight: 'bold',
+    fontSize: '13vh',
+    color: 'rgb(235, 190, 7)',
+    textShadow: '#3f2705 0 0.6rem 0, #fdddbc 0 -0.2rem 0',
+    pointerEvents: 'none',
   };
 
   const handBase = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transformOrigin: "left center",
-    transition: "all 0.05s ease-in-out",
-    background: "rgb(235, 190, 7)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transformOrigin: 'left center',
+    transition: 'all 0.05s ease-in-out',
+    background: 'rgb(235, 190, 7)',
   };
 
   const clockStyle = {
-    width: "90vmin",
-    height: "90vmin",
-    borderRadius: "50%",
-    position: "relative",
+    width: '90vmin',
+    height: '90vmin',
+    borderRadius: '50%',
+    position: 'relative',
     zIndex: 4,
     opacity: 0.8,
   };
 
   const dotStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    width: "9vmin",
-    height: "9vmin",
-    background: "rgb(235, 190, 7)",
-    borderRadius: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: '9vmin',
+    height: '9vmin',
+    background: 'rgb(235, 190, 7)',
+    borderRadius: '50%',
+    transform: 'translate(-50%, -50%)',
     zIndex: 5,
   };
 
   const bgStillStyle = {
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    width: "110vmin",
-    height: "110vmin",
-    objectFit: "cover",
-    transform: "translate(-50%, -50%)",
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    width: '110vmin',
+    height: '110vmin',
+    objectFit: 'cover',
+    transform: 'translate(-50%, -50%)',
     zIndex: 2,
   };
 
   const bgAnimStyle = {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    filter: "invert(100%) contrast(200%) brightness(150%)",
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    filter: 'invert(100%) contrast(200%) brightness(150%)',
     zIndex: 3,
     opacity: 0.4,
   };
@@ -146,22 +144,34 @@ const CoffeeClock = () => {
   const containerStyle = {
     margin: 0,
     padding: 0,
-    height: "100dvh",
-    width: "100vw",
-    background: "#5c4106",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-    position: "relative",
+    height: '100dvh',
+    width: '100vw',
+    background: '#5c4106',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    position: 'relative',
     opacity: 1,
   };
 
   // Actual clock render
   return (
     <div style={containerStyle}>
-      <img decoding="async" loading="lazy" src={bgStill} alt="Still Background" style={bgStillStyle} />
-      <img decoding="async" loading="lazy" src={bgAnimated} alt="Animated Overlay" style={bgAnimStyle} />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bgStill}
+        alt="Still Background"
+        style={bgStillStyle}
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bgAnimated}
+        alt="Animated Overlay"
+        style={bgAnimStyle}
+      />
 
       <div style={clockStyle}>
         {[...Array(12)].map((_, i) => {
@@ -181,15 +191,15 @@ const CoffeeClock = () => {
         })}
         <div
           ref={hourHandRef}
-          style={{ ...handBase, width: "20vmin", height: "3.8vmin" }}
+          style={{ ...handBase, width: '20vmin', height: '3.8vmin' }}
         ></div>
         <div
           ref={minuteHandRef}
-          style={{ ...handBase, width: "30vmin", height: "1.9vmin" }}
+          style={{ ...handBase, width: '30vmin', height: '1.9vmin' }}
         ></div>
         <div
           ref={secondHandRef}
-          style={{ ...handBase, width: "45vmin", height: "0.9vmin" }}
+          style={{ ...handBase, width: '45vmin', height: '0.9vmin' }}
         ></div>
         <div style={dotStyle}></div>
       </div>

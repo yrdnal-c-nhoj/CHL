@@ -39,12 +39,24 @@ const MintClock = () => {
     updateClock();
     const interval = setInterval(updateClock, 1000);
 
-    [hourHand, minuteHand, secondHand].forEach(hand => {
+    [hourHand, minuteHand, secondHand].forEach((hand) => {
       hand.onerror = () => {
         console.error(`Failed to load image for ${hand.alt} at ${hand.src}`);
-        hand.style.background = hand.classList.contains('hour') ? 'blue' : hand.classList.contains('minute') ? 'green' : 'red';
-        hand.style.width = hand.classList.contains('hour') ? '0.3rem' : hand.classList.contains('minute') ? '0.2rem' : '0.1rem';
-        hand.style.height = hand.classList.contains('hour') ? '6rem' : hand.classList.contains('minute') ? '8rem' : '10rem';
+        hand.style.background = hand.classList.contains('hour')
+          ? 'blue'
+          : hand.classList.contains('minute')
+            ? 'green'
+            : 'red';
+        hand.style.width = hand.classList.contains('hour')
+          ? '0.3rem'
+          : hand.classList.contains('minute')
+            ? '0.2rem'
+            : '0.1rem';
+        hand.style.height = hand.classList.contains('hour')
+          ? '6rem'
+          : hand.classList.contains('minute')
+            ? '8rem'
+            : '10rem';
       };
     });
 
@@ -52,7 +64,18 @@ const MintClock = () => {
   }, []);
 
   return (
-    <div style={{ margin: 0, height: '100vh', width: '100vw', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#85ed6b', overflow: 'hidden' }}>
+    <div
+      style={{
+        margin: 0,
+        height: '100vh',
+        width: '100vw',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#85ed6b',
+        overflow: 'hidden',
+      }}
+    >
       <style>
         {`
           @font-face {
@@ -137,9 +160,27 @@ const MintClock = () => {
       </style>
       <div className="bgimage"></div>
       <div className="clock" id="clock">
-        <img decoding="async" loading="lazy" className="hand hour" src={hourImg} alt="Hour Hand" />
-        <img decoding="async" loading="lazy" className="hand minute" src={minuteImg} alt="Minute Hand" />
-        <img decoding="async" loading="lazy" className="hand second" src={secondImg} alt="Second Hand" />
+        <img
+          decoding="async"
+          loading="lazy"
+          className="hand hour"
+          src={hourImg}
+          alt="Hour Hand"
+        />
+        <img
+          decoding="async"
+          loading="lazy"
+          className="hand minute"
+          src={minuteImg}
+          alt="Minute Hand"
+        />
+        <img
+          decoding="async"
+          loading="lazy"
+          className="hand second"
+          src={secondImg}
+          alt="Second Hand"
+        />
         <div className="center-dot"></div>
       </div>
     </div>

@@ -9,18 +9,21 @@ BorrowedTime is an experimental digital art project by Cubist Heart Laboratories
 ## 🛠️ Complete Tech Stack
 
 ### Frontend Framework & Build Tools
+
 - **React 18.3.1** - Component-based UI framework with hooks
 - **Vite 7.1.6** - Fast build tool and development server
 - **React Router 6.30.1** - Client-side routing with dynamic routes
 - **Node.js 24.x** - Runtime environment
 
 ### Styling & CSS
+
 - **Tailwind CSS 4.1.18** - Utility-first CSS framework
 - **Styled Components 6.1.19** - CSS-in-JS styling
 - **PostCSS** - CSS processing with autoprefixer
 - **CSS Modules** - Component-scoped styling
 
 ### Visual Effects & Animation Libraries
+
 - **Canvas API** - Custom animations and particle effects
 - **GSAP 3.13.0** - Professional animation library
 - **Three.js 0.180.0** - 3D graphics and WebGL rendering
@@ -28,6 +31,7 @@ BorrowedTime is an experimental digital art project by Cubist Heart Laboratories
 - **React Three Drei 9.122.0** - Three.js helpers and abstractions
 
 ### Data & APIs
+
 - **Axios 1.13.2** - HTTP client for API requests
 - **Google APIs 159.0.0** - Google services integration
 - **Twitter API v2 1.27.0** - Social media integration
@@ -35,6 +39,7 @@ BorrowedTime is an experimental digital art project by Cubist Heart Laboratories
 - **MongoDB 7.0.0** - Database driver
 
 ### Development & Utilities
+
 - **ESLint** - Code linting and formatting
 - **Babel** - JavaScript transpilation with React preset
 - **Vite Plugin Compression** - Brotli compression for production
@@ -44,10 +49,12 @@ BorrowedTime is an experimental digital art project by Cubist Heart Laboratories
 - **Papa Parse 5.5.3** - CSV parsing library
 
 ### Analytics & Monitoring
+
 - **React GA4 2.1.0** - Google Analytics 4 integration
 - **Custom Analytics System** - Privacy-aware tracking with DNT support
 
 ### Typography & Fonts
+
 - **FontSource Roboto Mono 5.2.8** - Monospace font family
 - **FontSource Share Tech Mono 5.2.7** - Technical monospace font
 - **300+ Custom Fonts** - Daily unique fonts in TTF/WOFF2 format
@@ -112,6 +119,7 @@ CHL/
 ## 🎨 Clock Component Architecture
 
 ### Component Structure Pattern
+
 Each daily clock follows this standardized structure:
 
 ```jsx
@@ -143,7 +151,13 @@ const Clock = () => {
   }, [dimensions]);
 
   return (
-    <div style={{/* Container styles */}}>
+    <div
+      style={
+        {
+          /* Container styles */
+        }
+      }
+    >
       {/* Layer 1: Background video/image (zIndex: 1) */}
       {/* Layer 2: Tiled overlays (zIndex: 2) */}
       {/* Layer 3: Canvas animations (zIndex: 5) */}
@@ -158,12 +172,14 @@ export default Clock;
 ### Advanced Clock Examples
 
 #### 26-03-01: Multi-Layered Visual Experience
+
 - **Background Layer**: west.mp4 with hue/saturation filter
 - **Middle Layer**: Tiled cloud.gif with horizontal flip and opacity
 - **Animation Layer**: Neon rain canvas with screen blend mode
 - **Content Layer**: Silver analog clock with real-time updates
 
 #### 26-03-03: Pure Canvas Animation
+
 - Neon rain particle system with 30 drops
 - Bezier curve ripple effects
 - Trail effects with semi-transparent clearing
@@ -172,24 +188,28 @@ export default Clock;
 ## 🚀 Core Features & Functionality
 
 ### Dynamic Clock Loading System
+
 - **Route-based Loading**: `/YY-MM-DD` URLs map to clock components
 - **Asset Preloading**: Images, fonts, and videos loaded before render
 - **Fallback System**: Graceful degradation for missing assets
 - **Performance Optimization**: Lazy loading and code splitting
 
 ### Navigation & UX
+
 - **Auto-hiding Navigation**: Footer fades after inactivity
 - **Smooth Transitions**: Loading states and fade animations
 - **Keyboard Navigation**: Full accessibility support
 - **Touch Support**: Mobile-optimized interactions
 
 ### Data Management
+
 - **JSON-driven Metadata**: 335 clocks with titles and dates
 - **Environment-based Loading**: Production vs test data
 - **Date Validation**: Robust date format checking
 - **Sorting System**: Date, title, and random sorting options
 
 ### Font Management
+
 - **300+ Custom Fonts**: Daily unique typography
 - **Dynamic Font Loading**: Prevents Flash of Unstyled Text
 - **Font Isolation**: Each clock gets isolated font context
@@ -198,20 +218,21 @@ export default Clock;
 ## 🎯 Visual Effects & Animation Techniques
 
 ### Canvas Animations
+
 ```jsx
 // Neon rain particle system
 class Drop {
   constructor() {
     this.init();
   }
-  
+
   init() {
     this.x = Math.random() * w;
     this.y = 0;
     this.vy = Math.random() * 1 + 4;
     this.color = 'hsl(220, 100%, 80%)';
   }
-  
+
   draw() {
     // Falling drop or expanding ripple
     if (this.y > this.hit) {
@@ -225,12 +246,14 @@ class Drop {
 ```
 
 ### Video Backgrounds
+
 - **Auto-playing looped videos** with muted attribute
 - **CSS Filters**: hue-rotate, saturate, brightness adjustments
 - **Responsive Positioning**: Cover entire viewport
 - **Performance Optimized**: playsInline for mobile
 
 ### Layer System
+
 - **zIndex: 1** - Background video/image
 - **zIndex: 2** - Tiled overlays (GIFs, patterns)
 - **zIndex: 5** - Canvas animations (particles, effects)
@@ -239,6 +262,7 @@ class Drop {
 ## 📊 Analytics & Performance
 
 ### Privacy-Aware Analytics
+
 ```jsx
 // Custom analytics with DNT support
 const shouldTrack = () => Boolean(GA_ID) && isProdEnv() && !dntEnabled();
@@ -251,6 +275,7 @@ export const pageview = (url) => {
 ```
 
 ### Performance Optimizations
+
 - **Code Splitting**: Dynamic imports for clock components
 - **Asset Preloading**: Images, fonts, videos loaded before render
 - **Memory Management**: Cleanup on component unmount
@@ -259,6 +284,7 @@ export const pageview = (url) => {
 ## 🔧 Configuration Files
 
 ### Vite Configuration
+
 ```javascript
 export default defineConfig({
   plugins: [
@@ -288,12 +314,10 @@ export default defineConfig({
 ```
 
 ### Tailwind CSS Configuration
+
 ```javascript
 module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}"
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       // Custom theme extensions
@@ -306,10 +330,12 @@ module.exports = {
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - **Node.js 24.x** (specified in package.json engines)
 - **npm** or **yarn** package manager
 
 ### Installation
+
 ```bash
 # Clone the repository
 git clone <repository-url>
@@ -333,6 +359,7 @@ npm run preview
 ```
 
 ### Environment Variables
+
 ```env
 # .env file
 VITE_ENVIRONMENT=production
@@ -345,11 +372,13 @@ VITE_API_URL=your_api_url
 ### Step-by-Step Guide
 
 1. **Create Date Folder Structure**
+
    ```bash
    mkdir -p src/pages/26-03/26-03-32
    ```
 
 2. **Create Clock Component**
+
    ```jsx
    // src/pages/26-03/26-03-32/Clock.jsx
    import React, { useState, useEffect, useRef } from 'react';
@@ -359,7 +388,13 @@ VITE_API_URL=your_api_url
    const Clock = () => {
      // Your clock implementation
      return (
-       <div style={{/* Your styles */}}>
+       <div
+         style={
+           {
+             /* Your styles */
+           }
+         }
+       >
          {/* Your clock content */}
        </div>
      );
@@ -369,10 +404,11 @@ VITE_API_URL=your_api_url
    ```
 
 3. **Add Assets**
+
    ```bash
    # Add fonts
    cp your-font.woff2 src/assets/fonts/26-03-32-font.woff2
-   
+
    # Add images/videos
    cp your-bg.jpg src/assets/images/26-03/26-03-32/bg.jpg
    ```
@@ -384,6 +420,7 @@ VITE_API_URL=your_api_url
    ```
 
 ### Clock Component Template
+
 ```jsx
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 
@@ -408,22 +445,24 @@ const Clock = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
+
     const ctx = canvas.getContext('2d');
     // Your animation code here
-    
+
     return () => {
       // Cleanup
     };
   }, []);
 
   return (
-    <div style={{
-      width: '100vw',
-      height: '100vh',
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
+    <div
+      style={{
+        width: '100vw',
+        height: '100vh',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
       {/* Background layers */}
       {/* Animation layers */}
       {/* Content overlay */}
@@ -437,18 +476,21 @@ export default Clock;
 ## 🎨 Design Patterns & Best Practices
 
 ### Component Architecture
+
 - **Single Responsibility**: Each clock has one primary visual concept
 - **Consistent Layering**: Standardized z-index system
 - **Performance First**: Efficient animations and memory management
 - **Responsive Design**: Works across all viewport sizes
 
 ### Asset Organization
+
 - **Date-based Structure**: Assets organized by `YY-MM/YY-MM-DD/`
 - **Font Naming**: `YY-MM-DD-description.ttf/woff2`
 - **Image Formats**: WebP for modern browsers, fallbacks for legacy
 - **Video Optimization**: MP4 with appropriate compression
 
 ### Code Quality
+
 - **ESLint Configuration**: Consistent code style
 - **Component Documentation**: Clear comments and JSDoc
 - **Error Handling**: Graceful degradation for missing assets
@@ -457,6 +499,7 @@ export default Clock;
 ## 🌐 Deployment & Production
 
 ### Build Process
+
 ```bash
 # Production build with optimizations
 npm run build
@@ -472,11 +515,13 @@ dist/
 ```
 
 ### Environment Configuration
+
 - **Production**: Optimized builds with compression
 - **Development**: Hot reload and fast refresh
 - **Testing**: Test data and development tools
 
 ### Docker Deployment
+
 ```dockerfile
 FROM node:24-alpine
 WORKDIR /app
@@ -489,6 +534,7 @@ CMD ["npm", "run", "preview"]
 ```
 
 ### Vercel Configuration
+
 ```json
 {
   "buildCommand": "npm run build",
@@ -501,23 +547,26 @@ CMD ["npm", "run", "preview"]
 ## 📊 Analytics & SEO
 
 ### Google Analytics Integration
+
 - **Privacy-First**: Respects Do Not Track settings
 - **SPA Support**: Manual page view tracking
 - **Environment-Aware**: Only tracks in production
 - **Performance Optimized**: Dynamic script loading
 
 ### SEO Optimization
+
 - **Dynamic Meta Tags**: Per-clock titles and descriptions
 - **Open Graph**: Social media sharing cards
 - **Canonical URLs**: Proper URL canonicalization
 - **Structured Data**: JSON-LD for search engines
 
 ### Meta Tag System
+
 ```jsx
 const AnalyticsAndSEO = () => {
   const location = useLocation();
   const path = location.pathname === '/index.html' ? '/' : location.pathname;
-  
+
   const meta = dynamicClockRoute.test(path)
     ? {
         title: `BorrowedTime Clock for ${path.slice(1)}`,
@@ -545,11 +594,12 @@ const AnalyticsAndSEO = () => {
 ## 🔮 Advanced Features
 
 ### Dynamic Font Loading
+
 ```jsx
 const DynamicComponent = () => {
   const [fontReady, setFontReady] = useState(false);
   const fontFamily = `CustomFont_${new Date().toISOString().split('T')[0].replace(/-/g, '')}_${generateRandomString()}`;
-  
+
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
@@ -575,14 +625,20 @@ const DynamicComponent = () => {
 ```
 
 ### Image Grid System
+
 ```jsx
 const ImageGrid = () => {
   const [images, setImages] = useState([]);
-  
+
   useEffect(() => {
     // Vite glob import for all images
-    const imageModules = import.meta.glob('/src/assets/images/**/*.{png,jpg,jpeg,gif,svg,webp}', { eager: true });
-    const imageUrls = Object.values(imageModules).map(module => module.default);
+    const imageModules = import.meta.glob(
+      '/src/assets/images/**/*.{png,jpg,jpeg,gif,svg,webp}',
+      { eager: true },
+    );
+    const imageUrls = Object.values(imageModules).map(
+      (module) => module.default,
+    );
     setImages(imageUrls);
   }, []);
 
@@ -597,6 +653,7 @@ const ImageGrid = () => {
 ```
 
 ### Real-time Clock Components
+
 ```jsx
 const AnalogClock = () => {
   const [time, setTime] = useState(new Date());
@@ -616,7 +673,13 @@ const AnalogClock = () => {
   const hourAngle = hours * 30 + minutes * 0.5;
 
   return (
-    <div style={{/* Clock face styles */}}>
+    <div
+      style={
+        {
+          /* Clock face styles */
+        }
+      }
+    >
       {/* Hour markers */}
       {/* Clock hands with calculated angles */}
       {/* Center pivot */}
@@ -628,6 +691,7 @@ const AnalogClock = () => {
 ## 🤝 Contributing Guidelines
 
 ### Development Workflow
+
 1. **Fork Repository** - Create your fork
 2. **Feature Branch** - `git checkout -b feature/new-clock`
 3. **Development** - Follow coding standards
@@ -636,12 +700,14 @@ const AnalogClock = () => {
 6. **Pull Request** - Submit with detailed description
 
 ### Code Standards
+
 - **ESLint Configuration**: Follow defined linting rules
 - **Component Structure**: Use established patterns
 - **Asset Organization**: Follow naming conventions
 - **Performance**: Optimize for smooth animations
 
 ### Testing Guidelines
+
 - **Cross-browser Testing**: Chrome, Firefox, Safari, Edge
 - **Mobile Testing**: iOS Safari, Chrome Mobile
 - **Performance Testing**: 60fps animations
@@ -652,12 +718,14 @@ const AnalogClock = () => {
 This project is part of Cubist Heart Laboratories' experimental art collection.
 
 ### Technology Credits
+
 - **React Team** - For the amazing React framework
 - **Vite Team** - For the lightning-fast build tool
 - **Three.js Community** - For 3D graphics capabilities
 - **Open Source Contributors** - For the countless libraries used
 
 ### Art Credits
+
 - **Internet Artists** - For the found images and media
 - **Type Designers** - For the beautiful fonts
 - **Digital Alchemists** - For transforming the ordinary into extraordinary
@@ -665,6 +733,7 @@ This project is part of Cubist Heart Laboratories' experimental art collection.
 ## 🔮 Future Roadmap
 
 ### Planned Features
+
 - **3D Clock Variations** - Using Three.js and WebGL
 - **Audio Integration** - Sound effects and ambient audio
 - **User Customization** - Personalizable clock settings
@@ -673,6 +742,7 @@ This project is part of Cubist Heart Laboratories' experimental art collection.
 - **AI-Generated Clocks** - Using AI for unique designs
 
 ### Technical Improvements
+
 - **WebAssembly Integration** - For performance-critical animations
 - **Service Workers** - Offline functionality
 - **WebRTC** - Real-time collaborative features
@@ -681,12 +751,14 @@ This project is part of Cubist Heart Laboratories' experimental art collection.
 ## 📞 Support & Community
 
 ### Getting Help
+
 - **Documentation**: This README and inline code comments
 - **Issues**: GitHub Issues for bug reports
 - **Contact**: cubistheart@gmail.com
 - **Social**: @cubistheartlabs on Instagram and X
 
 ### Community
+
 - **Newsletter**: Monthly updates via Buttondown
 - **Discord**: Community discussions (coming soon)
 - **Workshops**: Clock creation tutorials (planned)
@@ -695,7 +767,7 @@ This project is part of Cubist Heart Laboratories' experimental art collection.
 
 ## 🎨 Design Philosophy
 
-*BorrowedTime* operates on these core principles:
+_BorrowedTime_ operates on these core principles:
 
 1. **One Clock Per Day** - Each date gets a unique visual interpretation
 2. **Technical Experimentation** - Showcase cutting-edge web technologies
@@ -712,6 +784,6 @@ To everyone who contributes to the vast ecosystem of open-source software that m
 
 ---
 
-*BorrowedTime - A new clock every day, because time is the ultimate borrowed resource.*
+_BorrowedTime - A new clock every day, because time is the ultimate borrowed resource._
 
-🧊🫀🔭 *Cubist Heart Laboratories* 🧊🫀🔭
+🧊🫀🔭 _Cubist Heart Laboratories_ 🧊🫀🔭

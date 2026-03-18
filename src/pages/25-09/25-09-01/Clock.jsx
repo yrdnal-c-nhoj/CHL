@@ -4,8 +4,16 @@ import bgImage from '../../../assets/images/25-09/25-09-01/clo.webp';
 import cornerImage from '../../../assets/images/25-09/25-09-01/seal.png';
 
 const chineseDigits = {
-  0: '零', 1: '一', 2: '二', 3: '三', 4: '四',
-  5: '五', 6: '六', 7: '七', 8: '八', 9: '九'
+  0: '零',
+  1: '一',
+  2: '二',
+  3: '三',
+  4: '四',
+  5: '五',
+  6: '六',
+  7: '七',
+  8: '八',
+  9: '九',
 };
 
 const ChinaClock = () => {
@@ -30,13 +38,12 @@ const ChinaClock = () => {
     const minutes = date.getMinutes().toString().padStart(2, '0').split('');
     const seconds = date.getSeconds().toString().padStart(2, '0').split('');
 
-    const toChinese = (digits) => digits.map(d => chineseDigits[d]).join('');
+    const toChinese = (digits) => digits.map((d) => chineseDigits[d]).join('');
 
     return isMobile
       ? [toChinese(hours), toChinese(minutes), toChinese(seconds)]
       : `${toChinese(hours)}:${toChinese(minutes)}.${toChinese(seconds)}`;
   };
-
 
   const timeParts = formatTimeToChinese(time);
 
@@ -66,51 +73,66 @@ const ChinaClock = () => {
   const partStyle = { textAlign: 'center' };
 
   return (
-    <div style={{
-      position: 'relative',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100dvh',
-      width: '100vw',
-      margin: 0,
-      padding: 0,
-      overflow: 'hidden',
-    }}>
+    <div
+      style={{
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100dvh',
+        width: '100vw',
+        margin: 0,
+        padding: 0,
+        overflow: 'hidden',
+      }}
+    >
       {/* Background */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        filter: 'invert(100%) hue-rotate(180deg) brightness(0.5) contrast(1.3) saturate(1.2)',
-        zIndex: 0,
-      }}>
-        <div style={{
+      <div
+        style={{
           position: 'absolute',
           top: 0,
           left: 0,
           width: '100%',
           height: '100%',
-          background: 'radial-gradient(circle, rgba(0,0,0,0) 70%, rgba(0,0,0,0.6) 100%)',
-        }} />
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          filter:
+            'invert(100%) hue-rotate(180deg) brightness(0.5) contrast(1.3) saturate(1.2)',
+          zIndex: 0,
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background:
+              'radial-gradient(circle, rgba(0,0,0,0) 70%, rgba(0,0,0,0.6) 100%)',
+          }}
+        />
       </div>
 
       {/* Clock */}
       <div style={clockStyle} className={DigitalClock.clock}>
-        {isMobile
-          ? timeParts.map((part, idx) => <div key={idx} style={partStyle}>{part}</div>)
-          : <span style={partStyle}>{timeParts}</span>
-        }
+        {isMobile ? (
+          timeParts.map((part, idx) => (
+            <div key={idx} style={partStyle}>
+              {part}
+            </div>
+          ))
+        ) : (
+          <span style={partStyle}>{timeParts}</span>
+        )}
       </div>
 
       {/* Upper Right Corner Image */}
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={cornerImage}
         alt="Corner"
         style={{

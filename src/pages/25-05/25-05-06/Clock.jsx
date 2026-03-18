@@ -1,19 +1,43 @@
 import React, { useEffect, useRef } from 'react';
 
 const googleFonts = [
-  'Kablammo', 'Oi', 'Ballet', 'Stalinist One', 'Silkscreen', 'Creepster', 
-  'Monoton', 'Rubik Beastly', 'Lakki Reddy', 'Metal Mania', 
-  'Kumar One Outline', 'Rye', 'Nosifer', 'Caesar Dressing', 'Moo Lah Lah', 'Danfo'
+  'Kablammo',
+  'Oi',
+  'Ballet',
+  'Stalinist One',
+  'Silkscreen',
+  'Creepster',
+  'Monoton',
+  'Rubik Beastly',
+  'Lakki Reddy',
+  'Metal Mania',
+  'Kumar One Outline',
+  'Rye',
+  'Nosifer',
+  'Caesar Dressing',
+  'Moo Lah Lah',
+  'Danfo',
 ];
 
 const UnrulyClock = () => {
   const digitRefs = useRef([]);
   // Added 'shake' to the behavior list
-  const animations = ['bounce', 'skew', 'skew2', 'rotate', 'rotateRev', 'scale', 'scale2', 'shake'];
+  const animations = [
+    'bounce',
+    'skew',
+    'skew2',
+    'rotate',
+    'rotateRev',
+    'scale',
+    'scale2',
+    'shake',
+  ];
 
   useEffect(() => {
     const link = document.createElement('link');
-    const fontQuery = googleFonts.map(f => `family=${f.replace(/ /g, '+')}`).join('&');
+    const fontQuery = googleFonts
+      .map((f) => `family=${f.replace(/ /g, '+')}`)
+      .join('&');
     link.href = `https://fonts.googleapis.com/css2?${fontQuery}&display=swap`;
     link.rel = 'stylesheet';
     document.head.appendChild(link);
@@ -21,21 +45,24 @@ const UnrulyClock = () => {
     const updateClock = () => {
       const now = new Date();
       const timeStr = [now.getHours(), now.getMinutes(), now.getSeconds()]
-        .map(n => String(n).padStart(2, '0')).join('');
+        .map((n) => String(n).padStart(2, '0'))
+        .join('');
 
       [...timeStr].forEach((val, i) => {
         const el = digitRefs.current[i];
         if (!el) return;
-        
+
         // Randomize Appearance
         el.textContent = val;
         el.style.fontFamily = `'${googleFonts[Math.floor(Math.random() * googleFonts.length)]}', cursive`;
         el.style.color = `hsl(${Math.floor(Math.random() * 360)}, 100%, 60%)`;
-        
+
         // Trigger Animation
         el.classList.remove(...animations);
         void el.offsetWidth; // Force reflow to restart animation
-        el.classList.add(animations[Math.floor(Math.random() * animations.length)]);
+        el.classList.add(
+          animations[Math.floor(Math.random() * animations.length)],
+        );
       });
     };
 
@@ -136,7 +163,7 @@ const UnrulyClock = () => {
         {[...Array(6)].map((_, i) => (
           <div
             key={i}
-            ref={el => (digitRefs.current[i] = el)}
+            ref={(el) => (digitRefs.current[i] = el)}
             className="digit"
           >
             0

@@ -103,7 +103,8 @@ const DigitalClock = () => {
       0 3rem 6rem rgba(0,0,0,0.6)
     `,
     filter: 'brightness(1.15) contrast(1.3) saturate(1.4)',
-    animation: 'float 7s ease-in-out infinite, rainbow-glow 6s ease-in-out infinite',
+    animation:
+      'float 7s ease-in-out infinite, rainbow-glow 6s ease-in-out infinite',
   };
 
   const containerStyle = {
@@ -137,7 +138,8 @@ const DigitalClock = () => {
     gap: isMobile ? '1.5rem' : '2rem',
     position: 'relative',
     zIndex: 10,
-    animation: 'entrance 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s both',
+    animation:
+      'entrance 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s both',
     transform: 'translateZ(0)',
     perspective: '1200px',
   };
@@ -167,8 +169,10 @@ const DigitalClock = () => {
       radial-gradient(circle at 25% 75%, rgba(245,101,101,0.25) 0%, transparent 4%),
       radial-gradient(circle at 75% 25%, rgba(236,72,153,0.2) 0%, transparent 3%)
     `,
-    backgroundSize: '350px 350px, 300px 300px, 450px 450px, 400px 400px, 250px 250px, 320px 320px, 280px 280px',
-    animation: 'cosmic-drift 35s linear infinite, twinkle 3s ease-in-out infinite',
+    backgroundSize:
+      '350px 350px, 300px 300px, 450px 450px, 400px 400px, 250px 250px, 320px 320px, 280px 280px',
+    animation:
+      'cosmic-drift 35s linear infinite, twinkle 3s ease-in-out infinite',
   };
 
   const auroraOverlayStyle = {
@@ -199,18 +203,30 @@ const DigitalClock = () => {
 
       <div style={timeContainerStyle}>
         <div style={{ ...timeGroupStyle, animationDelay: '0s' }}>
-          <div style={{ ...digitBoxStyle, animationDelay: '0.1s' }}>{hours[0]}</div>
-          <div style={{ ...digitBoxStyle, animationDelay: '0.2s' }}>{hours[1]}</div>
+          <div style={{ ...digitBoxStyle, animationDelay: '0.1s' }}>
+            {hours[0]}
+          </div>
+          <div style={{ ...digitBoxStyle, animationDelay: '0.2s' }}>
+            {hours[1]}
+          </div>
         </div>
 
         <div style={{ ...timeGroupStyle, animationDelay: '1.2s' }}>
-          <div style={{ ...digitBoxStyle, animationDelay: '0.3s' }}>{minutes[0]}</div>
-          <div style={{ ...digitBoxStyle, animationDelay: '0.4s' }}>{minutes[1]}</div>
+          <div style={{ ...digitBoxStyle, animationDelay: '0.3s' }}>
+            {minutes[0]}
+          </div>
+          <div style={{ ...digitBoxStyle, animationDelay: '0.4s' }}>
+            {minutes[1]}
+          </div>
         </div>
 
         <div style={{ ...timeGroupStyle, animationDelay: '2.4s' }}>
-          <div style={{ ...digitBoxStyle, animationDelay: '0.5s' }}>{seconds[0]}</div>
-          <div style={{ ...digitBoxStyle, animationDelay: '0.6s' }}>{seconds[1]}</div>
+          <div style={{ ...digitBoxStyle, animationDelay: '0.5s' }}>
+            {seconds[0]}
+          </div>
+          <div style={{ ...digitBoxStyle, animationDelay: '0.6s' }}>
+            {seconds[1]}
+          </div>
         </div>
       </div>
 

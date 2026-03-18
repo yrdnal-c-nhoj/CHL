@@ -3,9 +3,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import hourHand from '../../../assets/images/25-04/25-04-21/hour.gif';
 import minuteHand from '../../../assets/images/25-04/25-04-21/minute.gif';
 import secondHand from '../../../assets/images/25-04/25-04-21/second.gif';
-import bgImage from '../../../assets/images/25-04/25-04-21/pp.gif';   // spinning layer
+import bgImage from '../../../assets/images/25-04/25-04-21/pp.gif'; // spinning layer
 import mainBackground from '../../../assets/images/25-04/25-04-21/p.jpg'; // static full-screen background
-import overlayTopLeft from '../../../assets/images/25-04/25-04-21/Pea.gif';     // top-left overlay
+import overlayTopLeft from '../../../assets/images/25-04/25-04-21/Pea.gif'; // top-left overlay
 import overlayBottomRight from '../../../assets/images/25-04/25-04-21/Pea2.gif'; // bottom-right overlay (different file)
 
 export default function AnalogImageClock() {
@@ -118,14 +118,47 @@ export default function AnalogImageClock() {
 
       {/* Clock */}
       <div className="clock-face" aria-label="Analog clock">
-        <img decoding="async" loading="lazy" ref={hourRef} src={hourHand} alt="hour hand" className="hand hour-hand" />
-        <img decoding="async" loading="lazy" ref={minuteRef} src={minuteHand} alt="minute hand" className="hand minute-hand" />
-        <img decoding="async" loading="lazy" ref={secondRef} src={secondHand} alt="second hand" className="hand second-hand" />
+        <img
+          decoding="async"
+          loading="lazy"
+          ref={hourRef}
+          src={hourHand}
+          alt="hour hand"
+          className="hand hour-hand"
+        />
+        <img
+          decoding="async"
+          loading="lazy"
+          ref={minuteRef}
+          src={minuteHand}
+          alt="minute hand"
+          className="hand minute-hand"
+        />
+        <img
+          decoding="async"
+          loading="lazy"
+          ref={secondRef}
+          src={secondHand}
+          alt="second hand"
+          className="hand second-hand"
+        />
       </div>
 
       {/* Overlay images */}
-      <img decoding="async" loading="lazy" src={overlayTopLeft} alt="top left overlay" className="top-left overlay" />
-      <img decoding="async" loading="lazy" src={overlayBottomRight} alt="bottom right overlay" className="bottom-right overlay" />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={overlayTopLeft}
+        alt="top left overlay"
+        className="top-left overlay"
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={overlayBottomRight}
+        alt="bottom right overlay"
+        className="bottom-right overlay"
+      />
     </div>
   );
 }

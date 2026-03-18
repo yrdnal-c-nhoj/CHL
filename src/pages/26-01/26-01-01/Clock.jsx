@@ -11,7 +11,7 @@ const InvertedClock = () => {
   const hourHandRef = useRef(null);
   const [bgReady, setBgReady] = useState(false);
   const [fontLoaded, setFontLoaded] = useState(false);
-  
+
   // Simple scoped font loading without leaks
   useEffect(() => {
     const loadFont = async () => {
@@ -25,7 +25,7 @@ const InvertedClock = () => {
         setFontLoaded(false);
       }
     };
-    
+
     loadFont();
   }, []);
 
@@ -33,21 +33,24 @@ const InvertedClock = () => {
     const t = setInterval(() => {
       const now = new Date();
       setTime(now);
-      
+
       const ms = now.getMilliseconds();
       const seconds = now.getSeconds() + ms / 1000;
       const minutes = now.getMinutes() + seconds / 60;
       const hours = now.getHours() + minutes / 60;
 
-      // Note: Added -90 to the degree calculation to account for 
+      // Note: Added -90 to the degree calculation to account for
       // the CSS 'right: 50%' starting position (which points to 9 o'clock)
       const secondsDegrees = (seconds / 60) * 360 - 90;
       const minsDegrees = (minutes / 60) * 360 - 90;
       const hourDegrees = (hours / 12) * 360 - 90;
 
-      if (secondHandRef.current) secondHandRef.current.style.transform = `translateY(-50%) rotate(${secondsDegrees}deg)`;
-      if (minHandRef.current) minHandRef.current.style.transform = `translateY(-50%) rotate(${minsDegrees}deg)`;
-      if (hourHandRef.current) hourHandRef.current.style.transform = `translateY(-50%) rotate(${hourDegrees}deg)`;
+      if (secondHandRef.current)
+        secondHandRef.current.style.transform = `translateY(-50%) rotate(${secondsDegrees}deg)`;
+      if (minHandRef.current)
+        minHandRef.current.style.transform = `translateY(-50%) rotate(${minsDegrees}deg)`;
+      if (hourHandRef.current)
+        hourHandRef.current.style.transform = `translateY(-50%) rotate(${hourDegrees}deg)`;
     }, 50);
     return () => clearInterval(t);
   }, []);
@@ -69,8 +72,8 @@ const InvertedClock = () => {
     height: '100dvh',
     overflow: 'hidden',
     backgroundColor: '#000',
-    display: 'flex',        // Added for layout centering
-    alignItems: 'center',    // Centers vertically
+    display: 'flex', // Added for layout centering
+    alignItems: 'center', // Centers vertically
     justifyContent: 'center', // Centers horizontally
     opacity: fontLoaded && bgReady ? 1 : 0,
     transition: 'opacity 0.3s ease-in-out',
@@ -84,12 +87,13 @@ const InvertedClock = () => {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     zIndex: 0,
-      filter: 'grayscale(1) brightness(1.2) sepia(1) hue-rotate(-510deg) saturate(9)',
+    filter:
+      'grayscale(1) brightness(1.2) sepia(1) hue-rotate(-510deg) saturate(9)',
     // filter: 'contrast(1.7)', // Add contrast and brightness filters to background only
   };
 
   const clockOverlayStyle = {
-    position: 'relative',   // Relative to the flex container
+    position: 'relative', // Relative to the flex container
     zIndex: 1,
     mixBlendMode: 'difference',
     display: 'flex',
@@ -156,31 +160,48 @@ const InvertedClock = () => {
           ))}
 
           {/* Hands centered with transformOrigin at the center of the face */}
-          <div 
-            ref={hourHandRef} 
-            style={{ ...handBaseStyle, width: '18vh', height: '2vh', zIndex: 10 }} 
+          <div
+            ref={hourHandRef}
+            style={{
+              ...handBaseStyle,
+              width: '18vh',
+              height: '2vh',
+              zIndex: 10,
+            }}
           />
-          <div 
-            ref={minHandRef} 
-            style={{ ...handBaseStyle, width: '24vh', height: '1.2vh', zIndex: 11 }} 
+          <div
+            ref={minHandRef}
+            style={{
+              ...handBaseStyle,
+              width: '24vh',
+              height: '1.2vh',
+              zIndex: 11,
+            }}
           />
-          <div 
-            ref={secondHandRef} 
-            style={{ ...handBaseStyle, width: '28vh', height: '0.4vh', zIndex: 12 }} 
+          <div
+            ref={secondHandRef}
+            style={{
+              ...handBaseStyle,
+              width: '28vh',
+              height: '0.4vh',
+              zIndex: 12,
+            }}
           />
-          
+
           {/* Optional: Center Pin to hide the joint */}
-           <div style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '2vh',
-            height: '2vh',
-            borderRadius: '50%',
-            backgroundColor: 'white',
-            zIndex: 15
-          }} /> 
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '2vh',
+              height: '2vh',
+              borderRadius: '50%',
+              backgroundColor: 'white',
+              zIndex: 15,
+            }}
+          />
         </div>
       </div>
     </div>

@@ -1,44 +1,53 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import { useFontLoader } from '../../../utils/fontLoader' // This should be useMultipleFontLoader
-import bgImage from '../../../assets/images/25-12/25-12-13/roc.webp'
-import fontFile from '../../../assets/fonts/25-12-13-cherub.ttf?url'; 
+import React, { useState, useEffect, useMemo } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader'; // This should be useMultipleFontLoader
+import bgImage from '../../../assets/images/25-12/25-12-13/roc.webp';
+import fontFile from '../../../assets/fonts/25-12-13-cherub.ttf?url';
 
 export default function RococoClock() {
-  const [now, setNow] = useState(new Date())
-  const fontFamily = 'RococoFont'
-  const fontLoaded = useFontLoader(fontFamily, fontFile, { fallback: true, timeout: 3500 })
+  const [now, setNow] = useState(new Date());
+  const fontFamily = 'RococoFont';
+  const fontLoaded = useFontLoader(fontFamily, fontFile, {
+    fallback: true,
+    timeout: 3500,
+  });
 
   useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000)
-    return () => clearInterval(interval)
-  }, [])
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Graceful configuration
   const digitConfigs = useMemo(() => {
     return Array.from({ length: 6 }).map((_, i) => ({
       // Much slower: 8 to 14 seconds per loop
-      duration: 8 + Math.random() * 6, 
+      duration: 8 + Math.random() * 6,
       delay: Math.random() * -10,
       // Subtle drift
-      rangeX: 2 + Math.random() * 3, 
+      rangeX: 2 + Math.random() * 3,
       rangeY: 3 + Math.random() * 4,
       rotate: 5 + Math.random() * 15,
       scale: 1.05 + Math.random() * 0.1,
       // Responsive font sizes using clamp(min, preferred, max)
       // This ensures text is never too small on mobile or too huge on 4k
-      fontSize: i >= 4 ? 'clamp(4rem, 8vh, 12vh)' : 'clamp(6rem, 15vh, 25vh)'
-    }))
-  }, [])
+      fontSize: i >= 4 ? 'clamp(4rem, 8vh, 12vh)' : 'clamp(6rem, 15vh, 25vh)',
+    }));
+  }, []);
 
-  const hours = now.getHours()
-  const displayHours = hours % 12 === 0 ? 12 : hours % 12
-  const hourDigits = displayHours.toString().split('')
-  const minuteDigits = now.getMinutes().toString().padStart(2, '0').split('')
-  const ampmDigits = (hours >= 12 ? 'pm' : 'am').split('')
-  const allChars = [...hourDigits, ...minuteDigits, ...ampmDigits]
+  const hours = now.getHours();
+  const displayHours = hours % 12 === 0 ? 12 : hours % 12;
+  const hourDigits = displayHours.toString().split('');
+  const minuteDigits = now.getMinutes().toString().padStart(2, '0').split('');
+  const ampmDigits = (hours >= 12 ? 'pm' : 'am').split('');
+  const allChars = [...hourDigits, ...minuteDigits, ...ampmDigits];
 
   return (
-    <div style={{ ...containerStyle, opacity: fontLoaded ? 1 : 0, transition: 'opacity 0.4s ease' }}>
+    <div
+      style={{
+        ...containerStyle,
+        opacity: fontLoaded ? 1 : 0,
+        transition: 'opacity 0.4s ease',
+      }}
+    >
       <style>
         {`
           @keyframes rococoFloat {
@@ -57,7 +66,7 @@ export default function RococoClock() {
 
       <div style={rowStyle}>
         {allChars.map((char, i) => {
-          const config = digitConfigs[i]
+          const config = digitConfigs[i];
           return (
             <div
               key={i}
@@ -75,16 +84,16 @@ export default function RococoClock() {
                 zIndex: i < 2 ? 30 : i >= 4 ? 5 : 15,
                 // Soft entry to avoid a "pop" on load
                 opacity: fontLoaded ? 1 : 0,
-                transition: 'opacity 2s ease-in'
+                transition: 'opacity 2s ease-in',
               }}
             >
               {char}
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }
 
 const containerStyle = {
@@ -98,8 +107,8 @@ const containerStyle = {
   backgroundPosition: 'center',
   backgroundColor: '#000',
   overflow: 'hidden',
-  position: 'relative'
-}
+  position: 'relative',
+};
 
 const rowStyle = {
   display: 'flex',
@@ -108,8 +117,8 @@ const rowStyle = {
   justifyContent: 'center',
   alignItems: 'center',
   width: '90%',
-  gap: '1rem'
-}
+  gap: '1rem',
+};
 
 const baseDigitStyle = {
   display: 'inline-block',
@@ -121,5 +130,5 @@ const baseDigitStyle = {
     0.2vh 0.2vh 0.4vh rgba(169, 19, 99, 0.81),
     -0.2vh -0.2vh 0.4vh rgba(50, 205, 50, 0.72)
   `,
-  willChange: 'transform' // Optimizes performance for constant motion
-}
+  willChange: 'transform', // Optimizes performance for constant motion
+};

@@ -1,62 +1,65 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
-import bgImage from '../../../assets/images/25-12/25-12-14/steel.webp'
-import digitTexture from '../../../assets/images/25-12/25-12-14/steel2.webp'
+import bgImage from '../../../assets/images/25-12/25-12-14/steel.webp';
+import digitTexture from '../../../assets/images/25-12/25-12-14/steel2.webp';
 
 // Font imported with today's date (December 16, 2025)
 import screw251214 from '../../../assets/fonts/25-12-14-steel.ttf?url';
 
 export default function DigitalClock() {
-  const [time, setTime] = useState(new Date())
-  const [fontLoaded, setFontLoaded] = useState(false)
+  const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   // Update time every second
   useEffect(() => {
     const timer = setInterval(() => {
-      setTime(new Date())
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [])
+      setTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Load and detect the custom font as early as possible
   useEffect(() => {
     if (!document.fonts) {
-      setFontLoaded(true) // fallback if FontFaceSet API not supported
-      return
+      setFontLoaded(true); // fallback if FontFaceSet API not supported
+      return;
     }
 
-    const font = new FontFace('screw251214', `url(${screw251214})`)
+    const font = new FontFace('screw251214', `url(${screw251214})`);
 
-    document.fonts.add(font)
+    document.fonts.add(font);
 
-    font.load().then(() => {
-      setFontLoaded(true)
-    }).catch(() => {
-      setFontLoaded(true) // proceed even if load fails
-    })
+    font
+      .load()
+      .then(() => {
+        setFontLoaded(true);
+      })
+      .catch(() => {
+        setFontLoaded(true); // proceed even if load fails
+      });
 
     // Also listen to the global fonts ready state for safety
     document.fonts.ready.then(() => {
       if (document.fonts.check('1em screw251214')) {
-        setFontLoaded(true)
+        setFontLoaded(true);
       }
-    })
-  }, [])
+    });
+  }, []);
 
-  const hours = time.getHours().toString().padStart(2, '0')
-  const minutes = time.getMinutes().toString().padStart(2, '0')
+  const hours = time.getHours().toString().padStart(2, '0');
+  const minutes = time.getMinutes().toString().padStart(2, '0');
 
-  const hoursDigits = hours.split('')
-  const minutesDigits = minutes.split('')
+  const hoursDigits = hours.split('');
+  const minutesDigits = minutes.split('');
 
-  const allDigits = [...hoursDigits, ...minutesDigits]
+  const allDigits = [...hoursDigits, ...minutesDigits];
 
   const [textureOffsets] = useState(() =>
     allDigits.map(() => ({
       x: Math.floor(Math.random() * 100),
       y: Math.floor(Math.random() * 100),
-    }))
-  )
+    })),
+  );
 
   const containerStyle = {
     width: '100vw',
@@ -68,10 +71,8 @@ export default function DigitalClock() {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     overflow: 'hidden',
-    fontFamily: fontLoaded
-      ? '"screw251214", monospace'
-      : 'monospace', // solid fallback before custom font loads
-  }
+    fontFamily: fontLoaded ? '"screw251214", monospace' : 'monospace', // solid fallback before custom font loads
+  };
 
   const clockStyle = {
     display: 'flex',
@@ -80,13 +81,13 @@ export default function DigitalClock() {
     alignItems: 'center',
     opacity: fontLoaded ? 1 : 0, // hide until font is ready (avoids FOUC)
     transition: 'opacity 0.2s ease-in',
-  }
+  };
 
   const rowStyle = {
     display: 'flex',
     gap: '1.5vmin',
     alignItems: 'center',
-  }
+  };
 
   const digitBoxStyle = {
     width: '24vmin',
@@ -94,15 +95,13 @@ export default function DigitalClock() {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  };
 
-
-
-  let textureIndex = 0
+  let textureIndex = 0;
 
   const renderDigits = (digits, prefix) =>
     digits.map((digit, i) => {
-      const offset = textureOffsets[textureIndex++]
+      const offset = textureOffsets[textureIndex++];
       return (
         <span key={`${prefix}-${i}`} style={digitBoxStyle}>
           <span
@@ -115,8 +114,8 @@ export default function DigitalClock() {
             {digit}
           </span>
         </span>
-      )
-    })
+      );
+    });
 
   return (
     <div style={containerStyle}>
@@ -156,5 +155,5 @@ export default function DigitalClock() {
         `}
       </style>
     </div>
-  )
+  );
 }

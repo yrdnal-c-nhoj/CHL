@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
-import bgImage from '../../../assets/images/25-08/25-08-04/shrub.jpeg';      // Your background image file
-import myFont from '../../../assets/fonts/25-08-04-Tr.ttf';          // Your custom font file
+import bgImage from '../../../assets/images/25-08/25-08-04/shrub.jpeg'; // Your background image file
+import myFont from '../../../assets/fonts/25-08-04-Tr.ttf'; // Your custom font file
 
 const getRandomPosition = () => ({
   top: `${Math.random() * 80 + 10}%`,
@@ -21,7 +21,7 @@ const DigitalClock = () => {
         position: getRandomPosition(),
         tilt: getRandomTilt(),
       })),
-    []
+    [],
   );
 
   useEffect(() => {

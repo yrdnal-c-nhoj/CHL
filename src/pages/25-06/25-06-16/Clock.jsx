@@ -6,8 +6,20 @@ import klaHand from '../../../assets/images/25-06/25-06-16/kla.png';
 import klaxFont from '../../../assets/fonts/25-06-16-klax.ttf';
 import overlayImage from '../../../assets/images/25-06/25-06-16/klax.webp';
 
-
-const romanNumerals = ["xii", "i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "xi"];
+const romanNumerals = [
+  'xii',
+  'i',
+  'ii',
+  'iii',
+  'iv',
+  'v',
+  'vi',
+  'vii',
+  'viii',
+  'ix',
+  'x',
+  'xi',
+];
 
 const KlaxonClock = () => {
   useEffect(() => {
@@ -59,22 +71,27 @@ const KlaxonClock = () => {
       const minuteDeg = min * 6 + sec * 0.1;
       const hourDeg = (hr % 12) * 30 + min * 0.5;
 
-      document.getElementById("second").style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
-      document.getElementById("minute").style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
-      document.getElementById("hour").style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+      document.getElementById('second').style.transform =
+        `translateX(-50%) rotate(${secondDeg}deg)`;
+      document.getElementById('minute').style.transform =
+        `translateX(-50%) rotate(${minuteDeg}deg)`;
+      document.getElementById('hour').style.transform =
+        `translateX(-50%) rotate(${hourDeg}deg)`;
 
       const normalizedSecond = secondDeg % 360;
 
-      numberElements.forEach(el => {
+      numberElements.forEach((el) => {
         const numAngle = parseFloat(el.dataset.angle);
         let startAngle = (numAngle - flashStartOffset + 360) % 360;
         let endAngle = (numAngle + flashEndOffset) % 360;
 
         let insideZone = false;
         if (startAngle < endAngle) {
-          insideZone = normalizedSecond >= startAngle && normalizedSecond <= endAngle;
+          insideZone =
+            normalizedSecond >= startAngle && normalizedSecond <= endAngle;
         } else {
-          insideZone = normalizedSecond >= startAngle || normalizedSecond <= endAngle;
+          insideZone =
+            normalizedSecond >= startAngle || normalizedSecond <= endAngle;
         }
 
         if (insideZone) {
@@ -98,7 +115,7 @@ const KlaxonClock = () => {
     requestAnimationFrame(updateClock);
   }, []);
 
-  const formatDate = offset => {
+  const formatDate = (offset) => {
     const d = new Date();
     d.setDate(d.getDate() + offset);
     return `${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
@@ -108,13 +125,37 @@ const KlaxonClock = () => {
     <div style={styles.body}>
       <div style={styles.bgImage}></div>
 
- <div style={styles.overlay}></div>
+      <div style={styles.overlay}></div>
 
       <div style={styles.clockWrapper}>
         <div style={styles.clock} id="clock">
-          <img decoding="async" loading="lazy" src={klax} alt="Hour Hand" className="hand hour" id="hour" style={styles.handHour} />
-          <img decoding="async" loading="lazy" src={klaxon} alt="Minute Hand" className="hand minute" id="minute" style={styles.handMinute} />
-          <img decoding="async" loading="lazy" src={klaHand} alt="Second Hand" className="hand second" id="second" style={styles.handSecond} />
+          <img
+            decoding="async"
+            loading="lazy"
+            src={klax}
+            alt="Hour Hand"
+            className="hand hour"
+            id="hour"
+            style={styles.handHour}
+          />
+          <img
+            decoding="async"
+            loading="lazy"
+            src={klaxon}
+            alt="Minute Hand"
+            className="hand minute"
+            id="minute"
+            style={styles.handMinute}
+          />
+          <img
+            decoding="async"
+            loading="lazy"
+            src={klaHand}
+            alt="Second Hand"
+            className="hand second"
+            id="second"
+            style={styles.handSecond}
+          />
         </div>
       </div>
 
@@ -177,21 +218,20 @@ const styles = {
     pointerEvents: 'none',
   },
   overlay: {
-  backgroundImage: `url(${overlayImage})`,
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  width: '100vw',
-  height: '100vh',
-  backgroundSize: '190%', // Scale up the image
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
-  zIndex: 2,
-  pointerEvents: 'none',
-  opacity: 0.7,
-  mixBlendMode: 'screen',
-},
-
+    backgroundImage: `url(${overlayImage})`,
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    backgroundSize: '190%', // Scale up the image
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    zIndex: 2,
+    pointerEvents: 'none',
+    opacity: 0.7,
+    mixBlendMode: 'screen',
+  },
 
   clockWrapper: {
     position: 'relative',
@@ -216,7 +256,8 @@ const styles = {
     transformOrigin: 'bottom',
     transform: 'translateX(-50%)',
     height: '35%',
-    filter: 'sepia(100%) saturate(150%) hue-rotate(-10deg) brightness(90%) contrast(120%)',
+    filter:
+      'sepia(100%) saturate(150%) hue-rotate(-10deg) brightness(90%) contrast(120%)',
     zIndex: 7,
     pointerEvents: 'none',
   },

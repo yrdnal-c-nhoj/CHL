@@ -3,9 +3,9 @@ import React, { useEffect, useRef, useState } from 'react';
 const RainCanvas = () => {
   const canvasRef = useRef(null);
   const [time, setTime] = useState(new Date());
-  
+
   // Start with 3 drops
-  const dropCountRef = useRef(3); 
+  const dropCountRef = useRef(3);
   const dropsRef = useRef([]);
 
   useEffect(() => {
@@ -15,9 +15,15 @@ const RainCanvas = () => {
 
   // Progression Logic: 3 -> 9 -> 18 -> 110
   useEffect(() => {
-    const stage1 = setTimeout(() => { dropCountRef.current = 9; }, 2000);
-    const stage2 = setTimeout(() => { dropCountRef.current = 18; }, 4000);
-    const stage3 = setTimeout(() => { dropCountRef.current = 110; }, 7000);
+    const stage1 = setTimeout(() => {
+      dropCountRef.current = 9;
+    }, 2000);
+    const stage2 = setTimeout(() => {
+      dropCountRef.current = 18;
+    }, 4000);
+    const stage3 = setTimeout(() => {
+      dropCountRef.current = 110;
+    }, 7000);
 
     return () => {
       clearTimeout(stage1);
@@ -32,18 +38,20 @@ const RainCanvas = () => {
     const ctx = canvas.getContext('2d');
     let animationFrameId;
     let ripples = [];
-    const themeColor = "10, 5, 15";
+    const themeColor = '10, 5, 15';
 
     class Drop {
-      constructor() { this.init(); }
+      constructor() {
+        this.init();
+      }
       init() {
         this.z = Math.random() * 0.8 + 0.2;
         this.x = Math.random() * canvas.width;
         // Start them high enough so they don't all appear instantly
-        this.y = Math.random() * -canvas.height; 
+        this.y = Math.random() * -canvas.height;
         this.speed = this.z * 6 + 3;
         this.length = this.z * 15 + 10;
-        this.targetY = canvas.height * 0.52 + (this.z * canvas.height * 0.45);
+        this.targetY = canvas.height * 0.52 + this.z * canvas.height * 0.45;
       }
       update() {
         this.y += this.speed;
@@ -64,11 +72,13 @@ const RainCanvas = () => {
 
     class Ripple {
       constructor(x, y, z) {
-        this.x = x; this.y = y; this.z = z;
+        this.x = x;
+        this.y = y;
+        this.z = z;
         this.r = 2;
-        this.opacity = 0.85; 
-        this.growth = (z * 0.08) + 0.04; 
-        this.decay = 0.0012; 
+        this.opacity = 0.85;
+        this.growth = z * 0.08 + 0.04;
+        this.decay = 0.0012;
       }
       update() {
         this.r += this.growth;
@@ -78,7 +88,15 @@ const RainCanvas = () => {
         ctx.beginPath();
         ctx.strokeStyle = `rgba(${themeColor}, ${this.opacity})`;
         ctx.lineWidth = this.z * 3.5 + 0.5;
-        ctx.ellipse(this.x, this.y, this.r * 4, this.r * 0.8, 0, 0, Math.PI * 2);
+        ctx.ellipse(
+          this.x,
+          this.y,
+          this.r * 4,
+          this.r * 0.8,
+          0,
+          0,
+          Math.PI * 2,
+        );
         ctx.stroke();
       }
     }
@@ -87,7 +105,10 @@ const RainCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       // Re-populate drops on resize based on current stage
-      dropsRef.current = Array.from({ length: dropCountRef.current }, () => new Drop());
+      dropsRef.current = Array.from(
+        { length: dropCountRef.current },
+        () => new Drop(),
+      );
     };
 
     window.addEventListener('resize', resize);
@@ -105,9 +126,15 @@ const RainCanvas = () => {
         }
       }
 
-      ripples = ripples.filter(r => r.opacity > 0);
-      ripples.forEach(r => { r.update(); r.draw(); });
-      dropsRef.current.forEach(d => { d.update(); d.draw(); });
+      ripples = ripples.filter((r) => r.opacity > 0);
+      ripples.forEach((r) => {
+        r.update();
+        r.draw();
+      });
+      dropsRef.current.forEach((d) => {
+        d.update();
+        d.draw();
+      });
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -135,42 +162,60 @@ const RainCanvas = () => {
   };
 
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', background: '#DBCC99' }}>
+    <div
+      style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+        background: '#DBCC99',
+      }}
+    >
       <canvas ref={canvasRef} style={{ display: 'block' }} />
-      
-      <div style={{
-        position: 'absolute',
-        top: '75%',
-        left: 0,
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        perspective: '1000px',
-        pointerEvents: 'none'
-      }}>
-        <div style={{
-          transform: 'rotateX(75deg)',
-          transformOrigin: '50% 0%',
+
+      <div
+        style={{
+          position: 'absolute',
+          top: '75%',
+          left: 0,
+          width: '100%',
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
-          color: 'rgb(109, 103, 106)',
-          textShadow: '0 0 20px rgba(10, 5, 15, 0.1)'
-        }}>
-          <span style={sharedDigitStyle}>{h}:{m}:{s}</span>
+          perspective: '1000px',
+          pointerEvents: 'none',
+        }}
+      >
+        <div
+          style={{
+            transform: 'rotateX(75deg)',
+            transformOrigin: '50% 0%',
+            display: 'flex',
+            alignItems: 'center',
+            color: 'rgb(109, 103, 106)',
+            textShadow: '0 0 20px rgba(10, 5, 15, 0.1)',
+          }}
+        >
+          <span style={sharedDigitStyle}>
+            {h}:{m}:{s}
+          </span>
         </div>
 
-        <div style={{
-          marginTop: '-2vh',
-          transform: 'rotateX(75deg) scaleY(-1)',
-          transformOrigin: '50% 0%',
-          display: 'flex',
-          alignItems: 'center',
-          color: 'rgba(10, 5, 15, 0.15)',
-          filter: 'blur(8px)',
-          opacity: 0.6
-        }}>
-          <span style={sharedDigitStyle}>{h}:{m}:{s}</span>
+        <div
+          style={{
+            marginTop: '-2vh',
+            transform: 'rotateX(75deg) scaleY(-1)',
+            transformOrigin: '50% 0%',
+            display: 'flex',
+            alignItems: 'center',
+            color: 'rgba(10, 5, 15, 0.15)',
+            filter: 'blur(8px)',
+            opacity: 0.6,
+          }}
+        >
+          <span style={sharedDigitStyle}>
+            {h}:{m}:{s}
+          </span>
         </div>
       </div>
     </div>

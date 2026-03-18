@@ -1,17 +1,17 @@
-import { useEffect, useRef } from "react";
-import backgroundImage from "../../../assets/images/25-08/25-08-27/rootsu.gif";
+import { useEffect, useRef } from 'react';
+import backgroundImage from '../../../assets/images/25-08/25-08-27/rootsu.gif';
 import dodecahedronFontFile from '../../../assets/fonts/25-08-27-root.ttf'; // renamed import
 
 export default function TwelfthRootsOfUnityWithClock() {
   const canvasRef = useRef(null);
   const clockRef = useRef(null);
-  const fontRef = useRef("sans-serif"); // fallback
+  const fontRef = useRef('sans-serif'); // fallback
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     const clock = clockRef.current;
-    const cctx = clock.getContext("2d");
+    const cctx = clock.getContext('2d');
 
     const n = 12;
     let step = 1;
@@ -21,18 +21,22 @@ export default function TwelfthRootsOfUnityWithClock() {
     let frameCount = 0;
 
     // Scoped Dodecahedron font
-    const dodecahedronFont = new FontFace("DodecahedronFont", `url(${dodecahedronFontFile})`);
+    const dodecahedronFont = new FontFace(
+      'DodecahedronFont',
+      `url(${dodecahedronFontFile})`,
+    );
     dodecahedronFont
       .load()
       .then((loadedFont) => {
         document.fonts.add(loadedFont);
-        fontRef.current = "DodecahedronFont";
+        fontRef.current = 'DodecahedronFont';
       })
-      .catch(() => (fontRef.current = "sans-serif"))
+      .catch(() => (fontRef.current = 'sans-serif'))
       .finally(() => animate());
 
     const resize = () => {
-      const containerSize = Math.min(window.innerWidth, window.innerHeight) * 0.8;
+      const containerSize =
+        Math.min(window.innerWidth, window.innerHeight) * 0.8;
       const dpr = window.devicePixelRatio || 1;
 
       canvas.width = containerSize * dpr;
@@ -50,7 +54,7 @@ export default function TwelfthRootsOfUnityWithClock() {
     };
 
     resize();
-    window.addEventListener("resize", resize);
+    window.addEventListener('resize', resize);
 
     const drawRoots = () => {
       const size = canvas.width / (window.devicePixelRatio || 1);
@@ -72,17 +76,17 @@ export default function TwelfthRootsOfUnityWithClock() {
 
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-      ctx.strokeStyle = "rgba(255,0,0,0.3)";
+      ctx.strokeStyle = 'rgba(255,0,0,0.3)';
       ctx.lineWidth = size * 0.009;
       ctx.stroke();
 
       ctx.font = `${size * 0.08}px ${fontRef.current}`;
-      ctx.fillStyle = "#03341F";
+      ctx.fillStyle = '#03341F';
 
       roots.forEach((root, k) => {
         ctx.beginPath();
         ctx.arc(root.x, root.y, pointRadius, 0, 2 * Math.PI);
-        ctx.fillStyle = "#212321";
+        ctx.fillStyle = '#212321';
         ctx.fill();
 
         const angle = Math.atan2(root.y - centerY, root.x - centerX);
@@ -90,8 +94,8 @@ export default function TwelfthRootsOfUnityWithClock() {
         const tx = centerX + (radius + labelDist) * Math.cos(angle);
         const ty = centerY + (radius + labelDist) * Math.sin(angle);
 
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         ctx.fillText(`ω^${k}`, tx, ty);
       });
 
@@ -141,15 +145,18 @@ export default function TwelfthRootsOfUnityWithClock() {
       const drawHand = (angle, length, color, width) => {
         cctx.beginPath();
         cctx.moveTo(centerX, centerY);
-        cctx.lineTo(centerX + length * Math.cos(angle), centerY + length * Math.sin(angle));
+        cctx.lineTo(
+          centerX + length * Math.cos(angle),
+          centerY + length * Math.sin(angle),
+        );
         cctx.strokeStyle = color;
         cctx.lineWidth = width;
         cctx.stroke();
       };
 
-      drawHand(hourAngle, radius * 0.5, "#312E2E", 0.3 * (size / 100));
-      drawHand(minAngle, radius * 0.8, "#312E2E", 0.3 * (size / 100));
-      drawHand(secAngle, radius * 0.9, "#1A1C1A", 0.3 * (size / 100));
+      drawHand(hourAngle, radius * 0.5, '#312E2E', 0.3 * (size / 100));
+      drawHand(minAngle, radius * 0.8, '#312E2E', 0.3 * (size / 100));
+      drawHand(secAngle, radius * 0.9, '#1A1C1A', 0.3 * (size / 100));
     };
 
     let animationId;
@@ -160,7 +167,7 @@ export default function TwelfthRootsOfUnityWithClock() {
     };
 
     return () => {
-      window.removeEventListener("resize", resize);
+      window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationId);
     };
   }, []);
@@ -168,55 +175,57 @@ export default function TwelfthRootsOfUnityWithClock() {
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100dvh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "radial-gradient(circle, #F9C7B4 0%, #D8CFCF 90%)",
+        width: '100vw',
+        height: '100dvh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: 'radial-gradient(circle, #F9C7B4 0%, #D8CFCF 90%)',
       }}
     >
       <div
         style={{
-          position: "relative",
-          width: "80vmin",
-          height: "80vmin",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          position: 'relative',
+          width: '80vmin',
+          height: '80vmin',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={backgroundImage}
           alt="Background"
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: 0,
             left: 0,
-            width: "100%",
-            height: "95%",
-            objectFit: "contain",
+            width: '100%',
+            height: '95%',
+            objectFit: 'contain',
             zIndex: 2,
           }}
         />
         <canvas
           ref={canvasRef}
           style={{
-            position: "absolute",
+            position: 'absolute',
             inset: 0,
-            width: "100%",
-            height: "100%",
+            width: '100%',
+            height: '100%',
             zIndex: 1,
           }}
         />
         <canvas
           ref={clockRef}
           style={{
-            position: "absolute",
+            position: 'absolute',
             inset: 0,
-            width: "100%",
-            height: "100%",
-            pointerEvents: "none",
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
             zIndex: 3,
           }}
         />

@@ -5,11 +5,11 @@ import cisFont from '../../../assets/fonts/25-06-18-cis.ttf';
 
 const CistercianClock = () => {
   const [time, setTime] = useState(new Date());
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('cis', cisFont, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   useEffect(() => {
@@ -43,19 +43,19 @@ const CistercianClock = () => {
     zIndex: 4,
   };
 
-const bgStyle = {
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  width: '100vw',
-  height: '100vh', // Use exactly 100vh to match the viewport
-  backgroundImage: `url(${bgImage})`,
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: 'cover',           // Ensures it stretches to cover the whole viewport
-  backgroundPosition: 'center',      // Keeps the image centered
-  zIndex: 1,
-  filter: 'contrast(140%) brightness(120%) saturate(30%)',
-};
+  const bgStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh', // Use exactly 100vh to match the viewport
+    backgroundImage: `url(${bgImage})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover', // Ensures it stretches to cover the whole viewport
+    backgroundPosition: 'center', // Keeps the image centered
+    zIndex: 1,
+    filter: 'contrast(140%) brightness(120%) saturate(30%)',
+  };
 
   return (
     <div style={containerStyle}>

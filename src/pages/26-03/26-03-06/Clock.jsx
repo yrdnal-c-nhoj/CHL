@@ -22,7 +22,7 @@ const RocketGrid = () => {
     setRotation({
       s: secondsWithMs * 6,
       m: minutesWithSeconds * 6,
-      h: hoursWithMinutes * 30
+      h: hoursWithMinutes * 30,
     });
 
     requestRef.current = requestAnimationFrame(animate);
@@ -39,7 +39,6 @@ const RocketGrid = () => {
 
   return (
     <div style={containerStyle}>
-      
       {/* --- UNCLIPPED LARGE ROCKET GRID --- */}
       <div style={gridWrapperStyle}>
         {Array.from({ length: rows }).map((_, rowIndex) => (
@@ -53,7 +52,8 @@ const RocketGrid = () => {
                     width: '100%',
                     height: '100%',
                     objectFit: 'contain', // Ensures the whole rocket is visible
-                    transform: rowIndex % 2 === 0 ? 'rotate(90deg)' : 'rotate(270deg)',
+                    transform:
+                      rowIndex % 2 === 0 ? 'rotate(90deg)' : 'rotate(270deg)',
                   }}
                 />
               </div>
@@ -64,25 +64,36 @@ const RocketGrid = () => {
 
       {/* --- ANALOG CLOCK OVERLAY --- */}
       <div style={clockWrapperStyle}>
-        <img src={hourHandImg} alt="Hour" style={{ 
-          ...handStyle, 
-          height: '18vh', 
-          transform: `translateX(-50%) rotate(${rotation.h}deg)` 
-        }} />
-        
-        <img src={minuteHandImg} alt="Minute" style={{ 
-          ...handStyle, 
-          height: '23vh', 
-          transform: `translateX(-50%) rotate(${rotation.m}deg)` 
-        }} />
-        
-        <img src={secondHandImg} alt="Second" style={{ 
-          ...handStyle, 
-          height: '25vh', 
-          transform: `translateX(-50%) rotate(${rotation.s}deg)`,
-          transition: 'none'
-        }} />
+        <img
+          src={hourHandImg}
+          alt="Hour"
+          style={{
+            ...handStyle,
+            height: '18vh',
+            transform: `translateX(-50%) rotate(${rotation.h}deg)`,
+          }}
+        />
 
+        <img
+          src={minuteHandImg}
+          alt="Minute"
+          style={{
+            ...handStyle,
+            height: '23vh',
+            transform: `translateX(-50%) rotate(${rotation.m}deg)`,
+          }}
+        />
+
+        <img
+          src={secondHandImg}
+          alt="Second"
+          style={{
+            ...handStyle,
+            height: '25vh',
+            transform: `translateX(-50%) rotate(${rotation.s}deg)`,
+            transition: 'none',
+          }}
+        />
       </div>
     </div>
   );
@@ -98,7 +109,7 @@ const containerStyle = {
   background: '#1F5FAC',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center'
+  justifyContent: 'center',
 };
 
 const gridWrapperStyle = {
@@ -111,7 +122,7 @@ const gridWrapperStyle = {
   pointerEvents: 'none',
   // opacity: 0.8,
   // Using gap to keep them close without overlapping/clipping
-  // gap: '10px' 
+  // gap: '10px'
 };
 
 const rowStyle = {
@@ -126,7 +137,7 @@ const cellStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  flexShrink: 0
+  flexShrink: 0,
 };
 
 const clockWrapperStyle = {
@@ -134,7 +145,7 @@ const clockWrapperStyle = {
   width: '600px', // Increased from 450px
   height: '600px', // Increased from 450px
   zIndex: 10,
-  filter: 'drop-shadow(0 0 40px rgb(0, 0, 0))'
+  filter: 'drop-shadow(0 0 40px rgb(0, 0, 0))',
 };
 
 const handStyle = {
@@ -143,7 +154,7 @@ const handStyle = {
   bottom: '50%',
   transformOrigin: 'bottom center',
   zIndex: 15,
-  willChange: 'transform'
+  willChange: 'transform',
 };
 
 export default RocketGrid;

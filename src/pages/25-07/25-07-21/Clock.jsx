@@ -23,85 +23,102 @@ const AnglerfishClock = () => {
   }, []);
 
   return (
-    <div style={{
-      height: '100dvh',
-      width: '100vw',
-      overflow: 'hidden',
-      position: 'relative',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      // Added linear gradient background here
-      background: 'linear-gradient(to bottom, #1C6179 0%, #3F1395 100%)',
-    }}>
+    <div
+      style={{
+        height: '100dvh',
+        width: '100vw',
+        overflow: 'hidden',
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        // Added linear gradient background here
+        background: 'linear-gradient(to bottom, #1C6179 0%, #3F1395 100%)',
+      }}
+    >
       {/* Overlays */}
-      <div style={{
-        position: 'fixed',
-        top: 0, left: 0,
-        width: '100vw',
-        height: '100vh',
-        backgroundImage: `url(${anglerfishIdle})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center center',
-        backgroundSize: '100% 100%',
-        opacity: 0.4,
-        zIndex: 1,
-      }} />
-      <div style={{
-        position: 'fixed',
-        top: 0, left: 0,
-        width: '100vw',
-        height: '100vh',
-        backgroundImage: `url(${anglerfishFuse})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center center',
-        backgroundSize: '100% 100%',
-        opacity: 0.4,
-        zIndex: 2,
-      }} />
-      <div style={{
-        position: 'fixed',
-        top: 0, left: 0,
-        width: '100vw',
-        height: '100vh',
-        backgroundImage: `url(${patternOverlay})`,
-        backgroundRepeat: 'repeat',
-        backgroundPosition: 'center center',
-        backgroundSize: '33% 33%',
-        opacity: 0.4,
-        zIndex: 4,
-      }} />
-      <div style={{
-        position: 'fixed',
-        top: 0, left: 0,
-        width: '100vw',
-        height: '100vh',
-        backgroundImage: `url(${spinGif})`,
-        backgroundRepeat: 'no-repeat',
-         backgroundSize: '100% 100%',
-        backgroundPosition: 'center center',
-        backgroundAttachment: 'fixed',
-        transform: 'scaleX(-1)',
-        opacity: 0.3,
-        zIndex: 5,
-      }} />
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundImage: `url(${anglerfishIdle})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
+          backgroundSize: '100% 100%',
+          opacity: 0.4,
+          zIndex: 1,
+        }}
+      />
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundImage: `url(${anglerfishFuse})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
+          backgroundSize: '100% 100%',
+          opacity: 0.4,
+          zIndex: 2,
+        }}
+      />
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundImage: `url(${patternOverlay})`,
+          backgroundRepeat: 'repeat',
+          backgroundPosition: 'center center',
+          backgroundSize: '33% 33%',
+          opacity: 0.4,
+          zIndex: 4,
+        }}
+      />
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundImage: `url(${spinGif})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: '100% 100%',
+          backgroundPosition: 'center center',
+          backgroundAttachment: 'fixed',
+          transform: 'scaleX(-1)',
+          opacity: 0.3,
+          zIndex: 5,
+        }}
+      />
 
       {/* Clock content */}
-      <div style={{
-        fontFamily: "'Barriecito', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif",
-        fontSize: '14rem',
-        whiteSpace: 'nowrap',
-        background: 'linear-gradient(90deg, #369b91, #0e8c68, #711579)',
-        backgroundSize: '75%',
-        backgroundRepeat: 'no-repeat',
-        backgroundClip: 'text',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        animation: 'animate 3s linear infinite',
-        opacity: 0.6,
-        zIndex: 9,
-        position: 'relative',
-      }}>
+      <div
+        style={{
+          fontFamily:
+            "'Barriecito', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif",
+          fontSize: '14rem',
+          whiteSpace: 'nowrap',
+          background: 'linear-gradient(90deg, #369b91, #0e8c68, #711579)',
+          backgroundSize: '75%',
+          backgroundRepeat: 'no-repeat',
+          backgroundClip: 'text',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          animation: 'animate 3s linear infinite',
+          opacity: 0.6,
+          zIndex: 9,
+          position: 'relative',
+        }}
+      >
         {time}
       </div>
 

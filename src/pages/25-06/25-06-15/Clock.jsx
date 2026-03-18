@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 import fontUrl from '../../../assets/fonts/25-06-15-ZombieStitch.ttf';
-import bgImageUrl from "../../../assets/images/25-06/25-06-15/stin.webp";
-import overlayImageUrl from "../../../assets/images/25-06/25-06-15/stit.jpeg";
+import bgImageUrl from '../../../assets/images/25-06/25-06-15/stin.webp';
+import overlayImageUrl from '../../../assets/images/25-06/25-06-15/stit.jpeg';
 
 const StitchesClock = () => {
   useEffect(() => {
     // Load font with unique name
-    const font = new FontFace("ZombieStitch_2025_10_29", `url(${fontUrl})`);
+    const font = new FontFace('ZombieStitch_2025_10_29', `url(${fontUrl})`);
     font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
     });
@@ -16,21 +16,21 @@ const StitchesClock = () => {
       const now = new Date();
       let h = now.getHours();
       const m = now.getMinutes();
-      const ampm = h >= 12 ? "PM" : "AM";
+      const ampm = h >= 12 ? 'PM' : 'AM';
 
       h = h % 12 || 12;
       const hStr = String(h);
-      const mStr = String(m).padStart(2, "0");
+      const mStr = String(m).padStart(2, '0');
       const allChars = hStr + mStr + ampm;
 
-      const container = document.getElementById("clockRow");
+      const container = document.getElementById('clockRow');
       if (!container) return;
-      container.innerHTML = "";
+      container.innerHTML = '';
 
       for (let i = 0; i < allChars.length; i++) {
         const ch = allChars[i];
-        const span = document.createElement("span");
-        span.className = "digit";
+        const span = document.createElement('span');
+        span.className = 'digit';
         span.textContent = ch;
         Object.assign(span.style, styles.digit);
         container.appendChild(span);
@@ -47,7 +47,9 @@ const StitchesClock = () => {
       <div
         style={{ ...styles.bgImage, backgroundImage: `url(${bgImageUrl})` }}
       />
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={overlayImageUrl}
         alt="stitched overlay"
         style={styles.bgOverlay}
@@ -60,52 +62,52 @@ const StitchesClock = () => {
 const styles = {
   body: {
     margin: 0,
-    background: "#d7d2d2",
-    overflow: "hidden",
-    height: "100dvh",
-    width: "100vw",
-    position: "relative",
-    fontFamily: "ZombieStitch_2025_10_29, sans-serif",
+    background: '#d7d2d2',
+    overflow: 'hidden',
+    height: '100dvh',
+    width: '100vw',
+    position: 'relative',
+    fontFamily: 'ZombieStitch_2025_10_29, sans-serif',
   },
   bgImage: {
-    position: "fixed",
+    position: 'fixed',
     top: 0,
     left: 0,
-    width: "100vw",
-    height: "100vh",
+    width: '100vw',
+    height: '100vh',
     zIndex: 0,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
     opacity: 0.3,
   },
   bgOverlay: {
-    position: "fixed",
+    position: 'fixed',
     top: 0,
     left: 0,
-    width: "100vw",
-    height: "100vh",
+    width: '100vw',
+    height: '100vh',
     zIndex: 1,
-    objectFit: "cover",
-    filter: "brightness(120%) hue-rotate(18deg) saturate(20%)",
+    objectFit: 'cover',
+    filter: 'brightness(120%) hue-rotate(18deg) saturate(20%)',
     opacity: 0.5,
   },
   clockRow: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    display: "flex",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    display: 'flex',
     zIndex: 2,
   },
   digit: {
-    fontFamily: "ZombieStitch_2025_10_29, sans-serif",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "26vh",
-    color: "#1f1d52",
+    fontFamily: 'ZombieStitch_2025_10_29, sans-serif',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '26vh',
+    color: '#1f1d52',
     textShadow:
-      "rgba(236, 15, 15, 0.85) 0.1rem -0.1rem 0.5rem, rgba(236, 15, 15, 0.85) -0.1rem 0.1rem 0.5rem, rgba(255,255,255,0.75) 0.05rem -0.05rem 0rem",
+      'rgba(236, 15, 15, 0.85) 0.1rem -0.1rem 0.5rem, rgba(236, 15, 15, 0.85) -0.1rem 0.1rem 0.5rem, rgba(255,255,255,0.75) 0.05rem -0.05rem 0rem',
   },
 };
 

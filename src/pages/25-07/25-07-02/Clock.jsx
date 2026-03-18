@@ -27,9 +27,12 @@ export default function Clock() {
       const minuteDeg = (minutes / 60) * 360 + (seconds / 60) * 6;
       const hourDeg = (hours / 12) * 360 + (minutes / 60) * 30;
 
-      if (secondRef.current) secondRef.current.style.transform = `rotate(${secondDeg}deg)`;
-      if (minuteRef.current) minuteRef.current.style.transform = `rotate(${minuteDeg}deg)`;
-      if (hourRef.current) hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
+      if (secondRef.current)
+        secondRef.current.style.transform = `rotate(${secondDeg}deg)`;
+      if (minuteRef.current)
+        minuteRef.current.style.transform = `rotate(${minuteDeg}deg)`;
+      if (hourRef.current)
+        hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
 
       numberRefs.current.forEach((number) => {
         const numberAngle = parseFloat(number.getAttribute('data-angle'));
@@ -104,7 +107,9 @@ export default function Clock() {
   return (
     <div style={containerStyle}>
       {/* Background */}
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={backgroundGif}
         alt="background"
         style={{
@@ -125,17 +130,32 @@ export default function Clock() {
         <div
           ref={hourRef}
           className="hand hour-hand"
-          style={{ ...handStyle, width: '0.4rem', height: '6rem', background: '#634a05' }}
+          style={{
+            ...handStyle,
+            width: '0.4rem',
+            height: '6rem',
+            background: '#634a05',
+          }}
         ></div>
         <div
           ref={minuteRef}
           className="hand minute-hand"
-          style={{ ...handStyle, width: '0.3rem', height: '8rem', background: '#b97c03' }}
+          style={{
+            ...handStyle,
+            width: '0.3rem',
+            height: '8rem',
+            background: '#b97c03',
+          }}
         ></div>
         <div
           ref={secondRef}
           className="hand second-hand"
-          style={{ ...handStyle, width: '0.2rem', height: '9rem', background: 'rgb(148, 3, 3)' }}
+          style={{
+            ...handStyle,
+            width: '0.2rem',
+            height: '9rem',
+            background: 'rgb(148, 3, 3)',
+          }}
         ></div>
 
         {/* Center dot */}

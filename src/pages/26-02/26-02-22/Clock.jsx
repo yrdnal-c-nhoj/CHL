@@ -31,13 +31,15 @@ const DIGITS = [
 ];
 
 const SimpleClock = () => {
-  const [hueRotation, setHueRotation] = useState(Math.floor(Math.random() * 360)); // Random starting color
+  const [hueRotation, setHueRotation] = useState(
+    Math.floor(Math.random() * 360),
+  ); // Random starting color
   const [time, setTime] = useState(new Date());
 
   // High-degree hue rotation
   useEffect(() => {
     const interval = setInterval(() => {
-      setHueRotation(prev => (prev + 45) % 360); // Increased from 12 to 45 degrees
+      setHueRotation((prev) => (prev + 45) % 360); // Increased from 12 to 45 degrees
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -93,22 +95,22 @@ const SimpleClock = () => {
         {DIGITS.map((img, i) => {
           // Unique filter values for each digit
           const filters = [
-            { saturate: 1.2, brightness: 1.1, contrast: 1.0 },  // 12
-            { saturate: 1.9, brightness: 1.2, contrast: 1.1 },  // 1
-            { saturate: 1.3, brightness: 0.9, contrast: 1.2 },  // 2
-            { saturate: 1.0, brightness: 1.3, contrast: 0.9 },  // 3
-            { saturate: 3.4, brightness: 1.0, contrast: 1.3 },  // 4
-            { saturate: 3.0, brightness: 0.8, contrast: 1.4 },  // 5
-            { saturate: 1.1, brightness: 1.4, contrast: 1.0 },  // 6
-            { saturate: 3.7, brightness: 1.1, contrast: 1.2 },  // 7
-            { saturate: 2.5, brightness: 0.7, contrast: 1.1 },  // 8
-            { saturate: 1.2, brightness: 1.3, contrast: 0.8 },  // 9
-            { saturate: 1.9, brightness: 1.0, contrast: 1.5 },  // 11
-            { saturate: 1.6, brightness: 1.2, contrast: 0.7 },  // 10
+            { saturate: 1.2, brightness: 1.1, contrast: 1.0 }, // 12
+            { saturate: 1.9, brightness: 1.2, contrast: 1.1 }, // 1
+            { saturate: 1.3, brightness: 0.9, contrast: 1.2 }, // 2
+            { saturate: 1.0, brightness: 1.3, contrast: 0.9 }, // 3
+            { saturate: 3.4, brightness: 1.0, contrast: 1.3 }, // 4
+            { saturate: 3.0, brightness: 0.8, contrast: 1.4 }, // 5
+            { saturate: 1.1, brightness: 1.4, contrast: 1.0 }, // 6
+            { saturate: 3.7, brightness: 1.1, contrast: 1.2 }, // 7
+            { saturate: 2.5, brightness: 0.7, contrast: 1.1 }, // 8
+            { saturate: 1.2, brightness: 1.3, contrast: 0.8 }, // 9
+            { saturate: 1.9, brightness: 1.0, contrast: 1.5 }, // 11
+            { saturate: 1.6, brightness: 1.2, contrast: 0.7 }, // 10
           ];
-          
+
           const filter = filters[i];
-          
+
           return (
             <div
               key={i}

@@ -1,7 +1,7 @@
 /** @jsxImportSource react */
-import { useEffect, useState } from "react";
-import bgImage from "../../../assets/images/25-10/25-10-30/turq.webp";
-import clockFaceImage from "../../../assets/images/25-10/25-10-30/tur.jpg";
+import { useEffect, useState } from 'react';
+import bgImage from '../../../assets/images/25-10/25-10-30/turq.webp';
+import clockFaceImage from '../../../assets/images/25-10/25-10-30/tur.jpg';
 import customFont2025_10_31 from '../../../assets/fonts/25-10-30-turqs.ttf?url';
 
 export default function AnalogClock() {
@@ -18,11 +18,14 @@ export default function AnalogClock() {
   useEffect(() => {
     const loadFont = async () => {
       try {
-        const font = new FontFace("CustomFont2025_10_31", `url(${customFont2025_10_31})`);
+        const font = new FontFace(
+          'CustomFont2025_10_31',
+          `url(${customFont2025_10_31})`,
+        );
         await font.load();
         document.fonts.add(font);
       } catch (err) {
-        console.warn("Font failed to load:", err);
+        console.warn('Font failed to load:', err);
       }
     };
 
@@ -44,19 +47,17 @@ export default function AnalogClock() {
     return (
       <div
         style={{
-          width: "100vw",
-          height: "100dvh",
-          backgroundColor: "#000",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          color: "#4ff",
-          fontFamily: "sans-serif",
-          letterSpacing: "0.2em",
+          width: '100vw',
+          height: '100dvh',
+          backgroundColor: '#000',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: '#4ff',
+          fontFamily: 'sans-serif',
+          letterSpacing: '0.2em',
         }}
-      >
-        
-      </div>
+      ></div>
     );
 
   // Time math
@@ -68,74 +69,74 @@ export default function AnalogClock() {
   const secondDeg = seconds * 6;
   const minuteDeg = minutes * 6;
   const hourDeg = hours * 30;
-  const radius = "min(50vh, 50vw)";
+  const radius = 'min(50vh, 50vw)';
   const clockSize = `calc(2 * ${radius})`;
 
   // Style definitions
   const METALLIC = {
     background:
-      "linear-gradient(135deg, #847979 0%, #C9C6C6 25%, #ffffff 50%, #C8C8C8 75%, #836F6F 100%)",
+      'linear-gradient(135deg, #847979 0%, #C9C6C6 25%, #ffffff 50%, #C8C8C8 75%, #836F6F 100%)',
     boxShadow:
-      "0 0.2vh 0.8vh rgba(0,0,0,0.3), inset -0.1vh 0 0.9vh rgba(255,255,255,0.9), inset 0.1vh 0 0.3vh rgba(0,0,0,0.9)",
+      '0 0.2vh 0.8vh rgba(0,0,0,0.3), inset -0.1vh 0 0.9vh rgba(255,255,255,0.9), inset 0.1vh 0 0.3vh rgba(0,0,0,0.9)',
   };
   const FILIGREE = {
     ...METALLIC,
-    filter: "hue-rotate(190deg) saturate(0.5) brightness(1.1)",
+    filter: 'hue-rotate(190deg) saturate(0.5) brightness(1.1)',
   };
 
   const pageStyle = {
-    width: "100vw",
-    height: "100dvh",
+    width: '100vw',
+    height: '100dvh',
     margin: 0,
     padding: 0,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
     fontFamily: "'CustomFont2025_10_31', sans-serif",
-    overflow: "hidden",
+    overflow: 'hidden',
   };
 
   const bgStyle = {
-    position: "absolute",
+    position: 'absolute',
     inset: 0,
     backgroundImage: `url(${bgImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    filter: "hue-rotate(-10deg) saturate(1.5) brightness(0.9) contrast(0.9)",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    filter: 'hue-rotate(-10deg) saturate(1.5) brightness(0.9) contrast(0.9)',
     zIndex: 0,
   };
 
   const wrapperStyle = {
-    position: "relative",
+    position: 'relative',
     width: clockSize,
     height: clockSize,
-    borderRadius: "50%",
-    overflow: "hidden",
+    borderRadius: '50%',
+    overflow: 'hidden',
     zIndex: 1,
     backgroundImage: `url(${clockFaceImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
   };
 
   const overlayStyle = {
-    position: "absolute",
+    position: 'absolute',
     inset: 0,
-    backgroundColor: "rgba(64,224,227,0.7)",
-    borderRadius: "50%",
+    backgroundColor: 'rgba(64,224,227,0.7)',
+    borderRadius: '50%',
     zIndex: 1,
   };
 
   const handBase = (widthFrac, lengthFrac, deg, clipPath) => ({
     ...FILIGREE,
-    position: "absolute",
+    position: 'absolute',
     width: `calc(${widthFrac} * ${radius})`,
     height: `calc(${lengthFrac} * ${radius} * 2)`,
-    left: "50%",
-    top: "50%",
+    left: '50%',
+    top: '50%',
     transform: `translate(-50%, -100%) rotate(${deg}deg)`,
-    transformOrigin: "center bottom",
+    transformOrigin: 'center bottom',
     clipPath,
     zIndex: 3,
   });
@@ -144,49 +145,49 @@ export default function AnalogClock() {
     0.1,
     0.28,
     hourDeg,
-    "polygon(50% 0%, 75% 15%, 70% 50%, 90% 80%, 75% 100%, 25% 100%, 10% 80%, 30% 50%, 25% 15%)"
+    'polygon(50% 0%, 75% 15%, 70% 50%, 90% 80%, 75% 100%, 25% 100%, 10% 80%, 30% 50%, 25% 15%)',
   );
   const minuteHand = handBase(
     0.06,
     0.4,
     minuteDeg,
-    "polygon(50% 0%, 70% 5%, 60% 40%, 80% 70%, 60% 100%, 40% 100%, 20% 70%, 40% 40%, 30% 5%)"
+    'polygon(50% 0%, 70% 5%, 60% 40%, 80% 70%, 60% 100%, 40% 100%, 20% 70%, 40% 40%, 30% 5%)',
   );
   const secondHand = {
     ...FILIGREE,
-    position: "absolute",
+    position: 'absolute',
     width: `calc(0.01 * ${radius})`,
     height: `calc(0.4375 * ${radius} * 2)`,
-    left: "50%",
-    top: "50%",
+    left: '50%',
+    top: '50%',
     transform: `translate(-50%, -100%) rotate(${secondDeg}deg)`,
-    transformOrigin: "center bottom",
-    borderRadius: "0 0 0.2vh 0.2vh",
+    transformOrigin: 'center bottom',
+    borderRadius: '0 0 0.2vh 0.2vh',
     zIndex: 3,
   };
 
   const centerCap = {
     ...FILIGREE,
-    position: "absolute",
+    position: 'absolute',
     width: `calc(0.12 * ${radius})`,
     height: `calc(0.12 * ${radius})`,
-    borderRadius: "50%",
+    borderRadius: '50%',
     top: `calc(50% - 0.06 * ${radius})`,
     left: `calc(50% - 0.06 * ${radius})`,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     zIndex: 5,
   };
 
   const svgNumbers = (
     <svg
       style={{
-        position: "absolute",
-        width: "100%",
-        height: "100%",
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
         zIndex: 2,
-        pointerEvents: "none",
+        pointerEvents: 'none',
       }}
       viewBox="0 0 100 100"
     >
@@ -199,7 +200,13 @@ export default function AnalogClock() {
           <stop offset="100%" stopColor="#777A79" />
         </linearGradient>
         <filter id="numShadow">
-          <feDropShadow dx="0" dy="0.5" stdDeviation="0.8" floodColor="#000" floodOpacity="0.4" />
+          <feDropShadow
+            dx="0"
+            dy="0.5"
+            stdDeviation="0.8"
+            floodColor="#000"
+            floodOpacity="0.4"
+          />
         </filter>
       </defs>
 
@@ -208,7 +215,16 @@ export default function AnalogClock() {
         const radiusPos = 38;
         const x = 50 + radiusPos * Math.sin(angle);
         const y = 50 - radiusPos * Math.cos(angle);
-        const label = i === 0 ? "12" : i === 3 ? "3" : i === 6 ? "6" : i === 9 ? "9" : i.toString();
+        const label =
+          i === 0
+            ? '12'
+            : i === 3
+              ? '3'
+              : i === 6
+                ? '6'
+                : i === 9
+                  ? '9'
+                  : i.toString();
 
         return (
           <text

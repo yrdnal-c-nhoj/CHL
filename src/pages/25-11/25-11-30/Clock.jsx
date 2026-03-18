@@ -1,21 +1,21 @@
 // DigitalClock.jsx (Optimized for FOUT Prevention)
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import font251130 from '../../../assets/fonts/25-11-30-nono.ttf?url';
-import backgroundImg from '../../../assets/images/25-11/25-11-30/crax.jpg'
+import backgroundImg from '../../../assets/images/25-11/25-11-30/crax.jpg';
 
-export default function DigitalClock () {
-  const [now, setNow] = useState(() => new Date())
-  const [fontReady, setFontReady] = useState(false) // New state to control rendering
-  const injected = useRef(false)
+export default function DigitalClock() {
+  const [now, setNow] = useState(() => new Date());
+  const [fontReady, setFontReady] = useState(false); // New state to control rendering
+  const injected = useRef(false);
 
   // Use a simple, safe font-family name
-  const fontFamily = 'ClockFont2025_12_01'
-  const styleId = 'ClockFontStyle_2025_12_01'
-  const FONT_FALLBACK = 'monospace' // Fallback font for interim display
+  const fontFamily = 'ClockFont2025_12_01';
+  const styleId = 'ClockFontStyle_2025_12_01';
+  const FONT_FALLBACK = 'monospace'; // Fallback font for interim display
 
   // --- 1. Font Injection and Loading (Optimized) ---
   useEffect(() => {
-    if (injected.current) return
+    if (injected.current) return;
 
     // 1a. Inject global CSS (Viewports & @font-face definition)
     const css = `
@@ -31,36 +31,36 @@ export default function DigitalClock () {
         margin: 0; padding: 0; overflow: hidden;
       }
       body { min-height: 100dvh; min-height: -webkit-fill-available; }
-    `
+    `;
 
-    const tag = document.createElement('style')
-    tag.id = styleId
-    tag.appendChild(document.createTextNode(css))
-    document.head.appendChild(tag)
+    const tag = document.createElement('style');
+    tag.id = styleId;
+    tag.appendChild(document.createTextNode(css));
+    document.head.appendChild(tag);
 
     // 1b. Use Font Loading API to wait for font
     // This is the key to preventing FOUT: do not render digits until font is loaded
     document.fonts
       .load(`1em '${fontFamily}'`)
       .then(() => {
-        setFontReady(true)
+        setFontReady(true);
       })
-      .catch(err => {
-        console.error('Font loading failed, falling back.', err)
+      .catch((err) => {
+        console.error('Font loading failed, falling back.', err);
         // Render anyway, using the monospace fallback font
-        setFontReady(true)
-      })
+        setFontReady(true);
+      });
 
-    injected.current = true
-  }, [])
+    injected.current = true;
+  }, []);
 
   // --- 2. Clock Update (Unchanged) ---
   useEffect(() => {
     // Only start the clock interval if the font injection/loading process has started
-    if (!injected.current) return
-    const interval = setInterval(() => setNow(new Date()), 1000)
-    return () => clearInterval(interval)
-  }, [])
+    if (!injected.current) return;
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // --- 3. Time Calculations and Leetspeak (Unchanged) ---
   const digitMap = {
@@ -73,34 +73,34 @@ export default function DigitalClock () {
     6: 'L',
     7: '2',
     8: 'q',
-    9: 'C'
-  }
+    9: 'C',
+  };
 
   const sub = useCallback(
-    str =>
+    (str) =>
       str
         .split('')
-        .map(d => digitMap[d] || d)
+        .map((d) => digitMap[d] || d)
         .join(''),
-    []
-  )
+    [],
+  );
 
-  const HH = sub(String(now.getHours()).padStart(2, '0'))
-  const MM = sub(String(now.getMinutes()).padStart(2, '0'))
-  const SS = sub(String(now.getSeconds()).padStart(2, '0'))
+  const HH = sub(String(now.getHours()).padStart(2, '0'));
+  const MM = sub(String(now.getMinutes()).padStart(2, '0'));
+  const SS = sub(String(now.getSeconds()).padStart(2, '0'));
 
-  const isPhone = window.innerWidth < 600
+  const isPhone = window.innerWidth < 600;
 
   // --- 4. Inline Style Definitions (Unchanged/Refined) ---
 
-  const baseFontSize = isPhone ? '32vw' : '18vw'
-  const boxWidth = isPhone ? '26vw' : '14vw'
-  const boxHeight = isPhone ? '24vw' : '16vw'
+  const baseFontSize = isPhone ? '32vw' : '18vw';
+  const boxWidth = isPhone ? '26vw' : '14vw';
+  const boxHeight = isPhone ? '24vw' : '16vw';
 
   // Use the font family state: Fallback until loaded
   const currentFontFamily = fontReady
     ? `'${fontFamily}', ${FONT_FALLBACK}`
-    : FONT_FALLBACK
+    : FONT_FALLBACK;
 
   const digitBox = {
     width: boxWidth,
@@ -119,8 +119,8 @@ export default function DigitalClock () {
       -1px  1px 0 #F98016FF,
        1px  1px 0 #F9800FFF
     `,
-    userSelect: 'none'
-  }
+    userSelect: 'none',
+  };
 
   const container = {
     width: '100vw',
@@ -134,29 +134,29 @@ export default function DigitalClock () {
     backgroundRepeat: 'no-repeat',
     margin: 0,
     padding: isPhone ? '2vh 0' : '0',
-    boxSizing: 'border-box'
-  }
+    boxSizing: 'border-box',
+  };
 
   const row = {
     display: 'flex',
     flexDirection: 'row',
     gap: '3vw', // Consistent gap using vw
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  };
 
   const column = {
     display: 'flex',
     flexDirection: 'column',
     gap: '4vh', // Gap using vh
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  };
 
-  const renderPair = digits => (
+  const renderPair = (digits) => (
     <div style={{ display: 'flex', gap: isPhone ? '2vw' : '1vw' }}>
       <div style={digitBox}>{digits[0]}</div>
       <div style={digitBox}>{digits[1]}</div>
     </div>
-  )
+  );
 
   // --- 5. Conditional Render (The FOUT solution) ---
   if (!fontReady) {
@@ -165,7 +165,7 @@ export default function DigitalClock () {
       <div style={container}>
         <div style={{ color: 'white', fontSize: '4vh' }}>Loading...</div>
       </div>
-    )
+    );
   }
 
   return (
@@ -184,5 +184,5 @@ export default function DigitalClock () {
         </div>
       )}
     </div>
-  )
+  );
 }

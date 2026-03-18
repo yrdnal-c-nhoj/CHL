@@ -1,10 +1,10 @@
 // useFontLoader.js
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 
 export default function useFontLoader(fontName, fontFile, format = 'truetype') {
   useEffect(() => {
     // Inject @font-face
-    const style = document.createElement('style')
+    const style = document.createElement('style');
     style.textContent = `
       @font-face {
         font-family: '${fontName}';
@@ -13,21 +13,21 @@ export default function useFontLoader(fontName, fontFile, format = 'truetype') {
         font-weight: normal;
         font-style: normal;
       }
-    `
-    document.head.appendChild(style)
+    `;
+    document.head.appendChild(style);
 
     // Optional: preload
-    const link = document.createElement('link')
-    link.rel = 'preload'
-    link.as = 'font'
-    link.href = fontFile
-    link.type = format === 'woff2' ? 'font/woff2' : 'font/ttf'
-    link.crossOrigin = 'anonymous'
-    document.head.appendChild(link)
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'font';
+    link.href = fontFile;
+    link.type = format === 'woff2' ? 'font/woff2' : 'font/ttf';
+    link.crossOrigin = 'anonymous';
+    document.head.appendChild(link);
 
     return () => {
-      document.head.removeChild(style)
-      document.head.removeChild(link)
-    }
-  }, [fontName, fontFile, format])
+      document.head.removeChild(style);
+      document.head.removeChild(link);
+    };
+  }, [fontName, fontFile, format]);
 }

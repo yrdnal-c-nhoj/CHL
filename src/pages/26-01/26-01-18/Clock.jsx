@@ -1,11 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 
-
 class IsoEngine {
   constructor(canvas) {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
-    this.scale = 20; 
+    this.scale = 20;
     this.angle = Math.PI / 6;
   }
 
@@ -15,24 +14,41 @@ class IsoEngine {
     const originX = this.canvas.width / 2;
     const originY = this.canvas.height / 2;
 
-    const px = originX + (x * this.scale * cosA) + (y * this.scale * Math.cos(Math.PI - this.angle));
-    const py = originY - (x * this.scale * sinA) - (y * this.scale * Math.sin(Math.PI - this.angle)) - (z * this.scale);
+    const px =
+      originX +
+      x * this.scale * cosA +
+      y * this.scale * Math.cos(Math.PI - this.angle);
+    const py =
+      originY -
+      x * this.scale * sinA -
+      y * this.scale * Math.sin(Math.PI - this.angle) -
+      z * this.scale;
     return { x: px, y: py };
   }
 
   drawPrism(x, y, z, w, l, h, color) {
     const points = [
-      [x, y, z], [x + w, y, z], [x + w, y + l, z], [x, y + l, z],
-      [x, y, z + h], [x + w, y, z + h], [x + w, y + l, z + h], [x, y + l, z + h]
+      [x, y, z],
+      [x + w, y, z],
+      [x + w, y + l, z],
+      [x, y + l, z],
+      [x, y, z + h],
+      [x + w, y, z + h],
+      [x + w, y + l, z + h],
+      [x, y + l, z + h],
     ];
-    const faces = [[0, 1, 5, 4], [1, 2, 6, 5], [4, 5, 6, 7]];
-    const shades = [0.8, 0.6, 1.0]; 
+    const faces = [
+      [0, 1, 5, 4],
+      [1, 2, 6, 5],
+      [4, 5, 6, 7],
+    ];
+    const shades = [0.8, 0.6, 1.0];
 
     faces.forEach((indices, i) => {
       this.ctx.beginPath();
       const p0 = this.project(...points[indices[0]]);
       this.ctx.moveTo(p0.x, p0.y);
-      indices.slice(1).forEach(idx => {
+      indices.slice(1).forEach((idx) => {
         const p = this.project(...points[idx]);
         this.ctx.lineTo(p.x, p.y);
       });
@@ -48,19 +64,82 @@ class IsoEngine {
 }
 
 const GLYPH_MAP = {
-  '0': [[0,0,0,3,1,1],[0,0,4,3,1,1],[0,0,1,1,1,3],[2,0,1,1,1,3]],
-  '1': [[1,0,0,1,1,5]],
-  '2': [[0,0,0,3,1,1],[0,0,2,3,1,1],[0,0,4,3,1,1],[2,0,3,1,1,1],[0,0,1,1,1,1]],
-  '3': [[0,0,0,3,1,1],[0,0,2,3,1,1],[0,0,4,3,1,1],[2,0,1,1,1,3]],
-  '4': [[2,0,0,1,1,5],[0,0,2,1,1,3],[1,0,2,1,1,1]],
-  '5': [[0,0,0,3,1,1],[0,0,2,3,1,1],[0,0,4,3,1,1],[0,0,3,1,1,1],[2,0,1,1,1,1]],
-  '6': [[0,0,0,3,1,1],[0,0,2,3,1,1],[0,0,4,3,1,1],[0,0,1,1,1,3],[2,0,1,1,1,1]],
-  '7': [[2,0,0,1,1,5],[0,0,4,3,1,1]],
-  '8': [[0,0,0,3,1,1],[0,0,2,3,1,1],[0,0,4,3,1,1],[0,0,1,1,1,3],[2,0,1,1,1,3]],
-  '9': [[0,0,0,3,1,1],[0,0,2,3,1,1],[0,0,4,3,1,1],[0,0,3,1,1,1],[2,0,1,1,1,3]],
-  'A': [[0,0,0,1,1,4],[2,0,0,1,1,4],[0,0,4,3,1,1],[0,0,2,3,1,1]],
-  'P': [[0,0,0,1,1,5],[1,0,4,2,1,1],[1,0,2,2,1,1],[2,0,3,1,1,1]],
-  'M': [[0,0,0,1,1,5],[4,0,0,1,1,5],[1,0,3,1,1,1],[2,0,2,1,1,1],[3,0,3,1,1,1]],
+  0: [
+    [0, 0, 0, 3, 1, 1],
+    [0, 0, 4, 3, 1, 1],
+    [0, 0, 1, 1, 1, 3],
+    [2, 0, 1, 1, 1, 3],
+  ],
+  1: [[1, 0, 0, 1, 1, 5]],
+  2: [
+    [0, 0, 0, 3, 1, 1],
+    [0, 0, 2, 3, 1, 1],
+    [0, 0, 4, 3, 1, 1],
+    [2, 0, 3, 1, 1, 1],
+    [0, 0, 1, 1, 1, 1],
+  ],
+  3: [
+    [0, 0, 0, 3, 1, 1],
+    [0, 0, 2, 3, 1, 1],
+    [0, 0, 4, 3, 1, 1],
+    [2, 0, 1, 1, 1, 3],
+  ],
+  4: [
+    [2, 0, 0, 1, 1, 5],
+    [0, 0, 2, 1, 1, 3],
+    [1, 0, 2, 1, 1, 1],
+  ],
+  5: [
+    [0, 0, 0, 3, 1, 1],
+    [0, 0, 2, 3, 1, 1],
+    [0, 0, 4, 3, 1, 1],
+    [0, 0, 3, 1, 1, 1],
+    [2, 0, 1, 1, 1, 1],
+  ],
+  6: [
+    [0, 0, 0, 3, 1, 1],
+    [0, 0, 2, 3, 1, 1],
+    [0, 0, 4, 3, 1, 1],
+    [0, 0, 1, 1, 1, 3],
+    [2, 0, 1, 1, 1, 1],
+  ],
+  7: [
+    [2, 0, 0, 1, 1, 5],
+    [0, 0, 4, 3, 1, 1],
+  ],
+  8: [
+    [0, 0, 0, 3, 1, 1],
+    [0, 0, 2, 3, 1, 1],
+    [0, 0, 4, 3, 1, 1],
+    [0, 0, 1, 1, 1, 3],
+    [2, 0, 1, 1, 1, 3],
+  ],
+  9: [
+    [0, 0, 0, 3, 1, 1],
+    [0, 0, 2, 3, 1, 1],
+    [0, 0, 4, 3, 1, 1],
+    [0, 0, 3, 1, 1, 1],
+    [2, 0, 1, 1, 1, 3],
+  ],
+  A: [
+    [0, 0, 0, 1, 1, 4],
+    [2, 0, 0, 1, 1, 4],
+    [0, 0, 4, 3, 1, 1],
+    [0, 0, 2, 3, 1, 1],
+  ],
+  P: [
+    [0, 0, 0, 1, 1, 5],
+    [1, 0, 4, 2, 1, 1],
+    [1, 0, 2, 2, 1, 1],
+    [2, 0, 3, 1, 1, 1],
+  ],
+  M: [
+    [0, 0, 0, 1, 1, 5],
+    [4, 0, 0, 1, 1, 5],
+    [1, 0, 3, 1, 1, 1],
+    [2, 0, 2, 1, 1, 1],
+    [3, 0, 3, 1, 1, 1],
+  ],
 };
 
 const OrtogonalClock = () => {
@@ -74,17 +153,17 @@ const OrtogonalClock = () => {
 
     const tick = (time) => {
       const width = window.innerWidth;
-      
+
       // Responsive Scales
       if (width < 480) {
-        engine.scale = width / 38; 
+        engine.scale = width / 38;
       } else if (width < 1024) {
         engine.scale = 35;
       } else {
         engine.scale = 50;
       }
-      
-      engine.angle = (time / 3000); 
+
+      engine.angle = time / 3000;
       engine.clear();
 
       const now = new Date();
@@ -105,22 +184,32 @@ const OrtogonalClock = () => {
         else totalWidth += 4;
       }
 
-      let currentX = -(totalWidth / 2); 
+      let currentX = -(totalWidth / 2);
 
       for (let i = 0; i < fullStr.length; i++) {
         const char = fullStr[i];
         if (char === ':') {
           engine.drawPrism(currentX, 0, 1, 1, 1, 1, clockColor);
           engine.drawPrism(currentX, 0, 3, 1, 1, 1, clockColor);
-          currentX += 2; 
+          currentX += 2;
         } else if (char === ' ') {
           currentX += 1.5;
         } else {
           const shapes = GLYPH_MAP[char];
           if (shapes) {
-            shapes.forEach(f => engine.drawPrism(f[0] + currentX, f[1], f[2], f[3], f[4], f[5], clockColor));
+            shapes.forEach((f) =>
+              engine.drawPrism(
+                f[0] + currentX,
+                f[1],
+                f[2],
+                f[3],
+                f[4],
+                f[5],
+                clockColor,
+              ),
+            );
           }
-          currentX += (char === 'M') ? 6 : 4; 
+          currentX += char === 'M' ? 6 : 4;
         }
       }
       raf = requestAnimationFrame(tick);
@@ -131,17 +220,22 @@ const OrtogonalClock = () => {
   }, []);
 
   return (
-    <div style={{
-      width: '100vw', height: '100dvh',
-      background: 'linear-gradient(180deg, #185591 0%, #835CD7 100%)',
-      display: 'flex', justifyContent: 'center', alignItems: 'center',
-      overflow: 'hidden'
-    }}>
-      <canvas 
-        ref={canvasRef} 
-        width={window.innerWidth * 2} 
-        height={window.innerHeight * 2} 
-        style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+    <div
+      style={{
+        width: '100vw',
+        height: '100dvh',
+        background: 'linear-gradient(180deg, #185591 0%, #835CD7 100%)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+      }}
+    >
+      <canvas
+        ref={canvasRef}
+        width={window.innerWidth * 2}
+        height={window.innerHeight * 2}
+        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
       />
     </div>
   );

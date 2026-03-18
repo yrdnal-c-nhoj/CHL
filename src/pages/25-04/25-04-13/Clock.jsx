@@ -16,15 +16,18 @@ const PizzaClock = () => {
       const ms = now.getMilliseconds();
       const s = now.getSeconds() + ms / 1000;
       const m = now.getMinutes() + s / 60;
-      const h = now.getHours() % 12 + m / 60;
+      const h = (now.getHours() % 12) + m / 60;
 
       const hourDeg = h * 30;
       const minuteDeg = m * 6;
       const secondDeg = s * 6;
 
-      if (hourRef.current) hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
-      if (minuteRef.current) minuteRef.current.style.transform = `rotate(${minuteDeg}deg)`;
-      if (secondRef.current) secondRef.current.style.transform = `rotate(${secondDeg}deg)`;
+      if (hourRef.current)
+        hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
+      if (minuteRef.current)
+        minuteRef.current.style.transform = `rotate(${minuteDeg}deg)`;
+      if (secondRef.current)
+        secondRef.current.style.transform = `rotate(${secondDeg}deg)`;
 
       requestAnimationFrame(updateClockSmooth);
     };
@@ -33,17 +36,21 @@ const PizzaClock = () => {
   }, []);
 
   return (
-    <div style={{
-      margin: 0,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100dvh',
-      width: '100vw',
-      overflow: 'hidden',
-      position: 'relative',
-    }}>
-      <img decoding="async" loading="lazy"
+    <div
+      style={{
+        margin: 0,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100dvh',
+        width: '100vw',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
+    >
+      <img
+        decoding="async"
+        loading="lazy"
         src={backgroundImage}
         alt="Background"
         style={{
@@ -57,19 +64,21 @@ const PizzaClock = () => {
           zIndex: 0,
         }}
       />
-      <div style={{
-        position: 'relative',
-        width: '80vmin',      // vmin ensures a square that fits within viewport
-        height: '80vmin',
-        aspectRatio: '1',
-        backgroundImage: `url(${pizzaFace})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-        borderRadius: '50%',
-        filter: 'saturate(1.6)',
-        zIndex: 1,
-      }}>
+      <div
+        style={{
+          position: 'relative',
+          width: '80vmin', // vmin ensures a square that fits within viewport
+          height: '80vmin',
+          aspectRatio: '1',
+          backgroundImage: `url(${pizzaFace})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+          borderRadius: '50%',
+          filter: 'saturate(1.6)',
+          zIndex: 1,
+        }}
+      >
         <div
           ref={minuteRef}
           style={{
@@ -83,7 +92,9 @@ const PizzaClock = () => {
             zIndex: 6,
           }}
         >
-          <img decoding="async" loading="lazy"
+          <img
+            decoding="async"
+            loading="lazy"
             src={minuteSlice}
             alt="Minute Hand"
             style={{
@@ -111,7 +122,9 @@ const PizzaClock = () => {
             zIndex: 9,
           }}
         >
-          <img decoding="async" loading="lazy"
+          <img
+            decoding="async"
+            loading="lazy"
             src={hourSlice}
             alt="Hour Hand"
             style={{
@@ -139,7 +152,9 @@ const PizzaClock = () => {
             zIndex: 5,
           }}
         >
-          <img decoding="async" loading="lazy"
+          <img
+            decoding="async"
+            loading="lazy"
             src={secondSlice}
             alt="Second Hand"
             style={{

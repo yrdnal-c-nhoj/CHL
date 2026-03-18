@@ -31,14 +31,41 @@ const Clock = () => {
   return (
     <div style={{ ...styles.container, fontFamily: `'blu', monospace` }}>
       {/* Background layers */}
-      <img decoding="async" loading="lazy" src={image1} alt="bg1" style={styles.image1} />
-      <img decoding="async" loading="lazy" src={image2} alt="bg2" style={styles.image2} />
-      <img decoding="async" loading="lazy" src={image3} alt="bg3" style={styles.image3} />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={image1}
+        alt="bg1"
+        style={styles.image1}
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={image2}
+        alt="bg2"
+        style={styles.image2}
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={image3}
+        alt="bg3"
+        style={styles.image3}
+      />
 
       {/* Centered clock */}
       <div style={styles.clock}>
-        {[hours[0], hours[1], minutes[0], minutes[1], seconds[0], seconds[1]].map((digit, idx) => (
-          <span key={idx} style={styles.digit}>{digit}</span>
+        {[
+          hours[0],
+          hours[1],
+          minutes[0],
+          minutes[1],
+          seconds[0],
+          seconds[1],
+        ].map((digit, idx) => (
+          <span key={idx} style={styles.digit}>
+            {digit}
+          </span>
         ))}
       </div>
     </div>

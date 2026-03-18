@@ -1,29 +1,29 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react';
 // import bgVideo from './sea.mp4' // Video file not found in current directory
-import fallbackImg from '../../../assets/images/25-11/25-11-04/sea.webp'
+import fallbackImg from '../../../assets/images/25-11/25-11-04/sea.webp';
 import cu251104font from '../../../assets/fonts/25-11-04-naut.ttf?url';
 import { useFontLoader } from '../../../utils/fontLoader'; // Nautical font
 
-export default function OceanStorm () {
-  const [vh, setVh] = useState(window.innerHeight)
-  const [fontLoaded, setFontLoaded] = useState(false)
+export default function OceanStorm() {
+  const [vh, setVh] = useState(window.innerHeight);
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
     // Update vh dynamically
-    const handleResize = () => setVh(window.innerHeight)
-    window.addEventListener('resize', handleResize)
+    const handleResize = () => setVh(window.innerHeight);
+    window.addEventListener('resize', handleResize);
 
     // Load custom font
-    const font = new FontFace('Nautical', `url(${cu251104font})`)
-    font.load().then(loadedFont => {
-      document.fonts.add(loadedFont)
-      setFontLoaded(true)
-    })
+    const font = new FontFace('Nautical', `url(${cu251104font})`);
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      setFontLoaded(true);
+    });
 
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  const clockSize = '60vmin'
+  const clockSize = '60vmin';
 
   return (
     <div
@@ -31,7 +31,7 @@ export default function OceanStorm () {
         position: 'relative',
         width: '100vw',
         height: `${vh}px`,
-        overflow: 'hidden'
+        overflow: 'hidden',
         // backgroundColor: "#001f33",
       }}
     >
@@ -48,7 +48,7 @@ export default function OceanStorm () {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           zIndex: 0,
-          filter: 'brightness(1.5) contrast(1.4) hue-rotate(-10deg)'
+          filter: 'brightness(1.5) contrast(1.4) hue-rotate(-10deg)',
         }}
       />
 
@@ -64,7 +64,7 @@ export default function OceanStorm () {
           opacity: 0.7,
           borderRadius: '50%',
           animation: 'hurricaneRock 5s ease-in-out infinite',
-          transformStyle: 'preserve-3d'
+          transformStyle: 'preserve-3d',
         }}
       >
         {fontLoaded && <ClockFace />}
@@ -104,38 +104,38 @@ export default function OceanStorm () {
     
       `}</style>
     </div>
-  )
+  );
 }
 
 // --- ClockFace Component ---
-function ClockFace () {
-  const hourRef = useRef(null)
-  const minuteRef = useRef(null)
-  const secondRef = useRef(null)
+function ClockFace() {
+  const hourRef = useRef(null);
+  const minuteRef = useRef(null);
+  const secondRef = useRef(null);
 
   useEffect(() => {
     const updateClock = () => {
-      const now = new Date()
-      const seconds = now.getSeconds()
-      const minutes = now.getMinutes()
-      const hours = now.getHours() % 12
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const minutes = now.getMinutes();
+      const hours = now.getHours() % 12;
 
-      const secDeg = seconds * 6
-      const minDeg = minutes * 6 + seconds * 0.1
-      const hourDeg = hours * 30 + minutes * 0.5
+      const secDeg = seconds * 6;
+      const minDeg = minutes * 6 + seconds * 0.1;
+      const hourDeg = hours * 30 + minutes * 0.5;
 
       if (hourRef.current)
-        hourRef.current.style.transform = `rotate(${hourDeg}deg)`
+        hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
       if (minuteRef.current)
-        minuteRef.current.style.transform = `rotate(${minDeg}deg)`
+        minuteRef.current.style.transform = `rotate(${minDeg}deg)`;
       if (secondRef.current)
-        secondRef.current.style.transform = `rotate(${secDeg}deg)`
-    }
+        secondRef.current.style.transform = `rotate(${secDeg}deg)`;
+    };
 
-    updateClock()
-    const interval = setInterval(updateClock, 1000)
-    return () => clearInterval(interval)
-  }, [])
+    updateClock();
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const brassHand = (widthVmin, heightVmin, shadow) => ({
     position: 'absolute',
@@ -147,19 +147,19 @@ function ClockFace () {
     background:
       'linear-gradient(180deg, #E7C970FF 0%, #b8860b 50%, #5a3e0a 100%)',
     borderRadius: '0.5vmin',
-    boxShadow: shadow
-  })
+    boxShadow: shadow,
+  });
 
   const mainNumbers = [
     { num: 12, angle: 0 },
     { num: 3, angle: 90 },
     { num: 6, angle: 180 },
-    { num: 9, angle: 270 }
-  ]
+    { num: 9, angle: 270 },
+  ];
 
   return (
     <div
-      className='clock-glow'
+      className="clock-glow"
       style={{
         fontFamily: 'Nautical, sans-serif',
         width: '100%',
@@ -167,27 +167,27 @@ function ClockFace () {
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
       }}
     >
       {mainNumbers.map(({ num, angle }) => {
-        const x = 40 * Math.sin((angle * Math.PI) / 180)
-        const y = -40 * Math.cos((angle * Math.PI) / 180)
+        const x = 40 * Math.sin((angle * Math.PI) / 180);
+        const y = -40 * Math.cos((angle * Math.PI) / 180);
         return (
           <div
             key={num}
-            className='brass-text'
+            className="brass-text"
             style={{
               position: 'absolute',
               left: `calc(50% + ${x}%)`,
               top: `calc(50% + ${y}%)`,
               transform: 'translate(-50%, -50%)',
-              fontSize: 'clamp(6vmin, 10vmin, 12vmin)'
+              fontSize: 'clamp(6vmin, 10vmin, 12vmin)',
             }}
           >
             {num}
           </div>
-        )
+        );
       })}
 
       <div
@@ -195,7 +195,7 @@ function ClockFace () {
         style={brassHand(
           1.5,
           20,
-          'inset 0 0 0.5rem #2a1b00, 0 0 1rem rgba(255,200,100,0.5)'
+          'inset 0 0 0.5rem #2a1b00, 0 0 1rem rgba(255,200,100,0.5)',
         )}
       />
       <div
@@ -203,7 +203,7 @@ function ClockFace () {
         style={brassHand(
           1,
           30,
-          'inset 0 0 0.3rem #3a2b00, 0 0 1rem rgba(255,200,80,0.4)'
+          'inset 0 0 0.3rem #3a2b00, 0 0 1rem rgba(255,200,80,0.4)',
         )}
       />
       <div
@@ -211,9 +211,9 @@ function ClockFace () {
         style={brassHand(
           0.5,
           30,
-          'inset 0 0 0.2rem #4a3400, 0 0 1rem rgba(255,200,80,0.4)'
+          'inset 0 0 0.2rem #4a3400, 0 0 1rem rgba(255,200,80,0.4)',
         )}
       />
     </div>
-  )
+  );
 }

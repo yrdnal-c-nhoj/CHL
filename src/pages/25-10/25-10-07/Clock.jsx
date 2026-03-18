@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 // === Local assets ===
-import backgroundVideo from '../../../assets/images/25-10/25-10-07/big.mp4'
-import fallbackGif from '../../../assets/images/25-10/25-10-07/big.webp'
+import backgroundVideo from '../../../assets/images/25-10/25-10-07/big.mp4';
+import fallbackGif from '../../../assets/images/25-10/25-10-07/big.webp';
 import O251007font from '../../../assets/fonts/25-10-07-str.ttf';
 
-export default function ImageAnalogClock () {
-  const [time, setTime] = useState(new Date())
-  const [ready, setReady] = useState(false)
+export default function ImageAnalogClock() {
+  const [time, setTime] = useState(new Date());
+  const [ready, setReady] = useState(false);
   const [fontLoaded, setFontLoaded] = useState(false);
-  
+
   // Simple scoped font loading without leaks
   useEffect(() => {
     const loadFont = async () => {
@@ -26,41 +26,41 @@ export default function ImageAnalogClock () {
         setTimeout(() => setReady(true), 100);
       }
     };
-    
+
     loadFont();
   }, []);
 
   // Update time every second
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000)
-    return () => clearInterval(interval)
-  }, [])
+    const interval = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Force autoplay (iOS sometimes ignores initial play call)
   useEffect(() => {
-    const video = document.querySelector('video')
-    if (!video) return
+    const video = document.querySelector('video');
+    if (!video) return;
 
     const tryPlay = () => {
-      video.play().catch(() => {})
-    }
+      video.play().catch(() => {});
+    };
 
     // Attempt several times in case of delayed video load
-    tryPlay()
-    const t1 = setTimeout(tryPlay, 500)
-    const t2 = setTimeout(tryPlay, 1500)
-    const t3 = setTimeout(tryPlay, 3000)
+    tryPlay();
+    const t1 = setTimeout(tryPlay, 500);
+    const t2 = setTimeout(tryPlay, 1500);
+    const t3 = setTimeout(tryPlay, 3000);
 
     return () => {
-      clearTimeout(t1)
-      clearTimeout(t2)
-      clearTimeout(t3)
-    }
-  }, [ready])
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, [ready]);
 
-  const clockSize = '80%'
-  const center = { x: 50, y: 50 }
-  const radius = 45
+  const clockSize = '80%';
+  const center = { x: 50, y: 50 };
+  const radius = 45;
 
   const numbers = [
     { digit: 'twelve', angle: 0 },
@@ -74,16 +74,16 @@ export default function ImageAnalogClock () {
     { digit: 'eight', angle: 240 },
     { digit: 'nine', angle: 270 },
     { digit: 'ten', angle: 300 },
-    { digit: 'eleven', angle: 330 }
-  ]
+    { digit: 'eleven', angle: 330 },
+  ];
 
-  const hours = time.getHours() % 12
-  const minutes = time.getMinutes()
-  const seconds = time.getSeconds()
+  const hours = time.getHours() % 12;
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds();
 
-  const hourAngle = (hours + minutes / 60) * 30
-  const minuteAngle = (minutes + seconds / 60) * 6
-  const secondAngle = seconds * 6
+  const hourAngle = (hours + minutes / 60) * 30;
+  const minuteAngle = (minutes + seconds / 60) * 6;
+  const secondAngle = seconds * 6;
 
   const handStyle = (width, length, color, angle) => ({
     position: 'absolute',
@@ -94,8 +94,8 @@ export default function ImageAnalogClock () {
     left: '50%',
     transformOrigin: '50% 100%',
     transform: `translate(-50%, -100%) rotate(${angle}deg)`,
-    pointerEvents: 'none'
-  })
+    pointerEvents: 'none',
+  });
 
   if (!ready) {
     return (
@@ -106,10 +106,10 @@ export default function ImageAnalogClock () {
           left: 0,
           width: '100vw',
           height: '100dvh',
-          backgroundColor: 'black'
+          backgroundColor: 'black',
         }}
       />
-    )
+    );
   }
 
   return (
@@ -123,7 +123,7 @@ export default function ImageAnalogClock () {
         alignItems: 'center',
         overflow: 'hidden',
         isolation: 'isolate',
-        backgroundColor: '#111'
+        backgroundColor: '#111',
       }}
     >
       {/* Background video with autoplay + fallback */}
@@ -133,24 +133,26 @@ export default function ImageAnalogClock () {
         muted
         playsInline
         disablePictureInPicture
-        preload='auto'
-        onLoadedData={e => e.target.play().catch(() => {})}
+        preload="auto"
+        onLoadedData={(e) => e.target.play().catch(() => {})}
         style={{
           position: 'absolute',
           width: '100vw',
           height: '100dvh',
           objectFit: 'cover',
-          zIndex: -1
+          zIndex: -1,
         }}
       >
-        <source src={backgroundVideo} type='video/mp4' />
-        <img decoding="async" loading="lazy"
+        <source src={backgroundVideo} type="video/mp4" />
+        <img
+          decoding="async"
+          loading="lazy"
           src={fallbackGif}
-          alt='Fallback background'
+          alt="Fallback background"
           style={{
             width: '100vw',
             height: '100dvh',
-            objectFit: 'cover'
+            objectFit: 'cover',
           }}
         />
       </video>
@@ -162,7 +164,7 @@ export default function ImageAnalogClock () {
           width: clockSize,
           height: clockSize,
           borderRadius: '50%',
-          isolation: 'isolate'
+          isolation: 'isolate',
         }}
       >
         {/* Hands */}
@@ -172,9 +174,9 @@ export default function ImageAnalogClock () {
 
         {/* Numbers */}
         {numbers.map((num, idx) => {
-          const angleRad = (num.angle - 90) * (Math.PI / 180)
-          const x = center.x + radius * 0.9 * Math.cos(angleRad)
-          const y = center.y + radius * 0.9 * Math.sin(angleRad)
+          const angleRad = (num.angle - 90) * (Math.PI / 180);
+          const x = center.x + radius * 0.9 * Math.cos(angleRad);
+          const y = center.y + radius * 0.9 * Math.sin(angleRad);
           return (
             <div
               key={idx}
@@ -187,14 +189,14 @@ export default function ImageAnalogClock () {
                 top: `${y}%`,
                 transform: 'translate(-50%, -50%)',
                 textAlign: 'center',
-                userSelect: 'none'
+                userSelect: 'none',
               }}
             >
               {num.digit}
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }

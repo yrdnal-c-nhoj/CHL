@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import imageLeft from '../../../assets/images/25-08/25-08-16/pal.webp';  
+import imageLeft from '../../../assets/images/25-08/25-08-16/pal.webp';
 import clockFace from '../../../assets/images/25-08/25-08-16/palm.webp';
 import customFontUrl from '../../../assets/fonts/25-08-16-palm.ttf';
-import hourHandImage from  '../../../assets/images/25-08/25-08-16/p1.gif';
+import hourHandImage from '../../../assets/images/25-08/25-08-16/p1.gif';
 import minuteHandImage from '../../../assets/images/25-08/25-08-16/p2.webp';
 import secondHandImage from '../../../assets/images/25-08/25-08-16/p3.gif';
 
@@ -56,21 +56,20 @@ const MirroredBackground = () => {
     contain: 'strict',
   };
 
-const leftStyle = {
-  ...imageSectionStyle,
-  backgroundImage: `url(${imageLeft})`,
-  transform: 'scaleX(-1)', // flipped LEFT side
-  filter: 'brightness(0.9) contrast(1.0) saturate(0.8)',
-  backgroundSize: '80%',   // zoom in (>100%) / zoom out (<100%)
-  backgroundPosition: 'center',
-};
-
+  const leftStyle = {
+    ...imageSectionStyle,
+    backgroundImage: `url(${imageLeft})`,
+    transform: 'scaleX(-1)', // flipped LEFT side
+    filter: 'brightness(0.9) contrast(1.0) saturate(0.8)',
+    backgroundSize: '80%', // zoom in (>100%) / zoom out (<100%)
+    backgroundPosition: 'center',
+  };
 
   const rightStyle = {
-      ...imageSectionStyle,
+    ...imageSectionStyle,
     backgroundImage: `url(${imageLeft})`,
     // transform: 'scaleX(-1)', // flipped LEFT side
-      backgroundSize: '80%',   // zoom in (>100%) / zoom out (<100%)
+    backgroundSize: '80%', // zoom in (>100%) / zoom out (<100%)
     filter: 'brightness(0.9) contrast(1.0) saturate(0.8)',
   };
 
@@ -101,22 +100,22 @@ const leftStyle = {
   };
 
   const numberStyle = (hour) => {
-  const angle = (hour - 3) * 30;
-  const radius = `calc(${clockSize} * 0.36)`;
-  const x = `calc(50% + ${radius} * ${Math.cos(angle * Math.PI / 180)})`;
-  const y = `calc(50% + ${radius} * ${Math.sin(angle * Math.PI / 180)})`;
+    const angle = (hour - 3) * 30;
+    const radius = `calc(${clockSize} * 0.36)`;
+    const x = `calc(50% + ${radius} * ${Math.cos((angle * Math.PI) / 180)})`;
+    const y = `calc(50% + ${radius} * ${Math.sin((angle * Math.PI) / 180)})`;
 
-  return {
-    position: 'absolute',
-    left: x,
-    top: y,
-    transform: 'translate(-50%, -50%)',
-    fontSize: `calc(${clockSize} * 0.15)`,
-    userSelect: 'none',
-    zIndex: 1,
-    color: '#D8EEA1FF',
-    fontFamily: `'${CLOCK_FONT_FAMILY}', sans-serif`,
-    textShadow: `
+    return {
+      position: 'absolute',
+      left: x,
+      top: y,
+      transform: 'translate(-50%, -50%)',
+      fontSize: `calc(${clockSize} * 0.15)`,
+      userSelect: 'none',
+      zIndex: 1,
+      color: '#D8EEA1FF',
+      fontFamily: `'${CLOCK_FONT_FAMILY}', sans-serif`,
+      textShadow: `
       /* soft glow */
       0 0 0.2rem #D8EEA1FF,
       0 0 0.4rem #D8EEA1FF,
@@ -132,9 +131,8 @@ const leftStyle = {
       -0.025rem 0.025rem 0 #fff,
       0.025rem 0.025rem 0 #fff
     `,
+    };
   };
-};
-
 
   const handCommon = {
     position: 'absolute',
@@ -153,8 +151,8 @@ const leftStyle = {
     height: `calc(${clockSize} * 0.56)`,
     transform: `translateX(-50%) rotate(${hourDeg}deg)`,
     backgroundImage: `url(${hourHandImage})`,
-        filter: 'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5)) saturate(5.5) brightness(2.2)',
-
+    filter:
+      'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5)) saturate(5.5) brightness(2.2)',
   };
 
   const minuteHandStyle = {
@@ -163,8 +161,8 @@ const leftStyle = {
     height: `calc(${clockSize} * 0.495)`,
     transform: `translateX(-50%) rotate(${minDeg}deg)`,
     backgroundImage: `url(${minuteHandImage})`,
-        filter: 'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5)) saturate(1.5) brightness(2.2)',
-
+    filter:
+      'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5)) saturate(1.5) brightness(2.2)',
   };
 
   const secondHandStyle = {
@@ -173,8 +171,8 @@ const leftStyle = {
     height: `calc(${clockSize} * 0.47)`,
     transform: `translateX(-50%) rotate(${secDeg}deg)`,
     backgroundImage: `url(${secondHandImage})`,
-        filter: 'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5)) saturate(1.5) brightness(2.2)',
-
+    filter:
+      'drop-shadow(0 0 0.3rem rgba(0,0,0,0.5)) saturate(1.5) brightness(2.2)',
   };
 
   return (
@@ -185,12 +183,14 @@ const leftStyle = {
 
       <div style={overlayStyle}>
         <div style={clockStyle} aria-label="Analog clock">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(hour => (
-            <div key={hour} style={numberStyle(hour)}>{hour}</div>
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((hour) => (
+            <div key={hour} style={numberStyle(hour)}>
+              {hour}
+            </div>
           ))}
           <div style={hourHandStyle} />
           <div style={minuteHandStyle} />
-          <div style={secondHandStyle} />        
+          <div style={secondHandStyle} />
         </div>
       </div>
     </div>

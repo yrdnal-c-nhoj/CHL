@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import backgroundImg from "../../../assets/images/25-11/25-11-29/squ.webp";
+import React, { useEffect, useState } from 'react';
+import backgroundImg from '../../../assets/images/25-11/25-11-29/squ.webp';
 import fontUrl_20251128 from '../../../assets/fonts/25-11-29-roc.ttf?url';
 
 export default function RococoDigitalClock() {
@@ -39,16 +39,16 @@ export default function RococoDigitalClock() {
         const font = new FontFace('RococoBlob', `url(${fontUrl_20251128})`, {
           weight: '800',
           style: 'normal',
-          display: 'block'
+          display: 'block',
         });
-        
+
         // Wait for the font to load
         await font.load();
         document.fonts.add(font);
-        
+
         // Small delay to ensure all resources are ready
-        await new Promise(resolve => setTimeout(resolve, 100));
-        
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
         setFontLoaded(true);
       } catch (e) {
         console.error('Failed to load font:', e);
@@ -81,13 +81,13 @@ export default function RococoDigitalClock() {
       setIsVertical(window.innerWidth < window.innerHeight);
     }
     check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
   }, []);
 
-  const hours = now.getHours().toString().padStart(2, "0");
-  const minutes = now.getMinutes().toString().padStart(2, "0");
-  const seconds = now.getSeconds().toString().padStart(2, "0");
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
   const timeStr = `${hours}:${minutes}:${seconds}`;
 
   const rand = (seed) => {
@@ -106,40 +106,44 @@ export default function RococoDigitalClock() {
         translateY(${-4 + rand(s + 5) * 8}vh)
         translateX(${-2 + rand(s + 6) * 4}vh)
       `,
-      transition: "transform 4.2s cubic-bezier(0.22, 0.88, 0.34, 0.98)",
+      transition: 'transform 4.2s cubic-bezier(0.22, 0.88, 0.34, 0.98)',
     };
   };
 
   // Show loading state that matches the final layout
   if (!fontLoaded) {
     return (
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: '#000',
-        backgroundImage: `url(${backgroundImg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        filter: 'brightness(1.2) contrast(1.4)',
-        zIndex: 9999,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '2vh',
-        opacity: 1,
-      }}>
-        {/* Invisible placeholder that matches the clock's layout */}
-        <div style={{ 
-          width: '100vw',
-          height: '18vh',
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: '#000',
+          backgroundImage: `url(${backgroundImg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'brightness(1.2) contrast(1.4)',
+          zIndex: 9999,
           display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
           justifyContent: 'center',
-          visibility: 'hidden'
-        }}>
+          gap: '2vh',
+          opacity: 1,
+        }}
+      >
+        {/* Invisible placeholder that matches the clock's layout */}
+        <div
+          style={{
+            width: '100vw',
+            height: '18vh',
+            display: 'flex',
+            justifyContent: 'center',
+            visibility: 'hidden',
+          }}
+        >
           <div style={{ width: '10vh', height: '18vh' }} />
           <div style={{ width: '10vh', height: '18vh' }} />
         </div>
@@ -151,47 +155,47 @@ export default function RococoDigitalClock() {
     return (
       <div
         style={{
-          width: "100vw",
-          height: "100dvh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
+          width: '100vw',
+          height: '100dvh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
           backgroundImage: `url(${backgroundImg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          filter: "brightness(1.2) contrast(1.4)",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'brightness(1.2) contrast(1.4)',
           fontFamily: "'RococoBlob', serif",
-          overflow: "hidden",
-          gap: "2vh",
+          overflow: 'hidden',
+          gap: '2vh',
           opacity: 1,
         }}
       >
         {/* Font face is now loaded in the main effect */}
-        <div style={{ display: "flex", position: "relative" }}>
-          {hours.split("").map((char, i) => (
+        <div style={{ display: 'flex', position: 'relative' }}>
+          {hours.split('').map((char, i) => (
             <div
               key={i}
               style={{
-                position: "relative",
-                width: "10vh",
-                height: "18vh",
+                position: 'relative',
+                width: '10vh',
+                height: '18vh',
                 flexShrink: 0,
               }}
             >
               <span
                 style={{
-                  position: "absolute",
+                  position: 'absolute',
                   inset: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "15vh",
-                  lineHeight: "0.88",
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '15vh',
+                  lineHeight: '0.88',
                   opacity: 0.6,
-                  color: "#352904FF",
-                  userSelect: "none",
-                  willChange: "transform",
+                  color: '#352904FF',
+                  userSelect: 'none',
+                  willChange: 'transform',
                   ...distortLetter(char, i),
                 }}
               >
@@ -200,30 +204,30 @@ export default function RococoDigitalClock() {
             </div>
           ))}
         </div>
-        <div style={{ display: "flex", position: "relative" }}>
-          {minutes.split("").map((char, i) => (
+        <div style={{ display: 'flex', position: 'relative' }}>
+          {minutes.split('').map((char, i) => (
             <div
               key={i}
               style={{
-                position: "relative",
-                width: "10vh",
-                height: "18vh",
+                position: 'relative',
+                width: '10vh',
+                height: '18vh',
                 flexShrink: 0,
               }}
             >
               <span
                 style={{
-                  position: "absolute",
+                  position: 'absolute',
                   inset: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "15vh",
-                  lineHeight: "0.88",
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '15vh',
+                  lineHeight: '0.88',
                   opacity: 0.6,
-                  color: "#352904FF",
-                  userSelect: "none",
-                  willChange: "transform",
+                  color: '#352904FF',
+                  userSelect: 'none',
+                  willChange: 'transform',
                   ...distortLetter(char, i + 2),
                 }}
               >
@@ -232,30 +236,30 @@ export default function RococoDigitalClock() {
             </div>
           ))}
         </div>
-        <div style={{ display: "flex", position: "relative" }}>
-          {seconds.split("").map((char, i) => (
+        <div style={{ display: 'flex', position: 'relative' }}>
+          {seconds.split('').map((char, i) => (
             <div
               key={i}
               style={{
-                position: "relative",
-                width: "10vh",
-                height: "18vh",
+                position: 'relative',
+                width: '10vh',
+                height: '18vh',
                 flexShrink: 0,
               }}
             >
               <span
                 style={{
-                  position: "absolute",
+                  position: 'absolute',
                   inset: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "15vh",
-                  lineHeight: "0.88",
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '15vh',
+                  lineHeight: '0.88',
                   opacity: 0.9,
-                  color: "#746A4D",
-                  userSelect: "none",
-                  willChange: "transform",
+                  color: '#746A4D',
+                  userSelect: 'none',
+                  willChange: 'transform',
                   ...distortLetter(char, i + 4),
                 }}
               >
@@ -271,19 +275,19 @@ export default function RococoDigitalClock() {
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100dvh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        width: '100vw',
+        height: '100dvh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundImage: `url(${backgroundImg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         // filter: "brightness(1.2) contrast(1.4)",
         fontFamily: "'RococoBlob', serif",
-        overflow: "hidden",
+        overflow: 'hidden',
         opacity: fontLoaded ? 1 : 0,
-        transition: "opacity 0.3s ease-in",
+        transition: 'opacity 0.3s ease-in',
       }}
     >
       <style>{`
@@ -297,33 +301,33 @@ export default function RococoDigitalClock() {
 
       <div
         style={{
-          display: "flex",
-          position: "relative",
+          display: 'flex',
+          position: 'relative',
         }}
       >
-        {timeStr.split("").map((char, i) => (
+        {timeStr.split('').map((char, i) => (
           <div
             key={i}
             style={{
-              position: "relative",
-              width: char === ":" ? "6vh" : "10vh",
-              height: "18vh",
+              position: 'relative',
+              width: char === ':' ? '6vh' : '10vh',
+              height: '18vh',
               flexShrink: 0,
             }}
           >
             <span
               style={{
-                position: "absolute",
+                position: 'absolute',
                 inset: 0,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: char === ":" ? "10vh" : "12vh",
-                lineHeight: "0.88",
-                opacity: 0.9, 
-                color: "#806107",
-                userSelect: "none",
-                willChange: "transform",
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: char === ':' ? '10vh' : '12vh',
+                lineHeight: '0.88',
+                opacity: 0.9,
+                color: '#806107',
+                userSelect: 'none',
+                willChange: 'transform',
                 ...distortLetter(char, i),
               }}
             >

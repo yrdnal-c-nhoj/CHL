@@ -25,7 +25,7 @@ const Clock = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#000',           // stark industrial black
+        backgroundColor: '#000', // stark industrial black
         backgroundImage: `url(${bgImage})`, // optional — consider removing or using a very dark/gray industrial photo
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -51,7 +51,7 @@ const Clock = () => {
                 position: 'absolute',
                 width: isCardinal ? '4px' : '2px',
                 height: isCardinal ? '28px' : '14px',
-                backgroundColor: '#eee',          // off-white for high contrast
+                backgroundColor: '#eee', // off-white for high contrast
                 top: '20px',
                 left: '50%',
                 transform: `translateX(-50%) rotate(${i * 30}deg)`,
@@ -65,7 +65,7 @@ const Clock = () => {
         {[...Array(60)].map((_, i) => {
           // Skip positions where hour markers already exist
           if (i % 5 === 0) return null;
-          
+
           return (
             <div
               key={`tick-${i}`}
@@ -82,9 +82,6 @@ const Clock = () => {
             />
           );
         })}
-
-      
-       
 
         {/* Hands — pure geometry, no gradients, no clip-path tricks */}
         {/* Hour hand — short, broad, rectangular with slight taper */}

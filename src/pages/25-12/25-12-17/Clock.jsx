@@ -5,9 +5,14 @@ import FONT_PATH from '../../../assets/fonts/facexxxx.ttf?url';
 
 export default function App() {
   const [time, setTime] = useState(new Date());
-  const [isLargeScreen, setIsLargeScreen] = useState(typeof window !== 'undefined' ? window.innerWidth > 768 : true);
+  const [isLargeScreen, setIsLargeScreen] = useState(
+    typeof window !== 'undefined' ? window.innerWidth > 768 : true,
+  );
   const fontFamilyName = 'ClockComponentFont';
-  const fontLoaded = useFontLoader(fontFamilyName, FONT_PATH, { fallback: true, timeout: 3500 });
+  const fontLoaded = useFontLoader(fontFamilyName, FONT_PATH, {
+    fallback: true,
+    timeout: 3500,
+  });
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -33,7 +38,7 @@ export default function App() {
       .toString()
       .padStart(2, '0')
       .split('')
-      .map(d => digitToLetter(parseInt(d, 10)));
+      .map((d) => digitToLetter(parseInt(d, 10)));
   };
 
   const hours = formatWithLetters(time.getHours());
@@ -59,14 +64,14 @@ export default function App() {
     background: 'transparent',
     border: 'none',
     padding: 0,
-    margin: 0
+    margin: 0,
   };
 
   const timePartStyle = {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   };
 
   const renderTimePart = (chars) => (
@@ -83,7 +88,7 @@ export default function App() {
     width: '100vw',
     height: '100dvh',
     position: 'relative',
-    overflow: 'hidden'
+    overflow: 'hidden',
   };
 
   const backgroundStyle = {
@@ -92,13 +97,13 @@ export default function App() {
     backgroundImage: `url(${background})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    filter: 'brightness(1.6) saturate(2) contrast(2.8) hue-rotate(-155deg)'
+    filter: 'brightness(1.6) saturate(2) contrast(2.8) hue-rotate(-155deg)',
   };
 
   const overlayStyle = {
     position: 'absolute',
     inset: 0,
-    backgroundColor: 'rgba(0, 123, 253, 0.4)'
+    backgroundColor: 'rgba(0, 123, 253, 0.4)',
   };
 
   const clockContainerStyle = {

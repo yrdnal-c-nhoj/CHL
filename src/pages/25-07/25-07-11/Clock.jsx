@@ -70,8 +70,10 @@ const PenmanshipClock = () => {
         }}
       >
         &nbsp;&nbsp;&nbsp;{timeString}&nbsp;
-        <span style={{ fontSize: '7.6vw', textTransform: 'lowercase' }}>{ampm}</span>
-      </div>
+        <span style={{ fontSize: '7.6vw', textTransform: 'lowercase' }}>
+          {ampm}
+        </span>
+      </div>,
     );
   }
 

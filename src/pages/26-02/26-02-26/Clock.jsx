@@ -12,13 +12,13 @@ const Clock = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
-      
+
       // Change 3 random cells to different images
       if (imageAssignments.length > 0 && images.length > 1) {
-        setCurrentImageIndex(prev => {
+        setCurrentImageIndex((prev) => {
           const newIndex = { ...prev };
           const totalCells = imageAssignments.length;
-          
+
           // Select 3 random cells to change to next image
           for (let i = 0; i < 3; i++) {
             const randomCell = Math.floor(Math.random() * totalCells);
@@ -26,12 +26,12 @@ const Clock = () => {
             // Move to next image in the array, loop back if needed
             newIndex[randomCell] = (currentIdx + 1) % images.length;
           }
-          
+
           return newIndex;
         });
       }
     }, 1000);
-    
+
     return () => clearInterval(timer);
   }, [imageAssignments.length, images.length]);
 
@@ -39,8 +39,13 @@ const Clock = () => {
   useEffect(() => {
     const loadImages = async () => {
       try {
-        const imageModules = import.meta.glob('/src/assets/images/26-02/26-02-26/bg/*.{png,jpg,jpeg,gif,svg,webp}', { eager: true });
-        const imageUrls = Object.values(imageModules).map(module => module.default);
+        const imageModules = import.meta.glob(
+          '/src/assets/images/26-02/26-02-26/bg/*.{png,jpg,jpeg,gif,svg,webp}',
+          { eager: true },
+        );
+        const imageUrls = Object.values(imageModules).map(
+          (module) => module.default,
+        );
         setImages(imageUrls.length > 0 ? imageUrls : fallbackImages);
       } catch (error) {
         console.error('Error loading images:', error);
@@ -48,7 +53,7 @@ const Clock = () => {
           '/src/assets/images/i.png',
           '/src/assets/images/fbook.png',
           '/src/assets/images/insta.png',
-          '/src/assets/images/x.png'
+          '/src/assets/images/x.png',
         ]);
       }
     };
@@ -73,17 +78,17 @@ const Clock = () => {
   useEffect(() => {
     if (images.length > 0 && gridSize.rows > 0) {
       const totalCells = gridSize.rows * gridSize.cols;
-      
+
       // Initialize all cells with random images
       const initialAssignments = [];
       const initialIndex = {};
-      
+
       for (let i = 0; i < totalCells; i++) {
         const randomImageIndex = Math.floor(Math.random() * images.length);
         initialAssignments[i] = images[randomImageIndex];
         initialIndex[i] = randomImageIndex;
       }
-      
+
       setImageAssignments(initialAssignments);
       setCurrentImageIndex(initialIndex);
     }
@@ -94,8 +99,8 @@ const Clock = () => {
     let hours = date.getHours();
     const minutes = date.getMinutes();
     const ampm = hours >= 12 ? 'P‌M' : 'A‌M';
-    
-    hours = hours % 12 || 12; 
+
+    hours = hours % 12 || 12;
     return `${hours}:${minutes < 10 ? '0' : ''}${minutes}\u2009${ampm}`;
   };
 
@@ -105,7 +110,7 @@ const Clock = () => {
     height: '100dvh',
     overflow: 'hidden',
     background: 'fuchsia',
-    position: 'relative'
+    position: 'relative',
   };
 
   const gridStyle = {
@@ -117,7 +122,7 @@ const Clock = () => {
     gridTemplateColumns: `repeat(${gridSize.cols}, 100px)`,
     gridTemplateRows: `repeat(${gridSize.rows}, 100px)`,
     width: `${gridSize.cols * 100}px`,
-    height: `${gridSize.rows * 100}px`
+    height: `${gridSize.rows * 100}px`,
   };
 
   const clockStyle = {
@@ -133,10 +138,12 @@ const Clock = () => {
     letterSpacing: '-1vh',
     whiteSpace: 'nowrap',
     pointerEvents: 'none', // Allows clicking through text
-    textShadow: '-6px 0 rgb(244, 240, 240), 6px 0 rgb(28, 3, 3),  0 0 20px rgb(244, 240, 240)'
+    textShadow:
+      '-6px 0 rgb(244, 240, 240), 6px 0 rgb(28, 3, 3),  0 0 20px rgb(244, 240, 240)',
   };
 
-  if (imageAssignments.length === 0) return <div style={{background:'#000', height:'100vh'}} />;
+  if (imageAssignments.length === 0)
+    return <div style={{ background: '#000', height: '100vh' }} />;
 
   return (
     <div style={containerStyle}>
@@ -144,22 +151,22 @@ const Clock = () => {
         @font-face { font-family: 'DateFont'; src: url('./26-02-26-fu.ttf') format('truetype'); }
         .grid-img { transition: opacity 0.5s ease-in-out; object-fit: cover; width: 100%; height: 100%; }
       `}</style>
-      
+
       <div style={gridStyle}>
         {imageAssignments.map((src, i) => {
           const imageIndexToShow = currentImageIndex[i] || 0;
           const imageToShow = images[imageIndexToShow];
-          
+
           return (
             <div key={i} style={{ background: 'fuchsia', overflow: 'hidden' }}>
-              <img 
-                src={imageToShow} 
+              <img
+                src={imageToShow}
                 className="grid-img"
-                style={{ 
+                style={{
                   opacity: loadedImages.has(i) ? 1 : 0,
-                  transition: 'opacity 0.5s ease-in-out'
+                  transition: 'opacity 0.5s ease-in-out',
                 }}
-                onLoad={() => setLoadedImages(prev => new Set(prev).add(i))}
+                onLoad={() => setLoadedImages((prev) => new Set(prev).add(i))}
                 alt=""
               />
             </div>
@@ -167,9 +174,18 @@ const Clock = () => {
         })}
       </div>
 
-      <img 
-        src="/26-02-26-f.webp" 
-        style={{ position: 'absolute', top: 0, left: 0, width: '30vh', height: '30vh', zIndex: 11, filter: 'drop-shadow(-11px 0 rgb(244, 240, 240)) drop-shadow(11px 0 rgb(28, 3, 3))' }}
+      <img
+        src="/26-02-26-f.webp"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '30vh',
+          height: '30vh',
+          zIndex: 11,
+          filter:
+            'drop-shadow(-11px 0 rgb(244, 240, 240)) drop-shadow(11px 0 rgb(28, 3, 3))',
+        }}
         alt="corner"
       />
 

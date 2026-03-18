@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 import overlayImg from '../../../assets/images/25-04/25-04-05/gfccc.gif';
 import hourHandSource from '../../../assets/images/25-04/25-04-05/gr4.gif';
@@ -9,20 +9,19 @@ import minuteHandSource from '../../../assets/images/25-04/25-04-05/gr99.webp';
 const getHourRotation = (date) => {
   const hours = date.getHours() % 12;
   const minutes = date.getMinutes();
-  return (hours * 30) + (minutes * 0.5);
+  return hours * 30 + minutes * 0.5;
 };
 
 const getMinuteRotation = (date) => {
   const minutes = date.getMinutes();
   const seconds = date.getSeconds();
-  return (minutes * 6) + (seconds * 0.1);
+  return minutes * 6 + seconds * 0.1;
 };
 
 const getSecondRotation = (date) => {
-  const seconds = date.getSeconds() + (date.getMilliseconds() / 1000);
+  const seconds = date.getSeconds() + date.getMilliseconds() / 1000;
   return seconds * 6;
 };
-
 
 const TallClock = () => {
   const [time, setTime] = useState(new Date());
@@ -44,20 +43,21 @@ const TallClock = () => {
   const secondRotation = getSecondRotation(time);
 
   // Set image URLs using the imported source variables
-  const hourHandStyle = { 
-    backgroundImage: `url(${hourHandSource})`, 
+  const hourHandStyle = {
+    backgroundImage: `url(${hourHandSource})`,
     transform: `translateX(-50%) rotate(${hourRotation}deg)`,
-    filter: 'drop-shadow(2px 4px 6px rgba(24, 23, 23, 0.56))'
+    filter: 'drop-shadow(2px 4px 6px rgba(24, 23, 23, 0.56))',
   };
-  const minuteHandStyle = { 
-    backgroundImage: `url(${minuteHandSource})`, 
+  const minuteHandStyle = {
+    backgroundImage: `url(${minuteHandSource})`,
     transform: `translateX(-50%) rotate(${minuteRotation}deg)`,
-    filter: 'drop-shadow(2px 4px 6px rgba(12, 11, 11, 0.9))'
+    filter: 'drop-shadow(2px 4px 6px rgba(12, 11, 11, 0.9))',
   };
-  const secondHandStyle = { 
-    backgroundImage: `url(${secondHandSource})`, 
+  const secondHandStyle = {
+    backgroundImage: `url(${secondHandSource})`,
     transform: `translateX(-50%) rotate(${secondRotation}deg)`,
-    filter: 'drop-shadow(2px 4px 6px rgba(23, 22, 22, 0.53)) contrast(1.7) saturate(1.7)  brightness(0.8)'
+    filter:
+      'drop-shadow(2px 4px 6px rgba(23, 22, 22, 0.53)) contrast(1.7) saturate(1.7)  brightness(0.8)',
   };
 
   return (
@@ -65,37 +65,36 @@ const TallClock = () => {
       {/* Clock Content */}
       <div style={styles.clockContainer}>
         <div style={styles.clockFace}>
-          
           {/* Hour Hand */}
-          <div 
-            style={{ 
-              ...styles.hand, 
-              ...styles.hourHand, 
-              ...styles.imageHand, 
-              ...hourHandStyle
-            }} 
+          <div
+            style={{
+              ...styles.hand,
+              ...styles.hourHand,
+              ...styles.imageHand,
+              ...hourHandStyle,
+            }}
           />
-          
+
           {/* Minute Hand */}
-          <div 
-            style={{ 
-              ...styles.hand, 
-              ...styles.minuteHand, 
+          <div
+            style={{
+              ...styles.hand,
+              ...styles.minuteHand,
               ...styles.imageHand,
-              ...minuteHandStyle
-            }} 
+              ...minuteHandStyle,
+            }}
           />
-          
+
           {/* Second Hand */}
-          <div 
-            style={{ 
-              ...styles.hand, 
-              ...styles.secondHand, 
+          <div
+            style={{
+              ...styles.hand,
+              ...styles.secondHand,
               ...styles.imageHand,
-              ...secondHandStyle
-            }} 
+              ...secondHandStyle,
+            }}
           />
-          
+
           <div style={styles.centerDot} />
         </div>
       </div>
@@ -111,99 +110,99 @@ const TallClock = () => {
 // --- Styles (Unchanged, optimized for image background) ---
 const styles = {
   container: {
-    backgroundColor: "#805c0d",
+    backgroundColor: '#805c0d',
     margin: 0,
     padding: 0,
-    width: "100vw",
-    height: "100vh",
-    overflow: "hidden",
-    position: "fixed",
+    width: '100vw',
+    height: '100vh',
+    overflow: 'hidden',
+    position: 'fixed',
     top: 0,
     left: 0,
-    boxSizing: "border-box",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    boxSizing: 'border-box',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   clockContainer: {
-    position: "relative",
+    position: 'relative',
     zIndex: 9,
-    width: "99vmin",
-    height: "99vmin",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '99vmin',
+    height: '99vmin',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   clockFace: {
-    width: "100%",
-    height: "100%",
-    borderRadius: "50%",
-    position: "relative",
+    width: '100%',
+    height: '100%',
+    borderRadius: '50%',
+    position: 'relative',
   },
-  
+
   // General hand properties
   hand: {
-    position: "absolute",
-    left: "50%",
-    transformOrigin: "bottom center",
+    position: 'absolute',
+    left: '50%',
+    transformOrigin: 'bottom center',
   },
-  
+
   // Properties for hands that use images
   imageHand: {
     backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center bottom', 
+    backgroundPosition: 'center bottom',
     backgroundSize: '100% 100%',
     backgroundColor: 'transparent',
-    borderRadius: 0, 
+    borderRadius: 0,
   },
 
-  // Hand Sizing 
+  // Hand Sizing
   hourHand: {
-    width: "26%",
-    height: "35%", 
-    top: "15%",
+    width: '26%',
+    height: '35%',
+    top: '15%',
     zIndex: 8,
-    transition: "transform 0.12s cubic-bezier(0, 0, 0.58, 1)",
+    transition: 'transform 0.12s cubic-bezier(0, 0, 0.58, 1)',
   },
   minuteHand: {
-    width: "38%",
-    height: "49%",
-    top: "5%",
+    width: '38%',
+    height: '49%',
+    top: '5%',
     zIndex: 9,
-    transition: "transform 0.12s cubic-bezier(0, 0, 0.58, 1)",
+    transition: 'transform 0.12s cubic-bezier(0, 0, 0.58, 1)',
   },
   secondHand: {
-    width: "20%",
-    height: "50%",
-    top: "0%",
+    width: '20%',
+    height: '50%',
+    top: '0%',
     zIndex: 11,
     // no transition so it follows RAF updates smoothly without snapping
   },
-  
+
   // Overlay Styles
   overlay: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     backgroundImage: `url(${overlayImg})`,
-    backgroundRepeat: "repeat",
+    backgroundRepeat: 'repeat',
     zIndex: 1,
-    pointerEvents: "none",
+    pointerEvents: 'none',
   },
   overlay1: {
-    backgroundSize: "12vmin 12vmin",
+    backgroundSize: '12vmin 12vmin',
     opacity: 0.8,
     zIndex: 5,
   },
   overlay2: {
-    backgroundSize: "20vmin 20vmin",
+    backgroundSize: '20vmin 20vmin',
     opacity: 0.5,
     zIndex: 6,
   },
   overlay3: {
-    backgroundSize: "auto",
+    backgroundSize: 'auto',
     opacity: 0.3,
     zIndex: 7,
   },

@@ -15,13 +15,19 @@ export default function DigitalClock() {
     let mounted = true;
     if (typeof window !== 'undefined' && window.FontFace) {
       const f = new FontFace('DigitalClockFont', `url(${DigitalClockFont})`);
-      f.load().then((loaded) => {
-        if (!mounted) return;
-        try { document.fonts.add(loaded); } catch {}
-        setFontReady(true);
-      }).catch(() => setFontReady(true));
+      f.load()
+        .then((loaded) => {
+          if (!mounted) return;
+          try {
+            document.fonts.add(loaded);
+          } catch {}
+          setFontReady(true);
+        })
+        .catch(() => setFontReady(true));
     } else setFontReady(true);
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   // Preload background
@@ -58,7 +64,11 @@ export default function DigitalClock() {
   const seconds = now.getSeconds();
   const ampm = hours24 >= 12 ? 'P.M.' : 'A.M.';
 
-  const allDigits = [...formatTwoDigits(hours12), ...formatTwoDigits(minutes), ...formatTwoDigits(seconds)];
+  const allDigits = [
+    ...formatTwoDigits(hours12),
+    ...formatTwoDigits(minutes),
+    ...formatTwoDigits(seconds),
+  ];
   const allAMPM = ampm.split('');
 
   const rootStyle = {
@@ -122,7 +132,10 @@ export default function DigitalClock() {
         ];
         let z = i < 2 ? 4 : i < 4 ? 3 : 2;
         return (
-          <div key={`d${i}`} style={digitStyle(positions[i].x, positions[i].y, '62vw', z)}>
+          <div
+            key={`d${i}`}
+            style={digitStyle(positions[i].x, positions[i].y, '62vw', z)}
+          >
             {d}
           </div>
         );
@@ -136,13 +149,22 @@ export default function DigitalClock() {
           { x: 950, y: 80 },
         ];
         return (
-          <div key={`a${i}`} style={digitStyle(positions[i].x, positions[i].y, '62vw', 5)}>
+          <div
+            key={`a${i}`}
+            style={digitStyle(positions[i].x, positions[i].y, '62vw', 5)}
+          >
             {c}
           </div>
         );
       })}
 
-      <img decoding="async" loading="lazy" src={MovingImg} alt="moving" style={movingStyle} />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={MovingImg}
+        alt="moving"
+        style={movingStyle}
+      />
     </div>
   );
 }

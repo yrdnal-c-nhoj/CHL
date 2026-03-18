@@ -13,7 +13,7 @@ const Clock = () => {
       75,
       window.innerWidth / window.innerHeight,
       0.1,
-      1000
+      1000,
     );
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -50,17 +50,19 @@ const Clock = () => {
 
     const faceColors = [0xff0000, 0xd3531b, 0xf76b07, 0xb80404];
     const materials = faceColors.map(
-      color =>
+      (color) =>
         new THREE.MeshBasicMaterial({
           map: clockTexture,
           color,
           side: THREE.DoubleSide,
           transparent: false,
-        })
+        }),
     );
 
     let geometry = new THREE.TetrahedronGeometry(1).toNonIndexed();
-    const uvAttribute = new Float32Array(geometry.attributes.position.count * 2);
+    const uvAttribute = new Float32Array(
+      geometry.attributes.position.count * 2,
+    );
     const faceCount = geometry.attributes.position.count / 3;
 
     for (let i = 0; i < faceCount; i++) {
@@ -80,7 +82,10 @@ const Clock = () => {
 
     const wireframeGeometry = new THREE.EdgesGeometry(geometry);
     const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
-    const wireframe = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
+    const wireframe = new THREE.LineSegments(
+      wireframeGeometry,
+      wireframeMaterial,
+    );
     wireframe.scale.set(4, 4, 4);
     scene.add(wireframe);
 
@@ -98,7 +103,8 @@ const Clock = () => {
       const zMin = -2;
       const zMax = 17;
       const zRange = zMax - zMin;
-      camera.position.z = zMin + (zRange * (Math.sin((2 * Math.PI * time) / period) + 1)) / 2;
+      camera.position.z =
+        zMin + (zRange * (Math.sin((2 * Math.PI * time) / period) + 1)) / 2;
 
       updateClockCanvas();
       renderer.render(scene, camera);
@@ -110,7 +116,7 @@ const Clock = () => {
         updateClockCanvas();
         animate();
       })
-      .catch(err => {
+      .catch((err) => {
         console.warn('Font loading failed:', err);
         updateClockCanvas();
         animate();

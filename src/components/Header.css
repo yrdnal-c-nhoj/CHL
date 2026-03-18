@@ -27,7 +27,7 @@
 }
 
 .bttitle {
-  font-family: "Oxanium", sans-serif;
+  font-family: 'Oxanium', sans-serif;
   transform: skewX(-20deg);
   color: #eae8ed;
   text-shadow:
@@ -45,4 +45,3 @@
   box-sizing: border-box;
   overflow-x: hidden;
 }
-

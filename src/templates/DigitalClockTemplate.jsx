@@ -48,7 +48,10 @@ const DigitalClockTemplate = () => {
 
   // Time ticker
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), CONFIG.showSeconds ? 100 : 1000);
+    const interval = setInterval(
+      () => setTime(new Date()),
+      CONFIG.showSeconds ? 100 : 1000,
+    );
     return () => clearInterval(interval);
   }, []);
 
@@ -135,10 +138,12 @@ const DigitalClockTemplate = () => {
   // Loading overlay to prevent flash of unstyled content (FOUC)
   if (!fontReady) {
     return (
-      <div style={{
-        ...containerStyle,
-        background: '#000',
-      }} />
+      <div
+        style={{
+          ...containerStyle,
+          background: '#000',
+        }}
+      />
     );
   }
 

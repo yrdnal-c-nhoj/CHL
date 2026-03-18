@@ -64,9 +64,7 @@ export default function DigitalClock() {
           fontSize: '2.5rem',
           fontFamily: 'sans-serif',
         }}
-      >
-     
-      </div>
+      ></div>
     );
   }
 

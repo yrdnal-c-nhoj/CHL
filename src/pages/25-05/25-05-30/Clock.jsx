@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader'; 
+import { useFontLoader } from '../../../utils/fontLoader';
 import issFont from '../../../assets/fonts/25-05-30-iss.ttf';
 
 const Clock = () => {
@@ -80,7 +80,7 @@ const Clock = () => {
       flexDirection: 'row',
       alignItems: 'center',
       // Consistent spacing between digit "boxes"
-      gap: '1.5vw', 
+      gap: '1.5vw',
       padding: '0 2vw',
       // Move clock slightly left
       marginLeft: '-3vw',
@@ -91,21 +91,21 @@ const Clock = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      
+
       // Fixed width based on font size ensures the layout never shifts
-      width: '0.8em', 
+      width: '0.8em',
       height: '1.2em',
-      
+
       color: '#8D6E6E',
       fontFamily: "'iss', monospace",
-      fontSize: 'clamp(3rem, 8vw, 12rem)', 
+      fontSize: 'clamp(3rem, 8vw, 12rem)',
       fontWeight: 400,
       lineHeight: 1,
       textAlign: 'center',
-      
+
       // Forces consistent spacing if the font supports OpenType features
       fontVariantNumeric: 'tabular-nums',
-      
+
       textShadow: `
         0 0 20px #F1C120,
         0 0 40px #CB5F26,

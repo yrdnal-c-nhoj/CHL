@@ -95,7 +95,9 @@ const DigitalClock = () => {
 
       <div style={styles.container}>
         <div style={styles.imageContainer}>
-          <img decoding="async" loading="lazy"
+          <img
+            decoding="async"
+            loading="lazy"
             src={featuredImage}
             alt="Featured content"
             style={styles.image}

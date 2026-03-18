@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, memo } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 // Explicit Asset Imports
 import backgroundImage from '../../../assets/images/26-01/26-01-21/fllap.webp';
-import tileImage from '../../../assets/images/26-01/26-01-21/flap.webp'; 
+import tileImage from '../../../assets/images/26-01/26-01-21/flap.webp';
 import custom260121Font from '../../../assets/fonts/26-01-21-migrate.ttf';
 
 // Memoize the Numbers so they don't re-render every second
@@ -16,9 +16,7 @@ const ClockNumbers = memo(({ fontFamily }) => (
           transform: `rotate(${i * 30}deg)`,
         }}
       >
-        <span style={{ ...styles.number, fontFamily }}>
-          {i === 0 ? 12 : i}
-        </span>
+        <span style={{ ...styles.number, fontFamily }}>{i === 0 ? 12 : i}</span>
       </div>
     ))}
   </>
@@ -43,7 +41,7 @@ const AnalogBirdMigrateClock = () => {
       loaded += 1;
       if (loaded >= images.length) setBgReady(true);
     };
-    images.forEach(src => {
+    images.forEach((src) => {
       const img = new Image();
       img.onload = done;
       img.onerror = done;
@@ -64,27 +62,33 @@ const AnalogBirdMigrateClock = () => {
       <div style={styles.gpuAcceleratedLayer}>
         <div style={styles.backgroundLayer} />
         <div style={styles.backgroundLayer2} />
-        <div style={{ ...styles.tileBase, backgroundSize: '600px', opacity: 0.8 }} />
+        <div
+          style={{ ...styles.tileBase, backgroundSize: '600px', opacity: 0.8 }}
+        />
       </div>
 
       <div style={styles.clockFace}>
         <ClockNumbers fontFamily={fontFamilyName} />
 
         {/* Hour Hand */}
-        <div style={{ 
-          ...styles.hand, 
-          height: '24%', 
-          width: 'min(1.8vw, 3px)',
-          transform: `translateX(-50%) rotate(${hourDeg}deg)` 
-        }} />
-        
+        <div
+          style={{
+            ...styles.hand,
+            height: '24%',
+            width: 'min(1.8vw, 3px)',
+            transform: `translateX(-50%) rotate(${hourDeg}deg)`,
+          }}
+        />
+
         {/* Minute Hand */}
-        <div style={{ 
-          ...styles.hand, 
-          height: '45%', 
-          width: 'min(1.2vw, 2px)',
-          transform: `translateX(-50%) rotate(${minuteDeg}deg)` 
-        }} />
+        <div
+          style={{
+            ...styles.hand,
+            height: '45%',
+            width: 'min(1.2vw, 2px)',
+            transform: `translateX(-50%) rotate(${minuteDeg}deg)`,
+          }}
+        />
 
         <div style={styles.pin} />
       </div>
@@ -93,16 +97,16 @@ const AnalogBirdMigrateClock = () => {
 };
 
 const styles = {
-wrapper: {
-  width: '100vw',
-  height: '100dvh',
-  position: 'relative',
-  overflow: 'hidden',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  background: 'linear-gradient(180deg, #4C6DF3 0%, #798158A2 100%)', // Blue to Dark Blue
-},
+  wrapper: {
+    width: '100vw',
+    height: '100dvh',
+    position: 'relative',
+    overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: 'linear-gradient(180deg, #4C6DF3 0%, #798158A2 100%)', // Blue to Dark Blue
+  },
   gpuAcceleratedLayer: {
     position: 'absolute',
     inset: 0,
@@ -118,15 +122,15 @@ wrapper: {
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    filter: 'brightness(0.5)', 
+    filter: 'brightness(0.5)',
   },
-   backgroundLayer2: {
+  backgroundLayer2: {
     position: 'absolute',
     inset: 0,
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    filter: 'brightness(0.5)', 
+    filter: 'brightness(0.5)',
   },
   tileBase: {
     position: 'absolute',
@@ -150,7 +154,7 @@ wrapper: {
     paddingTop: '2%',
   },
   number: {
-    fontSize: 'min(11vw, 11vh)', 
+    fontSize: 'min(11vw, 11vh)',
     color: '#830DD2',
     textShadow: '0 0 15px #8B5CF6',
     userSelect: 'none',
@@ -164,7 +168,7 @@ wrapper: {
     backgroundColor: '#830DD2',
     boxShadow: '0 0 20px #8B5CF6',
     zIndex: 15,
-  }
+  },
 };
 
 export default AnalogBirdMigrateClock;

@@ -90,8 +90,8 @@ const Clock = () => {
                 typeClass === 'hour'
                   ? '5rem'
                   : typeClass === 'minuteTens'
-                  ? '3.5rem'
-                  : '1.6rem',
+                    ? '3.5rem'
+                    : '1.6rem',
             }}
           >
             {char}

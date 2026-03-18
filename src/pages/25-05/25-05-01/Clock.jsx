@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
-import lightningImg from "../../../assets/images/25-05/25-05-01/lightning.webp";
-import innerFontTTF from "../../../assets/fonts/25-05-01-Inner.ttf";
+import React, { useEffect, useState, useRef } from 'react';
+import lightningImg from '../../../assets/images/25-05/25-05-01/lightning.webp';
+import innerFontTTF from '../../../assets/fonts/25-05-01-Inner.ttf';
 
 export default function SlowLightningClock() {
-  const [time, setTime] = useState({ hours: "--", minutes: "--" });
+  const [time, setTime] = useState({ hours: '--', minutes: '--' });
   const clockRef = useRef(null);
   const flashWhiteRef = useRef(null);
   const flashBlackRef = useRef(null);
@@ -13,8 +13,8 @@ export default function SlowLightningClock() {
     function updateClock() {
       const now = new Date();
       setTime({
-        hours: String(now.getHours()).padStart(2, "0"),
-        minutes: String(now.getMinutes()).padStart(2, "0"),
+        hours: String(now.getHours()).padStart(2, '0'),
+        minutes: String(now.getMinutes()).padStart(2, '0'),
       });
     }
     updateClock();
@@ -25,19 +25,19 @@ export default function SlowLightningClock() {
   // Clock shaking animation
   function triggerClockEffect() {
     if (!clockRef.current) return;
-    clockRef.current.classList.add("animate-clock");
+    clockRef.current.classList.add('animate-clock');
     setTimeout(() => {
-      clockRef.current && clockRef.current.classList.remove("animate-clock");
+      clockRef.current && clockRef.current.classList.remove('animate-clock');
     }, 330);
   }
 
   // Flash effect for white or black flash
   function triggerFlash(type) {
-    const el = type === "white" ? flashWhiteRef.current : flashBlackRef.current;
+    const el = type === 'white' ? flashWhiteRef.current : flashBlackRef.current;
     if (!el) return;
-    el.style.opacity = "1";
+    el.style.opacity = '1';
     setTimeout(() => {
-      if (el) el.style.opacity = "0";
+      if (el) el.style.opacity = '0';
     }, 100);
   }
 
@@ -54,7 +54,7 @@ export default function SlowLightningClock() {
       }
 
       if (rand > 0.9) {
-        triggerFlash(Math.random() > 0.5 ? "white" : "black");
+        triggerFlash(Math.random() > 0.5 ? 'white' : 'black');
       }
 
       setTimeout(randomEffectsLoop, 500);
@@ -67,89 +67,89 @@ export default function SlowLightningClock() {
 
   // Inline styles (converted from your CSS)
   const styles = {
-    "@font-face": {
-      fontFamily: "Inner",
+    '@font-face': {
+      fontFamily: 'Inner',
       src: `url(${innerFontTTF}) format('truetype')`,
     },
     body: {
       margin: 0,
       padding: 0,
-      height: "100%",
-      width: "100%",
-      overflow: "hidden",
-      backgroundColor: "black",
+      height: '100%',
+      width: '100%',
+      overflow: 'hidden',
+      backgroundColor: 'black',
     },
     bgimage: {
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      position: "absolute",
-      height: "100dvh",
-      width: "100vw",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      position: 'absolute',
+      height: '100dvh',
+      width: '100vw',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
       zIndex: 1,
       opacity: 0.9,
-      userSelect: "none",
-      pointerEvents: "none",
+      userSelect: 'none',
+      pointerEvents: 'none',
     },
     bgimage1: {
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      position: "absolute",
-      height: "100vh",
-      width: "100vw",
-      transform: "scaleX(-1)",
-      top: "50%",
-      left: "50%",
-      transformOrigin: "center",
-      translate: "-50%, -50%",
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      position: 'absolute',
+      height: '100vh',
+      width: '100vw',
+      transform: 'scaleX(-1)',
+      top: '50%',
+      left: '50%',
+      transformOrigin: 'center',
+      translate: '-50%, -50%',
       zIndex: 2,
       opacity: 0.9,
-      userSelect: "none",
-      pointerEvents: "none",
+      userSelect: 'none',
+      pointerEvents: 'none',
     },
     clockContainer: {
-      position: "relative",
+      position: 'relative',
       zIndex: 7,
-      height: "100dvh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
+      height: '100dvh',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     clock: {
-      color: "rgb(244, 243, 230)",
+      color: 'rgb(244, 243, 230)',
       fontFamily: "'Inner', sans-serif",
-      display: "flex",
-      fontSize: "80vh",
-      userSelect: "none",
+      display: 'flex',
+      fontSize: '80vh',
+      userSelect: 'none',
     },
     clockSpan: {
-      display: "block",
+      display: 'block',
     },
     flashWhite: {
-      position: "fixed",
+      position: 'fixed',
       top: 0,
       left: 0,
-      width: "100vw",
-      height: "100vh",
+      width: '100vw',
+      height: '100vh',
       zIndex: 999,
-      pointerEvents: "none",
-      backgroundColor: "rgb(236, 241, 218)",
+      pointerEvents: 'none',
+      backgroundColor: 'rgb(236, 241, 218)',
       opacity: 0,
-      transition: "opacity 0.1s ease-out",
+      transition: 'opacity 0.1s ease-out',
     },
     flashBlack: {
-      position: "fixed",
+      position: 'fixed',
       top: 0,
       left: 0,
-      width: "100vw",
-      height: "100vh",
+      width: '100vw',
+      height: '100vh',
       zIndex: 999,
-      pointerEvents: "none",
-      backgroundColor: "rgb(7, 5, 19)",
+      pointerEvents: 'none',
+      backgroundColor: 'rgb(7, 5, 19)',
       opacity: 0,
-      transition: "opacity 0.1s ease-out",
+      transition: 'opacity 0.1s ease-out',
     },
     // ShakeJump animation keyframes are best handled in CSS
   };
@@ -192,8 +192,26 @@ export default function SlowLightningClock() {
       `}</style>
 
       {/* Background images */}
-      <img decoding="async" loading="lazy" src={lightningImg} alt="lightning" style={styles.bgimage} draggable={false} />
-      <img decoding="async" loading="lazy" src={lightningImg} alt="lightning mirrored" style={{ ...styles.bgimage, transform: "translate(-50%, -50%) scaleX(-1)", zIndex: 2 }} draggable={false} />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={lightningImg}
+        alt="lightning"
+        style={styles.bgimage}
+        draggable={false}
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={lightningImg}
+        alt="lightning mirrored"
+        style={{
+          ...styles.bgimage,
+          transform: 'translate(-50%, -50%) scaleX(-1)',
+          zIndex: 2,
+        }}
+        draggable={false}
+      />
 
       <div style={styles.clockContainer}>
         <div id="clock" ref={clockRef} style={styles.clock}>

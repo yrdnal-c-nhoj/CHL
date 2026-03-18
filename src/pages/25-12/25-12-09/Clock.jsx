@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import bgImage from '../../../assets/images/25-12/25-12-09/muybridge.webp'
+import React, { useEffect, useState } from 'react';
+import bgImage from '../../../assets/images/25-12/25-12-09/muybridge.webp';
 import customFont_2025_1210 from '../../../assets/fonts/25-12-09-muy.ttf?url';
 import { useFontLoader } from '../../../utils/fontLoader';
 
-const elementColor = '#BBA8C8FF'
+const elementColor = '#BBA8C8FF';
 
 const digitBoxStyle = {
   position: 'relative',
@@ -17,31 +17,34 @@ const digitBoxStyle = {
   textShadow: '0.5px 0.5px 0px black, -0.5px -0.5px 0px white',
   flexShrink: 1,
   minWidth: 0,
-  overflow: 'hidden'
-}
+  overflow: 'hidden',
+};
 
 export default function DigitalClock() {
-  const [time, setTime] = useState(new Date())
-  const [fontLoaded, setFontLoaded] = useState(false)
+  const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
     // Load font before showing content
-    const font = new FontFace('MuybridgeFont', `url(${customFont_2025_1210})`)
-    
-    font.load().then(() => {
-      document.fonts.add(font)
-      setFontLoaded(true)
-    }).catch(err => {
-      console.error('Font loading failed:', err)
-      setFontLoaded(true) // Show content anyway after error
-    })
-  }, [])
+    const font = new FontFace('MuybridgeFont', `url(${customFont_2025_1210})`);
+
+    font
+      .load()
+      .then(() => {
+        document.fonts.add(font);
+        setFontLoaded(true);
+      })
+      .catch((err) => {
+        console.error('Font loading failed:', err);
+        setFontLoaded(true); // Show content anyway after error
+      });
+  }, []);
 
   useEffect(() => {
-    if (!fontLoaded) return
-    const interval = setInterval(() => setTime(new Date()), 100)
-    return () => clearInterval(interval)
-  }, [fontLoaded])
+    if (!fontLoaded) return;
+    const interval = setInterval(() => setTime(new Date()), 100);
+    return () => clearInterval(interval);
+  }, [fontLoaded]);
 
   const containerStyle = {
     position: 'fixed',
@@ -64,8 +67,8 @@ export default function DigitalClock() {
     WebkitOverflowScrolling: 'touch',
     overscrollBehavior: 'none',
     opacity: fontLoaded ? 1 : 0,
-    transition: 'opacity 0.3s ease-in'
-  }
+    transition: 'opacity 0.3s ease-in',
+  };
 
   const clockContainerStyle = {
     display: 'flex',
@@ -79,20 +82,20 @@ export default function DigitalClock() {
     position: 'absolute',
     bottom: '18vh',
     left: 0,
-    right: 0
-  }
+    right: 0,
+  };
 
   const separatorStyle = {
     fontSize: 'clamp(34px, 22vw, 58px)',
     color: elementColor,
     lineHeight: 1,
     paddingBottom: '1.5vw',
-    flexShrink: 0
-  }
+    flexShrink: 0,
+  };
 
-  const hours = String(time.getHours()).padStart(2, '0')
-  const minutes = String(time.getMinutes()).padStart(2, '0')
-  const seconds = String(time.getSeconds()).padStart(2, '0')
+  const hours = String(time.getHours()).padStart(2, '0');
+  const minutes = String(time.getMinutes()).padStart(2, '0');
+  const seconds = String(time.getSeconds()).padStart(2, '0');
 
   return (
     <div style={containerStyle}>
@@ -111,31 +114,31 @@ export default function DigitalClock() {
         }
       `}</style>
       <div style={clockContainerStyle}>
-        <div style={digitBoxStyle} aria-hidden='true'>
+        <div style={digitBoxStyle} aria-hidden="true">
           {hours[0]}
         </div>
-        <div style={digitBoxStyle} aria-hidden='true'>
+        <div style={digitBoxStyle} aria-hidden="true">
           {hours[1]}
         </div>
-        <div style={separatorStyle} aria-hidden='true'>
+        <div style={separatorStyle} aria-hidden="true">
           :
         </div>
-        <div style={digitBoxStyle} aria-hidden='true'>
+        <div style={digitBoxStyle} aria-hidden="true">
           {minutes[0]}
         </div>
-        <div style={digitBoxStyle} aria-hidden='true'>
+        <div style={digitBoxStyle} aria-hidden="true">
           {minutes[1]}
         </div>
-        <div style={separatorStyle} aria-hidden='true'>
+        <div style={separatorStyle} aria-hidden="true">
           :
         </div>
-        <div style={digitBoxStyle} aria-hidden='true'>
+        <div style={digitBoxStyle} aria-hidden="true">
           {seconds[0]}
         </div>
-        <div style={digitBoxStyle} aria-hidden='true'>
+        <div style={digitBoxStyle} aria-hidden="true">
           {seconds[1]}
         </div>
       </div>
     </div>
-  )
+  );
 }

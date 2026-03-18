@@ -8,8 +8,9 @@ const Disc260203Clock = () => {
   useEffect(() => {
     // Inject Google Font link directly into document head
     const link = document.createElement('link');
-    link.href = "https://fonts.googleapis.com/css2?family=Taviraj:wght@100;500;900&display=swap";
-    link.rel = "stylesheet";
+    link.href =
+      'https://fonts.googleapis.com/css2?family=Taviraj:wght@100;500;900&display=swap';
+    link.rel = 'stylesheet';
     document.head.appendChild(link);
 
     // Ensure font is ready before revealing UI to prevent FOUC
@@ -19,7 +20,9 @@ const Disc260203Clock = () => {
       .catch(() => true); // fall back to showing even if font fails
 
     // Safety timeout so we never stay hidden
-    const timeoutPromise = new Promise((resolve) => setTimeout(resolve, 1200, true));
+    const timeoutPromise = new Promise((resolve) =>
+      setTimeout(resolve, 1200, true),
+    );
 
     Promise.race([fontPromise, timeoutPromise]).then(() => setFontReady(true));
 
@@ -62,15 +65,33 @@ const Disc260203Clock = () => {
     >
       <div style={styles.clockBase}>
         <div style={styles.centerPin} />
-        
+
         {/* Seconds - Taviraj 100 */}
-        <Disc size="85vmin" rotationVar="--s-rot" color="#E20606" label="s" weight={100} />
-        
+        <Disc
+          size="85vmin"
+          rotationVar="--s-rot"
+          color="#E20606"
+          label="s"
+          weight={100}
+        />
+
         {/* Minutes - Taviraj 500 */}
-        <Disc size="60vmin" rotationVar="--m-rot" color="#0D74FB" label="m" weight={500} />
-        
+        <Disc
+          size="60vmin"
+          rotationVar="--m-rot"
+          color="#0D74FB"
+          label="m"
+          weight={500}
+        />
+
         {/* Hours - Taviraj 900 */}
-        <Disc size="25vmin" rotationVar="--h-rot" color="#08B308" label="h" weight={900} />
+        <Disc
+          size="25vmin"
+          rotationVar="--h-rot"
+          color="#08B308"
+          label="h"
+          weight={900}
+        />
       </div>
     </div>
   );
@@ -85,11 +106,13 @@ const Disc = ({ size, rotationVar, color, label, weight }) => (
       transform: `rotate(var(${rotationVar}))`,
     }}
   >
-    <span style={{ 
-      ...styles.label, 
-      color,
-      fontWeight: weight,
-    }}>
+    <span
+      style={{
+        ...styles.label,
+        color,
+        fontWeight: weight,
+      }}
+    >
       {label}
     </span>
   </div>
@@ -102,7 +125,8 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    background: 'radial-gradient(circle at center, #F5F3D0 0%, #F5E6A3 55%, #B5A25C 75%, #B79D4E 100%)',
+    background:
+      'radial-gradient(circle at center, #F5F3D0 0%, #F5E6A3 55%, #B5A25C 75%, #B79D4E 100%)',
     margin: 0,
     overflow: 'hidden',
   },
@@ -126,7 +150,7 @@ const styles = {
     position: 'absolute',
     top: '0',
     fontSize: 'clamp(5vw, 20vmin, 10vw)',
-    transform: 'translateY(-50%)', 
+    transform: 'translateY(-50%)',
     lineHeight: 1,
     fontFamily: '"Taviraj", serif',
   },
@@ -136,7 +160,7 @@ const styles = {
     backgroundColor: '#F26AD7',
     borderRadius: '50%',
     zIndex: 10,
-  }
+  },
 };
 
 export default Disc260203Clock;

@@ -23,7 +23,7 @@ const Clock = () => {
     const style = document.createElement('style');
     style.textContent = fontFace;
     document.head.appendChild(style);
-    
+
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => {
       clearInterval(timer);
@@ -36,31 +36,36 @@ const Clock = () => {
   const seconds = time.getSeconds();
 
   // Calculation for smooth movement or standard stepping
-  const hourAngle = (hours * 30) + (minutes * 0.5);
-  const minuteAngle = (minutes * 6) + (seconds * 0.1);
+  const hourAngle = hours * 30 + minutes * 0.5;
+  const minuteAngle = minutes * 6 + seconds * 0.1;
   const secondAngle = seconds * 6;
 
   // Generate numbers 1-12 using dragon font
   const clockNumbers = [];
   for (let i = 1; i <= 12; i++) {
-    const angle = (i * 30) - 90;
+    const angle = i * 30 - 90;
     const radian = (angle * Math.PI) / 180;
     const x = 50 + 40 * Math.cos(radian);
     const y = 50 + 40 * Math.sin(radian);
-    
+
     clockNumbers.push(
-      <div key={i} style={{
-        position: 'absolute',
-        left: `${x}%`,
-        top: `${y}%`,
-        transform: `translate(-50%, -50%) rotate(${angle + 90}deg)`,
-        fontFamily: `'Dragon', serif`,
-        fontSize: '5rem',
-        color: '#83EF907F',
-        // textShadow: '0 0 12px rgba(131,239,144,0.7)',
-        userSelect: 'none',
-        // fontWeight: 'bold'
-      }}>{i}</div>
+      <div
+        key={i}
+        style={{
+          position: 'absolute',
+          left: `${x}%`,
+          top: `${y}%`,
+          transform: `translate(-50%, -50%) rotate(${angle + 90}deg)`,
+          fontFamily: `'Dragon', serif`,
+          fontSize: '5rem',
+          color: '#83EF907F',
+          // textShadow: '0 0 12px rgba(131,239,144,0.7)',
+          userSelect: 'none',
+          // fontWeight: 'bold'
+        }}
+      >
+        {i}
+      </div>,
     );
   }
 
@@ -77,59 +82,93 @@ const Clock = () => {
     transform: `translate(-50%, -100%) rotate(${angle}deg)`,
     filter: `drop-shadow(${shadow}) saturate(0.2)`,
     zIndex,
-    transition: seconds === 0 ? 'none' : 'transform 0.2s cubic-bezier(0.4, 2.08, 0.55, 0.44)',
+    transition:
+      seconds === 0
+        ? 'none'
+        : 'transform 0.2s cubic-bezier(0.4, 2.08, 0.55, 0.44)',
   });
 
   return (
-    <div style={{
-      width: '100vw',
-      height: '100dvh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'relative',
-      overflow: 'hidden',
-      background: '#000',
-    }}>
+    <div
+      style={{
+        width: '100vw',
+        height: '100dvh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+        background: '#000',
+      }}
+    >
       {/* Background Video */}
-      <video autoPlay loop muted playsInline style={{
-        position: 'absolute', top: 0, left: 0,
-        width: '100%', height: '100%',
-        objectFit: 'fill', zIndex: 0,
-        transform: 'scaleX(-1)',
-        filter: 'hue-rotate(-30deg) saturate(1.5) contrast(1.4) brightness(1.2)',
-      }}>
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'fill',
+          zIndex: 0,
+          transform: 'scaleX(-1)',
+          filter:
+            'hue-rotate(-30deg) saturate(1.5) contrast(1.4) brightness(1.2)',
+        }}
+      >
         <source src={dragonVideo} type="video/mp4" />
       </video>
 
       {/* Clock Face Container */}
-      <div style={{
-        position: 'relative',
-        width: '520px',
-        height: '520px',
-        zIndex: 1,
-        opacity: 0.9,
-      }}>
-        
-
+      <div
+        style={{
+          position: 'relative',
+          width: '520px',
+          height: '520px',
+          zIndex: 1,
+          opacity: 0.9,
+        }}
+      >
         {/* Numbers */}
         {clockNumbers}
 
         {/* Hands - Adjust height to prevent clipping container edges */}
-        <img 
-          src={hand2Img} 
-          alt="Hour" 
-          style={getHandStyle(hourAngle, 70, 160, 5, '0 0 8px rgba(200,180,100,0.8)')} 
+        <img
+          src={hand2Img}
+          alt="Hour"
+          style={getHandStyle(
+            hourAngle,
+            70,
+            160,
+            5,
+            '0 0 8px rgba(200,180,100,0.8)',
+          )}
         />
-        <img 
-          src={hand1Img} 
-          alt="Minute" 
-          style={getHandStyle(minuteAngle, 60, 190, 4, '0 0 6px rgba(180,200,255,0.7)')} 
+        <img
+          src={hand1Img}
+          alt="Minute"
+          style={getHandStyle(
+            minuteAngle,
+            60,
+            190,
+            4,
+            '0 0 6px rgba(180,200,255,0.7)',
+          )}
         />
-        <img 
-          src={handImg} 
-          alt="Second" 
-          style={getHandStyle(secondAngle, 50, 200, 3, '0 0 5px rgba(255,50,50,0.9)')} 
+        <img
+          src={handImg}
+          alt="Second"
+          style={getHandStyle(
+            secondAngle,
+            50,
+            200,
+            3,
+            '0 0 5px rgba(255,50,50,0.9)',
+          )}
         />
       </div>
     </div>

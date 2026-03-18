@@ -7,9 +7,9 @@ const EntropyClock = () => {
   const [animationKey, setAnimationKey] = useState(0); // triggers animation restart
   const fontReady = useFontLoader('EntropyFont', font20251027, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
-  const [showClock, setShowClock] = useState(false);  // controls fade-in
+  const [showClock, setShowClock] = useState(false); // controls fade-in
   const [mountedClockKey, setMountedClockKey] = useState(0); // unique key for each cycle
   const numbersRef = useRef([]);
   const handsRef = useRef({ hour: null, minute: null, second: null });
@@ -62,7 +62,7 @@ const EntropyClock = () => {
     });
 
     // Hands tremble then fall
-    const handsOrder = shuffle(["hour", "minute", "second"]);
+    const handsOrder = shuffle(['hour', 'minute', 'second']);
     handsOrder.forEach((hand) => {
       const trembleDelay = 800 + Math.random() * 500;
       cumulativeDelay += trembleDelay;
@@ -80,7 +80,9 @@ const EntropyClock = () => {
 
     // Restart animation
     cumulativeDelay += 2000;
-    timers.push(setTimeout(() => setAnimationKey((k) => k + 1), cumulativeDelay));
+    timers.push(
+      setTimeout(() => setAnimationKey((k) => k + 1), cumulativeDelay),
+    );
 
     return () => timers.forEach(clearTimeout);
   }, [animationKey, fontReady]);
@@ -118,7 +120,8 @@ const EntropyClock = () => {
     if (!el) return;
     let start = null;
     const duration = 1500;
-    const deg = hand === "hour" ? hourDeg : hand === "minute" ? minuteDeg : secondDeg;
+    const deg =
+      hand === 'hour' ? hourDeg : hand === 'minute' ? minuteDeg : secondDeg;
     const animate = (timestamp) => {
       if (!start) start = timestamp;
       const t = (timestamp - start) / duration;
@@ -175,17 +178,17 @@ const EntropyClock = () => {
     const total = 500;
     const rect = dot.getBoundingClientRect();
     for (let i = 0; i < total; i++) {
-      const p = document.createElement("div");
+      const p = document.createElement('div');
       Object.assign(p.style, {
-        position: "fixed",
-  width: "2px",
-        height: "2px",
-        background: "gold",
-        borderRadius: "50%",
+        position: 'fixed',
+        width: '2px',
+        height: '2px',
+        background: 'gold',
+        borderRadius: '50%',
         left: `${rect.left + rect.width / 2}px`,
         top: `${rect.top + rect.height / 2}px`,
-        pointerEvents: "none",
-        zIndex: "1000"
+        pointerEvents: 'none',
+        zIndex: '1000',
       });
       document.body.appendChild(p);
 
@@ -208,7 +211,7 @@ const EntropyClock = () => {
       };
       requestAnimationFrame(animateParticle);
     }
-    dot.style.opacity = "0";
+    dot.style.opacity = '0';
   };
 
   const explodeClock = () => {
@@ -235,7 +238,7 @@ const EntropyClock = () => {
         const easeOut = 1 - Math.pow(1 - t, 3);
         const dx = Math.cos(angle) * distance * easeOut;
         const dy = Math.sin(angle) * distance * easeOut + t * 150;
-        const currentTransform = el.style.transform || "";
+        const currentTransform = el.style.transform || '';
         el.style.transform = `${currentTransform} translate(${dx}vw, ${dy}vh) rotateX(${rotateX * t}deg) rotateY(${rotateY * t}deg) rotateZ(${rotateZ * t}deg)`;
         el.style.opacity = 1 - t;
         if (t < 1) requestAnimationFrame(animate);
@@ -244,38 +247,39 @@ const EntropyClock = () => {
     });
   };
 
-  const clockSize = "90vmin";
+  const clockSize = '90vmin';
 
   // === REUSABLE TEXT SHADOW (same as digits) ===
-  const digitTextShadow = "-2px -2px 0px #37034A, 0 0 30px #FFEA00";
+  const digitTextShadow = '-2px -2px 0px #37034A, 0 0 30px #FFEA00';
 
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100dvh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        overflow: "hidden",
-        fontFamily: "EntropyFont, monospace",
-        perspective: "1500px",
-        background: "radial-gradient(circle at center, #F761C2FF 0%, #DA44BFFF 30%, #C96CF5FF 100%)",
+        width: '100vw',
+        height: '100dvh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+        fontFamily: 'EntropyFont, monospace',
+        perspective: '1500px',
+        background:
+          'radial-gradient(circle at center, #F761C2FF 0%, #DA44BFFF 30%, #C96CF5FF 100%)',
         margin: 0,
-        padding: 0
+        padding: 0,
       }}
     >
       <div
         key={mountedClockKey} // new key triggers re-mount each cycle
         ref={clockContainerRef}
         style={{
-          position: "relative",
+          position: 'relative',
           width: clockSize,
           height: clockSize,
-          borderRadius: "50%",
+          borderRadius: '50%',
           opacity: showClock ? 1 : 0,
-          transition: "opacity 1s ease-in-out",
-          transform: "translateY(-3vh)" // move entire clock up by 3vh
+          transition: 'opacity 1s ease-in-out',
+          transform: 'translateY(-3vh)', // move entire clock up by 3vh
         }}
       >
         {/* === NUMBERS === */}
@@ -287,16 +291,16 @@ const EntropyClock = () => {
               key={i}
               ref={(el) => (numbersRef.current[i] = el)}
               style={{
-                position: "absolute",
+                position: 'absolute',
                 left: `calc(50% + ${40 * Math.cos(rad)}vmin)`,
                 top: `calc(50% + ${40 * Math.sin(rad)}vmin)`,
-                transform: "translate(-50%, -50%)",
-                fontSize: "7vh",
-                fontWeight: "900",
-                color: "#FFD700",
+                transform: 'translate(-50%, -50%)',
+                fontSize: '7vh',
+                fontWeight: '900',
+                color: '#FFD700',
                 textShadow: digitTextShadow, // same shadow
-                fontFamily: "EntropyFont, monospace",
-                userSelect: "none"
+                fontFamily: 'EntropyFont, monospace',
+                userSelect: 'none',
               }}
             >
               {i === 0 ? 12 : i}
@@ -308,47 +312,64 @@ const EntropyClock = () => {
         <div
           ref={dotRef}
           style={{
-            position: "absolute",
-            width: "2vmin",
-            height: "2vmin",
-            backgroundColor: "gold",
-            borderRadius: "50%",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            boxShadow: "-2px -2px 0px #37034AFF, 0 0 20px #FFD700, 0 0 40px #FFD700, 0 0 60px #FFEA00",
-            zIndex: 10
+            position: 'absolute',
+            width: '2vmin',
+            height: '2vmin',
+            backgroundColor: 'gold',
+            borderRadius: '50%',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            boxShadow:
+              '-2px -2px 0px #37034AFF, 0 0 20px #FFD700, 0 0 40px #FFD700, 0 0 60px #FFEA00',
+            zIndex: 10,
           }}
         />
 
         {/* === CLOCK HANDS (NOW WITH DIGIT-LIKE SHADOW) === */}
-        {["hour", "minute", "second"].map((hand) => {
-          const deg = hand === "hour" ? hourDeg : hand === "minute" ? minuteDeg : secondDeg;
-          const size = hand === "hour" ? "25vmin" : hand === "minute" ? "35vmin" : "45vmin";
-          const width = hand === "hour" ? "1.5vmin" : hand === "minute" ? "1vmin" : "0.5vmin";
+        {['hour', 'minute', 'second'].map((hand) => {
+          const deg =
+            hand === 'hour'
+              ? hourDeg
+              : hand === 'minute'
+                ? minuteDeg
+                : secondDeg;
+          const size =
+            hand === 'hour'
+              ? '25vmin'
+              : hand === 'minute'
+                ? '35vmin'
+                : '45vmin';
+          const width =
+            hand === 'hour'
+              ? '1.5vmin'
+              : hand === 'minute'
+                ? '1vmin'
+                : '0.5vmin';
 
           return (
             <div
               key={hand}
               ref={(el) => (handsRef.current[hand] = el)}
               style={{
-                position: "absolute",
+                position: 'absolute',
                 width,
                 height: size,
-                backgroundColor: hand === "second" ? "#FF0404FF" : "#FFD700",
+                backgroundColor: hand === 'second' ? '#FF0404FF' : '#FFD700',
                 left: `calc(50% - ${parseFloat(width) / 2}vmin)`,
                 top: `calc(50% - ${parseFloat(size)}vmin)`,
-                transformOrigin: "center bottom",
+                transformOrigin: 'center bottom',
                 transform: `rotate(${deg}deg)`,
-                borderRadius: "50%",
+                borderRadius: '50%',
                 // APPLY THE SAME TEXT-SHADOW EFFECT USING boxShadow
                 boxShadow: digitTextShadow,
                 // Optional: keep red glow for second hand (using filter for better performance on thin elements)
-                ...(hand === "second"
+                ...(hand === 'second'
                   ? {
-                      filter: "drop-shadow(0 0 6px #FB0808FF) drop-shadow(0 0 12px #FF6347)"
+                      filter:
+                        'drop-shadow(0 0 6px #FB0808FF) drop-shadow(0 0 12px #FF6347)',
                     }
-                  : {})
+                  : {}),
               }}
             />
           );

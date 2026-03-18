@@ -1,5 +1,5 @@
 /** @jsxImportSource react */
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 /* =========================
    CONFIG
@@ -13,90 +13,104 @@ const UPDATE_INTERVAL = 1000;
 ========================= */
 
 const digitGlobs = {
+  0: import.meta.glob(
+    '../../../assets/images/26-01/26-01-04/digits/0/*.{png,jpg,jpeg,gif,webp}',
+    { eager: true, as: 'url' },
+  ),
 
-  0: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/0/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  1: import.meta.glob(
+    '../../../assets/images/26-01/26-01-04/digits/1/*.{png,jpg,jpeg,gif,webp}',
+    { eager: true, as: 'url' },
+  ),
 
-  1: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/1/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  2: import.meta.glob(
+    '../../../assets/images/26-01/26-01-04/digits/2/*.{png,jpg,jpeg,gif,webp}',
+    { eager: true, as: 'url' },
+  ),
 
-  2: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/2/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  3: import.meta.glob(
+    '../../../assets/images/26-01/26-01-04/digits/3/*.{png,jpg,jpeg,gif,webp}',
+    { eager: true, as: 'url' },
+  ),
 
-  3: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/3/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  4: import.meta.glob(
+    '../../../assets/images/26-01/26-01-04/digits/4/*.{png,jpg,jpeg,gif,webp}',
+    { eager: true, as: 'url' },
+  ),
 
-  4: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/4/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  5: import.meta.glob(
+    '../../../assets/images/26-01/26-01-04/digits/5/*.{png,jpg,jpeg,gif,webp}',
+    { eager: true, as: 'url' },
+  ),
 
-  5: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/5/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  6: import.meta.glob(
+    '../../../assets/images/26-01/26-01-04/digits/6/*.{png,jpg,jpeg,gif,webp}',
+    { eager: true, as: 'url' },
+  ),
 
-  6: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/6/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  7: import.meta.glob(
+    '../../../assets/images/26-01/26-01-04/digits/7/*.{png,jpg,jpeg,gif,webp}',
+    { eager: true, as: 'url' },
+  ),
 
-  7: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/7/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
+  8: import.meta.glob(
+    '../../../assets/images/26-01/26-01-04/digits/8/*.{png,jpg,jpeg,gif,webp}',
+    { eager: true, as: 'url' },
+  ),
 
-  8: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/8/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
-
-  9: import.meta.glob("../../../assets/images/26-01/26-01-04/digits/9/*.{png,jpg,jpeg,gif,webp}", { eager: true, as: "url" }),
-
+  9: import.meta.glob(
+    '../../../assets/images/26-01/26-01-04/digits/9/*.{png,jpg,jpeg,gif,webp}',
+    { eager: true, as: 'url' },
+  ),
 };
-
 
 /* =========================
    LOAD FOLDERS
 ========================= */
 
 function loadDigitFolders() {
-
   const folders = {};
 
   for (let d = 0; d <= 9; d++) {
-
     const urls = Object.values(digitGlobs[d] || {}).filter(Boolean);
 
-    folders[d] = urls.length ? urls : [""];
-
+    folders[d] = urls.length ? urls : [''];
   }
 
   return folders;
-
 }
-
 
 /* =========================
    TIME
 ========================= */
 
 function get24HourDigits(date) {
+  const h = date.getHours().toString().padStart(2, '0');
+  const m = date.getMinutes().toString().padStart(2, '0');
+  const s = date.getSeconds().toString().padStart(2, '0');
 
-  const h = date.getHours().toString().padStart(2, "0");
-  const m = date.getMinutes().toString().padStart(2, "0");
-  const s = date.getSeconds().toString().padStart(2, "0");
-
-  return (h + m + s).split("").map(Number);
-
+  return (h + m + s).split('').map(Number);
 }
-
 
 /* =========================
    IMAGE SELECTOR ENGINE
 ========================= */
 
 function createSelector(folders) {
-
   const lastUsed = {};
 
   return (digits, tick) => {
-
     const usedThisFrame = {};
     const result = new Array(DIGIT_COUNT);
 
     for (let pos = 0; pos < DIGIT_COUNT; pos++) {
-
       const digit = digits[pos];
       const images = folders[digit];
       const key = `${digit}-${pos}`;
 
       if (images.length === 1) {
-
         result[pos] = images[0];
         continue;
-
       }
 
       const lastIdx = lastUsed[key] ?? -1;
@@ -105,59 +119,45 @@ function createSelector(folders) {
       let selected = -1;
 
       for (let i = 0; i < images.length; i++) {
-
         const idx = (tick + i) % images.length;
 
         if (idx !== lastIdx && !used.includes(idx)) {
-
           selected = idx;
           break;
-
         }
-
       }
 
-      if (selected === -1)
-        selected = (lastIdx + 1) % images.length;
+      if (selected === -1) selected = (lastIdx + 1) % images.length;
 
       lastUsed[key] = selected;
       usedThisFrame[digit] = [...used, selected];
 
       result[pos] = images[selected];
-
     }
 
     return result;
-
   };
-
 }
-
 
 /* =========================
    HOOK
 ========================= */
 
 function useDigitClockImages(folders) {
-
   const selectorRef = useRef(null);
   const lastSecondRef = useRef(-1);
 
-  const [urls, setUrls] = useState(() => Array(DIGIT_COUNT).fill(""));
+  const [urls, setUrls] = useState(() => Array(DIGIT_COUNT).fill(''));
   const [ready, setReady] = useState(false);
 
-  if (!selectorRef.current)
-    selectorRef.current = createSelector(folders);
+  if (!selectorRef.current) selectorRef.current = createSelector(folders);
 
   useEffect(() => {
-
     function update() {
-
       const now = new Date();
       const sec = now.getSeconds();
 
-      if (sec === lastSecondRef.current)
-        return;
+      if (sec === lastSecondRef.current) return;
 
       lastSecondRef.current = sec;
 
@@ -166,9 +166,7 @@ function useDigitClockImages(folders) {
 
       setUrls(newUrls);
 
-      if (!ready && newUrls.some(Boolean))
-        setReady(true);
-
+      if (!ready && newUrls.some(Boolean)) setReady(true);
     }
 
     update();
@@ -176,38 +174,26 @@ function useDigitClockImages(folders) {
     const interval = setInterval(update, UPDATE_INTERVAL);
 
     return () => clearInterval(interval);
-
   }, [folders, ready]);
 
   return { urls, ready };
-
 }
-
 
 /* =========================
    COMPONENT
 ========================= */
 
 export default function DigitClock() {
-
   const folders = useMemo(loadDigitFolders, []);
   const { urls, ready } = useDigitClockImages(folders);
 
-  if (!ready)
-    return (
-      <div style={styles.loading}>
-        LOADING...
-      </div>
-    );
+  if (!ready) return <div style={styles.loading}>LOADING...</div>;
 
   return (
-
     <div style={styles.container}>
-
       <style>{css}</style>
 
       <div className="clock">
-
         <DigitPair urls={urls.slice(0, 2)} />
         <Colon />
 
@@ -215,60 +201,50 @@ export default function DigitClock() {
         <Colon />
 
         <DigitPair urls={urls.slice(4, 6)} />
-
       </div>
-
     </div>
-
   );
-
 }
-
 
 /* =========================
    SUBCOMPONENTS
 ========================= */
 
 function DigitPair({ urls }) {
-
   return (
     <div className="pair">
-      {urls.map((url, i) =>
+      {urls.map((url, i) => (
         <img key={i} src={url} className="digit" alt="" />
-      )}
+      ))}
     </div>
   );
-
 }
 
 function Colon() {
   return <div className="colon">:</div>;
 }
 
-
 /* =========================
    STYLES
 ========================= */
 
 const styles = {
-
   container: {
-    minHeight: "100dvh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    background: "radial-gradient(circle, #233343, #000)",
+    minHeight: '100dvh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: 'radial-gradient(circle, #233343, #000)',
   },
 
   loading: {
-    minHeight: "100dvh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    background: "#000",
-    color: "#fff",
-  }
-
+    minHeight: '100dvh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: '#000',
+    color: '#fff',
+  },
 };
 
 const css = `

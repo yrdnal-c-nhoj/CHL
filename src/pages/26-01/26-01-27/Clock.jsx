@@ -73,14 +73,17 @@ export default function PanoramaClock() {
       }
     `;
     document.head.appendChild(style);
-    return () => { if (style.parentNode) document.head.removeChild(style); };
+    return () => {
+      if (style.parentNode) document.head.removeChild(style);
+    };
   }, [uniqueFontFamily]);
 
   // 3. Load Font
   useEffect(() => {
     const loadFont = async () => {
       try {
-        if (document.fonts) await document.fonts.load(`12px ${uniqueFontFamily}`);
+        if (document.fonts)
+          await document.fonts.load(`12px ${uniqueFontFamily}`);
       } catch (e) {
         console.warn(e);
       } finally {
@@ -94,11 +97,15 @@ export default function PanoramaClock() {
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      setTimeString(now.toLocaleTimeString('en-US', {
-        hour12: true, 
-        hour: 'numeric', 
-        minute: '2-digit'
-      }).replace(' ', ''));
+      setTimeString(
+        now
+          .toLocaleTimeString('en-US', {
+            hour12: true,
+            hour: 'numeric',
+            minute: '2-digit',
+          })
+          .replace(' ', ''),
+      );
     };
     updateTime();
     const interval = setInterval(updateTime, 1000);
@@ -110,7 +117,9 @@ export default function PanoramaClock() {
   const clockGroup = (
     <div style={{ display: 'flex' }}>
       {Array.from({ length: 10 }, (_, i) => (
-        <div key={i} className="pz-clock-display">{timeString}</div>
+        <div key={i} className="pz-clock-display">
+          {timeString}
+        </div>
       ))}
     </div>
   );
@@ -128,21 +137,25 @@ export default function PanoramaClock() {
     >
       {/* BACKGROUND LAYER */}
       <div style={{ position: 'absolute', inset: 0 }}>
-        <div 
+        <div
           className="pz-bg-container"
           style={{ animationDuration: `${bgDuration}s` }}
         >
-          <img decoding="async" loading="lazy" 
+          <img
+            decoding="async"
+            loading="lazy"
             ref={imgRef}
             onLoad={handleImageLoad}
-            src={backgroundImage} 
-            alt="panorama-1" 
-            style={{ height: '100%', display: 'block' }} 
+            src={backgroundImage}
+            alt="panorama-1"
+            style={{ height: '100%', display: 'block' }}
           />
-          <img decoding="async" loading="lazy" 
-            src={backgroundImage} 
-            alt="panorama-2" 
-            style={{ height: '100%', display: 'block' }} 
+          <img
+            decoding="async"
+            loading="lazy"
+            src={backgroundImage}
+            alt="panorama-2"
+            style={{ height: '100%', display: 'block' }}
           />
         </div>
       </div>

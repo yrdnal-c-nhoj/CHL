@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
-import * as THREE from "three";
+import * as THREE from 'three';
 import OrbitronFont20251012 from '../../../assets/fonts/25-10-14-air.ttf';
-import bgImage from "../../../assets/images/25-10/25-10-14/air.webp";
+import bgImage from '../../../assets/images/25-10/25-10-14/air.webp';
 
 const SpinningDodecahedronClock = () => {
   const containerRef = useRef(null);
@@ -11,11 +11,11 @@ const SpinningDodecahedronClock = () => {
 
   const [ready, setReady] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('Orbitron20251012', OrbitronFont20251012, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   // --- Load background image ---
@@ -35,7 +35,7 @@ const SpinningDodecahedronClock = () => {
       75,
       window.innerWidth / window.innerHeight,
       0.1,
-      1000
+      1000,
     );
     camera.position.z = 7;
 
@@ -56,7 +56,7 @@ const SpinningDodecahedronClock = () => {
       roughness: 0.3,
       metalness: 0.8,
       side: THREE.DoubleSide,
-      emissive: 0x7f01ff, 
+      emissive: 0x7f01ff,
       emissiveIntensity: 0.9,
     });
     const blueSurface = new THREE.Mesh(geometry, surfaceMaterial);
@@ -88,32 +88,31 @@ const SpinningDodecahedronClock = () => {
 
     // --- Clock Texture ---
     const createClockTexture = () => {
-      const canvas = document.createElement("canvas");
+      const canvas = document.createElement('canvas');
       canvas.width = 512;
       canvas.height = 512;
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext('2d');
 
- const drawTime = () => {
-  ctx.clearRect(0, 0, 512, 512);
-  const now = new Date();
-  const hours = now.getHours();
-  const minutes = String(now.getMinutes()).padStart(2, "0");
-  const time = `${hours}${minutes}`;
+      const drawTime = () => {
+        ctx.clearRect(0, 0, 512, 512);
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const time = `${hours}${minutes}`;
 
-  ctx.font = "280px 'Orbitron20251012', monospace";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
+        ctx.font = "280px 'Orbitron20251012', monospace";
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
 
-  // Draw black outline
-  ctx.lineWidth = 3;            // thickness of the outline
-  ctx.strokeStyle = "black";     // color of the outline
-  ctx.strokeText(time, 256, 256);
+        // Draw black outline
+        ctx.lineWidth = 3; // thickness of the outline
+        ctx.strokeStyle = 'black'; // color of the outline
+        ctx.strokeText(time, 256, 256);
 
-  // Draw main text
-  ctx.fillStyle = "#E8CB0DFF";   // fill color
-  ctx.fillText(time, 256, 256);
-};
-
+        // Draw main text
+        ctx.fillStyle = '#E8CB0DFF'; // fill color
+        ctx.fillText(time, 256, 256);
+      };
 
       drawTime();
       const texture = new THREE.CanvasTexture(canvas);
@@ -152,7 +151,10 @@ const SpinningDodecahedronClock = () => {
     ];
 
     faceCenters.forEach((center) => {
-      const mesh = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 1.2), textMaterial);
+      const mesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(1.2, 1.2),
+        textMaterial,
+      );
       const pos = center.clone().multiplyScalar(2);
       mesh.position.copy(pos);
       mesh.lookAt(new THREE.Vector3(0, 0, 0));
@@ -173,8 +175,8 @@ const SpinningDodecahedronClock = () => {
         saturate(0.1)
         hue-rotate(200deg)
       `;
-      bgRef.current.style.opacity = "1";
-      bgRef.current.style.transition = "opacity 1.2s ease";
+      bgRef.current.style.opacity = '1';
+      bgRef.current.style.transition = 'opacity 1.2s ease';
     }
 
     // --- Animate ---
@@ -203,12 +205,12 @@ const SpinningDodecahedronClock = () => {
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     setReady(true);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
       if (animationIdRef.current) cancelAnimationFrame(animationIdRef.current);
       renderer.dispose();
       geometry.dispose();
@@ -224,51 +226,49 @@ const SpinningDodecahedronClock = () => {
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100vh",
-        overflow: "hidden",
-        position: "fixed",
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+        position: 'fixed',
         top: 0,
         left: 0,
-        backgroundColor: "#000",
+        backgroundColor: '#000',
       }}
     >
       {!ready && (
         <div
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: 0,
             left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "#000",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#888",
-            fontFamily: "monospace",
-            fontSize: "1.2rem",
+            width: '100%',
+            height: '100%',
+            backgroundColor: '#000',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#888',
+            fontFamily: 'monospace',
+            fontSize: '1.2rem',
             zIndex: 5,
           }}
-        >
-          
-        </div>
+        ></div>
       )}
 
       <div
         ref={bgRef}
         style={{
-          position: "absolute",
+          position: 'absolute',
           top: 0,
           left: 0,
-          width: "100%",
-          height: "100%",
+          width: '100%',
+          height: '100%',
           backgroundImage: `url(${bgImage})`,
-          backgroundSize: "100% 100%",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center center",
-          opacity: "0",
-          transition: "opacity 1.2s ease",
+          backgroundSize: '100% 100%',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
+          opacity: '0',
+          transition: 'opacity 1.2s ease',
           zIndex: 0,
         }}
       />
@@ -277,12 +277,12 @@ const SpinningDodecahedronClock = () => {
         ref={containerRef}
         style={{
           opacity: ready ? 1 : 0,
-          transition: "opacity 1s ease",
-          position: "absolute",
+          transition: 'opacity 1s ease',
+          position: 'absolute',
           top: 0,
           left: 0,
-          width: "100%",
-          height: "100%",
+          width: '100%',
+          height: '100%',
           zIndex: 1,
         }}
       />

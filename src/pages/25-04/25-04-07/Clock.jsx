@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 import sys1 from '../../../assets/images/25-04/25-04-07/sys1.gif';
 import sys2 from '../../../assets/images/25-04/25-04-07/sys2.gif';
 import sys3 from '../../../assets/images/25-04/25-04-07/sys3.gif';
 
-const SolarSystemClock = ({ backgroundColor = "#0C0D53FF" }) => {
+const SolarSystemClock = ({ backgroundColor = '#0C0D53FF' }) => {
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
@@ -20,12 +20,17 @@ const SolarSystemClock = ({ backgroundColor = "#0C0D53FF" }) => {
       const minAngle = minutes * 6 + seconds * 0.1;
       const hourAngle = hours * 30 + minutes * 0.5;
 
-      if (clockRef.current && hourRef.current && minuteRef.current && secondRef.current) {
+      if (
+        clockRef.current &&
+        hourRef.current &&
+        minuteRef.current &&
+        secondRef.current
+      ) {
         setBallPosition(secondRef.current, secAngle, 20);
         setBallPosition(minuteRef.current, minAngle, 15);
         setBallPosition(hourRef.current, hourAngle, 10);
       } else {
-        console.warn("Refs not ready:", {
+        console.warn('Refs not ready:', {
           clockRef: clockRef.current,
           hourRef: hourRef.current,
           minuteRef: minuteRef.current,
@@ -58,21 +63,43 @@ const SolarSystemClock = ({ backgroundColor = "#0C0D53FF" }) => {
     <div
       className="solar-system-clock-container unique-solar-clock"
       style={{
-        all: "unset",
-        display: "block",
-        width: "100%",
-        height: "100%",
-        isolation: "isolate",
-        boxSizing: "border-box",
+        all: 'unset',
+        display: 'block',
+        width: '100%',
+        height: '100%',
+        isolation: 'isolate',
+        boxSizing: 'border-box',
         backgroundColor, // <-- Apply controlled background color here
-        position: "relative",
+        position: 'relative',
       }}
     >
       <div style={styles.body}>
-        <img decoding="async" loading="lazy" src={sys1} alt="Layer 1" style={styles.image1} />
-        <img decoding="async" loading="lazy" src={sys2} alt="Layer 2" style={styles.image2} />
-        <img decoding="async" loading="lazy" src={sys3} alt="Layer 3" style={styles.image3} />
-        <div className="clock unique-solar-clock" style={styles.clock} ref={clockRef}>
+        <img
+          decoding="async"
+          loading="lazy"
+          src={sys1}
+          alt="Layer 1"
+          style={styles.image1}
+        />
+        <img
+          decoding="async"
+          loading="lazy"
+          src={sys2}
+          alt="Layer 2"
+          style={styles.image2}
+        />
+        <img
+          decoding="async"
+          loading="lazy"
+          src={sys3}
+          alt="Layer 3"
+          style={styles.image3}
+        />
+        <div
+          className="clock unique-solar-clock"
+          style={styles.clock}
+          ref={clockRef}
+        >
           <div
             className="ball hour unique-solar-clock"
             style={{ ...styles.ball, ...styles.hour }}
@@ -98,84 +125,84 @@ const styles = {
   body: {
     margin: 0,
     padding: 0,
-    height: "100dvh",
-    width: "100vw",
-    overflow: "hidden",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
-    boxSizing: "border-box",
+    height: '100dvh',
+    width: '100vw',
+    overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    boxSizing: 'border-box',
   },
   image1: {
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    height: "122dvh",
-    objectFit: "cover",
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    height: '122dvh',
+    objectFit: 'cover',
     opacity: 0.2,
-    filter: "saturate(99.5) brightness(90%) contrast(150%)",
-    pointerEvents: "none",
+    filter: 'saturate(99.5) brightness(90%) contrast(150%)',
+    pointerEvents: 'none',
     zIndex: 4,
-    boxSizing: "border-box",
+    boxSizing: 'border-box',
   },
   image2: {
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    height: "105dvh",
-    objectFit: "cover",
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    height: '105dvh',
+    objectFit: 'cover',
     opacity: 0.8,
-    filter: "saturate(2.5) brightness(100%) contrast(100%)",
-    pointerEvents: "none",
+    filter: 'saturate(2.5) brightness(100%) contrast(100%)',
+    pointerEvents: 'none',
     zIndex: 3,
-    boxSizing: "border-box",
+    boxSizing: 'border-box',
   },
   image3: {
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    height: "100dvh",
-    objectFit: "cover",
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    height: '100dvh',
+    objectFit: 'cover',
     opacity: 0.8,
-    pointerEvents: "none",
+    pointerEvents: 'none',
     zIndex: 2,
-    boxSizing: "border-box",
+    boxSizing: 'border-box',
   },
   clock: {
-    position: "absolute",
-    width: "60vh",
-    height: "60vh",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    width: '60vh',
+    height: '60vh',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     zIndex: 5,
-    boxSizing: "border-box",
+    boxSizing: 'border-box',
   },
   ball: {
-    position: "absolute",
-    width: "9vh",
-    height: "9vh",
+    position: 'absolute',
+    width: '9vh',
+    height: '9vh',
     opacity: 1,
-    borderRadius: "50%",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    borderRadius: '50%',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     zIndex: 9,
-    border: "1px solid black",
-    boxSizing: "border-box",
+    border: '1px solid black',
+    boxSizing: 'border-box',
   },
   hour: {
-    background: "rgb(55, 68, 239)",
+    background: 'rgb(55, 68, 239)',
   },
   minute: {
-    background: "#3f3",
+    background: '#3f3',
   },
   second: {
-    background: "rgb(250, 7, 3)",
+    background: 'rgb(250, 7, 3)',
   },
 };
 

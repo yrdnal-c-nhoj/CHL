@@ -19,7 +19,11 @@ export const DataProvider = ({ children }) => {
       // Use test data for local development, production data otherwise
       const isLocalDev = import.meta.env.DEV;
       const env = import.meta.env.VITE_ENVIRONMENT || 'production';
-      const clockData = isLocalDev ? testData : (env === 'testing' ? testData : prodData);
+      const clockData = isLocalDev
+        ? testData
+        : env === 'testing'
+          ? testData
+          : prodData;
 
       if (!clockData || clockData.length === 0) {
         throw new Error('No data found in JSON file.');
@@ -27,22 +31,29 @@ export const DataProvider = ({ children }) => {
 
       // Parse JSON rows
       const parsedItems = clockData.map((row, index) => {
-        let path = row.path?.toString().trim().replace(/^\/|\/$/g, '') || '';
+        let path =
+          row.path
+            ?.toString()
+            .trim()
+            .replace(/^\/|\/$/g, '') || '';
         if (!path && row.date) path = row.date.toString().trim();
 
         return {
           path,
           date: row.date?.toString().trim() || '',
           title:
-            row.title?.toString().trim().replace(/\bclock\b/gi, '').trim() ||
-            'No Title',
+            row.title
+              ?.toString()
+              .trim()
+              .replace(/\bclock\b/gi, '')
+              .trim() || 'No Title',
           clockNumber: index + 1,
         };
       });
 
       // Keep only valid items
       const validItems = parsedItems.filter(
-        (item) => item.path && isValidDateFormat(item.date)
+        (item) => item.path && isValidDateFormat(item.date),
       );
 
       if (validItems.length === 0) {

@@ -1,79 +1,86 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 import coinGif from '../../../assets/images/25-04/25-04-27/coin.gif';
 import spinWebp from '../../../assets/images/25-04/25-04-27/spin.webp';
 
 const SpinningCoinClock = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
-  
+
   // Load Google Fonts Federant
   useEffect(() => {
     const loadGoogleFont = async () => {
       try {
         // Create link element for Google Fonts
         const link = document.createElement('link');
-        link.href = 'https://fonts.googleapis.com/css2?family=Federant&display=swap';
+        link.href =
+          'https://fonts.googleapis.com/css2?family=Federant&display=swap';
         link.rel = 'stylesheet';
         document.head.appendChild(link);
-        
+
         // Wait for font to load
-        const fontFace = new FontFace('Federant', 'url(https://fonts.gstatic.com/s/federant/v13/2sDdZGJYIn2lnlY2JMQ.woff2) format("woff2")');
+        const fontFace = new FontFace(
+          'Federant',
+          'url(https://fonts.gstatic.com/s/federant/v13/2sDdZGJYIn2lnlY2JMQ.woff2) format("woff2")',
+        );
         await fontFace.load();
         document.fonts.add(fontFace);
-        
+
         // Also load as 'MoneyMoney-Regular' for CSS compatibility
-        const moneyFont = new FontFace('MoneyMoney-Regular', 'url(https://fonts.gstatic.com/s/federant/v13/2sDdZGJYIn2lnlY2JMQ.woff2) format("woff2")');
+        const moneyFont = new FontFace(
+          'MoneyMoney-Regular',
+          'url(https://fonts.gstatic.com/s/federant/v13/2sDdZGJYIn2lnlY2JMQ.woff2) format("woff2")',
+        );
         await moneyFont.load();
         document.fonts.add(moneyFont);
-        
+
         setFontLoaded(true);
       } catch (error) {
         console.warn('Google Font failed to load, using fallback');
         setFontLoaded(false);
       }
     };
-    
+
     loadGoogleFont();
   }, []);
   useEffect(() => {
-    const clock = document.getElementById("clock");
+    const clock = document.getElementById('clock');
     if (!clock) return;
 
     // Remove any existing numbers or hands to prevent duplicates on remount
     const existingNumbers = clock.querySelectorAll('.number');
-    existingNumbers.forEach(n => n.remove());
+    existingNumbers.forEach((n) => n.remove());
     const existingHands = clock.querySelectorAll('.hand');
-    existingHands.forEach(h => h.remove());
+    existingHands.forEach((h) => h.remove());
 
     // Create hour markers
     for (let i = 1; i <= 12; i++) {
       const angle = (i * 30 * Math.PI) / 180;
-      const number = document.createElement("div");
-      number.className = "number";
+      const number = document.createElement('div');
+      number.className = 'number';
       number.textContent = i;
-        // position at the circle point and center the element with translate
-        number.style.left = `calc(50% + ${Math.sin(angle) * 19}vw)`;
-        number.style.top = `calc(50% - ${Math.cos(angle) * 19}vw)`;
-        number.style.transform = 'translate(-50%, -50%)';
-        number.style.display = 'flex';
-        number.style.alignItems = 'center';
-        number.style.justifyContent = 'center';
-        number.style.width = 'auto';
-        number.style.lineHeight = '1';
+      // position at the circle point and center the element with translate
+      number.style.left = `calc(50% + ${Math.sin(angle) * 19}vw)`;
+      number.style.top = `calc(50% - ${Math.cos(angle) * 19}vw)`;
+      number.style.transform = 'translate(-50%, -50%)';
+      number.style.display = 'flex';
+      number.style.alignItems = 'center';
+      number.style.justifyContent = 'center';
+      number.style.width = 'auto';
+      number.style.lineHeight = '1';
       clock.appendChild(number);
     }
 
     // Create clock hands
-    const hourHand = document.createElement("div");
-    hourHand.className = "hand hour-hand";
+    const hourHand = document.createElement('div');
+    hourHand.className = 'hand hour-hand';
     clock.appendChild(hourHand);
 
-    const minuteHand = document.createElement("div");
-    minuteHand.className = "hand minute-hand";
+    const minuteHand = document.createElement('div');
+    minuteHand.className = 'hand minute-hand';
     clock.appendChild(minuteHand);
 
-    const secondHand = document.createElement("div");
-    secondHand.className = "hand second-hand";
+    const secondHand = document.createElement('div');
+    secondHand.className = 'hand second-hand';
     clock.appendChild(secondHand);
 
     const updateClock = () => {
@@ -100,56 +107,58 @@ const SpinningCoinClock = () => {
   return (
     <div
       style={{
-        backgroundColor: "#060606",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100dvh",
-        width: "100vw",
+        backgroundColor: '#060606',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100dvh',
+        width: '100vw',
         margin: 0,
-        perspective: "100vw",
-        overflow: "hidden",
-        position: "relative",
+        perspective: '100vw',
+        overflow: 'hidden',
+        position: 'relative',
       }}
     >
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={coinGif}
         alt="coin background"
         style={{
-          position: "absolute",
+          position: 'absolute',
           top: 0,
           left: 0,
-          width: "100vw",
-          height: "100vh",
-          objectFit: "cover",
+          width: '100vw',
+          height: '100vh',
+          objectFit: 'cover',
           zIndex: -1,
         }}
       />
       <div
         id="clock"
         style={{
-          width: "80vh",
-          height: "80vh",
-          borderRadius: "50%",
-          position: "relative",
-          transformStyle: "preserve-3d",
-          animation: "spin 7s linear infinite",
+          width: '80vh',
+          height: '80vh',
+          borderRadius: '50%',
+          position: 'relative',
+          transformStyle: 'preserve-3d',
+          animation: 'spin 7s linear infinite',
         }}
       >
         <div
           className="center"
           style={{
-            width: "8vh",
-            height: "8vh",
+            width: '8vh',
+            height: '8vh',
             backgroundImage: `url(${spinWebp})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            borderRadius: "50%",
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            borderRadius: '50%',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
             zIndex: 10,
           }}
         ></div>

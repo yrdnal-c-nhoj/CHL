@@ -16,13 +16,13 @@ const DynamicComponent = () => {
   useEffect(() => {
     const styleId = 'static-font-styles';
     let styleTag = document.getElementById(styleId);
-    
+
     if (!styleTag) {
       styleTag = document.createElement('style');
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-    
+
     styleTag.innerHTML = `
       @font-face {
         font-family: 'TopFont';
@@ -38,35 +38,41 @@ const DynamicComponent = () => {
 
     Promise.all([
       document.fonts.load('1vh TopFont'),
-      document.fonts.load('1vh BottomFont')
-    ]).then(() => {
-      // Small delay to ensure layout is ready
-      setTimeout(() => setFontsLoaded(true), 125);
-    }).catch(() => {
-      setFontsLoaded(true); 
-    });
+      document.fonts.load('1vh BottomFont'),
+    ])
+      .then(() => {
+        // Small delay to ensure layout is ready
+        setTimeout(() => setFontsLoaded(true), 125);
+      })
+      .catch(() => {
+        setFontsLoaded(true);
+      });
   }, []);
 
-  const timeString = time.toLocaleTimeString('en-US', {
-    hour12: true,
-    hour: 'numeric',
-    minute: '2-digit',
-    second: '2-digit'
-  }).replace(/[: ]/g, ''); // Remove colons and spaces
+  const timeString = time
+    .toLocaleTimeString('en-US', {
+      hour12: true,
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit',
+    })
+    .replace(/[: ]/g, ''); // Remove colons and spaces
 
   const DigitBox = ({ digit }) => (
-    <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minWidth: '6vh',
-      fontFamily: 'inherit',
-      fontSize: 'inherit',
-      // The massive scale can cause blurriness; translateZ(0) helps sharpen it
-      transform: 'scaleY(1) translateZ(0)',
-      transformOrigin: 'center',
-      willChange: 'transform',
-    }}>
+    <div
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth: '6vh',
+        fontFamily: 'inherit',
+        fontSize: 'inherit',
+        // The massive scale can cause blurriness; translateZ(0) helps sharpen it
+        transform: 'scaleY(1) translateZ(0)',
+        transformOrigin: 'center',
+        willChange: 'transform',
+      }}
+    >
       {digit}
     </div>
   );
@@ -78,9 +84,10 @@ const DynamicComponent = () => {
       display: 'flex',
       flexDirection: 'column',
       // space-between keeps them at the poles, but we use heights to prevent clipping
-      justifyContent: 'space-between', 
+      justifyContent: 'space-between',
       alignItems: 'center',
-      background: 'linear-gradient(180deg, #383A38 0%, #7E7EA5 30%,#ECCFEE 50%,#8686AB 70%, #393B39 100%)',
+      background:
+        'linear-gradient(180deg, #383A38 0%, #7E7EA5 30%,#ECCFEE 50%,#8686AB 70%, #393B39 100%)',
       opacity: fontsLoaded ? 1 : 0,
       transition: 'opacity 0.2s ease-in',
       overflow: 'hidden',
@@ -89,7 +96,7 @@ const DynamicComponent = () => {
       zIndex: 2,
       width: '100%',
       // Reduced height to prevent shadow clipping
-      height: '35dvh', 
+      height: '35dvh',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -105,11 +112,13 @@ const DynamicComponent = () => {
       alignItems: 'center',
     },
     leftClockShadow: {
-      textShadow: '-0px 34.5vh 1.7vh rgba(0, 0, 0, 0.9), 0px 2px 12px rgb(240, 7, 7)',
+      textShadow:
+        '-0px 34.5vh 1.7vh rgba(0, 0, 0, 0.9), 0px 2px 12px rgb(240, 7, 7)',
     },
     rightClockShadow: {
-      textShadow: '0px -34.5vh 1.7vh rgba(0, 0, 0, 0.9), 0px -2px 12px rgb(238, 9, 9)',
-    }
+      textShadow:
+        '0px -34.5vh 1.7vh rgba(0, 0, 0, 0.9), 0px -2px 12px rgb(238, 9, 9)',
+    },
   };
 
   if (!fontsLoaded) return null;
@@ -118,8 +127,16 @@ const DynamicComponent = () => {
     <div style={styles.container}>
       {/* Top Clock Section */}
       <div style={styles.clockWrapper}>
-        <div style={{...styles.horizontalClock, fontFamily: 'TopFont', ...styles.leftClockShadow}}>
-          {timeString.split('').map((d, i) => <DigitBox key={`l-${i}`} digit={d} />)}
+        <div
+          style={{
+            ...styles.horizontalClock,
+            fontFamily: 'TopFont',
+            ...styles.leftClockShadow,
+          }}
+        >
+          {timeString.split('').map((d, i) => (
+            <DigitBox key={`l-${i}`} digit={d} />
+          ))}
         </div>
       </div>
 
@@ -127,8 +144,16 @@ const DynamicComponent = () => {
 
       {/* Bottom Clock Section */}
       <div style={styles.clockWrapper}>
-        <div style={{...styles.horizontalClock, fontFamily: 'BottomFont', ...styles.rightClockShadow}}>
-          {timeString.split('').map((d, i) => <DigitBox key={`r-${i}`} digit={d} />)}
+        <div
+          style={{
+            ...styles.horizontalClock,
+            fontFamily: 'BottomFont',
+            ...styles.rightClockShadow,
+          }}
+        >
+          {timeString.split('').map((d, i) => (
+            <DigitBox key={`r-${i}`} digit={d} />
+          ))}
         </div>
       </div>
     </div>

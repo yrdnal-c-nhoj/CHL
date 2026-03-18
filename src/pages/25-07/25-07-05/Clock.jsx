@@ -11,11 +11,11 @@ const VegasClock = () => {
   const second2Ref = useRef(null);
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('vegas', vegasFontUrl, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   // Initialize YouTube IFrame API
@@ -74,11 +74,15 @@ const VegasClock = () => {
       const element = refs[elementId];
       if (!element) return;
       flickerClasses.forEach((cls) => element.classList.remove(cls));
-      const flickerClass = flickerClasses[Math.floor(Math.random() * flickerClasses.length)];
+      const flickerClass =
+        flickerClasses[Math.floor(Math.random() * flickerClasses.length)];
       element.classList.add(flickerClass);
       const duration = flickerClass.includes('015') ? 150 : 300;
       setTimeout(() => element.classList.remove(flickerClass), duration);
-      setTimeout(() => setFlicker(elementId, minInterval, maxInterval), getRandomInt(minInterval, maxInterval));
+      setTimeout(
+        () => setFlicker(elementId, minInterval, maxInterval),
+        getRandomInt(minInterval, maxInterval),
+      );
     };
 
     const updateClock = () => {

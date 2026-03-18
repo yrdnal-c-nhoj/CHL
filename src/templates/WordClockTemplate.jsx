@@ -17,7 +17,7 @@ const CONFIG = {
   LAYOUT: {
     rows: 7,
     cols: 11,
-  }
+  },
 };
 
 // Word clock matrix - each row represents time words
@@ -28,7 +28,7 @@ const WORD_MATRIX = [
   ['H', 'A', 'L', 'F', 'B', 'T', 'O', 'P', 'A', 'S', 'T'],
   ['S', 'E', 'V', 'E', 'N', 'T', 'E', 'N', 'I', 'N', 'E'],
   ['O', 'N', 'E', 'T', 'W', 'O', 'T', 'H', 'R', 'E', 'E'],
-  ['F', 'O', 'U', 'R', 'F', 'I', 'V', 'E', 'S', 'I', 'X']
+  ['F', 'O', 'U', 'R', 'F', 'I', 'V', 'E', 'S', 'I', 'X'],
 ];
 
 /**
@@ -49,19 +49,19 @@ const useWordClock = () => {
   return useMemo(() => {
     const hours = time.getHours();
     const minutes = time.getMinutes();
-    
+
     // Convert to word clock format
     const highlightedWords = new Set();
-    
+
     // Always highlight "IT IS"
     highlightedWords.add('0-0'); // I
     highlightedWords.add('0-1'); // T
     highlightedWords.add('0-3'); // I
     highlightedWords.add('0-4'); // S
-    
+
     let hourWord = hours % 12;
     if (hourWord === 0) hourWord = 12;
-    
+
     // Handle minutes
     if (minutes === 0) {
       // Exact hour
@@ -105,7 +105,7 @@ const useWordClock = () => {
         highlightedWords.add('2-9'); // V
         highlightedWords.add('2-10'); // E
       }
-      
+
       if (minutes > 0) {
         highlightedWords.add('3-7'); // P
         highlightedWords.add('3-8'); // A
@@ -151,17 +151,17 @@ const useWordClock = () => {
         highlightedWords.add('4-10'); // N
         highlightedWords.add('4-11'); // E
       }
-      
+
       highlightedWords.add('3-5'); // T
       highlightedWords.add('3-6'); // O
       addHourWords(highlightedWords, (hourWord % 12) + 1);
     }
-    
+
     return {
       highlightedWords,
-      currentTime: time.toLocaleTimeString('en-US', { 
-        hour: '2-digit', 
-        minute: '2-digit' 
+      currentTime: time.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
       }),
     };
   }, [time]);
@@ -185,9 +185,9 @@ const addHourWords = (highlightedWords, hour) => {
     11: ['4-9', '4-10', '4-11'], // ELEVEN (simplified)
     12: ['1-0', '1-1', '1-2'], // TWELVE (simplified)
   };
-  
+
   const words = hourWords[hour] || [];
-  words.forEach(word => highlightedWords.add(word));
+  words.forEach((word) => highlightedWords.add(word));
 };
 
 /**
@@ -195,11 +195,14 @@ const addHourWords = (highlightedWords, hour) => {
  */
 const WordCell = ({ letter, isHighlighted, position }) => {
   const [isAnimating, setIsAnimating] = useState(false);
-  
+
   useEffect(() => {
     if (isHighlighted) {
       setIsAnimating(true);
-      const timer = setTimeout(() => setIsAnimating(false), CONFIG.FADE_DURATION);
+      const timer = setTimeout(
+        () => setIsAnimating(false),
+        CONFIG.FADE_DURATION,
+      );
       return () => clearTimeout(timer);
     }
   }, [isHighlighted]);
@@ -238,7 +241,7 @@ const WordClockTemplate = () => {
     <div style={styles.container}>
       {/* Background */}
       <div style={styles.background} />
-      
+
       {/* Word Grid */}
       <div style={styles.gridContainer}>
         {WORD_MATRIX.map((row, rowIndex) => (
@@ -246,7 +249,7 @@ const WordClockTemplate = () => {
             {row.map((letter, colIndex) => {
               const position = `${rowIndex}-${colIndex}`;
               const isHighlighted = highlightedWords.has(position);
-              
+
               return (
                 <WordCell
                   key={position}
@@ -259,11 +262,9 @@ const WordClockTemplate = () => {
           </div>
         ))}
       </div>
-      
+
       {/* Digital time display (subtle) */}
-      <div style={styles.digitalTime}>
-        {currentTime}
-      </div>
+      <div style={styles.digitalTime}>{currentTime}</div>
     </div>
   );
 };
@@ -282,14 +283,14 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  
+
   background: {
     position: 'absolute',
     inset: 0,
     background: CONFIG.COLORS.background,
     zIndex: 1,
   },
-  
+
   loadingContainer: {
     position: 'relative',
     zIndex: 10,
@@ -298,13 +299,13 @@ const styles = {
     alignItems: 'center',
     height: '100vh',
   },
-  
+
   loadingText: {
     color: CONFIG.COLORS.text,
     fontSize: '1.5rem',
     fontFamily: 'serif',
   },
-  
+
   gridContainer: {
     position: 'relative',
     zIndex: 10,
@@ -315,13 +316,13 @@ const styles = {
     maxWidth: '800px',
     width: '90%',
   },
-  
+
   row: {
     display: 'flex',
     justifyContent: 'center',
     gap: '0.5rem',
   },
-  
+
   cell: {
     display: 'flex',
     justifyContent: 'center',
@@ -335,7 +336,7 @@ const styles = {
     borderRadius: '0.25rem',
     transition: 'all 0.3s ease',
   },
-  
+
   digitalTime: {
     position: 'absolute',
     bottom: '2rem',

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import bgImage from "../../../assets/images/25-08/25-08-08/q.webp";
+import React, { useEffect, useState } from 'react';
+import bgImage from '../../../assets/images/25-08/25-08-08/q.webp';
 import fontFile_2025_11_01 from '../../../assets/fonts/25-08-08-q.otf';
 
 export default function DigitalClock() {
@@ -18,23 +18,23 @@ export default function DigitalClock() {
     };
   }, []);
 
-  const hours = time.getHours().toString().padStart(2, "0");
-  const minutes = time.getMinutes().toString().padStart(2, "0");
-  const seconds = time.getSeconds().toString().padStart(2, "0");
+  const hours = time.getHours().toString().padStart(2, '0');
+  const minutes = time.getMinutes().toString().padStart(2, '0');
+  const seconds = time.getSeconds().toString().padStart(2, '0');
   const hundredths = Math.floor(time.getMilliseconds() / 10)
     .toString()
-    .padStart(2, "0");
+    .padStart(2, '0');
 
   const DigitBox = ({ children }) => (
     <div
       style={{
-        width: "1.5ch",
-        textAlign: "center",
-        display: "inline-block",
-        userSelect: "none",
+        width: '1.5ch',
+        textAlign: 'center',
+        display: 'inline-block',
+        userSelect: 'none',
         fontFamily: "'MyCustomFont', monospace, sans-serif", // Explicitly apply font
-        fontWeight: "normal",
-        fontStyle: "normal",
+        fontWeight: 'normal',
+        fontStyle: 'normal',
       }}
     >
       {children}
@@ -61,19 +61,19 @@ export default function DigitalClock() {
 
       <div
         style={{
-          height: "100vh",
-          width: "100vw",
+          height: '100vh',
+          width: '100vw',
           backgroundImage: `url(${bgImage})`,
-          backgroundSize: "110% 110%",
+          backgroundSize: '110% 110%',
           backgroundPosition: `${offsetX}px 0px`,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "10vh",
-          color: "#fff",
-          textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
-          userSelect: "none",
-          transition: "none",
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: '10vh',
+          color: '#fff',
+          textShadow: '2px 2px 4px rgba(0,0,0,0.7)',
+          userSelect: 'none',
+          transition: 'none',
           fontFamily: "'MyCustomFont', monospace, sans-serif", // Ensure font is applied
         }}
       >

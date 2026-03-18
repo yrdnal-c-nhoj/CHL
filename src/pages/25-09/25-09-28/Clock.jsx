@@ -1,82 +1,82 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
-import ufoImg from '../../../assets/images/25-09/25-09-28/ufo.webp'
-import skyImg from '../../../assets/images/25-09/25-09-28/stars.gif'
-import nebulaImg from '../../../assets/images/25-09/25-09-28/sta.gif'
+import ufoImg from '../../../assets/images/25-09/25-09-28/ufo.webp';
+import skyImg from '../../../assets/images/25-09/25-09-28/stars.gif';
+import nebulaImg from '../../../assets/images/25-09/25-09-28/sta.gif';
 import cu250928fontont from '../../../assets/fonts/25-09-28-cow.ttf?url';
 
-function getClockTime () {
-  const now = new Date()
-  const h = now.getHours()
-  const m = now.getMinutes()
-  const s = now.getSeconds()
+function getClockTime() {
+  const now = new Date();
+  const h = now.getHours();
+  const m = now.getMinutes();
+  const s = now.getSeconds();
   return `${h}:${m.toString().padStart(2, '0')}:${s
     .toString()
-    .padStart(2, '0')}`
+    .padStart(2, '0')}`;
 }
 
-const UFO_WIDTH = 20 // VW
-const UFO_HOVER_X = 50 - UFO_WIDTH / 2
-const UFO_ENTER_START = 112
-const UFO_LEAVE_END = -15
+const UFO_WIDTH = 20; // VW
+const UFO_HOVER_X = 50 - UFO_WIDTH / 2;
+const UFO_ENTER_START = 112;
+const UFO_LEAVE_END = -15;
 
-const GROUND_HEIGHT = 21
-const CLOCK_BASE_Y = 72 + GROUND_HEIGHT / 2 // = 86 — middle of ground
+const GROUND_HEIGHT = 21;
+const CLOCK_BASE_Y = 72 + GROUND_HEIGHT / 2; // = 86 — middle of ground
 
-const CLOCK_ABDUCTED_Y = 44
-const ABDUCTION_DELAY = 1700
-const CHAOS_DURATION = 3000
-const TRANSFORM_DURATION = 50
-const UFO_LEAVE_DURATION = 2000
-const LOOP_DELAY = 1000
-const FLASH_DURATION = 600
+const CLOCK_ABDUCTED_Y = 44;
+const ABDUCTION_DELAY = 1700;
+const CHAOS_DURATION = 3000;
+const TRANSFORM_DURATION = 50;
+const UFO_LEAVE_DURATION = 2000;
+const LOOP_DELAY = 1000;
+const FLASH_DURATION = 600;
 
-const dateVariation = '20250929'
-const cu250928fontontFamily = `CustomClockFont${dateVariation}`
+const dateVariation = '20250929';
+const cu250928fontontFamily = `CustomClockFont${dateVariation}`;
 
-export default function DesertUFOSequence () {
-  const [stage, setStage] = useState(0)
-  const [ufoX, setUfoX] = useState(UFO_ENTER_START)
-  const [clockY, setClockY] = useState(CLOCK_BASE_Y)
-  const [beam, setBeam] = useState(false)
-  const [clockVisible, setClockVisible] = useState(true)
-  const [clockOpacity, setClockOpacity] = useState(1)
-  const [clockText, setClockText] = useState(getClockTime())
-  const [chaos, setChaos] = useState(0)
-  const [sparks, setSparks] = useState([])
-  const [digitScale, setDigitScale] = useState(1)
-  const [blobOpacity, setBlobOpacity] = useState(0)
-  const [blobScale, setBlobScale] = useState(1)
-  const [flashOpacity, setFlashOpacity] = useState(0)
-  
+export default function DesertUFOSequence() {
+  const [stage, setStage] = useState(0);
+  const [ufoX, setUfoX] = useState(UFO_ENTER_START);
+  const [clockY, setClockY] = useState(CLOCK_BASE_Y);
+  const [beam, setBeam] = useState(false);
+  const [clockVisible, setClockVisible] = useState(true);
+  const [clockOpacity, setClockOpacity] = useState(1);
+  const [clockText, setClockText] = useState(getClockTime());
+  const [chaos, setChaos] = useState(0);
+  const [sparks, setSparks] = useState([]);
+  const [digitScale, setDigitScale] = useState(1);
+  const [blobOpacity, setBlobOpacity] = useState(0);
+  const [blobScale, setBlobScale] = useState(1);
+  const [flashOpacity, setFlashOpacity] = useState(0);
+
   // Use standardized font loader
   const fontReady = useFontLoader(cu250928fontontFamily, cu250928fontont, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   // Clock update
   useEffect(() => {
-    const interval = setInterval(() => setClockText(getClockTime()), 1000)
-    return () => clearInterval(interval)
-  }, [])
+    const interval = setInterval(() => setClockText(getClockTime()), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
-  function generateSparks (count = 8) {
+  function generateSparks(count = 8) {
     const newSparks = Array.from({ length: count }).map(() => ({
       left: Math.random() * 10 - 5,
       top: Math.random() * 10 - 5,
       size: Math.random() * 0.5 + 0.3,
-      opacity: Math.random() * 0.6 + 0.4
-    }))
-    setSparks(newSparks)
-    setTimeout(() => setSparks([]), 400)
+      opacity: Math.random() * 0.6 + 0.4,
+    }));
+    setSparks(newSparks);
+    setTimeout(() => setSparks([]), 400);
   }
 
   const renderScrambledClock = () =>
     clockText.split('').map((char, i) => (
       <span
         key={i}
-        className='clock-text'
+        className="clock-text"
         style={{
           display: 'inline-block',
           transform: `translate(${(Math.random() - 0.5) * chaos}vw, ${
@@ -91,128 +91,128 @@ export default function DesertUFOSequence () {
           color:
             stage === 3
               ? `rgba(255,255,255,${1 - (1 - clockOpacity) * 0.5})`
-              : '#B3EF30FF'
+              : '#B3EF30FF',
         }}
       >
         {char}
       </span>
-    ))
+    ));
 
   useEffect(() => {
-    let timer
+    let timer;
 
     if (stage === 0) {
-      setClockVisible(true)
-      setClockOpacity(1)
-      setClockY(prev => Math.max(86, prev - (CLOCK_BASE_Y - 86) / steps))
-      setBeam(false)
-      setUfoX(UFO_ENTER_START)
-      setDigitScale(1)
-      setClockText(getClockTime())
-      setBlobOpacity(0)
-      setBlobScale(1)
-      setFlashOpacity(0)
+      setClockVisible(true);
+      setClockOpacity(1);
+      setClockY((prev) => Math.max(86, prev - (CLOCK_BASE_Y - 86) / steps));
+      setBeam(false);
+      setUfoX(UFO_ENTER_START);
+      setDigitScale(1);
+      setClockText(getClockTime());
+      setBlobOpacity(0);
+      setBlobScale(1);
+      setFlashOpacity(0);
 
-      const steps = 30
-      let step = 0
+      const steps = 30;
+      let step = 0;
       const slideInterval = setInterval(() => {
-        step++
-        setClockY(prev => Math.max(80, prev - (CLOCK_BASE_Y - 80) / steps))
-        if (step >= steps) clearInterval(slideInterval)
-      }, 60)
+        step++;
+        setClockY((prev) => Math.max(80, prev - (CLOCK_BASE_Y - 80) / steps));
+        if (step >= steps) clearInterval(slideInterval);
+      }, 60);
 
       timer = setTimeout(() => {
-        setUfoX(UFO_HOVER_X)
-        setStage(1)
-      }, 2500)
+        setUfoX(UFO_HOVER_X);
+        setStage(1);
+      }, 2500);
     } else if (stage === 1) {
-      setBeam(false)
-      timer = setTimeout(() => setStage(2), ABDUCTION_DELAY)
+      setBeam(false);
+      timer = setTimeout(() => setStage(2), ABDUCTION_DELAY);
     } else if (stage === 2) {
-      setBeam(true)
-      timer = setTimeout(() => setStage(2.5), 300)
+      setBeam(true);
+      timer = setTimeout(() => setStage(2.5), 300);
     } else if (stage === 2.5) {
-      const steps = 60
-      let step = 0
+      const steps = 60;
+      let step = 0;
       const chaosInterval = setInterval(() => {
-        step++
-        setChaos(Math.random() * 100)
+        step++;
+        setChaos(Math.random() * 100);
         if (step >= steps) {
-          clearInterval(chaosInterval)
-          setChaos(0)
-          setStage(3)
+          clearInterval(chaosInterval);
+          setChaos(0);
+          setStage(3);
         }
-      }, CHAOS_DURATION / steps)
+      }, CHAOS_DURATION / steps);
     } else if (stage === 3) {
-      generateSparks()
+      generateSparks();
 
-      let startTime = null
+      let startTime = null;
 
-      const transformToBlob = timestamp => {
-        if (!startTime) startTime = timestamp
-        const elapsed = timestamp - startTime
-        const progress = Math.min(elapsed / TRANSFORM_DURATION, 1)
+      const transformToBlob = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        const progress = Math.min(elapsed / TRANSFORM_DURATION, 1);
 
-        setDigitScale(1 - progress * 0.8)
-        setClockOpacity(1 - progress)
-        setBlobOpacity(progress)
-        setBlobScale(1 - progress * 0.5)
+        setDigitScale(1 - progress * 0.8);
+        setClockOpacity(1 - progress);
+        setBlobOpacity(progress);
+        setBlobScale(1 - progress * 0.5);
 
         if (progress < 1) {
-          requestAnimationFrame(transformToBlob)
+          requestAnimationFrame(transformToBlob);
         } else {
-          setClockVisible(false)
-          setClockOpacity(0)
-          setDigitScale(0)
-          setClockText('')
+          setClockVisible(false);
+          setClockOpacity(0);
+          setDigitScale(0);
+          setClockText('');
 
-          setFlashOpacity(0.7)
-          setTimeout(() => setFlashOpacity(0), FLASH_DURATION)
+          setFlashOpacity(0.7);
+          setTimeout(() => setFlashOpacity(0), FLASH_DURATION);
 
-          let blobStart = performance.now()
-          const moveBlob = now => {
+          let blobStart = performance.now();
+          const moveBlob = (now) => {
             const blobProgress = Math.min(
               (now - blobStart) / UFO_LEAVE_DURATION,
-              1
-            )
+              1,
+            );
             setClockY(
-              CLOCK_BASE_Y - (CLOCK_BASE_Y - CLOCK_ABDUCTED_Y) * blobProgress
-            )
-            setBlobOpacity(1 - blobProgress)
-            if (blobProgress < 1) requestAnimationFrame(moveBlob)
-            else setStage(4)
-          }
-          requestAnimationFrame(moveBlob)
+              CLOCK_BASE_Y - (CLOCK_BASE_Y - CLOCK_ABDUCTED_Y) * blobProgress,
+            );
+            setBlobOpacity(1 - blobProgress);
+            if (blobProgress < 1) requestAnimationFrame(moveBlob);
+            else setStage(4);
+          };
+          requestAnimationFrame(moveBlob);
         }
-      }
+      };
 
-      requestAnimationFrame(transformToBlob)
+      requestAnimationFrame(transformToBlob);
     } else if (stage === 4) {
-      setBeam(false)
-      let step = 0
-      const leaveSteps = 26
+      setBeam(false);
+      let step = 0;
+      const leaveSteps = 26;
       const leaveInterval = setInterval(() => {
-        step++
-        setUfoX(prev =>
+        step++;
+        setUfoX((prev) =>
           Math.max(
             UFO_LEAVE_END,
-            prev - (UFO_HOVER_X - UFO_LEAVE_END) / leaveSteps
-          )
-        )
+            prev - (UFO_HOVER_X - UFO_LEAVE_END) / leaveSteps,
+          ),
+        );
         if (step >= leaveSteps) {
-          clearInterval(leaveInterval)
-          setStage(5)
+          clearInterval(leaveInterval);
+          setStage(5);
         }
-      }, UFO_LEAVE_DURATION / leaveSteps)
+      }, UFO_LEAVE_DURATION / leaveSteps);
     } else if (stage === 5) {
       timer = setTimeout(() => {
-        setUfoX(UFO_ENTER_START)
-        setStage(0)
-      }, LOOP_DELAY)
+        setUfoX(UFO_ENTER_START);
+        setStage(0);
+      }, LOOP_DELAY);
     }
 
-    return () => timer && clearTimeout(timer)
-  }, [stage])
+    return () => timer && clearTimeout(timer);
+  }, [stage]);
 
   if (!fontReady)
     return (
@@ -223,10 +223,10 @@ export default function DesertUFOSequence () {
           left: 0,
           width: '100vw',
           height: '100dvh',
-          background: 'black'
+          background: 'black',
         }}
       />
-    )
+    );
 
   return (
     <div
@@ -238,7 +238,7 @@ export default function DesertUFOSequence () {
         backgroundImage: `url(${nebulaImg}), url(${skyImg})`,
         backgroundSize: 'cover, cover',
         backgroundPosition: 'center, center',
-        backgroundRepeat: 'no-repeat, no-repeat'
+        backgroundRepeat: 'no-repeat, no-repeat',
       }}
     >
       <style>{`
@@ -263,7 +263,7 @@ export default function DesertUFOSequence () {
           opacity: flashOpacity,
           pointerEvents: 'none',
           transition: `opacity ${FLASH_DURATION / 1000}s linear`,
-          zIndex: 10
+          zIndex: 10,
         }}
       />
 
@@ -276,7 +276,7 @@ export default function DesertUFOSequence () {
           width: '100vw',
           height: '28dvh',
           background:
-            'linear-gradient(to top, #C8943FFF 0%, #AE854BFF 40%, #3B3404FF 100%)'
+            'linear-gradient(to top, #C8943FFF 0%, #AE854BFF 40%, #3B3404FF 100%)',
         }}
       />
 
@@ -289,7 +289,7 @@ export default function DesertUFOSequence () {
           transform: `translateX(-50%)`,
           textAlign: 'center',
           whiteSpace: 'pre',
-          zIndex: 6
+          zIndex: 6,
         }}
       >
         {clockVisible && (
@@ -307,21 +307,21 @@ export default function DesertUFOSequence () {
               textShadow: '0.3vw 0.3vw 0 #7a5a32, -1vw -1vw 0 #F4EFE9FF', // subtle embossed/branded effect
               letterSpacing: '0.05em',
               // backgroundColor: 'white', // optional for contrast
-              paddingInline: '0.5em' // tiny extra padding around digits
+              paddingInline: '0.5em', // tiny extra padding around digits
             }}
           >
             {stage === 2.5 || stage === 3 ? (
               renderScrambledClock()
             ) : (
               <span
-                className='clock-text'
+                className="clock-text"
                 style={{
                   display: 'inline-block',
                   transform: `scale(${digitScale})`,
                   opacity: clockOpacity,
                   transition: 'transform 0.05s linear, opacity 0.05s linear',
                   color: '#E6EAE6FF',
-                  textShadow: '0.5vw 0.5vw 0 #141312FF'
+                  textShadow: '0.5vw 0.5vw 0 #141312FF',
                 }}
               >
                 {clockText}
@@ -344,7 +344,7 @@ export default function DesertUFOSequence () {
             transform: `translateX(-50%) scale(${blobScale})`,
             opacity: blobOpacity,
             pointerEvents: 'none',
-            zIndex: 7
+            zIndex: 7,
           }}
         />
 
@@ -362,7 +362,7 @@ export default function DesertUFOSequence () {
               opacity: spark.opacity,
               pointerEvents: 'none',
               filter: 'blur(0.1rem)',
-              transform: 'translate(-50%,-50%)'
+              transform: 'translate(-50%,-50%)',
             }}
           />
         ))}
@@ -375,7 +375,7 @@ export default function DesertUFOSequence () {
           top: '36dvh',
           left: `${ufoX}vw`,
           width: `${UFO_WIDTH}vw`,
-          transition: 'left 0.4s linear'
+          transition: 'left 0.4s linear',
         }}
       >
         {/* Beam behind UFO */}
@@ -392,21 +392,23 @@ export default function DesertUFOSequence () {
                 'linear-gradient(180deg, rgba(194,241,255,0.98) 0%, rgba(255,255,192,0.68) 85%, rgba(255,230,192,0.00) 100%)',
               borderRadius: '0.8vw',
               filter: 'blur(0.2rem)',
-              zIndex: 3
+              zIndex: 3,
             }}
           />
         )}
 
         {/* UFO on top */}
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={ufoImg}
-          alt='UFO'
+          alt="UFO"
           style={{
             width: '100%',
             display: 'block',
             pointerEvents: 'none',
             position: 'relative',
-            zIndex: 4
+            zIndex: 4,
           }}
         />
       </div>
@@ -421,9 +423,9 @@ export default function DesertUFOSequence () {
           height: '100dvh',
           pointerEvents: 'none',
           background:
-            'radial-gradient(ellipse at 54vw 8dvh, rgba(40,60,140,0.52) 0%, rgba(30,32,49,0.25) 100%)'
+            'radial-gradient(ellipse at 54vw 8dvh, rgba(40,60,140,0.52) 0%, rgba(30,32,49,0.25) 100%)',
         }}
       />
     </div>
-  )
+  );
 }

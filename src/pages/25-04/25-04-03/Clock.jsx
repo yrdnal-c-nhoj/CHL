@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import mobyFont from "../../../assets/fonts/25-04-03-moby.ttf";
+import mobyFont from '../../../assets/fonts/25-04-03-moby.ttf';
 import waves from '../../../assets/images/25-04/25-04-03/waves.gif';
 
 const MobyDickClock = () => {
@@ -49,12 +49,12 @@ const MobyDickClock = () => {
       const x = getRandomPosAvoidCenter(
         window.innerWidth,
         (window.innerWidth - centerAvoidSize.width) / 2,
-        (window.innerWidth + centerAvoidSize.width) / 2
+        (window.innerWidth + centerAvoidSize.width) / 2,
       );
       const y = getRandomPosAvoidCenter(
         window.innerHeight,
         (window.innerHeight - centerAvoidSize.height) / 2,
-        (window.innerHeight + centerAvoidSize.height) / 2
+        (window.innerHeight + centerAvoidSize.height) / 2,
       );
 
       // Random font size and opacity
@@ -62,7 +62,8 @@ const MobyDickClock = () => {
       const opacity = Math.random() * 0.7 + 0.3;
 
       // Apply styles with smooth transition
-      clock.style.transition = 'transform 2s ease-in-out, font-size 2s ease-in-out, opacity 2s ease-in-out';
+      clock.style.transition =
+        'transform 2s ease-in-out, font-size 2s ease-in-out, opacity 2s ease-in-out';
       clock.style.transform = `translate(${x}px, ${y}px)`;
       clock.style.fontSize = `${fontSize}rem`;
       clock.style.opacity = opacity;
@@ -107,14 +108,17 @@ const MobyDickClock = () => {
         style={{
           fontFamily: 'Moby, cursive',
           color: '#a1b4b4',
-          textShadow: '#ced4d4 0.1rem 0.1rem 0.2rem, #000404 -0.1rem -0.1rem 0.9rem',
+          textShadow:
+            '#ced4d4 0.1rem 0.1rem 0.2rem, #000404 -0.1rem -0.1rem 0.9rem',
           position: 'absolute',
           whiteSpace: 'nowrap',
           pointerEvents: 'none',
           opacity: 0,
         }}
       />
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={waves}
         alt="waves"
         style={{

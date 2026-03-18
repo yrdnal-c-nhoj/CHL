@@ -29,7 +29,20 @@ const FStopClock = () => {
 
   useEffect(() => {
     const clock = document.querySelector('.fstop-clock');
-    const customDigits = ['f/1.0', 'f/1.4', 'f/2.0', 'f/2.8', 'f/4.0', 'f/5.6', 'f/8.0', 'f/11', 'f/16', 'f/22', 'f/32', 'f/45'];
+    const customDigits = [
+      'f/1.0',
+      'f/1.4',
+      'f/2.0',
+      'f/2.8',
+      'f/4.0',
+      'f/5.6',
+      'f/8.0',
+      'f/11',
+      'f/16',
+      'f/22',
+      'f/32',
+      'f/45',
+    ];
     const sharpIndices = [];
     while (sharpIndices.length < 6) {
       const randIndex = Math.floor(Math.random() * 12);
@@ -53,15 +66,18 @@ const FStopClock = () => {
   }, []);
 
   return (
-    <div className="fstop-wrapper" style={{
-      margin: 0,
-      background: '#111',
-      height: '100dvh',
-      width: '100vw',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}>
+    <div
+      className="fstop-wrapper"
+      style={{
+        margin: 0,
+        background: '#111',
+        height: '100dvh',
+        width: '100vw',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <style>{`
         @font-face {
           font-family: 'fstop-cam';
@@ -216,10 +232,34 @@ const FStopClock = () => {
         .fstop-bgimage4 { z-index: 4; opacity: 0.2; width: 104vw; }
       `}</style>
 
-      <img decoding="async" loading="lazy" src={bg4} className="fstop-bgimage4" alt="bg4" />
-      <img decoding="async" loading="lazy" src={bg3} className="fstop-bgimage3" alt="bg3" />
-      <img decoding="async" loading="lazy" src={bg1} className="fstop-bgimage" alt="bg1" />
-      <img decoding="async" loading="lazy" src={bg2} className="fstop-bgimage2" alt="bg2" />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bg4}
+        className="fstop-bgimage4"
+        alt="bg4"
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bg3}
+        className="fstop-bgimage3"
+        alt="bg3"
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bg1}
+        className="fstop-bgimage"
+        alt="bg1"
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bg2}
+        className="fstop-bgimage2"
+        alt="bg2"
+      />
 
       <div className="fstop-clock">
         <div className="fstop-hand fstop-hour" id="fstop-hourHand"></div>

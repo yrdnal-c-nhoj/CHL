@@ -2,11 +2,15 @@
 // Lightweight GA4 helper with environment + DNT guards.
 
 const GA_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
-const APP_ENV = import.meta.env.VITE_ENVIRONMENT || import.meta.env.MODE || import.meta.env.NODE_ENV;
+const APP_ENV =
+  import.meta.env.VITE_ENVIRONMENT ||
+  import.meta.env.MODE ||
+  import.meta.env.NODE_ENV;
 
 const isProdEnv = () => (APP_ENV || '').toLowerCase() === 'production';
 const dntEnabled = () => {
-  const dnt = navigator?.doNotTrack || window?.doNotTrack || navigator?.msDoNotTrack;
+  const dnt =
+    navigator?.doNotTrack || window?.doNotTrack || navigator?.msDoNotTrack;
   return dnt === '1' || dnt === 'yes';
 };
 
@@ -21,9 +25,11 @@ const loadGaScript = () => {
 
   // Bootstrap dataLayer / gtag stub early
   window.dataLayer = window.dataLayer || [];
-  window.gtag = window.gtag || function gtag() {
-    window.dataLayer.push(arguments);
-  };
+  window.gtag =
+    window.gtag ||
+    function gtag() {
+      window.dataLayer.push(arguments);
+    };
 
   const script = document.createElement('script');
   script.async = true;

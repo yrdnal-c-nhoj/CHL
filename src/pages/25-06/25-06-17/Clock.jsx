@@ -43,7 +43,7 @@ const BackslantClock = () => {
       return frag;
     };
 
-    ids.forEach(id => {
+    ids.forEach((id) => {
       const trainEl = document.getElementById(id + 'train');
       trainEl.appendChild(createDigitLine());
       trains.current[id] = trainEl;
@@ -81,8 +81,9 @@ const BackslantClock = () => {
         const train = trains.current[id];
 
         if (digit !== lastDigits.current[id]) {
-          Array.from(train.children).forEach(span => {
-            if (!span.classList.contains('leaving')) span.classList.remove('active');
+          Array.from(train.children).forEach((span) => {
+            if (!span.classList.contains('leaving'))
+              span.classList.remove('active');
           });
 
           const oldSpan = train.querySelector('span.active');
@@ -91,7 +92,7 @@ const BackslantClock = () => {
             oldSpan.addEventListener(
               'animationend',
               () => oldSpan.classList.remove('leaving', 'active'),
-              { once: true }
+              { once: true },
             );
           }
 
@@ -105,9 +106,13 @@ const BackslantClock = () => {
         }
       });
 
-      ids.forEach(id => {
+      ids.forEach((id) => {
         const train = trains.current[id];
-        currentOffsets.current[id] = lerp(currentOffsets.current[id], targetOffsets.current[id], 0.1);
+        currentOffsets.current[id] = lerp(
+          currentOffsets.current[id],
+          targetOffsets.current[id],
+          0.1,
+        );
         train.style.transform = `translateX(-${currentOffsets.current[id]}px)`;
       });
 
@@ -130,9 +135,13 @@ const BackslantClock = () => {
     <div style={styles.body}>
       <div style={styles.wrapper}>
         <div style={styles.clock} role="timer" aria-label="Digital clock">
-          {ids.map(id => (
+          {ids.map((id) => (
             <div key={id} style={styles.clockRow}>
-              <div id={`${id}train`} className="digitTrain" style={styles.digitTrain}></div>
+              <div
+                id={`${id}train`}
+                className="digitTrain"
+                style={styles.digitTrain}
+              ></div>
             </div>
           ))}
         </div>
@@ -147,7 +156,8 @@ const styles = {
     padding: 0,
     height: '100dvh',
     width: '100vw',
-    backgroundImage: 'linear-gradient(24deg, #211408 6.25%, #f3a64e 6.25%, #ea8007 25%, #fff 25%, #f9c2c2 31.25%, #e3630d 31.25%, #e3630d 50%, #211408 50%, #0b30ea 56.25%, #ed8917 56.25%, #ed8917 75%, #f60808 75%, #fff 81.25%, #e3630d 81.25%, #e3630d 100%)',
+    backgroundImage:
+      'linear-gradient(24deg, #211408 6.25%, #f3a64e 6.25%, #ea8007 25%, #fff 25%, #f9c2c2 31.25%, #e3630d 31.25%, #e3630d 50%, #211408 50%, #0b30ea 56.25%, #ed8917 56.25%, #ed8917 75%, #f60808 75%, #fff 81.25%, #e3630d 81.25%, #e3630d 100%)',
     backgroundSize: '6vw 2vh',
     display: 'flex',
     justifyContent: 'center',
@@ -184,7 +194,7 @@ const styles = {
     fontSize: '3.5rem',
     whiteSpace: 'nowrap',
     transition: 'transform 0.4s linear',
-  }
+  },
 };
 
 export default BackslantClock;

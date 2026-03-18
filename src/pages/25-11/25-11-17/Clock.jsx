@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import bg1 from "../../../assets/images/25-11/25-11-17/mars2.webp";
-import bg2 from "../../../assets/images/25-11/25-11-17/mars1.gif";
-import bg3 from "../../../assets/images/25-11/25-11-17/mars1.gif";
-import bg4 from "../../../assets/images/25-11/25-11-17/mars5.webp"; // ← added Mars four import
+import React, { useEffect, useRef, useState } from 'react';
+import bg1 from '../../../assets/images/25-11/25-11-17/mars2.webp';
+import bg2 from '../../../assets/images/25-11/25-11-17/mars1.gif';
+import bg3 from '../../../assets/images/25-11/25-11-17/mars1.gif';
+import bg4 from '../../../assets/images/25-11/25-11-17/mars5.webp'; // ← added Mars four import
 import font2025_11_18 from '../../../assets/fonts/25-11-17-mars.ttf?url';
 
 export default function MarsDigitalClock() {
@@ -12,9 +12,9 @@ export default function MarsDigitalClock() {
 
   useEffect(() => {
     let cancelled = false;
-    const font = new FontFace("ClockFont", `url(${font2025_11_18})`, {
-      style: "normal",
-      weight: "400",
+    const font = new FontFace('ClockFont', `url(${font2025_11_18})`, {
+      style: 'normal',
+      weight: '400',
     });
 
     font
@@ -48,7 +48,7 @@ export default function MarsDigitalClock() {
     };
   }, []);
 
-  const two = (n) => String(n).padStart(2, "0");
+  const two = (n) => String(n).padStart(2, '0');
 
   const hoursStr = two(time.getHours());
   const minutesStr = two(time.getMinutes());
@@ -70,114 +70,114 @@ export default function MarsDigitalClock() {
       }
     `,
     /* Mars four - behind everything else */
-   background4: {
-  position: "absolute",
-  top: 0,
-  left: 0,
-  width: "100%",
-  height: "100%",
-  backgroundImage: `url(${bg4})`,
-  backgroundSize: "130% 130%",
-  opacity: 0.7,
-  backgroundBlendMode: "multiply",
-  backgroundColor: "red",
-  filter: "brightness(1.7) contrast(1.2)",
-  // backgroundRepeat: "no-repeat",
-  backgroundPosition: "center",
-  zIndex: 1,
-},
-
-    root: {
-      minHeight: "100dvh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      position: "relative",
-      fontFamily:
-        "ClockFont, Inter, Roboto, system-ui, -apple-system, 'Segoe UI', sans-serif",
-      overflow: "hidden",
-      padding: "2vh",
-      boxSizing: "border-box",
-      opacity: fontLoaded ? 1 : 0,
-      transition: "opacity 0.35s ease-out",
-    },
-    gradientBackground: {
-      position: "absolute",
+    background4: {
+      position: 'absolute',
       top: 0,
       left: 0,
-      width: "100%",
-      height: "100%",
-      background: "linear-gradient(188deg, #F3061AFF, #181717FF)",
+      width: '100%',
+      height: '100%',
+      backgroundImage: `url(${bg4})`,
+      backgroundSize: '130% 130%',
+      opacity: 0.7,
+      backgroundBlendMode: 'multiply',
+      backgroundColor: 'red',
+      filter: 'brightness(1.7) contrast(1.2)',
+      // backgroundRepeat: "no-repeat",
+      backgroundPosition: 'center',
+      zIndex: 1,
+    },
+
+    root: {
+      minHeight: '100dvh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'relative',
+      fontFamily:
+        "ClockFont, Inter, Roboto, system-ui, -apple-system, 'Segoe UI', sans-serif",
+      overflow: 'hidden',
+      padding: '2vh',
+      boxSizing: 'border-box',
+      opacity: fontLoaded ? 1 : 0,
+      transition: 'opacity 0.35s ease-out',
+    },
+    gradientBackground: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      background: 'linear-gradient(188deg, #F3061AFF, #181717FF)',
       zIndex: 0, // gradient behind everything
     },
     background1: {
-      position: "absolute",
+      position: 'absolute',
       top: 0,
       left: 0,
-      width: "100%",
-      height: "100%",
+      width: '100%',
+      height: '100%',
       backgroundImage: `url(${bg1})`,
-      backgroundSize: "contain",
-    
-      backgroundPosition: "center",
-      filter: "hue-rotate(-20deg) saturate(1.8) contrast(1.8) brightness(1.2)",
+      backgroundSize: 'contain',
+
+      backgroundPosition: 'center',
+      filter: 'hue-rotate(-20deg) saturate(1.8) contrast(1.8) brightness(1.2)',
       zIndex: 1,
       // opacity: 0.3, // 60% opacity
     },
     background2: {
-      position: "absolute",
+      position: 'absolute',
       top: 0,
       left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundRepeat: "no-repeat",
+      width: '100%',
+      height: '100%',
+      backgroundRepeat: 'no-repeat',
       backgroundImage: `url(${bg2})`,
-      backgroundSize: "100% 100%",   // <— Stretch to fill container
-      backgroundPosition: "center",
+      backgroundSize: '100% 100%', // <— Stretch to fill container
+      backgroundPosition: 'center',
       opacity: 0.5,
       zIndex: 2,
     },
 
     background3: {
-      position: "absolute",
+      position: 'absolute',
       top: 0,
       left: 0,
-      width: "100%",
-      height: "100%",
+      width: '100%',
+      height: '100%',
       backgroundImage: `url(${bg3})`,
-      backgroundSize: "100% 100%",   // <— Stretch to fill container
-      backgroundPosition: "center",
-      transform: "rotate(180deg)",
+      backgroundSize: '100% 100%', // <— Stretch to fill container
+      backgroundPosition: 'center',
+      transform: 'rotate(180deg)',
       opacity: 0.5,
       zIndex: 3,
     },
 
     content: {
-      position: "relative",
+      position: 'relative',
       zIndex: 4, // above all backgrounds
-      display: "flex",
-      flexDirection: "row",
-      flexWrap: "wrap",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "2vh",
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '2vh',
     },
     group: {
-      display: "flex",
-      flexDirection: "row",
-      gap: "1vh",
+      display: 'flex',
+      flexDirection: 'row',
+      gap: '1vh',
     },
     digitBox: {
-      width: "10vh",
-      height: "11vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      fontSize: "11vh",
-      color: "#EF2005FF",
+      width: '10vh',
+      height: '11vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '11vh',
+      color: '#EF2005FF',
       lineHeight: 1,
-      whiteSpace: "nowrap",
-      textShadow: "-1px -1px 0 #040404FF, 1px 1px 0 #F7F8BFFF",
+      whiteSpace: 'nowrap',
+      textShadow: '-1px -1px 0 #040404FF, 1px 1px 0 #F7F8BFFF',
     },
   };
 

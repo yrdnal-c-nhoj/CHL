@@ -6,8 +6,8 @@ import secondHandImage from '../../../assets/images/25-09/25-09-02/arm3.gif';
 
 export default function FullViewportRectangularAnalogClock({
   showSeconds = true,
-  xOffset = -10,  // horizontal offset in pixels (default center)
-  yOffset = 10,  // vertical offset in pixels (default center)
+  xOffset = -10, // horizontal offset in pixels (default center)
+  yOffset = 10, // vertical offset in pixels (default center)
 }) {
   const [now, setNow] = useState(new Date());
   const [size, setSize] = useState({
@@ -16,19 +16,23 @@ export default function FullViewportRectangularAnalogClock({
   });
 
   useEffect(() => {
-    const onResize = () => setSize({ w: window.innerWidth, h: window.innerHeight });
+    const onResize = () =>
+      setSize({ w: window.innerWidth, h: window.innerHeight });
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), showSeconds ? 1000 : 60000);
+    const interval = setInterval(
+      () => setNow(new Date()),
+      showSeconds ? 1000 : 60000,
+    );
     return () => clearInterval(interval);
   }, [showSeconds]);
 
   const { w, h } = size;
-  const cx = w / 2 + xOffset;  // apply horizontal offset
-  const cy = h / 2 + yOffset;  // apply vertical offset
+  const cx = w / 2 + xOffset; // apply horizontal offset
+  const cy = h / 2 + yOffset; // apply vertical offset
   const radius = Math.min(w, h) * 0.38;
 
   const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
@@ -61,7 +65,11 @@ export default function FullViewportRectangularAnalogClock({
 
   return (
     <div style={containerStyle}>
-      <svg style={svgStyle} viewBox={`0 0 ${w} ${h}`} xmlns="http://www.w3.org/2000/svg">
+      <svg
+        style={svgStyle}
+        viewBox={`0 0 ${w} ${h}`}
+        xmlns="http://www.w3.org/2000/svg"
+      >
         {/* Hour hand */}
         <image
           href={hourHandImage}
@@ -101,4 +109,3 @@ export default function FullViewportRectangularAnalogClock({
     </div>
   );
 }
-

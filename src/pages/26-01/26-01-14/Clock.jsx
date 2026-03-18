@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useMemo } from "react";
-import bgVideo from "../../../assets/images/26-01/26-01-14/kuro.mp4";
-import fallbackImg from "../../../assets/images/26-01/26-01-14/kuro.webp";
-import romanFont from "../../../assets/fonts/26-01-14-kuro.otf";
+import React, { useEffect, useState, useMemo } from 'react';
+import bgVideo from '../../../assets/images/26-01/26-01-14/kuro.mp4';
+import fallbackImg from '../../../assets/images/26-01/26-01-14/kuro.webp';
+import romanFont from '../../../assets/fonts/26-01-14-kuro.otf';
 
-const FONT_NAME = "RomanClockFont";
-const CLOCK_GRADIENT = "linear-gradient(180deg, #DCCFE1, #AFB1B3)";
+const FONT_NAME = 'RomanClockFont';
+const CLOCK_GRADIENT = 'linear-gradient(180deg, #DCCFE1, #AFB1B3)';
 
 export default function KurosawaClock() {
   const [now, setNow] = useState(new Date());
@@ -19,10 +19,13 @@ export default function KurosawaClock() {
 
   useEffect(() => {
     const font = new FontFace(FONT_NAME, `url(${romanFont})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-      setFontLoaded(true);
-    }).catch(() => setFontLoaded(true));
+    font
+      .load()
+      .then((loaded) => {
+        document.fonts.add(loaded);
+        setFontLoaded(true);
+      })
+      .catch(() => setFontLoaded(true));
   }, []);
 
   useEffect(() => {
@@ -38,40 +41,40 @@ export default function KurosawaClock() {
 
   const styles = {
     wrapper: {
-      height: "100dvh",
-      width: "100vw",
-      overflow: "hidden",
-      position: "relative",
-      background: "#000",
-      boxSizing: "border-box",
+      height: '100dvh',
+      width: '100vw',
+      overflow: 'hidden',
+      position: 'relative',
+      background: '#000',
+      boxSizing: 'border-box',
     },
     media: {
-      position: "absolute",
+      position: 'absolute',
       left: 0,
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
       zIndex: 0,
     },
     // CHANGED: The container no longer uses absolute positioning to center itself.
     // It now behaves like a normal flex child within the clock instance.
     container: {
-      display: "flex",
-      gap: "0", 
-      pointerEvents: "none",
+      display: 'flex',
+      gap: '0',
+      pointerEvents: 'none',
     },
     digit: {
-      width: "calc(100vw / 18)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
+      width: 'calc(100vw / 18)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       fontFamily: `${FONT_NAME}, sans-serif`,
-      fontSize: "min(12dvh, 8vw)",
+      fontSize: 'min(12dvh, 8vw)',
       background: CLOCK_GRADIENT,
-      WebkitBackgroundClip: "text",
-      WebkitTextFillColor: "transparent",
-      textAlign: "center",
-    }
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+      textAlign: 'center',
+    },
   };
 
   const clocksWrapper = {
@@ -95,7 +98,7 @@ export default function KurosawaClock() {
         minute: '2-digit',
         second: '2-digit',
       });
-      return timeString.replace(/:/g, "").split("");
+      return timeString.replace(/:/g, '').split('');
     }, [time]);
 
     return (
@@ -119,18 +122,34 @@ export default function KurosawaClock() {
   const ready = fontLoaded && (mediaReady || videoError);
 
   return (
-    <main style={{ ...styles.wrapper, opacity: ready ? 1 : 0, visibility: ready ? 'visible' : 'hidden', transition: 'opacity 0.35s ease' }}>
+    <main
+      style={{
+        ...styles.wrapper,
+        opacity: ready ? 1 : 0,
+        visibility: ready ? 'visible' : 'hidden',
+        transition: 'opacity 0.35s ease',
+      }}
+    >
       {!videoError ? (
         <video
           src={bgVideo}
-          muted autoPlay loop playsInline
+          muted
+          autoPlay
+          loop
+          playsInline
           onError={() => setVideoError(true)}
           style={styles.media}
         />
       ) : (
-        <img decoding="async" loading="lazy" src={fallbackImg} alt="" style={styles.media} />
+        <img
+          decoding="async"
+          loading="lazy"
+          src={fallbackImg}
+          alt=""
+          style={styles.media}
+        />
       )}
-      
+
       <div style={clocksWrapper}>
         <Clock time={leftTime} />
         <Clock time={now} />

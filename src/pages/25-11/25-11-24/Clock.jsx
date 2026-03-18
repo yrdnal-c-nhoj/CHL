@@ -10,31 +10,31 @@ import secondHandImg from '../../../assets/images/25-11/25-11-24/sn1.webp?url';
 import clockCenterImg from '../../../assets/images/25-11/25-11-24/center.webp?url';
 import fon251124 from '../../../assets/fonts/25-11-24-snake.ttf?url';
 
-export default function AnalogClock () {
-  const [time, setTime] = useState(new Date())
-  const requestRef = useRef()
+export default function AnalogClock() {
+  const [time, setTime] = useState(new Date());
+  const requestRef = useRef();
 
   // Smooth update with setInterval
   const updateTime = () => {
-    setTime(new Date())
-  }
+    setTime(new Date());
+  };
 
   useEffect(() => {
     const interval = setInterval(updateTime, 50); // Update every 50ms for smooth motion
-    return () => clearInterval(interval)
-  }, [])
+    return () => clearInterval(interval);
+  }, []);
 
-  const hours = time.getHours() % 12
-  const minutes = time.getMinutes()
-  const seconds = time.getSeconds() + time.getMilliseconds() / 1000
+  const hours = time.getHours() % 12;
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
 
-  const hourAngle = (hours + minutes / 60) * 30
-  const minuteAngle = (minutes + seconds / 60) * 6
-  const secondAngle = seconds * 6
+  const hourAngle = (hours + minutes / 60) * 30;
+  const minuteAngle = (minutes + seconds / 60) * 6;
+  const secondAngle = seconds * 6;
 
-  const unit = 'vmin'
-  const clockSize = 100 // smaller size now
-  const tileSize = 25
+  const unit = 'vmin';
+  const clockSize = 100; // smaller size now
+  const tileSize = 25;
 
   const pageWrapperStyle = {
     position: 'fixed',
@@ -45,8 +45,8 @@ export default function AnalogClock () {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'hidden'
-  }
+    overflow: 'hidden',
+  };
 
   const pageBackgroundBase = {
     position: 'absolute',
@@ -59,8 +59,8 @@ export default function AnalogClock () {
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     filter: 'saturate(2.7) contrast(0.4) brightness(0.4)',
-    zIndex: -3
-  }
+    zIndex: -3,
+  };
 
   const pageBackgroundLayer1 = {
     position: 'absolute',
@@ -74,8 +74,8 @@ export default function AnalogClock () {
     opacity: 0.6,
     backgroundSize: `${tileSize}${unit} ${tileSize}${unit}`,
     backgroundPosition: 'center',
-    zIndex: -2
-  }
+    zIndex: -2,
+  };
 
   const containerStyle = {
     position: 'relative',
@@ -83,8 +83,8 @@ export default function AnalogClock () {
     height: `${clockSize}${unit}`,
     borderRadius: '50%',
     overflow: 'visible',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  };
 
   const backgroundStyle = {
     position: 'absolute',
@@ -98,8 +98,8 @@ export default function AnalogClock () {
     backgroundPosition: 'center',
     filter: 'saturate(0.7) contrast(1.4) brightness(0.7)',
     opacity: 0.6,
-    zIndex: 1
-  }
+    zIndex: 1,
+  };
 
   const handStyle = (angle, length) => ({
     position: 'absolute',
@@ -108,23 +108,23 @@ export default function AnalogClock () {
     width: 'auto',
     height: `${length}${unit}`,
     transform: `translate(-50%, -100%) rotate(${angle}deg)`,
-    transformOrigin: '50% 100%'
-  })
+    transformOrigin: '50% 100%',
+  });
 
   const fontBlob = `@font-face {
     font-family: 'customFont';
     src: url(${fon251124}) format('truetype');
     font-weight: normal;
     font-style: normal;
-  }`
+  }`;
 
-  const digits = Array.from({ length: 12 }, (_, i) => i + 1)
+  const digits = Array.from({ length: 12 }, (_, i) => i + 1);
 
-  const digitStyle = num => {
-    const angle = (num * 30 - 90) * (Math.PI / 180)
-    const radius = clockSize / 2 - 7
-    const x = radius * Math.cos(angle)
-    const y = radius * Math.sin(angle)
+  const digitStyle = (num) => {
+    const angle = (num * 30 - 90) * (Math.PI / 180);
+    const radius = clockSize / 2 - 7;
+    const x = radius * Math.cos(angle);
+    const y = radius * Math.sin(angle);
 
     return {
       position: 'absolute',
@@ -136,13 +136,13 @@ export default function AnalogClock () {
       color: '#6C5D35D0',
       textShadow: '1px 1px rgba(220,192,192,0.9), -1px -1px rgba(0,0,0,0.9)',
       userSelect: 'none',
-      zIndex: 2
-    }
-  }
+      zIndex: 2,
+    };
+  };
 
-  const hourHandLen = 42
-  const minuteHandLen = 50
-  const secondHandLen = 58
+  const hourHandLen = 42;
+  const minuteHandLen = 50;
+  const secondHandLen = 58;
 
   return (
     <div style={pageWrapperStyle}>
@@ -153,16 +153,18 @@ export default function AnalogClock () {
         <style>{fontBlob}</style>
         <div style={backgroundStyle}></div>
 
-        {digits.map(d => (
+        {digits.map((d) => (
           <div key={d} style={digitStyle(d)}>
             {d}
           </div>
         ))}
 
         {/* Center image */}
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={clockCenterImg}
-          alt='center'
+          alt="center"
           style={{
             position: 'absolute',
             top: '52%',
@@ -174,43 +176,49 @@ export default function AnalogClock () {
             filter:
               'saturate(1.2) contrast(1.2) hue-rotate(44deg)  brightness(0.8) drop-shadow(0 1px 0.5vmin rgba(222,211,210))',
 
-            pointerEvents: 'none'
+            pointerEvents: 'none',
           }}
         />
 
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={hourHandImg}
-          alt='hour'
+          alt="hour"
           style={{
             ...handStyle(hourAngle, hourHandLen),
             zIndex: 8,
             filter:
-              'saturate(1.2) contrast(1.9) brightness(0.8) drop-shadow(0 1px 0.5vmin rgba(222,211,210))'
+              'saturate(1.2) contrast(1.9) brightness(0.8) drop-shadow(0 1px 0.5vmin rgba(222,211,210))',
           }}
         />
 
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={minuteHandImg}
-          alt='minute'
+          alt="minute"
           style={{
             ...handStyle(minuteAngle, minuteHandLen),
             zIndex: 6,
             filter:
-              'saturate(1.1) contrast(1.2) brightness(0.9) drop-shadow(0 1px 0.5vmin rgba(222,211,210))'
+              'saturate(1.1) contrast(1.2) brightness(0.9) drop-shadow(0 1px 0.5vmin rgba(222,211,210))',
           }}
         />
 
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={secondHandImg}
-          alt='second'
+          alt="second"
           style={{
             ...handStyle(secondAngle, secondHandLen),
             zIndex: 3,
             filter:
-              'grayscale(100%) sepia(100%) hue-rotate(44deg) saturate(50%) contrast(1.7) brightness(0.9) drop-shadow(0 1px 0.5vmin rgba(222,211,210))'
+              'grayscale(100%) sepia(100%) hue-rotate(44deg) saturate(50%) contrast(1.7) brightness(0.9) drop-shadow(0 1px 0.5vmin rgba(222,211,210))',
           }}
         />
       </div>
     </div>
-  )
+  );
 }

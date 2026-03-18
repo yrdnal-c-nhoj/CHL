@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo, memo } from 'react';
 
-
 import backgroundGif3 from '../../../assets/images/26-01/26-01-29/ur.png';
 import backgroundGif2 from '../../../assets/images/26-01/26-01-29/ur.gif';
 import backgroundGif from '../../../assets/images/26-01/26-01-29/uranu.gif';
@@ -56,13 +55,13 @@ const AnalogUranusClock = () => {
       const currentTime = Date.now();
       const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
       lastTime = currentTime;
-      
+
       // Rotate -6 degrees per second (counterclockwise)
-      setBgRotation(prev => prev - (1 * deltaTime));
-      
+      setBgRotation((prev) => prev - 1 * deltaTime);
+
       animationFrameId = requestAnimationFrame(animate);
     };
-    
+
     animationFrameId = requestAnimationFrame(animate);
 
     return () => {
@@ -78,7 +77,7 @@ const AnalogUranusClock = () => {
   const minutes = now.getMinutes();
   const seconds = now.getSeconds();
 
-  const hourDeg   = hours * 30 + minutes * 0.5;
+  const hourDeg = hours * 30 + minutes * 0.5;
   const minuteDeg = minutes * 6 + seconds * 0.1; // slightly smoother
 
   return (
@@ -105,44 +104,42 @@ const AnalogUranusClock = () => {
           pointerEvents: 'none',
           overflow: 'visible',
         }}
-          >
-                {/* Third background layer - add your image import and use here */}
-       
-       
-       <div
-  style={{
-    position: 'absolute',
-    top: '-50%',
-    left: '-50%',
-    right: '-50%',
-    bottom: '-50%',
-    backgroundImage: `url(${tileOverlay})`,
-    // Change this line:
-    backgroundSize: 'contain', 
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    opacity: 0.7,
-    pointerEvents: 'none', // Good practice for overlays so they don't block clicks
-  }}
-/>
-      
-      </div>
- <div
+      >
+        {/* Third background layer - add your image import and use here */}
+
+        <div
           style={{
             position: 'absolute',
             top: '-50%',
             left: '-50%',
             right: '-50%',
             bottom: '-50%',
-            backgroundImage: `url(${backgroundGif3})`,
-            backgroundSize: '50vh 50vh',
-            backgroundRepeat: 'repeat',
+            backgroundImage: `url(${tileOverlay})`,
+            // Change this line:
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
-            filter: 'contrast(1.8) brightness(0.5) saturate(2.0)',
-            zIndex: 5,
-            opacity: 0.5,
+            opacity: 0.7,
+            pointerEvents: 'none', // Good practice for overlays so they don't block clicks
           }}
         />
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          top: '-50%',
+          left: '-50%',
+          right: '-50%',
+          bottom: '-50%',
+          backgroundImage: `url(${backgroundGif3})`,
+          backgroundSize: '50vh 50vh',
+          backgroundRepeat: 'repeat',
+          backgroundPosition: 'center',
+          filter: 'contrast(1.8) brightness(0.5) saturate(2.0)',
+          zIndex: 5,
+          opacity: 0.5,
+        }}
+      />
       {/* Clock face container */}
       <div
         style={{
@@ -187,26 +184,24 @@ const AnalogUranusClock = () => {
             zIndex: 5,
           }}
         />
-
-       
-          </div>
-           <div
-          style={{
-            position: 'absolute',
-            top: '-50%',
-            left: '-50%',
-            right: '-50%',
-            bottom: '-50%',
-            backgroundImage: `url(${backgroundGif})`,
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            zIndex: 1,
-            opacity: 0.4,
-            transform: `rotate(${bgRotation}deg)`,
-            filter: ' contrast(0.8) brightness(1.8) saturate(0.0)',
-          }}
-        />
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          top: '-50%',
+          left: '-50%',
+          right: '-50%',
+          bottom: '-50%',
+          backgroundImage: `url(${backgroundGif})`,
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          zIndex: 1,
+          opacity: 0.4,
+          transform: `rotate(${bgRotation}deg)`,
+          filter: ' contrast(0.8) brightness(1.8) saturate(0.0)',
+        }}
+      />
     </div>
   );
 };

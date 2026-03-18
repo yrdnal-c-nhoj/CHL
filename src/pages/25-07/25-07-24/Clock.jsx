@@ -31,7 +31,20 @@ const Clock = () => {
     const secondCtx = createCanvasContext(secondRef);
 
     const radius = size / 2;
-    const hourNumbers = ['🎄', '🥇', '✌️', '🎶', '🍀', '⭐', '🀞', '🎰', '🎱', '🐈', '🎯', '⏸️'];
+    const hourNumbers = [
+      '🎄',
+      '🥇',
+      '✌️',
+      '🎶',
+      '🍀',
+      '⭐',
+      '🀞',
+      '🎰',
+      '🎱',
+      '🐈',
+      '🎯',
+      '⏸️',
+    ];
 
     const hourImg = new Image();
     hourImg.src = hourHandImgSrc;
@@ -56,7 +69,7 @@ const Clock = () => {
       faceCtx.translate(radius, radius);
 
       for (let i = 0; i < 12; i++) {
-        const angle = (i * 30) * Math.PI / 180;
+        const angle = (i * 30 * Math.PI) / 180;
         faceCtx.save();
         faceCtx.rotate(angle);
         faceCtx.translate(0, -radius * 0.65);
@@ -86,7 +99,14 @@ const Clock = () => {
       faceCtx.restore();
     };
 
-    const drawHandImage = (ctx, img, value, max, length, scaleMultiplier = 1) => {
+    const drawHandImage = (
+      ctx,
+      img,
+      value,
+      max,
+      length,
+      scaleMultiplier = 1,
+    ) => {
       ctx.clearRect(0, 0, size, size);
       ctx.save();
       ctx.translate(radius, radius);
@@ -105,8 +125,14 @@ const Clock = () => {
 
       const updateClock = () => {
         const now = new Date();
-        const hours = now.getHours() % 12 + now.getMinutes() / 60 + now.getSeconds() / 3600;
-        const minutes = now.getMinutes() + now.getSeconds() / 60 + now.getMilliseconds() / 60000;
+        const hours =
+          (now.getHours() % 12) +
+          now.getMinutes() / 60 +
+          now.getSeconds() / 3600;
+        const minutes =
+          now.getMinutes() +
+          now.getSeconds() / 60 +
+          now.getMilliseconds() / 60000;
         const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
 
         drawHandImage(hourCtx, hourImg, hours, 12, 0.3, 1.2);
@@ -134,7 +160,9 @@ const Clock = () => {
       }}
     >
       {/* Background */}
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={bgImage}
         alt="Background"
         style={{

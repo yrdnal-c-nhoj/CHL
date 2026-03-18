@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import backgroundImage from '../../../assets/images/25-12/25-12-18/ci.webp'
-import FONT_PATH from '../../../assets/fonts/cine.ttf?url'
+import React, { useEffect, useState } from 'react';
+import backgroundImage from '../../../assets/images/25-12/25-12-18/ci.webp';
+import FONT_PATH from '../../../assets/fonts/cine.ttf?url';
 
 const TiltedReverseClock = () => {
-  const [time, setTime] = useState(new Date())
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const id = setInterval(() => setTime(new Date()), 1000)
-    return () => clearInterval(id)
-  }, [])
+    const id = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
 
   // Load font
   useEffect(() => {
@@ -29,12 +29,12 @@ const TiltedReverseClock = () => {
     };
   }, []);
 
-  const hours24 = time.getHours()
-  const hours12 = hours24 % 12 || 12
-  const minutes = time.getMinutes()
+  const hours24 = time.getHours();
+  const hours12 = hours24 % 12 || 12;
+  const minutes = time.getMinutes();
 
-  const hourDigits = String(hours12)
-  const minuteDigits = String(minutes).padStart(2, '0')
+  const hourDigits = String(hours12);
+  const minuteDigits = String(minutes).padStart(2, '0');
 
   return (
     <div
@@ -68,7 +68,8 @@ const TiltedReverseClock = () => {
           backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'left bottom',
-          filter: 'brightness(1.5) contrast(1.2) saturate(0.7) hue-rotate(45deg)',
+          filter:
+            'brightness(1.5) contrast(1.2) saturate(0.7) hue-rotate(45deg)',
         }}
       />
 
@@ -136,7 +137,7 @@ const TiltedReverseClock = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TiltedReverseClock
+export default TiltedReverseClock;

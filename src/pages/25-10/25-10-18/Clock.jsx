@@ -1,23 +1,23 @@
 // MediaClock.jsx
-import React, { useEffect, useRef, useState } from "react";
-import bgVideo from "../../../assets/images/25-10/25-10-18/total.mp4";
-import fallbackImg from "../../../assets/images/25-10/25-10-18/tot.webp";
+import React, { useEffect, useRef, useState } from 'react';
+import bgVideo from '../../../assets/images/25-10/25-10-18/total.mp4';
+import fallbackImg from '../../../assets/images/25-10/25-10-18/tot.webp';
 import font_20251018 from '../../../assets/fonts/25-10-18-tot.ttf';
 
 export default function MediaClock() {
   const [mediaReady, setMediaReady] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const [fontReady, setFontReady] = useState(false);
-  const [time, setTime] = useState("--:--");
+  const [time, setTime] = useState('--:--');
   const videoRef = useRef(null);
 
-  const backgroundShiftX = "49%";
-  const backgroundShiftY = "center";
+  const backgroundShiftX = '49%';
+  const backgroundShiftY = 'center';
 
   // Load font
   useEffect(() => {
-    const fontName = "SereneFont";
-    const styleEl = document.createElement("style");
+    const fontName = 'SereneFont';
+    const styleEl = document.createElement('style');
     styleEl.textContent = `
       @font-face {
         font-family: '${fontName}';
@@ -42,8 +42,8 @@ export default function MediaClock() {
   useEffect(() => {
     function updateTime() {
       const d = new Date();
-      const hh = String(d.getHours()).padStart(2, "0");
-      const mm = String(d.getMinutes()).padStart(2, "0");
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
       setTime(`${hh}${mm}`);
     }
     updateTime();
@@ -53,7 +53,7 @@ export default function MediaClock() {
 
   const handleVideoLoaded = () => setMediaReady(true);
   const handleVideoError = () => {
-    console.warn("Video failed to load, switching to fallback image.");
+    console.warn('Video failed to load, switching to fallback image.');
     setVideoFailed(true);
   };
   const handleImageLoad = () => setMediaReady(true);
@@ -63,11 +63,11 @@ export default function MediaClock() {
   return (
     <div
       style={{
-        height: "100dvh",
-        width: "100vw",
-        overflow: "hidden",
-        position: "relative",
-        backgroundColor: "#F9F985FF",
+        height: '100dvh',
+        width: '100vw',
+        overflow: 'hidden',
+        position: 'relative',
+        backgroundColor: '#F9F985FF',
       }}
     >
       {/* BACKGROUND MEDIA */}
@@ -82,29 +82,31 @@ export default function MediaClock() {
           onLoadedData={handleVideoLoaded}
           onError={handleVideoError}
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: 0,
             left: 0,
-            height: "100dvh",
-            width: "100vw",
-            objectFit: "cover",
+            height: '100dvh',
+            width: '100vw',
+            objectFit: 'cover',
             objectPosition: `${backgroundShiftX} ${backgroundShiftY}`,
             zIndex: 0,
           }}
         />
       ) : (
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={fallbackImg}
           alt=""
           onLoad={handleImageLoad}
           onError={() => setMediaReady(true)}
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: 0,
             left: 0,
-            height: "100dvh",
-            width: "100vw",
-            objectFit: "cover",
+            height: '100dvh',
+            width: '100vw',
+            objectFit: 'cover',
             objectPosition: `${backgroundShiftX} ${backgroundShiftY}`,
             zIndex: 0,
           }}
@@ -115,26 +117,26 @@ export default function MediaClock() {
       {allReady && (
         <div
           style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
             zIndex: 2,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           <span
             style={{
-              fontSize: "14vh",
+              fontSize: '14vh',
               fontWeight: 700,
-              color: "#2B2626FF",
-              textShadow: "0.25px -0.25px #F1E499FF",
-              letterSpacing: "2.6vh",
+              color: '#2B2626FF',
+              textShadow: '0.25px -0.25px #F1E499FF',
+              letterSpacing: '2.6vh',
               fontFamily:
                 "'SereneFont', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace",
-              textAlign: "center",
+              textAlign: 'center',
             }}
           >
             {time}

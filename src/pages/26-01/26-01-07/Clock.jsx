@@ -25,7 +25,8 @@ const AquariumClock = () => {
 
       // Handle the 354° -> -90° jump to prevent the hand from spinning backwards
       if (secondHandRef.current) {
-        secondHandRef.current.style.transition = seconds === 0 ? 'none' : 'all 0.5s cubic-bezier(0.1, 2.7, 0.58, 1)';
+        secondHandRef.current.style.transition =
+          seconds === 0 ? 'none' : 'all 0.5s cubic-bezier(0.1, 2.7, 0.58, 1)';
         secondHandRef.current.style.transform = `translateY(-50%) rotate(${secondsDeg}deg)`;
       }
 
@@ -49,7 +50,7 @@ const AquariumClock = () => {
     left: 0,
     width: '100%',
     height: '100%',
-    objectFit: 'cover'
+    objectFit: 'cover',
   };
 
   const handStyle = {
@@ -59,7 +60,7 @@ const AquariumClock = () => {
     transformOrigin: 'left center',
     transition: 'transform 0.5s cubic-bezier(0.1, 2.7, 0.58, 1)',
     maxWidth: 'none',
-    willChange: 'transform'
+    willChange: 'transform',
   };
 
   const handFilter =
@@ -84,7 +85,7 @@ const AquariumClock = () => {
   const handSizes = {
     hour: 'min(30vw, 30vh)',
     minute: 'min(45vw, 45vh)',
-    second: 'min(48vw, 48vh)'
+    second: 'min(48vw, 48vh)',
   };
 
   return (
@@ -93,91 +94,138 @@ const AquariumClock = () => {
         ...containerStyle,
         opacity: 0,
         visibility: 'hidden',
-        animation: 'aquariumFadeIn 180ms ease-out forwards'
+        animation: 'aquariumFadeIn 180ms ease-out forwards',
       }}
     >
       {/* Background Layers */}
-      <img decoding="async" loading="lazy" src={aquarium} style={{ ...sharedImageStyle, opacity: 0.5, zIndex: 0 }} alt="" />
-      <img decoding="async" loading="lazy" src={aquarium} style={{ ...sharedImageStyle, opacity: 0.9, transform: 'scaleX(-1)', zIndex: 1 }} alt="" />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={aquarium}
+        style={{ ...sharedImageStyle, opacity: 0.5, zIndex: 0 }}
+        alt=""
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={aquarium}
+        style={{
+          ...sharedImageStyle,
+          opacity: 0.9,
+          transform: 'scaleX(-1)',
+          zIndex: 1,
+        }}
+        alt=""
+      />
 
       {/* Rotating Background GIFs */}
-      <img decoding="async" loading="lazy" 
-        src={spin} 
-        style={{ 
-          ...sharedImageStyle, 
-          height: '80%', 
-          width: 'auto', 
+      <img
+        decoding="async"
+        loading="lazy"
+        src={spin}
+        style={{
+          ...sharedImageStyle,
+          height: '80%',
+          width: 'auto',
           left: '50%',
           transform: 'translateX(-50%)',
-          opacity: 0.6, 
-          zIndex: 2, 
+          opacity: 0.6,
+          zIndex: 2,
           filter: 'sepia(100%) hue-rotate(-30deg) saturate(400%)',
-          maxHeight: '80vh'
-        }} 
-        alt="" 
+          maxHeight: '80vh',
+        }}
+        alt=""
       />
 
       {/* Clock Hands Container */}
-      <div style={{ 
-        position: 'absolute', 
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '100%',
-        height: '100%',
-        maxWidth: '100%',
-        maxHeight: '100%',
-        zIndex: 6, 
-        pointerEvents: 'none' 
-      }}>
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '100%',
+          height: '100%',
+          maxWidth: '100%',
+          maxHeight: '100%',
+          zIndex: 6,
+          pointerEvents: 'none',
+        }}
+      >
         {/* Hour Hand (Smallest/Thickest) */}
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={fish}
           ref={hourHandRef}
-          style={{ ...handStyle, width: handSizes.hour, height: 'auto', filter: handFilter }}
+          style={{
+            ...handStyle,
+            width: handSizes.hour,
+            height: 'auto',
+            filter: handFilter,
+          }}
           alt="hour"
         />
         {/* Minute Hand (Medium) */}
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={fish}
           ref={minHandRef}
-          style={{ ...handStyle, width: handSizes.minute, height: 'auto', filter: handFilter }}
+          style={{
+            ...handStyle,
+            width: handSizes.minute,
+            height: 'auto',
+            filter: handFilter,
+          }}
           alt="minute"
         />
         {/* Second Hand (Longest/Thinnest) */}
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={fish}
           ref={secondHandRef}
-          style={{ ...handStyle, width: handSizes.second, height: 'auto', filter: handFilter, opacity: 0.8 }}
+          style={{
+            ...handStyle,
+            width: handSizes.second,
+            height: 'auto',
+            filter: handFilter,
+            opacity: 0.8,
+          }}
           alt="second"
         />
       </div>
 
       {/* Foreground Bubbles & Fish */}
-      <img decoding="async" loading="lazy" 
-        src={bubl} 
-        style={{ 
-          position: 'absolute', 
-          top: 0, 
-          left: '-22%', 
-          width: '144%', 
-          height: '110%', 
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bubl}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: '-22%',
+          width: '144%',
+          height: '110%',
           zIndex: 4,
-          maxWidth: 'none'
-        }} 
-        alt="" 
+          maxWidth: 'none',
+        }}
+        alt=""
       />
-      <img decoding="async" loading="lazy" 
-        src={gfish} 
-        style={{ 
-          ...sharedImageStyle, 
-          width: '180%', 
-          opacity: 0.8, 
-          transform: 'scaleX(-1)', 
+      <img
+        decoding="async"
+        loading="lazy"
+        src={gfish}
+        style={{
+          ...sharedImageStyle,
+          width: '180%',
+          opacity: 0.8,
+          transform: 'scaleX(-1)',
           zIndex: 7,
-          maxWidth: 'none'
-        }} 
-        alt="" 
+          maxWidth: 'none',
+        }}
+        alt=""
       />
       <style>{`
         @keyframes aquariumFadeIn {

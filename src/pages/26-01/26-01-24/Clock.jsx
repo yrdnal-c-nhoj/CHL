@@ -8,24 +8,144 @@ const Clock = () => {
 
   // --- EMOJI POOL ---
   const allEmojis = useMemo(() => {
-    const rawList = ['🏓','🏸','🏒','🏑','🏏','🥅','🎣','🥊','🎽','🛹','🛷','🥌','🎿','🎭','🎨','🎬','🎹','🥁','🎸','🎯','🐶','🐱','🐹','🦊','🐯','🦁','🐸','🦄','🐄','🐎','🐩','🐈','🐅','🦓','🦒','🦘','🐛','🦋','🐌','🐢','🐍','🦎','🐙','🦑','🦐','🦀','🐡','🐠','🐬','🐳','🐋','🦈','🦃','🦚','🦜','🦩','🐾','🐉','🐲','🌵','🌴','🌱','🌿','🎋','🍁','🍄','🌾','💐','🌹','🌸','🌼','🚗','🚌','🚎','🏎','🚒','🚚','🚜','🚲','🛵','🚍','🚘','🚋','🚞','🚂','🚇','🚊','🚀','🚁','🛶','🚤','🚢','🗿','🗽','🗼','🏰','🏟','🎡','🎢','🎠','🏖','🏜','🌋','🏔','🏕','🏘','🏗','🗺','💺','🎳'
+    const rawList = [
+      '🏓',
+      '🏸',
+      '🏒',
+      '🏑',
+      '🏏',
+      '🥅',
+      '🎣',
+      '🥊',
+      '🎽',
+      '🛹',
+      '🛷',
+      '🥌',
+      '🎿',
+      '🎭',
+      '🎨',
+      '🎬',
+      '🎹',
+      '🥁',
+      '🎸',
+      '🎯',
+      '🐶',
+      '🐱',
+      '🐹',
+      '🦊',
+      '🐯',
+      '🦁',
+      '🐸',
+      '🦄',
+      '🐄',
+      '🐎',
+      '🐩',
+      '🐈',
+      '🐅',
+      '🦓',
+      '🦒',
+      '🦘',
+      '🐛',
+      '🦋',
+      '🐌',
+      '🐢',
+      '🐍',
+      '🦎',
+      '🐙',
+      '🦑',
+      '🦐',
+      '🦀',
+      '🐡',
+      '🐠',
+      '🐬',
+      '🐳',
+      '🐋',
+      '🦈',
+      '🦃',
+      '🦚',
+      '🦜',
+      '🦩',
+      '🐾',
+      '🐉',
+      '🐲',
+      '🌵',
+      '🌴',
+      '🌱',
+      '🌿',
+      '🎋',
+      '🍁',
+      '🍄',
+      '🌾',
+      '💐',
+      '🌹',
+      '🌸',
+      '🌼',
+      '🚗',
+      '🚌',
+      '🚎',
+      '🏎',
+      '🚒',
+      '🚚',
+      '🚜',
+      '🚲',
+      '🛵',
+      '🚍',
+      '🚘',
+      '🚋',
+      '🚞',
+      '🚂',
+      '🚇',
+      '🚊',
+      '🚀',
+      '🚁',
+      '🛶',
+      '🚤',
+      '🚢',
+      '🗿',
+      '🗽',
+      '🗼',
+      '🏰',
+      '🏟',
+      '🎡',
+      '🎢',
+      '🎠',
+      '🏖',
+      '🏜',
+      '🌋',
+      '🏔',
+      '🏕',
+      '🏘',
+      '🏗',
+      '🗺',
+      '💺',
+      '🎳',
     ];
     return [...new Set(rawList)].filter(Boolean);
   }, []);
 
   // --- NON-REPEATING CYCLE SYSTEM ---
-  const [emojiCycle] = useState(() => [...allEmojis].sort(() => Math.random() - 0.5));
+  const [emojiCycle] = useState(() =>
+    [...allEmojis].sort(() => Math.random() - 0.5),
+  );
   const [emojiIndex, setEmojiIndex] = useState(0);
 
   // --- DOUBLE BUFFER SYSTEM ---
-  const [activeBuffer, setActiveBuffer] = useState(1); 
+  const [activeBuffer, setActiveBuffer] = useState(1);
   const [buffer1Emoji, setBuffer1Emoji] = useState(emojiCycle[0]);
   const [buffer2Emoji, setBuffer2Emoji] = useState('');
 
   // --- DIGIT MAPPING ---
   const digitToEmoji = {
-    '0': '🕳️', '1': '📍', '2': '🥈', '3': '🔱', '4': '🍀',
-    '5': '⭐', '6': '🐝', '7': '🎰', '8': '🎱', '9': '☁️',
+    0: '🕳️',
+    1: '📍',
+    2: '🥈',
+    3: '🔱',
+    4: '🍀',
+    5: '⭐',
+    6: '🐝',
+    7: '🎰',
+    8: '🎱',
+    9: '☁️',
   };
 
   // --- MAIN EFFECT LOOP ---
@@ -37,7 +157,7 @@ const Clock = () => {
       secondsCounter++;
 
       if (secondsCounter % 3 === 0) {
-        setEmojiIndex(prevIndex => {
+        setEmojiIndex((prevIndex) => {
           const nextIndex = (prevIndex + 1) % emojiCycle.length;
           const nextEmoji = emojiCycle[nextIndex];
 
@@ -86,7 +206,7 @@ const Clock = () => {
       backgroundSize: `${tileSize}px ${tileSize}px`,
       backgroundPosition: 'center',
       opacity: isVisible ? 1 : 0,
-      transition: 'opacity 2s cubic-bezier(0.4, 0, 0.2, 1)', 
+      transition: 'opacity 2s cubic-bezier(0.4, 0, 0.2, 1)',
       zIndex: 1,
       willChange: 'opacity',
     };
@@ -124,30 +244,34 @@ const Clock = () => {
   );
 
   return (
-    <div style={{
-      height: '100dvh',
-      width: '100vw',
-      backgroundColor: '#DAD3DE',
-      overflow: 'hidden',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      fontFamily: 'system-ui, -apple-system, sans-serif',
-      opacity: bgReady ? 1 : 0,
-      transition: 'opacity 0.8s ease'
-    }}>
+    <div
+      style={{
+        height: '100dvh',
+        width: '100vw',
+        backgroundColor: '#DAD3DE',
+        overflow: 'hidden',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        opacity: bgReady ? 1 : 0,
+        transition: 'opacity 0.8s ease',
+      }}
+    >
       <div style={getLayerStyle(buffer1Emoji, activeBuffer === 1)} />
       <div style={getLayerStyle(buffer2Emoji, activeBuffer === 2)} />
-      
-      <div style={{
-        position: 'relative',
-        zIndex: 2,
-        display: 'flex',
-        flexDirection: isLargeScreen ? 'row' : 'column',
-        alignItems: 'center',
-        gap: isLargeScreen ? '2rem' : '1rem',
-        padding: isLargeScreen ? '3rem 5rem' : '2rem',
-      }}>
+
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          display: 'flex',
+          flexDirection: isLargeScreen ? 'row' : 'column',
+          alignItems: 'center',
+          gap: isLargeScreen ? '2rem' : '1rem',
+          padding: isLargeScreen ? '3rem 5rem' : '2rem',
+        }}
+      >
         {renderDigits(h)}
         {renderDigits(m)}
         {renderDigits(s)}

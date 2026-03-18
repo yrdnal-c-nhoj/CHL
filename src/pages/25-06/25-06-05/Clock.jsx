@@ -71,27 +71,45 @@ const TreehouseClock = () => {
     alignItems: 'center',
     height: '100dvh',
     width: '100vw',
-    background: 'linear-gradient(180deg, rgb(142, 183, 243) 0%, rgb(108, 164, 197) 80%)',
+    background:
+      'linear-gradient(180deg, rgb(142, 183, 243) 0%, rgb(108, 164, 197) 80%)',
     position: 'relative',
     overflow: 'hidden',
   };
 
   const clockStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  position: 'relative',
-  zIndex: 5,
-  top: '-9vh',
-  gap: '0.3rem',
-  left: '-4vw', // 👈 Move to the left
-};
-
+    display: 'flex',
+    alignItems: 'center',
+    position: 'relative',
+    zIndex: 5,
+    top: '-9vh',
+    gap: '0.3rem',
+    left: '-4vw', // 👈 Move to the left
+  };
 
   return (
     <div style={bodyStyle}>
-      <img decoding="async" loading="lazy" src={tree1Img} alt="tree1" style={treeStyle1} />
-      <img decoding="async" loading="lazy" src={tree2Img} alt="tree2" style={treeStyle2} />
-      <img decoding="async" loading="lazy" src={tree2Img} alt="tree2" style={treeStyle2a} />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={tree1Img}
+        alt="tree1"
+        style={treeStyle1}
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={tree2Img}
+        alt="tree2"
+        style={treeStyle2}
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={tree2Img}
+        alt="tree2"
+        style={treeStyle2a}
+      />
       <div style={clockStyle}>
         {hourStr.length === 2 ? (
           <>

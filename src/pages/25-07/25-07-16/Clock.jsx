@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';import * as THREE from 'three';
+import { useFontLoader } from '../../../utils/fontLoader';
+import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry.js';
 import mobFontUrl from '../../../assets/fonts/25-07-16-mob.otf';
@@ -17,7 +18,7 @@ const MobiusStripClock = () => {
       75,
       window.innerWidth / window.innerHeight,
       0.1,
-      1000
+      1000,
     );
     camera.position.z = 3;
 
@@ -25,7 +26,8 @@ const MobiusStripClock = () => {
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     try {
       if (!renderer.getContext()) {
-        containerRef.current.innerHTML = '<p>Sorry, WebGL is not supported.</p>';
+        containerRef.current.innerHTML =
+          '<p>Sorry, WebGL is not supported.</p>';
         console.error('WebGL not supported');
         return;
       }
@@ -39,7 +41,8 @@ const MobiusStripClock = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace; // Fixed for Three.js >= r152
-    renderer.domElement.style.cssText = 'width: 100vw; height: 100vh; display: block;';
+    renderer.domElement.style.cssText =
+      'width: 100vw; height: 100vh; display: block;';
     containerRef.current.appendChild(renderer.domElement);
 
     // Clock texture
@@ -117,16 +120,29 @@ const MobiusStripClock = () => {
         const newTimeString = `${hour}:${minute.toString().padStart(2, '0')} ${ampm}`;
         setTimeString(newTimeString); // Update for accessibility
 
-        clockContext.clearRect(0, 0, clockCanvas.width / dpr, clockCanvas.height / dpr);
+        clockContext.clearRect(
+          0,
+          0,
+          clockCanvas.width / dpr,
+          clockCanvas.height / dpr,
+        );
         clockContext.fillStyle = 'rgba(0, 0, 0, 0.5)';
-        clockContext.fillRect(0, 0, clockCanvas.width / dpr, clockCanvas.height / dpr);
+        clockContext.fillRect(
+          0,
+          0,
+          clockCanvas.width / dpr,
+          clockCanvas.height / dpr,
+        );
 
-        const fontSize = Math.min(clockCanvas.width / dpr / 4.5, clockCanvas.height / dpr);
+        const fontSize = Math.min(
+          clockCanvas.width / dpr / 4.5,
+          clockCanvas.height / dpr,
+        );
         clockContext.font = `${fontSize}px ${fontLoaded ? 'mob' : 'Arial'}`;
         clockContext.fillStyle = '#EFF1F1FF';
         clockContext.textAlign = 'left';
         clockContext.textBaseline = 'middle';
-        clockContext.fillText(newTimeString, 10, (clockCanvas.height / dpr) / 2);
+        clockContext.fillText(newTimeString, 10, clockCanvas.height / dpr / 2);
 
         clockTexture.needsUpdate = true;
       }
@@ -199,7 +215,8 @@ const MobiusStripClock = () => {
         overflow: 'hidden',
         margin: 0,
         padding: 0,
-        background: 'radial-gradient(circle at center, #ff5978 0%, #8000ff 100%)',
+        background:
+          'radial-gradient(circle at center, #ff5978 0%, #8000ff 100%)',
       }}
     >
       <span style={{ display: 'none' }} aria-live="polite">

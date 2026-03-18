@@ -9,11 +9,12 @@ import analogBgImage from '../../../assets/images/26-01-31/rain.webp';
 const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 40,
   COLORS: {
-    silverText: 'linear-gradient(180deg, #FFFFFF 0%, #C0C0C0 45%, #C5C1C1 50%, #D3D8F3 100%)',
+    silverText:
+      'linear-gradient(180deg, #FFFFFF 0%, #C0C0C0 45%, #C5C1C1 50%, #D3D8F3 100%)',
     hourHand: 'linear-gradient(to right, #959595, #ffffff, #959595)',
     minuteHand: 'linear-gradient(to right, #B0B0B0, #ffffff, #B0B0B0)',
-    secondHand: 'linear-gradient(to top, #5F709F, #889AD4)', 
-  }
+    secondHand: 'linear-gradient(to top, #5F709F, #889AD4)',
+  },
 };
 
 /**
@@ -71,39 +72,49 @@ const AnalogClock = () => {
       {/* FILTERED BACKGROUND LAYER 
           By placing the filter here, it only affects the image, not the clock.
       */}
-      <div style={{ 
-        ...styles.backgroundLayer, 
-        backgroundImage: `url(${analogBgImage})` 
-      }} />
+      <div
+        style={{
+          ...styles.backgroundLayer,
+          backgroundImage: `url(${analogBgImage})`,
+        }}
+      />
 
       {/* CLOCK FACE LAYER */}
-      <div style={{ 
-        ...styles.face, 
-        fontFamily: fontReady ? "'BorrowedAnalog', sans-serif" : 'sans-serif' 
-      }}>
+      <div
+        style={{
+          ...styles.face,
+          fontFamily: fontReady ? "'BorrowedAnalog', sans-serif" : 'sans-serif',
+        }}
+      >
         {renderedNumerals}
-        
+
         {/* Hour Hand */}
-        <div style={{ 
-          ...styles.hand, 
-          ...styles.hourHand, 
-          transform: `translate(-50%, 0) rotate(${hr * 30}deg)` 
-        }} />
-        
+        <div
+          style={{
+            ...styles.hand,
+            ...styles.hourHand,
+            transform: `translate(-50%, 0) rotate(${hr * 30}deg)`,
+          }}
+        />
+
         {/* Minute Hand */}
-        <div style={{ 
-          ...styles.hand, 
-          ...styles.minHand, 
-          transform: `translate(-50%, 0) rotate(${min * 6}deg)` 
-        }} />
-        
+        <div
+          style={{
+            ...styles.hand,
+            ...styles.minHand,
+            transform: `translate(-50%, 0) rotate(${min * 6}deg)`,
+          }}
+        />
+
         {/* Second Hand */}
-        <div style={{ 
-          ...styles.hand, 
-          ...styles.secHand, 
-          transform: `translate(-50%, 0) rotate(${sec * 6}deg)` 
-        }} />
-        
+        <div
+          style={{
+            ...styles.hand,
+            ...styles.secHand,
+            transform: `translate(-50%, 0) rotate(${sec * 6}deg)`,
+          }}
+        />
+
         {/* Center Cap */}
         <div style={styles.centerDot} />
       </div>

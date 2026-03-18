@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import font20250924 from '../../../assets/fonts/25-09-24-cora.ttf?url';
 
 const HorizontalProportionalGradientClock = () => {
@@ -11,7 +11,7 @@ const HorizontalProportionalGradientClock = () => {
 
     const loadFont = async () => {
       try {
-        const font = new FontFace("CustomFont", `url(${font20250924})`);
+        const font = new FontFace('CustomFont', `url(${font20250924})`);
         const loaded = await font.load();
 
         if (!cancelled) {
@@ -19,7 +19,7 @@ const HorizontalProportionalGradientClock = () => {
           setFontReady(true);
         }
       } catch (err) {
-        console.error("Font failed to load:", err);
+        console.error('Font failed to load:', err);
       }
     };
 
@@ -63,9 +63,7 @@ const HorizontalProportionalGradientClock = () => {
   const adder = 2;
 
   const scaleDigit = (num) => {
-    const normalized = num.isHour
-      ? (num.value - 1) / 11
-      : num.value / num.max;
+    const normalized = num.isHour ? (num.value - 1) / 11 : num.value / num.max;
     return normalized * scaleFactor + adder;
   };
 
@@ -75,10 +73,10 @@ const HorizontalProportionalGradientClock = () => {
   };
 
   const containerStyle = {
-    width: "100vw",
-    height: "100vh",
-    display: "flex",
-    flexDirection: "row",
+    width: '100vw',
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'row',
   };
 
   const styles = `
