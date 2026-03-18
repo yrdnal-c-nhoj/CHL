@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader, useStyleInjection } from '../../../utils/fontLoader';
 import fontUrl from '../../../assets/fonts/26-03-15-shadow.otf';
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
 
-  // Standardized font loading with font-display: swap to avoid FOUC
+  // Suspense-friendly font loading with centralized style injection
   const fontConfigs = [
     {
       fontFamily: '26-03-15-shadow',
@@ -16,7 +16,21 @@ const Clock: React.FC = () => {
       }
     }
   ];
-  const fontsReady = useMultipleFontLoader(fontConfigs);
+
+  // Inject keyframes and other styles through centralized utility
+  useStyleInjection({
+    keyframes: {
+      'float-animation': {
+        '0%, 100%': { transform: 'translateY(0) rotateX(0deg) rotateY(0deg)' },
+        '25%': { transform: 'translateY(-0.8rem) rotateX(3deg) rotateY(1deg)' },
+        '50%': { transform: 'translateY(0) rotateX(0deg) rotateY(0deg)' },
+        '75%': { transform: 'translateY(0.5rem) rotateX(-2deg) rotateY(-1deg)' }
+      }
+    }
+  });
+
+  // Use Suspense-friendly font loader
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -34,25 +48,6 @@ const Clock: React.FC = () => {
       rotation: -(time.getSeconds() / 60) * 360,
     };
   }, [time]);
-
-  // Show loading state while font loads
-  if (!fontsReady) {
-    return (
-      <div style={{
-        minHeight: '100dvh',
-        background: 'radial-gradient(circle at center, #D3AEE7 0%, #CA79A1 30%, #A5DEDF 60%, #DCE77A 80%, #D4A64A 100%)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        border: '25px solid #FF1493',
-        boxSizing: 'border-box',
-        color: '#1C0210',
-        fontFamily: 'sans-serif'
-      }}>
-        Loading...
-      </div>
-    );
-  }
 
   return (
     <>
