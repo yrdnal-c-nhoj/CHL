@@ -9,8 +9,16 @@ const fontFaceStyle = `
 `;
 
 const grayShades = [
-  '#747070', '#767D7C', '#33312D', '#4D4E55', '#DAD3DB',
-  '#282838', '#171417', '#d6d6d6', '#262616', '#161414'
+  '#747070',
+  '#767D7C',
+  '#33312D',
+  '#4D4E55',
+  '#DAD3DB',
+  '#282838',
+  '#171417',
+  '#d6d6d6',
+  '#262616',
+  '#161414',
 ];
 
 const ClockApp = () => {
@@ -32,7 +40,8 @@ const ClockApp = () => {
     rotationZ: Math.random() * 360,
   });
 
-  const getRandomGrayShade = () => grayShades[Math.floor(Math.random() * grayShades.length)];
+  const getRandomGrayShade = () =>
+    grayShades[Math.floor(Math.random() * grayShades.length)];
 
   const getRandomSize = () => {
     const size = Math.random() * (6.25 - 0.625) + 0.625;

@@ -22,7 +22,9 @@ const ErasingClock = () => {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const f = new FontFace(FONT_FAMILY, `url(${FONT_PATH}) format('opentype')`);
-    f.load().then(font => document.fonts.add(font)).catch(() => {});
+    f.load()
+      .then((font) => document.fonts.add(font))
+      .catch(() => {});
   }, []);
 
   /* ---------- Tick Loop (60fps) ---------- */
@@ -108,7 +110,6 @@ const ErasingClock = () => {
   return (
     <div style={container}>
       <div style={face}>
-
         {/* Hour/Minute Ticks */}
         {[...Array(60)].map((_, i) => (
           <div
@@ -179,9 +180,7 @@ const ErasingClock = () => {
         )}
 
         {/* Eraser second hand */}
-        {isErasing && (
-          <div style={hand(eraseAngle, 0.4, 45, 11, 'white')} />
-        )}
+        {isErasing && <div style={hand(eraseAngle, 0.4, 45, 11, 'white')} />}
 
         {/* Center pin */}
         <div
@@ -195,7 +194,6 @@ const ErasingClock = () => {
             zIndex: 12,
           }}
         />
-
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export default function App() {
         // Create unique font name for this component instance
         const uniqueFontName = `CustomFont-${Date.now()}`;
         setScopedFontName(uniqueFontName);
-        
+
         // Create scoped font-face using style tag
         const style = document.createElement('style');
         style.textContent = `
@@ -46,7 +46,7 @@ export default function App() {
       .toString()
       .padStart(2, '0')
       .split('')
-      .map(d => digitToLetter(parseInt(d, 10)));
+      .map((d) => digitToLetter(parseInt(d, 10)));
 
   const digitStyle = {
     display: 'inline-block',
@@ -57,7 +57,7 @@ export default function App() {
       // White shadow to the right (1px right, 0px down, 1px blur)
       '1px 0 1px rgba(255, 255, 255, 0.8)',
       // Black shadow to the left (-1px left, 0px down, 1px blur)
-      '-1px 0 1px rgba(0, 0, 0, 0.8)'
+      '-1px 0 1px rgba(0, 0, 0, 0.8)',
     ].join(','),
     transform: 'rotate(90deg)',
     transformOrigin: 'center center',
@@ -67,18 +67,20 @@ export default function App() {
     userSelect: 'none',
     fontFamily: scopedFontName ? `${scopedFontName}, sans-serif` : 'sans-serif',
     position: 'relative',
-    zIndex: 1
+    zIndex: 1,
   };
 
   const timePartStyle = {
     display: 'flex',
-    gap: '4vh'
+    gap: '4vh',
   };
 
   const renderTimePart = (chars) => (
     <div style={timePartStyle}>
       {chars.map((char, i) => (
-        <span key={i} style={digitStyle}>{char}</span>
+        <span key={i} style={digitStyle}>
+          {char}
+        </span>
       ))}
     </div>
   );
@@ -87,7 +89,7 @@ export default function App() {
     width: '100vw',
     height: '100dvh',
     position: 'relative',
-    overflow: 'hidden'
+    overflow: 'hidden',
   };
 
   const backgroundStyle = {
@@ -100,7 +102,7 @@ export default function App() {
     backgroundPosition: 'center center',
     filter: 'brightness(1.4) saturate(4.8) contrast(0.3) hue-rotate(-25deg)',
     animation: 'rotateGrid 360s linear infinite',
-    transformOrigin: 'center center'
+    transformOrigin: 'center center',
   };
 
   const keyframesStyle = `
@@ -134,7 +136,6 @@ export default function App() {
       />
 
       {/* 2. Solid black overlay - middle layer */}
-     
 
       {/* 3. Rotating grid - middle layer */}
       <div

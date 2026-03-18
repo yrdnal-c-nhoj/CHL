@@ -5,7 +5,8 @@ const ProgressClock = () => {
 
   useEffect(() => {
     const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Varela+Round&display=swap';
+    link.href =
+      'https://fonts.googleapis.com/css2?family=Varela+Round&display=swap';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
 
@@ -17,8 +18,8 @@ const ProgressClock = () => {
   const m = time.getMinutes();
   const s = time.getSeconds();
 
-  const strokeWidth = 36; 
-  const outerRadius = 135; 
+  const strokeWidth = 36;
+  const outerRadius = 135;
   const middleRadius = 105;
   const innerRadius = 75;
 
@@ -28,8 +29,8 @@ const ProgressClock = () => {
   const getRingData = (val, max, r) => {
     const circumference = 2 * Math.PI * r;
     const progress = val / max;
-    const offset = circumference - (progress * circumference);
-    
+    const offset = circumference - progress * circumference;
+
     const angle = progress * 2 * Math.PI;
     // Updated to use the new dynamic center
     const x = center + r * Math.cos(angle);
@@ -38,8 +39,9 @@ const ProgressClock = () => {
     return {
       strokeDasharray: `${circumference} ${circumference}`,
       strokeDashoffset: isNaN(offset) ? circumference : offset,
-      transition: val === 0 ? 'none' : 'stroke-dashoffset 0.5s ease, transform 0.5s ease',
-      labelPos: { x, y }
+      transition:
+        val === 0 ? 'none' : 'stroke-dashoffset 0.5s ease, transform 0.5s ease',
+      labelPos: { x, y },
     };
   };
 
@@ -48,17 +50,24 @@ const ProgressClock = () => {
   const hData = getRingData((h % 12) + m / 60, 12, innerRadius);
 
   return (
-    <div style={{ 
-      width: '100%', 
-      height: '100dvh', 
-      display: 'flex', 
-      alignItems: 'center', 
-      justifyContent: 'center',
-      background: '#dddfff',
-      fontFamily: '"Varela Round", sans-serif'
-    }}>
-      <svg 
-        style={{ transform: 'rotate(-90deg)', width: '90%', height: '90%', maxWidth: '650px' }} 
+    <div
+      style={{
+        width: '100%',
+        height: '100dvh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#dddfff',
+        fontFamily: '"Varela Round", sans-serif',
+      }}
+    >
+      <svg
+        style={{
+          transform: 'rotate(-90deg)',
+          width: '90%',
+          height: '90%',
+          maxWidth: '650px',
+        }}
         // Increased viewBox to 310 to give the 153px radius rings breathing room
         viewBox="0 0 310 310"
       >
@@ -77,51 +86,70 @@ const ProgressClock = () => {
           </linearGradient>
         </defs>
 
-        <Ring 
-          radius={outerRadius} 
-          stroke="url(#pc-purple)" 
+        <Ring
+          radius={outerRadius}
+          stroke="url(#pc-purple)"
           strokeWidth={strokeWidth}
           value={s}
           center={center}
-          {...sData} 
+          {...sData}
         />
 
-        <Ring 
-          radius={middleRadius} 
-          stroke="url(#pc-blue)" 
+        <Ring
+          radius={middleRadius}
+          stroke="url(#pc-blue)"
           strokeWidth={strokeWidth}
           value={m}
           center={center}
-          {...mData} 
+          {...mData}
         />
 
-        <Ring 
-          radius={innerRadius} 
-          stroke="url(#pc-yellow)" 
+        <Ring
+          radius={innerRadius}
+          stroke="url(#pc-yellow)"
           strokeWidth={strokeWidth}
           value={h === 0 ? 12 : h > 12 ? h - 12 : h}
           center={center}
-          {...hData} 
+          {...hData}
         />
       </svg>
     </div>
   );
 };
 
-const Ring = ({ radius, stroke, strokeWidth, strokeDasharray, strokeDashoffset, transition, labelPos, value, center }) => (
+const Ring = ({
+  radius,
+  stroke,
+  strokeWidth,
+  strokeDasharray,
+  strokeDashoffset,
+  transition,
+  labelPos,
+  value,
+  center,
+}) => (
   <g>
-    <circle 
-      cx={center} cy={center} r={radius} 
-      fill="none" stroke={stroke} strokeWidth={strokeWidth} opacity="0.1" 
+    <circle
+      cx={center}
+      cy={center}
+      r={radius}
+      fill="none"
+      stroke={stroke}
+      strokeWidth={strokeWidth}
+      opacity="0.1"
     />
-    <circle 
-      cx={center} cy={center} r={radius} 
-      fill="none" stroke={stroke} strokeWidth={strokeWidth} 
+    <circle
+      cx={center}
+      cy={center}
+      r={radius}
+      fill="none"
+      stroke={stroke}
+      strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeDasharray={strokeDasharray}
       style={{ strokeDashoffset, transition }}
     />
-    <g 
+    <g
       style={{ transition: 'transform 0.5s ease', mixBlendMode: 'difference' }}
       transform={`translate(${labelPos.x}, ${labelPos.y})`}
     >
@@ -133,7 +161,7 @@ const Ring = ({ radius, stroke, strokeWidth, strokeDasharray, strokeDashoffset, 
           fill: 'white',
           fontSize: '14px',
           fontFamily: '"Varela Round", sans-serif',
-          pointerEvents: 'none'
+          pointerEvents: 'none',
         }}
       >
         {Math.floor(value)}

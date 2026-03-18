@@ -61,8 +61,16 @@ const DigitalClock = () => {
 
   const digitToLetter = (str) => {
     const map = {
-      '0': 'A', '1': 'B', '2': 'C', '3': 'E', '4': 'F',
-      '5': 'I', '6': 'J', '7': 'N', '8': 'O', '9': 'T',
+      0: 'A',
+      1: 'B',
+      2: 'C',
+      3: 'E',
+      4: 'F',
+      5: 'I',
+      6: 'J',
+      7: 'N',
+      8: 'O',
+      9: 'T',
     };
     return str.replace(/\d/g, (d) => map[d]);
   };
@@ -80,10 +88,14 @@ const DigitalClock = () => {
   const renderTimeWithSeparateDigits = (timeString) =>
     timeString.split('').map((char, index) =>
       char === ':' ? (
-        <span key={index} style={styles.colon}>:</span>
+        <span key={index} style={styles.colon}>
+          :
+        </span>
       ) : (
-        <span key={index} style={styles.digit}>{char}</span>
-      )
+        <span key={index} style={styles.digit}>
+          {char}
+        </span>
+      ),
     );
 
   return (

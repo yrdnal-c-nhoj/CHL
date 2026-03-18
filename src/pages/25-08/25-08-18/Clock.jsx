@@ -1,18 +1,18 @@
-import React, { useEffect, useMemo, useState } from "react";
-import bg3 from "../../../assets/images/25-08/25-08-18/target.gif";
-import bg1 from "../../../assets/images/25-08/25-08-18/arrows.gif";
-import bg2 from "../../../assets/images/25-08/25-08-18/ar.gif";
-import bg4 from "../../../assets/images/25-08/25-08-18/bul.gif";
+import React, { useEffect, useMemo, useState } from 'react';
+import bg3 from '../../../assets/images/25-08/25-08-18/target.gif';
+import bg1 from '../../../assets/images/25-08/25-08-18/arrows.gif';
+import bg2 from '../../../assets/images/25-08/25-08-18/ar.gif';
+import bg4 from '../../../assets/images/25-08/25-08-18/bul.gif';
 import fontFileUrl from '../../../assets/fonts/25-08-18-targ.otf';
-import hourHandImg from "../../../assets/images/25-08/25-08-18/aro.gif";
-import minuteHandImg from "../../../assets/images/25-08/25-08-18/arrr.gif";
-import secondHandImg from "../../../assets/images/25-08/25-08-18/ar9.gif";
+import hourHandImg from '../../../assets/images/25-08/25-08-18/aro.gif';
+import minuteHandImg from '../../../assets/images/25-08/25-08-18/arrr.gif';
+import secondHandImg from '../../../assets/images/25-08/25-08-18/ar9.gif';
 
-const CLOCK_FONT_FAMILY = "ClockFont__Scoped_7t3";
+const CLOCK_FONT_FAMILY = 'ClockFont__Scoped_7t3';
 
 export default function ClockLetters({
   sizeVmin = 60,
-  letters = "EPHiCUGLjgKp",
+  letters = 'EPHiCUGLjgKp',
   showSecondHand = true,
 }) {
   const [now, setNow] = useState(new Date());
@@ -27,14 +27,15 @@ export default function ClockLetters({
   // New: Load font and set loaded state
   useEffect(() => {
     const font = new FontFace(CLOCK_FONT_FAMILY, `url(${fontFileUrl})`, {
-      style: "normal",
-      weight: "700",
+      style: 'normal',
+      weight: '700',
     });
     document.fonts.add(font);
-    font.load()
+    font
+      .load()
       .then(() => setFontLoaded(true))
       .catch((err) => {
-        console.warn("Font load failed:", err);
+        console.warn('Font load failed:', err);
         setFontLoaded(true); // Fallback show content to avoid infinite hide
       });
   }, []);
@@ -70,25 +71,25 @@ export default function ClockLetters({
   }, [now]);
 
   const glyphs = useMemo(() => {
-    const raw = (letters || "").toString();
-    if (raw.length >= 12) return raw.slice(0, 12).split("");
-    return (raw + "ABCDEFGHIJKL").slice(0, 12).split("");
+    const raw = (letters || '').toString();
+    if (raw.length >= 12) return raw.slice(0, 12).split('');
+    return (raw + 'ABCDEFGHIJKL').slice(0, 12).split('');
   }, [letters]);
 
   const root = {
-    position: "relative",
-    width: "100vw",
-    height: "100dvh",
-    background: "#ffffff",
+    position: 'relative',
+    width: '100vw',
+    height: '100dvh',
+    background: '#ffffff',
   };
 
   const targetBackground = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    width: "200vmax",
-    height: "200vmax",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: '200vmax',
+    height: '200vmax',
+    transform: 'translate(-50%, -50%)',
     background: `
       radial-gradient(
         circle at center,
@@ -102,91 +103,132 @@ export default function ClockLetters({
         transparent 70%
       )
     `,
-    backgroundSize: "cover",
-    backgroundPosition: "center center",
-    backgroundRepeat: "no-repeat",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    backgroundRepeat: 'no-repeat',
     zIndex: 0, // Lowest z-index to place behind all elements
   };
 
   const backgroundLayers = [
-    { url: bg1, opacity: 0.7, contrast: 8.0, zIndex: 2, size: "70%", pos: "center", saturation: 2.2, hue: 20, rotate: rotation.layer1 },
-    { url: bg2, opacity: 0.9, contrast: 8.0, zIndex: 3, size: "50%", pos: "center", saturation: 2.8, hue: 10, rotate: rotation.layer2 },
-    { url: bg3, opacity: 1.0, contrast: 8.0, zIndex: 1, size: "50%", pos: "center", saturation: 2.5, hue: -40 },
-    { url: bg4, opacity: 0.7, contrast: 6.0, zIndex: 4, size: "50%", pos: "center", saturation: 2.5, hue: -40, rotate: rotation.layer3 },
+    {
+      url: bg1,
+      opacity: 0.7,
+      contrast: 8.0,
+      zIndex: 2,
+      size: '70%',
+      pos: 'center',
+      saturation: 2.2,
+      hue: 20,
+      rotate: rotation.layer1,
+    },
+    {
+      url: bg2,
+      opacity: 0.9,
+      contrast: 8.0,
+      zIndex: 3,
+      size: '50%',
+      pos: 'center',
+      saturation: 2.8,
+      hue: 10,
+      rotate: rotation.layer2,
+    },
+    {
+      url: bg3,
+      opacity: 1.0,
+      contrast: 8.0,
+      zIndex: 1,
+      size: '50%',
+      pos: 'center',
+      saturation: 2.5,
+      hue: -40,
+    },
+    {
+      url: bg4,
+      opacity: 0.7,
+      contrast: 6.0,
+      zIndex: 4,
+      size: '50%',
+      pos: 'center',
+      saturation: 2.5,
+      hue: -40,
+      rotate: rotation.layer3,
+    },
   ];
 
   const bgLayerStyle = (layer) => ({
-    position: "absolute",
-    width: "150vw",
-    height: "150vh",
-    top: "50%",
-    left: "50%",
-    transform: layer.rotate ? `translate(-50%, -50%) rotate(${layer.rotate}deg)` : "translate(-50%, -50%)",
-    transformOrigin: "center",
+    position: 'absolute',
+    width: '150vw',
+    height: '150vh',
+    top: '50%',
+    left: '50%',
+    transform: layer.rotate
+      ? `translate(-50%, -50%) rotate(${layer.rotate}deg)`
+      : 'translate(-50%, -50%)',
+    transformOrigin: 'center',
     backgroundImage: `url(${layer.url})`,
-    backgroundSize: layer.size || "cover",
-    backgroundPosition: layer.pos || "center",
-    backgroundRepeat: "no-repeat",
+    backgroundSize: layer.size || 'cover',
+    backgroundPosition: layer.pos || 'center',
+    backgroundRepeat: 'no-repeat',
     opacity: layer.opacity,
     zIndex: layer.zIndex,
     filter: `saturate(${layer.saturation || 1}) hue-rotate(${layer.hue || 0}deg) contrast(${layer.contrast || 1})`, // Fix: Added missing contrast
   });
 
   const crosshairStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    width: "100vmax",
-    height: "100vmax",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: '100vmax',
+    height: '100vmax',
+    transform: 'translate(-50%, -50%)',
     zIndex: 5, // Above target background and image layers
-    pointerEvents: "none",
+    pointerEvents: 'none',
   };
 
   const crosshairLineStyle = {
-    position: "absolute",
-    background: "rgba(0, 0, 0, 0.5)",
+    position: 'absolute',
+    background: 'rgba(0, 0, 0, 0.5)',
   };
 
   const targetNumberStyle = {
-    position: "absolute",
-    fontFamily: "Arial, sans-serif",
+    position: 'absolute',
+    fontFamily: 'Arial, sans-serif',
     // fontWeight: "bold",
-    color: "#EA1010",
+    color: '#EA1010',
     fontSize: `${sizeVmin * 0.1}vmin`,
-    textShadow: "0 0.2vmin 0.2vmin #FFFFFF", // Fix: Removed extra dot
-    userSelect: "none",
+    textShadow: '0 0.2vmin 0.2vmin #FFFFFF', // Fix: Removed extra dot
+    userSelect: 'none',
     zIndex: 6, // Above crosshairs
   };
 
   const faceWrap = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     width: `${sizeVmin}vmin`,
     height: `${sizeVmin}vmin`,
-    display: "grid",
-    placeItems: "center",
+    display: 'grid',
+    placeItems: 'center',
     zIndex: 10,
   };
 
   const face = {
-    position: "relative",
-    width: "100%",
-    height: "100%",
-    borderRadius: "50%",
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    borderRadius: '50%',
   };
 
   const letterStyleBase = {
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
     fontFamily: `${CLOCK_FONT_FAMILY}, Arial, sans-serif`, // New: Added fallback
-    fontWeight: "700",
-    userSelect: "none",
-    color: "#0D0C0CFF",
+    fontWeight: '700',
+    userSelect: 'none',
+    color: '#0D0C0CFF',
     zIndex: 2,
   };
 
@@ -223,20 +265,20 @@ export default function ClockLetters({
         <div
           key={i}
           style={{
-            position: "absolute",
-            left: "50%",
-            top: "50%",
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
             width: `${len}vmin`,
             height: `${thick}vmin`,
-            background: "rgba(0,0,0,0.5)",
-            transformOrigin: "0% 50%",
+            background: 'rgba(0,0,0,0.5)',
+            transformOrigin: '0% 50%',
             transform: `rotate(${i * 6 - 90}deg) translateX(${
               sizeVmin * 0.48
             }vmin)`,
-            borderRadius: "1vmin",
+            borderRadius: '1vmin',
             opacity: isHour ? 0.9 : 0.6,
           }}
-        />
+        />,
       );
     }
     return nodes;
@@ -245,7 +287,7 @@ export default function ClockLetters({
   const targetNumbers = useMemo(() => {
     const numbers = [10, 9, 8, 7, 6, 5]; // Typical shooting range scoring rings
     const nodes = [];
-    
+
     // Horizontal crosshair numbers (left and right)
     numbers.forEach((num, i) => {
       const offset = (i + 1) * 15; // Spread numbers across viewport
@@ -256,12 +298,12 @@ export default function ClockLetters({
           style={{
             ...targetNumberStyle,
             left: `calc(50% - ${offset}vw)`,
-            top: "50%",
-            transform: "translate(-50%, -50%)",
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
           }}
         >
           {num}
-        </div>
+        </div>,
       );
       // Right side
       nodes.push(
@@ -270,12 +312,12 @@ export default function ClockLetters({
           style={{
             ...targetNumberStyle,
             left: `calc(50% + ${offset}vw)`,
-            top: "50%",
-            transform: "translate(-50%, -50%)",
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
           }}
         >
           {num}
-        </div>
+        </div>,
       );
     });
 
@@ -288,13 +330,13 @@ export default function ClockLetters({
           key={`v-${num}-top`}
           style={{
             ...targetNumberStyle,
-            left: "50%",
+            left: '50%',
             top: `calc(50% - ${offset}vh)`,
-            transform: "translate(-50%, -50%)",
+            transform: 'translate(-50%, -50%)',
           }}
         >
           {num}
-        </div>
+        </div>,
       );
       // Bottom side
       nodes.push(
@@ -302,13 +344,13 @@ export default function ClockLetters({
           key={`v-${num}-bottom`}
           style={{
             ...targetNumberStyle,
-            left: "50%",
+            left: '50%',
             top: `calc(50% + ${offset}vh)`,
-            transform: "translate(-50%, -50%)",
+            transform: 'translate(-50%, -50%)',
           }}
         >
           {num}
-        </div>
+        </div>,
       );
     });
 
@@ -316,23 +358,23 @@ export default function ClockLetters({
   }, [sizeVmin]);
 
   const handContainerStyle = (deg, length, z) => ({
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transformOrigin: "0% 50%",
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    transformOrigin: '0% 50%',
     transform: `rotate(${deg - 90}deg) translateX(${sizeVmin * 0.04}vmin)`,
     width: `${length}vmin`,
-    height: "auto",
+    height: 'auto',
     zIndex: z,
-    pointerEvents: "none",
+    pointerEvents: 'none',
   });
 
   const handImageStyle = {
-    width: "100%",
-    height: "auto",
-    transform: "rotate(180deg)",
-    transformOrigin: "center",
-    filter: "drop-shadow(0.2vmin 0.2vmin 0.3vmin rgba(0,0,0,0.5))",
+    width: '100%',
+    height: 'auto',
+    transform: 'rotate(180deg)',
+    transformOrigin: 'center',
+    filter: 'drop-shadow(0.2vmin 0.2vmin 0.3vmin rgba(0,0,0,0.5))',
   };
 
   return (
@@ -360,19 +402,19 @@ export default function ClockLetters({
         <div
           style={{
             ...crosshairLineStyle,
-            width: "100%",
-            height: "0.2vmin",
-            top: "50%",
-            transform: "translateY(-50%)",
+            width: '100%',
+            height: '0.2vmin',
+            top: '50%',
+            transform: 'translateY(-50%)',
           }}
         />
         <div
           style={{
             ...crosshairLineStyle,
-            width: "0.2vmin",
-            height: "100%",
-            left: "50%",
-            transform: "translateX(-50%)",
+            width: '0.2vmin',
+            height: '100%',
+            left: '50%',
+            transform: 'translateX(-50%)',
           }}
         />
       </div>
@@ -387,14 +429,32 @@ export default function ClockLetters({
               {ticks}
               {lettersNodes}
               <div style={handContainerStyle(hourDeg, sizeVmin * 0.37, 3)}>
-                <img decoding="async" loading="lazy" src={hourHandImg} style={handImageStyle} alt="Hour hand" />
+                <img
+                  decoding="async"
+                  loading="lazy"
+                  src={hourHandImg}
+                  style={handImageStyle}
+                  alt="Hour hand"
+                />
               </div>
               <div style={handContainerStyle(minDeg, sizeVmin * 0.53, 4)}>
-                <img decoding="async" loading="lazy" src={minuteHandImg} style={handImageStyle} alt="Minute hand" />
+                <img
+                  decoding="async"
+                  loading="lazy"
+                  src={minuteHandImg}
+                  style={handImageStyle}
+                  alt="Minute hand"
+                />
               </div>
               {showSecondHand && (
                 <div style={handContainerStyle(secDeg, sizeVmin * 0.6, 5)}>
-                  <img decoding="async" loading="lazy" src={secondHandImg} style={handImageStyle} alt="Second hand" />
+                  <img
+                    decoding="async"
+                    loading="lazy"
+                    src={secondHandImg}
+                    style={handImageStyle}
+                    alt="Second hand"
+                  />
                 </div>
               )}
             </>

@@ -3,14 +3,14 @@ import { useState, useEffect, useMemo } from 'react';
 /**
  * Standardized hook for Clock components.
  * Provides time, date parts, and responsive metrics.
- * 
+ *
  * @param {number} tickRate - Update interval in ms (default 1000)
  */
 export function useClock(tickRate = 1000) {
   const [now, setNow] = useState(new Date());
   const [dimensions, setDimensions] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 0,
-    height: typeof window !== 'undefined' ? window.innerHeight : 0
+    height: typeof window !== 'undefined' ? window.innerHeight : 0,
   });
 
   // 1. Time Loop
@@ -29,11 +29,14 @@ export function useClock(tickRate = 1000) {
   }, []);
 
   // 3. Derived State (Memoized for performance)
-  const timeData = useMemo(() => ({
-    now,
-    isPortrait: dimensions.height > dimensions.width,
-    ...dimensions
-  }), [now, dimensions]);
+  const timeData = useMemo(
+    () => ({
+      now,
+      isPortrait: dimensions.height > dimensions.width,
+      ...dimensions,
+    }),
+    [now, dimensions],
+  );
 
   return timeData;
 }

@@ -1,70 +1,80 @@
-import React, { useEffect, useState } from 'react'
-import bgImage from '../../../assets/images/26-01/26-01-10/moo.gif'
+import React, { useEffect, useState } from 'react';
+import bgImage from '../../../assets/images/26-01/26-01-10/moo.gif';
 import d25090116font from '../../../assets/fonts/26-01-10-bit.ttf';
 
 const Clock = () => {
-  const [time, setTime] = useState(new Date())
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 700)
-  const [bgReady, setBgReady] = useState(false)
+  const [time, setTime] = useState(new Date());
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 700);
+  const [bgReady, setBgReady] = useState(false);
 
   // 1. LETTER MAPPING: Change these letters to your preference
   const digitToLetter = {
-    '0': ' ', '1': 'd', '2': 'a', '3': 'M', '4': 'x',
-    '5': 'k', '6': 'm', '7': 'n', '8': 'o', '9': 't'
+    0: ' ',
+    1: 'd',
+    2: 'a',
+    3: 'M',
+    4: 'x',
+    5: 'k',
+    6: 'm',
+    7: 'n',
+    8: 'o',
+    9: 't',
   };
 
   useEffect(() => {
-    setTime(new Date())
-    const timer = setInterval(() => setTime(new Date()), 100)
-    return () => clearInterval(timer)
-  }, [])
+    setTime(new Date());
+    const timer = setInterval(() => setTime(new Date()), 100);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
-    const style = document.createElement('style')
+    const style = document.createElement('style');
     style.textContent = `
       @font-face {
         font-family: 'MyD25090116font';
         src: url(${d25090116font}) format('truetype');
         font-display: block;
       }
-    `
-    document.head.appendChild(style)
-    const fontPromise = document.fonts.load('22vh MyD25090116font')
+    `;
+    document.head.appendChild(style);
+    const fontPromise = document.fonts.load('22vh MyD25090116font');
     const imagePromise = new Promise((resolve, reject) => {
-      const img = new Image()
-      img.src = bgImage
-      img.onload = resolve
-      img.onerror = reject
-    })
+      const img = new Image();
+      img.src = bgImage;
+      img.onload = resolve;
+      img.onerror = reject;
+    });
 
     Promise.all([fontPromise, imagePromise])
       .then(() => setIsLoaded(true))
-      .catch(() => setIsLoaded(true))
+      .catch(() => setIsLoaded(true));
 
-    return () => { document.head.removeChild(style) }
-  }, [])
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
 
   // Separate background readiness
   useEffect(() => {
-    const img = new Image()
-    const done = () => setBgReady(true)
-    img.onload = done
-    img.onerror = done
-    img.src = bgImage
-    const timeout = setTimeout(done, 1200)
-    return () => clearTimeout(timeout)
-  }, [])
+    const img = new Image();
+    const done = () => setBgReady(true);
+    img.onload = done;
+    img.onerror = done;
+    img.src = bgImage;
+    const timeout = setTimeout(done, 1200);
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
-    const handleResize = () => setIsLargeScreen(window.innerWidth > 600)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    const handleResize = () => setIsLargeScreen(window.innerWidth > 600);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  const hours = String(((time.getHours() + 11) % 12) + 1).padStart(2, '0')
-  const minutes = String(time.getMinutes()).padStart(2, '0')
-  const seconds = String(time.getSeconds()).padStart(2, '0')
+  const hours = String(((time.getHours() + 11) % 12) + 1).padStart(2, '0');
+  const minutes = String(time.getMinutes()).padStart(2, '0');
+  const seconds = String(time.getSeconds()).padStart(2, '0');
 
   // 2. STYLES: Using fixed widths to prevent "jumping"
   const digitBoxStyle = {
@@ -75,10 +85,10 @@ const Clock = () => {
     fontSize: '28vh',
     color: 'rgba(66, 142, 241, 0.82)',
     // Fixed width ensures 'I' takes as much space as 'W'
-    width: '20vh', 
+    width: '20vh',
     height: '20vh',
     textAlign: 'center',
-  }
+  };
 
   const backgroundStyle = {
     position: 'fixed',
@@ -131,21 +141,21 @@ const Clock = () => {
     zIndex: 10,
     opacity: isLoaded && bgReady ? 1 : 0,
     visibility: isLoaded && bgReady ? 'visible' : 'hidden',
-    transition: 'opacity 0.3s ease'
+    transition: 'opacity 0.3s ease',
   };
 
   const layoutStyle = {
     display: 'flex',
     flexDirection: isLargeScreen ? 'row' : 'column',
     alignItems: 'center',
-    gap: isLargeScreen ? '0vw' : '0vh'
-  }
+    gap: isLargeScreen ? '0vw' : '0vh',
+  };
 
   const groupStyle = {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  };
 
   // 3. RENDER HELPERS
   const renderUnit = (value) => (
@@ -156,20 +166,24 @@ const Clock = () => {
         </div>
       ))}
     </div>
-  )
+  );
 
-  
-  
-  const ready = isLoaded && bgReady
+  const ready = isLoaded && bgReady;
 
   return (
     <>
       {/* Mirror background effect */}
-      <div style={{ ...backgroundStyle, opacity: ready ? 1 : 0, transition: 'opacity 0.3s ease' }}>
+      <div
+        style={{
+          ...backgroundStyle,
+          opacity: ready ? 1 : 0,
+          transition: 'opacity 0.3s ease',
+        }}
+      >
         <div style={leftBackgroundStyle} />
         <div style={rightBackgroundStyle} />
       </div>
-      
+
       {/* Clock content layer */}
       <div style={containerStyle}>
         <div style={layoutStyle}>
@@ -179,7 +193,7 @@ const Clock = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Clock
+export default Clock;

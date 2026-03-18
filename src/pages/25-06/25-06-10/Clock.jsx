@@ -33,7 +33,7 @@ const ShapesClock = () => {
   const bodyStyle = {
     margin: 0,
     height: '100dvh',
-    width: "100%",
+    width: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -68,17 +68,21 @@ const ShapesClock = () => {
     transition: 'all 0.7s ease',
   };
 
-
   return (
     <>
       <style>{fontFaceStyle}</style>
 
-
       <div style={bodyStyle}>
         <div style={clockStyle}>
-          <div><span style={spanStyle}>{time.hours}</span></div>
-          <div><span style={spanStyle}>{time.minutes}</span></div>
-          <div><span style={spanStyle}>{time.seconds}</span></div>
+          <div>
+            <span style={spanStyle}>{time.hours}</span>
+          </div>
+          <div>
+            <span style={spanStyle}>{time.minutes}</span>
+          </div>
+          <div>
+            <span style={spanStyle}>{time.seconds}</span>
+          </div>
         </div>
       </div>
     </>

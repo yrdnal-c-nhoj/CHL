@@ -3,16 +3,16 @@ import gridImage from '../../../assets/images/25-10/25-10-02/lan.gif';
 
 // Counting rod digit map
 const digitMap = {
-  '0': '▫',
-  '1': '\u{1D360}',
-  '2': '\u{1D361}',
-  '3': '\u{1D362}',
-  '4': '\u{1D363}',
-  '5': '\u{1D364}',
-  '6': '\u{1D365}',
-  '7': '\u{1D366}',
-  '8': '\u{1D367}',
-  '9': '\u{1D369}',
+  0: '▫',
+  1: '\u{1D360}',
+  2: '\u{1D361}',
+  3: '\u{1D362}',
+  4: '\u{1D363}',
+  5: '\u{1D364}',
+  6: '\u{1D365}',
+  7: '\u{1D366}',
+  8: '\u{1D367}',
+  9: '\u{1D369}',
 };
 
 const toCountingRod = (number) =>
@@ -133,17 +133,29 @@ const DigitalClock = () => {
       >
         {hours.map((d, i) => (
           <div key={`h${i}`} style={digitBackgroundStyle}>
-            <span style={{ ...digitTextStyle, opacity: digitOpacities.hours[i] }}>{d}</span>
+            <span
+              style={{ ...digitTextStyle, opacity: digitOpacities.hours[i] }}
+            >
+              {d}
+            </span>
           </div>
         ))}
         {minutes.map((d, i) => (
           <div key={`m${i}`} style={digitBackgroundStyle}>
-            <span style={{ ...digitTextStyle, opacity: digitOpacities.minutes[i] }}>{d}</span>
+            <span
+              style={{ ...digitTextStyle, opacity: digitOpacities.minutes[i] }}
+            >
+              {d}
+            </span>
           </div>
         ))}
         {seconds.map((d, i) => (
           <div key={`s${i}`} style={digitBackgroundStyle}>
-            <span style={{ ...digitTextStyle, opacity: digitOpacities.seconds[i] }}>{d}</span>
+            <span
+              style={{ ...digitTextStyle, opacity: digitOpacities.seconds[i] }}
+            >
+              {d}
+            </span>
           </div>
         ))}
       </div>

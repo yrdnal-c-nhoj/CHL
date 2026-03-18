@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 
-import stars from "../../../assets/images/25-04/25-04-02/stars.webp";
-import backgroundGif from "../../../assets/images/25-04/25-04-02/437cb739d14912acd84d65ee853b9067.gif";
-import overlay1 from "../../../assets/images/25-04/25-04-02/OzJtZ3Z.gif";
-import overlay2 from "../../../assets/images/25-04/25-04-02/2556744_d34a4.webp";
-import pixelGif from "../../../assets/images/25-04/25-04-02/sdswrf.gif";
+import stars from '../../../assets/images/25-04/25-04-02/stars.webp';
+import backgroundGif from '../../../assets/images/25-04/25-04-02/437cb739d14912acd84d65ee853b9067.gif';
+import overlay1 from '../../../assets/images/25-04/25-04-02/OzJtZ3Z.gif';
+import overlay2 from '../../../assets/images/25-04/25-04-02/2556744_d34a4.webp';
+import pixelGif from '../../../assets/images/25-04/25-04-02/sdswrf.gif';
 
 // Image imports from src/assets
 const images = {
@@ -16,70 +16,70 @@ const images = {
 };
 
 const digits = {
-  "0": [
+  0: [
     [1, 1, 1],
     [1, 0, 1],
     [1, 0, 1],
     [1, 0, 1],
     [1, 1, 1],
   ],
-  "1": [
+  1: [
     [1, 1, 0],
     [0, 1, 0],
     [0, 1, 0],
     [0, 1, 0],
     [1, 1, 1],
   ],
-  "2": [
+  2: [
     [1, 1, 1],
     [0, 0, 1],
     [1, 1, 1],
     [1, 0, 0],
     [1, 1, 1],
   ],
-  "3": [
+  3: [
     [1, 1, 1],
     [0, 0, 1],
     [1, 1, 1],
     [0, 0, 1],
     [1, 1, 1],
   ],
-  "4": [
+  4: [
     [1, 0, 1],
     [1, 0, 1],
     [1, 1, 1],
     [0, 0, 1],
     [0, 0, 1],
   ],
-  "5": [
+  5: [
     [1, 1, 1],
     [1, 0, 0],
     [1, 1, 1],
     [0, 0, 1],
     [1, 1, 1],
   ],
-  "6": [
+  6: [
     [1, 0, 0],
     [1, 0, 0],
     [1, 1, 1],
     [1, 0, 1],
     [1, 1, 1],
   ],
-  "7": [
+  7: [
     [1, 1, 1],
     [0, 0, 1],
     [0, 0, 1],
     [0, 0, 1],
     [0, 0, 1],
   ],
-  "8": [
+  8: [
     [1, 1, 1],
     [1, 0, 1],
     [1, 1, 1],
     [1, 0, 1],
     [1, 1, 1],
   ],
-  "9": [
+  9: [
     [1, 1, 1],
     [1, 0, 1],
     [1, 1, 1],
@@ -99,25 +99,24 @@ function DeepSpaceClock() {
   const makeDigit = (target, digitMatrix) => {
     const container = target.current;
     if (!container) return;
-    container.innerHTML = "";
+    container.innerHTML = '';
     digitMatrix.forEach((row, i) =>
       row.forEach((on, j) => {
         if (on) {
-          const div = document.createElement("div");
+          const div = document.createElement('div');
           div.style.gridRow = `${i + 1}`;
           div.style.gridColumn = `${j + 1}`;
-          div.style.height = "4vmin";
-          div.style.width = "4vmin";
+          div.style.height = '4vmin';
+          div.style.width = '4vmin';
           div.style.backgroundImage = `url(${images.pixelGif})`;
-          div.style.backgroundSize = "220% 250%";
+          div.style.backgroundSize = '220% 250%';
           container.appendChild(div);
         }
-      })
+      }),
     );
   };
 
   useEffect(() => {
-
     let shownHours = -1,
       shownMinutes = -1,
       shownSeconds = -1;
@@ -125,9 +124,9 @@ function DeepSpaceClock() {
     const updateClock = () => {
       const now = new Date();
       const [h, m, s] = [
-        now.getHours().toString().padStart(2, "0"),
-        now.getMinutes().toString().padStart(2, "0"),
-        now.getSeconds().toString().padStart(2, "0"),
+        now.getHours().toString().padStart(2, '0'),
+        now.getMinutes().toString().padStart(2, '0'),
+        now.getSeconds().toString().padStart(2, '0'),
       ];
 
       if (h !== shownHours.toString()) {
@@ -152,36 +151,35 @@ function DeepSpaceClock() {
     return () => clearInterval(interval);
   }, []);
 
-
   return (
     <div
       style={{
         backgroundImage: `url(${images.stars})`,
-        backgroundSize: "cover",
-        overflow: "hidden",
-        height: "100dvh",
-        width: "100vw",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        position: "relative",
-        backgroundColor: "#333" // Fallback background color
+        backgroundSize: 'cover',
+        overflow: 'hidden',
+        height: '100dvh',
+        width: '100vw',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+        backgroundColor: '#333', // Fallback background color
       }}
     >
       <div
         style={{
           backgroundImage: `url(${images.backgroundGif})`,
-          backgroundSize: "cover",
-          position: "absolute",
+          backgroundSize: 'cover',
+          position: 'absolute',
           inset: 0,
-          zIndex: 1
+          zIndex: 1,
         }}
       />
       <div
         style={{
           backgroundImage: `url(${images.overlay1})`,
-          backgroundSize: "cover",
-          position: "fixed",
+          backgroundSize: 'cover',
+          position: 'fixed',
           inset: 0,
           opacity: 0.35,
           zIndex: 6,
@@ -190,8 +188,8 @@ function DeepSpaceClock() {
       <div
         style={{
           backgroundImage: `url(${images.overlay2})`,
-          backgroundSize: "cover",
-          position: "fixed",
+          backgroundSize: 'cover',
+          position: 'fixed',
           inset: 0,
           opacity: 0.15,
           zIndex: 5,
@@ -199,13 +197,13 @@ function DeepSpaceClock() {
       />
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "3vw",
-          animation: "spinClock 20s linear infinite",
-          transformStyle: "preserve-3d",
-          perspective: "1000px",
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '3vw',
+          animation: 'spinClock 20s linear infinite',
+          transformStyle: 'preserve-3d',
+          perspective: '1000px',
         }}
       >
         <style>
@@ -232,11 +230,11 @@ function DeepSpaceClock() {
 }
 
 const digitStyle = {
-  display: "grid",
-  gridTemplateColumns: "repeat(3, 1fr)",
-  gridTemplateRows: "repeat(5, 1fr)",
-  width: "13vw",
-  height: "44vh",
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gridTemplateRows: 'repeat(5, 1fr)',
+  width: '13vw',
+  height: '44vh',
 };
 
 export default DeepSpaceClock;

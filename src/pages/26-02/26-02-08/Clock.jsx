@@ -7,8 +7,8 @@ import analogBgImage from '../../../assets/images/26-02/26-02-08/tower.webp';
 import eifGif from '../../../assets/images/26-02/26-02-08/eif.gif';
 
 const STYLE_CONFIG = {
-  ironColor: '#8DA3A4', 
-  brassColor: '#E8D183', 
+  ironColor: '#8DA3A4',
+  brassColor: '#E8D183',
   accentColor: '#916567',
   glowColor: 'rgb(255, 253, 208)',
 };
@@ -20,10 +20,13 @@ const TrocClock = () => {
 
   useEffect(() => {
     const font = new FontFace('TrocaderoFont', `url(${trocaderoFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontReady(true);
-    }).catch(() => setFontReady(true));
+    font
+      .load()
+      .then((loadedFont) => {
+        document.fonts.add(loadedFont);
+        setFontReady(true);
+      })
+      .catch(() => setFontReady(true));
   }, []);
 
   useEffect(() => {
@@ -52,7 +55,9 @@ const TrocClock = () => {
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
-    fontFamily: fontReady ? "'TrocaderoFont', serif" : "'Playfair Display', serif",
+    fontFamily: fontReady
+      ? "'TrocaderoFont', serif"
+      : "'Playfair Display', serif",
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -95,7 +100,8 @@ const TrocClock = () => {
     width: '2.5vmin',
     height: '24vmin',
     backgroundColor: STYLE_CONFIG.ironColor,
-    clipPath: 'polygon(50% 0%, 100% 20%, 70% 20%, 70% 100%, 30% 100%, 30% 20%, 0% 20%)', 
+    clipPath:
+      'polygon(50% 0%, 100% 20%, 70% 20%, 70% 100%, 30% 100%, 30% 20%, 0% 20%)',
     transform: `translate(-50%, 0) rotate(${(h / 12) * 360}deg)`,
     border: `0.3vmin solid ${STYLE_CONFIG.brassColor}`,
     filter: 'drop-shadow(0.8vmin 0.8vmin 1vmin rgba(0,0,0,0.6))',
@@ -121,7 +127,8 @@ const TrocClock = () => {
     backgroundColor: STYLE_CONFIG.accentColor,
     transform: `translate(-50%, 0) rotate(${(s / 60) * 360}deg)`,
     // Prevent backward spin on reset (59 -> 0)
-    transition: s === 0 ? 'none' : 'transform 0.2s cubic-bezier(0.4, 2.3, 0.6, 1)',
+    transition:
+      s === 0 ? 'none' : 'transform 0.2s cubic-bezier(0.4, 2.3, 0.6, 1)',
     filter: 'drop-shadow(0.4vmin 0.4vmin 0.5vmin rgba(0,0,0,0.4))',
     zIndex: 4,
   };
@@ -140,7 +147,20 @@ const TrocClock = () => {
     boxShadow: '0 0.5rem 1.5rem rgba(0,0,0,0.6)',
   };
 
-  const romanNumerals = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"];
+  const romanNumerals = [
+    'XII',
+    'I',
+    'II',
+    'III',
+    'IV',
+    'V',
+    'VI',
+    'VII',
+    'VIII',
+    'IX',
+    'X',
+    'XI',
+  ];
 
   const renderNumerals = () => {
     const radiusPercent = 38;
@@ -174,24 +194,27 @@ const TrocClock = () => {
     <div style={containerStyle}>
       {/* Background layer with filter - independent of clock */}
       <div style={backgroundLayerStyle} />
-      
-      {/* Second background image layer - eif.gif as tiling image on top */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundImage: `url(${eifGif})`,
-        backgroundSize: '50px 100px',
-        backgroundRepeat: 'repeat',
-        backgroundPosition: 'center',
-        opacity: 0.5,
-    filter: 'brightness(1.7) hue-rotate(180deg) contrast(1.9) drop-shadow(0.4vmin 0.4vmin 0.5vmin rgba(0,0,0,0.4))',
 
-        zIndex: 1, // Between background (0) and clock face (1)
-      }} />
-       
+      {/* Second background image layer - eif.gif as tiling image on top */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url(${eifGif})`,
+          backgroundSize: '50px 100px',
+          backgroundRepeat: 'repeat',
+          backgroundPosition: 'center',
+          opacity: 0.5,
+          filter:
+            'brightness(1.7) hue-rotate(180deg) contrast(1.9) drop-shadow(0.4vmin 0.4vmin 0.5vmin rgba(0,0,0,0.4))',
+
+          zIndex: 1, // Between background (0) and clock face (1)
+        }}
+      />
+
       {/* Clock Face Layer */}
       <div style={faceContainerStyle}>
         {renderNumerals()}

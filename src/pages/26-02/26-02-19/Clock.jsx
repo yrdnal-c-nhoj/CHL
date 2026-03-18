@@ -4,11 +4,11 @@ import platFont from '../../../assets/fonts/26-02-19-plat.ttf';
 
 const ImageDisplay = () => {
   const [time, setTime] = useState(new Date());
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('PlatFont', platFont, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const ImageDisplay = () => {
   const hrs = time.getHours();
   const secs = time.getSeconds();
   const minDegrees = mins * 6;
-  const hrDegrees = (hrs % 12) * 30 + (mins * 0.5);
+  const hrDegrees = (hrs % 12) * 30 + mins * 0.5;
   const secDegrees = secs * 6;
 
   const timeString = time.toLocaleTimeString('en-US', {
@@ -38,17 +38,19 @@ const ImageDisplay = () => {
   // Show content when font is ready
   if (!fontReady) {
     return (
-      <div style={{
-        width: '100vw',
-        height: '100dvh',
-        backgroundColor: '#112D1E',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: '#ACA99F',
-        fontFamily: 'sans-serif',
-        fontSize: '1.5rem'
-      }}>
+      <div
+        style={{
+          width: '100vw',
+          height: '100dvh',
+          backgroundColor: '#112D1E',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: '#ACA99F',
+          fontFamily: 'sans-serif',
+          fontSize: '1.5rem',
+        }}
+      >
         Loading...
       </div>
     );
@@ -185,9 +187,7 @@ const ImageDisplay = () => {
               </div>
             ))}
           </div>
-          <div className="ampm-box">
-            {spacedAmPm}
-          </div>
+          <div className="ampm-box">{spacedAmPm}</div>
         </div>
 
         {/* Analog Clock */}
@@ -197,50 +197,57 @@ const ImageDisplay = () => {
             {[...Array(12)].map((_, i) => {
               const isMainHour = [0, 3, 6, 9].includes(i);
               return (
-              <div
-                key={i}
-                style={{
-                  position: 'absolute',
-                  width: isMainHour ? '1.2vh' : '0.8vh',
-                  height: isMainHour ? '4vh' : '2vh',
-                  backgroundColor: isMainHour ? '#B67423' : '#FFFFFF',   
-                  top: '0.5vh',
-                  left: 'calc(50% - ' + (isMainHour ? '0.6vh' : '0.4vh') + ')',
-                  transformOrigin: '50% 17.25vh',
-                  transform: `rotate(${i * 30}deg)`,
-                  borderRadius: '1vh',
-                }}
-              />
+                <div
+                  key={i}
+                  style={{
+                    position: 'absolute',
+                    width: isMainHour ? '1.2vh' : '0.8vh',
+                    height: isMainHour ? '4vh' : '2vh',
+                    backgroundColor: isMainHour ? '#B67423' : '#FFFFFF',
+                    top: '0.5vh',
+                    left:
+                      'calc(50% - ' + (isMainHour ? '0.6vh' : '0.4vh') + ')',
+                    transformOrigin: '50% 17.25vh',
+                    transform: `rotate(${i * 30}deg)`,
+                    borderRadius: '1vh',
+                  }}
+                />
               );
             })}
 
             {/* Hour Hand */}
-            <div style={{
-              ...handBase,
-              height: '22%',
-              width: '1.4vh',
-              backgroundColor: '#2D312D',
-              transform: `rotate(${hrDegrees}deg)`,
-            }} />
+            <div
+              style={{
+                ...handBase,
+                height: '22%',
+                width: '1.4vh',
+                backgroundColor: '#2D312D',
+                transform: `rotate(${hrDegrees}deg)`,
+              }}
+            />
 
             {/* Minute Hand */}
-            <div style={{
-              ...handBase,
-              height: '35%',
-              width: '0.8vh',
-              backgroundColor: '#202220',
-              transform: `rotate(${minDegrees}deg)`,
-            }} />
+            <div
+              style={{
+                ...handBase,
+                height: '35%',
+                width: '0.8vh',
+                backgroundColor: '#202220',
+                transform: `rotate(${minDegrees}deg)`,
+              }}
+            />
 
             {/* Second Hand */}
-            <div style={{
-              ...handBase,
-              height: '42%',
-              width: '0.4vh',
-              backgroundColor: '#B67423',
-              transform: `rotate(${secDegrees}deg)`,
-              transition: 'transform 0.1s cubic-bezier(0.4, 0.0, 0.2, 1)',
-            }} />
+            <div
+              style={{
+                ...handBase,
+                height: '42%',
+                width: '0.4vh',
+                backgroundColor: '#B67423',
+                transform: `rotate(${secDegrees}deg)`,
+                transition: 'transform 0.1s cubic-bezier(0.4, 0.0, 0.2, 1)',
+              }}
+            />
 
             {/* Center Pin */}
             <div style={centerDot} />

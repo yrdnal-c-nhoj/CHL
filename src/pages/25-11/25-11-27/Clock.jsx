@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react';
 import revolution251127font from '../../../assets/fonts/25-11-27-dec.ttf?url';
 import line251127font from '../../../assets/fonts/25-11-27-french.ttf?url';
-import hourHandImg from '../../../assets/images/25-11/25-11-27/fre.webp'
-import minuteHandImg from '../../../assets/images/25-11/25-11-27/fren.webp'
-import secondHandImg from '../../../assets/images/25-11/25-11-27/french.webp' 
-import backgroundImg from '../../../assets/images/25-11/25-11-27/fr.jpg' // your background image
+import hourHandImg from '../../../assets/images/25-11/25-11-27/fre.webp';
+import minuteHandImg from '../../../assets/images/25-11/25-11-27/fren.webp';
+import secondHandImg from '../../../assets/images/25-11/25-11-27/french.webp';
+import backgroundImg from '../../../assets/images/25-11/25-11-27/fr.jpg'; // your background image
 
 // --- 251127font Setup ---
 const inject251127font = (id, fontFace) => {
   if (!document.getElementById(id)) {
-    const style = document.createElement('style')
-    style.id = id
-    style.innerHTML = fontFace
-    document.head.appendChild(style)
+    const style = document.createElement('style');
+    style.id = id;
+    style.innerHTML = fontFace;
+    document.head.appendChild(style);
   }
-}
+};
 
 const fontFaceRevolution = `
   @font-face {
@@ -24,7 +24,7 @@ const fontFaceRevolution = `
     font-style: normal;
     font-display: swap;
   }
-`
+`;
 
 const fontFaceLine = `
   @font-face {
@@ -34,7 +34,7 @@ const fontFaceLine = `
     font-style: normal;
     font-display: swap;
   }
-`
+`;
 
 // --- Styles ---
 const styles = {
@@ -55,11 +55,11 @@ const styles = {
     transform: 'rotate(-2.5deg)',
     transformOrigin: 'center center',
     '@media (max-width: 768px)': {
-      transform: 'rotate(-2.5deg) scale(0.9)'
+      transform: 'rotate(-2.5deg) scale(0.9)',
     },
     '@media (max-width: 480px)': {
-      transform: 'rotate(-2.5deg) scale(0.8)'
-    }
+      transform: 'rotate(-2.5deg) scale(0.8)',
+    },
   },
   topDigits: {
     position: 'absolute',
@@ -75,11 +75,11 @@ const styles = {
       '0 0 0.5vh rgba(255,255,254,1), -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white',
     fontSize: '8vw',
     '@media (min-width: 1024px)': {
-      fontSize: '5vw'
+      fontSize: '5vw',
     },
     '@media (min-width: 1600px)': {
-      fontSize: '4vw'
-    }
+      fontSize: '4vw',
+    },
   },
   dial: {
     position: 'relative',
@@ -95,12 +95,12 @@ const styles = {
     zIndex: 10,
     '@media (max-width: 768px)': {
       width: '80vmin',
-      height: '80vmin'
+      height: '80vmin',
     },
     '@media (max-width: 480px)': {
       width: '90vmin',
-      height: '90vmin'
-    }
+      height: '90vmin',
+    },
   },
   handBase: {
     position: 'absolute',
@@ -108,71 +108,71 @@ const styles = {
     bottom: '50%',
     transformOrigin: 'bottom center',
     borderRadius: '0.2vh',
-    filter: 'drop-shadow(1px 0 0 rgba(0,0,0,0.9))'
-  }
-}
+    filter: 'drop-shadow(1px 0 0 rgba(0,0,0,0.9))',
+  },
+};
 
 const handConfig = [
   // Hour hand configuration
   {
     img: hourHandImg,
-    size: isMobile => (isMobile ? ['17vw', '30vw'] : ['4.5vw', '11vw']),
+    size: (isMobile) => (isMobile ? ['17vw', '30vw'] : ['4.5vw', '11vw']),
     maxSize: ['80px', '200px'],
     zIndex: 5,
-    getDeg: (h, m) => (h / 10) * 360 + m / 10
+    getDeg: (h, m) => (h / 10) * 360 + m / 10,
   },
   // Minute hand configuration
   {
     img: minuteHandImg,
-    size: isMobile => (isMobile ? ['20vw', '45vw'] : ['36vw', '60vw']),
+    size: (isMobile) => (isMobile ? ['20vw', '45vw'] : ['36vw', '60vw']),
     maxSize: ['100px', '250px'],
     zIndex: 7,
-    getDeg: (h, m, s) => (m / 100) * 360 + s / 100
+    getDeg: (h, m, s) => (m / 100) * 360 + s / 100,
   },
   // Second hand configuration
   {
     img: secondHandImg,
-    size: isMobile => (isMobile ? ['20vw', '43vw'] : ['26vw', '45vw']),
+    size: (isMobile) => (isMobile ? ['20vw', '43vw'] : ['26vw', '45vw']),
     maxSize: ['80px', '250px'],
     zIndex: 9,
     opacity: 0.7,
-    getDeg: (h, m, s) => (s / 100) * 360
-  }
-]
+    getDeg: (h, m, s) => (s / 100) * 360,
+  },
+];
 
-const useMediaQuery = query => {
-  const [matches, setMatches] = useState(false)
+const useMediaQuery = (query) => {
+  const [matches, setMatches] = useState(false);
 
   useEffect(() => {
-    const media = window.matchMedia(query)
+    const media = window.matchMedia(query);
     if (media.matches !== matches) {
-      setMatches(media.matches)
+      setMatches(media.matches);
     }
-    const listener = () => setMatches(media.matches)
-    media.addListener(listener)
-    return () => media.removeListener(listener)
-  }, [matches, query])
+    const listener = () => setMatches(media.matches);
+    media.addListener(listener);
+    return () => media.removeListener(listener);
+  }, [matches, query]);
 
-  return matches
-}
+  return matches;
+};
 
-export default function Clock () {
-  const isMobile = useMediaQuery('(max-width: 768px)')
-  const [time, setTime] = useState(new Date())
-  const requestRef = useRef()
+export default function Clock() {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [time, setTime] = useState(new Date());
+  const requestRef = useRef();
 
   useEffect(() => {
-    inject251127font('revolution-font-style', fontFaceRevolution)
-    inject251127font('line-font-style', fontFaceLine)
-  }, [])
+    inject251127font('revolution-font-style', fontFaceRevolution);
+    inject251127font('line-font-style', fontFaceLine);
+  }, []);
 
   useEffect(() => {
     const animate = () => {
-      setTime(new Date())
-    }
-    const interval = setInterval(animate, 50)
-    return () => clearInterval(interval)
-  }, [])
+      setTime(new Date());
+    };
+    const interval = setInterval(animate, 50);
+    return () => clearInterval(interval);
+  }, []);
 
   // Decimal time calculation: Convert standard time to French decimal time
   // French decimal time divides the day into 10 hours, each hour into 100 minutes, each minute into 100 seconds
@@ -180,13 +180,13 @@ export default function Clock () {
     time.getHours() * 3600 +
     time.getMinutes() * 60 +
     time.getSeconds() +
-    time.getMilliseconds() / 1000 // Total seconds elapsed in standard time (86400 per day)
-  const totalDecimalSeconds = (totalStandardSeconds / 86400) * 100000 // Convert to decimal seconds (100000 per day in decimal time)
-  const decimalHours = Math.floor(totalDecimalSeconds / 10000) // Extract decimal hours (0-9)
-  const decimalMinutes = Math.floor((totalDecimalSeconds % 10000) / 100) // Extract decimal minutes (0-99)
-  const decimalSeconds = totalDecimalSeconds % 100 // Extract decimal seconds (0-99)
+    time.getMilliseconds() / 1000; // Total seconds elapsed in standard time (86400 per day)
+  const totalDecimalSeconds = (totalStandardSeconds / 86400) * 100000; // Convert to decimal seconds (100000 per day in decimal time)
+  const decimalHours = Math.floor(totalDecimalSeconds / 10000); // Extract decimal hours (0-9)
+  const decimalMinutes = Math.floor((totalDecimalSeconds % 10000) / 100); // Extract decimal minutes (0-99)
+  const decimalSeconds = totalDecimalSeconds % 100; // Extract decimal seconds (0-99)
 
-  const decimalHoursArray = Array.from({ length: 10 }, (_, i) => i + 1)
+  const decimalHoursArray = Array.from({ length: 10 }, (_, i) => i + 1);
 
   return (
     <div style={styles.container}>
@@ -200,14 +200,14 @@ export default function Clock () {
       {/* Clock face */}
       <div style={styles.dial}>
         {/* Hour markers 1–10 */}
-        {decimalHoursArray.map(hour => (
+        {decimalHoursArray.map((hour) => (
           <div
             key={hour}
             style={{
               position: 'absolute',
               width: '100%',
               height: '100%',
-              transform: `rotate(${(hour / 10) * 360}deg)`
+              transform: `rotate(${(hour / 10) * 360}deg)`,
             }}
           >
             <div
@@ -218,12 +218,12 @@ export default function Clock () {
                 transform: `translateX(-50%) rotate(-${(hour / 10) * 360}deg)`,
                 fontSize: '6vmin',
                 '@media (min-width: 768px)': {
-                  fontSize: '4vmin'
+                  fontSize: '4vmin',
                 },
                 '@media (min-width: 1200px)': {
-                  fontSize: '3vmin'
+                  fontSize: '3vmin',
                 },
-                color: '#000080'
+                color: '#000080',
               }}
             >
               {hour}
@@ -234,7 +234,7 @@ export default function Clock () {
         {/* Hands */}
         {handConfig.map(
           ({ img, size: getSize, zIndex, opacity = 1, getDeg, maxSize }, i) => {
-            const size = getSize(isMobile)
+            const size = getSize(isMobile);
             return (
               <div
                 key={i}
@@ -250,16 +250,16 @@ export default function Clock () {
                   transform: `translateX(-50%) rotate(${getDeg(
                     decimalHours,
                     decimalMinutes,
-                    decimalSeconds
-                  )}deg)`
+                    decimalSeconds,
+                  )}deg)`,
                 }}
               />
-            )
-          }
+            );
+          },
         )}
 
         <div style={styles.centerDot} />
       </div>
     </div>
-  )
+  );
 }

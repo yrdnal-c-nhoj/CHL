@@ -45,7 +45,7 @@ const RotatingAnalemmaClock = () => {
         setIsReady(true);
       })
       .catch((err) => {
-        console.error("Font failed to load:", err);
+        console.error('Font failed to load:', err);
         setIsReady(true);
       });
 
@@ -62,11 +62,14 @@ const RotatingAnalemmaClock = () => {
       const rot = -(seconds / 60) * 360; // Clockwise rotation (negative)
       rotationRef.current = rot;
       if (rotatingGroupRef.current) {
-        rotatingGroupRef.current.setAttribute('transform', `rotate(${rot}, 150, 150)`);
+        rotatingGroupRef.current.setAttribute(
+          'transform',
+          `rotate(${rot}, 150, 150)`,
+        );
       }
       rafId = requestAnimationFrame(animate); // Use RAF for smooth animation
     };
-    
+
     // Start animation loop
     rafId = requestAnimationFrame(animate);
 
@@ -86,13 +89,13 @@ const RotatingAnalemmaClock = () => {
     const B = toRad((360 / 365) * (dayOfYear - 81));
     // Equation of Time formula
     const eot = 9.87 * Math.sin(2 * B) - 7.53 * Math.cos(B) - 1.5 * Math.sin(B);
-    
+
     return {
       // Centered on 150 (middle of 300 width)
-      x: 150 + (eot * 4), 
-      y: 150 - (declination * 5),
+      x: 150 + eot * 4,
+      y: 150 - declination * 5,
       rawEot: eot,
-      rawDec: declination
+      rawDec: declination,
     };
   };
 
@@ -104,10 +107,10 @@ const RotatingAnalemmaClock = () => {
     }
     const start = new Date(time.getFullYear(), 0, 0);
     const dayOfYear = Math.floor((time - start) / (1000 * 60 * 60 * 24));
-    
+
     return {
       pathData: `M ${points.join(' L ')}`,
-      currentPos: calculateAnalemma(dayOfYear)
+      currentPos: calculateAnalemma(dayOfYear),
     };
   }, [time.getFullYear()]);
 
@@ -141,7 +144,7 @@ const RotatingAnalemmaClock = () => {
       fontFamily: `AnalemmaText, ${fontFamilyName}, sans-serif`,
       fontSize: '3.3vh',
       // letterSpacing: '0.2em',
-      zIndex: 10
+      zIndex: 10,
     },
     sideLabelRight: {
       position: 'absolute',
@@ -153,13 +156,13 @@ const RotatingAnalemmaClock = () => {
       fontSize: '3.3vh',
       color: '#F7FBFB',
       letterSpacing: '0.2vh',
-      zIndex: 10
+      zIndex: 10,
     },
     clockContainer: {
-      width: '100%',  // padding: '0 2vw',
+      width: '100%', // padding: '0 2vw',
       boxSizing: 'border-box',
       // marginTop: '2vh',
-      zIndex: 5
+      zIndex: 5,
     },
     clock: {
       display: 'flex',
@@ -176,20 +179,20 @@ const RotatingAnalemmaClock = () => {
       alignItems: 'center',
       justifyContent: 'center',
       minHeight: 0,
-      zIndex: 1 // Lower z-index so side labels stay interactive/visible
+      zIndex: 1, // Lower z-index so side labels stay interactive/visible
     },
     svg: {
       height: '100%',
       width: 'auto',
       maxWidth: '95vw',
-      overflow: 'visible' // Key for preventing clipping
-    }
+      overflow: 'visible', // Key for preventing clipping
+    },
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.sideLabelLeft}>
-       ekvacio de tempo: {currentPos.rawEot.toFixed(2)} min
+        ekvacio de tempo: {currentPos.rawEot.toFixed(2)} min
       </div>
 
       <div style={styles.sideLabelRight}>
@@ -199,19 +202,22 @@ const RotatingAnalemmaClock = () => {
       <div style={styles.clockContainer}>
         <div style={styles.clock}>
           {(() => {
-            const timeStr = time.toLocaleTimeString([], { 
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: true,
-              hourCycle: 'h12'
-            })
-            .replace(':', '')  // Remove colon
-            .replace(/([0-9])\s+([AP]M)/, '$1$2')  // Remove space before AM/PM
-            .toUpperCase();  // Ensure consistent case
-            
+            const timeStr = time
+              .toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+                hourCycle: 'h12',
+              })
+              .replace(':', '') // Remove colon
+              .replace(/([0-9])\s+([AP]M)/, '$1$2') // Remove space before AM/PM
+              .toUpperCase(); // Ensure consistent case
+
             // Split into individual characters and map to spans with equal flex
             return Array.from(timeStr).map((char, index) => (
-              <span key={index} style={{ flex: 1, textAlign: 'center' }}>{char}</span>
+              <span key={index} style={{ flex: 1, textAlign: 'center' }}>
+                {char}
+              </span>
             ));
           })()}
         </div>
@@ -221,26 +227,60 @@ const RotatingAnalemmaClock = () => {
         {/* Increased viewBox width to 300 to allow for rotation width */}
         <svg viewBox="0 0 300 300" style={styles.svg}>
           {/* Static Background Grid */}
-          <line x1="150" y1="0" x2="150" y2="300" stroke="#222" strokeWidth="1" />
-          <line x1="0" y1="150" x2="300" y2="150" stroke="#222" strokeWidth="1" />
+          <line
+            x1="150"
+            y1="0"
+            x2="150"
+            y2="300"
+            stroke="#222"
+            strokeWidth="1"
+          />
+          <line
+            x1="0"
+            y1="150"
+            x2="300"
+            y2="150"
+            stroke="#222"
+            strokeWidth="1"
+          />
 
           {/* Rotating Group - Pivoting on 150, 150 (transform updated via RAF for smoothness) */}
-          <g ref={rotatingGroupRef} transform={`rotate(${rotationRef.current || 0}, 150, 150)`}>
-            <path 
-              d={pathData} 
-              fill="none" 
-              stroke="rgba(255, 255, 255)" 
-              strokeWidth="2" 
+          <g
+            ref={rotatingGroupRef}
+            transform={`rotate(${rotationRef.current || 0}, 150, 150)`}
+          >
+            <path
+              d={pathData}
+              fill="none"
+              stroke="rgba(255, 255, 255)"
+              strokeWidth="2"
             />
-            
-            <text x="150" y="10" textAnchor="middle" fill="#F29380" fontSize="22" >SOMERO</text>
-            <text x="150" y="300" textAnchor="middle" fill="#83F7FB" fontSize="22" transform="rotate(180 150 295)">VINTRO</text>
-            
+
+            <text
+              x="150"
+              y="10"
+              textAnchor="middle"
+              fill="#F29380"
+              fontSize="22"
+            >
+              SOMERO
+            </text>
+            <text
+              x="150"
+              y="300"
+              textAnchor="middle"
+              fill="#83F7FB"
+              fontSize="22"
+              transform="rotate(180 150 295)"
+            >
+              VINTRO
+            </text>
+
             {/* The dot is placed last so it has the "highest z-index" in the SVG */}
-            <circle 
-              cx={currentPos.x} 
-              cy={currentPos.y} 
-              r="22" 
+            <circle
+              cx={currentPos.x}
+              cy={currentPos.y}
+              r="22"
               fill="#FFFF00"
               style={{ filter: 'drop-shadow(0 0 18px #FFFF00)' }}
             />

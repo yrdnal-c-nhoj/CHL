@@ -1,13 +1,13 @@
 /**
  * Clock Page Component
- * 
+ *
  * This component handles the display of individual clock pages with:
  * - Dynamic clock component loading based on date
  * - Assetpreloading (images, fonts)
  * - Smooth loading animations and transitions
  * - Navigation between different clock pages
  * - Error handling and fallbacks
- * 
+ *
  * Features:
  * - Modern React patterns with hooks and memoization
  * - Performance optimizations with lazy loading
@@ -16,21 +16,21 @@
  * - SEO-friendly with proper meta handling
  */
 
-import React, { 
-  useState, 
-  useEffect, 
-  useContext, 
-  useCallback, 
-  useMemo 
-} from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { DataContext } from "./context/DataContext";
-import Header from "./components/Header";
-import ClockPageNav from "./components/ClockPageNav";
-import styles from "./ClockPage.module.css";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+  useMemo,
+} from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { DataContext } from './context/DataContext';
+import Header from './components/Header';
+import ClockPageNav from './components/ClockPageNav';
+import styles from './ClockPage.module.css';
 
 // Preload all Clock.jsx files under /pages/**/Clock.jsx
-const clockModules = import.meta.glob("./pages/**/Clock.jsx");
+const clockModules = import.meta.glob('./pages/**/Clock.jsx');
 
 // Configuration constants
 const DATE_REGEX = /^\d{2}-\d{2}-\d{2}$/;
@@ -49,12 +49,12 @@ const useClockUtils = () => {
     const date = item?.date || item?.path;
     if (!date) return null;
 
-    const [yy, mm] = date.split("-");
+    const [yy, mm] = date.split('-');
     if (!yy || !mm) return null;
 
     const candidates = [
       `./pages/${yy}-${mm}/${item.path}/Clock.jsx`, // month/day structure
-      `./pages/${item.path}/Clock.jsx`,             // legacy flat structure
+      `./pages/${item.path}/Clock.jsx`, // legacy flat structure
     ];
 
     for (const key of candidates) {
@@ -67,9 +67,14 @@ const useClockUtils = () => {
   /**
    * Normalize date format for consistent comparison
    */
-  const normalizeDate = useCallback((d) => 
-    d.split("-").map((n) => n.padStart(2, "0")).join("-")
-  , []);
+  const normalizeDate = useCallback(
+    (d) =>
+      d
+        .split('-')
+        .map((n) => n.padStart(2, '0'))
+        .join('-'),
+    [],
+  );
 
   return { getClockModuleKey, normalizeDate };
 };
@@ -84,8 +89,8 @@ const useAssetPreloader = () => {
     // Preload images exported from module
     const images = Object.values(module).filter(
       (value) =>
-        typeof value === "string" &&
-        /\.(jpg|jpeg|png|webp|gif|mp4|webm)$/i.test(value)
+        typeof value === 'string' &&
+        /\.(jpg|jpeg|png|webp|gif|mp4|webm)$/i.test(value),
     );
 
     const imagePromises = images.map(
@@ -102,36 +107,30 @@ const useAssetPreloader = () => {
             img.src = src;
             img.onload = img.onerror = resolve;
           }
-        })
+        }),
     );
 
     // Helper to avoid hanging forever on fonts.ready
     const fontPromise = (() => {
       try {
         // Modern browser check with safety
-        if (typeof document !== "undefined" && 'fonts' in document) {
+        if (typeof document !== 'undefined' && 'fonts' in document) {
           return new Promise((resolve) => {
             // Use the promise, but don't let it block indefinitely
-            document.fonts.ready
-              .then(() => resolve())
-                   .catch(() => resolve()); // Fail open
-          
-          // Hard timeout to prevent blank screens on buggy mobile browsers
-          setTimeout(resolve, 2000);
-        });
-      }
-    } catch {
+            document.fonts.ready.then(() => resolve()).catch(() => resolve()); // Fail open
 
+            // Hard timeout to prevent blank screens on buggy mobile browsers
+            setTimeout(resolve, 2000);
+          });
+        }
+      } catch {
         // ignore and fall through to resolved promise
       }
       return Promise.resolve();
     })();
 
     // Wait for images and (optionally) fonts to load, but never hang
-    await Promise.all([
-      ...imagePromises,
-      fontPromise,
-    ]);
+    await Promise.all([...imagePromises, fontPromise]);
 
     return true;
   }, []);
@@ -157,9 +156,9 @@ const ClockPage = () => {
   const [headerOpacity, setHeaderOpacity] = useState(1);
 
   // Memoized normalized date
-  const normalizedDate = useMemo(() => 
-    normalizeDate(date || ""), 
-    [date, normalizeDate]
+  const normalizedDate = useMemo(
+    () => normalizeDate(date || ''),
+    [date, normalizeDate],
   );
 
   // Header fade-out animation
@@ -174,7 +173,7 @@ const ClockPage = () => {
   // Validate date format and redirect if invalid
   useEffect(() => {
     if (!date || !DATE_REGEX.test(date)) {
-      navigate("/", { replace: true });
+      navigate('/', { replace: true });
     }
   }, [date, navigate]);
 
@@ -191,13 +190,14 @@ const ClockPage = () => {
     }
 
     const currentIndex = items.findIndex(
-      (item) => normalizeDate(item.date) === normalizedDate
+      (item) => normalizeDate(item.date) === normalizedDate,
     );
 
     return {
       currentIndex,
       prevItem: currentIndex > 0 ? items[currentIndex - 1] : null,
-      nextItem: currentIndex < items.length - 1 ? items[currentIndex + 1] : null,
+      nextItem:
+        currentIndex < items.length - 1 ? items[currentIndex + 1] : null,
     };
   }, [items, normalizedDate, normalizeDate]);
 
@@ -207,7 +207,7 @@ const ClockPage = () => {
       try {
         if (loading || !currentItem) {
           if (!loading && (!items || items.length === 0)) {
-            setPageError("No clock is available.");
+            setPageError('No clock is available.');
           }
           return;
         }
@@ -231,9 +231,8 @@ const ClockPage = () => {
 
         // Assets are preloaded, fade out the overlay
         setTimeout(() => setOverlayVisible(false), OVERLAY_FADE_DURATION);
-
       } catch (error) {
-        console.error("Failed to load clock:", error);
+        console.error('Failed to load clock:', error);
         setPageError(`Failed to load clock: ${error.message}`);
       }
     };
@@ -242,41 +241,46 @@ const ClockPage = () => {
   }, [currentItem, loading, items, getClockModuleKey, preloadAssets]);
 
   // Memoized title and date formatting functions
-  const formatTitle = useCallback((title) => 
-    title?.replace(/clock/i, "").trim() || "Home", 
-  []);
+  const formatTitle = useCallback(
+    (title) => title?.replace(/clock/i, '').trim() || 'Home',
+    [],
+  );
 
-  const formatDate = useCallback((dateString) => 
-    dateString.replace(/-/g, "."), 
-  []);
+  const formatDate = useCallback(
+    (dateString) => dateString.replace(/-/g, '.'),
+    [],
+  );
 
   // Error state display
   if (pageError) {
     return (
-      <div className={styles.container} style={{
-        width: "100vw", 
-        height: "100vh", 
-        overflow: "hidden", 
-        backgroundColor: "#000",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        color: "#fff",
-        fontFamily: "monospace"
-      }}>
+      <div
+        className={styles.container}
+        style={{
+          width: '100vw',
+          height: '100vh',
+          overflow: 'hidden',
+          backgroundColor: '#000',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          color: '#fff',
+          fontFamily: 'monospace',
+        }}
+      >
         <h1>Error</h1>
         <p>{pageError}</p>
-        <button 
-          onClick={() => navigate("/")}
+        <button
+          onClick={() => navigate('/')}
           style={{
-            background: "#fff",
-            color: "#000",
-            border: "none",
-            padding: "10px 20px",
-            borderRadius: "4px",
-            cursor: "pointer",
-            marginTop: "20px"
+            background: '#fff',
+            color: '#000',
+            border: 'none',
+            padding: '10px 20px',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            marginTop: '20px',
           }}
         >
           Back to Home
@@ -286,16 +290,16 @@ const ClockPage = () => {
   }
 
   return (
-    <div 
-      className={`${styles.container} ${isReady ? styles.loaded : ''}`} 
-      style={{ 
-        width: "100vw", 
-        height: "100vh",
-        overflow: "hidden", 
-        backgroundColor: "#000",
-        position: "fixed", 
+    <div
+      className={`${styles.container} ${isReady ? styles.loaded : ''}`}
+      style={{
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+        backgroundColor: '#000',
+        position: 'fixed',
         top: 0,
-        left: 0
+        left: 0,
       }}
     >
       {/* Header with fade animation */}
@@ -303,13 +307,13 @@ const ClockPage = () => {
         <div
           style={{
             opacity: headerOpacity,
-            transition: "opacity 0.5s ease-out",
-            pointerEvents: headerOpacity > 0 ? "auto" : "none",
-            position: "absolute",
+            transition: 'opacity 0.5s ease-out',
+            pointerEvents: headerOpacity > 0 ? 'auto' : 'none',
+            position: 'absolute',
             top: 0,
             left: 0,
             right: 0,
-            zIndex: 1000
+            zIndex: 1000,
           }}
         >
           <Header visible={headerOpacity > 0} />
@@ -318,20 +322,22 @@ const ClockPage = () => {
 
       {/* Clock component without animation */}
       {isReady && ClockComponent && (
-        <div style={{ 
-          width: "100%", 
-          height: "100vh", // Full viewport height
-          position: "absolute",
-          top: 0,
-          left: 0,
-          overflow: "hidden" // Prevent clock overflow
-        }}>
+        <div
+          style={{
+            width: '100%',
+            height: '100vh', // Full viewport height
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            overflow: 'hidden', // Prevent clock overflow
+          }}
+        >
           <div
             style={{
-              all: "initial",
-              display: "block",
-              width: "100%",
-              height: "100%", // Fill full viewport
+              all: 'initial',
+              display: 'block',
+              width: '100%',
+              height: '100%', // Fill full viewport
               opacity: 1, // Remove animation, start fully visible
             }}
           >
@@ -354,13 +360,13 @@ const ClockPage = () => {
       {/* Loading overlay */}
       <div
         style={{
-          position: "fixed",
+          position: 'fixed',
           inset: 0,
-          width: "100vw",
-          height: "100vh",
-          backgroundColor: "#000",
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: '#000',
           zIndex: 9999,
-          pointerEvents: "none",
+          pointerEvents: 'none',
           opacity: overlayVisible ? 1 : 0,
           transition: `opacity ${OVERLAY_FADE_DURATION}ms ease-out`,
         }}

@@ -32,23 +32,26 @@ const WarholGraveCamClock = () => {
 
     // Method 1: FontFace API
     const font = new FontFace('Map', `url(${mapFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-    }).catch((error) => {
-      console.error('Font loading failed:', error);
-      // Method 2: CSS injection as fallback
-      if (!document.getElementById('map-font-style')) {
-        const style = document.createElement('style');
-        style.id = 'map-font-style';
-        style.innerHTML = `
+    font
+      .load()
+      .then((loadedFont) => {
+        document.fonts.add(loadedFont);
+      })
+      .catch((error) => {
+        console.error('Font loading failed:', error);
+        // Method 2: CSS injection as fallback
+        if (!document.getElementById('map-font-style')) {
+          const style = document.createElement('style');
+          style.id = 'map-font-style';
+          style.innerHTML = `
           @font-face {
             font-family: 'Map';
             src: url(${mapFont}) format('truetype');
           }
         `;
-        document.head.appendChild(style);
-      }
-    });
+          document.head.appendChild(style);
+        }
+      });
   }, []);
 
   const digitStyle = {

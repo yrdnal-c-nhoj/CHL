@@ -2,12 +2,17 @@ import { useState, useEffect, useCallback } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 
 // Import all the fonts from the directory
-const fontImports = import.meta.glob('../../../assets/fonts/26-03-10/*.{ttf,otf}');
+const fontImports = import.meta.glob(
+  '../../../assets/fonts/26-03-10/*.{ttf,otf}',
+);
 
-const fontNames = Object.keys(fontImports).map(path => {
-    const font = new FontFace(path.split('/').pop().split('.')[0], `url(${path})`);
-    font.load();
-    return font.family;
+const fontNames = Object.keys(fontImports).map((path) => {
+  const font = new FontFace(
+    path.split('/').pop().split('.')[0],
+    `url(${path})`,
+  );
+  font.load();
+  return font.family;
 });
 
 const KittyClockComponent = () => {
@@ -18,21 +23,23 @@ const KittyClockComponent = () => {
 
   const fontReady = useFontLoader(fontNames, undefined, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   const getNewKitty = useCallback(async () => {
     try {
-      const response = await fetch('https://api.thecatapi.com/v1/images/search');
+      const response = await fetch(
+        'https://api.thecatapi.com/v1/images/search',
+      );
       const data = await response.json();
-      
+
       if (data && data[0]?.url) {
         const nextUrl = data[0].url;
 
         const img = new Image();
         img.src = nextUrl;
         img.onload = () => {
-          setImages(prev => ({ ...prev, next: nextUrl }));
+          setImages((prev) => ({ ...prev, next: nextUrl }));
           setIsTransitioning(true);
 
           setTimeout(() => {
@@ -49,10 +56,10 @@ const KittyClockComponent = () => {
   useEffect(() => {
     getNewKitty();
     const clockInterval = setInterval(() => {
-        setTime(new Date());
-        setCurrentFont(fontNames[Math.floor(Math.random() * fontNames.length)]);
+      setTime(new Date());
+      setCurrentFont(fontNames[Math.floor(Math.random() * fontNames.length)]);
     }, 1000);
-    const imageInterval = setInterval(getNewKitty, 5000); 
+    const imageInterval = setInterval(getNewKitty, 5000);
 
     return () => {
       clearInterval(clockInterval);
@@ -65,7 +72,9 @@ const KittyClockComponent = () => {
     const minutes = date.getMinutes();
     const ampm = hours >= 12 ? 'pm' : 'am';
     hours = hours % 12 || 12;
-    return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`.split('').join(' ');
+    return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`
+      .split('')
+      .join(' ');
   };
 
   const containerStyle = {
@@ -100,7 +109,7 @@ const KittyClockComponent = () => {
     opacity: fontReady ? 1 : 0,
     transition: 'opacity 0.5s ease, font-family 0.5s ease',
     transform: 'translateY(12vh)',
-    pointerEvents: 'none'
+    pointerEvents: 'none',
   };
 
   return (
@@ -109,7 +118,7 @@ const KittyClockComponent = () => {
         style={{
           ...layerStyle,
           backgroundImage: `url(${images.current})`,
-          zIndex: 1
+          zIndex: 1,
         }}
       />
       <div
@@ -117,12 +126,10 @@ const KittyClockComponent = () => {
           ...layerStyle,
           backgroundImage: `url(${images.next})`,
           opacity: isTransitioning ? 1 : 0,
-          zIndex: 2
+          zIndex: 2,
         }}
       />
-      <div style={clockStyle}>
-        {formatTime(time)}
-      </div>
+      <div style={clockStyle}>{formatTime(time)}</div>
     </div>
   );
 };

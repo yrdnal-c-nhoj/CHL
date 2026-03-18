@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';import sandTexture from '../../../assets/images/25-12/25-12-19/sand.webp';
+import { useFontLoader } from '../../../utils/fontLoader';
+import sandTexture from '../../../assets/images/25-12/25-12-19/sand.webp';
 
 const FONT_FAMILY = 'DateFont';
 import FONT_PATH from '../../../assets/fonts/hour.ttf?url';
@@ -26,7 +27,8 @@ const HourglassTimer = () => {
   useEffect(() => {
     const updateSand = () => {
       const now = new Date();
-      const secondsPassed = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+      const secondsPassed =
+        now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
       setPercentDayPassed((secondsPassed / 86400) * 100);
     };
 
@@ -36,8 +38,8 @@ const HourglassTimer = () => {
   }, []);
 
   const formatTimeLabel = (h) => {
-    if (h === 0 || h === 24) return "12";
-    if (h === 12) return "12";
+    if (h === 0 || h === 24) return '12';
+    if (h === 12) return '12';
     return h > 12 ? `${h - 12}` : `${h}`;
   };
 
@@ -57,7 +59,7 @@ const HourglassTimer = () => {
     overflow: 'hidden',
     opacity: fontLoaded ? 1 : 0,
     transition: 'opacity 0.3s ease-in-out',
-    pointerEvents: fontLoaded ? 'auto' : 'none'
+    pointerEvents: fontLoaded ? 'auto' : 'none',
   };
 
   const bulbStyle = {
@@ -82,7 +84,7 @@ const HourglassTimer = () => {
     // opacity: 0.9,
     backgroundPosition: 'bottom',
     zIndex: 5,
-    filter: 'contrast(0.8) brightness(1.3) saturate(1.3)'
+    filter: 'contrast(0.8) brightness(1.3) saturate(1.3)',
   };
 
   const timeLabelStyle = {
@@ -100,25 +102,42 @@ const HourglassTimer = () => {
   const bulbMarkings = Array.from({ length: 13 }, (_, i) => i * 2);
 
   const renderBulbMarkings = (isTopBulb) => {
-    return bulbMarkings.map(hour => {
+    return bulbMarkings.map((hour) => {
       const position = (hour / 24) * 100;
       return (
-        <div key={hour} style={{
-          position: 'absolute',
-          [isTopBulb ? 'top' : 'bottom']: `${position}%`,
-          left: 0,
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 10,
-          pointerEvents: 'none',
-          mixBlendMode: 'difference',
-          transform: `translateY(${isTopBulb ? '-50%' : '50%'})`,
-        }}>
-          <div style={{ flex: 1, borderBottom: '1px solid #EA3D54FF', opacity: 0.9 }} />
-          <span style={{ ...timeLabelStyle, zIndex: 20 }}>{formatTimeLabel(hour)}</span>
-          <div style={{ flex: 1, borderBottom: '1px solid #EA3D54FF', opacity: 0.9 }} />
+        <div
+          key={hour}
+          style={{
+            position: 'absolute',
+            [isTopBulb ? 'top' : 'bottom']: `${position}%`,
+            left: 0,
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 10,
+            pointerEvents: 'none',
+            mixBlendMode: 'difference',
+            transform: `translateY(${isTopBulb ? '-50%' : '50%'})`,
+          }}
+        >
+          <div
+            style={{
+              flex: 1,
+              borderBottom: '1px solid #EA3D54FF',
+              opacity: 0.9,
+            }}
+          />
+          <span style={{ ...timeLabelStyle, zIndex: 20 }}>
+            {formatTimeLabel(hour)}
+          </span>
+          <div
+            style={{
+              flex: 1,
+              borderBottom: '1px solid #EA3D54FF',
+              opacity: 0.9,
+            }}
+          />
         </div>
       );
     });
@@ -133,48 +152,66 @@ const HourglassTimer = () => {
         }
       `}</style>
 
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
         {/* TOP BULB */}
-        <div style={{ ...bulbStyle, clipPath: 'polygon(0% 0%, 100% 0%, 50% 100%)' }}>
+        <div
+          style={{
+            ...bulbStyle,
+            clipPath: 'polygon(0% 0%, 100% 0%, 50% 100%)',
+          }}
+        >
           <div style={{ ...sandStyle, height: `${100 - percentDayPassed}%` }} />
           {renderBulbMarkings(true)}
         </div>
 
         {/* DYNAMIC NECK & STREAM */}
-        <div style={{
-          height: '1vh',
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          position: 'relative',
-          overflow: 'visible'
-        }}>
+        <div
+          style={{
+            height: '1vh',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            position: 'relative',
+            overflow: 'visible',
+          }}
+        >
           {/* The constant stream of falling sand */}
-          <div style={{
-            width: '4px',
-            height: '46vh', // Reaches into the bottom bulb
-            position: 'absolute',
-            top: 0,
-            backgroundImage: `url(${sandTexture})`,
-            backgroundSize: '10px 50px',
-            backgroundColor: '#ECE7E1FF',
-            backgroundBlendMode: 'multiply',
-            animation: 'flow 0.5s linear infinite',
-            zIndex: 1,
+          <div
+            style={{
+              width: '4px',
+              height: '46vh', // Reaches into the bottom bulb
+              position: 'absolute',
+              top: 0,
+              backgroundImage: `url(${sandTexture})`,
+              backgroundSize: '10px 50px',
+              backgroundColor: '#ECE7E1FF',
+              backgroundBlendMode: 'multiply',
+              animation: 'flow 0.5s linear infinite',
+              zIndex: 1,
 
-    filter: 'contrast(0.8) brightness(1.3) saturate(1.3)'
+              filter: 'contrast(0.8) brightness(1.3) saturate(1.3)',
 
-            // boxShadow: '0 0 5px rgba(245, 225, 206, 0.9)'
-          }} />
+              // boxShadow: '0 0 5px rgba(245, 225, 206, 0.9)'
+            }}
+          />
         </div>
 
         {/* BOTTOM BULB */}
-        <div style={{ ...bulbStyle, clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }}>
+        <div
+          style={{
+            ...bulbStyle,
+            clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+          }}
+        >
           <div style={{ ...sandStyle, height: `${percentDayPassed}%` }} />
           {renderBulbMarkings(false)}
         </div>
-
       </div>
     </div>
   );

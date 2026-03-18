@@ -1,7 +1,7 @@
 // File: DigitalStackClock.jsx
-import React, { useEffect, useState } from "react";
-import bgImg from "../../../assets/images/25-11/25-11-23/gs.webp";           // your background
-import font2025_11_24 from "../../../assets/fonts/25-11-23-gal.ttf?url"; // your custom font
+import React, { useEffect, useState } from 'react';
+import bgImg from '../../../assets/images/25-11/25-11-23/gs.webp'; // your background
+import font2025_11_24 from '../../../assets/fonts/25-11-23-gal.ttf?url'; // your custom font
 
 export default function DigitalStackClock() {
   const [now, setNow] = useState(new Date());
@@ -23,52 +23,51 @@ export default function DigitalStackClock() {
   }, []);
 
   // Format time
-  const hh = String(now.getHours()).padStart(2, "0");
-  const mm = String(now.getMinutes()).padStart(2, "0");
-  const ss = String(now.getSeconds()).padStart(2, "0");
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
 
   // Styles
   const containerStyle = {
-    minHeight: "100dvh",           // fixes mobile Chrome centering
-    width: "100vw",
+    minHeight: '100dvh', // fixes mobile Chrome centering
+    width: '100vw',
     margin: 0,
-    padding: "4dvh 2vw",
-    boxSizing: "border-box",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    padding: '4dvh 2vw',
+    boxSizing: 'border-box',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     background: `url(${bgImg}) center/cover no-repeat`,
     fontFamily: '"CustomClock", system-ui, monospace',
   };
 
   const panelStyle = {
-    display: "flex",
-    flexDirection: "column",       // mobile = stacked
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "3vh",
-    width: "min(92vw, 70vh)",
-    padding: "3vh 2.5vw",
+    display: 'flex',
+    flexDirection: 'column', // mobile = stacked
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '3vh',
+    width: 'min(92vw, 70vh)',
+    padding: '3vh 2.5vw',
   };
 
   const digitRow = {
-    display: "flex",
-    gap: "1vh",
+    display: 'flex',
+    gap: '1vh',
   };
 
   const digitStyle = {
-    width: "14vh",
-    height: "18vh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "24vh",
-    fontVariantNumeric: "tabular-nums",
-    color: "#07487DFF",
+    width: '14vh',
+    height: '18vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '24vh',
+    fontVariantNumeric: 'tabular-nums',
+    color: '#07487DFF',
 
-    borderRadius: "1vh",
-    userSelect: "none",
-
+    borderRadius: '1vh',
+    userSelect: 'none',
   };
 
   return (
@@ -115,7 +114,7 @@ export default function DigitalStackClock() {
         />
 
         {/* Clock becomes visible only when font is loaded */}
-        <div className={`clock-root ${fontReady ? "font-ready" : ""}`}>
+        <div className={`clock-root ${fontReady ? 'font-ready' : ''}`}>
           <div className="clock-layout" style={panelStyle}>
             {/* HOURS */}
             <div style={digitRow}>

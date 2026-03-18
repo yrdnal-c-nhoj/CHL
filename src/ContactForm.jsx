@@ -8,22 +8,23 @@ const ContactForm = () => {
   const sendEmail = (e) => {
     e.preventDefault();
 
-    emailjs.sendForm(
-      'service_22mck9l',     // Replace with your actual service ID
-      'template_q5d1j6q',    // Replace with your actual template ID
-      form.current,
-      '8pV1DN6kZkdOvnJom'     // Replace with your actual public key
-    )
-    .then(
-      (result) => {
-        console.log('Success:', result.text);
-        alert('Message sent!');
-      },
-      (error) => {
-        console.error('Error:', error.text);
-        alert('Failed to send message.');
-      }
-    );
+    emailjs
+      .sendForm(
+        'service_22mck9l', // Replace with your actual service ID
+        'template_q5d1j6q', // Replace with your actual template ID
+        form.current,
+        '8pV1DN6kZkdOvnJom', // Replace with your actual public key
+      )
+      .then(
+        (result) => {
+          console.log('Success:', result.text);
+          alert('Message sent!');
+        },
+        (error) => {
+          console.error('Error:', error.text);
+          alert('Failed to send message.');
+        },
+      );
   };
 
   return (

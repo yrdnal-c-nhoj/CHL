@@ -16,13 +16,33 @@ import digit12 from '../../../assets/images/25-08/25-08-14/12.gif';
 import customFont from '../../../assets/fonts/25-08-14-bir.ttf';
 
 const digitImages = [
-  digit1, digit2, digit3, digit4, digit5, digit6,
-  digit7, digit8, digit9, digit10, digit11, digit12
+  digit1,
+  digit2,
+  digit3,
+  digit4,
+  digit5,
+  digit6,
+  digit7,
+  digit8,
+  digit9,
+  digit10,
+  digit11,
+  digit12,
 ];
 
 const words = [
-  'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP',
-  'OCT', 'NOV', 'DEC', 'JAN', 'FEB', 'MAR'
+  'APR',
+  'MAY',
+  'JUN',
+  'JUL',
+  'AUG',
+  'SEP',
+  'OCT',
+  'NOV',
+  'DEC',
+  'JAN',
+  'FEB',
+  'MAR',
 ];
 
 const AnalogClock = () => {
@@ -40,7 +60,7 @@ const AnalogClock = () => {
   // Enhanced font loading with error handling
   useEffect(() => {
     const fontName = 'CustomClockFont';
-    
+
     // Check if font is already loaded
     if (document.fonts) {
       document.fonts.ready.then(() => {
@@ -70,12 +90,14 @@ const AnalogClock = () => {
         -moz-osx-font-smoothing: grayscale;
       }
     `;
-    
+
     document.head.appendChild(style);
-    
+
     // Cleanup
     return () => {
-      const existingStyle = document.head.querySelector('style[data-font="custom-clock-font"]');
+      const existingStyle = document.head.querySelector(
+        'style[data-font="custom-clock-font"]',
+      );
       if (existingStyle) {
         document.head.removeChild(existingStyle);
       }
@@ -85,7 +107,7 @@ const AnalogClock = () => {
   // Calculate angles
   const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
   const minutes = now.getMinutes() + seconds / 60;
-  const hours = now.getHours() % 12 + minutes / 60;
+  const hours = (now.getHours() % 12) + minutes / 60;
 
   const secondDeg = seconds * 6;
   const minuteDeg = minutes * 6;
@@ -95,7 +117,7 @@ const AnalogClock = () => {
     width: '100vw',
     height: '100dvh',
     position: 'relative',
-    overflow: 'hidden'
+    overflow: 'hidden',
   };
 
   const backgroundStyle = {
@@ -106,7 +128,7 @@ const AnalogClock = () => {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     filter: 'brightness(0.4)',
-    zIndex: 0
+    zIndex: 0,
   };
 
   const clockContainerStyle = {
@@ -115,7 +137,7 @@ const AnalogClock = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%'
+    height: '100%',
   };
 
   const clockStyle = {
@@ -147,12 +169,14 @@ const AnalogClock = () => {
                   position: 'absolute',
                   top: '50%',
                   left: '50%',
-                  width: '13vmin',      // bigger digits
+                  width: '13vmin', // bigger digits
                   height: '13vmin',
                   transform: `translate(-50%, -50%) rotate(${angle}deg) translate(0, -35vmin) rotate(-${angle}deg)`,
                 }}
               >
-                <img decoding="async" loading="lazy"
+                <img
+                  decoding="async"
+                  loading="lazy"
                   src={digit}
                   alt={`${index + 1}`}
                   style={{ width: '100%', height: '100%' }}
@@ -175,7 +199,7 @@ const AnalogClock = () => {
                   transform: `rotate(${angle}deg) translateX(9vmin)`, // pushed closer to digits
                   transformOrigin: 'left center',
                   color: '#C8C1C1FF',
-                  fontSize: '1.6rem',   // bigger font
+                  fontSize: '1.6rem', // bigger font
                   fontFamily: 'CustomClockFont',
                   textAlign: 'right',
                   letterSpacing: '0.1em',
@@ -183,7 +207,7 @@ const AnalogClock = () => {
                   pointerEvents: 'none',
                   fontSmooth: 'always',
                   WebkitFontSmoothing: 'antialiased',
-                  MozOsxFontSmoothing: 'grayscale'
+                  MozOsxFontSmoothing: 'grayscale',
                 }}
               >
                 {word}
@@ -196,10 +220,10 @@ const AnalogClock = () => {
             style={{
               ...handCommonStyle,
               width: '1vmin',
-              height: '22vmin',   // longer hand
+              height: '22vmin', // longer hand
               backgroundColor: '#F9F6F6FF',
               opacity: 0.6,
-              transform: `translateX(-50%) rotate(${hourDeg}deg)`
+              transform: `translateX(-50%) rotate(${hourDeg}deg)`,
             }}
           />
           {/* Minute Hand */}
@@ -210,7 +234,7 @@ const AnalogClock = () => {
               height: '33vmin',
               backgroundColor: '#F7EFEFFF',
               opacity: 0.6,
-              transform: `translateX(-50%) rotate(${minuteDeg}deg)`
+              transform: `translateX(-50%) rotate(${minuteDeg}deg)`,
             }}
           />
           {/* Second Hand */}
@@ -221,7 +245,7 @@ const AnalogClock = () => {
               height: '33vmin',
               backgroundColor: '#F7EFEFFF',
               opacity: 0.6,
-              transform: `translateX(-50%) rotate(${secondDeg}deg)`
+              transform: `translateX(-50%) rotate(${secondDeg}deg)`,
             }}
           />
 

@@ -1,58 +1,58 @@
-import React, { useEffect, useState } from 'react'
-import bgImage from '../../../assets/images/25-09/25-09-16/bg.jpg'
+import React, { useEffect, useState } from 'react';
+import bgImage from '../../../assets/images/25-09/25-09-16/bg.jpg';
 import d250916font from '../../../assets/fonts/25-09-16-baud.ttf?url';
 
 const Clock = () => {
-  const [time, setTime] = useState(new Date())
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [time, setTime] = useState(new Date());
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Update time every second
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000)
-    return () => clearInterval(timer)
-  }, [])
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Preload font and image
   useEffect(() => {
     // Inject font-face
-    const style = document.createElement('style')
+    const style = document.createElement('style');
     style.textContent = `
       @font-face {
         font-family: 'MyD250916font';
         src: url(${d250916font}) format('truetype');
         font-display: swap;
       }
-    `
-    document.head.appendChild(style)
+    `;
+    document.head.appendChild(style);
 
     // Font preload
-    const fontPromise = document.fonts.load('10rem MyD250916font')
+    const fontPromise = document.fonts.load('10rem MyD250916font');
 
     // Background image preload
     const imagePromise = new Promise((resolve, reject) => {
-      const img = new Image()
-      img.src = bgImage
-      img.onload = resolve
-      img.onerror = reject
-    })
+      const img = new Image();
+      img.src = bgImage;
+      img.onload = resolve;
+      img.onerror = reject;
+    });
 
     // Wait for both
     Promise.all([fontPromise, imagePromise])
       .then(() => setIsLoaded(true))
-      .catch(err => {
-        console.error('Asset loading error:', err)
-        setIsLoaded(true) // fallback
-      })
+      .catch((err) => {
+        console.error('Asset loading error:', err);
+        setIsLoaded(true); // fallback
+      });
 
     return () => {
-      document.head.removeChild(style)
-    }
-  }, [])
+      document.head.removeChild(style);
+    };
+  }, []);
 
   // Format time
-  const hours = String(((time.getHours() + 11) % 12) + 1).padStart(2, '0')
-  const minutes = String(time.getMinutes()).padStart(2, '0')
-  const seconds = String(time.getSeconds()).padStart(2, '0')
+  const hours = String(((time.getHours() + 11) % 12) + 1).padStart(2, '0');
+  const minutes = String(time.getMinutes()).padStart(2, '0');
+  const seconds = String(time.getSeconds()).padStart(2, '0');
 
   const digitBox = {
     display: 'flex',
@@ -81,8 +81,8 @@ const Clock = () => {
       0 0 80px #ffffff,
       0 0 90px #ffffff,
       0 0 99px #ffffff
-    `
-  }
+    `,
+  };
 
   const containerStyle = {
     height: '100dvh',
@@ -93,22 +93,22 @@ const Clock = () => {
     backgroundColor: 'black', // fallback black until loaded
     backgroundImage: isLoaded ? `url(${bgImage})` : 'none',
     backgroundSize: 'cover',
-    backgroundPosition: 'center'
-  }
+    backgroundPosition: 'center',
+  };
 
   const faceStyle = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  };
 
-  const renderDigits = value =>
+  const renderDigits = (value) =>
     value.split('').map((d, i) => (
       <div key={i} style={digitBox}>
         {d}
       </div>
-    ))
+    ));
 
   // Show black screen until everything is ready
   if (!isLoaded) {
@@ -116,7 +116,7 @@ const Clock = () => {
       <div
         style={{ height: '100dvh', width: '100vw', backgroundColor: 'black' }}
       />
-    )
+    );
   }
 
   return (
@@ -129,7 +129,7 @@ const Clock = () => {
         {renderDigits(seconds)}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Clock
+export default Clock;

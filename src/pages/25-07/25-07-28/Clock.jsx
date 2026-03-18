@@ -18,17 +18,19 @@ const Clock = () => {
   };
 
   return (
-    <div style={{
-      height: '100dvh',
-      width: '100vw',
-      backgroundImage: `url(${backgroundImage})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      fontFamily: 'CustomFont, sans-serif',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}>
+    <div
+      style={{
+        height: '100dvh',
+        width: '100vw',
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        fontFamily: 'CustomFont, sans-serif',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <style>
         {`
           @font-face {
@@ -39,7 +41,13 @@ const Clock = () => {
           }
         `}
       </style>
-      <div style={{ fontSize: '4rem', color: '#F0ECD8FF', textShadow: '0 0 1rem black' }}>
+      <div
+        style={{
+          fontSize: '4rem',
+          color: '#F0ECD8FF',
+          textShadow: '0 0 1rem black',
+        }}
+      >
         {getFormattedTime()}
       </div>
     </div>

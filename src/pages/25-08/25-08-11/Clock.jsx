@@ -16,20 +16,37 @@ import img11 from '../../../assets/images/25-08/25-08-11/y.gif';
 
 const SwirlingImages = () => {
   const imageSizes = [9, 8, 10, 11, 9, 9, 9, 11, 9, 9, 8];
-  const [viewport, setViewport] = useState({ width: window.innerWidth, height: window.innerHeight });
+  const [viewport, setViewport] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
   const [time, setTime] = useState(new Date());
 
   const imagesRef = useRef(null);
 
   if (!imagesRef.current) {
     const remToPx = (rem) => rem * 16;
-    const maxImageHalfPx = Math.max(...imageSizes) / 2 * 16;
-    const baseOrbitRadiusPx = Math.min(viewport.width, viewport.height) / 2 - maxImageHalfPx - 10;
+    const maxImageHalfPx = (Math.max(...imageSizes) / 2) * 16;
+    const baseOrbitRadiusPx =
+      Math.min(viewport.width, viewport.height) / 2 - maxImageHalfPx - 10;
 
     const orbitRadiusFactor = 0.65;
-    const baseOrbitRadiusVh = ((baseOrbitRadiusPx / viewport.height) * 100) * orbitRadiusFactor;
+    const baseOrbitRadiusVh =
+      (baseOrbitRadiusPx / viewport.height) * 100 * orbitRadiusFactor;
 
-    imagesRef.current = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11].map((src, i) => {
+    imagesRef.current = [
+      img1,
+      img2,
+      img3,
+      img4,
+      img5,
+      img6,
+      img7,
+      img8,
+      img9,
+      img10,
+      img11,
+    ].map((src, i) => {
       const direction = Math.random() > 0.5 ? 1 : -1;
       const baseSpeed = 3;
       const speedVariance = Math.random() * 3;
@@ -52,7 +69,8 @@ const SwirlingImages = () => {
   const images = imagesRef.current;
 
   useEffect(() => {
-    const onResize = () => setViewport({ width: window.innerWidth, height: window.innerHeight });
+    const onResize = () =>
+      setViewport({ width: window.innerWidth, height: window.innerHeight });
     window.addEventListener('resize', onResize);
 
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -246,13 +264,25 @@ const SwirlingImages = () => {
   return (
     <div style={containerStyle}>
       <div style={backgroundStyle} />
-      <img decoding="async" loading="lazy" src={topImage} alt="Top image overlay" style={topImageStyle} />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={topImage}
+        alt="Top image overlay"
+        style={topImageStyle}
+      />
 
       <div style={imageContainerStyle}>
         {images.map((img) => (
           <div key={img.id} style={getOrbitWrapperStyle(img)}>
             <div style={getInnerWrapperStyle(img)}>
-              <img decoding="async" loading="lazy" src={img.src} alt={`Swirling image ${img.id + 1}`} style={getImageStyle(img)} />
+              <img
+                decoding="async"
+                loading="lazy"
+                src={img.src}
+                alt={`Swirling image ${img.id + 1}`}
+                style={getImageStyle(img)}
+              />
             </div>
           </div>
         ))}

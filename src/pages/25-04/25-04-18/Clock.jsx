@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 import backgroundImg from '../../../assets/images/25-04/25-04-18/Antarctica.jpg';
 
 const AntarcticaClock = () => {
@@ -17,9 +17,9 @@ const AntarcticaClock = () => {
 
     // Create tick marks
     for (let i = 0; i < 60; i++) {
-      const tick = document.createElement("div");
-      tick.className = "tick";
-      if (i % 5 === 0) tick.classList.add("major");
+      const tick = document.createElement('div');
+      tick.className = 'tick';
+      if (i % 5 === 0) tick.classList.add('major');
       tick.style.transform = `rotate(${i * 6}deg)`;
       clock.appendChild(tick);
     }
@@ -133,25 +133,31 @@ const AntarcticaClock = () => {
 
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100dvh",
-          width: "100vw",
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100dvh',
+          width: '100vw',
           margin: 0,
-          overflow: "hidden",
-          position: "relative",
+          overflow: 'hidden',
+          position: 'relative',
         }}
       >
-        <img decoding="async" loading="lazy" src={backgroundImg} alt="Antarctica" className="bgimage" />
+        <img
+          decoding="async"
+          loading="lazy"
+          src={backgroundImg}
+          alt="Antarctica"
+          className="bgimage"
+        />
         <div
           ref={clockRef}
           className="clock"
           style={{
-            position: "relative",
-            width: "50vh",
-            height: "30vh",
-            borderRadius: "50%",
+            position: 'relative',
+            width: '50vh',
+            height: '30vh',
+            borderRadius: '50%',
             zIndex: 1, // added this so clock is above background image
           }}
         >

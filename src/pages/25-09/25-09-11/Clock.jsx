@@ -107,7 +107,8 @@ const MedievalBanner = () => {
             }
           `}
         </style>
-        {hours}{minutes}
+        {hours}
+        {minutes}
       </div>
     </div>
   );

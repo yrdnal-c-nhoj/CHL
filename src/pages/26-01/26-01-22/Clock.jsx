@@ -44,16 +44,16 @@ const DynamicClock = () => {
 
     loadAssets();
 
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   if (!isReady) return null;
 
-  const timeString = [
-    time.getHours(),
-    time.getMinutes(),
-    time.getSeconds(),
-  ].map((n) => n.toString().padStart(2, '0')).join('');
+  const timeString = [time.getHours(), time.getMinutes(), time.getSeconds()]
+    .map((n) => n.toString().padStart(2, '0'))
+    .join('');
 
   // ────────────────────────────────────────────────
   // Styles
@@ -76,7 +76,7 @@ const DynamicClock = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 'clamp(1.0vw, 2vw, 4vw)',   // space between boxes
+    gap: 'clamp(1.0vw, 2vw, 4vw)', // space between boxes
     padding: '0 2vw',
     width: '100%',
     maxWidth: '99vw',
@@ -84,16 +84,16 @@ const DynamicClock = () => {
   };
 
   const digitBoxStyle = {
-    width: 'clamp(22vw, 22vw, 222px)',     // fixed width — biggest factor in preventing jump
-    height: 'clamp(29vw, 29vw, 340px)',    // fixed height
+    width: 'clamp(22vw, 22vw, 222px)', // fixed width — biggest factor in preventing jump
+    height: 'clamp(29vw, 29vw, 340px)', // fixed height
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',     
-    overflow: 'hidden',                    // keeps content insideoptional depth
+    alignItems: 'center',
+    overflow: 'hidden', // keeps content insideoptional depth
   };
 
   const digitStyle = {
-    fontSize: 'clamp(20vw, 26vw, 260px)',  // large enough to mostly fill the box
+    fontSize: 'clamp(20vw, 26vw, 260px)', // large enough to mostly fill the box
     // fontWeight: 'bold',
     lineHeight: '1',
     backgroundImage: `url(${digitTextureUrl})`,
@@ -114,9 +114,7 @@ const DynamicClock = () => {
       <div style={digitsRowStyle}>
         {timeString.split('').map((char, i) => (
           <div key={i} style={digitBoxStyle}>
-            <div style={digitStyle}>
-              {char}
-            </div>
+            <div style={digitStyle}>{char}</div>
           </div>
         ))}
       </div>

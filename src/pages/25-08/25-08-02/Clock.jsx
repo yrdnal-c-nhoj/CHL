@@ -7,7 +7,10 @@ import bg3 from '../../../assets/images/25-08/25-08-02/la.gif'; // copy of bg1 f
 
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
-  const fontReady = useFontLoader('MyCustomFont', myFontWoff2, { fallback: true, timeout: 3500 });
+  const fontReady = useFontLoader('MyCustomFont', myFontWoff2, {
+    fallback: true,
+    timeout: 3500,
+  });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -52,7 +55,7 @@ const DigitalClock = () => {
     height: '100vh',
     opacity: fontReady ? 1 : 0,
     visibility: fontReady ? 'visible' : 'hidden',
-    transition: 'opacity 0.3s ease'
+    transition: 'opacity 0.3s ease',
   };
 
   return (
@@ -64,7 +67,6 @@ const DigitalClock = () => {
         })}
       />
 
- 
       {/* Clock Display */}
       <div style={clockContainerStyle}>{formatTime(time)}</div>
     </>

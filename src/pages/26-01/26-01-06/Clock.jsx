@@ -12,13 +12,13 @@ export default function PyramidzBackground() {
   // Generate unique font-family name: Giza_20260107
   const dateStr = '20260107'; // January 07, 2026
   const uniqueFontFamily = `Giza_${dateStr}`;
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader(uniqueFontFamily, gizaFont, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
-  
+
   // 2. Inject marquee styles (cleaned up on unmount)
   useEffect(() => {
     const style = document.createElement('style');
@@ -105,9 +105,7 @@ export default function PyramidzBackground() {
         hour: 'numeric',
         minute: '2-digit',
       });
-      const formatted = time
-        .replace(/^0/, '')
-        .replace(/\s+/g, '');
+      const formatted = time.replace(/^0/, '').replace(/\s+/g, '');
       setTimeString(formatted);
     };
 
@@ -150,7 +148,10 @@ export default function PyramidzBackground() {
           filter: brightness(0.7) contrast(1.5);
         }
       `}</style>
-      <div className="pz-background" style={{ position: 'absolute', inset: 0 }}></div>
+      <div
+        className="pz-background"
+        style={{ position: 'absolute', inset: 0 }}
+      ></div>
 
       <div
         style={{
@@ -164,12 +165,8 @@ export default function PyramidzBackground() {
         }}
       >
         <div className="pz-marquee-wrapper">
-          <div className="pz-marquee-group">
-            {timeString.repeat(20)}
-          </div>
-          <div className="pz-marquee-group">
-            {timeString.repeat(20)}
-          </div>
+          <div className="pz-marquee-group">{timeString.repeat(20)}</div>
+          <div className="pz-marquee-group">{timeString.repeat(20)}</div>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 import permanentMarkerFont from '../../../assets/fonts/25-04-19-sph.ttf';
 
 const BALL_SIZES = {
@@ -21,8 +21,8 @@ const BALL_PROPERTIES = {
 
 const roomTypes = [
   {
-    name: "hours",
-    colorClass: "hour-ball",
+    name: 'hours',
+    colorClass: 'hour-ball',
     countFn: () => {
       const h = new Date().getHours();
       return h % 12 === 0 ? 12 : h % 12;
@@ -35,8 +35,8 @@ const roomTypes = [
     height: 20,
   },
   {
-    name: "minutes",
-    colorClass: "minute-ball",
+    name: 'minutes',
+    colorClass: 'minute-ball',
     countFn: () => new Date().getMinutes(),
     max: 60,
     size: BALL_SIZES.minutes,
@@ -46,8 +46,8 @@ const roomTypes = [
     height: 35,
   },
   {
-    name: "seconds",
-    colorClass: "second-ball",
+    name: 'seconds',
+    colorClass: 'second-ball',
     countFn: () => new Date().getSeconds(),
     max: 60,
     size: BALL_SIZES.seconds,
@@ -68,12 +68,14 @@ const SphereDropClock = () => {
 
     // Create rooms
     roomTypes.forEach((type, i) => {
-      let room = document.createElement("div");
-      room.className = "room";
+      let room = document.createElement('div');
+      room.className = 'room';
       room.id = `${type.name}-room`;
       room.style.width = `${type.width}vw`;
       room.style.height = `${type.height}vh`;
-      const yTranslate = roomTypes.slice(0, i).reduce((sum, r) => sum + r.height, 0);
+      const yTranslate = roomTypes
+        .slice(0, i)
+        .reduce((sum, r) => sum + r.height, 0);
       room.style.transform = `translateY(${yTranslate}vh)`;
       tower.appendChild(room);
     });
@@ -82,8 +84,18 @@ const SphereDropClock = () => {
       return room.childElementCount + 1;
     }
 
-    function dropBall(room, colorClass, size, gravity, bounce, friction, roomHeight, roomWidth, typeName) {
-      const ball = document.createElement("div");
+    function dropBall(
+      room,
+      colorClass,
+      size,
+      gravity,
+      bounce,
+      friction,
+      roomHeight,
+      roomWidth,
+      typeName,
+    ) {
+      const ball = document.createElement('div');
       ball.className = `ball ${colorClass}`;
       ball.innerText = getNextNumber(room);
       ball.style.width = `${size}vh`;
@@ -100,7 +112,7 @@ const SphereDropClock = () => {
       const frictionFactor = friction;
       let bouncing = true;
 
-      if (typeName === "hours" || typeName === "minutes") {
+      if (typeName === 'hours' || typeName === 'minutes') {
         latestBalls.current[typeName] = ball;
       }
 
@@ -137,7 +149,7 @@ const SphereDropClock = () => {
               bouncing = false;
 
               if (
-                (typeName === "hours" || typeName === "minutes") &&
+                (typeName === 'hours' || typeName === 'minutes') &&
                 latestBalls.current[typeName] === ball
               ) {
                 velocityX = (Math.random() - 0.5) * 10;
@@ -146,7 +158,7 @@ const SphereDropClock = () => {
             }
           }
         } else if (
-          (typeName === "hours" || typeName === "minutes") &&
+          (typeName === 'hours' || typeName === 'minutes') &&
           latestBalls.current[typeName] === ball
         ) {
           posX += velocityX * 0.016;
@@ -179,7 +191,7 @@ const SphereDropClock = () => {
       while (room.firstChild) {
         room.removeChild(room.firstChild);
       }
-      if (typeName === "hours" || typeName === "minutes") {
+      if (typeName === 'hours' || typeName === 'minutes') {
         latestBalls.current[typeName] = null;
       }
     }
@@ -205,7 +217,7 @@ const SphereDropClock = () => {
             type.properties.friction,
             type.height,
             type.width,
-            type.name
+            type.name,
           );
         }
 

@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useMemo, memo, useRef } from 'react'
+import React, { useEffect, useState, useMemo, memo, useRef } from 'react';
 
 // --- Image Imports ---
 import bg1 from '../../../assets/images/25-12/25-12-10/j.webp';
-import bg2 from  '../../../assets/images/25-12/25-12-10/jj.webp';
-import portImg from  '../../../assets/images/25-12/25-12-10/eagle.webp';
+import bg2 from '../../../assets/images/25-12/25-12-10/jj.webp';
+import portImg from '../../../assets/images/25-12/25-12-10/eagle.webp';
 import hourHandImg from '../../../assets/images/25-12/25-12-10/oa.gif';
 import minuteHandImg from '../../../assets/images/25-12/25-12-10/oak.gif';
 import secondHandImg from '../../../assets/images/25-12/25-12-10/nk.gif';
@@ -16,59 +16,59 @@ const CONFIG = {
   hands: [
     { img: secondHandImg, width: '22vw', max: '200px' },
     { img: minuteHandImg, width: '28vw', max: '200px' },
-    { img: hourHandImg, width: '26vw', max: '166px' }
+    { img: hourHandImg, width: '26vw', max: '166px' },
   ],
   numerals: [
     { text: 'XII', deg: 0 },
     { text: 'III', deg: 90 },
     { text: 'VI', deg: 180 },
-    { text: 'IX', deg: 270 }
+    { text: 'IX', deg: 270 },
   ],
-  tileSize: 100
-}
+  tileSize: 100,
+};
 
 // --- HOOKS ---
-function useTime () {
-  const [time, setTime] = useState(() => new Date())
+function useTime() {
+  const [time, setTime] = useState(() => new Date());
 
   useEffect(() => {
-    let animationFrameId
+    let animationFrameId;
 
     const updateTime = () => {
-      setTime(new Date())
-    }
+      setTime(new Date());
+    };
 
     // Start the interval loop
-    const intervalId = setInterval(updateTime, 50)
+    const intervalId = setInterval(updateTime, 50);
 
     // Cleanup function to clear the interval when component unmounts
     return () => {
-      clearInterval(intervalId)
-    }
-  }, [])
+      clearInterval(intervalId);
+    };
+  }, []);
 
-  return time
+  return time;
 }
 
-function useClockAngles (time) {
+function useClockAngles(time) {
   return useMemo(() => {
-    const ms = time.getMilliseconds()
-    const s = time.getSeconds() + ms / 1000
-    const m = time.getMinutes() + s / 60
-    const h = (time.getHours() % 12) + m / 60
-    return { second: s * 6, minute: m * 6, hour: h * 30 }
-  }, [time])
+    const ms = time.getMilliseconds();
+    const s = time.getSeconds() + ms / 1000;
+    const m = time.getMinutes() + s / 60;
+    const h = (time.getHours() % 12) + m / 60;
+    return { second: s * 6, minute: m * 6, hour: h * 30 };
+  }, [time]);
 }
 
 // Pre-calculate numeral positions (only once)
 const NUMERAL_POSITIONS = CONFIG.numerals.map(({ text, deg }) => {
-  const rad = (deg - 90) * (Math.PI / 180)
+  const rad = (deg - 90) * (Math.PI / 180);
   return {
     text,
     x: 50 + CONFIG.numeralRadius * Math.cos(rad),
-    y: 50 + CONFIG.numeralRadius * Math.sin(rad)
-  }
-})
+    y: 50 + CONFIG.numeralRadius * Math.sin(rad),
+  };
+});
 
 // --- GLOBAL FONT ---
 const GlobalStyles = memo(() => (
@@ -83,7 +83,7 @@ const GlobalStyles = memo(() => (
       to { transform: translateY(-66.66%); }
     }
   `}</style>
-))
+));
 
 // --- INFINITE UPWARD SCROLLING BG1 ---
 const InfiniteScrollingBG = memo(() => (
@@ -93,7 +93,7 @@ const InfiniteScrollingBG = memo(() => (
       inset: 0,
       overflow: 'hidden',
       zIndex: 1,
-      pointerEvents: 'none'
+      pointerEvents: 'none',
     }}
   >
     <div
@@ -106,11 +106,11 @@ const InfiniteScrollingBG = memo(() => (
         backgroundRepeat: 'repeat-y',
         backgroundPosition: 'center top',
         animation: 'scrollUp 19s linear infinite',
-        willChange: 'transform'
+        willChange: 'transform',
       }}
     />
   </div>
-))
+));
 
 // --- STATIC BG2 ---
 const BackgroundImage2 = memo(() => (
@@ -124,22 +124,22 @@ const BackgroundImage2 = memo(() => (
       backgroundPosition: 'center',
       zIndex: 10,
       filter: 'saturate(3.5) contrast(1.5) brightness(17.5)',
-      pointerEvents: 'none'
+      pointerEvents: 'none',
     }}
   />
-))
+));
 
 // --- TILED EAGLE LAYER ---
 const TiledBackground = memo(() => {
   const tiles = useMemo(() => {
-    const { tileSize } = CONFIG
-    const cols = Math.ceil(window.innerWidth / tileSize) + 3
-    const rows = Math.ceil(window.innerHeight / tileSize) + 3
-    const result = []
+    const { tileSize } = CONFIG;
+    const cols = Math.ceil(window.innerWidth / tileSize) + 3;
+    const rows = Math.ceil(window.innerHeight / tileSize) + 3;
+    const result = [];
 
     for (let r = -2; r < rows; r++) {
       for (let c = -2; c < cols; c++) {
-        const flip = (r + c) % 2 === 1
+        const flip = (r + c) % 2 === 1;
         result.push(
           <div
             key={`${r}-${c}`}
@@ -154,17 +154,17 @@ const TiledBackground = memo(() => {
               left: c * tileSize - tileSize,
               top: r * tileSize - tileSize,
               zIndex: 3,
-              pointerEvents: 'none'
+              pointerEvents: 'none',
             }}
-          />
-        )
+          />,
+        );
       }
     }
-    return result
-  }, [])
+    return result;
+  }, []);
 
-  return <>{tiles}</>
-})
+  return <>{tiles}</>;
+});
 
 // --- NUMERAL ---
 const ClockNumeral = memo(({ text, x, y }) => (
@@ -179,18 +179,20 @@ const ClockNumeral = memo(({ text, x, y }) => (
       fontSize: 'clamp(5rem, 8vw, 6.5rem)',
       textShadow: '2px 2px 0px #FAC72DFF',
       zIndex: 0,
-      pointerEvents: 'none'
+      pointerEvents: 'none',
     }}
   >
     {text}
   </div>
-))
+));
 
 // --- CLOCK HAND ---
 const ClockHand = memo(({ img, width, max, rotation }) => (
-  <img decoding="async" loading="lazy"
+  <img
+    decoding="async"
+    loading="lazy"
     src={img}
-    alt=''
+    alt=""
     draggable={false}
     style={{
       position: 'absolute',
@@ -204,10 +206,10 @@ const ClockHand = memo(({ img, width, max, rotation }) => (
       userSelect: 'none',
       filter:
         'hue-rotate(20deg) saturate(2) brightness(1.2) drop-shadow(2px 2px 0px #0E63EBFF)',
-      willChange: 'transform'
+      willChange: 'transform',
     }}
   />
-))
+));
 
 // --- CLOCK FACE ---
 const ClockFace = memo(({ angles }) => (
@@ -220,7 +222,7 @@ const ClockFace = memo(({ angles }) => (
       height: CONFIG.clockSize,
       transform: 'translate(-50%, -50%)',
       borderRadius: '50%',
-      zIndex: 10
+      zIndex: 10,
     }}
   >
     {NUMERAL_POSITIONS.map((p, i) => (
@@ -232,7 +234,7 @@ const ClockFace = memo(({ angles }) => (
         position: 'absolute',
         top: '50%',
         left: '50%',
-        transform: 'translate(-50%, -50%)'
+        transform: 'translate(-50%, -50%)',
       }}
     >
       {CONFIG.hands.map((h, i) => (
@@ -248,24 +250,24 @@ const ClockFace = memo(({ angles }) => (
       ))}
     </div>
   </div>
-))
+));
 
 // --- MAIN COMPONENT ---
-export default function AnalogClock () {
-  const time = useTime()
-  const angles = useClockAngles(time)
-  const preloadedRef = useRef(false)
+export default function AnalogClock() {
+  const time = useTime();
+  const angles = useClockAngles(time);
+  const preloadedRef = useRef(false);
 
   // Preload hand images once
   useEffect(() => {
     if (!preloadedRef.current) {
-      [hourHandImg, minuteHandImg, secondHandImg].forEach(src => {
+      [hourHandImg, minuteHandImg, secondHandImg].forEach((src) => {
         const img = new Image();
         img.src = src;
       });
       preloadedRef.current = true;
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -275,5 +277,5 @@ export default function AnalogClock () {
       <TiledBackground />
       <ClockFace angles={angles} />
     </>
-  )
+  );
 }

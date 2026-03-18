@@ -13,12 +13,12 @@ export default function PixelInverseClock() {
   // 1. Assets Loading
   useEffect(() => {
     const font = new FontFace(FONT_FAMILY, `url(${fontFile})`);
-    
+
     const loadAssets = async () => {
       try {
         const loadedFont = await font.load();
         document.fonts.add(loadedFont);
-        
+
         // Load animated WebP with proper settings
         await new Promise((resolve, reject) => {
           imageRef.current.src = backgroundImage;
@@ -37,7 +37,7 @@ export default function PixelInverseClock() {
 
         setAssetsLoaded(true);
       } catch (err) {
-        console.error("Failed to load clock assets:", err);
+        console.error('Failed to load clock assets:', err);
       }
     };
 
@@ -55,17 +55,17 @@ export default function PixelInverseClock() {
 
     // Clear canvas (background is handled by CSS)
     ctx.clearRect(0, 0, w, h);
-    
+
     // Prepare to draw Inverse Elements
-    // We use "difference" blending so anything drawn white (#fff) 
+    // We use "difference" blending so anything drawn white (#fff)
     // will perfectly invert the pixels underneath it.
     ctx.save();
     ctx.globalCompositeOperation = 'difference';
     ctx.fillStyle = 'white';
     ctx.strokeStyle = 'white';
-    
+
     drawClockUI(ctx, w, h, now);
-    
+
     ctx.restore();
     requestRef.current = requestAnimationFrame(() => render(ctx));
   };
@@ -74,7 +74,7 @@ export default function PixelInverseClock() {
     const cx = w / 2;
     const cy = h / 2;
     const baseSize = Math.min(w, h);
-    
+
     const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
     const minutes = now.getMinutes() + seconds / 60;
     const hours = (now.getHours() % 12) + minutes / 60;
@@ -83,13 +83,17 @@ export default function PixelInverseClock() {
     ctx.font = `${baseSize * 0.08}px "${FONT_FAMILY}"`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    
+
     const radiusX = w * 0.45;
     const radiusY = h * 0.1;
 
     for (let n = 1; n <= 12; n++) {
       const angle = (n / 12) * Math.PI * 2 - Math.PI / 2;
-      ctx.fillText(n.toString(), cx + Math.cos(angle) * radiusX, cy + Math.sin(angle) * radiusY);
+      ctx.fillText(
+        n.toString(),
+        cx + Math.cos(angle) * radiusX,
+        cy + Math.sin(angle) * radiusY,
+      );
     }
 
     // Hands
@@ -102,9 +106,9 @@ export default function PixelInverseClock() {
       ctx.stroke();
     };
 
-    drawHand((hours * Math.PI) / 6 - Math.PI / 2, baseSize * 0.3, 8);   // Hour
+    drawHand((hours * Math.PI) / 6 - Math.PI / 2, baseSize * 0.3, 8); // Hour
     drawHand((minutes * Math.PI) / 30 - Math.PI / 2, baseSize * 0.5, 5); // Minute
-    drawHand((seconds * Math.PI) / 30 - Math.PI / 2, baseSize * 2.90, 2); // Second
+    drawHand((seconds * Math.PI) / 30 - Math.PI / 2, baseSize * 2.9, 2); // Second
   };
 
   // 3. Canvas Setup & Resize
@@ -120,24 +124,26 @@ export default function PixelInverseClock() {
 
     window.addEventListener('resize', handleResize);
     handleResize();
-    
+
     requestRef.current = requestAnimationFrame(() => render(ctx));
 
     return () => window.removeEventListener('resize', handleResize);
   }, [assetsLoaded]);
 
   return (
-    <div style={{ 
-      backgroundColor: '#000', 
-      width: '100vw', 
-      height: '100dvh', 
-      overflow: 'hidden',
-      position: 'relative',
-      backgroundImage: `url(${backgroundImage})`,
-      backgroundSize: 'contain',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'repeat'
-    }}>
+    <div
+      style={{
+        backgroundColor: '#000',
+        width: '100vw',
+        height: '100dvh',
+        overflow: 'hidden',
+        position: 'relative',
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'contain',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'repeat',
+      }}
+    >
       <canvas
         ref={canvasRef}
         style={{
@@ -150,7 +156,7 @@ export default function PixelInverseClock() {
           top: 0,
           left: 0,
           mixBlendMode: 'difference',
-          zIndex: 3
+          zIndex: 3,
         }}
       />
     </div>

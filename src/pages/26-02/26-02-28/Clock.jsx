@@ -61,7 +61,7 @@ const ImageGrid = () => {
         coords.push({
           x: col * TILE_SIZE + centerX,
           y: row * TILE_SIZE + centerY,
-          id: `${row}-${col}`
+          id: `${row}-${col}`,
         });
       }
     }
@@ -76,19 +76,19 @@ const ImageGrid = () => {
           src: url('${atomicFont}') format('truetype');
         }
       `}</style>
-      
+
       {/* Background Grid */}
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
         {tileCoords.map((tile) => (
-          <img 
-            key={tile.id} 
-            src={atomicWebp} 
-            style={{ ...styles.tileImage, left: tile.x, top: tile.y }} 
-            alt="" 
+          <img
+            key={tile.id}
+            src={atomicWebp}
+            style={{ ...styles.tileImage, left: tile.x, top: tile.y }}
+            alt=""
           />
         ))}
       </div>
-      
+
       <DigitalClock />
     </div>
   );
@@ -108,7 +108,7 @@ const styles = {
     height: TILE_SIZE,
     objectFit: 'cover',
     display: 'block',
-    filter: 'hue-rotate(30deg) saturate(1.8) brightness(1.1)'
+    filter: 'hue-rotate(30deg) saturate(1.8) brightness(1.1)',
   },
   clockContainer: {
     position: 'absolute',
@@ -128,16 +128,16 @@ const styles = {
     textShadow: ' 1px 1px 0px #181616',
     // background: 'radial-gradient(circle, #C3BCBC 0%, #ECCDCD 100%)',
     letterSpacing: '0.02em',
-    
+
     // Centering Logic
     display: 'flex',
-    alignItems: 'center',       // Vertical centering
-    justifyContent: 'center',    // Horizontal centering
-    lineHeight: 1.5,             // Adjust this to change the height of the strip
-    padding: '10px 0',           // Exact padding above and below
+    alignItems: 'center', // Vertical centering
+    justifyContent: 'center', // Horizontal centering
+    lineHeight: 1.5, // Adjust this to change the height of the strip
+    padding: '10px 0', // Exact padding above and below
     width: '100%',
     textAlign: 'center',
-  }
+  },
 };
 
 export default ImageGrid;

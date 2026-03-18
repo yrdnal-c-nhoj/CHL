@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';import backgroundImage from '../../../assets/images/25-12/25-12-29/shrine.webp';
+import { useFontLoader } from '../../../utils/fontLoader';
+import backgroundImage from '../../../assets/images/25-12/25-12-29/shrine.webp';
 import shrineFont from '../../../assets/fonts/25-12-29-shrine.ttf?url';
 
 const DynamicClockComponent = () => {
@@ -10,13 +11,16 @@ const DynamicClockComponent = () => {
   // Load the custom font
   useEffect(() => {
     const font = new FontFace(FONT_FAMILY, `url(${shrineFont})`);
-    font.load().then(loaded => {
-      document.fonts.add(loaded);
-      setFontLoaded(true);
-    }).catch(err => {
-      console.error("Font load error:", err);
-      setFontLoaded(true); // Still show clock even if font fails
-    });
+    font
+      .load()
+      .then((loaded) => {
+        document.fonts.add(loaded);
+        setFontLoaded(true);
+      })
+      .catch((err) => {
+        console.error('Font load error:', err);
+        setFontLoaded(true); // Still show clock even if font fails
+      });
 
     return () => {
       // Cleanup if needed
@@ -29,10 +33,10 @@ const DynamicClockComponent = () => {
   }, []);
 
   const formattedTime = time
-    .toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
-      minute: '2-digit', 
-      hour12: true 
+    .toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
     })
     .replace(/\s/g, '');
 
@@ -63,11 +67,12 @@ const DynamicClockComponent = () => {
     clockBase: {
       fontSize: '12vh',
       color: 'white',
-      textShadow: '2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000',
+      textShadow:
+        '2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000',
       zIndex: 10,
       position: 'relative',
       fontFamily: `"${FONT_FAMILY}", sans-serif`,
-    }
+    },
   };
 
   if (!fontLoaded) return null;
@@ -76,18 +81,22 @@ const DynamicClockComponent = () => {
     <div style={styles.container}>
       <div style={styles.background} />
 
-      <div style={{ 
-        ...styles.clockBase, 
-        writingMode: 'vertical-rl', 
-        transform: 'rotate(180deg)'
-      }}>
+      <div
+        style={{
+          ...styles.clockBase,
+          writingMode: 'vertical-rl',
+          transform: 'rotate(180deg)',
+        }}
+      >
         {formattedTime}
       </div>
 
-      <div style={{ 
-        ...styles.clockBase, 
-        writingMode: 'vertical-lr'
-      }}>
+      <div
+        style={{
+          ...styles.clockBase,
+          writingMode: 'vertical-lr',
+        }}
+      >
         {formattedTime}
       </div>
     </div>

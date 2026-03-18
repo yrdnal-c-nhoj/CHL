@@ -10,7 +10,10 @@ const RandomColorClock = () => {
 
   const [background, setBackground] = useState('#f7050d');
 
-  const getRandomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+  const getRandomColor = () =>
+    `#${Math.floor(Math.random() * 16777215)
+      .toString(16)
+      .padStart(6, '0')}`;
 
   const updateClock = () => {
     const now = new Date();
@@ -36,12 +39,12 @@ const RandomColorClock = () => {
     }
 
     if (dotContainerRef.current) {
-      Array.from(dotContainerRef.current.children).forEach(dot => {
+      Array.from(dotContainerRef.current.children).forEach((dot) => {
         dot.style.backgroundColor = getRandomColor();
       });
     }
 
-    squareRefs.current.forEach(square => {
+    squareRefs.current.forEach((square) => {
       square.style.backgroundColor = getRandomColor();
     });
 
@@ -58,7 +61,7 @@ const RandomColorClock = () => {
     const center = size / 2;
 
     for (let i = 0; i < 12; i++) {
-      const angle = (i * 30) * (Math.PI / 180);
+      const angle = i * 30 * (Math.PI / 180);
       const x = center + radius * Math.cos(angle) - size * 0.04;
       const y = center + radius * Math.sin(angle) - size * 0.04;
 
@@ -77,7 +80,7 @@ const RandomColorClock = () => {
   const positionSquares = () => {
     if (!clockRef.current) return;
     const size = clockRef.current.offsetWidth;
-    const radius = size * 0.60;
+    const radius = size * 0.6;
     const center = size / 2;
 
     squareRefs.current.forEach((square, i) => {

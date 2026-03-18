@@ -6,7 +6,7 @@ import myFontUrl from '../../../assets/fonts/25-07-26-sec.ttf';
 const COLORS = ['#CB0BEDFF', '#25E90CFF', '#F58E0FFF'];
 
 const getRandomDifferentColor = (currentColor, palette) => {
-  const newPalette = palette.filter(c => c !== currentColor);
+  const newPalette = palette.filter((c) => c !== currentColor);
   return newPalette[Math.floor(Math.random() * newPalette.length)];
 };
 
@@ -16,7 +16,10 @@ const PrimaryColorClock = () => {
   const hourHandRef = useRef(null);
 
   const [numberColors, setNumberColors] = useState(() =>
-    Array.from({ length: 12 }, () => COLORS[Math.floor(Math.random() * COLORS.length)])
+    Array.from(
+      { length: 12 },
+      () => COLORS[Math.floor(Math.random() * COLORS.length)],
+    ),
   );
 
   const [handColors, setHandColors] = useState({
@@ -39,9 +42,12 @@ const PrimaryColorClock = () => {
       const minsDegrees = (minutes / 60) * 360 + 90;
       const hourDegrees = (hours / 12) * 360 + 90;
 
-      if (secondHandRef.current) secondHandRef.current.style.transform = `rotate(${secondsDegrees}deg)`;
-      if (minHandRef.current) minHandRef.current.style.transform = `rotate(${minsDegrees}deg)`;
-      if (hourHandRef.current) hourHandRef.current.style.transform = `rotate(${hourDegrees}deg)`;
+      if (secondHandRef.current)
+        secondHandRef.current.style.transform = `rotate(${secondsDegrees}deg)`;
+      if (minHandRef.current)
+        minHandRef.current.style.transform = `rotate(${minsDegrees}deg)`;
+      if (hourHandRef.current)
+        hourHandRef.current.style.transform = `rotate(${hourDegrees}deg)`;
 
       requestAnimationFrame(update);
     };
@@ -52,11 +58,11 @@ const PrimaryColorClock = () => {
   // Color changer
   useEffect(() => {
     const colorInterval = setInterval(() => {
-      setNumberColors(prev =>
-        prev.map(c => getRandomDifferentColor(c, COLORS))
+      setNumberColors((prev) =>
+        prev.map((c) => getRandomDifferentColor(c, COLORS)),
       );
 
-      setHandColors(prev => ({
+      setHandColors((prev) => ({
         second: getRandomDifferentColor(prev.second, COLORS),
         minute: getRandomDifferentColor(prev.minute, COLORS),
         hour: getRandomDifferentColor(prev.hour, COLORS),

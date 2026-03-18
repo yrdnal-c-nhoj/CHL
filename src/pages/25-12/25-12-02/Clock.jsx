@@ -13,11 +13,11 @@ const RotatingBackground = () => {
   // Preload the background image and compute sizes
   useEffect(() => {
     let isMounted = true;
-    
+
     const loadImage = () => {
       const img = new Image();
       img.src = backgroundImage;
-      
+
       img.onload = () => {
         if (isMounted) {
           const computeSize = () => {
@@ -26,15 +26,15 @@ const RotatingBackground = () => {
             const diagonal = Math.sqrt(w * w + h * h) * ZOOM_MULTIPLIER;
             setSideLength(diagonal);
           };
-          
+
           computeSize();
           window.addEventListener('resize', computeSize);
           setIsLoading(false);
-          
+
           return () => window.removeEventListener('resize', computeSize);
         }
       };
-      
+
       img.onerror = () => {
         if (isMounted) {
           console.error('Failed to load background image');
@@ -42,9 +42,9 @@ const RotatingBackground = () => {
         }
       };
     };
-    
+
     loadImage();
-    
+
     return () => {
       isMounted = false;
     };
@@ -62,7 +62,7 @@ const RotatingBackground = () => {
       setRotationAngle(angle);
       frameId = requestAnimationFrame(rotate); // Use RAF for continuous animation
     };
-    
+
     // Start animation loop
     frameId = requestAnimationFrame(rotate);
     return () => cancelAnimationFrame(frameId);
@@ -138,18 +138,20 @@ const RotatingBackground = () => {
 
   if (isLoading) {
     return (
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: '#000',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 9999
-      }}>
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: '#000',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+        }}
+      >
         {/* Optional: Add a loading spinner or text here if desired */}
       </div>
     );

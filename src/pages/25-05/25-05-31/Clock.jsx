@@ -12,10 +12,10 @@ const ElephantClock = () => {
   const minuteRef = useRef();
   const secondRef = useRef();
   const orbitRef = useRef();
-  
+
   const fontReady = useFontLoader('fat', fatFont, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   useEffect(() => {
@@ -49,7 +49,8 @@ const ElephantClock = () => {
       const hours = now.getHours();
       const t = Date.now();
 
-      const secondDeg = preciseSeconds * 6 + 5 * Math.sin(t / 150) + Math.random() * 1;
+      const secondDeg =
+        preciseSeconds * 6 + 5 * Math.sin(t / 150) + Math.random() * 1;
 
       const minuteDegBase = minutes * 6 + seconds * 0.1;
       const hourDegBase = (hours % 12) * 30 + minutes * 0.5;
@@ -57,8 +58,11 @@ const ElephantClock = () => {
       if (t > hourSway.nextUpdate) randomizeSway(hourSway);
       if (t > minuteSway.nextUpdate) randomizeSway(minuteSway);
 
-      const hourDeg = hourDegBase + hourSway.amplitude * Math.sin(t * hourSway.frequency);
-      const minuteDeg = minuteDegBase + minuteSway.amplitude * Math.sin(t * minuteSway.frequency);
+      const hourDeg =
+        hourDegBase + hourSway.amplitude * Math.sin(t * hourSway.frequency);
+      const minuteDeg =
+        minuteDegBase +
+        minuteSway.amplitude * Math.sin(t * minuteSway.frequency);
 
       hourHand.style.transform = `translate(-50%, -50%) rotate(${hourDeg}deg)`;
       minuteHand.style.transform = `translate(-50%, -50%) rotate(${minuteDeg}deg)`;
@@ -101,7 +105,7 @@ const ElephantClock = () => {
         }}
       >
         {i}
-      </div>
+      </div>,
     );
   }
 
@@ -120,7 +124,9 @@ const ElephantClock = () => {
         transition: 'opacity 0.3s ease',
       }}
     >
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={elWebp}
         alt="Background"
         style={{
@@ -157,7 +163,9 @@ const ElephantClock = () => {
           {numbers}
 
           <div style={handStyle}>
-            <img decoding="async" loading="lazy"
+            <img
+              decoding="async"
+              loading="lazy"
               ref={hourRef}
               src={el2}
               alt="Hour Hand"
@@ -173,7 +181,9 @@ const ElephantClock = () => {
             />
           </div>
           <div style={handStyle}>
-            <img decoding="async" loading="lazy"
+            <img
+              decoding="async"
+              loading="lazy"
               ref={minuteRef}
               src={el1}
               alt="Minute Hand"
@@ -189,7 +199,9 @@ const ElephantClock = () => {
             />
           </div>
           <div style={handStyle}>
-            <img decoding="async" loading="lazy"
+            <img
+              decoding="async"
+              loading="lazy"
               ref={secondRef}
               src={el3}
               alt="Second Hand"
@@ -205,7 +217,9 @@ const ElephantClock = () => {
             />
           </div>
 
-          <img decoding="async" loading="lazy"
+          <img
+            decoding="async"
+            loading="lazy"
             ref={orbitRef}
             src={eleGif}
             alt=""

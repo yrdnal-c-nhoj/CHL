@@ -9,8 +9,7 @@ import analogBgImage from '../../../assets/images/26-02/26-02-10/tv.jpg';
 const CLOCK_CONFIG = {
   COLORS: {
     silverText: '#58D5C0',
-
-  }
+  },
 };
 
 /**
@@ -46,19 +45,21 @@ const DigitalClock = () => {
 
   if (!fontReady) {
     return (
-      <div style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        backgroundColor: '#050505',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: CLOCK_CONFIG.COLORS.silverText,
-        fontFamily: 'monospace',
-        fontSize: '1.5rem'
-      }}>
+      <div
+        style={{
+          position: 'relative',
+          width: '100vw',
+          height: '100dvh',
+          overflow: 'hidden',
+          backgroundColor: '#050505',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: CLOCK_CONFIG.COLORS.silverText,
+          fontFamily: 'monospace',
+          fontSize: '1.5rem',
+        }}
+      >
         Loading...
       </div>
     );
@@ -67,17 +68,21 @@ const DigitalClock = () => {
   return (
     <div style={styles.container}>
       {/* FILTERED BACKGROUND LAYER */}
-      <div style={{ 
-        ...styles.backgroundLayer, 
-        backgroundImage: `url(${analogBgImage})` 
-      }} />
+      <div
+        style={{
+          ...styles.backgroundLayer,
+          backgroundImage: `url(${analogBgImage})`,
+        }}
+      />
 
       {/* DIGITAL CLOCK DISPLAY */}
       <div style={styles.digitalFace}>
-        <div style={{
-          ...styles.digitalDisplay,
-          fontFamily: "'TeeVeeFont', sans-serif"
-        }}>
+        <div
+          style={{
+            ...styles.digitalDisplay,
+            fontFamily: "'TeeVeeFont', sans-serif",
+          }}
+        >
           {timeString}
         </div>
       </div>

@@ -61,7 +61,18 @@ const BoneClock = () => {
   }, []);
 
   return (
-    <div style={{ margin: 0, padding: 0, background: '#757272', height: '100vh', width: '100vw', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <div
+      style={{
+        margin: 0,
+        padding: 0,
+        background: '#757272',
+        height: '100vh',
+        width: '100vw',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <style>{`
         @font-face {
           font-family: 'bone';
@@ -81,16 +92,30 @@ const BoneClock = () => {
         }
       `}</style>
 
-      <img decoding="async" loading="lazy" src={bgImage} className="bgImage" alt="background" />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bgImage}
+        className="bgImage"
+        alt="background"
+      />
 
-      <div style={{
-        position: 'relative',
-        width: '15rem',
-        height: '15rem',
-        borderRadius: '50%',
-        zIndex: 5,
-      }}>
-        <img decoding="async" loading="lazy" src={bone2} ref={hourRef} className="hand-img" alt="hour hand"
+      <div
+        style={{
+          position: 'relative',
+          width: '15rem',
+          height: '15rem',
+          borderRadius: '50%',
+          zIndex: 5,
+        }}
+      >
+        <img
+          decoding="async"
+          loading="lazy"
+          src={bone2}
+          ref={hourRef}
+          className="hand-img"
+          alt="hour hand"
           style={{
             position: 'absolute',
             bottom: '50%',
@@ -100,9 +125,16 @@ const BoneClock = () => {
             height: '4rem',
             zIndex: 3,
             pointerEvents: 'none',
-          }} />
+          }}
+        />
 
-        <img decoding="async" loading="lazy" src={bone1} ref={minuteRef} className="hand-img" alt="minute hand"
+        <img
+          decoding="async"
+          loading="lazy"
+          src={bone1}
+          ref={minuteRef}
+          className="hand-img"
+          alt="minute hand"
           style={{
             position: 'absolute',
             bottom: '50%',
@@ -112,9 +144,16 @@ const BoneClock = () => {
             height: '7rem',
             zIndex: 2,
             pointerEvents: 'none',
-          }} />
+          }}
+        />
 
-        <img decoding="async" loading="lazy" src={bone} ref={secondRef} className="hand-img" alt="second hand"
+        <img
+          decoding="async"
+          loading="lazy"
+          src={bone}
+          ref={secondRef}
+          className="hand-img"
+          alt="second hand"
           style={{
             position: 'absolute',
             bottom: '50%',
@@ -125,15 +164,19 @@ const BoneClock = () => {
             filter: 'brightness(0.8) contrast(1.3)',
             zIndex: 1,
             pointerEvents: 'none',
-          }} />
+          }}
+        />
 
-        <div ref={numberContainerRef} style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-        }} />
+        <div
+          ref={numberContainerRef}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+          }}
+        />
       </div>
     </div>
   );

@@ -14,8 +14,8 @@ const CinemaClock = () => {
       hours = hours % 12 || 12;
 
       setTime({
-        hours: String(hours),                    // no leading zero
-        minutes: String(minutes).padStart(2, '0') // leading zero on minutes
+        hours: String(hours), // no leading zero
+        minutes: String(minutes).padStart(2, '0'), // leading zero on minutes
       });
     };
 
@@ -65,7 +65,7 @@ const CinemaClock = () => {
       filter: 'contrast(100%)',
       zIndex: 1,
       pointerEvents: 'none',
-    }
+    },
   };
 
   return (
@@ -73,7 +73,8 @@ const CinemaClock = () => {
       <style>{fontFace}</style>
       <div style={styles.bgImage}></div>
       <div style={styles.clock}>
-        {time.hours}{time.minutes}
+        {time.hours}
+        {time.minutes}
       </div>
     </div>
   );

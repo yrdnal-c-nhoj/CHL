@@ -35,8 +35,16 @@ const DigitalClock = () => {
 
   // Substitution mapping based on your requirements
   const substitutionMap = {
-    0: 'n', 1: 't', 2: '6', 3: 'L', 4: '9',
-    5: '1', 6: 'J', 7: 'S', 8: 'E', 9: 'm'
+    0: 'n',
+    1: 't',
+    2: '6',
+    3: 'L',
+    4: '9',
+    5: '1',
+    6: 'J',
+    7: 'S',
+    8: 'E',
+    9: 'm',
   };
 
   const numberToLetter = (num) => substitutionMap[num] ?? num.toString();
@@ -49,7 +57,9 @@ const DigitalClock = () => {
   };
 
   const splitDigitsToLetters = (timeString) => {
-    return timeString.split('').map(digit => numberToLetter(parseInt(digit, 10)));
+    return timeString
+      .split('')
+      .map((digit) => numberToLetter(parseInt(digit, 10)));
   };
 
   const { hours, minutes, seconds } = formatTime(time);
@@ -73,32 +83,34 @@ const DigitalClock = () => {
     // Background 1: Propeller GIF
     bgLayer1: {
       position: 'absolute',
-      top: 0, left: 0, right: 0, bottom: 0,
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
       backgroundImage: `url(${backgroundGif})`,
       backgroundSize: '100% 100%',
       backgroundPosition: 'center',
       opacity: 0.8,
       filter: 'contrast(1.3) brightness(0.7)', // Individual filter
       zIndex: 1,
-    },bgLayer2: {
-  position: 'absolute',
-  inset: 0,
-  backgroundImage: `url(${backgroundGif2})`,
-  backgroundSize: '100% 100%',
-  backgroundPosition: 'center',
-  opacity: 0.6,
-  filter: 'contrast(4) brightness(1.3)',
-  zIndex: 2,
-  transform: 'scaleX(-1)',
-  mixBlendMode: 'lighten',
+    },
+    bgLayer2: {
+      position: 'absolute',
+      inset: 0,
+      backgroundImage: `url(${backgroundGif2})`,
+      backgroundSize: '100% 100%',
+      backgroundPosition: 'center',
+      opacity: 0.6,
+      filter: 'contrast(4) brightness(1.3)',
+      zIndex: 2,
+      transform: 'scaleX(-1)',
+      mixBlendMode: 'lighten',
 
-  // ── The important part ───────────────────────────────
-  WebkitMaskImage:
-    'linear-gradient(to top, black 15%, transparent 16%)',
-  maskImage:
-    'linear-gradient(to top, black 15%, transparent 15%)',
-  // ───────────────────────────────────────────────────────
-},
+      // ── The important part ───────────────────────────────
+      WebkitMaskImage: 'linear-gradient(to top, black 15%, transparent 16%)',
+      maskImage: 'linear-gradient(to top, black 15%, transparent 15%)',
+      // ───────────────────────────────────────────────────────
+    },
     clockContainer: {
       position: 'relative',
       zIndex: 10,
@@ -117,7 +129,7 @@ const DigitalClock = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      width: 'clamp(90px, 22vw, 170px)', 
+      width: 'clamp(90px, 22vw, 170px)',
       height: 'clamp(80px, 22vh, 180px)',
     },
     digit: {
@@ -144,34 +156,35 @@ const DigitalClock = () => {
           }
         `}
       </style>
-      
+
       {/* Background Layers */}
       <div style={styles.bgLayer1} />
       <div style={styles.bgLayer2} />
 
       {/* Loading overlay to prevent flash of unstyled content */}
       {!fontLoaded && (
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100dvh',
-          backgroundImage: `url(${backgroundGif})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          zIndex: 100
-        }} />
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100dvh',
+            backgroundImage: `url(${backgroundGif})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            zIndex: 100,
+          }}
+        />
       )}
 
       {!isInitialized ? (
-        <div style={{ color: '#E3E7F1', zIndex: 11, fontFamily: 'monospace' }}>
-      
-        </div>
+        <div
+          style={{ color: '#E3E7F1', zIndex: 11, fontFamily: 'monospace' }}
+        ></div>
       ) : (
         <div style={styles.clockContainer}>
-          
           {/* HOURS */}
           <div style={styles.digitGroup}>
             {splitDigitsToLetters(hours).map((letter, index) => (
@@ -180,7 +193,7 @@ const DigitalClock = () => {
               </div>
             ))}
           </div>
-          
+
           {/* MINUTES */}
           <div style={styles.digitGroup}>
             {splitDigitsToLetters(minutes).map((letter, index) => (
@@ -189,7 +202,7 @@ const DigitalClock = () => {
               </div>
             ))}
           </div>
-          
+
           {/* SECONDS */}
           <div style={styles.digitGroup}>
             {splitDigitsToLetters(seconds).map((letter, index) => (
@@ -198,7 +211,6 @@ const DigitalClock = () => {
               </div>
             ))}
           </div>
-
         </div>
       )}
     </div>

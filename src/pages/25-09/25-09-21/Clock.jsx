@@ -1,55 +1,56 @@
-import React, { useEffect, useState } from 'react'
-import { useFontLoader } from '../../../utils/fontLoader';import cust250921font from '../../../assets/fonts/25-09-21-ele.ttf?url';
-import stripe1 from '../../../assets/images/25-09/25-09-21/fire.gif?url'
-import stripe2 from '../../../assets/images/25-09/25-09-21/air.gif?url'
-import stripe3 from '../../../assets/images/25-09/25-09-21/h2o.webp?url'
-import stripe4 from '../../../assets/images/25-09/25-09-21/earth.webp?url'
+import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
+import cust250921font from '../../../assets/fonts/25-09-21-ele.ttf?url';
+import stripe1 from '../../../assets/images/25-09/25-09-21/fire.gif?url';
+import stripe2 from '../../../assets/images/25-09/25-09-21/air.gif?url';
+import stripe3 from '../../../assets/images/25-09/25-09-21/h2o.webp?url';
+import stripe4 from '../../../assets/images/25-09/25-09-21/earth.webp?url';
 
-export default function AnalogClock () {
-  const [time, setTime] = useState(new Date())
-  const [fontVar] = useState(`font${new Date().getTime()}`)
+export default function AnalogClock() {
+  const [time, setTime] = useState(new Date());
+  const [fontVar] = useState(`font${new Date().getTime()}`);
 
   useEffect(() => {
-    const styleEl = document.createElement('style')
+    const styleEl = document.createElement('style');
     styleEl.innerHTML = `
       @font-face {
         font-family: '${fontVar}';
         src: url(${cust250921font}) format('truetype');
         font-display: swap;
       }
-    `
-    document.head.appendChild(styleEl)
+    `;
+    document.head.appendChild(styleEl);
 
-    const font = new FontFace(fontVar, `url(${cust250921font})`)
+    const font = new FontFace(fontVar, `url(${cust250921font})`);
     font
       .load()
       .then(() => {
-        document.fonts.add(font)
+        document.fonts.add(font);
       })
       .catch(() => {
         // Font failed to load, continue anyway
-      })
+      });
 
     return () => {
-      document.head.removeChild(styleEl)
-    }
-  }, [fontVar])
+      document.head.removeChild(styleEl);
+    };
+  }, [fontVar]);
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 16)
-    return () => clearInterval(interval)
-  }, [])
+    const interval = setInterval(() => setTime(new Date()), 16);
+    return () => clearInterval(interval);
+  }, []);
 
-  const hour = time.getHours() % 12
-  const minute = time.getMinutes()
-  const second = time.getSeconds()
-  const millisecond = time.getMilliseconds()
+  const hour = time.getHours() % 12;
+  const minute = time.getMinutes();
+  const second = time.getSeconds();
+  const millisecond = time.getMilliseconds();
 
-  const hourDeg = (hour + minute / 60 + second / 3600) * 30
-  const minuteDeg = (minute + second / 60 + millisecond / 60000) * 6
-  const secondDeg = (second + millisecond / 1000) * 6
+  const hourDeg = (hour + minute / 60 + second / 3600) * 30;
+  const minuteDeg = (minute + second / 60 + millisecond / 60000) * 6;
+  const secondDeg = (second + millisecond / 1000) * 6;
 
-  const stripes = [stripe1, stripe2, stripe3, stripe4]
+  const stripes = [stripe1, stripe2, stripe3, stripe4];
 
   // Hand style helper
   const handStyle = (width, height, top, rotateDeg) => ({
@@ -66,8 +67,8 @@ export default function AnalogClock () {
     boxShadow: `
       0.05rem 0.05rem 0 rgba(255, 250, 230, 0.8),
       -0.05rem -0.05rem 0 rgba(0,0,0,0.8)
-    `
-  })
+    `,
+  });
 
   const numberStyle = {
     position: 'absolute',
@@ -83,8 +84,8 @@ export default function AnalogClock () {
     display: 'flex',
     opacity: 0.3,
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  };
 
   return (
     <div
@@ -94,38 +95,38 @@ export default function AnalogClock () {
         position: 'relative',
         overflow: 'hidden',
         backgroundColor: '#EFE9E9FF',
-        fontFamily: fontVar
+        fontFamily: fontVar,
       }}
     >
       {/* Clock layers container (pointer-events disabled) */}
       <div style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
         {/* Stripes */}
         {stripes.map((src, idx) => {
-          let mask = ''
+          let mask = '';
           if (idx === 0)
             mask =
-              'linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)'
+              'linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)';
           else if (idx === 3)
             mask =
-              'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%)'
+              'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%)';
           else
             mask =
-              'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)'
+              'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)';
 
           let filter =
-            'hue-rotate(0deg) saturate(1) brightness(1) contrast(0.8)'
+            'hue-rotate(0deg) saturate(1) brightness(1) contrast(0.8)';
           if (idx === 0)
             filter =
-              'hue-rotate(-40deg) saturate(2.2) brightness(1.1) contrast(1.1)'
+              'hue-rotate(-40deg) saturate(2.2) brightness(1.1) contrast(1.1)';
           if (idx === 1)
             filter =
-              'hue-rotate(220deg) saturate(1.9) brightness(1.0) contrast(1.9)'
+              'hue-rotate(220deg) saturate(1.9) brightness(1.0) contrast(1.9)';
           if (idx === 2)
             filter =
-              'hue-rotate(-19deg) saturate(1.1) brightness(1.05) contrast(1.3)'
+              'hue-rotate(-19deg) saturate(1.1) brightness(1.05) contrast(1.3)';
           if (idx === 3)
             filter =
-              'sepia(1) hue-rotate(20deg) saturate(1.2) brightness(1.1) contrast(0.7)'
+              'sepia(1) hue-rotate(20deg) saturate(1.2) brightness(1.1) contrast(0.7)';
 
           return (
             <div
@@ -136,14 +137,14 @@ export default function AnalogClock () {
                   idx === 0
                     ? '0'
                     : idx === 1
-                    ? '15dvh'
-                    : idx === 2
-                    ? '49dvh'
-                    : 'calc(100dvh - 28dvh)',
+                      ? '15dvh'
+                      : idx === 2
+                        ? '49dvh'
+                        : 'calc(100dvh - 28dvh)',
                 left: 0,
                 width: '100vw',
                 height: idx === 1 ? '50dvh' : idx === 2 ? '40dvh' : '28dvh',
-                zIndex: idx
+                zIndex: idx,
               }}
             >
               {[false, true].map((flipped, i) => (
@@ -163,12 +164,12 @@ export default function AnalogClock () {
                     maskImage: mask,
                     filter: filter,
                     opacity: 0.5,
-                    transform: flipped ? 'scaleX(-1)' : 'none'
+                    transform: flipped ? 'scaleX(-1)' : 'none',
                   }}
                 />
               ))}
             </div>
-          )
+          );
         })}
 
         {/* Numbers */}
@@ -177,7 +178,7 @@ export default function AnalogClock () {
             ...numberStyle,
             top: '2vh',
             left: '50%',
-            transform: 'translateX(-50%) scaleX(-1)'
+            transform: 'translateX(-50%) scaleX(-1)',
           }}
         >
           8
@@ -187,7 +188,7 @@ export default function AnalogClock () {
             ...numberStyle,
             bottom: '2vh',
             left: '50%',
-            transform: 'translateX(-50%)'
+            transform: 'translateX(-50%)',
           }}
         >
           6
@@ -197,7 +198,7 @@ export default function AnalogClock () {
             ...numberStyle,
             top: '50%',
             right: '2vw',
-            transform: 'translateY(-50%)'
+            transform: 'translateY(-50%)',
           }}
         >
           3
@@ -207,7 +208,7 @@ export default function AnalogClock () {
             ...numberStyle,
             top: '50%',
             left: '2vw',
-            transform: 'translateY(-50%)'
+            transform: 'translateY(-50%)',
           }}
         >
           9
@@ -225,7 +226,7 @@ export default function AnalogClock () {
             borderRadius: '50%',
             opacity: '0.8',
             background: 'transparent',
-            zIndex: 5
+            zIndex: 5,
           }}
         >
           {/* Full viewport second hand */}
@@ -242,7 +243,7 @@ export default function AnalogClock () {
               boxShadow: `
                 0.05rem 0.05rem 0 rgba(255, 250, 230, 0.8),
                 -0.05rem -0.05rem 0 rgba(0,0,0,0.8)
-              `
+              `,
             }}
           />
 
@@ -257,5 +258,5 @@ export default function AnalogClock () {
         </div>
       </div>
     </div>
-  )
+  );
 }

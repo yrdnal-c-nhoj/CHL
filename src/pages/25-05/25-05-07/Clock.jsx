@@ -13,17 +13,21 @@ const Clock = () => {
 
     const secondsDeg = ((seconds + ms / 1000) / 60) * 360;
     const minutesDeg = ((minutes + seconds / 60) / 60) * 360;
-    const hoursDeg = ((hours % 12 + minutes / 60) / 12) * 360;
+    const hoursDeg = (((hours % 12) + minutes / 60) / 12) * 360;
 
     const sHand = document.querySelector('.second-hand');
     const mHand = document.querySelector('.minute-hand');
     const hHand = document.querySelector('.hour-hand');
     const sweep = document.querySelector('.radar-sweep');
 
-    if (sHand) sHand.style.transform = `translateX(-50%) rotate(${secondsDeg}deg)`;
-    if (sweep) sweep.style.transform = `translate(-50%, -50%) rotate(${secondsDeg}deg)`;
-    if (mHand) mHand.style.transform = `translateX(-50%) rotate(${minutesDeg}deg)`;
-    if (hHand) hHand.style.transform = `translateX(-50%) rotate(${hoursDeg}deg)`;
+    if (sHand)
+      sHand.style.transform = `translateX(-50%) rotate(${secondsDeg}deg)`;
+    if (sweep)
+      sweep.style.transform = `translate(-50%, -50%) rotate(${secondsDeg}deg)`;
+    if (mHand)
+      mHand.style.transform = `translateX(-50%) rotate(${minutesDeg}deg)`;
+    if (hHand)
+      hHand.style.transform = `translateX(-50%) rotate(${hoursDeg}deg)`;
 
     requestRef.current = requestAnimationFrame(updateClock);
   };
@@ -34,22 +38,24 @@ const Clock = () => {
   }, []);
 
   return (
-    <div style={{
-      position: 'relative',
-      width: '100vw',
-      height: '100dvh',
-      overflow: 'hidden',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}>
+    <div
+      style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100dvh',
+        overflow: 'hidden',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <img src={bgImage} alt="background" className="full-page-image" />
-      
+
       <div className="clock">
         <div id="radar">
           {/* The trailing glow effect */}
           <div className="radar-sweep"></div>
-          
+
           <div className="clock-face">
             <div className="hand hour-hand"></div>
             <div className="hand minute-hand"></div>

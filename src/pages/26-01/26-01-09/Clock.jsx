@@ -10,19 +10,19 @@ import customFont from '../../../assets/fonts/26-01-12-tic.ttf';
 const BackgroundGrid = ({ children }) => {
   const [isBackgroundLoaded, setIsBackgroundLoaded] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('CustomClockFont', customFont, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   useEffect(() => {
     setIsClient(true);
-    
+
     // Preload all background images
     const images = [gifOne, gifTwo, gifThree, gifFour];
-    const imagePromises = images.map(src => {
+    const imagePromises = images.map((src) => {
       return new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = resolve;
@@ -71,7 +71,7 @@ const BackgroundGrid = ({ children }) => {
     userSelect: 'none',
     touchAction: 'manipulation',
     WebkitFontSmoothing: 'antialiased',
-    MozOsxFontSmoothing: 'grayscale'
+    MozOsxFontSmoothing: 'grayscale',
   };
 
   const gridItemStyle = {
@@ -86,14 +86,23 @@ const BackgroundGrid = ({ children }) => {
     const row = Math.floor(index / 4);
     const col = index % 4;
     const imageIndex = (row + col) % 4;
-    
+
     let backgroundImage;
-    switch(imageIndex) {
-      case 0: backgroundImage = gifOne; break;
-      case 1: backgroundImage = gifTwo; break;
-      case 2: backgroundImage = gifThree; break;
-      case 3: backgroundImage = gifFour; break;
-      default: backgroundImage = gifOne;
+    switch (imageIndex) {
+      case 0:
+        backgroundImage = gifOne;
+        break;
+      case 1:
+        backgroundImage = gifTwo;
+        break;
+      case 2:
+        backgroundImage = gifThree;
+        break;
+      case 3:
+        backgroundImage = gifFour;
+        break;
+      default:
+        backgroundImage = gifOne;
     }
 
     return (
@@ -114,7 +123,8 @@ const BackgroundGrid = ({ children }) => {
       if (!viewportMeta) {
         const meta = document.createElement('meta');
         meta.name = 'viewport';
-        meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no';
+        meta.content =
+          'width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no';
         document.head.appendChild(meta);
       }
     }
@@ -122,20 +132,20 @@ const BackgroundGrid = ({ children }) => {
 
   return (
     <>
-      <div style={containerStyle}>
-        {gridCells}
-      </div>
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: 10,
-        pointerEvents: 'none',
-        opacity: isBackgroundLoaded && fontReady ? 1 : 0,
-        transition: 'opacity 0.3s ease-in-out'
-      }}>
+      <div style={containerStyle}>{gridCells}</div>
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 10,
+          pointerEvents: 'none',
+          opacity: isBackgroundLoaded && fontReady ? 1 : 0,
+          transition: 'opacity 0.3s ease-in-out',
+        }}
+      >
         {children}
       </div>
     </>
@@ -145,11 +155,11 @@ const BackgroundGrid = ({ children }) => {
 export default function TicTacToeClock() {
   const [time, setTime] = useState(() => new Date());
   const [isClient, setIsClient] = useState(false);
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('CustomClockFont', customFont, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   // Memoize the time formatter to prevent unnecessary recalculations
@@ -160,7 +170,7 @@ export default function TicTacToeClock() {
     const ms = date.getMilliseconds();
     const ampm = hours >= 12 ? 'PM' : 'AM';
     const displayHours = hours % 12 || 12;
-    
+
     return {
       h1: Math.floor(displayHours / 10),
       h2: displayHours % 10,
@@ -169,7 +179,7 @@ export default function TicTacToeClock() {
       s1: Math.floor(seconds / 10),
       s2: seconds % 10,
       ms1: Math.floor((ms % 100) / 10),
-      ampm: ampm
+      ampm: ampm,
     };
   }, []);
 
@@ -178,33 +188,33 @@ export default function TicTacToeClock() {
   // Set up animation frame
   useEffect(() => {
     setIsClient(true);
-    
+
     // Use requestAnimationFrame for smoother updates
     let animationFrameId;
     let lastUpdate = 0;
-    
+
     const updateTime = (timestamp) => {
-      if (!lastUpdate || timestamp - lastUpdate >= 16) { // ~60fps
+      if (!lastUpdate || timestamp - lastUpdate >= 16) {
+        // ~60fps
         setTime(new Date());
         lastUpdate = timestamp;
       }
       animationFrameId = setInterval(() => setTime(new Date()), 100);
     };
-    
+
     animationFrameId = setInterval(() => setTime(new Date()), 100);
-    
+
     return () => {
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
       }
     };
   }, []);
-  
+
   // Update display time when time changes
   useEffect(() => {
     setDisplayTime(formatTime(time));
   }, [time, formatTime]);
-
 
   const clockContainerStyle = {
     width: '100%',
@@ -224,7 +234,7 @@ export default function TicTacToeClock() {
     userSelect: 'none',
     touchAction: 'manipulation',
     WebkitFontSmoothing: 'antialiased',
-    MozOsxFontSmoothing: 'grayscale'
+    MozOsxFontSmoothing: 'grayscale',
   };
 
   const gridStyle = {
@@ -236,7 +246,8 @@ export default function TicTacToeClock() {
     height: '90vmin',
     maxWidth: '500px',
     maxHeight: '500px',
-    padding: 'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)'
+    padding:
+      'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
   };
 
   const cellStyle = {
@@ -250,26 +261,37 @@ export default function TicTacToeClock() {
     textAlign: 'center',
     textRendering: 'optimizeLegibility',
     WebkitFontSmoothing: 'antialiased',
-    MozOsxFontSmoothing: 'grayscale'
+    MozOsxFontSmoothing: 'grayscale',
   };
 
   // Memoize time values array to prevent unnecessary re-renders
-  const timeValues = React.useMemo(() => [
-    displayTime.h1, displayTime.h2, displayTime.m1,
-    displayTime.m2, displayTime.s1, displayTime.s2,
-    displayTime.ms1, displayTime.ampm.charAt(0), displayTime.ampm.charAt(1)
-  ], [displayTime]);
+  const timeValues = React.useMemo(
+    () => [
+      displayTime.h1,
+      displayTime.h2,
+      displayTime.m1,
+      displayTime.m2,
+      displayTime.s1,
+      displayTime.s2,
+      displayTime.ms1,
+      displayTime.ampm.charAt(0),
+      displayTime.ampm.charAt(1),
+    ],
+    [displayTime],
+  );
 
   // Only render on the client to prevent hydration mismatches
   if (!isClient) {
     return (
-      <div style={{ 
-        width: '100%', 
-        height: '100vh', 
-        backgroundColor: '#000',
-        position: 'relative',
-        zIndex: 1
-      }} />
+      <div
+        style={{
+          width: '100%',
+          height: '100vh',
+          backgroundColor: '#000',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      />
     );
   }
 
@@ -281,16 +303,16 @@ export default function TicTacToeClock() {
             const isEven = index % 2 === 0;
             const color = isEven ? '#ff4444' : '#4444ff';
             const shadowColor = isEven ? '255, 68, 68' : '68, 68, 255';
-            
+
             return (
-              <div 
+              <div
                 key={index}
                 style={{
                   ...cellStyle,
                   color,
                   textShadow: `0 0 10px rgba(${shadowColor}, 0.5)`,
                   willChange: 'transform',
-                  transform: 'translateZ(0)' // Promote to own layer for better performance
+                  transform: 'translateZ(0)', // Promote to own layer for better performance
                 }}
                 aria-hidden="true"
               >

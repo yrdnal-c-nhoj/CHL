@@ -8,17 +8,19 @@ import gif3 from '../../../assets/images/25-04/25-04-29/giphy.gif';
 const FireworksClock = () => {
   const clockRef = useRef(null);
   const componentId = `fireworks-clock-${Math.random().toString(36).substr(2, 9)}`;
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('bang', fontUrl, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   useEffect(() => {
     const showClock = () => {
       const now = new Date();
-      const timeString = now.toLocaleTimeString('en-US', { hour12: false }).slice(0, 5);
+      const timeString = now
+        .toLocaleTimeString('en-US', { hour12: false })
+        .slice(0, 5);
       const clock = clockRef.current;
       if (!clock) return;
 
@@ -112,9 +114,27 @@ const FireworksClock = () => {
 
   return (
     <div style={containerStyle} data-component={componentId}>
-      <img decoding="async" loading="lazy" src={gif1} alt="bg1" style={bgStyle} />
-      <img decoding="async" loading="lazy" src={gif2} alt="bg2" style={bgStyle} />
-      <img decoding="async" loading="lazy" src={gif3} alt="bg3" style={bgStyle} />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={gif1}
+        alt="bg1"
+        style={bgStyle}
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={gif2}
+        alt="bg2"
+        style={bgStyle}
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={gif3}
+        alt="bg3"
+        style={bgStyle}
+      />
       <div ref={clockRef} style={clockStyle} />
       <style>{`
         @keyframes ${componentId}-pulse {

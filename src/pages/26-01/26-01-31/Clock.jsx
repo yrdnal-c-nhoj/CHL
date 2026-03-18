@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';import lemonBg from '../../../assets/images/26-01/26-01-31/lemon.gif';
+import { useFontLoader } from '../../../utils/fontLoader';
+import lemonBg from '../../../assets/images/26-01/26-01-31/lemon.gif';
 import rainBg from '../../../assets/images/26-01/26-01-31/lu.webp';
 import lemGif from '../../../assets/images/26-01/26-01-31/lemslo.gif';
 import lemons2Bg from '../../../assets/images/26-01/26-01-31/lemons2.jpg';
@@ -97,13 +98,14 @@ const SimpleBackground = () => {
   // Custom Font Loading
   useEffect(() => {
     const font = new FontFace('LemonFont', `url(${lemonFont})`);
-    font.load()
+    font
+      .load()
       .then((loadedFont) => {
         document.fonts.add(loadedFont);
         setFontLoaded(true);
       })
       .catch((err) => {
-        console.error("Font loading failed:", err);
+        console.error('Font loading failed:', err);
         setFontLoaded(true);
       });
   }, []);
@@ -112,7 +114,7 @@ const SimpleBackground = () => {
     let h = time.getHours();
     const isPm = h >= 12;
     h = h % 12 || 12;
-    
+
     const hours = h.toString().padStart(2, '0');
     const minutes = time.getMinutes().toString().padStart(2, '0');
     const seconds = time.getSeconds().toString().padStart(2, '0');
@@ -120,9 +122,15 @@ const SimpleBackground = () => {
 
     // Map time to the 9-cell grid
     return [
-      hours[0],   hours[1],   minutes[0],
-      minutes[1], seconds[0], seconds[1],
-      ms,         isPm ? 'p' : 'a', 'm'
+      hours[0],
+      hours[1],
+      minutes[0],
+      minutes[1],
+      seconds[0],
+      seconds[1],
+      ms,
+      isPm ? 'p' : 'a',
+      'm',
     ];
   };
 
@@ -142,7 +150,7 @@ const SimpleBackground = () => {
       }
     `;
     document.head.appendChild(style);
-    
+
     return () => {
       document.head.removeChild(style);
     };
@@ -151,63 +159,73 @@ const SimpleBackground = () => {
   return (
     <div style={containerStyle}>
       {/* LAYER 1: The Solid Color (Bottom) */}
-      <div style={{ 
-        ...layerBaseStyle, 
-        backgroundColor: '#FFFB04', 
-        zIndex: 0,
-      }} />
+      <div
+        style={{
+          ...layerBaseStyle,
+          backgroundColor: '#FFFB04',
+          zIndex: 0,
+        }}
+      />
 
       {/* LAYER 2: Rain Image (Middle) */}
-    <div style={{ 
-    ...layerBaseStyle, 
-    backgroundImage: `url(${rainBg})`, 
-    backgroundPosition: 'center center',
-    backgroundSize: '100% 100%', // Forces the image to stretch to the edges
-    backgroundRepeat: 'no-repeat',
-    width: '100vw',               // 100% of Viewport Width
-    height: '100vh',              // 100% of Viewport Height
-    position: 'fixed',            // Keeps it there even if you scroll
-    top: 0,
-    left: 0,
-    zIndex: 3,
-    opacity: 0.7
-    }} />
+      <div
+        style={{
+          ...layerBaseStyle,
+          backgroundImage: `url(${rainBg})`,
+          backgroundPosition: 'center center',
+          backgroundSize: '100% 100%', // Forces the image to stretch to the edges
+          backgroundRepeat: 'no-repeat',
+          width: '100vw', // 100% of Viewport Width
+          height: '100vh', // 100% of Viewport Height
+          position: 'fixed', // Keeps it there even if you scroll
+          top: 0,
+          left: 0,
+          zIndex: 3,
+          opacity: 0.7,
+        }}
+      />
 
-    <div style={{ 
-    ...layerBaseStyle, 
-    backgroundImage: `url(${rainBg})`, 
-    backgroundPosition: 'center center',
-    backgroundSize: '100% 100%',
-    backgroundRepeat: 'no-repeat',
-    width: '100vw',
-    height: '100vh',
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    zIndex: 4,
-    transform: 'scale(-1, -1)', // This performs the double flip
-    opacity: 0.7
-}} />
+      <div
+        style={{
+          ...layerBaseStyle,
+          backgroundImage: `url(${rainBg})`,
+          backgroundPosition: 'center center',
+          backgroundSize: '100% 100%',
+          backgroundRepeat: 'no-repeat',
+          width: '100vw',
+          height: '100vh',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          zIndex: 4,
+          transform: 'scale(-1, -1)', // This performs the double flip
+          opacity: 0.7,
+        }}
+      />
 
       {/* LAYER 3: Lemon Image (Top) */}
-      <div style={{ 
-        ...layerBaseStyle, 
-        backgroundImage: `url(${lemonBg})`, 
-         backgroundPosition: 'center center',
-        zIndex: 2,
-        opacity: 0.8
-      }} />
+      <div
+        style={{
+          ...layerBaseStyle,
+          backgroundImage: `url(${lemonBg})`,
+          backgroundPosition: 'center center',
+          zIndex: 2,
+          opacity: 0.8,
+        }}
+      />
 
       {/* LAYER 4: Lemons2 Tiling Image */}
-      <div style={{ 
-        ...layerBaseStyle, 
-        backgroundImage: `url(${lemons2Bg})`, 
-        backgroundSize: 'auto auto',
-        backgroundPosition: 'top left',
-        backgroundRepeat: 'repeat',
-        zIndex: 1,
-        opacity: 0.8
-      }} />
+      <div
+        style={{
+          ...layerBaseStyle,
+          backgroundImage: `url(${lemons2Bg})`,
+          backgroundSize: 'auto auto',
+          backgroundPosition: 'top left',
+          backgroundRepeat: 'repeat',
+          zIndex: 1,
+          opacity: 0.8,
+        }}
+      />
 
       {/* LAYER 5: The Time Grid */}
       <div style={gridStyle}>

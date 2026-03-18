@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import backgroundImageUrl from '../../../assets/images/25-09/25-09-15/plaid.jpg'
+import React, { useEffect, useState } from 'react';
+import backgroundImageUrl from '../../../assets/images/25-09/25-09-15/plaid.jpg';
 import m250915font from '../../../assets/fonts/25-09-15-plaid.ttf?url';
 
 const SkewFlatClock = ({
   horizontalColors = ['#BB100AFF', '#FFFFFF', '#026033FF'],
   verticalColors = ['#BB100AFF', '#FFFFFF', '#026033FF'],
   verticalRepeats = 40,
-  horizontalRepeats = 30
+  horizontalRepeats = 30,
 }) => {
-  const [time, setTime] = useState('')
-  const [hue, setHue] = useState(0)
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [time, setTime] = useState('');
+  const [hue, setHue] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Load font and background image
   useEffect(() => {
@@ -27,41 +27,43 @@ const SkewFlatClock = ({
 
     // Background image preload
     const imagePromise = new Promise((resolve, reject) => {
-      const img = new Image()
-      img.src = backgroundImageUrl
-      img.onload = resolve
-      img.onerror = reject
-    })
+      const img = new Image();
+      img.src = backgroundImageUrl;
+      img.onload = resolve;
+      img.onerror = reject;
+    });
 
     // Load font and wait for image
     Promise.all([loadFont(), imagePromise])
       .then(() => setIsLoaded(true))
-      .catch(err => {
-        console.error('Asset loading error:', err)
-        setIsLoaded(true)
-      })
-
-  }, [])
+      .catch((err) => {
+        console.error('Asset loading error:', err);
+        setIsLoaded(true);
+      });
+  }, []);
 
   // Update time and hue
   useEffect(() => {
     const updateTime = () => {
-      const now = new Date()
-      let hours = now.getHours()
-      const minutes = now.getMinutes().toString().padStart(2, '0')
-      hours = hours % 12 || 12 // 12-hour format
-      setTime(`${hours}:${minutes}_`)
-    }
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      hours = hours % 12 || 12; // 12-hour format
+      setTime(`${hours}:${minutes}_`);
+    };
 
-    updateTime()
-    const timeInterval = setInterval(updateTime, 60000)
-    const hueInterval = setInterval(() => setHue(prev => (prev + 1) % 360), 70)
+    updateTime();
+    const timeInterval = setInterval(updateTime, 60000);
+    const hueInterval = setInterval(
+      () => setHue((prev) => (prev + 1) % 360),
+      70,
+    );
 
     return () => {
-      clearInterval(timeInterval)
-      clearInterval(hueInterval)
-    }
-  }, [])
+      clearInterval(timeInterval);
+      clearInterval(hueInterval);
+    };
+  }, []);
 
   // If not loaded, render plain black screen
   if (!isLoaded) {
@@ -69,14 +71,14 @@ const SkewFlatClock = ({
       <div
         style={{ height: '100dvh', width: '100vw', backgroundColor: 'black' }}
       />
-    )
+    );
   }
 
-  const createTartanGrid = colors => {
-    const rows = []
+  const createTartanGrid = (colors) => {
+    const rows = [];
     for (let row = 0; row < verticalRepeats; row++) {
-      const rowColor = colors[row % colors.length]
-      const cols = []
+      const rowColor = colors[row % colors.length];
+      const cols = [];
       for (let col = 0; col < horizontalRepeats; col++) {
         cols.push(
           <span
@@ -86,21 +88,21 @@ const SkewFlatClock = ({
               marginRight: '0.1rem',
               color: rowColor,
               opacity: 0.65,
-              fontFamily: 'MyCustomFont'
+              fontFamily: 'MyCustomFont',
             }}
           >
             {time}
-          </span>
-        )
+          </span>,
+        );
       }
       rows.push(
         <div key={row} style={{ whiteSpace: 'nowrap', lineHeight: '1.05' }}>
           {cols}
-        </div>
-      )
+        </div>,
+      );
     }
-    return rows
-  }
+    return rows;
+  };
 
   const baseGridStyle = {
     fontSize: '2.6rem',
@@ -108,8 +110,8 @@ const SkewFlatClock = ({
     top: '50%',
     left: '50%',
     transformOrigin: 'center',
-    translate: '-50% -50%'
-  }
+    translate: '-50% -50%',
+  };
 
   return (
     <div
@@ -121,12 +123,12 @@ const SkewFlatClock = ({
         alignItems: 'center',
         justifyContent: 'center',
         background: '#F3EFEFFF',
-        filter: `hue-rotate(${hue}deg)`
+        filter: `hue-rotate(${hue}deg)`,
       }}
     >
       <div
-        role='timer'
-        aria-live='polite'
+        role="timer"
+        aria-live="polite"
         style={{
           height: '200dvh',
           width: '200vw',
@@ -135,7 +137,7 @@ const SkewFlatClock = ({
           backgroundSize: '15rem 15rem',
           transform: 'rotate(-17deg)',
           transformOrigin: 'center',
-          position: 'relative'
+          position: 'relative',
         }}
       >
         {/* Horizontal threads */}
@@ -149,7 +151,7 @@ const SkewFlatClock = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SkewFlatClock
+export default SkewFlatClock;

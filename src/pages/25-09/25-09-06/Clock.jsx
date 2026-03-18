@@ -13,7 +13,7 @@ const AnalogClock = () => {
   useEffect(() => {
     const font = new FontFace(
       'AnalogClockFont_06_09_2025',
-      `url(${font_06_09_2025})`
+      `url(${font_06_09_2025})`,
     );
     font.load().then(() => {
       document.fonts.add(font);
@@ -122,7 +122,9 @@ const AnalogClock = () => {
           const angle = (i * 360) / 60;
           const tickLength = i % 5 === 0 ? 2 : 1;
           return (
-            <img decoding="async" loading="lazy"
+            <img
+              decoding="async"
+              loading="lazy"
               key={i}
               src={tickImg}
               alt="tick"
@@ -140,7 +142,9 @@ const AnalogClock = () => {
         })}
 
         {/* Hour Hand */}
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={hourHandImg}
           alt="hour"
           style={{
@@ -157,7 +161,9 @@ const AnalogClock = () => {
         />
 
         {/* Minute Hand */}
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={minuteHandImg}
           alt="minute"
           style={{
@@ -174,7 +180,9 @@ const AnalogClock = () => {
         />
 
         {/* Second Hand */}
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={secondHandImg}
           alt="second"
           style={{

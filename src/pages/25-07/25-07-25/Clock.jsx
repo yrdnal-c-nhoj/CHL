@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import background2 from '../../../assets/images/25-07/25-07-25/bb.webp';   // front
-import background1 from '../../../assets/images/25-07/25-07-25/bam.webp';  // back
+import background2 from '../../../assets/images/25-07/25-07-25/bb.webp'; // front
+import background1 from '../../../assets/images/25-07/25-07-25/bam.webp'; // back
 import background3 from '../../../assets/images/25-07/25-07-25/bambu.gif'; // static background
 import customFont from '../../../assets/fonts/25-07-25-bamboo.ttf';
 
@@ -141,12 +141,16 @@ const Clock = () => {
       <div style={clockStackStyle}>
         <div style={digitRowStyle}>
           {hours.split('').map((char, index) => (
-            <div key={`h-${index}`} style={digitBoxStyle}>{char}</div>
+            <div key={`h-${index}`} style={digitBoxStyle}>
+              {char}
+            </div>
           ))}
         </div>
         <div style={digitRowStyle}>
           {minutes.split('').map((char, index) => (
-            <div key={`m-${index}`} style={digitBoxStyle}>{char}</div>
+            <div key={`m-${index}`} style={digitBoxStyle}>
+              {char}
+            </div>
           ))}
         </div>
       </div>

@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import bgImage from '../../../assets/images/25-09/25-09-07/wall.jpg' // local background image
+import React, { useEffect, useState } from 'react';
+import bgImage from '../../../assets/images/25-09/25-09-07/wall.jpg'; // local background image
 import f250907 from '../../../assets/fonts/25-09-07-wall.ttf'; // local font file
 
-const fontVar = 'CustomFont20250908' // custom variable name
+const fontVar = 'CustomFont20250908'; // custom variable name
 
-export default function Clock () {
-  const [now, setNow] = useState(new Date())
+export default function Clock() {
+  const [now, setNow] = useState(new Date());
 
   useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000)
-    return () => clearInterval(interval)
-  }, [])
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Inject @font-face dynamically
   useEffect(() => {
-    const style = document.createElement('style')
+    const style = document.createElement('style');
     style.innerHTML = `
       @font-face {
         font-family: '${fontVar}';
@@ -22,18 +22,18 @@ export default function Clock () {
         font-weight: normal;
         font-style: normal;
       }
-    `
-    document.head.appendChild(style)
+    `;
+    document.head.appendChild(style);
     return () => {
-      document.head.removeChild(style)
-    }
-  }, [])
+      document.head.removeChild(style);
+    };
+  }, []);
 
   // 12-hour format, no leading zeros
-  const hour24 = now.getHours()
-  const hours = hour24 % 12 || 12
-  const minutes = now.getMinutes().toString().padStart(2, '0')
-  const amPm = hour24 < 12 ? 'am' : 'pm'
+  const hour24 = now.getHours();
+  const hours = hour24 % 12 || 12;
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const amPm = hour24 < 12 ? 'am' : 'pm';
 
   return (
     <div
@@ -45,7 +45,7 @@ export default function Clock () {
         justifyContent: 'center',
         fontFamily: fontVar,
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
       }}
     >
       {/* Background image with filter */}
@@ -61,7 +61,7 @@ export default function Clock () {
           backgroundPosition: 'center',
           filter: 'saturate(1.3) hue-rotate(-120deg)',
           transform: 'scaleX(-1)', // flips horizontally
-          zIndex: 0
+          zIndex: 0,
         }}
       />
 
@@ -75,14 +75,14 @@ export default function Clock () {
           lineHeight: '0.7',
           color: '#CDD3D4FF',
           position: 'relative',
-          zIndex: 1 // make sure it stays above the background
+          zIndex: 1, // make sure it stays above the background
         }}
       >
         <span
           style={{
             fontSize: '5rem',
             letterSpacing: '0.1rem',
-            opacity: '0.6'
+            opacity: '0.6',
           }}
         >
           {hours}
@@ -92,12 +92,12 @@ export default function Clock () {
           style={{
             fontSize: '5rem',
             opacity: '0.6',
-            marginTop: '0.5rem'
+            marginTop: '0.5rem',
           }}
         >
           {amPm}
         </span>
       </div>
     </div>
-  )
+  );
 }

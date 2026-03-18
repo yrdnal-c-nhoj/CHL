@@ -27,7 +27,7 @@ const ConcentricClock = () => {
     margin: 0,
     padding: 0,
     overflow: 'hidden',
-    fontFamily: 'sans-serif'
+    fontFamily: 'sans-serif',
   };
 
   const clockFaceStyle = {
@@ -36,7 +36,7 @@ const ConcentricClock = () => {
     height: '90vmin',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   };
 
   const discBaseStyle = {
@@ -51,51 +51,52 @@ const ConcentricClock = () => {
     width: '1vmin',
     height: '4vmin',
     backgroundColor: '#38bdf8',
-    borderRadius: '1vmin'
+    borderRadius: '1vmin',
   };
 
   return (
     <div style={containerStyle}>
       <div style={clockFaceStyle}>
-        
         {/* Seconds Ring - Outer */}
-        <div style={{
-          ...discBaseStyle,
-          width: '95vmin',
-          height: '95vmin',
-          transform: `rotate(${secRev}deg)`,
-          zIndex: 1
-        }}>
+        <div
+          style={{
+            ...discBaseStyle,
+            width: '95vmin',
+            height: '95vmin',
+            transform: `rotate(${secRev}deg)`,
+            zIndex: 1,
+          }}
+        >
           <div style={{ ...markerStyle, backgroundColor: '#F50F35' }} />
         </div>
 
         {/* Minutes Ring - Middle */}
-        <div style={{
-          ...discBaseStyle,
-          width: '70vmin',
-          height: '70vmin',
-          transform: `rotate(${minRev}deg)`,
-          zIndex: 2,
-        }}>
+        <div
+          style={{
+            ...discBaseStyle,
+            width: '70vmin',
+            height: '70vmin',
+            transform: `rotate(${minRev}deg)`,
+            zIndex: 2,
+          }}
+        >
           <div style={{ ...markerStyle, backgroundColor: '#fbbf24' }} />
         </div>
 
         {/* Hours Ring - Inner */}
-        <div style={{
-          ...discBaseStyle,
-          width: '30vmin',
-          height: '40vmin',
-          transform: `rotate(${hrRev}deg)`,
-          zIndex: 3,
-          // backgroundColor: '#334155',
-          // boxShadow: '0 0 5vmin rgba(0,0,0,0.5)'
-        }}>
+        <div
+          style={{
+            ...discBaseStyle,
+            width: '30vmin',
+            height: '40vmin',
+            transform: `rotate(${hrRev}deg)`,
+            zIndex: 3,
+            // backgroundColor: '#334155',
+            // boxShadow: '0 0 5vmin rgba(0,0,0,0.5)'
+          }}
+        >
           <div style={markerStyle} />
         </div>
-
-       
-
-
       </div>
     </div>
   );

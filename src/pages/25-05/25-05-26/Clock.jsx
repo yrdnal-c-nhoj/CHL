@@ -108,7 +108,10 @@ export default function SproutClock() {
 
     const load = async () => {
       try {
-        const face = new FontFace('sprout', `url(${sproutFontWoff2}) format('woff2'), url(${sproutFontTtf}) format('truetype')`);
+        const face = new FontFace(
+          'sprout',
+          `url(${sproutFontWoff2}) format('woff2'), url(${sproutFontTtf}) format('truetype')`,
+        );
         const loaded = await face.load();
         if (!cancelled) {
           document.fonts.add(loaded);
@@ -144,22 +147,33 @@ export default function SproutClock() {
     return () => clearInterval(interval);
   }, []);
 
-  const styles = useMemo(() => ({
-    ...baseStyles,
-    digit: {
-      ...baseStyles.digit,
-      // Uncomment for debugging borders
-      // border: fontReady ? '2px solid green' : '2px solid red',
-    },
-  }), [fontReady]);
+  const styles = useMemo(
+    () => ({
+      ...baseStyles,
+      digit: {
+        ...baseStyles.digit,
+        // Uncomment for debugging borders
+        // border: fontReady ? '2px solid green' : '2px solid red',
+      },
+    }),
+    [fontReady],
+  );
 
   const renderDigits = (digits) =>
     digits.map((d, i) => (
-      <div key={i} style={styles.digit}>{d}</div>
+      <div key={i} style={styles.digit}>
+        {d}
+      </div>
     ));
 
   return (
-    <div style={{...styles.container, opacity: fontReady ? 1 : 0, transition: 'opacity 0.3s ease'}}>
+    <div
+      style={{
+        ...styles.container,
+        opacity: fontReady ? 1 : 0,
+        transition: 'opacity 0.3s ease',
+      }}
+    >
       <div style={styles.bgTiled}></div>
       <div style={styles.bgCover}></div>
 
@@ -176,7 +190,10 @@ export default function SproutClock() {
           />
         ))}
 
-        <div style={styles.clock} aria-label={`Current time ${time.h.join('')}:${time.m.join('')}:${time.s.join('')}.${time.ms.join('')}`}>
+        <div
+          style={styles.clock}
+          aria-label={`Current time ${time.h.join('')}:${time.m.join('')}:${time.s.join('')}.${time.ms.join('')}`}
+        >
           <div style={styles.timeRow}>{renderDigits(time.h)}</div>
           <div style={styles.timeRow}>{renderDigits(time.m)}</div>
           <div style={styles.timeRow}>{renderDigits(time.s)}</div>

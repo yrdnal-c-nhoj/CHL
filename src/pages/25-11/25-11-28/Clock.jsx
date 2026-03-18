@@ -1,7 +1,7 @@
 // TimelineClock.jsx
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import li251128font from '../../../assets/fonts/25-11-28-line.otf?url';
-import patternImg from '../../../assets/images/25-11/25-11-28/line.webp'
+import patternImg from '../../../assets/images/25-11/25-11-28/line.webp';
 
 // 1. Keep fontStyles for global CSS injection
 const fontStyles = `
@@ -13,29 +13,29 @@ const fontStyles = `
     font-display: swap; 
   }
   html, body, #root { height: 100dvh; margin: 0; overflow: hidden; }
-`
+`;
 
-export default function TimelineClock () {
-  const [now, setNow] = useState(new Date())
-  const [isVertical, setIsVertical] = useState(false)
-  const [flash, setFlash] = useState(false)
-  const [comet, setComet] = useState(-100)
+export default function TimelineClock() {
+  const [now, setNow] = useState(new Date());
+  const [isVertical, setIsVertical] = useState(false);
+  const [flash, setFlash] = useState(false);
+  const [comet, setComet] = useState(-100);
   // ADDED: State to track if the font is loaded
-  const [fontLoaded, setFontLoaded] = useState(false)
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   // EXISTING: Clock update
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000)
-    return () => clearInterval(id)
-  }, [])
+    const id = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
 
   // EXISTING: Orientation check
   useEffect(() => {
-    const check = () => setIsVertical(window.innerWidth < window.innerHeight)
-    check()
-    window.addEventListener('resize', check)
-    return () => window.removeEventListener('resize', check)
-  }, [])
+    const check = () => setIsVertical(window.innerWidth < window.innerHeight);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   // ADDED: Font Loading Check
   useEffect(() => {
@@ -44,45 +44,45 @@ export default function TimelineClock () {
       document.fonts
         .load("5.3vh 'Li251128font'")
         .then(() => {
-          setFontLoaded(true)
+          setFontLoaded(true);
         })
-        .catch(err => {
+        .catch((err) => {
           // Fallback: If loading fails, render anyway to avoid infinite blank screen
-          console.error('Font loading failed:', err)
-          setFontLoaded(true)
-        })
+          console.error('Font loading failed:', err);
+          setFontLoaded(true);
+        });
     } else {
       // Fallback for browsers that don't support document.fonts (render immediately)
-      setFontLoaded(true)
+      setFontLoaded(true);
     }
-  }, []) // Run only once on mount
+  }, []); // Run only once on mount
 
   // EXISTING: Comet sweep
   useEffect(() => {
     const triggerComet = () => {
-      setComet(-20)
-      const duration = 800 + Math.random() * 700
-      const timer = setTimeout(() => setComet(120), 50)
-      setTimeout(() => setComet(-100), duration + 100)
-      return () => clearTimeout(timer)
-    }
-    triggerComet()
-    const interval = setInterval(triggerComet, 4000 + Math.random() * 5000)
-    return () => clearInterval(interval)
-  }, [])
+      setComet(-20);
+      const duration = 800 + Math.random() * 700;
+      const timer = setTimeout(() => setComet(120), 50);
+      setTimeout(() => setComet(-100), duration + 100);
+      return () => clearTimeout(timer);
+    };
+    triggerComet();
+    const interval = setInterval(triggerComet, 4000 + Math.random() * 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   // EXISTING: Flash heartbeat
   useEffect(() => {
     const iv = setInterval(() => {
-      setFlash(true)
-      setTimeout(() => setFlash(false), 300)
-    }, 3000)
-    return () => clearInterval(iv)
-  }, [])
+      setFlash(true);
+      setTimeout(() => setFlash(false), 300);
+    }, 3000);
+    return () => clearInterval(iv);
+  }, []);
 
   const seconds =
-    now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds()
-  const percent = (seconds / 86400) * 100
+    now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+  const percent = (seconds / 86400) * 100;
 
   const s = {
     page: {
@@ -93,7 +93,7 @@ export default function TimelineClock () {
       left: 0,
       background: '#0f0404',
       fontFamily: "'Li251128font', system-ui, sans-serif",
-      overflow: 'hidden'
+      overflow: 'hidden',
     },
     timeline: { position: 'relative', width: '100%', height: '100%' },
     bar: {
@@ -101,10 +101,10 @@ export default function TimelineClock () {
       inset: 0,
       backgroundImage: `url(${patternImg})`,
       backgroundRepeat: 'repeat',
-      backgroundSize: isVertical ? '26vh 18vh' : '24vh 18vh'
+      backgroundSize: isVertical ? '26vh 18vh' : '24vh 18vh',
     },
     // MODIFIED: Ticks now follow a diagonal path regardless of orientation
-    tick: pos => ({
+    tick: (pos) => ({
       position: 'absolute',
       left: `${pos}%`, // Position horizontally based on hour percentage
       top: `${pos}%`, // Position vertically based on hour percentage
@@ -114,7 +114,7 @@ export default function TimelineClock () {
       // fontWeight: "bold",
       color: '#333',
       textShadow: `-1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red, -1px 0 0 red, 1px 0 0 red, 0 -1px 0 red, 0 1px 0 red`,
-      userSelect: 'none'
+      userSelect: 'none',
     }),
     // UNCHANGED: MAIN RED LINE (nowLine) position based on orientation
     nowLine: {
@@ -132,7 +132,7 @@ export default function TimelineClock () {
         ? '0 0 40px #ff0000, 0 0 80px #ff3333'
         : '0 0 20px #ff0000, 0 0 40px #ff2222',
       zIndex: 10,
-      transition: 'all 0.4s ease'
+      transition: 'all 0.4s ease',
     },
     // UNCHANGED: COMET position and visibility based on orientation
     comet: {
@@ -149,14 +149,14 @@ export default function TimelineClock () {
       pointerEvents: 'none',
       zIndex: 20,
       opacity: comet >= -20 && comet <= 120 ? 1 : 0,
-      transition: 'opacity 0.2s ease'
-    }
-  }
+      transition: 'opacity 0.2s ease',
+    },
+  };
 
   const ticks = Array.from({ length: 25 }, (_, h) => ({
     hour: h,
-    pos: (h / 24) * 100
-  }))
+    pos: (h / 24) * 100,
+  }));
 
   // CONDITIONAL RENDER: Show a black screen until the font is loaded
   if (!fontLoaded) {
@@ -164,7 +164,7 @@ export default function TimelineClock () {
       <div style={{ ...s.page, background: '#0f0404' }}>
         <style jsx>{fontStyles}</style>
       </div>
-    )
+    );
   }
 
   // The main component render (only runs after fontLoaded is true)
@@ -174,7 +174,7 @@ export default function TimelineClock () {
       <div style={s.timeline}>
         <div style={s.bar} />
         {/* Hour ticks (now diagonal) */}
-        {ticks.map(t => (
+        {ticks.map((t) => (
           <div key={t.hour} style={s.tick(t.pos)}>
             {String(t.hour).padStart(2, '0')}
           </div>
@@ -185,5 +185,5 @@ export default function TimelineClock () {
         <div style={s.comet} />
       </div>
     </div>
-  )
+  );
 }

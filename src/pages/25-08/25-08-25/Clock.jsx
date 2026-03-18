@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import font1 from '../../../assets/fonts/25-08-25-code.ttf';
 import font2 from '../../../assets/fonts/25-08-25-bar.ttf';
-import bgImage2 from '../../../assets/images/25-08/25-08-25/bgla.webp';   // Bottom background
+import bgImage2 from '../../../assets/images/25-08/25-08-25/bgla.webp'; // Bottom background
 import bgImage from '../../../assets/images/25-08/25-08-25/wh.webp'; // Top background
 
 export default function DigitalClock() {
@@ -23,7 +23,9 @@ export default function DigitalClock() {
     const h = hours.toString().padStart(2, '0');
     const m = minutes.toString().padStart(2, '0');
     const s = seconds.toString().padStart(2, '0');
-    const ms = Math.floor(milliseconds / 10).toString().padStart(2, '0');
+    const ms = Math.floor(milliseconds / 10)
+      .toString()
+      .padStart(2, '0');
 
     return [...h, ...m, ...s, ...ms];
   };

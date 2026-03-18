@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';// Asset Imports
+import { useFontLoader } from '../../../utils/fontLoader'; // Asset Imports
 import clockFont from '../../../assets/fonts/26-01-30-ne.ttf';
-import bgLayer1 from "../../../assets/images/26-01/26-01-30/new.webp";
-import bgLayer2 from "../../../assets/images/26-01/26-01-30/nes.gif";
+import bgLayer1 from '../../../assets/images/26-01/26-01-30/new.webp';
+import bgLayer2 from '../../../assets/images/26-01/26-01-30/nes.gif';
 // import bgLayer3 from "../../../assets/images/26-01/26-01-30/ne3.gif";
 
 const DigitalClock = () => {
@@ -18,7 +18,7 @@ const DigitalClock = () => {
     targetAngle: Math.random() * Math.PI * 2,
     speed: 0.005,
     turnStrength: 0.008,
-    confusionTimer: 0
+    confusionTimer: 0,
   });
 
   useEffect(() => {
@@ -31,11 +31,17 @@ const DigitalClock = () => {
     `;
     document.head.appendChild(styleSheet);
 
-    const font = new FontFace('MyCustomFont', `url(${clockFont}) format('truetype')`);
-    font.load().then((f) => {
-      document.fonts.add(f);
-      setFontLoaded(true);
-    }).catch(() => setFontLoaded(true));
+    const font = new FontFace(
+      'MyCustomFont',
+      `url(${clockFont}) format('truetype')`,
+    );
+    font
+      .load()
+      .then((f) => {
+        document.fonts.add(f);
+        setFontLoaded(true);
+      })
+      .catch(() => setFontLoaded(true));
 
     const timer = setInterval(() => setTime(new Date()), 1000);
 
@@ -60,13 +66,13 @@ const DigitalClock = () => {
       pos.current.y += Math.sin(b.angle) * b.speed;
 
       // ── Containment logic ────────────────────────────────────────
-      const limitX = 34;   // vw — feels good on most screens
-      const limitY = 28;   // vh — slightly tighter vertically
+      const limitX = 34; // vw — feels good on most screens
+      const limitY = 28; // vh — slightly tighter vertically
 
       let bounced = false;
 
       if (pos.current.x > limitX) {
-        pos.current.x = limitX * 0.96;           // soft push inside
+        pos.current.x = limitX * 0.96; // soft push inside
         b.targetAngle = Math.atan2(-pos.current.y, -pos.current.x);
         b.speed = 0.5;
         bounced = true;
@@ -93,12 +99,20 @@ const DigitalClock = () => {
       if (bounced) {
         b.confusionTimer = Math.floor(Math.random() * 45) + 20;
         b.turnStrength = 0.12 + Math.random() * 0.08; // temporary snappier turn
-        setTimeout(() => { b.turnStrength = 0.08; }, 800); // reset after ~0.8s
+        setTimeout(() => {
+          b.turnStrength = 0.08;
+        }, 800); // reset after ~0.8s
       }
 
       // Final safety clamp (prevents any rare overshoot)
-      pos.current.x = Math.max(-limitX * 1.05, Math.min(limitX * 1.05, pos.current.x));
-      pos.current.y = Math.max(-limitY * 1.05, Math.min(limitY * 1.05, pos.current.y));
+      pos.current.x = Math.max(
+        -limitX * 1.05,
+        Math.min(limitX * 1.05, pos.current.x),
+      );
+      pos.current.y = Math.max(
+        -limitY * 1.05,
+        Math.min(limitY * 1.05, pos.current.y),
+      );
 
       setBgPos({ x: pos.current.x, y: pos.current.y });
 
@@ -110,7 +124,8 @@ const DigitalClock = () => {
     return () => {
       clearInterval(timer);
       cancelAnimationFrame(requestRef.current);
-      if (document.head.contains(styleSheet)) document.head.removeChild(styleSheet);
+      if (document.head.contains(styleSheet))
+        document.head.removeChild(styleSheet);
     };
   }, []);
 
@@ -181,18 +196,24 @@ const DigitalClock = () => {
       fontStyle: 'italic',
       transform: 'skewX(-25deg)',
       opacity: fontLoaded ? 1 : 0,
-      transition: 'opacity 0.5s ease-in-out'
+      transition: 'opacity 0.5s ease-in-out',
     },
     ampmText: {
       fontSize: '0.4em',
       verticalAlign: 'middle',
-      marginLeft: '10px'
-    }
+      marginLeft: '10px',
+    },
   };
 
   return (
     <div style={styles.container}>
-      <img decoding="async" loading="lazy" src={bgLayer1} alt="" style={styles.imageLayer1} />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bgLayer1}
+        alt=""
+        style={styles.imageLayer1}
+      />
       <div style={styles.imageLayer2} />
       {/* <img decoding="async" loading="lazy" src={bgLayer3} alt="" style={styles.imageLayer3} /> */}
       <div style={styles.uiWrapper}>

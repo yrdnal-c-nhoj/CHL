@@ -4,7 +4,13 @@ import fontUrl from './gr.ttf';
 
 const Clockgrid = () => {
   // 1. Time State and Logic
-  const [time, setTime] = useState({ hours: '', minutes: '', seconds: '', millis: '', ampm: '' });
+  const [time, setTime] = useState({
+    hours: '',
+    minutes: '',
+    seconds: '',
+    millis: '',
+    ampm: '',
+  });
 
   useEffect(() => {
     const updateClock = () => {
@@ -32,16 +38,18 @@ const Clockgrid = () => {
   }, []);
 
   // UPDATED: Clock content now removes colons and dots, using only spaces
-  const clockContent = useMemo(() => (
-    // Format: HH MM SS ms AM/PM (Note the spaces between units)
-    `${time.hours} ${time.minutes} ${time.seconds} ${time.millis} ${time.ampm}`.toUpperCase()
-  ), [time]);
+  const clockContent = useMemo(
+    () =>
+      // Format: HH MM SS ms AM/PM (Note the spaces between units)
+      `${time.hours} ${time.minutes} ${time.seconds} ${time.millis} ${time.ampm}`.toUpperCase(),
+    [time],
+  );
 
   // 2. Dynamic Grid Calculation and Font Setup
   // Define a fixed size for each clock cell in vh units
-  const CLOCK_WIDTH_VH = 22; 
+  const CLOCK_WIDTH_VH = 22;
   const CLOCK_HEIGHT_VH = 4;
-  
+
   // Calculate the number of columns and rows that perfectly fit the viewport
   const columns = Math.ceil(100 / CLOCK_WIDTH_VH);
   const rows = Math.ceil(100 / CLOCK_HEIGHT_VH);
@@ -71,7 +79,7 @@ const Clockgrid = () => {
       position: 'relative',
       fontFamily: 'mult, monospace',
       overflow: 'hidden',
-      gap: '0', 
+      gap: '0',
     },
     // Style for each individual clock
     clock: {
@@ -105,7 +113,9 @@ const Clockgrid = () => {
 
   // 4. Render Clocks
   const clocks = Array.from({ length: totalClocks }, (_, index) => (
-    <div key={index} style={styles.clock}>{clockContent}</div>
+    <div key={index} style={styles.clock}>
+      {clockContent}
+    </div>
   ));
 
   // 5. Component Return

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react'
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 
 // Image paths in public folder
 import bgImage from '../../../assets/images/25-12/25-12-06/giraffe.webp';
@@ -10,28 +10,28 @@ import centerImg from '../../../assets/images/25-12/25-12-06/walk.webp';
 import customFont_2025_1206 from '../../../assets/fonts/25-12-06-gir.otf?url';
 
 export default function AnalogClock() {
-  const [time, setTime] = useState(new Date())
+  const [time, setTime] = useState(new Date());
   const [viewport, setViewport] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 1200,
-    height: typeof window !== 'undefined' ? window.innerHeight : 800
-  })
+    height: typeof window !== 'undefined' ? window.innerHeight : 800,
+  });
 
   // useLayoutEffect prevents the "flash" of incorrect positions on first mount
   useLayoutEffect(() => {
     const handleResize = () => {
       setViewport({
         width: window.innerWidth,
-        height: window.innerHeight
-      })
-    }
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+        height: window.innerHeight,
+      });
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Inject styles including the custom font
   useEffect(() => {
-    const style = document.createElement('style')
+    const style = document.createElement('style');
     style.innerHTML = `
       @font-face {
         font-family: 'CustomClockFont';
@@ -46,54 +46,65 @@ export default function AnalogClock() {
         background: #000;
       }
       body { height: 100dvh; }
-    `
-    document.head.appendChild(style)
+    `;
+    document.head.appendChild(style);
     return () => {
-      if (document.head.contains(style)) document.head.removeChild(style)
-    }
-  }, [])
+      if (document.head.contains(style)) document.head.removeChild(style);
+    };
+  }, []);
 
   // Animation Loop
   useEffect(() => {
-    let intervalId
+    let intervalId;
     const tick = () => {
-      setTime(new Date())
-    }
-    intervalId = setInterval(tick, 50)
-    return () => clearInterval(intervalId)
-  }, [])
+      setTime(new Date());
+    };
+    intervalId = setInterval(tick, 50);
+    return () => clearInterval(intervalId);
+  }, []);
 
   // Time Calculations
-  const now = time
-  const totalHours = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600
-  const totalMinutes = now.getMinutes() + now.getSeconds() / 60
-  const totalSeconds = now.getSeconds() + now.getMilliseconds() / 1000
+  const now = time;
+  const totalHours =
+    now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
+  const totalMinutes = now.getMinutes() + now.getSeconds() / 60;
+  const totalSeconds = now.getSeconds() + now.getMilliseconds() / 1000;
 
-  const hourDeg = totalHours * 30
-  const minuteDeg = totalMinutes * 6
-  const secondDeg = totalSeconds * 6
-  const centerDeg = -totalSeconds * 6
+  const hourDeg = totalHours * 30;
+  const minuteDeg = totalMinutes * 6;
+  const secondDeg = totalSeconds * 6;
+  const centerDeg = -totalSeconds * 6;
 
   // Tiling logic
-  const vmin = Math.min(viewport.width, viewport.height)
-  const tileSize = 10 // vmin
-  const tileSizePx = (tileSize / 100) * vmin
-  const horizontalTiles = Math.ceil(viewport.width / tileSizePx) + 2
-  const verticalTiles = Math.ceil(viewport.height / tileSizePx) + 2
+  const vmin = Math.min(viewport.width, viewport.height);
+  const tileSize = 10; // vmin
+  const tileSizePx = (tileSize / 100) * vmin;
+  const horizontalTiles = Math.ceil(viewport.width / tileSizePx) + 2;
+  const verticalTiles = Math.ceil(viewport.height / tileSizePx) + 2;
 
   const renderTiles = (count, rotation, isRow) =>
     Array.from({ length: count }, (_, i) => (
-      <div key={i} style={{ height: `${tileSize}vmin`, width: `${tileSize}vmin`, overflow: 'hidden' }}>
-        <div style={{
-          height: '100%', width: '100%',
-          backgroundImage: `url(${tileImg})`,
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-          transform: `rotate(${rotation}deg)`
-        }} />
+      <div
+        key={i}
+        style={{
+          height: `${tileSize}vmin`,
+          width: `${tileSize}vmin`,
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          style={{
+            height: '100%',
+            width: '100%',
+            backgroundImage: `url(${tileImg})`,
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            transform: `rotate(${rotation}deg)`,
+          }}
+        />
       </div>
-    ))
+    ));
 
   // Component Styles
   const outerContainerStyle = {
@@ -108,19 +119,19 @@ export default function AnalogClock() {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    touchAction: 'none'
-  }
+    touchAction: 'none',
+  };
 
   const clockContainerStyle = {
     width: 'min(80vmin, 90vw)',
     height: 'min(80vmin, 90vw)',
     position: 'relative',
-    zIndex: 10
-  }
+    zIndex: 10,
+  };
 
   const numberStyle = (num) => {
-    const angle = (num - 3) * 30 * (Math.PI / 180)
-    const radius = 42 
+    const angle = (num - 3) * 30 * (Math.PI / 180);
+    const radius = 42;
     return {
       position: 'absolute',
       left: `calc(50% + ${radius * Math.cos(angle)}%)`,
@@ -131,9 +142,9 @@ export default function AnalogClock() {
       color: 'white',
       textShadow: '2px 2px 4px rgba(0, 0, 0, 0.83)',
       userSelect: 'none',
-      zIndex: 5
-    }
-  }
+      zIndex: 5,
+    };
+  };
 
   const handStyle = (deg, width, zIndex) => ({
     position: 'absolute',
@@ -147,50 +158,113 @@ export default function AnalogClock() {
     zIndex: zIndex,
     filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.5))',
     maskImage: 'linear-gradient(to top, transparent 10%, rgba(0,0,0,1) 30%)',
-    WebkitMaskImage: 'linear-gradient(to top, transparent 10%, rgba(0,0,0,1) 30%)',
+    WebkitMaskImage:
+      'linear-gradient(to top, transparent 10%, rgba(0,0,0,1) 30%)',
     pointerEvents: 'none',
-    willChange: 'transform'
-  })
+    willChange: 'transform',
+  });
 
   return (
     <div style={outerContainerStyle}>
       {/* Border Tiling */}
-      <div style={{ position: 'absolute', top: 0, width: '100%', display: 'flex', zIndex: 3 }}>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          width: '100%',
+          display: 'flex',
+          zIndex: 3,
+        }}
+      >
         {renderTiles(horizontalTiles, 180, true)}
       </div>
-      <div style={{ position: 'absolute', bottom: 0, width: '100%', display: 'flex', zIndex: 3 }}>
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          width: '100%',
+          display: 'flex',
+          zIndex: 3,
+        }}
+      >
         {renderTiles(horizontalTiles, 0, true)}
       </div>
-      <div style={{ position: 'absolute', left: 0, height: '100%', display: 'flex', flexDirection: 'column', zIndex: 3 }}>
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          zIndex: 3,
+        }}
+      >
         {renderTiles(verticalTiles, 90, false)}
       </div>
-      <div style={{ position: 'absolute', right: 0, height: '100%', display: 'flex', flexDirection: 'column', zIndex: 3 }}>
+      <div
+        style={{
+          position: 'absolute',
+          right: 0,
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          zIndex: 3,
+        }}
+      >
         {renderTiles(verticalTiles, 270, false)}
       </div>
 
       {/* Clock Face */}
       <div style={clockContainerStyle}>
         {[...Array(12)].map((_, i) => (
-          <div key={i + 1} style={numberStyle(i + 1)}>{i + 1}</div>
+          <div key={i + 1} style={numberStyle(i + 1)}>
+            {i + 1}
+          </div>
         ))}
 
-        <img decoding="async" loading="lazy" src={minnnuteHandImg} style={handStyle(minuteDeg, 37, 9)} alt="minute" />
-        <img decoding="async" loading="lazy" src={secondHandImg} style={handStyle(secondDeg, 40, 10)} alt="second" />
-        <img decoding="async" loading="lazy" src={hourHandImggir} style={handStyle(hourDeg, 45, 11)} alt="hour" /> 
-      
+        <img
+          decoding="async"
+          loading="lazy"
+          src={minnnuteHandImg}
+          style={handStyle(minuteDeg, 37, 9)}
+          alt="minute"
+        />
+        <img
+          decoding="async"
+          loading="lazy"
+          src={secondHandImg}
+          style={handStyle(secondDeg, 40, 10)}
+          alt="second"
+        />
+        <img
+          decoding="async"
+          loading="lazy"
+          src={hourHandImggir}
+          style={handStyle(hourDeg, 45, 11)}
+          alt="hour"
+        />
+
         {/* Spinning Center Image */}
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '29vmin',
-          height: '29vmin',
-          transform: `translate(-50%, -50%) rotate(${centerDeg}deg)`,
-          zIndex: 15
-        }}>
-          <img decoding="async" loading="lazy" src={centerImg} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="center" />
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: '29vmin',
+            height: '29vmin',
+            transform: `translate(-50%, -50%) rotate(${centerDeg}deg)`,
+            zIndex: 15,
+          }}
+        >
+          <img
+            decoding="async"
+            loading="lazy"
+            src={centerImg}
+            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+            alt="center"
+          />
         </div>
       </div>
     </div>
-  )
+  );
 }

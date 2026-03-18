@@ -1,19 +1,22 @@
 /** @jsxImportSource react */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import cus251101font from '../../../assets/fonts/25-11-01-edgecase.ttf'; // 🟩 Local font
 
-export default function EdgeClockWithHands () {
-  const [time, setTime] = useState(new Date())
-  const [viewport, setViewport] = useState({ width: 0, height: 0 })
+export default function EdgeClockWithHands() {
+  const [time, setTime] = useState(new Date());
+  const [viewport, setViewport] = useState({ width: 0, height: 0 });
   const [fontLoaded, setFontLoaded] = useState(false);
-  const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   const numberAndHandColor = '#FF6B6B'; // Define the missing color variable
-  
+
   // Simple scoped font loading without leaks
   useEffect(() => {
     const loadFont = async () => {
       try {
-        const fontFace = new FontFace('CustomClockFont', `url(${cus251101font})`);
+        const fontFace = new FontFace(
+          'CustomClockFont',
+          `url(${cus251101font})`,
+        );
         await fontFace.load();
         document.fonts.add(fontFace);
         setFontLoaded(true);
@@ -22,39 +25,39 @@ export default function EdgeClockWithHands () {
         setFontLoaded(false);
       }
     };
-    
+
     loadFont();
   }, []);
 
   // Continuous update for smooth hands
   useEffect(() => {
     const interval = setInterval(() => {
-      setTime(new Date())
+      setTime(new Date());
     }, 50); // Update every 50ms for smooth hand movement
-    return () => clearInterval(interval)
-  }, [])
+    return () => clearInterval(interval);
+  }, []);
 
   // Track viewport size
   useEffect(() => {
     const updateSize = () =>
-      setViewport({ width: window.innerWidth, height: window.innerHeight })
-    updateSize()
-    window.addEventListener('resize', updateSize)
-    return () => window.removeEventListener('resize', updateSize)
-  }, [])
+      setViewport({ width: window.innerWidth, height: window.innerHeight });
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
 
-  const centerX = viewport.width / 2
-  const centerY = viewport.height / 2
-  const margin = 1 // in vh units
+  const centerX = viewport.width / 2;
+  const centerY = viewport.height / 2;
+  const margin = 1; // in vh units
 
   // Time calculations
-  const seconds = time.getSeconds() + time.getMilliseconds() / 1000
-  const minutes = time.getMinutes() + seconds / 60
-  const hours = (time.getHours() % 12) + minutes / 60
+  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+  const minutes = time.getMinutes() + seconds / 60;
+  const hours = (time.getHours() % 12) + minutes / 60;
 
-  const secondDeg = seconds * 6
-  const minuteDeg = minutes * 6
-  const hourDeg = hours * 30
+  const secondDeg = seconds * 6;
+  const minuteDeg = minutes * 6;
+  const hourDeg = hours * 30;
 
   // Hands style with fixed pixel sizes
   const handStyle = (widthPx, lengthPx, color, rotation) => ({
@@ -67,24 +70,24 @@ export default function EdgeClockWithHands () {
     left: `${centerX - widthPx / 2}px`,
     transform: `rotate(${rotation}deg)`,
     borderRadius: '2px',
-    zIndex: 3
-  })
+    zIndex: 3,
+  });
 
   // Place numbers slightly closer to the center
-  const numberStyle = num => {
-    const angle = (num - 3) * (Math.PI / 6)
+  const numberStyle = (num) => {
+    const angle = (num - 3) * (Math.PI / 6);
     const dx =
       angle === 0 || angle === Math.PI
         ? centerX - (margin * viewport.height) / 100
-        : centerX / Math.abs(Math.cos(angle))
+        : centerX / Math.abs(Math.cos(angle));
     const dy =
       angle === Math.PI / 2 || angle === -Math.PI / 2
         ? centerY - (margin * viewport.height) / 100
-        : centerY / Math.abs(Math.sin(angle))
-    const dist = Math.min(dx, dy) * 0.9
+        : centerY / Math.abs(Math.sin(angle));
+    const dist = Math.min(dx, dy) * 0.9;
 
-    const x = centerX + Math.cos(angle) * dist
-    const y = centerY + Math.sin(angle) * dist
+    const x = centerX + Math.cos(angle) * dist;
+    const y = centerY + Math.sin(angle) * dist;
 
     return {
       position: 'absolute',
@@ -94,13 +97,13 @@ export default function EdgeClockWithHands () {
       fontSize: '4vh',
       color: numberAndHandColor,
       fontFamily: 'CustomClockFont',
-      zIndex: 2
-    }
-  }
+      zIndex: 2,
+    };
+  };
 
   // Rectangle dimensions: 50px smaller than viewport
-  const rectWidth = viewport.width - 130
-  const rectHeight = viewport.height - 130
+  const rectWidth = viewport.width - 130;
+  const rectHeight = viewport.height - 130;
 
   return (
     <div
@@ -113,7 +116,7 @@ export default function EdgeClockWithHands () {
         border: '6px solid #72FF06FF', // Component border
         boxSizing: 'border-box',
         opacity: fontLoaded ? 1 : 0,
-        transition: 'opacity 0.2s ease-out'
+        transition: 'opacity 0.2s ease-out',
       }}
     >
       {/* Yellow rectangle, 50px smaller than viewport, centered */}
@@ -127,13 +130,13 @@ export default function EdgeClockWithHands () {
             left: `${(viewport.width - rectWidth) / 2}px`, // Center horizontally
             border: '11px solid #1A3D02FF', // Yellow border
             boxSizing: 'border-box',
-            zIndex: 1 // Behind numbers and hands
+            zIndex: 1, // Behind numbers and hands
           }}
         />
       )}
 
       {viewport.width > 0 &&
-        numbers.map(n => (
+        numbers.map((n) => (
           <React.Fragment key={n}>
             <div style={numberStyle(n)}>{n}</div>
           </React.Fragment>
@@ -144,5 +147,5 @@ export default function EdgeClockWithHands () {
       <div style={handStyle(4, 20, numberAndHandColor, minuteDeg)} />
       <div style={handStyle(2, 25, numberAndHandColor, secondDeg)} />
     </div>
-  )
+  );
 }

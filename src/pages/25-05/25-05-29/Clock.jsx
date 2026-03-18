@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import gearsGif from "../../../assets/images/25-05/25-05-29/gears-13950_128.gif";
-import watchWoff2 from "../../../assets/fonts/25-05-29-watch.woff2";
-import watchTtf from "../../../assets/fonts/25-05-29-watch.ttf";
+import { useEffect, useState } from 'react';
+import gearsGif from '../../../assets/images/25-05/25-05-29/gears-13950_128.gif';
+import watchWoff2 from '../../../assets/fonts/25-05-29-watch.woff2';
+import watchTtf from '../../../assets/fonts/25-05-29-watch.ttf';
 
 const Clock = () => {
   const [loaded, setLoaded] = useState(false);
@@ -12,33 +12,33 @@ const Clock = () => {
 
   // Character map for digits
   const charMap = {
-    "0": "zero",
-    "1": "one",
-    "2": "two",
-    "3": "three",
-    "4": "four",
-    "5": "five",
-    "6": "six",
-    "7": "seven",
-    "8": "eight",
-    "9": "nine",
+    0: 'zero',
+    1: 'one',
+    2: 'two',
+    3: 'three',
+    4: 'four',
+    5: 'five',
+    6: 'six',
+    7: 'seven',
+    8: 'eight',
+    9: 'nine',
   };
 
-  const substituteDigit = (str) => str.split("").map((d) => charMap[d] || d);
+  const substituteDigit = (str) => str.split('').map((d) => charMap[d] || d);
 
   useEffect(() => {
     // Update vh on resize for mobile viewport issues
     const onResize = () => setVh(window.innerHeight);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, []);
 
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
       let hours = now.getHours() % 12 || 12;
-      const minutes = String(now.getMinutes()).padStart(2, "0");
-      const seconds = String(now.getSeconds()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
 
       setHoursDigits(substituteDigit(String(hours)));
       setMinutesDigits(substituteDigit(minutes));
@@ -54,28 +54,28 @@ const Clock = () => {
   if (!loaded) return null;
 
   const backgroundStyle = {
-    position: "fixed",
-    width: "100%",
-    height: "100%",
+    position: 'fixed',
+    width: '100%',
+    height: '100%',
     top: 0,
     left: 0,
     backgroundImage: `url(${gearsGif})`,
-    backgroundRepeat: "repeat",
-    backgroundPosition: "center",
-    pointerEvents: "none",
+    backgroundRepeat: 'repeat',
+    backgroundPosition: 'center',
+    pointerEvents: 'none',
   };
 
   return (
     <div
       style={{
         height: vh,
-        width: "100vw",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        position: "relative",
-        overflow: "hidden",
-        backgroundColor: "#c9dbef",
+        width: '100vw',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+        backgroundColor: '#c9dbef',
         margin: 0,
         padding: 0,
       }}
@@ -113,22 +113,61 @@ const Clock = () => {
       `}</style>
 
       {/* Background Layers */}
-      <div style={{ ...backgroundStyle, backgroundSize: "22vw 18vw", opacity: 0.3, zIndex: 5 }} />
-      <div style={{ ...backgroundStyle, backgroundSize: "21vw 17vw", opacity: 0.35, zIndex: 4 }} />
-      <div style={{ ...backgroundStyle, backgroundSize: "20vw 16vw", opacity: 0.4, zIndex: 3 }} />
+      <div
+        style={{
+          ...backgroundStyle,
+          backgroundSize: '22vw 18vw',
+          opacity: 0.3,
+          zIndex: 5,
+        }}
+      />
+      <div
+        style={{
+          ...backgroundStyle,
+          backgroundSize: '21vw 17vw',
+          opacity: 0.35,
+          zIndex: 4,
+        }}
+      />
+      <div
+        style={{
+          ...backgroundStyle,
+          backgroundSize: '20vw 16vw',
+          opacity: 0.4,
+          zIndex: 3,
+        }}
+      />
 
       {/* Clock */}
       <div className="clock">
         <div className="unit" id="hours">
-          <div className="value">{hoursDigits.map((d, i) => <span key={i} className="digit-box">{d}</span>)}</div>
+          <div className="value">
+            {hoursDigits.map((d, i) => (
+              <span key={i} className="digit-box">
+                {d}
+              </span>
+            ))}
+          </div>
         </div>
         <div className="divider"></div>
         <div className="unit" id="minutes">
-          <div className="value">{minutesDigits.map((d, i) => <span key={i} className="digit-box">{d}</span>)}</div>
+          <div className="value">
+            {minutesDigits.map((d, i) => (
+              <span key={i} className="digit-box">
+                {d}
+              </span>
+            ))}
+          </div>
         </div>
         <div className="divider"></div>
         <div className="unit" id="seconds">
-          <div className="value">{secondsDigits.map((d, i) => <span key={i} className="digit-box">{d}</span>)}</div>
+          <div className="value">
+            {secondsDigits.map((d, i) => (
+              <span key={i} className="digit-box">
+                {d}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </div>

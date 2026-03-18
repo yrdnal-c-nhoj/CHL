@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 // Import today's date font
 import font_2025_12_06 from '../../../assets/fonts/25-12-05-magic.ttf?url'; // This path is correct as it's relative to the public directory
 
 // Import background image
-import bgImage from '../../../assets/images/25-12/25-12-05/magic.webp'
+import bgImage from '../../../assets/images/25-12/25-12-05/magic.webp';
 
-export default function BoxedDigitalClock () {
-  const [time, setTime] = useState(new Date())
-  const [visible, setVisible] = useState(false) // Clock visibility for glitch
-  const [randomOpacity, setRandomOpacity] = useState(0.2) // Random opacity for glitches
-  
+export default function BoxedDigitalClock() {
+  const [time, setTime] = useState(new Date());
+  const [visible, setVisible] = useState(false); // Clock visibility for glitch
+  const [randomOpacity, setRandomOpacity] = useState(0.2); // Random opacity for glitches
+
   // Use standardized font loader
   const fontReady = useFontLoader('CustomFont_2025_12_06', font_2025_12_06, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   // -------------------------------
   // Update clock every second
   // -------------------------------
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000)
-    return () => clearInterval(timer)
-  }, [])
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   // -------------------------------
   // Random glitch in/out
@@ -33,29 +33,29 @@ export default function BoxedDigitalClock () {
     const startTimeout = setTimeout(() => {
       const glitchLoop = () => {
         // Random delay ~0-500ms for next glitch
-        const delay = 500 + Math.random() * 500
+        const delay = 500 + Math.random() * 500;
 
         // Set random opacity for this glitch
-        setRandomOpacity(Math.random() * 0.8)
+        setRandomOpacity(Math.random() * 0.8);
 
         // Show clock briefly (~1/16 second)
-        setVisible(true)
-        setTimeout(() => setVisible(false), 62) // 1/16 second
+        setVisible(true);
+        setTimeout(() => setVisible(false), 62); // 1/16 second
 
         // Schedule next glitch
-        setTimeout(glitchLoop, delay)
-      }
-      glitchLoop()
-    }, 1000)
+        setTimeout(glitchLoop, delay);
+      };
+      glitchLoop();
+    }, 1000);
 
-    return () => clearTimeout(startTimeout)
-  }, [])
+    return () => clearTimeout(startTimeout);
+  }, []);
 
   // Convert to 12-hour format without leading zeros
-  const hours12 = time.getHours() % 12 || 12 // Convert 0 to 12 for midnight
-  const hours = hours12.toString().split('')
-  const minutes = time.getMinutes().toString().padStart(2, '0').split('')
-  const ampm = time.getHours() >= 12 ? 'PM' : 'AM'
+  const hours12 = time.getHours() % 12 || 12; // Convert 0 to 12 for midnight
+  const hours = hours12.toString().split('');
+  const minutes = time.getMinutes().toString().padStart(2, '0').split('');
+  const ampm = time.getHours() >= 12 ? 'PM' : 'AM';
 
   const containerStyle = {
     fontFamily: 'CustomFont_2025_12_06',
@@ -72,8 +72,8 @@ export default function BoxedDigitalClock () {
     boxSizing: 'border-box',
     overflow: 'hidden',
     fontFeatureSettings: "'tnum'",
-    position: 'relative'
-  }
+    position: 'relative',
+  };
 
   const overlayStyle = {
     position: 'absolute',
@@ -83,8 +83,8 @@ export default function BoxedDigitalClock () {
     height: '100%',
     background:
       'radial-gradient(circle,  rgba(18, 110, 128, 0.3) 0%,  rgba(128, 0, 128, 0.2) 100%)',
-    pointerEvents: 'none'
-  }
+    pointerEvents: 'none',
+  };
 
   const clockStyle = {
     display: visible ? 'flex' : 'none', // Show only during glitch
@@ -98,8 +98,8 @@ export default function BoxedDigitalClock () {
     filter: visible
       ? `blur(${Math.random() * 1.5}px) brightness(${1 + Math.random() * 0.5})`
       : 'none',
-    transition: 'all 0.05s linear'
-  }
+    transition: 'all 0.05s linear',
+  };
 
   const digitBoxStyle = {
     display: 'flex',
@@ -108,12 +108,12 @@ export default function BoxedDigitalClock () {
     backgroundColor: 'rgba(0,0,0,0.5)',
     width: '6vh',
     height: '8vh',
-    borderRadius: '1vh'
-  }
+    borderRadius: '1vh',
+  };
 
   const separatorStyle = {
-    margin: '0 1vw'
-  }
+    margin: '0 1vw',
+  };
 
   return (
     <div style={containerStyle}>
@@ -135,7 +135,9 @@ export default function BoxedDigitalClock () {
           </div>
         ))}
 
-        <div style={separatorStyle} className="digit">:</div>
+        <div style={separatorStyle} className="digit">
+          :
+        </div>
 
         {minutes.map((digit, i) => (
           <div key={`m${i}`} style={digitBoxStyle} className="digit">
@@ -148,5 +150,5 @@ export default function BoxedDigitalClock () {
         </div>
       </div>
     </div>
-  )
+  );
 }

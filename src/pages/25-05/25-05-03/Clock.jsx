@@ -48,10 +48,30 @@ const FlyingPetalsClock = () => {
   };
 
   const imageStyles = [
-    { ...imgStyleBase, transform: 'rotate(180deg)', filter: 'saturate(7.5)', zIndex: 4 },
-    { ...imgStyleBase, transform: 'rotate(185deg)', filter: 'saturate(2.5) brightness(1.5)', zIndex: 1 },
-    { ...imgStyleBase, transform: 'rotate(180deg)', filter: 'saturate(1.5) brightness(1.5)', zIndex: 2 },
-    { ...imgStyleBase, transform: 'rotate(10deg)', filter: 'saturate(1.5) brightness(1.5)', zIndex: 3 },
+    {
+      ...imgStyleBase,
+      transform: 'rotate(180deg)',
+      filter: 'saturate(7.5)',
+      zIndex: 4,
+    },
+    {
+      ...imgStyleBase,
+      transform: 'rotate(185deg)',
+      filter: 'saturate(2.5) brightness(1.5)',
+      zIndex: 1,
+    },
+    {
+      ...imgStyleBase,
+      transform: 'rotate(180deg)',
+      filter: 'saturate(1.5) brightness(1.5)',
+      zIndex: 2,
+    },
+    {
+      ...imgStyleBase,
+      transform: 'rotate(10deg)',
+      filter: 'saturate(1.5) brightness(1.5)',
+      zIndex: 3,
+    },
   ];
 
   const wrapperStyle = {
@@ -93,10 +113,34 @@ const FlyingPetalsClock = () => {
 
   return (
     <div style={containerStyle}>
-      <img decoding="async" loading="lazy" src={bg1} alt="background1" style={imageStyles[0]} />
-      <img decoding="async" loading="lazy" src={bg2} alt="background2" style={imageStyles[1]} />
-      <img decoding="async" loading="lazy" src={bg3} alt="background3" style={imageStyles[2]} />
-      <img decoding="async" loading="lazy" src={bg4} alt="background4" style={imageStyles[3]} />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bg1}
+        alt="background1"
+        style={imageStyles[0]}
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bg2}
+        alt="background2"
+        style={imageStyles[1]}
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bg3}
+        alt="background3"
+        style={imageStyles[2]}
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bg4}
+        alt="background4"
+        style={imageStyles[3]}
+      />
       <div style={wrapperStyle}>
         <div style={clockContainerStyle}>
           <div style={digitGroupStyle}>

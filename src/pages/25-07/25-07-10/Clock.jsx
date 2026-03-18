@@ -3,7 +3,14 @@ import sliFont from '../../../assets/fonts/25-07-10-sli.otf';
 import sli2Font from '../../../assets/fonts/25-07-10-sli2.ttf';
 
 const Clock = () => {
-  const digitGroups = ['hour-tens', 'hour-ones', 'minute-tens', 'minute-ones', 'second-tens', 'second-ones'];
+  const digitGroups = [
+    'hour-tens',
+    'hour-ones',
+    'minute-tens',
+    'minute-ones',
+    'second-tens',
+    'second-ones',
+  ];
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
 
   useEffect(() => {
@@ -55,8 +62,10 @@ const Clock = () => {
         const val = parseInt(digits[i]);
         const groupRect = group?.getBoundingClientRect();
         const offset = isMobile
-          ? window.innerWidth / 2 - (groupRect?.left + val * digitSize + digitSize / 2)
-          : window.innerHeight / 2 - (groupRect?.top + val * digitSize + digitSize / 2);
+          ? window.innerWidth / 2 -
+            (groupRect?.left + val * digitSize + digitSize / 2)
+          : window.innerHeight / 2 -
+            (groupRect?.top + val * digitSize + digitSize / 2);
         strip.style.transform = isMobile
           ? `translateX(${offset / 16}rem)`
           : `translateY(${offset / 16}rem)`;
@@ -71,8 +80,10 @@ const Clock = () => {
       const ampmIndex = ampm === 'A' ? 0 : 1;
       const ampmRect = ampmGroup?.getBoundingClientRect();
       const ampmOffset = isMobile
-        ? window.innerWidth / 2 - (ampmRect?.left + ampmIndex * digitSize + digitSize / 2)
-        : window.innerHeight / 2 - (ampmRect?.top + ampmIndex * digitSize + digitSize / 2);
+        ? window.innerWidth / 2 -
+          (ampmRect?.left + ampmIndex * digitSize + digitSize / 2)
+        : window.innerHeight / 2 -
+          (ampmRect?.top + ampmIndex * digitSize + digitSize / 2);
       ampmStrip.style.transform = isMobile
         ? `translateX(${ampmOffset / 16}rem)`
         : `translateY(${ampmOffset / 16}rem)`;

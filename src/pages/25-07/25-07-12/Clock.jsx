@@ -14,9 +14,12 @@ const FibonacciClock = () => {
       const minuteDeg = (minutes / 60) * 360 + (seconds / 60) * 6;
       const hourDeg = (hours / 12) * 360 + (minutes / 60) * 30;
 
-      document.querySelector('.second-hand').style.transform = `rotate(${secondDeg}deg)`;
-      document.querySelector('.minute-hand').style.transform = `rotate(${minuteDeg}deg)`;
-      document.querySelector('.hour-hand').style.transform = `rotate(${hourDeg}deg)`;
+      document.querySelector('.second-hand').style.transform =
+        `rotate(${secondDeg}deg)`;
+      document.querySelector('.minute-hand').style.transform =
+        `rotate(${minuteDeg}deg)`;
+      document.querySelector('.hour-hand').style.transform =
+        `rotate(${hourDeg}deg)`;
     };
 
     updateClock();
@@ -47,19 +50,23 @@ const FibonacciClock = () => {
   ];
 
   return (
-    <div style={{
-      margin: 0,
-      height: '100dvh',
-      width: '100vw',
-      backgroundColor: '#cac7c7',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      overflow: 'hidden',
-      position: 'relative'
-    }}>
+    <div
+      style={{
+        margin: 0,
+        height: '100dvh',
+        width: '100vw',
+        backgroundColor: '#cac7c7',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
+    >
       <style>{fontFace}</style>
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={fibImage}
         alt="background"
         style={{
@@ -76,13 +83,15 @@ const FibonacciClock = () => {
           transform: 'translate(-50%, -50%) scale(-1, -1)',
         }}
       />
-      <div style={{
-        width: '40vh',
-        height: '40vh',
-        borderRadius: '50%',
-        position: 'relative',
-        zIndex: 3,
-      }}>
+      <div
+        style={{
+          width: '40vh',
+          height: '40vh',
+          borderRadius: '50%',
+          position: 'relative',
+          zIndex: 3,
+        }}
+      >
         {numbers.map(({ angle, value }, i) => (
           <div
             key={i}
@@ -99,59 +108,72 @@ const FibonacciClock = () => {
               textShadow: '0.15rem 0.04rem #f1c72f',
             }}
           >
-            <div style={{
-              position: 'absolute',
-              transform: 'translate(-50%, -21vh)',
-            }}>
+            <div
+              style={{
+                position: 'absolute',
+                transform: 'translate(-50%, -21vh)',
+              }}
+            >
               {value}
             </div>
           </div>
         ))}
 
-        <div className="hand hour-hand" style={{
-          position: 'absolute',
-          bottom: '50%',
-          left: '50%',
-          width: '0.7vh',
-          height: '6.5vh',
-          backgroundColor: '#191918',
-          transformOrigin: 'bottom',
-          borderRadius: '0.3vh',
-          filter: 'drop-shadow(0.15rem 0.04rem rgb(231, 196, 23))',
-        }} />
-        <div className="hand minute-hand" style={{
-          position: 'absolute',
-          bottom: '50%',
-          left: '50%',
-          width: '0.5vh',
-          height: '13vh',
-          backgroundColor: '#191918',
-          transformOrigin: 'bottom',
-          borderRadius: '0.25vh',
-          filter: 'drop-shadow(0.15rem 0.04rem rgb(231, 196, 23))',
-        }} />
-        <div className="hand second-hand" style={{
-          position: 'absolute',
-          bottom: '50%',
-          left: '50%',
-          width: '0.2vh',
-          height: '8vh',
-          backgroundColor: 'transparent',
-          transformOrigin: 'bottom',
-          borderRadius: '0.2vh',
-          filter: 'drop-shadow(0.15rem 0.04rem rgb(231, 196, 23))',
-        }} />
-        <div style={{
-          width: '2.6vh',
-          height: '2.6vh',
-          borderRadius: '50%',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          opacity: 0.1,
-          backgroundColor: '#000',
-        }}></div>
+        <div
+          className="hand hour-hand"
+          style={{
+            position: 'absolute',
+            bottom: '50%',
+            left: '50%',
+            width: '0.7vh',
+            height: '6.5vh',
+            backgroundColor: '#191918',
+            transformOrigin: 'bottom',
+            borderRadius: '0.3vh',
+            filter: 'drop-shadow(0.15rem 0.04rem rgb(231, 196, 23))',
+          }}
+        />
+        <div
+          className="hand minute-hand"
+          style={{
+            position: 'absolute',
+            bottom: '50%',
+            left: '50%',
+            width: '0.5vh',
+            height: '13vh',
+            backgroundColor: '#191918',
+            transformOrigin: 'bottom',
+            borderRadius: '0.25vh',
+            filter: 'drop-shadow(0.15rem 0.04rem rgb(231, 196, 23))',
+          }}
+        />
+        <div
+          className="hand second-hand"
+          style={{
+            position: 'absolute',
+            bottom: '50%',
+            left: '50%',
+            width: '0.2vh',
+            height: '8vh',
+            backgroundColor: 'transparent',
+            transformOrigin: 'bottom',
+            borderRadius: '0.2vh',
+            filter: 'drop-shadow(0.15rem 0.04rem rgb(231, 196, 23))',
+          }}
+        />
+        <div
+          style={{
+            width: '2.6vh',
+            height: '2.6vh',
+            borderRadius: '50%',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            opacity: 0.1,
+            backgroundColor: '#000',
+          }}
+        ></div>
       </div>
       <style>{`
         @keyframes slow-rotate {

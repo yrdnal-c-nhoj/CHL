@@ -7,11 +7,11 @@ const StretchedClock = () => {
   const [time, setTime] = useState(new Date());
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 768);
   const [bgReady, setBgReady] = useState(false);
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('Cram260102', fontFile, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   useEffect(() => {
@@ -113,19 +113,15 @@ const StretchedClock = () => {
           z-index: 1;
         }
       `}</style>
-      
+
       {/* Hours Section */}
       <div style={segmentStyle} className="filtered-bg">
-        <div style={textStyle}>
-          {hours}
-        </div>
+        <div style={textStyle}>{hours}</div>
       </div>
 
       {/* Minutes Section */}
       <div style={segmentStyle} className="filtered-bg">
-        <div style={textStyle}>
-          {minutes}
-        </div>
+        <div style={textStyle}>{minutes}</div>
       </div>
     </div>
   );

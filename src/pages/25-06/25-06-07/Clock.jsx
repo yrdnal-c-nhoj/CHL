@@ -1,14 +1,14 @@
-import React, { useEffect, useRef } from "react";
-import backgroundImage from "../../../assets/images/25-06/25-06-07/1937.696_print-scaled.jpg";
-import flakesGif from "../../../assets/images/25-06/25-06-07/Z3ut.gif";
-import sgSnow from "../../../assets/images/25-06/25-06-07/sg-snow.gif";
-import snow659 from "../../../assets/images/25-06/25-06-07/659.gif";
-import snow01 from "../../../assets/images/25-06/25-06-07/snow01.gif";
-import snow02 from "../../../assets/images/25-06/25-06-07/snow02.gif";
-import sno from "../../../assets/images/25-06/25-06-07/sno.gif";
-import snow7 from "../../../assets/images/25-06/25-06-07/snow-gif-7.gif";
-import flakes from "../../../assets/images/25-06/25-06-07/flakes.gif";
-import eref from "../../../assets/images/25-06/25-06-07/eref.gif";
+import React, { useEffect, useRef } from 'react';
+import backgroundImage from '../../../assets/images/25-06/25-06-07/1937.696_print-scaled.jpg';
+import flakesGif from '../../../assets/images/25-06/25-06-07/Z3ut.gif';
+import sgSnow from '../../../assets/images/25-06/25-06-07/sg-snow.gif';
+import snow659 from '../../../assets/images/25-06/25-06-07/659.gif';
+import snow01 from '../../../assets/images/25-06/25-06-07/snow01.gif';
+import snow02 from '../../../assets/images/25-06/25-06-07/snow02.gif';
+import sno from '../../../assets/images/25-06/25-06-07/sno.gif';
+import snow7 from '../../../assets/images/25-06/25-06-07/snow-gif-7.gif';
+import flakes from '../../../assets/images/25-06/25-06-07/flakes.gif';
+import eref from '../../../assets/images/25-06/25-06-07/eref.gif';
 import amaticRegular from '../../../assets/fonts/25-06-07-amati.ttf';
 
 export default function BlizzardClock() {
@@ -17,16 +17,19 @@ export default function BlizzardClock() {
   // ✅ Correct viewport height for mobile Chrome
   useEffect(() => {
     const setVh = () => {
-      document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
+      document.documentElement.style.setProperty(
+        '--vh',
+        `${window.innerHeight * 0.01}px`,
+      );
     };
     setVh();
-    window.addEventListener("resize", setVh);
-    return () => window.removeEventListener("resize", setVh);
+    window.addEventListener('resize', setVh);
+    return () => window.removeEventListener('resize', setVh);
   }, []);
 
   // ✅ Inject font dynamically
   useEffect(() => {
-    const style = document.createElement("style");
+    const style = document.createElement('style');
     style.innerHTML = `
       @font-face {
         font-family: 'amati';
@@ -43,8 +46,8 @@ export default function BlizzardClock() {
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
-      const hours = now.getHours().toString().padStart(2, "0");
-      const minutes = now.getMinutes().toString().padStart(2, "0");
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
       if (clockRef.current) {
         clockRef.current.textContent = `${hours}:${minutes}`;
       }
@@ -54,8 +57,8 @@ export default function BlizzardClock() {
   }, []);
 
   const cellStyle = {
-    border: "0.4rem solid #483206",
-    boxShadow: "inset 0 0 1.5rem 1rem rgba(236, 205, 252, 0.7)",
+    border: '0.4rem solid #483206',
+    boxShadow: 'inset 0 0 1.5rem 1rem rgba(236, 205, 252, 0.7)',
   };
 
   return (
@@ -63,35 +66,35 @@ export default function BlizzardClock() {
       style={{
         margin: 0,
         padding: 0,
-        height: "calc(var(--vh, 1vh) * 100)",
-        width: "100vw",
+        height: 'calc(var(--vh, 1vh) * 100)',
+        width: '100vw',
         backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        overflow: "hidden",
-        position: "relative",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        overflow: 'hidden',
+        position: 'relative',
       }}
     >
       {/* Clock Table */}
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "calc(var(--vh, 1vh) * 100)",
-          width: "100vw",
-          position: "relative",
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: 'calc(var(--vh, 1vh) * 100)',
+          width: '100vw',
+          position: 'relative',
           zIndex: 2,
         }}
       >
         <table
           style={{
-            width: "80vw",
-            height: "80vh",
-            backgroundColor: "rgb(19, 83, 162)",
-            borderCollapse: "collapse",
-            border: "2vh solid #483206",
+            width: '80vw',
+            height: '80vh',
+            backgroundColor: 'rgb(19, 83, 162)',
+            borderCollapse: 'collapse',
+            border: '2vh solid #483206',
           }}
         >
           <tbody>
@@ -99,29 +102,29 @@ export default function BlizzardClock() {
               <td
                 style={{
                   ...cellStyle,
-                  height: "17vh",
-                  width: "17vw",
+                  height: '17vh',
+                  width: '17vw',
                   backgroundImage: `url(${sgSnow}), url(${snow659})`,
-                  backgroundRepeat: "repeat, no-repeat",
-                  backgroundSize: "cover, contain",
+                  backgroundRepeat: 'repeat, no-repeat',
+                  backgroundSize: 'cover, contain',
                 }}
               />
               <td
                 style={{
                   ...cellStyle,
                   backgroundImage: `url(${snow659}), url(${flakes})`,
-                  backgroundRepeat: "no-repeat, repeat",
-                  backgroundSize: "contain, auto",
+                  backgroundRepeat: 'no-repeat, repeat',
+                  backgroundSize: 'contain, auto',
                 }}
               />
               <td
                 style={{
                   ...cellStyle,
-                  height: "17vh",
-                  width: "17vw",
+                  height: '17vh',
+                  width: '17vw',
                   backgroundImage: `url(${sgSnow}), url(${snow659})`,
-                  backgroundRepeat: "repeat, no-repeat",
-                  backgroundSize: "cover, contain",
+                  backgroundRepeat: 'repeat, no-repeat',
+                  backgroundSize: 'cover, contain',
                 }}
               />
             </tr>
@@ -131,30 +134,30 @@ export default function BlizzardClock() {
                 style={{
                   ...cellStyle,
                   backgroundImage: `url(${snow01})`,
-                  backgroundRepeat: "repeat",
-                  backgroundSize: "auto",
+                  backgroundRepeat: 'repeat',
+                  backgroundSize: 'auto',
                 }}
               />
               <td
                 style={{
                   ...cellStyle,
                   backgroundImage: `url(${eref}), url(${snow02}), url(${sno}), url(${snow7}), url(${sgSnow}), url(${flakes})`,
-                  backgroundRepeat: "repeat",
-                  backgroundSize: "auto",
-                  textAlign: "center",
-                  verticalAlign: "middle",
+                  backgroundRepeat: 'repeat',
+                  backgroundSize: 'auto',
+                  textAlign: 'center',
+                  verticalAlign: 'middle',
                 }}
               >
                 <div
                   ref={clockRef}
                   style={{
-                    fontSize: "20vw",
-                    color: "rgb(237, 237, 249)",
+                    fontSize: '20vw',
+                    color: 'rgb(237, 237, 249)',
                     fontFamily: "'amati', serif",
-                    transform: "scale(1, 2)",
-                    fontWeight: "bold",
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
+                    transform: 'scale(1, 2)',
+                    fontWeight: 'bold',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
                   }}
                 />
               </td>
@@ -162,7 +165,7 @@ export default function BlizzardClock() {
                 style={{
                   ...cellStyle,
                   backgroundImage: `url(${snow01})`,
-                  backgroundRepeat: "repeat",
+                  backgroundRepeat: 'repeat',
                 }}
               />
             </tr>
@@ -172,23 +175,23 @@ export default function BlizzardClock() {
                 style={{
                   ...cellStyle,
                   backgroundImage: `url(${eref})`,
-                  backgroundRepeat: "repeat",
+                  backgroundRepeat: 'repeat',
                 }}
               />
               <td
                 style={{
                   ...cellStyle,
                   backgroundImage: `url(${eref})`,
-                  backgroundRepeat: "repeat",
+                  backgroundRepeat: 'repeat',
                 }}
               />
               <td
                 style={{
                   ...cellStyle,
-                  height: "17vh",
-                  width: "17vw",
+                  height: '17vh',
+                  width: '17vw',
                   backgroundImage: `url(${eref})`,
-                  backgroundRepeat: "repeat",
+                  backgroundRepeat: 'repeat',
                 }}
               />
             </tr>
@@ -199,16 +202,16 @@ export default function BlizzardClock() {
       {/* Snow Overlay */}
       <div
         style={{
-          position: "absolute",
+          position: 'absolute',
           top: 0,
           left: 0,
-          width: "200vw",
-          height: "200vh",
+          width: '200vw',
+          height: '200vh',
           backgroundImage: `url(${flakesGif})`,
-          backgroundSize: "cover",
+          backgroundSize: 'cover',
           opacity: 0.6,
           zIndex: 1,
-          pointerEvents: "none",
+          pointerEvents: 'none',
         }}
       />
     </div>

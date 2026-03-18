@@ -4,26 +4,39 @@ import sunBg from '../../../assets/images/26-03/26-03-04/sun-40.gif';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
-  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' && window.innerWidth < 768,
+  );
   const [fontLoaded, setFontLoaded] = useState(false);
 
   const digitLetters = {
-    '0': 'c', '1': 't', '2': 'N', '3': 'W', '4': 'V',
-    '5': 'U', '6': 'D', '7': 'X', '8': 'J', '9': 'g',
+    0: 'c',
+    1: 't',
+    2: 'N',
+    3: 'W',
+    4: 'V',
+    5: 'U',
+    6: 'D',
+    7: 'X',
+    8: 'J',
+    9: 'g',
   };
 
   useEffect(() => {
     // 1. Load Custom Font via FontFace API
     const font = new FontFace('SunFont', `url(${sunFont})`);
-    
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontLoaded(true);
-    }).catch(err => {
-      console.error("Font failed to load", err);
-      // Set to true anyway so the clock eventually shows in a fallback font
-      setFontLoaded(true); 
-    });
+
+    font
+      .load()
+      .then((loadedFont) => {
+        document.fonts.add(loadedFont);
+        setFontLoaded(true);
+      })
+      .catch((err) => {
+        console.error('Font failed to load', err);
+        // Set to true anyway so the clock eventually shows in a fallback font
+        setFontLoaded(true);
+      });
 
     // 2. Timer Interval
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -33,10 +46,10 @@ const Clock = () => {
     window.addEventListener('resize', handleResize);
 
     // 4. Global Styles Cleanup
-    document.body.style.margin = "0";
-    document.body.style.padding = "0";
-    document.body.style.overflow = "hidden";
-    document.body.style.backgroundColor = "#0C0B00";
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
+    document.body.style.overflow = 'hidden';
+    document.body.style.backgroundColor = '#0C0B00';
 
     return () => {
       clearInterval(timer);
@@ -76,7 +89,9 @@ const Clock = () => {
 
   const clockGridStyle = {
     display: 'grid',
-    gridTemplateColumns: isMobile ? `repeat(2, ${boxWidth})` : `repeat(6, ${boxWidth})`,
+    gridTemplateColumns: isMobile
+      ? `repeat(2, ${boxWidth})`
+      : `repeat(6, ${boxWidth})`,
     justifyContent: 'center',
     alignContent: 'center',
     gap: isMobile ? '10px' : '0',
@@ -89,7 +104,7 @@ const Clock = () => {
     width: boxWidth,
     height: boxHeight,
     fontFamily: "'SunFont', monospace",
-    fontSize: isMobile ? '22vh' : '15vw', 
+    fontSize: isMobile ? '22vh' : '15vw',
     color: '#051160',
     lineHeight: 1,
     textAlign: 'center',

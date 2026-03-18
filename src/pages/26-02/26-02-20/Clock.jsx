@@ -35,9 +35,42 @@ const getTimeDigits = (date) => {
 };
 
 const spellNumber = (num) => {
-  const ones = ['', 'UNUS', 'DUO', 'TRES', 'QUATTUOR', 'QUINQUE', 'SEX', 'SEPTEM', 'OCTO', 'NOVEM'];
-  const teens = ['DECEM', 'UNDECIM', 'DUODECIM', 'TREDECIM', 'QUATTUORDECIM', 'QUINDECIM', 'SEDECIM', 'SEPTEDECIM', 'DUODEVIGINTI', 'UNDEVIGINTI'];
-  const tens = ['', '', 'VIGINTI', 'TRIGINTA', 'QUADRAGINTA', 'QUINQUAGINTA', 'SEXAGINTA', 'SEPTUAGINTA', 'OCTOGINTA', 'NONAGINTA'];
+  const ones = [
+    '',
+    'UNUS',
+    'DUO',
+    'TRES',
+    'QUATTUOR',
+    'QUINQUE',
+    'SEX',
+    'SEPTEM',
+    'OCTO',
+    'NOVEM',
+  ];
+  const teens = [
+    'DECEM',
+    'UNDECIM',
+    'DUODECIM',
+    'TREDECIM',
+    'QUATTUORDECIM',
+    'QUINDECIM',
+    'SEDECIM',
+    'SEPTEDECIM',
+    'DUODEVIGINTI',
+    'UNDEVIGINTI',
+  ];
+  const tens = [
+    '',
+    '',
+    'VIGINTI',
+    'TRIGINTA',
+    'QUADRAGINTA',
+    'QUINQUAGINTA',
+    'SEXAGINTA',
+    'SEPTUAGINTA',
+    'OCTOGINTA',
+    'NONAGINTA',
+  ];
 
   if (num === 0) return 'NULLUS';
   if (num < 10) return ones[num];
@@ -79,7 +112,9 @@ function useImagePreload(imageUrl) {
     img.onload = () => mounted && setIsReady(true);
     img.onerror = () => mounted && setIsReady(true);
     img.src = imageUrl;
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [imageUrl]);
   return isReady;
 }
@@ -93,11 +128,12 @@ export default function ClockTemplate() {
 
   // Handle Responsiveness & Font
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    const checkMobile = () =>
+      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
     checkMobile(); // Initial check
-    
+
     window.addEventListener('resize', checkMobile);
-    
+
     // Load Forum font via CSS injection to prevent FOUC
     const style = document.createElement('style');
     style.textContent = `
@@ -107,7 +143,7 @@ export default function ClockTemplate() {
       }
     `;
     document.head.appendChild(style);
-    
+
     return () => {
       window.removeEventListener('resize', checkMobile);
       if (document.head.contains(style)) {
@@ -116,15 +152,15 @@ export default function ClockTemplate() {
     };
   }, []);
 
-  const isBgReady    = useImagePreload(backgroundImage);
-  const isTopReady   = useImagePreload(topImage);
-  const isReady      = isBgReady && isTopReady;
+  const isBgReady = useImagePreload(backgroundImage);
+  const isTopReady = useImagePreload(topImage);
+  const isReady = isBgReady && isTopReady;
 
   const { hours, minutes, isPM } = useMemo(() => getTimeDigits(time), [time]);
 
-  const spelledHours   = spellTwoDigitNumber(hours);
+  const spelledHours = spellTwoDigitNumber(hours);
   const spelledMinutes = spellTwoDigitNumber(minutes);
-  const ampm           = isPM ? 'POST MERIDIEM' : 'ANTE MERIDIAN';
+  const ampm = isPM ? 'POST MERIDIEM' : 'ANTE MERIDIAN';
 
   /* =========================
       STYLES
@@ -162,25 +198,23 @@ export default function ClockTemplate() {
     transition: 'height 0.3s ease',
   };
 
+  const clockRowStyle = {
+    display: 'flex',
+    flexDirection: isMobile ? 'column' : 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: isMobile ? '0.5rem' : '0.9rem',
+    fontFamily: `'${FONT_NAME}', serif`,
 
+    // ─── Brass metallic look ───────────────────────────────────────
+    background:
+      'linear-gradient(135deg, #3a2c0f 0%, #8b6914 20%, #d4a017 40%, #f0d08a 50%, #d4a017 60%, #b8860b 80%, #3a2c0f 100%)',
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+    color: 'transparent', // required for gradient text
 
-
-const clockRowStyle = {
-  display: 'flex',
-  flexDirection: isMobile ? 'column' : 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: isMobile ? '0.5rem' : '0.9rem',
-  fontFamily: `'${FONT_NAME}', serif`,
-  
-  // ─── Brass metallic look ───────────────────────────────────────
-  background: 'linear-gradient(135deg, #3a2c0f 0%, #8b6914 20%, #d4a017 40%, #f0d08a 50%, #d4a017 60%, #b8860b 80%, #3a2c0f 100%)',
-  WebkitBackgroundClip: 'text',
-  backgroundClip: 'text',
-  color: 'transparent',                    // required for gradient text
-  
-  // Thick / raised / embossed 3D effect
-  textShadow: `
+    // Thick / raised / embossed 3D effect
+    textShadow: `
     0 1px 0 #f0e68c,
     0 2px 0 #deb887,
     0 3px 0 #cd853f,
@@ -188,25 +222,23 @@ const clockRowStyle = {
     0 5px 6px rgba(0,0,0,0.7),
     0 8px 12px rgba(0,0,0,0.5)
   `,
-  
-  // Extra definition & slight glow (brass often has subtle shine)
-  WebkitTextStroke: '0.5px #4a2c0a',       // thin dark outline → makes it pop & look thicker
-  textStroke: '0.5px #4a2c0a',
-  
-  letterSpacing: '0.18em',
-  fontSize: isMobile ? 'clamp(18px, 5.5vw, 28px)' : 'clamp(16px, 2.4vw, 26px)',
-  fontWeight: '600',                        // slightly bolder if Forum supports it
-  whiteSpace: 'nowrap',
-  textAlign: 'center',
-  
-  // Optional: subtle shine animation (uncomment if you like movement)
-  // backgroundSize: '200% 200%',
-  // animation: 'brassShine 8s ease-in-out infinite',
-};
 
+    // Extra definition & slight glow (brass often has subtle shine)
+    WebkitTextStroke: '0.5px #4a2c0a', // thin dark outline → makes it pop & look thicker
+    textStroke: '0.5px #4a2c0a',
 
+    letterSpacing: '0.18em',
+    fontSize: isMobile
+      ? 'clamp(18px, 5.5vw, 28px)'
+      : 'clamp(16px, 2.4vw, 26px)',
+    fontWeight: '600', // slightly bolder if Forum supports it
+    whiteSpace: 'nowrap',
+    textAlign: 'center',
 
-
+    // Optional: subtle shine animation (uncomment if you like movement)
+    // backgroundSize: '200% 200%',
+    // animation: 'brassShine 8s ease-in-out infinite',
+  };
 
   const bottomStyle = {
     flex: 1,

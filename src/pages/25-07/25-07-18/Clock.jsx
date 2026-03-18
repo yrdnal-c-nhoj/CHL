@@ -5,11 +5,11 @@ import xrayFontUrl from '../../../assets/fonts/25-07-18-xray.ttf';
 
 const HospitalClock = () => {
   const [time, setTime] = useState('');
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('xray', xrayFontUrl, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   useEffect(() => {
@@ -34,7 +34,9 @@ const HospitalClock = () => {
           <div style={styles.flickerOverlay} />
           <div style={styles.clock}>
             {time.split('').map((char, i) => (
-              <span key={i} style={styles.digit}>{char}</span>
+              <span key={i} style={styles.digit}>
+                {char}
+              </span>
             ))}
           </div>
         </div>
@@ -60,7 +62,8 @@ const styles = {
     border: '1.5rem solid #9a9595',
     borderRadius: '2rem',
     padding: '2rem',
-    boxShadow: 'inset 0 0 6vh #000, 0 0 3vh rgba(0,255,255,0.1), 0 0 8vh rgba(0,255,255,0.2)',
+    boxShadow:
+      'inset 0 0 6vh #000, 0 0 3vh rgba(0,255,255,0.1), 0 0 8vh rgba(0,255,255,0.2)',
     width: '80vw',
     maxWidth: '90rem',
     height: '60vh',
@@ -104,7 +107,8 @@ const styles = {
   flickerOverlay: {
     content: "''",
     position: 'absolute',
-    top: 0, left: 0,
+    top: 0,
+    left: 0,
     width: '100%',
     height: '100%',
     background: `repeating-linear-gradient(

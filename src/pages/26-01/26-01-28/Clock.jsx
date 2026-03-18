@@ -10,7 +10,7 @@ function CheckerboardBackground() {
     const handleResize = () => {
       setDimensions({
         cols: Math.ceil(window.innerWidth / tileSize) + 2,
-        rows: Math.ceil(window.innerHeight / tileSize) + 2
+        rows: Math.ceil(window.innerHeight / tileSize) + 2,
       });
     };
     handleResize();
@@ -42,7 +42,7 @@ function CheckerboardBackground() {
               transform: transform,
               opacity: 0.2,
             }}
-          />
+          />,
         );
       }
     }
@@ -51,15 +51,17 @@ function CheckerboardBackground() {
 
   return (
     <div style={backgroundWrapperStyle}>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: `repeat(${dimensions.cols}, ${tileSize}px)`,
-        gridTemplateRows: `repeat(${dimensions.rows}, ${tileSize}px)`,
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-      }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: `repeat(${dimensions.cols}, ${tileSize}px)`,
+          gridTemplateRows: `repeat(${dimensions.rows}, ${tileSize}px)`,
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
         {renderedTiles}
       </div>
     </div>
@@ -107,11 +109,14 @@ export default function ThreeSingleHandClocks() {
       try {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = 'https://fonts.googleapis.com/css2?family=Big+Shoulders+Inline+Text:wght@500;800&display=swap';
+        link.href =
+          'https://fonts.googleapis.com/css2?family=Big+Shoulders+Inline+Text:wght@500;800&display=swap';
         document.head.appendChild(link);
         await document.fonts.load('800 12px "Big Shoulders Inline Text"');
         setFontLoaded(true);
-      } catch (e) { setFontLoaded(true); }
+      } catch (e) {
+        setFontLoaded(true);
+      }
     };
     loadGoogleFont();
   }, []);
@@ -122,9 +127,10 @@ export default function ThreeSingleHandClocks() {
       const h = window.innerHeight;
       const nextLayout = w < 900 ? 'column' : 'row';
       setLayout(nextLayout);
-      const diameter = nextLayout === 'row' 
-        ? Math.min((w / 3) * 0.8, h * 0.7) 
-        : Math.min(w * 0.8, (h / 3) * 0.7);
+      const diameter =
+        nextLayout === 'row'
+          ? Math.min((w / 3) * 0.8, h * 0.7)
+          : Math.min(w * 0.8, (h / 3) * 0.7);
       setClockSize(diameter);
     };
     handleResize();
@@ -135,38 +141,78 @@ export default function ThreeSingleHandClocks() {
   return (
     <main style={containerStyle}>
       <CheckerboardBackground />
-      <div style={{
-        ...clockGridStyle,
-        flexDirection: layout,
-        gap: layout === 'column' ? '0vh' : '0vw',
-        opacity: fontLoaded ? 1 : 0,
-        transition: 'opacity 0.5s ease',
-        zIndex: 10 
-      }}>
+      <div
+        style={{
+          ...clockGridStyle,
+          flexDirection: layout,
+          gap: layout === 'column' ? '0vh' : '0vw',
+          opacity: fontLoaded ? 1 : 0,
+          transition: 'opacity 0.5s ease',
+          zIndex: 10,
+        }}
+      >
+        <Clock
+          label="SECONDS"
+          angle={secAngle}
+          color="#FAD903"
+          thickness="14%"
+          maxUnits={60}
+          step={1}
+          smooth={false}
+          clockSize={clockSize}
+          font260128Name={font260128Name}
+        />
 
-        <Clock label="SECONDS" angle={secAngle} color="#FAD903" thickness="14%" maxUnits={60} step={1} smooth={false} clockSize={clockSize} font260128Name={font260128Name} />      
-  
-        <Clock label="HOURS" angle={hourAngle} color="#FF0000" thickness="18%" maxUnits={24} step={1} clockSize={clockSize} font260128Name={font260128Name} />
- 
-          <Clock label="MINUTES" angle={minAngle} color="#1693FA" thickness="16%" maxUnits={60} step={1} clockSize={clockSize} font260128Name={font260128Name} />
-             </div>
+        <Clock
+          label="HOURS"
+          angle={hourAngle}
+          color="#FF0000"
+          thickness="18%"
+          maxUnits={24}
+          step={1}
+          clockSize={clockSize}
+          font260128Name={font260128Name}
+        />
+
+        <Clock
+          label="MINUTES"
+          angle={minAngle}
+          color="#1693FA"
+          thickness="16%"
+          maxUnits={60}
+          step={1}
+          clockSize={clockSize}
+          font260128Name={font260128Name}
+        />
+      </div>
     </main>
   );
 }
 
 // --- Clock Sub-component ---
-function Clock({ angle, color, thickness, smooth = true, maxUnits, step, clockSize, font260128Name }) {
+function Clock({
+  angle,
+  color,
+  thickness,
+  smooth = true,
+  maxUnits,
+  step,
+  clockSize,
+  font260128Name,
+}) {
   const markers = useMemo(() => {
     const arr = [];
     for (let i = step; i <= maxUnits; i += step) arr.push(i);
     return arr;
   }, [maxUnits, step]);
 
-  const transitionStyle = smooth ? 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)' : 'none';
-  
+  const transitionStyle = smooth
+    ? 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)'
+    : 'none';
+
   // Set the "padding" for the white border (e.g., 6px even on all sides)
-  const borderWeight = 6; 
-  const massiveHeight = '200vh'; 
+  const borderWeight = 6;
+  const massiveHeight = '200vh';
 
   return (
     <div style={{ ...faceStyle, width: clockSize, height: clockSize }}>
@@ -201,7 +247,7 @@ function Clock({ angle, color, thickness, smooth = true, maxUnits, step, clockSi
 
       {/* 3. Numbers */}
       {markers.map((num) => {
-        const rotation = (num * (360 / maxUnits)) - 90;
+        const rotation = num * (360 / maxUnits) - 90;
         const radius = (clockSize / 2) * 1.8;
         return (
           <div
@@ -239,7 +285,7 @@ const containerStyle = {
   margin: 0,
   padding: 0,
   overflow: 'hidden',
-  position: 'relative'
+  position: 'relative',
 };
 
 const backgroundWrapperStyle = {
@@ -250,7 +296,7 @@ const backgroundWrapperStyle = {
   height: '100%',
   zIndex: 1,
   overflow: 'hidden',
-  pointerEvents: 'none'
+  pointerEvents: 'none',
 };
 
 const clockGridStyle = {
@@ -268,7 +314,7 @@ const faceStyle = {
 const handStyle = {
   position: 'absolute',
   left: '50%',
-  bottom: '50%', 
+  bottom: '50%',
   transformOrigin: '50% 100%',
   boxSizing: 'border-box',
 };

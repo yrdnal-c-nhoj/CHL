@@ -18,9 +18,12 @@ const BananaClock = () => {
       const minuteDeg = minutes * 6 + seconds * 0.1;
       const hourDeg = hours * 30 + minutes * 0.5;
 
-      document.getElementById('secondHand').style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
-      document.getElementById('minuteHand').style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
-      document.getElementById('hourHand').style.transform = `translate(-50%, -100%) rotate(${hourDeg}deg)`;
+      document.getElementById('secondHand').style.transform =
+        `translate(-50%, -100%) rotate(${secondDeg}deg)`;
+      document.getElementById('minuteHand').style.transform =
+        `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
+      document.getElementById('hourHand').style.transform =
+        `translate(-50%, -100%) rotate(${hourDeg}deg)`;
     };
 
     const interval = setInterval(updateClock, 1000);
@@ -31,7 +34,9 @@ const BananaClock = () => {
   // Create banana tiles dynamically
   const tileCount = 8 * 8;
   const tiles = Array.from({ length: tileCount }, (_, i) => (
-    <img decoding="async" loading="lazy"
+    <img
+      decoding="async"
+      loading="lazy"
       key={i}
       src={bananaGif}
       alt="banana tile"
@@ -93,7 +98,13 @@ const BananaClock = () => {
           pointerEvents: 'none',
         }}
       >
-        <img decoding="async" loading="lazy" src={hourHand} alt="hour" className="hand hour-hand" id="hourHand"
+        <img
+          decoding="async"
+          loading="lazy"
+          src={hourHand}
+          alt="hour"
+          className="hand hour-hand"
+          id="hourHand"
           style={{
             position: 'absolute',
             top: '50%',
@@ -105,7 +116,13 @@ const BananaClock = () => {
             filter: 'brightness(160%)',
           }}
         />
-        <img decoding="async" loading="lazy" src={minuteHand} alt="minute" className="hand minute-hand" id="minuteHand"
+        <img
+          decoding="async"
+          loading="lazy"
+          src={minuteHand}
+          alt="minute"
+          className="hand minute-hand"
+          id="minuteHand"
           style={{
             position: 'absolute',
             top: '50%',
@@ -117,7 +134,13 @@ const BananaClock = () => {
             filter: 'contrast(150%)',
           }}
         />
-        <img decoding="async" loading="lazy" src={secondHand} alt="second" className="hand second-hand" id="secondHand"
+        <img
+          decoding="async"
+          loading="lazy"
+          src={secondHand}
+          alt="second"
+          className="hand second-hand"
+          id="secondHand"
           style={{
             position: 'absolute',
             top: '50%',

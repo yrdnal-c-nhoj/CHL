@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import bgImage from "../../../assets/images/25-08/25-08-13/bg.webp";
-import secondBgImage from "../../../assets/images/25-08/25-08-13/loop.webp";
-import thirdBgImage from "../../../assets/images/25-08/25-08-13/tiny.gif"; // new background image
+import { useEffect, useRef, useState } from 'react';
+import bgImage from '../../../assets/images/25-08/25-08-13/bg.webp';
+import secondBgImage from '../../../assets/images/25-08/25-08-13/loop.webp';
+import thirdBgImage from '../../../assets/images/25-08/25-08-13/tiny.gif'; // new background image
 
 export default function AnalogClock() {
   const canvasRef = useRef(null);
@@ -14,14 +14,14 @@ export default function AnalogClock() {
   useEffect(() => {
     const handleResize = () =>
       setDimensions({ width: window.innerWidth, height: window.innerHeight });
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Draw clock
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
 
     const drawClock = () => {
       const { width, height } = dimensions;
@@ -45,15 +45,15 @@ export default function AnalogClock() {
       // Clock face
       ctx.beginPath();
       ctx.arc(0, 0, radius, 0, 2 * Math.PI);
-      ctx.fillStyle = "#F4EEEEFF"; // white
+      ctx.fillStyle = '#F4EEEEFF'; // white
       ctx.fill();
       ctx.closePath();
 
       // Numbers
       ctx.font = `${radius * 0.25}px Arial`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillStyle = "#000000"; // black
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#000000'; // black
       for (let num = 1; num <= 12; num++) {
         const ang = (num * Math.PI) / 6;
         const x = radius * 0.8 * Math.sin(ang);
@@ -65,7 +65,7 @@ export default function AnalogClock() {
       const drawHand = (angle, length, width, color) => {
         ctx.beginPath();
         ctx.lineWidth = width;
-        ctx.lineCap = "round";
+        ctx.lineCap = 'round';
         ctx.strokeStyle = color;
         ctx.moveTo(0, 0);
         ctx.rotate(angle);
@@ -74,9 +74,19 @@ export default function AnalogClock() {
         ctx.rotate(-angle);
       };
 
-      drawHand((Math.PI / 6) * hr + (Math.PI / 360) * min, radius * 0.5, radius * 0.06, "#000000"); // black
-      drawHand((Math.PI / 30) * min + (Math.PI / 1800) * sec, radius * 0.75, radius * 0.04, "#000000"); // black
-      drawHand((Math.PI / 30) * sec, radius * 0.85, radius * 0.02, "#FF0000"); // red
+      drawHand(
+        (Math.PI / 6) * hr + (Math.PI / 360) * min,
+        radius * 0.5,
+        radius * 0.06,
+        '#000000',
+      ); // black
+      drawHand(
+        (Math.PI / 30) * min + (Math.PI / 1800) * sec,
+        radius * 0.75,
+        radius * 0.04,
+        '#000000',
+      ); // black
+      drawHand((Math.PI / 30) * sec, radius * 0.85, radius * 0.02, '#FF0000'); // red
 
       ctx.restore();
     };
@@ -89,25 +99,25 @@ export default function AnalogClock() {
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100dvh",
-        overflow: "hidden",
-        position: "relative",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        fontFamily: "Arial",
-        backgroundColor: "#DE0E0EFF", // black
+        width: '100vw',
+        height: '100dvh',
+        overflow: 'hidden',
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontFamily: 'Arial',
+        backgroundColor: '#DE0E0EFF', // black
       }}
     >
       {/* Background layer 1 */}
       <div
         style={{
-          position: "absolute",
+          position: 'absolute',
           inset: 0,
           backgroundImage: `url(${bgImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
           opacity: 0.7,
           zIndex: 1,
         }}
@@ -116,12 +126,12 @@ export default function AnalogClock() {
       {/* Background layer 2 */}
       <div
         style={{
-          position: "absolute",
+          position: 'absolute',
           inset: 0,
           backgroundImage: `url(${secondBgImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          mixBlendMode: "overlay",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          mixBlendMode: 'overlay',
           opacity: 0.4,
           zIndex: 4,
         }}
@@ -130,12 +140,12 @@ export default function AnalogClock() {
       {/* Background layer 3 */}
       <div
         style={{
-          position: "absolute",
+          position: 'absolute',
           inset: 0,
           backgroundImage: `url(${thirdBgImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          mixBlendMode: "overlay",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          mixBlendMode: 'overlay',
           // opacity: 0.9,
           zIndex: 3,
         }}
@@ -145,7 +155,7 @@ export default function AnalogClock() {
       <canvas
         ref={canvasRef}
         style={{
-          position: "relative",
+          position: 'relative',
           zIndex: 2, // always on top
           opacity: 1.0,
         }}

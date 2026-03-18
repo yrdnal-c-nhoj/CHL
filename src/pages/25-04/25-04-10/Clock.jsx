@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
-import monofettFont from "../../../assets/fonts/25-04-10-Monofett.ttf";
+import monofettFont from '../../../assets/fonts/25-04-10-Monofett.ttf';
 
 const BarGraphClock = () => {
   const [time, setTime] = useState(new Date());
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('Monofett', monofettFont, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   useEffect(() => {
@@ -63,19 +63,41 @@ const BarGraphClock = () => {
   return (
     <div style={containerStyle}>
       <div style={segmentContainerStyle}>
-        <div style={{ ...baseSegmentStyle, height: hourHeight, backgroundColor: '#FF5733' }}>
-          <div style={{ ...labelBaseStyle, color: 'rgba(168, 60, 14, 0.71)' }}>{hours}</div>
+        <div
+          style={{
+            ...baseSegmentStyle,
+            height: hourHeight,
+            backgroundColor: '#FF5733',
+          }}
+        >
+          <div style={{ ...labelBaseStyle, color: 'rgba(168, 60, 14, 0.71)' }}>
+            {hours}
+          </div>
         </div>
       </div>
 
       <div style={segmentContainerStyle}>
-        <div style={{ ...baseSegmentStyle, height: minuteHeight, backgroundColor: '#90fe0a' }}>
-          <div style={{ ...labelBaseStyle, color: 'rgba(51, 162, 34, 0.69)' }}>{minutes}</div>
+        <div
+          style={{
+            ...baseSegmentStyle,
+            height: minuteHeight,
+            backgroundColor: '#90fe0a',
+          }}
+        >
+          <div style={{ ...labelBaseStyle, color: 'rgba(51, 162, 34, 0.69)' }}>
+            {minutes}
+          </div>
         </div>
       </div>
 
       <div style={segmentContainerStyle}>
-        <div style={{ ...baseSegmentStyle, height: secondHeight, backgroundColor: '#91dfdb' }}>
+        <div
+          style={{
+            ...baseSegmentStyle,
+            height: secondHeight,
+            backgroundColor: '#91dfdb',
+          }}
+        >
           <div style={{ ...labelBaseStyle, color: '#61AAA6BB' }}>{seconds}</div>
         </div>
       </div>
