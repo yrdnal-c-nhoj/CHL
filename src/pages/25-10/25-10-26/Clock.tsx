@@ -9,7 +9,7 @@ export default function MonarchClock() {
   const [mediaReady, setMediaReady] = useState<boolean>(false);
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const [videoStyle, setVideoStyle, setVideoStyle, setVideoStyle] = useState<Record<string, any>>({});
+  const [videoStyle, setVideoStyle] = useState<Record<string, any>>({});
 
   // Gradient for hands & numerals
   const clockGradient = 'linear-gradient(180deg, #E8B87DFF, #EA9227FF)';

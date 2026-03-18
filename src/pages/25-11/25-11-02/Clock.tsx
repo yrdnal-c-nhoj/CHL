@@ -7,7 +7,7 @@ import fontFile2025_11_04 from '../../../assets/fonts/25-11-02-sperm.ttf'; // Cu
 export default function MonarchScene() {
   const videoRef = useRef(null);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const [videoStyle, setVideoStyle, setVideoStyle, setVideoStyle] = useState<Record<string, any>>({});
+  const [videoStyle, setVideoStyle] = useState<Record<string, any>>({});
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
