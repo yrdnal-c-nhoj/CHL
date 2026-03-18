@@ -123,7 +123,7 @@ const Clock = () => {
             position: 'absolute',
             width: '3px',
             height: '160px',
-            backgroundColor: '#c00', // Bauhaus often used primary red accents
+            backgroundColor: '#DA4008', // Bauhaus often used primary red accents
             left: '50%',
             bottom: '50%',
             transformOrigin: '50% 100%',
