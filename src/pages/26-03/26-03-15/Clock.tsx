@@ -57,7 +57,7 @@ const Clock: React.FC = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        background: 'radial-gradient(circle at center, #D3AEE7 0%, #CA79A1 30%, #A5DEDF 60%, #DCE77A 80%, #D4A64A 100%)'
+        background: 'radial-gradient(circle at center, #607DF0 0%, #79ACCA 30%, #A5DEDF 60%, #7AE7D5 80%, #4AC4D4 100%)'
       }}>
         <div style={{ color: '#1C0210', fontFamily: 'monospace', fontSize: '1.2rem' }}>
           Loading clock...
@@ -124,12 +124,12 @@ const styles = {
   container: {
     minHeight: '100dvh',
     background:
-      'radial-gradient(circle at center, #D3AEE7 0%, #CA79A1 30%, #A5DEDF 60%, #DCE77A 80%, #D4A64A 100%)',
+      'radial-gradient(circle at center, #AED0E7 0%, #92DBE8 30%, #A5DEDF 60%, #A6A4DB 80%, #CCB8EE 100%)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    border: '25px solid #28930D',
+    border: '25px solid #F0EEBB',
     boxSizing: 'border-box',
   },
   wrapper: {
@@ -138,7 +138,7 @@ const styles = {
   },
   digitBox: {
     display: 'inline-block',
-    width: '11vw', // Responsive baseline
+    width: '9vw', // Responsive baseline
     textAlign: 'center',
     transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)', // Snappy rotation
     willChange: 'transform',
@@ -147,7 +147,7 @@ const styles = {
   text: {
     fontFamily:
       '"26-03-15-shadow", "Avant Garde", "Century Gothic", sans-serif',
-    color: '#1C0210',
+    color: '#3D0925',
     fontSize: '36vw',
     margin: 0,
     filter: 'url(#deep-shadow)', // Applying the SVG filter here
