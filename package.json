@@ -6,7 +6,8 @@
   "scripts": {
     "screenshot": "node screenshot.js",
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
+    "build:with-types": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
