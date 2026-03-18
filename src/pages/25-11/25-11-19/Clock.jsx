@@ -1,5 +1,7 @@
 // AnalogClock.jsx
 import React, { useEffect, useState } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import bgImg from '../../../assets/images/25-11/25-11-19/apple.webp'; // Main background
 import tileImg from '../../../assets/images/25-11/25-11-19/app.webp'; // Tiled background
 import overlayImg from '../../../assets/images/25-11/25-11-19/ap.webp'; // Full-cover overlay

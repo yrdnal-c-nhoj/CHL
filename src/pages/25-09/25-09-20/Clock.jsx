@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useMemo } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 const o250920font = '../../../assets/fonts/25-09-20-orb.ttf'; // Local font file
 
 const COLORS = {

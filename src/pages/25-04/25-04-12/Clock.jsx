@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import angFont from '../../../assets/fonts/25-04-12-ang.ttf';
 
 const digitFontSizes = {

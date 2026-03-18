@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import bgVideo from '../../../assets/images/25-09/25-09-22/deex.mp4';
 import fallbackImage from '../../../assets/images/25-09/25-09-22/deex.gif';
 import customFontmmm from '../../../assets/fonts/25-09-22-disney.ttf?url';

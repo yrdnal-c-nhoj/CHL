@@ -1,5 +1,6 @@
 // TimelineClock.jsx
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import li251128font from '../../../assets/fonts/25-11-28-line.otf?url';
 import patternImg from '../../../assets/images/25-11/25-11-28/line.webp';
 

@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import fontUrl from '../../../assets/fonts/25-08-19-cas.ttf';
 import bgUrl from '../../../assets/images/25-08/25-08-19/ap.jpeg';
 

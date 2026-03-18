@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from '../../../assets/images/26-02/26-02-15/caldera.webp';
 import fontFile from '../../../assets/fonts/26-02-15-fire.ttf';
 

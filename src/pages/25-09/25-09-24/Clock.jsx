@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import font20250924 from '../../../assets/fonts/25-09-24-cora.ttf?url';
 
 const HorizontalProportionalGradientClock = () => {

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import woodImg from '../../../assets/images/25-05/25-05-13/wood.jpg';
 import tilesImg from '../../../assets/images/25-05/25-05-13/tiles.jpg';
 import hydFont from '../../../assets/fonts/25-05-13-hyd.ttf';

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 
 const CubeClock = () => {
   const cubeRef = useRef(null);

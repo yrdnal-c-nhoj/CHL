@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import videoFile from '../../../assets/images/26-01/26-01-17/swww.mp4';
 import fallbackImg from '../../../assets/images/26-01/26-01-17/sw.webp';
 import overlayImage from '../../../assets/images/26-01/26-01-17/sw22.webp'; // Add your overlay image path here

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import neptuneFont from '../../../assets/fonts/26-02-23-nep.ttf';
 import nepBg from '../../../assets/images/26-02/26-02-23/nept.webp';
 import loopBg from '../../../assets/images/26-02/26-02-23/swirl.gif';

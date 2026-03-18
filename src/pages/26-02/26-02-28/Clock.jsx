@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import atomicWebp from '../../../assets/images/26-02/26-02-28/atomic.webp';
 import atomicFont from '../../../assets/fonts/26-02-28-atomic.ttf';
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import font20250119_primary from '../../../assets/fonts/26-01-16-leap.otf';
 import font20250119_secondary from '../../../assets/fonts/25-04-25-Oswald-Bold.ttf';
 import font20250119_mono from '../../../assets/fonts/25-05-10-Questrial.ttf';

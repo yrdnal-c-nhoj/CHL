@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import cus250930 from '../../../assets/fonts/25-09-30-stt.ttf';
 
 export default function StripedClock() {

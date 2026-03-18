@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import iceFont from '../../../assets/fonts/25-12-15-ice.ttf?url'; // import font as module
 import BG_IMAGE_PATH from '../../../assets/images/25-12/25-12-15/forest.jpeg';
 

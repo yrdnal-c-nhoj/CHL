@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 // Explicit Asset Imports
 import top260126Font from '../../../assets/fonts/26-01-26-halfb.ttf';

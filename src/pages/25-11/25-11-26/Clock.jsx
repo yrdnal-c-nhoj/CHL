@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 // Media file paths in public folder
 import videoFile from '../../../assets/images/25-11/25-11-26/esp.mp4';

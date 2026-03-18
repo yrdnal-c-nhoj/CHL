@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bgImage from '../../../assets/images/25-09/25-09-19/oort.jpg';
 
 export default function AnalogClock() {

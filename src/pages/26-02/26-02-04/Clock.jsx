@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 // Assets
 import digitalFontUrl from '../../../assets/fonts/26-02-04-trans.ttf';

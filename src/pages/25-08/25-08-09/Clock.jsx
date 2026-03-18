@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import customFont from '../../../assets/fonts/25-08-09-box.ttf'; // Custom font file
 
 const RectangularAnalogClock = () => {

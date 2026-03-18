@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import backFont from '../../../assets/fonts/25-06-17-back.ttf';
 
 const BackslantClock = () => {

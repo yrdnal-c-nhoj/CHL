@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import bananaGif from '../../../assets/images/25-06/25-06-11/banana.gif';
 import spinningBanana from '../../../assets/images/25-06/25-06-11/yellow-spinning-banana.gif';
 import hourHand from '../../../assets/images/25-06/25-06-11/ban.png';

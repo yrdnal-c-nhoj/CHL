@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import sunFont from '../../../assets/fonts/26-03-04-sun.ttf';
 import sunBg from '../../../assets/images/26-03/26-03-04/sun-40.gif';
 

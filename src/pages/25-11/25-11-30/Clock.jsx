@@ -1,5 +1,7 @@
 // DigitalClock.jsx (Optimized for FOUT Prevention)
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import font251130 from '../../../assets/fonts/25-11-30-nono.ttf?url';
 import backgroundImg from '../../../assets/images/25-11/25-11-30/crax.jpg';
 

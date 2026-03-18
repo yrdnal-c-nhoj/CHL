@@ -22,7 +22,10 @@ export function useFontLoader(fontFamily, fontUrl, options = {}) {
       }
 
       try {
-        const font = new FontFace(fontFamily, `url(${fontUrl})`, options);
+        const font = new FontFace(fontFamily, `url(${fontUrl})`, { 
+          ...options,
+          display: 'swap' // Always use swap to prevent FOUC
+        });
         await font.load();
         document.fonts.add(font);
       } catch (e) {
@@ -65,7 +68,10 @@ export function useMultipleFontLoader(fonts) {
           const font = new FontFace(
             f.fontFamily,
             `url(${f.fontUrl})`,
-            f.options,
+            { 
+              ...f.options,
+              display: 'swap' // Always use swap to prevent FOUC
+            }
           );
           await font.load();
           document.fonts.add(font);
