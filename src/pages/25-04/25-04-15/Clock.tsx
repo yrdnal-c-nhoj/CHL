@@ -3,7 +3,7 @@ import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import horizonFontUrl from '../../../assets/fonts/25-04-15-hori.otf';
 import layer2 from '../../../assets/images/25-04/25-04-15/4c558c5dbff1828f2b87582dc49526e8.gif';
-import layer3 from '../../../assets/images/25-04/25-04-15/sdfwefsd.webp';
+import sdfwef from '../../../assets/images/25-04/25-04-15/sdfwef.webp';
 import layer1 from '../../../assets/images/25-04/25-04-15/ewfsdfsd.webp';
 
 const HorizonClock: React.FC = () => {
@@ -166,7 +166,7 @@ const HorizonClock: React.FC = () => {
       <img
         decoding="async"
         loading="lazy"
-        src={layer3}
+        src={sdfwef}
         style={{
           position: 'absolute',
           bottom: 0,
