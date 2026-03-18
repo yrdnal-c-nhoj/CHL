@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useEnhancedFontLoader, useGlobalStyles } from '../../../utils/enhancedFontLoader';
 import bgVideo from '../../../assets/images/25-10/25-10-26/monarch.mp4';
 import fallbackImg from '../../../assets/images/25-10/25-10-26/monarch.webp';
 import romanFont2025_10_27 from '../../../assets/fonts/25-10-26-roman.otf'; // Optimized OTF
@@ -7,9 +7,40 @@ import romanFont2025_10_27 from '../../../assets/fonts/25-10-26-roman.otf'; // O
 export default function MonarchClock() {
   const videoRef = useRef(null);
   const [mediaReady, setMediaReady] = useState<boolean>(false);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [videoStyle, setVideoStyle] = useState<Record<string, any>>({});
+
+  // Enhanced font loading
+  const fontLoaded = useEnhancedFontLoader('RomanFont2025_10_27', romanFont2025_10_27);
+
+  // Global styles for this clock
+  useGlobalStyles(`
+    .monarch-clock {
+      background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+      border-radius: 50%;
+      box-shadow: 
+        0 0 50px rgba(232, 184, 125, 0.3),
+        inset 0 0 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    .monarch-clock::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #E8B87DFF, #EA9227FF, #E8B87DFF);
+      border-radius: 50%;
+      z-index: -1;
+      animation: monarch-glow 3s ease-in-out infinite alternate;
+    }
+    
+    @keyframes monarch-glow {
+      from { box-shadow: 0 0 20px rgba(232, 184, 125, 0.5); }
+      to { box-shadow: 0 0 30px rgba(234, 146, 39, 0.8); }
+    }
+  `, 'monarch-clock-styles');
 
   // Gradient for hands & numerals
   const clockGradient = 'linear-gradient(180deg, #E8B87DFF, #EA9227FF)';
@@ -26,27 +57,6 @@ export default function MonarchClock() {
       }
     }, 100);
     return () => clearInterval(id);
-  }, []);
-
-  // Load custom font
-  useEffect(() => {
-    const fontFamilyName = 'RomanClockFont_2025_10_27';
-    const font = new FontFace(
-      fontFamilyName,
-      `url(${romanFont2025_10_27}) format('opentype')`,
-    );
-    font
-      .load()
-      .then(() => {
-        document.fonts.add(font);
-        setFontLoaded(true);
-      })
-      .catch(() => setFontLoaded(true));
-
-    const timeout = setTimeout(() => {
-      if (!fontLoaded) setFontLoaded(true);
-    }, 3000);
-    return () => clearTimeout(timeout);
   }, []);
 
   const handleVideoLoaded: React.FC = () => {
