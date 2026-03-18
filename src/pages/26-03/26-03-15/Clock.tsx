@@ -129,7 +129,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    border: '25px solid #FF1493',
+    border: '25px solid #28930D',
     boxSizing: 'border-box',
   },
   wrapper: {
