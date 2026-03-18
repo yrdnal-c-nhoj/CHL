@@ -68,12 +68,7 @@ const initializeApp = () => {
     document.documentElement.classList.add('react-hydrated');
 
     // Create and render the React application
-    const root = createRoot(rootElement, {
-      // Enable concurrent features
-      unstable_strictMode: true,
-      // Enable concurrent rendering
-      unstable_concurrentUpdatesByDefault: true
-    });
+    const root = createRoot(rootElement);
 
     root.render(
       <StrictMode>
