@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from '../../../assets/images/25-05/25-05-23/blank.jpg';
 import crossFont from '../../../assets/fonts/25-05-23-Cross.otf';
 
@@ -7,11 +7,20 @@ const CrossClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('Cross', crossFont, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Cross',
+      fontUrl: crossFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     // Asset Preloading
@@ -47,7 +56,7 @@ const CrossClock: React.FC = () => {
   }, []);
 
   // Combined loading check
-  const everythingLoaded = isLoaded && fontReady;
+  const everythingLoaded = isLoaded && fontsLoaded;
 
   if (!everythingLoaded) {
     return (

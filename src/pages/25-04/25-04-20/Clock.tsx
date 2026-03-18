@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import clouds from '../../../assets/images/25-04/25-04-20/clouds.gif';
 import cloFont from '../../../assets/fonts/25-04-20-clo.ttf';
 
 const CloudClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'CloFont',
+      fontUrl: cloFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [hoursHTML, setHoursHTML] = useState<any>('');
   const [minutesHTML, setMinutesHTML] = useState<any>('');
-  const [ampmHTML, setAmPmHTML, setAmpmHTML] = useState<any>('');
-
-  const fontFace = `
-    @font-face {
-      font-family: 'CloFont';
-      src: url(${cloFont}) format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-  `;
+  const [ampmHTML, setAmPmHTML] = useState<any>('');
 
   const getStyledText = (str) =>
     str
@@ -46,7 +50,6 @@ const CloudClock: React.FC = () => {
 
   return (
     <>
-      <style>{fontFace}</style>
       <style>{`
         * {
           margin: 0;

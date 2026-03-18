@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import imageLeft from '../../../assets/images/25-08/25-08-16/pal.webp';
 import clockFace from '../../../assets/images/25-08/25-08-16/palm.webp';
 import customFontUrl from '../../../assets/fonts/25-08-16-palm.ttf';
@@ -11,6 +11,19 @@ import secondHandImage from '../../../assets/images/25-08/25-08-16/p3.gif';
 const CLOCK_FONT_FAMILY = 'ClockFont__Scoped_9k2';
 
 const MirroredBackground: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: CLOCK_FONT_FAMILY,
+      fontUrl: customFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
@@ -18,14 +31,9 @@ const MirroredBackground: React.FC = () => {
     return () => clearInterval(id);
   }, []);
 
+  // Font loading handled by useMultipleFontLoader
   const fontFaceTag = useMemo(() => {
-    const css = `
-      @font-face {
-        font-family: '${CLOCK_FONT_FAMILY}';
-        src: url(${customFontUrl}) format('truetype');
-        font-display: swap;
-      }
-    `;
+    const css = ``;
     return <style>{css}</style>;
   }, []);
 

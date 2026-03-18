@@ -1,6 +1,6 @@
 import React, { useEffect, useState, memo } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import font250909 from '../../../assets/fonts/25-09-09-van.ttf?url';
 import bgImage2 from '../../../assets/images/25-09/25-09-09/skull.jpg';
 import bgImage from '../../../assets/images/25-09/25-09-09/va.webp';
@@ -59,23 +59,28 @@ export default function ClockWall() {
   const [ready, setReady] = useState<boolean>(false); // ✅ only show page when true
 
   // Load font
-  useEffect(() => {
-    const loadFont = async () => {
-      const font = new FontFace(CONFIG.font, `url(${CONFIG.fontUrl})`);
-      await font.load();
-      document.fonts.add(font);
-    };
+  const fontConfigs = [
+    {
+      fontFamily: CONFIG.font,
+      fontUrl: CONFIG.fontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-    // Preload images
-    const loadImage = (src) =>
-      new Promise((res) => {
-        const img = new Image();
-        img.src = src;
-        img.onload = res;
-      });
+  // Preload images
+  const loadImage = (src) =>
+    new Promise((res) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = res;
+    });
 
-    const preloadAll = async () => {
-      await loadFont();
+  const preloadAll = async () => {
+      // Font loading handled by useMultipleFontLoader
       await Promise.all([
         loadImage(bgImage),
         loadImage(bgImage2),
@@ -84,6 +89,7 @@ export default function ClockWall() {
       setReady(true); // ✅ everything loaded
     };
 
+  useEffect(() => {
     preloadAll();
   }, []);
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 
 // Digit images (imported as modules)
 import digit0 from '../../../assets/images/25-08/25-08-23/0.gif';
@@ -35,8 +35,20 @@ const digitImages = {
   9: digit9,
 };
 
+const fontConfigs = [
+  {
+    fontFamily: 'CustomFont',
+    fontUrl: fogFont,
+    options: {
+      weight: 'normal',
+      style: 'normal'
+    }
+  }
+];
+
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   // Style constants
   const fontSize = '2rem';
@@ -58,12 +70,7 @@ export default function DigitalClock() {
 
   // Scoped CSS for font and animation
   const scopedCSS = `
-    @font-face {
-      font-family: 'CustomFont';
-      src: url(${fogFont}) format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
+    /* Font loading handled by useMultipleFontLoader */
 
     @keyframes float {
       0%, 100% { transform: translateY(0); }

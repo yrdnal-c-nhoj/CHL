@@ -1,11 +1,33 @@
 import { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import font1 from '../../../assets/fonts/25-08-25-code.ttf';
 import font2 from '../../../assets/fonts/25-08-25-bar.ttf';
 import bgImage2 from '../../../assets/images/25-08/25-08-25/bgla.webp'; // Bottom background
 import bgImage from '../../../assets/images/25-08/25-08-25/wh.webp'; // Top background
 
 export default function DigitalClock() {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'CodeFont',
+      fontUrl: font1,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    },
+    {
+      fontFamily: 'BarFont',
+      fontUrl: font2,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -85,14 +107,7 @@ export default function DigitalClock() {
     <div style={containerStyle}>
       <style>
         {`
-          @font-face {
-            font-family: 'CodeFont';
-            src: url(${font1}) format('truetype');
-          }
-          @font-face {
-            font-family: 'BarFont';
-            src: url(${font2}) format('truetype');
-          }
+          /* Font loading handled by useMultipleFontLoader */
         `}
       </style>
 

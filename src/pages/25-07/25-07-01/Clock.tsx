@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bgImage from '../../../assets/images/25-07/25-07-01/mu.jpg';
 import fontUrl from '../../../assets/fonts/25-07-01-mult.ttf';
 
 const CinemaClock: React.FC = () => {
   const [time, setTime] = useState<any>({ hours: '', minutes: '' });
+
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'mult',
+      fontUrl: fontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     const updateClock: React.FC = () => {

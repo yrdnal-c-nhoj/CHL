@@ -1,9 +1,21 @@
 import React, { useEffect, useRef } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 import backFont from '../../../assets/fonts/25-06-17-back.ttf';
 
 const BackslantClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'back',
+      fontUrl: backFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const ids = ['h0', 'h1', 'm0', 'm1', 's0', 's1'];
   const trains = useRef({});
   const positions = useRef({});
@@ -11,13 +23,11 @@ const BackslantClock: React.FC = () => {
   const targetOffsets = useRef({});
   const currentOffsets = useRef({});
 
+  // Font loading handled by useMultipleFontLoader
+
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
-      @font-face {
-        font-family: 'back';
-        src: url(${backFont}) format('truetype');
-      }
       .digitTrain span {
         color: rgb(4, 95, 151);
         text-shadow: #f24e07 0.2rem 0.2rem 0;

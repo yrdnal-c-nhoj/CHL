@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from '../../../assets/images/25-08/25-08-27/rootsu.gif';
 import dodecahedronFontFile from '../../../assets/fonts/25-08-27-root.ttf'; // renamed import
 
@@ -6,6 +7,19 @@ export default function TwelfthRootsOfUnityWithClock() {
   const canvasRef = useRef(null);
   const clockRef = useRef(null);
   const fontRef = useRef('sans-serif'); // fallback
+
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'DodecahedronFont',
+      fontUrl: dodecahedronFontFile,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -20,19 +34,10 @@ export default function TwelfthRootsOfUnityWithClock() {
     const fadeSpeed = 0.01;
     let frameCount = 0;
 
-    // Scoped Dodecahedron font
-    const dodecahedronFont = new FontFace(
-      'DodecahedronFont',
-      `url(${dodecahedronFontFile})`,
-    );
-    dodecahedronFont
-      .load()
-      .then((loadedFont) => {
-        document.fonts.add(loadedFont);
-        fontRef.current = 'DodecahedronFont';
-      })
-      .catch(() => (fontRef.current = 'sans-serif'))
-      .finally(() => animate());
+    // Font loading handled by useMultipleFontLoader
+    if (fontsLoaded) {
+      fontRef.current = 'DodecahedronFont';
+    }
 
     const resize: React.FC = () => {
       const containerSize =
@@ -160,11 +165,14 @@ export default function TwelfthRootsOfUnityWithClock() {
     };
 
     let animationId;
-    const animate: React.FC = () => {
+    const animate = () => {
       drawRoots();
       drawClock();
       animationId = requestAnimationFrame(animate);
     };
+
+    // Start the animation
+    animate();
 
     return () => {
       window.removeEventListener('resize', resize);

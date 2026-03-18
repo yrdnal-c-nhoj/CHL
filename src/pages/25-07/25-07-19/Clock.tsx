@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import cunFont from '../../../assets/fonts/25-07-19-cun.ttf';
 import bgOverlay from '../../../assets/images/25-07/25-07-19/cun1.webp';
 
 const CuneiformClock: React.FC = () => {
   const [time, setTime] = useState<any>('');
+
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'cunei-cun',
+      fontUrl: cunFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     const updateClock: React.FC = () => {
@@ -33,10 +46,7 @@ const CuneiformClock: React.FC = () => {
       }}
     >
       <style>{`
-        @font-face {
-          font-family: 'cunei-cun';
-          src: url(${cunFont}) format('truetype');
-        }
+        /* Font loading handled by useMultipleFontLoader */
 
         .cunei-wrapper {
           font-size: 2vh;

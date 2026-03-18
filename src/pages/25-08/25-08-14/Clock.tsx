@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useGlobalStyles } from '../../../utils/enhancedFontLoader';
-import { useEnhancedFontLoader } from '../../../utils/enhancedFontLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 
 import backgroundImg from '../../../assets/images/25-08/25-08-14/1.webp';
 import digit1 from '../../../assets/images/25-08/25-08-14/1.gif';
@@ -51,6 +48,18 @@ const words = [
 ];
 
 const AnalogClock: React.FC = () => {
+  const fontConfigs = [
+    {
+      fontFamily: 'CustomClockFont',
+      fontUrl: customFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [now, setNow] = useState(new Date());
 
   // Smoothly update time
@@ -75,26 +84,10 @@ const AnalogClock: React.FC = () => {
       });
     }
 
-    // Create and inject @font-face
+    // Font loading handled by useMultipleFontLoader
     const style = document.createElement('style');
     style.setAttribute('data-font', 'custom-clock-font');
-    style.textContent = `
-      @font-face {
-        font-family: '${fontName}';
-        src: url(${customFont}) format('truetype');
-        font-display: swap; /* Better font loading behavior */
-        font-weight: normal;
-        font-style: normal;
-      }
-      
-      /* Fallback font stack */
-      .month-text {
-        font-family: '${fontName}', 'Arial Narrow', Arial, sans-serif;
-        font-smooth: always;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-    `;
+    style.textContent = ``;
 
     document.head.appendChild(style);
 

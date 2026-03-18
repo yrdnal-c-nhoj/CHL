@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import michromaFont from '../../../assets/fonts/25-05-10-Michroma.ttf';
 import economicaFont from '../../../assets/fonts/25-05-10-Economica.ttf';
 import questrialFont from '../../../assets/fonts/25-05-10-Questrial.ttf';
@@ -20,12 +21,12 @@ const throwTimeCharacters = (timeStr, throwContainer) => {
   const compColor = getComplementaryColor(r, g, b);
 
   for (let i = 0; i < timeStr.length; i++) {
-    const span = document.createElement('span');
     const x = getRand(0, 100); // percentage
     const size = getRand(1, 12);
     const gravityDuration = size >= 7 ? 1500 : 900;
     const y = getRand(0, 100);
 
+    const span = document.createElement('span');
     span.textContent = timeStr[i];
     span.style.position = 'absolute';
     span.style.left = `${x}vw`;
@@ -55,29 +56,39 @@ const throwTimeCharacters = (timeStr, throwContainer) => {
 };
 
 const NumberTossClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'michroma',
+      fontUrl: michromaFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    },
+    {
+      fontFamily: 'economica',
+      fontUrl: economicaFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    },
+    {
+      fontFamily: 'questrial',
+      fontUrl: questrialFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const throwContainer = useRef(null);
   const [backgroundTime, setBackgroundTime] = useState(getTimeString());
 
   useEffect(() => {
-    const fontStyles = `
-      @font-face {
-        font-family: 'michroma';
-        src: url(${michromaFont}) format('truetype');
-      }
-      @font-face {
-        font-family: 'economica';
-        src: url(${economicaFont}) format('truetype');
-      }
-      @font-face {
-        font-family: 'questrial';
-        src: url(${questrialFont}) format('truetype');
-      }
-    `;
-
-    const styleSheet = document.createElement('style');
-    styleSheet.innerHTML = fontStyles;
-    document.head.appendChild(styleSheet);
-
     const updateBackgroundTime = setInterval(() => {
       setBackgroundTime(getTimeString());
     }, 1000);
@@ -93,7 +104,6 @@ const NumberTossClock: React.FC = () => {
     return () => {
       clearTimeout(animationFrame);
       clearInterval(updateBackgroundTime);
-      document.head.removeChild(styleSheet);
     };
   }, []);
 

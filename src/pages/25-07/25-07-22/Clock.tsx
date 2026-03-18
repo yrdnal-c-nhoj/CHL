@@ -1,11 +1,23 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bardImg from '../../../assets/images/25-07/25-07-22/bard.webp';
 import barrsImg from '../../../assets/images/25-07/25-07-22/barrs.webp';
 import berFont from '../../../assets/fonts/25-07-22-ber.otf';
 
 const BarrelrollClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'ber',
+      fontUrl: berFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
   useEffect(() => {
     const updateClock: React.FC = () => {
       const now = new Date();
@@ -42,10 +54,7 @@ const BarrelrollClock: React.FC = () => {
       }}
     >
       <style>{`
-        @font-face {
-          font-family: 'ber';
-          src: url(${berFont}) format('opentype');
-        }
+        /* Font loading handled by useMultipleFontLoader */
 
         * {
           margin: 0;
@@ -185,7 +194,7 @@ const BarrelrollClock: React.FC = () => {
 
       <div className="container">
         <div className="spin-wrapper">
-          <div className="half left">
+          <div className="left half">
             <img
               decoding="async"
               loading="lazy"
@@ -193,7 +202,7 @@ const BarrelrollClock: React.FC = () => {
               alt="Left Image"
             />
           </div>
-          <div className="half right">
+          <div className="right half">
             <img
               decoding="async"
               loading="lazy"

@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import fontFile from '../../../assets/fonts/26-01-02-cram.ttf';
 import backgroundImage from '../../../assets/images/26-01/26-01-02/brick.webp';
 
 const StretchedClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Cram260102',
+      fontUrl: fontFile,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
   const [isLargeScreen, setIsLargeScreen] = useState<any>(window.innerWidth > 768);
   const [bgReady, setBgReady] = useState<boolean>(false);
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('Cram260102', fontFile, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -59,9 +68,9 @@ const StretchedClock: React.FC = () => {
     overflow: 'hidden',
     padding: 0,
     backgroundColor: '#C9C7AF',
-    opacity: fontReady && bgReady ? 1 : 0,
+    opacity: fontsLoaded && bgReady ? 1 : 0,
     transition: 'opacity 0.35s ease',
-    visibility: fontReady && bgReady ? 'visible' : 'hidden',
+    visibility: fontsLoaded && bgReady ? 'visible' : 'hidden',
   };
 
   const segmentStyle = {

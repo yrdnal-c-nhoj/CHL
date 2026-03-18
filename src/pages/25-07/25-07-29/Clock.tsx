@@ -1,20 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 import slotFont from '../../../assets/fonts/25-07-29-slot.otf';
 import bgImage from '../../../assets/images/25-07/25-07-29/IMAGE_1688551792.webp';
 
-// Define font-face globally
-const style = document.createElement('style');
-style.textContent = `
-  @font-face {
-    font-family: 'slot';
-    src: url(${slotFont}) format('opentype');
-  }
-`;
-document.head.appendChild(style);
-
 const SlotMachineClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'slot',
+      fontUrl: slotFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState<any>({
     hour: '',
     minute: '',

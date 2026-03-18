@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import myFontWoff2 from '../../../assets/fonts/25-08-02-hea.ttf';
 import bg2 from '../../../assets/images/25-08/25-08-02/em.webp';
 
@@ -8,34 +8,26 @@ const DigitalClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
   const componentId = useRef(`digital-clock-${Date.now()}`);
-  const fontName = `DigitalClockFont-${componentId.current}`;
 
-  // Scoped font loading with unique name
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'hea',
+      fontUrl: myFontWoff2,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Update fontLoaded state when fontsLoaded changes
   useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace(fontName, `url(${myFontWoff2})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font failed to load:', error);
-        setFontLoaded(false);
-      }
-    };
+    setFontLoaded(fontsLoaded);
+  }, [fontsLoaded]);
 
-    loadFont();
-
-    // Cleanup font on unmount
-    return () => {
-      for (const font of document.fonts) {
-        if (font.family === fontName) {
-          document.fonts.delete(font);
-          break;
-        }
-      }
-    };
-  }, [fontName]);
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -71,7 +63,7 @@ const DigitalClock: React.FC = () => {
   const clockContainerStyle = {
     position: 'relative',
     zIndex: 10,
-    fontFamily: fontLoaded ? fontName : 'monospace',
+    fontFamily: fontLoaded ? "'hea', monospace" : 'monospace',
     fontSize: '0.5rem',
     color: '#CFEAEA',
     display: 'flex',

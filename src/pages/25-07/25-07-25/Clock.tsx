@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 import background2 from '../../../assets/images/25-07/25-07-25/bb.webp'; // front
 import background1 from '../../../assets/images/25-07/25-07-25/bam.webp'; // back
 import background3 from '../../../assets/images/25-07/25-07-25/bambu.gif'; // static background
@@ -9,6 +8,19 @@ import customFont from '../../../assets/fonts/25-07-25-bamboo.ttf';
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(() => new Date());
+
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'CustomFont',
+      fontUrl: customFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -18,12 +30,7 @@ const Clock: React.FC = () => {
   useEffect(() => {
     const style = document.createElement('style');
     style.innerHTML = `
-      @font-face {
-        font-family: 'CustomFont';
-        src: url(${customFont}) format('woff2');
-        font-weight: normal;
-        font-style: normal;
-      }
+      /* Font loading handled by useMultipleFontLoader */
 
       @keyframes parallaxBack {
         0% { background-position: 0 0; }

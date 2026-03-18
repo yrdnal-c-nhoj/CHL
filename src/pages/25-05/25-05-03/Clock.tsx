@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import fontUrl from '../../../assets/fonts/25-05-03-Petal.ttf';
 import bg1 from '../../../assets/images/25-05/25-05-03/petalos.gif';
 import bg2 from '../../../assets/images/25-05/25-05-03/petals.gif';
@@ -10,8 +10,20 @@ import bg4 from '../../../assets/images/25-05/25-05-03/talos.gif';
 const FlyingPetalsClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
 
-  // Load Petal font with FOUC prevention
-  const fontReady = useFontLoader('Petal', fontUrl);
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Petal',
+      fontUrl: fontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -19,7 +31,7 @@ const FlyingPetalsClock: React.FC = () => {
   }, []);
 
   // Show loading state while font loads
-  if (!fontReady) {
+  if (!fontsLoaded) {
     return (
       <div style={{
         height: '100dvh',

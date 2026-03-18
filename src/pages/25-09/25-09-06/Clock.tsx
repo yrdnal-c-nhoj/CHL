@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import font_06_09_2025 from '../../../assets/fonts/25-09-06-boom.ttf';
 import bgImage from '../../../assets/images/25-09/25-09-06/boo.jpg';
 import hourHandImg from '../../../assets/images/25-09/25-09-06/b.gif';
@@ -8,18 +9,22 @@ import secondHandImg from '../../../assets/images/25-09/25-09-06/b2.gif';
 import tickImg from '../../../assets/images/25-09/25-09-06/b3.gif';
 
 const AnalogClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'AnalogClockFont_06_09_2025',
+      fontUrl: font_06_09_2025,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
 
-  // Load font
-  useEffect(() => {
-    const font = new FontFace(
-      'AnalogClockFont_06_09_2025',
-      `url(${font_06_09_2025})`,
-    );
-    font.load().then(() => {
-      document.fonts.add(font);
-    });
-  }, []);
+  // Font loading handled by useMultipleFontLoader
 
   // Update clock every second
   useEffect(() => {
@@ -51,10 +56,7 @@ const AnalogClock: React.FC = () => {
     >
       {/* Scoped font */}
       <style>{`
-        @font-face {
-          font-family: 'AnalogClockFont_06_09_2025';
-          src: url(${font_06_09_2025}) format('truetype');
-        }
+        /* Font loading handled by useMultipleFontLoader */
       `}</style>
 
       {/* Background */}

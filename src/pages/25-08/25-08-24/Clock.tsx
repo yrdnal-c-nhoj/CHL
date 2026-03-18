@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 import castelImage from '../../../assets/images/25-08/25-08-24/castel.jpg';
-import viaFont from '../../../assets/fonts/25-08-24-via.ttf'; // Make sure this path is correct
+import viaFont from '../../../assets/fonts/25-08-24-via.ttf';
 
-const toRoman = (num) => {
+const toRoman = (num: number) => {
   const romanMap = [
     [1000, 'M'],
     [900, 'CM'],
@@ -30,23 +29,26 @@ const toRoman = (num) => {
   return result || 'N';
 };
 
-// Inject @font-face dynamically
-const fontStyle = document.createElement('style');
-fontStyle.innerHTML = `
-  @font-face {
-    font-family: 'Via';
-    src: url(${viaFont}) format('truetype');
-  }
-`;
-document.head.appendChild(fontStyle);
+const RomanClock = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Via',
+      fontUrl: viaFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-function RomanClock() {
-  const [time, setTime] = useState<any>('');
-  const [fade, setFade] = useState<boolean>(false);
-  const timeoutRef = useRef();
+  const [time, setTime] = useState('');
+  const [fade, setFade] = useState(false);
+  const timeoutRef = useRef<any>();
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const newTime = `${toRoman(now.getHours())}.${toRoman(
         now.getMinutes(),
@@ -67,57 +69,38 @@ function RomanClock() {
     };
   }, []);
 
+  const containerStyle = {
+    position: 'relative' as const,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    width: '100vw',
+    fontFamily: fontsLoaded ? "'Via', serif" : 'serif',
+    backgroundColor: '#1a1a1a',
+    backgroundImage: `url(${castelImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    overflow: 'hidden',
+  };
+
+  const timeStyle = {
+    color: 'rgb(203, 227, 197)',
+    fontSize: '1.7rem',
+    textAlign: 'center' as const,
+    position: 'relative' as const,
+    zIndex: 1,
+    opacity: fade ? 0 : 1,
+    transition: 'opacity 0.5s ease-in-out',
+  };
+
   return (
-    <div style={styles.container}>
-      <img
-        decoding="async"
-        loading="lazy"
-        src={castelImage}
-        alt="Background"
-        style={styles.bgImage}
-      />
-      <div
-        style={{
-          ...styles.clock,
-          opacity: fade ? 0 : 1,
-          transition: 'opacity 0.5s ease-in-out',
-        }}
-      >
+    <div style={containerStyle}>
+      <div style={timeStyle}>
         {time}
       </div>
     </div>
   );
-}
-
-const styles = {
-  container: {
-    height: '100dvh',
-    width: '100vw',
-    overflow: 'hidden',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontFamily: "'Via', monospace",
-    backgroundColor: 'rgb(19, 4, 4)',
-    position: 'relative',
-  },
-  bgImage: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    // filter: "blur(5px)",
-    zIndex: 0,
-  },
-  clock: {
-    color: 'rgb(203, 227, 197)',
-    fontSize: '1.7rem',
-    textAlign: 'center',
-    position: 'relative',
-    zIndex: 1,
-  },
 };
 
 export default RomanClock;

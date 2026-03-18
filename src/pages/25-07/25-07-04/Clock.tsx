@@ -1,70 +1,56 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import kalFont from '../../../assets/fonts/25-07-04-kal.otf';
 import bgImage from '../../../assets/images/25-07/25-07-04/7ZAx.webp';
 
+/** * CONFIGURATION 
+ * Defined outside to prevent re-allocation on every frame
+ */
 const SEGMENTS = 12;
 const COLORS = [
-  '#ff0040',
-  '#045DF7FF',
-  '#F9D108FF',
-  '#00ff00',
-  '#FC7B02FF',
-  '#ff00ff',
-  '#00bfff',
-  '#ffffff',
-  '#D0FF00FF',
-  '#C12FFBFF',
-  '#FAA404FF',
-  '#12F5DBFF',
+  '#ff0040', '#045DF7FF', '#F9D108FF', '#00ff00',
+  '#FC7B02FF', '#ff00ff', '#00bfff', '#ffffff',
+  '#D0FF00FF', '#C12FFBFF', '#FAA404FF', '#12F5DBFF',
 ];
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
-  const requestRef = useRef();
+  const requestRef = useRef<number | null>(null);
 
-  // 1. Correct Font Loading Logic
-  // Using the hook you imported; ensure 'useFontLoader' returns a boolean or object
-  const fontReady = useFontLoader('kal', kalFont, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // 1. Font Loading Logic
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: 'kal',
+      fontUrl: kalFont,
+      options: { weight: 'normal', style: 'normal' }
+    }
+  ], []);
+  
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  // 2. Animation Loop
-  const animate: React.FC = () => {
+  // 2. Optimized Animation Loop
+  const animate = useCallback(() => {
     setTime(new Date());
     requestRef.current = requestAnimationFrame(animate);
-  };
+  }, []);
 
   useEffect(() => {
     requestRef.current = requestAnimationFrame(animate);
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
-  }, []);
+  }, [animate]);
 
-  // 3. Proper Guard Clause
-  // Changed from 'fontState.loading' to 'fontReady' to match your hook
-  if (!fontReady) {
+  // 3. Loading State Guard
+  if (!fontsLoaded) {
     return (
-      <div
-        style={{
-          background: 'black',
-          height: '100dvh',
-          width: '100vw',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          color: '#777',
-          fontFamily: 'sans-serif',
-        }}
-      >
+      <div style={loadingOverlayStyle}>
         Initializing Synchronicity...
       </div>
     );
   }
 
-  // 4. Time Calculations
+  // 4. Time Formatting
   const h = time.getHours();
   const hourText = (h % 12 || 12).toString().padStart(2, '0');
   const minuteText = time.getMinutes().toString().padStart(2, '0');
@@ -72,10 +58,10 @@ const Clock: React.FC = () => {
   const ampm = h >= 12 ? 'PM' : 'AM';
   const s = time.getSeconds();
 
-  const renderRingSegments = (offset) => {
+  // 5. Segment Rendering Logic
+  const renderRingSegments = (offset: number) => {
     return Array.from({ length: SEGMENTS }).map((_, i) => {
       const angle = i * (360 / SEGMENTS);
-      // Logic to rotate colors based on seconds for the "kaleidoscope" effect
       const colorIndex = (i + s + offset) % COLORS.length;
 
       return (
@@ -122,22 +108,19 @@ const Clock: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        margin: 0,
-        padding: 0,
-        background: 'black',
-        height: '100vh',
-        overflow: 'hidden',
-        position: 'relative',
-      }}
-    >
-      {/* Background Layer */}
-      <img decoding="async" src={bgImage} alt="background" style={bgStyle} />
+    <div style={containerStyle}>
+      {/* Background Image Layer */}
+      <img 
+        decoding="async" 
+        src={bgImage} 
+        alt="background" 
+        style={bgStyle} 
+      />
 
-      {/* Visual Clock Layers */}
+    
+
+      {/* Clock Layers */}
       <div className="kaleidoscope spin-cw">{renderRingSegments(0)}</div>
-
       <div className="kaleidoscope spin-ccw">{renderRingSegments(6)}</div>
 
       <style>{`
@@ -153,6 +136,7 @@ const Clock: React.FC = () => {
           align-items: center; 
           z-index: 2; 
           pointer-events: none;
+          perspective: 1000px;
         }
         
         .spin-cw { animation: spin-cw 60s linear infinite; opacity: 0.8; }
@@ -162,21 +146,40 @@ const Clock: React.FC = () => {
           position: absolute; 
           font-weight: 900; 
           mix-blend-mode: screen; 
-          transition: color 0.8s ease; 
+          transition: color 0.8s ease, transform 0.5s ease-out; 
           font-size: 5rem; 
           white-space: nowrap;
+          will-change: transform, color;
         }
         
         .minute { font-size: 3rem; opacity: 0.8; }
         .second { font-size: 1.5rem; opacity: 0.6; }
         .ampm { font-size: 0.7rem; letter-spacing: 1px; }
+
+        @media (max-width: 768px) {
+          .segment { font-size: 3rem; }
+          .minute { font-size: 1.8rem; }
+          .second { font-size: 1rem; }
+        }
       `}</style>
     </div>
   );
 };
 
-// Styles defined outside component to prevent re-creation on every tick
-const bgStyle = {
+/**
+ * STYLES
+ */
+const containerStyle: React.CSSProperties = {
+  margin: 0,
+  padding: 0,
+  background: 'black',
+  height: '100dvh',
+  width: '100vw',
+  overflow: 'hidden',
+  position: 'relative',
+};
+
+const bgStyle: React.CSSProperties = {
   position: 'fixed',
   top: 0,
   left: 0,
@@ -188,18 +191,32 @@ const bgStyle = {
   pointerEvents: 'none',
 };
 
-const headerStyle = {
+const headerStyle: React.CSSProperties = {
   position: 'absolute',
   top: '15px',
   left: '50%',
   transform: 'translateX(-50%)',
-  width: '95%',
+  width: '90%',
   display: 'flex',
-  color: 'rgba(255,255,255,0.7)',
+  color: 'rgba(255,255,255,0.4)',
   zIndex: 6,
-  fontSize: '1.2rem',
-  borderTop: '1px solid rgba(255,255,255,0.2)',
+  fontSize: '0.8rem',
+  fontFamily: 'monospace',
+  borderTop: '1px solid rgba(255,255,255,0.1)',
   paddingTop: '5px',
+  pointerEvents: 'none',
+};
+
+const loadingOverlayStyle: React.CSSProperties = {
+  background: 'black',
+  height: '100dvh',
+  width: '100vw',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  color: '#444',
+  fontFamily: 'monospace',
+  letterSpacing: '2px',
 };
 
 export default Clock;

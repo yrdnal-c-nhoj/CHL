@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import customFontUrl from '../../../assets/fonts/25-08-17-scr.otf';
 import pageBg from '../../../assets/images/25-08/25-08-17/bg.webp'; // full-screen background image
 
 const CLOCK_FONT_FAMILY = 'DigitalClockFont__Scoped';
 
 const StickyNoteClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: CLOCK_FONT_FAMILY,
+      fontUrl: customFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -67,12 +80,7 @@ const StickyNoteClock: React.FC = () => {
       >
         <style>
           {`
-            @font-face {
-              font-family: '${CLOCK_FONT_FAMILY}';
-              src: url(${customFontUrl}) format('opentype');
-              font-weight: normal;
-              font-style: normal;
-            }
+            /* Font loading handled by useMultipleFontLoader */
           `}
         </style>
 

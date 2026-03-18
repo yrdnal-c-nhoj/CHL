@@ -1,12 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 import bgImage from '../../../assets/images/25-09/25-09-07/wall.jpg'; // local background image
 import f250907 from '../../../assets/fonts/25-09-07-wall.ttf'; // local font file
 
 const fontVar = 'CustomFont20250908'; // custom variable name
 
 export default function Clock() {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: fontVar,
+      fontUrl: f250907,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
@@ -14,22 +26,7 @@ export default function Clock() {
     return () => clearInterval(interval);
   }, []);
 
-  // Inject @font-face dynamically
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @font-face {
-        font-family: '${fontVar}';
-        src: url(${f250907}) format('truetype');
-        font-weight: normal;
-        font-style: normal;
-      }
-    `;
-    document.head.appendChild(style);
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
+  // Font loading handled by useMultipleFontLoader
 
   // 12-hour format, no leading zeros
   const hour24 = now.getHours();

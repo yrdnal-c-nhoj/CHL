@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 
 // Local images
 import bgImage from '../../../assets/images/25-09/25-09-10/bg.webp';
@@ -12,13 +12,28 @@ import secondHand from '../../../assets/images/25-09/25-09-10/sec.gif';
 import customLavaFont from '../../../assets/fonts/25-09-10-lava.otf?url';
 
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'CustomLavaFont_25_09_18',
+      fontUrl: customLavaFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
 
+  // Font loading handled by useMultipleFontLoader
+
   // Clock ticking
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
       const minutes = now.getMinutes() + seconds / 60;
@@ -64,10 +79,7 @@ const Clock: React.FC = () => {
     >
       {/* Scoped font injection */}
       <style>{`
-        @font-face {
-          font-family: 'CustomLavaFont_25_09_18';
-          src: url(${customLavaFont}) format('opentype');
-        }
+        /* Font loading handled by useMultipleFontLoader */
       `}</style>
 
       {/* Background */}

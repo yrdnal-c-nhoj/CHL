@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import morseFont from '../../../assets/fonts/25-06-27-morse.ttf';
 import birdsGif from '../../../assets/images/25-06/25-06-27/birds.gif';
 
@@ -37,11 +37,18 @@ const MorseClock: React.FC = () => {
   const wiresRef = useRef([]);
   const svgRef = useRef(null);
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('morse', morseFont, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'morse',
+      fontUrl: morseFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   // Initialize wires on mount
   useEffect(() => {

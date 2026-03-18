@@ -1,13 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import mapFont from '../../../assets/fonts/25-05-05-Map.ttf';
 
 const WarholGraveCamClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'MapFont',
+      fontUrl: mapFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState<any>({
     hours: '00',
     minutes: '00',
     seconds: '00',
   });
+
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const updateClock: React.FC = () => {

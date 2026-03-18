@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
 
 // Background & Assets
@@ -21,20 +21,8 @@ import minuteHandImg from '../../../assets/images/26-01/26-01-08/min.webp';
 import secondHandImg from '../../../assets/images/26-01/26-01-08/seco.webp';
 
 // --- CONSTANTS ---
-const CLOCK_LABELS = [
-  num12,
-  num1,
-  num2,
-  num3,
-  num4,
-  num5,
-  num6,
-  num7,
-  num8,
-  num9,
-  num10,
-  num11,
-];
+const CLOCK_LABELS = [num12, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11];
+
 const SHADOW_FILTER =
   'drop-shadow(0 0 6px rgba(45, 18, 3, 0.9)) drop-shadow(0 0 12px rgba(236, 10, 10, 0.7))';
 
@@ -51,36 +39,39 @@ const CONFIG = {
   },
 };
 
-function TangerineClock() {
+const TangerineClock: React.FC = () => {
   const [time, setTime] = useState(() => new Date());
-  const [clockSize, setClockSize] = useState<number>(300); // Default size, will be updated
+  const [clockSize, setClockSize] = useState<number>(300);
   const [isClient, setIsClient] = useState<boolean>(false);
 
-  // Standardized asset loading
-  const assets = useMultiAssetLoader({
+  // Asset configuration
+  const assetConfig = useMemo(() => ({
     background: { src: backgroundImage },
     bgLayer: { src: bgLayerTile },
     ...Object.fromEntries(
-      CLOCK_LABELS.map((label, index) => [
-        `num${index === 0 ? 12 : index}`,
-        { src: label }
-      ])
+      CLOCK_LABELS.map((label, index) => [`num${index === 0 ? 12 : index}`, { src: label }])
     ),
     hourHand: { src: hourHandImg },
     minuteHand: { src: minuteHandImg },
     secondHand: { src: secondHandImg },
-  });
+  }), []);
 
-  // Set up resize handler
+  const assets = useMultiAssetLoader(assetConfig);
+
+  // Handle resizing logic
+  const updateClockSize = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      const size = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.7, 500);
+      setClockSize(size);
+    }
+  }, []);
+
   useEffect(() => {
     setIsClient(true);
-
-    // Set initial size
     updateClockSize();
 
-    // Handle window resize with debounce
-    let resizeTimer;
-    const handleResize: React.FC = () => {
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    const handleResize = () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(updateClockSize, 100);
     };
@@ -90,70 +81,38 @@ function TangerineClock() {
       window.removeEventListener('resize', handleResize);
       clearTimeout(resizeTimer);
     };
-  }, []);
+  }, [updateClockSize]);
 
-  // Separate preload for backgrounds to avoid flash
-  useEffect(() => {
-    const imgs = [backgroundImage, bgLayerTile];
-    let loaded = 0;
-    const done: React.FC = () => {
-      loaded += 1;
-      if (loaded >= imgs.length) setBgReady(true);
-    };
-    imgs.forEach((src) => {
-      const img = new Image();
-      img.onload = done;
-      img.onerror = done;
-      img.src = src;
-    });
-    const timeout = setTimeout(() => setBgReady(true), 1200);
-    return () => clearTimeout(timeout);
-  }, []);
-
-  const updateClockSize: React.FC = () => {
-    if (typeof window !== 'undefined') {
-      const size = Math.min(
-        window.innerWidth * 0.9,
-        window.innerHeight * 0.7,
-        500,
-      );
-      setClockSize(size);
-    }
-  };
-
-  // Smooth animation using RAF
+  // High-performance animation loop
   useEffect(() => {
     if (!isClient) return;
 
-    let rafId;
-    let lastUpdate = 0;
-
-    const update = (timestamp) => {
-      if (!lastUpdate || timestamp - lastUpdate >= 16) {
-        // ~60fps
-        setTime(new Date());
-        lastUpdate = timestamp;
-      }
-      rafId = setInterval(() => setTime(new Date()), 100);
+    let rafId: number;
+    const update = () => {
+      setTime(new Date());
+      rafId = requestAnimationFrame(update);
     };
 
-    rafId = setInterval(() => setTime(new Date()), 100);
+    rafId = requestAnimationFrame(update);
     return () => cancelAnimationFrame(rafId);
   }, [isClient]);
 
-  // Calculate rotations
+  // Time calculations
   const { secDeg, minDeg, hourDeg, radius } = useMemo(() => {
     const ms = time.getMilliseconds();
+    const s = time.getSeconds();
+    const m = time.getMinutes();
+    const h = time.getHours();
+
     return {
-      secDeg: ((time.getSeconds() + ms / 1000) / 60) * 360,
-      minDeg: ((time.getMinutes() + time.getSeconds() / 60) / 60) * 360,
-      hourDeg: (((time.getHours() % 12) + time.getMinutes() / 60) / 12) * 360,
-      radius: clockSize * 0.45,
+      secDeg: ((s + ms / 1000) / 60) * 360,
+      minDeg: ((m + s / 60) / 60) * 360,
+      hourDeg: (((h % 12) + m / 60) / 12) * 360,
+      radius: clockSize * 0.42,
     };
   }, [time, clockSize]);
 
-  // Shared Hand Styles
-  const getHandStyle = (deg, sizeObj) => ({
+  const getHandStyle = (deg: number, sizeObj: any): React.CSSProperties => ({
     position: 'absolute',
     bottom: '50%',
     left: '50%',
@@ -166,36 +125,12 @@ function TangerineClock() {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-end',
+    // Optional: Smooths out jitter if the browser drops frames
+    willChange: 'transform', 
   });
 
-  // Set viewport meta tag
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      let viewportMeta = document.querySelector('meta[name="viewport"]');
-      if (!viewportMeta) {
-        viewportMeta = document.createElement('meta');
-        viewportMeta.name = 'viewport';
-        viewportMeta.content =
-          'width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no';
-        document.head.appendChild(viewportMeta);
-      }
-    }
-  }, []);
-
   if (!isClient) {
-    return (
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          backgroundColor: '#1a0a02',
-          zIndex: 1,
-        }}
-      />
-    );
+    return <div style={{ position: 'fixed', inset: 0, backgroundColor: '#1a0a02' }} />;
   }
 
   const ready = assets.isAllLoaded;
@@ -204,40 +139,25 @@ function TangerineClock() {
     <div
       style={{
         position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
+        inset: 0,
         overflow: 'hidden',
         backgroundColor: '#1a0a02',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         touchAction: 'none',
-        WebkitTapHighlightColor: 'transparent',
-        WebkitTouchCallout: 'none',
-        WebkitUserSelect: 'none',
         userSelect: 'none',
         opacity: ready ? 1 : 0,
         visibility: ready ? 'visible' : 'hidden',
         transition: 'opacity 0.5s ease-in-out',
       }}
     >
-      {/* --- BACKGROUND LAYERS --- */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 1,
-          opacity: ready ? 1 : 0,
-          transition: 'opacity 0.3s ease-in-out',
-          willChange: 'opacity',
-        }}
-      >
+      {/* Background Layers */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
         <div
           style={{
             position: 'absolute',
-            inset: -20, // Small bleed to prevent edges showing during scale
+            inset: -20,
             backgroundImage: `url(${backgroundImage})`,
             backgroundSize: '25% auto',
             backgroundRepeat: 'repeat',
@@ -257,7 +177,7 @@ function TangerineClock() {
         />
       </div>
 
-      {/* --- CLOCK FACE CONTAINER --- */}
+      {/* Clock Face */}
       <div
         style={{
           position: 'relative',
@@ -267,10 +187,8 @@ function TangerineClock() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          opacity: ready ? 1 : 0,
           transform: ready ? 'scale(1)' : 'scale(0.95)',
-          transition: 'opacity 0.5s ease-out, transform 0.5s ease-out',
-          willChange: 'opacity, transform',
+          transition: 'transform 0.5s ease-out',
         }}
       >
         {/* Numbers */}
@@ -281,8 +199,6 @@ function TangerineClock() {
 
           return (
             <img
-              decoding="async"
-              loading="lazy"
               key={i}
               src={label}
               alt=""
@@ -293,7 +209,6 @@ function TangerineClock() {
                 height: clockSize * 0.22,
                 objectFit: 'contain',
                 filter: SHADOW_FILTER,
-                userSelect: 'none',
               }}
             />
           );
@@ -302,8 +217,6 @@ function TangerineClock() {
         {/* Hour Hand */}
         <div style={getHandStyle(hourDeg, CONFIG.sizes.hourHand)}>
           <img
-            decoding="async"
-            loading="lazy"
             src={hourHandImg}
             style={{
               width: '100%',
@@ -318,15 +231,8 @@ function TangerineClock() {
         {/* Minute Hand */}
         <div style={getHandStyle(minDeg, CONFIG.sizes.minuteHand)}>
           <img
-            decoding="async"
-            loading="lazy"
             src={minuteHandImg}
-            style={{
-              width: '100%',
-              height: '70%',
-              objectFit: 'contain',
-              filter: SHADOW_FILTER,
-            }}
+            style={{ width: '100%', height: '70%', objectFit: 'contain', filter: SHADOW_FILTER }}
             alt=""
           />
         </div>
@@ -334,15 +240,8 @@ function TangerineClock() {
         {/* Second Hand */}
         <div style={getHandStyle(secDeg, CONFIG.sizes.secondHand)}>
           <img
-            decoding="async"
-            loading="lazy"
             src={secondHandImg}
-            style={{
-              width: '100%',
-              height: '80%',
-              objectFit: 'contain',
-              filter: SHADOW_FILTER,
-            }}
+            style={{ width: '100%', height: '80%', objectFit: 'contain', filter: SHADOW_FILTER }}
             alt=""
           />
         </div>
@@ -362,6 +261,6 @@ function TangerineClock() {
       </div>
     </div>
   );
-}
+};
 
 export default TangerineClock;

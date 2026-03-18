@@ -3,38 +3,34 @@ import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useGlobalStyles } from '../../../utils/enhancedFontLoader';
 import { useEnhancedFontLoader } from '../../../utils/enhancedFontLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 import hand1Img from '/src/assets/images/26-03/26-03-08/hand2.png';
 import hand2Img from '/src/assets/images/26-03/26-03-08/hand1.webp';
 import handImg from '/src/assets/images/26-03/26-03-08/hand.webp';
 import dragonFont from '/src/assets/fonts/26-03-08-dragon.ttf';
 import dragonVideo from '/src/assets/images/26-03/26-03-08/dragon1.mp4';
 
-// Add font-face CSS
-const fontFace = `
-  @font-face {
-    font-family: 'Dragon';
-    src: url(${dragonFont}) format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-`;
-
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Dragon',
+      fontUrl: dragonFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    // Inject font-face CSS
-    const style = document.createElement('style');
-    style.textContent = fontFace;
-    document.head.appendChild(style);
-
     const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => {
-      clearInterval(timer);
-      document.head.removeChild(style);
-    };
+    return () => clearInterval(timer);
   }, []);
+
+  // Font loading and @font-face CSS handled by useMultipleFontLoader
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();

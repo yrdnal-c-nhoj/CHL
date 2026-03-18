@@ -1,33 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import issFont from '../../../assets/fonts/25-05-30-iss.ttf';
 
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'iss',
+      fontUrl: issFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
-  const fontReady = useFontLoader('iss', issFont, { timeout: 3000 });
+
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'iss';
-        src: url(${issFont}) format('truetype');
-        font-display: block;
-      }
-    `;
-    document.head.appendChild(style);
-
     const interval = setInterval(() => {
       setTime(new Date());
     }, 1000);
 
     return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
       clearInterval(interval);
     };
-  }, [issFont]);
+  }, []);
 
   const formatDigit = (value) => String(value).padStart(2, '0').split('');
 
@@ -71,7 +72,7 @@ const Clock: React.FC = () => {
       alignItems: 'center',
       width: '100%',
       height: '100%',
-      opacity: fontReady ? 1 : 0,
+      opacity: fontsLoaded ? 1 : 0,
       transition: 'opacity 0.8s ease-in-out',
     },
 

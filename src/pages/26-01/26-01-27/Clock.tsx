@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
+import { useEnhancedFontLoader } from '../../../utils/enhancedFontLoader';
 import backgroundImage from '../../../assets/images/26-01/26-01-27/pan.jpg';
-import gizaFont from '../../../assets/fonts/26-01-27-pan.ttf';
+import panFont from '../../../assets/fonts/26-01-27-pan.ttf';
 
 export default function PanoramaClock() {
-  const [fontReady, setFontReady] = useState<boolean>(false);
   const [timeString, setTimeString] = useState<any>('');
   const [bgDuration, setBgDuration] = useState<number>(0);
   const imgRef = useRef(null);
 
-  const dateStr = '20260107';
-  const uniqueFontFamily = `Giza_${dateStr}`;
+  const uniqueFontFamily = 'PanoramaClock_26-01-27';
+  const fontLoaded = useEnhancedFontLoader(uniqueFontFamily, panFont);
 
   // 1. Calculate Background Speed based on Image Width
   const handleImageLoad: React.FC = () => {
@@ -20,18 +20,10 @@ export default function PanoramaClock() {
     }
   };
 
-  // 2. Inject Styles (including reversed clock animation)
+  // 2. Inject Styles (animation only, no font-face)
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
-      @font-face {
-        font-family: '${uniqueFontFamily}';
-        src: url(${gizaFont}) format('truetype');
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
-      }
-
       /* Background scrolls LEFT (0 to -50%) */
       .pz-bg-container {
         display: flex;
@@ -61,7 +53,7 @@ export default function PanoramaClock() {
 
       .pz-clock-display {
         color: rgba(10, 152, 168, 0.9);
-        font-family: '${uniqueFontFamily}', monospace;
+        font-family: ${fontLoaded ? `'${uniqueFontFamily}', monospace` : 'monospace'};
         font-size: 15vh; 
         padding-right: 2vh;
         text-shadow:
@@ -76,24 +68,9 @@ export default function PanoramaClock() {
     return () => {
       if (style.parentNode) document.head.removeChild(style);
     };
-  }, [uniqueFontFamily]);
+  }, [uniqueFontFamily, fontLoaded]);
 
-  // 3. Load Font
-  useEffect(() => {
-    const loadFont = async () => {
-      try {
-        if (document.fonts)
-          await document.fonts.load(`12px ${uniqueFontFamily}`);
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setFontReady(true);
-      }
-    };
-    loadFont();
-  }, [uniqueFontFamily]);
-
-  // 4. Update Time
+  // 3. Update Time
   useEffect(() => {
     const updateTime: React.FC = () => {
       const now = new Date();
@@ -112,7 +89,7 @@ export default function PanoramaClock() {
     return () => clearInterval(interval);
   }, []);
 
-  if (!fontReady) return null;
+  if (!fontLoaded) return null;
 
   const clockGroup = (
     <div style={{ display: 'flex' }}>

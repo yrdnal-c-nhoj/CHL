@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bgImage from '../../../assets/images/25-08/25-08-04/shrub.jpeg'; // Your background image file
 import myFont from '../../../assets/fonts/25-08-04-Tr.ttf'; // Your custom font file
 
@@ -16,34 +17,26 @@ const DigitalClock: React.FC = () => {
   const [fadeIndex, setFadeIndex] = useState<number>(0);
   const [fontLoaded, setFontLoaded] = useState(false);
   const componentId = useRef(`multi-clock-${Date.now()}`);
-  const fontName = `MultiClockFont-${componentId.current}`;
 
-  // Scoped font loading with unique name
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Tr',
+      fontUrl: myFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Update fontLoaded state when fontsLoaded changes
   useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace(fontName, `url(${myFont})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font failed to load:', error);
-        setFontLoaded(false);
-      }
-    };
+    setFontLoaded(fontsLoaded);
+  }, [fontsLoaded]);
 
-    loadFont();
-
-    // Cleanup font on unmount
-    return () => {
-      for (const font of document.fonts) {
-        if (font.family === fontName) {
-          document.fonts.delete(font);
-          break;
-        }
-      }
-    };
-  }, [fontName]);
+  // Font loading handled by useMultipleFontLoader
 
   const clocks = useMemo(
     () =>
@@ -84,14 +77,7 @@ const DigitalClock: React.FC = () => {
 
   return (
     <>
-      <style>{`
-        @font-face {
-          font-family: '${fontName}';
-          src: url(${myFont}) format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
-      `}</style>
+      {/* Font loading handled by useMultipleFontLoader */}
 
       <div
         style={{
@@ -126,7 +112,7 @@ const DigitalClock: React.FC = () => {
           zIndex: 10,
           pointerEvents: 'none',
           backgroundColor: 'transparent',
-          fontFamily: fontLoaded ? `'${fontName}', Arial, sans-serif` : 'Arial, sans-serif',
+          fontFamily: fontLoaded ? 'Tr, Arial, sans-serif' : 'Arial, sans-serif',
         }}
       >
         {clocks.map(({ position, tilt }, index) => {

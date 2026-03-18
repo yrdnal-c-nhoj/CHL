@@ -1,8 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import customFont821 from '../../../assets/fonts/25-08-21-wide.ttf'; // Your font file
 
 const NumberLineClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'CustomFont',
+      fontUrl: customFont821,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const hoursRef = useRef(null);
   const minutesRef = useRef(null);
   const secondsRef = useRef(null);
@@ -203,12 +216,7 @@ const NumberLineClock: React.FC = () => {
       }}
     >
       <style>{`
-        @font-face {
-          font-family: 'CustomFont';
-          src: url(${customFont821}) format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
+        /* Font loading handled by useMultipleFontLoader */
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
         }

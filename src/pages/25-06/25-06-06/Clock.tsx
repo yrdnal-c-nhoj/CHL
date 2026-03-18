@@ -1,8 +1,20 @@
 import React, { useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import rrrrFont from '../../../assets/fonts/25-06-06-rrrr.ttf';
 
 const RollingClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'rrrr',
+      fontUrl: rrrrFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
   useEffect(() => {
     const ticker = document.getElementById('ticker');
     const clockSpeed = 40;

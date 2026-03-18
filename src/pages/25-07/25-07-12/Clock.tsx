@@ -1,9 +1,22 @@
 import React, { useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import fibFont from '../../../assets/fonts/25-07-12-fib.otf';
 import fibImage from '../../../assets/images/25-07/25-07-12/fib.gif';
 
 const FibonacciClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'fib',
+      fontUrl: fibFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   useEffect(() => {
     const updateClock: React.FC = () => {
       const now = new Date();
@@ -29,10 +42,7 @@ const FibonacciClock: React.FC = () => {
   }, []);
 
   const fontFace = `
-    @font-face {
-      font-family: 'fib';
-      src: url(${fibFont}) format('opentype');
-    }
+    /* Font loading handled by useMultipleFontLoader */
   `;
 
   const numbers = [

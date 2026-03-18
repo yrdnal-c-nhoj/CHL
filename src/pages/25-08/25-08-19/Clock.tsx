@@ -1,20 +1,26 @@
 import React, { useEffect } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 import fontUrl from '../../../assets/fonts/25-08-19-cas.ttf';
 import bgUrl from '../../../assets/images/25-08/25-08-19/ap.jpeg';
 
 const Pendulum: React.FC = () => {
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'CustomFont';
-        src: url(${fontUrl}) format('truetype');
-        font-weight: normal;
-        font-style: normal;
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'CustomFont',
+      fontUrl: fontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
       }
-    `;
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  useEffect(() => {
+    // Font loading handled by useMultipleFontLoader
+    const style = document.createElement('style');
+    style.textContent = ``;
     document.head.appendChild(style);
 
     const updateTimeOnBalls: React.FC = () => {

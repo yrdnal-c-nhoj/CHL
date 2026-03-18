@@ -1,21 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import rocketGif from '../../../assets/images/25-07/25-07-03/rocket.gif';
 import rockFont from '../../../assets/fonts/25-07-03-rock.ttf';
 
 const Clock: React.FC = () => {
   const clockRef = useRef(null);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'rock',
+      fontUrl: rockFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-    const font = new FontFace('rock', `url(${rockFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontLoaded(true);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!fontLoaded) return;
+    if (!fontsLoaded) return;
 
     const updateClock: React.FC = () => {
       const now = new Date();
@@ -30,8 +35,8 @@ const Clock: React.FC = () => {
       requestAnimationFrame(updateClock);
     };
 
-    requestAnimationFrame(updateClock);
-  }, [fontLoaded]);
+    updateClock();
+  }, [fontsLoaded]);
 
   const containerStyle = {
     margin: 0,
@@ -48,7 +53,7 @@ const Clock: React.FC = () => {
   };
 
   const clockStyle = {
-    fontFamily: fontLoaded ? 'rock' : 'monospace', // fallback font reserves space
+    fontFamily: fontsLoaded ? 'rock' : 'monospace', // fallback font reserves space
     color: 'rgb(255, 0, 47)',
     fontSize: '1.8rem',
     textAlign: 'center',
@@ -59,7 +64,7 @@ const Clock: React.FC = () => {
     <div style={containerStyle}>
       <div id="clock" ref={clockRef} style={clockStyle}>
         {/* show placeholder text until font loads */}
-        {!fontLoaded && 'T-00:00:00.000'}
+        {!fontsLoaded && 'T-00:00:00.000'}
       </div>
     </div>
   );

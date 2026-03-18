@@ -1,16 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import stretchFont from '../../../assets/fonts/25-06-29-stretch.ttf';
 
 const StretchClock: React.FC = () => {
   const [time, setTime] = useState<any>({ hours: '', minutes: '', seconds: '' });
 
-  useEffect(() => {
-    const font = new FontFace('stretch', `url(${stretchFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-    });
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'stretch',
+      fontUrl: stretchFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
+  // Font loading handled by useMultipleFontLoader
+
+  useEffect(() => {
     const updateClock: React.FC = () => {
       const now = new Date();
       let hours = now.getHours() % 12 || 12;
