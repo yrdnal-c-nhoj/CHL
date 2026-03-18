@@ -1,0 +1,124 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
+import backgroundImage from '../../../assets/images/25-04/25-04-25/bad.webp';
+import boldFont from '../../../assets/fonts/25-04-25-Oswald-Bold.ttf';
+import hourHandImage from '../../../assets/images/25-04/25-04-25/ban.webp';
+import minuteHandImage from '../../../assets/images/25-04/25-04-25/ba.gif';
+import secondHandImage from '../../../assets/images/25-04/25-04-25/band.gif';
+
+const MyClock: React.FC = () => {
+  const canvasRef = useRef(null);
+  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+
+  // Simple scoped font loading without leaks
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        console.log('Loading font:', boldFont);
+        const fontFace = new FontFace('MyFont', `url(${boldFont})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        console.log('Font loaded successfully');
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback:', error);
+        setFontLoaded(false);
+      }
+    };
+
+    loadFont();
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const update: React.FC = () => {
+      const now = new Date();
+      const w = (canvas.width = window.innerWidth);
+      const h = (canvas.height = window.innerHeight);
+      const r = Math.min(w, h) / 3;
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.save();
+      ctx.translate(w / 2, h / 2);
+
+      // Draw clock numbers
+      ctx.fillStyle = '#FA0820FF';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const fontToUse = fontLoaded ? 'MyFont' : 'Arial';
+      ctx.font = `${r * 0.5}px ${fontToUse}`;
+      console.log('Using font:', fontToUse, 'Font loaded:', fontLoaded);
+
+      for (let i = 1; i <= 12; i++) {
+        const angle = (i * Math.PI) / 6;
+        ctx.save();
+        ctx.rotate(angle);
+        ctx.translate(0, -r * 0.85);
+        ctx.fillText(i, 0, 0);
+        ctx.restore();
+      }
+
+      const hour = now.getHours() % 12;
+      const minute = now.getMinutes();
+      const second = now.getSeconds();
+
+      // Updated drawImageHand function
+      const drawImageHand = (img, angle, widthScale = 1, heightScale = 1) => {
+        const imgW = r * 0.1 * widthScale;
+        const imgH = r * heightScale;
+
+        ctx.save();
+        ctx.rotate(angle);
+        ctx.drawImage(img, -imgW / 2, -imgH * 0.9, imgW, imgH); // base of hand at center
+        ctx.restore();
+      };
+
+      // Create images on demand since ClockPage preloads them
+      const hourImg = new Image();
+      const minuteImg = new Image();
+      const secondImg = new Image();
+      hourImg.src = hourHandImage;
+      minuteImg.src = minuteHandImage;
+      secondImg.src = secondHandImage;
+
+      // Customize image hand sizes here:
+      drawImageHand(
+        hourImg,
+        (Math.PI / 6) * hour + (Math.PI / 360) * minute,
+        1.9,
+        0.5,
+      );
+      drawImageHand(
+        minuteImg,
+        (Math.PI / 30) * minute + (Math.PI / 1800) * second,
+        1.6,
+        0.8,
+      );
+      drawImageHand(secondImg, (Math.PI / 30) * second, 1.2, 1.0);
+
+      ctx.restore();
+      requestAnimationFrame(update);
+    };
+
+    update();
+  }, []);
+
+  return (
+    <div
+      style={{
+        width: '100vw',
+        height: '100dvh',
+        backgroundColor: '#FFFFFF', // White background color
+        background: `url(${backgroundImage}) center/cover no-repeat`, // Background image
+        overflow: 'hidden',
+      }}
+    >
+      <canvas ref={canvasRef} style={{ display: 'block' }} />
+    </div>
+  );
+};
+
+export default MyClock;

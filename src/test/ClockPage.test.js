@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import ClockPage from '../ClockPage';
 
 // Mock the dynamic import system
-vi.mock('./pages/**/Clock.jsx', () => ({
+vi.mock('./pages/**/Clock.tsx', () => ({
   default: () => 'Mock Clock Component',
 }));
 
@@ -34,9 +34,9 @@ describe('ClockPage Dynamic Import System', () => {
     vi.stubGlobal('import', {
       meta: {
         glob: vi.fn(() => ({
-          './pages/26-03/26-03-05/Clock.jsx': () =>
+          './pages/26-03/26-03-05/Clock.tsx': () =>
             Promise.resolve({ default: () => 'Clock Component' }),
-          './pages/26-03/26-03-04/Clock.jsx': () =>
+          './pages/26-03/26-03-04/Clock.tsx': () =>
             Promise.resolve({ default: () => 'Clock Component' }),
         })),
       },
@@ -50,13 +50,13 @@ describe('ClockPage Dynamic Import System', () => {
 
   it('should resolve correct module path for 26-03-05', () => {
     const item = mockItems.find((i) => i.path === '26-03-05');
-    const expectedKey = './pages/26-03/26-03-05/Clock.jsx';
+    const expectedKey = './pages/26-03/26-03-05/Clock.tsx';
 
     // This tests the path resolution logic from ClockPage.jsx
     const [yy, mm] = item.date.split('-');
     const candidates = [
-      `./pages/${yy}-${mm}/${item.path}/Clock.jsx`,
-      `./pages/${item.path}/Clock.jsx`,
+      `./pages/${yy}-${mm}/${item.path}/Clock.tsx`,
+      `./pages/${item.path}/Clock.tsx`,
     ];
 
     expect(candidates[0]).toBe(expectedKey);
@@ -68,12 +68,12 @@ describe('ClockPage Dynamic Import System', () => {
       date: '25-11-01',
       title: 'Legacy Clock',
     };
-    const expectedKey = './pages/25-11-01/Clock.jsx';
+    const expectedKey = './pages/25-11-01/Clock.tsx';
 
     const [yy, mm] = legacyItem.date.split('-');
     const candidates = [
-      `./pages/${yy}-${mm}/${legacyItem.path}/Clock.jsx`,
-      `./pages/${legacyItem.path}/Clock.jsx`,
+      `./pages/${yy}-${mm}/${legacyItem.path}/Clock.tsx`,
+      `./pages/${legacyItem.path}/Clock.tsx`,
     ];
 
     expect(candidates[1]).toBe(expectedKey);
