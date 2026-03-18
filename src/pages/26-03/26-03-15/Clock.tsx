@@ -1,12 +1,22 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import fontUrl from '../../../assets/fonts/26-03-15-shadow.otf';
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
 
-  // Load custom font with FOUC prevention
-  const fontReady = useFontLoader('26-03-15-shadow', fontUrl);
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: '26-03-15-shadow',
+      fontUrl: fontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsReady = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -26,7 +36,7 @@ const Clock: React.FC = () => {
   }, [time]);
 
   // Show loading state while font loads
-  if (!fontReady) {
+  if (!fontsReady) {
     return (
       <div style={{
         minHeight: '100dvh',

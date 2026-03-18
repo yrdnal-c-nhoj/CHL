@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 
 // --- Assets ---
 import teeVeeLoungeFont from '../../../assets/fonts/26-02-10-tv.ttf?url';
@@ -31,7 +31,19 @@ const teeVeeLoungeClock: React.FC = () => {
 
 const DigitalClock: React.FC = () => {
   const now = teeVeeLoungeClock();
-  const fontReady = useFontLoader('TeeVeeFont', teeVeeLoungeFont);
+  
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'TeeVeeFont',
+      fontUrl: teeVeeLoungeFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsReady = useMultipleFontLoader(fontConfigs);
 
   // 12-hour format with no leading zeros
   const hours = now.getHours();
@@ -43,7 +55,7 @@ const DigitalClock: React.FC = () => {
   // Format with leading zeros on minutes only, all on one line
   const timeString = `${twelveHour}:${minutes.toString().padStart(2, '0')}${ampm}`;
 
-  if (!fontReady) {
+  if (!fontsReady) {
     return (
       <div
         style={{

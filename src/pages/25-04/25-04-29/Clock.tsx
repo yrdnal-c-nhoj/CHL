@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import fontUrl from '../../../assets/fonts/25-04-29-bang.ttf';
 import gif1 from '../../../assets/images/25-04/25-04-29/fw.webp';
 import gif2 from '../../../assets/images/25-04/25-04-29/84298.gif';
@@ -10,11 +10,18 @@ const FireworksClock: React.FC = () => {
   const clockRef = useRef(null);
   const componentId = `fireworks-clock-${Math.random().toString(36).substr(2, 9)}`;
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('bang', fontUrl, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'bang',
+      fontUrl: fontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsReady = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     const showClock: React.FC = () => {
