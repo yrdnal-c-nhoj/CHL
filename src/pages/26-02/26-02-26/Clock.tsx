@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
+import backgroundImage from '../../../assets/images/26-02/26-02-26/26-02-26-f.webp';
+import fontFile from '../../../assets/fonts/26-02-26-fu.ttf';
 
 const Clock: React.FC = () => {
   const [images, setImages] = useState<any>([]);
@@ -149,7 +151,7 @@ const Clock: React.FC = () => {
   return (
     <div style={containerStyle}>
       <style>{`
-        @font-face { font-family: 'DateFont'; src: url('./26-02-26-fu.ttf') format('truetype'); }
+        @font-face { font-family: 'DateFont'; src: url(${fontFile}) format('truetype'); }
         .grid-img { transition: opacity 0.5s ease-in-out; object-fit: cover; width: 100%; height: 100%; }
       `}</style>
 
@@ -176,7 +178,7 @@ const Clock: React.FC = () => {
       </div>
 
       <img
-        src="/26-02-26-f.webp"
+        src={backgroundImage}
         style={{
           position: 'absolute',
           top: 0,
