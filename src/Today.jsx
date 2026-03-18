@@ -12,7 +12,7 @@ import ClockPageNav from './components/ClockPageNav';
 import styles from './ClockPage.module.css';
 
 // Preload all Clock.jsx files under /pages/**/Clock.jsx using Vite's glob import
-const clockModules = import.meta.glob('./pages/**/Clock.jsx');
+const clockModules = import.meta.glob('./pages/**/Clock.tsx');
 
 // Resolve the correct module key for a given item, supporting both:
 // - New structure: ./pages/YY-MM/YY-MM-DD/Clock.jsx
@@ -25,8 +25,8 @@ const getClockModuleKey = (item) => {
   if (!yy || !mm) return null;
 
   const candidates = [
-    `./pages/${yy}-${mm}/${item.path}/Clock.jsx`, // month/day structure
-    `./pages/${item.path}/Clock.jsx`, // legacy flat structure
+    `./pages/${yy}-${mm}/${item.path}/Clock.tsx`, // month/day structure
+    `./pages/${item.path}/Clock.tsx`, // legacy flat structure
   ];
 
   for (const key of candidates) {
