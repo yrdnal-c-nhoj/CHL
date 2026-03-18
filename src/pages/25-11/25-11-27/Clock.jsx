@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import revolution251127font from '../../../assets/fonts/25-11-27-dec.ttf?url';
 import line251127font from '../../../assets/fonts/25-11-27-french.ttf?url';
 import hourHandImg from '../../../assets/images/25-11/25-11-27/fre.webp';

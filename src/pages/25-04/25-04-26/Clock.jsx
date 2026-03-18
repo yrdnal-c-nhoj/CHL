@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import stickFont from '../../../assets/fonts/25-04-26-Stick.ttf';
 
 const SkewClock = () => {

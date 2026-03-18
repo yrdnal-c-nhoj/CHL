@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from '../../../assets/images/25-06/25-06-07/1937.696_print-scaled.jpg';
 import flakesGif from '../../../assets/images/25-06/25-06-07/Z3ut.gif';
 import sgSnow from '../../../assets/images/25-06/25-06-07/sg-snow.gif';

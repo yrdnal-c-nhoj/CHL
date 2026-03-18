@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import backgroundImg from '../../../assets/images/25-11/25-11-29/squ.webp';
 import fontUrl_20251128 from '../../../assets/fonts/25-11-29-roc.ttf?url';
 

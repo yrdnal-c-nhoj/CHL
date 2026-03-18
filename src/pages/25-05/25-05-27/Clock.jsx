@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import dotsFontWoff2 from '../../../assets/fonts/25-05-27-dots.woff2'; // Preferred format
 import dotsFontOtf from '../../../assets/fonts/25-05-27-dots.otf'; // Fallback format
 import backgroundImage from '../../../assets/images/25-05/25-05-27/dot.jpg'; // Import background image

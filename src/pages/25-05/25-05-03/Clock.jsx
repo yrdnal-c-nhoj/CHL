@@ -9,15 +9,30 @@ import bg4 from '../../../assets/images/25-05/25-05-03/talos.gif';
 const FlyingPetalsClock = () => {
   const [time, setTime] = useState(new Date());
 
-  useEffect(() => {
-    const font = new FontFace('Petal', `url(${fontUrl})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-    });
+  // Load Petal font with FOUC prevention
+  const fontReady = useFontLoader('Petal', fontUrl);
 
+  useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
+
+  // Show loading state while font loads
+  if (!fontReady) {
+    return (
+      <div style={{
+        height: '100dvh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgb(224, 145, 156)',
+        color: '#7f8431',
+        fontFamily: 'sans-serif'
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   const getTimeParts = () => {
     const hours = time.getHours().toString().padStart(2, '0');

@@ -1,36 +1,30 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import videoFile from '../../../assets/images/25-10/25-10-22/bg.mp4';
 import fallbackImg from '../../../assets/images/25-10/25-10-22/bg.webp';
 import fontFile_2025_10_22 from '../../../assets/fonts/25-10-22-fundy.ttf';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 
 export default function ClockWithVideo() {
-  const [fontReady, setFontReady] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
-  // CRITICAL CHANGE: showPlayButton is now always false and will never be set true
-  const [showPlayButton, setShowPlayButton] = useState(false);
   const [time, setTime] = useState(new Date());
   const videoRef = useRef(null);
+
+  const fonts = useMemo(
+    () => [
+      {
+        fontFamily: 'MyCustomFont',
+        fontUrl: fontFile_2025_10_22,
+        options: { display: 'swap' },
+      },
+    ],
+    [],
+  );
+  const fontReady = useMultipleFontLoader(fonts);
 
   // Time update every 10ms (Unchanged)
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 10);
     return () => clearInterval(interval);
-  }, []);
-
-  // Font loading (Unchanged)
-  useEffect(() => {
-    const font = new FontFace(
-      'MyCustomFont',
-      `url(${fontFile_2025_10_22}) format("truetype")`,
-    );
-    font
-      .load()
-      .then((loaded) => {
-        document.fonts.add(loaded);
-        setFontReady(true);
-      })
-      // Set to true even if load fails, to prevent infinite loading state
-      .catch(() => setFontReady(true));
   }, []);
 
   // Video Autoplay and Error Handling (MODIFIED)
@@ -41,13 +35,10 @@ export default function ClockWithVideo() {
     const onError = (e) => {
       console.error('Video error (asset failure):', e.target.error);
       setVideoFailed(true);
-      // Removed: setShowPlayButton(true);
     };
     const onStalled = () => {
-      // Removed: setShowPlayButton(true);
     };
 
-    v.addEventListener('error', onError);
     v.addEventListener('stalled', onStalled);
 
     // Initial play attempt relies on <video autoPlay muted playsInline> for best chance.
@@ -59,7 +50,6 @@ export default function ClockWithVideo() {
           'Autoplay failed (Policy issue). Proceeding silently.',
           err,
         );
-        // Removed: setShowPlayButton(true);
       });
     }
 
@@ -73,12 +63,9 @@ export default function ClockWithVideo() {
 
     return () => {
       clearTimeout(checkReadiness);
-      v.removeEventListener('error', onError);
       v.removeEventListener('stalled', onStalled);
     };
   }, []);
-
-  // Removed: handlePlayClick function
 
   const formatTime = () => {
     const h = String(time.getHours()).padStart(2, '0');

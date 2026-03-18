@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import bgImage from '../../../assets/images/25-12/25-12-31/shadow.jpg';
 import d250916font from '../../../assets/fonts/25-12-31-shadow.otf';
 

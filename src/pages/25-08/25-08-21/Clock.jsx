@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import customFont821 from '../../../assets/fonts/25-08-21-wide.ttf'; // Your font file
 
 const NumberLineClock = () => {

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import clockBg from '../../../assets/images/25-07/25-07-30/ca.gif';
 import fullBg from '../../../assets/images/25-07/25-07-30/ca.gif';
 import myFont from '../../../assets/fonts/25-07-30-Cam.ttf'; // Import font

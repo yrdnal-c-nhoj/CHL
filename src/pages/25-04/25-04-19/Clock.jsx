@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import permanentMarkerFont from '../../../assets/fonts/25-04-19-sph.ttf';
 
 const BALL_SIZES = {

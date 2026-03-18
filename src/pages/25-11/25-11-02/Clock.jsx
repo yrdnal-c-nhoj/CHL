@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import bgVideo from '../../../assets/images/25-11/25-11-02/swim.mp4';
 import fallbackImg from '../../../assets/images/25-11/25-11-02/swim.webp';
 import fontFile2025_11_04 from '../../../assets/fonts/25-11-02-sperm.ttf'; // Custom scientific font

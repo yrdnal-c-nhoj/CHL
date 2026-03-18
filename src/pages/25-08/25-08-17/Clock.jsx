@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import customFontUrl from '../../../assets/fonts/25-08-17-scr.otf';
 import pageBg from '../../../assets/images/25-08/25-08-17/bg.webp'; // full-screen background image
 

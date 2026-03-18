@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 import backgroundImg from '../../../assets/images/25-08/25-08-14/1.webp';
 import digit1 from '../../../assets/images/25-08/25-08-14/1.gif';

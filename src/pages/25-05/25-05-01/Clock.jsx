@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import lightningImg from '../../../assets/images/25-05/25-05-01/lightning.webp';
 import innerFontTTF from '../../../assets/fonts/25-05-01-Inner.ttf';
 

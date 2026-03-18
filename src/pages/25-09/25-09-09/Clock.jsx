@@ -1,4 +1,5 @@
 import React, { useEffect, useState, memo } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import font250909 from '../../../assets/fonts/25-09-09-van.ttf?url';
 import bgImage2 from '../../../assets/images/25-09/25-09-09/skull.jpg';
 import bgImage from '../../../assets/images/25-09/25-09-09/va.webp';

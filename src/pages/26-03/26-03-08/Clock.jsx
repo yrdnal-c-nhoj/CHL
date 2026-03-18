@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import hand1Img from '/src/assets/images/26-03/26-03-08/hand2.png';
 import hand2Img from '/src/assets/images/26-03/26-03-08/hand1.webp';
 import handImg from '/src/assets/images/26-03/26-03-08/hand.webp';

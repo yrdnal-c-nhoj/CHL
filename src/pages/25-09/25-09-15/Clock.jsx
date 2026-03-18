@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import backgroundImageUrl from '../../../assets/images/25-09/25-09-15/plaid.jpg';
 import m250915font from '../../../assets/fonts/25-09-15-plaid.ttf?url';
 

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 // 1. Standard imports (Best for performance and reliability)
 import mazeFont from '../../../assets/fonts/26-02-18-jelly.otf';

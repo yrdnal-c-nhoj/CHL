@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 import myCustomFont from '../../../assets/fonts/25-07-27-som.ttf';
 import backgroundImage from '../../../assets/images/25-07/25-07-27/met.jpg'; // Import your background image
 

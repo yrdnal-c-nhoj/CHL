@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
 
 import coinGif from '../../../assets/images/25-04/25-04-27/coin.gif';
 import spinWebp from '../../../assets/images/25-04/25-04-27/spin.webp';

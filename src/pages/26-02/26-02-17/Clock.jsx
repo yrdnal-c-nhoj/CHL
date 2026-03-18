@@ -9,6 +9,8 @@
  */
 
 import React, { useState, useEffect, useMemo, memo } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import AsteriskFont1 from '../../../assets/fonts/26-02-17-ast.otf';
 import AsteriskFont2 from '../../../assets/fonts/26-02-17-aster.otf';
 
