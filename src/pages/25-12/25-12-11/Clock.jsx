@@ -57,11 +57,6 @@ export default function GeologicTimeClock() {
         WebkitUserSelect: 'none',
       }}
     >
-      <link
-        href='https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Roboto+Mono:wght@400;700&display=swap'
-        rel='stylesheet'
-      />
-
       {/* Semantic list container using flexbox for even distribution */}
       <div
         style={{

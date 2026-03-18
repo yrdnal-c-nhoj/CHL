@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import font_2025_11_21 from '../../../assets/fonts/25-11-18-cat.ttf?url';
 import bgImg from "../../../assets/images/25-11/25-11-18/eyes.webp";
+import { useMultipleFontLoader } from "../../../utils/fontLoader"; // Assuming you move the hook
 
 export default function RotatedClockGrid() {
   const [now, setNow] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState(false);
-  
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 200);
     return () => clearInterval(t);
@@ -31,7 +30,14 @@ export default function RotatedClockGrid() {
   // Extra buffer: how many clock-columns to add to the left, and how many rows above
   const extraLeft = 6; // increase to show more clocks off the left edge
   const extraTop = 5; // increase to show more clocks above the top edge
-  const FONT_FAMILY = "ClockFont_2025_11_21";
+  const FONT_FAMILY = "ClockFont_2025_11_18_cat";
+
+  const fontLoaded = useMultipleFontLoader(useMemo(() => [
+    {
+      fontFamily: FONT_FAMILY,
+      fontUrl: font_2025_11_21
+    }
+  ], []));
 
   // 20-color palette provided by user
   const COLORS = [
@@ -69,32 +75,6 @@ export default function RotatedClockGrid() {
     setDigitColors(Array.from({ length: totalCells }, () => randIndex()));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [secs]);
-  
-  const fontFaceCSS = `@font-face{font-family: '${FONT_FAMILY}'; src: url('${font_2025_11_21}'); font-weight:400; font-style:normal; font-display:swap;}`;
-
-  // Load font programmatically to detect when it's ready and avoid FOUT
-  useEffect(() => {
-    let mounted = true;
-    try {
-      const f = new FontFace(FONT_FAMILY, `url(${font_2025_11_21})`);
-      f.load().then((loaded) => {
-        if (!mounted) return;
-        // add to document fonts so CSS uses it
-        document.fonts.add(loaded);
-        setFontLoaded(true);
-      }).catch(() => {
-        // If loading fails, still show content
-        if (!mounted) return;
-        setFontLoaded(true);
-      });
-    } catch (e) {
-      // Fallback: mark loaded so UI doesn't remain hidden
-      setFontLoaded(true);
-    }
-    return () => {
-      mounted = false;
-    };
-  }, []);
 
   const rowsNeeded = Math.ceil(100 / (digitSize + gap)) + 4 + extraTop;
   const clocksPerRow = Math.ceil(100 / ((digitSize + gap) * 3)) + 4 + extraLeft;
@@ -124,9 +104,6 @@ export default function RotatedClockGrid() {
 />
 
 
-      {/* Load the font */}
-      <style dangerouslySetInnerHTML={{ __html: fontFaceCSS }} />
-      
       {/* Main grid of digits, no filter applied */}
       <div
         style={{
