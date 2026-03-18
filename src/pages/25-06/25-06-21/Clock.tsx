@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import fontUrl from '../../../assets/fonts/25-06-21-merc.ttf';
 import bg1 from '../../../assets/images/25-06/25-06-21/MercuryResonancePrecession001.gif';
 import bg2 from '../../../assets/images/25-06/25-06-21/mmmmm.gif';

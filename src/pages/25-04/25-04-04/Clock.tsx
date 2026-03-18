@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 
 import beat4 from '../../../assets/images/25-04/25-04-04/beat4.webp';
 import tumblrImg from '../../../assets/images/25-04/25-04-04/heart.webp';

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 
 // Add global styles for fade-in animation
 if (typeof document !== 'undefined') {

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from '../../../assets/images/25-04/25-04-25/bad.webp';
 import boldFont from '../../../assets/fonts/25-04-25-Oswald-Bold.ttf';
@@ -9,13 +10,15 @@ import secondHandImage from '../../../assets/images/25-04/25-04-25/band.gif';
 const MyClock: React.FC = () => {
   const canvasRef = useRef(null);
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+  const componentId = useRef(`oswald-clock-${Date.now()}`);
+  const fontName = `OswaldClockFont-${componentId.current}`;
 
   // Simple scoped font loading without leaks
   useEffect(() => {
     const loadFont = async () => {
       try {
         console.log('Loading font:', boldFont);
-        const fontFace = new FontFace('MyFont', `url(${boldFont})`);
+        const fontFace = new FontFace(fontName, `url(${boldFont})`);
         await fontFace.load();
         document.fonts.add(fontFace);
         console.log('Font loaded successfully');
@@ -27,9 +30,21 @@ const MyClock: React.FC = () => {
     };
 
     loadFont();
-  }, []);
+
+    // Cleanup font on unmount
+    return () => {
+      for (const font of document.fonts) {
+        if (font.family === fontName) {
+          document.fonts.delete(font);
+          break;
+        }
+      }
+    };
+  }, [fontName]);
 
   useEffect(() => {
+    if (!fontLoaded) return; // Don't start rendering until font is loaded
+    
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -48,7 +63,7 @@ const MyClock: React.FC = () => {
       ctx.fillStyle = '#FA0820FF';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      const fontToUse = fontLoaded ? 'MyFont' : 'Arial';
+      const fontToUse = fontLoaded ? fontName : 'Arial';
       ctx.font = `${r * 0.5}px ${fontToUse}`;
       console.log('Using font:', fontToUse, 'Font loaded:', fontLoaded);
 
@@ -104,14 +119,13 @@ const MyClock: React.FC = () => {
     };
 
     update();
-  }, []);
+  }, [fontLoaded]);
 
   return (
     <div
       style={{
         width: '100vw',
         height: '100dvh',
-        backgroundColor: '#FFFFFF', // White background color
         background: `url(${backgroundImage}) center/cover no-repeat`, // Background image
         overflow: 'hidden',
       }}

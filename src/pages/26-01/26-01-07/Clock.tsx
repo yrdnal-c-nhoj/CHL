@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 
 import spin from '../../../assets/images/26-01/26-01-07/20206.gif';
 import bubl from '../../../assets/images/26-01/26-01-07/bubl.gif';

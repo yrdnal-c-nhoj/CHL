@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import tumbGif from '../../../assets/images/25-05/25-05-04/tumb-ezgif.com-optimize.gif';
 import spinnGif from '../../../assets/images/25-05/25-05-04/spinn.gif';
 import edGif from '../../../assets/images/25-05/25-05-04/ed-ezgif.com-optimize.gif';

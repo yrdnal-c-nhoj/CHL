@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import bardImg from '../../../assets/images/25-07/25-07-22/bard.webp';
 import barrsImg from '../../../assets/images/25-07/25-07-22/barrs.webp';

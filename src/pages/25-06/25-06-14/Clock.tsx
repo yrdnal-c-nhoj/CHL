@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import hummFont from '../../../assets/fonts/25-06-14-humm.ttf';

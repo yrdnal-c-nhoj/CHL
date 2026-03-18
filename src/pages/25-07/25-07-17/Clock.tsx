@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 
 // Import font and images as modules from the same folder
@@ -194,7 +195,7 @@ const AnalogClock: React.FC = () => {
     width: '100%',
     height: '100%',
     zIndex: 1,
-    opacity: 0.1,
+    opacity: 0.8,
     transformOrigin: 'center center',
   };
 

@@ -1,5 +1,6 @@
 /** @jsxImportSource react */
 import React, { useState, useEffect, useRef, useMemo, memo } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 

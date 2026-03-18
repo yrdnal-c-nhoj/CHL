@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 
 // Image imports with Vite ?url suffix

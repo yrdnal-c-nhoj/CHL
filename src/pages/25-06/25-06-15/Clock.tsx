@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import fontUrl from '../../../assets/fonts/25-06-15-ZombieStitch.ttf';
 import bgImageUrl from '../../../assets/images/25-06/25-06-15/stin.webp';

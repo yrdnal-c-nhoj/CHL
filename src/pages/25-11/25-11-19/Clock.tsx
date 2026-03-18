@@ -1,5 +1,6 @@
 // AnalogClock.jsx
 import React, { useEffect, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import bgImg from '../../../assets/images/25-11/25-11-19/apple.webp'; // Main background

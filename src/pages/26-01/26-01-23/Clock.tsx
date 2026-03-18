@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 
 // Asset imports
 import clockDigitImage from '../../../assets/images/26-01/26-01-23/eye.gif';

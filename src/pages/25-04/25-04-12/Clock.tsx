@@ -6,12 +6,12 @@ const digitFontSizes = {
   0: '51vh',
   1: '46vh',
   2: '21vh',
-  3: '28vh',
-  4: '54vh',
-  5: '51vh',
-  6: '29vh',
-  7: '55vh',
-  8: '23vh',
+  3: '18vh',
+  4: '20vh',
+  5: '19vh',
+  6: '16vh',
+  7: '21vh',
+  8: '17vh',
   9: '20vh',
 };
 
@@ -20,17 +20,49 @@ const mediaQueryFontSizes = {
   1: '29vh',
   2: '26vh',
   3: '23vh',
-  4: '21vh',
-  5: '19vh',
-  6: '17vh',
-  7: '14vh',
+  4: '25vh',
+  5: '24vh',
+  6: '21vh',
+  7: '26vh',
+  8: '22vh',
+  9: '25vh',
 };
 
-const MagentaClock: React.FC = () => {
+const AngFontClock: React.FC = () => {
   const [timeStr, setTimeStr] = useState<any>(['', '', '']);
   const [prevDigits, setPrevDigits] = useState<any>(['', '', '']);
-  const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const componentId = useRef(`angfont-clock-${Date.now()}`);
+  const fontName = `AngFontClockFont-${componentId.current}`;
   const animationTimeouts = useRef([]);
+
+  // Scoped font loading
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace(fontName, `url(${angFont})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback:', error);
+        setFontLoaded(false);
+      }
+    };
+
+    loadFont();
+
+    // Cleanup font on unmount
+    return () => {
+      for (const font of document.fonts) {
+        if (font.family === fontName) {
+          document.fonts.delete(font);
+          break;
+        }
+      }
+    };
+  }, [fontName]);
 
   useEffect(() => {
     const updateTime: React.FC = () => {
@@ -89,7 +121,7 @@ const MagentaClock: React.FC = () => {
     width: '100vw',
     margin: 0,
     backgroundColor: '#ff00ff',
-    fontFamily: 'AngFont, system-ui',
+    fontFamily: fontLoaded ? `${fontName}, system-ui` : 'system-ui',
     fontStyle: 'normal',
   };
 
@@ -149,7 +181,7 @@ const MagentaClock: React.FC = () => {
       <style>
         {`
         @font-face {
-          font-family: 'AngFont';
+          font-family: '${fontName}';
           src: url(${angFont}) format('truetype');
           font-weight: normal;
           font-style: normal;

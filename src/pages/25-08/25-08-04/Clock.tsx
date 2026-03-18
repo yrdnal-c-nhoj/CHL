@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import bgImage from '../../../assets/images/25-08/25-08-04/shrub.jpeg'; // Your background image file
 import myFont from '../../../assets/fonts/25-08-04-Tr.ttf'; // Your custom font file
 
@@ -14,6 +14,36 @@ const getRandomTilt = () => ({
 const DigitalClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [fadeIndex, setFadeIndex] = useState<number>(0);
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const componentId = useRef(`multi-clock-${Date.now()}`);
+  const fontName = `MultiClockFont-${componentId.current}`;
+
+  // Scoped font loading with unique name
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace(fontName, `url(${myFont})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load:', error);
+        setFontLoaded(false);
+      }
+    };
+
+    loadFont();
+
+    // Cleanup font on unmount
+    return () => {
+      for (const font of document.fonts) {
+        if (font.family === fontName) {
+          document.fonts.delete(font);
+          break;
+        }
+      }
+    };
+  }, [fontName]);
 
   const clocks = useMemo(
     () =>
@@ -56,25 +86,22 @@ const DigitalClock: React.FC = () => {
     <>
       <style>{`
         @font-face {
-          font-family: 'MyCustomFont';
+          font-family: '${fontName}';
           src: url(${myFont}) format('truetype');
           font-weight: normal;
           font-style: normal;
         }
-        body, html, #root {
-          margin: 0; padding: 0; height: 100%;
-          background: black;
-          overflow: hidden;
-        }
       `}</style>
 
-      {/* Background image bigger but centered */}
       <div
         style={{
-          position: 'fixed',
-          inset: 0,
-          pointerEvents: 'none',
-          zIndex: 0,
+          position: 'relative',
+          width: '100vw',
+          height: '100dvh',
+          margin: 0,
+          padding: 0,
+          background: 'black',
+          overflow: 'hidden',
         }}
       >
         <div
@@ -93,13 +120,13 @@ const DigitalClock: React.FC = () => {
       {/* Clocks */}
       <div
         style={{
-          position: 'fixed',
+          position: 'absolute',
           inset: 0,
           overflow: 'hidden',
           zIndex: 10,
           pointerEvents: 'none',
           backgroundColor: 'transparent',
-          fontFamily: `'MyCustomFont', Arial, sans-serif`,
+          fontFamily: fontLoaded ? `'${fontName}', Arial, sans-serif` : 'Arial, sans-serif',
         }}
       >
         {clocks.map(({ position, tilt }, index) => {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 
 // Assets (unchanged)
 import digit7 from '../../../assets/images/26-02/26-02-22/1.webp';

@@ -1,15 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 import monofettFont from '../../../assets/fonts/25-04-10-Monofett.ttf';
 
 const BarGraphClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const componentId = useRef(`bargraph-clock-${Date.now()}`);
+  const fontName = `BarGraphClockFont-${componentId.current}`;
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('Monofett', monofettFont, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Scoped font loading
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace(fontName, `url(${monofettFont})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback:', error);
+        setFontLoaded(false);
+      }
+    };
+
+    loadFont();
+
+    // Cleanup font on unmount
+    return () => {
+      for (const font of document.fonts) {
+        if (font.family === fontName) {
+          document.fonts.delete(font);
+          break;
+        }
+      }
+    };
+  }, [fontName]);
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -33,7 +57,7 @@ const BarGraphClock: React.FC = () => {
     margin: 0,
     padding: 0,
     backgroundColor: '#e2af2c',
-    fontFamily: '"Monofett", monospace',
+    fontFamily: fontLoaded ? `"${fontName}", monospace` : 'monospace',
   };
 
   const segmentContainerStyle = {

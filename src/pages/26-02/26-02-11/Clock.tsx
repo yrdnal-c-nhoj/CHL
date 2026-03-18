@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 
 // --- Assets ---
 import bellImage2 from '../../../assets/images/26-02/26-02-11/bell.webp';

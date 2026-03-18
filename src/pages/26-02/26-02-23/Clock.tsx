@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useKeyframes } from '../../../utils/enhancedFontLoader';
 import { useGlobalStyles } from '../../../utils/enhancedFontLoader';
 import { useEnhancedFontLoader } from '../../../utils/enhancedFontLoader';

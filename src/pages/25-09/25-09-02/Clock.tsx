@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import bgImage from '../../../assets/images/25-09/25-09-02/lp.webp';
 import hourHandImage from '../../../assets/images/25-09/25-09-02/arm1.gif';
 import minuteHandImage from '../../../assets/images/25-09/25-09-02/arm2.gif';

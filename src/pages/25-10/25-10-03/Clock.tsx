@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 
 // Import your 12 number images
 import num1 from '../../../assets/images/25-10/25-10-03/1.gif';

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import roulGif from '../../../assets/images/25-05/25-05-15/roul.gif';
 import rouleGif from '../../../assets/images/25-05/25-05-15/roule.gif';
@@ -6,32 +7,38 @@ import rouletteSvg from '../../../assets/images/25-05/25-05-15/Roulette_french.s
 import loraFont from '../../../assets/fonts/25-05-15-lora.ttf';
 
 const RouletteClock: React.FC = () => {
-  // Load Lora font with FOUC prevention
-  const fontReady = useFontLoader('Lora', loraFont, { weight: '900' });
+  // Load Lora font with scoped approach
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const componentId = useRef(`roulette-clock-${Date.now()}`);
+  const fontName = `RouletteClockFont-${componentId.current}`;
   const [time, setTime] = useState(new Date());
-  useEffect(() => {
-    createClock();
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, [fontReady]);
 
-  // Show loading state while font loads
-  if (!fontReady) {
-    return (
-      <div style={{
-        height: '100dvh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#000',
-        color: '#fff',
-        fontFamily: 'serif'
-      }}>
-        Loading...
-      </div>
-    );
-  }
+  // Scoped font loading
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace(fontName, `url(${loraFont})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback:', error);
+        setFontLoaded(false);
+      }
+    };
+
+    loadFont();
+
+    // Cleanup font on unmount
+    return () => {
+      for (const font of document.fonts) {
+        if (font.family === fontName) {
+          document.fonts.delete(font);
+          break;
+        }
+      }
+    };
+  }, [fontName]);
 
   const createClock: React.FC = () => {
     const clock = document.getElementById('clock');
@@ -45,7 +52,7 @@ const RouletteClock: React.FC = () => {
       number.style.position = 'absolute';
       number.style.width = '100%';
       number.style.height = '100%';
-      number.style.fontFamily = 'Lora, serif';
+      number.style.fontFamily = fontLoaded ? `'${fontName}', serif` : 'serif';
       number.style.fontWeight = '900';
       number.style.textAlign = 'center';
       number.style.fontSize = '6.5vw'; // Scaled with viewport width
@@ -144,6 +151,33 @@ const RouletteClock: React.FC = () => {
     if (second)
       second.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
   };
+
+  useEffect(() => {
+    createClock();
+    // Small delay to ensure DOM elements are created
+    setTimeout(() => {
+      updateClock();
+      const interval = setInterval(updateClock, 1000);
+      return () => clearInterval(interval);
+    }, 100);
+  }, [fontLoaded]);
+
+  // Show loading state while font loads
+  if (!fontLoaded) {
+    return (
+      <div style={{
+        height: '100dvh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#000',
+        color: '#fff',
+        fontFamily: 'serif'
+      }}>
+        Loading font...
+      </div>
+    );
+  }
 
   const fontStyle = `
     @font-face {

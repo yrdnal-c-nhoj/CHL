@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import sys1 from '../../../assets/images/25-04/25-04-07/sys1.gif';
 import sys2 from '../../../assets/images/25-04/25-04-07/sys2.gif';
 import sys3 from '../../../assets/images/25-04/25-04-07/sys3.gif';
