@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSuspenseFontLoader, useStyleInjection } from '../../../utils/fontLoader';
 
 const font1Path = '/src/assets/fonts/25-06-20-inde2.ttf';
 const font2Path = '/src/assets/fonts/25-06-20-inde1.ttf';
@@ -6,7 +7,44 @@ const font2Path = '/src/assets/fonts/25-06-20-inde1.ttf';
 const IndecisiveClock: React.FC = () => {
   const [time, setTime] = useState<any>({ h: '', m: '', s: '' });
   const [showFirst, setShowFirst] = useState<boolean>(true);
-  const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
+
+  // Suspense-friendly font loading with centralized style injection
+  const fontConfigs = [
+    {
+      fontFamily: 'ClockFont1',
+      fontUrl: font1Path,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    },
+    {
+      fontFamily: 'ClockFont2',
+      fontUrl: font2Path,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+
+  // Inject responsive styles through centralized utility
+  useStyleInjection({
+    custom: `
+      @media (max-width: 768px) {
+        .time-block {
+          flex-direction: column !important;
+          gap: 0.5rem !important;
+        }
+        .digit {
+          font-size: 6rem !important;
+        }
+      }
+    `
+  });
+
+  // Use Suspense-friendly font loader
+  useSuspenseFontLoader(fontConfigs);
 
   // Update time every second
   useEffect(() => {
@@ -28,29 +66,7 @@ const IndecisiveClock: React.FC = () => {
 
     return () => {
       clearInterval(timeInterval);
-      clearInterval(fontInterval);
     };
-  }, []);
-
-  // Load fonts on component mount
-  useEffect(() => {
-    const loadFonts = async () => {
-      try {
-        const font1 = new FontFace('ClockFont1', `url(${font1Path})`);
-        const font2 = new FontFace('ClockFont2', `url(${font2Path})`);
-
-        await Promise.all([font1.load(), font2.load()]);
-        document.fonts.add(font1);
-        document.fonts.add(font2);
-
-        setFontsLoaded(true);
-      } catch (error) {
-        console.error('Error loading fonts:', error);
-        setFontsLoaded(true);
-      }
-    };
-
-    loadFonts();
   }, []);
 
   const bodyStyle = {
@@ -100,38 +116,8 @@ const IndecisiveClock: React.FC = () => {
     lineHeight: '7rem',
   };
 
-  if (!fontsLoaded) {
-    return null;
-  }
-
   return (
-    <>
-      <style>
-        {`
-          @font-face {
-            font-family: 'ClockFont1';
-            src: url('${font1Path}') format('truetype');
-            font-display: swap;
-          }
-          @font-face {
-            font-family: 'ClockFont2';
-            src: url('${font2Path}') format('truetype');
-            font-display: swap;
-          }
-          
-          @media (max-width: 768px) {
-            .time-block {
-              flex-direction: column !important;
-              gap: 0.5rem !important;
-            }
-            .digit {
-              font-size: 6rem !important;
-            }
-          }
-        `}
-      </style>
-
-      <div style={bodyStyle}>
+    <div style={bodyStyle}>
         <div id="container" style={containerStyle}>
           <div
             className="time-block"
