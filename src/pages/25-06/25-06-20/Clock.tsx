@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader, useStyleInjection } from '../../../utils/fontLoader';
 
-const font1Path = '/src/assets/fonts/25-06-20-inde2.ttf';
-const font2Path = '/src/assets/fonts/25-06-20-inde1.ttf';
+const font1Path = '/src/assets/fonts/25-06-20-inde2.woff2';
+const font2Path = '/src/assets/fonts/25-06-20-inde1.woff2';
 
 const IndecisiveClock: React.FC = () => {
   const [time, setTime] = useState<any>({ h: '', m: '', s: '' });
@@ -65,7 +65,7 @@ const IndecisiveClock: React.FC = () => {
 
   // Update time every second
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const h = String(now.getHours()).padStart(2, '0');
       const m = String(now.getMinutes()).padStart(2, '0');
