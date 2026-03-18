@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 // Import today's date font
 import font_2025_12_06 from '../../../assets/fonts/25-12-05-magic.ttf?url'; // This path is correct as it's relative to the public directory
 
@@ -11,11 +11,18 @@ export default function BoxedDigitalClock() {
   const [visible, setVisible] = useState<boolean>(false); // Clock visibility for glitch
   const [randomOpacity, setRandomOpacity] = useState<number>(0.2); // Random opacity for glitches
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('CustomFont_2025_12_06', font_2025_12_06, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'CustomFont_2025_12_06',
+      fontUrl: font_2025_12_06,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsReady = useMultipleFontLoader(fontConfigs);
 
   // -------------------------------
   // Update clock every second
