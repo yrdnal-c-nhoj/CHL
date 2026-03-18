@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import Clock from '../pages/26-03/26-03-05/Clock';
+import Clock from '../pages/26-03/26-03-05/Clock.tsx';
 
 // Mock the font loader utility
 vi.mock('../../utils/fontLoader', () => ({

@@ -29,8 +29,8 @@ import Header from './components/Header';
 import ClockPageNav from './components/ClockPageNav';
 import styles from './ClockPage.module.css';
 
-// Preload all Clock.jsx files under /pages/**/Clock.jsx
-const clockModules = import.meta.glob('./pages/**/Clock.jsx');
+// Preload all Clock.tsx files under /pages/**/Clock.tsx
+const clockModules = import.meta.glob('./pages/**/Clock.tsx');
 
 // Configuration constants
 const DATE_REGEX = /^\d{2}-\d{2}-\d{2}$/;
@@ -53,8 +53,8 @@ const useClockUtils = () => {
     if (!yy || !mm) return null;
 
     const candidates = [
-      `./pages/${yy}-${mm}/${item.path}/Clock.jsx`, // month/day structure
-      `./pages/${item.path}/Clock.jsx`, // legacy flat structure
+      `./pages/${yy}-${mm}/${item.path}/Clock.tsx`, // month/day structure
+      `./pages/${item.path}/Clock.tsx`, // legacy flat structure
     ];
 
     for (const key of candidates) {
