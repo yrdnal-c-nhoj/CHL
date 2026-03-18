@@ -52,29 +52,9 @@ const SpinningCoinClock: React.FC = () => {
     const clock = document.getElementById('clock');
     if (!clock) return;
 
-    // Remove any existing numbers or hands to prevent duplicates on remount
-    const existingNumbers = clock.querySelectorAll('.number');
-    existingNumbers.forEach((n) => n.remove());
+    // Remove any existing hands to prevent duplicates on remount
     const existingHands = clock.querySelectorAll('.hand');
     existingHands.forEach((h) => h.remove());
-
-    // Create hour markers
-    for (let i = 1; i <= 12; i++) {
-      const angle = (i * 30 * Math.PI) / 180;
-      const number = document.createElement('div');
-      number.className = 'number';
-      number.textContent = i;
-      // position at the circle point and center the element with translate
-      number.style.left = `calc(50% + ${Math.sin(angle) * 19}vw)`;
-      number.style.top = `calc(50% - ${Math.cos(angle) * 19}vw)`;
-      number.style.transform = 'translate(-50%, -50%)';
-      number.style.display = 'flex';
-      number.style.alignItems = 'center';
-      number.style.justifyContent = 'center';
-      number.style.width = 'auto';
-      number.style.lineHeight = '1';
-      clock.appendChild(number);
-    }
 
     // Create clock hands
     const hourHand = document.createElement('div');

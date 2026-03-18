@@ -1,14 +1,30 @@
 import { useEffect, useState } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import gearsGif from '../../../assets/images/25-05/25-05-29/gears-13950_128.gif';
 import watchWoff2 from '../../../assets/fonts/25-05-29-watch.woff2';
 import watchTtf from '../../../assets/fonts/25-05-29-watch.ttf';
 
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'watch',
+      fontUrl: watchWoff2, // Using WOFF2 as primary for consistency
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [loaded, setLoaded] = useState<boolean>(false);
   const [hoursDigits, setHoursDigits] = useState<any>([]);
   const [minutesDigits, setMinutesDigits] = useState<any>([]);
   const [secondsDigits, setSecondsDigits] = useState<any>([]);
   const [vh, setVh] = useState<any>(window.innerHeight);
+
+  // Font loading handled by useMultipleFontLoader
 
   // Character map for digits
   const charMap = {

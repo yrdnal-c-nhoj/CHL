@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import asciiFontUrl from '../../../assets/fonts/25-07-15-ascii.ttf';
 import asciiImageUrl from '../../../assets/images/25-07/25-07-15/ascii.jpg';
 
@@ -150,11 +150,20 @@ const makeGroup = (str) => {
 const AsciiClock: React.FC = () => {
   const [timeParts, setTimeParts] = useState<any>([]);
 
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'ascii',
+      fontUrl: asciiFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   useEffect(() => {
-    const font = new FontFace('ascii', `url(${asciiFontUrl})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-    });
 
     const updateClock: React.FC = () => {
       const now = new Date();

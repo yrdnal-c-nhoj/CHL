@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import angFont from '../../../assets/fonts/25-04-12-ang.ttf';
 
 const digitFontSizes = {
@@ -29,40 +29,32 @@ const mediaQueryFontSizes = {
 };
 
 const AngFontClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'AngFontClockFont',
+      fontUrl: angFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [timeStr, setTimeStr] = useState<any>(['', '', '']);
   const [prevDigits, setPrevDigits] = useState<any>(['', '', '']);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(fontsLoaded);
   const componentId = useRef(`angfont-clock-${Date.now()}`);
-  const fontName = `AngFontClockFont-${componentId.current}`;
   const animationTimeouts = useRef([]);
 
-  // Scoped font loading
+  // Update fontLoaded state when fontsLoaded changes
   useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace(fontName, `url(${angFont})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font failed to load, using fallback:', error);
-        setFontLoaded(false);
-      }
-    };
+    setFontLoaded(fontsLoaded);
+  }, [fontsLoaded]);
 
-    loadFont();
-
-    // Cleanup font on unmount
-    return () => {
-      for (const font of document.fonts) {
-        if (font.family === fontName) {
-          document.fonts.delete(font);
-          break;
-        }
-      }
-    };
-  }, [fontName]);
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const updateTime: React.FC = () => {
@@ -121,7 +113,7 @@ const AngFontClock: React.FC = () => {
     width: '100vw',
     margin: 0,
     backgroundColor: '#ff00ff',
-    fontFamily: fontLoaded ? `${fontName}, system-ui` : 'system-ui',
+    fontFamily: fontLoaded ? 'AngFontClockFont, system-ui' : 'system-ui',
     fontStyle: 'normal',
   };
 
@@ -181,7 +173,7 @@ const AngFontClock: React.FC = () => {
       <style>
         {`
         @font-face {
-          font-family: '${fontName}';
+          font-family: 'AngFontClockFont';
           src: url(${angFont}) format('truetype');
           font-weight: normal;
           font-style: normal;
@@ -207,4 +199,4 @@ const AngFontClock: React.FC = () => {
   );
 };
 
-export default MagentaClock;
+export default AngFontClock;

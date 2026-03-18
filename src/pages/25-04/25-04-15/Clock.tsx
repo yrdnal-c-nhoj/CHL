@@ -1,43 +1,35 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import horizonFontUrl from '../../../assets/fonts/25-04-15-hori.otf';
 import layer2 from '../../../assets/images/25-04/25-04-15/4c558c5dbff1828f2b87582dc49526e8.gif';
 import sdfwef from '../../../assets/images/25-04/25-04-15/sdfwef.webp';
 import layer1 from '../../../assets/images/25-04/25-04-15/ewfsdfsd.webp';
 
 const HorizonClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState(false);
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'HorizonClockFont',
+      fontUrl: horizonFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  const [time, setTime] = useState<string>('');
+  const [fontLoaded, setFontLoaded] = useState(fontsLoaded);
   const componentId = useRef(`horizon-clock-${Date.now()}`);
-  const fontName = `HorizonClockFont-${componentId.current}`;
 
-  // Scoped font loading
+  // Update fontLoaded state when fontsLoaded changes
   useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace(fontName, `url(${horizonFontUrl})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font failed to load, using fallback:', error);
-        setFontLoaded(false);
-      }
-    };
+    setFontLoaded(fontsLoaded);
+  }, [fontsLoaded]);
 
-    loadFont();
-
-    // Cleanup font on unmount
-    return () => {
-      for (const font of document.fonts) {
-        if (font.family === fontName) {
-          document.fonts.delete(font);
-          break;
-        }
-      }
-    };
-  }, [fontName]);
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const updateClock: React.FC = () => {
@@ -75,7 +67,7 @@ const HorizonClock: React.FC = () => {
       <style>
         {`
           @font-face {
-            font-family: '${fontName}';
+            font-family: 'HorizonClockFont';
             src: url('${horizonFontUrl}') format('opentype');
           }
         `}
@@ -113,7 +105,7 @@ const HorizonClock: React.FC = () => {
           zIndex: 10,
           width: '100%',
           textAlign: 'center',
-          fontFamily: fontLoaded ? `${fontName}, Arial, sans-serif` : 'Arial, sans-serif',
+          fontFamily: fontLoaded ? 'HorizonClockFont, Arial, sans-serif' : 'Arial, sans-serif',
           fontSize: '15vw',
           color: 'white',
           backgroundImage:

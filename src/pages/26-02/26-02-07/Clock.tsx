@@ -1,17 +1,25 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import customFontUrl from '../../../assets/fonts/26-02-07-gear.ttf?url';
 import backgroundImage from '../../../assets/images/26-02/26-02-07/gear.gif';
 
 const FullscreenClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
-  const FONT_NAME = 'GearFont';
 
-  // Use standardized font loader
-  const fontReady = useFontLoader(FONT_NAME, customFontUrl, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'GearFont',
+      fontUrl: customFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -31,7 +39,7 @@ const FullscreenClock: React.FC = () => {
     return str.split('');
   }, [time]);
 
-  if (!fontReady) {
+  if (!fontsLoaded) {
     return (
       <div
         style={{
@@ -62,7 +70,7 @@ const FullscreenClock: React.FC = () => {
         backgroundColor: '#E9F7AB',
         backgroundImage: 'radial-gradient(circle, #E9F7AB 0%, #CDF296 100%)',
         overflow: 'hidden',
-        fontFamily: `'${FONT_NAME}', sans-serif`,
+        fontFamily: 'GearFont, sans-serif',
       }}
     >
       <style>{`

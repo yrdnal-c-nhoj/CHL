@@ -1,13 +1,28 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import lightningImg from '../../../assets/images/25-05/25-05-01/lightning.webp';
 import innerFontTTF from '../../../assets/fonts/25-05-01-Inner.ttf';
 
 export default function SlowLightningClock() {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'InnerFont',
+      fontUrl: innerFontTTF,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState<any>({ hours: '--', minutes: '--' });
   const clockRef = useRef(null);
   const flashWhiteRef = useRef(null);
   const flashBlackRef = useRef(null);
+
+  // Font loading handled by useMultipleFontLoader
 
   // Update clock time every second
   useEffect(() => {

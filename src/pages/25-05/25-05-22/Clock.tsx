@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import sunGif from '../../../assets/images/25-05/25-05-22/sun.gif'; // Use static import
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import dirFontUrl from '../../../assets/fonts/25-05-22-Dir.ttf'; // Use static import
 
 const romanNumerals = [
@@ -18,8 +19,21 @@ const romanNumerals = [
 ];
 
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Dir',
+      fontUrl: dirFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Font loading handled by useMultipleFontLoader
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     // Asset Preloading

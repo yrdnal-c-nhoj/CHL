@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import A3ui from '../../../assets/images/25-05/25-05-12/A3ui.gif';
 import leoFont from '../../../assets/fonts/25-05-12-leo.ttf';
 
 const CheetahClock: React.FC = () => {
   const [isMobile, setIsMobile] = useState<any>(window.innerWidth <= 600);
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('leo', leoFont, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'leo',
+      fontUrl: leoFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 600);

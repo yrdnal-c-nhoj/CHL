@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bananaGif from '../../../assets/images/25-06/25-06-11/banana.gif';
 import spinningBanana from '../../../assets/images/25-06/25-06-11/yellow-spinning-banana.gif';
 import hourHand from '../../../assets/images/25-06/25-06-11/ban.png';
@@ -9,6 +9,18 @@ import secondHand from '../../../assets/images/25-06/25-06-11/ban.png';
 import banFont from '../../../assets/fonts/25-06-11-Ban.ttf';
 
 const BananaClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Ban',
+      fontUrl: banFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
   useEffect(() => {
     const updateClock: React.FC = () => {
       const now = new Date();
@@ -64,10 +76,7 @@ const BananaClock: React.FC = () => {
       }}
     >
       <style>{`
-        @font-face {
-          font-family: 'Ban';
-          src: url(${banFont}) format('truetype');
-        }
+        /* Font loading handled by useMultipleFontLoader */
       `}</style>
 
       {/* Background tiles */}
@@ -92,8 +101,8 @@ const BananaClock: React.FC = () => {
         className="clock"
         style={{
           position: 'absolute',
-          top: '47%',
-          left: '55%',
+          top: '50%',
+          left: '50%',
           width: '70vmin',
           height: '70vmin',
           transform: 'translate(-50%, -50%)',

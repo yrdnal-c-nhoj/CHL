@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import arm from '../../../assets/images/25-05/25-05-25/arm.gif';
 import arm2 from '../../../assets/images/25-05/25-05-25/arm2.gif';
 import arm3 from '../../../assets/images/25-05/25-05-25/arm3.gif';
@@ -8,10 +8,20 @@ import arm3 from '../../../assets/images/25-05/25-05-25/arm3.gif';
 import botFontUrl from '../../../assets/fonts/25-05-25-bot.ttf';
 
 const Clock: React.FC = () => {
-  const fontReady = useFontLoader('bot', botFontUrl, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'bot',
+      fontUrl: botFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const updateClock: React.FC = () => {
@@ -109,7 +119,7 @@ const Clock: React.FC = () => {
     <div
       style={{
         ...containerStyle,
-        opacity: fontReady ? 1 : 0.5,
+        opacity: fontsLoaded ? 1 : 0.5,
         transition: 'opacity 0.3s ease',
       }}
     >

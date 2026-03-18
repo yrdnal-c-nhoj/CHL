@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import lava1 from '../../../assets/images/25-04/25-04-24/lava.webp';
 import lava2 from '../../../assets/images/25-04/25-04-24/vp2OVr.gif';
 import lava3 from '../../../assets/images/25-04/25-04-24/lava.webp';
 import lavaFont from '../../../assets/fonts/25-04-24-lava.ttf';
 
 const LavaClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Rubik Burned',
+      fontUrl: lavaFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState<any>({ hours: '00', minutes: '00' });
   const [showGif, setShowGif] = useState<boolean>(false);
   const [fadeOut, setFadeOut] = useState<boolean>(false);
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('Rubik Burned', lavaFont, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const updateClock: React.FC = () => {

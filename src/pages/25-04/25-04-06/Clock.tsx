@@ -1,45 +1,37 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import confFont from '../../../assets/fonts/25-04-06-conf.ttf';
 import confettiBg from '../../../assets/images/25-04/25-04-06/conf2.gif';
 
 const TOTAL_DIGITS = 160;
 
 const ConfettiClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'ConfettiClockFont',
+      fontUrl: confFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const containerRef = useRef(null);
   const digitsRef = useRef([]);
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(fontsLoaded);
   const componentId = useRef(`confetti-clock-${Date.now()}`);
-  const fontName = `ConfettiClockFont-${componentId.current}`;
 
-  // Scoped font loading
+  // Update fontLoaded state when fontsLoaded changes
   useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace(fontName, `url(${confFont})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font failed to load, using fallback:', error);
-        setFontLoaded(false);
-      }
-    };
+    setFontLoaded(fontsLoaded);
+  }, [fontsLoaded]);
 
-    loadFont();
+  // Font loading handled by useMultipleFontLoader
 
-    // Cleanup font on unmount
-    return () => {
-      for (const font of document.fonts) {
-        if (font.family === fontName) {
-          document.fonts.delete(font);
-          break;
-        }
-      }
-    };
-  }, [fontName]);
-
-  const getCurrentTimeDigits: React.FC = () => {
+  const getCurrentTimeDigits = () => {
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, '0').split('');
     const minutes = now.getMinutes().toString().padStart(2, '0').split('');
@@ -77,7 +69,7 @@ const ConfettiClock: React.FC = () => {
     digitsRef.current.forEach((el, i) => {
       const fontSize = Math.random() * 12 + 4; // 4vh to 16vh
       el.style.fontSize = `${fontSize}vh`;
-      el.style.fontFamily = fontLoaded ? `'${fontName}', sans-serif` : 'sans-serif';
+      el.style.fontFamily = fontLoaded ? 'ConfettiClockFont, sans-serif' : 'sans-serif';
       el.style.color = colors[Math.floor(Math.random() * colors.length)];
       el.style.position = 'absolute';
       el.style.opacity = '0.95';

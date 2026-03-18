@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import backgroundImg from '../../../assets/images/25-07/25-07-23/bay01s52djxo1_400.webp';
 import bayFont from '../../../assets/fonts/25-07-23-bay.ttf';
 
 const Clock: React.FC = () => {
   const [timeStr, setTimeStr] = useState<any>('');
+
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'bay',
+      fontUrl: bayFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     const updateClock: React.FC = () => {
@@ -24,10 +37,7 @@ const Clock: React.FC = () => {
     <div style={styles.body}>
       <style>
         {`
-          @font-face {
-            font-family: 'bay';
-            src: url(${bayFont}) format('truetype');
-          }
+          /* Font loading handled by useMultipleFontLoader */
         `}
       </style>
 

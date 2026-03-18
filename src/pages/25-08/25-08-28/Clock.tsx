@@ -1,14 +1,23 @@
 import { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from '../../../assets/images/25-08/25-08-28/gob.jpg';
 import clockFontFile from '../../../assets/fonts/25-08-28-gob.ttf';
 
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
-  const fontReady = useFontLoader('ClockFontScoped', clockFontFile, {
-    timeout: 5000,
-    fallback: true,
-  });
+  
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'ClockFontScoped',
+      fontUrl: clockFontFile,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -29,7 +38,7 @@ export default function DigitalClock() {
     justifyContent: 'center',
     height: '100dvh',
     width: '100vw',
-    fontFamily: fontReady ? "'ClockFontScoped', monospace" : 'monospace',
+    fontFamily: fontsLoaded ? "'ClockFontScoped', monospace" : 'monospace',
     overflow: 'hidden',
   };
 
@@ -50,8 +59,8 @@ export default function DigitalClock() {
     position: 'relative',
     display: 'flex',
     zIndex: 1,
-    visibility: fontReady ? 'visible' : 'hidden',
-    opacity: fontReady ? 1 : 0,
+    visibility: fontsLoaded ? 'visible' : 'hidden',
+    opacity: fontsLoaded ? 1 : 0,
     transition: 'opacity 0.3s ease',
   };
 

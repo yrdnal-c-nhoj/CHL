@@ -1,10 +1,24 @@
 import { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import cus250903font from '../../../assets/fonts/25-09-03-mau.ttf';
 import cornerImage from '../../../assets/images/25-09/25-09-03/corner.gif';
 import backgroundImage from '../../../assets/images/25-09/25-09-03/mau.gif'; // <-- your background image
 
 function DigitalClock() {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Digital7',
+      fontUrl: cus250903font,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
   const [loaded, setLoaded] = useState<boolean>(false);
 
@@ -110,12 +124,7 @@ function DigitalClock() {
     <>
       <style>
         {`
-          @font-face {
-            font-family: 'Digital7';
-            src: url(${cus250903font}) format('truetype');
-            font-weight: normal;
-            font-style: normal;
-          }
+          /* Font loading handled by useMultipleFontLoader */
 
           /* On larger screens, reduce font size */
           @media (min-width: 700px) {

@@ -9,27 +9,7 @@ import custom251112tz from '../../../assets/fonts/25-11-12-oct.ttf?url';
 
 export default function TwoBackgroundOctahedron() {
   const threeRef = useRef(null);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-
-  // Simple scoped font loading without leaks
-  useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace(
-          'OctahedronFont',
-          `url(${custom251112tz})`,
-        );
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font failed to load, using fallback');
-        setFontLoaded(false);
-      }
-    };
-
-    loadFont();
-  }, []);
+  const fontLoaded = useFontLoader('OctahedronFont', custom251112tz);
 
   // THREE.js Octahedron (unchanged)
   useEffect(() => {
@@ -66,7 +46,21 @@ export default function TwoBackgroundOctahedron() {
       const txt = `${h}:${m < 10 ? '0' + m : m}`;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.font = `110px ${fontLoaded ? fontName : 'Arial'}`;
+      
+      // Force font assignment and test if it's actually available
+      if (fontLoaded) {
+        ctx.font = `110px 'OctahedronFont', Arial`;
+        // Test if the font is actually loaded by measuring text
+        const metrics = ctx.measureText(txt);
+        if (metrics.width === 0) {
+          // Font didn't load properly, fallback to Arial
+          ctx.font = '110px Arial';
+        }
+      } else {
+        ctx.font = '110px Arial';
+      }
+      
+      console.log('Font loaded:', fontLoaded, 'Using font:', ctx.font);
       ctx.fillStyle = '#043D91FF';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';

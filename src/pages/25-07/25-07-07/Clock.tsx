@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import suvFont from '../../../assets/fonts/25-07-07-suv.ttf';
 import suvImage from '../../../assets/images/25-07/25-07-07/suv.gif';
 import suvBackground from '../../../assets/images/25-07/25-07-07/suvx.jpg';
@@ -12,11 +12,20 @@ const Clock: React.FC = () => {
     ampm: 'AM',
   });
 
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'suv',
+      fontUrl: suvFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   useEffect(() => {
-    const font = new FontFace('suv', `url(${suvFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-    });
 
     const updateClock: React.FC = () => {
       const now = new Date();

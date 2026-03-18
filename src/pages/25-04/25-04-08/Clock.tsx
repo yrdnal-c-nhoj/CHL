@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import sageFontUrl from '../../../assets/fonts/25-04-08-sage.ttf';
 
 const TripleCactusClock: React.FC = () => {
@@ -8,36 +8,32 @@ const TripleCactusClock: React.FC = () => {
   const secondsRef = useRef();
   const millisecondsRef = useRef();
 
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'CactusClockFont',
+      fontUrl: sageFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   // Scoped font loading
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(fontsLoaded);
   const componentId = useRef(`cactus-clock-${Date.now()}`);
-  const fontName = `CactusClockFont-${componentId.current}`;
+  // Ref to hold the current font state for the animation loop
+  const fontLoadedRef = useRef(fontLoaded);
 
+  // Update fontLoaded state when fontsLoaded changes
   useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace(fontName, `url(${sageFontUrl})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font failed to load, using fallback:', error);
-        setFontLoaded(false);
-      }
-    };
+    setFontLoaded(fontsLoaded);
+    fontLoadedRef.current = fontsLoaded;
+  }, [fontsLoaded]);
 
-    loadFont();
-
-    // Cleanup font on unmount
-    return () => {
-      for (const font of document.fonts) {
-        if (font.family === fontName) {
-          document.fonts.delete(font);
-          break;
-        }
-      }
-    };
-  }, [fontName]);
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const setDigits = (container, text) => {
@@ -52,7 +48,7 @@ const TripleCactusClock: React.FC = () => {
           textAlign: 'center',
           fontVariantNumeric: 'tabular-nums',
           fontFeatureSettings: '"tnum"',
-          fontFamily: fontLoaded ? `'${fontName}', sans-serif` : 'sans-serif',
+          fontFamily: fontLoadedRef.current ? 'CactusClockFont, sans-serif' : 'sans-serif',
         });
         container.appendChild(span);
       }
@@ -128,7 +124,7 @@ const TripleCactusClock: React.FC = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              fontFamily: fontLoaded ? fontName : 'sans-serif',
+              fontFamily: fontLoaded ? 'CactusClockFont' : 'sans-serif',
             }}
           >
             <div

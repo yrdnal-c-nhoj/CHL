@@ -1,24 +1,29 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import coffeeFont from '../../../assets/fonts/25-06-04-cof.ttf';
 import bgStill from '../../../assets/images/25-06/25-06-04/coff.png';
 import bgAnimated from '../../../assets/images/25-06/25-06-04/coff.gif';
 
 const CoffeeClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'cof',
+      fontUrl: coffeeFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  
   const jitterSettings = useRef([]);
   const numberRefs = useRef([]);
   const hourHandRef = useRef(null);
   const minuteHandRef = useRef(null);
   const secondHandRef = useRef(null);
-
-  // Load font
-  useEffect(() => {
-    const font = new FontFace('cof', `url(${coffeeFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-    });
-  }, []);
 
   // Animate numbers jitter
   useEffect(() => {

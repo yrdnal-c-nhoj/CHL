@@ -1,12 +1,25 @@
 import React, { useEffect } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 import dottedFont from '../../../assets/fonts/25-05-14-dotted.ttf'; // Custom dotted font for clock display
 
 export default function Clock() {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'DottedRough2025_11_01',
+      fontUrl: dottedFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Font loading handled by useMultipleFontLoader
+
   useEffect(() => {
     const SCOPE_ID = 'ri-clock-2025-11-01';
-    const fontName = 'DottedRough2025_11_01';
     let animationFrameId;
 
     // ------------------- Utility functions -------------------
@@ -129,13 +142,13 @@ export default function Clock() {
     style.setAttribute('data-scope', SCOPE_ID);
     style.textContent = `
       @font-face {
-        font-family: '${fontName}';
+        font-family: 'DottedRough2025_11_01';
         src: url('${dottedFont}') format('truetype');
         font-display: swap;
       }
       #${SCOPE_ID} {
         width: 100vw; height: 100vh; overflow: hidden;
-        position: relative; font-family: '${fontName}', system-ui;
+        position: relative; font-family: 'DottedRough2025_11_01', system-ui;
         background-image: linear-gradient(180deg, rgb(21 84 89) 0%, rgb(228 207 249) 100%);
       }
       #${SCOPE_ID} .digit {
@@ -168,7 +181,7 @@ export default function Clock() {
     `;
     document.head.appendChild(style);
 
-    const font = new FontFace(fontName, `url(${dottedFont})`, {
+    const font = new FontFace('DottedRough2025_11_01', `url(${dottedFont})`, {
       style: 'normal',
       weight: '400',
     });

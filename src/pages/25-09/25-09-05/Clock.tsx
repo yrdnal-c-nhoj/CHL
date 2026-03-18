@@ -1,54 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import DigitalClockFont from '../../../assets/fonts/25-09-05-swi.ttf';
 import DigitalClockBg from '../../../assets/images/25-09/25-09-05/swiss.jpg';
 import MovingImg from '../../../assets/images/25-09/25-09-05/mouse.gif';
 
 export default function DigitalClock() {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'DigitalClockFont',
+      fontUrl: DigitalClockFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [now, setNow] = useState(new Date());
-  const [fontReady, setFontReady] = useState<boolean>(false);
+  const [fontReady, setFontReady] = useState<boolean>(fontsLoaded);
   const [bgReady, setBgReady] = useState<boolean>(false);
   const [imgReady, setImgReady] = useState<boolean>(false);
 
-  // Load custom font
+  // Update time every second
   useEffect(() => {
-    let mounted = true;
-    if (typeof window !== 'undefined' && window.FontFace) {
-      const f = new FontFace('DigitalClockFont', `url(${DigitalClockFont})`);
-      f.load()
-        .then((loaded) => {
-          if (!mounted) return;
-          try {
-            document.fonts.add(loaded);
-          } catch {}
-          setFontReady(true);
-        })
-        .catch(() => setFontReady(true));
-    } else setFontReady(true);
-    return () => {
-      mounted = false;
-    };
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
-  // Preload background
+  // Load background image
   useEffect(() => {
     const img = new Image();
     img.src = DigitalClockBg;
     img.onload = () => setBgReady(true);
   }, []);
 
-  // Preload moving image
+  // Load moving image
   useEffect(() => {
     const img = new Image();
     img.src = MovingImg;
     img.onload = () => setImgReady(true);
-  }, []);
-
-  // Update time
-  useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 500);
-    return () => clearInterval(t);
   }, []);
 
   // Only render once all assets are ready

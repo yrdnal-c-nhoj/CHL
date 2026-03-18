@@ -1,9 +1,24 @@
 import React, { useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import shinyFont from '../../../assets/fonts/25-05-08-Shiny.ttf';
 import bgGif from '../../../assets/images/25-05/25-05-08/d7e781b32269a8a82b500c1a9dc97733-ezgif.com-optimize.gif';
 
 const GoldenHourClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'ShinyFont',
+      fontUrl: shinyFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Font loading handled by useMultipleFontLoader
+
   useEffect(() => {
     const updateClock: React.FC = () => {
       const now = new Date();

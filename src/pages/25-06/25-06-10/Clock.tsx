@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import shaFont from '../../../assets/fonts/25-06-10-sha.ttf';
 
 const ShapesClock: React.FC = () => {
@@ -8,6 +8,19 @@ const ShapesClock: React.FC = () => {
     minutes: '00',
     seconds: '00',
   });
+
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'sha',
+      fontUrl: shaFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     const updateClock: React.FC = () => {

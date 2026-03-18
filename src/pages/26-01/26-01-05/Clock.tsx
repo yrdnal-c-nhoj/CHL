@@ -1,33 +1,35 @@
 import { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from '../../../assets/images/26-01/26-01-06/aa.jpg';
 import gizaFont from '../../../assets/fonts/26-01-06-aa.ttf';
 import aaaImage from '../../../assets/images/26-01/26-01-06/aaa.webp';
 
 export default function AardvarkClock() {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Giza_20260107',
+      fontUrl: gizaFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
   const [totalSeconds, setTotalSeconds] = useState<number>(0);
   const [bgReady, setBgReady] = useState<boolean>(false);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+  const [fontLoaded, setFontLoaded] = useState<boolean>(fontsLoaded);
 
-  const uniqueFontFamily = `Giza_20260107`;
-
-  // Simple scoped font loading without leaks
+  // Update fontLoaded state when fontsLoaded changes
   useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace(uniqueFontFamily, `url(${gizaFont})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font failed to load, using fallback');
-        setFontLoaded(false);
-      }
-    };
+    setFontLoaded(fontsLoaded);
+  }, [fontsLoaded]);
 
-    loadFont();
-  }, []);
+  // Font loading handled by useMultipleFontLoader
 
   const clockLabels = [
     'a',
@@ -130,7 +132,7 @@ export default function AardvarkClock() {
           position: 'relative',
           width: 'min(80vmin, 90%)',
           height: 'min(80vmin, 90%)',
-          fontFamily: `'${uniqueFontFamily}', serif`,
+          fontFamily: 'Giza_20260107, serif',
           color: '#F45309',
         }}
       >

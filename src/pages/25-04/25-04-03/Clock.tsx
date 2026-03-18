@@ -1,52 +1,42 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 import mobyFont from '../../../assets/fonts/25-04-03-moby.ttf';
 import waves from '../../../assets/images/25-04/25-04-03/waves.gif';
 
 const MobyDickClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'MobyClockFont',
+      fontUrl: mobyFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const clockRef = useRef(null);
   const [fontLoaded, setFontLoaded] = useState(false);
   const componentId = useRef(`moby-clock-${Date.now()}`);
-  const fontName = `MobyClockFont-${componentId.current}`;
 
-  // Scoped font loading
+  // Update fontLoaded state when fontsLoaded changes
   useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace(fontName, `url(${mobyFont})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font failed to load, using fallback:', error);
-        setFontLoaded(false);
-      }
-    };
+    setFontLoaded(fontsLoaded);
+  }, [fontsLoaded]);
 
-    loadFont();
-
-    // Cleanup font on unmount
-    return () => {
-      for (const font of document.fonts) {
-        if (font.family === fontName) {
-          document.fonts.delete(font);
-          break;
-        }
-      }
-    };
-  }, [fontName]);
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     if (!fontLoaded) return; // Wait for font to load
 
+    let timeoutId: NodeJS.Timeout;
+
     // Create scoped CSS
     const style = document.createElement('style');
     style.innerHTML = `
-      @font-face {
-        font-family: '${fontName}';
-        src: url(${mobyFont}) format('truetype');
-      }
+      /* Font loading handled by useMultipleFontLoader */
       @keyframes float {
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-0.5rem); }
@@ -65,7 +55,7 @@ const MobyDickClock: React.FC = () => {
       return pos;
     };
 
-    const moveClock: React.FC = () => {
+    const moveClock = () => {
       const clock = clockRef.current;
       if (!clock) return;
 
@@ -102,7 +92,7 @@ const MobyDickClock: React.FC = () => {
 
       // Next move after 2-4 seconds randomly
       const nextTime = 2000 + Math.random() * 2000;
-      setTimeout(moveClock, nextTime);
+      timeoutId = setTimeout(moveClock, nextTime);
     };
 
     // Initial position: place clock off-screen so first move slides it in
@@ -118,8 +108,11 @@ const MobyDickClock: React.FC = () => {
     // Start animation loop
     moveClock();
 
-    return () => clearTimeout();
-  }, []);
+    return () => {
+      clearTimeout(timeoutId);
+      if (style.parentNode) style.parentNode.removeChild(style);
+    };
+  }, [fontLoaded]);
 
   return (
     <div
@@ -138,7 +131,7 @@ const MobyDickClock: React.FC = () => {
       <div
         ref={clockRef}
         style={{
-          fontFamily: fontLoaded ? `'${fontName}', cursive` : 'cursive',
+          fontFamily: fontLoaded ? 'MobyClockFont, cursive' : 'cursive',
           color: '#a1b4b4',
           textShadow:
             '#ced4d4 0.1rem 0.1rem 0.2rem, #000404 -0.1rem -0.1rem 0.9rem',

@@ -1,12 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 import clockBg from '../../../assets/images/25-07/25-07-30/ca.gif';
 import fullBg from '../../../assets/images/25-07/25-07-30/ca.gif';
 import myFont from '../../../assets/fonts/25-07-30-Cam.ttf'; // Import font
 
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'CustomFont',
+      fontUrl: myFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -14,14 +26,10 @@ const Clock: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Inject @font-face as a scoped <style> tag
+  // Font loading handled by useMultipleFontLoader
   useEffect(() => {
     const style = document.createElement('style');
     style.innerHTML = `
-      @font-face {
-        font-family: 'CustomFont';
-        src: url(${myFont}) format('truetype');
-      }
     `;
     document.head.appendChild(style);
 

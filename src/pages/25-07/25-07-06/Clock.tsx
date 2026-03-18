@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import polFont from '../../../assets/fonts/25-07-06-pol.otf';
 import polarisGif from '../../../assets/images/25-07/25-07-06/polaris.gif';
 
@@ -19,20 +19,22 @@ const CLOCK_NUMBERS = [
 ];
 
 const Clock: React.FC = () => {
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
   const [time, setTime] = useState(new Date());
 
-  useEffect(() => {
-    // Font loading
-    const font = new FontFace('pol', `url(${polFont}) format('opentype')`);
-    font
-      .load()
-      .then((loadedFont) => {
-        document.fonts.add(loadedFont);
-        setFontLoaded(true);
-      })
-      .catch((err) => console.error('Font load failed', err));
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'pol',
+      fontUrl: polFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
+  useEffect(() => {
     // Time update
     const interval = setInterval(() => {
       setTime(new Date());
@@ -127,7 +129,7 @@ const Clock: React.FC = () => {
             className="number"
             style={{
               position: 'absolute',
-              fontFamily: fontLoaded ? 'pol' : 'Arial, Helvetica, sans-serif',
+              fontFamily: fontsLoaded ? 'pol' : 'Arial, Helvetica, sans-serif',
               fontSize: '3.2rem',
               color: 'rgb(3, 3, 61)',
               textShadow: '#0f5c7a 0.3rem 0.3rem, #0f5c7a -0.3rem -0.3rem',

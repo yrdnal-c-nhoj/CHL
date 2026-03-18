@@ -1,17 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'VT323',
+      fontUrl: 'https://fonts.gstatic.com/s/vt323/v18/pxiKyp0ihIEF2isfFJA.ttf',
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState<any>('');
   const [bootText, setBootText] = useState<any>('');
   const [showEmail, setShowEmail] = useState<boolean>(false);
   const [showFooter, setShowFooter] = useState<boolean>(false);
 
-  // Load VT323 font
-  const fontReady = useFontLoader(
-    'VT323',
-    'https://fonts.gstatic.com/s/vt323/v18/pxiKyp0ihIEF2isfFJA.ttf',
-  );
+  // Font loading handled by useMultipleFontLoader
 
   // 1. Clock Logic
   useEffect(() => {

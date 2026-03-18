@@ -1,19 +1,14 @@
 import { useEffect, useState } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import airFontUrl from './air.ttf';
 import stampImg from './stamp.png';
 import stamp2Img from './stamp2.png';
 import stamp3Img from './stamp3.png';
 import frameImg from './frame.jpg';
 
-// Inject @font-face with fallback and enhanced media queries
+// CSS animations (font loading handled by useMultipleFontLoader)
 const styleSheet = new CSSStyleSheet();
 styleSheet.replaceSync(`
-  @font-face {
-    font-family: 'air';
-    src: url(${airFontUrl}) format('truetype');
-    font-display: swap;
-  }
-
   @keyframes bounceJostle {
     0%, 10%, 20%, 90%, 100% {
       transform: translate(-50%, -50%) translate(0, 0) rotate(0);
@@ -136,6 +131,19 @@ const styles = {
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState<Date>(() => new Date());
+
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'air',
+      fontUrl: airFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);

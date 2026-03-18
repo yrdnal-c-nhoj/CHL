@@ -1,11 +1,26 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import woodImg from '../../../assets/images/25-05/25-05-13/wood.jpg';
 import tilesImg from '../../../assets/images/25-05/25-05-13/tiles.jpg';
 import hydFont from '../../../assets/fonts/25-05-13-hyd.ttf';
 
 const FlatClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'hyd',
+      fontUrl: hydFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Font loading handled by useMultipleFontLoader
+
   useEffect(() => {
     const updateClock: React.FC = () => {
       const now = new Date();

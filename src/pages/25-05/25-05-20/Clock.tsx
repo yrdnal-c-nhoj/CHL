@@ -1,9 +1,25 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import flaFont from '../../../assets/fonts/25-05-20-fla.ttf'; // Import the font file from the same folder
 
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'fla',
+      fontUrl: flaFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const mountRef = useRef(null);
+
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -15,8 +31,9 @@ const Clock: React.FC = () => {
       0.1,
       1000,
     );
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0xb20832, 1); // Set background color
     mount.appendChild(renderer.domElement);
 
     const clockCanvas = document.createElement('canvas');

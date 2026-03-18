@@ -1,39 +1,31 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import monofettFont from '../../../assets/fonts/25-04-10-Monofett.ttf';
 
 const BarGraphClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'BarGraphClockFont',
+      fontUrl: monofettFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(fontsLoaded);
   const componentId = useRef(`bargraph-clock-${Date.now()}`);
-  const fontName = `BarGraphClockFont-${componentId.current}`;
 
-  // Scoped font loading
+  // Update fontLoaded state when fontsLoaded changes
   useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace(fontName, `url(${monofettFont})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font failed to load, using fallback:', error);
-        setFontLoaded(false);
-      }
-    };
+    setFontLoaded(fontsLoaded);
+  }, [fontsLoaded]);
 
-    loadFont();
-
-    // Cleanup font on unmount
-    return () => {
-      for (const font of document.fonts) {
-        if (font.family === fontName) {
-          document.fonts.delete(font);
-          break;
-        }
-      }
-    };
-  }, [fontName]);
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -57,7 +49,7 @@ const BarGraphClock: React.FC = () => {
     margin: 0,
     padding: 0,
     backgroundColor: '#e2af2c',
-    fontFamily: fontLoaded ? `"${fontName}", monospace` : 'monospace',
+    fontFamily: fontLoaded ? 'BarGraphClockFont, monospace' : 'monospace',
   };
 
   const segmentContainerStyle = {

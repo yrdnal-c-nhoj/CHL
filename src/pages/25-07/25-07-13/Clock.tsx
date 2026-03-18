@@ -1,18 +1,23 @@
 import React, { useEffect, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import rorFontUrl from '../../../assets/fonts/25-07-13-ror.ttf';
 
 const RorschachClock: React.FC = () => {
   const clockRef = useRef();
   const mirrorRef = useRef();
 
-  // Load the custom font
-  useEffect(() => {
-    const font = new FontFace('ror', `url(${rorFontUrl})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-    });
-  }, []);
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'ror',
+      fontUrl: rorFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   const getRandomFontSize = (min = 5, max = 14) => {
     return (Math.random() * (max - min) + min).toFixed(2) + 'vh';

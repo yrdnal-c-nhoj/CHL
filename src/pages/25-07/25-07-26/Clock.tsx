@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bg1 from '../../../assets/images/25-07/25-07-26/tum.gif';
 import bg2 from '../../../assets/images/25-07/25-07-26/tum2.gif';
 import myFontUrl from '../../../assets/fonts/25-07-26-sec.ttf';
@@ -13,6 +13,19 @@ const getRandomDifferentColor = (currentColor, palette) => {
 };
 
 const PrimaryColorClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'MyFont',
+      fontUrl: myFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const secondHandRef = useRef(null);
   const minHandRef = useRef(null);
   const hourHandRef = useRef(null);
@@ -75,12 +88,7 @@ const PrimaryColorClock: React.FC = () => {
   }, []);
 
   const fontFace = `
-    @font-face {
-      font-family: 'MyFont';
-      src: url(${myFontUrl}) format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
+    /* Font loading handled by useMultipleFontLoader */
   `;
 
   const styleTag = <style>{fontFace}</style>;

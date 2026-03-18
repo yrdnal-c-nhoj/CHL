@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import sliFont from '../../../assets/fonts/25-07-10-sli.otf';
 import sli2Font from '../../../assets/fonts/25-07-10-sli2.ttf';
 
@@ -13,6 +14,27 @@ const Clock: React.FC = () => {
   ];
   const [isMobile, setIsMobile] = useState<any>(window.innerWidth <= 600);
 
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'sli',
+      fontUrl: sliFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    },
+    {
+      fontFamily: 'sli2',
+      fontUrl: sli2Font,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 600);
     window.addEventListener('resize', handleResize);
@@ -24,14 +46,7 @@ const Clock: React.FC = () => {
 
     const styleSheet = document.createElement('style');
     styleSheet.textContent = `
-      @font-face {
-        font-family: 'sli';
-        src: url(${sliFont}) format('opentype');
-      }
-      @font-face {
-        font-family: 'sli2';
-        src: url(${sli2Font}) format('truetype');
-      }
+      /* Font loading handled by useMultipleFontLoader */
       .clock-component .digit {
         font-family: 'sli', cursive, sans-serif !important;
         font-size: 3.125rem !important;

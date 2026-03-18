@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import myFontWoff2 from '../../../assets/fonts/25-08-01-zod.ttf';
 import bg1 from '../../../assets/images/25-08/25-08-01/stars.webp';
 import bg2 from '../../../assets/images/25-08/25-08-01/zod.gif';
@@ -34,10 +34,19 @@ const AnalogClock: React.FC = () => {
 
   const numeralsRef = useRef(numerals);
   numeralsRef.current = numerals;
-  const fontLoaded = useFontLoader('MyCustomFont', myFontWoff2, {
-    fallback: true,
-    timeout: 3500,
-  });
+  
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'MyCustomFont',
+      fontUrl: myFontWoff2,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -223,9 +232,9 @@ const AnalogClock: React.FC = () => {
       <div
         style={{
           ...wrapperStyle,
-          opacity: fontLoaded ? 1 : 0,
+          opacity: fontsLoaded ? 1 : 0,
           transition: 'opacity 0.35s ease',
-          fontFamily: fontLoaded ? 'MyCustomFont, sans-serif' : 'sans-serif',
+          fontFamily: fontsLoaded ? 'MyCustomFont, sans-serif' : 'sans-serif',
         }}
       >
         <div style={containerStyle}>

@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import WebFonnov25ufuf from '../../../assets/fonts/25-11-05-webs1.ttf';
 import Webfont2511055 from '../../../assets/fonts/25-11-05-webs2.ttf';
 import w251105font from '../../../assets/fonts/25-11-05-webs3.ttf';
@@ -134,17 +135,41 @@ function Rulers({ viewportWidth, viewportHeight }) {
   );
 }
 
-export default function Clock251106() {
+function ModernDigitalClock() {
   const [now, setNow] = useState(new Date());
-  const [viewportWidth, setViewportWidth] = useState<any>(
-    typeof window !== 'undefined' ? window.innerWidth : 1440,
-  );
-  const [viewportHeight, setViewportHeight] = useState<any>(
-    typeof window !== 'undefined' ? window.innerHeight : 900,
-  );
-  const [fontsReady, setFontsReady] = useState<boolean>(false);
+  const [fontsReady, setFontsReady] = useState(false);
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+  const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
 
-  // Time update interval
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Bungee',
+      fontUrl: WebFonnov25ufuf,
+      options: {
+        weight: '400',
+        style: 'normal'
+      }
+    },
+    {
+      fontFamily: 'Poppins',
+      fontUrl: Webfont2511055,
+      options: {
+        weight: '700',
+        style: 'normal'
+      }
+    },
+    {
+      fontFamily: 'Teko',
+      fontUrl: w251105font,
+      options: {
+        weight: '700',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 100);
     return () => clearInterval(id);
@@ -164,7 +189,7 @@ export default function Clock251106() {
 
   // Resize listener
   useEffect(() => {
-    const handleResize: React.FC = () => {
+    const handleResize = () => {
       setViewportWidth(window.innerWidth);
       setViewportHeight(window.innerHeight);
     };
@@ -228,30 +253,10 @@ export default function Clock251106() {
         boxSizing: 'border-box',
       }}
     >
-      {/* 2. Simplified Inline @font-face declarations using imported URLs */}
+      {/* Font loading handled by useMultipleFontLoader */}
       <style>
         {`
-          @font-face {
-            font-family: 'Bungee';
-            src: url(${WebFonnov25ufuf}) format('truetype');
-            font-weight: 400;
-            font-style: normal;
-            font-display: swap;
-          }
-          @font-face {
-            font-family: 'Poppins';
-            src: url(${Webfont2511055}) format('truetype');
-            font-weight: 700;
-            font-style: normal;
-            font-display: swap;
-          }
-          @font-face {
-            font-family: 'Teko';
-            src: url(${w251105font}) format('truetype');
-            font-weight: 700;
-            font-style: normal;
-            font-display: swap;
-          }
+          /* Font loading handled by useMultipleFontLoader */
         `}
       </style>
 
@@ -745,3 +750,5 @@ export default function Clock251106() {
     </div>
   );
 }
+
+export default ModernDigitalClock;

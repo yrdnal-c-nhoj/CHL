@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import spr from '../../../assets/images/25-05/25-05-26/spr.gif';
 import sprou from '../../../assets/images/25-05/25-05-26/sprou.gif';
 import sprout from '../../../assets/images/25-05/25-05-26/sprout.gif';
@@ -100,38 +101,28 @@ function pad(num, length) {
 }
 
 export default function SproutClock() {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'sprout',
+      fontUrl: sproutFontTtf, // Using TTF as primary for consistency
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState<any>({ h: [], m: [], s: [], ms: [] });
   const [fontReady, setFontReady] = useState<boolean>(false);
 
-  // Inline FontFace loading with woff2 primary and ttf fallback (no external CSS file)
+  // Update fontReady state when fontsLoaded changes
   useEffect(() => {
-    let cancelled = false;
+    setFontReady(fontsLoaded);
+  }, [fontsLoaded]);
 
-    const load = async () => {
-      try {
-        const face = new FontFace(
-          'sprout',
-          `url(${sproutFontWoff2}) format('woff2'), url(${sproutFontTtf}) format('truetype')`,
-        );
-        const loaded = await face.load();
-        if (!cancelled) {
-          document.fonts.add(loaded);
-          setFontReady(true);
-        }
-      } catch (err) {
-        console.error('Sprout font load failed, using fallback', err);
-        if (!cancelled) {
-          // Allow render even if font fails
-          setFontReady(true);
-        }
-      }
-    };
-
-    load();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const update: React.FC = () => {

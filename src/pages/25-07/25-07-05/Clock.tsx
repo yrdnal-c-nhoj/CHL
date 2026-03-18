@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import vegasFontUrl from '../../../assets/fonts/25-07-05-vegas.ttf';
 
 const VegasClock: React.FC = () => {
@@ -12,22 +12,31 @@ const VegasClock: React.FC = () => {
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('vegas', vegasFontUrl, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'vegas',
+      fontUrl: vegasFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   // Initialize YouTube IFrame API
   useEffect(() => {
+    let scriptTag = null;
+    
     if (!window.YT) {
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      document.body.appendChild(tag);
+      scriptTag = document.createElement('script');
+      scriptTag.src = 'https://www.youtube.com/iframe_api';
+      document.body.appendChild(scriptTag);
     }
 
     window.onYouTubeIframeAPIReady = () => {
-      if (!playerRef.current) {
+      if (!playerRef.current && playerContainerRef.current) {
         playerRef.current = new window.YT.Player(playerContainerRef.current, {
           videoId: 'jtvmwjzZY0c',
           playerVars: {
@@ -43,11 +52,33 @@ const VegasClock: React.FC = () => {
         });
       }
     };
+
+    // Cleanup function
+    return () => {
+      if (playerRef.current) {
+        try {
+          playerRef.current.destroy();
+        } catch (e) {
+          // Player might already be destroyed
+        }
+        playerRef.current = null;
+      }
+      window.onYouTubeIframeAPIReady = null;
+      
+      // Clean up script tag
+      if (scriptTag && scriptTag.parentNode) {
+        try {
+          scriptTag.parentNode.removeChild(scriptTag);
+        } catch (e) {
+          // Script might already be removed
+        }
+      }
+    };
   }, []);
 
   // Clock logic
   useEffect(() => {
-    if (!fontReady) return;
+    if (!fontsLoaded) return;
 
     const refs = {
       hour1: hour1Ref.current,
@@ -107,15 +138,15 @@ const VegasClock: React.FC = () => {
     setTimeout(() => setFlicker('hour1', 4000, 12000), 2000);
 
     return () => clearInterval(interval);
-  }, [fontReady]);
+  }, [fontsLoaded]);
 
   const iframeStyle = {
     position: 'fixed',
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100dvh',
-    zIndex: 1,
+    height: '100vh',
+    zIndex: -1,
     pointerEvents: 'none',
   };
 
@@ -129,7 +160,7 @@ const VegasClock: React.FC = () => {
   };
 
   const clockContainerStyle = {
-    display: fontReady ? 'flex' : 'none', // hide until ready
+    display: fontsLoaded ? 'flex' : 'none', // hide until ready
     flexDirection: 'row',
     gap: '1vmin',
     alignItems: 'center',

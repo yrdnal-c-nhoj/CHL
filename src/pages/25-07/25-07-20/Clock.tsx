@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import camFont from '../../../assets/fonts/25-07-20-cam.otf';
 import bg1 from '../../../assets/images/25-07/25-07-20/ca.webp';
 import bg2 from '../../../assets/images/25-07/25-07-20/cam.webp';
@@ -8,6 +8,18 @@ import bg3 from '../../../assets/images/25-07/25-07-20/camer.webp';
 import bg4 from '../../../assets/images/25-07/25-07-20/camr.webp';
 
 const FStopClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'fstop-cam',
+      fontUrl: camFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
   useEffect(() => {
     const hourHand = document.getElementById('fstop-hourHand');
     const minuteHand = document.getElementById('fstop-minuteHand');
@@ -81,10 +93,7 @@ const FStopClock: React.FC = () => {
       }}
     >
       <style>{`
-        @font-face {
-          font-family: 'fstop-cam';
-          src: url(${camFont}) format('opentype');
-        }
+        /* Font loading handled by useMultipleFontLoader */
 
         .fstop-wrapper {
           font-size: 2vh;

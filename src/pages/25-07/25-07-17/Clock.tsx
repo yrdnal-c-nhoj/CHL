@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 
 // Import font and images as modules from the same folder
 import animFont from '../../../assets/fonts/25-07-17-ani.ttf';
@@ -20,13 +20,8 @@ import num12Img from '../../../assets/images/25-07/25-07-17/gergfeds.gif';
 
 import bgImage from '../../../assets/images/25-07/25-07-17/anim.webp';
 
-// Inject font-face and background rotation styles
+// Inject background rotation styles (font loading handled by useMultipleFontLoader)
 const fontFaceStyle = `
-@font-face {
-  font-family: 'anim';
-  src: url(${animFont}) format('truetype');
-}
-
 @keyframes rotateCCW {
   from {
     transform: translate(-50%, -50%) rotate(0deg);
@@ -43,18 +38,18 @@ const fontFaceStyle = `
 
 const texts = [
   'Ursus arctos middendorffi',
-  'Macropus rufus',
-  'Harpia harpyja',
-  'Eunectes murinus',
-  'Suncus etruscus',
-  'Dicopomorpha echmepterygis',
-  'Mycoplasma genitalium',
-  'Balaenoptera musculus',
-  'Loxodonta africana',
-  'Ceratotherium simum',
-  'Crocodylus porosus',
-  'Equus ferus caballus',
-];
+    'Macropus rufus',
+    'Harpia harpyja',
+    'Eunectes murinus',
+    'Suncus etruscus',
+    'Dicopomorpha echmepterygis',
+    'Mycoplasma genitalium',
+    'Balaenoptera musculus',
+    'Loxodonta africana',
+    'Ceratotherium simum',
+    'Crocodylus porosus',
+    'Equus ferus caballus',
+  ];
 
 const images = [
   { img: num1Img, className: 'num1', style: { left: '78%', top: '65%' } },
@@ -88,7 +83,20 @@ const numberSizes = {
 
 const textRotationDegrees = Array.from({ length: 12 }, (_, i) => i * 30);
 
-const AnalogClock: React.FC = () => {
+const AnimatedClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'anim',
+      fontUrl: animFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -278,4 +286,4 @@ const AnalogClock: React.FC = () => {
   );
 };
 
-export default AnalogClock;
+export default AnimatedClock;

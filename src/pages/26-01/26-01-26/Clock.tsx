@@ -1,56 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { useGlobalStyles } from '../../../utils/enhancedFontLoader';
-import { useEnhancedFontLoader } from '../../../utils/enhancedFontLoader';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 
 // Explicit Asset Imports
 import top260126Font from '../../../assets/fonts/26-01-26-halfb.ttf';
 import bottom260126Font from '../../../assets/fonts/26-01-26-halft.ttf';
 
 const DynamicComponent: React.FC = () => {
-  const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
   const [time, setTime] = useState(new Date());
+
+  const fontsLoaded = useMultipleFontLoader(
+    useMemo(
+      () => [
+        { fontFamily: 'TopFont', fontUrl: top260126Font, options: { display: 'block' } },
+        { fontFamily: 'BottomFont', fontUrl: bottom260126Font, options: { display: 'block' } },
+      ],
+      [],
+    ),
+  );
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    const styleId = 'static-font-styles';
-    let styleTag = document.getElementById(styleId);
-
-    if (!styleTag) {
-      styleTag = document.createElement('style');
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
-    }
-
-    styleTag.innerHTML = `
-      @font-face {
-        font-family: 'TopFont';
-        src: url('${top260126Font}') format('truetype');
-        font-display: block;
-      }
-      @font-face {
-        font-family: 'BottomFont';
-        src: url('${bottom260126Font}') format('truetype');
-        font-display: block;
-      }
-    `;
-
-    Promise.all([
-      document.fonts.load('1vh TopFont'),
-      document.fonts.load('1vh BottomFont'),
-    ])
-      .then(() => {
-        // Small delay to ensure layout is ready
-        setTimeout(() => setFontsLoaded(true), 125);
-      })
-      .catch(() => {
-        setFontsLoaded(true);
-      });
   }, []);
 
   const timeString = time

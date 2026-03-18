@@ -1,152 +1,125 @@
 /** @jsxImportSource react */
-import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
-import cus251101font from '../../../assets/fonts/25-11-01-edgecase.ttf'; // 🟩 Local font
+import React, { useEffect, useState, useMemo } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import cus251101font from '../../../assets/fonts/25-11-01-edgecase.ttf';
 
 export default function EdgeClockWithHands() {
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: 'CustomClockFont',
+      fontUrl: cus251101font,
+      options: { weight: 'normal', style: 'normal' }
+    }
+  ], []);
+
+  const isFontReady = useMultipleFontLoader(fontConfigs);
   const [time, setTime] = useState(new Date());
-  const [viewport, setViewport] = useState<any>({ width: 0, height: 0 });
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-  const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-  const numberAndHandColor = '#FF6B6B'; // Define the missing color variable
-
-  // Simple scoped font loading without leaks
-  useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace(
-          'CustomClockFont',
-          `url(${cus251101font})`,
-        );
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font failed to load, using fallback');
-        setFontLoaded(false);
-      }
-    };
-
-    loadFont();
-  }, []);
-
-  // Continuous update for smooth hands
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 50); // Update every 50ms for smooth hand movement
-    return () => clearInterval(interval);
-  }, []);
-
-  // Track viewport size
-  useEffect(() => {
-    const updateSize = () =>
-      setViewport({ width: window.innerWidth, height: window.innerHeight });
-    updateSize();
-    window.addEventListener('resize', updateSize);
-    return () => window.removeEventListener('resize', updateSize);
-  }, []);
-
-  const centerX = viewport.width / 2;
-  const centerY = viewport.height / 2;
-  const margin = 1; // in vh units
-
-  // Time calculations
-  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
-  const minutes = time.getMinutes() + seconds / 60;
-  const hours = (time.getHours() % 12) + minutes / 60;
-
-  const secondDeg = seconds * 6;
-  const minuteDeg = minutes * 6;
-  const hourDeg = hours * 30;
-
-  // Hands style with fixed pixel sizes
-  const handStyle = (widthPx, lengthPx, color, rotation) => ({
-    position: 'absolute',
-    width: `${widthPx}px`,
-    height: `${lengthPx}px`,
-    backgroundColor: '#F7F3F3FF',
-    transformOrigin: '50% 100%',
-    top: `${centerY - lengthPx}px`,
-    left: `${centerX - widthPx / 2}px`,
-    transform: `rotate(${rotation}deg)`,
-    borderRadius: '2px',
-    zIndex: 3,
+  const [viewport, setViewport] = useState({ 
+    width: typeof window !== 'undefined' ? window.innerWidth : 0, 
+    height: typeof window !== 'undefined' ? window.innerHeight : 0 
   });
 
-  // Place numbers slightly closer to the center
-  const numberStyle = (num) => {
-    const angle = (num - 3) * (Math.PI / 6);
-    const dx =
-      angle === 0 || angle === Math.PI
-        ? centerX - (margin * viewport.height) / 100
-        : centerX / Math.abs(Math.cos(angle));
-    const dy =
-      angle === Math.PI / 2 || angle === -Math.PI / 2
-        ? centerY - (margin * viewport.height) / 100
-        : centerY / Math.abs(Math.sin(angle));
-    const dist = Math.min(dx, dy) * 0.9;
+  useEffect(() => {
+    const interval = setInterval(() => setTime(new Date()), 50);
+    const updateSize = () => setViewport({ width: window.innerWidth, height: window.innerHeight });
+    window.addEventListener('resize', updateSize);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('resize', updateSize);
+    };
+  }, []);
 
-    const x = centerX + Math.cos(angle) * dist;
-    const y = centerY + Math.sin(angle) * dist;
+  const { width, height } = viewport;
+  const padding = 40; // Space from the literal edge of the screen in pixels
+
+  const getNumberStyle = (num: number): React.CSSProperties => {
+    let x = 50; // Percent
+    let y = 50; // Percent
+
+    // Map clock numbers to rectangular edge coordinates
+    switch (num) {
+      case 12: x = 50; y = 0; break;
+      case 1:  x = 75; y = 0; break;
+      case 2:  x = 100; y = 25; break;
+      case 3:  x = 100; y = 50; break;
+      case 4:  x = 100; y = 75; break;
+      case 5:  x = 75; y = 100; break;
+      case 6:  x = 50; y = 100; break;
+      case 7:  x = 25; y = 100; break;
+      case 8:  x = 0; y = 75; break;
+      case 9:  x = 0; y = 50; break;
+      case 10: x = 0; y = 25; break;
+      case 11: x = 25; y = 0; break;
+    }
+
+    // Convert percentages to pixels with padding
+    const left = `calc(${x}% + ${x === 0 ? padding : x === 100 ? -padding : 0}px)`;
+    const top = `calc(${y}% + ${y === 0 ? padding : y === 100 ? -padding : 0}px)`;
 
     return {
       position: 'absolute',
-      left: `${x}px`,
-      top: `${y}px`,
+      left,
+      top,
       transform: 'translate(-50%, -50%)',
-      fontSize: '4vh',
-      color: numberAndHandColor,
-      fontFamily: 'CustomClockFont',
-      zIndex: 2,
+      fontSize: '6vh',
+      color: '#FF6B6B',
+      fontFamily: 'CustomClockFont, sans-serif',
+      zIndex: 10,
     };
   };
 
-  // Rectangle dimensions: 50px smaller than viewport
-  const rectWidth = viewport.width - 130;
-  const rectHeight = viewport.height - 130;
+  // Hand calculations
+  const s = time.getSeconds() + time.getMilliseconds() / 1000;
+  const m = time.getMinutes() + s / 60;
+  const h = (time.getHours() % 12) + m / 60;
+
+  const handStyle = (w: number, l: number, rot: number, color = '#F7F3F3FF'): React.CSSProperties => ({
+    position: 'absolute',
+    width: `${w}px`,
+    height: `${l}vh`, // Use vh for responsive length
+    backgroundColor: color,
+    bottom: '50%',
+    left: `calc(50% - ${w / 2}px)`,
+    transformOrigin: '50% 100%',
+    transform: `rotate(${rot}deg)`,
+    borderRadius: '10px',
+    zIndex: 5,
+  });
 
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        position: 'relative',
-        overflow: 'hidden',
-        backgroundColor: '#05322DFF',
-        border: '6px solid #72FF06FF', // Component border
-        boxSizing: 'border-box',
-        opacity: fontLoaded ? 1 : 0,
-        transition: 'opacity 0.2s ease-out',
-      }}
-    >
-      {/* Yellow rectangle, 50px smaller than viewport, centered */}
-      {viewport.width > 0 && (
-        <div
-          style={{
-            position: 'absolute',
-            width: `${rectWidth}px`,
-            height: `${rectHeight}px`,
-            top: `${(viewport.height - rectHeight) / 2}px`, // Center vertically
-            left: `${(viewport.width - rectWidth) / 2}px`, // Center horizontally
-            border: '11px solid #1A3D02FF', // Yellow border
-            boxSizing: 'border-box',
-            zIndex: 1, // Behind numbers and hands
-          }}
-        />
-      )}
+    <div style={{
+      width: '100vw',
+      height: '100dvh',
+      position: 'relative',
+      backgroundColor: '#05322DFF',
+      overflow: 'hidden',
+      opacity: isFontReady ? 1 : 0,
+      transition: 'opacity 0.5s',
+      border: '8px solid #72FF06FF',
+      boxSizing: 'border-box'
+    }}>
+      {/* Numbers at Rectangular Edges */}
+      {[1,2,3,4,5,6,7,8,9,10,11,12].map(n => (
+        <div key={n} style={getNumberStyle(n)}>{n}</div>
+      ))}
 
-      {viewport.width > 0 &&
-        numbers.map((n) => (
-          <React.Fragment key={n}>
-            <div style={numberStyle(n)}>{n}</div>
-          </React.Fragment>
-        ))}
+      {/* Clock Hands */}
+      <div style={handStyle(12, 30, h * 30)} /> {/* Hour */}
+      <div style={handStyle(8, 40, m * 6)} />   {/* Minute */}
+      <div style={handStyle(4, 45, s * 6, '#FF6B6B')} /> {/* Second */}
 
-      {/* Clock hands with fixed pixel sizes */}
-      <div style={handStyle(6, 15, numberAndHandColor, hourDeg)} />
-      <div style={handStyle(4, 20, numberAndHandColor, minuteDeg)} />
-      <div style={handStyle(2, 25, numberAndHandColor, secondDeg)} />
+      {/* Center Cap */}
+      <div style={{
+        position: 'absolute',
+        width: '20px',
+        height: '20px',
+        backgroundColor: '#F7F3F3FF',
+        borderRadius: '50%',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        zIndex: 6
+      }} />
     </div>
   );
 }
