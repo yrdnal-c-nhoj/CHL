@@ -253,3 +253,11 @@ const TOP_AIRPORTS = [
   { code: 'YOW', name: 'Ottawa Macdonald-Cartier International Airport', city: 'Ottawa', country: 'Canada', lat: 45.3225, lon: -75.6692 },
   { code: 'YUL', name: 'Pierre Elliott Trudeau International Airport', city: 'Montreal', country: 'Canada', lat: 45.4706, lon: -73.7410 },
   { code: 'YQB', name: 'Québec City Jean Lesage International Airport', city: 'Quebec City', country: 'Canada', lat: 46.7897, lon: -71.3819 },
+];
+
+const FlightDuration: React.FC = () => {
+  // Component implementation would go here
+  return <div>Flight Duration Component</div>;
+};
+
+export default FlightDuration;

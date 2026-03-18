@@ -1,24 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
 import myCustomFont from '../../../assets/fonts/25-07-27-som.ttf';
 import backgroundImage from '../../../assets/images/25-07/25-07-27/met.jpg'; // Import your background image
 
+interface Digit {
+  id: number;
+  char: string;
+  top: number;
+  typeClass: 'hour' | 'minuteTens' | 'minuteOnes';
+  color: string;
+}
+
 const Clock: React.FC = () => {
-  const [digits, setDigits] = useState<any>([]);
+  const [digits, setDigits] = useState<Digit[]>([]);
 
   useEffect(() => {
-    const formatTime = (date) => {
+    const formatTime = (date: Date): string => {
       let h = date.getHours() % 12;
       if (h === 0) h = 12;
       const m = String(date.getMinutes()).padStart(2, '0');
       return `${h}${m}`;
     };
 
-    const addDigit = (char, index, hourLength) => {
+    const addDigit = (char: string, index: number, hourLength: number) => {
       const id = Date.now() + Math.random();
       const top = Math.random() * 90;
 
-      let typeClass, color;
+      let typeClass: Digit['typeClass'], color: string;
 
       if (index < hourLength) {
         typeClass = 'hour';
@@ -57,7 +64,7 @@ const Clock: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const digitStyle = (top) => ({
+  const digitStyle = (top: number): React.CSSProperties => ({
     position: 'absolute',
     top: `${top}vh`,
     left: '-30vw',
