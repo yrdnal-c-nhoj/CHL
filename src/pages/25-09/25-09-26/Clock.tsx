@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useKeyframes } from '../../../utils/enhancedFontLoader';
+import { useGlobalStyles } from '../../../utils/enhancedFontLoader';
+import { useEnhancedFontLoader } from '../../../utils/enhancedFontLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import bgImage926 from '../../../assets/images/25-09/25-09-26/wall.webp';

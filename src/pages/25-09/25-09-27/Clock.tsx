@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useGlobalStyles } from '../../../utils/enhancedFontLoader';
+import { useEnhancedFontLoader } from '../../../utils/enhancedFontLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import sss47wert from '../../../assets/fonts/25-09-27-disc.ttf?url';
