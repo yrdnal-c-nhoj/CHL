@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import penFontUrl from '../../../assets/fonts/25-07-11-Pen.ttf';
 
 const PenmanshipClock: React.FC = () => {
   const [timeString, setTimeString] = useState<any>('--:--');
   const [ampm, setAmpm] = useState<any>('--');
   const [gridSize, setGridSize] = useState<any>({ columns: 1, rows: 1 });
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false); // Track font load
 
-  // Load font
-  useEffect(() => {
-    const font = new FontFace('Pen', `url(${penFontUrl})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-      setFontLoaded(true); // Font is ready
-    });
-  }, []);
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Pen',
+      fontUrl: penFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   // Update time every second
   useEffect(() => {
@@ -50,7 +53,7 @@ const PenmanshipClock: React.FC = () => {
     return () => window.removeEventListener('resize', resize);
   }, []);
 
-  if (!fontLoaded) {
+  if (!fontsLoaded) {
     // Optionally render nothing or a placeholder until font is loaded
     return null; // avoids FOUT completely
   }

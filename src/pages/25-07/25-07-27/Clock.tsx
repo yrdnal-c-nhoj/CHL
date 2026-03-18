@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import myCustomFont from '../../../assets/fonts/25-07-27-som.ttf';
 import backgroundImage from '../../../assets/images/25-07/25-07-27/met.jpg'; // Import your background image
 
@@ -11,6 +12,19 @@ interface Digit {
 }
 
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'MyCustomFont',
+      fontUrl: myCustomFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [digits, setDigits] = useState<Digit[]>([]);
 
   useEffect(() => {
@@ -107,12 +121,7 @@ const Clock: React.FC = () => {
         ))}
       </div>
       <style>{`
-        @font-face {
-          font-family: 'MyCustomFont';
-          src: url(${myCustomFont}) format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
+        /* Font loading handled by useMultipleFontLoader */
 
         .hour, .minuteTens, .minuteOnes {
           animation:

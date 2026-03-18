@@ -1,31 +1,34 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bgVideo from '../../../assets/images/25-11/25-11-02/swim.mp4';
 import fallbackImg from '../../../assets/images/25-11/25-11-02/swim.webp';
 import fontFile2025_11_04 from '../../../assets/fonts/25-11-02-sperm.ttf'; // Custom scientific font
 
 export default function MonarchScene() {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'MedTech2025_11_04',
+      fontUrl: fontFile2025_11_04,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const videoRef = useRef(null);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [videoStyle, setVideoStyle] = useState<Record<string, any>>({});
   const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+  const [fontLoaded, setFontLoaded] = useState<boolean>(fontsLoaded);
 
-  // Load custom font
-  useEffect(() => {
-    const fontFace = new FontFace(
-      'MedTech2025_11_04',
-      `url(${fontFile2025_11_04}) format("truetype")`,
-    );
-    fontFace.load().then((loaded) => {
-      document.fonts.add(loaded);
-      document.fonts.ready.then(() => setFontLoaded(true));
-    });
-  }, []);
+  // Font loading handled by useMultipleFontLoader
 
   // Adjust background video scaling to ensure full coverage
-  const adjustVideoPosition: React.FC = () => {
+  const adjustVideoPosition = () => {
     const video = videoRef.current;
     if (!video) return;
 

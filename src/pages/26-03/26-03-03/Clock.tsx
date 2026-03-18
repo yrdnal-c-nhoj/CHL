@@ -1,9 +1,22 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import paperflowerVideo from '../../../assets/images/26-03/26-03-02/paperflower.mp4';
 import paperFont from '../../../assets/fonts/26-03-03-paper.ttf';
 
 const AnalogClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'PaperFont',
+      fontUrl: paperFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
   const [dimensions, setDimensions] = useState<any>({ width: 300, height: 300 });
 
@@ -61,10 +74,7 @@ const AnalogClock: React.FC = () => {
   return (
     <div style={{ width, height, position: 'relative', pointerEvents: 'none' }}>
       <style>{`
-        @font-face {
-          font-family: 'PaperFont';
-          src: url(${paperFont}) format('truetype');
-        }
+        /* Font loading handled by useMultipleFontLoader */
         .clock-hand {
           position: absolute;
           bottom: 50%;

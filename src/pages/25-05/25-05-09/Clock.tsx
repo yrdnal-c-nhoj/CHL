@@ -1,23 +1,25 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import KinaFont from '../../../assets/fonts/25-05-09-Kina.ttf';
 import swurl from '../../../assets/images/25-05/25-05-09/swurl.gif';
 
 const importantNumbers = [12, 3, 6, 9];
 
-// Inject @font-face dynamically
-const KinaFontStyle = () => (
-  <style>{`
-    @font-face {
-      font-family: 'Kina';
-      src: url(${KinaFont}) format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-  `}</style>
-);
-
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Kina',
+      fontUrl: KinaFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Font loading and @font-face CSS handled by useMultipleFontLoader
   const clockRef = useRef(null);
   const [time, setTime] = useState(new Date());
 
@@ -36,7 +38,6 @@ const Clock: React.FC = () => {
 
   return (
     <>
-      <KinaFontStyle />
       <div
         style={{
           margin: 0,

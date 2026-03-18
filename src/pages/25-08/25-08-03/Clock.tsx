@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bgImage from '../../../assets/images/25-08/25-08-03/sta.gif';
 import overlay2 from '../../../assets/images/25-08/25-08-03/pro.gif';
 import overlay1 from '../../../assets/images/25-08/25-08-03/cur.webp';
@@ -10,6 +10,19 @@ const goldGradient =
   'linear-gradient(135deg, #ffd700, #ffec85, #b8860b, #f5d742)';
 
 const OrnateClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'ClockFont',
+      fontUrl: clockFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
@@ -37,15 +50,7 @@ const OrnateClock: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    const font = new FontFace('ClockFont', `url(${clockFont})`);
-    font
-      .load()
-      .then((loadedFont) => {
-        document.fonts.add(loadedFont);
-      })
-      .catch((error) => console.error('Font loading failed:', error));
-  }, []);
+  // Font loading handled by useMultipleFontLoader
 
   const styles = useMemo(
     () => ({

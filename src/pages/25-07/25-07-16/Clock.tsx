@@ -1,84 +1,43 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry.js';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import mobFontUrl from '../../../assets/fonts/25-07-16-mob.otf';
 
 const MobiusStripClock: React.FC = () => {
-  const containerRef = useRef();
-  const [timeString, setTimeString] = useState<any>(''); // For accessibility
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [timeString, setTimeString] = useState<string>('');
+
+  const fontConfigs = [{ fontFamily: 'mob', fontUrl: mobFontUrl }];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    // Wait until fonts are ready and container exists
+    if (!fontsLoaded || !containerRef.current) return;
 
-    // Scene setup
+    // --- Scene Setup ---
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000,
-    );
-    camera.position.z = 3;
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 4;
 
-    // Renderer setup
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    try {
-      if (!renderer.getContext()) {
-        containerRef.current.innerHTML =
-          '<p>Sorry, WebGL is not supported.</p>';
-        console.error('WebGL not supported');
-        return;
-      }
-    } catch (error) {
-      containerRef.current.innerHTML = '<p>Error initializing WebGL.</p>';
-      console.error('Error initializing WebGL:', error);
-      return;
-    }
-
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap DPR for performance
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 0);
-    renderer.outputColorSpace = THREE.SRGBColorSpace; // Fixed for Three.js >= r152
-    renderer.domElement.style.cssText =
-      'width: 100vw; height: 100vh; display: block;';
     containerRef.current.appendChild(renderer.domElement);
 
-    // Clock texture
+    // --- Canvas Texture ---
     const clockCanvas = document.createElement('canvas');
-    const dpr = window.devicePixelRatio || 1;
-    clockCanvas.width = 512 * dpr;
-    clockCanvas.height = 128 * dpr;
-    const clockContext = clockCanvas.getContext('2d');
-    if (!clockContext) {
-      console.error('Canvas context not supported');
-      return;
-    }
-    clockContext.scale(dpr, dpr);
+    clockCanvas.width = 1024; // Higher res for the strip
+    clockCanvas.height = 256;
+    const ctx = clockCanvas.getContext('2d');
     const clockTexture = new THREE.CanvasTexture(clockCanvas);
-    clockTexture.minFilter = THREE.LinearFilter;
     clockTexture.wrapS = THREE.RepeatWrapping;
-    clockTexture.wrapT = THREE.RepeatWrapping;
 
-    // Font setup
-    let fontLoaded = false;
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace('mob', `url(${mobFontUrl})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        fontLoaded = true;
-      } catch (error) {
-        console.warn('Font loading failed, using fallback:', error);
-        fontLoaded = false;
-      }
-    };
-
-    // Möbius strip
-    const mobiusFunction = (u, v, target) => {
-      const r = 1;
-      const w = 0.2;
+    // --- Möbius Geometry ---
+    const mobiusFunc = (u: number, v: number, target: THREE.Vector3) => {
+      const r = 1.5;
+      const w = 0.4;
       const theta = u * Math.PI * 2;
       const t = v * 2 - 1;
       const x = (r + w * t * Math.cos(theta / 2)) * Math.cos(theta);
@@ -87,139 +46,87 @@ const MobiusStripClock: React.FC = () => {
       target.set(x, y, z);
     };
 
-    const geometry = new ParametricGeometry(mobiusFunction, 50, 10); // Reduced segments for performance
-    const material = new THREE.MeshBasicMaterial({
-      map: clockTexture,
+    const geometry = new ParametricGeometry(mobiusFunc, 100, 20);
+    const material = new THREE.MeshBasicMaterial({ 
+      map: clockTexture, 
       side: THREE.DoubleSide,
-      emissive: 0xffffff,
-      emissiveIntensity: 1,
+      transparent: true 
     });
 
     const mobius = new THREE.Mesh(geometry, material);
-    const mobiusInner = new THREE.Mesh(geometry.clone(), material.clone());
-    mobiusInner.scale.set(2.5, 2.5, 2.5);
-    scene.add(mobius, mobiusInner);
+    scene.add(mobius);
 
-    // Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.minDistance = 2;
-    controls.maxDistance = 5;
 
-    // Clock update
-    let lastMinute = null;
-    const updateClockTexture: React.FC = () => {
+    // --- Update Logic ---
+    let animationFrameId: number;
+    
+    const updateClock = () => {
       const now = new Date();
-      const minute = now.getMinutes();
-      let hour = now.getHours();
-      const ampm = hour >= 12 ? 'PM' : 'AM';
-      hour = hour % 12 || 12;
-
-      if (minute !== lastMinute) {
-        lastMinute = minute;
-        const newTimeString = `${hour}:${minute.toString().padStart(2, '0')} ${ampm}`;
-        setTimeString(newTimeString); // Update for accessibility
-
-        clockContext.clearRect(
-          0,
-          0,
-          clockCanvas.width / dpr,
-          clockCanvas.height / dpr,
-        );
-        clockContext.fillStyle = 'rgba(0, 0, 0, 0.5)';
-        clockContext.fillRect(
-          0,
-          0,
-          clockCanvas.width / dpr,
-          clockCanvas.height / dpr,
-        );
-
-        const fontSize = Math.min(
-          clockCanvas.width / dpr / 4.5,
-          clockCanvas.height / dpr,
-        );
-        clockContext.font = `${fontSize}px ${fontLoaded ? 'mob' : 'Arial'}`;
-        clockContext.fillStyle = '#EFF1F1FF';
-        clockContext.textAlign = 'left';
-        clockContext.textBaseline = 'middle';
-        clockContext.fillText(newTimeString, 10, clockCanvas.height / dpr / 2);
-
+      const displayTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      
+      if (ctx) {
+        ctx.clearRect(0, 0, clockCanvas.width, clockCanvas.height);
+        // Draw background for the text path
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+        ctx.fillRect(0, 0, clockCanvas.width, clockCanvas.height);
+        
+        // Draw Text
+        ctx.fillStyle = '#ffffff';
+        ctx.font = `bold 120px mob, Arial`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        // Repeat the time across the texture so it's always visible on the strip
+        ctx.fillText(displayTime, clockCanvas.width / 4, clockCanvas.height / 2);
+        ctx.fillText(displayTime, (3 * clockCanvas.width) / 4, clockCanvas.height / 2);
+        
         clockTexture.needsUpdate = true;
       }
+      setTimeString(displayTime);
     };
 
-    // Animation
-    const animate: React.FC = () => {
-      requestAnimationFrame(animate);
-      mobius.rotation.x += 0.003;
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+      
       mobius.rotation.y += 0.005;
       mobius.rotation.z += 0.002;
-      mobiusInner.rotation.x -= 0.002;
-      mobiusInner.rotation.y -= 0.003;
-      mobiusInner.rotation.z -= 0.001;
+      
+      // Infinite scroll effect
+      clockTexture.offset.x -= 0.001;
+      
       controls.update();
-      clockTexture.offset.x -= 0.002;
-      if (clockTexture.offset.x < -1) clockTexture.offset.x += 1;
       renderer.render(scene, camera);
     };
 
-    // Start animation and clock updates
-    loadFont().then(() => {
-      updateClockTexture(); // Initial update after font loading
-      animate();
-      const timeUpdateInterval = setInterval(updateClockTexture, 1000);
-
-      // Resize handler
-      const handleResize: React.FC = () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      };
-      window.addEventListener('resize', handleResize);
-
-      // Cleanup
-      return () => {
-        clearInterval(timeUpdateInterval);
-        window.removeEventListener('resize', handleResize);
-        if (containerRef.current) {
-          containerRef.current.removeChild(renderer.domElement);
-        }
-        geometry.dispose();
-        material.dispose();
-        clockTexture.dispose();
-        renderer.dispose();
-      };
-    });
-
-    // Initial font style injection (for compatibility)
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'mob';
-        src: url(${mobFontUrl}) format('opentype');
-      }
-    `;
-    document.head.appendChild(style);
-
-    return () => {
-      document.head.removeChild(style);
+    const handleResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
     };
-  }, []);
+
+    // --- Start ---
+    updateClock();
+    const clockInterval = setInterval(updateClock, 1000);
+    animate();
+    window.addEventListener('resize', handleResize);
+
+    // --- Cleanup ---
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      clearInterval(clockInterval);
+      window.removeEventListener('resize', handleResize);
+      geometry.dispose();
+      material.dispose();
+      clockTexture.dispose();
+      renderer.dispose();
+      if (containerRef.current) containerRef.current.removeChild(renderer.domElement);
+    };
+  }, [fontsLoaded]); // Re-run when fonts actually load
 
   return (
-    <div
-      ref={containerRef}
-      style={{
-        height: '100dvh',
-        width: '100vw',
-        overflow: 'hidden',
-        margin: 0,
-        padding: 0,
-        background:
-          'radial-gradient(circle at center, #ff5978 0%, #8000ff 100%)',
-      }}
-    >
-      <span style={{ display: 'none' }} aria-live="polite">
+    <div ref={containerRef} style={{ width: '100vw', height: '100dvh', background: 'radial-gradient(circle, #ff5978, #8000ff)' }}>
+      <span className="sr-only" aria-live="polite" style={{ position: 'absolute', opacity: 0 }}>
         {timeString}
       </span>
     </div>

@@ -1,24 +1,30 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import c251004font from '../../../assets/fonts/25-10-04-iss.ttf';
-import { useFontLoader } from '../../../utils/fontLoader';
 import bgMp4 from '../../../assets/images/25-10/25-10-04/waterfall.mp4';
 import bgWebp from '../../../assets/images/25-10/25-10-04/waterfall.webp';
 
 const ClockVideoBackground: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'iss',
+      fontUrl: c251004font,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+  const [fontLoaded, setFontLoaded] = useState<boolean>(fontsLoaded);
   const videoRef = useRef(null);
 
-  // Load the font
-  useEffect(() => {
-    const font = new FontFace('iss', `url(${c251004font})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontLoaded(true);
-    });
-  }, []);
+  // Font loading handled by useMultipleFontLoader
 
   // Smooth clock updates using requestAnimationFrame
   useEffect(() => {

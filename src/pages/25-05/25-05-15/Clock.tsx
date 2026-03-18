@@ -1,44 +1,36 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import roulGif from '../../../assets/images/25-05/25-05-15/roul.gif';
 import rouleGif from '../../../assets/images/25-05/25-05-15/roule.gif';
 import rouletteSvg from '../../../assets/images/25-05/25-05-15/Roulette_french.svg';
 import loraFont from '../../../assets/fonts/25-05-15-lora.ttf';
 
 const RouletteClock: React.FC = () => {
-  // Load Lora font with scoped approach
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'RouletteClockFont',
+      fontUrl: loraFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [fontLoaded, setFontLoaded] = useState(false);
   const componentId = useRef(`roulette-clock-${Date.now()}`);
   const fontName = `RouletteClockFont-${componentId.current}`;
   const [time, setTime] = useState(new Date());
 
-  // Scoped font loading
+  // Update fontLoaded state when fontsLoaded changes
   useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace(fontName, `url(${loraFont})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font failed to load, using fallback:', error);
-        setFontLoaded(false);
-      }
-    };
+    setFontLoaded(fontsLoaded);
+  }, [fontsLoaded]);
 
-    loadFont();
-
-    // Cleanup font on unmount
-    return () => {
-      for (const font of document.fonts) {
-        if (font.family === fontName) {
-          document.fonts.delete(font);
-          break;
-        }
-      }
-    };
-  }, [fontName]);
+  // Font loading handled by useMultipleFontLoader
 
   const createClock: React.FC = () => {
     const clock = document.getElementById('clock');

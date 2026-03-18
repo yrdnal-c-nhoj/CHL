@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import elWebp from '../../../assets/images/25-05/25-05-31/el.webp';
 import el1 from '../../../assets/images/25-05/25-05-31/el1.png';
 import el2 from '../../../assets/images/25-05/25-05-31/el2.png';
@@ -9,15 +9,25 @@ import eleGif from '../../../assets/images/25-05/25-05-31/ele.gif';
 import fatFont from '../../../assets/fonts/25-05-31-fat.otf';
 
 const ElephantClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'fat',
+      fontUrl: fatFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const hourRef = useRef();
   const minuteRef = useRef();
   const secondRef = useRef();
   const orbitRef = useRef();
 
-  const fontReady = useFontLoader('fat', fatFont, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const hourHand = hourRef.current;
@@ -121,7 +131,7 @@ const ElephantClock: React.FC = () => {
         background: '#7e7c79',
         position: 'relative',
         fontFamily: 'sans-serif',
-        opacity: fontReady ? 1 : 0.3,
+        opacity: fontsLoaded ? 1 : 0.3,
         transition: 'opacity 0.3s ease',
       }}
     >

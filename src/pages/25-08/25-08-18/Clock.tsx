@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bg3 from '../../../assets/images/25-08/25-08-18/target.gif';
 import bg1 from '../../../assets/images/25-08/25-08-18/arrows.gif';
 import bg2 from '../../../assets/images/25-08/25-08-18/ar.gif';
@@ -17,29 +17,25 @@ export default function ClockLetters({
   letters = 'EPHiCUGLjgKp',
   showSecondHand = true,
 }) {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: CLOCK_FONT_FAMILY,
+      fontUrl: fontFileUrl,
+      options: {
+        weight: '700',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [now, setNow] = useState(new Date());
   const [rotation, setRotation] = useState<any>({ layer1: 0, layer2: 0 });
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false); // New: Track font load
 
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(interval);
-  }, []);
-
-  // New: Load font and set loaded state
-  useEffect(() => {
-    const font = new FontFace(CLOCK_FONT_FAMILY, `url(${fontFileUrl})`, {
-      style: 'normal',
-      weight: '700',
-    });
-    document.fonts.add(font);
-    font
-      .load()
-      .then(() => setFontLoaded(true))
-      .catch((err) => {
-        console.warn('Font load failed:', err);
-        setFontLoaded(true); // Fallback show content to avoid infinite hide
-      });
   }, []);
 
   // Animate rotating layers
@@ -426,7 +422,7 @@ export default function ClockLetters({
 
       <div style={faceWrap}>
         <div style={face}>
-          {fontLoaded && ( // New: Only render clock face when font is loaded
+          {fontsLoaded && ( // Only render clock face when font is loaded
             <>
               {ticks}
               {lettersNodes}

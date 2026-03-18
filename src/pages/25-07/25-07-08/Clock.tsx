@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import mintFont from '../../../assets/fonts/25-07-08-mint.ttf';
 import hourImg from '../../../assets/images/25-07/25-07-08/mint.png';
 import minuteImg from '../../../assets/images/25-07/25-07-08/minty.webp';
@@ -8,6 +8,18 @@ import secondImg from '../../../assets/images/25-07/25-07-08/min.png';
 import bgImage from '../../../assets/images/25-07/25-07-08/candy.jpg';
 
 const MintClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'mint',
+      fontUrl: mintFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
   useEffect(() => {
     const clock = document.getElementById('clock');
     for (let i = 1; i <= 12; i++) {
@@ -80,10 +92,7 @@ const MintClock: React.FC = () => {
     >
       <style>
         {`
-          @font-face {
-            font-family: 'mint';
-            src: url(${mintFont}) format('truetype');
-          }
+          /* Font loading handled by useMultipleFontLoader */
 
           .clock {
             z-index: 6;

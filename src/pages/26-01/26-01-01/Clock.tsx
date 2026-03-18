@@ -1,34 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useEnhancedFontLoader } from '../../../utils/enhancedFontLoader';
 
 // === Local assets ===
 import bg1 from '../../../assets/images/26-01/26-01-01/fan.webp';
 import myFontUrl from '../../../assets/fonts/26-01-01-fan.otf';
 
 const InvertedClock: React.FC = () => {
+  const fontLoaded = useEnhancedFontLoader('MyFontScoped', myFontUrl);
+
   const [time, setTime] = useState(new Date());
   const secondHandRef = useRef(null);
   const minHandRef = useRef(null);
   const hourHandRef = useRef(null);
   const [bgReady, setBgReady] = useState<boolean>(false);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
-  // Simple scoped font loading without leaks
-  useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace('MyFontScoped', `url(${myFontUrl})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font failed to load, using fallback');
-        setFontLoaded(false);
-      }
-    };
-
-    loadFont();
-  }, []);
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -76,9 +62,9 @@ const InvertedClock: React.FC = () => {
     display: 'flex', // Added for layout centering
     alignItems: 'center', // Centers vertically
     justifyContent: 'center', // Centers horizontally
-    opacity: fontLoaded && bgReady ? 1 : 0,
+    opacity: bgReady ? 1 : 0,
     transition: 'opacity 0.3s ease-in-out',
-    visibility: fontLoaded && bgReady ? 'visible' : 'hidden',
+    visibility: bgReady ? 'visible' : 'hidden',
   };
 
   const bgMediaStyle = {
@@ -143,10 +129,7 @@ const InvertedClock: React.FC = () => {
   return (
     <div style={containerStyle}>
       <style>{`
-        @font-face {
-          font-family: 'MyFontScoped';
-          src: url(${myFontUrl}) format('truetype');
-        }
+        /* Font loading handled by useMultipleFontLoader */
       `}</style>
 
       <div style={bgMediaStyle} />

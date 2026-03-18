@@ -1,11 +1,27 @@
 import { useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import antFontUrl from '../../../assets/fonts/25-05-19-Ant.ttf';
 import bg1 from '../../../assets/images/25-05/25-05-19/ants.gif';
 import bg2 from '../../../assets/images/25-05/25-05-19/ants1.gif';
 
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Ant',
+      fontUrl: antFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
+
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);

@@ -1,9 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import customFont from '../../../assets/fonts/25-07-28-gol.ttf'; // Import your custom font
 import backgroundImage from '../../../assets/images/25-07/25-07-28/go.gif';
 
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'CustomFont',
+      fontUrl: customFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(() => new Date());
 
   useEffect(() => {
@@ -34,12 +47,7 @@ const Clock: React.FC = () => {
     >
       <style>
         {`
-          @font-face {
-            font-family: 'CustomFont';
-            src: url(${customFont}) format('truetype');
-            font-weight: normal;
-            font-style: normal;
-          }
+          /* Font loading handled by useMultipleFontLoader */
         `}
       </style>
       <div

@@ -1,9 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bgImage from '../../../assets/images/25-08/25-08-08/q.webp';
 import fontFile_2025_11_01 from '../../../assets/fonts/25-08-08-q.otf';
 
 export default function DigitalClock() {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'MyCustomFont',
+      fontUrl: fontFile_2025_11_01,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
   const [offsetX, setOffsetX] = useState<number>(0);
 
@@ -46,12 +59,7 @@ export default function DigitalClock() {
     <>
       <style>
         {`
-          @font-face {
-            font-family: 'MyCustomFont';
-            src: url(${fontFile_2025_11_01}) format('opentype');
-            font-weight: normal;
-            font-style: normal;
-          }
+          /* Font loading handled by useMultipleFontLoader */
           html, body, #root {
             margin: 0; padding: 0; height: 100%;
             font-family: 'MyCustomFont', monospace, sans-serif;

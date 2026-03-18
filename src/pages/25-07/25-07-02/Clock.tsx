@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bakFont from '../../../assets/fonts/25-07-02-bak.ttf';
 import backgroundGif from '../../../assets/images/25-07/25-07-02/ba.gif';
 
@@ -9,13 +9,20 @@ export default function Clock() {
   const secondRef = useRef(null);
   const numberRefs = useRef([]);
 
-  useEffect(() => {
-    // --- Load font first, then add ---
-    const font = new FontFace('bak', `url(${bakFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-    });
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'bak',
+      fontUrl: bakFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
+  useEffect(() => {
     // --- Clock update loop ---
     const updateClock: React.FC = () => {
       const now = new Date();

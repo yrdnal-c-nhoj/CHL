@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import Cu250830 from '../../../assets/fonts/25-08-30-mem.ttf'; // your font file
 import bgImage from '../../../assets/images/25-08/25-08-30/mem.gif'; // your background image
 
 export default function MessyClock() {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: '250930',
+      fontUrl: Cu250830,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -44,12 +57,7 @@ export default function MessyClock() {
   return (
     <div style={clockStyle}>
       <style>
-        {`@font-face {
-            font-family: '250930';
-            src: url(${Cu250830}) format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }`}
+        {`/* Font loading handled by useMultipleFontLoader */`}
       </style>
       {timeString}
     </div>

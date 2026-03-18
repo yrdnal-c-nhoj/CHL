@@ -1,42 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import circleFont from '../../../assets/fonts/25-05-28-circle.ttf'; // Use working ttf file
 
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'circle-local',
+      fontUrl: circleFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-  const fontReady = useFontLoader('circle-local', circleFont, {
-    fallback: true,
-    timeout: 5000,
-  });
 
-  // Debug font loading
-  console.log('Circle font ready:', fontReady);
-  console.log('Circle font URL:', circleFont);
-  console.log('Font file exists:', !!circleFont);
-
-  // Force CSS font-face declaration to override any cached references
+  // Update fontLoaded state when fontsLoaded changes
   useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'circle-local';
-        src: url(${circleFont}) format('truetype');
-        font-display: block;
-        font-weight: normal;
-        font-style: normal;
-      }
-    `;
-    document.head.appendChild(style);
+    setFontLoaded(fontsLoaded);
+  }, [fontsLoaded]);
 
-    return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
-    };
-  }, [circleFont]);
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
-    if (!fontReady) return;
+    if (!fontsLoaded) return;
 
     let animationFrameId;
 
@@ -72,7 +62,7 @@ const Clock: React.FC = () => {
         cancelAnimationFrame(animationFrameId);
       }
     };
-  }, [fontReady]);
+  }, [fontsLoaded]);
 
   // Don't render until font is ready (loaded or fallback)
   if (!fontLoaded) {

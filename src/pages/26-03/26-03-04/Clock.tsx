@@ -1,14 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import sunFont from '../../../assets/fonts/26-03-04-sun.ttf';
 import sunBg from '../../../assets/images/26-03/26-03-04/sun-40.gif';
 
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'SunFont',
+      fontUrl: sunFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
   const [isMobile, setIsMobile] = useState<any>(
     typeof window !== 'undefined' && window.innerWidth < 768,
   );
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+  const [fontLoaded, setFontLoaded] = useState<boolean>(fontsLoaded);
+
+  // Update fontLoaded state when fontsLoaded changes
+  useEffect(() => {
+    setFontLoaded(fontsLoaded);
+  }, [fontsLoaded]);
+
+  // Font loading handled by useMultipleFontLoader
 
   const digitLetters = {
     0: 'c',
@@ -24,29 +44,14 @@ const Clock: React.FC = () => {
   };
 
   useEffect(() => {
-    // 1. Load Custom Font via FontFace API
-    const font = new FontFace('SunFont', `url(${sunFont})`);
-
-    font
-      .load()
-      .then((loadedFont) => {
-        document.fonts.add(loadedFont);
-        setFontLoaded(true);
-      })
-      .catch((err) => {
-        console.error('Font failed to load', err);
-        // Set to true anyway so the clock eventually shows in a fallback font
-        setFontLoaded(true);
-      });
-
-    // 2. Timer Interval
+    // Timer Interval
     const timer = setInterval(() => setTime(new Date()), 1000);
 
-    // 3. Resize Listener
+    // Resize Listener
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
 
-    // 4. Global Styles Cleanup
+    // Global Styles Cleanup
     document.body.style.margin = '0';
     document.body.style.padding = '0';
     document.body.style.overflow = 'hidden';

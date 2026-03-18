@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 
 // --- Assets ---
 import dripFont from '../../../assets/fonts/26-01-31-cond.ttf?url';
@@ -18,6 +18,7 @@ const CLOCK_CONFIG = {
 };
 
 /**
+ * Custom hook for clock time management
  * Custom Hook: useClock
  * Uses requestAnimationFrame for a "liquid" sweep motion
  * (much smoother than setInterval)
@@ -39,11 +40,21 @@ const useClock: React.FC = () => {
 };
 
 const AnalogClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'BorrowedAnalog',
+      fontUrl: dripFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const now = useClock();
-  const fontReady = useFontLoader('BorrowedAnalog', dripFont, {
-    fallback: true,
-    timeout: 3500,
-  });
+  const fontReady = fontsLoaded;
   const styles = getStyles(fontReady);
 
   // Time Calculations (including sub-second fractions for smooth motion)

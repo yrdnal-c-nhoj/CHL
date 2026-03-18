@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import customFont from '../../../assets/fonts/25-08-11-wash.otf';
 import bgImage from '../../../assets/images/25-08/25-08-11/mach.gif';
 import topImage from '../../../assets/images/25-08/25-08-11/wash.gif';
@@ -17,6 +17,19 @@ import img10 from '../../../assets/images/25-08/25-08-11/x.webp';
 import img11 from '../../../assets/images/25-08/25-08-11/y.gif';
 
 const SwirlingImages: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'CustomFont',
+      fontUrl: customFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const imageSizes = [9, 8, 10, 11, 9, 9, 9, 11, 9, 9, 8];
   const [viewport, setViewport] = useState<any>({
     width: window.innerWidth,
@@ -211,10 +224,7 @@ const SwirlingImages: React.FC = () => {
 
   const generateKeyframes: React.FC = () => {
     let keyframes = `
-      @font-face {
-        font-family: "CustomFont";
-        src: url(${customFont}) format("truetype");
-      }
+      /* Font loading handled by useMultipleFontLoader */
     `;
 
     images.forEach((img) => {

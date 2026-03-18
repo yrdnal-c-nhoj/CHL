@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bgImage from '../../../assets/images/25-06/25-06-18/cis.jpg';
 import cisFont from '../../../assets/fonts/25-06-18-cis.ttf';
 
 const CistercianClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('cis', cisFont, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'cis',
+      fontUrl: cisFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);

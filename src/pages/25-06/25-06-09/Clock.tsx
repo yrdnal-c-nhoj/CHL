@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 import ionFont from '../../../assets/fonts/25-06-09-ion.ttf';
 import ionJpeg from '../../../assets/images/25-06/25-06-09/ion.jpeg';
 import iskyWebp from '../../../assets/images/25-06/25-06-09/isky.webp';
@@ -96,17 +95,23 @@ export default function IonosphereClock() {
   const [clocks, setClocks] = useState<any>([]);
   const containerRef = useRef(null);
 
-  // Font + animations
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'ion',
+      fontUrl: ionFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Animations and global styles (font loading handled by useMultipleFontLoader)
   useEffect(() => {
     const styleEl = document.createElement('style');
     styleEl.innerHTML = `
-      @font-face {
-        font-family: 'ion';
-        src: url(${ionFont}) format('truetype');
-        font-weight: normal;
-        font-style: normal;
-      }
-
       body, html, #root {
         margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden;
         background: rgb(4, 30, 60);

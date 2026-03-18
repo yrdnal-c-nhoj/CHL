@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 
 // Assets
 import digitalFontUrl from '../../../assets/fonts/26-02-04-trans.ttf';
@@ -13,30 +12,27 @@ const CONFIG = {
 };
 
 const DigitalClockTemplate: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'BorrowedDigital',
+      fontUrl: digitalFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [animationName, setAnimationName] = useState<any>('');
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
-  // Simple scoped font loading without leaks
   useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace(
-          'BorrowedDigital',
-          `url(${digitalFontUrl})`,
-        );
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font failed to load, using fallback');
-        setFontLoaded(false);
-      }
-    };
-
-    loadFont();
-  }, []);
+    setFontLoaded(fontsLoaded);
+  }, [fontsLoaded]);
 
   useEffect(() => {
     // Device Detection

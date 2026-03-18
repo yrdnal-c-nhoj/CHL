@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import ci2602Font from '../../../assets/fonts/pin.ttf?url';
 
 // Constants moved outside to prevent re-allocation
@@ -14,11 +14,18 @@ const OutwardDistortedClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const requestRef = useRef();
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('Cine', ci2602Font, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Cine',
+      fontUrl: ci2602Font,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontReady = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     // High-performance animation loop

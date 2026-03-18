@@ -2,23 +2,28 @@ import React, { useEffect, useState, useRef } from 'react';
 // import bgVideo from './sea.mp4' // Video file not found in current directory
 import fallbackImg from '../../../assets/images/25-11/25-11-04/sea.webp';
 import cu251104font from '../../../assets/fonts/25-11-04-naut.ttf?url';
-import { useFontLoader } from '../../../utils/fontLoader'; // Nautical font
+import { useMultipleFontLoader } from '../../../utils/fontLoader'; // Nautical font
 
 export default function OceanStorm() {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'Nautical',
+      fontUrl: cu251104font,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [vh, setVh] = useState<any>(window.innerHeight);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     // Update vh dynamically
     const handleResize = () => setVh(window.innerHeight);
     window.addEventListener('resize', handleResize);
-
-    // Load custom font
-    const font = new FontFace('Nautical', `url(${cu251104font})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontLoaded(true);
-    });
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -67,7 +72,7 @@ export default function OceanStorm() {
           transformStyle: 'preserve-3d',
         }}
       >
-        {fontLoaded && <ClockFace />}
+        {fontsLoaded && <ClockFace />}
       </div>
 
       {/* Styles */}
@@ -99,8 +104,6 @@ export default function OceanStorm() {
           -webkit-text-fill-color: transparent;
           text-shadow: 0 0 2px rgba(255, 220, 120, 0.5);
         }
-
-        // .clock-glow {
     
       `}</style>
     </div>
@@ -114,7 +117,7 @@ function ClockFace() {
   const secondRef = useRef(null);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const seconds = now.getSeconds();
       const minutes = now.getMinutes();

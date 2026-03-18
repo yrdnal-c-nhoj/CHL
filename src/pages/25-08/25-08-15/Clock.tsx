@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import customFontUrl from '../../../assets/fonts/25-08-15-dom.ttf';
 import backgroundImg from '../../../assets/images/25-08/25-08-15/tabl.webp';
 
@@ -44,17 +44,21 @@ const styles = {
 };
 
 const DigitalClock: React.FC = () => {
+  const fontConfigs = [
+    {
+      fontFamily: 'dom',
+      fontUrl: customFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
-  const [fontReady, setFontReady] = useState<boolean>(false);
 
   useEffect(() => {
-    // Load custom font via FontFace API
-    const font = new FontFace('dom', `url(${customFontUrl})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontReady(true);
-    });
-
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
@@ -99,8 +103,8 @@ const DigitalClock: React.FC = () => {
     );
 
   return (
-    <div style={styles.clockContainer(fontReady)}>
-      {fontReady && (
+    <div style={styles.clockContainer(fontsLoaded)}>
+      {fontsLoaded && (
         <div style={styles.clockDisplay}>
           {renderTimeWithSeparateDigits(formatTime(time))}
         </div>

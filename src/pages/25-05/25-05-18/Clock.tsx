@@ -1,13 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bluFont from '../../../assets/fonts/25-05-18-blu.otf'; // local font
 import image1 from '../../../assets/images/25-05/25-05-18/13966281486_Volantis_Tumblr.gif'; // bottom layer
 import image2 from '../../../assets/images/25-05/25-05-18/8mMt.gif'; // middle layer
 import image3 from '../../../assets/images/25-05/25-05-18/bloo.gif'; // top layer
 
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'blu',
+      fontUrl: bluFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
+
+  // Font loading handled by useMultipleFontLoader
 
   // Update time every second
   useEffect(() => {

@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bgImage from '../../../assets/images/25-07/25-07-18/558074085193-ezgif.com-optiwebp-1.webp';
 import xrayFontUrl from '../../../assets/fonts/25-07-18-xray.ttf';
 
 const HospitalClock: React.FC = () => {
   const [time, setTime] = useState<any>('');
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('xray', xrayFontUrl, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'xray',
+      fontUrl: xrayFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     const updateClock: React.FC = () => {

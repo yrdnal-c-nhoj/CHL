@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import customFontUrl from '../../../assets/fonts/25-08-12-cubic.ttf'; // local font file
 import backgroundImage from '../../../assets/images/25-08/25-08-12/earth.webp'; // local background image
 
@@ -13,18 +13,22 @@ const faceColors = [
 ];
 
 export default function BiteviteHexahedron() {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'CustomHexFont',
+      fontUrl: customFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
-  // Load custom font before showing
-  useEffect(() => {
-    const font = new FontFace('CustomHexFont', `url(${customFontUrl})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-      setFontLoaded(true);
-    });
-  }, []);
-
+  // Font loading handled by useMultipleFontLoader
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
@@ -144,7 +148,7 @@ export default function BiteviteHexahedron() {
         <div style={bgLayerStyle} />
 
         {/* Only render cube when font is loaded */}
-        {fontLoaded && (
+        {fontsLoaded && (
           <div style={perspectiveStyle} className="hexa-perspective">
             <div style={cubeStyle}>
               {['front', 'back', 'right', 'left', 'top', 'bottom'].map(

@@ -1,22 +1,27 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 import bg1 from '../../../assets/images/25-06/25-06-26/co.png';
 import bg2 from '../../../assets/images/25-06/25-06-26/cos.png';
 import wheFont from '../../../assets/fonts/25-06-26-whe.ttf';
 
 const CosmicWheelClock: React.FC = () => {
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @font-face {
-        font-family: 'whe';
-        src: url(${wheFont}) format('truetype');
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'whe',
+      fontUrl: wheFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
       }
-    `;
-    document.head.appendChild(style);
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
+  // Font loading handled by useMultipleFontLoader
+
+  useEffect(() => {
     const updateClock: React.FC = () => {
       const now = new Date();
       let hours = now.getHours();

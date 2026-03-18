@@ -1,16 +1,28 @@
 import React, { useEffect, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import twentyFont from '../../../assets/fonts/25-06-28-twenty.otf';
 
 const Clock24: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'twenty',
+      fontUrl: twentyFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const hourRef = useRef();
   const minuteRef = useRef();
   const secondRef = useRef();
 
-  useEffect(() => {
-    const font = new FontFace('twenty', `url(${twentyFont})`);
-    font.load().then(() => document.fonts.add(font));
+  // Font loading handled by useMultipleFontLoader
 
+  useEffect(() => {
     const updateClock: React.FC = () => {
       const now = new Date();
       const h = now.getHours();

@@ -1,9 +1,24 @@
 import React, { useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import torGif from '../../../assets/images/25-05/25-05-24/tor.gif';
 import speedFont from '../../../assets/fonts/25-05-24-speed.ttf';
 
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'speed',
+      fontUrl: speedFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Font loading handled by useMultipleFontLoader
+
   useEffect(() => {
     const now = new Date();
     let hours = now.getHours();

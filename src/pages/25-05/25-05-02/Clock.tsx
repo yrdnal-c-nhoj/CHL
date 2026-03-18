@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 // Import your images as before
 import scorpImage from '../../../assets/images/25-05/25-05-02/sand.webp';
 import hourHandImage from '../../../assets/images/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif';
@@ -8,13 +8,19 @@ import minuteHandImage from '../../../assets/images/25-05/25-05-02/giphy1-ezgif.
 import secondHandImage from '../../../assets/images/25-05/25-05-02/giphy1-ezgif.com-rotate(3).gif';
 import fontFile from '../../../assets/fonts/25-05-02-scorp.ttf';
 
-// Generate unique font name once, outside the component
-const dateStr = new Date().toISOString().split('T')[0].replace(/-/g, '');
-const randomStr = Math.random().toString(36).substring(2, 7).toUpperCase();
-const uniqueFontName = `Font_${dateStr}_${randomStr}`;
-
 export default function Clock() {
-  const fontLoaded = useFontLoader(uniqueFontName, fontFile);
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'ScorpionFont',
+      fontUrl: fontFile,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     // Clock Animation Logic
@@ -58,7 +64,7 @@ export default function Clock() {
   }, []);
 
   // Block rendering until font is ready
-  if (!fontLoaded) return null;
+  if (!fontsLoaded) return null;
 
   const numbers = Array.from({ length: 12 }, (_, i) => ({
     value: i + 1,
@@ -106,7 +112,7 @@ export default function Clock() {
               textAlign: 'center',
               fontSize: '16.5vmin',
               color: '#c5c53e',
-              fontFamily: uniqueFontName, // Using the pre-generated unique name
+              fontFamily: 'ScorpionFont', // Using standardized font name
               textShadow: '#09f745 0.1rem 0.1rem, #080808 -0.1rem 0.1rem',
               transform: `rotate(${num.rotation}deg)`,
             }}

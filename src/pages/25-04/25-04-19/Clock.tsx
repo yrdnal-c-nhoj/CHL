@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import permanentMarkerFont from '../../../assets/fonts/25-04-19-sph.ttf';
 
 const BALL_SIZES = {
@@ -60,6 +60,19 @@ const roomTypes = [
 ];
 
 const SphereDropClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'SphFont',
+      fontUrl: permanentMarkerFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const towerRef = useRef(null);
   const latestBalls = useRef({ hours: null, minutes: null });
   const state = useRef({ hours: 0, minutes: 0, seconds: 0 });

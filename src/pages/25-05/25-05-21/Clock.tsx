@@ -1,25 +1,29 @@
 import { useEffect, useState } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import background from '../../../assets/images/25-05/25-05-21/signals.jpg';
 import semFont from '../../../assets/fonts/25-05-21-sem.ttf';
 
-// Inject font-face using JS
-const injectFont: React.FC = () => {
-  const style = document.createElement('style');
-  style.innerHTML = `
-    @font-face {
-      font-family: 'sem';
-      src: url(${semFont}) format('truetype');
-    }
-  `;
-  document.head.appendChild(style);
-};
-
 const Clock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'sem',
+      fontUrl: semFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
   const [time, setTime] = useState(new Date());
   const isMobile = window.innerWidth < 768;
 
+  // Font loading handled by useMultipleFontLoader
+
   useEffect(() => {
-    injectFont(); // Inject the font when component mounts
+    // Font loading handled by useMultipleFontLoader
     // Ensure the font is loaded and apply class when ready
     if (document && document.fonts) {
       document.fonts

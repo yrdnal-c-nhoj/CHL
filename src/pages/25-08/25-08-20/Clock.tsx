@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import myFontUrl from '../../../assets/fonts/25-08-20-go.otf';
 import bgImage from '../../../assets/images/25-08/25-08-20/24.webp'; // background image
 
@@ -31,16 +32,17 @@ const TIMEZONES = [
 
 function useCustomFont(fontName, fontUrl) {
   useEffect(() => {
+    // Font loading handled by useMultipleFontLoader
     const style = document.createElement('style');
     style.innerHTML = `
-      @font-face {
-        font-family: '${fontName}';
-        src: url(${fontUrl}) format('truetype');
-        font-display: swap;
-      }
+      /* Font loading handled by useMultipleFontLoader */
     `;
     document.head.appendChild(style);
-    return () => document.head.removeChild(style);
+    return () => {
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
+    };
   }, [fontName, fontUrl]);
 }
 

@@ -10,6 +10,7 @@ const Clock: React.FC = () => {
   const [imageAssignments, setImageAssignments] = useState<any>([]);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [currentImageIndex, setCurrentImageIndex] = useState<Record<string, any>>({});
+  const fontLoaded = useFontLoader('DateFont', fontFile);
 
   // 1. Update clock and change random images every second
   useEffect(() => {
@@ -134,13 +135,13 @@ const Clock: React.FC = () => {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     color: '#557F25',
-    fontFamily: "'DateFont', monospace",
+    fontFamily: fontLoaded ? "'DateFont', monospace" : 'monospace',
     fontSize: '11vh',
     fontWeight: 'bold',
     zIndex: 10,
     letterSpacing: '-1vh',
     whiteSpace: 'nowrap',
-    pointerEvents: 'none', // Allows clicking through text
+    pointerEvents: 'none' as const,
     textShadow:
       '-6px 0 rgb(244, 240, 240), 6px 0 rgb(28, 3, 3),  0 0 20px rgb(244, 240, 240)',
   };
@@ -151,7 +152,6 @@ const Clock: React.FC = () => {
   return (
     <div style={containerStyle}>
       <style>{`
-        @font-face { font-family: 'DateFont'; src: url(${fontFile}) format('truetype'); }
         .grid-img { transition: opacity 0.5s ease-in-out; object-fit: cover; width: 100%; height: 100%; }
       `}</style>
 

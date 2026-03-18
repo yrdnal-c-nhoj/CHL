@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import clockFont from '../../../assets/fonts/25-08-26-root.ttf';
 import bg0 from '../../../assets/images/25-08/25-08-26/rrr.webp'; // bottom-most
 import bg1 from '../../../assets/images/25-08/25-08-26/ro.gif'; // middle
@@ -9,11 +9,18 @@ import bg3 from '../../../assets/images/25-08/25-08-26/root.webp'; // top foregr
 export default function DigitalClock() {
   const [time, setTime] = useState<any>(getTimeParts);
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('ClockFontScoped_18_09_25', clockFont, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'ClockFontScoped_18_09_25',
+      fontUrl: clockFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   // Clock ticking
   useEffect(() => {
@@ -96,7 +103,7 @@ export default function DigitalClock() {
       transform,
     }),
     styleTag: {
-      fontFace: `@font-face { font-family: 'ClockFontScoped_18_09_25'; src: url(${clockFont}) format('truetype'); }`,
+      fontFace: `/* Font loading handled by useMultipleFontLoader */`,
     },
   };
 

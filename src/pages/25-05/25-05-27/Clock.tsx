@@ -1,52 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
-import dotsFontWoff2 from '../../../assets/fonts/25-05-27-dots.woff2'; // Preferred format
-import dotsFontOtf from '../../../assets/fonts/25-05-27-dots.otf'; // Fallback format
 import backgroundImage from '../../../assets/images/25-05/25-05-27/dot.jpg'; // Import background image
+import dotsFont from '../../../assets/fonts/25-05-27-dots.otf'; // Import font file
 
 function Clock() {
   const [time, setTime] = useState(new Date());
   const [isMobile, setIsMobile] = useState<any>(window.innerWidth < 600);
-  const [fontReady, setFontReady] = useState<boolean>(false);
+  const [fontLoaded, setFontLoaded] = useState(false);
 
-  // Inline FontFace loading with woff2 primary and otf fallback (no external CSS file)
+  // Load font using inline styles
   useEffect(() => {
-    let cancelled = false;
-
-    const preload = document.createElement('link');
-    preload.rel = 'preload';
-    preload.as = 'font';
-    preload.type = 'font/woff2';
-    preload.crossOrigin = 'anonymous';
-    preload.href = dotsFontWoff2;
-    document.head.appendChild(preload);
-
-    const load = async () => {
+    const loadFont = async () => {
       try {
-        const face = new FontFace(
-          'dots',
-          `url(${dotsFontWoff2}) format('woff2'), url(${dotsFontOtf}) format('opentype')`,
-        );
-        const loaded = await face.load();
-        if (!cancelled) {
-          document.fonts.add(loaded);
-          setFontReady(true);
-        }
-      } catch (err) {
-        console.error('Dots font load failed, using fallback', err);
-        if (!cancelled) {
-          setFontReady(true); // allow render even if font fails
-        }
+        const fontFace = new FontFace('dotsFont', `url(${dotsFont})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font loading failed, using fallback:', error);
+        setFontLoaded(false);
       }
     };
 
-    load();
-    return () => {
-      cancelled = true;
-      if (document.head.contains(preload)) {
-        document.head.removeChild(preload);
-      }
-    };
+    loadFont();
   }, []);
 
   useEffect(() => {
@@ -104,12 +79,11 @@ function Clock() {
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: '11rem',
-    fontFamily: "'dots', monospace",
+    fontFamily: fontLoaded ? "'dotsFont', monospace" : 'monospace',
     backgroundColor: 'rgba(251, 148, 5, 0.1)',
     borderRadius: '0.2em',
     color: 'rgb(4, 2, 109)',
-    // Uncomment for debugging
-    // border: fontReady ? '2px solid green' : '2px solid red',
+    border: '2px solid rgba(4, 2, 109, 0.3)',
     textShadow: `
       #f6320b 1px 1px 20px,
       #94f00b -1px 1px 20px,
@@ -136,7 +110,7 @@ function Clock() {
           width: '100vw',
           height: '100vh',
           overflow: 'hidden',
-          opacity: fontReady ? 1 : 0.5,
+          opacity: 1,
           transition: 'opacity 0.3s ease',
         }}
       >

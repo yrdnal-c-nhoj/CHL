@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import treeFont from '../../../assets/fonts/25-06-05-tree.ttf';
 import tree1Img from '../../../assets/images/25-06/25-06-05/tree1.webp';
 import tree2Img from '../../../assets/images/25-06/25-06-05/tree2.webp';
@@ -8,12 +8,20 @@ import tree2Img from '../../../assets/images/25-06/25-06-05/tree2.webp';
 const TreehouseClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
 
-  useEffect(() => {
-    const font = new FontFace('TreeFont', `url(${treeFont})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-    });
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'TreeFont',
+      fontUrl: treeFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
+  useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
