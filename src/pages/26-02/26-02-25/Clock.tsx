@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import cocteauVideo from '../../../assets/images/26-02/26-02-25/cocteau.mp4';
 import starWebp from '../../../assets/images/26-02/26-02-25/star.webp';
 

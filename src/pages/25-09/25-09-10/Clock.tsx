@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 
 // Local images

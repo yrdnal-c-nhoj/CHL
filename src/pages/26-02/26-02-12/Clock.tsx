@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 
 // Asset Imports (keeping your existing imports)

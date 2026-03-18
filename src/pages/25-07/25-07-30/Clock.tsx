@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import clockBg from '../../../assets/images/25-07/25-07-30/ca.gif';

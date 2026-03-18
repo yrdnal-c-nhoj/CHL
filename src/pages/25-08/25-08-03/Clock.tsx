@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useMemo } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import bgImage from '../../../assets/images/25-08/25-08-03/sta.gif';
 import overlay2 from '../../../assets/images/25-08/25-08-03/pro.gif';

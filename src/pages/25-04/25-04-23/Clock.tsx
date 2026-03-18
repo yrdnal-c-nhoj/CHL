@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import pirateHook from '../../../assets/images/25-04/25-04-23/hook.webp';
 import pirateCutlass from '../../../assets/images/25-04/25-04-23/pirate_foam.gif';
 import pirateKnife from '../../../assets/images/25-04/25-04-23/cut.gif';

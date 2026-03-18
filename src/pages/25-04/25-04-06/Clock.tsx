@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 import confFont from '../../../assets/fonts/25-04-06-conf.ttf';
 import confettiBg from '../../../assets/images/25-04/25-04-06/conf2.gif';
@@ -8,7 +8,36 @@ const TOTAL_DIGITS = 160;
 const ConfettiClock: React.FC = () => {
   const containerRef = useRef(null);
   const digitsRef = useRef([]);
-  const fontLoaded = useFontLoader('conf', confFont);
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const componentId = useRef(`confetti-clock-${Date.now()}`);
+  const fontName = `ConfettiClockFont-${componentId.current}`;
+
+  // Scoped font loading
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace(fontName, `url(${confFont})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback:', error);
+        setFontLoaded(false);
+      }
+    };
+
+    loadFont();
+
+    // Cleanup font on unmount
+    return () => {
+      for (const font of document.fonts) {
+        if (font.family === fontName) {
+          document.fonts.delete(font);
+          break;
+        }
+      }
+    };
+  }, [fontName]);
 
   const getCurrentTimeDigits: React.FC = () => {
     const now = new Date();
@@ -48,7 +77,7 @@ const ConfettiClock: React.FC = () => {
     digitsRef.current.forEach((el, i) => {
       const fontSize = Math.random() * 12 + 4; // 4vh to 16vh
       el.style.fontSize = `${fontSize}vh`;
-      el.style.fontFamily = "'conf', sans-serif";
+      el.style.fontFamily = fontLoaded ? `'${fontName}', sans-serif` : 'sans-serif';
       el.style.color = colors[Math.floor(Math.random() * colors.length)];
       el.style.position = 'absolute';
       el.style.opacity = '0.95';

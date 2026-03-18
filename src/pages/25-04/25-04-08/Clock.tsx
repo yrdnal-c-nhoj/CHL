@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 import sageFontUrl from '../../../assets/fonts/25-04-08-sage.ttf';
 
@@ -8,11 +8,36 @@ const TripleCactusClock: React.FC = () => {
   const secondsRef = useRef();
   const millisecondsRef = useRef();
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('sage', sageFontUrl, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Scoped font loading
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const componentId = useRef(`cactus-clock-${Date.now()}`);
+  const fontName = `CactusClockFont-${componentId.current}`;
+
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace(fontName, `url(${sageFontUrl})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback:', error);
+        setFontLoaded(false);
+      }
+    };
+
+    loadFont();
+
+    // Cleanup font on unmount
+    return () => {
+      for (const font of document.fonts) {
+        if (font.family === fontName) {
+          document.fonts.delete(font);
+          break;
+        }
+      }
+    };
+  }, [fontName]);
 
   useEffect(() => {
     const setDigits = (container, text) => {
@@ -27,7 +52,7 @@ const TripleCactusClock: React.FC = () => {
           textAlign: 'center',
           fontVariantNumeric: 'tabular-nums',
           fontFeatureSettings: '"tnum"',
-          fontFamily: 'sage, sans-serif',
+          fontFamily: fontLoaded ? `'${fontName}', sans-serif` : 'sans-serif',
         });
         container.appendChild(span);
       }
@@ -103,7 +128,7 @@ const TripleCactusClock: React.FC = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              fontFamily: 'sage',
+              fontFamily: fontLoaded ? fontName : 'sans-serif',
             }}
           >
             <div

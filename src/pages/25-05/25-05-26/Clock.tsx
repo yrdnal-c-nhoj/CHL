@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import spr from '../../../assets/images/25-05/25-05-26/spr.gif';
 import sprou from '../../../assets/images/25-05/25-05-26/sprou.gif';
 import sprout from '../../../assets/images/25-05/25-05-26/sprout.gif';

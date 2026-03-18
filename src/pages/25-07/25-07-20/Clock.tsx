@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import camFont from '../../../assets/fonts/25-07-20-cam.otf';
 import bg1 from '../../../assets/images/25-07/25-07-20/ca.webp';

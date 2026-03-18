@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import bluFont from '../../../assets/fonts/25-05-18-blu.otf'; // local font
 import image1 from '../../../assets/images/25-05/25-05-18/13966281486_Volantis_Tumblr.gif'; // bottom layer

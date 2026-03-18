@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import videoFile from '../../../assets/images/26-01/26-01-17/swww.mp4';
 import fallbackImg from '../../../assets/images/26-01/26-01-17/sw.webp';

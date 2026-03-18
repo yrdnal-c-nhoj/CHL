@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import mobyFont from '../../../assets/fonts/25-04-03-moby.ttf';
@@ -6,23 +6,53 @@ import waves from '../../../assets/images/25-04/25-04-03/waves.gif';
 
 const MobyDickClock: React.FC = () => {
   const clockRef = useRef(null);
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const componentId = useRef(`moby-clock-${Date.now()}`);
+  const fontName = `MobyClockFont-${componentId.current}`;
+
+  // Scoped font loading
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace(fontName, `url(${mobyFont})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback:', error);
+        setFontLoaded(false);
+      }
+    };
+
+    loadFont();
+
+    // Cleanup font on unmount
+    return () => {
+      for (const font of document.fonts) {
+        if (font.family === fontName) {
+          document.fonts.delete(font);
+          break;
+        }
+      }
+    };
+  }, [fontName]);
 
   useEffect(() => {
-    if (!document.getElementById('moby-font')) {
-      const style = document.createElement('style');
-      style.id = 'moby-font';
-      style.innerHTML = `
-        @font-face {
-          font-family: 'Moby';
-          src: url(${mobyFont}) format('truetype');
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-0.5rem); }
-        }
-      `;
-      document.head.appendChild(style);
-    }
+    if (!fontLoaded) return; // Wait for font to load
+
+    // Create scoped CSS
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @font-face {
+        font-family: '${fontName}';
+        src: url(${mobyFont}) format('truetype');
+      }
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-0.5rem); }
+      }
+    `;
+    document.head.appendChild(style);
 
     const centerAvoidSize = { width: 300, height: 200 }; // px area to avoid center
 
@@ -108,7 +138,7 @@ const MobyDickClock: React.FC = () => {
       <div
         ref={clockRef}
         style={{
-          fontFamily: 'Moby, cursive',
+          fontFamily: fontLoaded ? `'${fontName}', cursive` : 'cursive',
           color: '#a1b4b4',
           textShadow:
             '#ced4d4 0.1rem 0.1rem 0.2rem, #000404 -0.1rem -0.1rem 0.9rem',

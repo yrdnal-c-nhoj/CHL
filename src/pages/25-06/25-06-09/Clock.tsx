@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import ionFont from '../../../assets/fonts/25-06-09-ion.ttf';

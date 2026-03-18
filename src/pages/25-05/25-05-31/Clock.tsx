@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import elWebp from '../../../assets/images/25-05/25-05-31/el.webp';
 import el1 from '../../../assets/images/25-05/25-05-31/el1.png';

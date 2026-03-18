@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import bgVideo from '../../../assets/images/25-10/25-10-12/rose.mp4';
 import bgFallback from '../../../assets/images/25-10/25-10-12/rose.webp';
 

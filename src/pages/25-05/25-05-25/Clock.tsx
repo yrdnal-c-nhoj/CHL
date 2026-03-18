@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import arm from '../../../assets/images/25-05/25-05-25/arm.gif';
 import arm2 from '../../../assets/images/25-05/25-05-25/arm2.gif';

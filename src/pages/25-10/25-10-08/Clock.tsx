@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 
 // === Local assets ===
 import bgImg from '../../../assets/images/25-10/25-10-08/table.png';

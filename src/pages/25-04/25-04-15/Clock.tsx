@@ -1,12 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import horizonFontUrl from '../../../assets/fonts/25-04-15-hori.otf';
 import layer2 from '../../../assets/images/25-04/25-04-15/4c558c5dbff1828f2b87582dc49526e8.gif';
-import layer3 from '../../../assets/images/25-04/25-04-15/sdfwef.webp';
+import layer3 from '../../../assets/images/25-04/25-04-15/sdfwefsd.webp';
 import layer1 from '../../../assets/images/25-04/25-04-15/ewfsdfsd.webp';
 
 const HorizonClock: React.FC = () => {
-  const [time, setTime] = useState<any>('--:-- AM');
+  const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const componentId = useRef(`horizon-clock-${Date.now()}`);
+  const fontName = `HorizonClockFont-${componentId.current}`;
+
+  // Scoped font loading
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace(fontName, `url(${horizonFontUrl})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load, using fallback:', error);
+        setFontLoaded(false);
+      }
+    };
+
+    loadFont();
+
+    // Cleanup font on unmount
+    return () => {
+      for (const font of document.fonts) {
+        if (font.family === fontName) {
+          document.fonts.delete(font);
+          break;
+        }
+      }
+    };
+  }, [fontName]);
 
   useEffect(() => {
     const updateClock: React.FC = () => {
@@ -44,7 +75,7 @@ const HorizonClock: React.FC = () => {
       <style>
         {`
           @font-face {
-            font-family: 'HorizonFont';
+            font-family: '${fontName}';
             src: url('${horizonFontUrl}') format('opentype');
           }
         `}
@@ -82,7 +113,7 @@ const HorizonClock: React.FC = () => {
           zIndex: 10,
           width: '100%',
           textAlign: 'center',
-          fontFamily: 'HorizonFont, Arial, sans-serif',
+          fontFamily: fontLoaded ? `${fontName}, Arial, sans-serif` : 'Arial, sans-serif',
           fontSize: '15vw',
           color: 'white',
           backgroundImage:

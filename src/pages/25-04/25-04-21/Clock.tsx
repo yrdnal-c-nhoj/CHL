@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 
 import hourHand from '../../../assets/images/25-04/25-04-21/hour.gif';
 import minuteHand from '../../../assets/images/25-04/25-04-21/minute.gif';
