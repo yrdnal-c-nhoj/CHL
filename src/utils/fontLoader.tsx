@@ -1,19 +1,47 @@
-import { useState, useLayoutEffect, useMemo } from 'react';
+import React, { useState, useLayoutEffect, useMemo } from 'react';
+
+interface FontFaceOptions {
+  display?: string;
+  weight?: string;
+  style?: string;
+}
+
+interface FontConfig {
+  fontFamily: string;
+  fontUrl: string;
+  options?: FontFaceOptions;
+}
+
+interface StylesConfig {
+  fontFaces?: Array<{
+    fontFamily: string;
+    fontUrl: string;
+    options?: FontFaceOptions;
+  }>;
+  keyframes?: Record<string, string | Record<string, string | number>>;
+  custom?: string;
+}
+
+interface StyleElement extends HTMLStyleElement {
+  remove(): void;
+}
 
 /**
  * Style injection utility for centralizing CSS management
  */
 class StyleManager {
+  private injectedStyles: Map<string, StyleElement>;
+
   constructor() {
     this.injectedStyles = new Map();
   }
 
   /**
    * Inject CSS styles into the document head
-   * @param {string} id - Unique identifier for the style
-   * @param {string} css - CSS content to inject
+   * @param id - Unique identifier for the style
+   * @param css - CSS content to inject
    */
-  inject(id, css) {
+  inject(id: string, css: string): void {
     if (typeof document === 'undefined') return;
 
     // Remove existing style if it exists
@@ -34,9 +62,9 @@ class StyleManager {
 
   /**
    * Remove injected styles
-   * @param {string} id - Unique identifier for the style
+   * @param id - Unique identifier for the style
    */
-  remove(id) {
+  remove(id: string): void {
     if (this.injectedStyles.has(id)) {
       const element = this.injectedStyles.get(id);
       if (element && element.parentNode) {
@@ -48,12 +76,12 @@ class StyleManager {
 
   /**
    * Generate font-face CSS
-   * @param {string} fontFamily - Font family name
-   * @param {string} fontUrl - Font file URL
-   * @param {Object} options - Font face options
-   * @returns {string} CSS string
+   * @param fontFamily - Font family name
+   * @param fontUrl - Font file URL
+   * @param options - Font face options
+   * @returns CSS string
    */
-  generateFontFaceCSS(fontFamily, fontUrl, options = {}) {
+  generateFontFaceCSS(fontFamily: string, fontUrl: string, options: FontFaceOptions = {}): string {
     const display = options.display || 'swap';
     const weight = options.weight || 'normal';
     const style = options.style || 'normal';
@@ -71,16 +99,23 @@ class StyleManager {
 
   /**
    * Generate keyframes CSS
-   * @param {string} name - Animation name
-   * @param {Object} keyframes - Keyframe definitions
-   * @returns {string} CSS string
+   * @param name - Animation name
+   * @param keyframes - Keyframe definitions
+   * @returns CSS string
    */
-  generateKeyframesCSS(name, keyframes) {
+  generateKeyframesCSS(name: string, keyframes: Record<string, string | Record<string, string | number>>): string {
     const keyframeRules = Object.entries(keyframes)
       .map(([percentage, styles]) => {
-        const styleString = Object.entries(styles)
-          .map(([prop, value]) => `  ${prop}: ${value};`)
-          .join('\n');
+        let styleString: string;
+        if (typeof styles === 'string') {
+          styleString = `  ${styles}`;
+        } else if (typeof styles === 'object' && styles !== null) {
+          styleString = Object.entries(styles)
+            .map(([prop, value]) => `  ${prop}: ${value};`)
+            .join('\n');
+        } else {
+          styleString = `  ${styles}`;
+        }
         return `  ${percentage} {\n${styleString}\n  }`;
       })
       .join('\n');
@@ -100,18 +135,18 @@ const styleManager = new StyleManager();
  * Loads a single font programmatically using the FontFace API.
  * Prevents FOUC (Flash of Unstyled Content).
  *
- * @param {string} fontFamily - The font family name
- * @param {string} fontUrl - The URL to the font file
- * @param {Object} options - Optional font face options
- * @returns {boolean} true when font is loaded (or failed but settled)
+ * @param fontFamily - The font family name
+ * @param fontUrl - The URL to the font file
+ * @param options - Optional font face options
+ * @returns true when font is loaded (or failed but settled)
  */
-export function useFontLoader(fontFamily, fontUrl, options = {}) {
+export function useFontLoader(fontFamily: string, fontUrl: string, options: FontFaceOptions = {}): boolean {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useLayoutEffect(() => {
     let isMounted = true;
 
-    const load = async () => {
+    const load = async (): Promise<void> => {
       if (typeof document === 'undefined' || !('fonts' in document)) {
         if (isMounted) setIsLoaded(true);
         return;
@@ -144,17 +179,17 @@ export function useFontLoader(fontFamily, fontUrl, options = {}) {
  * Loads multiple fonts programmatically using the FontFace API.
  * Prevents FOUC (Flash of Unstyled Content) and cleans up component logic.
  *
- * @param {Array<{fontFamily: string, fontUrl: string, options?: Object}>} fonts
- * @param {Object} styles - Optional additional CSS to inject
- * @returns {boolean} true when all fonts are loaded (or failed but settled)
+ * @param fonts - Array of font configurations
+ * @param styles - Optional additional CSS to inject
+ * @returns true when all fonts are loaded (or failed but settled)
  */
-export function useMultipleFontLoader(fonts, styles = {}) {
+export function useMultipleFontLoader(fonts: FontConfig[], styles: StylesConfig = {}): boolean {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useLayoutEffect(() => {
     let isMounted = true;
 
-    const load = async () => {
+    const load = async (): Promise<void> => {
       if (typeof document === 'undefined' || !('fonts' in document)) {
         if (isMounted) setIsLoaded(true);
         return;
@@ -221,10 +256,9 @@ export function useMultipleFontLoader(fonts, styles = {}) {
 
 /**
  * Hook for injecting styles without font loading
- * @param {Object} styles - Style configuration
- * @returns {void}
+ * @param styles - Style configuration
  */
-export function useStyleInjection(styles = {}) {
+export function useStyleInjection(styles: StylesConfig = {}): void {
   const styleId = useMemo(() => `style-${Math.random().toString(36).substr(2, 9)}`, []);
 
   useLayoutEffect(() => {
@@ -263,17 +297,17 @@ export function useStyleInjection(styles = {}) {
 
 /**
  * Suspense-friendly font loader that throws a promise when fonts are loading
- * @param {Array} fonts - Font configurations
- * @param {Object} styles - Additional styles to inject
- * @returns {void} - Throws during loading, completes when ready
+ * @param fonts - Font configurations
+ * @param styles - Additional styles to inject
+ * @throws Promise during loading, completes when ready
  */
-export function useSuspenseFontLoader(fonts, styles = {}) {
+export function useSuspenseFontLoader(fonts: FontConfig[], styles: StylesConfig = {}): void {
   const hasLoaded = useMultipleFontLoader(fonts, styles);
   
   if (!hasLoaded) {
     // Throw a promise that React Suspense can catch
-    throw new Promise((resolve) => {
-      const checkLoaded = () => {
+    throw new Promise<void>((resolve) => {
+      const checkLoaded = (): void => {
         if (hasLoaded) {
           resolve();
         } else {
@@ -287,12 +321,15 @@ export function useSuspenseFontLoader(fonts, styles = {}) {
 
 /**
  * Higher-order component for wrapping clocks with Suspense
- * @param {React.Component} ClockComponent - The clock component to wrap
- * @param {Object} fallback - Fallback UI for loading state
- * @returns {React.Component} - Wrapped component
+ * @param ClockComponent - The clock component to wrap
+ * @param fallback - Fallback UI for loading state
+ * @returns Wrapped component
  */
-export function withClockSuspense(ClockComponent, fallback = null) {
-  const SuspenseWrapper = (props) => (
+export function withClockSuspense<T extends Record<string, any>>(
+  ClockComponent: React.ComponentType<T>,
+  fallback: React.ReactNode = null
+): React.ComponentType<T> {
+  const SuspenseWrapper = (props: T) => (
     <React.Suspense fallback={fallback || <ClockLoadingFallback />}>
       <ClockComponent {...props} />
     </React.Suspense>
@@ -305,7 +342,7 @@ export function withClockSuspense(ClockComponent, fallback = null) {
 /**
  * Default loading fallback component
  */
-export function ClockLoadingFallback() {
+export function ClockLoadingFallback(): React.ReactElement {
   return (
     <div style={{
       width: '100vw',

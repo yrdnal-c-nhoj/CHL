@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useFontLoader } from '../../utils/fontLoader.js';
+import { useFontLoader } from '../../utils/fontLoader';
 
 // --- Assets ---
 import wordFont from '../../../assets/fonts/serif-bold.ttf';
