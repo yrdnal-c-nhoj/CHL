@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import font1 from '../../../assets/fonts/25-08-25-code.ttf';
 import font2 from '../../../assets/fonts/25-08-25-bar.ttf';
 import bgImage2 from '../../../assets/images/25-08/25-08-25/bgla.webp'; // Bottom background

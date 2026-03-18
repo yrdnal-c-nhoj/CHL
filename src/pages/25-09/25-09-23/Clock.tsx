@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 
 // digits
 import digit1 from '../../../assets/images/25-09/25-09-23/z.gif';

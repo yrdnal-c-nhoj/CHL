@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import myFontUrl from '../../../assets/fonts/25-08-07-rope.ttf';
 import backgroundImageUrl from '../../../assets/images/25-08/25-08-07/wes.webp';

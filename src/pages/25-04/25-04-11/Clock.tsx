@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import hand1 from '../../../assets/images/25-04/25-04-11/hand1.webp';
 import hand2 from '../../../assets/images/25-04/25-04-11/hand2.webp';
 import hand3 from '../../../assets/images/25-04/25-04-11/hand3.webp';

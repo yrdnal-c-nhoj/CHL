@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, memo } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 
 import backgroundGif3 from '../../../assets/images/26-01/26-01-29/ur.png';
 import backgroundGif2 from '../../../assets/images/26-01/26-01-29/ur.gif';

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import bgImage from '../../../assets/images/25-08/25-08-29/sun.jpg'; // background image
 import digitImage from '../../../assets/images/25-08/25-08-29/sun.gif'; // image for all 12 numbers + center
 

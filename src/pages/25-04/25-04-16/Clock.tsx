@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import cakeGif from '../../../assets/images/25-04/25-04-16/cake.gif';
 import minuteImg from '../../../assets/images/25-04/25-04-16/200w.webp';
 import hourImg from '../../../assets/images/25-04/25-04-16/2hhj.webp';

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useEnhancedFontLoader, useGlobalStyles } from '../../../utils/enhancedFontLoader';
 import bgVideo from '../../../assets/images/25-10/25-10-26/monarch.mp4';
 import fallbackImg from '../../../assets/images/25-10/25-10-26/monarch.webp';

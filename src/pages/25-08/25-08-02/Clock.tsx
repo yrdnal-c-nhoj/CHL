@@ -1,16 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import myFontWoff2 from '../../../assets/fonts/25-08-02-hea.ttf';
 import bg2 from '../../../assets/images/25-08/25-08-02/em.webp';
-import bg1 from '../../../assets/images/25-08/25-08-02/la.gif';
-import bg3 from '../../../assets/images/25-08/25-08-02/la.gif'; // copy of bg1 for flipping
 
 const DigitalClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
-  const fontReady = useFontLoader('MyCustomFont', myFontWoff2, {
-    fallback: true,
-    timeout: 3500,
-  });
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const componentId = useRef(`digital-clock-${Date.now()}`);
+  const fontName = `DigitalClockFont-${componentId.current}`;
+
+  // Scoped font loading with unique name
+  useEffect(() => {
+    const loadFont = async () => {
+      try {
+        const fontFace = new FontFace(fontName, `url(${myFontWoff2})`);
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        setFontLoaded(true);
+      } catch (error) {
+        console.warn('Font failed to load:', error);
+        setFontLoaded(false);
+      }
+    };
+
+    loadFont();
+
+    // Cleanup font on unmount
+    return () => {
+      for (const font of document.fonts) {
+        if (font.family === fontName) {
+          document.fonts.delete(font);
+          break;
+        }
+      }
+    };
+  }, [fontName]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -28,14 +53,14 @@ const DigitalClock: React.FC = () => {
   const bgFilter = 'brightness(1.5) contrast(3.2)';
 
   const fullScreenBackgroundStyle = (image, opacity, zIndex, custom = {}) => ({
-    position: 'fixed',
+    position: 'absolute',
     backgroundImage: `url(${image})`,
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     top: 0,
     left: 0,
-    width: '100vw',
-    height: '100dvh',
+    width: '100%',
+    height: '100%',
     opacity,
     zIndex,
     pointerEvents: 'none',
@@ -46,15 +71,15 @@ const DigitalClock: React.FC = () => {
   const clockContainerStyle = {
     position: 'relative',
     zIndex: 10,
-    fontFamily: fontReady ? 'MyCustomFont, monospace' : 'monospace',
+    fontFamily: fontLoaded ? fontName : 'monospace',
     fontSize: '0.5rem',
     color: '#CFEAEA',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
-    opacity: fontReady ? 1 : 0,
-    visibility: fontReady ? 'visible' : 'hidden',
+    opacity: fontLoaded ? 1 : 0,
+    visibility: fontLoaded ? 'visible' : 'hidden',
     transition: 'opacity 0.3s ease',
   };
 

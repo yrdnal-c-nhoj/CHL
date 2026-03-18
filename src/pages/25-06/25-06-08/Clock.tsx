@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import bgImage from '../../../assets/images/25-06/25-06-08/bg.webp';
 
 import img12 from '../../../assets/images/25-06/25-06-08/qspades.jpg';

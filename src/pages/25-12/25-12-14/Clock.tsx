@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 
 import bgImage from '../../../assets/images/25-12/25-12-14/steel.webp';
 import digitTexture from '../../../assets/images/25-12/25-12-14/steel2.webp';

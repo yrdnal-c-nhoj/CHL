@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 // === Local assets ===
 import backgroundVideo from '../../../assets/images/25-10/25-10-07/big.mp4';

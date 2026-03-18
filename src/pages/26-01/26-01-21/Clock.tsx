@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, memo } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 // Explicit Asset Imports
 import backgroundImage from '../../../assets/images/26-01/26-01-21/fllap.webp';

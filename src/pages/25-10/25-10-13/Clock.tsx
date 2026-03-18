@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import bgImage2 from '../../../assets/images/25-10/25-10-13/ro.jpeg';
 import bgImage from '../../../assets/images/25-10/25-10-13/roundhay.webp'; // second background

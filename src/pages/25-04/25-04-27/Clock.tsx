@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 
 import coinGif from '../../../assets/images/25-04/25-04-27/coin.gif';
@@ -6,34 +7,28 @@ import spinWebp from '../../../assets/images/25-04/25-04-27/spin.webp';
 
 const SpinningCoinClock: React.FC = () => {
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+  const componentId = useRef(`coin-clock-${Date.now()}`);
+  const fontName = `CoinClockFont-${componentId.current}`;
 
-  // Load Google Fonts Federant
+  // Load Google Fonts Federant with scoped approach
   useEffect(() => {
     const loadGoogleFont = async () => {
       try {
-        // Create link element for Google Fonts
-        const link = document.createElement('link');
-        link.href =
-          'https://fonts.googleapis.com/css2?family=Federant&display=swap';
-        link.rel = 'stylesheet';
-        document.head.appendChild(link);
+        // Create scoped font-face
+        const style = document.createElement('style');
+        style.textContent = `
+          @font-face {
+            font-family: '${fontName}';
+            src: url('https://fonts.gstatic.com/s/federant/v13/2sDdZGJYIn2lnlY2JMQ.woff2') format('woff2');
+          }
+        `;
+        document.head.appendChild(style);
 
-        // Wait for font to load
-        const fontFace = new FontFace(
-          'Federant',
-          'url(https://fonts.gstatic.com/s/federant/v13/2sDdZGJYIn2lnlY2JMQ.woff2) format("woff2")',
-        );
+        // Load the font
+        const fontFace = new FontFace(fontName, `url(https://fonts.gstatic.com/s/federant/v13/2sDdZGJYIn2lnlY2JMQ.woff2) format('woff2')`);
         await fontFace.load();
         document.fonts.add(fontFace);
-
-        // Also load as 'MoneyMoney-Regular' for CSS compatibility
-        const moneyFont = new FontFace(
-          'MoneyMoney-Regular',
-          'url(https://fonts.gstatic.com/s/federant/v13/2sDdZGJYIn2lnlY2JMQ.woff2) format("woff2")',
-        );
-        await moneyFont.load();
-        document.fonts.add(moneyFont);
-
+        
         setFontLoaded(true);
       } catch (error) {
         console.warn('Google Font failed to load, using fallback');
@@ -42,7 +37,17 @@ const SpinningCoinClock: React.FC = () => {
     };
 
     loadGoogleFont();
-  }, []);
+
+    // Cleanup font on unmount
+    return () => {
+      for (const font of document.fonts) {
+        if (font.family === fontName) {
+          document.fonts.delete(font);
+          break;
+        }
+      }
+    };
+  }, [fontName]);
   useEffect(() => {
     const clock = document.getElementById('clock');
     if (!clock) return;
@@ -197,7 +202,7 @@ const SpinningCoinClock: React.FC = () => {
         }
 
         .number {
-          font-family: 'MoneyMoney-Regular', sans-serif;
+          font-family: ${fontLoaded ? `'${fontName}', cursive` : 'cursive'},
           position: absolute;
           font-size: 6.2vw;
           color: #d3ad62;

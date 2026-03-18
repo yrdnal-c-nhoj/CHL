@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import backgroundImage from '../../../assets/images/26-01/26-01-06/aa.jpg';
 import gizaFont from '../../../assets/fonts/26-01-06-aa.ttf';
 import aaaImage from '../../../assets/images/26-01/26-01-06/aaa.webp';

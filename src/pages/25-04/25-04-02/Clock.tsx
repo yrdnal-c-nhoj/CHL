@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 
 import stars from '../../../assets/images/25-04/25-04-02/stars.webp';
 import backgroundGif from '../../../assets/images/25-04/25-04-02/437cb739d14912acd84d65ee853b9067.gif';

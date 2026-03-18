@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import mintFont from '../../../assets/fonts/25-07-08-mint.ttf';
 import hourImg from '../../../assets/images/25-07/25-07-08/mint.png';

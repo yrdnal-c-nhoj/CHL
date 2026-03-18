@@ -1,5 +1,6 @@
 // MediaClock.jsx
 import React, { useEffect, useRef, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import bgVideo from '../../../assets/images/25-10/25-10-18/total.mp4';

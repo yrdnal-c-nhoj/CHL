@@ -1,19 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-
-// Preload images
-const preloadImages = (urls) => {
-  return Promise.all(
-    urls.map(
-      (url) =>
-        new Promise((resolve, reject) => {
-          const img = new Image();
-          img.onload = resolve;
-          img.onerror = reject;
-          img.src = url;
-        }),
-    ),
-  );
-};
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 
 // Background & Assets
 import backgroundImage from '../../../assets/images/26-01/26-01-08/tang.jpeg';
@@ -67,36 +53,27 @@ const CONFIG = {
 
 function TangerineClock() {
   const [time, setTime] = useState(() => new Date());
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [clockSize, setClockSize] = useState<number>(300); // Default size, will be updated
   const [isClient, setIsClient] = useState<boolean>(false);
-  const [bgReady, setBgReady] = useState<boolean>(false);
 
-  // Preload all images and set up resize handler
+  // Standardized asset loading
+  const assets = useMultiAssetLoader({
+    background: { src: backgroundImage },
+    bgLayer: { src: bgLayerTile },
+    ...Object.fromEntries(
+      CLOCK_LABELS.map((label, index) => [
+        `num${index === 0 ? 12 : index}`,
+        { src: label }
+      ])
+    ),
+    hourHand: { src: hourHandImg },
+    minuteHand: { src: minuteHandImg },
+    secondHand: { src: secondHandImg },
+  });
+
+  // Set up resize handler
   useEffect(() => {
     setIsClient(true);
-
-    // Preload all images
-    const allImages = [
-      backgroundImage,
-      bgLayerTile,
-      ...CLOCK_LABELS,
-      hourHandImg,
-      minuteHandImg,
-      secondHandImg,
-    ];
-
-    const loadAssets = async () => {
-      try {
-        await preloadImages(allImages);
-        setIsLoaded(true);
-      } catch (err) {
-        console.error('Error loading assets:', err);
-        setIsLoaded(true); // Continue even if some assets fail to load
-      }
-    };
-
-    loadAssets();
 
     // Set initial size
     updateClockSize();
@@ -221,7 +198,7 @@ function TangerineClock() {
     );
   }
 
-  const ready = isLoaded && bgReady;
+  const ready = assets.isAllLoaded;
 
   return (
     <div

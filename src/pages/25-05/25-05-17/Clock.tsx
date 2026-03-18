@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import bgGif from '../../../assets/images/25-05/25-05-17/2501912_2ddac-564534539.gif';
 import layer5Gif from '../../../assets/images/25-05/25-05-17/e0435fd452bbed155b5b3c5128b4f7c5.gif';
 import layer3Gif from '../../../assets/images/25-05/25-05-17/giphy-3181726992.webp';

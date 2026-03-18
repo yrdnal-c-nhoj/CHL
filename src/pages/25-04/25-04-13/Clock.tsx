@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import backgroundImage from '../../../assets/images/25-04/25-04-13/pattern.jpeg';
 import pizzaFace from '../../../assets/images/25-04/25-04-13/pie.webp';
 import hourSlice from '../../../assets/images/25-04/25-04-13/s3.webp';

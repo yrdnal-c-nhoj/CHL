@@ -1,5 +1,6 @@
 /** @jsxImportSource react */
 import React, { useEffect, useRef, useState } from 'react';
+import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
 import bgVideo from '../../../assets/images/25-10/25-10-29/tilt.mp4';
 import fallbackImg from '../../../assets/images/25-10/25-10-29/tilt.webp';
