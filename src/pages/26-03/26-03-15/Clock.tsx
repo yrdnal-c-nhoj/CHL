@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader, useStyleInjection } from '../../../utils/fontLoader';
+import { useMultipleFontLoader, useStyleInjection } from '../../../utils/fontLoader';
 import fontUrl from '../../../assets/fonts/26-03-15-shadow.otf';
 
 const Clock: React.FC = () => {
@@ -29,8 +29,8 @@ const Clock: React.FC = () => {
     }
   });
 
-  // Use Suspense-friendly font loader
-  useSuspenseFontLoader(fontConfigs);
+  // Use font loader
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -48,6 +48,23 @@ const Clock: React.FC = () => {
       rotation: -(time.getSeconds() / 60) * 360,
     };
   }, [time]);
+
+  // Don't render until fonts are loaded
+  if (!fontsLoaded) {
+    return (
+      <div style={{
+        minHeight: '100dvh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: 'radial-gradient(circle at center, #D3AEE7 0%, #CA79A1 30%, #A5DEDF 60%, #DCE77A 80%, #D4A64A 100%)'
+      }}>
+        <div style={{ color: '#1C0210', fontFamily: 'monospace', fontSize: '1.2rem' }}>
+          Loading clock...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

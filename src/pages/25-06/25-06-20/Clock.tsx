@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSuspenseFontLoader, useStyleInjection } from '../../../utils/fontLoader';
+import { useMultipleFontLoader, useStyleInjection } from '../../../utils/fontLoader';
 
 const font1Path = '/src/assets/fonts/25-06-20-inde2.ttf';
 const font2Path = '/src/assets/fonts/25-06-20-inde1.ttf';
@@ -43,8 +43,25 @@ const IndecisiveClock: React.FC = () => {
     `
   });
 
-  // Use Suspense-friendly font loader
-  useSuspenseFontLoader(fontConfigs);
+  // Use font loader
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  // Don't render until fonts are loaded
+  if (!fontsLoaded) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: '#000',
+        color: '#fff',
+        fontFamily: 'monospace'
+      }}>
+        Loading clock...
+      </div>
+    );
+  }
 
   // Update time every second
   useEffect(() => {
