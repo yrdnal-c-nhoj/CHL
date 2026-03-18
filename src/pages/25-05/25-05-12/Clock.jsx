@@ -5,11 +5,11 @@ import leoFont from '../../../assets/fonts/25-05-12-leo.ttf';
 
 const CheetahClock = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('leo', leoFont, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   useEffect(() => {
@@ -50,12 +50,11 @@ const CheetahClock = () => {
     };
   }, []);
 
- const vars = {
-  '--digit-width': isMobile ? '29vw' : '13vw',   // reduce in landscape
-  '--digit-height': '18vh',
-  '--font-size': isMobile ? '14vh' : '11vh',     // optional tweak for spacing
-};
-
+  const vars = {
+    '--digit-width': isMobile ? '29vw' : '13vw', // reduce in landscape
+    '--digit-height': '18vh',
+    '--font-size': isMobile ? '14vh' : '11vh', // optional tweak for spacing
+  };
 
   const sharedDigitStyle = {
     width: 'var(--digit-width)',
@@ -108,10 +107,10 @@ const CheetahClock = () => {
         background: 'black',
       }}
     >
-     
-
       {/* Background */}
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={A3ui}
         alt="Background"
         style={{
@@ -138,8 +137,6 @@ const CheetahClock = () => {
           ></div>
         ))}
       </div>
-
-     
     </div>
   );
 };

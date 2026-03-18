@@ -1,11 +1,20 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';import bgImage from '../../../assets/images/26-01/26-01-20/hairdo.webp';
+import { useFontLoader } from '../../../utils/fontLoader';
+import bgImage from '../../../assets/images/26-01/26-01-20/hairdo.webp';
 import d25090120font from '../../../assets/fonts/26-01-20-hairdo.ttf';
 
 // Defined outside to prevent re-allocation on every second tick
 const DIGIT_MAP = {
-  '0': 'B', '1': 'V', '2': 'A', '3': 'X', '4': 'D',
-  '5': 'Q', '6': 'M', '7': 'G', '8': 'H', '9': 'T'
+  0: 'B',
+  1: 'V',
+  2: 'A',
+  3: 'X',
+  4: 'D',
+  5: 'Q',
+  6: 'M',
+  7: 'G',
+  8: 'H',
+  9: 'T',
 };
 
 const Clock = () => {
@@ -36,11 +45,14 @@ const Clock = () => {
   }, []);
 
   // 4. Time Formatting
-  const timeStrings = useMemo(() => ({
-    hours: String(time.getHours()).padStart(2, '0'),
-    minutes: String(time.getMinutes()).padStart(2, '0'),
-    seconds: String(time.getSeconds()).padStart(2, '0'),
-  }), [time]);
+  const timeStrings = useMemo(
+    () => ({
+      hours: String(time.getHours()).padStart(2, '0'),
+      minutes: String(time.getMinutes()).padStart(2, '0'),
+      seconds: String(time.getSeconds()).padStart(2, '0'),
+    }),
+    [time],
+  );
 
   // 5. Dynamic Styles
   const styles = {
@@ -88,19 +100,21 @@ const Clock = () => {
       width: '0.75em',
       textAlign: 'center',
       lineHeight: isLargeScreen ? '1.1' : '0.8',
-      textShadow: '1px 1px 17px #FFFFFF, -1px -1px 17px #FFFFFF, 1px -1px 17px #FFFFFF, -1px 1px 17px #FFFFFF',
-    }
+      textShadow:
+        '1px 1px 17px #FFFFFF, -1px -1px 17px #FFFFFF, 1px -1px 17px #FFFFFF, -1px 1px 17px #FFFFFF',
+    },
   };
 
   const renderUnit = (value) => (
     <div style={{ display: 'flex' }}>
       {value.split('').map((digit, i) => (
-        <span 
-          key={i} 
+        <span
+          key={i}
           className="clock-digit"
           style={{
             ...styles.digit,
-            fontFamily: "'MyD25090120font', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+            fontFamily:
+              "'MyD25090120font', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
           }}
         >
           {DIGIT_MAP[digit] || digit}
@@ -114,14 +128,12 @@ const Clock = () => {
   }
 
   return (
-    <main 
-      style={styles.container} 
-    >
+    <main style={styles.container}>
       <div style={styles.background} aria-hidden="true" />
       <div style={styles.gradient} aria-hidden="true" />
-      
-      <time 
-        style={styles.content} 
+
+      <time
+        style={styles.content}
         dateTime={`${timeStrings.hours}:${timeStrings.minutes}:${timeStrings.seconds}`}
       >
         {renderUnit(timeStrings.hours)}

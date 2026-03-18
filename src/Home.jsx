@@ -11,7 +11,9 @@ const Home = () => {
   const { items, loading, error } = useContext(DataContext);
   const [sortBy, setSortBy] = useState('date-desc');
   const [randomSortKey, setRandomSortKey] = useState(0);
-  const [fontsReady, setFontsReady] = useState(sessionStorage.getItem('fontsLoaded') === 'true');
+  const [fontsReady, setFontsReady] = useState(
+    sessionStorage.getItem('fontsLoaded') === 'true',
+  );
 
   // 🟢 Load fonts and prevent FOUT
   useEffect(() => {
@@ -43,57 +45,60 @@ const Home = () => {
     return !isNaN(date.getTime());
   };
 
+  const formatDate = (dateStr) => {
+    const parts = dateStr?.split('-');
+    if (!parts || parts.length !== 3) return 'Unknown Date';
+    const [yy, mm, dd] = parts.map(Number);
+    const date = new Date(2000 + yy, mm - 1, dd);
+    if (isNaN(date.getTime())) return 'Unknown Date';
 
+    const year = String(date.getFullYear()).slice(-2); // 2-digit year
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 2-digit month
+    const day = String(date.getDate()).padStart(2, '0'); // 2-digit day
 
-
-const formatDate = (dateStr) => {
-  const parts = dateStr?.split('-');
-  if (!parts || parts.length !== 3) return 'Unknown Date';
-  const [yy, mm, dd] = parts.map(Number);
-  const date = new Date(2000 + yy, mm - 1, dd);
-  if (isNaN(date.getTime())) return 'Unknown Date';
-
-  const year = String(date.getFullYear()).slice(-2); // 2-digit year
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // 2-digit month
-  const day = String(date.getDate()).padStart(2, '0'); // 2-digit day
-
-  return `${year}.${month}.${day}`; // YYYY-MM-DD
-};
-
-
-
+    return `${year}.${month}.${day}`; // YYYY-MM-DD
+  };
 
   // Fo
 
   // Sorted items
   const sortedItems = useMemo(() => {
-    const itemsCopy = [...items].filter(item => item?.date && isValidDate(item.date));
+    const itemsCopy = [...items].filter(
+      (item) => item?.date && isValidDate(item.date),
+    );
 
-    if (sortBy === 'date-desc') return itemsCopy.sort((a, b) => b.date.localeCompare(a.date));
-    if (sortBy === 'date-asc') return itemsCopy.sort((a, b) => a.date.localeCompare(b.date));
-    if (sortBy === 'title-asc') return itemsCopy.sort((a, b) => a.title.localeCompare(b.title));
-    if (sortBy === 'title-desc') return itemsCopy.sort((a, b) => b.title.localeCompare(a.title));
+    if (sortBy === 'date-desc')
+      return itemsCopy.sort((a, b) => b.date.localeCompare(a.date));
+    if (sortBy === 'date-asc')
+      return itemsCopy.sort((a, b) => a.date.localeCompare(b.date));
+    if (sortBy === 'title-asc')
+      return itemsCopy.sort((a, b) => a.title.localeCompare(b.title));
+    if (sortBy === 'title-desc')
+      return itemsCopy.sort((a, b) => b.title.localeCompare(a.title));
     return itemsCopy.sort(() => Math.random() - 0.5);
   }, [items, sortBy, randomSortKey]);
 
-  const handleRandomSort = () => setSortBy('random') || setRandomSortKey(prev => prev + 1);
-  const handleDateSort = () => setSortBy(prev => (prev === 'date-desc' ? 'date-asc' : 'date-desc'));
-  const handleTitleSort = () => setSortBy(prev => (prev === 'title-asc' ? 'title-desc' : 'title-asc'));
+  const handleRandomSort = () =>
+    setSortBy('random') || setRandomSortKey((prev) => prev + 1);
+  const handleDateSort = () =>
+    setSortBy((prev) => (prev === 'date-desc' ? 'date-asc' : 'date-desc'));
+  const handleTitleSort = () =>
+    setSortBy((prev) => (prev === 'title-asc' ? 'title-desc' : 'title-asc'));
 
   // 🟡 Show loader until fonts AND data are ready
   if (!fontsReady || loading) {
     return (
-      <div style={{
-        height: '100dvh',
-        width: '100vw',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        fontFamily: 'sans-serif',
-      }}>
-        
-      </div>
+      <div
+        style={{
+          height: '100dvh',
+          width: '100vw',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#fff',
+          fontFamily: 'sans-serif',
+        }}
+      ></div>
     );
   }
 
@@ -102,14 +107,16 @@ const formatDate = (dateStr) => {
   return (
     <>
       <TopNav />
-      <div style={{
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "100vh",
-        backgroundColor: "#dcd7d8", // Fallback background color
-        opacity: fontsReady ? 1 : 0,
-        transition: "opacity 0.6s ease-in",
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+          backgroundColor: '#dcd7d8', // Fallback background color
+          opacity: fontsReady ? 1 : 0,
+          transition: 'opacity 0.6s ease-in',
+        }}
+      >
         <main style={{ flex: 1 }}>
           <div className={styles.container}>
             <div className={styles.centeredContent}>
@@ -117,16 +124,30 @@ const formatDate = (dateStr) => {
                 <button
                   onClick={handleDateSort}
                   className={`${styles.sortButton} ${styles.dateSortButton} ${sortBy.includes('date') ? styles.active : ''}`}
-                  title={sortBy === 'date-desc' ? 'Sort Oldest to Newest' : 'Sort Newest to Oldest'}
+                  title={
+                    sortBy === 'date-desc'
+                      ? 'Sort Oldest to Newest'
+                      : 'Sort Newest to Oldest'
+                  }
                 >
-                  date {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
+                  date{' '}
+                  {sortBy === 'date-asc'
+                    ? '↓'
+                    : sortBy === 'date-desc'
+                      ? '↑'
+                      : ''}
                 </button>
                 <button
                   onClick={handleTitleSort}
                   className={`${styles.sortButton} ${styles.titleSortButton} ${sortBy.includes('title') ? styles.active : ''}`}
                   title={sortBy === 'title-asc' ? 'Sort Z–A' : 'Sort A–Z'}
                 >
-                  title {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
+                  title{' '}
+                  {sortBy === 'title-asc'
+                    ? '↓'
+                    : sortBy === 'title-desc'
+                      ? '↑'
+                      : ''}
                 </button>
                 <button
                   onClick={handleRandomSort}
@@ -138,12 +159,18 @@ const formatDate = (dateStr) => {
               </div>
 
               <ul className={styles.dateList}>
-                {sortedItems.map(item => (
+                {sortedItems.map((item) => (
                   <li key={item.date} className={styles.entry}>
                     <Link to={`/${item.date}`} className={styles.navLink}>
-                      <span className={styles.date}>{formatDate(item.date)}</span>
-                      <span className={styles.title}>{item.title || 'No Title'}</span>
-                      <span className={styles.clockNumber}>#{item.clockNumber}</span>
+                      <span className={styles.date}>
+                        {formatDate(item.date)}
+                      </span>
+                      <span className={styles.title}>
+                        {item.title || 'No Title'}
+                      </span>
+                      <span className={styles.clockNumber}>
+                        #{item.clockNumber}
+                      </span>
                     </Link>
                   </li>
                 ))}
@@ -152,18 +179,40 @@ const formatDate = (dateStr) => {
           </div>
         </main>
 
-        <div style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-          gap: "0.1rem",
-          padding: "0.1rem",
-        }}>
-          <a href="https://www.instagram.com/cubist_heart_labs/" target="_blank" rel="noopener noreferrer">
-            <img decoding="async" loading="lazy" src={instaImg} alt="Instagram" style={{ width: "2rem", height: "2rem" }} />
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            gap: '0.1rem',
+            padding: '0.1rem',
+          }}
+        >
+          <a
+            href="https://www.instagram.com/cubist_heart_labs/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              decoding="async"
+              loading="lazy"
+              src={instaImg}
+              alt="Instagram"
+              style={{ width: '2rem', height: '2rem' }}
+            />
           </a>
-          <a href="https://x.com/cubistheartlabs" target="_blank" rel="noopener noreferrer">
-            <img decoding="async" loading="lazy" src={elonImg} alt="X" style={{ width: "2rem", height: "2rem" }} />
+          <a
+            href="https://x.com/cubistheartlabs"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              decoding="async"
+              loading="lazy"
+              src={elonImg}
+              alt="X"
+              style={{ width: '2rem', height: '2rem' }}
+            />
           </a>
         </div>
 

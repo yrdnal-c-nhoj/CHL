@@ -1,16 +1,16 @@
 // DigitalClock.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
-import bgImg from "../../../assets/images/25-12/25-12-01/shark.webp";
+import bgImg from '../../../assets/images/25-12/25-12-01/shark.webp';
 import clockfoont12012 from '../../../assets/fonts/25-12-01-shark.ttf?url';
 
 export default function DigitalClock() {
   const [time, setTime] = useState(() => new Date());
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('ClockFont_2025_12_01', clockfoont12012, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   useEffect(() => {
@@ -18,35 +18,35 @@ export default function DigitalClock() {
     return () => clearInterval(interval);
   }, []);
 
-  const formatTime = (num) => num.toString().padStart(2, "0");
+  const formatTime = (num) => num.toString().padStart(2, '0');
   const hours = formatTime(time.getHours());
   const minutes = formatTime(time.getMinutes());
   const seconds = formatTime(time.getSeconds());
 
   const containerStyle = {
-    width: "100vw",
-    height: "100dvh",                  // THIS IS THE FIX
-    minHeight: "100dvh",               // extra safety
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '100vw',
+    height: '100dvh', // THIS IS THE FIX
+    minHeight: '100dvh', // extra safety
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundImage: `url(${bgImg})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    fontFamily: "ClockFont_2025_12_01, sans-serif",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    fontFamily: 'ClockFont_2025_12_01, sans-serif',
     margin: 0,
     padding: 0,
-    boxSizing: "border-box",
+    boxSizing: 'border-box',
   };
 
   const digitStyle = {
-    display: "inline-flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "0.6em",
-    fontSize: "10vh",           // keep vh here — looks great and scales nicely
-    color: "#EE4747",
-    textShadow: "0 0 1vh rgba(0,0,0,0.9)",
+    display: 'inline-flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '0.6em',
+    fontSize: '10vh', // keep vh here — looks great and scales nicely
+    color: '#EE4747',
+    textShadow: '0 0 1vh rgba(0,0,0,0.9)',
     // Remove the huge paddingTop — that's pushing it down too far!
     // paddingTop: "45vh",   ← DELETE THIS LINE
   };
@@ -55,23 +55,27 @@ export default function DigitalClock() {
 
   if (!fontReady) {
     return (
-      <div style={{
-        ...containerStyle,
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: '#000',
-        zIndex: 9999
-      }}>
-        <div style={{ 
-          ...digitStyle, 
-          color: '#333',
-          fontSize: '10vh',
-          width: 'auto',
-          visibility: 'hidden' 
-        }}>
+      <div
+        style={{
+          ...containerStyle,
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: '#000',
+          zIndex: 9999,
+        }}
+      >
+        <div
+          style={{
+            ...digitStyle,
+            color: '#333',
+            fontSize: '10vh',
+            width: 'auto',
+            visibility: 'hidden',
+          }}
+        >
           00:00:00
         </div>
       </div>
@@ -80,8 +84,8 @@ export default function DigitalClock() {
 
   return (
     <div style={containerStyle}>
-      <div style={{ display: "flex", gap: "0.4rem" }}>
-        {digits.split("").map((d, i) => (
+      <div style={{ display: 'flex', gap: '0.4rem' }}>
+        {digits.split('').map((d, i) => (
           <div key={i} style={digitStyle}>
             {d}
           </div>

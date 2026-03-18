@@ -107,13 +107,19 @@ const DigitalClock = () => {
   return (
     <div style={containerStyle}>
       {/* Hours */}
-      <div style={rowStyle}>{renderRow(current.hours, previous.hours, digitBoxStyle)}</div>
+      <div style={rowStyle}>
+        {renderRow(current.hours, previous.hours, digitBoxStyle)}
+      </div>
 
       {/* Minutes */}
-      <div style={rowStyle}>{renderRow(current.minutes, previous.minutes, digitBoxStyle)}</div>
+      <div style={rowStyle}>
+        {renderRow(current.minutes, previous.minutes, digitBoxStyle)}
+      </div>
 
       {/* Seconds */}
-      <div style={rowStyle}>{renderRow(current.seconds, previous.seconds, digitBoxStyle)}</div>
+      <div style={rowStyle}>
+        {renderRow(current.seconds, previous.seconds, digitBoxStyle)}
+      </div>
     </div>
   );
 };

@@ -11,14 +11,10 @@ export default function TopNav() {
 
   return (
     <>
-      <div className="topnavchl">
-        🧊🫀🔭 Cubist Heart Laboratories 🧊🫀🔭
-      </div>
+      <div className="topnavchl">🧊🫀🔭 Cubist Heart Laboratories 🧊🫀🔭</div>
 
       <div className="topnavbgcolor">
-        <div className="topnavbt">
-          BorrowedTime
-        </div>
+        <div className="topnavbt">BorrowedTime</div>
 
         <div className="topnavtag">
           a new clock every day, made from recycled internet stuff
@@ -39,15 +35,16 @@ export default function TopNav() {
           <li className="nav-item">
             <NavLink
               to="/"
-              className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+              className={({ isActive }) =>
+                isActive ? 'nav-link active' : 'nav-link'
+              }
               onClick={() => setIsMenuOpen(false)}
             >
               HOME
             </NavLink>
           </li>
 
-
-{/* 
+          {/* 
           <li className="nav-item">
             <NavLink
               to="/manifesto"
@@ -69,11 +66,13 @@ export default function TopNav() {
             </NavLink>
           </li>
            */}
-           
+
           <li className="nav-item">
             <NavLink
               to="/contact"
-              className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+              className={({ isActive }) =>
+                isActive ? 'nav-link active' : 'nav-link'
+              }
               onClick={() => setIsMenuOpen(false)}
             >
               CONTACT
@@ -82,7 +81,9 @@ export default function TopNav() {
           <li className="nav-item">
             <NavLink
               to="/today"
-              className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+              className={({ isActive }) =>
+                isActive ? 'nav-link active' : 'nav-link'
+              }
               onClick={() => setIsMenuOpen(false)}
             >
               TODAY

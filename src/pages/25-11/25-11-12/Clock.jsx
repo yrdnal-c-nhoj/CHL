@@ -1,19 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react'
-import * as THREE from 'three'
+import React, { useEffect, useRef, useState } from 'react';
+import * as THREE from 'three';
 
-import bgFull from '../../../assets/images/25-11/25-11-12/octo.webp' // full-size background
-import bgTile from '../../../assets/images/25-11/25-11-12/octoh.webp' // repeating/tiled background
+import bgFull from '../../../assets/images/25-11/25-11-12/octo.webp'; // full-size background
+import bgTile from '../../../assets/images/25-11/25-11-12/octoh.webp'; // repeating/tiled background
 import custom251112tz from '../../../assets/fonts/25-11-12-oct.ttf?url';
 
-export default function TwoBackgroundOctahedron () {
-  const threeRef = useRef(null)
+export default function TwoBackgroundOctahedron() {
+  const threeRef = useRef(null);
   const [fontLoaded, setFontLoaded] = useState(false);
-  
+
   // Simple scoped font loading without leaks
   useEffect(() => {
     const loadFont = async () => {
       try {
-        const fontFace = new FontFace('OctahedronFont', `url(${custom251112tz})`);
+        const fontFace = new FontFace(
+          'OctahedronFont',
+          `url(${custom251112tz})`,
+        );
         await fontFace.load();
         document.fonts.add(fontFace);
         setFontLoaded(true);
@@ -22,74 +25,74 @@ export default function TwoBackgroundOctahedron () {
         setFontLoaded(false);
       }
     };
-    
+
     loadFont();
   }, []);
 
   // THREE.js Octahedron (unchanged)
   useEffect(() => {
-    const mount = threeRef.current
-    if (!mount) return
+    const mount = threeRef.current;
+    if (!mount) return;
 
-    const scene = new THREE.Scene()
-    scene.background = null
+    const scene = new THREE.Scene();
+    scene.background = null;
 
     const camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
       0.01,
-      1000
-    )
-    camera.position.z = 1
+      1000,
+    );
+    camera.position.z = 1;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    mount.appendChild(renderer.domElement)
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    mount.appendChild(renderer.domElement);
 
-    const canvas = document.createElement('canvas')
-    canvas.width = 256
-    canvas.height = 256
-    const ctx = canvas.getContext('2d')
-    const texture = new THREE.CanvasTexture(canvas)
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext('2d');
+    const texture = new THREE.CanvasTexture(canvas);
 
-    const fontName = 'OctahedronFont' // Use the same name as the loaded font
+    const fontName = 'OctahedronFont'; // Use the same name as the loaded font
 
     const updateClock = () => {
-      const now = new Date()
-      let h = now.getHours() % 12 || 12
-      let m = now.getMinutes()
-      const txt = `${h}:${m < 10 ? '0' + m : m}`
+      const now = new Date();
+      let h = now.getHours() % 12 || 12;
+      let m = now.getMinutes();
+      const txt = `${h}:${m < 10 ? '0' + m : m}`;
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      ctx.font = `110px ${fontLoaded ? fontName : 'Arial'}`
-      ctx.fillStyle = '#043D91FF'
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'middle'
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.font = `110px ${fontLoaded ? fontName : 'Arial'}`;
+      ctx.fillStyle = '#043D91FF';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillText(
         txt,
         canvas.width / 2,
-        canvas.height / 2 + canvas.height * 0.2
-      )
+        canvas.height / 2 + canvas.height * 0.2,
+      );
 
-      texture.needsUpdate = true
-    }
+      texture.needsUpdate = true;
+    };
 
-    updateClock()
-    const clockInterval = setInterval(updateClock, 1000)
+    updateClock();
+    const clockInterval = setInterval(updateClock, 1000);
 
-    const geometry = new THREE.OctahedronGeometry(2)
+    const geometry = new THREE.OctahedronGeometry(2);
 
     // reassign UVs (unchanged)
-    const uv = geometry.attributes.uv.array
+    const uv = geometry.attributes.uv.array;
     for (let i = 0; i < uv.length; i += 6) {
-      uv[i] = 0
-      uv[i + 1] = 0
-      uv[i + 2] = 1
-      uv[i + 3] = 0
-      uv[i + 4] = 0.5
-      uv[i + 5] = 1
+      uv[i] = 0;
+      uv[i + 1] = 0;
+      uv[i + 2] = 1;
+      uv[i + 3] = 0;
+      uv[i + 4] = 0.5;
+      uv[i + 5] = 1;
     }
-    geometry.attributes.uv.needsUpdate = true
+    geometry.attributes.uv.needsUpdate = true;
 
     const material = new THREE.MeshPhongMaterial({
       color: 0xfff0f0,
@@ -97,60 +100,60 @@ export default function TwoBackgroundOctahedron () {
       transparent: true,
       // opacity: 0.6,
       side: THREE.DoubleSide,
-      map: texture
-    })
+      map: texture,
+    });
 
-    const oct = new THREE.Mesh(geometry, material)
-    scene.add(oct)
+    const oct = new THREE.Mesh(geometry, material);
+    scene.add(oct);
 
     const wireframe = new THREE.LineSegments(
       new THREE.WireframeGeometry(geometry),
-      new THREE.LineBasicMaterial({ color: 0xffffff })
-    )
-    scene.add(wireframe)
+      new THREE.LineBasicMaterial({ color: 0xffffff }),
+    );
+    scene.add(wireframe);
 
-    scene.add(new THREE.DirectionalLight(0xffffff, 1))
-    scene.add(new THREE.AmbientLight(0xffffff, 0.4))
+    scene.add(new THREE.DirectionalLight(0xffffff, 1));
+    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
 
-    const clock = new THREE.Clock()
+    const clock = new THREE.Clock();
     const animate = () => {
-      requestAnimationFrame(animate)
+      requestAnimationFrame(animate);
 
-      oct.rotation.x += 0.003
-      oct.rotation.y += 0.005
-      wireframe.rotation.x += 0.003
-      wireframe.rotation.y += 0.005
+      oct.rotation.x += 0.003;
+      oct.rotation.y += 0.005;
+      wireframe.rotation.x += 0.003;
+      wireframe.rotation.y += 0.005;
 
-      const t = clock.getElapsedTime()
+      const t = clock.getElapsedTime();
       const zStart = -15,
-        zEnd = 2
+        zEnd = 2;
       const z =
         (zEnd + zStart) / 2 +
-        Math.sin((t / 25) * Math.PI * 2) * ((zEnd - zStart) / 2)
+        Math.sin((t / 25) * Math.PI * 2) * ((zEnd - zStart) / 2);
 
-      oct.position.z = wireframe.position.z = z
+      oct.position.z = wireframe.position.z = z;
 
-      renderer.render(scene, camera)
-    }
-    animate()
+      renderer.render(scene, camera);
+    };
+    animate();
 
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight
-      camera.updateProjectionMatrix()
-      renderer.setSize(window.innerWidth, window.innerHeight)
-    }
-    window.addEventListener('resize', handleResize)
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      clearInterval(clockInterval)
-      renderer.dispose()
-      geometry.dispose()
-      material.dispose()
-      texture.dispose()
-      mount.removeChild(renderer.domElement)
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
+      clearInterval(clockInterval);
+      renderer.dispose();
+      geometry.dispose();
+      material.dispose();
+      texture.dispose();
+      mount.removeChild(renderer.domElement);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <div
@@ -159,7 +162,7 @@ export default function TwoBackgroundOctahedron () {
         height: '100dvh',
         position: 'relative',
         overflow: 'hidden',
-        backgroundColor: '#000'
+        backgroundColor: '#000',
       }}
     >
       {/* FULL IMAGE BACKGROUND */}
@@ -171,7 +174,7 @@ export default function TwoBackgroundOctahedron () {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           // opacity: 0.55,          // <--- adjust
-          zIndex: 0
+          zIndex: 0,
         }}
       />
 
@@ -185,7 +188,7 @@ export default function TwoBackgroundOctahedron () {
           backgroundSize: '100px 100px',
           animation: 'floatUp 45s linear infinite',
           opacity: 0.3, // <--- adjust
-          zIndex: 0
+          zIndex: 0,
         }}
       />
 
@@ -196,7 +199,7 @@ export default function TwoBackgroundOctahedron () {
           position: 'absolute',
           inset: 0,
           zIndex: 1,
-          pointerEvents: 'none'
+          pointerEvents: 'none',
         }}
       />
 
@@ -210,5 +213,5 @@ export default function TwoBackgroundOctahedron () {
         `}
       </style>
     </div>
-  )
+  );
 }

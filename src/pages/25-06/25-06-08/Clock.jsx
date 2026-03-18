@@ -14,7 +14,20 @@ import img9 from '../../../assets/images/25-06/25-06-08/Qclu.gif';
 import img10 from '../../../assets/images/25-06/25-06-08/Qdi.gif';
 import img11 from '../../../assets/images/25-06/25-06-08/Qhea.gif';
 
-const images = [img12, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
+const images = [
+  img12,
+  img1,
+  img2,
+  img3,
+  img4,
+  img5,
+  img6,
+  img7,
+  img8,
+  img9,
+  img10,
+  img11,
+];
 
 const FaceCardClock = () => {
   const hourRef = useRef();
@@ -27,7 +40,7 @@ const FaceCardClock = () => {
       const ms = now.getMilliseconds();
       const seconds = now.getSeconds() + ms / 1000;
       const minutes = now.getMinutes() + seconds / 60;
-      const hours = now.getHours() % 12 + minutes / 60;
+      const hours = (now.getHours() % 12) + minutes / 60;
 
       const secondDeg = (seconds / 60) * 360;
       const minuteDeg = (minutes / 60) * 360;
@@ -86,7 +99,8 @@ const FaceCardClock = () => {
     left: '50%',
     transformOrigin: 'bottom',
     borderRadius: '5px',
-    boxShadow: '1px 1px 1px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(205, 201, 201)',
+    boxShadow:
+      '1px 1px 1px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(205, 201, 201)',
   };
 
   const centerDot = {
@@ -114,7 +128,13 @@ const FaceCardClock = () => {
         position: 'relative',
       }}
     >
-      <img decoding="async" loading="lazy" src={bgImage} style={bgStyle} alt="Background" />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bgImage}
+        style={bgStyle}
+        alt="Background"
+      />
 
       <div style={clockContainer}>
         {images.map((src, i) => {
@@ -127,7 +147,13 @@ const FaceCardClock = () => {
                 transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-39vmin)`,
               }}
             >
-              <img decoding="async" loading="lazy" src={src} alt={`card-${i}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+              <img
+                decoding="async"
+                loading="lazy"
+                src={src}
+                alt={`card-${i}`}
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              />
             </div>
           );
         })}

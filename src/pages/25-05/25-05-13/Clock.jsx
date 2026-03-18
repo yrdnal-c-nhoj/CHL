@@ -15,11 +15,15 @@ const FlatClock = () => {
       const minDeg = minute * 6 + second * 0.1;
       const hourDeg = hour * 30 + minute * 0.5;
 
-      document.getElementById('second-hand').style.transform = `rotate(${secDeg}deg)`;
-      document.getElementById('minute-hand').style.transform = `rotate(${minDeg}deg)`;
-      document.getElementById('hour-hand').style.transform = `rotate(${hourDeg}deg)`;
+      document.getElementById('second-hand').style.transform =
+        `rotate(${secDeg}deg)`;
+      document.getElementById('minute-hand').style.transform =
+        `rotate(${minDeg}deg)`;
+      document.getElementById('hour-hand').style.transform =
+        `rotate(${hourDeg}deg)`;
 
-      document.getElementById('clock-time').textContent = `Current time: ${now.toLocaleTimeString()}`;
+      document.getElementById('clock-time').textContent =
+        `Current time: ${now.toLocaleTimeString()}`;
     };
 
     const tick = () => {

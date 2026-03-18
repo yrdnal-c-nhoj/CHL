@@ -1,23 +1,23 @@
-import React, { useEffect, useState, useMemo, useRef } from "react";
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 
 // digits
-import digit1 from "../../../assets/images/25-09/25-09-23/z.gif";
-import digit2 from "../../../assets/images/25-09/25-09-23/z2.gif";
-import digit10 from "../../../assets/images/25-09/25-09-23/z3.gif";
-import digit12 from "../../../assets/images/25-09/25-09-23/z4.gif";
-import digit5 from "../../../assets/images/25-09/25-09-23/z5.gif";
-import digit6 from "../../../assets/images/25-09/25-09-23/z6.gif";
-import digit7 from "../../../assets/images/25-09/25-09-23/z7.gif";
-import digit8 from "../../../assets/images/25-09/25-09-23/z8.webp";
-import digit9 from "../../../assets/images/25-09/25-09-23/z9.webp";
-import digit11 from "../../../assets/images/25-09/25-09-23/z10.gif";
-import digit3 from "../../../assets/images/25-09/25-09-23/z11.gif";
-import digit4 from "../../../assets/images/25-09/25-09-23/z12.gif";
+import digit1 from '../../../assets/images/25-09/25-09-23/z.gif';
+import digit2 from '../../../assets/images/25-09/25-09-23/z2.gif';
+import digit10 from '../../../assets/images/25-09/25-09-23/z3.gif';
+import digit12 from '../../../assets/images/25-09/25-09-23/z4.gif';
+import digit5 from '../../../assets/images/25-09/25-09-23/z5.gif';
+import digit6 from '../../../assets/images/25-09/25-09-23/z6.gif';
+import digit7 from '../../../assets/images/25-09/25-09-23/z7.gif';
+import digit8 from '../../../assets/images/25-09/25-09-23/z8.webp';
+import digit9 from '../../../assets/images/25-09/25-09-23/z9.webp';
+import digit11 from '../../../assets/images/25-09/25-09-23/z10.gif';
+import digit3 from '../../../assets/images/25-09/25-09-23/z11.gif';
+import digit4 from '../../../assets/images/25-09/25-09-23/z12.gif';
 
 // hands
-import hourHandImg from "../../../assets/images/25-09/25-09-23/steth.png";
-import minuteHandImg from "../../../assets/images/25-09/25-09-23/sss.webp";
-import secondHandImg from "../../../assets/images/25-09/25-09-23/ste.gif";
+import hourHandImg from '../../../assets/images/25-09/25-09-23/steth.png';
+import minuteHandImg from '../../../assets/images/25-09/25-09-23/sss.webp';
+import secondHandImg from '../../../assets/images/25-09/25-09-23/ste.gif';
 
 export default function AnalogClock() {
   const hourRef = useRef(null);
@@ -29,10 +29,20 @@ export default function AnalogClock() {
   // Digits array
   const digits = useMemo(
     () => [
-      digit12, digit1, digit2, digit3, digit4, digit5,
-      digit6, digit7, digit8, digit9, digit10, digit11
+      digit12,
+      digit1,
+      digit2,
+      digit3,
+      digit4,
+      digit5,
+      digit6,
+      digit7,
+      digit8,
+      digit9,
+      digit10,
+      digit11,
     ],
-    []
+    [],
   );
 
   // Preload images once
@@ -40,13 +50,13 @@ export default function AnalogClock() {
     const allImages = [...digits, hourHandImg, minuteHandImg, secondHandImg];
     Promise.all(
       allImages.map(
-        src =>
-          new Promise(resolve => {
+        (src) =>
+          new Promise((resolve) => {
             const img = new Image();
             img.onload = img.onerror = resolve;
             img.src = src;
-          })
-      )
+          }),
+      ),
     ).then(() => setReady(true));
   }, [digits]);
 
@@ -59,17 +69,19 @@ export default function AnalogClock() {
       const y = 50 - radius * Math.cos(angle);
 
       return (
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           key={i}
           src={src}
           alt={`digit-${i}`}
           className="clock-digit"
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: `${y}%`,
             left: `${x}%`,
-            transform: "translate(-50%, -50%)",
-            width: "auto",
+            transform: 'translate(-50%, -50%)',
+            width: 'auto',
           }}
         />
       );
@@ -109,21 +121,42 @@ export default function AnalogClock() {
   return (
     <div
       style={{
-        height: "100dvh",
-        width: "100vw",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        height: '100dvh',
+        width: '100vw',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         background:
-          "radial-gradient(circle, rgba(123,120,120,0.8) 0%, rgba(159,116,10,0.3) 80%)",
+          'radial-gradient(circle, rgba(123,120,120,0.8) 0%, rgba(159,116,10,0.3) 80%)',
       }}
     >
       <div className="clock-face">
         {digitElements}
 
-        <img decoding="async" loading="lazy" ref={hourRef} src={hourHandImg} alt="hour-hand" className="hour-hand" />
-        <img decoding="async" loading="lazy" ref={minuteRef} src={minuteHandImg} alt="minute-hand" className="minute-hand" />
-        <img decoding="async" loading="lazy" ref={secondRef} src={secondHandImg} alt="second-hand" className="second-hand" />
+        <img
+          decoding="async"
+          loading="lazy"
+          ref={hourRef}
+          src={hourHandImg}
+          alt="hour-hand"
+          className="hour-hand"
+        />
+        <img
+          decoding="async"
+          loading="lazy"
+          ref={minuteRef}
+          src={minuteHandImg}
+          alt="minute-hand"
+          className="minute-hand"
+        />
+        <img
+          decoding="async"
+          loading="lazy"
+          ref={secondRef}
+          src={secondHandImg}
+          alt="second-hand"
+          className="second-hand"
+        />
       </div>
 
       <style>{`

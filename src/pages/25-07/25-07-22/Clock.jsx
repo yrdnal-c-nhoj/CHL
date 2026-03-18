@@ -15,9 +15,12 @@ const BarrelrollClock = () => {
       const minuteDeg = minute * 6 + second * 0.1;
       const hourDeg = ((hour % 12) / 12) * 360 + (minute / 60) * 30;
 
-      document.getElementById('second').style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
-      document.getElementById('minute').style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
-      document.getElementById('hour').style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+      document.getElementById('second').style.transform =
+        `translateX(-50%) rotate(${secondDeg}deg)`;
+      document.getElementById('minute').style.transform =
+        `translateX(-50%) rotate(${minuteDeg}deg)`;
+      document.getElementById('hour').style.transform =
+        `translateX(-50%) rotate(${hourDeg}deg)`;
     };
 
     const interval = setInterval(updateClock, 1000);
@@ -27,13 +30,15 @@ const BarrelrollClock = () => {
   }, []);
 
   return (
-    <div style={{
-      width: '100vw',
-      height: '100dvh',
-      overflow: 'hidden',
-      background: '#000',
-      fontSize: '1rem',
-    }}>
+    <div
+      style={{
+        width: '100vw',
+        height: '100dvh',
+        overflow: 'hidden',
+        background: '#000',
+        fontSize: '1rem',
+      }}
+    >
       <style>{`
         @font-face {
           font-family: 'ber';
@@ -176,22 +181,32 @@ const BarrelrollClock = () => {
      
       `}</style>
 
-    
-
       <div className="container">
         <div className="spin-wrapper">
           <div className="half left">
-            <img decoding="async" loading="lazy" src={bardImg} alt="Left Image" />
+            <img
+              decoding="async"
+              loading="lazy"
+              src={bardImg}
+              alt="Left Image"
+            />
           </div>
           <div className="half right">
-            <img decoding="async" loading="lazy" src={barrsImg} alt="Right Image" />
+            <img
+              decoding="async"
+              loading="lazy"
+              src={barrsImg}
+              alt="Right Image"
+            />
           </div>
           <div className="center-line"></div>
         </div>
 
         <div className="clock" id="clock">
           {[...Array(12)].map((_, i) => (
-            <div className="number" key={i} style={{ '--i': i + 1 }}>{i + 1}</div>
+            <div className="number" key={i} style={{ '--i': i + 1 }}>
+              {i + 1}
+            </div>
           ))}
 
           <div className="hand hour" id="hour"></div>

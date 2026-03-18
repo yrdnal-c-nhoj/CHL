@@ -9,14 +9,14 @@ const CocteauClock = () => {
   useEffect(() => {
     // 1. Precise Clock Timer
     const timer = setInterval(() => setTime(new Date()), 1000);
-    
+
     // 2. Mobile Autoplay Force
-    // React's 'muted' prop can fail on mount; setting it via ref 
+    // React's 'muted' prop can fail on mount; setting it via ref
     // guarantees the browser sees it as muted before play() is called.
     if (videoRef.current) {
-      videoRef.current.muted = true; 
+      videoRef.current.muted = true;
       videoRef.current.play().catch((err) => {
-        console.warn("Autoplay blocked by browser/battery saver:", err);
+        console.warn('Autoplay blocked by browser/battery saver:', err);
       });
     }
 
@@ -46,17 +46,30 @@ const CocteauClock = () => {
   });
 
   return (
-    <div style={{
-      width: '100vw', height: '100dvh', position: 'relative',
-      overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center',
-      backgroundColor: '#000' // Prevents white flash while video loads
-    }}>
+    <div
+      style={{
+        width: '100vw',
+        height: '100dvh',
+        position: 'relative',
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#000', // Prevents white flash while video loads
+      }}
+    >
       {/* Background Video */}
       <video
         ref={videoRef}
         style={{
-          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-          objectFit: 'cover', opacity: 0.9, zIndex: 1
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          opacity: 0.9,
+          zIndex: 1,
         }}
         autoPlay
         loop
@@ -70,34 +83,53 @@ const CocteauClock = () => {
       {/* SVG Filters */}
       <svg style={{ position: 'absolute', width: 0, height: 0 }}>
         <filter id="cocteau-line">
-          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise" />
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.05"
+            numOctaves="3"
+            result="noise"
+          />
           <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" />
         </filter>
       </svg>
 
       {/* Clock Face */}
-      <div style={{
-        position: 'relative', zIndex: 10,
-        width: 'min(75vw, 75vh)', height: 'min(75vw, 75vh)',
-        borderRadius: '52% 48% 51% 49% / 49% 52% 48% 51%',
-        filter: 'url(#cocteau-line)',
-        opacity: 0.7,
-      }}>
-        
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          width: 'min(75vw, 75vh)',
+          height: 'min(75vw, 75vh)',
+          borderRadius: '52% 48% 51% 49% / 49% 52% 48% 51%',
+          filter: 'url(#cocteau-line)',
+          opacity: 0.7,
+        }}
+      >
         {/* The Cocteau Star (12 o'clock) */}
-        <div style={{
-          position: 'absolute', top: '15px', left: '50%',
-          transform: 'translateX(-50%)', width: '40px', height: '40px',
-          backgroundImage: `url(${starWebp})`,
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center'
-        }} />
+        <div
+          style={{
+            position: 'absolute',
+            top: '15px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '40px',
+            height: '40px',
+            backgroundImage: `url(${starWebp})`,
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+          }}
+        />
 
         {/* Hands */}
         <div style={handStyle('42%', '7px', '#E2C264', minuteAngle)} />
         <div style={handStyle('26%', '8px', '#8BC7D0', hourAngle)} />
-        <div style={{...handStyle('46%', '5px', '#F3F2EB', secondAngle), zIndex: 15}} />
+        <div
+          style={{
+            ...handStyle('46%', '5px', '#F3F2EB', secondAngle),
+            zIndex: 15,
+          }}
+        />
       </div>
     </div>
   );

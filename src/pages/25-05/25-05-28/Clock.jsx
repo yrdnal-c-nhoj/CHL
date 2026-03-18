@@ -4,13 +4,16 @@ import circleFont from '../../../assets/fonts/25-05-28-circle.ttf'; // Use worki
 
 const Clock = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
-  const fontReady = useFontLoader('circle-local', circleFont, { fallback: true, timeout: 5000 });
-  
+  const fontReady = useFontLoader('circle-local', circleFont, {
+    fallback: true,
+    timeout: 5000,
+  });
+
   // Debug font loading
   console.log('Circle font ready:', fontReady);
   console.log('Circle font URL:', circleFont);
   console.log('Font file exists:', !!circleFont);
-  
+
   // Force CSS font-face declaration to override any cached references
   useEffect(() => {
     const style = document.createElement('style');
@@ -24,7 +27,7 @@ const Clock = () => {
       }
     `;
     document.head.appendChild(style);
-    
+
     return () => {
       if (document.head.contains(style)) {
         document.head.removeChild(style);
@@ -42,7 +45,7 @@ const Clock = () => {
       const milliseconds = now.getMilliseconds();
       const seconds = now.getSeconds() + milliseconds / 1000;
       const minutes = now.getMinutes() + seconds / 60;
-      const hours = now.getHours() % 12 + minutes / 60;
+      const hours = (now.getHours() % 12) + minutes / 60;
 
       const hourAngle = hours * 30;
       const minuteAngle = minutes * 6;
@@ -172,18 +175,55 @@ const Clock = () => {
   const renderClock = (id, index) => (
     <div key={id} id={id} style={clockPositions[index].style}>
       <svg viewBox="0 0 100 100" style={svgStyle}>
-        <circle className="clock-face" cx="50" cy="50" r="45" style={clockFaceStyle} />
+        <circle
+          className="clock-face"
+          cx="50"
+          cy="50"
+          r="45"
+          style={clockFaceStyle}
+        />
         {[...Array(12)].map((_, i) => (
           <g key={i} transform={`rotate(${i * 30} 50 50)`}>
-            <line className="tick" x1="50" y1="5" x2="50" y2="10" style={tickStyle} />
+            <line
+              className="tick"
+              x1="50"
+              y1="5"
+              x2="50"
+              y2="10"
+              style={tickStyle}
+            />
             <text className="number" x="50" y="15" style={numberStyle}>
               {i === 0 ? 12 : i}
             </text>
           </g>
         ))}
-        <line className="hour-hand" x1="50" y1="50" x2="50" y2="22" id={`hour${index + 1}`} style={handStyles.hour} />
-        <line className="minute-hand" x1="50" y1="50" x2="50" y2="9" id={`minute${index + 1}`} style={handStyles.minute} />
-        <line className="second-hand" x1="50" y1="50" x2="50" y2="-500" id={`second${index + 1}`} style={handStyles.second} />
+        <line
+          className="hour-hand"
+          x1="50"
+          y1="50"
+          x2="50"
+          y2="22"
+          id={`hour${index + 1}`}
+          style={handStyles.hour}
+        />
+        <line
+          className="minute-hand"
+          x1="50"
+          y1="50"
+          x2="50"
+          y2="9"
+          id={`minute${index + 1}`}
+          style={handStyles.minute}
+        />
+        <line
+          className="second-hand"
+          x1="50"
+          y1="50"
+          x2="50"
+          y2="-500"
+          id={`second${index + 1}`}
+          style={handStyles.second}
+        />
         <circle cx="50" cy="50" r="2" fill="#333" />
       </svg>
     </div>

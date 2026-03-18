@@ -6,17 +6,17 @@ const PuppyClockComponent = () => {
   const [images, setImages] = useState({ current: '', next: '' });
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [time, setTime] = useState(new Date());
-  
+
   const fontReady = useFontLoader('CustomFont', font_2024_12_05, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   const getNewPuppy = useCallback(async () => {
     try {
       const response = await fetch('https://dog.ceo/api/breeds/image/random');
       const data = await response.json();
-      
+
       if (data.status === 'success') {
         const nextUrl = data.message;
 
@@ -25,8 +25,8 @@ const PuppyClockComponent = () => {
         img.src = nextUrl;
         img.onload = () => {
           // 1. Set the 'next' image behind the current one
-          setImages(prev => ({ ...prev, next: nextUrl }));
-          
+          setImages((prev) => ({ ...prev, next: nextUrl }));
+
           // 2. Trigger the fade transition
           setIsTransitioning(true);
 
@@ -34,7 +34,7 @@ const PuppyClockComponent = () => {
           setTimeout(() => {
             setImages({ current: nextUrl, next: '' });
             setIsTransitioning(false);
-          }, 600); 
+          }, 600);
         };
       }
     } catch (error) {
@@ -58,7 +58,9 @@ const PuppyClockComponent = () => {
     const minutes = date.getMinutes();
     const ampm = hours >= 12 ? 'pm' : 'am';
     hours = hours % 12 || 12;
-    return `${hours}${minutes.toString().padStart(2, '0')} ${ampm}`.split('').join(' ');
+    return `${hours}${minutes.toString().padStart(2, '0')} ${ampm}`
+      .split('')
+      .join(' ');
   };
 
   // --- STYLES ---
@@ -95,34 +97,32 @@ const PuppyClockComponent = () => {
     opacity: fontReady ? 1 : 0,
     transition: 'opacity 0.5s ease',
     transform: 'translateY(12vh)',
-    pointerEvents: 'none'
+    pointerEvents: 'none',
   };
 
   return (
     <div style={containerStyle}>
       {/* BACKGROUND LAYER 1: The "Old" or Static Image */}
-      <div 
-        style={{ 
-          ...layerStyle, 
+      <div
+        style={{
+          ...layerStyle,
           backgroundImage: `url(${images.current})`,
-          zIndex: 1 
-        }} 
+          zIndex: 1,
+        }}
       />
 
       {/* BACKGROUND LAYER 2: The "New" incoming Image */}
-      <div 
-        style={{ 
-          ...layerStyle, 
+      <div
+        style={{
+          ...layerStyle,
           backgroundImage: `url(${images.next})`,
           opacity: isTransitioning ? 1 : 0,
-          zIndex: 2 
-        }} 
+          zIndex: 2,
+        }}
       />
 
       {/* TIME OVERLAY */}
-      <div style={clockStyle}>
-        {formatTime(time)}
-      </div>
+      <div style={clockStyle}>{formatTime(time)}</div>
     </div>
   );
 };

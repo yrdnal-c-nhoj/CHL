@@ -43,7 +43,7 @@ const Clock = () => {
     colonBox: {
       fontSize: '4.5rem',
 
-  lineHeight: '1rem', // or another value like '1', 'normal', etc.
+      lineHeight: '1rem', // or another value like '1', 'normal', etc.
 
       background: 'transparent',
     },

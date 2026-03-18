@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
@@ -23,7 +23,9 @@ const Clock = () => {
     const centerY = 18;
     const radius = 22;
 
-    const display = Array(41).fill(null).map(() => Array(81).fill(' '));
+    const display = Array(41)
+      .fill(null)
+      .map(() => Array(81).fill(' '));
 
     // Clock circle
     for (let angle = 0; angle < 360; angle += 2) {
@@ -37,8 +39,18 @@ const Clock = () => {
 
     // Hour markers (Esperanto names)
     const hourNames = [
-      'DEKKDU', 'UNU', 'DU', 'TRI', 'KVAR', 'KVIN',
-      'SES', 'SEP', 'OK', 'NAŬ', 'DEK', 'DEKUNU'
+      'DEKKDU',
+      'UNU',
+      'DU',
+      'TRI',
+      'KVAR',
+      'KVIN',
+      'SES',
+      'SEP',
+      'OK',
+      'NAŬ',
+      'DEK',
+      'DEKUNU',
     ];
     for (let i = 0; i < 12; i++) {
       const angle = (i * 30 - 90) * (Math.PI / 180);
@@ -79,24 +91,24 @@ const Clock = () => {
 
     display[centerY][centerX] = '+';
 
-    return display.map(row => row.join('')).join('\n');
+    return display.map((row) => row.join('')).join('\n');
   };
 
   return (
     <div
       style={{
-        height: "100dvh",
-        width: "100vw",
-        backgroundColor: "#D7F5F3FF",
-        color: "#0A110CFF",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        fontFamily: "monospace",
-        whiteSpace: "pre",
-        overflow: "auto",
-        fontSize: "clamp(8px, 1.5vh, 16px)",
-        lineHeight: "1",
+        height: '100dvh',
+        width: '100vw',
+        backgroundColor: '#D7F5F3FF',
+        color: '#0A110CFF',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontFamily: 'monospace',
+        whiteSpace: 'pre',
+        overflow: 'auto',
+        fontSize: 'clamp(8px, 1.5vh, 16px)',
+        lineHeight: '1',
       }}
     >
       {drawClock()}

@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import cinzel20251010 from '../../../assets/fonts/25-10-09-d1.ttf';
 import roboto20251010 from '../../../assets/fonts/25-10-09-d2.ttf';
 import orbitron20251010 from '../../../assets/fonts/25-10-09-d3.otf';
 
-export default function ConcentricClock () {
-  const [currentTime, setCurrentTime] = useState({ h: 0, m: 0, s: 0 })
-  const [fontsLoaded, setFontsLoaded] = useState(false)
+export default function ConcentricClock() {
+  const [currentTime, setCurrentTime] = useState({ h: 0, m: 0, s: 0 });
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
     const setVh = () => {
       document.documentElement.style.setProperty(
         '--vh',
-        `${window.innerHeight * 0.01}px`
-      )
-    }
-    setVh()
-    window.addEventListener('resize', setVh)
-    return () => window.removeEventListener('resize', setVh)
-  }, [])
+        `${window.innerHeight * 0.01}px`,
+      );
+    };
+    setVh();
+    window.addEventListener('resize', setVh);
+    return () => window.removeEventListener('resize', setVh);
+  }, []);
 
   useEffect(() => {
-    const style = document.createElement('style')
+    const style = document.createElement('style');
     style.textContent = `
       @font-face {
         font-family: 'HoursFont';
@@ -34,48 +34,48 @@ export default function ConcentricClock () {
         font-family: 'SecondsFont';
         src: url(${orbitron20251010}) format('opentype');
       }
-    `
-    document.head.appendChild(style)
-    document.fonts.ready.then(() => setFontsLoaded(true))
-  }, [])
+    `;
+    document.head.appendChild(style);
+    document.fonts.ready.then(() => setFontsLoaded(true));
+  }, []);
 
   useEffect(() => {
-    if (!fontsLoaded) return
+    if (!fontsLoaded) return;
     const getTime = () => {
-      const now = new Date()
+      const now = new Date();
       setCurrentTime({
         h: now.getHours() % 12 || 12,
         m: now.getMinutes(),
-        s: now.getSeconds()
-      })
-    }
-    getTime()
-    const interval = setInterval(getTime, 1000)
-    return () => clearInterval(interval)
-  }, [fontsLoaded])
+        s: now.getSeconds(),
+      });
+    };
+    getTime();
+    const interval = setInterval(getTime, 1000);
+    return () => clearInterval(interval);
+  }, [fontsLoaded]);
 
   const renderRing = (count, radiusVh, type, offset = { x: 0, y: 0 }) => {
-    const items = []
-    const current = currentTime[type]
+    const items = [];
+    const current = currentTime[type];
     const fontFamily =
-      type === 'h' ? 'HoursFont' : type === 'm' ? 'MinutesFont' : 'SecondsFont'
-    const currentOffset = (360 / count) * current
+      type === 'h' ? 'HoursFont' : type === 'm' ? 'MinutesFont' : 'SecondsFont';
+    const currentOffset = (360 / count) * current;
 
     for (let i = 0; i < count; i++) {
-      const angle = (360 / count) * i - currentOffset
-      const rad = (angle * Math.PI) / 180
-      const x = radiusVh * Math.cos(rad) + offset.x
-      const y = radiusVh * Math.sin(rad) + offset.y
+      const angle = (360 / count) * i - currentOffset;
+      const rad = (angle * Math.PI) / 180;
+      const x = radiusVh * Math.cos(rad) + offset.x;
+      const y = radiusVh * Math.sin(rad) + offset.y;
 
-      let value
-      if (type === 'h') value = i === 0 ? 12 : i
-      else value = i.toString().padStart(2, '0')
+      let value;
+      if (type === 'h') value = i === 0 ? 12 : i;
+      else value = i.toString().padStart(2, '0');
 
       const isCurrent =
         (type === 'h' &&
           value === (currentTime.h === 0 ? 12 : currentTime.h)) ||
         (type === 'm' && i === currentTime.m) ||
-        (type === 's' && i === currentTime.s)
+        (type === 's' && i === currentTime.s);
 
       items.push(
         <div
@@ -108,24 +108,24 @@ export default function ConcentricClock () {
             whiteSpace: 'nowrap',
 
             // 🆕 Add this line:
-            zIndex: isCurrent ? 10 : 1
+            zIndex: isCurrent ? 10 : 1,
           }}
         >
           {value}
-        </div>
-      )
+        </div>,
+      );
     }
-    return items
-  }
+    return items;
+  };
 
-  if (!fontsLoaded) return null
+  if (!fontsLoaded) return null;
 
   // Format time in HH:MM:SS (12-hour)
   const formattedTime = `${currentTime.h
     .toString()
     .padStart(2, '0')}:${currentTime.m
     .toString()
-    .padStart(2, '0')}:${currentTime.s.toString().padStart(2, '0')}`
+    .padStart(2, '0')}:${currentTime.s.toString().padStart(2, '0')}`;
 
   return (
     <div
@@ -140,7 +140,7 @@ export default function ConcentricClock () {
         justifyContent: 'flex-start',
         background:
           'radial-gradient(circle at center, #530B7CFF 30%, #6B11BAFF 100%)',
-        overflow: 'hidden'
+        overflow: 'hidden',
       }}
     >
       {/* Concentric rings */}
@@ -148,7 +148,7 @@ export default function ConcentricClock () {
         style={{
           position: 'relative',
           width: '100vh',
-          height: '100vh'
+          height: '100vh',
         }}
       >
         {renderRing(12, 62, 'h', { x: -79, y: -42 })}
@@ -156,5 +156,5 @@ export default function ConcentricClock () {
         {renderRing(60, 72, 's', { x: -75, y: 11 })}
       </div>
     </div>
-  )
+  );
 }

@@ -1,6 +1,6 @@
 /**
  * Asterisk Clock Component
- * 
+ *
  * Features:
  * - Matrix-style falling character background
  * - Analog clock with custom font characters
@@ -11,7 +11,6 @@
 import React, { useState, useEffect, useMemo, memo } from 'react';
 import AsteriskFont1 from '../../../assets/fonts/26-02-17-ast.otf';
 import AsteriskFont2 from '../../../assets/fonts/26-02-17-aster.otf';
-
 
 /* Generate 12 unique random characters */
 const generateChars = () => {
@@ -25,42 +24,39 @@ const generateChars = () => {
   return chars.slice(0, 12);
 };
 
-
 /**
  * BackgroundGrid
  */
 const BackgroundGrid = memo(({ windowSize, cellSize }) => {
-
   const columnCount = Math.ceil(windowSize.width / cellSize);
   const rowsPerColumn = 20;
 
   const streams = useMemo(() => {
-
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
     return Array.from({ length: columnCount }, () => ({
-      data: Array.from({ length: rowsPerColumn }, () =>
-        chars[Math.floor(Math.random() * chars.length)]
+      data: Array.from(
+        { length: rowsPerColumn },
+        () => chars[Math.floor(Math.random() * chars.length)],
       ),
       duration: 12 + Math.random() * 18,
-      delay: Math.random() * -20
+      delay: Math.random() * -20,
     }));
-
   }, [columnCount]);
 
-
   return (
-    <div style={{
-      position: 'absolute',
-      inset: 0,
-      zIndex: 1,
-      display: 'flex',
-      pointerEvents: 'none',
-      opacity: 0.3,
-      overflow: 'hidden'
-    }}>
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        zIndex: 1,
+        display: 'flex',
+        pointerEvents: 'none',
+        opacity: 0.3,
+        overflow: 'hidden',
+      }}
+    >
       {streams.map((stream, colIdx) => (
-
         <div
           key={colIdx}
           style={{
@@ -68,12 +64,10 @@ const BackgroundGrid = memo(({ windowSize, cellSize }) => {
             display: 'flex',
             flexDirection: 'column',
             animation: `rain-rise ${stream.duration}s linear infinite`,
-            animationDelay: `${stream.delay}s`
+            animationDelay: `${stream.delay}s`,
           }}
         >
-
           {[...stream.data, ...stream.data, ...stream.data].map((char, i) => (
-
             <div
               key={i}
               style={{
@@ -84,28 +78,22 @@ const BackgroundGrid = memo(({ windowSize, cellSize }) => {
                 fontFamily: 'AsteriskFont1',
                 fontSize: '1.8rem',
                 color: '#B103F6',
-                userSelect: 'none'
+                userSelect: 'none',
               }}
             >
               {char}
             </div>
-
           ))}
-
         </div>
-
       ))}
     </div>
   );
-
 });
-
 
 /**
  * Main Clock
  */
 const AsteriskClock = () => {
-
   const [time, setTime] = useState(new Date());
 
   const [clockChars, setClockChars] = useState(generateChars());
@@ -114,22 +102,18 @@ const AsteriskClock = () => {
 
   const cellSize = 50;
 
-
   const [windowSize, setWindowSize] = useState({
-
     width: typeof window !== 'undefined' ? window.innerWidth : 1920,
 
-    height: typeof window !== 'undefined' ? window.innerHeight : 1080
-
+    height: typeof window !== 'undefined' ? window.innerHeight : 1080,
   });
 
-
   /**
- * Setup fonts, resize, and clock tick
+   * Setup fonts, resize, and clock tick
    */
   useEffect(() => {
     console.log('AsteriskClock: Component mounting');
-    
+
     try {
       const style = document.createElement('style');
 
@@ -158,7 +142,7 @@ const AsteriskClock = () => {
       const resize = () => {
         setWindowSize({
           width: window.innerWidth,
-          height: window.innerHeight
+          height: window.innerHeight,
         });
       };
 
@@ -180,31 +164,22 @@ const AsteriskClock = () => {
     }
   }, []);
 
-
   /**
    * Character fade cycle every 3 seconds
    */
   useEffect(() => {
-
     const interval = setInterval(() => {
-
       setVisible(false);
 
       setTimeout(() => {
-
         setClockChars(generateChars());
 
         setVisible(true);
-
       }, 400);
-
     }, 3000);
 
-
     return () => clearInterval(interval);
-
   }, []);
-
 
   /**
    * Clock hand angles
@@ -217,42 +192,44 @@ const AsteriskClock = () => {
   const minuteAngle = minutes * 6 + seconds * 0.1 - 90;
   const hourAngle = hours * 30 + minutes * 0.5 - 90;
 
-
   return (
-    <div style={{
-      width: '100vw',
-      height: '100dvh',
-      backgroundColor: '#CFF6DA',
-      position: 'relative',
-      overflow: 'hidden',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}>
-    
-
+    <div
+      style={{
+        width: '100vw',
+        height: '100dvh',
+        backgroundColor: '#CFF6DA',
+        position: 'relative',
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       <BackgroundGrid windowSize={windowSize} cellSize={cellSize} />
 
-      <div style={{
-        position: 'relative',
-        width: 'min(75vw, 75vh)',
-        height: 'min(75vw, 75vh)',
-        zIndex: 10,
-        border: '2px solid rgba(0,0,0,0.1)',
-        borderRadius: '50%'
-      }}>
-
+      <div
+        style={{
+          position: 'relative',
+          width: 'min(75vw, 75vh)',
+          height: 'min(75vw, 75vh)',
+          zIndex: 10,
+          border: '2px solid rgba(0,0,0,0.1)',
+          borderRadius: '50%',
+        }}
+      >
         {/* Clock Characters */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          opacity: visible ? 1 : 0,
-          transition: 'opacity 0.4s ease'
-        }}>
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            opacity: visible ? 1 : 0,
+            transition: 'opacity 0.4s ease',
+          }}
+        >
           {clockChars.map((char, i) => {
             const angle = i * 30 - 90;
-            const x = 50 + 42 * Math.cos(angle * Math.PI / 180);
-            const y = 50 + 42 * Math.sin(angle * Math.PI / 180);
+            const x = 50 + 42 * Math.cos((angle * Math.PI) / 180);
+            const y = 50 + 42 * Math.sin((angle * Math.PI) / 180);
 
             return (
               <div
@@ -266,7 +243,7 @@ const AsteriskClock = () => {
                   fontSize: 'clamp(3rem, 15vh, 8rem)',
                   color: '#1C1C19',
                   textShadow: '2px 2px 0px #FBEF05',
-                  userSelect: 'none'
+                  userSelect: 'none',
                 }}
               >
                 {char}
@@ -280,8 +257,8 @@ const AsteriskClock = () => {
           <line
             x1="100"
             y1="100"
-            x2={100 + 30 * Math.cos(hourAngle * Math.PI / 180)}
-            y2={100 + 30 * Math.sin(hourAngle * Math.PI / 180)}
+            x2={100 + 30 * Math.cos((hourAngle * Math.PI) / 180)}
+            y2={100 + 30 * Math.sin((hourAngle * Math.PI) / 180)}
             stroke="#333"
             strokeWidth="5"
             strokeLinecap="round"
@@ -290,8 +267,8 @@ const AsteriskClock = () => {
           <line
             x1="100"
             y1="100"
-            x2={100 + 45 * Math.cos(minuteAngle * Math.PI / 180)}
-            y2={100 + 45 * Math.sin(minuteAngle * Math.PI / 180)}
+            x2={100 + 45 * Math.cos((minuteAngle * Math.PI) / 180)}
+            y2={100 + 45 * Math.sin((minuteAngle * Math.PI) / 180)}
             stroke="#333"
             strokeWidth="3"
             strokeLinecap="round"
@@ -301,19 +278,16 @@ const AsteriskClock = () => {
           <line
             x1="100"
             y1="100"
-            x2={100 + 55 * Math.cos(secondAngle * Math.PI / 180)}
-            y2={100 + 55 * Math.sin(secondAngle * Math.PI / 180)}
+            x2={100 + 55 * Math.cos((secondAngle * Math.PI) / 180)}
+            y2={100 + 55 * Math.sin((secondAngle * Math.PI) / 180)}
             stroke="#ff3333"
             strokeWidth="1.5"
             strokeLinecap="round"
           />
         </svg>
-
       </div>
     </div>
   );
-
 };
-
 
 export default AsteriskClock;

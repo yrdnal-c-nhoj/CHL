@@ -8,9 +8,19 @@ const MedievalSVG = () => (
   >
     <defs>
       {/* Bark texture pattern */}
-      <pattern id="barkTexture" patternUnits="userSpaceOnUse" width="8" height="12">
+      <pattern
+        id="barkTexture"
+        patternUnits="userSpaceOnUse"
+        width="8"
+        height="12"
+      >
         <rect width="8" height="12" fill="#8B4513" />
-        <path d="M0 0 L8 3 L0 6 L8 9 L0 12" stroke="#654321" strokeWidth="1" fill="none" />
+        <path
+          d="M0 0 L8 3 L0 6 L8 9 L0 12"
+          stroke="#654321"
+          strokeWidth="1"
+          fill="none"
+        />
         <circle cx="2" cy="4" r="0.5" fill="#654321" />
         <circle cx="6" cy="8" r="0.5" fill="#654321" />
       </pattern>
@@ -19,11 +29,50 @@ const MedievalSVG = () => (
       <pattern id="weave" patternUnits="userSpaceOnUse" width="30" height="30">
         <rect width="30" height="30" fill="#8B0000" opacity="0.5" />
         <rect x="0" y="0" width="15" height="15" fill="#A0222A" opacity="0.5" />
-        <rect x="15" y="15" width="15" height="15" fill="#A0222A" opacity="0.5" />
-        <line x1="0" y1="7.5" x2="30" y2="7.5" stroke="#654321" strokeWidth="0.7" opacity={0.5 * 0.3} />
-        <line x1="0" y1="22.5" x2="30" y2="22.5" stroke="#654321" strokeWidth="0.7" opacity={0.5 * 0.3} />
-        <line x1="7.5" y1="0" x2="7.5" y2="30" stroke="#654321" strokeWidth="0.7" opacity={0.5 * 0.3} />
-        <line x1="22.5" y1="0" x2="22.5" y2="30" stroke="#654321" strokeWidth="0.7" opacity={0.5 * 0.3} />
+        <rect
+          x="15"
+          y="15"
+          width="15"
+          height="15"
+          fill="#A0222A"
+          opacity="0.5"
+        />
+        <line
+          x1="0"
+          y1="7.5"
+          x2="30"
+          y2="7.5"
+          stroke="#654321"
+          strokeWidth="0.7"
+          opacity={0.5 * 0.3}
+        />
+        <line
+          x1="0"
+          y1="22.5"
+          x2="30"
+          y2="22.5"
+          stroke="#654321"
+          strokeWidth="0.7"
+          opacity={0.5 * 0.3}
+        />
+        <line
+          x1="7.5"
+          y1="0"
+          x2="7.5"
+          y2="30"
+          stroke="#654321"
+          strokeWidth="0.7"
+          opacity={0.5 * 0.3}
+        />
+        <line
+          x1="22.5"
+          y1="0"
+          x2="22.5"
+          y2="30"
+          stroke="#654321"
+          strokeWidth="0.7"
+          opacity={0.5 * 0.3}
+        />
       </pattern>
     </defs>
 
@@ -33,15 +82,71 @@ const MedievalSVG = () => (
     <ellipse cx="75" cy="580" rx="25" ry="100" fill="url(#barkTexture)" />
     <ellipse cx="75" cy="480" rx="22" ry="80" fill="url(#barkTexture)" />
     {/* Branches */}
-    <ellipse cx="45" cy="450" rx="12" ry="60" fill="url(#barkTexture)" transform="rotate(-25 45 450)" />
-    <ellipse cx="105" cy="420" rx="10" ry="50" fill="url(#barkTexture)" transform="rotate(30 105 420)" />
-    <ellipse cx="35" cy="380" rx="8" ry="40" fill="#8B4513" transform="rotate(-45 35 380)" />
-    <ellipse cx="115" cy="350" rx="9" ry="45" fill="#8B4513" transform="rotate(40 115 350)" />
+    <ellipse
+      cx="45"
+      cy="450"
+      rx="12"
+      ry="60"
+      fill="url(#barkTexture)"
+      transform="rotate(-25 45 450)"
+    />
+    <ellipse
+      cx="105"
+      cy="420"
+      rx="10"
+      ry="50"
+      fill="url(#barkTexture)"
+      transform="rotate(30 105 420)"
+    />
+    <ellipse
+      cx="35"
+      cy="380"
+      rx="8"
+      ry="40"
+      fill="#8B4513"
+      transform="rotate(-45 35 380)"
+    />
+    <ellipse
+      cx="115"
+      cy="350"
+      rx="9"
+      ry="45"
+      fill="#8B4513"
+      transform="rotate(40 115 350)"
+    />
     {/* Smaller branches */}
-    <ellipse cx="25" cy="320" rx="5" ry="25" fill="#8B4513" transform="rotate(-60 25 320)" />
-    <ellipse cx="125" cy="300" rx="4" ry="20" fill="#8B4513" transform="rotate(55 125 300)" />
-    <ellipse cx="50" cy="280" rx="6" ry="30" fill="#8B4513" transform="rotate(-20 50 280)" />
-    <ellipse cx="100" cy="260" rx="5" ry="25" fill="#8B4513" transform="rotate(25 100 260)" />
+    <ellipse
+      cx="25"
+      cy="320"
+      rx="5"
+      ry="25"
+      fill="#8B4513"
+      transform="rotate(-60 25 320)"
+    />
+    <ellipse
+      cx="125"
+      cy="300"
+      rx="4"
+      ry="20"
+      fill="#8B4513"
+      transform="rotate(55 125 300)"
+    />
+    <ellipse
+      cx="50"
+      cy="280"
+      rx="6"
+      ry="30"
+      fill="#8B4513"
+      transform="rotate(-20 50 280)"
+    />
+    <ellipse
+      cx="100"
+      cy="260"
+      rx="5"
+      ry="25"
+      fill="#8B4513"
+      transform="rotate(25 100 260)"
+    />
     {/* Foliage clusters */}
     <circle cx="20" cy="310" r="25" fill="#228B22" />
     <circle cx="35" cy="295" r="30" fill="#32CD32" />
@@ -61,8 +166,22 @@ const MedievalSVG = () => (
     <circle cx="95" cy="170" r="38" fill="#228B22" />
     <circle cx="75" cy="140" r="30" fill="#32CD32" />
     {/* Roots */}
-    <ellipse cx="45" cy="980" rx="8" ry="30" fill="#8B4513" transform="rotate(-30 45 980)" />
-    <ellipse cx="105" cy="985" rx="10" ry="35" fill="#8B4513" transform="rotate(25 105 985)" />
+    <ellipse
+      cx="45"
+      cy="980"
+      rx="8"
+      ry="30"
+      fill="#8B4513"
+      transform="rotate(-30 45 980)"
+    />
+    <ellipse
+      cx="105"
+      cy="985"
+      rx="10"
+      ry="35"
+      fill="#8B4513"
+      transform="rotate(25 105 985)"
+    />
     <ellipse cx="75" cy="990" rx="12" ry="25" fill="#8B4513" />
 
     {/* RIGHT TREE */}
@@ -71,15 +190,71 @@ const MedievalSVG = () => (
     <ellipse cx="725" cy="570" rx="28" ry="110" fill="url(#barkTexture)" />
     <ellipse cx="725" cy="460" rx="25" ry="90" fill="url(#barkTexture)" />
     {/* Branches */}
-    <ellipse cx="680" cy="430" rx="14" ry="65" fill="url(#barkTexture)" transform="rotate(-35 680 430)" />
-    <ellipse cx="770" cy="400" rx="12" ry="55" fill="url(#barkTexture)" transform="rotate(25 770 400)" />
-    <ellipse cx="660" cy="360" rx="10" ry="45" fill="url(#barkTexture)" transform="rotate(-50 660 360)" />
-    <ellipse cx="790" cy="330" rx="11" ry="50" fill="url(#barkTexture)" transform="rotate(45 790 330)" />
+    <ellipse
+      cx="680"
+      cy="430"
+      rx="14"
+      ry="65"
+      fill="url(#barkTexture)"
+      transform="rotate(-35 680 430)"
+    />
+    <ellipse
+      cx="770"
+      cy="400"
+      rx="12"
+      ry="55"
+      fill="url(#barkTexture)"
+      transform="rotate(25 770 400)"
+    />
+    <ellipse
+      cx="660"
+      cy="360"
+      rx="10"
+      ry="45"
+      fill="url(#barkTexture)"
+      transform="rotate(-50 660 360)"
+    />
+    <ellipse
+      cx="790"
+      cy="330"
+      rx="11"
+      ry="50"
+      fill="url(#barkTexture)"
+      transform="rotate(45 790 330)"
+    />
     {/* Smaller branches */}
-    <ellipse cx="645" cy="300" rx="6" ry="28" fill="#8B4513" transform="rotate(-65 645 300)" />
-    <ellipse cx="805" cy="280" rx="5" ry="22" fill="#8B4513" transform="rotate(60 805 280)" />
-    <ellipse cx="690" cy="260" rx="7" ry="32" fill="#8B4513" transform="rotate(-25 690 260)" />
-    <ellipse cx="760" cy="240" rx="6" ry="28" fill="#8B4513" transform="rotate(30 760 240)" />
+    <ellipse
+      cx="645"
+      cy="300"
+      rx="6"
+      ry="28"
+      fill="#8B4513"
+      transform="rotate(-65 645 300)"
+    />
+    <ellipse
+      cx="805"
+      cy="280"
+      rx="5"
+      ry="22"
+      fill="#8B4513"
+      transform="rotate(60 805 280)"
+    />
+    <ellipse
+      cx="690"
+      cy="260"
+      rx="7"
+      ry="32"
+      fill="#8B4513"
+      transform="rotate(-25 690 260)"
+    />
+    <ellipse
+      cx="760"
+      cy="240"
+      rx="6"
+      ry="28"
+      fill="#8B4513"
+      transform="rotate(30 760 240)"
+    />
     {/* Foliage clusters */}
     <circle cx="635" cy="290" r="28" fill="#228B22" />
     <circle cx="655" cy="275" r="32" fill="#32CD32" />
@@ -101,16 +276,51 @@ const MedievalSVG = () => (
     <circle cx="775" cy="125" r="30" fill="#228B22" />
     <circle cx="675" cy="120" r="32" fill="#32CD32" />
     {/* Roots */}
-    <ellipse cx="690" cy="995" rx="10" ry="32" fill="#8B4513" transform="rotate(-25 690 995)" />
-    <ellipse cx="760" cy="990" rx="12" ry="38" fill="#8B4513" transform="rotate(30 760 990)" />
+    <ellipse
+      cx="690"
+      cy="995"
+      rx="10"
+      ry="32"
+      fill="#8B4513"
+      transform="rotate(-25 690 995)"
+    />
+    <ellipse
+      cx="760"
+      cy="990"
+      rx="12"
+      ry="38"
+      fill="#8B4513"
+      transform="rotate(30 760 990)"
+    />
     <ellipse cx="725" cy="1000" rx="15" ry="28" fill="#8B4513" />
 
     {/* Rope and banner */}
-    <path d="M 130 200 Q 400 240 670 180" stroke="#8B4513" strokeWidth="10" fill="none" />
-    <path d="M 130 200 Q 400 240 670 180" stroke="#A0522D" strokeWidth="6" fill="none" />
-    <path d="M 130 200 Q 400 240 670 180" stroke="#D2691E" strokeWidth="2" fill="none" />
+    <path
+      d="M 130 200 Q 400 240 670 180"
+      stroke="#8B4513"
+      strokeWidth="10"
+      fill="none"
+    />
+    <path
+      d="M 130 200 Q 400 240 670 180"
+      stroke="#A0522D"
+      strokeWidth="6"
+      fill="none"
+    />
+    <path
+      d="M 130 200 Q 400 240 670 180"
+      stroke="#D2691E"
+      strokeWidth="2"
+      fill="none"
+    />
 
-    <path d="M 150 230 Q 400 275 650 220 L 650 820 Q 400 870 150 820 Z" fill="#A52BDDFF" stroke="#F38110FF" strokeWidth="6" opacity="0.7" />
+    <path
+      d="M 150 230 Q 400 275 650 220 L 650 820 Q 400 870 150 820 Z"
+      fill="#A52BDDFF"
+      stroke="#F38110FF"
+      strokeWidth="6"
+      opacity="0.7"
+    />
 
     {/* Banner fabric with weave pattern at 0.7 opacity */}
     <path
@@ -122,31 +332,87 @@ const MedievalSVG = () => (
     {/* Embroidered borders */}
     <rect x="170" y="260" width="30" height="530" fill="#DAA520" />
     {[...Array(10)].map((_, i) => (
-      <circle key={`l-circle-${i}`} cx="185" cy={280 + i * 50} r="8" fill={i % 2 === 0 ? "#EF0808FF" : "#FFD700"} />
+      <circle
+        key={`l-circle-${i}`}
+        cx="185"
+        cy={280 + i * 50}
+        r="8"
+        fill={i % 2 === 0 ? '#EF0808FF' : '#FFD700'}
+      />
     ))}
     {[...Array(10)].map((_, i) => (
-      <path key={`l-tri-${i}`} d={`M 175 ${275 + i * 50} L 195 ${275 + i * 50} L 185 ${295 + i * 50} Z`} fill={i % 2 === 0 ? "#FFD700" : "#058B00FF"} />
+      <path
+        key={`l-tri-${i}`}
+        d={`M 175 ${275 + i * 50} L 195 ${275 + i * 50} L 185 ${295 + i * 50} Z`}
+        fill={i % 2 === 0 ? '#FFD700' : '#058B00FF'}
+      />
     ))}
 
     <rect x="600" y="250" width="30" height="530" fill="#DAA520" />
     {[...Array(10)].map((_, i) => (
-      <circle key={`r-circle-${i}`} cx="615" cy={270 + i * 50} r="8" fill={i % 2 === 0 ? "#E30B0BFF" : "#FFD700"} />
+      <circle
+        key={`r-circle-${i}`}
+        cx="615"
+        cy={270 + i * 50}
+        r="8"
+        fill={i % 2 === 0 ? '#E30B0BFF' : '#FFD700'}
+      />
     ))}
     {[...Array(10)].map((_, i) => (
-      <path key={`r-tri-${i}`} d={`M 605 ${265 + i * 50} L 625 ${265 + i * 50} L 615 ${285 + i * 50} Z`} fill={i % 2 === 0 ? "#FFD700" : "#108B00FF"} />
+      <path
+        key={`r-tri-${i}`}
+        d={`M 605 ${265 + i * 50} L 625 ${265 + i * 50} L 615 ${285 + i * 50} Z`}
+        fill={i % 2 === 0 ? '#FFD700' : '#108B00FF'}
+      />
     ))}
 
     {/* Rope ties */}
-    <rect x="140" y="220" width="12" height="40" fill="#937627FF" transform="rotate(15 146 240)" />
-    <rect x="658" y="210" width="12" height="40" fill="#9E7E42FF" transform="rotate(-15 664 230)" />
+    <rect
+      x="140"
+      y="220"
+      width="12"
+      height="40"
+      fill="#937627FF"
+      transform="rotate(15 146 240)"
+    />
+    <rect
+      x="658"
+      y="210"
+      width="12"
+      height="40"
+      fill="#9E7E42FF"
+      transform="rotate(-15 664 230)"
+    />
 
     {/* Banner shadow */}
-    <path d="M 160 810 Q 400 850 640 800 L 650 820 Q 400 870 150 820 Z" fill="#000000" opacity="0.25" />
+    <path
+      d="M 160 810 Q 400 850 640 800 L 650 820 Q 400 870 150 820 Z"
+      fill="#000000"
+      opacity="0.25"
+    />
 
     {/* Fabric wrinkles */}
-    <path d="M 270 340 Q 400 355 530 340" stroke="#654321" strokeWidth="2" fill="none" opacity="0.3" />
-    <path d="M 290 510 Q 400 525 510 510" stroke="#654321" strokeWidth="2" fill="none" opacity="0.3" />
-    <path d="M 320 650 Q 400 665 480 650" stroke="#654321" strokeWidth="2" fill="none" opacity="0.3" />
+    <path
+      d="M 270 340 Q 400 355 530 340"
+      stroke="#654321"
+      strokeWidth="2"
+      fill="none"
+      opacity="0.3"
+    />
+    <path
+      d="M 290 510 Q 400 525 510 510"
+      stroke="#654321"
+      strokeWidth="2"
+      fill="none"
+      opacity="0.3"
+    />
+    <path
+      d="M 320 650 Q 400 665 480 650"
+      stroke="#654321"
+      strokeWidth="2"
+      fill="none"
+      opacity="0.3"
+    />
 
     {/* Moss and small plants */}
     <ellipse cx="65" cy="920" rx="8" ry="4" fill="#228B22" opacity="0.6" />

@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
-const fontVersion = "2026-03-11";
+const fontVersion = '2026-03-11';
 const FONT_NAME = `XanhMono_${fontVersion}`;
 
 const BorrowedTimeClock = () => {
-
   const [time, setTime] = useState(new Date());
-  const [imageUrl, setImageUrl] = useState(`https://picsum.photos/800/600?sig=${Date.now()}`);
+  const [imageUrl, setImageUrl] = useState(
+    `https://picsum.photos/800/600?sig=${Date.now()}`,
+  );
   const [opacity, setOpacity] = useState(1);
 
   useEffect(() => {
-
     const timer = setInterval(() => {
-
       const now = new Date();
       setTime(now);
 
@@ -23,11 +22,9 @@ const BorrowedTimeClock = () => {
         setImageUrl(`https://picsum.photos/800/600?sig=${now.getTime()}`);
         setOpacity(1);
       }, 200);
-
     }, 1000);
 
     return () => clearInterval(timer);
-
   }, []);
 
   const formatTime = (date) => {
@@ -36,7 +33,7 @@ const BorrowedTimeClock = () => {
         hour12: false,
         hour: '2-digit',
         minute: '2-digit',
-        second: '2-digit'
+        second: '2-digit',
       })
       .replace(/:/g, ' ');
   };
@@ -53,7 +50,7 @@ const BorrowedTimeClock = () => {
     padding:
       'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
     boxSizing: 'border-box',
-    gap: '2vmin'
+    gap: '2vmin',
   };
 
   const imageStyle = {
@@ -65,7 +62,7 @@ const BorrowedTimeClock = () => {
     border: '1px solid #F2F7F1',
     transition: 'opacity 0.3s ease',
     opacity: opacity,
-    flexShrink: 0
+    flexShrink: 0,
   };
 
   const clockStyle = {
@@ -78,7 +75,7 @@ const BorrowedTimeClock = () => {
     textShadow: '0 0 15px rgba(255,0,15,0.4)',
     textAlign: 'center',
     flexShrink: 0,
-    fontVariantNumeric: 'tabular-nums'
+    fontVariantNumeric: 'tabular-nums',
   };
 
   return (
@@ -107,15 +104,9 @@ const BorrowedTimeClock = () => {
       </style>
 
       <div style={containerStyle}>
-        <img
-          src={imageUrl}
-          alt="Generative Stream"
-          style={imageStyle}
-        />
+        <img src={imageUrl} alt="Generative Stream" style={imageStyle} />
 
-        <div style={clockStyle}>
-          {formatTime(time)}
-        </div>
+        <div style={clockStyle}>{formatTime(time)}</div>
       </div>
     </>
   );

@@ -28,9 +28,9 @@ export default function Clock() {
       const minuteDeg = minutes * 6 + seconds / 10 + jitter() * 0.02;
       const hourDeg = hours * 30 + minutes / 2 + jitter() * 0.005;
 
-      const secondScale = 1 + Math.sin(seconds * Math.PI / 30) * 0.05;
-      const minuteScale = 1 + Math.sin(minutes * Math.PI / 30) * 0.03;
-      const hourScale = 1 + Math.sin(hours * Math.PI / 6) * 0.02;
+      const secondScale = 1 + Math.sin((seconds * Math.PI) / 30) * 0.05;
+      const minuteScale = 1 + Math.sin((minutes * Math.PI) / 30) * 0.03;
+      const hourScale = 1 + Math.sin((hours * Math.PI) / 6) * 0.02;
 
       const secondHand = document.querySelector('.second-hand');
       const minuteHand = document.querySelector('.minute-hand');
@@ -65,17 +65,21 @@ export default function Clock() {
   }));
 
   return (
-    <div style={{
-      margin: 0, 
-      background: 'rgb(9,9,9)', 
-      width: '100vw', 
-      height: '100dvh', 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      overflow: 'hidden'
-    }}>
-      <img decoding="async" loading="lazy"
+    <div
+      style={{
+        margin: 0,
+        background: 'rgb(9,9,9)',
+        width: '100vw',
+        height: '100dvh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+      }}
+    >
+      <img
+        decoding="async"
+        loading="lazy"
         src={scorpImage}
         alt="Background"
         style={{
@@ -86,7 +90,7 @@ export default function Clock() {
           transform: 'translate(-50%, -50%) rotate(90deg)',
           left: '50%',
           top: '50%',
-          objectFit: 'cover'
+          objectFit: 'cover',
         }}
       />
 
@@ -130,7 +134,9 @@ export default function Clock() {
             zIndex: 4,
           }}
         >
-          <img decoding="async" loading="lazy"
+          <img
+            decoding="async"
+            loading="lazy"
             src={hourHandImage}
             alt="Hour Hand"
             style={{ width: '100%', height: '100%', objectFit: 'contain' }}
@@ -148,7 +154,9 @@ export default function Clock() {
             zIndex: 5,
           }}
         >
-          <img decoding="async" loading="lazy"
+          <img
+            decoding="async"
+            loading="lazy"
             src={minuteHandImage}
             alt="Minute Hand"
             style={{ width: '100%', height: '100%', objectFit: 'contain' }}
@@ -166,7 +174,9 @@ export default function Clock() {
             zIndex: 6,
           }}
         >
-          <img decoding="async" loading="lazy"
+          <img
+            decoding="async"
+            loading="lazy"
             src={secondHandImage}
             alt="Second Hand"
             style={{ width: '100%', height: '100%', objectFit: 'contain' }}

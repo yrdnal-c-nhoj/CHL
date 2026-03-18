@@ -44,13 +44,13 @@ function BounceClock() {
         { size: 5, gravity: 0.5 },
         { size: 7, gravity: 0.01 },
         { size: 10, gravity: 0.05 },
-        { size: 13, gravity: 0.001 }
+        { size: 13, gravity: 0.001 },
       ];
 
       const { size, gravity } = sizes[Math.floor(Math.random() * sizes.length)];
 
-      const clock = document.createElement("div");
-      clock.className = "clock";
+      const clock = document.createElement('div');
+      clock.className = 'clock';
       clock.style.width = `${size}rem`;
       clock.style.height = `${size}rem`;
       clock.style.left = `${Math.random() * 100}vw`;
@@ -60,19 +60,19 @@ function BounceClock() {
       clock.style.background = color;
       clock.style.boxShadow = `0 0 ${size * 0.2}rem ${color}`;
 
-      const hour = document.createElement("div");
-      hour.className = "hand hour";
+      const hour = document.createElement('div');
+      hour.className = 'hand hour';
       hour.style.width = `${size * 0.05}rem`;
       hour.style.height = `${size * 0.25}rem`;
       hour.style.top = `${size * 0.25}rem`;
-      hour.style.left = `${(size / 2) - (size * 0.05) / 2}rem`;
+      hour.style.left = `${size / 2 - (size * 0.05) / 2}rem`;
 
-      const minute = document.createElement("div");
-      minute.className = "hand minute";
+      const minute = document.createElement('div');
+      minute.className = 'hand minute';
       minute.style.width = `${size * 0.025}rem`;
       minute.style.height = `${size * 0.4}rem`;
       minute.style.top = `${size * 0.1}rem`;
-      minute.style.left = `${(size / 2) - (size * 0.025) / 2}rem`;
+      minute.style.left = `${size / 2 - (size * 0.025) / 2}rem`;
 
       clock.appendChild(hour);
       clock.appendChild(minute);
@@ -99,8 +99,8 @@ function BounceClock() {
       updateHands(hour, minute);
 
       setTimeout(() => {
-        clock.classList.add("fade-out");
-        clock.addEventListener("transitionend", () => {
+        clock.classList.add('fade-out');
+        clock.addEventListener('transitionend', () => {
           if (clock.parentElement) {
             clock.parentElement.removeChild(clock);
           }
@@ -131,9 +131,18 @@ function BounceClock() {
         <div style={styles.bttitle}>BorrowedTime</div>
       </div>
       <div style={styles.dateContainer}>
-        <a href="../fireworks/" style={{ ...styles.date, ...styles.dateleft }}>04/29/25</a>
-        <a href="../index.html" style={styles.clockname}>Bounce</a>
-        <a href="../slowlightning/" style={{ ...styles.date, ...styles.dateright }}>05/01/25</a>
+        <a href="../fireworks/" style={{ ...styles.date, ...styles.dateleft }}>
+          04/29/25
+        </a>
+        <a href="../index.html" style={styles.clockname}>
+          Bounce
+        </a>
+        <a
+          href="../slowlightning/"
+          style={{ ...styles.date, ...styles.dateright }}
+        >
+          05/01/25
+        </a>
       </div>
       <div ref={roomRef} style={styles.room} />
     </div>
@@ -216,7 +225,7 @@ const styles = {
 };
 
 // Global CSS classes injected into the page for animation
-const globalCSS = document.createElement("style");
+const globalCSS = document.createElement('style');
 globalCSS.textContent = `
 .clock {
   position: absolute;

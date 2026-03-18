@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import videoFile from "../../../assets/images/25-10/25-10-22/bg.mp4";
-import fallbackImg from "../../../assets/images/25-10/25-10-22/bg.webp";
+import React, { useEffect, useRef, useState } from 'react';
+import videoFile from '../../../assets/images/25-10/25-10-22/bg.mp4';
+import fallbackImg from '../../../assets/images/25-10/25-10-22/bg.webp';
 import fontFile_2025_10_22 from '../../../assets/fonts/25-10-22-fundy.ttf';
 
 export default function ClockWithVideo() {
@@ -20,8 +20,8 @@ export default function ClockWithVideo() {
   // Font loading (Unchanged)
   useEffect(() => {
     const font = new FontFace(
-      "MyCustomFont",
-      `url(${fontFile_2025_10_22}) format("truetype")`
+      'MyCustomFont',
+      `url(${fontFile_2025_10_22}) format("truetype")`,
     );
     font
       .load()
@@ -39,7 +39,7 @@ export default function ClockWithVideo() {
     if (!v) return;
 
     const onError = (e) => {
-      console.error("Video error (asset failure):", e.target.error);
+      console.error('Video error (asset failure):', e.target.error);
       setVideoFailed(true);
       // Removed: setShowPlayButton(true);
     };
@@ -47,107 +47,110 @@ export default function ClockWithVideo() {
       // Removed: setShowPlayButton(true);
     };
 
-    v.addEventListener("error", onError);
-    v.addEventListener("stalled", onStalled);
+    v.addEventListener('error', onError);
+    v.addEventListener('stalled', onStalled);
 
     // Initial play attempt relies on <video autoPlay muted playsInline> for best chance.
     // We add an explicit play attempt for edge cases, but aggressively ignore the error.
     const playPromise = v.play?.();
     if (playPromise) {
       playPromise.catch((err) => {
-        console.warn("Autoplay failed (Policy issue). Proceeding silently.", err);
+        console.warn(
+          'Autoplay failed (Policy issue). Proceeding silently.',
+          err,
+        );
         // Removed: setShowPlayButton(true);
       });
     }
-    
+
     // Set a timeout to check for asset failure (enhances fallback reliability)
     const checkReadiness = setTimeout(() => {
-        if (v.readyState < 4 && !v.paused) {
-             console.warn("Video failed to load completely. Switching to fallback.");
-             setVideoFailed(true);
-        }
+      if (v.readyState < 4 && !v.paused) {
+        console.warn('Video failed to load completely. Switching to fallback.');
+        setVideoFailed(true);
+      }
     }, 3000); // 3-second grace period
 
     return () => {
       clearTimeout(checkReadiness);
-      v.removeEventListener("error", onError);
-      v.removeEventListener("stalled", onStalled);
+      v.removeEventListener('error', onError);
+      v.removeEventListener('stalled', onStalled);
     };
   }, []);
 
   // Removed: handlePlayClick function
 
   const formatTime = () => {
-    const h = String(time.getHours()).padStart(2, "0");
-    const m = String(time.getMinutes()).padStart(2, "0");
-    const s = String(time.getSeconds()).padStart(2, "0");
+    const h = String(time.getHours()).padStart(2, '0');
+    const m = String(time.getMinutes()).padStart(2, '0');
+    const s = String(time.getSeconds()).padStart(2, '0');
     // Milliseconds slice for the 2-digit "tick" at the end
-    const ms = String(time.getMilliseconds()).padStart(3, "0");
+    const ms = String(time.getMilliseconds()).padStart(3, '0');
     return `${h}${m}${s}${ms.slice(0, 2)}`;
   };
 
-  const timeChars = formatTime().split("");
+  const timeChars = formatTime().split('');
 
   const containerStyle = {
-    width: "100vw",
-    height: "100dvh",
-    position: "relative",
-    overflow: "hidden",
-    backgroundColor: "#000",
-    display: fontReady ? "block" : "none",
+    width: '100vw',
+    height: '100dvh',
+    position: 'relative',
+    overflow: 'hidden',
+    backgroundColor: '#000',
+    display: fontReady ? 'block' : 'none',
   };
 
   const mediaStyle = {
-    position: "absolute",
+    position: 'absolute',
     inset: 0,
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
     zIndex: 0,
-    pointerEvents: "none",
-    display: videoFailed ? "none" : "block",
+    pointerEvents: 'none',
+    display: videoFailed ? 'none' : 'block',
   };
 
   const fallbackStyle = {
-    position: "absolute",
+    position: 'absolute',
     inset: 0,
     backgroundImage: `url(${fallbackImg})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    display: videoFailed ? "block" : "none",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    display: videoFailed ? 'block' : 'none',
   };
 
   const clockStyle = {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: "0.1rem",
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '0.1rem',
     zIndex: 1,
-    animation: "float_2025_10_22 26.3s linear infinite",
+    animation: 'float_2025_10_22 26.3s linear infinite',
   };
 
   const digitStyle = {
     fontFamily: "'MyCustomFont', sans-serif",
-    fontSize: "4rem",
-    width: "2rem",
-    textAlign: "center",
-    color: "#DF9268FF",
-    animation: "colorCycle_2025_10_22 26s linear infinite",
+    fontSize: '4rem',
+    width: '2rem',
+    textAlign: 'center',
+    color: '#DF9268FF',
+    animation: 'colorCycle_2025_10_22 26s linear infinite',
     textShadow: `
       0 0 8px #4B3424FF,
       0 0 6px #98643FFF,
       0 0 4px #C88A5E,
       0 0 2px #D2C497FF
     `,
-    transition: "text-shadow 1s linear",
+    transition: 'text-shadow 1s linear',
   };
 
   const separatorStyle = {
     ...digitStyle,
-    width: "1rem",
+    width: '1rem',
   };
 
   const scopedCSS = `
@@ -222,34 +225,78 @@ export default function ClockWithVideo() {
   // Helper function to insert separators into the time string for readability
   const renderTimeDigits = () => {
     // Current format is HHMMSSms(2)
-    const formattedTime = formatTime(); 
+    const formattedTime = formatTime();
     const elements = [];
-    
+
     // Use an iterator to track the digit index
     let charIndex = 0;
-    
+
     // HH
-    elements.push(<span key={charIndex++} style={digitStyle}>{formattedTime[0]}</span>);
-    elements.push(<span key={charIndex++} style={digitStyle}>{formattedTime[1]}</span>);
-    elements.push(<span key="sep1" style={separatorStyle}>:</span>); // Separator 1
+    elements.push(
+      <span key={charIndex++} style={digitStyle}>
+        {formattedTime[0]}
+      </span>,
+    );
+    elements.push(
+      <span key={charIndex++} style={digitStyle}>
+        {formattedTime[1]}
+      </span>,
+    );
+    elements.push(
+      <span key="sep1" style={separatorStyle}>
+        :
+      </span>,
+    ); // Separator 1
 
     // MM
-    elements.push(<span key={charIndex++} style={digitStyle}>{formattedTime[2]}</span>);
-    elements.push(<span key={charIndex++} style={digitStyle}>{formattedTime[3]}</span>);
-    elements.push(<span key="sep2" style={separatorStyle}>:</span>); // Separator 2
-    
+    elements.push(
+      <span key={charIndex++} style={digitStyle}>
+        {formattedTime[2]}
+      </span>,
+    );
+    elements.push(
+      <span key={charIndex++} style={digitStyle}>
+        {formattedTime[3]}
+      </span>,
+    );
+    elements.push(
+      <span key="sep2" style={separatorStyle}>
+        :
+      </span>,
+    ); // Separator 2
+
     // SS
-    elements.push(<span key={charIndex++} style={digitStyle}>{formattedTime[4]}</span>);
-    elements.push(<span key={charIndex++} style={digitStyle}>{formattedTime[5]}</span>);
-    elements.push(<span key="sep3" style={separatorStyle}>.</span>); // Separator 3
-    
+    elements.push(
+      <span key={charIndex++} style={digitStyle}>
+        {formattedTime[4]}
+      </span>,
+    );
+    elements.push(
+      <span key={charIndex++} style={digitStyle}>
+        {formattedTime[5]}
+      </span>,
+    );
+    elements.push(
+      <span key="sep3" style={separatorStyle}>
+        .
+      </span>,
+    ); // Separator 3
+
     // MS (2 digits)
-    elements.push(<span key={charIndex++} style={digitStyle}>{formattedTime[6]}</span>);
-    elements.push(<span key={charIndex++} style={digitStyle}>{formattedTime[7]}</span>);
+    elements.push(
+      <span key={charIndex++} style={digitStyle}>
+        {formattedTime[6]}
+      </span>,
+    );
+    elements.push(
+      <span key={charIndex++} style={digitStyle}>
+        {formattedTime[7]}
+      </span>,
+    );
 
     return elements;
-  }
-  
+  };
+
   return (
     <div style={containerStyle}>
       {/* CSS is injected here */}
@@ -265,13 +312,13 @@ export default function ClockWithVideo() {
       >
         <source src={videoFile} type="video/mp4" />
         {/* It is a good practice to include a WebM source for better cross-browser support */}
-        <source src="./bg.webm" type="video/webm" /> 
+        <source src="./bg.webm" type="video/webm" />
         Your browser does not support the video tag.
       </video>
       <div style={fallbackStyle} aria-hidden />
-      
+
       {/* 🛑 The 'Play Video' button rendering block is intentionally REMOVED here */}
-      
+
       <div style={clockStyle}>
         {/* Rendering the time with explicit separators for clear readability */}
         {renderTimeDigits()}

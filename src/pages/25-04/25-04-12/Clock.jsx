@@ -1,33 +1,33 @@
-import React, { useEffect, useState, useRef } from "react";
-import angFont from "../../../assets/fonts/25-04-12-ang.ttf";
+import React, { useEffect, useState, useRef } from 'react';
+import angFont from '../../../assets/fonts/25-04-12-ang.ttf';
 
 const digitFontSizes = {
-  0: "51vh",
-  1: "46vh",
-  2: "21vh",
-  3: "28vh",
-  4: "54vh",
-  5: "51vh",
-  6: "29vh",
-  7: "55vh",
-  8: "23vh",
-  9: "20vh",
+  0: '51vh',
+  1: '46vh',
+  2: '21vh',
+  3: '28vh',
+  4: '54vh',
+  5: '51vh',
+  6: '29vh',
+  7: '55vh',
+  8: '23vh',
+  9: '20vh',
 };
 
 const mediaQueryFontSizes = {
-  0: "33vh",
-  1: "29vh",
-  2: "26vh",
-  3: "23vh",
-  4: "21vh",
-  5: "19vh",
-  6: "17vh",
-  7: "14vh",
+  0: '33vh',
+  1: '29vh',
+  2: '26vh',
+  3: '23vh',
+  4: '21vh',
+  5: '19vh',
+  6: '17vh',
+  7: '14vh',
 };
 
 const MagentaClock = () => {
-  const [timeStr, setTimeStr] = useState(["", "", ""]);
-  const [prevDigits, setPrevDigits] = useState(["", "", ""]);
+  const [timeStr, setTimeStr] = useState(['', '', '']);
+  const [prevDigits, setPrevDigits] = useState(['', '', '']);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const animationTimeouts = useRef([]);
 
@@ -41,8 +41,8 @@ const MagentaClock = () => {
       hours = hours % 12 || 12; // 12-hour format, no leading zero
 
       const h = hours.toString(); // no padStart
-      const m = minutes.toString().padStart(2, "0");
-      const s = seconds.toString().padStart(2, "0");
+      const m = minutes.toString().padStart(2, '0');
+      const s = seconds.toString().padStart(2, '0');
 
       setTimeStr([h, m, s]);
     };
@@ -55,8 +55,8 @@ const MagentaClock = () => {
   useEffect(() => {
     const checkScreenSize = () => setIsSmallScreen(window.innerWidth <= 600);
     checkScreenSize();
-    window.addEventListener("resize", checkScreenSize);
-    return () => window.removeEventListener("resize", checkScreenSize);
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const MagentaClock = () => {
     animationTimeouts.current.push(
       setTimeout(() => {
         setPrevDigits(timeStr);
-      }, 300)
+      }, 300),
     );
 
     return () => animationTimeouts.current.forEach(clearTimeout);
@@ -75,61 +75,60 @@ const MagentaClock = () => {
   const getFontSize = (digit) => {
     const n = parseInt(digit, 10);
     return isSmallScreen
-      ? mediaQueryFontSizes[n] || "19vh"
-      : digitFontSizes[n] || "19vh";
+      ? mediaQueryFontSizes[n] || '19vh'
+      : digitFontSizes[n] || '19vh';
   };
 
   const bodyStyle = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    height: "100dvh",
-    width: "100vw",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    height: '100dvh',
+    width: '100vw',
     margin: 0,
-    backgroundColor: "#ff00ff",
-    fontFamily: "AngFont, system-ui",
-    fontStyle: "normal",
+    backgroundColor: '#ff00ff',
+    fontFamily: 'AngFont, system-ui',
+    fontStyle: 'normal',
   };
 
   const clockStyle = {
-    display: "flex",
-    flexDirection: isSmallScreen ? "column" : "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: isSmallScreen ? 'column' : 'row',
+    alignItems: 'center',
   };
 
   const timeUnitStyle = {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
   };
 
   const digitBoxStyle = {
-    width: isSmallScreen ? "15vw" : "13vh",
-    height: isSmallScreen ? "18vh" : "auto",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "relative",
+    width: isSmallScreen ? '15vw' : '13vh',
+    height: isSmallScreen ? '18vh' : 'auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
   };
 
   const renderDigits = (str, unitIndex) =>
-    str.split("").map((char, i) => {
+    str.split('').map((char, i) => {
       const animate =
-        prevDigits[unitIndex] &&
-        prevDigits[unitIndex][i] !== str[i];
+        prevDigits[unitIndex] && prevDigits[unitIndex][i] !== str[i];
 
       return (
         <div key={`${unitIndex}-${i}`} style={digitBoxStyle}>
           <span
             style={{
-              position: "absolute",
-              color: "#EDBFEAFF",
+              position: 'absolute',
+              color: '#EDBFEAFF',
               textShadow:
-                "4rem 0rem #E71BCBFF, 15px -15px #DF54CAFF, -4rem 0rem #ED0EC4FF, -6px 15px #CB26ADFF",
+                '4rem 0rem #E71BCBFF, 15px -15px #DF54CAFF, -4rem 0rem #ED0EC4FF, -6px 15px #CB26ADFF',
               fontSize: getFontSize(char),
-              animation: animate ? "fadeInOut 0.3s ease-in-out" : undefined,
-              transformOrigin: "center",
-              display: "inline-block",
+              animation: animate ? 'fadeInOut 0.3s ease-in-out' : undefined,
+              transformOrigin: 'center',
+              display: 'inline-block',
             }}
           >
             {char}

@@ -14,16 +14,16 @@ import digit8 from '../../../assets/images/25-08/25-08-10/8-6.webp';
 import digit9 from '../../../assets/images/25-08/25-08-10/9-6.webp';
 
 const digitImages = {
-  '0': digit0,
-  '1': digit1,
-  '2': digit2,
-  '3': digit3,
-  '4': digit4,
-  '5': digit5,
-  '6': digit6,
-  '7': digit7,
-  '8': digit8,
-  '9': digit9,
+  0: digit0,
+  1: digit1,
+  2: digit2,
+  3: digit3,
+  4: digit4,
+  5: digit5,
+  6: digit6,
+  7: digit7,
+  8: digit8,
+  9: digit9,
 };
 
 const DigitalClock = () => {
@@ -49,7 +49,9 @@ const DigitalClock = () => {
 
   const renderDigits = (text) =>
     [...text].map((char, index) => (
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         key={index}
         src={digitImages[char]}
         alt={char}

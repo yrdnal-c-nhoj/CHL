@@ -144,22 +144,66 @@ export default function Clock() {
     return () => clearInterval(interval);
   }, []);
 
-  const timeStr = time.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(/:/g, '');
-  const format = ['digit', 'digit', 'colon', 'digit', 'digit', 'colon', 'digit', 'digit'];
+  const timeStr = time
+    .toLocaleTimeString('en-US', {
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    })
+    .replace(/:/g, '');
+  const format = [
+    'digit',
+    'digit',
+    'colon',
+    'digit',
+    'digit',
+    'colon',
+    'digit',
+    'digit',
+  ];
   const timeParts = [...timeStr];
   let i = 0;
 
   return (
     <div style={styles.body} role="timer" aria-live="polite">
-      <img decoding="async" loading="lazy" src={frameImg} alt="Background frame" style={styles.bgimage} />
-      <img decoding="async" loading="lazy" src={stamp3Img} alt="Stamp 3" style={{ ...styles.stamp3, ...styles.jostle }} />
-      <img decoding="async" loading="lazy" src={stamp2Img} alt="Stamp 2" style={{ ...styles.stamp2, ...styles.jostle }} />
-      <img decoding="async" loading="lazy" src={stampImg} alt="Stamp 1" style={{ ...styles.stamp, ...styles.jostle }} />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={frameImg}
+        alt="Background frame"
+        style={styles.bgimage}
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={stamp3Img}
+        alt="Stamp 3"
+        style={{ ...styles.stamp3, ...styles.jostle }}
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={stamp2Img}
+        alt="Stamp 2"
+        style={{ ...styles.stamp2, ...styles.jostle }}
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={stampImg}
+        alt="Stamp 1"
+        style={{ ...styles.stamp, ...styles.jostle }}
+      />
       <div style={styles.clock}>
         {format.map((type, idx) => {
           if (type === 'colon') {
             return (
-              <div key={idx} style={{ ...styles.colon, ...styles.jostle }} aria-hidden="true">
+              <div
+                key={idx}
+                style={{ ...styles.colon, ...styles.jostle }}
+                aria-hidden="true"
+              >
                 :
               </div>
             );

@@ -97,7 +97,8 @@ const styles = {
     fontVariantNumeric: 'tabular-nums',
     fontFeatureSettings: '"tnum"',
     color: '#C2D2F5FF',
-    textShadow: '0px 3px 0px #095477FF, 0px -3px 0px #F8F9FAFF, -1px -1px 3px #050009FF',
+    textShadow:
+      '0px 3px 0px #095477FF, 0px -3px 0px #F8F9FAFF, -1px -1px 3px #050009FF',
     WebkitFontSmoothing: 'antialiased',
     MozOsxFontSmoothing: 'grayscale',
     lineHeight: 1,

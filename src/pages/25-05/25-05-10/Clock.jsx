@@ -3,15 +3,13 @@ import michromaFont from '../../../assets/fonts/25-05-10-Michroma.ttf';
 import economicaFont from '../../../assets/fonts/25-05-10-Economica.ttf';
 import questrialFont from '../../../assets/fonts/25-05-10-Questrial.ttf';
 
-const fonts = [
-  "'michroma'",
-  "'economica'",
-  "'questrial'"
-];
+const fonts = ["'michroma'", "'economica'", "'questrial'"];
 
 const getRand = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-const getComplementaryColor = (r, g, b) => `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
-const getTimeString = () => new Date().toLocaleTimeString('en-US', { hour12: false });
+const getComplementaryColor = (r, g, b) =>
+  `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
+const getTimeString = () =>
+  new Date().toLocaleTimeString('en-US', { hour12: false });
 
 const throwTimeCharacters = (timeStr, throwContainer) => {
   let letterId = 0;
@@ -139,7 +137,7 @@ const styles = {
     pointerEvents: 'none',
     userSelect: 'none',
     whiteSpace: 'nowrap',
-  }
+  },
 };
 
 const animationStyles = `

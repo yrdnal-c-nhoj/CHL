@@ -30,7 +30,7 @@ const SquigglingClock = () => {
       const centerY = canvas.height / 2;
       const radius = canvas.width * 0.46;
       const now = new Date();
-      const hours = now.getHours() % 12 + now.getMinutes() / 60;
+      const hours = (now.getHours() % 12) + now.getMinutes() / 60;
       const minutes = now.getMinutes() + now.getSeconds() / 60;
       const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
 
@@ -56,9 +56,11 @@ const SquigglingClock = () => {
       offCtx.shadowOffsetY = 2;
 
       for (let i = 0; i < 12; i++) {
-        const angle = (i * 30 - 90) * Math.PI / 180;
-        const numberX = centerX + (radius - canvas.width * 0.08) * Math.cos(angle);
-        const numberY = centerY + (radius - canvas.width * 0.08) * Math.sin(angle);
+        const angle = ((i * 30 - 90) * Math.PI) / 180;
+        const numberX =
+          centerX + (radius - canvas.width * 0.08) * Math.cos(angle);
+        const numberY =
+          centerY + (radius - canvas.width * 0.08) * Math.sin(angle);
         offCtx.fillText(i === 0 ? 12 : i, numberX, numberY);
       }
 
@@ -66,24 +68,39 @@ const SquigglingClock = () => {
       offCtx.save();
       offCtx.translate(centerX, centerY);
       offCtx.fillStyle = '#AFF3ACFF';
-      offCtx.rotate(hours * 30 * Math.PI / 180);
-      offCtx.fillRect(-canvas.width * 0.01, -radius * 0.5, canvas.width * 0.02, radius * 0.7);
+      offCtx.rotate((hours * 30 * Math.PI) / 180);
+      offCtx.fillRect(
+        -canvas.width * 0.01,
+        -radius * 0.5,
+        canvas.width * 0.02,
+        radius * 0.7,
+      );
       offCtx.restore();
 
       // Minute hand
       offCtx.save();
       offCtx.translate(centerX, centerY);
       offCtx.fillStyle = '#BEB2EAFF';
-      offCtx.rotate(minutes * 6 * Math.PI / 180);
-      offCtx.fillRect(-canvas.width * 0.006, -radius * 0.7, canvas.width * 0.012, radius * 0.9);
+      offCtx.rotate((minutes * 6 * Math.PI) / 180);
+      offCtx.fillRect(
+        -canvas.width * 0.006,
+        -radius * 0.7,
+        canvas.width * 0.012,
+        radius * 0.9,
+      );
       offCtx.restore();
 
       // Second hand
       offCtx.save();
       offCtx.translate(centerX, centerY);
       offCtx.fillStyle = '#EF1444FF';
-      offCtx.rotate(seconds * 6 * Math.PI / 180);
-      offCtx.fillRect(-canvas.width * 0.004, -radius * 0.9, canvas.width * 0.008, radius * 1.1);
+      offCtx.rotate((seconds * 6 * Math.PI) / 180);
+      offCtx.fillRect(
+        -canvas.width * 0.004,
+        -radius * 0.9,
+        canvas.width * 0.008,
+        radius * 1.1,
+      );
       offCtx.restore();
 
       // Distortion effect
@@ -123,19 +140,20 @@ const SquigglingClock = () => {
   }, []);
 
   return (
-    <div style={{
-      margin: 0,
-      height: '100dvh',
-      width: '100vw',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'column',
-      backgroundColor: '#486d48',
-      position: 'relative',
-      fontFamily: 'sans-serif'
-    }}>
-    
+    <div
+      style={{
+        margin: 0,
+        height: '100dvh',
+        width: '100vw',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        backgroundColor: '#486d48',
+        position: 'relative',
+        fontFamily: 'sans-serif',
+      }}
+    >
       <canvas
         ref={canvasRef}
         style={{
@@ -145,7 +163,6 @@ const SquigglingClock = () => {
           maxHeight: '90vh',
         }}
       />
-
     </div>
   );
 };

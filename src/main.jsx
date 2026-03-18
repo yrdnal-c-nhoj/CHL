@@ -1,12 +1,12 @@
 /**
  * Application Entry Point
- * 
+ *
  * This file initializes the React application and sets up:
  * - React 18's concurrent rendering with StrictMode
  * - Helmet provider for SEO meta tag management
  * - Error handling for the root element
  * - Performance optimizations
- * 
+ *
  * Features:
  * - Modern React 18 createRoot API
  * - Concurrent rendering capabilities
@@ -33,9 +33,11 @@ if (enablePerformanceMonitoring) {
     window.addEventListener('load', () => {
       const perfData = performance.getEntriesByType('navigation')[0];
       console.log('Page Load Performance:', {
-        domContentLoaded: perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart,
+        domContentLoaded:
+          perfData.domContentLoadedEventEnd -
+          perfData.domContentLoadedEventStart,
         loadComplete: perfData.loadEventEnd - perfData.loadEventStart,
-        totalTime: perfData.loadEventEnd - perfData.navigationStart
+        totalTime: perfData.loadEventEnd - perfData.navigationStart,
       });
     });
   }
@@ -59,9 +61,11 @@ const initializeApp = () => {
   try {
     // Find the root element
     const rootElement = document.getElementById('root');
-    
+
     if (!rootElement) {
-      throw new Error('Root element not found. Make sure there is a div with id="root" in your HTML.');
+      throw new Error(
+        'Root element not found. Make sure there is a div with id="root" in your HTML.',
+      );
     }
 
     // Mark React as hydrated to prevent FOUC (Flash of Unstyled Content)
@@ -75,7 +79,7 @@ const initializeApp = () => {
         <HelmetProvider>
           <App />
         </HelmetProvider>
-      </StrictMode>
+      </StrictMode>,
     );
 
     // Log successful initialization in development
@@ -84,10 +88,9 @@ const initializeApp = () => {
       console.log('📊 Environment:', import.meta.env.MODE);
       console.log('🔧 Vite HMR enabled:', import.meta.hot?.status);
     }
-
   } catch (error) {
     console.error('Failed to initialize application:', error);
-    
+
     // Fallback UI for critical initialization errors
     document.body.innerHTML = `
       <div style="
@@ -137,6 +140,6 @@ if (import.meta.hot) {
   import.meta.hot.accept('./App.jsx', () => {
     console.log('🔄 HMR: App component updated');
   });
-  
+
   import.meta.hot.accept();
 }

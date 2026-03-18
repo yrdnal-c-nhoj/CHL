@@ -41,7 +41,8 @@ const ThoughtBalloonClock = () => {
     };
   }, [time]);
 
-  const { hourTens, hourUnits, minuteTens, minuteUnits, ampm } = getFormattedTime();
+  const { hourTens, hourUnits, minuteTens, minuteUnits, ampm } =
+    getFormattedTime();
 
   return (
     <div
@@ -74,7 +75,9 @@ const ThoughtBalloonClock = () => {
 
       {/* Background Image */}
       {bgImageUrl && !bgImageError ? (
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={bgImageUrl}
           alt="background"
           style={{
@@ -85,7 +88,7 @@ const ThoughtBalloonClock = () => {
             width: '100vw',
             height: '100vh',
             // objectFit: 'cover',
-          
+
             zIndex: 1,
             pointerEvents: 'none',
           }}

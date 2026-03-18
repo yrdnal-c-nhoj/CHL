@@ -23,7 +23,7 @@ const Clock = () => {
       loaded += 1;
       if (loaded >= imgs.length) setBgReady(true);
     };
-    imgs.forEach(src => {
+    imgs.forEach((src) => {
       const img = new Image();
       img.onload = done;
       img.onerror = done;
@@ -60,24 +60,24 @@ const Clock = () => {
       overflow: 'hidden',
       position: 'fixed',
       top: 0,
-      left: 0
+      left: 0,
     },
-   clockFace: {
-  position: 'relative',
-  // Takes up the smaller of the two viewport dimensions
-  width: '95vmin', 
-  // Keeps it a perfect circle regardless of content
-  aspectRatio: '1 / 1', 
-  // Caps the size so it doesn't get comically large on monitors
-  maxWidth: '800px', 
-  
-  borderRadius: '50%',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  // Optional: ensures it stays centered if the parent is larger
-  margin: 'auto', 
-},
+    clockFace: {
+      position: 'relative',
+      // Takes up the smaller of the two viewport dimensions
+      width: '95vmin',
+      // Keeps it a perfect circle regardless of content
+      aspectRatio: '1 / 1',
+      // Caps the size so it doesn't get comically large on monitors
+      maxWidth: '800px',
+
+      borderRadius: '50%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      // Optional: ensures it stays centered if the parent is larger
+      margin: 'auto',
+    },
     bgLayer: {
       position: 'absolute',
       top: 0,
@@ -120,7 +120,7 @@ const Clock = () => {
       width: 'min(12vw, 12vh, 48px)',
       height: 'min(12vw, 12vh, 48px)',
       objectFit: 'contain',
-      transform: `translateY(-20%)`, 
+      transform: `translateY(-20%)`,
     },
     centerDot: {
       position: 'absolute',
@@ -133,18 +133,19 @@ const Clock = () => {
       transform: 'translate(-50%, -50%)',
       zIndex: 10,
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.88)',
-    }
+    },
   };
 
   return (
-    <div style={{
-      ...styles.container,
-      opacity: bgReady ? 1 : 0,
-      visibility: bgReady ? 'visible' : 'hidden',
-      transition: 'opacity 0.3s ease'
-    }}>
+    <div
+      style={{
+        ...styles.container,
+        opacity: bgReady ? 1 : 0,
+        visibility: bgReady ? 'visible' : 'hidden',
+        transition: 'opacity 0.3s ease',
+      }}
+    >
       <div style={styles.clockFace}>
-        
         {/* Rotating Background Layer */}
         <div style={styles.bgLayer} />
 
@@ -153,10 +154,12 @@ const Clock = () => {
           const rotation = (i + 1) * 30;
           return (
             <div key={i} style={styles.digitContainer(rotation)}>
-              <img decoding="async" loading="lazy" 
-                src={clockDigitImage} 
-                alt={`digit-${i + 1}`} 
-                style={styles.digitImage} 
+              <img
+                decoding="async"
+                loading="lazy"
+                src={clockDigitImage}
+                alt={`digit-${i + 1}`}
+                style={styles.digitImage}
               />
             </div>
           );
@@ -166,7 +169,7 @@ const Clock = () => {
         <div style={styles.hand(hourDeg, '8px', '11%', '#141313', 3)} />
         <div style={styles.hand(minDeg, '5px', '25%', '#030303', 4)} />
         <div style={styles.hand(secDeg, '2px', '25%', '#ef4444', 5)} />
-        
+
         {/* Center Pivot */}
         <div style={styles.centerDot} />
       </div>

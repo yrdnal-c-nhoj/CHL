@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 import clockFont from '../../../assets/fonts/25-08-26-root.ttf';
-import bg0 from "../../../assets/images/25-08/25-08-26/rrr.webp"; // bottom-most
-import bg1 from "../../../assets/images/25-08/25-08-26/ro.gif";   // middle
-import bg3 from "../../../assets/images/25-08/25-08-26/root.webp"; // top foreground
+import bg0 from '../../../assets/images/25-08/25-08-26/rrr.webp'; // bottom-most
+import bg1 from '../../../assets/images/25-08/25-08-26/ro.gif'; // middle
+import bg3 from '../../../assets/images/25-08/25-08-26/root.webp'; // top foreground
 
 export default function DigitalClock() {
   const [time, setTime] = useState(getTimeParts);
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('ClockFontScoped_18_09_25', clockFont, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   // Clock ticking
@@ -37,31 +37,31 @@ export default function DigitalClock() {
 
   const styles = {
     root: {
-      position: "relative",
-      height: "100dvh",
-      width: "100vw",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
+      position: 'relative',
+      height: '100dvh',
+      width: '100vw',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       fontFamily: "'ClockFontScoped_18_09_25', sans-serif",
-      overflow: "hidden",
+      overflow: 'hidden',
     },
     clock: {
-      fontVariantNumeric: "tabular-nums lining-nums",
-      fontSize: "14vw",
+      fontVariantNumeric: 'tabular-nums lining-nums',
+      fontSize: '14vw',
       lineHeight: 1,
-      letterSpacing: "-0.05em",
-      color: "#BFBBAAFF",
+      letterSpacing: '-0.05em',
+      color: '#BFBBAAFF',
       textShadow: `
         0.2rem 0.2rem 0 #373635FF,
         -0.2rem -0.1rem 0.4rem #6B5D48FF,
         0.1rem -0.2rem 0.4rem #403A30FF,
         -0.1rem 0.2rem 0.4rem #3C362FFF
       `,
-      transform: "rotate(-1deg) skewX(-2deg) skewY(1deg)",
+      transform: 'rotate(-1deg) skewX(-2deg) skewY(1deg)',
       zIndex: 4,
-      userSelect: "none",
-      filter: "contrast(1.2) saturate(2.0)",
+      userSelect: 'none',
+      filter: 'contrast(1.2) saturate(2.0)',
     },
     layer: ({
       img,
@@ -72,14 +72,14 @@ export default function DigitalClock() {
       invert = 0,
       hueRotate = 0,
       transform = undefined,
-      width = "100%",
-      height = "100%",
+      width = '100%',
+      height = '100%',
       top = 0,
       left = 0,
-      backgroundSize = "cover",
-      backgroundPosition = "center",
+      backgroundSize = 'cover',
+      backgroundPosition = 'center',
     }) => ({
-      position: "absolute",
+      position: 'absolute',
       top,
       left,
       width,
@@ -87,10 +87,10 @@ export default function DigitalClock() {
       backgroundImage: `url(${img})`,
       backgroundSize,
       backgroundPosition,
-      backgroundRepeat: "no-repeat",
+      backgroundRepeat: 'no-repeat',
       opacity,
       zIndex,
-      pointerEvents: "none",
+      pointerEvents: 'none',
       filter: `brightness(${brightness}) saturate(${saturation}) invert(${invert}%) hue-rotate(${hueRotate}deg)`,
       transform,
     }),
@@ -100,20 +100,47 @@ export default function DigitalClock() {
   };
 
   const layers = [
-    { img: bg0, opacity: 1, zIndex: 1, width: "120%", height: "110%", top: "-5%", left: "-10%" },
-    { img: bg1, zIndex: 8, width: "100%", height: "120%", top: "-10%", left: "0%" },
-    { img: bg3, opacity: 0.8, zIndex: 6, invert: 90, brightness: 0.9, saturation: 0.4, width: "100%", height: "170%", top: "0%", left: "0%" },
+    {
+      img: bg0,
+      opacity: 1,
+      zIndex: 1,
+      width: '120%',
+      height: '110%',
+      top: '-5%',
+      left: '-10%',
+    },
+    {
+      img: bg1,
+      zIndex: 8,
+      width: '100%',
+      height: '120%',
+      top: '-10%',
+      left: '0%',
+    },
+    {
+      img: bg3,
+      opacity: 0.8,
+      zIndex: 6,
+      invert: 90,
+      brightness: 0.9,
+      saturation: 0.4,
+      width: '100%',
+      height: '170%',
+      top: '0%',
+      left: '0%',
+    },
   ];
 
   return (
     <div style={styles.root}>
-
       {layers.map((layerProps, i) => {
         if (i === 1) {
           return (
             <React.Fragment key={i}>
               <div style={styles.layer(layerProps)} />
-              <div style={styles.layer({ ...layerProps, transform: "scaleX(-1)" })} />
+              <div
+                style={styles.layer({ ...layerProps, transform: 'scaleX(-1)' })}
+              />
             </React.Fragment>
           );
         }
@@ -121,7 +148,9 @@ export default function DigitalClock() {
       })}
 
       <div style={styles.clock}>
-        {time.hh}{time.mm}{time.period}
+        {time.hh}
+        {time.mm}
+        {time.period}
       </div>
     </div>
   );
@@ -131,7 +160,7 @@ function getTimeParts() {
   const now = new Date();
   let h = now.getHours();
   const m = now.getMinutes();
-  const period = h < 12 ? "AM" : "PM";
+  const period = h < 12 ? 'AM' : 'PM';
   h = h % 12 || 12;
-  return { hh: String(h), mm: String(m).padStart(2, "0"), period };
+  return { hh: String(h), mm: String(m).padStart(2, '0'), period };
 }

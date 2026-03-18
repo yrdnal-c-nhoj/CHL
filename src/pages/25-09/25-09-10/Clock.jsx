@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 
 // Local images
-import bgImage from "../../../assets/images/25-09/25-09-10/bg.webp";
-import hourHand from "../../../assets/images/25-09/25-09-10/hour.gif";
-import minuteHand from "../../../assets/images/25-09/25-09-10/min.gif";
-import secondHand from "../../../assets/images/25-09/25-09-10/sec.gif";
+import bgImage from '../../../assets/images/25-09/25-09-10/bg.webp';
+import hourHand from '../../../assets/images/25-09/25-09-10/hour.gif';
+import minuteHand from '../../../assets/images/25-09/25-09-10/min.gif';
+import secondHand from '../../../assets/images/25-09/25-09-10/sec.gif';
 
 // Local font
 import customLavaFont from '../../../assets/fonts/25-09-10-lava.otf?url';
@@ -21,7 +21,7 @@ const Clock = () => {
       const now = new Date();
       const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
       const minutes = now.getMinutes() + seconds / 60;
-      const hours = now.getHours() % 12 + minutes / 60;
+      const hours = (now.getHours() % 12) + minutes / 60;
 
       const secondDeg = (seconds / 60) * 360;
       const minuteDeg = (minutes / 60) * 360;
@@ -42,7 +42,10 @@ const Clock = () => {
 
   // Load font
   useEffect(() => {
-    const font = new FontFace("CustomLavaFont_25_09_18", `url(${customLavaFont})`);
+    const font = new FontFace(
+      'CustomLavaFont_25_09_18',
+      `url(${customLavaFont})`,
+    );
     font.load().then(() => {
       document.fonts.add(font);
     });
@@ -51,10 +54,10 @@ const Clock = () => {
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100dvh",
-        position: "relative",
-        overflow: "hidden",
+        width: '100vw',
+        height: '100dvh',
+        position: 'relative',
+        overflow: 'hidden',
         fontFamily: "'CustomLavaFont_25_09_18', sans-serif",
       }}
     >
@@ -69,14 +72,14 @@ const Clock = () => {
       {/* Background */}
       <div
         style={{
-          position: "absolute",
+          position: 'absolute',
           top: 0,
           left: 0,
-          width: "100vw",
-          height: "100dvh",
+          width: '100vw',
+          height: '100dvh',
           backgroundImage: `url(${bgImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
           zIndex: 1,
         }}
       />
@@ -84,14 +87,14 @@ const Clock = () => {
       {/* Clock face container */}
       <div
         style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "95vmin",
-          height: "95vmin",
-          borderRadius: "50%",
-          background: "rgba(255,255,255,0.05)",
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '95vmin',
+          height: '95vmin',
+          borderRadius: '50%',
+          background: 'rgba(255,255,255,0.05)',
           zIndex: 2,
         }}
       >
@@ -104,17 +107,17 @@ const Clock = () => {
             <div
               key={i}
               style={{
-                position: "absolute",
+                position: 'absolute',
                 top: `${y}%`,
                 left: `${x}%`,
-                transform: "translate(-50%, -50%)",
-                fontSize: "4rem",
-                color: "#EA81E0FF",
+                transform: 'translate(-50%, -50%)',
+                fontSize: '4rem',
+                color: '#EA81E0FF',
                 textShadow: `
                   0.7rem 0 0.9rem red,
                   -0.3rem 0 0.3rem yellow
                 `,
-                textAlign: "center",
+                textAlign: 'center',
                 zIndex: 3,
               }}
             >
@@ -125,45 +128,51 @@ const Clock = () => {
       </div>
 
       {/* Clock hands */}
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         ref={hourRef}
         src={hourHand}
         alt="hour hand"
         style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          width: "17vmin",
-          height: "29vmin",
-          transformOrigin: "50% 100%",
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '17vmin',
+          height: '29vmin',
+          transformOrigin: '50% 100%',
           zIndex: 4,
         }}
       />
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         ref={minuteRef}
         src={minuteHand}
         alt="minute hand"
         style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          width: "16vmin",
-          height: "45vmin",
-          transformOrigin: "50% 100%",
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '16vmin',
+          height: '45vmin',
+          transformOrigin: '50% 100%',
           zIndex: 5,
         }}
       />
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         ref={secondRef}
         src={secondHand}
         alt="second hand"
         style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          width: "12vmin",
-          height: "48vmin",
-          transformOrigin: "50% 100%",
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '12vmin',
+          height: '48vmin',
+          transformOrigin: '50% 100%',
           zIndex: 6,
         }}
       />

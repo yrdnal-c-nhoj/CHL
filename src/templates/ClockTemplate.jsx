@@ -59,12 +59,12 @@ function useFontLoader(fontUrl, fontName = 'CustomClockFont') {
         // Create font face
         const font = new FontFace(fontName, `url(${fontUrl})`);
         await font.load();
-        
+
         if (!mounted) return;
-        
+
         document.fonts.add(font);
         await document.fonts.load(`1rem "${fontName}"`);
-        
+
         if (mounted) setIsFontReady(true);
       } catch (error) {
         console.warn(`Failed to load font ${fontName}:`, error);
@@ -74,7 +74,7 @@ function useFontLoader(fontUrl, fontName = 'CustomClockFont') {
 
     if (fontUrl) {
       loadFont();
-      
+
       // Fallback timeout
       fontLoadTimeoutRef.current = setTimeout(() => {
         if (mounted) setIsFontReady(true);
@@ -142,15 +142,18 @@ function useImagePreload(imageUrl) {
 
 export default function ClockTemplate() {
   const time = useClock();
-  
+
   // Uncomment and update for your assets
   // const isFontReady = useFontLoader(customFont, 'TemplateFont');
   // const isImageReady = useImagePreload(backgroundImage);
-  
+
   const isFontReady = true; // Set to true when not using custom fonts
   const isImageReady = true; // Set to true when not using background images
-  
-  const { hours, minutes, seconds } = useMemo(() => getTimeDigits(time), [time]);
+
+  const { hours, minutes, seconds } = useMemo(
+    () => getTimeDigits(time),
+    [time],
+  );
   const isReady = isFontReady && isImageReady;
 
   /* =========================
@@ -207,14 +210,14 @@ export default function ClockTemplate() {
 
   if (!isReady) {
     return (
-      <div style={{
-        ...containerStyle,
-        opacity: 1,
-        backgroundColor: '#000',
-      }}>
-        <div style={{ ...digitStyle, color: '#333' }}>
-          00:00:00
-        </div>
+      <div
+        style={{
+          ...containerStyle,
+          opacity: 1,
+          backgroundColor: '#000',
+        }}
+      >
+        <div style={{ ...digitStyle, color: '#333' }}>00:00:00</div>
       </div>
     );
   }
@@ -235,7 +238,7 @@ export default function ClockTemplate() {
           font-display: swap;
         }
       `}</style> */}
-      
+
       <div style={clockContainerStyle}>
         <span style={digitStyle}>{hours[0]}</span>
         <span style={digitStyle}>{hours[1]}</span>

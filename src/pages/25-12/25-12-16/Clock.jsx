@@ -4,11 +4,11 @@ import font_2025_12_16 from '../../../assets/fonts/25-12-16-four.ttf?url';
 
 const QuadClock = () => {
   const [time, setTime] = useState(Date.now());
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('font_2025_12_16', font_2025_12_16, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   // === Effect 2: Animation loop for smooth clock ===
@@ -48,7 +48,8 @@ const QuadClock = () => {
     backgroundPosition: 'center',
     backgroundRepeat: 'repeat',
     margin: 0,
-    padding: 'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
+    padding:
+      'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
     boxSizing: 'border-box',
     overflow: 'hidden',
   };
@@ -83,7 +84,7 @@ const QuadClock = () => {
     >
       {/* Numbers */}
       {Array.from({ length: 12 }, (_, i) => i + 1).map((num) => {
-        const angle = (num * 30) * (Math.PI / 180);
+        const angle = num * 30 * (Math.PI / 180);
         const x = 52 + NUMBER_RADIUS * Math.sin(angle);
         const y = 48 - NUMBER_RADIUS * Math.cos(angle);
 
@@ -98,7 +99,9 @@ const QuadClock = () => {
               fontSize: `${CLOCK_SIZE * 0.09}vmin`,
               color: '#F7F8CEFF',
               textShadow: '1px 2px 0px #333333, -1px -1px 0px #333333',
-              fontFamily: fontReady ? 'font_2025_12_16, monospace' : 'monospace',
+              fontFamily: fontReady
+                ? 'font_2025_12_16, monospace'
+                : 'monospace',
               opacity: fontReady ? 1 : 0,
               transition: 'opacity 0.5s ease',
             }}
@@ -109,17 +112,56 @@ const QuadClock = () => {
       })}
 
       {/* Hands */}
-      <div style={handStyle(hDeg, `${CLOCK_SIZE * 0.25}vmin`, `${CLOCK_SIZE * 0.03}vmin`, '#EB31F5FF')} />
-      <div style={handStyle(mDeg, `${CLOCK_SIZE * 0.38}vmin`, `${CLOCK_SIZE * 0.02}vmin`, '#41F6EDFF')} />
-      <div style={handStyle(sDeg, `${CLOCK_SIZE * 0.45}vmin`, `${CLOCK_SIZE * 0.015}vmin`, '#FB6712FF')} />
+      <div
+        style={handStyle(
+          hDeg,
+          `${CLOCK_SIZE * 0.25}vmin`,
+          `${CLOCK_SIZE * 0.03}vmin`,
+          '#EB31F5FF',
+        )}
+      />
+      <div
+        style={handStyle(
+          mDeg,
+          `${CLOCK_SIZE * 0.38}vmin`,
+          `${CLOCK_SIZE * 0.02}vmin`,
+          '#41F6EDFF',
+        )}
+      />
+      <div
+        style={handStyle(
+          sDeg,
+          `${CLOCK_SIZE * 0.45}vmin`,
+          `${CLOCK_SIZE * 0.015}vmin`,
+          '#FB6712FF',
+        )}
+      />
     </div>
   );
 
   return (
     <div style={containerStyle}>
       {/* Crosshair lines */}
-      <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: '1px', backgroundColor: '#111010FF' }} />
-      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '1px', backgroundColor: '#100303FF' }} />
+      <div
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: 0,
+          bottom: 0,
+          width: '1px',
+          backgroundColor: '#111010FF',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: 0,
+          right: 0,
+          height: '1px',
+          backgroundColor: '#100303FF',
+        }}
+      />
 
       {/* Four mirrored layers */}
       {renderClockLayer('scale(-1, 1)')}

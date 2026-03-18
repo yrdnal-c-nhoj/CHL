@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import bgVideo from "../../../assets/images/25-10/25-10-12/rose.mp4";
-import bgFallback from "../../../assets/images/25-10/25-10-12/rose.webp";
+import React, { useEffect, useRef, useState } from 'react';
+import bgVideo from '../../../assets/images/25-10/25-10-12/rose.mp4';
+import bgFallback from '../../../assets/images/25-10/25-10-12/rose.webp';
 
 export default function AnalogClock() {
   const [videoPlayable, setVideoPlayable] = useState(false);
@@ -28,8 +28,8 @@ export default function AnalogClock() {
     if (!v) return;
     const onCanPlay = () => setVideoPlayable(true);
     const onError = () => setVideoFailed(true);
-    v.addEventListener("canplay", onCanPlay);
-    v.addEventListener("error", onError);
+    v.addEventListener('canplay', onCanPlay);
+    v.addEventListener('error', onError);
 
     v.muted = true;
     v.loop = true;
@@ -37,8 +37,8 @@ export default function AnalogClock() {
     v.play().catch(() => {});
 
     return () => {
-      v.removeEventListener("canplay", onCanPlay);
-      v.removeEventListener("error", onError);
+      v.removeEventListener('canplay', onCanPlay);
+      v.removeEventListener('error', onError);
     };
   }, []);
 
@@ -46,12 +46,12 @@ export default function AnalogClock() {
   const now = new Date();
   const baseMs = startTime.current;
   const elapsed = Date.now() - baseMs;
-  const ms = now.getMilliseconds() + elapsed % 1000;
+  const ms = now.getMilliseconds() + (elapsed % 1000);
 
   // Get smooth fractional time values
   const seconds = now.getSeconds() + ms / 1000;
   const minutes = now.getMinutes() + seconds / 60;
-  const hours = now.getHours() % 12 + minutes / 60;
+  const hours = (now.getHours() % 12) + minutes / 60;
 
   // Continuous degree values
   const secondDeg = seconds * 6; // 360° / 60
@@ -60,25 +60,25 @@ export default function AnalogClock() {
 
   // ---- STYLES ----
   const containerStyle = {
-    position: "relative",
-    width: "100vw",
-    height: "100dvh",
-    overflow: "hidden",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#0b1220",
+    position: 'relative',
+    width: '100vw',
+    height: '100dvh',
+    overflow: 'hidden',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#0b1220',
   };
 
   const backgroundBaseStyle = {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
     zIndex: 0,
-    transition: "opacity 0.4s ease, filter 1s ease",
+    transition: 'opacity 0.4s ease, filter 1s ease',
   };
 
   const backgroundFilters = `
@@ -88,7 +88,7 @@ export default function AnalogClock() {
     hue-rotate(-30deg)
   `;
 
-  const backgroundTransform = "rotate(0.5deg) scale(1.02)";
+  const backgroundTransform = 'rotate(0.5deg) scale(1.02)';
 
   const backgroundVideoStyle = {
     ...backgroundBaseStyle,
@@ -105,21 +105,21 @@ export default function AnalogClock() {
   };
 
   const handsContainerStyle = {
-    position: "relative",
+    position: 'relative',
     zIndex: 2,
-    width: "40vmin",
-    height: "40vmin",
-    pointerEvents: "none",
+    width: '40vmin',
+    height: '40vmin',
+    pointerEvents: 'none',
   };
 
   const handCommon = {
-    position: "absolute",
-    bottom: "50%",
-    left: "50%",
-    transformOrigin: "50% 100%",
-    borderRadius: "0.6vh",
-    willChange: "transform",
-    background: "rgba(255, 0, 40, 0.95)",
+    position: 'absolute',
+    bottom: '50%',
+    left: '50%',
+    transformOrigin: '50% 100%',
+    borderRadius: '0.6vh',
+    willChange: 'transform',
+    background: 'rgba(255, 0, 40, 0.95)',
     opacity: 0.9,
     boxShadow: `
     0 0 3vh rgba(255, 20, 20, 0.8),
@@ -130,29 +130,29 @@ export default function AnalogClock() {
 
   const hourStyle = {
     ...handCommon,
-    width: "1.6vh",
-    height: "12vmin",
+    width: '1.6vh',
+    height: '12vmin',
     transform: `translate(-50%, 0) rotate(${hourDeg}deg)`,
   };
 
   const minuteStyle = {
     ...handCommon,
-    width: "0.9vh",
-    height: "28vmin",
+    width: '0.9vh',
+    height: '28vmin',
     transform: `translate(-50%, 0) rotate(${minuteDeg}deg)`,
   };
 
   const secondStyle = {
     ...handCommon,
-    width: "0.4vh",
-    height: "44vmin",
+    width: '0.4vh',
+    height: '44vmin',
     opacity: 0.85,
     boxShadow: `
       0 0 3vh rgba(255, 20, 20, 0.8),
       0 0 6vh rgba(255, 40, 60, 0.6),
       0 0 10vh rgba(255, 0, 0, 0.5)
     `,
-    filter: "blur(0.4vh)",
+    filter: 'blur(0.4vh)',
     transform: `translate(-50%, 0) rotate(${secondDeg}deg)`,
   };
 
@@ -167,7 +167,13 @@ export default function AnalogClock() {
         loop
         preload="auto"
       />
-      <img decoding="async" loading="lazy" src={bgFallback} alt="" style={backgroundImageStyle} />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bgFallback}
+        alt=""
+        style={backgroundImageStyle}
+      />
       <div style={handsContainerStyle}>
         <div style={hourStyle} />
         <div style={minuteStyle} />

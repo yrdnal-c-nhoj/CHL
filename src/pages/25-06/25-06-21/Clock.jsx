@@ -20,7 +20,20 @@ const MercuryClock = () => {
       document.fonts.add(loadedFont);
     });
 
-    const romanNumerals = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"];
+    const romanNumerals = [
+      'XII',
+      'I',
+      'II',
+      'III',
+      'IV',
+      'V',
+      'VI',
+      'VII',
+      'VIII',
+      'IX',
+      'X',
+      'XI',
+    ];
     const clock = clockRef.current;
 
     romanNumerals.forEach((num, i) => {
@@ -40,7 +53,7 @@ const MercuryClock = () => {
         textShadow: '#0e0e0e 1px 1px 0px, #0e0e0e -1px -1px 0px',
         // fontSize: '4rem',
         // fontWeight: 'bold',
-        fontFamily: 'merc'
+        fontFamily: 'merc',
       });
       clock.appendChild(el);
     });
@@ -50,7 +63,7 @@ const MercuryClock = () => {
       const ms = now.getMilliseconds();
       const sec = now.getSeconds() + ms / 1000;
       const min = now.getMinutes() + sec / 60;
-      const hr = now.getHours() % 12 + min / 60;
+      const hr = (now.getHours() % 12) + min / 60;
 
       hourRef.current.style.transform = `translateX(-50%) rotate(${hr * 30}deg)`;
       minuteRef.current.style.transform = `translateX(-50%) rotate(${min * 6}deg)`;
@@ -62,92 +75,131 @@ const MercuryClock = () => {
   }, []);
 
   return (
-    <div style={{
-      margin: 0,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100dvh',
-     width: '100vw',
-      backgroundColor: '#838b8f',
-      backgroundImage: `url(${bg1}), url(${bg2}), url(${bg3})`,
-      backgroundRepeat: 'repeat, repeat, repeat',
-      backgroundSize: '2.5vh auto, 5vh auto, 2.5vh auto',
-      backgroundPosition: 'bottom right',
-      backgroundAttachment: 'scroll',
-      fontFamily: 'merc, serif'
-    }}>
+    <div
+      style={{
+        margin: 0,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100dvh',
+        width: '100vw',
+        backgroundColor: '#838b8f',
+        backgroundImage: `url(${bg1}), url(${bg2}), url(${bg3})`,
+        backgroundRepeat: 'repeat, repeat, repeat',
+        backgroundSize: '2.5vh auto, 5vh auto, 2.5vh auto',
+        backgroundPosition: 'bottom right',
+        backgroundAttachment: 'scroll',
+        fontFamily: 'merc, serif',
+      }}
+    >
       <style>{`@font-face { font-family: 'merc'; src: url(${fontUrl}) format('truetype'); }`}</style>
 
-      <img decoding="async" loading="lazy" src={bgImage} style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '99vw',
-        height: '91vh',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        zIndex: 8,
-        opacity: 0.8,
-        pointerEvents: 'none'
-      }} />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={bgImage}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '99vw',
+          height: '91vh',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          zIndex: 8,
+          opacity: 0.8,
+          pointerEvents: 'none',
+        }}
+      />
 
-      <div ref={clockRef} style={{
-        width: '90vmin',
-        height: '90vmin',
-        borderRadius: '50%',
-        position: 'relative'
-      }}>
-        <div ref={hourRef} style={{
-          position: 'absolute',
-          bottom: '50%',
-          left: '50%',
-          width: '21%',
-          height: '25%',
-          transformOrigin: 'bottom',
-          zIndex: 6,
-          filter: 'hue-rotate(-10deg) brightness(100%) saturate(10%) contrast(200%)'
-        }}>
-          <img decoding="async" loading="lazy" src={hourImg} style={{ width: '100%', height: '100%', display: 'block' }} />
-        </div>
-
-        <div ref={minuteRef} style={{
-          position: 'absolute',
-          bottom: '50%',
-          left: '50%',
-          width: '17%',
-          height: '49%',
-          transformOrigin: 'bottom',
-          zIndex: 6,
-          filter: 'sepia(10%) hue-rotate(-10deg) brightness(120%) saturate(10%)'
-        }}>
-          <img decoding="async" loading="lazy" src={minuteImg} style={{ width: '100%', height: '100%', display: 'block' }} />
-        </div>
-
-        <div ref={secondRef} style={{
-          position: 'absolute',
-          bottom: '50%',
-          left: '50%',
-          width: '43%',
-          height: '58%',
-          transformOrigin: 'bottom',
-          zIndex: 6,
-          filter: 'sepia(100%) hue-rotate(-10deg) brightness(180%) saturate(10%)'
-        }}>
-          <img decoding="async" loading="lazy" src={secondImg} style={{ width: '100%', height: '100%', display: 'block' }} />
-        </div>
-
-        <div style={{
-          position: 'absolute',
-          width: '1%',
-          height: '1%',
-          backgroundColor: '#99999b',
+      <div
+        ref={clockRef}
+        style={{
+          width: '90vmin',
+          height: '90vmin',
           borderRadius: '50%',
-          top: '49%',
-          left: '49%',
-          zIndex: 10
-        }} />
+          position: 'relative',
+        }}
+      >
+        <div
+          ref={hourRef}
+          style={{
+            position: 'absolute',
+            bottom: '50%',
+            left: '50%',
+            width: '21%',
+            height: '25%',
+            transformOrigin: 'bottom',
+            zIndex: 6,
+            filter:
+              'hue-rotate(-10deg) brightness(100%) saturate(10%) contrast(200%)',
+          }}
+        >
+          <img
+            decoding="async"
+            loading="lazy"
+            src={hourImg}
+            style={{ width: '100%', height: '100%', display: 'block' }}
+          />
+        </div>
+
+        <div
+          ref={minuteRef}
+          style={{
+            position: 'absolute',
+            bottom: '50%',
+            left: '50%',
+            width: '17%',
+            height: '49%',
+            transformOrigin: 'bottom',
+            zIndex: 6,
+            filter:
+              'sepia(10%) hue-rotate(-10deg) brightness(120%) saturate(10%)',
+          }}
+        >
+          <img
+            decoding="async"
+            loading="lazy"
+            src={minuteImg}
+            style={{ width: '100%', height: '100%', display: 'block' }}
+          />
+        </div>
+
+        <div
+          ref={secondRef}
+          style={{
+            position: 'absolute',
+            bottom: '50%',
+            left: '50%',
+            width: '43%',
+            height: '58%',
+            transformOrigin: 'bottom',
+            zIndex: 6,
+            filter:
+              'sepia(100%) hue-rotate(-10deg) brightness(180%) saturate(10%)',
+          }}
+        >
+          <img
+            decoding="async"
+            loading="lazy"
+            src={secondImg}
+            style={{ width: '100%', height: '100%', display: 'block' }}
+          />
+        </div>
+
+        <div
+          style={{
+            position: 'absolute',
+            width: '1%',
+            height: '1%',
+            backgroundColor: '#99999b',
+            borderRadius: '50%',
+            top: '49%',
+            left: '49%',
+            zIndex: 10,
+          }}
+        />
       </div>
     </div>
   );

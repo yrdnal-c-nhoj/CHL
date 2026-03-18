@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 
 const App = () => {
   const starCanvasRef = useRef(null);
@@ -9,41 +9,75 @@ const App = () => {
   const secondRef = useRef(null);
 
   const STAR_LAYERS = [
-    { count: 250, sizeMin: 0.5, sizeMax: 2.0, speed: 0.15, color: "#E5EAF8", opacity: 0.4 },
-    { count: 100, sizeMin: 0.5, sizeMax: 2.5, speed: 0.2, color: "#F9E7E7", opacity: 0.6 },
-    { count: 50, sizeMin: 0.8, sizeMax: 2.7, speed: 0.25, color: "#F4F3E1", opacity: 0.8 },
+    {
+      count: 250,
+      sizeMin: 0.5,
+      sizeMax: 2.0,
+      speed: 0.15,
+      color: '#E5EAF8',
+      opacity: 0.4,
+    },
+    {
+      count: 100,
+      sizeMin: 0.5,
+      sizeMax: 2.5,
+      speed: 0.2,
+      color: '#F9E7E7',
+      opacity: 0.6,
+    },
+    {
+      count: 50,
+      sizeMin: 0.8,
+      sizeMax: 2.7,
+      speed: 0.25,
+      color: '#F4F3E1',
+      opacity: 0.8,
+    },
   ];
 
   const CONFIG = {
-    HOUR_NUMBERS: ["🌕", "🌔", "🌓", "🌒", "🌙", "🌛", "🌚", "🌜", "🌙", "🌘", "🌗", "🌖"],
-    CENTER_DOT_COLOR: "white",
-    SHADOW_COLOR: "rgba(220, 215, 255)",
+    HOUR_NUMBERS: [
+      '🌕',
+      '🌔',
+      '🌓',
+      '🌒',
+      '🌙',
+      '🌛',
+      '🌚',
+      '🌜',
+      '🌙',
+      '🌘',
+      '🌗',
+      '🌖',
+    ],
+    CENTER_DOT_COLOR: 'white',
+    SHADOW_COLOR: 'rgba(220, 215, 255)',
     SHADOW_BLUR: 30,
-    HAND_SHADOW_COLOR: "rgba(200, 220, 255)",
+    HAND_SHADOW_COLOR: 'rgba(200, 220, 255)',
     HAND_SHADOW_BLUR: 22,
     SHEEN_GRADIENT: [
-      { stop: 0, color: "rgba(255,255,255,0.1)" },
-      { stop: 0.4, color: "rgba(200,200,200,0.05)" },
-      { stop: 1, color: "rgba(255,255,255,0)" },
+      { stop: 0, color: 'rgba(255,255,255,0.1)' },
+      { stop: 0.4, color: 'rgba(200,200,200,0.05)' },
+      { stop: 1, color: 'rgba(255,255,255,0)' },
     ],
     HAND_GRADIENT: [
-      { stop: 0, color: "#0E0E0E80" },
-      { stop: 0.5, color: "#9F9FA980" },
-      { stop: 1, color: "#F4F3F380" },
+      { stop: 0, color: '#0E0E0E80' },
+      { stop: 0.5, color: '#9F9FA980' },
+      { stop: 1, color: '#F4F3F380' },
     ],
     HAND_CONFIG: [
-      { type: "hour", max: 12, length: 0.3, width: 20 },
-      { type: "minute", max: 60, length: 0.45, width: 13 },
-      { type: "second", max: 60, length: 0.5, width: 8 },
+      { type: 'hour', max: 12, length: 0.3, width: 20 },
+      { type: 'minute', max: 60, length: 0.45, width: 13 },
+      { type: 'second', max: 60, length: 0.5, width: 8 },
     ],
     SIZE_MULTIPLIER: 1.1,
-    FONT_SIZES: { laptop: "5rem", phone: "3rem" },
+    FONT_SIZES: { laptop: '5rem', phone: '3rem' },
     BREAKPOINT: 768,
   };
 
   useEffect(() => {
     const starCanvas = starCanvasRef.current;
-    const starCtx = starCanvas.getContext("2d");
+    const starCtx = starCanvas.getContext('2d');
 
     let stars;
     let contexts;
@@ -66,7 +100,7 @@ const App = () => {
       canvas.height = size * dpr;
       canvas.style.width = `${size}px`;
       canvas.style.height = `${size}px`;
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext('2d');
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       return ctx;
     };
@@ -84,8 +118,8 @@ const App = () => {
         ctx.rotate(-angle);
 
         ctx.font = `${fontSize} Times New Roman`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         ctx.shadowColor = CONFIG.SHADOW_COLOR;
         ctx.shadowBlur = CONFIG.SHADOW_BLUR;
 
@@ -110,14 +144,16 @@ const App = () => {
       ctx.rotate((value / max) * 2 * Math.PI);
 
       const grad = ctx.createLinearGradient(0, 0, 0, -radius * length);
-      CONFIG.HAND_GRADIENT.forEach(({ stop, color }) => grad.addColorStop(stop, color));
+      CONFIG.HAND_GRADIENT.forEach(({ stop, color }) =>
+        grad.addColorStop(stop, color),
+      );
 
       ctx.beginPath();
       ctx.moveTo(0, 0);
       ctx.lineTo(0, -radius * length);
       ctx.lineWidth = width;
       ctx.strokeStyle = grad;
-      ctx.lineCap = "round";
+      ctx.lineCap = 'round';
       ctx.shadowColor = CONFIG.HAND_SHADOW_COLOR;
       ctx.shadowBlur = CONFIG.HAND_SHADOW_BLUR;
       ctx.stroke();
@@ -131,7 +167,9 @@ const App = () => {
       ctx.rotate(sheenAngle);
 
       const grad = ctx.createRadialGradient(0, 0, radius * 0.2, 0, 0, radius);
-      CONFIG.SHEEN_GRADIENT.forEach(({ stop, color }) => grad.addColorStop(stop, color));
+      CONFIG.SHEEN_GRADIENT.forEach(({ stop, color }) =>
+        grad.addColorStop(stop, color),
+      );
 
       ctx.fillStyle = grad;
       ctx.beginPath();
@@ -145,11 +183,13 @@ const App = () => {
       starCanvas.height = window.innerHeight;
 
       stars = STAR_LAYERS.map((layer) =>
-        generateStars(layer.count, layer.sizeMin, layer.sizeMax, layer.speed)
+        generateStars(layer.count, layer.sizeMin, layer.sizeMax, layer.speed),
       );
 
       const isLaptop = window.innerWidth >= CONFIG.BREAKPOINT;
-      const size = Math.min(window.innerWidth, window.innerHeight) * CONFIG.SIZE_MULTIPLIER;
+      const size =
+        Math.min(window.innerWidth, window.innerHeight) *
+        CONFIG.SIZE_MULTIPLIER;
       fontSize = isLaptop ? CONFIG.FONT_SIZES.laptop : CONFIG.FONT_SIZES.phone;
       const dpr = window.devicePixelRatio || 1;
 
@@ -170,16 +210,22 @@ const App = () => {
       starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
 
       // vertical gradient
-      const verticalGradient = starCtx.createLinearGradient(0, 0, 0, starCanvas.height);
-      verticalGradient.addColorStop(0, "#0E0133FF");
-      verticalGradient.addColorStop(1, "#072702FF");
+      const verticalGradient = starCtx.createLinearGradient(
+        0,
+        0,
+        0,
+        starCanvas.height,
+      );
+      verticalGradient.addColorStop(0, '#0E0133FF');
+      verticalGradient.addColorStop(1, '#072702FF');
       starCtx.fillStyle = verticalGradient;
       starCtx.fillRect(0, 0, starCanvas.width, starCanvas.height);
 
       // stars
       stars.forEach((layer, index) => {
         layer.forEach((star) => {
-          const twinkle = 0.5 + 0.5 * Math.sin(Date.now() * 0.002 + star.twinklePhase);
+          const twinkle =
+            0.5 + 0.5 * Math.sin(Date.now() * 0.002 + star.twinklePhase);
           starCtx.globalAlpha = STAR_LAYERS[index].opacity * twinkle;
           starCtx.fillStyle = STAR_LAYERS[index].color;
           starCtx.beginPath();
@@ -197,13 +243,38 @@ const App = () => {
 
       // ---- Clock ----
       const now = new Date();
-      const hours = (now.getHours() % 12) + now.getMinutes() / 60 + now.getSeconds() / 3600;
-      const minutes = now.getMinutes() + now.getSeconds() / 60 + now.getMilliseconds() / 60000;
+      const hours =
+        (now.getHours() % 12) + now.getMinutes() / 60 + now.getSeconds() / 3600;
+      const minutes =
+        now.getMinutes() +
+        now.getSeconds() / 60 +
+        now.getMilliseconds() / 60000;
       const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
 
-      drawHand(contexts.hour, hours, CONFIG.HAND_CONFIG[0].max, CONFIG.HAND_CONFIG[0].length, CONFIG.HAND_CONFIG[0].width, radius);
-      drawHand(contexts.minute, minutes, CONFIG.HAND_CONFIG[1].max, CONFIG.HAND_CONFIG[1].length, CONFIG.HAND_CONFIG[1].width, radius);
-      drawHand(contexts.second, seconds, CONFIG.HAND_CONFIG[2].max, CONFIG.HAND_CONFIG[2].length, CONFIG.HAND_CONFIG[2].width, radius);
+      drawHand(
+        contexts.hour,
+        hours,
+        CONFIG.HAND_CONFIG[0].max,
+        CONFIG.HAND_CONFIG[0].length,
+        CONFIG.HAND_CONFIG[0].width,
+        radius,
+      );
+      drawHand(
+        contexts.minute,
+        minutes,
+        CONFIG.HAND_CONFIG[1].max,
+        CONFIG.HAND_CONFIG[1].length,
+        CONFIG.HAND_CONFIG[1].width,
+        radius,
+      );
+      drawHand(
+        contexts.second,
+        seconds,
+        CONFIG.HAND_CONFIG[2].max,
+        CONFIG.HAND_CONFIG[2].length,
+        CONFIG.HAND_CONFIG[2].width,
+        radius,
+      );
 
       sheenAngle += 0.002;
       drawSheen(contexts.sheen, radius, sheenAngle);
@@ -213,32 +284,69 @@ const App = () => {
 
     resize();
     animate();
-    window.addEventListener("resize", resize);
+    window.addEventListener('resize', resize);
 
-    return () => window.removeEventListener("resize", resize);
+    return () => window.removeEventListener('resize', resize);
   }, []);
 
   return (
-    <div style={{ width: "100vw", height: "100dvh", position: "relative", overflow: "hidden" }}>
+    <div
+      style={{
+        width: '100vw',
+        height: '100dvh',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
       <canvas
         ref={starCanvasRef}
-        style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0 }}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 0,
+        }}
       />
       <div
         style={{
-          position: "absolute",
+          position: 'absolute',
           inset: 0,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
           zIndex: 2,
         }}
       >
-        <canvas ref={faceRef} style={{ position: "absolute", borderRadius: "50%", filter: "grayscale(90%)" }} />
-        <canvas ref={sheenRef} style={{ position: "absolute", borderRadius: "50%", pointerEvents: "none" }} />
-        <canvas ref={hourRef} style={{ position: "absolute", borderRadius: "50%" }} />
-        <canvas ref={minuteRef} style={{ position: "absolute", borderRadius: "50%" }} />
-        <canvas ref={secondRef} style={{ position: "absolute", borderRadius: "50%" }} />
+        <canvas
+          ref={faceRef}
+          style={{
+            position: 'absolute',
+            borderRadius: '50%',
+            filter: 'grayscale(90%)',
+          }}
+        />
+        <canvas
+          ref={sheenRef}
+          style={{
+            position: 'absolute',
+            borderRadius: '50%',
+            pointerEvents: 'none',
+          }}
+        />
+        <canvas
+          ref={hourRef}
+          style={{ position: 'absolute', borderRadius: '50%' }}
+        />
+        <canvas
+          ref={minuteRef}
+          style={{ position: 'absolute', borderRadius: '50%' }}
+        />
+        <canvas
+          ref={secondRef}
+          style={{ position: 'absolute', borderRadius: '50%' }}
+        />
       </div>
     </div>
   );

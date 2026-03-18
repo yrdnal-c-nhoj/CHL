@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 // Images
-import bg1Img from "../../../assets/images/25-06/25-06-02/bg1.png";
-import bg2Img from "../../../assets/images/25-06/25-06-02/bg2.gif";
-import bg3Img from "../../../assets/images/25-06/25-06-02/bg3.webp";
-import bg4Img from "../../../assets/images/25-06/25-06-02/bg4.webp";
+import bg1Img from '../../../assets/images/25-06/25-06-02/bg1.png';
+import bg2Img from '../../../assets/images/25-06/25-06-02/bg2.gif';
+import bg3Img from '../../../assets/images/25-06/25-06-02/bg3.webp';
+import bg4Img from '../../../assets/images/25-06/25-06-02/bg4.webp';
 
-import number1Img from "../../../assets/images/25-06/25-06-02/num1.webp";
-import number2Img from "../../../assets/images/25-06/25-06-02/num2.webp";
-import number3Img from "../../../assets/images/25-06/25-06-02/num3.webp";
-import number4Img from "../../../assets/images/25-06/25-06-02/num4.webp";
-import number5Img from "../../../assets/images/25-06/25-06-02/num5.webp";
-import number6Img from "../../../assets/images/25-06/25-06-02/num6.webp";
-import number7Img from "../../../assets/images/25-06/25-06-02/num7.webp";
-import number8Img from "../../../assets/images/25-06/25-06-02/num8.webp";
-import number9Img from "../../../assets/images/25-06/25-06-02/num9.webp";
-import number10Img from "../../../assets/images/25-06/25-06-02/num10.webp";
-import number11Img from "../../../assets/images/25-06/25-06-02/num11.webp";
-import number12Img from "../../../assets/images/25-06/25-06-02/num12.webp";
+import number1Img from '../../../assets/images/25-06/25-06-02/num1.webp';
+import number2Img from '../../../assets/images/25-06/25-06-02/num2.webp';
+import number3Img from '../../../assets/images/25-06/25-06-02/num3.webp';
+import number4Img from '../../../assets/images/25-06/25-06-02/num4.webp';
+import number5Img from '../../../assets/images/25-06/25-06-02/num5.webp';
+import number6Img from '../../../assets/images/25-06/25-06-02/num6.webp';
+import number7Img from '../../../assets/images/25-06/25-06-02/num7.webp';
+import number8Img from '../../../assets/images/25-06/25-06-02/num8.webp';
+import number9Img from '../../../assets/images/25-06/25-06-02/num9.webp';
+import number10Img from '../../../assets/images/25-06/25-06-02/num10.webp';
+import number11Img from '../../../assets/images/25-06/25-06-02/num11.webp';
+import number12Img from '../../../assets/images/25-06/25-06-02/num12.webp';
 
-import hourHandImg from "../../../assets/images/25-06/25-06-02/hour.png";
-import minuteHandImg from "../../../assets/images/25-06/25-06-02/min.png";
-import secondHandImg from "../../../assets/images/25-06/25-06-02/min.png";
+import hourHandImg from '../../../assets/images/25-06/25-06-02/hour.png';
+import minuteHandImg from '../../../assets/images/25-06/25-06-02/min.png';
+import secondHandImg from '../../../assets/images/25-06/25-06-02/min.png';
 
 export default function AnalogImageClock() {
   const [time, setTime] = useState(new Date());
@@ -69,30 +69,32 @@ export default function AnalogImageClock() {
       const x = 50 + radius * Math.cos(angle);
       const y = 50 + radius * Math.sin(angle);
       return (
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           key={i}
           src={img}
           alt={`number-${i}`}
           style={{
-            position: "absolute",
-            width: "10vmin",
-            height: "10vmin",
+            position: 'absolute',
+            width: '10vmin',
+            height: '10vmin',
             left: `${x}%`,
             top: `${y}%`,
-            transform: "translate(-50%, -50%)",
+            transform: 'translate(-50%, -50%)',
           }}
         />
       );
     });
 
   const handStyle = (deg, widthVmin, heightVmin) => ({
-    position: "absolute",
+    position: 'absolute',
     width: `${widthVmin}vmin`,
     height: `${heightVmin}vmin`,
-    top: "50%",
-    left: "50%",
+    top: '50%',
+    left: '50%',
     transform: `rotate(${deg}deg) translate(-50%, -50%)`,
-    transformOrigin: "50% 50%",
+    transformOrigin: '50% 50%',
   });
 
   const backgrounds = [
@@ -105,30 +107,32 @@ export default function AnalogImageClock() {
   return (
     <div
       style={{
-        position: "relative",
-        width: "100vw",
-        height: "100vh",
+        position: 'relative',
+        width: '100vw',
+        height: '100vh',
         background: `linear-gradient(${gradientShift}deg, #1a1a1a, #3a3a3a, #5a5a5a)`,
-        transition: "background 0.05s linear",
-        overflow: "hidden",
+        transition: 'background 0.05s linear',
+        overflow: 'hidden',
       }}
     >
       {/* Backgrounds */}
       {backgrounds.map((bg, idx) => (
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           key={idx}
           src={bg.src}
           alt={`background-${idx}`}
           style={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
             zIndex: bg.zIndex,
             opacity: bg.opacity,
-            objectFit: "cover",
+            objectFit: 'cover',
           }}
         />
       ))}
@@ -136,21 +140,39 @@ export default function AnalogImageClock() {
       {/* Centered Clock */}
       <div
         style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          width: "80vmin",
-          height: "80vmin",
-          borderRadius: "50%",
-          transform: "translate(-50%, -50%)",
-          overflow: "visible",
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '80vmin',
+          height: '80vmin',
+          borderRadius: '50%',
+          transform: 'translate(-50%, -50%)',
+          overflow: 'visible',
           zIndex: 10,
         }}
       >
         {renderNumbers()}
-        <img decoding="async" loading="lazy" src={hourHandImg} alt="hour-hand" style={handStyle(hourDeg, 2, 25)} />
-        <img decoding="async" loading="lazy" src={minuteHandImg} alt="minute-hand" style={handStyle(minuteDeg, 1.5, 35)} />
-        <img decoding="async" loading="lazy" src={secondHandImg} alt="second-hand" style={handStyle(secondDeg, 1, 40)} />
+        <img
+          decoding="async"
+          loading="lazy"
+          src={hourHandImg}
+          alt="hour-hand"
+          style={handStyle(hourDeg, 2, 25)}
+        />
+        <img
+          decoding="async"
+          loading="lazy"
+          src={minuteHandImg}
+          alt="minute-hand"
+          style={handStyle(minuteDeg, 1.5, 35)}
+        />
+        <img
+          decoding="async"
+          loading="lazy"
+          src={secondHandImg}
+          alt="second-hand"
+          style={handStyle(secondDeg, 1, 40)}
+        />
       </div>
     </div>
   );

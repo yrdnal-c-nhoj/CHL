@@ -83,9 +83,12 @@ const HummingbirdClock = () => {
       const minDeg = m * 6 + s / 10;
       const hourDeg = h * 30 + m / 2;
 
-      document.getElementById('second-hand').style.transform = `translateX(-50%) rotate(${secDeg}deg)`;
-      document.getElementById('minute-hand').style.transform = `translateX(-50%) rotate(${minDeg}deg)`;
-      document.getElementById('hour-hand').style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+      document.getElementById('second-hand').style.transform =
+        `translateX(-50%) rotate(${secDeg}deg)`;
+      document.getElementById('minute-hand').style.transform =
+        `translateX(-50%) rotate(${minDeg}deg)`;
+      document.getElementById('hour-hand').style.transform =
+        `translateX(-50%) rotate(${hourDeg}deg)`;
     };
 
     const interval = setInterval(updateClock, 1000);
@@ -96,7 +99,15 @@ const HummingbirdClock = () => {
       const newY = Math.random() * (window.innerHeight - 80);
       // Unique durations and easing for each hummingbird
       const durations = [1200, 1500, 1000, 1300, 800, 1100, 1400];
-      const easings = ['ease-in-out', 'ease-out', 'linear', 'ease-in', 'linear', 'ease-in-out', 'ease-out'];
+      const easings = [
+        'ease-in-out',
+        'ease-out',
+        'linear',
+        'ease-in',
+        'linear',
+        'ease-in-out',
+        'ease-out',
+      ];
       const duration = Math.random() * 600 + durations[index];
       const easing = easings[index];
 
@@ -142,9 +153,28 @@ const HummingbirdClock = () => {
 
   return (
     <div style={styles.body}>
-      <div style={{ ...styles.bgImageLayer, backgroundImage: `url(${hmmGif})`, zIndex: 1 }} />
-      <div style={{ ...styles.bgImageLayer, backgroundImage: `url(${hmmGif})`, transform: 'scaleX(-1) rotate(90deg)', zIndex: 2 }} />
-      <img decoding="async" loading="lazy" src={hummPng} alt="BG" style={styles.bgImageFlipped} />
+      <div
+        style={{
+          ...styles.bgImageLayer,
+          backgroundImage: `url(${hmmGif})`,
+          zIndex: 1,
+        }}
+      />
+      <div
+        style={{
+          ...styles.bgImageLayer,
+          backgroundImage: `url(${hmmGif})`,
+          transform: 'scaleX(-1) rotate(90deg)',
+          zIndex: 2,
+        }}
+      />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={hummPng}
+        alt="BG"
+        style={styles.bgImageFlipped}
+      />
 
       <div style={styles.clock}>
         <div style={{ ...styles.number, ...styles.numTwelve }}>twelve</div>
@@ -153,12 +183,20 @@ const HummingbirdClock = () => {
         <div style={{ ...styles.number, ...styles.numNine }}>nine</div>
 
         <div id="hour-hand" style={{ ...styles.hand, ...styles.hourHand }} />
-        <div id="minute-hand" style={{ ...styles.hand, ...styles.minuteHand }} />
-        <div id="second-hand" style={{ ...styles.hand, ...styles.secondHand }} />
+        <div
+          id="minute-hand"
+          style={{ ...styles.hand, ...styles.minuteHand }}
+        />
+        <div
+          id="second-hand"
+          style={{ ...styles.hand, ...styles.secondHand }}
+        />
       </div>
 
       {floatingImages.map((img, i) => (
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           key={i}
           id={`float-${i}`}
           src={img.src}

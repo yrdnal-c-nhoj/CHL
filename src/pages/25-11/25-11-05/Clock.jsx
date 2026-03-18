@@ -1,16 +1,16 @@
-import { useEffect, useState, useMemo } from 'react'
-import WebFonnov25ufuf from '../../../assets/fonts/25-11-05-webs1.ttf'
-import Webfont2511055 from '../../../assets/fonts/25-11-05-webs2.ttf'
-import w251105font from '../../../assets/fonts/25-11-05-webs3.ttf'
+import { useEffect, useState, useMemo } from 'react';
+import WebFonnov25ufuf from '../../../assets/fonts/25-11-05-webs1.ttf';
+import Webfont2511055 from '../../../assets/fonts/25-11-05-webs2.ttf';
+import w251105font from '../../../assets/fonts/25-11-05-webs3.ttf';
 
 // Helper function remains the same
-function makeColumnsBackground (columns, gutterVw, marginVw) {
+function makeColumnsBackground(columns, gutterVw, marginVw) {
   if (columns <= 0) {
-    console.error('Columns Must Be Greater Than 0') // Changed error message to Title Case
-    return 'none'
+    console.error('Columns Must Be Greater Than 0'); // Changed error message to Title Case
+    return 'none';
   }
-  const colColor = 'rgba(255,255,255)'
-  const gutColor = 'rgba(255,255,255)'
+  const colColor = 'rgba(255,255,255)';
+  const gutColor = 'rgba(255,255,255)';
   return [
     `linear-gradient(90deg, ${colColor} 0, ${colColor} ${marginVw}vw, transparent ${marginVw}vw)`,
     `repeating-linear-gradient(90deg,
@@ -19,23 +19,23 @@ function makeColumnsBackground (columns, gutterVw, marginVw) {
       ${gutColor} calc((100% - ${2 * marginVw}vw) / ${columns} - ${gutterVw}vw),
       ${gutColor} calc((100% - ${2 * marginVw}vw) / ${columns})
     )`,
-    `linear-gradient(90deg, transparent calc(100% - ${marginVw}vw), ${colColor} calc(100% - ${marginVw}vw), ${colColor} 100%)`
-  ].join(',')
+    `linear-gradient(90deg, transparent calc(100% - ${marginVw}vw), ${colColor} calc(100% - ${marginVw}vw), ${colColor} 100%)`,
+  ].join(',');
 }
 
 // Rulers component remains the same
-function Rulers ({ viewportWidth, viewportHeight }) {
-  const TICK_MAJOR = 9.26 // 100px / 1080px * 100
-  const TICK_MINOR = 1.85 // 20px / 1080px * 100
-  const COUNT = 200
+function Rulers({ viewportWidth, viewportHeight }) {
+  const TICK_MAJOR = 9.26; // 100px / 1080px * 100
+  const TICK_MINOR = 1.85; // 20px / 1080px * 100
+  const COUNT = 200;
   const labelStyle = {
     fontSize: '3.4vh',
     color: '#BBBBC7FF',
     textShadow: '0 0.2vh 0.4vh rgba(233,90,0)',
 
     fontWeight: 700,
-    fontFamily: "'Teko', sans-serif"
-  }
+    fontFamily: "'Teko', sans-serif",
+  };
 
   return (
     <>
@@ -50,11 +50,11 @@ function Rulers ({ viewportWidth, viewportHeight }) {
           height: '3.2vh',
           background: 'rgba(250,20,0,0.4)',
           borderBottom: '0.2vh solid rgba(2,255,2)',
-          pointerEvents: 'none'
+          pointerEvents: 'none',
         }}
       >
-        {Array.from({ length: COUNT }, (_, i) => i * TICK_MINOR).map(x => {
-          const major = x % TICK_MAJOR < 0.01
+        {Array.from({ length: COUNT }, (_, i) => i * TICK_MINOR).map((x) => {
+          const major = x % TICK_MAJOR < 0.01;
           return (
             <div
               key={x}
@@ -64,19 +64,19 @@ function Rulers ({ viewportWidth, viewportHeight }) {
                 bottom: 0,
                 width: major ? '0.3vw' : '0.3vw',
                 height: major ? '2.4vh' : '1.6vh',
-                background: major ? '#8b5cf6' : '#A9EF06FF'
+                background: major ? '#8b5cf6' : '#A9EF06FF',
               }}
             />
-          )
+          );
         })}
-        {Array.from({ length: COUNT }, (_, i) => i * TICK_MAJOR).map(x => (
+        {Array.from({ length: COUNT }, (_, i) => i * TICK_MAJOR).map((x) => (
           <div
             key={`label-x-${x}`}
             style={{
               position: 'absolute',
               left: `${x + 0.6}vw`,
               top: '4vh',
-              ...labelStyle
+              ...labelStyle,
             }}
           >
             {Math.round(x * (viewportWidth / 100))}
@@ -95,11 +95,11 @@ function Rulers ({ viewportWidth, viewportHeight }) {
           width: '2.4vw',
           background: '#D20B0B38',
           borderRight: '0.3vh solid rgba(255,255,2)',
-          pointerEvents: 'none'
+          pointerEvents: 'none',
         }}
       >
-        {Array.from({ length: COUNT }, (_, i) => i * TICK_MINOR).map(y => {
-          const major = y % TICK_MAJOR < 0.01
+        {Array.from({ length: COUNT }, (_, i) => i * TICK_MINOR).map((y) => {
+          const major = y % TICK_MAJOR < 0.01;
           return (
             <div
               key={y}
@@ -109,12 +109,12 @@ function Rulers ({ viewportWidth, viewportHeight }) {
                 right: 0,
                 width: major ? '3.8vw' : '3.6vw',
                 height: major ? '0.3vh' : '0.2vh',
-                background: major ? '#8b5cf6' : '#3f3f46'
+                background: major ? '#8b5cf6' : '#3f3f46',
               }}
             />
-          )
+          );
         })}
-        {Array.from({ length: COUNT }, (_, i) => i * TICK_MAJOR).map(y => (
+        {Array.from({ length: COUNT }, (_, i) => i * TICK_MAJOR).map((y) => (
           <div
             key={`label-y-${y}`}
             style={{
@@ -123,7 +123,7 @@ function Rulers ({ viewportWidth, viewportHeight }) {
               top: `${y + 0.4}vh`,
               transform: 'rotate(-90deg)',
               transformOrigin: 'top right',
-              ...labelStyle
+              ...labelStyle,
             }}
           >
             {Math.round(y * (viewportHeight / 100))}
@@ -131,57 +131,57 @@ function Rulers ({ viewportWidth, viewportHeight }) {
         ))}
       </div>
     </>
-  )
+  );
 }
 
-export default function Clock251106 () {
-  const [now, setNow] = useState(new Date())
+export default function Clock251106() {
+  const [now, setNow] = useState(new Date());
   const [viewportWidth, setViewportWidth] = useState(
-    typeof window !== 'undefined' ? window.innerWidth : 1440
-  )
+    typeof window !== 'undefined' ? window.innerWidth : 1440,
+  );
   const [viewportHeight, setViewportHeight] = useState(
-    typeof window !== 'undefined' ? window.innerHeight : 900
-  )
-  const [fontsReady, setFontsReady] = useState(false)
+    typeof window !== 'undefined' ? window.innerHeight : 900,
+  );
+  const [fontsReady, setFontsReady] = useState(false);
 
   // Time update interval
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 100)
-    return () => clearInterval(id)
-  }, [])
+    const id = setInterval(() => setNow(new Date()), 100);
+    return () => clearInterval(id);
+  }, []);
 
   // Avoid FOUT: wait for fonts then reveal component
   useEffect(() => {
     let raf = requestAnimationFrame(() => {
       if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(() => setFontsReady(true))
+        document.fonts.ready.then(() => setFontsReady(true));
       } else {
-        setFontsReady(true)
+        setFontsReady(true);
       }
-    })
-    return () => cancelAnimationFrame(raf)
-  }, [])
+    });
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   // Resize listener
   useEffect(() => {
     const handleResize = () => {
-      setViewportWidth(window.innerWidth)
-      setViewportHeight(window.innerHeight)
-    }
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+      setViewportWidth(window.innerWidth);
+      setViewportHeight(window.innerHeight);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  const pad = n => String(n).padStart(2, '0')
+  const pad = (n) => String(n).padStart(2, '0');
 
   // Scaffolding config (Constants remain the same)
-  const BASELINE = 0.8 // vh
-  const BASELINE_BOLD_EVERY = 2
-  const COLUMNS = 4
-  const GUTTER = 1 // vw
-  const MARGIN_H = 5 // vw
-  const SAFE_INSET_V = 8 // vh
-  const SAFE_INSET_H = 6 // vw
+  const BASELINE = 0.8; // vh
+  const BASELINE_BOLD_EVERY = 2;
+  const COLUMNS = 4;
+  const GUTTER = 1; // vw
+  const MARGIN_H = 5; // vw
+  const SAFE_INSET_V = 8; // vh
+  const SAFE_INSET_H = 6; // vw
 
   // Device breakpoints (Constants remain the same)
   const breakpoints = [
@@ -191,23 +191,23 @@ export default function Clock251106 () {
     { name: 'Tablet', width: 30, color: '#8ac926' }, // Changed 'Tablet' to 'Tablet' (already Title Case)
     { name: 'Laptop', width: 40, color: '#1982c4' }, // Changed 'Laptop' to 'Laptop' (already Title Case)
     { name: 'Laptop L', width: 56.25, color: '#8C6EB7FF' }, // Changed 'Laptop L' to 'Laptop L' (already Title Case)
-    { name: '4K', width: 100, color: '#d62828' } // Changed '4K' to '4K' (Title Case appropriate)
-  ]
+    { name: '4K', width: 100, color: '#d62828' }, // Changed '4K' to '4K' (Title Case appropriate)
+  ];
 
   const baselineLines = useMemo(
     () => Array.from({ length: 200 }, (_, i) => i),
-    []
-  )
+    [],
+  );
   const activeBreakpoint = breakpoints.reduce(
     (prev, curr) =>
       viewportWidth >= curr.width * (viewportWidth / 100) ? curr : prev,
-    breakpoints[0]
-  )
+    breakpoints[0],
+  );
 
   // Define typefaces
-  const CLOCK_TYPEFACE = "'Bungee', monospace"
-  const LABEL_TYPEFACE = "'Poppins', sans-serif"
-  const DIGIT_TYPEFACE = "'Teko', sans-serif"
+  const CLOCK_TYPEFACE = "'Bungee', monospace";
+  const LABEL_TYPEFACE = "'Poppins', sans-serif";
+  const DIGIT_TYPEFACE = "'Teko', sans-serif";
 
   return (
     <div
@@ -225,7 +225,7 @@ export default function Clock251106 () {
         borderImage:
           'repeating-linear-gradient(90deg, #ff1493 0 6px, #ccff00 6px 12px) 1',
         outlineOffset: 0,
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
       }}
     >
       {/* 2. Simplified Inline @font-face declarations using imported URLs */}
@@ -264,7 +264,7 @@ export default function Clock251106 () {
           pointerEvents: 'none',
           backgroundImage: makeColumnsBackground(COLUMNS, GUTTER, MARGIN_H),
           backgroundSize: '100% 100%',
-          opacity: 0.35 // Increased opacity for more prominence
+          opacity: 0.35, // Increased opacity for more prominence
         }}
       />
 
@@ -273,8 +273,8 @@ export default function Clock251106 () {
         aria-hidden
         style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
       >
-        {baselineLines.map(i => {
-          const thick = i % BASELINE_BOLD_EVERY === 0
+        {baselineLines.map((i) => {
+          const thick = i % BASELINE_BOLD_EVERY === 0;
           return (
             <div
               key={i}
@@ -288,10 +288,10 @@ export default function Clock251106 () {
                 background: thick
                   ? 'rgba(180, 80, 255, 0.8)'
                   : 'rgba(180, 80, 255, 0.55)',
-                boxShadow: thick ? '0 0 0.4vh rgba(180, 80, 255, 0.5)' : 'none'
+                boxShadow: thick ? '0 0 0.4vh rgba(180, 80, 255, 0.5)' : 'none',
               }}
             />
-          )
+          );
         })}
       </div>
 
@@ -308,7 +308,7 @@ export default function Clock251106 () {
             width: '0.5vw',
             height: '100%',
             background: 'rgba(6, 182, 212, 0.7)', // Brighter background
-            boxShadow: '0 0 1.2vh rgba(6, 182, 212, 0.7)' // Increased and brighter shadow
+            boxShadow: '0 0 1.2vh rgba(6, 182, 212, 0.7)', // Increased and brighter shadow
           }}
         />
         <div
@@ -319,7 +319,7 @@ export default function Clock251106 () {
             height: '0.5vh',
             width: '100%',
             background: 'rgba(6, 182, 212, 0.9)', // Brighter background
-            boxShadow: '0 0 1.2vh rgba(6, 182, 212, 0.7)' // Increased and brighter shadow
+            boxShadow: '0 0 1.2vh rgba(6, 182, 212, 0.7)', // Increased and brighter shadow
           }}
         />
         {/* Centerline labels */}
@@ -334,7 +334,7 @@ export default function Clock251106 () {
             letterSpacing: '0.12vh',
             fontWeight: 700,
             fontFamily: LABEL_TYPEFACE,
-            textShadow: '0 0.2vh 0.4vh rgba(0,0,0,0.5)'
+            textShadow: '0 0.2vh 0.4vh rgba(0,0,0,0.5)',
           }}
         >
           <span>Centerline X • </span>
@@ -355,7 +355,7 @@ export default function Clock251106 () {
             maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
             whiteSpace: 'nowrap',
             overflow: 'hidden',
-            textOverflow: 'ellipsis'
+            textOverflow: 'ellipsis',
           }}
         >
           <span>Centerline Y • </span>
@@ -377,7 +377,7 @@ export default function Clock251106 () {
             bottom: `${SAFE_INSET_V}vh`,
             border: '0.2vh dashed rgba(16, 185, 129)',
             // background: "rgba(16, 185, 129, 0.03)",
-            boxShadow: 'inset 0 0 2vh rgba(16, 185, 129, 0.55)'
+            boxShadow: 'inset 0 0 2vh rgba(16, 185, 129, 0.55)',
           }}
         />
         {/* Safe area corner labels */}
@@ -396,7 +396,7 @@ export default function Clock251106 () {
             maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
             whiteSpace: 'nowrap',
             overflow: 'hidden',
-            textOverflow: 'ellipsis'
+            textOverflow: 'ellipsis',
           }}
         >
           <span>Safe Area • </span>
@@ -416,7 +416,7 @@ export default function Clock251106 () {
             top: 0,
             height: `${SAFE_INSET_V}vh`,
             // background: "rgba(239, 68, 68, 0.05)",
-            borderBottom: '0.1vh solid rgba(239, 68, 68)'
+            borderBottom: '0.1vh solid rgba(239, 68, 68)',
           }}
         >
           <div
@@ -433,7 +433,7 @@ export default function Clock251106 () {
               maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
               whiteSpace: 'nowrap',
               overflow: 'hidden',
-              textOverflow: 'ellipsis'
+              textOverflow: 'ellipsis',
             }}
           >
             Danger Zone • No Critical Content
@@ -447,7 +447,7 @@ export default function Clock251106 () {
             bottom: 0,
             height: `${SAFE_INSET_V}vh`,
             background: 'rgba(239, 68, 68, 0.08)',
-            borderTop: '0.1vh solid rgba(239, 68, 68, 0.3)'
+            borderTop: '0.1vh solid rgba(239, 68, 68, 0.3)',
           }}
         >
           <div
@@ -464,7 +464,7 @@ export default function Clock251106 () {
               maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
               whiteSpace: 'nowrap',
               overflow: 'hidden',
-              textOverflow: 'ellipsis'
+              textOverflow: 'ellipsis',
             }}
           >
             Danger Zone • No Critical Content
@@ -478,7 +478,7 @@ export default function Clock251106 () {
             left: 0,
             width: `${SAFE_INSET_H}vw`,
             background: 'rgba(239, 68, 68, 0.08)',
-            borderRight: '0.1vh solid rgba(239, 68, 68, 0.3)'
+            borderRight: '0.1vh solid rgba(239, 68, 68, 0.3)',
           }}
         />
         <div
@@ -489,13 +489,13 @@ export default function Clock251106 () {
             right: 0,
             width: `${SAFE_INSET_H}vw`,
             background: 'rgba(239, 68, 68, 0.08)',
-            borderLeft: '0.1vh solid rgba(239, 68, 68, 0.3)'
+            borderLeft: '0.1vh solid rgba(239, 68, 68, 0.3)',
           }}
         />
       </div>
 
       {/* Device breakpoint lines */}
-      {breakpoints.map(bp => (
+      {breakpoints.map((bp) => (
         <div
           key={bp.width}
           aria-hidden
@@ -513,7 +513,7 @@ export default function Clock251106 () {
                 ? `0 0 1.2vh ${bp.color}`
                 : 'none',
             pointerEvents: 'none',
-            transition: 'opacity 0.3s ease'
+            transition: 'opacity 0.3s ease',
           }}
         >
           <div
@@ -533,7 +533,7 @@ export default function Clock251106 () {
               opacity:
                 viewportWidth >= bp.width * (viewportWidth / 100) ? 1 : 0.5,
               fontFamily: LABEL_TYPEFACE,
-              textShadow: '0 0.2vh 0.4vh rgba(0,0,0,0.5)'
+              textShadow: '0 0.2vh 0.4vh rgba(0,0,0,0.5)',
             }}
           >
             <span>{bp.name} </span>
@@ -550,8 +550,8 @@ export default function Clock251106 () {
         55.56, // 600px
         71.11, // 768px
         83.33, // 900px
-        100 // 1080px
-      ].map(height => (
+        100, // 1080px
+      ].map((height) => (
         <div
           key={`h-${height}`}
           aria-hidden
@@ -562,7 +562,7 @@ export default function Clock251106 () {
             width: '100%',
             height: '0.1vh',
             background: 'rgba(251, 191, 36, 0.9)',
-            pointerEvents: 'none'
+            pointerEvents: 'none',
           }}
         >
           <div
@@ -580,7 +580,7 @@ export default function Clock251106 () {
               maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
               whiteSpace: 'nowrap',
               overflow: 'hidden',
-              textOverflow: 'ellipsis'
+              textOverflow: 'ellipsis',
             }}
           >
             <span>Height Guide </span>
@@ -607,7 +607,7 @@ export default function Clock251106 () {
           maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
           whiteSpace: 'nowrap',
           overflow: 'hidden',
-          textOverflow: 'ellipsis'
+          textOverflow: 'ellipsis',
         }}
       >
         <span>
@@ -632,7 +632,7 @@ export default function Clock251106 () {
           maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
           whiteSpace: 'nowrap',
           overflow: 'hidden',
-          textOverflow: 'ellipsis'
+          textOverflow: 'ellipsis',
         }}
       >
         <span>Baseline {BASELINE}VH • Bold Every </span>
@@ -654,7 +654,7 @@ export default function Clock251106 () {
           display: 'grid',
           placeItems: 'center',
           pointerEvents: 'none',
-          zIndex: 10
+          zIndex: 10,
         }}
       >
         <div
@@ -674,7 +674,7 @@ export default function Clock251106 () {
             overflow: 'hidden',
             fontFamily: CLOCK_TYPEFACE,
             background: 'rgba(0,0,0,0.2)',
-            borderRadius: '0.8vh'
+            borderRadius: '0.8vh',
           }}
         >
           <>
@@ -702,7 +702,7 @@ export default function Clock251106 () {
           fontSize: '3.2vh',
           fontWeight: 700,
           letterSpacing: '0.1vh',
-          fontFamily: LABEL_TYPEFACE
+          fontFamily: LABEL_TYPEFACE,
         }}
       >
         <span style={{ color: activeBreakpoint.color }}>
@@ -731,7 +731,7 @@ export default function Clock251106 () {
           fontFamily: LABEL_TYPEFACE,
           textShadow: '0 0.2vh 0.4vh rgba(0,0,0,0.5)',
           maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
-          overflow: 'hidden'
+          overflow: 'hidden',
         }}
       >
         <div style={{ color: '#06b6d4' }}>█ Centerlines</div>
@@ -743,5 +743,5 @@ export default function Clock251106 () {
         <div style={{ color: '#ff006e' }}>█ Breakpoints</div>
       </div>
     </div>
-  )
+  );
 }

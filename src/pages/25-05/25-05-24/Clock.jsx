@@ -75,7 +75,7 @@ const Clock = () => {
         wobbleFreq: Math.random() * 0.15 + 0.1,
         wobbleAmp: Math.random() * 2 + 1,
         secondaryWobblePhase: Math.random() * 2 * Math.PI,
-        secondaryWobbleFreq: Math.random() * 0.2 + 0.05
+        secondaryWobbleFreq: Math.random() * 0.2 + 0.05,
       };
     });
 
@@ -85,7 +85,7 @@ const Clock = () => {
       time += 0.01;
       const swayOffset = Math.sin(time) * 5;
 
-      particles.forEach(p => {
+      particles.forEach((p) => {
         p.angle += p.speed * 0.05;
         p.baseHeight -= p.speed + Math.sin(time + p.wobblePhase) * 0.2;
         if (p.baseHeight < -5) {
@@ -98,7 +98,7 @@ const Clock = () => {
           p.secondaryWobblePhase = Math.random() * 2 * Math.PI;
         }
 
-        const normalizedHeight = 1 - (p.baseHeight / window.innerHeight);
+        const normalizedHeight = 1 - p.baseHeight / window.innerHeight;
         const baseRadius = 3 + normalizedHeight * 20;
         const radiusVariation = Math.sin(time + p.wobblePhase) * 1.5;
         const radius = baseRadius + radiusVariation;
@@ -107,7 +107,11 @@ const Clock = () => {
           Math.sin(time * p.wobbleFreq + p.wobblePhase) * p.wobbleAmp +
           Math.cos(time * p.secondaryWobbleFreq + p.secondaryWobblePhase) *
             (p.wobbleAmp * 0.5);
-        const x = (centerX / window.innerWidth) * 100 + swayOffset + Math.cos(p.angle) * radius + wobble;
+        const x =
+          (centerX / window.innerWidth) * 100 +
+          swayOffset +
+          Math.cos(p.angle) * radius +
+          wobble;
         const y = (p.baseHeight / window.innerHeight) * 100;
 
         const scale = 0.5 + (p.baseHeight / window.innerHeight) * 1.5;
@@ -120,7 +124,9 @@ const Clock = () => {
 
     animate();
 
-    const flashOverlay = document.getElementById('tornado-clock__flash-overlay');
+    const flashOverlay = document.getElementById(
+      'tornado-clock__flash-overlay',
+    );
     function triggerFlash(color) {
       if (flashOverlay) {
         flashOverlay.style.backgroundColor = color;
@@ -143,7 +149,7 @@ const Clock = () => {
     randomFlashLoop();
 
     return () => {
-      particles.forEach(p => p.el.remove());
+      particles.forEach((p) => p.el.remove());
       window.removeEventListener('resize', () => {
         centerX = window.innerWidth / 2;
       });
@@ -203,7 +209,13 @@ const Clock = () => {
         `}
       </style>
 
-      <img decoding="async" loading="lazy" src={torGif} className="tornado-clock__bgimage" alt="Tornado Background" />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={torGif}
+        className="tornado-clock__bgimage"
+        alt="Tornado Background"
+      />
       <div id="tornado-clock__flash-overlay"></div>
     </div>
   );

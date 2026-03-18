@@ -22,9 +22,12 @@ const Clock24 = () => {
       const minuteDeg = (m + s / 60) * 6;
       const secondDeg = (s + ms / 1000) * 6;
 
-      if (hourRef.current) hourRef.current.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
-      if (minuteRef.current) minuteRef.current.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
-      if (secondRef.current) secondRef.current.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
+      if (hourRef.current)
+        hourRef.current.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+      if (minuteRef.current)
+        minuteRef.current.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
+      if (secondRef.current)
+        secondRef.current.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
 
       requestAnimationFrame(updateClock);
     };
@@ -51,7 +54,7 @@ const Clock24 = () => {
   });
 
   const numbers = Array.from({ length: 24 }, (_, i) => {
-    const hour = (i % 24) || 24;
+    const hour = i % 24 || 24;
     const angle = (i / 24) * 360;
     const radius = 42;
     const x = 50 + radius * Math.sin((angle * Math.PI) / 180);
@@ -68,7 +71,12 @@ const Clock24 = () => {
           left: `${x}%`,
           top: `${y}%`,
           transform: `translate(-50%, -50%) rotate(${angle}deg)`,
-          color: hour === 24 ? 'red' : isEven ? 'rgb(9, 9, 9)' : 'rgb(253, 249, 249)',
+          color:
+            hour === 24
+              ? 'red'
+              : isEven
+                ? 'rgb(9, 9, 9)'
+                : 'rgb(253, 249, 249)',
           textAlign: 'center',
         }}
       >
@@ -112,7 +120,8 @@ const Clock24 = () => {
             transform: 'translateX(-50%) rotate(0deg)',
             width: '6.8%',
             height: '20%',
-            background: 'repeating-linear-gradient(to bottom, black, black 4.167%, white 4.167%, white 8.333%)',
+            background:
+              'repeating-linear-gradient(to bottom, black, black 4.167%, white 4.167%, white 8.333%)',
           }}
         />
         <div
@@ -126,7 +135,8 @@ const Clock24 = () => {
             transform: 'translateX(-50%) rotate(0deg)',
             width: '3.11%',
             height: '40%',
-            background: 'repeating-linear-gradient(to bottom, black, black 4.167%, white 4.167%, white 8.333%)',
+            background:
+              'repeating-linear-gradient(to bottom, black, black 4.167%, white 4.167%, white 8.333%)',
           }}
         />
         <div
@@ -140,7 +150,8 @@ const Clock24 = () => {
             transform: 'translateX(-50%) rotate(0deg)',
             width: '1.7%',
             height: '50%',
-            background: 'repeating-linear-gradient(to bottom, black, black 4.167%, white 4.167%, white 8.333%)',
+            background:
+              'repeating-linear-gradient(to bottom, black, black 4.167%, white 4.167%, white 8.333%)',
           }}
         />
         <div

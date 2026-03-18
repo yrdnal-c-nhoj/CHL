@@ -19,7 +19,20 @@ import img10 from '../../../assets/images/25-07/25-07-14/goura-goura12.gif';
 import img11 from '../../../assets/images/25-07/25-07-14/agencylife-kochstrasse.gif';
 import img12 from '../../../assets/images/25-07/25-07-14/agenturleben-agencylife.gif';
 
-const digitImages = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12];
+const digitImages = [
+  img1,
+  img2,
+  img3,
+  img4,
+  img5,
+  img6,
+  img7,
+  img8,
+  img9,
+  img10,
+  img11,
+  img12,
+];
 const sizes = [6.5, 7.1, 7.2, 7.7, 6.3, 10.5, 7.3, 7.5, 7.4, 6.7, 7.3, 7.3]; // rem units
 
 const Clock = () => {
@@ -39,15 +52,22 @@ const Clock = () => {
       const hourDeg = (hours / 12) * 360 + (minutes / 60) * 30;
 
       if (secRef.current) {
-        secRef.current.style.transition = seconds === 0 ? 'none' : 'transform 0.1s linear';
+        secRef.current.style.transition =
+          seconds === 0 ? 'none' : 'transform 0.1s linear';
         secRef.current.style.transform = `rotate(${secDeg}deg)`;
       }
       if (minRef.current) {
-        minRef.current.style.transition = (minutes === 0 && seconds === 0) ? 'none' : 'transform 0.5s ease-in-out';
+        minRef.current.style.transition =
+          minutes === 0 && seconds === 0
+            ? 'none'
+            : 'transform 0.5s ease-in-out';
         minRef.current.style.transform = `rotate(${minDeg}deg)`;
       }
       if (hourRef.current) {
-        hourRef.current.style.transition = (hours === 12 && minutes === 0 && seconds === 0) ? 'none' : 'transform 0.5s ease-in-out';
+        hourRef.current.style.transition =
+          hours === 12 && minutes === 0 && seconds === 0
+            ? 'none'
+            : 'transform 0.5s ease-in-out';
         hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
       }
     };
@@ -91,7 +111,9 @@ const Clock = () => {
                 inset: 0,
               }}
             >
-              <img decoding="async" loading="lazy"
+              <img
+                decoding="async"
+                loading="lazy"
                 src={img}
                 alt={`digit-${i + 1}`}
                 style={{
@@ -117,9 +139,30 @@ const Clock = () => {
               pointerEvents: 'none',
             }}
           >
-            <img decoding="async" loading="lazy" ref={hourRef} src={hourHand} alt="hour" style={handStyle(16)} />
-            <img decoding="async" loading="lazy" ref={minRef} src={minHand} alt="minute" style={handStyle(19)} />
-            <img decoding="async" loading="lazy" ref={secRef} src={secHand} alt="second" style={handStyle(24)} />
+            <img
+              decoding="async"
+              loading="lazy"
+              ref={hourRef}
+              src={hourHand}
+              alt="hour"
+              style={handStyle(16)}
+            />
+            <img
+              decoding="async"
+              loading="lazy"
+              ref={minRef}
+              src={minHand}
+              alt="minute"
+              style={handStyle(19)}
+            />
+            <img
+              decoding="async"
+              loading="lazy"
+              ref={secRef}
+              src={secHand}
+              alt="second"
+              style={handStyle(24)}
+            />
           </div>
         </div>
       </div>

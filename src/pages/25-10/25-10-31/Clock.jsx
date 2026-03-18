@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import videoFile from "../../../assets/images/25-10/25-10-31/mids.mp4";
-import fallbackImg from "../../../assets/images/25-10/25-10-31/midsun.webp";
+import React, { useEffect, useRef, useState } from 'react';
+import videoFile from '../../../assets/images/25-10/25-10-31/mids.mp4';
+import fallbackImg from '../../../assets/images/25-10/25-10-31/midsun.webp';
 import fontFile_2025_10_31 from '../../../assets/fonts/25-10-31-mi.otf?url';
 
 export default function VideoClock() {
@@ -10,12 +10,15 @@ export default function VideoClock() {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState(false);
   const videoRef = useRef(null);
-  
+
   // Simple scoped font loading without leaks
   useEffect(() => {
     const loadFont = async () => {
       try {
-        const fontFace = new FontFace('CustomFont', `url(${fontFile_2025_10_31})`);
+        const fontFace = new FontFace(
+          'CustomFont',
+          `url(${fontFile_2025_10_31})`,
+        );
         await fontFace.load();
         document.fonts.add(fontFace);
         setFontLoaded(true);
@@ -28,7 +31,7 @@ export default function VideoClock() {
         setTimeout(() => setReady(true), 100);
       }
     };
-    
+
     loadFont();
   }, []);
 
@@ -74,9 +77,9 @@ export default function VideoClock() {
         videoLoaded = false;
         checkReady();
       };
-      v.addEventListener("loadeddata", onLoadedData);
-      v.addEventListener("error", onError);
-      v.addEventListener("stalled", onError);
+      v.addEventListener('loadeddata', onLoadedData);
+      v.addEventListener('error', onError);
+      v.addEventListener('stalled', onError);
 
       const playPromise = v.play?.();
       if (playPromise) {
@@ -84,9 +87,9 @@ export default function VideoClock() {
       }
 
       return () => {
-        v.removeEventListener("loadeddata", onLoadedData);
-        v.removeEventListener("error", onError);
-        v.removeEventListener("stalled", onError);
+        v.removeEventListener('loadeddata', onLoadedData);
+        v.removeEventListener('error', onError);
+        v.removeEventListener('stalled', onError);
       };
     }
   }, [videoFailed]);
@@ -96,89 +99,89 @@ export default function VideoClock() {
     if (v) {
       v.play()
         .then(() => setShowPlayButton(false))
-        .catch(() => console.error("Manual play failed"));
+        .catch(() => console.error('Manual play failed'));
     }
   };
 
   // Time formatting
   const formatTime = () => {
-    const h = String(time.getHours()).padStart(2, "0");
-    const m = String(time.getMinutes()).padStart(2, "0");
-    const s = String(time.getSeconds()).padStart(2, "0");
-    const ms = String(Math.floor(time.getMilliseconds() / 10)).padStart(2, "0");
+    const h = String(time.getHours()).padStart(2, '0');
+    const m = String(time.getMinutes()).padStart(2, '0');
+    const s = String(time.getSeconds()).padStart(2, '0');
+    const ms = String(Math.floor(time.getMilliseconds() / 10)).padStart(2, '0');
     return h + m + s + ms;
   };
-  const digits = formatTime().split("");
+  const digits = formatTime().split('');
 
   // Inline styles
   const containerStyle = {
-    width: "100vw",
-    height: "100dvh",
-    position: "relative",
-    overflow: "hidden",
-    backgroundColor: "#000",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    transition: "opacity 0.4s ease-in-out",
+    width: '100vw',
+    height: '100dvh',
+    position: 'relative',
+    overflow: 'hidden',
+    backgroundColor: '#000',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    transition: 'opacity 0.4s ease-in-out',
     opacity: ready ? 1 : 0,
   };
 
   const videoStyle = {
-    position: "absolute",
+    position: 'absolute',
     inset: 0,
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
     zIndex: 0,
-    display: videoFailed ? "none" : "block",
-    pointerEvents: "none",
-    filter: "brightness(1.1) contrast(0.8) hue-rotate(15deg) saturate(1.2)",
+    display: videoFailed ? 'none' : 'block',
+    pointerEvents: 'none',
+    filter: 'brightness(1.1) contrast(0.8) hue-rotate(15deg) saturate(1.2)',
   };
 
   const fallbackStyle = {
-    position: "absolute",
+    position: 'absolute',
     inset: 0,
     backgroundImage: `url(${fallbackImg})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    display: videoFailed ? "block" : "none",
-    filter: "brightness(1.3) contrast(1.4) hue-rotate(-10deg) saturate(1.2)",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    display: videoFailed ? 'block' : 'none',
+    filter: 'brightness(1.3) contrast(1.4) hue-rotate(-10deg) saturate(1.2)',
   };
 
   const clockStyle = {
-    display: "grid",
-    gridTemplateColumns: "repeat(8, 1fr)",
-    width: "98vw",
-    transform: "rotate(180deg) translateY(3vh)",
+    display: 'grid',
+    gridTemplateColumns: 'repeat(8, 1fr)',
+    width: '98vw',
+    transform: 'rotate(180deg) translateY(3vh)',
     zIndex: 2,
-    fontFamily: "CustomFont, Arial, sans-serif",
-    fontSize: "24vw",
-    color: "#E6F2FF",
-    userSelect: "none",
-    textAlign: "center",
+    fontFamily: 'CustomFont, Arial, sans-serif',
+    fontSize: '24vw',
+    color: '#E6F2FF',
+    userSelect: 'none',
+    textAlign: 'center',
     textShadow: `
       1px 1px 0 #0A4FB8FF,
       -1px 0px 7px rgba(0, 50, 100, 0.8)
     `,
-    WebkitFontSmoothing: "antialiased",
-    MozOsxFontSmoothing: "grayscale",
+    WebkitFontSmoothing: 'antialiased',
+    MozOsxFontSmoothing: 'grayscale',
   };
 
   const playButtonStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     zIndex: 3,
-    padding: "10px 20px",
-    fontSize: "1rem",
-    cursor: "pointer",
-    backgroundColor: "rgba(0, 30, 60, 0.8)",
-    color: "#e6f2ff",
-    border: "1px solid rgba(100, 180, 255, 0.5)",
-    borderRadius: "5px",
-    textShadow: "0 0 4px rgba(100, 180, 255, 0.5)",
+    padding: '10px 20px',
+    fontSize: '1rem',
+    cursor: 'pointer',
+    backgroundColor: 'rgba(0, 30, 60, 0.8)',
+    color: '#e6f2ff',
+    border: '1px solid rgba(100, 180, 255, 0.5)',
+    borderRadius: '5px',
+    textShadow: '0 0 4px rgba(100, 180, 255, 0.5)',
   };
 
   return (

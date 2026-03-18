@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { useFontLoader } from '../../../utils/fontLoader';const fontLatin = '../../../assets/fonts/25-10-17-word.ttf';
-import backgroundImage from '../../../assets/images/25-10/25-10-17/words.jpg'
+import React, { useEffect, useState } from 'react';
+import { useFontLoader } from '../../../utils/fontLoader';
+const fontLatin = '../../../assets/fonts/25-10-17-word.ttf';
+import backgroundImage from '../../../assets/images/25-10/25-10-17/words.jpg';
 
-export default function TimeWordsClock () {
-  const [ready, setReady] = useState(false)
-  const [now, setNow] = useState(null)
-  const [langIndex, setLangIndex] = useState(0)
+export default function TimeWordsClock() {
+  const [ready, setReady] = useState(false);
+  const [now, setNow] = useState(null);
+  const [langIndex, setLangIndex] = useState(0);
 
   // 30 most popular Internet languages
   const languages = [
@@ -38,11 +39,11 @@ export default function TimeWordsClock () {
     'pa',
     'uk',
     'ro',
-    'hu'
-  ]
+    'hu',
+  ];
 
   // Plural helper
-  const pluralize = (n, singular, plural) => (n === 1 ? singular : plural)
+  const pluralize = (n, singular, plural) => (n === 1 ? singular : plural);
 
   // Translations (same as before)
   const translations = {
@@ -55,7 +56,7 @@ export default function TimeWordsClock () {
       itIs: 'It is',
       minute: ['minute', 'minutes'],
       second: ['second', 'seconds'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     zh: {
       after: '过',
@@ -66,7 +67,7 @@ export default function TimeWordsClock () {
       itIs: '是',
       minute: ['分钟', '分钟'],
       second: ['秒', '秒'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     es: {
       after: 'después',
@@ -77,7 +78,7 @@ export default function TimeWordsClock () {
       itIs: 'Son',
       minute: ['minuto', 'minutos'],
       second: ['segundo', 'segundos'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     ar: {
       after: 'بعد',
@@ -88,7 +89,7 @@ export default function TimeWordsClock () {
       itIs: 'هي',
       minute: ['دقيقة', 'دقائق'],
       second: ['ثانية', 'ثواني'],
-      dir: 'rtl'
+      dir: 'rtl',
     },
     pt: {
       after: 'depois',
@@ -99,7 +100,7 @@ export default function TimeWordsClock () {
       itIs: 'São',
       minute: ['minuto', 'minutos'],
       second: ['segundo', 'segundos'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     fr: {
       after: 'après',
@@ -110,7 +111,7 @@ export default function TimeWordsClock () {
       itIs: 'Il est',
       minute: ['minute', 'minutes'],
       second: ['seconde', 'secondes'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     ru: {
       after: 'после',
@@ -121,7 +122,7 @@ export default function TimeWordsClock () {
       itIs: 'Это',
       minute: ['минута', 'минуты'],
       second: ['секунда', 'секунды'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     ja: {
       after: 'すぎ',
@@ -132,7 +133,7 @@ export default function TimeWordsClock () {
       itIs: 'です',
       minute: ['分', '分'],
       second: ['秒', '秒'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     de: {
       after: 'nach',
@@ -143,7 +144,7 @@ export default function TimeWordsClock () {
       itIs: 'Es ist',
       minute: ['Minute', 'Minuten'],
       second: ['Sekunde', 'Sekunden'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     hi: {
       after: 'बाद',
@@ -154,7 +155,7 @@ export default function TimeWordsClock () {
       itIs: 'यह है',
       minute: ['मिनट', 'मिनट'],
       second: ['सेकंड', 'सेकंड'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     id: {
       after: 'lebih',
@@ -165,7 +166,7 @@ export default function TimeWordsClock () {
       itIs: 'Ini',
       minute: ['menit', 'menit'],
       second: ['detik', 'detik'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     it: {
       after: 'dopo',
@@ -176,7 +177,7 @@ export default function TimeWordsClock () {
       itIs: 'Sono',
       minute: ['minuto', 'minuti'],
       second: ['secondo', 'secondi'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     tr: {
       after: 'sonra',
@@ -187,7 +188,7 @@ export default function TimeWordsClock () {
       itIs: 'Bu',
       minute: ['dakika', 'dakikalar'],
       second: ['saniye', 'saniyeler'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     pl: {
       after: 'po',
@@ -198,7 +199,7 @@ export default function TimeWordsClock () {
       itIs: 'Jest',
       minute: ['minuta', 'minuty'],
       second: ['sekunda', 'sekundy'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     nl: {
       after: 'over',
@@ -209,7 +210,7 @@ export default function TimeWordsClock () {
       itIs: 'Het is',
       minute: ['minuut', 'minuten'],
       second: ['seconde', 'seconden'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     ko: {
       after: '후',
@@ -220,7 +221,7 @@ export default function TimeWordsClock () {
       itIs: '입니다',
       minute: ['분', '분'],
       second: ['초', '초'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     vi: {
       after: 'sau',
@@ -231,7 +232,7 @@ export default function TimeWordsClock () {
       itIs: 'Là',
       minute: ['phút', 'phút'],
       second: ['giây', 'giây'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     fa: {
       after: 'بعد',
@@ -242,7 +243,7 @@ export default function TimeWordsClock () {
       itIs: 'است',
       minute: ['دقیقه', 'دقیقه'],
       second: ['ثانیه', 'ثانیه'],
-      dir: 'rtl'
+      dir: 'rtl',
     },
     ur: {
       after: 'بعد',
@@ -253,7 +254,7 @@ export default function TimeWordsClock () {
       itIs: 'یہ ہے',
       minute: ['منٹ', 'منٹ'],
       second: ['سیکنڈ', 'سیکنڈ'],
-      dir: 'rtl'
+      dir: 'rtl',
     },
     th: {
       after: 'หลัง',
@@ -264,7 +265,7 @@ export default function TimeWordsClock () {
       itIs: 'คือ',
       minute: ['นาที', 'นาที'],
       second: ['วินาที', 'วินาที'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     ms: {
       after: 'selepas',
@@ -275,7 +276,7 @@ export default function TimeWordsClock () {
       itIs: 'Ini adalah',
       minute: ['minit', 'minit'],
       second: ['saat', 'saat'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     he: {
       after: 'אחרי',
@@ -286,7 +287,7 @@ export default function TimeWordsClock () {
       itIs: 'זה',
       minute: ['דקה', 'דקות'],
       second: ['שנייה', 'שניות'],
-      dir: 'rtl'
+      dir: 'rtl',
     },
     bn: {
       after: 'পর',
@@ -297,7 +298,7 @@ export default function TimeWordsClock () {
       itIs: 'এটি',
       minute: ['মিনিট', 'মিনিট'],
       second: ['সেকেন্ড', 'সেকেন্ড'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     ta: {
       after: 'பின்',
@@ -308,7 +309,7 @@ export default function TimeWordsClock () {
       itIs: 'இது',
       minute: ['நிமிடம்', 'நிமிடங்கள்'],
       second: ['வினாடி', 'வினாடிகள்'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     mr: {
       after: 'नंतर',
@@ -319,7 +320,7 @@ export default function TimeWordsClock () {
       itIs: 'हे आहे',
       minute: ['मिनिट', 'मिनिटे'],
       second: ['सेकंद', 'सेकंद'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     gu: {
       after: 'પછી',
@@ -330,7 +331,7 @@ export default function TimeWordsClock () {
       itIs: 'આ છે',
       minute: ['મિનિટ', 'મિનિટો'],
       second: ['સેકંડ', 'સેકંડો'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     pa: {
       after: 'ਬਾਅਦ',
@@ -341,7 +342,7 @@ export default function TimeWordsClock () {
       itIs: 'ਇਹ ਹੈ',
       minute: ['ਮਿੰਟ', 'ਮਿੰਟ'],
       second: ['ਸੈਕਿੰਡ', 'ਸੈਕਿੰਡ'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     uk: {
       after: 'після',
@@ -352,7 +353,7 @@ export default function TimeWordsClock () {
       itIs: 'Це',
       minute: ['хвилина', 'хвилини'],
       second: ['секунда', 'секунди'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     ro: {
       after: 'după',
@@ -363,7 +364,7 @@ export default function TimeWordsClock () {
       itIs: 'Este',
       minute: ['minut', 'minute'],
       second: ['secundă', 'secunde'],
-      dir: 'ltr'
+      dir: 'ltr',
     },
     hu: {
       after: 'után',
@@ -374,163 +375,163 @@ export default function TimeWordsClock () {
       itIs: 'Ez',
       minute: ['perc', 'percek'],
       second: ['másodperc', 'másodpercek'],
-      dir: 'ltr'
-    }
-  }
-
+      dir: 'ltr',
+    },
+  };
 
   // --- Font and background preloading ---
   useEffect(() => {
-    let cancelled = false
+    let cancelled = false;
 
-    const fonts = [
-      { name: 'LatinFont', url: fontLatin }
-    ]
+    const fonts = [{ name: 'LatinFont', url: fontLatin }];
 
     // Log font loading for debugging
-    console.log('Loading fonts:', fonts.map(f => `${f.name}: ${f.url}`))
+    console.log(
+      'Loading fonts:',
+      fonts.map((f) => `${f.name}: ${f.url}`),
+    );
 
-    const styleTag = document.createElement('style')
+    const styleTag = document.createElement('style');
     styleTag.textContent = fonts
       .map(
-        f =>
-          `@font-face { font-family: '${f.name}'; src: url('${f.url}') format('truetype'); font-display: swap; }`
+        (f) =>
+          `@font-face { font-family: '${f.name}'; src: url('${f.url}') format('truetype'); font-display: swap; }`,
       )
-      .join('\n')
-    document.head.appendChild(styleTag)
-    
+      .join('\n');
+    document.head.appendChild(styleTag);
+
     // Add font validation
     const validateFont = (fontName) => {
-      const testElement = document.createElement('span')
-      testElement.style.fontFamily = fontName
-      testElement.textContent = 'Test'
-      testElement.style.visibility = 'hidden'
-      testElement.style.position = 'absolute'
-      document.body.appendChild(testElement)
-      
-      const computedFont = window.getComputedStyle(testElement).fontFamily
-      console.log(`${fontName} loaded:`, computedFont.includes(fontName))
-      
-      document.body.removeChild(testElement)
-    }
+      const testElement = document.createElement('span');
+      testElement.style.fontFamily = fontName;
+      testElement.textContent = 'Test';
+      testElement.style.visibility = 'hidden';
+      testElement.style.position = 'absolute';
+      document.body.appendChild(testElement);
 
-    const image = new Image()
-    image.src = backgroundImage
+      const computedFont = window.getComputedStyle(testElement).fontFamily;
+      console.log(`${fontName} loaded:`, computedFont.includes(fontName));
+
+      document.body.removeChild(testElement);
+    };
+
+    const image = new Image();
+    image.src = backgroundImage;
 
     Promise.all([
-      ...fonts.map(f => {
+      ...fonts.map((f) => {
         if ('FontFace' in window) {
-          const ff = new FontFace(f.name, `url(${f.url})`)
-          return ff.load().then(loaded => {
-            document.fonts.add(loaded)
-            validateFont(f.name)
-            return loaded
-          })
+          const ff = new FontFace(f.name, `url(${f.url})`);
+          return ff.load().then((loaded) => {
+            document.fonts.add(loaded);
+            validateFont(f.name);
+            return loaded;
+          });
         } else {
-          return document.fonts?.ready || Promise.resolve()
+          return document.fonts?.ready || Promise.resolve();
         }
       }),
-      new Promise(resolve => {
-        if (image.complete) resolve()
+      new Promise((resolve) => {
+        if (image.complete) resolve();
         else {
-          image.onload = resolve
-          image.onerror = resolve
+          image.onload = resolve;
+          image.onerror = resolve;
         }
-      })
+      }),
     ])
       .then(() => {
         if (!cancelled) {
-          setNow(new Date())
-          setReady(true)
-          console.log('All fonts loaded successfully')
+          setNow(new Date());
+          setReady(true);
+          console.log('All fonts loaded successfully');
         }
       })
       .catch((error) => {
-        console.error('Font loading error:', error)
+        console.error('Font loading error:', error);
         if (!cancelled) {
-          setNow(new Date())
-          setReady(true)
+          setNow(new Date());
+          setReady(true);
         }
-      })
+      });
 
     return () => {
-      cancelled = true
-      document.head.removeChild(styleTag)
-    }
-  }, [])
+      cancelled = true;
+      document.head.removeChild(styleTag);
+    };
+  }, []);
 
   // --- Clock ticking and language rotation ---
   useEffect(() => {
-    if (!ready) return
+    if (!ready) return;
     const tick = () => {
-      setNow(new Date())
-      setLangIndex(prev => (prev + 1) % languages.length)
-    }
-    const msToNext = 1000 - (Date.now() % 1000)
+      setNow(new Date());
+      setLangIndex((prev) => (prev + 1) % languages.length);
+    };
+    const msToNext = 1000 - (Date.now() % 1000);
     const t = setTimeout(() => {
-      tick()
-      const i = setInterval(tick, 1000)
-      return () => clearInterval(i)
-    }, msToNext)
-    return () => clearTimeout(t)
-  }, [ready])
+      tick();
+      const i = setInterval(tick, 1000);
+      return () => clearInterval(i);
+    }, msToNext);
+    return () => clearTimeout(t);
+  }, [ready]);
 
   // --- Time to words conversion ---
   const timeToWords = (date, lang) => {
-    const t = translations[lang]
+    const t = translations[lang];
     let hours = date.getHours(),
       minutes = date.getMinutes(),
-      seconds = date.getSeconds()
+      seconds = date.getSeconds();
     let relation = t.after,
       displayMinutes = minutes,
-      displaySeconds = seconds
-    let displayHour = hours % 12 === 0 ? 12 : hours % 12
+      displaySeconds = seconds;
+    let displayHour = hours % 12 === 0 ? 12 : hours % 12;
 
     if (minutes > 30 || (minutes === 30 && seconds > 0)) {
-      relation = t.before
-      displayMinutes = 60 - minutes
-      displaySeconds = seconds > 0 ? 60 - seconds : 0
-      const nextHour = (hours + 1) % 24
-      displayHour = nextHour % 12 === 0 ? 12 : nextHour % 12
+      relation = t.before;
+      displayMinutes = 60 - minutes;
+      displaySeconds = seconds > 0 ? 60 - seconds : 0;
+      const nextHour = (hours + 1) % 24;
+      displayHour = nextHour % 12 === 0 ? 12 : nextHour % 12;
     }
 
-    const lines = []
+    const lines = [];
     if (displayMinutes > 0)
       lines.push(
         `${t.nowItIs} ${displayMinutes} ${pluralize(
           displayMinutes,
           t.minute[0],
-          t.minute[1]
-        )}`
-      )
+          t.minute[1],
+        )}`,
+      );
     if (displaySeconds > 0)
       lines.push(
         displayMinutes > 0
           ? `${t.and} ${displaySeconds} ${pluralize(
               displaySeconds,
               t.second[0],
-              t.second[1]
+              t.second[1],
             )}`
           : `${t.itIs} ${displaySeconds} ${pluralize(
               displaySeconds,
               t.second[0],
-              t.second[1]
-            )}`
-      )
-    lines.push(`${relation} ${displayHour} ${t.oclock}`)
-    return lines
-  }
+              t.second[1],
+            )}`,
+      );
+    lines.push(`${relation} ${displayHour} ${t.oclock}`);
+    return lines;
+  };
 
   if (!ready || !now)
     return (
       <div
         style={{ width: '100vw', height: '100dvh', backgroundColor: '#000' }}
       />
-    )
+    );
 
-  const lang = languages[langIndex]
-  const dir = translations[lang]?.dir || 'ltr'
-  const fontFamily = 'LatinFont'
+  const lang = languages[langIndex];
+  const dir = translations[lang]?.dir || 'ltr';
+  const fontFamily = 'LatinFont';
 
   const containerStyle = {
     width: '100vw',
@@ -541,8 +542,8 @@ export default function TimeWordsClock () {
     position: 'relative',
     overflow: 'hidden',
     backgroundColor: '#000',
-    direction: dir
-  }
+    direction: dir,
+  };
 
   const backgroundStyle = {
     position: 'absolute',
@@ -556,8 +557,8 @@ export default function TimeWordsClock () {
     backgroundRepeat: 'no-repeat',
     filter: 'hue-rotate(-130deg) saturate(0.6) contrast(0.3) brightness(1.9)',
     transform: 'scaleX(-1)',
-    zIndex: 0
-  }
+    zIndex: 0,
+  };
 
   const textStyle = {
     position: 'relative',
@@ -572,13 +573,13 @@ export default function TimeWordsClock () {
       '0.02em 0.02em #E91A1A, -0.02em -0.02em 0 rgba(255,255,255,0.9)',
     padding: '2vh 4vw',
     border: '0.2vh solid rgba(255,255,255,0.3)',
-    direction: dir
-  }
+    direction: dir,
+  };
 
-  const lines = timeToWords(now, lang)
+  const lines = timeToWords(now, lang);
 
   return (
-    <div style={containerStyle} aria-live='polite'>
+    <div style={containerStyle} aria-live="polite">
       <div style={backgroundStyle}></div>
       <div style={textStyle}>
         {lines.map((line, i) => (
@@ -590,5 +591,5 @@ export default function TimeWordsClock () {
         ))}
       </div>
     </div>
-  )
+  );
 }

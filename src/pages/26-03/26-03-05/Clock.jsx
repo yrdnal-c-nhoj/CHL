@@ -6,9 +6,12 @@ const Clock = () => {
   const [bootText, setBootText] = useState('');
   const [showEmail, setShowEmail] = useState(false);
   const [showFooter, setShowFooter] = useState(false);
-  
+
   // Load VT323 font
-  const fontReady = useFontLoader('VT323', 'https://fonts.gstatic.com/s/vt323/v18/pxiKyp0ihIEF2isfFJA.ttf');
+  const fontReady = useFontLoader(
+    'VT323',
+    'https://fonts.gstatic.com/s/vt323/v18/pxiKyp0ihIEF2isfFJA.ttf',
+  );
 
   // 1. Clock Logic
   useEffect(() => {
@@ -92,16 +95,24 @@ const Clock = () => {
     },
     scanlines: {
       position: 'absolute',
-      top: 0, left: 0, bottom: 0, right: 0,
-      background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))',
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      background:
+        'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))',
       backgroundSize: '100% 4px, 3px 100%',
       pointerEvents: 'none',
       zIndex: 10,
     },
     vignette: {
       position: 'absolute',
-      top: 0, left: 0, width: '100%', height: '100%',
-      background: 'radial-gradient(circle, transparent 50%, rgba(0,0,0,0.7) 100%)',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      background:
+        'radial-gradient(circle, transparent 50%, rgba(0,0,0,0.7) 100%)',
       pointerEvents: 'none',
       zIndex: 11,
     },
@@ -110,7 +121,7 @@ const Clock = () => {
       textDecoration: 'none',
       borderBottom: '1px solid #00fa00',
       transition: 'all 0.2s',
-    }
+    },
   };
 
   return (
@@ -148,17 +159,20 @@ const Clock = () => {
         {/* Visual FX Layers */}
         <div style={styles.scanlines}></div>
         <div style={styles.vignette}></div>
-        
+
         {/* Content */}
         <div style={styles.output}>
           <h1 style={styles.timeHeader}>{time}</h1>
-          
+
           <div style={{ fontSize: '2.3vh', lineHeight: '1.1' }}>
             <p dangerouslySetInnerHTML={{ __html: bootText }} />
-            
+
             {showEmail && (
               <p>
-                E-MAIL: <a href="mailto:cubistheart@gmail.com" style={styles.link}>cubistheart@gmail.com</a>
+                E-MAIL:{' '}
+                <a href="mailto:cubistheart@gmail.com" style={styles.link}>
+                  cubistheart@gmail.com
+                </a>
                 <span className="cursor"></span>
               </p>
             )}

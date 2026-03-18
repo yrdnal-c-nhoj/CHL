@@ -61,20 +61,22 @@ const AnalogClock = () => {
       <div style={getHandStyle('3.5px', '42%', angles.min, 4)} />
       {/* Second Hand */}
       <div style={getHandStyle('1.5px', '48%', angles.sec, 5)} />
-      
+
       {/* Center Pin / Hub */}
-      <div style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        width: '12px',
-        height: '12px',
-        backgroundColor: '#0933EE',
-        borderRadius: '50%',
-        transform: 'translate(-50%, -50%)',
-        zIndex: 10,
-        boxShadow: '0 0 10px rgba(158, 174, 246, 0.8)',
-      }} />
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '12px',
+          height: '12px',
+          backgroundColor: '#0933EE',
+          borderRadius: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 10,
+          boxShadow: '0 0 10px rgba(158, 174, 246, 0.8)',
+        }}
+      />
     </div>
   );
 };
@@ -101,17 +103,17 @@ const Clock = () => {
     const cols = Math.ceil(dimensions.width / TILE_SIZE);
     const rows = Math.ceil(dimensions.height / TILE_SIZE);
     const cutoff = dimensions.height * (2 / 3);
-    
+
     const centerX = (dimensions.width % TILE_SIZE) / 2;
     const centerY = (dimensions.height % TILE_SIZE) / 2;
-    
+
     const grid = [];
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         const x = col * TILE_SIZE + centerX;
         const y = row * TILE_SIZE + centerY;
         const opacity = y >= cutoff ? 0 : 0.4 * (1 - y / cutoff);
-        
+
         if (opacity > 0) {
           grid.push({ x, y, opacity, id: `${row}-${col}` });
         }
@@ -197,7 +199,8 @@ const styles = {
     zIndex: 2,
     pointerEvents: 'none',
     mask: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
-    WebkitMask: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
+    WebkitMask:
+      'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
   },
   backgroundCloudWrapper: {
     position: 'absolute',
@@ -205,7 +208,8 @@ const styles = {
     zIndex: 1,
     pointerEvents: 'none',
     mask: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
-    WebkitMask: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
+    WebkitMask:
+      'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
   },
   tile: {
     position: 'absolute',
@@ -217,7 +221,7 @@ const styles = {
     position: 'absolute',
     width: TILE_SIZE,
     height: TILE_SIZE,
-     transform: 'scaleX(-1)',
+    transform: 'scaleX(-1)',
     zIndex: 5,
   },
   westtImage: {

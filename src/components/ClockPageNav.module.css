@@ -14,7 +14,9 @@
   box-sizing: border-box;
   z-index: 10000; /* Above loading overlay */
   font-family: 'Manrope', sans-serif;
-  transition: opacity 0.7s ease-in-out, transform 0.5s ease-in-out;
+  transition:
+    opacity 0.7s ease-in-out,
+    transform 0.5s ease-in-out;
   pointer-events: auto;
 }
 
@@ -46,7 +48,10 @@
   text-decoration: none; /* remove underlines */
   box-sizing: border-box;
   font-family: inherit;
-  transition: background 0.4s ease, color 0.4s ease, opacity 0.4s ease;
+  transition:
+    background 0.4s ease,
+    color 0.4s ease,
+    opacity 0.4s ease;
   pointer-events: auto;
 }
 
@@ -62,7 +67,7 @@
 .navButton:hover {
   background: rgb(1, 10, 61);
   color: #fffffe; /* keep uniform color even on hover */
-  opacity: 1.0;
+  opacity: 1;
   text-decoration: none; /* remove underlines */
   border-color: rgba(200, 215, 242, 0.8);
 }
@@ -146,17 +151,16 @@
     /* Improve touch response */
     touch-action: manipulation;
   }
-  
+
   .navButton {
     width: 130px;
     font-size: 1.8rem;
     /* Ensure arrow is easily tappable */
     padding: 1rem;
   }
-  
+
   .footerCenter {
     /* Make center section easier to tap */
     padding: 0.5rem;
   }
- 
 }

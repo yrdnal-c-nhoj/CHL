@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import treeImg from "../../../assets/images/25-10/25-10-20/trees.jpg";
+import React, { useEffect, useRef } from 'react';
+import treeImg from '../../../assets/images/25-10/25-10-20/trees.jpg';
 
 export default function ClockPage() {
   const hourRef = useRef(null);
@@ -47,10 +47,10 @@ export default function ClockPage() {
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100dvh",
-        overflow: "hidden",
-        position: "relative",
+        width: '100vw',
+        height: '100dvh',
+        overflow: 'hidden',
+        position: 'relative',
       }}
     >
       {/* Full-viewport spinning background */}
@@ -58,44 +58,44 @@ export default function ClockPage() {
         ref={bgRef}
         style={{
           backgroundImage: `url(${treeImg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          width: "200%",
-          height: "200%",
-          transformOrigin: "center",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '200%',
+          height: '200%',
+          transformOrigin: 'center',
         }}
       />
 
       {/* Clock container */}
       <div
         style={{
-          width: "50vh",
-          height: "50vh",
-          borderRadius: "50%",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          width: '50vh',
+          height: '50vh',
+          borderRadius: '50%',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         {/* Hour hand */}
         <div
           ref={hourRef}
           style={{
-            position: "absolute",
-            width: "0.5%",
-            height: "25%",
-            background: "#C2DDEDFF",
-            top: "25%",
-            left: "50%",
-            transformOrigin: "bottom center",
-            borderRadius: "1rem",
+            position: 'absolute',
+            width: '0.5%',
+            height: '25%',
+            background: '#C2DDEDFF',
+            top: '25%',
+            left: '50%',
+            transformOrigin: 'bottom center',
+            borderRadius: '1rem',
           }}
         />
 
@@ -103,14 +103,14 @@ export default function ClockPage() {
         <div
           ref={minuteRef}
           style={{
-            position: "absolute",
-            width: "0.5%",
-            height: "35%",
-            background: "#C2DDEDFF",
-            top: "15%",
-            left: "50%",
-            transformOrigin: "bottom center",
-            borderRadius: "1rem",
+            position: 'absolute',
+            width: '0.5%',
+            height: '35%',
+            background: '#C2DDEDFF',
+            top: '15%',
+            left: '50%',
+            transformOrigin: 'bottom center',
+            borderRadius: '1rem',
           }}
         />
       </div>

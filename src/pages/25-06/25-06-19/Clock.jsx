@@ -28,7 +28,7 @@ const CmykClock = () => {
       const ms = now.getMilliseconds();
       const sec = now.getSeconds() + ms / 1000;
       const min = now.getMinutes() + sec / 60;
-      const hr = now.getHours() % 12 + min / 60;
+      const hr = (now.getHours() % 12) + min / 60;
 
       const secondDeg = (sec / 60) * 360;
       const minuteDeg = (min / 60) * 360;
@@ -149,7 +149,10 @@ const CmykClock = () => {
         <div className="hand hour-hand" />
         <div className="hand minute-hand" />
         <div className="hand second-hand" />
-        <div className="date-container"> {/* Optional date text can go here */}</div>
+        <div className="date-container">
+          {' '}
+          {/* Optional date text can go here */}
+        </div>
       </div>
     </>
   );

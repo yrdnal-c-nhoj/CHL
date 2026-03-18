@@ -3,21 +3,21 @@ import rrrrFont from '../../../assets/fonts/25-06-06-rrrr.ttf';
 
 const RollingClock = () => {
   useEffect(() => {
-    const ticker = document.getElementById("ticker");
+    const ticker = document.getElementById('ticker');
     const clockSpeed = 40;
     const screenWidth = window.innerWidth;
 
     function createClock() {
-      const clockContainer = document.createElement("div");
-      clockContainer.className = "clock-container";
-      clockContainer.style.left = screenWidth + "px";
+      const clockContainer = document.createElement('div');
+      clockContainer.className = 'clock-container';
+      clockContainer.style.left = screenWidth + 'px';
 
-      const clock = document.createElement("div");
-      clock.className = "clock";
+      const clock = document.createElement('div');
+      clock.className = 'clock';
 
       for (let i = 1; i <= 12; i++) {
-        const num = document.createElement("div");
-        num.className = "number";
+        const num = document.createElement('div');
+        num.className = 'number';
         num.innerText = i;
         const angle = (i - 3) * 30 * (Math.PI / 180);
         const r = 40;
@@ -29,14 +29,14 @@ const RollingClock = () => {
         clock.appendChild(num);
       }
 
-      const hourHand = document.createElement("div");
-      hourHand.className = "hand hour";
-      const minuteHand = document.createElement("div");
-      minuteHand.className = "hand minute";
-      const secondHand = document.createElement("div");
-      secondHand.className = "hand";
-      const centerDot = document.createElement("div");
-      centerDot.className = "center-dot";
+      const hourHand = document.createElement('div');
+      hourHand.className = 'hand hour';
+      const minuteHand = document.createElement('div');
+      minuteHand.className = 'hand minute';
+      const secondHand = document.createElement('div');
+      secondHand.className = 'hand';
+      const centerDot = document.createElement('div');
+      centerDot.className = 'center-dot';
 
       clock.appendChild(hourHand);
       clock.appendChild(minuteHand);
@@ -175,7 +175,8 @@ const styles = {
     padding: 0,
     height: '100vh',
     width: '100vw',
-    backgroundImage: 'radial-gradient(#301e01 11px, transparent 11px), radial-gradient(#301e01 11px, transparent 11px)',
+    backgroundImage:
+      'radial-gradient(#301e01 11px, transparent 11px), radial-gradient(#301e01 11px, transparent 11px)',
     backgroundSize: '56px 56px',
     backgroundPosition: '0 0, 28px 28px',
     backgroundColor: '#4b1a03',

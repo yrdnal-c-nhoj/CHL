@@ -28,10 +28,8 @@ const Clock = () => {
     return () => clearInterval(interval);
   }, []);
 
-
   const clockSizeVW = 100; // 100vw max 60rem via max-width in CSS
   const clockMaxRem = 60; // max 60rem
-
 
   const radiusVW = 20;
 
@@ -51,7 +49,9 @@ const Clock = () => {
         }}
       >
         {/* Background image */}
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={swurl}
           alt="Swirling background"
           style={{
@@ -118,8 +118,7 @@ const Clock = () => {
                   left: '50%',
                   fontSize: '7rem',
                   color: '#f199c8',
-                  textShadow:
-                    '5px 5px #100f10, -2px -2px white, 6px 6px white',
+                  textShadow: '5px 5px #100f10, -2px -2px white, 6px 6px white',
                   fontFamily: "'Kina', sans-serif",
                   pointerEvents: 'none',
                   zIndex: 1,
@@ -184,23 +183,22 @@ const Clock = () => {
                 />
 
                 {/* Second hand */}
-               <div
-  id="second"
-  className="hand second"
-  style={{
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    width: '0.5rem',
-    height: '150vh',   // <-- Use vh to extend beyond viewport height
-    backgroundColor: '#ee0909',
-    color: '#ee0909',
-    transformOrigin: 'bottom center',
-    transform: `translateX(-50%) rotate(${secondDeg}deg)`,
-    zIndex: 6,
-  }}
-/>
-
+                <div
+                  id="second"
+                  className="hand second"
+                  style={{
+                    position: 'absolute',
+                    bottom: '50%',
+                    left: '50%',
+                    width: '0.5rem',
+                    height: '150vh', // <-- Use vh to extend beyond viewport height
+                    backgroundColor: '#ee0909',
+                    color: '#ee0909',
+                    transformOrigin: 'bottom center',
+                    transform: `translateX(-50%) rotate(${secondDeg}deg)`,
+                    zIndex: 6,
+                  }}
+                />
               </>
             );
           })()}

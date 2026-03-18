@@ -30,7 +30,7 @@ const Clock = () => {
   const getRotationStyles = () => {
     const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
     const minutes = time.getMinutes() + seconds / 60;
-    const hours = time.getHours() % 12 + minutes / 60;
+    const hours = (time.getHours() % 12) + minutes / 60;
 
     return {
       hourStyle: {
@@ -89,7 +89,7 @@ const Clock = () => {
     ...handCommon,
     height: '30%',
     width: '3%',
-   background: '#B9A68CFF',
+    background: '#B9A68CFF',
     zIndex: 2,
     ...minuteStyle,
   };
@@ -98,7 +98,7 @@ const Clock = () => {
     ...handCommon,
     height: '40%',
     width: '0.5%',
-   background: '#454745FF',
+    background: '#454745FF',
     zIndex: 1,
     ...secondStyle,
   };
@@ -116,7 +116,7 @@ const Clock = () => {
   };
 
   const numberStyle = (n) => {
-    const angle = (n - 3) * (Math.PI * 2) / 12;
+    const angle = ((n - 3) * (Math.PI * 2)) / 12;
     const radius = 38;
     const x = 50 + radius * Math.cos(angle);
     const y = 50 + radius * Math.sin(angle);

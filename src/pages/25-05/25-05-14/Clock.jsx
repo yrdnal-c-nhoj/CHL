@@ -1,18 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import dottedFont from '../../../assets/fonts/25-05-14-dotted.ttf'; // Custom dotted font for clock display
 
 export default function Clock() {
   useEffect(() => {
-    const SCOPE_ID = "ri-clock-2025-11-01";
-    const fontName = "DottedRough2025_11_01";
+    const SCOPE_ID = 'ri-clock-2025-11-01';
+    const fontName = 'DottedRough2025_11_01';
     let animationFrameId;
 
     // ------------------- Utility functions -------------------
     const getTimeDigits = (srTime) => {
       const now = new Date();
       const hours = now.getHours() % 12 || 12;
-      const minutes = String(now.getMinutes()).padStart(2, "0");
-      srTime.textContent = now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      srTime.textContent = now.toLocaleTimeString([], {
+        hour: 'numeric',
+        minute: '2-digit',
+      });
       return [...(String(hours) + minutes)];
     };
 
@@ -27,30 +30,39 @@ export default function Clock() {
     const randomFinalAngle = () => `${Math.floor(Math.random() * 31 - 15)}deg`;
 
     function randomDirectionOffset() {
-      const side = ["top", "bottom", "left", "right"][Math.floor(Math.random() * 4)];
-      const vw = 100, vh = 100;
+      const side = ['top', 'bottom', 'left', 'right'][
+        Math.floor(Math.random() * 4)
+      ];
+      const vw = 100,
+        vh = 100;
       switch (side) {
-        case "top": return { x: `${(Math.random() * vw).toFixed(2)}vw`, y: `-10vh` };
-        case "bottom": return { x: `${(Math.random() * vw).toFixed(2)}vw`, y: `110vh` };
-        case "left": return { x: `-10vw`, y: `${(Math.random() * vh).toFixed(2)}vh` };
-        case "right": return { x: `110vw`, y: `${(Math.random() * vh).toFixed(2)}vh` };
-        default: return { x: "0vw", y: "0vh" };
+        case 'top':
+          return { x: `${(Math.random() * vw).toFixed(2)}vw`, y: `-10vh` };
+        case 'bottom':
+          return { x: `${(Math.random() * vw).toFixed(2)}vw`, y: `110vh` };
+        case 'left':
+          return { x: `-10vw`, y: `${(Math.random() * vh).toFixed(2)}vh` };
+        case 'right':
+          return { x: `110vw`, y: `${(Math.random() * vh).toFixed(2)}vh` };
+        default:
+          return { x: '0vw', y: '0vh' };
       }
     }
 
-
-
-const throwDigitsUp = (root, srTime) => {
+    const throwDigitsUp = (root, srTime) => {
       const digits = getTimeDigits(srTime);
       const fragment = document.createDocumentFragment();
       const digitCount = digits.length;
       const baseX = 50 - 5; // shift left by 5vw
-      const spreadX = 20, baseY = 30, spreadY = 5, minSpacing = 8;
+      const spreadX = 20,
+        baseY = 30,
+        spreadY = 5,
+        minSpacing = 8;
       const batchColor = randomColor();
 
       digits.forEach((char, index) => {
-        const span = document.createElement("span");
-        span.className = "digit";
+        const span = document.createElement('span');
+        span.className = 'digit';
         span.textContent = char;
 
         const xOffset = (index - (digitCount - 1) / 2) * minSpacing;
@@ -89,11 +101,10 @@ const throwDigitsUp = (root, srTime) => {
       root.appendChild(fragment);
     };
 
-
     // ------------------- Clock logic -------------------
     const startClockLogic = () => {
       const root = document.getElementById(SCOPE_ID);
-      const srTime = document.getElementById("screen-reader-time");
+      const srTime = document.getElementById('screen-reader-time');
       if (!root || !srTime) return;
 
       const interval = 1000; // once per second
@@ -102,7 +113,8 @@ const throwDigitsUp = (root, srTime) => {
       const tick = (currentTime) => {
         if (currentTime - lastFrameTime >= interval) {
           throwDigitsUp(root, srTime);
-          lastFrameTime = currentTime - ((currentTime - lastFrameTime) % interval);
+          lastFrameTime =
+            currentTime - ((currentTime - lastFrameTime) % interval);
         }
         animationFrameId = requestAnimationFrame(tick);
       };
@@ -111,8 +123,8 @@ const throwDigitsUp = (root, srTime) => {
     };
 
     // ------------------- Inject font + styles -------------------
-    const style = document.createElement("style");
-    style.setAttribute("data-scope", SCOPE_ID);
+    const style = document.createElement('style');
+    style.setAttribute('data-scope', SCOPE_ID);
     style.textContent = `
       @font-face {
         font-family: '${fontName}';
@@ -154,21 +166,35 @@ const throwDigitsUp = (root, srTime) => {
     `;
     document.head.appendChild(style);
 
-    const font = new FontFace(fontName, `url(${dottedFont})`, { style: "normal", weight: "400" });
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      startClockLogic();
-    }).catch(() => startClockLogic());
+    const font = new FontFace(fontName, `url(${dottedFont})`, {
+      style: 'normal',
+      weight: '400',
+    });
+    font
+      .load()
+      .then((loadedFont) => {
+        document.fonts.add(loadedFont);
+        startClockLogic();
+      })
+      .catch(() => startClockLogic());
 
     return () => {
       cancelAnimationFrame(animationFrameId);
-      document.querySelectorAll(`style[data-scope="${SCOPE_ID}"]`).forEach(el => el.remove());
-      document.querySelectorAll(`#${SCOPE_ID} .digit`).forEach(n => n.remove());
+      document
+        .querySelectorAll(`style[data-scope="${SCOPE_ID}"]`)
+        .forEach((el) => el.remove());
+      document
+        .querySelectorAll(`#${SCOPE_ID} .digit`)
+        .forEach((n) => n.remove());
     };
   }, []);
 
   return (
-    <div id="ri-clock-2025-11-01" role="timer" aria-label="Animated digital clock">
+    <div
+      id="ri-clock-2025-11-01"
+      role="timer"
+      aria-label="Animated digital clock"
+    >
       <time id="screen-reader-time" aria-live="polite" />
     </div>
   );

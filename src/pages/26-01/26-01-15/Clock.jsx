@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, memo } from 'react';
-import overlayBg from "../../../assets/images/26-01/26-01-15/red.gif";
-import baseBg from "../../../assets/images/26-01/26-01-15/sph.gif";
+import overlayBg from '../../../assets/images/26-01/26-01-15/red.gif';
+import baseBg from '../../../assets/images/26-01/26-01-15/sph.gif';
 
 // Centralized color control for all clock hands
 const handColors = {
@@ -34,7 +34,7 @@ const Clock = () => {
       loaded += 1;
       if (loaded >= imgs.length) setBgReady(true);
     };
-    imgs.forEach(src => {
+    imgs.forEach((src) => {
       const img = new Image();
       img.onload = done;
       img.onerror = done;
@@ -72,18 +72,25 @@ const Clock = () => {
   ];
 
   return (
-    <main style={{ ...styles.wrapper, opacity: bgReady ? 1 : 0, visibility: bgReady ? 'visible' : 'hidden', transition: 'opacity 0.3s ease' }}>
+    <main
+      style={{
+        ...styles.wrapper,
+        opacity: bgReady ? 1 : 0,
+        visibility: bgReady ? 'visible' : 'hidden',
+        transition: 'opacity 0.3s ease',
+      }}
+    >
       <div style={styles.baseBackground} />
       {overlayLayers.map((layer, index) => (
-        <div 
-          key={index} 
+        <div
+          key={index}
           style={{
             ...styles.overlayBase,
             backgroundColor: layer.color,
             backgroundImage: `url(${overlayBg})`,
             backgroundSize: layer.size,
-            zIndex: layer.z
-          }} 
+            zIndex: layer.z,
+          }}
         />
       ))}
 
@@ -99,9 +106,9 @@ const Clock = () => {
 
 const Hand = memo(({ type, rotation }) => {
   const isSecond = type === 'second';
-  
+
   const config = {
-    hour:   { width: '0.4vh', height: '4.5vh', z: 5, tail: '0vh' },
+    hour: { width: '0.4vh', height: '4.5vh', z: 5, tail: '0vh' },
     minute: { width: '0.25vh', height: '7.5vh', z: 4, tail: '0vh' },
     second: { width: '0.15vh', height: '10vh', z: 6, tail: '2.5vh' },
   };
@@ -117,17 +124,13 @@ const Hand = memo(({ type, rotation }) => {
     height: `calc(${height} + ${tail})`,
     backgroundColor: color,
     zIndex: z,
-    transformOrigin: `50% calc(100% - ${tail})`, 
+    transformOrigin: `50% calc(100% - ${tail})`,
     transform: `translate(-50%, -100%) translateY(${tail}) rotate(${rotation}deg)`,
     willChange: 'transform',
     borderRadius: '1px',
   };
 
-
-  return (
-    <div style={containerStyle}>
-    </div>
-  );
+  return <div style={containerStyle}></div>;
 });
 
 const styles = {
@@ -177,7 +180,7 @@ const styles = {
     borderRadius: '50%',
     transform: 'translate(-50%, -50%)',
     zIndex: 20,
-  }
+  },
 };
 
 export default Clock;

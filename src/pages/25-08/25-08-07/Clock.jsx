@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';import myFontUrl from '../../../assets/fonts/25-08-07-rope.ttf';
+import { useFontLoader } from '../../../utils/fontLoader';
+import myFontUrl from '../../../assets/fonts/25-08-07-rope.ttf';
 import backgroundImageUrl from '../../../assets/images/25-08/25-08-07/wes.webp';
 import hourHandImageUrl from '../../../assets/images/25-08/25-08-07/ggg.gif';
 import minuteHandImageUrl from '../../../assets/images/25-08/25-08-07/gun.gif';
@@ -24,9 +25,15 @@ const AnalogClock = () => {
     const font = new FontFace('MyClockFont', `url(${myFontUrl})`);
     const loadResources = Promise.all([
       font.load(),
-      new Promise((resolve) => { hourHandImage.onload = resolve; }),
-      new Promise((resolve) => { minuteHandImage.onload = resolve; }),
-      new Promise((resolve) => { secondHandImage.onload = resolve; }),
+      new Promise((resolve) => {
+        hourHandImage.onload = resolve;
+      }),
+      new Promise((resolve) => {
+        minuteHandImage.onload = resolve;
+      }),
+      new Promise((resolve) => {
+        secondHandImage.onload = resolve;
+      }),
     ]);
 
     const pivots = { hour: 1, minute: 1, second: 1 };
@@ -56,8 +63,12 @@ const AnalogClock = () => {
 
       // --- Vignette overlay ---
       const vignette = ctx.createRadialGradient(
-        centerX, centerY, radius * 1.1,
-        centerX, centerY, Math.max(width, height) * 0.7
+        centerX,
+        centerY,
+        radius * 1.1,
+        centerX,
+        centerY,
+        Math.max(width, height) * 0.7,
       );
       vignette.addColorStop(0, 'rgba(0,0,0,0)');
       vignette.addColorStop(1, 'rgba(0,0,0,0.75)');
@@ -96,7 +107,12 @@ const AnalogClock = () => {
         }
 
         // Main front face with inner gradient
-        const gradient = ctx.createLinearGradient(0, -radius*0.35, 0, radius*0.35);
+        const gradient = ctx.createLinearGradient(
+          0,
+          -radius * 0.35,
+          0,
+          radius * 0.35,
+        );
         gradient.addColorStop(0, `rgba(255, 249, 230, 1)`);
         gradient.addColorStop(0.5, `rgba(220, 180, 120, 1)`);
         gradient.addColorStop(1, `rgba(150, 100, 50, 1)`);
@@ -127,7 +143,13 @@ const AnalogClock = () => {
         const targetHeight = scale;
         const targetWidth = targetHeight * imgAspect;
         const pivotY = pivotYNormalized * targetHeight;
-        ctx.drawImage(img, -targetWidth / 2, -pivotY, targetWidth, targetHeight);
+        ctx.drawImage(
+          img,
+          -targetWidth / 2,
+          -pivotY,
+          targetWidth,
+          targetHeight,
+        );
       };
 
       // HOUR hand

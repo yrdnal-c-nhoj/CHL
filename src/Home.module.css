@@ -78,7 +78,9 @@ body {
   background-color: #02112f;
   z-index: -1;
   transform: translateX(-50%);
-  transition: width 0.2s ease, height 0.2s ease;
+  transition:
+    width 0.2s ease,
+    height 0.2s ease;
 }
 
 .entry:hover::before {
@@ -117,22 +119,26 @@ body {
 .clockNumber {
   flex: 0 0 auto;
   font-size: clamp(0.9rem, 2vw, 2rem); /* 16px - 32px */
-  font-family: "Manrope", sans-serif;
+  font-family: 'Manrope', sans-serif;
   color: #0c0d0d;
   letter-spacing: -0.04rem;
   padding: 0.2rem 0.5rem;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 /* Date */
 .date {
   flex: 0 0 auto;
   font-size: clamp(0.9rem, 2vw, 2rem); /* 14px - 28px */
-  font-family: "Manrope", sans-serif;
+  font-family: 'Manrope', sans-serif;
   color: #0c0d0d;
   letter-spacing: -0.06rem;
   padding: 0.2rem 0.5rem;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 /* Title */
@@ -142,7 +148,7 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: clamp(0.9rem, 2.2vw, 2.2rem); /* 19px - 40px */
-  font-family: "Manrope", sans-serif;
+  font-family: 'Manrope', sans-serif;
   letter-spacing: 0.02rem;
   max-width: 80%;
   color: #0c0d0d;
@@ -153,7 +159,9 @@ body {
   word-break: break-word;
   z-index: 5;
   padding: 0.2rem 0.5rem;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 /* --- Sort buttons --- */
@@ -171,9 +179,11 @@ body {
   border: 1px solid transparent;
   border-radius: 3px;
   cursor: pointer;
-  transition: background-color 0.2s, text-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    text-shadow 0.2s;
   color: #8b8f8c;
-  font-family: "Manrope", sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .sortButton:hover {

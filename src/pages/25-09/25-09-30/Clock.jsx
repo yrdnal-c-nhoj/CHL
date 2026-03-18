@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import cus250930 from '../../../assets/fonts/25-09-30-stt.ttf';
 
-export default function StripedClock () {
-  const [time, setTime] = useState([])
+export default function StripedClock() {
+  const [time, setTime] = useState([]);
 
-  function getClockTime () {
-    const now = new Date()
-    const h = now.getHours().toString().padStart(2, '0')
-    const m = now.getMinutes().toString().padStart(2, '0')
-    return (h + m).split('')
+  function getClockTime() {
+    const now = new Date();
+    const h = now.getHours().toString().padStart(2, '0');
+    const m = now.getMinutes().toString().padStart(2, '0');
+    return (h + m).split('');
   }
 
   useEffect(() => {
-    setTime(getClockTime())
-    const id = setInterval(() => setTime(getClockTime()), 1000)
-    return () => clearInterval(id)
-  }, [])
+    setTime(getClockTime());
+    const id = setInterval(() => setTime(getClockTime()), 1000);
+    return () => clearInterval(id);
+  }, []);
 
   const stripeGradient = `
     linear-gradient(
@@ -25,7 +25,7 @@ export default function StripedClock () {
        #7E054EFF 50%,  #7E054EFF 74.9%,
       #A0E418FF  75%, #0BF82BFF 100%
     )
-  `
+  `;
 
   return (
     <>
@@ -74,7 +74,7 @@ export default function StripedClock () {
       `}</style>
 
       <div
-        className='animated-bg'
+        className="animated-bg"
         style={{
           width: '100vw',
           height: '100dvh',
@@ -82,17 +82,17 @@ export default function StripedClock () {
           backgroundSize: '0.8rem 0.8rem',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
       >
-        <div className='animated-text'>
+        <div className="animated-text">
           {time.map((digit, i) => (
-            <span key={i} className='digit-box'>
+            <span key={i} className="digit-box">
               {digit}
             </span>
           ))}
         </div>
       </div>
     </>
-  )
+  );
 }

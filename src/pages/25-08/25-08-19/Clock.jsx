@@ -44,7 +44,7 @@ const Pendulum = () => {
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'column',
-      position: 'relative', 
+      position: 'relative',
       overflow: 'hidden',
     },
     bgLayer: {
@@ -55,29 +55,28 @@ const Pendulum = () => {
       height: '100%',
       background: `url(${bgUrl}) no-repeat center center fixed`,
       backgroundSize: 'cover',
-      filter:  'contrast(0.8) brightness(0.5) saturate(1.6)', // 👈 filter effect
-      zIndex: 0, 
+      filter: 'contrast(0.8) brightness(0.5) saturate(1.6)', // 👈 filter effect
+      zIndex: 0,
     },
 
- pendulum: {
-  display: 'flex',
-  borderStyle: 'solid',
-  borderWidth: '1vw 1vw 3vw 1vw', // thicker bottom
-  borderRadius: '3.25vw 3.25vw 0 0', // rounded top corners
-  padding: '0 4.5vw 2.25vw',
-  height: '26vw',
-  zIndex: 1,
-  borderImage: 'linear-gradient(145deg, #b08d57, #f6e27a, #b08d57, #8c6b32) 1',
-  borderImageSlice: 1, // ensures the gradient slices evenly
-  backgroundColor: 'transparent', // keeps inside open
-  boxShadow: `
+    pendulum: {
+      display: 'flex',
+      borderStyle: 'solid',
+      borderWidth: '1vw 1vw 3vw 1vw', // thicker bottom
+      borderRadius: '3.25vw 3.25vw 0 0', // rounded top corners
+      padding: '0 4.5vw 2.25vw',
+      height: '26vw',
+      zIndex: 1,
+      borderImage:
+        'linear-gradient(145deg, #b08d57, #f6e27a, #b08d57, #8c6b32) 1',
+      borderImageSlice: 1, // ensures the gradient slices evenly
+      backgroundColor: 'transparent', // keeps inside open
+      boxShadow: `
     inset 0 0.25vw 0.5vw rgba(255, 255, 255, 0.5),
     inset 0 -0.25vw 0.5vw rgba(0, 0, 0, 0.5)
   `,
-}
+    },
 
-
-,
     piece: {
       transformOrigin: 'center top',
       display: 'flex',
@@ -87,16 +86,17 @@ const Pendulum = () => {
       height: '22.5vw',
     },
     pieceFirstChild: {
-      animation: 'left 1s cubic-bezier(0.215, 0.61, 0.355, 1) infinite alternate',
+      animation:
+        'left 1s cubic-bezier(0.215, 0.61, 0.355, 1) infinite alternate',
     },
     pieceLastChild: {
-      animation: 'right 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite alternate',
+      animation:
+        'right 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite alternate',
     },
   };
 
   return (
     <div style={styles.pendulumApp}>
-     
       <div style={styles.bgLayer}></div>
 
       <style>{`
@@ -146,18 +146,19 @@ const Pendulum = () => {
   }
 `}</style>
 
-
-
-
-
-
       <div style={styles.pendulum}>
-        <div style={{ ...styles.piece, ...styles.pieceFirstChild }} className="piece"></div>
+        <div
+          style={{ ...styles.piece, ...styles.pieceFirstChild }}
+          className="piece"
+        ></div>
         <div style={styles.piece} className="piece"></div>
         <div style={styles.piece} className="piece"></div>
         <div style={styles.piece} className="piece"></div>
         <div style={styles.piece} className="piece"></div>
-        <div style={{ ...styles.piece, ...styles.pieceLastChild }} className="piece"></div>
+        <div
+          style={{ ...styles.piece, ...styles.pieceLastChild }}
+          className="piece"
+        ></div>
       </div>
     </div>
   );

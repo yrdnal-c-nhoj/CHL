@@ -29,9 +29,12 @@ const EmptyRoomClock = () => {
       const minuteDeg = (minute + second / 60) * 6;
       const secondDeg = second * 6;
 
-      if (hourRef.current) hourRef.current.style.transform = `translate(-50%) rotate(${hourDeg}deg)`;
-      if (minuteRef.current) minuteRef.current.style.transform = `translate(-50%) rotate(${minuteDeg}deg)`;
-      if (secondRef.current) secondRef.current.style.transform = `translate(-50%) rotate(${secondDeg}deg)`;
+      if (hourRef.current)
+        hourRef.current.style.transform = `translate(-50%) rotate(${hourDeg}deg)`;
+      if (minuteRef.current)
+        minuteRef.current.style.transform = `translate(-50%) rotate(${minuteDeg}deg)`;
+      if (secondRef.current)
+        secondRef.current.style.transform = `translate(-50%) rotate(${secondDeg}deg)`;
     };
 
     updateClock();
@@ -55,7 +58,9 @@ const EmptyRoomClock = () => {
         backgroundColor: '#000',
       }}
     >
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={roomImage}
         alt="Room background"
         style={{
@@ -92,7 +97,8 @@ const EmptyRoomClock = () => {
             -10px 15px 30px rgba(0, 0, 0, 0.5)
           `,
           zIndex: 1,
-          transition: 'width 0.3s ease, height 0.3s ease, bottom 0.3s ease, left 0.3s ease',
+          transition:
+            'width 0.3s ease, height 0.3s ease, bottom 0.3s ease, left 0.3s ease',
         }}
       >
         <div

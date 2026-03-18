@@ -1,9 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Nanum+Gothic&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap');
 
 .topnavchl {
-  font-family: "Roboto Slab", sans-serif;
+  font-family: 'Roboto Slab', sans-serif;
   color: rgb(246, 246, 242);
-  text-shadow: #0e0d0d 0.5px 0.5px 0px, #000000 -0.5px -0.5px 0px;
+  text-shadow:
+    #0e0d0d 0.5px 0.5px 0px,
+    #000000 -0.5px -0.5px 0px;
   font-size: 0.8rem;
   letter-spacing: 0.03rem;
   text-align: center;
@@ -17,11 +19,11 @@
 }
 
 .topnavbt {
-  font-family: "Oxanium", sans-serif;
+  font-family: 'Oxanium', sans-serif;
   transform: skewX(-20deg);
   color: #eae8ed;
   text-shadow:
-    #990606 3px 1px 7.0px,
+    #990606 3px 1px 7px,
     #b6e548 -2.2px -0.8px 5px,
     #340303 3px 2px 0,
     #340303 -3px -2px 0;
@@ -39,7 +41,7 @@
 }
 
 .topnavtag {
-  font-family: "Oxanium", sans-serif;
+  font-family: 'Oxanium', sans-serif;
   transform: skewX(-10deg);
   font-size: 0.8rem;
   line-height: 0.1rem;
@@ -56,7 +58,7 @@
 }
 
 .nav-menu {
-  font-family: "Roboto Slab", sans-serif;
+  font-family: 'Roboto Slab', sans-serif;
   font-weight: bold;
   font-size: 1rem;
   letter-spacing: 0.1rem;
@@ -65,14 +67,11 @@
   margin: 0;
   background-color: #2e382e;
   z-index: 999;
-  display: flex;           /* flex container */
+  display: flex; /* flex container */
   justify-content: center; /* center items horizontally */
-  align-items: center;     /* center vertically */
-  gap: 0.2rem;               /* space between menu items */
+  align-items: center; /* center vertically */
+  gap: 0.2rem; /* space between menu items */
 }
-
-
-
 
 .nav-menu.active {
   display: flex;
@@ -85,7 +84,7 @@
 .nav-link {
   color: #b5c9f7;
   text-decoration: none;
-  font-size: 1.0rem;
+  font-size: 1rem;
   padding: 0.5rem;
   display: block;
   transition: color 0.3s ease;

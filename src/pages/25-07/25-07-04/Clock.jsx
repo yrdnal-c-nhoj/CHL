@@ -5,9 +5,18 @@ import bgImage from '../../../assets/images/25-07/25-07-04/7ZAx.webp';
 
 const SEGMENTS = 12;
 const COLORS = [
-  '#ff0040', '#045DF7FF', '#F9D108FF', '#00ff00',
-  '#FC7B02FF', '#ff00ff', '#00bfff', '#ffffff',
-  '#D0FF00FF', '#C12FFBFF', '#FAA404FF', '#12F5DBFF'
+  '#ff0040',
+  '#045DF7FF',
+  '#F9D108FF',
+  '#00ff00',
+  '#FC7B02FF',
+  '#ff00ff',
+  '#00bfff',
+  '#ffffff',
+  '#D0FF00FF',
+  '#C12FFBFF',
+  '#FAA404FF',
+  '#12F5DBFF',
 ];
 
 const Clock = () => {
@@ -18,7 +27,7 @@ const Clock = () => {
   // Using the hook you imported; ensure 'useFontLoader' returns a boolean or object
   const fontReady = useFontLoader('kal', kalFont, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   // 2. Animation Loop
@@ -38,11 +47,18 @@ const Clock = () => {
   // Changed from 'fontState.loading' to 'fontReady' to match your hook
   if (!fontReady) {
     return (
-      <div style={{ 
-        background: 'black', height: '100dvh', width: '100vw', 
-        display: 'flex', justifyContent: 'center', alignItems: 'center', 
-        color: '#777', fontFamily: 'sans-serif' 
-      }}>
+      <div
+        style={{
+          background: 'black',
+          height: '100dvh',
+          width: '100vw',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: '#777',
+          fontFamily: 'sans-serif',
+        }}
+      >
         Initializing Synchronicity...
       </div>
     );
@@ -64,35 +80,65 @@ const Clock = () => {
 
       return (
         <React.Fragment key={i}>
-          <div className="segment hour" style={{ transform: `rotate(${angle}deg) translate(30vmin)`, color: COLORS[(colorIndex + 2) % COLORS.length] }}>{hourText}</div>
-          <div className="segment minute" style={{ transform: `rotate(${angle}deg) translate(20vmin)`, color: COLORS[(colorIndex + 4) % COLORS.length] }}>{minuteText}</div>
-          <div className="segment second" style={{ transform: `rotate(${angle}deg) translate(10vmin)`, color: COLORS[(colorIndex + 6) % COLORS.length] }}>{secondText}</div>
-          <div className="segment ampm" style={{ transform: `rotate(${angle}deg) translate(5vmin)`, color: COLORS[(colorIndex + 8) % COLORS.length] }}>{ampm}</div>
+          <div
+            className="segment hour"
+            style={{
+              transform: `rotate(${angle}deg) translate(30vmin)`,
+              color: COLORS[(colorIndex + 2) % COLORS.length],
+            }}
+          >
+            {hourText}
+          </div>
+          <div
+            className="segment minute"
+            style={{
+              transform: `rotate(${angle}deg) translate(20vmin)`,
+              color: COLORS[(colorIndex + 4) % COLORS.length],
+            }}
+          >
+            {minuteText}
+          </div>
+          <div
+            className="segment second"
+            style={{
+              transform: `rotate(${angle}deg) translate(10vmin)`,
+              color: COLORS[(colorIndex + 6) % COLORS.length],
+            }}
+          >
+            {secondText}
+          </div>
+          <div
+            className="segment ampm"
+            style={{
+              transform: `rotate(${angle}deg) translate(5vmin)`,
+              color: COLORS[(colorIndex + 8) % COLORS.length],
+            }}
+          >
+            {ampm}
+          </div>
         </React.Fragment>
       );
     });
   };
 
   return (
-    <div style={{ margin: 0, padding: 0, background: 'black', height: '100vh', overflow: 'hidden', position: 'relative' }}>
+    <div
+      style={{
+        margin: 0,
+        padding: 0,
+        background: 'black',
+        height: '100vh',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
+    >
       {/* Background Layer */}
-      <img 
-        decoding="async" 
-        src={bgImage} 
-        alt="background" 
-        style={bgStyle} 
-      />
-      
-  
+      <img decoding="async" src={bgImage} alt="background" style={bgStyle} />
 
       {/* Visual Clock Layers */}
-      <div className="kaleidoscope spin-cw">
-        {renderRingSegments(0)}
-      </div>
+      <div className="kaleidoscope spin-cw">{renderRingSegments(0)}</div>
 
-      <div className="kaleidoscope spin-ccw">
-        {renderRingSegments(6)}
-      </div>
+      <div className="kaleidoscope spin-ccw">{renderRingSegments(6)}</div>
 
       <style>{`
         @keyframes spin-cw { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -130,30 +176,30 @@ const Clock = () => {
 };
 
 // Styles defined outside component to prevent re-creation on every tick
-const bgStyle = { 
-  position: 'fixed', 
-  top: 0, 
-  left: 0, 
-  width: '100vw', 
-  height: '100dvh', 
-  objectFit: 'cover', 
-  filter: 'brightness(180%) saturate(200%) hue-rotate(-190deg) blur(2px)', 
-  zIndex: 1, 
-  pointerEvents: 'none' 
+const bgStyle = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  width: '100vw',
+  height: '100dvh',
+  objectFit: 'cover',
+  filter: 'brightness(180%) saturate(200%) hue-rotate(-190deg) blur(2px)',
+  zIndex: 1,
+  pointerEvents: 'none',
 };
 
-const headerStyle = { 
-  position: 'absolute', 
-  top: '15px', 
-  left: '50%', 
-  transform: 'translateX(-50%)', 
-  width: '95%', 
-  display: 'flex', 
-  color: 'rgba(255,255,255,0.7)', 
-  zIndex: 6, 
+const headerStyle = {
+  position: 'absolute',
+  top: '15px',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  width: '95%',
+  display: 'flex',
+  color: 'rgba(255,255,255,0.7)',
+  zIndex: 6,
   fontSize: '1.2rem',
   borderTop: '1px solid rgba(255,255,255,0.2)',
-  paddingTop: '5px'
+  paddingTop: '5px',
 };
 
 export default Clock;

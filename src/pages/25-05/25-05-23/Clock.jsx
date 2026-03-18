@@ -6,19 +6,19 @@ import crossFont from '../../../assets/fonts/25-05-23-Cross.otf';
 const CrossClock = () => {
   const [time, setTime] = useState(new Date());
   const [isLoaded, setIsLoaded] = useState(false);
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader('Cross', crossFont, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   useEffect(() => {
     // Asset Preloading
     const sources = [backgroundImage];
     let loaded = 0;
-    
-    sources.forEach(src => {
+
+    sources.forEach((src) => {
       const img = new Image();
       img.src = src;
       img.onload = img.onerror = () => {
@@ -51,15 +51,16 @@ const CrossClock = () => {
 
   if (!everythingLoaded) {
     return (
-      <div style={{ 
-        height: '100dvh', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        color: '#fff', 
-        background: '#000'
-      }}>
-      </div>
+      <div
+        style={{
+          height: '100dvh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#fff',
+          background: '#000',
+        }}
+      ></div>
     );
   }
 
@@ -101,7 +102,10 @@ const CrossClock = () => {
   const renderUnit = (value) => (
     <div style={unitStyle}>
       {value.split('').map((char, idx) => (
-        <span key={idx} style={{ ...digitStyle, color: getRandomBrightColor() }}>
+        <span
+          key={idx}
+          style={{ ...digitStyle, color: getRandomBrightColor() }}
+        >
           {char}
         </span>
       ))}
@@ -174,7 +178,9 @@ const CrossClock = () => {
       </style>
 
       <div className="clock-content">
-        <img decoding="async" loading="lazy"
+        <img
+          decoding="async"
+          loading="lazy"
           src={backgroundImage}
           alt="Background"
           style={{
@@ -188,7 +194,10 @@ const CrossClock = () => {
           }}
         />
 
-        <div className="clock-container" style={{ position: 'relative', zIndex: 5 }}>
+        <div
+          className="clock-container"
+          style={{ position: 'relative', zIndex: 5 }}
+        >
           {renderUnit(hours)}
           {renderUnit(minutes)}
           {renderUnit(seconds)}

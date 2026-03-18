@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from 'react'
-import bgImageUrl from '../../../assets/images/25-11/25-11-08/eye.gif'
-import dig2511088 from '../../../assets/fonts/25-11-08-eye3.ttf'
-import ti251108 from '../../../assets/fonts/25-11-08-eye.ttf'
+import React, { useEffect, useState } from 'react';
+import bgImageUrl from '../../../assets/images/25-11/25-11-08/eye.gif';
+import dig2511088 from '../../../assets/fonts/25-11-08-eye3.ttf';
+import ti251108 from '../../../assets/fonts/25-11-08-eye.ttf';
 
-export default function Clock ({ imageWidth = '24vw', imageHeight = '16vw' }) {
-  const [now, setNow] = useState(() => new Date())
-  const [elapsedMs, setElapsedMs] = useState(0)
+export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
+  const [now, setNow] = useState(() => new Date());
+  const [elapsedMs, setElapsedMs] = useState(0);
 
   useEffect(() => {
-    const start = Date.now()
+    const start = Date.now();
     const interval = setInterval(() => {
-      setNow(new Date())
-      setElapsedMs(Date.now() - start)
-    }, 100) // 100ms for smooth updates with lower performance overhead
-    return () => clearInterval(interval)
-  }, [])
+      setNow(new Date());
+      setElapsedMs(Date.now() - start);
+    }, 100); // 100ms for smooth updates with lower performance overhead
+    return () => clearInterval(interval);
+  }, []);
 
-  const pad2 = n => n.toString().padStart(2, '0')
+  const pad2 = (n) => n.toString().padStart(2, '0');
 
   // Convert to 12-hour format and get AM/PM
-  let hours = now.getHours()
-  const ampm = hours >= 12 ? 'PM' : 'AM'
-  hours = hours % 12 || 12 // Convert 0 to 12 for 12 AM
-  const clock = `${hours}:${pad2(now.getMinutes())} ${ampm}`
+  let hours = now.getHours();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12 || 12; // Convert 0 to 12 for 12 AM
+  const clock = `${hours}:${pad2(now.getMinutes())} ${ampm}`;
 
-  const digitsFontFamilyName = 'DigitsFont-2025-11-10'
-  const timerFontFamilyName = 'Ti251108-2025-11-10'
+  const digitsFontFamilyName = 'DigitsFont-2025-11-10';
+  const timerFontFamilyName = 'Ti251108-2025-11-10';
 
   const clockStyle = {
     position: 'absolute',
@@ -42,8 +42,8 @@ export default function Clock ({ imageWidth = '24vw', imageHeight = '16vw' }) {
     borderRadius: '5px',
     opacity: 0.9,
     textAlign: 'center',
-    transition: 'all 0.3s ease'
-  }
+    transition: 'all 0.3s ease',
+  };
 
   const wrapperStyle = {
     display: 'flex',
@@ -53,8 +53,8 @@ export default function Clock ({ imageWidth = '24vw', imageHeight = '16vw' }) {
     width: '100vw',
     position: 'relative',
     overflow: 'hidden',
-    backgroundColor: 'white'
-  }
+    backgroundColor: 'white',
+  };
 
   const bgStyle = {
     position: 'absolute',
@@ -65,8 +65,8 @@ export default function Clock ({ imageWidth = '24vw', imageHeight = '16vw' }) {
     zIndex: 0,
     pointerEvents: 'none',
     overflow: 'hidden',
-    opacity: 1.0
-  }
+    opacity: 1.0,
+  };
 
   const bgGridStyle = {
     position: 'absolute',
@@ -77,8 +77,8 @@ export default function Clock ({ imageWidth = '24vw', imageHeight = '16vw' }) {
     gridTemplateColumns: `repeat(30, ${imageWidth})`,
     gridAutoRows: `${imageHeight}`,
     marginLeft: `calc(-1 * ${imageWidth} / 2)`,
-    marginTop: `calc(-1 * ${imageHeight} / 2)`
-  }
+    marginTop: `calc(-1 * ${imageHeight} / 2)`,
+  };
 
   const tileStyleBase = {
     width: `${imageWidth}`,
@@ -87,29 +87,29 @@ export default function Clock ({ imageWidth = '24vw', imageHeight = '16vw' }) {
     backgroundRepeat: 'no-repeat',
     backgroundSize: '100% 100%',
     backgroundColor: 'lightgray',
-    willChange: 'transform'
-  }
+    willChange: 'transform',
+  };
 
   const renderCheckerboardBG = () => {
-    const tiles = []
-    const rows = 30
-    const cols = 30
+    const tiles = [];
+    const rows = 30;
+    const cols = 30;
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
-        const flip = (r + c) % 2 === 1
+        const flip = (r + c) % 2 === 1;
         tiles.push(
           <div
             key={`${r}-${c}`}
             style={{
               ...tileStyleBase,
-              transform: flip ? 'scaleX(-1)' : 'none'
+              transform: flip ? 'scaleX(-1)' : 'none',
             }}
-          />
-        )
+          />,
+        );
       }
     }
-    return <div style={bgGridStyle}>{tiles}</div>
-  }
+    return <div style={bgGridStyle}>{tiles}</div>;
+  };
 
   const timerDigitBoxStyle = {
     fontFamily: `'${timerFontFamilyName}', monospace`,
@@ -127,8 +127,8 @@ export default function Clock ({ imageWidth = '24vw', imageHeight = '16vw' }) {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    transition: 'transform 0.1s ease-out'
-  }
+    transition: 'transform 0.1s ease-out',
+  };
 
   const timerDotBoxStyle = {
     ...timerDigitBoxStyle,
@@ -136,16 +136,16 @@ export default function Clock ({ imageWidth = '24vw', imageHeight = '16vw' }) {
     minWidth: '0.08vh',
     padding: 0,
     backgroundColor: 'transparent',
-    boxShadow: 'none'
-  }
+    boxShadow: 'none',
+  };
 
-  const renderTimerBoxed = ms => {
-    const totalSeconds = Math.floor(ms / 1000)
-    const s = Math.floor(totalSeconds % 60)
-    const hundredths = Math.floor((ms % 1000) / 10)
+  const renderTimerBoxed = (ms) => {
+    const totalSeconds = Math.floor(ms / 1000);
+    const s = Math.floor(totalSeconds % 60);
+    const hundredths = Math.floor((ms % 1000) / 10);
 
     // Format as seconds.hundredths
-    const timeStr = `${s}.${pad2(hundredths)}`
+    const timeStr = `${s}.${pad2(hundredths)}`;
 
     return (
       <div
@@ -163,24 +163,24 @@ export default function Clock ({ imageWidth = '24vw', imageHeight = '16vw' }) {
           backgroundColor: 'rgba(0, 0, 0, 0.6)',
           borderRadius: '15px',
           border: '2px solid rgba(255, 0, 0, 0.7)',
-          boxShadow: '0 0 20px rgba(255, 0, 0, 0.7)'
+          boxShadow: '0 0 20px rgba(255, 0, 0, 0.7)',
         }}
-        className='timer-container'
+        className="timer-container"
       >
         {timeStr.split('').map((ch, i) => (
           <span
             key={i}
             style={{
               ...(ch === '.' ? timerDotBoxStyle : timerDigitBoxStyle),
-              opacity: 1
+              opacity: 1,
             }}
           >
             {ch}
           </span>
         ))}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div style={wrapperStyle}>
@@ -213,10 +213,10 @@ export default function Clock ({ imageWidth = '24vw', imageHeight = '16vw' }) {
         `}
       </style>
       <div style={bgStyle}>{renderCheckerboardBG()}</div>
-      <div style={clockStyle} className='clock'>
+      <div style={clockStyle} className="clock">
         {clock}
       </div>
       {renderTimerBoxed(elapsedMs)}
     </div>
-  )
+  );
 }

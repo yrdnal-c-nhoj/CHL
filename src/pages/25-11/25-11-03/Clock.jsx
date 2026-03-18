@@ -1,47 +1,47 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import digi251103font from '../../../assets/fonts/25-11-03-bin3.ttf?url';
 import tec251103font from '../../../assets/fonts/25-11-03-bin1.otf?url';
 
-const digitalFont = 'digitalFont'
-const techFont = 'techFont'
+const digitalFont = 'digitalFont';
+const techFont = 'techFont';
 
-export default function BinaryClockWithColumns () {
-  const [time, setTime] = useState(new Date())
-  const [overlayVisible, setOverlayVisible] = useState(true)
+export default function BinaryClockWithColumns() {
+  const [time, setTime] = useState(new Date());
+  const [overlayVisible, setOverlayVisible] = useState(true);
 
   // --- Update time every 50ms for smooth milliseconds ---
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 50)
-    return () => clearInterval(interval)
-  }, [])
+    const interval = setInterval(() => setTime(new Date()), 50);
+    return () => clearInterval(interval);
+  }, []);
 
   // --- Load fonts and prevent FOUT ---
   useEffect(() => {
-    let cancelled = false
+    let cancelled = false;
     const finish = () => {
-      if (!cancelled) setOverlayVisible(false)
-    }
+      if (!cancelled) setOverlayVisible(false);
+    };
 
     if (document && document.fonts && document.fonts.load) {
-      const ready = document.fonts.ready.catch(() => {})
+      const ready = document.fonts.ready.catch(() => {});
       const l1 = document.fonts
         .load(`400 16px "${digitalFont}"`)
-        .catch(() => {})
-      const l3 = document.fonts.load(`400 16px "${techFont}"`).catch(() => {})
+        .catch(() => {});
+      const l3 = document.fonts.load(`400 16px "${techFont}"`).catch(() => {});
       Promise.race([
         Promise.all([ready, l1, l3]),
-        new Promise(res => setTimeout(res, 2000))
-      ]).then(finish)
+        new Promise((res) => setTimeout(res, 2000)),
+      ]).then(finish);
       return () => {
-        cancelled = true
-      }
+        cancelled = true;
+      };
     } else {
-      const t = setTimeout(finish, 300)
-      return () => clearTimeout(t)
+      const t = setTimeout(finish, 300);
+      return () => clearTimeout(t);
     }
-  }, [])
+  }, []);
 
-  const formatBinary = num => num.toString(2).padStart(8, '0').split('')
+  const formatBinary = (num) => num.toString(2).padStart(8, '0').split('');
 
   const globalFontFaces = `
     @font-face { 
@@ -54,7 +54,7 @@ export default function BinaryClockWithColumns () {
       src: url(${tec251103font}) format('opentype'); 
       font-display: block;
     }
-  `
+  `;
 
   // --- STYLES ---
   const containerStyle = {
@@ -70,8 +70,8 @@ export default function BinaryClockWithColumns () {
     paddingLeft: 'env(safe-area-inset-left)',
     paddingRight: 'env(safe-area-inset-right)',
     WebkitTextSizeAdjust: '100%',
-    textSizeAdjust: '100%'
-  }
+    textSizeAdjust: '100%',
+  };
 
   const columnsWrapperStyle = {
     display: 'flex',
@@ -81,8 +81,8 @@ export default function BinaryClockWithColumns () {
     position: 'relative',
     zIndex: 1,
     width: '100%',
-    height: '100%'
-  }
+    height: '100%',
+  };
 
   const columnContainerStyle = {
     display: 'flex',
@@ -91,8 +91,8 @@ export default function BinaryClockWithColumns () {
     justifyContent: 'stretch',
     padding: 0,
     flex: 1,
-    height: '100%'
-  }
+    height: '100%',
+  };
 
   const binaryContainerStyle = {
     display: 'flex',
@@ -100,8 +100,8 @@ export default function BinaryClockWithColumns () {
     justifyContent: 'stretch',
     alignItems: 'stretch',
     flex: 1,
-    width: '100%'
-  }
+    width: '100%',
+  };
 
   const digitBoxStyle = {
     width: '100%',
@@ -121,10 +121,10 @@ export default function BinaryClockWithColumns () {
       -1px -1px 0 #000,
       1px -1px 0 #FFF,
       -1px 1px 0 #FFF
-    `
-  }
+    `,
+  };
 
-  const bitBoxStyle = bit => ({
+  const bitBoxStyle = (bit) => ({
     width: '100%',
     flex: 1,
     display: 'flex',
@@ -135,8 +135,8 @@ export default function BinaryClockWithColumns () {
     color: bit === '1' ? '#F6F2F2FF' : '#020202FF',
     backgroundColor: bit === '1' ? '#1100CCFF' : '#EFFA26FF',
     margin: 0,
-    transition: 'all 0.3s ease'
-  })
+    transition: 'all 0.3s ease',
+  });
 
   const renderColumn = (_label, bits, digit) => (
     <div style={columnContainerStyle}>
@@ -149,14 +149,14 @@ export default function BinaryClockWithColumns () {
       </div>
       <div style={digitBoxStyle}>{digit.toString().padStart(2, '0')}</div>
     </div>
-  )
+  );
 
   // --- Time values ---
-  const hours = formatBinary(time.getHours())
-  const minutes = formatBinary(time.getMinutes())
-  const seconds = formatBinary(time.getSeconds())
-  const milliseconds = Math.floor(time.getMilliseconds() / 10) // 0-99
-  const msBits = formatBinary(milliseconds)
+  const hours = formatBinary(time.getHours());
+  const minutes = formatBinary(time.getMinutes());
+  const seconds = formatBinary(time.getSeconds());
+  const milliseconds = Math.floor(time.getMilliseconds() / 10); // 0-99
+  const msBits = formatBinary(milliseconds);
 
   return (
     <>
@@ -175,7 +175,7 @@ export default function BinaryClockWithColumns () {
             pointerEvents: 'none',
             zIndex: 9999,
             willChange: 'opacity',
-            transform: 'translateZ(0)'
+            transform: 'translateZ(0)',
           }}
         />
         <div style={columnsWrapperStyle}>
@@ -186,5 +186,5 @@ export default function BinaryClockWithColumns () {
         </div>
       </div>
     </>
-  )
+  );
 }

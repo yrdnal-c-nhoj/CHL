@@ -40,7 +40,8 @@ const SkewClock = () => {
       // Measure widths for precise centering
       const spacing = canvas.width * 0.015;
       const widths = digits.map((d) => ctx.measureText(d).width);
-      const totalWidth = widths.reduce((acc, w) => acc + w, 0) + spacing * (digits.length - 1);
+      const totalWidth =
+        widths.reduce((acc, w) => acc + w, 0) + spacing * (digits.length - 1);
       let startX = (canvas.width - totalWidth) / 2;
       const centerY = canvas.height / 2;
 
@@ -88,7 +89,10 @@ const SkewClock = () => {
   }, []);
 
   return (
-    <div className="skew-wrapper" style={{ fontFamily: 'skew-stick, sans-serif' }}>
+    <div
+      className="skew-wrapper"
+      style={{ fontFamily: 'skew-stick, sans-serif' }}
+    >
       <style>{`
         @font-face {
           font-family: 'skew-stick';

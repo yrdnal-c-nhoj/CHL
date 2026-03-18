@@ -5,7 +5,20 @@ import bg1 from '../../../assets/images/25-08/25-08-01/stars.webp';
 import bg2 from '../../../assets/images/25-08/25-08-01/zod.gif';
 import htmlLogo from '../../../assets/images/25-08/25-08-01/st.gif';
 
-const romanNumerals = ['l', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'];
+const romanNumerals = [
+  'l',
+  'a',
+  'b',
+  'c',
+  'd',
+  'e',
+  'f',
+  'g',
+  'h',
+  'i',
+  'j',
+  'k',
+];
 
 const AnalogClock = () => {
   const [time, setTime] = useState(new Date());
@@ -15,12 +28,15 @@ const AnalogClock = () => {
       radius: (100 + Math.random() * 50) * 0.6, // 50% closer to center
       speed: 0.02 + Math.random() * 0.04,
       scale: 1 + Math.random() * 0.5,
-    }))
+    })),
   );
 
   const numeralsRef = useRef(numerals);
   numeralsRef.current = numerals;
-  const fontLoaded = useFontLoader('MyCustomFont', myFontWoff2, { fallback: true, timeout: 3500 });
+  const fontLoaded = useFontLoader('MyCustomFont', myFontWoff2, {
+    fallback: true,
+    timeout: 3500,
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -36,7 +52,7 @@ const AnalogClock = () => {
         prev.map((num) => ({
           ...num,
           angle: (num.angle - num.speed + 360) % 360,
-        }))
+        })),
       );
       animationFrameId = requestAnimationFrame(updateAngles);
     };
@@ -152,7 +168,7 @@ const AnalogClock = () => {
   }, []);
 
   const minutes = time.getMinutes();
-  const hours = time.getHours() % 12 + minutes / 60;
+  const hours = (time.getHours() % 12) + minutes / 60;
   const minuteDeg = (minutes / 60) * 360;
   const hourDeg = (hours / 12) * 360;
 
@@ -203,7 +219,14 @@ const AnalogClock = () => {
 
   return (
     <>
-      <div style={{ ...wrapperStyle, opacity: fontLoaded ? 1 : 0, transition: 'opacity 0.35s ease', fontFamily: fontLoaded ? 'MyCustomFont, sans-serif' : 'sans-serif' }}>
+      <div
+        style={{
+          ...wrapperStyle,
+          opacity: fontLoaded ? 1 : 0,
+          transition: 'opacity 0.35s ease',
+          fontFamily: fontLoaded ? 'MyCustomFont, sans-serif' : 'sans-serif',
+        }}
+      >
         <div style={containerStyle}>
           <div
             style={{
@@ -218,7 +241,7 @@ const AnalogClock = () => {
               borderRadius: '50%',
               zIndex: 0,
 
-    filter: 'hue-rotate(120deg)',
+              filter: 'hue-rotate(120deg)',
             }}
           />
           <div
@@ -236,38 +259,49 @@ const AnalogClock = () => {
             }}
           />
 
-          <img decoding="async" loading="lazy" src={htmlLogo} alt="HTML Logo" className="html-image" />
+          <img
+            decoding="async"
+            loading="lazy"
+            src={htmlLogo}
+            alt="HTML Logo"
+            className="html-image"
+          />
 
           <div style={centerDotStyle} />
           <div style={handStyle('0.25rem', '4rem', '#556389FF', hourDeg, 5)} />
-          <div style={handStyle('0.15rem', '5rem', '#3E5E6DFF', minuteDeg, 5)} />
+          <div
+            style={handStyle('0.15rem', '5rem', '#3E5E6DFF', minuteDeg, 5)}
+          />
 
-         {romanNumerals.map((numeral, index) => {
-  const centerX = 0;
-  const centerY = 0;
+          {romanNumerals.map((numeral, index) => {
+            const centerX = 0;
+            const centerY = 0;
 
-  const offset = 20; // <-- increase this number to move numerals further out
-  const radius = numerals[index].radius + offset;
+            const offset = 20; // <-- increase this number to move numerals further out
+            const radius = numerals[index].radius + offset;
 
-  const x = centerX + Math.cos((numerals[index].angle * Math.PI) / 180) * radius;
-  const y = centerY - Math.sin((numerals[index].angle * Math.PI) / 180) * radius;
+            const x =
+              centerX +
+              Math.cos((numerals[index].angle * Math.PI) / 180) * radius;
+            const y =
+              centerY -
+              Math.sin((numerals[index].angle * Math.PI) / 180) * radius;
 
-  return (
-    <div
-      key={numeral}
-      className="numeral"
-      style={{
-        left: `calc(30% + ${x}px)`,
-        top: `calc(50% + ${y}px)`,
-        transform: `translate(-50%, -50%) scale(${numerals[index].scale})`,
-        transformOrigin: 'center center',
-      }}
-    >
-      {numeral}
-    </div>
-  );
-})}
-
+            return (
+              <div
+                key={numeral}
+                className="numeral"
+                style={{
+                  left: `calc(30% + ${x}px)`,
+                  top: `calc(50% + ${y}px)`,
+                  transform: `translate(-50%, -50%) scale(${numerals[index].scale})`,
+                  transformOrigin: 'center center',
+                }}
+              >
+                {numeral}
+              </div>
+            );
+          })}
         </div>
       </div>
     </>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useFontLoader } from "../../../utils/fontLoader";
+import { useFontLoader } from '../../../utils/fontLoader';
 
 // Asset Imports (keeping your existing imports)
 import digitalFontUrl from '../../../assets/fonts/26-02-12-disco.otf';
@@ -35,15 +35,15 @@ const DigitalClockTemplate = () => {
     const hours24 = time.getHours();
     const hours = CONFIG.use24Hour ? hours24 : hours24 % 12 || 12;
     const pad = (n) => String(n).padStart(2, '0');
-    
+
     const hh = pad(hours);
     const mm = pad(time.getMinutes());
     const ss = pad(time.getSeconds());
-    
+
     // Combine all digits into one array for easier mapping
     return {
       digits: (hh + mm + (CONFIG.showSeconds ? ss : '')).split(''),
-      rawSeconds: time.getSeconds()
+      rawSeconds: time.getSeconds(),
     };
   }, [time]);
 
@@ -65,44 +65,90 @@ const DigitalClockTemplate = () => {
   };
 
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden', backgroundColor: '#000' }}>
-      
+    <div
+      style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100dvh',
+        overflow: 'hidden',
+        backgroundColor: '#000',
+      }}
+    >
       {/* Loading overlay to prevent flash of unstyled content */}
       {!fontReady && (
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#000',
-          zIndex: 100,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }} />
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: '#000',
+            zIndex: 100,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        />
       )}
-      
+
       {/* Background Layers */}
-      <div style={{ ...layerBase, backgroundImage: `url(${digitalBgImage})`, opacity: 1.0, filter: 'saturate(3.8) brightness(1.5)', zIndex: 1 }} />
-      <div style={{ ...layerBase, backgroundImage: `url(${extraBg1})`, opacity: 0.6, filter: 'saturate(3.8) contrast(1.5) brightness(1.5)', mixBlendMode: 'overlay', zIndex: 2 }} />
-      <div style={{ ...layerBase, backgroundImage: `url(${extraBg2})`, opacity: 0.3, filter: 'saturate(3.8) contrast(1.5) brightness(1.5)', zIndex: 3 }} />
-      <div style={{ ...layerBase, backgroundImage: `url(${extraBg3})`, opacity: 0.3, filter: 'saturate(1.8) contrast(1.5) brightness(2.5)', zIndex: 4 }} />
+      <div
+        style={{
+          ...layerBase,
+          backgroundImage: `url(${digitalBgImage})`,
+          opacity: 1.0,
+          filter: 'saturate(3.8) brightness(1.5)',
+          zIndex: 1,
+        }}
+      />
+      <div
+        style={{
+          ...layerBase,
+          backgroundImage: `url(${extraBg1})`,
+          opacity: 0.6,
+          filter: 'saturate(3.8) contrast(1.5) brightness(1.5)',
+          mixBlendMode: 'overlay',
+          zIndex: 2,
+        }}
+      />
+      <div
+        style={{
+          ...layerBase,
+          backgroundImage: `url(${extraBg2})`,
+          opacity: 0.3,
+          filter: 'saturate(3.8) contrast(1.5) brightness(1.5)',
+          zIndex: 3,
+        }}
+      />
+      <div
+        style={{
+          ...layerBase,
+          backgroundImage: `url(${extraBg3})`,
+          opacity: 0.3,
+          filter: 'saturate(1.8) contrast(1.5) brightness(2.5)',
+          zIndex: 4,
+        }}
+      />
 
       {/* Clock UI */}
-      <div style={{
-        position: 'relative',
-        zIndex: 10,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        fontFamily: fontReady ? "'BorrowedDigital', sans-serif" : 'sans-serif',
-      }}>
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+          fontFamily: fontReady
+            ? "'BorrowedDigital', sans-serif"
+            : 'sans-serif',
+        }}
+      >
         <div style={clockWrapperStyle}>
           {digits.map((digit, i) => (
-            <span 
-              key={i} 
+            <span
+              key={i}
               style={{
                 ...digitBoxStyle,
                 color: getDiscoColor(i),

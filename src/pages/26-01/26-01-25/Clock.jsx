@@ -30,12 +30,18 @@ const AnalogClockTemplate = () => {
       // Low frequency base wave
       const base = Math.sin(t * 1.1) * 0.5 + Math.sin(t * 0.7) * 0.5;
       // Medium frequency flutter
-      const flutter = Math.sin(t * 8.4 + 13.7) * 0.3 + Math.sin(t * 12.2 + 41.9) * 0.2;
+      const flutter =
+        Math.sin(t * 8.4 + 13.7) * 0.3 + Math.sin(t * 12.2 + 41.9) * 0.2;
       // Fast noise / sparkle
-      const noise = (Math.sin(t * 47.1 + 19.3) * 0.5 + Math.sin(t * 73.8 + 88.2) * 0.5) * 0.18;
+      const noise =
+        (Math.sin(t * 47.1 + 19.3) * 0.5 + Math.sin(t * 73.8 + 88.2) * 0.5) *
+        0.18;
 
       let targetOpacity = base + flutter + noise;
-      targetOpacity = Math.max(0.1, Math.min(0.28, targetOpacity * 0.45 + 0.04));
+      targetOpacity = Math.max(
+        0.1,
+        Math.min(0.28, targetOpacity * 0.45 + 0.04),
+      );
 
       setOpacity((prev) => prev + (targetOpacity - prev) * 28 * dt);
 

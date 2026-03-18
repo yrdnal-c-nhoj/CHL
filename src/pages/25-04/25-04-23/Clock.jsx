@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import pirateHook from '../../../assets/images/25-04/25-04-23/hook.webp';
 import pirateCutlass from '../../../assets/images/25-04/25-04-23/pirate_foam.gif';
 import pirateKnife from '../../../assets/images/25-04/25-04-23/cut.gif';
@@ -7,14 +7,24 @@ import pirateBackground from '../../../assets/images/25-04/25-04-23/water.webp';
 
 const PirateClock = () => {
   useEffect(() => {
-    const clock = document.getElementById("clock");
+    const clock = document.getElementById('clock');
     const romanNumerals = [
-      "XII", "I", "II", "III", "IV", "V",
-      "VI", "VII", "VIII", "IX", "X", "XI"
+      'XII',
+      'I',
+      'II',
+      'III',
+      'IV',
+      'V',
+      'VI',
+      'VII',
+      'VIII',
+      'IX',
+      'X',
+      'XI',
     ];
 
     function placeNumbers() {
-      clock.querySelectorAll(".number").forEach(el => el.remove());
+      clock.querySelectorAll('.number').forEach((el) => el.remove());
 
       const clockWidth = clock.offsetWidth;
       const radius = clockWidth * 0.45;
@@ -24,30 +34,30 @@ const PirateClock = () => {
         const angle = (i * 30 - 90) * (Math.PI / 180);
         const x = center + radius * Math.cos(angle);
         const y = center + radius * Math.sin(angle);
-        const number = document.createElement("div");
+        const number = document.createElement('div');
 
         Object.assign(number.style, {
-          position: "absolute",
+          position: 'absolute',
           left: `${x}px`,
           top: `${y}px`,
-          transform: "translate(-50%, -50%)",
-          fontSize: "clamp(2.4rem, 4vw, 2.5rem)", // Responsive font size
-          color: "#c29b0e",
-          textShadow: "rgb(14, 2, 26) 1px 1px 5px",
-          textAlign: "center",
-          width: "4vw",
-          height: "4vw",
-          lineHeight: "4vw",
-          minWidth: "30px",
-          minHeight: "30px",
+          transform: 'translate(-50%, -50%)',
+          fontSize: 'clamp(2.4rem, 4vw, 2.5rem)', // Responsive font size
+          color: '#c29b0e',
+          textShadow: 'rgb(14, 2, 26) 1px 1px 5px',
+          textAlign: 'center',
+          width: '4vw',
+          height: '4vw',
+          lineHeight: '4vw',
+          minWidth: '30px',
+          minHeight: '30px',
           animation: `float ${3.5 + Math.random()}s ease-in-out infinite`,
           animationDelay: `${Math.random() * 2}s`,
-          fontFamily: "Metamorphous, serif",
-          zIndex: "10"
+          fontFamily: 'Metamorphous, serif',
+          zIndex: '10',
         });
 
         number.textContent = num;
-        number.className = "number";
+        number.className = 'number';
         clock.appendChild(number);
       });
     }
@@ -62,9 +72,12 @@ const PirateClock = () => {
       const minuteDeg = min * 6;
       const secondDeg = sec * 6;
 
-      document.querySelector(".hour").style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
-      document.querySelector(".minute").style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
-      document.querySelector(".second").style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
+      document.querySelector('.hour').style.transform =
+        `translateX(-50%) rotate(${hourDeg}deg)`;
+      document.querySelector('.minute').style.transform =
+        `translateX(-50%) rotate(${minuteDeg}deg)`;
+      document.querySelector('.second').style.transform =
+        `translateX(-50%) rotate(${secondDeg}deg)`;
     }
 
     placeNumbers();
@@ -72,11 +85,11 @@ const PirateClock = () => {
     const interval = setInterval(updateClock, 1000);
 
     const handleResize = () => placeNumbers();
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     return () => {
       clearInterval(interval);
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -100,96 +113,108 @@ const PirateClock = () => {
           100% { transform: translate(-50%, -50%) translateY(0); }
         }
       `}</style>
-      <div style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100dvh",
-        width: "100vw",
-        margin: 0,
-        padding: 0,
-        backgroundColor: "#1c4dd3",
-        position: "relative",
-        overflow: "hidden"
-      }}>
-        <div style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundImage: `url(${pirateOverlay})`,
-          backgroundSize: "15% 15%",
-          backgroundRepeat: "repeat",
-          opacity: 0.4,
-          zIndex: 1
-        }} />
-        <img decoding="async" loading="lazy"
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100dvh',
+          width: '100vw',
+          margin: 0,
+          padding: 0,
+          backgroundColor: '#1c4dd3',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url(${pirateOverlay})`,
+            backgroundSize: '15% 15%',
+            backgroundRepeat: 'repeat',
+            opacity: 0.4,
+            zIndex: 1,
+          }}
+        />
+        <img
+          decoding="async"
+          loading="lazy"
           src={pirateBackground}
           alt="Background"
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: 0,
             left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            zIndex: 0
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            zIndex: 0,
           }}
         />
         <div
           id="clock"
           style={{
-            position: "relative",
-            width: "min(80vw, 80vh)",
-            height: "min(80vw, 80vh)",
-            borderRadius: "50%",
-            fontFamily: "Metamorphous, serif",
-            zIndex: 2
+            position: 'relative',
+            width: 'min(80vw, 80vh)',
+            height: 'min(80vw, 80vh)',
+            borderRadius: '50%',
+            fontFamily: 'Metamorphous, serif',
+            zIndex: 2,
           }}
         >
-          <img decoding="async" loading="lazy"
+          <img
+            decoding="async"
+            loading="lazy"
             className="hand hour"
             src={pirateHook}
             alt="Hour hand"
             style={{
-              position: "absolute",
-              bottom: "50%",
-              left: "50%",
-              transformOrigin: "bottom center",
-              transform: "translateX(-50%)",
-              width: "20%",
-              filter: "contrast(0.8)",
-              zIndex: 5
+              position: 'absolute',
+              bottom: '50%',
+              left: '50%',
+              transformOrigin: 'bottom center',
+              transform: 'translateX(-50%)',
+              width: '20%',
+              filter: 'contrast(0.8)',
+              zIndex: 5,
             }}
           />
-          <img decoding="async" loading="lazy"
+          <img
+            decoding="async"
+            loading="lazy"
             className="hand minute"
             src={pirateCutlass}
             alt="Minute hand"
             style={{
-              position: "absolute",
-              bottom: "50%",
-              left: "50%",
-              transformOrigin: "bottom center",
-              transform: "translateX(-50%)",
-              width: "18%",
-              filter: "saturate(0.8)",
-              zIndex: 3
+              position: 'absolute',
+              bottom: '50%',
+              left: '50%',
+              transformOrigin: 'bottom center',
+              transform: 'translateX(-50%)',
+              width: '18%',
+              filter: 'saturate(0.8)',
+              zIndex: 3,
             }}
           />
-          <img decoding="async" loading="lazy"
+          <img
+            decoding="async"
+            loading="lazy"
             className="hand second"
             src={pirateKnife}
             alt="Second hand"
             style={{
-              position: "absolute",
-              bottom: "50%",
-              left: "50%",
-              transformOrigin: "bottom center",
-              transform: "translateX(-50%)",
-              width: "28%",
-              zIndex: 3
+              position: 'absolute',
+              bottom: '50%',
+              left: '50%',
+              transformOrigin: 'bottom center',
+              transform: 'translateX(-50%)',
+              width: '28%',
+              zIndex: 3,
             }}
           />
         </div>

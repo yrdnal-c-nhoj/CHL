@@ -30,7 +30,9 @@ export default defineConfig({
             return 'assets/fonts/[name]-[hash][extname]';
           }
           // Group all common image types and videos into the assets/images folder
-          if (/\.(gif|jpe?g|png|svg|webp|avif|mp4|webm)$/i.test(assetInfo.name)) {
+          if (
+            /\.(gif|jpe?g|png|svg|webp|avif|mp4|webm)$/i.test(assetInfo.name)
+          ) {
             return 'assets/images/[name]-[hash][extname]';
           }
           return 'assets/[name]-[hash][extname]';

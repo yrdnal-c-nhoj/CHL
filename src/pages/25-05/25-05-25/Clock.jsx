@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
 import arm from '../../../assets/images/25-05/25-05-25/arm.gif';
 import arm2 from '../../../assets/images/25-05/25-05-25/arm2.gif';
@@ -9,9 +9,9 @@ import botFontUrl from '../../../assets/fonts/25-05-25-bot.ttf';
 const Clock = () => {
   const fontReady = useFontLoader('bot', botFontUrl, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
-  
+
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
@@ -23,9 +23,12 @@ const Clock = () => {
       const minuteDeg = minute * 6 + second * 0.1;
       const hourDeg = hour * 30 + minute * 0.5;
 
-      document.getElementById("second-hand").style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
-      document.getElementById("minute-hand").style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
-      document.getElementById("hour-hand").style.transform = `translate(-50%, -100%) rotate(${hourDeg}deg)`;
+      document.getElementById('second-hand').style.transform =
+        `translate(-50%, -100%) rotate(${secondDeg}deg)`;
+      document.getElementById('minute-hand').style.transform =
+        `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
+      document.getElementById('hour-hand').style.transform =
+        `translate(-50%, -100%) rotate(${hourDeg}deg)`;
     };
 
     updateClock();
@@ -35,7 +38,7 @@ const Clock = () => {
 
   // Inject font-face dynamically
   useEffect(() => {
-    const style = document.createElement("style");
+    const style = document.createElement('style');
     style.innerHTML = `
       @font-face {
         font-family: 'bot';
@@ -46,7 +49,7 @@ const Clock = () => {
       }
     `;
     document.head.appendChild(style);
-    
+
     return () => {
       if (document.head.contains(style)) {
         document.head.removeChild(style);
@@ -57,52 +60,58 @@ const Clock = () => {
   const containerStyle = {
     margin: 0,
     padding: 0,
-    height: "100dvh",
-    width: "100vw",
-    background: "radial-gradient(circle at center, #E2EE76, #ff6a06)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    height: '100dvh',
+    width: '100vw',
+    background: 'radial-gradient(circle at center, #E2EE76, #ff6a06)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   };
 
   const clockContainerStyle = {
-    position: "relative",
-    width: "80vmin",
-    height: "80vmin",
+    position: 'relative',
+    width: '80vmin',
+    height: '80vmin',
   };
 
   const clockStyle = {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
-    width: "100%",
-    height: "100%",
-    borderRadius: "50%",
+    width: '100%',
+    height: '100%',
+    borderRadius: '50%',
     zIndex: 1,
   };
 
   const numberStyle = {
-    position: "absolute",
-    color: "rgb(1, 80, 94)",
-    fontSize: "7vh",
-    transform: "translate(-50%, -50%)",
-    textShadow: "#f4d6f4 6px 6px",
+    position: 'absolute',
+    color: 'rgb(1, 80, 94)',
+    fontSize: '7vh',
+    transform: 'translate(-50%, -50%)',
+    textShadow: '#f4d6f4 6px 6px',
     fontFamily: "'bot', sans-serif",
     // Debug styles
     // border: fontReady ? '2px solid green' : '2px solid red',
   };
 
   const handBaseStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transformOrigin: "bottom center",
-    transform: "translate(-50%, -100%) rotate(0deg)",
-    pointerEvents: "none",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transformOrigin: 'bottom center',
+    transform: 'translate(-50%, -100%) rotate(0deg)',
+    pointerEvents: 'none',
   };
 
   return (
-    <div style={{...containerStyle, opacity: fontReady ? 1 : 0.5, transition: 'opacity 0.3s ease'}}>
+    <div
+      style={{
+        ...containerStyle,
+        opacity: fontReady ? 1 : 0.5,
+        transition: 'opacity 0.3s ease',
+      }}
+    >
       <div style={clockContainerStyle}>
         <div style={clockStyle} id="clock">
           {/* Numbers */}
@@ -127,35 +136,42 @@ const Clock = () => {
 
           {/* Hands */}
           <div className="hand second" id="second-hand" style={handBaseStyle}>
-            <img decoding="async" loading="lazy"
+            <img
+              decoding="async"
+              loading="lazy"
               src={arm2}
               alt="Second Hand"
               style={{
-                height: "45vmin",
-                filter: "saturate(100%)  hue-rotate(73deg) contrast(280%) brightness(150%)",
+                height: '45vmin',
+                filter:
+                  'saturate(100%)  hue-rotate(73deg) contrast(280%) brightness(150%)',
               }}
             />
           </div>
 
           <div className="hand minute" id="minute-hand" style={handBaseStyle}>
-            <img decoding="async" loading="lazy"
+            <img
+              decoding="async"
+              loading="lazy"
               src={arm3}
               alt="Minute Hand"
               style={{
-                height: "35vmin",
-                filter: "saturate(600%) contrast(180%) hue-rotate(170deg)",
+                height: '35vmin',
+                filter: 'saturate(600%) contrast(180%) hue-rotate(170deg)',
               }}
             />
           </div>
 
           <div className="hand hour" id="hour-hand" style={handBaseStyle}>
-            <img decoding="async" loading="lazy"
+            <img
+              decoding="async"
+              loading="lazy"
               src={arm}
               alt="Hour Hand"
               style={{
-                height: "27vmin",
-                transform: "scaleX(-1)",
-                filter: "saturate(70%)  hue-rotate(73deg) contrast(180%)",
+                height: '27vmin',
+                transform: 'scaleX(-1)',
+                filter: 'saturate(70%)  hue-rotate(73deg) contrast(180%)',
               }}
             />
           </div>

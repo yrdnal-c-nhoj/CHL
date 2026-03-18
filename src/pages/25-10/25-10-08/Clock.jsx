@@ -1,35 +1,35 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 
 // === Local assets ===
-import bgImg from "../../../assets/images/25-10/25-10-08/table.png";
-import digit0 from "../../../assets/images/25-10/25-10-08/0.jpg";
-import digit1 from "../../../assets/images/25-10/25-10-08/1.webp";
-import digit2 from "../../../assets/images/25-10/25-10-08/2.png";
-import digit3 from "../../../assets/images/25-10/25-10-08/3.webp";
-import digit4 from "../../../assets/images/25-10/25-10-08/4.jpg";
-import digit5 from "../../../assets/images/25-10/25-10-08/5.webp";
-import digit6 from "../../../assets/images/25-10/25-10-08/6.jpg";
-import digit7 from "../../../assets/images/25-10/25-10-08/7.webp";
-import digit8 from "../../../assets/images/25-10/25-10-08/8.webp";
-import digit9 from "../../../assets/images/25-10/25-10-08/9.gif";
+import bgImg from '../../../assets/images/25-10/25-10-08/table.png';
+import digit0 from '../../../assets/images/25-10/25-10-08/0.jpg';
+import digit1 from '../../../assets/images/25-10/25-10-08/1.webp';
+import digit2 from '../../../assets/images/25-10/25-10-08/2.png';
+import digit3 from '../../../assets/images/25-10/25-10-08/3.webp';
+import digit4 from '../../../assets/images/25-10/25-10-08/4.jpg';
+import digit5 from '../../../assets/images/25-10/25-10-08/5.webp';
+import digit6 from '../../../assets/images/25-10/25-10-08/6.jpg';
+import digit7 from '../../../assets/images/25-10/25-10-08/7.webp';
+import digit8 from '../../../assets/images/25-10/25-10-08/8.webp';
+import digit9 from '../../../assets/images/25-10/25-10-08/9.gif';
 
 const digitMap = {
-  "0": digit0,
-  "1": digit1,
-  "2": digit2,
-  "3": digit3,
-  "4": digit4,
-  "5": digit5,
-  "6": digit6,
-  "7": digit7,
-  "8": digit8,
-  "9": digit9,
+  0: digit0,
+  1: digit1,
+  2: digit2,
+  3: digit3,
+  4: digit4,
+  5: digit5,
+  6: digit6,
+  7: digit7,
+  8: digit8,
+  9: digit9,
 };
 
 const getAllDigits = (t) => {
-  const hours = String(t.getHours() % 12 || 12).padStart(2, "0");
-  const minutes = String(t.getMinutes()).padStart(2, "0");
-  const seconds = String(t.getSeconds()).padStart(2, "0");
+  const hours = String(t.getHours() % 12 || 12).padStart(2, '0');
+  const minutes = String(t.getMinutes()).padStart(2, '0');
+  const seconds = String(t.getSeconds()).padStart(2, '0');
   return hours + minutes + seconds;
 };
 
@@ -70,66 +70,81 @@ export default function DigitalImageClock() {
       const mobile = window.innerWidth <= 768;
       setIsMobile(mobile);
     };
-    
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
     calculateSize();
-    window.addEventListener("resize", calculateSize);
-    return () => window.removeEventListener("resize", calculateSize);
+    window.addEventListener('resize', calculateSize);
+    return () => window.removeEventListener('resize', calculateSize);
   }, [calculateSize]);
 
-  const containerStyle = useMemo(() => ({
-    width: "100vw",
-    height: "100dvh",
-    position: "relative",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  }), []);
+  const containerStyle = useMemo(
+    () => ({
+      width: '100vw',
+      height: '100dvh',
+      position: 'relative',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }),
+    [],
+  );
 
-  const backgroundStyle = useMemo(() => ({
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    backgroundImage: `url(${bgImg})`,
-    backgroundSize: "100% 100%",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    filter: "contrast(0.6)",
-    opacity: 0.5,
-    zIndex: 0,
-  }), []);
+  const backgroundStyle = useMemo(
+    () => ({
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      backgroundImage: `url(${bgImg})`,
+      backgroundSize: '100% 100%',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      filter: 'contrast(0.6)',
+      opacity: 0.5,
+      zIndex: 0,
+    }),
+    [],
+  );
 
-  const clockWrapperStyle = useMemo(() => ({
-    display: "flex",
-    flexDirection: isMobile ? "column" : "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 0,
-    zIndex: 1,
-  }), [isMobile]);
+  const clockWrapperStyle = useMemo(
+    () => ({
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 0,
+      zIndex: 1,
+    }),
+    [isMobile],
+  );
 
-  const groupStyle = useMemo(() => ({
-    display: "flex",
-    flexDirection: "row",
-    gap: 0,
-  }), []);
+  const groupStyle = useMemo(
+    () => ({
+      display: 'flex',
+      flexDirection: 'row',
+      gap: 0,
+    }),
+    [],
+  );
 
-  const digitStyle = useMemo(() => ({
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    objectFit: "contain",
-    transition: "opacity 0.5s ease-in-out",
-    opacity: 0.5,
-  }), []);
+  const digitStyle = useMemo(
+    () => ({
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      objectFit: 'contain',
+      transition: 'opacity 0.5s ease-in-out',
+      opacity: 0.5,
+    }),
+    [],
+  );
 
   if (digitSize === 0) return null;
 
@@ -141,7 +156,7 @@ export default function DigitalImageClock() {
           <div key={startIdx} style={groupStyle}>
             {currentDigits
               .slice(startIdx, startIdx + 2)
-              .split("")
+              .split('')
               .map((digit, idx, arr) => {
                 const prevDigit = prevDigits[startIdx + idx];
                 return (
@@ -150,19 +165,23 @@ export default function DigitalImageClock() {
                     style={{
                       width: `${digitSize}px`,
                       height: `${digitSize}px`,
-                      position: "relative",
+                      position: 'relative',
                       marginRight:
-                        !isMobile && idx !== arr.length - 1 ? "1px" : "0px",
+                        !isMobile && idx !== arr.length - 1 ? '1px' : '0px',
                       marginBottom:
-                        isMobile && idx !== arr.length - 1 ? "1px" : "0px",
+                        isMobile && idx !== arr.length - 1 ? '1px' : '0px',
                     }}
                   >
-                    <img decoding="async" loading="lazy"
+                    <img
+                      decoding="async"
+                      loading="lazy"
                       src={digitMap[prevDigit] || digitMap[digit]}
                       alt={prevDigit}
                       style={digitStyle}
                     />
-                    <img decoding="async" loading="lazy"
+                    <img
+                      decoding="async"
+                      loading="lazy"
                       src={digitMap[digit]}
                       alt={digit}
                       style={digitStyle}

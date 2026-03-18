@@ -31,7 +31,15 @@ const CattleBrandClock = () => {
   };
 
   return (
-    <div style={{ fontSize: '1rem', margin: 0, height: '100vh', width: '100vw', fontFamily: 'cattle' }}>
+    <div
+      style={{
+        fontSize: '1rem',
+        margin: 0,
+        height: '100vh',
+        width: '100vw',
+        fontFamily: 'cattle',
+      }}
+    >
       <style>
         {`
           @font-face {
@@ -41,7 +49,9 @@ const CattleBrandClock = () => {
         `}
       </style>
 
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={bgImage}
         alt="Background"
         style={{
@@ -54,9 +64,6 @@ const CattleBrandClock = () => {
           zIndex: 1,
         }}
       />
-
-
-      
 
       <div
         style={{

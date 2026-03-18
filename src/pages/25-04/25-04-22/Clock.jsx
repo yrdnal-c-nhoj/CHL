@@ -46,7 +46,7 @@ const CubeClock = () => {
 
     const updateAllClocks = () => {
       const faces = cube?.querySelectorAll('div');
-      faces?.forEach(face => updateClock(face));
+      faces?.forEach((face) => updateClock(face));
     };
 
     const animate = () => {
@@ -144,7 +144,7 @@ const styles = {
 };
 
 // Global keyframes
-const globalStyle = document.createElement("style");
+const globalStyle = document.createElement('style');
 globalStyle.textContent = `
 @keyframes rotate {
   0% { transform: rotateX(0deg) rotateY(0deg); }

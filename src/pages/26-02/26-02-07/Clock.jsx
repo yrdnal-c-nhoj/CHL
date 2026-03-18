@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useFontLoader } from '../../../utils/fontLoader';
-import customFontUrl from '../../../assets/fonts/26-02-07-gear.ttf?url'; 
-import backgroundImage from '../../../assets/images/26-02/26-02-07/gear.gif'; 
+import customFontUrl from '../../../assets/fonts/26-02-07-gear.ttf?url';
+import backgroundImage from '../../../assets/images/26-02/26-02-07/gear.gif';
 
 const FullscreenClock = () => {
   const [time, setTime] = useState(new Date());
   const FONT_NAME = 'GearFont';
-  
+
   // Use standardized font loader
   const fontReady = useFontLoader(FONT_NAME, customFontUrl, {
     timeout: 5000,
-    fallback: true
+    fallback: true,
   });
 
   useEffect(() => {
@@ -26,42 +26,45 @@ const FullscreenClock = () => {
       String(hours).padStart(2, '0'),
       String(time.getMinutes()).padStart(2, '0'),
       String(time.getSeconds()).padStart(2, '0'),
-      ampm
+      ampm,
     ].join('');
     return str.split('');
   }, [time]);
 
   if (!fontReady) {
     return (
-      <div style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        backgroundColor: '#E9F7AB',
-        backgroundImage: 'radial-gradient(circle, #E9F7AB 0%, #CDF296 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#7B0404',
-        fontFamily: 'monospace',
-        fontSize: '1.5rem'
-      }}>
+      <div
+        style={{
+          position: 'relative',
+          width: '100vw',
+          height: '100dvh',
+          backgroundColor: '#E9F7AB',
+          backgroundImage: 'radial-gradient(circle, #E9F7AB 0%, #CDF296 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#7B0404',
+          fontFamily: 'monospace',
+          fontSize: '1.5rem',
+        }}
+      >
         Loading...
       </div>
     );
   }
 
   return (
-    <div style={{
-      position: 'relative',
-      width: '100vw',
-      height: '100dvh',
-      backgroundColor: '#E9F7AB',
-      backgroundImage: 'radial-gradient(circle, #E9F7AB 0%, #CDF296 100%)',
-      overflow: 'hidden',
-      fontFamily: `'${FONT_NAME}', sans-serif`,
-    }}>
-      
+    <div
+      style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100dvh',
+        backgroundColor: '#E9F7AB',
+        backgroundImage: 'radial-gradient(circle, #E9F7AB 0%, #CDF296 100%)',
+        overflow: 'hidden',
+        fontFamily: `'${FONT_NAME}', sans-serif`,
+      }}
+    >
       <style>{`
         @keyframes rotate {
           from { transform: rotate(0deg); }
@@ -146,27 +149,32 @@ const FullscreenClock = () => {
 
       <svg style={{ position: 'absolute', width: 0, height: 0 }}>
         <filter id="gear-fix">
-          <feColorMatrix type="matrix" values="
+          <feColorMatrix
+            type="matrix"
+            values="
              -0.81  2.13  0.18  0  0
               0.18 -0.81  2.13  0  0
               2.13  0.18 -0.81  0  0
-              0     0     0     0.4 0" />
+              0     0     0     0.4 0"
+          />
         </filter>
       </svg>
 
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: '15vh 15vh',
-        backgroundRepeat: 'repeat',
-        backgroundPosition: 'center',
-        transform: 'scaleX(-1) translateZ(0)',
-        filter: 'url(#gear-fix) brightness(2.8) contrast(0.8)', 
-        zIndex: 1,
-        pointerEvents: 'none'
-      }} />
-      
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: '15vh 15vh',
+          backgroundRepeat: 'repeat',
+          backgroundPosition: 'center',
+          transform: 'scaleX(-1) translateZ(0)',
+          filter: 'url(#gear-fix) brightness(2.8) contrast(0.8)',
+          zIndex: 1,
+          pointerEvents: 'none',
+        }}
+      />
+
       <div className="clock-grid">
         {digits.map((char, i) => (
           /* key={i} ensures the DIV is not re-mounted, so rotation is continuous */

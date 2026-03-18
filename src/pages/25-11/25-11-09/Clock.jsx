@@ -1,15 +1,69 @@
 // src/components/DarkRomanClock.jsx
 import React, { useState, useEffect, useMemo } from 'react';
-import Font20251111 from '../../../assets/fonts/25-11-09-disc.ttf';       // main Roman font
+import Font20251111 from '../../../assets/fonts/25-11-09-disc.ttf'; // main Roman font
 import ActiveFont20251111 from '../../../assets/fonts/25-11-09-pin.ttf'; // active digit font
 
 const ROMAN_NUMERALS = [
-  'I','II','III','IV','V','VI','VII','VIII','IX','X',
-  'XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX',
-  'XXI','XXII','XXIII','XXIV','XXV','XXVI','XXVII','XXVIII','XXIX','XXX',
-  'XXXI','XXXII','XXXIII','XXXIV','XXXV','XXXVI','XXXVII','XXXVIII','XXXIX','XL',
-  'XLI','XLII','XLIII','XLIV','XLV','XLVI','XLVII','XLVIII','XLIX','L',
-  'LI','LII','LIII','LIV','LV','LVI','LVII','LVIII','LIX','LX'
+  'I',
+  'II',
+  'III',
+  'IV',
+  'V',
+  'VI',
+  'VII',
+  'VIII',
+  'IX',
+  'X',
+  'XI',
+  'XII',
+  'XIII',
+  'XIV',
+  'XV',
+  'XVI',
+  'XVII',
+  'XVIII',
+  'XIX',
+  'XX',
+  'XXI',
+  'XXII',
+  'XXIII',
+  'XXIV',
+  'XXV',
+  'XXVI',
+  'XXVII',
+  'XXVIII',
+  'XXIX',
+  'XXX',
+  'XXXI',
+  'XXXII',
+  'XXXIII',
+  'XXXIV',
+  'XXXV',
+  'XXXVI',
+  'XXXVII',
+  'XXXVIII',
+  'XXXIX',
+  'XL',
+  'XLI',
+  'XLII',
+  'XLIII',
+  'XLIV',
+  'XLV',
+  'XLVI',
+  'XLVII',
+  'XLVIII',
+  'XLIX',
+  'L',
+  'LI',
+  'LII',
+  'LIII',
+  'LIV',
+  'LV',
+  'LVI',
+  'LVII',
+  'LVIII',
+  'LIX',
+  'LX',
 ];
 
 // Helpers
@@ -34,16 +88,16 @@ const DarkRomanClock = () => {
   const ALIGNMENT_DEGREE = 180;
 
   const hourAngle = useMemo(
-    () => ((totalSeconds / 3600) / 24) * -360 + ALIGNMENT_DEGREE,
-    [totalSeconds]
+    () => (totalSeconds / 3600 / 24) * -360 + ALIGNMENT_DEGREE,
+    [totalSeconds],
   );
   const minuteAngle = useMemo(
-    () => ((totalSeconds / 60) / 60) * -360 + ALIGNMENT_DEGREE,
-    [totalSeconds]
+    () => (totalSeconds / 60 / 60) * -360 + ALIGNMENT_DEGREE,
+    [totalSeconds],
   );
   const secondAngle = useMemo(
     () => ((totalSeconds % 60) / 60) * -360 + ALIGNMENT_DEGREE,
-    [totalSeconds]
+    [totalSeconds],
   );
 
   const currentH = time.getHours();
@@ -109,7 +163,7 @@ const DarkRomanClock = () => {
           }}
         >
           {romanByIndex(i)}
-        </div>
+        </div>,
       );
     }
     return numerals;
@@ -139,19 +193,19 @@ const DarkRomanClock = () => {
   const hoursRing = renderRing(
     hourRadiusVH * 2.2,
     hourAngle,
-    renderNumerals(24, hoursActiveIndex, hourRadiusVH, 'h')
+    renderNumerals(24, hoursActiveIndex, hourRadiusVH, 'h'),
   );
 
   const minutesRing = renderRing(
     minuteRadiusVH * 2.2,
     minuteAngle,
-    renderNumerals(60, minutesActiveIndex, minuteRadiusVH, 'm')
+    renderNumerals(60, minutesActiveIndex, minuteRadiusVH, 'm'),
   );
 
   const secondsRing = renderRing(
     secondRadiusVH * 2.2,
     secondAngle,
-    renderNumerals(60, secondsActiveIndex, secondRadiusVH, 's')
+    renderNumerals(60, secondsActiveIndex, secondRadiusVH, 's'),
   );
 
   return (

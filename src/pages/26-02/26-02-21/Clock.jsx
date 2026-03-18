@@ -39,7 +39,9 @@ const generateImageStyle = (isDynamic = false) => ({
   maxWidth: '40vw',
   objectFit: 'cover',
   opacity: isDynamic ? 0.8 : 0.6 + Math.random() * 0.2,
-  zIndex: isDynamic ? Math.floor(Math.random() * 10) + 50 : Math.floor(Math.random() * 10),
+  zIndex: isDynamic
+    ? Math.floor(Math.random() * 10) + 50
+    : Math.floor(Math.random() * 10),
   filter: `hue-rotate(${Math.random() * 360}deg) brightness(${0.8 + Math.random() * 0.4})`,
   pointerEvents: 'none',
   transition: 'all 0.5s ease-out',
@@ -51,17 +53,26 @@ const generateImageStyle = (isDynamic = false) => ({
 
 // Memoized background to prevent re-renders on every clock tick
 const StaticCollage = memo(({ count }) => {
-  const collage = useMemo(() => 
-    Array.from({ length: count }, (_, i) => ({
-      id: `static-${i}`,
-      src: getRandomImage(),
-      style: generateImageStyle(false)
-    })), [count]);
+  const collage = useMemo(
+    () =>
+      Array.from({ length: count }, (_, i) => ({
+        id: `static-${i}`,
+        src: getRandomImage(),
+        style: generateImageStyle(false),
+      })),
+    [count],
+  );
 
   return (
     <>
-      {collage.map(img => (
-        <img key={img.id} src={img.src} style={img.style} alt="" aria-hidden="true" />
+      {collage.map((img) => (
+        <img
+          key={img.id}
+          src={img.src}
+          style={img.style}
+          alt=""
+          aria-hidden="true"
+        />
       ))}
     </>
   );
@@ -85,10 +96,13 @@ export default function RefactoredClock() {
       const newImg = {
         id: now.getTime(),
         src: getRandomImage(),
-        style: generateImageStyle(true)
+        style: generateImageStyle(true),
       };
 
-      setDynamicImages(prev => [...prev.slice(-(CONFIG.MAX_DYNAMIC_IMAGES - 1)), newImg]);
+      setDynamicImages((prev) => [
+        ...prev.slice(-(CONFIG.MAX_DYNAMIC_IMAGES - 1)),
+        newImg,
+      ]);
     }, CONFIG.UPDATE_INTERVAL);
 
     return () => clearInterval(ticker);
@@ -108,11 +122,14 @@ export default function RefactoredClock() {
 
     // Check if font is loaded
     const font = new FontFace(CONFIG.FONT_FAMILY, `url(${customFont})`);
-    font.load().then(() => {
-      setFontReady(true);
-    }).catch(() => {
-      setFontReady(true); // Still show content even if font fails
-    });
+    font
+      .load()
+      .then(() => {
+        setFontReady(true);
+      })
+      .catch(() => {
+        setFontReady(true); // Still show content even if font fails
+      });
 
     return () => {
       if (document.head.contains(style)) {
@@ -132,17 +149,19 @@ export default function RefactoredClock() {
 
   if (!fontReady) {
     return (
-      <div style={{
-        width: '100vw',
-        height: '100dvh',
-        backgroundColor: '#000',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#fff',
-        fontFamily: 'monospace',
-        fontSize: '1.5rem'
-      }}>
+      <div
+        style={{
+          width: '100vw',
+          height: '100dvh',
+          backgroundColor: '#000',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#fff',
+          fontFamily: 'monospace',
+          fontSize: '1.5rem',
+        }}
+      >
         Loading...
       </div>
     );
@@ -169,11 +188,14 @@ export default function RefactoredClock() {
     zIndex: 100,
     position: 'relative',
     mixBlendMode: 'difference', // Makes text readable over any background color
-    opacity: 0.8
+    opacity: 0.8,
   };
 
   return (
-    <div style={rootStyle} aria-label={`Current time: ${timeStrings.h}:${timeStrings.m}`}>
+    <div
+      style={rootStyle}
+      aria-label={`Current time: ${timeStrings.h}:${timeStrings.m}`}
+    >
       {/* Global Style Injection for Font Face */}
       <style>{`
         @font-face {
@@ -187,7 +209,7 @@ export default function RefactoredClock() {
 
       <StaticCollage count={CONFIG.COLLAGE_COUNT} />
 
-      {dynamicImages.map(img => (
+      {dynamicImages.map((img) => (
         <img key={img.id} src={img.src} style={img.style} alt="" />
       ))}
 

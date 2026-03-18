@@ -89,16 +89,35 @@ const ClockGrid = () => {
       const currentTime = new Date();
       const hour = currentTime.getHours() % 12 || 12;
       const minute = currentTime.getMinutes();
-      const second = currentTime.getSeconds() + currentTime.getMilliseconds() / 1000;
+      const second =
+        currentTime.getSeconds() + currentTime.getMilliseconds() / 1000;
 
       const handLength = clockSize * 12; // proportional long hands
 
       clocks.forEach(({ x, y, radius }) => {
         handsCtx.save();
         handsCtx.translate(x, y);
-        drawHand(handsCtx, (second * Math.PI) / 30, handLength, radius * 0.1, '#F90810FF'); // Second
-        drawHand(handsCtx, ((hour + minute / 60) * Math.PI) / 6, handLength, radius * 0.1, '#63FC11FF'); // Hour
-        drawHand(handsCtx, ((minute + second / 60) * Math.PI) / 30, handLength, radius * 0.1, '#893CF6FF'); // Minute
+        drawHand(
+          handsCtx,
+          (second * Math.PI) / 30,
+          handLength,
+          radius * 0.1,
+          '#F90810FF',
+        ); // Second
+        drawHand(
+          handsCtx,
+          ((hour + minute / 60) * Math.PI) / 6,
+          handLength,
+          radius * 0.1,
+          '#63FC11FF',
+        ); // Hour
+        drawHand(
+          handsCtx,
+          ((minute + second / 60) * Math.PI) / 30,
+          handLength,
+          radius * 0.1,
+          '#893CF6FF',
+        ); // Minute
         handsCtx.restore();
       });
 

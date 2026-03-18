@@ -81,7 +81,8 @@ const CloudyNightClock = () => {
     backgroundPosition: 'center',
     animation: 'cloudSweep 15s infinite ease-in-out',
     zIndex: 10,
-    filter: 'brightness(40%) contrast(200%) sepia(1) hue-rotate(190deg) saturate(2)',
+    filter:
+      'brightness(40%) contrast(200%) sepia(1) hue-rotate(190deg) saturate(2)',
     opacity: 0.7,
   };
 
@@ -161,11 +162,18 @@ const CloudyNightClock = () => {
 
   return (
     <div style={containerStyle}>
-
-      <img decoding="async" loading="lazy" src={clll} alt="bg" style={bgImageStyle} />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={clll}
+        alt="bg"
+        style={bgImageStyle}
+      />
 
       <div style={moonStyle}>
-        <div style={clockRef ? clockStyle : {}} ref={clockRef}>12:00</div>
+        <div style={clockRef ? clockStyle : {}} ref={clockRef}>
+          12:00
+        </div>
       </div>
 
       <div style={cloudStyle}></div>

@@ -9,10 +9,12 @@ const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 40,
   UPDATE_INTERVAL_MS: 50,
   FONT_FAMILY: "'Gilda Display', serif",
-  FONT_URL: 'https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap',
+  FONT_URL:
+    'https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap',
   COLORS: {
     background: '#BFA7A7',
-    silverText: 'linear-gradient(180deg, #24058B 0%, #000000 45%, #232222 50%, #062D79 100%)',
+    silverText:
+      'linear-gradient(180deg, #24058B 0%, #000000 45%, #232222 50%, #062D79 100%)',
     hourHand: 'linear-gradient(to right, #4E4D4D, #282727, #4D4949)',
     minuteHand: 'linear-gradient(to right, #3B3939, #383636, #484444)',
     secondHand: 'linear-gradient(to top, #4B4C4F, #4F4F52)',
@@ -32,7 +34,7 @@ const getHandRotation = (value, multiplier) => value * multiplier;
 const calculateNumeralPosition = (number) => {
   const angleRad = (number / 12) * 2 * Math.PI;
   const angleDeg = (number / 12) * 360;
-  
+
   return {
     x: 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angleRad),
     y: 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angleRad),
@@ -45,17 +47,17 @@ const calculateTimeValues = (date) => {
   const sec = date.getSeconds() + msec / 1000;
   const min = date.getMinutes() + sec / 60;
   const hr = (date.getHours() % 12) + min / 60;
-  
+
   return { hr, min, sec };
 };
 
 // --- Custom Hooks ---
 const useGoogleFont = (fontUrl = CLOCK_CONFIG.FONT_URL) => {
   const [fontReady, setFontReady] = useState(false);
-  
+
   useEffect(() => {
     const fontId = 'gilda-display-font';
-    
+
     // Check if font is already loaded
     const fontIsLoaded = () => {
       return document.fonts.check('1em "Gilda Display"');
@@ -65,7 +67,7 @@ const useGoogleFont = (fontUrl = CLOCK_CONFIG.FONT_URL) => {
       setFontReady(true);
       return;
     }
-    
+
     if (document.getElementById(fontId)) {
       setFontReady(true);
       return;
@@ -78,12 +80,12 @@ const useGoogleFont = (fontUrl = CLOCK_CONFIG.FONT_URL) => {
     link.href = fontUrl;
     link.media = 'print'; // Initially load as print to avoid FOUC
     document.head.appendChild(link);
-    
+
     // Switch media to all to activate fonts
     setTimeout(() => {
       link.media = 'all';
     }, 0);
-    
+
     // Check for font readiness
     const checkFonts = setInterval(() => {
       if (fontIsLoaded()) {
@@ -91,19 +93,19 @@ const useGoogleFont = (fontUrl = CLOCK_CONFIG.FONT_URL) => {
         setFontReady(true);
       }
     }, 50);
-    
+
     // Fallback timeout
     const fallbackTimeout = setTimeout(() => {
       clearInterval(checkFonts);
       setFontReady(true);
     }, 3000);
-    
+
     return () => {
       clearInterval(checkFonts);
       clearTimeout(fallbackTimeout);
     };
   }, [fontUrl]);
-  
+
   return fontReady;
 };
 
@@ -132,7 +134,8 @@ const BackgroundLayers = () => (
         ...styles.backgroundLayer,
         backgroundImage: `url(${bellImage2})`,
         backgroundSize: 'cover',
-        filter: 'saturate(520%) hue-rotate(-120deg) contrast(0.4) brightness(1.6)',
+        filter:
+          'saturate(520%) hue-rotate(-120deg) contrast(0.4) brightness(1.6)',
         zIndex: 1,
       }}
     />
@@ -182,9 +185,7 @@ const ClockHand = ({ type, rotation }) => {
   );
 };
 
-const CenterDot = () => (
-  <div style={styles.centerDot} />
-);
+const CenterDot = () => <div style={styles.centerDot} />;
 
 // --- Main Component ---
 const AnalogClock = () => {
@@ -201,7 +202,7 @@ const AnalogClock = () => {
       }}
     >
       <BackgroundLayers />
-      
+
       <div style={styles.clockFace}>
         <ClockNumerals />
         <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />

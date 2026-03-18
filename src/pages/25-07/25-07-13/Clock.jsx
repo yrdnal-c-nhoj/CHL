@@ -25,12 +25,18 @@ const RorschachClock = () => {
   const wrapDigits = (timeStr, ampm) => {
     const digitsHtml = timeStr
       .split('')
-      .map((char, i) => `<span style="font-size: ${getRandomFontSize()};">${char}</span>`)
+      .map(
+        (char, i) =>
+          `<span style="font-size: ${getRandomFontSize()};">${char}</span>`,
+      )
       .join('');
 
     const ampmHtml = ampm
       .split('')
-      .map((char) => `<span class="ampm" style="font-size: ${getRandomAmpmSize()};">${char}</span>`)
+      .map(
+        (char) =>
+          `<span class="ampm" style="font-size: ${getRandomAmpmSize()};">${char}</span>`,
+      )
       .join('');
 
     return digitsHtml + ampmHtml;
@@ -104,10 +110,12 @@ const RorschachClock = () => {
 
   return (
     <div style={containerStyle}>
-     
-
       <div style={{ ...clockContainerStyle, left: 'calc(50% - 20vw)' }}>
-        <div ref={mirrorRef} style={clockStyle('-90deg', true)} id="mirrorClock"></div>
+        <div
+          ref={mirrorRef}
+          style={clockStyle('-90deg', true)}
+          id="mirrorClock"
+        ></div>
       </div>
 
       <div style={{ ...clockContainerStyle, right: 'calc(50% - 20vw)' }}>

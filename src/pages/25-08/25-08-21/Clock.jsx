@@ -6,7 +6,11 @@ const NumberLineClock = () => {
   const minutesRef = useRef(null);
   const secondsRef = useRef(null);
 
-  const [itemWidths, setItemWidths] = useState({ hours: 0, minutes: 0, seconds: 0 });
+  const [itemWidths, setItemWidths] = useState({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
   const [containerWidth, setContainerWidth] = useState(0);
 
   useEffect(() => {
@@ -47,18 +51,24 @@ const NumberLineClock = () => {
   }, []);
 
   useEffect(() => {
-    if (!itemWidths.seconds || !itemWidths.minutes || !itemWidths.hours || !containerWidth) return;
+    if (
+      !itemWidths.seconds ||
+      !itemWidths.minutes ||
+      !itemWidths.hours ||
+      !containerWidth
+    )
+      return;
 
     let animationFrameId;
 
     const updateScrollPositions = () => {
       const now = new Date();
-      
+
       // Get 24-hour format and convert to 12-hour
       let hours24 = now.getHours();
       let hours12 = hours24 % 12;
       if (hours12 === 0) hours12 = 12; // Convert 0 to 12 for 12 AM/PM
-      
+
       const minutes = now.getMinutes();
       const seconds = now.getSeconds() + now.getMilliseconds() / 1000; // Smooth scroll
 
@@ -67,20 +77,29 @@ const NumberLineClock = () => {
         const currentHour = hours12 - 1; // Convert to 0-based index (0-11)
         const hourPosition = currentHour + minutes / 60; // Progress through the hour
         // Position between the current hour and next hour
-        const targetScrollLeft = hourPosition * itemWidths.hours - containerWidth / 2 + itemWidths.hours;
+        const targetScrollLeft =
+          hourPosition * itemWidths.hours -
+          containerWidth / 2 +
+          itemWidths.hours;
         hoursRef.current.scrollLeft = targetScrollLeft;
       }
 
       if (minutesRef.current) {
         // Position between numbers - progress through the minute
         const minutePosition = minutes + seconds / 60;
-        const targetScrollLeft = minutePosition * itemWidths.minutes - containerWidth / 2 + itemWidths.minutes;
+        const targetScrollLeft =
+          minutePosition * itemWidths.minutes -
+          containerWidth / 2 +
+          itemWidths.minutes;
         minutesRef.current.scrollLeft = targetScrollLeft;
       }
 
       if (secondsRef.current) {
         // Position between numbers - progress through the second
-        const targetScrollLeft = seconds * itemWidths.seconds - containerWidth / 2 + itemWidths.seconds;
+        const targetScrollLeft =
+          seconds * itemWidths.seconds -
+          containerWidth / 2 +
+          itemWidths.seconds;
         secondsRef.current.scrollLeft = targetScrollLeft;
       }
 
@@ -144,7 +163,9 @@ const NumberLineClock = () => {
               }}
             >
               <div style={{ marginBottom: '0.3rem', lineHeight: 1 }}>
-                {ref === hoursRef ? (i + 1).toString().padStart(2, '0') : i.toString().padStart(2, '0')}
+                {ref === hoursRef
+                  ? (i + 1).toString().padStart(2, '0')
+                  : i.toString().padStart(2, '0')}
               </div>
               <div
                 style={{

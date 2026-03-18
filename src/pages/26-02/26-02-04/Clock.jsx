@@ -14,12 +14,15 @@ const DigitalClockTemplate = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [animationName, setAnimationName] = useState('');
   const [fontLoaded, setFontLoaded] = useState(false);
-  
+
   // Simple scoped font loading without leaks
   useEffect(() => {
     const loadFont = async () => {
       try {
-        const fontFace = new FontFace('BorrowedDigital', `url(${digitalFontUrl})`);
+        const fontFace = new FontFace(
+          'BorrowedDigital',
+          `url(${digitalFontUrl})`,
+        );
         await fontFace.load();
         document.fonts.add(fontFace);
         setFontLoaded(true);
@@ -28,7 +31,7 @@ const DigitalClockTemplate = () => {
         setFontLoaded(false);
       }
     };
-    
+
     loadFont();
   }, []);
 
@@ -44,7 +47,7 @@ const DigitalClockTemplate = () => {
     // Create unique animation name and scoped style element
     const uniqueAnimationName = `copper-shimmer-${Date.now()}`;
     setAnimationName(uniqueAnimationName);
-    
+
     const style = document.createElement('style');
     style.textContent = `
       @keyframes ${uniqueAnimationName} {
@@ -111,15 +114,16 @@ const DigitalClockTemplate = () => {
     zIndex: 4,
   };
 
-const digitStyle = {
+  const digitStyle = {
     fontSize: isMobile ? '35dvh' : '30vw',
     lineHeight: 1,
     fontFamily: fontLoaded ? "'BorrowedDigital', monospace" : 'monospace',
     fontVariantNumeric: 'tabular-nums',
     userSelect: 'none',
-    
+
     // 1. The Gradient
-    backgroundImage: 'linear-gradient(90deg, #b87333 0%, #f4a460 25%, #ecc591 50%, #f4a460 75%, #b87333 100%)',
+    backgroundImage:
+      'linear-gradient(90deg, #b87333 0%, #f4a460 25%, #ecc591 50%, #f4a460 75%, #b87333 100%)',
     backgroundSize: '200% auto',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
@@ -128,16 +132,30 @@ const digitStyle = {
     // 2. The Border (The Secret Sauce)
     WebkitTextStroke: '0.5vh #43B3AE',
     paintOrder: 'stroke fill', // Draws the stroke first so it doesn't get eaten by the gradient
-    
+
     // 3. The Safety Net
     // If the stroke is still invisible, this filter will force a 1px "halo"
-    filter: 'drop-shadow(0.5vh 0 0 #43B3AE) drop-shadow(-0.5vh 0 0 #43B3AE) drop-shadow(0 1px 0 #43B3AE) drop-shadow(0 -1px 0 #43B3AE)',
+    filter:
+      'drop-shadow(0.5vh 0 0 #43B3AE) drop-shadow(-0.5vh 0 0 #43B3AE) drop-shadow(0 1px 0 #43B3AE) drop-shadow(0 -1px 0 #43B3AE)',
   };
   return (
     <div style={containerStyle}>
-      <div style={{ ...bgBaseStyle, backgroundImage: `url(${backgroundImage})`, zIndex: 1 }} />
-      <div style={{ ...bgBaseStyle, backgroundImage: `url(${digitalBgImage})`, zIndex: 2, filter: 'brightness(100%) saturate(10%)' }} />
-      
+      <div
+        style={{
+          ...bgBaseStyle,
+          backgroundImage: `url(${backgroundImage})`,
+          zIndex: 1,
+        }}
+      />
+      <div
+        style={{
+          ...bgBaseStyle,
+          backgroundImage: `url(${digitalBgImage})`,
+          zIndex: 2,
+          filter: 'brightness(100%) saturate(10%)',
+        }}
+      />
+
       <div style={timeRowStyle}>
         <div style={{ display: 'flex', gap: '1rem' }}>
           <span style={digitStyle}>{hh[0]}</span>

@@ -22,11 +22,14 @@ const Clock = () => {
     injectFont(); // Inject the font when component mounts
     // Ensure the font is loaded and apply class when ready
     if (document && document.fonts) {
-      document.fonts.load('1rem sem').then(() => {
-        document.documentElement.classList.add('fonts-loaded-sem');
-      }).catch(() => {
-        // ignore
-      });
+      document.fonts
+        .load('1rem sem')
+        .then(() => {
+          document.documentElement.classList.add('fonts-loaded-sem');
+        })
+        .catch(() => {
+          // ignore
+        });
     }
 
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -67,7 +70,8 @@ const Clock = () => {
     fontFamily: 'sem, sans-serif',
     fontSize: isMobile ? '20vh' : '25vh',
     color: 'rgb(245, 19, 19)',
-    textShadow: '#fff000 2px 2px, #fff000 -2px 2px, #fff000 2px -2px, #fff000 -2px -2px',
+    textShadow:
+      '#fff000 2px 2px, #fff000 -2px 2px, #fff000 2px -2px, #fff000 -2px -2px',
     display: 'flex',
     flexDirection: isMobile ? 'column' : 'row',
     flexWrap: 'wrap',

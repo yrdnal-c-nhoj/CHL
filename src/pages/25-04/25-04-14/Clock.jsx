@@ -28,55 +28,64 @@ const BlueBrickClock = () => {
   };
 
   const renderBalls = (count) =>
-    Array.from({ length: count }, (_, i) => (
-      <div key={i} style={ballStyle} />
-    ));
+    Array.from({ length: count }, (_, i) => <div key={i} style={ballStyle} />);
 
   return (
-    <div style={{
-      margin: 0,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100dvh',
-      position: 'relative',
-      boxSizing: 'border-box',
-    }}>
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        transform: 'rotate(180deg)',
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: '33% 33%',
-        backgroundRepeat: 'repeat',
-        filter: 'blur(4px) hue-rotate(180deg)',
-        zIndex: 1,
-      }} />
-
-      <div style={{
+    <div
+      style={{
+        margin: 0,
         display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 2,
-      }}>
+        height: '100dvh',
+        position: 'relative',
+        boxSizing: 'border-box',
+      }}
+    >
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          transform: 'rotate(180deg)',
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: '33% 33%',
+          backgroundRepeat: 'repeat',
+          filter: 'blur(4px) hue-rotate(180deg)',
+          zIndex: 1,
+        }}
+      />
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 2,
+        }}
+      >
         {['hours', 'seconds', 'minutes'].map((unit, idx) => (
-          <div key={unit} style={{ position: 'relative', width: '90vw', marginBottom: '2vh' }}>
-            <div style={{
-              position: 'relative',
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, 0.2vw)',
-              justifyContent: 'center',
-              alignContent: 'center',
-              gap: '3vw',
-              zIndex: 2,
-              pointerEvents: 'none',
-              height: '23vh',
-            }}>
+          <div
+            key={unit}
+            style={{ position: 'relative', width: '90vw', marginBottom: '2vh' }}
+          >
+            <div
+              style={{
+                position: 'relative',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, 0.2vw)',
+                justifyContent: 'center',
+                alignContent: 'center',
+                gap: '3vw',
+                zIndex: 2,
+                pointerEvents: 'none',
+                height: '23vh',
+              }}
+            >
               {renderBalls(time[unit])}
             </div>
           </div>

@@ -60,7 +60,7 @@ const Clock = () => {
     return { digits: `${h}:${m}`, period: ampm };
   })();
 
-  const videoId = "EO_1LWqsCNE";
+  const videoId = 'EO_1LWqsCNE';
 
   return (
     <div
@@ -69,18 +69,17 @@ const Clock = () => {
         height: '100dvh',
         overflow: 'hidden',
         position: 'relative',
-        background: '#000'
+        background: '#000',
       }}
     >
-
       {/* VIDEO */}
       <div
         className="video-background"
         style={{
-          position:'absolute',
-          inset:0,
-          zIndex:0,
-          overflow:'hidden'
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0,
+          overflow: 'hidden',
         }}
       >
         <iframe
@@ -89,12 +88,12 @@ const Clock = () => {
           frameBorder="0"
           allow="autoplay; fullscreen"
           style={{
-            position:'absolute',
-            top:'50%',
-            left:'50%',
-            minWidth:'100%',
-            minHeight:'100%',
-            transform:'translate(-50%,-50%)'
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            minWidth: '100%',
+            minHeight: '100%',
+            transform: 'translate(-50%,-50%)',
           }}
         />
       </div>
@@ -102,10 +101,10 @@ const Clock = () => {
       {/* DARK OVERLAY */}
       <div
         style={{
-          position:'absolute',
-          inset:0,
+          position: 'absolute',
+          inset: 0,
           // background:'rgba(0,0,0,.35)',
-          zIndex:1
+          zIndex: 1,
         }}
       />
 
@@ -113,32 +112,31 @@ const Clock = () => {
       <div
         className={`venice-clock ${fontLoaded ? 'loaded' : ''}`}
         style={{
-          position:'absolute',
-          inset:0,
-          display:'flex',
-          flexDirection:'column',
-          alignItems:'center',
-          justifyContent:'center',
-          textAlign:'center',
-          fontFamily:'VeniceFont, sans-serif',
-          zIndex:10,
-          pointerEvents:'none'
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+          fontFamily: 'VeniceFont, sans-serif',
+          zIndex: 10,
+          pointerEvents: 'none',
         }}
       >
-
         {/* DIGITS */}
         <div
           style={{
-            fontSize:'clamp(4rem,16vw,14rem)',
-            lineHeight:1.3,
-            padding:'0.2em 0',
+            fontSize: 'clamp(4rem,16vw,14rem)',
+            lineHeight: 1.3,
+            padding: '0.2em 0',
             // fontWeight:'bold',
-            whiteSpace:'nowrap',
-   background:'linear-gradient(90deg,#F321FA,#EFF70D,#ff1493)',
-                  WebkitBackgroundClip:'text',
-            backgroundClip:'text',
-            WebkitTextFillColor:'transparent',
-            animation:'venice-glow 4s ease-in-out infinite'
+            whiteSpace: 'nowrap',
+            background: 'linear-gradient(90deg,#F321FA,#EFF70D,#ff1493)',
+            WebkitBackgroundClip: 'text',
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            animation: 'venice-glow 4s ease-in-out infinite',
           }}
         >
           {digits}
@@ -147,21 +145,20 @@ const Clock = () => {
         {/* AM PM */}
         <div
           style={{
-            fontSize:'clamp(3rem,9vw,8rem)',
-            marginTop:'1rem',
-            letterSpacing:'.25em',
+            fontSize: 'clamp(3rem,9vw,8rem)',
+            marginTop: '1rem',
+            letterSpacing: '.25em',
             // fontWeight:900,
-            background:'linear-gradient(90deg,#ff1493,#00ffff,#DCFF14)',
-            backgroundSize:'200%',
-            WebkitBackgroundClip:'text',
-            backgroundClip:'text',
-            WebkitTextFillColor:'transparent',
-            animation:'venice-glow 3s ease-in-out infinite'
+            background: 'linear-gradient(90deg,#ff1493,#00ffff,#DCFF14)',
+            backgroundSize: '200%',
+            WebkitBackgroundClip: 'text',
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            animation: 'venice-glow 3s ease-in-out infinite',
           }}
         >
           {period}
         </div>
-
       </div>
     </div>
   );

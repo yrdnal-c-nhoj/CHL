@@ -93,22 +93,21 @@ const Clock = () => {
     letterSpacing: '-0.1rem',
   };
 
- const bgImageStyle = {
-  position: 'fixed',
-  bottom: 0,
-  left: 0,
-  width: '100vw',
-  height: '100vh',
-  backgroundImage: `url(${suvImage})`,
-  backgroundPosition: 'right bottom',
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: 'auto 100vh', // ensures full vertical fit
-  filter: 'brightness(160%) saturate(190%) hue-rotate(30deg)',
-  zIndex: 2,
-  pointerEvents: 'none',
-  transform: 'scaleX(-1)',
-};
-
+  const bgImageStyle = {
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    backgroundImage: `url(${suvImage})`,
+    backgroundPosition: 'right bottom',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'auto 100vh', // ensures full vertical fit
+    filter: 'brightness(160%) saturate(190%) hue-rotate(30deg)',
+    zIndex: 2,
+    pointerEvents: 'none',
+    transform: 'scaleX(-1)',
+  };
 
   const bgImage2Style = {
     position: 'fixed',

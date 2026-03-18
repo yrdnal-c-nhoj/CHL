@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 // Import number images
-import one from "../../../assets/images/25-10/25-10-01/1.png";
-import two from "../../../assets/images/25-10/25-10-01/12.png";
-import three from "../../../assets/images/25-10/25-10-01/11.png";
-import four from "../../../assets/images/25-10/25-10-01/10.png";
-import five from "../../../assets/images/25-10/25-10-01/9.png";
-import six from "../../../assets/images/25-10/25-10-01/8.png";
-import seven from "../../../assets/images/25-10/25-10-01/7.png";
-import eight from "../../../assets/images/25-10/25-10-01/6.png";
-import nine from "../../../assets/images/25-10/25-10-01/5.png";
-import ten from "../../../assets/images/25-10/25-10-01/4.png";
-import eleven from "../../../assets/images/25-10/25-10-01/3.png";
-import twelve from "../../../assets/images/25-10/25-10-01/2.png";
+import one from '../../../assets/images/25-10/25-10-01/1.png';
+import two from '../../../assets/images/25-10/25-10-01/12.png';
+import three from '../../../assets/images/25-10/25-10-01/11.png';
+import four from '../../../assets/images/25-10/25-10-01/10.png';
+import five from '../../../assets/images/25-10/25-10-01/9.png';
+import six from '../../../assets/images/25-10/25-10-01/8.png';
+import seven from '../../../assets/images/25-10/25-10-01/7.png';
+import eight from '../../../assets/images/25-10/25-10-01/6.png';
+import nine from '../../../assets/images/25-10/25-10-01/5.png';
+import ten from '../../../assets/images/25-10/25-10-01/4.png';
+import eleven from '../../../assets/images/25-10/25-10-01/3.png';
+import twelve from '../../../assets/images/25-10/25-10-01/2.png';
 
 // Clock face
-import clockFace from "../../../assets/images/25-10/25-10-01/gears.webp";
+import clockFace from '../../../assets/images/25-10/25-10-01/gears.webp';
 
 // Background video and fallback
-import backgroundVideo from "../../../assets/images/25-10/25-10-01/small.mp4";
-import fallbackGif from "../../../assets/images/25-10/25-10-01/small.webp";
+import backgroundVideo from '../../../assets/images/25-10/25-10-01/small.mp4';
+import fallbackGif from '../../../assets/images/25-10/25-10-01/small.webp';
 
 export default function ImageAnalogClock() {
   const [time, setTime] = useState(new Date());
@@ -39,23 +39,23 @@ export default function ImageAnalogClock() {
     return () => clearInterval(rotateInterval);
   }, []);
 
-  const clockSize = "min(80vw, 80vh)";
+  const clockSize = 'min(80vw, 80vh)';
   const center = { x: 50, y: 50 };
   const radius = 38;
 
   const numberImages = [
-    { src: one, angle: 0, width: "30%", height: "30%" },
-    { src: two, angle: 30, width: "20%", height: "20%" },
-    { src: three, angle: 60, width: "20%", height: "20%" },
-    { src: four, angle: 90, width: "20%", height: "20%" },
-    { src: five, angle: 120, width: "25%", height: "25%" },
-    { src: six, angle: 150, width: "24%", height: "24%" },
-    { src: seven, angle: 180, width: "24%", height: "24%" },
-    { src: eight, angle: 210, width: "20%", height: "20%" },
-    { src: nine, angle: 240, width: "22%", height: "22%" },
-    { src: ten, angle: 270, width: "24%", height: "24%" },
-    { src: eleven, angle: 300, width: "21%", height: "21%" },
-    { src: twelve, angle: 330, width: "21%", height: "21%" },
+    { src: one, angle: 0, width: '30%', height: '30%' },
+    { src: two, angle: 30, width: '20%', height: '20%' },
+    { src: three, angle: 60, width: '20%', height: '20%' },
+    { src: four, angle: 90, width: '20%', height: '20%' },
+    { src: five, angle: 120, width: '25%', height: '25%' },
+    { src: six, angle: 150, width: '24%', height: '24%' },
+    { src: seven, angle: 180, width: '24%', height: '24%' },
+    { src: eight, angle: 210, width: '20%', height: '20%' },
+    { src: nine, angle: 240, width: '22%', height: '22%' },
+    { src: ten, angle: 270, width: '24%', height: '24%' },
+    { src: eleven, angle: 300, width: '21%', height: '21%' },
+    { src: twelve, angle: 330, width: '21%', height: '21%' },
   ];
 
   const hours = time.getHours() % 12;
@@ -67,12 +67,12 @@ export default function ImageAnalogClock() {
   const secondAngle = seconds * 6;
 
   const metallicHandStyle = (width, length, angle) => ({
-    position: "absolute",
+    position: 'absolute',
     width: width,
     height: length,
-    top: "50%",
-    left: "50%",
-    transformOrigin: "50% 100%",
+    top: '50%',
+    left: '50%',
+    transformOrigin: '50% 100%',
     transform: `translate(-50%, -100%) rotate(${angle}deg)`,
     background: `linear-gradient(
       135deg,
@@ -82,7 +82,7 @@ export default function ImageAnalogClock() {
       #939292 75%,
       #FAF7F7 100%
     )`,
-    borderRadius: "0.5rem",
+    borderRadius: '0.5rem',
     boxShadow: `
       -2px -2px 0 #E2E2E1,
       2px 2px 0 #1E1E1E,
@@ -92,19 +92,19 @@ export default function ImageAnalogClock() {
       0 0 8px #fff,
       0 0 12px #bbb
     `,
-    pointerEvents: "none",
-    border: "0.05rem solid #999",
+    pointerEvents: 'none',
+    border: '0.05rem solid #999',
     opacity: 1.0,
   });
 
   const metallicNumberStyle = (width, height) => ({
-    position: "absolute",
+    position: 'absolute',
     width: width,
     height: height,
-    left: "50%",
-    top: "50%",
-    transform: "translate(-50%, -50%)",
-    objectFit: "contain",
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
+    objectFit: 'contain',
     filter: `
       grayscale(80%) 
       contrast(80%) 
@@ -118,15 +118,15 @@ export default function ImageAnalogClock() {
   return (
     <div
       style={{
-        position: "relative",
-        width: "100vw",
-        height: "100dvh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        overflow: "hidden",
-        isolation: "isolate",
-        backgroundColor: "#111",
+        position: 'relative',
+        width: '100vw',
+        height: '100dvh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+        isolation: 'isolate',
+        backgroundColor: '#111',
       }}
     >
       {/* Video background */}
@@ -136,11 +136,11 @@ export default function ImageAnalogClock() {
         muted
         playsInline
         style={{
-          position: "absolute",
-          width: "100vw",
-          height: "100dvh",
-          objectFit: "cover",
-          filter: "saturate(0.3) contrast(1.1) brightness(1.3)",
+          position: 'absolute',
+          width: '100vw',
+          height: '100dvh',
+          objectFit: 'cover',
+          filter: 'saturate(0.3) contrast(1.1) brightness(1.3)',
           zIndex: -2,
         }}
       >
@@ -148,14 +148,16 @@ export default function ImageAnalogClock() {
       </video>
 
       {/* Fallback */}
-      <img decoding="async" loading="lazy"
+      <img
+        decoding="async"
+        loading="lazy"
         src={fallbackGif}
         alt="Fallback background"
         style={{
-          position: "absolute",
-          width: "100vw",
-          height: "100dvh",
-          objectFit: "cover",
+          position: 'absolute',
+          width: '100vw',
+          height: '100dvh',
+          objectFit: 'cover',
           zIndex: -3,
         }}
       />
@@ -163,32 +165,32 @@ export default function ImageAnalogClock() {
       {/* Clock container */}
       <div
         style={{
-          position: "relative",
-          width: "min(90vw, 90vh)",
-          height: "min(90vw, 90vh)",
-          borderRadius: "50%",
-          overflow: "visible",
-          isolation: "isolate",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          position: 'relative',
+          width: 'min(90vw, 90vh)',
+          height: 'min(90vw, 90vh)',
+          borderRadius: '50%',
+          overflow: 'visible',
+          isolation: 'isolate',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         {/* Rotating clock face */}
         <div
           style={{
-            position: "absolute",
+            position: 'absolute',
             width: clockSize,
             height: clockSize,
             backgroundImage: `url(${clockFace})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            filter: "grayscale(95%)",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            filter: 'grayscale(95%)',
             opacity: 0.9,
             zIndex: -1,
             transform: `rotate(${rotation}deg)`,
-            transformOrigin: "50% 50%",
-            transition: "transform 0.016s linear",
+            transformOrigin: '50% 50%',
+            transition: 'transform 0.016s linear',
           }}
         />
 
@@ -199,7 +201,9 @@ export default function ImageAnalogClock() {
           const y = center.y + radius * Math.sin(angleRad);
 
           return (
-            <img decoding="async" loading="lazy"
+            <img
+              decoding="async"
+              loading="lazy"
               key={idx}
               src={num.src}
               alt={`number ${idx + 1}`}
@@ -213,9 +217,9 @@ export default function ImageAnalogClock() {
         })}
 
         {/* Hands */}
-        <div style={metallicHandStyle("0.8rem", "24dvh", hourAngle)} />
-        <div style={metallicHandStyle("0.5rem", "36dvh", minuteAngle)} />
-        <div style={metallicHandStyle("0.15rem", "40dvh", secondAngle)} />
+        <div style={metallicHandStyle('0.8rem', '24dvh', hourAngle)} />
+        <div style={metallicHandStyle('0.5rem', '36dvh', minuteAngle)} />
+        <div style={metallicHandStyle('0.15rem', '40dvh', secondAngle)} />
       </div>
     </div>
   );

@@ -35,7 +35,6 @@ const BackgroundLayers = React.memo(() => {
   const videoRef = React.useRef(null);
   const [videoError, setVideoError] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
-  
 
   const handleVideoError = (e) => {
     console.error('Video loading error:', e);
@@ -54,7 +53,7 @@ const BackgroundLayers = React.memo(() => {
         await video.play();
         setVideoLoaded(true);
       } catch (err) {
-        console.error("Video autoplay was prevented:", err);
+        console.error('Video autoplay was prevented:', err);
         setVideoError(true);
       }
     };
@@ -62,7 +61,8 @@ const BackgroundLayers = React.memo(() => {
     video.addEventListener('canplay', playVideo);
 
     // If video is already ready, play it.
-    if (video.readyState >= 4) { // HAVE_ENOUGH_DATA
+    if (video.readyState >= 4) {
+      // HAVE_ENOUGH_DATA
       playVideo();
     }
 
@@ -88,7 +88,7 @@ const BackgroundLayers = React.memo(() => {
           width: '150vw',
           height: '150vh',
           objectFit: 'cover',
-          opacity: videoError ? 0 : (videoLoaded ? 0.7 : 0),
+          opacity: videoError ? 0 : videoLoaded ? 0.7 : 0,
           zIndex: 0,
           animation: videoLoaded ? 'rotate-video 60s linear infinite' : 'none',
           transition: 'opacity 0.5s ease-in-out',
@@ -219,7 +219,8 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     // Respect safe areas (notches/home bars) from template
-    padding: 'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
+    padding:
+      'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
     boxSizing: 'border-box',
   },
   digitalContainer: {

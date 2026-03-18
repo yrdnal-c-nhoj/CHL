@@ -43,10 +43,8 @@ const Clock = () => {
   return (
     <div style={styles.container}>
       <ImageLayout />
-      
-      <div style={styles.clockOverlay}>
-        {formattedTime}
-      </div>
+
+      <div style={styles.clockOverlay}>{formattedTime}</div>
     </div>
   );
 };

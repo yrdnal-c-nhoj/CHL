@@ -15,10 +15,15 @@ const ImageGrid = () => {
       try {
         console.log('Starting to load images...');
         // Use Vite's glob import to get all images
-        const imageModules = import.meta.glob('/src/assets/images/**/*.{png,jpg,jpeg,gif,svg,webp}', { eager: true });
+        const imageModules = import.meta.glob(
+          '/src/assets/images/**/*.{png,jpg,jpeg,gif,svg,webp}',
+          { eager: true },
+        );
         console.log('Found image modules:', Object.keys(imageModules).length);
-        
-        const imageUrls = Object.values(imageModules).map(module => module.default);
+
+        const imageUrls = Object.values(imageModules).map(
+          (module) => module.default,
+        );
         console.log('Loaded images:', imageUrls.length);
         setImages(imageUrls);
       } catch (error) {
@@ -27,9 +32,9 @@ const ImageGrid = () => {
         // Fallback to some known images
         const fallbackImages = [
           '/src/assets/images/i.png',
-          '/src/assets/images/fbook.png', 
+          '/src/assets/images/fbook.png',
           '/src/assets/images/insta.png',
-          '/src/assets/images/x.png'
+          '/src/assets/images/x.png',
         ];
         setImages(fallbackImages);
       }
@@ -59,14 +64,16 @@ const ImageGrid = () => {
   const getCenterPosition = () => {
     return {
       row: Math.floor(gridSize.rows / 2),
-      col: Math.floor(gridSize.cols / 2)
+      col: Math.floor(gridSize.cols / 2),
     };
   };
 
   // Calculate distance from center for animation delay
   const getDistanceFromCenter = (row, col) => {
     const center = getCenterPosition();
-    return Math.sqrt(Math.pow(row - center.row, 2) + Math.pow(col - center.col, 2));
+    return Math.sqrt(
+      Math.pow(row - center.row, 2) + Math.pow(col - center.col, 2),
+    );
   };
 
   // Get random image for each grid cell
@@ -77,7 +84,7 @@ const ImageGrid = () => {
 
   // Handle image load
   const handleImageLoad = (index) => {
-    setLoadedImages(prev => new Set(prev).add(index));
+    setLoadedImages((prev) => new Set(prev).add(index));
   };
 
   // Generate grid cells in spiral order from center
@@ -85,23 +92,34 @@ const ImageGrid = () => {
     const cells = [];
     const center = getCenterPosition();
     const maxRadius = Math.max(gridSize.rows, gridSize.cols);
-    
+
     for (let radius = 0; radius <= maxRadius; radius++) {
       for (let angle = 0; angle < 360; angle += 45) {
-        const row = Math.round(center.row + radius * Math.sin(angle * Math.PI / 180));
-        const col = Math.round(center.col + radius * Math.cos(angle * Math.PI / 180));
-        
-        if (row >= 0 && row < gridSize.rows && col >= 0 && col < gridSize.cols) {
+        const row = Math.round(
+          center.row + radius * Math.sin((angle * Math.PI) / 180),
+        );
+        const col = Math.round(
+          center.col + radius * Math.cos((angle * Math.PI) / 180),
+        );
+
+        if (
+          row >= 0 &&
+          row < gridSize.rows &&
+          col >= 0 &&
+          col < gridSize.cols
+        ) {
           cells.push({ row, col, distance: radius });
         }
       }
     }
-    
+
     // Sort by distance and remove duplicates
-    const uniqueCells = cells.filter((cell, index, self) =>
-      index === self.findIndex((c) => c.row === cell.row && c.col === cell.col)
+    const uniqueCells = cells.filter(
+      (cell, index, self) =>
+        index ===
+        self.findIndex((c) => c.row === cell.row && c.col === cell.col),
     );
-    
+
     return uniqueCells.sort((a, b) => a.distance - b.distance);
   };
 
@@ -122,11 +140,11 @@ const ImageGrid = () => {
 
   return (
     <div className="image-grid-container" ref={gridRef}>
-      <div 
+      <div
         className="image-grid"
         style={{
           gridTemplateColumns: `repeat(${gridSize.cols}, 100px)`,
-          gridTemplateRows: `repeat(${gridSize.rows}, 100px)`
+          gridTemplateRows: `repeat(${gridSize.rows}, 100px)`,
         }}
       >
         {Array.from({ length: totalCells }).map((_, index) => {
@@ -135,7 +153,7 @@ const ImageGrid = () => {
           const distance = getDistanceFromCenter(row, col);
           const delay = distance * 0.1; // Delay based on distance from center
           const imageUrl = getRandomImage();
-          
+
           return (
             <div
               key={index}
@@ -143,7 +161,7 @@ const ImageGrid = () => {
               style={{
                 animationDelay: `${delay}s`,
                 width: '100px',
-                height: '100px'
+                height: '100px',
               }}
             >
               {imageUrl && (
@@ -154,7 +172,7 @@ const ImageGrid = () => {
                   onLoad={() => handleImageLoad(index)}
                   style={{
                     opacity: loadedImages.has(index) ? 1 : 0,
-                    transition: 'opacity 0.3s ease-in-out'
+                    transition: 'opacity 0.3s ease-in-out',
                   }}
                 />
               )}
@@ -163,9 +181,13 @@ const ImageGrid = () => {
         })}
       </div>
       <div className="grid-info">
-        <p>Grid: {gridSize.cols} × {gridSize.rows}</p>
+        <p>
+          Grid: {gridSize.cols} × {gridSize.rows}
+        </p>
         <p>Images: {images.length}</p>
-        <p>Loaded: {loadedImages.size}/{totalCells}</p>
+        <p>
+          Loaded: {loadedImages.size}/{totalCells}
+        </p>
       </div>
     </div>
   );

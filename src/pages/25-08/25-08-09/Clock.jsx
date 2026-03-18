@@ -59,9 +59,12 @@ const RectangularAnalogClock = () => {
     stroke,
     strokeWidth,
     keyPrefix,
-    startPerpRight = true
+    startPerpRight = true,
   ) => {
-    const segmentsAdjusted = Math.max(3, segments % 2 === 0 ? segments + 1 : segments);
+    const segmentsAdjusted = Math.max(
+      3,
+      segments % 2 === 0 ? segments + 1 : segments,
+    );
     const cx = 50;
     const cy = 50;
     const rad = (angleDeg * Math.PI) / 180;
@@ -107,7 +110,10 @@ const RectangularAnalogClock = () => {
   // Compute tick positions for grid lines
   const computeTickPositions = () => {
     const topXs = Array.from({ length: 15 }, (_, i) => 10 + (i * 80) / 14);
-    const leftYs = Array.from({ length: 13 }, (_, i) => 95 - ((i + 1) * 90) / 14);
+    const leftYs = Array.from(
+      { length: 13 },
+      (_, i) => 95 - ((i + 1) * 90) / 14,
+    );
     return { topXs, leftYs };
   };
 
@@ -204,17 +210,54 @@ const RectangularAnalogClock = () => {
       >
         <defs>
           <filter id="multiShadow">
-            <feDropShadow dx="1.5" dy="1.5" stdDeviation="0.53" floodColor="#540579FF" />
-            <feDropShadow dx="1.5" dy="1.5" stdDeviation="0.65" floodColor="#480462FF" />
+            <feDropShadow
+              dx="1.5"
+              dy="1.5"
+              stdDeviation="0.53"
+              floodColor="#540579FF"
+            />
+            <feDropShadow
+              dx="1.5"
+              dy="1.5"
+              stdDeviation="0.65"
+              floodColor="#480462FF"
+            />
           </filter>
         </defs>
 
         <rect width="100" height="100" fill="transparent" />
         {renderGridLines()}
         {generateHourMarkers()}
-        {renderMultiAngleHand(hour, 18, 6, 11, handColor, handStroke, 'hour', true)}
-        {renderMultiAngleHand(minute, 28, 8, 15, handColor, handStroke, 'minute', false)}
-        {renderMultiAngleHand(second, 36, 10, 19, handColor, handStroke, 'second', true)}
+        {renderMultiAngleHand(
+          hour,
+          18,
+          6,
+          11,
+          handColor,
+          handStroke,
+          'hour',
+          true,
+        )}
+        {renderMultiAngleHand(
+          minute,
+          28,
+          8,
+          15,
+          handColor,
+          handStroke,
+          'minute',
+          false,
+        )}
+        {renderMultiAngleHand(
+          second,
+          36,
+          10,
+          19,
+          handColor,
+          handStroke,
+          'second',
+          true,
+        )}
         <circle cx="50" cy="50" r="0.4" fill={handColor} />
       </svg>
     </div>

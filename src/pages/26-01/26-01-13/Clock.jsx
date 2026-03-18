@@ -40,7 +40,7 @@ const DiscClock = () => {
         ...styles.container,
         opacity: ready ? 1 : 0,
         visibility: ready ? 'visible' : 'hidden',
-        transition: 'opacity 0.25s ease'
+        transition: 'opacity 0.25s ease',
       }}
     >
       <div style={styles.clockBase}>
@@ -65,8 +65,13 @@ const Disc = ({ size, degrees, color, label }) => (
       background: `conic-gradient(from 0deg, transparent 0%, ${color}05 50%, ${color}aa 100%)`,
     }}
   >
-    <div style={{ ...styles.leadLine, backgroundColor: color, boxShadow: `0 0 0px ${color}` }} />
-
+    <div
+      style={{
+        ...styles.leadLine,
+        backgroundColor: color,
+        boxShadow: `0 0 0px ${color}`,
+      }}
+    />
   </div>
 );
 
@@ -97,7 +102,6 @@ const styles = {
     justifyContent: 'center',
     willChange: 'transform', // Optimization for animations
   },
-
 };
 
 export default DiscClock;

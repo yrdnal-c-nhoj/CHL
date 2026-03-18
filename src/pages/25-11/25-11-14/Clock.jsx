@@ -1,23 +1,33 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 
-import bg from "../../../assets/images/25-11/25-11-14/ice.jpg"; // background image in same folder
+import bg from '../../../assets/images/25-11/25-11-14/ice.jpg'; // background image in same folder
 
-import num1 from "../../../assets/images/25-11/25-11-14/1.jpg";
-import num2 from "../../../assets/images/25-11/25-11-14/2.webp";
-import num3 from "../../../assets/images/25-11/25-11-14/3.webp";
-import num4 from "../../../assets/images/25-11/25-11-14/4.jpg";
-import num5 from "../../../assets/images/25-11/25-11-14/5.jpg";
-import num6 from "../../../assets/images/25-11/25-11-14/6.jpg";
-import num7 from "../../../assets/images/25-11/25-11-14/7.jpg";
-import num8 from "../../../assets/images/25-11/25-11-14/8.jpg";
-import num9 from "../../../assets/images/25-11/25-11-14/9.webp";
-import num10 from "../../../assets/images/25-11/25-11-14/10.jpg";
-import num11 from "../../../assets/images/25-11/25-11-14/11.webp";
-import num12 from "../../../assets/images/25-11/25-11-14/12.webp";
+import num1 from '../../../assets/images/25-11/25-11-14/1.jpg';
+import num2 from '../../../assets/images/25-11/25-11-14/2.webp';
+import num3 from '../../../assets/images/25-11/25-11-14/3.webp';
+import num4 from '../../../assets/images/25-11/25-11-14/4.jpg';
+import num5 from '../../../assets/images/25-11/25-11-14/5.jpg';
+import num6 from '../../../assets/images/25-11/25-11-14/6.jpg';
+import num7 from '../../../assets/images/25-11/25-11-14/7.jpg';
+import num8 from '../../../assets/images/25-11/25-11-14/8.jpg';
+import num9 from '../../../assets/images/25-11/25-11-14/9.webp';
+import num10 from '../../../assets/images/25-11/25-11-14/10.jpg';
+import num11 from '../../../assets/images/25-11/25-11-14/11.webp';
+import num12 from '../../../assets/images/25-11/25-11-14/12.webp';
 
 const numberImages = [
-  num12, num1, num2, num3, num4, num5,
-  num6, num7, num8, num9, num10, num11
+  num12,
+  num1,
+  num2,
+  num3,
+  num4,
+  num5,
+  num6,
+  num7,
+  num8,
+  num9,
+  num10,
+  num11,
 ];
 
 export default function ImageAnalogClock() {
@@ -39,16 +49,13 @@ export default function ImageAnalogClock() {
       const hDeg = h * 30;
 
       if (hourRef.current)
-        hourRef.current.style.transform =
-          `translate(-50%, -100%) rotate(${hDeg}deg)`;
+        hourRef.current.style.transform = `translate(-50%, -100%) rotate(${hDeg}deg)`;
 
       if (minuteRef.current)
-        minuteRef.current.style.transform =
-          `translate(-50%, -100%) rotate(${mDeg}deg)`;
+        minuteRef.current.style.transform = `translate(-50%, -100%) rotate(${mDeg}deg)`;
 
       if (secondRef.current)
-        secondRef.current.style.transform =
-          `translate(-50%, -100%) rotate(${sDeg}deg)`;
+        secondRef.current.style.transform = `translate(-50%, -100%) rotate(${sDeg}deg)`;
 
       rafRef.current = requestAnimationFrame(update);
     }
@@ -57,20 +64,20 @@ export default function ImageAnalogClock() {
     return () => cancelAnimationFrame(rafRef.current);
   }, []);
 
-  const clockSize = "min(190vw, 190vh)";
+  const clockSize = 'min(190vw, 190vh)';
 
   const wrapper = {
     width: clockSize,
     height: clockSize,
-    borderRadius: "50%",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    borderRadius: '50%',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
 
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
 
     // ⭐ Gradient background behind the numbers
     // background: "radial-gradient(circle, #, #000, #000)",
@@ -84,66 +91,73 @@ export default function ImageAnalogClock() {
     const left = 50 + Math.cos(angle) * radius * 50;
 
     return {
-      position: "absolute",
+      position: 'absolute',
       top: `${top}%`,
       left: `${left}%`,
-      transform: "translate(-50%, -50%)",
+      transform: 'translate(-50%, -50%)',
 
-      width: "15vh",
-      height: "auto",
+      width: '15vh',
+      height: 'auto',
 
-      userSelect: "none",
-      pointerEvents: "none",
+      userSelect: 'none',
+      pointerEvents: 'none',
     };
   };
 
   const handCommon = {
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transformOrigin: "50% 100%",
-    borderRadius: "1vh",
-    background: "#C8E0EF",
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    transformOrigin: '50% 100%',
+    borderRadius: '1vh',
+    background: '#C8E0EF',
   };
 
   const hourHand = {
     ...handCommon,
-    width: "1vh",
-    height: "15vh",
+    width: '1vh',
+    height: '15vh',
     zIndex: 10,
   };
 
   const minuteHand = {
     ...handCommon,
-    width: "0.7vh",
-    height: "22vh",
+    width: '0.7vh',
+    height: '22vh',
     zIndex: 11,
   };
 
   const secondHand = {
     ...handCommon,
-    width: "0.35vh",
-    height: "25vh",
+    width: '0.35vh',
+    height: '25vh',
     zIndex: 12,
-    background: "#C8E0EF",
+    background: '#C8E0EF',
   };
 
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100dvh",
-        position: "relative",
-        overflow: "hidden",
+        width: '100vw',
+        height: '100dvh',
+        position: 'relative',
+        overflow: 'hidden',
         backgroundImage: `url(${bg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <div style={wrapper}>
         {numberImages.map((src, index) => (
-          <img decoding="async" loading="lazy" key={index} src={src} alt="" style={numberStyle(index)} />
+          <img
+            decoding="async"
+            loading="lazy"
+            key={index}
+            src={src}
+            alt=""
+            style={numberStyle(index)}
+          />
         ))}
 
         <div ref={hourRef} style={hourHand}></div>
