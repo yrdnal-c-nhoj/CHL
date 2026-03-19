@@ -71,7 +71,7 @@ const Clock: React.FC = () => {
     >
       {/* Full screen background image */}
       <img
-        src="/src/assets/images/26-03/26-03-17/plu.webp"
+        src='/src/assets/images/26-03/26-03-17/plu.webp'
         alt="Full screen"
         style={{
           position: 'absolute',
@@ -138,7 +138,7 @@ const Clock: React.FC = () => {
       
       {/* New top image overlay */}
       <img
-        src="/src/assets/images/26-03/26-03-17/0001-0160-ezgif.com-optiwebp-1.webp"
+        src='/src/assets/images/26-03/26-03-17/0001-0160-ezgif.com-optiwebp-1.webp'
         alt="Top overlay"
         style={{
           position: 'absolute',
