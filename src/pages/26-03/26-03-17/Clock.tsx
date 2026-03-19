@@ -7,6 +7,9 @@ import topImageWebp from '../../../assets/images/26-03/26-03-17/0001-0160-ezgif.
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const digitColor = '#0A0A0B'; // Single variable to control color of digits and separators
+  
+  // Check if mobile for responsive sizing
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -30,14 +33,14 @@ const Clock: React.FC = () => {
   const DigitBox: React.FC<{ digit: string }> = ({ digit }) => (
     <div
       style={{
-        width: '40px',
-        height: '50px',
+        width: isMobile ? '8vw' : '40px',
+        height: isMobile ? '10vw' : '50px',
         borderRadius: '8px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         color: digitColor,
-        fontSize: '12vh',
+        fontSize: isMobile ? '6vw' : '12vh',
         fontFamily: 'Metamorphous, monospace',
         textShadow: '2px 0px 0px rgba(255, 255, 255, 0.8)',
       }}
@@ -50,10 +53,10 @@ const Clock: React.FC = () => {
     <div
       style={{
         color: digitColor,
-        fontSize: '12vh',
+        fontSize: isMobile ? '6vw' : '12vh',
         fontFamily: 'Metamorphous, monospace',
         fontWeight: 'bold',
-        margin: '0 4px',
+        margin: isMobile ? '0 2vw' : '0 4px',
         alignSelf: 'center',
         textShadow: '2px 0px 0px rgba(255, 255, 255, 0.8)',
       }}
@@ -117,6 +120,7 @@ const Clock: React.FC = () => {
           alignItems: 'center',
           opacity: 0.7,
           zIndex: 3,
+          padding: isMobile ? '10px 5px' : '20px',
         }}
       >
         {/* Hours */}
