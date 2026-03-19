@@ -176,12 +176,11 @@ const Clock: React.FC = () => {
         {/* Center Cap (The "Star") */}
         <div style={{
           position: 'absolute', top: '50%', left: '50%',
-          width: `${4 * handScale}px`, height: `${4 * handScale}px`,
-          backgroundColor: gold,
-          borderRadius: '50%',
+          width: `${60 * handScale}px`, height: `${60 * handScale}px`,
+          backgroundColor: '#FFD700',
+          clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
           transform: 'translate(-50%, -50%)',
-          border: `2px solid ${champagne}`,
-          boxShadow: '0 0 10px rgba(0,0,0,0.8)',
+          filter: `drop-shadow(0 0 10px #FFD700) drop-shadow(0 0 20px #FFD700) drop-shadow(0 0 30px rgba(0,0,0,0.9))`,
           zIndex: 10
         }} />
       </div>
