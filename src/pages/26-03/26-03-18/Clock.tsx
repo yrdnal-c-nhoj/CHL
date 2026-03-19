@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import walkVideo from '../../../assets/images/26-03/26-03-18/walk.mp4';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import walkFont from '../../../assets/fonts/26-03-18-walk.ttf';
 
 const Clock: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -9,6 +11,19 @@ const Clock: React.FC = () => {
   const gold = '#0DF1F1';
   const champagne = '#FFFACD';
   const neonPink = '#F2A280'; // Subverted 50s neon accent
+  
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: 'walk',
+      fontUrl: walkFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
   
   // Responsive sizing for perfect centering on all devices
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
@@ -41,11 +56,7 @@ const Clock: React.FC = () => {
     <>
       <style>
         {`
-          @font-face {
-            font-family: '26-03-18-walk';
-            src: url('/src/assets/fonts/26-03-18-walk.ttf') format('truetype');
-          }
-          
+          /* Font loading handled by useMultipleFontLoader */
 
           .neon-glow {
             text-shadow: 0 0 10px ${gold}, 0 0 20px ${gold}, 0 0 30px #ffa500;
@@ -118,7 +129,7 @@ const Clock: React.FC = () => {
                 left: '50%',
                 fontSize: numberSize,
                 color: champagne,
-                fontFamily: '"26-03-18-walk", serif',
+                fontFamily: 'walk, serif',
                 transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotate(${angle}deg)`,
                 letterSpacing: '-2px',
                 transformOrigin: 'center center',
