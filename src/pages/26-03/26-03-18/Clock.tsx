@@ -8,7 +8,7 @@ const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   
   // 1950s Color Palette
-  const gold = '#0DF1F1';
+  const gold = '#0A9CD6';
   const champagne = '#FFFACD';
   const neonPink = '#F2A280'; // Subverted 50s neon accent
   
@@ -28,7 +28,7 @@ const Clock: React.FC = () => {
   // Responsive sizing for perfect centering on all devices
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const clockSize = isMobile ? 300 : 500;
-  const numberSize = isMobile ? '2.5rem' : '3.5rem';
+  const numberSize = isMobile ? '10vh' : '12vh';
   const handScale = isMobile ? 0.7 : 1;
 
   useEffect(() => {
@@ -115,7 +115,7 @@ const Clock: React.FC = () => {
         {/* Numbers */}
         {[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num, i) => {
           const angle = i * 30;
-          const radius = clockSize * 0.32; 
+          const radius = clockSize * 0.42; 
           const x = Math.cos((angle - 90) * Math.PI / 180) * radius;
           const y = Math.sin((angle - 90) * Math.PI / 180) * radius;
           
@@ -176,7 +176,7 @@ const Clock: React.FC = () => {
         {/* Center Cap (The "Star") */}
         <div style={{
           position: 'absolute', top: '50%', left: '50%',
-          width: `${14 * handScale}px`, height: `${14 * handScale}px`,
+          width: `${4 * handScale}px`, height: `${4 * handScale}px`,
           backgroundColor: gold,
           borderRadius: '50%',
           transform: 'translate(-50%, -50%)',
