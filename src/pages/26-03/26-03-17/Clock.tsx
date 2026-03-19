@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import type { ClockTime } from '@/types/clock';
+import pluWebp from '../../../assets/images/26-03/26-03-17/plu.webp';
+import tileBgGif from '../../../assets/images/26-03/26-03-17/tile_bg.gif';
+import topImageWebp from '../../../assets/images/26-03/26-03-17/0001-0160-ezgif.com-optiwebp-1.webp';
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
@@ -71,7 +74,7 @@ const Clock: React.FC = () => {
     >
       {/* Full screen background image */}
       <img
-        src='/src/assets/images/26-03/26-03-17/plu.webp'
+        src={pluWebp}
         alt="Full screen"
         style={{
           position: 'absolute',
@@ -93,7 +96,7 @@ const Clock: React.FC = () => {
           left: 0,
           width: '100vw',
           height: '100dvh',
-          backgroundImage: 'url(/src/assets/images/26-03/26-03-17/tile_bg.gif)',
+          backgroundImage: `url(${tileBgGif})`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'auto',
           zIndex: 2,
@@ -138,7 +141,7 @@ const Clock: React.FC = () => {
       
       {/* New top image overlay */}
       <img
-        src='/src/assets/images/26-03/26-03-17/0001-0160-ezgif.com-optiwebp-1.webp'
+        src={topImageWebp}
         alt="Top overlay"
         style={{
           position: 'absolute',
