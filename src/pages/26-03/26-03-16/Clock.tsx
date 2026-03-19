@@ -17,6 +17,32 @@ const Clock: React.FC = () => {
   const minuteAngle = minutes * 6 + seconds * 0.1;
   const hourAngle = hours * 30 + minutes * 0.5;
 
+  // Responsive sizing based on viewport with better mobile handling
+  const getClockSize = () => {
+    if (typeof window === 'undefined') return 380;
+    
+    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    const isMobile = vw <= 480;
+    const isSmallScreen = vw <= 768;
+    
+    if (isMobile) {
+      return Math.min(vw * 0.9, 320); // Use 90% of width on mobile, max 320px
+    } else if (isSmallScreen) {
+      return Math.min(vw * 0.7, 350); // Use 70% on small screens
+    } else {
+      return Math.min(vw * 0.8, 420); // Use 80% on desktop, max 420px
+    }
+  };
+
+  const clockSize = getClockSize();
+
+  // Mobile-specific adjustments for better centering
+  const mobileAdjustments = {
+    padding: typeof window !== 'undefined' && window.innerWidth <= 480 ? '15px' : '0px',
+    transform: typeof window !== 'undefined' && window.innerWidth <= 480 ? 'scale(0.9)' : 'scale(1)',
+  };
+
   return (
     <div
       style={{
@@ -30,29 +56,35 @@ const Clock: React.FC = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         fontFamily: 'Helvetica, Arial, sans-serif', // clean sans-serif fallback
+        padding: mobileAdjustments.padding,
       }}
     >
-      {/* Main clock face — crisp, functional circle with subtle industrial frame */}
+      {/* Main clock face — responsive size with mobile adjustments */}
       <div
         style={{
-          width: '380px',
-          height: '380px',
+          width: `${clockSize}px`,
+          height: `${clockSize}px`,
           position: 'relative',
           borderRadius: '50%',
+          transform: mobileAdjustments.transform,
         }}
       >
         {/* Minimal hour markers — simple white bars, longer at cardinals */}
         {[...Array(12)].map((_, i) => {
           const isCardinal = i % 3 === 0;
+          const markerWidth = isCardinal ? clockSize * 0.011 : clockSize * 0.005;
+          const markerHeight = isCardinal ? clockSize * 0.074 : clockSize * 0.037;
+          const markerTop = clockSize * 0.053;
+          
           return (
             <div
               key={i}
               style={{
                 position: 'absolute',
-                width: isCardinal ? '4px' : '2px',
-                height: isCardinal ? '28px' : '14px',
+                width: `${markerWidth}px`,
+                height: `${markerHeight}px`,
                 backgroundColor: '#eee', // off-white for high contrast
-                top: '20px',
+                top: `${markerTop}px`,
                 left: '50%',
                 transform: `translateX(-50%) rotate(${i * 30}deg)`,
                 transformOrigin: '50% 160px',
@@ -66,15 +98,19 @@ const Clock: React.FC = () => {
           // Skip positions where hour markers already exist
           if (i % 5 === 0) return null;
 
+          const tickWidth = clockSize * 0.003;
+          const tickHeight = clockSize * 0.021;
+          const tickTop = clockSize * 0.066;
+
           return (
             <div
               key={`tick-${i}`}
               style={{
                 position: 'absolute',
-                width: '1px',
-                height: '8px',
+                width: `${tickWidth}px`,
+                height: `${tickHeight}px`,
                 backgroundColor: '#aaa', // lighter gray for minute marks
-                top: '25px',
+                top: `${tickTop}px`,
                 left: '50%',
                 transform: `translateX(-50%) rotate(${i * 6}deg)`,
                 transformOrigin: '50% 165px',
@@ -88,38 +124,36 @@ const Clock: React.FC = () => {
         <div
           style={{
             position: 'absolute',
-            width: '16px',
-            height: '80px',
+            width: `${clockSize * 0.042}px`,
+            height: `${clockSize * 0.211}px`,
             backgroundColor: '#eee',
             left: '50%',
             bottom: '50%',
             transformOrigin: '50% 100%',
             transform: `translateX(-50%) rotate(${hourAngle}deg)`,
-            borderRadius: '8px 8px 2px 2px', // very slight rounding only at tip
+            borderRadius: `${clockSize * 0.021}px ${clockSize * 0.021}px ${clockSize * 0.005}px ${clockSize * 0.005}px`,
           }}
         />
-
         {/* Minute hand — longer, thinner */}
         <div
           style={{
             position: 'absolute',
-            width: '10px',
-            height: '130px',
+            width: `${clockSize * 0.026}px`,
+            height: `${clockSize * 0.342}px`,
             backgroundColor: '#eee',
             left: '50%',
             bottom: '50%',
             transformOrigin: '50% 100%',
             transform: `translateX(-50%) rotate(${minuteAngle}deg)`,
-            borderRadius: '5px 5px 1px 1px',
+            borderRadius: `${clockSize * 0.013}px ${clockSize * 0.013}px ${clockSize * 0.003}px ${clockSize * 0.003}px`,
           }}
         />
-
         {/* Second hand — very thin, red accent (common in functionalist designs for visibility) */}
         <div
           style={{
             position: 'absolute',
-            width: '3px',
-            height: '160px',
+            width: `${clockSize * 0.008}px`,
+            height: `${clockSize * 0.421}px`,
             backgroundColor: '#DA4008', // Bauhaus often used primary red accents
             left: '50%',
             bottom: '50%',
