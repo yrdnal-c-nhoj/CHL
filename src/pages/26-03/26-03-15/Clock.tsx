@@ -81,7 +81,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
   },
   digitBox: {
-    width: '15vh', 
+    width: '10vh', 
     height: '80vh',
     display: 'flex',
     justifyContent: 'center',
@@ -97,7 +97,7 @@ const styles: Record<string, React.CSSProperties> = {
 
 const getDigitStyle = (rotation: number): React.CSSProperties => ({
   fontFamily: '"26-03-15-shadow", sans-serif',
-  fontSize: '80vh',
+  fontSize: '60vh',
   // White color + difference blend mode = exact color inversion
   color: '#FFFFFF',
   mixBlendMode: 'difference',
