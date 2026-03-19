@@ -49,6 +49,26 @@ const Clock: React.FC = () => {
     };
   }, [time]);
 
+  // Responsive sizing for better mobile centering
+  const getResponsiveSize = () => {
+    if (typeof window === 'undefined') return { width: 380, scale: 1 };
+    
+    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    const isMobile = vw <= 480;
+    const isSmallScreen = vw <= 768;
+    
+    if (isMobile) {
+      return { width: Math.min(vw * 0.9, 320), scale: 0.8 }; // 90% width, scaled down
+    } else if (isSmallScreen) {
+      return { width: Math.min(vw * 0.8, 350), scale: 0.9 }; // 80% width, slightly scaled
+    } else {
+      return { width: Math.min(vw * 0.85, 420), scale: 1 }; // 85% width, full scale
+    }
+  };
+
+  const responsive = getResponsiveSize();
+
   // Don't render until fonts are loaded
   if (!fontsLoaded) {
     return (
@@ -138,18 +158,19 @@ const styles = {
   },
   digitBox: {
     display: 'inline-block',
-    width: '9vw', // Responsive baseline
+    width: `${responsive.width}px`, // Use responsive width
     textAlign: 'center',
     transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)', // Snappy rotation
     willChange: 'transform',
     zIndex: 2,
+    transform: `scale(${responsive.scale})`, // Apply responsive scale
   },
   text: {
     fontFamily:
       '"26-03-15-shadow", "Avant Garde", "Century Gothic", sans-serif',
-    color: '#3D0925',
-    fontSize: '36vw',
-    margin: 0,
+    fontSize: `${responsive.width * 0.08}px`, // Responsive font size (8% of container width)
+    color: '#1C0210',
+    textShadow: '0 0 20px rgba(28, 193, 0, 0.2)', // Subtle shadow
     filter: 'url(#deep-shadow)', // Applying the SVG filter here
     lineHeight: 1,
   },
