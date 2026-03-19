@@ -83,6 +83,7 @@ const Clock: React.FC = () => {
           width: '100vw',
           height: '100dvh',
           objectFit: 'cover',
+          opacity: 0.9,
           zIndex: 1,
           filter: 'hue-rotate(230deg) saturate(1.5)',
         }}
@@ -100,7 +101,7 @@ const Clock: React.FC = () => {
           backgroundRepeat: 'repeat',
           backgroundSize: 'auto',
           zIndex: 2,
-          opacity: 0.8,
+          opacity: 0.7,
           filter: 'hue-rotate(180deg) saturate(1.5)',
         }}
       />
@@ -114,6 +115,7 @@ const Clock: React.FC = () => {
           transform: 'translate(-50%, -50%)',
           display: 'flex',
           alignItems: 'center',
+          opacity: 0.7,
           zIndex: 3,
         }}
       >
