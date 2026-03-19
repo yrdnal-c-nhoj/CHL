@@ -96,13 +96,15 @@ const Clock: React.FC = () => {
       <div
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
           width: '100vw',
           height: '100dvh',
           backgroundImage: `url(${tileBgGif})`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'auto',
+          backgroundPosition: 'center',
           zIndex: 2,
           opacity: 0.7,
           filter: 'hue-rotate(180deg) saturate(1.5)',
