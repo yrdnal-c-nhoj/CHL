@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useMultipleFontLoader, useStyleInjection } from '../../../utils/fontLoader';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import fontUrl from '../../../assets/fonts/26-03-15-shadow.otf';
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
 
-  // Suspense-friendly font loading with centralized style injection
+  // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
       fontFamily: '26-03-15-shadow',
@@ -16,21 +16,7 @@ const Clock: React.FC = () => {
       }
     }
   ];
-
-  // Inject keyframes and other styles through centralized utility
-  useStyleInjection({
-    keyframes: {
-      'float-animation': {
-        '0%, 100%': { transform: 'translateY(0) rotateX(0deg) rotateY(0deg)' },
-        '25%': { transform: 'translateY(-0.8rem) rotateX(3deg) rotateY(1deg)' },
-        '50%': { transform: 'translateY(0) rotateX(0deg) rotateY(0deg)' },
-        '75%': { transform: 'translateY(0.5rem) rotateX(-2deg) rotateY(-1deg)' }
-      }
-    }
-  });
-
-  // Use font loader
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsReady = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -69,19 +55,58 @@ const Clock: React.FC = () => {
 
   const responsive = getResponsiveSize();
 
-  // Don't render until fonts are loaded
-  if (!fontsLoaded) {
+  // Define styles after responsive is calculated
+  const styles = {
+    container: {
+      minHeight: '100dvh',
+      background:
+        'radial-gradient(circle at center, #D3AEE7 0%, #CA79A1 30%, #A5DEDF 60%, #DCE77A 80%, #D4A64A 100%)',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      overflow: 'hidden',
+      border: '25px solid #FF1493',
+      boxSizing: 'border-box',
+    },
+    wrapper: {
+      display: 'flex',
+      alignItems: 'baseline',
+    },
+    digitBox: {
+      display: 'inline-block',
+      width: `${responsive.width}px`, // Use responsive width instead of vw
+      textAlign: 'center',
+      transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)', // Snappy rotation
+      willChange: 'transform',
+      zIndex: 2,
+      transform: `scale(${responsive.scale})`, // Apply responsive scale
+    },
+    text: {
+      fontFamily:
+        '"26-03-15-shadow", "Avant Garde", "Century Gothic", sans-serif',
+      color: '#1C0210',
+      fontSize: `${responsive.width * 0.08}px`, // Responsive font size (8% of container width)
+      margin: 0,
+      filter: 'url(#deep-shadow)', // Applying the SVG filter here
+      lineHeight: 1,
+    },
+  };
+
+  // Show loading state while font loads
+  if (!fontsReady) {
     return (
       <div style={{
         minHeight: '100dvh',
+        background: 'radial-gradient(circle at center, #D3AEE7 0%, #CA79A1 30%, #A5DEDF 60%, #DCE77A 80%, #D4A64A 100%)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        background: 'radial-gradient(circle at center, #607DF0 0%, #79ACCA 30%, #A5DEDF 60%, #7AE7D5 80%, #4AC4D4 100%)'
+        border: '25px solid #FF1493',
+        boxSizing: 'border-box',
+        color: '#1C0210',
+        fontFamily: 'sans-serif'
       }}>
-        <div style={{ color: '#1C0210', fontFamily: 'monospace', fontSize: '1.2rem' }}>
-          Loading clock...
-        </div>
+        Loading...
       </div>
     );
   }
@@ -138,42 +163,6 @@ const Clock: React.FC = () => {
       </div>
     </>
   );
-};
-
-const styles = {
-  container: {
-    minHeight: '100dvh',
-    background:
-      'radial-gradient(circle at center, #AED0E7 0%, #92DBE8 30%, #A5DEDF 60%, #A6A4DB 80%, #CCB8EE 100%)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    border: '25px solid #F0EEBB',
-    boxSizing: 'border-box',
-  },
-  wrapper: {
-    display: 'flex',
-    alignItems: 'baseline',
-  },
-  digitBox: {
-    display: 'inline-block',
-    width: `${responsive.width}px`, // Use responsive width
-    textAlign: 'center',
-    transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)', // Snappy rotation
-    willChange: 'transform',
-    zIndex: 2,
-    transform: `scale(${responsive.scale})`, // Apply responsive scale
-  },
-  text: {
-    fontFamily:
-      '"26-03-15-shadow", "Avant Garde", "Century Gothic", sans-serif',
-    fontSize: `${responsive.width * 0.08}px`, // Responsive font size (8% of container width)
-    color: '#1C0210',
-    textShadow: '0 0 20px rgba(28, 193, 0, 0.2)', // Subtle shadow
-    filter: 'url(#deep-shadow)', // Applying the SVG filter here
-    lineHeight: 1,
-  },
 };
 
 export default Clock;
