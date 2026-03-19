@@ -27,20 +27,20 @@ const Clock: React.FC = () => {
     const isSmallScreen = vw <= 768;
     
     if (isMobile) {
-      return Math.min(vw * 0.9, 320); // Use 90% of width on mobile, max 320px
+      return Math.min(vw * 0.8, vh * 0.8, 280); // Use 80% of viewport, max 280px on mobile
     } else if (isSmallScreen) {
-      return Math.min(vw * 0.7, 350); // Use 70% on small screens
+      return Math.min(vw * 0.7, vh * 0.7, 350); // Use 70% on small screens
     } else {
-      return Math.min(vw * 0.8, 420); // Use 80% on desktop, max 420px
+      return Math.min(vw * 0.8, vh * 0.8, 420); // Use 80% on desktop, max 420px
     }
   };
 
   const clockSize = getClockSize();
 
-  // Mobile-specific adjustments for better centering
+  // Better mobile-specific adjustments for Chrome mobile
   const mobileAdjustments = {
-    padding: typeof window !== 'undefined' && window.innerWidth <= 480 ? '15px' : '0px',
-    transform: typeof window !== 'undefined' && window.innerWidth <= 480 ? 'scale(0.9)' : 'scale(1)',
+    padding: typeof window !== 'undefined' && window.innerWidth <= 480 ? '10px' : '0px',
+    transform: typeof window !== 'undefined' && window.innerWidth <= 480 ? 'scale(0.85)' : 'scale(1)',
   };
 
   return (
@@ -57,6 +57,8 @@ const Clock: React.FC = () => {
         backgroundPosition: 'center',
         fontFamily: 'Helvetica, Arial, sans-serif', // clean sans-serif fallback
         padding: mobileAdjustments.padding,
+        boxSizing: 'border-box',
+        overflow: 'hidden',
       }}
     >
       {/* Main clock face — responsive size with mobile adjustments */}
