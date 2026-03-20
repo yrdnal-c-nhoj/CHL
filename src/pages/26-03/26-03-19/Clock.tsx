@@ -100,7 +100,7 @@ const SlowBuryBlizzard: React.FC = () => {
 
           const groundLevel = state.height - state.snowHeight;
           if (flake.y > groundLevel) {
-            state.snowHeight += 0.15; // Accumulation rate
+            state.snowHeight += 0.4; 
             return false;
           }
           return true;
@@ -146,7 +146,7 @@ const SlowBuryBlizzard: React.FC = () => {
     <div style={{ 
       position: 'fixed', 
       inset: 0, 
-      background: 'linear-gradient(to bottom, #1a202c, #000000)', 
+      background: 'radial-gradient(ellipse at top, #5a6b8a 0%, #3d4a66 20%, #2a3447 40%, #1a2332 70%, #0a0f1a 100%)', 
       overflow: 'hidden' 
     }}>
       {/* CLOCK: Increased z-index to 3 so it stays ABOVE the snow */}
