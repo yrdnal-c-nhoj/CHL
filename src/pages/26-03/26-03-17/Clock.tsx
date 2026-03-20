@@ -104,6 +104,7 @@ const Clock: React.FC = () => {
           // opacity: 0.4,
           zIndex: 1,
           filter: 'hue-rotate(230deg) saturate(1.5)',
+          transform: 'scaleX(-1)',
         }}
       />
       
