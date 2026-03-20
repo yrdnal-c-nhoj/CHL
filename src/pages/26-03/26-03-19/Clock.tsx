@@ -1,4 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import snowFont from '../../../assets/fonts/26-03-19-snow.otf';
 
 interface Flake {
   x: number;
@@ -13,27 +15,34 @@ const SlowBuryBlizzard: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const clockRef = useRef<HTMLDivElement | null>(null);
   
+  const fontsLoaded = useMultipleFontLoader([
+    { fontFamily: 'SnowFont', fontUrl: snowFont, options: { weight: 'normal', style: 'normal' } }
+  ]);
+  
   const stateRef = useRef({
     flakes: [] as Flake[],
     snowHeight: 0,
-    width: 0,
-    height: 0,
+    width: window.innerWidth, // Initialize with actual values
+    height: window.innerHeight,
     lastTime: 0,
     phase: 'snowing' as 'snowing' | 'holding' | 'fading',
     canvasOpacity: 1,
     holdStartTime: 0,
+    spawnTimer: 0 // Moved into ref to persist across frames
   });
 
   useEffect(() => {
+    if (!fontsLoaded) return; // Only start logic if fonts are ready
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d')!;
-    const clockElement = clockRef.current;
+    const state = stateRef.current;
 
     const handleResize = () => {
-      stateRef.current.width = window.innerWidth;
-      stateRef.current.height = window.innerHeight;
+      state.width = window.innerWidth;
+      state.height = window.innerHeight;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
@@ -42,14 +51,13 @@ const SlowBuryBlizzard: React.FC = () => {
     window.addEventListener('resize', handleResize);
 
     const updateClock = () => {
-      if (clockElement) {
+      if (clockRef.current) {
         const now = new Date();
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        const displayHours = hours % 12 || 12;
-        const displayMinutes = minutes.toString().padStart(2, '0');
-        clockElement.textContent = `${displayHours}:${displayMinutes} ${ampm}`;
+        clockRef.current.textContent = now.toLocaleTimeString([], { 
+          hour: 'numeric', 
+          minute: '2-digit', 
+          hour12: true 
+        });
       }
     };
 
@@ -57,31 +65,28 @@ const SlowBuryBlizzard: React.FC = () => {
     const clockInterval = setInterval(updateClock, 1000);
 
     const createFlake = (): Flake => ({
-      x: Math.random() * stateRef.current.width,
+      x: Math.random() * state.width,
       y: -20,
-      size: Math.random() * 3 + 1,
-      speed: Math.random() * 1 + 0.5, // SLOWER fall (was 1.5 + 1.5)
-      drift: Math.random() * 0.5 - 0.25,   // SLOWER drift (was 1 - 0.5)
-      opacity: Math.random() * 0.4 + 0.4,
+      size: Math.random() * 3 + 2,
+      speed: Math.random() * 1 + 0.5,
+      drift: Math.random() * 0.5 - 0.25,
+      opacity: Math.random() * 0.5 + 0.3,
     });
 
-    let spawnTimer = 0;
-
     const animate = (time: number) => {
-      const state = stateRef.current;
-      const { width, height } = state;
       const deltaTime = time - state.lastTime;
       state.lastTime = time;
 
-      ctx.clearRect(0, 0, width, height);
+      ctx.clearRect(0, 0, state.width, state.height);
+      
+      // Apply global opacity for the "fading" phase
       ctx.globalAlpha = state.canvasOpacity;
 
       if (state.phase === 'snowing') {
-        spawnTimer += deltaTime;
-        // SLOWED DOWN: Spawning 4 flakes every 40ms
-        if (spawnTimer > 40) { 
-          for (let i = 0; i < 4; i++) state.flakes.push(createFlake());
-          spawnTimer = 0;
+        state.spawnTimer += deltaTime;
+        if (state.spawnTimer > 60) { 
+          for (let i = 0; i < 3; i++) state.flakes.push(createFlake());
+          state.spawnTimer = 0;
         }
 
         state.flakes = state.flakes.filter((flake) => {
@@ -93,28 +98,24 @@ const SlowBuryBlizzard: React.FC = () => {
           ctx.fillStyle = `rgba(255, 255, 255, ${flake.opacity})`;
           ctx.fill();
 
-          const groundLevel = height - state.snowHeight;
+          const groundLevel = state.height - state.snowHeight;
           if (flake.y > groundLevel) {
-            // FASTER accumulation (was 0.05)
-            state.snowHeight += 0.2; 
+            state.snowHeight += 0.15; // Accumulation rate
             return false;
           }
           return true;
         });
 
-        if (state.snowHeight >= height) {
-          state.snowHeight = height;
+        if (state.snowHeight >= state.height) {
           state.phase = 'holding';
           state.holdStartTime = time;
         }
       } 
-      
       else if (state.phase === 'holding') {
-        if (time - state.holdStartTime > 2000) state.phase = 'fading'; // Hold longer
+        if (time - state.holdStartTime > 3000) state.phase = 'fading';
       } 
-      
       else if (state.phase === 'fading') {
-        state.canvasOpacity -= 0.01; // Slower fade
+        state.canvasOpacity -= 0.005; 
         if (state.canvasOpacity <= 0) {
           state.snowHeight = 0;
           state.flakes = [];
@@ -123,11 +124,10 @@ const SlowBuryBlizzard: React.FC = () => {
         }
       }
 
-      // DRAW SNOW GROUND
-      if (state.snowHeight > 0.1) {
+      // DRAW THE ACCUMULATED SNOW
+      if (state.snowHeight > 0) {
         ctx.fillStyle = '#ffffff';
-        // The +10 ensures that the "pile" looks solid as it moves up
-        ctx.fillRect(0, height - state.snowHeight, width, state.snowHeight + 10);
+        ctx.fillRect(0, state.height - state.snowHeight, state.width, state.snowHeight);
       }
 
       requestAnimationFrame(animate);
@@ -140,26 +140,16 @@ const SlowBuryBlizzard: React.FC = () => {
       cancelAnimationFrame(animationId);
       clearInterval(clockInterval);
     };
-  }, []);
+  }, [fontsLoaded]); // Re-run when fonts are loaded
 
   return (
     <div style={{ 
       position: 'fixed', 
       inset: 0, 
-      background: 'radial-gradient(ellipse at top, #4a5568 0%, #2d3748 20%, #1a202c 40%, #0f1419 70%, #000000 100%)', 
+      background: 'linear-gradient(to bottom, #1a202c, #000000)', 
       overflow: 'hidden' 
     }}>
-      {/* Custom Font Loading */}
-      <style>
-        {`
-          @font-face {
-            font-family: 'SnowFont';
-            src: url('/assets/fonts/26-03-19-snow.otf') format('opentype');
-          }
-        `}
-      </style>
-      
-      {/* 1. CLOCK (Layered behind the canvas) */}
+      {/* CLOCK: Increased z-index to 3 so it stays ABOVE the snow */}
       <div 
         ref={clockRef}
         style={{
@@ -168,38 +158,27 @@ const SlowBuryBlizzard: React.FC = () => {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           fontSize: 'clamp(3rem, 15vw, 8rem)',
-          fontWeight: '300',
-          color: 'rgba(255, 255, 255, 0.8)',
-          textShadow: '0 0 20px rgba(255, 255, 255, 0.2)',
-          fontFamily: "'SnowFont', monospace",
-          letterSpacing: '0.05em',
-          zIndex: 1, // Lower Z-Index
+          color: 'white',
+          fontFamily: fontsLoaded ? "'SnowFont', sans-serif" : 'sans-serif',
+          zIndex: 3, 
           pointerEvents: 'none',
           textAlign: 'center'
         }}
-      />
+      >
+        {!fontsLoaded && "Loading..."}
+      </div>
 
-      {/* 2. CANVAS (Layered in front) */}
       <canvas 
         ref={canvasRef} 
         style={{ 
-          position: 'relative',
-          display: 'block', 
+          position: 'absolute',
+          top: 0,
+          left: 0,
           width: '100%', 
           height: '100%',
-          zIndex: 2 // Higher Z-Index to cover the clock
+          zIndex: 2 // Snow falls behind the clock but covers the background
         }} 
       />
-      
-      {/* Subtly textured overlay */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        opacity: 0.02,
-        pointerEvents: 'none',
-        zIndex: 3,
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
-      }} />
     </div>
   );
 };
