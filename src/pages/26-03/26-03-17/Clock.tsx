@@ -87,7 +87,7 @@ const Clock: React.FC = () => {
           top: 0,
           left: 0,
           overflow: 'hidden',
-          background: 'radial-gradient(circle, #EC0FB9 0%, #0718B1 100%)',
+          background: 'radial-gradient(circle, #120910 0%, #0718B1 100%)',
         }}
       >
       {/* Full screen background image */}
@@ -101,7 +101,7 @@ const Clock: React.FC = () => {
           width: '100vw',
           height: '100vh',
           objectFit: 'cover',
-          opacity: 0.9,
+          // opacity: 0.4,
           zIndex: 1,
           filter: 'hue-rotate(230deg) saturate(1.5)',
         }}
@@ -121,7 +121,7 @@ const Clock: React.FC = () => {
           backgroundSize: 'auto',
           backgroundPosition: 'center',
           zIndex: 2,
-          opacity: 0.7,
+          opacity: 0.3,
           filter: 'hue-rotate(180deg) saturate(1.5)',
         }}
       />
@@ -135,7 +135,7 @@ const Clock: React.FC = () => {
           transform: 'translate(-50%, -50%)',
           display: 'flex',
           alignItems: 'center',
-          opacity: 0.7,
+          opacity: 0.5,
           zIndex: 3,
           padding: isMobile ? '10px 5px' : '20px',
         }}
@@ -162,21 +162,24 @@ const Clock: React.FC = () => {
       
     
       
-      {/* New top image overlay */}
-      <img
-        src={topImageWebp}
-        alt="Top overlay"
+      {/* New top image overlay - tiled from center */}
+      <div
         className="spinning-image"
         style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
-          maxWidth: '100vw',
-          maxHeight: '100vh',
+          width: '200vw',
+          height: '200vh',
+          backgroundImage: `url(${topImageWebp})`,
+          backgroundRepeat: 'repeat',
+          backgroundSize: 'auto',
+          backgroundPosition: 'center',
           zIndex: 4,
           pointerEvents: 'none',
           opacity: 0.5,
           filter: 'hue-rotate(270deg) saturate(1.5)',
+          transform: 'translate(-50%, -50%) scaleX(-1)',
         }}
       />
     </div>
