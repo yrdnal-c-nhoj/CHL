@@ -60,7 +60,7 @@ const styles = {
   },
   clockOverlay: {
     position: 'absolute',
-    top: '5px',
+    top: '1px',
     left: '20px',
     color: '#DFECD7',
     fontSize: '2vh',
