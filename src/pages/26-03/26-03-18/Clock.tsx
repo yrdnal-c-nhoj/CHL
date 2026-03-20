@@ -114,17 +114,6 @@ const Clock: React.FC = () => {
         <source src={walkVideo} type="video/mp4" />
       </video>
 
-      <div className="screen-overlay" style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        // background: 'rgba(0,0,0,0.1)',
-        zIndex: 1,
-        pointerEvents: 'none'
-      }} />
-
       {/* Main Clock Container */}
       <div
         style={{
@@ -133,7 +122,7 @@ const Clock: React.FC = () => {
           width: `${clockSize}px`, height: `${clockSize}px`,
           zIndex: 2,
           display: 'flex', justifyContent: 'center', alignItems: 'center',
-          opacity: 0.8,
+          // opacity: 0.8,
         }}
       >
         {/* Decorative Starburst (Googie Style) */}
