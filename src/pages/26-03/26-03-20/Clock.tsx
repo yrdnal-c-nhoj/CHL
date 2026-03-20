@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { ClockTime } from '@/types/clock';
+import backgroundImage from '../../../assets/images/26-03/26-03-20/empire.webp';
 import './Clock.css';
 
 const Clock: React.FC = () => {
@@ -54,7 +55,7 @@ const Clock: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#000',
-        backgroundImage: 'url(/src/assets/images/26-03/26-03-20/empire.webp)',
+        backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
