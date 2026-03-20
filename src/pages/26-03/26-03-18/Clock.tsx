@@ -7,9 +7,13 @@ const Clock: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [time, setTime] = useState(new Date());
   
-  // 1950s Color Palette
+  // 1950s Hollywood Color Palette
+  const hollywoodGold = '#FFD700';
+  const vintageRose = '#FF69B4';
   const gold = '#0A9CD6';
   const champagne = '#FFFACD';
+  const silver = '#C0C0C0';
+  const deepMagenta = '#8B008B';
   const neonPink = '#F2A280'; // Subverted 50s neon accent
   
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -59,7 +63,13 @@ const Clock: React.FC = () => {
           /* Font loading handled by useMultipleFontLoader */
 
           .neon-glow {
-            text-shadow: 0 0 10px ${gold}, 0 0 20px ${gold}, 0 0 30px #ffa500;
+            text-shadow: 
+              0 0 10px ${hollywoodGold},
+              0 0 20px ${vintageRose},
+              0 0 30px ${champagne},
+              0 0 40px ${silver},
+              0 0 50px ${neonPink},
+              0 2px 4px rgba(0,0,0,0.8);
           }
 
           .starburst {
@@ -68,16 +78,26 @@ const Clock: React.FC = () => {
             height: 4500px;
             background: repeating-conic-gradient(
               from 0deg,
-              rgba(255, 217, 0, 0.27) 0deg 15deg,
-              transparent 15deg 30deg
+              rgba(255, 215, 0, 0.4) 0deg 15deg,
+              rgba(255, 105, 180, 0.3) 15deg 30deg
             );
             border-radius: 50%;
             animation: rotate 60s linear infinite;
+            filter: blur(2px);
           }
 
           @keyframes rotate {
             from { transform: translate(-50%, -50%) rotate(360deg); }
             to { transform: translate(-50%, -50%) rotate(0deg); }
+          }
+
+          @keyframes hollywoodPulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+          }
+
+          .hollywood-glow {
+            animation: hollywoodPulse 3s ease-in-out infinite;
           }
         `}
       </style>
@@ -151,35 +171,47 @@ const Clock: React.FC = () => {
 
         {/* Clock Hands */}
         {/* Hour */}
-        <div style={{
+        <div className="hollywood-glow" style={{
           position: 'absolute', top: '50%', left: '50%',
           width: `${8 * handScale}px`, height: `${100 * handScale}px`,
-          background: `linear-gradient(to top, ${gold}, ${champagne})`,
+          background: `linear-gradient(to top, ${hollywoodGold}, ${champagne})`,
           transform: `translate(-50%, -100%) rotate(${hourAngle}deg)`,
           transformOrigin: 'bottom center',
           borderRadius: `${10 * handScale}px ${10 * handScale}px 0 0`,
-          boxShadow: '2px 2px 10px rgba(0,0,0,0.5)'
+          boxShadow: `
+            0 0 10px ${hollywoodGold},
+            0 0 20px ${vintageRose},
+            2px 2px 10px rgba(0,0,0,0.5)
+          `
         }} />
 
         {/* Minute */}
-        <div style={{
+        <div className="hollywood-glow" style={{
           position: 'absolute', top: '50%', left: '50%',
           width: `${4 * handScale}px`, height: `${140 * handScale}px`,
-          background: champagne,
+          background: `linear-gradient(to top, ${silver}, ${champagne})`,
           transform: `translate(-50%, -100%) rotate(${minuteAngle}deg)`,
           transformOrigin: 'bottom center',
           borderRadius: `${10 * handScale}px`,
-          boxShadow: '2px 2px 10px rgba(0,0,0,0.5)'
+          boxShadow: `
+            0 0 8px ${silver},
+            0 0 15px ${vintageRose},
+            2px 2px 10px rgba(0,0,0,0.5)
+          `
         }} />
 
-        {/* Second Hand - Styled like a spotlight beam */}
-        <div style={{
+        {/* Second Hand - Hollywood Spotlight */}
+        <div className="hollywood-glow" style={{
           position: 'absolute', top: '50%', left: '50%',
           width: `${2 * handScale}px`, height: `${160 * handScale}px`,
-          backgroundColor: neonPink,
+          background: `linear-gradient(to top, ${neonPink}, ${vintageRose})`,
           transform: `translate(-50%, -100%) rotate(${secondAngle}deg)`,
           transformOrigin: 'bottom center',
-          boxShadow: `0 0 10px ${neonPink}`,
+          boxShadow: `
+            0 0 15px ${neonPink},
+            0 0 30px ${vintageRose},
+            0 0 45px ${hollywoodGold}
+          `,
         }} />
 
         {/* Center Cap (The "Star") */}
