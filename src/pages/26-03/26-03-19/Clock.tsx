@@ -1,137 +1,207 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useRef } from 'react';
 
-// Import all the fonts from the directory
-const fontImports = import.meta.glob(
-  '../../../assets/fonts/26-03-10/*.{ttf,otf}',
-);
+interface Flake {
+  x: number;
+  y: number;
+  size: number;
+  speed: number;
+  drift: number;
+  opacity: number;
+}
 
-const fontNames = Object.keys(fontImports).map((path) => {
-  const font = new FontFace(
-    path.split('/').pop().split('.')[0],
-    `url(${path})`,
-  );
-  font.load();
-  return font.family;
-});
-
-const KittyClockComponent: React.FC = () => {
-  const [images, setImages] = useState<any>({ current: '', next: '' });
-  const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
-  const [time, setTime] = useState(new Date());
-  const [currentFont, setCurrentFont] = useState<any>(fontNames[0]);
-
-  const fontReady = useFontLoader(fontNames, undefined, {
-    timeout: 5000,
-    fallback: true,
+const SlowBuryBlizzard: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const clockRef = useRef<HTMLDivElement | null>(null);
+  
+  const stateRef = useRef({
+    flakes: [] as Flake[],
+    snowHeight: 0,
+    width: 0,
+    height: 0,
+    lastTime: 0,
+    phase: 'snowing' as 'snowing' | 'holding' | 'fading',
+    canvasOpacity: 1,
+    holdStartTime: 0,
   });
 
-  const getNewKitty = useCallback(async () => {
-    try {
-      const response = await fetch(
-        'https://api.thecatapi.com/v1/images/search',
-      );
-      const data = await response.json();
-
-      if (data && data[0]?.url) {
-        const nextUrl = data[0].url;
-
-        const img = new Image();
-        img.src = nextUrl;
-        img.onload = () => {
-          setImages((prev) => ({ ...prev, next: nextUrl }));
-          setIsTransitioning(true);
-
-          setTimeout(() => {
-            setImages({ current: nextUrl, next: '' });
-            setIsTransitioning(false);
-          }, 600);
-        };
-      }
-    } catch (error) {
-      console.error('Error fetching kitty:', error);
-    }
-  }, []);
-
   useEffect(() => {
-    getNewKitty();
-    const clockInterval = setInterval(() => {
-      setTime(new Date());
-      setCurrentFont(fontNames[Math.floor(Math.random() * fontNames.length)]);
-    }, 1000);
-    const imageInterval = setInterval(getNewKitty, 5000);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d')!;
+    const clockElement = clockRef.current;
+
+    const handleResize = () => {
+      stateRef.current.width = window.innerWidth;
+      stateRef.current.height = window.innerHeight;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    const updateClock = () => {
+      if (clockElement) {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const displayHours = hours % 12 || 12;
+        const displayMinutes = minutes.toString().padStart(2, '0');
+        clockElement.textContent = `${displayHours}:${displayMinutes} ${ampm}`;
+      }
+    };
+
+    updateClock();
+    const clockInterval = setInterval(updateClock, 1000);
+
+    const createFlake = (): Flake => ({
+      x: Math.random() * stateRef.current.width,
+      y: -20,
+      size: Math.random() * 3 + 1,
+      speed: Math.random() * 1 + 0.5, // SLOWER fall (was 1.5 + 1.5)
+      drift: Math.random() * 0.5 - 0.25,   // SLOWER drift (was 1 - 0.5)
+      opacity: Math.random() * 0.4 + 0.4,
+    });
+
+    let spawnTimer = 0;
+
+    const animate = (time: number) => {
+      const state = stateRef.current;
+      const { width, height } = state;
+      const deltaTime = time - state.lastTime;
+      state.lastTime = time;
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.globalAlpha = state.canvasOpacity;
+
+      if (state.phase === 'snowing') {
+        spawnTimer += deltaTime;
+        // SLOWED DOWN: Spawning 4 flakes every 40ms
+        if (spawnTimer > 40) { 
+          for (let i = 0; i < 4; i++) state.flakes.push(createFlake());
+          spawnTimer = 0;
+        }
+
+        state.flakes = state.flakes.filter((flake) => {
+          flake.y += flake.speed;
+          flake.x += flake.drift;
+
+          ctx.beginPath();
+          ctx.arc(flake.x, flake.y, flake.size / 2, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${flake.opacity})`;
+          ctx.fill();
+
+          const groundLevel = height - state.snowHeight;
+          if (flake.y > groundLevel) {
+            // FASTER accumulation (was 0.05)
+            state.snowHeight += 0.2; 
+            return false;
+          }
+          return true;
+        });
+
+        if (state.snowHeight >= height) {
+          state.snowHeight = height;
+          state.phase = 'holding';
+          state.holdStartTime = time;
+        }
+      } 
+      
+      else if (state.phase === 'holding') {
+        if (time - state.holdStartTime > 2000) state.phase = 'fading'; // Hold longer
+      } 
+      
+      else if (state.phase === 'fading') {
+        state.canvasOpacity -= 0.01; // Slower fade
+        if (state.canvasOpacity <= 0) {
+          state.snowHeight = 0;
+          state.flakes = [];
+          state.canvasOpacity = 1;
+          state.phase = 'snowing';
+        }
+      }
+
+      // DRAW SNOW GROUND
+      if (state.snowHeight > 0.1) {
+        ctx.fillStyle = '#ffffff';
+        // The +10 ensures that the "pile" looks solid as it moves up
+        ctx.fillRect(0, height - state.snowHeight, width, state.snowHeight + 10);
+      }
+
+      requestAnimationFrame(animate);
+    };
+
+    const animationId = requestAnimationFrame(animate);
 
     return () => {
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(animationId);
       clearInterval(clockInterval);
-      clearInterval(imageInterval);
     };
-  }, [getNewKitty]);
-
-  const formatTime = (date) => {
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12 || 12;
-    return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`
-      .split('')
-      .join(' ');
-  };
-
-  const containerStyle = {
-    position: 'relative',
-    width: '100vw',
-    height: '100vh',
-    backgroundColor: '#1a1a1a',
-    overflow: 'hidden',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  };
-
-  const layerStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    transition: 'opacity 0.6s ease-in-out',
-  };
-
-  const clockStyle = {
-    position: 'relative',
-    zIndex: 10,
-    fontFamily: currentFont,
-    fontSize: '7vh',
-    color: '#F9EBE5',
-    textShadow: '0 4px 12px rgba(0,0,0,0.5)',
-    opacity: fontReady ? 1 : 0,
-    transition: 'opacity 0.5s ease, font-family 0.5s ease',
-    transform: 'translateY(12vh)',
-    pointerEvents: 'none',
-  };
+  }, []);
 
   return (
-    <div style={containerStyle}>
-      <div
+    <div style={{ 
+      position: 'fixed', 
+      inset: 0, 
+      background: 'radial-gradient(ellipse at top, #4a5568 0%, #2d3748 20%, #1a202c 40%, #0f1419 70%, #000000 100%)', 
+      overflow: 'hidden' 
+    }}>
+      {/* Custom Font Loading */}
+      <style>
+        {`
+          @font-face {
+            font-family: 'SnowFont';
+            src: url('/src/assets/fonts/26-03-19-snow.otf') format('opentype');
+          }
+        `}
+      </style>
+      
+      {/* 1. CLOCK (Layered behind the canvas) */}
+      <div 
+        ref={clockRef}
         style={{
-          ...layerStyle,
-          backgroundImage: `url(${images.current})`,
-          zIndex: 1,
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          fontSize: 'clamp(3rem, 15vw, 8rem)',
+          fontWeight: '300',
+          color: 'rgba(255, 255, 255, 0.8)',
+          textShadow: '0 0 20px rgba(255, 255, 255, 0.2)',
+          fontFamily: "'SnowFont', monospace",
+          letterSpacing: '0.05em',
+          zIndex: 1, // Lower Z-Index
+          pointerEvents: 'none',
+          textAlign: 'center'
         }}
       />
-      <div
-        style={{
-          ...layerStyle,
-          backgroundImage: `url(${images.next})`,
-          opacity: isTransitioning ? 1 : 0,
-          zIndex: 2,
-        }}
+
+      {/* 2. CANVAS (Layered in front) */}
+      <canvas 
+        ref={canvasRef} 
+        style={{ 
+          position: 'relative',
+          display: 'block', 
+          width: '100%', 
+          height: '100%',
+          zIndex: 2 // Higher Z-Index to cover the clock
+        }} 
       />
-      <div style={clockStyle}>{formatTime(time)}</div>
+      
+      {/* Subtly textured overlay */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        opacity: 0.02,
+        pointerEvents: 'none',
+        zIndex: 3,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
+      }} />
     </div>
   );
 };
 
-export default KittyClockComponent;
+export default SlowBuryBlizzard;
