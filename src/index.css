@@ -38,8 +38,14 @@ html,
 body {
   margin: 0;
   padding: 0;
-  height: 100dvh; /* dynamic VH for mobile browsers */
+  height: 100%;
   width: 100%;
-  display: flex; /* makes body a flex container */
-  flex-direction: column;
+  overflow: hidden;
+}
+
+#root {
+  height: 100vh;
+  height: 100dvh;
+  width: 100vw;
+  overflow: hidden;
 }
