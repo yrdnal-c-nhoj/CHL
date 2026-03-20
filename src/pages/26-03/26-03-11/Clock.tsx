@@ -5,29 +5,37 @@ const FONT_NAME = `XanhMono_${fontVersion}`;
 
 const BorrowedTimeClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
-  const [imageUrl, setImageUrl] = useState(
-    `https://picsum.photos/800/600?sig=${Date.now()}`,
-  );
-  const [opacity, setOpacity] = useState<number>(1);
+  const [imageUrl, setImageUrl] = useState(`https://picsum.photos/800/600?sig=${Date.now()}`);
+  const [imgOpacity, setImgOpacity] = useState<number>(1);
+  const [isPendingNewImage, setIsPendingNewImage] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
       const now = new Date();
       setTime(now);
 
-      // Fade out
-      setOpacity(0);
+      // 1. Start Fade out
+      setImgOpacity(0);
+      setIsPendingNewImage(true);
 
+      // 2. Briefly wait for fade-out to complete before swapping URL
       setTimeout(() => {
         setImageUrl(`https://picsum.photos/800/600?sig=${now.getTime()}`);
-        setOpacity(1);
-      }, 200);
+      }, 300); 
     }, 1000);
 
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (date) => {
+  // 3. This triggers ONLY when the new image file has actually arrived
+  const handleImageLoad = () => {
+    if (isPendingNewImage) {
+      setImgOpacity(1);
+      setIsPendingNewImage(false);
+    }
+  };
+
+  const formatTime = (date: Date) => {
     return date
       .toLocaleTimeString('en-GB', {
         hour12: false,
@@ -38,7 +46,7 @@ const BorrowedTimeClock: React.FC = () => {
       .replace(/:/g, ' ');
   };
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -47,25 +55,33 @@ const BorrowedTimeClock: React.FC = () => {
     height: '100dvh',
     backgroundColor: '#000',
     overflow: 'hidden',
-    padding:
-      'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
-    boxSizing: 'border-box',
     gap: '2vmin',
   };
 
-  const imageStyle = {
+  // Static frame: This never changes opacity
+  const frameStyle: React.CSSProperties = {
     width: 'min(75vmin, 75%)',
     height: 'min(56.25vmin, 37.5vh)',
     maxWidth: '500px',
     maxHeight: '375px',
-    objectFit: 'cover',
-    border: '1px solid #F2F7F1',
-    transition: 'opacity 0.3s ease',
-    opacity: opacity,
+    border: '1px solid #F2F7F1', 
+    backgroundColor: '#111', // Subtle dark fill while empty
+    overflow: 'hidden',
     flexShrink: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   };
 
-  const clockStyle = {
+  const imageStyle: React.CSSProperties = {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    transition: 'opacity 0.4s ease-in-out',
+    opacity: imgOpacity,
+  };
+
+  const clockStyle: React.CSSProperties = {
     fontFamily: `"${FONT_NAME}", "Xanh Mono", monospace`,
     fontSize: 'min(15vmin, 16vw)',
     color: '#F7E3E4',
@@ -74,37 +90,25 @@ const BorrowedTimeClock: React.FC = () => {
     lineHeight: '1',
     textShadow: '0 0 15px rgba(255,0,15,0.4)',
     textAlign: 'center',
-    flexShrink: 0,
     fontVariantNumeric: 'tabular-nums',
   };
 
   return (
     <>
       <style>
-        {`
-        @import url('https://fonts.googleapis.com/css2?family=Xanh+Mono:ital@0;1&display=swap');
-
-        body {
-          margin:0;
-          padding:0;
-          background:#676B6B;
-          height:100dvh;
-          width:100vw;
-          overflow:hidden;
-          -webkit-text-size-adjust:100%;
-          -webkit-tap-highlight-color:transparent;
-        }
-
-        html{
-          height:100dvh;
-          width:100vw;
-          overflow:hidden;
-        }
-      `}
+        {`@import url('https://fonts.googleapis.com/css2?family=Xanh+Mono:ital@0;1&display=swap');
+          body { margin:0; background:#000; }`}
       </style>
 
       <div style={containerStyle}>
-        <img src={imageUrl} alt="Generative Stream" style={imageStyle} />
+        <div style={frameStyle}>
+          <img 
+            src={imageUrl} 
+            alt="Borrowed Time" 
+            style={imageStyle} 
+            onLoad={handleImageLoad}
+          />
+        </div>
 
         <div style={clockStyle}>{formatTime(time)}</div>
       </div>
