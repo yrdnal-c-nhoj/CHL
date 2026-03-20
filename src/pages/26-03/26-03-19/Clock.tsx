@@ -53,11 +53,13 @@ const SlowBuryBlizzard: React.FC = () => {
     const updateClock = () => {
       if (clockRef.current) {
         const now = new Date();
-        clockRef.current.textContent = now.toLocaleTimeString([], { 
-          hour: 'numeric', 
-          minute: '2-digit', 
-          hour12: true 
-        });
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const displayHours = hours % 12 || 12;
+        const displayMinutes = minutes.toString().padStart(2, '0');
+        
+        clockRef.current.innerHTML = `${displayHours}:${displayMinutes} <span style="font-size: 0.8em; opacity: 0.9;">${ampm}</span>`;
       }
     };
 
