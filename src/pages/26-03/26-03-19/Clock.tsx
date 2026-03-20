@@ -157,7 +157,7 @@ const SlowBuryBlizzard: React.FC = () => {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          fontSize: 'clamp(3rem, 15vw, 8rem)',
+          fontSize: 'clamp(5rem, 19vw, 10rem)',
           color: '#E3F2FD',
           fontFamily: fontsLoaded ? "'SnowFont', sans-serif" : 'sans-serif',
           zIndex: 3, 
