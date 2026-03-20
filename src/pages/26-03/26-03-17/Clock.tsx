@@ -82,12 +82,15 @@ const Clock: React.FC = () => {
       <div
         style={{
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           position: 'fixed',
           top: 0,
           left: 0,
           overflow: 'hidden',
           background: 'radial-gradient(circle, #120910 0%, #0718B1 100%)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
       {/* Full screen background image */}
