@@ -69,8 +69,10 @@ const Clock: React.FC = () => {
     <div
       style={{
         width: '100vw',
-        height: '100dvh',
-        position: 'relative',
+        height: '100vh',
+        position: 'fixed',
+        top: 0,
+        left: 0,
         overflow: 'hidden',
         background: 'radial-gradient(circle, #9DB1F6 0%, #61079A 100%)',
       }}
@@ -84,7 +86,7 @@ const Clock: React.FC = () => {
           top: 0,
           left: 0,
           width: '100vw',
-          height: '100dvh',
+          height: '100vh',
           objectFit: 'cover',
           opacity: 0.9,
           zIndex: 1,
@@ -100,7 +102,7 @@ const Clock: React.FC = () => {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           width: '100vw',
-          height: '100dvh',
+          height: '100vh',
           backgroundImage: `url(${tileBgGif})`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'auto',
