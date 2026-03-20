@@ -1,9 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useKeyframes } from '../../../utils/enhancedFontLoader';
-import { useGlobalStyles } from '../../../utils/enhancedFontLoader';
-import { useEnhancedFontLoader } from '../../../utils/enhancedFontLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 import veniceFont from '../../../assets/fonts/26-03-13-venice.ttf';
 
 const Clock: React.FC = () => {
@@ -108,7 +103,7 @@ const Clock: React.FC = () => {
         style={{
           position: 'absolute',
           inset: 0,
-          // background:'rgba(0,0,0,.35)',
+          background:'rgba(0,0,0,.35)',
           zIndex: 1,
         }}
       />
@@ -135,7 +130,7 @@ const Clock: React.FC = () => {
             fontSize: 'clamp(4rem,16vw,14rem)',
             lineHeight: 1.3,
             padding: '0.2em 0',
-            // fontWeight:'bold',
+            fontWeight:'bold',
             whiteSpace: 'nowrap',
             background: 'linear-gradient(90deg,#F321FA,#EFF70D,#ff1493)',
             WebkitBackgroundClip: 'text',
@@ -153,7 +148,7 @@ const Clock: React.FC = () => {
             fontSize: 'clamp(3rem,9vw,8rem)',
             marginTop: '1rem',
             letterSpacing: '.25em',
-            // fontWeight:900,
+            fontWeight: 900,
             background: 'linear-gradient(90deg,#ff1493,#00ffff,#DCFF14)',
             backgroundSize: '200%',
             WebkitBackgroundClip: 'text',
