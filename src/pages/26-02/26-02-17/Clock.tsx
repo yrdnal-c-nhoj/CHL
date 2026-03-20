@@ -150,9 +150,12 @@ const AsteriskClock: React.FC = () => {
 
       window.addEventListener('resize', resize);
 
+      // Start updating immediately
+      setTime(new Date());
+      
       const timer = setInterval(() => {
         setTime(new Date());
-      }, 100);
+      }, 1000);
 
       return () => {
         clearInterval(timer);
