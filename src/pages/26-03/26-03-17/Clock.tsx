@@ -66,17 +66,31 @@ const Clock: React.FC = () => {
   );
 
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100vh',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        overflow: 'hidden',
-        background: 'radial-gradient(circle, #9DB1F6 0%, #61079A 100%)',
-      }}
-    >
+    <>
+      <style>
+        {`
+          @keyframes spinCounterclockwise {
+            from { transform: translate(-50%, -50%) scaleX(-1) rotate(0deg); }
+            to { transform: translate(-50%, -50%) scaleX(-1) rotate(360deg); }
+          }
+          
+          .spinning-image {
+            animation: spinCounterclockwise 60s linear infinite;
+          }
+        `}
+      </style>
+      
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          overflow: 'hidden',
+          background: 'radial-gradient(circle, #EC0FB9 0%, #0718B1 100%)',
+        }}
+      >
       {/* Full screen background image */}
       <img
         src={pluWebp}
@@ -153,11 +167,11 @@ const Clock: React.FC = () => {
       <img
         src={topImageWebp}
         alt="Top overlay"
+        className="spinning-image"
         style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
-          transform: 'translate(-50%, -50%)',
           maxWidth: '100vw',
           maxHeight: '100vh',
           zIndex: 4,
@@ -167,6 +181,7 @@ const Clock: React.FC = () => {
         }}
       />
     </div>
+    </>
   );
 };
 
