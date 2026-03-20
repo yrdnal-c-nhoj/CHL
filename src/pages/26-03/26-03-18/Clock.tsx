@@ -108,7 +108,7 @@ const Clock: React.FC = () => {
         loop muted playsInline preload="auto"
         style={{
           position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
-          objectFit: 'cover', filter: 'sepia(20%) contrast(110%) brightness(80%)',
+          objectFit: 'cover', filter: 'contrast(140%) brightness(120%)',
         }}
       >
         <source src={walkVideo} type="video/mp4" />
@@ -120,7 +120,7 @@ const Clock: React.FC = () => {
         left: 0,
         width: '100vw',
         height: '100vh',
-        background: 'rgba(0,0,0,0.1)',
+        // background: 'rgba(0,0,0,0.1)',
         zIndex: 1,
         pointerEvents: 'none'
       }} />
