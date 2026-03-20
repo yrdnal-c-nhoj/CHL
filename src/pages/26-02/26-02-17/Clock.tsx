@@ -152,7 +152,7 @@ const AsteriskClock: React.FC = () => {
 
       const timer = setInterval(() => {
         setTime(new Date());
-      }, 1000);
+      }, 100);
 
       return () => {
         clearInterval(timer);
