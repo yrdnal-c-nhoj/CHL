@@ -154,7 +154,7 @@ const SlowBuryBlizzard: React.FC = () => {
         {`
           @font-face {
             font-family: 'SnowFont';
-            src: url('/src/assets/fonts/26-03-19-snow.otf') format('opentype');
+            src: url('/assets/fonts/26-03-19-snow.otf') format('opentype');
           }
         `}
       </style>
