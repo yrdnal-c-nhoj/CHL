@@ -178,7 +178,7 @@ const SlowBuryBlizzard: React.FC = () => {
           left: 0,
           width: '100%',
           height: '100%',
-          background: 'linear-gradient(to top, #323603 0%, #0A2465D1 100%)',
+          background: 'linear-gradient(to top, #3E4304 0%, #052882D1 100%)',
           opacity: 0.4,
           zIndex: 1
         }}
