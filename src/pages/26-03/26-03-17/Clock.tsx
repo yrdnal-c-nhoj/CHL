@@ -68,6 +68,18 @@ const Clock: React.FC = () => {
     <>
       <style>
         {`
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          
+          html, body {
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+          }
+          
           @keyframes spinCounterclockwise {
             from { transform: translate(-50%, -50%) scaleX(-1) rotate(0deg); }
             to { transform: translate(-50%, -50%) scaleX(-1) rotate(360deg); }
@@ -83,6 +95,8 @@ const Clock: React.FC = () => {
         style={{
           width: '100vw',
           height: '100dvh',
+          minHeight: '100vh',
+          maxHeight: '100vh',
           position: 'fixed',
           top: 0,
           left: 0,
@@ -91,6 +105,7 @@ const Clock: React.FC = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          WebkitOverflowScrolling: 'touch',
         }}
       >
       {/* Full screen background image */}
