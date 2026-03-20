@@ -148,7 +148,7 @@ const SlowBuryBlizzard: React.FC = () => {
     <div style={{ 
       position: 'fixed', 
       inset: 0, 
-      background: 'radial-gradient(ellipse at top, #5a6b8a 0%, #3d4a66 20%, #2a3447 40%, #1a2332 70%, #0a0f1a 100%)', 
+      background: 'radial-gradient(ellipse at top, #5a6b8a 0%, #2E416C 20%, #1B2943 40%, #142542 70%, #0F2044 100%)', 
       overflow: 'hidden' 
     }}>
       {/* CLOCK: Increased z-index to 3 so it stays ABOVE the snow */}
@@ -170,6 +170,20 @@ const SlowBuryBlizzard: React.FC = () => {
         {!fontsLoaded && "Loading..."}
       </div>
 
+      {/* GRADIENT OVERLAY: Yellow to blue gradient with 0.4 opacity */}
+      <div 
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'linear-gradient(to top, #323603 0%, #0A2465D1 100%)',
+          opacity: 0.4,
+          zIndex: 1
+        }}
+      />
+
       <canvas 
         ref={canvasRef} 
         style={{ 
@@ -178,7 +192,7 @@ const SlowBuryBlizzard: React.FC = () => {
           left: 0,
           width: '100%', 
           height: '100%',
-          zIndex: 2 // Snow falls behind the clock but covers the background
+          zIndex: 2 // Snow falls behind the clock but covers the gradient
         }} 
       />
     </div>
