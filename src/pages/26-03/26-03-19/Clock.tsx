@@ -126,7 +126,7 @@ const SlowBuryBlizzard: React.FC = () => {
 
       // DRAW THE ACCUMULATED SNOW
       if (state.snowHeight > 0) {
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = '#E4EDFC';
         ctx.fillRect(0, state.height - state.snowHeight, state.width, state.snowHeight);
       }
 
@@ -158,7 +158,7 @@ const SlowBuryBlizzard: React.FC = () => {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           fontSize: 'clamp(3rem, 15vw, 8rem)',
-          color: 'white',
+          color: '#E3F2FD',
           fontFamily: fontsLoaded ? "'SnowFont', sans-serif" : 'sans-serif',
           zIndex: 3, 
           pointerEvents: 'none',
