@@ -6,7 +6,7 @@ import topImageWebp from '../../../assets/images/26-03/26-03-17/0001-0160-ezgif.
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
-  const digitColor = '#0A0A0B'; // Single variable to control color of digits and separators
+  const digitColor = '#5D0DA8'; // Single variable to control color of digits and separators
   
   // Check if mobile for responsive sizing
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
@@ -42,7 +42,7 @@ const Clock: React.FC = () => {
         color: digitColor,
         fontSize: isMobile ? '12vw' : '8vh',
         fontFamily: 'Metamorphous, monospace',
-        textShadow: '2px 0px 0px rgba(255, 255, 255, 0.8)',
+        textShadow: '1px 9px 0px rgb(255, 255, 255)',
       }}
     >
       {digit}
@@ -55,9 +55,9 @@ const Clock: React.FC = () => {
         color: digitColor,
         fontSize: isMobile ? '6vw' : '8vh',
         fontFamily: 'Metamorphous, monospace',
-        margin: isMobile ? '0 2vw' : '0 4px',
+        margin: isMobile ? '0 1vw' : '0 2px',
         alignSelf: 'center',
-        textShadow: '2px 0px 0px rgba(255, 255, 255, 0.8)',
+        textShadow: '2px 4px 0px rgb(255, 255, 255)',
       }}
     >
       :
@@ -117,9 +117,9 @@ const Clock: React.FC = () => {
           width: '100vw',
           height: '100dvh',
           objectFit: 'cover',
-          // opacity: 0.4,
-          zIndex: 1,
-          filter: 'hue-rotate(230deg) saturate(1.5)',
+          opacity: 0.8,
+          zIndex: 7,
+          filter: 'hue-rotate(220deg) saturate(2.5) contrast(2.5)',
           transform: 'scaleX(-1)',
         }}
       />
@@ -153,8 +153,8 @@ const Clock: React.FC = () => {
           display: 'flex',
           alignItems: 'center',
           opacity: 0.5,
-          zIndex: 3,
-          padding: isMobile ? '10px 5px' : '20px',
+          zIndex: 6,
+          padding: isMobile ? '5px 3px' : '10px',
         }}
       >
         {/* Hours */}
@@ -194,7 +194,7 @@ const Clock: React.FC = () => {
           backgroundPosition: 'center',
           zIndex: 4,
           pointerEvents: 'none',
-          opacity: 0.5,
+          opacity: 0.7,
           filter: 'hue-rotate(270deg) saturate(1.5)',
           transform: 'translate(-50%, -50%) scaleX(-1)',
         }}
