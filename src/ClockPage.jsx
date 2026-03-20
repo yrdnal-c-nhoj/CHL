@@ -260,7 +260,7 @@ const ClockPage = () => {
         className={styles.container}
         style={{
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           overflow: 'hidden',
           backgroundColor: '#000',
           display: 'flex',
@@ -296,7 +296,7 @@ const ClockPage = () => {
       className={`${styles.container} ${isReady ? styles.loaded : ''}`}
       style={{
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         overflow: 'hidden',
         backgroundColor: '#000',
         position: 'fixed',
@@ -327,7 +327,7 @@ const ClockPage = () => {
         <div
           style={{
             width: '100%',
-            height: '100vh',
+            height: '100dvh',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -357,7 +357,7 @@ const ClockPage = () => {
           position: 'fixed',
           inset: 0,
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           backgroundColor: '#000',
           zIndex: 9999,
           pointerEvents: 'none',
