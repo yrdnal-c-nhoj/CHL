@@ -1,4 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import styles from './Clock.module.css';
 
 interface ClockData {
@@ -15,6 +18,12 @@ interface ClockData {
 }
 
 const GravityClock: React.FC = () => {
+  // Font loading configuration (memoized) - no custom fonts needed
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
   const [clocks, setClocks] = useState<ClockData[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>();
@@ -109,21 +118,11 @@ const GravityClock: React.FC = () => {
 };
 
 const ClockItem: React.FC<{ clock: ClockData }> = ({ clock }) => {
-  const [time, setTime] = useState(new Date());
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
 
-  // Standardized rAF loop for time
-  useEffect(() => {
-    let frameId: number;
-    const tick = () => {
-      setTime(new Date());
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
-
-  const h = (time.getHours() % 12) * 30 + time.getMinutes() * 0.5;
-  const m = time.getMinutes() * 6;
+  const h = (currentTime.getHours() % 12) * 30 + currentTime.getMinutes() * 0.5;
+  const m = currentTime.getMinutes() * 6;
 
   // Calculate the scale: squash affects Y, and to preserve volume, X does the opposite
   // (Traditional animation rule: if height goes down, width goes out)

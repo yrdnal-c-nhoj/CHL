@@ -1,98 +1,117 @@
-import React, { useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import React, { useEffect, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import pirateHook from '../../../assets/images/25-04/25-04-23/hook.webp';
 import pirateCutlass from '../../../assets/images/25-04/25-04-23/pirate_foam.gif';
 import pirateKnife from '../../../assets/images/25-04/25-04-23/cut.gif';
 import pirateOverlay from '../../../assets/images/25-04/25-04-23/sasasd.gif';
 import pirateBackground from '../../../assets/images/25-04/25-04-23/water.webp';
 
-const PirateClock: React.FC = () => {
-  useEffect(() => {
+// Component Props interface
+interface PirateClockProps {
+  // No props required for this component
+}
+
+const PirateClock = () => {
+  // Font loading configuration (memoized) - no custom fonts needed
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
+  const romanNumerals = [
+    'XII',
+    'I',
+    'II',
+    'III',
+    'IV',
+    'V',
+    'VI',
+    'VII',
+    'VIII',
+    'IX',
+    'X',
+    'XI',
+  ];
+
+  const placeNumbers = useCallback((): void => {
     const clock = document.getElementById('clock');
-    const romanNumerals = [
-      'XII',
-      'I',
-      'II',
-      'III',
-      'IV',
-      'V',
-      'VI',
-      'VII',
-      'VIII',
-      'IX',
-      'X',
-      'XI',
-    ];
+    if (!clock) return;
 
-    function placeNumbers() {
-      clock.querySelectorAll('.number').forEach((el) => el.remove());
+    clock.querySelectorAll('.number').forEach((el) => el.remove());
 
-      const clockWidth = clock.offsetWidth;
-      const radius = clockWidth * 0.45;
-      const center = clockWidth / 2;
+    const clockWidth = clock.offsetWidth;
+    const radius = clockWidth * 0.45;
+    const center = clockWidth / 2;
 
-      romanNumerals.forEach((num, i) => {
-        const angle = (i * 30 - 90) * (Math.PI / 180);
-        const x = center + radius * Math.cos(angle);
-        const y = center + radius * Math.sin(angle);
-        const number = document.createElement('div');
+    romanNumerals.forEach((num, i) => {
+      const angle = (i * 30 - 90) * (Math.PI / 180);
+      const x = center + radius * Math.cos(angle);
+      const y = center + radius * Math.sin(angle);
+      const number = document.createElement('div');
 
-        Object.assign(number.style, {
-          position: 'absolute',
-          left: `${x}px`,
-          top: `${y}px`,
-          transform: 'translate(-50%, -50%)',
-          fontSize: 'clamp(2.4rem, 4vw, 2.5rem)', // Responsive font size
-          color: '#c29b0e',
-          textShadow: 'rgb(14, 2, 26) 1px 1px 5px',
-          textAlign: 'center',
-          width: '4vw',
-          height: '4vw',
-          lineHeight: '4vw',
-          minWidth: '30px',
-          minHeight: '30px',
-          animation: `float ${3.5 + Math.random()}s ease-in-out infinite`,
-          animationDelay: `${Math.random() * 2}s`,
-          fontFamily: 'Metamorphous, serif',
-          zIndex: '10',
-        });
-
-        number.textContent = num;
-        number.className = 'number';
-        clock.appendChild(number);
+      Object.assign(number.style, {
+        position: 'absolute',
+        left: `${x}px`,
+        top: `${y}px`,
+        transform: 'translate(-50%, -50%)',
+        fontSize: 'clamp(2.4rem, 4vw, 2.5rem)', // Responsive font size
+        color: '#c29b0e',
+        textShadow: 'rgb(14, 2, 26) 1px 1px 5px',
+        textAlign: 'center',
+        width: '4vw',
+        height: '4vw',
+        lineHeight: '4vw',
+        minWidth: '30px',
+        minHeight: '30px',
+        animation: `float ${3.5 + Math.random()}s ease-in-out infinite`,
+        animationDelay: `${Math.random() * 2}s`,
+        fontFamily: 'Metamorphous, serif',
+        zIndex: '10',
       });
+
+      number.textContent = num;
+      number.className = 'number';
+      clock.appendChild(number);
+    });
+  }, []);
+
+  const updateClock = useCallback((): void => {
+    const hour = currentTime.getHours() % 12;
+    const min = currentTime.getMinutes();
+    const sec = currentTime.getSeconds();
+
+    const hourDeg = hour * 30 + min * 0.5;
+    const minuteDeg = min * 6;
+    const secondDeg = sec * 6;
+
+    const hourHand = document.querySelector('.hour') as HTMLElement;
+    const minuteHand = document.querySelector('.minute') as HTMLElement;
+    const secondHand = document.querySelector('.second') as HTMLElement;
+
+    if (hourHand) {
+      hourHand.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
     }
-
-    function updateClock() {
-      const now = new Date();
-      const hour = now.getHours() % 12;
-      const min = now.getMinutes();
-      const sec = now.getSeconds();
-
-      const hourDeg = hour * 30 + min * 0.5;
-      const minuteDeg = min * 6;
-      const secondDeg = sec * 6;
-
-      document.querySelector('.hour').style.transform =
-        `translateX(-50%) rotate(${hourDeg}deg)`;
-      document.querySelector('.minute').style.transform =
-        `translateX(-50%) rotate(${minuteDeg}deg)`;
-      document.querySelector('.second').style.transform =
-        `translateX(-50%) rotate(${secondDeg}deg)`;
+    if (minuteHand) {
+      minuteHand.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
     }
+    if (secondHand) {
+      secondHand.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
+    }
+  }, [currentTime]);
 
+  useEffect(() => {
     placeNumbers();
     updateClock();
-    const interval = setInterval(updateClock, 1000);
 
     const handleResize = () => placeNumbers();
     window.addEventListener('resize', handleResize);
 
     return () => {
-      clearInterval(interval);
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [placeNumbers, updateClock]);
 
   return (
     <>

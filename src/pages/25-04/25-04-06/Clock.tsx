@@ -78,6 +78,8 @@ const ConfettiClock = () => {
     ];
 
     containerRefs.digits.current.forEach((el, i) => {
+      if (!el) return; // Skip null elements
+      
       const fontSize = Math.random() * 12 + 4; // 4vh to 16vh
       el.style.fontSize = `${fontSize}vh`;
       el.style.fontFamily = 'ConfettiClockFont, sans-serif' as string;
@@ -117,13 +119,17 @@ const ConfettiClock = () => {
     const updateInterval = setInterval(() => {
       const timeDigits = getCurrentTimeDigits();
       containerRefs.digits.current.forEach((el, i) => {
-        el.textContent = timeDigits[i % timeDigits.length] || '0';
+        if (el) {
+          el.textContent = timeDigits[i % timeDigits.length] || '0';
+        }
       });
     }, 10000);
 
     const timeDigits = getCurrentTimeDigits();
     containerRefs.digits.current.forEach((el, i) => {
-      el.textContent = timeDigits[i % timeDigits.length] || '0';
+      if (el) {
+        el.textContent = timeDigits[i % timeDigits.length] || '0';
+      }
     });
 
     return () => clearInterval(updateInterval);

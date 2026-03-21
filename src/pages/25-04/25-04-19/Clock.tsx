@@ -1,6 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import permanentMarkerFont from '../../../assets/fonts/25-04-19-sph.ttf';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import permanentMarkerFont from '../../../assets/fonts/25-04-19-sph.ttf?url';
 
 const BALL_SIZES = {
   hours: 19,
@@ -59,9 +61,33 @@ const roomTypes = [
   },
 ];
 
-const SphereDropClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Ball properties interface
+interface BallProperties {
+  bounce: number;
+  friction: number;
+}
+
+// Room type interface
+interface RoomType {
+  name: string;
+  colorClass: string;
+  countFn: () => number;
+  max: number;
+  size: number;
+  gravity: number;
+  properties: BallProperties;
+  width: number;
+  height: number;
+}
+
+// Component Props interface
+interface SphereDropClockProps {
+  // No props required for this component
+}
+
+const SphereDropClock = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'SphFont',
       fontUrl: permanentMarkerFont,
@@ -70,8 +96,13 @@ const SphereDropClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
+
+  // Load fonts using suspense-based loader
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
 
   const towerRef = useRef(null);
   const latestBalls = useRef({ hours: null, minutes: null });

@@ -1,5 +1,7 @@
-import React, { useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import cakeGif from '../../../assets/images/25-04/25-04-16/cake.gif';
 import minuteImg from '../../../assets/images/25-04/25-04-16/200w.webp';
 import hourImg from '../../../assets/images/25-04/25-04-16/2hhj.webp';
@@ -7,35 +9,53 @@ import secondImg from '../../../assets/images/25-04/25-04-16/20.webp';
 import confGif from '../../../assets/images/25-04/25-04-16/conf.gif';
 import confJpg from '../../../assets/images/25-04/25-04-16/conf.jpg';
 
-const BirthdayCakeClock: React.FC = () => {
-  const hourHandRef = useRef(null);
-  const minuteHandRef = useRef(null);
-  const secondHandRef = useRef(null);
+// Component Props interface
+interface BirthdayCakeClockProps {
+  // No props required for this component
+}
+
+// Clock refs interface
+interface ClockRefs {
+  hourHand: React.RefObject<HTMLDivElement | null>;
+  minuteHand: React.RefObject<HTMLDivElement | null>;
+  secondHand: React.RefObject<HTMLDivElement | null>;
+}
+
+const BirthdayCakeClock = () => {
+  const clockRefs: ClockRefs = {
+    hourHand: useRef<HTMLDivElement>(null),
+    minuteHand: useRef<HTMLDivElement>(null),
+    secondHand: useRef<HTMLDivElement>(null),
+  };
+
+  // Font loading configuration (memoized) - no custom fonts needed
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth millisecond clock updates
+  const currentTime = useMillisecondClock();
+
+  const updateClockSmooth = useCallback((): void => {
+    const ms = currentTime.getMilliseconds();
+    const s = currentTime.getSeconds() + ms / 1000;
+    const m = currentTime.getMinutes() + s / 60;
+    const h = (currentTime.getHours() % 12) + m / 60;
+
+    const hourDeg = h * 30;
+    const minuteDeg = m * 6;
+    const secondDeg = s * 6;
+
+    if (clockRefs.hourHand.current)
+      clockRefs.hourHand.current.style.transform = `rotate(${hourDeg}deg)`;
+    if (clockRefs.minuteHand.current)
+      clockRefs.minuteHand.current.style.transform = `rotate(${minuteDeg}deg)`;
+    if (clockRefs.secondHand.current)
+      clockRefs.secondHand.current.style.transform = `rotate(${secondDeg}deg)`;
+  }, [currentTime]);
 
   useEffect(() => {
-    function updateClockSmooth() {
-      const now = new Date();
-      const ms = now.getMilliseconds();
-      const s = now.getSeconds() + ms / 1000;
-      const m = now.getMinutes() + s / 60;
-      const h = (now.getHours() % 12) + m / 60;
-
-      const hourDeg = h * 30;
-      const minuteDeg = m * 6;
-      const secondDeg = s * 6;
-
-      if (hourHandRef.current)
-        hourHandRef.current.style.transform = `rotate(${hourDeg}deg)`;
-      if (minuteHandRef.current)
-        minuteHandRef.current.style.transform = `rotate(${minuteDeg}deg)`;
-      if (secondHandRef.current)
-        secondHandRef.current.style.transform = `rotate(${secondDeg}deg)`;
-
-      requestAnimationFrame(updateClockSmooth);
-    }
-
-    requestAnimationFrame(updateClockSmooth);
-  }, []);
+    updateClockSmooth();
+  }, [updateClockSmooth]);
 
   const bodyStyle = {
     margin: 0,
@@ -165,7 +185,7 @@ const BirthdayCakeClock: React.FC = () => {
             </div>
 
             <div
-              ref={minuteHandRef}
+              ref={clockRefs.minuteHand}
               style={{ ...handBaseStyle, zIndex: 9 }}
               className="minute"
             >
@@ -179,7 +199,7 @@ const BirthdayCakeClock: React.FC = () => {
             </div>
 
             <div
-              ref={hourHandRef}
+              ref={clockRefs.hourHand}
               style={{ ...handBaseStyle, zIndex: 9 }}
               className="hour"
             >
@@ -192,7 +212,7 @@ const BirthdayCakeClock: React.FC = () => {
               />
             </div>
 
-            <div ref={secondHandRef} style={handBaseStyle} className="second">
+            <div ref={clockRefs.secondHand} style={handBaseStyle} className="second">
               <img
                 decoding="async"
                 loading="lazy"

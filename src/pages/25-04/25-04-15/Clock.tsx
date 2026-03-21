@@ -1,14 +1,20 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import horizonFontUrl from '../../../assets/fonts/25-04-15-hori.otf';
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import horizonFontUrl from '../../../assets/fonts/25-04-15-hori.otf?url';
 import layer2 from '../../../assets/images/25-04/25-04-15/4c558c5dbff1828f2b87582dc49526e8.gif';
 import sdfwef from '../../../assets/images/25-04/25-04-15/sdfwef.webp';
 import layer1 from '../../../assets/images/25-04/25-04-15/ewfsdfsd.webp';
 
-const HorizonClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Component Props interface
+interface HorizonClockProps {
+  // No props required for this component
+}
+
+const HorizonClock = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'HorizonClockFont',
       fontUrl: horizonFontUrl,
@@ -17,38 +23,32 @@ const HorizonClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
 
-  const [time, setTime] = useState<string>('');
-  const [fontLoaded, setFontLoaded] = useState(fontsLoaded);
+  // Load fonts using suspense-based loader
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
   const componentId = useRef(`horizon-clock-${Date.now()}`);
 
-  // Update fontLoaded state when fontsLoaded changes
+  const [time, setTime] = useState<string>('');
+
+  const updateClock = useCallback((): void => {
+    try {
+      const rawHours = currentTime.getHours();
+      const minutes = String(currentTime.getMinutes()).padStart(2, '0');
+      const ampm = rawHours >= 12 ? 'PM' : 'AM';
+      const displayHours = rawHours % 12 || 12;
+      setTime(`${displayHours}:${minutes} ${ampm}`);
+    } catch (err) {
+      console.error('Clock update error:', err);
+    }
+  }, [currentTime]);
+
   useEffect(() => {
-    setFontLoaded(fontsLoaded);
-  }, [fontsLoaded]);
-
-  // Font loading handled by useMultipleFontLoader
-
-  useEffect(() => {
-    const updateClock: React.FC = () => {
-      try {
-        const now = new Date();
-        const rawHours = now.getHours();
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const ampm = rawHours >= 12 ? 'PM' : 'AM';
-        const displayHours = rawHours % 12 || 12;
-        setTime(`${displayHours}:${minutes} ${ampm}`);
-      } catch (err) {
-        console.error('Clock update error:', err);
-      }
-    };
-
     updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  }, [updateClock]);
 
   return (
     <div
@@ -105,7 +105,7 @@ const HorizonClock: React.FC = () => {
           zIndex: 10,
           width: '100%',
           textAlign: 'center',
-          fontFamily: fontLoaded ? 'HorizonClockFont, Arial, sans-serif' : 'Arial, sans-serif',
+          fontFamily: 'HorizonClockFont, Arial, sans-serif',
           fontSize: '15vw',
           color: 'white',
           backgroundImage:
