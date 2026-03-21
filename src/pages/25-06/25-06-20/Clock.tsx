@@ -212,7 +212,6 @@ const IndecisiveClock: React.FC = () => {
           </defs>
         </svg>
       </div>
-    </>
   );
 };
 
