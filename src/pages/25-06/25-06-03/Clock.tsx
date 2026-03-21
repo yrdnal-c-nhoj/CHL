@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import cylFont from '../../../assets/fonts/25-06-03-cyl.ttf';
+
+// Standardized font loading with font-display: swap to avoid FOUC
+export const fontConfigs = [
+  {
+    fontFamily: 'cyl',
+    fontUrl: cylFont,
+    options: {
+      weight: 'normal',
+      style: 'normal'
+    }
+  }
+];
 
 const FiligreeClock: React.FC = () => {
   const [digits, setDigits] = useState(Array(16).fill('0'));
 
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'cyl',
-      fontUrl: cylFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ];
-  const fontLoaded = useMultipleFontLoader(fontConfigs);
+  useSuspenseFontLoader(fontConfigs);
 
   // Update time digits every second
   useEffect(() => {
-    if (!fontLoaded) return; // skip updating digits until font loaded
-    const updateDigits: React.FC = () => {
+    let frameId: number;
+    const tick = () => {
       const now = new Date();
       const timeStr = now
         .toLocaleTimeString('en-GB', { hour12: false })
@@ -31,12 +32,11 @@ const FiligreeClock: React.FC = () => {
         .slice(0, 16)
         .split('');
       setDigits(fullDigits);
+      frameId = requestAnimationFrame(tick);
     };
-
-    updateDigits();
-    const interval = setInterval(updateDigits, 1000);
-    return () => clearInterval(interval);
-  }, [fontLoaded]);
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
+  }, []);
 
   // Inline styles
   const styles = {
@@ -120,21 +120,20 @@ const FiligreeClock: React.FC = () => {
     <div style={styles.root}>
       <div style={styles.container}>
         <div id="clockBox" style={styles.box}>
-          {fontLoaded &&
-            [...Array(16)].map((_, i) => (
-              <div key={i} className="face" style={styles.face(i)}>
-                {[...Array(6)].map((__, j) => (
-                  <div key={j} className="digit" style={styles.digit}>
-                    <div className="face-front" style={styles.faceFront}>
-                      {digits[j] || '0'}
-                    </div>
-                    <div className="face-back" style={styles.faceBack}>
-                      {digits[j] || '0'}
-                    </div>
+          {[...Array(16)].map((_, i) => (
+            <div key={i} className="face" style={styles.face(i)}>
+              {[...Array(6)].map((__, j) => (
+                <div key={j} className="digit" style={styles.digit}>
+                  <div className="face-front" style={styles.faceFront}>
+                    {digits[j] || '0'}
                   </div>
-                ))}
-              </div>
-            ))}
+                  <div className="face-back" style={styles.faceBack}>
+                    {digits[j] || '0'}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
 

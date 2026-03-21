@@ -1,20 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import customFont from '../../../assets/fonts/25-08-09-box.ttf'; // Custom font file
 
-const RectangularAnalogClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'MyCustomFont',
-      fontUrl: customFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
+// Standardized font loading with font-display: swap to avoid FOUC
+export const fontConfigs = [
+  {
+    fontFamily: 'MyCustomFont',
+    fontUrl: customFont,
+    options: {
+      weight: 'normal',
+      style: 'normal'
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  }
+];
+
+const RectangularAnalogClock: React.FC = () => {
+  useSuspenseFontLoader(fontConfigs);
 
   const [time, setTime] = useState(new Date());
   const rafRef = useRef(null);
@@ -28,19 +29,6 @@ const RectangularAnalogClock: React.FC = () => {
     rafRef.current = requestAnimationFrame(updateTime);
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, []);
-
-  // Font loading handled by useMultipleFontLoader
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.id = 'rect-clock-custom-font';
-    style.innerHTML = ``;
-    document.head.appendChild(style);
-
-    return () => {
-      const el = document.getElementById('rect-clock-custom-font');
-      if (el) el.remove();
     };
   }, []);
 

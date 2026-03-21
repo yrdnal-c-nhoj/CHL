@@ -31,10 +31,13 @@ export default function CustomFontMirroredClock() {
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    let frameId: number;
+    const tick = () => {
       setTime(getCurrentTime());
-    }, 1000);
-    return () => clearInterval(interval);
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   // Note: Even though useSuspenseFontLoader loads the font, defining the @font-face

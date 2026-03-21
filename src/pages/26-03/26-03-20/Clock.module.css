@@ -35,14 +35,12 @@
   position: relative;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(2px);
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
 }
 
 .hourNumber {
   position: absolute;
   color: #fff;
-  font-family: sans-serif;
+  font-family: '270west', sans-serif;
   font-size: clamp(1rem, 4vmin, 2rem);
   font-weight: bold;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);

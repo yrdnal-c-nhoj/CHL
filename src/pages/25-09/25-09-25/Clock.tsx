@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import bgVideo from '../../../assets/images/25-09/25-09-25/unix-optimized.mp4'; // Optimized video for mobile compatibility
 import fallbackImage from '../../../assets/images/25-09/25-09-25/unix.webp';
 import FontOne_2025_09_25 from '../../../assets/fonts/25-09-25-unix.otf?url';
@@ -9,191 +7,45 @@ import FontTwo_2025_09_25 from '../../../assets/fonts/25-09-25-unix2.otf?url';
 import FontThree_2025_09_25 from '../../../assets/fonts/25-09-25-un.otf?url';
 import FontFour_2025_09_25 from '../../../assets/fonts/25-09-25-uunix.ttf?url';
 
-const today = new Date().toISOString().slice(0, 10).replace(/-/g, '_');
+// Export assets for preloading
+export { bgVideo, fallbackImage };
+
+const fontOneName = `FontOne-25-09-25`;
+const fontTwoName = `FontTwo-25-09-25`;
+const fontThreeName = `FontThree-25-09-25`;
+const fontFourName = `FontFour-25-09-25`;
+
+export const fontConfigs = [
+  { fontFamily: fontOneName, fontUrl: FontOne_2025_09_25 },
+  { fontFamily: fontTwoName, fontUrl: FontTwo_2025_09_25 },
+  { fontFamily: fontThreeName, fontUrl: FontThree_2025_09_25 },
+  { fontFamily: fontFourName, fontUrl: FontFour_2025_09_25 },
+];
 
 const UnixEpochClock: React.FC = () => {
-  const [ready, setReady] = useState<boolean>(false);
   const [timestamp, setTimestamp] = useState<any>('');
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [windowHeight, setWindowHeight] = useState<any>(window.innerHeight);
-  const intervalRef = useRef(null);
 
-  const fontOneName = `FontOne-${today}`;
-  const fontTwoName = `FontTwo-${today}`;
-  const fontThreeName = `FontThree-${today}`;
-  const fontFourName = `FontFour-${today}`;
-
-  const preloadFont = (url, family) =>
-    new FontFace(family, `url(${url}) format('truetype')`)
-      .load()
-      .then((f) => document.fonts.add(f))
-      .catch(() => console.error(`Failed to load font: ${family}`));
-
-  const preloadVideo = (src) =>
-    new Promise((resolve) => {
-      const vid = document.createElement('video');
-      vid.src = src;
-      vid.oncanplaythrough = () => {
-        console.log('Video preloaded successfully');
-        resolve();
-      };
-      vid.onerror = () => {
-        console.error('Video preload failed');
-        resolve(); // Resolve to avoid hanging
-      };
-    });
-
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: '${fontOneName}';
-        src: url(${FontOne_2025_09_25}) format('truetype');
-        font-display: swap;
-      }
-      @font-face {
-        font-family: '${fontTwoName}';
-        src: url(${FontTwo_2025_09_25}) format('truetype');
-        font-display: swap;
-      }
-      @font-face {
-        font-family: '${fontThreeName}';
-        src: url(${FontThree_2025_09_25}) format('truetype');
-        font-display: swap;
-      }
-      @font-face {
-        font-family: '${fontFourName}';
-        src: url(${FontFour_2025_09_25}) format('truetype');
-        font-display: swap;
-      }
-    `;
-    document.head.appendChild(style);
-
-    const loadResources = async () => {
-      const timeout = setTimeout(() => {
-        console.log('Resource loading timeout reached, setting ready');
-        setReady(true);
-      }, 3000); // 3s timeout to prevent hanging
-
-      try {
-        console.log('Starting resource loading');
-        await preloadFont(FontOne_2025_09_25, fontOneName);
-        await preloadFont(FontTwo_2025_09_25, fontTwoName);
-        await preloadFont(FontThree_2025_09_25, fontThreeName);
-        await preloadFont(FontFour_2025_09_25, fontFourName);
-        await preloadVideo(bgVideo);
-        console.log('All resources loaded successfully');
-        setReady(true);
-      } catch (err) {
-        console.error('Resource loading error:', err);
-        setReady(true); // Proceed even if resources fail
-      } finally {
-        clearTimeout(timeout);
-      }
-    };
-
-    loadResources();
-
-    return () => {
-      console.log('Cleaning up style element');
-      document.head.removeChild(style);
-    };
-  }, []);
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const handleResize: React.FC = () => {
-      console.log('Window resized, updating height');
       setWindowHeight(window.innerHeight);
     };
     window.addEventListener('resize', handleResize);
-    return () => {
-      console.log('Removing resize event listener');
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
-    if (!ready) return;
-    const updateTime: React.FC = () => {
-      console.log('Updating timestamp');
+    let frameId: number;
+    const tick = () => {
       setTimestamp(Math.floor(Date.now() / 1000).toString());
+      frameId = requestAnimationFrame(tick);
     };
-    updateTime();
-    intervalRef.current = setInterval(updateTime, 1000);
-    return () => {
-      console.log('Clearing timestamp interval');
-      clearInterval(intervalRef.current);
-    };
-  }, [ready]);
-
-  useEffect(() => {
-    if (!ready) return;
-
-    const videoEl = document.getElementById('bg-video');
-    if (!videoEl) {
-      console.error('Video element not found');
-      setVideoFailed(true);
-      return;
-    }
-
-    videoEl.muted = true;
-    videoEl.playsInline = true;
-
-    const tryPlay: React.FC = () => {
-      console.log('Attempting video playback');
-      videoEl.play().catch((err) => {
-        console.error('Video playback failed:', err);
-        setVideoFailed(true);
-      });
-    };
-
-    tryPlay();
-
-    const checkPaused = setTimeout(() => {
-      if (videoEl.paused) {
-        console.error('Video is paused after timeout');
-        setVideoFailed(true);
-      }
-    }, 500);
-
-    videoEl.onerror = () => {
-      console.error('Video error:', videoEl.error);
-      setVideoFailed(true);
-    };
-    videoEl.onabort = () => {
-      console.error('Video aborted');
-      setVideoFailed(true);
-    };
-    videoEl.onstalled = () => {
-      console.error('Video stalled');
-      setVideoFailed(true);
-    };
-
-    const handleInteraction: React.FC = () => {
-      if (videoEl.paused && !videoFailed) {
-        console.log('User interaction detected, retrying video playback');
-        tryPlay();
-      }
-    };
-    window.addEventListener('touchstart', handleInteraction, { once: true });
-
-    return () => {
-      console.log('Cleaning up video effect');
-      clearTimeout(checkPaused);
-      window.removeEventListener('touchstart', handleInteraction);
-    };
-  }, [ready, videoFailed]);
-
-  if (!ready)
-    return (
-      <div
-        style={{
-          width: '100vw',
-          height: `${windowHeight}px`,
-          backgroundColor: 'black',
-        }}
-      />
-    );
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
+  }, []);
 
   const currentYear = (
     (Date.now() - new Date('1970-01-01T00:00:00Z').getTime()) /
@@ -216,9 +68,14 @@ const UnixEpochClock: React.FC = () => {
         overflow: 'hidden',
       }}
     >
+      <style>{`
+        @font-face { font-family: '${fontOneName}'; src: url(${FontOne_2025_09_25}); font-display: swap; }
+        @font-face { font-family: '${fontTwoName}'; src: url(${FontTwo_2025_09_25}); font-display: swap; }
+        @font-face { font-family: '${fontThreeName}'; src: url(${FontThree_2025_09_25}); font-display: swap; }
+        @font-face { font-family: '${fontFourName}'; src: url(${FontFour_2025_09_25}); font-display: swap; }
+      `}</style>
       {!videoFailed ? (
         <video
-          id="bg-video"
           style={{
             position: 'absolute',
             top: 0,
@@ -233,9 +90,8 @@ const UnixEpochClock: React.FC = () => {
           loop
           muted
           playsInline
-          preload="auto"
           src={bgVideo}
-          poster={fallbackImage}
+          onError={() => setVideoFailed(true)}
         />
       ) : (
         <img
@@ -253,7 +109,6 @@ const UnixEpochClock: React.FC = () => {
           }}
           src={fallbackImage}
           alt="Background fallback"
-          onError={() => console.error('Fallback image failed to load')}
         />
       )}
 

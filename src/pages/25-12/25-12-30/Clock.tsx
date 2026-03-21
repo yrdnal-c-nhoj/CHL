@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useSuspenseFontLoader, type FontConfig } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import fontLemUrl from '../../../assets/fonts/25-12-30-lem.ttf?url';
 import fontAnaUrl from '../../../assets/fonts/25-12-30-ana.ttf?url';
+
+// 1. Define font configurations for the Suspense-based loader
+export const fontConfigs: FontConfig[] = [
+  { fontFamily: 'Lem', fontUrl: fontLemUrl },
+  { fontFamily: 'AnalemmaText', fontUrl: fontAnaUrl },
+];
 
 const RotatingAnalemmaClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const rotationRef = useRef(0);
   const rotatingGroupRef = useRef<SVGGElement | null>(null);
-
-  // 1. Define font configurations for the Suspense-based loader
-  const fontConfigs = useMemo(() => [
-    { fontFamily: 'Lem', fontUrl: fontLemUrl },
-    { fontFamily: 'AnalemmaText', fontUrl: fontAnaUrl },
-  ] as FontConfig[], []);
 
   // 2. This hook handles loading and suspends the component until fonts are ready.
   useSuspenseFontLoader(fontConfigs);

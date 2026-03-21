@@ -150,13 +150,19 @@ const Clock: React.FC = () => {
 
   // --- MAIN EFFECT LOOP ---
   useEffect(() => {
+    let frameId: number;
     let secondsCounter = 0;
+    let lastTime = Date.now();
 
-    const timer = setInterval(() => {
+    const tick = () => {
+      const now = Date.now();
       setTime(new Date());
-      secondsCounter++;
 
-      if (secondsCounter % 3 === 0) {
+      if (now - lastTime >= 1000) {
+        secondsCounter++;
+        lastTime = now;
+
+        if (secondsCounter % 3 === 0) {
         setEmojiIndex((prevIndex) => {
           const nextIndex = (prevIndex + 1) % emojiCycle.length;
           const nextEmoji = emojiCycle[nextIndex];
@@ -171,14 +177,17 @@ const Clock: React.FC = () => {
           return nextIndex;
         });
       }
-    }, 1000);
+      }
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
 
     const handleResize = () => setIsLargeScreen(window.innerWidth > 768);
     window.addEventListener('resize', handleResize);
     handleResize();
 
     return () => {
-      clearInterval(timer);
+      cancelAnimationFrame(frameId);
       window.removeEventListener('resize', handleResize);
     };
   }, [emojiCycle, activeBuffer]);
