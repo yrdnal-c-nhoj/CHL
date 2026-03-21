@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
 import fontUrl from '../../../assets/fonts/26-03-15-shadow.otf?url';
 import styles from './Clock.module.css';
 
 const MS_PER_ROTATION = 30000;
+
+export const fontConfigs: FontConfig[] = [
+  { fontFamily: '26-03-15-shadow', fontUrl, options: { weight: 'normal', style: 'normal' } },
+];
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());

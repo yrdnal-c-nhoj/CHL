@@ -1,3 +1,4 @@
+/** @jsxImportSource react */
 import React, { useState, useEffect, useRef, useMemo, memo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useSecondClock } from '../../../utils/useSmoothClock';
@@ -13,6 +14,7 @@ const CONFIG = {
 };
 
 // Asset imports
+// Asset imports (Assuming paths are correct)
 import img1 from '../../../assets/images/26-02/26-02-21/123.webp';
 import img2 from '../../../assets/images/26-02/26-02-21/1231.gif';
 import img3 from '../../../assets/images/26-02/26-02-21/1232.webp';
@@ -22,6 +24,9 @@ import img6 from '../../../assets/images/26-02/26-02-21/1235.webp';
 import img7 from '../../../assets/images/26-02/26-02-21/1236.gif';
 import img8 from '../../../assets/images/26-02/26-02-21/1237.webp';
 import customFont from '../../../assets/fonts/26-02-21-321.otf';
+
+// Export assets for preloading
+export { img1, img2, img3, img4, img5, img6, img7, img8 };
 
 const ASSETS = [img1, img2, img3, img4, img5, img6, img7, img8];
 
@@ -111,6 +116,17 @@ interface DynamicImages {
   style?: React.CSSProperties;
 }
 
+export const fontConfigs = [
+  {
+    fontFamily: CONFIG.FONT_FAMILY,
+    fontUrl: customFont,
+    options: {
+      weight: 'normal',
+      style: 'normal'
+    }
+  }
+];
+
 export default function RefactoredClock() {
   const time = useSecondClock();
   const [dynamicImages, setDynamicImages] = useState<DynamicImages[]>([]);
@@ -145,6 +161,7 @@ export default function RefactoredClock() {
   }, CONFIG.UPDATE_INTERVAL);
 
   // Time Formatting
+  // 3. Time Formatting
   const timeStrings = useMemo(() => {
     const hours24 = time.getHours();
     const hours12 = hours24 % 12 || 12; // Convert to 12-hour format
@@ -155,6 +172,7 @@ export default function RefactoredClock() {
 
   /* Styles */
   const rootStyle: React.CSSProperties = {
+  const rootStyle = {
     width: '100vw',
     height: '100dvh',
     backgroundColor: '#000',
@@ -163,16 +181,19 @@ export default function RefactoredClock() {
     alignItems: 'center',
     overflow: 'hidden',
     position: 'relative' as const,
+    position: 'relative',
     color: '#fff',
     fontFamily: `'${CONFIG.FONT_FAMILY}', sans-serif`,
   };
 
   const digitGroupStyle: React.CSSProperties = {
+  const digitGroupStyle = {
     fontSize: 'clamp(5rem, 25vw, 15rem)',
     display: 'flex',
     gap: '0.2em',
     zIndex: 100,
     position: 'relative' as const,
+    position: 'relative',
     mixBlendMode: 'difference', // Makes text readable over any background color
     opacity: 0.8,
   };
@@ -197,6 +218,7 @@ export default function RefactoredClock() {
 
       {dynamicImages.map((img, index) => (
         <img key={`dynamic-${index}-${img}`} src={img.src} style={{position: 'absolute', width: '100px', height: '100px', objectFit: 'cover'}} alt="" />
+        <img key={`dynamic-${index}-${img}`} src={img} style={{position: 'absolute', width: '100px', height: '100px', objectFit: 'cover'}} alt="" />
       ))}
 
       <div style={digitGroupStyle} aria-hidden="true">
