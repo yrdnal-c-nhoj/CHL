@@ -1,5 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 
 import stars from '../../../assets/images/25-04/25-04-02/stars.webp';
 import backgroundGif from '../../../assets/images/25-04/25-04-02/437cb739d14912acd84d65ee853b9067.gif';
@@ -8,7 +10,15 @@ import overlay2 from '../../../assets/images/25-04/25-04-02/2556744_d34a4.webp';
 import pixelGif from '../../../assets/images/25-04/25-04-02/sdswrf.gif';
 
 // Image imports from src/assets
-const images = {
+interface Images {
+  stars: string;
+  backgroundGif: string;
+  overlay1: string;
+  overlay2: string;
+  pixelGif: string;
+}
+
+const images: Images = {
   stars,
   backgroundGif,
   overlay1,
@@ -16,7 +26,15 @@ const images = {
   pixelGif,
 };
 
-const digits = {
+// Digit matrix type definition
+type DigitMatrix = number[][];
+
+// Digit patterns interface
+interface DigitPatterns {
+  [key: string]: DigitMatrix;
+}
+
+const digits: DigitPatterns = {
   0: [
     [1, 1, 1],
     [1, 0, 1],
@@ -89,20 +107,46 @@ const digits = {
   ],
 };
 
-function DeepSpaceClock() {
-  const hour1 = useRef();
-  const hour2 = useRef();
-  const minute1 = useRef();
-  const minute2 = useRef();
-  const second1 = useRef();
-  const second2 = useRef();
+// Component Props interface
+interface DeepSpaceClockProps {
+  // No props required for this component
+}
 
-  const makeDigit = (target, digitMatrix) => {
+// Ref interface for digit elements
+interface DigitRefs {
+  hour1: React.RefObject<HTMLDivElement | null>;
+  hour2: React.RefObject<HTMLDivElement | null>;
+  minute1: React.RefObject<HTMLDivElement | null>;
+  minute2: React.RefObject<HTMLDivElement | null>;
+  second1: React.RefObject<HTMLDivElement | null>;
+  second2: React.RefObject<HTMLDivElement | null>;
+}
+
+// Digit style interface
+interface DigitStyle extends React.CSSProperties {
+  display: 'grid';
+  gridTemplateColumns: string;
+  gridTemplateRows: string;
+  width: string;
+  height: string;
+}
+
+function DeepSpaceClock() {
+  const digitRefs: DigitRefs = {
+    hour1: useRef<HTMLDivElement>(null),
+    hour2: useRef<HTMLDivElement>(null),
+    minute1: useRef<HTMLDivElement>(null),
+    minute2: useRef<HTMLDivElement>(null),
+    second1: useRef<HTMLDivElement>(null),
+    second2: useRef<HTMLDivElement>(null),
+  };
+
+  const makeDigit = useCallback((target: React.RefObject<HTMLDivElement | null>, digitMatrix: DigitMatrix): void => {
     const container = target.current;
     if (!container) return;
     container.innerHTML = '';
-    digitMatrix.forEach((row, i) =>
-      row.forEach((on, j) => {
+    digitMatrix.forEach((row: number[], i: number) =>
+      row.forEach((on: number, j: number) => {
         if (on) {
           const div = document.createElement('div');
           div.style.gridRow = `${i + 1}`;
@@ -115,42 +159,52 @@ function DeepSpaceClock() {
         }
       }),
     );
-  };
+  }, []);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
+
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => {
+    // Since this clock doesn't use custom fonts, return empty array
+    // If fonts are needed in the future, add them here
+    return [];
+  }, []);
+
+  // Load fonts if needed (will be no-op for empty array)
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     let shownHours = -1,
       shownMinutes = -1,
       shownSeconds = -1;
 
-    const updateClock: React.FC = () => {
-      const now = new Date();
+    const updateClock = (): void => {
       const [h, m, s] = [
-        now.getHours().toString().padStart(2, '0'),
-        now.getMinutes().toString().padStart(2, '0'),
-        now.getSeconds().toString().padStart(2, '0'),
+        currentTime.getHours().toString().padStart(2, '0'),
+        currentTime.getMinutes().toString().padStart(2, '0'),
+        currentTime.getSeconds().toString().padStart(2, '0'),
       ];
 
       if (h !== shownHours.toString()) {
-        makeDigit(hour1, digits[h[0]]);
-        makeDigit(hour2, digits[h[1]]);
-        shownHours = h;
+        makeDigit(digitRefs.hour1, digits[h[0] as keyof DigitPatterns]!);
+        makeDigit(digitRefs.hour2, digits[h[1] as keyof DigitPatterns]!);
+        shownHours = parseInt(h);
       }
       if (m !== shownMinutes.toString()) {
-        makeDigit(minute1, digits[m[0]]);
-        makeDigit(minute2, digits[m[1]]);
-        shownMinutes = m;
+        makeDigit(digitRefs.minute1, digits[m[0] as keyof DigitPatterns]!);
+        makeDigit(digitRefs.minute2, digits[m[1] as keyof DigitPatterns]!);
+        shownMinutes = parseInt(m);
       }
       if (s !== shownSeconds.toString()) {
-        makeDigit(second1, digits[s[0]]);
-        makeDigit(second2, digits[s[1]]);
-        shownSeconds = s;
+        makeDigit(digitRefs.second1, digits[s[0] as keyof DigitPatterns]!);
+        makeDigit(digitRefs.second2, digits[s[1] as keyof DigitPatterns]!);
+        shownSeconds = parseInt(s);
       }
     };
 
     updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  }, [currentTime, makeDigit, digitRefs, digits]);
 
   return (
     <div
@@ -219,18 +273,18 @@ function DeepSpaceClock() {
             }
           `}
         </style>
-        <div className="digit" ref={hour1} style={digitStyle}></div>
-        <div className="digit" ref={hour2} style={digitStyle}></div>
-        <div className="digit" ref={minute1} style={digitStyle}></div>
-        <div className="digit" ref={minute2} style={digitStyle}></div>
-        <div className="digit" ref={second1} style={digitStyle}></div>
-        <div className="digit" ref={second2} style={digitStyle}></div>
+        <div className="digit" ref={digitRefs.hour1} style={digitStyle}></div>
+        <div className="digit" ref={digitRefs.hour2} style={digitStyle}></div>
+        <div className="digit" ref={digitRefs.minute1} style={digitStyle}></div>
+        <div className="digit" ref={digitRefs.minute2} style={digitStyle}></div>
+        <div className="digit" ref={digitRefs.second1} style={digitStyle}></div>
+        <div className="digit" ref={digitRefs.second2} style={digitStyle}></div>
       </div>
     </div>
   );
 }
 
-const digitStyle = {
+const digitStyle: DigitStyle = {
   display: 'grid',
   gridTemplateColumns: 'repeat(3, 1fr)',
   gridTemplateRows: 'repeat(5, 1fr)',

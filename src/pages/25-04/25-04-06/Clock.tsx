@@ -1,13 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import confFont from '../../../assets/fonts/25-04-06-conf.ttf';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import confFont from '../../../assets/fonts/25-04-06-conf.ttf?url';
 import confettiBg from '../../../assets/images/25-04/25-04-06/conf2.gif';
 
 const TOTAL_DIGITS = 160;
 
-const ConfettiClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Component Props interface
+interface ConfettiClockProps {
+  // No props required for this component
+}
+
+// Container refs interface
+interface ContainerRefs {
+  container: React.RefObject<HTMLDivElement | null>;
+  digits: React.RefObject<HTMLDivElement[]>;
+}
+
+const ConfettiClock = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'ConfettiClockFont',
       fontUrl: confFont,
@@ -16,45 +29,43 @@ const ConfettiClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
 
-  const containerRef = useRef(null);
-  const digitsRef = useRef([]);
-  const [fontLoaded, setFontLoaded] = useState(fontsLoaded);
+  // Load fonts using suspense-based loader
+  useSuspenseFontLoader(fontConfigs);
+
+  const containerRefs: ContainerRefs = {
+    container: useRef<HTMLDivElement>(null),
+    digits: useRef<HTMLDivElement[]>([]),
+  };
   const componentId = useRef(`confetti-clock-${Date.now()}`);
 
-  // Update fontLoaded state when fontsLoaded changes
-  useEffect(() => {
-    setFontLoaded(fontsLoaded);
-  }, [fontsLoaded]);
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
 
-  // Font loading handled by useMultipleFontLoader
-
-  const getCurrentTimeDigits = () => {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0').split('');
-    const minutes = now.getMinutes().toString().padStart(2, '0').split('');
+  const getCurrentTimeDigits = useCallback((): string[] => {
+    const hours = currentTime.getHours().toString().padStart(2, '0').split('');
+    const minutes = currentTime.getMinutes().toString().padStart(2, '0').split('');
     return [...hours, ...minutes];
-  };
+  }, [currentTime]);
 
   useEffect(() => {
-    const container = containerRef.current;
+    const container = containerRefs.container.current;
     if (!container) return;
 
     container.innerHTML = '';
-    digitsRef.current = [];
+    containerRefs.digits.current = [];
 
     for (let i = 0; i < TOTAL_DIGITS; i++) {
       const div = document.createElement('div');
       div.className = 'falling-digit';
       container.appendChild(div);
-      digitsRef.current.push(div);
+      containerRefs.digits.current.push(div);
     }
   }, []);
 
   useEffect(() => {
-    if (digitsRef.current.length === 0) return;
+    if (containerRefs.digits.current.length === 0) return;
 
     const colors = ['#ff1493', '#800080', '#ffa500'];
     const easingOptions = [
@@ -66,10 +77,10 @@ const ConfettiClock: React.FC = () => {
       'cubic-bezier(0.6, -0.28, 0.735, 0.045)',
     ];
 
-    digitsRef.current.forEach((el, i) => {
+    containerRefs.digits.current.forEach((el, i) => {
       const fontSize = Math.random() * 12 + 4; // 4vh to 16vh
       el.style.fontSize = `${fontSize}vh`;
-      el.style.fontFamily = fontLoaded ? 'ConfettiClockFont, sans-serif' : 'sans-serif';
+      el.style.fontFamily = 'ConfettiClockFont, sans-serif' as string;
       el.style.color = colors[Math.floor(Math.random() * colors.length)];
       el.style.position = 'absolute';
       el.style.opacity = '0.95';
@@ -105,18 +116,18 @@ const ConfettiClock: React.FC = () => {
 
     const updateInterval = setInterval(() => {
       const timeDigits = getCurrentTimeDigits();
-      digitsRef.current.forEach((el, i) => {
-        el.textContent = timeDigits[i % timeDigits.length];
+      containerRefs.digits.current.forEach((el, i) => {
+        el.textContent = timeDigits[i % timeDigits.length] || '0';
       });
     }, 10000);
 
     const timeDigits = getCurrentTimeDigits();
-    digitsRef.current.forEach((el, i) => {
-      el.textContent = timeDigits[i % timeDigits.length];
+    containerRefs.digits.current.forEach((el, i) => {
+      el.textContent = timeDigits[i % timeDigits.length] || '0';
     });
 
     return () => clearInterval(updateInterval);
-  }, []);
+  }, [getCurrentTimeDigits]);
 
   return (
     <>
@@ -152,7 +163,7 @@ const ConfettiClock: React.FC = () => {
 
       {/* Falling digits */}
       <div
-        ref={containerRef}
+        ref={containerRefs.container}
         style={{
           margin: 0,
           overflow: 'hidden',

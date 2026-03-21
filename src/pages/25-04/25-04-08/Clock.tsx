@@ -1,15 +1,32 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import sageFontUrl from '../../../assets/fonts/25-04-08-sage.ttf';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import sageFontUrl from '../../../assets/fonts/25-04-08-sage.ttf?url';
 
-const TripleCactusClock: React.FC = () => {
-  const hoursRef = useRef();
-  const minutesRef = useRef();
-  const secondsRef = useRef();
-  const millisecondsRef = useRef();
+// Component Props interface
+interface TripleCactusClockProps {
+  // No props required for this component
+}
 
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Clock refs interface
+interface ClockRefs {
+  hours: React.RefObject<HTMLDivElement | null>;
+  minutes: React.RefObject<HTMLDivElement | null>;
+  seconds: React.RefObject<HTMLDivElement | null>;
+  milliseconds: React.RefObject<HTMLDivElement | null>;
+}
+
+const TripleCactusClock = () => {
+  const clockRefs: ClockRefs = {
+    hours: useRef<HTMLDivElement>(null),
+    minutes: useRef<HTMLDivElement>(null),
+    seconds: useRef<HTMLDivElement>(null),
+    milliseconds: useRef<HTMLDivElement>(null),
+  };
+
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'CactusClockFont',
       fontUrl: sageFontUrl,
@@ -18,56 +35,47 @@ const TripleCactusClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
 
-  // Scoped font loading
-  const [fontLoaded, setFontLoaded] = useState(fontsLoaded);
+  // Load fonts using suspense-based loader
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth millisecond clock updates
+  const currentTime = useMillisecondClock();
   const componentId = useRef(`cactus-clock-${Date.now()}`);
-  // Ref to hold the current font state for the animation loop
-  const fontLoadedRef = useRef(fontLoaded);
 
-  // Update fontLoaded state when fontsLoaded changes
-  useEffect(() => {
-    setFontLoaded(fontsLoaded);
-    fontLoadedRef.current = fontsLoaded;
-  }, [fontsLoaded]);
-
-  // Font loading handled by useMultipleFontLoader
-
-  useEffect(() => {
-    const setDigits = (container, text) => {
-      container.innerHTML = '';
-      for (let char of text) {
-        const span = document.createElement('span');
-        span.textContent = char;
-        Object.assign(span.style, {
-          color: '#f3f586',
-          fontSize: '12vh',
-          lineHeight: '8vh',
-          textAlign: 'center',
-          fontVariantNumeric: 'tabular-nums',
-          fontFeatureSettings: '"tnum"',
-          fontFamily: fontLoadedRef.current ? 'CactusClockFont, sans-serif' : 'sans-serif',
-        });
-        container.appendChild(span);
-      }
-    };
-
-    const updateClock: React.FC = () => {
-      const now = new Date();
-      setDigits(hoursRef.current, String(now.getHours()).padStart(2, '0'));
-      setDigits(minutesRef.current, String(now.getMinutes()).padStart(2, '0'));
-      setDigits(secondsRef.current, String(now.getSeconds()).padStart(2, '0'));
-      setDigits(
-        millisecondsRef.current,
-        String(now.getMilliseconds()).padStart(3, '0'),
-      );
-      requestAnimationFrame(updateClock);
-    };
-
-    updateClock();
+  const setDigits = useCallback((container: HTMLDivElement | null, text: string): void => {
+    if (!container) return;
+    container.innerHTML = '';
+    for (let char of text) {
+      const span = document.createElement('span');
+      span.textContent = char;
+      Object.assign(span.style, {
+        color: '#f3f586',
+        fontSize: '12vh',
+        lineHeight: '8vh',
+        textAlign: 'center',
+        fontVariantNumeric: 'tabular-nums',
+        fontFeatureSettings: '"tnum"',
+        fontFamily: 'CactusClockFont, sans-serif',
+      });
+      container.appendChild(span);
+    }
   }, []);
+
+  const updateClock = useCallback((): void => {
+    setDigits(clockRefs.hours.current, String(currentTime.getHours()).padStart(2, '0'));
+    setDigits(clockRefs.minutes.current, String(currentTime.getMinutes()).padStart(2, '0'));
+    setDigits(clockRefs.seconds.current, String(currentTime.getSeconds()).padStart(2, '0'));
+    setDigits(
+      clockRefs.milliseconds.current,
+      String(currentTime.getMilliseconds()).padStart(3, '0'),
+    );
+  }, [currentTime, setDigits]);
+
+  useEffect(() => {
+    updateClock();
+  }, [updateClock]);
 
   return (
     <div
@@ -124,24 +132,24 @@ const TripleCactusClock: React.FC = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              fontFamily: fontLoaded ? 'CactusClockFont' : 'sans-serif',
+              fontFamily: 'CactusClockFont',
             }}
           >
             <div
               style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
-              ref={hoursRef}
+              ref={clockRefs.hours}
             ></div>
             <div
               style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
-              ref={minutesRef}
+              ref={clockRefs.minutes}
             ></div>
             <div
               style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
-              ref={secondsRef}
+              ref={clockRefs.seconds}
             ></div>
             <div
               style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
-              ref={millisecondsRef}
+              ref={clockRefs.milliseconds}
             ></div>
           </div>
         </div>
