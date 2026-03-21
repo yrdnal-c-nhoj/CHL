@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import type { FontConfig } from '../../../types/clock';
 import styles from './Clock.module.css';
 
@@ -7,35 +8,6 @@ import styles from './Clock.module.css';
 import digitalFontUrl from '../../../assets/fonts/26-02-04-trans.ttf?url';
 import digitalBgImage from '../../../assets/images/26-02/26-02-04/trans.webp';
 import backgroundImage from '../../../assets/images/26-02/26-02-04/tran.jpg';
-
-// Custom hook for smooth time updates using requestAnimationFrame
-const useSmoothTime = (updateInterval: number = 1000) => {
-  const [time, setTime] = useState(new Date());
-  const lastUpdateRef = useRef<number>(0);
-
-  useEffect(() => {
-    let animationFrameId: number;
-
-    const animate = (timestamp: number) => {
-      // Update based on interval to avoid excessive updates
-      if (timestamp - lastUpdateRef.current >= updateInterval) {
-        setTime(new Date());
-        lastUpdateRef.current = timestamp;
-      }
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animationFrameId = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
-  }, [updateInterval]);
-
-  return time;
-};
 
 const CONFIG = {
   use24Hour: false,
@@ -67,7 +39,7 @@ const DigitalClockTemplate: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use smooth time updates with requestAnimationFrame
-  const time = useSmoothTime(1000); // Update every second
+  const time = useSecondClock();
 
   // Time formatting - move before conditional return
   const { hh, mm }: TimeFormat = useMemo(() => {

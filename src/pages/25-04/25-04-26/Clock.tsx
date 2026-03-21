@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
 import stickFont from '../../../assets/fonts/25-04-26-Stick.ttf?url';
 
 // Component Props interface
@@ -9,7 +10,7 @@ interface SkewClockProps {
   // No props required for this component
 }
 
-const SkewClock = () => {
+const SkewClock: React.FC<SkewClockProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Font loading configuration (memoized)

@@ -155,6 +155,8 @@ class ErrorBoundary extends React.Component<Props, State> {
  * and global providers for the entire application
  */
 const App: React.FC = () => {
+  console.log('App component rendering');
+  
   return (
     <ErrorBoundary>
       <DataProvider>

@@ -1,14 +1,21 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
 import roulGif from '../../../assets/images/25-05/25-05-15/roul.gif';
 import rouleGif from '../../../assets/images/25-05/25-05-15/roule.gif';
 import rouletteSvg from '../../../assets/images/25-05/25-05-15/Roulette_french.svg';
-import loraFont from '../../../assets/fonts/25-05-15-lora.ttf';
+import loraFont from '../../../assets/fonts/25-05-15-lora.ttf?url';
 
-const RouletteClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Component Props interface
+interface RouletteClockProps {
+  // No props required for this component
+}
+
+const RouletteClock: React.FC<RouletteClockProps> = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'RouletteClockFont',
       fontUrl: loraFont,
@@ -17,22 +24,17 @@ const RouletteClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
 
-  const [fontLoaded, setFontLoaded] = useState(false);
-  const componentId = useRef(`roulette-clock-${Date.now()}`);
-  const fontName = `RouletteClockFont-${componentId.current}`;
-  const [time, setTime] = useState(new Date());
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
 
-  // Update fontLoaded state when fontsLoaded changes
-  useEffect(() => {
-    setFontLoaded(fontsLoaded);
-  }, [fontsLoaded]);
+  const [fontLoaded, setFontLoaded] = useState(true); // useSuspenseFontLoader handles font loading
 
-  // Font loading handled by useMultipleFontLoader
+  // Font loading handled by useSuspenseFontLoader
 
-  const createClock: React.FC = () => {
+  const createClock = () => {
     const clock = document.getElementById('clock');
     if (!clock) return;
 
@@ -44,7 +46,7 @@ const RouletteClock: React.FC = () => {
       number.style.position = 'absolute';
       number.style.width = '100%';
       number.style.height = '100%';
-      number.style.fontFamily = fontLoaded ? `'${fontName}', serif` : 'serif';
+      number.style.fontFamily = fontLoaded ? `'RouletteClockFont', serif` : 'serif';
       number.style.fontWeight = '900';
       number.style.textAlign = 'center';
       number.style.fontSize = '6.5vw'; // Scaled with viewport width

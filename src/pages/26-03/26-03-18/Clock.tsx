@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import walkVideo from '../../../assets/images/26-03/26-03-18/walk.mp4';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import walkFont from '../../../assets/fonts/26-03-18-walk.ttf';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
+import walkFont from '../../../assets/fonts/26-03-18-walk.ttf?url';
 
 const Clock: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [time, setTime] = useState(new Date());
+  const time = useMillisecondClock();
   
   // 1950s Hollywood Color Palette
   const hollywoodGold = '#FFD700';
@@ -17,7 +18,7 @@ const Clock: React.FC = () => {
   const neonPink = '#F2A280'; // Subverted 50s neon accent
   
   // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+  const fontConfigs = useMemo(() => [
     {
       fontFamily: 'walk',
       fontUrl: walkFont,
@@ -25,9 +26,9 @@ const Clock: React.FC = () => {
         weight: 'normal',
         style: 'normal'
       }
-    }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    }], []);
+
+  useSuspenseFontLoader(fontConfigs);
   
   // Responsive sizing for perfect centering on all devices
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
@@ -43,11 +44,6 @@ const Clock: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
@@ -60,7 +56,7 @@ const Clock: React.FC = () => {
     <>
       <style>
         {`
-          /* Font loading handled by useMultipleFontLoader */
+          /* Font loading handled by useSuspenseFontLoader */
 
           .neon-glow {
             text-shadow: 

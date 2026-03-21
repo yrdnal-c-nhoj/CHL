@@ -1,8 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import michromaFont from '../../../assets/fonts/25-05-10-Michroma.ttf';
-import economicaFont from '../../../assets/fonts/25-05-10-Economica.ttf';
-import questrialFont from '../../../assets/fonts/25-05-10-Questrial.ttf';
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
+import michromaFont from '../../../assets/fonts/25-05-10-Michroma.ttf?url';
+import economicaFont from '../../../assets/fonts/25-05-10-Economica.ttf?url';
+import questrialFont from '../../../assets/fonts/25-05-10-Questrial.ttf?url';
 
 const fonts = ["'michroma'", "'economica'", "'questrial'"];
 
@@ -13,6 +16,8 @@ const getTimeString = () =>
   new Date().toLocaleTimeString('en-US', { hour12: false });
 
 const throwTimeCharacters = (timeStr, throwContainer) => {
+  if (!throwContainer.current) return;
+  
   let letterId = 0;
   const r = getRand(90, 255);
   const g = getRand(1, 255);
@@ -83,7 +88,7 @@ const NumberTossClock: React.FC = () => {
       }
     }
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  useSuspenseFontLoader(fontConfigs);
 
   const throwContainer = useRef(null);
   const [backgroundTime, setBackgroundTime] = useState(getTimeString());

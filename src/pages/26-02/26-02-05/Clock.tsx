@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
 import ci2602Font from '../../../assets/fonts/pin.ttf?url';
 
 // Constants moved outside to prevent re-allocation
@@ -20,27 +21,10 @@ export const fontConfigs = [
 ];
 
 const OutwardDistortedClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-  const requestRef = useRef<number>();
+  const time = useMillisecondClock();
   
   // Use Suspense-compatible font loading
   useSuspenseFontLoader(fontConfigs);
-
-  // High-performance animation loop - move before conditional return
-  useEffect(() => {
-    const animate = () => {
-      setTime(new Date());
-      requestRef.current = requestAnimationFrame(animate);
-    };
-
-    requestRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (requestRef.current) {
-        cancelAnimationFrame(requestRef.current);
-      }
-    };
-  }, []);
 
   // Memoize the digit array to avoid splitting strings every 16ms - move before conditional return
   const { digits, phase } = useMemo(() => {
@@ -77,8 +61,15 @@ const OutwardDistortedClock: React.FC = () => {
   );
 };
 
+interface DigitProps {
+  char: string;
+  index: number;
+  total: number;
+  phase: number;
+}
+
 // 4. Sub-component to offload logic from the main loop
-const Digit = ({ char, index, total, phase }) => {
+const Digit: React.FC<DigitProps> = ({ char, index, total, phase }) => {
   const angle = (index / total) * 2 * Math.PI - phase;
   const x = Math.sin(angle) * OVAL.RADIUS_X;
   const z = Math.cos(angle) * OVAL.RADIUS_Z + OVAL.OFFSET_Z;
@@ -90,7 +81,7 @@ const Digit = ({ char, index, total, phase }) => {
   const scaleFactor = 1 + (distance / OVAL.RADIUS_Z) * 0.5; // Grow up to 1.5x size
   const fontSize = `${29 * scaleFactor}vh`;
 
-  const style = {
+  const style: React.CSSProperties = {
     ...digitBaseStyle,
     color: isBack ? '#08EEFA' : '#18080D',
     textShadow: isBack
@@ -106,7 +97,7 @@ const Digit = ({ char, index, total, phase }) => {
 };
 
 // --- Static Styles ---
-const containerStyle = {
+const containerStyle: React.CSSProperties = {
   width: '100vw',
   height: '100vh',
   display: 'flex',
@@ -118,7 +109,7 @@ const containerStyle = {
   fontFamily: '"Cine", "Arial Black", sans-serif',
 };
 
-const ringStyle = {
+const ringStyle: React.CSSProperties = {
   position: 'relative',
   transformStyle: 'preserve-3d',
   width: '100%',
@@ -126,7 +117,7 @@ const ringStyle = {
   transform: 'rotateX(10deg)',
 };
 
-const digitBaseStyle = {
+const digitBaseStyle: React.CSSProperties = {
   position: 'absolute',
   top: '50%',
   left: '50%',

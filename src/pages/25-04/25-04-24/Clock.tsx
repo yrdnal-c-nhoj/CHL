@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
 import lava1 from '../../../assets/images/25-04/25-04-24/lava.webp';
 import lava2 from '../../../assets/images/25-04/25-04-24/vp2OVr.gif';
 import lava3 from '../../../assets/images/25-04/25-04-24/lava.webp';
@@ -18,7 +19,7 @@ interface LavaClockProps {
   // No props required for this component
 }
 
-const LavaClock = () => {
+const LavaClock: React.FC<LavaClockProps> = () => {
   // Font loading configuration (memoized)
   const fontConfigs = useMemo<FontConfig[]>(() => [
     {
@@ -52,16 +53,22 @@ const LavaClock = () => {
   }, [updateClock]);
 
   useEffect(() => {
-    setTimeout(() => {
+    const timeout1 = setTimeout(() => {
       setShowGif(true);
     }, 100);
 
-    setTimeout(() => {
+    const timeout2 = setTimeout(() => {
       setFadeOut(true);
     }, 100);
+
+    return () => {
+      clearTimeout(timeout1);
+      clearTimeout(timeout2);
+    };
   }, []);
 
-  const screenStyle = {
+  // Properly typed styles
+  const screenStyle: CSSProperties = {
     position: 'fixed',
     top: 0,
     left: 0,
@@ -74,7 +81,7 @@ const LavaClock = () => {
     pointerEvents: 'none',
   };
 
-  const bgImageStyle1 = {
+  const bgImageStyle1: CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -86,7 +93,7 @@ const LavaClock = () => {
     display: showGif ? 'block' : 'none',
   };
 
-  const bgImageStyle2 = {
+  const bgImageStyle2: CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -98,7 +105,7 @@ const LavaClock = () => {
     zIndex: 3,
   };
 
-  const bgImageStyle3 = {
+  const bgImageStyle3: CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -110,7 +117,7 @@ const LavaClock = () => {
     zIndex: 1,
   };
 
-  const containerStyle = {
+  const containerStyle: CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -120,7 +127,7 @@ const LavaClock = () => {
     zIndex: 10,
   };
 
-  const timePartStyle = {
+  const timePartStyle: CSSProperties = {
     color: 'rgb(250, 9, 58)',
     textShadow:
       '#9f3406 -0.1rem -0.1rem 0.5rem, #efc107 0.1rem 0.1rem 0.4rem, #ef0707 1.3rem 1.3rem 1.7rem, #ff1104 -1.1rem 1.3rem 1.8rem, #ef0707 1.3rem -1.3rem 1.8rem, #dc2b03 -1.3rem -1.1rem 1.9rem, #f7390f -0.1rem -0.1rem 0.8rem, #ef2906 0.3rem 3.3rem 2.3rem',

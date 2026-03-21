@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
 import SkaterFont from '../../../assets/fonts/25-04-28-Skater.ttf?url';
 
 const fontFaceStyle = `
@@ -28,7 +29,7 @@ const grayShades = [
 interface ClockImpression {
   id: number;
   time: string;
-  style: React.CSSProperties;
+  style: CSSProperties;
 }
 
 // Component Props interface
@@ -36,7 +37,7 @@ interface ClockAppProps {
   // No props required for this component
 }
 
-const ClockApp = () => {
+const ClockApp: React.FC<ClockAppProps> = () => {
   const [currentTime, setCurrentTime] = useState<string>('00:00:00');
   const [impressions, setImpressions] = useState<ClockImpression[]>([]);
   const [impressionCount, setImpressionCount] = useState<number>(0);
@@ -106,7 +107,7 @@ const ClockApp = () => {
     const { rotationX, rotationY, rotationZ } = getRandomRotation();
 
     const newImpression: ClockImpression = {
-      id: impressionCount,
+      id: Date.now() + Math.random(), // Unique ID using timestamp + random
       time: timeString,
       style: {
         position: 'absolute',
@@ -120,7 +121,7 @@ const ClockApp = () => {
 
     setImpressions((prev) => [...prev, newImpression]);
     setImpressionCount((prev) => prev + 1);
-  }, [impressionCount, clockTime, getRandomPosition, getRandomRotation, getRandomSkew, getRandomSize, getRandomGrayShade]);
+  }, [clockTime, getRandomPosition, getRandomRotation, getRandomSkew, getRandomSize, getRandomGrayShade]);
 
   useEffect(() => {
     // Start after 0.5s

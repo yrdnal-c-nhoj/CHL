@@ -1,4 +1,5 @@
 import React, { useState, useEffect, memo } from 'react';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
 
 import backgroundGif3 from '../../../assets/images/26-01/26-01-29/ur.png';
 import backgroundGif2 from '../../../assets/images/26-01/26-01-29/ur.gif';
@@ -40,15 +41,12 @@ const ClockUranus = memo(() => (
 ));
 
 const AnalogUranusClock: React.FC = () => {
-  const [now, setNow] = useState(() => new Date());
+  const now = useMillisecondClock();
   const [bgRotation, setBgRotation] = useState<number>(0);
 
   useEffect(() => {
     let animationFrameId: number;
     let lastTime = Date.now();
-
-    // Clock tick
-    const timer = setInterval(() => setNow(new Date()), 1000);
 
     // Smooth background rotation - counterclockwise once per minute
     const animate = () => {
@@ -65,7 +63,6 @@ const AnalogUranusClock: React.FC = () => {
     animationFrameId = requestAnimationFrame(animate);
 
     return () => {
-      clearInterval(timer);
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
       }
@@ -75,10 +72,11 @@ const AnalogUranusClock: React.FC = () => {
   // Time calculations
   const hours = now.getHours() % 12;
   const minutes = now.getMinutes();
-  const seconds = now.getSeconds();
+  const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
 
   const hourDeg = hours * 30 + minutes * 0.5;
   const minuteDeg = minutes * 6 + seconds * 0.1; // slightly smoother
+  // const secondDeg = seconds * 6; // If you wanted a second hand
 
   return (
     <div

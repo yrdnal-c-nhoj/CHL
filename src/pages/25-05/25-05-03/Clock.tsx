@@ -1,17 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import fontUrl from '../../../assets/fonts/25-05-03-Petal.ttf';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
+import fontUrl from '../../../assets/fonts/25-05-03-Petal.ttf?url';
 import bg1 from '../../../assets/images/25-05/25-05-03/petalos.gif';
 import bg2 from '../../../assets/images/25-05/25-05-03/petals.gif';
 import bg3 from '../../../assets/images/25-05/25-05-03/sakura-leaves.gif';
 import bg4 from '../../../assets/images/25-05/25-05-03/talos.gif';
 
-const FlyingPetalsClock: React.FC = () => {
+// Component Props interface
+interface FlyingPetalsClockProps {
+  // No props required for this component
+}
+
+const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
   const [time, setTime] = useState(new Date());
 
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'Petal',
       fontUrl: fontUrl,
@@ -20,34 +29,17 @@ const FlyingPetalsClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
 
-  // Font loading handled by useMultipleFontLoader
+  // Font loading handled by useSuspenseFontLoader
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // Show loading state while font loads
-  if (!fontsLoaded) {
-    return (
-      <div style={{
-        height: '100dvh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'rgb(224, 145, 156)',
-        color: '#7f8431',
-        fontFamily: 'sans-serif'
-      }}>
-        Loading...
-      </div>
-    );
-  }
-
-  const getTimeParts: React.FC = () => {
+  const getTimeParts = () => {
     const hours = time.getHours().toString().padStart(2, '0');
     const minutes = time.getMinutes().toString().padStart(2, '0');
     const seconds = time.getSeconds().toString().padStart(2, '0');

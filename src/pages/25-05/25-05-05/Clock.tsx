@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import mapFont from '../../../assets/fonts/25-05-05-Map.ttf';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
+import mapFont from '../../../assets/fonts/25-05-05-Map.ttf?url';
 
-const WarholGraveCamClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Component Props interface
+interface WarholGraveCamClockProps {
+  // No props required for this component
+}
+
+const WarholGraveCamClock: React.FC<WarholGraveCamClockProps> = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'MapFont',
       fontUrl: mapFont,
@@ -13,8 +21,11 @@ const WarholGraveCamClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
 
   const [time, setTime] = useState<any>({
     hours: '00',
@@ -22,10 +33,10 @@ const WarholGraveCamClock: React.FC = () => {
     seconds: '00',
   });
 
-  // Font loading handled by useMultipleFontLoader
+  // Font loading handled by useSuspenseFontLoader
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       setTime({
         hours: String(now.getHours()).padStart(2, '0'),

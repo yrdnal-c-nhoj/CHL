@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 
 // Interface for Disc component props
 interface DiscProps {
@@ -10,27 +11,69 @@ interface DiscProps {
   weight: number;
 }
 
-const Disc260203Clock: React.FC = () => {
+// Styles defined before usage to ensure type safety and cleaner structure
+const styles: Record<string, React.CSSProperties> = {
+  container: {
+    width: '100vw',
+    height: '100dvh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background:
+      'radial-gradient(circle at center, #F5F3D0 0%, #F5E6A3 55%, #B5A25C 75%, #B79D4E 100%)',
+    margin: 0,
+    overflow: 'hidden',
+  },
+  clockBase: {
+    position: 'relative',
+    width: '95vmin',
+    height: '95vmin',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  disc: {
+    position: 'absolute',
+    borderRadius: '50%',
+    display: 'flex',
+    justifyContent: 'center',
+    willChange: 'transform',
+    pointerEvents: 'none',
+  },
+  label: {
+    position: 'absolute',
+    top: '0',
+    fontSize: 'clamp(5vw, 20vmin, 10vw)',
+    transform: 'translateY(-50%)',
+    lineHeight: 1,
+    // Fallback font until local asset is added
+    fontFamily: '"Taviraj", "Times New Roman", serif',
+  },
+  centerPin: {
+    width: '2vw',
+    height: '2vw',
+    backgroundColor: '#F26AD7',
+    borderRadius: '50%',
+    zIndex: 10,
+  },
+};
+
+const Clock: React.FC = () => {
   const clockRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number | undefined>();
-  const [showContent, setShowContent] = useState(false);
 
   // Use Suspense-compatible font loading
-  useSuspenseFontLoader([
-    {
-      fontFamily: 'Taviraj',
-      fontUrl: 'https://fonts.googleapis.com/css2?family=Taviraj:wght@100;500;900&display=swap',
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ]);
+  // NOTE: FontFace API requires a direct URL to a binary font file (ttf/woff), not a CSS link.
+  // Please download Taviraj and import it like: import taviraj from '../../../assets/fonts/taviraj.ttf?url';
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    // {
+    //   fontFamily: 'Taviraj',
+    //   fontUrl: taviraj, 
+    //   options: { weight: 'normal', style: 'normal' }
+    // }
+  ], []);
 
-  // Show content immediately with Suspense
-  useEffect(() => {
-    setShowContent(true);
-  }, []);
+  useSuspenseFontLoader(fontConfigs);
 
   // Clock animation
   useEffect(() => {
@@ -58,10 +101,6 @@ const Disc260203Clock: React.FC = () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
   }, []);
-
-  if (!showContent) {
-    return null;
-  }
 
   return (
     <div
@@ -128,49 +167,4 @@ const Disc: React.FC<DiscProps> = ({ size, rotationVar, color, label, weight }) 
   </div>
 );
 
-const styles = {
-  container: {
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    background:
-      'radial-gradient(circle at center, #F5F3D0 0%, #F5E6A3 55%, #B5A25C 75%, #B79D4E 100%)',
-    margin: 0,
-    overflow: 'hidden',
-  },
-  clockBase: {
-    position: 'relative',
-    width: '95vmin',
-    height: '95vmin',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  disc: {
-    position: 'absolute',
-    borderRadius: '50%',
-    display: 'flex',
-    justifyContent: 'center',
-    willChange: 'transform',
-    pointerEvents: 'none',
-  },
-  label: {
-    position: 'absolute',
-    top: '0',
-    fontSize: 'clamp(5vw, 20vmin, 10vw)',
-    transform: 'translateY(-50%)',
-    lineHeight: 1,
-    fontFamily: '"Taviraj", serif',
-  },
-  centerPin: {
-    width: '2vw',
-    height: '2vw',
-    backgroundColor: '#F26AD7',
-    borderRadius: '50%',
-    zIndex: 10,
-  },
-};
-
-export default Disc260203Clock;
+export default Clock;

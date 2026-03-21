@@ -1,49 +1,32 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
+import type { FontConfig } from '../../../types/clock';
 import bgVideo from '../../../assets/images/25-09/25-09-22/deex.mp4';
 import fallbackImage from '../../../assets/images/25-09/25-09-22/deex.gif';
 import customFontmmm from '../../../assets/fonts/25-09-22-disney.ttf?url';
 
 export default function DigitalClockVideo() {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const [time, setTime] = useState(new Date());
   const [isPhone, setIsPhone] = useState<boolean>(window.innerWidth <= 768);
   const videoRef = useRef(null); // Ref for video element
 
-  // Load custom font
-  useEffect(() => {
-    const font = new FontFace('CustomFontmmm', `url(${customFontmmm})`);
-    font
-      .load()
-      .then((loadedFont) => {
-        document.fonts.add(loadedFont);
-      })
-      .catch((error) => {
-        console.warn('Custom font failed to load:', error.message);
-      });
-  }, []);
+  const time = useMillisecondClock();
 
-  // Update time every ~16ms for smooth display
-  useEffect(() => {
-    console.log('Starting time update interval');
-    const interval = setInterval(() => {
-      const newTime = new Date();
-      setTime(newTime);
-      console.log('Time updated:', newTime.toLocaleTimeString());
-    }, 16);
-    return () => {
-      console.log('Clearing time update interval');
-      clearInterval(interval);
-    };
-  }, []);
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    {
+      fontFamily: 'CustomFontmmm',
+      fontUrl: customFontmmm,
+      options: { weight: 'normal', style: 'normal' }
+    }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
 
   // Video event handlers
   useEffect(() => {
     const videoEl = videoRef.current;
     if (videoEl) {
-      console.log('Attaching video event handlers');
       videoEl.oncanplay = () =>
         console.log('Video can play at', new Date().toLocaleTimeString());
       videoEl.onplay = () =>
@@ -64,10 +47,8 @@ export default function DigitalClockVideo() {
         setVideoFailed(true);
       };
     }
-    console.log('videoFailed state:', videoFailed);
     return () => {
       if (videoEl) {
-        console.log('Cleaning up video event handlers');
         videoEl.oncanplay = null;
         videoEl.onplay = null;
         videoEl.onerror = null;
@@ -81,20 +62,16 @@ export default function DigitalClockVideo() {
   useEffect(() => {
     const handleResize = () => {
       const newIsPhone = window.innerWidth <= 768;
-      console.log('Window resized, isPhone:', newIsPhone);
       setIsPhone(newIsPhone);
     };
     window.addEventListener('resize', handleResize);
-    console.log('Initial isPhone state:', isPhone);
     return () => {
-      console.log('Removing resize event listener');
       window.removeEventListener('resize', handleResize);
     };
   }, [isPhone]);
 
   // Inject keyframes for bronze/gold shimmer
   useEffect(() => {
-    console.log('Injecting sparkle keyframes');
     const style = document.createElement('style');
     style.id = 'sparkle-styles'; // Prevent duplicates
     style.innerHTML = `
@@ -108,7 +85,6 @@ export default function DigitalClockVideo() {
     `;
     document.head.appendChild(style);
     return () => {
-      console.log('Removing sparkle keyframes');
       document.head.removeChild(style);
     };
   }, []);
@@ -184,7 +160,6 @@ export default function DigitalClockVideo() {
 
   const renderBoxes = useCallback(
     (str) => {
-      console.log('Rendering boxes for:', str);
       return str.split('').map((c, i) => (
         <div key={i} style={boxStyle}>
           {c}
