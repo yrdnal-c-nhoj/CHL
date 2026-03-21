@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import font_2025_11_21 from '../../../assets/fonts/25-11-18-cat.ttf?url';
 import bgImg from '../../../assets/images/25-11/25-11-18/eyes.webp';
-import { useMultipleFontLoader } from '../../../utils/fontLoader'; // Assuming you move the hook
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 
 export default function RotatedClockGrid() {
   const [now, setNow] = useState(new Date());
@@ -31,18 +32,13 @@ export default function RotatedClockGrid() {
   const extraLeft = 6; // increase to show more clocks off the left edge
   const extraTop = 5; // increase to show more clocks above the top edge
   const FONT_FAMILY = 'ClockFont_2025_11_18_cat';
+  
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: FONT_FAMILY, fontUrl: font_2025_11_21 }
+  ], []);
 
-  const fontLoaded = useMultipleFontLoader(
-    useMemo(
-      () => [
-        {
-          fontFamily: FONT_FAMILY,
-          fontUrl: font_2025_11_21,
-        },
-      ],
-      [],
-    ),
-  );
+  // Suspends component rendering until the font is loaded.
+  useSuspenseFontLoader(fontConfigs);
 
   // 20-color palette provided by user
   const COLORS = [
@@ -123,10 +119,6 @@ export default function RotatedClockGrid() {
           gap: `${gap}vh`,
           alignItems: 'center',
           justifyItems: 'center',
-          // Prevent flash of unstyled text: hide until font is loaded
-          opacity: fontLoaded ? 1 : 0,
-          transition: 'opacity 160ms linear',
-          pointerEvents: fontLoaded ? 'auto' : 'none',
         }}
       >
         {Array.from({ length: rowsNeeded }).map((_, rowIndex) => {

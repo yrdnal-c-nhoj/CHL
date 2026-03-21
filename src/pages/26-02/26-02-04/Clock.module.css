@@ -1,0 +1,63 @@
+.container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.bgBase {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.timeRow {
+  display: flex;
+  gap: 2vw;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+}
+
+.timeRowMobile {
+  flex-direction: column;
+  gap: 2dvh;
+}
+
+.digit {
+  font-size: 30vw;
+  line-height: 1;
+  font-family: 'BorrowedDigital', monospace;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  background-image: linear-gradient(90deg, #b87333 0%, #f4a460 25%, #ecc591 50%, #f4a460 75%, #b87333 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: copper-shimmer 4s linear infinite;
+  -webkit-text-stroke: 0.5vh #43b3ae;
+  paint-order: stroke fill;
+  filter: drop-shadow(0.5vh 0 0 #43b3ae) drop-shadow(-0.5vh 0 0 #43b3ae) drop-shadow(0 1px 0 #43b3ae) drop-shadow(0 -1px 0 #43b3ae);
+}
+
+.digitMobile {
+  font-size: 35dvh;
+}
+
+@keyframes copper-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}

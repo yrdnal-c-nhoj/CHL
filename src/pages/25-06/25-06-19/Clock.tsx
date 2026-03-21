@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react';
+import styles from './Clock.module.css';
 
 const CmykClock: React.FC = () => {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const clockRef = useRef<HTMLDivElement>(null);
 
-  const resizeCanvas: React.FC = () => {
+  const resizeCanvas = () => {
     const canvas = canvasRef.current;
     if (canvas) {
       canvas.width = window.innerWidth;
@@ -19,11 +21,13 @@ const CmykClock: React.FC = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    const clockEl = clockRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
     const sectors = ['cyan', 'magenta', 'yellow'];
 
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const ms = now.getMilliseconds();
       const sec = now.getSeconds() + ms / 1000;
@@ -63,9 +67,9 @@ const CmykClock: React.FC = () => {
         ctx.fill();
       }
 
-      const sh = document.querySelector('.second-hand');
-      const mh = document.querySelector('.minute-hand');
-      const hh = document.querySelector('.hour-hand');
+      const sh = clockEl?.querySelector(`.${styles.secondHand}`) as HTMLElement;
+      const mh = clockEl?.querySelector(`.${styles.minuteHand}`) as HTMLElement;
+      const hh = clockEl?.querySelector(`.${styles.hourHand}`) as HTMLElement;
       if (sh) sh.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
       if (mh) mh.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
       if (hh) hh.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
@@ -78,78 +82,12 @@ const CmykClock: React.FC = () => {
 
   return (
     <>
-      <style>{`
-        html, body, #root {
-          margin: 0;
-          padding: 0;
-          height: 100%;
-          width: 100%;
-          overflow: hidden;
-          background: black;
-        }
-
-        .clock {
-          position: fixed;
-          top: 0;
-          left: 0;
-          height: 100dvh;
-          width: 100vw;
-        }
-
-        canvas {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          z-index: 1;
-          display: block;
-        }
-
-        .hand {
-          position: absolute;
-          bottom: 50%;
-          left: 50%;
-          transform-origin: bottom;
-          background-color: rgb(6, 0, 0);
-          z-index: 2;
-        }
-
-        .hour-hand {
-          width: 1rem;
-          height: 230vh;
-        }
-
-        .minute-hand {
-          width: 0.6rem;
-          height: 240vh;
-        }
-
-        .second-hand {
-          width: 0.3rem;
-          height: 245vh;
-        }
-
-        .date-container {
-          color: rgb(168, 154, 154);
-          position: absolute;
-          bottom: 0.5vh;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 98vw;
-          display: flex;
-          justify-content: center;
-          font-size: 1.2rem;
-          z-index: 6;
-        }
-      `}</style>
-
-      <div className="clock">
-        <canvas ref={canvasRef} />
-        <div className="hand hour-hand" />
-        <div className="hand minute-hand" />
-        <div className="hand second-hand" />
-        <div className="date-container">
+      <div className={styles.clock} ref={clockRef}>
+        <canvas ref={canvasRef} className={styles.canvas} />
+        <div className={`${styles.hand} ${styles.hourHand}`} />
+        <div className={`${styles.hand} ${styles.minuteHand}`} />
+        <div className={`${styles.hand} ${styles.secondHand}`} />
+        <div className={styles.dateContainer}>
           {' '}
           {/* Optional date text can go here */}
         </div>

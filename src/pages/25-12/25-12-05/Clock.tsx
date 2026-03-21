@@ -1,35 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-// Import today's date font
-import font_2025_12_06 from '../../../assets/fonts/25-12-05-magic.ttf?url'; // This path is correct as it's relative to the public directory
-
-// Import background image
+import React, { useEffect, useState, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import font_2025_12_06 from '../../../assets/fonts/25-12-05-magic.ttf?url';
 import bgImage from '../../../assets/images/25-12/25-12-05/magic.webp';
+import styles from './Clock.module.css';
 
 export default function BoxedDigitalClock() {
   const [time, setTime] = useState(new Date());
   const [visible, setVisible] = useState<boolean>(false); // Clock visibility for glitch
   const [randomOpacity, setRandomOpacity] = useState<number>(0.2); // Random opacity for glitches
 
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'CustomFont_2025_12_06',
-      fontUrl: font_2025_12_06,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ];
-  const fontsReady = useMultipleFontLoader(fontConfigs);
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'CustomFont_2025_12_06', fontUrl: font_2025_12_06 }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
 
   // -------------------------------
   // Update clock every second
   // -------------------------------
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    let frameId: number;
+    const tick = () => {
+      setTime(new Date());
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   // -------------------------------
@@ -38,7 +35,7 @@ export default function BoxedDigitalClock() {
   useEffect(() => {
     // Start after 1 second
     const startTimeout = setTimeout(() => {
-      const glitchLoop: React.FC = () => {
+      const glitchLoop = () => {
         // Random delay ~0-500ms for next glitch
         const delay = 500 + Math.random() * 500;
 
@@ -64,95 +61,39 @@ export default function BoxedDigitalClock() {
   const minutes = time.getMinutes().toString().padStart(2, '0').split('');
   const ampm = time.getHours() >= 12 ? 'PM' : 'AM';
 
-  const containerStyle = {
-    fontFamily: 'CustomFont_2025_12_06',
-    height: '100dvh',
-    width: '100vw',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'contain',
-    backgroundPosition: 'center',
-    flexDirection: 'column',
-    color: '#fff',
-    boxSizing: 'border-box',
-    overflow: 'hidden',
-    fontFeatureSettings: "'tnum'",
-    position: 'relative',
-  };
-
-  const overlayStyle = {
-    position: 'absolute',
-    top: '0',
-    left: '0',
-    width: '100%',
-    height: '100%',
-    background:
-      'radial-gradient(circle,  rgba(18, 110, 128, 0.3) 0%,  rgba(128, 0, 128, 0.2) 100%)',
-    pointerEvents: 'none',
-  };
-
-  const clockStyle = {
-    display: visible ? 'flex' : 'none', // Show only during glitch
-    gap: '1vw',
-    alignItems: 'center',
-    fontSize: '8vh',
-    opacity: randomOpacity,
-    transform: visible
-      ? `translateX(${Math.random() * 4 - 2}px)`
-      : 'translateX(0)', // slight horizontal jitter
-    filter: visible
-      ? `blur(${Math.random() * 1.5}px) brightness(${1 + Math.random() * 0.5})`
-      : 'none',
-    transition: 'all 0.05s linear',
-  };
-
-  const digitBoxStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    width: '6vh',
-    height: '8vh',
-    borderRadius: '1vh',
-  };
-
-  const separatorStyle = {
-    margin: '0 1vw',
-  };
-
   return (
-    <div style={containerStyle}>
-      <style>
-        {`
-          /* Fallback font stack */
-          .digit {
-            font-family: 'CustomFont_2025_12_06', 'Courier New', monospace;
-          }
-        `}
-      </style>
+    <div 
+      className={styles.container}
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
+      <div className={styles.overlay} />
 
-      <div style={overlayStyle}></div>
-
-      <div style={clockStyle}>
+      <div 
+        className={styles.clock}
+        style={{
+          display: visible ? 'flex' : 'none',
+          opacity: randomOpacity,
+          transform: visible ? `translateX(${Math.random() * 4 - 2}px)` : 'translateX(0)',
+          filter: visible ? `blur(${Math.random() * 1.5}px) brightness(${1 + Math.random() * 0.5})` : 'none',
+        }}
+      >
         {hours.map((digit, i) => (
-          <div key={`h${i}`} style={digitBoxStyle} className="digit">
+          <div key={`h${i}`} className={styles.digitBox}>
             {digit}
           </div>
         ))}
 
-        <div style={separatorStyle} className="digit">
+        <div className={styles.separator}>
           :
         </div>
 
         {minutes.map((digit, i) => (
-          <div key={`m${i}`} style={digitBoxStyle} className="digit">
+          <div key={`m${i}`} className={styles.digitBox}>
             {digit}
           </div>
         ))}
 
-        <div style={{ ...separatorStyle, marginLeft: '2vw' }} className="digit">
+        <div className={`${styles.separator} ${styles.ampm}`}>
           {ampm}
         </div>
       </div>

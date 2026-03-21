@@ -1,31 +1,38 @@
 import React, { useState, useEffect, useRef } from 'react';
+import styles from './Clock.module.css';
 
-const containerStyle = {
-  height: '100vh',
-  width: '100vw',
-  overflow: 'hidden',
-  background: 'linear-gradient(to top, #DCD5B4, #D6F1F1)',
-  position: 'relative',
-  margin: 0,
-};
+interface ClockData {
+  id: string;
+  size: number;
+  gravity: number;
+  bounce: number;
+  x: number;
+  y: number;
+  vy: number;
+  squash: number;
+  color: string;
+  born: number;
+}
 
-const App: React.FC = () => {
-  const [clocks, setClocks] = useState<any>([]);
-  const containerRef = useRef(null);
-  const requestRef = useRef();
+const GravityClock: React.FC = () => {
+  const [clocks, setClocks] = useState<ClockData[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const requestRef = useRef<number>();
 
+  // Spawning logic
   useEffect(() => {
-    const spawnClock: React.FC = () => {
+    const spawnClock = () => {
       const id = Math.random().toString(36).substr(2, 9);
       const sizes = [30, 60, 100, 180, 260];
       const size = sizes[Math.floor(Math.random() * sizes.length)];
 
       // Inverse Gravity: Large is slow, Small is fast
       const gravity = 2.2 / size + 0.005;
+      
       // Higher bounce for larger "lighter" clocks
       const bounce = Math.min(0.92, 0.2 + size / 320);
 
-      const newClock = {
+      const newClock: ClockData = {
         id,
         size,
         gravity,
@@ -44,7 +51,8 @@ const App: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const animate: React.FC = () => {
+  // Animation loop
+  const animate = () => {
     setClocks((prevClocks) => {
       const floor =
         (containerRef.current?.offsetHeight || window.innerHeight) / 16;
@@ -83,13 +91,16 @@ const App: React.FC = () => {
     requestRef.current = requestAnimationFrame(animate);
   };
 
+  // Start animation loop
   useEffect(() => {
     requestRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(requestRef.current);
+    return () => {
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+    };
   }, []);
 
   return (
-    <div ref={containerRef} style={containerStyle}>
+    <div ref={containerRef} className={styles.container}>
       {clocks.map((clock) => (
         <ClockItem key={clock.id} clock={clock} />
       ))}
@@ -97,12 +108,18 @@ const App: React.FC = () => {
   );
 };
 
-const ClockItem = ({ clock }) => {
+const ClockItem: React.FC<{ clock: ClockData }> = ({ clock }) => {
   const [time, setTime] = useState(new Date());
 
+  // Standardized rAF loop for time
   useEffect(() => {
-    const t = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(t);
+    let frameId: number;
+    const tick = () => {
+      setTime(new Date());
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   const h = (time.getHours() % 12) * 30 + time.getMinutes() * 0.5;
@@ -113,50 +130,30 @@ const ClockItem = ({ clock }) => {
   const scaleX = 1 / clock.squash;
   const scaleY = clock.squash;
 
-  const clockStyle = {
-    position: 'absolute',
-    width: `${clock.size / 16}rem`,
-    height: `${clock.size / 16}rem`,
-    left: `${clock.x}vw`,
-    backgroundColor: clock.color,
-    borderRadius: '50%',
-    border: '3px solid rgba(255,255,255,0.5)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // Apply the combined physics transform
-    transform: `translateY(${clock.y}rem) scale(${scaleX}, ${scaleY})`,
-    transformOrigin: 'bottom center', // Squash happens relative to the floor
-    willChange: 'transform',
-  };
-
   return (
-    <div style={clockStyle}>
-      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div
+      className={styles.clockItem}
+      style={{
+        width: `${clock.size / 16}rem`,
+        height: `${clock.size / 16}rem`,
+        left: `${clock.x}vw`,
+        backgroundColor: clock.color,
+        transform: `translateY(${clock.y}rem) scale(${scaleX}, ${scaleY})`,
+      }}
+    >
+      <div className={styles.clockFace}>
+        {/* Hour Hand */}
         <div
+          className={`${styles.hand} ${styles.hourHand}`}
           style={{
-            position: 'absolute',
-            bottom: '50%',
-            left: '50%',
-            width: '5px',
-            height: '28%',
-            backgroundColor: '#fff',
-            transformOrigin: 'bottom',
             transform: `translateX(-50%) rotate(${h}deg)`,
-            borderRadius: '5px',
           }}
         />
+        {/* Minute Hand */}
         <div
+          className={`${styles.hand} ${styles.minuteHand}`}
           style={{
-            position: 'absolute',
-            bottom: '50%',
-            left: '50%',
-            width: '3px',
-            height: '42%',
-            backgroundColor: 'rgba(255,255,255,0.7)',
-            transformOrigin: 'bottom',
             transform: `translateX(-50%) rotate(${m}deg)`,
-            borderRadius: '3px',
           }}
         />
       </div>
@@ -164,4 +161,4 @@ const ClockItem = ({ clock }) => {
   );
 };
 
-export default App;
+export default GravityClock;

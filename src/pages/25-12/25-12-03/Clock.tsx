@@ -1,16 +1,19 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import font_2024_12_05 from '../../../assets/fonts/25-12-03-dog.ttf?url';
+import styles from './Clock.module.css';
 
 const PuppyClockComponent: React.FC = () => {
-  const [images, setImages] = useState<any>({ current: '', next: '' });
+  const [images, setImages] = useState<{ current: string; next: string }>({ current: '', next: '' });
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const [time, setTime] = useState(new Date());
 
-  const fontReady = useFontLoader('CustomFont', font_2024_12_05, {
-    timeout: 5000,
-    fallback: true,
-  });
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'CustomFont', fontUrl: font_2024_12_05 }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
 
   const getNewPuppy = useCallback(async () => {
     try {
@@ -42,18 +45,27 @@ const PuppyClockComponent: React.FC = () => {
     }
   }, []);
 
+  // Clock tick (Standardized to rAF)
   useEffect(() => {
-    getNewPuppy();
-    const clockInterval = setInterval(() => setTime(new Date()), 1000);
-    const imageInterval = setInterval(getNewPuppy, 5000); // Increased to 5s for better UX
+    let frameId: number;
+    const tick = () => {
+      setTime(new Date());
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
+  }, []);
 
+  // Image rotation logic
+  useEffect(() => {
+    getNewPuppy(); // Initial load
+    const imageInterval = setInterval(getNewPuppy, 5000);
     return () => {
-      clearInterval(clockInterval);
       clearInterval(imageInterval);
     };
   }, [getNewPuppy]);
 
-  const formatTime = (date) => {
+  const formatTime = (date: Date) => {
     let hours = date.getHours();
     const minutes = date.getMinutes();
     const ampm = hours >= 12 ? 'pm' : 'am';
@@ -63,66 +75,29 @@ const PuppyClockComponent: React.FC = () => {
       .join(' ');
   };
 
-  // --- STYLES ---
-
-  const containerStyle = {
-    position: 'relative',
-    width: '100vw',
-    height: '100vh',
-    backgroundColor: '#1a1a1a',
-    overflow: 'hidden',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  };
-
-  const layerStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    transition: 'opacity 0.6s ease-in-out',
-  };
-
-  const clockStyle = {
-    position: 'relative', // Ensure it sits above the background layers
-    zIndex: 10,
-    fontFamily: 'CustomFont, sans-serif',
-    fontSize: '7vh',
-    color: '#F9EBE5',
-    textShadow: '0 4px 12px rgba(0,0,0,0.5)',
-    opacity: fontReady ? 1 : 0,
-    transition: 'opacity 0.5s ease',
-    transform: 'translateY(12vh)',
-    pointerEvents: 'none',
-  };
-
   return (
-    <div style={containerStyle}>
+    <div className={styles.container}>
       {/* BACKGROUND LAYER 1: The "Old" or Static Image */}
       <div
+        className={styles.layer}
         style={{
-          ...layerStyle,
           backgroundImage: `url(${images.current})`,
-          zIndex: 1,
+          zIndex: 1, // Static layer is lower
         }}
       />
 
       {/* BACKGROUND LAYER 2: The "New" incoming Image */}
       <div
+        className={styles.layer}
         style={{
-          ...layerStyle,
           backgroundImage: `url(${images.next})`,
           opacity: isTransitioning ? 1 : 0,
-          zIndex: 2,
+          zIndex: 2, // Transitioning layer is higher
         }}
       />
 
       {/* TIME OVERLAY */}
-      <div style={clockStyle}>{formatTime(time)}</div>
+      <div className={styles.clock}>{formatTime(time)}</div>
     </div>
   );
 };

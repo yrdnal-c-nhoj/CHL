@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bgImage from '../../../assets/images/25-11/25-11-07/birds.webp';
 import font251107kdvsf from '../../../assets/fonts/25-11-07-twobirds.ttf';
+import styles from './Clock.module.css';
 
 export default function PanicAnalogClock() {
   // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+  const fontConfigs = useMemo(() => [
     {
       fontFamily: 'CustomClockFont',
       fontUrl: font251107kdvsf,
@@ -14,7 +15,7 @@ export default function PanicAnalogClock() {
         style: 'normal'
       }
     }
-  ];
+  ], []);
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   const rightImageDelay = 500; // 0.5s delay for right image
@@ -187,24 +188,8 @@ export default function PanicAnalogClock() {
 
   return (
     <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
+      className={styles.container}
     >
-      {fontUrl && (
-        <style>
-          {`
-            /* Font loading handled by useMultipleFontLoader */
-            @keyframes digitFade {
-              from { opacity: 0; -webkit-text-fill-color: black; }
-              to { opacity: 0.8; -webkit-text-fill-color: transparent; }
-            }
-          `}
-        </style>
-      )}
       {/* Left background */}
       <img
         decoding="async"

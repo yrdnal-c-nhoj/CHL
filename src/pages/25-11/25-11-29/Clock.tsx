@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import backgroundImg from '../../../assets/images/25-11/25-11-29/squ.webp';
 import fontUrl_20251128 from '../../../assets/fonts/25-11-29-roc.ttf?url';
 
@@ -8,58 +8,14 @@ export default function RococoDigitalClock() {
   const [now, setNow] = useState(new Date());
   const [morph, setMorph] = useState<number>(0);
   const [isVertical, setIsVertical] = useState<boolean>(false);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
-  // Preload font and set up font face
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'RococoBlob', fontUrl: fontUrl_20251128, options: { weight: '800' } }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
+
   useEffect(() => {
-    // Add preload link for font
-    const preloadLink = document.createElement('link');
-    preloadLink.href = fontUrl_20251128;
-    preloadLink.rel = 'preload';
-    preloadLink.as = 'font';
-    preloadLink.type = 'font/ttf';
-    preloadLink.crossOrigin = 'anonymous';
-    document.head.appendChild(preloadLink);
-
-    // Add font face
-    const style = document.createElement('style');
-    style.id = 'rococo-font';
-    style.textContent = `
-      @font-face {
-        font-family: 'RococoBlob';
-        src: url(${fontUrl_20251128}) format('truetype');
-        font-weight: 800;
-        font-display: block; // Prevent FOUT
-      }
-    `;
-    document.head.appendChild(style);
-
-    // Check if font is loaded
-    const checkFont = async () => {
-      try {
-        // Load the font using the FontFace API
-        const font = new FontFace('RococoBlob', `url(${fontUrl_20251128})`, {
-          weight: '800',
-          style: 'normal',
-          display: 'block',
-        });
-
-        // Wait for the font to load
-        await font.load();
-        document.fonts.add(font);
-
-        // Small delay to ensure all resources are ready
-        await new Promise((resolve) => setTimeout(resolve, 100));
-
-        setFontLoaded(true);
-      } catch (e) {
-        console.error('Failed to load font:', e);
-        setFontLoaded(true); // Continue even if font fails to load
-      }
-    };
-
-    checkFont();
-
     // Set up time and morph intervals
     const timeInterval = setInterval(() => setNow(new Date()), 1000);
     const morphInterval = setInterval(() => {
@@ -72,9 +28,6 @@ export default function RococoDigitalClock() {
     return () => {
       clearInterval(timeInterval);
       clearInterval(morphInterval);
-      document.head.removeChild(preloadLink);
-      const existingStyle = document.getElementById('rococo-font');
-      if (existingStyle) document.head.removeChild(existingStyle);
     };
   }, []);
 
@@ -111,47 +64,6 @@ export default function RococoDigitalClock() {
       transition: 'transform 4.2s cubic-bezier(0.22, 0.88, 0.34, 0.98)',
     };
   };
-
-  // Show loading state that matches the final layout
-  if (!fontLoaded) {
-    return (
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: '#000',
-          backgroundImage: `url(${backgroundImg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'brightness(1.2) contrast(1.4)',
-          zIndex: 9999,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '2vh',
-          opacity: 1,
-        }}
-      >
-        {/* Invisible placeholder that matches the clock's layout */}
-        <div
-          style={{
-            width: '100vw',
-            height: '18vh',
-            display: 'flex',
-            justifyContent: 'center',
-            visibility: 'hidden',
-          }}
-        >
-          <div style={{ width: '10vh', height: '18vh' }} />
-          <div style={{ width: '10vh', height: '18vh' }} />
-        </div>
-      </div>
-    );
-  }
 
   if (isVertical) {
     return (
@@ -288,19 +200,8 @@ export default function RococoDigitalClock() {
         // filter: "brightness(1.2) contrast(1.4)",
         fontFamily: "'RococoBlob', serif",
         overflow: 'hidden',
-        opacity: fontLoaded ? 1 : 0,
-        transition: 'opacity 0.3s ease-in',
       }}
     >
-      <style>{`
-        @font-face {
-          font-family: 'RococoBlob';
-          src: url(${fontUrl_20251128}) format('truetype');
-          font-weight: 800;
-          font-display: swap;
-        }
-      `}</style>
-
       <div
         style={{
           display: 'flex',

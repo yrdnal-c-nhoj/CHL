@@ -3,38 +3,12 @@ import React, {
   useEffect,
   useContext,
   useMemo,
-  useCallback,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import Header from './components/Header';
 import ClockPageNav from './components/ClockPageNav';
+import { useClockPage } from './hooks/useClockPage';
 import styles from './ClockPage.module.css';
-
-// Preload all Clock.jsx files under /pages/**/Clock.jsx using Vite's glob import
-const clockModules = import.meta.glob('./pages/**/Clock.tsx');
-
-// Resolve the correct module key for a given item, supporting both:
-// - New structure: ./pages/YY-MM/YY-MM-DD/Clock.jsx
-// - Old structure: ./pages/YY-MM-DD/Clock.jsx (fallback)
-const getClockModuleKey = (item) => {
-  const date = item?.date || item?.path;
-  if (!date) return null;
-
-  const [yy, mm] = date.split('-');
-  if (!yy || !mm) return null;
-
-  const candidates = [
-    `./pages/${yy}-${mm}/${item.path}/Clock.tsx`, // month/day structure
-    `./pages/${item.path}/Clock.tsx`, // legacy flat structure
-  ];
-
-  for (const key of candidates) {
-    if (clockModules[key]) return key;
-  }
-
-  return null;
-};
 
 const formatTitle = (title) => title?.replace(/clock/i, '').trim() || 'Home';
 const formatDate = (dateStr) => {
@@ -66,118 +40,39 @@ const getTodayDate = () => {
   return `${yy}-${mm}-${dd}`;
 };
 
-/**
- * Custom hook for asset preloading (mirrors ClockPage.jsx logic)
- */
-const useAssetPreloader = () => {
-  const preloadAssets = useCallback(async (module) => {
-    // Preload images exported from module
-    const images = Object.values(module).filter(
-      (value) =>
-        typeof value === 'string' &&
-        /\.(jpg|jpeg|png|webp|gif|mp4|webm)$/i.test(value),
-    );
-
-    const imagePromises = images.map(
-      (src) =>
-        new Promise((resolve) => {
-          if (/\.(mp4|webm)$/i.test(src)) {
-            resolve();
-          } else {
-            const img = new Image();
-            img.src = src;
-            img.onload = img.onerror = resolve;
-          }
-        }),
-    );
-
-    // Helper to avoid hanging forever on fonts.ready
-    const fontPromise = (() => {
-      try {
-        if (typeof document !== 'undefined' && 'fonts' in document) {
-          return new Promise((resolve) => {
-            document.fonts.ready.then(() => resolve()).catch(() => resolve());
-            setTimeout(resolve, 2000);
-          });
-        }
-      } catch {
-        // ignore
-      }
-      return Promise.resolve();
-    })();
-
-    await Promise.all([...imagePromises, fontPromise]);
-
-    return true;
-  }, []);
-
-  return { preloadAssets };
-};
-
 const TodayClockPage = () => {
   const { items, loading, error } = useContext(DataContext);
-  const { preloadAssets } = useAssetPreloader();
-
-  // State management aligned with ClockPage.jsx for consistency
-  const [ClockComponent, setClockComponent] = useState(null);
-  const [pageError, setPageError] = useState(null);
   const [currentItem, setCurrentItem] = useState(null);
   const [headerVisible, setHeaderVisible] = useState(true);
-  const [isReady, setIsReady] = useState(false);
-  const [overlayVisible, setOverlayVisible] = useState(true);
-
   const OVERLAY_FADE_DURATION = 300;
 
   // -------------------------------
   // Load today's clock
   // -------------------------------
   useEffect(() => {
-    const loadClock = async () => {
-      if (loading) return;
+    if (loading || !items || items.length === 0) return;
 
-      try {
-        if (!items || items.length === 0) {
-          throw new Error('No clock data is available.');
-        }
+    const today = getTodayDate();
+    const todayVal = parseDateVal(today);
 
-        const today = getTodayDate();
-        const todayVal = parseDateVal(today);
+    // Sort items descending by date (newest first)
+    const sortedItems = [...items].sort(
+      (a, b) => parseDateVal(b.date) - parseDateVal(a.date),
+    );
 
-        // Sort items descending by date (newest first)
-        const sortedItems = [...items].sort(
-          (a, b) => parseDateVal(b.date) - parseDateVal(a.date),
-        );
+    // Find the first item that is today or past
+    let item = sortedItems.find(
+      (i) => parseDateVal(i.date) <= todayVal
+    );
 
-        // Find the first item that is today or past AND has a valid component file
-        let item = sortedItems.find(
-          (i) => parseDateVal(i.date) <= todayVal && getClockModuleKey(i),
-        );
+    // Fallback: If no past/today clock found, find the newest available valid clock anywhere
+    if (!item) item = sortedItems[0];
 
-        // Fallback: If no past/today clock found, find the newest available valid clock anywhere
-        if (!item) item = sortedItems.find((i) => getClockModuleKey(i));
+    setCurrentItem(item);
+  }, [items, loading]);
 
-        if (!item) throw new Error('No valid clock components found.');
-
-        setCurrentItem(item);
-
-        const key = getClockModuleKey(item);
-
-        const mod = await clockModules[key]();
-
-        // Preload assets to prevent FOUC/black screens on load
-        await preloadAssets(mod);
-
-        setClockComponent(() => mod.default);
-        setIsReady(true);
-      } catch (err) {
-        setPageError(err.message || 'Failed to load clock');
-      } finally {
-        setTimeout(() => setOverlayVisible(false), OVERLAY_FADE_DURATION);
-      }
-    };
-
-    loadClock();
-  }, [items, loading, preloadAssets]);
+  // Use the hook to load the clock
+  const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPage(currentItem);
 
   // -------------------------------
   // Auto-hide header shortly after load

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useFontLoader } from '../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../utils/fontLoader';
 
 // --- Assets ---
 import analogRainFont from '../../../assets/fonts/26-01-31-cond.ttf?url';
@@ -36,7 +36,11 @@ const useClock = () => {
 
 const AnalogClock = () => {
   const now = useClock();
-  const fontReady = useFontLoader('BorrowedAnalog', analogRainFont);
+  
+  const fontConfigs = useMemo(() => [
+    { fontFamily: 'BorrowedAnalog', fontUrl: analogRainFont }
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
 
   // Time Calculations (including sub-second fractions for smooth motion)
   const msec = now.getMilliseconds();
@@ -83,7 +87,7 @@ const AnalogClock = () => {
       <div
         style={{
           ...styles.face,
-          fontFamily: fontReady ? "'BorrowedAnalog', sans-serif" : 'sans-serif',
+          fontFamily: "'BorrowedAnalog', sans-serif",
         }}
       >
         {renderedNumerals}

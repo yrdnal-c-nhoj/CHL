@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import westVideo from '../../../assets/images/26-03/26-03-01/west.mp4';
 import cloudGif from '../../../assets/images/26-03/26-03-01/cloud.webp';
 import westtImage from '../../../assets/images/26-03/26-03-01/westt.webp';
+import styles from './Clock.module.css';
 
 const TILE_SIZE = 100;
 
@@ -124,21 +124,23 @@ const Clock: React.FC = () => {
   }, [dimensions]);
 
   return (
-    <main style={styles.container}>
+    <main className={styles.container}>
       {/* Layer 1: Filtered Video Background */}
-      <video autoPlay loop muted playsInline style={styles.video}>
+      <video autoPlay loop muted playsInline className={styles.video}>
         <source src={westVideo} type="video/mp4" />
       </video>
 
       {/* Layer 2: Offset Cloud Layer */}
-      <div style={styles.backgroundCloudWrapper}>
+      <div className={styles.backgroundCloudWrapper}>
         {tiles.map((tile) => (
           <img
             key={`bg-${tile.id}`}
             src={cloudGif}
             alt=""
+            className={styles.backgroundTile}
             style={{
-              ...styles.backgroundTile,
+              width: TILE_SIZE,
+              height: TILE_SIZE,
               left: tile.x + 25,
               top: tile.y + 25,
               opacity: tile.opacity * 0.8,
@@ -148,14 +150,16 @@ const Clock: React.FC = () => {
       </div>
 
       {/* Layer 3: Mirrored Overlay Wrapper */}
-      <div style={styles.overlayWrapper}>
+      <div className={styles.overlayWrapper}>
         {tiles.map((tile) => (
           <img
             key={tile.id}
             src={cloudGif}
             alt=""
+            className={styles.tile}
             style={{
-              ...styles.tile,
+              width: TILE_SIZE,
+              height: TILE_SIZE,
               left: tile.x,
               top: tile.y,
               opacity: tile.opacity,
@@ -165,76 +169,14 @@ const Clock: React.FC = () => {
       </div>
 
       {/* Layer 4: Static Overlay Image */}
-      <img src={westtImage} alt="" style={styles.westtImage} />
+      <img src={westtImage} alt="" className={styles.westtImage} />
 
       {/* Layer 5: Analog Clock UI */}
-      <section style={{ zIndex: 10, pointerEvents: 'none' }}>
+      <section className={styles.analogClockSection}>
         <AnalogClock />
       </section>
     </main>
   );
-};
-
-const styles = {
-  container: {
-    width: '100vw',
-    height: '100dvh',
-    position: 'relative',
-    backgroundColor: '#000',
-    overflow: 'hidden',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  video: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover', // Changed to cover for better filling on varied screens
-    zIndex: 1,
-    filter: 'hue-rotate(180deg) saturate(1.5) brightness(1.8) contrast(1.2)',
-  },
-  overlayWrapper: {
-    position: 'absolute',
-    inset: 0,
-    zIndex: 2,
-    pointerEvents: 'none',
-    mask: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
-    WebkitMask:
-      'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
-  },
-  backgroundCloudWrapper: {
-    position: 'absolute',
-    inset: 0,
-    zIndex: 1,
-    pointerEvents: 'none',
-    mask: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
-    WebkitMask:
-      'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
-  },
-  tile: {
-    position: 'absolute',
-    width: TILE_SIZE,
-    height: TILE_SIZE,
-    transform: 'scaleX(-1)',
-  },
-  backgroundTile: {
-    position: 'absolute',
-    width: TILE_SIZE,
-    height: TILE_SIZE,
-    transform: 'scaleX(-1)',
-    zIndex: 5,
-  },
-  westtImage: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    zIndex: 4,
-    pointerEvents: 'none',
-    opacity: 0.3,
-    filter: 'saturate(1.8) hue-rotate(180deg)',
-  },
 };
 
 export default Clock;
