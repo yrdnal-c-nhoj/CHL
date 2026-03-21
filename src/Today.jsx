@@ -79,6 +79,42 @@ const TodayClockPage = () => {
   const [pageError, setPageError] = useState(null);
   const [overlayVisible, setOverlayVisible] = useState(true);
 
+  // Helper to preload images from the module before rendering
+  const preloadAssets = async (module) => {
+    const promises = [];
+
+    // 1. Preload Images
+    const images = Object.values(module).filter(
+      (value) =>
+        typeof value === 'string' &&
+        /\.(jpg|jpeg|png|webp|gif|mp4|webm)$/i.test(value),
+    );
+
+    promises.push(...images.map((src) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = img.onerror = resolve;
+        });
+      }));
+
+    // 2. Preload Fonts (if exported)
+    if (module.fontConfigs && Array.isArray(module.fontConfigs)) {
+      promises.push(...module.fontConfigs.map(async (config) => {
+        try {
+          if (!config.fontFamily || !config.fontUrl) return;
+          const font = new FontFace(config.fontFamily, `url(${config.fontUrl})`, config.options);
+          const loadedFont = await font.load();
+          document.fonts.add(loadedFont);
+        } catch (e) {
+          console.warn('Font preload failed:', e);
+        }
+      }));
+    }
+
+    await Promise.all(promises);
+  };
+
   useEffect(() => {
     const loadClock = async () => {
       if (!currentItem) return;
@@ -99,6 +135,7 @@ const TodayClockPage = () => {
         }
 
         const module = await clockModules[moduleKey]();
+        await preloadAssets(module);
         setClockComponent(() => module.default);
         setIsReady(true);
         setTimeout(() => setOverlayVisible(false), OVERLAY_FADE_DURATION);

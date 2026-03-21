@@ -88,6 +88,8 @@ const useClockUtils = () => {
  */
 const useAssetPreloader = () => {
   const preloadAssets = useCallback(async (module) => {
+    const promises = [];
+
     // Preload images exported from module
     const images = Object.values(module).filter(
       (value) =>
@@ -95,8 +97,7 @@ const useAssetPreloader = () => {
         /\.(jpg|jpeg|png|webp|gif|mp4|webm)$/i.test(value),
     );
 
-    const imagePromises = images.map(
-      (src) =>
+    promises.push(...images.map((src) =>
         new Promise((resolve) => {
           if (/\.(mp4|webm)$/i.test(src)) {
             // For videos, we can't use Image(), but the browser will cache them
@@ -109,13 +110,23 @@ const useAssetPreloader = () => {
             img.src = src;
             img.onload = img.onerror = resolve;
           }
-        }),
-    );
+        })));
 
-    // Wait for images to load. Font loading is now handled by the
-    // useSuspenseFontLoader hook within each clock component, which is a
-    // more robust and Suspense-based approach.
-    await Promise.all(imagePromises);
+    // Preload Fonts (if exported)
+    if (module.fontConfigs && Array.isArray(module.fontConfigs)) {
+      promises.push(...module.fontConfigs.map(async (config) => {
+        try {
+          if (!config.fontFamily || !config.fontUrl) return;
+          const font = new FontFace(config.fontFamily, `url(${config.fontUrl})`, config.options);
+          const loadedFont = await font.load();
+          document.fonts.add(loadedFont);
+        } catch (e) {
+          console.warn('Font preload failed:', e);
+        }
+      }));
+    }
+
+    await Promise.all(promises);
 
     return true;
   }, []);
