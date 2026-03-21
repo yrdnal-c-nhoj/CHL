@@ -136,15 +136,6 @@ export const fontConfigs = [{
 
 // --- Main Component ---
 const DigitalClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = useMemo(() => [{
-      fontFamily: CONFIG.FONT_FAMILY,
-      fontUrl: mazeFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-  }], []);
   
   useSuspenseFontLoader(fontConfigs);
 

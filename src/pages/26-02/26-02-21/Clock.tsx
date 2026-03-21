@@ -13,7 +13,6 @@ const CONFIG = {
   FONT_FAMILY: 'ClockCustom',
 };
 
-// Asset imports
 // Asset imports (Assuming paths are correct)
 import img1 from '../../../assets/images/26-02/26-02-21/123.webp';
 import img2 from '../../../assets/images/26-02/26-02-21/1231.gif';
@@ -131,18 +130,6 @@ export default function RefactoredClock() {
   const time = useSecondClock();
   const [dynamicImages, setDynamicImages] = useState<DynamicImages[]>([]);
   const [showContent, setShowContent] = useState(false);
-
-  // Font loading with Suspense to prevent FOUC
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: CONFIG.FONT_FAMILY,
-      fontUrl: customFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
   
   useSuspenseFontLoader(fontConfigs);
 
@@ -160,7 +147,6 @@ export default function RefactoredClock() {
     ]);
   }, CONFIG.UPDATE_INTERVAL);
 
-  // Time Formatting
   // 3. Time Formatting
   const timeStrings = useMemo(() => {
     const hours24 = time.getHours();
@@ -171,7 +157,6 @@ export default function RefactoredClock() {
   }, [time]);
 
   /* Styles */
-  const rootStyle: React.CSSProperties = {
   const rootStyle = {
     width: '100vw',
     height: '100dvh',
@@ -180,19 +165,16 @@ export default function RefactoredClock() {
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    position: 'relative' as const,
     position: 'relative',
     color: '#fff',
     fontFamily: `'${CONFIG.FONT_FAMILY}', sans-serif`,
   };
 
-  const digitGroupStyle: React.CSSProperties = {
   const digitGroupStyle = {
     fontSize: 'clamp(5rem, 25vw, 15rem)',
     display: 'flex',
     gap: '0.2em',
     zIndex: 100,
-    position: 'relative' as const,
     position: 'relative',
     mixBlendMode: 'difference', // Makes text readable over any background color
     opacity: 0.8,
@@ -217,7 +199,6 @@ export default function RefactoredClock() {
       <StaticCollage count={CONFIG.COLLAGE_COUNT} />
 
       {dynamicImages.map((img, index) => (
-        <img key={`dynamic-${index}-${img}`} src={img.src} style={{position: 'absolute', width: '100px', height: '100px', objectFit: 'cover'}} alt="" />
         <img key={`dynamic-${index}-${img}`} src={img} style={{position: 'absolute', width: '100px', height: '100px', objectFit: 'cover'}} alt="" />
       ))}
 
