@@ -1,6 +1,7 @@
 /** @jsxImportSource react */
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { useMultipleFontLoader } from '../utils/fontLoader';
+import { useSuspenseFontLoader } from '../utils/fontLoader';
+// import type { FontConfig } from '../types/clock'; // Uncomment if using TypeScript
 
 /* =========================
    CONFIGURATION
@@ -56,23 +57,20 @@ function useClock() {
 export default function ClockTemplate() {
   const time = useClock();
 
-  // Uncomment and update for your assets
-  const fonts = useMemo(
+  // Uncomment and update to load custom fonts
+  const fontConfigs = useMemo(
     () => [
-      // { fontFamily: 'TemplateFont', fontUrl: customFont, options: { display: 'swap' } },
+      // { fontFamily: 'TemplateFont', fontUrl: customFont },
     ],
     [],
   );
-  const isFontReady = useMultipleFontLoader(fonts); // Consider useSuspenseFontLoader for new clocks
 
-  // For image preloading, consider creating a separate reusable hook in `utils`
-  const isImageReady = true;
+  useSuspenseFontLoader(fontConfigs);
 
   const { hours, minutes, seconds } = useMemo(
     () => getTimeDigits(time),
     [time],
   );
-  const isReady = isFontReady && isImageReady;
 
   /* =========================
      STYLES
@@ -93,15 +91,13 @@ export default function ClockTemplate() {
     margin: 0,
     padding: 0,
     boxSizing: 'border-box',
-    opacity: isReady ? 1 : 0,
-    transition: 'opacity 0.3s ease-in-out',
   };
 
   const clockContainerStyle = {
     display: 'flex',
     gap: '0.5rem',
     alignItems: 'center',
-    // fontFamily: fonts.length > 0 && isFontReady ? "'TemplateFont', sans-serif" : 'sans-serif', // Uncomment for custom font
+    // fontFamily: 'TemplateFont, sans-serif', // Uncomment for custom font
     fontFamily: 'monospace',
   };
 
@@ -121,24 +117,6 @@ export default function ClockTemplate() {
     fontSize: 'clamp(3rem, 12vw, 10rem)',
     opacity: 0.8,
   };
-
-  /* =========================
-     LOADING STATE
-  ========================= */
-
-  if (!isReady) {
-    return (
-      <div
-        style={{
-          ...containerStyle,
-          opacity: 1,
-          backgroundColor: '#000',
-        }}
-      >
-        <div style={{ ...digitStyle, color: '#333' }}>00:00:00</div>
-      </div>
-    );
-  }
 
   /* =========================
      RENDER
@@ -200,12 +178,12 @@ To customize:
 
 Example with assets:
 import myCoolFont from '../../../assets/fonts/26-01-01-cool.otf';
-import { useSuspenseFontLoader } from '../utils/fontLoader';
-const fonts = useMemo(() => [
-  { fontFamily: 'MyClockFont', fontUrl: myCoolFont, options: { display: 'swap' } }
+
+const fontConfigs = useMemo(() => [
+  { fontFamily: 'MyClockFont', fontUrl: myCoolFont }
 ], []);
-const isFontReady = useMultipleFontLoader(fonts);
+useSuspenseFontLoader(fontConfigs);
 
 // In clockContainerStyle:
-// fontFamily: isFontReady ? "'MyClockFont', sans-serif" : 'sans-serif',
+// fontFamily: "'MyClockFont', sans-serif",
 */

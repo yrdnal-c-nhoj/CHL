@@ -1,0 +1,63 @@
+:global(body) {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: black;
+}
+
+.clock {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  width: 100vw;
+}
+
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: block;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom;
+  background-color: rgb(6, 0, 0);
+  z-index: 2;
+}
+
+.hourHand {
+  width: 1rem;
+  height: 230vh;
+}
+
+.minuteHand {
+  width: 0.6rem;
+  height: 240vh;
+}
+
+.secondHand {
+  width: 0.3rem;
+  height: 245vh;
+}
+
+.dateContainer {
+  color: rgb(168, 154, 154);
+  position: absolute;
+  bottom: 0.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 98vw;
+  display: flex;
+  justify-content: center;
+  font-size: 1.2rem;
+  z-index: 6;
+}

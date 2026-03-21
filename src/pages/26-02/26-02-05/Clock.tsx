@@ -12,11 +12,10 @@ const OVAL = {
 
 const OutwardDistortedClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
-  const requestRef = useRef();
-  const [showContent, setShowContent] = useState(false);
+  const requestRef = useRef<number>();
 
   // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+  const fontConfigs = useMemo(() => [
     {
       fontFamily: 'Cine',
       fontUrl: ci2602Font,
@@ -25,19 +24,14 @@ const OutwardDistortedClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
+  ], []);
   
   // Use Suspense-compatible font loading
   useSuspenseFontLoader(fontConfigs);
 
-  // Show content immediately with Suspense
-  useEffect(() => {
-    setShowContent(true);
-  }, []);
-
   // High-performance animation loop - move before conditional return
   useEffect(() => {
-    const animate: React.FC = () => {
+    const animate = () => {
       setTime(new Date());
       requestRef.current = requestAnimationFrame(animate);
     };
@@ -69,9 +63,6 @@ const OutwardDistortedClock: React.FC = () => {
     <div
       style={{
         ...containerStyle,
-        opacity: 1,
-        visibility: 'visible',
-        transition: 'opacity 0.3s ease',
       }}
     >
       <div style={ringStyle}>

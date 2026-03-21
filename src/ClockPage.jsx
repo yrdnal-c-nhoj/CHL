@@ -113,8 +113,8 @@ const useAssetPreloader = () => {
     );
 
     // Wait for images to load. Font loading is now handled by the
-    // useMultipleFontLoader hook within each clock component, which is a
-    // more robust and decentralized approach.
+    // useSuspenseFontLoader hook within each clock component, which is a
+    // more robust and Suspense-based approach.
     await Promise.all(imagePromises);
 
     return true;

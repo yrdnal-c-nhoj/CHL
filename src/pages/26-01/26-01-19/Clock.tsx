@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import bgImage from '../../../assets/images/26-01/26-01-19/hands.webp';
+import styles from './Clock.module.css';
 
 const COLORS = {
   bg: '#FFFFFF',
@@ -159,7 +160,11 @@ const ManyHandClock: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const id = setInterval(() => {
+    let frameId: number;
+
+    const tick = () => {
+      frameId = requestAnimationFrame(tick);
+      
       const t = new Date();
       const currentTime = t.getTime();
       const s = t.getSeconds();
@@ -216,8 +221,10 @@ const ManyHandClock: React.FC = () => {
       } else {
         setPanickedPos(baseRotation);
       }
-    }, 16);
-    return () => clearInterval(id);
+    };
+
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   const h = now.getHours();
@@ -237,23 +244,11 @@ const ManyHandClock: React.FC = () => {
 
   return (
     <div
+      className={styles.container}
       style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#FFFFFF',
         backgroundImage: `radial-gradient(circle at center, rgba(135, 168, 126, 0.73) 0%, rgba(123, 135, 87, 0.4) 100%), url(${bgImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        overflow: 'hidden',
         opacity: bgReady ? 1 : 0,
         visibility: bgReady ? 'visible' : 'hidden',
-        transition: 'opacity 0.3s ease',
       }}
     >
       <div
@@ -265,27 +260,20 @@ const ManyHandClock: React.FC = () => {
       >
         {/* Main Hands (Hour/Minute) */}
         <div
+          className={styles.hand}
           style={{
-            position: 'absolute',
-            bottom: '50%',
-            left: '50%',
             height: `${clockSize * 0.25}vh`,
             width: `${clockSize * 0.015}vh`,
             background: COLORS.mainHands,
-            transformOrigin: 'bottom center',
             transform: `translateX(-50%) rotate(${hourRot}deg)`,
-            zIndex: 10,
           }}
         />
         <div
+          className={styles.hand}
           style={{
-            position: 'absolute',
-            bottom: '50%',
-            left: '50%',
             height: `${clockSize * 0.4}vh`,
             width: `${clockSize * 0.01}vh`,
             background: COLORS.mainHands,
-            transformOrigin: 'bottom center',
             transform: `translateX(-50%) rotate(${minuteRot}deg)`,
             zIndex: 11,
           }}
@@ -356,17 +344,10 @@ const ManyHandClock: React.FC = () => {
 
         {/* Center Dot */}
         <div
+          className={styles.centerDot}
           style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
             width: `${clockSize * 0.02}vh`,
             height: `${clockSize * 0.02}vh`,
-            background: '#EFD73C',
-            border: '2px solid #000',
-            borderRadius: '50%',
-            zIndex: 200,
           }}
         />
       </div>

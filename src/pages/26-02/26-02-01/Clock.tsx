@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useMillisecondClock } from '../../../utils/useSmoothClock';
+import styles from './Clock.module.css';
 
 // --- Assets ---
 import dripFont from '../../../assets/fonts/26-01-31-cond.ttf?url';
@@ -37,8 +38,6 @@ const AnalogClock: React.FC = () => {
   
   useSuspenseFontLoader(fontConfigs);
 
-  const styles = getStyles();
-
   // Time Calculations (including sub-second fractions for smooth motion)
   const msec = now.getMilliseconds();
   const sec = now.getSeconds() + msec / 1000;
@@ -57,8 +56,8 @@ const AnalogClock: React.FC = () => {
       return (
         <div
           key={num}
+          className={styles.numeralBase}
           style={{
-            ...styles.numeralBase,
             left: `${x}%`,
             top: `${y}%`,
           }}
@@ -70,139 +69,48 @@ const AnalogClock: React.FC = () => {
   }, []);
 
   return (
-    <div style={styles.container}>
+    <div className={styles.container}>
       {/* Background Layer */}
       <div
+        className={styles.backgroundLayer}
         style={{
-          ...styles.backgroundLayer,
           backgroundImage: `url(${analogBgImage})`,
         }}
       />
 
       {/* Clock Face Layer */}
-      <div
-        style={{
-          ...styles.face,
-          fontFamily: "'BorrowedAnalog', sans-serif",
-        }}
-      >
+      <div className={styles.face}>
         {renderedNumerals}
 
         {/* Hour Hand */}
         <div
+          className={`${styles.hand} ${styles.hourHand}`}
           style={{
-            ...styles.hand,
-            ...styles.hourHand,
             transform: `translate(-50%, 0) rotate(${hr * 30}deg)`,
           }}
         />
 
         {/* Minute Hand */}
         <div
+          className={`${styles.hand} ${styles.minHand}`}
           style={{
-            ...styles.hand,
-            ...styles.minHand,
             transform: `translate(-50%, 0) rotate(${min * 6}deg)`,
           }}
         />
 
         {/* Second Hand */}
         <div
+          className={`${styles.hand} ${styles.secHand}`}
           style={{
-            ...styles.hand,
-            ...styles.secHand,
             transform: `translate(-50%, 0) rotate(${sec * 6}deg)`,
           }}
         />
 
         {/* Center Cap */}
-        <div style={styles.centerDot} />
+        <div className={styles.centerDot} />
       </div>
     </div>
   );
 };
-
-// --- Styles ---
-const getStyles = () => ({
-  container: {
-    position: 'relative',
-    width: '100vw',
-    height: '100dvh',
-    overflow: 'hidden',
-    backgroundColor: '#050505',
-    // Suspense handles loading state, no need for manual opacity/visibility toggles
-  },
-  backgroundLayer: {
-    position: 'absolute',
-    inset: 0,
-    backgroundSize: '100% 100%',
-    backgroundPosition: 'center',
-    filter: 'saturate(120%) hue-rotate(-40deg) brightness(1.3) contrast(0.4)',
-    zIndex: 1,
-    transform: 'rotate(180deg)',
-    pointerEvents: 'none',
-  },
-  face: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '90vmin',
-    height: '90vmin',
-    zIndex: 2,
-  },
-  numeralBase: {
-    position: 'absolute',
-    transform: 'translate(-50%, -50%)',
-    fontSize: 'clamp(7rem, 18vw, 9rem)',
-    background: CLOCK_CONFIG.COLORS.silverText,
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    filter: 'drop-shadow(0px -4px 0px rgb(0, 0, 0))',
-    opacity: 0.4,
-    userSelect: 'none',
-  },
-  hand: {
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    transformOrigin: '50% 100%',
-    borderRadius: '10px',
-    willChange: 'transform',
-  },
-  hourHand: {
-    width: '1.2vmin',
-    height: '24vmin',
-    background: CLOCK_CONFIG.COLORS.hourHand,
-    boxShadow: '0 0 10px rgba(0,0,0,0.5)',
-    zIndex: 3,
-  },
-  minHand: {
-    width: '0.8vmin',
-    height: '32vmin',
-    background: CLOCK_CONFIG.COLORS.minuteHand,
-    boxShadow: '0 0 8px rgba(0,0,0,0.4)',
-    zIndex: 4,
-  },
-  secHand: {
-    width: '0.4vmin',
-    height: '38vmin',
-    background: CLOCK_CONFIG.COLORS.secondHand,
-    boxShadow: '0 0 12px rgba(90, 184, 213, 0.4)',
-    zIndex: 5,
-  },
-  centerDot: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '2.5vmin',
-    height: '2.5vmin',
-    backgroundColor: '#fff',
-    borderRadius: '50%',
-    transform: 'translate(-50%, -50%)',
-    zIndex: 10,
-    boxShadow: '0 0 5px rgba(0,0,0,0.8)',
-  },
-});
 
 export default AnalogClock;

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import styles from './Clock.module.css';
 
 import spin from '../../../assets/images/26-01/26-01-07/20206.gif';
 import bubl from '../../../assets/images/26-01/26-01-07/bubl.gif';
@@ -8,9 +8,9 @@ import gfish from '../../../assets/images/26-01/26-01-07/gfish.gif';
 import aquarium from '../../../assets/images/26-01/26-01-07/aquarium.gif';
 
 const AquariumClock: React.FC = () => {
-  const hourHandRef = useRef(null);
-  const minHandRef = useRef(null);
-  const secondHandRef = useRef(null);
+  const hourHandRef = useRef<HTMLImageElement>(null);
+  const minHandRef = useRef<HTMLImageElement>(null);
+  const secondHandRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     const setDate: React.FC = () => {
@@ -45,15 +45,6 @@ const AquariumClock: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const sharedImageStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-  };
-
   const handStyle = {
     position: 'absolute',
     left: '50%',
@@ -70,18 +61,6 @@ const AquariumClock: React.FC = () => {
     'drop-shadow(1px -1px 1px rgb(10, 154, 109)) ' +
     'drop-shadow(-1px -1px 1px rgb(214, 227, 216))';
 
-  // Calculate the size based on viewport dimensions
-  const containerStyle = {
-    position: 'relative',
-    width: '100%',
-    height: '100dvh',
-    overflow: 'hidden',
-    background: '#000',
-    margin: 0,
-    padding: 0,
-    boxSizing: 'border-box',
-  };
-
   // Adjust hand sizes based on viewport size
   const handSizes = {
     hour: 'min(30vw, 30vh)',
@@ -90,28 +69,22 @@ const AquariumClock: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        ...containerStyle,
-        opacity: 0,
-        visibility: 'hidden',
-        animation: 'aquariumFadeIn 180ms ease-out forwards',
-      }}
-    >
+    <div className={styles.container}>
       {/* Background Layers */}
       <img
         decoding="async"
         loading="lazy"
         src={aquarium}
-        style={{ ...sharedImageStyle, opacity: 0.5, zIndex: 0 }}
+        className={styles.sharedImage}
+        style={{ opacity: 0.5, zIndex: 0 }}
         alt=""
       />
       <img
         decoding="async"
         loading="lazy"
         src={aquarium}
+        className={styles.sharedImage}
         style={{
-          ...sharedImageStyle,
           opacity: 0.9,
           transform: 'scaleX(-1)',
           zIndex: 1,
@@ -124,8 +97,8 @@ const AquariumClock: React.FC = () => {
         decoding="async"
         loading="lazy"
         src={spin}
+        className={styles.sharedImage}
         style={{
-          ...sharedImageStyle,
           height: '80%',
           width: 'auto',
           left: '50%',
@@ -139,20 +112,7 @@ const AquariumClock: React.FC = () => {
       />
 
       {/* Clock Hands Container */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '100%',
-          height: '100%',
-          maxWidth: '100%',
-          maxHeight: '100%',
-          zIndex: 6,
-          pointerEvents: 'none',
-        }}
-      >
+      <div className={styles.handsContainer}>
         {/* Hour Hand (Smallest/Thickest) */}
         <img
           decoding="async"
@@ -218,8 +178,8 @@ const AquariumClock: React.FC = () => {
         decoding="async"
         loading="lazy"
         src={gfish}
+        className={styles.sharedImage}
         style={{
-          ...sharedImageStyle,
           width: '180%',
           opacity: 0.8,
           transform: 'scaleX(-1)',
@@ -228,12 +188,6 @@ const AquariumClock: React.FC = () => {
         }}
         alt=""
       />
-      <style>{`
-        @keyframes aquariumFadeIn {
-          from { opacity: 0; visibility: hidden; }
-          to { opacity: 1; visibility: visible; }
-        }
-      `}</style>
     </div>
   );
 };

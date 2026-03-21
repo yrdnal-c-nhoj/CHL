@@ -1,0 +1,11 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes digitFade {
+  from { opacity: 0; -webkit-text-fill-color: black; }
+  to { opacity: 0.8; -webkit-text-fill-color: transparent; }
+}

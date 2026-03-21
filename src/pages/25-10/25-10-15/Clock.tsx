@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
-import font20251016 from '../../../assets/fonts/25-10-15-brahmi.ttf';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import font20251016 from '../../../assets/fonts/25-10-15-brahmi.ttf?url';
 import image1 from '../../../assets/images/25-10/25-10-15/palm.webp';
 import image2 from '../../../assets/images/25-10/25-10-15/brahmi.webp';
 
@@ -16,52 +16,18 @@ function toBrahmi(num) {
 
 export default function BrahmiClock() {
   const [time, setTime] = useState(new Date());
-  const [ready, setReady] = useState<boolean>(false);
 
-  useEffect(() => {
-    let isCancelled = false;
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'BrahmiFont', fontUrl: font20251016 }
+  ], []);
 
-    async function loadResources() {
-      // Load font
-      const font = new FontFace('BrahmiFont', `url(${font20251016})`);
-      await font.load();
-      document.fonts.add(font);
-
-      // Load images
-      const loadImage = (src) =>
-        new Promise((resolve, reject) => {
-          const img = new Image();
-          img.src = src;
-          img.onload = resolve;
-          img.onerror = reject;
-        });
-
-      await Promise.all([loadImage(image1), loadImage(image2)]);
-
-      if (!isCancelled) setReady(true);
-    }
-
-    loadResources();
-
-    return () => {
-      isCancelled = true;
-    };
-  }, []);
+  useSuspenseFontLoader(fontConfigs);
 
   // Update time every second
   useEffect(() => {
-    if (!ready) return;
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
-  }, [ready]);
-
-  // **Do not render anything until ready**
-  if (!ready)
-    return (
-      <div
-        style={{ backgroundColor: 'black', width: '100vw', height: '100dvh' }}
-      />
-    );
+  }, []);
 
   const hours = toBrahmi(time.getHours().toString().padStart(2, '0'));
   const minutes = toBrahmi(time.getMinutes().toString().padStart(2, '0'));

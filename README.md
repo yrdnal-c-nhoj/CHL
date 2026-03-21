@@ -77,7 +77,6 @@ CHL/
 │   │   ├── fontLoader.tsx     # Advanced font loading utilities
 │   │   ├── assetLoader.ts     # Asset preloading and management
 │   │   ├── clockUtils.ts      # Clock-specific utilities
-│   │   └── useFontLoader.js   # Legacy font loader
 │   ├── templates/         # Clock templates and patterns
 │   │   └── WordClockTemplate.jsx
 │   ├── assets/           # Static assets
@@ -173,9 +172,10 @@ src/pages/YY-MM/YY-MM-DD/Clock.tsx
 ### Clock Component Template
 ```typescript
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader'; // The one true font loader
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
 import yourCustomFontUrl from '../../../assets/fonts/your-font.ttf?url';
+import styles from './Clock.module.css'; // Import CSS Modules
 
 // Custom hook for smooth time updates using requestAnimationFrame
 const useClock = () => {
@@ -196,20 +196,23 @@ const useClock = () => {
 
 const Clock: React.FC = () => {
   const time = useClock();
-  
+
   // Font configuration
   const fontConfigs = useMemo<FontConfig[]>(() => [
     { fontFamily: 'YourFontName', fontUrl: yourCustomFontUrl }
   ], []);
-  
+
   // This hook suspends the component until fonts are loaded, preventing FOUC.
   // The parent <ClockPage> provides the necessary <Suspense> boundary.
   useSuspenseFontLoader(fontConfigs);
-  
+
   return (
-    <div style={{ fontFamily: 'YourFontName, sans-serif' }}>
+    <div
+      className={styles.container}
+      style={{ fontFamily: 'YourFontName, sans-serif' }}
+    >
       {/* Your clock design here */}
-      {time.toLocaleTimeString()}
+      <span className={styles.time}>{time.toLocaleTimeString()}</span>
     </div>
   );
 };
@@ -305,6 +308,7 @@ Key settings in `vite.config.ts`:
 
 ### Technical Debt & Maintenance
 - [ ] **Code Cleanup**: Remove legacy JavaScript files and consolidate utilities
+- [ ] **Eliminate Style Leaks**: Refactor components that manually inject global styles or keyframes to use CSS Modules or scoped hooks, preventing style conflicts between clocks.
 - [ ] **Documentation**: Comprehensive API documentation and guides
 - [ ] **Security Audit**: Regular security assessments and updates
 - [ ] **Dependency Updates**: Automated dependency management and updates

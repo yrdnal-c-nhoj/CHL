@@ -1,0 +1,42 @@
+.container {
+  height: 100dvh;
+  width: 100vw;
+  background-color: #043a98;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent,
+    transparent 4vh,
+    rgb(225, 192, 7) 4vh,
+    rgb(202, 64, 64) 8vh
+  );
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.digitBox {
+  width: 10vh;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.digit {
+  font-family: '26-03-15-shadow', sans-serif;
+  font-size: 60vh;
+  color: #ffffff;
+  mix-blend-mode: difference;
+  line-height: 1;
+  will-change: transform;
+  transform-origin: center center;
+  display: inline-block;
+}

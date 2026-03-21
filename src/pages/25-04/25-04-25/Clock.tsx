@@ -7,11 +7,18 @@ import hourHandImage from '../../../assets/images/25-04/25-04-25/ban.webp';
 import minuteHandImage from '../../../assets/images/25-04/25-04-25/ba.gif';
 import secondHandImage from '../../../assets/images/25-04/25-04-25/band.gif';
 
+interface ClockImages {
+  hourImg: HTMLImageElement;
+  minuteImg: HTMLImageElement;
+  secondImg: HTMLImageElement;
+}
+
 const MyClock: React.FC = () => {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
   const componentId = useRef(`oswald-clock-${Date.now()}`);
   const fontName = `OswaldClockFont-${componentId.current}`;
+  const imagesRef = useRef<ClockImages | null>(null);
 
   // Simple scoped font loading without leaks
   useEffect(() => {
@@ -42,14 +49,35 @@ const MyClock: React.FC = () => {
     };
   }, [fontName]);
 
+  // Load images once
   useEffect(() => {
-    if (!fontLoaded) return; // Don't start rendering until font is loaded
+    const loadImages = async () => {
+      const hourImg = new Image();
+      const minuteImg = new Image();
+      const secondImg = new Image();
+      
+      const loadPromises = [
+        new Promise(resolve => { hourImg.onload = resolve; hourImg.src = hourHandImage; }),
+        new Promise(resolve => { minuteImg.onload = resolve; minuteImg.src = minuteHandImage; }),
+        new Promise(resolve => { secondImg.onload = resolve; secondImg.src = secondHandImage; })
+      ];
+      
+      await Promise.all(loadPromises);
+      imagesRef.current = { hourImg, minuteImg, secondImg };
+    };
+    
+    loadImages();
+  }, [hourHandImage, minuteHandImage, secondHandImage]);
+
+  useEffect(() => {
+    if (!fontLoaded || !imagesRef.current) return; // Don't start rendering until font is loaded
     
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    const update: React.FC = () => {
+    const update = () => {
       const now = new Date();
       const w = (canvas.width = window.innerWidth);
       const h = (canvas.height = window.innerHeight);
@@ -65,14 +93,13 @@ const MyClock: React.FC = () => {
       ctx.textBaseline = 'middle';
       const fontToUse = fontLoaded ? fontName : 'Arial';
       ctx.font = `${r * 0.5}px ${fontToUse}`;
-      console.log('Using font:', fontToUse, 'Font loaded:', fontLoaded);
 
       for (let i = 1; i <= 12; i++) {
         const angle = (i * Math.PI) / 6;
         ctx.save();
         ctx.rotate(angle);
         ctx.translate(0, -r * 0.85);
-        ctx.fillText(i, 0, 0);
+        ctx.fillText(i.toString(), 0, 0);
         ctx.restore();
       }
 
@@ -91,13 +118,10 @@ const MyClock: React.FC = () => {
         ctx.restore();
       };
 
-      // Create images on demand since ClockPage preloads them
-      const hourImg = new Image();
-      const minuteImg = new Image();
-      const secondImg = new Image();
-      hourImg.src = hourHandImage;
-      minuteImg.src = minuteHandImage;
-      secondImg.src = secondHandImage;
+      // Use preloaded images
+      const images = imagesRef.current;
+      if (!images) return;
+      const { hourImg, minuteImg, secondImg } = images;
 
       // Customize image hand sizes here:
       drawImageHand(

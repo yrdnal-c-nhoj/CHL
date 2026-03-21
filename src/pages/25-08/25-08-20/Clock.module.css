@@ -1,0 +1,50 @@
+.container {
+  display: grid;
+  gap: 5px;
+  width: 100vw;
+  height: 100dvh;
+  padding: 10px;
+  box-sizing: border-box;
+  justify-items: center;
+  align-items: center;
+  place-content: center;
+  font-family: 'MyCustomFont', sans-serif;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: rgba(0, 0, 0, 0.35);
+  background-blend-mode: multiply;
+}
+
+.clockContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.clockFace {
+  border-radius: 50%;
+  position: relative;
+  margin: 0 auto;
+  flex-shrink: 0;
+}
+
+.hand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+}
+
+.label {
+  margin-top: 4px;
+  text-align: center;
+  line-height: 1.2;
+  color: #1c89a2ff;
+  font-weight: 500;
+  filter: saturate(3.5);
+  text-shadow: -2px 0 12px #f07c62ff, 2px 0 1px white;
+}

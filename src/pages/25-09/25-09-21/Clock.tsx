@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import cust250921font from '../../../assets/fonts/25-09-21-ele.ttf?url';
 import stripe1 from '../../../assets/images/25-09/25-09-21/fire.gif?url';
 import stripe2 from '../../../assets/images/25-09/25-09-21/air.webp?url';
@@ -9,33 +9,13 @@ import stripe4 from '../../../assets/images/25-09/25-09-21/earth.webp?url';
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
-  const [fontVar] = useState(`font${new Date().getTime()}`);
+  const fontVar = 'ElementalFont';
 
-  useEffect(() => {
-    const styleEl = document.createElement('style');
-    styleEl.innerHTML = `
-      @font-face {
-        font-family: '${fontVar}';
-        src: url(${cust250921font}) format('truetype');
-        font-display: swap;
-      }
-    `;
-    document.head.appendChild(styleEl);
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: fontVar, fontUrl: cust250921font }
+  ], []);
 
-    const font = new FontFace(fontVar, `url(${cust250921font})`);
-    font
-      .load()
-      .then(() => {
-        document.fonts.add(font);
-      })
-      .catch(() => {
-        // Font failed to load, continue anyway
-      });
-
-    return () => {
-      document.head.removeChild(styleEl);
-    };
-  }, [fontVar]);
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 16);

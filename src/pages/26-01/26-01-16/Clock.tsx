@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import font20250119_primary from '../../../assets/fonts/26-01-16-leap.otf';
 import font20250119_secondary from '../../../assets/fonts/25-04-25-Oswald-Bold.ttf';
 import font20250119_mono from '../../../assets/fonts/25-05-10-Questrial.ttf';
@@ -38,8 +39,16 @@ const LEAP_SECOND_DATES = [
 
 const LeapClock: React.FC = () => {
   const [now, setNow] = useState(new Date());
-  const [fontsReady, setFontsReady] = useState<boolean>(false);
   const [gateReady, setGateReady] = useState<boolean>(false);
+
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'LeapFont', fontUrl: font20250119_primary, options: { display: 'swap' } },
+    { fontFamily: 'Oswald', fontUrl: font20250119_secondary, options: { weight: 'bold', display: 'swap' } },
+    { fontFamily: 'Questrial', fontUrl: font20250119_mono, options: { display: 'swap' } },
+  ], []);
+
+  // Suspend until fonts are loaded
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     let frameId;
@@ -52,14 +61,6 @@ const LeapClock: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const fontPromises = [
-      document.fonts.load("1em 'LeapFont'"),
-      document.fonts.load("1em 'Oswald'"),
-      document.fonts.load("1em 'Questrial'"),
-    ];
-    Promise.all(fontPromises)
-      .then(() => setFontsReady(true))
-      .catch(() => setFontsReady(true));
     const t = setTimeout(() => setGateReady(true), 150);
     return () => clearTimeout(t);
   }, []);
@@ -94,27 +95,7 @@ const LeapClock: React.FC = () => {
           .join(' ')
       : 'N/A';
 
-  const fontStyles = `
-    @font-face {
-      font-family: 'LeapFont';
-      src: url(${font20250119_primary}) format('opentype');
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Oswald';
-      src: url(${font20250119_secondary}) format('truetype');
-      font-weight: bold;
-      font-style: normal;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Questrial';
-      src: url(${font20250119_mono}) format('truetype');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
-
+  const cssStyles = `
     .tile-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -132,7 +113,7 @@ const LeapClock: React.FC = () => {
     }
   `;
 
-  const ready = fontsReady && gateReady;
+  const ready = gateReady;
 
   return (
     <div
@@ -151,7 +132,7 @@ const LeapClock: React.FC = () => {
         transition: 'opacity 0.4s ease',
       }}
     >
-      <style>{fontStyles}</style>
+      <style>{cssStyles}</style>
 
       <main
         style={{
