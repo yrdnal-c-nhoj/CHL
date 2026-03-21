@@ -1,6 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import angFont from '../../../assets/fonts/25-04-12-ang.ttf';
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import angFont from '../../../assets/fonts/25-04-12-ang.ttf?url';
 
 const digitFontSizes = {
   0: '51vh',
@@ -28,9 +30,19 @@ const mediaQueryFontSizes = {
   9: '25vh',
 };
 
-const AngFontClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Digit font size interfaces
+interface DigitFontSizes {
+  [key: number]: string;
+}
+
+// Component Props interface
+interface AngFontClockProps {
+  // No props required for this component
+}
+
+const AngFontClock = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'AngFontClockFont',
       fontUrl: angFont,
@@ -39,43 +51,37 @@ const AngFontClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
 
-  const [timeStr, setTimeStr] = useState<any>(['', '', '']);
-  const [prevDigits, setPrevDigits] = useState<any>(['', '', '']);
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
-  const [fontLoaded, setFontLoaded] = useState(fontsLoaded);
+  // Load fonts using suspense-based loader
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
   const componentId = useRef(`angfont-clock-${Date.now()}`);
-  const animationTimeouts = useRef([]);
+  const animationTimeouts = useRef<NodeJS.Timeout[]>([]);
 
-  // Update fontLoaded state when fontsLoaded changes
+  const [timeStr, setTimeStr] = useState<string[]>(['', '', '']);
+  const [prevDigits, setPrevDigits] = useState<string[]>(['', '', '']);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  const updateTime = useCallback((): void => {
+    let hours = currentTime.getHours();
+    const minutes = currentTime.getMinutes();
+    const seconds = currentTime.getSeconds();
+
+    hours = hours % 12 || 12; // 12-hour format, no leading zero
+
+    const h = hours.toString(); // no padStart
+    const m = minutes.toString().padStart(2, '0');
+    const s = seconds.toString().padStart(2, '0');
+
+    setTimeStr([h, m, s]);
+  }, [currentTime]);
+
   useEffect(() => {
-    setFontLoaded(fontsLoaded);
-  }, [fontsLoaded]);
-
-  // Font loading handled by useMultipleFontLoader
-
-  useEffect(() => {
-    const updateTime: React.FC = () => {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
-
-      hours = hours % 12 || 12; // 12-hour format, no leading zero
-
-      const h = hours.toString(); // no padStart
-      const m = minutes.toString().padStart(2, '0');
-      const s = seconds.toString().padStart(2, '0');
-
-      setTimeStr([h, m, s]);
-    };
-
     updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  }, [updateTime]);
 
   useEffect(() => {
     const checkScreenSize = () => setIsSmallScreen(window.innerWidth <= 600);
@@ -97,12 +103,12 @@ const AngFontClock: React.FC = () => {
     return () => animationTimeouts.current.forEach(clearTimeout);
   }, [timeStr]);
 
-  const getFontSize = (digit) => {
+  const getFontSize = useCallback((digit: string): string => {
     const n = parseInt(digit, 10);
     return isSmallScreen
       ? mediaQueryFontSizes[n] || '19vh'
       : digitFontSizes[n] || '19vh';
-  };
+  }, [isSmallScreen]);
 
   const bodyStyle = {
     display: 'flex',
@@ -113,7 +119,7 @@ const AngFontClock: React.FC = () => {
     width: '100vw',
     margin: 0,
     backgroundColor: '#ff00ff',
-    fontFamily: fontLoaded ? 'AngFontClockFont, system-ui' : 'system-ui',
+    fontFamily: 'AngFontClockFont, system-ui',
     fontStyle: 'normal',
   };
 

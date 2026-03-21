@@ -1,23 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import backgroundImage from '../../../assets/images/25-04/25-04-14/bricks.webp';
 
-const BlueBrickClock: React.FC = () => {
-  const [time, setTime] = useState<any>({ hours: 0, minutes: 0, seconds: 0 });
+// Time interface
+interface TimeState {
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
+
+// Component Props interface
+interface BlueBrickClockProps {
+  // No props required for this component
+}
+
+const BlueBrickClock = () => {
+  // Font loading configuration (memoized) - no custom fonts needed
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
+
+  const [time, setTime] = useState<TimeState>({
+    hours: currentTime.getHours(),
+    minutes: currentTime.getMinutes(),
+    seconds: currentTime.getSeconds(),
+  });
+
+  const updateClock = useCallback((): void => {
+    setTime({
+      hours: currentTime.getHours(),
+      minutes: currentTime.getMinutes(),
+      seconds: currentTime.getSeconds(),
+    });
+  }, [currentTime]);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
-      const now = new Date();
-      setTime({
-        hours: now.getHours(),
-        minutes: now.getMinutes(),
-        seconds: now.getSeconds(),
-      });
-    };
-
     updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  }, [updateClock]);
 
   const ballStyle = {
     width: '2vw',
@@ -27,8 +50,8 @@ const BlueBrickClock: React.FC = () => {
     animation: 'pop 0.6s cubic-bezier(0.28, 0.84, 0.42, 1)',
   };
 
-  const renderBalls = (count) =>
-    Array.from({ length: count }, (_, i) => <div key={i} style={ballStyle} />);
+  const renderBalls = useCallback((count: number) =>
+    Array.from({ length: count }, (_, i) => <div key={i} style={ballStyle} />), [ballStyle]);
 
   return (
     <div

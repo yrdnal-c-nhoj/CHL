@@ -1,14 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import lava1 from '../../../assets/images/25-04/25-04-24/lava.webp';
 import lava2 from '../../../assets/images/25-04/25-04-24/vp2OVr.gif';
 import lava3 from '../../../assets/images/25-04/25-04-24/lava.webp';
-import lavaFont from '../../../assets/fonts/25-04-24-lava.ttf';
+import lavaFont from '../../../assets/fonts/25-04-24-lava.ttf?url';
 
-const LavaClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Time state interface
+interface TimeState {
+  hours: string;
+  minutes: string;
+}
+
+// Component Props interface
+interface LavaClockProps {
+  // No props required for this component
+}
+
+const LavaClock = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'Rubik Burned',
       fontUrl: lavaFont,
@@ -17,26 +29,29 @@ const LavaClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
 
-  const [time, setTime] = useState<any>({ hours: '00', minutes: '00' });
+  // Load fonts using suspense-based loader
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
+
+  const [time, setTime] = useState<TimeState>({ hours: '00', minutes: '00' });
   const [showGif, setShowGif] = useState<boolean>(false);
   const [fadeOut, setFadeOut] = useState<boolean>(false);
 
-  // Font loading handled by useMultipleFontLoader
+  const updateClock = useCallback((): void => {
+    const hours = String(currentTime.getHours()).padStart(2, '0');
+    const minutes = String(currentTime.getMinutes()).padStart(2, '0');
+    setTime({ hours, minutes });
+  }, [currentTime]);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      setTime({ hours, minutes });
-    };
-
     updateClock();
-    const interval = setInterval(updateClock, 1000);
+  }, [updateClock]);
 
+  useEffect(() => {
     setTimeout(() => {
       setShowGif(true);
     }, 100);
@@ -44,8 +59,6 @@ const LavaClock: React.FC = () => {
     setTimeout(() => {
       setFadeOut(true);
     }, 100);
-
-    return () => clearInterval(interval);
   }, []);
 
   const screenStyle = {

@@ -1,8 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import styles from './Clock.module.css';
 
+// Digit style interface
+interface DigitStyle {
+  bg: string;
+  color: string;
+}
+
+// Component Props interface
+interface StripeClockProps {
+  // No props required for this component
+}
+
 // Digit color mapping
-const digitStyles = {
+const digitStyles: Record<string, DigitStyle> = {
   0: { bg: '#0E51FAFF', color: '#F87E04FF' },
   1: { bg: '#FA0820FF', color: '#2F9B04FF' },
   2: { bg: '#F7FF06FF', color: '#A205C2FF' },
@@ -24,13 +38,17 @@ const loadFont = () => {
 };
 
 export default function StripeClock() {
-  const [time, setTime] = useState(new Date());
+  // Font loading configuration (memoized) - no custom fonts needed
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
+  const [time, setTime] = useState<Date>(currentTime);
 
   useEffect(() => {
-    loadFont();
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+    setTime(currentTime);
+  }, [currentTime]);
 
   const timeStr = time
     .toLocaleTimeString('en-GB', { hour12: false })

@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
-import SkaterFont from '../../../assets/fonts/25-04-28-Skater.ttf';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import SkaterFont from '../../../assets/fonts/25-04-28-Skater.ttf?url';
 
 const fontFaceStyle = `
   @font-face {
@@ -22,53 +24,88 @@ const grayShades = [
   '#161414',
 ];
 
-const ClockApp: React.FC = () => {
-  const [currentTime, setCurrentTime] = useState<any>('00:00:00');
-  const [impressions, setImpressions] = useState<any>([]);
-  const [impressionCount, setImpressionCount] = useState<number>(0);
-  const intervalRef = useRef(null);
-  const timeoutRef = useRef(null);
+// Clock impression interface
+interface ClockImpression {
+  id: number;
+  time: string;
+  style: React.CSSProperties;
+}
 
-  const getRandomPosition: React.FC = () => {
+// Component Props interface
+interface ClockAppProps {
+  // No props required for this component
+}
+
+const ClockApp = () => {
+  const [currentTime, setCurrentTime] = useState<string>('00:00:00');
+  const [impressions, setImpressions] = useState<ClockImpression[]>([]);
+  const [impressionCount, setImpressionCount] = useState<number>(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    {
+      fontFamily: 'Skater',
+      fontUrl: SkaterFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ], []);
+
+  // Load fonts using suspense-based loader
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const clockTime = useSecondClock();
+
+  const getRandomPosition = useCallback((): { x: number; y: number } => {
     const x = Math.random() * (100 - 38.5);
     const y = Math.random() * (100 - 43.125);
     return { x, y };
-  };
+  }, []);
 
-  const getRandomRotation = () => ({
-    rotationX: Math.random() * 360,
-    rotationY: Math.random() * 360,
-    rotationZ: Math.random() * 360,
-  });
+  const getRandomRotation = useCallback((): { rotationX: number; rotationY: number; rotationZ: number } => {
+    return {
+      rotationX: Math.random() * 360,
+      rotationY: Math.random() * 360,
+      rotationZ: Math.random() * 360,
+    };
+  }, []);
 
-  const getRandomGrayShade = () =>
-    grayShades[Math.floor(Math.random() * grayShades.length)];
+  const getRandomGrayShade = useCallback((): string => {
+    const shade = grayShades[Math.floor(Math.random() * grayShades.length)];
+    return shade || '#000000';
+  }, []);
 
-  const getRandomSize: React.FC = () => {
+  const getRandomSize = useCallback((): string => {
     const size = Math.random() * (6.25 - 0.625) + 0.625;
     return `${size}rem`;
-  };
+  }, []);
 
-  const getRandomSkew: React.FC = () => {
+  const getRandomSkew = useCallback((): string => {
     const skewX = Math.random() * 60 - 30;
     const skewY = Math.random() * 60 - 30;
     return `skew(${skewX}deg, ${skewY}deg)`;
-  };
+  }, []);
 
-  const addClockImpression: React.FC = () => {
+  const addClockImpression = useCallback((): void => {
     if (impressionCount >= 1000) {
-      clearInterval(intervalRef.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
       return;
     }
 
-    const now = new Date();
-    const timeString = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+    const timeString = `${String(clockTime.getHours()).padStart(2, '0')}:${String(clockTime.getMinutes()).padStart(2, '0')}:${String(clockTime.getSeconds()).padStart(2, '0')}`;
     setCurrentTime(timeString);
 
     const { x, y } = getRandomPosition();
     const { rotationX, rotationY, rotationZ } = getRandomRotation();
 
-    const newImpression = {
+    const newImpression: ClockImpression = {
       id: impressionCount,
       time: timeString,
       style: {
@@ -83,7 +120,7 @@ const ClockApp: React.FC = () => {
 
     setImpressions((prev) => [...prev, newImpression]);
     setImpressionCount((prev) => prev + 1);
-  };
+  }, [impressionCount, clockTime, getRandomPosition, getRandomRotation, getRandomSkew, getRandomSize, getRandomGrayShade]);
 
   useEffect(() => {
     // Start after 0.5s
@@ -93,8 +130,12 @@ const ClockApp: React.FC = () => {
     }, 500);
 
     return () => {
-      clearTimeout(timeoutRef.current);
-      clearInterval(intervalRef.current);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
     };
   }, []);
 
