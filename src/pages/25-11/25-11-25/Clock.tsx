@@ -3,7 +3,8 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import fontClockUrl_20251126 from '../../../assets/fonts/25-11-25-ntp.ttf?url';
 import marqueeFontUrl from '../../../assets/fonts/25-11-25-n2.ttf?url';
 import backgroundImg from '../../../assets/images/25-11/25-11-25/npt.webp';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 
 // --- Constants (Keep as is) ---
 const NTP_EPOCH_OFFSET = 2208988800;
@@ -81,25 +82,20 @@ const generateDigitColors = (numDigits) => {
 export default function NtpClock() {
   const { offset, isSynced } = useNtpOffset();
 
-  // Modernization: Use centralized font loader instead of manual DOM injection
-  // This handles caching, prevent FOUC, and cleans up the component body
-  const fontsReady = useMultipleFontLoader(
-    useMemo(
-      () => [
-        {
-          fontFamily: 'ClockFont',
-          fontUrl: fontClockUrl_20251126,
-          options: { display: 'swap' },
-        },
-        {
-          fontFamily: 'MarqueeFont',
-          fontUrl: marqueeFontUrl,
-          options: { display: 'swap' },
-        },
-      ],
-      [],
-    ),
-  );
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    {
+      fontFamily: 'ClockFont',
+      fontUrl: fontClockUrl_20251126,
+      options: { display: 'swap' },
+    },
+    {
+      fontFamily: 'MarqueeFont',
+      fontUrl: marqueeFontUrl,
+      options: { display: 'swap' },
+    },
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
 
   const [ntpSeconds, setNtpSeconds] = useState<number>(0);
   const [digitColors, setDigitColors] = useState<any>([]);
@@ -232,11 +228,6 @@ export default function NtpClock() {
     () => calculateClockAngles(ntpSeconds),
     [ntpSeconds],
   );
-
-  // Optional: Return simplified loader or null if fonts aren't critical
-  // In this design, fallback fonts are handled by CSS, so we render anyway.
-  // If exact fonts are critical, uncomment below:
-  // if (!fontsReady) return null;
 
   return (
     <div style={wrapperStyle}>

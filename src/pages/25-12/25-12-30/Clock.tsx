@@ -1,64 +1,37 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader, type FontConfig } from '../../../utils/fontLoader';
+import fontLemUrl from '../../../assets/fonts/25-12-30-lem.ttf?url';
+import fontAnaUrl from '../../../assets/fonts/25-12-30-ana.ttf?url';
 
 const RotatingAnalemmaClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const rotationRef = useRef(0);
-  const rotatingGroupRef = useRef(null);
-  const [isReady, setIsReady] = useState<boolean>(false);
+  const rotatingGroupRef = useRef<SVGGElement | null>(null);
 
-  // 1. Generate Unique Font Family Name
-  const fontFamilyName = useMemo(() => {
-    const today = new Date().toISOString().split('T')[0].replace(/-/g, '');
-    const randomStr = Math.random().toString(36).substring(2, 7);
-    return `Font_${today}_${randomStr}`;
-  }, []);
+  // 1. Define font configurations for the Suspense-based loader
+  const fontConfigs = useMemo(() => [
+    { fontFamily: 'Lem', fontUrl: fontLemUrl },
+    { fontFamily: 'AnalemmaText', fontUrl: fontAnaUrl },
+  ] as FontConfig[], []);
+
+  // 2. This hook handles loading and suspends the component until fonts are ready.
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    // 2. Inject @font-face and Global Styles
-    const styleElement = document.createElement('style');
-    styleElement.id = `style-${fontFamilyName}`;
-    styleElement.innerHTML = `
-      @font-face {
-        font-family: '${fontFamilyName}';
-        src: url('${new URL('../../../assets/fonts/25-12-30-lem.ttf', import.meta.url).href}') format('truetype');
-        font-display: block;
-      }
-      @font-face {
-        font-family: 'AnalemmaText';
-        src: url('${new URL('../../../assets/fonts/25-12-30-ana.ttf', import.meta.url).href}') format('truetype');
-        font-display: block;
-      }
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-    `;
-    document.head.appendChild(styleElement);
+    // Global box-sizing cleanup (moved from injected style)
+    // Note: In a real app this is usually in index.css, but ensuring consistency here
+    document.body.style.boxSizing = 'border-box';
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
 
-    // 3. Wait for Font Loading (both injected faces)
-    Promise.all([
-      document.fonts.load(`1em ${fontFamilyName}`),
-      document.fonts.load(`1em AnalemmaText`),
-    ])
-      .then(() => {
-        setIsReady(true);
-      })
-      .catch((err) => {
-        console.error('Font failed to load:', err);
-        setIsReady(true);
-      });
-
-    // 4. Clock Interval: keep `time` updated once per second (used for labels)
+    // 3. Clock Interval: keep `time` updated once per second (used for labels)
     const timer = setInterval(() => {
       setTime(new Date());
     }, 1000);
 
-    // Smooth RAF-based rotation: update SVG transform directly to avoid React re-renders
-    let rafId = null;
-    const animate: React.FC = () => {
+    // 4. Smooth RAF-based rotation
+    let rafId: number | null = null;
+    const animate = () => {
       const now = new Date();
       const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
       const rot = -(seconds / 60) * 360; // Clockwise rotation (negative)
@@ -79,13 +52,11 @@ const RotatingAnalemmaClock: React.FC = () => {
     return () => {
       clearInterval(timer);
       if (rafId) cancelAnimationFrame(rafId);
-      const injectedStyle = document.getElementById(`style-${fontFamilyName}`);
-      if (injectedStyle) injectedStyle.remove();
     };
-  }, [fontFamilyName]);
+  }, []);
 
-  const calculateAnalemma = (dayOfYear) => {
-    const toRad = (deg) => (deg * Math.PI) / 180;
+  const calculateAnalemma = (dayOfYear: number) => {
+    const toRad = (deg: number) => (deg * Math.PI) / 180;
     // Standard Declination formula
     const declination = 23.44 * Math.sin(toRad((360 / 365) * (dayOfYear - 81)));
     const B = toRad((360 / 365) * (dayOfYear - 81));
@@ -132,8 +103,6 @@ const RotatingAnalemmaClock: React.FC = () => {
       overflow: 'hidden',
       boxSizing: 'border-box',
       position: 'relative',
-      opacity: isReady ? 1 : 0,
-      transition: 'opacity 0.125s ease-in', // 1/8 second fade-in
     },
     sideLabelLeft: {
       position: 'absolute',
@@ -143,7 +112,7 @@ const RotatingAnalemmaClock: React.FC = () => {
       writingMode: 'vertical-rl',
       color: '#FDFEFE',
       letterSpacing: '0.2vh',
-      fontFamily: `AnalemmaText, ${fontFamilyName}, sans-serif`,
+      fontFamily: `AnalemmaText, sans-serif`,
       fontSize: '3.3vh',
       // letterSpacing: '0.2em',
       zIndex: 10,
@@ -154,7 +123,7 @@ const RotatingAnalemmaClock: React.FC = () => {
       top: '50%',
       transform: 'translateY(-50%)',
       writingMode: 'vertical-lr',
-      fontFamily: `AnalemmaText, ${fontFamilyName}, sans-serif`,
+      fontFamily: `AnalemmaText, sans-serif`,
       fontSize: '3.3vh',
       color: '#F7FBFB',
       letterSpacing: '0.2vh',
@@ -170,7 +139,7 @@ const RotatingAnalemmaClock: React.FC = () => {
       display: 'flex',
       justifyContent: 'space-between',
       width: '100%',
-      fontFamily: `'${fontFamilyName}', monospace`,
+      fontFamily: `'Lem', monospace`,
       letterSpacing: '0.1em',
       // fontSize: 'clamp(1rem, 10vw, 8rem)'
     },
