@@ -1,4 +1,3 @@
-/** @jsxImportSource react */
 import React, { useState, useEffect, useRef, useMemo, memo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useSecondClock } from '../../../utils/useSmoothClock';
@@ -13,7 +12,7 @@ const CONFIG = {
   FONT_FAMILY: 'ClockCustom',
 };
 
-// Asset imports (Assuming paths are correct)
+// Asset imports
 import img1 from '../../../assets/images/26-02/26-02-21/123.webp';
 import img2 from '../../../assets/images/26-02/26-02-21/1231.gif';
 import img3 from '../../../assets/images/26-02/26-02-21/1232.webp';
@@ -145,7 +144,7 @@ export default function RefactoredClock() {
     ]);
   }, CONFIG.UPDATE_INTERVAL);
 
-  // 3. Time Formatting
+  // Time Formatting
   const timeStrings = useMemo(() => {
     const hours24 = time.getHours();
     const hours12 = hours24 % 12 || 12; // Convert to 12-hour format
@@ -155,7 +154,7 @@ export default function RefactoredClock() {
   }, [time]);
 
   /* Styles */
-  const rootStyle = {
+  const rootStyle: React.CSSProperties = {
     width: '100vw',
     height: '100dvh',
     backgroundColor: '#000',
@@ -163,17 +162,17 @@ export default function RefactoredClock() {
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    position: 'relative',
+    position: 'relative' as const,
     color: '#fff',
     fontFamily: `'${CONFIG.FONT_FAMILY}', sans-serif`,
   };
 
-  const digitGroupStyle = {
+  const digitGroupStyle: React.CSSProperties = {
     fontSize: 'clamp(5rem, 25vw, 15rem)',
     display: 'flex',
     gap: '0.2em',
     zIndex: 100,
-    position: 'relative',
+    position: 'relative' as const,
     mixBlendMode: 'difference', // Makes text readable over any background color
     opacity: 0.8,
   };
@@ -197,7 +196,7 @@ export default function RefactoredClock() {
       <StaticCollage count={CONFIG.COLLAGE_COUNT} />
 
       {dynamicImages.map((img, index) => (
-        <img key={`dynamic-${index}-${img}`} src={img} style={{position: 'absolute', width: '100px', height: '100px', objectFit: 'cover'}} alt="" />
+        <img key={`dynamic-${index}-${img}`} src={img.src} style={{position: 'absolute', width: '100px', height: '100px', objectFit: 'cover'}} alt="" />
       ))}
 
       <div style={digitGroupStyle} aria-hidden="true">
