@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import type { ClockTime } from '@/types/clock';
 import backgroundImage from '../../../assets/images/26-03/26-03-20/empire.webp';
-import './Clock.css';
+import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    let frameId: number;
+    const tick = () => {
       setTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer);
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   const hours = time.getHours() % 12;
@@ -26,16 +27,18 @@ const Clock: React.FC = () => {
     const markers: React.ReactNode[] = [];
     for (let i = 1; i <= 12; i++) {
       const angle = (i * 30) - 90;
-      const x = 240 * Math.cos(angle * Math.PI / 180);
-      const y = 240 * Math.sin(angle * Math.PI / 180);
+      // Using percentage based positioning for responsiveness
+      const radius = 40; // 40% from center
+      const x = 50 + radius * Math.cos(angle * Math.PI / 180);
+      const y = 50 + radius * Math.sin(angle * Math.PI / 180);
       
       markers.push(
         <div
           key={i}
-          className="hour-number"
+          className={styles.hourNumber}
           style={{
-            left: `${300 + x}px`,
-            top: `${300 + y}px`,
+            left: `${x}%`,
+            top: `${y}%`,
             transform: 'translate(-50%, -50%)'
           }}
         >
@@ -48,55 +51,40 @@ const Clock: React.FC = () => {
 
   return (
     <div
+      className={styles.container}
       style={{
-        width: '100vw',
-        height: '100dvh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#000',
         backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        position: 'relative',
       }}
     >
       <div 
-        className="clock-container"
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)'
-        }}
+        className={styles.clockContainer}
       >
-        <div className="analog-clock">
-          <div className="clock-face">
+        <div className={styles.analogClock}>
+          <div className={styles.clockFace}>
             {renderHourMarkers()}
             
             <div
-              className="hand hour-hand"
+              className={`${styles.hand} ${styles.hourHand}`}
               style={{
                 transform: `rotate(${hourDegrees}deg)`
               }}
             />
             
             <div
-              className="hand minute-hand"
+              className={`${styles.hand} ${styles.minuteHand}`}
               style={{
                 transform: `rotate(${minuteDegrees}deg)`
               }}
             />
             
             <div
-              className="hand second-hand"
+              className={`${styles.hand} ${styles.secondHand}`}
               style={{
                 transform: `rotate(${secondDegrees}deg)`
               }}
             />
             
-            <div className="center-dot" />
+            <div className={styles.centerDot} />
           </div>
         </div>
       </div>

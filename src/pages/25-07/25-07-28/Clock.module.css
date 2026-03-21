@@ -1,0 +1,16 @@
+.container {
+  height: 100dvh;
+  width: 100vw;
+  background-size: cover;
+  background-position: center;
+  font-family: 'CustomFont', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.time {
+  font-size: 4rem;
+  color: #F0ECD8FF;
+  text-shadow: 0 0 1rem black;
+}

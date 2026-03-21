@@ -1,31 +1,31 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import videoFile from '../../../assets/images/25-10/25-10-22/bg.mp4';
 import fallbackImg from '../../../assets/images/25-10/25-10-22/bg.webp';
-import fontFile_2025_10_22 from '../../../assets/fonts/25-10-22-fundy.ttf';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import fontFile_2025_10_22 from '../../../assets/fonts/25-10-22-fundy.ttf?url';
+import styles from './Clock.module.css';
 
-export default function ClockWithVideo() {
+const ClockWithVideo: React.FC = () => {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [time, setTime] = useState(new Date());
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const fonts = useMemo(
-    () => [
-      {
-        fontFamily: 'MyCustomFont',
-        fontUrl: fontFile_2025_10_22,
-        options: { display: 'swap' },
-      },
-    ],
-    [],
-  );
-  const fontReady = useMultipleFontLoader(fonts);
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'MyCustomFont', fontUrl: fontFile_2025_10_22 }
+  ], []);
 
-  // Time update every 10ms (Unchanged)
+  useSuspenseFontLoader(fontConfigs);
+
+  // Time update (Standardized to rAF)
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 10);
-    return () => clearInterval(interval);
+    let frameId: number;
+    const tick = () => {
+      setTime(new Date());
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   // Video Autoplay and Error Handling (MODIFIED)
@@ -33,11 +33,8 @@ export default function ClockWithVideo() {
     const v = videoRef.current;
     if (!v) return;
 
-    const onError = (e) => {
-      console.error('Video error (asset failure):', e.target.error);
-      setVideoFailed(true);
-    };
-    const onStalled: React.FC = () => {
+    const onStalled = () => {
+      // Optional: handle stalled video
     };
 
     v.addEventListener('stalled', onStalled);
@@ -68,7 +65,7 @@ export default function ClockWithVideo() {
     };
   }, []);
 
-  const formatTime: React.FC = () => {
+  const formatTime = () => {
     const h = String(time.getHours()).padStart(2, '0');
     const m = String(time.getMinutes()).padStart(2, '0');
     const s = String(time.getSeconds()).padStart(2, '0');
@@ -77,141 +74,8 @@ export default function ClockWithVideo() {
     return `${h}${m}${s}${ms.slice(0, 2)}`;
   };
 
-  const timeChars = formatTime().split('');
-
-  const containerStyle = {
-    width: '100vw',
-    height: '100dvh',
-    position: 'relative',
-    overflow: 'hidden',
-    backgroundColor: '#000',
-    display: fontReady ? 'block' : 'none',
-  };
-
-  const mediaStyle = {
-    position: 'absolute',
-    inset: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    zIndex: 0,
-    pointerEvents: 'none',
-    display: videoFailed ? 'none' : 'block',
-  };
-
-  const fallbackStyle = {
-    position: 'absolute',
-    inset: 0,
-    backgroundImage: `url(${fallbackImg})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    display: videoFailed ? 'block' : 'none',
-  };
-
-  const clockStyle = {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: '0.1rem',
-    zIndex: 1,
-    animation: 'float_2025_10_22 26.3s linear infinite',
-  };
-
-  const digitStyle = {
-    fontFamily: "'MyCustomFont', sans-serif",
-    fontSize: '4rem',
-    width: '2rem',
-    textAlign: 'center',
-    color: '#DF9268FF',
-    animation: 'colorCycle_2025_10_22 26s linear infinite',
-    textShadow: `
-      0 0 8px #4B3424FF,
-      0 0 6px #98643FFF,
-      0 0 4px #C88A5E,
-      0 0 2px #D2C497FF
-    `,
-    transition: 'text-shadow 1s linear',
-  };
-
-  const separatorStyle = {
-    ...digitStyle,
-    width: '1rem',
-  };
-
-  const scopedCSS = `
-    @font-face {
-      font-family: 'MyCustomFont';
-      src: url(${fontFile_2025_10_22}) format('truetype');
-      font-display: block;
-    }
-
-    @keyframes float_2025_10_22 {
-      0% { bottom: 0; }
-      50% { bottom: calc(100dvh - 4rem - 20px); }
-      100% { bottom: 0; }
-    }
-
-    @keyframes colorCycle_2025_10_22 {
-      0% {
-        color: #df9268ff;
-        text-shadow:
-           -1px 0 0px #4b3424ff,
-           0 0 6px #98643fff,
-           0 0 4px #c88a5e,
-           1px 0 2px #d2c497ff;
-        opacity: 1;
-      }
-      23.08% {
-        opacity: 0;
-        color: #7C947CFF;
-        text-shadow:
-          -1px -1px #04140BFF,
-           3px 2px 6px #E6EDE9FF,
-          -2px 0 4px #EBECEBFF,
-           1px 1px #e4ebe6ff;
-      }
-      50% {
-        opacity: 1;
-        color: #F4ECCCFF;
-        text-shadow:
-          1px 1px #e10e23ff,
-          0 0 6px #F8FDF7FF,
-          0 0 4px #5874a0ff,
-         -1px 0 #0d131cff;
-      }
-      76.92% {
-        opacity: 0;
-        color: #7C947CFF;
-        text-shadow:
-          -1px -1px #04140BFF,
-           3px 2px 6px #E6EDE9FF,
-          -2px 0 4px #EBECEBFF,
-           1px 1px #e4ebe6ff;
-      }
-      100% {
-        color: #df9268ff;
-        text-shadow:
-           -1px 0 0px #4b3424ff,
-           0 0 6px #98643fff,
-           0 0 4px #c88a5e,
-           1px 0 2px #d2c497ff;
-        opacity: 1;
-      }
-    }
-
-    @media (max-width: 768px) {
-      video {
-        /* CHANGED: Use cover to fill the screen for a background effect */
-        object-fit: cover; 
-      }
-    }
-  `;
-
   // Helper function to insert separators into the time string for readability
-  const renderTimeDigits: React.FC = () => {
+  const renderTimeDigits = () => {
     // Current format is HHMMSSms(2)
     const formattedTime = formatTime();
     const elements = [];
@@ -221,63 +85,63 @@ export default function ClockWithVideo() {
 
     // HH
     elements.push(
-      <span key={charIndex++} style={digitStyle}>
+      <span key={charIndex++} className={styles.digit}>
         {formattedTime[0]}
       </span>,
     );
     elements.push(
-      <span key={charIndex++} style={digitStyle}>
+      <span key={charIndex++} className={styles.digit}>
         {formattedTime[1]}
       </span>,
     );
     elements.push(
-      <span key="sep1" style={separatorStyle}>
+      <span key="sep1" className={styles.separator}>
         :
       </span>,
     ); // Separator 1
 
     // MM
     elements.push(
-      <span key={charIndex++} style={digitStyle}>
+      <span key={charIndex++} className={styles.digit}>
         {formattedTime[2]}
       </span>,
     );
     elements.push(
-      <span key={charIndex++} style={digitStyle}>
+      <span key={charIndex++} className={styles.digit}>
         {formattedTime[3]}
       </span>,
     );
     elements.push(
-      <span key="sep2" style={separatorStyle}>
+      <span key="sep2" className={styles.separator}>
         :
       </span>,
     ); // Separator 2
 
     // SS
     elements.push(
-      <span key={charIndex++} style={digitStyle}>
+      <span key={charIndex++} className={styles.digit}>
         {formattedTime[4]}
       </span>,
     );
     elements.push(
-      <span key={charIndex++} style={digitStyle}>
+      <span key={charIndex++} className={styles.digit}>
         {formattedTime[5]}
       </span>,
     );
     elements.push(
-      <span key="sep3" style={separatorStyle}>
+      <span key="sep3" className={styles.separator}>
         .
       </span>,
     ); // Separator 3
 
     // MS (2 digits)
     elements.push(
-      <span key={charIndex++} style={digitStyle}>
+      <span key={charIndex++} className={styles.digit}>
         {formattedTime[6]}
       </span>,
     );
     elements.push(
-      <span key={charIndex++} style={digitStyle}>
+      <span key={charIndex++} className={styles.digit}>
         {formattedTime[7]}
       </span>,
     );
@@ -286,12 +150,11 @@ export default function ClockWithVideo() {
   };
 
   return (
-    <div style={containerStyle}>
-      {/* CSS is injected here */}
-      <style>{scopedCSS}</style>
+    <div className={styles.container}>
       <video
         ref={videoRef}
-        style={mediaStyle}
+        className={styles.media}
+        style={{ display: videoFailed ? 'none' : 'block' }}
         loop
         muted
         playsInline
@@ -303,14 +166,23 @@ export default function ClockWithVideo() {
         <source src="./bg.webm" type="video/webm" />
         Your browser does not support the video tag.
       </video>
-      <div style={fallbackStyle} aria-hidden />
+      <div 
+        className={styles.fallback} 
+        style={{ 
+          display: videoFailed ? 'block' : 'none',
+          backgroundImage: `url(${fallbackImg})` 
+        }} 
+        aria-hidden 
+      />
 
       {/* 🛑 The 'Play Video' button rendering block is intentionally REMOVED here */}
 
-      <div style={clockStyle}>
+      <div className={styles.clock}>
         {/* Rendering the time with explicit separators for clear readability */}
         {renderTimeDigits()}
       </div>
     </div>
   );
 }
+
+export default ClockWithVideo;

@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import myFontUrl from '../../../assets/fonts/25-08-20-go.otf';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import myFontUrl from '../../../assets/fonts/25-08-20-go.otf?url';
 import bgImage from '../../../assets/images/25-08/25-08-20/24.webp'; // background image
+import styles from './Clock.module.css';
 
 const TIMEZONES = [
   'UTC',
@@ -30,29 +32,18 @@ const TIMEZONES = [
   'Europe/Athens',
 ];
 
-function useCustomFont(fontName, fontUrl) {
-  useEffect(() => {
-    // Font loading handled by useMultipleFontLoader
-    const style = document.createElement('style');
-    style.innerHTML = `
-      /* Font loading handled by useMultipleFontLoader */
-    `;
-    document.head.appendChild(style);
-    return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
-    };
-  }, [fontName, fontUrl]);
-}
-
 // Analog clock component
-function AnalogClock({ zone, clockSize, fontName }) {
+const AnalogClock: React.FC<{ zone: string; clockSize: number }> = ({ zone, clockSize }) => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const tick = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(tick);
+    let frameId: number;
+    const tick = () => {
+      setTime(new Date());
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   const local = new Date(time.toLocaleString('en-US', { timeZone: zone }));
@@ -64,22 +55,6 @@ function AnalogClock({ zone, clockSize, fontName }) {
   const minAngle = minutes * 6 + seconds * 0.1;
   const hourAngle = (hours % 12) * 30 + minutes * 0.5;
 
-  const clockStyle = {
-    width: `${clockSize}px`,
-    height: `${clockSize}px`,
-    borderRadius: '50%',
-    position: 'relative',
-    margin: '0 auto',
-    flexShrink: 0,
-  };
-
-  const handCommon = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transformOrigin: 'bottom center',
-  };
-
   const hourHandHeight = clockSize * 0.4;
   const minuteHandHeight = clockSize * 0.55;
   const secondHandHeight = clockSize * 0.66;
@@ -87,20 +62,14 @@ function AnalogClock({ zone, clockSize, fontName }) {
   const handShadow = 'drop-shadow(-4px 0px white) drop-shadow(4px -0px pink)';
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        width: '100%',
-      }}
-    >
-      <div style={clockStyle}>
+    <div className={styles.clockContainer}>
+      <div 
+        className={styles.clockFace} 
+        style={{ width: `${clockSize}px`, height: `${clockSize}px` }}
+      >
         <div
+          className={styles.hand}
           style={{
-            ...handCommon,
             width: '3px',
             height: `${hourHandHeight}px`,
             background: '#FC9905FF',
@@ -109,8 +78,8 @@ function AnalogClock({ zone, clockSize, fontName }) {
           }}
         />
         <div
+          className={styles.hand}
           style={{
-            ...handCommon,
             width: '2px',
             height: `${minuteHandHeight}px`,
             background: '#F7EF06FF',
@@ -119,8 +88,8 @@ function AnalogClock({ zone, clockSize, fontName }) {
           }}
         />
         <div
+          className={styles.hand}
           style={{
-            ...handCommon,
             width: '1px',
             height: `${secondHandHeight}px`,
             background: 'red',
@@ -142,20 +111,9 @@ function AnalogClock({ zone, clockSize, fontName }) {
         />
       </div>
       <div
+        className={styles.label}
         style={{
           fontSize: `${Math.max(8, clockSize * 0.25)}px`,
-          marginTop: '4px',
-          textAlign: 'center',
-          lineHeight: '1.2',
-          color: '#1C89A2FF',
-          fontWeight: '500',
-          fontFamily: fontName,
-          filter: 'saturate(3.5)', // saturation filter
-
-          textShadow: `
-          -2px 0 12px #F07C62FF,   /* red shadow to the left */
-           2px 0 1px white  /* white shadow to the right */
-        `,
         }}
       >
         {zone.split('/').pop().replace(/_/g, ' ')}
@@ -165,12 +123,16 @@ function AnalogClock({ zone, clockSize, fontName }) {
 }
 
 export default function WorldClockGrid() {
-  const [dimensions, setDimensions] = useState<any>({
+  const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
-  useCustomFont('MyCustomFont', myFontUrl);
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'MyCustomFont', fontUrl: myFontUrl }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const handleResize = () =>
@@ -190,38 +152,20 @@ export default function WorldClockGrid() {
     Math.min((dimensions.width - 20) / cols, (dimensions.height - 20) / rows) -
     10;
 
-  const containerStyle = {
-    display: 'grid',
-    gridTemplateColumns: `repeat(${cols}, 1fr)`,
-    gridTemplateRows: `repeat(${rows}, 1fr)`,
-    gap: '5px',
-    width: '100vw',
-    height: '100dvh',
-    padding: '10px',
-    boxSizing: 'border-box',
-    justifyItems: 'center',
-    alignItems: 'center',
-    placeContent: 'center',
-    fontFamily: 'MyCustomFont',
-
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-
-    // ✅ overlay + blend mode = static filter
-    backgroundColor: 'rgba(0,0,0,0.35)',
-    backgroundBlendMode: 'multiply',
-  };
-
   return (
-    <div style={containerStyle}>
+    <div 
+      className={styles.container}
+      style={{
+        gridTemplateColumns: `repeat(${cols}, 1fr)`,
+        gridTemplateRows: `repeat(${rows}, 1fr)`,
+        backgroundImage: `url(${bgImage})`,
+      }}
+    >
       {TIMEZONES.map((zone) => (
         <AnalogClock
           key={zone}
           zone={zone}
           clockSize={clockSize}
-          fontName="MyCustomFont"
         />
       ))}
     </div>

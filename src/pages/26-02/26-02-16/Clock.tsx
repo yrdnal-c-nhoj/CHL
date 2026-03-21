@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useSecondClock } from '../../../utils/useSmoothClock';
+import styles from './Clock.module.css';
 
 // --- Assets ---
 import mazeImage from '../../../assets/images/26-02/26-02-16/puzzle.gif';
@@ -86,6 +87,7 @@ const BackgroundLayers = React.memo(() => {
         muted
         playsInline
         onError={handleVideoError}
+        className={videoLoaded ? styles.rotatingVideo : ''}
         style={{
           position: 'absolute',
           top: '50%',
@@ -95,7 +97,6 @@ const BackgroundLayers = React.memo(() => {
           objectFit: 'cover',
           opacity: videoError ? 0 : videoLoaded ? 0.7 : 0,
           zIndex: 0,
-          animation: videoLoaded ? 'rotate-video 60s linear infinite' : 'none',
           transition: 'opacity 0.5s ease-in-out',
         }}
       >
@@ -114,8 +115,8 @@ BackgroundLayers.displayName = 'BackgroundLayers';
 const Digit = React.memo(({ char }) => {
   const isColon = char === ':';
   return (
-    <div style={styles.digitBox}>
-      <span style={{ ...styles.digit, ...(isColon ? styles.colon : {}) }}>
+    <div className={styles.digitBox}>
+      <span className={`${styles.digit} ${isColon ? styles.colon : ''}`}>
         {char}
       </span>
     </div>
@@ -149,11 +150,10 @@ const DigitalClock: React.FC = () => {
   }, [time]);
 
   return (
-    <main style={styles.container}>
-      <style>{animations}</style>
+    <main className={styles.container}>
       <BackgroundLayers />
-      <div style={styles.digitalContainer}>
-        <div style={styles.timeWrapper}>
+      <div className={styles.digitalContainer}>
+        <div className={styles.timeWrapper}>
           {timeParts.map((char, idx) => (
             <Digit key={`${idx}-${char}`} char={char} />
           ))}
@@ -161,83 +161,6 @@ const DigitalClock: React.FC = () => {
       </div>
     </main>
   );
-};
-
-// --- Animations ---
-const animations = `
-  @keyframes pulse-glow {
-    0%, 100% {
-      opacity: 1;
-      text-shadow:
-        0 0 10px ${CONFIG.COLORS.glow},
-        0 0 30px ${CONFIG.COLORS.glow},
-        0 0 60px ${CONFIG.COLORS.glowFaint};
-    }
-    50% {
-      opacity: 0.6;
-      text-shadow: 0 0 5px ${CONFIG.COLORS.glow};
-    }
-  }
-
-  @keyframes colon-blink {
-    0%, 49% { opacity: 0.8; }
-    50%, 100% { opacity: 0.2; }
-  }
-
-  @keyframes rotate-video {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
-  }
-`;
-
-// --- Styles ---
-const styles = {
-  container: {
-    position: 'relative',
-    width: '100vw',
-    height: '100dvh',
-    overflow: 'hidden',
-    backgroundColor: CONFIG.COLORS.background,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // Respect safe areas (notches/home bars) from template
-    padding:
-      'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
-    boxSizing: 'border-box',
-  },
-  digitalContainer: {
-    position: 'relative',
-    zIndex: 10,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-  },
-  timeWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.15em',
-  },
-  digitBox: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '1.1em',
-    height: '1.2em',
-  },
-  digit: {
-    fontFamily: `${CONFIG.FONT_FAMILY}, monospace`,
-    fontSize: 'clamp(2rem, 15vw, 8rem)',
-    lineHeight: 1,
-    textAlign: 'center',
-    color: CONFIG.COLORS.text,
-    animation: 'pulse-glow 2s ease-in-out infinite',
-    userSelect: 'none',
-  },
-  colon: {
-    animation: 'colon-blink 1s step-end infinite',
-  },
 };
 
 export default DigitalClock;

@@ -1,24 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import customFont821 from '../../../assets/fonts/25-08-21-wide.ttf'; // Your font file
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import customFont821 from '../../../assets/fonts/25-08-21-wide.ttf?url';
+import styles from './Clock.module.css';
 
 const NumberLineClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'CustomFont',
-      fontUrl: customFont821,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'CustomFont', fontUrl: customFont821 }
+  ], []);
 
-  const hoursRef = useRef(null);
-  const minutesRef = useRef(null);
-  const secondsRef = useRef(null);
+  useSuspenseFontLoader(fontConfigs);
+
+  const hoursRef = useRef<HTMLDivElement>(null);
+  const minutesRef = useRef<HTMLDivElement>(null);
+  const secondsRef = useRef<HTMLDivElement>(null);
 
   const [itemWidths, setItemWidths] = useState<any>({
     hours: 0,
@@ -28,7 +23,7 @@ const NumberLineClock: React.FC = () => {
   const [containerWidth, setContainerWidth] = useState<number>(0);
 
   useEffect(() => {
-    const updateWidths: React.FC = () => {
+    const updateWidths = () => {
       const refs = [
         { ref: secondsRef.current, key: 'seconds' },
         { ref: minutesRef.current, key: 'minutes' },
@@ -75,7 +70,7 @@ const NumberLineClock: React.FC = () => {
 
     let animationFrameId;
 
-    const updateScrollPositions: React.FC = () => {
+    const updateScrollPositions = () => {
       const now = new Date();
 
       // Get 24-hour format and convert to 12-hour
@@ -124,109 +119,46 @@ const NumberLineClock: React.FC = () => {
     return () => cancelAnimationFrame(animationFrameId);
   }, [itemWidths, containerWidth]);
 
-  const renderNumberLine = (count, ref, margin) => (
-    <div style={{ marginBottom: '2rem' }}>
-      <div style={{ position: 'relative' }}>
+  const renderNumberLine = (count: number, ref: React.RefObject<HTMLDivElement>, margin: string) => (
+    <div className={styles.numberLineContainer}>
+      <div className={styles.numberLineWrapper}>
         {/* Center indicator */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: '50%',
-            transform: 'translateX(-0.5px)',
-            width: '2px',
-            height: '100%',
-            backgroundColor: '#A78906FF',
-            zIndex: 10,
-            pointerEvents: 'none',
-          }}
-        />
+        <div className={styles.centerIndicator} />
         {/* Scrollable number line */}
         <div
           ref={ref}
-          style={{
-            overflowX: 'auto',
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-            whiteSpace: 'nowrap',
-            userSelect: 'none',
-            cursor: 'default',
-          }}
-          className="hide-scrollbar"
+          className={styles.scrollable}
         >
           {/* Left padding */}
-          <div style={{ display: 'inline-block', width: '50vw' }} />
+          <div className={styles.padding} />
 
           {Array.from({ length: count }, (_, i) => (
             <div
               key={i}
-              style={{
-                display: 'inline-flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: 'center',
-                margin: `0 ${margin}`,
-                color: '#F0E4F3FF',
-                fontWeight: 'normal',
-                fontSize: '2.5rem',
-                userSelect: 'none',
-                width: '2rem',
-                fontFamily: 'CustomFont, sans-serif',
-                lineHeight: 1,
-              }}
+              className={styles.numberItem}
+              style={{ margin: `0 ${margin}` }}
             >
-              <div style={{ marginBottom: '0.3rem', lineHeight: 1 }}>
+              <div className={styles.numberText}>
                 {ref === hoursRef
                   ? (i + 1).toString().padStart(2, '0')
                   : i.toString().padStart(2, '0')}
               </div>
               <div
-                style={{
-                  width: '0px',
-                  height: i % 5 === 0 ? '1.5rem' : '1rem',
-                  backgroundColor: i % 5 === 0 ? '#2d3748' : '#a0aec0',
-                  margin: '0 auto',
-                  borderRadius: '1px',
-                }}
+                className={`${styles.tickMark} ${i % 5 === 0 ? styles.tickMarkLarge : styles.tickMarkSmall}`}
               />
             </div>
           ))}
 
           {/* Right padding */}
-          <div style={{ display: 'inline-block', width: '50vw' }} />
+          <div className={styles.padding} />
         </div>
       </div>
     </div>
   );
 
   return (
-    <div
-      style={{
-        height: '100dvh',
-        opacity: 0.9,
-        backgroundImage:
-          'linear-gradient(#444cf7 0.4px, transparent 0.4px), linear-gradient(to right, #444cf7 0.4px, #2a331c 0.4px)',
-        backgroundSize: '4px 12px',
-        fontFamily: 'CustomFont, sans-serif',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <style>{`
-        /* Font loading handled by useMultipleFontLoader */
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
-
-      <div style={{ maxWidth: '72rem', width: '100%' }}>
+    <div className={styles.container}>
+      <div className={styles.wrapper}>
         {renderNumberLine(12, hoursRef, '10rem')}
         {renderNumberLine(60, minutesRef, '10rem')}
         {renderNumberLine(60, secondsRef, '10rem')}

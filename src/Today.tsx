@@ -3,15 +3,25 @@ import React, {
   useEffect,
   useContext,
   useMemo,
+  Suspense,
+  FC,
 } from 'react';
 import { DataContext } from './context/DataContext';
 import Header from './components/Header';
 import ClockPageNav from './components/ClockPageNav';
-import { useClockPage } from './hooks/useClockPage';
+import { useClockPage, ClockItem } from './hooks/useClockPage';
+import { ClockLoadingFallback } from './utils/fontLoader';
 import styles from './ClockPage.module.css';
 
-const formatTitle = (title) => title?.replace(/clock/i, '').trim() || 'Home';
-const formatDate = (dateStr) => {
+interface DataContextValue {
+  items: ClockItem[];
+  loading: boolean;
+  error: string | null;
+}
+
+const formatTitle = (title?: string): string =>
+  title?.replace(/clock/i, '').trim() || 'Home';
+const formatDate = (dateStr?: string): string => {
   if (!dateStr) return '';
   const parts = dateStr.split('-');
   if (parts.length !== 3) return dateStr;
@@ -20,13 +30,13 @@ const formatDate = (dateStr) => {
     ? `${mm}/${dd}/${yy}`
     : 'Invalid Date';
 };
-const normalizeDate = (d) =>
+const normalizeDate = (d: string): string =>
   d
     .split('-')
     .map((n) => n.padStart(2, '0'))
     .join('-');
 
-const parseDateVal = (dateStr) => {
+const parseDateVal = (dateStr?: string): number => {
   if (!dateStr) return 0;
   const [yy, mm, dd] = dateStr.split('-').map(Number);
   return new Date(2000 + yy, mm - 1, dd).getTime();
@@ -97,20 +107,20 @@ const TodayClockPage = () => {
   // -------------------------------
   const currentIndex = useMemo(
     () =>
-      currentItem
+      currentItem && items
         ? items.findIndex(
-            (i) => normalizeDate(i.date) === normalizeDate(currentItem.date),
+            (i: ClockItem) => normalizeDate(i.date) === normalizeDate(currentItem.date),
           )
         : -1,
     [currentItem, items],
   );
-  const prevItem = useMemo(
-    () => (currentIndex > 0 ? items[currentIndex - 1] : null),
+  const prevItem = useMemo<ClockItem | null>(
+    () => (items && currentIndex > 0 ? items[currentIndex - 1] : null),
     [items, currentIndex],
   );
-  const nextItem = useMemo(
+  const nextItem = useMemo<ClockItem | null>(
     () =>
-      currentIndex >= 0 && currentIndex < items.length - 1
+      items && currentIndex >= 0 && currentIndex < items.length - 1
         ? items[currentIndex + 1]
         : null,
     [items, currentIndex],

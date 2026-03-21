@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import videoFile from '../../../assets/images/25-12/25-12-28/coaster.mp4';
-import videoWebM from '../../../assets/images/25-12/25-12-28/coaster.mp4';
 import fallbackImg from '../../../assets/images/25-12/25-12-28/coaster.webp';
 import fontUrl_20251128 from '../../../assets/fonts/25-12-28-coaster.ttf?url';
 
@@ -11,8 +10,13 @@ export default function Clock() {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [shake, setShake] = useState<any>({ x: 0, y: 0, rotate: 0 });
   const videoRef = useRef(null);
-  const animationFrameId = useRef();
-  const lastTime = useRef(0);
+  const animationFrameId = useRef<number | null>(null);
+
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'CustomFont_20251128', fontUrl: fontUrl_20251128 }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
 
   const updateTime: React.FC = () => {
     const now = new Date();
@@ -28,48 +32,37 @@ export default function Clock() {
     setTimeText(formattedTime);
   };
 
-  // Enhanced shake animation loop for more dynamic movement
+  // Corrected shake animation loop
   useEffect(() => {
-    let lastTime = 0;
-    const intensity = 35; // Increased from 20 to 35 for more dramatic movement
+    const intensity = 35;
 
-    const animate = (time) => {
-      if (!lastTime) lastTime = time;
-      const delta = (time - lastTime) * 0.001;
-      lastTime = time;
-
-      // More dynamic movement with multiple frequencies for organic feel
+    const animate = (time: number) => {
       const t = time * 0.002; // Slower time multiplier for smoother oscillations
 
-      // X movement - more pronounced left/right
+      // X movement
       const x1 = Math.sin(t * 1.8) * intensity * 2.2;
       const x2 = Math.sin(t * 0.7) * intensity * 1.3;
-      const x = (x1 + x2) * 0.7; // Combine multiple frequencies
+      const x = (x1 + x2) * 0.7;
 
-      // Y movement - more bouncy up/down
+      // Y movement
       const y1 = Math.sin(t * 1.2) * intensity * 1.8;
       const y2 = Math.cos(t * 0.5) * intensity * 1.1;
       const y = (y1 + y2) * 0.6;
 
-      // Rotation - more dynamic and varied
-      const rotate1 = Math.sin(t * 1.4) * 18; // Increased rotation
-      const rotate2 = Math.cos(t * 0.3) * 8; // Secondary rotation for variation
+      // Rotation
+      const rotate1 = Math.sin(t * 1.4) * 18;
+      const rotate2 = Math.cos(t * 0.3) * 8;
       const rotate = (rotate1 + rotate2) * 0.7;
 
-      // Add some randomness for more organic feel
       const randomX = (Math.random() - 0.5) * 10;
       const randomY = (Math.random() - 0.5) * 5;
 
-      setShake({
-        x: x + randomX,
-        y: y + randomY,
-        rotate,
-      });
+      setShake({ x: x + randomX, y: y + randomY, rotate });
 
-      animationFrameId.current = setInterval(() => setTime(new Date()), 100);
+      animationFrameId.current = requestAnimationFrame(animate);
     };
 
-    animationFrameId.current = setInterval(() => setTime(new Date()), 100);
+    animationFrameId.current = requestAnimationFrame(animate);
 
     return () => {
       if (animationFrameId.current) {
@@ -78,14 +71,11 @@ export default function Clock() {
     };
   }, []);
 
-  // Time update effect
+  // Time update and video management effect
   useEffect(() => {
     updateTime();
     const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
-  useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
 
@@ -99,9 +89,12 @@ export default function Clock() {
     v.play?.().catch(onError);
 
     return () => {
-      v.removeEventListener('error', onError);
-      v.removeEventListener('stalled', onError);
-      v.removeEventListener('canplay', onCanPlay);
+      clearInterval(interval);
+      if (v) {
+        v.removeEventListener('error', onError);
+        v.removeEventListener('stalled', onError);
+        v.removeEventListener('canplay', onCanPlay);
+      }
     };
   }, []);
 
@@ -195,13 +188,6 @@ export default function Clock() {
     <>
       <style>
         {`
-          @font-face {
-            font-family: "CustomFont_20251128";
-            src: url(${fontUrl_20251128}) format("truetype");
-            font-weight: normal;
-            font-style: normal;
-          }
-          
           @keyframes jossel {
             0%, 100% {
               transform: 
@@ -270,7 +256,6 @@ export default function Clock() {
           preload="metadata"
         >
           <source src={videoFile} type="video/mp4" />
-          <source src={videoWebM} type="video/webm" />
         </video>
         <div style={fallbackStyle} aria-hidden={!videoFailed}>
           {videoFailed && (

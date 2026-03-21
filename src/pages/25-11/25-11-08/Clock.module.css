@@ -1,0 +1,77 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+  background-color: white;
+}
+
+.bgLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 1;
+}
+
+.bgGrid {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+}
+
+.tile {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-color: lightgray;
+  will-change: transform;
+}
+
+.clock {
+  position: absolute;
+  top: 1vh;
+  right: 2vw;
+  color: #f7f0f0;
+  font-size: min(4vw, 2.5vh);
+  font-family: 'DigitsFont-2025-11-10', monospace;
+  font-weight: normal;
+  white-space: nowrap;
+  z-index: 1;
+  padding: 0.5vh 1vw;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  opacity: 0.9;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.clock:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.timerContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  max-width: 95vw;
+  padding: 0.1vh 0.1vw;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 15px;
+  border: 2px solid rgba(255, 0, 0, 0.7);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+}

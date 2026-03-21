@@ -1,48 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
+import { useSuspenseFontLoader } from '../utils/fontLoader';
 import backgroundImage from '../assets/background.jpg';
+import customFont from '../assets/fonts/custom-font.woff2?url';
 
-// Generate a random 5-letter string
-const generateRandomString = () => {
-  return Math.random().toString(36).substring(2, 7);
-};\n
 export default function DynamicComponent() {
-  const [fontReady, setFontReady] = useState(false);
-  const fontFamily = `CustomFont_${new Date().toISOString().split('T')[0].replace(/-/g, '')}_${generateRandomString()}`;
-  const fontFile = new URL('../assets/fonts/custom-font.woff2', import.meta.url).href;
+  const fontFamily = 'DynamicCustomFont';
 
-  useEffect(() => {
-    // Create and inject @font-face
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: '${fontFamily}';
-        src: url('${fontFile}') format('woff2');
-        font-display: block;
-      }
-    `;
-    document.head.appendChild(style);
+  const fontConfigs = useMemo(
+    () => [{ fontFamily, fontUrl: customFont }],
+    [],
+  );
 
-    // Wait for font to load
-    const loadFont = async () => {
-      try {
-        await document.fonts.load(`1rem "${fontFamily}"`);
-        setFontReady(true);
-      } catch (error) {
-        console.error('Error loading font:', error);
-        setFontReady(true); // Continue rendering even if font fails
-      }
-    };
-
-    loadFont();
-
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, [fontFamily, fontFile]);
-
-  if (!fontReady) {
-    return null; // Prevent FOUT
-  }
+  useSuspenseFontLoader(fontConfigs);
 
   return (
     <div style={{

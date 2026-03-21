@@ -1,0 +1,91 @@
+.container {
+  height: 100dvh;
+  opacity: 0.9;
+  background-image: linear-gradient(#444cf7 0.4px, transparent 0.4px),
+    linear-gradient(to right, #444cf7 0.4px, #2a331c 0.4px);
+  background-size: 4px 12px;
+  font-family: 'CustomFont', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  max-width: 72rem;
+  width: 100%;
+}
+
+.numberLineContainer {
+  margin-bottom: 2rem;
+}
+
+.numberLineWrapper {
+  position: relative;
+}
+
+.centerIndicator {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-0.5px);
+  width: 2px;
+  height: 100%;
+  background-color: #a78906ff;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.scrollable {
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  white-space: nowrap;
+  user-select: none;
+  cursor: default;
+}
+
+.scrollable::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+
+.padding {
+  display: inline-block;
+  width: 50vw;
+}
+
+.numberItem {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #f0e4f3ff;
+  font-weight: normal;
+  font-size: 2.5rem;
+  user-select: none;
+  width: 2rem;
+  font-family: 'CustomFont', sans-serif;
+  line-height: 1;
+}
+
+.numberText {
+  margin-bottom: 0.3rem;
+  line-height: 1;
+}
+
+.tickMark {
+  width: 0px;
+  margin: 0 auto;
+  border-radius: 1px;
+}
+
+.tickMarkLarge {
+  height: 1.5rem;
+  background-color: #2d3748;
+}
+
+.tickMarkSmall {
+  height: 1rem;
+  background-color: #a0aec0;
+}

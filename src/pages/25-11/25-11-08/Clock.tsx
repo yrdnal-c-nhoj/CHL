@@ -1,20 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import bgImageUrl from '../../../assets/images/25-11/25-11-08/eye.gif';
 import dig2511088 from '../../../assets/fonts/25-11-08-eye3.ttf';
 import ti251108 from '../../../assets/fonts/25-11-08-eye.ttf';
+import styles from './Clock.module.css';
 
-export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
+interface ClockProps {
+  imageWidth?: string;
+  imageHeight?: string;
+}
+
+const Clock: React.FC<ClockProps> = ({ imageWidth = '24vw', imageHeight = '16vw' }) => {
   const [now, setNow] = useState(() => new Date());
   const [elapsedMs, setElapsedMs] = useState<number>(0);
 
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'DigitsFont-2025-11-10', fontUrl: dig2511088 },
+    { fontFamily: 'Ti251108-2025-11-10', fontUrl: ti251108 },
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
+
   useEffect(() => {
     const start = Date.now();
-    const interval = setInterval(() => {
+    let frameId: number;
+    
+    const tick = () => {
       setNow(new Date());
       setElapsedMs(Date.now() - start);
-    }, 100); // 100ms for smooth updates with lower performance overhead
-    return () => clearInterval(interval);
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   const pad2 = (n) => n.toString().padStart(2, '0');
@@ -25,73 +43,9 @@ export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
   hours = hours % 12 || 12; // Convert 0 to 12 for 12 AM
   const clock = `${hours}:${pad2(now.getMinutes())} ${ampm}`;
 
-  const digitsFontFamilyName = 'DigitsFont-2025-11-10';
   const timerFontFamilyName = 'Ti251108-2025-11-10';
 
-  const clockStyle = {
-    position: 'absolute',
-    top: '1vh',
-    right: '2vw',
-    color: '#F7F0F0',
-    fontSize: 'min(4vw, 2.5vh)',
-    fontFamily: `'${digitsFontFamilyName}', monospace`,
-    fontWeight: 'normal',
-    whiteSpace: 'nowrap',
-    zIndex: 1,
-    padding: '0.5vh 1vw',
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    borderRadius: '5px',
-    opacity: 0.9,
-    textAlign: 'center',
-    transition: 'all 0.3s ease',
-  };
-
-  const wrapperStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100dvh',
-    width: '100vw',
-    position: 'relative',
-    overflow: 'hidden',
-    backgroundColor: 'white',
-  };
-
-  const bgStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 0,
-    pointerEvents: 'none',
-    overflow: 'hidden',
-    opacity: 1.0,
-  };
-
-  const bgGridStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    display: 'grid',
-    gridTemplateColumns: `repeat(30, ${imageWidth})`,
-    gridAutoRows: `${imageHeight}`,
-    marginLeft: `calc(-1 * ${imageWidth} / 2)`,
-    marginTop: `calc(-1 * ${imageHeight} / 2)`,
-  };
-
-  const tileStyleBase = {
-    width: `${imageWidth}`,
-    height: `${imageHeight}`,
-    backgroundImage: `url(${bgImageUrl})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: '100% 100%',
-    backgroundColor: 'lightgray',
-    willChange: 'transform',
-  };
-
-  const renderCheckerboardBG: React.FC = () => {
+  const renderCheckerboardBG = () => {
     const tiles = [];
     const rows = 30;
     const cols = 30;
@@ -102,14 +56,22 @@ export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
           <div
             key={`${r}-${c}`}
             style={{
-              ...tileStyleBase,
+              width: imageWidth,
+              height: imageHeight,
+              backgroundImage: `url(${bgImageUrl})`,
               transform: flip ? 'scaleX(-1)' : 'none',
             }}
+            className={styles.tile}
           />,
         );
       }
     }
-    return <div style={bgGridStyle}>{tiles}</div>;
+    return <div className={styles.bgGrid} style={{
+      gridTemplateColumns: `repeat(30, ${imageWidth})`,
+      gridAutoRows: `${imageHeight}`,
+      marginLeft: `calc(-1 * ${imageWidth} / 2)`,
+      marginTop: `calc(-1 * ${imageHeight} / 2)`,
+    }}>{tiles}</div>;
   };
 
   const timerDigitBoxStyle = {
@@ -150,23 +112,7 @@ export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
 
     return (
       <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: 'auto',
-          maxWidth: '95vw',
-          padding: '0.1vh 0.1vw',
-          backgroundColor: 'rgba(0, 0, 0, 0.6)',
-          borderRadius: '15px',
-          border: '2px solid rgba(255, 0, 0, 0.7)',
-          boxShadow: '0 0 20px rgba(255, 0, 0, 0.7)',
-        }}
-        className="timer-container"
+        className={styles.timerContainer}
       >
         {timeStr.split('').map((ch, i) => (
           <span
@@ -184,40 +130,14 @@ export default function Clock({ imageWidth = '24vw', imageHeight = '16vw' }) {
   };
 
   return (
-    <div style={wrapperStyle}>
-      <style>
-        {`
-          @font-face {
-            font-family: '${digitsFontFamilyName}';
-            src: url(${dig2511088}) format('truetype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-          }
-          @font-face {
-            font-family: '${timerFontFamilyName}';
-            src: url(${ti251108}) format('truetype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-          }
-          .clock:hover {
-            opacity: 1;
-            background-color: rgba(0, 0, 0, 0.3);
-          }
-          @media (max-width: 600px) {
-            .timer-container {
-              padding: 2vh 3vw;
-              border-radius: 22px;
-            }
-          }
-        `}
-      </style>
-      <div style={bgStyle}>{renderCheckerboardBG()}</div>
-      <div style={clockStyle} className="clock">
+    <div className={styles.wrapper}>
+      <div className={styles.bgLayer}>{renderCheckerboardBG()}</div>
+      <div className={styles.clock}>
         {clock}
       </div>
       {renderTimerBoxed(elapsedMs)}
     </div>
   );
 }
+
+export default Clock;

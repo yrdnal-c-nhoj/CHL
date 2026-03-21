@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useFontLoader } from '../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../utils/fontLoader';
+// import type { FontConfig } from '../../types/clock';
 
 // --- Assets ---
-import wordFont from '../../../assets/fonts/serif-bold.ttf';
+import wordFont from '../../../assets/fonts/serif-bold.ttf?url';
 
 // --- Configuration ---
 const CONFIG = {
@@ -226,16 +227,12 @@ const WordCell = ({ letter, isHighlighted, position }) => {
  * Word Clock Template Component
  */
 const WordClockTemplate = () => {
-  const fontReady = useFontLoader('WordFont', wordFont, { timeout: 3000 });
-  const { highlightedWords, currentTime } = useWordClock();
+  const fontConfigs = useMemo(() => [
+    { fontFamily: 'WordFont', fontUrl: wordFont }
+  ], []);
 
-  if (!fontReady) {
-    return (
-      <div style={styles.loadingContainer}>
-        <div style={styles.loadingText}>Loading word clock...</div>
-      </div>
-    );
-  }
+  useSuspenseFontLoader(fontConfigs);
+  const { highlightedWords, currentTime } = useWordClock();
 
   return (
     <div style={styles.container}>

@@ -1,0 +1,46 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.containerMobile {
+  padding: 2vh 0;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 3vw;
+  align-items: center;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 4vh;
+  align-items: center;
+}
+
+.digitBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'ClockFont2025_12_01', monospace;
+  color: #071a16;
+  border-radius: 8px;
+  text-shadow:
+    -1px -1px 0 #f98016,
+    1px -1px 0 #f98016,
+    -1px 1px 0 #f98016,
+    1px 1px 0 #f9800f;
+  user-select: none;
+}

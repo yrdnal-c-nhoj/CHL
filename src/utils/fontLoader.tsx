@@ -1,410 +1,127 @@
-import React, { useState, useLayoutEffect, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import type { FontConfig } from '../types/clock';
 
-// Global registry to track loaded fonts and prevent duplicate network requests.
-const fontRegistry = new Map<string, Promise<void>>();
-const fontStatusRegistry = new Map<string, 'loading' | 'loaded' | 'error'>();
-
-interface FontFaceOptions {
-  display?: string;
-  weight?: string;
-  style?: string;
-}
-
-export interface FontConfig {
-  fontFamily: string;
-  fontUrl: string;
-  options?: FontFaceOptions;
-}
-
-interface StylesConfig {
-  fontFaces?: Array<{
-    fontFamily: string;
-    fontUrl: string;
-    options?: FontFaceOptions;
-  }>;
-  keyframes?: Record<string, string | Record<string, string | number>>;
-  custom?: string;
-}
-
-interface StyleElement extends HTMLStyleElement {
-  remove(): void;
-}
+// Global cache to prevent re-loading fonts
+const loadedFonts = new Set<string>();
+const fontPromises = new Map<string, Promise<void>>();
 
 /**
- * Style injection utility for centralizing CSS management
+ * Legacy hook for loading a single font.
+ * prefer useSuspenseFontLoader for new components.
  */
-class StyleManager {
-  private injectedStyles: Map<string, StyleElement>;
+export const useFontLoader = (fontName: string, fontUrl: string) => {
+  const [loaded, setLoaded] = useState(false);
 
-  constructor() {
-    this.injectedStyles = new Map();
-  }
-
-  /**
-   * Inject CSS styles into the document head
-   * @param id - Unique identifier for the style
-   * @param css - CSS content to inject
-   */
-  inject(id: string, css: string): void {
-    if (typeof document === 'undefined') return;
-
-    // Remove existing style if it exists
-    if (this.injectedStyles.has(id)) {
-      const existingElement = this.injectedStyles.get(id);
-      if (existingElement && existingElement.parentNode) {
-        existingElement.parentNode.removeChild(existingElement);
-      }
+  useEffect(() => {
+    if (loadedFonts.has(fontName)) {
+      setLoaded(true);
+      return;
     }
 
-    // Create and inject new style element
-    const styleElement = document.createElement('style');
-    styleElement.textContent = css;
-    styleElement.setAttribute('data-style-id', id);
-    document.head.appendChild(styleElement);
-    this.injectedStyles.set(id, styleElement);
-  }
+    const font = new FontFace(fontName, `url(${fontUrl})`);
+    font.load().then((f) => {
+      document.fonts.add(f);
+      loadedFonts.add(fontName);
+      setLoaded(true);
+    }).catch((err) => {
+      console.error(`Failed to load font ${fontName}:`, err);
+    });
+  }, [fontName, fontUrl]);
 
-  /**
-   * Remove injected styles
-   * @param id - Unique identifier for the style
-   */
-  remove(id: string): void {
-    if (this.injectedStyles.has(id)) {
-      const element = this.injectedStyles.get(id);
-      if (element && element.parentNode) {
-        element.parentNode.removeChild(element);
-      }
-      this.injectedStyles.delete(id);
-    }
-  }
-
-  /**
-   * Generate font-face CSS
-   * @param fontFamily - Font family name
-   * @param fontUrl - Font file URL
-   * @param options - Font face options
-   * @returns CSS string
-   */
-  generateFontFaceCSS(fontFamily: string, fontUrl: string, options: FontFaceOptions = {}): string {
-    const display = options.display || 'swap';
-    const weight = options.weight || 'normal';
-    const style = options.style || 'normal';
-    
-    return `
-      @font-face {
-        font-family: '${fontFamily}';
-        src: url('${fontUrl}') format('truetype');
-        font-display: ${display};
-        font-weight: ${weight};
-        font-style: ${style};
-      }
-    `;
-  }
-
-  /**
-   * Generate keyframes CSS
-   * @param name - Animation name
-   * @param keyframes - Keyframe definitions
-   * @returns CSS string
-   */
-  generateKeyframesCSS(name: string, keyframes: Record<string, string | Record<string, string | number>>): string {
-    const keyframeRules = Object.entries(keyframes)
-      .map(([percentage, styles]) => {
-        let styleString: string;
-        if (typeof styles === 'string') {
-          styleString = `  ${styles}`;
-        } else if (typeof styles === 'object' && styles !== null) {
-          styleString = Object.entries(styles)
-            .map(([prop, value]) => `  ${prop}: ${value};`)
-            .join('\n');
-        } else {
-          styleString = `  ${styles}`;
-        }
-        return `  ${percentage} {\n${styleString}\n  }`;
-      })
-      .join('\n');
-
-    return `
-      @keyframes ${name} {
-        ${keyframeRules}
-      }
-    `;
-  }
-}
-
-// Global style manager instance
-const styleManager = new StyleManager();
-
-/**
- * Internal utility to initiate a font load.
- * Idempotent: safe to call multiple times.
- */
-const loadFontEntry = (fontFamily: string, fontUrl: string, options: FontFaceOptions = {}): Promise<void> => {
-  const cacheKey = `${fontFamily}-${fontUrl}`;
-  
-  if (fontRegistry.has(cacheKey)) {
-    return fontRegistry.get(cacheKey)!;
-  }
-
-  fontStatusRegistry.set(cacheKey, 'loading');
-  
-  const fontPromise = (async () => {
-    try {
-      if (typeof document !== 'undefined' && 'fonts' in document) {
-        const font = new FontFace(fontFamily, `url(${fontUrl})`, { 
-          ...options,
-          display: 'swap' 
-        });
-        await font.load();
-        document.fonts.add(font);
-      }
-      fontStatusRegistry.set(cacheKey, 'loaded');
-    } catch (e) {
-      console.warn(`Failed to load font ${fontFamily}:`, e);
-      fontStatusRegistry.set(cacheKey, 'error');
-    }
-  })();
-
-  fontRegistry.set(cacheKey, fontPromise);
-  return fontPromise;
+  return loaded;
 };
 
 /**
- * Loads a single font programmatically using the FontFace API.
- * Prevents FOUC (Flash of Unstyled Content).
- *
- * @param fontFamily - The font family name
- * @param fontUrl - The URL to the font file
- * @param options - Optional font face options
- * @returns true when font is loaded (or failed but settled)
+ * Legacy hook for loading multiple fonts.
  */
-export function useFontLoader(fontFamily: string, fontUrl: string, options: FontFaceOptions = {}): boolean {
-  const [isLoaded, setIsLoaded] = useState(false);
+export const useMultipleFontLoader = (fonts: FontConfig[]) => {
+  const [loaded, setLoaded] = useState(false);
 
-  useLayoutEffect(() => {
-    let isMounted = true;
-
-    const load = async (): Promise<void> => {
-      if (typeof document === 'undefined' || !('fonts' in document)) {
-        if (isMounted) setIsLoaded(true);
-        return;
-      }
-
-      try {
-        await loadFontEntry(fontFamily, fontUrl, options);
-      } finally {
-        if (isMounted) setIsLoaded(true);
-      }
-    };
-
-    load();
-
-    load();
-    return () => {
-      isMounted = false;
-    };
-  }, [fontFamily, fontUrl, JSON.stringify(options)]);
-
-  return isLoaded;
-}
-
-/**
- * Loads multiple fonts programmatically using the FontFace API.
- * Prevents FOUC (Flash of Unstyled Content) and cleans up component logic.
- *
- * @param fonts - Array of font configurations
- * @param styles - Optional additional CSS to inject
- * @returns true when all fonts are loaded (or failed but settled)
- */
-export function useMultipleFontLoader(fonts: FontConfig[], styles: StylesConfig = {}): boolean {
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useLayoutEffect(() => {
-    let isMounted = true;
-
-    const load = async (): Promise<void> => {
-      if (typeof document === 'undefined' || !('fonts' in document)) {
-        if (isMounted) setIsLoaded(true);
-        return;
-      }
-
-      try {
-        // Load fonts
-        const fontPromises = fonts.map((f) => {
-          return loadFontEntry(f.fontFamily, f.fontUrl, f.options);
-        });
-
-        await Promise.all(fontPromises);
-
-        // Inject additional styles if provided
-        if (styles.fontFaces || styles.keyframes || styles.custom) {
-          const styleId = `clock-styles-${Date.now()}`;
-          let css = '';
-
-          // Generate font-face CSS
-          if (styles.fontFaces) {
-            styles.fontFaces.forEach(({ fontFamily, fontUrl, options }) => {
-              css += styleManager.generateFontFaceCSS(fontFamily, fontUrl, options);
-            });
-          }
-
-          // Generate keyframes CSS
-          if (styles.keyframes) {
-            Object.entries(styles.keyframes).forEach(([name, keyframes]) => {
-              css += styleManager.generateKeyframesCSS(name, keyframes);
-            });
-          }
-
-          // Add custom CSS
-          if (styles.custom) {
-            css += styles.custom;
-          }
-
-          styleManager.inject(styleId, css);
+  useEffect(() => {
+    const loadFonts = async () => {
+      const promises = fonts.map(async (config) => {
+        if (loadedFonts.has(config.fontFamily)) return;
+        try {
+          const font = new FontFace(config.fontFamily, `url(${config.fontUrl})`, config.options);
+          const f = await font.load();
+          document.fonts.add(f);
+          loadedFonts.add(config.fontFamily);
+        } catch (err) {
+          console.warn(`Failed to load font ${config.fontFamily}`, err);
         }
-      } catch (e) {
-        console.warn('Font loading error:', e);
-      } finally {
-        if (isMounted) setIsLoaded(true);
-      }
+      });
+      await Promise.all(promises);
+      setLoaded(true);
     };
 
-    load();
-    return () => {
-      isMounted = false;
-    };
-  }, [fonts, styles]);
+    loadFonts();
+  }, [fonts]);
 
-  return isLoaded;
-}
+  return loaded;
+};
 
 /**
- * Hook for injecting styles without font loading
- * @param styles - Style configuration
+ * Modern Suspense-based font loader.
+ * Throws a promise if fonts are not yet loaded, suspending the component.
  */
-export function useStyleInjection(styles: StylesConfig = {}): void {
-  const styleId = useMemo(() => `style-${Math.random().toString(36).substr(2, 9)}`, []);
+export const useSuspenseFontLoader = (fonts: FontConfig[]) => {
+  // Check if all fonts are already loaded
+  if (fonts.every(f => loadedFonts.has(f.fontFamily))) return;
 
-  useLayoutEffect(() => {
-    let css = '';
-
-    // Generate font-face CSS
-    if (styles.fontFaces) {
-      styles.fontFaces.forEach(({ fontFamily, fontUrl, options }) => {
-        css += styleManager.generateFontFaceCSS(fontFamily, fontUrl, options);
-      });
-    }
-
-    // Generate keyframes CSS
-    if (styles.keyframes) {
-      Object.entries(styles.keyframes).forEach(([name, keyframes]) => {
-        css += styleManager.generateKeyframesCSS(name, keyframes);
-      });
-    }
-
-    // Add custom CSS
-    if (styles.custom) {
-      css += styles.custom;
-    }
-
-    if (css) {
-      styleManager.inject(styleId, css);
-    }
-
-    return () => {
-      if (css) {
-        styleManager.remove(styleId);
-      }
-    };
-  }, [styleId, styles]);
-}
-
-/**
- * Suspense-friendly font loader that throws a promise when fonts are loading
- * @param fonts - Font configurations
- * @param styles - Additional styles to inject
- * @throws Promise during loading, completes when ready
- */
-export function useSuspenseFontLoader(fonts: FontConfig[], styles: StylesConfig = {}): void {
-  // 1. Initiate styles immediately (synchronous side-effect)
-  // We use useMemo to ensure this only runs once per unique style config
-  const styleId = useMemo(() => {
-    const id = `suspense-styles-${Math.random().toString(36).substr(2, 9)}`;
-    let css = '';
-    
-    if (styles.custom) css += styles.custom;
-    if (styles.keyframes) {
-      Object.entries(styles.keyframes).forEach(([name, def]) => {
-        css += styleManager.generateKeyframesCSS(name, def);
-      });
-    }
-    // Note: @font-face rules are not generated here as they are handled by FontFace API 
-    // in loadFontEntry, but if legacy CSS fallback is needed, it could go here.
-    
-    if (css) styleManager.inject(id, css);
-    return id;
-  }, [JSON.stringify(styles)]);
-
-  // 2. Check font status and collect pending promises
-  const pendingPromises: Promise<void>[] = [];
+  // Filter for fonts that need loading and aren't already pending
+  const needed = fonts.filter(f => !loadedFonts.has(f.fontFamily));
   
-  fonts.forEach(font => {
-    const cacheKey = `${font.fontFamily}-${font.fontUrl}`;
-    const status = fontStatusRegistry.get(cacheKey);
-    
-    if (status === 'loaded' || status === 'error') {
-      return;
+  const promises = needed.map(config => {
+    if (!fontPromises.has(config.fontFamily)) {
+      const promise = (async () => {
+        try {
+          const font = new FontFace(config.fontFamily, `url(${config.fontUrl})`, config.options);
+          const f = await font.load();
+          document.fonts.add(f);
+          loadedFonts.add(config.fontFamily);
+        } catch (err) {
+          console.warn(`Failed to load font ${config.fontFamily}`, err);
+          // Mark as loaded to prevent infinite suspense loops even on error
+          loadedFonts.add(config.fontFamily);
+        }
+      })();
+      fontPromises.set(config.fontFamily, promise);
     }
-    
-    // If not loaded or not started, ensure it's loading and add to pending
-    pendingPromises.push(loadFontEntry(font.fontFamily, font.fontUrl, font.options));
+    return fontPromises.get(config.fontFamily);
   });
 
-  // 3. Suspend if there are pending fonts
-  if (pendingPromises.length > 0) {
-    throw Promise.all(pendingPromises);
+  // Throw the combined promise to suspend React
+  if (promises.length > 0) {
+    throw Promise.all(promises);
   }
-}
+};
 
-/**
- * Higher-order component for wrapping clocks with Suspense
- * @param ClockComponent - The clock component to wrap
- * @param fallback - Fallback UI for loading state
- * @returns Wrapped component
- */
-export function withClockSuspense<T extends Record<string, any>>(
-  ClockComponent: React.ComponentType<T>,
-  fallback: React.ReactNode = null
-): React.ComponentType<T> {
-  const SuspenseWrapper = (props: T) => (
-    <React.Suspense fallback={fallback || <ClockLoadingFallback />}>
-      <ClockComponent {...props} />
-    </React.Suspense>
-  );
-  
-  SuspenseWrapper.displayName = `withClockSuspense(${ClockComponent.displayName || ClockComponent.name})`;
-  return SuspenseWrapper;
-}
+export const ClockLoadingFallback = () => (
+  <div style={{
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: 'monospace',
+    color: '#666',
+    fontSize: '1.2rem'
+  }}>
+    Loading Clock...
+  </div>
+);
 
-/**
- * Default loading fallback component
- */
-export function ClockLoadingFallback(): React.ReactElement {
-  return (
-    <div style={{
-      width: '100vw',
-      height: '100dvh',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#000',
-      color: '#fff',
-      fontFamily: 'monospace',
-      fontSize: '1.2rem'
-    }}>
-      Loading clock...
-    </div>
-  );
-}
-
-export { styleManager };
+export const styleManager = {
+  inject: (id: string, css: string) => {
+    if (typeof document === 'undefined' || document.getElementById(id)) return;
+    const style = document.createElement('style');
+    style.id = id;
+    style.textContent = css;
+    document.head.appendChild(style);
+  },
+  remove: (id: string) => {
+    if (typeof document === 'undefined') return;
+    const style = document.getElementById(id);
+    if (style) style.remove();
+  }
+};

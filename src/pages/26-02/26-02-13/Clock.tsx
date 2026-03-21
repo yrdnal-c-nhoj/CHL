@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useSecondClock } from '../../../utils/useSmoothClock';
+import styles from './Clock.module.css';
 
 const WordClock: React.FC = () => {
   // Standardized font loading
@@ -216,87 +217,14 @@ const WordClock: React.FC = () => {
   }, [now]);
 
   return (
-    <div className="clock-wrapper">
-      <style>{`
-        :root {
-          --bg: #E89077;
-          --inactive: rgba(233, 247, 234, 0.54);
-          --active: #AC0909;
-        }
-
-        .clock-wrapper {
-          background: var(--bg);
-          height: 100dvh;
-          width: 100dvw;
-          margin: 0;
-          padding: 12px;
-          box-sizing: border-box;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          overflow: hidden;
-        }
-
-        .clock-container {
-          display: flex;
-          flex-direction: column;
-          gap: clamp(3px, 1.1vmin, 10px);
-          width: 100%;
-          max-width: min(92vw, 540px);
-          aspect-ratio: 11 / 10;
-        }
-
-        .clock-row {
-          display: flex;
-          width: 100%;
-          gap: clamp(2px, 0.8vmin, 6px);
-        }
-
-        .clock-char {
-          font-family: 'Cinzel Decorative', cursive;
-          font-weight: 700;
-          color: var(--inactive);
-          font-size: clamp(14px, 5.8vmin, 36px);
-          letter-spacing: 0.02em;
-          line-height: 1.05;
-          text-align: center;
-          flex: 1;
-          transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-          user-select: none;
-        }
-
-        .active-char {
-          color: var(--active);
-          font-weight: 900;
-          text-shadow: 
-            0 0 10px rgba(255,255,255,0.7),
-            0 0 18px rgba(255,255,255,0.4);
-          transform: scale(1.12);
-        }
-
-        @media (orientation: landscape) and (max-height: 500px) {
-          .clock-container {
-            max-width: 420px;
-            gap: 4px;
-          }
-          .clock-char {
-            font-size: clamp(12px, 7vmin, 24px);
-          }
-        }
-
-        @media (max-width: 400px) {
-          .clock-wrapper { padding: 8px; }
-          .clock-container { gap: clamp(2px, 0.9vmin, 7px); }
-        }
-      `}</style>
-
-      <div className="clock-container">
+    <div className={styles.wrapper}>
+      <div className={styles.container}>
         {grid.map((row, rIdx) => (
-          <div key={rIdx} className="clock-row">
+          <div key={rIdx} className={styles.row}>
             {row.map((char, cIdx) => (
               <span
                 key={`${rIdx}-${cIdx}`}
-                className={`clock-char ${activeIndices.has(`${rIdx}-${cIdx}`) ? 'active-char' : ''}`}
+                className={`${styles.char} ${activeIndices.has(`${rIdx}-${cIdx}`) ? styles.active : ''}`}
               >
                 {char}
               </span>
