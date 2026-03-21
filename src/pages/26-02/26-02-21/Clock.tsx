@@ -1,5 +1,4 @@
-/** @jsxImportSource react */
-import React, { useState, useEffect, useRef, useMemo, memo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, memo, useCallback } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 
@@ -22,7 +21,7 @@ import img5 from '../../../assets/images/26-02/26-02-21/1234.webp';
 import img6 from '../../../assets/images/26-02/26-02-21/1235.webp';
 import img7 from '../../../assets/images/26-02/26-02-21/1236.gif';
 import img8 from '../../../assets/images/26-02/26-02-21/1237.webp';
-import customFont from '../../../assets/fonts/26-02-21-321.otf';
+import customFont from '../../../assets/fonts/26-02-21-321.otf?url';
 
 // Export assets for preloading
 export { img1, img2, img3, img4, img5, img6, img7, img8 };
@@ -34,7 +33,7 @@ const ASSETS = [img1, img2, img3, img4, img5, img6, img7, img8];
 ========================= */
 const getRandomImage = () => ASSETS[Math.floor(Math.random() * ASSETS.length)];
 
-const generateImageStyle = (isDynamic = false) => ({
+const generateImageStyle = (isDynamic = false): React.CSSProperties => ({
   position: 'absolute',
   top: `${Math.random() * 100}%`,
   left: `${Math.random() * 100}%`,
@@ -57,7 +56,11 @@ const generateImageStyle = (isDynamic = false) => ({
 ========================= */
 
 // Memoized background to prevent re-renders on every clock tick
-const StaticCollage = memo(({ count }) => {
+interface StaticCollageProps {
+  count: number;
+}
+
+const StaticCollage = memo<StaticCollageProps>(({ count }) => {
   const collage = useMemo(
     () =>
       Array.from({ length: count }, (_, i) => ({
@@ -129,7 +132,6 @@ export const fontConfigs = [
 export default function RefactoredClock() {
   const time = useSecondClock();
   const [dynamicImages, setDynamicImages] = useState<DynamicImages[]>([]);
-  const [showContent, setShowContent] = useState(false);
   
   useSuspenseFontLoader(fontConfigs);
 
@@ -139,7 +141,7 @@ export default function RefactoredClock() {
   }, []);
 
   // Dynamic image updates using requestAnimationFrame
-  usePeriodicUpdate(() => {
+  const updateDynamicImages = useCallback(() => {
     const newImg = `https://picsum.photos/seed/${Math.random()}/100/100.jpg`;
     setDynamicImages((prev) => [
       ...prev.slice(-(CONFIG.MAX_DYNAMIC_IMAGES - 1)),
@@ -147,13 +149,15 @@ export default function RefactoredClock() {
     ]);
   }, CONFIG.UPDATE_INTERVAL);
 
+  usePeriodicUpdate(updateDynamicImages, CONFIG.UPDATE_INTERVAL);
+
   // 3. Time Formatting
   const timeStrings = useMemo(() => {
     const hours24 = time.getHours();
     const hours12 = hours24 % 12 || 12; // Convert to 12-hour format
     const h = hours12.toString(); // No leading zeros
     const m = time.getMinutes().toString().padStart(2, '0'); // Keep leading zeros for minutes
-    return { h, m };
+    return { h, m, raw: time };
   }, [time]);
 
   /* Styles */
@@ -170,7 +174,7 @@ export default function RefactoredClock() {
     fontFamily: `'${CONFIG.FONT_FAMILY}', sans-serif`,
   };
 
-  const digitGroupStyle = {
+  const digitGroupStyle: React.CSSProperties = {
     fontSize: 'clamp(5rem, 25vw, 15rem)',
     display: 'flex',
     gap: '0.2em',
@@ -187,11 +191,6 @@ export default function RefactoredClock() {
     >
       {/* Global Style Injection for Font Face */}
       <style>{`
-        @font-face {
-          font-family: '${CONFIG.FONT_FAMILY}';
-          src: url(${customFont});
-          font-display: swap;
-        }
         img { animation: fadeIn 0.8s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: inherit; } }
       `}</style>
