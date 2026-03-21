@@ -9,7 +9,7 @@ import loopVideo from '../../../assets/images/26-02/26-02-16/loop.mp4';
 import mazeFont from '../../../assets/fonts/26-02-16-maze.ttf';
 
 // Export assets for ClockPage preloader
-export const background = mazeImage;
+export { mazeImage, loopVideo };
 
 // --- Configuration ---
 const CONFIG = {

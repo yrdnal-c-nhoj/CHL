@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 
 /**
  * Digital Clock Component with Optical Illusion Pattern
@@ -12,50 +14,27 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
  * - Clean, modern React architecture with performance optimizations
  */
 
+export const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'Silkscreen',
+    fontUrl: 'https://fonts.gstatic.com/s/silkscreen/v1/sl0eQqU3jxq_ht5x48sp9iE.woff2', // Direct URL for reliable loading via FontFace
+    options: { display: 'swap' }
+  }
+];
+
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+  
+  useSuspenseFontLoader(fontConfigs);
 
-  // Load Google Font
   useEffect(() => {
-    const link = document.createElement('link');
-    link.href =
-      'https://fonts.googleapis.com/css2?family=Silkscreen&display=swap';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-
-    // Check if font is loaded
-    const checkFont: React.FC = () => {
-      document.fonts
-        .load('12px Silkscreen')
-        .then(() => {
-          setFontLoaded(true);
-        })
-        .catch(() => {
-          setFontLoaded(true); // Fallback
-        });
+    let frameId: number;
+    const tick = () => {
+      setTime(new Date());
+      frameId = requestAnimationFrame(tick);
     };
-
-    link.onload = checkFont;
-    checkFont(); // Also check in case font is already cached
-
-    // Fallback timeout in case font loading takes too long
-    const fallbackTimeout = setTimeout(() => {
-      setFontLoaded(true);
-    }, 3000);
-
-    return () => {
-      if (link.parentNode) {
-        link.parentNode.removeChild(link);
-      }
-      clearTimeout(fallbackTimeout);
-    };
-  }, []);
-
-  // Update time every second
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   // Memoize time formatting to prevent unnecessary recalculations
@@ -108,8 +87,6 @@ const Clock: React.FC = () => {
     overflow: 'hidden',
     width: '100vw',
     height: '100dvh',
-    opacity: fontLoaded ? 1 : 0,
-    transition: 'opacity 0.3s ease',
   };
 
   const clockWrapperStyles = {

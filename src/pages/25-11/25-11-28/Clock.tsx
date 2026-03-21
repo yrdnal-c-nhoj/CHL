@@ -1,17 +1,26 @@
 // TimelineClock.jsx
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import li251128font from '../../../assets/fonts/25-11-28-line.otf?url';
 import patternImg from '../../../assets/images/25-11/25-11-28/line.webp';
+
+// Export assets for preloading
+export { patternImg };
+
+export const fontConfigs = [
+  {
+    fontFamily: 'Li251128font',
+    fontUrl: li251128font,
+    options: { weight: 'normal', style: 'normal' },
+  },
+];
 
 // 1. Keep fontStyles for global CSS injection
 const fontStyles = `
   @font-face {
     font-family: 'Li251128font';
     src: url(${li251128font}) format('opentype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap; 
+    font-display: block; 
   }
   html, body, #root { height: 100dvh; margin: 0; overflow: hidden; }
 `;
@@ -21,13 +30,18 @@ export default function TimelineClock() {
   const [isVertical, setIsVertical] = useState<boolean>(false);
   const [flash, setFlash] = useState<boolean>(false);
   const [comet, setComet] = useState<number>(-100);
-  // ADDED: State to track if the font is loaded
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+  
+  useSuspenseFontLoader(fontConfigs);
 
   // EXISTING: Clock update
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
+    let frameId: number;
+    const tick = () => {
+      setNow(new Date());
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   // EXISTING: Orientation check
@@ -37,26 +51,6 @@ export default function TimelineClock() {
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
   }, []);
-
-  // ADDED: Font Loading Check
-  useEffect(() => {
-    if (document.fonts) {
-      // Load the font and wait for it to be ready
-      document.fonts
-        .load("5.3vh 'Li251128font'")
-        .then(() => {
-          setFontLoaded(true);
-        })
-        .catch((err) => {
-          // Fallback: If loading fails, render anyway to avoid infinite blank screen
-          console.error('Font loading failed:', err);
-          setFontLoaded(true);
-        });
-    } else {
-      // Fallback for browsers that don't support document.fonts (render immediately)
-      setFontLoaded(true);
-    }
-  }, []); // Run only once on mount
 
   // EXISTING: Comet sweep
   useEffect(() => {
@@ -159,19 +153,9 @@ export default function TimelineClock() {
     pos: (h / 24) * 100,
   }));
 
-  // CONDITIONAL RENDER: Show a black screen until the font is loaded
-  if (!fontLoaded) {
-    return (
-      <div style={{ ...s.page, background: '#0f0404' }}>
-        <style jsx>{fontStyles}</style>
-      </div>
-    );
-  }
-
-  // The main component render (only runs after fontLoaded is true)
   return (
     <div style={s.page}>
-      <style jsx>{fontStyles}</style>
+      <style>{fontStyles}</style>
       <div style={s.timeline}>
         <div style={s.bar} />
         {/* Hour ticks (now diagonal) */}

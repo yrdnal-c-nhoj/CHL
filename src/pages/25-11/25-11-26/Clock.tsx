@@ -1,12 +1,21 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 
 // Media file paths in public folder
 import videoFile from '../../../assets/images/25-11/25-11-26/esp.mp4';
 import videoWebM from '../../../assets/images/25-11/25-11-26/esp.mp4';
 import fallbackImg from '../../../assets/images/25-11/25-11-26/birds.webp';
 import fontUrl_20251128 from '../../../assets/fonts/25-11-26-bird.ttf?url';
+
+// Export assets for preloading
+export { videoFile, videoWebM, fallbackImg };
+
+export const fontConfigs = [
+  {
+    fontFamily: 'CustomFont_20251128',
+    fontUrl: fontUrl_20251128,
+  },
+];
 
 // --- Digital Time Component ---
 function DigitalTime() {
@@ -15,6 +24,8 @@ function DigitalTime() {
 
   const ANIMATION_DURATION = 10000; // 10 seconds
   const STAGGER_DELAY = 800;
+
+  useSuspenseFontLoader(fontConfigs);
 
   const updateTime: React.FC = () => {
     const now = new Date();
@@ -114,16 +125,6 @@ function DigitalTime() {
 
   return (
     <>
-      <style>
-        {`
-          @font-face {
-            font-family: "CustomFont_20251128";
-            src: url(${fontUrl_20251128}) format("woff2");
-            font-weight: normal;
-            font-style: normal;
-          }
-        `}
-      </style>
       <div style={containerStyle} aria-live="polite">
         {letters.map((l, idx) => (
           <span key={idx} style={l.style}>

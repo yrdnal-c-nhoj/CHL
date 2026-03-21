@@ -1,10 +1,18 @@
 import React, { useState, useEffect, useMemo, memo } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 // Explicit Asset Imports
 import backgroundImage from '../../../assets/images/26-01/26-01-21/fllap.webp';
 import tileImage from '../../../assets/images/26-01/26-01-21/flap.webp';
 import custom260121Font from '../../../assets/fonts/26-01-21-migrate.ttf';
+
+// Export assets for preloading
+export { backgroundImage, tileImage };
+
+const fontFamilyName = 'Custom260121Font';
+
+export const fontConfigs = [
+  { fontFamily: fontFamilyName, fontUrl: custom260121Font },
+];
 
 // Memoize the Numbers so they don't re-render every second
 const ClockNumbers = memo(({ fontFamily }) => (
@@ -24,38 +32,22 @@ const ClockNumbers = memo(({ fontFamily }) => (
 ));
 
 const AnalogBirdMigrateClock: React.FC = () => {
-  const fontReady = useFontLoader('Custom260121Font', custom260121Font);
   const [time, setTime] = useState(new Date());
-  const [bgReady, setBgReady] = useState<boolean>(false);
 
-  const fontFamilyName = 'Custom260121Font';
-
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const images = [backgroundImage, tileImage];
-    let loaded = 0;
-    const done: React.FC = () => {
-      loaded += 1;
-      if (loaded >= images.length) setBgReady(true);
+    let frameId: number;
+    const tick = () => {
+      setTime(new Date());
+      frameId = requestAnimationFrame(tick);
     };
-    images.forEach((src) => {
-      const img = new Image();
-      img.onload = done;
-      img.onerror = done;
-      img.src = src;
-    });
-    const timeout = setTimeout(() => setBgReady(true), 1200);
-    return () => clearTimeout(timeout);
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   const hourDeg = (time.getHours() % 12) * 30 + time.getMinutes() * 0.5;
   const minuteDeg = time.getMinutes() * 6;
-
-  if (!fontReady || !bgReady) return null;
 
   return (
     <div style={styles.wrapper}>

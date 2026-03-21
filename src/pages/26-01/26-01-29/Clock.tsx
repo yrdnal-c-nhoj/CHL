@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useMemo, memo } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import React, { useState, useEffect, memo } from 'react';
 
 import backgroundGif3 from '../../../assets/images/26-01/26-01-29/ur.png';
 import backgroundGif2 from '../../../assets/images/26-01/26-01-29/ur.gif';
@@ -45,14 +44,14 @@ const AnalogUranusClock: React.FC = () => {
   const [bgRotation, setBgRotation] = useState<number>(0);
 
   useEffect(() => {
-    let animationFrameId;
+    let animationFrameId: number;
     let lastTime = Date.now();
 
     // Clock tick
     const timer = setInterval(() => setNow(new Date()), 1000);
 
     // Smooth background rotation - counterclockwise once per minute
-    const animate: React.FC = () => {
+    const animate = () => {
       const currentTime = Date.now();
       const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
       lastTime = currentTime;

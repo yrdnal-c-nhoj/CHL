@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import customFontpawww from '../../../assets/fonts/25-09-13-anim.ttf?url';
 import bgImage from '../../../assets/images/25-09/25-09-13/anim.jpg';
 
@@ -7,16 +7,15 @@ const DigitalClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [prevTime, setPrevTime] = useState(new Date());
   const [isHorizontal, setIsHorizontal] = useState<any>(window.innerWidth >= 768);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false); // <-- track font load
 
-  useEffect(() => {
-    // Load custom font before showing content
-    const font = new FontFace('CustomClockFont', `url(${customFontpawww})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      setFontLoaded(true); // font is ready
-    });
-  }, []);
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: 'CustomClockFont',
+      fontUrl: customFontpawww,
+      options: { weight: 'normal', style: 'normal' }
+    }
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -54,8 +53,8 @@ const DigitalClock: React.FC = () => {
     backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    fontFamily: fontLoaded ? 'CustomClockFont' : 'sans-serif', // <-- fallback
-    visibility: fontLoaded ? 'visible' : 'hidden', // hide until font ready
+    fontFamily: 'CustomClockFont, sans-serif',
+    visibility: 'visible',
   };
 
   const rowStyle = { display: 'flex' };

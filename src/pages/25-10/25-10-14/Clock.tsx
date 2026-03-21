@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import * as THREE from 'three';
 import OrbitronFont20251012 from '../../../assets/fonts/25-10-14-air.ttf';
 import bgImage from '../../../assets/images/25-10/25-10-14/air.webp';
@@ -13,10 +13,14 @@ const SpinningDodecahedronClock: React.FC = () => {
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
 
   // Use standardized font loader
-  const fontReady = useFontLoader('Orbitron20251012', OrbitronFont20251012, {
-    timeout: 5000,
-    fallback: true,
-  });
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: 'Orbitron20251012',
+      fontUrl: OrbitronFont20251012,
+      options: { weight: 'normal', style: 'normal' }
+    }
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
 
   // --- Load background image ---
   useEffect(() => {
@@ -27,7 +31,7 @@ const SpinningDodecahedronClock: React.FC = () => {
 
   // --- Initialize scene once all assets are ready ---
   useEffect(() => {
-    if (!containerRef.current || !fontReady || !imageLoaded) return;
+    if (!containerRef.current || !imageLoaded) return;
 
     // --- Scene ---
     const scene = new THREE.Scene();
@@ -220,7 +224,7 @@ const SpinningDodecahedronClock: React.FC = () => {
       if (containerRef.current && renderer.domElement)
         containerRef.current.removeChild(renderer.domElement);
     };
-  }, [fontReady, imageLoaded]);
+  }, [imageLoaded]);
 
   // --- Layout ---
   return (

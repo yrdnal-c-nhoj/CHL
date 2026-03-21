@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import * as THREE from 'three';
 
 import bgFull from '../../../assets/images/25-11/25-11-12/octo.webp'; // full-size background
@@ -9,7 +8,15 @@ import custom251112tz from '../../../assets/fonts/25-11-12-oct.ttf?url';
 
 export default function TwoBackgroundOctahedron() {
   const threeRef = useRef(null);
-  const fontLoaded = useFontLoader('OctahedronFont', custom251112tz);
+
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: 'OctahedronFont',
+      fontUrl: custom251112tz,
+      options: { weight: 'normal', style: 'normal' }
+    }
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
 
   // THREE.js Octahedron (unchanged)
   useEffect(() => {
@@ -46,21 +53,9 @@ export default function TwoBackgroundOctahedron() {
       const txt = `${h}:${m < 10 ? '0' + m : m}`;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Font is guaranteed loaded by Suspense
+      ctx.font = `110px 'OctahedronFont', Arial`;
       
-      // Force font assignment and test if it's actually available
-      if (fontLoaded) {
-        ctx.font = `110px 'OctahedronFont', Arial`;
-        // Test if the font is actually loaded by measuring text
-        const metrics = ctx.measureText(txt);
-        if (metrics.width === 0) {
-          // Font didn't load properly, fallback to Arial
-          ctx.font = '110px Arial';
-        }
-      } else {
-        ctx.font = '110px Arial';
-      }
-      
-      console.log('Font loaded:', fontLoaded, 'Using font:', ctx.font);
       ctx.fillStyle = '#043D91FF';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -149,7 +144,7 @@ export default function TwoBackgroundOctahedron() {
       mount.removeChild(renderer.domElement);
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, []); // Dependencies cleared as font loading is handled by Suspense
 
   return (
     <div

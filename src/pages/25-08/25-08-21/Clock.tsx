@@ -4,11 +4,11 @@ import type { FontConfig } from '../../../types/clock';
 import customFont821 from '../../../assets/fonts/25-08-21-wide.ttf?url';
 import styles from './Clock.module.css';
 
-const NumberLineClock: React.FC = () => {
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'CustomFont', fontUrl: customFont821 }
-  ], []);
+export const fontConfigs: FontConfig[] = [
+  { fontFamily: 'CustomFont', fontUrl: customFont821 }
+];
 
+const NumberLineClock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
   const hoursRef = useRef<HTMLDivElement>(null);

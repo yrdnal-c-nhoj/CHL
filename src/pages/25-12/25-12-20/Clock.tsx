@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo, memo, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 
 // --- Image Imports ---
 import bg1 from '../../../assets/images/25-12/25-12-20/nest.jpg';
@@ -8,6 +7,9 @@ import hourHandImg from '../../../assets/images/25-12/25-12-20/fea1.webp';
 import minuteHandImg from '../../../assets/images/25-12/25-12-20/fea2.webp';
 import secondHandImg from '../../../assets/images/25-12/25-12-20/fea3.webp';
 import font251211 from '../../../assets/fonts/feather.otf';
+
+// Export assets for preloading
+export { bg1, hourHandImg, minuteHandImg, secondHandImg };
 
 // --- CONFIG ---
 const CONFIG = {
@@ -35,21 +37,28 @@ const CONFIG = {
   tileSize: 100,
 };
 
+export const fontConfigs = [
+  { fontFamily: 'CustomFont251211', fontUrl: font251211 },
+];
+
 // --- HOOKS ---
 function useTime() {
   const [time, setTime] = useState(() => new Date());
+  const rafRef = useRef<number>();
 
   useEffect(() => {
-    const updateTime: React.FC = () => {
+    const tick = () => {
       setTime(new Date());
+      rafRef.current = requestAnimationFrame(tick);
     };
 
-    // Start the interval loop
-    const intervalId = setInterval(updateTime, 50);
+    rafRef.current = requestAnimationFrame(tick);
 
     // Cleanup function to clear the interval when component unmounts
     return () => {
-      clearInterval(intervalId);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
     };
   }, []);
 
@@ -102,17 +111,15 @@ const StaticBackground = memo(() => (
 ));
 
 // --- NUMERAL ---
-const ClockNumeral = memo(({ text, x, y, fontReady }) => (
+const ClockNumeral = memo(({ text, x, y }) => (
   <div
     style={{
       position: 'absolute',
       left: `${x}%`,
       top: `${y}%`,
       transform: 'translate(-50%, -50%)',
-      color: '#05121CFF',
-      fontFamily: fontReady ? 'CustomFont251211, serif' : 'serif',
-      opacity: fontReady ? 1 : 0,
-      transition: 'opacity 0.3s ease',
+      color: '#05121CFF', // This color is part of the design
+      fontFamily: 'CustomFont251211, serif',
       fontSize: 'clamp(7rem, 9vw, 8.5rem)',
       textShadow: '1px 1px 0px #B48811FF',
       zIndex: 0,
@@ -147,7 +154,7 @@ const ClockHand = memo(({ img, width, max, rotation }) => (
 ));
 
 // --- CLOCK FACE ---
-const ClockFace = memo(({ angles, fontReady }) => (
+const ClockFace = memo(({ angles }) => (
   <div
     style={{
       position: 'fixed',
@@ -166,7 +173,6 @@ const ClockFace = memo(({ angles, fontReady }) => (
         text={p.text}
         x={p.x}
         y={p.y}
-        fontReady={fontReady}
       />
     ))}
 
@@ -197,29 +203,13 @@ const ClockFace = memo(({ angles, fontReady }) => (
 export default function AnalogClock() {
   const time = useTime();
   const angles = useClockAngles(time);
-  const preloadedRef = useRef(false);
-  const fontReady = useFontLoader('CustomFont251211', font251211, {
-    fallback: true,
-    timeout: 3500,
-  });
 
-  // Preload hand images once
-  useEffect(() => {
-    if (!preloadedRef.current) {
-      [hourHandImg, minuteHandImg, secondHandImg].forEach((src) => {
-        const img = new Image();
-        img.src = src;
-      });
-      preloadedRef.current = true;
-    }
-  }, []);
+  useSuspenseFontLoader(fontConfigs);
 
   return (
-    <div
-      style={{ opacity: fontReady ? 1 : 0, transition: 'opacity 0.35s ease' }}
-    >
+    <div>
       <StaticBackground />
-      <ClockFace angles={angles} fontReady={fontReady} />
+      <ClockFace angles={angles} />
     </div>
   );
 }
