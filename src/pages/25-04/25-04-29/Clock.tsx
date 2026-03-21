@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
 import fontUrl from '../../../assets/fonts/25-04-29-bang.ttf?url';
 import gif1 from '../../../assets/images/25-04/25-04-29/fw.webp';
 import gif2 from '../../../assets/images/25-04/25-04-29/84298.gif';
@@ -12,7 +13,7 @@ interface FireworksClockProps {
   // No props required for this component
 }
 
-const FireworksClock = () => {
+const FireworksClock: React.FC<FireworksClockProps> = () => {
   const clockRef = useRef<HTMLDivElement>(null);
   const componentId = `fireworks-clock-${Math.random().toString(36).substr(2, 9)}`;
 

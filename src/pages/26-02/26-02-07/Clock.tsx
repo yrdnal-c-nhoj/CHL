@@ -1,42 +1,14 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import customFontUrl from '../../../assets/fonts/26-02-07-gear.ttf?url';
 import backgroundImage from '../../../assets/images/26-02/26-02-07/gear.gif';
-
-// Custom hook for smooth time updates using requestAnimationFrame
-const useSmoothTime = (updateInterval: number = 1000) => {
-  const [time, setTime] = useState(new Date());
-  const lastUpdateRef = useRef<number>(0);
-
-  useEffect(() => {
-    let animationFrameId: number;
-
-    const animate = (timestamp: number) => {
-      // Update based on interval to avoid excessive updates
-      if (timestamp - lastUpdateRef.current >= updateInterval) {
-        setTime(new Date());
-        lastUpdateRef.current = timestamp;
-      }
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animationFrameId = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
-  }, [updateInterval]);
-
-  return time;
-};
 
 const FullscreenClock: React.FC = () => {
   const [showContent, setShowContent] = useState(false);
 
   // Use Suspense-compatible font loading
-  useSuspenseFontLoader([
+  const fontConfigs = useMemo(() => [
     {
       fontFamily: 'GearFont',
       fontUrl: customFontUrl,
@@ -45,7 +17,9 @@ const FullscreenClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ]);
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
 
   // Show content immediately with Suspense
   useEffect(() => {
@@ -53,7 +27,7 @@ const FullscreenClock: React.FC = () => {
   }, []);
 
   // Use smooth time updates with requestAnimationFrame
-  const time = useSmoothTime(1000); // Update every second
+  const time = useSecondClock();
 
   const digits = useMemo(() => {
     let hours = time.getHours();

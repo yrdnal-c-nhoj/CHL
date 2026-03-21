@@ -1,10 +1,18 @@
-import React, { useEffect } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import dottedFont from '../../../assets/fonts/25-05-14-dotted.ttf'; // Custom dotted font for clock display
+import React, { useEffect, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
+import dottedFont from '../../../assets/fonts/25-05-14-dotted.ttf?url';
 
-export default function Clock() {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Component Props interface
+interface ClockProps {
+  // No props required for this component
+}
+
+const Clock: React.FC<ClockProps> = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'DottedRough2025_11_01',
       fontUrl: dottedFont,
@@ -13,8 +21,11 @@ export default function Clock() {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
 
   // Font loading handled by useMultipleFontLoader
 
@@ -214,3 +225,5 @@ export default function Clock() {
     </div>
   );
 }
+
+export default Clock;

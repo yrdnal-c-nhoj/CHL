@@ -1,26 +1,37 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import KinaFont from '../../../assets/fonts/25-05-09-Kina.ttf';
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
+import KinaFont from '../../../assets/fonts/25-05-09-Kina.ttf?url';
 import swurl from '../../../assets/images/25-05/25-05-09/swurl.gif';
 
 const importantNumbers = [12, 3, 6, 9];
 
-const Clock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Component Props interface
+interface ClockProps {
+  // No props required for this component
+}
+
+const Clock: React.FC<ClockProps> = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
-      fontFamily: 'Kina',
+      fontFamily: 'KinaFont',
       fontUrl: KinaFont,
       options: {
         weight: 'normal',
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
 
-  // Font loading and @font-face CSS handled by useMultipleFontLoader
-  const clockRef = useRef(null);
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
+
+  // Font loading and @font-face CSS handled by useSuspenseFontLoader
+  const clockRef = useRef<HTMLDivElement>(null);
   const [time, setTime] = useState(new Date());
 
   // Update time every animation frame for smooth second hand
@@ -47,7 +58,7 @@ const Clock: React.FC = () => {
           height: '100dvh',
           overflow: 'hidden',
           position: 'relative',
-          fontFamily: "'Kina', sans-serif",
+          fontFamily: "'KinaFont', sans-serif",
         }}
       >
         {/* Background image */}
@@ -121,7 +132,7 @@ const Clock: React.FC = () => {
                   fontSize: '7rem',
                   color: '#f199c8',
                   textShadow: '5px 5px #100f10, -2px -2px white, 6px 6px white',
-                  fontFamily: "'Kina', sans-serif",
+                  fontFamily: "'KinaFont', sans-serif",
                   pointerEvents: 'none',
                   zIndex: 1,
                   opacity: 0.7,

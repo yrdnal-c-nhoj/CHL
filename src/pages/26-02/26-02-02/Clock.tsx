@@ -1,37 +1,9 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useState } from 'react';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
 import digitalBgImage from '../../../assets/images/26-02/26-02-02/boom.webp';
 
-// Custom hook for smooth time updates using requestAnimationFrame
-const useSmoothTime = (updateInterval: number = 100) => {
-  const [time, setTime] = useState(new Date());
-  const lastUpdateRef = useRef<number>(0);
-
-  useEffect(() => {
-    let animationFrameId: number;
-
-    const animate = (timestamp: number) => {
-      // Update based on interval to avoid excessive updates
-      if (timestamp - lastUpdateRef.current >= updateInterval) {
-        setTime(new Date());
-        lastUpdateRef.current = timestamp;
-      }
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animationFrameId = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
-  }, [updateInterval]);
-
-  return time;
-};
-
 const FONT_NAME = 'Share Tech Mono';
+const FONT_URL = 'https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap';
 
 interface DigitStyle {
   fontSize: string;
@@ -45,26 +17,21 @@ interface DigitStyle {
 
 const SonicBoomClock: React.FC = () => {
   const [showContent, setShowContent] = useState(false);
+  const time = useMillisecondClock();
 
-  // Use Suspense-compatible font loading
-  useSuspenseFontLoader([
-    {
-      fontFamily: FONT_NAME,
-      fontUrl: 'https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap',
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ]);
-
-  // Show content immediately with Suspense
+  // Load Google Font
   useEffect(() => {
+    const link = document.createElement('link');
+    link.href = FONT_URL;
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
     setShowContent(true);
-  }, []);
 
-  // Use smooth time updates with requestAnimationFrame
-  const time = useSmoothTime(100); // Update every 100ms for smooth millisecond display
+    return () => {
+      // Optional: remove link on unmount if you want to clean up
+      // document.head.removeChild(link);
+    };
+  }, []);
 
   const timeString =
     time.getHours().toString().padStart(2, '0') +

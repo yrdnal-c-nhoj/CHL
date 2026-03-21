@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useMillisecondClock } from '../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
 import backgroundImage from '../../../assets/images/25-04/25-04-25/bad.webp';
 import boldFont from '../../../assets/fonts/25-04-25-Oswald-Bold.ttf?url';
 import hourHandImage from '../../../assets/images/25-04/25-04-25/ban.webp';
@@ -19,7 +20,7 @@ interface MyClockProps {
   // No props required for this component
 }
 
-const MyClock = () => {
+const MyClock: React.FC<MyClockProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const componentId = useRef(`oswald-clock-${Date.now()}`);
   const fontName = `OswaldClockFont-${componentId.current}`;

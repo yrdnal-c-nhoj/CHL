@@ -1,11 +1,25 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
 import lightningImg from '../../../assets/images/25-05/25-05-01/lightning.webp';
-import innerFontTTF from '../../../assets/fonts/25-05-01-Inner.ttf';
+import innerFontTTF from '../../../assets/fonts/25-05-01-Inner.ttf?url';
 
-export default function SlowLightningClock() {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Time state interface
+interface TimeState {
+  hours: string;
+  minutes: string;
+}
+
+// Component Props interface
+interface SlowLightningClockProps {
+  // No props required for this component
+}
+
+const SlowLightningClock: React.FC<SlowLightningClockProps> = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'InnerFont',
       fontUrl: innerFontTTF,
@@ -14,48 +28,48 @@ export default function SlowLightningClock() {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
 
-  const [time, setTime] = useState<any>({ hours: '--', minutes: '--' });
-  const clockRef = useRef(null);
-  const flashWhiteRef = useRef(null);
-  const flashBlackRef = useRef(null);
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
+  const [time, setTime] = useState<TimeState>({ hours: '--', minutes: '--' });
+  const clockRef = useRef<HTMLDivElement>(null);
+  const flashWhiteRef = useRef<HTMLDivElement>(null);
+  const flashBlackRef = useRef<HTMLDivElement>(null);
 
-  // Font loading handled by useMultipleFontLoader
+  // Update clock time whenever currentTime changes
+  const updateClock = useCallback((): void => {
+    setTime({
+      hours: String(currentTime.getHours()).padStart(2, '0'),
+      minutes: String(currentTime.getMinutes()).padStart(2, '0'),
+    });
+  }, [currentTime]);
 
-  // Update clock time every second
   useEffect(() => {
-    function updateClock() {
-      const now = new Date();
-      setTime({
-        hours: String(now.getHours()).padStart(2, '0'),
-        minutes: String(now.getMinutes()).padStart(2, '0'),
-      });
-    }
     updateClock();
-    const intervalId = setInterval(updateClock, 1000);
-    return () => clearInterval(intervalId);
-  }, []);
+  }, [updateClock]);
 
   // Clock shaking animation
-  function triggerClockEffect() {
+  const triggerClockEffect = useCallback((): void => {
     if (!clockRef.current) return;
     clockRef.current.classList.add('animate-clock');
     setTimeout(() => {
-      clockRef.current && clockRef.current.classList.remove('animate-clock');
+      if (clockRef.current) {
+        clockRef.current.classList.remove('animate-clock');
+      }
     }, 330);
-  }
+  }, []);
 
   // Flash effect for white or black flash
-  function triggerFlash(type) {
+  const triggerFlash = useCallback((type: 'white' | 'black'): void => {
     const el = type === 'white' ? flashWhiteRef.current : flashBlackRef.current;
     if (!el) return;
     el.style.opacity = '1';
     setTimeout(() => {
       if (el) el.style.opacity = '0';
     }, 100);
-  }
+  }, []);
 
   // Loop random effects
   useEffect(() => {
@@ -245,3 +259,5 @@ export default function SlowLightningClock() {
     </>
   );
 }
+
+export default SlowLightningClock;

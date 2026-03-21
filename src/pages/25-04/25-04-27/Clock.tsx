@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
 import coinGif from '../../../assets/images/25-04/25-04-27/coin.gif';
 import spinWebp from '../../../assets/images/25-04/25-04-27/spin.webp';
 
@@ -10,7 +11,8 @@ interface SpinningCoinClockProps {
   // No props required for this component
 }
 
-const SpinningCoinClock = () => {
+const SpinningCoinClock: React.FC<SpinningCoinClockProps> = () => {
+  const clockRef = useRef<HTMLDivElement>(null);
   const componentId = useRef(`coin-clock-${Date.now()}`);
   const fontName = `CoinClockFont-${componentId.current}`;
 
@@ -23,7 +25,7 @@ const SpinningCoinClock = () => {
   // Use the standardized hook for smooth clock updates
   const currentTime = useSecondClock();
   const updateClock = useCallback((): void => {
-    const clock = document.getElementById('clock');
+    const clock = clockRef.current;
     if (!clock) return;
 
     const hours = currentTime.getHours() % 12;
@@ -50,27 +52,11 @@ const SpinningCoinClock = () => {
   }, [currentTime]);
 
   useEffect(() => {
-    const clock = document.getElementById('clock');
-    if (!clock) return;
-
-    // Remove any existing hands to prevent duplicates on remount
-    const existingHands = clock.querySelectorAll('.hand');
-    existingHands.forEach((h) => h.remove());
-
-    // Create clock hands
-    const hourHand = document.createElement('div');
-    hourHand.className = 'hand hour-hand';
-    clock.appendChild(hourHand);
-
-    const minuteHand = document.createElement('div');
-    minuteHand.className = 'hand minute-hand';
-    clock.appendChild(minuteHand);
-
-    const secondHand = document.createElement('div');
-    secondHand.className = 'hand second-hand';
-    clock.appendChild(secondHand);
-
+    // Update clock immediately and then every second
     updateClock();
+    const interval = setInterval(updateClock, 1000);
+    
+    return () => clearInterval(interval);
   }, [updateClock]);
 
   return (
@@ -104,6 +90,7 @@ const SpinningCoinClock = () => {
         }}
       />
       <div
+        ref={clockRef}
         id="clock"
         style={{
           width: '80vh',
@@ -114,6 +101,45 @@ const SpinningCoinClock = () => {
           animation: 'spin 7s linear infinite',
         }}
       >
+        <div
+          className="hour-hand"
+          style={{
+            position: 'absolute',
+            bottom: '50%',
+            left: '50%',
+            transformOrigin: 'bottom center',
+            backgroundColor: '#d3ad62',
+            width: '0.6vw',
+            height: '12vw',
+            transform: 'translateX(-50%)',
+          }}
+        />
+        <div
+          className="minute-hand"
+          style={{
+            position: 'absolute',
+            bottom: '50%',
+            left: '50%',
+            transformOrigin: 'bottom center',
+            backgroundColor: '#d3ad62',
+            width: '0.4vw',
+            height: '16vw',
+            transform: 'translateX(-50%)',
+          }}
+        />
+        <div
+          className="second-hand"
+          style={{
+            position: 'absolute',
+            bottom: '50%',
+            left: '50%',
+            transformOrigin: 'bottom center',
+            backgroundColor: '#d3ad62',
+            width: '0.2vw',
+            height: '18vw',
+            transform: 'translateX(-50%)',
+          }}
+        />
         <div
           className="center"
           style={{
@@ -160,7 +186,7 @@ const SpinningCoinClock = () => {
 
         .second-hand {
           width: 0.2vw;
-          height: 818vw;
+          height: 18vw;
           transform: translateX(-50%);
         }
 

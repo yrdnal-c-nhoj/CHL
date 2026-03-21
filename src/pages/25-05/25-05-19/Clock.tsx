@@ -136,10 +136,10 @@ const Clock: React.FC = () => {
               width: '1vh',
               height: '20vh',
               backgroundColor: 'black',
-              top: '50%',
+              bottom: '50%',
               left: '50%',
-              transform: `translate(-50%, -50%) rotate(${hourDeg}deg)`,
-              transformOrigin: '50% 50%',
+              transform: `translateX(-50%) rotate(${hourDeg}deg)`,
+              transformOrigin: '50% 100%',
               borderRadius: '1vh',
             }}
           />
@@ -151,10 +151,10 @@ const Clock: React.FC = () => {
               width: '0.8vh',
               height: '28vh',
               backgroundColor: 'black',
-              top: '50%',
+              bottom: '50%',
               left: '50%',
-              transform: `translate(-50%, -50%) rotate(${minuteDeg}deg)`,
-              transformOrigin: '50% 50%',
+              transform: `translateX(-50%) rotate(${minuteDeg}deg)`,
+              transformOrigin: '50% 100%',
               borderRadius: '1vh',
             }}
           />
@@ -166,10 +166,10 @@ const Clock: React.FC = () => {
               width: '0.5vh',
               height: '30vh',
               backgroundColor: 'red',
-              top: '50%',
+              bottom: '50%',
               left: '50%',
-              transform: `translate(-50%, -50%) rotate(${secondDeg}deg)`,
-              transformOrigin: '50% 50%',
+              transform: `translateX(-50%) rotate(${secondDeg}deg)`,
+              transformOrigin: '50% 100%',
               borderRadius: '1vh',
             }}
           />

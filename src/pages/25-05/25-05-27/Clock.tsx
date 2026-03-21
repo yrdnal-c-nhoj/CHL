@@ -1,31 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import backgroundImage from '../../../assets/images/25-05/25-05-27/dot.jpg'; // Import background image
-import dotsFont from '../../../assets/fonts/25-05-27-dots.otf'; // Import font file
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import backgroundImage from '../../../assets/images/25-05/25-05-27/dot.jpg';
+import dotsFont from '../../../assets/fonts/25-05-27-dots.otf?url';
 
-function Clock() {
-  const [time, setTime] = useState(new Date());
-  const [isMobile, setIsMobile] = useState<any>(window.innerWidth < 600);
-  const [fontLoaded, setFontLoaded] = useState(false);
 
-  // Load font using inline styles
-  useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace('dotsFont', `url(${dotsFont})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font loading failed, using fallback:', error);
-        setFontLoaded(false);
+const Clock: React.FC = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    {
+      fontFamily: 'dotsFont',
+      fontUrl: dotsFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
       }
-    };
+    }
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
 
-    loadFont();
-  }, []);
+  const [time, setTime] = useState(new Date());
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
 
   useEffect(() => {
-    const handleResize: React.FC = () => {
+    const handleResize = () => {
       setIsMobile(window.innerWidth < 600);
     };
 
@@ -53,7 +51,7 @@ function Clock() {
 
   const { hours, minutes, seconds } = formatTimeParts(time);
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -64,7 +62,7 @@ function Clock() {
     overflow: 'hidden',
   };
 
-  const unitStyle = {
+  const unitStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'row',
     gap: '0.1rem',
@@ -72,18 +70,17 @@ function Clock() {
     justifyContent: 'center',
   };
 
-  const digitBoxStyle = {
+  const digitBoxStyle: React.CSSProperties = {
     width: '9rem',
     height: '9rem',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: '11rem',
-    fontFamily: fontLoaded ? "'dotsFont', monospace" : 'monospace',
-    backgroundColor: 'rgba(251, 148, 5, 0.1)',
+    fontFamily: "'dotsFont', monospace",
     borderRadius: '0.2em',
     color: 'rgb(4, 2, 109)',
-    border: '2px solid rgba(4, 2, 109, 0.3)',
+
     textShadow: `
       #f6320b 1px 1px 20px,
       #94f00b -1px 1px 20px,
