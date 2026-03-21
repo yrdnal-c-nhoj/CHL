@@ -98,7 +98,7 @@ const TodayClockPage = () => {
           throw new Error('Clock module not found');
         }
 
-        const module = await clockModulesmoduleKey;
+        const module = await clockModules[moduleKey]();
         setClockComponent(() => module.default);
         setIsReady(true);
         setTimeout(() => setOverlayVisible(false), OVERLAY_FADE_DURATION);
