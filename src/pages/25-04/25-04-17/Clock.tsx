@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import styles from './Clock.module.css';
 
 // Digit color mapping
 const digitStyles = {
@@ -15,7 +16,7 @@ const digitStyles = {
 };
 
 // Load Google Font dynamically
-const loadFont: React.FC = () => {
+const loadFont = () => {
   const link = document.createElement('link');
   link.href = 'https://fonts.googleapis.com/css2?family=Asset&display=swap';
   link.rel = 'stylesheet';
@@ -62,12 +63,21 @@ export default function StripeClock() {
   });
 
   return (
-    <div style={containerStyle}>
-      {timeStr.split('').map((char, idx) => (
-        <div key={idx} style={getStripeStyle(char)}>
-          {char}
-        </div>
-      ))}
+    <div className={styles.container}>
+      <div className={styles.clock}>
+        {timeStr.split('').map((char, idx) => (
+          <div 
+            key={idx} 
+            className={styles.stripe}
+            style={{
+              backgroundColor: digitStyles[char].bg,
+              color: digitStyles[char].color,
+            }}
+          >
+            {char}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

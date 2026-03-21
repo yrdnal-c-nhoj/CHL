@@ -25,7 +25,7 @@ export const fontConfigs = [
 ];
 
 const IndecisiveClock: React.FC = () => {
-  const [time, setTime] = useState<any>({ h: '', m: '', s: '' });
+  const [time, setTime] = useState({ h: '', m: '', s: '' });
   const [showFirst, setShowFirst] = useState<boolean>(true);
 
   // Suspense-friendly font loading with centralized style injection

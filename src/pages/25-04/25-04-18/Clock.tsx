@@ -1,14 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 import backgroundImg from '../../../assets/images/25-04/25-04-18/Antarctica.jpg';
+import styles from './Clock.module.css';
 
 const AntarcticaClock: React.FC = () => {
-  const clockRef = useRef(null);
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
+  const clockRef = useRef<HTMLDivElement>(null);
+  const hourRef = useRef<HTMLDivElement>(null);
+  const minuteRef = useRef<HTMLDivElement>(null);
+  const secondRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const clock = clockRef.current;
+    if (!clock) return;
 
     // Clear any existing ticks (in case of remount)
     while (clock.firstChild) {
@@ -18,18 +20,17 @@ const AntarcticaClock: React.FC = () => {
     // Create tick marks
     for (let i = 0; i < 60; i++) {
       const tick = document.createElement('div');
-      tick.className = 'tick';
-      if (i % 5 === 0) tick.classList.add('major');
+      tick.className = `${styles.tick} ${i % 5 === 0 ? styles.major : ''}`;
       tick.style.transform = `rotate(${i * 6}deg)`;
       clock.appendChild(tick);
     }
 
     // Append hands
-    clock.appendChild(hourRef.current);
-    clock.appendChild(minuteRef.current);
-    clock.appendChild(secondRef.current);
+    if (hourRef.current) clock.appendChild(hourRef.current);
+    if (minuteRef.current) clock.appendChild(minuteRef.current);
+    if (secondRef.current) clock.appendChild(secondRef.current);
 
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const hours = now.getHours() % 12;
       const minutes = now.getMinutes();
@@ -42,42 +43,25 @@ const AntarcticaClock: React.FC = () => {
       const progress = ms / 1000;
       const secondAngle = baseSecondAngle + progress * 6;
 
-      hourRef.current.style.transform = `translateX(-50%) rotate(${hourAngle}deg)`;
-      minuteRef.current.style.transform = `translateX(-50%) rotate(${minuteAngle}deg)`;
-      secondRef.current.style.transform = `translateX(-50%) rotate(${secondAngle}deg)`;
-
-      requestAnimationFrame(updateClock);
+      if (hourRef.current) hourRef.current.style.transform = `rotate(${hourAngle}deg)`;
+      if (minuteRef.current) minuteRef.current.style.transform = `rotate(${minuteAngle}deg)`;
+      if (secondRef.current) secondRef.current.style.transform = `rotate(${secondAngle}deg)`;
     };
 
-    updateClock();
+    requestAnimationFrame(updateClock);
   }, []);
 
   return (
-    <>
-      <style>
-        {`
-          .tick {
-            position: absolute;
-            width: 0.1vw;
-            height: 37.5vh;
-            background-color: #b6eef6;
-            top: 1.2vh;
-            left: 50%;
-            transform-origin: 50% 14.5vh;
-          }
-
-          .tick.major {
-            height: 58vh;
-            width: 0.1vw;
-          }
-
-          .hand {
-            position: absolute;
-            bottom: 50%;
-            left: 50%;
-            transform-origin: bottom;
-            background-color: #b3edf2;
-          }
+    <div className={styles.container}>
+      <div className={styles.bgContainer}>
+        <img
+          decoding="async"
+          loading="lazy"
+          src={backgroundImg}
+          alt="Antarctica"
+          className={styles.bgImage}
+        />
+      </div>
 
           .hour-hand {
             width: 3.7vw;
