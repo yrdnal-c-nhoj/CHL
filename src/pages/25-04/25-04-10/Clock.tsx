@@ -1,10 +1,17 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import monofettFont from '../../../assets/fonts/25-04-10-Monofett.ttf';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import monofettFont from '../../../assets/fonts/25-04-10-Monofett.ttf?url';
 
-const BarGraphClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Component Props interface
+interface BarGraphClockProps {
+  // No props required for this component
+}
+
+const BarGraphClock = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'BarGraphClockFont',
       fontUrl: monofettFont,
@@ -13,28 +20,18 @@ const BarGraphClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
 
-  const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState(fontsLoaded);
+  // Load fonts using suspense-based loader
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
   const componentId = useRef(`bargraph-clock-${Date.now()}`);
 
-  // Update fontLoaded state when fontsLoaded changes
-  useEffect(() => {
-    setFontLoaded(fontsLoaded);
-  }, [fontsLoaded]);
-
-  // Font loading handled by useMultipleFontLoader
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const hours = time.getHours() % 12 || 12;
-  const minutes = time.getMinutes();
-  const seconds = time.getSeconds();
+  const hours = currentTime.getHours() % 12 || 12;
+  const minutes = currentTime.getMinutes();
+  const seconds = currentTime.getSeconds();
 
   const hourHeight = `${(hours / 12) * 100}vh`;
   const minuteHeight = `${(minutes / 60) * 100}vh`;
@@ -49,7 +46,7 @@ const BarGraphClock: React.FC = () => {
     margin: 0,
     padding: 0,
     backgroundColor: '#e2af2c',
-    fontFamily: fontLoaded ? 'BarGraphClockFont, monospace' : 'monospace',
+    fontFamily: 'BarGraphClockFont, monospace',
   };
 
   const segmentContainerStyle = {

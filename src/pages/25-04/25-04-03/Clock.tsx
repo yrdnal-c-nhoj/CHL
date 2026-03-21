@@ -1,11 +1,32 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import mobyFont from '../../../assets/fonts/25-04-03-moby.ttf';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import mobyFont from '../../../assets/fonts/25-04-03-moby.ttf?url';
 import waves from '../../../assets/images/25-04/25-04-03/waves.gif';
 
-const MobyDickClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Component Props interface
+interface MobyDickClockProps {
+  // No props required for this component
+}
+
+// Center avoid size interface
+interface CenterAvoidSize {
+  width: number;
+  height: number;
+}
+
+// Clock position interface
+interface ClockPosition {
+  x: number;
+  y: number;
+  fontSize: number;
+  opacity: number;
+}
+
+const MobyDickClock = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'MobyClockFont',
       fontUrl: mobyFont,
@@ -14,29 +35,71 @@ const MobyDickClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
 
-  const clockRef = useRef(null);
-  const [fontLoaded, setFontLoaded] = useState(false);
+  // Load fonts using suspense-based loader
+  useSuspenseFontLoader(fontConfigs);
+
+  const clockRef = useRef<HTMLDivElement>(null);
   const componentId = useRef(`moby-clock-${Date.now()}`);
 
-  // Update fontLoaded state when fontsLoaded changes
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
+
+  // Returns a random coordinate avoiding center rectangle
+  const getRandomPosAvoidCenter = useCallback((max: number, avoidStart: number, avoidEnd: number): number => {
+    let pos: number;
+    do {
+      pos = Math.random() * max;
+    } while (pos > avoidStart && pos < avoidEnd);
+    return pos;
+  }, []);
+
+  // Calculate new clock position
+  const calculateNewPosition = useCallback((): ClockPosition => {
+    const centerAvoidSize: CenterAvoidSize = { width: 300, height: 200 };
+
+    const x = getRandomPosAvoidCenter(
+      window.innerWidth,
+      (window.innerWidth - centerAvoidSize.width) / 2,
+      (window.innerWidth + centerAvoidSize.width) / 2,
+    );
+    const y = getRandomPosAvoidCenter(
+      window.innerHeight,
+      (window.innerHeight - centerAvoidSize.height) / 2,
+      (window.innerHeight + centerAvoidSize.height) / 2,
+    );
+
+    const fontSize = 2 + Math.random() * 6; // rem
+    const opacity = Math.random() * 0.7 + 0.3;
+
+    return { x, y, fontSize, opacity };
+  }, [getRandomPosAvoidCenter]);
+
+  // Update clock display
+  const updateClockDisplay = useCallback((position: ClockPosition): void => {
+    const clock = clockRef.current;
+    if (!clock) return;
+
+    // Update time
+    clock.textContent = currentTime.toLocaleTimeString('en-US', {
+      hour12: false,
+      hour: 'numeric',
+      minute: 'numeric',
+    });
+
+    // Apply styles with smooth transition
+    clock.style.transition =
+      'transform 2s ease-in-out, font-size 2s ease-in-out, opacity 2s ease-in-out';
+    clock.style.transform = `translate(${position.x}px, ${position.y}px)`;
+    clock.style.fontSize = `${position.fontSize}rem`;
+    clock.style.opacity = position.opacity.toString();
+  }, [currentTime]);
+
   useEffect(() => {
-    setFontLoaded(fontsLoaded);
-  }, [fontsLoaded]);
-
-  // Font loading handled by useMultipleFontLoader
-
-  useEffect(() => {
-    if (!fontLoaded) return; // Wait for font to load
-
-    let timeoutId: NodeJS.Timeout;
-
     // Create scoped CSS
     const style = document.createElement('style');
     style.innerHTML = `
-      /* Font loading handled by useMultipleFontLoader */
       @keyframes float {
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-0.5rem); }
@@ -44,56 +107,10 @@ const MobyDickClock: React.FC = () => {
     `;
     document.head.appendChild(style);
 
-    const centerAvoidSize = { width: 300, height: 200 }; // px area to avoid center
-
-    // Returns a random coordinate avoiding center rectangle
-    const getRandomPosAvoidCenter = (max, avoidStart, avoidEnd) => {
-      let pos;
-      do {
-        pos = Math.random() * max;
-      } while (pos > avoidStart && pos < avoidEnd);
-      return pos;
-    };
-
-    const moveClock = () => {
-      const clock = clockRef.current;
-      if (!clock) return;
-
-      // Update time
-      const now = new Date();
-      clock.textContent = now.toLocaleTimeString('en-US', {
-        hour12: false,
-        hour: 'numeric',
-        minute: 'numeric',
-      });
-
-      // Calculate random X and Y avoiding center area
-      const x = getRandomPosAvoidCenter(
-        window.innerWidth,
-        (window.innerWidth - centerAvoidSize.width) / 2,
-        (window.innerWidth + centerAvoidSize.width) / 2,
-      );
-      const y = getRandomPosAvoidCenter(
-        window.innerHeight,
-        (window.innerHeight - centerAvoidSize.height) / 2,
-        (window.innerHeight + centerAvoidSize.height) / 2,
-      );
-
-      // Random font size and opacity
-      const fontSize = 2 + Math.random() * 6; // rem
-      const opacity = Math.random() * 0.7 + 0.3;
-
-      // Apply styles with smooth transition
-      clock.style.transition =
-        'transform 2s ease-in-out, font-size 2s ease-in-out, opacity 2s ease-in-out';
-      clock.style.transform = `translate(${x}px, ${y}px)`;
-      clock.style.fontSize = `${fontSize}rem`;
-      clock.style.opacity = opacity;
-
-      // Next move after 2-4 seconds randomly
-      const nextTime = 2000 + Math.random() * 2000;
-      timeoutId = setTimeout(moveClock, nextTime);
-    };
+    let animationFrameId: number;
+    let lastMoveTime: number = 0;
+    let nextMoveDelay: number = 2000 + Math.random() * 2000;
+    let isInitialized: boolean = false;
 
     // Initial position: place clock off-screen so first move slides it in
     const clock = clockRef.current;
@@ -105,14 +122,30 @@ const MobyDickClock: React.FC = () => {
       clock.style.transform = 'translate(-500px, -500px)';
     }
 
+    const animate = (timestamp: number): void => {
+      if (!isInitialized) {
+        // Initialize with first move
+        updateClockDisplay(calculateNewPosition());
+        isInitialized = true;
+        lastMoveTime = timestamp;
+      } else if (timestamp - lastMoveTime >= nextMoveDelay) {
+        // Move clock
+        updateClockDisplay(calculateNewPosition());
+        lastMoveTime = timestamp;
+        nextMoveDelay = 2000 + Math.random() * 2000;
+      }
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
     // Start animation loop
-    moveClock();
+    animationFrameId = requestAnimationFrame(animate);
 
     return () => {
-      clearTimeout(timeoutId);
+      cancelAnimationFrame(animationFrameId);
       if (style.parentNode) style.parentNode.removeChild(style);
     };
-  }, [fontLoaded]);
+  }, [calculateNewPosition, updateClockDisplay]);
 
   return (
     <div
@@ -131,7 +164,7 @@ const MobyDickClock: React.FC = () => {
       <div
         ref={clockRef}
         style={{
-          fontFamily: fontLoaded ? 'MobyClockFont, cursive' : 'cursive',
+          fontFamily: 'MobyClockFont, cursive',
           color: '#a1b4b4',
           textShadow:
             '#ced4d4 0.1rem 0.1rem 0.2rem, #000404 -0.1rem -0.1rem 0.9rem',

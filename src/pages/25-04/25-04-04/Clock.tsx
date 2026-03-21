@@ -1,39 +1,69 @@
-import React, { useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 
 import beat4 from '../../../assets/images/25-04/25-04-04/beat4.webp';
 import tumblrImg from '../../../assets/images/25-04/25-04-04/heart.webp';
 
-const HeartbeatClock: React.FC = () => {
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
+// Component Props interface
+interface HeartbeatClockProps {
+  // No props required for this component
+}
+
+// Clock refs interface
+interface ClockRefs {
+  hour: React.RefObject<HTMLDivElement | null>;
+  minute: React.RefObject<HTMLDivElement | null>;
+  second: React.RefObject<HTMLDivElement | null>;
+}
+
+// Style interfaces - simplified to avoid CSSProperties conflicts
+type BodyStyle = React.CSSProperties;
+type BackgroundStyle = React.CSSProperties;
+type ClockStyle = React.CSSProperties;
+type HandBaseStyle = React.CSSProperties;
+type HourStyle = React.CSSProperties;
+type MinuteStyle = React.CSSProperties;
+type SecondStyle = React.CSSProperties;
+type CenterDotStyle = React.CSSProperties;
+
+const HeartbeatClock = () => {
+  const clockRefs: ClockRefs = {
+    hour: useRef<HTMLDivElement>(null),
+    minute: useRef<HTMLDivElement>(null),
+    second: useRef<HTMLDivElement>(null),
+  };
+
+  // Font loading configuration (memoized) - no custom fonts needed
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
+
+  const updateClock = useCallback((): void => {
+    const seconds = currentTime.getSeconds();
+    const minutes = currentTime.getMinutes();
+    const hours = currentTime.getHours();
+
+    const secDeg = seconds * 6;
+    const minDeg = minutes * 6 + seconds * 0.1;
+    const hourDeg = (hours % 12) * 30 + minutes * 0.5;
+
+    if (clockRefs.second.current)
+      clockRefs.second.current.style.transform = `rotate(${secDeg}deg)`;
+    if (clockRefs.minute.current)
+      clockRefs.minute.current.style.transform = `rotate(${minDeg}deg)`;
+    if (clockRefs.hour.current)
+      clockRefs.hour.current.style.transform = `rotate(${hourDeg}deg)`;
+  }, [currentTime]);
 
   useEffect(() => {
-    function updateClock() {
-      const now = new Date();
-      const seconds = now.getSeconds();
-      const minutes = now.getMinutes();
-      const hours = now.getHours();
-
-      const secDeg = seconds * 6;
-      const minDeg = minutes * 6 + seconds * 0.1;
-      const hourDeg = (hours % 12) * 30 + minutes * 0.5;
-
-      if (secondRef.current)
-        secondRef.current.style.transform = `rotate(${secDeg}deg)`;
-      if (minuteRef.current)
-        minuteRef.current.style.transform = `rotate(${minDeg}deg)`;
-      if (hourRef.current)
-        hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
-    }
-
     updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  }, [updateClock]);
 
-  const bodyStyle = {
+  const bodyStyle: BodyStyle = {
     margin: 0,
     overflow: 'hidden',
     position: 'relative',
@@ -44,7 +74,7 @@ const HeartbeatClock: React.FC = () => {
     alignItems: 'center',
   };
 
-  const backgroundStyle = {
+  const backgroundStyle: BackgroundStyle = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -57,7 +87,7 @@ const HeartbeatClock: React.FC = () => {
     zIndex: 0,
   };
 
-  const clockStyle = {
+  const clockStyle: ClockStyle = {
     position: 'relative',
     width: '50vh',
     height: '50vh',
@@ -74,7 +104,7 @@ const HeartbeatClock: React.FC = () => {
     zIndex: 10,
   };
 
-  const handBaseStyle = {
+  const handBaseStyle: HandBaseStyle = {
     position: 'absolute',
     bottom: '50%',
     left: '50%',
@@ -82,7 +112,7 @@ const HeartbeatClock: React.FC = () => {
     transform: 'rotate(0deg)',
   };
 
-  const hourStyle = {
+  const hourStyle: HourStyle = {
     ...handBaseStyle,
     width: '7px',
     height: '70px',
@@ -92,7 +122,7 @@ const HeartbeatClock: React.FC = () => {
     zIndex: 3,
   };
 
-  const minuteStyle = {
+  const minuteStyle: MinuteStyle = {
     ...handBaseStyle,
     width: '6px',
     height: '140px',
@@ -102,7 +132,7 @@ const HeartbeatClock: React.FC = () => {
     zIndex: 2,
   };
 
-  const secondStyle = {
+  const secondStyle: SecondStyle = {
     ...handBaseStyle,
     width: '4px',
     height: '150px',
@@ -111,7 +141,7 @@ const HeartbeatClock: React.FC = () => {
     zIndex: 1,
   };
 
-  const centerDotStyle = {
+  const centerDotStyle: CenterDotStyle = {
     width: '30px',
     height: '30px',
     background: '#ff333f',
@@ -148,9 +178,9 @@ const HeartbeatClock: React.FC = () => {
       <div style={bodyStyle}>
         <div style={backgroundStyle} />
         <div style={clockStyle}>
-          <div ref={hourRef} style={hourStyle} />
-          <div ref={minuteRef} style={minuteStyle} />
-          <div ref={secondRef} style={secondStyle} />
+          <div ref={clockRefs.hour} style={hourStyle} />
+          <div ref={clockRefs.minute} style={minuteStyle} />
+          <div ref={clockRefs.second} style={secondStyle} />
           <div style={centerDotStyle} />
         </div>
       </div>

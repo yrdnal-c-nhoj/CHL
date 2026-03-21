@@ -1,64 +1,94 @@
-import React, { useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import sys1 from '../../../assets/images/25-04/25-04-07/sys1.gif';
 import sys2 from '../../../assets/images/25-04/25-04-07/sys2.gif';
 import sys3 from '../../../assets/images/25-04/25-04-07/sys3.gif';
 
-const SolarSystemClock = ({ backgroundColor = '#0C0D53FF' }) => {
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
-  const clockRef = useRef(null);
+// Component Props interface
+interface SolarSystemClockProps {
+  backgroundColor?: string;
+}
+
+// Clock refs interface
+interface ClockRefs {
+  hour: React.RefObject<HTMLDivElement | null>;
+  minute: React.RefObject<HTMLDivElement | null>;
+  second: React.RefObject<HTMLDivElement | null>;
+  clock: React.RefObject<HTMLDivElement | null>;
+}
+
+// Style interfaces - simplified to avoid CSSProperties conflicts
+type BodyStyle = React.CSSProperties;
+type ImageStyle = React.CSSProperties;
+type ClockStyle = React.CSSProperties;
+type BallStyle = React.CSSProperties;
+type HourStyle = React.CSSProperties;
+type MinuteStyle = React.CSSProperties;
+type SecondStyle = React.CSSProperties;
+
+const SolarSystemClock = ({ backgroundColor = '#0C0D53FF' }: SolarSystemClockProps) => {
+  const clockRefs: ClockRefs = {
+    hour: useRef<HTMLDivElement>(null),
+    minute: useRef<HTMLDivElement>(null),
+    second: useRef<HTMLDivElement>(null),
+    clock: useRef<HTMLDivElement>(null),
+  };
+
+  // Font loading configuration (memoized) - no custom fonts needed
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
+
+  const updateClock = useCallback((): void => {
+    const seconds = currentTime.getSeconds();
+    const minutes = currentTime.getMinutes();
+    const hours = currentTime.getHours() % 12;
+
+    const secAngle = seconds * 6;
+    const minAngle = minutes * 6 + seconds * 0.1;
+    const hourAngle = hours * 30 + minutes * 0.5;
+
+    if (
+      clockRefs.clock.current &&
+      clockRefs.hour.current &&
+      clockRefs.minute.current &&
+      clockRefs.second.current
+    ) {
+      setBallPosition(clockRefs.second.current, secAngle, 20);
+      setBallPosition(clockRefs.minute.current, minAngle, 15);
+      setBallPosition(clockRefs.hour.current, hourAngle, 10);
+    } else {
+      console.warn('Refs not ready:', {
+        clockRef: clockRefs.clock.current,
+        hourRef: clockRefs.hour.current,
+        minuteRef: clockRefs.minute.current,
+        secondRef: clockRefs.second.current,
+      });
+    }
+  }, [currentTime]);
+
+  const setBallPosition = useCallback((ball: HTMLDivElement | null, angle: number, radiusVh: number): void => {
+    if (!ball || !clockRefs.clock.current) return;
+
+    const rad = (angle - 90) * (Math.PI / 180);
+    const clockRect = clockRefs.clock.current.getBoundingClientRect();
+    const centerX = clockRect.width / 2;
+    const centerY = clockRect.height / 2;
+    const radiusPx = (radiusVh / 100) * window.innerHeight;
+    const x = centerX + radiusPx * Math.cos(rad);
+    const y = centerY + radiusPx * Math.sin(rad);
+
+    ball.style.left = `${x}px`;
+    ball.style.top = `${y}px`;
+  }, [clockRefs.clock]);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
-      const now = new Date();
-      const seconds = now.getSeconds();
-      const minutes = now.getMinutes();
-      const hours = now.getHours() % 12;
-
-      const secAngle = seconds * 6;
-      const minAngle = minutes * 6 + seconds * 0.1;
-      const hourAngle = hours * 30 + minutes * 0.5;
-
-      if (
-        clockRef.current &&
-        hourRef.current &&
-        minuteRef.current &&
-        secondRef.current
-      ) {
-        setBallPosition(secondRef.current, secAngle, 20);
-        setBallPosition(minuteRef.current, minAngle, 15);
-        setBallPosition(hourRef.current, hourAngle, 10);
-      } else {
-        console.warn('Refs not ready:', {
-          clockRef: clockRef.current,
-          hourRef: hourRef.current,
-          minuteRef: minuteRef.current,
-          secondRef: secondRef.current,
-        });
-      }
-    };
-
-    const setBallPosition = (ball, angle, radiusVh) => {
-      if (!ball || !clockRef.current) return;
-
-      const rad = (angle - 90) * (Math.PI / 180);
-      const clockRect = clockRef.current.getBoundingClientRect();
-      const centerX = clockRect.width / 2;
-      const centerY = clockRect.height / 2;
-      const radiusPx = (radiusVh / 100) * window.innerHeight;
-      const x = centerX + radiusPx * Math.cos(rad);
-      const y = centerY + radiusPx * Math.sin(rad);
-
-      ball.style.left = `${x}px`;
-      ball.style.top = `${y}px`;
-    };
-
-    const interval = setInterval(updateClock, 1000);
     updateClock();
-    return () => clearInterval(interval);
-  }, []);
+  }, [updateClock]);
 
   return (
     <div
@@ -99,22 +129,22 @@ const SolarSystemClock = ({ backgroundColor = '#0C0D53FF' }) => {
         <div
           className="clock unique-solar-clock"
           style={styles.clock}
-          ref={clockRef}
+          ref={clockRefs.clock}
         >
           <div
             className="ball hour unique-solar-clock"
             style={{ ...styles.ball, ...styles.hour }}
-            ref={hourRef}
+            ref={clockRefs.hour}
           ></div>
           <div
             className="ball minute unique-solar-clock"
             style={{ ...styles.ball, ...styles.minute }}
-            ref={minuteRef}
+            ref={clockRefs.minute}
           ></div>
           <div
             className="ball second unique-solar-clock"
             style={{ ...styles.ball, ...styles.second }}
-            ref={secondRef}
+            ref={clockRefs.second}
           ></div>
         </div>
       </div>

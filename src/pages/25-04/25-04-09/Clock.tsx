@@ -1,15 +1,45 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useMemo, useCallback, useState } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import roomImage from '../../../assets/images/25-04/25-04-09/room.webp';
 
-const EmptyRoomClock: React.FC = () => {
-  const hourRef = useRef();
-  const minuteRef = useRef();
-  const secondRef = useRef();
+// Component Props interface
+interface EmptyRoomClockProps {
+  // No props required for this component
+}
 
-  const [windowSize, setWindowSize] = useState<any>({
+// Window size interface
+interface WindowSize {
+  width: number;
+  height: number;
+}
+
+// Clock refs interface
+interface ClockRefs {
+  hour: React.RefObject<HTMLDivElement | null>;
+  minute: React.RefObject<HTMLDivElement | null>;
+  second: React.RefObject<HTMLDivElement | null>;
+}
+
+const EmptyRoomClock = () => {
+  const clockRefs: ClockRefs = {
+    hour: useRef<HTMLDivElement>(null),
+    minute: useRef<HTMLDivElement>(null),
+    second: useRef<HTMLDivElement>(null),
+  };
+
+  const [windowSize, setWindowSize] = useState<WindowSize>({
     width: window.innerWidth,
     height: window.innerHeight,
   });
+
+  // Font loading configuration (memoized) - no custom fonts needed
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
 
   useEffect(() => {
     const handleResize = () =>
@@ -18,29 +48,26 @@ const EmptyRoomClock: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const updateClock = useCallback((): void => {
+    const hour = currentTime.getHours() % 12;
+    const minute = currentTime.getMinutes();
+    const second = currentTime.getSeconds();
+
+    const hourDeg = (hour + minute / 60) * 30;
+    const minuteDeg = (minute + second / 60) * 6;
+    const secondDeg = second * 6;
+
+    if (clockRefs.hour.current)
+      clockRefs.hour.current.style.transform = `translate(-50%) rotate(${hourDeg}deg)`;
+    if (clockRefs.minute.current)
+      clockRefs.minute.current.style.transform = `translate(-50%) rotate(${minuteDeg}deg)`;
+    if (clockRefs.second.current)
+      clockRefs.second.current.style.transform = `translate(-50%) rotate(${secondDeg}deg)`;
+  }, [currentTime]);
+
   useEffect(() => {
-    const updateClock: React.FC = () => {
-      const now = new Date();
-      const hour = now.getHours() % 12;
-      const minute = now.getMinutes();
-      const second = now.getSeconds();
-
-      const hourDeg = (hour + minute / 60) * 30;
-      const minuteDeg = (minute + second / 60) * 6;
-      const secondDeg = second * 6;
-
-      if (hourRef.current)
-        hourRef.current.style.transform = `translate(-50%) rotate(${hourDeg}deg)`;
-      if (minuteRef.current)
-        minuteRef.current.style.transform = `translate(-50%) rotate(${minuteDeg}deg)`;
-      if (secondRef.current)
-        secondRef.current.style.transform = `translate(-50%) rotate(${secondDeg}deg)`;
-    };
-
     updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  }, [updateClock]);
 
   const clockSize = Math.min(windowSize.width, windowSize.height) * 0.4;
 
@@ -102,7 +129,7 @@ const EmptyRoomClock: React.FC = () => {
         }}
       >
         <div
-          ref={hourRef}
+          ref={clockRefs.hour}
           style={{
             position: 'absolute',
             bottom: '50%',
@@ -115,7 +142,7 @@ const EmptyRoomClock: React.FC = () => {
           }}
         />
         <div
-          ref={minuteRef}
+          ref={clockRefs.minute}
           style={{
             position: 'absolute',
             bottom: '50%',
@@ -128,7 +155,7 @@ const EmptyRoomClock: React.FC = () => {
           }}
         />
         <div
-          ref={secondRef}
+          ref={clockRefs.second}
           style={{
             position: 'absolute',
             bottom: '50%',

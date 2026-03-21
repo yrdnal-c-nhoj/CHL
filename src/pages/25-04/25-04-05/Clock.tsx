@@ -1,43 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import React, { useMemo, useCallback } from 'react';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 
 import overlayImg from '../../../assets/images/25-04/25-04-05/gfccc.gif';
 import hourHandSource from '../../../assets/images/25-04/25-04-05/gr4.gif';
 import secondHandSource from '../../../assets/images/25-04/25-04-05/gr5.gif';
 import minuteHandSource from '../../../assets/images/25-04/25-04-05/gr99.webp';
 
-// --- Clock Logic Functions (Unchanged) ---
-const getHourRotation = (date) => {
+// Component Props interface
+interface TallClockProps {
+  // No props required for this component
+}
+
+// Clock rotation functions with proper types
+const getHourRotation = (date: Date): number => {
   const hours = date.getHours() % 12;
   const minutes = date.getMinutes();
   return hours * 30 + minutes * 0.5;
 };
 
-const getMinuteRotation = (date) => {
+const getMinuteRotation = (date: Date): number => {
   const minutes = date.getMinutes();
   const seconds = date.getSeconds();
   return minutes * 6 + seconds * 0.1;
 };
 
-const getSecondRotation = (date) => {
+const getSecondRotation = (date: Date): number => {
   const seconds = date.getSeconds() + date.getMilliseconds() / 1000;
   return seconds * 6;
 };
 
-const TallClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+const TallClock = () => {
+  // Use the standardized hook for smooth millisecond clock updates
+  const time = useMillisecondClock();
 
-  useEffect(() => {
-    let rafId = null;
-    const loop: React.FC = () => {
-      setTime(new Date());
-      rafId = requestAnimationFrame(loop);
-    };
-    rafId = requestAnimationFrame(loop);
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId);
-    };
-  }, []);
+  // Font loading configuration (memoized) - no custom fonts needed
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+  useSuspenseFontLoader(fontConfigs);
 
   const hourRotation = getHourRotation(time);
   const minuteRotation = getMinuteRotation(time);
@@ -108,8 +108,37 @@ const TallClock: React.FC = () => {
   );
 };
 
+  // Style interfaces - simplified to avoid CSSProperties conflicts
+type ContainerStyle = React.CSSProperties;
+type ClockContainerStyle = React.CSSProperties;
+type ClockFaceStyle = React.CSSProperties;
+type HandStyle = React.CSSProperties;
+type ImageHandStyle = React.CSSProperties;
+type HourHandStyle = React.CSSProperties;
+type MinuteHandStyle = React.CSSProperties;
+type SecondHandStyle = React.CSSProperties;
+type CenterDotStyle = React.CSSProperties;
+type OverlayStyle = React.CSSProperties;
+type Overlay1Style = React.CSSProperties;
+type Overlay2Style = React.CSSProperties;
+type Overlay3Style = React.CSSProperties;
+
 // --- Styles (Unchanged, optimized for image background) ---
-const styles = {
+const styles: {
+  container: ContainerStyle;
+  clockContainer: ClockContainerStyle;
+  clockFace: ClockFaceStyle;
+  hand: HandStyle;
+  imageHand: ImageHandStyle;
+  hourHand: HourHandStyle;
+  minuteHand: MinuteHandStyle;
+  secondHand: SecondHandStyle;
+  centerDot: CenterDotStyle;
+  overlay: OverlayStyle;
+  overlay1: Overlay1Style;
+  overlay2: Overlay2Style;
+  overlay3: Overlay3Style;
+} = {
   container: {
     backgroundColor: '#805c0d',
     margin: 0,
@@ -178,6 +207,18 @@ const styles = {
     top: '0%',
     zIndex: 11,
     // no transition so it follows RAF updates smoothly without snapping
+  },
+
+  centerDot: {
+    width: '10px',
+    height: '10px',
+    background: '#000',
+    borderRadius: '50%',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    zIndex: 12,
   },
 
   // Overlay Styles
