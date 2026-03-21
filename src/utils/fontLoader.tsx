@@ -10,7 +10,7 @@ interface FontFaceOptions {
   style?: string;
 }
 
-interface FontConfig {
+export interface FontConfig {
   fontFamily: string;
   fontUrl: string;
   options?: FontFaceOptions;
