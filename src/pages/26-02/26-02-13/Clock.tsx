@@ -1,8 +1,19 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 const WordClock: React.FC = () => {
-  const [now, setNow] = useState(new Date());
-  const [isInitialized, setIsInitialized] = useState<boolean>(false);
+  // Standardized font loading
+  const fontConfigs = useMemo(() => [{
+    fontFamily: 'Cinzel Decorative',
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&display=swap',
+    options: { weight: '700', style: 'normal' }
+  }], []);
+
+  useSuspenseFontLoader(fontConfigs);
+
+  // Smooth animation using requestAnimationFrame
+  const now = useSecondClock();
 
   // 11×11 grid
   const grid = [
@@ -37,114 +48,101 @@ const WordClock: React.FC = () => {
       [1, 8],
     ],
     twenty: [
-      [2, 0],
       [2, 1],
       [2, 2],
       [2, 3],
       [2, 4],
       [2, 5],
-    ],
-    five_m: [
       [2, 6],
       [2, 7],
+    ],
+    five: [
       [2, 8],
       [2, 9],
     ],
     half: [
-      [3, 0],
       [3, 1],
       [3, 2],
       [3, 3],
+      [3, 4],
     ],
-    ten_m: [
-      [3, 5],
+    ten: [
       [3, 6],
       [3, 7],
-    ],
-    to: [
-      [3, 9],
-      [3, 10],
+      [3, 8],
     ],
     past: [
       [4, 0],
       [4, 1],
       [4, 2],
       [4, 3],
+      [4, 4],
     ],
-    7: [
+    to: [
+      [4, 6],
       [4, 7],
-      [4, 8],
-      [4, 9],
-      [4, 10],
-      [4, 11],
     ],
-    1: [
+    one: [
       [5, 0],
       [5, 1],
       [5, 2],
     ],
-    2: [
+    two: [
       [5, 3],
       [5, 4],
       [5, 5],
     ],
-    3: [
+    three: [
       [5, 6],
       [5, 7],
       [5, 8],
       [5, 9],
       [5, 10],
     ],
-    4: [
+    four: [
       [6, 0],
       [6, 1],
       [6, 2],
       [6, 3],
     ],
-    5: [
-      [6, 4],
+    six: [
       [6, 5],
       [6, 6],
       [6, 7],
     ],
-    6: [
-      [6, 8],
-      [6, 9],
-      [6, 10],
+    seven: [
+      [4, 8],
+      [4, 9],
+      [4, 10],
     ],
-    9: [
-      [7, 0],
-      [7, 1],
-      [7, 2],
-      [7, 3],
-    ],
-    12: [
-      [7, 5],
-      [7, 6],
-      [7, 7],
-      [7, 8],
-      [7, 9],
-      [7, 10],
-    ],
-    8: [
-      [8, 0],
+    eight: [
       [8, 1],
       [8, 2],
       [8, 3],
       [8, 4],
-    ],
-    11: [
       [8, 5],
+    ],
+    nine: [
+      [7, 0],
+      [7, 1],
+      [7, 2],
+      [7, 3],
+      [7, 4],
+    ],
+    eleven: [
       [8, 6],
       [8, 7],
       [8, 8],
       [8, 9],
       [8, 10],
     ],
-    10: [
-      [9, 0],
-      [9, 1],
-      [9, 2],
+    twelve: [
+      [7, 5],
+      [7, 6],
+      [7, 7],
+      [7, 8],
+      [7, 9],
+      [7, 10],
     ],
     oclock: [
       [9, 3],
@@ -155,12 +153,6 @@ const WordClock: React.FC = () => {
       [9, 8],
     ],
   };
-
-  useEffect(() => {
-    setIsInitialized(true);
-    const ticker = setInterval(() => setNow(new Date()), 10000);
-    return () => clearInterval(ticker);
-  }, []);
 
   const activeIndices = useMemo(() => {
     const h = now.getHours();
@@ -179,9 +171,10 @@ const WordClock: React.FC = () => {
 
     // Minute logic
     if (m >= 5 && m < 10) {
-      lightUp('five_m');
+      lightUp('five');
       lightUp('past');
     } else if (m >= 10 && m < 15) {
+      lightUp('ten');
       lightUp('ten_m');
       lightUp('past');
     } else if (m >= 15 && m < 20) {
@@ -221,8 +214,6 @@ const WordClock: React.FC = () => {
 
     return active;
   }, [now]);
-
-  if (!isInitialized) return null;
 
   return (
     <div className="clock-wrapper">

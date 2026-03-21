@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 
 // Asset Imports (keeping your existing imports)
 import digitalFontUrl from '../../../assets/fonts/26-02-12-disco.otf';
@@ -18,6 +17,11 @@ const DISCO_COLORS = [
   '#FF5E00', // Neon Orange
 ];
 
+interface TimeDigits {
+  digits: string[];
+  rawSeconds: number;
+}
+
 const CONFIG = {
   use24Hour: false,
   showSeconds: true,
@@ -25,17 +29,35 @@ const CONFIG = {
 
 const DigitalClockTemplate: React.FC = () => {
   const [time, setTime] = useState(new Date());
-  const fontReady = useFontLoader('BorrowedDigital', digitalFontUrl);
 
+  // Suspense-compatible font loading to prevent FOUC
+  const fontConfigs = useMemo(() => [{
+      fontFamily: 'BorrowedDigital',
+      fontUrl: digitalFontUrl,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+  }], []);
+  
+  useSuspenseFontLoader(fontConfigs);
+
+  // Smooth animation using requestAnimationFrame for millisecond updates
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 100);
-    return () => clearInterval(interval);
+    let rafId: number;
+    const update = () => {
+      setTime(new Date());
+      rafId = requestAnimationFrame(update);
+    };
+
+    rafId = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(rafId);
   }, []);
 
-  const { digits, rawSeconds } = useMemo(() => {
+  const { digits, rawSeconds }: TimeDigits = useMemo(() => {
     const hours24 = time.getHours();
     const hours = CONFIG.use24Hour ? hours24 : hours24 % 12 || 12;
-    const pad = (n) => String(n).padStart(2, '0');
+    const pad = (n: number): string => String(n).padStart(2, '0');
 
     const hh = pad(hours);
     const mm = pad(time.getMinutes());
@@ -48,10 +70,11 @@ const DigitalClockTemplate: React.FC = () => {
     };
   }, [time]);
 
+
   // Logic to shift color per digit per second
-  const getDiscoColor = (index) => {
+  const getDiscoColor = (index: number): string => {
     const colorIndex = (rawSeconds + index) % DISCO_COLORS.length;
-    return DISCO_COLORS[colorIndex];
+    return DISCO_COLORS[colorIndex] || DISCO_COLORS[0];
   };
 
   const layerBase = {
@@ -75,23 +98,6 @@ const DigitalClockTemplate: React.FC = () => {
         backgroundColor: '#000',
       }}
     >
-      {/* Loading overlay to prevent flash of unstyled content */}
-      {!fontReady && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: '#000',
-            zIndex: 100,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        />
-      )}
 
       {/* Background Layers */}
       <div
@@ -141,9 +147,7 @@ const DigitalClockTemplate: React.FC = () => {
           alignItems: 'center',
           justifyContent: 'center',
           height: '100%',
-          fontFamily: fontReady
-            ? "'BorrowedDigital', sans-serif"
-            : 'sans-serif',
+          fontFamily: "'BorrowedDigital', sans-serif"
         }}
       >
         <div style={clockWrapperStyle}>

@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 // --- Assets ---
 import mazeImage from '../../../assets/images/26-02/26-02-16/puzzle.gif';
 import loopVideo from '../../../assets/images/26-02/26-02-16/loop.mp4';
 import mazeFont from '../../../assets/fonts/26-02-16-maze.ttf';
+
+// Export assets for ClockPage preloader
+export const background = mazeImage;
 
 // --- Configuration ---
 const CONFIG = {
@@ -123,42 +125,20 @@ Digit.displayName = 'Digit';
 
 // --- Main Component ---
 const DigitalClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-  const lastSecondRef = React.useRef(null);
-
-  // 1. Font Loading via CSS injection to prevent FOUC
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: '${CONFIG.FONT_FAMILY}';
-        src: url('${mazeFont}') format('truetype');
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = useMemo(() => [{
+      fontFamily: CONFIG.FONT_FAMILY,
+      fontUrl: mazeFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
       }
-    `;
-    document.head.appendChild(style);
+  }], []);
+  
+  useSuspenseFontLoader(fontConfigs);
 
-    return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
-    };
-  }, []);
-
-  // 2. Clock tick — efficient updates via requestAnimationFrame
-  useEffect(() => {
-    let frameId;
-
-    const tick: React.FC = () => {
-      const now = new Date();
-      if (now.getSeconds() !== lastSecondRef.current) {
-        setTime(now);
-        lastSecondRef.current = now.getSeconds();
-      }
-      frameId = requestAnimationFrame(tick);
-    };
-    tick();
-    return () => cancelAnimationFrame(frameId);
-  }, []);
+  // 2. Clock tick using standard hook
+  const time = useSecondClock();
 
   // 3. Time Formatting
   const timeParts = useMemo(() => {

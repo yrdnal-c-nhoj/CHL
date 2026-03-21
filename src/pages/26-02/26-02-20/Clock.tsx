@@ -1,8 +1,7 @@
 /** @jsxImportSource react */
 import React, { useState, useEffect, useMemo } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 /* =========================
    CONFIGURATION
@@ -97,17 +96,8 @@ const spellTwoDigitNumber = (twoDigitStr) => {
 /* =========================
    CUSTOM HOOKS
 ========================= */
-function useClock(updateInterval = UPDATE_INTERVAL) {
-  const [time, setTime] = useState(() => new Date());
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), updateInterval);
-    return () => clearInterval(interval);
-  }, [updateInterval]);
-  return time;
-}
-
-function useImagePreload(imageUrl) {
-  const [isReady, setIsReady] = useState<any>(!imageUrl);
+function useImagePreload(imageUrl: string | null): boolean {
+  const [isReady, setIsReady] = useState<boolean>(!imageUrl);
   useEffect(() => {
     if (!imageUrl) return;
     let mounted = true;
@@ -126,10 +116,30 @@ function useImagePreload(imageUrl) {
    MAIN COMPONENT
 ========================= */
 export default function ClockTemplate() {
-  const time = useClock();
+  const time = useSecondClock();
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [showContent, setShowContent] = useState(false);
 
-  // Handle Responsiveness & Font
+  // Font loading with Suspense to prevent FOUC
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: FONT_NAME,
+      fontUrl: forumFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ], []);
+  
+  useSuspenseFontLoader(fontConfigs);
+
+  // Show content immediately with Suspense
+  useEffect(() => {
+    setShowContent(true);
+  }, []);
+
+  // Handle Responsiveness
   useEffect(() => {
     const checkMobile = () =>
       setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
@@ -137,21 +147,8 @@ export default function ClockTemplate() {
 
     window.addEventListener('resize', checkMobile);
 
-    // Load Forum font via CSS injection to prevent FOUC
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: '${FONT_NAME}';
-        src: url('${forumFont}') format('opentype');
-      }
-    `;
-    document.head.appendChild(style);
-
     return () => {
       window.removeEventListener('resize', checkMobile);
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
     };
   }, []);
 

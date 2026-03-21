@@ -1,63 +1,122 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import backgroundImage from '../../../assets/images/26-02/26-02-26/26-02-26-f.webp';
-import fontFile from '../../../assets/fonts/26-02-26-fu.ttf';
+import fuFont from '../../../assets/fonts/26-02-26-fu.ttf';
 
-const Clock: React.FC = () => {
-  const [images, setImages] = useState<any>([]);
-  const [gridSize, setGridSize] = useState<any>({ rows: 0, cols: 0 });
-  const [loadedImages, setLoadedImages] = useState(new Set());
-  const [imageAssignments, setImageAssignments] = useState<any>([]);
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [currentImageIndex, setCurrentImageIndex] = useState<Record<string, any>>({});
-  const fontLoaded = useFontLoader('DateFont', fontFile);
+// Interface for Vite glob import modules
+interface ViteModule {
+  default: string;
+}
 
-  // 1. Update clock and change random images every second
+// Interface for window size state
+interface WindowSize {
+  width: number;
+  height: number;
+}
+
+// Interface for time digits
+interface TimeDigits {
+  hours: string;
+  minutes: string;
+  isPM: boolean;
+}
+
+// Interface for grid size
+interface GridSize {
+  rows: number;
+  cols: number;
+}
+
+// Export assets for ClockPage preloader
+export const background = backgroundImage;
+
+/**
+ * Custom hook for periodic updates using requestAnimationFrame
+ */
+const usePeriodicUpdate = (callback: () => void, interval: number = 1000) => {
+  const lastUpdateRef = useRef<number>(0);
+  
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-
-      // Change 3 random cells to different images
-      if (imageAssignments.length > 0 && images.length > 1) {
-        setCurrentImageIndex((prev) => {
-          const newIndex = { ...prev };
-          const totalCells = imageAssignments.length;
-
-          // Select 3 random cells to change to next image
-          for (let i = 0; i < 3; i++) {
-            const randomCell = Math.floor(Math.random() * totalCells);
-            const currentIdx = newIndex[randomCell] || 0;
-            // Move to next image in the array, loop back if needed
-            newIndex[randomCell] = (currentIdx + 1) % images.length;
-          }
-
-          return newIndex;
-        });
+    let frameId: number;
+    
+    const animate = (timestamp: number) => {
+      if (timestamp - lastUpdateRef.current >= interval) {
+        lastUpdateRef.current = timestamp;
+        callback();
       }
-    }, 1000);
+      frameId = requestAnimationFrame(animate);
+    };
+    
+    frameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameId);
+  }, [callback, interval]);
+};
 
-    return () => clearInterval(timer);
-  }, [imageAssignments.length, images.length]);
+const ImageGridClock: React.FC = () => {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = useMemo(() => [{
+      fontFamily: 'DateFont',
+      fontUrl: fuFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+  }], []);
+  
+  useSuspenseFontLoader(fontConfigs);
+
+  const [images, setImages] = useState<string[]>([]);
+  const [gridSize, setGridSize] = useState<GridSize>({ rows: 0, cols: 0 });
+  const [loadedImages, setLoadedImages] = useState(new Set());
+  const [imageAssignments, setImageAssignments] = useState<number[]>([]);
+  const currentTime = useSecondClock();
+  const [currentImageIndex, setCurrentImageIndex] = useState<Record<string, number>>({});
+
+  // Change 3 random cells to different images
+  const changeRandomCells = () => {
+    if (imageAssignments.length > 0 && images.length > 1) {
+      setCurrentImageIndex((prev) => {
+        const newIndex = { ...prev };
+        const totalCells = imageAssignments.length;
+
+        // Select 3 random cells to change to next image
+        for (let i = 0; i < 3; i++) {
+          const randomCell = Math.floor(Math.random() * totalCells);
+          const currentIdx = newIndex[randomCell] || 0;
+          // Move to next image in the array, loop back if needed
+          newIndex[randomCell] = (currentIdx + 1) % images.length;
+        }
+
+        return newIndex;
+      });
+    }
+  };
+
+  // Update clock and change random images every second using requestAnimationFrame
+  usePeriodicUpdate(() => {
+    changeRandomCells();
+  }, 1000);
 
   // 2. Load images using Vite glob import
   useEffect(() => {
     const loadImages = async () => {
       try {
         const imageModules = import.meta.glob(
-          '/src/assets/images/26-02/26-02-26/bg/*.{png,jpg,jpeg,gif,svg,webp}',
+          '../../../assets/images/26-02/26-02-26/bg/*.{png,jpg,jpeg,gif,svg,webp}',
           { eager: true },
         );
         const imageUrls = Object.values(imageModules).map(
-          (module) => module.default,
+          (module: ViteModule) => module.default,
         );
-        setImages(imageUrls.length > 0 ? imageUrls : fallbackImages);
+        setImages(imageUrls.length > 0 ? imageUrls : []);
       } catch (error) {
         console.error('Error loading images:', error);
         setImages([
-          '/src/assets/images/i.png',
-          '/src/assets/images/fbook.png',
-          '/src/assets/images/insta.png',
-          '/src/assets/images/x.png',
+          '../../../assets/images/i.png',
+          '../../../assets/images/fbook.png',
+          '../../../assets/images/insta.png',
+          '../../../assets/images/x.png',
         ]);
       }
     };
@@ -135,7 +194,7 @@ const Clock: React.FC = () => {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     color: '#557F25',
-    fontFamily: fontLoaded ? "'DateFont', monospace" : 'monospace',
+    fontFamily: "'DateFont', monospace",
     fontSize: '11vh',
     fontWeight: 'bold',
     zIndex: 10,
@@ -197,4 +256,4 @@ const Clock: React.FC = () => {
   );
 };
 
-export default Clock;
+export default ImageGridClock;

@@ -1,13 +1,42 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import customFontUrl from '../../../assets/fonts/26-02-07-gear.ttf?url';
 import backgroundImage from '../../../assets/images/26-02/26-02-07/gear.gif';
 
-const FullscreenClock: React.FC = () => {
+// Custom hook for smooth time updates using requestAnimationFrame
+const useSmoothTime = (updateInterval: number = 1000) => {
   const [time, setTime] = useState(new Date());
+  const lastUpdateRef = useRef<number>(0);
 
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const animate = (timestamp: number) => {
+      // Update based on interval to avoid excessive updates
+      if (timestamp - lastUpdateRef.current >= updateInterval) {
+        setTime(new Date());
+        lastUpdateRef.current = timestamp;
+      }
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [updateInterval]);
+
+  return time;
+};
+
+const FullscreenClock: React.FC = () => {
+  const [showContent, setShowContent] = useState(false);
+
+  // Use Suspense-compatible font loading
+  useSuspenseFontLoader([
     {
       fontFamily: 'GearFont',
       fontUrl: customFontUrl,
@@ -16,15 +45,15 @@ const FullscreenClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ]);
 
-  // Font loading handled by useMultipleFontLoader
-
+  // Show content immediately with Suspense
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    setShowContent(true);
   }, []);
+
+  // Use smooth time updates with requestAnimationFrame
+  const time = useSmoothTime(1000); // Update every second
 
   const digits = useMemo(() => {
     let hours = time.getHours();
@@ -39,27 +68,6 @@ const FullscreenClock: React.FC = () => {
     return str.split('');
   }, [time]);
 
-  if (!fontsLoaded) {
-    return (
-      <div
-        style={{
-          position: 'relative',
-          width: '100vw',
-          height: '100dvh',
-          backgroundColor: '#E9F7AB',
-          backgroundImage: 'radial-gradient(circle, #E9F7AB 0%, #CDF296 100%)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#7B0404',
-          fontFamily: 'monospace',
-          fontSize: '1.5rem',
-        }}
-      >
-        Loading...
-      </div>
-    );
-  }
 
   return (
     <div

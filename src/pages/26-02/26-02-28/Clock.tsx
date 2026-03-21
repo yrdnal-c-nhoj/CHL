@@ -1,23 +1,21 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
 import atomicWebp from '../../../assets/images/26-02/26-02-28/atomic.webp';
 import atomicFont from '../../../assets/fonts/26-02-28-atomic.ttf';
 
 const TILE_SIZE = 140;
 
+// Interface for dimensions
+interface Dimensions {
+  width: number;
+  height: number;
+}
+
 // Isolated Clock Component to prevent Grid re-renders
 const DigitalClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    let frameId;
-    const update: React.FC = () => {
-      setTime(new Date());
-      frameId = requestAnimationFrame(update);
-    };
-    frameId = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
+  // Smooth millisecond animation using requestAnimationFrame
+  const time = useMillisecondClock();
 
   const formatTime = (date) => {
     const h = date.getHours().toString().padStart(2, '0');
@@ -35,13 +33,33 @@ const DigitalClock: React.FC = () => {
 };
 
 const ImageGrid: React.FC = () => {
-  const [dimensions, setDimensions] = useState<any>({
+  const [dimensions, setDimensions] = useState<Dimensions>({
     width: window.innerWidth,
     height: window.innerHeight,
   });
+  const [showContent, setShowContent] = useState(false);
+
+  // Font loading with Suspense to prevent FOUC
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: 'AtomicFont',
+      fontUrl: atomicFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ], []);
+  
+  useSuspenseFontLoader(fontConfigs);
+
+  // Show content immediately with Suspense
+  useEffect(() => {
+    setShowContent(true);
+  }, []);
 
   useEffect(() => {
-    const handleResize: React.FC = () => {
+    const handleResize = () => {
       setDimensions({ width: window.innerWidth, height: window.innerHeight });
     };
     window.addEventListener('resize', handleResize);
@@ -71,13 +89,6 @@ const ImageGrid: React.FC = () => {
 
   return (
     <div style={styles.container}>
-      <style>{`
-        @font-face {
-          font-family: 'AtomicFont';
-          src: url('${atomicFont}') format('truetype');
-        }
-      `}</style>
-
       {/* Background Grid */}
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
         {tileCoords.map((tile) => (

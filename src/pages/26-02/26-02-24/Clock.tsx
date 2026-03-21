@@ -1,9 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import futurBg from '../../../assets/images/26-02/26-02-24/futur.jpg';
 
-const ImageDisplay: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+interface Position {
+  top: string;
+  left: string;
+  rotate: string;
+  fontSize: string;
+  font: string;
+}
+
+const ImageDisplay = () => {
+  // Smooth animation using requestAnimationFrame
+  const time = useSecondClock();
   const [fontsReady, setFontsReady] = useState<boolean>(false);
+  const [ariaTime, setAriaTime] = useState('');
 
   useEffect(() => {
     // Add fonts-loading class initially
@@ -14,7 +25,7 @@ const ImageDisplay: React.FC = () => {
     fontLink.href =
       'https://fonts.googleapis.com/css2?family=Anton&family=Josefin+Sans:wght@400;700&family=Krona+One&family=Roboto+Mono:wght@400;700&family=Playfair+Display:wght@400;700&family=Oswald:wght@400;700&family=Merriweather:wght@400;700&family=Bebas+Neue&display=swap';
     fontLink.rel = 'stylesheet';
-    fontLink.media = 'print'; // Initially load as print to avoid FOUC
+    (fontLink as HTMLLinkElement).media = 'print'; // Initially load as print to avoid FOUC
     fontLink.onload = function () {
       // Switch to all media after load to apply fonts
       this.media = 'all';
@@ -26,22 +37,44 @@ const ImageDisplay: React.FC = () => {
 
     // 2. Fallback timeout in case font loading fails
     const fallbackTimeout = setTimeout(() => {
-      document.documentElement.classList.remove('fonts-loading');
+      document.documentElement.classList.remove('fonts-loading'); // Redundant but safe
       fontLink.media = 'all';
       setFontsReady(true);
     }, 1000);
 
-    // 3. THE TICKER: Update state every second
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
+    // 3. THE TICKER: Update handled by useSecondClock hook
 
     return () => {
-      clearInterval(timer);
       clearTimeout(fallbackTimeout);
       if (document.head.contains(fontLink)) document.head.removeChild(fontLink);
     };
   }, []);
+
+  // Accessibility: Update time string for screen readers
+  const seconds = time.getSeconds();
+  useEffect(() => {
+    setAriaTime(
+      time.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seconds]); // Update only when seconds change
+
+  // --- Robust Time Logic ---
+  const { amPm, digits } = useMemo(() => {
+    const rawHours = time.getHours();
+    const amPm = rawHours >= 12 ? 'PM' : 'AM';
+    const displayHours = (rawHours % 12 || 12).toString().padStart(2, '0');
+    const displayMinutes = time.getMinutes().toString().padStart(2, '0');
+    const displaySeconds = time.getSeconds().toString().padStart(2, '0');
+
+    // Array of exactly 6 digits: [H, H, M, M, S, S]
+    const digits = [
+      ...displayHours.split(''),
+      ...displayMinutes.split(''),
+      ...displaySeconds.split(''),
+    ];
+    return { amPm, digits };
+  }, [time]);
 
   if (!fontsReady) {
     return (
@@ -63,22 +96,8 @@ const ImageDisplay: React.FC = () => {
     );
   }
 
-  // --- Robust Time Logic ---
-  const rawHours = time.getHours();
-  const amPm = rawHours >= 12 ? 'PM' : 'AM';
-  const displayHours = (rawHours % 12 || 12).toString().padStart(2, '0');
-  const displayMinutes = time.getMinutes().toString().padStart(2, '0');
-  const displaySeconds = time.getSeconds().toString().padStart(2, '0');
-
-  // Array of exactly 6 digits: [H, H, M, M, S, S]
-  const digits = [
-    ...displayHours.split(''),
-    ...displayMinutes.split(''),
-    ...displaySeconds.split(''),
-  ];
-
   // --- Visual Layout Mapping ---
-  const positions = [
+  const positions: Position[] = [
     {
       top: '8%',
       left: '10%',
@@ -125,13 +144,23 @@ const ImageDisplay: React.FC = () => {
 
   return (
     <div style={containerStyle}>
-      <style>{`
-        .fonts-loading * {
-          opacity: 0 !important;
-        }
-      `}</style>
       <div style={backgroundStyle} />
       <div style={redOverlayStyle} />
+
+      {/* Accessibility Layer */}
+      <div
+        role="status"
+        aria-live="polite"
+        style={{
+          position: 'absolute',
+          width: 1,
+          height: 1,
+          overflow: 'hidden',
+          clip: 'rect(0,0,0,0)',
+        }}
+      >
+        {ariaTime}
+      </div>
 
       {/* Clock digits - show immediately with fallback fonts */}
       {digits.map((char, index) => (
@@ -184,7 +213,7 @@ const ImageDisplay: React.FC = () => {
 };
 
 // --- Styles ---
-const containerStyle = {
+const containerStyle: React.CSSProperties = {
   width: '100vw',
   height: '100dvh',
   position: 'relative',
@@ -192,13 +221,13 @@ const containerStyle = {
   backgroundColor: '#000',
 };
 
-const backgroundStyle = {
+const backgroundStyle: React.CSSProperties = {
   position: 'absolute',
   inset: 0,
   backgroundImage: `url(${futurBg})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
-  filter: 'brightness(2.5) contrast(0.6) grayscale(100%)',
+  filter: 'brightness(2.5) contrast(0.6) grayscale(1)',
   zIndex: 0,
 };
 
@@ -210,7 +239,7 @@ const redOverlayStyle = {
   zIndex: 1,
 };
 
-const digitBox = {
+const digitBox: React.CSSProperties = {
   color: 'black',
   pointerEvents: 'none',
   userSelect: 'none',
@@ -218,7 +247,7 @@ const digitBox = {
   transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)', // Adds a tiny "bounce" to number changes
 };
 
-const amPmStyle = {
+const amPmStyle: React.CSSProperties = {
   position: 'absolute',
   color: 'black',
   zIndex: 10,

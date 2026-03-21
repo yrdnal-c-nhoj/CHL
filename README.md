@@ -172,64 +172,44 @@ src/pages/YY-MM/YY-MM-DD/Clock.tsx
 
 ### Clock Component Template
 ```typescript
-import React, { useState, useEffect } from 'react';
-import { useMultipleFontLoader, useStyleInjection } from '../../../utils/fontLoader';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader'; // The one true font loader
 import type { FontConfig } from '../../../types/clock';
+import yourCustomFontUrl from '../../../assets/fonts/your-font.ttf?url';
+
+// Custom hook for smooth time updates using requestAnimationFrame
+const useClock = () => {
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    let frameId: number;
+    const tick = () => {
+      setTime(new Date());
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+
+  return time;
+};
 
 const Clock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useClock();
   
   // Font configuration
-  const fontConfigs: FontConfig[] = [
-    {
-      fontFamily: 'YourFontName',
-      fontUrl: fontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ];
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'YourFontName', fontUrl: yourCustomFontUrl }
+  ], []);
   
-  // Load fonts and inject styles
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
-  
-  useStyleInjection({
-    keyframes: {
-      'your-animation': {
-        '0%, 100%': { transform: 'translateY(0)' },
-        '50%': { transform: 'translateY(-10px)' }
-      }
-    },
-    custom: `
-      .your-class {
-        /* Custom CSS here */
-      }
-    `
-  });
-  
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-  
-  // Don't render until fonts are loaded
-  if (!fontsLoaded) {
-    return (
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}>
-        Loading clock...
-      </div>
-    );
-  }
+  // This hook suspends the component until fonts are loaded, preventing FOUC.
+  // The parent <ClockPage> provides the necessary <Suspense> boundary.
+  useSuspenseFontLoader(fontConfigs);
   
   return (
-    <div className="clock-container">
+    <div style={{ fontFamily: 'YourFontName, sans-serif' }}>
       {/* Your clock design here */}
+      {time.toLocaleTimeString()}
     </div>
   );
 };

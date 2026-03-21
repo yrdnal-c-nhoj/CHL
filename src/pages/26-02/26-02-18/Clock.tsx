@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useGlobalStyles } from '../../../utils/enhancedFontLoader';
-import { useEnhancedFontLoader } from '../../../utils/enhancedFontLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 // 1. Standard imports (Best for performance and reliability)
 import mazeFont from '../../../assets/fonts/26-02-18-jelly.otf';
@@ -11,29 +8,27 @@ import bg1 from '../../../assets/images/26-02/26-02-18/jel.webp';
 import bg3 from '../../../assets/images/26-02/26-02-18/jelly.webp';
 
 const ImageDisplay: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  // Smooth animation using requestAnimationFrame
+  const time = useSecondClock();
+  const [showContent, setShowContent] = useState(false);
 
-  // Load font via CSS injection to prevent FOUC
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'MazeFont';
-        src: url('${mazeFont}') format('opentype');
+  // Font loading with Suspense to prevent FOUC
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: 'MazeFont',
+      fontUrl: mazeFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
       }
-    `;
-    document.head.appendChild(style);
+    }
+  ], []);
+  
+  useSuspenseFontLoader(fontConfigs);
 
-    return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
-    };
-  }, []);
-
+  // Show content immediately with Suspense
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    setShowContent(true);
   }, []);
 
   const layerStyle = {

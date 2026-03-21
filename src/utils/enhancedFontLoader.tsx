@@ -133,15 +133,15 @@ export function createLazyClock(
   const fontPromise = createFontFace(fontFamily, fontUrl, fontOptions);
 
   // Create lazy component
-  const LazyClock = lazy(() => 
+  const LazyClock = lazy(() =>
     fontPromise.then(() => {
       // Dynamic import of the clock component
-      return import(componentPath).then(module => module.default);
+      return import(componentPath) as Promise<{ default: React.ComponentType }>;
     })
   );
 
   // Return component wrapped in Suspense
-  return function LazyClockWithFont(props: any) {
+  return function LazyClockWithFont(props: React.ComponentProps<typeof LazyClock>) {
     return (
       <Suspense 
         fallback={

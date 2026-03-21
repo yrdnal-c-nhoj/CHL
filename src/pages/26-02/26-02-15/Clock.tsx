@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from '../../../assets/images/26-02/26-02-15/caldera.webp';
 import fontFile from '../../../assets/fonts/26-02-15-fire.ttf';
 
@@ -9,17 +9,32 @@ export default function PixelInverseClock() {
   const canvasRef = useRef(null);
   const requestRef = useRef();
   const [assetsLoaded, setAssetsLoaded] = useState<boolean>(false);
+  const [showContent, setShowContent] = useState(false);
   const imageRef = useRef(new Image());
+
+  // Font loading with Suspense to prevent FOUC
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: FONT_FAMILY,
+      fontUrl: fontFile,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ], []);
+  
+  useSuspenseFontLoader(fontConfigs);
+
+  // Show content immediately with Suspense
+  useEffect(() => {
+    setShowContent(true);
+  }, []);
 
   // 1. Assets Loading
   useEffect(() => {
-    const font = new FontFace(FONT_FAMILY, `url(${fontFile})`);
-
     const loadAssets = async () => {
       try {
-        const loadedFont = await font.load();
-        document.fonts.add(loadedFont);
-
         // Load animated WebP with proper settings
         await new Promise((resolve, reject) => {
           imageRef.current.src = backgroundImage;
@@ -44,10 +59,28 @@ export default function PixelInverseClock() {
 
     loadAssets();
     return () => {
-      document.fonts.delete(font);
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
   }, []);
+
+  // 3. Canvas Setup & Resize
+  useEffect(() => {
+    if (!assetsLoaded) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+
+    const handleResize: React.FC = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    requestRef.current = requestAnimationFrame(() => render(ctx));
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [assetsLoaded]);
 
   // 2. Main Render Loop
   const render = (ctx) => {
@@ -111,25 +144,6 @@ export default function PixelInverseClock() {
     drawHand((minutes * Math.PI) / 30 - Math.PI / 2, baseSize * 0.5, 5); // Minute
     drawHand((seconds * Math.PI) / 30 - Math.PI / 2, baseSize * 2.9, 2); // Second
   };
-
-  // 3. Canvas Setup & Resize
-  useEffect(() => {
-    if (!assetsLoaded) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-
-    const handleResize: React.FC = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    requestRef.current = requestAnimationFrame(() => render(ctx));
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, [assetsLoaded]);
 
   return (
     <div

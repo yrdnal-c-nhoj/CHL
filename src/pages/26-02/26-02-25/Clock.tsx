@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import cocteauVideo from '../../../assets/images/26-02/26-02-25/cocteau.mp4';
 import starWebp from '../../../assets/images/26-02/26-02-25/star.webp';
 
 const CocteauClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  // Smooth animation using requestAnimationFrame
+  const time = useSecondClock();
   const videoRef = useRef(null);
 
   useEffect(() => {
-    // 1. Precise Clock Timer
-    const timer = setInterval(() => setTime(new Date()), 1000);
-
     // 2. Mobile Autoplay Force
     // React's 'muted' prop can fail on mount; setting it via ref
     // guarantees the browser sees it as muted before play() is called.
@@ -21,7 +19,9 @@ const CocteauClock: React.FC = () => {
       });
     }
 
-    return () => clearInterval(timer);
+    return () => {
+      // Timer handled by useSecondClock hook
+    };
   }, []);
 
   const seconds = time.getSeconds();
