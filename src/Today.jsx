@@ -3,12 +3,15 @@ import React, {
   useEffect,
   useContext,
   useMemo,
+  Suspense,
 } from 'react';
 import { DataContext } from './context/DataContext';
 import Header from './components/Header';
 import ClockPageNav from './components/ClockPageNav';
-import { useClockPage } from './hooks/useClockPage';
+import { ClockLoadingFallback } from './utils/fontLoader';
 import styles from './ClockPage.module.css';
+
+const clockModules = import.meta.glob('./pages/**/Clock.tsx');
 
 const formatTitle = (title) => title?.replace(/clock/i, '').trim() || 'Home';
 const formatDate = (dateStr) => {
@@ -71,8 +74,41 @@ const TodayClockPage = () => {
     setCurrentItem(item);
   }, [items, loading]);
 
-  // Use the hook to load the clock
-  const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPage(currentItem);
+  const [ClockComponent, setClockComponent] = useState(null);
+  const [isReady, setIsReady] = useState(false);
+  const [pageError, setPageError] = useState(null);
+  const [overlayVisible, setOverlayVisible] = useState(true);
+
+  useEffect(() => {
+    const loadClock = async () => {
+      if (!currentItem) return;
+      
+      try {
+        const date = currentItem.date;
+        const [yy, mm] = date.split('-');
+        // Try standard structure first
+        let moduleKey = `./pages/${yy}-${mm}/${date}/Clock.tsx`;
+        
+        // Fallback to searching if exact path not found
+        if (!clockModules[moduleKey]) {
+           moduleKey = Object.keys(clockModules).find(key => key.includes(`/${date}/Clock.tsx`));
+        }
+
+        if (!moduleKey || !clockModules[moduleKey]) {
+          throw new Error('Clock module not found');
+        }
+
+        const module = await clockModulesmoduleKey;
+        setClockComponent(() => module.default);
+        setIsReady(true);
+        setTimeout(() => setOverlayVisible(false), OVERLAY_FADE_DURATION);
+      } catch (err) {
+        console.error(err);
+        setPageError('Failed to load clock.');
+      }
+    };
+    loadClock();
+  }, [currentItem]);
 
   // -------------------------------
   // Auto-hide header shortly after load
@@ -169,7 +205,9 @@ const TodayClockPage = () => {
                 height: '100vh',
               }}
             >
-              <ClockComponent />
+              <Suspense fallback={<ClockLoadingFallback />}>
+                <ClockComponent />
+              </Suspense>
             </div>
           </div>
         ) : (
