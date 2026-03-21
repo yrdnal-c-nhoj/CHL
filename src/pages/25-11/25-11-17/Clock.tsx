@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import bg1 from '../../../assets/images/25-11/25-11-17/mars2.webp';
 import bg2 from '../../../assets/images/25-11/25-11-17/mars1.gif';
@@ -20,33 +18,9 @@ export const fontConfigs = [
 
 export default function MarsDigitalClock() {
   const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
   const rafRef = useRef(null);
 
-  useEffect(() => {
-    let cancelled = false;
-    const font = new FontFace('ClockFont', `url(${font2025_11_18})`, {
-      style: 'normal',
-      weight: '400',
-    });
   useSuspenseFontLoader(fontConfigs);
-
-    font
-      .load()
-      .then((loaded) => {
-        if (cancelled) return;
-        document.fonts.add(loaded);
-        setFontLoaded(true);
-      })
-      .catch(() => {
-        // In case of error, still show the clock with fallback font
-        if (!cancelled) setFontLoaded(true);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -112,8 +86,6 @@ export default function MarsDigitalClock() {
       overflow: 'hidden',
       padding: '2vh',
       boxSizing: 'border-box',
-      opacity: fontLoaded ? 1 : 0,
-      transition: 'opacity 0.35s ease-out',
       // Opacity handled by Suspense/Loader now
     },
     gradientBackground: {

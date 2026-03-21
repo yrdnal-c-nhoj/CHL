@@ -1,4 +1,3 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
 import React, { useEffect, useState, useRef } from 'react';
 
 import fontClockUrl_20251126 from '../../../assets/fonts/25-11-25-ntp.ttf?url';
@@ -95,19 +94,6 @@ export const fontConfigs: FontConfig[] = [
 // --- Component ---
 export default function NtpClock() {
   const { offset, isSynced } = useNtpOffset();
-
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'ClockFont',
-      fontUrl: fontClockUrl_20251126,
-      options: { display: 'swap' },
-    },
-    {
-      fontFamily: 'MarqueeFont',
-      fontUrl: marqueeFontUrl,
-      options: { display: 'swap' },
-    },
-  ], []);
 
   useSuspenseFontLoader(fontConfigs);
 

@@ -1,4 +1,3 @@
-import React, { useState, useEffect, useMemo } from 'react';
 import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
@@ -14,10 +13,6 @@ export const fontConfigs: FontConfig[] = [
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [rotation, setRotation] = useState(0);
-
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: '26-03-15-shadow', fontUrl, options: { weight: 'normal', style: 'normal' } },
-  ], []);
 
   useSuspenseFontLoader(fontConfigs);
 
