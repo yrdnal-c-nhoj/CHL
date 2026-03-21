@@ -17,6 +17,9 @@ import backgroundImage from '../../../assets/images/26-02/26-02-20/forum2.webp';
 import topImage from '../../../assets/images/26-02/26-02-20/forum.webp';
 import forumFont from '../../../assets/fonts/26-02-20-forum.otf';
 
+// Export assets for preloading
+export { backgroundImage, topImage };
+
 /* =========================
    UTILITY FUNCTIONS
 ========================= */
@@ -93,24 +96,16 @@ const spellTwoDigitNumber = (twoDigitStr) => {
   return spellNumber(num);
 };
 
-/* =========================
-   CUSTOM HOOKS
-========================= */
-function useImagePreload(imageUrl: string | null): boolean {
-  const [isReady, setIsReady] = useState<boolean>(!imageUrl);
-  useEffect(() => {
-    if (!imageUrl) return;
-    let mounted = true;
-    const img = new Image();
-    img.onload = () => mounted && setIsReady(true);
-    img.onerror = () => mounted && setIsReady(true);
-    img.src = imageUrl;
-    return () => {
-      mounted = false;
-    };
-  }, [imageUrl]);
-  return isReady;
-}
+export const fontConfigs = [
+  {
+    fontFamily: FONT_NAME,
+    fontUrl: forumFont,
+    options: {
+      weight: 'normal',
+      style: 'normal'
+    }
+  }
+];
 
 /* =========================
    MAIN COMPONENT
@@ -118,26 +113,8 @@ function useImagePreload(imageUrl: string | null): boolean {
 export default function ClockTemplate() {
   const time = useSecondClock();
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [showContent, setShowContent] = useState(false);
-
-  // Font loading with Suspense to prevent FOUC
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: FONT_NAME,
-      fontUrl: forumFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
   
   useSuspenseFontLoader(fontConfigs);
-
-  // Show content immediately with Suspense
-  useEffect(() => {
-    setShowContent(true);
-  }, []);
 
   // Handle Responsiveness
   useEffect(() => {
@@ -151,10 +128,6 @@ export default function ClockTemplate() {
       window.removeEventListener('resize', checkMobile);
     };
   }, []);
-
-  const isBgReady = useImagePreload(backgroundImage);
-  const isTopReady = useImagePreload(topImage);
-  const isReady = isBgReady && isTopReady;
 
   const { hours, minutes, isPM } = useMemo(() => getTimeDigits(time), [time]);
 
