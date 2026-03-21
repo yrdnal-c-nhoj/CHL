@@ -10,10 +10,10 @@ export { backgroundImage };
 // --- Background Logic with Centered Dual-Axis Mirroring ---
 function CheckerboardBackground() {
   const tileSize = 200;
-  const [dimensions, setDimensions] = useState<any>({ cols: 0, rows: 0 });
+  const [dimensions, setDimensions] = useState({ cols: 0, rows: 0 });
 
   useEffect(() => {
-    const handleResize: React.FC = () => {
+    const handleResize = () => {
       setDimensions({
         cols: Math.ceil(window.innerWidth / tileSize) + 2,
         rows: Math.ceil(window.innerHeight / tileSize) + 2,
@@ -80,7 +80,7 @@ function useClockAngles() {
 
   useEffect(() => {
     let frameId;
-    const tick: React.FC = () => {
+    const tick = () => {
       setNow(new Date());
       frameId = requestAnimationFrame(tick);
     };
@@ -111,13 +111,13 @@ export const fontConfigs: FontConfig[] = [
 // --- Main Component ---
 export default function ThreeSingleHandClocks() {
   const { hourAngle, minAngle, secAngle } = useClockAngles();
-  const [layout, setLayout] = useState<any>('row');
+  const [layout, setLayout] = useState<'row' | 'column'>('row');
   const [clockSize, setClockSize] = useState<number>(0);
 
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const handleResize: React.FC = () => {
+    const handleResize = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
       const nextLayout = w < 900 ? 'column' : 'row';
@@ -182,8 +182,20 @@ export default function ThreeSingleHandClocks() {
   );
 }
 
+interface ClockProps {
+  angle: number;
+  color: string;
+  thickness: string;
+  smooth?: boolean;
+  maxUnits: number;
+  step: number;
+  clockSize: number;
+  font260128Name: string;
+  label?: string;
+}
+
 // --- Clock Sub-component ---
-function Clock({
+const Clock: React.FC<ClockProps> = ({
   angle,
   color,
   thickness,
@@ -192,7 +204,7 @@ function Clock({
   step,
   clockSize,
   font260128Name,
-}) {
+}) => {
   const markers = useMemo(() => {
     const arr = [];
     for (let i = step; i <= maxUnits; i += step) arr.push(i);
@@ -265,7 +277,7 @@ function Clock({
       })}
     </div>
   );
-}
+};
 
 // --- Final Styles ---
 const containerStyle = {
