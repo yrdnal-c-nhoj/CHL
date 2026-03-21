@@ -1,14 +1,23 @@
 // src/components/CustomFontMirroredClock.jsx
 import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import todayFont251125 from '../../../assets/fonts/25-11-11-digi.ttf?url';
 import bgFront from '../../../assets/images/25-11/25-11-11/bg.webp'; // top layer
 import bgBack from '../../../assets/images/25-11/25-11-11/bg1.jpg'; // back layer
 
+// Export assets so parent loaders (Today.jsx) can preload them
+export { bgFront, bgBack };
+
+// Export font config so parent loaders can preload them
+export const fontConfigs = [
+  {
+    fontFamily: 'TodayFont',
+    fontUrl: todayFont251125,
+  },
+];
+
 export default function CustomFontMirroredClock() {
   const [time, setTime] = useState(getCurrentTime());
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
   function getCurrentTime() {
     const now = new Date();
@@ -18,6 +27,9 @@ export default function CustomFontMirroredClock() {
     return `${hours}:${minutes}:${seconds}`;
   }
 
+  // Use Suspense loader for fonts
+  useSuspenseFontLoader(fontConfigs);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(getCurrentTime());
@@ -25,38 +37,12 @@ export default function CustomFontMirroredClock() {
     return () => clearInterval(interval);
   }, []);
 
-  const fontFace = `
-    @font-face {
-      font-family: 'TodayFont';
-      src: url(${todayFont251125}) format('truetype');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
+  // Note: Even though useSuspenseFontLoader loads the font, defining the @font-face
+  // here ensures the browser maps the family name correctly in all contexts.
+  // We use font-display: block to prevent FOUT if suspense boundary isn't hit.
+  const fontStyle = `
+    @font-face { font-family: 'TodayFont'; src: url(${todayFont251125}) format('truetype'); font-display: block; }
   `;
-
-  // Load font programmatically to avoid flash-of-unstyled-text (FOUT)
-  useEffect(() => {
-    let mounted = true;
-    try {
-      const f = new FontFace('TodayFont', `url(${todayFont251125})`);
-      f.load()
-        .then((loaded) => {
-          if (!mounted) return;
-          document.fonts.add(loaded);
-          setFontLoaded(true);
-        })
-        .catch(() => {
-          if (!mounted) return;
-          setFontLoaded(true);
-        });
-    } catch (e) {
-      setFontLoaded(true);
-    }
-    return () => {
-      mounted = false;
-    };
-  }, []);
 
   const topImageSize = '90% auto'; // front image size
   const backImageSize = '380% auto'; // back image size
@@ -85,15 +71,11 @@ export default function CustomFontMirroredClock() {
     transform: 'scaleX(-1) translateX(-1vw)',
     textAlign: 'center',
     zIndex: 2,
-    // prevent flash: hide until the custom font is ready
-    opacity: fontLoaded ? 1 : 0,
-    transition: 'opacity 160ms linear',
-    pointerEvents: fontLoaded ? 'auto' : 'none',
   };
 
   return (
     <div style={containerStyle}>
-      <style>{fontFace}</style>
+      <style>{fontStyle}</style>
       <div style={mirroredClockStyle}>{time}</div>
     </div>
   );
