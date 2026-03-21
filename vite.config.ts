@@ -54,26 +54,6 @@ export default defineConfig({
           // Separate analytics
           analytics: ['react-ga4', 'react-helmet-async'],
         },
-        // Keeps your assets organized in the dist folder
-        assetFileNames: (assetInfo) => {
-          const name = assetInfo.name || '';
-          if (/\.(woff|woff2|eot|ttf|otf)$/i.test(name)) {
-            return 'assets/fonts/[name]-[hash][extname]';
-          }
-          // Group all common image types and videos into the assets/images folder
-          if (
-            /\.(gif|jpe?g|png|svg|webp|avif|mp4|webm)$/i.test(name)
-          ) {
-            return 'assets/images/[name]-[hash][extname]';
-          }
-          return 'assets/[name]-[hash][extname]';
-        },
-        chunkFileNames: (chunkInfo) => {
-          // Create cleaner chunk names
-          const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop() : 'chunk';
-          return `assets/js/[name]-[hash].js`;
-        },
-        entryFileNames: 'assets/js/[name]-[hash].js',
       },
       // Optimize dependencies
       external: [],
