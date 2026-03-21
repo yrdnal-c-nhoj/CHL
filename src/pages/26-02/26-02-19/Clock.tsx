@@ -1,19 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import platFont from '../../../assets/fonts/26-02-19-plat.ttf';
 
 const ImageDisplay: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  // Smooth animation using requestAnimationFrame
+  const time = useSecondClock();
+  const [showContent, setShowContent] = useState(false);
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('PlatFont', platFont, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Font loading with Suspense to prevent FOUC
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: 'PlatFont',
+      fontUrl: platFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ], []);
+  
+  useSuspenseFontLoader(fontConfigs);
 
+  // Show content immediately with Suspense
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    setShowContent(true);
   }, []);
 
   // Time Calculations
@@ -34,27 +45,6 @@ const ImageDisplay: React.FC = () => {
   const [rawTime, amPm] = timeString.split(' ');
   const digits = rawTime.replace(/:/g, '').split('');
   const spacedAmPm = amPm.split('').join(' ');
-
-  // Show content when font is ready
-  if (!fontReady) {
-    return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100dvh',
-          backgroundColor: '#112D1E',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          color: '#ACA99F',
-          fontFamily: 'sans-serif',
-          fontSize: '1.5rem',
-        }}
-      >
-        Loading...
-      </div>
-    );
-  }
 
   return (
     <>

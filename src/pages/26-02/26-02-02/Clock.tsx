@@ -1,26 +1,70 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import digitalBgImage from '../../../assets/images/26-02/26-02-02/boom.webp';
 
-// Try the explicit 400 weight import if index.css fails
-import '@fontsource/share-tech-mono/400.css';
+// Custom hook for smooth time updates using requestAnimationFrame
+const useSmoothTime = (updateInterval: number = 100) => {
+  const [time, setTime] = useState(new Date());
+  const lastUpdateRef = useRef<number>(0);
+
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const animate = (timestamp: number) => {
+      // Update based on interval to avoid excessive updates
+      if (timestamp - lastUpdateRef.current >= updateInterval) {
+        setTime(new Date());
+        lastUpdateRef.current = timestamp;
+      }
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [updateInterval]);
+
+  return time;
+};
 
 const FONT_NAME = 'Share Tech Mono';
 
+interface DigitStyle {
+  fontSize: string;
+  opacity: number;
+  color: string;
+  textShadow: string;
+  letterSpacing: string;
+  display: string;
+  marginLeft: string;
+}
+
 const SonicBoomClock: React.FC = () => {
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-  const [time, setTime] = useState(new Date());
+  const [showContent, setShowContent] = useState(false);
 
+  // Use Suspense-compatible font loading
+  useSuspenseFontLoader([
+    {
+      fontFamily: FONT_NAME,
+      fontUrl: 'https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap',
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ]);
+
+  // Show content immediately with Suspense
   useEffect(() => {
-    // 1. Update time
-    const interval = setInterval(() => setTime(new Date()), 100);
-
-    // 2. Track font loading specifically for this family
-    document.fonts.load(`1em "${FONT_NAME}"`).then(() => {
-      setFontLoaded(true);
-    });
-
-    return () => clearInterval(interval);
+    setShowContent(true);
   }, []);
+
+  // Use smooth time updates with requestAnimationFrame
+  const time = useSmoothTime(100); // Update every 100ms for smooth millisecond display
 
   const timeString =
     time.getHours().toString().padStart(2, '0') +
@@ -28,26 +72,7 @@ const SonicBoomClock: React.FC = () => {
     time.getSeconds().toString().padStart(2, '0') +
     Math.floor(time.getMilliseconds() / 100).toString();
 
-  if (!fontLoaded) {
-    return (
-      <div
-        style={{
-          position: 'fixed',
-          inset: 0,
-          backgroundColor: '#5669C8',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-          color: '#D0D6F2',
-          fontFamily: 'monospace',
-          fontSize: '1.5rem',
-        }}
-      >
-        Loading...
-      </div>
-    );
-  }
+  const digits = timeString.split('');
 
   return (
     <div
@@ -82,23 +107,26 @@ const SonicBoomClock: React.FC = () => {
           zIndex: 10,
         }}
       >
-        {timeString.split('').map((digit, index) => {
-          const digitIndex = timeString.length - index - 1; // Reverse index for progressive sizing
-          const fontSize = 40 + digitIndex * -4.5; // Each digit larger than the next, more dramatic difference
-          const opacity = 1.0 - digitIndex * 0.15; // More dramatic opacity drop
+        {digits.map((digit: string, index: number) => {
+          const reverseIndex = digits.length - index - 1; 
+          // Progressive sizing: larger on left, smaller on right
+          const fontSize = 40 + reverseIndex * -4.5; 
+          const opacity = Math.max(1.0 - reverseIndex * 0.15, 0.3);
+
+          const digitStyle: DigitStyle = {
+            fontSize: `${fontSize}vmin`,
+            opacity,
+            color: '#D0D6F2',
+            textShadow: '0 0 15px rgba(10, 63, 240, 0.4)',
+            letterSpacing: '-0.1em', // Negative letter spacing to bring digits closer
+            display: 'inline-block',
+            marginLeft: index > 0 ? '-0.2em' : '0',
+          };
 
           return (
             <span
               key={index}
-              style={{
-                fontSize: `${fontSize}vmin`,
-                opacity: Math.max(opacity, 0.3), // Minimum opacity of 0.3
-                color: '#D0D6F2',
-                textShadow: '0 0 15px rgba(10, 63, 240, 0.4)',
-                letterSpacing: '-0.1em', // Negative letter spacing to bring digits closer
-                display: 'inline-block',
-                marginLeft: index > 0 ? '-0.2em' : '0', // Additional negative margin between digits
-              }}
+              style={digitStyle}
             >
               {digit}
             </span>

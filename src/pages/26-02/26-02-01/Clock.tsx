@@ -1,9 +1,13 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
 
 // --- Assets ---
 import dripFont from '../../../assets/fonts/26-01-31-cond.ttf?url';
 import analogBgImage from '../../../assets/images/26-02/26-02-01/rain.webp';
+
+// Export assets for ClockPage preloader
+export const background = analogBgImage;
 
 // --- Configuration ---
 const CLOCK_CONFIG = {
@@ -17,45 +21,23 @@ const CLOCK_CONFIG = {
   },
 };
 
-/**
- * Custom hook for clock time management
- * Custom Hook: useClock
- * Uses requestAnimationFrame for a "liquid" sweep motion
- * (much smoother than setInterval)
- */
-const useClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    let frameId;
-    const update: React.FC = () => {
-      setTime(new Date());
-      frameId = requestAnimationFrame(update);
-    };
-    frameId = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
-
-  return time;
-};
-
 const AnalogClock: React.FC = () => {
+  // Smooth millisecond animation using requestAnimationFrame
+  const now = useMillisecondClock();
+  
   // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
+  const fontConfigs = useMemo(() => [{
       fontFamily: 'BorrowedAnalog',
       fontUrl: dripFont,
       options: {
         weight: 'normal',
         style: 'normal'
       }
-    }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  }], []);
+  
+  useSuspenseFontLoader(fontConfigs);
 
-  const now = useClock();
-  const fontReady = fontsLoaded;
-  const styles = getStyles(fontReady);
+  const styles = getStyles();
 
   // Time Calculations (including sub-second fractions for smooth motion)
   const msec = now.getMilliseconds();
@@ -101,7 +83,7 @@ const AnalogClock: React.FC = () => {
       <div
         style={{
           ...styles.face,
-          fontFamily: fontReady ? "'BorrowedAnalog', sans-serif" : 'sans-serif',
+          fontFamily: "'BorrowedAnalog', sans-serif",
         }}
       >
         {renderedNumerals}
@@ -141,17 +123,14 @@ const AnalogClock: React.FC = () => {
 };
 
 // --- Styles ---
-const getStyles = (fontReady) => ({
+const getStyles = () => ({
   container: {
     position: 'relative',
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
     backgroundColor: '#050505',
-    // Superior FOUC prevention from 26-02-18
-    opacity: fontReady ? 1 : 0,
-    transition: 'opacity 0.3s ease-in-out',
-    visibility: fontReady ? 'visible' : 'hidden',
+    // Suspense handles loading state, no need for manual opacity/visibility toggles
   },
   backgroundLayer: {
     position: 'absolute',

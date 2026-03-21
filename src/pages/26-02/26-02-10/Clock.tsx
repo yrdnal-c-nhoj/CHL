@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import React, { useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 // --- Assets ---
 import teeVeeLoungeFont from '../../../assets/fonts/26-02-10-tv.ttf?url';
 import analogBgImage from '../../../assets/images/26-02/26-02-10/tv.jpg';
+
+// Export assets for ClockPage preloader
+export const background = analogBgImage;
 
 // --- Configuration ---
 const CLOCK_CONFIG = {
@@ -12,38 +16,21 @@ const CLOCK_CONFIG = {
   },
 };
 
-/**
- * Custom Hook: teeVeeLoungeClock
- * Updates every second for digital display
- */
-const teeVeeLoungeClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 1000); // Update every second for digital clock
-    return () => clearInterval(interval);
-  }, []);
-
-  return time;
-};
-
 const DigitalClock: React.FC = () => {
-  const now = teeVeeLoungeClock();
+  // Smooth animation using requestAnimationFrame
+  const now = useSecondClock();
   
   // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
+  const fontConfigs = useMemo(() => [{
       fontFamily: 'TeeVeeFont',
       fontUrl: teeVeeLoungeFont,
       options: {
         weight: 'normal',
         style: 'normal'
       }
-    }
-  ];
-  const fontsReady = useMultipleFontLoader(fontConfigs);
+  }], []);
+  
+  useSuspenseFontLoader(fontConfigs);
 
   // 12-hour format with no leading zeros
   const hours = now.getHours();
@@ -54,28 +41,6 @@ const DigitalClock: React.FC = () => {
 
   // Format with leading zeros on minutes only, all on one line
   const timeString = `${twelveHour}:${minutes.toString().padStart(2, '0')}${ampm}`;
-
-  if (!fontsReady) {
-    return (
-      <div
-        style={{
-          position: 'relative',
-          width: '100vw',
-          height: '100dvh',
-          overflow: 'hidden',
-          backgroundColor: '#050505',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: CLOCK_CONFIG.COLORS.silverText,
-          fontFamily: 'monospace',
-          fontSize: '1.5rem',
-        }}
-      >
-        Loading...
-      </div>
-    );
-  }
 
   return (
     <div style={styles.container}>

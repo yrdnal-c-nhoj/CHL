@@ -1,8 +1,7 @@
 /** @jsxImportSource react */
 import React, { useState, useEffect, useRef, useMemo, memo } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 /* =========================
    CONFIGURATION & ASSETS
@@ -84,62 +83,67 @@ const StaticCollage = memo(({ count }) => {
 /* =========================
    MAIN COMPONENT
 ========================= */
-export default function RefactoredClock() {
-  const [time, setTime] = useState(new Date());
-  const [dynamicImages, setDynamicImages] = useState<any>([]);
-  const [fontReady, setFontReady] = useState<boolean>(false);
-
-  // 1. Clock & Dynamic Image Logic
+/**
+ * Custom hook for periodic updates using requestAnimationFrame
+ */
+const usePeriodicUpdate = (callback: () => void, interval: number = 1000) => {
+  const lastUpdateRef = useRef<number>(0);
+  
   useEffect(() => {
-    const ticker = setInterval(() => {
-      const now = new Date();
-      setTime(now);
-
-      // Add a new dynamic image every second
-      const newImg = {
-        id: now.getTime(),
-        src: getRandomImage(),
-        style: generateImageStyle(true),
-      };
-
-      setDynamicImages((prev) => [
-        ...prev.slice(-(CONFIG.MAX_DYNAMIC_IMAGES - 1)),
-        newImg,
-      ]);
-    }, CONFIG.UPDATE_INTERVAL);
-
-    return () => clearInterval(ticker);
-  }, []);
-
-  // 2. Font Loading via CSS injection to prevent FOUC
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: '${CONFIG.FONT_FAMILY}';
-        src: url('${customFont}');
-        font-display: swap;
+    let frameId: number;
+    
+    const animate = (timestamp: number) => {
+      if (timestamp - lastUpdateRef.current >= interval) {
+        lastUpdateRef.current = timestamp;
+        callback();
       }
-    `;
-    document.head.appendChild(style);
-
-    // Check if font is loaded
-    const font = new FontFace(CONFIG.FONT_FAMILY, `url(${customFont})`);
-    font
-      .load()
-      .then(() => {
-        setFontReady(true);
-      })
-      .catch(() => {
-        setFontReady(true); // Still show content even if font fails
-      });
-
-    return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
+      frameId = requestAnimationFrame(animate);
     };
+    
+    frameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameId);
+  }, [callback, interval]);
+};
+
+// Interface for dynamic images
+interface DynamicImages {
+  id: string;
+  src: string;
+  style?: React.CSSProperties;
+}
+
+export default function RefactoredClock() {
+  const time = useSecondClock();
+  const [dynamicImages, setDynamicImages] = useState<DynamicImages[]>([]);
+  const [showContent, setShowContent] = useState(false);
+
+  // Font loading with Suspense to prevent FOUC
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: CONFIG.FONT_FAMILY,
+      fontUrl: customFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ], []);
+  
+  useSuspenseFontLoader(fontConfigs);
+
+  // Show content immediately with Suspense
+  useEffect(() => {
+    setShowContent(true);
   }, []);
+
+  // Dynamic image updates using requestAnimationFrame
+  usePeriodicUpdate(() => {
+    const newImg = `https://picsum.photos/seed/${Math.random()}/100/100.jpg`;
+    setDynamicImages((prev) => [
+      ...prev.slice(-(CONFIG.MAX_DYNAMIC_IMAGES - 1)),
+      { id: Date.now().toString(), src: newImg }
+    ]);
+  }, CONFIG.UPDATE_INTERVAL);
 
   // 3. Time Formatting
   const timeStrings = useMemo(() => {
@@ -149,26 +153,6 @@ export default function RefactoredClock() {
     const m = time.getMinutes().toString().padStart(2, '0'); // Keep leading zeros for minutes
     return { h, m };
   }, [time]);
-
-  if (!fontReady) {
-    return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100dvh',
-          backgroundColor: '#000',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#fff',
-          fontFamily: 'monospace',
-          fontSize: '1.5rem',
-        }}
-      >
-        Loading...
-      </div>
-    );
-  }
 
   /* Styles */
   const rootStyle = {
@@ -212,8 +196,8 @@ export default function RefactoredClock() {
 
       <StaticCollage count={CONFIG.COLLAGE_COUNT} />
 
-      {dynamicImages.map((img) => (
-        <img key={img.id} src={img.src} style={img.style} alt="" />
+      {dynamicImages.map((img, index) => (
+        <img key={`dynamic-${index}-${img}`} src={img} style={{position: 'absolute', width: '100px', height: '100px', objectFit: 'cover'}} alt="" />
       ))}
 
       <div style={digitGroupStyle} aria-hidden="true">

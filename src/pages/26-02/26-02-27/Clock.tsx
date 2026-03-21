@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import abuVideo from '../../../assets/images/26-02/26-02-27/abu.mp4';
 
 const Clock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  // Smooth animation using requestAnimationFrame
+  const time = useSecondClock();
 
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  // Time update handled by useSecondClock hook
 
   const seconds = time.getSeconds();
   const minutes = time.getMinutes();
