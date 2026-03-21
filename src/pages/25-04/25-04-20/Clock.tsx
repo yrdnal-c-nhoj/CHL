@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import clouds from '../../../assets/images/25-04/25-04-20/clouds.webp';
-import cloFont from '../../../assets/fonts/25-04-20-clo.ttf';
+import cloFont from '../../../assets/fonts/25-04-20-clo.ttf?url';
 
-const CloudClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Component Props interface
+interface CloudClockProps {
+  // No props required for this component
+}
+
+const CloudClock = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'CloFont',
       fontUrl: cloFont,
@@ -14,39 +21,41 @@ const CloudClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
 
-  const [hoursHTML, setHoursHTML] = useState<any>('');
-  const [minutesHTML, setMinutesHTML] = useState<any>('');
-  const [ampmHTML, setAmPmHTML] = useState<any>('');
+  // Load fonts using suspense-based loader
+  useSuspenseFontLoader(fontConfigs);
 
-  const getStyledText = (str) =>
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
+
+  const [hoursHTML, setHoursHTML] = useState<string>('');
+  const [minutesHTML, setMinutesHTML] = useState<string>('');
+  const [ampmHTML, setAmPmHTML] = useState<string>('');
+
+  const getStyledText = useCallback((str: string): string =>
     str
       .split('')
       .map((char, i) => {
         const randomSize = (Math.random() * 11 + 1.5).toFixed(2); // 1.5rem–3.5rem
         return `<span class="digit" style="font-size: ${randomSize}rem;" data-key="${Date.now() + i}">${char}</span>`;
       })
-      .join('');
+      .join(''), []);
+
+  const updateTime = useCallback((): void => {
+    let h = currentTime.getHours();
+    const m = currentTime.getMinutes();
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+
+    setHoursHTML(getStyledText(String(h)));
+    setMinutesHTML(getStyledText(String(m).padStart(2, '0')));
+    setAmPmHTML(getStyledText(ampm));
+  }, [currentTime, getStyledText]);
 
   useEffect(() => {
-    const updateTime: React.FC = () => {
-      const now = new Date();
-      let h = now.getHours();
-      const m = now.getMinutes();
-      const ampm = h >= 12 ? 'PM' : 'AM';
-      h = h % 12 || 12;
-
-      setHoursHTML(getStyledText(String(h)));
-      setMinutesHTML(getStyledText(String(m).padStart(2, '0')));
-      setAmPmHTML(getStyledText(ampm));
-    };
-
     updateTime();
-    const interval = setInterval(updateTime, 5000); // Update every 5 seconds
-    return () => clearInterval(interval);
-  }, []);
+  }, [updateTime]);
 
   return (
     <>

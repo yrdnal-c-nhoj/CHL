@@ -1,40 +1,60 @@
-import React, { useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import backgroundImage from '../../../assets/images/25-04/25-04-13/pattern.jpeg';
 import pizzaFace from '../../../assets/images/25-04/25-04-13/pie.webp';
 import hourSlice from '../../../assets/images/25-04/25-04-13/s3.webp';
 import minuteSlice from '../../../assets/images/25-04/25-04-13/s2.webp';
 import secondSlice from '../../../assets/images/25-04/25-04-13/s1.webp';
 
-const PizzaClock: React.FC = () => {
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
+// Component Props interface
+interface PizzaClockProps {
+  // No props required for this component
+}
+
+// Clock refs interface
+interface ClockRefs {
+  hour: React.RefObject<HTMLDivElement | null>;
+  minute: React.RefObject<HTMLDivElement | null>;
+  second: React.RefObject<HTMLDivElement | null>;
+}
+
+const PizzaClock = () => {
+  const clockRefs: ClockRefs = {
+    hour: useRef<HTMLDivElement>(null),
+    minute: useRef<HTMLDivElement>(null),
+    second: useRef<HTMLDivElement>(null),
+  };
+
+  // Font loading configuration (memoized) - no custom fonts needed
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth millisecond clock updates
+  const currentTime = useMillisecondClock();
+
+  const updateClockSmooth = useCallback((): void => {
+    const ms = currentTime.getMilliseconds();
+    const s = currentTime.getSeconds() + ms / 1000;
+    const m = currentTime.getMinutes() + s / 60;
+    const h = (currentTime.getHours() % 12) + m / 60;
+
+    const hourDeg = h * 30;
+    const minuteDeg = m * 6;
+    const secondDeg = s * 6;
+
+    if (clockRefs.hour.current)
+      clockRefs.hour.current.style.transform = `rotate(${hourDeg}deg)`;
+    if (clockRefs.minute.current)
+      clockRefs.minute.current.style.transform = `rotate(${minuteDeg}deg)`;
+    if (clockRefs.second.current)
+      clockRefs.second.current.style.transform = `rotate(${secondDeg}deg)`;
+  }, [currentTime]);
 
   useEffect(() => {
-    const updateClockSmooth: React.FC = () => {
-      const now = new Date();
-      const ms = now.getMilliseconds();
-      const s = now.getSeconds() + ms / 1000;
-      const m = now.getMinutes() + s / 60;
-      const h = (now.getHours() % 12) + m / 60;
-
-      const hourDeg = h * 30;
-      const minuteDeg = m * 6;
-      const secondDeg = s * 6;
-
-      if (hourRef.current)
-        hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
-      if (minuteRef.current)
-        minuteRef.current.style.transform = `rotate(${minuteDeg}deg)`;
-      if (secondRef.current)
-        secondRef.current.style.transform = `rotate(${secondDeg}deg)`;
-
-      requestAnimationFrame(updateClockSmooth);
-    };
-
-    requestAnimationFrame(updateClockSmooth);
-  }, []);
+    updateClockSmooth();
+  }, [updateClockSmooth]);
 
   return (
     <div
@@ -81,7 +101,7 @@ const PizzaClock: React.FC = () => {
         }}
       >
         <div
-          ref={minuteRef}
+          ref={clockRefs.minute}
           style={{
             position: 'absolute',
             width: '100%',
@@ -111,7 +131,7 @@ const PizzaClock: React.FC = () => {
         </div>
 
         <div
-          ref={hourRef}
+          ref={clockRefs.hour}
           style={{
             position: 'absolute',
             width: '100%',
@@ -141,7 +161,7 @@ const PizzaClock: React.FC = () => {
         </div>
 
         <div
-          ref={secondRef}
+          ref={clockRefs.second}
           style={{
             position: 'absolute',
             width: '100%',

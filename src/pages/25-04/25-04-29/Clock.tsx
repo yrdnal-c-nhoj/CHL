@@ -1,17 +1,23 @@
-import React, { useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import fontUrl from '../../../assets/fonts/25-04-29-bang.ttf';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import fontUrl from '../../../assets/fonts/25-04-29-bang.ttf?url';
 import gif1 from '../../../assets/images/25-04/25-04-29/fw.webp';
 import gif2 from '../../../assets/images/25-04/25-04-29/84298.gif';
 import gif3 from '../../../assets/images/25-04/25-04-29/giphy.gif';
 
-const FireworksClock: React.FC = () => {
-  const clockRef = useRef(null);
+// Component Props interface
+interface FireworksClockProps {
+  // No props required for this component
+}
+
+const FireworksClock = () => {
+  const clockRef = useRef<HTMLDivElement>(null);
   const componentId = `fireworks-clock-${Math.random().toString(36).substr(2, 9)}`;
 
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'bang',
       fontUrl: fontUrl,
@@ -20,68 +26,71 @@ const FireworksClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsReady = useMultipleFontLoader(fontConfigs);
+  ], []);
 
-  useEffect(() => {
-    const showClock: React.FC = () => {
-      const now = new Date();
-      const timeString = now
-        .toLocaleTimeString('en-US', { hour12: false })
-        .slice(0, 5);
-      const clock = clockRef.current;
-      if (!clock) return;
+  // Load fonts using suspense-based loader
+  useSuspenseFontLoader(fontConfigs);
 
-      clock.innerHTML = '';
-      clock.style.animation = 'none';
-      void clock.offsetWidth;
-      clock.style.animation = `${componentId}-riseUp 1.5s ease-out forwards`;
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
 
-      for (const char of timeString) {
-        const span = document.createElement('span');
-        span.textContent = char;
-        span.style.color = getRandomBrightColor();
-        span.style.fontSize = getRandomFontSize();
-        span.style.fontWeight = 'bold';
-        span.style.position = 'relative';
-        span.style.display = 'inline-block';
-        span.style.willChange = 'transform, opacity';
-        span.style.textShadow = '0 0 0.5rem white';
+  const showClock = useCallback((): void => {
+    const clock = clockRef.current;
+    if (!clock) return;
 
-        const { dx, dy, rot } = getRandomExplosionVector();
-        span.style.setProperty('--dx', dx);
-        span.style.setProperty('--dy', dy);
-        span.style.setProperty('--rot', rot);
-        clock.appendChild(span);
+    const timeString = currentTime
+      .toLocaleTimeString('en-US', { hour12: false })
+      .slice(0, 5);
+
+    clock.innerHTML = '';
+    clock.style.animation = 'none';
+    void clock.offsetWidth;
+    clock.style.animation = `${componentId}-riseUp 1.5s ease-out forwards`;
+
+    for (const char of timeString) {
+      const span = document.createElement('span');
+      span.textContent = char;
+      span.style.color = getRandomBrightColor();
+      span.style.fontSize = getRandomFontSize();
+      span.style.fontWeight = 'bold';
+      span.style.position = 'relative';
+      span.style.display = 'inline-block';
+      span.style.willChange = 'transform, opacity';
+      span.style.textShadow = '0 0 0.5rem white';
+
+      const { dx, dy, rot } = getRandomExplosionVector();
+      span.style.setProperty('--dx', dx);
+      span.style.setProperty('--dy', dy);
+      span.style.setProperty('--rot', rot);
+      clock.appendChild(span);
+    }
+
+    setTimeout(() => {
+      for (const digit of clock.children) {
+        (digit as HTMLElement).style.animation = `${componentId}-explodeWild 1.5s ease-out forwards`;
       }
+    }, 1500);
+  }, [currentTime, componentId]);
 
-      setTimeout(() => {
-        for (const digit of clock.children) {
-          digit.style.animation = `${componentId}-explodeWild 1.5s ease-out forwards`;
-        }
-      }, 1500);
-    };
-
-    showClock();
-    const interval = setInterval(showClock, 5000);
-    return () => clearInterval(interval);
-  }, [componentId]);
-
-  const getRandomBrightColor: React.FC = () => {
+  const getRandomBrightColor = useCallback((): string => {
     const hue = Math.floor(Math.random() * 360);
     return `hsl(${hue}, 100%, 50%)`;
-  };
+  }, []);
 
-  const getRandomFontSize: React.FC = () => {
+  const getRandomFontSize = useCallback((): string => {
     return `${Math.floor(Math.random() * 2) + 4}rem`;
-  };
+  }, []);
 
-  const getRandomExplosionVector: React.FC = () => {
+  const getRandomExplosionVector = useCallback((): { dx: string; dy: string; rot: string } => {
     const dx = `${(Math.random() - 0.5) * 80}vw`;
     const dy = `${(Math.random() - 0.5) * 80}vh`;
     const rot = `${Math.random() * 1440 - 720}deg`;
     return { dx, dy, rot };
-  };
+  }, []);
+
+  useEffect(() => {
+    showClock();
+  }, [showClock]);
 
   const containerStyle = {
     fontFamily: 'bang, sans-serif',

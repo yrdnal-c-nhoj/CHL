@@ -1,53 +1,54 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
-
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import coinGif from '../../../assets/images/25-04/25-04-27/coin.gif';
 import spinWebp from '../../../assets/images/25-04/25-04-27/spin.webp';
 
-const SpinningCoinClock: React.FC = () => {
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+// Component Props interface
+interface SpinningCoinClockProps {
+  // No props required for this component
+}
+
+const SpinningCoinClock = () => {
   const componentId = useRef(`coin-clock-${Date.now()}`);
   const fontName = `CoinClockFont-${componentId.current}`;
 
-  // Load Google Fonts Federant with scoped approach
-  useEffect(() => {
-    const loadGoogleFont = async () => {
-      try {
-        // Create scoped font-face
-        const style = document.createElement('style');
-        style.textContent = `
-          @font-face {
-            font-family: '${fontName}';
-            src: url('https://fonts.gstatic.com/s/federant/v13/2sDdZGJYIn2lnlY2JMQ.woff2') format('woff2');
-          }
-        `;
-        document.head.appendChild(style);
+  // Font loading configuration (memoized) - no custom fonts needed to avoid network errors
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
 
-        // Load the font
-        const fontFace = new FontFace(fontName, `url(https://fonts.gstatic.com/s/federant/v13/2sDdZGJYIn2lnlY2JMQ.woff2) format('woff2')`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Google Font failed to load, using fallback');
-        setFontLoaded(false);
-      }
-    };
+  // Load fonts using suspense-based loader
+  useSuspenseFontLoader(fontConfigs);
 
-    loadGoogleFont();
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
+  const updateClock = useCallback((): void => {
+    const clock = document.getElementById('clock');
+    if (!clock) return;
 
-    // Cleanup font on unmount
-    return () => {
-      for (const font of document.fonts) {
-        if (font.family === fontName) {
-          document.fonts.delete(font);
-          break;
-        }
-      }
-    };
-  }, [fontName]);
+    const hours = currentTime.getHours() % 12;
+    const minutes = currentTime.getMinutes();
+    const seconds = currentTime.getSeconds();
+
+    const hourDeg = hours * 30 + minutes * 0.5;
+    const minuteDeg = minutes * 6;
+    const secondDeg = seconds * 6;
+
+    const hourHand = clock.querySelector('.hour-hand') as HTMLElement;
+    const minuteHand = clock.querySelector('.minute-hand') as HTMLElement;
+    const secondHand = clock.querySelector('.second-hand') as HTMLElement;
+
+    if (hourHand) {
+      hourHand.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+    }
+    if (minuteHand) {
+      minuteHand.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
+    }
+    if (secondHand) {
+      secondHand.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
+    }
+  }, [currentTime]);
+
   useEffect(() => {
     const clock = document.getElementById('clock');
     if (!clock) return;
@@ -69,26 +70,8 @@ const SpinningCoinClock: React.FC = () => {
     secondHand.className = 'hand second-hand';
     clock.appendChild(secondHand);
 
-    const updateClock: React.FC = () => {
-      const now = new Date();
-      const hours = now.getHours() % 12;
-      const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
-
-      const hourDeg = hours * 30 + minutes * 0.5;
-      const minuteDeg = minutes * 6;
-      const secondDeg = seconds * 6;
-
-      hourHand.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
-      minuteHand.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
-      secondHand.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
-    };
-
     updateClock();
-    const interval = setInterval(updateClock, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
+  }, [updateClock]);
 
   return (
     <div
@@ -182,7 +165,7 @@ const SpinningCoinClock: React.FC = () => {
         }
 
         .number {
-          font-family: ${fontLoaded ? `'${fontName}', cursive` : 'cursive'},
+          font-family: cursive,
           position: absolute;
           font-size: 6.2vw;
           color: #d3ad62;

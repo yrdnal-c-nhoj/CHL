@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import backgroundImage from '../../../assets/images/25-04/25-04-25/bad.webp';
-import boldFont from '../../../assets/fonts/25-04-25-Oswald-Bold.ttf';
+import boldFont from '../../../assets/fonts/25-04-25-Oswald-Bold.ttf?url';
 import hourHandImage from '../../../assets/images/25-04/25-04-25/ban.webp';
 import minuteHandImage from '../../../assets/images/25-04/25-04-25/ba.gif';
 import secondHandImage from '../../../assets/images/25-04/25-04-25/band.gif';
@@ -13,72 +14,44 @@ interface ClockImages {
   secondImg: HTMLImageElement;
 }
 
-const MyClock: React.FC = () => {
+// Component Props interface
+interface MyClockProps {
+  // No props required for this component
+}
+
+const MyClock = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
   const componentId = useRef(`oswald-clock-${Date.now()}`);
   const fontName = `OswaldClockFont-${componentId.current}`;
   const imagesRef = useRef<ClockImages | null>(null);
 
-  // Simple scoped font loading without leaks
-  useEffect(() => {
-    const loadFont = async () => {
-      try {
-        console.log('Loading font:', boldFont);
-        const fontFace = new FontFace(fontName, `url(${boldFont})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        console.log('Font loaded successfully');
-        setFontLoaded(true);
-      } catch (error) {
-        console.warn('Font failed to load, using fallback:', error);
-        setFontLoaded(false);
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    {
+      fontFamily: fontName,
+      fontUrl: boldFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
       }
-    };
+    }
+  ], [fontName]);
 
-    loadFont();
+  // Load fonts using suspense-based loader
+  useSuspenseFontLoader(fontConfigs);
 
-    // Cleanup font on unmount
-    return () => {
-      for (const font of document.fonts) {
-        if (font.family === fontName) {
-          document.fonts.delete(font);
-          break;
-        }
-      }
-    };
-  }, [fontName]);
-
-  // Load images once
-  useEffect(() => {
-    const loadImages = async () => {
-      const hourImg = new Image();
-      const minuteImg = new Image();
-      const secondImg = new Image();
-      
-      const loadPromises = [
-        new Promise(resolve => { hourImg.onload = resolve; hourImg.src = hourHandImage; }),
-        new Promise(resolve => { minuteImg.onload = resolve; minuteImg.src = minuteHandImage; }),
-        new Promise(resolve => { secondImg.onload = resolve; secondImg.src = secondHandImage; })
-      ];
-      
-      await Promise.all(loadPromises);
-      imagesRef.current = { hourImg, minuteImg, secondImg };
-    };
-    
-    loadImages();
-  }, [hourHandImage, minuteHandImage, secondHandImage]);
+  // Use the standardized hook for smooth millisecond clock updates
+  const currentTime = useMillisecondClock();
 
   useEffect(() => {
-    if (!fontLoaded || !imagesRef.current) return; // Don't start rendering until font is loaded
+    if (!imagesRef.current) return;
     
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const update = () => {
-      const now = new Date();
+    const update = (): void => {
       const w = (canvas.width = window.innerWidth);
       const h = (canvas.height = window.innerHeight);
       const r = Math.min(w, h) / 3;
@@ -91,8 +64,7 @@ const MyClock: React.FC = () => {
       ctx.fillStyle = '#FA0820FF';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      const fontToUse = fontLoaded ? fontName : 'Arial';
-      ctx.font = `${r * 0.5}px ${fontToUse}`;
+      ctx.font = `${r * 0.5}px ${fontName}`;
 
       for (let i = 1; i <= 12; i++) {
         const angle = (i * Math.PI) / 6;
@@ -103,12 +75,12 @@ const MyClock: React.FC = () => {
         ctx.restore();
       }
 
-      const hour = now.getHours() % 12;
-      const minute = now.getMinutes();
-      const second = now.getSeconds();
+      const hour = currentTime.getHours() % 12;
+      const minute = currentTime.getMinutes();
+      const second = currentTime.getSeconds();
 
       // Updated drawImageHand function
-      const drawImageHand = (img, angle, widthScale = 1, heightScale = 1) => {
+      const drawImageHand = (img: HTMLImageElement, angle: number, widthScale = 1, heightScale = 1): void => {
         const imgW = r * 0.1 * widthScale;
         const imgH = r * heightScale;
 
@@ -143,7 +115,28 @@ const MyClock: React.FC = () => {
     };
 
     update();
-  }, [fontLoaded]);
+  }, [currentTime, fontName]);
+
+  // Load images once
+  useEffect(() => {
+    const loadImages = async (): Promise<void> => {
+      const hourImg = new Image();
+      const minuteImg = new Image();
+      const secondImg = new Image();
+      
+      const loadPromises = [
+        new Promise<void>(resolve => { hourImg.onload = () => resolve(); hourImg.src = hourHandImage; }),
+        new Promise<void>(resolve => { minuteImg.onload = () => resolve(); minuteImg.src = minuteHandImage; }),
+        new Promise<void>(resolve => { secondImg.onload = () => resolve(); secondImg.src = secondHandImage; })
+      ];
+      
+      await Promise.all(loadPromises);
+      imagesRef.current = { hourImg, minuteImg, secondImg };
+    };
+    
+    loadImages();
+  }, [hourHandImage, minuteHandImage, secondHandImage]);
+
 
   return (
     <div

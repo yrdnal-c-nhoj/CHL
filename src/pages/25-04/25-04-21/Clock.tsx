@@ -1,5 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 
 import hourHand from '../../../assets/images/25-04/25-04-21/hour.gif';
 import minuteHand from '../../../assets/images/25-04/25-04-21/minute.gif';
@@ -9,37 +11,53 @@ import mainBackground from '../../../assets/images/25-04/25-04-21/p.jpg'; // sta
 import overlayTopLeft from '../../../assets/images/25-04/25-04-21/Pea.gif'; // top-left overlay
 import overlayBottomRight from '../../../assets/images/25-04/25-04-21/Pea2.gif'; // bottom-right overlay (different file)
 
+// Clock refs interface
+interface ClockRefs {
+  hour: React.RefObject<HTMLImageElement | null>;
+  minute: React.RefObject<HTMLImageElement | null>;
+  second: React.RefObject<HTMLImageElement | null>;
+}
+
+// Component Props interface
+interface AnalogImageClockProps {
+  // No props required for this component
+}
+
 export default function AnalogImageClock() {
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
-  const rafRef = useRef(0);
+  const clockRefs: ClockRefs = {
+    hour: useRef<HTMLImageElement>(null),
+    minute: useRef<HTMLImageElement>(null),
+    second: useRef<HTMLImageElement>(null),
+  };
+  const rafRef = useRef<number>(0);
 
-  // Clock hand animation
+  // Font loading configuration (memoized) - no custom fonts needed
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth millisecond clock updates
+  const currentTime = useMillisecondClock();
+
+  const update = useCallback((): void => {
+    const ms = currentTime.getMilliseconds();
+    const s = currentTime.getSeconds() + ms / 1000;
+    const m = currentTime.getMinutes() + s / 60;
+    const h = (currentTime.getHours() % 12) + m / 60;
+
+    if (clockRefs.hour.current) {
+      clockRefs.hour.current.style.transform = `translate(-50%, -85%) rotate(${h * 30}deg)`;
+    }
+    if (clockRefs.minute.current) {
+      clockRefs.minute.current.style.transform = `translate(-50%, -85%) rotate(${m * 6}deg)`;
+    }
+    if (clockRefs.second.current) {
+      clockRefs.second.current.style.transform = `translate(-50%, -85%) rotate(${s * 6}deg)`;
+    }
+  }, [currentTime]);
+
   useEffect(() => {
-    const update: React.FC = () => {
-      const now = new Date();
-      const ms = now.getMilliseconds();
-      const s = now.getSeconds() + ms / 1000;
-      const m = now.getMinutes() + s / 60;
-      const h = (now.getHours() % 12) + m / 60;
-
-      if (hourRef.current) {
-        hourRef.current.style.transform = `translate(-50%, -85%) rotate(${h * 30}deg)`;
-      }
-      if (minuteRef.current) {
-        minuteRef.current.style.transform = `translate(-50%, -85%) rotate(${m * 6}deg)`;
-      }
-      if (secondRef.current) {
-        secondRef.current.style.transform = `translate(-50%, -85%) rotate(${s * 6}deg)`;
-      }
-
-      rafRef.current = requestAnimationFrame(update);
-    };
-
-    rafRef.current = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, []);
+    update();
+  }, [update]);
 
   return (
     <div className="analog-clock">
@@ -122,7 +140,7 @@ export default function AnalogImageClock() {
         <img
           decoding="async"
           loading="lazy"
-          ref={hourRef}
+          ref={clockRefs.hour}
           src={hourHand}
           alt="hour hand"
           className="hand hour-hand"
@@ -130,7 +148,7 @@ export default function AnalogImageClock() {
         <img
           decoding="async"
           loading="lazy"
-          ref={minuteRef}
+          ref={clockRefs.minute}
           src={minuteHand}
           alt="minute hand"
           className="hand minute-hand"
@@ -138,7 +156,7 @@ export default function AnalogImageClock() {
         <img
           decoding="async"
           loading="lazy"
-          ref={secondRef}
+          ref={clockRefs.second}
           src={secondHand}
           alt="second hand"
           className="hand second-hand"
