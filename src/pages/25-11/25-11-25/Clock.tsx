@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import fontClockUrl_20251126 from '../../../assets/fonts/25-11-25-ntp.ttf?url';
 import marqueeFontUrl from '../../../assets/fonts/25-11-25-n2.ttf?url';
@@ -77,6 +78,19 @@ const generateDigitColors = (numDigits) => {
     };
   });
 };
+
+export const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'ClockFont',
+    fontUrl: fontClockUrl_20251126,
+    options: { display: 'swap' },
+  },
+  {
+    fontFamily: 'MarqueeFont',
+    fontUrl: marqueeFontUrl,
+    options: { display: 'swap' },
+  },
+];
 
 // --- Component ---
 export default function NtpClock() {
