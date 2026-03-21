@@ -1,37 +1,9 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
 import busterImg from '../../../assets/images/26-02/26-02-05/buster.webp';
 import hand1Img from '../../../assets/images/26-02/26-02-05/hand1.webp';
 import hand2Img from '../../../assets/images/26-02/26-02-05/hand2.webp';
-
-// Custom hook for smooth time updates using requestAnimationFrame
-const useSmoothTime = (updateInterval: number = 100) => {
-  const [time, setTime] = useState(new Date());
-  const lastUpdateRef = useRef<number>(0);
-
-  useEffect(() => {
-    let animationFrameId: number;
-
-    const animate = (timestamp: number) => {
-      // Update based on interval to avoid excessive updates
-      if (timestamp - lastUpdateRef.current >= updateInterval) {
-        setTime(new Date());
-        lastUpdateRef.current = timestamp;
-      }
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animationFrameId = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
-  }, [updateInterval]);
-
-  return time;
-};
 
 // Interface for hand style function parameters
 interface HandStyleParams {
@@ -44,7 +16,6 @@ interface HandStyleParams {
 
 const Analog260205Clock: React.FC = () => {
   const [showContent, setShowContent] = useState(false);
-  const requestRef = useRef<number | undefined>();
 
   // Use Suspense-compatible font loading (even though no fonts, for consistency)
   useSuspenseFontLoader([]);
@@ -55,12 +26,11 @@ const Analog260205Clock: React.FC = () => {
   }, []);
 
   // Use smooth time updates with requestAnimationFrame
-  const time = useSmoothTime(100); // Update every 100ms for smooth animations
+  const time = useMillisecondClock();
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
-  const ms = time.getMilliseconds();
 
   const minuteAngle = ((minutes + seconds / 60) / 60) * 360;
   const hourAngle = ((hours + minutes / 60) / 12) * 360;

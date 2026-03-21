@@ -145,7 +145,7 @@ export default function RefactoredClock() {
     const newImg = `https://picsum.photos/seed/${Math.random()}/100/100.jpg`;
     setDynamicImages((prev) => [
       ...prev.slice(-(CONFIG.MAX_DYNAMIC_IMAGES - 1)),
-      { id: Date.now().toString(), src: newImg }
+      { id: Date.now().toString(), src: newImg, style: generateImageStyle(true) }
     ]);
   }, CONFIG.UPDATE_INTERVAL);
 
@@ -187,18 +187,19 @@ export default function RefactoredClock() {
   return (
     <div
       style={rootStyle}
+      className="clock-26-02-21"
       aria-label={`Current time: ${timeStrings.h}:${timeStrings.m}`}
     >
       {/* Global Style Injection for Font Face */}
       <style>{`
-        img { animation: fadeIn 0.8s ease-in-out; }
+        .clock-26-02-21 img { animation: fadeIn 0.8s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: inherit; } }
       `}</style>
 
       <StaticCollage count={CONFIG.COLLAGE_COUNT} />
 
       {dynamicImages.map((img, index) => (
-        <img key={`dynamic-${index}-${img}`} src={img} style={{position: 'absolute', width: '100px', height: '100px', objectFit: 'cover'}} alt="" />
+        <img key={`dynamic-${index}-${img.id}`} src={img.src} style={img.style} alt="" />
       ))}
 
       <div style={digitGroupStyle} aria-hidden="true">

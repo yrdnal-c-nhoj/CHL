@@ -131,7 +131,7 @@ interface DigitStyle extends React.CSSProperties {
   height: string;
 }
 
-function DeepSpaceClock() {
+const DeepSpaceClock: React.FC = () => {
   const digitRefs: DigitRefs = {
     hour1: useRef<HTMLDivElement>(null),
     hour2: useRef<HTMLDivElement>(null),
@@ -161,13 +161,11 @@ function DeepSpaceClock() {
     );
   }, []);
 
-  // Use the standardized hook for smooth clock updates
   const currentTime = useSecondClock();
 
   // Font loading configuration (memoized)
   const fontConfigs = useMemo<FontConfig[]>(() => {
     // Since this clock doesn't use custom fonts, return empty array
-    // If fonts are needed in the future, add them here
     return [];
   }, []);
 

@@ -1,11 +1,26 @@
-import React, { useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
 import tumbGif from '../../../assets/images/25-05/25-05-04/tumb-ezgif.com-optimize.gif';
 import spinnGif from '../../../assets/images/25-05/25-05-04/spinn.gif';
 import edGif from '../../../assets/images/25-05/25-05-04/ed-ezgif.com-optimize.gif';
 import wallpaperGif from '../../../assets/images/25-05/25-05-04/wallpapaer-ezgif.com-optimize.gif';
 
-const Clock: React.FC = () => {
+// Component Props interface
+interface ClockProps {
+  // No props required for this component
+}
+
+const Clock: React.FC<ClockProps> = () => {
+  // Font loading configuration (memoized) - no custom fonts needed
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
+  const clockRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const updateClock: React.FC = () => {
       const now = new Date();

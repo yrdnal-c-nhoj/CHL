@@ -1,13 +1,20 @@
-import React, { useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
 import woodImg from '../../../assets/images/25-05/25-05-13/wood.jpg';
 import tilesImg from '../../../assets/images/25-05/25-05-13/tiles.jpg';
-import hydFont from '../../../assets/fonts/25-05-13-hyd.ttf';
+import hydFont from '../../../assets/fonts/25-05-13-hyd.ttf?url';
 
-const FlatClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Component Props interface
+interface FlatClockProps {
+  // No props required for this component
+}
+
+const FlatClock: React.FC<FlatClockProps> = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'hyd',
       fontUrl: hydFont,
@@ -16,13 +23,14 @@ const FlatClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
 
-  // Font loading handled by useMultipleFontLoader
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const second = now.getSeconds();
       const minute = now.getMinutes();

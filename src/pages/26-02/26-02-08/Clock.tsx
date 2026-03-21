@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 // Assets
 import trocaderoFont from '../../../assets/fonts/26-02-08-eiffel.ttf?url';
@@ -8,35 +9,6 @@ import eifGif from '../../../assets/images/26-02/26-02-08/eif.gif';
 
 // Export assets for ClockPage preloader
 export const background = analogBgImage;
-
-// Custom hook for smooth time updates using requestAnimationFrame
-const useSmoothTime = (updateInterval: number = 1000) => {
-  const [time, setTime] = useState(new Date());
-  const lastUpdateRef = useRef<number>(0);
-
-  useEffect(() => {
-    let animationFrameId: number;
-
-    const animate = (timestamp: number) => {
-      // Update based on interval to avoid excessive updates
-      if (timestamp - lastUpdateRef.current >= updateInterval) {
-        setTime(new Date());
-        lastUpdateRef.current = timestamp;
-      }
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animationFrameId = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
-  }, [updateInterval]);
-
-  return time;
-};
 
 const STYLE_CONFIG = {
   ironColor: '#8DA3A4',
@@ -59,7 +31,7 @@ const TrocClock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use smooth time updates with requestAnimationFrame
-  const time = useSmoothTime(1000); // Update every second
+  const time = useSecondClock();
 
   const s = time.getSeconds();
   const m = time.getMinutes() + s / 60;

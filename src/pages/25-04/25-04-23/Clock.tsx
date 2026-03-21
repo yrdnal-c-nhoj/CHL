@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
 import pirateHook from '../../../assets/images/25-04/25-04-23/hook.webp';
 import pirateCutlass from '../../../assets/images/25-04/25-04-23/pirate_foam.gif';
 import pirateKnife from '../../../assets/images/25-04/25-04-23/cut.gif';
@@ -13,7 +14,9 @@ interface PirateClockProps {
   // No props required for this component
 }
 
-const PirateClock = () => {
+const PirateClock: React.FC<PirateClockProps> = () => {
+  const clockRef = useRef<HTMLDivElement>(null);
+  
   // Font loading configuration (memoized) - no custom fonts needed
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
   useSuspenseFontLoader(fontConfigs);
@@ -36,7 +39,7 @@ const PirateClock = () => {
   ];
 
   const placeNumbers = useCallback((): void => {
-    const clock = document.getElementById('clock');
+    const clock = clockRef.current;
     if (!clock) return;
 
     clock.querySelectorAll('.number').forEach((el) => el.remove());
@@ -177,7 +180,7 @@ const PirateClock = () => {
           }}
         />
         <div
-          id="clock"
+          ref={clockRef}
           style={{
             position: 'relative',
             width: 'min(80vw, 80vh)',

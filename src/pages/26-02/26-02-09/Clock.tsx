@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import customFont from '../../../assets/fonts/26-02-09-spin.otf?url';
+import type { FontConfig } from '../../../types/clock';
 
 interface Glyph {
   type: 'hour' | 'minute' | 'period';
@@ -34,7 +36,6 @@ const CONFIG = {
 export default function CenteredLightClock() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // Use refs for animation state to avoid re-renders resetting the canvas
-  const fontLoadedRef = useRef<boolean>(false);
   const glyphsRef = useRef<Glyph[]>([]);
   // Accessible time state
   const [ariaTime, setAriaTime] = useState('');
@@ -51,6 +52,16 @@ export default function CenteredLightClock() {
     [],
   );
 
+  // Standardized font loading
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { 
+      fontFamily: 'CustomOswald', 
+      fontUrl: customFont, 
+      options: { weight: '600', style: 'normal' } 
+    }
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
+
   // Accessibility: Update time string every minute
   useEffect(() => {
     const updateAria = () => {
@@ -64,22 +75,6 @@ export default function CenteredLightClock() {
   }, []);
 
   useEffect(() => {
-    // ── Font loading ───────────────────────────────────────────────
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace('CustomOswald', `url(${customFont})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        fontLoadedRef.current = true;
-      } catch (err) {
-        console.error('Custom font failed to load:', err);
-        // We mark it as loaded so we stop checking or use fallback
-        fontLoadedRef.current = true;
-      }
-    };
-
-    loadFont();
-
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -264,9 +259,7 @@ export default function CenteredLightClock() {
         ctx.translate(g.x, y);
         ctx.rotate(g.spin);
 
-        ctx.font = `600 ${fontSize}px ${
-          fontLoadedRef.current ? '"CustomOswald"' : 'sans-serif'
-        }`;
+        ctx.font = `600 ${fontSize}px "CustomOswald", sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = COLORS[g.type];

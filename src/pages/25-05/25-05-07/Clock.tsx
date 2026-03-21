@@ -1,8 +1,23 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
 import bgImage from '../../../assets/images/25-05/25-05-07/water.webp';
 
-const Clock: React.FC = () => {
-  const requestRef = useRef();
+// Component Props interface
+interface ClockProps {
+  // No props required for this component
+}
+
+const Clock: React.FC<ClockProps> = () => {
+  // Font loading configuration (memoized) - no custom fonts needed
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+  useSuspenseFontLoader(fontConfigs);
+
+  // Use the standardized hook for smooth millisecond clock updates
+  const currentTime = useMillisecondClock();
+  const requestRef = useRef<number>();
 
   const updateClock: React.FC = () => {
     const now = new Date();

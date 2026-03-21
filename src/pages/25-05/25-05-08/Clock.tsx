@@ -1,11 +1,19 @@
-import React, { useEffect } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import shinyFont from '../../../assets/fonts/25-05-08-Shiny.ttf';
+import React, { useEffect, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
+import shinyFont from '../../../assets/fonts/25-05-08-Shiny.ttf?url';
 import bgGif from '../../../assets/images/25-05/25-05-08/d7e781b32269a8a82b500c1a9dc97733-ezgif.com-optimize.gif';
 
-const GoldenHourClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+// Component Props interface
+interface GoldenHourClockProps {
+  // No props required for this component
+}
+
+const GoldenHourClock: React.FC<GoldenHourClockProps> = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'ShinyFont',
       fontUrl: shinyFont,
@@ -14,10 +22,11 @@ const GoldenHourClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
 
-  // Font loading handled by useMultipleFontLoader
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
 
   useEffect(() => {
     const updateClock: React.FC = () => {

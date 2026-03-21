@@ -2,14 +2,11 @@ import React, { useEffect, useState, useMemo } from 'react';
 import font_2025_11_21 from '../../../assets/fonts/25-11-18-cat.ttf?url';
 import bgImg from '../../../assets/images/25-11/25-11-18/eyes.webp';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import type { FontConfig } from '../../../types/clock';
 
 export default function RotatedClockGrid() {
-  const [now, setNow] = useState(new Date());
-  useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 200);
-    return () => clearInterval(t);
-  }, []);
+  const now = useSecondClock();
 
   const hours24 = now.getHours();
   const hoursStr = String(hours24).padStart(2, '0');

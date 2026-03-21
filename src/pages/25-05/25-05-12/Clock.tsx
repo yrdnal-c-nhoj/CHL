@@ -1,13 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import type { CSSProperties } from 'react';
 import A3ui from '../../../assets/images/25-05/25-05-12/A3ui.gif';
-import leoFont from '../../../assets/fonts/25-05-12-leo.ttf';
+import leoFont from '../../../assets/fonts/25-05-12-leo.ttf?url';
 
-const CheetahClock: React.FC = () => {
-  const [isMobile, setIsMobile] = useState<any>(window.innerWidth <= 600);
+// Component Props interface
+interface CheetahClockProps {
+  // No props required for this component
+}
 
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+const CheetahClock: React.FC<CheetahClockProps> = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'leo',
       fontUrl: leoFont,
@@ -16,17 +22,19 @@ const CheetahClock: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
 
-  // Font loading handled by useMultipleFontLoader
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 600);
     window.addEventListener('resize', handleResize);
     handleResize();
 
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       let hours = now.getHours() % 12 || 12;
       const minutes = now.getMinutes();
