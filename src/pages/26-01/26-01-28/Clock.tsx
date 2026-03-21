@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import backgroundImage from '../../../assets/images/26-01/26-01-28/three.webp';
+// NOTE: The Google Font has been downloaded and is now hosted locally for preloading.
+import fontUrl from '../../../assets/fonts/26-01-28-big-shoulders.ttf?url';
+
+export { backgroundImage };
 
 // --- Background Logic with Centered Dual-Axis Mirroring ---
 function CheckerboardBackground() {
@@ -96,30 +102,19 @@ function useClockAngles() {
   }, [now]);
 }
 
+const font260128Name = 'Big Shoulders Inline Text';
+
+export const fontConfigs: FontConfig[] = [
+  { fontFamily: font260128Name, fontUrl, options: { weight: '800' } },
+];
+
 // --- Main Component ---
 export default function ThreeSingleHandClocks() {
   const { hourAngle, minAngle, secAngle } = useClockAngles();
   const [layout, setLayout] = useState<any>('row');
   const [clockSize, setClockSize] = useState<number>(0);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-  const font260128Name = 'Big Shoulders Inline Text';
 
-  useEffect(() => {
-    const loadGoogleFont = async () => {
-      try {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href =
-          'https://fonts.googleapis.com/css2?family=Big+Shoulders+Inline+Text:wght@500;800&display=swap';
-        document.head.appendChild(link);
-        await document.fonts.load('800 12px "Big Shoulders Inline Text"');
-        setFontLoaded(true);
-      } catch (e) {
-        setFontLoaded(true);
-      }
-    };
-    loadGoogleFont();
-  }, []);
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const handleResize: React.FC = () => {
@@ -146,8 +141,6 @@ export default function ThreeSingleHandClocks() {
           ...clockGridStyle,
           flexDirection: layout,
           gap: layout === 'column' ? '0vh' : '0vw',
-          opacity: fontLoaded ? 1 : 0,
-          transition: 'opacity 0.5s ease',
           zIndex: 10,
         }}
       >

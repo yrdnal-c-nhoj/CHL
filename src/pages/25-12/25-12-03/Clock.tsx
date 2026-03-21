@@ -4,14 +4,14 @@ import type { FontConfig } from '../../../types/clock';
 import font_2024_12_05 from '../../../assets/fonts/25-12-03-dog.ttf?url';
 import styles from './Clock.module.css';
 
+export const fontConfigs: FontConfig[] = [
+  { fontFamily: 'CustomFont', fontUrl: font_2024_12_05 }
+];
+
 const PuppyClockComponent: React.FC = () => {
   const [images, setImages] = useState<{ current: string; next: string }>({ current: '', next: '' });
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const [time, setTime] = useState(new Date());
-
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'CustomFont', fontUrl: font_2024_12_05 }
-  ], []);
 
   useSuspenseFontLoader(fontConfigs);
 
