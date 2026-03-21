@@ -1,11 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import bg1 from '../../../assets/images/25-11/25-11-17/mars2.webp';
 import bg2 from '../../../assets/images/25-11/25-11-17/mars1.gif';
 import bg3 from '../../../assets/images/25-11/25-11-17/mars1.gif';
 import bg4 from '../../../assets/images/25-11/25-11-17/mars5.webp'; // ← added Mars four import
 import font2025_11_18 from '../../../assets/fonts/25-11-17-mars.ttf?url';
+
+// Export assets for preloading
+export { bg1, bg2, bg3, bg4 };
+
+export const fontConfigs = [
+  {
+    fontFamily: 'ClockFont',
+    fontUrl: font2025_11_18,
+  },
+];
 
 export default function MarsDigitalClock() {
   const [time, setTime] = useState(new Date());
@@ -18,6 +29,7 @@ export default function MarsDigitalClock() {
       style: 'normal',
       weight: '400',
     });
+  useSuspenseFontLoader(fontConfigs);
 
     font
       .load()
@@ -102,6 +114,7 @@ export default function MarsDigitalClock() {
       boxSizing: 'border-box',
       opacity: fontLoaded ? 1 : 0,
       transition: 'opacity 0.35s ease-out',
+      // Opacity handled by Suspense/Loader now
     },
     gradientBackground: {
       position: 'absolute',

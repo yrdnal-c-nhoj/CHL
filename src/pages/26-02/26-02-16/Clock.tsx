@@ -124,6 +124,16 @@ const Digit = React.memo(({ char }) => {
 });
 Digit.displayName = 'Digit';
 
+// Standardized font loading with font-display: swap to avoid FOUC
+export const fontConfigs = [{
+  fontFamily: CONFIG.FONT_FAMILY,
+  fontUrl: mazeFont,
+  options: {
+    weight: 'normal',
+    style: 'normal'
+  }
+}];
+
 // --- Main Component ---
 const DigitalClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
