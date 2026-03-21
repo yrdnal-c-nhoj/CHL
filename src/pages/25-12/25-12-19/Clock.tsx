@@ -1,28 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import sandTexture from '../../../assets/images/25-12/25-12-19/sand.webp';
-
-const FONT_FAMILY = 'DateFont';
 import FONT_PATH from '../../../assets/fonts/hour.ttf?url';
 
+const FONT_FAMILY = 'DateFont';
+
 const HourglassTimer: React.FC = () => {
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
   const [percentDayPassed, setPercentDayPassed] = useState<number>(0);
 
-  useEffect(() => {
-    const loadFont = async () => {
-      const font = new FontFace(FONT_FAMILY, `url(${FONT_PATH})`);
-      try {
-        await font.load();
-        document.fonts.add(font);
-        setFontLoaded(true);
-      } catch (error) {
-        console.error('Failed to load font:', error);
-        setFontLoaded(true);
-      }
-    };
-    loadFont();
-  }, []);
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: FONT_FAMILY,
+      fontUrl: FONT_PATH,
+      options: { weight: 'normal', style: 'normal' }
+    }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const updateSand: React.FC = () => {
@@ -54,12 +48,10 @@ const HourglassTimer: React.FC = () => {
     margin: 0,
     padding: '1vh',
     boxSizing: 'border-box',
-    fontFamily: fontLoaded ? `'${FONT_FAMILY}', monospace` : 'monospace',
+    fontFamily: `'${FONT_FAMILY}', monospace`,
     color: '#C8C5C2FF',
     overflow: 'hidden',
-    opacity: fontLoaded ? 1 : 0,
-    transition: 'opacity 0.3s ease-in-out',
-    pointerEvents: fontLoaded ? 'auto' : 'none',
+    pointerEvents: 'auto',
   };
 
   const bulbStyle = {
@@ -92,7 +84,7 @@ const HourglassTimer: React.FC = () => {
     // fontWeight: 'bold',
     padding: '0 5px',
     textAlign: 'center',
-    fontFamily: fontLoaded ? `'${FONT_FAMILY}', monospace` : 'monospace',
+    fontFamily: `'${FONT_FAMILY}', monospace`,
     letterSpacing: '0.1px',
     lineHeight: '1.2',
     // backgroundColor: 'rgba(40,0,0)',

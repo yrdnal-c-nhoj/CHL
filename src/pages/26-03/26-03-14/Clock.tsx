@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import backgroundImage from '../../../assets/images/26-03/26-03-14/mother.webp';
 
+// Export assets for preloading
+export { backgroundImage };
+
 // Move static sub-components outside to prevent re-creation on every tick
 const ImageLayout = React.memo(() => (
   <div style={{ position: 'fixed', inset: 0, zIndex: 0, background: '#000' }}>
@@ -24,8 +27,14 @@ const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 100);
-    return () => clearInterval(timer);
+    let frameId: number;
+    const tick = () => {
+      setTime(new Date());
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
+
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   // Memoize formatting to keep the render function clean

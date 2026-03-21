@@ -10,21 +10,18 @@ const OVAL = {
   SPEED: 0.05,
 };
 
+// Standardized font loading with font-display: swap to avoid FOUC
+export const fontConfigs = [
+  {
+    fontFamily: 'Cine',
+    fontUrl: ci2602Font,
+    options: { weight: 'normal', style: 'normal' },
+  },
+];
+
 const OutwardDistortedClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const requestRef = useRef<number>();
-
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'Cine',
-      fontUrl: ci2602Font,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
   
   // Use Suspense-compatible font loading
   useSuspenseFontLoader(fontConfigs);

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 
 // Vite-optimized font loading with better error handling
 const fontImports = import.meta.glob(
@@ -7,13 +7,17 @@ const fontImports = import.meta.glob(
   { eager: true, query: '?url' }
 );
 
-// Memoized font names to prevent recalculation
-const fontNames: string[] = useMemo(() => 
-  Object.keys(fontImports).map((path) => {
-    const fontName = path.split('/').pop()?.split('.')[0] || 'fallback';
-    return fontName;
-  }), []
-);
+// Generate standard font configs from dynamic imports
+export const fontConfigs = Object.keys(fontImports).map((path) => {
+  const fontName = path.split('/').pop()?.split('.')[0] || 'fallback';
+  const fontUrl = (fontImports[path] as any).default;
+  return {
+    fontFamily: fontName,
+    fontUrl: fontUrl,
+  };
+});
+
+const fontNames = fontConfigs.map(c => c.fontFamily);
 
 // Interface for type safety
 interface KittyImages {
@@ -28,10 +32,7 @@ const KittyClockComponent: React.FC = () => {
   const [currentFont, setCurrentFont] = useState<string>(fontNames[0] || 'monospace');
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const fontReady = useFontLoader(fontNames, undefined, {
-    timeout: 5000,
-    fallback: true,
-  });
+  useSuspenseFontLoader(fontConfigs);
 
   // Memoized time formatting
   const formatTime = useCallback((date: Date): string => {
@@ -92,21 +93,29 @@ const KittyClockComponent: React.FC = () => {
   useEffect(() => {
     getNewKitty();
     
-    const clockInterval = setInterval(() => {
+    let frameId: number;
+    let lastFontUpdate = 0;
+
+    const tick = (now: number) => {
       setTime(new Date());
-      if (fontNames.length > 0) {
+      
+      // Update font every second
+      if (now - lastFontUpdate > 1000 && fontNames.length > 0) {
         const randomFont = fontNames[Math.floor(Math.random() * fontNames.length)];
         setCurrentFont(randomFont);
+        lastFontUpdate = now;
       }
-    }, 1000);
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
     
     const imageInterval = setInterval(getNewKitty, 5000);
 
     return () => {
-      clearInterval(clockInterval);
+      cancelAnimationFrame(frameId);
       clearInterval(imageInterval);
     };
-  }, [getNewKitty, fontNames]);
+  }, [getNewKitty]);
 
   // Memoized styles for performance
   const containerStyle = useMemo<React.CSSProperties>(() => ({
@@ -138,11 +147,10 @@ const KittyClockComponent: React.FC = () => {
     fontSize: '7vh',
     color: '#F9EBE5',
     textShadow: '0 4px 12px rgba(0,0,0,0.5)',
-    opacity: fontReady ? 1 : 0,
-    transition: 'opacity 0.5s ease, font-family 0.5s ease',
+    transition: 'font-family 0.5s ease',
     transform: 'translateY(12vh)',
     pointerEvents: 'none',
-  }), [currentFont, fontReady]);
+  }), [currentFont]);
 
   return (
     <div style={containerStyle}>

@@ -6,6 +6,9 @@ import backgroundImg from '../../../assets/images/25-11/25-11-25/npt.webp';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
 
+// Export assets for preloading
+export { backgroundImg };
+
 // --- Constants (Keep as is) ---
 const NTP_EPOCH_OFFSET = 2208988800;
 const MS_PER_SECOND = 1000;

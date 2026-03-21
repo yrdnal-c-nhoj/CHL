@@ -1,9 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import backgroundImage from '../../../assets/images/26-03/26-03-20/empire.webp';
+import fontFile from '../../../assets/fonts/26-03-01-270west.ttf?url';
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
+
+  // Standardized font loading
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: '270west',
+      fontUrl: fontFile,
+      options: { weight: 'normal', style: 'normal' }
+    }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     let frameId: number;

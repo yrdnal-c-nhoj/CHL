@@ -24,12 +24,13 @@ export default function MarsDigitalClock() {
 
   useEffect(() => {
     let mounted = true;
-    const loop: React.FC = () => {
+    const tick = () => {
       if (!mounted) return;
       setTime(new Date());
-      rafRef.current = setInterval(() => setTime(new Date()), 100);
+      rafRef.current = requestAnimationFrame(tick);
     };
-    rafRef.current = setInterval(() => setTime(new Date()), 100);
+    rafRef.current = requestAnimationFrame(tick);
+
     return () => {
       mounted = false;
       if (rafRef.current) cancelAnimationFrame(rafRef.current);

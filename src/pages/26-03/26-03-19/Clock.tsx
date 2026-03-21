@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import snowFont from '../../../assets/fonts/26-03-19-snow.otf';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import snowFont from '../../../assets/fonts/26-03-19-snow.otf?url';
 
 interface Flake {
   x: number;
@@ -11,19 +12,27 @@ interface Flake {
   opacity: number;
 }
 
-const SlowBuryBlizzard: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const clockRef = useRef<HTMLDivElement | null>(null);
+const Clock: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   
-  const fontsLoaded = useMultipleFontLoader([
-    { fontFamily: 'SnowFont', fontUrl: snowFont, options: { weight: 'normal', style: 'normal' } }
-  ]);
+  // Standardized font loading
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { 
+      fontFamily: 'SnowFont', 
+      fontUrl: snowFont, 
+      options: { weight: 'normal', style: 'normal' } 
+    }
+  ], []);
+  
+  useSuspenseFontLoader(fontConfigs);
+
+  const [time, setTime] = useState(new Date());
   
   const stateRef = useRef({
     flakes: [] as Flake[],
     snowHeight: 0,
-    width: window.innerWidth, // Initialize with actual values
-    height: window.innerHeight,
+    width: 0,
+    height: 0,
     lastTime: 0,
     phase: 'snowing' as 'snowing' | 'holding' | 'fading',
     canvasOpacity: 1,
@@ -31,13 +40,20 @@ const SlowBuryBlizzard: React.FC = () => {
     spawnTimer: 0 // Moved into ref to persist across frames
   });
 
+  // Time update loop
   useEffect(() => {
-    if (!fontsLoaded) return; // Only start logic if fonts are ready
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
+  // Canvas Animation Loop
+  useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d')!;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
     const state = stateRef.current;
 
     const handleResize = () => {
@@ -47,24 +63,9 @@ const SlowBuryBlizzard: React.FC = () => {
       canvas.height = window.innerHeight;
     };
 
+    // Initialize dimensions
     handleResize();
     window.addEventListener('resize', handleResize);
-
-    const updateClock = () => {
-      if (clockRef.current) {
-        const now = new Date();
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        const displayHours = hours % 12 || 12;
-        const displayMinutes = minutes.toString().padStart(2, '0');
-        
-        clockRef.current.innerHTML = `${displayHours}:${displayMinutes} <span style="font-size: 0.8em; opacity: 0.9;">${ampm}</span>`;
-      }
-    };
-
-    updateClock();
-    const clockInterval = setInterval(updateClock, 1000);
 
     const createFlake = (): Flake => ({
       x: Math.random() * state.width,
@@ -75,9 +76,12 @@ const SlowBuryBlizzard: React.FC = () => {
       opacity: Math.random() * 0.5 + 0.3,
     });
 
-    const animate = (time: number) => {
-      const deltaTime = time - state.lastTime;
-      state.lastTime = time;
+    let animationId: number;
+
+    const animate = (timestamp: number) => {
+      if (!state.lastTime) state.lastTime = timestamp;
+      const deltaTime = timestamp - state.lastTime;
+      state.lastTime = timestamp;
 
       ctx.clearRect(0, 0, state.width, state.height);
       
@@ -86,6 +90,9 @@ const SlowBuryBlizzard: React.FC = () => {
 
       if (state.phase === 'snowing') {
         state.spawnTimer += deltaTime;
+        // Cap spawn timer to prevent massive dump on tab switch/lag
+        if (state.spawnTimer > 200) state.spawnTimer = 200;
+
         if (state.spawnTimer > 60) { 
           for (let i = 0; i < 3; i++) state.flakes.push(createFlake());
           state.spawnTimer = 0;
@@ -110,11 +117,11 @@ const SlowBuryBlizzard: React.FC = () => {
 
         if (state.snowHeight >= state.height) {
           state.phase = 'holding';
-          state.holdStartTime = time;
+          state.holdStartTime = timestamp;
         }
       } 
       else if (state.phase === 'holding') {
-        if (time - state.holdStartTime > 3000) state.phase = 'fading';
+        if (timestamp - state.holdStartTime > 3000) state.phase = 'fading';
       } 
       else if (state.phase === 'fading') {
         state.canvasOpacity -= 0.005; 
@@ -132,17 +139,22 @@ const SlowBuryBlizzard: React.FC = () => {
         ctx.fillRect(0, state.height - state.snowHeight, state.width, state.snowHeight);
       }
 
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     };
 
-    const animationId = requestAnimationFrame(animate);
+    animationId = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationId);
-      clearInterval(clockInterval);
     };
-  }, [fontsLoaded]); // Re-run when fonts are loaded
+  }, []);
+
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const displayHours = hours % 12 || 12;
+  const displayMinutes = minutes.toString().padStart(2, '0');
 
   return (
     <div style={{ 
@@ -153,7 +165,6 @@ const SlowBuryBlizzard: React.FC = () => {
     }}>
       {/* CLOCK: Increased z-index to 3 so it stays ABOVE the snow */}
       <div 
-        ref={clockRef}
         style={{
           position: 'absolute',
           top: '50%',
@@ -161,13 +172,13 @@ const SlowBuryBlizzard: React.FC = () => {
           transform: 'translate(-50%, -50%)',
           fontSize: 'clamp(5rem, 19vw, 10rem)',
           color: '#E3F2FD',
-          fontFamily: fontsLoaded ? "'SnowFont', sans-serif" : 'sans-serif',
+          fontFamily: "'SnowFont', sans-serif",
           zIndex: 3, 
           pointerEvents: 'none',
           textAlign: 'center'
         }}
       >
-        {!fontsLoaded && "Loading..."}
+        {displayHours}:{displayMinutes} <span style={{ fontSize: '0.8em', opacity: 0.9 }}>{ampm}</span>
       </div>
 
       {/* GRADIENT OVERLAY: Yellow to blue gradient with 0.4 opacity */}
@@ -199,4 +210,4 @@ const SlowBuryBlizzard: React.FC = () => {
   );
 };
 
-export default SlowBuryBlizzard;
+export default Clock;
