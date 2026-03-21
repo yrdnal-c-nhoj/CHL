@@ -1,10 +1,24 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 
 // Assets
 import digitalFontUrl from '../../../assets/fonts/26-02-04-trans.ttf?url';
 import digitalBgImage from '../../../assets/images/26-02/26-02-04/trans.webp';
 import backgroundImage from '../../../assets/images/26-02/26-02-04/tran.jpg';
+
+// Add global CSS animation for copper shimmer effect
+if (typeof document !== 'undefined' && !document.getElementById('copper-shimmer-style')) {
+  const style = document.createElement('style');
+  style.id = 'copper-shimmer-style';
+  style.textContent = `
+    @keyframes copper-shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+  `;
+  document.head.appendChild(style);
+}
 
 // Custom hook for smooth time updates using requestAnimationFrame
 const useSmoothTime = (updateInterval: number = 1000) => {
@@ -47,11 +61,9 @@ interface TimeFormat {
 
 const DigitalClockTemplate: React.FC = () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [animationName, setAnimationName] = useState<string>('');
-  const [showContent, setShowContent] = useState(false);
 
-  // Use Suspense-compatible font loading
-  useSuspenseFontLoader([
+  // Define font configurations for the Suspense-based loader
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'BorrowedDigital',
       fontUrl: digitalFontUrl,
@@ -60,12 +72,11 @@ const DigitalClockTemplate: React.FC = () => {
         style: 'normal'
       }
     }
-  ]);
+  ], []);
 
-  // Show content immediately with Suspense
-  useEffect(() => {
-    setShowContent(true);
-  }, []);
+  // This hook handles loading and suspends the component until fonts are ready.
+  // The parent <ClockPage> provides the <Suspense> fallback UI.
+  useSuspenseFontLoader(fontConfigs);
 
   // Use smooth time updates with requestAnimationFrame
   const time = useSmoothTime(1000); // Update every second
@@ -81,31 +92,14 @@ const DigitalClockTemplate: React.FC = () => {
     };
   }, [time]);
 
-  // Device detection and animation setup - move before conditional return
+  // Device detection
   useEffect(() => {
-    // Device Detection
     const checkDevice = () => setIsMobile(window.innerWidth <= 768);
     checkDevice();
     window.addEventListener('resize', checkDevice);
 
-    // Create unique animation name and scoped style element
-    const uniqueAnimationName = `copper-shimmer-${Date.now()}`;
-    setAnimationName(uniqueAnimationName);
-
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes ${uniqueAnimationName} {
-        0% { background-position: -200% center; }
-        100% { background-position: 200% center; }
-      }
-    `;
-    document.head.appendChild(style);
-
     return () => {
       window.removeEventListener('resize', checkDevice);
-      if (style && style.parentNode) {
-        style.parentNode.removeChild(style);
-      }
     };
   }, []);
 
@@ -161,7 +155,8 @@ const DigitalClockTemplate: React.FC = () => {
     backgroundSize: '200% auto',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
-    animation: animationName ? `${animationName} 4s linear infinite` : 'none',
+    // CSS animation for copper shimmer effect
+    animation: 'copper-shimmer 4s linear infinite',
 
     // 2. The Border (The Secret Sauce)
     WebkitTextStroke: '0.5vh #43B3AE',
