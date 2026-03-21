@@ -3,7 +3,7 @@ import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
 import backgroundImage from '../../../assets/images/26-01/26-01-28/three.webp';
 // NOTE: The Google Font has been downloaded and is now hosted locally for preloading.
-import fontUrl from '../../../assets/fonts/26-01-28-big-shoulders.ttf?url';
+// import fontUrl from '../../../assets/fonts/26-01-28-big-shoulders.ttf?url';
 
 export { backgroundImage };
 
@@ -105,7 +105,7 @@ function useClockAngles() {
 const font260128Name = 'Big Shoulders Inline Text';
 
 export const fontConfigs: FontConfig[] = [
-  { fontFamily: font260128Name, fontUrl, options: { weight: '800' } },
+  // { fontFamily: font260128Name, fontUrl, options: { weight: '800' } },
 ];
 
 // --- Main Component ---
