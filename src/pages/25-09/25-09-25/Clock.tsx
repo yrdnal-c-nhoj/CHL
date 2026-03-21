@@ -23,14 +23,14 @@ export const fontConfigs = [
 ];
 
 const UnixEpochClock: React.FC = () => {
-  const [timestamp, setTimestamp] = useState<any>('');
+  const [timestamp, setTimestamp] = useState<string>('');
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const [windowHeight, setWindowHeight] = useState<any>(window.innerHeight);
+  const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
 
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const handleResize: React.FC = () => {
+    const handleResize = () => {
       setWindowHeight(window.innerHeight);
     };
     window.addEventListener('resize', handleResize);

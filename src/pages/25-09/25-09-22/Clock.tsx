@@ -9,7 +9,7 @@ import customFontmmm from '../../../assets/fonts/25-09-22-disney.ttf?url';
 export default function DigitalClockVideo() {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [time, setTime] = useState(new Date());
-  const [isPhone, setIsPhone] = useState<any>(window.innerWidth <= 768);
+  const [isPhone, setIsPhone] = useState<boolean>(window.innerWidth <= 768);
   const videoRef = useRef(null); // Ref for video element
 
   // Load custom font
@@ -79,7 +79,7 @@ export default function DigitalClockVideo() {
 
   // Responsive detection
   useEffect(() => {
-    const handleResize: React.FC = () => {
+    const handleResize = () => {
       const newIsPhone = window.innerWidth <= 768;
       console.log('Window resized, isPhone:', newIsPhone);
       setIsPhone(newIsPhone);
