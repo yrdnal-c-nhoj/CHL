@@ -8,14 +8,24 @@
  * - Responsive design
  */
 
-import React, { useState, useEffect, useMemo, memo } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useState, useEffect, useMemo, memo, useRef } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import AsteriskFont1 from '../../../assets/fonts/26-02-17-ast.otf';
 import AsteriskFont2 from '../../../assets/fonts/26-02-17-aster.otf';
 
+interface WindowSize {
+  width: number;
+  height: number;
+}
+
+interface BackgroundGridProps {
+  windowSize: WindowSize;
+  cellSize: number;
+}
+
 /* Generate 12 unique random characters */
-const generateChars: React.FC = () => {
+const generateChars = (): string[] => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split('');
 
   for (let i = chars.length - 1; i > 0; i--) {
@@ -29,7 +39,7 @@ const generateChars: React.FC = () => {
 /**
  * BackgroundGrid
  */
-const BackgroundGrid = memo(({ windowSize, cellSize }) => {
+const BackgroundGrid = memo<BackgroundGridProps>(({ windowSize, cellSize }) => {
   const columnCount = Math.ceil(windowSize.width / cellSize);
   const rowsPerColumn = 20;
 
@@ -95,8 +105,31 @@ const BackgroundGrid = memo(({ windowSize, cellSize }) => {
 /**
  * Main Clock
  */
+/**
+ * Custom hook for character fade animation using requestAnimationFrame
+ */
+const useCharacterFade = (callback: () => void, interval: number = 3000) => {
+  const lastUpdateRef = useRef<number>(0);
+  
+  useEffect(() => {
+    let frameId: number;
+    
+    const animate = (timestamp: number) => {
+      if (timestamp - lastUpdateRef.current >= interval) {
+        lastUpdateRef.current = timestamp;
+        callback();
+      }
+      frameId = requestAnimationFrame(animate);
+    };
+    
+    frameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameId);
+  }, [callback, interval]);
+};
+
 const AsteriskClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  // Smooth animation using requestAnimationFrame
+  const time = useSecondClock();
 
   const [clockChars, setClockChars] = useState(generateChars());
 
@@ -104,44 +137,41 @@ const AsteriskClock: React.FC = () => {
 
   const cellSize = 50;
 
-  const [windowSize, setWindowSize] = useState<any>({
+  const [windowSize, setWindowSize] = useState<WindowSize>({
     width: typeof window !== 'undefined' ? window.innerWidth : 1920,
-
     height: typeof window !== 'undefined' ? window.innerHeight : 1080,
   });
 
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: 'AsteriskFont1',
+      fontUrl: AsteriskFont1,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    },
+    {
+      fontFamily: 'AsteriskFont2',
+      fontUrl: AsteriskFont2,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
+
   /**
-   * Setup fonts, resize, and clock tick
+   * Setup resize handler
    */
   useEffect(() => {
     console.log('AsteriskClock: Component mounting');
 
     try {
-      const style = document.createElement('style');
-
-      style.textContent = `
-        @font-face {
-          font-family: 'AsteriskFont1';
-          src: url('${AsteriskFont1}');
-          font-display: block;
-        }
-
-        @font-face {
-          font-family: 'AsteriskFont2';
-          src: url('${AsteriskFont2}');
-          font-display: block;
-        }
-
-        @keyframes rain-rise {
-          0% { transform: translateY(0%); }
-          100% { transform: translateY(-50%); }
-        }
-      `;
-
-      document.head.appendChild(style);
-      console.log('AsteriskClock: Fonts loaded successfully');
-
-      const resize: React.FC = () => {
+      const resize = () => {
         setWindowSize({
           width: window.innerWidth,
           height: window.innerHeight,
@@ -150,19 +180,8 @@ const AsteriskClock: React.FC = () => {
 
       window.addEventListener('resize', resize);
 
-      // Start updating immediately
-      setTime(new Date());
-      
-      const timer = setInterval(() => {
-        setTime(new Date());
-      }, 1000);
-
       return () => {
-        clearInterval(timer);
         window.removeEventListener('resize', resize);
-        if (document.head.contains(style)) {
-          document.head.removeChild(style);
-        }
       };
     } catch (error) {
       console.error('AsteriskClock: Error in useEffect:', error);
@@ -170,21 +189,40 @@ const AsteriskClock: React.FC = () => {
   }, []);
 
   /**
-   * Character fade cycle every 3 seconds
-   */
+ * Custom hook for character fade animation using requestAnimationFrame
+ */
+const useCharacterFade = (callback: () => void, interval: number = 3000) => {
+  const lastUpdateRef = useRef<number>(0);
+  
   useEffect(() => {
-    const interval = setInterval(() => {
-      setVisible(false);
+    let frameId: number;
+    
+    const animate = (timestamp: number) => {
+      if (timestamp - lastUpdateRef.current >= interval) {
+        lastUpdateRef.current = timestamp;
+        callback();
+      }
+      frameId = requestAnimationFrame(animate);
+    };
+    
+    frameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameId);
+  }, [callback, interval]);
+};
 
-      setTimeout(() => {
-        setClockChars(generateChars());
+/**
+ * Character fade cycle every 3 seconds
+ */
+const handleCharacterFade = () => {
+  setVisible(false);
+  
+  setTimeout(() => {
+    setClockChars(generateChars());
+    setVisible(true);
+  }, 400);
+};
 
-        setVisible(true);
-      }, 400);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
+useCharacterFade(handleCharacterFade, 3000);
 
   /**
    * Clock hand angles

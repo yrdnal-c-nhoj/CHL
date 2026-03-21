@@ -112,27 +112,10 @@ const useAssetPreloader = () => {
         }),
     );
 
-    // Helper to avoid hanging forever on fonts.ready
-    const fontPromise = (() => {
-      try {
-        // Modern browser check with safety
-        if (typeof document !== 'undefined' && 'fonts' in document) {
-          return new Promise((resolve) => {
-            // Use the promise, but don't let it block indefinitely
-            document.fonts.ready.then(() => resolve()).catch(() => resolve()); // Fail open
-
-            // Hard timeout to prevent blank screens on buggy mobile browsers
-            setTimeout(resolve, 2000);
-          });
-        }
-      } catch {
-        // ignore and fall through to resolved promise
-      }
-      return Promise.resolve();
-    })();
-
-    // Wait for images and (optionally) fonts to load, but never hang
-    await Promise.all([...imagePromises, fontPromise]);
+    // Wait for images to load. Font loading is now handled by the
+    // useMultipleFontLoader hook within each clock component, which is a
+    // more robust and decentralized approach.
+    await Promise.all(imagePromises);
 
     return true;
   }, []);

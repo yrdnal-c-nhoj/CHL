@@ -1,36 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useKeyframes } from '../../../utils/enhancedFontLoader';
-import { useGlobalStyles } from '../../../utils/enhancedFontLoader';
-import { useEnhancedFontLoader } from '../../../utils/enhancedFontLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import neptuneFont from '../../../assets/fonts/26-02-23-nep.ttf';
 import nepBg from '../../../assets/images/26-02/26-02-23/nept.webp';
 import loopBg from '../../../assets/images/26-02/26-02-23/swirl.gif';
 import triBg from '../../../assets/images/26-02/26-02-23/tri.webp';
 
 const DigitalClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+  // Smooth animation using requestAnimationFrame
+  const time = useSecondClock();
+  const [showContent, setShowContent] = useState(false);
 
-  // Load custom font
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'NeptuneFont';
-        src: url('${neptuneFont}') format('truetype');
+  // Font loading with Suspense to prevent FOUC
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: 'NeptuneFont',
+      fontUrl: neptuneFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
       }
-    `;
-    document.head.appendChild(style);
+    }
+  ], []);
+  
+  useSuspenseFontLoader(fontConfigs);
 
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => {
-      clearInterval(timer);
-      document.head.removeChild(style);
-    };
+  // Show content immediately with Suspense
+  useEffect(() => {
+    setShowContent(true);
   }, []);
+
+  // Time update handled by useSecondClock hook
 
   const formatTime = (date) => {
     const hours = date.getHours().toString().padStart(2, '0');
@@ -151,7 +151,7 @@ const DigitalClock: React.FC = () => {
         <DigitBox digit={seconds[1]} />
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes shimmer {
           0% {
             background-position: 0% 50%;

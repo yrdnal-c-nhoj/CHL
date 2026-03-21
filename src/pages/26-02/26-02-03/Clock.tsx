@@ -1,32 +1,40 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+
+// Interface for Disc component props
+interface DiscProps {
+  size: string;
+  rotationVar: string;
+  color: string;
+  label: string;
+  weight: number;
+}
 
 const Disc260203Clock: React.FC = () => {
-  const clockRef = useRef(null);
-  const requestRef = useRef();
-  const [fontReady, setFontReady] = useState<boolean>(false);
+  const clockRef = useRef<HTMLDivElement>(null);
+  const requestRef = useRef<number | undefined>();
+  const [showContent, setShowContent] = useState(false);
 
+  // Use Suspense-compatible font loading
+  useSuspenseFontLoader([
+    {
+      fontFamily: 'Taviraj',
+      fontUrl: 'https://fonts.googleapis.com/css2?family=Taviraj:wght@100;500;900&display=swap',
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ]);
+
+  // Show content immediately with Suspense
   useEffect(() => {
-    // Inject Google Font link directly into document head
-    const link = document.createElement('link');
-    link.href =
-      'https://fonts.googleapis.com/css2?family=Taviraj:wght@100;500;900&display=swap';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
+    setShowContent(true);
+  }, []);
 
-    // Ensure font is ready before revealing UI to prevent FOUC
-    const fontPromise = document.fonts
-      .load('1em "Taviraj"')
-      .then(() => true)
-      .catch(() => true); // fall back to showing even if font fails
-
-    // Safety timeout so we never stay hidden
-    const timeoutPromise = new Promise((resolve) =>
-      setTimeout(resolve, 1200, true),
-    );
-
-    Promise.race([fontPromise, timeoutPromise]).then(() => setFontReady(true));
-
-    const animate: React.FC = () => {
+  // Clock animation
+  useEffect(() => {
+    const animate = () => {
       const now = new Date();
       const ms = now.getMilliseconds();
       const s = now.getSeconds();
@@ -48,17 +56,19 @@ const Disc260203Clock: React.FC = () => {
     requestRef.current = requestAnimationFrame(animate);
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
-      // Clean up the font link if the component unmounts
-      if (document.head.contains(link)) document.head.removeChild(link);
     };
   }, []);
+
+  if (!showContent) {
+    return null;
+  }
 
   return (
     <div
       style={{
         ...styles.container,
-        opacity: fontReady ? 1 : 0,
-        visibility: fontReady ? 'visible' : 'hidden',
+        opacity: 1,
+        visibility: 'visible',
         transition: 'opacity 0.3s ease',
       }}
       ref={clockRef}
@@ -97,7 +107,7 @@ const Disc260203Clock: React.FC = () => {
   );
 };
 
-const Disc = ({ size, rotationVar, color, label, weight }) => (
+const Disc: React.FC<DiscProps> = ({ size, rotationVar, color, label, weight }) => (
   <div
     style={{
       ...styles.disc,

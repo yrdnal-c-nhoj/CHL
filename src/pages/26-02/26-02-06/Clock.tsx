@@ -1,57 +1,61 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import busterImg from '../../../assets/images/26-02/26-02-05/buster.webp';
 import hand1Img from '../../../assets/images/26-02/26-02-05/hand1.webp';
 import hand2Img from '../../../assets/images/26-02/26-02-05/hand2.webp';
 
-const Analog260205Clock: React.FC = () => {
+// Custom hook for smooth time updates using requestAnimationFrame
+const useSmoothTime = (updateInterval: number = 100) => {
   const [time, setTime] = useState(new Date());
-  const [imagesLoaded, setImagesLoaded] = useState<boolean>(false);
-  const requestRef = useRef();
+  const lastUpdateRef = useRef<number>(0);
 
   useEffect(() => {
-    // Preload images to prevent FOUC
-    const preloadImages = async () => {
-      try {
-        await Promise.all([
-          new Promise((resolve, reject) => {
-            const img = new Image();
-            img.src = busterImg;
-            img.onload = resolve;
-            img.onerror = reject;
-          }),
-          new Promise((resolve, reject) => {
-            const img = new Image();
-            img.src = hand1Img;
-            img.onload = resolve;
-            img.onerror = reject;
-          }),
-          new Promise((resolve, reject) => {
-            const img = new Image();
-            img.src = hand2Img;
-            img.onload = resolve;
-            img.onerror = reject;
-          }),
-        ]);
-        setImagesLoaded(true);
-      } catch (error) {
-        console.warn('Some images failed to load:', error);
-        setImagesLoaded(true); // Show content even if images fail
+    let animationFrameId: number;
+
+    const animate = (timestamp: number) => {
+      // Update based on interval to avoid excessive updates
+      if (timestamp - lastUpdateRef.current >= updateInterval) {
+        setTime(new Date());
+        lastUpdateRef.current = timestamp;
       }
+      animationFrameId = requestAnimationFrame(animate);
     };
 
-    preloadImages();
-  }, []);
+    animationFrameId = requestAnimationFrame(animate);
 
-  const animate: React.FC = () => {
-    setTime(new Date());
-    requestRef.current = setInterval(() => setTime(new Date()), 100);
-  };
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [updateInterval]);
 
+  return time;
+};
+
+// Interface for hand style function parameters
+interface HandStyleParams {
+  height: number;
+  width: number;
+  image: string;
+  angle: number;
+  overlap?: number;
+}
+
+const Analog260205Clock: React.FC = () => {
+  const [showContent, setShowContent] = useState(false);
+  const requestRef = useRef<number | undefined>();
+
+  // Use Suspense-compatible font loading (even though no fonts, for consistency)
+  useSuspenseFontLoader([]);
+
+  // Show content immediately with Suspense
   useEffect(() => {
-    requestRef.current = setInterval(() => setTime(new Date()), 100);
-    return () => cancelAnimationFrame(requestRef.current);
+    setShowContent(true);
   }, []);
+
+  // Use smooth time updates with requestAnimationFrame
+  const time = useSmoothTime(100); // Update every 100ms for smooth animations
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
@@ -60,6 +64,7 @@ const Analog260205Clock: React.FC = () => {
 
   const minuteAngle = ((minutes + seconds / 60) / 60) * 360;
   const hourAngle = ((hours + minutes / 60) / 12) * 360;
+
 
   const containerStyle = {
     width: '100vw',
@@ -73,9 +78,9 @@ const Analog260205Clock: React.FC = () => {
     backgroundPosition: 'center',
     margin: 0,
     overflow: 'hidden',
-    opacity: imagesLoaded ? 1 : 0,
+    opacity: 1,
     transition: 'opacity 0.3s ease-in',
-    visibility: imagesLoaded ? 'visible' : 'hidden', // Prevent FOUC for images
+    visibility: 'visible',
   };
 
   const clockFaceStyle = {
@@ -84,10 +89,8 @@ const Analog260205Clock: React.FC = () => {
     height: '300px',
     borderRadius: '50%',
   };
-  const handStyle = (height, width, image, angle) => {
-    // Define how much of the hand should hang over the center point (in pixels)
-    const overlap = 5;
-
+  
+  const handStyle = ({ height, width, image, angle, overlap = 5 }: HandStyleParams) => {
     // Calculate skew based on angle - more skew when pointing up (taller/narrower)
     const skewAmount = Math.sin((angle * Math.PI) / 180) * 15; // Max 15px skew
 
@@ -117,8 +120,8 @@ const Analog260205Clock: React.FC = () => {
   return (
     <div style={containerStyle}>
       <div style={clockFaceStyle}>
-        <div style={handStyle(110, 40, hand1Img, hourAngle, 5)} />
-        <div style={handStyle(200, 50, hand2Img, minuteAngle, 8)} />
+        <div style={handStyle({ height: 110, width: 40, image: hand1Img, angle: hourAngle })} />
+        <div style={handStyle({ height: 200, width: 50, image: hand2Img, angle: minuteAngle })} />
       </div>
     </div>
   );

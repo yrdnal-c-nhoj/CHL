@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import ci2602Font from '../../../assets/fonts/pin.ttf?url';
 
 // Constants moved outside to prevent re-allocation
@@ -13,6 +13,7 @@ const OVAL = {
 const OutwardDistortedClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const requestRef = useRef();
+  const [showContent, setShowContent] = useState(false);
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -25,20 +26,32 @@ const OutwardDistortedClock: React.FC = () => {
       }
     }
   ];
-  const fontReady = useMultipleFontLoader(fontConfigs);
+  
+  // Use Suspense-compatible font loading
+  useSuspenseFontLoader(fontConfigs);
 
+  // Show content immediately with Suspense
   useEffect(() => {
-    // High-performance animation loop
+    setShowContent(true);
+  }, []);
+
+  // High-performance animation loop - move before conditional return
+  useEffect(() => {
     const animate: React.FC = () => {
       setTime(new Date());
       requestRef.current = requestAnimationFrame(animate);
     };
 
     requestRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(requestRef.current);
+
+    return () => {
+      if (requestRef.current) {
+        cancelAnimationFrame(requestRef.current);
+      }
+    };
   }, []);
 
-  // 3. Memoize the digit array to avoid splitting strings every 16ms
+  // Memoize the digit array to avoid splitting strings every 16ms - move before conditional return
   const { digits, phase } = useMemo(() => {
     const h = (time.getHours() % 12 || 12).toString().padStart(2, '0');
     const m = time.getMinutes().toString().padStart(2, '0');
@@ -51,12 +64,13 @@ const OutwardDistortedClock: React.FC = () => {
     };
   }, [time]);
 
+
   return (
     <div
       style={{
         ...containerStyle,
-        opacity: fontReady ? 1 : 0,
-        visibility: fontReady ? 'visible' : 'hidden',
+        opacity: 1,
+        visibility: 'visible',
         transition: 'opacity 0.3s ease',
       }}
     >

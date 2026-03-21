@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 // Assets (unchanged)
 import digit7 from '../../../assets/images/26-02/26-02-22/1.webp';
@@ -31,27 +31,40 @@ const DIGITS = [
   digit10,
 ];
 
+/**
+ * Custom hook for periodic updates using requestAnimationFrame
+ */
+const usePeriodicUpdate = (callback: () => void, interval: number = 1000) => {
+  const lastUpdateRef = useRef<number>(0);
+  
+  useEffect(() => {
+    let frameId: number;
+    
+    const animate = (timestamp: number) => {
+      if (timestamp - lastUpdateRef.current >= interval) {
+        lastUpdateRef.current = timestamp;
+        callback();
+      }
+      frameId = requestAnimationFrame(animate);
+    };
+    
+    frameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameId);
+  }, [callback, interval]);
+};
+
 const SimpleClock: React.FC = () => {
+  const time = useSecondClock();
   const [hueRotation, setHueRotation] = useState(
     Math.floor(Math.random() * 360),
   ); // Random starting color
-  const [time, setTime] = useState(new Date());
 
-  // High-degree hue rotation
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setHueRotation((prev) => (prev + 45) % 360); // Increased from 12 to 45 degrees
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  // High-degree hue rotation using requestAnimationFrame
+  usePeriodicUpdate(() => {
+    setHueRotation((prev) => (prev + 45) % 360); // Increased from 12 to 45 degrees
+  }, 1000);
 
-  // Time update
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  // Time update handled by useSecondClock hook
 
   // Calculate angles
   const seconds = time.getSeconds();

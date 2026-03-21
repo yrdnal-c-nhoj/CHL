@@ -33,16 +33,18 @@ const getTimeDigits = (date) => {
    CUSTOM HOOKS
 ========================= */
 
-function useClock(updateInterval = UPDATE_INTERVAL) {
+function useClock() {
   const [time, setTime] = useState(() => new Date());
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    let frameId;
+    const tick = () => {
       setTime(new Date());
-    }, updateInterval);
-
-    return () => clearInterval(interval);
-  }, [updateInterval]);
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
+  }, []);
 
   return time;
 }
@@ -61,7 +63,7 @@ export default function ClockTemplate() {
     ],
     [],
   );
-  const isFontReady = useMultipleFontLoader(fonts);
+  const isFontReady = useMultipleFontLoader(fonts); // Consider useSuspenseFontLoader for new clocks
 
   // For image preloading, consider creating a separate reusable hook in `utils`
   const isImageReady = true;
@@ -172,7 +174,7 @@ This template includes best practices observed from the project:
    - Optimized update intervals
 
 3. **Asset Loading**:
-   - Font loading with fallbacks
+   - Font loading with fallbacks (useSuspenseFontLoader is recommended)
    - Image preloading
    - Loading states with smooth transitions
 
@@ -198,7 +200,7 @@ To customize:
 
 Example with assets:
 import myCoolFont from '../../../assets/fonts/26-01-01-cool.otf';
-
+import { useSuspenseFontLoader } from '../utils/fontLoader';
 const fonts = useMemo(() => [
   { fontFamily: 'MyClockFont', fontUrl: myCoolFont, options: { display: 'swap' } }
 ], []);

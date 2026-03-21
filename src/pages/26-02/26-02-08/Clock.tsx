@@ -1,11 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 
 // Assets
 import trocaderoFont from '../../../assets/fonts/26-02-08-eiffel.ttf?url';
 import analogBgImage from '../../../assets/images/26-02/26-02-08/tower.webp';
 import eifGif from '../../../assets/images/26-02/26-02-08/eif.gif';
+
+// Export assets for ClockPage preloader
+export const background = analogBgImage;
+
+// Custom hook for smooth time updates using requestAnimationFrame
+const useSmoothTime = (updateInterval: number = 1000) => {
+  const [time, setTime] = useState(new Date());
+  const lastUpdateRef = useRef<number>(0);
+
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const animate = (timestamp: number) => {
+      // Update based on interval to avoid excessive updates
+      if (timestamp - lastUpdateRef.current >= updateInterval) {
+        setTime(new Date());
+        lastUpdateRef.current = timestamp;
+      }
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [updateInterval]);
+
+  return time;
+};
 
 const STYLE_CONFIG = {
   ironColor: '#8DA3A4',
@@ -15,37 +46,20 @@ const STYLE_CONFIG = {
 };
 
 const TrocClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-  const [fontReady, setFontReady] = useState<boolean>(false);
-  const [bgReady, setBgReady] = useState<boolean>(false);
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = useMemo(() => [{
+      fontFamily: 'TrocaderoFont',
+      fontUrl: trocaderoFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+  }], []);
+  
+  useSuspenseFontLoader(fontConfigs);
 
-  useEffect(() => {
-    const font = new FontFace('TrocaderoFont', `url(${trocaderoFont})`);
-    font
-      .load()
-      .then((loadedFont) => {
-        document.fonts.add(loadedFont);
-        setFontReady(true);
-      })
-      .catch(() => setFontReady(true));
-  }, []);
-
-  useEffect(() => {
-    // Preload the background image to avoid a flash when it appears
-    const img = new Image();
-    img.src = analogBgImage;
-    const done = () => setBgReady(true);
-    img.onload = done;
-    img.onerror = done; // Show UI even if image fails
-    // Safety timeout
-    const timeoutId = setTimeout(done, 1200);
-    return () => clearTimeout(timeoutId);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+  // Use smooth time updates with requestAnimationFrame
+  const time = useSmoothTime(1000); // Update every second
 
   const s = time.getSeconds();
   const m = time.getMinutes() + s / 60;
@@ -56,16 +70,11 @@ const TrocClock: React.FC = () => {
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
-    fontFamily: fontReady
-      ? "'TrocaderoFont', serif"
-      : "'Playfair Display', serif",
+    fontFamily: "'TrocaderoFont', serif",
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#000', // Solid base color while image loads
-    opacity: fontReady && bgReady ? 1 : 0,
-    visibility: fontReady && bgReady ? 'visible' : 'hidden', // Prevent FOUC for custom font & bg
-    transition: 'opacity 0.35s ease',
+    backgroundColor: '#000',
   };
 
   const backgroundLayerStyle = {
@@ -163,7 +172,7 @@ const TrocClock: React.FC = () => {
     'XI',
   ];
 
-  const renderNumerals: React.FC = () => {
+  const renderNumerals = () => {
     const radiusPercent = 38;
     return romanNumerals.map((num, i) => {
       const angle = (i / 12) * 2 * Math.PI;

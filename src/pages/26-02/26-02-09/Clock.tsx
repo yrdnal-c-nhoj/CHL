@@ -1,5 +1,19 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import customFont from '../../../assets/fonts/26-02-09-spin.otf?url';
+
+interface Glyph {
+  type: 'hour' | 'minute' | 'period';
+  z: number;
+  x: number;
+  baseY: number;
+  speed: number;
+  spin: number;
+  spinSpeed: number;
+  wobbleAmp: number;
+  wobbleFreq: number;
+  wobblePhase: number;
+  drift: number;
+}
 
 const COLORS = {
   hour: '#FFFFFF',
@@ -18,10 +32,14 @@ const CONFIG = {
 };
 
 export default function CenteredLightClock() {
-  const canvasRef = useRef(null);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  // Use refs for animation state to avoid re-renders resetting the canvas
+  const fontLoadedRef = useRef<boolean>(false);
+  const glyphsRef = useRef<Glyph[]>([]);
+  // Accessible time state
+  const [ariaTime, setAriaTime] = useState('');
 
-  const canvasStyle = useMemo(
+  const canvasStyle = useMemo<React.CSSProperties>(
     () => ({
       width: '100vw',
       height: '100dvh',
@@ -33,6 +51,18 @@ export default function CenteredLightClock() {
     [],
   );
 
+  // Accessibility: Update time string every minute
+  useEffect(() => {
+    const updateAria = () => {
+      setAriaTime(
+        new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+      );
+    };
+    updateAria();
+    const interval = setInterval(updateAria, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     // ── Font loading ───────────────────────────────────────────────
     const loadFont = async () => {
@@ -40,10 +70,11 @@ export default function CenteredLightClock() {
         const fontFace = new FontFace('CustomOswald', `url(${customFont})`);
         await fontFace.load();
         document.fonts.add(fontFace);
-        setFontLoaded(true);
+        fontLoadedRef.current = true;
       } catch (err) {
         console.error('Custom font failed to load:', err);
-        setFontLoaded(true); // continue anyway
+        // We mark it as loaded so we stop checking or use fallback
+        fontLoadedRef.current = true;
       }
     };
 
@@ -58,17 +89,24 @@ export default function CenteredLightClock() {
     let animationFrameId;
     let lastTime = performance.now();
     let spawnAccumulator = 0;
+    let logicalWidth = window.innerWidth;
+    let logicalHeight = window.innerHeight;
 
-    /** @type {Array<import('react').MutableRefObject<any>>} */
-    const glyphs = [];
+    // Use the ref so particles persist across re-renders
+    const glyphs = glyphsRef.current;
 
     // ── Helpers ────────────────────────────────────────────────────
-    const resizeCanvas: React.FC = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    const resizeCanvas = () => {
+      const dpr = window.devicePixelRatio || 1;
+      logicalWidth = window.innerWidth;
+      logicalHeight = window.innerHeight;
+
+      canvas.width = logicalWidth * dpr;
+      canvas.height = logicalHeight * dpr;
+      ctx.scale(dpr, dpr);
     };
 
-    const getTimeParts: React.FC = () => {
+    const getTimeParts = (): Record<Glyph['type'], string> => {
       const now = new Date();
       let h = now.getHours();
       const period = h >= 12 ? 'pm' : 'am';
@@ -80,14 +118,17 @@ export default function CenteredLightClock() {
       };
     };
 
-    const createGlyph = (type, forcedX = null) => {
+    const createGlyph = (
+      type: Glyph['type'],
+      forcedX: number | null = null,
+    ): Glyph => {
       const z = CONFIG.MIN_Z + Math.random() * (CONFIG.MAX_Z - CONFIG.MIN_Z);
 
       return {
         type,
         z,
-        x: forcedX ?? canvas.width + 200,
-        baseY: canvas.height * (0.1 + Math.random() * 0.8),
+        x: forcedX ?? logicalWidth + 200,
+        baseY: logicalHeight * (0.1 + Math.random() * 0.8),
         speed: (0.04 + Math.random() * 0.05) * z,
         spin: Math.random() * Math.PI * 2,
         spinSpeed:
@@ -99,18 +140,18 @@ export default function CenteredLightClock() {
       };
     };
 
-    const spawnGlyph = (type, forcedX = null) => {
+    const spawnGlyph = (type: Glyph['type'], forcedX: number | null = null) => {
       glyphs.push(createGlyph(type, forcedX));
     };
 
     const drawProjectedShadow = (
-      x,
-      y,
-      fontSize,
-      rotation,
-      lightX,
-      lightY,
-      z,
+      x: number,
+      y: number,
+      fontSize: number,
+      rotation: number,
+      lightX: number,
+      lightY: number,
+      z: number,
     ) => {
       const halfW = fontSize * 0.3;
       const halfH = fontSize * 0.25;
@@ -122,9 +163,12 @@ export default function CenteredLightClock() {
         { x: -halfW, y: +halfH },
       ];
 
+      const cosR = Math.cos(rotation);
+      const sinR = Math.sin(rotation);
+
       const rotatedCorners = localCorners.map(({ x: lx, y: ly }) => {
-        const rx = lx * Math.cos(rotation) - ly * Math.sin(rotation);
-        const ry = lx * Math.sin(rotation) + ly * Math.cos(rotation);
+        const rx = lx * cosR - ly * sinR;
+        const ry = lx * sinR + ly * cosR;
         return { x: x + rx, y: y + ry };
       });
 
@@ -133,21 +177,15 @@ export default function CenteredLightClock() {
 
       ctx.fillStyle = `rgba(255,255,255,${shadowAlpha})`;
 
+      const shadowDx = Math.sin(-lightAngle - Math.PI / 2) * CONFIG.SHADOW_LENGTH;
+      const shadowDy = Math.cos(-lightAngle - Math.PI / 2) * CONFIG.SHADOW_LENGTH;
+
       for (let i = 0; i < 4; i++) {
         const a = rotatedCorners[i];
         const b = rotatedCorners[(i + 1) % 4];
 
-        const dx = Math.sin(-lightAngle - Math.PI / 2);
-        const dy = Math.cos(-lightAngle - Math.PI / 2);
-
-        const aEnd = {
-          x: a.x + CONFIG.SHADOW_LENGTH * dx,
-          y: a.y + CONFIG.SHADOW_LENGTH * dy,
-        };
-        const bEnd = {
-          x: b.x + CONFIG.SHADOW_LENGTH * dx,
-          y: b.y + CONFIG.SHADOW_LENGTH * dy,
-        };
+        const aEnd = { x: a.x + shadowDx, y: a.y + shadowDy };
+        const bEnd = { x: b.x + shadowDx, y: b.y + shadowDy };
 
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
@@ -168,15 +206,15 @@ export default function CenteredLightClock() {
       // Steady spawning
       while (spawnAccumulator >= CONFIG.SPAWN_INTERVAL_MS) {
         spawnAccumulator -= CONFIG.SPAWN_INTERVAL_MS;
-        const types = ['hour', 'minute', 'period'];
+        const types = ['hour', 'minute', 'period'] as const;
         const randomType = types[Math.floor(Math.random() * types.length)];
         spawnGlyph(randomType);
       }
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, logicalWidth, logicalHeight);
 
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2;
+      const cx = logicalWidth / 2;
+      const cy = logicalHeight / 2;
 
       // Background gradient
       const grad = ctx.createRadialGradient(
@@ -190,12 +228,12 @@ export default function CenteredLightClock() {
       grad.addColorStop(0, '#828A99');
       grad.addColorStop(1, '#4A628E');
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, logicalWidth, logicalHeight);
 
       const timeParts = getTimeParts();
       const baseFontSize = Math.max(
         CONFIG.MIN_FONT_SIZE,
-        Math.min(canvas.width, canvas.height) * CONFIG.BASE_FONT_SIZE_FACTOR,
+        Math.min(logicalWidth, logicalHeight) * CONFIG.BASE_FONT_SIZE_FACTOR,
       );
 
       // Sort by depth (far → near)
@@ -215,8 +253,8 @@ export default function CenteredLightClock() {
           (g.type === 'hour'
             ? baseFontSize
             : g.type === 'minute'
-              ? baseFontSize * 0.8
-              : baseFontSize * 0.6) * g.z;
+            ? baseFontSize * 0.8
+            : baseFontSize * 0.6) * g.z;
 
         // Shadow
         drawProjectedShadow(g.x, y, fontSize, g.spin, cx, cy, g.z);
@@ -226,7 +264,9 @@ export default function CenteredLightClock() {
         ctx.translate(g.x, y);
         ctx.rotate(g.spin);
 
-        ctx.font = `600 ${fontSize}px ${fontLoaded ? '"CustomOswald"' : 'sans-serif'}`;
+        ctx.font = `600 ${fontSize}px ${
+          fontLoadedRef.current ? '"CustomOswald"' : 'sans-serif'
+        }`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = COLORS[g.type];
@@ -235,7 +275,7 @@ export default function CenteredLightClock() {
         ctx.restore();
 
         // Remove if completely off-screen left
-        if (g.x < -canvas.width * 0.5) {
+        if (g.x < -logicalWidth * 0.5) {
           glyphs.splice(i, 1);
         }
       }
@@ -248,9 +288,11 @@ export default function CenteredLightClock() {
     window.addEventListener('resize', resizeCanvas);
 
     // Pre-populate screen
-    const types = ['hour', 'minute', 'period'];
-    for (let i = 0; i < 15; i++) {
-      spawnGlyph(types[i % 3], Math.random() * canvas.width * 1.3);
+    if (glyphs.length === 0) {
+      const types = ['hour', 'minute', 'period'] as const;
+      for (let i = 0; i < 15; i++) {
+        spawnGlyph(types[i % 3], Math.random() * logicalWidth * 1.3);
+      }
     }
 
     // Start animation
@@ -261,7 +303,24 @@ export default function CenteredLightClock() {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [fontLoaded]);
+  }, []); // Empty dependency array ensures loop doesn't reset on font load
 
-  return <canvas ref={canvasRef} style={canvasStyle} />;
+  return (
+    <>
+      <div
+        role="status"
+        aria-live="polite"
+        style={{
+          position: 'absolute',
+          width: 1,
+          height: 1,
+          overflow: 'hidden',
+          clip: 'rect(0,0,0,0)',
+        }}
+      >
+        {ariaTime}
+      </div>
+      <canvas ref={canvasRef} style={canvasStyle} aria-hidden="true" />
+    </>
+  );
 }

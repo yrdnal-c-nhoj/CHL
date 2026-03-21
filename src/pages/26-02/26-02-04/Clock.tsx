@@ -1,19 +1,57 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 
 // Assets
-import digitalFontUrl from '../../../assets/fonts/26-02-04-trans.ttf';
+import digitalFontUrl from '../../../assets/fonts/26-02-04-trans.ttf?url';
 import digitalBgImage from '../../../assets/images/26-02/26-02-04/trans.webp';
 import backgroundImage from '../../../assets/images/26-02/26-02-04/tran.jpg';
+
+// Custom hook for smooth time updates using requestAnimationFrame
+const useSmoothTime = (updateInterval: number = 1000) => {
+  const [time, setTime] = useState(new Date());
+  const lastUpdateRef = useRef<number>(0);
+
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const animate = (timestamp: number) => {
+      // Update based on interval to avoid excessive updates
+      if (timestamp - lastUpdateRef.current >= updateInterval) {
+        setTime(new Date());
+        lastUpdateRef.current = timestamp;
+      }
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [updateInterval]);
+
+  return time;
+};
 
 const CONFIG = {
   use24Hour: false,
 };
 
+// Interface for time formatting result
+interface TimeFormat {
+  hh: string;
+  mm: string;
+}
+
 const DigitalClockTemplate: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [animationName, setAnimationName] = useState<string>('');
+  const [showContent, setShowContent] = useState(false);
+
+  // Use Suspense-compatible font loading
+  useSuspenseFontLoader([
     {
       fontFamily: 'BorrowedDigital',
       fontUrl: digitalFontUrl,
@@ -22,26 +60,33 @@ const DigitalClockTemplate: React.FC = () => {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ]);
 
-  const [time, setTime] = useState(new Date());
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [animationName, setAnimationName] = useState<any>('');
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-
+  // Show content immediately with Suspense
   useEffect(() => {
-    setFontLoaded(fontsLoaded);
-  }, [fontsLoaded]);
+    setShowContent(true);
+  }, []);
 
+  // Use smooth time updates with requestAnimationFrame
+  const time = useSmoothTime(1000); // Update every second
+
+  // Time formatting - move before conditional return
+  const { hh, mm }: TimeFormat = useMemo(() => {
+    const hours24 = time.getHours();
+    const hours = CONFIG.use24Hour ? hours24 : hours24 % 12 || 12;
+    const pad = (n) => String(n).padStart(2, '0');
+    return {
+      hh: pad(hours),
+      mm: pad(time.getMinutes()),
+    };
+  }, [time]);
+
+  // Device detection and animation setup - move before conditional return
   useEffect(() => {
     // Device Detection
     const checkDevice = () => setIsMobile(window.innerWidth <= 768);
     checkDevice();
     window.addEventListener('resize', checkDevice);
-
-    // Clock Ticker
-    const interval = setInterval(() => setTime(new Date()), 1000);
 
     // Create unique animation name and scoped style element
     const uniqueAnimationName = `copper-shimmer-${Date.now()}`;
@@ -58,22 +103,12 @@ const DigitalClockTemplate: React.FC = () => {
 
     return () => {
       window.removeEventListener('resize', checkDevice);
-      clearInterval(interval);
       if (style && style.parentNode) {
         style.parentNode.removeChild(style);
       }
     };
   }, []);
 
-  const { hh, mm } = useMemo(() => {
-    const hours24 = time.getHours();
-    const hours = CONFIG.use24Hour ? hours24 : hours24 % 12 || 12;
-    const pad = (n) => String(n).padStart(2, '0');
-    return {
-      hh: pad(hours),
-      mm: pad(time.getMinutes()),
-    };
-  }, [time]);
 
   // ────────────────────────────────────────────────
   //                STYLES
@@ -88,10 +123,10 @@ const DigitalClockTemplate: React.FC = () => {
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    // Superior FOUC prevention from 26-02-18
-    opacity: fontLoaded ? 1 : 0,
+    // Suspense handles loading state, no need for manual opacity/visibility toggles
+    opacity: 1,
     transition: 'opacity 0.3s ease',
-    visibility: fontLoaded ? 'visible' : 'hidden',
+    visibility: 'visible',
   };
   const bgBaseStyle = {
     position: 'absolute',
@@ -116,7 +151,7 @@ const DigitalClockTemplate: React.FC = () => {
   const digitStyle = {
     fontSize: isMobile ? '35dvh' : '30vw',
     lineHeight: 1,
-    fontFamily: fontLoaded ? "'BorrowedDigital', monospace" : 'monospace',
+    fontFamily: "'BorrowedDigital', monospace",
     fontVariantNumeric: 'tabular-nums',
     userSelect: 'none',
 

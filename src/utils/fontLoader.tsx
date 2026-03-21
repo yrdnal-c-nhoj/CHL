@@ -1,4 +1,8 @@
-import React, { useState, useLayoutEffect, useMemo } from 'react';
+import React, { useState, useLayoutEffect, useMemo, useEffect } from 'react';
+
+// Global registry to track loaded fonts and prevent duplicate network requests.
+const fontRegistry = new Map<string, Promise<void>>();
+const fontStatusRegistry = new Map<string, 'loading' | 'loaded' | 'error'>();
 
 interface FontFaceOptions {
   display?: string;
@@ -132,6 +136,40 @@ class StyleManager {
 const styleManager = new StyleManager();
 
 /**
+ * Internal utility to initiate a font load.
+ * Idempotent: safe to call multiple times.
+ */
+const loadFontEntry = (fontFamily: string, fontUrl: string, options: FontFaceOptions = {}): Promise<void> => {
+  const cacheKey = `${fontFamily}-${fontUrl}`;
+  
+  if (fontRegistry.has(cacheKey)) {
+    return fontRegistry.get(cacheKey)!;
+  }
+
+  fontStatusRegistry.set(cacheKey, 'loading');
+  
+  const fontPromise = (async () => {
+    try {
+      if (typeof document !== 'undefined' && 'fonts' in document) {
+        const font = new FontFace(fontFamily, `url(${fontUrl})`, { 
+          ...options,
+          display: 'swap' 
+        });
+        await font.load();
+        document.fonts.add(font);
+      }
+      fontStatusRegistry.set(cacheKey, 'loaded');
+    } catch (e) {
+      console.warn(`Failed to load font ${fontFamily}:`, e);
+      fontStatusRegistry.set(cacheKey, 'error');
+    }
+  })();
+
+  fontRegistry.set(cacheKey, fontPromise);
+  return fontPromise;
+};
+
+/**
  * Loads a single font programmatically using the FontFace API.
  * Prevents FOUC (Flash of Unstyled Content).
  *
@@ -153,18 +191,13 @@ export function useFontLoader(fontFamily: string, fontUrl: string, options: Font
       }
 
       try {
-        const font = new FontFace(fontFamily, `url(${fontUrl})`, { 
-          ...options,
-          display: 'swap' // Always use swap to prevent FOUC
-        });
-        await font.load();
-        document.fonts.add(font);
-      } catch (e) {
-        console.warn('Font loading error:', e);
+        await loadFontEntry(fontFamily, fontUrl, options);
       } finally {
         if (isMounted) setIsLoaded(true);
       }
     };
+
+    load();
 
     load();
     return () => {
@@ -197,17 +230,8 @@ export function useMultipleFontLoader(fonts: FontConfig[], styles: StylesConfig 
 
       try {
         // Load fonts
-        const fontPromises = fonts.map(async (f) => {
-          const font = new FontFace(
-            f.fontFamily,
-            `url(${f.fontUrl})`,
-            { 
-              ...f.options,
-              display: 'swap' // Always use swap to prevent FOUC
-            }
-          );
-          await font.load();
-          document.fonts.add(font);
+        const fontPromises = fonts.map((f) => {
+          return loadFontEntry(f.fontFamily, f.fontUrl, f.options);
         });
 
         await Promise.all(fontPromises);
@@ -302,20 +326,43 @@ export function useStyleInjection(styles: StylesConfig = {}): void {
  * @throws Promise during loading, completes when ready
  */
 export function useSuspenseFontLoader(fonts: FontConfig[], styles: StylesConfig = {}): void {
-  const hasLoaded = useMultipleFontLoader(fonts, styles);
+  // 1. Initiate styles immediately (synchronous side-effect)
+  // We use useMemo to ensure this only runs once per unique style config
+  const styleId = useMemo(() => {
+    const id = `suspense-styles-${Math.random().toString(36).substr(2, 9)}`;
+    let css = '';
+    
+    if (styles.custom) css += styles.custom;
+    if (styles.keyframes) {
+      Object.entries(styles.keyframes).forEach(([name, def]) => {
+        css += styleManager.generateKeyframesCSS(name, def);
+      });
+    }
+    // Note: @font-face rules are not generated here as they are handled by FontFace API 
+    // in loadFontEntry, but if legacy CSS fallback is needed, it could go here.
+    
+    if (css) styleManager.inject(id, css);
+    return id;
+  }, [JSON.stringify(styles)]);
+
+  // 2. Check font status and collect pending promises
+  const pendingPromises: Promise<void>[] = [];
   
-  if (!hasLoaded) {
-    // Throw a promise that React Suspense can catch
-    throw new Promise<void>((resolve) => {
-      const checkLoaded = (): void => {
-        if (hasLoaded) {
-          resolve();
-        } else {
-          setTimeout(checkLoaded, 50);
-        }
-      };
-      checkLoaded();
-    });
+  fonts.forEach(font => {
+    const cacheKey = `${font.fontFamily}-${font.fontUrl}`;
+    const status = fontStatusRegistry.get(cacheKey);
+    
+    if (status === 'loaded' || status === 'error') {
+      return;
+    }
+    
+    // If not loaded or not started, ensure it's loading and add to pending
+    pendingPromises.push(loadFontEntry(font.fontFamily, font.fontUrl, font.options));
+  });
+
+  // 3. Suspend if there are pending fonts
+  if (pendingPromises.length > 0) {
+    throw Promise.all(pendingPromises);
   }
 }
 

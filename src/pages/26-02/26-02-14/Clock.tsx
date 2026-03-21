@@ -1,42 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import airportFont from '../../../assets/fonts/26-02-14-airport.ttf';
 import backgroundGif from '../../../assets/images/26-02/26-02-14/prop.gif';
 import backgroundGif2 from '../../../assets/images/26-02/26-02-14/runway.gif';
 
+// Export assets for ClockPage preloader
+export const background = backgroundGif;
+
+interface SubstitutionMap {
+  [key: number]: string;
+}
+
 const DigitalClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-  const [isInitialized, setIsInitialized] = useState<boolean>(false);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+  // Smooth animation using requestAnimationFrame
+  const time = useSecondClock();
 
-  useEffect(() => {
-    const updateTime: React.FC = () => {
-      setTime(new Date());
-      setIsInitialized(true);
-    };
-
-    // Load custom font
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace('Airport', `url(${airportFont})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-      } catch (error) {
-        console.error('Font loading failed:', error);
-        setFontLoaded(true); // Continue with fallback font
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = useMemo(() => [{
+      fontFamily: 'Airport',
+      fontUrl: airportFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
       }
-    };
-
-    updateTime();
-    loadFont();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  }], []);
+  
+  useSuspenseFontLoader(fontConfigs);
 
   // Substitution mapping based on your requirements
-  const substitutionMap = {
+  const substitutionMap: SubstitutionMap = {
     0: 'n',
     1: 't',
     2: '6',
@@ -78,9 +71,6 @@ const DigitalClock: React.FC = () => {
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: '#000', // Base black layer
-      opacity: fontLoaded ? 1 : 0,
-      visibility: fontLoaded ? 'visible' : 'hidden',
-      transition: 'opacity 0.3s ease',
     },
     // Background 1: Propeller GIF
     bgLayer1: {
@@ -146,58 +136,22 @@ const DigitalClock: React.FC = () => {
 
   return (
     <div style={styles.container}>
-      {/* Global Font Injection */}
-      <style>
-        {`
-          @font-face {
-            font-family: 'Airport';
-            src: url(${airportFont}) format('truetype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: block;
-          }
-        `}
-      </style>
-
       {/* Background Layers */}
       <div style={styles.bgLayer1} />
       <div style={styles.bgLayer2} />
 
-      {/* Loading overlay to prevent flash of unstyled content */}
-      {!fontLoaded && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100dvh',
-            backgroundImage: `url(${backgroundGif})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            zIndex: 100,
-          }}
-        />
-      )}
+      <div style={styles.clockContainer}>
+        {/* HOURS */}
+        <div style={styles.digitGroup}>
+          {splitDigitsToLetters(hours).map((letter, index) => (
+            <div key={`h-${index}`} style={styles.digitBox}>
+              <span style={styles.digit}>{letter}</span>
+            </div>
+          ))}
+        </div>
 
-      {!isInitialized ? (
-        <div
-          style={{ color: '#E3E7F1', zIndex: 11, fontFamily: 'monospace' }}
-        ></div>
-      ) : (
-        <div style={styles.clockContainer}>
-          {/* HOURS */}
-          <div style={styles.digitGroup}>
-            {splitDigitsToLetters(hours).map((letter, index) => (
-              <div key={`h-${index}`} style={styles.digitBox}>
-                <span style={styles.digit}>{letter}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* MINUTES */}
-          <div style={styles.digitGroup}>
+        {/* MINUTES */}
+        <div style={styles.digitGroup}>
             {splitDigitsToLetters(minutes).map((letter, index) => (
               <div key={`m-${index}`} style={styles.digitBox}>
                 <span style={styles.digit}>{letter}</span>
@@ -214,7 +168,6 @@ const DigitalClock: React.FC = () => {
             ))}
           </div>
         </div>
-      )}
     </div>
   );
 };

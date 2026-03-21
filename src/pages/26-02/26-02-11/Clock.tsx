@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 
 // --- Assets ---
 import bellImage2 from '../../../assets/images/26-02/26-02-11/bell.webp';
@@ -23,16 +23,36 @@ const CLOCK_CONFIG = {
   },
 };
 
-const HAND_DIMENSIONS = {
+// Interface for clock hand dimensions
+interface HandDimensions {
+  width: string;
+  height: string;
+  zIndex: number;
+}
+
+// Interface for clock hand props
+interface ClockHandProps {
+  type: 'hour' | 'minute' | 'second';
+  rotation: number;
+}
+
+// Interface for time values
+interface TimeValues {
+  hr: number;
+  min: number;
+  sec: number;
+}
+
+const HAND_DIMENSIONS: Record<string, HandDimensions> = {
   hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
   minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
   second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
 };
 
 // --- Utility Functions ---
-const getHandRotation = (value, multiplier) => value * multiplier;
+const getHandRotation = (value: number, multiplier: number): number => value * multiplier;
 
-const calculateNumeralPosition = (number) => {
+const calculateNumeralPosition = (number: number) => {
   const angleRad = (number / 12) * 2 * Math.PI;
   const angleDeg = (number / 12) * 360;
 
@@ -43,7 +63,7 @@ const calculateNumeralPosition = (number) => {
   };
 };
 
-const calculateTimeValues = (date) => {
+const calculateTimeValues = (date: Date): TimeValues => {
   const msec = date.getMilliseconds();
   const sec = date.getSeconds() + msec / 1000;
   const min = date.getMinutes() + sec / 60;
@@ -53,69 +73,30 @@ const calculateTimeValues = (date) => {
 };
 
 // --- Custom Hooks ---
-const useGoogleFont = (fontUrl = CLOCK_CONFIG.FONT_URL) => {
-  const [fontReady, setFontReady] = useState<boolean>(false);
-
-  useEffect(() => {
-    const fontId = 'gilda-display-font';
-
-    // Check if font is already loaded
-    const fontIsLoaded: React.FC = () => {
-      return document.fonts.check('1em "Gilda Display"');
-    };
-
-    if (fontIsLoaded()) {
-      setFontReady(true);
-      return;
-    }
-
-    if (document.getElementById(fontId)) {
-      setFontReady(true);
-      return;
-    }
-
-    // Load font with media="print" technique to prevent FOUC
-    const link = document.createElement('link');
-    link.id = fontId;
-    link.rel = 'stylesheet';
-    link.href = fontUrl;
-    link.media = 'print'; // Initially load as print to avoid FOUC
-    document.head.appendChild(link);
-
-    // Switch media to all to activate fonts
-    setTimeout(() => {
-      link.media = 'all';
-    }, 0);
-
-    // Check for font readiness
-    const checkFonts = setInterval(() => {
-      if (fontIsLoaded()) {
-        clearInterval(checkFonts);
-        setFontReady(true);
-      }
-    }, 50);
-
-    // Fallback timeout
-    const fallbackTimeout = setTimeout(() => {
-      clearInterval(checkFonts);
-      setFontReady(true);
-    }, 3000);
-
-    return () => {
-      clearInterval(checkFonts);
-      clearTimeout(fallbackTimeout);
-    };
-  }, [fontUrl]);
-
-  return fontReady;
-};
-
+// Custom hook for smooth time updates using requestAnimationFrame
 const useSmoothClock = (intervalMs = CLOCK_CONFIG.UPDATE_INTERVAL_MS) => {
   const [time, setTime] = useState(() => new Date());
+  const lastUpdateRef = useRef<number>(0);
 
   useEffect(() => {
-    const intervalId = setInterval(() => setTime(new Date()), intervalMs);
-    return () => clearInterval(intervalId);
+    let animationFrameId: number;
+
+    const animate = (timestamp: number) => {
+      // Update based on interval to avoid excessive updates
+      if (timestamp - lastUpdateRef.current >= intervalMs) {
+        setTime(new Date());
+        lastUpdateRef.current = timestamp;
+      }
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, [intervalMs]);
 
   return time;
@@ -168,7 +149,7 @@ const ClockNumerals: React.FC = () => {
   return <>{numerals}</>;
 };
 
-const ClockHand = ({ type, rotation }) => {
+const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
   const { width, height, zIndex } = HAND_DIMENSIONS[type];
   const background = CLOCK_CONFIG.COLORS[`${type}Hand`];
 
@@ -190,7 +171,25 @@ const CenterDot = () => <div style={styles.centerDot} />;
 
 // --- Main Component ---
 const AnalogClock: React.FC = () => {
-  const fontReady = useGoogleFont();
+  const [showContent, setShowContent] = useState(false);
+
+  // Use Suspense-compatible font loading
+  useSuspenseFontLoader([
+    {
+      fontFamily: 'Gilda Display',
+      fontUrl: CLOCK_CONFIG.FONT_URL,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ]);
+
+  // Show content immediately with Suspense
+  useEffect(() => {
+    setShowContent(true);
+  }, []);
+
   const currentTime = useSmoothClock();
   const { hr, min, sec } = calculateTimeValues(currentTime);
 
@@ -198,8 +197,8 @@ const AnalogClock: React.FC = () => {
     <div
       style={{
         ...styles.container,
-        opacity: fontReady ? 1 : 0,
-        visibility: fontReady ? 'visible' : 'hidden',
+        opacity: 1,
+        visibility: 'visible',
       }}
     >
       <BackgroundLayers />

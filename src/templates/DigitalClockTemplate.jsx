@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../utils/fontLoader';
 
 // Template uses existing project assets so it looks consistent with other clocks.
 // Swap these imports for different fonts / images when making a new clock.
@@ -13,7 +14,7 @@ const FONT_FAMILY = 'Orbitron, system-ui, sans-serif';
  * DigitalClockTemplate
  *
  * A future-proof, React-first digital clock template that:
- * - Uses Google Fonts Orbitron (imported in index.html)
+ * - Uses standardized font loading hooks
  * - Updates time with React state (no manual DOM manipulation)
  * - Scales to full viewport and stays responsive
  * - Is easy to customize (colors, layout, 12/24 hr mode, etc.)
@@ -32,27 +33,26 @@ const CONFIG = {
 
 const DigitalClockTemplate = () => {
   const [time, setTime] = useState(new Date());
-  const [fontReady, setFontReady] = useState(false);
+  
+  // Since Orbitron is loaded globally for this template, we don't need to load it here.
+  // For custom fonts, use the useSuspenseFontLoader hook like this:
+  /*
+  const fontConfigs = useMemo(() => [{
+    fontFamily: 'MyCustomFont',
+    fontUrl: myFontUrl
+  }], []);
+  useSuspenseFontLoader(fontConfigs);
+  */
 
-  // Wait for Google Fonts to load before showing content (prevents FOUC)
+  // Time ticker using requestAnimationFrame for smooth updates (if showing seconds)
   useEffect(() => {
-    if ('fonts' in document) {
-      document.fonts.ready.then(() => {
-        setFontReady(true);
-      });
-    } else {
-      // Fallback for browsers without font loading API
-      setFontReady(true);
-    }
-  }, []);
-
-  // Time ticker
-  useEffect(() => {
-    const interval = setInterval(
-      () => setTime(new Date()),
-      CONFIG.showSeconds ? 100 : 1000,
-    );
-    return () => clearInterval(interval);
+    let frameId;
+    const tick = () => {
+      setTime(new Date());
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   const formatTimeParts = (date) => {
@@ -134,18 +134,6 @@ const DigitalClockTemplate = () => {
     color: 'rgba(245, 239, 223, 0.8)',
     padding: '0 0.1em',
   };
-
-  // Loading overlay to prevent flash of unstyled content (FOUC)
-  if (!fontReady) {
-    return (
-      <div
-        style={{
-          ...containerStyle,
-          background: '#000',
-        }}
-      />
-    );
-  }
 
   return (
     <div style={containerStyle}>
