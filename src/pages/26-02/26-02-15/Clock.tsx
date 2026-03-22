@@ -4,13 +4,12 @@ import { useSecondClock } from '../../../utils/useSmoothClock';
 import backgroundImage from '../../../assets/images/26-02/26-02-15/caldera.webp';
 import fontFile from '../../../assets/fonts/26-02-15-fire.ttf';
 
-const FONT_FAMILY = 'MyClockFont_20251120';
+const FONT_FAMILY = 'FireFont';
 
 export default function PixelInverseClock() {
   const canvasRef = useRef(null);
   const requestRef = useRef();
   const [assetsLoaded, setAssetsLoaded] = useState<boolean>(false);
-  const [showContent, setShowContent] = useState(false);
   const imageRef = useRef(new Image());
 
   const fontConfigs = useMemo(() => [
@@ -25,10 +24,6 @@ export default function PixelInverseClock() {
   ], []);
   
   useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-    setShowContent(true);
-  }, []);
 
   useEffect(() => {
     const loadAssets = async () => {
@@ -77,9 +72,10 @@ export default function PixelInverseClock() {
     return () => window.removeEventListener('resize', handleResize);
   }, [assetsLoaded]);
 
+  const time = useSecondClock();
+
   const render = (ctx) => {
     const { width: w, height: h } = ctx.canvas;
-    const time = useSecondClock();
 
     ctx.clearRect(0, 0, w, h);
 
