@@ -107,7 +107,7 @@ const Clock: React.FC = () => {
           width: '100vw',
           height: '100dvh',
           objectFit: 'cover',
-          opacity: 0.8,
+          opacity: 0.9,
           zIndex: 7,
           filter: 'hue-rotate(220deg) saturate(2.5) contrast(2.5)',
           transform: 'scaleX(-1)',
@@ -174,8 +174,6 @@ const Clock: React.FC = () => {
           backgroundSize: 'auto',
           backgroundPosition: 'center',
           zIndex: 4,
-          pointerEvents: 'none',
-          opacity: 0.7,
           filter: 'hue-rotate(270deg) saturate(1.5)',
           transform: 'translate(-50%, -50%) scaleX(-1)',
         }}
