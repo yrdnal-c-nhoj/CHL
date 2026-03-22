@@ -63,15 +63,6 @@ const Clock: React.FC = () => {
       </div>
 
       <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background:'rgba(0,0,0,.35)',
-          zIndex: 1,
-        }}
-      />
-
-      <div
         className={`venice-clock ${fontLoaded ? 'loaded' : ''}`}
         style={{
           position: 'absolute',
@@ -91,7 +82,6 @@ const Clock: React.FC = () => {
             fontSize: 'clamp(4rem,16vw,14rem)',
             lineHeight: 1.3,
             padding: '0.2em 0',
-            fontWeight:'bold',
             whiteSpace: 'nowrap',
             background: 'linear-gradient(90deg,#F321FA,#EFF70D,#ff1493)',
             WebkitBackgroundClip: 'text',
