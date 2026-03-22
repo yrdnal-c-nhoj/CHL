@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback } from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import backgroundImage from '../../../assets/images/26-03/26-03-20/empire.webp?url';
+import empireFont from '../../../assets/fonts/26-03-20-empire.otf';
 import styles from './Clock.module.css';
 
 interface HourMarker {
@@ -42,16 +43,18 @@ const Clock = () => {
 
   return (
     <>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Teko:wght@400&display=swap"
-      />
+      <style>
+        {`@font-face {
+          font-family: 'Empire';
+          src: url(${empireFont}) format('opentype');
+        }`}
+      </style>
       
       <div
         className={styles.container}
         style={{
           backgroundImage: `url(${backgroundImage})`,
-          fontFamily: 'Teko, sans-serif',
+          fontFamily: 'Empire, sans-serif',
         }}
       >
         <div className={styles.clockContainer}>
@@ -65,10 +68,10 @@ const Clock = () => {
                     left: `${marker.x}%`,
                     top: `${marker.y}%`,
                     transform: 'translate(-50%, -50%)',
-                    fontFamily: 'Teko, sans-serif',
-                    fontSize: '3rem',
+                    fontFamily: 'Empire, sans-serif',
+                    fontSize: '10vh',
                     textShadow: 'none',
-                    color: '#ffffff',
+                    color: '#E8A7A781',
                   }}
                 >
                   {marker.value}
@@ -96,7 +99,6 @@ const Clock = () => {
                 }}
               />
               
-              <div className={styles.centerDot} />
             </div>
           </div>
         </div>

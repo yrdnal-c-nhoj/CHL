@@ -38,7 +38,7 @@
 
 .hourNumber {
   position: absolute;
-  font-family: '270west', sans-serif;
+  font-family: 'Empire', sans-serif;
   font-size: clamp(1rem, 4vmin, 2rem);
   font-weight: bold;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
