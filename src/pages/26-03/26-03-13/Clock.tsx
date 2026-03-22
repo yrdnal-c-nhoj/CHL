@@ -1,55 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import veniceFont from '../../../assets/fonts/26-03-13-venice.ttf';
+import veniceFont from '../../../assets/fonts/26-03-13-venice.ttf?url';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 const Clock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useSecondClock();
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const fontConfigs = React.useMemo(() => [
+    { fontFamily: 'VeniceFont', fontUrl: veniceFont, options: { weight: 'normal', style: 'normal' } }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'VeniceFont';
-        src: url('${veniceFont}') format('truetype');
-        font-display: swap;
-      }
-
-      @keyframes venice-glow {
-        0%,100%{
-          filter: drop-shadow(0 0 20px rgba(255,215,0,.7));
-          transform: scale(1);
-        }
-        50%{
-          filter: drop-shadow(0 0 40px rgba(0,255,255,.8));
-          transform: scale(1.03);
-        }
-      }
-
-      .venice-clock{
-        opacity:0;
-        transition:opacity 1.2s ease;
-      }
-
-      .venice-clock.loaded{
-        opacity:1;
-      }
-
-      .video-background iframe{
-        pointer-events:none;
-      }
-    `;
-    document.head.appendChild(style);
-
-    document.fonts.ready.then(() => setFontLoaded(true));
-
-    return () => {
-      if (document.head.contains(style)) document.head.removeChild(style);
-    };
+    setFontLoaded(true);
   }, []);
 
   const { digits, period } = (() => {
@@ -72,7 +37,6 @@ const Clock: React.FC = () => {
         background: '#000',
       }}
     >
-      {/* VIDEO */}
       <div
         className="video-background"
         style={{
@@ -98,7 +62,6 @@ const Clock: React.FC = () => {
         />
       </div>
 
-      {/* DARK OVERLAY */}
       <div
         style={{
           position: 'absolute',
@@ -108,7 +71,6 @@ const Clock: React.FC = () => {
         }}
       />
 
-      {/* CLOCK */}
       <div
         className={`venice-clock ${fontLoaded ? 'loaded' : ''}`}
         style={{
@@ -124,7 +86,6 @@ const Clock: React.FC = () => {
           pointerEvents: 'none',
         }}
       >
-        {/* DIGITS */}
         <div
           style={{
             fontSize: 'clamp(4rem,16vw,14rem)',
@@ -142,7 +103,6 @@ const Clock: React.FC = () => {
           {digits}
         </div>
 
-        {/* AM PM */}
         <div
           style={{
             fontSize: 'clamp(3rem,9vw,8rem)',

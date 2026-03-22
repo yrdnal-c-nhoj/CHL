@@ -3,15 +3,12 @@ import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import styles from './Clock.module.css';
 
-// --- Assets ---
 import mazeImage from '../../../assets/images/26-02/26-02-16/puzzle.gif';
 import loopVideo from '../../../assets/images/26-02/26-02-16/loop.mp4';
 import mazeFont from '../../../assets/fonts/26-02-16-maze.ttf';
 
-// Export assets for ClockPage preloader
 export { mazeImage, loopVideo };
 
-// --- Configuration ---
 const CONFIG = {
   FONT_FAMILY: 'MazeFont',
   COLORS: {
@@ -22,7 +19,6 @@ const CONFIG = {
   },
 };
 
-// --- Background Style Helper ---
 const getBackgroundStyle = (isFlipped) => ({
   position: 'absolute',
   inset: 0,
@@ -36,7 +32,6 @@ const getBackgroundStyle = (isFlipped) => ({
   zIndex: isFlipped ? 2 : 1,
 });
 
-// --- Sub-Components ---
 const BackgroundLayers = React.memo(() => {
   const videoRef = React.useRef(null);
   const [videoError, setVideoError] = useState<boolean>(false);
@@ -124,7 +119,6 @@ const Digit = React.memo(({ char }) => {
 });
 Digit.displayName = 'Digit';
 
-// Standardized font loading with font-display: swap to avoid FOUC
 export const fontConfigs = [{
   fontFamily: CONFIG.FONT_FAMILY,
   fontUrl: mazeFont,
@@ -134,15 +128,11 @@ export const fontConfigs = [{
   }
 }];
 
-// --- Main Component ---
 const DigitalClock: React.FC = () => {
-  
   useSuspenseFontLoader(fontConfigs);
 
-  // 2. Clock tick using standard hook
   const time = useSecondClock();
 
-  // 3. Time Formatting
   const timeParts = useMemo(() => {
     const h = time.getHours().toString().padStart(2, '0');
     const m = time.getMinutes().toString().padStart(2, '0');

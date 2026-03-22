@@ -17,15 +17,12 @@ interface HandStyleParams {
 const Analog260205Clock: React.FC = () => {
   const [showContent, setShowContent] = useState(false);
 
-  // Use Suspense-compatible font loading (even though no fonts, for consistency)
   useSuspenseFontLoader([]);
 
-  // Show content immediately with Suspense
   useEffect(() => {
     setShowContent(true);
   }, []);
 
-  // Use smooth time updates with requestAnimationFrame
   const time = useMillisecondClock();
 
   const hours = time.getHours() % 12;
@@ -61,7 +58,6 @@ const Analog260205Clock: React.FC = () => {
   };
   
   const handStyle = ({ height, width, image, angle, overlap = 5 }: HandStyleParams) => {
-    // Calculate skew based on angle - more skew when pointing up (taller/narrower)
     const skewAmount = Math.sin((angle * Math.PI) / 180) * 15; // Max 15px skew
 
     return {
@@ -78,10 +74,6 @@ const Analog260205Clock: React.FC = () => {
         'saturate(1.2) contrast(1.8) brightness(1.2) drop-shadow(2px 2px 8px rgba(20, 35, 80, 0.87))',
       marginLeft: `-${width / 2}px`,
 
-      /* 1. Change origin to account for the overlap 
-       2. Rotate first, then translate downward 
-       3. Add skew transformation for perspective effect
-    */
       transformOrigin: `center ${height - overlap}px`,
       transform: `rotate(${angle}deg) translateY(${overlap}px) skewY(${skewAmount}deg)`,
     };

@@ -1,19 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 const RainCanvas: React.FC = () => {
   const canvasRef = useRef(null);
-  const [time, setTime] = useState(new Date());
+  const time = useSecondClock();
 
-  // Start with 3 drops
   const dropCountRef = useRef(3);
   const dropsRef = useRef([]);
 
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Progression Logic: 3 -> 9 -> 18 -> 110
   useEffect(() => {
     const stage1 = setTimeout(() => {
       dropCountRef.current = 9;
@@ -101,7 +95,7 @@ const RainCanvas: React.FC = () => {
       }
     }
 
-    const resize: React.FC = () => {
+    const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       // Re-populate drops on resize based on current stage
@@ -114,7 +108,7 @@ const RainCanvas: React.FC = () => {
     window.addEventListener('resize', resize);
     resize();
 
-    const render: React.FC = () => {
+    const render = () => {
       ctx.fillStyle = '#DBCC99';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 

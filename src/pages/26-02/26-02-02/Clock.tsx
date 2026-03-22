@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useMillisecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import digitalBgImage from '../../../assets/images/26-02/26-02-02/boom.webp';
-
-const FONT_NAME = 'Share Tech Mono';
-const FONT_URL = 'https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap';
+import monofettFont from '../../../assets/fonts/25-04-10-Monofett.ttf?url';
 
 interface DigitStyle {
   fontSize: string;
@@ -19,18 +18,19 @@ const SonicBoomClock: React.FC = () => {
   const [showContent, setShowContent] = useState(false);
   const time = useMillisecondClock();
 
-  // Load Google Font
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.href = FONT_URL;
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-    setShowContent(true);
+  const fontConfigs = [{
+    fontFamily: 'Monofett',
+    fontUrl: monofettFont,
+    options: {
+      weight: 'normal',
+      style: 'normal'
+    }
+  }];
 
-    return () => {
-      // Optional: remove link on unmount if you want to clean up
-      // document.head.removeChild(link);
-    };
+  useSuspenseFontLoader(fontConfigs);
+
+  useEffect(() => {
+    setShowContent(true);
   }, []);
 
   const timeString =
@@ -68,7 +68,7 @@ const SonicBoomClock: React.FC = () => {
       />
       <div
         style={{
-          fontFamily: `"${FONT_NAME}", monospace`,
+          fontFamily: `"Monofett", monospace`,
           display: 'flex',
           alignItems: 'center',
           zIndex: 10,
@@ -76,7 +76,6 @@ const SonicBoomClock: React.FC = () => {
       >
         {digits.map((digit: string, index: number) => {
           const reverseIndex = digits.length - index - 1; 
-          // Progressive sizing: larger on left, smaller on right
           const fontSize = 40 + reverseIndex * -4.5; 
           const opacity = Math.max(1.0 - reverseIndex * 0.15, 0.3);
 
@@ -85,7 +84,7 @@ const SonicBoomClock: React.FC = () => {
             opacity,
             color: '#D0D6F2',
             textShadow: '0 0 15px rgba(10, 63, 240, 0.4)',
-            letterSpacing: '-0.1em', // Negative letter spacing to bring digits closer
+            letterSpacing: '-0.1em',
             display: 'inline-block',
             marginLeft: index > 0 ? '-0.2em' : '0',
           };

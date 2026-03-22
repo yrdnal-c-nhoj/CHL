@@ -4,19 +4,17 @@ import { useSecondClock } from '../../../utils/useSmoothClock';
 import styles from './Clock.module.css';
 
 const WordClock: React.FC = () => {
-  // Standardized font loading
-  const fontConfigs = useMemo(() => [{
-    fontFamily: 'Cinzel Decorative',
-    fontUrl: 'https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&display=swap',
-    options: { weight: '700', style: 'normal' }
-  }], []);
+  // Temporarily disable font loader to fix hook error
+  // const fontConfigs = useMemo(() => [{
+  //   fontFamily: 'Cinzel Decorative',
+  //   fontUrl: 'https://fonts.gstatic.com/s/cinzeldecorative/v16/daaCSScvJGqLYhL8tTN8svvPq2_2p.woff2',
+  //   options: { weight: '700', style: 'normal' }
+  // }], []);
 
-  useSuspenseFontLoader(fontConfigs);
+  // useSuspenseFontLoader(fontConfigs);
 
-  // Smooth animation using requestAnimationFrame
   const now = useSecondClock();
 
-  // 11×11 grid
   const grid = [
     ['I', 'T', 'L', 'I', 'S', 'A', 'S', 'T', 'A', 'M', 'P'],
     ['A', 'C', 'Q', 'U', 'A', 'R', 'T', 'E', 'R', 'D', 'C'],
@@ -176,7 +174,6 @@ const WordClock: React.FC = () => {
       lightUp('past');
     } else if (m >= 10 && m < 15) {
       lightUp('ten');
-      lightUp('ten_m');
       lightUp('past');
     } else if (m >= 15 && m < 20) {
       lightUp('quarter');
@@ -186,14 +183,14 @@ const WordClock: React.FC = () => {
       lightUp('past');
     } else if (m >= 25 && m < 30) {
       lightUp('twenty');
-      lightUp('five_m');
+      lightUp('five');
       lightUp('past');
     } else if (m >= 30 && m < 35) {
       lightUp('half');
       lightUp('past');
     } else if (m >= 35 && m < 40) {
       lightUp('twenty');
-      lightUp('five_m');
+      lightUp('five');
       lightUp('to');
     } else if (m >= 40 && m < 45) {
       lightUp('twenty');
@@ -202,10 +199,10 @@ const WordClock: React.FC = () => {
       lightUp('quarter');
       lightUp('to');
     } else if (m >= 50 && m < 55) {
-      lightUp('ten_m');
+      lightUp('ten');
       lightUp('to');
     } else if (m >= 55) {
-      lightUp('five_m');
+      lightUp('five');
       lightUp('to');
     } else {
       lightUp('oclock');

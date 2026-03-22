@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
-// 1. Configuration & Styles
 const styles = {
   container: {
     width: '100vw',
@@ -31,20 +31,9 @@ const styles = {
 };
 
 export default function MinimalClock() {
-  const [time, setTime] = useState(new Date());
+  const time = useSecondClock();
 
-  // 2. High-performance animation loop
-  useEffect(() => {
-    let frameId: number;
-    const tick = () => {
-      setTime(new Date());
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
 
-  // 3. Memoized formatting
   const { timeStr, dateStr } = useMemo(() => {
     const h = String(time.getHours()).padStart(2, '0');
     const m = String(time.getMinutes()).padStart(2, '0');

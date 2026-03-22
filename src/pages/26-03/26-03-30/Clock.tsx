@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import type { ClockTime } from '@/types/clock';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 const Clock: React.FC = () => {
+  const time = useSecondClock();
+  
+  const hours = time.getHours().toString().padStart(2, '0');
+  const minutes = time.getMinutes().toString().padStart(2, '0');
+  const seconds = time.getSeconds().toString().padStart(2, '0');
+  
   return (
     <div
       style={{
@@ -16,7 +22,7 @@ const Clock: React.FC = () => {
         fontFamily: 'monospace',
       }}
     >
-      <div>26-03-30</div>
+      <div>{hours}:{minutes}:{seconds}</div>
     </div>
   );
 };

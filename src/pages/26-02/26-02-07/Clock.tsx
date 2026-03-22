@@ -7,7 +7,6 @@ import backgroundImage from '../../../assets/images/26-02/26-02-07/gear.gif';
 const FullscreenClock: React.FC = () => {
   const [showContent, setShowContent] = useState(false);
 
-  // Use Suspense-compatible font loading
   const fontConfigs = useMemo(() => [
     {
       fontFamily: 'GearFont',
@@ -21,12 +20,10 @@ const FullscreenClock: React.FC = () => {
 
   useSuspenseFontLoader(fontConfigs);
 
-  // Show content immediately with Suspense
   useEffect(() => {
     setShowContent(true);
   }, []);
 
-  // Use smooth time updates with requestAnimationFrame
   const time = useSecondClock();
 
   const digits = useMemo(() => {
@@ -78,11 +75,9 @@ const FullscreenClock: React.FC = () => {
           line-height: 1;
           animation: rotate 60s linear infinite;
           will-change: transform;
-          /* Restored your exact original 14vh tech shadows */
-          text-shadow: 14vh 14vh 0px #1111aa, -14vh 14vh 0px #1111aa, 14vh -14vh 0px #1111aa, -14vh -14vh 0px #1111aa; 
+          textShadow: '14vh 14vh 0px #1111aa, -14vh 14vh 0px #1111aa, 14vh -14vh 0px #1111aa, -14vh -14vh 0px #1111aa; 
         }
 
-        /* Laptop: 2 rows of 4 digits */
         @media (min-width: 1024px) {
           .clock-grid { 
             grid-template-columns: repeat(4, 1fr); 

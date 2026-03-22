@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 
-// Assets (unchanged)
 import digit7 from '../../../assets/images/26-02/26-02-22/1.webp';
 import digit4 from '../../../assets/images/26-02/26-02-22/2.webp';
 import digit12 from '../../../assets/images/26-02/26-02-22/3.webp';
@@ -31,40 +30,17 @@ const DIGITS = [
   digit10,
 ];
 
-/**
- * Custom hook for periodic updates using requestAnimationFrame
- */
-const usePeriodicUpdate = (callback: () => void, interval: number = 1000) => {
-  const lastUpdateRef = useRef<number>(0);
-  
-  useEffect(() => {
-    let frameId: number;
-    
-    const animate = (timestamp: number) => {
-      if (timestamp - lastUpdateRef.current >= interval) {
-        lastUpdateRef.current = timestamp;
-        callback();
-      }
-      frameId = requestAnimationFrame(animate);
-    };
-    
-    frameId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frameId);
-  }, [callback, interval]);
-};
-
 const SimpleClock: React.FC = () => {
   const time = useSecondClock();
   const [hueRotation, setHueRotation] = useState(
     Math.floor(Math.random() * 360),
-  ); // Random starting color
+  );
 
-  // High-degree hue rotation using requestAnimationFrame
-  usePeriodicUpdate(() => {
-    setHueRotation((prev) => (prev + 45) % 360); // Increased from 12 to 45 degrees
-  }, 1000);
-
-  // Time update handled by useSecondClock hook
+  useEffect(() => {
+    if (time.getSeconds() % 1 === 0) {
+      setHueRotation((prev) => (prev + 45) % 360);
+    }
+  }, [time]);
 
   // Calculate angles
   const seconds = time.getSeconds();
@@ -87,7 +63,6 @@ const SimpleClock: React.FC = () => {
         overflow: 'hidden',
       }}
     >
-      {/* Background */}
       <div
         style={{
           position: 'absolute',
@@ -97,7 +72,6 @@ const SimpleClock: React.FC = () => {
         }}
       />
 
-      {/* Clock Face Container */}
       <div
         style={{
           width: '90vmin',
@@ -105,7 +79,6 @@ const SimpleClock: React.FC = () => {
           position: 'relative',
         }}
       >
-        {/* DIGITS with individual filters */}
         {DIGITS.map((img, i) => {
           // Unique filter values for each digit
           const filters = [
@@ -146,7 +119,6 @@ const SimpleClock: React.FC = () => {
           );
         })}
 
-        {/* HOUR HAND */}
         <div
           style={{
             position: 'absolute',
@@ -162,7 +134,6 @@ const SimpleClock: React.FC = () => {
           }}
         />
 
-        {/* MINUTE HAND */}
         <div
           style={{
             position: 'absolute',
@@ -178,7 +149,6 @@ const SimpleClock: React.FC = () => {
           }}
         />
 
-        {/* SECOND HAND */}
         <div
           style={{
             position: 'absolute',
@@ -194,7 +164,6 @@ const SimpleClock: React.FC = () => {
           }}
         />
 
-        {/* CENTER DOT */}
         <div
           style={{
             position: 'absolute',

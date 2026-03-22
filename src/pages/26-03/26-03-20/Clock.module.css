@@ -34,12 +34,10 @@
   height: 100%;
   position: relative;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
 }
 
 .hourNumber {
   position: absolute;
-  color: #fff;
   font-family: '270west', sans-serif;
   font-size: clamp(1rem, 4vmin, 2rem);
   font-weight: bold;
@@ -53,6 +51,8 @@
   transform-origin: bottom center;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  opacity: 0.6;
+
 }
 
 .hourHand {
@@ -72,7 +72,7 @@
 .secondHand {
   width: 0.5%;
   height: 42%;
-  background-color: #ff4444;
+  background-color: #ee7777;
   z-index: 4;
 }
 
@@ -83,7 +83,7 @@
   transform: translate(-50%, -50%);
   width: 3%;
   height: 3%;
-  background-color: #ff4444;
+  background-color: #e76060;
   border-radius: 50%;
   z-index: 5;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);

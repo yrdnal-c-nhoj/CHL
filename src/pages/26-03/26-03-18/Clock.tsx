@@ -8,16 +8,12 @@ const Clock: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const time = useMillisecondClock();
   
-  // 1950s Hollywood Color Palette
   const hollywoodGold = '#FFD700';
   const vintageRose = '#FF69B4';
-  const gold = '#0A9CD6';
   const champagne = '#FFFACD';
   const silver = '#C0C0C0';
-  const deepMagenta = '#8B008B';
-  const neonPink = '#F2A280'; // Subverted 50s neon accent
+  const neonPink = '#F2A280';
   
-  // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = useMemo(() => [
     {
       fontFamily: 'walk',
@@ -30,7 +26,6 @@ const Clock: React.FC = () => {
 
   useSuspenseFontLoader(fontConfigs);
   
-  // Responsive sizing for perfect centering on all devices
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const clockSize = isMobile ? 300 : 500;
   const numberSize = isMobile ? '10vh' : '12vh';
@@ -56,8 +51,6 @@ const Clock: React.FC = () => {
     <>
       <style>
         {`
-          /* Font loading handled by useSuspenseFontLoader */
-
           .neon-glow {
             text-shadow: 
               0 0 10px ${hollywoodGold},
@@ -98,7 +91,6 @@ const Clock: React.FC = () => {
         `}
       </style>
       
-      {/* Background Video with Cinema Filter */}
       <video
         ref={videoRef}
         loop muted playsInline preload="auto"
@@ -110,7 +102,6 @@ const Clock: React.FC = () => {
         <source src={walkVideo} type="video/mp4" />
       </video>
 
-      {/* Main Clock Container */}
       <div
         style={{
           position: 'fixed', top: '50%', left: '50%',
@@ -118,15 +109,10 @@ const Clock: React.FC = () => {
           width: `${clockSize}px`, height: `${clockSize}px`,
           zIndex: 2,
           display: 'flex', justifyContent: 'center', alignItems: 'center',
-          // opacity: 0.8,
         }}
       >
-        {/* Decorative Starburst (Googie Style) */}
         <div className="starburst" style={{ top: '50%', left: '50%' }} />
 
-        
-
-        {/* Numbers */}
         {[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num, i) => {
           const angle = i * 30;
           const radius = clockSize * 0.42; 
@@ -154,8 +140,6 @@ const Clock: React.FC = () => {
           );
         })}
 
-        {/* Clock Hands */}
-        {/* Hour */}
         <div className="hollywood-glow" style={{
           position: 'absolute', top: '50%', left: '50%',
           width: `${8 * handScale}px`, height: `${100 * handScale}px`,
@@ -170,7 +154,6 @@ const Clock: React.FC = () => {
           `
         }} />
 
-        {/* Minute */}
         <div className="hollywood-glow" style={{
           position: 'absolute', top: '50%', left: '50%',
           width: `${4 * handScale}px`, height: `${140 * handScale}px`,
@@ -185,7 +168,6 @@ const Clock: React.FC = () => {
           `
         }} />
 
-        {/* Second Hand - Hollywood Spotlight */}
         <div className="hollywood-glow" style={{
           position: 'absolute', top: '50%', left: '50%',
           width: `${2 * handScale}px`, height: `${160 * handScale}px`,
@@ -199,7 +181,6 @@ const Clock: React.FC = () => {
           `,
         }} />
 
-        {/* Center Cap (The "Star") */}
         <div style={{
           position: 'absolute', top: '50%', left: '50%',
           width: `${60 * handScale}px`, height: `${60 * handScale}px`,

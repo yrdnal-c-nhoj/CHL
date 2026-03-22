@@ -2,12 +2,10 @@ import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 
-// Assets
 import trocaderoFont from '../../../assets/fonts/26-02-08-eiffel.ttf?url';
 import analogBgImage from '../../../assets/images/26-02/26-02-08/tower.webp';
 import eifGif from '../../../assets/images/26-02/26-02-08/eif.gif';
 
-// Export assets for ClockPage preloader
 export const background = analogBgImage;
 
 const STYLE_CONFIG = {
@@ -18,7 +16,6 @@ const STYLE_CONFIG = {
 };
 
 const TrocClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = useMemo(() => [{
       fontFamily: 'TrocaderoFont',
       fontUrl: trocaderoFont,
@@ -30,7 +27,6 @@ const TrocClock: React.FC = () => {
   
   useSuspenseFontLoader(fontConfigs);
 
-  // Use smooth time updates with requestAnimationFrame
   const time = useSecondClock();
 
   const s = time.getSeconds();
@@ -58,7 +54,6 @@ const TrocClock: React.FC = () => {
     backgroundImage: `url(${analogBgImage})`,
     backgroundSize: 'con',
     backgroundPosition: 'center',
-    // Apply filters ONLY here
     filter: 'brightness(0.9) saturate(0.9) contrast(0.9)',
     zIndex: 0,
   };
@@ -67,7 +62,7 @@ const TrocClock: React.FC = () => {
     position: 'relative',
     width: '100vmin',
     height: '100vmin',
-    zIndex: 1, // Sits above the filtered background
+    zIndex: 1,
   };
 
   const handBaseStyle = {
@@ -108,7 +103,6 @@ const TrocClock: React.FC = () => {
     height: '42vmin',
     backgroundColor: STYLE_CONFIG.accentColor,
     transform: `translate(-50%, 0) rotate(${(s / 60) * 360}deg)`,
-    // Prevent backward spin on reset (59 -> 0)
     transition:
       s === 0 ? 'none' : 'transform 0.2s cubic-bezier(0.4, 2.3, 0.6, 1)',
     filter: 'drop-shadow(0.4vmin 0.4vmin 0.5vmin rgba(0,0,0,0.4))',
@@ -174,10 +168,8 @@ const TrocClock: React.FC = () => {
 
   return (
     <div style={containerStyle}>
-      {/* Background layer with filter - independent of clock */}
       <div style={backgroundLayerStyle} />
 
-      {/* Second background image layer - eif.gif as tiling image on top */}
       <div
         style={{
           position: 'absolute',
@@ -193,11 +185,10 @@ const TrocClock: React.FC = () => {
           filter:
             'brightness(1.7) hue-rotate(180deg) contrast(1.9) drop-shadow(0.4vmin 0.4vmin 0.5vmin rgba(0,0,0,0.4))',
 
-          zIndex: 1, // Between background (0) and clock face (1)
+          zIndex: 1,
         }}
       />
 
-      {/* Clock Face Layer */}
       <div style={faceContainerStyle}>
         {renderNumerals()}
         <div style={hourHandStyle} />

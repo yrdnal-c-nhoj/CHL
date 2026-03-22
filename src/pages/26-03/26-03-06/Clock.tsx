@@ -1,46 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
 import rocketBg from '../../../assets/images/26-03/26-03-06/rocket.gif';
 import hourHandImg from '../../../assets/images/26-03/26-03-06/hand2.webp';
 import minuteHandImg from '../../../assets/images/26-03/26-03-06/hand1.webp';
 import secondHandImg from '../../../assets/images/26-03/26-03-06/hand3.webp';
 
 const RocketGrid: React.FC = () => {
-  const [rotation, setRotation] = useState<any>({ s: 0, m: 0, h: 0 });
-  const requestRef = useRef();
+  const time = useMillisecondClock();
 
-  const animate: React.FC = () => {
-    const now = new Date();
-    const ms = now.getMilliseconds();
-    const s = now.getSeconds();
-    const m = now.getMinutes();
-    const h = now.getHours();
+  const ms = time.getMilliseconds();
+  const s = time.getSeconds();
+  const m = time.getMinutes();
+  const h = time.getHours();
 
-    const secondsWithMs = s + ms / 1000;
-    const minutesWithSeconds = m + secondsWithMs / 60;
-    const hoursWithMinutes = (h % 12) + minutesWithSeconds / 60;
+  const secondsWithMs = s + ms / 1000;
+  const minutesWithSeconds = m + secondsWithMs / 60;
+  const hoursWithMinutes = (h % 12) + minutesWithSeconds / 60;
 
-    setRotation({
-      s: secondsWithMs * 6,
-      m: minutesWithSeconds * 6,
-      h: hoursWithMinutes * 30,
-    });
-
-    requestRef.current = requestAnimationFrame(animate);
+  const rotation = {
+    s: secondsWithMs * 6,
+    m: minutesWithSeconds * 6,
+    h: hoursWithMinutes * 30,
   };
 
-  useEffect(() => {
-    requestRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(requestRef.current);
-  }, []);
-
-  // Adjusted for large, full-view rockets
-  const rows = 28; // Increased from 22
-  const cols = 20; // Increased from 15
+  const rows = 28;
+  const cols = 20;
 
   return (
     <div style={containerStyle}>
-      {/* --- UNCLIPPED LARGE ROCKET GRID --- */}
       <div style={gridWrapperStyle}>
         {Array.from({ length: rows }).map((_, rowIndex) => (
           <div key={`row-${rowIndex}`} style={rowStyle}>
@@ -63,7 +51,6 @@ const RocketGrid: React.FC = () => {
         ))}
       </div>
 
-      {/* --- ANALOG CLOCK OVERLAY --- */}
       <div style={clockWrapperStyle}>
         <img
           src={hourHandImg}

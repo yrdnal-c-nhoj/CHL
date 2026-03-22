@@ -6,15 +6,12 @@ import atomicFont from '../../../assets/fonts/26-02-28-atomic.ttf';
 
 const TILE_SIZE = 140;
 
-// Interface for dimensions
 interface Dimensions {
   width: number;
   height: number;
 }
 
-// Isolated Clock Component to prevent Grid re-renders
 const DigitalClock: React.FC = () => {
-  // Smooth millisecond animation using requestAnimationFrame
   const time = useMillisecondClock();
 
   const formatTime = (date) => {
@@ -39,7 +36,6 @@ const ImageGrid: React.FC = () => {
   });
   const [showContent, setShowContent] = useState(false);
 
-  // Font loading with Suspense to prevent FOUC
   const fontConfigs = useMemo(() => [
     {
       fontFamily: 'AtomicFont',
@@ -52,8 +48,6 @@ const ImageGrid: React.FC = () => {
   ], []);
   
   useSuspenseFontLoader(fontConfigs);
-
-  // Show content immediately with Suspense
   useEffect(() => {
     setShowContent(true);
   }, []);
@@ -68,12 +62,11 @@ const ImageGrid: React.FC = () => {
 
   const tileCoords = useMemo(() => {
     const coords = [];
-    const cols = Math.ceil(dimensions.width / TILE_SIZE) + 1; // Add extra column
-    const rows = Math.ceil(dimensions.height / TILE_SIZE) + 1; // Add extra row
+    const cols = Math.ceil(dimensions.width / TILE_SIZE) + 1;
+    const rows = Math.ceil(dimensions.height / TILE_SIZE) + 1;
 
-    // Calculate center offset to start tiling from middle
-    const centerX = (dimensions.width % TILE_SIZE) / 2 - TILE_SIZE / 2; // Offset to ensure center coverage
-    const centerY = (dimensions.height % TILE_SIZE) / 2 - TILE_SIZE / 2; // Offset to ensure center coverage
+    const centerX = (dimensions.width % TILE_SIZE) / 2 - TILE_SIZE / 2;
+    const centerY = (dimensions.height % TILE_SIZE) / 2 - TILE_SIZE / 2;
 
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
@@ -89,7 +82,6 @@ const ImageGrid: React.FC = () => {
 
   return (
     <div style={styles.container}>
-      {/* Background Grid */}
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
         {tileCoords.map((tile) => (
           <img
@@ -138,10 +130,8 @@ const styles = {
     fontFamily: "'AtomicFont', monospace",
     fontSize: '14vw',
     textShadow: ' 1px 1px 0px #181616',
-    // background: 'radial-gradient(circle, #C3BCBC 0%, #ECCDCD 100%)',
     letterSpacing: '0.02em',
 
-    // Centering Logic
     display: 'flex',
     alignItems: 'center', // Vertical centering
     justifyContent: 'center', // Horizontal centering

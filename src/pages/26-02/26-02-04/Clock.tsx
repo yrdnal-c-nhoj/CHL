@@ -4,7 +4,6 @@ import { useSecondClock } from '../../../utils/useSmoothClock';
 import type { FontConfig } from '../../../types/clock';
 import styles from './Clock.module.css';
 
-// Assets
 import digitalFontUrl from '../../../assets/fonts/26-02-04-trans.ttf?url';
 import digitalBgImage from '../../../assets/images/26-02/26-02-04/trans.webp';
 import backgroundImage from '../../../assets/images/26-02/26-02-04/tran.jpg';
@@ -13,7 +12,6 @@ const CONFIG = {
   use24Hour: false,
 };
 
-// Interface for time formatting result
 interface TimeFormat {
   hh: string;
   mm: string;
@@ -22,7 +20,6 @@ interface TimeFormat {
 const DigitalClockTemplate: React.FC = () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
-  // Define font configurations for the Suspense-based loader
   const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'BorrowedDigital',
@@ -34,14 +31,10 @@ const DigitalClockTemplate: React.FC = () => {
     }
   ], []);
 
-  // This hook handles loading and suspends the component until fonts are ready.
-  // The parent <ClockPage> provides the <Suspense> fallback UI.
   useSuspenseFontLoader(fontConfigs);
 
-  // Use smooth time updates with requestAnimationFrame
   const time = useSecondClock();
 
-  // Time formatting - move before conditional return
   const { hh, mm }: TimeFormat = useMemo(() => {
     const hours24 = time.getHours();
     const hours = CONFIG.use24Hour ? hours24 : hours24 % 12 || 12;
