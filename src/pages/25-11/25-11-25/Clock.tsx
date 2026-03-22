@@ -1,9 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 
-import fontClockUrl_20251126 from '../../../assets/fonts/25-11-25-ntp.ttf?url';
-import marqueeFontUrl from '../../../assets/fonts/25-11-25-n2.ttf?url';
 import backgroundImg from '../../../assets/images/25-11/25-11-25/npt.webp';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
 
 // Export assets for preloading
@@ -84,12 +81,12 @@ const generateDigitColors = (numDigits) => {
 export const fontConfigs: FontConfig[] = [
   {
     fontFamily: 'ClockFont',
-    fontUrl: fontClockUrl_20251126,
+    fontUrl: 'https://fonts.gstatic.com/s/monoton/v25/1iTVw6I6v_QMRTox_I6wUJ3Y5ZK9.woff2',
     options: { display: 'swap' },
   },
   {
     fontFamily: 'MarqueeFont',
-    fontUrl: marqueeFontUrl,
+    fontUrl: 'https://fonts.gstatic.com/s/pressstart2p/v15/e3t4euO8T-267oIAQAu6jDQyK3nVivM.woff2',
     options: { display: 'swap' },
   },
 ];
@@ -98,7 +95,8 @@ export const fontConfigs: FontConfig[] = [
 export default function NtpClock() {
   const { offset, isSynced } = useNtpOffset();
 
-  useSuspenseFontLoader(fontConfigs);
+  // Temporarily disable font loader for production compatibility
+  // useSuspenseFontLoader(fontConfigs);
 
   const [ntpSeconds, setNtpSeconds] = useState<number>(0);
   const [digitColors, setDigitColors] = useState<any>([]);
@@ -107,7 +105,13 @@ export default function NtpClock() {
   const [displayTime, setDisplayTime] = useState(
     new Date().toLocaleString([], { timeZoneName: 'short' }),
   );
+  const [isPortrait, setIsPortrait] = useState(false);
   const marqueeRef = useRef(null);
+
+  // Handle window object access for SSR
+  useEffect(() => {
+    setIsPortrait(window.innerHeight > window.innerWidth);
+  }, []);
 
   // --- **Core Change 1 & 2: Update Time & Colors Every Second** ---
   useEffect(() => {
@@ -153,7 +157,6 @@ export default function NtpClock() {
   }, []); // Only runs once on mount
 
   // --- Styles and Rendering (Keep as is / Independent) ---
-  const isPortrait = window.innerHeight > window.innerWidth;
 
   const wrapperStyle = useMemo(
     () => ({
@@ -175,7 +178,7 @@ export default function NtpClock() {
       overflow: 'hidden',
       position: 'relative',
     }),
-    [],
+    [isPortrait],
   );
 
   const baseClockStyle = {
