@@ -1,28 +1,129 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
+import shapesFont from '../../../assets/fonts/26-03-21-shapes.ttf?url';
+import shapesBg from '../../../assets/images/26-03/26-03-21/shapes.webp';
 
 const Clock: React.FC = () => {
   const time = useSecondClock();
-  
-  const hours = time.getHours().toString().padStart(2, '0');
-  const minutes = time.getMinutes().toString().padStart(2, '0');
-  const seconds = time.getSeconds().toString().padStart(2, '0');
-  
+
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    {
+      fontFamily: 'ShapesFont',
+      fontUrl: shapesFont,
+      options: { weight: 'normal', style: 'normal' }
+    }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
+
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const digits = (pad(time.getHours()) + pad(time.getMinutes()) + pad(time.getSeconds())).split('');
+
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#000',
-        color: '#fff',
-        fontSize: '4rem',
-        fontFamily: 'monospace',
-      }}
-    >
-      <div>{hours}:{minutes}:{seconds}</div>
+    <div className="clock-wrapper">
+      <div className="yellow-overlay"></div>
+      <style>{`
+        :root, body {
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+        }
+
+        .clock-wrapper {
+          width: 100vw;
+          height: 100dvh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+       }
+
+       .clock-wrapper::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-image: url(${shapesBg});
+          background-size: 25% auto;
+          background-position: 0 0;
+          background-repeat: repeat;
+          filter: grayscale(100%);
+          z-index: -2;
+       }
+
+       .clock-wrapper::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-image: url(${shapesBg});
+          background-size: 25% auto;
+          background-position: 12.5% 0;
+          background-repeat: repeat;
+          filter: grayscale(100%) brightness(1.0) opacity(0.5);
+          z-index: -2;
+       }
+
+       .clock-wrapper .yellow-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(255, 255, 0, 0.3);
+          z-index: -1;
+          pointer-events: none;
+       }
+
+        .clock-container {
+          display: grid;
+          /* Mobile: 2 columns, 3 rows (Total 6 digits) */
+          grid-template-columns: repeat(2, 1fr);
+          grid-template-rows: repeat(3, 1fr);
+          width: 100vw;
+          height: 100dvh;
+        }
+
+        .digit {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #07984D;
+          font-family: 'ShapesFont', sans-serif;
+          
+          /* Scaled to prevent clipping in a 3-row layout */
+          font-size: 48vh; 
+          // line-height: 1;
+          user-select: none;
+          overflow: hidden;
+        }
+
+        /* Desktop View: Return to 6 digits in a single row */
+        @media (min-width: 768px) {
+          .clock-container {
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: 1fr;
+          }
+          .digit {
+            font-size: 24vw;
+            height: 100dvh;
+          }
+        }
+      `}</style>
+
+      <div className="clock-container">
+        {digits.map((digit, index) => (
+          <div key={index} className="digit">
+            {digit}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
