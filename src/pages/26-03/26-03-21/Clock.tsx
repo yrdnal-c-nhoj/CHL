@@ -7,7 +7,7 @@ import shapesBg from '../../../assets/images/26-03/26-03-21/shapes.webp';
 
 const Clock: React.FC = () => {
   const time = useSecondClock();
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
   const fontConfigs = useMemo<FontConfig[]>(() => [
     {
@@ -17,15 +17,11 @@ const Clock: React.FC = () => {
     }
   ], []);
 
+  useSuspenseFontLoader(fontConfigs);
+
   useEffect(() => {
-    try {
-      useSuspenseFontLoader(fontConfigs);
-      setFontLoaded(true);
-    } catch (error) {
-      console.warn('Font loading failed, using fallback:', error);
-      setFontLoaded(true); // Continue with fallback font
-    }
-  }, [fontConfigs]);
+    setFontLoaded(true);
+  }, []);
 
   const pad = (n: number) => String(n).padStart(2, '0');
   const digits = (pad(time.getHours()) + pad(time.getMinutes()) + pad(time.getSeconds())).split('');
