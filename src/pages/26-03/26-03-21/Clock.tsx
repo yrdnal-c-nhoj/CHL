@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
@@ -7,6 +7,7 @@ import shapesBg from '../../../assets/images/26-03/26-03-21/shapes.webp';
 
 const Clock: React.FC = () => {
   const time = useSecondClock();
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   const fontConfigs = useMemo<FontConfig[]>(() => [
     {
@@ -16,10 +17,36 @@ const Clock: React.FC = () => {
     }
   ], []);
 
-  useSuspenseFontLoader(fontConfigs);
+  useEffect(() => {
+    try {
+      useSuspenseFontLoader(fontConfigs);
+      setFontLoaded(true);
+    } catch (error) {
+      console.warn('Font loading failed, using fallback:', error);
+      setFontLoaded(true); // Continue with fallback font
+    }
+  }, [fontConfigs]);
 
   const pad = (n: number) => String(n).padStart(2, '0');
   const digits = (pad(time.getHours()) + pad(time.getMinutes()) + pad(time.getSeconds())).split('');
+
+  if (!fontLoaded) {
+    return (
+      <div style={{
+        width: '100vw',
+        height: '100dvh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#000',
+        color: '#07984D',
+        fontSize: '2rem',
+        fontFamily: 'monospace'
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="clock-wrapper">
@@ -99,7 +126,7 @@ const Clock: React.FC = () => {
           align-items: center;
           justify-content: center;
           color: #07984D;
-          font-family: 'ShapesFont', sans-serif;
+          font-family: ${fontLoaded ? "'ShapesFont', " : ''}monospace;
           
           /* Scaled to prevent clipping in a 3-row layout */
           font-size: 48vh; 
