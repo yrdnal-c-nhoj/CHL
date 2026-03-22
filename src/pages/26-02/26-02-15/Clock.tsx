@@ -29,13 +29,20 @@ export default function PixelInverseClock() {
     const loadAssets = async () => {
       try {
         await new Promise((resolve, reject) => {
+          if (!imageRef.current) {
+            reject(new Error('Image ref is null'));
+            return;
+          }
           imageRef.current.src = backgroundImage;
           imageRef.current.crossOrigin = 'anonymous';
           imageRef.current.onload = () => {
+            if (!imageRef.current) return;
             imageRef.current.style.display = 'none';
             document.body.appendChild(imageRef.current);
             setTimeout(() => {
-              document.body.removeChild(imageRef.current);
+              if (imageRef.current && document.body.contains(imageRef.current)) {
+                document.body.removeChild(imageRef.current);
+              }
               resolve();
             }, 100);
           };
