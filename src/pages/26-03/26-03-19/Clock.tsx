@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
 import snowFont from '../../../assets/fonts/26-03-19-snow.otf?url';
@@ -12,10 +13,22 @@ interface Flake {
   opacity: number;
 }
 
-const Clock: React.FC = () => {
+interface ClockState {
+  flakes: Flake[];
+  snowHeight: number;
+  width: number;
+  height: number;
+  lastTime: number;
+  phase: 'snowing' | 'holding' | 'fading';
+  canvasOpacity: number;
+  holdStartTime: number;
+  spawnTimer: number;
+}
+
+const Clock = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const currentTime = useSecondClock();
   
-  // Standardized font loading
   const fontConfigs = useMemo<FontConfig[]>(() => [
     { 
       fontFamily: 'SnowFont', 
@@ -26,27 +39,27 @@ const Clock: React.FC = () => {
   
   useSuspenseFontLoader(fontConfigs);
 
-  const [time, setTime] = useState(new Date());
-  
-  const stateRef = useRef({
-    flakes: [] as Flake[],
+  const stateRef = useRef<ClockState>({
+    flakes: [],
     snowHeight: 0,
     width: 0,
     height: 0,
     lastTime: 0,
-    phase: 'snowing' as 'snowing' | 'holding' | 'fading',
+    phase: 'snowing',
     canvasOpacity: 1,
     holdStartTime: 0,
-    spawnTimer: 0 // Moved into ref to persist across frames
+    spawnTimer: 0
   });
 
-  // Time update loop
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const createFlake = useCallback((): Flake => ({
+    x: Math.random() * stateRef.current.width,
+    y: -20,
+    size: Math.random() * 3 + 2,
+    speed: Math.random() * 1 + 0.5,
+    drift: Math.random() * 0.5 - 0.25,
+    opacity: Math.random() * 0.5 + 0.3,
+  }), []);
 
-  // Canvas Animation Loop
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -63,18 +76,8 @@ const Clock: React.FC = () => {
       canvas.height = window.innerHeight;
     };
 
-    // Initialize dimensions
     handleResize();
     window.addEventListener('resize', handleResize);
-
-    const createFlake = (): Flake => ({
-      x: Math.random() * state.width,
-      y: -20,
-      size: Math.random() * 3 + 2,
-      speed: Math.random() * 1 + 0.5,
-      drift: Math.random() * 0.5 - 0.25,
-      opacity: Math.random() * 0.5 + 0.3,
-    });
 
     let animationId: number;
 
@@ -84,13 +87,10 @@ const Clock: React.FC = () => {
       state.lastTime = timestamp;
 
       ctx.clearRect(0, 0, state.width, state.height);
-      
-      // Apply global opacity for the "fading" phase
       ctx.globalAlpha = state.canvasOpacity;
 
       if (state.phase === 'snowing') {
         state.spawnTimer += deltaTime;
-        // Cap spawn timer to prevent massive dump on tab switch/lag
         if (state.spawnTimer > 200) state.spawnTimer = 200;
 
         if (state.spawnTimer > 60) { 
@@ -133,7 +133,6 @@ const Clock: React.FC = () => {
         }
       }
 
-      // DRAW THE ACCUMULATED SNOW
       if (state.snowHeight > 0) {
         ctx.fillStyle = '#E4EDFC';
         ctx.fillRect(0, state.height - state.snowHeight, state.width, state.snowHeight);
@@ -148,10 +147,10 @@ const Clock: React.FC = () => {
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationId);
     };
-  }, []);
+  }, [createFlake]);
 
-  const hours = time.getHours();
-  const minutes = time.getMinutes();
+  const hours = currentTime.getHours();
+  const minutes = currentTime.getMinutes();
   const ampm = hours >= 12 ? 'PM' : 'AM';
   const displayHours = hours % 12 || 12;
   const displayMinutes = minutes.toString().padStart(2, '0');
@@ -163,7 +162,6 @@ const Clock: React.FC = () => {
       background: 'radial-gradient(ellipse at top, #5a6b8a 0%, #2E416C 20%, #1B2943 40%, #142542 70%, #0F2044 100%)', 
       overflow: 'hidden' 
     }}>
-      {/* CLOCK: Increased z-index to 3 so it stays ABOVE the snow */}
       <div 
         style={{
           position: 'absolute',
@@ -181,7 +179,6 @@ const Clock: React.FC = () => {
         {displayHours}:{displayMinutes} <span style={{ fontSize: '0.8em', opacity: 0.9 }}>{ampm}</span>
       </div>
 
-      {/* GRADIENT OVERLAY: Yellow to blue gradient with 0.4 opacity */}
       <div 
         style={{
           position: 'absolute',
@@ -203,7 +200,7 @@ const Clock: React.FC = () => {
           left: 0,
           width: '100%', 
           height: '100%',
-          zIndex: 2 // Snow falls behind the clock but covers the gradient
+          zIndex: 2
         }} 
       />
     </div>

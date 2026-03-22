@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import bgImage from '../../../assets/images/26-03/26-03-16/metrop.webp'; // keep your background if desired, or replace with solid color
+import React from 'react';
+import bgImage from '../../../assets/images/26-03/26-03-16/metrop.webp';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 const Clock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const time = useSecondClock();
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
@@ -17,7 +13,6 @@ const Clock: React.FC = () => {
   const minuteAngle = minutes * 6 + seconds * 0.1;
   const hourAngle = hours * 30 + minutes * 0.5;
 
-  // Responsive sizing based on viewport with better mobile handling
   const getClockSize = () => {
     if (typeof window === 'undefined') return 380;
     
@@ -27,17 +22,16 @@ const Clock: React.FC = () => {
     const isSmallScreen = vw <= 768;
     
     if (isMobile) {
-      return Math.min(vw * 0.8, vh * 0.8, 280); // Use 80% of viewport, max 280px on mobile
+      return Math.min(vw * 0.8, vh * 0.8, 280);
     } else if (isSmallScreen) {
-      return Math.min(vw * 0.7, vh * 0.7, 350); // Use 70% on small screens
+      return Math.min(vw * 0.7, vh * 0.7, 350);
     } else {
-      return Math.min(vw * 0.8, vh * 0.8, 420); // Use 80% on desktop, max 420px
+      return Math.min(vw * 0.8, vh * 0.8, 420);
     }
   };
 
   const clockSize = getClockSize();
 
-  // Better mobile-specific adjustments for Chrome mobile
   const mobileAdjustments = {
     padding: typeof window !== 'undefined' && window.innerWidth <= 480 ? '10px' : '0px',
     transform: typeof window !== 'undefined' && window.innerWidth <= 480 ? 'scale(0.85)' : 'scale(1)',
@@ -51,17 +45,16 @@ const Clock: React.FC = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#000', // stark industrial black
-        backgroundImage: `url(${bgImage})`, // optional — consider removing or using a very dark/gray industrial photo
+        backgroundColor: '#000',
+        backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        fontFamily: 'Helvetica, Arial, sans-serif', // clean sans-serif fallback
+        fontFamily: 'Helvetica, Arial, sans-serif',
         padding: mobileAdjustments.padding,
         boxSizing: 'border-box',
         overflow: 'hidden',
       }}
     >
-      {/* Main clock face — responsive size with mobile adjustments */}
       <div
         style={{
           width: `${clockSize}px`,
@@ -71,7 +64,6 @@ const Clock: React.FC = () => {
           transform: mobileAdjustments.transform,
         }}
       >
-        {/* Minimal hour markers — simple white bars, longer at cardinals */}
         {[...Array(12)].map((_, i) => {
           const isCardinal = i % 3 === 0;
           const markerWidth = isCardinal ? clockSize * 0.011 : clockSize * 0.005;
@@ -85,7 +77,7 @@ const Clock: React.FC = () => {
                 position: 'absolute',
                 width: `${markerWidth}px`,
                 height: `${markerHeight}px`,
-                backgroundColor: '#eee', // off-white for high contrast
+                backgroundColor: '#eee',
                 top: `${markerTop}px`,
                 left: '50%',
                 transform: `translateX(-50%) rotate(${i * 30}deg)`,
@@ -95,9 +87,7 @@ const Clock: React.FC = () => {
           );
         })}
 
-        {/* Minute tick marks — small lines between hour markers */}
         {[...Array(60)].map((_, i) => {
-          // Skip positions where hour markers already exist
           if (i % 5 === 0) return null;
 
           const tickWidth = clockSize * 0.003;
@@ -111,7 +101,7 @@ const Clock: React.FC = () => {
                 position: 'absolute',
                 width: `${tickWidth}px`,
                 height: `${tickHeight}px`,
-                backgroundColor: '#aaa', // lighter gray for minute marks
+                backgroundColor: '#aaa',
                 top: `${tickTop}px`,
                 left: '50%',
                 transform: `translateX(-50%) rotate(${i * 6}deg)`,
@@ -121,8 +111,6 @@ const Clock: React.FC = () => {
           );
         })}
 
-        {/* Hands — pure geometry, no gradients, no clip-path tricks */}
-        {/* Hour hand — short, broad, rectangular with slight taper */}
         <div
           style={{
             position: 'absolute',
@@ -136,7 +124,6 @@ const Clock: React.FC = () => {
             borderRadius: `${clockSize * 0.021}px ${clockSize * 0.021}px ${clockSize * 0.005}px ${clockSize * 0.005}px`,
           }}
         />
-        {/* Minute hand — longer, thinner */}
         <div
           style={{
             position: 'absolute',
@@ -150,21 +137,19 @@ const Clock: React.FC = () => {
             borderRadius: `${clockSize * 0.013}px ${clockSize * 0.013}px ${clockSize * 0.003}px ${clockSize * 0.003}px`,
           }}
         />
-        {/* Second hand — very thin, red accent (common in functionalist designs for visibility) */}
         <div
           style={{
             position: 'absolute',
             width: `${clockSize * 0.008}px`,
             height: `${clockSize * 0.421}px`,
-            backgroundColor: '#DA4008', // Bauhaus often used primary red accents
+            backgroundColor: '#DA4008',
             left: '50%',
             bottom: '50%',
             transformOrigin: '50% 100%',
             transform: `translateX(-50%) rotate(${secondAngle}deg)`,
-            transition: 'transform 0.05s linear', // smooth but mechanical feel
+            transition: 'transform 0.05s linear',
           }}
         >
-          {/* Tiny counterbalance circle — functional, not decorative */}
           <div
             style={{
               position: 'absolute',
@@ -178,14 +163,12 @@ const Clock: React.FC = () => {
           />
         </div>
 
-        {/* Center pivot — simple chrome-like industrial bolt */}
         <div
           style={{
             position: 'absolute',
             width: '2px',
             height: '2px',
             backgroundColor: '#222',
-            // border: '2px solid #555', // steel/chrome look
             borderRadius: '50%',
             left: '50%',
             top: '50%',

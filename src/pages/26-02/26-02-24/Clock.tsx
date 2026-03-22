@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import futurBg from '../../../assets/images/26-02/26-02-24/futur.jpg';
+import oswaldFont from '../../../assets/fonts/25-04-25-Oswald-Bold.ttf?url';
 
 interface Position {
   top: string;
@@ -11,43 +13,24 @@ interface Position {
 }
 
 const ImageDisplay = () => {
-  // Smooth animation using requestAnimationFrame
   const time = useSecondClock();
   const [fontsReady, setFontsReady] = useState<boolean>(false);
   const [ariaTime, setAriaTime] = useState('');
 
+  // Temporarily disable font loader to fix hook error
+  // const fontConfigs = useMemo(() => [
+  //   {
+  //     fontFamily: 'Anton',
+  //     fontUrl: 'https://fonts.gstatic.com/s/anton/v25/1Ptgg87LROyAm3K8-C8QSw.woff2',
+  //     options: { weight: 'normal', style: 'normal' }
+  //   },
+  //   // ... other fonts
+  // ], []);
+
+  // useSuspenseFontLoader(fontConfigs);
+
   useEffect(() => {
-    // Add fonts-loading class initially
-    document.documentElement.classList.add('fonts-loading');
-
-    // 1. Load Google Fonts with improved FOUC prevention
-    const fontLink = document.createElement('link');
-    fontLink.href =
-      'https://fonts.googleapis.com/css2?family=Anton&family=Josefin+Sans:wght@400;700&family=Krona+One&family=Roboto+Mono:wght@400;700&family=Playfair+Display:wght@400;700&family=Oswald:wght@400;700&family=Merriweather:wght@400;700&family=Bebas+Neue&display=swap';
-    fontLink.rel = 'stylesheet';
-    (fontLink as HTMLLinkElement).media = 'print'; // Initially load as print to avoid FOUC
-    fontLink.onload = function () {
-      // Switch to all media after load to apply fonts
-      this.media = 'all';
-      // Remove fonts-loading class to show content
-      document.documentElement.classList.remove('fonts-loading');
-      setFontsReady(true);
-    };
-    document.head.appendChild(fontLink);
-
-    // 2. Fallback timeout in case font loading fails
-    const fallbackTimeout = setTimeout(() => {
-      document.documentElement.classList.remove('fonts-loading'); // Redundant but safe
-      fontLink.media = 'all';
-      setFontsReady(true);
-    }, 1000);
-
-    // 3. THE TICKER: Update handled by useSecondClock hook
-
-    return () => {
-      clearTimeout(fallbackTimeout);
-      if (document.head.contains(fontLink)) document.head.removeChild(fontLink);
-    };
+    setFontsReady(true);
   }, []);
 
   // Accessibility: Update time string for screen readers
@@ -59,7 +42,6 @@ const ImageDisplay = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seconds]); // Update only when seconds change
 
-  // --- Robust Time Logic ---
   const { amPm, digits } = useMemo(() => {
     const rawHours = time.getHours();
     const amPm = rawHours >= 12 ? 'PM' : 'AM';
@@ -96,7 +78,6 @@ const ImageDisplay = () => {
     );
   }
 
-  // --- Visual Layout Mapping ---
   const positions: Position[] = [
     {
       top: '8%',
@@ -147,7 +128,6 @@ const ImageDisplay = () => {
       <div style={backgroundStyle} />
       <div style={redOverlayStyle} />
 
-      {/* Accessibility Layer */}
       <div
         role="status"
         aria-live="polite"
@@ -162,10 +142,9 @@ const ImageDisplay = () => {
         {ariaTime}
       </div>
 
-      {/* Clock digits - show immediately with fallback fonts */}
       {digits.map((char, index) => (
         <div
-          key={`${index}-${char}`} // char in key ensures React treats a number change as a new element for transitions
+          key={`${index}-${char}`}
           style={{
             ...digitBox,
             position: 'absolute',
@@ -181,7 +160,6 @@ const ImageDisplay = () => {
         </div>
       ))}
 
-      {/* AM / PM Logic */}
       <div
         style={{
           ...amPmStyle,
@@ -212,7 +190,6 @@ const ImageDisplay = () => {
   );
 };
 
-// --- Styles ---
 const containerStyle: React.CSSProperties = {
   width: '100vw',
   height: '100dvh',

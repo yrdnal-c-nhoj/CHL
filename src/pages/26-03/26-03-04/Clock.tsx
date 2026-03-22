@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import sunFont from '../../../assets/fonts/26-03-04-sun.ttf';
 import sunBg from '../../../assets/images/26-03/26-03-04/sun.webp';
 
 const Clock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
       fontFamily: 'SunFont',
@@ -17,18 +17,15 @@ const Clock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const [time, setTime] = useState(new Date());
-  const [isMobile, setIsMobile] = useState<any>(
+  const time = useSecondClock();
+  const [isMobile, setIsMobile] = useState(
     typeof window !== 'undefined' && window.innerWidth < 768,
   );
   const [fontLoaded, setFontLoaded] = useState<boolean>(fontsLoaded);
 
-  // Update fontLoaded state when fontsLoaded changes
   useEffect(() => {
     setFontLoaded(fontsLoaded);
   }, [fontsLoaded]);
-
-  // Font loading handled by useMultipleFontLoader
 
   const digitLetters = {
     0: 'c',
@@ -44,28 +41,21 @@ const Clock: React.FC = () => {
   };
 
   useEffect(() => {
-    // Timer Interval
-    const timer = setInterval(() => setTime(new Date()), 1000);
-
-    // Resize Listener
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
 
-    // Global Styles Cleanup
     document.body.style.margin = '0';
     document.body.style.padding = '0';
     document.body.style.overflow = 'hidden';
     document.body.style.backgroundColor = '#0C0B00';
 
     return () => {
-      clearInterval(timer);
       window.removeEventListener('resize', handleResize);
     };
   }, []);
 
   const digits = time.toTimeString().split(' ')[0].replace(/:/g, '').split('');
 
-  // Layout Constants
   const boxWidth = isMobile ? '48vw' : '16vw';
   const boxHeight = isMobile ? '25vh' : '40vh';
 

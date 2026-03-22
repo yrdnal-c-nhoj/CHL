@@ -1,13 +1,12 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
-// Vite-optimized font loading with better error handling
 const fontImports = import.meta.glob(
   '../../../assets/fonts/26-03-10/*.{ttf,otf}',
   { eager: true, query: '?url' }
 );
 
-// Generate standard font configs from dynamic imports
 export const fontConfigs = Object.keys(fontImports).map((path) => {
   const fontName = path.split('/').pop()?.split('.')[0] || 'fallback';
   const fontUrl = (fontImports[path] as any).default;
@@ -19,7 +18,6 @@ export const fontConfigs = Object.keys(fontImports).map((path) => {
 
 const fontNames = fontConfigs.map(c => c.fontFamily);
 
-// Interface for type safety
 interface KittyImages {
   current: string;
   next: string;
@@ -28,13 +26,12 @@ interface KittyImages {
 const KittyClockComponent: React.FC = () => {
   const [images, setImages] = useState<KittyImages>({ current: '', next: '' });
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
-  const [time, setTime] = useState<Date>(new Date());
+  const time = useSecondClock();
   const [currentFont, setCurrentFont] = useState<string>(fontNames[0] || 'monospace');
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useSuspenseFontLoader(fontConfigs);
 
-  // Memoized time formatting
   const formatTime = useCallback((date: Date): string => {
     const hours = date.getHours() % 12 || 12;
     const minutes = date.getMinutes();
@@ -44,14 +41,13 @@ const KittyClockComponent: React.FC = () => {
       .join(' ');
   }, []);
 
-  // Optimized kitty fetching with better error handling
   const getNewKitty = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await fetch(
         'https://api.thecatapi.com/v1/images/search',
         { 
-          signal: AbortSignal.timeout(5000) // Vite supports AbortSignal.timeout
+          signal: AbortSignal.timeout(5000)
         }
       );
       
@@ -64,7 +60,6 @@ const KittyClockComponent: React.FC = () => {
       if (data && data[0]?.url) {
         const nextUrl = data[0].url;
 
-        // Preload image for smooth transition
         const img = new Image();
         img.src = nextUrl;
         img.onload = () => {
@@ -89,35 +84,31 @@ const KittyClockComponent: React.FC = () => {
     }
   }, []);
 
-  // Optimized useEffect with proper dependencies
   useEffect(() => {
     getNewKitty();
     
-    let frameId: number;
     let lastFontUpdate = 0;
 
     const tick = (now: number) => {
-      setTime(new Date());
-      
-      // Update font every second
       if (now - lastFontUpdate > 1000 && fontNames.length > 0) {
         const randomFont = fontNames[Math.floor(Math.random() * fontNames.length)];
         setCurrentFont(randomFont);
         lastFontUpdate = now;
       }
-      frameId = requestAnimationFrame(tick);
     };
-    frameId = requestAnimationFrame(tick);
+
+    const interval = setInterval(() => {
+      tick(Date.now());
+    }, 100);
     
     const imageInterval = setInterval(getNewKitty, 5000);
 
     return () => {
-      cancelAnimationFrame(frameId);
+      clearInterval(interval);
       clearInterval(imageInterval);
     };
   }, [getNewKitty]);
 
-  // Memoized styles for performance
   const containerStyle = useMemo<React.CSSProperties>(() => ({
     position: 'relative',
     width: '100vw',
@@ -154,7 +145,6 @@ const KittyClockComponent: React.FC = () => {
 
   return (
     <div style={containerStyle}>
-      {/* Loading indicator */}
       {isLoading && (
         <div style={{
           position: 'absolute',

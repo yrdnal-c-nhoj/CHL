@@ -3,14 +3,11 @@ import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useMillisecondClock } from '../../../utils/useSmoothClock';
 import styles from './Clock.module.css';
 
-// --- Assets ---
 import dripFont from '../../../assets/fonts/26-01-31-cond.ttf?url';
 import analogBgImage from '../../../assets/images/26-02/26-02-01/rain.webp';
 
-// Export assets for ClockPage preloader
 export const background = analogBgImage;
 
-// --- Configuration ---
 const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 40,
   COLORS: {
@@ -23,10 +20,8 @@ const CLOCK_CONFIG = {
 };
 
 const AnalogClock: React.FC = () => {
-  // Smooth millisecond animation using requestAnimationFrame
   const now = useMillisecondClock();
   
-  // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = useMemo(() => [{
       fontFamily: 'BorrowedAnalog',
       fontUrl: dripFont,
@@ -38,17 +33,14 @@ const AnalogClock: React.FC = () => {
   
   useSuspenseFontLoader(fontConfigs);
 
-  // Time Calculations (including sub-second fractions for smooth motion)
   const msec = now.getMilliseconds();
   const sec = now.getSeconds() + msec / 1000;
   const min = now.getMinutes() + sec / 60;
   const hr = (now.getHours() % 12) + min / 60;
 
-  // Memoized Numerals
   const renderedNumerals = useMemo(() => {
     const numbersToShow = [12, 3, 6, 9];
     return numbersToShow.map((num) => {
-      // Calculate position using Polar to Cartesian conversion
       const angle = (num / 12) * 2 * Math.PI;
       const x = 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angle);
       const y = 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angle);

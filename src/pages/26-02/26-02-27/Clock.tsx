@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import abuVideo from '../../../assets/images/26-02/26-02-27/abu.mp4';
 
 const Clock: React.FC = () => {
-  // Smooth animation using requestAnimationFrame
   const time = useSecondClock();
 
-  // Time update handled by useSecondClock hook
 
   const seconds = time.getSeconds();
   const minutes = time.getMinutes();
   const hours = time.getHours() % 12;
 
-  // Hieratic Numerals (Unicode 108E1 - 108EA)
   const hieraticNumbers = {
     1: '𐣡',
     2: '𐣢',
@@ -95,7 +92,6 @@ const Clock: React.FC = () => {
         <source src={abuVideo} type="video/mp4" />
       </video>
 
-      {/* Main Clock Container: Maximized to 92% of the viewport to prevent clipping */}
       <div
         style={{
           position: 'relative',
@@ -107,7 +103,6 @@ const Clock: React.FC = () => {
           justifyContent: 'center',
         }}
       >
-        {/* --- NUMERALS --- */}
         {[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num, i) => {
           const rotation = i * 30;
           return (
@@ -136,9 +131,7 @@ const Clock: React.FC = () => {
           );
         })}
 
-        {/* --- CLOCK HANDS (Reverted to 0.2 opacity) --- */}
 
-        {/* Hour Hand */}
         <div
           style={{
             ...handStyle('28%', '16px', '#E2C264', hourAngle, 'hour'),
@@ -159,7 +152,6 @@ const Clock: React.FC = () => {
           />
         </div>
 
-        {/* Minute Hand */}
         <div
           style={{
             ...handStyle('42%', '10px', '#E2C264', minuteAngle, 'minute'),
@@ -167,7 +159,6 @@ const Clock: React.FC = () => {
           }}
         />
 
-        {/* Second Hand */}
         <div
           style={{
             ...handStyle('48%', '3px', '#E2C264', secondAngle, 'second'),
@@ -175,7 +166,6 @@ const Clock: React.FC = () => {
           }}
         />
 
-        {/* Center Pin */}
         <div
           style={{
             position: 'absolute',

@@ -7,11 +7,9 @@ import loopBg from '../../../assets/images/26-02/26-02-23/swirl.gif';
 import triBg from '../../../assets/images/26-02/26-02-23/tri.webp';
 
 const DigitalClock: React.FC = () => {
-  // Smooth animation using requestAnimationFrame
   const time = useSecondClock();
   const [showContent, setShowContent] = useState(false);
 
-  // Font loading with Suspense to prevent FOUC
   const fontConfigs = useMemo(() => [
     {
       fontFamily: 'NeptuneFont',
@@ -25,12 +23,9 @@ const DigitalClock: React.FC = () => {
   
   useSuspenseFontLoader(fontConfigs);
 
-  // Show content immediately with Suspense
   useEffect(() => {
     setShowContent(true);
   }, []);
-
-  // Time update handled by useSecondClock hook
 
   const formatTime = (date) => {
     const hours = date.getHours().toString().padStart(2, '0');
@@ -89,21 +84,19 @@ const DigitalClock: React.FC = () => {
         position: 'relative',
       }}
     >
-      {/* 1. Tiled Background Layer (tri.webp) */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           backgroundImage: `url(${triBg})`,
           backgroundRepeat: 'repeat',
-          backgroundSize: '300px auto', // Adjust size of the triangles here
+          backgroundSize: '300px auto',
 
           zIndex: 0,
           animation: 'tileScroll 20s linear infinite',
         }}
       />
 
-      {/* 2. Swirl Layer (loop.gif) */}
       <div
         style={{
           position: 'absolute',
@@ -117,7 +110,6 @@ const DigitalClock: React.FC = () => {
         }}
       />
 
-      {/* 3. Main Image Overlay (nep.webp) */}
       <div
         style={{
           position: 'absolute',
@@ -127,18 +119,16 @@ const DigitalClock: React.FC = () => {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           zIndex: 2,
-          // opacity: 0.6,
         }}
       />
 
-      {/* 4. Clock Content */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           position: 'relative',
           opacity: 0.8,
-          zIndex: 10, // Ensure clock is on top of all images
+          zIndex: 10,
         }}
       >
         <DigitBox digit={hours[0]} />

@@ -3,7 +3,6 @@ import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useMillisecondClock } from '../../../utils/useSmoothClock';
 import ci2602Font from '../../../assets/fonts/pin.ttf?url';
 
-// Constants moved outside to prevent re-allocation
 const OVAL = {
   RADIUS_X: 800,
   RADIUS_Z: 600,
@@ -11,7 +10,6 @@ const OVAL = {
   SPEED: 0.05,
 };
 
-// Standardized font loading with font-display: swap to avoid FOUC
 export const fontConfigs = [
   {
     fontFamily: 'Cine',
@@ -23,10 +21,8 @@ export const fontConfigs = [
 const OutwardDistortedClock: React.FC = () => {
   const time = useMillisecondClock();
   
-  // Use Suspense-compatible font loading
   useSuspenseFontLoader(fontConfigs);
 
-  // Memoize the digit array to avoid splitting strings every 16ms - move before conditional return
   const { digits, phase } = useMemo(() => {
     const h = (time.getHours() % 12 || 12).toString().padStart(2, '0');
     const m = time.getMinutes().toString().padStart(2, '0');
@@ -68,7 +64,6 @@ interface DigitProps {
   phase: number;
 }
 
-// 4. Sub-component to offload logic from the main loop
 const Digit: React.FC<DigitProps> = ({ char, index, total, phase }) => {
   const angle = (index / total) * 2 * Math.PI - phase;
   const x = Math.sin(angle) * OVAL.RADIUS_X;
@@ -76,9 +71,8 @@ const Digit: React.FC<DigitProps> = ({ char, index, total, phase }) => {
   const rotationY = (angle * 180) / Math.PI;
   const isBack = Math.cos(angle) < 0;
 
-  // Scale based on Z position (further = bigger)
   const distance = Math.abs(z - OVAL.OFFSET_Z);
-  const scaleFactor = 1 + (distance / OVAL.RADIUS_Z) * 0.5; // Grow up to 1.5x size
+  const scaleFactor = 1 + (distance / OVAL.RADIUS_Z) * 0.5;
   const fontSize = `${29 * scaleFactor}vh`;
 
   const style: React.CSSProperties = {
@@ -96,7 +90,6 @@ const Digit: React.FC<DigitProps> = ({ char, index, total, phase }) => {
   return <div style={style}>{char}</div>;
 };
 
-// --- Static Styles ---
 const containerStyle: React.CSSProperties = {
   width: '100vw',
   height: '100vh',

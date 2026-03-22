@@ -4,24 +4,16 @@ import cocteauVideo from '../../../assets/images/26-02/26-02-25/cocteau.mp4';
 import starWebp from '../../../assets/images/26-02/26-02-25/star.webp';
 
 const CocteauClock: React.FC = () => {
-  // Smooth animation using requestAnimationFrame
   const time = useSecondClock();
   const videoRef = useRef(null);
 
   useEffect(() => {
-    // 2. Mobile Autoplay Force
-    // React's 'muted' prop can fail on mount; setting it via ref
-    // guarantees the browser sees it as muted before play() is called.
     if (videoRef.current) {
       videoRef.current.muted = true;
       videoRef.current.play().catch((err) => {
         console.warn('Autoplay blocked by browser/battery saver:', err);
       });
     }
-
-    return () => {
-      // Timer handled by useSecondClock hook
-    };
   }, []);
 
   const seconds = time.getSeconds();
@@ -59,7 +51,6 @@ const CocteauClock: React.FC = () => {
         backgroundColor: '#000', // Prevents white flash while video loads
       }}
     >
-      {/* Background Video */}
       <video
         ref={videoRef}
         style={{
@@ -81,7 +72,6 @@ const CocteauClock: React.FC = () => {
         <source src={cocteauVideo} type="video/mp4" />
       </video>
 
-      {/* SVG Filters */}
       <svg style={{ position: 'absolute', width: 0, height: 0 }}>
         <filter id="cocteau-line">
           <feTurbulence
@@ -94,7 +84,6 @@ const CocteauClock: React.FC = () => {
         </filter>
       </svg>
 
-      {/* Clock Face */}
       <div
         style={{
           position: 'relative',
@@ -106,7 +95,6 @@ const CocteauClock: React.FC = () => {
           opacity: 0.7,
         }}
       >
-        {/* The Cocteau Star (12 o'clock) */}
         <div
           style={{
             position: 'absolute',
@@ -122,7 +110,6 @@ const CocteauClock: React.FC = () => {
           }}
         />
 
-        {/* Hands */}
         <div style={handStyle('42%', '7px', '#E2C264', minuteAngle)} />
         <div style={handStyle('26%', '8px', '#8BC7D0', hourAngle)} />
         <div

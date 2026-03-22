@@ -1,33 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 const fontVersion = '2026-03-11';
 const FONT_NAME = `XanhMono_${fontVersion}`;
 
 const BorrowedTimeClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useSecondClock();
   const [imageUrl, setImageUrl] = useState(`https://picsum.photos/800/600?sig=${Date.now()}`);
   const [imgOpacity, setImgOpacity] = useState<number>(1);
   const [isPendingNewImage, setIsPendingNewImage] = useState(false);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      const now = new Date();
-      setTime(now);
+    const now = time;
+    setImgOpacity(0);
+    setIsPendingNewImage(true);
 
-      // 1. Start Fade out
-      setImgOpacity(0);
-      setIsPendingNewImage(true);
+    setTimeout(() => {
+      setImageUrl(`https://picsum.photos/800/600?sig=${now.getTime()}`);
+    }, 300);
+  }, [time.getSeconds()]);
 
-      // 2. Briefly wait for fade-out to complete before swapping URL
-      setTimeout(() => {
-        setImageUrl(`https://picsum.photos/800/600?sig=${now.getTime()}`);
-      }, 300); 
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  // 3. This triggers ONLY when the new image file has actually arrived
   const handleImageLoad = () => {
     if (isPendingNewImage) {
       setImgOpacity(1);
@@ -58,7 +50,6 @@ const BorrowedTimeClock: React.FC = () => {
     gap: '2vmin',
   };
 
-  // Static frame: This never changes opacity
   const frameStyle: React.CSSProperties = {
     width: 'min(75vmin, 75%)',
     height: 'min(56.25vmin, 37.5vh)',

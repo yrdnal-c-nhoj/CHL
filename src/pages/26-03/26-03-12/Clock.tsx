@@ -1,25 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import cocteauVideo from '../../../assets/images/26-03/26-03-12/vr.mp4';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 const VirtualClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useSecondClock();
   const videoRef = useRef(null);
 
   useEffect(() => {
-    // 1. Precise Clock Timer
-    const timer = setInterval(() => setTime(new Date()), 1000);
-
-    // 2. Mobile Autoplay Force
-    // React's 'muted' prop can fail on mount; setting it via ref
-    // guarantees the browser sees it as muted before play() is called.
     if (videoRef.current) {
       videoRef.current.muted = true;
       videoRef.current.play().catch((err) => {
         console.warn('Autoplay blocked by browser/battery saver:', err);
       });
     }
-
-    return () => clearInterval(timer);
   }, []);
 
   const seconds = time.getSeconds();
@@ -69,7 +62,6 @@ const VirtualClock: React.FC = () => {
         }
       `}</style>
 
-      {/* Background Video */}
       <video
         ref={videoRef}
         style={{
@@ -92,7 +84,6 @@ const VirtualClock: React.FC = () => {
         <source src={cocteauVideo} type="video/mp4" />
       </video>
 
-      {/* 1970s Style Analog Clock - Lower Left Corner */}
       <div
         style={{
           position: 'absolute',
@@ -104,7 +95,6 @@ const VirtualClock: React.FC = () => {
           pointerEvents: 'none',
         }}
       >
-        {/* Clock face with 1970s colors - more transparent */}
         <div
           style={{
             position: 'absolute',
@@ -120,7 +110,6 @@ const VirtualClock: React.FC = () => {
           }}
         />
 
-        {/* Hour hand - simple white - more transparent */}
         <div
           style={{
             position: 'absolute',
@@ -136,7 +125,6 @@ const VirtualClock: React.FC = () => {
           }}
         />
 
-        {/* Minute hand - simple white - more transparent */}
         <div
           style={{
             position: 'absolute',
@@ -152,7 +140,6 @@ const VirtualClock: React.FC = () => {
           }}
         />
 
-        {/* Second hand - simple green - more transparent */}
         <div
           style={{
             position: 'absolute',
@@ -168,7 +155,6 @@ const VirtualClock: React.FC = () => {
           }}
         />
 
-        {/* Center dot - yellow - more transparent */}
         <div
           style={{
             position: 'absolute',
@@ -184,7 +170,6 @@ const VirtualClock: React.FC = () => {
           }}
         />
 
-        {/* Simple 1970s animation */}
         <style>{`
           @keyframes tick {
             0%, 100% { transform: translate(-50%, -100%) rotate(${secondAngle}deg); }
