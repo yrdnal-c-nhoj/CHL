@@ -1,11 +1,8 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 
 import bellImage2 from '../../../assets/images/26-02/26-02-11/bell.webp';
 import bellImage1 from '../../../assets/images/26-02/26-02-11/bell.gif';
-// Using remote URL as local file is missing causing build error
-const gildaDisplayFont = 'https://fonts.gstatic.com/s/gildadisplay/v19/t5tmIRoZIxDk6ghztBTA9yvM0g0.woff2';
 
 const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 40,
@@ -136,16 +133,6 @@ const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
 const CenterDot = () => <div style={styles.centerDot} />;
 
 const AnalogClock: React.FC = () => {
-  const [showContent, setShowContent] = useState(false);
-
-  const fontConfigs = useMemo(() => [], []);
-
-  useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-    setShowContent(true);
-  }, []);
-
   const currentTime = useSecondClock();
   const { hr, min, sec } = calculateTimeValues(currentTime);
 
@@ -173,11 +160,6 @@ const AnalogClock: React.FC = () => {
           <ClockHand type="second" rotation={getHandRotation(sec, 6)} />
           <CenterDot />
         </div>
-        <ClockNumerals />
-        <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />
-        <ClockHand type="minute" rotation={getHandRotation(min, 6)} />
-        <ClockHand type="second" rotation={getHandRotation(sec, 6)} />
-        <CenterDot />
       </div>
     </div>
   );
