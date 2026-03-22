@@ -3,13 +3,7 @@ import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useMillisecondClock } from '../../../utils/useSmoothClock';
 import type { FontConfig } from '../../../types/clock';
 
-export const fontConfigs: FontConfig[] = [
-  {
-    fontFamily: 'Silkscreen',
-    fontUrl: 'https://fonts.googleapis.com/css2?family=Silkscreen&display=swap',
-    options: { display: 'swap' }
-  }
-];
+export const fontConfigs: FontConfig[] = [];
 
 const Clock: React.FC = () => {
   const time = useMillisecondClock();
@@ -73,7 +67,7 @@ const Clock: React.FC = () => {
 
   const digitalDigitStyles = {
     fontSize: 'clamp(4rem, 20vw, 15rem)',
-    fontFamily: "'Silkscreen', monospace",
+    fontFamily: "'Press Start 2P', monospace",
     // fontWeight: 'bold',
     lineHeight: 1,
     display: 'flex',
@@ -112,6 +106,9 @@ const Clock: React.FC = () => {
 
   return (
     <div style={containerStyles}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+      `}</style>
       <div style={clockWrapperStyles}>
         <TimeUnit digits={timeDigits.hours} label="hours" />
         <TimeUnit digits={timeDigits.minutes} label="minutes" />

@@ -16,50 +16,9 @@ const ImageDisplay = () => {
   const [fontsReady, setFontsReady] = useState<boolean>(false);
   const [ariaTime, setAriaTime] = useState('');
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'Dancing Script',
-      fontUrl: 'https://fonts.gstatic.com/s/dancingscript/v25/If2cRXTr6YS-zF4S-kcSWSVi_sxjsohD9F50Ruu7BMSo3ROp8.woff2',
-      options: { weight: '700', style: 'normal' }
-    },
-    {
-      fontFamily: 'Creepster',
-      fontUrl: 'https://fonts.gstatic.com/s/creepster/v14/AlZg_z_9fyRLpcVx-4LK_vM3P7k.woff2',
-      options: { weight: 'normal', style: 'normal' }
-    },
-    {
-      fontFamily: 'Bungee Shade',
-      fontUrl: 'https://fonts.gstatic.com/s/bungeeshade/v14/DtVkJx26TCKQr5zXwkKsYl8ERlqBKE1N9Q.woff2',
-      options: { weight: 'normal', style: 'normal' }
-    },
-    {
-      fontFamily: 'Oswald',
-      fontUrl: 'https://fonts.gstatic.com/s/oswald/v53/TK3_WkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlbHYjedg.woff2',
-      options: { weight: 'normal', style: 'normal' }
-    },
-    {
-      fontFamily: 'Cinzel Decorative',
-      fontUrl: 'https://fonts.gstatic.com/s/cinzeldecorative/v16/daaCSScvJGqLYhL8tTN8svvPq2_2p.woff2',
-      options: { weight: '700', style: 'normal' }
-    },
-    {
-      fontFamily: 'Metal Mania',
-      fontUrl: 'https://fonts.gstatic.com/s/metalmania/v15/lJwX-pCE4I2l5hGxpY9QFQ.woff2',
-      options: { weight: 'normal', style: 'normal' }
-    },
-    {
-      fontFamily: 'UnifrakturMaguntia',
-      fontUrl: 'https://fonts.gstatic.com/s/unifrakturmaguntia/v20/WWXRlj2p6Ko3SJbE1Ot-9388.woff2',
-      options: { weight: 'normal', style: 'normal' }
-    },
-    {
-      fontFamily: 'ZCOOL KuaiLe',
-      fontUrl: 'https://fonts.gstatic.com/s/zcoolkuaile/v15/EJmT-p2e18s5Bii_zbqj.woff2',
-      options: { weight: 'normal', style: 'normal' }
-    }
-  ], []);
+  const fontConfigs = useMemo(() => [], []);
 
-  // useSuspenseFontLoader(fontConfigs);
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     setFontsReady(true);
@@ -157,6 +116,9 @@ const ImageDisplay = () => {
 
   return (
     <div style={containerStyle}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Creepster&family=Bungee+Shade&family=Oswald&family=Cinzel+Decorative:wght@700&family=Metal+Mania&family=UnifrakturMaguntia&family=ZCOOL+KuaiLe&family=Press+Start+2P&family=Space+Mono&display=swap');
+      `}</style>
       <div style={backgroundStyle} />
       <div style={redOverlayStyle} />
 
@@ -227,7 +189,7 @@ const ImageDisplay = () => {
           gap: '0.1em',
         }}
       >
-        {amPm[1].split('').map((letter, index) => (
+        {amPm.split('').map((letter, index) => (
           <span
             key={index}
             style={{
@@ -240,10 +202,6 @@ const ImageDisplay = () => {
           </span>
         ))}
       </div>
-      
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Creepster&family=Bungee+Shade&family=Oswald&family=Cinzel+Decorative:wght@700&family=Metal+Mania&family=UnifrakturMaguntia&family=ZCOOL+KuaiLe&family=Press+Start+2P&family=Space+Mono&display=swap');
-      `}</style>
     </div>
   );
 };
