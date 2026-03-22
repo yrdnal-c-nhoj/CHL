@@ -95,10 +95,10 @@ const Clock: React.FC = () => {
 
         <div
           style={{
-            fontSize: 'clamp(3rem,9vw,8rem)',
+            fontSize: 'clamp(3rem,13vw,10rem)',
             marginTop: '1rem',
             letterSpacing: '.25em',
-            fontWeight: 900,
+            lineHeight: 1.5,
             background: 'linear-gradient(90deg,#ff1493,#00ffff,#DCFF14)',
             backgroundSize: '200%',
             WebkitBackgroundClip: 'text',
