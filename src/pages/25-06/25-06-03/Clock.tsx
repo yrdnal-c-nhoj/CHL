@@ -16,6 +16,7 @@ export const fontConfigs = [
 
 const FiligreeClock: React.FC = () => {
   const [digits, setDigits] = useState(Array(16).fill('0'));
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   useSuspenseFontLoader(fontConfigs);
 

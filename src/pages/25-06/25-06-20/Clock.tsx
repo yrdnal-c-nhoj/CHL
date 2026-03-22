@@ -1,35 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 
-import font1Path from '../../../assets/fonts/25-06-20-inde2.woff2';
-import font2Path from '../../../assets/fonts/25-06-20-inde1.woff2';
+// Using CSS @import instead of corrupted local fonts
 
-// Export font configs for preloading
-export const fontConfigs = [
-  {
-    fontFamily: 'ClockFont1',
-    fontUrl: font1Path,
-    options: {
-      weight: 'normal',
-      style: 'normal',
-    },
-  },
-  {
-    fontFamily: 'ClockFont2',
-    fontUrl: font2Path,
-    options: {
-      weight: 'normal',
-      style: 'normal',
-    },
-  },
-];
+// Export empty font configs to disable font loader
+export const fontConfigs = [];
 
 const IndecisiveClock: React.FC = () => {
   const [time, setTime] = useState({ h: '', m: '', s: '' });
   const [showFirst, setShowFirst] = useState<boolean>(true);
 
-  // Suspense-friendly font loading with centralized style injection
-  useSuspenseFontLoader(fontConfigs);
+  // Font loading disabled - using CSS @import instead
+  // useSuspenseFontLoader(fontConfigs);
+
+  // Convert numbers to Roman numerals
+  const toRoman = (num: string) => {
+    const romanNumerals: { [key: string]: string } = {
+      '0': '0', '1': 'I', '2': 'II', '3': 'III', '4': 'IV', '5': 'V',
+      '6': 'VI', '7': 'VII', '8': 'VIII', '9': 'IX', '10': 'X', '11': 'XI', '12': 'XII'
+    };
+    return romanNumerals[num] || num;
+  };
 
   // Update time every second
   useEffect(() => {
@@ -45,10 +35,10 @@ const IndecisiveClock: React.FC = () => {
 
     frameId = requestAnimationFrame(tick);
 
-    // Toggle font every 2 seconds for equal visibility
+    // Toggle font every 1 second for better visibility
     const fontInterval = setInterval(() => {
       setShowFirst((prev) => !prev);
-    }, 2000);
+    }, 1000);
 
     return () => {
       cancelAnimationFrame(frameId);
@@ -106,8 +96,11 @@ const IndecisiveClock: React.FC = () => {
   return (
     <div style={bodyStyle}>
       <style>{`
-        @media (max-width: 768px) {
-          .time-block {
+        @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Metal+Mania:wght@400&display=swap');
+      `}</style>
+      <style jsx>{`
+        .time-block {
             flex-direction: column !important;
             gap: 0.5rem !important;
           }
@@ -129,27 +122,27 @@ const IndecisiveClock: React.FC = () => {
               className="digit"
               style={{
                 ...digitStyle,
-                fontFamily: "'ClockFont1', sans-serif",
+                fontFamily: "'Kalam', sans-serif",
                 color: 'white',
               }}
             >
-              {time.h}
+              {showFirst ? toRoman(time.m) : time.m}
             </span>
             <span
               className="digit"
               style={{
                 ...digitStyle,
-                fontFamily: "'ClockFont1', sans-serif",
+                fontFamily: "'Kalam', sans-serif",
                 color: 'white',
               }}
             >
-              {time.m}
+              {showFirst ? toRoman(time.s) : time.s}
             </span>
             <span
               className="digit"
               style={{
                 ...digitStyle,
-                fontFamily: "'ClockFont1', sans-serif",
+                fontFamily: "'Kalam', sans-serif",
                 color: 'white',
               }}
             >
@@ -168,7 +161,7 @@ const IndecisiveClock: React.FC = () => {
               className="digit"
               style={{
                 ...digitStyle,
-                fontFamily: "'ClockFont2', sans-serif",
+                fontFamily: "'Metal Mania', sans-serif",
                 color: 'black',
               }}
             >
@@ -178,7 +171,7 @@ const IndecisiveClock: React.FC = () => {
               className="digit"
               style={{
                 ...digitStyle,
-                fontFamily: "'ClockFont2', sans-serif",
+                fontFamily: "'Metal Mania', sans-serif",
                 color: 'black',
               }}
             >
@@ -188,7 +181,7 @@ const IndecisiveClock: React.FC = () => {
               className="digit"
               style={{
                 ...digitStyle,
-                fontFamily: "'ClockFont2', sans-serif",
+                fontFamily: "'Metal Mania', sans-serif",
                 color: 'black',
               }}
             >

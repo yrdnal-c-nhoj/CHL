@@ -1,22 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import gearsGif from '../../../assets/images/25-05/25-05-29/gears-13950_128.gif';
-import watchWoff2 from '../../../assets/fonts/25-05-29-watch.woff2';
-import watchTtf from '../../../assets/fonts/25-05-29-watch.ttf';
+import { Color } from 'three';
 
 const Clock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'watch',
-      fontUrl: watchWoff2, // Using WOFF2 as primary for consistency
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  // Using CSS @import instead of corrupted local font
+  const fontConfigs = [];
+  const fontsLoaded = true; // Bypass font loader since using CSS @import
 
   const [loaded, setLoaded] = useState<boolean>(false);
   const [hoursDigits, setHoursDigits] = useState<any>([]);
@@ -67,7 +56,7 @@ const Clock: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  if (!loaded) return null;
+  // Clock always visible - removed loading condition
 
   const backgroundStyle = {
     position: 'fixed',
@@ -75,6 +64,7 @@ const Clock: React.FC = () => {
     height: '100%',
     top: 0,
     left: 0,
+    backgroundColor: '#0066cc', // Blue background
     backgroundImage: `url(${gearsGif})`,
     backgroundRepeat: 'repeat',
     backgroundPosition: 'center',
@@ -85,26 +75,38 @@ const Clock: React.FC = () => {
     <div
       style={{
         height: vh,
-        width: '100vw',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
-        overflow: 'hidden',
-        backgroundColor: '#c9dbef',
         margin: 0,
         padding: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
+      {/* Background Layers */}
+      <div
+        style={{
+          ...backgroundStyle,
+          backgroundSize: '22vw 18vw',
+          opacity: 0.3,
+          zIndex: 5,
+        }}
+      />
+      <div
+        style={{
+          ...backgroundStyle,
+          backgroundSize: '21vw 17vw',
+          opacity: 0.35,
+          zIndex: 4,
+        }}
+      />
+      
+      {/* Font definition in the middle of component */}
       <style>{`
-        @font-face {
-          font-family: 'watch';
-          src: url(${watchWoff2}) format('woff2'), url(${watchTtf}) format('truetype');
-          font-display: swap;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+      `}</style>
+      <style>{`
         .clock {
-          font-family: 'watch', sans-serif !important;
+          font-family: 'Orbitron', sans-serif !important;
           color: rgb(29, 2, 84);
           text-shadow: rgb(238, 87, 5) 1px 1px 0px, white -1px 0px 0px;
           display: flex;
@@ -127,24 +129,6 @@ const Clock: React.FC = () => {
           .divider { width: 50vw; }
         }
       `}</style>
-
-      {/* Background Layers */}
-      <div
-        style={{
-          ...backgroundStyle,
-          backgroundSize: '22vw 18vw',
-          opacity: 0.3,
-          zIndex: 5,
-        }}
-      />
-      <div
-        style={{
-          ...backgroundStyle,
-          backgroundSize: '21vw 17vw',
-          opacity: 0.35,
-          zIndex: 4,
-        }}
-      />
       <div
         style={{
           ...backgroundStyle,

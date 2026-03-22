@@ -1,219 +1,76 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import circleFont from '../../../assets/fonts/25-05-28-circle.ttf'; // Use working ttf file
+import circleFont from '../../../assets/fonts/25-05-28-circle.ttf';
 
 const Clock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'circle-local',
-      fontUrl: circleFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ];
+  const fontConfigs = [{ fontFamily: 'circle-local', fontUrl: circleFont }];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-
-  // Update fontLoaded state when fontsLoaded changes
-  useEffect(() => {
-    setFontLoaded(fontsLoaded);
-  }, [fontsLoaded]);
-
-  // Font loading handled by useMultipleFontLoader
+  
+  // Ref to hold the container to update CSS variables directly
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!fontsLoaded) return;
 
-    let animationFrameId;
+    let animationFrameId: number;
 
-    const updateClocks: React.FC = () => {
+    const updateAngles = () => {
       const now = new Date();
-      const milliseconds = now.getMilliseconds();
-      const seconds = now.getSeconds() + milliseconds / 1000;
-      const minutes = now.getMinutes() + seconds / 60;
-      const hours = (now.getHours() % 12) + minutes / 60;
+      const ms = now.getMilliseconds();
+      const s = now.getSeconds() + ms / 1000;
+      const m = now.getMinutes() + s / 60;
+      const h = (now.getHours() % 12) + m / 60;
 
-      const hourAngle = hours * 30;
-      const minuteAngle = minutes * 6;
-      const secondAngle = seconds * 6;
-
-      for (let i = 1; i <= 4; i++) {
-        const h = document.getElementById(`hour${i}`);
-        const m = document.getElementById(`minute${i}`);
-        const s = document.getElementById(`second${i}`);
-
-        if (h) h.setAttribute('transform', `rotate(${hourAngle} 50 50)`);
-        if (m) m.setAttribute('transform', `rotate(${minuteAngle} 50 50)`);
-        if (s) s.setAttribute('transform', `rotate(${secondAngle} 50 50)`);
+      if (containerRef.current) {
+        // Set CSS variables on the parent container
+        // This avoids querying the DOM for 12 different hand elements
+        containerRef.current.style.setProperty('--hour-angle', `${h * 30}deg`);
+        containerRef.current.style.setProperty('--min-angle', `${m * 6}deg`);
+        containerRef.current.style.setProperty('--sec-angle', `${s * 6}deg`);
       }
 
-      animationFrameId = requestAnimationFrame(updateClocks);
+      animationFrameId = requestAnimationFrame(updateAngles);
     };
 
-    updateClocks();
-    setFontLoaded(true);
-
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
+    updateAngles();
+    return () => cancelAnimationFrame(animationFrameId);
   }, [fontsLoaded]);
 
-  // Don't render until font is ready (loaded or fallback)
-  if (!fontLoaded) {
-    return null; // or a loading placeholder if desired
-  }
+  if (!fontsLoaded) return null;
 
   const clockSize = '82vh';
 
-  const clockStyle = {
-    fontFamily: 'circle-local, sans-serif',
-    position: 'absolute',
-    width: clockSize,
-    height: clockSize,
-    maxWidth: `calc(${clockSize} * 1)`,
-    maxHeight: `calc(${clockSize} * 1)`,
-  };
+  // Helper for reused hand styles
+  const getHandStyle = (angleVar: string, color: string, width: string, length: number) => ({
+    stroke: color,
+    strokeWidth: width,
+    strokeLinecap: 'round' as const,
+    transform: `rotate(var(${angleVar}))`,
+    transformOrigin: '50px 50px',
+    transition: 'none', // Critical: do not animate the transition, let RAF handle it
+    willChange: 'transform', // Promotes to its own layer
+  });
 
-  const clockPositions = [
-    {
-      id: 'clock1',
-      style: {
-        ...clockStyle,
-        top: '-76vh',
-        left: '-76vh',
-        transform: `translate(calc(${clockSize} / 2), calc(${clockSize} / 2))`,
-      },
-    },
-    {
-      id: 'clock2',
-      style: {
-        ...clockStyle,
-        top: '-76vh',
-        right: '-76vh',
-        transform: `translate(calc(${clockSize} / -2), calc(${clockSize} / 2))`,
-      },
-    },
-    {
-      id: 'clock3',
-      style: {
-        ...clockStyle,
-        bottom: '-76vh',
-        left: '-76vh',
-        transform: `translate(calc(${clockSize} / 2), calc(${clockSize} / -2))`,
-      },
-    },
-    {
-      id: 'clock4',
-      style: {
-        ...clockStyle,
-        bottom: '-76vh',
-        right: '-76vh',
-        transform: `translate(calc(${clockSize} / -2), calc(${clockSize} / -2))`,
-      },
-    },
-  ];
-
-  const svgStyle = {
-    overflow: 'visible',
-    width: '100%',
-    height: '100%',
-  };
-
-  const clockFaceStyle = {
-    stroke: '#9de2ac',
-    strokeWidth: `calc(${clockSize} * 0.0005)`,
-    fill: 'transparent',
-  };
-
-  const handStyles = {
-    hour: {
-      stroke: '#f9d63a',
-      strokeWidth: `calc(${clockSize} * 0.015)`,
-      strokeLinecap: 'round',
-    },
-    minute: {
-      stroke: '#1147ea',
-      strokeWidth: `calc(${clockSize} * 0.01)`,
-      strokeLinecap: 'round',
-    },
-    second: {
-      stroke: '#f00',
-      strokeWidth: `calc(${clockSize} * 0.002)`,
-      strokeLinecap: 'round',
-    },
-  };
-
-  const tickStyle = {
-    stroke: '#9de2ac',
-    strokeWidth: `calc(${clockSize} * 0.0005)`,
-  };
-
-  const numberStyle = {
-    fontSize: `calc(${clockSize} * 0.02)`,
-    fill: '#9de2ac',
-    textAnchor: 'middle',
-    dominantBaseline: 'middle',
-    fontFamily: 'circle-local, sans-serif',
-  };
-
-  const renderClock = (id, index) => (
-    <div key={id} id={id} style={clockPositions[index].style}>
-      <svg viewBox="0 0 100 100" style={svgStyle}>
-        <circle
-          className="clock-face"
-          cx="50"
-          cy="50"
-          r="45"
-          style={clockFaceStyle}
-        />
+  const renderClock = (id: string, positionStyle: React.CSSProperties) => (
+    <div key={id} style={{ ...positionStyle, position: 'absolute', width: clockSize, height: clockSize }}>
+      <svg viewBox="0 0 100 100" style={{ overflow: 'visible', width: '100%', height: '100%' }}>
+        <circle cx="50" cy="50" r="45" style={{ stroke: '#9de2ac', strokeWidth: '0.05', fill: 'transparent' }} />
+        
+        {/* Ticks and Numbers */}
         {[...Array(12)].map((_, i) => (
           <g key={i} transform={`rotate(${i * 30} 50 50)`}>
-            <line
-              className="tick"
-              x1="50"
-              y1="5"
-              x2="50"
-              y2="10"
-              style={tickStyle}
-            />
-            <text className="number" x="50" y="15" style={numberStyle}>
+            <line x1="50" y1="5" x2="50" y2="10" style={{ stroke: '#9de2ac', strokeWidth: '0.1' }} />
+            <text x="50" y="15" style={{ fontSize: '2px', fill: '#9de2ac', textAnchor: 'middle', dominantBaseline: 'middle', transform: `rotate(-${i * 30} 50 15)` }}>
               {i === 0 ? 12 : i}
             </text>
           </g>
         ))}
-        <line
-          className="hour-hand"
-          x1="50"
-          y1="50"
-          x2="50"
-          y2="22"
-          id={`hour${index + 1}`}
-          style={handStyles.hour}
-        />
-        <line
-          className="minute-hand"
-          x1="50"
-          y1="50"
-          x2="50"
-          y2="9"
-          id={`minute${index + 1}`}
-          style={handStyles.minute}
-        />
-        <line
-          className="second-hand"
-          x1="50"
-          y1="50"
-          x2="50"
-          y2="-500"
-          id={`second${index + 1}`}
-          style={handStyles.second}
-        />
+
+        {/* Hands using CSS Variables */}
+        <line x1="50" y1="50" x2="50" y2="22" style={getHandStyle('--hour-angle', '#f9d63a', '1.5', 28)} />
+        <line x1="50" y1="50" x2="50" y2="9" style={getHandStyle('--min-angle', '#1147ea', '1', 41)} />
+        <line x1="50" y1="50" x2="50" y2="5" style={getHandStyle('--sec-angle', '#f00', '0.2', 45)} />
+        
         <circle cx="50" cy="50" r="2" fill="#333" />
       </svg>
     </div>
@@ -221,6 +78,7 @@ const Clock: React.FC = () => {
 
   return (
     <div
+      ref={containerRef}
       style={{
         margin: 0,
         overflow: 'hidden',
@@ -231,7 +89,13 @@ const Clock: React.FC = () => {
         fontFamily: 'circle-local, sans-serif',
       }}
     >
-      {clockPositions.map((clock, index) => renderClock(clock.id, index))}
+      {/* Clock positioning logic simplified */}
+      {[
+        { top: '-41vh', left: '-41vh' },
+        { top: '-41vh', right: '-41vh' },
+        { bottom: '-41vh', left: '-41vh' },
+        { bottom: '-41vh', right: '-41vh' },
+      ].map((pos, i) => renderClock(`clock-${i}`, pos))}
     </div>
   );
 };
