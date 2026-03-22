@@ -55,7 +55,7 @@ const Clock = () => {
     x: Math.random() * stateRef.current.width,
     y: -20,
     size: Math.random() * 3 + 2,
-    speed: Math.random() * 1 + 0.5,
+    speed: Math.random() * 2 + 1.5,
     drift: Math.random() * 0.5 - 0.25,
     opacity: Math.random() * 0.5 + 0.3,
   }), []);
