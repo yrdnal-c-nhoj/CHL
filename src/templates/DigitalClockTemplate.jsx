@@ -3,12 +3,11 @@ import { useSuspenseFontLoader } from '../utils/fontLoader';
 
 // Template uses existing project assets so it looks consistent with other clocks.
 // Swap these imports for different fonts / images when making a new clock.
-// For Google Fonts Orbitron, we use the Google Fonts URL directly
-import digitalBgImage from '../../../assets/images/25-08-15/tabl.webp';
+import digitalBgImage from '../assets/images/25-11/25-11-18/eyes.webp';
+import fontUrl from '../assets/fonts/25-11-18-cat.ttf?url';
 
-// Google Fonts Orbitron - loaded via CSS import in index.html or direct URL
-// To use Orbitron, ensure the font is loaded via index.html or use a custom font file
-const FONT_FAMILY = 'Orbitron, system-ui, sans-serif';
+// Define the font family name to be used in styles
+const FONT_FAMILY = 'ClockFont_Sample_Cat';
 
 /**
  * DigitalClockTemplate
@@ -34,15 +33,11 @@ const CONFIG = {
 const DigitalClockTemplate = () => {
   const [time, setTime] = useState(new Date());
   
-  // Since Orbitron is loaded globally for this template, we don't need to load it here.
-  // For custom fonts, use the useSuspenseFontLoader hook like this:
-  /*
-  const fontConfigs = useMemo(() => [{
-    fontFamily: 'MyCustomFont',
-    fontUrl: myFontUrl
+  // Load the sample custom font
+  const fontConfigs = useMemo(() => [
+    { fontFamily: FONT_FAMILY, fontUrl }
   }], []);
   useSuspenseFontLoader(fontConfigs);
-  */
 
   // Time ticker using requestAnimationFrame for smooth updates (if showing seconds)
   useEffect(() => {
