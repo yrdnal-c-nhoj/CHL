@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import futurBg from '../../../assets/images/26-02/26-02-24/futur.jpg';
-import oswaldFont from '../../../assets/fonts/25-04-25-Oswald-Bold.ttf?url';
 
 interface Position {
   top: string;
@@ -17,15 +16,48 @@ const ImageDisplay = () => {
   const [fontsReady, setFontsReady] = useState<boolean>(false);
   const [ariaTime, setAriaTime] = useState('');
 
-  // Temporarily disable font loader to fix hook error
-  // const fontConfigs = useMemo(() => [
-  //   {
-  //     fontFamily: 'Anton',
-  //     fontUrl: 'https://fonts.gstatic.com/s/anton/v25/1Ptgg87LROyAm3K8-C8QSw.woff2',
-  //     options: { weight: 'normal', style: 'normal' }
-  //   },
-  //   // ... other fonts
-  // ], []);
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: 'Dancing Script',
+      fontUrl: 'https://fonts.gstatic.com/s/dancingscript/v25/If2cRXTr6YS-zF4S-kcSWSVi_sxjsohD9F50Ruu7BMSo3ROp8.woff2',
+      options: { weight: '700', style: 'normal' }
+    },
+    {
+      fontFamily: 'Creepster',
+      fontUrl: 'https://fonts.gstatic.com/s/creepster/v14/AlZg_z_9fyRLpcVx-4LK_vM3P7k.woff2',
+      options: { weight: 'normal', style: 'normal' }
+    },
+    {
+      fontFamily: 'Bungee Shade',
+      fontUrl: 'https://fonts.gstatic.com/s/bungeeshade/v14/DtVkJx26TCKQr5zXwkKsYl8ERlqBKE1N9Q.woff2',
+      options: { weight: 'normal', style: 'normal' }
+    },
+    {
+      fontFamily: 'Oswald',
+      fontUrl: 'https://fonts.gstatic.com/s/oswald/v53/TK3_WkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlbHYjedg.woff2',
+      options: { weight: 'normal', style: 'normal' }
+    },
+    {
+      fontFamily: 'Cinzel Decorative',
+      fontUrl: 'https://fonts.gstatic.com/s/cinzeldecorative/v16/daaCSScvJGqLYhL8tTN8svvPq2_2p.woff2',
+      options: { weight: '700', style: 'normal' }
+    },
+    {
+      fontFamily: 'Metal Mania',
+      fontUrl: 'https://fonts.gstatic.com/s/metalmania/v15/lJwX-pCE4I2l5hGxpY9QFQ.woff2',
+      options: { weight: 'normal', style: 'normal' }
+    },
+    {
+      fontFamily: 'UnifrakturMaguntia',
+      fontUrl: 'https://fonts.gstatic.com/s/unifrakturmaguntia/v20/WWXRlj2p6Ko3SJbE1Ot-9388.woff2',
+      options: { weight: 'normal', style: 'normal' }
+    },
+    {
+      fontFamily: 'ZCOOL KuaiLe',
+      fontUrl: 'https://fonts.gstatic.com/s/zcoolkuaile/v15/EJmT-p2e18s5Bii_zbqj.woff2',
+      options: { weight: 'normal', style: 'normal' }
+    }
+  ], []);
 
   // useSuspenseFontLoader(fontConfigs);
 
@@ -84,21 +116,21 @@ const ImageDisplay = () => {
       left: '10%',
       rotate: '-15deg',
       fontSize: 'clamp(2rem, 8vw, 6rem)',
-      font: "'Krona One'",
+      font: "'Dancing Script'",
     }, // H1
     {
       top: '25%',
       left: '22%',
       rotate: '30deg',
       fontSize: 'clamp(11rem, 44vw, 22rem)',
-      font: "'Anton'",
+      font: "'Creepster'",
     }, // H2
     {
       top: '72%',
       left: '35%',
       rotate: '-18deg',
       fontSize: 'clamp(24rem, 64vw, 30rem)',
-      font: "'Playfair Display'",
+      font: "'Oswald'",
     }, // M1
     {
       top: '80%',
@@ -112,14 +144,14 @@ const ImageDisplay = () => {
       left: '75%',
       rotate: '-35deg',
       fontSize: 'clamp(5rem, 16vw, 12rem)',
-      font: "'Merriweather'",
+      font: "'Cinzel Decorative'",
     }, // S1
     {
       top: '40%',
       left: '80%',
       rotate: '44deg',
       fontSize: 'clamp(7.5rem, 31vw, 12rem)',
-      font: "'Roboto Mono'",
+      font: "'Metal Mania'",
     }, // S2
   ];
 
@@ -166,12 +198,23 @@ const ImageDisplay = () => {
           bottom: '20%',
           right: '5%',
           fontSize: '15vw',
-          fontFamily:
-            '"Josefin Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
           transform: 'rotate(-50deg)',
+          display: 'flex',
+          gap: '0.1em',
         }}
       >
-        {amPm[0]}
+        {amPm[0].split('').map((letter, index) => (
+          <span
+            key={index}
+            style={{
+              fontFamily: index === 0 
+                ? '"UnifrakturMaguntia", cursive, serif'
+                : '"ZCOOL KuaiLe", cursive, sans-serif',
+            }}
+          >
+            {letter}
+          </span>
+        ))}
       </div>
       <div
         style={{
@@ -179,13 +222,28 @@ const ImageDisplay = () => {
           bottom: '10%',
           right: '10%',
           fontSize: '4vw',
-          fontFamily:
-            '"Bebas Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
           transform: 'rotate(10deg)',
+          display: 'flex',
+          gap: '0.1em',
         }}
       >
-        {amPm[1]}
+        {amPm[1].split('').map((letter, index) => (
+          <span
+            key={index}
+            style={{
+              fontFamily: index === 0 
+                ? '"Press Start 2P", cursive, monospace'
+                : '"Space Mono", monospace, sans-serif',
+            }}
+          >
+            {letter}
+          </span>
+        ))}
       </div>
+      
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Creepster&family=Bungee+Shade&family=Oswald&family=Cinzel+Decorative:wght@700&family=Metal+Mania&family=UnifrakturMaguntia&family=ZCOOL+KuaiLe&family=Press+Start+2P&family=Space+Mono&display=swap');
+      `}</style>
     </div>
   );
 };
