@@ -1,53 +1,23 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
-import type { FontConfig } from '../../../types/clock';
 import shapesFont from '../../../assets/fonts/26-03-21-shapes.ttf?url';
 import shapesBg from '../../../assets/images/26-03/26-03-21/shapes.webp';
 
 const Clock: React.FC = () => {
   const time = useSecondClock();
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'ShapesFont',
-      fontUrl: shapesFont,
-      options: { weight: 'normal', style: 'normal' }
-    }
-  ], []);
-
-  useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-    setFontLoaded(true);
-  }, []);
 
   const pad = (n: number) => String(n).padStart(2, '0');
   const digits = (pad(time.getHours()) + pad(time.getMinutes()) + pad(time.getSeconds())).split('');
-
-  if (!fontLoaded) {
-    return (
-      <div style={{
-        width: '100vw',
-        height: '100dvh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#000',
-        color: '#07984D',
-        fontSize: '2rem',
-        fontFamily: 'monospace'
-      }}>
-        Loading...
-      </div>
-    );
-  }
 
   return (
     <div className="clock-wrapper">
       <div className="yellow-overlay"></div>
       <style>{`
+        @font-face {
+          font-family: 'ShapesFont';
+          src: url(${shapesFont}) format('truetype');
+        }
+        
         :root, body {
           margin: 0;
           padding: 0;
@@ -88,12 +58,12 @@ const Clock: React.FC = () => {
           right: 0;
           bottom: 0;
           background-image: 
-            url(${shapesBg}),
+            // url(${shapesBg}),
             url(${shapesBg});
           background-size: 25% auto, 25% auto;
           background-position: 0 calc(25% / 2), 12.5% calc(25% / 2);
           background-repeat: repeat, repeat;
-          filter: grayscale(90%) brightness(1.0) opacity(0.5) rotate(180deg);
+          filter: grayscale(30%) brightness(1.0) opacity(0.5) rotate(180deg);
           z-index: -2;
        }
 
@@ -113,20 +83,20 @@ const Clock: React.FC = () => {
           /* Mobile: 2 columns, 3 rows (Total 6 digits) */
           grid-template-columns: repeat(2, 1fr);
           grid-template-rows: repeat(3, 1fr);
-          width: 100vw;
-          height: 100dvh;
+          // width: 100vw;
+          // height: 99dvh;
         }
 
         .digit {
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #07984D;
-          font-family: ${fontLoaded ? "'ShapesFont', " : ''}monospace;
+          color: #5C8302;
+          font-family: 'ShapesFont', monospace;
           
           /* Scaled to prevent clipping in a 3-row layout */
-          font-size: 48vh; 
-          // line-height: 1;
+          font-size: 33.3vh; 
+          line-height: 0.69;
           user-select: none;
           overflow: hidden;
         }
