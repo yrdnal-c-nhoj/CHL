@@ -1,127 +1,127 @@
-import React, { useState, useEffect } from 'react';
+import React, { useLayoutEffect, useMemo } from 'react';
 import type { FontConfig } from '../types/clock';
 
-// Global cache to prevent re-loading fonts
-const loadedFonts = new Set<string>();
-const fontPromises = new Map<string, Promise<void>>();
+// --- Global Cache & State ---
+
+// Caches the Promise of the font load to prevent double-fetching
+const resourceCache = new Map<string, { read: () => FontFace }>();
+
+// Tracks how many active components are using a specific FontFace instance
+const refCounts = new Map<FontFace, number>();
+
+// Helper to generate a unique key for the cache based on font properties
+const getCacheKey = (family: string, url: string, options?: FontFaceDescriptors) => 
+  `${family}-${url}-${JSON.stringify(options || {})}`;
 
 /**
- * Legacy hook for loading a single font.
- * prefer useSuspenseFontLoader for new components.
+ * Low-level resource loader compatible with React Suspense.
+ * Returns a resource object with a .read() method that:
+ * - Throws a Promise if pending (suspends React)
+ * - Throws an Error if failed
+ * - Returns the FontFace if loaded
  */
-export const useFontLoader = (fontName: string, fontUrl: string) => {
-  const [loaded, setLoaded] = useState(false);
+function getFontResource(family: string, url: string, options: FontFaceDescriptors = {}) {
+  const key = getCacheKey(family, url, options);
 
-  useEffect(() => {
-    if (loadedFonts.has(fontName)) {
-      setLoaded(true);
-      return;
-    }
+  if (!resourceCache.has(key)) {
+    let status = 'pending';
+    let result: FontFace;
+    let error: any;
 
-    const font = new FontFace(fontName, `url(${fontUrl})`);
-    font.load().then((f) => {
-      document.fonts.add(f);
-      loadedFonts.add(fontName);
-      setLoaded(true);
-    }).catch((err) => {
-      console.error(`Failed to load font ${fontName}:`, err);
+    // display: 'block' is crucial for preventing FOUC (hides text until font is ready)
+    const fontFace = new FontFace(family, `url(${url})`, { display: 'block', ...options });
+
+    const promise = fontFace.load().then(
+      (loaded) => {
+        status = 'success';
+        result = loaded;
+      },
+      (err) => {
+        status = 'error';
+        error = err;
+        console.warn(`Failed to load font ${family}:`, err);
+      }
+    );
+
+    resourceCache.set(key, {
+      read() {
+        if (status === 'pending') throw promise;
+        if (status === 'error') throw error;
+        return result;
+      }
     });
-  }, [fontName, fontUrl]);
+  }
 
-  return loaded;
-};
+  return resourceCache.get(key)!;
+}
 
 /**
- * Legacy hook for loading multiple fonts.
+ * Main Hook: Loads fonts via Suspense and manages their lifecycle.
+ * Prevents leaks by removing fonts when the component unmounts.
+ * Prevents FOUC by suspending until fonts are ready.
  */
-export const useMultipleFontLoader = (fonts: FontConfig[]) => {
-  const [loaded, setLoaded] = useState(false);
+export function useSuspenseFontLoader(fontConfigs: FontConfig[]): boolean {
+  // 1. Generate a stable cache key string for the dependency array.
+  const cacheKey = fontConfigs
+    .map(c => getCacheKey(c.fontFamily, c.fontUrl, c.options))
+    .join('|');
 
-  useEffect(() => {
-    const loadFonts = async () => {
-      const promises = fonts.map(async (config) => {
-        if (loadedFonts.has(config.fontFamily)) return;
-        try {
-          const font = new FontFace(config.fontFamily, `url(${config.fontUrl})`, config.options);
-          const f = await font.load();
-          document.fonts.add(f);
-          loadedFonts.add(config.fontFamily);
-        } catch (err) {
-          console.warn(`Failed to load font ${config.fontFamily}`, err);
+  // 2. Trigger Load / Suspend (Memoized to prevent flickering)
+  const faces = useMemo(() => {
+    return fontConfigs.map(config => 
+      getFontResource(config.fontFamily, config.fontUrl, config.options).read()
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cacheKey]);
+
+  // 3. Lifecycle Management (Reference Counting)
+  useLayoutEffect(() => {
+    // Mount
+    faces.forEach(face => {
+      const current = refCounts.get(face) || 0;
+      if (current === 0) {
+        document.fonts.add(face);
+      }
+      refCounts.set(face, current + 1);
+    });
+
+    // Unmount
+    return () => {
+      faces.forEach(face => {
+        const current = refCounts.get(face) || 0;
+        const next = Math.max(0, current - 1);
+        refCounts.set(face, next);
+        
+        if (next === 0) {
+          document.fonts.delete(face);
         }
       });
-      await Promise.all(promises);
-      setLoaded(true);
     };
+  }, [faces]);
 
-    loadFonts();
-  }, [fonts]);
+  return true;
+}
 
-  return loaded;
+// --- Legacy Compatibility ---
+export const useMultipleFontLoader = useSuspenseFontLoader;
+
+export const useFontLoader = (fontFamily: string, fontUrl: string) => {
+  useSuspenseFontLoader([{ fontFamily, fontUrl }]);
+  return true;
 };
 
-/**
- * Modern Suspense-based font loader.
- * Throws a promise if fonts are not yet loaded, suspending the component.
- */
-export const useSuspenseFontLoader = (fonts: FontConfig[]) => {
-  // Check if all fonts are already loaded
-  if (fonts.every(f => loadedFonts.has(f.fontFamily))) return;
-
-  // Filter for fonts that need loading and aren't already pending
-  const needed = fonts.filter(f => !loadedFonts.has(f.fontFamily));
-  
-  const promises = needed.map(config => {
-    if (!fontPromises.has(config.fontFamily)) {
-      const promise = (async () => {
-        try {
-          const font = new FontFace(config.fontFamily, `url(${config.fontUrl})`, config.options);
-          const f = await font.load();
-          document.fonts.add(f);
-          loadedFonts.add(config.fontFamily);
-        } catch (err) {
-          console.warn(`Failed to load font ${config.fontFamily}`, err);
-          // Mark as loaded to prevent infinite suspense loops even on error
-          loadedFonts.add(config.fontFamily);
-        }
-      })();
-      fontPromises.set(config.fontFamily, promise);
-    }
-    return fontPromises.get(config.fontFamily);
-  });
-
-  // Throw the combined promise to suspend React
-  if (promises.length > 0) {
-    throw Promise.all(promises);
-  }
-};
-
+// --- Fallback Component ---
 export const ClockLoadingFallback = () => (
-  <div style={{
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+  <div style={{ 
+    display: 'flex', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    height: '100%', 
+    width: '100%', 
+    color: '#888', 
     fontFamily: 'monospace',
-    color: '#666',
     fontSize: '1.2rem'
   }}>
-    Loading Clock...
+    Loading...
   </div>
 );
-
-export const styleManager = {
-  inject: (id: string, css: string) => {
-    if (typeof document === 'undefined' || document.getElementById(id)) return;
-    const style = document.createElement('style');
-    style.id = id;
-    style.textContent = css;
-    document.head.appendChild(style);
-  },
-  remove: (id: string) => {
-    if (typeof document === 'undefined') return;
-    const style = document.getElementById(id);
-    if (style) style.remove();
-  }
-};
