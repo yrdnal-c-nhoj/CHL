@@ -35,9 +35,7 @@ const CONFIG = {
 
 export default function CenteredLightClock() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  // Use refs for animation state to avoid re-renders resetting the canvas
   const glyphsRef = useRef<Glyph[]>([]);
-  // Accessible time state
   const [ariaTime, setAriaTime] = useState('');
 
   const canvasStyle = useMemo<React.CSSProperties>(
@@ -52,7 +50,6 @@ export default function CenteredLightClock() {
     [],
   );
 
-  // Standardized font loading
   const fontConfigs = useMemo<FontConfig[]>(() => [
     { 
       fontFamily: 'CustomOswald', 
@@ -62,7 +59,6 @@ export default function CenteredLightClock() {
   ], []);
   useSuspenseFontLoader(fontConfigs);
 
-  // Accessibility: Update time string every minute
   useEffect(() => {
     const updateAria = () => {
       setAriaTime(
@@ -87,10 +83,8 @@ export default function CenteredLightClock() {
     let logicalWidth = window.innerWidth;
     let logicalHeight = window.innerHeight;
 
-    // Use the ref so particles persist across re-renders
     const glyphs = glyphsRef.current;
 
-    // ── Helpers ────────────────────────────────────────────────────
     const resizeCanvas = () => {
       const dpr = window.devicePixelRatio || 1;
       logicalWidth = window.innerWidth;
@@ -192,7 +186,6 @@ export default function CenteredLightClock() {
       }
     };
 
-    // ── Main render loop ───────────────────────────────────────────
     const drawScene = (timestamp) => {
       const dt = timestamp - lastTime;
       lastTime = timestamp;
@@ -276,11 +269,9 @@ export default function CenteredLightClock() {
       animationFrameId = requestAnimationFrame(drawScene);
     };
 
-    // ── Initialization ─────────────────────────────────────────────
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Pre-populate screen
     if (glyphs.length === 0) {
       const types = ['hour', 'minute', 'period'] as const;
       for (let i = 0; i < 15; i++) {
@@ -288,15 +279,13 @@ export default function CenteredLightClock() {
       }
     }
 
-    // Start animation
     animationFrameId = requestAnimationFrame(drawScene);
 
-    // Cleanup
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, []); // Empty dependency array ensures loop doesn't reset on font load
+  }, []);
 
   return (
     <>

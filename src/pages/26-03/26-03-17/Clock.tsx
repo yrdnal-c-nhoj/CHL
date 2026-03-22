@@ -1,23 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import type { ClockTime } from '@/types/clock';
+import React from 'react';
 import pluWebp from '../../../assets/images/26-03/26-03-17/plu.webp';
 import tileBgGif from '../../../assets/images/26-03/26-03-17/tile_bg.gif';
 import topImageWebp from '../../../assets/images/26-03/26-03-17/0001-0160-ezgif.com-optiwebp-1.webp';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
 
 const Clock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-  const digitColor = '#5D0DA8'; // Single variable to control color of digits and separators
+  const time = useMillisecondClock();
+  const digitColor = '#5D0DA8';
   
-  // Check if mobile for responsive sizing
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 10); // Update every 10ms for smooth milliseconds
-
-    return () => clearInterval(timer);
-  }, []);
 
   const formatTime = (date: Date) => {
     const hours = date.getHours().toString().padStart(2, '0');
@@ -106,7 +97,6 @@ const Clock: React.FC = () => {
           WebkitOverflowScrolling: 'touch',
         }}
       >
-      {/* Full screen background image */}
       <img
         src={pluWebp}
         alt="Full screen"
@@ -124,7 +114,6 @@ const Clock: React.FC = () => {
         }}
       />
       
-      {/* Tiled overlay image */}
       <div
         style={{
           position: 'absolute',
@@ -143,7 +132,6 @@ const Clock: React.FC = () => {
         }}
       />
       
-      {/* Digital Clock */}
       <div
         style={{
           position: 'absolute',
@@ -157,29 +145,22 @@ const Clock: React.FC = () => {
           padding: isMobile ? '5px 3px' : '10px',
         }}
       >
-        {/* Hours */}
         <DigitBox digit={hours[0] || '0'} />
         <DigitBox digit={hours[1] || '0'} />
         <Separator />
         
-        {/* Minutes */}
         <DigitBox digit={minutes[0] || '0'} />
         <DigitBox digit={minutes[1] || '0'} />
         <Separator />
         
-        {/* Seconds */}
         <DigitBox digit={seconds[0] || '0'} />
         <DigitBox digit={seconds[1] || '0'} />
         <Separator />
         
-        {/* Milliseconds */}
         <DigitBox digit={milliseconds[0] || '0'} />
         <DigitBox digit={milliseconds[1] || '0'} />
       </div>
       
-    
-      
-      {/* New top image overlay - tiled from center */}
       <div
         className="spinning-image"
         style={{

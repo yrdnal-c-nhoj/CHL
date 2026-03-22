@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
 import paperflowerVideo from '../../../assets/images/26-03/26-03-02/paperflower.mp4';
 import paperFont from '../../../assets/fonts/26-03-03-paper.ttf';
 
 const AnalogClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
       fontFamily: 'PaperFont',
@@ -17,24 +17,17 @@ const AnalogClock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const [time, setTime] = useState(new Date());
-  const [dimensions, setDimensions] = useState<any>({ width: 300, height: 300 });
+  const time = useMillisecondClock();
+  const [dimensions, setDimensions] = useState({ width: 300, height: 300 });
 
-  // 1. Optimized Timer (Sweep effect)
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 50);
-    return () => clearInterval(timer);
-  }, []);
-
-  // 2. Responsive Logic
-  useEffect(() => {
-    const handleResize: React.FC = () => {
+    const handleResize = () => {
       const { innerWidth: w, innerHeight: h } = window;
       const isPortrait = h > w;
 
       setDimensions(
         isPortrait
-          ? { width: w * 0.8, height: h * 0.6 } // Adjusted for mobile visibility
+          ? { width: w * 0.8, height: h * 0.6 }
           : { width: w * 0.6, height: h * 0.8 },
       );
     };
@@ -44,7 +37,6 @@ const AnalogClock: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // 3. Calculated Constants
   const { width, height } = dimensions;
   const cx = width / 2;
   const cy = height / 2;
@@ -84,7 +76,6 @@ const AnalogClock: React.FC = () => {
         }
       `}</style>
 
-      {/* Numbers */}
       {[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num, i) => {
         const pos = getPos(i * 30);
         return (
@@ -108,8 +99,6 @@ const AnalogClock: React.FC = () => {
         );
       })}
 
-      {/* Hands */}
-      {/* Hour Hand (Leaf) */}
       <div
         className="clock-hand"
         style={{
@@ -122,7 +111,6 @@ const AnalogClock: React.FC = () => {
         }}
       />
 
-      {/* Minute Hand (Leaf) */}
       <div
         className="clock-hand"
         style={{
@@ -135,7 +123,6 @@ const AnalogClock: React.FC = () => {
         }}
       />
 
-      {/* Second Hand (Stem) */}
       <div
         className="clock-hand"
         style={{
@@ -148,7 +135,6 @@ const AnalogClock: React.FC = () => {
         }}
       />
 
-      {/* Center Pin */}
       <div
         style={{
           position: 'absolute',

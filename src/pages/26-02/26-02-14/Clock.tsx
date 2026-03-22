@@ -5,7 +5,6 @@ import airportFont from '../../../assets/fonts/26-02-14-airport.ttf';
 import backgroundGif from '../../../assets/images/26-02/26-02-14/prop.gif';
 import backgroundGif2 from '../../../assets/images/26-02/26-02-14/runway.gif';
 
-// Export assets for ClockPage preloader
 export const background = backgroundGif;
 
 interface SubstitutionMap {
@@ -13,10 +12,8 @@ interface SubstitutionMap {
 }
 
 const DigitalClock: React.FC = () => {
-  // Smooth animation using requestAnimationFrame
   const time = useSecondClock();
 
-  // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = useMemo(() => [{
       fontFamily: 'Airport',
       fontUrl: airportFont,
@@ -28,7 +25,6 @@ const DigitalClock: React.FC = () => {
   
   useSuspenseFontLoader(fontConfigs);
 
-  // Substitution mapping based on your requirements
   const substitutionMap: SubstitutionMap = {
     0: 'n',
     1: 't',
@@ -70,9 +66,8 @@ const DigitalClock: React.FC = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#000', // Base black layer
+      backgroundColor: '#000',
     },
-    // Background 1: Propeller GIF
     bgLayer1: {
       position: 'absolute',
       top: 0,
@@ -98,10 +93,8 @@ const DigitalClock: React.FC = () => {
       transform: 'scaleX(-1)',
       mixBlendMode: 'lighten',
 
-      // ── The important part ───────────────────────────────
       WebkitMaskImage: 'linear-gradient(to top, black 15%, transparent 16%)',
       maskImage: 'linear-gradient(to top, black 15%, transparent 15%)',
-      // ───────────────────────────────────────────────────────
     },
     clockContainer: {
       position: 'relative',
@@ -136,12 +129,10 @@ const DigitalClock: React.FC = () => {
 
   return (
     <div style={styles.container}>
-      {/* Background Layers */}
       <div style={styles.bgLayer1} />
       <div style={styles.bgLayer2} />
 
       <div style={styles.clockContainer}>
-        {/* HOURS */}
         <div style={styles.digitGroup}>
           {splitDigitsToLetters(hours).map((letter, index) => (
             <div key={`h-${index}`} style={styles.digitBox}>
@@ -150,7 +141,6 @@ const DigitalClock: React.FC = () => {
           ))}
         </div>
 
-        {/* MINUTES */}
         <div style={styles.digitGroup}>
             {splitDigitsToLetters(minutes).map((letter, index) => (
               <div key={`m-${index}`} style={styles.digitBox}>
@@ -159,7 +149,6 @@ const DigitalClock: React.FC = () => {
             ))}
           </div>
 
-          {/* SECONDS */}
           <div style={styles.digitGroup}>
             {splitDigitsToLetters(seconds).map((letter, index) => (
               <div key={`s-${index}`} style={styles.digitBox}>

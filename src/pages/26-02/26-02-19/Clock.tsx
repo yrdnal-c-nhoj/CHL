@@ -4,11 +4,9 @@ import { useSecondClock } from '../../../utils/useSmoothClock';
 import platFont from '../../../assets/fonts/26-02-19-plat.ttf';
 
 const ImageDisplay: React.FC = () => {
-  // Smooth animation using requestAnimationFrame
   const time = useSecondClock();
   const [showContent, setShowContent] = useState(false);
 
-  // Font loading with Suspense to prevent FOUC
   const fontConfigs = useMemo(() => [
     {
       fontFamily: 'PlatFont',
@@ -22,12 +20,10 @@ const ImageDisplay: React.FC = () => {
   
   useSuspenseFontLoader(fontConfigs);
 
-  // Show content immediately with Suspense
   useEffect(() => {
     setShowContent(true);
   }, []);
 
-  // Time Calculations
   const mins = time.getMinutes();
   const hrs = time.getHours();
   const secs = time.getSeconds();
@@ -41,7 +37,6 @@ const ImageDisplay: React.FC = () => {
     hour12: true,
   });
 
-  // Logic to separate digits and AM/PM
   const [rawTime, amPm] = timeString.split(' ');
   const digits = rawTime.replace(/:/g, '').split('');
   const spacedAmPm = amPm.split('').join(' ');
@@ -168,7 +163,7 @@ const ImageDisplay: React.FC = () => {
       `}</style>
 
       <div className="main-container">
-        {/* Digital Clock */}
+        /* Digital Clock */
         <div className="digital-group">
           <div className="digits-container">
             {digits.map((char, index) => (
@@ -180,7 +175,7 @@ const ImageDisplay: React.FC = () => {
           <div className="ampm-box">{spacedAmPm}</div>
         </div>
 
-        {/* Analog Clock */}
+        /* Analog Clock */
         <div className="analog-section">
           <div className="clock-face" style={{ backgroundColor: '#F1E9C2' }}>
             {/* Ticks */}

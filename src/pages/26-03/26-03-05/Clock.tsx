@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 const Clock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
       fontFamily: 'VT323',
@@ -15,29 +15,16 @@ const Clock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const [time, setTime] = useState<any>('');
-  const [bootText, setBootText] = useState<any>('');
+  const time = useSecondClock();
+  const [bootText, setBootText] = useState('');
   const [showEmail, setShowEmail] = useState<boolean>(false);
   const [showFooter, setShowFooter] = useState<boolean>(false);
 
-  // Font loading handled by useMultipleFontLoader
+  const h = time.getHours().toString().padStart(2, '0');
+  const m = time.getMinutes().toString().padStart(2, '0');
+  const s = time.getSeconds().toString().padStart(2, '0');
+  const timeString = `> ${h}:${m}:${s}`;
 
-  // 1. Clock Logic
-  useEffect(() => {
-    const updateTime: React.FC = () => {
-      const now = new Date();
-      const h = now.getHours().toString().padStart(2, '0');
-      const m = now.getMinutes().toString().padStart(2, '0');
-      const s = now.getSeconds().toString().padStart(2, '0');
-      setTime(`> ${h}:${m}:${s}`);
-    };
-
-    updateTime();
-    const timer = setInterval(updateTime, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  // 2. Sequential "Typing" Boot Logic
   useEffect(() => {
     const fullProtocol = `CONNECTING.....................<br/>
       HTTP/1.1 200 OK<br/>
@@ -65,7 +52,6 @@ const Clock: React.FC = () => {
     return () => clearInterval(typingInterval);
   }, []);
 
-  // --- Styles Object ---
   const styles = {
     container: {
       background: '#050505',
@@ -171,7 +157,7 @@ const Clock: React.FC = () => {
 
         {/* Content */}
         <div style={styles.output}>
-          <h1 style={styles.timeHeader}>{time}</h1>
+          <h1 style={styles.timeHeader}>{timeString}</h1>
 
           <div style={{ fontSize: '2.3vh', lineHeight: '1.1' }}>
             <p dangerouslySetInnerHTML={{ __html: bootText }} />

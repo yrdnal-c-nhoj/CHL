@@ -2,14 +2,11 @@ import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 
-// --- Assets ---
 import teeVeeLoungeFont from '../../../assets/fonts/26-02-10-tv.ttf?url';
 import analogBgImage from '../../../assets/images/26-02/26-02-10/tv.jpg';
 
-// Export assets for ClockPage preloader
 export const background = analogBgImage;
 
-// --- Configuration ---
 const CLOCK_CONFIG = {
   COLORS: {
     silverText: '#58D5C0',
@@ -17,10 +14,8 @@ const CLOCK_CONFIG = {
 };
 
 const DigitalClock: React.FC = () => {
-  // Smooth animation using requestAnimationFrame
   const now = useSecondClock();
   
-  // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = useMemo(() => [{
       fontFamily: 'TeeVeeFont',
       fontUrl: teeVeeLoungeFont,
@@ -39,12 +34,10 @@ const DigitalClock: React.FC = () => {
   const seconds = now.getSeconds();
   const ampm = hours >= 12 ? 'PM' : 'AM';
 
-  // Format with leading zeros on minutes only, all on one line
   const timeString = `${twelveHour}:${minutes.toString().padStart(2, '0')}${ampm}`;
 
   return (
     <div style={styles.container}>
-      {/* FILTERED BACKGROUND LAYER */}
       <div
         style={{
           ...styles.backgroundLayer,
@@ -52,7 +45,6 @@ const DigitalClock: React.FC = () => {
         }}
       />
 
-      {/* DIGITAL CLOCK DISPLAY */}
       <div style={styles.digitalFace}>
         <div
           style={{
@@ -67,7 +59,6 @@ const DigitalClock: React.FC = () => {
   );
 };
 
-// --- Styles ---
 const styles = {
   container: {
     position: 'relative',

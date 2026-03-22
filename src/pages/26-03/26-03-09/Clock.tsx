@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 // Asset Imports
 import catFont from '../../../assets/fonts/cat.ttf';
@@ -29,12 +30,11 @@ const FONT_DATA = [
 const Clock: React.FC = () => {
   const fontConfigs = FONT_DATA.map(f => ({ fontFamily: f.name, fontUrl: f.url }));
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-  const [time, setTime] = useState(new Date());
+  const time = useSecondClock();
   const [index, setIndex] = useState(0);
   const [transform, setTransform] = useState({ scale: 1, rotateX: 0, rotateY: 0, rotateZ: 0, x: 0, y: 0 });
   const styleRef = useRef<HTMLStyleElement | null>(null);
 
-  // Diverse Cat SVGs
   const cat1 = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 120 120'%3E%3Cpath fill='none' stroke='%2300f2ff' stroke-width='2' opacity='0.4' d='M60 40 L75 20 L85 40 Q95 45 95 60 Q95 80 75 90 L75 105 Q90 110 85 120 Q70 110 60 95 Q50 110 35 120 Q30 110 45 105 L45 90 Q25 80 25 60 Q25 45 35 40 L45 20 Z'/%3E%3C/svg%3E";
   const cat2 = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 100 100'%3E%3Cpath fill='none' stroke='%23ff00ff' stroke-width='2' opacity='0.3' d='M30 80 Q20 80 20 60 Q20 40 40 40 L45 20 L55 40 L65 20 L70 40 Q90 40 90 60 Q90 80 80 80 L80 90 L70 80 L30 80'/%3E%3C/svg%3E";
   const cat3 = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='5' fill='%23ECDE46' opacity='0.6'/%3E%3Cpath fill='none' stroke='%23ECDE46' stroke-width='1.5' opacity='0.4' d='M20 50 Q30 20 50 20 Q70 20 80 50'/%3E%3C/svg%3E";
@@ -83,22 +83,18 @@ const Clock: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-      setIndex((prev) => (prev + 1) % FONT_DATA.length);
-      
-      const font = FONT_DATA[(index + 1) % FONT_DATA.length];
-      setTransform({
-        scale: Number((Math.random() * (font.maxSize - 0.7) + 0.7).toFixed(2)),
-        rotateX: Number((Math.random() * 50 - 25).toFixed(1)),
-        rotateY: Number((Math.random() * 50 - 25).toFixed(1)),
-        rotateZ: Number((Math.random() * 30 - 15).toFixed(1)),
-        x: Number((Math.random() * 25 - 12.5).toFixed(1)),
-        y: Number((Math.random() * 15 - 7.5).toFixed(1)),
-      });
-    }, 2000);
-    return () => clearInterval(timer);
-  }, [index]);
+    setIndex((prev) => (prev + 1) % FONT_DATA.length);
+    
+    const font = FONT_DATA[(index + 1) % FONT_DATA.length];
+    setTransform({
+      scale: Number((Math.random() * (font.maxSize - 0.7) + 0.7).toFixed(2)),
+      rotateX: Number((Math.random() * 50 - 25).toFixed(1)),
+      rotateY: Number((Math.random() * 50 - 25).toFixed(1)),
+      rotateZ: Number((Math.random() * 30 - 15).toFixed(1)),
+      x: Number((Math.random() * 25 - 12.5).toFixed(1)),
+      y: Number((Math.random() * 15 - 7.5).toFixed(1)),
+    });
+  }, [time.getSeconds()]);
 
   if (!fontsLoaded) return <div style={{ background: '#520850', height: '100dvh' }} />;
 
@@ -110,12 +106,10 @@ const Clock: React.FC = () => {
       width: '100vw', height: '100dvh', backgroundColor: '#520850', display: 'flex',
       alignItems: 'center', justifyContent: 'center', overflow: 'hidden', position: 'relative', perspective: '1500px'
     }}>
-      {/* Parallax Cat Layers */}
       <div className="clowder-layer layer-slow pounce-reaction" style={{ transform: `scale(${1 + transform.x * 0.01})` }} />
       <div className="clowder-layer layer-mid pounce-reaction" style={{ transform: `translate(${transform.x * 0.5}px, ${transform.y * 0.5}px)` }} />
       <div className="clowder-layer layer-fast pounce-reaction" />
 
-      {/* Main Kinetic Clock */}
       <div style={{
         fontSize: `calc(${transform.scale} * clamp(5rem, 25vw, 20rem))`,
         fontFamily: `'${FONT_DATA[index].name}', sans-serif`,

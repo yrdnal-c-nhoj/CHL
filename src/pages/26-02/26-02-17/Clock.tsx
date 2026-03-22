@@ -1,13 +1,3 @@
-/**
- * Asterisk Clock Component
- *
- * Features:
- * - Matrix-style falling character background
- * - Analog clock with custom font characters
- * - Smooth animations and transitions
- * - Responsive design
- */
-
 import React, { useState, useEffect, useMemo, memo, useRef } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useSecondClock } from '../../../utils/useSmoothClock';
@@ -24,7 +14,6 @@ interface BackgroundGridProps {
   cellSize: number;
 }
 
-/* Generate 12 unique random characters */
 const generateChars = (): string[] => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split('');
 
@@ -36,9 +25,6 @@ const generateChars = (): string[] => {
   return chars.slice(0, 12);
 };
 
-/**
- * BackgroundGrid
- */
 const BackgroundGrid = memo<BackgroundGridProps>(({ windowSize, cellSize }) => {
   const columnCount = Math.ceil(windowSize.width / cellSize);
   const rowsPerColumn = 20;
@@ -105,34 +91,10 @@ const BackgroundGrid = memo<BackgroundGridProps>(({ windowSize, cellSize }) => {
 /**
  * Main Clock
  */
-/**
- * Custom hook for character fade animation using requestAnimationFrame
- */
-const useCharacterFade = (callback: () => void, interval: number = 3000) => {
-  const lastUpdateRef = useRef<number>(0);
-  
-  useEffect(() => {
-    let frameId: number;
-    
-    const animate = (timestamp: number) => {
-      if (timestamp - lastUpdateRef.current >= interval) {
-        lastUpdateRef.current = timestamp;
-        callback();
-      }
-      frameId = requestAnimationFrame(animate);
-    };
-    
-    frameId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frameId);
-  }, [callback, interval]);
-};
-
 const AsteriskClock: React.FC = () => {
-  // Smooth animation using requestAnimationFrame
   const time = useSecondClock();
 
   const [clockChars, setClockChars] = useState(generateChars());
-
   const [visible, setVisible] = useState<boolean>(true);
 
   const cellSize = 50;
@@ -142,7 +104,6 @@ const AsteriskClock: React.FC = () => {
     height: typeof window !== 'undefined' ? window.innerHeight : 1080,
   });
 
-  // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = useMemo(() => [
     {
       fontFamily: 'AsteriskFont1',
@@ -164,69 +125,21 @@ const AsteriskClock: React.FC = () => {
 
   useSuspenseFontLoader(fontConfigs);
 
-  /**
-   * Setup resize handler
-   */
   useEffect(() => {
-    console.log('AsteriskClock: Component mounting');
+    const resize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
 
-    try {
-      const resize = () => {
-        setWindowSize({
-          width: window.innerWidth,
-          height: window.innerHeight,
-        });
-      };
+    window.addEventListener('resize', resize);
 
-      window.addEventListener('resize', resize);
-
-      return () => {
-        window.removeEventListener('resize', resize);
-      };
-    } catch (error) {
-      console.error('AsteriskClock: Error in useEffect:', error);
-    }
+    return () => {
+      window.removeEventListener('resize', resize);
+    };
   }, []);
 
-  /**
- * Custom hook for character fade animation using requestAnimationFrame
- */
-const useCharacterFade = (callback: () => void, interval: number = 3000) => {
-  const lastUpdateRef = useRef<number>(0);
-  
-  useEffect(() => {
-    let frameId: number;
-    
-    const animate = (timestamp: number) => {
-      if (timestamp - lastUpdateRef.current >= interval) {
-        lastUpdateRef.current = timestamp;
-        callback();
-      }
-      frameId = requestAnimationFrame(animate);
-    };
-    
-    frameId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frameId);
-  }, [callback, interval]);
-};
-
-/**
- * Character fade cycle every 3 seconds
- */
-const handleCharacterFade = () => {
-  setVisible(false);
-  
-  setTimeout(() => {
-    setClockChars(generateChars());
-    setVisible(true);
-  }, 400);
-};
-
-useCharacterFade(handleCharacterFade, 3000);
-
-  /**
-   * Clock hand angles
-   */
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();

@@ -1,107 +1,107 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
-import backgroundImage from '../../../assets/images/26-03/26-03-20/empire.webp';
-import fontFile from '../../../assets/fonts/26-03-01-270west.ttf?url';
+import React, { useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
+import backgroundImage from '../../../assets/images/26-03/26-03-20/empire.webp?url';
 import styles from './Clock.module.css';
 
-const Clock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+interface HourMarker {
+  value: number;
+  angle: number;
+  x: number;
+  y: number;
+}
 
-  // Standardized font loading
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: '270west',
-      fontUrl: fontFile,
-      options: { weight: 'normal', style: 'normal' }
-    }
-  ], []);
+const Clock = () => {
+  const currentTime = useSecondClock();
 
-  useSuspenseFontLoader(fontConfigs);
+  const calculateHandPositions = useCallback(() => {
+    const hours = currentTime.getHours() % 12;
+    const minutes = currentTime.getMinutes();
+    const seconds = currentTime.getSeconds();
 
-  useEffect(() => {
-    let frameId: number;
-    const tick = () => {
-      setTime(new Date());
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
+    const hourDegrees = (hours * 30) + (minutes * 0.5) - 90;
+    const minuteDegrees = (minutes * 6) + (seconds * 0.1) - 90;
+    const secondDegrees = (seconds * 6) - 90;
 
-  const hours = time.getHours() % 12;
-  const minutes = time.getMinutes();
-  const seconds = time.getSeconds();
+    return { hourDegrees, minuteDegrees, secondDegrees };
+  }, [currentTime]);
 
-  const hourDegrees = (hours * 30) + (minutes * 0.5) - 90;
-  const minuteDegrees = (minutes * 6) + (seconds * 0.1) - 90;
-  const secondDegrees = (seconds * 6) - 90;
-
-  const renderHourMarkers = () => {
-    const markers: React.ReactNode[] = [];
+  const hourMarkers = useMemo<HourMarker[]>(() => {
+    const markers: HourMarker[] = [];
     for (let i = 1; i <= 12; i++) {
       const angle = (i * 30) - 90;
-      // Using percentage based positioning for responsiveness
-      const radius = 40; // 40% from center
+      const radius = 40;
       const x = 50 + radius * Math.cos(angle * Math.PI / 180);
       const y = 50 + radius * Math.sin(angle * Math.PI / 180);
       
-      markers.push(
-        <div
-          key={i}
-          className={styles.hourNumber}
-          style={{
-            left: `${x}%`,
-            top: `${y}%`,
-            transform: 'translate(-50%, -50%)'
-          }}
-        >
-          {i}
-        </div>
-      );
+      markers.push({ value: i, angle, x, y });
     }
     return markers;
-  };
+  }, []);
+
+  const { hourDegrees, minuteDegrees, secondDegrees } = calculateHandPositions();
 
   return (
-    <div
-      className={styles.container}
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-      }}
-    >
-      <div 
-        className={styles.clockContainer}
+    <>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Teko:wght@400&display=swap"
+      />
+      
+      <div
+        className={styles.container}
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+          fontFamily: 'Teko, sans-serif',
+        }}
       >
-        <div className={styles.analogClock}>
-          <div className={styles.clockFace}>
-            {renderHourMarkers()}
-            
-            <div
-              className={`${styles.hand} ${styles.hourHand}`}
-              style={{
-                transform: `rotate(${hourDegrees}deg)`
-              }}
-            />
-            
-            <div
-              className={`${styles.hand} ${styles.minuteHand}`}
-              style={{
-                transform: `rotate(${minuteDegrees}deg)`
-              }}
-            />
-            
-            <div
-              className={`${styles.hand} ${styles.secondHand}`}
-              style={{
-                transform: `rotate(${secondDegrees}deg)`
-              }}
-            />
-            
-            <div className={styles.centerDot} />
+        <div className={styles.clockContainer}>
+          <div className={styles.analogClock}>
+            <div className={styles.clockFace}>
+              {hourMarkers.map((marker) => (
+                <div
+                  key={marker.value}
+                  className={styles.hourNumber}
+                  style={{
+                    left: `${marker.x}%`,
+                    top: `${marker.y}%`,
+                    transform: 'translate(-50%, -50%)',
+                    fontFamily: 'Teko, sans-serif',
+                    fontSize: '3rem',
+                    textShadow: 'none',
+                    color: '#ffffff',
+                  }}
+                >
+                  {marker.value}
+                </div>
+              ))}
+              
+              <div
+                className={`${styles.hand} ${styles.hourHand}`}
+                style={{
+                  transform: `rotate(${hourDegrees}deg)`
+                }}
+              />
+              
+              <div
+                className={`${styles.hand} ${styles.minuteHand}`}
+                style={{
+                  transform: `rotate(${minuteDegrees}deg)`
+                }}
+              />
+              
+              <div
+                className={`${styles.hand} ${styles.secondHand}`}
+                style={{
+                  transform: `rotate(${secondDegrees}deg)`
+                }}
+              />
+              
+              <div className={styles.centerDot} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

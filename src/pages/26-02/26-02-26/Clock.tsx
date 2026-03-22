@@ -4,57 +4,30 @@ import { useSecondClock } from '../../../utils/useSmoothClock';
 import backgroundImage from '../../../assets/images/26-02/26-02-26/26-02-26-f.webp';
 import fuFont from '../../../assets/fonts/26-02-26-fu.ttf';
 
-// Interface for Vite glob import modules
 interface ViteModule {
   default: string;
 }
 
-// Interface for window size state
 interface WindowSize {
   width: number;
   height: number;
 }
 
-// Interface for time digits
 interface TimeDigits {
   hours: string;
   minutes: string;
   isPM: boolean;
 }
 
-// Interface for grid size
 interface GridSize {
   rows: number;
   cols: number;
 }
 
-// Export assets for ClockPage preloader
 export const background = backgroundImage;
 
-/**
- * Custom hook for periodic updates using requestAnimationFrame
- */
-const usePeriodicUpdate = (callback: () => void, interval: number = 1000) => {
-  const lastUpdateRef = useRef<number>(0);
-  
-  useEffect(() => {
-    let frameId: number;
-    
-    const animate = (timestamp: number) => {
-      if (timestamp - lastUpdateRef.current >= interval) {
-        lastUpdateRef.current = timestamp;
-        callback();
-      }
-      frameId = requestAnimationFrame(animate);
-    };
-    
-    frameId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frameId);
-  }, [callback, interval]);
-};
 
 const ImageGridClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = useMemo(() => [{
       fontFamily: 'DateFont',
       fontUrl: fuFont,
@@ -73,18 +46,15 @@ const ImageGridClock: React.FC = () => {
   const currentTime = useSecondClock();
   const [currentImageIndex, setCurrentImageIndex] = useState<Record<string, number>>({});
 
-  // Change 3 random cells to different images
   const changeRandomCells = () => {
     if (imageAssignments.length > 0 && images.length > 1) {
       setCurrentImageIndex((prev) => {
         const newIndex = { ...prev };
         const totalCells = imageAssignments.length;
 
-        // Select 3 random cells to change to next image
         for (let i = 0; i < 3; i++) {
           const randomCell = Math.floor(Math.random() * totalCells);
           const currentIdx = newIndex[randomCell] || 0;
-          // Move to next image in the array, loop back if needed
           newIndex[randomCell] = (currentIdx + 1) % images.length;
         }
 
@@ -93,12 +63,10 @@ const ImageGridClock: React.FC = () => {
     }
   };
 
-  // Update clock and change random images every second using requestAnimationFrame
-  usePeriodicUpdate(() => {
+  useEffect(() => {
     changeRandomCells();
-  }, 1000);
+  }, [currentTime.getSeconds()]);
 
-  // 2. Load images using Vite glob import
   useEffect(() => {
     const loadImages = async () => {
       try {
@@ -123,9 +91,8 @@ const ImageGridClock: React.FC = () => {
     loadImages();
   }, []);
 
-  // 3. Handle Responsive Grid Calculation
   useEffect(() => {
-    const calculateGridSize: React.FC = () => {
+    const calculateGridSize = () => {
       const squareSize = 100;
       const cols = Math.ceil(window.innerWidth / squareSize);
       const rows = Math.ceil(window.innerHeight / squareSize);
@@ -137,12 +104,10 @@ const ImageGridClock: React.FC = () => {
     return () => window.removeEventListener('resize', calculateGridSize);
   }, []);
 
-  // 4. Assign images to grid cells
   useEffect(() => {
     if (images.length > 0 && gridSize.rows > 0) {
       const totalCells = gridSize.rows * gridSize.cols;
 
-      // Initialize all cells with random images
       const initialAssignments = [];
       const initialIndex = {};
 
@@ -157,7 +122,6 @@ const ImageGridClock: React.FC = () => {
     }
   }, [images, gridSize]);
 
-  // Helper: Format Time (e.g., 5:04p.m.)
   const formatTime = (date) => {
     let hours = date.getHours();
     const minutes = date.getMinutes();

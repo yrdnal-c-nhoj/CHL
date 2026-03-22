@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import type { FontConfig } from '../../../types/clock';
 
 // Interface for Disc component props
@@ -60,47 +61,23 @@ const styles: Record<string, React.CSSProperties> = {
 
 const Clock: React.FC = () => {
   const clockRef = useRef<HTMLDivElement>(null);
-  const requestRef = useRef<number | undefined>();
 
-  // Use Suspense-compatible font loading
-  // NOTE: FontFace API requires a direct URL to a binary font file (ttf/woff), not a CSS link.
-  // Please download Taviraj and import it like: import taviraj from '../../../assets/fonts/taviraj.ttf?url';
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    // {
-    //   fontFamily: 'Taviraj',
-    //   fontUrl: taviraj, 
-    //   options: { weight: 'normal', style: 'normal' }
-    // }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
 
   useSuspenseFontLoader(fontConfigs);
 
-  // Clock animation
+  const time = useSecondClock();
+  const s = time.getSeconds();
+  const m = time.getMinutes() + s / 60;
+  const h = (time.getHours() % 12) + m / 60;
+
   useEffect(() => {
-    const animate = () => {
-      const now = new Date();
-      const ms = now.getMilliseconds();
-      const s = now.getSeconds();
-      const m = now.getMinutes();
-      const h = now.getHours();
-
-      const sDeg = (s + ms / 1000) * 6;
-      const mDeg = (m + s / 60) * 6;
-      const hDeg = ((h % 12) + m / 60) * 30;
-
-      if (clockRef.current) {
-        clockRef.current.style.setProperty('--s-rot', `${sDeg}deg`);
-        clockRef.current.style.setProperty('--m-rot', `${mDeg}deg`);
-        clockRef.current.style.setProperty('--h-rot', `${hDeg}deg`);
-      }
-      requestRef.current = requestAnimationFrame(animate);
-    };
-
-    requestRef.current = requestAnimationFrame(animate);
-    return () => {
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
-    };
-  }, []);
+    if (clockRef.current) {
+      clockRef.current.style.setProperty('--s-rot', `${s * 6}deg`);
+      clockRef.current.style.setProperty('--m-rot', `${m * 6}deg`);
+      clockRef.current.style.setProperty('--h-rot', `${h * 30}deg`);
+    }
+  }, [s, m, h]);
 
   return (
     <div

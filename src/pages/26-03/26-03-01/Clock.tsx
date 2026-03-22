@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
 import westVideo from '../../../assets/images/26-03/26-03-01/west.mp4';
 import cloudGif from '../../../assets/images/26-03/26-03-01/cloud.webp';
 import westtImage from '../../../assets/images/26-03/26-03-01/westt.webp';
@@ -6,22 +7,8 @@ import styles from './Clock.module.css';
 
 const TILE_SIZE = 100;
 
-/**
- * Sub-component: The "Sweep" Analog Clock
- * Uses requestAnimationFrame for ~60fps smooth movement
- */
 const AnalogClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    let frameId;
-    const update: React.FC = () => {
-      setTime(new Date());
-      frameId = requestAnimationFrame(update);
-    };
-    frameId = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
+  const time = useMillisecondClock();
 
   const angles = useMemo(() => {
     const ms = time.getMilliseconds();
@@ -30,11 +17,8 @@ const AnalogClock: React.FC = () => {
     const h = time.getHours();
 
     return {
-      // 6 degrees per second + fractional milliseconds
       sec: (s + ms / 1000) * 6,
-      // 6 degrees per minute + fractional seconds
       min: (m + s / 60 + ms / 60000) * 6,
-      // 30 degrees per hour + fractional minutes
       hr: ((h % 12) + m / 60 + s / 3600) * 30,
     };
   }, [time]);
@@ -56,14 +40,10 @@ const AnalogClock: React.FC = () => {
 
   return (
     <div style={{ width: '45vw', height: '45vw', position: 'relative' }}>
-      {/* Hour Hand */}
       <div style={getHandStyle('5px', '28%', angles.hr, 3)} />
-      {/* Minute Hand */}
       <div style={getHandStyle('3.5px', '42%', angles.min, 4)} />
-      {/* Second Hand */}
       <div style={getHandStyle('1.5px', '48%', angles.sec, 5)} />
 
-      {/* Center Pin / Hub */}
       <div
         style={{
           position: 'absolute',
@@ -82,11 +62,8 @@ const AnalogClock: React.FC = () => {
   );
 };
 
-/**
- * Main Clock Screen Component
- */
 const Clock: React.FC = () => {
-  const [dimensions, setDimensions] = useState<any>({
+  const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
@@ -99,7 +76,6 @@ const Clock: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Memoized grid avoids expensive layout math on every clock tick
   const tiles = useMemo(() => {
     const cols = Math.ceil(dimensions.width / TILE_SIZE);
     const rows = Math.ceil(dimensions.height / TILE_SIZE);
@@ -125,12 +101,10 @@ const Clock: React.FC = () => {
 
   return (
     <main className={styles.container}>
-      {/* Layer 1: Filtered Video Background */}
       <video autoPlay loop muted playsInline className={styles.video}>
         <source src={westVideo} type="video/mp4" />
       </video>
 
-      {/* Layer 2: Offset Cloud Layer */}
       <div className={styles.backgroundCloudWrapper}>
         {tiles.map((tile) => (
           <img
@@ -149,7 +123,6 @@ const Clock: React.FC = () => {
         ))}
       </div>
 
-      {/* Layer 3: Mirrored Overlay Wrapper */}
       <div className={styles.overlayWrapper}>
         {tiles.map((tile) => (
           <img
@@ -168,10 +141,8 @@ const Clock: React.FC = () => {
         ))}
       </div>
 
-      {/* Layer 4: Static Overlay Image */}
       <img src={westtImage} alt="" className={styles.westtImage} />
 
-      {/* Layer 5: Analog Clock UI */}
       <section className={styles.analogClockSection}>
         <AnalogClock />
       </section>

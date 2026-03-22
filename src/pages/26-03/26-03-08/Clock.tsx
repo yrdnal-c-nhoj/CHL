@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
 import { useGlobalStyles } from '../../../utils/enhancedFontLoader';
 import { useEnhancedFontLoader } from '../../../utils/enhancedFontLoader';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import hand1Img from '/src/assets/images/26-03/26-03-08/hand2.png';
 import hand2Img from '/src/assets/images/26-03/26-03-08/hand1.webp';
 import handImg from '/src/assets/images/26-03/26-03-08/hand.webp';
@@ -10,7 +11,6 @@ import dragonFont from '/src/assets/fonts/26-03-08-dragon.ttf';
 import dragonVideo from '/src/assets/images/26-03/26-03-08/dragon1.mp4';
 
 const Clock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
       fontFamily: 'Dragon',
@@ -22,26 +22,16 @@ const Clock: React.FC = () => {
     }
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Font loading and @font-face CSS handled by useMultipleFontLoader
+  const time = useSecondClock();
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
 
-  // Calculation for smooth movement or standard stepping
   const hourAngle = hours * 30 + minutes * 0.5;
   const minuteAngle = minutes * 6 + seconds * 0.1;
   const secondAngle = seconds * 6;
 
-  // Generate numbers 1-12 using dragon font
   const clockNumbers = [];
   for (let i = 1; i <= 12; i++) {
     const angle = i * 30 - 90;
@@ -62,7 +52,6 @@ const Clock: React.FC = () => {
           color: '#83EF907F',
           // textShadow: '0 0 12px rgba(131,239,144,0.7)',
           userSelect: 'none',
-          // fontWeight: 'bold'
         }}
       >
         {i}
@@ -70,16 +59,13 @@ const Clock: React.FC = () => {
     );
   }
 
-  // Helper for Hand Styles (Vertical Orientation)
   const getHandStyle = (angle, width, height, zIndex, shadow) => ({
     position: 'absolute',
     top: '50%',
     left: '50%',
     width: `${width}px`,
     height: `${height}px`,
-    // pivot from the bottom center because image points up
     transformOrigin: 'bottom center',
-    // translate -50% (X) to center width, -100% (Y) to put bottom on center pin
     transform: `translate(-50%, -100%) rotate(${angle}deg)`,
     filter: `drop-shadow(${shadow}) saturate(0.2)`,
     zIndex,
@@ -102,7 +88,6 @@ const Clock: React.FC = () => {
         background: '#000',
       }}
     >
-      {/* Background Video */}
       <video
         autoPlay
         loop
@@ -124,7 +109,6 @@ const Clock: React.FC = () => {
         <source src={dragonVideo} type="video/mp4" />
       </video>
 
-      {/* Clock Face Container */}
       <div
         style={{
           position: 'relative',
@@ -134,10 +118,8 @@ const Clock: React.FC = () => {
           opacity: 0.9,
         }}
       >
-        {/* Numbers */}
         {clockNumbers}
 
-        {/* Hands - Adjust height to prevent clipping container edges */}
         <img
           src={hand2Img}
           alt="Hour"

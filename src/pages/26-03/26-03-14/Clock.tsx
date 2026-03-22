@@ -1,10 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import backgroundImage from '../../../assets/images/26-03/26-03-14/mother.webp';
+import { useMillisecondClock } from '../../../utils/useSmoothClock';
 
-// Export assets for preloading
-export { backgroundImage };
-
-// Move static sub-components outside to prevent re-creation on every tick
 const ImageLayout = React.memo(() => (
   <div style={{ position: 'fixed', inset: 0, zIndex: 0, background: '#000' }}>
     <img
@@ -24,20 +21,8 @@ const ImageLayout = React.memo(() => (
 ));
 
 const Clock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useMillisecondClock();
 
-  useEffect(() => {
-    let frameId: number;
-    const tick = () => {
-      setTime(new Date());
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-
-    return () => cancelAnimationFrame(frameId);
-  }, []);
-
-  // Memoize formatting to keep the render function clean
   const formattedTime = useMemo(() => {
     const hours = time.getHours();
     const h = hours % 12 || 12;
@@ -58,7 +43,6 @@ const Clock: React.FC = () => {
   );
 };
 
-// Styles object to keep JSX clean and readable
 const styles = {
   container: {
     width: '100vw',

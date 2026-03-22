@@ -2,26 +2,16 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 
-/* =========================
-   CONFIGURATION
-========================= */
-const UPDATE_INTERVAL = 1000; // ms
+const UPDATE_INTERVAL = 1000;
 const MOBILE_BREAKPOINT = 768;
 const FONT_NAME = 'Forum';
 
-/* =========================
-   ASSETS
-========================= */
 import backgroundImage from '../../../assets/images/26-02/26-02-20/forum2.webp';
 import topImage from '../../../assets/images/26-02/26-02-20/forum.webp';
 import forumFont from '../../../assets/fonts/26-02-20-forum.otf';
 
-// Export assets for preloading
 export { backgroundImage, topImage };
 
-/* =========================
-   UTILITY FUNCTIONS
-========================= */
 const formatTime = (num) => num.toString().padStart(2, '0');
 
 const getTimeDigits = (date) => {
@@ -106,9 +96,6 @@ export const fontConfigs = [
   }
 ];
 
-/* =========================
-   MAIN COMPONENT
-========================= */
 export default function ClockTemplate() {
   const time = useSecondClock();
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -134,9 +121,6 @@ export default function ClockTemplate() {
   const spelledMinutes = spellTwoDigitNumber(minutes);
   const ampm = isPM ? 'POST MERIDIEM' : 'ANTE MERIDIAN';
 
-  /* =========================
-      STYLES
-  ========================= */
   const containerStyle = {
     width: '100vw',
     height: '100dvh',
@@ -178,14 +162,12 @@ export default function ClockTemplate() {
     gap: isMobile ? '0.5rem' : '0.9rem',
     fontFamily: `'${FONT_NAME}', serif`,
 
-    // ─── Brass metallic look ───────────────────────────────────────
     background:
       'linear-gradient(135deg, #3a2c0f 0%, #8b6914 20%, #d4a017 40%, #f0d08a 50%, #d4a017 60%, #b8860b 80%, #3a2c0f 100%)',
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
-    color: 'transparent', // required for gradient text
+    color: 'transparent',
 
-    // Thick / raised / embossed 3D effect
     textShadow: `
     0 1px 0 #f0e68c,
     0 2px 0 #deb887,
@@ -195,8 +177,7 @@ export default function ClockTemplate() {
     0 8px 12px rgba(0,0,0,0.5)
   `,
 
-    // Extra definition & slight glow (brass often has subtle shine)
-    WebkitTextStroke: '0.5px #4a2c0a', // thin dark outline → makes it pop & look thicker
+    WebkitTextStroke: '0.5px #4a2c0a',
     textStroke: '0.5px #4a2c0a',
 
     letterSpacing: '0.18em',
@@ -206,10 +187,6 @@ export default function ClockTemplate() {
     fontWeight: '600', // slightly bolder if Forum supports it
     whiteSpace: 'nowrap',
     textAlign: 'center',
-
-    // Optional: subtle shine animation (uncomment if you like movement)
-    // backgroundSize: '200% 200%',
-    // animation: 'brassShine 8s ease-in-out infinite',
   };
 
   const bottomStyle = {
@@ -222,20 +199,16 @@ export default function ClockTemplate() {
 
   return (
     <div style={containerStyle}>
-      {/* Top decorative image */}
       <img src={topImage} alt="" style={topImageStyle} />
 
-      {/* Combined blue union + red stripe with clock on top */}
       <div style={combinedStripeStyle}>
         <div style={clockRowStyle}>
-          {/* Text broken into three parts for column stacking */}
           <span>{spelledHours} HORAE</span>
           <span>{spelledMinutes} MINUTA</span>
           <span>{ampm}</span>
         </div>
       </div>
 
-      {/* Bottom background image */}
       <div style={bottomStyle} />
     </div>
   );

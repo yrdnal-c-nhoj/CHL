@@ -2,17 +2,14 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 
-// 1. Standard imports (Best for performance and reliability)
 import mazeFont from '../../../assets/fonts/26-02-18-jelly.otf';
 import bg1 from '../../../assets/images/26-02/26-02-18/jel.webp';
 import bg3 from '../../../assets/images/26-02/26-02-18/jelly.webp';
 
 const ImageDisplay: React.FC = () => {
-  // Smooth animation using requestAnimationFrame
   const time = useSecondClock();
   const [showContent, setShowContent] = useState(false);
 
-  // Font loading with Suspense to prevent FOUC
   const fontConfigs = useMemo(() => [
     {
       fontFamily: 'MazeFont',
@@ -26,7 +23,6 @@ const ImageDisplay: React.FC = () => {
   
   useSuspenseFontLoader(fontConfigs);
 
-  // Show content immediately with Suspense
   useEffect(() => {
     setShowContent(true);
   }, []);
@@ -41,8 +37,6 @@ const ImageDisplay: React.FC = () => {
     willChange: 'filter, transform',
     backfaceVisibility: 'hidden',
   };
-
-  // Show content immediately - no loading state
 
   return (
     <div

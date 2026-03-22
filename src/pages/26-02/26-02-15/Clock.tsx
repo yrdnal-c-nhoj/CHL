@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import backgroundImage from '../../../assets/images/26-02/26-02-15/caldera.webp';
 import fontFile from '../../../assets/fonts/26-02-15-fire.ttf';
 
@@ -12,7 +13,6 @@ export default function PixelInverseClock() {
   const [showContent, setShowContent] = useState(false);
   const imageRef = useRef(new Image());
 
-  // Font loading with Suspense to prevent FOUC
   const fontConfigs = useMemo(() => [
     {
       fontFamily: FONT_FAMILY,
@@ -26,21 +26,17 @@ export default function PixelInverseClock() {
   
   useSuspenseFontLoader(fontConfigs);
 
-  // Show content immediately with Suspense
   useEffect(() => {
     setShowContent(true);
   }, []);
 
-  // 1. Assets Loading
   useEffect(() => {
     const loadAssets = async () => {
       try {
-        // Load animated WebP with proper settings
         await new Promise((resolve, reject) => {
           imageRef.current.src = backgroundImage;
-          imageRef.current.crossOrigin = 'anonymous'; // Add this for animated WebP
+          imageRef.current.crossOrigin = 'anonymous';
           imageRef.current.onload = () => {
-            // Force the WebP to start animating
             imageRef.current.style.display = 'none';
             document.body.appendChild(imageRef.current);
             setTimeout(() => {
@@ -63,13 +59,12 @@ export default function PixelInverseClock() {
     };
   }, []);
 
-  // 3. Canvas Setup & Resize
   useEffect(() => {
     if (!assetsLoaded) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
-    const handleResize: React.FC = () => {
+    const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
@@ -82,38 +77,32 @@ export default function PixelInverseClock() {
     return () => window.removeEventListener('resize', handleResize);
   }, [assetsLoaded]);
 
-  // 2. Main Render Loop
   const render = (ctx) => {
     const { width: w, height: h } = ctx.canvas;
-    const now = new Date();
+    const time = useSecondClock();
 
-    // Clear canvas (background is handled by CSS)
     ctx.clearRect(0, 0, w, h);
 
-    // Prepare to draw Inverse Elements
-    // We use "difference" blending so anything drawn white (#fff)
-    // will perfectly invert the pixels underneath it.
     ctx.save();
     ctx.globalCompositeOperation = 'difference';
     ctx.fillStyle = 'white';
     ctx.strokeStyle = 'white';
 
-    drawClockUI(ctx, w, h, now);
+    drawClockUI(ctx, w, h, time);
 
     ctx.restore();
     requestRef.current = requestAnimationFrame(() => render(ctx));
   };
 
-  const drawClockUI = (ctx, w, h, now) => {
+  const drawClockUI = (ctx, w, h, time) => {
     const cx = w / 2;
     const cy = h / 2;
     const baseSize = Math.min(w, h);
 
-    const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
-    const minutes = now.getMinutes() + seconds / 60;
-    const hours = (now.getHours() % 12) + minutes / 60;
+    const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+    const minutes = time.getMinutes() + seconds / 60;
+    const hours = (time.getHours() % 12) + minutes / 60;
 
-    // Numbers
     ctx.font = `${baseSize * 0.08}px "${FONT_FAMILY}"`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -130,7 +119,6 @@ export default function PixelInverseClock() {
       );
     }
 
-    // Hands
     const drawHand = (angle, length, width) => {
       ctx.lineWidth = width;
       ctx.lineCap = 'round';
@@ -140,9 +128,9 @@ export default function PixelInverseClock() {
       ctx.stroke();
     };
 
-    drawHand((hours * Math.PI) / 6 - Math.PI / 2, baseSize * 0.3, 8); // Hour
-    drawHand((minutes * Math.PI) / 30 - Math.PI / 2, baseSize * 0.5, 5); // Minute
-    drawHand((seconds * Math.PI) / 30 - Math.PI / 2, baseSize * 2.9, 2); // Second
+    drawHand((hours * Math.PI) / 6 - Math.PI / 2, baseSize * 0.3, 8);
+    drawHand((minutes * Math.PI) / 30 - Math.PI / 2, baseSize * 0.5, 5);
+    drawHand((seconds * Math.PI) / 30 - Math.PI / 2, baseSize * 2.9, 2);
   };
 
   return (

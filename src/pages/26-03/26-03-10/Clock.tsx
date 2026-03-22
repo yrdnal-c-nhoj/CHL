@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
 const ProgressClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useSecondClock();
 
   useEffect(() => {
     const link = document.createElement('link');
-    link.href =
-      'https://fonts.googleapis.com/css2?family=Varela+Round&display=swap';
+    link.href = 'https://fonts.googleapis.com/css2?family=Varela+Round&display=swap';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
-
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
   }, []);
 
   const h = time.getHours();
@@ -23,7 +20,6 @@ const ProgressClock: React.FC = () => {
   const middleRadius = 105;
   const innerRadius = 75;
 
-  // Center point adjusted to 155 to match the new viewBox padding
   const center = 155;
 
   const getRingData = (val, max, r) => {
@@ -32,7 +28,6 @@ const ProgressClock: React.FC = () => {
     const offset = circumference - progress * circumference;
 
     const angle = progress * 2 * Math.PI;
-    // Updated to use the new dynamic center
     const x = center + r * Math.cos(angle);
     const y = center + r * Math.sin(angle);
 
@@ -68,7 +63,6 @@ const ProgressClock: React.FC = () => {
           height: '90%',
           maxWidth: '650px',
         }}
-        // Increased viewBox to 310 to give the 153px radius rings breathing room
         viewBox="0 0 310 310"
       >
         <defs>

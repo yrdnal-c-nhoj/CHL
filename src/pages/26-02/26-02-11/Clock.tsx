@@ -1,17 +1,14 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 
-// --- Assets ---
 import bellImage2 from '../../../assets/images/26-02/26-02-11/bell.webp';
 import bellImage1 from '../../../assets/images/26-02/26-02-11/bell.gif';
+// Using remote URL as local file is missing causing build error
+const gildaDisplayFont = 'https://fonts.gstatic.com/s/gildadisplay/v19/t5tmIRoZIxDk6ghztBTA9yvM0g0.woff2';
 
-// --- Constants ---
 const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 40,
-  UPDATE_INTERVAL_MS: 50,
-  FONT_FAMILY: "'Gilda Display', serif",
-  FONT_URL:
-    'https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap',
   COLORS: {
     background: '#BFA7A7',
     silverText:
@@ -49,7 +46,6 @@ const HAND_DIMENSIONS: Record<string, HandDimensions> = {
   second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
 };
 
-// --- Utility Functions ---
 const getHandRotation = (value: number, multiplier: number): number => value * multiplier;
 
 const calculateNumeralPosition = (number: number) => {
@@ -73,36 +69,6 @@ const calculateTimeValues = (date: Date): TimeValues => {
 };
 
 // --- Custom Hooks ---
-// Custom hook for smooth time updates using requestAnimationFrame
-const useSmoothClock = (intervalMs = CLOCK_CONFIG.UPDATE_INTERVAL_MS) => {
-  const [time, setTime] = useState(() => new Date());
-  const lastUpdateRef = useRef<number>(0);
-
-  useEffect(() => {
-    let animationFrameId: number;
-
-    const animate = (timestamp: number) => {
-      // Update based on interval to avoid excessive updates
-      if (timestamp - lastUpdateRef.current >= intervalMs) {
-        setTime(new Date());
-        lastUpdateRef.current = timestamp;
-      }
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animationFrameId = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
-  }, [intervalMs]);
-
-  return time;
-};
-
-// --- Sub-Components ---
 const BackgroundLayers = () => (
   <>
     <div
@@ -169,28 +135,27 @@ const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
 
 const CenterDot = () => <div style={styles.centerDot} />;
 
-// --- Main Component ---
 const AnalogClock: React.FC = () => {
   const [showContent, setShowContent] = useState(false);
 
-  // Use Suspense-compatible font loading
-  useSuspenseFontLoader([
+  const fontConfigs = useMemo(() => [
     {
       fontFamily: 'Gilda Display',
-      fontUrl: CLOCK_CONFIG.FONT_URL,
+      fontUrl: gildaDisplayFont,
       options: {
         weight: 'normal',
         style: 'normal'
       }
     }
-  ]);
+  ], []);
 
-  // Show content immediately with Suspense
+  useSuspenseFontLoader(fontConfigs);
+
   useEffect(() => {
     setShowContent(true);
   }, []);
 
-  const currentTime = useSmoothClock();
+  const currentTime = useSecondClock();
   const { hr, min, sec } = calculateTimeValues(currentTime);
 
   return (
@@ -214,7 +179,6 @@ const AnalogClock: React.FC = () => {
   );
 };
 
-// --- Styles ---
 const styles = {
   container: {
     position: 'relative',
@@ -244,7 +208,7 @@ const styles = {
     width: '100vmin',
     height: '100vmin',
     zIndex: 7,
-    fontFamily: CLOCK_CONFIG.FONT_FAMILY,
+    fontFamily: "'Gilda Display', serif",
   },
 
   numeral: {
