@@ -138,16 +138,7 @@ const CenterDot = () => <div style={styles.centerDot} />;
 const AnalogClock: React.FC = () => {
   const [showContent, setShowContent] = useState(false);
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'Gilda Display',
-      fontUrl: gildaDisplayFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo(() => [], []);
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -162,13 +153,26 @@ const AnalogClock: React.FC = () => {
     <div
       style={{
         ...styles.container,
-        opacity: 1,
-        visibility: 'visible',
       }}
     >
-      <BackgroundLayers />
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap');
+      `}</style>
+      <div
+        style={{
+          opacity: 1,
+          visibility: 'visible',
+        }}
+      >
+        <BackgroundLayers />
 
-      <div style={styles.clockFace}>
+        <div style={styles.clockFace}>
+          <ClockNumerals />
+          <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />
+          <ClockHand type="minute" rotation={getHandRotation(min, 6)} />
+          <ClockHand type="second" rotation={getHandRotation(sec, 6)} />
+          <CenterDot />
+        </div>
         <ClockNumerals />
         <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />
         <ClockHand type="minute" rotation={getHandRotation(min, 6)} />

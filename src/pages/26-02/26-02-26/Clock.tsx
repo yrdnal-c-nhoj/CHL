@@ -92,6 +92,8 @@ const ImageGridClock: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    let resizeTimeout: NodeJS.Timeout;
+    
     const calculateGridSize = () => {
       const squareSize = 100;
       const cols = Math.ceil(window.innerWidth / squareSize);
@@ -99,9 +101,17 @@ const ImageGridClock: React.FC = () => {
       setGridSize({ rows, cols });
     };
 
+    const debouncedResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(calculateGridSize, 150);
+    };
+
     calculateGridSize();
-    window.addEventListener('resize', calculateGridSize);
-    return () => window.removeEventListener('resize', calculateGridSize);
+    window.addEventListener('resize', debouncedResize);
+    return () => {
+      window.removeEventListener('resize', debouncedResize);
+      clearTimeout(resizeTimeout);
+    };
   }, []);
 
   useEffect(() => {

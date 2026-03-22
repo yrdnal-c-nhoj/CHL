@@ -75,7 +75,7 @@ const FullscreenClock: React.FC = () => {
           line-height: 1;
           animation: rotate 60s linear infinite;
           will-change: transform;
-          textShadow: '14vh 14vh 0px #1111aa, -14vh 14vh 0px #1111aa, 14vh -14vh 0px #1111aa, -14vh -14vh 0px #1111aa; 
+          text-shadow: 14vh 14vh 0px #1111aa, -14vh 14vh 0px #1111aa, 14vh -14vh 0px #1111aa, -14vh -14vh 0px #1111aa; 
         }
 
         @media (min-width: 1024px) {

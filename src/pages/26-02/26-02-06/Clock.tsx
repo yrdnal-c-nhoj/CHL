@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useMillisecondClock } from '../../../utils/useSmoothClock';
 import busterImg from '../../../assets/images/26-02/26-02-05/buster.webp';
 import hand1Img from '../../../assets/images/26-02/26-02-05/hand1.webp';
@@ -16,8 +15,6 @@ interface HandStyleParams {
 
 const Analog260205Clock: React.FC = () => {
   const [showContent, setShowContent] = useState(false);
-
-  useSuspenseFontLoader([]);
 
   useEffect(() => {
     setShowContent(true);
