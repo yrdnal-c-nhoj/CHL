@@ -47,11 +47,13 @@ const Clock: React.FC = () => {
           left: 0;
           right: 0;
           bottom: 0;
-          background-image: url(${shapesBg});
-          background-size: 25% auto;
-          background-position: 0 0;
-          background-repeat: repeat;
-          filter: grayscale(100%);
+          background-image: 
+            url(${shapesBg}),
+            url(${shapesBg});
+          background-size: 25% auto, 25% auto;
+          background-position: 0 0, 12.5% 0;
+          background-repeat: repeat, repeat;
+          filter: grayscale(90%);
           z-index: -2;
        }
 
@@ -62,11 +64,13 @@ const Clock: React.FC = () => {
           left: 0;
           right: 0;
           bottom: 0;
-          background-image: url(${shapesBg});
-          background-size: 25% auto;
-          background-position: 12.5% 0;
-          background-repeat: repeat;
-          filter: grayscale(100%) brightness(1.0) opacity(0.5);
+          background-image: 
+            url(${shapesBg}),
+            url(${shapesBg});
+          background-size: 25% auto, 25% auto;
+          background-position: 0 calc(25% / 2), 12.5% calc(25% / 2);
+          background-repeat: repeat, repeat;
+          filter: grayscale(90%) brightness(1.0) opacity(0.5) rotate(180deg);
           z-index: -2;
        }
 
