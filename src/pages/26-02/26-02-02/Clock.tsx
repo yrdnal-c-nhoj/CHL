@@ -1,37 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useMillisecondClock } from '../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import digitalBgImage from '../../../assets/images/26-02/26-02-02/boom.webp';
-import monofettFont from '../../../assets/fonts/25-04-10-Monofett.ttf?url';
-
-interface DigitStyle {
-  fontSize: string;
-  opacity: number;
-  color: string;
-  textShadow: string;
-  letterSpacing: string;
-  display: string;
-  marginLeft: string;
-}
 
 const SonicBoomClock: React.FC = () => {
-  const [showContent, setShowContent] = useState(false);
   const time = useMillisecondClock();
-
-  const fontConfigs = [{
-    fontFamily: 'Monofett',
-    fontUrl: monofettFont,
-    options: {
-      weight: 'normal',
-      style: 'normal'
-    }
-  }];
-
-  useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-    setShowContent(true);
-  }, []);
 
   const timeString =
     time.getHours().toString().padStart(2, '0') +
@@ -68,7 +40,7 @@ const SonicBoomClock: React.FC = () => {
       />
       <div
         style={{
-          fontFamily: `"Monofett", monospace`,
+          fontFamily: `"Syne Mono", monospace`,
           display: 'flex',
           alignItems: 'center',
           zIndex: 10,
@@ -79,20 +51,18 @@ const SonicBoomClock: React.FC = () => {
           const fontSize = 40 + reverseIndex * -4.5; 
           const opacity = Math.max(1.0 - reverseIndex * 0.15, 0.3);
 
-          const digitStyle: DigitStyle = {
-            fontSize: `${fontSize}vmin`,
-            opacity,
-            color: '#D0D6F2',
-            textShadow: '0 0 15px rgba(10, 63, 240, 0.4)',
-            letterSpacing: '-0.1em',
-            display: 'inline-block',
-            marginLeft: index > 0 ? '-0.2em' : '0',
-          };
-
           return (
             <span
               key={index}
-              style={digitStyle}
+              style={{
+                fontSize: `${fontSize}vmin`,
+                opacity,
+                color: '#D0D6F2',
+                textShadow: '0 0 15px rgba(10, 63, 240, 0.4)',
+                letterSpacing: '-0.1em',
+                display: 'inline-block',
+                marginLeft: index > 0 ? '-0.2em' : '0',
+              }}
             >
               {digit}
             </span>
