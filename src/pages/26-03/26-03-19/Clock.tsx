@@ -134,7 +134,7 @@ const Clock = () => {
       }
 
       if (state.snowHeight > 0) {
-        ctx.fillStyle = '#E4EDFC';
+        ctx.fillStyle = '#E3F2FD',
         ctx.fillRect(0, state.height - state.snowHeight, state.width, state.snowHeight);
       }
 
