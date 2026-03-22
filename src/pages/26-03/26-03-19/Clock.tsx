@@ -134,7 +134,7 @@ const Clock = () => {
       }
 
       if (state.snowHeight > 0) {
-        ctx.fillStyle = '#E3F2FD',
+        ctx.fillStyle = '#CEE5F5',
         ctx.fillRect(0, state.height - state.snowHeight, state.width, state.snowHeight);
       }
 
@@ -169,9 +169,10 @@ const Clock = () => {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           fontSize: 'clamp(5rem, 19vw, 10rem)',
-          color: '#E3F2FD',
+          color: '#CEE5F5',
           fontFamily: "'SnowFont', sans-serif",
           zIndex: 3, 
+          opacity: 0.8,
           pointerEvents: 'none',
           textAlign: 'center'
         }}
@@ -186,7 +187,7 @@ const Clock = () => {
           left: 0,
           width: '100%',
           height: '100%',
-          background: 'linear-gradient(to top, #3E4304 0%, #052882D1 100%)',
+          background: 'linear-gradient(to top, #434803 0%,#1F355B 30%, #40568ED1 100%)',
           opacity: 0.4,
           zIndex: 1
         }}
