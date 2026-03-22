@@ -32,17 +32,32 @@ const BananaClock: React.FC = () => {
       const minuteDeg = minutes * 6 + seconds * 0.1;
       const hourDeg = hours * 30 + minutes * 0.5;
 
-      document.getElementById('secondHand').style.transform =
-        `translate(-50%, -100%) rotate(${secondDeg}deg)`;
-      document.getElementById('minuteHand').style.transform =
-        `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
-      document.getElementById('hourHand').style.transform =
-        `translate(-50%, -100%) rotate(${hourDeg}deg)`;
+      const secondHand = document.getElementById('secondHand');
+      const minuteHand = document.getElementById('minuteHand');
+      const hourHand = document.getElementById('hourHand');
+
+      // Add null checks before accessing style properties
+      if (secondHand) secondHand.style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
+      if (minuteHand) minuteHand.style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
+      if (hourHand) hourHand.style.transform = `translate(-50%, -100%) rotate(${hourDeg}deg)`;
     };
 
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
-    return () => clearInterval(interval);
+    // Ensure DOM elements exist before starting clock
+    const startClock = () => {
+      const secondHand = document.getElementById('secondHand');
+      const minuteHand = document.getElementById('minuteHand');
+      const hourHand = document.getElementById('hourHand');
+      
+      if (secondHand && minuteHand && hourHand) {
+        const interval = setInterval(updateClock, 1000);
+        updateClock();
+        return () => clearInterval(interval);
+      }
+    };
+
+    // Delay start to ensure DOM is ready
+    const timeout = setTimeout(startClock, 100);
+    return () => clearTimeout(timeout);
   }, []);
 
   // Create banana tiles dynamically
@@ -73,6 +88,9 @@ const BananaClock: React.FC = () => {
         position: 'relative',
         backgroundColor: '#000',
         fontSize: '13px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <style>{`
@@ -85,7 +103,9 @@ const BananaClock: React.FC = () => {
           position: 'absolute',
           top: 0,
           left: 0,
-          display: 'grid',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           gridTemplateColumns: 'repeat(8, 15vw)',
           gridAutoRows: '15vw',
           width: '100%',

@@ -26,17 +26,8 @@ const MyClock: React.FC<MyClockProps> = () => {
   const fontName = `OswaldClockFont-${componentId.current}`;
   const imagesRef = useRef<ClockImages | null>(null);
 
-  // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: fontName,
-      fontUrl: boldFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], [fontName]);
+  // Font loading disabled due to corruption - using CSS @import instead
+  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
 
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);
@@ -143,12 +134,20 @@ const MyClock: React.FC<MyClockProps> = () => {
     <div
       style={{
         width: '100vw',
-        height: '100dvh',
-        background: `url(${backgroundImage}) center/cover no-repeat`, // Background image
-        overflow: 'hidden',
       }}
     >
-      <canvas ref={canvasRef} style={{ display: 'block' }} />
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap');
+      `}</style>
+      <div
+        style={{
+          height: '100dvh',
+          background: `url(${backgroundImage}) center/cover no-repeat`, // Background image
+          overflow: 'hidden',
+        }}
+      >
+        <canvas ref={canvasRef} style={{ display: 'block' }} />
+      </div>
     </div>
   );
 };
