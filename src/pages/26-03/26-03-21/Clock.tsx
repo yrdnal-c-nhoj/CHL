@@ -40,13 +40,7 @@ const Clock: React.FC = () => {
           left: 0;
           right: 0;
           bottom: 0;
-          background-image: 
-            url(${shapesBg}),
-            url(${shapesBg});
-          background-size: 25% auto, 25% auto;
-          background-position: 0 0, 12.5% 0;
-          background-repeat: repeat, repeat;
-          filter: grayscale(90%);
+          background-color: #0A6703;
           z-index: -2;
        }
 
@@ -63,20 +57,10 @@ const Clock: React.FC = () => {
           background-size: 25% auto, 25% auto;
           background-position: 0 calc(25% / 2), 12.5% calc(25% / 2);
           background-repeat: repeat, repeat;
-          filter: grayscale(30%) brightness(1.0) opacity(0.5) rotate(180deg);
           z-index: -2;
        }
 
-       .clock-wrapper .yellow-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-color: rgba(255, 255, 0, 0.3);
-          z-index: -1;
-          pointer-events: none;
-       }
+    
 
         .clock-container {
           display: grid;
@@ -91,7 +75,6 @@ const Clock: React.FC = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #5C8302;
           font-family: 'ShapesFont', monospace;
           
           /* Scaled to prevent clipping in a 3-row layout */
@@ -99,6 +82,14 @@ const Clock: React.FC = () => {
           line-height: 0.69;
           user-select: none;
           overflow: hidden;
+          background-image: url(${shapesBg});
+          background-size: 80%;
+          background-position: center;
+          filter: grayscale(100%);
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;
         }
 
         /* Desktop View: Return to 6 digits in a single row */
@@ -110,6 +101,14 @@ const Clock: React.FC = () => {
           .digit {
             font-size: 22vw;
             height: 100dvh;
+            background-image: url(${shapesBg});
+            background-size: 50%;
+            background-position: center;
+            filter: grayscale(100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
           }
         }
       `}</style>
