@@ -31,7 +31,7 @@ const Clock: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         color: digitColor,
-        fontSize: isMobile ? '12vw' : '8vh',
+        fontSize: isMobile ? '16vw' : '10vh',
         fontFamily: 'Metamorphous, monospace',
         textShadow: '1px 9px 0px rgb(255, 255, 255)',
       }}
@@ -44,7 +44,7 @@ const Clock: React.FC = () => {
     <div
       style={{
         color: digitColor,
-        fontSize: isMobile ? '6vw' : '8vh',
+        fontSize: isMobile ? '8vw' : '10vh',
         fontFamily: 'Metamorphous, monospace',
         margin: isMobile ? '0 1vw' : '0 2px',
         alignSelf: 'center',
