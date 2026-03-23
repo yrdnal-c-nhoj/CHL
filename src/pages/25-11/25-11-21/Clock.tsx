@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 
 // --- FONT IMPORT (same folder) ---
 import font_sdfsdfsdfsd from '../../../assets/fonts/25-11-21-omission.otf?url';

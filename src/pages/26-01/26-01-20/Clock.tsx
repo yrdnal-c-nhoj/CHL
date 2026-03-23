@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import bgImage from '../../../assets/images/26-01/26-01-20/hairdo.webp';
 import d25090120font from '../../../assets/fonts/26-01-20-hairdo.ttf';
 

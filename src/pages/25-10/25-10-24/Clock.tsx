@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import videoFile from '../../../assets/images/25-10/25-10-24/esp.mp4';
 import videoWebM from '../../../assets/images/25-10/25-10-24/esp.webp';
 import fallbackImg from '../../../assets/images/25-10/25-10-24/esp.jpeg';

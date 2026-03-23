@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 // Explicit module-based imports for the background
 import gifOne from '../../../assets/images/26-01/26-01-12/tic.webp';
 import gifTwo from '../../../assets/images/26-01/26-01-12/tic2.gif';

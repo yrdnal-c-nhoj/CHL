@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import bottomBackgroundImg from '../../../assets/images/25-10/25-10-11/ch.jpg'; // New bottom background image
 import backgroundImg from '../../../assets/images/25-10/25-10-11/ches.jpg'; // Original background image
 import customFont20251011 from '../../../assets/fonts/25-10-11-ch.ttf';
