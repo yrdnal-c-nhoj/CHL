@@ -16,6 +16,7 @@ interface StreamData {
   chars: string[];
   duration: number;
   delay: number;
+  easing: string;
 }
 
 interface BackgroundGridProps {
@@ -32,7 +33,7 @@ const generateChars = (): string[] => {
     const j = Math.floor(Math.random() * (i + 1));
     [charPool[i], charPool[j]] = [charPool[j], charPool[i]];
   }
-  return charPool.slice(0, 12);
+  return charPool.slice(0, 12).filter(char => char !== undefined);
 };
 
 /**
@@ -45,24 +46,51 @@ const BackgroundGrid: React.FC<BackgroundGridProps> = ({ windowSize, cellSize })
   // Memoize streams so they don't rerender every second with the clock
   const streams = useMemo(() => {
     return Array.from({ length: columnCount }, (): StreamData => ({
-      chars: Array.from({ length: rowsPerColumn }, () =>
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.floor(Math.random() * 36)]
-      ),
-      duration: 12 + Math.random() * 18,
-      delay: Math.random() * -20,
+      chars: Array.from({ length: rowsPerColumn }, () => {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        return chars[Math.floor(Math.random() * chars.length)];
+      }),
+      duration: 20 + Math.random() * 30,
+      delay: Math.random() * -30,
+      easing: ['ease-in-out', 'ease-out', 'ease-in', 'ease-in-out'][Math.floor(Math.random() * 4)] || 'ease-in-out',
     }));
   }, [columnCount]);
 
   return (
-    <div style={{
-      position: 'absolute',
-      inset: 0,
-      zIndex: 1,
-      display: 'flex',
-      pointerEvents: 'none',
-      opacity: 0.3,
-      overflow: 'hidden'
-    }}>
+    <>
+      <style>
+        {`
+          @keyframes rain-rise {
+            0% {
+              transform: translateY(100%);
+            }
+            20% {
+              transform: translateY(60%) translateY(-8px);
+            }
+            40% {
+              transform: translateY(30%) translateY(4px);
+            }
+            60% {
+              transform: translateY(10%) translateY(-6px);
+            }
+            80% {
+              transform: translateY(-10%) translateY(3px);
+            }
+            100% {
+              transform: translateY(-100%);
+            }
+          }
+        `}
+      </style>
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        zIndex: 1,
+        display: 'flex',
+        pointerEvents: 'none',
+        opacity: 0.3,
+        overflow: 'hidden'
+      }}>
       {streams.map((stream, colIdx) => (
         <div
           key={colIdx}
@@ -70,7 +98,7 @@ const BackgroundGrid: React.FC<BackgroundGridProps> = ({ windowSize, cellSize })
             width: cellSize,
             display: 'flex',
             flexDirection: 'column',
-            animation: `rain-rise ${stream.duration}s linear infinite`,
+            animation: `rain-rise ${stream.duration}s ${stream.easing} infinite`,
             animationDelay: `${stream.delay}s`,
           }}
         >
@@ -95,6 +123,7 @@ const BackgroundGrid: React.FC<BackgroundGridProps> = ({ windowSize, cellSize })
         </div>
       ))}
     </div>
+    </>
   );
 };
 
