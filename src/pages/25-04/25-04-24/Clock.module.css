@@ -1,0 +1,7 @@
+.inlineStyle {
+  background-color: #f70f07;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}

@@ -1,0 +1,99 @@
+.style-1 {
+
+            transform: translateY(-20vh) translateX(0vw)
+                       rotateX(0) rotateY(0) rotateZ(0);
+            opacity: 1;
+          
+}
+
+.style-2 {
+
+            transform:
+              translateY(120vh) translateX(var(--translateX))
+              rotateX(var(--rotateX))
+              rotateY(var(--rotateY))
+              rotateZ(var(--rotateZ));
+            opacity: 1;
+          
+}
+
+.style-3 {
+
+            transform: translateY(-20vh) translateX(0vw)
+                       rotateX(0) rotateY(0) rotateZ(0);
+            opacity: 1;
+          
+}
+
+.style-4 {
+
+            transform: translateY(30vh) translateX(calc(var(--translateX) * 0.3))
+                       rotateX(calc(var(--rotateX) * 0.25))
+                       rotateY(calc(var(--rotateY) * 0.25))
+                       rotateZ(calc(var(--rotateZ) * 0.25));
+            opacity: 1;
+          
+}
+
+.style-5 {
+
+            transform: translateY(60vh) translateX(calc(var(--translateX) * -0.3))
+                       rotateX(calc(var(--rotateX) * 0.5))
+                       rotateY(calc(var(--rotateY) * 0.5))
+                       rotateZ(calc(var(--rotateZ) * 0.5));
+            opacity: 1;
+          
+}
+
+.style-6 {
+
+            transform: translateY(90vh) translateX(calc(var(--translateX) * 0.3))
+                       rotateX(calc(var(--rotateX) * 0.75))
+                       rotateY(calc(var(--rotateY) * 0.75))
+                       rotateZ(calc(var(--rotateZ) * 0.75));
+            opacity: 1;
+          
+}
+
+.style-7 {
+
+            transform:
+              translateY(120vh) translateX(var(--translateX))
+              rotateX(var(--rotateX))
+              rotateY(var(--rotateY))
+              rotateZ(var(--rotateZ));
+            opacity: 1;
+          
+}
+
+.style-8 {
+
+          user-select: none;
+          pointer-events: none;
+          position: absolute;
+          font-weight: 700;
+          mix-blend-mode: screen;
+          will-change: transform;
+        
+}
+
+.inlineStyle {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background: linear-gradient(to top;
+  // red to yellow gradient
+          z-index: 0;
+  margin: 0;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+}

@@ -1,0 +1,103 @@
+.style-1 {
+ transform: rotateY(0deg); 
+}
+
+.style-2 {
+ transform: rotateY(360deg); 
+}
+
+.style-3 {
+
+          position: absolute;
+          bottom: 50%;
+          left: 50%;
+          transform-origin: bottom center;
+          background-color: #d3ad62;
+        
+}
+
+.style-4 {
+
+          width: 0.6vw;
+          height: 12vw;
+          transform: translateX(-50%);
+        
+}
+
+.style-5 {
+
+          width: 0.4vw;
+          height: 16vw;
+          transform: translateX(-50%);
+        
+}
+
+.style-6 {
+
+          width: 0.2vw;
+          height: 18vw;
+          transform: translateX(-50%);
+        
+}
+
+.style-7 {
+
+          font-family: cursive,
+          position: absolute;
+          font-size: 6.2vw;
+          color: #d3ad62;
+          text-align: center;
+          width: auto;
+          pointer-events: none;
+        
+}
+
+.inlineStyle {
+  background-color: #060606;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+  width: 100vw;
+  margin: 0;
+  perspective: 100vw;
+  overflow: hidden;
+  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+  width: 80vh;
+  height: 80vh;
+  border-radius: 50%;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: spin 7s linear infinite;
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  background-color: #d3ad62;
+  width: 0.6vw;
+  height: 12vw;
+  transform: translateX(-50%);
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  background-color: #d3ad62;
+  width: 0.4vw;
+  height: 16vw;
+  transform: translateX(-50%);
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  background-color: #d3ad62;
+  width: 0.2vw;
+  height: 18vw;
+  transform: translateX(-50%);
+}
