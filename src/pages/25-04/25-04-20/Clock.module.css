@@ -1,0 +1,108 @@
+.style-1 {
+
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        
+}
+
+.style-2 {
+
+          display: inline-block;
+          line-height: 0.9;
+          color: #E5EBF0FF;
+          font-family: 'CloFont', serif;
+          text-align: center;
+          user-select: none;
+          transition: opacity 1s ease, transform 1s ease, font-size 1s ease;
+          text-shadow:
+            19px 19px 0 #C9D2DEFF,
+            -19px -19px 0 #E1E5EBFF,    
+            0 -21px 0 #A8C4CCFF,
+            -20px 0px 0 #A9B7D2FF,
+            0 21px 0 #B3B8CEFF,
+            20px 0px 0 #9FB5C1FF,
+            -20px 23px 0 #CFD5DDFF,  
+            20px -23px 0 #E3E7ECFF;
+          opacity: 0;
+          transform: scale(0.95);
+          animation: fadePulse 5s ease-in-out infinite;
+        
+}
+
+.style-3 {
+
+            opacity: 0;
+            transform: scale(0.95);
+          
+}
+
+.style-4 {
+
+            opacity: 1;
+            transform: scale(1);
+          
+}
+
+.style-5 {
+
+            opacity: 1;
+            transform: scale(1);
+          
+}
+
+.style-6 {
+
+            opacity: 0;
+            transform: scale(0.95);
+          
+}
+
+.style-7 {
+
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          font-family: 'CloFont', serif;
+          color: #bed3ef;
+          text-align: center;
+          gap: 0.2rem;
+          z-index: 6;
+        
+}
+
+.style-8 {
+
+            flex-direction: row;
+          
+}
+
+.inlineStyle {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  object-fit: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  object-fit: cover;
+  transform: scaleX(-1);
+  opacity: 0.5;
+}

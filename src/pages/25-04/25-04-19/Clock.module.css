@@ -1,0 +1,79 @@
+.style-1 {
+permanentMarkerFont
+}
+
+.style-2 {
+
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        
+}
+
+.style-3 {
+
+          width: 100%;
+          height: 100%;
+          background: #5B032EFF;
+          overflow: hidden;
+          margin: 0;
+        
+}
+
+.style-4 {
+
+          position: absolute;
+          top: 20vh;
+          right: 15vw;
+          transform-origin: top right;
+          transform-style: preserve-3d;
+          transform: scale(0.8) rotateX(20deg) rotateY(20deg);
+          perspective: 1500px;
+          width: 100vw;
+          height: 100dvh;
+          overflow: visible;
+        
+}
+
+.style-5 {
+
+          position: absolute;
+          transform-style: preserve-3d;
+          width: 100vw;
+          overflow: visible;
+          height: auto;
+        
+}
+
+.style-6 {
+
+          font-family: 'SphFont', sans-serif !important;
+          border-radius: 50%;
+          position: absolute;
+          transform-style: preserve-3d;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: rgb(7, 21, 112);
+          user-select: none;
+          box-shadow: 0 0 1vh rgba(0,0,0,0.3);
+        
+}
+
+.style-7 {
+
+          background: radial-gradient(circle at 30%, #0dcaec, #056d7b);
+        
+}
+
+.style-8 {
+
+          background: radial-gradient(circle at 30%, #dce30b, #c2b30c);
+        
+}
+
+.style-9 {
+
+          background: radial-gradient(circle at 30%, #f80, #c50);
+        
+}

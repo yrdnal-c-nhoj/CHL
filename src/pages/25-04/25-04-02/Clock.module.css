@@ -1,0 +1,21 @@
+.style-1 {
+
+                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+              
+}
+
+.style-2 {
+
+                transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+              
+}
+
+.inlineStyle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3vw;
+  animation: spinClock 20s linear infinite;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}

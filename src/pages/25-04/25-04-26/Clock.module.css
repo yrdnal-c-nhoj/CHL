@@ -1,0 +1,37 @@
+.style-1 {
+stickFont
+}
+
+.style-2 {
+
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+        
+}
+
+.style-3 {
+
+          background: black;
+          height: 100dvh;
+          width: 100vw;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+        
+}
+
+.style-4 {
+
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100dvh;
+        
+}
+
+.inlineStyle {
+  font-family: skew-stick;
+}
