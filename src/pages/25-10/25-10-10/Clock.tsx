@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 // === Local assets ===
 import bgWebp from '../../../assets/images/25-10/25-10-10/roma.webp';
 import bgVideo from '../../../assets/images/25-10/25-10-10/ro.mp4';

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 
 // Image imports with Vite ?url suffix
 import pageBgImgBase from '../../../assets/images/25-11/25-11-24/skin.jpg?url';

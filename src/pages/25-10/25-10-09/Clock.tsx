@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import cinzel20251010 from '../../../assets/fonts/25-10-09-d1.ttf';
 import roboto20251010 from '../../../assets/fonts/25-10-09-d2.ttf';
 import orbitron20251010 from '../../../assets/fonts/25-10-09-d3.otf';
