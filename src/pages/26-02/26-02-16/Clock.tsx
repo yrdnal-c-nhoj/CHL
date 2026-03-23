@@ -20,7 +20,7 @@ const CONFIG = {
 };
 
 const getBackgroundStyle = (isFlipped) => ({
-  position: 'absolute',
+  position: 'absolute' as const,
   inset: 0,
   backgroundImage: `url(${mazeImage})`,
   backgroundSize: '200px auto',
@@ -33,35 +33,63 @@ const getBackgroundStyle = (isFlipped) => ({
 });
 
 const BackgroundLayers = React.memo(() => {
-  const videoRef = React.useRef(null);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
   const [videoError, setVideoError] = useState<boolean>(false);
   const [videoLoaded, setVideoLoaded] = useState<boolean>(false);
+  const [userInteracted, setUserInteracted] = useState<boolean>(false);
 
   const handleVideoError = (e) => {
-    console.error('Video loading error:', e);
-    console.error('Video src:', loopVideo);
+    // Log to console in development only
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Video loading error:', e);
+      console.error('Video src:', loopVideo);
+    }
     setVideoError(true);
+  };
+
+  const handleVideoLoad = () => {
+    setVideoLoaded(true);
+    setVideoError(false);
+  };
+
+  const handleUserInteraction = () => {
+    setUserInteracted(true);
+    // Try to play video after user interaction
+    const video = videoRef.current;
+    if (video && !videoLoaded && !videoError) {
+      video.play().then(() => {
+        setVideoLoaded(true);
+      }).catch((err) => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Video play failed after user interaction:', err);
+        }
+        setVideoError(true);
+      });
+    }
   };
 
   React.useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
-    let played = false;
+    if (!video || videoError) return;
+    
     const playVideo = async () => {
-      if (played) return;
-      played = true;
       try {
         await video.play();
         setVideoLoaded(true);
       } catch (err) {
-        console.error('Video autoplay was prevented:', err);
-        setVideoError(true);
+        // Log to console in development only
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Video autoplay was prevented:', err);
+        }
+        // Don't set error immediately - wait for user interaction
       }
     };
 
+    // Add multiple event listeners for better reliability
     video.addEventListener('canplay', playVideo);
+    video.addEventListener('loadeddata', handleVideoLoad);
 
-    // If video is already ready, play it.
+    // If video is already ready, try to play it.
     if (video.readyState >= 4) {
       // HAVE_ENOUGH_DATA
       playVideo();
@@ -69,8 +97,26 @@ const BackgroundLayers = React.memo(() => {
 
     return () => {
       video.removeEventListener('canplay', playVideo);
+      video.removeEventListener('loadeddata', handleVideoLoad);
     };
-  }, []);
+  }, [videoError]);
+
+  // Add global click listener for user interaction
+  React.useEffect(() => {
+    if (userInteracted || videoLoaded) return;
+    
+    const handleGlobalClick = () => {
+      handleUserInteraction();
+    };
+    
+    document.addEventListener('click', handleGlobalClick, { once: true });
+    document.addEventListener('touchstart', handleGlobalClick, { once: true });
+    
+    return () => {
+      document.removeEventListener('click', handleGlobalClick);
+      document.removeEventListener('touchstart', handleGlobalClick);
+    };
+  }, [userInteracted, videoLoaded]);
 
   return (
     <>
@@ -82,15 +128,17 @@ const BackgroundLayers = React.memo(() => {
         muted
         playsInline
         onError={handleVideoError}
+        onLoadedData={handleVideoLoad}
         className={videoLoaded ? styles.rotatingVideo : ''}
         style={{
-          position: 'absolute',
+          position: 'absolute' as const,
           top: '50%',
           left: '50%',
           width: '150vw',
           height: '150vh',
           objectFit: 'cover',
-          opacity: videoError ? 0 : videoLoaded ? 0.7 : 0,
+          opacity: videoError ? 0 : videoLoaded ? 0.7 : 0.1,
+          visibility: videoError ? 'hidden' : 'visible',
           zIndex: 0,
           transition: 'opacity 0.5s ease-in-out',
         }}
