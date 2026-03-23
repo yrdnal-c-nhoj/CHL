@@ -1,0 +1,129 @@
+.style-1 {
+ background: #3bbdf0; 
+}
+
+.style-2 {
+ background: #8fbee2; 
+}
+
+.style-3 {
+ background: #e8a30d; 
+}
+
+.style-4 {
+ background: #fd1d1d; 
+}
+
+.style-5 {
+ background: #b43a87; 
+}
+
+.style-6 {
+ background: #833ab4; 
+}
+
+.style-7 {
+ background: #02027f; 
+}
+
+.style-8 {
+ background: #010102; 
+}
+
+.style-9 {
+ top: 10%; opacity: 1; 
+}
+
+.style-10 {
+ top: 50%; opacity: 1; 
+}
+
+.style-11 {
+ top: 90%; opacity: 0; 
+}
+
+.inlineStyle {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  height: 100%;
+  overflow: hidden;
+  background: #01151d;
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: column;
+  animation: skyCycle 20s ease-in-out infinite alternate;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: sunVertical 20s linear infinite alternate;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: CactusClockFont;
+  display: flex;
+  gap: 1.3vh;
+  margin: 1vh 0;
+  display: flex;
+  gap: 1.3vh;
+  margin: 1vh 0;
+  display: flex;
+  gap: 1.3vh;
+  margin: 1vh 0;
+  display: flex;
+  gap: 1.3vh;
+  margin: 1vh 0;
+  position: absolute;
+  bottom: 40vh;
+  width: 100%;
+  height: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  gap: 1vw;
+  opacity: 0.6;
+  position: absolute;
+  bottom: 0;
+  height: 27vh;
+  width: 100%;
+  background: #c5a770;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  display: flex;
+  justify-content: center;
+  gap: 15vw;
+  margin-bottom: 8vh;
+  width: 2vw;
+  height: 15vh;
+  background: #228b22;
+  border-radius: 1vw;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 1vw;
+  height: 6vh;
+  background: #228b22;
+  border-radius: 50% 50% 0 0;
+  left: -1vw;
+  top: 20%;
+  transform: rotate(-40deg);
+  transform-origin: bottom right;
+  position: absolute;
+  width: 1vw;
+  height: 6vh;
+  background: #228b22;
+  border-radius: 50% 50% 0 0;
+  right: -1vw;
+  top: 10%;
+  transform: rotate(40deg);
+  transform-origin: bottom left;
+}

@@ -1,0 +1,45 @@
+.style-1 {
+ transform: scale(0); 
+}
+
+.style-2 {
+ transform: scale(1.2); 
+}
+
+.style-3 {
+ transform: scale(1); 
+}
+
+.style-4 {
+
+              flex-direction: column !important;
+            
+}
+
+.inlineStyle {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  position: relative;
+  width: 90vw;
+  margin-bottom: 2vh;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fill;
+  justify-content: center;
+  align-content: center;
+  gap: 3vw;
+  z-index: 2;
+  pointer-events: none;
+  height: 23vh;
+}

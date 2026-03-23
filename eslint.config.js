@@ -148,6 +148,23 @@ export default tseslint.config(
       'jsx-a11y/role-supports-aria-props': 'error',
       'jsx-a11y/scope': 'error',
       'jsx-a11y/tabindex-no-positive': 'error',
+
+      // Block style tag injection in clock pages
+      'react/no-danger': 'error',
+      'react/jsx-no-duplicate-props': 'error',
+      'react/no-unknown-property': ['error', { ignore: ['cssText'] }],
+    },
+  },
+
+  // Specific rules for clock pages to block style injection
+  {
+    files: ['**/pages/**/Clock.tsx'],
+    rules: {
+      'react/no-danger': 'error',
+      'react/jsx-no-target-blank': 'error',
+      'no-template-curly-in-string': 'error',
+      // Block style tags and inline styles in clock pages
+      'react/no-unknown-property': ['error', { ignore: ['cssText'] }],
     },
   },
 

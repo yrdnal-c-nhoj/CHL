@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import type { ComponentType } from 'react';
 
 // Preload all Clock.tsx files under /pages/**/Clock.tsx
-const clockModules = import.meta.glob('../../pages/**/Clock.tsx');
+const clockModules = import.meta.glob('../pages/**/Clock.tsx');
 
 export interface ClockItem {
   date: string;
@@ -35,8 +35,8 @@ export const useClockPage = (item: ClockItem | null | undefined): UseClockPageRe
     if (!yy || !mm) return null;
 
     const candidates = [
-      `../../pages/${yy}-${mm}/${item.path}/Clock.tsx`, // month/day structure
-      `../../pages/${item.path}/Clock.tsx`, // legacy flat structure
+      `../pages/${yy}-${mm}/${item.path}/Clock.tsx`, // month/day structure
+      `../pages/${item.path}/Clock.tsx`, // legacy flat structure
     ];
 
 

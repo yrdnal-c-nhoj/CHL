@@ -1,0 +1,98 @@
+.style-1 {
+mainBackground
+}
+
+.style-2 {
+bgImage
+}
+
+.style-3 {
+
+          animation: spin-cw 290s linear infinite;
+          opacity: 0.5;
+        
+}
+
+.style-4 {
+
+          animation: spin-ccw 290s linear infinite;
+          opacity: 0.3;
+        
+}
+
+.style-5 {
+ transform: rotate(0deg) scale(1.5); 
+}
+
+.style-6 {
+ transform: rotate(360deg) scale(1.5); 
+}
+
+.style-7 {
+ transform: rotate(0deg) scale(1.5); 
+}
+
+.style-8 {
+ transform: rotate(-360deg) scale(1.5); 
+}
+
+.style-9 {
+
+          position: relative;
+          width: 90vmin; /* Increased to prevent clipping */
+          height: 90vmin; /* Increased to prevent clipping */
+          z-index: 1;
+        
+}
+
+.style-10 {
+
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform-origin: 50% 85%;
+          will-change: transform;
+          opacity: 0.8;
+          filter: drop-shadow(0 0.3rem 0.5rem rgba(0,0,0,0.4));
+          pointer-events: none;
+          width: auto;
+          max-height: 100%; /* Ensure hands scale within clock face */
+        
+}
+
+.style-11 {
+ height: 11rem; z-index: 2; 
+}
+
+.style-12 {
+ height: 13rem; z-index: 3; 
+}
+
+.style-13 {
+ height: 15rem; z-index: 4; 
+}
+
+.style-14 {
+
+          position: absolute;
+          z-index: 10;
+          width: 70vw;
+          height: auto;
+          opacity: 0.3;
+          pointer-events: none;
+        
+}
+
+.style-15 {
+
+          top: 0vh;
+          left: 0vw;
+        
+}
+
+.style-16 {
+
+          bottom: 0vh;
+          right: 0vw;
+        
+}
