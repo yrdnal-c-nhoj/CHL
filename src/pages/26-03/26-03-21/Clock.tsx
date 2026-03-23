@@ -11,7 +11,6 @@ const Clock: React.FC = () => {
 
   return (
     <div className="clock-wrapper">
-      <div className="yellow-overlay"></div>
       <style>{`
         @font-face {
           font-family: 'ShapesFont';
@@ -43,24 +42,6 @@ const Clock: React.FC = () => {
           background-color: #0A6703;
           z-index: -2;
        }
-
-       .clock-wrapper::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-image: 
-            // url(${shapesBg}),
-            url(${shapesBg});
-          background-size: 25% auto, 25% auto;
-          background-position: 0 calc(25% / 2), 12.5% calc(25% / 2);
-          background-repeat: repeat, repeat;
-          z-index: -2;
-       }
-
-    
 
         .clock-container {
           display: grid;
