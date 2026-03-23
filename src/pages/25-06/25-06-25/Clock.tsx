@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import boneFont from '../../../assets/fonts/25-06-25-bone.ttf';
 import bone from '../../../assets/images/25-06/25-06-25/bone.png';
 import bone1 from '../../../assets/images/25-06/25-06-25/bone1.png';

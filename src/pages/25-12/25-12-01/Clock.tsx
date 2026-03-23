@@ -1,6 +1,6 @@
 // DigitalClock.jsx
 import React, { useState, useEffect } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import bgImg from '../../../assets/images/25-12/25-12-01/shark.webp';
 import clockfoont12012 from '../../../assets/fonts/25-12-01-shark.ttf?url';
 

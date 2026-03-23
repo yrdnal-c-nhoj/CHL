@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import bgImage from '../../../assets/images/25-06/25-06-12/auth.jpg';
 import cattleFont from '../../../assets/fonts/25-06-12-cattle.ttf';
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, memo, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 
 // --- Image Imports ---
 import bg1 from '../../../assets/images/25-12/25-12-10/j.webp';

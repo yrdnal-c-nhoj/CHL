@@ -26,7 +26,6 @@ export const useClockPage = (item: ClockItem | null | undefined): UseClockPageRe
   // Ref to track the current loading item to prevent race conditions
   const loadingItemRef = useRef<string | null>(null);
 
-  console.log('useClockPage called with item:', item);
 
   const getClockModuleKey = useCallback((item: ClockItem) => {
     const date = item?.date || item?.path;
@@ -40,16 +39,13 @@ export const useClockPage = (item: ClockItem | null | undefined): UseClockPageRe
       `../../pages/${item.path}/Clock.tsx`, // legacy flat structure
     ];
 
-    console.log('Module candidates for', date, ':', candidates);
 
     for (const key of candidates) {
       if (clockModules[key]) {
-        console.log('Found module key:', key);
         return key;
       }
     }
 
-    console.log('No module found for', date);
     return null;
   }, []);
 

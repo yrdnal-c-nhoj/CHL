@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import bgImage from '../../../assets/images/25-10/25-10-05/16a.webp';
 import clockBgImage from '../../../assets/images/25-10/25-10-05/16.webp';
 import diigi251005 from '../../../assets/fonts/25-10-05-dode.ttf';

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import ufoImg from '../../../assets/images/25-09/25-09-28/ufo.webp';
 import skyImg from '../../../assets/images/25-09/25-09-28/stars.gif';
 import nebulaImg from '../../../assets/images/25-09/25-09-28/sta.gif';
