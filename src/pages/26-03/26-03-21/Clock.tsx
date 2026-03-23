@@ -108,7 +108,7 @@ const Clock: React.FC = () => {
             grid-template-rows: 1fr;
           }
           .digit {
-            font-size: 24vw;
+            font-size: 22vw;
             height: 100dvh;
           }
         }
