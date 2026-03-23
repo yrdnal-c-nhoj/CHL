@@ -45,11 +45,8 @@ const Clock: React.FC = () => {
 
         .clock-container {
           display: grid;
-          /* Mobile: 2 columns, 3 rows (Total 6 digits) */
           grid-template-columns: repeat(2, 1fr);
           grid-template-rows: repeat(3, 1fr);
-          // width: 100vw;
-          // height: 99dvh;
         }
 
         .digit {
@@ -57,8 +54,6 @@ const Clock: React.FC = () => {
           align-items: center;
           justify-content: center;
           font-family: 'ShapesFont', monospace;
-          
-          /* Scaled to prevent clipping in a 3-row layout */
           font-size: 33.3vh; 
           line-height: 0.69;
           user-select: none;
@@ -73,7 +68,6 @@ const Clock: React.FC = () => {
           -webkit-text-fill-color: transparent;
         }
 
-        /* Desktop View: Return to 6 digits in a single row */
         @media (min-width: 768px) {
           .clock-container {
             grid-template-columns: repeat(6, 1fr);
