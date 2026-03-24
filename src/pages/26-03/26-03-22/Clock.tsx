@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef, memo } from 'react';
 import skyImage from '../../../assets/images/26-03/26-03-22/sky.webp';
 
-const balloonColors = ['#FF2D2D', '#FFD700', '#00BFFF', '#32CD32', '#FF6B9D', '#FF8C00', '#FF1493', '#00CED1', '#FF4500', '#9370DB'];
+const balloonColors = ['#FF2D2D', '#FFD700', '#32CD32', '#FF6B9D', '#FF8C00', '#FF1493',  '#FF4500', '#9370DB'];
 
 interface BalloonDigitProps {
   char: string;
@@ -166,6 +166,7 @@ const VIPParallaxClock = () => {
           flex-direction: column;
           justify-content: space-around;
           align-items: center;
+          opacity: 0.8;
           animation: scrollUp 25s linear infinite;
           z-index: 2;
         }
