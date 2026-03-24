@@ -1,153 +1,217 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef, memo } from 'react';
+import skyImage from '../../../assets/images/26-03/26-03-22/sky.webp';
+
+const balloonColors = ['#FF2D2D', '#FFD700', '#00BFFF', '#32CD32', '#FF6B9D', '#FF8C00', '#FF1493', '#00CED1', '#FF4500', '#9370DB'];
+
+interface BalloonDigitProps {
+  char: string;
+}
+
+// 1. Memoized BalloonDigit prevents the "jump" by keeping 
+// the same physics/animation state when the time updates.
+const BalloonDigit = memo(({ char }: BalloonDigitProps) => {
+  const [color] = useState(() => balloonColors[Math.floor(Math.random() * balloonColors.length)]);
+  
+  // Physics are generated once per mount and persisted in useRef
+  const p = useRef({
+    floatSpeed: 3 + Math.random() * 2,
+    floatAmplitude: 12 + Math.random() * 10,
+    driftSpeed: 4 + Math.random() * 3,
+    driftAmplitude: 8 + Math.random() * 10,
+    rockSpeed: 2 + Math.random() * 2,
+    rockAmplitude: 3 + Math.random() * 3,
+    scaleSpeed: 2.5 + Math.random() * 1.5,
+    scaleMin: 0.94,
+    scaleMax: 1.06,
+    delay: Math.random() * -20, // Negative delay prevents "starting from zero" look
+    baseOffsetY: Math.random() * 20 - 10,
+    baseOffsetX: Math.random() * 15 - 7.5,
+  }).current;
+
+  if (char === ' ') {
+    return <span style={{ margin: '0 0.25em' }}>&nbsp;</span>;
+  }
+
+  return (
+    <span style={{ 
+      display: 'inline-block', 
+      transform: `translate(${p.baseOffsetX}px, ${p.baseOffsetY}px)`,
+      margin: '0 4px'
+    }}>
+      <span style={{
+        display: 'inline-block',
+        animation: `balloonFloat ${p.floatSpeed}s ease-in-out infinite alternate`,
+        animationDelay: `${p.delay}s`,
+        ['--float-amp' as any]: `${p.floatAmplitude}px`,
+      }}>
+        <span style={{
+          display: 'inline-block',
+          animation: `balloonDrift ${p.driftSpeed}s ease-in-out infinite alternate`,
+          animationDelay: `${p.delay}s`,
+          ['--drift-amp' as any]: `${p.driftAmplitude}px`,
+        }}>
+          <span style={{
+            display: 'inline-block',
+            animation: `balloonRock ${p.rockSpeed}s ease-in-out infinite alternate`,
+            animationDelay: `${p.delay}s`,
+            ['--rock-amp' as any]: `${p.rockAmplitude}deg`,
+          }}>
+            <span 
+              className="balloon-string"
+              style={{
+                display: 'inline-block',
+                color: color,
+                textShadow: '4px 4px 8px rgba(0,0,0,0.3), -1px -1px 2px rgba(255,255,255,0.2)',
+                animation: `balloonBreathe ${p.scaleSpeed}s ease-in-out infinite alternate`,
+                animationDelay: `${p.delay}s`,
+                ['--scale-min' as any]: p.scaleMin,
+                ['--scale-max' as any]: p.scaleMax,
+                willChange: 'transform',
+              }}
+            >
+              {char}
+            </span>
+          </span>
+        </span>
+      </span>
+    </span>
+  );
+});
+
+const ColoredTime = ({ time }: { time: string }) => {
+  return (
+    <>
+      {time.split('').map((char, index) => (
+        // 2. Using index as the key is CRITICAL. 
+        // It tells React to update the existing balloon rather than replacing it.
+        <BalloonDigit key={index} char={char} />
+      ))}
+    </>
+  );
+};
 
 const VIPParallaxClock = () => {
-  const [time, setTime] = useState(new Date().toLocaleTimeString());
+  const [time, setTime] = useState('');
 
-  // Update clock every second
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date().toLocaleTimeString());
-    }, 1000);
+    const formatTime = () => {
+      const now = new Date();
+      return now.toLocaleTimeString('en-GB', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      }).replace(':', ' '); 
+    };
+
+    setTime(formatTime());
+    const timer = setInterval(() => setTime(formatTime()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // Split time into individual characters (digits and colons)
-  const timeChars = time.split('');
+  const styles = useMemo(() => (
+    <style>
+      {`
+        @font-face {
+          font-family: 'Balloon';
+          src: url('/src/assets/fonts/26-03-22-balloon.ttf') format('truetype');
+        }
+
+        @keyframes scrollUp {
+          from { transform: translateY(0); }
+          to { transform: translateY(-50%); }
+        }
+
+        @keyframes balloonFloat {
+          0% { transform: translateY(calc(var(--float-amp) * -1)); }
+          100% { transform: translateY(var(--float-amp)); }
+        }
+
+        @keyframes balloonDrift {
+          0% { transform: translateX(calc(var(--drift-amp) * -1)); }
+          100% { transform: translateX(var(--drift-amp)); }
+        }
+
+        @keyframes balloonRock {
+          0% { transform: rotate(calc(var(--rock-amp) * -1)); }
+          100% { transform: rotate(var(--rock-amp)); }
+        }
+
+        @keyframes balloonBreathe {
+          0% { transform: scale(var(--scale-min)); }
+          100% { transform: scale(var(--scale-max)); }
+        }
+
+        .stage {
+          position: relative;
+          width: 100%;
+          height: 100vh;
+          overflow: hidden;
+          background: #87CEEB; /* Fallback sky blue */
+        }
+
+        .layer {
+          position: absolute;
+          width: 100%;
+          height: 200%;
+          top: 0;
+          left: 0;
+        }
+
+        .bg {
+          background: url("${skyImage}") center/cover;
+          animation: scrollUp 60s linear infinite;
+        }
+
+        .fg {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          align-items: center;
+          animation: scrollUp 25s linear infinite;
+          z-index: 2;
+        }
+
+        .glass-tile {
+          font-family: 'Balloon', sans-serif;
+          font-size: clamp(4rem, 15vw, 12rem);
+          text-align: center;
+          user-select: none;
+          filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
+        }
+
+        /* The Balloon String */
+        .balloon-string {
+          position: relative;
+        }
+
+        .balloon-string::after {
+          content: '';
+          position: absolute;
+          left: 50%;
+          top: 85%;
+          width: 2px;
+          height: 100px;
+          background: linear-gradient(to bottom, 
+            rgba(255,255,255,0.6) 0%, 
+            rgba(255,255,255,0.1) 100%
+          );
+          transform: translateX(-50%) skewX(-1deg);
+          border-radius: 1px;
+          pointer-events: none;
+          z-index: -1;
+        }
+      `}
+    </style>
+  ), []);
 
   return (
     <>
-      <style>
-        {`
-          @keyframes slideUpBG {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); }
-          }
-          @keyframes slideUpTiles {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); }
-          }
-          .animate-bg {
-            animation: slideUpBG 40s linear infinite;
-          }
-          .animate-tiles {
-            animation: slideUpTiles 15s linear infinite;
-          }
-          .glass-tile {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-          }
-          .digit-box {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 0.7em;
-            height: 1.2em;
-            text-align: center;
-            font-family: 'Balloon', system-ui, sans-serif;
-          }
-          @font-face {
-            font-family: 'Balloon';
-            src: url('/src/assets/fonts/26-03-22-balloon.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-          }
-        `}
-      </style>
-
-      <div style={{
-        position: 'relative',
-        width: '100%',
-        height: '600px',
-        backgroundColor: '#0a0a0a',
-        overflow: 'hidden',
-        borderRadius: '24px',
-        fontFamily: 'system-ui, -apple-system, sans-serif'
-      }}>
-        
-        {/* LAYER 1: Background Image (Slower) */}
-        <div className="animate-bg" style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '200%', // Doubled for seamless loop
-          backgroundImage: 'url("https://images.unsplash.com/photo-1634128221889-82ed6efebfc3?q=80&w=2000")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.4,
-          zIndex: 1
-        }} />
-
-        {/* LAYER 2: Moving Tiles (Faster) */}
-        <div className="animate-tiles" style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '200%', // Doubled for seamless loop
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'space-around',
-          zIndex: 2
-        }}>
-          {/* We render two sets of the same content to create the infinite replacement loop */}
-          {[1, 2].map((group) => (
-            <div key={group} style={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
-              gap: '150px',
-              height: '50%',
-              justifyContent: 'center' 
-            }}>
-              <div className="glass-tile" style={{
-                padding: '40px 60px',
-                borderRadius: '30px',
-                textAlign: 'center',
-                minWidth: '320px'
-              }}>
-                <div style={{ 
-                  color: '#fbbf24', 
-                  fontSize: '12px', 
-                  letterSpacing: '4px', 
-                  marginBottom: '10px',
-                  fontWeight: '900' 
-                }}>
-                  PREMIUM ACCESS
-                </div>
-                <div style={{ 
-                  fontSize: '4rem', 
-                  fontWeight: '300', 
-                  color: '#fff',
-                  textShadow: '0 0 20px rgba(255,255,255,0.3)',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  gap: '2px'
-                }}>
-                  {timeChars.map((char, index) => (
-                    <span key={index} className="digit-box">
-                      {char}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* STATIC OVERLAY (Labels/UI that don't move) */}
-        <div style={{
-          position: 'absolute',
-          bottom: '20px',
-          right: '20px',
-          zIndex: 10,
-          color: 'rgba(255,255,255,0.5)',
-          fontSize: '12px'
-        }}>
-          EST. 2026 • VIP MODULE
+      {styles}
+      <div className="stage" aria-label={`Current time is ${time}`}>
+        <div className="layer bg" aria-hidden="true" />
+        <div className="layer fg">
+          <time className="glass-tile"><ColoredTime time={time} /></time>
+          <time className="glass-tile"><ColoredTime time={time} /></time>
+          <time className="glass-tile"><ColoredTime time={time} /></time>
         </div>
       </div>
     </>
