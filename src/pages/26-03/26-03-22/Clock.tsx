@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, memo } from 'react';
 import skyImage from '../../../assets/images/26-03/26-03-22/sky.webp';
+import balloonFont from '../../../assets/fonts/26-03-22-balloon.ttf?url';
 
 const balloonColors = ['#FF2D2D', '#FFD700', '#32CD32', '#FF6B9D', '#FF8C00', '#FF1493',  '#FF4500', '#9370DB'];
 
@@ -112,7 +113,7 @@ const VIPParallaxClock = () => {
       {`
         @font-face {
           font-family: 'Balloon';
-          src: url('/src/assets/fonts/26-03-22-balloon.ttf') format('truetype');
+          src: url(${balloonFont}) format('truetype');
         }
 
         @keyframes scrollUp {
