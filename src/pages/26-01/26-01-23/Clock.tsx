@@ -1,37 +1,57 @@
-import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
+import React, { useState, useEffect, CSSProperties } from 'react';
 
 // Asset imports
 import clockDigitImage from '../../../assets/images/26-01/26-01-23/eye.gif';
 import clockBackground from '../../../assets/images/26-01/26-01-23/eye.webp';
+import styles from './Clock.module.css';
+
+interface CustomStyle extends CSSProperties {
+  '--rotation'?: string;
+}
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [bgReady, setBgReady] = useState<boolean>(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    let animationFrameId: number;
+
+    const tick = () => {
       setTime(new Date());
-    }, 100); // Update every 100ms for smooth time display
-    return () => clearInterval(interval);
+      animationFrameId = requestAnimationFrame(tick);
+    };
+
+    animationFrameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
   // Preload background and digit asset to avoid flash
   useEffect(() => {
+    let isMounted = true;
     const imgs = [clockDigitImage, clockBackground];
-    let loaded = 0;
-    const done: React.FC = () => {
-      loaded += 1;
-      if (loaded >= imgs.length) setBgReady(true);
-    };
-    imgs.forEach((src) => {
-      const img = new Image();
-      img.onload = done;
-      img.onerror = done;
-      img.src = src;
+    
+    const loadPromises = imgs.map((src) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = resolve;
+        img.onerror = resolve;
+        img.src = src;
+      });
     });
-    const timeout = setTimeout(() => setBgReady(true), 1200);
-    return () => clearTimeout(timeout);
+
+    Promise.all(loadPromises).then(() => {
+      if (isMounted) setBgReady(true);
+    });
+
+    // Fallback timeout
+    const timeout = setTimeout(() => {
+      if (isMounted) setBgReady(true);
+    }, 1200);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timeout);
+    };
   }, []);
 
   // Calculate time values including milliseconds for smooth movement
@@ -48,131 +68,60 @@ const Clock: React.FC = () => {
   // Background rotation: Counter-clockwise (-), once per 60 seconds
   const bgRotation = -(seconds / 60) * 360;
 
-  const styles = {
-    container: {
-      width: '100vw',
-      height: '100dvh',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#0D0D0E',
-      margin: 0,
-      padding: 0,
-      overflow: 'hidden',
-      position: 'fixed',
-      top: 0,
-      left: 0,
-    },
-    clockFace: {
-      position: 'relative',
-      // Takes up the smaller of the two viewport dimensions
-      width: '95vmin',
-      // Keeps it a perfect circle regardless of content
-      aspectRatio: '1 / 1',
-      // Caps the size so it doesn't get comically large on monitors
-      maxWidth: '800px',
-
-      borderRadius: '50%',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      // Optional: ensures it stays centered if the parent is larger
-      margin: 'auto',
-    },
-    bgLayer: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundImage: `url(${clockBackground})`,
-      backgroundSize: '60%',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      transform: `rotate(${bgRotation}deg)`,
-      willChange: 'transform',
-      zIndex: 1,
-    },
-    hand: (deg, width, length, color, zIndex) => ({
-      position: 'absolute',
-      bottom: '50%',
-      left: '50%',
-      transformOrigin: 'bottom',
-      transform: `translateX(-50%) rotate(${deg}deg)`,
-      width: width,
-      height: length,
-      backgroundColor: color,
-      borderRadius: '10px',
-      zIndex: zIndex,
-      opacity: 0.6,
-      filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.79))',
-    }),
-    digitContainer: (rotation) => ({
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
-      transform: `rotate(${rotation}deg)`,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'flex-start',
-      zIndex: 2,
-    }),
-    digitImage: {
-      width: 'min(12vw, 12vh, 48px)',
-      height: 'min(12vw, 12vh, 48px)',
-      objectFit: 'contain',
-      transform: `translateY(-20%)`,
-    },
-    centerDot: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      width: 'clamp(5px, 2vw, 8px)',
-      height: 'clamp(5px, 2vw, 8px)',
-      backgroundColor: '#0E1113',
-      borderRadius: '50%',
-      transform: 'translate(-50%, -50%)',
-      zIndex: 10,
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.88)',
-    },
-  };
-
   return (
     <div
+      className={styles.container}
       style={{
-        ...styles.container,
         opacity: bgReady ? 1 : 0,
         visibility: bgReady ? 'visible' : 'hidden',
-        transition: 'opacity 0.3s ease',
       }}
     >
-      <div style={styles.clockFace}>
+      <div className={styles.clockFace}>
         {/* Rotating Background Layer */}
-        <div style={styles.bgLayer} />
+        <div
+          className={styles.bgLayer}
+          style={{
+            backgroundImage: `url(${clockBackground})`,
+            '--rotation': `${bgRotation}deg`,
+          } as CustomStyle}
+        />
 
         {/* Static Digits Layer */}
         {[...Array(12)].map((_, i) => {
           const rotation = (i + 1) * 30;
           return (
-            <div key={i} style={styles.digitContainer(rotation)}>
+            <div
+              key={i}
+              className={styles.digitContainer}
+              style={{ '--rotation': `${rotation}deg` } as CustomStyle}
+            >
               <img
                 decoding="async"
                 loading="lazy"
                 src={clockDigitImage}
                 alt={`digit-${i + 1}`}
-                style={styles.digitImage}
+                className={styles.digitImage}
               />
             </div>
           );
         })}
 
         {/* Hands */}
-        <div style={styles.hand(hourDeg, '8px', '11%', '#141313', 3)} />
-        <div style={styles.hand(minDeg, '5px', '25%', '#030303', 4)} />
-        <div style={styles.hand(secDeg, '2px', '25%', '#ef4444', 5)} />
+        <div
+          className={`${styles.hand} ${styles.handHour}`}
+          style={{ '--rotation': `${hourDeg}deg` } as CustomStyle}
+        />
+        <div
+          className={`${styles.hand} ${styles.handMinute}`}
+          style={{ '--rotation': `${minDeg}deg` } as CustomStyle}
+        />
+        <div
+          className={`${styles.hand} ${styles.handSecond}`}
+          style={{ '--rotation': `${secDeg}deg` } as CustomStyle}
+        />
 
         {/* Center Pivot */}
-        <div style={styles.centerDot} />
+        <div className={styles.centerDot} />
       </div>
     </div>
   );
