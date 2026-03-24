@@ -2,42 +2,40 @@ import React, { useState, useEffect, useMemo, useRef, memo } from 'react';
 import skyImage from '../../../assets/images/26-03/26-03-22/sky.webp';
 import balloonFont from '../../../assets/fonts/26-03-22-balloon.ttf?url';
 
-const balloonColors = ['#FF2D2D', '#FFD700', '#32CD32', '#F44781', '#FF8C00', '#FF1493',  '#FF4500', '#9A6BF9'];
+const balloonColors = ['#FF2D2D', '#D4F904', '#32CD32', '#FFCC01FF', '#FF8C00', '#FF1493', '#FF4500', '#9A6BF9'];
+
+// Shuffled once to ensure colors stay consistent for the session
+const staticShuffledColors = [...balloonColors].sort(() => Math.random() - 0.5);
 
 interface BalloonDigitProps {
   char: string;
   color: string;
 }
 
-// 1. Memoized BalloonDigit prevents the "jump" by keeping 
-// the same physics/animation state when the time updates.
 const BalloonDigit = memo(({ char, color }: BalloonDigitProps) => {
-  
-  // Physics are generated once per mount and persisted in useRef
+  // Physics generated once per mount - no more "isPopping" state
   const p = useRef({
     floatSpeed: 3 + Math.random() * 2,
     floatAmplitude: 12 + Math.random() * 10,
     driftSpeed: 4 + Math.random() * 3,
-    driftAmplitude: 8 + Math.random() * 10,
+    driftAmplitude: 3 + Math.random() * 1,
     rockSpeed: 2 + Math.random() * 2,
     rockAmplitude: 3 + Math.random() * 3,
     scaleSpeed: 2.5 + Math.random() * 1.5,
     scaleMin: 0.94,
     scaleMax: 1.06,
-    delay: Math.random() * -20, // Negative delay prevents "starting from zero" look
+    delay: Math.random() * -20,
     baseOffsetY: Math.random() * 20 - 10,
     baseOffsetX: Math.random() * 15 - 7.5,
   }).current;
 
-  if (char === ' ') {
-    return <span style={{ margin: '0 0.25em' }}>&nbsp;</span>;
-  }
+  if (char === ' ') return <span style={{ margin: '0 0.25em' }}>&nbsp;</span>;
 
   return (
     <span style={{ 
       display: 'inline-block', 
       transform: `translate(${p.baseOffsetX}px, ${p.baseOffsetY}px)`,
-      margin: '0 4px'
+      margin: '0 4px',
     }}>
       <span style={{
         display: 'inline-block',
@@ -79,38 +77,25 @@ const BalloonDigit = memo(({ char, color }: BalloonDigitProps) => {
   );
 });
 
-const ColoredTime = ({ time }: { time: string }) => {
-  // Assign unique random colors to each digit without repetition
-  const colors = useMemo(() => {
-    const shuffled = [...balloonColors].sort(() => Math.random() - 0.5);
-    return time.split('').map((_, i) => shuffled[i % shuffled.length]);
-  }, [time]);
-
-  return (
-    <>
-      {time.split('').map((char, index) => (
-        // 2. Using index as the key is CRITICAL. 
-        // It tells React to update the existing balloon rather than replacing it.
-        <BalloonDigit key={index} char={char} color={colors[index]!} />
-      ))}
-    </>
-  );
-};
-
 const VIPParallaxClock = () => {
   const [time, setTime] = useState('');
 
   useEffect(() => {
     const formatTime = () => {
       const now = new Date();
-      return now.toLocaleTimeString('en-GB', { 
-        hour: '2-digit', 
-        minute: '2-digit' 
-      }).replace(':', ''); 
+      return now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }).replace(':', ''); 
     };
 
+    // Set initial time
     setTime(formatTime());
-    const timer = setInterval(() => setTime(formatTime()), 1000);
+
+    const timer = setInterval(() => {
+      const nextTime = formatTime();
+      // Crucial: Only update state if the string actually changes (once per minute)
+      // This prevents the "jumping" caused by 1-second re-renders
+      setTime(prev => (prev !== nextTime ? nextTime : prev));
+    }, 1000);
+
     return () => clearInterval(timer);
   }, []);
 
@@ -133,12 +118,12 @@ const VIPParallaxClock = () => {
         }
 
         @keyframes balloonDrift {
-          0% { transform: translateX(calc(var(--drift-amp) * -1)); }
+          0% { transform: translateX(calc(var(--drift-amp) * -6)); }
           100% { transform: translateX(var(--drift-amp)); }
         }
 
         @keyframes balloonRock {
-          0% { transform: rotate(calc(var(--rock-amp) * -1)); }
+          0% { transform: rotate(calc(var(--rock-amp) * -3)); }
           100% { transform: rotate(var(--rock-amp)); }
         }
 
@@ -152,7 +137,7 @@ const VIPParallaxClock = () => {
           width: 100%;
           height: 100vh;
           overflow: hidden;
-          background: #87CEEB; /* Fallback sky blue */
+          background: #87CEEB;
         }
 
         .layer {
@@ -183,14 +168,10 @@ const VIPParallaxClock = () => {
           font-size: clamp(4rem, 15vw, 12rem);
           text-align: center;
           user-select: none;
-          filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
+          filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.63));
         }
 
-        /* The Balloon String */
-        .balloon-string {
-          position: relative;
-        }
-
+        .balloon-string { position: relative; }
         .balloon-string::after {
           content: '';
           position: absolute;
@@ -198,28 +179,34 @@ const VIPParallaxClock = () => {
           top: 85%;
           width: 2px;
           height: 100px;
-          background: linear-gradient(to bottom, 
-            rgba(255,255,255,0.6) 0%, 
-            rgba(255,255,255,0.1) 100%
-          );
-          transform: translateX(-50%) skewX(-1deg);
-          border-radius: 1px;
-          pointer-events: none;
+          background: linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0));
+          transform: translateX(-50%);
           z-index: -1;
         }
       `}
     </style>
   ), []);
 
+  // Helper to render digits with consistent coloring
+  const renderDigits = (offset: number) => {
+    return time.split('').map((char, index) => (
+      <BalloonDigit 
+        key={`${offset}-${index}`} 
+        char={char} 
+        color={staticShuffledColors[(index + offset) % staticShuffledColors.length]} 
+      />
+    ));
+  };
+
   return (
     <>
       {styles}
-      <div className="stage" aria-label={`Current time is ${time}`}>
+      <div className="stage">
         <div className="layer bg" aria-hidden="true" />
         <div className="layer fg">
-          <time className="glass-tile"><ColoredTime time={time} /></time>
-          <time className="glass-tile"><ColoredTime time={time} /></time>
-          <time className="glass-tile"><ColoredTime time={time} /></time>
+          <time className="glass-tile">{renderDigits(0)}</time>
+          <time className="glass-tile">{renderDigits(2)}</time>
+          <time className="glass-tile">{renderDigits(4)}</time>
         </div>
       </div>
     </>
