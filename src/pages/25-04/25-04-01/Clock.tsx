@@ -1,9 +1,74 @@
 import React, { useState, useEffect } from 'react';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useGlobalStyles, useKeyframes } from '../../../utils/enhancedFontLoader';
 
 const DigitalClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  // Generate unique keyframe names
+  const auroraName = useKeyframes('aurora', `
+    0%, 100% { background-position: 0% 50%, 0% 50%, 0% 50%, 0% 50%, 0% 50%; }
+    20% { background-position: 100% 50%, 25% 75%, 75% 25%, 50% 100%, 0% 50%; }
+    40% { background-position: 50% 100%, 100% 50%, 50% 0%, 0% 50%, 0% 50%; }
+    60% { background-position: 25% 25%, 75% 25%, 25% 75%, 75% 75%, 0% 50%; }
+    80% { background-position: 75% 75%, 0% 25%, 100% 75%, 50% 50%, 0% 50%; }
+    100% { background-position: 0% 50%, 0% 50%, 0% 50%, 0% 50%, 0% 50%; }
+  `);
+  const fadeInName = useKeyframes('fadeIn', `
+    from { opacity: 0; transform: scale(0.8) rotate(5deg); }
+    to { opacity: 1; transform: scale(1) rotate(0deg); }
+  `);
+  const entranceName = useKeyframes('entrance', `
+    0% { opacity: 0; transform: translateY(10rem) rotateX(60deg) scale(0.7); filter: blur(3rem); }
+    100% { opacity: 1; transform: translateY(0) rotateX(0deg) scale(1); filter: blur(0); }
+  `);
+  const floatName = useKeyframes('float', `
+    0%, 100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
+    25% { transform: translateY(-0.8rem) rotateX(3deg) rotateY(1deg); }
+    50% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
+    75% { transform: translateY(0.5rem) rotateX(-2deg) rotateY(-1deg); }
+  `);
+  const groupFloatName = useKeyframes('groupFloat', `
+    0%, 100% { transform: translateZ(60px) rotateY(0deg) rotateX(0deg); }
+    33% { transform: translateZ(70px) rotateY(3deg) rotateX(1deg); }
+    66% { transform: translateZ(50px) rotateY(-3deg) rotateX(-1deg); }
+  `);
+  const rainbowGlowName = useKeyframes('rainbowGlow', `
+    0% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(147,51,234,0.9), 0 0 4.5rem rgba(59,130,246,0.9), 0 0 6rem rgba(16,185,129,0.7); }
+    20% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(59,130,246,0.9), 0 0 4.5rem rgba(16,185,129,0.9), 0 0 6rem rgba(245,101,101,0.7); }
+    40% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(16,185,129,0.9), 0 0 4.5rem rgba(236,72,153,0.9), 0 0 6rem rgba(59,130,246,0.7); }
+    60% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(236,72,153,0.9), 0 0 4.5rem rgba(245,101,101,0.9), 0 0 6rem rgba(147,51,234,0.7); }
+    80% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(245,101,101,0.9), 0 0 4.5rem rgba(147,51,234,0.9), 0 0 6rem rgba(16,185,129,0.7); }
+    100% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(147,51,234,0.9), 0 0 4.5rem rgba(59,130,246,0.9), 0 0 6rem rgba(16,185,129,0.7); }
+  `);
+  const cosmicDriftName = useKeyframes('cosmicDrift', `
+    0% { background-position: 0% 0%, 0% 0%, 0% 0%; }
+    100% { background-position: 100% 100%, -100% -100%, 100% -100%; }
+  `);
+  const twinkleName = useKeyframes('twinkle', `
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.3; }
+  `);
+  const auroraSweepName = useKeyframes('auroraSweep', `
+    0%, 100% { transform: translateX(-20%) scaleX(1); opacity: 0.2; }
+    50% { transform: translateX(120%) scaleX(1.5); opacity: 0.5; }
+  `);
+
+  // Inject global styles for keyframes references
+  useGlobalStyles(`
+    @keyframes premium-spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.2); opacity: 0.4; }
+    }
+    @keyframes glow-text {
+      0% { text-shadow: 0 0 0.5rem rgba(255,255,255,0.3); opacity: 0.6; }
+      100% { text-shadow: 0 0 2rem rgba(147,51,234,0.8), 0 0 4rem rgba(59,130,246,0.6); opacity: 1; }
+    }
+  `, 'clock-25-04-01-global');
 
   // System fonts don't need loading - use fallback approach
   const fontVariation = `ultraFont${new Date().getTime()}`;
@@ -103,8 +168,7 @@ const DigitalClock: React.FC = () => {
       0 3rem 6rem rgba(0,0,0,0.6)
     `,
     filter: 'brightness(1.15) contrast(1.3) saturate(1.4)',
-    animation:
-      'float 7s ease-in-out infinite, rainbow-glow 6s ease-in-out infinite',
+    animation: `${floatName} 7s ease-in-out infinite, ${rainbowGlowName} 6s ease-in-out infinite`,
   };
 
   const containerStyle = {
@@ -127,7 +191,7 @@ const DigitalClock: React.FC = () => {
     padding: 0,
     overflow: 'hidden',
     position: 'relative',
-    animation: 'aurora 25s ease-in-out infinite, fadeIn 4s ease-out',
+    animation: `${auroraName} 25s ease-in-out infinite, ${fadeInName} 4s ease-out`,
   };
 
   const timeContainerStyle = {
@@ -138,8 +202,7 @@ const DigitalClock: React.FC = () => {
     gap: isMobile ? '1.5rem' : '2rem',
     position: 'relative',
     zIndex: 10,
-    animation:
-      'entrance 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s both',
+    animation: `${entranceName} 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s both`,
     transform: 'translateZ(0)',
     perspective: '1200px',
   };
@@ -150,7 +213,7 @@ const DigitalClock: React.FC = () => {
     justifyContent: 'center',
     position: 'relative',
     transform: 'translateZ(60px)',
-    animation: 'group-float 9s ease-in-out infinite',
+    animation: `${groupFloatName} 9s ease-in-out infinite`,
   };
 
   const cosmicNoiseStyle = {
@@ -171,8 +234,7 @@ const DigitalClock: React.FC = () => {
     `,
     backgroundSize:
       '350px 350px, 300px 300px, 450px 450px, 400px 400px, 250px 250px, 320px 320px, 280px 280px',
-    animation:
-      'cosmic-drift 35s linear infinite, twinkle 3s ease-in-out infinite',
+    animation: `${cosmicDriftName} 35s linear infinite, ${twinkleName} 3s ease-in-out infinite`,
   };
 
   const auroraOverlayStyle = {
@@ -192,7 +254,7 @@ const DigitalClock: React.FC = () => {
         transparent 100%
       )
     `,
-    animation: 'aurora-sweep 15s ease-in-out infinite',
+    animation: `${auroraSweepName} 15s ease-in-out infinite`,
     zIndex: 2,
   };
 
@@ -229,68 +291,6 @@ const DigitalClock: React.FC = () => {
           </div>
         </div>
       </div>
-
-      <style>{`
-        @keyframes aurora {
-          0%, 100% { background-position: 0% 50%, 0% 50%, 0% 50%, 0% 50%, 0% 50%; }
-          20% { background-position: 100% 50%, 25% 75%, 75% 25%, 50% 100%, 0% 50%; }
-          40% { background-position: 50% 100%, 100% 50%, 50% 0%, 0% 50%, 0% 50%; }
-          60% { background-position: 25% 25%, 75% 25%, 25% 75%, 75% 75%, 0% 50%; }
-          80% { background-position: 75% 75%, 0% 25%, 100% 75%, 50% 50%, 0% 50%; }
-          100% { background-position: 0% 50%, 0% 50%, 0% 50%, 0% 50%, 0% 50%; }
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: scale(0.8) rotate(5deg); }
-          to { opacity: 1; transform: scale(1) rotate(0deg); }
-        }
-        @keyframes entrance {
-          0% { opacity: 0; transform: translateY(10rem) rotateX(60deg) scale(0.7); filter: blur(3rem); }
-          100% { opacity: 1; transform: translateY(0) rotateX(0deg) scale(1); filter: blur(0); }
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
-          25% { transform: translateY(-0.8rem) rotateX(3deg) rotateY(1deg); }
-          50% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
-          75% { transform: translateY(0.5rem) rotateX(-2deg) rotateY(-1deg); }
-        }
-        @keyframes group-float {
-          0%, 100% { transform: translateZ(60px) rotateY(0deg) rotateX(0deg); }
-          33% { transform: translateZ(70px) rotateY(3deg) rotateX(1deg); }
-          66% { transform: translateZ(50px) rotateY(-3deg) rotateX(-1deg); }
-        }
-        @keyframes rainbow-glow {
-          0% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(147,51,234,0.9), 0 0 4.5rem rgba(59,130,246,0.9), 0 0 6rem rgba(16,185,129,0.7); }
-          20% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(59,130,246,0.9), 0 0 4.5rem rgba(16,185,129,0.9), 0 0 6rem rgba(245,101,101,0.7); }
-          40% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(16,185,129,0.9), 0 0 4.5rem rgba(236,72,153,0.9), 0 0 6rem rgba(59,130,246,0.7); }
-          60% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(236,72,153,0.9), 0 0 4.5rem rgba(245,101,101,0.9), 0 0 6rem rgba(147,51,234,0.7); }
-          80% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(245,101,101,0.9), 0 0 4.5rem rgba(147,51,234,0.9), 0 0 6rem rgba(16,185,129,0.7); }
-          100% { text-shadow: 0 0 1.5rem rgba(255,255,255,1), 0 0 3rem rgba(147,51,234,0.9), 0 0 4.5rem rgba(59,130,246,0.9), 0 0 6rem rgba(16,185,129,0.7); }
-        }
-        @keyframes cosmic-drift {
-          0% { background-position: 0% 0%, 0% 0%, 0% 0%; }
-          100% { background-position: 100% 100%, -100% -100%, 100% -100%; }
-        }
-        @keyframes twinkle {
-          0%, 100% { opacity: 0.2; }
-          50% { opacity: 0.3; }
-        }
-        @keyframes aurora-sweep {
-          0%, 100% { transform: translateX(-20%) scaleX(1); opacity: 0.2; }
-          50% { transform: translateX(120%) scaleX(1.5); opacity: 0.5; }
-        }
-        @keyframes premium-spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); opacity: 0.8; }
-          50% { transform: scale(1.2); opacity: 0.4; }
-        }
-        @keyframes glow-text {
-          0% { text-shadow: 0 0 0.5rem rgba(255,255,255,0.3); opacity: 0.6; }
-          100% { text-shadow: 0 0 2rem rgba(147,51,234,0.8), 0 0 4rem rgba(59,130,246,0.6); opacity: 1; }
-        }
-      `}</style>
     </div>
   );
 };
