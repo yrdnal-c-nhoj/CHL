@@ -1,47 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useEnhancedFontLoader, useGlobalStyles } from '../../../utils/enhancedFontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import bgVideo from '../../../assets/images/25-10/25-10-26/monarch.mp4';
 import fallbackImg from '../../../assets/images/25-10/25-10-26/monarch.webp';
 import romanFont2025_10_27 from '../../../assets/fonts/25-10-26-roman.otf'; // Optimized OTF
 
 export default function MonarchClock() {
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [mediaReady, setMediaReady] = useState<boolean>(false);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [videoStyle, setVideoStyle] = useState<Record<string, any>>({});
 
-  // Enhanced font loading
-  const fontLoaded = useEnhancedFontLoader('RomanFont2025_10_27', romanFont2025_10_27);
-
-  // Global styles for this clock
-  useGlobalStyles(`
-    .monarch-clock {
-      background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-      border-radius: 50%;
-      box-shadow: 
-        0 0 50px rgba(232, 184, 125, 0.3),
-        inset 0 0 30px rgba(0, 0, 0, 0.5);
-    }
-    
-    .monarch-clock::before {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      right: -2px;
-      bottom: -2px;
-      background: linear-gradient(45deg, #E8B87DFF, #EA9227FF, #E8B87DFF);
-      border-radius: 50%;
-      z-index: -1;
-      animation: monarch-glow 3s ease-in-out infinite alternate;
-    }
-    
-    @keyframes monarch-glow {
-      from { box-shadow: 0 0 20px rgba(232, 184, 125, 0.5); }
-      to { box-shadow: 0 0 30px rgba(234, 146, 39, 0.8); }
-    }
-  `, 'monarch-clock-styles');
+  // Font loading
+  const fontLoaded = useFontLoader('RomanFont2025_10_27', romanFont2025_10_27);
 
   // Gradient for hands & numerals
   const clockGradient = 'linear-gradient(180deg, #E8B87DFF, #EA9227FF)';
@@ -60,14 +31,14 @@ export default function MonarchClock() {
     return () => clearInterval(id);
   }, []);
 
-  const handleVideoLoaded: React.FC = () => {
+  const handleVideoLoaded = () => {
     setMediaReady(true);
     adjustVideoPosition();
   };
   const handleVideoError = () => setVideoFailed(true);
   const handleImageLoad = () => setMediaReady(true);
 
-  const adjustVideoPosition: React.FC = () => {
+  const adjustVideoPosition = () => {
     const video = videoRef.current;
     if (!video) return;
 
@@ -148,7 +119,7 @@ export default function MonarchClock() {
     }
   `;
 
-  const handCommon = {
+  const handCommon: React.CSSProperties = {
     position: 'absolute',
     left: '50%',
     top: '50%',
@@ -180,7 +151,7 @@ export default function MonarchClock() {
     zIndex: 9,
   };
 
-  const numeralBaseStyle = {
+  const numeralBaseStyle: React.CSSProperties = {
     position: 'absolute',
     fontFamily: `'${fontFamilyName}', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`,
     fontSize: '7dvh',
