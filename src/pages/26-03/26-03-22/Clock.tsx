@@ -2,16 +2,16 @@ import React, { useState, useEffect, useMemo, useRef, memo } from 'react';
 import skyImage from '../../../assets/images/26-03/26-03-22/sky.webp';
 import balloonFont from '../../../assets/fonts/26-03-22-balloon.ttf?url';
 
-const balloonColors = ['#FF2D2D', '#FFD700', '#32CD32', '#FF6B9D', '#FF8C00', '#FF1493',  '#FF4500', '#9370DB'];
+const balloonColors = ['#FF2D2D', '#FFD700', '#32CD32', '#F44781', '#FF8C00', '#FF1493',  '#FF4500', '#9A6BF9'];
 
 interface BalloonDigitProps {
   char: string;
+  color: string;
 }
 
 // 1. Memoized BalloonDigit prevents the "jump" by keeping 
 // the same physics/animation state when the time updates.
-const BalloonDigit = memo(({ char }: BalloonDigitProps) => {
-  const [color] = useState(() => balloonColors[Math.floor(Math.random() * balloonColors.length)]);
+const BalloonDigit = memo(({ char, color }: BalloonDigitProps) => {
   
   // Physics are generated once per mount and persisted in useRef
   const p = useRef({
@@ -80,12 +80,18 @@ const BalloonDigit = memo(({ char }: BalloonDigitProps) => {
 });
 
 const ColoredTime = ({ time }: { time: string }) => {
+  // Assign unique random colors to each digit without repetition
+  const colors = useMemo(() => {
+    const shuffled = [...balloonColors].sort(() => Math.random() - 0.5);
+    return time.split('').map((_, i) => shuffled[i % shuffled.length]);
+  }, [time]);
+
   return (
     <>
       {time.split('').map((char, index) => (
         // 2. Using index as the key is CRITICAL. 
         // It tells React to update the existing balloon rather than replacing it.
-        <BalloonDigit key={index} char={char} />
+        <BalloonDigit key={index} char={char} color={colors[index]!} />
       ))}
     </>
   );
@@ -100,7 +106,7 @@ const VIPParallaxClock = () => {
       return now.toLocaleTimeString('en-GB', { 
         hour: '2-digit', 
         minute: '2-digit' 
-      }).replace(':', ' '); 
+      }).replace(':', ''); 
     };
 
     setTime(formatTime());
