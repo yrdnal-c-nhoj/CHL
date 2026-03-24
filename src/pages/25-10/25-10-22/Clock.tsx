@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
 import videoFile from '../../../assets/images/25-10/25-10-22/bg.mp4';
 import fallbackImg from '../../../assets/images/25-10/25-10-22/bg.webp';
@@ -11,11 +11,8 @@ const ClockWithVideo: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'MyCustomFont', fontUrl: fontFile_2025_10_22 }
-  ], []);
-
-  useSuspenseFontLoader(fontConfigs);
+  // Load font without Suspense requirement
+  const fontLoaded = useFontLoader('MyCustomFont', fontFile_2025_10_22);
 
   // Time update (Standardized to rAF)
   useEffect(() => {
