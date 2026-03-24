@@ -1,12 +1,20 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, CSSProperties } from 'react';
 // 🎯 Import the background image
 import backgroundImageURL from '../../../assets/images/25-11/25-11-13/bg.webp';
+import styles from './Clock.module.css';
 
 // A unique ID generator for each rolling clock
 let nextId = 0;
 
+interface ClockInstance {
+  id: number;
+  born: number;
+  duration: number;
+  direction: 'right-to-left' | 'left-to-right';
+}
+
 export default function RollingAnalogClock() {
-  const [clocks, setClocks] = useState<any>([]);
+  const [clocks, setClocks] = useState<ClockInstance[]>([]);
 
   /* ------------------------------------------------------------------
      SPAWN CLOCKS AT RANDOM INTERVALS
@@ -55,22 +63,11 @@ export default function RollingAnalogClock() {
     return () => clearInterval(cleaner);
   }, []);
 
-  /* ------------------------------------------------------------------
-     ROOT STYLE: Uses the imported image
-  ------------------------------------------------------------------ */
-  const rootStyle = {
-    width: '100vw',
-    height: '100dvh',
-    overflow: 'hidden',
-    // Use the imported image URL
-    backgroundImage: `url('${backgroundImageURL}')`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    position: 'relative',
-  };
-
   return (
-    <div style={rootStyle}>
+    <div 
+      className={styles.container}
+      style={{ backgroundImage: `url('${backgroundImageURL}')` }}
+    >
       {clocks.map((clock) => (
         <SingleSlowRollingClock
           key={clock.id}
@@ -87,9 +84,14 @@ export default function RollingAnalogClock() {
 /* ==================================================================
    A SINGLE ROLLING CLOCK (with extended hands and marker position)
 ================================================================== */
-function SingleSlowRollingClock({ duration, direction }) {
-  const clockRef = useRef(null);
-  const handsRef = useRef({ hour: null, minute: null, second: null });
+interface SingleClockProps {
+  duration: number; // in seconds
+  direction: 'right-to-left' | 'left-to-right';
+}
+
+function SingleSlowRollingClock({ duration, direction }: SingleClockProps) {
+  const clockRef = useRef<HTMLDivElement>(null);
+  const handsRef = useRef<{ hour: HTMLDivElement | null; minute: HTMLDivElement | null; second: HTMLDivElement | null }>({ hour: null, minute: null, second: null });
   const [now, setNow] = useState(new Date());
 
   // Set a large distance to ensure the clock travels completely off-screen
@@ -147,69 +149,6 @@ function SingleSlowRollingClock({ duration, direction }) {
     });
   }, [duration, direction, travelDistance]);
 
-  /* --------------------------------------
-     Styles for clock layout (Hands made longer)
-  --------------------------------------- */
-  const clockFaceStyle = {
-    width: '40vh',
-    height: '40vh',
-    borderRadius: '50%',
-    background: '#FAF1C9FF',
-    border: '0.5vh solid #222',
-    position: 'relative',
-    boxShadow: '0 0.6vh 1.2vh rgba(0,0,0,0.08)',
-  };
-
-  const handCommon = {
-    position: 'absolute',
-    left: '50%',
-    top: '50%',
-    transformOrigin: '50% 100%',
-  };
-
-  const hourStyle = {
-    ...handCommon,
-    width: '0.8vh',
-    height: '8.5vh', // ⬅️ Longer
-    marginTop: '-8.5vh',
-    background: '#222',
-    borderRadius: '0.4vh',
-    zIndex: 3,
-  };
-
-  const minuteStyle = {
-    ...handCommon,
-    width: '0.6vh',
-    height: '12vh', // ⬅️ Longer
-    marginTop: '-12vh',
-    background: '#111',
-    borderRadius: '0.4vh',
-    zIndex: 2,
-  };
-
-  const secondStyle = {
-    ...handCommon,
-    width: '0.35vh',
-    height: '13vh', // ⬅️ Longer
-    marginTop: '-13vh',
-    background: '#d9534f',
-    borderRadius: '0.2vh',
-    zIndex: 1,
-  };
-
-  const pinStyle = {
-    position: 'absolute',
-    left: '50%',
-    top: '50%',
-    width: '1.2vh',
-    height: '1.2vh',
-    marginLeft: '-0.6vh',
-    marginTop: '-0.6vh',
-    background: '#222',
-    borderRadius: '50%',
-    zIndex: 10,
-  };
-
   // Initial position based on direction
   const initialX =
     direction === 'right-to-left'
@@ -219,33 +158,19 @@ function SingleSlowRollingClock({ duration, direction }) {
   return (
     <div
       ref={clockRef}
+      className={styles.rollingClockWrapper}
       style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
         transform: `translateX(${initialX}) translate(-50%, -50%)`,
       }}
     >
-      <div style={clockFaceStyle}>
+      <div className={styles.clockFace}>
         {/* 12 o'clock marker only (Moved out further) */}
-        <div
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            width: '0.9vh',
-            height: '3vh',
-            marginLeft: '-0.45vh',
-            transform: 'translateY(-18vh)', // ⬅️ Moved further out
-            background: '#0F35DFFF',
-            borderRadius: '0.3vh',
-          }}
-        />
+        <div className={styles.marker12} />
         {/* hands */}
-        <div ref={(el) => (handsRef.current.hour = el)} style={hourStyle} />
-        <div ref={(el) => (handsRef.current.minute = el)} style={minuteStyle} />
-        <div ref={(el) => (handsRef.current.second = el)} style={secondStyle} />
-        <div style={pinStyle} />
+        <div ref={(el) => (handsRef.current.hour = el)} className={`${styles.hand} ${styles.handHour}`} />
+        <div ref={(el) => (handsRef.current.minute = el)} className={`${styles.hand} ${styles.handMinute}`} />
+        <div ref={(el) => (handsRef.current.second = el)} className={`${styles.hand} ${styles.handSecond}`} />
+        <div className={styles.centerPin} />
       </div>
     </div>
   );

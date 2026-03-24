@@ -1,0 +1,82 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.rollingClockWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  will-change: transform;
+}
+
+.clockFace {
+  width: 40vh;
+  height: 40vh;
+  border-radius: 50%;
+  background: #faf1c9;
+  border: 0.5vh solid #222;
+  position: relative;
+  box-shadow: 0 0.6vh 1.2vh rgba(0, 0, 0, 0.08);
+}
+
+.marker12 {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.9vh;
+  height: 3vh;
+  margin-left: -0.45vh;
+  transform: translateY(-18vh);
+  background: #0f35df;
+  border-radius: 0.3vh;
+}
+
+.hand {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: 50% 100%;
+  border-radius: 0.4vh;
+}
+
+.handHour {
+  width: 0.8vh;
+  height: 8.5vh;
+  margin-top: -8.5vh;
+  background: #222;
+  z-index: 3;
+}
+
+.handMinute {
+  width: 0.6vh;
+  height: 12vh;
+  margin-top: -12vh;
+  background: #111;
+  z-index: 2;
+}
+
+.handSecond {
+  width: 0.35vh;
+  height: 13vh;
+  margin-top: -13vh;
+  background: #d9534f;
+  border-radius: 0.2vh;
+  z-index: 1;
+}
+
+.centerPin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 1.2vh;
+  height: 1.2vh;
+  background: #222;
+  border-radius: 50%;
+  z-index: 10;
+}
