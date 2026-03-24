@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useGlobalStyles } from '../../../utils/enhancedFontLoader';
 import type { FontConfig } from '../../../types/clock';
 import type { CSSProperties } from 'react';
 import michromaFont from '../../../assets/fonts/25-05-10-Michroma.ttf?url';
@@ -61,6 +62,82 @@ const throwTimeCharacters = (timeStr, throwContainer) => {
 };
 
 const NumberTossClock: React.FC = () => {
+  // Inject animation styles globally
+  useGlobalStyles(`
+    .an-1 {
+      animation: throw-1-up 1200ms ease-out forwards, throw-1-down 750ms 1200ms ease-in forwards;
+    }
+    .an-2 {
+      animation: throw-2-up 900ms ease-out forwards, throw-2-down 450ms 900ms ease-in forwards;
+    }
+    .an-3 {
+      animation: throw-3-up 1300ms ease-out forwards, throw-3-down 1300ms 1300ms ease-in forwards;
+    }
+    .an-4 {
+      animation: throw-4-up 1380ms ease-out forwards, throw-4-down 1130ms 1380ms ease-in forwards;
+    }
+    .an-5 {
+      animation: throw-5-up 830ms ease-out forwards, throw-5-down 660ms 830ms ease-in forwards;
+    }
+    .an-6 {
+      animation: throw-6-up 320ms ease-out forwards, throw-6-down 940ms 320ms ease-in forwards;
+    }
+
+    @keyframes throw-1-up {
+      0% { transform: translateY(0%) rotate(0deg); }
+      100% { transform: translateY(-500%) rotate(720deg); }
+    }
+    @keyframes throw-1-down {
+      0% { transform: translateY(-500%) rotate(720deg); }
+      100% { transform: translateY(0%); }
+    }
+
+    @keyframes throw-2-up {
+      0% { transform: translateY(0%) rotate(0deg); }
+      100% { transform: translateY(-300%) rotate(320deg); }
+    }
+    @keyframes throw-2-down {
+      0% { transform: translateY(-300%) rotate(320deg); }
+      100% { transform: translateY(0%); }
+    }
+
+    @keyframes throw-3-up {
+      0% { transform: translateY(0%) rotate(0deg); }
+      100% { transform: translateY(-800%) rotate(600deg); }
+    }
+    @keyframes throw-3-down {
+      0% { transform: translateY(-800%) rotate(600deg); }
+      100% { transform: translateY(0%); }
+    }
+
+    @keyframes throw-4-up {
+      0% { transform: translateY(0%) rotate(0deg); }
+      100% { transform: translateY(-850%) rotate(-550deg); }
+    }
+    @keyframes throw-4-down {
+      0% { transform: translateY(-850%) rotate(-550deg); }
+      100% { transform: translateY(0%); }
+    }
+
+    @keyframes throw-5-up {
+      0% { transform: translateY(0%) rotate(0deg); }
+      100% { transform: translateY(-350%) rotate(200deg); }
+    }
+    @keyframes throw-5-down {
+      0% { transform: translateY(-350%) rotate(200deg); }
+      100% { transform: translateY(0%); }
+    }
+
+    @keyframes throw-6-up {
+      0% { transform: translateY(0%) rotate(0deg); }
+      100% { transform: translateY(-523%) rotate(300deg); }
+    }
+    @keyframes throw-6-down {
+      0% { transform: translateY(-523%) rotate(300deg); }
+      100% { transform: translateY(0%); }
+    }
+  `, 'clock-25-05-10-animations');
+
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -116,7 +193,6 @@ const NumberTossClock: React.FC = () => {
     <div style={styles.body}>
       <div style={styles.stationaryClock}>{backgroundTime}</div>
       <div ref={throwContainer} style={styles.throw}></div>
-      <style>{animationStyles}</style>
     </div>
   );
 };
@@ -154,80 +230,5 @@ const styles = {
     whiteSpace: 'nowrap',
   },
 };
-
-const animationStyles = `
-  .an-1 {
-    animation: throw-1-up 1200ms ease-out forwards, throw-1-down 750ms 1200ms ease-in forwards;
-  }
-  .an-2 {
-    animation: throw-2-up 900ms ease-out forwards, throw-2-down 450ms 900ms ease-in forwards;
-  }
-  .an-3 {
-    animation: throw-3-up 1300ms ease-out forwards, throw-3-down 1300ms 1300ms ease-in forwards;
-  }
-  .an-4 {
-    animation: throw-4-up 1380ms ease-out forwards, throw-4-down 1130ms 1380ms ease-in forwards;
-  }
-  .an-5 {
-    animation: throw-5-up 830ms ease-out forwards, throw-5-down 660ms 830ms ease-in forwards;
-  }
-  .an-6 {
-    animation: throw-6-up 320ms ease-out forwards, throw-6-down 940ms 320ms ease-in forwards;
-  }
-
-  @keyframes throw-1-up {
-    0% { transform: translateY(0%) rotate(0deg); }
-    100% { transform: translateY(-500%) rotate(720deg); }
-  }
-  @keyframes throw-1-down {
-    0% { transform: translateY(-500%) rotate(720deg); }
-    100% { transform: translateY(0%); }
-  }
-
-  @keyframes throw-2-up {
-    0% { transform: translateY(0%) rotate(0deg); }
-    100% { transform: translateY(-300%) rotate(320deg); }
-  }
-  @keyframes throw-2-down {
-    0% { transform: translateY(-300%) rotate(320deg); }
-    100% { transform: translateY(0%); }
-  }
-
-  @keyframes throw-3-up {
-    0% { transform: translateY(0%) rotate(0deg); }
-    100% { transform: translateY(-800%) rotate(600deg); }
-  }
-  @keyframes throw-3-down {
-    0% { transform: translateY(-800%) rotate(600deg); }
-    100% { transform: translateY(0%); }
-  }
-
-  @keyframes throw-4-up {
-    0% { transform: translateY(0%) rotate(0deg); }
-    100% { transform: translateY(-850%) rotate(-550deg); }
-  }
-  @keyframes throw-4-down {
-    0% { transform: translateY(-850%) rotate(-550deg); }
-    100% { transform: translateY(0%); }
-  }
-
-  @keyframes throw-5-up {
-    0% { transform: translateY(0%) rotate(0deg); }
-    100% { transform: translateY(-350%) rotate(200deg); }
-  }
-  @keyframes throw-5-down {
-    0% { transform: translateY(-350%) rotate(200deg); }
-    100% { transform: translateY(0%); }
-  }
-
-  @keyframes throw-6-up {
-    0% { transform: translateY(0%) rotate(0deg); }
-    100% { transform: translateY(-523%) rotate(300deg); }
-  }
-  @keyframes throw-6-down {
-    0% { transform: translateY(-523%) rotate(300deg); }
-    100% { transform: translateY(0%); }
-  }
-`;
 
 export default NumberTossClock;
