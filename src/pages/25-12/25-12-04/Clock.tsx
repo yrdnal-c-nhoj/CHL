@@ -102,7 +102,7 @@ export default function EyeChart() {
           justifyContent: 'center',
           fontFamily: 'sans-serif',
           fontSize: '1rem',
-          color: '#666',
+          color: '#656',
         }}
       >
         Loading...
