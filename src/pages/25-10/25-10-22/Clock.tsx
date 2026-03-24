@@ -1,18 +1,13 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
-import type { FontConfig } from '../../../types/clock';
 import videoFile from '../../../assets/images/25-10/25-10-22/bg.mp4';
 import fallbackImg from '../../../assets/images/25-10/25-10-22/bg.webp';
-import fontFile_2025_10_22 from '../../../assets/fonts/25-10-22-fundy.ttf?url';
+import fundyFont from '../../../assets/fonts/25-10-22-fundy.ttf';
 import styles from './Clock.module.css';
 
 const ClockWithVideo: React.FC = () => {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [time, setTime] = useState(new Date());
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  // Load font without Suspense requirement
-  const fontLoaded = useFontLoader('MyCustomFont', fontFile_2025_10_22);
 
   // Time update (Standardized to rAF)
   useEffect(() => {
@@ -147,7 +142,14 @@ const ClockWithVideo: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <>
+      <style>
+        {`@font-face {
+          font-family: 'FundyFont';
+          src: url(${fundyFont}) format('truetype');
+        }`}
+      </style>
+      <div className={styles.container}>
       <video
         ref={videoRef}
         className={styles.media}
@@ -178,7 +180,8 @@ const ClockWithVideo: React.FC = () => {
         {/* Rendering the time with explicit separators for clear readability */}
         {renderTimeDigits()}
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 
