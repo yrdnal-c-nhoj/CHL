@@ -87,12 +87,11 @@ const Clock: React.FC = () => {
         <div
           style={{
             fontSize: 'clamp(5rem, 22vw, 18rem)',
-            lineHeight: 1,
+            lineHeight: 1.7,
             background: 'linear-gradient(to bottom, #F321FA, #EFF70D)',
             WebkitBackgroundClip: 'text',
             backgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            filter: 'drop-shadow(0 0 15px rgba(243, 33, 250, 0.5))',
           }}
         >
           {digits}
@@ -100,7 +99,7 @@ const Clock: React.FC = () => {
 
         <div
           style={{
-            fontSize: 'clamp(2rem, 9vw, 7rem)',
+            fontSize: 'clamp(4rem, 12vw, 11rem)',
             letterSpacing: '0.2em',
             background: 'linear-gradient(90deg, #00ffff, #DCFF14)',
             WebkitBackgroundClip: 'text',
@@ -116,7 +115,7 @@ const Clock: React.FC = () => {
       <style>{`
         @keyframes venice-float {
           0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
+          50% { transform: translateY(-20px); }
         }
         .loaded {
           animation: venice-float 6s ease-in-out infinite;
