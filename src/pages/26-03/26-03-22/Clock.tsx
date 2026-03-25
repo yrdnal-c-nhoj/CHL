@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useRef, memo } from 'react';
 import skyImage from '../../../assets/images/26-03/26-03-22/sky.webp';
 import balloonFont from '../../../assets/fonts/26-03-22-balloon.ttf?url';
 
-const balloonColors = ['#FF2D2D', '#D4F904', '#32CD32', '#FFCC01FF', '#FF8C00', '#FF1493', '#FF4500', '#9A6BF9'];
+const balloonColors = ['#FF2D2D', '#D4F904', '#32CD32', '#FFCC01FF', '#FF1493', '#FF4500', '#9A6BF9'];
 
 // Shuffled once to ensure colors stay consistent for the session
 const staticShuffledColors = [...balloonColors].sort(() => Math.random() - 0.5);
@@ -151,6 +151,7 @@ const VIPParallaxClock = () => {
         .bg {
           background: url("${skyImage}") center/cover;
           animation: scrollUp 60s linear infinite;
+          filter: contrast(0.4) brightness(1.3) saturate(1.7);
         }
 
         .fg {
