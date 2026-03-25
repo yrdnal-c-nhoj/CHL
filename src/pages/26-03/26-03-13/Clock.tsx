@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import veniceFont from '../../../assets/fonts/26-03-13-venice.ttf?url';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useSecondClock } from '../../../utils/useSmoothClock';
@@ -7,7 +7,10 @@ const Clock: React.FC = () => {
   const time = useSecondClock();
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
-  const fontConfigs = React.useMemo(() => [
+  // The Live ID from your error message
+  const videoId = 'EO_1LWqsCNE'; 
+
+  const fontConfigs = useMemo(() => [
     { fontFamily: 'VeniceFont', fontUrl: veniceFont, options: { weight: 'normal', style: 'normal' } }
   ], []);
 
@@ -17,15 +20,13 @@ const Clock: React.FC = () => {
     setFontLoaded(true);
   }, []);
 
-  const { digits, period } = (() => {
+  const { digits, period } = useMemo(() => {
     let h = time.getHours();
     const m = time.getMinutes().toString().padStart(2, '0');
     const ampm = h >= 12 ? 'P.M.' : 'A.M.';
     h = h % 12 || 12;
     return { digits: `${h}:${m}`, period: ampm };
-  })();
-
-  const videoId = 'EO_1LWqsCNE';
+  }, [time]);
 
   return (
     <div
@@ -34,60 +35,70 @@ const Clock: React.FC = () => {
         height: '100dvh',
         overflow: 'hidden',
         position: 'relative',
-        background: '#000',
+        background: '#111', // Dark fallback while video loads
       }}
     >
+      {/* Video Container */}
       <div
-        className="video-background"
         style={{
           position: 'absolute',
           inset: 0,
           zIndex: 0,
-          overflow: 'hidden',
+          pointerEvents: 'none',
         }}
       >
         <iframe
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0`}
-          title="Venice Beach"
+          key={videoId}
+          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&enablejsapi=1&origin=${window.location.origin}`}
+          title="Venice Beach Cam"
           frameBorder="0"
-          allow="autoplay; fullscreen"
+          allow="autoplay; fullscreen; encrypted-media"
           style={{
             position: 'absolute',
             top: '50%',
             left: '50%',
-            minWidth: '100%',
-            minHeight: '100%',
-            transform: 'translate(-50%,-50%)',
+            width: '100vw',
+            height: '56.25vw', 
+            minHeight: '100dvh',
+            minWidth: '177.77dvh',
+            transform: 'translate(-50%, -50%)',
           }}
         />
+        {/* Visual Polish: Vignette overlay */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.3), transparent, rgba(0,0,0,0.3))',
+          zIndex: 1
+        }} />
       </div>
 
+      {/* Clock UI */}
       <div
         className={`venice-clock ${fontLoaded ? 'loaded' : ''}`}
         style={{
-          position: 'absolute',
-          inset: 0,
+          position: 'relative',
+          height: '100%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          textAlign: 'center',
           fontFamily: 'VeniceFont, sans-serif',
           zIndex: 10,
           pointerEvents: 'none',
+          opacity: fontLoaded ? 1 : 0,
+          transition: 'opacity 1s ease',
         }}
       >
         <div
           style={{
-            fontSize: 'clamp(4rem,16vw,14rem)',
-            lineHeight: 1.3,
-            padding: '0.2em 0',
-            whiteSpace: 'nowrap',
-            background: 'linear-gradient(90deg,#F321FA,#EFF70D,#ff1493)',
+            fontSize: 'clamp(5rem, 22vw, 18rem)',
+            lineHeight: 1,
+            background: 'linear-gradient(to bottom, #F321FA, #EFF70D)',
             WebkitBackgroundClip: 'text',
             backgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            animation: 'venice-glow 4s ease-in-out infinite',
+            filter: 'drop-shadow(0 0 15px rgba(243, 33, 250, 0.5))',
           }}
         >
           {digits}
@@ -95,21 +106,28 @@ const Clock: React.FC = () => {
 
         <div
           style={{
-            fontSize: 'clamp(3rem,13vw,10rem)',
-            marginTop: '1rem',
-            letterSpacing: '.25em',
-            lineHeight: 1.5,
-            background: 'linear-gradient(90deg,#ff1493,#00ffff,#DCFF14)',
-            backgroundSize: '200%',
+            fontSize: 'clamp(2rem, 9vw, 7rem)',
+            letterSpacing: '0.2em',
+            background: 'linear-gradient(90deg, #00ffff, #DCFF14)',
             WebkitBackgroundClip: 'text',
             backgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            animation: 'venice-glow 3s ease-in-out infinite',
+            textTransform: 'uppercase',
           }}
         >
           {period}
         </div>
       </div>
+
+      <style>{`
+        @keyframes venice-float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        .loaded {
+          animation: venice-float 6s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 };
