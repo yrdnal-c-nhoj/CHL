@@ -1,0 +1,62 @@
+/* BaseClock.module.css - Standardized Clock Styles */
+
+/* =========================
+   CONTAINER
+   ========================= */
+.container {
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* =========================
+   TIME DISPLAY
+   ========================= */
+.timeDisplay {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-family: monospace;
+  color: #fff;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* =========================
+   DIGITS
+   ========================= */
+.digitGroup {
+  display: flex;
+  gap: 0;
+}
+
+.digit {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(4rem, 15vw, 12rem);
+  text-shadow: 0 0 1rem rgba(0, 0, 0, 0.8);
+  min-width: 0.8em;
+  line-height: 1;
+}
+
+/* =========================
+   SEPARATORS
+   ========================= */
+.separator {
+  font-size: clamp(3rem, 12vw, 10rem);
+  opacity: 0.8;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.4; }
+}
