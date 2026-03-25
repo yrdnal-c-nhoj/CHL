@@ -64,13 +64,7 @@ const Clock: React.FC = () => {
             transform: 'translate(-50%, -50%)',
           }}
         />
-        {/* Visual Polish: Vignette overlay */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.3), transparent, rgba(0,0,0,0.3))',
-          zIndex: 1
-        }} />
+     
       </div>
 
       {/* Clock UI */}
