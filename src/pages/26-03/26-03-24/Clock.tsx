@@ -5,12 +5,12 @@ import bgImage from '../../../assets/images/26-03/26-03-24/blakstar.webp?url';
 import exoFont from '../../../assets/fonts/26-03-24-exo.ttf?url';
 
 // We keep these for the internal coordinate system math
-const BASE_SIZE = 400;
+const BASE_SIZE = 450;
 const CENTER = BASE_SIZE / 2;
 const RADIUS = 160;
 const TEXT_RADIUS = 185;
 
-const hourNumbers = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+const hourNumbers = ["12", "01","02", "03", "04", "05", "06", "07", "08", "09", "10", "11"];
 
 const fontFaceExo = `
   @font-face {
@@ -52,14 +52,14 @@ const Clock: React.FC = () => {
             textAnchor="middle"
             dominantBaseline="middle"
             fill="#F8F1A3"
-            fontSize="20"
+            fontSize="80"
             fontFamily="ExoClock, system-ui, sans-serif"
             fontWeight="normal"
             letterSpacing="2"
-            opacity={0.9}
             style={{
               transform: `rotate(${rotation}deg)`,
               transformOrigin: `${x}px ${y}px`,
+              textShadow: '1px 1px 0 #00ffff',
             }}
           >
             {num}
@@ -111,7 +111,7 @@ const Clock: React.FC = () => {
           width: '80vmin', 
           height: '80vmin',
           display: 'block',
-          filter: 'drop-shadow(0 0 2vmin rgba(0,0,0,0.5))' 
+          filter: 'drop-shadow(0 0 1vmin rgb(253, 4, 4))' 
         }}
         viewBox={`0 0 ${BASE_SIZE} ${BASE_SIZE}`}
       >
