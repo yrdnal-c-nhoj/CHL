@@ -1,0 +1,66 @@
+@font-face {
+  font-family: 'ShapesFont';
+  src: url('../../../assets/fonts/26-03-21-shapes.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.clockWrapper {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.clockWrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #0A6703;
+  z-index: -2;
+}
+
+.clockContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.digit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'ShapesFont', monospace;
+  font-size: 33.3vh;
+  line-height: 0.69;
+  -webkit-user-select: none;
+  user-select: none;
+  overflow: hidden;
+  background-image: url('../../../assets/images/26-03/26-03-21/shapes.webp');
+  background-size: 80%;
+  background-position: center;
+  filter: grayscale(100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (min-width: 768px) {
+  .clockContainer {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 1fr;
+  }
+
+  .digit {
+    font-size: 22vw;
+    height: 100dvh;
+    background-size: 50%;
+  }
+}
