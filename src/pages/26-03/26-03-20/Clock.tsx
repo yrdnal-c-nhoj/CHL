@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
-import backgroundImage from '../../../assets/images/26-03/26-03-20/empire.webp?url';
-import empireFont from '../../../assets/fonts/26-03-20-empire.otf';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import styles from './Clock.module.css';
 
 interface HourMarker {
@@ -11,7 +11,21 @@ interface HourMarker {
   y: number;
 }
 
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'Empire',
+    fontUrl: new URL('../../../assets/fonts/26-03-20-empire.otf', import.meta.url).href,
+    options: {
+      weight: 'normal',
+      style: 'normal',
+    }
+  }
+];
+
 const Clock = () => {
+  // Load fonts via Suspense-compatible loader
+  useSuspenseFontLoader(fontConfigs);
+
   const currentTime = useSecondClock();
 
   const calculateHandPositions = useCallback(() => {
@@ -42,68 +56,48 @@ const Clock = () => {
   const { hourDegrees, minuteDegrees, secondDegrees } = calculateHandPositions();
 
   return (
-    <>
-      <style>
-        {`@font-face {
-          font-family: 'Empire';
-          src: url(${empireFont}) format('opentype');
-        }`}
-      </style>
-      
-      <div
-        className={styles.container}
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-          fontFamily: 'Empire, sans-serif',
-        }}
-      >
-        <div className={styles.clockContainer}>
-          <div className={styles.analogClock}>
-            <div className={styles.clockFace}>
-              {hourMarkers.map((marker) => (
-                <div
-                  key={marker.value}
-                  className={styles.hourNumber}
-                  style={{
-                    left: `${marker.x}%`,
-                    top: `${marker.y}%`,
-                    transform: 'translate(-50%, -50%)',
-                    fontFamily: 'Empire, sans-serif',
-                    fontSize: '10vh',
-                    textShadow: 'none',
-                    color: '#E8A7A781',
-                  }}
-                >
-                  {marker.value}
-                </div>
-              ))}
-              
+    <div className={styles.container}>
+      <div className={styles.clockContainer}>
+        <div className={styles.analogClock}>
+          <div className={styles.clockFace}>
+            {hourMarkers.map((marker) => (
               <div
-                className={`${styles.hand} ${styles.hourHand}`}
+                key={marker.value}
+                className={styles.hourNumber}
                 style={{
-                  transform: `rotate(${hourDegrees}deg)`
+                  left: `${marker.x}%`,
+                  top: `${marker.y}%`,
                 }}
-              />
-              
-              <div
-                className={`${styles.hand} ${styles.minuteHand}`}
-                style={{
-                  transform: `rotate(${minuteDegrees}deg)`
-                }}
-              />
-              
-              <div
-                className={`${styles.hand} ${styles.secondHand}`}
-                style={{
-                  transform: `rotate(${secondDegrees}deg)`
-                }}
-              />
-              
-            </div>
+              >
+                {marker.value}
+              </div>
+            ))}
+            
+            <div
+              className={`${styles.hand} ${styles.hourHand}`}
+              style={{
+                transform: `rotate(${hourDegrees}deg)`
+              }}
+            />
+            
+            <div
+              className={`${styles.hand} ${styles.minuteHand}`}
+              style={{
+                transform: `rotate(${minuteDegrees}deg)`
+              }}
+            />
+            
+            <div
+              className={`${styles.hand} ${styles.secondHand}`}
+              style={{
+                transform: `rotate(${secondDegrees}deg)`
+              }}
+            />
+            
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
