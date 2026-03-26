@@ -70,8 +70,8 @@ const Clock: React.FC = () => {
       >
         <defs>
           <filter id="digitShadow" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow dx="0" dy="-1" stdDeviation="0" floodColor="white" floodOpacity="1"/>
-            <feDropShadow dx="0" dy="1" stdDeviation="0" floodColor="#FAE604" floodOpacity="1"/>
+            <feDropShadow dx="1" dy="0" stdDeviation="0" floodColor="white" floodOpacity="1"/>
+            {/* <feDropShadow dx="-1" dy="0" stdDeviation="0" floodColor="#E6F103" floodOpacity="1"/> */}
           </filter>
         </defs>
         {staticElements}
