@@ -1,0 +1,55 @@
+@font-face {
+  font-family: 'ExoClock';
+  src: url('../../../assets/fonts/26-03-24-exo.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  overflow: hidden;
+  background-color: #000;
+  /* STRETCH & NUDGE LOGIC:
+     - 110% 110% stretches the image beyond the viewport to ensure no gaps.
+     - center 20% nudges the image "up" (aligning the top 20% of the image to the top 20% of the screen).
+  */
+  background-image: url('../../../assets/images/26-03/26-03-24/blakstar.webp');
+  background-position: bottom center;
+  background-size: 100% 107%;
+  background-repeat: no-repeat;
+}
+
+.clockSvg {
+  width: 85vmin;
+  height: 85vmin;
+  display: block;
+  filter: drop-shadow(0 0 2vmin rgb(251, 250, 250));
+  overflow: visible;
+}
+
+.hourNumber {
+  font-family: 'ExoClock', system-ui, sans-serif;
+  font-size: 80px;
+  font-weight: normal;
+  letter-spacing: 2px;
+  fill: black;
+  filter: url(#digitShadow);
+}
+
+.hourHand {
+  fill: #FFFDFD;
+}
+
+.minuteHand {
+  fill: #FDFDFD;
+}
+
+.secondHand {
+  fill: #FAF7F7;
+}
