@@ -4,13 +4,13 @@ import { calculateAngles } from '../../../utils/clockUtils';
 import bgImage from '../../../assets/images/26-03/26-03-24/blakstar.webp?url';
 import exoFont from '../../../assets/fonts/26-03-24-exo.ttf?url';
 
-// We keep these for the internal coordinate system math
+// Internal coordinate system constants
 const BASE_SIZE = 500;
 const CENTER = BASE_SIZE / 2;
 const RADIUS = 160;
-const TEXT_RADIUS = 170;
+const TEXT_RADIUS = 185; // Slightly increased to clear the ticks better
 
-const hourNumbers = ["12", "01","02", "03", "04", "05", "06", "07", "08", "09", "10", "11"];
+const hourNumbers = ["12", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11"];
 
 const fontFaceExo = `
   @font-face {
@@ -52,14 +52,13 @@ const Clock: React.FC = () => {
             textAnchor="middle"
             dominantBaseline="middle"
             fill="#FAE604"
-            fontSize="100"
+            fontSize="80"
             fontFamily="ExoClock, system-ui, sans-serif"
             fontWeight="normal"
             letterSpacing="2"
             style={{
               transform: `rotate(${rotation}deg)`,
               transformOrigin: `${x}px ${y}px`,
-              textShadow: '15px 0px 0 #08F8F4, -15px -0px 0 #FF00CC',
             }}
           >
             {num}
@@ -67,6 +66,7 @@ const Clock: React.FC = () => {
         );
       })}
 
+      {/* Tick Marks */}
       {Array.from({ length: 60 }).map((_, i) => {
         const isHour = i % 5 === 0;
         const angle = ((i * 6) - 90) * (Math.PI / 180);
@@ -95,23 +95,29 @@ const Clock: React.FC = () => {
     <div
       style={{
         width: '100vw',
-        height: '100vh', // Changed from 100dvh for broader compatibility, or keep dvh if preferred
+        height: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: `url(${bgImage}) center/cover no-repeat`,
         margin: 0,
         overflow: 'hidden',
+        backgroundColor: '#000', // Fallback color
+        /* STRETCH & NUDGE LOGIC:
+           - 110% 110% stretches the image beyond the viewport to ensure no gaps.
+           - center 20% nudges the image "up" (aligning the top 20% of the image to the top 20% of the screen).
+        */
+        backgroundImage: `url(${bgImage})`,
+        backgroundPosition: 'center 20%',
+        backgroundSize: '115% 115%', 
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <svg 
-        // Using vmin ensures the clock stays circular and fits within 
-        // the smallest dimension of the screen (width vs height)
         style={{ 
-          width: '80vmin', 
-          height: '80vmin',
+          width: '85vmin', 
+          height: '85vmin',
           display: 'block',
-          filter: 'drop-shadow(0 0 1vmin rgb(253, 4, 4))' 
+          filter: 'drop-shadow(0 0 2vmin rgba(253, 4, 4, 0.8))' 
         }}
         viewBox={`0 0 ${BASE_SIZE} ${BASE_SIZE}`}
       >
@@ -121,10 +127,10 @@ const Clock: React.FC = () => {
         <line
           x1={CENTER}
           y1={CENTER}
-          x2={CENTER + Math.cos((angles.hour - 90) * Math.PI / 180) * 80}
-          y2={CENTER + Math.sin((angles.hour - 90) * Math.PI / 180) * 80}
+          x2={CENTER + Math.cos((angles.hour - 90) * Math.PI / 180) * 85}
+          y2={CENTER + Math.sin((angles.hour - 90) * Math.PI / 180) * 85}
           stroke="#7D7D7D"
-          strokeWidth={6}
+          strokeWidth={8}
           strokeLinecap="round"
         />
 
@@ -132,10 +138,10 @@ const Clock: React.FC = () => {
         <line
           x1={CENTER}
           y1={CENTER}
-          x2={CENTER + Math.cos((angles.minute - 90) * Math.PI / 180) * 120}
-          y2={CENTER + Math.sin((angles.minute - 90) * Math.PI / 180) * 120}
+          x2={CENTER + Math.cos((angles.minute - 90) * Math.PI / 180) * 125}
+          y2={CENTER + Math.sin((angles.minute - 90) * Math.PI / 180) * 125}
           stroke="#7D7B7B"
-          strokeWidth={4}
+          strokeWidth={5}
           strokeLinecap="round"
         />
 
@@ -143,12 +149,15 @@ const Clock: React.FC = () => {
         <line
           x1={CENTER}
           y1={CENTER}
-          x2={CENTER + Math.cos((angles.second - 90) * Math.PI / 180) * 140}
-          y2={CENTER + Math.sin((angles.second - 90) * Math.PI / 180) * 140}
+          x2={CENTER + Math.cos((angles.second - 90) * Math.PI / 180) * 145}
+          y2={CENTER + Math.sin((angles.second - 90) * Math.PI / 180) * 145}
           stroke="#7B7979"
           strokeWidth={2}
           strokeLinecap="round"
         />
+
+        {/* Center Cap */}
+        <circle cx={CENTER} cy={CENTER} r={6} fill="#FFFFFF" />
       </svg>
     </div>
   );

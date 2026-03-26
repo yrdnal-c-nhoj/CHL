@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useMemo, useRef, memo } from 'react';
+import React, { useMemo, useRef, memo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import { useSecondClock } from '../../../utils/useSmoothClock';
 import skyImage from '../../../assets/images/26-03/26-03-22/sky.webp';
-import balloonFont from '../../../assets/fonts/26-03-22-balloon.ttf?url';
+import balloonFont from '../../../assets/fonts/26-03-22-balloon.ttf';
+import styles from './Clock.module.css';
 
 const balloonColors = ['#FF2D2D', '#D4F904', '#32CD32', '#FFCC01FF', '#FF1493', '#FF4500', '#9A6BF9'];
 
@@ -13,7 +16,7 @@ interface BalloonDigitProps {
 }
 
 const BalloonDigit = memo(({ char, color }: BalloonDigitProps) => {
-  // Physics generated once per mount - no more "isPopping" state
+  // Physics generated once per mount
   const p = useRef({
     floatSpeed: 3 + Math.random() * 2,
     floatAmplitude: 12 + Math.random() * 10,
@@ -31,43 +34,26 @@ const BalloonDigit = memo(({ char, color }: BalloonDigitProps) => {
 
   if (char === ' ') return <span style={{ margin: '0 0.25em' }}>&nbsp;</span>;
 
+  const cssVars = {
+    '--float-amp': `${p.floatAmplitude}px`,
+    '--drift-amp': `${p.driftAmplitude}px`,
+    '--rock-amp': `${p.rockAmplitude}deg`,
+    '--scale-min': p.scaleMin,
+    '--scale-max': p.scaleMax,
+    '--float-speed': `${p.floatSpeed}s`,
+    '--drift-speed': `${p.driftSpeed}s`,
+    '--rock-speed': `${p.rockSpeed}s`,
+    '--scale-speed': `${p.scaleSpeed}s`,
+    '--delay': `${p.delay}s`,
+    transform: `translate(${p.baseOffsetX}px, ${p.baseOffsetY}px)`,
+  } as React.CSSProperties;
+
   return (
-    <span style={{ 
-      display: 'inline-block', 
-      transform: `translate(${p.baseOffsetX}px, ${p.baseOffsetY}px)`,
-      margin: '0 4px',
-    }}>
-      <span style={{
-        display: 'inline-block',
-        animation: `balloonFloat ${p.floatSpeed}s ease-in-out infinite alternate`,
-        animationDelay: `${p.delay}s`,
-        ['--float-amp' as any]: `${p.floatAmplitude}px`,
-      }}>
-        <span style={{
-          display: 'inline-block',
-          animation: `balloonDrift ${p.driftSpeed}s ease-in-out infinite alternate`,
-          animationDelay: `${p.delay}s`,
-          ['--drift-amp' as any]: `${p.driftAmplitude}px`,
-        }}>
-          <span style={{
-            display: 'inline-block',
-            animation: `balloonRock ${p.rockSpeed}s ease-in-out infinite alternate`,
-            animationDelay: `${p.delay}s`,
-            ['--rock-amp' as any]: `${p.rockAmplitude}deg`,
-          }}>
-            <span 
-              className="balloon-string"
-              style={{
-                display: 'inline-block',
-                color: color,
-                textShadow: '4px 4px 8px rgba(0,0,0,0.3), -1px -1px 2px rgba(255,255,255,0.2)',
-                animation: `balloonBreathe ${p.scaleSpeed}s ease-in-out infinite alternate`,
-                animationDelay: `${p.delay}s`,
-                ['--scale-min' as any]: p.scaleMin,
-                ['--scale-max' as any]: p.scaleMax,
-                willChange: 'transform',
-              }}
-            >
+    <span className={styles.balloonWrapper} style={{ margin: '0 4px', ...cssVars }}>
+      <span className={styles.balloonFloat}>
+        <span className={styles.balloonDrift}>
+          <span className={styles.balloonRock}>
+            <span className={`${styles.balloonString} ${styles.balloonBreathe}`} style={{ color }}>
               {char}
             </span>
           </span>
@@ -76,141 +62,49 @@ const BalloonDigit = memo(({ char, color }: BalloonDigitProps) => {
     </span>
   );
 });
+BalloonDigit.displayName = 'BalloonDigit';
 
-const VIPParallaxClock = () => {
-  const [time, setTime] = useState('');
+const fontConfigs = [{
+  fontFamily: 'Balloon',
+  fontUrl: balloonFont,
+  options: {
+    weight: 'normal',
+    style: 'normal'
+  }
+}];
 
-  useEffect(() => {
-    const formatTime = () => {
-      const now = new Date();
-      return now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }).replace(':', ''); 
-    };
-
-    // Set initial time
-    setTime(formatTime());
-
-    const timer = setInterval(() => {
-      const nextTime = formatTime();
-      // Crucial: Only update state if the string actually changes (once per minute)
-      // This prevents the "jumping" caused by 1-second re-renders
-      setTime(prev => (prev !== nextTime ? nextTime : prev));
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const styles = useMemo(() => (
-    <style>
-      {`
-        @font-face {
-          font-family: 'Balloon';
-          src: url(${balloonFont}) format('truetype');
-        }
-
-        @keyframes scrollUp {
-          from { transform: translateY(0); }
-          to { transform: translateY(-50%); }
-        }
-
-        @keyframes balloonFloat {
-          0% { transform: translateY(calc(var(--float-amp) * -1)); }
-          100% { transform: translateY(var(--float-amp)); }
-        }
-
-        @keyframes balloonDrift {
-          0% { transform: translateX(calc(var(--drift-amp) * -6)); }
-          100% { transform: translateX(var(--drift-amp)); }
-        }
-
-        @keyframes balloonRock {
-          0% { transform: rotate(calc(var(--rock-amp) * -3)); }
-          100% { transform: rotate(var(--rock-amp)); }
-        }
-
-        @keyframes balloonBreathe {
-          0% { transform: scale(var(--scale-min)); }
-          100% { transform: scale(var(--scale-max)); }
-        }
-
-        .stage {
-          position: relative;
-          width: 100%;
-          height: 100vh;
-          overflow: hidden;
-          background: #87CEEB;
-        }
-
-        .layer {
-          position: absolute;
-          width: 100%;
-          height: 200%;
-          top: 0;
-          left: 0;
-        }
-
-        .bg {
-          background: url("${skyImage}") center/cover;
-          animation: scrollUp 60s linear infinite;
-          filter: contrast(0.4) brightness(1.3) saturate(1.7);
-        }
-
-        .fg {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          align-items: center;
-          opacity: 0.8;
-          animation: scrollUp 25s linear infinite;
-          z-index: 2;
-        }
-
-        .glass-tile {
-          font-family: 'Balloon', sans-serif;
-          font-size: clamp(4rem, 15vw, 12rem);
-          text-align: center;
-          user-select: none;
-          filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.63));
-        }
-
-        .balloon-string { position: relative; }
-        .balloon-string::after {
-          content: '';
-          position: absolute;
-          left: 50%;
-          top: 85%;
-          width: 2px;
-          height: 100px;
-          background: linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0));
-          transform: translateX(-50%);
-          z-index: -1;
-        }
-      `}
-    </style>
-  ), []);
+const VIPParallaxClock: React.FC = () => {
+  useSuspenseFontLoader(fontConfigs);
+  
+  const time = useSecondClock();
+  const timeString = useMemo(() => {
+    return time.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }).replace(':', '');
+  }, [time]);
 
   // Helper to render digits with consistent coloring
   const renderDigits = (offset: number) => {
-    return time.split('').map((char, index) => (
+    return timeString.split('').map((char, index) => (
       <BalloonDigit 
         key={`${offset}-${index}`} 
         char={char} 
-        color={staticShuffledColors[(index + offset) % staticShuffledColors.length]} 
+        color={staticShuffledColors[(index + offset) % staticShuffledColors.length] ?? '#FF2D2D'} 
       />
     ));
   };
 
   return (
-    <>
-      {styles}
-      <div className="stage">
-        <div className="layer bg" aria-hidden="true" />
-        <div className="layer fg">
-          <time className="glass-tile">{renderDigits(0)}</time>
-          <time className="glass-tile">{renderDigits(2)}</time>
-          <time className="glass-tile">{renderDigits(4)}</time>
-        </div>
+    <div className={styles.stage}>
+      <div 
+        className={`${styles.layer} ${styles.bg}`} 
+        style={{ backgroundImage: `url(${skyImage})` }}
+        aria-hidden="true" 
+      />
+      <div className={`${styles.layer} ${styles.fg}`}>
+        <time className={styles.glassTile}>{renderDigits(0)}</time>
+        <time className={styles.glassTile}>{renderDigits(2)}</time>
+        <time className={styles.glassTile}>{renderDigits(4)}</time>
       </div>
-    </>
+    </div>
   );
 };
 
