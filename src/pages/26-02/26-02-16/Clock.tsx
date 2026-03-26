@@ -16,8 +16,8 @@ const getBackgroundStyle = (isFlipped) => ({
   backgroundSize: '200px auto',
   backgroundRepeat: 'repeat',
   backgroundPosition: 'center',
-  filter: 'contrast(6.4) brightness(2.0)',
-  opacity: isFlipped ? 0.4 : 0.7,
+  filter: `contrast(6.4) brightness(2.0)`,
+  opacity: isFlipped ? 0.3 : 0.6,
   transform: isFlipped ? 'scale(-1, -1)' : 'none',
   zIndex: isFlipped ? 2 : 1,
 });
@@ -33,6 +33,8 @@ const BackgroundLayers = React.memo(() => (
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
+        filter: 'saturate(5.8)',
+        // opacity: 0.5,
         zIndex: 0,
       }}
     />
