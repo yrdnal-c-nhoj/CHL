@@ -5,10 +5,10 @@ import bgImage from '../../../assets/images/26-03/26-03-24/blakstar.webp?url';
 import exoFont from '../../../assets/fonts/26-03-24-exo.ttf?url';
 
 // We keep these for the internal coordinate system math
-const BASE_SIZE = 450;
+const BASE_SIZE = 500;
 const CENTER = BASE_SIZE / 2;
 const RADIUS = 160;
-const TEXT_RADIUS = 185;
+const TEXT_RADIUS = 170;
 
 const hourNumbers = ["12", "01","02", "03", "04", "05", "06", "07", "08", "09", "10", "11"];
 
@@ -51,15 +51,15 @@ const Clock: React.FC = () => {
             y={y}
             textAnchor="middle"
             dominantBaseline="middle"
-            fill="#F8F1A3"
-            fontSize="80"
+            fill="#FAE604"
+            fontSize="100"
             fontFamily="ExoClock, system-ui, sans-serif"
             fontWeight="normal"
             letterSpacing="2"
             style={{
               transform: `rotate(${rotation}deg)`,
               transformOrigin: `${x}px ${y}px`,
-              textShadow: '1px 1px 0 #00ffff',
+              textShadow: '15px 0px 0 #08F8F4, -15px -0px 0 #FF00CC',
             }}
           >
             {num}
