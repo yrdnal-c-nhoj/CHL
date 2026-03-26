@@ -110,23 +110,18 @@
 .hourNumber5, .hourNumber11 { fill: #3a86ff; }
 
 /* --- Ticks --- */
-.hourTickPink, .minuteTickPink     { stroke: #ff006e; }
-.hourTickOrange, .minuteTickOrange { stroke: #fb5607; }
-.hourTickYellow, .minuteTickYellow { stroke: #ffbe0b; }
-.hourTickGreen, .minuteTickGreen   { stroke: #06ffa5; }
-.hourTickBlue, .minuteTickBlue     { stroke: #3a86ff; }
-.hourTickPurple, .minuteTickPurple { stroke: #8338ec; }
+.tickPink    { stroke: #ff006e; }
+.tickOrange  { stroke: #fb5607; }
+.tickYellow  { stroke: #ffbe0b; }
+.tickGreen   { stroke: #06ffa5; }
+.tickBlue    { stroke: #3a86ff; }
+.tickPurple  { stroke: #8338ec; }
 
-[class*="hourTick"] { 
-  stroke-width: 8; 
+.tickPink, .tickOrange, .tickYellow, .tickGreen, .tickBlue, .tickPurple {
+  stroke-width: 3;
   stroke-linecap: round;
-  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
-}
-
-[class*="minuteTick"] { 
-  stroke-width: 3; 
-  stroke-linecap: round; 
-  opacity: 0.8;
+  fill: none;
+  opacity: 0.9;
 }
 
 /* --- Hands --- */
