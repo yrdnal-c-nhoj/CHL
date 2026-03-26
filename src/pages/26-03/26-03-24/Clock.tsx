@@ -79,8 +79,8 @@ const Clock: React.FC = () => {
         {/* Hour hand - tapered */}
         {(() => {
           const angle = (angles.hour - 90) * Math.PI / 180;
-          const x2 = CENTER + Math.cos(angle) * 600;
-          const y2 = CENTER + Math.sin(angle) * 600;
+          const x2 = CENTER + Math.cos(angle) * 300;
+          const y2 = CENTER + Math.sin(angle) * 300;
           const perpAngle = angle + Math.PI / 2;
           const w = 8;
           const xOff = Math.cos(perpAngle) * w / 2;
