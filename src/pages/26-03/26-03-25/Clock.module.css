@@ -70,7 +70,7 @@
   /* Spin the entire face */
   animation: spin 30s linear infinite;
   transform-origin: center center;
-  filter: drop-shadow(0 0 40px rgba(0, 0, 0, 0.3));
+  /* filter: drop-shadow(0 0 40px rgba(0, 0, 0, 0.3)); */
 }
 
 @keyframes spin {
