@@ -1,133 +1,251 @@
-import React, { useMemo } from 'react';
-import { useSecondClock } from '../../../utils/useSmoothClock';
-import { calculateAngles } from '../../../utils/clockUtils';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import arrowImg from '../../../assets/images/26-03/26-03-23/arrow.webp?url';
+import fontUrl from '../../../assets/fonts/26-03-23-arrow.ttf?url';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
-import type { FontConfig } from '../../../types/clock';
-import styles from './Clock.module.css';
 
-// Internal coordinate system constants
-const BASE_SIZE = 500;
-const CENTER = BASE_SIZE / 2;
-const RADIUS = 160;
-const TEXT_RADIUS = 185;
+const FONT_FAMILY = 'ClockFont_Arrow';
+const LOOP_MS = 10000;                    // full cycle time (intact → shatter → new clock)
+const ANIMATION_DURATION_MS = 4200;       // length of the fly-off animation
+const BASE_DELAY_S = 2.5;                 // seconds the clock stays fully intact before first shatter
+const STAGGER_S = 0.35;                   // seconds between each digit starting its shatter
 
-const hourNumbers = ["12", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11"];
+const getFlight = () => ({
+  tx: `${(Math.random() - 0.5) * 220}vw`,
+  ty: `${(Math.random() - 0.5) * 220}vh`,
+  tz: `${(Math.random() - 0.5) * 2200}px`,
+  rx: `${(Math.random() - 0.5) * 720}deg`,
+  ry: `${(Math.random() - 0.5) * 720}deg`,
+  rz: `${(Math.random() - 0.5) * 720}deg`,
+});
 
-const fontConfigs: FontConfig[] = [
-  {
-    fontFamily: 'ExoClock',
-    fontUrl: new URL('../../../assets/fonts/26-03-24-exo.ttf', import.meta.url).href,
-    options: {
-      weight: 'normal',
-      style: 'normal',
+const getTime = () => {
+  const now = new Date();
+  let hours = now.getHours();
+  const period = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12 || 12;
+  return {
+    hh: String(hours).padStart(2, '0'),
+    mm: String(now.getMinutes()).padStart(2, '0'),
+    period,
+  };
+};
+
+// Updated keyframes – one-shot fly-off (no return to center)
+const STYLE_TAG = `
+  @font-face {
+    font-family: '${FONT_FAMILY}';
+    src: url('${fontUrl}') format('truetype');
+    font-display: swap;
+  }
+
+  @keyframes shatter {
+    0%, 5% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) rotate(0deg);
+      filter: blur(0px);
+    }
+    30% {
+      transform: translate3d(var(--tx, 0), var(--ty, 0), var(--tz, 0))
+                rotateX(var(--rx, 0)) rotateY(var(--ry, 0)) rotateZ(var(--rz, 0));
+      opacity: 1;
+    }
+    100% {
+      transform: translate3d(calc(var(--tx, 0) * 5), calc(var(--ty, 0) * 5), calc(var(--tz, 0) * 5))
+                rotateX(var(--rx, 0)) rotateY(var(--ry, 0)) rotateZ(var(--rz, 0));
+      opacity: 0;
+      filter: blur(20px);
     }
   }
-];
+`;
 
-const Clock: React.FC = () => {
-  // Load fonts via Suspense-compatible loader
+// Inline style objects (unchanged except where noted)
+const containerStyle: React.CSSProperties = {
+  width: '100vw',
+  height: '100vh',
+  backgroundImage: `url(${arrowImg})`,
+  backgroundPosition: 'center',
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat',
+  backgroundColor: '#080808',
+  transform: 'rotate(180deg)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  overflow: 'hidden',
+  perspective: '2000px',
+};
+
+const clockStyle: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.5rem',
+  fontFamily: `'${FONT_FAMILY}', "Courier New", monospace`,
+  fontSize: 'clamp(3rem, 10vw, 8rem)',
+  fontWeight: 'bold',
+  color: 'white',
+  textShadow: '0 0 20px rgba(0, 0, 0, 0.8)',
+  transform: 'rotate(180deg)',
+};
+
+const digitsStyle: React.CSSProperties = {
+  display: 'flex',
+  gap: '0.1em',
+  fontVariantNumeric: 'tabular-nums',
+};
+
+const charBoxStyle: React.CSSProperties = {
+  position: 'relative',
+  width: '0.7em',
+  height: '1.2em',
+};
+
+const shardBaseStyle: React.CSSProperties = {
+  position: 'absolute',
+  inset: 0,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backfaceVisibility: 'hidden',
+  opacity: 1,                                      // ← was 0, now visible by default
+  animationName: 'shatter',
+  animationDuration: `${ANIMATION_DURATION_MS}ms`,
+  animationTimingFunction: 'ease-in-out',
+  animationIterationCount: 1,                      // ← one-shot (was infinite)
+  animationFillMode: 'forwards',                   // ← stay at final state (out + invisible)
+};
+
+const shardInnerStyle: React.CSSProperties = {
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  // ← NO transform here anymore (this was the main reason the clock was invisible!)
+};
+
+const topShardClip: React.CSSProperties = {
+  clipPath: 'inset(0 0 50% 0)',
+};
+
+const bottomShardClip: React.CSSProperties = {
+  clipPath: 'inset(50% 0 0 0)',
+};
+
+interface ShardProps {
+  char: string;
+  delay: number;
+  top: ReturnType<typeof getFlight>;
+  bottom: ReturnType<typeof getFlight>;
+}
+
+const CharBox = React.memo(({ char, delay, top, bottom }: ShardProps) => (
+  <div style={charBoxStyle}>
+    {/* Top half shard */}
+    <div
+      style={{
+        ...shardBaseStyle,
+        ...topShardClip,
+        animationDelay: `${delay}s`,
+        '--tx': top.tx,
+        '--ty': top.ty,
+        '--tz': top.tz,
+        '--rx': top.rx,
+        '--ry': top.ry,
+        '--rz': top.rz,
+      } as React.CSSProperties}
+    >
+      <div style={shardInnerStyle}>{char}</div>
+    </div>
+
+    {/* Bottom half shard */}
+    <div
+      style={{
+        ...shardBaseStyle,
+        ...bottomShardClip,
+        animationDelay: `${delay}s`,
+        '--tx': bottom.tx,
+        '--ty': bottom.ty,
+        '--tz': bottom.tz,
+        '--rx': bottom.rx,
+        '--ry': bottom.ry,
+        '--rz': bottom.rz,
+      } as React.CSSProperties}
+    >
+      <div style={shardInnerStyle}>{char}</div>
+    </div>
+  </div>
+));
+CharBox.displayName = 'CharBox';
+
+const ExplodingClock: React.FC = () => {
+  const fontConfigs = useMemo(
+    () => [{ fontFamily: FONT_FAMILY, fontUrl }],
+    []
+  );
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useSecondClock();
-  const angles = calculateAngles(time);
+  const [{ chars, flights, loopKey }, setState] = useState(() => {
+    const t = getTime();
+    const cs = [...t.hh, ...t.mm, ...t.period];
+    return {
+      chars: cs,
+      flights: cs.map(() => ({ top: getFlight(), bottom: getFlight() })),
+      loopKey: 0,
+    };
+  });
 
-  const staticElements = useMemo(() => (
-    <>
-      {/* Hour numbers with custom font */}
-      {hourNumbers.map((num, i) => {
-        const angle = ((i * 30) - 90) * (Math.PI / 180);
-        const x = CENTER + Math.cos(angle) * TEXT_RADIUS;
-        const y = CENTER + Math.sin(angle) * TEXT_RADIUS;
-        const rotation = i * 30;
+  const loopKeyRef = useRef(loopKey);
+  loopKeyRef.current = loopKey;
 
-        return (
-          <text
-            key={`num-${i}`}
-            x={x}
-            y={y}
-            textAnchor="middle"
-            dominantBaseline="middle"
-            className={styles.hourNumber}
-            style={{
-              transform: `rotate(${rotation}deg)`,
-              transformOrigin: `${x}px ${y}px`,
-            }}
-          >
-            {num}
-          </text>
-        );
-      })}
+  useEffect(() => {
+    let nextLoop = Date.now() + LOOP_MS;
 
-    
-    </>
-  ), []);
+    const tick = () => {
+      const now = Date.now();
+      const t = getTime();
+      const cs = [...t.hh, ...t.mm, ...t.period];
+      const newLoop = now >= nextLoop;
+
+      if (newLoop) nextLoop += LOOP_MS;
+
+      setState(prev => {
+        const newFlights = newLoop
+          ? cs.map(() => ({ top: getFlight(), bottom: getFlight() }))
+          : prev.flights;
+
+        return {
+          chars: cs,
+          flights: newFlights,
+          loopKey: newLoop ? prev.loopKey + 1 : prev.loopKey,
+        };
+      });
+    };
+
+    const timer = setInterval(tick, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <div className={styles.container}>
-      <svg 
-        className={styles.clockSvg}
-        viewBox={`0 0 ${BASE_SIZE} ${BASE_SIZE}`}
-      >
-        <defs>
-          <filter id="digitShadow" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow dx="1" dy="1" stdDeviation="0" floodColor="#0D0D0D" floodOpacity="1"/>
-          </filter>
-        </defs>
-        {staticElements}
-
-        {/* Hour hand - tapered */}
-        {(() => {
-          const angle = (angles.hour - 90) * Math.PI / 180;
-          const x2 = CENTER + Math.cos(angle) * 300;
-          const y2 = CENTER + Math.sin(angle) * 300;
-          const perpAngle = angle + Math.PI / 2;
-          const w = 8;
-          const xOff = Math.cos(perpAngle) * w / 2;
-          const yOff = Math.sin(perpAngle) * w / 2;
-          return (
-            <path
-              d={`M ${CENTER - xOff} ${CENTER - yOff} L ${x2} ${y2} L ${CENTER + xOff} ${CENTER + yOff} Z`}
-              className={styles.hourHand}
-            />
-          );
-        })()}
-
-        {/* Minute hand - tapered */}
-        {(() => {
-          const angle = (angles.minute - 90) * Math.PI / 180;
-          const x2 = CENTER + Math.cos(angle) * 800;
-          const y2 = CENTER + Math.sin(angle) * 800;
-          const perpAngle = angle + Math.PI / 2;
-          const w = 5;
-          const xOff = Math.cos(perpAngle) * w / 2;
-          const yOff = Math.sin(perpAngle) * w / 2;
-          return (
-            <path
-              d={`M ${CENTER - xOff} ${CENTER - yOff} L ${x2} ${y2} L ${CENTER + xOff} ${CENTER + yOff} Z`}
-              className={styles.minuteHand}
-            />
-          );
-        })()}
-
-        {/* Second hand - tapered */}
-        {(() => {
-          const angle = (angles.second - 90) * Math.PI / 180;
-          const x2 = CENTER + Math.cos(angle) * 1000;
-          const y2 = CENTER + Math.sin(angle) * 1000;
-          const perpAngle = angle + Math.PI / 2;
-          const w = 2;
-          const xOff = Math.cos(perpAngle) * w / 2;
-          const yOff = Math.sin(perpAngle) * w / 2;
-          return (
-            <path
-              d={`M ${CENTER - xOff} ${CENTER - yOff} L ${x2} ${y2} L ${CENTER + xOff} ${CENTER + yOff} Z`}
-              className={styles.secondHand}
-            />
-          );
-        })()}
-      </svg>
+    <div style={containerStyle}>
+      <style>{STYLE_TAG}</style>
+      <div style={clockStyle}>
+        <div style={digitsStyle}>
+          {chars.map((char, i) => {
+            const delay = BASE_DELAY_S + (chars.length - 1 - i) * STAGGER_S;
+            return (
+              <CharBox
+                key={`${i}-${loopKey}`}
+                char={char}
+                delay={delay}
+                top={flights[i].top}
+                bottom={flights[i].bottom}
+              />
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Clock;
+export default ExplodingClock;
