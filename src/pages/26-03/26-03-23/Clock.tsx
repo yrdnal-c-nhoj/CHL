@@ -1,18 +1,21 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import arrowImg from '../../../assets/images/26-03/26-03-23/arrow.webp';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import arrowImg from '../../../assets/images/26-03/26-03-23/arrow.webp?url';
 import fontUrl from '../../../assets/fonts/26-03-23-arrow.ttf?url';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 
 const FONT_FAMILY = 'ClockFont_Arrow';
-const LOOP_MS = 8000;
+const LOOP_MS = 10000;                    // full cycle time (intact → shatter → new clock)
+const ANIMATION_DURATION_MS = 4200;       // length of the fly-off animation
+const BASE_DELAY_S = 2.5;                 // seconds the clock stays fully intact before first shatter
+const STAGGER_S = 0.35;                   // seconds between each digit starting its shatter
 
 const getFlight = () => ({
-  tx: `${(Math.random() - 0.5) * 600}vw`,
-  ty: `${(Math.random() - 0.5) * 600}vh`,
-  tz: `${(Math.random() - 0.5) * 4000}px`,
-  rx: `${(Math.random() - 0.5) * 1440}deg`,
-  ry: `${(Math.random() - 0.5) * 1440}deg`,
-  rz: `${(Math.random() - 0.5) * 1440}deg`,
+  tx: `${(Math.random() - 0.5) * 220}vw`,
+  ty: `${(Math.random() - 0.5) * 220}vh`,
+  tz: `${(Math.random() - 0.5) * 2200}px`,
+  rx: `${(Math.random() - 0.5) * 720}deg`,
+  ry: `${(Math.random() - 0.5) * 720}deg`,
+  rz: `${(Math.random() - 0.5) * 720}deg`,
 });
 
 const getTime = () => {
@@ -27,52 +30,106 @@ const getTime = () => {
   };
 };
 
-// Static style — defined once outside the component, never regenerated
-const STATIC_STYLE = `
-  @font-face { font-family: '${FONT_FAMILY}'; src: url('${fontUrl}'); }
-
-  .scene {
-    width: 100vw; height: 100dvh;
-    background: url('${arrowImg}') center/cover no-repeat;
-    background-color: #080808;
-    transform: rotate(180deg);
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-    perspective: 2000px;
+// Updated keyframes – one-shot fly-off (no return to center)
+const STYLE_TAG = `
+  @font-face {
+    font-family: '${FONT_FAMILY}';
+    src: url('${fontUrl}') format('truetype');
+    font-display: swap;
   }
-  .clock-wrapper { display: flex; gap: 0.1em; transform: rotate(180deg); }
-  .char-box {
-    position: relative; width: 0.7em; height: 1.2em;
-    font-family: '${FONT_FAMILY}', 'Courier New', monospace;
-    font-size: clamp(3rem, 15vw, 10rem);
-    font-weight: 900; color: white;
-    text-shadow: 0 0 25px rgba(0,0,0,0.6);
-  }
-  .shard {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    backface-visibility: hidden;
-    opacity: 0;
-    animation: shatter ${LOOP_MS}ms ease-in-out infinite;
-  }
-  .top-shard { clip-path: inset(0 0 50% 0); }
-  .bottom-shard { clip-path: inset(50% 0 0 0); }
 
   @keyframes shatter {
-    0%, 5%   { opacity: 0; transform: translate3d(0,0,0) rotate(0); filter: blur(10px); }
-    15%      { opacity: 1; transform: translate3d(0,0,0) rotate(0); filter: blur(0); }
-    50%      { transform: translate3d(0,0,0); }
-    52%      { transform: translate3d(-2px, 2px, 0); }
-    54%      { transform: translate3d(2px, -2px, 0); }
-    55%      { opacity: 1; }
-    95%, 100% {
+    0%, 5% {
       opacity: 1;
-      transform:
-        translate3d(var(--tx), var(--ty), var(--tz))
-        rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(var(--rz));
+      transform: translate3d(0, 0, 0) rotate(0deg);
+      filter: blur(0px);
+    }
+    30% {
+      transform: translate3d(var(--tx, 0), var(--ty, 0), var(--tz, 0))
+                rotateX(var(--rx, 0)) rotateY(var(--ry, 0)) rotateZ(var(--rz, 0));
+      opacity: 1;
+    }
+    100% {
+      transform: translate3d(calc(var(--tx, 0) * 5), calc(var(--ty, 0) * 5), calc(var(--tz, 0) * 5))
+                rotateX(var(--rx, 0)) rotateY(var(--ry, 0)) rotateZ(var(--rz, 0));
+      opacity: 0;
+      filter: blur(20px);
     }
   }
 `;
+
+// Inline style objects (unchanged except where noted)
+const containerStyle: React.CSSProperties = {
+  width: '100vw',
+  height: '100vh',
+  backgroundImage: `url(${arrowImg})`,
+  backgroundPosition: 'center',
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat',
+  backgroundColor: '#080808',
+  transform: 'rotate(180deg)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  overflow: 'hidden',
+  perspective: '2000px',
+};
+
+const clockStyle: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.5rem',
+  fontFamily: `'${FONT_FAMILY}', "Courier New", monospace`,
+  fontSize: 'clamp(3rem, 10vw, 8rem)',
+  fontWeight: 'bold',
+  color: 'white',
+  textShadow: '0 0 20px rgba(0, 0, 0, 0.8)',
+  transform: 'rotate(180deg)',
+};
+
+const digitsStyle: React.CSSProperties = {
+  display: 'flex',
+  gap: '0.1em',
+  fontVariantNumeric: 'tabular-nums',
+};
+
+const charBoxStyle: React.CSSProperties = {
+  position: 'relative',
+  width: '0.7em',
+  height: '1.2em',
+};
+
+const shardBaseStyle: React.CSSProperties = {
+  position: 'absolute',
+  inset: 0,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backfaceVisibility: 'hidden',
+  opacity: 1,                                      // ← was 0, now visible by default
+  animationName: 'shatter',
+  animationDuration: `${ANIMATION_DURATION_MS}ms`,
+  animationTimingFunction: 'ease-in-out',
+  animationIterationCount: 1,                      // ← one-shot (was infinite)
+  animationFillMode: 'forwards',                   // ← stay at final state (out + invisible)
+};
+
+const shardInnerStyle: React.CSSProperties = {
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  // ← NO transform here anymore (this was the main reason the clock was invisible!)
+};
+
+const topShardClip: React.CSSProperties = {
+  clipPath: 'inset(0 0 50% 0)',
+};
+
+const bottomShardClip: React.CSSProperties = {
+  clipPath: 'inset(50% 0 0 0)',
+};
 
 interface ShardProps {
   char: string;
@@ -81,38 +138,52 @@ interface ShardProps {
   bottom: ReturnType<typeof getFlight>;
 }
 
-// Memoized so a char-box only re-renders when its char or delay changes
 const CharBox = React.memo(({ char, delay, top, bottom }: ShardProps) => (
-  <div className="char-box">
+  <div style={charBoxStyle}>
+    {/* Top half shard */}
     <div
-      className="top-shard shard"
       style={{
+        ...shardBaseStyle,
+        ...topShardClip,
         animationDelay: `${delay}s`,
-        '--tx': top.tx, '--ty': top.ty, '--tz': top.tz,
-        '--rx': top.rx, '--ry': top.ry, '--rz': top.rz,
+        '--tx': top.tx,
+        '--ty': top.ty,
+        '--tz': top.tz,
+        '--rx': top.rx,
+        '--ry': top.ry,
+        '--rz': top.rz,
       } as React.CSSProperties}
     >
-      {char}
+      <div style={shardInnerStyle}>{char}</div>
     </div>
+
+    {/* Bottom half shard */}
     <div
-      className="bottom-shard shard"
       style={{
+        ...shardBaseStyle,
+        ...bottomShardClip,
         animationDelay: `${delay}s`,
-        '--tx': bottom.tx, '--ty': bottom.ty, '--tz': bottom.tz,
-        '--rx': bottom.rx, '--ry': bottom.ry, '--rz': bottom.rz,
+        '--tx': bottom.tx,
+        '--ty': bottom.ty,
+        '--tz': bottom.tz,
+        '--rx': bottom.rx,
+        '--ry': bottom.ry,
+        '--rz': bottom.rz,
       } as React.CSSProperties}
     >
-      {char}
+      <div style={shardInnerStyle}>{char}</div>
     </div>
   </div>
 ));
 CharBox.displayName = 'CharBox';
 
 const ExplodingClock: React.FC = () => {
-  const fontConfigs = useMemo(() => [{ fontFamily: FONT_FAMILY, fontUrl }], []);
+  const fontConfigs = useMemo(
+    () => [{ fontFamily: FONT_FAMILY, fontUrl }],
+    []
+  );
   useSuspenseFontLoader(fontConfigs);
 
-  // Single state object — one setState, one re-render per tick
   const [{ chars, flights, loopKey }, setState] = useState(() => {
     const t = getTime();
     const cs = [...t.hh, ...t.mm, ...t.period];
@@ -138,14 +209,13 @@ const ExplodingClock: React.FC = () => {
       if (newLoop) nextLoop += LOOP_MS;
 
       setState(prev => {
-        // Only regenerate flights on loop reset
-        const flights = newLoop
+        const newFlights = newLoop
           ? cs.map(() => ({ top: getFlight(), bottom: getFlight() }))
           : prev.flights;
 
         return {
           chars: cs,
-          flights,
+          flights: newFlights,
           loopKey: newLoop ? prev.loopKey + 1 : prev.loopKey,
         };
       });
@@ -156,18 +226,23 @@ const ExplodingClock: React.FC = () => {
   }, []);
 
   return (
-    <div className="scene">
-      <style>{STATIC_STYLE}</style>
-      <div className="clock-wrapper">
-        {chars.map((char, i) => (
-          <CharBox
-            key={`${i}-${loopKey}`}
-            char={char}
-            delay={(chars.length - 1 - i) * 0.4}
-            top={flights[i].top}
-            bottom={flights[i].bottom}
-          />
-        ))}
+    <div style={containerStyle}>
+      <style>{STYLE_TAG}</style>
+      <div style={clockStyle}>
+        <div style={digitsStyle}>
+          {chars.map((char, i) => {
+            const delay = BASE_DELAY_S + (chars.length - 1 - i) * STAGGER_S;
+            return (
+              <CharBox
+                key={`${i}-${loopKey}`}
+                char={char}
+                delay={delay}
+                top={flights[i].top}
+                bottom={flights[i].bottom}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );
