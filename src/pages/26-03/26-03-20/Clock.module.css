@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Empire';
+  src: url('../../../assets/fonts/26-03-20-empire.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 .container {
   width: 100vw;
   height: 100dvh;
@@ -5,11 +13,13 @@
   align-items: center;
   justify-content: center;
   background-color: #000;
+  background-image: url('../../../assets/images/26-03/26-03-20/empire.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
   overflow: hidden;
+  font-family: 'Empire', sans-serif;
 }
 
 .clockContainer {
@@ -39,9 +49,11 @@
 .hourNumber {
   position: absolute;
   font-family: 'Empire', sans-serif;
-  font-size: clamp(1rem, 4vmin, 2rem);
+  font-size: 10vh;
   font-weight: bold;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  text-shadow: none;
+  color: #E8A7A781;
+  transform: translate(-50%, -50%);
 }
 
 .hand {
