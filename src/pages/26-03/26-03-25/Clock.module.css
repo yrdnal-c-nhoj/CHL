@@ -1,0 +1,146 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  overflow: hidden;
+  background: linear-gradient(45deg, #ff006e 0%, #8338ec 15%, #3a86ff 30%, #06ffa5 45%, #ffbe0b 60%, #fb5607 75%, #ff006e 100%);
+  background-size: 400% 400%;
+  animation: bgShift 8s ease infinite;
+  position: relative;
+}
+
+@keyframes bgShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.bgGrid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(4, 1fr);
+  z-index: 0;
+}
+
+.bgCell {
+  background-image: url('../../../assets/images/26-03/26-03-25/ride.webp');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Phone 2x4 checkerboard pattern */
+.bgCell:nth-child(1),
+.bgCell:nth-child(4),
+.bgCell:nth-child(5),
+.bgCell:nth-child(8) {
+  transform: scaleX(-1);
+}
+
+/* Desktop 3x3 grid */
+@media (min-width: 768px) {
+  .bgGrid {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+  
+  /* Reset phone transforms */
+  .bgCell:nth-child(1),
+  .bgCell:nth-child(4),
+  .bgCell:nth-child(5),
+  .bgCell:nth-child(8) {
+    transform: none;
+  }
+  
+  /* Desktop checkerboard pattern */
+  .bgCell:nth-child(2),
+  .bgCell:nth-child(4),
+  .bgCell:nth-child(6),
+  .bgCell:nth-child(8) {
+    transform: scaleX(-1);
+  }
+}
+
+.clockSvg {
+  width: 80vmin;
+  height: 80vmin;
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 0 50px rgba(255, 190, 11, 0.8)) drop-shadow(0 0 20px rgba(255, 0, 110, 0.6));
+  position: relative;
+  z-index: 1;
+  animation: spin 30s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.clockRing {
+  fill: none;
+  stroke: url(#goldGradient);
+  stroke-width: 14;
+  filter: drop-shadow(0 0 15px rgba(255, 215, 0, 1)) drop-shadow(0 0 30px rgba(255, 0, 110, 0.6));
+}
+
+.centerDot {
+  fill: #ff006e;
+  filter: drop-shadow(0 0 15px rgba(255, 0, 110, 1)) drop-shadow(0 0 30px rgba(255, 0, 110, 0.8));
+}
+
+.hourNumber {
+  font-family: 'RideFont', 'Georgia', serif;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.hourNumber1 { fill: #ff006e; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px #ff006e; }
+.hourNumber2 { fill: #fb5607; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px #fb5607; }
+.hourNumber3 { fill: #ffbe0b; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px #ffbe0b; }
+.hourNumber4 { fill: #06ffa5; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px #06ffa5; }
+.hourNumber5 { fill: #3a86ff; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px #3a86ff; }
+.hourNumber6 { fill: #8338ec; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px #8338ec; }
+.hourNumber7 { fill: #ff006e; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px #ff006e; }
+.hourNumber8 { fill: #fb5607; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px #fb5607; }
+.hourNumber9 { fill: #ffbe0b; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px #ffbe0b; }
+.hourNumber10 { fill: #06ffa5; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px #06ffa5; }
+.hourNumber11 { fill: #3a86ff; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px #3a86ff; }
+.hourNumber12 { fill: #8338ec; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px #8338ec; }
+
+.hourHand {
+  fill: #ff006e;
+  filter: drop-shadow(3px 3px 10px rgba(255, 0, 110, 0.9));
+}
+
+.minuteHand {
+  fill: #06ffa5;
+  filter: drop-shadow(3px 3px 10px rgba(6, 255, 165, 0.9));
+}
+
+.secondHand {
+  fill: #8338ec;
+  filter: drop-shadow(2px 2px 8px rgba(131, 56, 236, 0.9));
+}
+
+.hourTickPink { stroke: #ff006e; stroke-width: 6; stroke-linecap: round; filter: drop-shadow(0 0 6px #ff006e); }
+.hourTickOrange { stroke: #fb5607; stroke-width: 6; stroke-linecap: round; filter: drop-shadow(0 0 6px #fb5607); }
+.hourTickYellow { stroke: #ffbe0b; stroke-width: 6; stroke-linecap: round; filter: drop-shadow(0 0 6px #ffbe0b); }
+.hourTickGreen { stroke: #06ffa5; stroke-width: 6; stroke-linecap: round; filter: drop-shadow(0 0 6px #06ffa5); }
+.hourTickBlue { stroke: #3a86ff; stroke-width: 6; stroke-linecap: round; filter: drop-shadow(0 0 6px #3a86ff); }
+.hourTickPurple { stroke: #8338ec; stroke-width: 6; stroke-linecap: round; filter: drop-shadow(0 0 6px #8338ec); }
+
+.minuteTickPink { stroke: #ff006e; stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 0 3px #ff006e); }
+.minuteTickOrange { stroke: #fb5607; stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 0 3px #fb5607); }
+.minuteTickYellow { stroke: #ffbe0b; stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 0 3px #ffbe0b); }
+.minuteTickGreen { stroke: #06ffa5; stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 0 3px #06ffa5); }
+.minuteTickBlue { stroke: #3a86ff; stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 0 3px #3a86ff); }
+.minuteTickPurple { stroke: #8338ec; stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 0 3px #8338ec); }
