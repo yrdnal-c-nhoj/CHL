@@ -107,7 +107,7 @@ const AnalogClock: React.FC = () => {
           background: 'linear-gradient(to top, #ff69b4, #ffb6c1)',
           clipPath: 'path("M7 0 C 15 10, 15 25, 7 45 C -1 25, -1 10, 7 0")', // Organic leaf shape
           transform: `translateX(-50%) rotate(${timeData.hr}deg)`,
-          zIndex: 3,
+          zindex: 3,
         }}
       />
 
@@ -119,7 +119,7 @@ const AnalogClock: React.FC = () => {
           background: 'linear-gradient(to top, #E4DADB, #EF4B9D)',
           clipPath: 'path("M5 0 C 12 15, 22 45, 5 60 C -2 45, -2 15, 5 0")',
           transform: `translateX(-50%) rotate(${timeData.min}deg)`,
-          zIndex: 4,
+          zindex: 4,
         }}
       />
 
@@ -131,7 +131,7 @@ const AnalogClock: React.FC = () => {
           backgroundColor: '#52B652',
           boxShadow: '0 0 8px rgba(69, 144, 69, 0.8)',
           transform: `translateX(-50%) rotate(${timeData.sec}deg)`,
-          zIndex: 5,
+          zindex: 5,
         }}
       />
 
@@ -145,7 +145,7 @@ const AnalogClock: React.FC = () => {
           backgroundColor: '#ff69b4',
           borderRadius: '50%',
           transform: 'translate(-50%, -50%)',
-          zIndex: 10,
+          zindex: 10,
           border: '2px solid #fff',
         }}
       />
@@ -185,7 +185,7 @@ const Clock: React.FC = () => {
         <source src={paperflowerVideo} type="video/mp4" />
       </video>
 
-      <div style={{ zIndex: 10 }}>
+      <div style={{ zindex: 10 }}>
         <AnalogClock />
       </div>
     </main>

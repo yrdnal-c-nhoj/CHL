@@ -179,7 +179,9 @@ const TodayClockPage = () => {
                 height: '100vh',
               }}
             >
-              <ClockComponent />
+              <Suspense fallback={<ClockLoadingFallback />}>
+                <ClockComponent />
+              </Suspense>
             </div>
           </div>
         ) : (
