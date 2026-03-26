@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
-import type { CSSProperties } from 'react';
+import styles from './Clock.module.css';
 
 // Import assets at top level for bundler optimization
 import scorpImage from '../../../assets/images/25-05/25-05-02/sand.webp?url';
 import hourHandImage from '../../../assets/images/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
-import minuteHandImage from '../../../assets/images/25-05/25-05-02/giphy1-ezgif.com-rotate(2).gif?url';
-import secondHandImage from '../../../assets/images/25-05/25-05-02/giphy1-ezgif.com-rotate(3).gif?url';
+import minuteHandImage from '../../../assets/images/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
+import secondHandImage from '../../../assets/images/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
 import fontFile from '../../../assets/fonts/25-05-02-scorp.ttf?url';
 
 // Component Props interface
@@ -77,7 +77,7 @@ const Clock: React.FC<ClockProps> = () => {
   // Update clock hands using requestAnimationFrame
   const updateClockHands = useCallback(() => {
     const positions = calculateHandPositions();
-    
+
     const secondHand = document.querySelector('.second-hand') as HTMLElement;
     const minuteHand = document.querySelector('.minute-hand') as HTMLElement;
     const hourHand = document.querySelector('.hour-hand') as HTMLElement;
@@ -108,154 +108,67 @@ const Clock: React.FC<ClockProps> = () => {
   }, [updateClockHands]);
 
   // Generate clock numbers
-  const numbers = useMemo<ClockNumber[]>(() => 
+  const numbers = useMemo<ClockNumber[]>(() =>
     Array.from({ length: 12 }, (_, index): ClockNumber => ({
       value: index + 1,
       rotation: index * 30,
     }))
-  , []);
-
-  // Styles
-  const containerStyle: CSSProperties = {
-    margin: 0,
-    background: 'linear-gradient(45deg, #1a1a1a, #2d2d2d)',
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-  };
-
-  const clockContainerStyle: CSSProperties = {
-    position: 'relative',
-    width: '90vmin',
-    height: '90vmin',
-    borderRadius: '50%',
-    background: 'rgba(255, 255, 255, 0.1)',
-    backdropFilter: 'blur(10px)',
-    border: '2px solid rgba(255, 255, 255, 0.2)',
-  };
-
-  const backgroundStyle: CSSProperties = {
-    position: 'absolute',
-    width: '100vw',
-    height: '100vh',
-    opacity: 0.7,
-    left: '50%',
-    top: '50%',
-    transform: 'translate(-50%, -50%)',
-    objectFit: 'cover',
-  };
-
-  const numberStyle = (rotation: number): CSSProperties => ({
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: `translate(-50%, -50%) rotate(${rotation}deg) translateY(-40vmin) rotate(-${rotation}deg)`,
-    fontSize: '5vmin',
-    fontFamily: 'Scorpion, serif',
-    color: '#ffffff',
-    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
-    fontWeight: 'bold',
-  });
-
-  const hourHandStyle: CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '8vmin',
-    height: '25vmin',
-    transformOrigin: '50% 100%',
-    zIndex: 4,
-  };
-
-  const minuteHandStyle: CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '6vmin',
-    height: '35vmin',
-    transformOrigin: '50% 100%',
-    zIndex: 5,
-  };
-
-  const secondHandStyle: CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '4vmin',
-    height: '40vmin',
-    transformOrigin: '50% 100%',
-    zIndex: 6,
-  };
-
-  const imageStyle: CSSProperties = {
-    width: '100%',
-    height: '100%',
-    objectFit: 'contain',
-  };
+    , []);
 
   return (
-    <div style={containerStyle}>
+    <div className={styles.container}>
       <img
         decoding="async"
         loading="lazy"
         src={scorpImage}
         alt="Background"
-        style={backgroundStyle}
+        className={styles.background}
       />
 
-      <div style={clockContainerStyle} ref={clockRef}>
+      <div className={styles.clockContainer} ref={clockRef}>
         {/* Clock numbers */}
         {numbers.map((num) => (
           <div
             key={num.value}
-            style={numberStyle(num.rotation)}
+            className={styles.number}
+            style={{
+              transform: `translate(-50%, -50%) rotate(${num.rotation}deg) translateY(-40vmin) rotate(-${num.rotation}deg)`,
+            }}
           >
             {num.value}
           </div>
         ))}
 
         {/* Hour Hand */}
-        <div
-          className="hour-hand"
-          style={hourHandStyle}
-        >
+        <div className={`${styles.hourHand} hour-hand`}>
           <img
             decoding="async"
             loading="lazy"
             src={hourHandImage}
             alt="Hour Hand"
-            style={imageStyle}
+            className={styles.handImage}
           />
         </div>
 
         {/* Minute Hand */}
-        <div
-          className="minute-hand"
-          style={minuteHandStyle}
-        >
+        <div className={`${styles.minuteHand} minute-hand`}>
           <img
             decoding="async"
             loading="lazy"
             src={minuteHandImage}
             alt="Minute Hand"
-            style={imageStyle}
+            className={styles.handImage}
           />
         </div>
 
         {/* Second Hand */}
-        <div
-          className="second-hand"
-          style={secondHandStyle}
-        >
+        <div className={`${styles.secondHand} second-hand`}>
           <img
             decoding="async"
             loading="lazy"
             src={secondHandImage}
             alt="Second Hand"
-            style={imageStyle}
+            className={styles.handImage}
           />
         </div>
       </div>
