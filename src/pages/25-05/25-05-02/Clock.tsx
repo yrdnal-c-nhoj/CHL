@@ -139,16 +139,6 @@ const Clock: React.FC<ClockProps> = () => {
           </div>
         ))}
 
-        {/* Hour Hand */}
-        <div className={`${styles.hourHand} hour-hand`}>
-          <img
-            decoding="async"
-            loading="lazy"
-            src={hourHandImage}
-            alt="Hour Hand"
-            className={styles.handImage}
-          />
-        </div>
 
         {/* Minute Hand */}
         <div className={`${styles.minuteHand} minute-hand`}>
@@ -168,9 +158,29 @@ const Clock: React.FC<ClockProps> = () => {
             loading="lazy"
             src={secondHandImage}
             alt="Second Hand"
+            zIndex={5}
             className={styles.handImage}
           />
         </div>
+
+
+
+
+
+
+
+        {/* Hour Hand */}
+        <div className={`${styles.hourHand} hour-hand`}>
+          <img
+            decoding="async"
+            loading="lazy"
+            src={hourHandImage}
+            alt="Hour Hand"
+            className={styles.handImage}
+          />
+        </div>
+
+
       </div>
     </div>
   );
