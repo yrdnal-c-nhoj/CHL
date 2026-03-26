@@ -9,27 +9,36 @@ const RADIUS = 200;
 const TEXT_RADIUS = 160;
 
 const hourNumbers = ['12', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
-const colors = ['Purple', 'Pink', 'Orange', 'Yellow', 'Green', 'Blue']; // 6 colors for 60 ticks
+const colorNames = ['Pink', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple'];
 
+// Pre-calculate tick paths for each color (10 ticks per color)
+const generateTickPath = (colorIndex: number): string => {
+  const paths: string[] = [];
+  for (let i = 0; i < 60; i += 6) {
+    const tickIndex = i + colorIndex;
+    const angle = tickIndex * 6;
+    const isHour = tickIndex % 5 === 0;
+    const length = isHour ? 15 : 8;
+    const innerR = RADIUS - length;
+    const outerR = RADIUS;
+    
+    // Calculate rotated coordinates
+    const rad = (angle - 90) * (Math.PI / 180);
+    const x1 = CENTER + Math.cos(rad) * innerR;
+    const y1 = CENTER + Math.sin(rad) * innerR;
+    const x2 = CENTER + Math.cos(rad) * outerR;
+    const y2 = CENTER + Math.sin(rad) * outerR;
+    
+    paths.push(`M${x1.toFixed(1)},${y1.toFixed(1)} L${x2.toFixed(1)},${y2.toFixed(1)}`);
+  }
+  return paths.join(' ');
+};
+
+// Memoized Static Sub-components
 const ClockFace = memo(() => {
-  const ticks = useMemo(() => {
-    return Array.from({ length: 60 }).map((_, i) => {
-      const angle = i * 6;
-      const isHour = i % 5 === 0;
-      const length = isHour ? 15 : 8;
-      const colorName = colors[i % 6]; // Cycle through the 6 rainbow colors
-      const tickClass = isHour ? styles[`hourTick${colorName}`] : styles[`minuteTick${colorName}`];
-      
-      return (
-        <line
-          key={`tick-${i}`}
-          x1={CENTER} y1={RADIUS - length}
-          x2={CENTER} y2={RADIUS}
-          className={tickClass}
-          transform={`rotate(${angle}, ${CENTER}, ${CENTER})`}
-        />
-      );
-    });
+  // Generate paths for each color
+  const tickPaths = useMemo(() => {
+    return colorNames.map((_, i) => generateTickPath(i));
   }, []);
 
   const numbers = useMemo(() => {
@@ -51,7 +60,14 @@ const ClockFace = memo(() => {
     });
   }, []);
 
-  return <g>{ticks}{numbers}</g>;
+  return (
+    <g>
+      {tickPaths.map((path, i) => (
+        <path key={colorNames[i]} d={path} className={styles[`tick${colorNames[i]}`]} />
+      ))}
+      {numbers}
+    </g>
+  );
 });
 
 const Clock: React.FC = () => {
