@@ -29,7 +29,7 @@
   width: 85vmin;
   height: 85vmin;
   display: block;
-  filter: drop-shadow(0 0 2vmin rgb(251, 250, 250));
+  /* filter: drop-shadow(0 0 2vmin rgb(251, 250, 250)); */
   overflow: visible;
 }
 
@@ -38,7 +38,7 @@
   font-size: 80px;
   font-weight: normal;
   letter-spacing: 2px;
-  fill: #FB3434;
+  fill: #f0730d;
   filter: url(#digitShadow);
 }
 
