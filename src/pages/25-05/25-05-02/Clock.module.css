@@ -45,7 +45,7 @@
   height: 25vh;
   transform-origin: 50% 100%;
   transform: translate(-50%, -100%);
-  z-index: 4;
+  z-index: 6;
 }
 
 .minuteHand {
@@ -67,7 +67,7 @@
   height: 50vmin;
   transform-origin: 50% 100%;
   transform: translate(-50%, -100%);
-  z-index: 6;
+  z-index: 4;
 }
 
 .handImage {
