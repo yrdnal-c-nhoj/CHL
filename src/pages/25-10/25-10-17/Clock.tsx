@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
-const fontLatin = '../../../assets/fonts/25-10-17-word.ttf';
+import { useClockTime } from '../../../utils/clockUtils';
+import fontLatin from '../../../assets/fonts/25-10-17-word.ttf?url';
 import backgroundImage from '../../../assets/images/25-10/25-10-17/words.jpg';
+import styles from './Clock.module.css';
 
 export default function TimeWordsClock() {
-  const [ready, setReady] = useState<boolean>(false);
-  const [now, setNow] = useState<any>(null);
+  const now = useClockTime();
   const [langIndex, setLangIndex] = useState<number>(0);
 
   // 30 most popular Internet languages
@@ -379,112 +380,32 @@ export default function TimeWordsClock() {
     },
   };
 
-  // --- Font and background preloading ---
+  const fontConfigs = useMemo(() => [
+    { fontFamily: 'LatinFont', fontUrl: fontLatin }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
+
+  // Language rotation logic
   useEffect(() => {
-    let cancelled = false;
-
-    const fonts = [{ name: 'LatinFont', url: fontLatin }];
-
-    // Log font loading for debugging
-    console.log(
-      'Loading fonts:',
-      fonts.map((f) => `${f.name}: ${f.url}`),
-    );
-
-    const styleTag = document.createElement('style');
-    styleTag.textContent = fonts
-      .map(
-        (f) =>
-          `@font-face { font-family: '${f.name}'; src: url('${f.url}') format('truetype'); font-display: swap; }`,
-      )
-      .join('\n');
-    document.head.appendChild(styleTag);
-
-    // Add font validation
-    const validateFont = (fontName) => {
-      const testElement = document.createElement('span');
-      testElement.style.fontFamily = fontName;
-      testElement.textContent = 'Test';
-      testElement.style.visibility = 'hidden';
-      testElement.style.position = 'absolute';
-      document.body.appendChild(testElement);
-
-      const computedFont = window.getComputedStyle(testElement).fontFamily;
-      console.log(`${fontName} loaded:`, computedFont.includes(fontName));
-
-      document.body.removeChild(testElement);
-    };
-
-    const image = new Image();
-    image.src = backgroundImage;
-
-    Promise.all([
-      ...fonts.map((f) => {
-        if ('FontFace' in window) {
-          const ff = new FontFace(f.name, `url(${f.url})`);
-          return ff.load().then((loaded) => {
-            document.fonts.add(loaded);
-            validateFont(f.name);
-            return loaded;
-          });
-        } else {
-          return document.fonts?.ready || Promise.resolve();
-        }
-      }),
-      new Promise((resolve) => {
-        if (image.complete) resolve();
-        else {
-          image.onload = resolve;
-          image.onerror = resolve;
-        }
-      }),
-    ])
-      .then(() => {
-        if (!cancelled) {
-          setNow(new Date());
-          setReady(true);
-          console.log('All fonts loaded successfully');
-        }
-      })
-      .catch((error) => {
-        console.error('Font loading error:', error);
-        if (!cancelled) {
-          setNow(new Date());
-          setReady(true);
-        }
-      });
-
-    return () => {
-      cancelled = true;
-      document.head.removeChild(styleTag);
-    };
-  }, []);
-
-  // --- Clock ticking and language rotation ---
-  useEffect(() => {
-    if (!ready) return;
-    const tick: React.FC = () => {
-      setNow(new Date());
+    const i = setInterval(() => {
       setLangIndex((prev) => (prev + 1) % languages.length);
-    };
-    const msToNext = 1000 - (Date.now() % 1000);
-    const t = setTimeout(() => {
-      tick();
-      const i = setInterval(tick, 1000);
-      return () => clearInterval(i);
-    }, msToNext);
-    return () => clearTimeout(t);
-  }, [ready]);
+    }, 1000);
+    return () => clearInterval(i);
+  }, [languages.length]);
 
   // --- Time to words conversion ---
-  const timeToWords = (date, lang) => {
+  const timeToWords = (date: Date, lang: string) => {
     const t = translations[lang];
     let hours = date.getHours(),
       minutes = date.getMinutes(),
       seconds = date.getSeconds();
-    let relation = t.after,
-      displayMinutes = minutes,
-      displaySeconds = seconds;
+    
+    let relation = t.after;
+    let displayMinutes = minutes;
+    // @ts-ignore - handling potential undefined seconds from external hooks
+    let displaySeconds = seconds;
+      
     let displayHour = hours % 12 === 0 ? 12 : hours % 12;
 
     if (minutes > 30 || (minutes === 30 && seconds > 0)) {
@@ -522,71 +443,24 @@ export default function TimeWordsClock() {
     return lines;
   };
 
-  if (!ready || !now)
-    return (
-      <div
-        style={{ width: '100vw', height: '100dvh', backgroundColor: '#000' }}
-      />
-    );
-
   const lang = languages[langIndex];
   const dir = translations[lang]?.dir || 'ltr';
-  const fontFamily = 'LatinFont';
-
-  const containerStyle = {
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    overflow: 'hidden',
-    backgroundColor: '#000',
-    direction: dir,
-  };
-
-  const backgroundStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    filter: 'hue-rotate(-130deg) saturate(0.6) contrast(0.3) brightness(1.9)',
-    transform: 'scaleX(-1)',
-    zIndex: 0,
-  };
-
-  const textStyle = {
-    position: 'relative',
-    zIndex: 1,
-    fontFamily: `${fontFamily}, Georgia, serif`,
-    fontSize: 'clamp(4vh, 5vw, 8vh)',
-    color: '#050504FF',
-    textAlign: 'center',
-    lineHeight: '1.4',
-    borderRadius: '0.2vh',
-    textShadow:
-      '0.02em 0.02em #E91A1A, -0.02em -0.02em 0 rgba(255,255,255,0.9)',
-    padding: '2vh 4vw',
-    border: '0.2vh solid rgba(255,255,255,0.3)',
-    direction: dir,
-  };
-
   const lines = timeToWords(now, lang);
 
   return (
-    <div style={containerStyle} aria-live="polite">
-      <div style={backgroundStyle}></div>
-      <div style={textStyle}>
+    <div 
+      className={styles.container} 
+      style={{ direction: dir } as React.CSSProperties} 
+      aria-live="polite"
+    >
+      <div 
+        className={styles.background} 
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+      />
+      <div className={styles.text}>
         {lines.map((line, i) => (
           <div key={i}>
             {line}
-            <br />
-            &nbsp;
           </div>
         ))}
       </div>
