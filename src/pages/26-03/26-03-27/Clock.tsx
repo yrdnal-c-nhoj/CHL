@@ -162,11 +162,11 @@ export default function TriangleClock() {
       <svg
         viewBox={`0 0 ${VW} ${VH}`}
         style={{
-          width: 'calc(100% - 60px)',
-          height: 'calc(100% - 60px)',
+          width: 'calc(100% - 40px)',
+          height: 'calc(100% - 40px)',
           display: 'block',
         }}
-        preserveAspectRatio="xMidYMid meet"
+        preserveAspectRatio="none"
       >
         <defs>
           <clipPath id="triangle-clip">
@@ -280,7 +280,6 @@ export default function TriangleClock() {
           fill="none"
           stroke={triStroke}
           strokeWidth={13.5}
-          vectorEffect="non-scaling-stroke"
           filter="url(#glow-border)"
         />
         <polygon
