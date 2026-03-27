@@ -155,7 +155,7 @@ export default function TriangleClock() {
         overflow: 'hidden',
         position: 'relative',
         boxSizing: 'border-box',
-        outline: '10px solid #1DE50F',
+        outline: '10px solid #2956EB',
         outlineOffset: '-10px',
       }}
     >
