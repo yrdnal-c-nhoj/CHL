@@ -1,0 +1,31 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.text {
+  position: relative;
+  z-index: 1;
+  font-family: 'LatinFont', sans-serif;
+  font-size: 2rem;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  padding: 1rem;
+  line-height: 1.5;
+}
