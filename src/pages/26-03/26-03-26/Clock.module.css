@@ -4,7 +4,8 @@
   width: 100vw;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: 12vh;
   overflow: hidden;
 }
 
@@ -20,87 +21,53 @@
   z-index: -2;
 }
 
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100dvh;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.5) 50%,
-    rgba(0, 0, 0, 0.3) 100%
-  );
-  z-index: -1;
-}
 
 .clockWrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: clamp(0.5rem, 2vw, 2rem);
-  padding: 2rem;
   z-index: 1;
+  animation: drift 90s ease-in-out infinite;
+  /* filter: blur(0.3px); */
+  opacity: 0.3;
 }
 
 .timeUnit {
   display: flex;
-  gap: 0.1em;
 }
 
 .digit {
-  font-family: 'Courier New', 'Courier', monospace;
-  font-size: clamp(4rem, 18vw, 14rem);
-  font-weight: 700;
-  color: #ffffff;
+  font-family: 'HighwayFont', 'Courier New', monospace;
+  font-size: clamp(3rem, 12vw, 10rem);
+  font-weight: 400;
+  color: #ffe4b5;
   text-shadow: 
-    0 0 10px rgba(255, 255, 255, 0.8),
-    0 0 20px rgba(255, 255, 255, 0.6),
-    0 0 40px rgba(255, 255, 255, 0.4),
-    2px 2px 4px rgba(0, 0, 0, 0.5);
+    0 0 20px rgba(255, 140, 100, 0.9),
+    0 0 40px rgba(255, 100, 80, 0.7),
+    0 0 80px rgba(255, 80, 60, 0.5),
+    0 0 120px rgba(200, 60, 80, 0.3),
+    -2px 0 0 rgba(255, 150, 100, 0.3),
+    2px 0 0 rgba(255, 100, 150, 0.3);
   line-height: 1;
-  letter-spacing: -0.05em;
 }
 
-.separator {
-  font-family: 'Courier New', 'Courier', monospace;
-  font-size: clamp(3rem, 14vw, 10rem);
-  font-weight: 700;
-  color: #ffffff;
-  text-shadow: 
-    0 0 10px rgba(255, 255, 255, 0.8),
-    0 0 20px rgba(255, 255, 255, 0.6),
-    2px 2px 4px rgba(0, 0, 0, 0.5);
-  line-height: 1;
-  animation: pulse 1s ease-in-out infinite;
-}
-
-@keyframes pulse {
+@keyframes drift {
   0%, 100% {
-    opacity: 1;
+    transform: translateY(0) translateX(0);
   }
-  50% {
-    opacity: 0.5;
+  15% {
+    transform: translateY(-20px) translateX(8px);
   }
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-  .clockWrapper {
-    flex-direction: column;
-    gap: 0.5rem;
+  35% {
+    transform: translateY(-12px) translateX(-15px);
   }
-
-  .separator {
-    display: none;
+  55% {
+    transform: translateY(-28px) translateX(5px);
   }
-
-  .timeUnit {
-    gap: 0.2em;
+  75% {
+    transform: translateY(-8px) translateX(12px);
   }
-
-  .digit {
-    font-size: clamp(3rem, 25vw, 8rem);
+  90% {
+    transform: translateY(-18px) translateX(-6px);
   }
 }
