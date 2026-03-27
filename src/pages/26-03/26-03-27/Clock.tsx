@@ -162,11 +162,11 @@ export default function TriangleClock() {
       <svg
         viewBox={`0 0 ${VW} ${VH}`}
         style={{
-          width: 'calc(100% - 40px)',
-          height: 'calc(100% - 40px)',
+          width: 'calc(100% - 60px)',
+          height: 'calc(100% - 60px)',
           display: 'block',
         }}
-        preserveAspectRatio="none"
+        preserveAspectRatio="xMidYMid meet"
       >
         <defs>
           <clipPath id="triangle-clip">
@@ -181,7 +181,7 @@ export default function TriangleClock() {
           </radialGradient>
 
           <filter id="glow-gold" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feGaussianBlur stdDeviation="6" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
@@ -189,7 +189,7 @@ export default function TriangleClock() {
           </filter>
 
           <filter id="glow-sec" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="6" result="blur" />
+            <feGaussianBlur stdDeviation="8" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
@@ -230,7 +230,7 @@ export default function TriangleClock() {
             x2={cx + Math.sin(secAngle) * secR}
             y2={cy - Math.cos(secAngle) * secR}
             stroke={secColor}
-            strokeWidth={4}
+            strokeWidth={8}
             strokeLinecap="round"
             opacity={1}
             filter="url(#glow-sec)"
@@ -242,7 +242,7 @@ export default function TriangleClock() {
             x2={mx}
             y2={my}
             stroke={handMin}
-            strokeWidth={7}
+            strokeWidth={12}
             strokeLinecap="round"
             filter="url(#glow-gold)"
           />
@@ -253,7 +253,7 @@ export default function TriangleClock() {
             x2={hx}
             y2={hy}
             stroke={handHour}
-            strokeWidth={11}
+            strokeWidth={16}
             strokeLinecap="round"
             filter="url(#glow-gold)"
           />
@@ -280,6 +280,7 @@ export default function TriangleClock() {
           fill="none"
           stroke={triStroke}
           strokeWidth={13.5}
+          vectorEffect="non-scaling-stroke"
           filter="url(#glow-border)"
         />
         <polygon
