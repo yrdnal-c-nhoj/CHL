@@ -88,11 +88,11 @@ export default function TriangleClock() {
   const secArcAngle = secFrac * 2 * Math.PI;
   const prevSecAngle = Math.floor(seconds) / 60 * 2 * Math.PI;
 
-  // Numbers as percentages of container (positioned inside the triangle)
+  // Numbers positioned inside the triangle
   const numberPct: Record<number, { left: string; top: string; right?: string }> = {
-    10: { left: '22%', top: '18%' },
-    2: { left: 'auto', top: '18%', right: '14%' },
-    6: { left: '50%', top: '78%' },
+    10: { left: '18%', top: '15%' },
+    2: { left: 'auto', top: '15%', right: '18%' },
+    6: { left: '50%', top: '80%' },
   };
 
   // Generate 3 equidistant tick marks on each edge, pointing toward center
@@ -106,7 +106,7 @@ export default function TriangleClock() {
       const x = start[0] + (end[0] - start[0]) * t;
       const y = start[1] + (end[1] - start[1]) * t;
       // Tick points from a point closer to center out toward the edge
-      const tickLen = 20;
+      const tickLen = 40;
       const dx = x - cx;
       const dy = y - cy;
       const dist = Math.sqrt(dx * dx + dy * dy);
@@ -140,8 +140,7 @@ export default function TriangleClock() {
   const handMin = '#00A2FF';
   const secColor = '#AD97EB';
   const centerDot = '#F80505';
-  const tickMajor = '#00ff88';
-  const tickMinor = '#ff6b6b';
+  const tickMajor = '#E3D8E3';
   const numberFill = '#D8F6D4';
 
   return (
@@ -149,14 +148,14 @@ export default function TriangleClock() {
       style={{
         width: '100%',
         height: '100%',
-        background: bg,
+        background: 'linear-gradient(180deg, #1a3a5c 0%, #007BA7 50%, #1a3a5c 100%)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
         position: 'relative',
         boxSizing: 'border-box',
-        outline: '10px solid #71FF69',
+        outline: '10px solid #1DE50F',
         outlineOffset: '-10px',
       }}
     >
@@ -166,7 +165,6 @@ export default function TriangleClock() {
           width: 'calc(100% - 40px)',
           height: 'calc(100% - 40px)',
           display: 'block',
-          marginTop: 20,
         }}
         preserveAspectRatio="none"
       >
@@ -176,10 +174,10 @@ export default function TriangleClock() {
           </clipPath>
 
           <radialGradient id="bg-grad" cx="50%" cy="40%" r="60%">
-            <stop offset="0%" stopColor="#847F84" />
-            <stop offset="30%" stopColor="#1E2020" />
-            <stop offset="60%" stopColor="#565254" />
-            <stop offset="100%" stopColor="#040404" />
+            <stop offset="0%" stopColor="#B88CBD" />
+            <stop offset="30%" stopColor="#B2779E" />
+            <stop offset="60%" stopColor="#B387B6" />
+            <stop offset="100%" stopColor="#A283AE" />
           </radialGradient>
 
           <filter id="glow-gold" x="-50%" y="-50%" width="200%" height="200%">
