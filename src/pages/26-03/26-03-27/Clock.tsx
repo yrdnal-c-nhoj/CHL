@@ -136,12 +136,12 @@ export default function TriangleClock() {
 
   const bg = '#D6C6C6';
   const triStroke = '#F409E4';
-  const handHour = '#00ffff';
-  const handMin = '#00A2FF';
-  const secColor = '#AD97EB';
+  const handHour = '#DAEEEE';
+  const handMin = '#BDD5E3';
+  const secColor = '#6B3FE3';
   const centerDot = '#F80505';
-  const tickMajor = '#E3D8E3';
-  const numberFill = '#D8F6D4';
+  const tickMajor = '#184F11';
+  const numberFill = '#184F11';
 
   return (
     <div
@@ -309,7 +309,7 @@ export default function TriangleClock() {
               fontWeight: 300,
               letterSpacing: '2px',
               userSelect: 'none',
-              textShadow: '0 0 10px #ff69b4, 0 0 20px #ff69b4',
+              textShadow: '0 0 10px #EFB8D4, 0 0 20px #F9C3DE',
             }}
           >
             {n}
