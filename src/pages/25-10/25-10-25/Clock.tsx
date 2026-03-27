@@ -1,20 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
-import font20251027 from '../../../assets/fonts/25-10-25-fall.ttf'; // Local font file
+import { useFontLoader } from '../../../utils/fontLoader';
+import font20251027 from '../../../assets/fonts/25-10-25-fall.ttf?url'; // Local font file
 
 const EntropyClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [animationKey, setAnimationKey] = useState<number>(0); // triggers animation restart
-  const fontReady = useFontLoader('EntropyFont', font20251027, {
-    timeout: 5000,
-    fallback: true,
-  });
+  const fontReady = useFontLoader('EntropyFont', font20251027);
   const [showClock, setShowClock] = useState<boolean>(false); // controls fade-in
   const [mountedClockKey, setMountedClockKey] = useState<number>(0); // unique key for each cycle
-  const numbersRef = useRef([]);
-  const handsRef = useRef({ hour: null, minute: null, second: null });
-  const dotRef = useRef(null);
-  const clockContainerRef = useRef(null);
+  const numbersRef = useRef<HTMLDivElement[]>([]);
+  const handsRef = useRef<{ hour: HTMLDivElement | null; minute: HTMLDivElement | null; second: HTMLDivElement | null }>({ hour: null, minute: null, second: null });
+  const dotRef = useRef<HTMLDivElement>(null);
+  const clockContainerRef = useRef<HTMLDivElement>(null);
   const styleElementRef = useRef(null);
 
   // --- Update time every second ---
@@ -147,7 +144,7 @@ const EntropyClock: React.FC = () => {
       const t = Math.min((timestamp - start) / duration, 1);
       const jump = Math.sin(t * Math.PI) * 20;
       el.style.transform = `translate(-50%, ${jump + t * 150}vh) rotateX(${rotateX * t}deg) rotateY(${rotateY * t}deg) rotateZ(${rotateZ * t}deg)`;
-      el.style.opacity = 1 - t;
+      el.style.opacity = String(1 - t);
       if (t < 1) requestAnimationFrame(animate);
     };
     requestAnimationFrame(animate);
@@ -166,13 +163,13 @@ const EntropyClock: React.FC = () => {
       const t = Math.min((timestamp - start) / duration, 1);
       const jump = Math.sin(t * Math.PI) * 20;
       el.style.transform = `translate(-50%, ${jump + t * 150}vh) rotateX(${rotateX * t}deg) rotateY(${rotateY * t}deg) rotateZ(${rotateZ * t}deg)`;
-      el.style.opacity = 1 - t;
+      el.style.opacity = String(1 - t);
       if (t < 1) requestAnimationFrame(animate);
     };
     requestAnimationFrame(animate);
   };
 
-  const explodeDot: React.FC = () => {
+  const explodeDot = () => {
     const dot = dotRef.current;
     if (!dot) return;
     const total = 500;
@@ -214,7 +211,7 @@ const EntropyClock: React.FC = () => {
     dot.style.opacity = '0';
   };
 
-  const explodeClock: React.FC = () => {
+  const explodeClock = () => {
     const allElements = [
       ...numbersRef.current.filter(Boolean),
       ...Object.values(handsRef.current).filter(Boolean),
@@ -240,7 +237,7 @@ const EntropyClock: React.FC = () => {
         const dy = Math.sin(angle) * distance * easeOut + t * 150;
         const currentTransform = el.style.transform || '';
         el.style.transform = `${currentTransform} translate(${dx}vw, ${dy}vh) rotateX(${rotateX * t}deg) rotateY(${rotateY * t}deg) rotateZ(${rotateZ * t}deg)`;
-        el.style.opacity = 1 - t;
+        el.style.opacity = String(1 - t);
         if (t < 1) requestAnimationFrame(animate);
       };
       requestAnimationFrame(animate);
@@ -289,7 +286,7 @@ const EntropyClock: React.FC = () => {
           return (
             <div
               key={i}
-              ref={(el) => (numbersRef.current[i] = el)}
+              ref={(el) => { numbersRef.current[i] = el as HTMLDivElement; }}
               style={{
                 position: 'absolute',
                 left: `calc(50% + ${40 * Math.cos(rad)}vmin)`,
