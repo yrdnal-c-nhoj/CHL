@@ -1,45 +1,24 @@
 // MediaClock.jsx
-import React, { useEffect, useRef, useState } from 'react';
-import { useMultiAssetLoader } from '../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import bgVideo from '../../../assets/images/25-10/25-10-18/total.mp4';
 import fallbackImg from '../../../assets/images/25-10/25-10-18/tot.webp';
-import font_20251018 from '../../../assets/fonts/25-10-18-tot.ttf';
+import font_20251018 from '../../../assets/fonts/25-10-18-tot.ttf?url';
 
 export default function MediaClock() {
   const [mediaReady, setMediaReady] = useState<boolean>(false);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const [fontReady, setFontReady] = useState<boolean>(false);
-  const [time, setTime] = useState<any>('--:--');
+  const [time, setTime] = useState<string>('--:--');
   const videoRef = useRef(null);
 
   const backgroundShiftX = '49%';
   const backgroundShiftY = 'center';
 
-  // Load font
-  useEffect(() => {
-    const fontName = 'SereneFont';
-    const styleEl = document.createElement('style');
-    styleEl.textContent = `
-      @font-face {
-        font-family: '${fontName}';
-        src: url(${font_20251018}) format('truetype');
-        font-display: swap;
-      }
-    `;
-    document.head.appendChild(styleEl);
+  const fontConfigs = useMemo(() => [
+    { fontFamily: 'SereneFont', fontUrl: font_20251018 }
+  ], []);
 
-    const f = new FontFace(fontName, `url(${font_20251018})`);
-    f.load()
-      .then((loadedFace) => {
-        document.fonts.add(loadedFace);
-        setFontReady(true);
-      })
-      .catch(() => setFontReady(true));
-
-    return () => document.head.removeChild(styleEl);
-  }, []);
+  useSuspenseFontLoader(fontConfigs);
 
   // Update time
   useEffect(() => {
@@ -55,13 +34,11 @@ export default function MediaClock() {
   }, []);
 
   const handleVideoLoaded = () => setMediaReady(true);
-  const handleVideoError: React.FC = () => {
+  const handleVideoError = () => {
     console.warn('Video failed to load, switching to fallback image.');
     setVideoFailed(true);
   };
   const handleImageLoad = () => setMediaReady(true);
-
-  const allReady = mediaReady && fontReady;
 
   return (
     <div
@@ -117,7 +94,7 @@ export default function MediaClock() {
       )}
 
       {/* CLOCK */}
-      {allReady && (
+      {mediaReady && (
         <div
           style={{
             position: 'absolute',

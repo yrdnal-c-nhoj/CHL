@@ -2,14 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import treeImg from '../../../assets/images/25-10/25-10-20/trees.jpg';
 
 export default function ClockPage() {
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const rafRef = useRef(null);
-  const bgRef = useRef(null);
-  const bgRafRef = useRef(null);
+  const hourRef = useRef<HTMLDivElement>(null);
+  const minuteRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | null>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const bgRafRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const hours = now.getHours() % 12;
       const minutes = now.getMinutes();
@@ -27,7 +27,7 @@ export default function ClockPage() {
     };
     rafRef.current = requestAnimationFrame(updateClock);
 
-    const rotateBackground: React.FC = () => {
+    const rotateBackground = () => {
       const now = new Date();
       const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
       const degrees = (seconds / 60) * 360;
@@ -39,8 +39,8 @@ export default function ClockPage() {
     rotateBackground();
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
-      cancelAnimationFrame(bgRafRef.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (bgRafRef.current) cancelAnimationFrame(bgRafRef.current);
     };
   }, []);
 

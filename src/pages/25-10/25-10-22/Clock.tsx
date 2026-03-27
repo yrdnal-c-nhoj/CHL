@@ -1,13 +1,21 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import videoFile from '../../../assets/images/25-10/25-10-22/bg.mp4';
 import fallbackImg from '../../../assets/images/25-10/25-10-22/bg.webp';
-import fundyFont from '../../../assets/fonts/25-10-22-fundy.ttf';
+import fundyFont from '../../../assets/fonts/25-10-22-fundy.ttf?url';
 import styles from './Clock.module.css';
 
 const ClockWithVideo: React.FC = () => {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [time, setTime] = useState(new Date());
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const fontConfigs = useMemo(() => [
+    { fontFamily: 'FundyFont', fontUrl: fundyFont }
+  ], []);
+
+  // Use the standardized loader to avoid injecting <style> tags manually
+  useSuspenseFontLoader(fontConfigs);
 
   // Time update (Standardized to rAF)
   useEffect(() => {
@@ -143,12 +151,6 @@ const ClockWithVideo: React.FC = () => {
 
   return (
     <>
-      <style>
-        {`@font-face {
-          font-family: 'FundyFont';
-          src: url(${fundyFont}) format('truetype');
-        }`}
-      </style>
       <div className={styles.container}>
       <video
         ref={videoRef}
