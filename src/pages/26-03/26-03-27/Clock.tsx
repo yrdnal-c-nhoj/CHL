@@ -88,11 +88,11 @@ export default function TriangleClock() {
   const secArcAngle = secFrac * 2 * Math.PI;
   const prevSecAngle = Math.floor(seconds) / 60 * 2 * Math.PI;
 
-  // Numbers as percentages of container (for positioning outside SVG)
+  // Numbers as percentages of container (positioned inside the triangle)
   const numberPct: Record<number, { left: string; top: string; right?: string }> = {
-    10: { left: '12%', top: '5%' },
-    2: { left: 'auto', top: '5%', right: '4%' },
-    6: { left: '50%', top: '92%' },
+    10: { left: '22%', top: '18%' },
+    2: { left: 'auto', top: '18%', right: '14%' },
+    6: { left: '50%', top: '78%' },
   };
 
   // Generate 3 equidistant tick marks on each edge, pointing toward center
@@ -135,7 +135,7 @@ export default function TriangleClock() {
   };
 
   const bg = '#D6C6C6';
-  const triStroke = '#F929F2';
+  const triStroke = '#F409E4';
   const handHour = '#00ffff';
   const handMin = '#00A2FF';
   const secColor = '#AD97EB';
@@ -156,28 +156,17 @@ export default function TriangleClock() {
         overflow: 'hidden',
         position: 'relative',
         boxSizing: 'border-box',
-        border: '10px solid #253DF1',
+        outline: '10px solid #71FF69',
+        outlineOffset: '-10px',
       }}
     >
-      <div
-        style={{
-          position: 'absolute',
-          top: 10,
-          left: 10,
-          right: 10,
-          bottom: 10,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden',
-        }}
-      >
-        <svg
+      <svg
         viewBox={`0 0 ${VW} ${VH}`}
         style={{
-          width: '100%',
-          height: '100%',
+          width: 'calc(100% - 40px)',
+          height: 'calc(100% - 40px)',
           display: 'block',
+          marginTop: 20,
         }}
         preserveAspectRatio="none"
       >
@@ -187,9 +176,9 @@ export default function TriangleClock() {
           </clipPath>
 
           <radialGradient id="bg-grad" cx="50%" cy="40%" r="60%">
-            <stop offset="0%" stopColor="#312231" />
+            <stop offset="0%" stopColor="#847F84" />
             <stop offset="30%" stopColor="#1E2020" />
-            <stop offset="60%" stopColor="#3D031A" />
+            <stop offset="60%" stopColor="#565254" />
             <stop offset="100%" stopColor="#040404" />
           </radialGradient>
 
@@ -329,7 +318,6 @@ export default function TriangleClock() {
           </div>
         );
       })}
-      </div>
     </div>
   );
 }
