@@ -10,9 +10,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "strict": false, // Temporarily disabled for migration
-    "strictNullChecks": true, // Required for exactOptionalPropertyTypes
-    "noUnusedLocals": false, // Temporarily disabled for migration
+    "strict": false,
+    "strictNullChecks": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     "exactOptionalPropertyTypes": true,
     "noImplicitReturns": true,
@@ -30,11 +30,13 @@
       "@/pages/*": ["src/pages/*"],
       "@/context/*": ["src/context/*"],
       "@/types/*": ["src/types/*"]
-    }
+    },
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
   "include": [
     "src/**/*",
-    "vite.config.ts"
+    "vite.config.ts",
+    "vitest.config.js"
   ],
   "exclude": [
     "node_modules",
