@@ -22,7 +22,7 @@ const RainOverlay: React.FC = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
     handleResize();
 
     const rainCount = 100;

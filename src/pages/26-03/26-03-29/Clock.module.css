@@ -77,6 +77,7 @@
   width: min(80vw, 80vh);
   height: min(80vw, 80vh);
   border-radius: 50%;
+  contain: layout paint;
 }
 
 .numeral {
@@ -95,6 +96,7 @@
   top: 50%;
   left: 50%;
   transform-origin: bottom center;
+  will-change: transform;
 }
 
 .hourHand {
