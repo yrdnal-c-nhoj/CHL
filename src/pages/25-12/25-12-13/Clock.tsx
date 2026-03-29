@@ -2,14 +2,21 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader'; // This should be useMultipleFontLoader
 import bgImage from '../../../assets/images/25-12/25-12-13/roc.webp';
 import fontFile from '../../../assets/fonts/25-12-13-cherub.ttf?url';
+import type { FontConfig } from '../../../types/clock';
+
+const fontFamily = 'RococoFont';
+
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: fontFamily,
+    fontUrl: fontFile,
+  },
+];
 
 export default function RococoClock() {
   const [now, setNow] = useState(new Date());
-  const fontFamily = 'RococoFont';
-  const fontLoaded = useFontLoader(fontFamily, fontFile, {
-    fallback: true,
-    timeout: 3500,
-  });
+  
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), 1000);
@@ -44,7 +51,7 @@ export default function RococoClock() {
     <div
       style={{
         ...containerStyle,
-        opacity: fontLoaded ? 1 : 0,
+        opacity: 1,
         transition: 'opacity 0.4s ease',
       }}
     >
@@ -72,7 +79,7 @@ export default function RococoClock() {
               key={i}
               style={{
                 ...baseDigitStyle,
-                fontFamily: fontLoaded ? `'${fontFamily}', serif` : 'serif',
+                fontFamily: `'${fontFamily}', serif`,
                 fontSize: config.fontSize,
                 // Using a "slow-in, slow-out" bezier curve for gracefulness
                 animation: `rococoFloat ${config.duration}s infinite cubic-bezier(0.45, 0, 0.55, 1)`,
@@ -83,7 +90,7 @@ export default function RococoClock() {
                 '--sc': config.scale,
                 zIndex: i < 2 ? 30 : i >= 4 ? 5 : 15,
                 // Soft entry to avoid a "pop" on load
-                opacity: fontLoaded ? 1 : 0,
+                opacity: 1,
                 transition: 'opacity 2s ease-in',
               }}
             >

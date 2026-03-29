@@ -82,7 +82,7 @@ const UnrulyClock: React.FC = () => {
     <div className="container">
       <style>{`
         .container {
-          background: #000;
+          background: #4C514C;
           height: 100vh;
           width: 100vw;
           display: flex;

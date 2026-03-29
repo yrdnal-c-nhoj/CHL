@@ -1,13 +1,22 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import font20251027 from '../../../assets/fonts/25-10-25-fall.ttf?url'; // Local font file
 
 const EntropyClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [animationKey, setAnimationKey] = useState<number>(0); // triggers animation restart
-  const fontReady = useFontLoader('EntropyFont', font20251027);
   const [showClock, setShowClock] = useState<boolean>(false); // controls fade-in
   const [mountedClockKey, setMountedClockKey] = useState<number>(0); // unique key for each cycle
+  
+  // Font configuration using the new suspense-based loader
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'EntropyFont', fontUrl: font20251027 }
+  ], []);
+  
+  // This hook suspends the component until fonts are loaded
+  useSuspenseFontLoader(fontConfigs);
+  
   const numbersRef = useRef<HTMLDivElement[]>([]);
   const handsRef = useRef<{ hour: HTMLDivElement | null; minute: HTMLDivElement | null; second: HTMLDivElement | null }>({ hour: null, minute: null, second: null });
   const dotRef = useRef<HTMLDivElement>(null);
@@ -22,30 +31,25 @@ const EntropyClock: React.FC = () => {
 
   // --- Trigger fade-in for each animation cycle ---
   useEffect(() => {
-    if (!fontReady) return;
-
     // Hide clock first
     setShowClock(false);
 
     // Mount a new clock div shortly after
     const mountTimeout = setTimeout(() => setMountedClockKey((k) => k + 1), 50);
     return () => clearTimeout(mountTimeout);
-  }, [animationKey, fontReady]);
+  }, [animationKey]);
 
   // --- Fade in the mounted clock ---
   useEffect(() => {
-    if (!fontReady) return;
     const fadeTimeout = setTimeout(() => setShowClock(true), 50);
     return () => clearTimeout(fadeTimeout);
-  }, [mountedClockKey, fontReady]);
+  }, [mountedClockKey]);
 
   // --- Helper to shuffle arrays ---
   const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
 
   // --- Animation sequence: numbers → hands → dot → clock ---
   useEffect(() => {
-    if (!fontReady) return;
-
     const timers = [];
     let cumulativeDelay = 2000;
 
@@ -82,7 +86,7 @@ const EntropyClock: React.FC = () => {
     );
 
     return () => timers.forEach(clearTimeout);
-  }, [animationKey, fontReady]);
+  }, [animationKey]);
 
   // --- Time calculations ---
   const hours = time.getHours() % 12;

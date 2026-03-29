@@ -56,14 +56,16 @@ const Pendulum: React.FC = () => {
       overflow: 'hidden',
     },
     bgLayer: {
-      position: 'absolute',
+      position: 'fixed',
       top: 0,
       left: 0,
-      width: '100%',
-      height: '100%',
-      background: `url(${bgUrl}) no-repeat center center fixed`,
+      width: '100vw',
+      height: '100vh',
+      backgroundImage: `url(${bgUrl})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center center',
       backgroundSize: 'cover',
-      filter: 'contrast(0.8) brightness(0.5) saturate(1.6)', // 👈 filter effect
+      filter: 'contrast(0.8) brightness(0.5) saturate(1.6)',
       zIndex: 0,
     },
 

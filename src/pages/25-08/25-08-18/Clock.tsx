@@ -194,7 +194,7 @@ export default function ClockLetters({
     // fontWeight: "bold",
     color: '#EA1010',
     fontSize: `${sizeVmin * 0.1}vmin`,
-    textShadow: '0 0.2vmin 0.2vmin #FFFFFF', // Fix: Removed extra dot
+    textShadow: '0 2px 0.2vmin #FFFFFF', // Fix: Removed extra dot
     userSelect: 'none',
     zIndex: 6, // Above crosshairs
   };
@@ -216,6 +216,7 @@ export default function ClockLetters({
     width: '100%',
     height: '100%',
     borderRadius: '50%',
+    boxShadow: '1px 0 0 2px rgba(231, 167, 167, 0.5)',
   };
 
   const letterStyleBase = {
@@ -223,10 +224,11 @@ export default function ClockLetters({
     left: '50%',
     top: '50%',
     transform: 'translate(-50%, -50%)',
-    fontFamily: `${CLOCK_FONT_FAMILY}, Arial, sans-serif`, // New: Added fallback
+    fontFamily: `${CLOCK_FONT_FAMILY}, Arial, sans-serif`,
     fontWeight: '700',
     userSelect: 'none',
     color: '#0D0C0CFF',
+    textShadow: '1px 1px 0px rgba(244, 240, 240, 0.5)',
     zIndex: 2,
   };
 

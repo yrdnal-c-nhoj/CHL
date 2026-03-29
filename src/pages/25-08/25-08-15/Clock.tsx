@@ -12,12 +12,13 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     height: '100dvh',
+    width: '100%',
     backgroundImage: `url(${backgroundImg})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    fontFamily: fontReady ? fontFamily : 'monospace', // fallback until font is ready
-    visibility: fontReady ? 'visible' : 'hidden', // hide until font loads
+    fontFamily: fontReady ? fontFamily : 'monospace',
+    visibility: fontReady ? 'visible' : 'hidden',
   }),
   clockDisplay: {
     display: 'flex',

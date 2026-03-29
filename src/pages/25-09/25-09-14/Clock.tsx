@@ -1,16 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
-import d250914 from '../../../assets/fonts/25-09-14-swi.ttf?url';
 import bgImageSrc from '../../../assets/images/25-09/25-09-14/bg.gif';
 
 const GoldenChordsClock: React.FC = () => {
-  const canvasRef = useRef(null);
-
-  // Use standardized font loader
-  const fontReady = useFontLoader('GoldenChordsFont', d250914, {
-    timeout: 5000,
-    fallback: true,
-  });
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const R = 180;
   const chordLength = 1.9 * R;
@@ -18,13 +10,15 @@ const GoldenChordsClock: React.FC = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
     // Load background image
     const bgImage = new Image();
     bgImage.src = bgImageSrc;
 
-    const draw: React.FC = () => {
+    const draw = () => {
       const now = new Date();
       const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
       const minutes = now.getMinutes() + seconds / 60;
@@ -64,7 +58,7 @@ const GoldenChordsClock: React.FC = () => {
 
       // --- CLOCK HANDS ---
       const clockRadius = R * 0.6 * scale;
-      const drawHand = (angle, length, width, color) => {
+      const drawHand = (angle: number, length: number, width: number, color: string) => {
         ctx.save();
         ctx.globalAlpha = 0.9;
         ctx.shadowColor = 'rgba(24, 28, 26, 0.8)';
@@ -159,7 +153,7 @@ const GoldenChordsClock: React.FC = () => {
       requestAnimationFrame(draw);
     };
 
-    const handleResize: React.FC = () => {
+    const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
