@@ -38,7 +38,7 @@ const RainOverlay: React.FC = () => {
       
       // Batch all lines into a single path for performance
       ctx.beginPath();
-      ctx.strokeStyle = 'rgba(5, 74, 118, 0.4)';
+      ctx.strokeStyle = 'rgba(156, 224, 241, 0.77)';
       ctx.lineWidth = 1.5;
       ctx.lineCap = 'round';
 
