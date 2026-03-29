@@ -1,283 +1,151 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
 import backgroundImg from '../../../assets/images/25-11/25-11-25/npt.webp';
+import fontClockUrl from '../../../assets/fonts/25-11-25-ntp.ttf?url';
+import fontMarqueeUrl from '../../../assets/fonts/25-11-25-n2.ttf?url';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
 
-// Export assets for preloading
 export { backgroundImg };
 
-// --- Constants (Keep as is) ---
 const NTP_EPOCH_OFFSET = 2208988800;
 const MS_PER_SECOND = 1000;
-const SECONDS_PER_DAY = 86400;
 
-// --- Custom Hooks (Keep as is) ---
 function useNtpOffset() {
   const [offset, setOffset] = useState<number>(0);
   const [isSynced, setIsSynced] = useState<boolean>(false);
 
   useEffect(() => {
     let isMounted = true;
-
     const fetchTime = async () => {
       try {
         const start = performance.now();
-        // Using Etc/UTC as a reliable, non-DST time source
-        const res = await fetch(
-          'https://worldtimeapi.org/api/timezone/Etc/UTC',
-        );
+        const res = await fetch('https://worldtimeapi.org/api/timezone/Etc/UTC');
         const data = await res.json();
-        const end = performance.now();
-        if (!isMounted) return;
-
-        // Calculate offset (network latency compensated)
-        const networkDelay = (end - start) / 2;
-        const serverTime = new Date(data.utc_datetime).getTime();
-        const newOffset = serverTime - (Date.now() + networkDelay);
-
-        setOffset(newOffset);
-        setIsSynced(true);
-      } catch (e) {
+        const networkDelay = (performance.now() - start) / 2;
         if (isMounted) {
-          console.error('Failed to load NTP time:', e);
+          setOffset(new Date(data.utc_datetime).getTime() - (Date.now() + networkDelay));
           setIsSynced(true);
         }
+      } catch (e) {
+        if (isMounted) setIsSynced(true); 
       }
     };
-
     fetchTime();
-    return () => {
-      isMounted = false;
-    };
+    return () => { isMounted = false; };
   }, []);
 
   return { offset, isSynced };
 }
 
-// --- Utility Functions (Keep as is) ---
-const calculateClockAngles = (ntpSeconds) => {
-  // ... (logic remains the same)
-  const timeOfDay = ntpSeconds % SECONDS_PER_DAY;
-  const hours = Math.floor(timeOfDay / 3600);
-  const minutes = Math.floor((timeOfDay % 3600) / 60);
-  const seconds = timeOfDay % 60;
-  const secAngle = seconds * 6 - 90;
-  const minAngle = minutes * 6 + seconds * 0.1 - 90;
-  const hourAngle = (hours % 12) * 30 + minutes * 0.5 - 90;
-  return { secAngle, minAngle, hourAngle };
-};
-
-const generateDigitColors = (numDigits) => {
-  return Array.from({ length: numDigits }, () => {
-    const h = Math.random() * 360;
-    const shadowH = (h + 180) % 360; // Complementary color for shadow
-    return {
-      color: `hsl(${h}, 200%, 50%)`,
-      shadowColor: `hsl(${shadowH}, 200%, 60%)`,
-    };
-  });
-};
-
 export const fontConfigs: FontConfig[] = [
-  {
-    fontFamily: 'ClockFont',
-    fontUrl: 'https://fonts.gstatic.com/s/monoton/v25/1iTVw6I6v_QMRTox_I6wUJ3Y5ZK9.woff2',
-    options: { display: 'swap' },
-  },
-  {
-    fontFamily: 'MarqueeFont',
-    fontUrl: 'https://fonts.gstatic.com/s/pressstart2p/v15/e3t4euO8T-267oIAQAu6jDQyK3nVivM.woff2',
-    options: { display: 'swap' },
-  },
+  { fontFamily: 'ClockFont', fontUrl: fontClockUrl, options: { display: 'swap' } },
+  { fontFamily: 'MarqueeFont', fontUrl: fontMarqueeUrl, options: { display: 'swap' } },
 ];
 
-// --- Component ---
 export default function NtpClock() {
   const { offset, isSynced } = useNtpOffset();
-
-  // Temporarily disable font loader for production compatibility
-  // useSuspenseFontLoader(fontConfigs);
+  useSuspenseFontLoader(fontConfigs);
 
   const [ntpSeconds, setNtpSeconds] = useState<number>(0);
-  const [digitColors, setDigitColors] = useState<any>([]);
+  const [digitColors, setDigitColors] = useState<{ color: string; shadowColor: string }[]>([]);
   const [marqueePos, setMarqueePos] = useState<number>(0);
-  // displayTime shows local time for the marquee text
-  const [displayTime, setDisplayTime] = useState(
-    new Date().toLocaleString([], { timeZoneName: 'short' }),
-  );
+  const [displayTime, setDisplayTime] = useState("");
   const [isPortrait, setIsPortrait] = useState(false);
-  const marqueeRef = useRef(null);
 
-  // Handle window object access for SSR
   useEffect(() => {
     setIsPortrait(window.innerHeight > window.innerWidth);
-  }, []);
-
-  // --- **Core Change 1 & 2: Update Time & Colors Every Second** ---
-  useEffect(() => {
-    // Function to calculate time and generate colors
-    const updatePerSecond: React.FC = () => {
-      // 1. Calculate the synchronized time (falls back to local if not yet synced)
+    
+    const tick = () => {
       const nowTime = Date.now() + offset;
       const newSeconds = Math.floor(nowTime / MS_PER_SECOND) + NTP_EPOCH_OFFSET;
+      const strSec = String(newSeconds);
 
-      // 2. Update NTP seconds (for clock display)
       setNtpSeconds(newSeconds);
-
-      // 3. Generate new colors every second (randomly)
-      setDigitColors(generateDigitColors(String(newSeconds).length));
-
-      // 4. Update local display time for marquee
-      setDisplayTime(new Date().toLocaleString([], { timeZoneName: 'short' }));
+      setDisplayTime(new Date(nowTime).toLocaleString([], { timeZoneName: 'short' }));
+      
+      // Generate colors only for the length of the current timestamp
+      setDigitColors(Array.from({ length: strSec.length }, () => {
+        const h = Math.random() * 360;
+        return {
+          color: `hsl(${h}, 200%, 50%)`,
+          shadowColor: `hsl(${(h + 180) % 360}, 200%, 60%)`,
+        };
+      }));
     };
 
-    // Run once immediately
-    updatePerSecond();
+    tick();
+    const interval = setInterval(tick, MS_PER_SECOND);
+    return () => clearInterval(interval);
+  }, [offset]);
 
-    // Set up the interval to run every 1000ms (1 second)
-    const tick = setInterval(updatePerSecond, MS_PER_SECOND);
-
-    return () => clearInterval(tick);
-  }, [offset]); // Runs whenever offset updates
-
-  // --- Marquee Animation (Keep as is / Independent) ---
   useEffect(() => {
-    let frame;
-    const step: React.FC = () => {
-      setMarqueePos((prev) => {
-        const speed = 0.7; // vh per frame
-        // This is a simple linear animation, you might want to reset 'prev'
-        // based on the size of the marqueeRef content if you want it to loop properly
-        return prev + speed;
-      });
+    let frame = requestAnimationFrame(function step() {
+      setMarqueePos(prev => (prev > 200 ? 0 : prev + 0.7)); // Reset loop at 200 units
       frame = requestAnimationFrame(step);
-    };
-    frame = requestAnimationFrame(step);
+    });
     return () => cancelAnimationFrame(frame);
-  }, []); // Only runs once on mount
+  }, []);
 
-  // --- Styles and Rendering (Keep as is / Independent) ---
-
-  const wrapperStyle = useMemo(
-    () => ({
-      width: '100vw',
-      height: '100dvh',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#111',
-      // **Background Image is independent of the timing logic**
-      backgroundImage: `
-      url(${backgroundImg}),
+  const wrapperStyle = useMemo(() => ({
+    width: '100vw',
+    height: '100dvh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#111',
+    backgroundImage: `url(${backgroundImg}),
       linear-gradient(to right, rgba(200,200,200,0.05) 0.1vh, transparent 0.1vh),
-      linear-gradient(to bottom, rgba(200,200,200,0.05) 0.1vh, transparent 0.1vh)
-    `,
-      backgroundSize: '25vh 15vh, 25vh 15vh, 25vh 15vh',
-      backgroundPosition: 'center',
-      filter: 'invert(1) saturate(7)',
-      overflow: 'hidden',
-      position: 'relative',
-    }),
-    [isPortrait],
-  );
+      linear-gradient(to bottom, rgba(200,200,200,0.05) 0.1vh, transparent 0.1vh)`,
+    backgroundSize: '25vh 15vh',
+    backgroundPosition: 'center',
+    filter: 'invert(1) saturate(7)',
+    overflow: 'hidden',
+    position: 'relative' as const,
+  }), []);
 
-  const baseClockStyle = {
+  const clockStyle = {
     fontFamily: 'ClockFont, monospace',
-    textAlign: 'center',
+    fontSize: isPortrait ? '13vh' : '15vh',
+    lineHeight: '0.75',
+    display: 'flex',
+    flexDirection: (isPortrait ? 'column' : 'row') as any,
+    zIndex: 2,
   };
 
-  const clockStyle = useMemo(
-    () => ({
-      ...baseClockStyle,
-      fontSize: isPortrait ? '13vh' : '15vh',
-      lineHeight: '0.75',
-      display: 'flex',
-      flexDirection: isPortrait ? 'column' : 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 2,
-    }),
-    [isPortrait],
-  );
-
-  const staticText = `{{time}} NTP, or Network Time Protocol, is a system that keeps computers’ clocks accurate by checking the time from trusted servers and adjusting them as needed. `;
-
-  const marqueeText = Array(10).fill(staticText).join(' ');
-
   const marqueeStyle = {
-    position: 'absolute',
-    whiteSpace: 'nowrap',
+    position: 'absolute' as const,
+    whiteSpace: 'nowrap' as const,
     fontSize: '49vh',
-    fontFamily: 'MarqueeFont, serif, sans-serif',
+    fontFamily: 'MarqueeFont, serif',
     color: '#110101FF',
     textShadow: '#6EE612FF 1px 0',
     zIndex: 1,
-    // opacity: 0.9,
-    pointerEvents: 'none',
-    // Marquee position is updated by requestAnimationFrame, making it independent
-    ...(isPortrait
-      ? {
-          top: '50%',
-          left: `${100 - marqueePos}vw`,
-          transform: 'translate(-50%, -50%)',
-        }
-      : {
-          left: '50%',
-          top: `${100 - marqueePos}vh`,
-          transform: 'translate(-50%, 0) rotate(90deg)',
-        }),
+    pointerEvents: 'none' as const,
+    left: '50%',
+    top: '50%',
+    transform: isPortrait 
+      ? `translate(-50%, -50%) translateX(${100 - marqueePos}vw)` 
+      : `translate(-50%, -50%) translateY(${100 - marqueePos}vh) rotate(90deg)`,
   };
-
-  // Although you're not rendering the hands, the angles are still calculated.
-  // We'll keep this as it doesn't hurt performance much.
-  const { secAngle, minAngle, hourAngle } = useMemo(
-    () => calculateClockAngles(ntpSeconds),
-    [ntpSeconds],
-  );
 
   return (
     <div style={wrapperStyle}>
-      {/* Clock Display */}
       <div style={clockStyle}>
-        {String(ntpSeconds)
-          .split('')
-          .map((digit, i) => (
-            <span
-              key={i}
-              style={{
-                color: digitColors[i]?.color || '#00ffff',
-                textShadow: `1.0vh 0 0 ${digitColors[i]?.shadowColor || '#00ffff'}, -1.0vh 0 0 ${digitColors[i]?.shadowColor || '#00ffff'}, 1.1vh 0 0 ${digitColors[i]?.shadowColor || '#00ffff'}, -1.1vh 0 0 ${digitColors[i]?.shadowColor || '#00ffff'}, 1px 0 black, 0 -1px 0 black, 1px 0 0 black, -1px 0 0 black`,
-              }}
-            >
-              {digit}
-            </span>
-          ))}
+        {String(ntpSeconds).split('').map((digit, i) => (
+          <span key={i} style={{
+            color: digitColors[i]?.color || '#0ff',
+            textShadow: `1.0vh 0 0 ${digitColors[i]?.shadowColor || '#0ff'}, 1px 0 black, 0 -1px 0 black`,
+          }}>
+            {digit}
+          </span>
+        ))}
       </div>
 
-      {/* Sync indicator to explain fallback state */}
-      {!isSynced && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '2vh',
-            right: '2vh',
-            padding: '1vh 2vh',
-            background: 'rgba(0,0,0,0.6)',
-            color: '#c8ff00',
-            fontFamily: 'monospace',
-            fontSize: '2vh',
-            border: '1px solid #c8ff00',
-            borderRadius: '1vh',
-            zIndex: 3,
-          }}
-        >
-          Syncing time...
-        </div>
-      )}
+      {!isSynced && <div style={{ position: 'absolute', top: '2vh', right: '2vh', color: '#c8ff00' }}>Syncing...</div>}
 
-      {/* Marquee */}
-      <div ref={marqueeRef} style={marqueeStyle}>
-        {marqueeText.replace(/\{\{time\}\}/g, displayTime)}
+      <div style={marqueeStyle}>
+        {`${displayTime} NTP is a system that keeps computers accurate. `.repeat(5)}
       </div>
     </div>
   );

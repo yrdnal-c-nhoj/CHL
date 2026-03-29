@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import futurBg from '../../../assets/images/26-02/26-02-24/futur.jpg';
 
@@ -16,12 +15,16 @@ const ImageDisplay = () => {
   const [fontsReady, setFontsReady] = useState<boolean>(false);
   const [ariaTime, setAriaTime] = useState('');
 
-  const fontConfigs = useMemo(() => [], []);
-
-  useSuspenseFontLoader(fontConfigs);
-
+  // Load Google Fonts
   useEffect(() => {
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Dancing+Script&family=Creepster&family=Oswald&family=Cinzel+Decorative&family=Metal+Mania&family=UnifrakturMaguntia&family=ZCOOL+KuaiLe&family=Press+Start+2P&family=Space+Mono&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
     setFontsReady(true);
+    return () => {
+      document.head.removeChild(link);
+    };
   }, []);
 
   // Accessibility: Update time string for screen readers
@@ -116,9 +119,6 @@ const ImageDisplay = () => {
 
   return (
     <div style={containerStyle}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Creepster&family=Bungee+Shade&family=Oswald&family=Cinzel+Decorative:wght@700&family=Metal+Mania&family=UnifrakturMaguntia&family=ZCOOL+KuaiLe&family=Press+Start+2P&family=Space+Mono&display=swap');
-      `}</style>
       <div style={backgroundStyle} />
       <div style={redOverlayStyle} />
 

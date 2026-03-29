@@ -27,10 +27,12 @@ const VegasClock: React.FC = () => {
 
   // Initialize YouTube IFrame API
   useEffect(() => {
-    let scriptTag = null;
+    const scriptId = 'youtube-iframe-api-script';
+    let scriptTag = document.getElementById(scriptId) as HTMLScriptElement | null;
     
-    if (!window.YT) {
+    if (!window.YT && !scriptTag) {
       scriptTag = document.createElement('script');
+      scriptTag.id = scriptId;
       scriptTag.src = 'https://www.youtube.com/iframe_api';
       document.body.appendChild(scriptTag);
     }
@@ -64,15 +66,6 @@ const VegasClock: React.FC = () => {
         playerRef.current = null;
       }
       window.onYouTubeIframeAPIReady = null;
-      
-      // Clean up script tag
-      if (scriptTag && scriptTag.parentNode) {
-        try {
-          scriptTag.parentNode.removeChild(scriptTag);
-        } catch (e) {
-          // Script might already be removed
-        }
-      }
     };
   }, []);
 

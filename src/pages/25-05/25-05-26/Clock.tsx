@@ -115,12 +115,6 @@ export default function SproutClock() {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   const [time, setTime] = useState<any>({ h: [], m: [], s: [], ms: [] });
-  const [fontReady, setFontReady] = useState<boolean>(false);
-
-  // Update fontReady state when fontsLoaded changes
-  useEffect(() => {
-    setFontReady(fontsLoaded);
-  }, [fontsLoaded]);
 
   // Font loading handled by useMultipleFontLoader
 
@@ -148,7 +142,7 @@ export default function SproutClock() {
         // border: fontReady ? '2px solid green' : '2px solid red',
       },
     }),
-    [fontReady],
+    [fontsLoaded],
   );
 
   const renderDigits = (digits) =>
@@ -162,7 +156,7 @@ export default function SproutClock() {
     <div
       style={{
         ...styles.container,
-        opacity: fontReady ? 1 : 0,
+        opacity: fontsLoaded ? 1 : 0,
         transition: 'opacity 0.3s ease',
       }}
     >

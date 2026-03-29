@@ -44,7 +44,7 @@ export default function TimeWordsClock() {
   ];
 
   // Plural helper
-  const pluralize = (n, singular, plural) => (n === 1 ? singular : plural);
+  const pluralize = (n: number, singular: string, plural: string) => (n === 1 ? singular : plural);
 
   // Translations (same as before)
   const translations = {
@@ -403,8 +403,7 @@ export default function TimeWordsClock() {
     
     let relation = t.after;
     let displayMinutes = minutes;
-    // @ts-ignore - handling potential undefined seconds from external hooks
-    let displaySeconds = seconds;
+    const displaySeconds = seconds;
       
     let displayHour = hours % 12 === 0 ? 12 : hours % 12;
 

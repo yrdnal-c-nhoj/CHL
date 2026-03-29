@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import bg1 from '../../../assets/images/25-11/25-11-17/mars2.webp';
 import bg2 from '../../../assets/images/25-11/25-11-17/mars1.gif';
 import bg3 from '../../../assets/images/25-11/25-11-17/mars1.gif';
-import bg4 from '../../../assets/images/25-11/25-11-17/mars5.webp'; // ← added Mars four import
+import bg4 from '../../../assets/images/25-11/25-11-17/mars5.webp';
 import font2025_11_18 from '../../../assets/fonts/25-11-17-mars.ttf?url';
 
-// Export assets for preloading
 export { bg1, bg2, bg3, bg4 };
 
 export const fontConfigs = [
@@ -18,19 +16,41 @@ export const fontConfigs = [
 
 export default function MarsDigitalClock() {
   const [time, setTime] = useState(new Date());
+  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
   const rafRef = useRef(null);
 
-  useSuspenseFontLoader(fontConfigs);
+  useEffect(() => {
+    let cancelled = false;
+    const font = new FontFace('ClockFont', `url(${font2025_11_18})`, {
+      style: 'normal',
+      weight: '400',
+    });
+
+    font
+      .load()
+      .then((loaded) => {
+        if (cancelled) return;
+        document.fonts.add(loaded);
+        setFontLoaded(true);
+      })
+      .catch(() => {
+        // In case of error, still show the clock with fallback font
+        if (!cancelled) setFontLoaded(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     let mounted = true;
-    const tick = () => {
+    const loop: React.FC = () => {
       if (!mounted) return;
       setTime(new Date());
-      rafRef.current = requestAnimationFrame(tick);
+      rafRef.current = setInterval(() => setTime(new Date()), 100);
     };
-    rafRef.current = requestAnimationFrame(tick);
-
+    rafRef.current = setInterval(() => setTime(new Date()), 100);
     return () => {
       mounted = false;
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -87,6 +107,8 @@ export default function MarsDigitalClock() {
       overflow: 'hidden',
       padding: '2vh',
       boxSizing: 'border-box',
+      opacity: fontLoaded ? 1 : 0,
+      transition: 'opacity 0.35s ease-out',
       // Opacity handled by Suspense/Loader now
     },
     gradientBackground: {

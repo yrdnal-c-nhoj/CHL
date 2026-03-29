@@ -121,13 +121,13 @@ export default function Clock() {
         alt="background"
         style={{
           position: 'absolute',
-          bottom: 0,
-          right: 0,
+          top: '50%',
+          left: '50%',
           width: '100%',
           height: '100%',
           objectFit: 'cover',
           zIndex: 1,
-          transform: 'scale(1.2)',
+          transform: 'translate(-50%, -50%) scale(1.2)',
           transformOrigin: 'center center',
         }}
       />

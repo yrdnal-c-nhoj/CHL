@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react';
 import gearsGif from '../../../assets/images/25-05/25-05-29/gears-13950_128.gif';
+import watchFont from '../../../assets/fonts/25-05-29-watch.ttf?url';
 import { Color } from 'three';
 
 const Clock: React.FC = () => {
-  // Using CSS @import instead of corrupted local font
-  const fontConfigs = [];
-  const fontsLoaded = true; // Bypass font loader since using CSS @import
-
   const [loaded, setLoaded] = useState<boolean>(false);
   const [hoursDigits, setHoursDigits] = useState<any>([]);
   const [minutesDigits, setMinutesDigits] = useState<any>([]);
   const [secondsDigits, setSecondsDigits] = useState<any>([]);
   const [vh, setVh] = useState<any>(window.innerHeight);
 
-  // Font loading handled by useMultipleFontLoader
+  // Load local font file
+  useEffect(() => {
+    const font = new FontFace('WatchFont', `url(${watchFont})`);
+    font.load().then((loaded) => {
+      document.fonts.add(loaded);
+    }).catch(() => {
+      // Font failed to load, will use fallback
+    });
+  }, []);
 
   // Character map for digits
   const charMap = {
@@ -100,13 +105,10 @@ const Clock: React.FC = () => {
         }}
       />
       
-      {/* Font definition in the middle of component */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-      `}</style>
+      {/* Clock Styles */}
       <style>{`
         .clock {
-          font-family: 'Orbitron', sans-serif !important;
+          font-family: 'WatchFont', 'Orbitron', sans-serif !important;
           color: rgb(29, 2, 84);
           text-shadow: rgb(238, 87, 5) 1px 1px 0px, white -1px 0px 0px;
           display: flex;

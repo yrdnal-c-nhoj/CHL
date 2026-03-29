@@ -1,15 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import sloanFont_2025_1204 from '../../../assets/fonts/25-12-04-ichart.otf?url';
+import type { FontConfig } from '../../../types/clock';
+
+const fontFamilyName = 'SloanOptotype_2025_1204';
+
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: fontFamilyName,
+    fontUrl: sloanFont_2025_1204,
+  },
+];
 
 export default function EyeChart() {
-  const fontFamilyName = 'SloanOptotype_2025_1204';
-
   // Use standardized font loader
-  const fontReady = useFontLoader(fontFamilyName, sloanFont_2025_1204, {
-    timeout: 5000,
-    fallback: true,
-  });
+  useSuspenseFontLoader(fontConfigs);
 
   const [time, setTime] = useState(new Date());
   useEffect(() => {
@@ -92,23 +97,6 @@ export default function EyeChart() {
     opacity: 0.55,
     letterSpacing: '0.15vh',
   };
-
-  if (!fontReady) {
-    return (
-      <div
-        style={{
-          ...outer,
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontFamily: 'sans-serif',
-          fontSize: '1rem',
-          color: '#656',
-        }}
-      >
-        Loading...
-      </div>
-    );
-  }
 
   return (
     <div style={outer} className="eyechart-root">

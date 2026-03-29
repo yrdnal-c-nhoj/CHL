@@ -16,7 +16,6 @@ export const fontConfigs = [
 
 const FiligreeClock: React.FC = () => {
   const [digits, setDigits] = useState(Array(16).fill('0'));
-  const [fontLoaded, setFontLoaded] = useState(false);
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -42,7 +41,7 @@ const FiligreeClock: React.FC = () => {
   // Inline styles
   const styles = {
     root: {
-      fontFamily: fontLoaded ? "'cyl', sans-serif" : 'sans-serif',
+      fontFamily: "'cyl', sans-serif",
       background:
         'radial-gradient(circle, rgba(163, 91, 111, 1) 0%, rgba(145, 81, 144, 1) 100%)',
       width: '100vw',

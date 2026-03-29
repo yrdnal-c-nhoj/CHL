@@ -6,21 +6,11 @@ import font2025_11_24 from '../../../assets/fonts/25-11-23-gal.ttf?url'; // your
 
 export default function DigitalStackClock() {
   const [now, setNow] = useState(new Date());
-  const [fontReady, setFontReady] = useState<boolean>(false);
 
   // Update time every 250 ms
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 250);
     return () => clearInterval(id);
-  }, []);
-
-  // Wait for custom font → eliminates FOUC completely
-  useEffect(() => {
-    document.fonts.ready.then(() => {
-      document.fonts
-        .load('100 1em CustomClock') // load at least one weight
-        .then(() => setFontReady(true));
-    });
   }, []);
 
   // Format time
@@ -114,8 +104,8 @@ export default function DigitalStackClock() {
           }}
         />
 
-        {/* Clock becomes visible only when font is loaded */}
-        <div className={`clock-root ${fontReady ? 'font-ready' : ''}`}>
+        {/* Clock becomes visible immediately since font preloads */}
+        <div className="font-ready clock-root">
           <div className="clock-layout" style={panelStyle}>
             {/* HOURS */}
             <div style={digitRow}>

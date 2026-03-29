@@ -2,17 +2,24 @@ import { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import background from '../../../assets/images/25-12/25-12-17/swagr.webp';
 import FONT_PATH from '../../../assets/fonts/facexxxx.ttf?url';
+import type { FontConfig } from '../../../types/clock';
+
+const fontFamilyName = 'ClockComponentFont';
+
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: fontFamilyName,
+    fontUrl: FONT_PATH,
+  },
+];
 
 export default function App() {
   const [time, setTime] = useState(new Date());
   const [isLargeScreen, setIsLargeScreen] = useState<any>(
     typeof window !== 'undefined' ? window.innerWidth > 768 : true,
   );
-  const fontFamilyName = 'ClockComponentFont';
-  const fontLoaded = useFontLoader(fontFamilyName, FONT_PATH, {
-    fallback: true,
-    timeout: 3500,
-  });
+  
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -51,8 +58,8 @@ export default function App() {
     textAlign: 'center',
     color: '#070809FF',
     filter: 'drop-shadow(1px 2px 0  #D862F2FF)',
-    fontFamily: fontLoaded ? `${fontFamilyName}, monospace` : 'monospace',
-    opacity: fontLoaded ? 1 : 0.8,
+    fontFamily: `${fontFamilyName}, monospace`,
+    opacity: 1,
     transition: 'opacity 0.3s ease',
     fontSize: 'inherit',
     fontWeight: 'normal',
@@ -115,8 +122,8 @@ export default function App() {
     height: '100%',
     color: 'white',
     fontSize: isLargeScreen ? '15vw' : '20vh',
-    fontFamily: fontLoaded ? `${fontFamilyName}, monospace` : 'monospace',
-    opacity: fontLoaded ? 1 : 0.8,
+    fontFamily: `${fontFamilyName}, monospace`,
+    opacity: 1,
     transition: 'opacity 0.3s ease',
     fontWeight: 'normal',
     lineHeight: 1,
