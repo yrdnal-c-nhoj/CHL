@@ -3,7 +3,6 @@ import { useSecondClock } from '../../../utils/useSmoothClock';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bgVideo from '../../../assets/images/26-03/26-03-29/sunrise.mp4';
 import borderImage from '../../../assets/images/26-03/26-03-29/horse.webp';
-import scarabImage from '../../../assets/images/26-03/26-03-29/scarab.webp';
 import eastFont from '../../../assets/fonts/26-03-29-east.ttf';
 import styles from './Clock.module.css';
 
@@ -37,7 +36,7 @@ const RainOverlay: React.FC = () => {
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.strokeStyle = 'rgba(135, 206, 250, 0.5)';
+      ctx.strokeStyle = 'rgba(9, 106, 166, 0.5)';
       ctx.lineWidth = 1.5;
       ctx.lineCap = 'round';
 
@@ -89,8 +88,8 @@ const Clock: React.FC = () => {
   const minuteAngle = ((minutes + seconds / 60) / 60) * 360;
   const hourAngle = (((hours % 12) + minutes / 60) / 12) * 360;
 
-  const borderColor = 'rgba(255, 179, 0, 0.52)';
-  const borderFilter = ' contrast(1.3) brightness(0.9)';
+  const borderColor = 'rgba(255, 179, 0, 0.31)';
+  const borderFilter = ' contrast(1.1) brightness(0.9) saturate(3.7)';
 
   const borderStyle: React.CSSProperties = {
     backgroundImage: `linear-gradient(${borderColor}, ${borderColor}), url(${borderImage})`,
@@ -106,8 +105,6 @@ const Clock: React.FC = () => {
       </video>
 
       <RainOverlay />
-
-      <div className={styles.scarab} style={{ backgroundImage: `url(${scarabImage})` }} />
 
       <div className={styles.borderTop} style={borderStyle} />
       <div className={styles.borderBottom} style={borderStyle} />
