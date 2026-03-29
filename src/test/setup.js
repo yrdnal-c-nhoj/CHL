@@ -22,11 +22,21 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
   disconnect: vi.fn(),
 }));
 
-// Mock FontFace API
-global.FontFace = vi.fn().mockImplementation(() => ({
-  load: vi.fn().mockResolvedValue({}),
-  loaded: Promise.resolve({}),
-}));
+// Mock FontFace API - needs to be a proper constructor
+class MockFontFace {
+  constructor(family, source, descriptors) {
+    this.family = family;
+    this.source = source;
+    this.descriptors = descriptors;
+    this.loaded = Promise.resolve(this);
+  }
+  
+  load() {
+    return Promise.resolve(this);
+  }
+}
+
+global.FontFace = MockFontFace;
 
 // Mock document.fonts
 Object.defineProperty(document, 'fonts', {
