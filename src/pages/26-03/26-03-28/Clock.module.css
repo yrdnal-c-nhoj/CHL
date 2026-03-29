@@ -29,12 +29,6 @@
   filter: saturate(3) brightness(1.1) hue-rotate(180deg) contrast(1.2);
 }
 
-@media (max-width: 768px) {
-  .imageOverlay {
-    background-size: 80%;
-  }
-}
-
 .imageOverlayFlipped {
   position: absolute;
   top: 0;
@@ -46,12 +40,6 @@
   z-index: 2;
   filter: saturate(3) brightness(1.1) hue-rotate(180deg) contrast(1.2);
   transform: scaleX(-1);
-}
-
-@media (max-width: 768px) {
-  .imageOverlayFlipped {
-    background-size: 80%;
-  }
 }
 
 .clockDisplay {
