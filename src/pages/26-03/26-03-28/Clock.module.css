@@ -3,6 +3,7 @@
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
+  background-color: #0aefff;
 }
 
 .videoBackground {
@@ -15,6 +16,15 @@
   z-index: 0;
   filter: saturate(3) brightness(1.5);
   transform: rotate(180deg);
+}
+
+@media (max-width: 768px) {
+  .videoBackground {
+    width: 130%;
+    height: 130%;
+    left: -15%;
+    top: -15%;
+  }
 }
 
 .imageOverlay {
