@@ -123,9 +123,9 @@
 
 .scarab {
   position: absolute;
-  top: 50%;
+  top: calc(50% - 100vh);
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   width: 120px;
   height: 120px;
   background-size: contain;
