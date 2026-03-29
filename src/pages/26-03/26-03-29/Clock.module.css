@@ -125,7 +125,7 @@
 
 .scarab {
   position: absolute;
-  top: calc(50% - 5vh);
+  top: calc(50% - 10vh);
   left: 50%;
   transform: translateX(-50%);
   width: 120px;
