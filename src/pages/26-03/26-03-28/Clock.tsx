@@ -25,8 +25,8 @@ const Clock: React.FC = () => {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    border: '1px solid #00ff41',
+
+    border: '1px solid #C3493C',
     color: '#00ff41',
     fontSize: '22.5vw',
     fontFamily,
@@ -46,7 +46,7 @@ const Clock: React.FC = () => {
       <video
         autoPlay muted loop playsInline
         style={{
-          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+          position: 'absolute', top: 0, left: '-5vw', width: '110%', height: '100%',
           objectFit: 'cover', zIndex: 0,
           filter: 'saturate(3) brightness(1.5)',
           transform: 'rotate(180deg)',
@@ -63,7 +63,7 @@ const Clock: React.FC = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           zIndex: 1,
-          filter: 'saturate(3) brightness(1.5) hue-rotate(180deg) contrast(2.2)',
+          filter: 'saturate(3) brightness(1.1) hue-rotate(180deg) contrast(1.2)',
         }}
       />
 
@@ -75,7 +75,7 @@ const Clock: React.FC = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           zIndex: 2,
-          filter: 'saturate(3) brightness(1.5) hue-rotate(180deg) contrast(2.2)',
+          filter: 'saturate(3) brightness(1.1) hue-rotate(180deg) contrast(1.2)',
           transform: 'scaleX(-1)',
         }}
       />
