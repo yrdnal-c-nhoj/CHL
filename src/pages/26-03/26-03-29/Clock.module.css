@@ -14,7 +14,7 @@
   height: 100%;
   object-fit: cover;
   z-index: 0;
-  filter: saturate(1.5) brightness(1.4) contrast(0.5) hue-rotate(9deg);
+  filter: saturate(1.8) brightness(1.4) contrast(0.5) hue-rotate(9deg);
 }
 
 .rainCanvas {
@@ -84,8 +84,8 @@
   color: #ffe066;
   font-size: clamp(1.2rem, 8vw, 2.5rem);
   opacity: 1;
-  text-shadow: 0 0 20px rgb(25, 20, 1), 0 0 40px rgba(255, 230, 102, 0.9), 0 0 60px rgba(255, 230, 102, 0.7);
-  letter-spacing: 0.05em;
+  text-shadow: 1px 0 0px rgb(25, 20, 1), 0 0 40px rgba(255, 230, 102, 0.9), 0 0 60px rgba(255, 230, 102, 0.7);
+  letter-spacing: -0.09em;
 }
 
 .hourHand,
