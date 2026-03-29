@@ -26,12 +26,12 @@
 
 .scarab {
   position: absolute;
-  top: 10%;
+  bottom: 80%;
   left: 50%;
   transform: translateX(-50%);
   width: 80px;
-  height: 80px;
-  background-size: contain;
+  height: 160px;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
   z-index: 3;
