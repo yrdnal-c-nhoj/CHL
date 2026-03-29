@@ -21,14 +21,14 @@ const Clock: React.FC = () => {
 
   const digitBoxStyle = {
     width: '14vw',
-    height: '5vw',
+    height: '10vw',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-
-    border: '1px solid #C3493C',
+    backgroundColor: 'rgba(233, 9, 9, 0.29)',
+    border: '2px solid #00FF408E',
     color: '#00ff41',
-    fontSize: '22.5vw',
+    fontSize: '20vw',
     fontFamily,
     textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 10px #00ff41, 0 0 20px #00ff41',
   };
@@ -46,7 +46,7 @@ const Clock: React.FC = () => {
       <video
         autoPlay muted loop playsInline
         style={{
-          position: 'absolute', top: 0, left: '-5vw', width: '110%', height: '100%',
+          position: 'absolute', top: 0, left: '-6vw', width: '102%', height: '100%',
           objectFit: 'cover', zIndex: 0,
           filter: 'saturate(3) brightness(1.5)',
           transform: 'rotate(180deg)',
