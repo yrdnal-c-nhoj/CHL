@@ -1,37 +1,26 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useMillisecondClock } from '../../../utils/useSmoothClock';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import bgVideo from '../../../assets/images/26-03/26-03-28/water.mp4';
 import bgImage from '../../../assets/images/26-03/26-03-28/h2o.webp';
 import clockFont from '../../../assets/fonts/26-03-28-h2o.ttf';
+import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {
   const time = useMillisecondClock();
 
-  // Load custom font
-  const fontConfigs = [
+  // Font configuration with Suspense loading
+  const fontConfigs = useMemo<FontConfig[]>(() => [
     {
       fontFamily: 'H2OClock',
       fontUrl: clockFont,
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
 
-  const fontFamily = fontsLoaded ? 'H2OClock, monospace' : 'monospace';
+  // This hook suspends the component until fonts are loaded, preventing FOUC
+  useSuspenseFontLoader(fontConfigs);
 
-  const digitBoxStyle = {
-    width: '14vw',
-    height: '10vw',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(233, 9, 9, 0.29)',
-    border: '2px solid #00FF408E',
-    color: '#00ff41',
-    fontSize: '20vw',
-    fontFamily,
-    textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 10px #00ff41, 0 0 20px #00ff41',
-  };
 
   const hours = time.getHours().toString().padStart(2, '0');
   const minutes = time.getMinutes().toString().padStart(2, '0');
@@ -41,65 +30,43 @@ const Clock: React.FC = () => {
   const msOnes = Math.floor((ms % 100) / 10).toString();
 
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden' }}>
+    <div className={styles.container}>
       {/* Video background - bottom layer */}
       <video
-        autoPlay muted loop playsInline
-        style={{
-          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-          objectFit: 'cover', zIndex: 0,
-          filter: 'saturate(3) brightness(1.5)',
-          transform: 'rotate(180deg)',
-        }}
+        autoPlay
+        muted
+        loop
+        playsInline
+        className={styles.videoBackground}
       >
         <source src={bgVideo} type="video/mp4" />
       </video>
 
       {/* Image overlay - top layer */}
       <div
-        style={{
-          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-          backgroundImage: `url(${bgImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          zIndex: 1,
-          filter: 'saturate(3) brightness(1.1) hue-rotate(180deg) contrast(1.2)',
-        }}
+        className={styles.imageOverlay}
+        style={{ backgroundImage: `url(${bgImage})` }}
       />
 
       {/* Image overlay - flipped 180° horizontally */}
       <div
-        style={{
-          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-          backgroundImage: `url(${bgImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          zIndex: 2,
-          filter: 'saturate(3) brightness(1.1) hue-rotate(180deg) contrast(1.2)',
-          transform: 'scaleX(-1)',
-        }}
+        className={styles.imageOverlayFlipped}
+        style={{ backgroundImage: `url(${bgImage})` }}
       />
 
       {/* Clock display */}
-      <div
-        style={{
-          position: 'absolute', inset: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          zIndex: 3,
-          gap: '0.25rem',
-        }}
-      >
+      <div className={styles.clockDisplay}>
         {/* Hours */}
-        <div style={digitBoxStyle}>{hours[0]}</div>
-        <div style={digitBoxStyle}>{hours[1]}</div>
+        <div className={styles.digitBox}>{hours[0]}</div>
+        <div className={styles.digitBox}>{hours[1]}</div>
         {/* Minutes */}
-        <div style={digitBoxStyle}>{minutes[0]}</div>
-        <div style={digitBoxStyle}>{minutes[1]}</div>
+        <div className={styles.digitBox}>{minutes[0]}</div>
+        <div className={styles.digitBox}>{minutes[1]}</div>
         {/* Seconds */}
-        <div style={digitBoxStyle}>{seconds[0]}</div>
-        <div style={digitBoxStyle}>{seconds[1]}</div>
-        <div style={digitBoxStyle}>{msTens}</div>
-        <div style={digitBoxStyle}>{msOnes}</div>
+        <div className={styles.digitBox}>{seconds[0]}</div>
+        <div className={styles.digitBox}>{seconds[1]}</div>
+        <div className={styles.digitBox}>{msTens}</div>
+        <div className={styles.digitBox}>{msOnes}</div>
       </div>
     </div>
   );
