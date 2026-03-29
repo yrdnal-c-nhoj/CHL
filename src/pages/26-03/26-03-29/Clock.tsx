@@ -1,93 +1,152 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bgVideo from '../../../assets/images/26-03/26-03-29/sunrise.mp4';
 import borderImage from '../../../assets/images/26-03/26-03-29/horse.webp';
+import eastFont from '../../../assets/fonts/26-03-29-east.ttf';
+import styles from './Clock.module.css';
 
+// --- Rain Overlay Sub-Component ---
+const RainOverlay: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animationFrameId: number;
+
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    const rainCount = 120;
+    const drops = Array.from({ length: rainCount }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      length: Math.random() * 25 + 10,
+      speed: Math.random() * 15 + 10,
+      opacity: Math.random() * 0.4 + 0.1
+    }));
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = 'rgba(135, 206, 250, 0.5)';
+      ctx.lineWidth = 1.5;
+      ctx.lineCap = 'round';
+
+      drops.forEach(d => {
+        ctx.beginPath();
+        ctx.moveTo(d.x, d.y);
+        ctx.lineTo(d.x, d.y + d.length);
+        ctx.stroke();
+
+        d.y += d.speed;
+        if (d.y > canvas.height) {
+          d.y = -d.length;
+          d.x = Math.random() * canvas.width;
+        }
+      });
+
+      animationFrameId = requestAnimationFrame(draw);
+    };
+
+    draw();
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className={styles.rainCanvas} />;
+};
+
+// --- Main Clock Component ---
 const Clock: React.FC = () => {
   const time = useSecondClock();
 
-  const hours = time.getHours().toString().padStart(2, '0');
-  const minutes = time.getMinutes().toString().padStart(2, '0');
-  const seconds = time.getSeconds().toString().padStart(2, '0');
+  const fontConfigs = [
+    {
+      fontFamily: 'EastWind',
+      fontUrl: eastFont,
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const borderSize = '75px';
+  const fontFamily = fontsLoaded ? 'EastWind, Georgia, serif' : 'Georgia, serif';
+
+  const seconds = time.getSeconds();
+  const minutes = time.getMinutes();
+  const hours = time.getHours();
+
+  const secondAngle = (seconds / 60) * 360;
+  const minuteAngle = ((minutes + seconds / 60) / 60) * 360;
+  const hourAngle = (((hours % 12) + minutes / 60) / 12) * 360;
+
   const borderColor = 'rgba(255, 179, 0, 0.52)';
   const borderFilter = ' contrast(1.3) brightness(0.9)';
 
+  const borderStyle: React.CSSProperties = {
+    backgroundImage: `linear-gradient(${borderColor}, ${borderColor}), url(${borderImage})`,
+    backgroundSize: 'auto 7vh',
+    backgroundRepeat: 'repeat-x',
+    filter: borderFilter,
+  };
+
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden', background: '#000' }}>
-      {/* Video background */}
-      <video
-        autoPlay muted loop playsInline
-        style={{
-          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-          objectFit: 'cover', zIndex: 0,
-          filter: 'saturate(1.5) brightness(1.4) contrast(0.5) hue-rotate(9deg)',
-        }}
-      >
+    <div className={styles.container}>
+      <video autoPlay muted loop playsInline className={styles.videoBg}>
         <source src={bgVideo} type="video/mp4" />
       </video>
 
-      {/* 1. TOP BORDER - Upside down */}
-      <div style={{
-        position: 'absolute', top: 0, left: 0, width: '100vw', height: borderSize,
-        backgroundImage: `linear-gradient(${borderColor}, ${borderColor}), url(${borderImage})`,
-        backgroundSize: `auto ${borderSize}`,
-        backgroundRepeat: 'repeat-x', transform: 'rotate(180deg)', zIndex: 10,
-        filter: borderFilter,
-      }} />
+      <RainOverlay />
 
-      {/* 2. BOTTOM BORDER - Right side up */}
-      <div style={{
-        position: 'absolute', bottom: 0, left: 0, width: '100vw', height: borderSize,
-        backgroundImage: `linear-gradient(${borderColor}, ${borderColor}), url(${borderImage})`,
-        backgroundSize: `auto ${borderSize}`,
-        backgroundRepeat: 'repeat-x', zIndex: 10,
-        filter: borderFilter,
-      }} />
+      <div className={styles.borderTop} style={borderStyle} />
+      <div className={styles.borderBottom} style={borderStyle} />
+      <div className={styles.borderLeft} style={borderStyle} />
+      <div className={styles.borderRight} style={borderStyle} />
 
-      {/* 3. LEFT BORDER - Spun 90° Clockwise */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: borderSize, 
-        width: '100dvh',
-        height: borderSize,
-        backgroundImage: `linear-gradient(${borderColor}, ${borderColor}), url(${borderImage})`,
-        backgroundSize: `auto ${borderSize}`,
-        backgroundRepeat: 'repeat-x',
-        transformOrigin: 'top left',
-        transform: 'rotate(90deg)',
-        zIndex: 10,
-        filter: borderFilter,
-      }} />
+      <div className={styles.clockDisplay}>
+        <div className={styles.clockFace}>
+          {['xii', 'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x', 'xi'].map((numeral, i) => {
+            const angle = (i * 30 - 90) * (Math.PI / 180);
+            const radius = 42;
+            const x = 50 + radius * Math.cos(angle);
+            const y = 50 + radius * Math.sin(angle);
+            const rotation = i * 30;
+            return (
+              <div
+                key={numeral}
+                className={styles.numeral}
+                style={{
+                  left: `${x}%`,
+                  top: `${y}%`,
+                  transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
+                  fontFamily,
+                }}
+              >
+                {numeral}
+              </div>
+            );
+          })}
 
-      {/* 4. RIGHT BORDER - Spun 90° Counter-Clockwise (-90deg) */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        right: borderSize,
-        width: '100dvh',
-        height: borderSize,
-        backgroundImage: `linear-gradient(${borderColor}, ${borderColor}), url(${borderImage})`,
-        backgroundSize: `auto ${borderSize}`,
-        backgroundRepeat: 'repeat-x',
-        transformOrigin: 'top right',
-        transform: 'rotate(-90deg)',
-        zIndex: 10,
-        filter: borderFilter,
-      }} />
-
-      {/* Clock display */}
-      <div style={{
-        position: 'absolute', inset: borderSize,
-        display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 5,
-      }}>
-        <div style={{
-          color: '#fff', fontSize: '5rem', fontFamily: 'monospace',
-          textShadow: '2px 2px 10px rgba(0,0,0,1)',
-        }}>
-          {hours}:{minutes}:{seconds}
+          <div
+            className={styles.hourHand}
+            style={{ transform: `translate(-50%, -100%) rotate(${hourAngle}deg)` }}
+          />
+          <div
+            className={styles.minuteHand}
+            style={{ transform: `translate(-50%, -100%) rotate(${minuteAngle}deg)` }}
+          />
+          <div
+            className={styles.secondHand}
+            style={{ transform: `translate(-50%, -100%) rotate(${secondAngle}deg)` }}
+          />
         </div>
       </div>
     </div>
