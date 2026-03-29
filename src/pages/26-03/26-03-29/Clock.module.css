@@ -24,6 +24,19 @@
   pointer-events: none;
 }
 
+.scarab {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 3;
+}
+
 .borderTop {
   position: absolute;
   top: 0;

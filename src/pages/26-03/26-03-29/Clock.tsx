@@ -3,6 +3,7 @@ import { useSecondClock } from '../../../utils/useSmoothClock';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import bgVideo from '../../../assets/images/26-03/26-03-29/sunrise.mp4';
 import borderImage from '../../../assets/images/26-03/26-03-29/horse.webp';
+import scarabImage from '../../../assets/images/26-03/26-03-29/scarab.webp';
 import eastFont from '../../../assets/fonts/26-03-29-east.ttf';
 import styles from './Clock.module.css';
 
@@ -105,6 +106,8 @@ const Clock: React.FC = () => {
       </video>
 
       <RainOverlay />
+
+      <div className={styles.scarab} style={{ backgroundImage: `url(${scarabImage})` }} />
 
       <div className={styles.borderTop} style={borderStyle} />
       <div className={styles.borderBottom} style={borderStyle} />
