@@ -6,6 +6,15 @@ import testData from './testclock.json';
 // Create context
 export const DataContext = createContext();
 
+// Custom hook to use the DataContext
+export const useDataContext = () => {
+  const context = React.useContext(DataContext);
+  if (context === undefined) {
+    return { items: [], loading: false, error: null };
+  }
+  return context;
+};
+
 export const DataProvider = ({ children }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);

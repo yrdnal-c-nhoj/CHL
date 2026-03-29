@@ -1,8 +1,16 @@
 # BorrowedTime 🧊🫀🔭
 
-*A new clock every day.*
+[![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](https://github.com/your-username/CHL/actions)
+[![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=flat&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![React](https://img.shields.io/badge/react-%2320232a.svg?style=flat&logo=react&logoColor=%2361DAFB)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-BorrowedTime is a creative digital art project by Cubist Heart Laboratories that delivers a unique clock design each day. Every clock is a distinct exploration of time, typography, and visual aesthetics, combining found imagery, custom fonts, and innovative web technologies.
+> *A new clock every day.*
+
+BorrowedTime is a creative digital art project by [Cubist Heart Laboratories](https://www.cubistheart.com) that delivers a unique clock design each day. Every clock is a distinct exploration of time, typography, and visual aesthetics, combining found imagery, custom fonts, and innovative web technologies.
+
+[🕐 View Live Site](https://www.cubistheart.com) · [📖 Read the Manifesto](https://www.cubistheart.com/manifesto) · [💌 Contact Us](mailto:cubistheart@gmail.com)
 
 ## 🎨 Project Overview
 
@@ -154,12 +162,76 @@ Each clock follows a flexible structure while maintaining unique characteristics
 - `npm run build` - Build for production
 - `npm run build:with-types` - Build with TypeScript checking
 - `npm run preview` - Preview production build
-- `npm run test` - Run tests
+- `npm run test` - Run tests in watch mode
+- `npm run test:run` - Run tests once (CI-friendly)
 - `npm run test:ui` - Run tests with UI
 - `npm run lint` - Run ESLint
 - `npm run format` - Format code with Prettier
 - `npm run type-check` - TypeScript type checking
 - `npm run clean` - Clean build artifacts
+
+## 🧪 Testing
+
+The project uses **Vitest** for unit testing with **@testing-library/react** for component testing.
+
+### Running Tests
+
+```bash
+# Run tests in watch mode (development)
+npm run test
+
+# Run tests once (CI/production)
+npm run test:run
+
+# Run tests with interactive UI
+npm run test:ui
+```
+
+### Test Structure
+
+Tests are organized in `src/test/`:
+
+| Test File | Coverage |
+|-----------|----------|
+| `clockUtils.test.ts` | Time formatting, angle calculations, tick mark generation |
+| `assetLoader.test.ts` | Asset loading utilities, srcset generation |
+| `useClockPage.test.ts` | Dynamic clock loading, path resolution |
+| `DataContext.test.tsx` | Data context provider, error handling |
+| `App.test.tsx` | App routing, error boundaries |
+| `navigation.test.tsx` | TopNav component |
+| `ClockPage.test.js` | Path resolution, date format validation |
+
+### Writing Tests
+
+The test setup includes mocks for browser APIs:
+- `window.matchMedia` - Responsive design testing
+- `ResizeObserver` - Layout testing
+- `FontFace` / `document.fonts` - Font loading testing
+
+Example test pattern:
+```typescript
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+
+// Mock modules with hoisting-safe factories
+vi.mock('../context/data.json', () => ({
+  default: [{ path: '26-03-05', date: '26-03-05', title: 'Clock Title' }]
+}));
+
+describe('Component', () => {
+  it('renders correctly', () => {
+    render(<Component />);
+    expect(screen.getByText('expected')).toBeInTheDocument();
+  });
+});
+```
+
+### Test Configuration
+
+- **Config**: `vitest.config.js`
+- **Setup**: `src/test/setup.js` (mocks and global configuration)
+- **Environment**: jsdom
+- **Globals**: Enabled (no import needed for `describe`, `it`, `expect`, `vi`)
 
 ## 🎨 Creating a New Clock
 

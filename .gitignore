@@ -87,6 +87,7 @@ Thumbs.db
 # Optional: build logs & editor workflows
 logs/
 build-log.txt
+.build-log.txt
 .windsurf/
 
 # Project-specific
