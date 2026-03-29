@@ -100,15 +100,15 @@
 }
 
 .hourHand {
-  width: 3px;
-  height: 30%;
+  width: 4px;
+  height: 20%;
   background: linear-gradient(to top, rgba(218, 165, 32, 0.6) 0%, rgba(255, 215, 0, 0.7) 50%, rgba(255, 236, 139, 0.6) 100%);
   border-radius: 3px;
   z-index: 3;
 }
 
 .minuteHand {
-  width: 2px;
+  width: 3px;
   height: 40%;
   background: linear-gradient(to top, rgba(218, 165, 32, 0.6) 0%, rgba(255, 215, 0, 0.7) 50%, rgba(255, 236, 139, 0.6) 100%);
   border-radius: 2px;
@@ -116,7 +116,7 @@
 }
 
 .secondHand {
-  width: 1px;
+  width: 2px;
   height: 45%;
   background: linear-gradient(to top, rgba(218, 165, 32, 0.5), rgba(255, 236, 139, 0.5));
   border-radius: 1px;
@@ -125,11 +125,11 @@
 
 .scarab {
   position: absolute;
-  top: calc(50% - 12vh);
+  top: calc(50% - 11vw);
   left: 50%;
   transform: translateX(-50%);
-  width: 120px;
-  height: 120px;
+  width: 38vw;
+  height: 22vw;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
