@@ -308,7 +308,7 @@ export default function TriangleClock() {
               fontFamily,
               fontSize: 38,
               fontWeight: 300,
-              letterSpacing: '2px',
+              letterSpacing: n === 10 ? '-6px' : '2px',
               userSelect: 'none',
               textShadow: '0 0 10px #EFB8D4, 0 0 20px #F9C3DE',
             }}
