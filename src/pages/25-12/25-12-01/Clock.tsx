@@ -3,15 +3,20 @@ import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import bgImg from '../../../assets/images/25-12/25-12-01/shark.webp';
 import clockfoont12012 from '../../../assets/fonts/25-12-01-shark.ttf?url';
+import type { FontConfig } from '../../../types/clock';
+
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'ClockFont_2025_12_01',
+    fontUrl: clockfoont12012,
+  },
+];
 
 export default function DigitalClock() {
   const [time, setTime] = useState(() => new Date());
 
   // Use standardized font loader
-  const fontReady = useFontLoader('ClockFont_2025_12_01', clockfoont12012, {
-    timeout: 5000,
-    fallback: true,
-  });
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -52,35 +57,6 @@ export default function DigitalClock() {
   };
 
   const digits = `${hours}${minutes}${seconds}`;
-
-  if (!fontReady) {
-    return (
-      <div
-        style={{
-          ...containerStyle,
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: '#000',
-          zIndex: 9999,
-        }}
-      >
-        <div
-          style={{
-            ...digitStyle,
-            color: '#333',
-            fontSize: '10vh',
-            width: 'auto',
-            visibility: 'hidden',
-          }}
-        >
-          00:00:00
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div style={containerStyle}>

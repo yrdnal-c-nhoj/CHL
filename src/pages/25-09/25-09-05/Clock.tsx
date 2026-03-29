@@ -20,7 +20,6 @@ export default function DigitalClock() {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   const [now, setNow] = useState(new Date());
-  const [fontReady, setFontReady] = useState<boolean>(fontsLoaded);
   const [bgReady, setBgReady] = useState<boolean>(false);
   const [imgReady, setImgReady] = useState<boolean>(false);
 
@@ -45,7 +44,7 @@ export default function DigitalClock() {
   }, []);
 
   // Only render once all assets are ready
-  const allLoaded = fontReady && bgReady && imgReady;
+  const allLoaded = fontsLoaded && bgReady && imgReady;
 
   if (!allLoaded) return null; // or a loader div
 

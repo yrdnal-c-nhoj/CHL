@@ -4,6 +4,7 @@ import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 // Vite public folder imports (root-relative → auto-hashed in prod)
 import backgroundImage from '../../../assets/images/26-01/26-01-05/pyr.webp';
 import gizaFont from '../../../assets/fonts/26-01-05-giza.otf';
+import type { FontConfig } from '../../../types/clock';
 
 export default function PyramidzBackground() {
   const [timeString, setTimeString] = useState<any>('');
@@ -13,11 +14,15 @@ export default function PyramidzBackground() {
   const dateStr = '20260107'; // January 07, 2026
   const uniqueFontFamily = `Giza_${dateStr}`;
 
+  const fontConfigs: FontConfig[] = [
+    {
+      fontFamily: uniqueFontFamily,
+      fontUrl: gizaFont,
+    },
+  ];
+
   // Use standardized font loader
-  const fontReady = useFontLoader(uniqueFontFamily, gizaFont, {
-    timeout: 5000,
-    fallback: true,
-  });
+  useSuspenseFontLoader(fontConfigs);
 
   // 2. Inject marquee styles (cleaned up on unmount)
   useEffect(() => {
@@ -62,29 +67,6 @@ export default function PyramidzBackground() {
     };
   }, [uniqueFontFamily]);
 
-  // 2. Wait for font to be usable
-  useEffect(() => {
-    if (!document.fonts) {
-      setFontReady(true);
-      return;
-    }
-
-    let mounted = true;
-    document.fonts
-      .load(`12px ${uniqueFontFamily}`)
-      .then(() => {
-        if (mounted) setFontReady(true);
-      })
-      .catch((err) => {
-        console.warn(' ', err);
-        if (mounted) setFontReady(true);
-      });
-
-    return () => {
-      mounted = false;
-    };
-  }, [uniqueFontFamily]);
-
   // 2b. Preload background to avoid flash
   useEffect(() => {
     const img = new Image();
@@ -114,8 +96,8 @@ export default function PyramidzBackground() {
     return () => clearInterval(interval);
   }, []);
 
-  // Block render until font is confirmed loaded
-  if (!fontReady || !bgReady) return null;
+  // Block render until bg is confirmed loaded
+  if (!bgReady) return null;
 
   return (
     <div

@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import font_2025_12_16 from '../../../assets/fonts/25-12-16-four.ttf?url';
+import type { FontConfig } from '../../../types/clock';
+
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'font_2025_12_16',
+    fontUrl: font_2025_12_16,
+  },
+];
 
 const QuadClock: React.FC = () => {
   const [time, setTime] = useState(Date.now());
 
   // Use standardized font loader
-  const fontReady = useFontLoader('font_2025_12_16', font_2025_12_16, {
-    timeout: 5000,
-    fallback: true,
-  });
+  useSuspenseFontLoader(fontConfigs);
 
   // === Effect 2: Animation loop for smooth clock ===
   useEffect(() => {
@@ -99,10 +104,8 @@ const QuadClock: React.FC = () => {
               fontSize: `${CLOCK_SIZE * 0.09}vmin`,
               color: '#F7F8CEFF',
               textShadow: '1px 2px 0px #333333, -1px -1px 0px #333333',
-              fontFamily: fontReady
-                ? 'font_2025_12_16, monospace'
-                : 'monospace',
-              opacity: fontReady ? 1 : 0,
+              fontFamily: 'font_2025_12_16, monospace',
+              opacity: 1,
               transition: 'opacity 0.5s ease',
             }}
           >

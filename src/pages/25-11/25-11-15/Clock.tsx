@@ -2,6 +2,14 @@ import React, { useRef, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import font_25251115j from '../../../assets/fonts/25-11-15-rain.otf?url';
 import bgImage from '../../../assets/images/25-11/25-11-15/fall.webp'; // local background image
+import type { FontConfig } from '../../../types/clock';
+
+export const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'DigitFont_25251115j',
+    fontUrl: font_25251115j,
+  },
+];
 
 export default function FallClock() {
   const canvasRef = useRef(null);
@@ -10,10 +18,7 @@ export default function FallClock() {
   const bgRef = useRef(null);
 
   // Use standardized font loader
-  const fontReady = useFontLoader('DigitFont_25251115j', font_25251115j, {
-    timeout: 5000,
-    fallback: true,
-  });
+  useSuspenseFontLoader(fontConfigs);
 
   const GRAVITY = 9.0;
   const WIND_BASE = 0.01;

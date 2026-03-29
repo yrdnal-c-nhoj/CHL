@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import type { FontConfig } from '../../../types/clock';
 import bgImage from '../../../assets/images/26-01/26-01-20/hairdo.webp';
 import d25090120font from '../../../assets/fonts/26-01-20-hairdo.ttf';
 
@@ -17,9 +18,16 @@ const DIGIT_MAP = {
   9: 'T',
 };
 
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'MyD25090120font',
+    fontUrl: d25090120font,
+  },
+];
+
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
-  const fontReady = useFontLoader('MyD25090120font', d25090120font);
+  useSuspenseFontLoader(fontConfigs);
   const [isLargeScreen, setIsLargeScreen] = useState<any>(window.innerWidth > 768);
   const [bgReady, setBgReady] = useState<boolean>(false);
 
@@ -123,7 +131,7 @@ const Clock: React.FC = () => {
     </div>
   );
 
-  if (!fontReady || !bgReady) {
+  if (!bgReady) {
     return <div style={{ ...styles.container, color: '#fff' }}></div>;
   }
 

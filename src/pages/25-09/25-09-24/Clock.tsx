@@ -4,47 +4,21 @@ import font20250924 from '../../../assets/fonts/25-09-24-cora.ttf?url';
 
 const HorizontalProportionalGradientClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
-  const [fontReady, setFontReady] = useState<boolean>(false);
 
-  // Load and persist font once
-  useEffect(() => {
-    let cancelled = false;
-
-    const loadFont = async () => {
-      try {
-        const font = new FontFace('CustomFont', `url(${font20250924})`);
-        const loaded = await font.load();
-
-        if (!cancelled) {
-          document.fonts.add(loaded);
-          setFontReady(true);
-        }
-      } catch (err) {
-        console.error('Font failed to load:', err);
-      }
-    };
-
-    loadFont();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  // Load font via Suspense
+  useSuspenseFontLoader([{ fontFamily: 'CustomFont', fontUrl: font20250924 }]);
 
   // Clock tick animation
   useEffect(() => {
-    if (!fontReady) return;
-
     let frame;
-    const tick: React.FC = () => {
+    const tick = () => {
       setTime(new Date());
       frame = requestAnimationFrame(tick);
     };
 
     tick();
     return () => cancelAnimationFrame(frame);
-  }, [fontReady]);
-
-  if (!fontReady) return null;
+  }, []);
 
   let hours = time.getHours() % 12;
   if (hours === 0) hours = 12;

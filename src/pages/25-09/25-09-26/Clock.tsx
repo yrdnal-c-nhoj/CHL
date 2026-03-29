@@ -171,7 +171,9 @@ export default function DualFontClock() {
             flexDirection: 'row',
           }}
         >
-          {chars.map((c, i) => stackedChar(c))}
+          {chars.map((c, i) => (
+            <div key={i}>{stackedChar(c)}</div>
+          ))}
         </div>
       );
     }

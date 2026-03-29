@@ -5,6 +5,14 @@ import ufoImg from '../../../assets/images/25-09/25-09-28/ufo.webp';
 import skyImg from '../../../assets/images/25-09/25-09-28/stars.gif';
 import nebulaImg from '../../../assets/images/25-09/25-09-28/sta.gif';
 import cu250928fontont from '../../../assets/fonts/25-09-28-cow.ttf?url';
+import type { FontConfig } from '../../../types/clock';
+
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'CowFont',
+    fontUrl: cu250928fontont,
+  },
+];
 
 function getClockTime() {
   const now = new Date();
@@ -50,11 +58,8 @@ export default function DesertUFOSequence() {
   const [blobScale, setBlobScale] = useState<number>(1);
   const [flashOpacity, setFlashOpacity] = useState<number>(0);
 
-  // Use standardized font loader
-  const fontReady = useFontLoader(cu250928fontontFamily, cu250928fontont, {
-    timeout: 5000,
-    fallback: true,
-  });
+  // Font is loaded by useSuspenseFontLoader - Suspense handles the loading state
+  useSuspenseFontLoader(fontConfigs);
 
   // Clock update
   useEffect(() => {
@@ -215,19 +220,6 @@ export default function DesertUFOSequence() {
     return () => timer && clearTimeout(timer);
   }, [stage]);
 
-  if (!fontReady)
-    return (
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100dvh',
-          background: 'black',
-        }}
-      />
-    );
 
   return (
     <div

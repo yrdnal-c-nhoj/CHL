@@ -1,7 +1,5 @@
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useMillisecondClock } from '../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
-import type { FontConfig } from '../../../types/clock';
 import type { CSSProperties } from 'react';
 import backgroundImage from '../../../assets/images/25-04/25-04-25/bad.webp';
 import boldFont from '../../../assets/fonts/25-04-25-Oswald-Bold.ttf?url';
@@ -22,15 +20,19 @@ interface MyClockProps {
 
 const MyClock: React.FC<MyClockProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const componentId = useRef(`oswald-clock-${Date.now()}`);
-  const fontName = `OswaldClockFont-${componentId.current}`;
   const imagesRef = useRef<ClockImages | null>(null);
+  const [fontLoaded, setFontLoaded] = useState(false);
 
-  // Font loading disabled due to corruption - using CSS @import instead
-  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
-
-  // Load fonts using suspense-based loader
-  useSuspenseFontLoader(fontConfigs);
+  // Load local font file
+  useEffect(() => {
+    const font = new FontFace('OswaldBold', `url(${boldFont})`);
+    font.load().then((loaded) => {
+      document.fonts.add(loaded);
+      setFontLoaded(true);
+    }).catch(() => {
+      setFontLoaded(true); // fallback
+    });
+  }, []);
 
   // Use the standardized hook for smooth millisecond clock updates
   const currentTime = useMillisecondClock();
@@ -56,7 +58,7 @@ const MyClock: React.FC<MyClockProps> = () => {
       ctx.fillStyle = '#FA0820FF';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.font = `${r * 0.5}px ${fontName}`;
+      ctx.font = `${r * 0.5}px OswaldBold`;
 
       for (let i = 1; i <= 12; i++) {
         const angle = (i * Math.PI) / 6;
@@ -107,7 +109,7 @@ const MyClock: React.FC<MyClockProps> = () => {
     };
 
     update();
-  }, [currentTime, fontName]);
+  }, [currentTime, fontLoaded]);
 
   // Load images once
   useEffect(() => {
@@ -131,24 +133,15 @@ const MyClock: React.FC<MyClockProps> = () => {
 
 
   return (
-    <div
-      style={{
-        width: '100vw',
-      }}
-    >
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap');
-      `}</style>
       <div
         style={{
           height: '100dvh',
-          background: `url(${backgroundImage}) center/cover no-repeat`, // Background image
+          background: `url(${backgroundImage}) center/cover no-repeat`,
           overflow: 'hidden',
         }}
       >
         <canvas ref={canvasRef} style={{ display: 'block' }} />
       </div>
-    </div>
   );
 };
 

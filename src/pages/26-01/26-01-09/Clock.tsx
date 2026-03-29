@@ -7,16 +7,21 @@ import gifTwo from '../../../assets/images/26-01/26-01-12/tic2.gif';
 import gifThree from '../../../assets/images/26-01/26-01-12/tic3.gif';
 import gifFour from '../../../assets/images/26-01/26-01-12/tic4.gif';
 import customFont from '../../../assets/fonts/26-01-12-tic.ttf';
+import type { FontConfig } from '../../../types/clock';
+
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'CustomClockFont',
+    fontUrl: customFont,
+  },
+];
 
 const BackgroundGrid = ({ children }) => {
   const [isBackgroundLoaded, setIsBackgroundLoaded] = useState<boolean>(false);
   const [isClient, setIsClient] = useState<boolean>(false);
 
   // Use standardized font loader
-  const fontReady = useFontLoader('CustomClockFont', customFont, {
-    timeout: 5000,
-    fallback: true,
-  });
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     setIsClient(true);
@@ -143,7 +148,7 @@ const BackgroundGrid = ({ children }) => {
           height: '100%',
           zIndex: 10,
           pointerEvents: 'none',
-          opacity: isBackgroundLoaded && fontReady ? 1 : 0,
+          opacity: isBackgroundLoaded ? 1 : 0,
           transition: 'opacity 0.3s ease-in-out',
         }}
       >
@@ -157,13 +162,9 @@ export default function TicTacToeClock() {
   const [time, setTime] = useState(() => new Date());
   const [isClient, setIsClient] = useState<boolean>(false);
 
-  // Use standardized font loader
-  const fontReady = useFontLoader('CustomClockFont', customFont, {
-    timeout: 5000,
-    fallback: true,
-  });
-
-  // Memoize the time formatter to prevent unnecessary recalculations
+  // Font is loaded by useSuspenseFontLoader in BackgroundGrid component
+  
+  const fontFamily = 'CustomClockFont, monospace';
   const formatTime = useCallback((date) => {
     const hours = date.getHours();
     const minutes = date.getHours();
@@ -225,7 +226,7 @@ export default function TicTacToeClock() {
     alignItems: 'center',
     opacity: isClient ? 1 : 0,
     transition: 'opacity 0.3s ease-in-out',
-    fontFamily: fontReady ? 'CustomClockFont, monospace' : 'monospace',
+    fontFamily: fontFamily,
     position: 'relative',
     zIndex: 10,
     pointerEvents: 'none',

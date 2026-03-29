@@ -178,10 +178,11 @@ const styles: Record<string, CSSProperties> = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: '5vw', // Changed to vw for better scaling with the cube
+    fontSize: '5vw',
     textAlign: 'center',
     color: 'rgb(70, 61, 61)',
-    backfaceVisibility: 'visible',
+    backfaceVisibility: 'hidden',
+    WebkitBackfaceVisibility: 'hidden',
     border: '1px solid rgba(255,255,255,0.2)'
   },
   front: { transform: 'translateZ(7.5vw)', backgroundColor: 'rgba(235, 108, 108, 0.8)' },

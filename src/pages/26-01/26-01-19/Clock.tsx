@@ -75,8 +75,9 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }) => {
           width: '100%',
           height: `${radius * 0.8}vh`,
           background: COLORS.secondHand,
-          border: `${outlineWidth} solid ${COLORS.border}`,
-          borderBottom: 'none',
+          borderTop: `${outlineWidth} solid ${COLORS.border}`,
+          borderLeft: `${outlineWidth} solid ${COLORS.border}`,
+          borderRight: `${outlineWidth} solid ${COLORS.border}`,
           boxSizing: 'border-box',
         }}
       />
