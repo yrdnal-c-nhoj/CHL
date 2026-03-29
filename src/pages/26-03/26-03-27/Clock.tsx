@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useMillisecondClock } from '../../../utils/useSmoothClock';
 
 // Returns the max radius a hand at angle `theta` (radians, 0=up, CW) can extend
@@ -38,17 +38,6 @@ function maxRadiusInTriangle(
 }
 
 export default function TriangleClock() {
-  // Load Google Font
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,600;1,400&display=swap';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
-
   const time = useMillisecondClock();
 
   const hours = time.getHours() % 12;
@@ -305,7 +294,7 @@ export default function TriangleClock() {
               transform: 'translate(-50%, -50%)',
               color: numberFill,
               fontSize: 38,
-              fontFamily: "'Bodoni Moda', serif",
+              fontFamily: "Georgia, 'Times New Roman', serif",
               fontWeight: 300,
               letterSpacing: '2px',
               userSelect: 'none',
