@@ -1,5 +1,7 @@
 import React from 'react';
 import { useMillisecondClock } from '../../../utils/useSmoothClock';
+import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import triFont from '../../../assets/fonts/26-03-27-tri.ttf';
 
 // Returns the max radius a hand at angle `theta` (radians, 0=up, CW) can extend
 // within the triangle defined by vertices relative to center cx, cy.
@@ -39,6 +41,16 @@ function maxRadiusInTriangle(
 
 export default function TriangleClock() {
   const time = useMillisecondClock();
+
+  const fontConfigs = [
+    {
+      fontFamily: 'TriFont',
+      fontUrl: triFont,
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  const fontFamily = fontsLoaded ? 'TriFont, Georgia, serif' : 'Georgia, serif';
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
@@ -293,8 +305,8 @@ export default function TriangleClock() {
               right: pct.right,
               transform: 'translate(-50%, -50%)',
               color: numberFill,
+              fontFamily,
               fontSize: 38,
-              fontFamily: "Georgia, 'Times New Roman', serif",
               fontWeight: 300,
               letterSpacing: '2px',
               userSelect: 'none',

@@ -46,7 +46,7 @@ const Clock: React.FC = () => {
       <video
         autoPlay muted loop playsInline
         style={{
-          position: 'absolute', top: 0, left: '-6vw', width: '102%', height: '100%',
+          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
           objectFit: 'cover', zIndex: 0,
           filter: 'saturate(3) brightness(1.5)',
           transform: 'rotate(180deg)',
