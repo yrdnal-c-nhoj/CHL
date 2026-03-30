@@ -15,6 +15,7 @@
   margin: 0;
   overflow: hidden;
   background-color: #000;
+  position: relative;
   /* STRETCH & NUDGE LOGIC:
      - 110% 110% stretches the image beyond the viewport to ensure no gaps.
      - center 20% nudges the image "up" (aligning the top 20% of the image to the top 20% of the screen).
@@ -42,6 +43,19 @@
   filter: url(#digitShadow);
 }
 
+.starsCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.clockContent {
+  position: relative;
+  z-index: 1;
+}
 .hourHand {
   fill: #FFFDFD;
 }
