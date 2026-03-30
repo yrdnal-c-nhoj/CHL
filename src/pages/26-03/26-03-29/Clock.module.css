@@ -122,17 +122,3 @@
   border-radius: 1px;
   z-index: 1;
 }
-
-.scarab {
-  position: absolute;
-  top: calc(50% - 11vw);
-  left: 50%;
-  transform: translateX(-50%);
-  width: 38vw;
-  height: 22vw;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  z-index: 4;
-  opacity: 0.3;
-}
