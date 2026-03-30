@@ -10,7 +10,7 @@ import styles from './Clock.module.css';
 const BASE_SIZE = 500;
 const CENTER = BASE_SIZE / 2;
 const RADIUS = 160;
-const TEXT_RADIUS = 185;
+const TEXT_RADIUS = 200;
 
 const hourNumbers = ["12", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11"];
 
