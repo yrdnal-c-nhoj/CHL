@@ -48,9 +48,9 @@
     -2px 0 0 rgba(255, 150, 100, 0.3),
     2px 0 0 rgba(255, 100, 150, 0.3);
   line-height: 1;
-  animation: heatWave 24s ease-in-out infinite, heatRise 8s ease-in-out infinite;
-  animation-delay: calc(var(--digit-index, 0) * 1.6s), calc(var(--digit-index, 0) * 1s);
-  opacity: 0.85;
+  animation: heatWave 60s ease-in-out infinite, heatRise 20s ease-in-out infinite;
+  animation-delay: calc(var(--digit-index, 0) * 4s), calc(var(--digit-index, 0) * 2.5s);
+  opacity: 0.25;
   filter: blur(0.5px);
   position: relative;
   display: inline-block;
@@ -66,8 +66,8 @@
   color: #ffcc80;
   opacity: 0;
   filter: blur(4px) brightness(1.3);
-  animation: heatRise 8s ease-in-out infinite;
-  animation-delay: calc(var(--digit-index, 0) * 1s);
+  animation: heatRise 20s ease-in-out infinite;
+  animation-delay: calc(var(--digit-index, 0) * 2.5s);
   pointer-events: none;
   -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0) 100%);
   mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0) 100%);
@@ -103,57 +103,57 @@
 
 @keyframes heatWave {
   0% {
-    opacity: 0.95;
+    opacity: 0.35;
     filter: blur(0.2px) saturate(1.2);
     transform: scaleY(1) skewX(0deg);
   }
   10% {
-    opacity: 0.15;
+    opacity: 0.28;
     filter: blur(2.5px) saturate(0.6);
     transform: scaleY(1.015) skewX(0.3deg);
   }
   20% {
-    opacity: 0.88;
+    opacity: 0.32;
     filter: blur(0.4px) saturate(1.1);
     transform: scaleY(0.995) skewX(-0.2deg);
   }
   30% {
-    opacity: 0.22;
+    opacity: 0.25;
     filter: blur(2px) saturate(0.7);
     transform: scaleY(1.008) skewX(0.25deg);
   }
   40% {
-    opacity: 0.92;
+    opacity: 0.33;
     filter: blur(0.3px) saturate(1.15);
     transform: scaleY(1.002) skewX(-0.15deg);
   }
   50% {
-    opacity: 0.08;
+    opacity: 0.22;
     filter: blur(3px) saturate(0.5);
     transform: scaleY(1.012) skewX(0.4deg);
   }
   60% {
-    opacity: 0.85;
+    opacity: 0.30;
     filter: blur(0.5px) saturate(1.05);
     transform: scaleY(0.998) skewX(-0.1deg);
   }
   70% {
-    opacity: 0.18;
+    opacity: 0.26;
     filter: blur(2.2px) saturate(0.65);
     transform: scaleY(1.006) skewX(0.2deg);
   }
   80% {
-    opacity: 0.9;
+    opacity: 0.34;
     filter: blur(0.35px) saturate(1.12);
     transform: scaleY(1.003) skewX(-0.25deg);
   }
   90% {
-    opacity: 0.25;
+    opacity: 0.24;
     filter: blur(1.8px) saturate(0.75);
     transform: scaleY(0.997) skewX(0.15deg);
   }
   100% {
-    opacity: 0.95;
+    opacity: 0.35;
     filter: blur(0.2px) saturate(1.2);
     transform: scaleY(1) skewX(0deg);
   }
