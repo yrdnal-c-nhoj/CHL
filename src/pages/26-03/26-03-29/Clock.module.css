@@ -134,7 +134,7 @@
   background-repeat: no-repeat;
   background-position: center;
   z-index: 4;
-  opacity: 0;
+  /* opacity: 0; */
   animation: scarabFade 8s linear infinite;
 }
 
@@ -142,7 +142,7 @@
   0%, 25% {
     opacity: 0;
   }
-  37.5% {
+  90% {
     opacity: 0.5;
   }
   100% {
