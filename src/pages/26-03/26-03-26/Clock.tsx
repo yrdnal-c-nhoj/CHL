@@ -40,19 +40,20 @@ const Clock: React.FC = () => {
       <div className={styles.background} />
 
       <div className={styles.clockWrapper}>
-        {timeDigits.hours.map((digit, index) => (
-          <span key={`h-${index}`} className={styles.digit} style={{ fontFamily }}>
-            {digit}
+        {[
+          ...timeDigits.hours,
+          ...timeDigits.minutes,
+          ...timeDigits.amPm.split('')
+        ].map((char, index) => (
+          <span 
+            key={index} 
+            className={styles.digit}
+            data-char={char}
+            style={{ fontFamily, '--digit-index': index } as React.CSSProperties}
+          >
+            {char}
           </span>
         ))}
-        {timeDigits.minutes.map((digit, index) => (
-          <span key={`m-${index}`} className={styles.digit} style={{ fontFamily }}>
-            {digit}
-          </span>
-        ))}
-        <span className={styles.amPm} style={{ fontFamily }}>
-          {timeDigits.amPm}
-        </span>
       </div>
     </div>
   );
