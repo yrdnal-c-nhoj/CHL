@@ -74,8 +74,8 @@
 
 .clockFace {
   position: relative;
-  width: min(95vw, 95vh);
-  height: min(95vw, 95vh);
+  width: min(65vw, 65vh);
+  height: min(65vw, 65vh);
   aspect-ratio: 1 / 1;
   border-radius: 50%;
 }
@@ -83,7 +83,7 @@
 .numeral {
   position: absolute;
   color: #ffe066;
-  font-size: clamp(1.2rem, 8vw, 2.5rem);
+  font-size: clamp(1.5rem, 11vw, 3.5rem);
   opacity: 1;
   text-shadow: 1px 0 0px rgb(25, 20, 1), 0 0 40px rgba(255, 230, 102, 0.9), 0 0 60px rgba(255, 230, 102, 0.7);
   letter-spacing: -0.09em;
@@ -125,11 +125,11 @@
 
 .scarab {
   position: absolute;
-  top: 50%;
+  top: calc(50% - 2vh);
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 25vw;
-  height: 25vw;
+  width: 48vw;
+  height: 48vw;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

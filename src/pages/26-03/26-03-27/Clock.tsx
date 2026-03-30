@@ -92,7 +92,7 @@ export default function TriangleClock() {
   // Numbers positioned inside the triangle
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const numberPct: Record<number, { left: string; top: string; right?: string }> = {
-    10: { left: isMobile ? '22%' : '18%', top: '15%' },
+    10: { left: isMobile ? '25%' : '18%', top: '15%' },
     2: { left: 'auto', top: '15%', right: '18%' },
     6: { left: '50%', top: '80%' },
   };
