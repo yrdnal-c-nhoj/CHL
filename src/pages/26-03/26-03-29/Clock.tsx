@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
-import bgVideo from '../../../assets/images/26-03/26-03-29/sunrise.mp4';
+import bgVideo from '../../../assets/images/26-03/26-03-29/sunrise1.mp4';
 import borderImage from '../../../assets/images/26-03/26-03-29/horse.webp';
 import scarabImage from '../../../assets/images/26-03/26-03-29/scarab.webp';
 import eastFont from '../../../assets/fonts/26-03-29-east.ttf';
