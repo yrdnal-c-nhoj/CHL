@@ -36,7 +36,7 @@
   background-size: cover;
   background-position: center;
   z-index: 1;
-  filter: saturate(3) brightness(1.1) hue-rotate(200deg) contrast(1.2);
+  filter: saturate(3) brightness(0.7) hue-rotate(160deg) contrast(1.2);
 }
 
 .imageOverlayFlipped {
@@ -48,7 +48,7 @@
   background-size: cover;
   background-position: center;
   z-index: 2;
-  filter: saturate(3) brightness(1.1) hue-rotate(200deg) contrast(1.2);
+  filter: saturate(3) brightness(0.7) hue-rotate(160deg) contrast(1.2);
   transform: scaleX(-1);
 }
 
