@@ -128,14 +128,14 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 8vw;
-  height: 8vw;
+  width: 25vw;
+  height: 25vw;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   z-index: 4;
   opacity: 0;
-  animation: scarabFadeIn 10s ease-out infinite;
+  animation: scarabFadeIn 8s ease-out infinite;
 }
 
 @keyframes scarabFadeIn {
@@ -143,9 +143,9 @@
     opacity: 0;
   }
   80% {
-    opacity: 0.7;
+    opacity: 0.4;
   }
   100% {
-    opacity: 0.7;
+    opacity: 0;
   }
 }
