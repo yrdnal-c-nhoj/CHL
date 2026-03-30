@@ -37,7 +37,7 @@
 
 .digit {
   font-family: 'Courier New', monospace;
-  font-size: clamp(4rem, 18vw, 14rem);
+  font-size: clamp(4rem, 14vh, 14rem);
   font-weight: 400;
   color: #ffe4b5;
   text-shadow: 
