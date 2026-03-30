@@ -3,6 +3,7 @@ import { useSecondClock } from '../../../utils/useSmoothClock';
 import { calculateAngles } from '../../../utils/clockUtils';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
+import StarsBackground from './StarsBackground';
 import styles from './Clock.module.css';
 
 // Internal coordinate system constants
@@ -64,68 +65,71 @@ const Clock: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <svg 
-        className={styles.clockSvg}
-        viewBox={`0 0 ${BASE_SIZE} ${BASE_SIZE}`}
-      >
-        <defs>
-          <filter id="digitShadow" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow dx="1" dy="1" stdDeviation="0" floodColor="#0D0D0D" floodOpacity="1"/>
-          </filter>
-        </defs>
-        {staticElements}
+      <StarsBackground />
+      <div className={styles.clockContent}>
+        <svg 
+          className={styles.clockSvg}
+          viewBox={`0 0 ${BASE_SIZE} ${BASE_SIZE}`}
+        >
+          <defs>
+            <filter id="digitShadow" x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="1" dy="1" stdDeviation="0" floodColor="#0D0D0D" floodOpacity="1"/>
+            </filter>
+          </defs>
+          {staticElements}
 
-        {/* Hour hand - tapered */}
-        {(() => {
-          const angle = (angles.hour - 90) * Math.PI / 180;
-          const x2 = CENTER + Math.cos(angle) * 300;
-          const y2 = CENTER + Math.sin(angle) * 300;
-          const perpAngle = angle + Math.PI / 2;
-          const w = 8;
-          const xOff = Math.cos(perpAngle) * w / 2;
-          const yOff = Math.sin(perpAngle) * w / 2;
-          return (
-            <path
-              d={`M ${CENTER - xOff} ${CENTER - yOff} L ${x2} ${y2} L ${CENTER + xOff} ${CENTER + yOff} Z`}
-              className={styles.hourHand}
-            />
-          );
-        })()}
+          {/* Hour hand - tapered */}
+          {(() => {
+            const angle = (angles.hour - 90) * Math.PI / 180;
+            const x2 = CENTER + Math.cos(angle) * 300;
+            const y2 = CENTER + Math.sin(angle) * 300;
+            const perpAngle = angle + Math.PI / 2;
+            const w = 8;
+            const xOff = Math.cos(perpAngle) * w / 2;
+            const yOff = Math.sin(perpAngle) * w / 2;
+            return (
+              <path
+                d={`M ${CENTER - xOff} ${CENTER - yOff} L ${x2} ${y2} L ${CENTER + xOff} ${CENTER + yOff} Z`}
+                className={styles.hourHand}
+              />
+            );
+          })()}
 
-        {/* Minute hand - tapered */}
-        {(() => {
-          const angle = (angles.minute - 90) * Math.PI / 180;
-          const x2 = CENTER + Math.cos(angle) * 800;
-          const y2 = CENTER + Math.sin(angle) * 800;
-          const perpAngle = angle + Math.PI / 2;
-          const w = 5;
-          const xOff = Math.cos(perpAngle) * w / 2;
-          const yOff = Math.sin(perpAngle) * w / 2;
-          return (
-            <path
-              d={`M ${CENTER - xOff} ${CENTER - yOff} L ${x2} ${y2} L ${CENTER + xOff} ${CENTER + yOff} Z`}
-              className={styles.minuteHand}
-            />
-          );
-        })()}
+          {/* Minute hand - tapered */}
+          {(() => {
+            const angle = (angles.minute - 90) * Math.PI / 180;
+            const x2 = CENTER + Math.cos(angle) * 800;
+            const y2 = CENTER + Math.sin(angle) * 800;
+            const perpAngle = angle + Math.PI / 2;
+            const w = 5;
+            const xOff = Math.cos(perpAngle) * w / 2;
+            const yOff = Math.sin(perpAngle) * w / 2;
+            return (
+              <path
+                d={`M ${CENTER - xOff} ${CENTER - yOff} L ${x2} ${y2} L ${CENTER + xOff} ${CENTER + yOff} Z`}
+                className={styles.minuteHand}
+              />
+            );
+          })()}
 
-        {/* Second hand - tapered */}
-        {(() => {
-          const angle = (angles.second - 90) * Math.PI / 180;
-          const x2 = CENTER + Math.cos(angle) * 1000;
-          const y2 = CENTER + Math.sin(angle) * 1000;
-          const perpAngle = angle + Math.PI / 2;
-          const w = 2;
-          const xOff = Math.cos(perpAngle) * w / 2;
-          const yOff = Math.sin(perpAngle) * w / 2;
-          return (
-            <path
-              d={`M ${CENTER - xOff} ${CENTER - yOff} L ${x2} ${y2} L ${CENTER + xOff} ${CENTER + yOff} Z`}
-              className={styles.secondHand}
-            />
-          );
-        })()}
-      </svg>
+          {/* Second hand - tapered */}
+          {(() => {
+            const angle = (angles.second - 90) * Math.PI / 180;
+            const x2 = CENTER + Math.cos(angle) * 1000;
+            const y2 = CENTER + Math.sin(angle) * 1000;
+            const perpAngle = angle + Math.PI / 2;
+            const w = 2;
+            const xOff = Math.cos(perpAngle) * w / 2;
+            const yOff = Math.sin(perpAngle) * w / 2;
+            return (
+              <path
+                d={`M ${CENTER - xOff} ${CENTER - yOff} L ${x2} ${y2} L ${CENTER + xOff} ${CENTER + yOff} Z`}
+                className={styles.secondHand}
+              />
+            );
+          })()}
+        </svg>
+      </div>
     </div>
   );
 };
