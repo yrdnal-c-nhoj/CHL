@@ -74,8 +74,8 @@
 
 .clockFace {
   position: relative;
-  width: min(80vw, 80vh);
-  height: min(80vw, 80vh);
+  width: min(95vw, 95vh);
+  height: min(95vw, 95vh);
   border-radius: 50%;
   contain: layout paint;
 }
@@ -121,4 +121,18 @@
   background: linear-gradient(to top, rgba(218, 165, 32, 0.5), rgba(255, 236, 139, 0.5));
   border-radius: 1px;
   z-index: 1;
+}
+
+.scarab {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8vw;
+  height: 8vw;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 4;
+  opacity: 0.4;
 }
