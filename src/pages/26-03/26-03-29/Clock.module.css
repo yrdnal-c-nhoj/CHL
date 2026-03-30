@@ -31,8 +31,6 @@
   height: 7vh;
   z-index: 10;
   transform: rotate(180deg);
-  opacity: 0;
-  animation: imageFade 8s linear infinite;
 }
 
 .borderBottom {
@@ -41,8 +39,6 @@
   width: 100vw;
   height: 7vh;
   z-index: 10;
-  opacity: 0;
-  animation: imageFade 8s linear infinite;
 }
 
 .borderLeft {
@@ -54,8 +50,6 @@
   z-index: 10;
   transform-origin: top left;
   transform: rotate(90deg);
-  opacity: 0;
-  animation: imageFade 8s linear infinite;
 }
 
 .borderRight {
@@ -67,8 +61,6 @@
   z-index: 10;
   transform-origin: top right;
   transform: rotate(-90deg);
-  opacity: 0;
-  animation: imageFade 8s linear infinite;
 }
 
 .clockDisplay {
@@ -143,26 +135,14 @@
   background-position: center;
   z-index: 4;
   opacity: 0;
-  animation: imageFade 8s linear infinite;
-}
-
-@keyframes imageFade {
-  0%, 25% {
-    opacity: 0;
-  }
-  90% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 0;
-  }
+  animation: scarabFade 8s linear infinite;
 }
 
 @keyframes scarabFade {
   0%, 25% {
     opacity: 0;
   }
-  90% {
+  37.5% {
     opacity: 0.5;
   }
   100% {
