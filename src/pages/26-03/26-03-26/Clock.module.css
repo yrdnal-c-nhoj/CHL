@@ -26,10 +26,9 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   z-index: 1;
-  animation: drift 40s ease-in-out infinite;
-  /* filter: blur(0.3px); */
-  opacity: 0.5;
+  /* No drift animation - stays centered */
 }
 
 .timeUnit {
@@ -38,7 +37,7 @@
 
 .digit {
   font-family: 'Courier New', monospace;
-  font-size: clamp(3rem, 12vw, 10rem);
+  font-size: clamp(4rem, 18vw, 14rem);
   font-weight: 400;
   color: #ffe4b5;
   text-shadow: 
@@ -49,21 +48,115 @@
     -2px 0 0 rgba(255, 150, 100, 0.3),
     2px 0 0 rgba(255, 100, 150, 0.3);
   line-height: 1;
+  animation: heatWave 24s ease-in-out infinite, heatRise 8s ease-in-out infinite;
+  animation-delay: calc(var(--digit-index, 0) * 1.6s), calc(var(--digit-index, 0) * 1s);
+  opacity: 0.85;
+  filter: blur(0.5px);
+  position: relative;
+  display: inline-block;
 }
 
-.amPm {
-  font-family: 'Courier New', monospace;
-  font-size: clamp(3rem, 12vw, 10rem);
-  font-weight: 400;
-  color: #ffe4b5;
-  text-shadow: 
-    0 0 20px rgba(255, 140, 100, 0.9),
-    0 0 40px rgba(255, 100, 80, 0.7),
-    0 0 80px rgba(255, 80, 60, 0.5),
-    0 0 120px rgba(200, 60, 80, 0.3),
-    -2px 0 0 rgba(255, 150, 100, 0.3),
-    2px 0 0 rgba(255, 100, 150, 0.3);
-  line-height: 1;
+.digit::before {
+  content: attr(data-char);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: #ffcc80;
+  opacity: 0;
+  filter: blur(4px) brightness(1.3);
+  animation: heatRise 8s ease-in-out infinite;
+  animation-delay: calc(var(--digit-index, 0) * 1s);
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0) 100%);
+  -webkit-mask-size: 100% 40%;
+  mask-size: 100% 40%;
+  -webkit-mask-position: 0% 100%;
+  mask-position: 0% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+@keyframes heatRise {
+  0% {
+    opacity: 0;
+    -webkit-mask-position: 0% 120%;
+    mask-position: 0% 120%;
+  }
+  20% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  80% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    -webkit-mask-position: 0% -20%;
+    mask-position: 0% -20%;
+  }
+}
+
+@keyframes heatWave {
+  0% {
+    opacity: 0.95;
+    filter: blur(0.2px) saturate(1.2);
+    transform: scaleY(1) skewX(0deg);
+  }
+  10% {
+    opacity: 0.15;
+    filter: blur(2.5px) saturate(0.6);
+    transform: scaleY(1.015) skewX(0.3deg);
+  }
+  20% {
+    opacity: 0.88;
+    filter: blur(0.4px) saturate(1.1);
+    transform: scaleY(0.995) skewX(-0.2deg);
+  }
+  30% {
+    opacity: 0.22;
+    filter: blur(2px) saturate(0.7);
+    transform: scaleY(1.008) skewX(0.25deg);
+  }
+  40% {
+    opacity: 0.92;
+    filter: blur(0.3px) saturate(1.15);
+    transform: scaleY(1.002) skewX(-0.15deg);
+  }
+  50% {
+    opacity: 0.08;
+    filter: blur(3px) saturate(0.5);
+    transform: scaleY(1.012) skewX(0.4deg);
+  }
+  60% {
+    opacity: 0.85;
+    filter: blur(0.5px) saturate(1.05);
+    transform: scaleY(0.998) skewX(-0.1deg);
+  }
+  70% {
+    opacity: 0.18;
+    filter: blur(2.2px) saturate(0.65);
+    transform: scaleY(1.006) skewX(0.2deg);
+  }
+  80% {
+    opacity: 0.9;
+    filter: blur(0.35px) saturate(1.12);
+    transform: scaleY(1.003) skewX(-0.25deg);
+  }
+  90% {
+    opacity: 0.25;
+    filter: blur(1.8px) saturate(0.75);
+    transform: scaleY(0.997) skewX(0.15deg);
+  }
+  100% {
+    opacity: 0.95;
+    filter: blur(0.2px) saturate(1.2);
+    transform: scaleY(1) skewX(0deg);
+  }
 }
 
 @keyframes drift {
