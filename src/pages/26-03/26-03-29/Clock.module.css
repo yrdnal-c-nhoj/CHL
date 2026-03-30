@@ -76,8 +76,8 @@
   position: relative;
   width: min(95vw, 95vh);
   height: min(95vw, 95vh);
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
-  contain: layout paint;
 }
 
 .numeral {
@@ -134,5 +134,18 @@
   background-repeat: no-repeat;
   background-position: center;
   z-index: 4;
-  opacity: 0.4;
+  opacity: 0;
+  animation: scarabFadeIn 10s ease-out infinite;
+}
+
+@keyframes scarabFadeIn {
+  0% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0.7;
+  }
 }
