@@ -38,16 +38,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.423);
   min-width: 14vw;
   aspect-ratio: 1/1;
 }
 
 .digit span {
   font-size: clamp(2rem, 16vw, 8rem);
-  color: #ed0f1e;
+  color: #C53539;
   font-family: OrigamiFont, sans-serif;
-  text-shadow: 0 0 20px rgb(0, 0, 0);
+  text-shadow: 0 0 20px rgb(238, 253, 224);
 }
 
 /* Mobile styles */
@@ -69,6 +69,6 @@
 @media (min-width: 768px) {
   .clockGrid {
     grid-template-columns: repeat(6, 1fr);
-    gap: 2vw;
+    gap: 1vw;
   }
 }
