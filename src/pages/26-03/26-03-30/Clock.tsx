@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useSecondClock } from '../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import origamiFont from '../../../assets/fonts/26-03-30-origami.ttf';
-import craneImg from '../../../assets/images/26-03/26-03-30/crane.webp';
+import craneImg from '../../../assets/images/26-03/26-03-30/crane2.webp';
 import styles from './Clock.module.css';
 
 const LETTERS = ['b', 'f', 'c', 'j', 'i', 'n', 'q', 's', 'u', 'w'];
