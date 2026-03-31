@@ -46,10 +46,15 @@
   transform-origin: bottom center;
   animation: underwaterFloat var(--drift-duration, 6s) ease-in-out var(--drift-delay, 0s) infinite;
   z-index: 1;
+  opacity: 0.8;
 }
 
 .handHour {
   z-index: 2;
+}
+
+.handMinute {
+  opacity: 0;
 }
 
 .handSecond {
