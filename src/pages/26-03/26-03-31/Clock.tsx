@@ -113,7 +113,7 @@ const Clock: React.FC = () => {
     handType: 'hour' | 'minute' | 'second'
   ) => {
     const drift = HAND_DRIFT[handType]!;
-    const handClass = handType === 'hour' ? styles.handHour : handType === 'second' ? styles.handSecond : '';
+    const handClass = handType === 'hour' ? styles.handHour : handType === 'minute' ? styles.handMinute : handType === 'second' ? styles.handSecond : '';
     const imgClass = handType === 'hour' ? styles.hourHand : handType === 'minute' ? styles.minuteHand : styles.secondHand;
 
     return (
