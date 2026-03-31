@@ -31,7 +31,7 @@
   position: absolute;
   font-size: clamp(4rem, 10vmin, 14rem);
   opacity: 0.8;
-  z-index: 100;
+  z-index: 300;
 }
 
 .numeralInner {
@@ -53,7 +53,7 @@
 }
 
 .handSecond {
-  z-index: 200;
+  z-index: 50;
 }
 
 .handInner {
