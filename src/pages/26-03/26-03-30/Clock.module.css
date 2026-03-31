@@ -44,7 +44,7 @@
 }
 
 .digit span {
-  font-size: clamp(2rem, 16vw, 10rem);
+  font-size: clamp(2rem, 16vw, 8rem);
   color: #ed0f1e;
   font-family: OrigamiFont, sans-serif;
   text-shadow: 0 0 20px rgb(0, 0, 0);
@@ -61,7 +61,7 @@
   }
 
   .digit span {
-    font-size: clamp(3rem, 30vw, 10rem);
+    font-size: clamp(3rem, 24vw, 8rem);
   }
 }
 
