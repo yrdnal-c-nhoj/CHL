@@ -1,0 +1,74 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: repeat;
+  background-size: 8vw 8vw;
+  background-position: center;
+  filter: saturate(0.4) contrast(1.8) brightness(2.9);
+}
+
+.clockGrid {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  justify-content: center;
+  margin: auto;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 20px;
+  max-width: 90vw;
+}
+
+.digit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.92);
+  min-width: 14vw;
+  aspect-ratio: 1/1;
+}
+
+.digit span {
+  font-size: clamp(2rem, 16vw, 10rem);
+  color: #ed0f1e;
+  font-family: OrigamiFont, sans-serif;
+  text-shadow: 0 0 20px rgb(0, 0, 0);
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+  .clockGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .clockGrid > * {
+    min-width: 35vw;
+  }
+
+  .digit span {
+    font-size: clamp(3rem, 30vw, 10rem);
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+  .clockGrid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2vw;
+  }
+}
