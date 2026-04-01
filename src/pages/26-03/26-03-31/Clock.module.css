@@ -17,7 +17,7 @@
   height: 100%;
   object-fit: cover;
   z-index: 0;
-  filter: brightness(1.2) contrast(0.8);
+  filter: brightness(0.8) contrast(1.3) saturate(1.4);
 }
 
 .clockWrapper {
@@ -29,9 +29,10 @@
 
 .numeral {
   position: absolute;
-  font-size: clamp(4rem, 10vmin, 14rem);
-  opacity: 0.8;
+  font-size: clamp(1.8rem, 5vw, 10rem);
+  opacity: 0.5;
   z-index: 300;
+  text-align: center;
 }
 
 .numeralInner {
@@ -46,12 +47,11 @@
   transform-origin: bottom center;
   animation: underwaterFloat var(--drift-duration, 6s) ease-in-out var(--drift-delay, 0s) infinite;
   z-index: 1;
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
 .handHour {
   z-index: 2;
-  opacity: 0.8;
   filter: contrast(1.3);
 }
 
