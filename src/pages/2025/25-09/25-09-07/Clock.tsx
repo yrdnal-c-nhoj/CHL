@@ -1,0 +1,102 @@
+import React, { useEffect, useState } from 'react';
+import { useMultipleFontLoader } from '../../../../utils/fontLoader';
+import bgImage from '../../../../assets/images/2025/25-09/25-09-07/wall.jpg'; // local background image
+import f250907 from '../../../../assets/fonts/25-09-07-wall.ttf'; // local font file
+
+const fontVar = 'CustomFont20250908'; // custom variable name
+
+export default function Clock() {
+  // Standardized font loading with font-display: swap to avoid FOUC
+  const fontConfigs = [
+    {
+      fontFamily: fontVar,
+      fontUrl: f250907,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Font loading handled by useMultipleFontLoader
+
+  // 12-hour format, no leading zeros
+  const hour24 = now.getHours();
+  const hours = hour24 % 12 || 12;
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const amPm = hour24 < 12 ? 'am' : 'pm';
+
+  return (
+    <div
+      style={{
+        height: '100dvh',
+        width: '100vw',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: fontVar,
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Background image with filter */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'saturate(1.3) hue-rotate(-120deg)',
+          transform: 'scaleX(-1)', // flips horizontally
+          zIndex: 0,
+        }}
+      />
+
+      {/* Clock on top */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+          lineHeight: '0.7',
+          color: '#CDD3D4FF',
+          position: 'relative',
+          zIndex: 1, // make sure it stays above the background
+        }}
+      >
+        <span
+          style={{
+            fontSize: '5rem',
+            letterSpacing: '0.1rem',
+            opacity: '0.6',
+          }}
+        >
+          {hours}
+          {minutes}
+        </span>
+        <span
+          style={{
+            fontSize: '5rem',
+            opacity: '0.6',
+            marginTop: '0.5rem',
+          }}
+        >
+          {amPm}
+        </span>
+      </div>
+    </div>
+  );
+}

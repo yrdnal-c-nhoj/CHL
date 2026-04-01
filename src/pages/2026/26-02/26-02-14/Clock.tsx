@@ -1,0 +1,164 @@
+import React, { useMemo } from 'react';
+import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
+import { useSecondClock } from '../../../../utils/useSmoothClock';
+import airportFont from '../../../../assets/fonts/26-02-14-airport.ttf';
+import backgroundGif from '../../../../assets/images/2026/26-02/26-02-14/prop.gif';
+import backgroundGif2 from '../../../../assets/images/2026/26-02/26-02-14/runway.gif';
+
+export const background = backgroundGif;
+
+interface SubstitutionMap {
+  [key: number]: string;
+}
+
+const DigitalClock: React.FC = () => {
+  const time = useSecondClock();
+
+  const fontConfigs = useMemo(() => [{
+      fontFamily: 'Airport',
+      fontUrl: airportFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+  }], []);
+  
+  useSuspenseFontLoader(fontConfigs);
+
+  const substitutionMap: SubstitutionMap = {
+    0: 'n',
+    1: 't',
+    2: '6',
+    3: 'L',
+    4: '9',
+    5: '1',
+    6: 'J',
+    7: 'S',
+    8: 'E',
+    9: 'm',
+  };
+
+  const numberToLetter = (num) => substitutionMap[num] ?? num.toString();
+
+  const formatTime = (date) => {
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+    return { hours, minutes, seconds };
+  };
+
+  const splitDigitsToLetters = (timeString) => {
+    return timeString
+      .split('')
+      .map((digit) => numberToLetter(parseInt(digit, 10)));
+  };
+
+  const { hours, minutes, seconds } = formatTime(time);
+
+  const styles = {
+    container: {
+      position: 'relative',
+      width: '100vw',
+      height: '100dvh',
+      margin: 0,
+      padding: 0,
+      overflow: 'hidden',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#000',
+    },
+    bgLayer1: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundImage: `url(${backgroundGif})`,
+      backgroundSize: '100% 100%',
+      backgroundPosition: 'center',
+      opacity: 0.8,
+      filter: 'contrast(1.3) brightness(0.7)', // Individual filter
+      zIndex: 1,
+    },
+    bgLayer2: {
+      position: 'absolute',
+      inset: 0,
+      backgroundImage: `url(${backgroundGif2})`,
+      backgroundSize: '100% 100%',
+      backgroundPosition: 'center',
+      opacity: 0.6,
+      filter: 'contrast(4) brightness(1.3)',
+      zIndex: 2,
+      transform: 'scaleX(-1)',
+      mixBlendMode: 'lighten',
+
+      WebkitMaskImage: 'linear-gradient(to top, black 15%, transparent 16%)',
+      maskImage: 'linear-gradient(to top, black 15%, transparent 15%)',
+    },
+    clockContainer: {
+      position: 'relative',
+      zIndex: 10,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '2vh',
+      width: '100%',
+    },
+    digitGroup: {
+      display: 'flex',
+      gap: '8vh',
+      justifyContent: 'center',
+    },
+    digitBox: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 'clamp(90px, 22vw, 170px)',
+      height: 'clamp(80px, 22vh, 180px)',
+    },
+    digit: {
+      fontSize: 'clamp(50px, 14vh, 140px)',
+      color: '#D4D8E3',
+      fontFamily: "'Airport', monospace",
+      textAlign: 'center',
+      lineHeight: 1,
+      // textShadow: '0 0 15px rgba(9, 51, 177, 0.4)', // Subtle blue glow
+    },
+  };
+
+  return (
+    <div style={styles.container}>
+      <div style={styles.bgLayer1} />
+      <div style={styles.bgLayer2} />
+
+      <div style={styles.clockContainer}>
+        <div style={styles.digitGroup}>
+          {splitDigitsToLetters(hours).map((letter, index) => (
+            <div key={`h-${index}`} style={styles.digitBox}>
+              <span style={styles.digit}>{letter}</span>
+            </div>
+          ))}
+        </div>
+
+        <div style={styles.digitGroup}>
+            {splitDigitsToLetters(minutes).map((letter, index) => (
+              <div key={`m-${index}`} style={styles.digitBox}>
+                <span style={styles.digit}>{letter}</span>
+              </div>
+            ))}
+          </div>
+
+          <div style={styles.digitGroup}>
+            {splitDigitsToLetters(seconds).map((letter, index) => (
+              <div key={`s-${index}`} style={styles.digitBox}>
+                <span style={styles.digit}>{letter}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+    </div>
+  );
+};
+
+export default DigitalClock;

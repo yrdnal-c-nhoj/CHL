@@ -1,0 +1,109 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.videoBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  filter: brightness(0.8) contrast(1.8) saturate(0.4);
+}
+
+.clockWrapper {
+  position: relative;
+  width: 90vmin;
+  height: 90vmin;
+  z-index: 10;
+}
+
+.numeral {
+  position: absolute;
+  font-size: clamp(1.8rem, 5vh, 10rem);
+  /* opacity: 0.5; */
+  z-index: 300;
+  text-align: center;
+}
+
+.numeralInner {
+  display: inline-block;
+  animation: underwaterFloat var(--drift-duration, 6s) ease-in-out var(--drift-delay, 0s) infinite;
+}
+
+.hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: bottom center;
+  animation: underwaterFloat var(--drift-duration, 6s) ease-in-out var(--drift-delay, 0s) infinite;
+  z-index: 1;
+  filter: contrast(2.9);
+  opacity: 0.7;
+}
+
+.handHour {
+  z-index: 2;
+
+}
+
+.handMinute {
+  opacity: 0.7;
+}
+
+.handSecond {
+  z-index: 50;
+}
+
+.handInner {
+  transform: translateX(-50%) rotate(var(--rotation, 0deg));
+  transform-origin: bottom center;
+}
+
+.handImg {
+  object-fit: contain;
+  display: block;
+}
+
+.hourHand {
+  height: 18vh;
+}
+
+.minuteHand {
+  height: 22vh;
+}
+
+.secondHand {
+  height: 22vh;
+}
+
+@keyframes underwaterFloat {
+  0%   { transform: translateY(0px) scale(1); }
+  20%  { transform: translateY(calc(var(--drift-amp, 10) * -1px)) scale(var(--scale-hi, 1.05)); }
+  50%  { transform: translateY(calc(var(--drift-amp, 10) * 0.6px)) scale(var(--scale-lo, 0.95)); }
+  75%  { transform: translateY(calc(var(--drift-amp, 10) * -0.8px)) scale(calc(var(--scale-hi, 1.05) * 0.98)); }
+  100% { transform: translateY(0px) scale(1); }
+}
+
+@media (min-width: 1024px) {
+  .hourHand {
+    height: 28vh !important;
+  }
+
+  .minuteHand {
+    height: 35vh !important;
+  }
+
+  .secondHand {
+    height: 38vh !important;
+  }
+}
