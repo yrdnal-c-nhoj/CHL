@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, Suspense } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useMillisecondClock } from '@/utils/useSmoothClock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgVideo from '@/assets/images/2026/26-03/26-03-31/seafloor.mp4';
@@ -19,13 +19,9 @@ const NUMERAL_DRIFT = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((_, i) => ({
   duration: 4 + ((i * 1.37 + 2.1) % 6),
   delay: -((i * 0.83 + 0.5) % 8),
   amp: 6 + ((i * 2.11 + 3) % 14),
-  scaleLo: (0.88 + ((i * 0.007 + 0.003) % 0.08)).toFixed(3),
-  scaleHi: (2.44 + ((i * 0.009 + 0.005) % 0.10)).toFixed(3),
+  scaleLo: (0.3 + ((i * 0.007 + 0.003) % 0.08)).toFixed(3),
+  scaleHi: (3 + ((i * 0.009 + 0.005) % 0.10)).toFixed(3),
 }));
-
-const COLORS = [
-  'rgb(175, 243, 141)',
-];
 
 const Clock: React.FC = () => {
   const time = useMillisecondClock();
@@ -50,7 +46,7 @@ const Clock: React.FC = () => {
     h: hoursWithMinutes * 30,
   };
 
-  // Generate stable numerals (rendered once)
+  // Generate stable numerals with animated gradient colors
   const numeralsRef = useRef<React.ReactNode[]>([]);
   if (numeralsRef.current.length === 0) {
     numeralsRef.current = ([12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as const).map((num, i) => {
@@ -59,9 +55,12 @@ const Clock: React.FC = () => {
       const radius = 42;
       const x = 50 + radius * Math.cos(angleRad);
       const y = 50 + radius * Math.sin(angleRad);
-      const color = COLORS[i % COLORS.length];
-      const glow = 0.5 + ((i * 0.13 + 0.3) % 0.5);
       const drift = NUMERAL_DRIFT[i]!;
+      
+      // Unique gradient animation for each numeral
+      const gradientDuration = 3 + (i * 0.7);
+      const gradientDelay = i * 0.5;
+      const startAngle = i * 30;
 
       return (
         <div
@@ -70,27 +69,22 @@ const Clock: React.FC = () => {
           style={{
             left: `${x}%`,
             top: `${y}%`,
-            color,
             fontFamily: 'CrabFont, sans-serif',
-            textShadow: `
-              1px 0 0 rgba(0,0,0,0.9),
-              -1px 0 0 rgba(255,255,255,0.6),
-              0 0 ${20 * glow}px rgba(0,100,120,${0.6 * glow}),
-              0 0 ${50 * glow}px rgba(0,80,100,${0.4 * glow}),
-              0 0 ${90 * glow}px rgba(0,60,80,${0.2 * glow}),
-              0 8px 20px rgba(0,0,0,0.8)
-            `,
             transform: `translate(-50%, -50%) rotate(${angleDeg + 90}deg)`,
           }}
         >
           <span
-            className={styles.numeralInner}
+            className={`${styles.numeralInner} ${styles.gradientText}`}
             style={{
               ['--drift-duration' as string]: `${drift.duration}s`,
               ['--drift-delay' as string]: `${drift.delay}s`,
               ['--drift-amp' as string]: drift.amp,
               ['--scale-lo' as string]: drift.scaleLo,
               ['--scale-hi' as string]: drift.scaleHi,
+              ['--gradient-duration' as string]: `${gradientDuration}s`,
+              ['--gradient-delay' as string]: `${gradientDelay}s`,
+              ['--start-angle' as string]: `${startAngle}deg`,
+              ['--color-index' as string]: i,
             }}
           >
             {num}

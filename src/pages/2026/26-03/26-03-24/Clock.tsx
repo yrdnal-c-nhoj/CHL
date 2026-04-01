@@ -10,6 +10,20 @@ const ANIMATION_DURATION_MS = 4200;
 const BASE_DELAY_S = 2.5;
 const STAGGER_S = 0.35;
 
+// Lantern, fish white, flash, and bright green color palette
+const DIGIT_COLORS = [
+  '#FF6B35', // Lantern orange
+  '#F7F7F7', // Fish white
+  '#FFFFFF', // Flash white
+  '#39FF14', // Bright green
+  '#FFAA5C', // Light lantern
+  '#E8E8E8', // Pale fish white
+  '#FFFACD', // Flash yellow
+  '#00FF41', // Matrix green
+  '#FF8C42', // Deep lantern
+  '#F0F0F0', // Bright fish white
+];
+
 const getFlight = () => ({
   tx: `${(Math.random() - 0.5) * 220}vw`,
   ty: `${(Math.random() - 0.5) * 220}vh`,
@@ -45,9 +59,10 @@ interface ShardProps {
   delay: number;
   top: ReturnType<typeof getFlight>;
   bottom: ReturnType<typeof getFlight>;
+  color: string;
 }
 
-const CharBox = React.memo(({ char, delay, top, bottom }: ShardProps) => (
+const CharBox = React.memo(({ char, delay, top, bottom, color }: ShardProps) => (
   <div className={styles.charBox}>
     {/* Top half shard */}
     <div
@@ -61,6 +76,7 @@ const CharBox = React.memo(({ char, delay, top, bottom }: ShardProps) => (
         '--rx': top.rx,
         '--ry': top.ry,
         '--rz': top.rz,
+        color,
       } as React.CSSProperties}
     >
       <div className={styles.shardInner}>{char}</div>
@@ -78,6 +94,7 @@ const CharBox = React.memo(({ char, delay, top, bottom }: ShardProps) => (
         '--rx': bottom.rx,
         '--ry': bottom.ry,
         '--rz': bottom.rz,
+        color,
       } as React.CSSProperties}
     >
       <div className={styles.shardInner}>{char}</div>
@@ -141,6 +158,7 @@ const ExplodingClock: React.FC = () => {
         <div className={styles.digits}>
           {chars.map((char, i) => {
             const delay = BASE_DELAY_S + (chars.length - 1 - i) * STAGGER_S;
+            const color = DIGIT_COLORS[i % DIGIT_COLORS.length];
             return (
               <CharBox
                 key={`${i}-${loopKey}`}
@@ -148,6 +166,7 @@ const ExplodingClock: React.FC = () => {
                 delay={delay}
                 top={flights[i]!.top}
                 bottom={flights[i]!.bottom}
+                color={color}
               />
             );
           })}
