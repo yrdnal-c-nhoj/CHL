@@ -20,7 +20,7 @@ const NUMERAL_DRIFT = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((_, i) => ({
   delay: -((i * 0.83 + 0.5) % 8),
   amp: 6 + ((i * 2.11 + 3) % 14),
   scaleLo: (0.88 + ((i * 0.007 + 0.003) % 0.08)).toFixed(3),
-  scaleHi: (1.04 + ((i * 0.009 + 0.005) % 0.10)).toFixed(3),
+  scaleHi: (2.44 + ((i * 0.009 + 0.005) % 0.10)).toFixed(3),
 }));
 
 const COLORS = [
