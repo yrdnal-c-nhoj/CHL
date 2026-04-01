@@ -71,12 +71,14 @@ const ImageGridClock: React.FC = () => {
     const loadImages = async () => {
       try {
         const imageModules = import.meta.glob(
-          '../../../assets/images/2026/26-02/26-02-26/bg/*.{png,jpg,jpeg,gif,svg,webp}',
+          '../../../../assets/images/2026/26-02/26-02-26/bg/*.{png,jpg,jpeg,gif,svg,webp}',
           { eager: true },
         );
+        console.log('[26-02-26] Loaded modules:', imageModules);
         const imageUrls = Object.values(imageModules).map(
           (module: ViteModule) => module.default,
         );
+        console.log('[26-02-26] Image URLs:', imageUrls);
         setImages(imageUrls.length > 0 ? imageUrls : []);
       } catch (error) {
         console.error('Error loading images:', error);
