@@ -70,32 +70,40 @@ const Clock: React.FC = () => {
           line-height: 1;
           transition: transform 0.3s ease;
           font-family: 'Fleur De Leah', cursive;
-          background: linear-gradient(135deg, #FFD700 0%, #FFF8DC 25%, #D4AF37 50%, #C0C0C0 75%, #FFD700 100%);
-          background-size: 200% 200%;
+          background: linear-gradient(135deg, #00FFCC 0%, #39FF14 15%, #FFFF00 30%, #00FFFF 45%, #BF00FF 55%, #FF00FF 70%, #1B03FF 85%, #39FF14 100%);
+          background-size: 300% 300%;
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
           -webkit-text-fill-color: transparent;
-          animation: goldShimmer 8s ease-in-out infinite, flash 3s ease-in-out infinite alternate;
+          animation: bioShift 10s ease-in-out infinite, flash 4s ease-in-out infinite alternate, pinkFlash 15s ease-in-out infinite;
           text-shadow: 
-            0 0 10px rgba(255, 215, 0, 0.8),
-            0 0 20px rgba(255, 215, 0, 0.6),
-            0 0 30px rgba(255, 255, 255, 0.8),
-            0 0 40px rgba(255, 215, 0, 0.4),
+            0 0 10px rgba(0, 255, 204, 0.8),
+            0 0 20px rgba(57, 255, 20, 0.6),
+            0 0 30px rgba(0, 255, 255, 0.8),
+            0 0 40px rgba(191, 0, 255, 0.4),
             2px 2px 4px rgba(0,0,0,0.5);
-          filter: drop-shadow(0 0 15px gold) brightness(1.2);
+          filter: drop-shadow(0 0 15px #00FFCC) brightness(1.2);
           -webkit-text-stroke: 0.5px rgba(0,0,0,0.7);
           text-stroke: 0.5px rgba(0,0,0,0.7);
           paint-order: stroke fill;
         }
-        @keyframes goldShimmer {
-          0% { background-position: 0% 50%; filter: drop-shadow(0 0 10px gold) brightness(1.1); }
-          50% { background-position: 100% 50%; filter: drop-shadow(0 0 30px #FFF8DC) brightness(1.5); }
-          100% { background-position: 0% 50%; filter: drop-shadow(0 0 10px gold) brightness(1.1); }
+        @keyframes bioShift {
+          0% { background-position: 0% 50%; filter: drop-shadow(0 0 10px #00FFCC) brightness(1.1); }
+          25% { background-position: 50% 100%; filter: drop-shadow(0 0 30px #39FF14) brightness(1.5); }
+          50% { background-position: 100% 50%; filter: drop-shadow(0 0 40px #00FFFF) brightness(1.8); }
+          75% { background-position: 50% 0%; filter: drop-shadow(0 0 30px #1B03FF) brightness(1.5); }
+          100% { background-position: 0% 50%; filter: drop-shadow(0 0 10px #00FFCC) brightness(1.1); }
         }
         @keyframes flash {
           0% { opacity: 0.9; }
           100% { opacity: 1; filter: drop-shadow(0 0 40px #FFF) brightness(1.8); }
+        }
+        @keyframes pinkFlash {
+          0%, 92%, 100% { filter: drop-shadow(0 0 15px #00FFCC) brightness(1.2); }
+          94% { filter: drop-shadow(0 0 50px #FF1493) brightness(2); text-shadow: 0 0 20px #FF1493, 0 0 40px #FF69B4; }
+          96% { filter: drop-shadow(0 0 15px #00FFCC) brightness(1.2); }
+          98% { filter: drop-shadow(0 0 60px #FF1493) brightness(2.2); text-shadow: 0 0 30px #FF1493, 0 0 50px #FF69B4; }
         }
         .digit-one {
           transform: scale(0.92);
