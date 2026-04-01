@@ -2,10 +2,10 @@ import React, { useMemo, useRef, Suspense } from 'react';
 import { useMillisecondClock } from '../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import bgVideo from '../../../assets/images/26-03/26-03-31/seafloor.mp4';
-import crabFont from '../../../assets/fonts/26-03-31-crab.ttf';
-import hourHandImg from '../../../assets/images/26-03/26-03-31/crab1.webp';
-import minuteHandImg from '../../../assets/images/26-03/26-03-31/crab2.webp';
-import secondHandImg from '../../../assets/images/26-03/26-03-31/crab3.webp';
+import crabFont from '../../../assets/fonts/26-03-31.ttf';
+import hourHandImg from '../../../assets/images/26-03/26-03-31/hour.webp';
+import minuteHandImg from '../../../assets/images/26-03/26-03-31/minute.webp';
+import secondHandImg from '../../../assets/images/26-03/26-03-31/second.webp';
 import styles from './Clock.module.css';
 
 // ---- DRIFT CONFIGS ----
@@ -24,12 +24,7 @@ const NUMERAL_DRIFT = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((_, i) => ({
 }));
 
 const COLORS = [
-  'rgba(60,80,50,0.85)',
-  'rgba(45,70,60,0.85)',
-  'rgba(30,60,70,0.85)',
-  'rgba(50,75,65,0.85)',
-  'rgba(65,85,55,0.85)',
-  'rgba(40,65,75,0.85)',
+  'rgba(224, 248, 212, 0.85)',
 ];
 
 const Clock: React.FC = () => {
