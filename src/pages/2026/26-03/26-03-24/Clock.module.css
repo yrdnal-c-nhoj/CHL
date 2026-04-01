@@ -20,7 +20,6 @@
   font-family: 'ClockFont_Arrow', 'Courier New', monospace;
   font-size: clamp(3rem, 10vw, 8rem);
   font-weight: bold;
-  color: white;
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
   transform: rotate(180deg);
 }

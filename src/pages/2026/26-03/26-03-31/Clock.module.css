@@ -16,8 +16,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  mix-blend-mode: screen; /* This lets the video "glow" against the background */
+  opacity: 0.6;
   z-index: 0;
-  filter: brightness(0.8) contrast(1.8) saturate(0.4);
+  filter: brightness(1.4) contrast(1.8) saturate(0.4);
 }
 
 .clockWrapper {
@@ -39,6 +41,88 @@
   display: inline-block;
   animation: underwaterFloat var(--drift-duration, 6s) ease-in-out
     var(--drift-delay, 0s) infinite;
+}
+
+/* Animated bioluminescent gradient text with breathing */
+.gradientText {
+  background: linear-gradient(
+    var(--start-angle, 0deg),
+    #00FF41 0%,
+    #00CED1 25%,
+    #1E90FF 50%,
+    #39FF14 75%,
+    #00FF7F 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: 
+    underwaterFloat var(--drift-duration, 6s) ease-in-out var(--drift-delay, 0s) infinite,
+    gradientShift var(--gradient-duration, 4s) ease-in-out var(--gradient-delay, 0s) infinite,
+    gradientRotate var(--gradient-duration, 4s) ease-in-out var(--gradient-delay, 0s) infinite;
+  text-shadow: 
+    0 0 10px rgba(0,255,65,0.5),
+    0 0 20px rgba(0,206,209,0.3),
+    0 0 30px rgba(57,255,20,0.2);
+  filter: drop-shadow(0 0 5px rgba(0,255,65,0.8));
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg) brightness(1) drop-shadow(0 0 5px rgba(0,255,65,0.8));
+  }
+  25% {
+    background-position: 50% 100%;
+    filter: hue-rotate(45deg) brightness(1.3) drop-shadow(0 0 15px rgba(57,255,20,1));
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: hue-rotate(90deg) brightness(1.5) drop-shadow(0 0 25px rgba(0,255,127,1));
+  }
+  75% {
+    background-position: 50% 0%;
+    filter: hue-rotate(135deg) brightness(1.3) drop-shadow(0 0 15px rgba(30,144,255,0.9));
+  }
+  100% {
+    background-position: 0% 50%;
+    filter: hue-rotate(180deg) brightness(1) drop-shadow(0 0 5px rgba(0,255,65,0.8));
+  }
+}
+
+@keyframes gradientRotate {
+  0% {
+    background: linear-gradient(0deg, #00FF41, #39FF14, #00CED1, #1E90FF, #00FF7F);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  20% {
+    background: linear-gradient(72deg, #39FF14, #00CED1, #1E90FF, #00FF7F, #7FFF00);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  40% {
+    background: linear-gradient(144deg, #00CED1, #1E90FF, #00FF7F, #7FFF00, #00FA9A);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  60% {
+    background: linear-gradient(216deg, #1E90FF, #00FF7F, #7FFF00, #00FA9A, #00FF41);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  80% {
+    background: linear-gradient(288deg, #00FF7F, #7FFF00, #00FA9A, #00FF41, #39FF14);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  100% {
+    background: linear-gradient(360deg, #7FFF00, #00FA9A, #00FF41, #39FF14, #00CED1);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
 }
 
 .hand {
@@ -115,9 +199,5 @@
 
   .minuteHand {
     height: 35vh !important;
-  }
-
-  .secondHand {
-    height: 38vh !important;
   }
 }
