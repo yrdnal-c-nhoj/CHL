@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader'; // Asset Imports
-import clockFont from '../../../../assets/fonts/26-01-30-ne.ttf';
+import clockFont from '../../../../assets/fonts/2026/26-01-30-ne.ttf';
 import bgLayer1 from '../../../../assets/images/2026/26-01/26-01-30/new.webp';
 import bgLayer2 from '../../../../assets/images/2026/26-01/26-01-30/nes.gif';
 // import bgLayer3 from "../../../assets/images/2026/26-01/26-01-30/ne3.gif";

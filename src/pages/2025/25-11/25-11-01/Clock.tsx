@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import type { FontConfig } from '../../../../types/clock';
-import cus251101font from '../../../../assets/fonts/25-11-01-edgecase.ttf?url';
+import cus251101font from '../../../../assets/fonts/2025/25-11-01-edgecase.ttf?url';
 import styles from './Clock.module.css';
 
 export default function EdgeClockWithHands() {

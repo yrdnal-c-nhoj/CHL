@@ -4,7 +4,7 @@ import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 // === Local assets ===
 import backgroundVideo from '../../../../assets/images/2025/25-10/25-10-07/big.mp4';
 import fallbackGif from '../../../../assets/images/2025/25-10/25-10-07/big.webp';
-import O251007font from '../../../../assets/fonts/25-10-07-str.ttf';
+import O251007font from '../../../../assets/fonts/2025/25-10-07-str.ttf';
 
 export default function ImageAnalogClock() {
   const [time, setTime] = useState(new Date());

@@ -17,7 +17,7 @@ const hourNumbers = ["12", "01", "02", "03", "04", "05", "06", "07", "08", "09",
 const fontConfigs: FontConfig[] = [
   {
     fontFamily: 'ExoClock',
-    fontUrl: new URL('../../../assets/fonts/26-03-24-exo.ttf', import.meta.url).href,
+    fontUrl: new URL('../../../assets/fonts/2026/26-03-24-exo.ttf', import.meta.url).href,
     options: {
       weight: 'normal',
       style: 'normal',

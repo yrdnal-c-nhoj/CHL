@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import myCustomFont from '../../../../assets/fonts/25-07-27-som.ttf';
+import myCustomFont from '../../../../assets/fonts/2025/25-07-27-som.ttf';
 import backgroundImage from '../../../../assets/images/2025/25-07/25-07-27/met.jpg'; // Import your background image
 
 interface Digit {

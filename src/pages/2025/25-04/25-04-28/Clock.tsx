@@ -3,7 +3,7 @@ import { useSecondClock } from '../../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import type { FontConfig } from '../../../../types/clock';
 import type { CSSProperties } from 'react';
-import SkaterFont from '../../../../assets/fonts/25-04-28-Skater.ttf?url';
+import SkaterFont from '../../../../assets/fonts/2025/25-04-28-Skater.ttf?url';
 
 const fontFaceStyle = `
   @font-face {

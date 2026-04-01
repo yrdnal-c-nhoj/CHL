@@ -3,7 +3,7 @@ import { useSecondClock } from '../../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import type { FontConfig } from '../../../../types/clock';
 import type { CSSProperties } from 'react';
-import KinaFont from '../../../../assets/fonts/25-05-09-Kina.ttf?url';
+import KinaFont from '../../../../assets/fonts/2025/25-05-09-Kina.ttf?url';
 import swurl from '../../../../assets/images/2025/25-05/25-05-09/swurl.gif';
 
 const importantNumbers = [12, 3, 6, 9];

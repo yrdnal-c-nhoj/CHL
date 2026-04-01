@@ -3,7 +3,7 @@ import bg1 from '../../../../assets/images/2025/25-11/25-11-17/mars2.webp';
 import bg2 from '../../../../assets/images/2025/25-11/25-11-17/mars1.gif';
 import bg3 from '../../../../assets/images/2025/25-11/25-11-17/mars1.gif';
 import bg4 from '../../../../assets/images/2025/25-11/25-11-17/mars5.webp';
-import font2025_11_18 from '../../../../assets/fonts/25-11-17-mars.ttf?url';
+import font2025_11_18 from '../../../../assets/fonts/2025/25-11-17-mars.ttf?url';
 
 export { bg1, bg2, bg3, bg4 };
 

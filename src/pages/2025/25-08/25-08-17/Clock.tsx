@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import customFontUrl from '../../../../assets/fonts/25-08-17-scr.otf';
+import customFontUrl from '../../../../assets/fonts/2025/25-08-17-scr.otf';
 import pageBg from '../../../../assets/images/2025/25-08/25-08-17/bg.webp'; // full-screen background image
 
 const CLOCK_FONT_FAMILY = 'DigitalClockFont__Scoped';

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import { useClockTime } from '../../../../utils/clockUtils';
-import fontLatin from '../../../../assets/fonts/25-10-17-word.ttf?url';
+import fontLatin from '../../../../assets/fonts/2025/25-10-17-word.ttf?url';
 import backgroundImage from '../../../../assets/images/2025/25-10/25-10-17/words.jpg';
 import styles from './Clock.module.css';
 

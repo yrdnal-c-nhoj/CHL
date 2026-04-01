@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
 import background from '../../../../assets/images/2025/25-05/25-05-21/signals.jpg';
-import semFont from '../../../../assets/fonts/25-05-21-sem.ttf';
+import semFont from '../../../../assets/fonts/2025/25-05-21-sem.ttf';
 
 const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

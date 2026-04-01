@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import digi251103font from '../../../../assets/fonts/25-11-03-bin3.ttf?url';
-import tec251103font from '../../../../assets/fonts/25-11-03-bin1.otf?url';
+import digi251103font from '../../../../assets/fonts/2025/25-11-03-bin3.ttf?url';
+import tec251103font from '../../../../assets/fonts/2025/25-11-03-bin1.otf?url';
 
 const digitalFont = 'digitalFont';
 const techFont = 'techFont';

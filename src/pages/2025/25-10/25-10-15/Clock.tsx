@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import type { FontConfig } from '../../../../types/clock';
-import font20251016 from '../../../../assets/fonts/25-10-15-brahmi.ttf?url';
+import font20251016 from '../../../../assets/fonts/2025/25-10-15-brahmi.ttf?url';
 import image1 from '../../../../assets/images/2025/25-10/25-10-15/palm.webp';
 import image2 from '../../../../assets/images/2025/25-10/25-10-15/brahmi.webp';
 

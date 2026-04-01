@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import myFontUrl from '../../../../assets/fonts/25-08-07-rope.ttf';
+import myFontUrl from '../../../../assets/fonts/2025/25-08-07-rope.ttf';
 import backgroundImageUrl from '../../../../assets/images/2025/25-08/25-08-07/wes.webp';
 import hourHandImageUrl from '../../../../assets/images/2025/25-08/25-08-07/ggg.gif';
 import minuteHandImageUrl from '../../../../assets/images/2025/25-08/25-08-07/gun.gif';

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import mintFont from '../../../../assets/fonts/25-07-08-mint.ttf';
+import mintFont from '../../../../assets/fonts/2025/25-07-08-mint.ttf';
 import hourImg from '../../../../assets/images/2025/25-07/25-07-08/mint.png';
 import minuteImg from '../../../../assets/images/2025/25-07/25-07-08/minty.webp';
 import secondImg from '../../../../assets/images/2025/25-07/25-07-08/min.png';

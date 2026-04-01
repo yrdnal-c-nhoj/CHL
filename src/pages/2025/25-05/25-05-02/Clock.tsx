@@ -9,7 +9,7 @@ import scorpImage from '../../../../assets/images/2025/25-05/25-05-02/sand.webp?
 import hourHandImage from '../../../../assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
 import minuteHandImage from '../../../../assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
 import secondHandImage from '../../../../assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
-import fontFile from '../../../../assets/fonts/25-05-02-scorp.ttf?url';
+import fontFile from '../../../../assets/fonts/2025/25-05-02-scorp.ttf?url';
 
 // Component Props interface
 interface ClockProps {

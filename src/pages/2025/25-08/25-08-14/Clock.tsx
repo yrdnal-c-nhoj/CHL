@@ -15,7 +15,7 @@ import digit9 from '../../../../assets/images/2025/25-08/25-08-14/9.gif';
 import digit10 from '../../../../assets/images/2025/25-08/25-08-14/10.gif';
 import digit11 from '../../../../assets/images/2025/25-08/25-08-14/11.gif';
 import digit12 from '../../../../assets/images/2025/25-08/25-08-14/12.gif';
-import customFont from '../../../../assets/fonts/25-08-14-bir.ttf';
+import customFont from '../../../../assets/fonts/2025/25-08-14-bir.ttf';
 
 const digitImages = [
   digit1,

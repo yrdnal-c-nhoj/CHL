@@ -6,7 +6,7 @@ import type { CSSProperties } from 'react';
 import lava1 from '../../../../assets/images/2025/25-04/25-04-24/lava.webp';
 import lava2 from '../../../../assets/images/2025/25-04/25-04-24/vp2OVr.gif';
 import lava3 from '../../../../assets/images/2025/25-04/25-04-24/lava.webp';
-import lavaFont from '../../../../assets/fonts/25-04-24-lava.ttf?url';
+import lavaFont from '../../../../assets/fonts/2025/25-04-24-lava.ttf?url';
 
 // Time state interface
 interface TimeState {

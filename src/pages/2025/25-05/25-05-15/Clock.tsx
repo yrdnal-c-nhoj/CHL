@@ -6,7 +6,7 @@ import type { CSSProperties } from 'react';
 import roulGif from '../../../../assets/images/2025/25-05/25-05-15/roul.gif';
 import rouleGif from '../../../../assets/images/2025/25-05/25-05-15/roule.gif';
 import rouletteSvg from '../../../../assets/images/2025/25-05/25-05-15/Roulette_french.svg';
-import loraFont from '../../../../assets/fonts/25-05-15-lora.ttf?url';
+import loraFont from '../../../../assets/fonts/2025/25-05-15-lora.ttf?url';
 
 // Component Props interface
 interface RouletteClockProps {

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import { useSecondClock } from '../../../../utils/useSmoothClock';
 
-import digitalFontUrl from '../../../../assets/fonts/26-02-12-disco.otf';
+import digitalFontUrl from '../../../../assets/fonts/2026/26-02-12-disco.otf';
 import digitalBgImage from '../../../../assets/images/2026/26-02/26-02-12/lit.webp';
 import extraBg1 from '../../../../assets/images/2026/26-02/26-02-12/light.webp';
 import extraBg2 from '../../../../assets/images/2026/26-02/26-02-12/li.gif';

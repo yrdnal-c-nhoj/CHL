@@ -5,7 +5,7 @@ import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 // --- Image Imports ---
 import bg2 from '../../../../assets/images/2026/26-01/26-01-11/flam4.webp';
 import bg1 from '../../../../assets/images/2026/26-01/26-01-11/flaa.webp';
-import fontflam251211 from '../../../../assets/fonts/26-01-11-flam.ttf';
+import fontflam251211 from '../../../../assets/fonts/2026/26-01-11-flam.ttf';
 import hourHandImg from '../../../../assets/images/2026/26-01/26-01-11/leg1.webp';
 import minuteHandImg from '../../../../assets/images/2026/26-01/26-01-11/leg2.webp';
 import secondHandImg from '../../../../assets/images/2026/26-01/26-01-11/flam.webp';

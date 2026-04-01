@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import font20250924 from '../../../../assets/fonts/25-09-24-cora.ttf?url';
+import font20250924 from '../../../../assets/fonts/2025/25-09-24-cora.ttf?url';
 
 const HorizontalProportionalGradientClock: React.FC = () => {
   const [time, setTime] = useState(new Date());

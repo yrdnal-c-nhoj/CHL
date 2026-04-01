@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import fontUrl from '../../../../assets/fonts/25-06-15-ZombieStitch.ttf';
+import fontUrl from '../../../../assets/fonts/2025/25-06-15-ZombieStitch.ttf';
 import bgImageUrl from '../../../../assets/images/2025/25-06/25-06-15/stin.webp';
 import overlayImageUrl from '../../../../assets/images/2025/25-06/25-06-15/stit.jpeg';
 

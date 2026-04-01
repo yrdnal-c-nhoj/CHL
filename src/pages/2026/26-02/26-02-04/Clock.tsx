@@ -4,7 +4,7 @@ import { useSecondClock } from '../../../../utils/useSmoothClock';
 import type { FontConfig } from '../../../../types/clock';
 import styles from './Clock.module.css';
 
-import digitalFontUrl from '../../../../assets/fonts/26-02-04-trans.ttf?url';
+import digitalFontUrl from '../../../../assets/fonts/2026/26-02-04-trans.ttf?url';
 import digitalBgImage from '../../../../assets/images/2026/26-02/26-02-04/trans.webp';
 import backgroundImage from '../../../../assets/images/2026/26-02/26-02-04/tran.jpg';
 

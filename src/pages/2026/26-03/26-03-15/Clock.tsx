@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import { useMillisecondClock } from '../../../../utils/useSmoothClock';
-import fontUrl from '../../../../assets/fonts/26-03-15-shadow.otf?url';
+import fontUrl from '../../../../assets/fonts/2026/26-03-15-shadow.otf?url';
 import styles from './Clock.module.css';
 
 const MS_PER_ROTATION = 30000;

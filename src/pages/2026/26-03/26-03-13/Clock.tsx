@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import veniceFont from '../../../../assets/fonts/26-03-13-venice.ttf?url';
+import veniceFont from '../../../../assets/fonts/2026/26-03-13-venice.ttf?url';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import { useSecondClock } from '../../../../utils/useSmoothClock';
 

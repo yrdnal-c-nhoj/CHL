@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
 import backgroundImage from '../../../../assets/images/2025/25-08/25-08-28/gob.jpg';
-import clockFontFile from '../../../../assets/fonts/25-08-28-gob.ttf';
+import clockFontFile from '../../../../assets/fonts/2025/25-08-28-gob.ttf';
 
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date());

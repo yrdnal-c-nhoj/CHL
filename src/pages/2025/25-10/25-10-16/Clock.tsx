@@ -5,7 +5,7 @@ import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import bgLayer1 from '../../../../assets/images/2025/25-10/25-10-16/venus2.webp';
 import bgLayer2 from '../../../../assets/images/2025/25-10/25-10-16/venus.webp';
 import fullBg from '../../../../assets/images/2025/25-10/25-10-16/ve.jpg';
-import font20251015 from '../../../../assets/fonts/25-10-16-venus.ttf';
+import font20251015 from '../../../../assets/fonts/2025/25-10-16-venus.ttf';
 
 export default function VenusClock() {
   const [ready, setReady] = useState<boolean>(false);

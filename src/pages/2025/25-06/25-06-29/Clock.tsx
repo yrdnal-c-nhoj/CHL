@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import stretchFont from '../../../../assets/fonts/25-06-29-stretch.ttf';
+import stretchFont from '../../../../assets/fonts/2025/25-06-29-stretch.ttf';
 
 const StretchClock: React.FC = () => {
   const [time, setTime] = useState<any>({ hours: '', minutes: '', seconds: '' });

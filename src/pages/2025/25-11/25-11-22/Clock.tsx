@@ -4,7 +4,7 @@ import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import videoFile from '../../../../assets/images/2025/25-11/25-11-22/sput.mp4';
 import fallbackImg from '../../../../assets/images/2025/25-11/25-11-22/sput.webp';
 import secondHandImg from '../../../../assets/images/2025/25-11/25-11-22/spu.webp';
-import font112425sput from '../../../../assets/fonts/25-11-22-spu.ttf?url';
+import font112425sput from '../../../../assets/fonts/2025/25-11-22-spu.ttf?url';
 
 export default function Clock() {
   const videoRef = useRef(null);

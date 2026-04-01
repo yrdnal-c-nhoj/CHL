@@ -9,7 +9,7 @@ import minuteHand from '../../../../assets/images/2025/25-09/25-09-10/min.gif';
 import secondHand from '../../../../assets/images/2025/25-09/25-09-10/sec.gif';
 
 // Local font
-import customLavaFont from '../../../../assets/fonts/25-09-10-lava.otf?url';
+import customLavaFont from '../../../../assets/fonts/2025/25-09-10-lava.otf?url';
 
 const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

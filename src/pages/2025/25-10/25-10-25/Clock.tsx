@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import type { FontConfig } from '../../../../types/clock';
-import font20251027 from '../../../../assets/fonts/25-10-25-fall.ttf?url'; // Local font file
+import font20251027 from '../../../../assets/fonts/2025/25-10-25-fall.ttf?url'; // Local font file
 
 const EntropyClock: React.FC = () => {
   const [time, setTime] = useState(new Date());

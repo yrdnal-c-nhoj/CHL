@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import font_25251115j from '../../../../assets/fonts/25-11-15-rain.otf?url';
+import font_25251115j from '../../../../assets/fonts/2025/25-11-15-rain.otf?url';
 import bgImage from '../../../../assets/images/2025/25-11/25-11-15/fall.webp'; // local background image
 import type { FontConfig } from '../../../../types/clock';
 

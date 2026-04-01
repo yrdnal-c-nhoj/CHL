@@ -2,7 +2,7 @@ import React, { useMemo, useRef, memo } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import { useSecondClock } from '../../../../utils/useSmoothClock';
 import skyImage from '../../../../assets/images/2026/26-03/26-03-22/sky.webp';
-import balloonFont from '../../../../assets/fonts/26-03-22-balloon.ttf';
+import balloonFont from '../../../../assets/fonts/2026/26-03-22-balloon.ttf';
 import styles from './Clock.module.css';
 
 const balloonColors = ['#FF2D2D', '#D4F904', '#32CD32', '#FFCC01FF', '#FF1493', '#FF4500', '#9A6BF9'];

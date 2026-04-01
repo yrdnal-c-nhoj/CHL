@@ -9,7 +9,7 @@ const FONT_NAME = 'Forum';
 
 import backgroundImage from '../../../../assets/images/2026/26-02/26-02-20/forum2.webp';
 import topImage from '../../../../assets/images/2026/26-02/26-02-20/forum.webp';
-import forumFont from '../../../../assets/fonts/26-02-20-forum.otf';
+import forumFont from '../../../../assets/fonts/2026/26-02-20-forum.otf';
 
 export { backgroundImage, topImage };
 

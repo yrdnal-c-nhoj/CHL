@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import ionFont from '../../../../assets/fonts/25-06-09-ion.ttf';
+import ionFont from '../../../../assets/fonts/2025/25-06-09-ion.ttf';
 import ionJpeg from '../../../../assets/images/2025/25-06/25-06-09/ion.jpeg';
 import iskyWebp from '../../../../assets/images/2025/25-06/25-06-09/isky.webp';
 

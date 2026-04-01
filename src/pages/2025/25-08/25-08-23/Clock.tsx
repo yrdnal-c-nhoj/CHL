@@ -19,7 +19,7 @@ import backgroundImage from '../../../../assets/images/2025/25-08/25-08-23/g.web
 import overlayImage from '../../../../assets/images/2025/25-08/25-08-23/fog.gif';
 
 // Custom font (imported as module)
-import fogFont from '../../../../assets/fonts/25-08-23-fog.ttf';
+import fogFont from '../../../../assets/fonts/2025/25-08-23-fog.ttf';
 
 // Map digits to their respective images
 const digitImages = {

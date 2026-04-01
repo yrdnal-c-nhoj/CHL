@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import treeFont from '../../../../assets/fonts/25-06-05-tree.ttf';
+import treeFont from '../../../../assets/fonts/2025/25-06-05-tree.ttf';
 import tree1Img from '../../../../assets/images/2025/25-06/25-06-05/tree1.webp';
 import tree2Img from '../../../../assets/images/2025/25-06/25-06-05/tree2.webp';
 

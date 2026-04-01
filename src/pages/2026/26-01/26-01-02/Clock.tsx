@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import fontFile from '../../../../assets/fonts/26-01-02-cram.ttf';
+import fontFile from '../../../../assets/fonts/2026/26-01-02-cram.ttf';
 import backgroundImage from '../../../../assets/images/2026/26-01/26-01-02/brick.webp';
 
 const StretchedClock: React.FC = () => {
