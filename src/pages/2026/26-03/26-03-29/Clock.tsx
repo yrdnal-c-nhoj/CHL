@@ -95,6 +95,26 @@ const Clock: React.FC = () => {
   const hourRef = useRef<HTMLDivElement>(null);
   const minRef = useRef<HTMLDivElement>(null);
   const secRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Ensure video autoplay (fallback for strict mobile browsers)
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    
+    const attemptPlay = () => {
+      if (video.paused) {
+        video.play().catch(() => {
+          // Autoplay blocked, will retry on user interaction
+        });
+      }
+    };
+    
+    attemptPlay();
+    video.addEventListener('canplaythrough', attemptPlay);
+    
+    return () => video.removeEventListener('canplaythrough', attemptPlay);
+  }, []);
 
   const fontConfigs = useMemo(() => [{ fontFamily: 'EastWind', fontUrl: eastFont }], []);
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
@@ -180,7 +200,7 @@ const Clock: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <video autoPlay muted loop playsInline className={styles.videoBg}>
+      <video ref={videoRef} autoPlay muted loop playsInline preload="auto" disablePictureInPicture className={styles.videoBg}>
         <source src={bgVideo} type="video/mp4" />
       </video>
 
