@@ -1,45 +1,48 @@
 .style-1 {
- background: #3bbdf0; 
+  background: #3bbdf0;
 }
 
 .style-2 {
- background: #8fbee2; 
+  background: #8fbee2;
 }
 
 .style-3 {
- background: #e8a30d; 
+  background: #e8a30d;
 }
 
 .style-4 {
- background: #fd1d1d; 
+  background: #fd1d1d;
 }
 
 .style-5 {
- background: #b43a87; 
+  background: #b43a87;
 }
 
 .style-6 {
- background: #833ab4; 
+  background: #833ab4;
 }
 
 .style-7 {
- background: #02027f; 
+  background: #02027f;
 }
 
 .style-8 {
- background: #010102; 
+  background: #010102;
 }
 
 .style-9 {
- top: 10%; opacity: 1; 
+  top: 10%;
+  opacity: 1;
 }
 
 .style-10 {
- top: 50%; opacity: 1; 
+  top: 50%;
+  opacity: 1;
 }
 
 .style-11 {
- top: 90%; opacity: 0; 
+  top: 90%;
+  opacity: 0;
 }
 
 .inlineStyle {

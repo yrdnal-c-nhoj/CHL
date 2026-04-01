@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import bgVideo from '../../../../assets/images/2025/25-09/25-09-25/unix-optimized.mp4'; // Optimized video for mobile compatibility
-import fallbackImage from '../../../../assets/images/2025/25-09/25-09-25/unix.webp';
-import FontOne_2025_09_25 from '../../../../assets/fonts/2025/25-09-25-unix.otf?url';
-import FontTwo_2025_09_25 from '../../../../assets/fonts/2025/25-09-25-unix2.otf?url';
-import FontThree_2025_09_25 from '../../../../assets/fonts/2025/25-09-25-un.otf?url';
-import FontFour_2025_09_25 from '../../../../assets/fonts/2025/25-09-25-uunix.ttf?url';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import bgVideo from '@/assets/images/2025/25-09/25-09-25/unix-optimized.mp4'; // Optimized video for mobile compatibility
+import fallbackImage from '@/assets/images/2025/25-09/25-09-25/unix.webp';
+import FontOne_2025_09_25 from '@/assets/fonts/2025/25-09-25-unix.otf?url';
+import FontTwo_2025_09_25 from '@/assets/fonts/2025/25-09-25-unix2.otf?url';
+import FontThree_2025_09_25 from '@/assets/fonts/2025/25-09-25-un.otf?url';
+import FontFour_2025_09_25 from '@/assets/fonts/2025/25-09-25-uunix.ttf?url';
 
 // Export assets for preloading
 export { bgVideo, fallbackImage };

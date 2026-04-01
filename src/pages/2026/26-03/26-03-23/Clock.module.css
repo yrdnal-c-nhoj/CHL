@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'ExoClock';
-  src: url('../../../assets/fonts/2026/26-03-24-exo.ttf') format('truetype');
+  src: url('../../../../assets/fonts/2026/26-03-24-exo.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -20,7 +20,7 @@
      - 110% 110% stretches the image beyond the viewport to ensure no gaps.
      - center 20% nudges the image "up" (aligning the top 20% of the image to the top 20% of the screen).
   */
-  background-image: url('../../../assets/images/26-03/26-03-24/blakstar.webp');
+  background-image: url('../../../../assets/images/2026/26-03/26-03-24/blakstar.webp');
   background-position: bottom center;
   background-size: 100% 107%;
   background-repeat: no-repeat;
@@ -77,13 +77,13 @@
   height: 100%;
 }
 .hourHand {
-  fill: #FFFDFD;
+  fill: #fffdfd;
 }
 
 .minuteHand {
-  fill: #FDFDFD;
+  fill: #fdfdfd;
 }
 
 .secondHand {
-  fill: #FAF7F7;
+  fill: #faf7f7;
 }

@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import cloudyFont from '../../../../assets/fonts/2025/25-06-13-cloudy.ttf';
-import cmoon from '../../../../assets/images/2025/25-06/25-06-13/cmoon.webp';
-import clouGif from '../../../../assets/images/2025/25-06/25-06-13/clou.gif';
-import clll from '../../../../assets/images/2025/25-06/25-06-13/clll.webp';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import cloudyFont from '@/assets/fonts/2025/25-06-13-cloudy.ttf';
+import cmoon from '@/assets/images/2025/25-06/25-06-13/cmoon.webp';
+import clouGif from '@/assets/images/2025/25-06/25-06-13/clou.gif';
+import clll from '@/assets/images/2025/25-06/25-06-13/clll.webp';
 
 const CloudyNightClock: React.FC = () => {
   const clockRef = useRef();

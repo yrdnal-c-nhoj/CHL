@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
+import { useSecondClock } from '@/utils/useSmoothClock';
 
 const RainCanvas: React.FC = () => {
   const canvasRef = useRef(null);

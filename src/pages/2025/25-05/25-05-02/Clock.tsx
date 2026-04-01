@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
 
 // Import assets at top level for bundler optimization
-import scorpImage from '../../../../assets/images/2025/25-05/25-05-02/sand.webp?url';
-import hourHandImage from '../../../../assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
-import minuteHandImage from '../../../../assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
-import secondHandImage from '../../../../assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
-import fontFile from '../../../../assets/fonts/2025/25-05-02-scorp.ttf?url';
+import scorpImage from '@/assets/images/2025/25-05/25-05-02/sand.webp?url';
+import hourHandImage from '@/assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
+import minuteHandImage from '@/assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
+import secondHandImage from '@/assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
+import fontFile from '@/assets/fonts/2025/25-05-02-scorp.ttf?url';
 
 // Component Props interface
 interface ClockProps {

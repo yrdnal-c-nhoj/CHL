@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import gearsGif from '../../../../assets/images/2025/25-05/25-05-29/gears-13950_128.gif';
-import watchFont from '../../../../assets/fonts/2025/25-05-29-watch.ttf?url';
+import gearsGif from '@/assets/images/2025/25-05/25-05-29/gears-13950_128.gif';
+import watchFont from '@/assets/fonts/2025/25-05-29-watch.ttf?url';
 import { Color } from 'three';
 
 const Clock: React.FC = () => {
@@ -13,11 +13,14 @@ const Clock: React.FC = () => {
   // Load local font file
   useEffect(() => {
     const font = new FontFace('WatchFont', `url(${watchFont})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-    }).catch(() => {
-      // Font failed to load, will use fallback
-    });
+    font
+      .load()
+      .then((loaded) => {
+        document.fonts.add(loaded);
+      })
+      .catch(() => {
+        // Font failed to load, will use fallback
+      });
   }, []);
 
   // Character map for digits
@@ -104,7 +107,7 @@ const Clock: React.FC = () => {
           zIndex: 4,
         }}
       />
-      
+
       {/* Clock Styles */}
       <style>{`
         .clock {

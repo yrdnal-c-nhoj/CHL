@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
+import { useSecondClock } from '@/utils/useSmoothClock';
 
 const fontVersion = '2026-03-11';
 const FONT_NAME = `XanhMono_${fontVersion}`;

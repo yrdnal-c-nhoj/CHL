@@ -71,9 +71,7 @@ const TodayClockPage = () => {
     );
 
     // Find the first item that is today or past
-    let item = sortedItems.find(
-      (i) => parseDateVal(i.date) <= todayVal
-    );
+    let item = sortedItems.find((i) => parseDateVal(i.date) <= todayVal);
 
     // Fallback: If no past/today clock found, find the newest available valid clock anywhere
     if (!item) item = sortedItems[0];
@@ -82,7 +80,12 @@ const TodayClockPage = () => {
   }, [items, loading]);
 
   // Use the hook to load the clock
-  const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPage(currentItem);
+  const {
+    ClockComponent,
+    isReady,
+    error: pageError,
+    overlayVisible,
+  } = useClockPage(currentItem);
 
   // -------------------------------
   // Auto-hide header shortly after load
@@ -109,7 +112,8 @@ const TodayClockPage = () => {
     () =>
       currentItem && items
         ? items.findIndex(
-            (i: ClockItem) => normalizeDate(i.date) === normalizeDate(currentItem.date),
+            (i: ClockItem) =>
+              normalizeDate(i.date) === normalizeDate(currentItem.date),
           )
         : -1,
     [currentItem, items],

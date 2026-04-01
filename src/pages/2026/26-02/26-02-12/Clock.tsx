@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/useSmoothClock';
 
-import digitalFontUrl from '../../../../assets/fonts/2026/26-02-12-disco.otf';
-import digitalBgImage from '../../../../assets/images/2026/26-02/26-02-12/lit.webp';
-import extraBg1 from '../../../../assets/images/2026/26-02/26-02-12/light.webp';
-import extraBg2 from '../../../../assets/images/2026/26-02/26-02-12/li.gif';
-import extraBg3 from '../../../../assets/images/2026/26-02/26-02-12/ball.webp';
+import digitalFontUrl from '@/assets/fonts/2026/26-02-12-disco.otf';
+import digitalBgImage from '@/assets/images/2026/26-02/26-02-12/lit.webp';
+import extraBg1 from '@/assets/images/2026/26-02/26-02-12/light.webp';
+import extraBg2 from '@/assets/images/2026/26-02/26-02-12/li.gif';
+import extraBg3 from '@/assets/images/2026/26-02/26-02-12/ball.webp';
 
 const DISCO_COLORS = [
   '#FF00FF', // Neon Magenta

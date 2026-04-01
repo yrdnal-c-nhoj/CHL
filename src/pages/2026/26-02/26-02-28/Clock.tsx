@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import { useMillisecondClock } from '../../../../utils/useSmoothClock';
-import atomicWebp from '../../../../assets/images/2026/26-02/26-02-28/atomic.webp';
-import atomicFont from '../../../../assets/fonts/2026/26-02-28-atomic.ttf';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/useSmoothClock';
+import atomicWebp from '@/assets/images/2026/26-02/26-02-28/atomic.webp';
+import atomicFont from '@/assets/fonts/2026/26-02-28-atomic.ttf';
 
 const TILE_SIZE = 140;
 

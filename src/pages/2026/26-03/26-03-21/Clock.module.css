@@ -1,6 +1,7 @@
 @font-face {
   font-family: 'ShapesFont';
-  src: url('../../../assets/fonts/2026/26-03-21-shapes.ttf') format('truetype');
+  src: url('../../../../assets/fonts/2026/26-03-21-shapes.ttf')
+    format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -22,7 +23,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #0A6703;
+  background-color: #0a6703;
   z-index: -2;
 }
 
@@ -42,7 +43,7 @@
   -webkit-user-select: none;
   user-select: none;
   overflow: hidden;
-  background-image: url('../../../assets/images/26-03/26-03-21/shapes.webp');
+  background-image: url('../../../../assets/images/2026/26-03/26-03-21/shapes.webp');
   background-size: 80%;
   background-position: center;
   filter: grayscale(100%);

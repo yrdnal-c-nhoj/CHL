@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useMemo, useCallback, useState } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import roomImage from '../../../../assets/images/2025/25-04/25-04-09/room.webp';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import roomImage from '@/assets/images/2025/25-04/25-04-09/room.webp';
 
 // Component Props interface
 interface EmptyRoomClockProps {

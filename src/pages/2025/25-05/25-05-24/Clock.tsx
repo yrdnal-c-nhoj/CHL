@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import torGif from '../../../../assets/images/2025/25-05/25-05-24/tor.gif';
-import speedFont from '../../../../assets/fonts/2025/25-05-24-speed.ttf';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import torGif from '@/assets/images/2025/25-05/25-05-24/tor.gif';
+import speedFont from '@/assets/fonts/2025/25-05-24-speed.ttf';
 
 const NUM_PARTICLES = 100;
 

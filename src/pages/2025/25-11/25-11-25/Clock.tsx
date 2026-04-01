@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useMemo } from 'react';
 
-import backgroundImg from '../../../../assets/images/2025/25-11/25-11-25/npt.webp';
-import fontClockUrl from '../../../../assets/fonts/2025/25-11-25-ntp.ttf?url';
-import fontMarqueeUrl from '../../../../assets/fonts/2025/25-11-25-n2.ttf?url';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
+import backgroundImg from '@/assets/images/2025/25-11/25-11-25/npt.webp';
+import fontClockUrl from '@/assets/fonts/2025/25-11-25-ntp.ttf?url';
+import fontMarqueeUrl from '@/assets/fonts/2025/25-11-25-n2.ttf?url';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 
 export { backgroundImg };
 

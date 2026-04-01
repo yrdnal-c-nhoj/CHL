@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import background from '../../../../assets/images/2025/25-12/25-12-17/swagr.webp';
-import FONT_PATH from '../../../../assets/fonts/facexxxx.ttf?url';
-import type { FontConfig } from '../../../../types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import background from '@/assets/images/2025/25-12/25-12-17/swagr.webp';
+import FONT_PATH from '@/assets/fonts/facexxxx.ttf?url';
+import type { FontConfig } from '@/types/clock';
 
 const fontFamilyName = 'ClockComponentFont';
 

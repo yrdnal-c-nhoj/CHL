@@ -208,7 +208,7 @@ describe('generateTickMarks', () => {
     // Hour ticks should be longer (difference between outer and inner should be 15)
     const hourLength = Math.sqrt(
       Math.pow(hourTick.x2 - hourTick.x1, 2) +
-        Math.pow(hourTick.y2 - hourTick.y1, 2)
+        Math.pow(hourTick.y2 - hourTick.y1, 2),
     );
 
     expect(hourLength).toBeCloseTo(15, 0);
@@ -220,10 +220,10 @@ describe('generateTickMarks', () => {
 
     // The tick at 12 o'clock should scale with radius
     const twelveTick1 = tickMarks1.find(
-      (t) => t.isHour && Math.abs(t.x2 - 100) < 1
+      (t) => t.isHour && Math.abs(t.x2 - 100) < 1,
     )!;
     const twelveTick2 = tickMarks2.find(
-      (t) => t.isHour && Math.abs(t.x2 - 100) < 1
+      (t) => t.isHour && Math.abs(t.x2 - 100) < 1,
     )!;
 
     expect(twelveTick1.y2).toBeCloseTo(50, 0); // 100 - 50

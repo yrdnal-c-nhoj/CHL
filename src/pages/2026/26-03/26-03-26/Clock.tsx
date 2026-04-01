@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import highwayBg from '../../../../assets/images/2026/26-03/26-03-26/highway.webp';
-import overFont from '../../../../assets/fonts/2026/26-03-26-over.otf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import highwayBg from '@/assets/images/2026/26-03/26-03-26/highway.webp';
+import overFont from '@/assets/fonts/2026/26-03-26-over.otf';
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {

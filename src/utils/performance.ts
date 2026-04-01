@@ -34,7 +34,7 @@ export function useDebounce<T>(value: T, delay: number): T {
  */
 export function useThrottle<T extends (...args: any[]) => any>(
   func: T,
-  delay: number
+  delay: number,
 ): T {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastExecRef = useRef<number>(0);
@@ -42,22 +42,25 @@ export function useThrottle<T extends (...args: any[]) => any>(
   return useCallback(
     (...args: Parameters<T>) => {
       const now = Date.now();
-      
+
       if (now - lastExecRef.current > delay) {
         lastExecRef.current = now;
         return func(...args);
       }
-      
+
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-      
-      timeoutRef.current = setTimeout(() => {
-        lastExecRef.current = Date.now();
-        func(...args);
-      }, delay - (now - lastExecRef.current));
+
+      timeoutRef.current = setTimeout(
+        () => {
+          lastExecRef.current = Date.now();
+          func(...args);
+        },
+        delay - (now - lastExecRef.current),
+      );
     },
-    [func, delay]
+    [func, delay],
   ) as T;
 }
 
@@ -71,20 +74,21 @@ export function useThrottle<T extends (...args: any[]) => any>(
 export function useMemoWithCleanup<T>(
   factory: () => T,
   cleanup: (value: T) => void,
-  deps: React.DependencyList
+  deps: React.DependencyList,
 ): T {
   const valueRef = useRef<T>();
   const depsRef = useRef<React.DependencyList>();
 
   // Check if dependencies changed
-  const depsChanged = !depsRef.current || !deps.every((dep, i) => dep === depsRef.current![i]);
+  const depsChanged =
+    !depsRef.current || !deps.every((dep, i) => dep === depsRef.current![i]);
 
   if (depsChanged) {
     // Cleanup previous value
     if (valueRef.current !== undefined) {
       cleanup(valueRef.current);
     }
-    
+
     // Create new value
     valueRef.current = factory();
     depsRef.current = deps;
@@ -99,7 +103,7 @@ export function useMemoWithCleanup<T>(
  * @returns Intersection observer result
  */
 export function useIntersectionObserver(
-  options: IntersectionObserverInit = {}
+  options: IntersectionObserverInit = {},
 ) {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null);
@@ -125,7 +129,7 @@ export function useIntersectionObserver(
         threshold: 0.1,
         rootMargin: '50px',
         ...options,
-      }
+      },
     );
 
     observer.observe(element);
@@ -153,7 +157,7 @@ export function useLazyImage(
   options: {
     threshold?: number;
     rootMargin?: string;
-  } = {}
+  } = {},
 ) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -163,10 +167,13 @@ export function useLazyImage(
   });
   const imgRef = useRef<HTMLImageElement>(null);
 
-  const setRefs = useCallback((node: HTMLImageElement | null) => {
-    intersectionRef(node);
-    imgRef.current = node;
-  }, [intersectionRef]);
+  const setRefs = useCallback(
+    (node: HTMLImageElement | null) => {
+      intersectionRef(node);
+      imgRef.current = node;
+    },
+    [intersectionRef],
+  );
 
   useEffect(() => {
     if (!isIntersecting || !src) return;
@@ -217,21 +224,23 @@ export class PerformanceMonitor {
   static endTimer(name: string): number {
     const startTime = this.timers.get(name);
     if (!startTime) return 0;
-    
+
     const duration = performance.now() - startTime;
     this.timers.delete(name);
-    
+
     // Log performance warnings
     if (duration > 100) {
-      console.warn(`Slow operation detected: ${name} took ${duration.toFixed(2)}ms`);
+      console.warn(
+        `Slow operation detected: ${name} took ${duration.toFixed(2)}ms`,
+      );
     }
-    
+
     return duration;
   }
 
   static measureFunction<T extends (...args: any[]) => any>(
     name: string,
-    fn: T
+    fn: T,
   ): T {
     return ((...args: any[]) => {
       this.startTimer(name);
@@ -280,12 +289,15 @@ export function useVirtualScrolling<T>({
   const [scrollTop, setScrollTop] = useState(0);
 
   const visibleRange = useMemo(() => {
-    const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
+    const startIndex = Math.max(
+      0,
+      Math.floor(scrollTop / itemHeight) - overscan,
+    );
     const endIndex = Math.min(
       items.length - 1,
-      Math.ceil((scrollTop + containerHeight) / itemHeight) + overscan
+      Math.ceil((scrollTop + containerHeight) / itemHeight) + overscan,
     );
-    
+
     return { startIndex, endIndex };
   }, [scrollTop, itemHeight, containerHeight, items.length, overscan]);
 

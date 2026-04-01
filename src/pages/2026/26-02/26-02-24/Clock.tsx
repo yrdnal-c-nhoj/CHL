@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import futurBg from '../../../../assets/images/2026/26-02/26-02-24/futur.jpg';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import futurBg from '@/assets/images/2026/26-02/26-02-24/futur.jpg';
 
 interface Position {
   top: string;

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import background from '../../../../assets/images/2025/25-12/25-12-21/cass.webp';
-import backgroundImage from '../../../../assets/images/2025/25-12/25-12-21/tape.gif';
-import FONT_PATH from '../../../../assets/fonts/cas.ttf?url';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import background from '@/assets/images/2025/25-12/25-12-21/cass.webp';
+import backgroundImage from '@/assets/images/2025/25-12/25-12-21/tape.gif';
+import FONT_PATH from '@/assets/fonts/cas.ttf?url';
 
 export default function App() {
   const [time, setTime] = useState(new Date());

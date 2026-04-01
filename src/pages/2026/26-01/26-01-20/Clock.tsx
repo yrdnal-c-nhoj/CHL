@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import bgImage from '../../../../assets/images/2026/26-01/26-01-20/hairdo.webp';
-import d25090120font from '../../../../assets/fonts/2026/26-01-20-hairdo.ttf';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import bgImage from '@/assets/images/2026/26-01/26-01-20/hairdo.webp';
+import d25090120font from '@/assets/fonts/2026/26-01-20-hairdo.ttf';
 
 // Defined outside to prevent re-allocation on every second tick
 const DIGIT_MAP = {

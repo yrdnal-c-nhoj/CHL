@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import arm from '../../../../assets/images/2025/25-05/25-05-25/arm.gif';
-import arm2 from '../../../../assets/images/2025/25-05/25-05-25/arm2.gif';
-import arm3 from '../../../../assets/images/2025/25-05/25-05-25/arm3.gif';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import arm from '@/assets/images/2025/25-05/25-05-25/arm.gif';
+import arm2 from '@/assets/images/2025/25-05/25-05-25/arm2.gif';
+import arm3 from '@/assets/images/2025/25-05/25-05-25/arm3.gif';
 // Use the ttf font instead of corrupted woff2
-import botFontUrl from '../../../../assets/fonts/2025/25-05-25-bot.ttf';
+import botFontUrl from '@/assets/fonts/2025/25-05-25-bot.ttf';
 
 const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

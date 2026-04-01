@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import Cu250830 from '../../../../assets/fonts/2025/25-08-30-mem.ttf'; // your font file
-import bgImage from '../../../../assets/images/2025/25-08/25-08-30/mem.gif'; // your background image
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import Cu250830 from '@/assets/fonts/2025/25-08-30-mem.ttf'; // your font file
+import bgImage from '@/assets/images/2025/25-08/25-08-30/mem.gif'; // your background image
 
 export default function MessyClock() {
   // Standardized font loading with font-display: swap to avoid FOUC

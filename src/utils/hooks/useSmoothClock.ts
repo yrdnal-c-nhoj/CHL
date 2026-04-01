@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 /**
  * Hook for smooth clock updates using requestAnimationFrame
  * Replaces setInterval for better performance and battery efficiency
- * 
+ *
  * @param updateInterval - Update interval in milliseconds (default: 1000 for seconds, use lower values for milliseconds)
  * @returns Current time
  */
@@ -37,7 +37,7 @@ export function useSmoothClock(updateInterval: number = 1000): Date {
 /**
  * Hook for smooth clock updates that only updates when seconds change
  * More efficient for clocks that don't need millisecond precision
- * 
+ *
  * @returns Current time
  */
 export function useSecondClock(): Date {
@@ -49,13 +49,13 @@ export function useSecondClock(): Date {
     const animate = (_timestamp: number) => {
       const now = new Date();
       const currentSecond = now.getSeconds();
-      
+
       // Only update when seconds change
       if (currentSecond !== lastSecondRef.current) {
         setTime(now);
         lastSecondRef.current = currentSecond;
       }
-      
+
       rafIdRef.current = requestAnimationFrame(animate);
     };
 
@@ -74,7 +74,7 @@ export function useSecondClock(): Date {
 /**
  * Hook for smooth millisecond display
  * Optimized for clocks showing millisecond precision
- * 
+ *
  * @param updateInterval - Update interval in milliseconds (default: 50)
  * @returns Current time
  */

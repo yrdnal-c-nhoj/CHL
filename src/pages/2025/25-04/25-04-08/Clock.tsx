@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useMillisecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import sageFontUrl from '../../../../assets/fonts/2025/25-04-08-sage.ttf?url';
+import { useMillisecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import sageFontUrl from '@/assets/fonts/2025/25-04-08-sage.ttf?url';
 
 // Component Props interface
 interface TripleCactusClockProps {

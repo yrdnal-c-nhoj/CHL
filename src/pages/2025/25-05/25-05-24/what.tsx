@@ -147,7 +147,7 @@ const BounceClock: React.FC = () => {
       <div ref={roomRef} style={styles.room} />
     </div>
   );
-}
+};
 
 const styles = {
   body: {

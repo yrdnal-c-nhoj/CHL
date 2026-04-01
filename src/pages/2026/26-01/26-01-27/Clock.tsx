@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { useEnhancedFontLoader } from '../../../../utils/enhancedFontLoader';
-import backgroundImage from '../../../../assets/images/2026/26-01/26-01-27/pan.jpg';
-import panFont from '../../../../assets/fonts/2026/26-01-27-pan.ttf';
+import { useEnhancedFontLoader } from '@/utils/enhancedFontLoader';
+import backgroundImage from '@/assets/images/2026/26-01/26-01-27/pan.jpg';
+import panFont from '@/assets/fonts/2026/26-01-27-pan.ttf';
 
 export default function PanoramaClock() {
   const [timeString, setTimeString] = useState<any>('');

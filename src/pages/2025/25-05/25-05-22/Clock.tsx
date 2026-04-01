@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import sunGif from '../../../../assets/images/2025/25-05/25-05-22/sun.gif'; // Use static import
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import dirFontUrl from '../../../../assets/fonts/2025/25-05-22-Dir.ttf'; // Use static import
+import sunGif from '@/assets/images/2025/25-05/25-05-22/sun.gif'; // Use static import
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import dirFontUrl from '@/assets/fonts/2025/25-05-22-Dir.ttf'; // Use static import
 
 const romanNumerals = [
   'XII',

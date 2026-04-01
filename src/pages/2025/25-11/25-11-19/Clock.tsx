@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import bgImg from '../../../../assets/images/2025/25-11/25-11-19/apple.webp';
-import tileImg from '../../../../assets/images/2025/25-11/25-11-19/ap.webp';
-import overlayImg from '../../../../assets/images/2025/25-11/25-11-19/app.webp';
-import customFontUrl from '../../../../assets/fonts/2025/25-11-19-apple.ttf?url';
+import bgImg from '@/assets/images/2025/25-11/25-11-19/apple.webp';
+import tileImg from '@/assets/images/2025/25-11/25-11-19/ap.webp';
+import overlayImg from '@/assets/images/2025/25-11/25-11-19/app.webp';
+import customFontUrl from '@/assets/fonts/2025/25-11-19-apple.ttf?url';
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
@@ -11,13 +11,16 @@ export default function AnalogClock() {
   // 1. Manage Font Loading
   useEffect(() => {
     const font = new FontFace('CustomClockFont', `url(${customFontUrl})`);
-    
-    font.load().then(() => {
-      document.fonts.add(font);
-      setFontLoaded(true);
-    }).catch(() => {
-      setFontLoaded(true); // Fallback
-    });
+
+    font
+      .load()
+      .then(() => {
+        document.fonts.add(font);
+        setFontLoaded(true);
+      })
+      .catch(() => {
+        setFontLoaded(true); // Fallback
+      });
   }, []);
 
   // 2. Manage Clock Timer
@@ -39,13 +42,15 @@ export default function AnalogClock() {
       <div style={styles.overlayBg} />
       <div style={styles.tiledBg} />
       <div style={styles.mainBg} />
-      
+
       {/* Clock Face */}
-      <div style={{ 
-        ...styles.clock, 
-        opacity: fontLoaded ? 1 : 0,
-        fontFamily: fontLoaded ? 'CustomClockFont, sans-serif' : 'sans-serif'
-      }}>
+      <div
+        style={{
+          ...styles.clock,
+          opacity: fontLoaded ? 1 : 0,
+          fontFamily: fontLoaded ? 'CustomClockFont, sans-serif' : 'sans-serif',
+        }}
+      >
         {displayTime}
       </div>
     </div>

@@ -1,4 +1,11 @@
-import React, { useEffect, useContext, useMemo, Suspense, useState, useCallback } from 'react';
+import React, {
+  useEffect,
+  useContext,
+  useMemo,
+  Suspense,
+  useState,
+  useCallback,
+} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import Header from './components/Header';
@@ -37,11 +44,18 @@ const ClockPage: React.FC = () => {
   // Memoized current item lookup
   const currentItem = useMemo(() => {
     if (!items || items.length === 0) return null;
-    return items.find((item: any) => normalizeDate(item.date) === normalizedDate);
+    return items.find(
+      (item: any) => normalizeDate(item.date) === normalizedDate,
+    );
   }, [items, normalizedDate, normalizeDate]);
 
   // Use the new hook for clock logic
-  const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPage(currentItem);
+  const {
+    ClockComponent,
+    isReady,
+    error: pageError,
+    overlayVisible,
+  } = useClockPage(currentItem);
 
   // Header fade-out animation
   useEffect(() => {
@@ -65,8 +79,8 @@ const ClockPage: React.FC = () => {
       return { currentIndex: -1, prevItem: null, nextItem: null };
     }
 
-    const currentIndex = items.findIndex((item: any) => 
-      normalizeDate(item.date) === normalizedDate
+    const currentIndex = items.findIndex(
+      (item: any) => normalizeDate(item.date) === normalizedDate,
     );
 
     return {

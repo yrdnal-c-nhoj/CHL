@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import woodImg from '../../../../assets/images/2025/25-05/25-05-13/wood.jpg';
-import tilesImg from '../../../../assets/images/2025/25-05/25-05-13/tiles.jpg';
-import hydFont from '../../../../assets/fonts/2025/25-05-13-hyd.ttf?url';
+import woodImg from '@/assets/images/2025/25-05/25-05-13/wood.jpg';
+import tilesImg from '@/assets/images/2025/25-05/25-05-13/tiles.jpg';
+import hydFont from '@/assets/fonts/2025/25-05-13-hyd.ttf?url';
 
 // Component Props interface
 interface FlatClockProps {

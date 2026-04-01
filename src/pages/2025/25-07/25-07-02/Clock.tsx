@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import bakFont from '../../../../assets/fonts/2025/25-07-02-bak.ttf';
-import backgroundGif from '../../../../assets/images/2025/25-07/25-07-02/ba.gif';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import bakFont from '@/assets/fonts/2025/25-07-02-bak.ttf';
+import backgroundGif from '@/assets/images/2025/25-07/25-07-02/ba.gif';
 
 export default function Clock() {
   const hourRef = useRef(null);

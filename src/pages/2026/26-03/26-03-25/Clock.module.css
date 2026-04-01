@@ -12,15 +12,17 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5, #ffbe0b, #fb5607, #ff006e);
-  background-size: 400% 400%;
-  animation: bgShift 8s ease infinite;
   position: relative;
 }
 
 @keyframes bgShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 /* --- Background Grid --- */
@@ -34,10 +36,11 @@
 }
 
 .bgCell {
-  background-image: url('../../../assets/images/26-03/26-03-25/ride.webp');
+  background-color: #333;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  min-height: 100%;
 }
 
 /* 2x4 Checkerboard for Mobile */
@@ -51,9 +54,11 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
   }
-  
-  .bgCell { transform: none; } /* Reset mobile pattern */
-  
+
+  .bgCell {
+    transform: none;
+  } /* Reset mobile pattern */
+
   /* 3x3 Checkerboard for Desktop */
   .bgCell:nth-child(even) {
     transform: scaleX(-1);
@@ -75,8 +80,12 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .clockRing {
@@ -103,22 +112,57 @@
 }
 
 /* Individual Color Mappings */
-.hourNumber12, .hourNumber6 { fill: #8338ec; }
-.hourNumber1, .hourNumber7  { fill: #ff006e; }
-.hourNumber2, .hourNumber8  { fill: #fb5607; }
-.hourNumber3, .hourNumber9  { fill: #ffbe0b; }
-.hourNumber4, .hourNumber10 { fill: #06ffa5; }
-.hourNumber5, .hourNumber11 { fill: #3a86ff; }
+.hourNumber12,
+.hourNumber6 {
+  fill: #8338ec;
+}
+.hourNumber1,
+.hourNumber7 {
+  fill: #ff006e;
+}
+.hourNumber2,
+.hourNumber8 {
+  fill: #fb5607;
+}
+.hourNumber3,
+.hourNumber9 {
+  fill: #ffbe0b;
+}
+.hourNumber4,
+.hourNumber10 {
+  fill: #06ffa5;
+}
+.hourNumber5,
+.hourNumber11 {
+  fill: #3a86ff;
+}
 
 /* --- Ticks --- */
-.tickPink    { stroke: #ff006e; }
-.tickOrange  { stroke: #fb5607; }
-.tickYellow  { stroke: #ffbe0b; }
-.tickGreen   { stroke: #06ffa5; }
-.tickBlue    { stroke: #3a86ff; }
-.tickPurple  { stroke: #8338ec; }
+.tickPink {
+  stroke: #ff006e;
+}
+.tickOrange {
+  stroke: #fb5607;
+}
+.tickYellow {
+  stroke: #ffbe0b;
+}
+.tickGreen {
+  stroke: #06ffa5;
+}
+.tickBlue {
+  stroke: #3a86ff;
+}
+.tickPurple {
+  stroke: #8338ec;
+}
 
-.tickPink, .tickOrange, .tickYellow, .tickGreen, .tickBlue, .tickPurple {
+.tickPink,
+.tickOrange,
+.tickYellow,
+.tickGreen,
+.tickBlue,
+.tickPurple {
   stroke-width: 3;
   stroke-linecap: round;
   fill: none;
@@ -130,19 +174,19 @@
   stroke: #ff006e;
   stroke-width: 12;
   stroke-linecap: round;
-  filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.5));
+  filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.5));
 }
 
 .minuteHand {
   stroke: #06ffa5;
   stroke-width: 8;
   stroke-linecap: round;
-  filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.5));
+  filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.5));
 }
 
 .secondHand {
   stroke: #8338ec;
   stroke-width: 4;
   stroke-linecap: round;
-  filter: drop-shadow(1px 1px 3px rgba(0,0,0,0.5));
+  filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.5));
 }

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import customFont from '../../../../assets/fonts/2025/25-07-28-gol.ttf?url';
-import backgroundImage from '../../../../assets/images/2025/25-07/25-07-28/go.gif';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import customFont from '@/assets/fonts/2025/25-07-28-gol.ttf?url';
+import backgroundImage from '@/assets/images/2025/25-07/25-07-28/go.gif';
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {

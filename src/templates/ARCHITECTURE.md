@@ -23,12 +23,12 @@ src/
 
 ## Standard Hooks (from `@/utils/hooks`)
 
-| Hook | Purpose | Update Rate |
-|------|---------|-------------|
-| `useClockTime` | Basic time display | 1 second |
-| `useSecondClock` | Alias for useClockTime | 1 second |
-| `useMillisecondClock` | Smooth animations | 60fps RAF |
-| `useNtpClock` | NTP-synced precision | 60fps RAF |
+| Hook                  | Purpose                | Update Rate |
+| --------------------- | ---------------------- | ----------- |
+| `useClockTime`        | Basic time display     | 1 second    |
+| `useSecondClock`      | Alias for useClockTime | 1 second    |
+| `useMillisecondClock` | Smooth animations      | 60fps RAF   |
+| `useNtpClock`         | NTP-synced precision   | 60fps RAF   |
 
 ```tsx
 import { useClockTime } from '@/utils/hooks';
@@ -56,18 +56,18 @@ export { bgImage };
 
 // 2. Font configuration
 const fontConfigs: FontConfig[] = [
-  { fontFamily: 'MyFont', fontUrl: '/fonts/my-font.woff2' }
+  { fontFamily: 'MyFont', fontUrl: '/fonts/my-font.woff2' },
 ];
 
 // 3. Component
 const Clock: React.FC = () => {
   const time = useClockTime();
   useSuspenseFontLoader(fontConfigs);
-  
+
   const formatted = useMemo(() => {
     return time.toLocaleTimeString();
   }, [time]);
-  
+
   return (
     <main className={styles.container}>
       <time dateTime={formatted}>{formatted}</time>
@@ -93,7 +93,7 @@ export default Clock;
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const fontConfigs: FontConfig[] = [
-  { fontFamily: 'MyFont', fontUrl: myFontFile }
+  { fontFamily: 'MyFont', fontUrl: myFontFile },
 ];
 
 const Clock: React.FC = () => {

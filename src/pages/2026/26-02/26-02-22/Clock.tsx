@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
+import { useSecondClock } from '@/utils/useSmoothClock';
 
-import digit7 from '../../../../assets/images/2026/26-02/26-02-22/1.webp';
-import digit4 from '../../../../assets/images/2026/26-02/26-02-22/2.webp';
-import digit12 from '../../../../assets/images/2026/26-02/26-02-22/3.webp';
-import digit3 from '../../../../assets/images/2026/26-02/26-02-22/4.webp';
-import digit1 from '../../../../assets/images/2026/26-02/26-02-22/5.webp';
-import digit9 from '../../../../assets/images/2026/26-02/26-02-22/6.webp';
-import digit2 from '../../../../assets/images/2026/26-02/26-02-22/7.webp';
-import digit10 from '../../../../assets/images/2026/26-02/26-02-22/8.webp';
-import digit6 from '../../../../assets/images/2026/26-02/26-02-22/9.webp';
-import digit5 from '../../../../assets/images/2026/26-02/26-02-22/10.webp';
-import digit8 from '../../../../assets/images/2026/26-02/26-02-22/11.webp';
-import digit11 from '../../../../assets/images/2026/26-02/26-02-22/12.webp';
-import skinBg from '../../../../assets/images/2026/26-02/26-02-22/skin.jpg';
+import digit7 from '@/assets/images/2026/26-02/26-02-22/1.webp';
+import digit4 from '@/assets/images/2026/26-02/26-02-22/2.webp';
+import digit12 from '@/assets/images/2026/26-02/26-02-22/3.webp';
+import digit3 from '@/assets/images/2026/26-02/26-02-22/4.webp';
+import digit1 from '@/assets/images/2026/26-02/26-02-22/5.webp';
+import digit9 from '@/assets/images/2026/26-02/26-02-22/6.webp';
+import digit2 from '@/assets/images/2026/26-02/26-02-22/7.webp';
+import digit10 from '@/assets/images/2026/26-02/26-02-22/8.webp';
+import digit6 from '@/assets/images/2026/26-02/26-02-22/9.webp';
+import digit5 from '@/assets/images/2026/26-02/26-02-22/10.webp';
+import digit8 from '@/assets/images/2026/26-02/26-02-22/11.webp';
+import digit11 from '@/assets/images/2026/26-02/26-02-22/12.webp';
+import skinBg from '@/assets/images/2026/26-02/26-02-22/skin.jpg';
 
 const DIGITS = [
   digit12,

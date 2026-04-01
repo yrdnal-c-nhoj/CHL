@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import twentyFont from '../../../../assets/fonts/2025/25-06-28-twenty.otf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import twentyFont from '@/assets/fonts/2025/25-06-28-twenty.otf';
 
 const Clock24: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

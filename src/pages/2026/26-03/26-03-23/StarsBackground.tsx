@@ -35,7 +35,14 @@ const StarsBackground: React.FC = () => {
     if (!starCtx) return;
 
     const half = starCanvas.width / 2;
-    const gradient = starCtx.createRadialGradient(half, half, 0, half, half, half);
+    const gradient = starCtx.createRadialGradient(
+      half,
+      half,
+      0,
+      half,
+      half,
+      half,
+    );
     gradient.addColorStop(0.025, '#fff');
     gradient.addColorStop(0.1, `hsl(${HUE}, 61%, 33%)`);
     gradient.addColorStop(0.25, `hsl(${HUE}, 64%, 6%)`);
@@ -122,7 +129,7 @@ const StarsBackground: React.FC = () => {
             x - star.radius / 2,
             y - star.radius / 2,
             star.radius,
-            star.radius
+            star.radius,
           );
         }
         star.timePassed += star.speed;

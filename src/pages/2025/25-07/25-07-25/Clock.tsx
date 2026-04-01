@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import background2 from '../../../../assets/images/2025/25-07/25-07-25/bb.webp'; // front
-import background1 from '../../../../assets/images/2025/25-07/25-07-25/bam.webp'; // back
-import background3 from '../../../../assets/images/2025/25-07/25-07-25/bambu.gif'; // static background
-import customFont from '../../../../assets/fonts/2025/25-07-25-bamboo.ttf';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import background2 from '@/assets/images/2025/25-07/25-07-25/bb.webp'; // front
+import background1 from '@/assets/images/2025/25-07/25-07-25/bam.webp'; // back
+import background3 from '@/assets/images/2025/25-07/25-07-25/bambu.gif'; // static background
+import customFont from '@/assets/fonts/2025/25-07-25-bamboo.ttf';
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(() => new Date());

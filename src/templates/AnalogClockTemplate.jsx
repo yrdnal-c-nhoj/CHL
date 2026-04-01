@@ -36,10 +36,11 @@ const useClock = () => {
 
 const AnalogClock = () => {
   const now = useClock();
-  
-  const fontConfigs = useMemo(() => [
-    { fontFamily: 'BorrowedAnalog', fontUrl: analogRainFont }
-  ], []);
+
+  const fontConfigs = useMemo(
+    () => [{ fontFamily: 'BorrowedAnalog', fontUrl: analogRainFont }],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Time Calculations (including sub-second fractions for smooth motion)

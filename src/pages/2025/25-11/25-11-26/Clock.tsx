@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // Media file paths in public folder
-import videoFile from '../../../../assets/images/2025/25-11/25-11-26/esp.mp4';
-import videoWebM from '../../../../assets/images/2025/25-11/25-11-26/esp.mp4';
-import fallbackImg from '../../../../assets/images/2025/25-11/25-11-26/birds.webp';
-import fontUrl_20251128 from '../../../../assets/fonts/2025/25-11-26-bird.ttf?url';
+import videoFile from '@/assets/images/2025/25-11/25-11-26/esp.mp4';
+import videoWebM from '@/assets/images/2025/25-11/25-11-26/esp.mp4';
+import fallbackImg from '@/assets/images/2025/25-11/25-11-26/birds.webp';
+import fontUrl_20251128 from '@/assets/fonts/2025/25-11-26-bird.ttf?url';
 
 // Export assets for preloading
 export { videoFile, videoWebM, fallbackImg };

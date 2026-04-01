@@ -1,8 +1,9 @@
 import React, { useMemo, useCallback } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
+import empireFont from '@/assets/fonts/2026/26-03-20-empire.otf';
 
 interface HourMarker {
   value: number;
@@ -14,12 +15,12 @@ interface HourMarker {
 const fontConfigs: FontConfig[] = [
   {
     fontFamily: 'Empire',
-    fontUrl: new URL('../../../assets/fonts/2026/26-03-20-empire.otf', import.meta.url).href,
+    fontUrl: empireFont,
     options: {
       weight: 'normal',
       style: 'normal',
-    }
-  }
+    },
+  },
 ];
 
 const Clock = () => {
@@ -33,9 +34,9 @@ const Clock = () => {
     const minutes = currentTime.getMinutes();
     const seconds = currentTime.getSeconds();
 
-    const hourDegrees = (hours * 30) + (minutes * 0.5) - 90;
-    const minuteDegrees = (minutes * 6) + (seconds * 0.1) - 90;
-    const secondDegrees = (seconds * 6) - 90;
+    const hourDegrees = hours * 30 + minutes * 0.5 - 90;
+    const minuteDegrees = minutes * 6 + seconds * 0.1 - 90;
+    const secondDegrees = seconds * 6 - 90;
 
     return { hourDegrees, minuteDegrees, secondDegrees };
   }, [currentTime]);
@@ -43,17 +44,18 @@ const Clock = () => {
   const hourMarkers = useMemo<HourMarker[]>(() => {
     const markers: HourMarker[] = [];
     for (let i = 1; i <= 12; i++) {
-      const angle = (i * 30) - 90;
+      const angle = i * 30 - 90;
       const radius = 40;
-      const x = 50 + radius * Math.cos(angle * Math.PI / 180);
-      const y = 50 + radius * Math.sin(angle * Math.PI / 180);
-      
+      const x = 50 + radius * Math.cos((angle * Math.PI) / 180);
+      const y = 50 + radius * Math.sin((angle * Math.PI) / 180);
+
       markers.push({ value: i, angle, x, y });
     }
     return markers;
   }, []);
 
-  const { hourDegrees, minuteDegrees, secondDegrees } = calculateHandPositions();
+  const { hourDegrees, minuteDegrees, secondDegrees } =
+    calculateHandPositions();
 
   return (
     <div className={styles.container}>
@@ -72,28 +74,27 @@ const Clock = () => {
                 {marker.value}
               </div>
             ))}
-            
+
             <div
               className={`${styles.hand} ${styles.hourHand}`}
               style={{
-                transform: `rotate(${hourDegrees}deg)`
+                transform: `rotate(${hourDegrees}deg)`,
               }}
             />
-            
+
             <div
               className={`${styles.hand} ${styles.minuteHand}`}
               style={{
-                transform: `rotate(${minuteDegrees}deg)`
+                transform: `rotate(${minuteDegrees}deg)`,
               }}
             />
-            
+
             <div
               className={`${styles.hand} ${styles.secondHand}`}
               style={{
-                transform: `rotate(${secondDegrees}deg)`
+                transform: `rotate(${secondDegrees}deg)`,
               }}
             />
-            
           </div>
         </div>
       </div>

@@ -30,7 +30,7 @@ class MockFontFace {
     this.descriptors = descriptors;
     this.loaded = Promise.resolve(this);
   }
-  
+
   load() {
     return Promise.resolve(this);
   }

@@ -3,7 +3,7 @@
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
-  background-color:  #00eaff;
+  background-color: #00eaff;
 }
 
 .videoBackground {
@@ -69,9 +69,15 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(233, 9, 9, 0.29);
-  border: 2px solid #00FF408E;
+  border: 2px solid #00ff408e;
   color: #00ff41;
   font-family: 'H2OClock', Georgia, serif;
   font-size: 20vw;
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 10px #00ff41, 0 0 20px #00ff41;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000,
+    0 0 10px #00ff41,
+    0 0 20px #00ff41;
 }

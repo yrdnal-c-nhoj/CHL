@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import customFont from '../../../../assets/fonts/2026/26-02-09-spin.otf?url';
-import type { FontConfig } from '../../../../types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import customFont from '@/assets/fonts/2026/26-02-09-spin.otf?url';
+import type { FontConfig } from '@/types/clock';
 
 interface Glyph {
   type: 'hour' | 'minute' | 'period';

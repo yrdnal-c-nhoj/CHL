@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import videoFile from '../../../../assets/images/2025/25-12/25-12-28/coaster.mp4';
-import fallbackImg from '../../../../assets/images/2025/25-12/25-12-28/coaster.webp';
-import fontUrl_20251128 from '../../../../assets/fonts/2025/25-12-28-coaster.ttf?url';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import videoFile from '@/assets/images/2025/25-12/25-12-28/coaster.mp4';
+import fallbackImg from '@/assets/images/2025/25-12/25-12-28/coaster.webp';
+import fontUrl_20251128 from '@/assets/fonts/2025/25-12-28-coaster.ttf?url';
 
 export default function Clock() {
   const [timeText, setTimeText] = useState<any>('');

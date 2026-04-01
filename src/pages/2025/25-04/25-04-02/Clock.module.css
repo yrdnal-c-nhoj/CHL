@@ -1,13 +1,9 @@
 .style-1 {
-
-                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-              
+  transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
 }
 
 .style-2 {
-
-                transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
-              
+  transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
 }
 
 .inlineStyle {

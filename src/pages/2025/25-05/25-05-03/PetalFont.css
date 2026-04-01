@@ -1,4 +1,5 @@
 @font-face {
   font-family: 'Petal';
-  src: url('../../../assets/fonts/2025/25-05-03-Petal.ttf') format('truetype');
+  src: url('../../../../assets/fonts/2025/25-05-03-Petal.ttf')
+    format('truetype');
 }

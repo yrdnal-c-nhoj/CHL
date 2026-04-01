@@ -15,8 +15,19 @@ const IndecisiveClock: React.FC = () => {
   // Convert numbers to Roman numerals
   const toRoman = (num: string) => {
     const romanNumerals: { [key: string]: string } = {
-      '0': '0', '1': 'I', '2': 'II', '3': 'III', '4': 'IV', '5': 'V',
-      '6': 'VI', '7': 'VII', '8': 'VIII', '9': 'IX', '10': 'X', '11': 'XI', '12': 'XII'
+      '0': '0',
+      '1': 'I',
+      '2': 'II',
+      '3': 'III',
+      '4': 'IV',
+      '5': 'V',
+      '6': 'VI',
+      '7': 'VII',
+      '8': 'VIII',
+      '9': 'IX',
+      '10': 'X',
+      '11': 'XI',
+      '12': 'XII',
     };
     return romanNumerals[num] || num;
   };
@@ -110,101 +121,101 @@ const IndecisiveClock: React.FC = () => {
         }
       `}</style>
 
-        <div id="container" style={containerStyle}>
-          <div
-            className="time-block"
+      <div id="container" style={containerStyle}>
+        <div
+          className="time-block"
+          style={{
+            ...timeBlockBase,
+            opacity: showFirst ? 1 : 0,
+          }}
+        >
+          <span
+            className="digit"
             style={{
-              ...timeBlockBase,
-              opacity: showFirst ? 1 : 0,
+              ...digitStyle,
+              fontFamily: "'Kalam', sans-serif",
+              color: 'white',
             }}
           >
-            <span
-              className="digit"
-              style={{
-                ...digitStyle,
-                fontFamily: "'Kalam', sans-serif",
-                color: 'white',
-              }}
-            >
-              {showFirst ? toRoman(time.m) : time.m}
-            </span>
-            <span
-              className="digit"
-              style={{
-                ...digitStyle,
-                fontFamily: "'Kalam', sans-serif",
-                color: 'white',
-              }}
-            >
-              {showFirst ? toRoman(time.s) : time.s}
-            </span>
-            <span
-              className="digit"
-              style={{
-                ...digitStyle,
-                fontFamily: "'Kalam', sans-serif",
-                color: 'white',
-              }}
-            >
-              {time.s}
-            </span>
-          </div>
-
-          <div
-            className="time-block"
+            {showFirst ? toRoman(time.m) : time.m}
+          </span>
+          <span
+            className="digit"
             style={{
-              ...timeBlockBase,
-              opacity: showFirst ? 0 : 1,
+              ...digitStyle,
+              fontFamily: "'Kalam', sans-serif",
+              color: 'white',
             }}
           >
-            <span
-              className="digit"
-              style={{
-                ...digitStyle,
-                fontFamily: "'Metal Mania', sans-serif",
-                color: 'black',
-              }}
-            >
-              {time.h}
-            </span>
-            <span
-              className="digit"
-              style={{
-                ...digitStyle,
-                fontFamily: "'Metal Mania', sans-serif",
-                color: 'black',
-              }}
-            >
-              {time.m}
-            </span>
-            <span
-              className="digit"
-              style={{
-                ...digitStyle,
-                fontFamily: "'Metal Mania', sans-serif",
-                color: 'black',
-              }}
-            >
-              {time.s}
-            </span>
-          </div>
+            {showFirst ? toRoman(time.s) : time.s}
+          </span>
+          <span
+            className="digit"
+            style={{
+              ...digitStyle,
+              fontFamily: "'Kalam', sans-serif",
+              color: 'white',
+            }}
+          >
+            {time.s}
+          </span>
         </div>
 
-        <svg id="filters" style={{ position: 'absolute', width: 0, height: 0 }}>
-          <defs>
-            <filter id="threshold">
-              <feColorMatrix
-                in="SourceGraphic"
-                type="matrix"
-                values="1 0 0 0 0
+        <div
+          className="time-block"
+          style={{
+            ...timeBlockBase,
+            opacity: showFirst ? 0 : 1,
+          }}
+        >
+          <span
+            className="digit"
+            style={{
+              ...digitStyle,
+              fontFamily: "'Metal Mania', sans-serif",
+              color: 'black',
+            }}
+          >
+            {time.h}
+          </span>
+          <span
+            className="digit"
+            style={{
+              ...digitStyle,
+              fontFamily: "'Metal Mania', sans-serif",
+              color: 'black',
+            }}
+          >
+            {time.m}
+          </span>
+          <span
+            className="digit"
+            style={{
+              ...digitStyle,
+              fontFamily: "'Metal Mania', sans-serif",
+              color: 'black',
+            }}
+          >
+            {time.s}
+          </span>
+        </div>
+      </div>
+
+      <svg id="filters" style={{ position: 'absolute', width: 0, height: 0 }}>
+        <defs>
+          <filter id="threshold">
+            <feColorMatrix
+              in="SourceGraphic"
+              type="matrix"
+              values="1 0 0 0 0
                         0 1 0 0 0
                         0 0 1 0 0
                         0 0 0 255 -140"
-              />
-            </filter>
-          </defs>
-        </svg>
-      </div>
+            />
+          </filter>
+        </defs>
+      </svg>
+    </div>
   );
 };
 

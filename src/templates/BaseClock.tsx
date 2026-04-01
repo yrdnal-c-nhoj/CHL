@@ -6,15 +6,15 @@ import styles from './BaseClock.module.css';
 
 /**
  * BaseClock - Standardized Clock Component Architecture
- * 
+ *
  * This component demonstrates the canonical structure for all BorrowedTime clocks:
- * 
+ *
  * 1. Asset exports for preloading pipeline
  * 2. Font loading with Suspense
  * 3. CSS Module for scoped styles
  * 4. Standard hook for time management
  * 5. Semantic HTML with <time> element
- * 
+ *
  * To create a new clock:
  * 1. Copy this file and the .module.css file
  * 2. Update asset imports
@@ -48,7 +48,7 @@ const formatDigits = (num: number): string => num.toString().padStart(2, '0');
 const BaseClock: React.FC = () => {
   // Use standardized hook (1-second updates by default)
   const time = useClockTime();
-  
+
   // Load fonts via Suspense (component must be wrapped in <Suspense>)
   useSuspenseFontLoader(fontConfigs);
 

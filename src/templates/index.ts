@@ -1,8 +1,8 @@
 /**
  * Templates Index
- * 
+ *
  * Central export for all clock templates.
- * 
+ *
  * Templates:
  * - BaseClock: Standardized architecture (recommended starting point)
  * - MasterTemplate: Legacy template with useClock hook

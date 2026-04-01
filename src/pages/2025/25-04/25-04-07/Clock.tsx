@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import sys1 from '../../../../assets/images/2025/25-04/25-04-07/sys1.gif';
-import sys2 from '../../../../assets/images/2025/25-04/25-04-07/sys2.gif';
-import sys3 from '../../../../assets/images/2025/25-04/25-04-07/sys3.gif';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import sys1 from '@/assets/images/2025/25-04/25-04-07/sys1.gif';
+import sys2 from '@/assets/images/2025/25-04/25-04-07/sys2.gif';
+import sys3 from '@/assets/images/2025/25-04/25-04-07/sys3.gif';
 
 // Component Props interface
 interface SolarSystemClockProps {

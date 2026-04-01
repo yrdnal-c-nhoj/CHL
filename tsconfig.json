@@ -33,14 +33,6 @@
     },
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": [
-    "src/**/*",
-    "vite.config.ts",
-    "vitest.config.js"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build"
-  ]
+  "include": ["src/**/*", "vite.config.ts", "vitest.config.js"],
+  "exclude": ["node_modules", "dist", "build"]
 }

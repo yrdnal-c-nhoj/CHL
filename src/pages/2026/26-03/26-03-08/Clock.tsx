@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useGlobalStyles } from '../../../../utils/enhancedFontLoader';
-import { useEnhancedFontLoader } from '../../../../utils/enhancedFontLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useGlobalStyles } from '@/utils/enhancedFontLoader';
+import { useEnhancedFontLoader } from '@/utils/enhancedFontLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/useSmoothClock';
 import hand1Img from '/src/assets/images/2026/26-03/26-03-08/hand2.png';
 import hand2Img from '/src/assets/images/2026/26-03/26-03-08/hand1.webp';
 import handImg from '/src/assets/images/2026/26-03/26-03-08/hand.webp';

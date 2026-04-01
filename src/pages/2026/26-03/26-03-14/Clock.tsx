@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import backgroundImage from '../../../../assets/images/2026/26-03/26-03-14/mother.webp';
-import { useMillisecondClock } from '../../../../utils/useSmoothClock';
+import backgroundImage from '@/assets/images/2026/26-03/26-03-14/mother.webp';
+import { useMillisecondClock } from '@/utils/useSmoothClock';
 
 const ImageLayout = React.memo(() => (
   <div style={{ position: 'fixed', inset: 0, zIndex: 0, background: '#000' }}>

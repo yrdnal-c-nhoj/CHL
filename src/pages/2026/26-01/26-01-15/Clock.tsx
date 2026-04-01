@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, memo } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import overlayBg from '../../../../assets/images/2026/26-01/26-01-15/red.gif';
-import baseBg from '../../../../assets/images/2026/26-01/26-01-15/sph.gif';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import overlayBg from '@/assets/images/2026/26-01/26-01-15/red.gif';
+import baseBg from '@/assets/images/2026/26-01/26-01-15/sph.gif';
 
 // Centralized color control for all clock hands
 const handColors = {
