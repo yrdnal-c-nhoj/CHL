@@ -2,6 +2,7 @@ import React from 'react';
 import { useMillisecondClock } from '@/utils/useSmoothClock';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import triFont from '@/assets/fonts/2026/26-03-27-tri.ttf';
+import styles from './Clock.module.css';
 
 // Returns the max radius a hand at angle `theta` (radians, 0=up, CW) can extend
 // within the triangle defined by vertices relative to center cx, cy.
@@ -89,12 +90,10 @@ export default function TriangleClock() {
   const secArcAngle = secFrac * 2 * Math.PI;
   const prevSecAngle = Math.floor(seconds) / 60 * 2 * Math.PI;
 
-  // Numbers positioned inside the triangle
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const numberPct: Record<number, { left: string; top: string; right?: string }> = {
-    10: { left: isMobile ? '25%' : '18%', top: '15%' },
-    2: { left: 'auto', top: '15%', right: '18%' },
-    6: { left: '50%', top: '80%' },
+  const numberPositions: Record<number, string> = {
+    10: styles.numberTen,
+    2: styles.numberTwo,
+    6: styles.numberSix,
   };
 
   // Generate 3 equidistant tick marks on each edge, pointing toward center
@@ -146,28 +145,10 @@ export default function TriangleClock() {
   const numberFill = '#184F11';
 
   return (
-    <div
-      style={{
-        width: '100%',
-        height: '100%',
-        background: 'linear-gradient(180deg, #1a3a5c 0%, #007BA7 50%, #1a3a5c 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        position: 'relative',
-        boxSizing: 'border-box',
-        outline: '10px solid #2956EB',
-        outlineOffset: '-10px',
-      }}
-    >
+    <div className={styles.container}>
       <svg
         viewBox={`0 0 ${VW} ${VH}`}
-        style={{
-          width: 'calc(100% - 40px)',
-          height: 'calc(100% - 40px)',
-          display: 'block',
-        }}
+        className={styles.svg}
         preserveAspectRatio="none"
       >
         <defs>
@@ -294,30 +275,15 @@ export default function TriangleClock() {
       </svg>
 
       {/* Numbers rendered outside SVG to avoid stretching */}
-      {([10, 2, 6] as const).map((n) => {
-        const pct = numberPct[n]!;
-        return (
-          <div
-            key={n}
-            style={{
-              position: 'absolute',
-              left: pct.left,
-              top: pct.top,
-              right: pct.right,
-              transform: 'translate(-50%, -50%)',
-              color: numberFill,
-              fontFamily,
-              fontSize: 38,
-              fontWeight: 300,
-              letterSpacing: n === 10 ? '-6px' : '2px',
-              userSelect: 'none',
-              textShadow: '0 0 10px #EFB8D4, 0 0 20px #F9C3DE',
-            }}
-          >
-            {n}
-          </div>
-        );
-      })}
+      {([10, 2, 6] as const).map((n) => (
+        <div
+          key={n}
+          className={`${styles.number} ${numberPositions[n]}`}
+          style={{ fontFamily }}
+        >
+          {n}
+        </div>
+      ))}
     </div>
   );
 }

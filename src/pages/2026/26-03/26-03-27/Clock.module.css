@@ -1,0 +1,55 @@
+.container {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #1a3a5c 0%, #007BA7 50%, #1a3a5c 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  outline: 10px solid #2956EB;
+  outline-offset: -10px;
+}
+
+.svg {
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+  display: block;
+}
+
+.number {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  color: #184F11;
+  font-size: 38px;
+  font-weight: 300;
+  user-select: none;
+  -webkit-user-select: none;
+  text-shadow: 0 0 10px #EFB8D4, 0 0 20px #F9C3DE;
+}
+
+.numberTen {
+  left: 18%;
+  top: 15%;
+  letter-spacing: -6px;
+}
+
+.numberTwo {
+  left: auto;
+  right: 18%;
+  top: 15%;
+  letter-spacing: 2px;
+}
+
+.numberSix {
+  left: 50%;
+  top: 80%;
+  letter-spacing: 2px;
+}
+
+@media (max-width: 768px) {
+  .numberTen {
+    left: 25%;
+  }
+}
