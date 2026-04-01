@@ -163,20 +163,20 @@ const Clock: React.FC = () => {
         lastTime = now;
 
         if (secondsCounter % 3 === 0) {
-        setEmojiIndex((prevIndex) => {
-          const nextIndex = (prevIndex + 1) % emojiCycle.length;
-          const nextEmoji = emojiCycle[nextIndex];
+          setEmojiIndex((prevIndex) => {
+            const nextIndex = (prevIndex + 1) % emojiCycle.length;
+            const nextEmoji = emojiCycle[nextIndex];
 
-          if (activeBuffer === 1) {
-            setBuffer2Emoji(nextEmoji);
-            setActiveBuffer(2);
-          } else {
-            setBuffer1Emoji(nextEmoji);
-            setActiveBuffer(1);
-          }
-          return nextIndex;
-        });
-      }
+            if (activeBuffer === 1) {
+              setBuffer2Emoji(nextEmoji);
+              setActiveBuffer(2);
+            } else {
+              setBuffer1Emoji(nextEmoji);
+              setActiveBuffer(1);
+            }
+            return nextIndex;
+          });
+        }
       }
       frameId = requestAnimationFrame(tick);
     };

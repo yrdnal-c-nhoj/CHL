@@ -1,9 +1,9 @@
 // Clock.jsx
 import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import backgroundImg from '../../../../assets/images/2025/25-10/25-10-21/bg.jpg';
-import hourHandImg from '../../../../assets/images/2025/25-10/25-10-21/hour.gif';
-import minuteHandImg from '../../../../assets/images/2025/25-10/25-10-21/min.gif';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import backgroundImg from '@/assets/images/2025/25-10/25-10-21/bg.jpg';
+import hourHandImg from '@/assets/images/2025/25-10/25-10-21/hour.gif';
+import minuteHandImg from '@/assets/images/2025/25-10/25-10-21/min.gif';
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());

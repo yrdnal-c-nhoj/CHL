@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import font20250119_primary from '../../../../assets/fonts/2026/26-01-16-leap.otf';
-import font20250119_secondary from '../../../../assets/fonts/25-04-25-Oswald-Bold.ttf';
-import font20250119_mono from '../../../../assets/fonts/25-05-10-Questrial.ttf';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import font20250119_primary from '@/assets/fonts/2026/26-01-16-leap.otf';
+import font20250119_secondary from '@/assets/fonts/25-04-25-Oswald-Bold.ttf';
+import font20250119_mono from '@/assets/fonts/25-05-10-Questrial.ttf';
 import '@fontsource/roboto-mono';
 
 const LEAP_SECOND_DATES = [

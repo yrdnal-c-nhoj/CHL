@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import sss47wert from '../../../../assets/fonts/2025/25-09-27-disc.ttf?url';
-import bgOuter from '../../../../assets/images/2025/25-09/25-09-27/water.webp';
-import bgInner from '../../../../assets/images/2025/25-09/25-09-27/disc.gif';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import sss47wert from '@/assets/fonts/2025/25-09-27-disc.ttf?url';
+import bgOuter from '@/assets/images/2025/25-09/25-09-27/water.webp';
+import bgInner from '@/assets/images/2025/25-09/25-09-27/disc.gif';
 
 const TempestClock: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());

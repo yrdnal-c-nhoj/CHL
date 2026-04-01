@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import myFontUrl from '../../../../assets/fonts/2025/25-08-20-go.otf?url';
-import bgImage from '../../../../assets/images/2025/25-08/25-08-20/24.webp'; // background image
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import myFontUrl from '@/assets/fonts/2025/25-08-20-go.otf?url';
+import bgImage from '@/assets/images/2025/25-08/25-08-20/24.webp'; // background image
 import styles from './Clock.module.css';
 
 const TIMEZONES = [

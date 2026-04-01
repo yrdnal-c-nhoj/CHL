@@ -45,7 +45,7 @@
 
 .digit span {
   font-size: clamp(2rem, 16vw, 8rem);
-  color: #C53539;
+  color: #c53539;
   font-family: OrigamiFont, sans-serif;
   text-shadow: 0 0 20px rgb(238, 253, 224);
 }

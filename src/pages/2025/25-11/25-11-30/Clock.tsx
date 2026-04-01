@@ -1,9 +1,9 @@
 // DigitalClock.jsx (Optimized for FOUT Prevention)
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import font251130 from '../../../../assets/fonts/2025/25-11-30-nono.ttf?url';
-import backgroundImg from '../../../../assets/images/2025/25-11/25-11-30/crax.jpg';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import font251130 from '@/assets/fonts/2025/25-11-30-nono.ttf?url';
+import backgroundImg from '@/assets/images/2025/25-11/25-11-30/crax.jpg';
 import styles from './Clock.module.css';
 
 export default function DigitalClock() {

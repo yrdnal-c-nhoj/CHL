@@ -5,6 +5,7 @@ Thank you for your interest in contributing to BorrowedTime! This document provi
 ## 🎯 Ways to Contribute
 
 ### 1. Add a New Clock
+
 The primary way to contribute is by creating a new daily clock:
 
 - Create a clock following our [date-based structure](README.md#creating-a-new-clock)
@@ -13,12 +14,14 @@ The primary way to contribute is by creating a new daily clock:
 - Submit a pull request
 
 ### 2. Improve Existing Clocks
+
 - Fix bugs in existing clock implementations
 - Improve performance or accessibility
 - Enhance animations or visual effects
 - Refactor for better code quality
 
 ### 3. Enhance Infrastructure
+
 - Improve build tools and configuration
 - Add new testing coverage
 - Optimize asset loading
@@ -27,17 +30,20 @@ The primary way to contribute is by creating a new daily clock:
 ## 🚀 Getting Started
 
 1. **Fork the repository**
+
    ```bash
    git clone https://github.com/your-username/CHL.git
    cd CHL
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment**
+
    ```bash
    cp .env.example .env
    # Edit .env with your configuration
@@ -51,6 +57,7 @@ The primary way to contribute is by creating a new daily clock:
 ## 📝 Guidelines
 
 ### Code Style
+
 - Use TypeScript for new components
 - Follow existing file naming conventions
 - Use CSS Modules for component styles (`.module.css`)
@@ -58,7 +65,9 @@ The primary way to contribute is by creating a new daily clock:
 - Run `npm run format` to format code
 
 ### Clock Structure
+
 Each clock should be in:
+
 ```
 src/pages/YY-MM/YY-MM-DD/
 ├── Clock.tsx           # Main clock component
@@ -67,11 +76,13 @@ src/pages/YY-MM/YY-MM-DD/
 ```
 
 ### Testing
+
 - Run `npm run test:run` to ensure tests pass
 - Add tests for new utilities or components
 - Follow existing test patterns in `src/test/`
 
 ### Performance
+
 - Use lazy loading for heavy assets
 - Optimize images before committing
 - Test on mobile devices
@@ -88,6 +99,7 @@ src/pages/YY-MM/YY-MM-DD/
 ## 📋 Pull Request Process
 
 1. **Create a branch** for your feature
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -95,6 +107,7 @@ src/pages/YY-MM/YY-MM-DD/
 2. **Make your changes** following the guidelines above
 
 3. **Test thoroughly**
+
    ```bash
    npm run test:run
    npm run build
@@ -102,11 +115,13 @@ src/pages/YY-MM/YY-MM-DD/
    ```
 
 4. **Commit with clear messages**
+
    ```bash
    git commit -m "Add: New clock for 26-04-01 with wave animation"
    ```
 
 5. **Push and create PR**
+
    ```bash
    git push origin feature/your-feature-name
    ```

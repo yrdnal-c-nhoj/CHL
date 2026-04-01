@@ -53,8 +53,8 @@ export function calculateAngles(time: Date): {
   const seconds = time.getSeconds();
 
   return {
-    hour: ((hours % 12) * 30) + (minutes * 0.5), // 30 degrees per hour + minute adjustment
-    minute: minutes * 6 + (seconds * 0.1), // 6 degrees per minute + second adjustment
+    hour: (hours % 12) * 30 + minutes * 0.5, // 30 degrees per hour + minute adjustment
+    minute: minutes * 6 + seconds * 0.1, // 6 degrees per minute + second adjustment
     second: seconds * 6, // 6 degrees per second
   };
 }
@@ -69,7 +69,7 @@ export function calculateAngles(time: Date): {
 export function generateTickMarks(
   radius: number,
   centerX: number,
-  centerY: number
+  centerY: number,
 ): Array<{
   x1: number;
   y1: number;

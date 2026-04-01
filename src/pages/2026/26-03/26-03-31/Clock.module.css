@@ -37,7 +37,8 @@
 
 .numeralInner {
   display: inline-block;
-  animation: underwaterFloat var(--drift-duration, 6s) ease-in-out var(--drift-delay, 0s) infinite;
+  animation: underwaterFloat var(--drift-duration, 6s) ease-in-out
+    var(--drift-delay, 0s) infinite;
 }
 
 .hand {
@@ -45,7 +46,8 @@
   left: 50%;
   bottom: 50%;
   transform-origin: bottom center;
-  animation: underwaterFloat var(--drift-duration, 6s) ease-in-out var(--drift-delay, 0s) infinite;
+  animation: underwaterFloat var(--drift-duration, 6s) ease-in-out
+    var(--drift-delay, 0s) infinite;
   z-index: 1;
   filter: contrast(2.9);
   opacity: 0.7;
@@ -53,7 +55,6 @@
 
 .handHour {
   z-index: 2;
-
 }
 
 .handMinute {
@@ -87,11 +88,24 @@
 }
 
 @keyframes underwaterFloat {
-  0%   { transform: translateY(0px) scale(1); }
-  20%  { transform: translateY(calc(var(--drift-amp, 10) * -1px)) scale(var(--scale-hi, 1.05)); }
-  50%  { transform: translateY(calc(var(--drift-amp, 10) * 0.6px)) scale(var(--scale-lo, 0.95)); }
-  75%  { transform: translateY(calc(var(--drift-amp, 10) * -0.8px)) scale(calc(var(--scale-hi, 1.05) * 0.98)); }
-  100% { transform: translateY(0px) scale(1); }
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  20% {
+    transform: translateY(calc(var(--drift-amp, 10) * -1px))
+      scale(var(--scale-hi, 1.05));
+  }
+  50% {
+    transform: translateY(calc(var(--drift-amp, 10) * 0.6px))
+      scale(var(--scale-lo, 0.95));
+  }
+  75% {
+    transform: translateY(calc(var(--drift-amp, 10) * -0.8px))
+      scale(calc(var(--scale-hi, 1.05) * 0.98));
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+  }
 }
 
 @media (min-width: 1024px) {

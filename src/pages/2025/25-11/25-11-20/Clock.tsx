@@ -1,8 +1,8 @@
 // PixelInverseClock.jsx
 import React, { useRef, useEffect, useState } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import videoFile from '../../../../assets/images/2025/25-11/25-11-20/day.mp4';
-import fontFile from '../../../../assets/fonts/2025/25-11-20-day.ttf';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import videoFile from '@/assets/images/2025/25-11/25-11-20/day.mp4';
+import fontFile from '@/assets/fonts/2025/25-11-20-day.ttf';
 
 const FONT_FAMILY = 'MyClockFont_20251120';
 const fontUrl = fontFile;

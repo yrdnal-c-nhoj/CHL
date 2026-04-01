@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import bananaGif from '../../../../assets/images/2025/25-06/25-06-11/banana.gif';
-import spinningBanana from '../../../../assets/images/2025/25-06/25-06-11/yellow-spinning-banana.gif';
-import hourHand from '../../../../assets/images/2025/25-06/25-06-11/ban.png';
-import minuteHand from '../../../../assets/images/2025/25-06/25-06-11/ban.png';
-import secondHand from '../../../../assets/images/2025/25-06/25-06-11/ban.png';
-import banFont from '../../../../assets/fonts/2025/25-06-11-Ban.ttf';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import bananaGif from '@/assets/images/2025/25-06/25-06-11/banana.gif';
+import spinningBanana from '@/assets/images/2025/25-06/25-06-11/yellow-spinning-banana.gif';
+import hourHand from '@/assets/images/2025/25-06/25-06-11/ban.png';
+import minuteHand from '@/assets/images/2025/25-06/25-06-11/ban.png';
+import secondHand from '@/assets/images/2025/25-06/25-06-11/ban.png';
+import banFont from '@/assets/fonts/2025/25-06-11-Ban.ttf';
 
 const BananaClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

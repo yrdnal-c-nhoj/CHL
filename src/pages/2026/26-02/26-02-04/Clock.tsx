@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import type { FontConfig } from '../../../../types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
 
-import digitalFontUrl from '../../../../assets/fonts/2026/26-02-04-trans.ttf?url';
-import digitalBgImage from '../../../../assets/images/2026/26-02/26-02-04/trans.webp';
-import backgroundImage from '../../../../assets/images/2026/26-02/26-02-04/tran.jpg';
+import digitalFontUrl from '@/assets/fonts/2026/26-02-04-trans.ttf?url';
+import digitalBgImage from '@/assets/images/2026/26-02/26-02-04/trans.webp';
+import backgroundImage from '@/assets/images/2026/26-02/26-02-04/tran.jpg';
 
 const CONFIG = {
   use24Hour: false,

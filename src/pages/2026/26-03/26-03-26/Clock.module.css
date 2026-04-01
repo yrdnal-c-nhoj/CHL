@@ -21,7 +21,6 @@
   z-index: -2;
 }
 
-
 .clockWrapper {
   display: flex;
   flex-direction: row;
@@ -40,7 +39,7 @@
   font-size: clamp(4rem, 14vh, 14rem);
   font-weight: 400;
   color: #ffe4b5;
-  text-shadow: 
+  text-shadow:
     0 0 20px rgba(255, 140, 100, 0.9),
     0 0 40px rgba(255, 100, 80, 0.7),
     0 0 80px rgba(255, 80, 60, 0.5),
@@ -48,8 +47,11 @@
     -2px 0 0 rgba(255, 150, 100, 0.3),
     2px 0 0 rgba(255, 100, 150, 0.3);
   line-height: 1;
-  animation: heatWave 60s ease-in-out infinite, heatRise 20s ease-in-out infinite;
-  animation-delay: calc(var(--digit-index, 0) * 4s), calc(var(--digit-index, 0) * 2.5s);
+  animation:
+    heatWave 60s ease-in-out infinite,
+    heatRise 20s ease-in-out infinite;
+  animation-delay:
+    calc(var(--digit-index, 0) * 4s), calc(var(--digit-index, 0) * 2.5s);
   opacity: 0.25;
   filter: blur(0.5px);
   position: relative;
@@ -69,8 +71,18 @@
   animation: heatRise 20s ease-in-out infinite;
   animation-delay: calc(var(--digit-index, 0) * 2.5s);
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0) 100%);
-  mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.8) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.8) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
   -webkit-mask-size: 100% 40%;
   mask-size: 100% 40%;
   -webkit-mask-position: 0% 100%;
@@ -133,7 +145,7 @@
     transform: scaleY(1.012) skewX(0.4deg);
   }
   60% {
-    opacity: 0.30;
+    opacity: 0.3;
     filter: blur(0.5px) saturate(1.05);
     transform: scaleY(0.998) skewX(-0.1deg);
   }
@@ -160,7 +172,8 @@
 }
 
 @keyframes drift {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) translateX(0) rotate(0deg);
   }
   15% {
@@ -181,7 +194,8 @@
 }
 
 @keyframes breathe {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.5;
     filter: brightness(1) saturate(1) blur(0.3px);
     transform: scale(1);

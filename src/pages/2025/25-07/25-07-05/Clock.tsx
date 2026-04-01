@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import vegasFontUrl from '../../../../assets/fonts/2025/25-07-05-vegas.ttf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import vegasFontUrl from '@/assets/fonts/2025/25-07-05-vegas.ttf';
 
 const VegasClock: React.FC = () => {
   const hour1Ref = useRef(null);

@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import { spellTwoDigitNumber } from '../../../../utils/latinNumberSpelling';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import { spellTwoDigitNumber } from '@/utils/latinNumberSpelling';
 
 const UPDATE_INTERVAL = 1000;
 const MOBILE_BREAKPOINT = 768;
 const FONT_NAME = 'Forum';
 
-import backgroundImage from '../../../../assets/images/2026/26-02/26-02-20/forum2.webp';
-import topImage from '../../../../assets/images/2026/26-02/26-02-20/forum.webp';
-import forumFont from '../../../../assets/fonts/2026/26-02-20-forum.otf';
+import backgroundImage from '@/assets/images/2026/26-02/26-02-20/forum2.webp';
+import topImage from '@/assets/images/2026/26-02/26-02-20/forum.webp';
+import forumFont from '@/assets/fonts/2026/26-02-20-forum.otf';
 
 export { backgroundImage, topImage };
 

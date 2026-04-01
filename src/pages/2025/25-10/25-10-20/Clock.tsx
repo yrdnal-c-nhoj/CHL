@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import treeImg from '../../../../assets/images/2025/25-10/25-10-20/trees.jpg';
+import treeImg from '@/assets/images/2025/25-10/25-10-20/trees.jpg';
 
 export default function ClockPage() {
   const hourRef = useRef<HTMLDivElement>(null);

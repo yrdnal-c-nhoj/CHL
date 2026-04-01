@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, memo, useCallback } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/useSmoothClock';
 
 const CONFIG = {
   UPDATE_INTERVAL: 1000,
@@ -9,15 +9,15 @@ const CONFIG = {
   FONT_FAMILY: 'ClockCustom',
 };
 
-import img1 from '../../../../assets/images/2026/26-02/26-02-21/123.webp';
-import img2 from '../../../../assets/images/2026/26-02/26-02-21/1231.gif';
-import img3 from '../../../../assets/images/2026/26-02/26-02-21/1232.webp';
-import img4 from '../../../../assets/images/2026/26-02/26-02-21/1233.webp';
-import img5 from '../../../../assets/images/2026/26-02/26-02-21/1234.webp';
-import img6 from '../../../../assets/images/2026/26-02/26-02-21/1235.webp';
-import img7 from '../../../../assets/images/2026/26-02/26-02-21/1236.gif';
-import img8 from '../../../../assets/images/2026/26-02/26-02-21/1237.webp';
-import customFont from '../../../../assets/fonts/2026/26-02-21-321.otf?url';
+import img1 from '@/assets/images/2026/26-02/26-02-21/123.webp';
+import img2 from '@/assets/images/2026/26-02/26-02-21/1231.gif';
+import img3 from '@/assets/images/2026/26-02/26-02-21/1232.webp';
+import img4 from '@/assets/images/2026/26-02/26-02-21/1233.webp';
+import img5 from '@/assets/images/2026/26-02/26-02-21/1234.webp';
+import img6 from '@/assets/images/2026/26-02/26-02-21/1235.webp';
+import img7 from '@/assets/images/2026/26-02/26-02-21/1236.gif';
+import img8 from '@/assets/images/2026/26-02/26-02-21/1237.webp';
+import customFont from '@/assets/fonts/2026/26-02-21-321.otf?url';
 
 export { img1, img2, img3, img4, img5, img6, img7, img8 };
 

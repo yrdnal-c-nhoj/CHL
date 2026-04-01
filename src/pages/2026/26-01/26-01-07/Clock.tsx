@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import styles from './Clock.module.css';
 
-import spin from '../../../../assets/images/2026/26-01/26-01-07/20206.gif';
-import bubl from '../../../../assets/images/2026/26-01/26-01-07/bubl.gif';
-import fish from '../../../../assets/images/2026/26-01/26-01-07/fish.gif';
-import gfish from '../../../../assets/images/2026/26-01/26-01-07/gfish.gif';
-import aquarium from '../../../../assets/images/2026/26-01/26-01-07/aquarium.gif';
+import spin from '@/assets/images/2026/26-01/26-01-07/20206.gif';
+import bubl from '@/assets/images/2026/26-01/26-01-07/bubl.gif';
+import fish from '@/assets/images/2026/26-01/26-01-07/fish.gif';
+import gfish from '@/assets/images/2026/26-01/26-01-07/gfish.gif';
+import aquarium from '@/assets/images/2026/26-01/26-01-07/aquarium.gif';
 
 const AquariumClock: React.FC = () => {
   const hourHandRef = useRef<HTMLImageElement>(null);

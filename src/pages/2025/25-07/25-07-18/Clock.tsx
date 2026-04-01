@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import bgImage from '../../../../assets/images/2025/25-07/25-07-18/558074085193-ezgif.com-optiwebp-1.webp';
-import xrayFontUrl from '../../../../assets/fonts/2025/25-07-18-xray.ttf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import bgImage from '@/assets/images/2025/25-07/25-07-18/558074085193-ezgif.com-optiwebp-1.webp';
+import xrayFontUrl from '@/assets/fonts/2025/25-07-18-xray.ttf';
 
 const HospitalClock: React.FC = () => {
   const [time, setTime] = useState<any>('');

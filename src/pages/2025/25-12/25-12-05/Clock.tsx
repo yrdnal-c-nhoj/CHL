@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import font_2025_12_06 from '../../../../assets/fonts/2025/25-12-05-magic.ttf?url';
-import bgImage from '../../../../assets/images/2025/25-12/25-12-05/magic.webp';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import font_2025_12_06 from '@/assets/fonts/2025/25-12-05-magic.ttf?url';
+import bgImage from '@/assets/images/2025/25-12/25-12-05/magic.webp';
 import styles from './Clock.module.css';
 
 export default function BoxedDigitalClock() {

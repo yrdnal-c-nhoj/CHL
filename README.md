@@ -6,7 +6,7 @@
 [![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> *A new clock every day.*
+> _A new clock every day._
 
 BorrowedTime is a creative digital art project by [Cubist Heart Laboratories](https://www.cubistheart.com) that delivers a unique clock design each day. Every clock is a distinct exploration of time, typography, and visual aesthetics, combining found imagery, custom fonts, and innovative web technologies.
 
@@ -25,6 +25,7 @@ BorrowedTime creates daily clock experiences that challenge conventional timekee
 ## 🚀 Features
 
 ### Core Functionality
+
 - **Daily Clock Generation**: New clock design published every day
 - **Dynamic Routing**: URL structure `/YY-MM-DD` for each clock
 - **Archive Navigation**: Browse through historical clock designs
@@ -32,6 +33,7 @@ BorrowedTime creates daily clock experiences that challenge conventional timekee
 - **Today's Clock**: Direct access to the current day's design
 
 ### Technical Features
+
 - **Modern React Architecture**: Built with React 18 and hooks
 - **TypeScript Integration**: Complete migration to TypeScript for enhanced type safety
 - **Performance Optimized**: Lazy loading, code splitting, and asset optimization
@@ -43,6 +45,7 @@ BorrowedTime creates daily clock experiences that challenge conventional timekee
 ## 🛠 Technology Stack
 
 ### Frontend
+
 - **React 18**: Modern React with hooks and concurrent features
 - **React Router v6**: Client-side routing with dynamic routes
 - **TypeScript**: Gradual adoption for enhanced development experience
@@ -51,12 +54,14 @@ BorrowedTime creates daily clock experiences that challenge conventional timekee
 - **GSAP**: Advanced animations and transitions
 
 ### Development Tools
+
 - **ESLint**: Code quality and consistency
 - **Prettier**: Code formatting
 - **Vitest**: Unit testing framework
 - **TypeScript Compiler**: Static type checking
 
 ### Deployment & Infrastructure
+
 - **Vercel**: Hosting and deployment platform
 - **GitHub**: Version control and collaboration
 - **Node.js 24.x**: Runtime environment
@@ -111,6 +116,7 @@ CHL/
 Each clock follows a flexible structure while maintaining unique characteristics:
 
 ### Common Elements
+
 - **Time Display**: Hours, minutes, and seconds in various formats
 - **Typography**: Custom fonts and typographic experiments
 - **Visual Effects**: Animations, transitions, and interactive elements
@@ -118,6 +124,7 @@ Each clock follows a flexible structure while maintaining unique characteristics
 - **Responsive Design**: Mobile and desktop optimizations
 
 ### Design Examples
+
 - **26-03-15**: Rotating digits with custom shadow effects and vibrant gradients
 - **25-04-01**: Cosmic-themed digital clock with aurora effects and rainbow glow
 - **25-05-01**: Lightning-themed clock with shake animations and flash effects
@@ -126,29 +133,34 @@ Each clock follows a flexible structure while maintaining unique characteristics
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 24.x or higher
 - npm or yarn package manager
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/your-username/CHL.git
    cd CHL
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.example .env
    # Edit .env with your configuration
    ```
 
 4. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -191,24 +203,26 @@ npm run test:ui
 
 Tests are organized in `src/test/`:
 
-| Test File | Coverage |
-|-----------|----------|
-| `clockUtils.test.ts` | Time formatting, angle calculations, tick mark generation |
-| `assetLoader.test.ts` | Asset loading utilities, srcset generation |
-| `useClockPage.test.ts` | Dynamic clock loading, path resolution |
-| `DataContext.test.tsx` | Data context provider, error handling |
-| `App.test.tsx` | App routing, error boundaries |
-| `navigation.test.tsx` | TopNav component |
-| `ClockPage.test.js` | Path resolution, date format validation |
+| Test File              | Coverage                                                  |
+| ---------------------- | --------------------------------------------------------- |
+| `clockUtils.test.ts`   | Time formatting, angle calculations, tick mark generation |
+| `assetLoader.test.ts`  | Asset loading utilities, srcset generation                |
+| `useClockPage.test.ts` | Dynamic clock loading, path resolution                    |
+| `DataContext.test.tsx` | Data context provider, error handling                     |
+| `App.test.tsx`         | App routing, error boundaries                             |
+| `navigation.test.tsx`  | TopNav component                                          |
+| `ClockPage.test.js`    | Path resolution, date format validation                   |
 
 ### Writing Tests
 
 The test setup includes mocks for browser APIs:
+
 - `window.matchMedia` - Responsive design testing
 - `ResizeObserver` - Layout testing
 - `FontFace` / `document.fonts` - Font loading testing
 
 Example test pattern:
+
 ```typescript
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
@@ -236,12 +250,15 @@ describe('Component', () => {
 ## 🎨 Creating a New Clock
 
 ### File Structure
+
 Each clock follows the date-based structure:
+
 ```
 src/pages/YY-MM/YY-MM-DD/Clock.tsx
 ```
 
 ### Clock Component Template
+
 ```typescript
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
@@ -293,6 +310,7 @@ export default Clock;
 ```
 
 ### Best Practices
+
 - Use the `useFontLoader` hook for custom fonts to prevent FOUC
 - Implement responsive design for mobile and desktop
 - Add loading states for better UX
@@ -302,6 +320,7 @@ export default Clock;
 ## 🌐 Deployment
 
 ### Vercel (Recommended)
+
 1. Connect your GitHub repository to Vercel
 2. Configure build settings:
    - Build Command: `npm run build`
@@ -310,6 +329,7 @@ export default Clock;
 3. Deploy automatically on push to main branch
 
 ### Manual Deployment
+
 ```bash
 npm run build
 # Deploy the 'dist' folder to your hosting provider
@@ -324,14 +344,18 @@ npm run build
 ## 🔧 Configuration
 
 ### Environment Variables
+
 Create a `.env` file with:
+
 ```env
 VITE_GA_ID=your-google-analytics-id
 VITE_BASE_URL=https://your-domain.com
 ```
 
 ### Vite Configuration
+
 Key settings in `vite.config.ts`:
+
 - React plugin configuration
 - Build optimization
 - Development server settings
@@ -339,6 +363,7 @@ Key settings in `vite.config.ts`:
 ## 🗺️ Roadmap
 
 ### Phase 1: Foundation & Performance (Q1 2025)
+
 - [x] **TypeScript Migration**: Complete migration to TypeScript for all components
 - [x] **Advanced Font Loading**: Implement robust font loading with FOUC prevention
 - [x] **Component Library**: Create reusable components and utilities
@@ -347,6 +372,7 @@ Key settings in `vite.config.ts`:
 - [ ] **Testing Suite**: Implement unit and integration tests
 
 ### Phase 2: Enhanced User Experience (Q2 2025)
+
 - [ ] **Offline Support**: Implement service worker for offline clock viewing
 - [ ] **Accessibility**: Full WCAG 2.1 AA compliance across all clocks
 - [ ] **Mobile Optimization**: Touch gestures and mobile-specific interactions
@@ -355,6 +381,7 @@ Key settings in `vite.config.ts`:
 - [ ] **Social Sharing**: Enhanced sharing capabilities with custom previews
 
 ### Phase 3: Advanced Features (Q3 2025)
+
 - [ ] **Clock Creator**: Web-based tool for creating custom clock designs
 - [ ] **API Integration**: External API support for weather-based themes
 - [ ] **Real-time Collaboration**: Multi-user clock design sessions
@@ -363,6 +390,7 @@ Key settings in `vite.config.ts`:
 - [ ] **Export Functionality**: Download clocks as images or standalone widgets
 
 ### Phase 4: Platform Expansion (Q4 2025)
+
 - [ ] **Mobile Apps**: Native iOS and Android applications
 - [ ] **Desktop App**: Electron-based desktop application
 - [ ] **Browser Extensions**: Clock widgets for popular browsers
@@ -371,6 +399,7 @@ Key settings in `vite.config.ts`:
 - [ ] **API Public**: Public API for third-party integrations
 
 ### Phase 5: Community & Ecosystem (2026)
+
 - [ ] **Community Gallery**: User-submitted clock designs
 - [ ] **Design System**: Comprehensive design system documentation
 - [ ] **Plugin Architecture**: Plugin system for custom clock behaviors
@@ -379,6 +408,7 @@ Key settings in `vite.config.ts`:
 - [ ] **Design Awards**: Annual clock design competition
 
 ### Technical Debt & Maintenance
+
 - [ ] **Code Cleanup**: Remove legacy JavaScript files and consolidate utilities
 - [ ] **Eliminate Style Leaks**: Refactor components that manually inject global styles or keyframes to use CSS Modules or scoped hooks, preventing style conflicts between clocks.
 - [ ] **Documentation**: Comprehensive API documentation and guides
@@ -388,6 +418,7 @@ Key settings in `vite.config.ts`:
 - [ ] **CI/CD Pipeline**: Enhanced deployment and testing pipelines
 
 ### Infrastructure & DevOps
+
 - [ ] **CDN Implementation**: Global content delivery for assets
 - [ ] **Database Migration**: Move from JSON to proper database solution
 - [ ] **Caching Strategy**: Implement advanced caching mechanisms
@@ -402,18 +433,21 @@ Key settings in `vite.config.ts`:
 We welcome contributions to the BorrowedTime project! Here's how you can help:
 
 ### Adding New Clocks
+
 1. Create a new clock following the date-based structure
 2. Test on multiple devices and browsers
 3. Add the clock to the data context
 4. Submit a pull request
 
 ### Improving Existing Features
+
 - Bug fixes and performance improvements
 - New components or utilities
 - Documentation updates
 - Test coverage improvements
 
 ### Development Guidelines
+
 - Follow the existing code style and patterns
 - Use TypeScript for new components when possible
 - Test your changes thoroughly
@@ -434,12 +468,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📬 Newsletter
 
 Subscribe to our monthly newsletter for project updates and new clock releases:
+
 - Visit the [Contact page](/contact) to subscribe
 - Or use the direct Buttondown subscription form
 
 ## 🎭 Manifesto
 
-*BorrowedTime* operates on these principles:
+_BorrowedTime_ operates on these principles:
 
 - **We Take Pictures** - We appropriate beautiful images from the infinite scroll of the Internet
 - **We Love Typefaces** - Born from passion and shared like a secret handshake
@@ -452,5 +487,5 @@ Read the full [manifesto](/manifesto) for our complete philosophy.
 
 ---
 
-*Built with ❤️ by Cubist Heart Laboratories*  
-*🧊🫀🔭*
+_Built with ❤️ by Cubist Heart Laboratories_  
+_🧊🫀🔭_

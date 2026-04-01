@@ -1,8 +1,8 @@
 // File: DigitalStackClock.jsx
 import React, { useEffect, useState } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import bgImg from '../../../../assets/images/2025/25-11/25-11-23/gs.webp'; // your background
-import font2025_11_24 from '../../../../assets/fonts/2025/25-11-23-gal.ttf?url'; // your custom font
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import bgImg from '@/assets/images/2025/25-11/25-11-23/gs.webp'; // your background
+import font2025_11_24 from '@/assets/fonts/2025/25-11-23-gal.ttf?url'; // your custom font
 
 export default function DigitalStackClock() {
   const [now, setNow] = useState(new Date());

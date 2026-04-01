@@ -1,6 +1,6 @@
 import React from 'react';
-import bgImage from '../../../../assets/images/2026/26-03/26-03-16/metrop.webp';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
+import bgImage from '@/assets/images/2026/26-03/26-03-16/metrop.webp';
+import { useSecondClock } from '@/utils/useSmoothClock';
 
 const Clock: React.FC = () => {
   const time = useSecondClock();

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import cocteauVideo from '../../../../assets/images/2026/26-02/26-02-25/cocteau.mp4';
-import starWebp from '../../../../assets/images/2026/26-02/26-02-25/star.webp';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import cocteauVideo from '@/assets/images/2026/26-02/26-02-25/cocteau.mp4';
+import starWebp from '@/assets/images/2026/26-02/26-02-25/star.webp';
 
 const CocteauClock: React.FC = () => {
   const time = useSecondClock();

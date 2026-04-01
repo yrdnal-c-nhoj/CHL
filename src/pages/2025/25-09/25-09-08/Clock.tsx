@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import bgImage from '../../../../assets/images/2025/25-09/25-09-08/orange.webp';
-import img1 from '../../../../assets/images/2025/25-09/25-09-08/1.webp';
-import img2 from '../../../../assets/images/2025/25-09/25-09-08/2.jpg';
-import img3 from '../../../../assets/images/2025/25-09/25-09-08/3.jpg';
-import img4 from '../../../../assets/images/2025/25-09/25-09-08/4.jpg';
-import img5 from '../../../../assets/images/2025/25-09/25-09-08/5.jpg';
-import img6 from '../../../../assets/images/2025/25-09/25-09-08/6.jpg';
-import img7 from '../../../../assets/images/2025/25-09/25-09-08/7.jpg';
-import img8 from '../../../../assets/images/2025/25-09/25-09-08/8.jpg';
-import img9 from '../../../../assets/images/2025/25-09/25-09-08/9.jpg';
-import img10 from '../../../../assets/images/2025/25-09/25-09-08/10.jpg';
-import img11 from '../../../../assets/images/2025/25-09/25-09-08/11.jpg';
-import img12 from '../../../../assets/images/2025/25-09/25-09-08/12.webp';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import bgImage from '@/assets/images/2025/25-09/25-09-08/orange.webp';
+import img1 from '@/assets/images/2025/25-09/25-09-08/1.webp';
+import img2 from '@/assets/images/2025/25-09/25-09-08/2.jpg';
+import img3 from '@/assets/images/2025/25-09/25-09-08/3.jpg';
+import img4 from '@/assets/images/2025/25-09/25-09-08/4.jpg';
+import img5 from '@/assets/images/2025/25-09/25-09-08/5.jpg';
+import img6 from '@/assets/images/2025/25-09/25-09-08/6.jpg';
+import img7 from '@/assets/images/2025/25-09/25-09-08/7.jpg';
+import img8 from '@/assets/images/2025/25-09/25-09-08/8.jpg';
+import img9 from '@/assets/images/2025/25-09/25-09-08/9.jpg';
+import img10 from '@/assets/images/2025/25-09/25-09-08/10.jpg';
+import img11 from '@/assets/images/2025/25-09/25-09-08/11.jpg';
+import img12 from '@/assets/images/2025/25-09/25-09-08/12.webp';
 
 export default function ImageAnalogClock() {
   const [time, setTime] = useState(new Date());

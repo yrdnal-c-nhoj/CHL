@@ -17,15 +17,18 @@ interface UseClockPageResult {
   overlayVisible: boolean;
 }
 
-export const useClockPage = (item: ClockItem | null | undefined): UseClockPageResult => {
-  const [ClockComponent, setClockComponent] = useState<ComponentType | null>(null);
+export const useClockPage = (
+  item: ClockItem | null | undefined,
+): UseClockPageResult => {
+  const [ClockComponent, setClockComponent] = useState<ComponentType | null>(
+    null,
+  );
   const [isReady, setIsReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [overlayVisible, setOverlayVisible] = useState(true);
-  
+
   // Ref to track the current loading item to prevent race conditions
   const loadingItemRef = useRef<string | null>(null);
-
 
   const getClockModuleKey = useCallback((item: ClockItem) => {
     const date = item?.date || item?.path;
@@ -38,7 +41,6 @@ export const useClockPage = (item: ClockItem | null | undefined): UseClockPageRe
       `../pages/20${yy}/${yy}-${mm}/${item.path}/Clock.tsx`, // year/month/day structure
       `../pages/${yy}-${mm}/${item.path}/Clock.tsx`, // legacy flat structure
     ];
-
 
     for (const key of candidates) {
       if (clockModules[key]) {
@@ -84,7 +86,7 @@ export const useClockPage = (item: ClockItem | null | undefined): UseClockPageRe
 
       const itemKey = item.date || item.path;
       loadingItemRef.current = itemKey;
-      
+
       setOverlayVisible(true);
       setError(null);
 
@@ -96,11 +98,11 @@ export const useClockPage = (item: ClockItem | null | undefined): UseClockPageRe
 
         const moduleLoader = clockModules[moduleKey] as () => Promise<any>;
         const module = await moduleLoader();
-        
+
         // Only proceed if we're still loading the same item
         if (loadingItemRef.current === itemKey) {
           await preloadAssets(module);
-          
+
           setClockComponent(() => module.default);
           setIsReady(true);
           setTimeout(() => setOverlayVisible(false), 300);

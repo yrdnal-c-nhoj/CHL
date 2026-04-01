@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import bgImageSrc from '../../../../assets/images/2025/25-09/25-09-14/bg.gif';
+import bgImageSrc from '@/assets/images/2025/25-09/25-09-14/bg.gif';
 
 const GoldenChordsClock: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -58,7 +58,12 @@ const GoldenChordsClock: React.FC = () => {
 
       // --- CLOCK HANDS ---
       const clockRadius = R * 0.6 * scale;
-      const drawHand = (angle: number, length: number, width: number, color: string) => {
+      const drawHand = (
+        angle: number,
+        length: number,
+        width: number,
+        color: string,
+      ) => {
         ctx.save();
         ctx.globalAlpha = 0.9;
         ctx.shadowColor = 'rgba(24, 28, 26, 0.8)';

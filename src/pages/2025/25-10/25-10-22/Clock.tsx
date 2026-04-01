@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import videoFile from '../../../../assets/images/2025/25-10/25-10-22/bg.mp4';
-import fallbackImg from '../../../../assets/images/2025/25-10/25-10-22/bg.webp';
-import fundyFont from '../../../../assets/fonts/2025/25-10-22-fundy.ttf?url';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import videoFile from '@/assets/images/2025/25-10/25-10-22/bg.mp4';
+import fallbackImg from '@/assets/images/2025/25-10/25-10-22/bg.webp';
+import fundyFont from '@/assets/fonts/2025/25-10-22-fundy.ttf?url';
 import styles from './Clock.module.css';
 
 const ClockWithVideo: React.FC = () => {

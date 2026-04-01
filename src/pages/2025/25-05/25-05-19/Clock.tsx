@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import antFontUrl from '../../../../assets/fonts/2025/25-05-19-Ant.ttf';
-import bg1 from '../../../../assets/images/2025/25-05/25-05-19/ants.gif';
-import bg2 from '../../../../assets/images/2025/25-05/25-05-19/ants1.gif';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import antFontUrl from '@/assets/fonts/2025/25-05-19-Ant.ttf';
+import bg1 from '@/assets/images/2025/25-05/25-05-19/ants.gif';
+import bg2 from '@/assets/images/2025/25-05/25-05-19/ants1.gif';
 
 const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

@@ -1,11 +1,11 @@
 import { useEffect, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 
 // Asset imports
-import bgImage from '../../../../assets/images/2025/25-12/25-12-26/sat.webp';
-import overlayImage from '../../../../assets/images/2025/25-12/25-12-26/scythe.webp';
-import fontFile from '../../../../assets/fonts/sat.ttf?url'; // ?url tells Vite to copy the file to output
+import bgImage from '@/assets/images/2025/25-12/25-12-26/sat.webp';
+import overlayImage from '@/assets/images/2025/25-12/25-12-26/scythe.webp';
+import fontFile from '@/assets/fonts/sat.ttf?url'; // ?url tells Vite to copy the file to output
 
 const FONT_FAMILY = 'SaturnFont';
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import coffeeFont from '../../../../assets/fonts/2025/25-06-04-cof.ttf';
-import bgStill from '../../../../assets/images/2025/25-06/25-06-04/coff.png';
-import bgAnimated from '../../../../assets/images/2025/25-06/25-06-04/coff.gif';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import coffeeFont from '@/assets/fonts/2025/25-06-04-cof.ttf';
+import bgStill from '@/assets/images/2025/25-06/25-06-04/coff.png';
+import bgAnimated from '@/assets/images/2025/25-06/25-06-04/coff.gif';
 
 const CoffeeClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

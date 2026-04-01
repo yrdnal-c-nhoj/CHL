@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import bgImage from '../../../../assets/images/2026/26-01/26-01-19/hands.webp';
+import bgImage from '@/assets/images/2026/26-01/26-01-19/hands.webp';
 import styles from './Clock.module.css';
 
 const COLORS = {
@@ -165,7 +165,7 @@ const ManyHandClock: React.FC = () => {
 
     const tick = () => {
       frameId = requestAnimationFrame(tick);
-      
+
       const t = new Date();
       const currentTime = t.getTime();
       const s = t.getSeconds();

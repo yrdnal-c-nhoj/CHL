@@ -14,7 +14,7 @@ export const fontConfigs: FontConfig[] = [
 
 const Clock: React.FC = () => {
   const { time, smoothSeconds } = useClock();
-  
+
   // Load fonts and suspend if necessary
   useSuspenseFontLoader(fontConfigs);
 
@@ -25,9 +25,9 @@ const Clock: React.FC = () => {
     <main className={styles.container}>
       <div className={styles.visuals}>
         {/* Your art goes here */}
-        <div 
-          className={styles.hand} 
-          style={{ transform: `rotate(${rotation}deg)` }} 
+        <div
+          className={styles.hand}
+          style={{ transform: `rotate(${rotation}deg)` }}
         />
       </div>
       <h1 className={styles.timeDisplay}>{time.toLocaleTimeString()}</h1>

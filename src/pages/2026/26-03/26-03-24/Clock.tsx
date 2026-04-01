@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import arrowImg from '../../../../assets/images/2026/26-03/26-03-23/arrow.webp?url';
-import fontUrl from '../../../../assets/fonts/2026/26-03-23-arrow.ttf?url';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
+import arrowImg from '@/assets/images/2026/26-03/26-03-23/arrow.webp?url';
+import fontUrl from '@/assets/fonts/2026/26-03-23-arrow.ttf?url';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const FONT_FAMILY = 'ClockFont_Arrow';
 const LOOP_MS = 10000;                    // full cycle time (intact → shatter → new clock)

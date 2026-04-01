@@ -53,7 +53,7 @@ describe('App Routing', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <App />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   });
 
@@ -61,7 +61,7 @@ describe('App Routing', () => {
     const { container } = render(
       <MemoryRouter initialEntries={['/']}>
         <App />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(container).toBeTruthy();
@@ -74,7 +74,7 @@ describe('App Error Boundary', () => {
     const { container } = render(
       <MemoryRouter initialEntries={['/']}>
         <App />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(container).toBeTruthy();

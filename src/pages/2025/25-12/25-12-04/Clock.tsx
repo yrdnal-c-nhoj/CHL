@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import sloanFont_2025_1204 from '../../../../assets/fonts/2025/25-12-04-ichart.otf?url';
-import type { FontConfig } from '../../../../types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import sloanFont_2025_1204 from '@/assets/fonts/2025/25-12-04-ichart.otf?url';
+import type { FontConfig } from '@/types/clock';
 
 const fontFamilyName = 'SloanOptotype_2025_1204';
 

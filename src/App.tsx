@@ -156,7 +156,7 @@ class ErrorBoundary extends React.Component<Props, State> {
  */
 const App: React.FC = () => {
   console.log('App component rendering');
-  
+
   return (
     <ErrorBoundary>
       <DataProvider>

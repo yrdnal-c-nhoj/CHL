@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // --- FONT IMPORT (same folder) ---
-import font_sdfsdfsdfsd from '../../../../assets/fonts/2025/25-11-21-omission.otf?url';
+import font_sdfsdfsdfsd from '@/assets/fonts/2025/25-11-21-omission.otf?url';
 
 // --- IMAGE IMPORTS (same folder) ---
-import img1 from '../../../../assets/images/2025/25-11/25-11-21/1.jpg';
-import img2 from '../../../../assets/images/2025/25-11/25-11-21/2.jpg';
-import img3 from '../../../../assets/images/2025/25-11/25-11-21/3.jpg';
-import img4 from '../../../../assets/images/2025/25-11/25-11-21/4.jpg';
-import img5 from '../../../../assets/images/2025/25-11/25-11-21/5.jpg';
-import img6 from '../../../../assets/images/2025/25-11/25-11-21/6.jpg';
+import img1 from '@/assets/images/2025/25-11/25-11-21/1.jpg';
+import img2 from '@/assets/images/2025/25-11/25-11-21/2.jpg';
+import img3 from '@/assets/images/2025/25-11/25-11-21/3.jpg';
+import img4 from '@/assets/images/2025/25-11/25-11-21/4.jpg';
+import img5 from '@/assets/images/2025/25-11/25-11-21/5.jpg';
+import img6 from '@/assets/images/2025/25-11/25-11-21/6.jpg';
 
 const images = [img1, img2, img3, img4, img5, img6];
 

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import * as THREE from 'three';
 
-import bgFull from '../../../../assets/images/2025/25-11/25-11-12/octo.webp'; // full-size background
-import bgTile from '../../../../assets/images/2025/25-11/25-11-12/octoh.webp'; // repeating/tiled background
-import custom251112tz from '../../../../assets/fonts/2025/25-11-12-oct.ttf?url';
+import bgFull from '@/assets/images/2025/25-11/25-11-12/octo.webp'; // full-size background
+import bgTile from '@/assets/images/2025/25-11/25-11-12/octoh.webp'; // repeating/tiled background
+import custom251112tz from '@/assets/fonts/2025/25-11-12-oct.ttf?url';
 
 export default function TwoBackgroundOctahedron() {
   const threeRef = useRef(null);

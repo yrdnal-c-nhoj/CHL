@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import backgroundImage from '../../../../assets/images/2025/25-12/25-12-02/bg.webp';
+import backgroundImage from '@/assets/images/2025/25-12/25-12-02/bg.webp';
 
 const ROTATION_DURATION = 240; // seconds for a full rotation (quarter speed)
 const ZOOM_MULTIPLIER = 1.5;

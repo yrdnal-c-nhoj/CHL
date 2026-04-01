@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import bluFont from '../../../../assets/fonts/2025/25-05-18-blu.otf'; // local font
-import image1 from '../../../../assets/images/2025/25-05/25-05-18/13966281486_Volantis_Tumblr.gif'; // bottom layer
-import image2 from '../../../../assets/images/2025/25-05/25-05-18/8mMt.gif'; // middle layer
-import image3 from '../../../../assets/images/2025/25-05/25-05-18/bloo.gif'; // top layer
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import bluFont from '@/assets/fonts/2025/25-05-18-blu.otf'; // local font
+import image1 from '@/assets/images/2025/25-05/25-05-18/13966281486_Volantis_Tumblr.gif'; // bottom layer
+import image2 from '@/assets/images/2025/25-05/25-05-18/8mMt.gif'; // middle layer
+import image3 from '@/assets/images/2025/25-05/25-05-18/bloo.gif'; // top layer
 
 const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

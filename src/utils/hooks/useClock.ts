@@ -14,10 +14,12 @@ export function useClock() {
     const syncTime = async () => {
       try {
         const start = performance.now();
-        const res = await fetch('https://worldtimeapi.org/api/timezone/Etc/UTC');
+        const res = await fetch(
+          'https://worldtimeapi.org/api/timezone/Etc/UTC',
+        );
         const data = await res.json();
         const end = performance.now();
-        
+
         const networkDelay = (end - start) / 2;
         const serverTime = new Date(data.utc_datetime).getTime();
         offsetRef.current = serverTime - (Date.now() + networkDelay);
@@ -49,6 +51,6 @@ export function useClock() {
     minutes: time.getMinutes(),
     hours: time.getHours(),
     // Provides a 0-1 progress value for smooth rotations
-    smoothSeconds: time.getSeconds() + time.getMilliseconds() / 1000
+    smoothSeconds: time.getSeconds() + time.getMilliseconds() / 1000,
   };
 }

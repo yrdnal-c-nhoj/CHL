@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import clouds from '../../../../assets/images/2025/25-04/25-04-20/clouds.webp';
-import cloFont from '../../../../assets/fonts/2025/25-04-20-clo.ttf?url';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import clouds from '@/assets/images/2025/25-04/25-04-20/clouds.webp';
+import cloFont from '@/assets/fonts/2025/25-04-20-clo.ttf?url';
 
 // Component Props interface
 interface CloudClockProps {

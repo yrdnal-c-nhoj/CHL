@@ -46,5 +46,7 @@
   color: #1c89a2ff;
   font-weight: 500;
   filter: saturate(3.5);
-  text-shadow: -2px 0 12px #f07c62ff, 2px 0 1px white;
+  text-shadow:
+    -2px 0 12px #f07c62ff,
+    2px 0 1px white;
 }

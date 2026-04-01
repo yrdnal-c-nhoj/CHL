@@ -1,9 +1,9 @@
 // src/components/CustomFontMirroredClock.jsx
 import React, { useState, useEffect } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import todayFont251125 from '../../../../assets/fonts/2025/25-11-11-digi.ttf?url';
-import bgFront from '../../../../assets/images/2025/25-11/25-11-11/bg.webp'; // top layer
-import bgBack from '../../../../assets/images/2025/25-11/25-11-11/bg1.jpg'; // back layer
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import todayFont251125 from '@/assets/fonts/2025/25-11-11-digi.ttf?url';
+import bgFront from '@/assets/images/2025/25-11/25-11-11/bg.webp'; // top layer
+import bgBack from '@/assets/images/2025/25-11/25-11-11/bg1.jpg'; // back layer
 
 // Export assets so parent loaders (Today.jsx) can preload them
 export { bgFront, bgBack };

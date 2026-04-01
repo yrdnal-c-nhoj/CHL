@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import permanentMarkerFont from '../../../../assets/fonts/2025/25-04-19-sph.ttf?url';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import permanentMarkerFont from '@/assets/fonts/2025/25-04-19-sph.ttf?url';
 
 const BALL_SIZES = {
   hours: 19,

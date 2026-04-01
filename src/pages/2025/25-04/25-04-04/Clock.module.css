@@ -1,29 +1,19 @@
 .style-1 {
-
-            transform: scale(1);
-          
+  transform: scale(1);
 }
 
 .style-2 {
-
-            transform: scale(1.2);
-          
+  transform: scale(1.2);
 }
 
 .style-3 {
-
-            transform: scale(0.95);
-          
+  transform: scale(0.95);
 }
 
 .style-4 {
-
-            transform: scale(1.1);
-          
+  transform: scale(1.1);
 }
 
 .style-5 {
-
-            transform: scale(1.03);
-          
+  transform: scale(1.03);
 }

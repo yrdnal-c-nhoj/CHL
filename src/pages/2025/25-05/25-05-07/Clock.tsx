@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useMillisecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
+import { useMillisecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import bgImage from '../../../../assets/images/2025/25-05/25-05-07/water.webp';
+import bgImage from '@/assets/images/2025/25-05/25-05-07/water.webp';
 
 // Component Props interface
 interface ClockProps {

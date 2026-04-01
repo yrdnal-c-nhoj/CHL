@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import myFontWoff2 from '../../../../assets/fonts/2025/25-08-01-zod.ttf';
-import bg1 from '../../../../assets/images/2025/25-08/25-08-01/stars.webp';
-import bg2 from '../../../../assets/images/2025/25-08/25-08-01/zod.gif';
-import htmlLogo from '../../../../assets/images/2025/25-08/25-08-01/st.gif';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import myFontWoff2 from '@/assets/fonts/2025/25-08-01-zod.ttf';
+import bg1 from '@/assets/images/2025/25-08/25-08-01/stars.webp';
+import bg2 from '@/assets/images/2025/25-08/25-08-01/zod.gif';
+import htmlLogo from '@/assets/images/2025/25-08/25-08-01/st.gif';
 
 const romanNumerals = [
   'l',

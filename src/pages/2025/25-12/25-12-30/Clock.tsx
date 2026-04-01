@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import fontLemUrl from '../../../../assets/fonts/2025/25-12-30-lem.ttf?url';
-import fontAnaUrl from '../../../../assets/fonts/2025/25-12-30-ana.ttf?url';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import fontLemUrl from '@/assets/fonts/2025/25-12-30-lem.ttf?url';
+import fontAnaUrl from '@/assets/fonts/2025/25-12-30-ana.ttf?url';
 
 // 1. Define font configurations for the Suspense-based loader
 export const fontConfigs: FontConfig[] = [

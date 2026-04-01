@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 
-import stars from '../../../../assets/images/2025/25-04/25-04-02/stars.webp';
-import backgroundGif from '../../../../assets/images/2025/25-04/25-04-02/437cb739d14912acd84d65ee853b9067.gif';
-import overlay1 from '../../../../assets/images/2025/25-04/25-04-02/OzJtZ3Z.gif';
-import overlay2 from '../../../../assets/images/2025/25-04/25-04-02/2556744_d34a4.webp';
-import pixelGif from '../../../../assets/images/2025/25-04/25-04-02/sdswrf.gif';
+import stars from '@/assets/images/2025/25-04/25-04-02/stars.webp';
+import backgroundGif from '@/assets/images/2025/25-04/25-04-02/437cb739d14912acd84d65ee853b9067.gif';
+import overlay1 from '@/assets/images/2025/25-04/25-04-02/OzJtZ3Z.gif';
+import overlay2 from '@/assets/images/2025/25-04/25-04-02/2556744_d34a4.webp';
+import pixelGif from '@/assets/images/2025/25-04/25-04-02/sdswrf.gif';
 
 // Image imports from src/assets
 interface Images {

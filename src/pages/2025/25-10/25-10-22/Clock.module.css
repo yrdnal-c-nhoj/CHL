@@ -40,9 +40,13 @@
   font-size: 4rem;
   width: 2rem;
   text-align: center;
-  color: #DF9268FF;
+  color: #df9268ff;
   animation: colorCycle 26s linear infinite;
-  text-shadow: 0 0 8px #4B3424FF, 0 0 6px #98643FFF, 0 0 4px #C88A5E, 0 0 2px #D2C497FF;
+  text-shadow:
+    0 0 8px #4b3424ff,
+    0 0 6px #98643fff,
+    0 0 4px #c88a5e,
+    0 0 2px #d2c497ff;
   transition: text-shadow 1s linear;
 }
 
@@ -52,35 +56,61 @@
 }
 
 @keyframes float {
-  0% { bottom: 0; }
-  50% { bottom: calc(100dvh - 4rem - 20px); }
-  100% { bottom: 0; }
+  0% {
+    bottom: 0;
+  }
+  50% {
+    bottom: calc(100dvh - 4rem - 20px);
+  }
+  100% {
+    bottom: 0;
+  }
 }
 
 @keyframes colorCycle {
   0% {
     color: #df9268ff;
-    text-shadow: -1px 0 0px #4b3424ff, 0 0 6px #98643fff, 0 0 4px #c88a5e, 1px 0 2px #d2c497ff;
+    text-shadow:
+      -1px 0 0px #4b3424ff,
+      0 0 6px #98643fff,
+      0 0 4px #c88a5e,
+      1px 0 2px #d2c497ff;
     opacity: 1;
   }
   23.08% {
     opacity: 0;
-    color: #7C947CFF;
-    text-shadow: -1px -1px #04140BFF, 3px 2px 6px #E6EDE9FF, -2px 0 4px #EBECEBFF, 1px 1px #e4ebe6ff;
+    color: #7c947cff;
+    text-shadow:
+      -1px -1px #04140bff,
+      3px 2px 6px #e6ede9ff,
+      -2px 0 4px #ebecebff,
+      1px 1px #e4ebe6ff;
   }
   50% {
     opacity: 1;
-    color: #F4ECCCFF;
-    text-shadow: 1px 1px #e10e23ff, 0 0 6px #F8FDF7FF, 0 0 4px #5874a0ff, -1px 0 #0d131cff;
+    color: #f4ecccff;
+    text-shadow:
+      1px 1px #e10e23ff,
+      0 0 6px #f8fdf7ff,
+      0 0 4px #5874a0ff,
+      -1px 0 #0d131cff;
   }
   76.92% {
     opacity: 0;
-    color: #7C947CFF;
-    text-shadow: -1px -1px #04140BFF, 3px 2px 6px #E6EDE9FF, -2px 0 4px #EBECEBFF, 1px 1px #e4ebe6ff;
+    color: #7c947cff;
+    text-shadow:
+      -1px -1px #04140bff,
+      3px 2px 6px #e6ede9ff,
+      -2px 0 4px #ebecebff,
+      1px 1px #e4ebe6ff;
   }
   100% {
     color: #df9268ff;
-    text-shadow: -1px 0 0px #4b3424ff, 0 0 6px #98643fff, 0 0 4px #c88a5e, 1px 0 2px #d2c497ff;
+    text-shadow:
+      -1px 0 0px #4b3424ff,
+      0 0 6px #98643fff,
+      0 0 4px #c88a5e,
+      1px 0 2px #d2c497ff;
     opacity: 1;
   }
 }

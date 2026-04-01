@@ -1,9 +1,9 @@
 // MediaClock.jsx
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import bgVideo from '../../../../assets/images/2025/25-10/25-10-18/total.mp4';
-import fallbackImg from '../../../../assets/images/2025/25-10/25-10-18/tot.webp';
-import font_20251018 from '../../../../assets/fonts/2025/25-10-18-tot.ttf?url';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import bgVideo from '@/assets/images/2025/25-10/25-10-18/total.mp4';
+import fallbackImg from '@/assets/images/2025/25-10/25-10-18/tot.webp';
+import font_20251018 from '@/assets/fonts/2025/25-10-18-tot.ttf?url';
 
 export default function MediaClock() {
   const [mediaReady, setMediaReady] = useState<boolean>(false);
