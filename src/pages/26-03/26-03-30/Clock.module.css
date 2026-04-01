@@ -18,7 +18,7 @@
   background-repeat: repeat;
   background-size: 8vh 8vh;
   background-position: center;
-  filter: saturate(0.4) contrast(1.8) brightness(2.9);
+  filter: saturate(0.7) contrast(1.2) brightness(1.3);
 }
 
 .clockGrid {
