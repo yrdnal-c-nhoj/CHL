@@ -2,73 +2,73 @@ import React, { useEffect, useState } from 'react';
 
 // Asset URLs (Vite-safe)
 const one = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/1.gif',
+  '../../../../assets/images/2025/25-11/25-11-10/1.gif',
   import.meta.url,
 ).href;
 const two = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/2.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/2.webp',
   import.meta.url,
 ).href;
 const three = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/3.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/3.webp',
   import.meta.url,
 ).href;
 const four = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/4.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/4.webp',
   import.meta.url,
 ).href;
 const five = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/5.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/5.webp',
   import.meta.url,
 ).href;
 const six = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/6.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/6.webp',
   import.meta.url,
 ).href;
 const seven = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/7.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/7.webp',
   import.meta.url,
 ).href;
 const eight = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/8.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/8.webp',
   import.meta.url,
 ).href;
 const nine = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/9.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/9.webp',
   import.meta.url,
 ).href;
 const ten = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/10.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/10.webp',
   import.meta.url,
 ).href;
 const eleven = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/11.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/11.webp',
   import.meta.url,
 ).href;
 const twelve = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/12.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/12.webp',
   import.meta.url,
 ).href;
 
 const hourHand = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/hour.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/hour.webp',
   import.meta.url,
 ).href;
 const minuteHand = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/min.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/min.webp',
   import.meta.url,
 ).href;
 const secondHand = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/sec.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/sec.webp',
   import.meta.url,
 ).href;
 
 const pageBackground = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/pong.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/pong.webp',
   import.meta.url,
 ).href;
 const extraBg = new URL(
-  '../../../assets/images/2025/25-11/25-11-10/bg.webp',
+  '../../../../assets/images/2025/25-11/25-11-10/bg.webp',
   import.meta.url,
 ).href;
 
