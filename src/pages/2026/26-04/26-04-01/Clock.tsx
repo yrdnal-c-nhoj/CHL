@@ -70,7 +70,7 @@ const Clock: React.FC = () => {
           line-height: 1;
           transition: transform 0.3s ease;
           font-family: 'Fleur De Leah', cursive;
-          background: linear-gradient(135deg, #39FF14 0%, #00FFCC 8%, #39FF14 20%, #FFFF00 30%, #FFFFFF 36%, #00FFFF 44%, #BF00FF 56%, #FF00FF 68%, #FFFFFF 76%, #1B03FF 84%, #39FF14 92%, #00FFCC 100%);
+          background: linear-gradient(135deg, #FFD414 0%, #EEF49C 8%, #BFF000 20%, #FFFF00 30%, #FFFFFF 36%, #BFFF00 44%, #BF00FF 56%, #DFEA03 68%, #FFFFFF 76%, #1B03FF 84%, #D0F01E 92%, #BBFF00 100%);
           background-size: 300% 300%;
           -webkit-background-clip: text;
           background-clip: text;
@@ -79,11 +79,11 @@ const Clock: React.FC = () => {
           animation: bioShift 10s ease-in-out infinite, flash 4s ease-in-out infinite alternate;
           text-shadow: 
             0 0 10px rgba(0, 255, 204, 0.8),
-            0 0 20px rgba(57, 255, 20, 0.6),
+            0 0 20px rgba(242, 242, 16, 0.6),
             0 0 30px rgba(0, 255, 255, 0.8),
             0 0 40px rgba(191, 0, 255, 0.4),
             2px 2px 4px rgba(0,0,0,0.5);
-          filter: drop-shadow(0 0 15px #39FF14) brightness(1.3);
+          filter: drop-shadow(0 0 15px #3FF000) brightness(1.3);
           -webkit-text-stroke: 0.5px rgba(0,0,0,0.7);
           text-stroke: 0.5px rgba(0,0,0,0.7);
           paint-order: stroke fill;
@@ -99,7 +99,7 @@ const Clock: React.FC = () => {
           left: 0;
           right: 0;
           bottom: 0;
-          background: repeating-radial-gradient(circle at 50% 50%, transparent 0px, transparent 3px, #39FF14 4px, #39FF14 6px, transparent 7px, transparent 10px);
+          background: repeating-radial-gradient(circle at 50% 50%, transparent 0px, transparent 3px, #3FF000 4px, #3FF000 6px, transparent 7px, transparent 10px);
           background-size: 20px 40px;
           -webkit-background-clip: text;
           background-clip: text;
@@ -114,26 +114,21 @@ const Clock: React.FC = () => {
           100% { background-position: 0% 0%; }
         }
         @keyframes bioShift {
-          0% { background-position: 0% 50%; filter: drop-shadow(0 0 15px #39FF14) brightness(1.2); transform: translateZ(0); }
-          20% { background-position: 30% 70%; filter: drop-shadow(0 0 30px #39FF14) brightness(1.4); }
-          40% { background-position: 60% 100%; filter: drop-shadow(0 0 40px #39FF14) brightness(1.6); }
+          0% { background-position: 0% 50%; filter: drop-shadow(0 0 15px #FFaa11) brightness(1.2); transform: translateZ(0); }
+          20% { background-position: 30% 70%; filter: drop-shadow(0 0 30px #FFaa11) brightness(1.4); }
+          40% { background-position: 60% 100%; filter: drop-shadow(0 0 40px #FFaa11) brightness(1.6); }
           60% { background-position: 100% 50%; filter: drop-shadow(0 0 30px #FF00FF) brightness(1.4); }
-          80% { background-position: 60% 0%; filter: drop-shadow(0 0 20px #39FF14) brightness(1.3); }
-          100% { background-position: 0% 50%; filter: drop-shadow(0 0 15px #39FF14) brightness(1.2); transform: translateZ(0); }
+          80% { background-position: 60% 0%; filter: drop-shadow(0 0 20px #FFaa11) brightness(1.3); }
+          100% { background-position: 0% 50%; filter: drop-shadow(0 0 15px #FFaa11) brightness(1.2); transform: translateZ(0); }
         }
         @keyframes flash {
           0% { opacity: 0.9; }
-          25% { opacity: 1; filter: drop-shadow(0 0 40px #39FF14) brightness(1.6); }
+          25% { opacity: 1; filter: drop-shadow(0 0 40px #3FF000) brightness(1.6); }
           50% { opacity: 0.9; }
-          75% { opacity: 1; filter: drop-shadow(0 0 60px #39FF14) brightness(2); }
+          75% { opacity: 1; filter: drop-shadow(0 0 60px #3FF000) brightness(2); }
           100% { opacity: 0.9; }
         }
-        // @keyframes pinkFlash {
-        //   0%, 92%, 100% { filter: drop-shadow(0 0 15px #00FFCC) brightness(1.2); }
-        //   94% { filter: drop-shadow(0 0 50px #FF1493) brightness(2); text-shadow: 0 0 20px #FF1493, 0 0 40px #FF69B4; }
-        //   96% { filter: drop-shadow(0 0 15px #00FFCC) brightness(1.2); }
-        //   98% { filter: drop-shadow(0 0 60px #FF1493) brightness(2.2); text-shadow: 0 0 30px #FF1493, 0 0 50px #FF69B4; }
-        // }
+    
         .digit-one {
           transform: scale(0.92);
         }
