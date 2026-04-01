@@ -51,7 +51,7 @@
 }
 
 /* Mobile styles */
-@media (max-width: 767px) {
+@media (max-width: 600px) {
   .clockGrid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -66,7 +66,7 @@
 }
 
 /* Desktop styles */
-@media (min-width: 768px) {
+@media (min-width: 600px) {
   .clockGrid {
     grid-template-columns: repeat(6, 1fr);
     gap: 1vw;
