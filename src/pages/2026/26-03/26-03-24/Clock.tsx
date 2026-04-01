@@ -10,18 +10,18 @@ const ANIMATION_DURATION_MS = 4200;
 const BASE_DELAY_S = 2.5;
 const STAGGER_S = 0.35;
 
-// Lantern, fish white, flash, and bright green color palette
+// All digits white
 const DIGIT_COLORS = [
-  '#FF6B35', // Lantern orange
-  '#F7F7F7', // Fish white
-  '#FFFFFF', // Flash white
-  '#39FF14', // Bright green
-  '#FFAA5C', // Light lantern
-  '#E8E8E8', // Pale fish white
-  '#FFFACD', // Flash yellow
-  '#00FF41', // Matrix green
-  '#FF8C42', // Deep lantern
-  '#F0F0F0', // Bright fish white
+  '#FFFFFF', // White
+  '#FFFFFF', // White
+  '#FFFFFF', // White
+  '#FFFFFF', // White
+  '#FFFFFF', // White
+  '#FFFFFF', // White
+  '#FFFFFF', // White
+  '#FFFFFF', // White
+  '#FFFFFF', // White
+  '#FFFFFF', // White
 ];
 
 const getFlight = () => ({
