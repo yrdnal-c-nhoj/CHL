@@ -7,7 +7,7 @@ import styles from './Clock.module.css';
 const fontConfigs: FontConfig[] = [
   {
     fontFamily: 'ShapesFont',
-    fontUrl: new URL('../../../assets/fonts/26-03-21-shapes.ttf', import.meta.url).href,
+    fontUrl: new URL('../../../assets/fonts/2026/26-03-21-shapes.ttf', import.meta.url).href,
     options: {
       weight: 'normal',
       style: 'normal',

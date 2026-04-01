@@ -1,8 +1,8 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import WebFonnov25ufuf from '../../../../assets/fonts/25-11-05-webs1.ttf';
-import Webfont2511055 from '../../../../assets/fonts/25-11-05-webs2.ttf';
-import w251105font from '../../../../assets/fonts/25-11-05-webs3.ttf';
+import WebFonnov25ufuf from '../../../../assets/fonts/2025/25-11-05-webs1.ttf';
+import Webfont2511055 from '../../../../assets/fonts/2025/25-11-05-webs2.ttf';
+import w251105font from '../../../../assets/fonts/2025/25-11-05-webs3.ttf';
 
 // Helper function remains the same
 function makeColumnsBackground(columns, gutterVw, marginVw) {

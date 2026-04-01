@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react'
 import { useSecondClock } from '../../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import type { FontConfig } from '../../../../types/clock';
-import horizonFontUrl from '../../../../assets/fonts/25-04-15-hori.otf?url';
+import horizonFontUrl from '../../../../assets/fonts/2025/25-04-15-hori.otf?url';
 import layer2 from '../../../../assets/images/2025/25-04/25-04-15/4c558c5dbff1828f2b87582dc49526e8.gif';
 import sdfwef from '../../../../assets/images/2025/25-04/25-04-15/sdfwef.webp';
 import layer1 from '../../../../assets/images/2025/25-04/25-04-15/ewfsdfsd.webp';

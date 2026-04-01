@@ -3,8 +3,8 @@ import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import bottomBackgroundImg from '../../../../assets/images/2025/25-10/25-10-11/ch.jpg'; // New bottom background image
 import backgroundImg from '../../../../assets/images/2025/25-10/25-10-11/ches.jpg'; // Original background image
-import customFont20251011 from '../../../../assets/fonts/25-10-11-ch.ttf';
-import alphabetFont20251011 from '../../../../assets/fonts/25-10-11-chess.ttf';
+import customFont20251011 from '../../../../assets/fonts/2025/25-10-11-ch.ttf';
+import alphabetFont20251011 from '../../../../assets/fonts/2025/25-10-11-chess.ttf';
 
 export default function FancyClock() {
   const [time, setTime] = useState(new Date());

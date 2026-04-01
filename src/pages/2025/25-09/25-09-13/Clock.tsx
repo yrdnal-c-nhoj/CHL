@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import customFontpawww from '../../../../assets/fonts/25-09-13-anim.ttf?url';
+import customFontpawww from '../../../../assets/fonts/2025/25-09-13-anim.ttf?url';
 import bgImage from '../../../../assets/images/2025/25-09/25-09-13/anim.jpg';
 
 const DigitalClock: React.FC = () => {

@@ -4,9 +4,9 @@ import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import { useGlobalStyles } from '../../../../utils/enhancedFontLoader';
 import type { FontConfig } from '../../../../types/clock';
 import type { CSSProperties } from 'react';
-import michromaFont from '../../../../assets/fonts/25-05-10-Michroma.ttf?url';
-import economicaFont from '../../../../assets/fonts/25-05-10-Economica.ttf?url';
-import questrialFont from '../../../../assets/fonts/25-05-10-Questrial.ttf?url';
+import michromaFont from '../../../../assets/fonts/2025/25-05-10-Michroma.ttf?url';
+import economicaFont from '../../../../assets/fonts/2025/25-05-10-Economica.ttf?url';
+import questrialFont from '../../../../assets/fonts/2025/25-05-10-Questrial.ttf?url';
 
 const fonts = ["'michroma'", "'economica'", "'questrial'"];
 

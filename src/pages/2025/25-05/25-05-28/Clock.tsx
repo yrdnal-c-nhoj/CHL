@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import circleFont from '../../../../assets/fonts/25-05-28-circle.ttf';
+import circleFont from '../../../../assets/fonts/2025/25-05-28-circle.ttf';
 
 const Clock: React.FC = () => {
   const fontConfigs = [{ fontFamily: 'circle-local', fontUrl: circleFont }];

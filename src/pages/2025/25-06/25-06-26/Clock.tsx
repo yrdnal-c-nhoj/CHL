@@ -3,7 +3,7 @@ import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
 import bg1 from '../../../../assets/images/2025/25-06/25-06-26/co.png';
 import bg2 from '../../../../assets/images/2025/25-06/25-06-26/cos.png';
-import wheFont from '../../../../assets/fonts/25-06-26-whe.ttf';
+import wheFont from '../../../../assets/fonts/2025/25-06-26-whe.ttf';
 
 const CosmicWheelClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

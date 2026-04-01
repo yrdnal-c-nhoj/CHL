@@ -4,7 +4,7 @@ import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import type { FontConfig } from '../../../../types/clock';
 import type { CSSProperties } from 'react';
 import A3ui from '../../../../assets/images/2025/25-05/25-05-12/A3ui.gif';
-import leoFont from '../../../../assets/fonts/25-05-12-leo.ttf?url';
+import leoFont from '../../../../assets/fonts/2025/25-05-12-leo.ttf?url';
 
 // Component Props interface
 interface CheetahClockProps {

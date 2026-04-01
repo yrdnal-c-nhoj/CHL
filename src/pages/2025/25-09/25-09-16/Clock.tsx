@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import bgImage from '../../../../assets/images/2025/25-09/25-09-16/bg.jpg';
-import d250916font from '../../../../assets/fonts/25-09-16-baud.ttf?url';
+import d250916font from '../../../../assets/fonts/2025/25-09-16-baud.ttf?url';
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());

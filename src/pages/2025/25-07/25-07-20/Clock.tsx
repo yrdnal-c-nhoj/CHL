@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import camFont from '../../../../assets/fonts/25-07-20-cam.otf';
+import camFont from '../../../../assets/fonts/2025/25-07-20-cam.otf';
 import bg1 from '../../../../assets/images/2025/25-07/25-07-20/ca.webp';
 import bg2 from '../../../../assets/images/2025/25-07/25-07-20/cam.webp';
 import bg3 from '../../../../assets/images/2025/25-07/25-07-20/camer.webp';

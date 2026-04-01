@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import { useSecondClock } from '../../../../utils/useSmoothClock';
-import neptuneFont from '../../../../assets/fonts/26-02-23-nep.ttf';
+import neptuneFont from '../../../../assets/fonts/2026/26-02-23-nep.ttf';
 import nepBg from '../../../../assets/images/2026/26-02/26-02-23/nept.webp';
 import loopBg from '../../../../assets/images/2026/26-02/26-02-23/swirl.gif';
 import triBg from '../../../../assets/images/2026/26-02/26-02-23/tri.webp';

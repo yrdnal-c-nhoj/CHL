@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import iceFont from '../../../../assets/fonts/25-12-15-ice.ttf?url'; // import font as module
+import iceFont from '../../../../assets/fonts/2025/25-12-15-ice.ttf?url'; // import font as module
 import BG_IMAGE_PATH from '../../../../assets/images/2025/25-12/25-12-15/forest.jpeg';
 
 const FONT_FAMILY = 'DigitalClock';

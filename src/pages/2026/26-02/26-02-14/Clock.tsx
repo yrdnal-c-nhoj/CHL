@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import { useSecondClock } from '../../../../utils/useSmoothClock';
-import airportFont from '../../../../assets/fonts/26-02-14-airport.ttf';
+import airportFont from '../../../../assets/fonts/2026/26-02-14-airport.ttf';
 import backgroundGif from '../../../../assets/images/2026/26-02/26-02-14/prop.gif';
 import backgroundGif2 from '../../../../assets/images/2026/26-02/26-02-14/runway.gif';
 

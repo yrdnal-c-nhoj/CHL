@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
 import bgImage from '../../../../assets/images/2025/25-07/25-07-01/mu.jpg';
-import fontUrl from '../../../../assets/fonts/25-07-01-mult.ttf';
+import fontUrl from '../../../../assets/fonts/2025/25-07-01-mult.ttf';
 
 const CinemaClock: React.FC = () => {
   const [time, setTime] = useState<any>({ hours: '', minutes: '' });

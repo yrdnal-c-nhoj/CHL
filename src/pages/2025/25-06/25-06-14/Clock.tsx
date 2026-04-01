@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import hummFont from '../../../../assets/fonts/25-06-14-humm.ttf';
+import hummFont from '../../../../assets/fonts/2025/25-06-14-humm.ttf';
 import hmmGif from '../../../../assets/images/2025/25-06/25-06-14/hmm.gif';
 import hummPng from '../../../../assets/images/2025/25-06/25-06-14/humm.png';
 import hum1 from '../../../../assets/images/2025/25-06/25-06-14/hum1.webp';

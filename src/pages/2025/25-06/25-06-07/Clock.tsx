@@ -11,7 +11,7 @@ import sno from '../../../../assets/images/2025/25-06/25-06-07/sno.gif';
 import snow7 from '../../../../assets/images/2025/25-06/25-06-07/snow-gif-7.gif';
 import flakes from '../../../../assets/images/2025/25-06/25-06-07/flakes.gif';
 import eref from '../../../../assets/images/2025/25-06/25-06-07/eref.gif';
-import amaticRegular from '../../../../assets/fonts/25-06-07-amati.ttf';
+import amaticRegular from '../../../../assets/fonts/2025/25-06-07-amati.ttf';
 
 export default function BlizzardClock() {
   const clockRef = useRef(null);

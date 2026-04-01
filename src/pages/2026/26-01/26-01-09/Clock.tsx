@@ -6,7 +6,7 @@ import gifOne from '../../../../assets/images/2026/26-01/26-01-12/tic.webp';
 import gifTwo from '../../../../assets/images/2026/26-01/26-01-12/tic2.gif';
 import gifThree from '../../../../assets/images/2026/26-01/26-01-12/tic3.gif';
 import gifFour from '../../../../assets/images/2026/26-01/26-01-12/tic4.gif';
-import customFont from '../../../../assets/fonts/26-01-12-tic.ttf';
+import customFont from '../../../../assets/fonts/2026/26-01-12-tic.ttf';
 import type { FontConfig } from '../../../../types/clock';
 
 const fontConfigs: FontConfig[] = [

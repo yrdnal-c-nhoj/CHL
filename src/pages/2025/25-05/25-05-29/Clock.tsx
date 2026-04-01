@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import gearsGif from '../../../../assets/images/2025/25-05/25-05-29/gears-13950_128.gif';
-import watchFont from '../../../../assets/fonts/25-05-29-watch.ttf?url';
+import watchFont from '../../../../assets/fonts/2025/25-05-29-watch.ttf?url';
 import { Color } from 'three';
 
 const Clock: React.FC = () => {

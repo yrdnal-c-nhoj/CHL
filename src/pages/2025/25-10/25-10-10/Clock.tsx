@@ -4,7 +4,7 @@ import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 // === Local assets ===
 import bgWebp from '../../../../assets/images/2025/25-10/25-10-10/roma.webp';
 import bgVideo from '../../../../assets/images/2025/25-10/25-10-10/ro.mp4';
-import font_20251007 from '../../../../assets/fonts/25-10-10-roma.ttf';
+import font_20251007 from '../../../../assets/fonts/2025/25-10-10-roma.ttf';
 
 export default function ProcessingCounterClock() {
   const [time, setTime] = useState(new Date());

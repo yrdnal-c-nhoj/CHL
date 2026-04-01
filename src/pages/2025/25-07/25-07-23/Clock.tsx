@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
 import backgroundImg from '../../../../assets/images/2025/25-07/25-07-23/bay01s52djxo1_400.webp';
-import bayFont from '../../../../assets/fonts/25-07-23-bay.ttf';
+import bayFont from '../../../../assets/fonts/2025/25-07-23-bay.ttf';
 
 const Clock: React.FC = () => {
   const [timeStr, setTimeStr] = useState<any>('');

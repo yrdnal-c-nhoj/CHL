@@ -5,7 +5,7 @@ import bgImage from '../../../../assets/images/2025/25-12/25-12-14/steel.webp';
 import digitTexture from '../../../../assets/images/2025/25-12/25-12-14/steel2.webp';
 
 // Font imported with today's date (December 16, 2025)
-import screw251214 from '../../../../assets/fonts/25-12-14-steel.ttf?url';
+import screw251214 from '../../../../assets/fonts/2025/25-12-14-steel.ttf?url';
 
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date());

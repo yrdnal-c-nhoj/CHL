@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry.js';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import mobFontUrl from '../../../../assets/fonts/25-07-16-mob.otf';
+import mobFontUrl from '../../../../assets/fonts/2025/25-07-16-mob.otf';
 
 const MobiusStripClock: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
 import bgImage from '../../../../assets/images/2025/25-08/25-08-08/q.webp';
-import fontFile_2025_11_01 from '../../../../assets/fonts/25-08-08-q.otf';
+import fontFile_2025_11_01 from '../../../../assets/fonts/2025/25-08-08-q.otf';
 
 export default function DigitalClock() {
   // Standardized font loading with font-display: swap to avoid FOUC

@@ -10,7 +10,7 @@ import hourHandImg from '../../../../assets/images/2025/25-11/25-11-24/sn5.webp?
 import minuteHandImg from '../../../../assets/images/2025/25-11/25-11-24/sfsd.webp?url';
 import secondHandImg from '../../../../assets/images/2025/25-11/25-11-24/sn1.webp?url';
 import clockCenterImg from '../../../../assets/images/2025/25-11/25-11-24/center.webp?url';
-import fon251124 from '../../../../assets/fonts/25-11-24-snake.ttf?url';
+import fon251124 from '../../../../assets/fonts/2025/25-11-24-snake.ttf?url';
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());

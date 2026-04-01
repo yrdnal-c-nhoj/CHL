@@ -6,7 +6,7 @@ import spinningBanana from '../../../../assets/images/2025/25-06/25-06-11/yellow
 import hourHand from '../../../../assets/images/2025/25-06/25-06-11/ban.png';
 import minuteHand from '../../../../assets/images/2025/25-06/25-06-11/ban.png';
 import secondHand from '../../../../assets/images/2025/25-06/25-06-11/ban.png';
-import banFont from '../../../../assets/fonts/25-06-11-Ban.ttf';
+import banFont from '../../../../assets/fonts/2025/25-06-11-Ban.ttf';
 
 const BananaClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

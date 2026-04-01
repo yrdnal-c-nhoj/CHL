@@ -4,7 +4,7 @@ import * as THREE from 'three';
 
 import bgFull from '../../../../assets/images/2025/25-11/25-11-12/octo.webp'; // full-size background
 import bgTile from '../../../../assets/images/2025/25-11/25-11-12/octoh.webp'; // repeating/tiled background
-import custom251112tz from '../../../../assets/fonts/25-11-12-oct.ttf?url';
+import custom251112tz from '../../../../assets/fonts/2025/25-11-12-oct.ttf?url';
 
 export default function TwoBackgroundOctahedron() {
   const threeRef = useRef(null);

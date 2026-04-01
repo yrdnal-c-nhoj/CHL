@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import c251004font from '../../../../assets/fonts/25-10-04-iss.ttf';
+import c251004font from '../../../../assets/fonts/2025/25-10-04-iss.ttf';
 import bgMp4 from '../../../../assets/images/2025/25-10/25-10-04/waterfall.mp4';
 import bgWebp from '../../../../assets/images/2025/25-10/25-10-04/waterfall.webp';
 

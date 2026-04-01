@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import type { FontConfig } from '../../../../types/clock';
 import backgroundImage from '../../../../assets/images/2025/25-05/25-05-27/dot.jpg';
-import dotsFont from '../../../../assets/fonts/25-05-27-dots.otf?url';
+import dotsFont from '../../../../assets/fonts/2025/25-05-27-dots.otf?url';
 
 
 const Clock: React.FC = () => {

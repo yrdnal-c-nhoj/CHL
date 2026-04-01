@@ -3,7 +3,7 @@ import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
 import bardImg from '../../../../assets/images/2025/25-07/25-07-22/bard.webp';
 import barrsImg from '../../../../assets/images/2025/25-07/25-07-22/barrs.webp';
-import berFont from '../../../../assets/fonts/25-07-22-ber.otf';
+import berFont from '../../../../assets/fonts/2025/25-07-22-ber.otf';
 
 const BarrelrollClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
