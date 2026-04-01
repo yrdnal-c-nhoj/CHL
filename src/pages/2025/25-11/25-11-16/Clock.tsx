@@ -1,0 +1,161 @@
+import React, { useEffect, useRef, useCallback, useState } from 'react';
+import { useMultiAssetLoader } from '../../../../utils/assetLoader';
+import bgImg from '../../../../assets/images/2025/25-11/25-11-16/ray.webp';
+import clockBg from '../../../../assets/images/2025/25-11/25-11-16/ray2.webp';
+
+export default function AnalogClock() {
+  const rafRef = useRef(null);
+  const hourRef = useRef(null);
+  const minuteRef = useRef(null);
+  const secondRef = useRef(null);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [isShortScreen, setIsShortScreen] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkScreenSize: React.FC = () => {
+      setIsMobile(window.innerWidth <= 768);
+      setIsShortScreen(window.innerHeight <= 600);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  const tick = useCallback(() => {
+    const now = new Date();
+    const ms = now.getMilliseconds();
+    const s = now.getSeconds() + ms / 1000;
+    const m = now.getMinutes() + s / 60;
+    const h = (now.getHours() % 12) + m / 60;
+
+    if (hourRef.current)
+      hourRef.current.style.transform = `translate(-50%, 0%) rotate(${h * 30}deg)`;
+    if (minuteRef.current)
+      minuteRef.current.style.transform = `translate(-50%, 0%) rotate(${m * 6}deg)`;
+    if (secondRef.current)
+      secondRef.current.style.transform = `translate(-50%, 0%) rotate(${s * 6}deg)`;
+
+    rafRef.current = requestAnimationFrame(tick);
+  }, []);
+
+  useEffect(() => {
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [tick]);
+
+  // Main container: Ensures the clock is centered and fits the screen
+  const containerStyle = {
+    width: '100%',
+    height: isMobile ? '100vh' : '100dvh', // Use 100vh on mobile for better compatibility
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    backgroundColor: '#000',
+    minHeight: isMobile ? '-webkit-fill-available' : 'auto', // iOS Safari fix
+  };
+
+  // Page background
+  const bgStyle = {
+    position: 'absolute',
+    inset: 0,
+    backgroundImage: `url(${bgImg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    transform: 'scaleY(-1)',
+    zIndex: 0,
+  };
+
+  // Clock container: Uses 'vmin' to ensure it never exceeds the screen width OR height
+  const clockStyle = {
+    width: isShortScreen ? '80vmin' : isMobile ? '85vmin' : '90vmin', // Responsive sizing
+    height: isShortScreen ? '80vmin' : isMobile ? '85vmin' : '90vmin', // Keeps it a perfect square
+    position: 'relative',
+    background: 'rgba(255,255,255,0.15)',
+    backdropFilter: 'blur(10px)',
+    borderRadius: '50%', // Standard round clock face
+    overflow: 'hidden',
+    zIndex: 1,
+    border: '1px solid rgba(255,255,255,0.2)',
+  };
+
+  const clockBackgroundStyle = {
+    position: 'absolute',
+    inset: 0,
+    backgroundImage: `url(${clockBg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    opacity: 0.1,
+    filter: 'brightness(0.8) contrast(2)',
+    zIndex: 0,
+  };
+
+  // Hand styles: Adjusted to stay within clock bounds
+  const handBase = {
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    transformOrigin: '50% 0%', // Changed to rotate from top center
+    background: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: '10px',
+    zIndex: 2,
+  };
+
+  return (
+    <div style={containerStyle}>
+      <div style={bgStyle} aria-hidden="true" />
+
+      <div style={clockStyle}>
+        <div style={clockBackgroundStyle} aria-hidden="true" />
+
+        {/* Center Pin */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: '12px',
+            height: '12px',
+            background: 'white',
+            borderRadius: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 5,
+          }}
+        />
+
+        {/* Hour Hand */}
+        <div
+          ref={hourRef}
+          style={{
+            ...handBase,
+            width: '2%',
+            height: '20%', // Reduced from 25%
+            background: 'rgba(255,255,255,0.9)',
+          }}
+        />
+        {/* Minute Hand */}
+        <div
+          ref={minuteRef}
+          style={{
+            ...handBase,
+            width: '1.5%',
+            height: '35%', // Reduced from 40%
+            background: 'rgba(255,255,255,0.7)',
+          }}
+        />
+        {/* Second Hand */}
+        <div
+          ref={secondRef}
+          style={{
+            ...handBase,
+            width: '1%',
+            height: '40%', // Reduced from 45%
+            background: '#ff4d4d', // Brighter red for visibility
+          }}
+        />
+      </div>
+    </div>
+  );
+}

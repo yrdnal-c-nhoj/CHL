@@ -1,0 +1,254 @@
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useSecondClock } from '../../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
+import type { FontConfig } from '../../../../types/clock';
+import confFont from '../../../../assets/fonts/25-04-06-conf.ttf?url';
+import confettiBg from '../../../../assets/images/2025/25-04/25-04-06/conf2.gif';
+
+const TOTAL_DIGITS = 160;
+
+// Component Props interface
+interface ConfettiClockProps {
+  // No props required for this component
+}
+
+// Container refs interface
+interface ContainerRefs {
+  container: React.RefObject<HTMLDivElement | null>;
+  digits: React.RefObject<HTMLDivElement[]>;
+}
+
+const ConfettiClock = () => {
+  // Font loading configuration (memoized)
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    {
+      fontFamily: 'ConfettiClockFont',
+      fontUrl: confFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ], []);
+
+  // Load fonts using suspense-based loader
+  useSuspenseFontLoader(fontConfigs);
+
+  const containerRefs: ContainerRefs = {
+    container: useRef<HTMLDivElement>(null),
+    digits: useRef<HTMLDivElement[]>([]),
+  };
+  const componentId = useRef(`confetti-clock-${Date.now()}`);
+
+  // Use the standardized hook for smooth clock updates
+  const currentTime = useSecondClock();
+
+  const getCurrentTimeDigits = useCallback((): string[] => {
+    const hours = currentTime.getHours().toString().padStart(2, '0').split('');
+    const minutes = currentTime.getMinutes().toString().padStart(2, '0').split('');
+    return [...hours, ...minutes];
+  }, [currentTime]);
+
+  useEffect(() => {
+    const container = containerRefs.container.current;
+    if (!container) return;
+
+    container.innerHTML = '';
+    containerRefs.digits.current = [];
+
+    for (let i = 0; i < TOTAL_DIGITS; i++) {
+      const div = document.createElement('div');
+      div.className = 'falling-digit';
+      container.appendChild(div);
+      containerRefs.digits.current.push(div);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (containerRefs.digits.current.length === 0) return;
+
+    const colors = ['#ff1493', '#800080', '#ffa500'];
+    const easingOptions = [
+      'ease-in',
+      'ease-out',
+      'ease-in-out',
+      'cubic-bezier(0.25, 1, 0.5, 1)',
+      'cubic-bezier(0.42, 0, 0.58, 1)',
+      'cubic-bezier(0.6, -0.28, 0.735, 0.045)',
+    ];
+
+    containerRefs.digits.current.forEach((el, i) => {
+      if (!el) return; // Skip null elements
+      
+      const fontSize = Math.random() * 12 + 4; // 4vh to 16vh
+      el.style.fontSize = `${fontSize}vh`;
+      el.style.fontFamily = 'ConfettiClockFont, sans-serif' as string;
+      el.style.color = colors[Math.floor(Math.random() * colors.length)];
+      el.style.position = 'absolute';
+      el.style.opacity = '0.95';
+      el.style.pointerEvents = 'none';
+      el.style.willChange = 'transform';
+      el.style.zIndex = '2';
+
+      el.style.left = `${Math.random() * 100}vw`;
+      el.style.top = '0';
+
+      const duration = Math.random() * 8 + 3;
+      const delay = (i / TOTAL_DIGITS) * duration;
+
+      const rotateX = Math.random() * 1080 - 540;
+      const rotateY = Math.random() * 1080 - 540;
+      const rotateZ = Math.random() * 1080 - 540;
+      const translateX = Math.random() * 40 - 20;
+      const translateY = 120;
+
+      const easing =
+        easingOptions[Math.floor(Math.random() * easingOptions.length)];
+      const animationName = Math.random() > 0.5 ? 'leafFall' : 'fall3d';
+
+      el.style.animation = `${animationName} ${duration}s ${easing} infinite`;
+      el.style.animationDelay = `-${delay}s`;
+
+      el.style.setProperty('--rotateX', `${rotateX}deg`);
+      el.style.setProperty('--rotateY', `${rotateY}deg`);
+      el.style.setProperty('--rotateZ', `${rotateZ}deg`);
+      el.style.setProperty('--translateX', `${translateX}vw`);
+      el.style.setProperty('--translateY', `${translateY}vh`);
+    });
+
+    const updateInterval = setInterval(() => {
+      const timeDigits = getCurrentTimeDigits();
+      containerRefs.digits.current.forEach((el, i) => {
+        if (el) {
+          el.textContent = timeDigits[i % timeDigits.length] || '0';
+        }
+      });
+    }, 10000);
+
+    const timeDigits = getCurrentTimeDigits();
+    containerRefs.digits.current.forEach((el, i) => {
+      if (el) {
+        el.textContent = timeDigits[i % timeDigits.length] || '0';
+      }
+    });
+
+    return () => clearInterval(updateInterval);
+  }, [getCurrentTimeDigits]);
+
+  return (
+    <>
+      {/* Gradient Background */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100dvh',
+          background: 'linear-gradient(to top, #ff0000, #ffff00)', // red to yellow gradient
+          zIndex: 0,
+        }}
+      />
+
+      {/* Confetti GIF overlay */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100dvh',
+          backgroundImage: `url(${confettiBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          zIndex: 1,
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Falling digits */}
+      <div
+        ref={containerRefs.container}
+        style={{
+          margin: 0,
+          overflow: 'hidden',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100dvh',
+          pointerEvents: 'none',
+          userSelect: 'none',
+          zIndex: 2,
+        }}
+      />
+
+      <style>{`
+        @keyframes fall3d {
+          0% {
+            transform: translateY(-20vh) translateX(0vw)
+                       rotateX(0) rotateY(0) rotateZ(0);
+            opacity: 1;
+          }
+          100% {
+            transform:
+              translateY(120vh) translateX(var(--translateX))
+              rotateX(var(--rotateX))
+              rotateY(var(--rotateY))
+              rotateZ(var(--rotateZ));
+            opacity: 1;
+          }
+        }
+
+        @keyframes leafFall {
+          0% {
+            transform: translateY(-20vh) translateX(0vw)
+                       rotateX(0) rotateY(0) rotateZ(0);
+            opacity: 1;
+          }
+          25% {
+            transform: translateY(30vh) translateX(calc(var(--translateX) * 0.3))
+                       rotateX(calc(var(--rotateX) * 0.25))
+                       rotateY(calc(var(--rotateY) * 0.25))
+                       rotateZ(calc(var(--rotateZ) * 0.25));
+            opacity: 1;
+          }
+          50% {
+            transform: translateY(60vh) translateX(calc(var(--translateX) * -0.3))
+                       rotateX(calc(var(--rotateX) * 0.5))
+                       rotateY(calc(var(--rotateY) * 0.5))
+                       rotateZ(calc(var(--rotateZ) * 0.5));
+            opacity: 1;
+          }
+          75% {
+            transform: translateY(90vh) translateX(calc(var(--translateX) * 0.3))
+                       rotateX(calc(var(--rotateX) * 0.75))
+                       rotateY(calc(var(--rotateY) * 0.75))
+                       rotateZ(calc(var(--rotateZ) * 0.75));
+            opacity: 1;
+          }
+          100% {
+            transform:
+              translateY(120vh) translateX(var(--translateX))
+              rotateX(var(--rotateX))
+              rotateY(var(--rotateY))
+              rotateZ(var(--rotateZ));
+            opacity: 1;
+          }
+        }
+
+        .falling-digit {
+          user-select: none;
+          pointer-events: none;
+          position: absolute;
+          font-weight: 700;
+          mix-blend-mode: screen;
+          will-change: transform;
+        }
+      `}</style>
+    </>
+  );
+};
+
+export default ConfettiClock;
