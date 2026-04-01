@@ -35,8 +35,8 @@ export const useClockPage = (item: ClockItem | null | undefined): UseClockPageRe
     if (!yy || !mm) return null;
 
     const candidates = [
-      `../pages/${yy}-${mm}/${item.path}/Clock.tsx`, // month/day structure
-      `../pages/${item.path}/Clock.tsx`, // legacy flat structure
+      `../pages/20${yy}/${yy}-${mm}/${item.path}/Clock.tsx`, // year/month/day structure
+      `../pages/${yy}-${mm}/${item.path}/Clock.tsx`, // legacy flat structure
     ];
 
 

@@ -100,3 +100,7 @@ scripts/
 *.publishsettings
 src/assets/images/26-03/mye.gif
 .vercel
+
+# Build logs
+build.txt
+build-log.txt
