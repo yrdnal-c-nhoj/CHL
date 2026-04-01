@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import flaFont from '../../../../assets/fonts/2025/25-05-20-fla.ttf'; // Import the font file from the same folder
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import flaFont from '@/assets/fonts/2025/25-05-20-fla.ttf'; // Import the font file from the same folder
 
 const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

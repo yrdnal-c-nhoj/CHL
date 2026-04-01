@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import f251023 from '../../../../assets/fonts/2025/25-10-23-gr.ttf';
-import bgImage from '../../../../assets/images/2025/25-10/25-10-23/bg.gif';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import f251023 from '@/assets/fonts/2025/25-10-23-gr.ttf';
+import bgImage from '@/assets/images/2025/25-10/25-10-23/bg.gif';
 
 const Clockgrid: React.FC = () => {
   const [time, setTime] = useState<any>({

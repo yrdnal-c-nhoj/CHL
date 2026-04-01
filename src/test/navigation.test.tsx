@@ -28,7 +28,7 @@ describe('TopNav', () => {
         <DataProvider>
           <TopNav />
         </DataProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.getByText('BorrowedTime')).toBeInTheDocument();
@@ -40,7 +40,7 @@ describe('TopNav', () => {
         <DataProvider>
           <TopNav />
         </DataProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.getByText('HOME')).toBeInTheDocument();
@@ -52,7 +52,7 @@ describe('TopNav', () => {
         <DataProvider>
           <TopNav />
         </DataProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.getByText('CONTACT')).toBeInTheDocument();
@@ -64,7 +64,7 @@ describe('TopNav', () => {
         <DataProvider>
           <TopNav />
         </DataProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.getByText('TODAY')).toBeInTheDocument();

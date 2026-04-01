@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import backFont from '../../../../assets/fonts/2025/25-06-17-back.ttf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import backFont from '@/assets/fonts/2025/25-06-17-back.ttf';
 
 const BackslantClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

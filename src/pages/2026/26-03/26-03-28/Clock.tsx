@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
-import { useMillisecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import bgVideo from '../../../../assets/images/2026/26-03/26-03-28/water.mp4';
-import bgImage from '../../../../assets/images/2026/26-03/26-03-28/h2o.webp';
-import clockFont from '../../../../assets/fonts/2026/26-03-28-h2o.ttf';
+import { useMillisecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import bgVideo from '@/assets/images/2026/26-03/26-03-28/water.mp4';
+import bgImage from '@/assets/images/2026/26-03/26-03-28/h2o.webp';
+import clockFont from '@/assets/fonts/2026/26-03-28-h2o.ttf';
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {

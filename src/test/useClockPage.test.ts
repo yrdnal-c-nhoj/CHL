@@ -51,7 +51,7 @@ describe('useClockPage', () => {
         // After error, error should be set (since we can't actually import in test)
         expect(result.current.error || result.current.isReady).toBeTruthy();
       },
-      { timeout: 3000 }
+      { timeout: 3000 },
     );
   });
 
@@ -68,7 +68,7 @@ describe('useClockPage', () => {
       () => {
         expect(result.current.error || result.current.isReady).toBeTruthy();
       },
-      { timeout: 3000 }
+      { timeout: 3000 },
     );
   });
 
@@ -125,7 +125,7 @@ describe('useClockPage', () => {
       () => {
         expect(result.current.error || result.current.isReady).toBeTruthy();
       },
-      { timeout: 3000 }
+      { timeout: 3000 },
     );
   });
 
@@ -136,12 +136,9 @@ describe('useClockPage', () => {
       title: 'Clock 1',
     };
 
-    const { result, rerender } = renderHook(
-      ({ item }) => useClockPage(item),
-      {
-        initialProps: { item: item1 },
-      }
-    );
+    const { result, rerender } = renderHook(({ item }) => useClockPage(item), {
+      initialProps: { item: item1 },
+    });
 
     // Quickly switch to different item
     const item2 = {
@@ -157,7 +154,7 @@ describe('useClockPage', () => {
       () => {
         expect(result.current.error || result.current.isReady).toBeTruthy();
       },
-      { timeout: 3000 }
+      { timeout: 3000 },
     );
   });
 });

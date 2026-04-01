@@ -1,9 +1,9 @@
 /** @jsxImportSource react */
 import { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import bgImage from '../../../../assets/images/2025/25-10/25-10-30/turq.webp';
-import clockFaceImage from '../../../../assets/images/2025/25-10/25-10-30/tur.jpg';
-import customFont2025_10_31 from '../../../../assets/fonts/2025/25-10-30-turqs.ttf?url';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import bgImage from '@/assets/images/2025/25-10/25-10-30/turq.webp';
+import clockFaceImage from '@/assets/images/2025/25-10/25-10-30/tur.jpg';
+import customFont2025_10_31 from '@/assets/fonts/2025/25-10-30-turqs.ttf?url';
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());

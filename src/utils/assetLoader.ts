@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 /**
  * Standardized Asset Loading System
- * 
+ *
  * Centralizes all asset loading patterns (images, videos, audio, fonts)
  * with consistent error handling, loading states, and performance optimization.
  */
@@ -74,16 +74,16 @@ export function useImageLoader(config: ImageAssetConfig): {
 
     const loadPromise = new Promise<HTMLImageElement>((resolve, reject) => {
       const img = new Image();
-      
+
       img.onload = () => {
         setState('loaded');
         resolve(img);
       };
-      
+
       img.onerror = () => {
         const err = new Error(`Failed to load image: ${config.src}`);
         setError(err);
-        
+
         // Try fallback if available
         if (config.fallback) {
           const fallbackImg = new Image();
@@ -110,7 +110,7 @@ export function useImageLoader(config: ImageAssetConfig): {
     });
 
     imageRegistry.set(config.src, loadPromise);
-    
+
     try {
       return await loadPromise;
     } catch (err) {
@@ -130,7 +130,7 @@ export function useImageLoader(config: ImageAssetConfig): {
     state,
     element: elementRef.current,
     error,
-    ref: elementRef
+    ref: elementRef,
   };
 }
 
@@ -166,16 +166,16 @@ export function useVideoLoader(config: VideoAssetConfig): {
 
     const loadPromise = new Promise<HTMLVideoElement>((resolve, reject) => {
       const video = document.createElement('video');
-      
+
       video.onloadeddata = () => {
         setState('loaded');
         resolve(video);
       };
-      
+
       video.onerror = () => {
         const err = new Error(`Failed to load video: ${config.src}`);
         setError(err);
-        
+
         // Try fallback if available
         if (config.fallback) {
           const fallbackVideo = document.createElement('video');
@@ -199,15 +199,16 @@ export function useVideoLoader(config: VideoAssetConfig): {
       if (config.autoplay !== undefined) video.autoplay = config.autoplay;
       if (config.muted !== undefined) video.muted = config.muted;
       if (config.loop !== undefined) video.loop = config.loop;
-      if (config.playsInline !== undefined) video.playsInline = config.playsInline;
+      if (config.playsInline !== undefined)
+        video.playsInline = config.playsInline;
       if (config.controls !== undefined) video.controls = config.controls;
-      
+
       // Preload the video
       video.load();
     });
 
     videoRegistry.set(config.src, loadPromise);
-    
+
     try {
       return await loadPromise;
     } catch (err) {
@@ -248,7 +249,7 @@ export function useVideoLoader(config: VideoAssetConfig): {
     ref: elementRef,
     play,
     pause,
-    isPlaying
+    isPlaying,
   };
 }
 
@@ -285,16 +286,16 @@ export function useAudioLoader(config: AudioAssetConfig): {
 
     const loadPromise = new Promise<HTMLAudioElement>((resolve, reject) => {
       const audio = new Audio();
-      
+
       audio.onloadeddata = () => {
         setState('loaded');
         resolve(audio);
       };
-      
+
       audio.onerror = () => {
         const err = new Error(`Failed to load audio: ${config.src}`);
         setError(err);
-        
+
         // Try fallback if available
         if (config.fallback) {
           const fallbackAudio = new Audio(config.fallback);
@@ -317,13 +318,13 @@ export function useAudioLoader(config: AudioAssetConfig): {
       if (config.loop !== undefined) audio.loop = config.loop;
       if (config.muted !== undefined) audio.muted = config.muted;
       if (config.volume !== undefined) audio.volume = config.volume;
-      
+
       // Preload the audio
       audio.load();
     });
 
     audioRegistry.set(config.src, loadPromise);
-    
+
     try {
       return await loadPromise;
     } catch (err) {
@@ -371,7 +372,7 @@ export function useAudioLoader(config: AudioAssetConfig): {
     play,
     pause,
     isPlaying,
-    setVolume
+    setVolume,
   };
 }
 
@@ -379,7 +380,7 @@ export function useAudioLoader(config: AudioAssetConfig): {
  * Multi-asset loading hook for clocks with multiple assets
  */
 export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
-  configs: T
+  configs: T,
 ): {
   states: Record<keyof T, AssetLoadState>;
   errors: Record<keyof T, Error | null>;
@@ -389,10 +390,10 @@ export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
   totalCount: number;
 } {
   const [states, setStates] = useState<Record<keyof T, AssetLoadState>>(
-    {} as Record<keyof T, AssetLoadState>
+    {} as Record<keyof T, AssetLoadState>,
   );
   const [errors, setErrors] = useState<Record<keyof T, Error | null>>(
-    {} as Record<keyof T, Error | null>
+    {} as Record<keyof T, Error | null>,
   );
 
   useEffect(() => {
@@ -400,7 +401,7 @@ export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
     const initialStates = {} as Record<keyof T, AssetLoadState>;
     const initialErrors = {} as Record<keyof T, Error | null>;
 
-    assetKeys.forEach(key => {
+    assetKeys.forEach((key) => {
       initialStates[key] = 'loading';
       initialErrors[key] = null;
     });
@@ -423,7 +424,8 @@ export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
           const img = new Image();
           await new Promise<void>((resolve, reject) => {
             img.onload = () => resolve();
-            img.onerror = () => reject(new Error(`Failed to load image: ${config.src}`));
+            img.onerror = () =>
+              reject(new Error(`Failed to load image: ${config.src}`));
             img.src = config.src;
           });
           newState = 'loaded';
@@ -432,7 +434,8 @@ export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
           const video = document.createElement('video');
           await new Promise<void>((resolve, reject) => {
             video.onloadeddata = () => resolve();
-            video.onerror = () => reject(new Error(`Failed to load video: ${config.src}`));
+            video.onerror = () =>
+              reject(new Error(`Failed to load video: ${config.src}`));
             video.src = config.src;
             video.load();
           });
@@ -442,7 +445,8 @@ export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
           const audio = new Audio();
           await new Promise<void>((resolve, reject) => {
             audio.onloadeddata = () => resolve();
-            audio.onerror = () => reject(new Error(`Failed to load audio: ${config.src}`));
+            audio.onerror = () =>
+              reject(new Error(`Failed to load audio: ${config.src}`));
             audio.src = config.src;
             audio.load();
           });
@@ -451,7 +455,7 @@ export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
       } catch (err) {
         newError = err as Error;
         newState = 'error';
-        
+
         // Try fallback if available
         if (config.fallback) {
           try {
@@ -470,19 +474,19 @@ export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
         }
       }
 
-      setStates(prev => ({ ...prev, [key]: newState }));
-      setErrors(prev => ({ ...prev, [key]: newError }));
+      setStates((prev) => ({ ...prev, [key]: newState }));
+      setErrors((prev) => ({ ...prev, [key]: newError }));
     });
 
     Promise.allSettled(loadPromises);
   }, [configs]);
 
-  const loadedCount = Object.values(states).filter(state => 
-    state === 'loaded' || state === 'fallback'
+  const loadedCount = Object.values(states).filter(
+    (state) => state === 'loaded' || state === 'fallback',
   ).length;
   const totalCount = Object.keys(configs).length;
   const isAllLoaded = loadedCount === totalCount;
-  const hasErrors = Object.values(errors).some(error => error !== null);
+  const hasErrors = Object.values(errors).some((error) => error !== null);
 
   return {
     states,
@@ -490,7 +494,7 @@ export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
     isAllLoaded,
     hasErrors,
     loadedCount,
-    totalCount
+    totalCount,
   };
 }
 
@@ -498,7 +502,7 @@ export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
  * Asset preloading utility for performance optimization
  */
 export function preloadAssets(assets: AssetConfig[]): Promise<void[]> {
-  const preloadPromises = assets.map(asset => {
+  const preloadPromises = assets.map((asset) => {
     if (asset.src.match(/\.(jpg|jpeg|png|gif|webp|svg)$/i)) {
       return new Promise<void>((resolve, reject) => {
         const img = new Image();
@@ -557,7 +561,7 @@ export const AssetUtils = {
   generateSrcSet(basePath: string, sizes: number[]): string {
     const extension = basePath.split('.').pop() || 'png';
     return sizes
-      .map(size => `${basePath}-${size}w.${extension} ${size}w`)
+      .map((size) => `${basePath}-${size}w.${extension} ${size}w`)
       .join(', ');
   },
 
@@ -578,7 +582,7 @@ export const AssetUtils = {
     imageRegistry.clear();
     videoRegistry.clear();
     audioRegistry.clear();
-  }
+  },
 };
 
 export default {
@@ -587,5 +591,5 @@ export default {
   useAudioLoader,
   useMultiAssetLoader,
   preloadAssets,
-  AssetUtils
+  AssetUtils,
 };

@@ -1,14 +1,14 @@
 import React, { useRef, useMemo, useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Html } from '@react-three/drei';
 import * as THREE from 'three';
 
-import backgroundImage from '../../../../assets/images/2025/25-12/25-12-07/h2o.webp';
-import backgroundImage2 from '../../../../assets/images/2025/25-12/25-12-07/water.gif';
-import font251207 from '../../../../assets/fonts/2025/25-12-07-isoca.ttf?url';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
+import backgroundImage from '@/assets/images/2025/25-12/25-12-07/h2o.webp';
+import backgroundImage2 from '@/assets/images/2025/25-12/25-12-07/water.gif';
+import font251207 from '@/assets/fonts/2025/25-12-07-isoca.ttf?url';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 
 const fontConfigs: FontConfig[] = [
   {

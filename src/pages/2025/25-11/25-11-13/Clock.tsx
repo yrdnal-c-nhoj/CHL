@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, CSSProperties } from 'react';
 // 🎯 Import the background image
-import backgroundImageURL from '../../../../assets/images/2025/25-11/25-11-13/bg.webp';
+import backgroundImageURL from '@/assets/images/2025/25-11/25-11-13/bg.webp';
 import styles from './Clock.module.css';
 
 // A unique ID generator for each rolling clock
@@ -64,7 +64,7 @@ export default function RollingAnalogClock() {
   }, []);
 
   return (
-    <div 
+    <div
       className={styles.container}
       style={{ backgroundImage: `url('${backgroundImageURL}')` }}
     >
@@ -91,7 +91,11 @@ interface SingleClockProps {
 
 function SingleSlowRollingClock({ duration, direction }: SingleClockProps) {
   const clockRef = useRef<HTMLDivElement>(null);
-  const handsRef = useRef<{ hour: HTMLDivElement | null; minute: HTMLDivElement | null; second: HTMLDivElement | null }>({ hour: null, minute: null, second: null });
+  const handsRef = useRef<{
+    hour: HTMLDivElement | null;
+    minute: HTMLDivElement | null;
+    second: HTMLDivElement | null;
+  }>({ hour: null, minute: null, second: null });
   const [now, setNow] = useState(new Date());
 
   // Set a large distance to ensure the clock travels completely off-screen
@@ -167,9 +171,18 @@ function SingleSlowRollingClock({ duration, direction }: SingleClockProps) {
         {/* 12 o'clock marker only (Moved out further) */}
         <div className={styles.marker12} />
         {/* hands */}
-        <div ref={(el) => (handsRef.current.hour = el)} className={`${styles.hand} ${styles.handHour}`} />
-        <div ref={(el) => (handsRef.current.minute = el)} className={`${styles.hand} ${styles.handMinute}`} />
-        <div ref={(el) => (handsRef.current.second = el)} className={`${styles.hand} ${styles.handSecond}`} />
+        <div
+          ref={(el) => (handsRef.current.hour = el)}
+          className={`${styles.hand} ${styles.handHour}`}
+        />
+        <div
+          ref={(el) => (handsRef.current.minute = el)}
+          className={`${styles.hand} ${styles.handMinute}`}
+        />
+        <div
+          ref={(el) => (handsRef.current.second = el)}
+          className={`${styles.hand} ${styles.handSecond}`}
+        />
         <div className={styles.centerPin} />
       </div>
     </div>

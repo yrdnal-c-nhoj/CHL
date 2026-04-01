@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
+import { useSecondClock } from '@/utils/useSmoothClock';
 import styles from './Clock.module.css';
 
 const WordClock: React.FC = () => {

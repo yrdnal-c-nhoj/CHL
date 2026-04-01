@@ -22,6 +22,7 @@ npm run clean         # rm -rf dist
 ```
 
 Run a single test file:
+
 ```bash
 npx vitest run src/path/to/file.test.ts
 ```
@@ -39,6 +40,7 @@ The clock registry lives in `src/context/clockpages.json` — an ordered array o
 ### Clock Loading Pipeline
 
 `src/hooks/useClockPage.ts` is the core of the system:
+
 1. Uses `import.meta.glob('../../pages/**/Clock.tsx')` to pre-register all clock modules at build time.
 2. Constructs the module key as `pages/YY-MM/YY-MM-DD/Clock.tsx`.
 3. Dynamically imports the matching module and preloads any exported image/video assets before rendering.
@@ -77,6 +79,7 @@ The codebase is in active migration from JSX to TSX. Shared utilities and new fi
 ### Environment Variables
 
 Defined in `.env` (copy from `.env.example`). All must be prefixed with `VITE_` to be accessible in the browser. Key variables:
+
 - `VITE_GA_ID` — Google Analytics 4 measurement ID
 - `VITE_ENVIRONMENT` — `development` / `testing` / `production` (controls test vs. prod data)
 - `VITE_PIXABAY_KEY`, `VITE_UNSPLASH_KEY`, `VITE_GOOGLE_API_KEY`, `VITE_NASA_API_KEY` — image API keys used by individual clocks

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import backgroundImage from '../../../../assets/images/2026/26-01/26-01-06/aa.jpg';
-import gizaFont from '../../../../assets/fonts/2026/26-01-06-aa.ttf';
-import aaaImage from '../../../../assets/images/2026/26-01/26-01-06/aaa.webp';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import backgroundImage from '@/assets/images/2026/26-01/26-01-06/aa.jpg';
+import gizaFont from '@/assets/fonts/2026/26-01-06-aa.ttf';
+import aaaImage from '@/assets/images/2026/26-01/26-01-06/aaa.webp';
 
 export default function AardvarkClock() {
   // Standardized font loading with font-display: swap to avoid FOUC

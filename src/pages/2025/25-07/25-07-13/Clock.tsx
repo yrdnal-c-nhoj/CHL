@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import rorFontUrl from '../../../../assets/fonts/2025/25-07-13-ror.ttf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import rorFontUrl from '@/assets/fonts/2025/25-07-13-ror.ttf';
 
 const RorschachClock: React.FC = () => {
   const clockRef = useRef();

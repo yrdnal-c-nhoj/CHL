@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useGlobalStyles, useKeyframes } from '../../../../utils/enhancedFontLoader';
+import { useGlobalStyles, useKeyframes } from '@/utils/enhancedFontLoader';
 
 const DigitalClock: React.FC = () => {
   const [time, setTime] = useState(new Date());

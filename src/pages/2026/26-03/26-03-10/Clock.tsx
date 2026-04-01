@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
+import { useSecondClock } from '@/utils/useSmoothClock';
 
 const ProgressClock: React.FC = () => {
   const time = useSecondClock();

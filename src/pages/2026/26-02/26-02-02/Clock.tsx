@@ -1,6 +1,6 @@
 import React from 'react';
-import { useMillisecondClock } from '../../../../utils/useSmoothClock';
-import digitalBgImage from '../../../../assets/images/2026/26-02/26-02-02/boom.webp';
+import { useMillisecondClock } from '@/utils/useSmoothClock';
+import digitalBgImage from '@/assets/images/2026/26-02/26-02-02/boom.webp';
 
 const SonicBoomClock: React.FC = () => {
   const time = useMillisecondClock();

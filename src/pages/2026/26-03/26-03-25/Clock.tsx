@@ -1,6 +1,7 @@
 import React, { useMemo, memo } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import { calculateAngles } from '../../../../utils/clockUtils';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import { calculateAngles } from '@/utils/clockUtils';
+import bgImage from '@/assets/images/2026/26-03/26-03-25/ride.webp';
 import styles from './Clock.module.css';
 
 const BASE_SIZE = 500;
@@ -78,7 +79,11 @@ const Clock: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.bgGrid}>
         {Array.from({ length: 9 }).map((_, i) => (
-          <div key={i} className={styles.bgCell} />
+          <div 
+            key={i} 
+            className={styles.bgCell}
+            style={{ backgroundImage: `url(${bgImage})` }}
+          />
         ))}
       </div>
 

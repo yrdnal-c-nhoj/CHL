@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import backgroundImage from '../../../../assets/images/2025/25-04/25-04-14/bricks.webp';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import backgroundImage from '@/assets/images/2025/25-04/25-04-14/bricks.webp';
 
 // Time interface
 interface TimeState {

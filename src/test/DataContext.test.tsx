@@ -1,6 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
-import { DataProvider, useDataContext, DataContext } from '../context/DataContext';
+import {
+  DataProvider,
+  useDataContext,
+  DataContext,
+} from '../context/DataContext';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 
@@ -42,7 +46,7 @@ describe('DataContext', () => {
     render(
       <DataProvider>
         <TestComponent />
-      </DataProvider>
+      </DataProvider>,
     );
 
     expect(screen.getByTestId('item-count')).toHaveTextContent('3');
@@ -57,7 +61,7 @@ describe('DataContext', () => {
     render(
       <DataProvider>
         <TestComponent />
-      </DataProvider>
+      </DataProvider>,
     );
 
     expect(screen.getByTestId('loading')).toHaveTextContent('ready');
@@ -72,7 +76,7 @@ describe('DataContext', () => {
     render(
       <DataProvider>
         <TestComponent />
-      </DataProvider>
+      </DataProvider>,
     );
 
     expect(screen.getByTestId('error')).toHaveTextContent('no-error');
@@ -94,12 +98,14 @@ describe('DataContext', () => {
     render(
       <DataProvider>
         <TestComponent />
-      </DataProvider>
+      </DataProvider>,
     );
 
     expect(screen.getByTestId('first-path')).toHaveTextContent('26-03-05');
     expect(screen.getByTestId('first-date')).toHaveTextContent('26-03-05');
-    expect(screen.getByTestId('first-title')).toHaveTextContent('Retro Terminal');
+    expect(screen.getByTestId('first-title')).toHaveTextContent(
+      'Retro Terminal',
+    );
   });
 
   it('should provide empty array when used outside provider', () => {
@@ -139,7 +145,7 @@ describe('DataContext', () => {
     render(
       <DataProvider>
         <TestComponent />
-      </DataProvider>
+      </DataProvider>,
     );
 
     expect(screen.getByTestId('item-0')).toHaveTextContent('26-03-05');
@@ -160,7 +166,7 @@ describe('DataContext Provider', () => {
         <DataProvider>
           <TestComponent />
         </DataProvider>
-      </DataProvider>
+      </DataProvider>,
     );
 
     expect(screen.getByTestId('count')).toHaveTextContent('3');
@@ -181,7 +187,7 @@ describe('DataContext Provider', () => {
       <DataProvider>
         <Consumer1 />
         <Consumer2 />
-      </DataProvider>
+      </DataProvider>,
     );
 
     expect(screen.getByTestId('consumer1')).toHaveTextContent('Retro Terminal');

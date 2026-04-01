@@ -16,14 +16,17 @@ const APP_ENV =
 const isProdEnv = (): boolean => (APP_ENV || '').toLowerCase() === 'production';
 const dntEnabled = (): boolean => {
   const dnt =
-    navigator?.doNotTrack || (window as any)?.doNotTrack || (navigator as any)?.msDoNotTrack;
+    navigator?.doNotTrack ||
+    (window as any)?.doNotTrack ||
+    (navigator as any)?.msDoNotTrack;
   return dnt === '1' || dnt === 'yes';
 };
 
 let gaScriptLoading = false;
 let gaInitialized = false;
 
-const shouldTrack = (): boolean => Boolean(GA_ID) && isProdEnv() && !dntEnabled();
+const shouldTrack = (): boolean =>
+  Boolean(GA_ID) && isProdEnv() && !dntEnabled();
 
 const loadGaScript = () => {
   if (gaScriptLoading || gaInitialized) return;

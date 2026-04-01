@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import anglerfishIdle from '../../../../assets/images/2025/25-07/25-07-21/anglerfish-gif_anglerfish_idle_swim.webp';
-import anglerfishFuse from '../../../../assets/images/2025/25-07/25-07-21/Deep-Sea-Anglerfish-Fuse.webp';
-import patternOverlay from '../../../../assets/images/2025/25-07/25-07-21/qsxwwd.webp';
-import spinGif from '../../../../assets/images/2025/25-07/25-07-21/spin.gif';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import anglerfishIdle from '@/assets/images/2025/25-07/25-07-21/anglerfish-gif_anglerfish_idle_swim.webp';
+import anglerfishFuse from '@/assets/images/2025/25-07/25-07-21/Deep-Sea-Anglerfish-Fuse.webp';
+import patternOverlay from '@/assets/images/2025/25-07/25-07-21/qsxwwd.webp';
+import spinGif from '@/assets/images/2025/25-07/25-07-21/spin.gif';
 
 const AnglerfishClock: React.FC = () => {
   const [time, setTime] = useState<any>('');

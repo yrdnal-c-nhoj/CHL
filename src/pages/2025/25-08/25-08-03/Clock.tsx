@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useMemo } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import bgImage from '../../../../assets/images/2025/25-08/25-08-03/sta.gif';
-import overlay2 from '../../../../assets/images/2025/25-08/25-08-03/pro.gif';
-import overlay1 from '../../../../assets/images/2025/25-08/25-08-03/cur.webp';
-import clockFont from '../../../../assets/fonts/2025/25-08-03-st.ttf';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import bgImage from '@/assets/images/2025/25-08/25-08-03/sta.gif';
+import overlay2 from '@/assets/images/2025/25-08/25-08-03/pro.gif';
+import overlay1 from '@/assets/images/2025/25-08/25-08-03/cur.webp';
+import clockFont from '@/assets/fonts/2025/25-08-03-st.ttf';
 
 const goldGradient =
   'linear-gradient(135deg, #ffd700, #ffec85, #b8860b, #f5d742)';

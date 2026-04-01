@@ -85,7 +85,10 @@
   color: #ffe066;
   font-size: clamp(1.5rem, 11vw, 3.5rem);
   opacity: 1;
-  text-shadow: 1px 0 0px rgb(25, 20, 1), 0 0 40px rgba(255, 230, 102, 0.9), 0 0 60px rgba(255, 230, 102, 0.7);
+  text-shadow:
+    1px 0 0px rgb(25, 20, 1),
+    0 0 40px rgba(255, 230, 102, 0.9),
+    0 0 60px rgba(255, 230, 102, 0.7);
   letter-spacing: -0.09em;
 }
 
@@ -102,7 +105,12 @@
 .hourHand {
   width: 4px;
   height: 20%;
-  background: linear-gradient(to top, rgba(218, 165, 32, 0.6) 0%, rgba(255, 215, 0, 0.7) 50%, rgba(255, 236, 139, 0.6) 100%);
+  background: linear-gradient(
+    to top,
+    rgba(218, 165, 32, 0.6) 0%,
+    rgba(255, 215, 0, 0.7) 50%,
+    rgba(255, 236, 139, 0.6) 100%
+  );
   border-radius: 3px;
   z-index: 3;
 }
@@ -110,7 +118,12 @@
 .minuteHand {
   width: 3px;
   height: 40%;
-  background: linear-gradient(to top, rgba(218, 165, 32, 0.6) 0%, rgba(255, 215, 0, 0.7) 50%, rgba(255, 236, 139, 0.6) 100%);
+  background: linear-gradient(
+    to top,
+    rgba(218, 165, 32, 0.6) 0%,
+    rgba(255, 215, 0, 0.7) 50%,
+    rgba(255, 236, 139, 0.6) 100%
+  );
   border-radius: 2px;
   z-index: 2;
 }
@@ -118,7 +131,11 @@
 .secondHand {
   width: 2px;
   height: 45%;
-  background: linear-gradient(to top, rgba(218, 165, 32, 0.5), rgba(255, 236, 139, 0.5));
+  background: linear-gradient(
+    to top,
+    rgba(218, 165, 32, 0.5),
+    rgba(255, 236, 139, 0.5)
+  );
   border-radius: 1px;
   z-index: 1;
 }
@@ -139,7 +156,8 @@
 }
 
 @keyframes scarabFade {
-  0%, 25% {
+  0%,
+  25% {
     opacity: 0;
   }
   90% {

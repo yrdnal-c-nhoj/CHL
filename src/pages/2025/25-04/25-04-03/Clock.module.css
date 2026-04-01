@@ -4,7 +4,7 @@
   height: 100dvh;
   width: 100vw;
   overflow: hidden;
-  background-color: #727B7BFF;
+  background-color: #727b7bff;
   filter: brightness(300%) contrast(40%);
   position: relative;
   user-select: none;

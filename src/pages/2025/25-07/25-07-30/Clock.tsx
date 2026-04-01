@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import clockBg from '../../../../assets/images/2025/25-07/25-07-30/ca.gif';
-import fullBg from '../../../../assets/images/2025/25-07/25-07-30/ca.gif';
-import myFont from '../../../../assets/fonts/2025/25-07-30-Cam.ttf'; // Import font
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import clockBg from '@/assets/images/2025/25-07/25-07-30/ca.gif';
+import fullBg from '@/assets/images/2025/25-07/25-07-30/ca.gif';
+import myFont from '@/assets/fonts/2025/25-07-30-Cam.ttf'; // Import font
 
 const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

@@ -1,12 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import videoFile from '../../../../assets/images/2025/25-10/25-10-24/esp.mp4';
-import videoWebM from '../../../../assets/images/2025/25-10/25-10-24/esp.webp';
-import fallbackImg from '../../../../assets/images/2025/25-10/25-10-24/esp.jpeg';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import videoFile from '@/assets/images/2025/25-10/25-10-24/esp.mp4';
+import videoWebM from '@/assets/images/2025/25-10/25-10-24/esp.webp';
+import fallbackImg from '@/assets/images/2025/25-10/25-10-24/esp.jpeg';
 const fontFile251024 = '../../../assets/fonts/2025/25-10-24-esp.ttf';
-import cornerUL from '../../../../assets/images/2025/25-10/25-10-24/ul.webp';
-import cornerLR from '../../../../assets/images/2025/25-10/25-10-24/lr.webp';
+import cornerUL from '@/assets/images/2025/25-10/25-10-24/ul.webp';
+import cornerLR from '@/assets/images/2025/25-10/25-10-24/lr.webp';
 
 export default function VictorianEsperantoClock() {
   const videoRef = useRef(null);

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 const o250920font = '../../../assets/fonts/2025/25-09-20-orb.ttf'; // Local font file
 
 const COLORS = {

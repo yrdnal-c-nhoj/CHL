@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import lightningImg from '../../../../assets/images/2025/25-05/25-05-01/lightning.webp';
-import innerFontTTF from '../../../../assets/fonts/2025/25-05-01-Inner.ttf?url';
+import lightningImg from '@/assets/images/2025/25-05/25-05-01/lightning.webp';
+import innerFontTTF from '@/assets/fonts/2025/25-05-01-Inner.ttf?url';
 
 // Time state interface
 interface TimeState {

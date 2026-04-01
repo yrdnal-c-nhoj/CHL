@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useMemo } from 'react';
-import walkVideo from '../../../../assets/images/2026/26-03/26-03-18/walk.mp4';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import { useMillisecondClock } from '../../../../utils/useSmoothClock';
-import walkFont from '../../../../assets/fonts/2026/26-03-18-walk.ttf?url';
+import walkVideo from '@/assets/images/2026/26-03/26-03-18/walk.mp4';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/useSmoothClock';
+import walkFont from '@/assets/fonts/2026/26-03-18-walk.ttf?url';
 
 const Clock: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);

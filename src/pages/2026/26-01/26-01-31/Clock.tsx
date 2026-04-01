@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 
 
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import lemonBg from '../../../../assets/images/2026/26-01/26-01-31/lemon.gif';
-import rainBg from '../../../../assets/images/2026/26-01/26-01-31/lu.webp';
-import lemGif from '../../../../assets/images/2026/26-01/26-01-31/lemslo.gif';
-import lemons2Bg from '../../../../assets/images/2026/26-01/26-01-31/lemons2.jpg';
-import lemonFont from '../../../../assets/fonts/2026/26-01-31-lemon.otf';
-import centerImage from '../../../../assets/images/2026/26-01/26-01-31/lem.gif';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import lemonBg from '@/assets/images/2026/26-01/26-01-31/lemon.gif';
+import rainBg from '@/assets/images/2026/26-01/26-01-31/lu.webp';
+import lemGif from '@/assets/images/2026/26-01/26-01-31/lemslo.gif';
+import lemons2Bg from '@/assets/images/2026/26-01/26-01-31/lemons2.jpg';
+import lemonFont from '@/assets/fonts/2026/26-01-31-lemon.otf';
+import centerImage from '@/assets/images/2026/26-01/26-01-31/lem.gif';
 
 const containerStyle = {
   position: 'fixed',

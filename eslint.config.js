@@ -10,7 +10,13 @@ import prettierConfig from 'eslint-config-prettier';
 export default tseslint.config(
   // Ignore build artifacts and generated files
   {
-    ignores: ['dist/**', 'build/**', 'node_modules/**', 'scripts/**', '*.min.js'],
+    ignores: [
+      'dist/**',
+      'build/**',
+      'node_modules/**',
+      'scripts/**',
+      '*.min.js',
+    ],
   },
 
   // Base JS rules for all JS/JSX files
@@ -244,7 +250,7 @@ export default tseslint.config(
       'max-depth': ['warn', 4],
       'max-lines': ['warn', 500],
       'max-lines-per-function': ['warn', 50],
-      'complexity': ['warn', 10],
+      complexity: ['warn', 10],
       quotes: ['error', 'single', { allowTemplateLiterals: true }],
       semi: ['error', 'always'],
       'comma-dangle': ['error', 'never'],
@@ -306,7 +312,12 @@ export default tseslint.config(
   },
 
   {
-    files: ['*.config.{js,ts}', 'vite.config.ts', 'postcss.config.js', 'tailwind.config.js'],
+    files: [
+      '*.config.{js,ts}',
+      'vite.config.ts',
+      'postcss.config.js',
+      'tailwind.config.js',
+    ],
     rules: {
       'no-console': 'off',
     },

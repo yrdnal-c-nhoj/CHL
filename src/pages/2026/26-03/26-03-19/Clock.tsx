@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import snowFont from '../../../../assets/fonts/2026/26-03-19-snow.otf?url';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import snowFont from '@/assets/fonts/2026/26-03-19-snow.otf?url';
 
 interface Flake {
   x: number;

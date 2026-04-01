@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/useSmoothClock';
 
-import mazeFont from '../../../../assets/fonts/2026/26-02-18-jelly.otf';
-import bg1 from '../../../../assets/images/2026/26-02/26-02-18/jel.webp';
-import bg3 from '../../../../assets/images/2026/26-02/26-02-18/jelly.webp';
+import mazeFont from '@/assets/fonts/2026/26-02-18-jelly.otf';
+import bg1 from '@/assets/images/2026/26-02/26-02-18/jel.webp';
+import bg3 from '@/assets/images/2026/26-02/26-02-18/jelly.webp';
 
 const ImageDisplay: React.FC = () => {
   const time = useSecondClock();

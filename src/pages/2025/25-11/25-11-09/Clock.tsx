@@ -1,9 +1,9 @@
 // src/components/DarkRomanClock.jsx
 import React, { useState, useEffect, useMemo } from 'react';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import Font20251111 from '../../../../assets/fonts/2025/25-11-09-disc.ttf'; // main Roman font
-import ActiveFont20251111 from '../../../../assets/fonts/2025/25-11-09-pin.ttf'; // active digit font
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import Font20251111 from '@/assets/fonts/2025/25-11-09-disc.ttf'; // main Roman font
+import ActiveFont20251111 from '@/assets/fonts/2025/25-11-09-pin.ttf'; // active digit font
 
 const ROMAN_NUMERALS = [
   'I',

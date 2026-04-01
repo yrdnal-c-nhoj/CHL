@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useClockTime } from '../../../../utils/hooks';
+import { useClockTime } from '@/utils/hooks';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 

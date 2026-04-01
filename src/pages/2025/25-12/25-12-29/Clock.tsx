@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import backgroundImage from '../../../../assets/images/2025/25-12/25-12-29/shrine.webp';
-import shrineFont from '../../../../assets/fonts/2025/25-12-29-shrine.ttf?url';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import backgroundImage from '@/assets/images/2025/25-12/25-12-29/shrine.webp';
+import shrineFont from '@/assets/fonts/2025/25-12-29-shrine.ttf?url';
 
 const DynamicClockComponent: React.FC = () => {
   const FONT_FAMILY = 'ShrineFont_20251229';

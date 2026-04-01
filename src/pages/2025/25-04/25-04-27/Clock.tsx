@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import coinGif from '../../../../assets/images/2025/25-04/25-04-27/coin.gif';
-import spinWebp from '../../../../assets/images/2025/25-04/25-04-27/spin.webp';
+import coinGif from '@/assets/images/2025/25-04/25-04-27/coin.gif';
+import spinWebp from '@/assets/images/2025/25-04/25-04-27/spin.webp';
 
 // Component Props interface
 interface SpinningCoinClockProps {

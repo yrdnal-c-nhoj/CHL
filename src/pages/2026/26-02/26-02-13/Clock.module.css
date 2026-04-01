@@ -1,5 +1,5 @@
 .wrapper {
-  background: #E89077;
+  background: #e89077;
   height: 100dvh;
   width: 100dvw;
   margin: 0;
@@ -11,7 +11,7 @@
   overflow: hidden;
   /* Locally scoped variables */
   --inactive: rgba(233, 247, 234, 0.54);
-  --active: #AC0909;
+  --active: #ac0909;
 }
 
 .container {
@@ -45,9 +45,9 @@
 .active {
   color: var(--active);
   font-weight: 900;
-  text-shadow: 
-    0 0 10px rgba(255,255,255,0.7),
-    0 0 18px rgba(255,255,255,0.4);
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.7),
+    0 0 18px rgba(255, 255, 255, 0.4);
   transform: scale(1.12);
 }
 
@@ -62,6 +62,10 @@
 }
 
 @media (max-width: 400px) {
-  .wrapper { padding: 8px; }
-  .container { gap: clamp(2px, 0.9vmin, 7px); }
+  .wrapper {
+    padding: 8px;
+  }
+  .container {
+    gap: clamp(2px, 0.9vmin, 7px);
+  }
 }

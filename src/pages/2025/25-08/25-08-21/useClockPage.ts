@@ -17,12 +17,16 @@ interface UseClockPageResult {
   overlayVisible: boolean;
 }
 
-export const useClockPage = (item: ClockItem | null | undefined): UseClockPageResult => {
-  const [ClockComponent, setClockComponent] = useState<ComponentType | null>(null);
+export const useClockPage = (
+  item: ClockItem | null | undefined,
+): UseClockPageResult => {
+  const [ClockComponent, setClockComponent] = useState<ComponentType | null>(
+    null,
+  );
   const [isReady, setIsReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [overlayVisible, setOverlayVisible] = useState(true);
-  
+
   // Ref to track the current loading item to prevent race conditions
   const loadingItemRef = useRef<string | null>(null);
 
@@ -80,7 +84,7 @@ export const useClockPage = (item: ClockItem | null | undefined): UseClockPageRe
 
       const itemKey = item.date || item.path;
       loadingItemRef.current = itemKey;
-      
+
       setOverlayVisible(true);
       setError(null);
 
@@ -92,11 +96,11 @@ export const useClockPage = (item: ClockItem | null | undefined): UseClockPageRe
 
         const moduleLoader = clockModules[moduleKey] as () => Promise<any>;
         const module = await moduleLoader();
-        
+
         // Only proceed if we're still loading the same item
         if (loadingItemRef.current === itemKey) {
           await preloadAssets(module);
-          
+
           setClockComponent(() => module.default);
           setIsReady(true);
           setTimeout(() => setOverlayVisible(false), 300);

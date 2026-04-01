@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // Asset imports
-import backgroundUrl from '../../../../assets/images/2026/26-01/26-01-22/1974.jpg';
-import digitTextureUrl from '../../../../assets/images/2026/26-01/26-01-22/liq.webp';
-import fontUrl from '../../../../assets/fonts/2026/26-01-22-1974.ttf';
+import backgroundUrl from '@/assets/images/2026/26-01/26-01-22/1974.jpg';
+import digitTextureUrl from '@/assets/images/2026/26-01/26-01-22/liq.webp';
+import fontUrl from '@/assets/fonts/2026/26-01-22-1974.ttf';
 
 const FONT_FAMILY = '1974';
 

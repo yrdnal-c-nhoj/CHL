@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import topoImage from '../../../../assets/images/2025/25-12/25-12-25/topo.jpg';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import topoImage from '@/assets/images/2025/25-12/25-12-25/topo.jpg';
 
 // Constants
 const COLORS = {

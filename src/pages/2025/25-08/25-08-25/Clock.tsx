@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import font1 from '../../../../assets/fonts/2025/25-08-25-code.ttf';
-import font2 from '../../../../assets/fonts/2025/25-08-25-bar.ttf';
-import bgImage2 from '../../../../assets/images/2025/25-08/25-08-25/bgla.webp'; // Bottom background
-import bgImage from '../../../../assets/images/2025/25-08/25-08-25/wh.webp'; // Top background
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import font1 from '@/assets/fonts/2025/25-08-25-code.ttf';
+import font2 from '@/assets/fonts/2025/25-08-25-bar.ttf';
+import bgImage2 from '@/assets/images/2025/25-08/25-08-25/bgla.webp'; // Bottom background
+import bgImage from '@/assets/images/2025/25-08/25-08-25/wh.webp'; // Top background
 
 export default function DigitalClock() {
   // Standardized font loading with font-display: swap to avoid FOUC

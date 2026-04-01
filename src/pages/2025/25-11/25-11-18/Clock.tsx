@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import font_2025_11_21 from '../../../../assets/fonts/2025/25-11-18-cat.ttf?url';
-import bgImg from '../../../../assets/images/2025/25-11/25-11-18/eyes.webp';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
-import type { FontConfig } from '../../../../types/clock';
+import font_2025_11_21 from '@/assets/fonts/2025/25-11-18-cat.ttf?url';
+import bgImg from '@/assets/images/2025/25-11/25-11-18/eyes.webp';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/useSmoothClock';
+import type { FontConfig } from '@/types/clock';
 
 export default function RotatedClockGrid() {
   const now = useSecondClock();

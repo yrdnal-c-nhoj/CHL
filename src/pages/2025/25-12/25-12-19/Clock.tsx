@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import sandTexture from '../../../../assets/images/2025/25-12/25-12-19/sand.webp';
-import FONT_PATH from '../../../../assets/fonts/hour.ttf?url';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import sandTexture from '@/assets/images/2025/25-12/25-12-19/sand.webp';
+import FONT_PATH from '@/assets/fonts/hour.ttf?url';
 
 const FONT_FAMILY = 'DateFont';
 

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import cus250903font from '../../../../assets/fonts/2025/25-09-03-mau.ttf';
-import cornerImage from '../../../../assets/images/2025/25-09/25-09-03/corner.gif';
-import backgroundImage from '../../../../assets/images/2025/25-09/25-09-03/mau.gif'; // <-- your background image
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import cus250903font from '@/assets/fonts/2025/25-09-03-mau.ttf';
+import cornerImage from '@/assets/images/2025/25-09/25-09-03/corner.gif';
+import backgroundImage from '@/assets/images/2025/25-09/25-09-03/mau.gif'; // <-- your background image
 
 function DigitalClock() {
   // Standardized font loading with font-display: swap to avoid FOUC

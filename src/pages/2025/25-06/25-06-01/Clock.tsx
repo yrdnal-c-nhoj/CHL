@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import airFontUrl from '../../../../assets/fonts/2025/25-06-01-air.ttf';
-import stampImg from '../../../../assets/images/2025/25-06/25-06-01/stamp.png';
-import stamp2Img from '../../../../assets/images/2025/25-06/25-06-01/stamp2.png';
-import stamp3Img from '../../../../assets/images/2025/25-06/25-06-01/stamp3.png';
-import frameImg from '../../../../assets/images/2025/25-06/25-06-01/frame.jpg';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import airFontUrl from '@/assets/fonts/2025/25-06-01-air.ttf';
+import stampImg from '@/assets/images/2025/25-06/25-06-01/stamp.png';
+import stamp2Img from '@/assets/images/2025/25-06/25-06-01/stamp2.png';
+import stamp3Img from '@/assets/images/2025/25-06/25-06-01/stamp3.png';
+import frameImg from '@/assets/images/2025/25-06/25-06-01/frame.jpg';
 
 // Font loading handled by useMultipleFontLoader
 const styleSheet = new CSSStyleSheet();

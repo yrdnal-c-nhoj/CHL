@@ -10,8 +10,11 @@ const resourceCache = new Map<string, { read: () => FontFace }>();
 const refCounts = new Map<FontFace, number>();
 
 // Helper to generate a unique key for the cache based on font properties
-const getCacheKey = (family: string, url: string, options?: FontFaceDescriptors) => 
-  `${family}-${url}-${JSON.stringify(options || {})}`;
+const getCacheKey = (
+  family: string,
+  url: string,
+  options?: FontFaceDescriptors,
+) => `${family}-${url}-${JSON.stringify(options || {})}`;
 
 /**
  * Low-level resource loader compatible with React Suspense.
@@ -20,7 +23,11 @@ const getCacheKey = (family: string, url: string, options?: FontFaceDescriptors)
  * - Throws an Error if failed
  * - Returns the FontFace if loaded
  */
-function getFontResource(family: string, url: string, options: FontFaceDescriptors = {}) {
+function getFontResource(
+  family: string,
+  url: string,
+  options: FontFaceDescriptors = {},
+) {
   const key = getCacheKey(family, url, options);
 
   if (!resourceCache.has(key)) {
@@ -29,7 +36,10 @@ function getFontResource(family: string, url: string, options: FontFaceDescripto
     let error: any;
 
     // display: 'block' is crucial for preventing FOUC (hides text until font is ready)
-    const fontFace = new FontFace(family, `url(${url})`, { display: 'block', ...options });
+    const fontFace = new FontFace(family, `url(${url})`, {
+      display: 'block',
+      ...options,
+    });
 
     const promise = fontFace.load().then(
       (loaded) => {
@@ -40,7 +50,7 @@ function getFontResource(family: string, url: string, options: FontFaceDescripto
         status = 'error';
         error = err;
         console.warn(`Failed to load font ${family}:`, err);
-      }
+      },
     );
 
     resourceCache.set(key, {
@@ -48,7 +58,7 @@ function getFontResource(family: string, url: string, options: FontFaceDescripto
         if (status === 'pending') throw promise;
         if (status === 'error') throw error;
         return result;
-      }
+      },
     });
   }
 
@@ -63,21 +73,21 @@ function getFontResource(family: string, url: string, options: FontFaceDescripto
 export function useSuspenseFontLoader(fontConfigs: FontConfig[]): boolean {
   // 1. Generate a stable cache key string for the dependency array.
   const cacheKey = fontConfigs
-    .map(c => getCacheKey(c.fontFamily, c.fontUrl, c.options))
+    .map((c) => getCacheKey(c.fontFamily, c.fontUrl, c.options))
     .join('|');
 
   // 2. Trigger Load / Suspend (Memoized to prevent flickering)
   const faces = useMemo(() => {
-    return fontConfigs.map(config => 
-      getFontResource(config.fontFamily, config.fontUrl, config.options).read()
+    return fontConfigs.map((config) =>
+      getFontResource(config.fontFamily, config.fontUrl, config.options).read(),
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cacheKey]);
 
   // 3. Lifecycle Management (Reference Counting)
   useLayoutEffect(() => {
     // Mount
-    faces.forEach(face => {
+    faces.forEach((face) => {
       const current = refCounts.get(face) || 0;
       if (current === 0) {
         document.fonts.add(face);
@@ -87,11 +97,11 @@ export function useSuspenseFontLoader(fontConfigs: FontConfig[]): boolean {
 
     // Unmount
     return () => {
-      faces.forEach(face => {
+      faces.forEach((face) => {
         const current = refCounts.get(face) || 0;
         const next = Math.max(0, current - 1);
         refCounts.set(face, next);
-        
+
         if (next === 0) {
           document.fonts.delete(face);
         }
@@ -112,16 +122,18 @@ export const useFontLoader = (fontFamily: string, fontUrl: string) => {
 
 // --- Fallback Component ---
 export const ClockLoadingFallback = () => (
-  <div style={{ 
-    display: 'flex', 
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    height: '100%', 
-    width: '100%', 
-    color: '#888', 
-    fontFamily: 'monospace',
-    fontSize: '1.2rem'
-  }}>
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100%',
+      width: '100%',
+      color: '#888',
+      fontFamily: 'monospace',
+      fontSize: '1.2rem',
+    }}
+  >
     Loading...
   </div>
 );

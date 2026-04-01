@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import cocteauVideo from '../../../../assets/images/2026/26-03/26-03-12/vr.mp4';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
+import cocteauVideo from '@/assets/images/2026/26-03/26-03-12/vr.mp4';
+import { useSecondClock } from '@/utils/useSmoothClock';
 
 const VirtualClock: React.FC = () => {
   const time = useSecondClock();

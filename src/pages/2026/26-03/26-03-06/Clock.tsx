@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMillisecondClock } from '../../../../utils/useSmoothClock';
-import rocketBg from '../../../../assets/images/2026/26-03/26-03-06/rocket.gif';
-import hourHandImg from '../../../../assets/images/2026/26-03/26-03-06/hand2.webp';
-import minuteHandImg from '../../../../assets/images/2026/26-03/26-03-06/hand1.webp';
-import secondHandImg from '../../../../assets/images/2026/26-03/26-03-06/hand3.webp';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMillisecondClock } from '@/utils/useSmoothClock';
+import rocketBg from '@/assets/images/2026/26-03/26-03-06/rocket.gif';
+import hourHandImg from '@/assets/images/2026/26-03/26-03-06/hand2.webp';
+import minuteHandImg from '@/assets/images/2026/26-03/26-03-06/hand1.webp';
+import secondHandImg from '@/assets/images/2026/26-03/26-03-06/hand3.webp';
 
 const RocketGrid: React.FC = () => {
   const time = useMillisecondClock();

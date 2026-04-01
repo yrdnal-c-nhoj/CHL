@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import { useSecondClock } from '../../../../utils/useSmoothClock';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/useSmoothClock';
 
 // Asset Imports
-import catFont from '../../../../assets/fonts/cat.ttf';
-import SwatsFont from '../../../../assets/fonts/Swats.ttf';
-import cat1Font from '../../../../assets/fonts/cat1.ttf';
-import catzFont from '../../../../assets/fonts/catz.otf';
-import katFont from '../../../../assets/fonts/kat.ttf';
-import katzzFont from '../../../../assets/fonts/katzz.ttf';
-import KittiesFont from '../../../../assets/fonts/Kitties.ttf';
-import meFont from '../../../../assets/fonts/me.ttf';
-import OrienightFont from '../../../../assets/fonts/Orienight.otf';
-import PurrfectFont from '../../../../assets/fonts/Purrfect.ttf';
+import catFont from '@/assets/fonts/cat.ttf';
+import SwatsFont from '@/assets/fonts/Swats.ttf';
+import cat1Font from '@/assets/fonts/cat1.ttf';
+import catzFont from '@/assets/fonts/catz.otf';
+import katFont from '@/assets/fonts/kat.ttf';
+import katzzFont from '@/assets/fonts/katzz.ttf';
+import KittiesFont from '@/assets/fonts/Kitties.ttf';
+import meFont from '@/assets/fonts/me.ttf';
+import OrienightFont from '@/assets/fonts/Orienight.otf';
+import PurrfectFont from '@/assets/fonts/Purrfect.ttf';
 
 const FONT_DATA = [
   { name: 'cat', url: catFont, maxSize: 0.4 },

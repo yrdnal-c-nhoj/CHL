@@ -227,9 +227,10 @@ const WordCell = ({ letter, isHighlighted, position }) => {
  * Word Clock Template Component
  */
 const WordClockTemplate = () => {
-  const fontConfigs = useMemo(() => [
-    { fontFamily: 'WordFont', fontUrl: wordFont }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [{ fontFamily: 'WordFont', fontUrl: wordFont }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
   const { highlightedWords, currentTime } = useWordClock();

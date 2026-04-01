@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 // === Local assets ===
-import bgImg from '../../../../assets/images/2025/25-10/25-10-08/table.png';
-import digit0 from '../../../../assets/images/2025/25-10/25-10-08/0.jpg';
-import digit1 from '../../../../assets/images/2025/25-10/25-10-08/1.webp';
-import digit2 from '../../../../assets/images/2025/25-10/25-10-08/2.png';
-import digit3 from '../../../../assets/images/2025/25-10/25-10-08/3.webp';
-import digit4 from '../../../../assets/images/2025/25-10/25-10-08/4.jpg';
-import digit5 from '../../../../assets/images/2025/25-10/25-10-08/5.webp';
-import digit6 from '../../../../assets/images/2025/25-10/25-10-08/6.jpg';
-import digit7 from '../../../../assets/images/2025/25-10/25-10-08/7.webp';
-import digit8 from '../../../../assets/images/2025/25-10/25-10-08/8.webp';
-import digit9 from '../../../../assets/images/2025/25-10/25-10-08/9.gif';
+import bgImg from '@/assets/images/2025/25-10/25-10-08/table.png';
+import digit0 from '@/assets/images/2025/25-10/25-10-08/0.jpg';
+import digit1 from '@/assets/images/2025/25-10/25-10-08/1.webp';
+import digit2 from '@/assets/images/2025/25-10/25-10-08/2.png';
+import digit3 from '@/assets/images/2025/25-10/25-10-08/3.webp';
+import digit4 from '@/assets/images/2025/25-10/25-10-08/4.jpg';
+import digit5 from '@/assets/images/2025/25-10/25-10-08/5.webp';
+import digit6 from '@/assets/images/2025/25-10/25-10-08/6.jpg';
+import digit7 from '@/assets/images/2025/25-10/25-10-08/7.webp';
+import digit8 from '@/assets/images/2025/25-10/25-10-08/8.webp';
+import digit9 from '@/assets/images/2025/25-10/25-10-08/9.gif';
 
 const digitMap = {
   0: digit0,

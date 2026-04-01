@@ -1,17 +1,17 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import backgroundImage from '../../../../assets/images/2025/25-06/25-06-07/1937.696_print-scaled.jpg';
-import flakesGif from '../../../../assets/images/2025/25-06/25-06-07/Z3ut.gif';
-import sgSnow from '../../../../assets/images/2025/25-06/25-06-07/sg-snow.gif';
-import snow659 from '../../../../assets/images/2025/25-06/25-06-07/659.gif';
-import snow01 from '../../../../assets/images/2025/25-06/25-06-07/snow01.gif';
-import snow02 from '../../../../assets/images/2025/25-06/25-06-07/snow02.gif';
-import sno from '../../../../assets/images/2025/25-06/25-06-07/sno.gif';
-import snow7 from '../../../../assets/images/2025/25-06/25-06-07/snow-gif-7.gif';
-import flakes from '../../../../assets/images/2025/25-06/25-06-07/flakes.gif';
-import eref from '../../../../assets/images/2025/25-06/25-06-07/eref.gif';
-import amaticRegular from '../../../../assets/fonts/2025/25-06-07-amati.ttf';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import backgroundImage from '@/assets/images/2025/25-06/25-06-07/1937.696_print-scaled.jpg';
+import flakesGif from '@/assets/images/2025/25-06/25-06-07/Z3ut.gif';
+import sgSnow from '@/assets/images/2025/25-06/25-06-07/sg-snow.gif';
+import snow659 from '@/assets/images/2025/25-06/25-06-07/659.gif';
+import snow01 from '@/assets/images/2025/25-06/25-06-07/snow01.gif';
+import snow02 from '@/assets/images/2025/25-06/25-06-07/snow02.gif';
+import sno from '@/assets/images/2025/25-06/25-06-07/sno.gif';
+import snow7 from '@/assets/images/2025/25-06/25-06-07/snow-gif-7.gif';
+import flakes from '@/assets/images/2025/25-06/25-06-07/flakes.gif';
+import eref from '@/assets/images/2025/25-06/25-06-07/eref.gif';
+import amaticRegular from '@/assets/fonts/2025/25-06-07-amati.ttf';
 
 export default function BlizzardClock() {
   const clockRef = useRef(null);

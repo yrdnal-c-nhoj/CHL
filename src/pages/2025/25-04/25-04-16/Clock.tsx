@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useMillisecondClock } from '../../../../utils/useSmoothClock';
-import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import type { FontConfig } from '../../../../types/clock';
-import cakeGif from '../../../../assets/images/2025/25-04/25-04-16/cake.gif';
-import minuteImg from '../../../../assets/images/2025/25-04/25-04-16/200w.webp';
-import hourImg from '../../../../assets/images/2025/25-04/25-04-16/2hhj.webp';
-import secondImg from '../../../../assets/images/2025/25-04/25-04-16/20.webp';
-import confGif from '../../../../assets/images/2025/25-04/25-04-16/conf.gif';
-import confJpg from '../../../../assets/images/2025/25-04/25-04-16/conf.jpg';
+import { useMillisecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import cakeGif from '@/assets/images/2025/25-04/25-04-16/cake.gif';
+import minuteImg from '@/assets/images/2025/25-04/25-04-16/200w.webp';
+import hourImg from '@/assets/images/2025/25-04/25-04-16/2hhj.webp';
+import secondImg from '@/assets/images/2025/25-04/25-04-16/20.webp';
+import confGif from '@/assets/images/2025/25-04/25-04-16/conf.gif';
+import confJpg from '@/assets/images/2025/25-04/25-04-16/conf.jpg';
 
 // Component Props interface
 interface BirthdayCakeClockProps {

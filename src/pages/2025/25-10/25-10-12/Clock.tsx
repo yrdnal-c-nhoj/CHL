@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useMultiAssetLoader } from '../../../../utils/assetLoader';
-import bgVideo from '../../../../assets/images/2025/25-10/25-10-12/rose.mp4';
-import bgFallback from '../../../../assets/images/2025/25-10/25-10-12/rose.webp';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import bgVideo from '@/assets/images/2025/25-10/25-10-12/rose.mp4';
+import bgFallback from '@/assets/images/2025/25-10/25-10-12/rose.webp';
 
 export default function AnalogClock() {
   const [videoPlayable, setVideoPlayable] = useState<boolean>(false);
