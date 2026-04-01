@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import { useSecondClock } from '../../../../utils/useSmoothClock';
-import customFontUrl from '../../../../assets/fonts/26-02-07-gear.ttf?url';
+import customFontUrl from '../../../../assets/fonts/2026/26-02-07-gear.ttf?url';
 import backgroundImage from '../../../../assets/images/2026/26-02/26-02-07/gear.gif';
 
 const FullscreenClock: React.FC = () => {

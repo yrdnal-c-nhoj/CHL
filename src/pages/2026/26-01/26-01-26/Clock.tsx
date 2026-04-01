@@ -2,8 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
 
 // Explicit Asset Imports
-import top260126Font from '../../../../assets/fonts/26-01-26-halfb.ttf';
-import bottom260126Font from '../../../../assets/fonts/26-01-26-halft.ttf';
+import top260126Font from '../../../../assets/fonts/2026/26-01-26-halfb.ttf';
+import bottom260126Font from '../../../../assets/fonts/2026/26-01-26-halft.ttf';
 
 const DynamicComponent: React.FC = () => {
   const [time, setTime] = useState(new Date());

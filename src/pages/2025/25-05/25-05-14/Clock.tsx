@@ -3,7 +3,7 @@ import { useSecondClock } from '../../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import type { FontConfig } from '../../../../types/clock';
 import type { CSSProperties } from 'react';
-import dottedFont from '../../../../assets/fonts/25-05-14-dotted.ttf?url';
+import dottedFont from '../../../../assets/fonts/2025/25-05-14-dotted.ttf?url';
 
 // Component Props interface
 interface ClockProps {

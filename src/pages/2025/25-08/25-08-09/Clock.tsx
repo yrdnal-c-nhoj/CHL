@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import customFont from '../../../../assets/fonts/25-08-09-box.ttf'; // Custom font file
+import customFont from '../../../../assets/fonts/2025/25-08-09-box.ttf'; // Custom font file
 
 // Standardized font loading with font-display: swap to avoid FOUC
 export const fontConfigs = [

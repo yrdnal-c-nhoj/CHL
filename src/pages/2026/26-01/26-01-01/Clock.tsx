@@ -3,7 +3,7 @@ import { useEnhancedFontLoader } from '../../../../utils/enhancedFontLoader';
 
 // === Local assets ===
 import bg1 from '../../../../assets/images/2026/26-01/26-01-01/fan.webp';
-import myFontUrl from '../../../../assets/fonts/26-01-01-fan.otf';
+import myFontUrl from '../../../../assets/fonts/2026/26-01-01-fan.otf';
 
 const InvertedClock: React.FC = () => {
   const fontLoaded = useEnhancedFontLoader('MyFontScoped', myFontUrl);

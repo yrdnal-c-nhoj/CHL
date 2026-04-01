@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import font_06_09_2025 from '../../../../assets/fonts/25-09-06-boom.ttf';
+import font_06_09_2025 from '../../../../assets/fonts/2025/25-09-06-boom.ttf';
 import bgImage from '../../../../assets/images/2025/25-09/25-09-06/boo.jpg';
 import hourHandImg from '../../../../assets/images/2025/25-09/25-09-06/b.gif';
 import minuteHandImg from '../../../../assets/images/2025/25-09/25-09-06/b1.gif';

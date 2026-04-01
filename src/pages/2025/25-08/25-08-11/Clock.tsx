@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import customFont from '../../../../assets/fonts/25-08-11-wash.otf';
+import customFont from '../../../../assets/fonts/2025/25-08-11-wash.otf';
 import bgImage from '../../../../assets/images/2025/25-08/25-08-11/mach.gif';
 import topImage from '../../../../assets/images/2025/25-08/25-08-11/wash.gif';
 import img1 from '../../../../assets/images/2025/25-08/25-08-11/a.gif';

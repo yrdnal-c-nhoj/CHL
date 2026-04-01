@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import { useSecondClock } from '../../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import type { FontConfig } from '../../../../types/clock';
-import angFont from '../../../../assets/fonts/25-04-12-ang.ttf?url';
+import angFont from '../../../../assets/fonts/2025/25-04-12-ang.ttf?url';
 
 const digitFontSizes = {
   0: '51vh',

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import type { FontConfig } from '../../../../types/clock';
-import customFont821 from '../../../../assets/fonts/25-08-21-wide.ttf?url';
+import customFont821 from '../../../../assets/fonts/2025/25-08-21-wide.ttf?url';
 import styles from './Clock.module.css';
 
 export const fontConfigs: FontConfig[] = [

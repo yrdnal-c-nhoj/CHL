@@ -4,7 +4,7 @@ import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import ufoImg from '../../../../assets/images/2025/25-09/25-09-28/ufo.webp';
 import skyImg from '../../../../assets/images/2025/25-09/25-09-28/stars.gif';
 import nebulaImg from '../../../../assets/images/2025/25-09/25-09-28/sta.gif';
-import cu250928fontont from '../../../../assets/fonts/25-09-28-cow.ttf?url';
+import cu250928fontont from '../../../../assets/fonts/2025/25-09-28-cow.ttf?url';
 import type { FontConfig } from '../../../../types/clock';
 
 const fontConfigs: FontConfig[] = [

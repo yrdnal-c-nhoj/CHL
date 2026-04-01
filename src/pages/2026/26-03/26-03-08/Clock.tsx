@@ -7,7 +7,7 @@ import { useSecondClock } from '../../../../utils/useSmoothClock';
 import hand1Img from '/src/assets/images/2026/26-03/26-03-08/hand2.png';
 import hand2Img from '/src/assets/images/2026/26-03/26-03-08/hand1.webp';
 import handImg from '/src/assets/images/2026/26-03/26-03-08/hand.webp';
-import dragonFont from '/src/assets/fonts/26-03-08-dragon.ttf';
+import dragonFont from '/src/assets/fonts/2026/26-03-08-dragon.ttf';
 import dragonVideo from '/src/assets/images/2026/26-03/26-03-08/dragon1.mp4';
 
 const Clock: React.FC = () => {

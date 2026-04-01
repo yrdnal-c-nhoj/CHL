@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import type { FontConfig } from '../../../../types/clock';
 import backgroundImg from '../../../../assets/images/2025/25-11/25-11-29/squ.webp';
-import fontUrl_20251128 from '../../../../assets/fonts/25-11-29-roc.ttf?url';
+import fontUrl_20251128 from '../../../../assets/fonts/2025/25-11-29-roc.ttf?url';
 
 export default function RococoDigitalClock() {
   const [now, setNow] = useState(new Date());

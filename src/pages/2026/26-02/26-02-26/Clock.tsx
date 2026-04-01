@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import { useSecondClock } from '../../../../utils/useSmoothClock';
 import backgroundImage from '../../../../assets/images/2026/26-02/26-02-26/26-02-26-f.webp';
-import fuFont from '../../../../assets/fonts/26-02-26-fu.ttf';
+import fuFont from '../../../../assets/fonts/2026/26-02-26-fu.ttf';
 
 interface ViteModule {
   default: string;

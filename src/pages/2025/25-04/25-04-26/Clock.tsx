@@ -3,7 +3,7 @@ import { useSecondClock } from '../../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import type { FontConfig } from '../../../../types/clock';
 import type { CSSProperties } from 'react';
-import stickFont from '../../../../assets/fonts/25-04-26-Stick.ttf?url';
+import stickFont from '../../../../assets/fonts/2025/25-04-26-Stick.ttf?url';
 
 // Component Props interface
 interface SkewClockProps {

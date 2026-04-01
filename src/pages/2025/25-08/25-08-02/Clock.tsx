@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import myFontWoff2 from '../../../../assets/fonts/25-08-02-hea.ttf';
+import myFontWoff2 from '../../../../assets/fonts/2025/25-08-02-hea.ttf';
 import bg2 from '../../../../assets/images/2025/25-08/25-08-02/em.webp';
 
 const DigitalClock: React.FC = () => {

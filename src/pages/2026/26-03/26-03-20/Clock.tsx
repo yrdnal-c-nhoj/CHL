@@ -14,7 +14,7 @@ interface HourMarker {
 const fontConfigs: FontConfig[] = [
   {
     fontFamily: 'Empire',
-    fontUrl: new URL('../../../assets/fonts/26-03-20-empire.otf', import.meta.url).href,
+    fontUrl: new URL('../../../assets/fonts/2026/26-03-20-empire.otf', import.meta.url).href,
     options: {
       weight: 'normal',
       style: 'normal',

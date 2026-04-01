@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
-import cylFont from '../../../../assets/fonts/25-06-03-cyl.ttf';
+import cylFont from '../../../../assets/fonts/2025/25-06-03-cyl.ttf';
 
 // Standardized font loading with font-display: swap to avoid FOUC
 export const fontConfigs = [

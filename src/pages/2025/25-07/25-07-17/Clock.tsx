@@ -3,7 +3,7 @@ import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
 
 // Import font and images as modules from the same folder
-import animFont from '../../../../assets/fonts/25-07-17-ani.ttf';
+import animFont from '../../../../assets/fonts/2025/25-07-17-ani.ttf';
 
 import num1Img from '../../../../assets/images/2025/25-07/25-07-17/pngtree-a-beautiful-saltwater-crocodile-png-image_13409821-ezgif.com-rotate.gif';
 import num2Img from '../../../../assets/images/2025/25-07/25-07-17/nbvfghj-ezgif.com-effects.gif';

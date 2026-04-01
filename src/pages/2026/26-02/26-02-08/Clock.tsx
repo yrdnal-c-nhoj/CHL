@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import { useSecondClock } from '../../../../utils/useSmoothClock';
 
-import trocaderoFont from '../../../../assets/fonts/26-02-08-eiffel.ttf?url';
+import trocaderoFont from '../../../../assets/fonts/2026/26-02-08-eiffel.ttf?url';
 import analogBgImage from '../../../../assets/images/2026/26-02/26-02-08/tower.webp';
 import eifGif from '../../../../assets/images/2026/26-02/26-02-08/eif.gif';
 

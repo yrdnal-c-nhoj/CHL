@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMillisecondClock } from '../../../../utils/useSmoothClock';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import triFont from '../../../../assets/fonts/26-03-27-tri.ttf';
+import triFont from '../../../../assets/fonts/2026/26-03-27-tri.ttf';
 
 // Returns the max radius a hand at angle `theta` (radians, 0=up, CW) can extend
 // within the triangle defined by vertices relative to center cx, cy.

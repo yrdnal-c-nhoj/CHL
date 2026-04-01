@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import backgroundImageUrl from '../../../../assets/images/2025/25-09/25-09-15/plaid.jpg';
-import m250915font from '../../../../assets/fonts/25-09-15-plaid.ttf?url';
+import m250915font from '../../../../assets/fonts/2025/25-09-15-plaid.ttf?url';
 
 const SkewFlatClock = ({
   horizontalColors = ['#BB100AFF', '#FFFFFF', '#026033FF'],

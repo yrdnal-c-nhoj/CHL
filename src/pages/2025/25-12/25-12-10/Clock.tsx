@@ -9,7 +9,7 @@ import portImg from '../../../../assets/images/2025/25-12/25-12-10/eagle.webp';
 import hourHandImg from '../../../../assets/images/2025/25-12/25-12-10/oa.gif';
 import minuteHandImg from '../../../../assets/images/2025/25-12/25-12-10/oak.gif';
 import secondHandImg from '../../../../assets/images/2025/25-12/25-12-10/nk.gif';
-const font251211 = '../../../assets/fonts/25-12-10-jup.ttf';
+const font251211 = '../../../assets/fonts/2025/25-12-10-jup.ttf';
 
 // --- CONFIG ---
 const CONFIG = {

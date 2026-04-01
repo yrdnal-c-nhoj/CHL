@@ -3,7 +3,7 @@ import { useMultiAssetLoader } from '../../../../utils/assetLoader';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 
 // --- FONT IMPORT (same folder) ---
-import font_sdfsdfsdfsd from '../../../../assets/fonts/25-11-21-omission.otf?url';
+import font_sdfsdfsdfsd from '../../../../assets/fonts/2025/25-11-21-omission.otf?url';
 
 // --- IMAGE IMPORTS (same folder) ---
 import img1 from '../../../../assets/images/2025/25-11/25-11-21/1.jpg';

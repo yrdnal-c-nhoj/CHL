@@ -3,7 +3,7 @@ import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 // Explicit Asset Imports
 import backgroundImage from '../../../../assets/images/2026/26-01/26-01-21/fllap.webp';
 import tileImage from '../../../../assets/images/2026/26-01/26-01-21/flap.webp';
-import custom260121Font from '../../../../assets/fonts/26-01-21-migrate.ttf';
+import custom260121Font from '../../../../assets/fonts/2026/26-01-21-migrate.ttf';
 
 // Export assets for preloading
 export { backgroundImage, tileImage };

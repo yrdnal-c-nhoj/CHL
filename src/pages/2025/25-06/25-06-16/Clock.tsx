@@ -5,7 +5,7 @@ import kla from '../../../../assets/images/2025/25-06/25-06-16/kla.webp';
 import klax from '../../../../assets/images/2025/25-06/25-06-16/klax.png';
 import klaxon from '../../../../assets/images/2025/25-06/25-06-16/klaxon.png';
 import klaHand from '../../../../assets/images/2025/25-06/25-06-16/kla.png';
-import klaxFont from '../../../../assets/fonts/25-06-16-klax.ttf';
+import klaxFont from '../../../../assets/fonts/2025/25-06-16-klax.ttf';
 import overlayImage from '../../../../assets/images/2025/25-06/25-06-16/klax.webp';
 
 const romanNumerals = [

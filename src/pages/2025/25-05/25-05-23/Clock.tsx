@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
 import backgroundImage from '../../../../assets/images/2025/25-05/25-05-23/blank.jpg';
-import crossFont from '../../../../assets/fonts/25-05-23-Cross.otf';
+import crossFont from '../../../../assets/fonts/2025/25-05-23-Cross.otf';
 
 const CrossClock: React.FC = () => {
   const [time, setTime] = useState(new Date());

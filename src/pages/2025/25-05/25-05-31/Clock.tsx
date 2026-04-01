@@ -6,7 +6,7 @@ import el1 from '../../../../assets/images/2025/25-05/25-05-31/el1.png';
 import el2 from '../../../../assets/images/2025/25-05/25-05-31/el2.png';
 import el3 from '../../../../assets/images/2025/25-05/25-05-31/el3.png';
 import eleGif from '../../../../assets/images/2025/25-05/25-05-31/ele.gif';
-import fatFont from '../../../../assets/fonts/25-05-31-fat.otf';
+import fatFont from '../../../../assets/fonts/2025/25-05-31-fat.otf';
 
 const ElephantClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

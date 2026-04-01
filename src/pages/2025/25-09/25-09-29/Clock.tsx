@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import c250929 from '../../../../assets/fonts/25-09-29-actionj.ttf?url';
+import c250929 from '../../../../assets/fonts/2025/25-09-29-actionj.ttf?url';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 
 export default function ComicClock() {

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useSecondClock } from '../../../../utils/useSmoothClock';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import type { FontConfig } from '../../../../types/clock';
-import mobyFont from '../../../../assets/fonts/25-04-03-moby.ttf?url';
+import mobyFont from '../../../../assets/fonts/2025/25-04-03-moby.ttf?url';
 import waves from '../../../../assets/images/2025/25-04/25-04-03/waves.gif';
 
 // Component Props interface

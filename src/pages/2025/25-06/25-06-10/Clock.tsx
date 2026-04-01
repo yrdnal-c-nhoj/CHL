@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '../../../../utils/fontLoader';
-import shaFont from '../../../../assets/fonts/25-06-10-sha.ttf';
+import shaFont from '../../../../assets/fonts/2025/25-06-10-sha.ttf';
 
 const ShapesClock: React.FC = () => {
   const [time, setTime] = useState<any>({
