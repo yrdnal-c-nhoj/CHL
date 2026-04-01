@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import font_2024_12_05 from '@/assets/fonts/2025/25-12-03-dog.ttf?url';
 import styles from './Clock.module.css';
@@ -13,7 +13,7 @@ const PuppyClockComponent: React.FC = () => {
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const [time, setTime] = useState(new Date());
 
-  useSuspenseFontLoader(fontConfigs);
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   const getNewPuppy = useCallback(async () => {
     try {
@@ -74,6 +74,10 @@ const PuppyClockComponent: React.FC = () => {
       .split('')
       .join(' ');
   };
+
+  if (!fontsLoaded) {
+    return <div className={styles.container} style={{ background: '#1a1a1a' }} />;
+  }
 
   return (
     <div className={styles.container}>
