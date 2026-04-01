@@ -21,6 +21,20 @@ const Clock: React.FC = () => {
     };
   }, [time]);
 
+  const getDigitRotation = (index: number, isHour: boolean, isOnes: boolean = false): string => {
+    if (isHour) {
+      // Hours: counterclockwise by 7°, each digit slightly different
+      const baseRotation = -7;
+      const offset = index === 0 ? -2 : 2; // First digit tilts more left, second more right
+      return `rotate(${baseRotation + offset}deg)`;
+    }
+    // Minutes: tens and ones have different angles
+    if (isOnes) {
+      return 'rotate(12deg)'; // Ones: clockwise by 12°
+    }
+    return 'rotate(8deg)'; // Tens: clockwise by 8°
+  };
+
   const getDigitSize = (digit: string, isHour: boolean) => {
     // '1' is slightly smaller
     const baseSize = digit === '1' ? '0.85em' : '1em';
@@ -45,12 +59,13 @@ const Clock: React.FC = () => {
     fontWeight: 300,
     fontSize: 'clamp(4rem, 15vw, 12rem)',
     color: '#fff',
+    transform: 'translate(-3vw, -5vh)',
   };
 
   const hourContainerStyle: React.CSSProperties = {
     display: 'flex',
     gap: '0.2em',
-    transform: 'rotate(-10deg)', // Hours tilted 10° counterclockwise
+    // Individual digit rotations applied per digit
   };
 
   const minutesContainerStyle: React.CSSProperties = {
@@ -70,20 +85,20 @@ const Clock: React.FC = () => {
           line-height: 1;
           transition: transform 0.3s ease;
           font-family: 'Fleur De Leah', cursive;
-          background: linear-gradient(135deg, #FFD414 0%, #EEF49C 8%, #BFF000 20%, #FFFF00 30%, #FFFFFF 36%, #BFFF00 44%, #BF00FF 56%, #DFEA03 68%, #FFFFFF 76%, #1B03FF 84%, #D0F01E 92%, #BBFF00 100%);
+          background: linear-gradient(135deg, #FFD414 0%, #EEF49C 12%, #FFFF00 24%, #FFFFFF 30%, #FFF8DC 36%, #C0C0C0 44%, #87CEEB 56%, #B0E0E6 68%, #FFFFFF 76%, #B0C4DE 84%, #FFD700 90%, #FFD414 100%);
           background-size: 300% 300%;
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
           -webkit-text-fill-color: transparent;
-          animation: bioShift 10s ease-in-out infinite, flash 4s ease-in-out infinite alternate;
+          animation: bioShift 20s ease-in-out infinite, flash 8s ease-in-out infinite alternate, shimmer 6s ease-in-out infinite, pulseGlow 4s ease-in-out infinite;
           text-shadow: 
-            0 0 10px rgba(0, 255, 204, 0.8),
+            0 0 10px rgba(255, 215, 0, 0.8),
             0 0 20px rgba(242, 242, 16, 0.6),
-            0 0 30px rgba(0, 255, 255, 0.8),
-            0 0 40px rgba(191, 0, 255, 0.4),
+            0 0 30px rgba(192, 192, 192, 0.8),
+            0 0 40px rgba(135, 206, 235, 0.4),
             2px 2px 4px rgba(0,0,0,0.5);
-          filter: drop-shadow(0 0 15px #3FF000) brightness(1.3);
+          filter: drop-shadow(0 0 15px gold) brightness(1.3);
           -webkit-text-stroke: 0.5px rgba(0,0,0,0.7);
           text-stroke: 0.5px rgba(0,0,0,0.7);
           paint-order: stroke fill;
@@ -99,7 +114,7 @@ const Clock: React.FC = () => {
           left: 0;
           right: 0;
           bottom: 0;
-          background: repeating-radial-gradient(circle at 50% 50%, transparent 0px, transparent 3px, #3FF000 4px, #3FF000 6px, transparent 7px, transparent 10px);
+          background: repeating-radial-gradient(circle at 50% 50%, transparent 0px, transparent 3px, #FFD700 4px, #FFD700 6px, transparent 7px, transparent 10px);
           background-size: 20px 40px;
           -webkit-background-clip: text;
           background-clip: text;
@@ -113,30 +128,67 @@ const Clock: React.FC = () => {
           75% { background-position: 15% 20%; }
           100% { background-position: 0% 0%; }
         }
-        @keyframes bioShift {
-          0% { background-position: 0% 50%; filter: drop-shadow(0 0 15px #FFaa11) brightness(1.2); transform: translateZ(0); }
-          20% { background-position: 30% 70%; filter: drop-shadow(0 0 30px #FFaa11) brightness(1.4); }
-          40% { background-position: 60% 100%; filter: drop-shadow(0 0 40px #FFaa11) brightness(1.6); }
-          60% { background-position: 100% 50%; filter: drop-shadow(0 0 30px #FF00FF) brightness(1.4); }
-          80% { background-position: 60% 0%; filter: drop-shadow(0 0 20px #FFaa11) brightness(1.3); }
-          100% { background-position: 0% 50%; filter: drop-shadow(0 0 15px #FFaa11) brightness(1.2); transform: translateZ(0); }
+        @keyframes diamondShine {
+          0%, 100% { background-position: -100% -100%; opacity: 0; }
+          50% { background-position: 100% 100%; opacity: 0.6; }
+          75% { opacity: 1; }
         }
-        @keyframes flash {
-          0% { opacity: 0.9; }
-          25% { opacity: 1; filter: drop-shadow(0 0 40px #3FF000) brightness(1.6); }
-          50% { opacity: 0.9; }
-          75% { opacity: 1; filter: drop-shadow(0 0 60px #3FF000) brightness(2); }
-          100% { opacity: 0.9; }
+        @keyframes bioShift {
+          0% { background-position: 0% 50%; filter: drop-shadow(0 0 15px gold) brightness(1.2); transform: translateZ(0); }
+          20% { background-position: 30% 70%; filter: drop-shadow(0 0 30px #FFD414) brightness(1.4); }
+          40% { background-position: 60% 100%; filter: drop-shadow(0 0 40px #FFFF00) brightness(1.6); }
+          60% { background-position: 100% 50%; filter: drop-shadow(0 0 30px #C0C0C0) brightness(1.4); }
+          80% { background-position: 60% 0%; filter: drop-shadow(0 0 20px #FFF8DC) brightness(1.3); }
+          100% { background-position: 0% 50%; filter: drop-shadow(0 0 15px gold) brightness(1.2); transform: translateZ(0); }
+        }
+        @keyframes shimmer {
+          0% { background-position: -200% 0%; }
+          50% { background-position: 200% 0%; }
+          100% { background-position: -200% 0%; }
+        }
+        @keyframes pulseGlow {
+          0%, 100% { filter: drop-shadow(0 0 15px gold) brightness(1.3) drop-shadow(0 0 30px #FFD700); }
+          50% { filter: drop-shadow(0 0 25px #FFFF00) brightness(1.6) drop-shadow(0 0 50px #FFF8DC) drop-shadow(0 0 70px #FFD700); }
+        }
+        @keyframes sparkleSweep {
+          0% { transform: translateX(-100%) rotate(0deg); opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { transform: translateX(100vw) rotate(360deg); opacity: 0; }
+        }
+        .digit-glam-0 { animation-delay: 0s, 0s, 0s, 0s; }
+        .digit-glam-1 { animation-delay: 0s, 0.5s, 0.3s, 0.2s; }
+        .digit-glam-2 { animation-delay: 0s, 1s, 0.6s, 0.4s; }
+        .digit-glam-3 { animation-delay: 0s, 1.5s, 0.9s, 0.6s; }
+        .digit::before {
+          content: '';
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.8) 50%, transparent 70%);
+          background-size: 200% 200%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          animation: diamondShine 8s ease-in-out infinite;
+          pointer-events: none;
+          mix-blend-mode: overlay;
+        }
+        @keyframes diamondShine {
+          0%, 100% { background-position: -100% -100%; opacity: 0; }
+          50% { background-position: 100% 100%; opacity: 0.6; }
+          75% { opacity: 1; }
         }
     
         .digit-one {
-          transform: scale(0.92);
+          /* transform handled inline */
         }
         .minute-tens {
-          transform: rotate(5deg) scale(0.9); /* 5° clockwise */
+          /* transform handled inline */
         }
         .minute-ones {
-          transform: rotate(10deg) scale(0.75); /* 10° clockwise, smaller */
+          /* transform handled inline */
         }
         @keyframes blink {
           0%, 100% { opacity: 0.6; }
@@ -212,8 +264,11 @@ const Clock: React.FC = () => {
             {timeData.hourDigits.map((digit, i) => (
               <span 
                 key={`h-${i}`} 
-                className={`digit ${digit === '1' ? 'digit-one' : ''}`}
-                style={{ fontSize: getDigitSize(digit, true) }}
+                className={`digit digit-glam-${i} ${digit === '1' ? 'digit-one' : ''}`}
+                style={{ 
+                  fontSize: getDigitSize(digit, true),
+                  transform: `${getDigitRotation(i, true)} scale(${digit === '1' ? 0.92 : 1})`,
+                }}
               >
                 {digit}
               </span>
@@ -223,14 +278,20 @@ const Clock: React.FC = () => {
           {/* Minutes - diagonally below, different tilts */}
           <div style={minutesContainerStyle}>
             <span 
-              className="digit minute-tens"
-              style={{ fontSize: getDigitSize(timeData.minDigits[0]!, false) }}
+              className="digit digit-glam-2"
+              style={{ 
+                fontSize: getDigitSize(timeData.minDigits[0]!, false),
+                transform: `${getDigitRotation(0, false, false)} scale(0.9)`,
+              }}
             >
               {timeData.minDigits[0]}
             </span>
             <span 
-              className="digit minute-ones"
-              style={{ fontSize: getDigitSize(timeData.minDigits[1]!, false) }}
+              className="digit digit-glam-3"
+              style={{ 
+                fontSize: getDigitSize(timeData.minDigits[1]!, false),
+                transform: `${getDigitRotation(0, false, true)} scale(0.75)`,
+              }}
             >
               {timeData.minDigits[1]}
             </span>
