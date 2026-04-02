@@ -96,7 +96,7 @@ function Contact() {
             placeholder="you@example.com"
             required
           />
-          <input type="submit" value="Subscribe" />
+          <input type="submit" value="Subscribe" className="form-button" />
         </form>
         {/* </section> */}
 
@@ -129,7 +129,7 @@ function Contact() {
               rows="5"
               required
             />
-            <input type="submit" value="Send Message" />
+            <input type="submit" value="Send Message" className="form-button" />
           </form>
           <p className="email-fallback">
             Or email directly:{' '}
