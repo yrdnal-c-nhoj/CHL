@@ -121,26 +121,13 @@ const Clock: React.FC = () => {
           animation: lanternDots 12s linear infinite;
           pointer-events: none;
         }
-        @keyframes lanternDots {
-          0% { background-position: 0% 0%; }
-          25% { background-position: 10% 30%; }
-          50% { background-position: -5% 60%; }
-          75% { background-position: 15% 20%; }
-          100% { background-position: 0% 0%; }
-        }
+   
         @keyframes diamondShine {
           0%, 100% { background-position: -100% -100%; opacity: 0; }
           50% { background-position: 100% 100%; opacity: 0.6; }
           75% { opacity: 1; }
         }
-        @keyframes bioShift {
-          0% { background-position: 0% 50%; filter: drop-shadow(0 0 15px gold) brightness(1.2); transform: translateZ(0); }
-          20% { background-position: 30% 70%; filter: drop-shadow(0 0 30px #FFD414) brightness(1.4); }
-          40% { background-position: 60% 100%; filter: drop-shadow(0 0 40px #FFFF00) brightness(1.6); }
-          60% { background-position: 100% 50%; filter: drop-shadow(0 0 30px #C0C0C0) brightness(1.4); }
-          80% { background-position: 60% 0%; filter: drop-shadow(0 0 20px #FFF8DC) brightness(1.3); }
-          100% { background-position: 0% 50%; filter: drop-shadow(0 0 15px gold) brightness(1.2); transform: translateZ(0); }
-        }
+      
         @keyframes shimmer {
           0% { background-position: -200% 0%; }
           50% { background-position: 200% 0%; }
@@ -221,7 +208,7 @@ const Clock: React.FC = () => {
           contain: strict;
           content-visibility: auto;
         }
-        @media (orientation: landscape) and (min-width: 1024px) {
+        @media (orientation: landscape) and (min-width: 600px) {
           .clock-bg {
             transform: rotate(-90deg);
             background-size: 175%;
@@ -234,7 +221,7 @@ const Clock: React.FC = () => {
             margin-left: -50dvh;
           }
         }
-        @media (min-width: 1024px) {
+        @media (min-width: 700px) {
           .clock-wrapper {
             contain: layout style;
             transform: scale(0.6) rotate(-3deg) translate(-80px, -70px) translateZ(0);
