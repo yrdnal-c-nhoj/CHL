@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import TopNav from './components/TopNav';
 import Footer from './components/Footer';
 import './WordPages.css';
@@ -7,9 +7,28 @@ import elonImg from './assets/x.png';
 import fbookImg from './assets/fbook.png';
 
 function Contact() {
+  useEffect(() => {
+    document.body.style.overflow = 'auto';
+    document.body.style.height = 'auto';
+    document.documentElement.style.overflow = 'auto';
+    const root = document.getElementById('root');
+    if (root) {
+      root.style.overflow = 'auto';
+      root.style.height = 'auto';
+    }
+  }, []);
+
   return (
-    <div className="container">
-      <TopNav />
+    <>
+      <style>{`
+        body, #root {
+          overflow: auto !important;
+          height: auto !important;
+          min-height: 100vh !important;
+        }
+      `}</style>
+      <div className="container" style={{ overflow: 'auto', minHeight: '100vh', height: 'auto' }}>
+        <TopNav />
 
       <main className="centeredContent">
         <h1>CONTACT</h1>
@@ -81,14 +100,39 @@ function Contact() {
         </form>
         {/* </section> */}
 
-        {/* Email contact */}
+        {/* Email contact form */}
         <section className="section">
-          <span className="hat">Send an eMail to the Lab</span>
+          <span className="hat">Send a Message to the Lab</span>
           <p>
             <span className="smallcaps">Questions?</span> Comments? Suggestions?
           </p>
-          <p>
-            Send to:
+          <form
+            action="https://formspree.io/f/xnjobvva"
+            method="POST"
+            className="contact-form"
+          >
+            <input
+              type="text"
+              name="name"
+              placeholder="Your name"
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="your@email.com"
+              required
+            />
+            <textarea
+              name="message"
+              placeholder="Your message..."
+              rows="5"
+              required
+            />
+            <input type="submit" value="Send Message" />
+          </form>
+          <p className="email-fallback">
+            Or email directly:{' '}
             <a
               className="email-link"
               href="mailto:cubistheart@gmail.com?subject=🧊🫀🔭"
@@ -100,7 +144,8 @@ function Contact() {
       </main>
 
       <Footer />
-    </div>
+      </div>
+    </>
   );
 }
 
