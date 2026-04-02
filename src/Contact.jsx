@@ -31,8 +31,9 @@ function Contact() {
         <TopNav />
 
       <main className="centeredContent">
+      
         <h1>CONTACT</h1>
-
+  <hr className="section-divider" />
         <span className="hat">Follow on Social</span>
         <div className="social-links">
           <a
@@ -76,6 +77,7 @@ function Contact() {
           </a>
         </div>
 
+        <hr className="section-divider" />
         <span className="hat">Get the Lab's Monthly Newsletter</span>
         <p>
           <span className="smallcaps">Subscribe</span> to receive the lab's
@@ -102,6 +104,7 @@ function Contact() {
 
         {/* Email contact form */}
         <section className="section">
+          <hr className="section-divider" />
           <span className="hat">Send a Message to the Lab</span>
           <p>
             <span className="smallcaps">Questions?</span> Comments? Suggestions?
