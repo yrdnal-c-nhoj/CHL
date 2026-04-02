@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { useClockTime } from '@/utils/clockUtils';
+import styles from './Clock.module.css';
 
 // --- Utilities ---
 
@@ -52,26 +53,6 @@ const Clock: React.FC = () => {
   const planetMaterialRef = useRef<THREE.MeshStandardMaterial | null>(null);
   const moonMaterialRef = useRef<THREE.MeshStandardMaterial | null>(null);
 
-  const containerStyle: React.CSSProperties = {
-    position: 'relative',
-    width: '100vw',
-    height: '100dvh',
-    overflow: 'hidden',
-    background: 'radial-gradient(circle at 50% 50%, #ff6b6b 0%, #4ecdc4 25%, #45b7d1 50%, #96ceb4 75%, #ffeaa7 100%)',
-  };
-
-  const gradientOverlayStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    background: 'linear-gradient(180deg, #B3780A 0%, #90D809 100%)',
-    opacity: 0.8,
-    pointerEvents: 'none',
-    zIndex: 1,
-  };
-
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -87,8 +68,13 @@ const Clock: React.FC = () => {
     const init = () => {
       // 1. Scene Setup
       scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.set(0, 5, 35);
+      camera = new THREE.PerspectiveCamera(
+        55,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      camera.position.set(0, 0, 30);
 
       // 2. Lighting
       const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -125,7 +111,7 @@ const Clock: React.FC = () => {
       
       planetMaterialRef.current = planetMat;
       planet = new THREE.Mesh(planetGeo, planetMat);
-      planet.position.set(0, 2, -10);
+      planet.position.set(0, 0, 0);
       scene.add(planet);
 
       // 5. Objects (Moon - Minutes)
@@ -157,15 +143,19 @@ const Clock: React.FC = () => {
       animationId = requestAnimationFrame(animate);
       const elapsed = threeClock.getElapsedTime();
 
-      // Slow rotation for the Planet
-      if (planet) planet.rotation.y += 0.005;
+      // Slow rotation for the Planet + gentle floating drift
+      if (planet) {
+        planet.rotation.y += 0.005;
+        planet.position.x = Math.sin(elapsed * 0.3) * 2;
+        planet.position.y = Math.cos(elapsed * 0.2) * 1.5;
+      }
 
-      // Orbit logic for the Moon
+      // Orbit logic for the Moon - centered on planet
       if (moon) {
         moon.rotation.y -= 0.02;
-        moon.position.x = 22 * Math.cos(elapsed * 0.5);
-        moon.position.z = 15 * Math.sin(elapsed * 0.5) - 10;
-        moon.position.y = 2 + Math.sin(elapsed) * 2; // Slight vertical bobbing
+        moon.position.x = 18 * Math.cos(elapsed * 0.5);
+        moon.position.z = 18 * Math.sin(elapsed * 0.5);
+        moon.position.y = Math.sin(elapsed) * 2;
       }
 
       renderer.render(scene, camera);
@@ -178,7 +168,7 @@ const Clock: React.FC = () => {
       renderer.setSize(container.clientWidth, container.clientHeight);
     };
 
-    // Ensure fonts are loaded before starting to avoid "jumping" fonts on canvas
+    // Wait for fonts to load before initializing to avoid fallback font on canvas
     document.fonts.ready.then(() => {
       init();
       animate();
@@ -227,15 +217,9 @@ const Clock: React.FC = () => {
   }, [time]);
 
   return (
-    <div style={containerStyle}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Space+Mono:wght@700&display=swap');
-      `}</style>
-      <div style={gradientOverlayStyle}></div>
-      <div 
-        ref={containerRef} 
-        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }} 
-      />
+    <div className={styles.container}>
+      <div className={styles.gradientOverlay} />
+      <div ref={containerRef} className={styles.canvasContainer} />
     </div>
   );
 };
