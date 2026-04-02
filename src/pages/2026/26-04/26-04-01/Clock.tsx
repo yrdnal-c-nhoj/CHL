@@ -24,20 +24,20 @@ const Clock: React.FC = () => {
   const getDigitRotation = (index: number, isHour: boolean, isOnes: boolean = false): string => {
     if (isHour) {
       // Hours: counterclockwise by 7°, each digit slightly different
-      const baseRotation = -7;
+      const baseRotation = -17;
       const offset = index === 0 ? -2 : 2; // First digit tilts more left, second more right
       return `rotate(${baseRotation + offset}deg)`;
     }
     // Minutes: tens and ones have different angles
     if (isOnes) {
-      return 'rotate(12deg)'; // Ones: clockwise by 12°
+      return 'rotate(-19deg)'; // Ones: clockwise by 12°
     }
-    return 'rotate(8deg)'; // Tens: clockwise by 8°
+    return 'rotate(28deg)'; // Tens: clockwise by 8°
   };
 
   const getDigitSize = (digit: string, isHour: boolean) => {
     // '1' is slightly smaller
-    const baseSize = digit === '1' ? '0.85em' : '1em';
+    const baseSize = digit === '1' ? '10vh' : '10vh';
     // Hours are bigger than minutes
     const scale = isHour ? 1.8 : 1;
     return `calc(${baseSize} * ${scale})`;
@@ -72,8 +72,8 @@ const Clock: React.FC = () => {
     display: 'flex',
     gap: '0.15em',
     position: 'absolute',
-    right: '-0.3em',
-    bottom: '-1.1em',
+    right: '-0.1em',
+    bottom: '-1.0em',
   };
 
   return (
@@ -86,7 +86,7 @@ const Clock: React.FC = () => {
           transition: transform 0.3s ease;
           font-family: 'Fleur De Leah', cursive;
           background: linear-gradient(135deg, #FFD414 0%, #EEF49C 12%, #FFFF00 24%, #FFFFFF 30%, #FFF8DC 36%, #C0C0C0 44%, #87CEEB 56%, #B0E0E6 68%, #FFFFFF 76%, #B0C4DE 84%, #FFD700 90%, #FFD414 100%);
-          background-size: 300% 300%;
+          background-size: 200% 200%;
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
@@ -202,7 +202,7 @@ const Clock: React.FC = () => {
           width: 100vw;
           height: 100dvh;
           background-image: url(${bgImage});
-          background-size: 200%;
+          background-size: 170%;
           background-position: center;
           z-index: -1;
           contain: strict;
@@ -224,7 +224,7 @@ const Clock: React.FC = () => {
         @media (min-width: 700px) {
           .clock-wrapper {
             contain: layout style;
-            transform: scale(0.6) rotate(-3deg) translate(-80px, -70px) translateZ(0);
+            transform: scale(0.6)  translate(-80px, -70px) translateZ(0);
             filter: drop-shadow(0 0 30px gold) drop-shadow(0 0 60px #FFF8DC);
           }
         }
