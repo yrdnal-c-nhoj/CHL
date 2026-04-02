@@ -1,17 +1,37 @@
 html,
 body {
   margin: 0;
+  min-height: 100%;
+  height: 100%;
+}
+
+/* Override global overflow hidden for WordPages */
+body {
+  overflow: visible !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  height: auto !important;
+  min-height: 100vh !important;
+}
+
+#root {
+  overflow: visible !important;
+  overflow-y: auto !important;
+  height: auto !important;
+  min-height: 100vh !important;
 }
 
 .container {
   margin: 0;
   padding: 0 0 60px 0;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  overflow: visible;
+  overflow-y: auto;
 }
 
 .centeredContent {
@@ -217,10 +237,50 @@ a:hover {
   margin-bottom: 1rem;
 }
 
-/* Make the button look a bit more polished */
-.embeddable-buttondown-form input[type='submit'] {
-  cursor: pointer;
-  /* text-transform: uppercase; */
+/* Contact form styling */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-family: 'Manrope', sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.contact-form input[type='submit'] {
+  background-color: #850404;
+  color: white;
   font-weight: bold;
-  /* margin-left: 10px; */
+  font-family: 'Manrope', sans-serif;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: auto;
+  align-self: flex-start;
+}
+
+.contact-form input[type='submit']:hover {
+  background-color: #6a0303;
+}
+
+.email-fallback {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #666;
 }
