@@ -64,6 +64,16 @@
         document.documentElement.classList.add('dom-loaded');
       });
     </script>
+    <style>
+      /* Critical CSS: Prevent FOUC */
+      .fonts-loading body {
+        opacity: 0;
+      }
+      .fonts-loading.dom-loaded body {
+        opacity: 1;
+        transition: opacity 0.3s ease-in;
+      }
+    </style>
   </head>
 
   <body>
