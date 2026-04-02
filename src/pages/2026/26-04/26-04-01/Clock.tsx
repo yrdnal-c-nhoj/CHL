@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/hooks';
 import bgImage from '@/assets/images/2026/26-04/26-04-01/rococo.webp?url';
 import bgImageBack from '@/assets/images/2026/26-04/26-04-01/Rococo.jpg?url';
+import bgImageMiddle from '@/assets/images/2026/26-04/26-04-01/1silk.webp?url';
 
 const Clock: React.FC = () => {
   const time = useClockTime();
@@ -191,7 +192,23 @@ const Clock: React.FC = () => {
           background-size: 100% 100%;
           background-repeat: no-repeat;
           background-position: center;
+          filter: saturate(1.1) brightness(1.2) hue-rotate(-30deg);
           z-index: -2;
+          contain: strict;
+          content-visibility: auto;
+        }
+        .clock-bg-middle {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100dvh;
+          background-image: url(${bgImageMiddle});
+          background-size: contain;
+          background-position: center;
+          filter: saturate(0.5) brightness(1.5) hue-rotate(80deg);
+          opacity: 0.8;
+          z-index: -1;
           contain: strict;
           content-visibility: auto;
         }
@@ -204,7 +221,8 @@ const Clock: React.FC = () => {
           background-image: url(${bgImage});
           background-size: 170%;
           background-position: center;
-          z-index: -1;
+          z-index: 0;
+          opacity: 0.7;
           contain: strict;
           content-visibility: auto;
         }
@@ -243,6 +261,7 @@ const Clock: React.FC = () => {
         }
       `}</style>
       <div className="clock-bg-back"></div>
+      <div className="clock-bg-middle"></div>
       <div className="clock-bg"></div>
       <div style={containerStyle}>
         <div className="clock-wrapper" style={clockContainerStyle}>
