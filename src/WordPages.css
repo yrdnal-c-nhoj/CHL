@@ -179,7 +179,7 @@ a:hover {
 
 .embeddable-buttondown-form input[type='submit'].form-button,
 .embeddable-buttondown-form input.form-button {
-  background-color: #850404;
+  background-color: #6e6c6c;
   color: white;
   font-weight: bold;
   font-family: 'Manrope', sans-serif;
@@ -193,7 +193,7 @@ a:hover {
 
 .embeddable-buttondown-form input[type='submit'].form-button:hover,
 .embeddable-buttondown-form input.form-button:hover {
-  background-color: #6a0303;
+  background-color: #585656;
 }
 .email-link {
   font-family: 'Manrope', sans-serif;
@@ -204,7 +204,7 @@ a:hover {
 
 /* Shared button styles */
 .form-button {
-  background-color: #850404;
+  background-color: #6e6c6c;
   color: white;
   font-weight: bold;
   font-family: 'Manrope', sans-serif;
@@ -219,7 +219,7 @@ a:hover {
 }
 
 .form-button:hover {
-  background-color: #6a0303;
+  background-color: #585656;
 }
 
 /* Footer styles */
@@ -286,7 +286,7 @@ a:hover {
 
 .contact-form input[type='submit'].form-button,
 .contact-form input.form-button {
-  background-color: #850404;
+  background-color: #6e6c6c;
   color: white;
   font-weight: bold;
   font-family: 'Manrope', sans-serif;
@@ -302,7 +302,7 @@ a:hover {
 
 .contact-form input[type='submit'].form-button:hover,
 .contact-form input.form-button:hover {
-  background-color: #6a0303;
+  background-color: #585656;
 }
 
 .email-fallback {
