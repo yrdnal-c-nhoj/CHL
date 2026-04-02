@@ -197,12 +197,13 @@ const Clock: React.FC = () => {
           width: 100vw;
           height: 100dvh;
           background-image: url(${bgImage});
-          background-size: 170%;
+          background-size: 175%;
           background-position: center;
           z-index: 0;
           opacity: 0.6;
           filter: hue-rotate(-20deg) contrast(150%) saturate(80%);
-          contain: strict;
+          contain: strict;  
+           transform: rotate(180deg);
           content-visibility: auto;
         }
         @media (orientation: landscape) and (min-width: 600px) {
@@ -222,20 +223,17 @@ const Clock: React.FC = () => {
           .clock-wrapper {
             contain: layout style;
             transform: scale(0.6) translate(-80px, -70px) translateZ(0);
-            filter: drop-shadow(0 0 30px gold) drop-shadow(0 0 60px #FFF8DC);
           }
         }
         @media (max-width: 600px) {
           .hour-group {
             top: 30% !important;
             left: 15% !important;
-            filter: brightness(1.4);
           }
           .minute-group {
             top: 55% !important;
             bottom: auto !important;
             left: 15% !important;
-            filter: brightness(1.4);
           }
         }
       `}</style>
