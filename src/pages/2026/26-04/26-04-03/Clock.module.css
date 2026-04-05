@@ -1,0 +1,67 @@
+@font-face {
+  font-family: 'Clox';
+  src: url('@/assets/fonts/26-04-03-clox.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  background-image: url('@/assets/images/2026/26-04/26-04-03/1dancingclox.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Mobile: zoom into image by 50% */
+@media (max-width: 768px) {
+  .container {
+    background-size: 150%;
+  }
+}
+
+.clockOverlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.05em;
+  z-index: 10;
+}
+
+.digit,
+.separator {
+  font-family: 'Clox', monospace;
+  font-size: clamp(4rem, 12vw, 9rem);
+  font-weight: normal;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.digit {
+  min-width: 1.2ch;
+  aspect-ratio: 1 / 1.2;
+}
+
+.separator {
+  padding: 0 0.1em;
+  transform: translateY(-0.15em);
+}
