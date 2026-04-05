@@ -74,7 +74,9 @@ const Clock: React.FC = () => {
         0.1,
         1000
       );
-      camera.position.set(0, 0, 30);
+      // Pull camera back further on mobile (narrow screens)
+      const isMobile = window.innerWidth / window.innerHeight < 1;
+      camera.position.set(0, 0, isMobile ? 80 : 30);
 
       // 2. Lighting
       const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -164,6 +166,9 @@ const Clock: React.FC = () => {
     const handleResize = () => {
       if (!container || !camera || !renderer) return;
       camera.aspect = container.clientWidth / container.clientHeight;
+      // Update camera Z on resize/rotation
+      const isMobile = container.clientWidth / container.clientHeight < 1;
+      camera.position.z = isMobile ? 80 : 30;
       camera.updateProjectionMatrix();
       renderer.setSize(container.clientWidth, container.clientHeight);
     };
