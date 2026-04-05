@@ -362,5 +362,6 @@
   { "path": "26-03-30", "date": "26-03-30", "title": "Origami" },
   { "path": "26-03-31", "date": "26-03-31", "title": "Lanternfish" },
   { "path": "26-04-01", "date": "26-04-01", "title": "Pompadour" },
-  { "path": "26-04-02", "date": "26-04-02", "title": "Satellite" }
+  { "path": "26-04-02", "date": "26-04-02", "title": "Satellite" },
+  { "path": "26-04-03", "date": "26-04-03", "title": "Periodicity" }
 ]
