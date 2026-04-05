@@ -4,14 +4,10 @@ import styles from './Clock.module.css';
 
 interface DigitProps {
   digit: string;
-  index: number;
-  offset?: number;
 }
 
-const Digit: React.FC<DigitProps> = ({ digit, index, offset = 0 }) => (
-  <span className={`${styles.digit} ${styles[`digit-glam-${index + offset}`]}`}>
-    {digit}
-  </span>
+const Digit: React.FC<DigitProps> = ({ digit }) => (
+  <span className={styles.digit}>{digit}</span>
 );
 
 const BackgroundLayers: React.FC = () => (
@@ -42,12 +38,12 @@ const Clock: React.FC = () => {
         <div className={styles['clock-wrapper']}>
           <div className={styles['hour-group']}>
             {hourDigits.map((digit, i) => (
-              <Digit key={`h-${i}`} digit={digit} index={i} />
+              <Digit key={`h-${i}`} digit={digit} />
             ))}
           </div>
           <div className={styles['minute-group']}>
             {minDigits.map((digit, i) => (
-              <Digit key={`m-${i}`} digit={digit} index={i} offset={2} />
+              <Digit key={`m-${i}`} digit={digit} />
             ))}
           </div>
         </div>
