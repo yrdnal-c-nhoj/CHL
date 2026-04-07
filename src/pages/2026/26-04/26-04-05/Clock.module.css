@@ -56,14 +56,14 @@
 }
 
 .digitBox {
-  font-size: clamp(3rem, 16vw, 15rem);
+  font-size: clamp(3rem, 14vw, 13rem);
   color: #ffffff;
   font-family: 'Meteor', monospace;
   text-shadow:
     0 0 2px rgba(255, 255, 255, 1),
     2px 2px 0px rgba(0, 0, 0, 1),
     -1px -1px 0px rgba(128, 128, 128, 0.8);
-  width: 0.8em;
+  width: 1.0em;
   display: flex;
   justify-content: center;
   align-items: center;
