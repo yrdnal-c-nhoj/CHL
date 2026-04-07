@@ -33,20 +33,23 @@ const Clock: React.FC = () => {
     }));
   });
 
+  // Track which image index to load next (sequential)
+  const [imageIndex, setImageIndex] = useState(0);
+
   // Use the raw seconds value to trigger the effect
   const seconds = time.getSeconds();
 
   useEffect(() => {
     setDisplayedImages((prev) => {
-      const randomIndex = Math.floor(Math.random() * IMAGES.length);
-      const newImage = {
-        src: IMAGES[randomIndex],
+      // Load images in order from IMAGES array
+      const nextImage = {
+        src: IMAGES[imageIndex % IMAGES.length],
         pos: getRandomPosition(),
         id: Date.now(),
       };
 
       // Create new array with new image at the end
-      const next = [...prev, newImage];
+      const next = [...prev, nextImage];
 
       // Once we reach 30, start removing the oldest (first) each second
       if (next.length > 30) {
@@ -55,6 +58,9 @@ const Clock: React.FC = () => {
       
       return next;
     });
+    
+    // Increment to next image index
+    setImageIndex((prev) => prev + 1);
   }, [seconds]);
 
   // Styles
