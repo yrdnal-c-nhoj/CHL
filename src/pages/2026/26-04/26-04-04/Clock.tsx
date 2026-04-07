@@ -4,6 +4,7 @@ import img12 from '@/assets/images/2026/26-04/26-04-04/12.jpg';
 import img3 from '@/assets/images/2026/26-04/26-04-04/3.png';
 import img6 from '@/assets/images/2026/26-04/26-04-04/6.jpg';
 import img9 from '@/assets/images/2026/26-04/26-04-04/9.png';
+import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {
   const time = useClockTime();
@@ -21,63 +22,13 @@ const Clock: React.FC = () => {
   const minuteDeg = (minutes * 6) + (seconds * 0.1);
   const hourDeg = ((hours % 12) * 30) + (minutes * 0.5);
 
-  const containerStyle: React.CSSProperties = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    overflow: 'hidden',
-    touchAction: 'none',
-    userSelect: 'none',
-  };
-
   const clockSize = 'min(96vw, 96vh)';
   const imgSize = 34;
   const halfImg = imgSize / 2;
 
-  const glassStyle: React.CSSProperties = {
-    fill: 'rgba(255, 250, 240, 0.55)',
-    stroke: 'rgba(255, 250, 240, 0.65)',
-    strokeWidth: 5.6,
-    strokeLinecap: 'round',
-    filter: 'url(#acrylicNoise)',
-  };
-
-  const minuteGlassStyle: React.CSSProperties = {
-    fill: 'rgba(255, 250, 240, 0.55)',
-    stroke: 'rgba(255, 250, 240, 0.65)',
-    strokeWidth: 3.6,
-    strokeLinecap: 'round',
-    filter: 'url(#acrylicNoise)',
-  };
-
-  const thinLineStyle: React.CSSProperties = {
-    fill: 'rgba(255, 220, 150, 0.4)',
-    stroke: 'none',
-  };
-
   return (
-    <>
-      <style>{`
-        .danger-border {
-          box-sizing: border-box;
-          border: 5px solid transparent;
-          border-image: repeating-linear-gradient(
-            45deg,
-            #ff8c00 0px,
-            #ff8c00 10px,
-            #000000 10px,
-            #000000 20px
-          ) 5;
-        }
-      `}</style>
-      <div style={containerStyle} className="danger-border">
-        <svg viewBox="0 0 100 100" style={{ width: clockSize, height: clockSize, display: 'block' }}>
+    <div className={styles.container}>
+      <svg viewBox="0 0 100 100" className={styles.clockSvg}>
         
         <defs>
           <filter id="acrylicNoise" x="0%" y="0%" width="100%" height="100%">
@@ -101,7 +52,7 @@ const Clock: React.FC = () => {
           y1="50"
           x2="50"
           y2="26"
-          style={glassStyle}
+          className={styles.glass}
           transform={`rotate(${hourDeg} 50 50)`}
         />
         <line
@@ -121,7 +72,7 @@ const Clock: React.FC = () => {
           y1="50"
           x2="50"
           y2="12"
-          style={minuteGlassStyle}
+          className={styles.minuteGlass}
           transform={`rotate(${minuteDeg} 50 50)`}
         />
         <line
@@ -145,20 +96,14 @@ const Clock: React.FC = () => {
           strokeWidth="0.3"
           strokeLinecap="round"
           transform={`rotate(${secondDeg} 50 50)`}
-          style={{ 
-            // We remove the CSS transition for the second hand 
-            // and rely on the high-frequency updates of useClockTime 
-            // for a "true" sweep feel without the reset glitch.
-            willChange: 'transform' 
-          }}
+          className={styles.secondHand}
         />
 
         {/* Center Pivot */}
         <circle cx="50" cy="50" r="0.5" fill="#938F8F" />
         <circle cx="50" cy="50" r="0.3" fill="#ff3b30" />
       </svg>
-      </div>
-    </>
+    </div>
   );
 };
 
