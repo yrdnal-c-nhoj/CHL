@@ -264,7 +264,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '../../../utils/fontLoader';
 import type { FontConfig } from '../../../types/clock';
 import yourCustomFontUrl from '../../../assets/fonts/your-font.ttf?url';
-import styles from './Clock.module.css'; // Import CSS Modules
+import styles from './Clock.module.css'; // Import CSS Modules for production
 
 // Custom hook for smooth time updates using requestAnimationFrame
 const useClock = () => {
@@ -286,13 +286,14 @@ const useClock = () => {
 const Clock: React.FC = () => {
   const time = useClock();
 
-  // Font configuration
+  // ONLY include font loading if using a custom font
   const fontConfigs = useMemo<FontConfig[]>(() => [
     { fontFamily: 'YourFontName', fontUrl: yourCustomFontUrl }
   ], []);
 
   // This hook suspends the component until fonts are loaded, preventing FOUC.
   // The parent <ClockPage> provides the necessary <Suspense> boundary.
+  // Skip this hook entirely if not using custom fonts.
   useSuspenseFontLoader(fontConfigs);
 
   return (
@@ -311,11 +312,12 @@ export default Clock;
 
 ### Best Practices
 
-- Use the `useFontLoader` hook for custom fonts to prevent FOUC
-- Implement responsive design for mobile and desktop
-- Add loading states for better UX
-- Use semantic HTML and ARIA labels for accessibility
-- Optimize images and assets for performance
+- **Development Workflow**: Use inline styles during rapid development, then convert to CSS Modules before pushing to GitHub
+- **CSS Modules**: Final production code should use CSS Modules (`Clock.module.css`) for scoped styles
+- **Font Loading**: Only use `useSuspenseFontLoader` when the clock uses a custom font. Skip if using system fonts or no text
+- **Responsive Design**: Implement mobile and desktop optimizations
+- **Accessibility**: Use semantic HTML and ARIA labels where applicable
+- **Performance**: Optimize images and assets
 
 ## 🌐 Deployment
 
