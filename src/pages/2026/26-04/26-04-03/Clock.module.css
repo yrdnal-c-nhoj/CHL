@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'Clox';
+  src: url('../../../../assets/fonts/clox.ttf') format('truetype');
+  font-display: block;
+}
+
 .container {
   position: fixed;
   top: 0;
@@ -18,6 +24,31 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .backgroundVideo {
+    object-fit: contain;
+    transform: scale(1.3);
+  }
+
+  .topOverlay,
+  .bottomOverlay {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 15%;
+    background: #000;
+    z-index: 10;
+  }
+
+  .topOverlay {
+    top: 0;
+  }
+
+  .bottomOverlay {
+    bottom: 0;
+  }
 }
 
 .contentWrapper {
