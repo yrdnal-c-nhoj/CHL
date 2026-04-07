@@ -41,16 +41,16 @@ const Clock: React.FC = () => {
   const halfImg = imgSize / 2;
 
   const glassStyle: React.CSSProperties = {
-    fill: 'rgba(255, 250, 240, 0.15)',
-    stroke: 'rgba(255, 250, 240, 0.35)',
+    fill: 'rgba(255, 250, 240, 0.55)',
+    stroke: 'rgba(255, 250, 240, 0.65)',
     strokeWidth: 5.6,
     strokeLinecap: 'round',
     filter: 'url(#acrylicNoise)',
   };
 
   const minuteGlassStyle: React.CSSProperties = {
-    fill: 'rgba(255, 250, 240, 0.15)',
-    stroke: 'rgba(255, 250, 240, 0.35)',
+    fill: 'rgba(255, 250, 240, 0.55)',
+    stroke: 'rgba(255, 250, 240, 0.65)',
     strokeWidth: 3.6,
     strokeLinecap: 'round',
     filter: 'url(#acrylicNoise)',
@@ -109,7 +109,7 @@ const Clock: React.FC = () => {
           y1="50"
           x2="50"
           y2="26"
-          stroke="rgba(255, 200, 100, 0.5)"
+          stroke="rgba(255, 160, 60, 0.9)"
           strokeWidth="0.8"
           strokeLinecap="round"
           transform={`rotate(${hourDeg} 50 50)`}
@@ -129,7 +129,7 @@ const Clock: React.FC = () => {
           y1="50"
           x2="50"
           y2="12"
-          stroke="rgba(255, 200, 100, 0.5)"
+          stroke="rgba(255, 160, 60, 0.9)"
           strokeWidth="0.8"
           strokeLinecap="round"
           transform={`rotate(${minuteDeg} 50 50)`}
