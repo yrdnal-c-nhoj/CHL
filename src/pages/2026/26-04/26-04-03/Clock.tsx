@@ -33,7 +33,7 @@ const Clock: React.FC = () => {
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#333333',
     gap: 0,
   };
 
@@ -108,7 +108,7 @@ const Clock: React.FC = () => {
   return (
     <>
       <style>{`
-        html, body { margin: 0; padding: 0; overflow: hidden; background: #000; }
+        html, body { margin: 0; padding: 0; overflow: hidden; background: #333; }
         @media (max-width: 768px) {
           .clock-container video { object-fit: contain; height: 50% !important; top: 25% !important; }
           .mobile-overlay { display: block !important; }
@@ -117,8 +117,8 @@ const Clock: React.FC = () => {
       
       <div style={containerStyle} className="clock-container">
         <video style={videoStyle} autoPlay loop muted playsInline src={backgroundVideo} />
-        <div style={{...overlayStyle, top: 0, background: '#000000'}} className="mobile-overlay" />
-        <div style={{...overlayStyle, bottom: 0, background: '#000000'}} className="mobile-overlay" />
+        <div style={{...overlayStyle, top: 0, background: '#333333'}} className="mobile-overlay" />
+        <div style={{...overlayStyle, bottom: 0, background: '#333333'}} className="mobile-overlay" />
         <div style={clockRowsWrapperStyle}>
           <div style={clockWrapperStyle}>
             {timeParts.map((char, index) => (
