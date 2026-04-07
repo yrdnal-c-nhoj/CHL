@@ -365,5 +365,6 @@
   { "path": "26-04-02", "date": "26-04-02", "title": "Satellite" },
   { "path": "26-04-03", "date": "26-04-03", "title": "Periodicity" },
   { "path": "26-04-04", "date": "26-04-04", "title": "Ishihara" },
-  { "path": "26-04-05", "date": "26-04-05", "title": "Bolide" }
+  { "path": "26-04-05", "date": "26-04-05", "title": "Bolide" },
+  { "path": "26-04-06", "date": "26-04-06", "title": "Pulley" }
 ]
