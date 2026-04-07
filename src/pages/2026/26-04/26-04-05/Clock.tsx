@@ -30,20 +30,11 @@ const Clock: React.FC = () => {
       <video className={styles.middleVideoLayer} autoPlay loop muted playsInline src={middleVideo} />
 
       <div className={styles.clockWrapper}>
-        {/* Hours */}
         <div className={styles.digitGroup}>
           <div className={styles.digitBox}>{digits[0]}</div>
           <div className={styles.digitBox}>{digits[1]}</div>
-        </div>
-
-        {/* Minutes */}
-        <div className={styles.digitGroup}>
           <div className={styles.digitBox}>{digits[2]}</div>
           <div className={styles.digitBox}>{digits[3]}</div>
-        </div>
-
-        {/* Seconds */}
-        <div className={styles.digitGroup}>
           <div className={styles.digitBox}>{digits[4]}</div>
           <div className={styles.digitBox}>{digits[5]}</div>
         </div>
