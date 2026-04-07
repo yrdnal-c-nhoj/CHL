@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 import backgroundVideo from '@/assets/images/2026/26-04/26-04-03/clox.mp4';
 import fontUrl from '@/assets/fonts/clox.ttf?url';
 
@@ -13,6 +15,12 @@ const formatTimeParts = (date: Date): string[] => {
 const Clock: React.FC = () => {
   const time = useClockTime();
   const timeParts = formatTimeParts(time);
+
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'Clox', fontUrl: fontUrl }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
 
   const containerStyle: React.CSSProperties = {
     position: 'fixed',
@@ -100,11 +108,6 @@ const Clock: React.FC = () => {
   return (
     <>
       <style>{`
-        @font-face {
-          font-family: 'Clox';
-          src: url('${fontUrl}') format('truetype');
-          font-display: block;
-        }
         html, body { margin: 0; padding: 0; overflow: hidden; background: #000; }
         @media (max-width: 768px) {
           .clock-container video { object-fit: contain; height: 50% !important; top: 25% !important; }
