@@ -33,7 +33,7 @@ const Clock: React.FC = () => {
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
-    backgroundColor: '#333333',
+    backgroundColor: 'transparent',
     gap: 0,
   };
 
@@ -42,7 +42,6 @@ const Clock: React.FC = () => {
     alignItems: 'center',
     justifyContent: 'center',
     pointerEvents: 'none',
-    mixBlendMode: 'difference',
     flexWrap: 'nowrap',
     marginBottom: '-8vw',
   };
@@ -59,6 +58,7 @@ const Clock: React.FC = () => {
     justifyContent: 'center',
     lineHeight: 1,
     flexShrink: 0,
+    mixBlendMode: 'difference',
   };
 
   const digitStyle: React.CSSProperties = {
@@ -85,6 +85,7 @@ const Clock: React.FC = () => {
     height: '100dvh',
     objectFit: 'cover',
     zIndex: 0,
+    filter: ' contrast(1.2)',
   };
   const clockRowsWrapperStyle: React.CSSProperties = {
     display: 'flex',
@@ -92,7 +93,6 @@ const Clock: React.FC = () => {
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-    zIndex: 2,
   };
 
   const colonStyle: React.CSSProperties = {
@@ -108,7 +108,7 @@ const Clock: React.FC = () => {
   return (
     <>
       <style>{`
-        html, body { margin: 0; padding: 0; overflow: hidden; background: #333; }
+        html, body { margin: 0; padding: 0; overflow: hidden; background: transparent; }
         @media (max-width: 768px) {
           .clock-container video { object-fit: contain; height: 50% !important; top: 25% !important; }
           .mobile-overlay { display: block !important; }
