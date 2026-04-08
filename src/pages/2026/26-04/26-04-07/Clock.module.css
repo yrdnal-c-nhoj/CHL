@@ -1,0 +1,63 @@
+@keyframes panBackground {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.container {
+  width: 100vw;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.backgroundWrapper {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  animation: panBackground 30s linear infinite;
+}
+
+.bgImage {
+  height: 100%;
+  width: auto;
+}
+
+.marqueeContainer {
+  position: absolute;
+  top: 10%;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.marqueeTrack {
+  display: flex;
+  width: fit-content;
+  animation: marquee 120s linear infinite;
+}
+
+.clockInstance {
+  display: flex;
+  font-family: 'Wall_26-04-07', monospace;
+  font-size: clamp(3rem, 12vw, 7rem);
+  color: #fff;
+  padding-right: 5vw;
+}
+
+.digitBox {
+  display: inline-block;
+  width: 0.5ch;
+  text-align: center;
+  padding: 0.15em 0.25em;
+  margin: 0 0.08em;
+  color: #3d2914;
+  opacity: 0.75;
+  filter: sepia(0.3) contrast(0.95);
+}
