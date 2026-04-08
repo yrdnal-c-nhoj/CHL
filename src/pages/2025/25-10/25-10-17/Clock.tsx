@@ -3,7 +3,6 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/clockUtils';
 import fontLatin from '@/assets/fonts/2025/25-10-17-word.ttf?url';
 import backgroundImage from '@/assets/images/2025/25-10/25-10-17/words.jpg';
-import styles from './Clock.module.css';
 
 export default function TimeWordsClock() {
   const now = useClockTime();
@@ -46,8 +45,21 @@ export default function TimeWordsClock() {
   // Plural helper
   const pluralize = (n: number, singular: string, plural: string) => (n === 1 ? singular : plural);
 
+  // Translation type definition
+  type Translation = {
+    after: string;
+    before: string;
+    oclock: string;
+    nowItIs: string;
+    and: string;
+    itIs: string;
+    minute: [string, string];
+    second: [string, string];
+    dir: 'ltr' | 'rtl';
+  };
+
   // Translations (same as before)
-  const translations = {
+  const translations: Record<string, Translation> = {
     en: {
       after: 'after',
       before: 'before',
@@ -395,15 +407,16 @@ export default function TimeWordsClock() {
   }, [languages.length]);
 
   // --- Time to words conversion ---
-  const timeToWords = (date: Date, lang: string) => {
-    const t = translations[lang];
+  type LangCode = keyof typeof translations;
+  const timeToWords = (date: Date, lang: LangCode) => {
+    const t = translations[lang]!;
     let hours = date.getHours(),
       minutes = date.getMinutes(),
       seconds = date.getSeconds();
     
     let relation = t.after;
     let displayMinutes = minutes;
-    const displaySeconds = seconds;
+    let displaySeconds = seconds;
       
     let displayHour = hours % 12 === 0 ? 12 : hours % 12;
 
@@ -442,25 +455,50 @@ export default function TimeWordsClock() {
     return lines;
   };
 
-  const lang = languages[langIndex];
+  const lang = (languages[langIndex] || 'en') as LangCode;
   const dir = translations[lang]?.dir || 'ltr';
   const lines = timeToWords(now, lang);
 
+  const containerStyle: React.CSSProperties = {
+    width: '100vw',
+    height: '100dvh',
+    position: 'relative',
+    overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    direction: dir as 'ltr' | 'rtl',
+  };
+
+  const backgroundStyle: React.CSSProperties = {
+    position: 'absolute',
+    inset: 0,
+    width: '100%',
+    height: '100%',
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    zIndex: 0,
+  };
+
+  const textStyle: React.CSSProperties = {
+    position: 'relative',
+    zIndex: 1,
+    fontFamily: "'LatinFont', sans-serif",
+    fontSize: '2rem',
+    color: '#fff',
+    textAlign: 'center',
+    textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)',
+    padding: '1rem',
+    lineHeight: 1.5,
+  };
+
   return (
-    <div 
-      className={styles.container} 
-      style={{ direction: dir } as React.CSSProperties} 
-      aria-live="polite"
-    >
-      <div 
-        className={styles.background} 
-        style={{ backgroundImage: `url(${backgroundImage})` }}
-      />
-      <div className={styles.text}>
+    <div style={containerStyle} aria-live="polite">
+      <div style={backgroundStyle} />
+      <div style={textStyle}>
         {lines.map((line, i) => (
-          <div key={i}>
-            {line}
-          </div>
+          <div key={i}>{line}</div>
         ))}
       </div>
     </div>
