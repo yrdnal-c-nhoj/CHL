@@ -12,22 +12,22 @@ const DigitBox: React.FC<{ value: string }> = ({ value }) => (
 );
 
 const Clock: React.FC = () => {
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'Wall_26-04-07', fontUrl: wallFont }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'Wall_26-04-07', fontUrl: wallFont }],
+    []
+  );
 
   useSuspenseFontLoader(fontConfigs);
-
   const time = useClockTime();
 
-  const digits = useMemo(() => {
+  // Better digit extraction
+  const displayTime = useMemo(() => {
     const h = formatDigit(time.getHours());
     const m = formatDigit(time.getMinutes());
     return [...h, ...m];
   }, [time]);
 
   const clockCountInSet = 4;
-  const clockSet = Array.from({ length: clockCountInSet });
 
   return (
     <div style={containerStyle} role="img" aria-label={`Current time: ${time.getHours()}:${formatDigit(time.getMinutes())}`}>
@@ -42,17 +42,19 @@ const Clock: React.FC = () => {
         }
       `}</style>
 
+      {/* Background */}
       <div style={backgroundWrapperStyle} aria-hidden="true">
         <img src={bgImage} style={bgImageStyle} alt="" />
-        <img src={bgImage} style={bgImageStyle} alt="" aria-hidden="true" />
+        <img src={bgImage} style={bgImageStyle} alt="" />
       </div>
 
+      {/* Marquee */}
       <div style={marqueeContainerStyle}>
         <div style={marqueeTrackStyle}>
-          {[...clockSet, ...clockSet].map((_, index) => (
+          {Array.from({ length: clockCountInSet * 2 }).map((_, index) => (
             <div key={index} style={clockInstanceStyle}>
-              {digits.map((d, i) => (
-                <DigitBox key={i} value={d} />
+              {displayTime.map((digit, i) => (
+                <DigitBox key={i} value={digit} />
               ))}
             </div>
           ))}
@@ -62,6 +64,7 @@ const Clock: React.FC = () => {
   );
 };
 
+// Styles
 const containerStyle: React.CSSProperties = {
   width: '100vw',
   height: '100dvh',
@@ -69,14 +72,13 @@ const containerStyle: React.CSSProperties = {
   overflow: 'hidden',
   backgroundColor: '#000',
   touchAction: 'none',
+  userSelect: 'none',
 };
 
 const backgroundWrapperStyle: React.CSSProperties = {
   position: 'absolute',
-  top: 0,
-  left: 0,
+  inset: 0,
   display: 'flex',
-  height: '100%',
   minWidth: '200vw',
   willChange: 'transform',
   animation: 'panBackground 30s linear infinite',
@@ -85,7 +87,6 @@ const backgroundWrapperStyle: React.CSSProperties = {
 const bgImageStyle: React.CSSProperties = {
   height: '100%',
   width: 'auto',
-  maxWidth: 'none',
   flexShrink: 0,
   objectFit: 'cover',
 };
@@ -97,6 +98,7 @@ const marqueeContainerStyle: React.CSSProperties = {
   width: '100%',
   zIndex: 2,
   pointerEvents: 'none',
+  overflow: 'hidden',
 };
 
 const marqueeTrackStyle: React.CSSProperties = {
@@ -113,17 +115,19 @@ const clockInstanceStyle: React.CSSProperties = {
   fontSize: 'clamp(3rem, 12vw, 7rem)',
   color: '#fff',
   paddingRight: '5vw',
+  whiteSpace: 'nowrap',
 };
 
 const digitBoxStyle: React.CSSProperties = {
   display: 'inline-block',
-  width: '0.5ch',
+  width: '0.6ch',           // slightly wider for better spacing
   textAlign: 'center',
-  padding: '0.15em 0.25em',
-  margin: '0 0.08em',
+  padding: '0.1em 0.2em',
+  margin: '0 0.1em',
   color: '#3d2914',
   opacity: 0.75,
   filter: 'sepia(0.3) contrast(0.95)',
+  textShadow: '0 0 8px rgba(0,0,0,0.6)', // added depth
 };
 
 export default Clock;
