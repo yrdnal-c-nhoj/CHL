@@ -48,7 +48,7 @@
 
 @media (max-width: 768px) {
   .clockWrapper {
-    transform: translateX(-1.5vw);
+    transform: translateX(-1vw);
   }
 }
 
