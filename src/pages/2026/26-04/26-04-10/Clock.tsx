@@ -1,143 +1,88 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import styles from './Clock.module.css';
+import React from 'react';
+import { useMillisecondClock } from '@/utils/useSmoothClock';
+import hourHand from '@/assets/images/2026/26-04/26-04-10/hour.webp';
+import minuteHand from '@/assets/images/2026/26-04/26-04-10/minute.webp';
+import secondHand from '@/assets/images/2026/26-04/26-04-10/second.webp';
+import backgroundImage from '@/assets/images/2026/26-04/26-04-10/sand.jpg';
 
 const Clock: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const now = useMillisecondClock();
 
-  useEffect(() => {
-    if (!containerRef.current) return;
+  const ms = now.getMilliseconds();
+  const s = now.getSeconds() + ms / 1000;
+  const m = now.getMinutes() + s / 60;
+  const h = (now.getHours() % 12) + m / 60;
 
-    const container = containerRef.current;
-    let renderer: THREE.WebGLRenderer;
-    let camera: THREE.PerspectiveCamera;
-    let scene: THREE.Scene;
-    let terrainGeometry: THREE.PlaneGeometry;
-    let clock: THREE.Clock;
-    let terrain: THREE.Mesh;
-    let animationId: number;
-    let timeoutDebounce: ReturnType<typeof setTimeout>;
+  const containerStyle: React.CSSProperties = {
+    width: '100vw',
+    height: '100dvh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#111',
+    margin: 0,
+    padding: 0,
+    position: 'relative',
+    overflow: 'hidden',
+  };
 
-    let frame = 0;
-    let cameraDx = 0.05;
-    let count = 0;
-    let delta = 0;
+  const backgroundStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    filter: 'saturate(170%) contrast(1.2) brightness(100%)',
+    zIndex: 0,
+  };
 
-    const init = () => {
-      scene = new THREE.Scene();
-      scene.background = new THREE.Color('#F3F5F7');
-      scene.fog = new THREE.Fog('#F1F1F4', 0.05, 50);
+  const faceStyle: React.CSSProperties = {
+    width: 'min(95vw, 95vh)',
+    height: 'min(95vw, 95vh)',
+    borderRadius: '50%',
+    position: 'relative',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
 
-      camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.01, 1000);
-      camera.position.set(0, 1, 32);
+  // Hand size configuration (percentage of clock face)
+  const HOUR_HAND_WIDTH = 20;    // % of clock face
+  const HOUR_HAND_HEIGHT = 29;  // % of clock face radius
+  const MINUTE_HAND_WIDTH = 22;
+  const MINUTE_HAND_HEIGHT = 49;
+  const SECOND_HAND_WIDTH = 23;
+  const SECOND_HAND_HEIGHT = 50;
 
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setSize(container.clientWidth, container.clientHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
-      container.appendChild(renderer.domElement);
+  const handStyle = (rotate: number, width: number, height: number, filter?: string): React.CSSProperties => ({
+    position: 'absolute',
+    bottom: '50%',
+    left: '50%',
+    width: `${width}%`,
+    height: `${height}%`,
+    transformOrigin: '50% 100%',
+    transform: `translateX(-50%) rotate(${rotate}deg)`,
+    willChange: 'transform',
+    pointerEvents: 'none',
+    filter,
+  });
 
-      clock = new THREE.Clock();
-
-      // Terrain
-      terrainGeometry = new THREE.PlaneGeometry(70, 70, 20, 20);
-      const terrainMaterial = new THREE.MeshBasicMaterial({ color: 0x11e0a, fog: true });
-      terrain = new THREE.Mesh(terrainGeometry, terrainMaterial);
-      terrain.rotation.x = -0.47 * Math.PI;
-      terrain.rotation.z = THREE.MathUtils.degToRad(90);
-      scene.add(terrain);
-
-      const t_vertex_Array = terrainGeometry.getAttribute('position').array;
-      (terrainGeometry.getAttribute('position') as THREE.BufferAttribute).setUsage(THREE.DynamicDrawUsage);
-
-      terrainGeometry.setAttribute('myZ', new THREE.BufferAttribute(new Float32Array(t_vertex_Array.length / 3), 1));
-      const t_myZ_Array = terrainGeometry.getAttribute('myZ').array as Float32Array;
-
-      for (let i = 0; i < t_vertex_Array.length; i++) {
-        t_myZ_Array[i] = THREE.MathUtils.randInt(0, 5);
-      }
-
-      // Terrain Lines
-      const terrainLine = new THREE.LineSegments(
-        terrainGeometry,
-        new THREE.LineBasicMaterial({ color: '#f555ff', fog: false })
-      );
-      terrainLine.rotation.x = -0.47 * Math.PI;
-      terrainLine.rotation.z = THREE.MathUtils.degToRad(90);
-      scene.add(terrainLine);
-
-    };
-
-    const animate = () => {
-      // Terrain Animation
-      const t_vertex_Array = terrainGeometry.getAttribute('position').array as Float32Array;
-      const t_myZ_Array = terrainGeometry.getAttribute('myZ').array as Float32Array;
-
-      for (let i = 0; i < t_vertex_Array.length; i++) {
-        if (i >= 210 && i <= 250) {
-          t_vertex_Array[i * 3 + 2] = 0;
-        } else {
-          const myZ = t_myZ_Array?.[i] ?? 0;
-          t_vertex_Array[i * 3 + 2] = Math.sin((i + count * 0.0003)) * (myZ - myZ * 0.5);
-          count += 0.1;
-        }
-      }
-
-      // Camera Movement
-      camera.position.x += cameraDx;
-      camera.position.y = -1.2 * (1 - Math.abs(frame / 2000 - 0.5) / 0.5);
-      camera.lookAt(0, 0, 0);
-      frame += 8;
-      if (frame > 2000) frame = 0;
-      if (camera.position.x > 18) cameraDx = -cameraDx;
-      if (camera.position.x < -18) cameraDx = Math.abs(cameraDx);
-
-      (terrainGeometry.attributes.position as THREE.BufferAttribute).needsUpdate = true;
-      renderer.render(scene, camera);
-    };
-
-    const limitFPS = (interval: number) => {
-      const loop = () => {
-        animationId = requestAnimationFrame(loop);
-        delta += clock.getDelta();
-        if (delta > interval) {
-          animate();
-          delta = delta % interval;
-        }
-      };
-      loop();
-    };
-
-    const onWindowResize = () => {
-      camera.aspect = container.clientWidth / container.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(container.clientWidth, container.clientHeight);
-    };
-
-    const handleResize = () => {
-      clearTimeout(timeoutDebounce);
-      timeoutDebounce = setTimeout(onWindowResize, 80);
-    };
-
-    init();
-    limitFPS(1 / 60);
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      cancelAnimationFrame(animationId);
-      clearTimeout(timeoutDebounce);
-      window.removeEventListener('resize', handleResize);
-      if (renderer && container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
-      }
-      renderer?.dispose();
-    };
-  }, []);
-
+  const clockWrapperStyle: React.CSSProperties = {
+    position: 'relative',
+    zIndex: 1,
+  };
 
   return (
-    <div className={styles.container}>
-      <div ref={containerRef} className={styles.canvasContainer}></div>
+    <div style={containerStyle}>
+      <img src={backgroundImage} style={backgroundStyle} alt="background" />
+      <div style={clockWrapperStyle}>
+        <div style={faceStyle}>
+          <img src={hourHand} style={handStyle(h * 30, HOUR_HAND_WIDTH, HOUR_HAND_HEIGHT, 'saturate(100%) contrast(200%) brightness(100%)')} alt="hour hand" />
+          <img src={minuteHand} style={handStyle(m * 6, MINUTE_HAND_WIDTH, MINUTE_HAND_HEIGHT, 'saturate(100%) brightness(100%)')} alt="minute hand" />
+          <img src={secondHand} style={handStyle(s * 6, SECOND_HAND_WIDTH, SECOND_HAND_HEIGHT, 'saturate(100%) brightness(100%)')} alt="second hand" />
+        </div>
+      </div>
     </div>
   );
 };
