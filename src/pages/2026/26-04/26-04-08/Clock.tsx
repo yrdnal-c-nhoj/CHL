@@ -37,10 +37,12 @@ const Clock: React.FC = () => {
   }, [time]);
 
   const getEasedProgress = (progress: number): number => {
-    if (progress < 0.1) return (progress / 0.1) ** 2 * 0.02;           // Very slow start
-    if (progress < 0.8) return 0.02 + ((progress - 0.1) / 0.7) * 0.96; // Fast middle
-    const p = (progress - 0.8) / 0.2;
-    return 0.98 + (1 - (1 - p) ** 3) * 0.02;                          // Very slow stop
+    // Smooth cubic ease-in-out for gradual curve throughout
+    // Starts slow, accelerates smoothly, peaks in middle, decelerates smoothly
+    const p = progress < 0.5
+      ? 4 * progress ** 3
+      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+    return p;
   };
 
   const animate = useCallback((timestamp: number) => {
