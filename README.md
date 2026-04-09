@@ -71,13 +71,17 @@ BorrowedTime creates daily clock experiences that challenge conventional timekee
 ```
 CHL/
 ├── src/
-│   ├── pages/              # Daily clock implementations
-│   │   ├── 25-04/         # Month-based organization
-│   │   │   ├── 25-04-01/  # Individual clock
-│   │   │   │   └── Clock.tsx
-│   │   │   └── ...
-│   │   └── 26-03/         # Current month
-│   ├── components/        # Reusable UI components
+│   ├── pages/                  # Daily clock implementations
+│   │   ├── 2025/               # Year folder
+│   │   │   ├── 25-04/          # Month folder (YY-MM format)
+│   │   │   │   ├── 25-04-01/   # Individual clock folder
+│   │   │   │   │   └── Clock.tsx
+│   │   │   │   └── ...
+│   │   │   └── 25-10/
+│   │   └── 2026/               # Current year
+│   │       ├── 26-03/
+│   │       └── 26-04/
+│   ├── components/            # Reusable UI components
 │   │   ├── TopNav.jsx
 │   │   ├── Footer.jsx
 │   │   ├── Header.jsx
@@ -254,8 +258,13 @@ describe('Component', () => {
 Each clock follows the date-based structure:
 
 ```
-src/pages/YY-MM/YY-MM-DD/Clock.tsx
+src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx
 ```
+
+For example:
+
+- `src/pages/2025/25-04/25-04-01/Clock.tsx` for April 1, 2025
+- `src/pages/2026/26-03/26-03-15/Clock.tsx` for March 15, 2026
 
 ### Clock Component Template
 
