@@ -28,7 +28,7 @@ const Clock: React.FC = () => {
   // Independent motion animation for each digit - choppy water chaos
   useEffect(() => {
     const animate = () => {
-      timeRef.current += 0.025; // Faster time increment
+      timeRef.current += 0.018; // Moderate time increment
       const t = timeRef.current;
 
       // Chaotic choppy wave motion - bigger, faster, more random
