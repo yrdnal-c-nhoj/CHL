@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/useSmoothClock';
+import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
@@ -29,7 +29,7 @@ const GravityClock: React.FC<GravityClockProps> = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const currentTime = useClockTime();
   const [clocks, setClocks] = useState<ClockData[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>();
@@ -125,7 +125,7 @@ const GravityClock: React.FC<GravityClockProps> = () => {
 
 const ClockItem: React.FC<{ clock: ClockData }> = ({ clock }) => {
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const currentTime = useClockTime();
 
   const h = (currentTime.getHours() % 12) * 30 + currentTime.getMinutes() * 0.5;
   const m = currentTime.getMinutes() * 6;

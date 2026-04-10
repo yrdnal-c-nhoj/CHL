@@ -1,7 +1,9 @@
-import React, { useEffect, useState, useRef, CSSProperties } from 'react';
-// 🎯 Import the background image
-import backgroundImageURL from '@/assets/images/2025/25-11/25-11-13/bg.webp';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import styles from './Clock.module.css';
+import { useClockTime } from '@/utils/clockUtils';
+import bgImage from '@/assets/images/2025/25-11/25-11-13/bg.webp';
+
+export const assets = [bgImage];
 
 // A unique ID generator for each rolling clock
 let nextId = 0;
@@ -64,10 +66,7 @@ export default function RollingAnalogClock() {
   }, []);
 
   return (
-    <div
-      className={styles.container}
-      style={{ backgroundImage: `url('${backgroundImageURL}')` }}
-    >
+    <div className={styles.container}>
       {clocks.map((clock) => (
         <SingleSlowRollingClock
           key={clock.id}
@@ -96,18 +95,11 @@ function SingleSlowRollingClock({ duration, direction }: SingleClockProps) {
     minute: HTMLDivElement | null;
     second: HTMLDivElement | null;
   }>({ hour: null, minute: null, second: null });
-  const [now, setNow] = useState(new Date());
+  
+  const now = useClockTime(); // Standardized animation loop
 
   // Set a large distance to ensure the clock travels completely off-screen
   const travelDistance = 150; // 150vw
-
-  /* --------------------------------------
-     Update clock hands every second
-  --------------------------------------- */
-  useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(t);
-  }, []);
 
   useEffect(() => {
     const d = now;

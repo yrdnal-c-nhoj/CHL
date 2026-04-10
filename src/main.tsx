@@ -30,10 +30,10 @@ const enablePerformanceMonitoring = import.meta.env.DEV;
 if (enablePerformanceMonitoring) {
   // Performance monitoring setup
   if ('performance' in window) {
-    window.addEventListener('load', () => {
-      const perfData = performance.getEntriesByType('navigation')[0];
+    window.addEventListener('load', (event: Event) => {
+      const perfData = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
       console.log('Page Load Performance:', {
-        domContentLoaded:
+        domContentLoaded: perfData &&
           perfData.domContentLoadedEventEnd -
           perfData.domContentLoadedEventStart,
         loadComplete: perfData.loadEventEnd - perfData.loadEventStart,
@@ -46,7 +46,7 @@ if (enablePerformanceMonitoring) {
 /**
  * Error handling for unhandled promise rejections
  */
-window.addEventListener('unhandledrejection', (event) => {
+window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {
   console.error('Unhandled Promise Rejection:', event.reason);
   // In production, you might want to send this to an error reporting service
   if (import.meta.env.PROD) {
