@@ -9,50 +9,21 @@ import React, {
 import { DataContext } from './context/DataContext';
 import Header from './components/Header';
 import ClockPageNav from './components/ClockPageNav';
-import { useClockPage, ClockItem } from './hooks/useClockPage';
+import { useClockPage } from './hooks/useClockPage';
 import { ClockLoadingFallback } from './utils/fontLoader';
 import styles from './ClockPage.module.css';
-
-interface DataContextValue {
-  items: ClockItem[];
-  loading: boolean;
-  error: string | null;
-}
-
-const formatTitle = (title?: string): string =>
-  title?.replace(/clock/i, '').trim() || 'Home';
-const formatDate = (dateStr?: string): string => {
-  if (!dateStr) return '';
-  const parts = dateStr.split('-');
-  if (parts.length !== 3) return dateStr;
-  const [yy, mm, dd] = parts.map(Number);
-  return mm >= 1 && mm <= 12 && dd >= 1 && dd <= 31
-    ? `${mm}/${dd}/${yy}`
-    : 'Invalid Date';
-};
-const normalizeDate = (d: string): string =>
-  d
-    .split('-')
-    .map((n) => n.padStart(2, '0'))
-    .join('-');
-
-const parseDateVal = (dateStr?: string): number => {
-  if (!dateStr) return 0;
-  const [yy, mm, dd] = dateStr.split('-').map(Number);
-  return new Date(2000 + yy, mm - 1, dd).getTime();
-};
-
-const getTodayDate = () => {
-  const now = new Date();
-  const yy = String(now.getFullYear()).slice(-2);
-  const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const dd = String(now.getDate()).padStart(2, '0');
-  return `${yy}-${mm}-${dd}`;
-};
+import { ClockItem, DataContextType } from './types/data';
+import {
+  normalizeDate,
+  formatTitle,
+  formatDateSlashes,
+  parseDateVal,
+  getTodayDate,
+} from './utils/dateUtils';
 
 const TodayClockPage = () => {
-  const { items, loading, error } = useContext(DataContext);
-  const [currentItem, setCurrentItem] = useState(null);
+  const { items, loading, error } = useContext(DataContext) as DataContextType;
+  const [currentItem, setCurrentItem] = useState<ClockItem | null>(null);
   const [headerVisible, setHeaderVisible] = useState(true);
   const OVERLAY_FADE_DURATION = 300;
 
@@ -202,7 +173,7 @@ const TodayClockPage = () => {
           currentItem={currentItem}
           items={items}
           formatTitle={formatTitle}
-          formatDate={formatDate}
+          formatDate={formatDateSlashes}
         />
       )}
 

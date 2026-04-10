@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
 import backgroundVideo from '@/assets/images/2026/26-04/26-04-09/water.mp4';
+import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -74,72 +75,28 @@ const Clock: React.FC = () => {
   const m = time.getMinutes().toString().padStart(2, '0');
   const digits = [h[0], h[1], m[0], m[1]];
 
-  const containerStyle: React.CSSProperties = {
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    overflow: 'hidden',
-    margin: 0,
-    padding: 0,
-  };
-
-  const videoStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    zIndex: 0,
-  };
-
-  const clockWrapperStyle: React.CSSProperties = {
-    position: 'relative',
-    zIndex: 1,
-  };
-
-  const digitBoxStyle = (index: number): React.CSSProperties => {
-    const transform = digitTransforms[index];
+  const getDigitStyle = (index: number): React.CSSProperties => {
+    const t = digitTransforms[index]!;
     return {
-      width: 'clamp(3rem, 12vw, 10rem)',
-      height: 'clamp(4rem, 15vw, 12rem)',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      fontSize: 'clamp(2.5rem, 12vw, 10rem)',
-      color: '#fff',
       fontFamily: fontLoaded ? 'Water, monospace' : 'monospace',
-      fontWeight: 300,
-      transform: `translateY(${transform!.y}px) rotate(${transform!.rotate}deg) scale(${transform!.scale})`,
-      willChange: 'transform',
-    };
-  };
-
-  const digitsContainerStyle: React.CSSProperties = {
-    display: 'flex',
-    gap: '0.5rem',
-    alignItems: 'center',
-  };
-
-  const spaceStyle: React.CSSProperties = {
-    width: '1rem',
+      '--digit-y': `${t.y}px`,
+      '--digit-rotate': `${t.rotate}deg`,
+      '--digit-scale': t.scale,
+    } as React.CSSProperties;
   };
 
   return (
-    <div style={containerStyle}>
-      <video style={videoStyle} autoPlay muted loop playsInline>
+    <div className={styles.container}>
+      <video className={styles.video} autoPlay muted loop playsInline>
         <source src={backgroundVideo} type="video/mp4" />
       </video>
-      <div style={clockWrapperStyle}>
-        <div style={digitsContainerStyle}>
-          <span style={digitBoxStyle(0)}>{digits[0]}</span>
-          <span style={digitBoxStyle(1)}>{digits[1]}</span>
-          <span style={spaceStyle}></span>
-          <span style={digitBoxStyle(2)}>{digits[2]}</span>
-          <span style={digitBoxStyle(3)}>{digits[3]}</span>
+      <div className={styles.clockWrapper}>
+        <div className={styles.digitsContainer}>
+          <span className={styles.digitBox} style={getDigitStyle(0)}>{digits[0]}</span>
+          <span className={styles.digitBox} style={getDigitStyle(1)}>{digits[1]}</span>
+          <span className={styles.space}></span>
+          <span className={styles.digitBox} style={getDigitStyle(2)}>{digits[2]}</span>
+          <span className={styles.digitBox} style={getDigitStyle(3)}>{digits[3]}</span>
         </div>
       </div>
     </div>

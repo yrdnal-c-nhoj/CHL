@@ -1,0 +1,52 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.clockWrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.digitsContainer {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.digitBox {
+  width: clamp(3rem, 12vw, 10rem);
+  height: clamp(4rem, 15vw, 12rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(2.5rem, 12vw, 10rem);
+  font-weight: 300;
+  will-change: transform;
+  transform: translateY(var(--digit-y, 0)) rotate(var(--digit-rotate, 0)) scale(var(--digit-scale, 1));
+  background: linear-gradient(to bottom, #1a3a3a 0%, #2d5a5a 30%, #8B7355 70%, #6B5345 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.space {
+  width: 1rem;
+}

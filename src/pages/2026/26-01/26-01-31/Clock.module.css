@@ -1,0 +1,74 @@
+.container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.layerBase {
+  position: absolute;
+  inset: 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.layerColor { background-color: #FFFB04; z-index: 0; position: absolute; inset: 0; }
+.layerTiling { background-image: url('@/assets/images/2026/26-01/26-01-31/lemons2.jpg'); background-repeat: repeat; z-index: 1; opacity: 0.8; position: absolute; inset: 0; }
+.layerLemon { background-image: url('@/assets/images/2026/26-01/26-01-31/lemon.gif'); background-position: center; z-index: 2; opacity: 0.8; position: absolute; inset: 0; }
+.layerRain { 
+  background-image: url('@/assets/images/2026/26-01/26-01-31/lu.webp'); 
+  background-size: 100% 100%; 
+  width: 100vw; height: 100vh; 
+  position: fixed; top: 0; left: 0; 
+  z-index: 3; opacity: 0.7; 
+}
+.layerRainFlipped { transform: scale(-1, -1); z-index: 4; }
+
+.grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 30vmin);
+  grid-template-rows: repeat(3, 30vmin);
+  gap: 2.2vmin;
+  z-index: 10;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8vmin;
+  font-family: 'LemonFont', monospace;
+  color: #FCDC0A;
+  position: relative;
+}
+
+.cellImage {
+  position: absolute;
+  inset: 0;
+  background-image: url('@/assets/images/2026/26-01/26-01-31/lemslo.gif');
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+.centerImage {
+  position: absolute;
+  inset: 0;
+  background-image: url('@/assets/images/2026/26-01/26-01-31/lem.gif');
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+  animation: rotateCounterClockwise 15s linear infinite;
+}
+
+.char { position: relative; z-index: 1; }
+
+@keyframes rotateCounterClockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
