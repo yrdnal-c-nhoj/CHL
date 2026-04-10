@@ -1,122 +1,118 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import type { ComponentType } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
-// Preload all Clock.tsx files under /pages/**/Clock.tsx
-const clockModules = import.meta.glob('../pages/**/Clock.tsx');
-
-export interface ClockItem {
-  date: string;
-  path: string;
-  title?: string;
+interface ClockModule {
+  default: React.ComponentType;
+  assets?: string[];
 }
 
-interface UseClockPageResult {
-  ClockComponent: ComponentType | null;
-  isReady: boolean;
-  error: string | null;
-  overlayVisible: boolean;
-}
+// Safety timeout to prevent infinite black screen
+const LOADING_TIMEOUT = 10000; // 10 seconds
 
-export const useClockPage = (
-  item: ClockItem | null | undefined,
-): UseClockPageResult => {
-  const [ClockComponent, setClockComponent] = useState<ComponentType | null>(
-    null,
-  );
+/**
+ * State-of-the-art dynamic clock loader.
+ * Handles dynamic imports, asset preloading, and overlay synchronization.
+ */
+export function useClockPage(currentItem: { date: string } | null) {
+  const [ClockComponent, setClockComponent] = useState<React.ComponentType | null>(null);
   const [isReady, setIsReady] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [overlayVisible, setOverlayVisible] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isReadyRef = useRef(isReady);
+  
+  // Keep ref in sync with state to avoid stale closure in timeout
+  isReadyRef.current = isReady;
 
-  // Ref to track the current loading item to prevent race conditions
-  const loadingItemRef = useRef<string | null>(null);
+  // Register all clock components via Vite glob (memoized to prevent re-renders)
+  const clockModules = useMemo(() => import.meta.glob('../pages/**/Clock.tsx'), []);
 
-  const getClockModuleKey = useCallback((item: ClockItem) => {
-    const date = item?.date || item?.path;
-    if (!date) return null;
-
-    const [yy, mm] = date.split('-');
-    if (!yy || !mm) return null;
-
-    const candidates = [
-      `../pages/20${yy}/${yy}-${mm}/${item.path}/Clock.tsx`, // year/month/day structure
-      `../pages/${yy}-${mm}/${item.path}/Clock.tsx`, // legacy flat structure
-    ];
-
-    for (const key of candidates) {
-      if (clockModules[key]) {
-        return key;
-      }
-    }
-
-    return null;
-  }, []);
-
-  const preloadAssets = useCallback(async (module: any) => {
-    // Preload images exported from module
-    const images = Object.values(module).filter(
-      (value): value is string =>
-        typeof value === 'string' &&
-        /\.(jpg|jpeg|png|webp|gif|mp4|webm)$/i.test(value),
-    );
-
-    const imagePromises = images.map(
-      (src) =>
-        new Promise<void>((resolve) => {
-          if (/\.(mp4|webm)$/i.test(src)) {
-            resolve();
-          } else {
-            const img = new Image();
-            img.src = src;
-            img.onload = () => resolve();
-            img.onerror = () => resolve();
-          }
-        }),
-    );
-
-    await Promise.all(imagePromises);
+  const preloadAsset = useCallback((url: string): Promise<void> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = url;
+      img.onload = () => resolve();
+      img.onerror = () => {
+        console.warn(`Failed to preload asset: ${url}`);
+        resolve(); // Resolve anyway to prevent hanging the UI
+      };
+    });
   }, []);
 
   useEffect(() => {
+    if (!currentItem) {
+      // Reset state when no item is selected
+      setIsReady(false);
+      setOverlayVisible(false);
+      return;
+    }
+
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
     const loadClock = async () => {
-      if (!item) {
-        setClockComponent(null);
-        setIsReady(false);
-        return;
-      }
-
-      const itemKey = item.date || item.path;
-      loadingItemRef.current = itemKey;
-
+      setIsReady(false);
       setOverlayVisible(true);
       setError(null);
 
+      // Safety timeout: force overlay to hide if loading takes too long
+      timeoutRef.current = setTimeout(() => {
+        console.warn('[useClockPage] Loading timeout reached, forcing overlay hide');
+        setOverlayVisible(false);
+        if (!isReadyRef.current) {
+          setError('Clock loading timed out');
+        }
+      }, LOADING_TIMEOUT);
+
       try {
-        const moduleKey = getClockModuleKey(item);
-        if (!moduleKey) {
-          throw new Error(`No clock found for date: ${item.date}`);
+        // 1. Resolve the module path
+        const [year, month] = currentItem.date.split('-');
+        const path = `../pages/20${year}/${year}-${month}/${currentItem.date}/Clock.tsx`;
+        
+        const importFn = clockModules[path];
+        if (!importFn) {
+          throw new Error(`Clock not found at path: ${path}`);
         }
 
-        const moduleLoader = clockModules[moduleKey] as () => Promise<any>;
-        const module = await moduleLoader();
+        // 2. Dynamically import the module
+        const module = (await importFn()) as ClockModule;
+        
+        // 3. Preload defined assets (images/gifs)
+        if (module.assets && module.assets.length > 0) {
+          await Promise.all(module.assets.map(preloadAsset));
+        }
 
-        // Only proceed if we're still loading the same item
-        if (loadingItemRef.current === itemKey) {
-          await preloadAssets(module);
-
-          setClockComponent(() => module.default);
+        // 4. Update component state
+        setClockComponent(() => module.default);
+        
+        // 5. Short delay for React to mount before fading overlay
+        requestAnimationFrame(() => {
           setIsReady(true);
-          setTimeout(() => setOverlayVisible(false), 300);
-        }
-      } catch (err: any) {
-        if (loadingItemRef.current === itemKey) {
-          console.error('Failed to load clock:', err);
-          setError(err.message || 'Failed to load clock');
+          // Fade out overlay after a tiny buffer to ensure layout is stable
+          setTimeout(() => setOverlayVisible(false), 50);
+        });
+
+      } catch (err) {
+        console.error('Error loading clock page:', err);
+        setError(err instanceof Error ? err.message : 'Unknown loading error');
+        setOverlayVisible(false);
+      } finally {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = null;
         }
       }
     };
 
     loadClock();
-  }, [item, getClockModuleKey, preloadAssets]);
+    
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [currentItem, clockModules, preloadAsset]);
 
   return { ClockComponent, isReady, error, overlayVisible };
-};
+}

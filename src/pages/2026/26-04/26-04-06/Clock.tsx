@@ -12,6 +12,8 @@ const IMAGES = Object.values(imageModules).filter(
   (src): src is string => typeof src === 'string' && !src.includes('.DS_Store')
 );
 
+export const assets = IMAGES;
+
 const getRandomPosition = () => ({
   top: `${Math.random() * 70}%`,
   left: `${Math.random() * 70}%`,

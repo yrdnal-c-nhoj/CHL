@@ -1,0 +1,41 @@
+.container {
+  height: 100dvh;
+  width: 100vw;
+  background-color: #dad3de;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: system-ui, -apple-system, sans-serif;
+  transition: opacity 0.8s ease;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  background-size: 60px 60px;
+  background-position: center;
+  transition: opacity 2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+  will-change: opacity;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.digit {
+  text-align: center;
+  text-shadow: 0 -1px 5px rgba(255, 255, 255, 0.9), -1px -1px 0px #fff, 1px 1px 0px rgba(0, 0, 0, 0.67), 3px 3px 3px rgba(0, 0, 0, 0.3), 15px 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.digitLarge { width: 12vw; font-size: 12vw; }
+.digitMobile { width: 20vh; font-size: 20vh; }
+
+@media (min-width: 769px) { .content { flex-direction: row; gap: 2rem; } }
