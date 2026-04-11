@@ -1,0 +1,16 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, #65195E 0%, #4A0216 50%, #140507 100%);
+  overflow: hidden;
+}
+
+.clockWrapper {
+  width: 95vmin;
+  height: 95vmin;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
