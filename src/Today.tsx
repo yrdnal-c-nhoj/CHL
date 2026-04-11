@@ -11,6 +11,7 @@ import Header from './components/Header';
 import ClockPageNav from './components/ClockPageNav';
 import { useClockPage } from './hooks/useClockPage';
 import { ClockLoadingFallback } from './utils/fontLoader';
+import { useAutoHeader } from './hooks/useAutoHeader';
 import styles from './ClockPage.module.css';
 import { ClockItem, DataContextType } from './types/data';
 import {
@@ -24,7 +25,7 @@ import {
 const TodayClockPage = () => {
   const { items, loading, error } = useContext(DataContext) as DataContextType;
   const [currentItem, setCurrentItem] = useState<ClockItem | null>(null);
-  const [headerVisible, setHeaderVisible] = useState(true);
+  const headerVisible = useAutoHeader(1500);
   const OVERLAY_FADE_DURATION = 300;
 
   // -------------------------------
@@ -57,14 +58,6 @@ const TodayClockPage = () => {
     error: pageError,
     overlayVisible,
   } = useClockPage(currentItem);
-
-  // -------------------------------
-  // Auto-hide header shortly after load
-  // -------------------------------
-  useEffect(() => {
-    const headerTimer = setTimeout(() => setHeaderVisible(false), 1500);
-    return () => clearTimeout(headerTimer);
-  }, []);
 
   // -------------------------------
   // Prevent scrolling
@@ -178,18 +171,12 @@ const TodayClockPage = () => {
       )}
 
       {/* Loading overlay */}
-      <div
-        style={{
-          position: 'fixed',
-          inset: 0,
-          width: '100vw',
-          height: '100vh',
-          backgroundColor: '#000',
-          zIndex: 9999,
-          pointerEvents: 'none',
+      <div 
+        className={styles.loadingOverlay}
+        style={{ 
           opacity: overlayVisible ? 1 : 0,
-          transition: `opacity ${OVERLAY_FADE_DURATION}ms ease-out`,
-        }}
+          transition: `opacity ${OVERLAY_FADE_DURATION}ms ease-out`
+        }} 
       />
     </div>
   );
