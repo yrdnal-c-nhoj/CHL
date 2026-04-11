@@ -13,6 +13,7 @@ import { ClockLoadingFallback } from './utils/fontLoader';
 import { useClockPage } from './hooks/useClockPage';
 import styles from './ClockPage.module.css';
 import { ClockItem, DataContextType } from './types/data'; // Import centralized interfaces
+import { useAutoHeader } from './hooks/useAutoHeader';
 import {
   DATE_REGEX,
   normalizeDate,
@@ -26,9 +27,9 @@ const OVERLAY_FADE_DURATION = 300; // 0.3 seconds for a smoother fade
 
 const ClockPage: React.FC = () => {
   const { date } = useParams();
-  const { items, loading } = useContext(DataContext) as DataContextType;
+  const { items, loading, error: contextError } = useContext(DataContext) as DataContextType;
   const navigate = useNavigate();
-  const [headerOpacity, setHeaderOpacity] = useState(1);
+  const headerVisible = useAutoHeader(HEADER_FADE_DELAY);
 
   // Memoized normalized date
   const normalizedDate = useMemo(
@@ -51,15 +52,6 @@ const ClockPage: React.FC = () => {
     error: pageError,
     overlayVisible,
   } = useClockPage(currentItem);
-
-  // Header fade-out animation
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setHeaderOpacity(0);
-    }, HEADER_FADE_DELAY);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   // Validate date format and redirect if invalid
   useEffect(() => {
@@ -87,13 +79,13 @@ const ClockPage: React.FC = () => {
   }, [items, normalizedDate, normalizeDate]);
 
   // Error state display
-  if (pageError || (!loading && !currentItem && items.length > 0)) {
+  if (pageError || contextError || (!loading && !currentItem && items.length > 0)) {
     return (
       <div
         className={styles.errorContainer}
       >
         <h1>Error</h1>
-        <p>{pageError || 'Clock not found'}</p>
+        <p>{pageError || contextError || 'Clock not found'}</p>
         <button
           onClick={() => navigate('/')}
           className={styles.errorButton}
@@ -111,11 +103,11 @@ const ClockPage: React.FC = () => {
         <div
           className={styles.headerWrapper}
           style={{
-            opacity: headerOpacity,
-            pointerEvents: headerOpacity > 0 ? 'auto' : 'none',
+            opacity: headerVisible ? 1 : 0,
+            pointerEvents: headerVisible ? 'auto' : 'none',
           }}
         >
-          <Header visible={headerOpacity > 0} />
+          <Header visible={headerVisible} />
         </div>
       )}
 
