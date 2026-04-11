@@ -4,11 +4,11 @@ import bgImg from '@/assets/images/2025/25-11/25-11-18/eyes.webp';
 export { bgImg }; // Export for preloading pipeline
 
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClockTime } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 
 export default function RotatedClockGrid() {
-  const now = useSecondClock();
+  const now = useClockTime();
 
   const hours24 = now.getHours();
   const hoursStr = String(hours24).padStart(2, '0');
