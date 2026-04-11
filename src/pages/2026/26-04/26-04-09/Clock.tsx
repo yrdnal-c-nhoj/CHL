@@ -1,10 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
+import { useClockTime } from '@/utils/hooks';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 import backgroundVideo from '@/assets/images/2026/26-04/26-04-09/water.mp4';
+export { backgroundVideo }; // Export for preloading pipeline
+
+import waterFontUrl from '@/assets/fonts/26-04-09-water.ttf?url';
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {
-  const [fontLoaded, setFontLoaded] = useState(false);
   const [digitTransforms, setDigitTransforms] = useState([
     { y: 0, rotate: 0, scale: 1 },
     { y: 0, rotate: 0, scale: 1 },
@@ -15,16 +19,11 @@ const Clock: React.FC = () => {
   const animationRef = useRef<number | undefined>(undefined);
   const time = useClockTime();
 
-  useEffect(() => {
-    import('@/assets/fonts/26-04-09-water.ttf').then((fontModule) => {
-      const fontUrl = (fontModule as { default: string }).default;
-      const waterFont = new FontFace('Water', `url(${fontUrl})`);
-      waterFont.load().then((font) => {
-        document.fonts.add(font);
-        setFontLoaded(true);
-      });
-    });
-  }, []);
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'Water', fontUrl: waterFontUrl }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
 
   // Independent motion animation for each digit - choppy water chaos
   useEffect(() => {
@@ -78,7 +77,7 @@ const Clock: React.FC = () => {
   const getDigitStyle = (index: number): React.CSSProperties => {
     const t = digitTransforms[index]!;
     return {
-      fontFamily: fontLoaded ? 'Water, monospace' : 'monospace',
+      fontFamily: 'Water, monospace',
       '--digit-y': `${t.y}px`,
       '--digit-rotate': `${t.rotate}deg`,
       '--digit-scale': t.scale,

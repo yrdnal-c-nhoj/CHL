@@ -1,5 +1,5 @@
 import React, { useState, useRef, useMemo, useCallback, useEffect } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 const colors = {
@@ -13,7 +13,7 @@ const colors = {
 type SpinPhase = 0 | 1 | 2 | 3;
 
 const Clock: React.FC = () => {
-  const time = useClockTime();
+  const time = useMillisecondClock();
   
   const [phase, setPhase] = useState<SpinPhase>(0);
   const containerRef = useRef<HTMLDivElement>(null);
