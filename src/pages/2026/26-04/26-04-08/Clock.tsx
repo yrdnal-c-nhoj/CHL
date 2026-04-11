@@ -1,19 +1,13 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useRef, useMemo, useCallback, useEffect } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
+import styles from './Clock.module.css';
 
 const colors = {
-  background: {
-    top: '#712A6A',
-    middle: '#4A0216',
-    bottom: '#140507',
-  },
-  clock: {
-    accent: '#54C75EAC',
-    accentStroke: '#fff',
-    hourHand: '#F3E8B6',
-    minuteHand: '#DBF7CB',
-    secondHand: '#F50000',
-  },
+  accent: '#54C75EAC',
+  accentStroke: '#fff',
+  hourHand: '#F3E8B6',
+  minuteHand: '#DBF7CB',
+  secondHand: '#F50000',
 } as const;
 
 type SpinPhase = 0 | 1 | 2 | 3;
@@ -37,11 +31,9 @@ const Clock: React.FC = () => {
   }, [time]);
 
   const getEasedProgress = (progress: number): number => {
-    // Smooth cubic ease-in-out for gradual curve throughout
-    // Starts slow, accelerates smoothly, peaks in middle, decelerates smoothly
-    const p = progress < 0.5
-      ? 4 * progress ** 3
-      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+    // Quintic smoothstep: extremely flat start and end, very slow transitions
+    // 6t^5 - 15t^4 + 10t^3 has zero velocity AND zero acceleration at t=0 and t=1
+    const p = progress ** 3 * (10 - 15 * progress + 6 * progress * progress);
     return p;
   };
 
@@ -49,7 +41,6 @@ const Clock: React.FC = () => {
     if (!startRef.current) startRef.current = timestamp;
 
     const elapsed = timestamp - startRef.current;
-    const deltaT = timestamp - prevTimeRef.current || 16;
     prevTimeRef.current = timestamp;
 
     const container = containerRef.current;
@@ -60,9 +51,9 @@ const Clock: React.FC = () => {
       container.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
       container.style.filter = 'drop-shadow(0 0 12px rgba(0,0,0,0.6))';
     } 
-    else if (elapsed < 7250) {
+    else if (elapsed < 6250) {
       const spinElapsed = elapsed - 250;
-      const progress = Math.min(spinElapsed / 7000, 1);
+      const progress = Math.min(spinElapsed / 6000, 1);
       const eased = getEasedProgress(progress);
       const totalRotation = eased * 5400;
 
@@ -78,7 +69,7 @@ const Clock: React.FC = () => {
       // Subtle glow during spin
       container.style.filter = 'drop-shadow(0 0 8px rgba(0,0,0,0.5))';
     } 
-    else if (elapsed < 7500) {
+    else if (elapsed < 6500) {
       // Final sharp display
       container.style.filter = 'drop-shadow(0 0 12px rgba(0,0,0,0.6))';
     } 
@@ -107,45 +98,17 @@ const Clock: React.FC = () => {
     };
   }, [phase, animate]);
 
-  const containerStyle: React.CSSProperties = {
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    background: `linear-gradient(180deg, ${colors.background.top} 0%, ${colors.background.middle} 50%, ${colors.background.bottom} 100%)`,
-    overflow: 'hidden',
-  };
-
-  const clockWrapperStyle: React.CSSProperties = {
-    width: '95vmin',
-    height: '95vmin',
-    transformStyle: 'preserve-3d',
-    willChange: 'transform, filter',
-    transition: 'filter 0.08s ease-out', // helps flash feel snappier
-  };
-
   return (
-    <div style={containerStyle} role="img" aria-label={`Analog clock showing ${timeLabel}`}>
-      <div ref={containerRef} style={clockWrapperStyle}>
+    <div className={styles.container} role="img" aria-label={`Analog clock showing ${timeLabel}`}>
+      <div ref={containerRef} className={styles.clockWrapper}>
         <svg
           width="100%"
           height="100%"
           viewBox="0 0 100 100"
         >
-          <defs>
-            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-
           <g>
             {/* Clock face */}
-            <circle cx="50" cy="50" r="48" fill="#BDF4B920" stroke="#B6EAEACB" strokeWidth="0.5" />
+            <circle cx="50" cy="50" r="48" fill="#F5E6A300" />
 
             {/* Hour markers */}
             {[1, 2, 4, 5, 7, 8, 10, 11].map((num) => (
@@ -161,30 +124,30 @@ const Clock: React.FC = () => {
             {/* Hands */}
             <line
               x1="50" y1="50" x2="50" y2="28"
-              stroke={colors.clock.hourHand}
+              stroke={colors.hourHand}
               strokeWidth="4"
               strokeLinecap="round"
               transform={`rotate(${hourDegrees} 50 50)`}
             />
             <line
               x1="50" y1="50" x2="50" y2="18"
-              stroke={colors.clock.minuteHand}
+              stroke={colors.minuteHand}
               strokeWidth="3"
               strokeLinecap="round"
               transform={`rotate(${minuteDegrees} 50 50)`}
             />
 
             {/* Accents */}
-            <circle cx="50" cy="10" r="5" fill={colors.clock.accent} stroke={colors.clock.accentStroke} strokeWidth="1" />
-            <circle cx="90" cy="50" r="3" fill={colors.clock.accent} stroke={colors.clock.accentStroke} strokeWidth="1" />
-            <circle cx="50" cy="90" r="3" fill={colors.clock.accent} stroke={colors.clock.accentStroke} strokeWidth="1" />
-            <circle cx="10" cy="50" r="3" fill={colors.clock.accent} stroke={colors.clock.accentStroke} strokeWidth="1" />
-            <circle cx="50" cy="50" r="2" fill={colors.clock.accent} />
+            <circle cx="50" cy="10" r="5" fill={colors.accent} stroke={colors.accentStroke} strokeWidth="1" />
+            <circle cx="90" cy="50" r="3" fill={colors.accent} stroke={colors.accentStroke} strokeWidth="1" />
+            <circle cx="50" cy="90" r="3" fill={colors.accent} stroke={colors.accentStroke} strokeWidth="1" />
+            <circle cx="10" cy="50" r="3" fill={colors.accent} stroke={colors.accentStroke} strokeWidth="1" />
+            <circle cx="50" cy="50" r="2" fill={colors.accent} />
 
             {/* Second hand */}
             <line
               x1="50" y1="55" x2="50" y2="3"
-              stroke={colors.clock.secondHand}
+              stroke={colors.secondHand}
               strokeWidth="1.3"
               strokeLinecap="round"
               transform={`rotate(${secondDegrees} 50 50)`}
