@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import font_2024_12_05 from '@/assets/fonts/2025/25-12-03-dog.ttf?url';
 import styles from './Clock.module.css';
@@ -11,9 +12,9 @@ export const fontConfigs: FontConfig[] = [
 const PuppyClockComponent: React.FC = () => {
   const [images, setImages] = useState<{ current: string; next: string }>({ current: '', next: '' });
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
 
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  useSuspenseFontLoader(fontConfigs);
 
   const getNewPuppy = useCallback(async () => {
     try {
@@ -45,17 +46,6 @@ const PuppyClockComponent: React.FC = () => {
     }
   }, []);
 
-  // Clock tick (Standardized to rAF)
-  useEffect(() => {
-    let frameId: number;
-    const tick = () => {
-      setTime(new Date());
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
-
   // Image rotation logic
   useEffect(() => {
     getNewPuppy(); // Initial load
@@ -74,10 +64,6 @@ const PuppyClockComponent: React.FC = () => {
       .split('')
       .join(' ');
   };
-
-  if (!fontsLoaded) {
-    return <div className={styles.container} style={{ background: '#1a1a1a' }} />;
-  }
 
   return (
     <div className={styles.container}>
