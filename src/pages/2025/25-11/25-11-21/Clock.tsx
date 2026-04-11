@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 
 // --- FONT IMPORT (same folder) ---
 import font_sdfsdfsdfsd from '@/assets/fonts/2025/25-11-21-omission.otf?url';
@@ -13,22 +14,18 @@ import img4 from '@/assets/images/2025/25-11/25-11-21/4.jpg';
 import img5 from '@/assets/images/2025/25-11/25-11-21/5.jpg';
 import img6 from '@/assets/images/2025/25-11/25-11-21/6.jpg';
 
+export { img1, img2, img3, img4, img5, img6 }; // Export for preloading pipeline
 const images = [img1, img2, img3, img4, img5, img6];
 
 const DigitalGridClock: React.FC = () => {
-  // --- INTERNAL FONTFACE ---
-  const fontStyle = `
-    @font-face {
-      font-family: 'ClockFont_sdfsdfsdfsd';
-      src: url(${font_sdfsdfsdfsd}) format('woff2');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
-  `;
+  const time = useClockTime();
+  const [width, setWidth] = useState<number>(window.innerWidth);
 
-  const [time, setTime] = useState(new Date());
-  const [width, setWidth] = useState<any>(window.innerWidth);
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'ClockFont_Omission', fontUrl: font_sdfsdfsdfsd }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
 
   // Separate images for hour and minute
   const [hourImage, setHourImage] = useState(
@@ -43,20 +40,18 @@ const DigitalGridClock: React.FC = () => {
   });
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-
     const handleResize = () => setWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
 
     return () => {
-      clearInterval(timer);
       window.removeEventListener('resize', handleResize);
     };
   }, []);
 
   // Change images every minute
+  const currentMinute = time.getMinutes();
   useEffect(() => {
-    const changeImages: React.FC = () => {
+    const changeImages = () => {
       const newHourImage = images[Math.floor(Math.random() * images.length)];
       let newMinuteImage;
       do {
@@ -67,25 +62,14 @@ const DigitalGridClock: React.FC = () => {
       setMinuteImage(newMinuteImage);
     };
 
-    // Calculate ms until next full minute
-    const now = new Date();
-    const delay = (60 - now.getSeconds()) * 1000;
-
-    const timeout = setTimeout(() => {
-      changeImages();
-      // Then update every full minute
-      const interval = setInterval(changeImages, 60000);
-      return () => clearInterval(interval);
-    }, delay);
-
-    return () => clearTimeout(timeout);
-  }, [time]);
+    changeImages();
+  }, [currentMinute]);
 
   const hours = time.getHours();
-  const minutes = time.getMinutes();
+  const minutes = currentMinute;
   const isDesktop = width >= 768;
 
-  const cellStyle = (active) => ({
+  const cellStyle = () => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -93,12 +77,12 @@ const DigitalGridClock: React.FC = () => {
     backgroundColor: '#2A0433FF',
     color: '#F9E8C8FF',
     transition: 'all 0.5s ease',
-    fontFamily: 'ClockFont_sdfsdfsdfsd',
+    fontFamily: 'ClockFont_Omission',
     overflow: 'hidden',
   });
 
   const activeCellStyle = (image) => ({
-    ...cellStyle(true),
+    ...cellStyle(),
     backgroundImage: `url(${image})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -116,12 +100,9 @@ const DigitalGridClock: React.FC = () => {
         justifyContent: 'center',
         overflow: 'hidden',
         position: 'relative',
-        fontFamily: 'ClockFont_sdfsdfsdfsd',
+        fontFamily: 'ClockFont_Omission',
       }}
     >
-      {/* Inject your @font-face safely */}
-      <style>{fontStyle}</style>
-
       <div
         style={{
           display: 'grid',
@@ -141,7 +122,7 @@ const DigitalGridClock: React.FC = () => {
         {Array.from({ length: 24 }, (_, i) => (
           <div
             key={`hour-${i}`}
-            style={i === hours ? activeCellStyle(hourImage) : cellStyle(false)}
+            style={i === hours ? activeCellStyle(hourImage) : cellStyle()}
           >
             {String(i).padStart(2, '0')}
           </div>
@@ -152,7 +133,7 @@ const DigitalGridClock: React.FC = () => {
           <div
             key={`min-${i}`}
             style={
-              i === minutes ? activeCellStyle(minuteImage) : cellStyle(false)
+              i === minutes ? activeCellStyle(minuteImage) : cellStyle()
             }
           >
             {String(i).padStart(2, '0')}

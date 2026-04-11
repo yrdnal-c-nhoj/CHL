@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import font_2025_11_21 from '@/assets/fonts/2025/25-11-18-cat.ttf?url';
 import bgImg from '@/assets/images/2025/25-11/25-11-18/eyes.webp';
+export { bgImg }; // Export for preloading pipeline
+
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSecondClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 
 export default function RotatedClockGrid() {
