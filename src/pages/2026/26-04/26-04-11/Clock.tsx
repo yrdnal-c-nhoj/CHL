@@ -21,6 +21,7 @@ import m10 from '@/assets/images/2026/26-04/26-04-11/10.gif';
 import m11 from '@/assets/images/2026/26-04/26-04-11/11.gif';
 import m12 from '@/assets/images/2026/26-04/26-04-11/12.webp';
 import m13 from '@/assets/images/2026/26-04/26-04-11/13.webp';
+import centerImg from '@/assets/images/2026/26-04/26-04-11/center.webp';
 
 const handImages = {
   hour: hourHandImg,
@@ -158,12 +159,29 @@ const Clock: React.FC = () => {
           style={handStyle(rotations.minuteDegrees, '54%', '60%', 3)} 
           alt="minute hand" 
         />
-        <img 
-          src={handImages.second} 
-          style={handStyle(rotations.secondDegrees, '52%', '50%', 4)} 
-          alt="second hand" 
+        <img
+          src={handImages.second}
+          style={handStyle(rotations.secondDegrees, '52%', '50%', 4)}
+          alt="second hand"
         />
-        
+
+        {/* Center Image */}
+        <img
+          src={centerImg}
+          alt="center"
+          style={{
+            position: 'absolute',
+            top: '45%',
+            left: '50%',
+            width: '90%',
+            height: '90%',
+            opacity: 0.7,
+            transform: 'translate(-50%, -50%)',
+            objectFit: 'contain',
+            pointerEvents: 'none',
+            zIndex: 10,
+          }}
+        />
 
       </div>
     </div>
