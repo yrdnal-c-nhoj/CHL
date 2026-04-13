@@ -1,5 +1,6 @@
 import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
+import styles from './Clock.module.css';
 
 // Import hand images
 import hourHandImg from '@/assets/images/2026/26-04/26-04-11/hand.webp';
@@ -37,10 +38,6 @@ const Clock: React.FC = () => {
   const time = useClockTime(); // Assumes this returns a Date object updated frequently
   const [positionImages, setPositionImages] = useState<number[]>([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
   const lastProcessedSecond = useRef<number>(-1);
-
-  // Debug: log current images
-  console.log('positionImages:', positionImages);
-  console.log('Current time:', time.toLocaleTimeString());
 
   const seconds = time.getSeconds();
   const milliseconds = time.getMilliseconds();
@@ -82,45 +79,14 @@ const Clock: React.FC = () => {
     };
   }, [time, seconds, milliseconds]);
 
-  // --- Styles ---
-  const containerStyle: React.CSSProperties = {
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    margin: 0,
-    overflow: 'hidden',
-  };
-
-  const clockWrapperStyle: React.CSSProperties = {
-    position: 'relative',
-    width: '80vmin',
-    height: '80vmin',
-    borderRadius: '50%',
-  };
-
-  const handStyle = (deg: number, width: string, height: string, zIndex: number): React.CSSProperties => ({
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    width,
-    height,
-    transformOrigin: 'bottom center',
+  const getHandStyle = (deg: number, transition: boolean): React.CSSProperties => ({
     transform: `translateX(-50%) rotate(${deg}deg)`,
-    objectFit: 'contain',
-    pointerEvents: 'none',
-    zIndex,
-    // Add a transition for the second hand if you want a "sweeping" effect
-    transition: milliseconds < 100 ? 'none' : 'transform 0.1s linear', 
+    transition: transition && milliseconds >= 100 ? 'transform 0.1s linear' : 'none',
   });
 
   return (
-    <div style={containerStyle}>
-      <div style={clockWrapperStyle}>
+    <div className={styles.container} style={{ backgroundImage: `url(${bgImage})` }}>
+      <div className={styles.clockWrapper}>
         
         {/* Hour Markers (1 to 12) */}
         {positionImages.map((imageIdx, i) => {
@@ -135,33 +101,29 @@ const Clock: React.FC = () => {
               key={i}
               src={allMatchImages[imageIdx]}
               alt={`marker-${hour}`}
-              style={{
-                position: 'absolute',
-                left: `${x}%`,
-                top: `${y}%`,
-                width: '15%',
-                height: '15%',
-                transform: 'translate(-50%, -50%)',
-                objectFit: 'contain',
-              }}
+              className={styles.marker}
+              style={{ left: `${x}%`, top: `${y}%` }}
             />
           );
         })}
 
         {/* Clock Hands */}
-        <img 
-          src={handImages.hour} 
-          style={handStyle(rotations.hourDegrees, '26%', '30%', 2)} 
-          alt="hour hand" 
+        <img
+          src={handImages.hour}
+          className={`${styles.hand} ${styles.hourHand}`}
+          style={getHandStyle(rotations.hourDegrees, false)}
+          alt="hour hand"
         />
-        <img 
-          src={handImages.minute} 
-          style={handStyle(rotations.minuteDegrees, '54%', '60%', 3)} 
-          alt="minute hand" 
+        <img
+          src={handImages.minute}
+          className={`${styles.hand} ${styles.minuteHand}`}
+          style={getHandStyle(rotations.minuteDegrees, false)}
+          alt="minute hand"
         />
         <img
           src={handImages.second}
-          style={handStyle(rotations.secondDegrees, '52%', '50%', 4)}
+          className={`${styles.hand} ${styles.secondHand}`}
+          style={getHandStyle(rotations.secondDegrees, true)}
           alt="second hand"
         />
 
@@ -169,18 +131,7 @@ const Clock: React.FC = () => {
         <img
           src={centerImg}
           alt="center"
-          style={{
-            position: 'absolute',
-            top: '45%',
-            left: '50%',
-            width: '90%',
-            height: '90%',
-            opacity: 0.7,
-            transform: 'translate(-50%, -50%)',
-            objectFit: 'contain',
-            pointerEvents: 'none',
-            zIndex: 10,
-          }}
+          className={styles.centerImage}
         />
 
       </div>
