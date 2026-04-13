@@ -4,7 +4,6 @@ import React, {
   useContext,
   useMemo,
   Suspense,
-  FC,
 } from 'react';
 import { DataContext } from './context/DataContext';
 import Header from './components/Header';
