@@ -1,13 +1,8 @@
-import React, { useEffect, useRef, useMemo, useCallback, useState } from 'react';
-import { useSecondClock } from '@/utils/useSmoothClock';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+import React, { useEffect, useRef, useState } from 'react';
+import { useClockTime } from '@/utils/hooks';
 import roomImage from '@/assets/images/2025/25-04/25-04-09/room.webp';
 
-// Component Props interface
-interface EmptyRoomClockProps {
-  // No props required for this component
-}
+export { roomImage }; // Export for preloading pipeline
 
 // Window size interface
 interface WindowSize {
@@ -15,31 +10,18 @@ interface WindowSize {
   height: number;
 }
 
-// Clock refs interface
-interface ClockRefs {
-  hour: React.RefObject<HTMLDivElement | null>;
-  minute: React.RefObject<HTMLDivElement | null>;
-  second: React.RefObject<HTMLDivElement | null>;
-}
-
-const EmptyRoomClock = () => {
-  const clockRefs: ClockRefs = {
-    hour: useRef<HTMLDivElement>(null),
-    minute: useRef<HTMLDivElement>(null),
-    second: useRef<HTMLDivElement>(null),
-  };
+const EmptyRoomClock: React.FC = () => {
+  const hourRef = useRef<HTMLDivElement>(null);
+  const minuteRef = useRef<HTMLDivElement>(null);
+  const secondRef = useRef<HTMLDivElement>(null);
 
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
-  // Font loading configuration (memoized) - no custom fonts needed
-  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
-  useSuspenseFontLoader(fontConfigs);
-
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const currentTime = useClockTime();
 
   useEffect(() => {
     const handleResize = () =>
@@ -48,7 +30,7 @@ const EmptyRoomClock = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const updateClock = useCallback((): void => {
+  useEffect(() => {
     const hour = currentTime.getHours() % 12;
     const minute = currentTime.getMinutes();
     const second = currentTime.getSeconds();
@@ -57,17 +39,13 @@ const EmptyRoomClock = () => {
     const minuteDeg = (minute + second / 60) * 6;
     const secondDeg = second * 6;
 
-    if (clockRefs.hour.current)
-      clockRefs.hour.current.style.transform = `translate(-50%) rotate(${hourDeg}deg)`;
-    if (clockRefs.minute.current)
-      clockRefs.minute.current.style.transform = `translate(-50%) rotate(${minuteDeg}deg)`;
-    if (clockRefs.second.current)
-      clockRefs.second.current.style.transform = `translate(-50%) rotate(${secondDeg}deg)`;
+    if (hourRef.current)
+      hourRef.current.style.transform = `translate(-50%) rotate(${hourDeg}deg)`;
+    if (minuteRef.current)
+      minuteRef.current.style.transform = `translate(-50%) rotate(${minuteDeg}deg)`;
+    if (secondRef.current)
+      secondRef.current.style.transform = `translate(-50%) rotate(${secondDeg}deg)`;
   }, [currentTime]);
-
-  useEffect(() => {
-    updateClock();
-  }, [updateClock]);
 
   const clockSize = Math.min(windowSize.width, windowSize.height) * 0.4;
 
@@ -129,7 +107,7 @@ const EmptyRoomClock = () => {
         }}
       >
         <div
-          ref={clockRefs.hour}
+          ref={hourRef}
           style={{
             position: 'absolute',
             bottom: '50%',
@@ -142,7 +120,7 @@ const EmptyRoomClock = () => {
           }}
         />
         <div
-          ref={clockRefs.minute}
+          ref={minuteRef}
           style={{
             position: 'absolute',
             bottom: '50%',
@@ -155,7 +133,7 @@ const EmptyRoomClock = () => {
           }}
         />
         <div
-          ref={clockRefs.second}
+          ref={secondRef}
           style={{
             position: 'absolute',
             bottom: '50%',
