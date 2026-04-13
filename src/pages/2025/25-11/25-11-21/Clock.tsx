@@ -66,7 +66,6 @@ const DigitalGridClock: React.FC = () => {
   }, [currentMinute]);
 
   const hours = time.getHours();
-  const minutes = currentMinute;
   const isDesktop = width >= 768;
 
   const cellStyle = () => ({
@@ -133,7 +132,7 @@ const DigitalGridClock: React.FC = () => {
           <div
             key={`min-${i}`}
             style={
-              i === minutes ? activeCellStyle(minuteImage) : cellStyle()
+              i === currentMinute ? activeCellStyle(minuteImage) : cellStyle()
             }
           >
             {String(i).padStart(2, '0')}
