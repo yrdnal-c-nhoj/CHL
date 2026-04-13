@@ -41,7 +41,7 @@
   font-weight: 300;
   will-change: transform;
   transform: translateY(var(--digit-y, 0)) rotate(var(--digit-rotate, 0)) scale(var(--digit-scale, 1));
-  background: linear-gradient(to bottom, #1a3a3a 0%, #2d5a5a 30%, #8B7355 70%, #6B5345 100%);
+  background: linear-gradient(to bottom, #1a3a3a 0%, #2d5a5a 30%, #b6a675 70%, #e0dedd 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
