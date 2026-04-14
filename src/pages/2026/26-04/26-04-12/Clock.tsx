@@ -6,7 +6,7 @@ import styles from './Clock.module.css';
 import hourHandImg from '@/assets/images/2026/26-04/26-04-11/hand.webp';
 import minuteHandImg from '@/assets/images/2026/26-04/26-04-11/hand2.webp';
 import secondHandImg from '@/assets/images/2026/26-04/26-04-11/hand3.gif';
-import bgImage from '@/assets/images/2026/26-04/26-04-11/background.jpg';
+import bgImage from '@/assets/images/2026/26-04/26-04-11/background.jpeg';
 
 // Import marker images
 import m1 from '@/assets/images/2026/26-04/26-04-11/1.webp';
@@ -34,9 +34,25 @@ const allMatchImages = [
   m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13
 ];
 
+// Fisher-Yates shuffle
+const shuffle = (arr: number[]): number[] => {
+  const newArr = [...arr];
+  for (let i = newArr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tempI = newArr[i]!;
+    const tempJ = newArr[j]!;
+    newArr[i] = tempJ;
+    newArr[j] = tempI;
+  }
+  return newArr;
+};
+
 const Clock: React.FC = () => {
-  const time = useClockTime(); // Assumes this returns a Date object updated frequently
+  const time = useClockTime();
   const [positionImages, setPositionImages] = useState<number[]>([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+  const [randomizedMode, setRandomizedMode] = useState(false);
+  const shuffledList = useRef<number[]>([]);
+  const shuffleIndex = useRef(0);
   const lastProcessedSecond = useRef<number>(-1);
 
   const seconds = time.getSeconds();
@@ -45,27 +61,46 @@ const Clock: React.FC = () => {
   useEffect(() => {
     if (seconds !== lastProcessedSecond.current) {
       lastProcessedSecond.current = seconds;
-      
+
       setPositionImages(prev => {
         const next = [...prev];
-        const positionToChange = seconds % 12;
+        const positionToChange = (11 - (seconds % 12));
 
-        // Special logic for the 1st second swap
-        if (seconds === 1) {
-          next[0] = 12; // Use the 13th image (index 12)
+        if (!randomizedMode) {
+          // Initial phase: fill all 12 positions, add 13th at second 1
+          if (seconds === 1) {
+            next[0] = 12;
+            // Check if all 13 unique images are now displayed
+            if (new Set(next).size === 13) {
+              setRandomizedMode(true);
+              shuffledList.current = shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+              shuffleIndex.current = 0;
+            }
+          } else {
+            const currentImages = new Set(next);
+            const unusedImageIndex = allMatchImages.findIndex((_, idx) => !currentImages.has(idx));
+            if (unusedImageIndex !== -1) {
+              next[positionToChange] = unusedImageIndex;
+            }
+          }
         } else {
-          // Find an image index that is NOT currently displayed on the clock face
-          const currentImages = new Set(next);
-          const unusedImageIndex = allMatchImages.findIndex((_, idx) => !currentImages.has(idx));
-          
-          if (unusedImageIndex !== -1) {
-            next[positionToChange] = unusedImageIndex;
+          // Randomized mode: pick from shuffled list
+          const imageToShow = shuffledList.current[shuffleIndex.current];
+          if (imageToShow !== undefined) {
+            next[positionToChange] = imageToShow;
+          }
+
+          shuffleIndex.current++;
+          if (shuffleIndex.current >= 13) {
+            // Reshuffle for next cycle
+            shuffledList.current = shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+            shuffleIndex.current = 0;
           }
         }
         return next;
       });
     }
-  }, [seconds]);
+  }, [seconds, randomizedMode]);
 
   const rotations = useMemo(() => {
     const s = seconds + milliseconds / 1000;

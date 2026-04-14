@@ -12,17 +12,18 @@
 
 .clockWrapper {
   position: relative;
-  width: 80vmin;
-  height: 80vmin;
+  width: 99vmin;
+  height: 99vmin;
   border-radius: 50%;
 }
 
 .marker {
   position: absolute;
-  width: 15%;
-  height: 15%;
+  width: 20%;
+  height: 20%;
   transform: translate(-50%, -50%);
   object-fit: contain;
+  opacity: 0.9;
 }
 
 .hand {
@@ -42,13 +43,13 @@
 }
 
 .minuteHand {
-  width: 54%;
+  width: 84%;
   height: 60%;
   z-index: 3;
 }
 
 .secondHand {
-  width: 52%;
+  width: 72%;
   height: 50%;
   z-index: 4;
 }
