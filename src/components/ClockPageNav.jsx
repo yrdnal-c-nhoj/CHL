@@ -23,7 +23,7 @@ const ClockPageNav = ({
     clearInactivityTimer();
     const timer = setTimeout(() => {
       setVisible(false);
-    }, 1000); // 1 second
+    }, 3000); // Stay visible for 3 seconds of inactivity
     setInactivityTimer(timer);
   }, [clearInactivityTimer]);
 
@@ -33,9 +33,8 @@ const ClockPageNav = ({
   }, [clearInactivityTimer]);
 
   const handleMouseLeave = useCallback(() => {
-    setVisible(false);
-    clearInactivityTimer();
-  }, [clearInactivityTimer]);
+    startInactivityTimer();
+  }, [startInactivityTimer]);
 
   const handleMouseMove = useCallback(() => {
     setVisible(true);
@@ -48,9 +47,8 @@ const ClockPageNav = ({
   }, [clearInactivityTimer]);
 
   const handleTouchEnd = useCallback(() => {
-    setVisible(false);
-    clearInactivityTimer();
-  }, [clearInactivityTimer]);
+    startInactivityTimer();
+  }, [startInactivityTimer]);
 
   // Show footer initially and start inactivity timer
   useEffect(() => {

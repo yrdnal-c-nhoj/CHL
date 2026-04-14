@@ -28,8 +28,16 @@
 
 .footerStrip.hidden {
   opacity: 0;
+  /* Keep the container at translateY(0) so the mouse can still 'hit' the 
+     area at the bottom of the screen to trigger handleMouseEnter/MouseMove */
   transform: translateY(0);
   pointer-events: auto;
+}
+
+/* Prevent accidental clicks on navigation links while they are hidden */
+.footerStrip.hidden .navButton,
+.footerStrip.hidden .footerButton {
+  pointer-events: none;
 }
 
 /* --- Buttons --- */
