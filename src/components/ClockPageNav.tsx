@@ -37,7 +37,7 @@ const ClockPageNav: React.FC<ClockPageNavProps> = ({
     clearInactivityTimer();
     const timer = setTimeout(() => {
       setVisible(false);
-    }, 1000); 
+    }, 3000); 
     setInactivityTimer(timer);
   }, [clearInactivityTimer]);
 
@@ -62,9 +62,9 @@ const ClockPageNav: React.FC<ClockPageNavProps> = ({
   }, [clearInactivityTimer]);
 
   const handleTouchEnd = useCallback(() => {
-    setVisible(false);
-    clearInactivityTimer();
-  }, [clearInactivityTimer]);
+    // Start inactivity timer instead of immediately hiding (matches mouse behavior)
+    startInactivityTimer();
+  }, [startInactivityTimer]);
 
   useEffect(() => {
     setVisible(true);

@@ -1,67 +1,89 @@
-import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import bgImage from '@/assets/images/2026/26-04/26-04-13/bg.webp';
+import carFont from '@/assets/fonts/26-04-13-car.otf';
+import styles from './Clock.module.css';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+// Custom hook for smooth millisecond updates
+const useMsClockTime = () => {
+  const [time, setTime] = useState(new Date());
 
-  const { hours, minutes, seconds } = useMemo(() => {
+  useEffect(() => {
+    let rafId: number;
+    const tick = () => {
+      setTime(new Date());
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
+  return time;
+};
+
+const fontConfigs: FontConfig[] = [
+  { fontFamily: 'Car', fontUrl: carFont }
+];
+
+const Clock: React.FC = () => {
+  useSuspenseFontLoader(fontConfigs);
+  const time = useMsClockTime();
+
+  const { hours, minutes, seconds, msTens, msOnes } = useMemo(() => {
     const h = formatTime(time.getHours());
     const m = formatTime(time.getMinutes());
     const s = formatTime(time.getSeconds());
-    return { hours: h, minutes: m, seconds: s };
+    const ms = formatTime(time.getMilliseconds());
+    return {
+      hours: h,
+      minutes: m,
+      seconds: s,
+      msTens: ms[0],
+      msOnes: ms[1],
+    };
   }, [time]);
 
-  const containerStyle: React.CSSProperties = {
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#111',
-    margin: 0,
-    padding: 0,
-  };
-
-  const clockStyle: React.CSSProperties = {
-    display: 'flex',
-    gap: '0.5rem',
-    alignItems: 'center',
-    fontFamily: 'monospace',
-    fontWeight: 300,
-  };
-
-  const digitStyle: React.CSSProperties = {
-    fontSize: 'clamp(4rem, 15vw, 12rem)',
-    color: '#fff',
-    minWidth: '0.8em',
-    lineHeight: 1,
-  };
-
-  const separatorStyle: React.CSSProperties = {
-    ...digitStyle,
-    opacity: 0.6,
-    animation: 'blink 1s infinite',
-  };
-
   return (
-    <div style={containerStyle}>
-      <style>{`
-        @keyframes blink {
-          0%, 100% { opacity: 0.6; }
-          50% { opacity: 0.2; }
-        }
-      `}</style>
-      <div style={clockStyle}>
-        <span style={digitStyle}>{hours[0]}</span>
-        <span style={digitStyle}>{hours[1]}</span>
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{minutes[0]}</span>
-        <span style={digitStyle}>{minutes[1]}</span>
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{seconds[0]}</span>
-        <span style={digitStyle}>{seconds[1]}</span>
+    <div className={styles.container}>
+      <div
+        className={styles.bgOverlay}
+        style={{ backgroundImage: `url(${bgImage})` }}
+      />
+      <div className={styles.clockRow}>
+        {/* Hours */}
+        <div className={styles.digitBox}>
+          <span className={styles.digit}>{hours[0]}</span>
+        </div>
+        <div className={styles.digitBox}>
+          <span className={styles.digit}>{hours[1]}</span>
+        </div>
+
+        {/* Minutes */}
+        <div className={styles.digitBox}>
+          <span className={styles.digit}>{minutes[0]}</span>
+        </div>
+        <div className={styles.digitBox}>
+          <span className={styles.digit}>{minutes[1]}</span>
+        </div>
+
+        {/* Seconds */}
+        <div className={styles.digitBox}>
+          <span className={styles.digit}>{seconds[0]}</span>
+        </div>
+        <div className={styles.digitBox}>
+          <span className={styles.digit}>{seconds[1]}</span>
+        </div>
+
+        {/* Milliseconds */}
+        <div className={styles.digitBox}>
+          <span className={styles.digit}>{msTens}</span>
+        </div>
+        <div className={styles.digitBox}>
+          <span className={styles.digit}>{msOnes}</span>
+        </div>
       </div>
     </div>
   );
