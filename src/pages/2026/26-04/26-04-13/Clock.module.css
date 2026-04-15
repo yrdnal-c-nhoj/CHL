@@ -1,0 +1,52 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.bgOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: saturate(4) contrast(1.5) hue-rotate(180deg) brightness(1.5);
+  z-index: 0;
+}
+
+.clockRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  z-index: 1;
+  max-width: 100vw;
+  padding: clamp(8px, 2vw, 24px);
+}
+
+.digitBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 0.75;
+  min-width: clamp(30px, 10vw, 80px);
+  min-height: clamp(40px, 14vw, 120px);
+}
+
+.digit {
+  font-family: 'Car', monospace;
+  font-weight: 300;
+  font-size: clamp(3rem, 12vw, 8rem);
+  color: #f4f80a;
+  line-height: 1;
+}
