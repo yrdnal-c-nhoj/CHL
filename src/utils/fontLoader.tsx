@@ -56,7 +56,8 @@ function getFontResource(
     resourceCache.set(key, {
       read() {
         if (status === 'pending') throw promise;
-        if (status === 'error') throw error;
+        // Don't throw on error - let component render with fallback fonts
+        // The CSS font-family stack (e.g., 'Hanalei, cursive') handles degradation
         return result;
       },
     });
@@ -88,6 +89,7 @@ export function useSuspenseFontLoader(fontConfigs: FontConfig[]): boolean {
   useLayoutEffect(() => {
     // Mount
     faces.forEach((face) => {
+      if (!face) return; // Skip if font failed to load
       const current = refCounts.get(face) || 0;
       if (current === 0) {
         document.fonts.add(face);
@@ -98,6 +100,7 @@ export function useSuspenseFontLoader(fontConfigs: FontConfig[]): boolean {
     // Unmount
     return () => {
       faces.forEach((face) => {
+        if (!face) return; // Skip if font failed to load
         const current = refCounts.get(face) || 0;
         const next = Math.max(0, current - 1);
         refCounts.set(face, next);
