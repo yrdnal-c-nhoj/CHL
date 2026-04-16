@@ -49,4 +49,19 @@
   font-size: clamp(3rem, 12vw, 8rem);
   color: #f4f80a;
   line-height: 1;
+  transform: skewX(-15deg);
+  text-shadow:
+    -5px 0 0 rgba(244, 248, 10, 0.8),
+    -10px 0 0 rgba(244, 248, 10, 0.6),
+    -20px 0 0 rgba(244, 248, 10, 0.4),
+    -40px 0 0 rgba(244, 248, 10, 0.2),
+    -80px 0 0 rgba(244, 248, 10, 0.1);
+  animation: raceVibrate 0.05s infinite;
+}
+
+@keyframes raceVibrate {
+  0%, 100% { transform: skewX(-15deg) translateX(0); }
+  25% { transform: skewX(-15deg) translateX(-3px); }
+  50% { transform: skewX(-15deg) translateX(2px); }
+  75% { transform: skewX(-15deg) translateX(-1px); }
 }
