@@ -1,8 +1,9 @@
 import React, { useMemo, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/useSmoothClock';
 
-// Asset import for video
+// Asset import for video and overlay image
 import bgVideo from '@/assets/images/2026/26-04/26-04-14/haumeas.mp4';
+import overlayImage from '@/assets/images/2026/26-04/26-04-14/haumea.webp';
 
 const Clock: React.FC = () => {
   // 1. Inject Google Fonts stylesheet automatically on mount
@@ -37,6 +38,9 @@ const Clock: React.FC = () => {
     <div style={containerStyle}>
       <video src={bgVideo} autoPlay loop muted playsInline style={videoStyle} />
 
+      {/* Overlay image on top of video */}
+      <img src={overlayImage} alt="" style={imageOverlayStyle} />
+
       {/* Radial gradient overlay - covers background only */}
       <div style={overlayStyle} />
 
@@ -64,7 +68,7 @@ const Clock: React.FC = () => {
 
         <Hand deg={hourDeg} width="8%" length="25%" color="#FFFFFF45" z={2} />
         <Hand deg={minDeg} width="6%" length="38%" color="#FFFFFF44" z={3} />
-        <Hand deg={secDeg} width="4%" length="242%" color="#ff4444" z={4} />
+        <Hand deg={secDeg} width="4%" length="242%" color="#DF886F" z={4} />
 
         <div style={centerDotStyle} />
       </div>
@@ -89,6 +93,18 @@ const containerStyle: React.CSSProperties = {
 const videoStyle: React.CSSProperties = {
   position: 'absolute', width: 'auto', height: '100%', objectFit: 'contain',
 };
+const imageOverlayStyle: React.CSSProperties = {
+  position: 'absolute',
+  inset: 0,
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  pointerEvents: 'none',
+  zIndex: 0,
+  transform: 'rotate(-90deg)',
+  opacity: 0.3,
+  zIndex: 4,
+};
 const overlayStyle: React.CSSProperties = {
   position: 'absolute',
   inset: 0,
@@ -98,7 +114,6 @@ const overlayStyle: React.CSSProperties = {
 };
 const clockFaceStyle: React.CSSProperties = {
   position: 'relative', width: '55vh', height: '100vh', borderRadius: '50%',
-  border: '0px solid rgba(255,255,255,0.2)',
 };
 const numberStyle: React.CSSProperties = {
   position: 'absolute',
