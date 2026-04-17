@@ -61,8 +61,17 @@ const ClockPageNav: React.FC<ClockPageNavProps> = ({
     clearInactivityTimer();
   }, [clearInactivityTimer]);
 
+  const handleTouchMove = useCallback(() => {
+    setVisible(true);
+    clearInactivityTimer();
+  }, [clearInactivityTimer]);
+
   const handleTouchEnd = useCallback(() => {
     // Start inactivity timer instead of immediately hiding (matches mouse behavior)
+    startInactivityTimer();
+  }, [startInactivityTimer]);
+
+  const handleTouchCancel = useCallback(() => {
     startInactivityTimer();
   }, [startInactivityTimer]);
 
@@ -84,7 +93,9 @@ const ClockPageNav: React.FC<ClockPageNavProps> = ({
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
       onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchCancel}
     >
       <Link
         to={prevItem ? `/${prevItem.date}` : '/'}
