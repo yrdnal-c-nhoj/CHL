@@ -95,15 +95,15 @@ const videoStyle: React.CSSProperties = {
 };
 const imageOverlayStyle: React.CSSProperties = {
   position: 'absolute',
-  inset: 0,
-  width: '100%',
-  height: '100%',
+  top: '50%',
+  left: '50%',
+  width: '100vh',
+  height: '100vw',
   objectFit: 'cover',
   pointerEvents: 'none',
   zIndex: 0,
-  transform: 'rotate(-90deg)',
-  opacity: 0.3,
-  zIndex: 4,
+  transform: 'translate(-50%, -50%) rotate(-90deg)',
+  opacity: 0.15,
 };
 const overlayStyle: React.CSSProperties = {
   position: 'absolute',
