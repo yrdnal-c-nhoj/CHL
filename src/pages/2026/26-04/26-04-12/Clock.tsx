@@ -1,5 +1,6 @@
 import React, { useMemo, useRef, useState, useEffect, useCallback } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
+import styles from './Clock.module.css';
 
 // Asset Imports
 import hourHandImg from '@/assets/images/2026/26-04/26-04-12/hand.webp';
@@ -105,11 +106,11 @@ const Clock: React.FC = () => {
   }, [seconds, milliseconds, time]);
 
   return (
-    <div style={{ 
-      width: '100vw', height: '100dvh', display: 'flex', justifyContent: 'center', 
-      alignItems: 'center', backgroundImage: `url(${bgImage})`, backgroundSize: 'cover' 
-    }}>
-      <div style={{ position: 'relative', width: '99vmin', height: '99vmin' }}>
+    <div
+      className={styles.container}
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
+      <div className={styles.clock}>
         
         {/* Render the 12 Positions */}
         {faceIndices.map((imgIdx, i) => {
@@ -127,14 +128,16 @@ const Clock: React.FC = () => {
             <img
               key={`pos-${i}`}
               src={allMatchImages[imgIdx]}
+              className={styles.faceImage}
               style={{
-                position: 'absolute', width: config.size, height: config.size,
-                left: `${x}%`, top: `${y}%`, transform: 'translate(-50%, -50%)',
-                objectFit: 'contain', opacity: config.opacity,
+                width: config.size,
+                height: config.size,
+                left: `${x}%`,
+                top: `${y}%`,
+                opacity: config.opacity,
                 filter: `brightness(${config.brightness}) saturate(${config.saturation})`,
-                transition: 'all 0.3s ease-in-out',
-                WebkitMaskImage: `radial-gradient(ellipse 70% 70% at 50% 50%, black ${config.vignetteBlackStop}, transparent ${config.vignetteTransparentStop})`,
-                maskImage: `radial-gradient(ellipse 70% 70% at 50% 50%, black ${config.vignetteBlackStop}, transparent ${config.vignetteTransparentStop})`,
+                ['--vignette-black' as string]: config.vignetteBlackStop,
+                ['--vignette-transparent' as string]: config.vignetteTransparentStop,
               }}
               alt=""
             />
@@ -147,10 +150,7 @@ const Clock: React.FC = () => {
         <Hand src={secondHandImg} deg={rotations.sec} width="72%" height="50%" z={4} isSec ms={milliseconds} />
 
         {/* Center overlay */}
-        <img src={centerImg} style={{ 
-          position: 'absolute', top: '45%', left: '50%', width: '90%', height: '90%', 
-          opacity: 0.7, transform: 'translate(-50%, -50%)', pointerEvents: 'none', zIndex: 10 
-        }} alt="" />
+        <img src={centerImg} className={styles.centerOverlay} alt="" />
       </div>
     </div>
   );
@@ -158,12 +158,18 @@ const Clock: React.FC = () => {
 
 interface HandProps { src: string; deg: number; width: string; height: string; z: number; isSec?: boolean; ms?: number; }
 const Hand = ({ src, deg, width, height, z, isSec, ms }: HandProps) => (
-  <img src={src} style={{
-    position: 'absolute', bottom: '50%', left: '50%', transformOrigin: 'bottom center',
-    width, height, zIndex: z, pointerEvents: 'none',
-    transform: `translateX(-50%) rotate(${deg}deg)`,
-    transition: isSec && ms! >= 100 ? 'transform 0.1s linear' : 'none'
-  }} alt="" />
+  <img
+    src={src}
+    className={styles.hand}
+    style={{
+      width,
+      height,
+      zIndex: z,
+      transform: `translateX(-50%) rotate(${deg}deg)`,
+      transition: isSec && ms! >= 100 ? 'transform 0.1s linear' : 'none',
+    }}
+    alt=""
+  />
 );
 
 export default Clock;
