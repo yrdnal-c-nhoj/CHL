@@ -47,7 +47,6 @@ const Clock: React.FC = () => {
     height: 'min(45vh, 400px)',
     borderRadius: '1rem',
     boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
-    border: '2px solid #333',
     overflow: 'hidden',
     backgroundColor: '#222',
     display: 'flex',
@@ -70,14 +69,13 @@ const Clock: React.FC = () => {
   };
 
   const digitBoxStyle: React.CSSProperties = {
-    width: '4.9em',
+    width: '5.8em',
     height: '1.4em',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#1a1a1a',
     borderRadius: '0.15em',
-    border: '2px solid #333',
   };
 
   const digitStyle: React.CSSProperties = {
