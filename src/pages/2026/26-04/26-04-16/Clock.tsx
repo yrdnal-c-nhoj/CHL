@@ -3,6 +3,7 @@ import { useClockTime, calculateAngles } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import seFont from '@/assets/fonts/26-04-16-se.ttf';
+import bgImage from '@/assets/images/2026/26-04/26-04-16/jamine.webp';
 
 const ROMAN_NUMERALS = ['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
 
@@ -19,7 +20,7 @@ const Clock: React.FC = () => {
 
   const clockSize = 70;
   const center = 50;
-  const numeralRadius = 30;
+  const numeralRadius = 60;
 
   // Calculate position and rotation for each Roman numeral around the perimeter
   const numerals = useMemo(() => {
@@ -38,7 +39,8 @@ const Clock: React.FC = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#1a1a1a',
+    position: 'relative',
+    overflow: 'hidden',
     margin: 0,
     padding: 0,
   };
@@ -46,10 +48,10 @@ const Clock: React.FC = () => {
   const numeralStyle: React.CSSProperties = {
     position: 'absolute',
     fontFamily: 'SEClock, serif',
-    fontSize: 'clamp(1rem, 3.5vw, 2.5rem)',
-    color: '#e8e0d0',
+    fontSize: 'clamp(2rem, 4.5vw, 4.5rem)',
+    color: '#2d6a4f',
     transform: 'translate(-50%, -50%)',
-    textShadow: '0 0 10px rgba(232, 224, 208, 0.3)',
+    textShadow: '0 0 12px rgba(64, 224, 208, 0.4), 0 2px 4px rgba(0,0,0,0.2)',
   };
 
   const handBaseStyle: React.CSSProperties = {
@@ -62,21 +64,74 @@ const Clock: React.FC = () => {
 
   return (
     <div style={containerStyle}>
+      {/* Base image layer */}
+      <div
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: 'contain',
+          backgroundPosition: 'center',
+          transform: 'rotate(90deg)',
+        }}
+      />
+      {/* Southeast wind gradient overlay - spring mist and warmth */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: `
+            linear-gradient(135deg, 
+              rgba(45, 106, 79, 0.15) 0%, 
+              rgba(82, 183, 136, 0.1) 30%,
+              rgba(233, 196, 106, 0.08) 60%,
+              rgba(64, 145, 108, 0.12) 100%
+            )
+          `,
+          pointerEvents: 'none',
+        }}
+      />
+      {/* Animated wind streaks - southeast breeze flowing */}
+      <style>{`
+        @keyframes windFlow {
+          0% { transform: translateX(-100%) skewX(-12deg); opacity: 0; }
+          10% { opacity: 0.3; }
+          90% { opacity: 0.3; }
+          100% { transform: translateX(100vw) skewX(-12deg); opacity: 0; }
+        }
+        @keyframes windDrift {
+          0%, 100% { transform: translateY(0) translateX(0); }
+          50% { transform: translateY(-20px) translateX(10px); }
+        }
+        .wind-streak {
+          position: absolute;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, rgba(149, 213, 178, 0.4), rgba(233, 196, 106, 0.3), transparent);
+          border-radius: 2px;
+          animation: windFlow 8s linear infinite;
+          pointer-events: none;
+        }
+        .wind-streak:nth-child(1) { top: 15%; width: 200px; animation-delay: 0s; }
+        .wind-streak:nth-child(2) { top: 25%; width: 300px; animation-delay: 2s; animation-duration: 10s; }
+        .wind-streak:nth-child(3) { top: 40%; width: 150px; animation-delay: 4s; animation-duration: 7s; }
+        .wind-streak:nth-child(4) { top: 55%; width: 250px; animation-delay: 1s; animation-duration: 9s; }
+        .wind-streak:nth-child(5) { top: 70%; width: 180px; animation-delay: 3s; animation-duration: 8s; }
+        .wind-streak:nth-child(6) { top: 85%; width: 220px; animation-delay: 5s; animation-duration: 11s; }
+      `}</style>
+      <div className="wind-streak" style={{ left: '-200px' }} />
+      <div className="wind-streak" style={{ left: '-300px' }} />
+      <div className="wind-streak" style={{ left: '-150px' }} />
+      <div className="wind-streak" style={{ left: '-250px' }} />
+      <div className="wind-streak" style={{ left: '-180px' }} />
+      <div className="wind-streak" style={{ left: '-220px' }} />
       <div
         style={{
           position: 'relative',
           width: `${clockSize}vmin`,
           height: `${clockSize}vmin`,
           borderRadius: '50%',
-          border: '3px solid #8b7355',
-          boxShadow: `
-            0 0 30px rgba(139, 115, 85, 0.3),
-            inset 0 0 60px rgba(0, 0, 0, 0.5),
-            0 0 0 8px #1a1a1a,
-            0 0 0 11px #5a4a3a
-          `,
-          background: 'radial-gradient(circle at center, #2a2520 0%, #1a1815 100%)',
-        }}
+       }}
       >
         {/* Roman Numerals */}
         {numerals.map(({ numeral, x, y, rotation }, index) => (
@@ -99,7 +154,7 @@ const Clock: React.FC = () => {
             ...handBaseStyle,
             width: '6px',
             height: '25%',
-            background: 'linear-gradient(to top, #8b7355 0%, #c4a77d 100%)',
+            background: 'linear-gradient(to top, #1b5e3f 0%, #40916c 50%, #74c69d 100%)',
             transform: `translate(-50%, -100%) rotate(${angles.hour}deg)`,
             boxShadow: '0 0 8px rgba(0,0,0,0.5)',
             zIndex: 3,
@@ -112,7 +167,7 @@ const Clock: React.FC = () => {
             ...handBaseStyle,
             width: '4px',
             height: '38%',
-            background: 'linear-gradient(to top, #a09070 0%, #d4c4a0 100%)',
+            background: 'linear-gradient(to top, #2d6a4f 0%, #52b788 50%, #95d5b2 100%)',
             transform: `translate(-50%, -100%) rotate(${angles.minute}deg)`,
             boxShadow: '0 0 8px rgba(0,0,0,0.5)',
             zIndex: 2,
@@ -125,7 +180,7 @@ const Clock: React.FC = () => {
             ...handBaseStyle,
             width: '2px',
             height: '42%',
-            background: 'linear-gradient(to top, #b85050 0%, #ff8080 100%)',
+            background: 'linear-gradient(to top, #e07a5f 0%, #f4a261 50%, #e9c46a 100%)',
             transform: `translate(-50%, -100%) rotate(${angles.second}deg)`,
             boxShadow: '0 0 6px rgba(184,80,80,0.6)',
             zIndex: 1,
@@ -140,7 +195,7 @@ const Clock: React.FC = () => {
             top: `${center}%`,
             width: '14px',
             height: '14px',
-            background: 'radial-gradient(circle at 30% 30%, #d4c4a0 0%, #5a4a3a 100%)',
+            background: 'radial-gradient(circle at 30% 30%, #74c69d 0%, #2d6a4f 100%)',
             borderRadius: '50%',
             transform: 'translate(-50%, -50%)',
             boxShadow: '0 0 10px rgba(0,0,0,0.8)',
@@ -169,7 +224,7 @@ const Clock: React.FC = () => {
                 height: `${y2 - y1}%`,
                 transform: `rotate(${i * 6}deg)`,
                 transformOrigin: `${center - x1}% ${center - y1}%`,
-                background: '#5a4a3a',
+                background: '#40916c',
               }}
             />
           );
