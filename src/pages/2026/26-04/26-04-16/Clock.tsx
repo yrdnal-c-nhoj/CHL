@@ -4,6 +4,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import seFont from '@/assets/fonts/26-04-16-se.ttf';
 import bgImage from '@/assets/images/2026/26-04/26-04-16/jamine.webp';
+import tileImage from '@/assets/images/2026/26-04/26-04-16/pom.webp';
 
 const ROMAN_NUMERALS = ['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
 
@@ -64,6 +65,18 @@ const Clock: React.FC = () => {
 
   return (
     <div style={containerStyle}>
+      {/* Tiled background layer */}
+      <div
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url(${tileImage})`,
+          backgroundSize: '200px',
+          backgroundRepeat: 'repeat',
+          opacity: 0.3,
+        }}
+      />
       {/* Base image layer */}
       <style>{`
         @keyframes rotateCounterClockwise {
@@ -79,6 +92,7 @@ const Clock: React.FC = () => {
           backgroundImage: `url(${bgImage})`,
           backgroundSize: 'contain',
           backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
           animation: 'rotateCounterClockwise 60s linear infinite',
         }}
       />
@@ -209,32 +223,6 @@ const Clock: React.FC = () => {
           }}
         />
 
-        {/* Decorative tick marks */}
-        {Array.from({ length: 60 }).map((_, i) => {
-          if (i % 5 === 0) return null;
-          const angle = (i * 6 - 90) * (Math.PI / 180);
-          const r1 = 46;
-          const r2 = 47;
-          const x1 = center + Math.cos(angle) * r1;
-          const y1 = center + Math.sin(angle) * r1;
-          const x2 = center + Math.cos(angle) * r2;
-          const y2 = center + Math.sin(angle) * r2;
-          return (
-            <div
-              key={i}
-              style={{
-                position: 'absolute',
-                left: `${x1}%`,
-                top: `${y1}%`,
-                width: `${x2 - x1}%`,
-                height: `${y2 - y1}%`,
-                transform: `rotate(${i * 6}deg)`,
-                transformOrigin: `${center - x1}% ${center - y1}%`,
-                background: '#40916c',
-              }}
-            />
-          );
-        })}
       </div>
     </div>
   );
