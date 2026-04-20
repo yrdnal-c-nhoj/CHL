@@ -34,7 +34,7 @@ const Clock: React.FC = () => {
 
   const clockStyle: React.CSSProperties = {
     display: 'flex',
-    gap: '0.5rem',
+    gap: '0.2rem',
     alignItems: 'center',
     fontFamily: '"Space Grotesk", monospace',
     fontWeight: 300,
@@ -54,12 +54,6 @@ const Clock: React.FC = () => {
     `,
   };
 
-  const separatorStyle: React.CSSProperties = {
-    ...digitStyle,
-    opacity: 0.6,
-    animation: 'blink 1s infinite',
-  };
-
   return (
     <div style={containerStyle}>
       <style>{`
@@ -71,10 +65,8 @@ const Clock: React.FC = () => {
       <div style={clockStyle}>
         <span style={digitStyle}>{hours[0]}</span>
         <span style={digitStyle}>{hours[1]}</span>
-        <span style={separatorStyle}>:</span>
         <span style={digitStyle}>{minutes[0]}</span>
         <span style={digitStyle}>{minutes[1]}</span>
-        <span style={separatorStyle}>:</span>
         <span style={digitStyle}>{seconds[0]}</span>
         <span style={digitStyle}>{seconds[1]}</span>
       </div>
