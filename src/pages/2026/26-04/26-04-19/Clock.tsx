@@ -1,16 +1,21 @@
 import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import wobbleVideo from '@/assets/images/2026/26-04/26-04-19/wobble.mp4';
+import wobbleFont from '@/assets/fonts/26-04-19-wobble.ttf';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 const Clock: React.FC = () => {
+  useSuspenseFontLoader([{ fontFamily: 'Wobble', fontUrl: wobbleFont }]);
   const time = useClockTime();
 
-  const { hours, minutes, seconds } = useMemo(() => {
-    const h = formatTime(time.getHours());
+  const { hours, minutes, ampm } = useMemo(() => {
+    let h = time.getHours();
+    const am = h < 12 ? 'AM' : 'PM';
+    h = h % 12 || 12;
     const m = formatTime(time.getMinutes());
-    const s = formatTime(time.getSeconds());
-    return { hours: h, minutes: m, seconds: s };
+    return { hours: h.toString(), minutes: m, ampm: am };
   }, [time]);
 
   const containerStyle: React.CSSProperties = {
@@ -19,34 +24,61 @@ const Clock: React.FC = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#111',
+    position: 'relative',
+    overflow: 'hidden',
     margin: 0,
     padding: 0,
+  };
+
+  const videoStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    zIndex: 0,
   };
 
   const clockStyle: React.CSSProperties = {
     display: 'flex',
     gap: '0.5rem',
     alignItems: 'center',
-    fontFamily: 'monospace',
+    fontFamily: 'Wobble, monospace',
     fontWeight: 300,
+    position: 'relative',
+    zIndex: 1,
   };
 
   const digitStyle: React.CSSProperties = {
-    fontSize: 'clamp(4rem, 15vw, 12rem)',
-    color: '#fff',
+    fontSize: 'clamp(2rem, 7vw, 6rem)',
+    color: '#F5D20A',
     minWidth: '0.8em',
     lineHeight: 1,
   };
 
   const separatorStyle: React.CSSProperties = {
     ...digitStyle,
-    opacity: 0.6,
-    animation: 'blink 1s infinite',
+
+  };
+
+  const ampmStyle: React.CSSProperties = {
+    ...digitStyle,
+    // opacity: 0.8,
+    // marginLeft: '0.5rem',
+    alignSelf: 'flex-end',
   };
 
   return (
     <div style={containerStyle}>
+      <video
+        src={wobbleVideo}
+        style={videoStyle}
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
       <style>{`
         @keyframes blink {
           0%, 100% { opacity: 0.6; }
@@ -54,14 +86,13 @@ const Clock: React.FC = () => {
         }
       `}</style>
       <div style={clockStyle}>
-        <span style={digitStyle}>{hours[0]}</span>
-        <span style={digitStyle}>{hours[1]}</span>
+        {hours.split('').map((digit, i) => (
+          <span key={i} style={digitStyle}>{digit}</span>
+        ))}
         <span style={separatorStyle}>:</span>
         <span style={digitStyle}>{minutes[0]}</span>
         <span style={digitStyle}>{minutes[1]}</span>
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{seconds[0]}</span>
-        <span style={digitStyle}>{seconds[1]}</span>
+        <span style={ampmStyle}>{ampm}</span>
       </div>
     </div>
   );
