@@ -50,9 +50,9 @@ const Clock: React.FC = () => {
     position: 'absolute',
     fontFamily: 'SEClock, serif',
     fontSize: 'clamp(2rem, 4.5vw, 4.5rem)',
-    color: '#2d6a4f',
+    color: '#D5ECE2',
     transform: 'translate(-50%, -50%)',
-    textShadow: '0 0 12px rgba(64, 224, 208, 0.4), 0 2px 4px rgba(0,0,0,0.2)',
+    textShadow: '0 0 12px rgba(64, 224, 208, 0.89), 0 2px 4px rgba(0,0,0,0.2)',
   };
 
   const handBaseStyle: React.CSSProperties = {
