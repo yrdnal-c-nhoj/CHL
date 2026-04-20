@@ -65,6 +65,12 @@ const Clock: React.FC = () => {
   return (
     <div style={containerStyle}>
       {/* Base image layer */}
+      <style>{`
+        @keyframes rotateCounterClockwise {
+          from { transform: rotate(90deg); }
+          to { transform: rotate(-270deg); }
+        }
+      `}</style>
       <div
         style={{
           position: 'absolute',
@@ -73,7 +79,7 @@ const Clock: React.FC = () => {
           backgroundImage: `url(${bgImage})`,
           backgroundSize: 'contain',
           backgroundPosition: 'center',
-          transform: 'rotate(90deg)',
+          animation: 'rotateCounterClockwise 60s linear infinite',
         }}
       />
       {/* Southeast wind gradient overlay - spring mist and warmth */}
