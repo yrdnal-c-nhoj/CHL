@@ -83,6 +83,8 @@ const Clock: React.FC = () => {
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, 200px)',
           gridTemplateRows: 'repeat(auto-fill, 200px)',
+          justifyContent: 'center',
+          alignContent: 'center',
         }}
       >
         {Array.from({ length: 100 }).map((_, i) => (
