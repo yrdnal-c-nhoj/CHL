@@ -42,6 +42,7 @@ const Clock: React.FC = () => {
     alignItems: 'center',
     position: 'relative',
     overflow: 'hidden',
+    backgroundColor: '#CE8C09',
     margin: 0,
     padding: 0,
   };
@@ -65,18 +66,49 @@ const Clock: React.FC = () => {
 
   return (
     <div style={containerStyle}>
-      {/* Tiled background layer */}
+      {/* Tiled rotating images layer */}
+      <style>{`
+        @keyframes rotateTile {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
       <div
         style={{
           position: 'absolute',
-          width: '100%',
-          height: '100%',
-          backgroundImage: `url(${tileImage})`,
-          backgroundSize: '200px',
-          backgroundRepeat: 'repeat',
-          opacity: 0.3,
+          width: '120%',
+          height: '120%',
+          left: '-10%',
+          top: '-10%',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, 200px)',
+          gridTemplateRows: 'repeat(auto-fill, 200px)',
         }}
-      />
+      >
+        {Array.from({ length: 100 }).map((_, i) => (
+          <div
+            key={i}
+            style={{
+              width: '200px',
+              height: '200px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <img
+              src={tileImage}
+              alt=""
+              style={{
+                width: '100px',
+                height: '100px',
+                objectFit: 'cover',
+                animation: 'rotateTile 60s linear infinite',
+              }}
+            />
+          </div>
+        ))}
+      </div>
       {/* Base image layer */}
       <style>{`
         @keyframes rotateCounterClockwise {
@@ -87,8 +119,10 @@ const Clock: React.FC = () => {
       <div
         style={{
           position: 'absolute',
-          width: '100%',
-          height: '100%',
+          width: '140%',
+          height: '140%',
+          left: '-20%',
+          top: '-20%',
           backgroundImage: `url(${bgImage})`,
           backgroundSize: 'contain',
           backgroundPosition: 'center',
@@ -96,22 +130,7 @@ const Clock: React.FC = () => {
           animation: 'rotateCounterClockwise 60s linear infinite',
         }}
       />
-      {/* Southeast wind gradient overlay - spring mist and warmth */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: `
-            linear-gradient(135deg, 
-              rgba(45, 106, 79, 0.15) 0%, 
-              rgba(82, 183, 136, 0.1) 30%,
-              rgba(233, 196, 106, 0.08) 60%,
-              rgba(64, 145, 108, 0.12) 100%
-            )
-          `,
-          pointerEvents: 'none',
-        }}
-      />
+    
       {/* Animated wind streaks - southeast breeze flowing */}
       <style>{`
         @keyframes windFlow {
