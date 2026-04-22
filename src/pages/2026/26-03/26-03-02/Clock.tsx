@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSecondClock } from '@/utils/useSmoothClock';
+import styles from './Clock.module.css';
 
 const RainCanvas: React.FC = () => {
   const canvasRef = useRef(null);
@@ -145,69 +146,19 @@ const RainCanvas: React.FC = () => {
   const m = format(time.getMinutes());
   const s = format(time.getSeconds());
 
-  const sharedDigitStyle = {
-    fontSize: '12vw',
-    fontWeight: 200,
-    fontFamily: 'sans-serif',
-    letterSpacing: '-0.05em',
-    display: 'inline-block',
-    minWidth: '0.65em',
-    textAlign: 'center',
-  };
-
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100vh',
-        overflow: 'hidden',
-        background: '#DBCC99',
-      }}
-    >
-      <canvas ref={canvasRef} style={{ display: 'block' }} />
+    <div className={styles.container}>
+      <canvas ref={canvasRef} className={styles.canvas} />
 
-      <div
-        style={{
-          position: 'absolute',
-          top: '75%',
-          left: 0,
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          perspective: '1000px',
-          pointerEvents: 'none',
-        }}
-      >
-        <div
-          style={{
-            transform: 'rotateX(75deg)',
-            transformOrigin: '50% 0%',
-            display: 'flex',
-            alignItems: 'center',
-            color: 'rgb(109, 103, 106)',
-            textShadow: '0 0 20px rgba(10, 5, 15, 0.1)',
-          }}
-        >
-          <span style={sharedDigitStyle}>
+      <div className={styles.timeWrapper}>
+        <div className={styles.mainTime}>
+          <span className={styles.digit}>
             {h}:{m}:{s}
           </span>
         </div>
 
-        <div
-          style={{
-            marginTop: '-2vh',
-            transform: 'rotateX(75deg) scaleY(-1)',
-            transformOrigin: '50% 0%',
-            display: 'flex',
-            alignItems: 'center',
-            color: 'rgba(10, 5, 15, 0.15)',
-            filter: 'blur(8px)',
-            opacity: 0.6,
-          }}
-        >
-          <span style={sharedDigitStyle}>
+        <div className={styles.reflection}>
+          <span className={styles.digit}>
             {h}:{m}:{s}
           </span>
         </div>

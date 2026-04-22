@@ -26,6 +26,8 @@
   height: 100px;
   object-fit: cover;
   animation: rotateTile 60s linear infinite;
+  left: var(--tile-x);
+  top: var(--tile-y);
 }
 
 .baseImageLayer {
@@ -50,6 +52,9 @@
   font-size: clamp(3rem, 6vw, 6rem);
   color: #d5ece2;
   text-shadow: 1px 1px 12px rgb(64, 224, 208), 0 8px 1px rgba(0, 0, 0, 0.8);
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%) rotate(var(--rot));
 }
 
 .hourHand, .minuteHand, .secondHand {
@@ -58,6 +63,7 @@
   top: 50%;
   transform-origin: bottom center;
   border-radius: 4px;
+  transform: translate(-50%, -100%) rotate(var(--rot));
 }
 
 .hourHand {
@@ -66,6 +72,7 @@
   background: linear-gradient(to top, #1b5e3f 0%, #40916c 50%, #74c69d 100%);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
   z-index: 13;
+  /* transform handled by shared class */
 }
 
 .minuteHand {
@@ -74,6 +81,7 @@
   background: linear-gradient(to top, #2d6a4f 0%, #52b788 50%, #95d5b2 100%);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
   z-index: 12;
+  /* transform handled by shared class */
 }
 
 .secondHand {

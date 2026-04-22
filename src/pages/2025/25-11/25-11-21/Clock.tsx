@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
+import styles from './Clock.module.css';
 
 // --- FONT IMPORT (same folder) ---
 import font_sdfsdfsdfsd from '@/assets/fonts/2025/25-11-21-omission.otf?url';
@@ -68,60 +69,17 @@ const DigitalGridClock: React.FC = () => {
   const hours = time.getHours();
   const isDesktop = width >= 768;
 
-  const cellStyle = () => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: isDesktop ? '6vmin' : '6vmin',
-    backgroundColor: '#2A0433FF',
-    color: '#F9E8C8FF',
-    transition: 'all 0.5s ease',
-    fontFamily: 'ClockFont_Omission',
-    overflow: 'hidden',
-  });
-
-  const activeCellStyle = (image) => ({
-    ...cellStyle(),
-    backgroundImage: `url(${image})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    color: 'transparent', // hide the number
-  });
-
   return (
-    <div
-      style={{
-        height: '100dvh', // Changed from 100vh to 100dvh to respect mobile browser bars
-        width: '100vw',
-        backgroundColor: '#CFCAD1FF',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        position: 'relative',
-        fontFamily: 'ClockFont_Omission',
-      }}
-    >
+    <div className={styles.container}>
       <div
-        style={{
-          display: 'grid',
-          // Using minmax(0, 1fr) forces rows/cols to shrink to fit the screen
-          // preventing them from being pushed out by internal content size.
-          gridTemplateColumns: isDesktop
-            ? 'repeat(14, minmax(0, 1fr))'
-            : 'repeat(6, minmax(0, 1fr))',
-          gridTemplateRows: isDesktop
-            ? 'repeat(6, minmax(0, 1fr))'
-            : 'repeat(14, minmax(0, 1fr))',
-          width: '100vw',
-          height: '100dvh',
-        }}
+        className={`${styles.grid} ${isDesktop ? styles.desktopGrid : styles.mobileGrid}`}
       >
         {/* Hours (0-23) */}
         {Array.from({ length: 24 }, (_, i) => (
           <div
             key={`hour-${i}`}
-            style={i === hours ? activeCellStyle(hourImage) : cellStyle()}
+            className={`${styles.cell} ${i === hours ? styles.activeCell : ''}`}
+            style={i === hours ? { '--active-image': `url(${hourImage})` } as React.CSSProperties : {}}
           >
             {String(i).padStart(2, '0')}
           </div>
@@ -131,9 +89,8 @@ const DigitalGridClock: React.FC = () => {
         {Array.from({ length: 60 }, (_, i) => (
           <div
             key={`min-${i}`}
-            style={
-              i === currentMinute ? activeCellStyle(minuteImage) : cellStyle()
-            }
+            className={`${styles.cell} ${i === currentMinute ? styles.activeCell : ''}`}
+            style={i === currentMinute ? { '--active-image': `url(${minuteImage})` } as React.CSSProperties : {}}
           >
             {String(i).padStart(2, '0')}
           </div>

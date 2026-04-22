@@ -1,0 +1,52 @@
+.container {
+  height: 100dvh;
+  width: 100vw;
+  background-color: #CFCAD1FF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  font-family: 'ClockFont_Omission', sans-serif;
+}
+
+.grid {
+  display: grid;
+  width: 100vw;
+  height: 100dvh;
+}
+
+.desktopGrid {
+  grid-template-columns: repeat(14, minmax(0, 1fr));
+  grid-template-rows: repeat(6, minmax(0, 1fr));
+}
+
+.mobileGrid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-rows: repeat(14, minmax(0, 1fr));
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 6vmin;
+  background-color: #2A0433FF;
+  color: #F9E8C8FF;
+  transition: all 0.5s ease;
+  font-family: 'ClockFont_Omission', sans-serif;
+  overflow: hidden;
+}
+
+.activeCell {
+  background-image: var(--active-image);
+  background-size: cover;
+  background-position: center;
+  color: transparent;
+}
+
+@media (max-width: 768px) {
+  .cell {
+    font-size: 6vmin;
+  }
+}
