@@ -32,10 +32,13 @@ const Clock: React.FC = () => {
 
   const videoStyle: React.CSSProperties = {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    minWidth: '100%',
+    minHeight: '100%',
+    width: 'auto',
+    height: 'auto',
     objectFit: 'cover',
     zIndex: 0,
   };
@@ -64,8 +67,6 @@ const Clock: React.FC = () => {
 
   const ampmStyle: React.CSSProperties = {
     ...digitStyle,
-    // opacity: 0.8,
-    // marginLeft: '0.5rem',
     alignSelf: 'flex-end',
   };
 
