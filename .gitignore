@@ -24,14 +24,31 @@ dist/
 .parcel-cache/
 .cache
 .eslintcache
-
-# Environment (keep .env.production / .env.test if you commit them)
+# Environment
 .env
 .env.local
+.env.development
 .env.development.local
+.env.test
 .env.test.local
+.env.production
 .env.production.local
 *.cron.log
+logs/
+build.txt
+build-log.txt
+.build-log.txt
+.windsurf/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
 
 # Vercel
 .vercel/
@@ -43,36 +60,18 @@ dist/
 !.vscode/launch.json
 !.vscode/*.code-snippets
 
-# Additional editor files
+# Other Editors
 *.sublime-project
 *.sublime-workspace
-
-# Vim
 *.swp
 *.swo
 *~
-
 .idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-
-# Testing
-coverage/
-.nyc_output/
-
-# Debug logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
 
 # OS
 .DS_Store
@@ -83,23 +82,9 @@ pids
 ehthumbs.db
 Thumbs.db
 
-# Optional: build logs & editor workflows
-logs/
-build-log.txt
-.build-log.txt
-.windsurf/
-
 # Project-specific
-testclock.json
+src/context/testclock.json
 screenshots/
 scripts/
-
-# Misc
 *.pfx
 *.publishsettings
-src/assets/images/26-03/mye.gif
-.vercel
-
-# Build logs
-build.txt
-build-log.txt

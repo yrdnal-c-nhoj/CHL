@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useSecondClock } from '@/utils/useSmoothClock';
+import React, { useEffect, useMemo } from 'react';
+import { useClockTime } from '@/utils/clockUtils';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import futurBg from '@/assets/images/2026/26-02/26-02-24/futur.jpg';
 
 interface Position {
@@ -10,31 +11,72 @@ interface Position {
   font: string;
 }
 
-const ImageDisplay = () => {
-  const time = useSecondClock();
-  const [fontsReady, setFontsReady] = useState<boolean>(false);
-  const [ariaTime, setAriaTime] = useState('');
+const GOOGLE_FONTS_URL = 'https://fonts.googleapis.com/css2?family=Dancing+Script&family=Creepster&family=Oswald&family=Cinzel+Decorative&family=Metal+Mania&family=UnifrakturMaguntia&family=ZCOOL+KuaiLe&family=Press+Start+2P&family=Space+Mono&display=swap';
 
-  // Load Google Fonts
+const POSITIONS: Position[] = [
+  {
+    top: '8%',
+    left: '10%',
+    rotate: '-15deg',
+    fontSize: 'clamp(2rem, 8vw, 6rem)',
+    font: "'Dancing Script'",
+  },
+  {
+    top: '25%',
+    left: '22%',
+    rotate: '30deg',
+    fontSize: 'clamp(11rem, 44vw, 22rem)',
+    font: "'Creepster'",
+  },
+  {
+    top: '72%',
+    left: '35%',
+    rotate: '-18deg',
+    fontSize: 'clamp(24rem, 64vw, 30rem)',
+    font: "'Oswald'",
+  },
+  {
+    top: '80%',
+    left: '75%',
+    rotate: '25deg',
+    fontSize: 'clamp(2.5rem, 9vw, 7rem)',
+    font: "'Oswald'",
+  },
+  {
+    top: '15%',
+    left: '75%',
+    rotate: '-35deg',
+    fontSize: 'clamp(5rem, 16vw, 12rem)',
+    font: "'Cinzel Decorative'",
+  },
+  {
+    top: '40%',
+    left: '80%',
+    rotate: '44deg',
+    fontSize: 'clamp(7.5rem, 31vw, 12rem)',
+    font: "'Metal Mania'",
+  },
+];
+
+const ImageDisplay = () => {
+  const time = useClockTime();
+
+  // Professional Practice: Use standardized font loading pipeline
   useEffect(() => {
     const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Dancing+Script&family=Creepster&family=Oswald&family=Cinzel+Decorative&family=Metal+Mania&family=UnifrakturMaguntia&family=ZCOOL+KuaiLe&family=Press+Start+2P&family=Space+Mono&display=swap';
+    link.href = GOOGLE_FONTS_URL;
     link.rel = 'stylesheet';
     document.head.appendChild(link);
-    setFontsReady(true);
     return () => {
       document.head.removeChild(link);
     };
   }, []);
 
   // Accessibility: Update time string for screen readers
-  const seconds = time.getSeconds();
-  useEffect(() => {
-    setAriaTime(
-      time.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [seconds]); // Update only when seconds change
+  const ariaTime = useMemo(() => 
+    time.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+    [time.getHours(), time.getMinutes()]
+  );
 
   const { amPm, digits } = useMemo(() => {
     const rawHours = time.getHours();
@@ -51,71 +93,6 @@ const ImageDisplay = () => {
     ];
     return { amPm, digits };
   }, [time]);
-
-  if (!fontsReady) {
-    return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100dvh',
-          backgroundColor: '#000',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'black',
-          fontFamily: 'monospace',
-          fontSize: '1.5rem',
-        }}
-      >
-        Loading...
-      </div>
-    );
-  }
-
-  const positions: Position[] = [
-    {
-      top: '8%',
-      left: '10%',
-      rotate: '-15deg',
-      fontSize: 'clamp(2rem, 8vw, 6rem)',
-      font: "'Dancing Script'",
-    }, // H1
-    {
-      top: '25%',
-      left: '22%',
-      rotate: '30deg',
-      fontSize: 'clamp(11rem, 44vw, 22rem)',
-      font: "'Creepster'",
-    }, // H2
-    {
-      top: '72%',
-      left: '35%',
-      rotate: '-18deg',
-      fontSize: 'clamp(24rem, 64vw, 30rem)',
-      font: "'Oswald'",
-    }, // M1
-    {
-      top: '80%',
-      left: '75%',
-      rotate: '25deg',
-      fontSize: 'clamp(2.5rem, 9vw, 7rem)',
-      font: "'Oswald'",
-    }, // M2
-    {
-      top: '15%',
-      left: '75%',
-      rotate: '-35deg',
-      fontSize: 'clamp(5rem, 16vw, 12rem)',
-      font: "'Cinzel Decorative'",
-    }, // S1
-    {
-      top: '40%',
-      left: '80%',
-      rotate: '44deg',
-      fontSize: 'clamp(7.5rem, 31vw, 12rem)',
-      font: "'Metal Mania'",
-    }, // S2
-  ];
 
   return (
     <div style={containerStyle}>
@@ -142,11 +119,11 @@ const ImageDisplay = () => {
           style={{
             ...digitBox,
             position: 'absolute',
-            top: positions[index].top,
-            left: positions[index].left,
-            transform: `translate(-50%, -50%) rotate(${positions[index].rotate})`,
-            fontFamily: `${positions[index].font}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif`,
-            fontSize: positions[index].fontSize,
+            top: POSITIONS[index].top,
+            left: POSITIONS[index].left,
+            transform: `translate(-50%, -50%) rotate(${POSITIONS[index].rotate})`,
+            fontFamily: `${POSITIONS[index].font}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif`,
+            fontSize: POSITIONS[index].fontSize,
             zIndex: 10,
           }}
         >
