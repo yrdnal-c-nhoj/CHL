@@ -1,0 +1,71 @@
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100svh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.loadingOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: #000;
+  transition: opacity 600ms ease-in-out;
+  zIndex: 9999;
+  pointer-events: none;
+}
+
+.columnsWrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+}
+
+.binaryContainer {
+  display: flex;
+  flex-direction: column-reverse;
+  flex: 1;
+}
+
+.digitBox {
+  height: 12vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 8vh;
+  font-family: 'digitalFont', monospace;
+  color: #f713dc;
+  background-color: #024236;
+  border-top: 2px solid #000;
+}
+
+.bitCell {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 6vh;
+  font-family: 'techFont', monospace;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.bitOn {
+  color: #f6f2f2;
+  background-color: #1100cc;
+}
+
+.bitOff {
+  color: #020202;
+  background-color: #effa26;
+}

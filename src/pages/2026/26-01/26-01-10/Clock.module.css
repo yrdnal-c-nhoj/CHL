@@ -1,0 +1,72 @@
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  z-index: 1;
+  transition: opacity 0.3s ease;
+}
+
+.leftBackground, .rightBackground {
+  position: absolute;
+  top: 0;
+  width: 50vw;
+  height: 117%;
+  background-size: cover;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.leftBackground {
+  left: 0;
+  background-position: right;
+  filter: brightness(1.2) hue-rotate(10deg) saturate(2.5);
+}
+
+.rightBackground {
+  right: 0;
+  background-position: right center;
+  transform: scaleX(-1);
+  filter: brightness(1.2) hue-rotate(10deg) saturate(1.5);
+}
+
+.container {
+  height: 100dvh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+  transition: opacity 0.3s ease;
+}
+
+.layout {
+  display: flex;
+  align-items: center;
+}
+
+.row { flex-direction: row; gap: 0; }
+.column { flex-direction: column; gap: 0; }
+
+.unitGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.digitBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'MyD25090116font', sans-serif;
+  font-size: 28vh;
+  color: rgba(66, 142, 241, 0.82);
+  width: 20vh;
+  height: 20vh;
+  text-align: center;
+}

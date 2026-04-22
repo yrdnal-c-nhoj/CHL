@@ -27,35 +27,72 @@ const RainCanvas: React.FC = () => {
     };
   }, []);
 
+  // Define interfaces for Drop and Ripple properties for strict typing
+  interface DropProperties {
+    z: number;
+    x: number;
+    y: number;
+    speed: number;
+    length: number;
+    targetY: number;
+  }
+
+  interface RippleProperties {
+    x: number;
+    y: number;
+    z: number;
+    r: number;
+    opacity: number;
+    growth: number;
+    decay: number;
+  }
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     let animationFrameId;
     let ripples = [];
+    if (!canvas) return; // Ensure canvas exists
+    const ctx = canvas.getContext('2d'); // Get 2D rendering context
+    if (!ctx) return; // Ensure context is available
+
+    let animationFrameId: number;
+    let ripples: Ripple[] = []; // Explicitly type the ripples array
     const themeColor = '10, 5, 15';
 
     class Drop {
       constructor() {
         this.init();
+    class Drop implements DropProperties {
+      z: number; x: number; y: number; speed: number; length: number; targetY: number;
+
+      constructor(canvas: HTMLCanvasElement) {
+        this.init(canvas);
       }
       init() {
+      init(canvas: HTMLCanvasElement) {
         this.z = Math.random() * 0.8 + 0.2;
         this.x = Math.random() * canvas.width;
         // Start them high enough so they don't all appear instantly
         this.y = Math.random() * -canvas.height;
+        this.y = Math.random() * -canvas.height; // Start them high enough so they don't all appear instantly
         this.speed = this.z * 6 + 3;
         this.length = this.z * 15 + 10;
         this.targetY = canvas.height * 0.52 + this.z * canvas.height * 0.45;
       }
       update() {
+      update(canvas: HTMLCanvasElement, currentRipples: Ripple[]) {
         this.y += this.speed;
         if (this.y > this.targetY) {
           ripples.push(new Ripple(this.x, this.targetY, this.z));
           this.init();
+          currentRipples.push(new Ripple(this.x, this.targetY, this.z));
+          this.init(canvas);
         }
       }
       draw() {
+      draw(ctx: CanvasRenderingContext2D, themeColor: string) {
         ctx.beginPath();
         ctx.strokeStyle = `rgba(${themeColor}, ${this.z * 0.4})`;
         ctx.lineWidth = this.z * 1.2;
@@ -67,6 +104,10 @@ const RainCanvas: React.FC = () => {
 
     class Ripple {
       constructor(x, y, z) {
+    class Ripple implements RippleProperties {
+      x: number; y: number; z: number; r: number; opacity: number; growth: number; decay: number;
+
+      constructor(x: number, y: number, z: number) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -80,6 +121,8 @@ const RainCanvas: React.FC = () => {
         this.opacity -= this.decay;
       }
       draw() {
+      update() { this.r += this.growth; this.opacity -= this.decay; }
+      draw(ctx: CanvasRenderingContext2D, themeColor: string) {
         ctx.beginPath();
         ctx.strokeStyle = `rgba(${themeColor}, ${this.opacity})`;
         ctx.lineWidth = this.z * 3.5 + 0.5;
@@ -104,10 +147,14 @@ const RainCanvas: React.FC = () => {
         { length: dropCountRef.current },
         () => new Drop(),
       );
+      dropsRef.current = Array.from({ length: dropCountRef.current }, () => new Drop(canvas));
     };
 
     window.addEventListener('resize', resize);
     resize();
+
+    // Initialize drops with canvas
+    dropsRef.current = Array.from({ length: dropCountRef.current }, () => new Drop(canvas));
 
     const render = () => {
       ctx.fillStyle = '#DBCC99';
@@ -118,6 +165,8 @@ const RainCanvas: React.FC = () => {
         const diff = dropCountRef.current - dropsRef.current.length;
         for (let i = 0; i < diff; i++) {
           dropsRef.current.push(new Drop());
+        for (let i = 0; i < diff; i++) { // Use a for loop for adding new drops
+          dropsRef.current.push(new Drop(canvas));
         }
       }
 
@@ -125,10 +174,13 @@ const RainCanvas: React.FC = () => {
       ripples.forEach((r) => {
         r.update();
         r.draw();
+        r.draw(ctx, themeColor);
       });
       dropsRef.current.forEach((d) => {
         d.update();
         d.draw();
+        d.update(canvas, ripples);
+        d.draw(ctx, themeColor);
       });
 
       animationFrameId = requestAnimationFrame(render);
