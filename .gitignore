@@ -1,4 +1,4 @@
-# Dependencies
+# --- Dependencies ---
 node_modules/
 .pnp
 .pnp.js
@@ -7,7 +7,7 @@ node_modules/
 yarn.lock
 pnpm-lock.yaml
 
-# Build / output
+# --- Build / Output ---
 build/
 dist/
 .vite/
@@ -19,13 +19,15 @@ dist/
 .nuxt/
 .vuepress/dist/
 
-# Local development & caches
+# --- Development & Caches ---
 .local/
 .parcel-cache/
 .cache
 .eslintcache
-# Environment
+
+# --- Environment Variables (Security) ---
 .env
+.env.*
 .env.local
 .env.development
 .env.development.local
@@ -33,40 +35,28 @@ dist/
 .env.test.local
 .env.production
 .env.production.local
+
+# --- Logs & Debugging ---
 *.cron.log
 logs/
-build.txt
-build-log.txt
-.build-log.txt
+*.log
+build*.txt
 .windsurf/
 
-# Testing
+# --- Testing ---
 coverage/
 .nyc_output/
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Vercel
 .vercel/
 
-# Editor: VS Code (keep shared config, ignore rest)
+# --- Editor / IDE ---
 .vscode/*
 !.vscode/extensions.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/*.code-snippets
-
-# Other Editors
+.idea/
 *.sublime-project
 *.sublime-workspace
-*.swp
-*.swo
-*~
-.idea/
 *.suo
 *.ntvs*
 *.njsproj
@@ -82,9 +72,9 @@ pids
 ehthumbs.db
 Thumbs.db
 
-# Project-specific
+# --- Project Specific ---
 src/context/testclock.json
 screenshots/
-scripts/
+scripts/temp/
 *.pfx
 *.publishsettings
