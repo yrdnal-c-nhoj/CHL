@@ -1,67 +1,92 @@
 import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
+import bgImg from '@/assets/images/2026/26-04/26-04-20/bstream.gif';
 
-const formatTime = (num: number): string => num.toString().padStart(2, '0');
+export const assets = [bgImg];
 
 const Clock: React.FC = () => {
   const time = useClockTime();
 
-  const { hours, minutes, seconds } = useMemo(() => {
-    const h = formatTime(time.getHours());
-    const m = formatTime(time.getMinutes());
-    const s = formatTime(time.getSeconds());
-    return { hours: h, minutes: m, seconds: s };
+  const { hourDeg, minuteDeg, secondDeg } = useMemo(() => {
+    const h = time.getHours() % 12;
+    const m = time.getMinutes();
+    const s = time.getSeconds();
+    return {
+      hourDeg: (h * 30) + (m * 0.5),
+      minuteDeg: m * 6,
+      secondDeg: s * 6,
+    };
   }, [time]);
+
+  const size = 'min(80vw, 80vh)';
 
   const containerStyle: React.CSSProperties = {
     width: '100vw',
-    height: '100dvh',
+    height: '100vh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#111',
-    margin: 0,
-    padding: 0,
+    backgroundColor: '#000',
+    overflow: 'hidden',
+    position: 'relative',
   };
 
-  const clockStyle: React.CSSProperties = {
-    display: 'flex',
-    gap: '0.5rem',
-    alignItems: 'center',
-    fontFamily: 'monospace',
-    fontWeight: 300,
+  const bgStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundImage: `url(${bgImg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    zIndex: 0,
   };
 
-  const digitStyle: React.CSSProperties = {
-    fontSize: 'clamp(4rem, 15vw, 12rem)',
-    color: '#fff',
-    minWidth: '0.8em',
-    lineHeight: 1,
+  const clockFaceStyle: React.CSSProperties = {
+    width: size,
+    height: size,
+    borderRadius: '50%',
+    border: '4px solid rgba(255,255,255,0.3)',
+    position: 'relative',
+    zIndex: 1,
+    backdropFilter: 'blur(2px)',
   };
 
-  const separatorStyle: React.CSSProperties = {
-    ...digitStyle,
-    opacity: 0.6,
-    animation: 'blink 1s infinite',
+  const handStyle = (deg: number, length: string, width: string, color: string): React.CSSProperties => ({
+    position: 'absolute',
+    bottom: '50%',
+    left: '50%',
+    width,
+    height: length,
+    backgroundColor: color,
+    transformOrigin: 'bottom center',
+    transform: `translateX(-50%) rotate(${deg}deg)`,
+    borderRadius: '2px',
+    boxShadow: '0 0 4px rgba(0,0,0,0.5)',
+  });
+
+  const centerDotStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: '12px',
+    height: '12px',
+    backgroundColor: '#fff',
+    borderRadius: '50%',
+    transform: 'translate(-50%, -50%)',
+    zIndex: 10,
+    boxShadow: '0 0 4px rgba(0,0,0,0.5)',
   };
 
   return (
     <div style={containerStyle}>
-      <style>{`
-        @keyframes blink {
-          0%, 100% { opacity: 0.6; }
-          50% { opacity: 0.2; }
-        }
-      `}</style>
-      <div style={clockStyle}>
-        <span style={digitStyle}>{hours[0]}</span>
-        <span style={digitStyle}>{hours[1]}</span>
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{minutes[0]}</span>
-        <span style={digitStyle}>{minutes[1]}</span>
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{seconds[0]}</span>
-        <span style={digitStyle}>{seconds[1]}</span>
+      <div style={bgStyle} />
+      <div style={clockFaceStyle}>
+        <div style={handStyle(hourDeg, '25%', '6px', '#fff')} />
+        <div style={handStyle(minuteDeg, '35%', '4px', '#ccc')} />
+        <div style={handStyle(secondDeg, '40%', '2px', '#ff3366')} />
+        <div style={centerDotStyle} />
       </div>
     </div>
   );

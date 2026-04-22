@@ -35,11 +35,11 @@
 }
 
 .digit {
-  font-size: clamp(2rem, 7vw, 6rem);
+  font-size: clamp(1rem, 4vh, 6rem);
   color: #f5d20a;
-  min-width: 0.8em;
+  min-width: 0.4em;
   line-height: 1;
-  text-shadow: 1px 1px 0 #000;
+  text-shadow: 3px 3px 0 #000;
 }
 
 .ampm {

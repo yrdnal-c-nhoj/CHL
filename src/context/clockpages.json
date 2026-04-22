@@ -379,5 +379,6 @@
   { "path": "26-04-16", "date": "26-04-16", "title": "135° Southeast" },
   { "path": "26-04-17", "date": "26-04-17", "title": "Jacques" },
   { "path": "26-04-18", "date": "26-04-18", "title": "Frequency" },      
-  { "path": "26-04-19", "date": "26-04-19", "title": "Wobble" }
+  { "path": "26-04-19", "date": "26-04-19", "title": "Wobble" },
+  { "path": "26-04-20", "date": "26-04-20", "title": "Particle Digital" }
 ]
