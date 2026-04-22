@@ -16,6 +16,8 @@
   overflow: hidden;
   background-color: #000;
   touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .backgroundWrapper {
@@ -60,15 +62,17 @@
   font-size: clamp(3rem, 12vw, 7rem);
   color: #fff;
   padding-right: 5vw;
+  white-space: nowrap;
 }
 
 .digitBox {
   display: inline-block;
-  width: 0.5ch;
+  width: 0.6ch;
   text-align: center;
-  padding: 0.15em 0.25em;
-  margin: 0 0.08em;
+  padding: 0.1em 0.2em;
+  margin: 0 0.1em;
   color: #3d2914;
   opacity: 0.75;
   filter: sepia(0.3) contrast(0.95);
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
 }
