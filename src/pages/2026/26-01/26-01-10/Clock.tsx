@@ -3,6 +3,7 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/2026/26-01/26-01-10/moo.gif';
 import d25090116font from '@/assets/fonts/2026/26-01-10-bit.ttf';
+import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
@@ -78,92 +79,11 @@ const Clock: React.FC = () => {
   const minutes = String(time.getMinutes()).padStart(2, '0');
   const seconds = String(time.getSeconds()).padStart(2, '0');
 
-  // 2. STYLES: Using fixed widths to prevent "jumping"
-  const digitBoxStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontFamily: "'MyD25090116font', sans-serif",
-    fontSize: '28vh',
-    color: 'rgba(66, 142, 241, 0.82)',
-    // Fixed width ensures 'I' takes as much space as 'W'
-    width: '20vh',
-    height: '20vh',
-    textAlign: 'center',
-  };
-
-  const backgroundStyle = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100vw',
-    height: '100dvh',
-    overflow: 'hidden',
-    zIndex: 1,
-  };
-
-  const leftBackgroundStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '50vw',
-    height: '117%',
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'right', // Align to center edge
-    overflow: 'hidden',
-    filter: 'brightness(1.2) hue-rotate(10deg) saturate(2.5)',
-    zIndex: 1,
-  };
-
-  const rightBackgroundStyle = {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    width: '50vw',
-    height: '117%',
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'right center', // Keep the same alignment as left side
-    overflow: 'hidden',
-    transform: 'scaleX(-1)', // Flip horizontally
-    filter: 'brightness(1.2) hue-rotate(10deg) saturate(1.5)',
-    zIndex: 1,
-  };
-
-  const containerStyle = {
-    height: '100dvh',
-    width: '100vw',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent', // Make background transparent to see the filtered background
-    overflow: 'hidden',
-    position: 'relative',
-    zIndex: 10,
-    opacity: isLoaded && bgReady ? 1 : 0,
-    visibility: isLoaded && bgReady ? 'visible' : 'hidden',
-    transition: 'opacity 0.3s ease',
-  };
-
-  const layoutStyle = {
-    display: 'flex',
-    flexDirection: isLargeScreen ? 'row' : 'column',
-    alignItems: 'center',
-    gap: isLargeScreen ? '0vw' : '0vh',
-  };
-
-  const groupStyle = {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  };
-
   // 3. RENDER HELPERS
   const renderUnit = (value) => (
-    <div style={groupStyle}>
+    <div className={styles.unitGroup}>
       {value.split('').map((digit, i) => (
-        <div key={i} style={digitBoxStyle}>
+        <div key={i} className={styles.digitBox}>
           {digitToLetter[digit] || digit}
         </div>
       ))}
@@ -176,19 +96,22 @@ const Clock: React.FC = () => {
     <>
       {/* Mirror background effect */}
       <div
-        style={{
-          ...backgroundStyle,
-          opacity: ready ? 1 : 0,
-          transition: 'opacity 0.3s ease',
-        }}
+        className={styles.background}
+        style={{ opacity: ready ? 1 : 0 }}
       >
-        <div style={leftBackgroundStyle} />
-        <div style={rightBackgroundStyle} />
+        <div 
+          className={styles.leftBackground} 
+          style={{ backgroundImage: `url(${bgImage})` }} 
+        />
+        <div 
+          className={styles.rightBackground} 
+          style={{ backgroundImage: `url(${bgImage})` }} 
+        />
       </div>
 
       {/* Clock content layer */}
-      <div style={containerStyle}>
-        <div style={layoutStyle}>
+      <div className={styles.container} style={{ opacity: ready ? 1 : 0 }}>
+        <div className={`${styles.layout} ${isLargeScreen ? styles.row : styles.column}`}>
           {renderUnit(hours)}
           {renderUnit(minutes)}
           {renderUnit(seconds)}
