@@ -157,12 +157,12 @@ const Clock: React.FC = () => {
 
       circlesRef.current.forEach((circle) => {
         if (slowdownActive) {
-          // Shake with decreasing intensity during slowdown
-          const shakeIntensity = 20; // High intensity shake
-          circle.vx += (Math.random() - 0.5) * shakeIntensity;
-          circle.vy += (Math.random() - 0.5) * shakeIntensity;
-          circle.vx *= 0.7; // Gradual slowdown
-          circle.vy *= 0.7;
+          // Rapid deceleration to complete stop
+          circle.vx *= 0.5; // Strong friction for quick slowdown
+          circle.vy *= 0.5;
+          // Snap to zero when very slow
+          if (Math.abs(circle.vx) < 0.1) circle.vx = 0;
+          if (Math.abs(circle.vy) < 0.1) circle.vy = 0;
         } else if (circle.movement === 'in' || circle.movement === 'jiggle') {
           const dx = circle.originX - circle.x;
           const dy = circle.originY - circle.y;
