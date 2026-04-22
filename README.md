@@ -18,9 +18,8 @@ BorrowedTime is an online digital art project by [Cubist Heart Laboratories](htt
 BorrowedTime creates daily clock experiences that challenge conventional timekeeping through:
 
 - **Unique Daily Designs**: Each day features a completely new clock concept
-- **Experimental Typography**: Custom fonts and typographic treatments
+- **Experimental Typography**:  Unique fonts and typographic treatments
 - **Found Imagery**: Curated visual elements sourced from across the internet
-- **Interactive Elements**: Animations, transitions, and user interactions
 - **Responsive Design**: Optimized for both desktop and mobile experiences
 
 ## 🚀 Features
