@@ -4,6 +4,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import mobyFont from '@/assets/fonts/2025/25-04-03-moby.ttf?url';
 import waves from '@/assets/images/2025/25-04/25-04-03/waves.gif';
+import styles from './Clock.module.css';
 
 // Component Props interface
 interface MobyDickClockProps {
@@ -97,15 +98,6 @@ const MobyDickClock = () => {
   }, [currentTime]);
 
   useEffect(() => {
-    // Create scoped CSS
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-0.5rem); }
-      }
-    `;
-    document.head.appendChild(style);
 
     let animationFrameId: number;
     let lastMoveTime: number = 0;
@@ -143,7 +135,6 @@ const MobyDickClock = () => {
 
     return () => {
       cancelAnimationFrame(animationFrameId);
-      if (style.parentNode) style.parentNode.removeChild(style);
     };
   }, [calculateNewPosition, updateClockDisplay]);
 
@@ -163,16 +154,7 @@ const MobyDickClock = () => {
     >
       <div
         ref={clockRef}
-        style={{
-          fontFamily: 'MobyClockFont, cursive',
-          color: '#a1b4b4',
-          textShadow:
-            '#ced4d4 0.1rem 0.1rem 0.2rem, #000404 -0.1rem -0.1rem 0.9rem',
-          position: 'absolute',
-          whiteSpace: 'nowrap',
-          pointerEvents: 'none',
-          opacity: 0,
-        }}
+        className={styles.mobyClock}
       />
       <img
         decoding="async"

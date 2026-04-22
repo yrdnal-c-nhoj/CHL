@@ -22,7 +22,7 @@ const RectangularAnalogClock: React.FC = () => {
 
   // Animation loop for updating time
   useEffect(() => {
-    const updateTime: React.FC = () => {
+    const updateTime = () => {
       setTime(new Date());
       rafRef.current = requestAnimationFrame(updateTime);
     };
@@ -33,7 +33,7 @@ const RectangularAnalogClock: React.FC = () => {
   }, []);
 
   // Calculate hand angles
-  const calculateHandAngles: React.FC = () => {
+  const calculateHandAngles = () => {
     const ms = time.getMilliseconds();
     const rawSeconds = time.getSeconds() + ms / 1000;
     const rawMinutes = time.getMinutes() + rawSeconds / 60;
@@ -103,7 +103,7 @@ const RectangularAnalogClock: React.FC = () => {
   };
 
   // Compute tick positions for grid lines
-  const computeTickPositions: React.FC = () => {
+  const computeTickPositions = () => {
     const topXs = Array.from({ length: 15 }, (_, i) => 10 + (i * 80) / 14);
     const leftYs = Array.from(
       { length: 13 },
@@ -113,7 +113,7 @@ const RectangularAnalogClock: React.FC = () => {
   };
 
   // Render grid lines
-  const renderGridLines: React.FC = () => {
+  const renderGridLines = () => {
     const { topXs, leftYs } = computeTickPositions();
     return [
       ...topXs.map((x, idx) => (
@@ -142,7 +142,7 @@ const RectangularAnalogClock: React.FC = () => {
   };
 
   // Generate hour markers
-  const generateHourMarkers: React.FC = () => {
+  const generateHourMarkers = () => {
     const positions = [
       { num: 12, x: 50, y: 15 },
       { num: 1, x: 75, y: 20 },
