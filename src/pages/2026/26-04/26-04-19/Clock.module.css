@@ -39,6 +39,7 @@
   color: #f5d20a;
   min-width: 0.8em;
   line-height: 1;
+  text-shadow: 1px 1px 0 #000;
 }
 
 .ampm {
