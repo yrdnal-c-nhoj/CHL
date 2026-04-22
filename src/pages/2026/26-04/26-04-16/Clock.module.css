@@ -1,0 +1,115 @@
+.clockViewport {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle, #f6ea09 0%, #ce8c09 80%, #8b5e00 100%);
+  margin: 0;
+  padding: 0;
+}
+
+.tileContainer {
+  position: absolute;
+  width: 300vw;
+  height: 300vh;
+  left: -100vw;
+  top: -100vh;
+  z-index: 0;
+}
+
+.rotatingTile {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  animation: rotateTile 60s linear infinite;
+}
+
+.baseImageLayer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: rotateCounterClockwise 60s linear infinite;
+  z-index: 1;
+}
+
+.clockFace {
+  position: relative;
+  z-index: 10;
+}
+
+.numeral {
+  position: absolute;
+  font-family: 'SEClock', serif;
+  font-size: clamp(3rem, 6vw, 6rem);
+  color: #d5ece2;
+  text-shadow: 1px 1px 12px rgb(64, 224, 208), 0 8px 1px rgba(0, 0, 0, 0.8);
+}
+
+.hourHand, .minuteHand, .secondHand {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: bottom center;
+  border-radius: 4px;
+}
+
+.hourHand {
+  width: 6px;
+  height: 22%;
+  background: linear-gradient(to top, #1b5e3f 0%, #40916c 50%, #74c69d 100%);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  z-index: 13;
+}
+
+.minuteHand {
+  width: 4px;
+  height: 35%;
+  background: linear-gradient(to top, #2d6a4f 0%, #52b788 50%, #95d5b2 100%);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  z-index: 12;
+}
+
+.secondHand {
+  width: 2px;
+  height: 40%;
+  background: linear-gradient(to top, #e07a5f 0%, #f4a261 50%, #e9c46a 100%);
+  box-shadow: 0 0 6px rgba(184, 80, 80, 0.6);
+  z-index: 11;
+}
+
+.centerCap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  background: radial-gradient(circle at 30% 30%, #74c69d 0%, #2d6a4f 100%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  z-index: 14;
+}
+
+@keyframes rotateTile {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rotateCounterClockwise {
+  from { transform: rotate(90deg); }
+  to { transform: rotate(-270deg); }
+}
+
+@keyframes windFlow {
+  0% { transform: translateX(-100%) skewX(-12deg); opacity: 0; }
+  10% { opacity: 0.3; }
+  90% { opacity: 0.3; }
+  100% { transform: translateX(100vw) skewX(-12deg); opacity: 0; }
+}

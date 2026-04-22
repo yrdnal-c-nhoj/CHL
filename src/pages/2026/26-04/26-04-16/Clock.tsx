@@ -5,6 +5,7 @@ import type { FontConfig } from '@/types/clock';
 import seFont from '@/assets/fonts/26-04-16-se.ttf';
 import bgImage from '@/assets/images/2026/26-04/26-04-16/jamine.webp';
 import tileImage from '@/assets/images/2026/26-04/26-04-16/pom.webp';
+import styles from './Clock.module.css';
 
 const ROMAN_NUMERALS = ['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
 
@@ -61,7 +62,7 @@ const Clock: React.FC = () => {
               key={`${ring}-${side}-${pos}`}
               src={tileImage}
               alt=""
-              className="rotating-tile"
+              className={styles.rotatingTile}
               style={{ left, top }}
             />
           );
@@ -72,110 +73,26 @@ const Clock: React.FC = () => {
   }, []);
 
   return (
-    <div className="clock-viewport">
-      <style>{`
-        .clock-viewport {
-          width: 100vw;
-          height: 100dvh;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: relative;
-          overflow: hidden;
-          background: radial-gradient(circle, #F6EA09 0%, #CE8C09 80%, #8B5E00 100%);
-          margin: 0;
-          padding: 0;
-        }
-
-        @keyframes rotateTile {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-
-        .tile-container {
-          position: absolute;
-          width: 300vw;
-          height: 300vh;
-          left: -100vw;
-          top: -100vh;
-          z-index: 0;
-        }
-
-        .rotating-tile {
-          position: absolute;
-          width: 100px;
-          height: 100px;
-          object-fit: cover;
-          animation: rotateTile 60s linear infinite;
-        }
-
-        @keyframes rotateCounterClockwise {
-          from { transform: rotate(90deg); }
-          to { transform: rotate(-270deg); }
-        }
-
-        .base-image-layer {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          background-image: url(${bgImage});
-          background-size: contain;
-          background-position: center;
-          background-repeat: no-repeat;
-          animation: rotateCounterClockwise 60s linear infinite;
-          z-index: 1;
-        }
-
-        @keyframes windFlow {
-          0% { transform: translateX(-100%) skewX(-12deg); opacity: 0; }
-          10% { opacity: 0.3; }
-          90% { opacity: 0.3; }
-          100% { transform: translateX(100vw) skewX(-12deg); opacity: 0; }
-        }
-
-        .wind-streak {
-          position: absolute;
-          height: 2px;
-          background: linear-gradient(90deg, transparent, rgba(149, 213, 178, 0.4), rgba(233, 196, 106, 0.3), transparent);
-          border-radius: 2px;
-          animation: windFlow 8s linear infinite;
-          pointer-events: none;
-          z-index: 2;
-        }
-      `}</style>
-
+    <div className={styles.clockViewport}>
       {/* Tiles Layer */}
-      <div className="tile-container">
-        <img src={tileImage} alt="" className="rotating-tile" style={{ left: 'calc(50% - 50px)', top: 'calc(50% - 50px)' }} />
+      <div className={styles.tileContainer}>
+        <img src={tileImage} alt="" className={styles.rotatingTile} style={{ left: 'calc(50% - 50px)', top: 'calc(50% - 50px)' }} />
         {backgroundTiles}
       </div>
 
       {/* Center Image Layer */}
-      <div className="base-image-layer" />
-
+      <div className={styles.baseImageLayer} style={{ backgroundImage: `url(${bgImage})` }} />
    
-
       {/* Clock Face */}
-      <div
-        style={{
-          position: 'relative',
-          width: `${clockSize}vmin`,
-          height: `${clockSize}vmin`,
-          zIndex: 10,
-        }}
-      >
+      <div className={styles.clockFace} style={{ width: `${clockSize}vmin`, height: `${clockSize}vmin` }}>
         {numerals.map(({ numeral, x, y, rotation }, index) => (
           <span
             key={index}
+            className={styles.numeral}
             style={{
-              position: 'absolute',
-              fontFamily: 'SEClock, serif',
-              fontSize: 'clamp(3rem, 6vw, 6rem)',
-              color: '#D5ECE2',
               left: `${x}%`,
               top: `${y}%`,
               transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
-              textShadow: '1px 1px 12px rgb(64, 224, 208), 0 8px 1px rgba(0,0,0,0.8)',
             }}
           >
             {numeral}
@@ -184,69 +101,20 @@ const Clock: React.FC = () => {
 
         {/* Hour Hand */}
         <div
+          className={styles.hourHand}
           style={{
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            transformOrigin: 'bottom center',
-            width: '6px',
-            height: '22%',
-            background: 'linear-gradient(to top, #1b5e3f 0%, #40916c 50%, #74c69d 100%)',
             transform: `translate(-50%, -100%) rotate(${angles.hour}deg)`,
-            boxShadow: '0 0 8px rgba(0,0,0,0.5)',
-            zIndex: 13,
-            borderRadius: '4px',
           }}
         />
 
         {/* Minute Hand */}
-        <div
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            transformOrigin: 'bottom center',
-            width: '4px',
-            height: '35%',
-            background: 'linear-gradient(to top, #2d6a4f 0%, #52b788 50%, #95d5b2 100%)',
-            transform: `translate(-50%, -100%) rotate(${angles.minute}deg)`,
-            boxShadow: '0 0 8px rgba(0,0,0,0.5)',
-            zIndex: 12,
-            borderRadius: '3px',
-          }}
-        />
+        <div className={styles.minuteHand} style={{ transform: `translate(-50%, -100%) rotate(${angles.minute}deg)` }} />
 
         {/* Second Hand */}
-        <div
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            transformOrigin: 'bottom center',
-            width: '2px',
-            height: '40%',
-            background: 'linear-gradient(to top, #e07a5f 0%, #f4a261 50%, #e9c46a 100%)',
-            transform: `translate(-50%, -100%) rotate(${angles.second}deg)`,
-            boxShadow: '0 0 6px rgba(184,80,80,0.6)',
-            zIndex: 11,
-          }}
-        />
+        <div className={styles.secondHand} style={{ transform: `translate(-50%, -100%) rotate(${angles.second}deg)` }} />
 
         {/* Center Cap */}
-        <div
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            width: '16px',
-            height: '16px',
-            background: 'radial-gradient(circle at 30% 30%, #74c69d 0%, #2d6a4f 100%)',
-            borderRadius: '50%',
-            transform: 'translate(-50%, -50%)',
-            boxShadow: '0 0 10px rgba(0,0,0,0.8)',
-            zIndex: 14,
-          }}
-        />
+        <div className={styles.centerCap} />
       </div>
     </div>
   );

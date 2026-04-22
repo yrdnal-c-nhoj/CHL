@@ -1,0 +1,47 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+}
+
+.video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: auto;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.clock {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-family: 'Wobble', monospace;
+  font-weight: 300;
+  position: relative;
+  z-index: 1;
+}
+
+.digit {
+  font-size: clamp(2rem, 7vw, 6rem);
+  color: #f5d20a;
+  min-width: 0.8em;
+  line-height: 1;
+}
+
+.ampm {
+  composes: digit;
+  align-self: flex-end;
+}
