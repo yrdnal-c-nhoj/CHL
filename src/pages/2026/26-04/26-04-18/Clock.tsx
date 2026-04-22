@@ -92,7 +92,7 @@ const Clock: React.FC = () => {
             text-shadow: 1px 0 1px rgba(255,0,0,0.6);
           }
           75% {
-            color: #625F62;
+            color: #CAC3CA;
             text-shadow: 1px 0 1px rgba(255,0,0,0.6);
             }
         }
