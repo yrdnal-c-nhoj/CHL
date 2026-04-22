@@ -10,7 +10,8 @@
 
 BorrowedTime is an online digital art project by [Cubist Heart Laboratories](https://www.cubistheart.com). The Lab combines existing material (open source code, appropriated imagery, found type design, etc.) to make a new online clock each day
 
-[🕐 View Live Site](https://www.cubistheart.com) · [📖 Read the Manifesto](https://www.cubistheart.com/manifesto) · [💌 Contact Us](mailto:cubistheart@gmail.com)
+[🕐 Take Me There](https://www.cubistheart.com)
+[💌 Contact The Lab](mailto:cubistheart@gmail.com)
 
 ## 🎨 Project Overview
 
