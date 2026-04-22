@@ -109,7 +109,7 @@ const Clock: React.FC = () => {
     <>
       <style>{`
         html, body { margin: 0; padding: 0; overflow: hidden; background: transparent; }
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
           .clock-container video { object-fit: contain; height: 50% !important; top: 25% !important; }
           .mobile-overlay { display: block !important; }
         }
