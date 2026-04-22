@@ -32,7 +32,7 @@
 }
 
 .bgImage {
-  height: 10%;
+  height: 100%;
   width: auto;
   max-width: none;
   flex-shrink: 0;
