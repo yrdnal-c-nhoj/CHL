@@ -29,7 +29,7 @@ const Clock: React.FC = () => {
   const [resetKey, setResetKey] = useState(0);
 
   const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'Luxurious Script', fontUrl: 'https://fonts.gstatic.com/s/luxuriousscript/v9/qWcB6jptJa7Ht02aE4dAbwAs_PxQN1vM5tja4dRExwuS.woff2' }
+    { fontFamily: 'Caveat', fontUrl: 'https://fonts.gstatic.com/s/caveat/v18/Wnz6HAc5bAfYB2Q7azYYMg8.woff2' }
   ], []);
 
   useSuspenseFontLoader(fontConfigs);
@@ -68,7 +68,7 @@ const Clock: React.FC = () => {
     
     textCtx.fillStyle = '#000';
     textCtx.fillRect(0, 0, cw, ch);
-    textCtx.font = `900 120px 'Luxurious Script', sans-serif`;
+    textCtx.font = `900 120px 'Caveat', cursive`;
     textCtx.fillStyle = '#fff';
     textCtx.textAlign = 'center';
     textCtx.textBaseline = 'middle';
