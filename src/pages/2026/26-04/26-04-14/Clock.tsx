@@ -91,7 +91,8 @@ const containerStyle: React.CSSProperties = {
   alignItems: 'center', backgroundColor: '#000', position: 'relative', overflow: 'hidden',
 };
 const videoStyle: React.CSSProperties = {
-  position: 'absolute', width: 'auto', height: '100%', objectFit: 'contain',
+  position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+  minWidth: '100%', minHeight: '100%', width: 'auto', height: 'auto', objectFit: 'cover',
 };
 const imageOverlayStyle: React.CSSProperties = {
   position: 'absolute',
@@ -113,7 +114,7 @@ const overlayStyle: React.CSSProperties = {
   zIndex: 1,
 };
 const clockFaceStyle: React.CSSProperties = {
-  position: 'relative', width: '55vh', height: '100vh', borderRadius: '50%',
+  position: 'relative', width: '80vmin', height: '80vmin', borderRadius: '50%',
 };
 const numberStyle: React.CSSProperties = {
   position: 'absolute',

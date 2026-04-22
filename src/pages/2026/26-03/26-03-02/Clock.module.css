@@ -1,0 +1,63 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: #dbcc99;
+}
+
+.canvas {
+  display: block;
+}
+
+.timeWrapper {
+  position: absolute;
+  top: 75%;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  perspective: 1000px;
+  pointer-events: none;
+}
+
+.mainTime, .reflection {
+  display: flex;
+  align-items: center;
+  transform-origin: 50% 0%;
+}
+
+.mainTime {
+  transform: rotateX(75deg);
+  color: rgb(109, 103, 106);
+  text-shadow: 0 0 20px rgba(10, 5, 15, 0.1);
+}
+
+.reflection {
+  margin-top: -2vh;
+  transform: rotateX(75deg) scaleY(-1);
+  color: rgba(10, 5, 15, 0.15);
+  filter: blur(8px);
+  opacity: 0.6;
+}
+
+.digit {
+  font-size: 12vw;
+  font-weight: 200;
+  font-family: sans-serif;
+  letter-spacing: -0.05em;
+  display: inline-block;
+  min-width: 0.65em;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .digit {
+    font-size: 18vw;
+  }
+  
+  .timeWrapper {
+    top: 70%;
+  }
+}

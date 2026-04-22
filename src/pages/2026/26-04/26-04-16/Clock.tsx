@@ -63,7 +63,7 @@ const Clock: React.FC = () => {
               src={tileImage}
               alt=""
               className={styles.rotatingTile}
-              style={{ left, top }}
+              style={{ '--tile-x': left, '--tile-y': top } as React.CSSProperties}
             />
           );
         }
@@ -76,7 +76,7 @@ const Clock: React.FC = () => {
     <div className={styles.clockViewport}>
       {/* Tiles Layer */}
       <div className={styles.tileContainer}>
-        <img src={tileImage} alt="" className={styles.rotatingTile} style={{ left: 'calc(50% - 50px)', top: 'calc(50% - 50px)' }} />
+        <img src={tileImage} alt="" className={styles.rotatingTile} style={{ '--tile-x': 'calc(50% - 50px)', '--tile-y': 'calc(50% - 50px)' } as React.CSSProperties} />
         {backgroundTiles}
       </div>
 
@@ -90,10 +90,10 @@ const Clock: React.FC = () => {
             key={index}
             className={styles.numeral}
             style={{
-              left: `${x}%`,
-              top: `${y}%`,
-              transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
-            }}
+              '--x': `${x}%`,
+              '--y': `${y}%`,
+              '--rot': `${rotation}deg`,
+            } as React.CSSProperties}
           >
             {numeral}
           </span>
@@ -103,15 +103,15 @@ const Clock: React.FC = () => {
         <div
           className={styles.hourHand}
           style={{
-            transform: `translate(-50%, -100%) rotate(${angles.hour}deg)`,
-          }}
+            '--rot': `${angles.hour}deg`,
+          } as React.CSSProperties}
         />
 
         {/* Minute Hand */}
-        <div className={styles.minuteHand} style={{ transform: `translate(-50%, -100%) rotate(${angles.minute}deg)` }} />
+        <div className={styles.minuteHand} style={{ '--rot': `${angles.minute}deg` } as React.CSSProperties} />
 
         {/* Second Hand */}
-        <div className={styles.secondHand} style={{ transform: `translate(-50%, -100%) rotate(${angles.second}deg)` }} />
+        <div className={styles.secondHand} style={{ '--rot': `${angles.second}deg` } as React.CSSProperties} />
 
         {/* Center Cap */}
         <div className={styles.centerCap} />
