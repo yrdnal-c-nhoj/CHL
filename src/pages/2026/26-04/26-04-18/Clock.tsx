@@ -28,7 +28,7 @@ const Clock: React.FC = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000',
+    backgroundColor: '#D8E4D7',
     overflow: 'hidden',
     position: 'relative',
   };
@@ -42,7 +42,8 @@ const Clock: React.FC = () => {
     backgroundImage: `url(${bgImg})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    filter: 'grayscale(100%) brightness(1.1)',
+    filter: 'grayscale(100%) brightness(1.1) contrast(1.5)',
+    opacity: 0.3,
     zIndex: 0,
   };
 
@@ -69,7 +70,7 @@ const Clock: React.FC = () => {
     left: 0,
     width: '100vw',
     height: '100vh',
-    background: 'linear-gradient(135deg, rgba(0, 255, 255, 0.62) 0%, rgba(0,0,0,0) 50%, rgba(255, 0, 255, 0.59) 100%)',
+    background: 'linear-gradient(135deg, rgba(0, 255, 255, 0.13) 0%, rgba(0,0,0,0) 50%, rgba(255, 0, 255, 0.17) 100%)',
     mixBlendMode: 'overlay',
     pointerEvents: 'none',
     zIndex: 1,
@@ -80,20 +81,20 @@ const Clock: React.FC = () => {
       <style>{`
         @keyframes radioWave {
           0%, 100% {
-            color: #fff;
-            text-shadow: 1px 0 1px rgba(255,0,0,0.6);
+            color: #603135;
+            text-shadow: 3px 1px 0 rgba(39, 18, 18, 0.6);
           }
           25% {
             color: #AAAFA6;
-            text-shadow: 1px 0 1px rgba(255,0,0,0.6);
+            text-shadow: 1px 0 0 rgb(255, 0, 0);
          }
           50% {
-            color: #535F52;
-            text-shadow: 1px 0 1px rgba(255,0,0,0.6);
+            color: #073103;
+            text-shadow: -1px -2px 0 rgb(255, 242, 3);
           }
           75% {
-            color: #CAC3CA;
-            text-shadow: 1px 0 1px rgba(255,0,0,0.6);
+            color: #FDF9FD;
+            text-shadow: 1px 0 0 rgb(255, 0, 0);
             }
         }
         .radio-digit {
@@ -102,15 +103,15 @@ const Clock: React.FC = () => {
           line-height: 1;
           font-variant-numeric: tabular-nums;
           user-select: none;
-          animation: radioWave 2s ease-in-out infinite;
+          animation: radioWave 40s ease-in-out infinite;
           letter-spacing: -0.05em;
           transform: translateY(14%);
-          opacity: 0.6;
+          opacity: 0.9;
         }
         .radio-digit:nth-child(1) { animation-delay: 0s; }
-        .radio-digit:nth-child(2) { animation-delay: 0.5s; }
-        .radio-digit:nth-child(3) { animation-delay: 1s; }
-        .radio-digit:nth-child(4) { animation-delay: 1.5s; }
+        .radio-digit:nth-child(2) { animation-delay: 2s; }
+        .radio-digit:nth-child(3) { animation-delay: 12s; }
+        .radio-digit:nth-child(4) { animation-delay: 28s; }
       `}</style>
       <div style={bgStyle} />
       <div style={overlayStyle} />
