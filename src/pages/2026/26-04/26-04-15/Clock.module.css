@@ -36,7 +36,7 @@
   gap: 0.5rem;
   align-items: center;
   font-family: monospace;
-  fontWeight: 300;
+  font-weight: 300;
   /* Nudge clock up slightly to maintain balance */
   transform: translateY(-2vh);
 }
