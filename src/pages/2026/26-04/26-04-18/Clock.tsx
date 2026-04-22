@@ -42,7 +42,7 @@ const Clock: React.FC = () => {
     backgroundImage: `url(${bgImg})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    filter: 'grayscale(100%) brightness(1.3)',
+    filter: 'grayscale(100%) brightness(1.1)',
     zIndex: 0,
   };
 
@@ -51,7 +51,7 @@ const Clock: React.FC = () => {
     gridTemplateColumns: `repeat(2, ${cell})`,
     gridTemplateRows: `repeat(2, ${cell})`,
     position: 'relative',
-    zIndex: 1,
+    zIndex: 2,
   };
 
   const charWrapper: React.CSSProperties = {
@@ -61,6 +61,18 @@ const Clock: React.FC = () => {
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
+  };
+
+  const overlayStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    background: 'linear-gradient(135deg, rgba(0, 255, 255, 0.62) 0%, rgba(0,0,0,0) 50%, rgba(255, 0, 255, 0.59) 100%)',
+    mixBlendMode: 'overlay',
+    pointerEvents: 'none',
+    zIndex: 1,
   };
 
   return (
@@ -100,6 +112,7 @@ const Clock: React.FC = () => {
         .radio-digit:nth-child(4) { animation-delay: 1.5s; }
       `}</style>
       <div style={bgStyle} />
+      <div style={overlayStyle} />
       <div style={gridStyle}>
         <div style={charWrapper}><div className="radio-digit">{hours[0]}</div></div>
         <div style={charWrapper}><div className="radio-digit">{hours[1]}</div></div>
