@@ -32,7 +32,7 @@ The primary way to contribute is by creating a new daily clock:
 1. **Fork the repository**
 
    ```bash
-   git clone https://github.com/your-username/CHL.git
+   git clone https://github.com/yrdnal-c-nhoj/CHL.git
    cd CHL
    ```
 
@@ -50,6 +50,7 @@ The primary way to contribute is by creating a new daily clock:
    ```
 
 4. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -68,8 +69,8 @@ The primary way to contribute is by creating a new daily clock:
 
 Each clock should be in:
 
-```
-src/pages/YY-MM/YY-MM-DD/
+```text
+src/pages/YYYY/YY-MM/YY-MM-DD/
 ├── Clock.tsx           # Main clock component
 ├── Clock.module.css    # Scoped styles
 └── assets/             # Clock-specific images/fonts (optional)
@@ -144,8 +145,8 @@ If you find a bug:
 
 ## 💬 Questions?
 
-- Email: cubistheart@gmail.com
-- Website: https://www.cubistheart.com
+- Email: `cubistheart@gmail.com`
+- Website: <https://www.cubistheart.com>
 - Instagram: [@cubist_heart_labs](https://www.instagram.com/cubist_heart_labs/)
 
 ## 📜 Code of Conduct

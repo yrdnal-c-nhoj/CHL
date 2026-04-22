@@ -1,6 +1,6 @@
 # BorrowedTime 🧊🫀🔭
 
-[![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](https://github.com/your-username/CHL/actions)
+[![CI](https://github.com/yrdnal-c-nhoj/CHL/actions/workflows/ci.yml/badge.svg)](https://github.com/yrdnal-c-nhoj/CHL/actions/workflows/ci.yml)
 [![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=flat&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/react-%2320232a.svg?style=flat&logo=react&logoColor=%2361DAFB)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -11,10 +11,6 @@
 BorrowedTime is an online digital art project by [Cubist Heart Laboratories](https://www.cubistheart.com). The Lab combines existing material (open source code, appropriated imagery, found type design, etc.) to make a new online clock each day
 
 [🕐 Take Me There](https://www.cubistheart.com)
-
-
-
-
 
 [💌 Contact The Lab](mailto:cubistheart@gmail.com)
 
@@ -151,7 +147,7 @@ Each clock follows a flexible structure while maintaining unique characteristics
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your-username/CHL.git
+   git clone https://github.com/yrdnal-c-nhoj/CHL.git
    cd CHL
    ```
 
