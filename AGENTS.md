@@ -35,14 +35,14 @@ The clock registry lives in `src/context/clockpages.json` — an ordered array o
 
 ### Routing
 
-`App.jsx` defines routes. The wildcard route `/:date` maps to `ClockPage.tsx`, which looks up the date in `DataContext`, then dynamically imports the matching `Clock.tsx` via the `useClockPage` hook.
+`App.tsx` defines routes. The wildcard route `/:date` maps to `ClockPage.tsx`, which looks up the date in `DataContext`, then dynamically imports the matching `Clock.tsx` via the `useClockPage` hook.
 
 ### Clock Loading Pipeline
 
 `src/hooks/useClockPage.ts` is the core of the system:
 
 1. Uses `import.meta.glob('../../pages/**/Clock.tsx')` to pre-register all clock modules at build time.
-2. Constructs the module key as `pages/YY-MM/YY-MM-DD/Clock.tsx`.
+2. Constructs the module key as `pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx`.
 3. Dynamically imports the matching module and preloads any exported image/video assets before rendering.
 4. Manages a black overlay that fades out once the clock and its assets are ready, preventing flash of unstyled content.
 
@@ -54,7 +54,7 @@ The clock registry lives in `src/context/clockpages.json` — an ordered array o
 
 ### Adding a New Clock
 
-1. Create `src/pages/YY-MM/YY-MM-DD/Clock.tsx` — the default export must be a React component.
+1. Create `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx` — the default export must be a React component.
 2. Add an entry to `src/context/clockpages.json`: `{ "path": "YY-MM-DD", "date": "YY-MM-DD", "title": "Clock Title" }`.
 
 That's all that's required. The glob-based dynamic import in `useClockPage.ts` automatically picks up any new `Clock.tsx` file matching the pattern.
@@ -74,13 +74,13 @@ That's all that's required. The glob-based dynamic import in `useClockPage.ts` a
 
 ### TypeScript Migration
 
-The codebase is in active migration from JSX to TSX. Shared utilities and new files should use TypeScript. `strict` mode is currently disabled in `tsconfig.json` to ease migration, but `strictNullChecks` is enabled. Path aliases (`@/components/*`, `@/utils/*`, etc.) are configured.
+The codebase is in active migration from JSX to TSX. Shared utilities and new files should use TypeScript. `strict` mode is enabled in `tsconfig.json`, with path aliases (`@/components/*`, `@/utils/*`, etc.) configured.
 
 ### Environment Variables
 
 Defined in `.env` (copy from `.env.example`). All must be prefixed with `VITE_` to be accessible in the browser. Key variables:
 
-- `VITE_GA_ID` — Google Analytics 4 measurement ID
+- `VITE_GA_MEASUREMENT_ID` — Google Analytics 4 measurement ID
 - `VITE_ENVIRONMENT` — `development` / `testing` / `production` (controls test vs. prod data)
 - `VITE_PIXABAY_KEY`, `VITE_UNSPLASH_KEY`, `VITE_GOOGLE_API_KEY`, `VITE_NASA_API_KEY` — image API keys used by individual clocks
 
