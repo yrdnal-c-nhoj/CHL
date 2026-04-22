@@ -3,6 +3,7 @@ import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import wobbleVideo from '@/assets/images/2026/26-04/26-04-19/wobble2.mp4';
 import wobbleFont from '@/assets/fonts/26-04-19-wobble.ttf';
+import styles from './Clock.module.css';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
@@ -18,78 +19,25 @@ const Clock: React.FC = () => {
     return { hours: h.toString(), minutes: m, ampm: am };
   }, [time]);
 
-  const containerStyle: React.CSSProperties = {
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    overflow: 'hidden',
-    margin: 0,
-    padding: 0,
-    backgroundColor: '#FFFFFF',
-  };
-
-  const videoStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    minWidth: 'auto',
-    minHeight: '100%',
-    width: 'auto',
-    height: 'auto',
-    objectFit: 'cover',
-    zIndex: 0,
-  };
-
-  const clockStyle: React.CSSProperties = {
-    display: 'flex',
-    gap: '0.5rem',
-    alignItems: 'center',
-    fontFamily: 'Wobble, monospace',
-    fontWeight: 300,
-    position: 'relative',
-    zIndex: 1,
-  };
-
-  const digitStyle: React.CSSProperties = {
-    fontSize: 'clamp(2rem, 7vw, 6rem)',
-    color: '#F5D20A',
-    minWidth: '0.8em',
-    lineHeight: 1,
-  };
-
-  const separatorStyle: React.CSSProperties = {
-    ...digitStyle,
-
-  };
-
-  const ampmStyle: React.CSSProperties = {
-    ...digitStyle,
-    alignSelf: 'flex-end',
-  };
-
   return (
-    <div style={containerStyle}>
+    <div className={styles.container}>
       <video
         src={wobbleVideo}
-        style={videoStyle}
+        className={styles.video}
         autoPlay
         loop
         muted
         playsInline
       />
 
-      <div style={clockStyle}>
+      <div className={styles.clock}>
         {hours.split('').map((digit, i) => (
-          <span key={i} style={digitStyle}>{digit}</span>
+          <span key={i} className={styles.digit}>{digit}</span>
         ))}
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{minutes[0]}</span>
-        <span style={digitStyle}>{minutes[1]}</span>
-        <span style={ampmStyle}>{ampm}</span>
+        <span className={styles.digit}>:</span>
+        <span className={styles.digit}>{minutes[0]}</span>
+        <span className={styles.digit}>{minutes[1]}</span>
+        <span className={styles.ampm}>{ampm}</span>
       </div>
     </div>
   );
