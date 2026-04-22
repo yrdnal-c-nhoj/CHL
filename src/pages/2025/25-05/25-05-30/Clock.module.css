@@ -1,0 +1,63 @@
+.screen {
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.backgroundIframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.1);
+  transform-origin: center;
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+}
+
+.clockWrapper {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.clockContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5vw;
+  padding: 0 2vw;
+  margin-left: -3vw;
+}
+
+.digitBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 0.8em;
+  height: 1.2em;
+  color: #8d6e6e;
+  font-family: 'iss', monospace;
+  font-size: clamp(3rem, 8vw, 12rem);
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 20px #f1c120, 0 0 40px #cb5f26, 0 0 80px #f1c120,
+    0 0 60px #f3f7f8, 0 1px 1px #d4d6e0;
+}

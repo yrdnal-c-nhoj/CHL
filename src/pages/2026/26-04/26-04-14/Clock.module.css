@@ -11,13 +11,11 @@
 
 .video {
   position: absolute;
-  top: 50%;
+  top: 42%;
   left: 50%;
   transform: translate(-50%, -50%);
-  min-width: 100%;
-  min-height: 100%;
   width: auto;
-  height: 100%;
+  height: auto;
   object-fit: cover;
 }
 
@@ -54,8 +52,9 @@
   left: var(--x);
   top: var(--y);
   transform: translate(-50%, -50%) rotate(var(--rot));
-  font-family: 'Hanalei', cursive;
+  font-family: 'Hanalei', 'Arial Black', fantasy;
   font-size: 9vh;
+  font-weight: normal;
   color: #e2725b;
   text-shadow: 2px 2px 0 #1b4d3e, -2px -2px 0 #1b4d3e, 2px -2px 0 #1b4d3e, -2px 2px 0 #1b4d3e, 0 0 8px rgba(0, 0, 0, 0.8);
 }
@@ -86,6 +85,6 @@
 .secondHand {
   width: 4%;
   height: 242%; /* Note: This value was preserved from your original code */
-  background-color: #df886f;
+  background-color: #ffffffa3;
   z-index: 4;
 }
