@@ -40,10 +40,10 @@ const Clock: React.FC = () => {
     let slowdownTimeoutId: NodeJS.Timeout;
 
     const scheduleCycle = () => {
-      // Start slowdown 1 second before the reset
+      // Start slowdown 2 seconds before the reset
       slowdownTimeoutId = setTimeout(() => {
         setSlowdownActive(true);
-      }, 4000); // 4 seconds into the 5-second cycle
+      }, 3000); // 3 seconds into the 5-second cycle
 
       // Trigger reset and restart the cycle after 5 seconds
       intervalId = setTimeout(() => {
@@ -157,9 +157,12 @@ const Clock: React.FC = () => {
 
       circlesRef.current.forEach((circle) => {
         if (slowdownActive) {
-          // Freeze particles completely during slowdown - just apply strong friction
-          circle.vx *= 0.1;
-          circle.vy *= 0.1;
+          // Shake with decreasing intensity during slowdown
+          const shakeIntensity = 20; // High intensity shake
+          circle.vx += (Math.random() - 0.5) * shakeIntensity;
+          circle.vy += (Math.random() - 0.5) * shakeIntensity;
+          circle.vx *= 0.7; // Gradual slowdown
+          circle.vy *= 0.7;
         } else if (circle.movement === 'in' || circle.movement === 'jiggle') {
           const dx = circle.originX - circle.x;
           const dy = circle.originY - circle.y;
