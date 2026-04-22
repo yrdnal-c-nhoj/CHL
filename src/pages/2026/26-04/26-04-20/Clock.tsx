@@ -40,6 +40,7 @@ const Clock: React.FC = () => {
     backgroundImage: `url(${bgImg})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+    transform: 'scaleX(-1)',
     zIndex: 0,
   };
 
@@ -60,7 +61,7 @@ const Clock: React.FC = () => {
     transformOrigin: 'bottom center',
     transform: `translateX(-50%) rotate(${deg}deg)`,
     borderRadius: '2px',
-    boxShadow: '13px 0 4px #EC0B0B',
+    boxShadow: '13px 0 1px #EC0B0B',
   });
 
   const centerDotStyle: React.CSSProperties = {
