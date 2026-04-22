@@ -1,5 +1,7 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { useMillisecondClock } from '@/utils/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
 
 // Asset import for video and overlay image
@@ -10,14 +12,11 @@ import overlayImage from '@/assets/images/2026/26-04/26-04-14/haumea.webp';
 export { bgVideo, overlayImage };
 
 const Clock: React.FC = () => {
-  // Load Hanalei font from Google Fonts
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Hanalei&display=swap';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-    return () => { document.head.removeChild(link); };
-  }, []);
+  // Load Hanalei font using useSuspenseFontLoader
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'Hanalei', fontUrl: 'https://fonts.gstatic.com/s/hanalei/v23/wEO_EBrAnchaJ3eGCBz5hQ.woff2' }
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
 
   const time = useMillisecondClock(16);
   const ms = time.getMilliseconds();

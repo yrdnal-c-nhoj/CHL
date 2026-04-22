@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useCallback, useState, useMemo } from 'react'
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
+import styles from './Clock.module.css';
 
 interface Circle {
   x: number;
@@ -204,7 +205,7 @@ const Clock: React.FC = () => {
     return () => cancelAnimationFrame(animationRef.current);
   }, [slowdownActive]);
 
-  return <canvas ref={canvasRef} style={{ display: 'block', background: '#71896F' }} />;
+  return <canvas ref={canvasRef} className={styles.canvas} />;
 };
 
 export default Clock;
