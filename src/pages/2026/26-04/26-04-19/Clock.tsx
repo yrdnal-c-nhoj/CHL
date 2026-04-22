@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import wobbleVideo from '@/assets/images/2026/26-04/26-04-19/wobble.mp4';
+import wobbleVideo from '@/assets/images/2026/26-04/26-04-19/wobble2.mp4';
 import wobbleFont from '@/assets/fonts/26-04-19-wobble.ttf';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
@@ -28,6 +28,7 @@ const Clock: React.FC = () => {
     overflow: 'hidden',
     margin: 0,
     padding: 0,
+    backgroundColor: '#FFFFFF',
   };
 
   const videoStyle: React.CSSProperties = {
@@ -35,7 +36,7 @@ const Clock: React.FC = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    minWidth: '100%',
+    minWidth: 'auto',
     minHeight: '100%',
     width: 'auto',
     height: 'auto',
@@ -80,12 +81,7 @@ const Clock: React.FC = () => {
         muted
         playsInline
       />
-      <style>{`
-        @keyframes blink {
-          0%, 100% { opacity: 0.6; }
-          50% { opacity: 0.2; }
-        }
-      `}</style>
+
       <div style={clockStyle}>
         {hours.split('').map((digit, i) => (
           <span key={i} style={digitStyle}>{digit}</span>
