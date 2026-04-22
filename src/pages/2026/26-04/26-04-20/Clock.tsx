@@ -46,11 +46,8 @@ const Clock: React.FC = () => {
   const clockFaceStyle: React.CSSProperties = {
     width: size,
     height: size,
-    borderRadius: '50%',
-    border: '4px solid rgba(255,255,255,0.3)',
     position: 'relative',
     zIndex: 1,
-    backdropFilter: 'blur(2px)',
   };
 
   const handStyle = (deg: number, length: string, width: string, color: string): React.CSSProperties => ({
@@ -63,7 +60,7 @@ const Clock: React.FC = () => {
     transformOrigin: 'bottom center',
     transform: `translateX(-50%) rotate(${deg}deg)`,
     borderRadius: '2px',
-    boxShadow: '0 0 4px rgba(0,0,0,0.5)',
+    boxShadow: '13px 0 4px #EC0B0B',
   });
 
   const centerDotStyle: React.CSSProperties = {
