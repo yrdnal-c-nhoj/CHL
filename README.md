@@ -35,10 +35,10 @@ BorrowedTime creates daily clock experiences that challenge conventional timekee
 ### Technical Features
 
 - **Modern React Architecture**: Built with React 18 and hooks
-- **TypeScript Integration**: Complete migration to TypeScript for enhanced type safety
+- **TypeScript Integration**: Ongoing migration to TypeScript for enhanced type safety
 - **Performance Optimized**: Lazy loading, code splitting, and asset optimization
 - **SEO Friendly**: Dynamic meta tags and semantic markup
-- **Progressive Web App**: Offline capabilities and app-like experience
+- **Progressive Enhancement**: App-like routing and performance-focused loading
 - **Advanced Font Loading**: Custom font loading utilities with FOUC prevention
 - **Component Library**: Reusable components and utilities
 
@@ -68,7 +68,7 @@ BorrowedTime creates daily clock experiences that challenge conventional timekee
 
 ## 📁 Project Structure
 
-```
+```text
 CHL/
 ├── src/
 │   ├── pages/                  # Daily clock implementations
@@ -100,14 +100,14 @@ CHL/
 │   │   ├── fonts/       # Custom typography
 │   │   ├── images/      # Found imagery and graphics
 │   │   └── i.png, x.png # Social media icons
-│   ├── App.jsx           # Main application component
+│   ├── App.tsx           # Main application component
 │   ├── Home.jsx          # Homepage with clock archive
-│   ├── ClockPage.jsx     # Dynamic clock page renderer
+│   ├── ClockPage.tsx     # Dynamic clock page renderer
 │   ├── Today.jsx         # Today's clock page
 │   ├── About.jsx         # About page
 │   ├── Manifesto.jsx     # Project manifesto
 │   ├── Contact.jsx       # Contact information
-│   └── main.jsx          # Application entry point
+│   └── main.tsx          # Application entry point
 ├── public/               # Public assets
 ├── package.json          # Dependencies and scripts
 ├── vite.config.ts       # Vite configuration
@@ -257,7 +257,7 @@ describe('Component', () => {
 
 Each clock follows the date-based structure:
 
-```
+```text
 src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx
 ```
 
@@ -359,8 +359,9 @@ npm run build
 Create a `.env` file with:
 
 ```env
-VITE_GA_ID=your-google-analytics-id
+VITE_GA_MEASUREMENT_ID=your-google-analytics-id
 VITE_BASE_URL=https://your-domain.com
+VITE_ENVIRONMENT=development
 ```
 
 ### Vite Configuration
@@ -375,7 +376,7 @@ Key settings in `vite.config.ts`:
 
 ### Phase 1: Foundation & Performance (Q1 2025)
 
-- [x] **TypeScript Migration**: Complete migration to TypeScript for all components
+- [ ] **TypeScript Migration**: Complete migration to TypeScript for all components
 - [x] **Advanced Font Loading**: Implement robust font loading with FOUC prevention
 - [x] **Component Library**: Create reusable components and utilities
 - [ ] **Performance Optimization**: Implement code splitting and lazy loading for all clocks
@@ -470,8 +471,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 💌 Contact
 
-- **Email**: cubistheart@gmail.com
-- **Website**: https://www.cubistheart.com
+- **Email**: `cubistheart@gmail.com`
+- **Website**: <https://www.cubistheart.com>
 - **Instagram**: [@cubist_heart_labs](https://www.instagram.com/cubist_heart_labs/)
 - **X (Twitter)**: [@cubistheartlabs](https://x.com/cubistheartlabs)
 - **Facebook**: [Cubist Heart Laboratories](https://www.facebook.com/profile.php?id=100090369371981)

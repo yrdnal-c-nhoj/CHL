@@ -4,7 +4,7 @@ This document defines the standardized architecture for BorrowedTime clock compo
 
 ## Directory Structure
 
-```
+```text
 src/
 ├── templates/           # Starter templates
 │   ├── BaseClock.tsx   # ⭐ Recommended starting point
@@ -106,14 +106,14 @@ The component must be wrapped in `<Suspense>` in the parent (handled by `ClockPa
 
 ## File Locations
 
-- **Clock component**: `src/pages/YY-MM/YY-MM-DD/Clock.tsx`
-- **Styles**: `src/pages/YY-MM/YY-MM-DD/Clock.module.css`
+- **Clock component**: `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx`
+- **Styles**: `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.module.css`
 - **Assets**: `src/assets/images/YY-MM/YY-MM-DD/`
 - **Fonts**: `src/assets/fonts/YY-MM-DD-name.ttf`
 
 ## Adding a New Clock
 
-1. Create `src/pages/YY-MM/YY-MM-DD/Clock.tsx` using BaseClock as template
-2. Create `src/pages/YY-MM/YY-MM-DD/Clock.module.css`
+1. Create `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx` using BaseClock as template
+2. Create `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.module.css`
 3. Add assets to `src/assets/images/YY-MM/YY-MM-DD/`
 4. Add entry to `src/context/clockpages.json`
