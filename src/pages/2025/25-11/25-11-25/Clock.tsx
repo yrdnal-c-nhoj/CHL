@@ -5,6 +5,7 @@ import fontClockUrl from '@/assets/fonts/2025/25-11-25-ntp.ttf?url';
 import fontMarqueeUrl from '@/assets/fonts/2025/25-11-25-n2.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
+import styles from './Clock.module.css';
 
 export { backgroundImg };
 
@@ -87,64 +88,34 @@ export default function NtpClock() {
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  const wrapperStyle = useMemo(() => ({
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#111',
-    backgroundImage: `url(${backgroundImg}),
-      linear-gradient(to right, rgba(200,200,200,0.05) 0.1vh, transparent 0.1vh),
-      linear-gradient(to bottom, rgba(200,200,200,0.05) 0.1vh, transparent 0.1vh)`,
-    backgroundSize: '25vh 15vh',
-    backgroundPosition: 'center',
-    filter: 'invert(1) saturate(7)',
-    overflow: 'hidden',
-    position: 'relative' as const,
-  }), []);
-
-  const clockStyle = {
-    fontFamily: 'ClockFont, monospace',
-    fontSize: isPortrait ? '13vh' : '15vh',
-    lineHeight: '0.75',
-    display: 'flex',
-    flexDirection: (isPortrait ? 'column' : 'row') as any,
-    zIndex: 2,
-  };
-
-  const marqueeStyle = {
-    position: 'absolute' as const,
-    whiteSpace: 'nowrap' as const,
-    fontSize: '49vh',
-    fontFamily: 'MarqueeFont, serif',
-    color: '#110101FF',
-    textShadow: '#6EE612FF 1px 0',
-    zIndex: 1,
-    pointerEvents: 'none' as const,
-    left: '50%',
-    top: '50%',
-    transform: isPortrait 
-      ? `translate(-50%, -50%) translateX(${100 - marqueePos}vw)` 
-      : `translate(-50%, -50%) translateY(${100 - marqueePos}vh) rotate(90deg)`,
-  };
-
   return (
-    <div style={wrapperStyle}>
-      <div style={clockStyle}>
+    <div 
+      className={styles.wrapper} 
+      style={{ '--bg-img': `url(${backgroundImg})` } as React.CSSProperties}
+    >
+      <div className={`${styles.clock} ${isPortrait ? styles.portrait : styles.landscape}`}>
         {String(ntpSeconds).split('').map((digit, i) => (
-          <span key={i} style={{
-            color: digitColors[i]?.color || '#0ff',
-            textShadow: `1.0vh 0 0 ${digitColors[i]?.shadowColor || '#0ff'}, 1px 0 black, 0 -1px 0 black`,
-          }}>
+          <span 
+            key={i} 
+            className={styles.digit}
+            style={{
+              '--digit-color': digitColors[i]?.color || '#0ff',
+              '--digit-shadow': digitColors[i]?.shadowColor || '#0ff',
+            } as React.CSSProperties}
+          >
             {digit}
           </span>
         ))}
       </div>
 
-      {!isSynced && <div style={{ position: 'absolute', top: '2vh', right: '2vh', color: '#c8ff00' }}>Syncing...</div>}
+      {!isSynced && <div className={styles.syncStatus}>Syncing...</div>}
 
-      <div style={marqueeStyle}>
+      <div 
+        className={`${styles.marquee} ${isPortrait ? styles.portrait : styles.landscape}`}
+        style={{
+          '--marquee-pos': `${100 - marqueePos}`
+        } as React.CSSProperties}
+      >
         {`${displayTime} NTP is a system that keeps computers accurate. `.repeat(5)}
       </div>
     </div>
