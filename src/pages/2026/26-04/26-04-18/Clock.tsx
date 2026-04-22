@@ -28,18 +28,30 @@ const Clock: React.FC = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundImage: `url(${bgImg})`,
-    backgroundSize: 'cover',
-    filter: 'grayscale(100%) brightness(1.3)',
-    backgroundPosition: 'center',
     backgroundColor: '#000',
     overflow: 'hidden',
+    position: 'relative',
+  };
+
+  const bgStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    backgroundImage: `url(${bgImg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    filter: 'grayscale(100%) brightness(1.3)',
+    zIndex: 0,
   };
 
   const gridStyle: React.CSSProperties = {
     display: 'grid',
     gridTemplateColumns: `repeat(2, ${cell})`,
     gridTemplateRows: `repeat(2, ${cell})`,
+    position: 'relative',
+    zIndex: 1,
   };
 
   const charWrapper: React.CSSProperties = {
@@ -51,23 +63,48 @@ const Clock: React.FC = () => {
     overflow: 'hidden',
   };
 
-  const charStyle: React.CSSProperties = {
-    fontFamily: "'H1', monospace",
-    color: '#f222ff',
-    fontSize: `calc(${cell} * 1.05)`, // 🔥 push near max
-    lineHeight: 1,
-    fontVariantNumeric: 'tabular-nums',
-    userSelect: 'none',
-    transform: 'translateY(14%)',
-  };
-
   return (
     <div style={containerStyle}>
+      <style>{`
+        @keyframes radioWave {
+          0%, 100% {
+            color: #fff;
+            text-shadow: 1px 0 1px rgba(255,0,0,0.6);
+          }
+          25% {
+            color: #AAAFA6;
+            text-shadow: 1px 0 1px rgba(255,0,0,0.6);
+         }
+          50% {
+            color: #535F52;
+            text-shadow: 1px 0 1px rgba(255,0,0,0.6);
+          }
+          75% {
+            color: #625F62;
+            text-shadow: 1px 0 1px rgba(255,0,0,0.6);
+            }
+        }
+        .radio-digit {
+          font-family: 'H1', monospace;
+          font-size: calc(${cell} * 1.05);
+          line-height: 1;
+          font-variant-numeric: tabular-nums;
+          user-select: none;
+          animation: radioWave 2s ease-in-out infinite;
+          letter-spacing: -0.05em;
+          transform: translateY(14%);
+        }
+        .radio-digit:nth-child(1) { animation-delay: 0s; }
+        .radio-digit:nth-child(2) { animation-delay: 0.5s; }
+        .radio-digit:nth-child(3) { animation-delay: 1s; }
+        .radio-digit:nth-child(4) { animation-delay: 1.5s; }
+      `}</style>
+      <div style={bgStyle} />
       <div style={gridStyle}>
-        <div style={charWrapper}><div style={charStyle}>{hours[0]}</div></div>
-        <div style={charWrapper}><div style={charStyle}>{hours[1]}</div></div>
-        <div style={charWrapper}><div style={charStyle}>{minutes[0]}</div></div>
-        <div style={charWrapper}><div style={charStyle}>{minutes[1]}</div></div>
+        <div style={charWrapper}><div className="radio-digit">{hours[0]}</div></div>
+        <div style={charWrapper}><div className="radio-digit">{hours[1]}</div></div>
+        <div style={charWrapper}><div className="radio-digit">{minutes[0]}</div></div>
+        <div style={charWrapper}><div className="radio-digit">{minutes[1]}</div></div>
       </div>
     </div>
   );
