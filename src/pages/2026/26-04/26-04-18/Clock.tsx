@@ -48,7 +48,7 @@ const Clock: React.FC = () => {
 
   const gridStyle: React.CSSProperties = {
     display: 'grid',
-    gridTemplateColumns: `repeat(2, ${cell})`,
+    gridTemplateColumns: `repeat(2, calc(${cell} * 0.85))`,
     gridTemplateRows: `repeat(2, ${cell})`,
     position: 'relative',
     zIndex: 2,
@@ -105,6 +105,7 @@ const Clock: React.FC = () => {
           animation: radioWave 2s ease-in-out infinite;
           letter-spacing: -0.05em;
           transform: translateY(14%);
+          opacity: 0.6;
         }
         .radio-digit:nth-child(1) { animation-delay: 0s; }
         .radio-digit:nth-child(2) { animation-delay: 0.5s; }

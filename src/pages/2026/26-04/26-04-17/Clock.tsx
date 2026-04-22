@@ -43,7 +43,7 @@ const Clock: React.FC = () => {
   const digitStyle: React.CSSProperties = {
     fontSize: 'clamp(4rem, 15vw, 12rem)',
     color: '#fff',
-    minWidth: '0.8em',
+    minWidth: '0.7em',
     lineHeight: 1,
     textShadow: `
       0 0 10px rgba(255,255,255,0.8),
@@ -56,12 +56,6 @@ const Clock: React.FC = () => {
 
   return (
     <div style={containerStyle}>
-      <style>{`
-        @keyframes blink {
-          0%, 100% { opacity: 0.6; }
-          50% { opacity: 0.2; }
-        }
-      `}</style>
       <div style={clockStyle}>
         <span style={digitStyle}>{hours[0]}</span>
         <span style={digitStyle}>{hours[1]}</span>
