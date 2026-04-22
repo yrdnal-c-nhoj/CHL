@@ -61,16 +61,14 @@ const POSITIONS: Position[] = [
 const ImageDisplay = () => {
   const time = useClockTime();
 
-  // Professional Practice: Use standardized font loading pipeline
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.href = GOOGLE_FONTS_URL;
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
+  // Professional Practice: Use standardized project loader for external fonts
+  const fontConfigs = useMemo(() => [
+    { fontFamily: 'Dancing Script', fontUrl: GOOGLE_FONTS_URL },
+    { fontFamily: 'Creepster', fontUrl: GOOGLE_FONTS_URL },
+    { fontFamily: 'Oswald', fontUrl: GOOGLE_FONTS_URL }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
 
   // Accessibility: Update time string for screen readers
   const ariaTime = useMemo(() => 
