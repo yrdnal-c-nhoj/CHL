@@ -105,7 +105,7 @@ export default function SproutClock() {
   const fontConfigs = [
     {
       fontFamily: 'sprout',
-      fontUrl: sproutFontTtf, // Using TTF as primary for consistency
+      fontUrl: sproutFontWoff2, // Prefer WOFF2 for better compression and performance
       options: {
         weight: 'normal',
         style: 'normal'
