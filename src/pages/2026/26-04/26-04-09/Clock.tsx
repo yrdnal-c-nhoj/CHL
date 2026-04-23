@@ -5,7 +5,7 @@ import type { FontConfig } from '@/types/clock';
 import backgroundVideo from '@/assets/images/2026/26-04/26-04-09/water.mp4';
 export { backgroundVideo }; // Export for preloading pipeline
 
-import waterFontUrl from '@/assets/fonts/26-04-09-water.ttf?url';
+import waterFontUrl from '@/assets/fonts/2026/26-04-09-water.ttf?url';
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {

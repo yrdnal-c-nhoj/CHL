@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
-import fontUrl from '@/assets/fonts/26-04-24-lissa.ttf';
+import fontUrl from '@/assets/fonts/2026/26-04-24-lissa.ttf';
 
 /**
  * Utility to pad time numbers

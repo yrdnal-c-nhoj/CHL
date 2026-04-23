@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/2026/26-04/26-04-13/bg.webp';
-import carFont from '@/assets/fonts/26-04-13-car.otf';
+import carFont from '@/assets/fonts/2026/26-04-13-car.otf';
 import styles from './Clock.module.css';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');

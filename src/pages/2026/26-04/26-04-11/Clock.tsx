@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import eyesFont from '@/assets/fonts/26-04-11-eyes.ttf';
+import eyesFont from '@/assets/fonts/2026/26-04-11-eyes.ttf';
 import bgImage from '@/assets/images/2026/26-04/26-04-11/eyes.webp'; 
 import styles from './Clock.module.css';
 
