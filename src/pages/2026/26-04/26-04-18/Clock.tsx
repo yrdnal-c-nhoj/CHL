@@ -81,19 +81,19 @@ const Clock: React.FC = () => {
       <style>{`
         @keyframes radioWave {
           0%, 100% {
-            color: #603135;
-            text-shadow: 3px 1px 0 rgba(39, 18, 18, 0.6);
+            color: #F4F1F1;
+            text-shadow: 3px 1px 0 rgba(246, 241, 241, 0.99);
           }
           25% {
-            color: #AAAFA6;
+            color: #3E4638;
             text-shadow: 1px 0 0 rgb(255, 0, 0);
          }
           50% {
-            color: #073103;
+            color: #D0D7D0;
             text-shadow: -1px -2px 0 rgb(255, 242, 3);
           }
           75% {
-            color: #FDF9FD;
+            color: #6E596E;
             text-shadow: 1px 0 0 rgb(255, 0, 0);
             }
         }
