@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import wobbleVideo from '@/assets/images/2026/26-04/26-04-19/wobble2.mp4';
-import wobbleFont from '@/assets/fonts/26-04-19-wobble.ttf';
+import wobbleFont from '@/assets/fonts/2026/26-04-19-wobble.ttf';
 import styles from './Clock.module.css';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
