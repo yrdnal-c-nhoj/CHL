@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
 import bgImg from '@/assets/images/2026/26-04/26-04-20/bstream.gif';
+import styles from './Clock.module.css'; // Import CSS Modules
 
 export const assets = [bgImg];
 
@@ -18,73 +19,23 @@ const Clock: React.FC = () => {
     };
   }, [time]);
 
-  const size = 'min(80vw, 80vh)';
-
-  const containerStyle: React.CSSProperties = {
-    width: '100vw',
-    height: '100vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#000',
-    overflow: 'hidden',
-    position: 'relative',
-  };
-
-  const bgStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${bgImg})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    transform: 'scaleX(-1)',
-    zIndex: 0,
-  };
-
-  const clockFaceStyle: React.CSSProperties = {
-    width: size,
-    height: size,
-    position: 'relative',
-    zIndex: 1,
-  };
-
-  const handStyle = (deg: number, length: string, width: string, color: string): React.CSSProperties => ({
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    width,
-    height: length,
-    backgroundColor: color,
-    transformOrigin: 'bottom center',
-    transform: `translateX(-50%) rotate(${deg}deg)`,
-    borderRadius: '2px',
-    boxShadow: '13px 0 0 #EC0B0B',
-  });
-
-  const centerDotStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '12px',
-    height: '12px',
-    backgroundColor: '#fff',
-    borderRadius: '50%',
-    transform: 'translate(-50%, -50%)',
-    zIndex: 10,
-    boxShadow: '0 0 4px rgba(0,0,0,0.5)',
-  };
-
   return (
-    <div style={containerStyle}>
-      <div style={bgStyle} />
-      <div style={clockFaceStyle}>
-        <div style={handStyle(hourDeg, '25%', '6px', '#fff')} />
-        <div style={handStyle(minuteDeg, '35%', '4px', '#ccc')} />
-        <div style={handStyle(secondDeg, '40%', '2px', '#ff3366')} />
-        <div style={centerDotStyle} />
+    <div className={styles.container}>
+      <div className={styles.bg} style={{ backgroundImage: `url(${bgImg})` }} />
+      <div className={styles.clockFace}>
+        <div
+          className={`${styles.hand} ${styles.hourHand}`}
+          style={{ transform: `translateX(-50%) rotate(${hourDeg}deg)` }}
+        />
+        <div
+          className={`${styles.hand} ${styles.minuteHand}`}
+          style={{ transform: `translateX(-50%) rotate(${minuteDeg}deg)` }}
+        />
+        <div
+          className={`${styles.hand} ${styles.secondHand}`}
+          style={{ transform: `translateX(-50%) rotate(${secondDeg}deg)` }}
+        />
+        <div className={styles.centerDot} />
       </div>
     </div>
   );
