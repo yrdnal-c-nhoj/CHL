@@ -8,6 +8,7 @@
   overflow: hidden;
   margin: 0;
   padding: 0;
+  background-color: #000;
 }
 
 .video {
@@ -20,27 +21,24 @@
   z-index: 0;
 }
 
-.clockWrapper {
+.digitsContainer {
   position: relative;
   z-index: 1;
-}
-
-.digitsContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0;
   height: 100dvh;
-  padding: 2vh 0;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .digitBox {
-  font-size: calc((100dvh - 4vh) / 9);
+  font-size: calc(100dvh / 10);
   font-weight: 300;
-  font-family: monospace;
-  color: #e6f207;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-  line-height: 1;
+  font-family: "Clock26-04-23", monospace;
+  color: #FAEA10;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  line-height: 0.85;
+  font-variant-numeric: tabular-nums;
 }
-
