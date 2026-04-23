@@ -1,58 +1,19 @@
-import React, { useState, useEffect, useRef, Suspense } from 'react';
+import React, { useState, useEffect, useRef, Suspense, useMemo } from 'react';
 import backgroundVideo from '@/assets/images/2026/26-04/26-04-23/sunflower.mp4';
 import fontUrl from '@/assets/fonts/26-04-23.otf';
-import { useFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
+import { useSuspenseFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import styles from './Clock.module.css';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 const formatMs = (num: number): string => num.toString().padStart(3, '0');
 
-const containerStyle: React.CSSProperties = {
-  width: '100vw',
-  height: '100dvh',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  position: 'relative',
-  overflow: 'hidden',
-  margin: 0,
-  padding: 0,
-  backgroundColor: '#000',
-};
-
-const videoStyle: React.CSSProperties = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  zIndex: 0,
-};
-
-const digitsContainerStyle: React.CSSProperties = {
-  position: 'relative',
-  zIndex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '100dvh',
-  // Using user-select: none prevents accidental highlighting while watching
-  userSelect: 'none', 
-};
-
-const digitBoxStyle: React.CSSProperties = {
-  fontSize: 'calc(100dvh / 10)', 
-  fontWeight: 300,
-  fontFamily: '"Clock26-04-23", monospace',
-  color: '#FAEA10',
-  textShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
-  lineHeight: 0.85,
-  fontVariantNumeric: 'tabular-nums',
-};
 
 const ClockInner: React.FC = () => {
-  useFontLoader('Clock26-04-23', fontUrl);
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'Clock26-04-23', fontUrl: fontUrl }
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
   const [time, setTime] = useState<Date>(new Date());
   const requestRef = useRef<number>();
 
@@ -77,9 +38,9 @@ const ClockInner: React.FC = () => {
   const allDigits = (h + m + s + ms).split('');
 
   return (
-    <div style={containerStyle}>
+    <div className={styles.container}>
       <video 
-        style={videoStyle} 
+        className={styles.video}
         autoPlay 
         muted 
         loop 
@@ -89,9 +50,9 @@ const ClockInner: React.FC = () => {
         <source src={backgroundVideo} type="video/mp4" />
       </video>
       
-      <main style={digitsContainerStyle}>
+      <main className={styles.digitsContainer}>
         {allDigits.map((digit, index) => (
-          <span key={index} style={digitBoxStyle}>
+          <span key={index} className={styles.digitBox}>
             {digit}
           </span>
         ))}
