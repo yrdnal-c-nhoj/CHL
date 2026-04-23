@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, Suspense, useMemo } from 'react';
 import backgroundVideo from '@/assets/images/2026/26-04/26-04-23/sunflower.mp4';
-import fontUrl from '@/assets/fonts/26-04-23.otf';
+import fontUrl from '@/assets/fonts/2026/26-04-23.otf';
 import { useSuspenseFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';

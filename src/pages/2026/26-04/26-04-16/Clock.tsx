@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useClockTime, calculateAngles } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import seFont from '@/assets/fonts/26-04-16-se.ttf';
+import seFont from '@/assets/fonts/2026/26-04-16-se.ttf';
 import bgImage from '@/assets/images/2026/26-04/26-04-16/jamine.webp';
 import tileImage from '@/assets/images/2026/26-04/26-04-16/pom.webp';
 import styles from './Clock.module.css';
