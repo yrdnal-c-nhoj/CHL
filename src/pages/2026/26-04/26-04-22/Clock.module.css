@@ -1,0 +1,113 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background: #736565;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contentBox {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Retains ratio and prevents cropping */
+  z-index: 0;
+}
+
+.clockContainer {
+  position: absolute;
+  bottom: 12vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32vh;
+  height: 32vh;
+  z-index: 1;
+  perspective: 1000px;
+}
+
+.clockFace {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.7);
+  border: 8px solid rgba(255, 255, 255, 0.8);
+  position: relative;
+  transform: rotateX(75deg);
+  transform-style: preserve-3d;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.twelveDot {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 24px;
+  background: #d3d3d3; /* Light grey dot */
+  border-radius: 50%;
+}
+
+.handBase {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: 50% 100%;
+  border-radius: 2px;
+}
+
+.hourHand {
+  width: 8px;
+  height: 25%;
+  background: #fff;
+}
+
+.minuteHand {
+  width: 4px;
+  height: 38%;
+  background: #fff;
+}
+
+.secondHand {
+  width: 2px;
+  height: 42%;
+  background: #ff4444;
+}
+
+.centerDot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+@media (min-width: 1024px) {
+  .contentBox {
+    width: 100%;
+    height: 100%;
+  }
+  .video {
+    object-fit: contain; /* Retains ratio within the aspect container and prevents cropping */
+  }
+  .clockContainer {
+    bottom: 15%;
+  }
+}
