@@ -82,6 +82,98 @@ src/pages/YYYY/YY-MM/YY-MM-DD/
 - Add tests for new utilities or components
 - Follow existing test patterns in `src/test/`
 
+
+### How to use it:
+
+1.  **Run the audit script first**: This ensures you have an up-to-date list of unused fonts.
+    ```bash
+    node scripts/audit-fonts.mjs
+    ```
+    This will generate or update `unused-fonts-report.txt`.
+
+2.  **Run the deletion script**:
+    ```bash
+    node scripts/delete-unused-fonts.mjs
+    ```
+    The script will list all the font files it intends to delete and ask for your confirmation before proceeding.
+
+This approach provides a safe way to remove unused fonts, giving you a chance to review the list before any files are permanently deleted.
+
+<!--
+[PROMPT_SUGGESTION]Can you add a `npm run clean:fonts` script to package.json that runs both the audit and delete scripts?[/PROMPT_SUGGESTION]
+[PROMPT_SUGGESTION]The audit script currently marks a font as "used" if it's imported, even if not actively applied. How can I modify the audit script to only consider fonts "used" if they are actually passed to `useSuspenseFontLoader` or `useMultipleFontLoader`?[/PROMPT_SUGGESTION]
+-->
+
+### How to use it:
+
+1.  **Run the audit script first**: This ensures you have an up-to-date list of unused fonts.
+    ```bash
+    node scripts/audit-fonts.mjs
+    ```
+    This will generate or update `unused-fonts-report.txt`.
+
+2.  **Run the deletion script**:
+    ```bash
+    node scripts/delete-unused-fonts.mjs
+    ```
+    The script will list all the font files it intends to delete and ask for your confirmation before proceeding.
+
+This approach provides a safe way to remove unused fonts, giving you a chance to review the list before any files are permanently deleted.
+
+<!--
+[PROMPT_SUGGESTION]Can you add a `npm run clean:fonts` script to package.json that runs both the audit and delete scripts?[/PROMPT_SUGGESTION]
+[PROMPT_SUGGESTION]The audit script currently marks a font as "used" if it's imported, even if not actively applied. How can I modify the audit script to only consider fonts "used" if they are actually passed to `useSuspenseFontLoader` or `useMultipleFontLoader`?[/PROMPT_SUGGESTION]
+-->
+
+### How to use it:
+
+1.  **Run the audit script first**: This ensures you have an up-to-date list of unused fonts.
+    ```bash
+    node scripts/audit-fonts.mjs
+    ```
+    This will generate or update `unused-fonts-report.txt`.
+
+2.  **Run the deletion script**:
+    ```bash
+    node scripts/delete-unused-fonts.mjs
+    ```
+    The script will list all the font files it intends to delete and ask for your confirmation before proceeding.
+
+This approach provides a safe way to remove unused fonts, giving you a chance to review the list before any files are permanently deleted.
+
+<!--
+[PROMPT_SUGGESTION]Can you add a `npm run clean:fonts` script to package.json that runs both the audit and delete scripts?[/PROMPT_SUGGESTION]
+[PROMPT_SUGGESTION]The audit script currently marks a font as "used" if it's imported, even if not actively applied. How can I modify the audit script to only consider fonts "used" if they are actually passed to `useSuspenseFontLoader` or `useMultipleFontLoader`?[/PROMPT_SUGGESTION]
+-->
+
+### How to use it:
+
+1.  **Run the audit script first**: This ensures you have an up-to-date list of unused fonts.
+    ```bash
+    node scripts/audit-fonts.mjs
+    ```
+    This will generate or update `unused-fonts-report.txt`.
+
+2.  **Run the deletion script**:
+    ```bash
+    node scripts/delete-unused-fonts.mjs
+    ```
+    The script will list all the font files it intends to delete and ask for your confirmation before proceeding.
+
+This approach provides a safe way to remove unused fonts, giving you a chance to review the list before any files are permanently deleted.
+
+<!--
+[PROMPT_SUGGESTION]Can you add a `npm run clean:fonts` script to package.json that runs both the audit and delete scripts?[/PROMPT_SUGGESTION]
+[PROMPT_SUGGESTION]The audit script currently marks a font as "used" if it's imported, even if not actively applied. How can I modify the audit script to only consider fonts "used" if they are actually passed to `useSuspenseFontLoader` or `useMultipleFontLoader`?[/PROMPT_SUGGESTION]
+-->
+### Asset Management
+
+To keep the repository lean, check for unused font files using the audit script:
+```bash
+node scripts/audit-fonts.mjs
+```
+Results are saved to `unused-fonts-report.txt`.
+
 ### Performance
 
 - Use lazy loading for heavy assets
