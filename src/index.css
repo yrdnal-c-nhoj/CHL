@@ -11,6 +11,20 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Lab Brand Colors */
+  --lab-red: #850404;
+  --lab-blue: #02385f;
+  --lab-blue-deep: #04406a;
+  --lab-bg-gray: #f5f5f5;
+  --lab-divider: #5b5a5a;
+  
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 /* Root element stuff — keep it clean */
 html.fonts-loading body {
   visibility: hidden;
@@ -26,20 +40,21 @@ body {
   transition: visibility 0s linear;
 }
 
-:root {
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Constrain html + body to viewport and remove scrollbars */
+/* Standard Document Flow */
 html,
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100%;
   width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Clock Mode: Force viewport constraint for art pieces */
+.clock-mode {
+  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 

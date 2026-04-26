@@ -5,22 +5,6 @@ body {
   height: 100%;
 }
 
-/* Override global overflow hidden for WordPages */
-body {
-  overflow: visible !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  height: auto !important;
-  min-height: 100vh !important;
-}
-
-#root {
-  overflow: visible !important;
-  overflow-y: auto !important;
-  height: auto !important;
-  min-height: 100vh !important;
-}
-
 .container {
   margin: 0;
   padding: 0 0 60px 0;
@@ -47,7 +31,7 @@ body {
 
 .centeredContent h1 {
   font-family: 'Roboto Slab', sans-serif;
-  color: #850404;
+  color: var(--lab-red);
   letter-spacing: 0.1rem;
   font-size: clamp(1.7rem, 2vw, 3rem); /* responsive font size */
   line-height: 1.4em;
@@ -94,7 +78,7 @@ body {
   font-size: 1.1rem;
   letter-spacing: 0.02em;
   font-weight: bold;
-  color: #850404;
+  color: var(--lab-red);
   line-height: 1.2rem;
   margin-bottom: -1.9rem;
   display: block;
@@ -129,7 +113,7 @@ p {
 }
 
 a {
-  color: #02385f;
+  color: var(--lab-blue);
   padding: 0.2rem 0.4rem;
   text-decoration: none;
 }
@@ -197,7 +181,7 @@ a:hover {
 }
 .email-link {
   font-family: 'Manrope', sans-serif;
-  color: #04406a;
+  color: var(--lab-blue-deep);
   text-decoration: none;
   font-weight: bold;
 }
@@ -225,7 +209,7 @@ a:hover {
 /* Footer styles */
 .footer {
   width: 100%;
-  background-color: #f5f5f5;
+  background-color: var(--lab-bg-gray);
   border-top: 1px solid #ddd;
   margin-top: auto;
   padding: 1rem 0;
@@ -314,7 +298,7 @@ a:hover {
 /* Section divider lines */
 .section-divider {
   border: none;
-  border-top: 1px solid #5b5a5a;
+  border-top: 1px solid var(--lab-divider);
   margin: 0.5rem 0 0.5rem 0;
   width: 300px;
 }
