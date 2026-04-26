@@ -55,17 +55,23 @@ const LissajousClock: React.FC = () => {
     return `${h}:${m}:${s}   `; 
   }, [time]);
 
-  // Handle responsive path regeneration
+  // Use ResizeObserver to ensure dimensions are captured correctly even if
+  // the layout settles after the initial mount.
   useEffect(() => {
-    const handleResize = () => {
-      if (containerRef.current) {
-        const { clientWidth, clientHeight } = containerRef.current;
-        setPath(generateLissajousPath(clientWidth, clientHeight));
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const { width, height } = entry.contentRect;
+        if (width > 0 && height > 0) {
+          setPath(generateLissajousPath(width, height));
+        }
       }
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    });
+
+    observer.observe(container);
+    return () => observer.disconnect();
   }, []);
 
   const clockTrains = Array.from({ length: PARAMS.clockCount });
@@ -113,6 +119,9 @@ const LissajousClock: React.FC = () => {
                     key={`${trainIndex}-${charIndex}`}
                     style={{
                       position: 'absolute',
+                      display: 'inline-block',
+                      top: 0,
+                      left: 0,
                       color: '#3E5204',
                       fontFamily: 'LissaFont, system-ui, sans-serif',
                       fontSize: 'clamp(14px, 6vmin, 40px)',
