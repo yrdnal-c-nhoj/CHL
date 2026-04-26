@@ -1,70 +1,52 @@
 import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
+import styles from './Clock.module.css';
 
-const formatTime = (num: number): string => num.toString().padStart(2, '0');
-
-const Clock: React.FC = () => {
+/**
+ * LAB / SCRATCHPAD CLOCK
+ * Use this file for rapid prototyping.
+ * Add '/src/pages/lab/' to your .gitignore to keep this local-only.
+ */
+const LabClock: React.FC = () => {
   const time = useClockTime();
 
-  const { hours, minutes, seconds } = useMemo(() => {
-    const h = formatTime(time.getHours());
-    const m = formatTime(time.getMinutes());
-    const s = formatTime(time.getSeconds());
-    return { hours: h, minutes: m, seconds: s };
+  // Centralized time logic for easy manipulation
+  const display = useMemo(() => {
+    const h = time.getHours().toString().padStart(2, '0');
+    const m = time.getMinutes().toString().padStart(2, '0');
+    const s = time.getSeconds().toString().padStart(2, '0');
+    const ms = time.getMilliseconds().toString().padStart(3, '0');
+    
+    return { h, m, s, ms, raw: time.getTime() };
   }, [time]);
 
-  const containerStyle: React.CSSProperties = {
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#111',
-    margin: 0,
-    padding: 0,
-  };
-
-  const clockStyle: React.CSSProperties = {
-    display: 'flex',
-    gap: '0.5rem',
-    alignItems: 'center',
-    fontFamily: 'monospace',
-    fontWeight: 300,
-  };
-
-  const digitStyle: React.CSSProperties = {
-    fontSize: 'clamp(4rem, 15vw, 12rem)',
-    color: '#fff',
-    minWidth: '0.8em',
-    lineHeight: 1,
-  };
-
-  const separatorStyle: React.CSSProperties = {
-    ...digitStyle,
-    opacity: 0.6,
-    animation: 'blink 1s infinite',
+  // Example of a derived experimental style
+  const experimentalStyle = {
+    transform: `rotate(${display.raw % 360}deg)`,
+    color: `hsl(${(display.raw / 50) % 360}, 70%, 60%)`
   };
 
   return (
-    <div style={containerStyle}>
-      <style>{`
-        @keyframes blink {
-          0%, 100% { opacity: 0.6; }
-          50% { opacity: 0.2; }
-        }
-      `}</style>
-      <div style={clockStyle}>
-        <span style={digitStyle}>{hours[0]}</span>
-        <span style={digitStyle}>{hours[1]}</span>
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{minutes[0]}</span>
-        <span style={digitStyle}>{minutes[1]}</span>
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{seconds[0]}</span>
-        <span style={digitStyle}>{seconds[1]}</span>
+    <div className={styles.container}>
+      <div className={styles.playground}>
+        <header className={styles.header}>LAB_DRAFT</header>
+        
+        <main className={styles.clockBody}>
+          <div className={styles.timeRow}>
+            <span className={styles.digit}>{display.h}</span>
+            <span className={styles.separator}>:</span>
+            <span className={styles.digit}>{display.m}</span>
+            <span className={styles.separator}>:</span>
+            <span className={styles.digit}>{display.s}</span>
+          </div>
+          
+          <div className={styles.msBar} style={{ width: `${(time.getMilliseconds() / 1000) * 100}%` }} />
+        </main>
+
+        <footer className={styles.footer} style={experimentalStyle}>EXPERIMENTAL_MODE</footer>
       </div>
     </div>
   );
 };
 
-export default Clock;
+export default LabClock;

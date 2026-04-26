@@ -78,3 +78,4 @@ screenshots/
 scripts/temp/
 *.pfx
 *.publishsettings
+src/pages/lab/
