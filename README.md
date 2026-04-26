@@ -259,65 +259,16 @@ describe('Component', () => {
 Each clock follows the date-based structure:
 
 ```text
-src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx
-```
+1. **Generate Files**: Create `Clock.tsx` and `Clock.module.css` in the correct date-based folder.
+2. **Register**: Add the entry to `src/context/clockpages.json`.
+3. **Asset Handling**: Import videos/images directly into the component.
 
-For example:
-
-- `src/pages/2025/25-04/25-04-01/Clock.tsx` for April 1, 2025
-- `src/pages/2026/26-03/26-03-15/Clock.tsx` for March 15, 2026
-
-### Clock Component Template
+### Recommended Hook usage:
 
 ```typescript
-import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
-import type { FontConfig } from '../../../types/clock';
-import yourCustomFontUrl from '../../../assets/fonts/your-font.ttf?url';
-import styles from './Clock.module.css'; // Import CSS Modules for production
-
-// Custom hook for smooth time updates using requestAnimationFrame
-const useClock = () => {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    let frameId: number;
-    const tick = () => {
-      setTime(new Date());
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
-
-  return time;
-};
-
-const Clock: React.FC = () => {
-  const time = useClock();
-
-  // ONLY include font loading if using a custom font
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'YourFontName', fontUrl: yourCustomFontUrl }
-  ], []);
-
-  // This hook suspends the component until fonts are loaded, preventing FOUC.
-  // The parent <ClockPage> provides the necessary <Suspense> boundary.
-  // Skip this hook entirely if not using custom fonts.
-  useSuspenseFontLoader(fontConfigs);
-
-  return (
-    <div
-      className={styles.container}
-      style={{ fontFamily: 'YourFontName, sans-serif' }}
-    >
-      {/* Your clock design here */}
-      <span className={styles.time}>{time.toLocaleTimeString()}</span>
-    </div>
-  );
-};
-
-export default Clock;
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/clockUtils';
+// Clock components must be wrapped in a <Suspense> boundary (provided by ClockPage)
 ```
 
 ### Best Practices
