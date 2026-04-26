@@ -77,13 +77,12 @@ const LissajousClock: React.FC = () => {
   const clockTrains = Array.from({ length: PARAMS.clockCount });
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      height: '100vh', 
+    <div style={{
+      display: 'flex',
+      height: '100vh',
       width: '100vw',
       background: 'linear-gradient(-185deg, #7FAEEF 0%, #7FAEEF 44%,  #D8A4EB 80% , #F7E1AE   100%)',
       overflow: 'hidden',
-      cursor: 'none'
     }}>
       <style>{`
         @font-face {
