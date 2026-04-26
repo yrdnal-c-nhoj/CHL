@@ -9,7 +9,9 @@ const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 const Clock: React.FC = () => {
   const time = useClockTime();
-  const [catUrl, setCatUrl] = useState(`https://cataas.com/cat?t=${time.getTime()}`);
+  // Use a timestamp rounded to 3 seconds to prevent excessive network requests
+  const catInterval = Math.floor(time.getTime() / 3000);
+  const [catUrl, setCatUrl] = useState(`https://cataas.com/cat?t=${catInterval}`);
 
   // Load the local cat font for this date
   const fontConfigs = useMemo<FontConfig[]>(() => [
@@ -18,10 +20,10 @@ const Clock: React.FC = () => {
 
   useSuspenseFontLoader(fontConfigs);
 
-  // Update the cat image every second
+  // Update the cat image every 3 seconds instead of every second.
   useEffect(() => {
-    setCatUrl(`https://cataas.com/cat?t=${time.getTime()}`);
-  }, [time]);
+    setCatUrl(`https://cataas.com/cat?t=${catInterval}`);
+  }, [catInterval]);
 
   const { hours, minutes, seconds } = useMemo(() => {
     const h = formatTime(time.getHours());
