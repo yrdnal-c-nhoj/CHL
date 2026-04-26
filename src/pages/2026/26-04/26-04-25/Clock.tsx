@@ -124,10 +124,10 @@ const LabClock: React.FC = () => {
           left: '50%',
           width: '7px',
           height: '7px',
-          backgroundColor: '#2c3e50',
+          backgroundColor: '#2C3E50CA',
           borderRadius: '50%',
           transform: 'translate(-50%, -50%)',
-          border: '1px solid white',
+          border: '1px #F5F0F0A3',
           zIndex: 10
         }} />
       </div>
