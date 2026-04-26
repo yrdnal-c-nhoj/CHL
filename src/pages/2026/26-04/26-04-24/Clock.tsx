@@ -75,7 +75,7 @@ const LissajousClock: React.FC = () => {
       display: 'flex', 
       height: '100vh', 
       width: '100vw',
-      background: 'linear-gradient(188deg, #818C9B 0%, #F3A8E9 50% , #CCABC1   100%)',
+      background: 'linear-gradient(-185deg, #7FAEEF 0%, #7FAEEF 44%,  #DFA8F3 80% , #F7E1AE   100%)',
       overflow: 'hidden',
       cursor: 'none'
     }}>
