@@ -41,15 +41,6 @@ const ClockInner: React.FC = () => {
     <div className={styles.container}>
       <video 
         className={styles.video}
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 'auto',
-          height: '90dvh',
-          objectFit: 'contain',
-        }}
         autoPlay 
         muted 
         loop 
