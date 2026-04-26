@@ -1,7 +1,10 @@
 // DataProvider.jsx
 import React, { createContext, useState, useEffect } from 'react';
 import prodData from './clockpages.json';
-import testData from './testclock.json';
+
+// Use Vite's glob import to handle cases where testclock.json might be missing.
+const testModules = import.meta.glob('./testclock.json', { eager: true });
+const testData = testModules['./testclock.json']?.default || prodData;
 
 // Create context
 export const DataContext = createContext();
