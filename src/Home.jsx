@@ -105,7 +105,7 @@ const Home = () => {
   if (error) return <div className={styles.error}>Error: {error}</div>;
 
   return (
-    <div style={{ width: '100%', height: '100%', overflowY: 'auto' }}>
+    <div style={{ width: '100%', minHeight: '100vh', overflowY: 'auto' }}>
       <TopNav />
       <div
         style={{
