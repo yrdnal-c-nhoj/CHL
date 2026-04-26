@@ -51,7 +51,7 @@ body {
   overflow-y: auto;
 }
 
-/* Clock Mode: Force viewport constraint for art pieces */
+/* Clock Mode: Force viewport constraint and hide scrollbars for art pieces */
 .clock-mode {
   height: 100vh;
   height: 100dvh;
@@ -59,8 +59,9 @@ body {
 }
 
 #root {
-  height: 100vh;
-  height: 100dvh;
-  width: 100vw;
-  overflow: hidden;
+  /* Default to document flow, ClockPage will manage body.clock-mode */
+  min-height: 100vh; /* Ensure it takes at least full viewport height */
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }

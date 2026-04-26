@@ -60,6 +60,18 @@ const ClockPage: React.FC = () => {
     }
   }, [date, navigate]);
 
+  // Apply/remove 'clock-mode' class to body based on clock readiness
+  useEffect(() => {
+    if (isReady) {
+      document.body.classList.add('clock-mode');
+    } else {
+      document.body.classList.remove('clock-mode');
+    }
+    return () => {
+      document.body.classList.remove('clock-mode');
+    };
+  }, [isReady]);
+
   // Memoized navigation items
   const navigationItems = useMemo(() => {
     if (!items || items.length === 0) {
