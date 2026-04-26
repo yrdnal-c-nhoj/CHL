@@ -95,7 +95,7 @@ const Home = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: '#fff',
+          backgroundColor: 'var(--lab-bg-gray)',
           fontFamily: 'sans-serif',
         }}
       ></div>
@@ -112,7 +112,7 @@ const Home = () => {
           display: 'flex',
           flexDirection: 'column',
           minHeight: '100vh',
-          backgroundColor: '#dcd7d8', // Fallback background color
+          backgroundColor: 'var(--lab-bg-gray)',
           opacity: fontsReady ? 1 : 0,
           transition: 'opacity 0.6s ease-in',
         }}
