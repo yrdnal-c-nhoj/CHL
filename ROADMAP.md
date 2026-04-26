@@ -1,49 +1,29 @@
-# BorrowedTime Roadmap
+# BorrowedTime: Development History
 
-This document outlines the planned evolution of the BorrowedTime project.
+This document tracks the technical progress and architectural shifts of the project since inception.
 
-## Phase 1: Foundation & Performance (Q1 2025)
+## 🟢 The HTML Roots (Pre-V1)
+- **Format**: Individual `.html` files.
+- **Styling**: Inline CSS and global stylesheets.
+- **Logic**: Vanilla JavaScript `setInterval` for time updates.
+- **Constraint**: Heavy layout shifts and no shared navigation.
 
-- [ ] **TypeScript Migration**: Complete migration to TypeScript for all components
-- [x] **Advanced Font Loading**: Implement robust font loading with FOUC prevention
-- [x] **Component Library**: Create reusable components and utilities
-- [ ] **Performance Optimization**: Implement code splitting and lazy loading for all clocks
-- [ ] **Error Boundaries**: Add comprehensive error handling and recovery
-- [ ] **Testing Suite**: Implement unit and integration tests
+## 🟡 The Component Pivot (V1.0)
+- **Framework**: Migration to React 18 + Vite.
+- **Routing**: React Router v6 introduced to handle daily paths.
+- **Registry**: Centralized metadata into `clockpages.json`.
 
-## Phase 2: Enhanced User Experience (Q2 2025)
+## 🟠 Performance & Asset Hardening (V1.5)
+- **Font Loading**: Developed `useSuspenseFontLoader` to eliminate "Flash of Unstyled Content" (FOUC).
+- **Preloading**: Implemented an overlay-based loading system that waits for videos and images to buffer before revealing the art.
+- **RAF Engine**: Switched from `setInterval` to `requestAnimationFrame` in `useClockTime` for perfectly synced 60fps rendering.
 
-- [ ] **Offline Support**: Implement service worker for offline clock viewing
-- [ ] **Accessibility**: Full WCAG 2.1 AA compliance across all clocks
-- [ ] **Mobile Optimization**: Touch gestures and mobile-specific interactions
-- [ ] **Dark Mode**: System-wide dark/light theme support
-- [ ] **Clock Favorites**: Allow users to save and organize favorite clocks
-- [ ] **Social Sharing**: Enhanced sharing capabilities with custom previews
+## 🔵 Modern Architecture (Current)
+- **Type Safety**: Ongoing migration from JS to **TypeScript**.
+- **Scoped Styles**: Adoption of **CSS Modules** to isolate daily designs and prevent global style collisions.
+- **Automation**: Integrated `import.meta.glob` to automate the daily clock discovery pipeline.
 
-## Phase 3: Advanced Features (Q3 2025)
-
-- [ ] **Clock Creator**: Web-based tool for creating custom clock designs
-- [ ] **API Integration**: External API support for weather-based themes
-- [ ] **Real-time Collaboration**: Multi-user clock design sessions
-- [ ] **Advanced Animations**: GSAP-powered animations and transitions
-- [ ] **Audio Integration**: Ambient soundscapes synchronized with clock themes
-- [ ] **Export Functionality**: Download clocks as images or standalone widgets
-
-## Technical Debt & Maintenance
-
-- [ ] **Code Cleanup**: Remove legacy JavaScript files and consolidate utilities
-- [ ] **Eliminate Style Leaks**: Refactor components that manually inject global styles or keyframes to use CSS Modules or scoped hooks, preventing style conflicts between clocks.
-- [ ] **Documentation**: Comprehensive API documentation and guides
-- [ ] **Security Audit**: Regular security assessments and updates
-- [ ] **Dependency Updates**: Automated dependency management and updates
-- [ ] **Performance Monitoring**: Real-time performance tracking and alerts
-- [ ] **CI/CD Pipeline**: Enhanced deployment and testing pipelines
-
-## Infrastructure & DevOps
-
-- [ ] **CDN Implementation**: Global content delivery for assets
-- [ ] **Database Migration**: Move from JSON to proper database solution
-- [ ] **Caching Strategy**: Implement advanced caching mechanisms
-- [ ] **Analytics Enhancement**: Detailed user behavior analytics
-- [ ] **Backup Systems**: Automated backup and disaster recovery
-- [ ] **Monitoring**: Comprehensive application and infrastructure monitoring
+## 🏗️ Technical Debt & Optimization Focus
+- **Cleanup**: Continuing to remove legacy JavaScript files.
+- **Style Leaks**: Refactoring remaining components that inject global `<style>` tags.
+- **Asset Efficiency**: Implementing advanced caching for high-resolution daily videos.
