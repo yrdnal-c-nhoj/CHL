@@ -29,24 +29,6 @@ This document outlines the planned evolution of the BorrowedTime project.
 - [ ] **Audio Integration**: Ambient soundscapes synchronized with clock themes
 - [ ] **Export Functionality**: Download clocks as images or standalone widgets
 
-## Phase 4: Platform Expansion (Q4 2025)
-
-- [ ] **Mobile Apps**: Native iOS and Android applications
-- [ ] **Desktop App**: Electron-based desktop application
-- [ ] **Browser Extensions**: Clock widgets for popular browsers
-- [ ] **Smart Watch Support**: Apple Watch and Wear OS compatibility
-- [ ] **Home Assistant**: Integration with smart home systems
-- [ ] **API Public**: Public API for third-party integrations
-
-## Phase 5: Community & Ecosystem (2026)
-
-- [ ] **Community Gallery**: User-submitted clock designs
-- [ ] **Design System**: Comprehensive design system documentation
-- [ ] **Plugin Architecture**: Plugin system for custom clock behaviors
-- [ ] **Educational Content**: Tutorials and workshops for clock design
-- [ ] **Open Source Initiative**: Core components as open-source libraries
-- [ ] **Design Awards**: Annual clock design competition
-
 ## Technical Debt & Maintenance
 
 - [ ] **Code Cleanup**: Remove legacy JavaScript files and consolidate utilities
