@@ -127,6 +127,7 @@ const LissajousClock: React.FC = () => {
                       fontSize: 'clamp(14px, 6vmin, 40px)',
                       whiteSpace: 'pre',
                       offsetPath: `path("${path}")`,
+                      offsetRotate: 'auto',
                       animation: `movePath ${PARAMS.animationLength}s linear infinite`,
                       animationDelay: `-${delay}s`,
                       willChange: 'offset-distance',
