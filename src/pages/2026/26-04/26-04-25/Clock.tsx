@@ -45,8 +45,8 @@ const LabClock: React.FC = () => {
         alt=""
         style={{
           position: 'absolute',
-          width: '600px',
-          height: '600px',
+          width: 'auto',
+          height: 'auto',
           objectFit: 'contain',
           filter: 'brightness(1.0) contrast(0.8)'
         }}
@@ -54,10 +54,10 @@ const LabClock: React.FC = () => {
       {/* Clock Face Container */}
       <div style={{
         position: 'relative',
-        width: '210px',
-        height: '210px',
-        marginLeft: '26px',
-        marginTop: '8px',
+        width: '116px',
+        height: '116px',
+        marginLeft: '16px',
+        marginTop: '5px',
         borderRadius: '50%',
         opacity: 0.3,
         boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
@@ -69,7 +69,7 @@ const LabClock: React.FC = () => {
             key={i}
             style={{
               position: 'absolute',
-              width: '3px',
+              width: '2px',
               height: '100%',
               left: 'calc(50% - 1.5px)',
               transform: `rotate(${i * 30}deg)`,
@@ -88,7 +88,7 @@ const LabClock: React.FC = () => {
         <div style={{
           ...handBaseStyle,
           width: '3px',
-          height: '65px',
+          height: '35px',
           backgroundColor: '#65788B',
           marginLeft: '-1.5px', 
           transform: `rotate(${angles.hour}deg)`,
@@ -99,7 +99,7 @@ const LabClock: React.FC = () => {
         <div style={{
           ...handBaseStyle,
           width: '2.5px',
-          height: '95px',
+          height: '58px',
           backgroundColor: '#5887B3',
           marginLeft: '-1.25px',
           transform: `rotate(${angles.minute}deg)`,
@@ -110,7 +110,7 @@ const LabClock: React.FC = () => {
         <div style={{
           ...handBaseStyle,
           width: '2px',
-          height: '100px',
+          height: '58px',
           backgroundColor: '#E74D3C92',
           marginLeft: '-1px',
           transform: `rotate(${angles.second}deg)`,
