@@ -1,145 +1,153 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 import fontUrl from '@/assets/fonts/2026/26-04-24-lissa.ttf';
 
-/**
- * Utility to pad time numbers
- */
-const formatTime = (num: number): string => num.toString().padStart(2, '0');
-
-/**
- * Configuration Parameters
- * a/b = 3/2 creates the classic "pretzel" Lissajous knot
- */
-const PARAMS = {
+const CONFIG = {
   a: 3,
   b: 2,
-  delta: Math.PI / 2, 
-  animationLength: 129, // Slightly slower for better readability
-  spacing: 0.009,      // Spacing between characters
-  clockCount: 12,      // Total instances of the time string
-};
+  delta: Math.PI / 2,
+  animationLength: 45,
 
-/**
- * Generates the SVG path string for a Lissajous curve based on container dimensions
- */
+  clockCount: 10,
+  fontSize: '8.8vmin',
+  charGap: 0.02,
+  clockGap: 0.08,
+
+  fontColor: '#5A1F04',
+  background: 'linear-gradient(-185deg, #7FAEEF 0%, #7FAEEF 44%, #D8A4EB 80%, #F7E1AE 100%)',
+} as const;
+
+const formatTime = (num: number) => num.toString().padStart(2, '0');
+
 const generateLissajousPath = (width: number, height: number): string => {
-  const { a, b, delta } = PARAMS;
-  const numPoints = 120; 
-  const pad = Math.min(width, height) * 0.15; // Slightly more padding
+  const { a, b, delta } = CONFIG;
+  const numPoints = 150;
+  const pad = Math.min(width, height) * 0.15;
   const scaleX = (width - pad) / 2;
   const scaleY = (height - pad) / 2;
   const cx = width / 2;
   const cy = height / 2;
 
-  let d = "";
+  let d = '';
+
   for (let i = 0; i <= numPoints; i++) {
-    const t = (i / numPoints) * 2 * Math.PI;
+    const t = (i / numPoints) * Math.PI * 2;
     const x = cx + scaleX * Math.sin(a * t + delta);
     const y = cy + scaleY * Math.sin(b * t);
-    d += (i === 0 ? "M " : " L ") + `${x.toFixed(1)} ${y.toFixed(1)}`;
+    d += `${i === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)} `;
   }
-  return d + " Z";
+
+  return `${d.trim()} Z`;
 };
+
+function useLissajousPath(ref: React.RefObject<HTMLDivElement>) {
+  const [path, setPath] = useState('');
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect;
+      if (width > 0 && height > 0) {
+        setPath(generateLissajousPath(width, height));
+      }
+    });
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref]);
+
+  return path;
+}
 
 const LissajousClock: React.FC = () => {
   const time = useClockTime();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [path, setPath] = useState<string>('');
-  
-  // Format time string with trailing space for separation
-  const timeString = useMemo(() => {
+  const path = useLissajousPath(containerRef);
+
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'LissaFont', fontUrl }],
+    []
+  );
+
+  useSuspenseFontLoader(fontConfigs);
+
+  const characters = useMemo(() => {
     const h = formatTime(time.getHours());
     const m = formatTime(time.getMinutes());
     const s = formatTime(time.getSeconds());
-    return `${h}:${m}:${s}   `; 
+    return `${h}:${m}:${s}`.split('');
   }, [time]);
 
-  // Use ResizeObserver to ensure dimensions are captured correctly even if
-  // the layout settles after the initial mount.
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+  const totalCharacters = CONFIG.clockCount * characters.length;
+  const step = 1 / totalCharacters;
 
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const { width, height } = entry.contentRect;
-        if (width > 0 && height > 0) {
-          setPath(generateLissajousPath(width, height));
-        }
-      }
-    });
+  const getDelay = (clockIdx: number, charIdx: number) => {
+    const index = clockIdx * characters.length + charIdx;
+    return index * step * CONFIG.animationLength;
+  };
 
-    observer.observe(container);
-    return () => observer.disconnect();
-  }, []);
+  const containerStyle: React.CSSProperties = {
+    width: '90vw',
+    height: '90vh',
+    margin: 'auto',
+    position: 'relative',
+  };
 
-  const clockTrains = Array.from({ length: PARAMS.clockCount });
+  const charStyleBase: React.CSSProperties = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    display: 'inline-block',
+    color: CONFIG.fontColor,
+    fontFamily: 'LissaFont, system-ui, sans-serif',
+    fontSize: CONFIG.fontSize,
+    textShadow: '2px 2px 4px rgba(0,0,0,0.1)',
+    whiteSpace: 'pre',
+    offsetPath: `path("${path}")`,
+    offsetRotate: 'auto',
+    animation: `movePath ${CONFIG.animationLength}s linear infinite`,
+    willChange: 'offset-distance',
+    pointerEvents: 'none',
+  };
 
   return (
-    <div style={{
-      display: 'flex',
-      height: '100vh',
-      width: '100vw',
-      background: 'linear-gradient(-185deg, #7FAEEF 0%, #7FAEEF 44%,  #D8A4EB 80% , #F7E1AE   100%)',
-      overflow: 'hidden',
-    }}>
+    <div
+      style={{
+        display: 'flex',
+        height: '100vh',
+        width: '100vw',
+        overflow: 'hidden',
+        background: CONFIG.background,
+      }}
+    >
       <style>{`
-        @font-face {
-          font-family: 'LissaFont';
-          src: url('${fontUrl}') format('truetype');
-        }
         @keyframes movePath {
-          0% { offset-distance: 0%;  }
-          100% { offset-distance: 100%;  }
+          from { offset-distance: 0%; }
+          to { offset-distance: 100%; }
         }
       `}</style>
-      
-      <div 
-        ref={containerRef}
-        style={{
-          width: '85vw',
-          height: '85vh',
-          margin: 'auto',
-          position: 'relative',
-        }}
-      >
-        {path && clockTrains.map((_, trainIndex) => {
-          const trainOffset = trainIndex / PARAMS.clockCount;
-          
-          return (
-            <React.Fragment key={`train-${trainIndex}`}>
-              {timeString.split('').map((char, charIndex) => {
-                // Calculate delay so each character follows the previous one
-                const delay = (trainOffset + (charIndex * PARAMS.spacing)) * PARAMS.animationLength;
-                
-                return (
-                  <span
-                    key={`${trainIndex}-${charIndex}`}
-                    style={{
-                      position: 'absolute',
-                      display: 'inline-block',
-                      top: 0,
-                      left: 0,
-                      color: '#3E5204',
-                      fontFamily: 'LissaFont, system-ui, sans-serif',
-                      fontSize: 'clamp(14px, 6vmin, 40px)',
-                      whiteSpace: 'pre',
-                      offsetPath: `path("${path}")`,
-                      offsetRotate: 'auto',
-                      animation: `movePath ${PARAMS.animationLength}s linear infinite`,
-                      animationDelay: `-${delay}s`,
-                      willChange: 'offset-distance',
-                      pointerEvents: 'none',
-                    }}
-                  >
-                    {char}
-                  </span>
-                );
-              })}
+
+      <div ref={containerRef} style={containerStyle}>
+        {path &&
+          Array.from({ length: CONFIG.clockCount }).map((_, clockIdx) => (
+            <React.Fragment key={`clock-${clockIdx}`}>
+              {characters.map((char, charIdx) => (
+                <span
+                  key={`${clockIdx}-${charIdx}`}
+                  style={{
+                    ...charStyleBase,
+                    animationDelay: `-${getDelay(clockIdx, charIdx)}s`,
+                  }}
+                >
+                  {char}
+                </span>
+              ))}
             </React.Fragment>
-          );
-        })}
+          ))}
       </div>
     </div>
   );
