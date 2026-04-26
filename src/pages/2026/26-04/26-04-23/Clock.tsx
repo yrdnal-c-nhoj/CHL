@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef, Suspense, useMemo } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import backgroundVideo from '@/assets/images/2026/26-04/26-04-23/sunflower.mp4';
 import fontUrl from '@/assets/fonts/2026/26-04-23.otf';
+import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
@@ -14,20 +15,8 @@ const ClockInner: React.FC = () => {
     { fontFamily: 'Clock26-04-23', fontUrl: fontUrl }
   ], []);
   useSuspenseFontLoader(fontConfigs);
-  const [time, setTime] = useState<Date>(new Date());
-  const requestRef = useRef<number>();
-
-  const animate = () => {
-    setTime(new Date());
-    requestRef.current = requestAnimationFrame(animate);
-  };
-
-  useEffect(() => {
-    requestRef.current = requestAnimationFrame(animate);
-    return () => {
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
-    };
-  }, []);
+  
+  const time = useClockTime();
 
   const h = formatTime(time.getHours());
   const m = formatTime(time.getMinutes());

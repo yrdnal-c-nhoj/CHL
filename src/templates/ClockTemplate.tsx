@@ -40,14 +40,13 @@ const ClockTemplate: React.FC = () => {
 
   const fontConfigs = useMemo<FontConfig[]>(
     () => [
-      // { fontFamily: 'TemplateFont', fontUrl: customFont },
+      // { fontFamily: 'YourClockFont', fontUrl: customFontUrl },
     ],
     [],
   );
 
-  if (fontConfigs.length > 0) {
-    useSuspenseFontLoader(fontConfigs);
-  }
+  // Suspend rendering until fonts are ready to prevent FOUC
+  useSuspenseFontLoader(fontConfigs);
 
   const { h, m, s } = useMemo(
     () => getTimeDigits(time),

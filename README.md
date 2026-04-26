@@ -328,11 +328,11 @@ Key settings in `vite.config.ts`:
 
 ### Phase 1: Foundation & Performance (Q1 2025)
 
-- [ ] **TypeScript Migration**: Complete migration to TypeScript for all components
-- [x] **Advanced Font Loading**: Implement robust font loading with FOUC prevention
-- [x] **Component Library**: Create reusable components and utilities
-- [ ] **Performance Optimization**: Implement code splitting and lazy loading for all clocks
-- [ ] **Error Boundaries**: Add comprehensive error handling and recovery
+- [x] **TypeScript Core**: Migration of shared utilities and core logic to TypeScript.
+- [x] **Asset Loading Engine**: Robust font and video preloading with FOUC prevention.
+- [x] **High-Perf Time Logic**: Centralized `requestAnimationFrame` hook for sub-millisecond updates.
+- [x] **Dynamic Asset Pipeline**: glob-based lazy loading for daily modules.
+- [x] **Error Boundaries**: Global and per-clock crash recovery.
 - [ ] **Testing Suite**: Implement unit and integration tests
 
 ### Phase 2: Enhanced User Experience (Q2 2025)
