@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanalei&display=swap');
+
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  position: relative;
+  overflow: hidden;
+}
+
+.video {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  height: 80%;
+  object-fit: cover;
+}
+
+.imageOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vh;
+  height: 100vw;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  opacity: 0.15;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(95, 225, 56, 0.35) 0%, rgba(180, 156, 89, 0.38) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.clockFace {
+  position: relative;
+  width: 80vmin;
+  height: 80vmin;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.number {
+  position: absolute;
+  font-family: 'Hanalei', 'Arial Black', system-ui, fantasy;
+  font-size: 9vh;
+  font-weight: 400;
+  color: #e2725b;
+  text-shadow:
+    2px 2px 0 #1b4d3e,
+    -2px -2px 0 #1b4d3e,
+    2px -2px 0 #1b4d3e,
+    -2px 2px 0 #1b4d3e,
+    0 0 12px rgba(0, 0, 0, 0.9);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  border-radius: 50% 50% 0 0;
+  box-shadow: 0 0 8px rgba(255,255,255,0.3);
+}
+
+.hourHand {
+  width: 15%;
+  height: 45%;
+  background-color: #ffffff45;
+  z-index: 2;
+}
+
+.minuteHand {
+  width: 16%;
+  height: 78%;
+  background-color: #ffffff44;
+  z-index: 3;
+}
+
+.secondHand {
+  width: 1%;
+  height: 242%;
+  background-color: #FFFFFF6E;
+  z-index: 4;
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5%;
+  height: 5%;
+  background-color: #e2725b;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  box-shadow: 0 0 12px #e2725b;
+}
