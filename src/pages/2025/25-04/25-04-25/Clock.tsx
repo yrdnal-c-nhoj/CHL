@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useMillisecondClock } from '@/utils/useSmoothClock';
-import type { CSSProperties } from 'react';
+import { useClockTime } from '@/utils/hooks'; // Assuming useClockTime is in '@/utils/hooks'
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 import backgroundImage from '@/assets/images/2025/25-04/25-04-25/bad.webp';
 import boldFont from '@/assets/fonts/2025/25-04-25-Oswald-Bold.ttf?url';
 import hourHandImage from '@/assets/images/2025/25-04/25-04-25/ban.webp';
 import minuteHandImage from '@/assets/images/2025/25-04/25-04-25/ba.gif';
 import secondHandImage from '@/assets/images/2025/25-04/25-04-25/band.gif';
+import styles from './Clock.module.css';
 
 interface ClockImages {
   hourImg: HTMLImageElement;
@@ -21,21 +23,21 @@ interface MyClockProps {
 const MyClock: React.FC<MyClockProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<ClockImages | null>(null);
-  const [fontLoaded, setFontLoaded] = useState(false);
+  
+  const fontConfigs: FontConfig[] = [
+    {
+      fontFamily: 'OswaldBold',
+      fontUrl: boldFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ];
+  useSuspenseFontLoader(fontConfigs);
 
-  // Load local font file
-  useEffect(() => {
-    const font = new FontFace('OswaldBold', `url(${boldFont})`);
-    font.load().then((loaded) => {
-      document.fonts.add(loaded);
-      setFontLoaded(true);
-    }).catch(() => {
-      setFontLoaded(true); // fallback
-    });
-  }, []);
-
-  // Use the standardized hook for smooth millisecond clock updates
-  const currentTime = useMillisecondClock();
+  // Use the standardized hook for clock updates
+  const currentTime = useClockTime();
 
   useEffect(() => {
     if (!imagesRef.current) return;
@@ -58,7 +60,7 @@ const MyClock: React.FC<MyClockProps> = () => {
       ctx.fillStyle = '#FA0820FF';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.font = `${r * 0.5}px OswaldBold`;
+      ctx.font = `${r * 0.5}px OswaldBold, sans-serif`; // Fallback font
 
       for (let i = 1; i <= 12; i++) {
         const angle = (i * Math.PI) / 6;
@@ -111,7 +113,7 @@ const MyClock: React.FC<MyClockProps> = () => {
     update();
   }, [currentTime, fontLoaded]);
 
-  // Load images once
+  // Load images once (this effect runs only once on mount)
   useEffect(() => {
     const loadImages = async (): Promise<void> => {
       const hourImg = new Image();
@@ -131,17 +133,16 @@ const MyClock: React.FC<MyClockProps> = () => {
     loadImages();
   }, [hourHandImage, minuteHandImage, secondHandImage]);
 
+  const isoTime = currentTime.toISOString();
 
   return (
-      <div
-        style={{
-          height: '100dvh',
-          background: `url(${backgroundImage}) center/cover no-repeat`,
-          overflow: 'hidden',
-        }}
-      >
-        <canvas ref={canvasRef} style={{ display: 'block' }} />
-      </div>
+    <main className={styles.container} style={{ backgroundImage: `url(${backgroundImage})` }}>
+      {/* Visually hidden time for accessibility and SEO */}
+      <time dateTime={isoTime} className={styles.semanticTime}>
+        {currentTime.toLocaleTimeString()}
+      </time>
+      <canvas ref={canvasRef} className={styles.clockCanvas} />
+    </main>
   );
 };
 
