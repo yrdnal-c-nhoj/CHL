@@ -1,7 +1,7 @@
 .container {
   height: 100dvh;
   background-size: cover;
-  background-image: var(--background-image); /* Moved from inline style */
+  background-image: var(--bg-image);
   background-position: center;
   background-repeat: no-repeat;
   overflow: hidden;
