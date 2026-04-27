@@ -1,0 +1,41 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  background-color: #f8e0f8;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.baseImage {
+  position: absolute;
+  max-width: 250px;
+  max-height: 250px;
+  opacity: 0.8;
+  transition: all 0.5s ease-in-out;
+  z-index: 1;
+}
+
+.digitalClock {
+  position: relative;
+  z-index: 100;
+  font-family: 'Lever', monospace;
+  font-size: 25vmin;
+  color: #1f1d41;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+}
+
+.colon {
+  transform: translateY(-0.1em);
+  font-size: 1.5em;
+}
+
+.digit {
+  display: inline-block;
+  line-height: 1;
+}
