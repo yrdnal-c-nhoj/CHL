@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import leverFont from '@/assets/fonts/2026/26-04-27-lever.ttf';
 
 // Dynamically import all images from the assets folder
 const imageModules = import.meta.glob('@/assets/images/2026/26-04/26-04-27/*', {
@@ -27,7 +29,7 @@ const getRandomFilter = () => {
 const containerStyle: React.CSSProperties = {
   width: '100vw',
   height: '100dvh',
-  backgroundColor: '#fff',
+  backgroundColor: '#F8E0F8',
   position: 'relative',
   overflow: 'hidden',
   display: 'flex',
@@ -47,15 +49,35 @@ const baseImageStyle: React.CSSProperties = {
 const digitalClockStyle: React.CSSProperties = {
   position: 'relative',
   zIndex: 100,
-  fontFamily: 'monospace',
+  fontFamily: 'Lever, monospace',
   fontSize: '15vmin',
-  color: '#fff',
+  color: '#1F1D41',
   textShadow: '0 0 20px rgba(0, 0, 0, 0.8)',
   letterSpacing: '0.05em',
+  display: 'flex',
+  alignItems: 'center',
+};
+
+const colonStyle: React.CSSProperties = {
+  transform: 'translateY(-0.1em)',
+  fontSize: '1.5em',
 };
 
 const Clock: React.FC = () => {
   const time = useClockTime();
+
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily: 'Lever',
+      fontUrl: leverFont,
+      options: {
+        weight: 'normal',
+        style: 'normal'
+      }
+    }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
   
   // Start with all images loaded at random positions with filters
   const [displayedImages, setDisplayedImages] = useState<Array<{ src: string; pos: React.CSSProperties; id: number; filter: string }>>(() => {
@@ -98,14 +120,14 @@ const Clock: React.FC = () => {
 
 
   // Format digital time
-  const timeLabel = useMemo(() => {
+  const { hours, minutes } = useMemo(() => {
     const h = time.getHours().toString().padStart(2, '0');
     const m = time.getMinutes().toString().padStart(2, '0');
-    return `${h}:${m}`;
+    return { hours: h, minutes: m };
   }, [time]);
 
   return (
-    <div style={containerStyle} role="img" aria-label={`Digital clock showing ${timeLabel}`}>
+    <div style={containerStyle} role="img" aria-label={`Digital clock showing ${hours}:${minutes}`}>
       {/* Background Images Layer */}
       {displayedImages.map((img) => (
         <img
@@ -118,7 +140,9 @@ const Clock: React.FC = () => {
 
       {/* Digital Clock Display */}
       <div style={digitalClockStyle}>
-        {timeLabel}
+        <span>{hours}</span>
+        <span style={colonStyle}>:</span>
+        <span>{minutes}</span>
       </div>
     </div>
   );
