@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import leverFont from '@/assets/fonts/2026/26-04-27-lever.ttf';
+import styles from './Clock.module.css';
 
 // Dynamically import all images from the assets folder
 const imageModules = import.meta.glob('@/assets/images/2026/26-04/26-04-27/*', {
@@ -24,43 +25,6 @@ const getRandomPosition = () => ({
 const getRandomFilter = () => {
   const saturation = Math.random() * 3; // 0 to 3 (0 = grayscale, 3 = super saturated)
   return `saturate(${saturation})`;
-};
-
-const containerStyle: React.CSSProperties = {
-  width: '100vw',
-  height: '100dvh',
-  backgroundColor: '#F8E0F8',
-  position: 'relative',
-  overflow: 'hidden',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-};
-
-const baseImageStyle: React.CSSProperties = {
-  position: 'absolute',
-  maxWidth: '250px',
-  maxHeight: '250px',
-  opacity: 0.8,
-  transition: 'all 0.5s ease-in-out',
-  zIndex: 1,
-};
-
-const digitalClockStyle: React.CSSProperties = {
-  position: 'relative',
-  zIndex: 100,
-  fontFamily: 'Lever, monospace',
-  fontSize: '25vmin',
-  color: '#1F1D41',
-  textShadow: '0 0 20px rgba(0, 0, 0, 0.8)',
-  letterSpacing: '0.05em',
-  display: 'flex',
-  alignItems: 'center',
-};
-
-const colonStyle: React.CSSProperties = {
-  transform: 'translateY(-0.1em)',
-  fontSize: '1.5em',
 };
 
 const Clock: React.FC = () => {
@@ -123,28 +87,29 @@ const Clock: React.FC = () => {
   const { hours, minutes } = useMemo(() => {
     const h = time.getHours().toString().padStart(2, '0');
     const m = time.getMinutes().toString().padStart(2, '0');
-    return { hours: h, minutes: m };
+    return { hours: h, minutes: m, iso: `${h}:${m}` };
   }, [time]);
 
   return (
-    <div style={containerStyle} role="img" aria-label={`Digital clock showing ${hours}:${minutes}`}>
+    <main className={styles.container}>
       {/* Background Images Layer */}
       {displayedImages.map((img) => (
         <img
           key={img.id}
           src={img.src}
           alt=""
-          style={{ ...baseImageStyle, ...img.pos, filter: img.filter }}
+          className={styles.baseImage}
+          style={{ ...img.pos as React.CSSProperties, filter: img.filter }}
         />
       ))}
 
       {/* Digital Clock Display */}
-      <div style={digitalClockStyle}>
-        <span>{hours}</span>
-        <span style={colonStyle}>:</span>
-        <span>{minutes}</span>
-      </div>
-    </div>
+      <time className={styles.digitalClock} dateTime={iso}>
+        <span className={styles.digit}>{hours}</span>
+        <span className={styles.colon}>:</span>
+        <span className={styles.digit}>{minutes}</span>
+      </time>
+    </main>
   );
 };
 
