@@ -1,67 +1,124 @@
-import React, { useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
 
-const formatTime = (num: number): string => num.toString().padStart(2, '0');
+// Dynamically import all images from the assets folder
+const imageModules = import.meta.glob('@/assets/images/2026/26-04/26-04-27/*', {
+  eager: true,
+  import: 'default',
+});
+
+const IMAGES = Object.values(imageModules).filter(
+  (src): src is string => typeof src === 'string' && !src.includes('.DS_Store')
+);
+
+export const assets = IMAGES;
+
+const getRandomPosition = () => ({
+  top: `${Math.random() * 90}%`,
+  left: `${Math.random() * 90}%`,
+  transform: `scale(${0.1 + Math.random()})`,
+});
+
+const getRandomFilter = () => {
+  const saturation = Math.random() * 3; // 0 to 3 (0 = grayscale, 3 = super saturated)
+  return `saturate(${saturation})`;
+};
+
+const containerStyle: React.CSSProperties = {
+  width: '100vw',
+  height: '100dvh',
+  backgroundColor: '#fff',
+  position: 'relative',
+  overflow: 'hidden',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+const baseImageStyle: React.CSSProperties = {
+  position: 'absolute',
+  maxWidth: '250px',
+  maxHeight: '250px',
+  opacity: 0.8,
+  transition: 'all 0.5s ease-in-out',
+  zIndex: 1,
+};
+
+const digitalClockStyle: React.CSSProperties = {
+  position: 'relative',
+  zIndex: 100,
+  fontFamily: 'monospace',
+  fontSize: '15vmin',
+  color: '#fff',
+  textShadow: '0 0 20px rgba(0, 0, 0, 0.8)',
+  letterSpacing: '0.05em',
+};
 
 const Clock: React.FC = () => {
   const time = useClockTime();
+  
+  // Start with all images loaded at random positions with filters
+  const [displayedImages, setDisplayedImages] = useState<Array<{ src: string; pos: React.CSSProperties; id: number; filter: string }>>(() => {
+    return IMAGES.map((src) => ({
+      src,
+      pos: getRandomPosition(),
+      id: Date.now() + Math.random(),
+      filter: getRandomFilter(),
+    }));
+  });
 
-  const { hours, minutes, seconds } = useMemo(() => {
-    const h = formatTime(time.getHours());
-    const m = formatTime(time.getMinutes());
-    const s = formatTime(time.getSeconds());
-    return { hours: h, minutes: m, seconds: s };
+  // Track which image index to load next (sequential)
+  const [imageIndex, setImageIndex] = useState(0);
+
+  // Use the raw seconds value to trigger the effect
+  const seconds = time.getSeconds();
+
+  useEffect(() => {
+    setDisplayedImages((prev) => {
+      const nextSrc = IMAGES[imageIndex % IMAGES.length];
+      if (!nextSrc) return prev;
+
+      const nextImage = {
+        src: nextSrc,
+        pos: getRandomPosition(),
+        id: Date.now(),
+        filter: getRandomFilter(),
+      };
+
+      const next = [...prev, nextImage];
+      if (next.length > 30) {
+        next.shift();
+      }
+
+      return next;
+    });
+
+    setImageIndex((prev) => prev + 1);
+  }, [seconds]);
+
+
+  // Format digital time
+  const timeLabel = useMemo(() => {
+    const h = time.getHours().toString().padStart(2, '0');
+    const m = time.getMinutes().toString().padStart(2, '0');
+    return `${h}:${m}`;
   }, [time]);
 
-  const containerStyle: React.CSSProperties = {
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#111',
-    margin: 0,
-    padding: 0,
-  };
-
-  const clockStyle: React.CSSProperties = {
-    display: 'flex',
-    gap: '0.5rem',
-    alignItems: 'center',
-    fontFamily: 'monospace',
-    fontWeight: 300,
-  };
-
-  const digitStyle: React.CSSProperties = {
-    fontSize: 'clamp(4rem, 15vw, 12rem)',
-    color: '#fff',
-    minWidth: '0.8em',
-    lineHeight: 1,
-  };
-
-  const separatorStyle: React.CSSProperties = {
-    ...digitStyle,
-    opacity: 0.6,
-    animation: 'blink 1s infinite',
-  };
-
   return (
-    <div style={containerStyle}>
-      <style>{`
-        @keyframes blink {
-          0%, 100% { opacity: 0.6; }
-          50% { opacity: 0.2; }
-        }
-      `}</style>
-      <div style={clockStyle}>
-        <span style={digitStyle}>{hours[0]}</span>
-        <span style={digitStyle}>{hours[1]}</span>
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{minutes[0]}</span>
-        <span style={digitStyle}>{minutes[1]}</span>
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{seconds[0]}</span>
-        <span style={digitStyle}>{seconds[1]}</span>
+    <div style={containerStyle} role="img" aria-label={`Digital clock showing ${timeLabel}`}>
+      {/* Background Images Layer */}
+      {displayedImages.map((img) => (
+        <img
+          key={img.id}
+          src={img.src}
+          alt=""
+          style={{ ...baseImageStyle, ...img.pos, filter: img.filter }}
+        />
+      ))}
+
+      {/* Digital Clock Display */}
+      <div style={digitalClockStyle}>
+        {timeLabel}
       </div>
     </div>
   );
