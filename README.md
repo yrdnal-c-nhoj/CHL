@@ -274,12 +274,22 @@ import { useClockTime } from '@/utils/clockUtils';
 
 ### Best Practices
 
-- **Development Workflow**: Use inline styles during rapid development, then convert to CSS Modules before pushing to GitHub
-- **CSS Modules**: Final production code should use CSS Modules (`Clock.module.css`) for scoped styles
-- **Font Loading**: Only use `useSuspenseFontLoader` when the clock uses a custom font. Skip if using system fonts or no text
-- **Responsive Design**: Implement mobile and desktop optimizations
-- **Accessibility**: Use semantic HTML and ARIA labels where applicable
-- **Performance**: Optimize images and assets
+
+### 💎 The BorrowedTime Technical Standard
+
+To ensure a state-of-the-art, professional delivery, every component must adhere to these standards:
+
+1. **Type Safety**: All new components must be written in **TypeScript (`.tsx`)**.
+2. **Style Isolation**: Always use **CSS Modules (`.module.css`)**. Inline styles are permitted *only* for dynamic properties (e.g., coordinates, random rotations).
+3. **Semantic Markup**: 
+   - Use `<main>` as the root container of a clock.
+   - Use `<time datetime="...">` for all digital time displays to ensure machine readability and accessibility.
+4. **Asset Pipeline**: 
+   - Utilize `import.meta.glob` for automated asset discovery.
+   - Use `useSuspenseFontLoader` for custom typography to prevent Flash of Unstyled Content (FOUC).
+5. **Performance**: 
+   - Time logic must use the `requestAnimationFrame` based hooks (`useClockTime`).
+   - Images should be optimized (WebP preferred) and pre-buffered using standard project hooks.
 
 ## 🌐 Deployment
 
