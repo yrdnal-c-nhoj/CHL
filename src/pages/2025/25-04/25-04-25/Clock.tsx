@@ -133,7 +133,10 @@ const MyClock: React.FC<MyClockProps> = () => {
   const isoTime = currentTime.toISOString();
 
   return (
-    <main className={styles.container} style={{ backgroundImage: `url(${backgroundImage})` }}>
+    <main 
+      className={styles.container} 
+      style={{ '--bg-image': `url(${backgroundImage})` } as React.CSSProperties}
+    >
       {/* Visually hidden time for accessibility and SEO */}
       <time dateTime={isoTime} className={styles.semanticTime}>
         {currentTime.toLocaleTimeString()}
