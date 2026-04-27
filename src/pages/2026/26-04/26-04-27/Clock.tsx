@@ -50,7 +50,7 @@ const digitalClockStyle: React.CSSProperties = {
   position: 'relative',
   zIndex: 100,
   fontFamily: 'Lever, monospace',
-  fontSize: '15vmin',
+  fontSize: '25vmin',
   color: '#1F1D41',
   textShadow: '0 0 20px rgba(0, 0, 0, 0.8)',
   letterSpacing: '0.05em',
