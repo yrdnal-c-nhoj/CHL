@@ -290,6 +290,8 @@ To ensure a state-of-the-art, professional delivery, every component must adhere
 5. **Performance**: 
    - Time logic must use the `requestAnimationFrame` based hooks (`useClockTime`).
    - Images should be optimized (WebP preferred) and pre-buffered using standard project hooks.
+   - **Bundle Hygiene**: Avoid importing heavy Node-only libraries in client-side components.
+   - **Style Consolidation**: Prefer CSS Modules for clock-specific art and Tailwind for UI to minimize runtime CSS-in-JS overhead.
 
 ## 🌐 Deployment
 
