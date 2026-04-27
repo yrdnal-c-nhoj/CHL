@@ -10,18 +10,19 @@ const Clock: React.FC = () => {
   const time = useClockTime();
 
   const { hours, minutes, seconds, ms, ampm } = useMemo(() => {
-    let h = time.getHours();
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    h = h % 12;
-    h = h ? h : 12;
+    const rawHours = time.getHours();
+    const ampm = rawHours >= 12 ? 'PM' : 'AM';
+    const displayHours = rawHours % 12 || 12;
+    
+    const h = formatTime(displayHours);
     const m = formatTime(time.getMinutes());
     const s = formatTime(time.getSeconds());
     const ms = formatMs(time.getMilliseconds());
-    return { hours: h.toString(), minutes: m, seconds: s, ms, ampm };
+    return { hours: h, minutes: m, seconds: s, ms, ampm };
   }, [time]);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <video
         src={bgVideo}
         autoPlay
@@ -30,10 +31,10 @@ const Clock: React.FC = () => {
         playsInline
         className={styles.video}
       />
-      <div className={styles.clockWrapper}>
+      <time className={styles.clockWrapper} dateTime={time.toISOString()}>
         <div className={styles.clock}>
           <div className={styles.digitBox}><span className={styles.digit}>{hours[0]}</span></div>
-          {hours[1] && <div className={styles.digitBox}><span className={styles.digit}>{hours[1]}</span></div>}
+          <div className={styles.digitBox}><span className={styles.digit}>{hours[1]}</span></div>
           <div className={styles.digitBox}><span className={styles.digit}>{minutes[0]}</span></div>
           <div className={styles.digitBox}><span className={styles.digit}>{minutes[1]}</span></div>
           <div className={styles.digitBox}><span className={styles.digit}>{seconds[0]}</span></div>
@@ -43,8 +44,8 @@ const Clock: React.FC = () => {
           <div className={styles.digitBox}><span className={styles.digit}>{ms[2]}</span></div>
           <div className={styles.ampmBox}><span className={styles.ampm}>{ampm}</span></div>
         </div>
-      </div>
-    </div>
+      </time>
+    </main>
   );
 };
 
