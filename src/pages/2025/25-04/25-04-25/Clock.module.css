@@ -1,4 +1,18 @@
-.inlineStyle {
-  width: 100vw;
+.container {
+  height: 100dvh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  display: flex; /* Use flex to center canvas if needed, or just for layout */
+  justify-content: center;
+  align-items: center;
+}
+
+.clockCanvas {
   display: block;
+}
+.semanticTime {
+  position: absolute; /* Position absolutely to hide it visually */
+  width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;
 }

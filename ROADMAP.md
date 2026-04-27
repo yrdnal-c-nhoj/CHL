@@ -26,9 +26,10 @@ This document tracks the technical progress and architectural shifts of the proj
 - **Automation**: Full implementation of `import.meta.glob` for zero-config asset delivery in daily clocks (pioneered in 26-04-27).
 
 ## 🏗️ Technical Debt & Optimization Focus
-- **Phase 1: Legacy Liquidation**: Remove all `.jsx` templates and unused test JSON files.
+- **Phase 1: Legacy Liquidation**: Remove all `.jsx` templates and unused test JSON files. (IN PROGRESS)
+- **Phase 1.5: Dependency Purge**: Move backend/heavy libraries (Puppeteer, MongoDB, Express) to `devDependencies` to protect bundle size.
 - **Phase 2: Semantic Retrofit**: Update 2025 components (starting with 25-04-25) to use the `<time>` tag and CSS Modules.
 - **Phase 3: Hook Migration**: Replace manual `FontFace` loading in older components with `useSuspenseFontLoader`.
 - **Phase 4: Asset Efficiency**: Implementing automated WebP conversion for the daily image pipeline to improve LCP (Largest Contentful Paint).
 
-*Last Updated: 2026-04-27*
+*Last Updated: 2026-04-27 - Audit Completed*
