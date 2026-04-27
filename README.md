@@ -32,6 +32,7 @@ BorrowedTime creates daily clock experiences that challenge conventional timekee
 - **Archive Navigation**: Browse through historical clock designs
 - **Smart Sorting**: Sort clocks by date, title, or randomly
 - **Today's Clock**: Direct access to the current day's design
+- **Automated Asset Discovery**: Zero-config asset loading via Vite glob-imports.
 
 ### Technical Features
 
@@ -40,7 +41,7 @@ BorrowedTime creates daily clock experiences that challenge conventional timekee
 - **Performance Optimized**: Lazy loading, code splitting, and asset optimization
 - **SEO Friendly**: Dynamic meta tags and semantic markup
 - **Progressive Enhancement**: App-like routing and performance-focused loading
-- **Advanced Font Loading**: Custom font loading utilities with FOUC prevention
+- **Advanced Asset Pipeline**: Custom font loading and image pre-buffering with FOUC prevention.
 - **Component Library**: Reusable components and utilities
 
 ## 🛠 Technology Stack

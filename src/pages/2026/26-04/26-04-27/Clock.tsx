@@ -84,10 +84,10 @@ const Clock: React.FC = () => {
 
 
   // Format digital time
-  const { hours, minutes } = useMemo(() => {
+  const { hours, minutes, iso } = useMemo(() => {
     const h = time.getHours().toString().padStart(2, '0');
     const m = time.getMinutes().toString().padStart(2, '0');
-    return { hours: h, minutes: m, iso: `${h}:${m}` };
+    return { hours: h, minutes: m, iso: `${h}:${m}:00` };
   }, [time]);
 
   return (

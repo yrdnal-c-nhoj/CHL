@@ -17,13 +17,14 @@ This document tracks the technical progress and architectural shifts of the proj
 - **Font Loading**: Developed `useSuspenseFontLoader` to eliminate "Flash of Unstyled Content" (FOUC).
 - **Preloading**: Implemented an overlay-based loading system that waits for videos and images to buffer before revealing the art.
 - **RAF Engine**: Switched from `setInterval` to `requestAnimationFrame` in `useClockTime` for perfectly synced 60fps rendering.
+- **Semantic Refactor**: Migrated to `<main>` and `<time>` tags for accessibility and SEO.
 
 ## 🔵 Modern Architecture (Current)
 - **Type Safety**: Ongoing migration from JS to **TypeScript**.
 - **Scoped Styles**: Adoption of **CSS Modules** to isolate daily designs and prevent global style collisions.
-- **Automation**: Integrated `import.meta.glob` to automate the daily clock discovery pipeline.
+- **Automation**: Full implementation of `import.meta.glob` for zero-config asset delivery in daily clocks (pioneered in 26-04-27).
 
 ## 🏗️ Technical Debt & Optimization Focus
-- **Cleanup**: Continuing to remove legacy JavaScript files.
+- **Cleanup**: Deprecated `.jsx` templates in favor of `.tsx` standards.
 - **Style Leaks**: Refactoring remaining components that inject global `<style>` tags.
 - **Asset Efficiency**: Implementing advanced caching for high-resolution daily videos.
