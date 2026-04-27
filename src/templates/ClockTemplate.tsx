@@ -54,8 +54,9 @@ const ClockTemplate: React.FC = () => {
   );
 
   return (
-    <div className={styles.container}>
-      <div className={styles.clockWrapper}>
+    <main className={styles.container}>
+      {/* Semantic time for accessibility and SEO */}
+      <time dateTime={time.toISOString()} className={styles.clockWrapper}>
         <span className={styles.digit}>{h[0]}</span>
         <span className={styles.digit}>{h[1]}</span>
         <span className={styles.separator}>:</span>
@@ -64,8 +65,8 @@ const ClockTemplate: React.FC = () => {
         <span className={styles.separator}>:</span>
         <span className={styles.digit}>{s[0]}</span>
         <span className={styles.digit}>{s[1]}</span>
-      </div>
-    </div>
+      </time>
+    </main>
   );
 };
 

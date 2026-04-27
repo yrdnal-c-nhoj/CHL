@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useClockTime } from '@/utils/hooks'; // Assuming useClockTime is in '@/utils/hooks'
+import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundImage from '@/assets/images/2025/25-04/25-04-25/bad.webp';
@@ -23,7 +23,7 @@ interface MyClockProps {
 const MyClock: React.FC<MyClockProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<ClockImages | null>(null);
-  
+
   const fontConfigs: FontConfig[] = [
     {
       fontFamily: 'OswaldBold',
@@ -35,13 +35,10 @@ const MyClock: React.FC<MyClockProps> = () => {
     }
   ];
   useSuspenseFontLoader(fontConfigs);
-
-  // Use the standardized hook for clock updates
   const currentTime = useClockTime();
 
   useEffect(() => {
     if (!imagesRef.current) return;
-    
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -111,7 +108,7 @@ const MyClock: React.FC<MyClockProps> = () => {
     };
 
     update();
-  }, [currentTime, fontLoaded]);
+  }, [currentTime, imagesRef.current]);
 
   // Load images once (this effect runs only once on mount)
   useEffect(() => {
