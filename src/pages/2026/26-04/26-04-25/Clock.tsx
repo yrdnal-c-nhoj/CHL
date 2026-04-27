@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
-import bgImage from '../../../../assets/images/2026/26-04/26-04-25/magnify.jpg';
+import styles from './Clock.module.css';
+import bgImage from '@/assets/images/2026/26-04/26-04-25/magnify.jpg';
 
-const LabClock: React.FC = () => {
+const Clock: React.FC = () => {
   const time = useClockTime();
 
   const angles = useMemo(() => {
@@ -20,119 +21,37 @@ const LabClock: React.FC = () => {
     };
   }, [time]);
 
-  // Shared styles for the hands
-  const handBaseStyle: React.CSSProperties = {
-    position: 'absolute',
-    left: '50%',
-    bottom: '50%',
-    transformOrigin: 'bottom center',
-    borderRadius: '3px',
-    willChange: 'transform',
-  };
-
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100vw',
-      height: '100vh',
-      position: 'relative'
-    }}>
-      {/* Fixed-size background image */}
-      <img
-        src={bgImage}
-        alt=""
-        style={{
-          position: 'absolute',
-          width: 'auto',
-          height: 'auto',
-          objectFit: 'contain',
-          filter: 'brightness(1.0) contrast(0.8)'
-        }}
-      />
-      {/* Clock Face Container */}
-      <div style={{
-        position: 'relative',
-        width: '116px',
-        height: '116px',
-        marginLeft: '16px',
-        marginTop: '5px',
-        borderRadius: '50%',
-        opacity: 0.3,
-        boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
-      }}>
-        
-        {/* Tick Marks */}
+    <div className={styles.container}>
+      <img src={bgImage} alt="" className={styles.bgImage} />
+      <div className={styles.clockFace}>
         {Array.from({ length: 12 }).map((_, i) => (
           <div
             key={i}
-            style={{
-              position: 'absolute',
-              width: '2px',
-              height: '100%',
-              left: 'calc(50% - 1.5px)',
-              transform: `rotate(${i * 30}deg)`,
-            }}
+            className={styles.tickMarkContainer}
+            style={{ transform: `rotate(${i * 30}deg)` }}
           >
-            <div style={{
-              width: '100%',
-              height: '3%',
-              backgroundColor: '#212629',
-              borderRadius: '2px'
-            }} />
+            <div className={styles.tickMark} />
           </div>
         ))}
 
-        {/* Hour Hand */}
-        <div style={{
-          ...handBaseStyle,
-          width: '3px',
-          height: '35px',
-          backgroundColor: '#65788B',
-          marginLeft: '-1.5px', 
-          transform: `rotate(${angles.hour}deg)`,
-          zIndex: 3,
-        }} />
+        <div
+          className={`${styles.handBase} ${styles.hourHand}`}
+          style={{ transform: `rotate(${angles.hour}deg)` }}
+        />
+        <div
+          className={`${styles.handBase} ${styles.minuteHand}`}
+          style={{ transform: `rotate(${angles.minute}deg)` }}
+        />
+        <div
+          className={`${styles.handBase} ${styles.secondHand}`}
+          style={{ transform: `rotate(${angles.second}deg)` }}
+        />
 
-        {/* Minute Hand */}
-        <div style={{
-          ...handBaseStyle,
-          width: '2.5px',
-          height: '58px',
-          backgroundColor: '#5887B3',
-          marginLeft: '-1.25px',
-          transform: `rotate(${angles.minute}deg)`,
-          zIndex: 4,
-        }} />
-
-        {/* Second Hand */}
-        <div style={{
-          ...handBaseStyle,
-          width: '2px',
-          height: '58px',
-          backgroundColor: '#E74D3C92',
-          marginLeft: '-1px',
-          transform: `rotate(${angles.second}deg)`,
-          zIndex: 5,
-        }} />
-
-        {/* Center Dot */}
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '3px',
-          height: '3px',
-          backgroundColor: '#2C3E50CA',
-          borderRadius: '50%',
-          transform: 'translate(-50%, -50%)',
-          border: '1px #F5F0F0A3',
-          zIndex: 10
-        }} />
+        <div className={styles.centerDot} />
       </div>
     </div>
   );
 };
 
-export default LabClock;
+export default Clock;

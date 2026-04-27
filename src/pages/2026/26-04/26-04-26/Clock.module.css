@@ -1,0 +1,93 @@
+@font-face {
+  font-family: 'Jet';
+  src: url('@/assets/fonts/26-04-26-jet.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.clockWrapper {
+  position: relative;
+  z-index: 1;
+  width: 85vw;
+  max-width: 800px;
+  height: 15vh;
+  min-height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clock {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-family: 'Jet', monospace;
+  font-weight: 300;
+  opacity: 0.8;
+}
+
+.digitBox {
+  width: clamp(1.5rem, 7vw, 5rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ampmBox {
+  width: clamp(2rem, 10vw, 6rem);
+  margin-left: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.digit {
+  font-size: clamp(2rem, 8vw, 6rem);
+  color: #fff;
+  min-width: 0.8em;
+  line-height: 1;
+  text-shadow:
+    0 0 10px rgba(255, 100, 50, 0.8),
+    0 0 20px rgba(255, 100, 50, 0.6),
+    0 0 40px rgba(255, 50, 100, 0.4),
+    2px 2px 0px rgba(0, 0, 0, 0.8),
+    -1px -1px 0px rgba(255, 255, 255, 0.3);
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.3);
+}
+
+.ampm {
+  font-size: clamp(1.5rem, 6vw, 4rem);
+  color: #fff;
+  min-width: 0.8em;
+  line-height: 1;
+  text-shadow:
+    0 0 10px rgba(255, 100, 50, 0.8),
+    0 0 20px rgba(255, 100, 50, 0.6),
+    0 0 40px rgba(255, 50, 100, 0.4),
+    2px 2px 0px rgba(0, 0, 0, 0.8),
+    -1px -1px 0px rgba(255, 255, 255, 0.3);
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.3);
+}
