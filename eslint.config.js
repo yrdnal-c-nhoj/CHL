@@ -17,8 +17,6 @@ export default tseslint.config(
       'scripts/**',
       'babel.config.js',
       '*.min.js',
-      'src/pages/2025/**',
-      'src/pages/2026/**',
       'src/assets/images/**',
       'src/test/**',
       'src/templates/**',
