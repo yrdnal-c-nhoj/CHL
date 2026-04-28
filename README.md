@@ -10,8 +10,8 @@
 
 BorrowedTime is an online digital art project by Cubist Heart Laboratories. The Lab combines existing material (open source code, appropriated imagery, found type design, etc.) to make a new online clock each day.
 
-[🕐 Take Me There](https://www.cubistheart.com)
-[💌 Contact The Lab](mailto:cubistheart@gmail.com)
+[🧊🫀🔭 Take Me There](https://www.cubistheart.com)
+[🧊🫀🔭 Contact The Lab](mailto:cubistheart@gmail.com)
 
 ---
 
@@ -23,21 +23,6 @@ BorrowedTime is an online digital art project by Cubist Heart Laboratories. The 
 *   **Animation**: GSAP + RequestAnimationFrame
 *   **Deployment**: Vercel
 
-## 🚀 Quick Start
-
-1.  **Clone & Install**
-    ```bash
-    git clone https://github.com/yrdnal-c-nhoj/CHL.git
-    npm install
-    ```
-2.  **Environment Setup**
-    ```bash
-    cp .env.example .env
-    ```
-3.  **Run Development**
-    ```bash
-    npm run dev
-    ```
 
 ## 📁 Architecture
 
@@ -55,15 +40,6 @@ To maintain art quality and performance, every clock must adhere to the **Borrow
 *   **Semantic Markup**: Use `<main>` for containers and `<time>` for digital displays.
 *   **Rendering**: Utilize the `useClockTime` hook for frame-synced updates.
 *   **Asset Pipeline**: Use `useSuspenseFontLoader` to prevent Flash of Unstyled Content (FOUC).
-
-## 🗺️ Roadmap
-Detailed strategic goals can be found in ROADMAP.md. Highlights include:
-*   **Phase 1**: TypeScript migration and Asset Hardening (Current).
-*   **Phase 2**: Offline support and Accessibility (Q2 2025).
-*   **Phase 3**: Clock Creator web tool (Q3 2025).
-
-## 🤝 Contributing
-We welcome daily clock submissions. Please see CONTRIBUTING.md for the workflow.
 
 ## 🎭 Manifesto
 *   **We Take Pictures**: Appropriation as appreciation.
