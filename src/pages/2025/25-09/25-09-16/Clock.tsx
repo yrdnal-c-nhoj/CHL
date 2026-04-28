@@ -1,54 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
+import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/2025/25-09/25-09-16/bg.jpg';
 import d250916font from '@/assets/fonts/2025/25-09-16-baud.ttf?url';
 
 const Clock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
-  // Update time every second
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'MyD250916font', fontUrl: d250916font }
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
+
+  // Handle background image preloading separately as font is handled by Suspense
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Preload font and image
-  useEffect(() => {
-    // Inject font-face
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'MyD250916font';
-        src: url(${d250916font}) format('truetype');
-        font-display: swap;
-      }
-    `;
-    document.head.appendChild(style);
-
-    // Font preload
-    const fontPromise = document.fonts.load('10rem MyD250916font');
-
-    // Background image preload
-    const imagePromise = new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = bgImage;
-      img.onload = resolve;
-      img.onerror = reject;
-    });
-
-    // Wait for both
-    Promise.all([fontPromise, imagePromise])
-      .then(() => setIsLoaded(true))
-      .catch((err) => {
-        console.error('Asset loading error:', err);
-        setIsLoaded(true); // fallback
-      });
-
-    return () => {
-      document.head.removeChild(style);
-    };
+    const img = new Image();
+    img.src = bgImage;
+    img.onload = () => setIsLoaded(true);
+    img.onerror = () => setIsLoaded(true);
   }, []);
 
   // Format time
@@ -56,7 +28,7 @@ const Clock: React.FC = () => {
   const minutes = String(time.getMinutes()).padStart(2, '0');
   const seconds = String(time.getSeconds()).padStart(2, '0');
 
-  const digitBox = {
+  const digitBox: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -86,7 +58,7 @@ const Clock: React.FC = () => {
     `,
   };
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     height: '100dvh',
     width: '100vw',
     display: 'flex',
@@ -98,14 +70,14 @@ const Clock: React.FC = () => {
     backgroundPosition: 'center',
   };
 
-  const faceStyle = {
+  const faceStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   };
 
-  const renderDigits = (value) =>
+  const renderDigits = (value: string) =>
     value.split('').map((d, i) => (
       <div key={i} style={digitBox}>
         {d}
