@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import videoFile from '@/assets/images/2025/25-10/25-10-22/bg.mp4';
 import fallbackImg from '@/assets/images/2025/25-10/25-10-22/bg.webp';
@@ -7,7 +8,7 @@ import styles from './Clock.module.css';
 
 const ClockWithVideo: React.FC = () => {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const fontConfigs = useMemo(() => [
@@ -16,17 +17,6 @@ const ClockWithVideo: React.FC = () => {
 
   // Use the standardized loader to avoid injecting <style> tags manually
   useSuspenseFontLoader(fontConfigs);
-
-  // Time update (Standardized to rAF)
-  useEffect(() => {
-    let frameId: number;
-    const tick = () => {
-      setTime(new Date());
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
 
   // Video Autoplay and Error Handling (MODIFIED)
   useEffect(() => {
