@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime, formatTime } from '@/utils/clockUtils';
 import videoFile from '@/assets/images/2025/25-10/25-10-31/mids.mp4';
 import fallbackImg from '@/assets/images/2025/25-10/25-10-31/midsun.webp';
 import fontFile_2025_10_31 from '@/assets/fonts/2025/25-10-31-mi.otf?url';
@@ -9,47 +9,26 @@ export default function VideoClock() {
   const [ready, setReady] = useState<boolean>(false);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [showPlayButton, setShowPlayButton] = useState<boolean>(false);
-  const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Simple scoped font loading without leaks
-  useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace(
-          'CustomFont',
-          `url(${fontFile_2025_10_31})`,
-        );
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-        // Trigger ready check when font loads
-        setTimeout(() => setReady(true), 100);
-      } catch (error) {
-        console.warn('Font failed to load, using fallback');
-        setFontLoaded(false);
-        // Still set ready to true even if font fails
-        setTimeout(() => setReady(true), 100);
-      }
-    };
+  const time = useClockTime('ms');
+  const { hours, minutes, seconds, milliseconds } = formatTime(time, '24h');
+  const datetime = `${hours}:${minutes}:${seconds}`;
+  const digits = (hours + minutes + seconds + milliseconds).split('');
 
-    loadFont();
-  }, []);
-
-  // Time update loop
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 10);
-    return () => clearInterval(interval);
-  }, []);
+  const fontConfigs = useMemo(() => [
+    { fontFamily: 'CustomFont', fontUrl: fontFile_2025_10_31 }
+  ], []);
+  
+  useSuspenseFontLoader(fontConfigs);
 
   // Preload assets: video, fallback image
   useEffect(() => {
     let imageLoaded = false;
     let videoLoaded = false;
 
-    const checkReady: React.FC = () => {
-      if ((videoLoaded || videoFailed) && imageLoaded && fontLoaded) {
+    const checkReady = () => {
+      if ((videoLoaded || videoFailed) && imageLoaded) {
         setTimeout(() => setReady(true), 100);
       }
     };
@@ -94,9 +73,9 @@ export default function VideoClock() {
         v.removeEventListener('stalled', onError);
       };
     }
-  }, [videoFailed]);
+  }, [videoFailed]); // fontLoaded removed as useSuspenseFontLoader handles it
 
-  const handlePlayClick: React.FC = () => {
+  const handlePlayClick = () => {
     const v = videoRef.current;
     if (v) {
       v.play()
@@ -104,16 +83,6 @@ export default function VideoClock() {
         .catch(() => console.error('Manual play failed'));
     }
   };
-
-  // Time formatting
-  const formatTime: React.FC = () => {
-    const h = String(time.getHours()).padStart(2, '0');
-    const m = String(time.getMinutes()).padStart(2, '0');
-    const s = String(time.getSeconds()).padStart(2, '0');
-    const ms = String(Math.floor(time.getMilliseconds() / 10)).padStart(2, '0');
-    return h + m + s + ms;
-  };
-  const digits = formatTime().split('');
 
   // Inline styles
   const containerStyle = {
@@ -187,7 +156,7 @@ export default function VideoClock() {
   };
 
   return (
-    <div style={containerStyle}>
+    <main style={containerStyle}>
       <video
         ref={videoRef}
         style={videoStyle}
@@ -206,12 +175,12 @@ export default function VideoClock() {
         </button>
       )}
       {ready && (
-        <div style={clockStyle}>
+        <time dateTime={datetime} style={clockStyle}>
           {digits.map((d, i) => (
             <span key={i}>{d}</span>
           ))}
-        </div>
+        </time>
       )}
-    </div>
+    </main>
   );
 }
