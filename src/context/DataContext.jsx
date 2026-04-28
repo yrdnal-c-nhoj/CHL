@@ -37,20 +37,22 @@ export const DataProvider = ({ children }) => {
           ? testData
           : prodData;
 
+      // If the data is still a string (failed auto-parse), attempt manual parse to catch errors
+      let dataToProcess = clockData;
       if (typeof clockData === 'string') {
         try {
-          JSON.parse(clockData);
+          dataToProcess = JSON.parse(clockData);
         } catch (e) {
-          throw new Error(`JSON Syntax Error: ${e.message}`);
+          throw new Error(`JSON Syntax Error: ${e.message}. Please check your .json files.`);
         }
       }
 
-      if (!clockData || clockData.length === 0) {
+      if (!dataToProcess || dataToProcess.length === 0) {
         throw new Error('No data found in JSON file.');
       }
 
       // Parse JSON rows
-      const parsedItems = clockData.map((row, index) => {
+      const parsedItems = dataToProcess.map((row, index) => {
         let path =
           row.path
             ?.toString()

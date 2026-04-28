@@ -44,12 +44,13 @@ export default defineConfig({
     rollupOptions: {
       output: {
         // Optimize chunk splitting
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('three')) return 'three';
-            if (id.includes('react')) return 'vendor';
-            return 'libs';
-          }
+        manualChunks: (id) => {
+          if (!id.includes('node_modules')) return;
+          
+          if (id.includes('three')) return 'three';
+          if (id.includes('react')) return 'vendor';
+          if (id.includes('gsap')) return 'animation';
+          return 'vendor';
         },
       },
     },
