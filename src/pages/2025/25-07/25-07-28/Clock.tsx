@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import customFont from '@/assets/fonts/2025/25-07-28-gol.ttf?url';
 import backgroundImage from '@/assets/images/2025/25-07/25-07-28/go.gif';
@@ -19,18 +20,7 @@ const Clock: React.FC = () => {
 
   useSuspenseFontLoader(fontConfigs);
 
-  const [time, setTime] = useState(() => new Date());
-
-  // Standardized rAF loop for time
-  useEffect(() => {
-    let frameId: number;
-    const tick = () => {
-      setTime(new Date());
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
+  const time = useClockTime();
 
   const getFormattedTime = () => {
     let h = time.getHours() % 12;
