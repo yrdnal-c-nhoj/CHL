@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import viteCompression from 'vite-plugin-compression';
-import dts from 'vite-plugin-dts';
 import path from 'path';
 
 export default defineConfig({
@@ -26,9 +25,6 @@ export default defineConfig({
       algorithm: 'gzip',
       ext: '.gz',
     }),
-    dts({
-      insertTypesEntry: true,
-    }),
   ],
 
   css: {
@@ -51,19 +47,14 @@ export default defineConfig({
     rollupOptions: {
       output: {
         // Optimize chunk splitting
-        manualChunks: {
-          // Separate vendor libraries
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          // Separate Three.js and related libraries
-          three: ['three', '@react-three/fiber', '@react-three/drei'],
-          // Separate UI libraries
-          ui: ['styled-components', '@emotion/react', '@emotion/cache'],
-          // Separate analytics
-          analytics: ['react-ga4', 'react-helmet-async'],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('three')) return 'three';
+            if (id.includes('react')) return 'vendor';
+            return 'libs';
+          }
         },
       },
-      // Optimize dependencies
-      external: [],
     },
     // Optimize chunk size warning limit
     chunkSizeWarningLimit: 1000,
