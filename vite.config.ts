@@ -51,7 +51,6 @@ export default defineConfig({
           if (id.includes('node_modules')) {
             if (id.includes('three')) return 'three';
             if (id.includes('react')) return 'vendor';
-            // Remove explicit 'analytics' chunk if react-ga4 is not installed
             return 'libs';
           }
         },

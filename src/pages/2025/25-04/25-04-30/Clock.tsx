@@ -69,8 +69,10 @@ const GravityClock: React.FC<GravityClockProps> = () => {
   // Animation loop
   const animate = () => {
     setClocks((prevClocks) => {
-      const floor =
-        (containerRef.current?.offsetHeight || window.innerHeight) / 16;
+      // Use the actual pixel height of the viewport/container
+      const containerHeight = containerRef.current?.getBoundingClientRect().height || window.innerHeight;
+      // Convert to rem for the physics simulation since we use rem for drawing
+      const floor = containerHeight / 16;
 
       return prevClocks
         .filter((c) => Date.now() - c.born < 45000)

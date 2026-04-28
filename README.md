@@ -8,133 +8,71 @@
 
 > _A new clock every day._
 
-BorrowedTime is an online digital art project from [Cubist Heart Laboratories](https://www.cubistheart.com). The Lab combines existing material (open source code, appropriated imagery, found type design, etc.) to make a new online clock each day
+BorrowedTime is an online digital art project by [Cubist Heart Laboratories](https://www.cubistheart.com). We curate internet culture—open-source code, appropriated imagery, and found typography—into unique daily timekeeping experiences.
 
 [🕐 Take Me There](https://www.cubistheart.com)
-
 [💌 Contact The Lab](mailto:cubistheart@gmail.com)
 
-## 🎨 Project Overview
+---
 
-BorrowedTime creates daily clock experiences that challenge conventional timekeeping through:
+## 🛠 Technical Stack
+*   **Framework**: React 18 + Vite
+*   **Language**: TypeScript (Strict Mode)
+*   **Routing**: React Router v6
+*   **Styling**: CSS Modules + TailwindCSS
+*   **Animation**: GSAP + RequestAnimationFrame
+*   **Deployment**: Vercel
 
-- **Unique Daily Designs**: Each day features a completely new clock concept
-- **Experimental Typography**:  Unique fonts and typographic treatments
-- **Found Imagery**: Curated visual elements sourced from across the internet
-- **Responsive Design**: Optimized for both desktop and mobile experiences
+## 🚀 Quick Start
 
-## 🚀 Features
+1.  **Clone & Install**
+    ```bash
+    git clone https://github.com/yrdnal-c-nhoj/CHL.git
+    npm install
+    ```
+2.  **Environment Setup**
+    ```bash
+    cp .env.example .env
+    ```
+3.  **Run Development**
+    ```bash
+    npm run dev
+    ```
 
-### Core Functionality
+## 📁 Architecture
 
-- **Daily Clock Generation**: New clock design published every day
-- **Dynamic Routing**: URL structure `/YY-MM-DD` for each clock
-- **Archive Navigation**: Browse through historical clock designs
-- **Smart Sorting**: Sort clocks by date, title, or randomly
-- **Today's Clock**: Direct access to the current day's design
-- **Automated Asset Discovery**: Zero-config asset loading via Vite glob-imports.
+The project uses a **Registry-Discovery** pattern. Adding a clock requires zero manual routing:
 
-### Technical Features
+1.  Create your clock in `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx`.
+2.  Register the entry in `src/context/clockpages.json`.
+3.  Vite's `import.meta.glob` handles dynamic discovery and code-splitting automatically.
 
-- **Modern React Architecture**: Built with React 18 and hooks
-- **TypeScript Integration**: Ongoing migration to TypeScript for enhanced type safety
-- **Performance Optimized**: Lazy loading, code splitting, and asset optimization
-- **SEO Friendly**: Dynamic meta tags and semantic markup
-- **Progressive Enhancement**: App-like routing and performance-focused loading
-- **Advanced Asset Pipeline**: Custom font loading and image pre-buffering with FOUC prevention.
-- **Component Library**: Reusable components and utilities
+## 💎 The Technical Standard (BTS)
+To maintain art quality and performance, every clock must adhere to the **BorrowedTime Technical Standard**:
 
-## 🛠 Technology Stack
+*   **Type Safety**: Must be written in `.tsx`.
+*   **Style Isolation**: Use `.module.css` for clock-specific art.
+*   **Semantic Markup**: Use `<main>` for containers and `<time>` for digital displays.
+*   **Rendering**: Utilize the `useClockTime` hook for frame-synced updates.
+*   **Asset Pipeline**: Use `useSuspenseFontLoader` to prevent Flash of Unstyled Content (FOUC).
 
-### Frontend
+## 🗺️ Roadmap
+Detailed strategic goals can be found in ROADMAP.md. Highlights include:
+*   **Phase 1**: TypeScript migration and Asset Hardening (Current).
+*   **Phase 2**: Offline support and Accessibility (Q2 2025).
+*   **Phase 3**: Clock Creator web tool (Q3 2025).
 
-- **React 18**: Modern React with hooks and concurrent features
-- **React Router v6**: Client-side routing with dynamic routes
-- **TypeScript**: Gradual adoption for enhanced development experience
-- **Vite**: Fast build tool and development server
-- **TailwindCSS**: Utility-first CSS framework
-- **GSAP**: Advanced animations and transitions
+## 🤝 Contributing
+We welcome daily clock submissions. Please see CONTRIBUTING.md for the workflow.
 
-### Development Tools
+## 🎭 Manifesto
+*   **We Take Pictures**: Appropriation as appreciation.
+*   **We Love Typefaces**: Typography as a secret handshake.
+*   **We Use AI**: A new tool is a new toy for learning.
+*   **Plus Ars Citius Omni Tempore Nam Quisque**: More Art Faster For Everybody All The Time.
 
-- **ESLint**: Code quality and consistency
-- **Prettier**: Code formatting
-- **Vitest**: Unit testing framework
-- **TypeScript Compiler**: Static type checking
-
-### Deployment & Infrastructure
-
-- **Vercel**: Hosting and deployment platform
-- **GitHub**: Version control and collaboration
-- **Node.js 24.x**: Runtime environment
-
-## 📁 Project Structure
-
-```text
-CHL/
-├── src/
-│   ├── pages/                  # Daily clock implementations
-│   │   ├── 2025/               # Year folder
-│   │   │   ├── 25-04/          # Month folder (YY-MM format)
-│   │   │   │   ├── 25-04-01/   # Individual clock folder
-│   │   │   │   │   └── Clock.tsx
-│   │   │   │   └── ...
-│   │   │   └── 25-10/
-│   │   └── 2026/               # Current year
-│   │       ├── 26-03/
-│   │       └── 26-04/
-│   ├── components/            # Reusable UI components
-│   │   ├── TopNav.jsx
-│   │   ├── Footer.jsx
-│   │   ├── Header.jsx
-│   │   └── ClockPageNav.jsx
-│   ├── context/          # React context for state management
-│   │   └── DataContext.jsx
-│   ├── types/            # TypeScript type definitions
-│   │   └── clock.ts
-│   ├── utils/            # Utility functions and helpers
-│   │   ├── fontLoader.tsx     # Advanced font loading utilities
-│   │   ├── assetLoader.ts     # Asset preloading and management
-│   │   ├── clockUtils.ts      # Clock-specific utilities
-│   ├── templates/         # Clock templates and patterns
-│   │   └── WordClockTemplate.jsx
-│   ├── assets/           # Static assets
-│   │   ├── fonts/       # Custom typography
-│   │   ├── images/      # Found imagery and graphics
-│   │   └── i.png, x.png # Social media icons
-│   ├── App.tsx           # Main application component
-│   ├── Home.jsx          # Homepage with clock archive
-│   ├── ClockPage.tsx     # Dynamic clock page renderer
-│   ├── Today.jsx         # Today's clock page
-│   ├── About.jsx         # About page
-│   ├── Manifesto.jsx     # Project manifesto
-│   ├── Contact.jsx       # Contact information
-│   └── main.tsx          # Application entry point
-├── public/               # Public assets
-├── package.json          # Dependencies and scripts
-├── vite.config.ts       # Vite configuration
-├── tailwind.config.js   # TailwindCSS configuration
-└── README.md            # This file
-```
-
-## 🎯 Clock Design Patterns
-
-Each clock follows a flexible structure while maintaining unique characteristics:
-
-### Common Elements
-
-- **Time Display**: Hours, minutes, and seconds in various formats
-- **Typography**: Custom fonts and typographic experiments
-- **Visual Effects**: Animations, transitions, and interactive elements
-- **Backgrounds**: Found imagery, gradients, or abstract designs
-- **Responsive Design**: Mobile and desktop optimizations
-
-### Design Examples
-
-- **26-03-15**: Rotating digits with custom shadow effects and vibrant gradients
-- **25-04-01**: Cosmic-themed digital clock with aurora effects and rainbow glow
-- **25-05-01**: Lightning-themed clock with shake animations and flash effects
-- **25-06-01**: Postal stamp design with jostling animations
+---
+_Built with ❤️ by Cubist Heart Laboratories_
 
 ## 🚀 Getting Started
 
