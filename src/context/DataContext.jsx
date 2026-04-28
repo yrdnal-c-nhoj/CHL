@@ -37,6 +37,14 @@ export const DataProvider = ({ children }) => {
           ? testData
           : prodData;
 
+      if (typeof clockData === 'string') {
+        try {
+          JSON.parse(clockData);
+        } catch (e) {
+          throw new Error(`JSON Syntax Error: ${e.message}`);
+        }
+      }
+
       if (!clockData || clockData.length === 0) {
         throw new Error('No data found in JSON file.');
       }
