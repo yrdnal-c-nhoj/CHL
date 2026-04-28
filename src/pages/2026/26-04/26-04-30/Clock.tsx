@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
-import { useClockTime, formatTime } from '@/utils/clockUtils';
+import { useClockTime, formatTime as utilFormatTime } from '@/utils/clockUtils';
 
 const GRAVITY = 0.6;
 const BOUNCE = -0.85;
@@ -7,7 +7,7 @@ const BOUNCE = -0.85;
 const Clock: React.FC = () => {
   const time = useClockTime();
 
-  const { hours, minutes, seconds } = useMemo(() => formatTime(time, '24h'), [time]);
+  const { hours, minutes, seconds } = useMemo(() => utilFormatTime(time, '24h'), [time]);
 
   // Motion state
   const [y, setY] = useState(0);
@@ -15,6 +15,7 @@ const Clock: React.FC = () => {
   const velocityRef = useRef(0);
   const clockRef = useRef<HTMLDivElement | null>(null);
   const viewportHeightRef = useRef(window.innerHeight);
+  const animationFrameId = useRef<number | null>(null); // Track animation frame ID
 
   // Standardized Resize Handling
   useEffect(() => {
@@ -26,11 +27,12 @@ const Clock: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    let animationFrame: number;
-
     const animate = () => {
       const clockEl = clockRef.current;
-      if (!clockEl) return;
+      if (!clockEl) {
+        animationFrameId.current = requestAnimationFrame(animate);
+        return;
+      }
 
       const clockHeight = clockEl.offsetHeight;
       const viewportHeight = viewportHeightRef.current;
@@ -46,17 +48,32 @@ const Clock: React.FC = () => {
         // Stability threshold to stop jittering when resting
         if (Math.abs(velocityRef.current) < 0.2) {
           velocityRef.current = 0;
+          // Stop animation if settled at the bottom
+          if (animationFrameId.current) {
+            cancelAnimationFrame(animationFrameId.current);
+            animationFrameId.current = null;
+            return; // Exit early if animation stopped
+          }
         }
       }
 
       yRef.current = newY;
       setY(newY);
-      animationFrame = requestAnimationFrame(animate);
+      animationFrameId.current = requestAnimationFrame(animate);
     };
 
-    animationFrame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrame);
-  }, []);
+    // Start animation, or restart if it was stopped
+    if (animationFrameId.current === null) {
+      animationFrameId.current = requestAnimationFrame(animate);
+    }
+
+    return () => {
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+        animationFrameId.current = null;
+      }
+    };
+  }, [time]); // Re-run effect if time changes, to ensure animation restarts if needed
 
   const containerStyle: React.CSSProperties = {
     width: '100vw',
