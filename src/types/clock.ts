@@ -4,6 +4,7 @@ export interface ClockTime {
   hours: string;
   minutes: string;
   seconds: string;
+  milliseconds?: string;
 }
 
 export interface ClockDigit {

@@ -4,11 +4,80 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import videoFile from '@/assets/images/2025/25-10/25-10-22/bg.mp4';
 import fallbackImg from '@/assets/images/2025/25-10/25-10-22/bg.webp';
 import fundyFont from '@/assets/fonts/2025/25-10-22-fundy.ttf?url';
-import styles from './Clock.module.css';
+
+/**
+ * Constants and Styles defined outside the component to prevent 
+ * re-creation/re-parsing on every millisecond tick.
+ */
+const ANIMATION_NAME = 'colorCycle-25-10-22';
+const FLOAT_NAME = 'float-25-10-22';
+
+const GlobalStyles = () => (
+  <style>{`
+    @keyframes ${FLOAT_NAME} {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(calc(-100dvh + 4rem + 40px)); }
+      100% { transform: translateY(0); }
+    }
+    @keyframes ${ANIMATION_NAME} {
+      0%, 100% {
+        color: #df9268ff;
+        text-shadow: -1px 0 0px #4b3424ff, 0 0 6px #98643fff, 0 0 4px #c88a5e, 1px 0 2px #d2c497ff;
+      }
+      23.08%, 76.92% {
+        color: #7c947cff;
+        text-shadow: -1px -1px #04140bff, 3px 2px 6px #e6ede9ff, -2px 0 4px #ebecebff, 1px 1px #e4ebe6ff;
+      }
+      50% {
+        color: #f4ecccff;
+        text-shadow: 1px 1px #e10e23ff, 0 0 6px #f8fdf7ff, 0 0 4px #5874a0ff, -1px 0 #0d131cff;
+      }
+    }
+    .clock-digit {
+      font-family: 'FundyFont', sans-serif;
+      font-size: 4rem;
+      width: 3.0rem;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      animation: ${ANIMATION_NAME} 26.3s linear infinite;
+      will-change: color, text-shadow;
+    }
+  `}</style>
+);
+
+const containerStyle: React.CSSProperties = {
+  width: '100vw',
+  height: '100dvh',
+  position: 'relative',
+  overflow: 'hidden',
+  backgroundColor: '#000',
+};
+
+const mediaStyle: React.CSSProperties = {
+  position: 'absolute',
+  inset: 0,
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  zIndex: 0,
+  pointerEvents: 'none',
+};
+
+const clockContainerStyle: React.CSSProperties = {
+  position: 'absolute',
+  bottom: '20px',
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  zIndex: 1,
+  animation: `${FLOAT_NAME} 26.3s linear infinite`,
+  willChange: 'transform',
+};
 
 const ClockWithVideo: React.FC = () => {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  // Using 'ms' precision for the high-frequency tick display
   const time = useClockTime('ms');
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -16,107 +85,80 @@ const ClockWithVideo: React.FC = () => {
     { fontFamily: 'FundyFont', fontUrl: fundyFont }
   ], []);
 
-  // Use the standardized loader to avoid injecting <style> tags manually
   useSuspenseFontLoader(fontConfigs);
 
-  // Video Autoplay and Error Handling (MODIFIED)
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
 
-    const onStalled = () => {
-      // Optional: handle stalled video
-    };
+    v.play()?.catch((err) => {
+      console.warn('Autoplay prevented:', err);
+    });
 
-    v.addEventListener('stalled', onStalled);
-
-    // Initial play attempt relies on <video autoPlay muted playsInline> for best chance.
-    // We add an explicit play attempt for edge cases, but aggressively ignore the error.
-    const playPromise = v.play?.();
-    if (playPromise) {
-      playPromise.catch((err) => {
-        console.warn(
-          'Autoplay failed (Policy issue). Proceeding silently.',
-          err,
-        );
-      });
-    }
-
-    // Set a timeout to check for asset failure (enhances fallback reliability)
     const checkReadiness = setTimeout(() => {
-      if (v.readyState < 4 && !v.paused) {
-        console.warn('Video failed to load completely. Switching to fallback.');
-        setVideoFailed(true);
-      }
-    }, 3000); // 3-second grace period
+      if (v.readyState < 4) setVideoFailed(true);
+    }, 3000);
 
-    return () => {
-      clearTimeout(checkReadiness);
-      v.removeEventListener('stalled', onStalled);
-    };
+    return () => clearTimeout(checkReadiness);
   }, []);
 
-  // Helper function to insert separators into the time string for readability
   const renderTimeDigits = () => {
     const { hours, minutes, seconds, milliseconds } = formatClockTime(time, '24h');
-    
-    const Digit = ({ val, idx }: { val: string; idx: number }) => (
-      <span key={idx} className={styles.digit}>{val}</span>
-    );
+    // Combine into a single string for easier mapping
+    const fullTimeStr = `${hours}${minutes}${seconds}${milliseconds || '00'}`;
 
     return (
-      <>
-        <Digit val={hours[0]} idx={0} />
-        <Digit val={hours[1]} idx={1} />
-        <span className={styles.separator}>:</span>
-        <Digit val={minutes[0]} idx={2} />
-        <Digit val={minutes[1]} idx={3} />
-        <span className={styles.separator}>:</span>
-        <Digit val={seconds[0]} idx={4} />
-        <Digit val={seconds[1]} idx={5} />
-        <span className={styles.separator}>.</span>
-        <Digit val={milliseconds![0]} idx={6} />
-        <Digit val={milliseconds![1]} idx={7} />
-      </>
+      <time dateTime={`${hours}:${minutes}:${seconds}`}>
+        {fullTimeStr.split('').map((char, idx) => (
+          <span key={idx} className="clock-digit">
+            {char}
+          </span>
+        ))}
+      </time>
     );
   };
 
   return (
     <>
-      <div className={styles.container}>
-      <video
-        ref={videoRef}
-        className={styles.media}
-        style={{ display: videoFailed ? 'none' : 'block' }}
-        loop
-        muted
-        playsInline
-        autoPlay
-        preload="metadata"
-      >
-        <source src={videoFile} type="video/mp4" />
-        {/* It is a good practice to include a WebM source for better cross-browser support */}
-        <source src="./bg.webm" type="video/webm" />
-        Your browser does not support the video tag.
-      </video>
-      <div 
-        className={styles.fallback} 
-        style={{ 
-          display: videoFailed ? 'block' : 'none',
-          backgroundImage: `url(${fallbackImg})` 
-        }} 
-        aria-hidden 
-      />
+      <GlobalStyles />
+      <main style={containerStyle}>
+        <video
+          ref={videoRef}
+          style={{ ...mediaStyle, display: videoFailed ? 'none' : 'block' }}
+          loop
+          muted
+          playsInline
+          autoPlay
+          preload="auto"
+        >
+          <source src={videoFile} type="video/mp4" />
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundImage: `url(${fallbackImg})`,
+              backgroundSize: 'cover',
+            }}
+          />
+        </video>
 
-      {/* 🛑 The 'Play Video' button rendering block is intentionally REMOVED here */}
+        {videoFailed && (
+          <div
+            style={{
+              ...mediaStyle,
+              backgroundImage: `url(${fallbackImg})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          />
+        )}
 
-      <div className={styles.clock}>
-        {/* Rendering the time with explicit separators for clear readability */}
-        {renderTimeDigits()}
-      </div>
-      </div>
+        <div style={clockContainerStyle}>
+          {renderTimeDigits()}
+        </div>
+      </main>
     </>
   );
-}
+};
 
 export default ClockWithVideo;
