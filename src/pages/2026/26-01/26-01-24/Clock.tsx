@@ -160,7 +160,11 @@ const Clock: React.FC = () => {
     const currentSecond = time.getSeconds();
     
     // Only update emoji every 3 seconds
-    if (currentSecond % 3 === 0 && currentSecond !== lastCycledSecond.current) {
+    // Ensure it only triggers once per second when the condition is met
+    if (
+      currentSecond % 3 === 0 &&
+      currentSecond !== lastCycledSecond.current
+    ) {
       lastCycledSecond.current = currentSecond;
 
       setEmojiIndex((prevIndex) => {
