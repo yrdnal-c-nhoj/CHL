@@ -94,15 +94,15 @@ const Clock: React.FC = () => {
   }
 
   return (
-    <div style={containerStyle}>
-      <div style={faceStyle}>
+    <main style={containerStyle}>
+      <time dateTime={time.toISOString()} style={faceStyle}>
         {renderDigits(hours)}
         <div style={digitBox}>:</div>
         {renderDigits(minutes)}
         <div style={digitBox}>:</div>
         {renderDigits(seconds)}
-      </div>
-    </div>
+      </time>
+    </main>
   );
 };
 

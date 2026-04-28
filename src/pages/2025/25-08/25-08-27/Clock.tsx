@@ -9,6 +9,12 @@ export default function TwelfthRootsOfUnityWithClock() {
   const clockRef = useRef(null);
   const fontRef = useRef('sans-serif'); // fallback
   const time = useClockTime();
+  const timeRef = useRef(time);
+
+  // Keep time ref updated for the animation loop
+  useEffect(() => {
+    timeRef.current = time;
+  }, [time]);
 
   const fontConfigs = useMemo(() => [
     {
@@ -166,7 +172,7 @@ export default function TwelfthRootsOfUnityWithClock() {
     let animationId;
     const animate = () => {
       drawRoots();
-      drawClock(time);
+      drawClock(timeRef.current);
       animationId = requestAnimationFrame(animate);
     };
 
@@ -177,10 +183,10 @@ export default function TwelfthRootsOfUnityWithClock() {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationId);
     };
-  }, [time]);
+  }, []); // Only run setup once
 
   return (
-    <div
+    <main
       style={{
         width: '100vw',
         height: '100dvh',
@@ -190,6 +196,7 @@ export default function TwelfthRootsOfUnityWithClock() {
         background: 'radial-gradient(circle, #F9C7B4 0%, #D8CFCF 90%)',
       }}
     >
+      <time dateTime={time.toISOString()} style={{ display: 'none' }}>{time.toLocaleTimeString()}</time>
       <div
         style={{
           position: 'relative',
@@ -237,6 +244,6 @@ export default function TwelfthRootsOfUnityWithClock() {
           }}
         />
       </div>
-    </div>
+    </main>
   );
 }
