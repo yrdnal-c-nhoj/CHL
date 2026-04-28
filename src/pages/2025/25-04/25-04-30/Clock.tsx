@@ -115,17 +115,21 @@ const GravityClock: React.FC<GravityClockProps> = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className={styles.container}>
+    <main ref={containerRef} className={styles.container}>
+      <time dateTime={currentTime.toISOString()} style={{ display: 'none' }}>{currentTime.toLocaleTimeString()}</time>
       {clocks.map((clock) => (
-        <ClockItem key={clock.id} clock={clock} />
+        <ClockItem key={clock.id} clock={clock} currentTime={currentTime} />
       ))}
-    </div>
+    </main>
   );
 };
 
-const ClockItem: React.FC<{ clock: ClockData }> = ({ clock }) => {
-  // Use the standardized hook for smooth clock updates
-  const currentTime = useClockTime();
+interface ClockItemProps {
+  clock: ClockData;
+  currentTime: Date; // Pass currentTime as a prop
+}
+
+const ClockItem: React.FC<ClockItemProps> = ({ clock, currentTime }) => {
 
   const h = (currentTime.getHours() % 12) * 30 + currentTime.getMinutes() * 0.5;
   const m = currentTime.getMinutes() * 6;
