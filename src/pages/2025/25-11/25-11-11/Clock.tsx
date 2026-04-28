@@ -54,18 +54,35 @@ export default function CustomFontMirroredClock() {
 
   const mirroredClockStyle = {
     fontFamily: 'TodayFont, monospace',
-    fontSize: '13vw',
+    fontSize: '15vw',
     color: '#F70E12E5',
     textShadow: '1px 1px 0px #F1EAEBA0, -1px -1px 0px #0E0D0DFF',
     transform: 'scaleX(-1) translateX(-1vw)',
-    textAlign: 'center',
     zIndex: 2,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '0.5vw',
   };
 
   return (
-    <div style={containerStyle}>
+    <main style={containerStyle}>
       <style>{fontStyle}</style>
-      <div style={mirroredClockStyle}>{timeString}</div>
-    </div>
+      <time dateTime={timeString} style={mirroredClockStyle}>
+        {timeString.split('').map((char, index) => (
+          <span
+            key={index}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: char === ':' ? '4vw' : '11vw',
+            }}
+          >
+            {char}
+          </span>
+        ))}
+      </time>
+    </main>
   );
 }

@@ -1,28 +1,24 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import font_2025_11_21 from '@/assets/fonts/2025/25-11-18-cat.ttf?url';
 import bgImg from '@/assets/images/2025/25-11/25-11-18/eyes.webp';
 export { bgImg }; // Export for preloading pipeline
 
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useClockTime, formatTime } from '@/utils/clockUtils';
 import type { FontConfig } from '@/types/clock';
 
 export default function RotatedClockGrid() {
-  const now = useClockTime();
-
-  const hours24 = now.getHours();
-  const hoursStr = String(hours24).padStart(2, '0');
-  const minsStr = String(now.getMinutes()).padStart(2, '0');
-  const secsStr = String(now.getSeconds()).padStart(2, '0');
-  const secs = now.getSeconds();
+  // Using the standardized BTS hook
+  const time = useClockTime('seconds');
+  const { hours, minutes, seconds } = formatTime(time, '24h');
 
   const slots = [
-    hoursStr[0],
-    hoursStr[1],
-    minsStr[0],
-    minsStr[1],
-    secsStr[0],
-    secsStr[1],
+    hours[0],
+    hours[1],
+    minutes[0],
+    minutes[1],
+    seconds[0],
+    seconds[1],
   ];
 
   const digitSize = 8; // in vh
@@ -73,17 +69,17 @@ export default function RotatedClockGrid() {
     Array.from({ length: totalCells }, () => randIndex()),
   );
 
-  // Regenerate colors when the second changes so colors update in sync with the clock
-  useEffect(() => {
+  // Regenerate colors when the seconds value changes.
+  // We memoize the regeneration logic to stay in sync with the ClockTime interface.
+  useMemo(() => {
     setDigitColors(Array.from({ length: totalCells }, () => randIndex()));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [secs]);
+  }, [seconds]);
 
   const rowsNeeded = Math.ceil(100 / (digitSize + gap)) + 4 + extraTop;
   const clocksPerRow = Math.ceil(100 / ((digitSize + gap) * 3)) + 4 + extraLeft;
 
   return (
-    <div
+    <main
       style={{
         position: 'relative',
         height: '100vh',
@@ -107,7 +103,7 @@ export default function RotatedClockGrid() {
       />
 
       {/* Main grid of digits, no filter applied */}
-      <div
+      <time dateTime={`${hours}:${minutes}:${seconds}`}
         style={{
           position: 'relative',
           zIndex: 1,
@@ -160,7 +156,7 @@ export default function RotatedClockGrid() {
             }),
           );
         })}
-      </div>
-    </div>
+      </time>
+    </main>
   );
 }
