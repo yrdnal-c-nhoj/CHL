@@ -53,19 +53,6 @@
     "vite-plugin-pages": "^0.33.1",
     "vite-plugin-sitemap": "^0.8.2"
   },
-  "devDependencies": {
-    "@emailjs/browser": "^4.4.1",
-    "@emotion/cache": "^11.14.0",
-    "@emotion/react": "^11.14.0",
-    "styled-components": "^6.1.19",
-    "suncalc": "^1.9.0",
-    "three": "^0.180.0",
-    "twitter-api-v2": "^1.27.0",
-    "vite-plugin-html": "^3.2.2",
-    "vite-plugin-pages": "^0.33.1",
-    "vite-plugin-sitemap": "^0.8.2",
-    "vite-ssg": "^28.0.0"
-  },
   "engines": {
     "node": "24.x"
   },
@@ -114,9 +101,6 @@
     "vite-ssg": "^28.0.0",
     "vitest": "^4.0.18",
     "twitter-api-v2": "^1.27.0"
-  },
-  "engines": {
-    "node": "24.x"
   },
   "overrides": {
     "basic-ftp": "^5.3.0",
