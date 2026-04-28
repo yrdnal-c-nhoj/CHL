@@ -17,7 +17,8 @@
     "clean": "rm -rf dist",
     "clock:new": "mkdir -p src/pages/$(date +%Y)/$(date +%y-%m)/$(date +%y-%m-%d) && cp src/templates/MasterTemplate.tsx src/pages/$(date +%Y)/$(date +%y-%m)/$(date +%y-%m-%d)/Clock.tsx && touch src/pages/$(date +%Y)/$(date +%y-%m)/$(date +%y-%m-%d)/Clock.module.css",
     "perf:analyze": "vite build --mode production && npx source-map-explorer 'dist/assets/*.js'",
-    "optimize:images": "npx sharp-cli -i ./src/assets/images -o ./src/assets/images --webp"
+    "optimize:images": "npx sharp-cli -i ./src/assets/images -o ./src/assets/images --webp",
+    "standardize:fonts": "node scripts/standardize-font-names.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
