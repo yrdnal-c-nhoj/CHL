@@ -42,15 +42,15 @@ describe('useClockTime', () => {
     expect(result.current.getTime()).toBe(initialTime.getTime() + 1000);
   });
 
-  it('should clear interval on unmount', () => {
-    const clearIntervalSpy = vi.spyOn(global, 'clearInterval');
+  it('should cancel animation frame on unmount', () => {
+    const cancelFrameSpy = vi.spyOn(window, 'cancelAnimationFrame');
 
     const { unmount } = renderHook(() => useClockTime());
 
     unmount();
 
-    expect(clearIntervalSpy).toHaveBeenCalled();
-    clearIntervalSpy.mockRestore();
+    expect(cancelFrameSpy).toHaveBeenCalled();
+    cancelFrameSpy.mockRestore();
   });
 });
 
