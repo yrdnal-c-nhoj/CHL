@@ -8,7 +8,8 @@ import styles from './Clock.module.css';
 
 const ClockWithVideo: React.FC = () => {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const time = useClockTime();
+  // Using 'ms' precision for the high-frequency tick display
+  const time = useClockTime('ms');
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const fontConfigs = useMemo(() => [

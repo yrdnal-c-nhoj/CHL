@@ -1,6 +1,7 @@
 // src/components/CustomFontMirroredClock.jsx
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime, formatTime } from '@/utils/clockUtils';
 import todayFont251125 from '@/assets/fonts/2025/25-11-11-digi.ttf?url';
 import bgFront from '@/assets/images/2025/25-11/25-11-11/bg.webp'; // top layer
 import bgBack from '@/assets/images/2025/25-11/25-11-11/bg1.jpg'; // back layer
@@ -17,28 +18,13 @@ export const fontConfigs = [
 ];
 
 export default function CustomFontMirroredClock() {
-  const [time, setTime] = useState(getCurrentTime());
-
-  function getCurrentTime() {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
-  }
-
   // Use Suspense loader for fonts
   useSuspenseFontLoader(fontConfigs);
 
-  useEffect(() => {
-    let frameId: number;
-    const tick = () => {
-      setTime(getCurrentTime());
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
+  // Using the standardized BTS hook
+  const time = useClockTime('seconds');
+  const { hours, minutes, seconds } = formatTime(time, '24h');
+  const timeString = `${hours}:${minutes}:${seconds}`;
 
   // Note: Even though useSuspenseFontLoader loads the font, defining the @font-face
   // here ensures the browser maps the family name correctly in all contexts.
@@ -79,7 +65,7 @@ export default function CustomFontMirroredClock() {
   return (
     <div style={containerStyle}>
       <style>{fontStyle}</style>
-      <div style={mirroredClockStyle}>{time}</div>
+      <div style={mirroredClockStyle}>{timeString}</div>
     </div>
   );
 }
