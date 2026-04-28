@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
@@ -12,6 +12,7 @@ export const fontConfigs: FontConfig[] = [
 const PuppyClockComponent: React.FC = () => {
   const [images, setImages] = useState<{ current: string; next: string }>({ current: '', next: '' });
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
+  const transitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const time = useClockTime();
 
   useSuspenseFontLoader(fontConfigs);
@@ -35,7 +36,11 @@ const PuppyClockComponent: React.FC = () => {
           setIsTransitioning(true);
 
           // 3. After CSS transition finishes (500ms), swap them permanently
-          setTimeout(() => {
+          if (transitionTimerRef.current) {
+            clearTimeout(transitionTimerRef.current);
+          }
+
+          transitionTimerRef.current = setTimeout(() => {
             setImages({ current: nextUrl, next: '' });
             setIsTransitioning(false);
           }, 600);
@@ -52,6 +57,9 @@ const PuppyClockComponent: React.FC = () => {
     const imageInterval = setInterval(getNewPuppy, 5000);
     return () => {
       clearInterval(imageInterval);
+      if (transitionTimerRef.current) {
+        clearTimeout(transitionTimerRef.current);
+      }
     };
   }, [getNewPuppy]);
 
