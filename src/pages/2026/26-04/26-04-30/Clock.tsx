@@ -19,6 +19,7 @@ const Clock: React.FC = () => {
 
   // Motion state
   const [y, setY] = useState(0);
+  const yRef = useRef(0);
   const velocityRef = useRef(0);
   const clockRef = useRef<HTMLDivElement | null>(null);
 
@@ -33,7 +34,7 @@ const Clock: React.FC = () => {
       const viewportHeight = window.innerHeight;
 
       velocityRef.current += GRAVITY;
-      let newY = y + velocityRef.current;
+      let newY = yRef.current + velocityRef.current;
 
       // Collision with bottom
       if (newY + clockHeight >= viewportHeight) {
@@ -41,13 +42,14 @@ const Clock: React.FC = () => {
         velocityRef.current *= BOUNCE;
       }
 
+      yRef.current = newY;
       setY(newY);
       animationFrame = requestAnimationFrame(animate);
     };
 
     animationFrame = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationFrame);
-  }, [y]);
+  }, []);
 
   const containerStyle: React.CSSProperties = {
     width: '100vw',
