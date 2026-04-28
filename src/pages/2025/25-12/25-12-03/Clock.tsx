@@ -63,6 +63,8 @@ const PuppyClockComponent: React.FC = () => {
     };
   }, [getNewPuppy]);
 
+  // TODO: Standardize this formatting function in '@/utils/clockUtils'
+  // to adhere to BTS for shared utilities.
   const formatTime = (date: Date) => {
     let hours = date.getHours();
     const minutes = date.getMinutes();
@@ -72,7 +74,6 @@ const PuppyClockComponent: React.FC = () => {
       .split('')
       .join(' ');
   };
-
   return (
     <main className={styles.container}>
       {/* BACKGROUND LAYER 1: The "Old" or Static Image */}

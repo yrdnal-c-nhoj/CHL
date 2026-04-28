@@ -155,8 +155,8 @@ const RectangularAnalogClock: React.FC = () => {
         fill="#22FB05FF"
         filter="url(#multiShadow)"
         style={{
-          fontFamily: 'MyCustomFont, system-ui, sans-serif',
-          fontSize: '0.9rem',
+          fontFamily: 'MyCustomFont, system-ui, sans-serif', // Use the loaded custom font
+          fontSize: '2.5vmin', // Standardize on vmin for responsive sizing
           userSelect: 'none',
         }}
       >
