@@ -26,9 +26,9 @@ async function capture(dateArg: string) {
   console.log(`🚀 Navigating to ${url}...`);
   await page.goto(url, { waitUntil: 'networkidle' });
 
-  // Wait for the 'useClockPage' black overlay to fade out (1.5s) 
-  // and for Suspense/Font loading to settle.
-  await page.waitForTimeout(3500);
+  // Wait for the 'useClockPage' black overlay to fade out (1.5s)
+  // plus an extra buffer to ensure animations have stabilized.
+  await page.waitForTimeout(4000);
 
   const outputDir = path.join(process.cwd(), 'screenshots');
   if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
