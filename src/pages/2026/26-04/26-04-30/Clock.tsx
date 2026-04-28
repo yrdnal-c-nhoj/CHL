@@ -1,7 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
-
-const formatTime = (num: number): string => num.toString().padStart(2, '0');
+import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
+import { useClockTime, formatTime as utilFormatTime } from '@/utils/clockUtils';
 
 const GRAVITY = 0.6;
 const BOUNCE = -0.85;
@@ -9,19 +7,23 @@ const BOUNCE = -0.85;
 const Clock: React.FC = () => {
   const time = useClockTime();
 
-  const { hours, minutes, seconds } = useMemo(() => {
-    return {
-      hours: formatTime(time.getHours()),
-      minutes: formatTime(time.getMinutes()),
-      seconds: formatTime(time.getSeconds()),
-    };
-  }, [time]);
+  const { hours, minutes, seconds } = useMemo(() => utilFormatTime(time, '24h'), [time]);
 
   // Motion state
   const [y, setY] = useState(0);
   const yRef = useRef(0);
   const velocityRef = useRef(0);
   const clockRef = useRef<HTMLDivElement | null>(null);
+  const viewportHeightRef = useRef(window.innerHeight);
+
+  // Standardized Resize Handling
+  useEffect(() => {
+    const handleResize = () => {
+      viewportHeightRef.current = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     let animationFrame: number;
@@ -31,7 +33,7 @@ const Clock: React.FC = () => {
       if (!clockEl) return;
 
       const clockHeight = clockEl.offsetHeight;
-      const viewportHeight = window.innerHeight;
+      const viewportHeight = viewportHeightRef.current;
 
       velocityRef.current += GRAVITY;
       let newY = yRef.current + velocityRef.current;
@@ -40,6 +42,11 @@ const Clock: React.FC = () => {
       if (newY + clockHeight >= viewportHeight) {
         newY = viewportHeight - clockHeight;
         velocityRef.current *= BOUNCE;
+
+        // Stability threshold to stop jittering when resting
+        if (Math.abs(velocityRef.current) < 0.2) {
+          velocityRef.current = 0;
+        }
       }
 
       yRef.current = newY;
@@ -85,7 +92,7 @@ const Clock: React.FC = () => {
   };
 
   return (
-    <div style={containerStyle}>
+    <main style={containerStyle}>
       <style>{`
         @keyframes blink {
           0%, 100% { opacity: 0.6; }
@@ -93,7 +100,11 @@ const Clock: React.FC = () => {
         }
       `}</style>
 
-      <div ref={clockRef} style={clockStyle}>
+      <time 
+        ref={clockRef} 
+        style={clockStyle}
+        dateTime={`${hours}:${minutes}:${seconds}`}
+      >
         <span style={digitStyle}>{hours[0]}</span>
         <span style={digitStyle}>{hours[1]}</span>
         <span style={separatorStyle}>:</span>
@@ -102,8 +113,8 @@ const Clock: React.FC = () => {
         <span style={separatorStyle}>:</span>
         <span style={digitStyle}>{seconds[0]}</span>
         <span style={digitStyle}>{seconds[1]}</span>
-      </div>
-    </div>
+      </time>
+    </main>
   );
 };
 
