@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { formatTime } from '@/utils/clockUtils';
+import { formatTime as utilFormatTime } from '@/utils/clockUtils'; // Alias to avoid conflict with local formatTime
+import { useClockTime } from '@/utils/hooks'; // Use the standardized hook
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {
   // --- STATE MANAGEMENT ---
-  const [time, setTime] = useState(() => new Date());
+  const time = useClockTime(); // Centralized time source
   const [isLargeScreen, setIsLargeScreen] = useState(true);
   const [bgReady, setBgReady] = useState<boolean>(false);
 
@@ -151,72 +152,63 @@ const Clock: React.FC = () => {
     '9': '☁️',
   }), []);
 
-  // --- MAIN EFFECT LOOP ---
+  // --- EMOJI CYCLING LOGIC ---
+  // This useEffect replaces the time update and emoji cycling from the old rAF loop
   useEffect(() => {
-    let frameId: number;
-    let secondsCounter = 0;
-    let lastTime = Date.now();
+    // Only update emoji every 3 seconds
+    if (time.getSeconds() % 3 === 0) {
+      setEmojiIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % emojiCycle.length;
+        const nextEmoji = emojiCycle[nextIndex];
 
-    const tick = () => {
-      const now = Date.now();
-      setTime(new Date());
-
-      if (now - lastTime >= 1000) {
-        secondsCounter++;
-        lastTime = now;
-
-        if (secondsCounter % 3 === 0) {
-          setEmojiIndex((prevIndex) => {
-            const nextIndex = (prevIndex + 1) % emojiCycle.length;
-            const nextEmoji = emojiCycle[nextIndex];
-
-            if (activeBuffer === 1) {
-              setBuffer2Emoji(nextEmoji);
-              setActiveBuffer(2);
-            } else {
-              setBuffer1Emoji(nextEmoji);
-              setActiveBuffer(1);
-            }
-            return nextIndex;
-          });
+        if (activeBuffer === 1) {
+          setBuffer2Emoji(nextEmoji);
+          setActiveBuffer(2);
+        } else {
+          setBuffer1Emoji(nextEmoji);
+          setActiveBuffer(1);
         }
-      }
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
+        return nextIndex;
+      });
+    }
+  }, [time.getSeconds(), emojiCycle, activeBuffer]); // Depend on seconds to trigger every second, then filter every 3rd.
 
+  // --- SCREEN RESIZE LISTENER ---
+  useEffect(() => {
     const handleResize = () => setIsLargeScreen(window.innerWidth > 768);
     window.addEventListener('resize', handleResize);
-    handleResize();
+    handleResize(); // Initial check
 
-    return () => {
-      cancelAnimationFrame(frameId);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [emojiCycle, activeBuffer]);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
+  // --- BACKGROUND READY EFFECT ---
+  // This is for the initial fade-in of the component
+  // The ClockPage.tsx already handles a loading overlay, so this might be redundant
+  // but keeping it for now as it's part of the component's internal logic.
   useEffect(() => {
     const t = setTimeout(() => setBgReady(true), 100);
     return () => clearTimeout(t);
   }, []);
 
-  const tileSize: number = 60;
-
   const getLayerStyle = useCallback((emoji: string, isVisible: boolean) => {
+    // Determine base size for SVG emoji based on screen size
+    const baseSvgSize = isLargeScreen ? 60 : 40; // Example: 60px for large, 40px for small
+
     const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="${tileSize}" height="${tileSize}">
-        <text x="50%" y="55%" font-size="${tileSize * 0.7}" text-anchor="middle" dominant-baseline="middle">
+      <svg xmlns="http://www.w3.org/2000/svg" width="${baseSvgSize}" height="${baseSvgSize}">
+        <text x="50%" y="55%" font-size="${baseSvgSize * 0.7}" text-anchor="middle" dominant-baseline="middle">
           ${emoji}
         </text>
       </svg>`.trim();
     return {
       className: styles.layer,
-      backgroundImage: `url("data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}")`,
+      backgroundImage: `url("data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}")`, // Use baseSvgSize here
       opacity: isVisible ? 1 : 0,
     };
-  }, []);
+  }, [isLargeScreen]); // Re-create if isLargeScreen changes
 
-  const { hours, minutes, seconds } = useMemo(() => formatTime(time, '12h'), [time]);
+  const { hours, minutes, seconds } = useMemo(() => utilFormatTime(time, '12h'), [time]);
 
   const renderDigits = (str: string) => (
     <div className={styles.digitGroup}>

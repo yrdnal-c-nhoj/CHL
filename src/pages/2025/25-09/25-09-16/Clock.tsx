@@ -32,8 +32,8 @@ const Clock: React.FC = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontFamily: "'MyD250916font', sans-serif",
-    fontSize: '8rem',
+    fontFamily: "'MyD250916font', sans-serif", // Use the loaded custom font
+    fontSize: '10vmin', // Standardize on vmin for responsive sizing
     color: '#ffffff',
     margin: '0 0.5vw',
     minWidth: '8vw',

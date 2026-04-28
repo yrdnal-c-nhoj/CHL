@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/useSmoothClock';
+import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
@@ -40,9 +40,11 @@ const Clock: React.FC<ClockProps> = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
-  const clockRef = useRef<HTMLDivElement>(null);
+  const currentTime = useClockTime();
   const animationFrameRef = useRef<number>();
+  const secondHandRef = useRef<HTMLDivElement>(null);
+  const minuteHandRef = useRef<HTMLDivElement>(null);
+  const hourHandRef = useRef<HTMLDivElement>(null);
 
   // Calculate hand positions
   const calculateHandPositions = useCallback((): {
@@ -78,18 +80,14 @@ const Clock: React.FC<ClockProps> = () => {
   const updateClockHands = useCallback(() => {
     const positions = calculateHandPositions();
 
-    const secondHand = document.querySelector('.second-hand') as HTMLElement;
-    const minuteHand = document.querySelector('.minute-hand') as HTMLElement;
-    const hourHand = document.querySelector('.hour-hand') as HTMLElement;
-
-    if (secondHand) {
-      secondHand.style.transform = `translate(-50%, -100%) rotate(${positions.second.degrees}deg) scaleY(${positions.second.scale})`;
+    if (secondHandRef.current) {
+      secondHandRef.current.style.transform = `translate(-50%, -100%) rotate(${positions.second.degrees}deg) scaleY(${positions.second.scale})`;
     }
-    if (minuteHand) {
-      minuteHand.style.transform = `translate(-50%, -100%) rotate(${positions.minute.degrees}deg) scaleY(${positions.minute.scale})`;
+    if (minuteHandRef.current) {
+      minuteHandRef.current.style.transform = `translate(-50%, -100%) rotate(${positions.minute.degrees}deg) scaleY(${positions.minute.scale})`;
     }
-    if (hourHand) {
-      hourHand.style.transform = `translate(-50%, -100%) rotate(${positions.hour.degrees}deg) scaleY(${positions.hour.scale})`;
+    if (hourHandRef.current) {
+      hourHandRef.current.style.transform = `translate(-50%, -100%) rotate(${positions.hour.degrees}deg) scaleY(${positions.hour.scale})`;
     }
 
     // Continue animation loop
@@ -116,7 +114,7 @@ const Clock: React.FC<ClockProps> = () => {
     , []);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <img
         decoding="async"
         loading="lazy"
@@ -125,7 +123,8 @@ const Clock: React.FC<ClockProps> = () => {
         className={styles.background}
       />
 
-      <div className={styles.clockContainer} ref={clockRef}>
+      <time dateTime={currentTime.toISOString()} className={styles.clockContainer}>
+        <span style={{ display: 'none' }}>{currentTime.toLocaleTimeString()}</span>
         {/* Clock numbers */}
         {numbers.map((num) => (
           <div
@@ -141,7 +140,7 @@ const Clock: React.FC<ClockProps> = () => {
 
 
         {/* Minute Hand */}
-        <div className={`${styles.minuteHand} minute-hand`}>
+        <div className={styles.minuteHand} ref={minuteHandRef}>
           <img
             decoding="async"
             loading="lazy"
@@ -152,25 +151,19 @@ const Clock: React.FC<ClockProps> = () => {
         </div>
 
         {/* Second Hand */}
-        <div className={`${styles.secondHand} second-hand`}>
+        <div className={styles.secondHand} ref={secondHandRef}>
           <img
             decoding="async"
             loading="lazy"
             src={secondHandImage}
             alt="Second Hand"
-            zIndex={5}
+            style={{ zIndex: 5 }}
             className={styles.handImage}
           />
         </div>
 
-
-
-
-
-
-
         {/* Hour Hand */}
-        <div className={`${styles.hourHand} hour-hand`}>
+        <div className={styles.hourHand} ref={hourHandRef}>
           <img
             decoding="async"
             loading="lazy"
@@ -179,10 +172,8 @@ const Clock: React.FC<ClockProps> = () => {
             className={styles.handImage}
           />
         </div>
-
-
-      </div>
-    </div>
+      </time>
+    </main>
   );
 };
 
