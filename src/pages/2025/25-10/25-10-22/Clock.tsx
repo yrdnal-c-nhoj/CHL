@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import { useClockTime, formatTime as formatClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import videoFile from '@/assets/images/2025/25-10/25-10-22/bg.mp4';
 import fallbackImg from '@/assets/images/2025/25-10/25-10-22/bg.webp';
@@ -56,88 +56,29 @@ const ClockWithVideo: React.FC = () => {
     };
   }, []);
 
-  const formatTime = () => {
-    const h = String(time.getHours()).padStart(2, '0');
-    const m = String(time.getMinutes()).padStart(2, '0');
-    const s = String(time.getSeconds()).padStart(2, '0');
-    // Milliseconds slice for the 2-digit "tick" at the end
-    const ms = String(time.getMilliseconds()).padStart(3, '0');
-    return `${h}${m}${s}${ms.slice(0, 2)}`;
-  };
-
   // Helper function to insert separators into the time string for readability
   const renderTimeDigits = () => {
-    // Current format is HHMMSSms(2)
-    const formattedTime = formatTime();
-    const elements = [];
-
-    // Use an iterator to track the digit index
-    let charIndex = 0;
-
-    // HH
-    elements.push(
-      <span key={charIndex++} className={styles.digit}>
-        {formattedTime[0]}
-      </span>,
-    );
-    elements.push(
-      <span key={charIndex++} className={styles.digit}>
-        {formattedTime[1]}
-      </span>,
-    );
-    elements.push(
-      <span key="sep1" className={styles.separator}>
-        :
-      </span>,
-    ); // Separator 1
-
-    // MM
-    elements.push(
-      <span key={charIndex++} className={styles.digit}>
-        {formattedTime[2]}
-      </span>,
-    );
-    elements.push(
-      <span key={charIndex++} className={styles.digit}>
-        {formattedTime[3]}
-      </span>,
-    );
-    elements.push(
-      <span key="sep2" className={styles.separator}>
-        :
-      </span>,
-    ); // Separator 2
-
-    // SS
-    elements.push(
-      <span key={charIndex++} className={styles.digit}>
-        {formattedTime[4]}
-      </span>,
-    );
-    elements.push(
-      <span key={charIndex++} className={styles.digit}>
-        {formattedTime[5]}
-      </span>,
-    );
-    elements.push(
-      <span key="sep3" className={styles.separator}>
-        .
-      </span>,
-    ); // Separator 3
-
-    // MS (2 digits)
-    elements.push(
-      <span key={charIndex++} className={styles.digit}>
-        {formattedTime[6]}
-      </span>,
-    );
-    elements.push(
-      <span key={charIndex++} className={styles.digit}>
-        {formattedTime[7]}
-      </span>,
+    const { hours, minutes, seconds, milliseconds } = formatClockTime(time, '24h');
+    
+    const Digit = ({ val, idx }: { val: string; idx: number }) => (
+      <span key={idx} className={styles.digit}>{val}</span>
     );
 
-    return elements;
+    return (
+      <>
+        <Digit val={hours[0]} idx={0} />
+        <Digit val={hours[1]} idx={1} />
+        <span className={styles.separator}>:</span>
+        <Digit val={minutes[0]} idx={2} />
+        <Digit val={minutes[1]} idx={3} />
+        <span className={styles.separator}>:</span>
+        <Digit val={seconds[0]} idx={4} />
+        <Digit val={seconds[1]} idx={5} />
+        <span className={styles.separator}>.</span>
+        <Digit val={milliseconds![0]} idx={6} />
+        <Digit val={milliseconds![1]} idx={7} />
+      </>
+    );
   };
 
   return (

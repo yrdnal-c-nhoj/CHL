@@ -46,6 +46,7 @@ export function formatTime(date: Date, format: TimeFormat = '12h'): ClockTime {
   let hours = date.getHours();
   const minutes = date.getMinutes();
   const seconds = date.getSeconds();
+  const ms = date.getMilliseconds();
 
   if (format === '12h') {
     hours = hours % 12 || 12;
@@ -55,6 +56,7 @@ export function formatTime(date: Date, format: TimeFormat = '12h'): ClockTime {
     hours: hours.toString().padStart(2, '0'),
     minutes: minutes.toString().padStart(2, '0'),
     seconds: seconds.toString().padStart(2, '0'),
+    milliseconds: ms.toString().padStart(3, '0').slice(0, 2)
   };
 }
 
@@ -71,11 +73,12 @@ export function calculateAngles(time: Date): {
   const hours = time.getHours();
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
+  const ms = time.getMilliseconds();
 
   return {
-    hour: (hours % 12) * 30 + minutes * 0.5, // 30 degrees per hour + minute adjustment
-    minute: minutes * 6 + seconds * 0.1, // 6 degrees per minute + second adjustment
-    second: seconds * 6, // 6 degrees per second
+    hour: (hours % 12) * 30 + minutes * 0.5 + seconds * (0.5 / 60), 
+    minute: minutes * 6 + seconds * 0.1 + ms * (0.1 / 1000),
+    second: seconds * 6 + ms * 0.006 // 6 degrees per second + fractional ms sweep
   };
 }
 
