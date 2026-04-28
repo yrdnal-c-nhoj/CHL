@@ -74,7 +74,7 @@ const PuppyClockComponent: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       {/* BACKGROUND LAYER 1: The "Old" or Static Image */}
       <div
         className={styles.layer}
@@ -95,8 +95,8 @@ const PuppyClockComponent: React.FC = () => {
       />
 
       {/* TIME OVERLAY */}
-      <div className={styles.clock}>{formatTime(time)}</div>
-    </div>
+      <time dateTime={time.toISOString()} className={styles.clock}>{formatTime(time)}</time>
+    </main>
   );
 };
 
