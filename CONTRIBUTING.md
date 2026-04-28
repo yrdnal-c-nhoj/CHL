@@ -1,79 +1,21 @@
 # Contributing to BorrowedTime
 
-Thank you for your interest in contributing to BorrowedTime! This document provides guidelines and instructions for contributing to this creative digital art project.
-
-## 🎯 Ways to Contribute
-
-### 1. Add a New Clock
-
-The primary way to contribute is by creating a new daily clock:
-
-- Create a clock following our [date-based structure](README.md#creating-a-new-clock)
-- Test on multiple browsers and devices
-- Follow the existing code style and patterns
-- Submit a pull request
-
-### 2. Improve Existing Clocks
-
-- Fix bugs in existing clock implementations
-- Improve performance or accessibility
-- Enhance animations or visual effects
-- Refactor for better code quality
-
-### 3. Enhance Infrastructure
-
-- Improve build tools and configuration
-- Add new testing coverage
-- Optimize asset loading
-- Improve development experience
+Thank you for contributing to our daily art project. To maintain a high technical bar, we follow the **BorrowedTime Technical Standard (BTS)**.
 
 ## 🚀 Getting Started
 
-1. **Fork the repository**
+1.  **Clone & Setup**: Install dependencies and copy `.env.example`.
+2.  **Branching**: Work on a descriptive branch name (e.g., `feature/26-05-12-neon-clock`).
+3.  **Development**: Run `npm run dev` to see your changes in real-time.
 
-   ```bash
-   git clone https://github.com/yrdnal-c-nhoj/CHL.git
-   cd CHL
-   ```
+## 🎯 Adding a New Clock
 
-2. **Install dependencies**
-
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment**
-
-   ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
-   ```
-
-4. **Start development server**
-
-   ```bash
-   npm run dev
-   ```
-
-## 📝 Guidelines
-
-### Code Style
-
-- Use TypeScript for new components
-- Follow existing file naming conventions
-- Use CSS Modules for component styles (`.module.css`)
-- Run `npm run lint` before committing
-- Run `npm run format` to format code
-
-### Clock Structure
-
-Each clock should be in:
-
+### 1. File Structure
+Clocks must be organized by date in `src/pages/YYYY/YY-MM/YY-MM-DD/`:
 ```text
-src/pages/YYYY/YY-MM/YY-MM-DD/
-├── Clock.tsx           # Main clock component
-├── Clock.module.css    # Scoped styles
-└── assets/             # Clock-specific images/fonts (optional)
+├── Clock.tsx
+├── Clock.module.css
+└── assets/ (optional imagery/fonts)
 ```
 
 ### Testing
