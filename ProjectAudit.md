@@ -5,6 +5,10 @@ The project follows a **Registry-Discovery** architecture, ensuring metadata dri
 1.  **Registry**: `clockpages.json` defines the source of truth for all daily clocks.
 2.  **Discovery**: `import.meta.glob` performs build-time mapping of paths to code-split bundles.
 3.  **Loading Orchestration**: `ClockPage.tsx` uses React Suspense to delay rendering until custom fonts and media are pre-buffered.
+1.  **Legacy Roots**: The project originated as static HTML files and was refactored into a React/Vite ecosystem for performance.
+2.  **Registry**: `clockpages.json` defines the source of truth for all daily modules.
+3.  **Discovery**: `import.meta.glob` performs build-time mapping of paths to code-split bundles.
+4.  **Loading Orchestration**: `ClockPage.tsx` uses React Suspense to delay rendering until custom fonts and media are pre-buffered.
 
 ---
 
@@ -38,8 +42,10 @@ _Technical Standards supervised by Cubist Heart Laboratories._
 
 ### Case Study: Time Logic
 **Before (Legacy Patterns):**
+**Before (Phase 1):**
 ```javascript
 // Found in legacy .html or .jsx files
+// Found in original .html files
 useEffect(() => {
   const timer = setInterval(() => {
     setTime(new Date());
