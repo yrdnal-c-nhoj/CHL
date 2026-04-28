@@ -108,4 +108,5 @@ const modules = import.meta.glob('../../pages/**/Clock.tsx');
 
 - **Vite Compression**: Using `vite-plugin-compression` to serve Gzip/Brotli assets.
 - **Asset Purging**: Automated scripts (`audit-fonts.mjs`) prevent the `dist` folder from bloating with unused typeface files.
+- **Asset Naming Convention**: All clock-specific fonts and media must be prefixed with the `YY-MM-DD` date string. This prevents asset collisions in the global bundle and simplifies manual audits. 
 - **Image Pipeline**: Integration of `sharp-cli` for automated WebP conversion to hit Phase 4 of the roadmap.
