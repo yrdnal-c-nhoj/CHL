@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
 import customFont from '@/assets/fonts/2025/25-08-09-box.ttf'; // Custom font file
 
 // Standardized font loading with font-display: swap to avoid FOUC
@@ -16,21 +17,7 @@ export const fontConfigs = [
 
 const RectangularAnalogClock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
-
-  const [time, setTime] = useState(new Date());
-  const rafRef = useRef(null);
-
-  // Animation loop for updating time
-  useEffect(() => {
-    const updateTime = () => {
-      setTime(new Date());
-      rafRef.current = requestAnimationFrame(updateTime);
-    };
-    rafRef.current = requestAnimationFrame(updateTime);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, []);
+  const time = useClockTime();
 
   // Calculate hand angles
   const calculateHandAngles = () => {

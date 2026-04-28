@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useEffect, useRef, useMemo } from 'react';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
 import backgroundImage from '@/assets/images/2025/25-08/25-08-27/rootsu.gif';
 import dodecahedronFontFile from '@/assets/fonts/2025/25-08-27-root.ttf'; // renamed import
 
@@ -7,9 +8,9 @@ export default function TwelfthRootsOfUnityWithClock() {
   const canvasRef = useRef(null);
   const clockRef = useRef(null);
   const fontRef = useRef('sans-serif'); // fallback
+  const time = useClockTime();
 
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+  const fontConfigs = useMemo(() => [
     {
       fontFamily: 'DodecahedronFont',
       fontUrl: dodecahedronFontFile,
@@ -18,8 +19,9 @@ export default function TwelfthRootsOfUnityWithClock() {
         style: 'normal'
       }
     }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  ], []);
+
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -34,12 +36,10 @@ export default function TwelfthRootsOfUnityWithClock() {
     const fadeSpeed = 0.01;
     let frameCount = 0;
 
-    // Font loading handled by useMultipleFontLoader
-    if (fontsLoaded) {
-      fontRef.current = 'DodecahedronFont';
-    }
+    // Ensure font name is ready for canvas
+    fontRef.current = 'DodecahedronFont';
 
-    const resize: React.FC = () => {
+    const resize = () => {
       const containerSize =
         Math.min(window.innerWidth, window.innerHeight) * 0.8;
       const dpr = window.devicePixelRatio || 1;
@@ -61,7 +61,7 @@ export default function TwelfthRootsOfUnityWithClock() {
     resize();
     window.addEventListener('resize', resize);
 
-    const drawRoots: React.FC = () => {
+    const drawRoots = () => {
       const size = canvas.width / (window.devicePixelRatio || 1);
       const centerX = size / 2;
       const centerY = size / 2;
@@ -131,17 +131,16 @@ export default function TwelfthRootsOfUnityWithClock() {
       }
     };
 
-    const drawClock: React.FC = () => {
+    const drawClock = (currentTime: Date) => {
       const size = clock.width / (window.devicePixelRatio || 1);
       const centerX = size / 2;
       const centerY = size / 2;
       const radius = size * 0.45;
       cctx.clearRect(0, 0, size, size);
 
-      const now = new Date();
-      const sec = now.getSeconds();
-      const min = now.getMinutes();
-      const hr = now.getHours() % 12;
+      const sec = currentTime.getSeconds();
+      const min = currentTime.getMinutes();
+      const hr = currentTime.getHours() % 12;
 
       const hourAngle = ((hr + min / 60) * 2 * Math.PI) / 12 - Math.PI / 2;
       const minAngle = ((min + sec / 60) * 2 * Math.PI) / 60 - Math.PI / 2;
@@ -167,7 +166,7 @@ export default function TwelfthRootsOfUnityWithClock() {
     let animationId;
     const animate = () => {
       drawRoots();
-      drawClock();
+      drawClock(time);
       animationId = requestAnimationFrame(animate);
     };
 
@@ -178,7 +177,7 @@ export default function TwelfthRootsOfUnityWithClock() {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationId);
     };
-  }, []);
+  }, [time]);
 
   return (
     <div
