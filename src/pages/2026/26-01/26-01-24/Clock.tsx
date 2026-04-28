@@ -153,10 +153,16 @@ const Clock: React.FC = () => {
   }), []);
 
   // --- EMOJI CYCLING LOGIC ---
+  const lastCycledSecond = useRef<number>(-1);
+
   // This useEffect replaces the time update and emoji cycling from the old rAF loop
   useEffect(() => {
+    const currentSecond = time.getSeconds();
+    
     // Only update emoji every 3 seconds
-    if (time.getSeconds() % 3 === 0) {
+    if (currentSecond % 3 === 0 && currentSecond !== lastCycledSecond.current) {
+      lastCycledSecond.current = currentSecond;
+
       setEmojiIndex((prevIndex) => {
         const nextIndex = (prevIndex + 1) % emojiCycle.length;
         const nextEmoji = emojiCycle[nextIndex];
