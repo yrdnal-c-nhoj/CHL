@@ -78,14 +78,10 @@ useEffect(() => {
 **After (BTS Standard):**
 ```typescript
 // Standardized in useClockTime.ts
-export const useClockTime = () => {
+export const useClockTime = (precision: 'ms' | 'seconds' = 'seconds') => {
   const [time, setTime] = useState(new Date());
-  useAnimationFrame(() => {
-    const now = new Date();
-    if (now.getSeconds() !== time.getSeconds()) {
-      setTime(now);
-    }
-  });
+  // Logic inside useEffect handles RAF with conditional state updates 
+  // based on the requested precision.
   return time;
 };
 ```

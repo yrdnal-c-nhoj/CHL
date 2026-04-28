@@ -1,22 +1,37 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { ClockTime, TimeFormat } from '@/types/clock';
 
 /**
  * Hook that provides current time with automatic updates
+ * @param {('ms'|'seconds')} precision - How often the clock should update
  * @returns {Date} Current time
  */
-export function useClockTime(): Date {
+export function useClockTime(precision: 'ms' | 'seconds' = 'seconds'): Date {
   const [time, setTime] = useState<Date>(new Date());
+  const lastSecondRef = useRef<number>(-1);
 
   useEffect(() => {
     let frameId: number;
+    
     const tick = () => {
-      setTime(new Date());
+      const now = new Date();
+      
+      if (precision === 'seconds') {
+        const currentSecond = now.getSeconds();
+        if (currentSecond !== lastSecondRef.current) {
+          lastSecondRef.current = currentSecond;
+          setTime(now);
+        }
+      } else {
+        setTime(now);
+      }
+      
       frameId = requestAnimationFrame(tick);
     };
+
     frameId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frameId);
-  }, []);
+  }, [precision]);
 
   return time;
 }
