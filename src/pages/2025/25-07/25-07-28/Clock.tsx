@@ -30,18 +30,19 @@ const Clock: React.FC = () => {
   };
 
   return (
-    <div
+    <main
       className={styles.container}
       style={{
         backgroundImage: `url(${backgroundImage})`,
       }}
     >
-      <div
+      <time
+        dateTime={time.toISOString()}
         className={styles.time}
       >
         {getFormattedTime()}
-      </div>
-    </div>
+      </time>
+    </main>
   );
 };
 

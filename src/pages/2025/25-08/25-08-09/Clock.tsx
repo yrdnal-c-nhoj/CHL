@@ -34,14 +34,14 @@ const RectangularAnalogClock: React.FC = () => {
 
   // Render multi-angle clock hand
   const renderMultiAngleHand = (
-    angleDeg,
-    radialTotal,
-    perpStep,
-    segments,
-    stroke,
-    strokeWidth,
-    keyPrefix,
-    startPerpRight = true,
+    angleDeg: number,
+    radialTotal: number,
+    perpStep: number,
+    segments: number,
+    stroke: string,
+    strokeWidth: number,
+    keyPrefix: string,
+    startPerpRight: boolean = true,
   ) => {
     const segmentsAdjusted = Math.max(
       3,
