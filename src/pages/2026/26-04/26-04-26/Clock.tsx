@@ -4,21 +4,25 @@ import styles from './Clock.module.css';
 import bgVideo from '@/assets/images/2026/26-04/26-04-26/jetson.mp4';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
-const formatMs = (num: number): string => num.toString().padStart(3, '0');
+
+const POSITIONS = [
+  { top: '25%', left: '50%' }, // Hour tens
+  { top: '42%', left: '35%' }, // Hour ones
+  { top: '45%', left: '50%' }, // Minute ones (Visual center)
+  { top: '40%', left: '65%' }, // Minute tens (Visual right)
+  { top: '65%', left: '42%' }, // Second tens
+  { top: '65%', left: '58%' }, // Second ones
+] as const;
 
 const Clock: React.FC = () => {
   const time = useClockTime();
 
-  const { hours, minutes, seconds, ms, ampm } = useMemo(() => {
-    const rawHours = time.getHours();
-    const ampm = rawHours >= 12 ? 'PM' : 'AM';
-    const displayHours = rawHours % 12 || 12;
-    
-    const h = formatTime(displayHours);
+  const digits = useMemo(() => {
+    const h = formatTime(time.getHours() % 12 || 12);
     const m = formatTime(time.getMinutes());
     const s = formatTime(time.getSeconds());
-    const ms = formatMs(time.getMilliseconds());
-    return { hours: h, minutes: m, seconds: s, ms, ampm };
+    // Map digits to match the star indices used in the Pleiades standard
+    return [h[0], h[1], m[1], m[0], s[0], s[1]];
   }, [time]);
 
   return (
@@ -32,18 +36,20 @@ const Clock: React.FC = () => {
         className={styles.video}
       />
       <time className={styles.clockWrapper} dateTime={time.toISOString()}>
-        <div className={styles.clock}>
-          <div className={styles.digitBox}><span className={styles.digit}>{hours[0]}</span></div>
-          <div className={styles.digitBox}><span className={styles.digit}>{hours[1]}</span></div>
-          <div className={styles.digitBox}><span className={styles.digit}>{minutes[0]}</span></div>
-          <div className={styles.digitBox}><span className={styles.digit}>{minutes[1]}</span></div>
-          <div className={styles.digitBox}><span className={styles.digit}>{seconds[0]}</span></div>
-          <div className={styles.digitBox}><span className={styles.digit}>{seconds[1]}</span></div>
-          <div className={styles.digitBox}><span className={styles.digit}>{ms[0]}</span></div>
-          <div className={styles.digitBox}><span className={styles.digit}>{ms[1]}</span></div>
-          <div className={styles.digitBox}><span className={styles.digit}>{ms[2]}</span></div>
-          <div className={styles.ampmBox}><span className={styles.ampm}>{ampm}</span></div>
-        </div>
+        {digits.map((digit, i) => (
+          <div
+            key={i}
+            className={styles.digitBox}
+            style={{
+              position: 'absolute',
+              top: POSITIONS[i].top,
+              left: POSITIONS[i].left,
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            <span className={styles.digit}>{digit}</span>
+          </div>
+        ))}
       </time>
     </main>
   );
