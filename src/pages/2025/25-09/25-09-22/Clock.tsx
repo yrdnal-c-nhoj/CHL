@@ -9,7 +9,7 @@ import customFontmmm from '@/assets/fonts/2025/25-09-22-disney.ttf?url';
 export default function DigitalClockVideo() {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [isPhone, setIsPhone] = useState<boolean>(window.innerWidth <= 768);
-  const videoRef = useRef(null); // Ref for video element
+  const videoRef = useRef<HTMLVideoElement>(null); // Ref for video element
 
   const time = useMillisecondClock();
 
