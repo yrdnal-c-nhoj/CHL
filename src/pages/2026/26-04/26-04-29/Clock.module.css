@@ -27,28 +27,41 @@
 
 .clock {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.25rem;
   align-items: center;
   font-family: 'Rye', cursive, serif;
   font-weight: 400;
   position: relative;
   z-index: 1;
+  max-width: 100%;
+  padding: 0 0.5rem;
 }
 
 .digit {
-  font-size: clamp(4rem, 15vw, 12rem);
+  font-size: clamp(2rem, 8vw, 10rem);
   color: #fff;
-  min-width: 0.6em;
   line-height: 1;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 0.7em;
+  height: 1.2em;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .separator {
-  font-size: clamp(4rem, 15vw, 12rem);
+  font-size: clamp(2rem, 8vw, 10rem);
   color: #fff;
-  min-width: 0.6em;
   line-height: 1;
   opacity: 0.6;
   animation: blink 1s infinite;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 0.3em;
+  height: 1.2em;
 }
 
 @keyframes blink {
