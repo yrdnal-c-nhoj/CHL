@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import animalsVideo from '@/assets/images/2026/26-04/26-04-29/animals.mp4';
 import { useClockTime } from '@/utils/clockUtils';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
@@ -22,6 +23,20 @@ const Clock: React.FC = () => {
     backgroundColor: '#111',
     margin: 0,
     padding: 0,
+    position: 'relative',
+    overflow: 'hidden',
+  };
+
+  const videoStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    minWidth: '100%',
+    minHeight: '100%',
+    width: 'auto',
+    height: 'auto',
+    transform: 'translate(-50%, -50%)',
+    objectFit: 'cover',
   };
 
   const clockStyle: React.CSSProperties = {
@@ -30,6 +45,8 @@ const Clock: React.FC = () => {
     alignItems: 'center',
     fontFamily: 'monospace',
     fontWeight: 300,
+    position: 'relative',
+    zIndex: 1,
   };
 
   const digitStyle: React.CSSProperties = {
@@ -41,18 +58,19 @@ const Clock: React.FC = () => {
 
   const separatorStyle: React.CSSProperties = {
     ...digitStyle,
-    opacity: 0.6,
-    animation: 'blink 1s infinite',
   };
 
   return (
     <div style={containerStyle}>
-      <style>{`
-        @keyframes blink {
-          0%, 100% { opacity: 0.6; }
-          50% { opacity: 0.2; }
-        }
-      `}</style>
+
+      <video
+        style={videoStyle}
+        autoPlay
+        loop
+        muted
+        playsInline
+        src={animalsVideo}
+      />
       <div style={clockStyle}>
         <span style={digitStyle}>{hours[0]}</span>
         <span style={digitStyle}>{hours[1]}</span>

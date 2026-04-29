@@ -2,9 +2,9 @@
 import React, { createContext, useState, useEffect } from 'react';
 import prodData from './clockpages.json';
 
-// Use Vite's glob import to handle cases where testclock.json might be missing.
-const testModules = import.meta.glob('./testclock.json', { eager: true });
-const testData = testModules['./testclock.json']?.default || prodData;
+// Use Vite's glob import to handle cases where testclocks.json might be missing.
+const testModules = import.meta.glob('./testclocks.json', { eager: true });
+const testData = testModules['./testclocks.json']?.default || prodData;
 
 // Create context
 export const DataContext = createContext();
