@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Rye&display=swap');
 
+@keyframes rainbow-move {
+  /* Using a fixed unit (rem) ensures the speed is identical on all characters */
+  0% { background-position: 0 0; }
+  100% { background-position: 20rem 20rem; }
+}
+
 .container {
+  --clock-accent: #ee6e6e;
   width: 100vw;
   height: 100dvh;
   display: flex;
@@ -17,12 +24,16 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  min-width: 100%;
-  min-height: 100%;
   width: auto;
-  height: auto;
+  height: 40%;
   transform: translate(-50%, -50%);
   object-fit: cover;
+}
+
+@media (max-width: 450px) {
+  .video {
+    left: 30%;
+  }
 }
 
 .clock {
@@ -38,33 +49,35 @@
 }
 
 .digit {
-  font-size: clamp(2rem, 8vw, 10rem);
-  color: #fff;
+  font-size: 9vh;
+  /* 8 colors ending where we started creates a perfect cycle */
+  background: linear-gradient(45deg, #ff0000, #ffa500, #ffff00, #008000, #0000ff, #4b0082, #ee82ee, #ff0000);
+  background-size: 20rem 20rem; 
+  -webkit-background-clip: text; /* Clip the background to the text shape */
+  background-clip: text;
+  -webkit-text-fill-color: transparent; /* Make the text transparent so the background shows through */
+  animation: rainbow-move 5s linear infinite; /* Apply the moving gradient animation */
   line-height: 1;
   display: inline-flex;
+  filter: drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.7));
   justify-content: center;
   align-items: center;
-  width: 0.7em;
+  width: 0.6em;
   height: 1.2em;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .separator {
-  font-size: clamp(2rem, 8vw, 10rem);
-  color: #fff;
+  font-size: 8vh;
+  background: linear-gradient(45deg, #ff0000, #ffa500, #ffff00, #008000, #0000ff, #4b0082, #ee82ee, #ff0000);
+  background-size: 20rem 20rem;
+  -webkit-background-clip: text; /* Clip the background to the text shape */
+  background-clip: text;
+  -webkit-text-fill-color: transparent; /* Make the text transparent so the background shows through */
+  animation: rainbow-move 5s linear infinite; /* Apply the moving gradient animation */
   line-height: 1;
-  opacity: 0.6;
-  animation: blink 1s infinite;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 0.3em;
-  height: 1.2em;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 0.2; }
+  width: 0.2em;
+  transform: translateY(-0.1em); /* Raises the separator higher */
 }
