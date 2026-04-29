@@ -22,15 +22,15 @@ export default function PanicAnalogClock() {
   const bottomImageOpacity = 1.0;
   const topImageOpacity = 0.5;
   const fontName = 'CustomClockFont';
-  const [leftSrc, setLeftSrc] = useState<any>(null);
-  const [rightSrc, setRightSrc] = useState<any>(null);
-  const [fontUrl, setFontUrl] = useState<any>(null);
-  const [showImages, setShowImages] = useState<any>({ left: false, right: false }); // Restore staggered image timing
+  const [leftSrc, setLeftSrc] = useState<string | null>(null);
+  const [rightSrc, setRightSrc] = useState<string | null>(null);
+  const [fontUrl, setFontUrl] = useState<string | null>(null);
+  const [showImages, setShowImages] = useState<{ left: boolean; right: boolean }>({ left: false, right: false }); // Restore staggered image timing
   const [fadeBlack, setFadeBlack] = useState<boolean>(false); // Black overlay fade
   const [rightImageLoaded, setRightImageLoaded] = useState<boolean>(false); // Track right image load
-  const urlsRef = useRef({ left: null, right: null, font: null });
-  const timerRef = useRef(null);
-  const [timeStr, setTimeStr] = useState<any>('');
+  const urlsRef = useRef<{ left: string | null; right: string | null; font: string | null }>({ left: null, right: null, font: null });
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [timeStr, setTimeStr] = useState<string>('');
 
   const formatTime = (d) => {
     let h = d.getHours();
