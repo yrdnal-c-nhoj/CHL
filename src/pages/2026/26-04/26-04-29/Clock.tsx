@@ -1,6 +1,9 @@
 import React, { useMemo } from 'react';
+
 import animalsVideo from '@/assets/images/2026/26-04/26-04-29/animals.mp4';
 import { useClockTime } from '@/utils/clockUtils';
+
+import styles from './Clock.module.css';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
@@ -14,75 +17,28 @@ const Clock: React.FC = () => {
     return { hours: h, minutes: m, seconds: s };
   }, [time]);
 
-  const containerStyle: React.CSSProperties = {
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#111',
-    margin: 0,
-    padding: 0,
-    position: 'relative',
-    overflow: 'hidden',
-  };
-
-  const videoStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    minWidth: '100%',
-    minHeight: '100%',
-    width: 'auto',
-    height: 'auto',
-    transform: 'translate(-50%, -50%)',
-    objectFit: 'cover',
-  };
-
-  const clockStyle: React.CSSProperties = {
-    display: 'flex',
-    gap: '0.5rem',
-    alignItems: 'center',
-    fontFamily: 'monospace',
-    fontWeight: 300,
-    position: 'relative',
-    zIndex: 1,
-  };
-
-  const digitStyle: React.CSSProperties = {
-    fontSize: 'clamp(4rem, 15vw, 12rem)',
-    color: '#fff',
-    minWidth: '.01em',
-    lineHeight: 1,
-  };
-
-  const separatorStyle: React.CSSProperties = {
-    ...digitStyle,
-  };
-
   return (
-    <div style={containerStyle}>
-
+    <div className={styles.container}>
       <video
-        style={videoStyle}
+        className={styles.video}
         autoPlay
         loop
         muted
         playsInline
         src={animalsVideo}
       />
-      <div style={clockStyle}>
-        <span style={digitStyle}>{hours[0]}</span>
-        <span style={digitStyle}>{hours[1]}</span>
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{minutes[0]}</span>
-        <span style={digitStyle}>{minutes[1]}</span>
-        <span style={separatorStyle}>:</span>
-        <span style={digitStyle}>{seconds[0]}</span>
-        <span style={digitStyle}>{seconds[1]}</span>
+      <div className={styles.clock}>
+        <span className={styles.digit}>{hours[0]}</span>
+        <span className={styles.digit}>{hours[1]}</span>
+        <span className={styles.separator}>:</span>
+        <span className={styles.digit}>{minutes[0]}</span>
+        <span className={styles.digit}>{minutes[1]}</span>
+        <span className={styles.separator}>:</span>
+        <span className={styles.digit}>{seconds[0]}</span>
+        <span className={styles.digit}>{seconds[1]}</span>
       </div>
     </div>
   );
-};
+}
 
 export default Clock;
