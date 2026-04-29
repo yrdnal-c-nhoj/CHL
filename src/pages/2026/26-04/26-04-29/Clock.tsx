@@ -52,7 +52,7 @@ const Clock: React.FC = () => {
   const digitStyle: React.CSSProperties = {
     fontSize: 'clamp(4rem, 15vw, 12rem)',
     color: '#fff',
-    minWidth: '0.8em',
+    minWidth: '.01em',
     lineHeight: 1,
   };
 
