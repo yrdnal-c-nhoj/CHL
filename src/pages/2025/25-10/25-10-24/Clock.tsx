@@ -1,28 +1,21 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks'; // Import the standardized clock hook
 import videoFile from '@/assets/images/2025/25-10/25-10-24/esp.mp4';
 import videoWebM from '@/assets/images/2025/25-10/25-10-24/esp.webp';
 import fallbackImg from '@/assets/images/2025/25-10/25-10-24/esp.jpeg';
 import fontFile251024 from '@/assets/fonts/2025/25-10-24-esp.ttf';
 import cornerUL from '@/assets/images/2025/25-10/25-10-24/ul.webp';
 import cornerLR from '@/assets/images/2025/25-10/25-10-24/lr.webp';
-
 export default function VictorianEsperantoClock() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime(); // Use the standardized clock hook
   const textAndOrnamentColor = '#110116FF';
   const textAndOrnamentShadow = '-1px 1px 0px #F0DDC4';
-
   // Capitalization helper
   const capitalizeFirst = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
