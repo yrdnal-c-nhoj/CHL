@@ -34,7 +34,7 @@ import styles from './BaseClock.module.css';
 // FONT CONFIGURATION
 // =========================
 const fontConfigs: FontConfig[] = [
-  // { fontFamily: 'MyClockFont', fontUrl: '/fonts/my-font.woff2' }
+  // { fontFamily: 'MyClockFont', fontUrl: '/fonts/YY-MM-DD-name.ttf' }
 ];
 
 // =========================
