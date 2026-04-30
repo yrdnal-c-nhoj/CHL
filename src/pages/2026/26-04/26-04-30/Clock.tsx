@@ -21,7 +21,7 @@ interface StarPair {
   key: number;
 }
 
-const STAR_COUNT = 300;
+const STAR_COUNT = 150;
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 const positions = [
@@ -46,17 +46,45 @@ const generateRandomPair = (id: number, key: number): StarPair => ({
   key,
 });
 
+// Pleiades cluster positions (7 sisters + Atlas/Pleione parents)
+const PLEIADES_STARS = [
+  { top: 35, left: 44, brightness: 0.9 }, // Atlas
+  { top: 32, left: 52, brightness: 0.8 }, // Pleione
+  { top: 50, left: 50, brightness: 1.0 }, // Alcyone (brightest)
+  { top: 45, left: 58, brightness: 0.7 }, // Merope
+  { top: 58, left: 42, brightness: 0.6 }, // Electra
+  { top: 62, left: 56, brightness: 0.6 }, // Maia
+  { top: 55, left: 48, brightness: 0.5 }, // Taygeta
+  { top: 48, left: 40, brightness: 0.4 }, // Celeano
+  { top: 40, left: 62, brightness: 0.4 }, // Sterope
+];
+
 const STARS = Array.from({ length: STAR_COUNT }, (_, i) => {
   const rand = Math.random;
   const animRoll = rand();
   const colorRoll = rand();
-  
+
+  // 70% of stars clustered around Pleiades positions, 30% scattered
+  const useCluster = rand() < 0.7;
+  let top, left;
+
+  if (useCluster) {
+    const clusterIndex = Math.floor(rand() * PLEIADES_STARS.length);
+    const cluster = PLEIADES_STARS[clusterIndex]!;
+    const spread = 6; // degrees of spread around cluster center
+    top = cluster.top + (rand() * spread * 2 - spread);
+    left = cluster.left + (rand() * spread * 2 - spread);
+  } else {
+    top = rand() * 100;
+    left = rand() * 100;
+  }
+
   return {
     id: i,
-    top: `${rand() * 100}%`,
-    left: `${rand() * 100}%`,
+    top: `${top}%`,
+    left: `${left}%`,
     size: rand() * 2.5 + 0.5,
-    opacity: rand() * 0.6 + 0.3,
+    opacity: rand() * 0.5 + 0.4,
     delay: rand() * 5,
     duration: rand() * 3 + 2,
     animType: animRoll > 0.8 ? 'pulse' : animRoll > 0.6 ? 'flicker' : 'twinkle' as AnimType,
@@ -72,7 +100,7 @@ const PleiadesClock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useClockTime();
   const [starPairs, setStarPairs] = useState<StarPair[]>(() =>
-    Array.from({ length: 6 }, (_, i) => generateRandomPair(i, 0))
+    Array.from({ length: 24 }, (_, i) => generateRandomPair(i, 0))
   );
 
   const regeneratePair = useCallback((id: number) => {
@@ -226,6 +254,16 @@ const PleiadesClock: React.FC = () => {
             100% { transform: rotate(${s.angle}deg) translateX(${s.distance}vw); opacity: 0; }
           }
         `).join('')}
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+          .digit-shimmer {
+            font-size: clamp(2rem, 10vw, 6rem) !important;
+          }
+          .digit-shimmer-bright {
+            font-size: clamp(2.5rem, 12vw, 7rem) !important;
+          }
+        }
       `}</style>
     </div>
   );
