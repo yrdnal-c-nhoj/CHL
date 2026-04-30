@@ -24,17 +24,17 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: auto;
-  height: 40%;
+  width: 100%;
+  height: auto;
   transform: translate(-50%, -50%);
   object-fit: cover;
 }
-
+/* 
 @media (max-width: 450px) {
   .video {
     left: 30%;
   }
-}
+} */
 
 .clock {
   display: flex;
@@ -51,7 +51,7 @@
 .digit {
   font-size: 9vh;
   /* 8 colors ending where we started creates a perfect cycle */
-  background: linear-gradient(45deg, #ff0000, #ffa500, #ffff00, #008000, #0000ff, #4b0082, #ee82ee, #ff0000);
+  background: linear-gradient(45deg, #ff0000, #ffa500, #d812f7, #ee82ee, #ff0000);
   background-size: 20rem 20rem; 
   -webkit-background-clip: text; /* Clip the background to the text shape */
   background-clip: text;
@@ -68,7 +68,7 @@
 
 .separator {
   font-size: 8vh;
-  background: linear-gradient(45deg, #ff0000, #ffa500, #ffff00, #008000, #0000ff, #4b0082, #ee82ee, #ff0000);
+  background: linear-gradient(45deg, #ff0000, #ffa500, #f50599, #ee82ee, #ff0000);
   background-size: 20rem 20rem;
   -webkit-background-clip: text; /* Clip the background to the text shape */
   background-clip: text;
