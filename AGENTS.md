@@ -97,9 +97,9 @@ src/
 ## Asset Naming
 
 **Fonts:**
-- Format: `YY-MM-DD-name.woff2`
+- Format: `YY-MM-DD-name.[ext]` (ttf, otf, or woff2)
 - Location: `src/assets/fonts/YYYY/`
-- Standard: WOFF2 only
+ - Standard: TTF, OTF, and WOFF2 supported
 
 **Images:**
 - Format: `YY-MM-DD-name.webp`
@@ -129,7 +129,7 @@ npm run perf:analyze  # Check deps
 **Fonts:**
 ```bash
 npm run audit:fonts
-# Check paths match /fonts/YY-MM-DD-name.woff2
+# Check paths match /fonts/YY-MM-DD-name.[ext]
 ```
 
 ## Deployment Checklist
