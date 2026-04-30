@@ -3,21 +3,9 @@ import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgVideo from '@/assets/images/2026/26-04/26-04-26/jetson.mp4';
 import jetFont from '@/assets/fonts/2026/26-04-26-jet.ttf?url';
-
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
-
-const PLEIADES_POSITIONS = [
-  { top: '25%', left: '50%' }, // Hour tens (Handle)
-  { top: '42%', left: '35%' }, // Hour ones (Bowl Edge)
-  { top: '40%', left: '65%' }, // Minute tens (Bowl Edge)
-  { top: '45%', left: '50%' }, // Minute ones (Bowl Center)
-  { top: '65%', left: '42%' }, // Second tens (Bowl Bottom)
-  { top: '65%', left: '58%' }, // Second ones (Bowl Bottom)
-] as const;
-
 const Clock: React.FC = () => {
   const time = useClockTime();
-
   const fontConfigs = useMemo(() => [
     {
       fontFamily: 'Jet',
@@ -28,19 +16,18 @@ const Clock: React.FC = () => {
       }
     }
   ], []);
-
   useSuspenseFontLoader(fontConfigs);
-
-  const digits = useMemo(() => {
-    let h = time.getHours();
-    h = h % 12;
-    h = h ? h : 12; // 0 should be 12
-    const hStr = formatTime(h);
-    const m = formatTime(time.getMinutes());
-    const s = formatTime(time.getSeconds());
-    return [...hStr.split(''), ...m.split(''), ...s.split('')];
+  const { displayHours, displayMinutes, displaySeconds, ampm } = useMemo(() => {
+    const rawHours = time.getHours();
+    const ampm = rawHours >= 12 ? 'PM' : 'AM';
+    const h = rawHours % 12 || 12; // Convert to 12-hour format, 0 becomes 12
+    return {
+      displayHours: formatTime(h),
+      displayMinutes: formatTime(time.getMinutes()),
+      displaySeconds: formatTime(time.getSeconds()),
+      ampm,
+    };
   }, [time]);
-
   const containerStyle: React.CSSProperties = {
     width: '100vw',
     height: '100dvh',
@@ -63,12 +50,23 @@ const Clock: React.FC = () => {
     zIndex: 0,
   };
 
-  const digitStyle: React.CSSProperties = {
-    fontFamily: 'Jet, monospace',
+  const baseDigitStyle: React.CSSProperties = {
     fontSize: 'clamp(2rem, 8vw, 6rem)',
     color: '#fff',
     minWidth: '0.8em',
     lineHeight: 1,
+  };
+
+  const timeStyle: React.CSSProperties = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '0.5rem', // Spacing between digit boxes and separators
+    fontFamily: 'Jet',
+  };
+
+  const digitStyle: React.CSSProperties = {
+    ...baseDigitStyle,
     textShadow: `
       0 0 10px rgba(255, 100, 50, 0.8),
       0 0 20px rgba(255, 100, 50, 0.6),
@@ -79,22 +77,40 @@ const Clock: React.FC = () => {
     WebkitTextStroke: '1px rgba(0, 0, 0, 0.3)',
   };
 
-  const digitBoxStyle: React.CSSProperties = {
+  const separatorStyle: React.CSSProperties = {
+    ...digitStyle, // Inherit all digit styles including shadow and stroke
+    margin: '0 0.25rem', // Adjust margin
+  };
+
+  const ampmStyle: React.CSSProperties = {
+    ...digitStyle, // Inherit all digit styles including shadow and stroke
+    fontSize: 'clamp(1.5rem, 6vw, 4rem)', // Smaller for AM/PM
+    marginLeft: '0.5rem',
+  };
+
+  const baseDigitBoxStyle: React.CSSProperties = {
     width: 'clamp(1.5rem, 7vw, 5rem)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    transform: 'translate(-50%, -50%)',
+  };
+
+  const digitBoxStyle: React.CSSProperties = {
+    ...baseDigitBoxStyle,
+  };
+
+  const ampmBoxStyle: React.CSSProperties = {
+    ...baseDigitBoxStyle,
+    width: 'clamp(2rem, 10vw, 6rem)', // Wider for AM/PM
+    marginLeft: '0.5rem',
   };
 
   const clockWrapperStyle: React.CSSProperties = {
     position: 'relative',
     zIndex: 1,
-    width: '85vw',
+    width: '90vw',
     maxWidth: '800px',
-    height: '60vh',
-    minHeight: '80px',
+    height: 'auto', // Let content define height
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -116,20 +132,19 @@ const Clock: React.FC = () => {
           50% { opacity: 0.2; }
         }
       `}</style>
-      <time style={clockWrapperStyle} dateTime={time.toISOString()}>
-        {digits.map((digit, i) => (
-          <div
-            key={i}
-            style={{
-              ...digitBoxStyle,
-              top: PLEIADES_POSITIONS[i].top,
-              left: PLEIADES_POSITIONS[i].left,
-            }}
-          >
-            <span style={digitStyle}>{digit}</span>
-          </div>
-        ))}
-      </time>
+      <div style={clockWrapperStyle}>
+        <time style={timeStyle} dateTime={time.toISOString()}>
+          <div style={digitBoxStyle}><span style={digitStyle}>{displayHours[0]}</span></div>
+          <div style={digitBoxStyle}><span style={digitStyle}>{displayHours[1]}</span></div>
+          <span style={separatorStyle}>:</span>
+          <div style={digitBoxStyle}><span style={digitStyle}>{displayMinutes[0]}</span></div>
+          <div style={digitBoxStyle}><span style={digitStyle}>{displayMinutes[1]}</span></div>
+          <span style={separatorStyle}>:</span>
+          <div style={digitBoxStyle}><span style={digitStyle}>{displaySeconds[0]}</span></div>
+          <div style={digitBoxStyle}><span style={digitStyle}>{displaySeconds[1]}</span></div>
+          <div style={ampmBoxStyle}><span style={ampmStyle}>{ampm}</span></div>
+        </time>
+      </div>
     </main>
   );
 };
