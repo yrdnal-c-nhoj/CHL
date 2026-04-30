@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks'; // Corrected import path
+// import { useSuspenseFontLoader } from '@/utils/fontLoader'; // Not suitable for external Google Fonts
 import futurBg from '@/assets/images/2026/26-02/26-02-24/futur.jpg';
 
 interface Position {
@@ -62,13 +62,15 @@ const ImageDisplay = () => {
   const time = useClockTime();
 
   // Professional Practice: Use standardized project loader for external fonts
-  const fontConfigs = useMemo(() => [
-    { fontFamily: 'Dancing Script', fontUrl: GOOGLE_FONTS_URL },
-    { fontFamily: 'Creepster', fontUrl: GOOGLE_FONTS_URL },
-    { fontFamily: 'Oswald', fontUrl: GOOGLE_FONTS_URL }
-  ], []);
-
-  useSuspenseFontLoader(fontConfigs);
+  // For Google Fonts, it's best to link them in index.html or import via CSS.
+  // useSuspenseFontLoader is for local font files to prevent FOUC.
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.href = GOOGLE_FONTS_URL;
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+    return () => { document.head.removeChild(link); };
+  }, []);
 
   // Accessibility: Update time string for screen readers
   const ariaTime = useMemo(() => 

@@ -1,6 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './ClockPageNav.module.css';
+import styles from './ClockPageNav.module.css'; // keep using the same styles
+
+/**
+ * @typedef {Object} ClockItem
+ * @property {string} date
+ * @property {string} title
+ * @property {number | string} [clockNumber]
+ */
 
 interface NavItem {
   date: string;
@@ -16,29 +23,29 @@ interface ClockPageNavProps {
   formatDate: (date: string | null | undefined) => string;
 }
 
-const ClockPageNav: React.FC<ClockPageNavProps> = ({
+const ClockPageNav = ({
   prevItem,
   nextItem,
   currentItem,
   formatTitle,
   formatDate,
-}) => {
+}: ClockPageNavProps) => {
   const [visible, setVisible] = useState(true);
-  const [inactivityTimer, setInactivityTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
+  // Using a ref for the timer to avoid unnecessary re-renders when setting the state
+  const timerRef = useRef(null);
 
   const clearInactivityTimer = useCallback(() => {
-    if (inactivityTimer) {
-      clearTimeout(inactivityTimer);
-      setInactivityTimer(null);
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
     }
-  }, [inactivityTimer]);
+  }, []);
 
   const startInactivityTimer = useCallback(() => {
     clearInactivityTimer();
-    const timer = setTimeout(() => {
-      setVisible(false);
-    }, 1000); 
-    setInactivityTimer(timer);
+    timerRef.current = setTimeout(() => {
+      setVisible(false); // Stay visible for 3 seconds of inactivity
+    }, 3000); // Stay visible for 3 seconds of inactivity
   }, [clearInactivityTimer]);
 
   const handleMouseEnter = useCallback(() => {
@@ -47,9 +54,8 @@ const ClockPageNav: React.FC<ClockPageNavProps> = ({
   }, [clearInactivityTimer]);
 
   const handleMouseLeave = useCallback(() => {
-    setVisible(false);
-    clearInactivityTimer();
-  }, [clearInactivityTimer]);
+    startInactivityTimer();
+  }, [startInactivityTimer]);
 
   const handleMouseMove = useCallback(() => {
     setVisible(true);
@@ -67,15 +73,10 @@ const ClockPageNav: React.FC<ClockPageNavProps> = ({
   }, [clearInactivityTimer]);
 
   const handleTouchEnd = useCallback(() => {
-    // Start inactivity timer instead of immediately hiding (matches mouse behavior)
     startInactivityTimer();
   }, [startInactivityTimer]);
 
   const handleTouchCancel = useCallback(() => {
-    startInactivityTimer();
-  }, [startInactivityTimer]);
-
-  useEffect(() => {
     setVisible(true);
     startInactivityTimer();
 

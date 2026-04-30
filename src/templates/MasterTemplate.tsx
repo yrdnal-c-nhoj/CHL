@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useClock } from '../../utils/useClock';
+import { useClockTime } from '../../utils/hooks'; // Use standardized hook
 import { useSuspenseFontLoader } from '../../utils/fontLoader';
 import type { FontConfig } from '../../types/clock';
 import styles from './Clock.module.css';
@@ -13,10 +13,13 @@ export const fontConfigs: FontConfig[] = [
 ];
 
 const Clock: React.FC = () => {
-  const { time, smoothSeconds } = useClock();
+  const time = useClockTime('ms'); // Request millisecond precision for smooth animations
 
   // Load fonts and suspend if necessary
   useSuspenseFontLoader(fontConfigs);
+
+  // Derive smoothSeconds from the millisecond-precise time
+  const smoothSeconds = time.getSeconds() + time.getMilliseconds() / 1000;
 
   // Calculate rotations or animations based on smoothSeconds
   const rotation = useMemo(() => (smoothSeconds / 60) * 360, [smoothSeconds]);
