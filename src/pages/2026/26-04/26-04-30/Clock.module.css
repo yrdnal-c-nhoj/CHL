@@ -1,0 +1,130 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  position: relative;
+  background-color: #02040a;
+  background-image: radial-gradient(circle at 50% 50%, rgba(30, 50, 100, 0.3), transparent), url('@/assets/images/2026/26-04/26-04-30/pleiades.webp');
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.timeWrapper {
+  display: contents;
+}
+
+.digit {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-family: 'Pleiades', serif;
+  font-weight: 100;
+  color: #fff;
+  user-select: none;
+  -webkit-user-select: none;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.digitCenter {
+  font-size: clamp(5rem, 18vw, 14rem);
+  text-shadow: 0 0 30px rgba(255, 255, 255, 1), 0 0 60px rgba(100, 150, 255, 0.6), 0 0 90px rgba(100, 150, 255, 0.3);
+  z-index: 20;
+}
+
+.digitStandard {
+  font-size: clamp(3rem, 12vw, 9rem);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.7), 0 0 40px rgba(100, 150, 255, 0.3);
+  z-index: 10;
+}
+
+.digitBright {
+  animation-duration: 2s;
+}
+
+.indicator {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-family: 'Pleiades', serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.indicatorActive {
+  color: #fff;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+}
+
+.indicatorInactive {
+  color: rgba(255, 255, 255, 0.1);
+  text-shadow: none;
+}
+
+.indicatorTransition {
+  transition: all 1s ease-in-out;
+}
+
+.starTwinkle {
+  position: absolute;
+  border-radius: 50%;
+  animation: twinkle infinite ease-in-out;
+}
+
+.starPulse {
+  position: absolute;
+  border-radius: 50%;
+  animation: pulse infinite ease-in-out;
+}
+
+.starFlicker {
+  position: absolute;
+  border-radius: 50%;
+  animation: flicker infinite step-start;
+}
+
+.shootingStar {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), #fff);
+  transform-origin: left center;
+  opacity: 0;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.4; }
+  50% { transform: scale(1.5); opacity: 1; }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+  80% { opacity: 0.8; }
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    filter: brightness(1) drop-shadow(0 0 20px rgba(255, 255, 255, 0.7));
+  }
+  25% {
+    filter: brightness(1.2) drop-shadow(0 0 35px rgba(255, 255, 255, 0.9));
+  }
+  50% {
+    filter: brightness(1) drop-shadow(0 0 25px rgba(255, 255, 255, 0.7));
+  }
+  75% {
+    filter: brightness(1.15) drop-shadow(0 0 30px rgba(150, 200, 255, 0.8));
+  }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .digitStandard {
+    font-size: clamp(2rem, 10vw, 6rem) !important;
+  }
+  .digitCenter {
+    font-size: clamp(2.5rem, 12vw, 7rem) !important;
+  }
+}
