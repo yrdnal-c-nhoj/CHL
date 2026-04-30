@@ -3,7 +3,7 @@ import { useSecondClock } from '@/utils/useSmoothClock';
 import { calculateAngles } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import exoFont from '@/assets/fonts/2026/26-03-24-exo.ttf';
+import exoFont from '@/assets/fonts/2026/26-03-23-26-03-24-exo.ttf?url';
 import StarsBackground from './StarsBackground';
 import styles from './Clock.module.css';
 

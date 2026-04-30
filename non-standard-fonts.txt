@@ -1,0 +1,5 @@
+src/assets/fonts/2026/26--03-25-ride.ttf
+src/assets/fonts/2026/26-03-31.ttf
+src/assets/fonts/2026/26-04-04.ttf
+src/assets/fonts/2026/26-04-23.otf
+src/assets/fonts/2026/26-04-27.otf
