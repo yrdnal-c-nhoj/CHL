@@ -104,7 +104,7 @@ const PleiadesClock: React.FC = () => {
   const [starPairs, setStarPairs] = useState<StarPair[]>(() =>
     Array.from({ length: 24 }, (_, i) => generateRandomPair(i, 0))
   );
-  const timeoutsRef = useRef<Set<NodeJS.Timeout>>(new Set());
+  const timeoutsRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
 
   const regeneratePair = useCallback((id: number) => {
     const delay = Math.random() * 6000 + 2000;
