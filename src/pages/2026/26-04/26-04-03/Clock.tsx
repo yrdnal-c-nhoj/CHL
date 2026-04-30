@@ -3,7 +3,7 @@ import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundVideo from '@/assets/images/2026/26-04/26-04-03/clox.mp4';
-import fontUrl from '@/assets/fonts/clox.ttf?url';
+import fontUrl from '@/assets/fonts/2026/26-04-03-clox.ttf?url';
 
 const formatTimeParts = (date: Date): string[] => {
   const hours = date.getHours().toString().padStart(2, '0');
