@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import React from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // Asset imports
@@ -10,48 +10,12 @@ import fontUrl from '@/assets/fonts/2026/26-01-22-1974.ttf';
 const FONT_FAMILY = '1974';
 
 const DynamicClock: React.FC = () => {
-  const [isReady, setIsReady] = useState<boolean>(false);
-  const [time, setTime] = useState(new Date());
+  // BTS Standard: FOUC Prevention via Suspense
+  useSuspenseFontLoader([{ fontFamily: FONT_FAMILY, fontUrl }]);
 
-  // Update time every second
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Load font + background image
-  useLayoutEffect(() => {
-    let mounted = true;
-
-    const loadAssets = async () => {
-      const fontFace = new FontFace(FONT_FAMILY, `url(${fontUrl})`);
-      document.fonts.add(fontFace);
-
-      try {
-        await Promise.all([
-          fontFace.load(),
-          new Promise((resolve) => {
-            const img = new Image();
-            img.src = backgroundUrl;
-            img.onload = resolve;
-            img.onerror = resolve;
-          }),
-        ]);
-        if (mounted) setIsReady(true);
-      } catch (err) {
-        console.error('Asset loading failed:', err);
-        if (mounted) setIsReady(true);
-      }
-    };
-
-    loadAssets();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  if (!isReady) return null;
+  // BTS Standard: Frame-perfect time synchronization
+  const time = useClockTime('seconds');
+  const dateTime = time.toISOString();
 
   const timeString = [time.getHours(), time.getMinutes(), time.getSeconds()]
     .map((n) => n.toString().padStart(2, '0'))
@@ -112,15 +76,17 @@ const DynamicClock: React.FC = () => {
   };
 
   return (
-    <div style={containerStyle}>
+    <main style={containerStyle}>
       <div style={digitsRowStyle}>
-        {timeString.split('').map((char, i) => (
-          <div key={i} style={digitBoxStyle}>
-            <div style={digitStyle}>{char}</div>
-          </div>
-        ))}
+        <time dateTime={dateTime} style={{ display: 'flex', gap: 'inherit' }}>
+          {timeString.split('').map((char, i) => (
+            <div key={i} style={digitBoxStyle}>
+              <div style={digitStyle}>{char}</div>
+            </div>
+          ))}
+        </time>
       </div>
-    </div>
+    </main>
   );
 };
 

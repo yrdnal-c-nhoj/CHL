@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import topoImage from '@/assets/images/2025/25-12/25-12-25/topo.jpg';
 
 // Constants
@@ -297,7 +298,7 @@ const calculateFlightDuration = (origin, destination) => {
 };
 
 // Function to get random airports
-const getRandomAirports: React.FC = () => {
+const getRandomAirports = () => {
   const randomIndex1 = Math.floor(Math.random() * TOP_AIRPORTS.length);
   let randomIndex2 = Math.floor(Math.random() * TOP_AIRPORTS.length);
 
@@ -313,9 +314,6 @@ const getRandomAirports: React.FC = () => {
 };
 
 const BoardingPass: React.FC = () => {
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [isReady, setIsReady] = useState<boolean>(false);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
   const [flightData, setFlightData] = useState(() => {
     const randomAirports = getRandomAirports();
     return {
@@ -335,68 +333,27 @@ const BoardingPass: React.FC = () => {
     };
   });
 
-  // Update flight data every second
+  // BTS Standard: suspense-based font loading
+  useSuspenseFontLoader([
+    { fontFamily: 'Oxanium', fontUrl: 'https://fonts.gstatic.com/s/oxanium/v19/RrQPboN_4yJ0JmiM3N0-14HLVnA.woff2' },
+    { fontFamily: 'Roboto', fontUrl: 'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2' }
+  ]);
+
+  // BTS Standard: RAF-based time hook
+  const currentDate = useClockTime('seconds');
+
   useEffect(() => {
-    const updateFlightData: React.FC = () => {
-      const randomAirports = getRandomAirports();
-      setFlightData((prev) => ({
-        ...prev,
-        origin: randomAirports.origin,
-        destination: randomAirports.destination,
-        flightDuration: calculateFlightDuration(
-          randomAirports.origin,
-          randomAirports.destination,
-        ),
-      }));
-    };
-
-    // Initial update
-    updateFlightData();
-
-    // Update current time every second
-    const timeTimer = setInterval(() => {
-      setCurrentDate(new Date());
-      updateFlightData(); // Update flight data every second along with time
-    }, 1000);
-
-    // Initial flight data load
-    updateFlightData();
-
-    // Load font with FontFace API for better control
-    const loadFonts = async () => {
-      try {
-        // Preload fonts
-        const font = new FontFace(
-          'Oxanium',
-          'url(https://fonts.gstatic.com/s/oxanium/v19/RrQPboN_4yJ0JmiM3N0-14HLVnA.woff2)',
-        );
-        await font.load();
-        document.fonts.add(font);
-
-        const roboto = new FontFace(
-          'Roboto',
-          'url(https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2)',
-        );
-        await roboto.load();
-        document.fonts.add(roboto);
-
-        setFontLoaded(true);
-        setIsReady(true);
-      } catch (error) {
-        console.error('Failed to load fonts:', error);
-        // Fallback to system fonts if loading fails
-        setFontLoaded(true);
-        setIsReady(true);
-      }
-    };
-
-    loadFonts();
-
-    // Cleanup
-    return () => {
-      clearInterval(timeTimer);
-    };
-  }, []);
+    const randomAirports = getRandomAirports();
+    setFlightData((prev) => ({
+      ...prev,
+      origin: randomAirports.origin,
+      destination: randomAirports.destination,
+      flightDuration: calculateFlightDuration(
+        randomAirports.origin,
+        randomAirports.destination,
+      ),
+    }));
+  }, [currentDate]);
 
   // Utility functions
   const addMinutes = (date, minutes) => {
@@ -418,29 +375,11 @@ const BoardingPass: React.FC = () => {
   const arrivalTime = addMinutes(currentDate, flightData.flightDuration);
   const boardingTime = addMinutes(currentDate, flightData.boardingTime);
 
-  // Don't render until fonts are loaded
-  if (!isReady) {
-    return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: COLORS.white,
-        }}
-      >
-        <div>Loading...</div>
-      </div>
-    );
-  }
-
   return (
-    <div style={styles.container}>
+    <main style={styles.container}>
       <div style={styles.ticket}>
         <div style={styles.header}>
-          <div style={styles.logo(fontLoaded)}>{flightData.airline}</div>
+          <div style={styles.logo(true)}>{flightData.airline}</div>
           <div style={styles.flightLabel}>Boarding Pass</div>
         </div>
 
@@ -475,7 +414,7 @@ const BoardingPass: React.FC = () => {
             <div style={styles.flightInfo}>
               <InfoField label="Flight" value={flightData.flightNumber} />
               <InfoField label="Date" value={formatDate(currentDate)} />
-              <InfoField label="Depart" value={formatTime(currentDate)} />
+              <InfoField label="Depart" value={<time dateTime={currentDate.toISOString()}>{formatTime(currentDate)}</time>} />
             </div>
           </div>
         </div>
@@ -485,14 +424,14 @@ const BoardingPass: React.FC = () => {
             <div style={styles.depart}>
               <InfoField label="Terminal" value={flightData.terminal} />
               <InfoField label="Gate" value={flightData.gate} />
-              <InfoField label="Boarding" value={formatTime(boardingTime)} />
+              <InfoField label="Boarding" value={<time dateTime={boardingTime.toISOString()}>{formatTime(boardingTime)}</time>} />
             </div>
 
             <div style={styles.barcode}></div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
