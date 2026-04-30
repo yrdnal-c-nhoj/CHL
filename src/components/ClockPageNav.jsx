@@ -1,6 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './ClockPageNav.module.css'; // keep using the same styles
+
+/**
+ * @typedef {Object} ClockItem
+ * @property {string} date
+ * @property {string} title
+ * @property {number} clockNumber
+ */
 
 const ClockPageNav = ({
   prevItem,
@@ -10,21 +17,21 @@ const ClockPageNav = ({
   formatDate,
 }) => {
   const [visible, setVisible] = useState(true);
-  const [inactivityTimer, setInactivityTimer] = useState(null);
+  // Using a ref for the timer to avoid unnecessary re-renders when setting the state
+  const timerRef = useRef(null);
 
   const clearInactivityTimer = useCallback(() => {
-    if (inactivityTimer) {
-      clearTimeout(inactivityTimer);
-      setInactivityTimer(null);
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
     }
-  }, [inactivityTimer]);
+  }, []);
 
   const startInactivityTimer = useCallback(() => {
     clearInactivityTimer();
-    const timer = setTimeout(() => {
+    timerRef.current = setTimeout(() => {
       setVisible(false);
     }, 3000); // Stay visible for 3 seconds of inactivity
-    setInactivityTimer(timer);
   }, [clearInactivityTimer]);
 
   const handleMouseEnter = useCallback(() => {

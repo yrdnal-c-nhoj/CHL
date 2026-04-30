@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useEnhancedFontLoader } from '@/utils/enhancedFontLoader';
+import { useClockTime } from '@/utils/hooks';
 
 // === Local assets ===
 import bg1 from '@/assets/images/2026/26-01/26-01-01/fan.webp';
@@ -8,39 +9,30 @@ import myFontUrl from '@/assets/fonts/2026/26-01-01-fan.otf';
 const InvertedClock: React.FC = () => {
   const fontLoaded = useEnhancedFontLoader('MyFontScoped', myFontUrl);
 
-  const [time, setTime] = useState(new Date());
-  const secondHandRef = useRef(null);
-  const minHandRef = useRef(null);
-  const hourHandRef = useRef(null);
+  const time = useClockTime('ms'); // Request higher precision for smooth hands
+  const secondHandRef = useRef<HTMLDivElement>(null);
+  const minHandRef = useRef<HTMLDivElement>(null);
+  const hourHandRef = useRef<HTMLDivElement>(null);
   const [bgReady, setBgReady] = useState<boolean>(false);
 
-  // Font loading handled by useMultipleFontLoader
-
   useEffect(() => {
-    const t = setInterval(() => {
-      const now = new Date();
-      setTime(now);
+    const now = time;
+    const ms = now.getMilliseconds();
+    const seconds = now.getSeconds() + ms / 1000;
+    const minutes = now.getMinutes() + seconds / 60;
+    const hours = now.getHours() + minutes / 60;
 
-      const ms = now.getMilliseconds();
-      const seconds = now.getSeconds() + ms / 1000;
-      const minutes = now.getMinutes() + seconds / 60;
-      const hours = now.getHours() + minutes / 60;
+    const secondsDegrees = (seconds / 60) * 360 - 90;
+    const minsDegrees = (minutes / 60) * 360 - 90;
+    const hourDegrees = (hours / 12) * 360 - 90;
 
-      // Note: Added -90 to the degree calculation to account for
-      // the CSS 'right: 50%' starting position (which points to 9 o'clock)
-      const secondsDegrees = (seconds / 60) * 360 - 90;
-      const minsDegrees = (minutes / 60) * 360 - 90;
-      const hourDegrees = (hours / 12) * 360 - 90;
-
-      if (secondHandRef.current)
-        secondHandRef.current.style.transform = `translateY(-50%) rotate(${secondsDegrees}deg)`;
-      if (minHandRef.current)
-        minHandRef.current.style.transform = `translateY(-50%) rotate(${minsDegrees}deg)`;
-      if (hourHandRef.current)
-        hourHandRef.current.style.transform = `translateY(-50%) rotate(${hourDegrees}deg)`;
-    }, 50);
-    return () => clearInterval(t);
-  }, []);
+    if (secondHandRef.current)
+      secondHandRef.current.style.transform = `translateY(-50%) rotate(${secondsDegrees}deg)`;
+    if (minHandRef.current)
+      minHandRef.current.style.transform = `translateY(-50%) rotate(${minsDegrees}deg)`;
+    if (hourHandRef.current)
+      hourHandRef.current.style.transform = `translateY(-50%) rotate(${hourDegrees}deg)`;
+  }, [time]);
 
   // Preload background to avoid flashing
   useEffect(() => {

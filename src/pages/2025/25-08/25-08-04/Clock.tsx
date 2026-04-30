@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
 import bgImage from '@/assets/images/2025/25-08/25-08-04/shrub.jpeg'; // Your background image file
 import myFont from '@/assets/fonts/2025/25-08-04-Tr.ttf'; // Your custom font file
 
@@ -13,7 +14,7 @@ const getRandomTilt = () => ({
 });
 
 const DigitalClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [fadeIndex, setFadeIndex] = useState<number>(0);
   const [fontLoaded, setFontLoaded] = useState(false);
   const componentId = useRef(`multi-clock-${Date.now()}`);
@@ -46,11 +47,6 @@ const DigitalClock: React.FC = () => {
       })),
     [],
   );
-
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   // faster fade change → 1s instead of 2s
   useEffect(() => {
