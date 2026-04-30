@@ -1,9 +1,5 @@
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { useSecondClock } from '@/utils/useSmoothClock';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import type { CSSProperties } from 'react';
-import stickFont from '@/assets/fonts/2025/25-04-26-Stick.ttf?url';
 
 // Component Props interface
 interface SkewClockProps {
@@ -12,21 +8,6 @@ interface SkewClockProps {
 
 const SkewClock: React.FC<SkewClockProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'skew-stick',
-      fontUrl: stickFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
-
-  // Load fonts using suspense-based loader
-  useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
   const currentTime = useSecondClock();
@@ -55,7 +36,7 @@ const SkewClock: React.FC<SkewClockProps> = () => {
     ctx.save();
 
     const fontSize = canvas.height * 0.2;
-    ctx.font = `${fontSize}px 'skew-stick', sans-serif`;
+    ctx.font = `${fontSize}px 'Stick', sans-serif`;
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'left';
 
@@ -109,7 +90,7 @@ const SkewClock: React.FC<SkewClockProps> = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    document.fonts.load(`1rem 'skew-stick'`).then(() => {
+    document.fonts.load(`1rem 'Stick'`).then(() => {
       updateClock();
     });
 
@@ -121,13 +102,10 @@ const SkewClock: React.FC<SkewClockProps> = () => {
   return (
     <div
       className="skew-wrapper"
-      style={{ fontFamily: 'skew-stick, sans-serif' }}
+      style={{ fontFamily: "'Stick', sans-serif" }}
     >
       <style>{`
-        @font-face {
-          font-family: 'skew-stick';
-          src: url(${stickFont}) format('truetype');
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Stick&display=swap');
 
         .skew-wrapper, .skew-wrapper * {
           margin: 0;
