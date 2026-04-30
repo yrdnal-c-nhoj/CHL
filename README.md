@@ -40,13 +40,6 @@ To maintain art quality and performance, every clock must adhere to the **Borrow
 *   **Semantic Markup**: Use `<main>` for containers and `<time>` for digital displays.
 *   **Rendering**: Utilize the `useClockTime` hook for frame-synced updates.
 *   **Asset Pipeline**: Use `useSuspenseFontLoader` to prevent Flash of Unstyled Content (FOUC).
-
-## 🎭 Manifesto
-*   **We Take Pictures**: Appropriation as appreciation.
-*   **We Love Typefaces**: Typography as a secret handshake.
-*   **We Use AI**: A new tool is a new toy for learning.
-*   **Plus Ars Citius Omni Tempore Nam Quisque**: More Art Faster For Everybody All The Time.
-
 ---
 _Built with ❤️ by Cubist Heart Laboratories_
 
@@ -63,25 +56,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **X (Twitter)**: [@cubistheartlabs](https://x.com/cubistheartlabs)
 - **Facebook**: [Cubist Heart Laboratories](https://www.facebook.com/profile.php?id=100090369371981)
 
-## 📬 Newsletter
-
-Subscribe to our monthly newsletter for project updates and new clock releases:
-
-- Visit the [Contact page](/contact) to subscribe
-- Or use the direct Buttondown subscription form
-
-## 🎭 Manifesto
-
-_BorrowedTime_ operates on these principles:
-
-- **We Take Pictures** - We appropriate beautiful images from the infinite scroll of the Internet
-- **We Love Typefaces** - Born from passion and shared like a secret handshake
-- **We Use Open-Source Code** - We code on the shoulders of giants with gratitude
-- **We Believe in Electrons** - Invisible, endlessly jumping at the intersection of Nature, Culture and Technology
-- **We Use AI** - A new tool is a new toy for making and learning
-- **Plus Ars Citius Omni Tempore Nam Quisque** - More Art Faster For Everybody All The Time
-
-Read the full [manifesto](/manifesto) for our complete philosophy.
 
 ---
 
