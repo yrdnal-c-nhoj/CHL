@@ -9,18 +9,14 @@
   overflow: hidden;
 }
 
-.timeWrapper {
-  display: contents;
-}
-
 .digit {
   position: absolute;
   transform: translate(-50%, -50%);
   font-family: 'Pleiades', serif;
   font-weight: 100;
   color: #fff;
-  -webkit-user-select: none;
   user-select: none;
+  -webkit-user-select: none;
   animation: shimmer 3s ease-in-out infinite;
 }
 
