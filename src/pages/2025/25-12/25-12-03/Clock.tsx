@@ -63,9 +63,8 @@ const PuppyClockComponent: React.FC = () => {
     };
   }, [getNewPuppy]);
 
-  // TODO: Standardize this formatting function in '@/utils/clockUtils'
-  // to adhere to BTS for shared utilities.
-  const formatTime = (date: Date) => {
+  // Internal helper for stylized time
+  const formatStylizedTime = (date: Date) => {
     let hours = date.getHours();
     const minutes = date.getMinutes();
     const ampm = hours >= 12 ? 'pm' : 'am';
@@ -96,7 +95,7 @@ const PuppyClockComponent: React.FC = () => {
       />
 
       {/* TIME OVERLAY */}
-      <time dateTime={time.toISOString()} className={styles.clock}>{formatTime(time)}</time>
+      <time dateTime={time.toISOString()} className={styles.clock}>{formatStylizedTime(time)}</time>
     </main>
   );
 };

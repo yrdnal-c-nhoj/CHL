@@ -9,14 +9,14 @@ import cornerUL from '@/assets/images/2025/25-10/25-10-24/ul.webp';
 import cornerLR from '@/assets/images/2025/25-10/25-10-24/lr.webp';
 
 export default function VictorianEsperantoClock() {
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [time, setTime] = useState(new Date());
   const textAndOrnamentColor = '#110116FF';
   const textAndOrnamentShadow = '-1px 1px 0px #F0DDC4';
 
   // Capitalization helper
-  const capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+  const capitalizeFirst = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -204,7 +204,7 @@ export default function VictorianEsperantoClock() {
     opacity: 0.6,
   };
 
-  const renderRow = (number, label, top) => (
+  const renderRow = (number: string, label: string, top: string) => (
     <div style={{ ...rowStyle, top }}>
       <div style={numberStyle}>{number}</div>
       <div style={dotsStyle} />
