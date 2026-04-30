@@ -1,36 +1,144 @@
 # AGENTS.md
 
-Technical guidance for AI coding agents and automated build tools.
+Technical standards for BorrowedTime development.
 
-## 🏗️ Core Architecture
+## Architecture
 
-### Data Flow
-*   **Registry**: `src/context/clockpages.json` is the source of truth for all modules.
-*   **Loading**: `useClockPage.ts` uses `import.meta.glob` to resolve paths dynamically based on the registry.
+**Registry-Discovery Pattern**
+- Source of truth: `src/context/clockpages.json`
+- Dynamic loading: `import.meta.glob` in `useClockPage.ts`
 
-### Hooks & Utilities
-*   **Time Source**: `useClockTime()` from `@/utils/hooks`.
-*   **Font Loader**: `useSuspenseFontLoader()` handles font injections via React Suspense.
-*   **Asset Loader**: `useImageLoader` / `useVideoLoader` handle pre-buffering.
+**Key Hooks**
+- `useClockTime()` - 1s updates from `@/utils/hooks`
+- `useSuspenseFontLoader()` - FOUC prevention
+- `useImageLoader()` / `useVideoLoader()` - Pre-buffering
 
-## 💎 Coding Standards (BTS)
+## Coding Standards (BTS)
 
-1.  **Strict Typing**: All new files must use `.tsx`. Avoid `any`.
-2.  **CSS Modules**: Use `.module.css` for clock art; Tailwind for UI.
-3.  **Semantic SEO**: Wrap clock face content in `<time dateTime={...}>`.
+1. **Strict Typing**: `.tsx` only, no `any`
+2. **CSS Modules**: `.module.css` for clocks, Tailwind for UI
+3. **Semantic HTML**: `<time dateTime={...}>` for displays
 4.  **No Direct DOM**: Avoid `document.querySelector`. Use `useRef` for canvas/animations.
 5.  **Clean Up**: Always clear `setTimeout`, `setInterval`, and `requestAnimationFrame` on unmount.
 
-## 🛠️ CLI Operations
+## CLI Operations
 
-*   `npm run type-check`: Validates project-wide types.
-*   `npm run audit:fonts`: Runs the font usage audit script.
-*   `npm run test:run`: Executes Vitest suite.
+### Essential
 
-## 📂 Directory Map
-*   `src/pages/YYYY/YY-MM/YY-MM-DD/`: Location for daily clock modules.
-*   `src/utils/`: Core logic (Hooks, Asset Loaders).
-*   `src/assets/fonts/2025/`: Standard location for daily typefaces.
+| Command | Purpose |
+|---------|---------|
+| `npm run dev` | Start dev server |
+| `npm run build` | Production build |
+| `npm run build:with-types` | Build with type check |
+| `npm run type-check` | TypeScript only |
+| `npm run lint` | ESLint |
+| `npm run format` | Prettier |
+
+### Testing
+
+| Command | Purpose |
+|---------|---------|
+| `npm run test` | Vitest watch |
+| `npm run test:run` | Single run (CI) |
+| `npm run test:ui` | Browser UI |
+
+### Clock Creation
+
+| Command | Purpose |
+|---------|---------|
+| `npm run clock:new` | Create clock from template |
+
+### Asset Management
+
+| Command | Purpose |
+|---------|---------|
+| `npm run audit:fonts` | Find unused fonts |
+| `npm run audit:images` | Find unused images |
+| `npm run standardize:fonts` | Fix font names |
+| `npm run optimize:images` | Convert to WebP |
+
+### Performance
+
+| Command | Purpose |
+|---------|---------|
+| `npm run perf:analyze` | Bundle analysis |
+| `npm run preview` | Preview build |
+| `npm run clean` | Remove dist |
+
+## Directory Map
+
+```
+src/
+├── pages/YYYY/YY-MM/YY-MM-DD/    # Daily clock modules
+│   ├── Clock.tsx                 # Clock component
+│   └── Clock.module.css          # Styles
+├── utils/
+│   ├── hooks/                     # Time hooks
+│   │   ├── useClockTime.ts       # 1s updates
+│   │   ├── useSmoothClock.ts     # 60fps RAF
+│   │   └── useClock.ts           # Legacy
+│   └── fontLoader.tsx            # Font loading
+├── assets/
+│   ├── images/YY-MM/YY-MM-DD/    # Imagery
+│   └── fonts/YYYY/                # Typefaces
+├── context/clockpages.json       # Registry
+└── templates/                     # Starters
+```
+
+## Performance Budgets
+
+| Metric | Limit |
+|--------|-------|
+| Clock Bundle | 5MB max |
+| Font Assets | 100KB per clock |
+| Image Assets | 2MB per clock |
+| Total Page | 6MB max |
+
+## Asset Naming
+
+**Fonts:**
+- Format: `YY-MM-DD-name.woff2`
+- Location: `src/assets/fonts/YYYY/`
+- Standard: WOFF2 only
+
+**Images:**
+- Format: `YY-MM-DD-name.webp`
+- Location: `src/assets/images/YY-MM/YY-MM-DD/`
+- Standard: WebP only
+
+**Videos:**
+- Local limit: 100KB max
+- Policy: CDN for larger files
+
+## Troubleshooting
+
+**TypeScript:**
+```bash
+npm run type-check
+```
+- RefObject null checks: Add `?` optional chaining
+- Missing args: Check hook signatures
+
+**Build:**
+```bash
+npm run clean
+npm run build
+npm run perf:analyze  # Check deps
+```
+
+**Fonts:**
+```bash
+npm run audit:fonts
+# Check paths match /fonts/YY-MM-DD-name.woff2
+```
+
+## Deployment Checklist
+
+- [ ] `npm run type-check` passes
+- [ ] `npm run lint` passes
+- [ ] `npm run build` succeeds
+- [ ] Entry added to `clockpages.json`
+- [ ] Assets follow naming conventions
 
 ---
-Guidance provided by Cubist Heart Laboratories.
+Cubist Heart Laboratories
