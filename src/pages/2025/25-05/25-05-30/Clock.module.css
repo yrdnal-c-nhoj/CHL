@@ -53,7 +53,7 @@
   height: 1.2em;
   color: #8d6e6e;
   font-family: 'iss', monospace;
-  font-size: clamp(3rem, 8vw, 12rem);
+  font-size: clamp(3rem, 8vh, 12rem);
   font-weight: 400;
   line-height: 1;
   text-align: center;
