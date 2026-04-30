@@ -19,8 +19,8 @@
   font-family: 'Pleiades', serif;
   font-weight: 100;
   color: #fff;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
   animation: shimmer 3s ease-in-out infinite;
 }
 
