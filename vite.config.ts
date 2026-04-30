@@ -31,6 +31,10 @@ export default defineConfig({
     postcss: './postcss.config.js',
   },
 
+  esbuild: {
+    drop: ['console', 'debugger'],
+  },
+
   build: {
     assetsDir: 'assets',
     assetsInlineLimit: 4096, // Inline small assets under 4KB
@@ -38,9 +42,6 @@ export default defineConfig({
     emptyOutDir: true,
     sourcemap: false, // Disable sourcemaps for production
     minify: 'esbuild',
-    esbuild: {
-      drop: ['console', 'debugger'],
-    },
     rollupOptions: {
       output: {
         // Optimize chunk splitting
