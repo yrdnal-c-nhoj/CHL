@@ -4,8 +4,7 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import spr from '@/assets/images/2025/25-05/25-05-26/spr.gif';
 import sprou from '@/assets/images/2025/25-05/25-05-26/sprou.gif';
 import sprout from '@/assets/images/2025/25-05/25-05-26/sprout.gif';
-import sproutFontWoff2 from '@/assets/fonts/2025/25-05-26-sprout.woff2';
-import sproutFontTtf from '@/assets/fonts/2025/25-05-26-sprout.ttf';
+import sproutFontTtf from '@/assets/fonts/2025/25-05-26-sprout.ttf?url';
 
 const baseStyles = {
   container: {
@@ -105,7 +104,7 @@ export default function SproutClock() {
   const fontConfigs = [
     {
       fontFamily: 'sprout',
-      fontUrl: sproutFontWoff2, // Prefer WOFF2 for better compression and performance
+      fontUrl: sproutFontTtf,
       options: {
         weight: 'normal',
         style: 'normal'
@@ -119,7 +118,7 @@ export default function SproutClock() {
   // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
-    const update: React.FC = () => {
+    const update = () => {
       const now = new Date();
       setTime({
         h: pad(now.getHours() % 12 || 12, 2),
