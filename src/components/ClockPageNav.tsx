@@ -37,7 +37,7 @@ const ClockPageNav: React.FC<ClockPageNavProps> = ({
     clearInactivityTimer();
     const timer = setTimeout(() => {
       setVisible(false);
-    }, 3000); 
+    }, 1000); 
     setInactivityTimer(timer);
   }, [clearInactivityTimer]);
 
