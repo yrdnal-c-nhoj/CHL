@@ -1,24 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useClockTime } from '@/utils/hooks'; // Import the standardized clock hook
 
 import bgImage from '@/assets/images/2025/25-12/25-12-14/steel.webp';
 import digitTexture from '@/assets/images/2025/25-12/25-12-14/steel2.webp';
 
 // Font imported with today's date (December 16, 2025)
 import screw251214 from '@/assets/fonts/2025/25-12-14-steel.ttf?url';
-
 export default function DigitalClock() {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime(); // Use the standardized clock hook
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-
-  // Update time every second
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
   // Load and detect the custom font as early as possible
   useEffect(() => {
     if (!document.fonts) {
@@ -47,13 +38,12 @@ export default function DigitalClock() {
     });
   }, []);
 
-  const hours = time.getHours().toString().padStart(2, '0');
-  const minutes = time.getMinutes().toString().padStart(2, '0');
-
-  const hoursDigits = hours.split('');
-  const minutesDigits = minutes.split('');
-
-  const allDigits = [...hoursDigits, ...minutesDigits];
+  const { hours, minutes } = useMemo(() => {
+    return {
+      hours: time.getHours().toString().padStart(2, '0'),
+      minutes: time.getMinutes().toString().padStart(2, '0'),
+    };
+  }, [time]);
 
   const [textureOffsets] = useState(() =>
     allDigits.map(() => ({

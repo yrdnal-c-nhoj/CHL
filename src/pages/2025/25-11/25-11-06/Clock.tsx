@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useClockTime } from '@/utils/hooks'; // Import the standardized clock hook
 
 const Clock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  const time = useClockTime(); // Use the standardized clock hook
 
   const drawClock: React.FC = () => {
     const hours = time.getHours() % 12;
