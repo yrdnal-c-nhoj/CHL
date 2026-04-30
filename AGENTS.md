@@ -8,6 +8,12 @@ Technical standards for BorrowedTime development.
 - Source of truth: `src/context/clockpages.json`
 - Dynamic loading: `import.meta.glob` in `useClockPage.ts`
 
+## Priority Focus (Current Sprint)
+1. **Asset Pruning**: Remove the 270 identified unused font files to reduce repo bloat.
+2. **Naming Compliance**: Fix the 33 non-standardized font filenames.
+3. **Logic Migration**: Refactor remaining `setInterval` clocks to `useClockTime()`.
+4. **Image Optimization**: Transition to Phase 4 (WebP automation).
+
 **Key Hooks**
 - `useClockTime()` - 1s updates from `@/utils/hooks`
 - `useSuspenseFontLoader()` - FOUC prevention
@@ -99,7 +105,7 @@ src/
 **Fonts:**
 - Format: `YY-MM-DD-name.[ext]` (ttf, otf, or woff2)
 - Location: `src/assets/fonts/YYYY/`
- - Standard: TTF, OTF, and WOFF2 supported
+- Standard: TTF, OTF, and WOFF2 supported (WOFF2 conversion de-prioritized)
 
 **Images:**
 - Format: `YY-MM-DD-name.webp`

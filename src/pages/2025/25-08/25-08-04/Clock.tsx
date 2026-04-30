@@ -48,13 +48,11 @@ const DigitalClock: React.FC = () => {
     [],
   );
 
-  // faster fade change → 1s instead of 2s
+  // Synchronize fade change with the centralized clock pulse
   useEffect(() => {
-    const fadeTimer = setInterval(() => {
-      setFadeIndex((i) => (i + 1) % clocks.length);
-    }, 1000);
-    return () => clearInterval(fadeTimer);
-  }, [clocks.length]);
+    // This ensures the transition happens exactly on the second tick
+    setFadeIndex((i) => (i + 1) % clocks.length);
+  }, [time, clocks.length]);
 
   const getOpacity = (i) => {
     const totalClocks = clocks.length;
