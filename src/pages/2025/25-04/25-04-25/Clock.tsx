@@ -3,7 +3,7 @@ import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundImage from '@/assets/images/2025/25-04/25-04-25/bad.webp';
-import boldFont from '@/assets/fonts/2025/25-04-25-Oswald-Bold.ttf?url';
+import boldFont from '../../../../assets/fonts/2025/25-04-25-Oswald-Bold.ttf?url';
 import hourHandImage from '@/assets/images/2025/25-04/25-04-25/ban.webp';
 import minuteHandImage from '@/assets/images/2025/25-04/25-04-25/ba.gif';
 import secondHandImage from '@/assets/images/2025/25-04/25-04-25/band.gif';
