@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/2025/25-12/25-12-18/ci.webp';
-import FONT_PATH from '@/assets/fonts/cine.ttf?url';
+import FONT_PATH from '@/assets/fonts/2025/25-12-18-cine.ttf?url';
 
 const TiltedReverseClock: React.FC = () => {
   const [time, setTime] = useState(new Date());

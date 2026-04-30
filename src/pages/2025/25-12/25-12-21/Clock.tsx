@@ -3,7 +3,7 @@ import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import background from '@/assets/images/2025/25-12/25-12-21/cass.webp';
 import backgroundImage from '@/assets/images/2025/25-12/25-12-21/tape.gif';
-import FONT_PATH from '@/assets/fonts/cas.ttf?url';
+import FONT_PATH from '@/assets/fonts/2025/25-12-21-cas.ttf?url';
 
 const Clock: React.FC = () => {
   const time = useClockTime();
