@@ -25,12 +25,12 @@ const STAR_COUNT = 300;
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 const positions = [
-  { top: '32%', left: '42%' },    // 0: Hour tens - Atlas (upper left of cluster)
-  { top: '28%', left: '52%' },    // 1: Hour ones - Pleione (upper right, near Atlas)
-  { top: '45%', left: '48%' },    // 2: Minute ones - Alcyone (center, brightest)
-  { top: '40%', left: '58%' },    // 3: Minute tens - Merope (right of center)
-  { top: '58%', left: '44%' },    // 4: A/P indicator - Electra (lower left)
-  { top: '55%', left: '54%' },    // 5: M indicator - Maia (lower right)
+  { top: '35%', left: '44%' },    // 0: Hour tens - Atlas (upper left of cluster)
+  { top: '32%', left: '52%' },    // 1: Hour ones - Pleione (upper right, near Atlas)
+  { top: '50%', left: '50%' },    // 2: Minute ones - Alcyone (center, brightest)
+  { top: '45%', left: '58%' },    // 3: Minute tens - Merope (right of center)
+  { top: '65%', left: '46%' },    // 4: A/P indicator - Electra (lower left)
+  { top: '62%', left: '54%' },    // 5: M indicator - Maia (lower right)
 ] as const;
 
 // --- Helper Functions ---
@@ -72,7 +72,7 @@ const PleiadesClock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useClockTime();
   const [starPairs, setStarPairs] = useState<StarPair[]>(() =>
-    Array.from({ length: 3 }, (_, i) => generateRandomPair(i, 0))
+    Array.from({ length: 6 }, (_, i) => generateRandomPair(i, 0))
   );
 
   const regeneratePair = useCallback((id: number) => {
