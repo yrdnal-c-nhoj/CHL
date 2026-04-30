@@ -1,55 +1,29 @@
-import { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import React, { useMemo, useEffect } from 'react';
+import { useClockTime } from '@/utils/clockUtils';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import background from '@/assets/images/2025/25-12/25-12-21/cass.webp';
 import backgroundImage from '@/assets/images/2025/25-12/25-12-21/tape.gif';
 import FONT_PATH from '@/assets/fonts/cas.ttf?url';
 
-export default function App() {
-  const [time, setTime] = useState(new Date());
-  const [scopedFontName, setScopedFontName] = useState<any>('');
+const Clock: React.FC = () => {
+  const time = useClockTime();
+  const fontFamily = 'CasFont_251221';
 
-  useEffect(() => {
-    // Load custom font (scoped to this component only)
-    const loadFont = async () => {
-      try {
-        // Create unique font name for this component instance
-        const uniqueFontName = `CustomFont-${Date.now()}`;
-        setScopedFontName(uniqueFontName);
+  const fontConfigs = useMemo(() => [
+    {
+      fontFamily,
+      fontUrl: FONT_PATH
+    }
+  ], []);
 
-        // Create scoped font-face using style tag
-        const style = document.createElement('style');
-        style.textContent = `
-          @font-face {
-            font-family: '${uniqueFontName}';
-            src: url(${FONT_PATH}) format('truetype');
-            font-display: swap;
-          }
-        `;
-        document.head.appendChild(style);
-      } catch (error) {
-        console.error('Failed to load CustomFont:', error);
-      }
-    };
+  useSuspenseFontLoader(fontConfigs);
 
-    loadFont();
-
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const digitToLetter = (digit) => {
+  const digitToLetter = (digit: number) => {
     const letters = ['0', 'G', 'b', 'W', 'z', 'u', 'v', 'w', 'a', 's'];
     return letters[digit] || digit;
   };
 
-  const formatWithLetters = (value) =>
-    value
-      .toString()
-      .padStart(2, '0')
-      .split('')
-      .map((d) => digitToLetter(parseInt(d, 10)));
-
-  const digitStyle = {
+  const digitStyle: React.CSSProperties = {
     display: 'inline-block',
     width: '3vh',
     textAlign: 'center',
@@ -66,17 +40,24 @@ export default function App() {
     lineHeight: 1,
     WebkitUserSelect: 'none',
     userSelect: 'none',
-    fontFamily: scopedFontName ? `${scopedFontName}, sans-serif` : 'sans-serif',
+    fontFamily: `${fontFamily}, sans-serif`,
     position: 'relative',
     zIndex: 1,
   };
 
-  const timePartStyle = {
+  const formatWithLetters = (value: number): (string | number)[] =>
+    value
+      .toString()
+      .padStart(2, '0')
+      .split('')
+      .map((d) => digitToLetter(parseInt(d, 10)));
+
+  const timePartStyle: React.CSSProperties = {
     display: 'flex',
     gap: '4vh',
   };
 
-  const renderTimePart = (chars) => (
+  const renderTimePart = (chars: (string | number)[]) => (
     <div style={timePartStyle}>
       {chars.map((char, i) => (
         <span key={i} style={digitStyle}>
@@ -86,14 +67,14 @@ export default function App() {
     </div>
   );
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     width: '100vw',
     height: '100dvh',
     position: 'relative',
     overflow: 'hidden',
   };
 
-  const backgroundStyle = {
+  const backgroundStyle: React.CSSProperties = {
     position: 'absolute',
     inset: '-100%',
     backgroundImage: `url(${background})`,
@@ -106,23 +87,22 @@ export default function App() {
     transformOrigin: 'center center',
   };
 
-  const keyframesStyle = `
-    @keyframes rotateGrid {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(-360deg); }
-    }
-  `;
-
-  // Inject keyframes
-  useEffect(() => {
-    const styleElement = document.createElement('style');
-    styleElement.textContent = keyframesStyle;
-    document.head.appendChild(styleElement);
-    return () => document.head.removeChild(styleElement);
-  }, []);
+  const clockData = useMemo(() => ({
+    h: formatWithLetters(time.getHours()),
+    m: formatWithLetters(time.getMinutes()),
+    s: formatWithLetters(time.getSeconds()),
+    iso: time.toISOString()
+  }), [time]);
 
   return (
-    <div style={containerStyle}>
+    <main style={containerStyle}>
+      <style>{`
+        @keyframes rotateGrid {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(-360deg); }
+        }
+      `}</style>
+
       {/* 1. Background image - bottom layer */}
       <div
         style={{
@@ -135,8 +115,6 @@ export default function App() {
           zIndex: 1,
         }}
       />
-
-      {/* 2. Solid black overlay - middle layer */}
 
       {/* 3. Rotating grid - middle layer */}
       <div
@@ -157,18 +135,21 @@ export default function App() {
           alignItems: 'center',
         }}
       >
-        <div
+        <time
+          dateTime={clockData.iso}
           style={{
             display: 'flex',
             flexDirection: 'row',
             gap: '4vh',
           }}
         >
-          {renderTimePart(formatWithLetters(time.getHours()))}
-          {renderTimePart(formatWithLetters(time.getMinutes()))}
-          {renderTimePart(formatWithLetters(time.getSeconds()))}
-        </div>
+          {renderTimePart(clockData.h)}
+          {renderTimePart(clockData.m)}
+          {renderTimePart(clockData.s)}
+        </time>
       </div>
-    </div>
+    </main>
   );
-}
+};
+
+export default Clock;
