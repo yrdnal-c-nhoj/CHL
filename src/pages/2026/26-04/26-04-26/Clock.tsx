@@ -72,7 +72,7 @@ const Clock: React.FC = () => {
       0 0 20px rgba(255, 100, 50, 0.6),
       0 0 40px rgba(255, 50, 100, 0.4),
       2px 2px 0px rgba(0, 0, 0, 0.8),
-      -1px -1px 0px rgba(255, 255, 255, 0.3)
+      -1px -1px 0px #fff
     `,
     WebkitTextStroke: '1px rgba(0, 0, 0, 0.3)',
   };

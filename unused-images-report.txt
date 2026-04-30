@@ -1,15 +1,12 @@
 --- Image Audit Report ---
-Generated on: 4/30/2026, 10:17:22 AM
-Total images found: 1120
-Used images: 885
-Unused images: 235
+Generated on: 4/30/2026, 1:36:14 PM
+Total images found: 1116
+Used images: 884
+Unused images: 232
 
-- src/assets/images/2025/25-04/25-04-01/va.webp (84.2 KB)
 - src/assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(2).gif (39.5 KB)
 - src/assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(3).gif (39.5 KB)
-- src/assets/images/2025/25-06/25-06-01/a.jpeg (254.2 KB)
 - src/assets/images/2025/25-06/25-06-07/birds.gif (57.5 KB)
-- src/assets/images/2025/25-06/25-06-11/ban.webp (709.5 KB)
 - src/assets/images/2025/25-06/25-06-30/1.png (389.3 KB)
 - src/assets/images/2025/25-07/25-07-24/em.gif (63.5 KB)
 - src/assets/images/2025/25-08/25-08-01/sta.gif (42.0 KB)
@@ -241,6 +238,6 @@ Unused images: 235
 - src/assets/images/2026/26-04/26-04-27/original-f32c72459a60086b4b5dfae5fc92e495-ezgif.com-optiwebp.webp (115.4 KB)
 
 
-Total image storage: 215.10 MB
-Unused image storage: 13.27 MB
-Potential savings: 6.2%
+Total image storage: 213.09 MB
+Unused image storage: 12.25 MB
+Potential savings: 5.7%
