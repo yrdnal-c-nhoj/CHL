@@ -1,22 +1,9 @@
 import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgVideo from '@/assets/images/2026/26-04/26-04-26/jetson.mp4';
-import jetFont from '@/assets/fonts/2026/26-04-26-jet.ttf?url';
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 const Clock: React.FC = () => {
   const time = useClockTime();
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'Jet',
-      fontUrl: jetFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
-  useSuspenseFontLoader(fontConfigs);
   const { displayHours, displayMinutes, displaySeconds, ampm } = useMemo(() => {
     const rawHours = time.getHours();
     const ampm = rawHours >= 12 ? 'PM' : 'AM';
@@ -62,7 +49,7 @@ const Clock: React.FC = () => {
     justifyContent: 'center',
     alignItems: 'center',
     gap: '0.5rem', // Spacing between digit boxes and separators
-    fontFamily: 'Jet',
+    fontFamily: "'Tektur', sans-serif",
   };
 
   const digitStyle: React.CSSProperties = {
@@ -127,6 +114,7 @@ const Clock: React.FC = () => {
         style={videoStyle}
       />
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Tektur:wght@400..900&display=swap');
         @keyframes blink {
           0%, 100% { opacity: 0.6; }
           50% { opacity: 0.2; }
