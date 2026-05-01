@@ -57,7 +57,7 @@ src/
 ## Development
 
 ```bash
-npm install
+npm ci
 npm run dev          # http://localhost:5173
 npm run clock:new    # Create today's clock
 ```
@@ -68,6 +68,7 @@ npm run clock:new    # Create today's clock
 |--------|-------------|
 | `npm run dev` | Dev server |
 | `npm run build` | Production build |
+| `npm run build:with-types` | Type-check + production build |
 | `npm run type-check` | TypeScript check |
 | `npm run lint` | ESLint |
 | `npm run format` | Prettier |
@@ -76,6 +77,8 @@ npm run clock:new    # Create today's clock
 | `npm run clock:new` | New clock from template |
 | `npm run audit:fonts` | Find unused fonts |
 | `npm run audit:images` | Find unused images |
+| `npm run standardize:fonts` | Auto-fix non-standard font names |
+| `npm run optimize:images` | Convert image assets to WebP |
 | `npm run perf:analyze` | Bundle analysis |
 
 ## New Clock
@@ -105,6 +108,44 @@ npm run test:ui     # Browser UI
 ```bash
 npm run type-check && npm run lint && npm run build
 ```
+
+## Audit & Hygiene
+
+```bash
+# Asset audits
+npm run audit:images
+npm run audit:fonts
+
+# Naming normalization
+npm run standardize:fonts
+
+# Delivery checks
+npm run type-check
+npm run lint
+npm run build
+```
+
+Generated audit artifacts:
+- `unused-images-report.txt`
+- `unused-images-only-report.txt`
+- `unused-videos-report.txt`
+- `unused-fonts-report.txt`
+- `non-standard-fonts.txt`
+
+## Current Audit Snapshot (2026-05-01)
+
+- TypeScript: **3241 errors** (`typecheck-report.txt`)
+- ESLint: **518 errors / 3288 warnings** (`eslint-report.json`)
+- Production build: **passes** (`npm run build`)
+- Dist footprint: **249.87 MB**
+  - Largest JS bundle: `dist/assets/three-C9XuxQ2Y.js` (~747.2 KB)
+  - Largest driver: video assets (`.mp4` ~81.76 MB total in `dist`)
+
+Primary near-term priorities:
+1. Reduce lint/type debt in high-error clock modules.
+2. Remove or archive confirmed unused assets.
+3. Enforce naming and import conventions in CI.
+4. Keep media-heavy clocks segmented to preserve fast initial route loads.
 
 ## Deployment
 
