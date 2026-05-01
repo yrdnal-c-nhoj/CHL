@@ -27,12 +27,12 @@ import { Helmet } from 'react-helmet-async';
 import { DataProvider } from './context/DataContext';
 
 // Lazy loaded components for better performance
-const Home = React.lazy(() => import('./Home.jsx'));
+const Home = React.lazy(() => import('./Home'));
 const ClockPage = React.lazy(() => import('./ClockPage'));
-const Manifesto = React.lazy(() => import('./Manifesto.jsx'));
-const About = React.lazy(() => import('./About.jsx'));
-const Today = React.lazy(() => import('./Today.tsx'));
-const Contact = React.lazy(() => import('./Contact.jsx'));
+const Manifesto = React.lazy(() => import('./Manifesto'));
+const About = React.lazy(() => import('./About'));
+const Today = React.lazy(() => import('./Today'));
+const Contact = React.lazy(() => import('./Contact'));
 
 import { pageview } from './analytics';
 
