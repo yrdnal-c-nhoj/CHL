@@ -1,14 +1,3 @@
-import React, { useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useGlobalStyles } from '@/utils/enhancedFontLoader';
-import { useEnhancedFontLoader } from '@/utils/enhancedFontLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
-import hand1Img from '/src/assets/images/2026/26-03/26-03-08/hand2.png';
-import hand2Img from '/src/assets/images/2026/26-03/26-03-08/hand1.webp';
-import handImg from '/src/assets/images/2026/26-03/26-03-08/hand.webp';
-import dragonFont from '/src/assets/fonts/2026/26-03-08-dragon.ttf';
-import dragonVideo from '/src/assets/images/2026/26-03/26-03-08/dragon1.mp4';
 import React from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
@@ -32,8 +21,6 @@ const Clock: React.FC = () => {
       }
     }
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
-  const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
   const time = useClockTime();
 
@@ -57,15 +44,9 @@ const Clock: React.FC = () => {
         key={i}
         className={styles.number}
         style={{
-          position: 'absolute',
           left: `${x}%`,
           top: `${y}%`,
           transform: `translate(-50%, -50%) rotate(${angle + 90}deg)`,
-          fontFamily: `'Dragon', serif`,
-          fontSize: '5rem',
-          color: '#83EF907F',
-          // textShadow: '0 0 12px rgba(131,239,144,0.7)',
-          userSelect: 'none',
         }}
       >
         {i}
@@ -74,12 +55,8 @@ const Clock: React.FC = () => {
   }
 
   const getHandStyle = (angle, width, height, zIndex, shadow) => ({
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
     width: `${width}px`,
     height: `${height}px`,
-    transformOrigin: 'bottom center',
     transform: `translate(-50%, -100%) rotate(${angle}deg)`,
     filter: `drop-shadow(${shadow}) saturate(0.2)`,
     zIndex,
@@ -90,18 +67,6 @@ const Clock: React.FC = () => {
   });
 
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-        overflow: 'hidden',
-        background: '#000',
-      }}
-    >
     <main className={styles.container}>
       <time dateTime={time.toISOString()} className={styles.semanticTime}>
         {time.toLocaleTimeString()}
@@ -112,32 +77,11 @@ const Clock: React.FC = () => {
         loop
         muted
         playsInline
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'fill',
-          zIndex: 0,
-          transform: 'scaleX(-1)',
-          filter:
-            'hue-rotate(-30deg) saturate(1.5) contrast(1.4) brightness(1.2)',
-        }}
         className={styles.videoBackground}
       >
         <source src={dragonVideo} type="video/mp4" />
       </video>
 
-      <div
-        style={{
-          position: 'relative',
-          width: '520px',
-          height: '520px',
-          zIndex: 1,
-          opacity: 0.9,
-        }}
-      >
       <div className={styles.clockWrapper}>
         {clockNumbers}
 
@@ -178,7 +122,6 @@ const Clock: React.FC = () => {
           )}
         />
       </div>
-    </div>
     </main>
   );
 };
