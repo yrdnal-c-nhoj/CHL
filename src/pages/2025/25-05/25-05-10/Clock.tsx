@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useGlobalStyles } from '@/utils/enhancedFontLoader';
 import type { FontConfig } from '@/types/clock';

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSecondClock } from '@/utils/hooks';
 import platFont from '@/assets/fonts/2026/26-02-19-plat.ttf';
 
 const ImageDisplay: React.FC = () => {

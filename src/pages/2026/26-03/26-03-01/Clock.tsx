@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useMillisecondClock } from '@/utils/useSmoothClock';
+import { useMillisecondClock } from '@/utils/hooks';
 import westVideo from '@/assets/images/2026/26-03/26-03-01/west.mp4';
 import cloudGif from '@/assets/images/2026/26-03/26-03-01/cloud.webp';
 import westtImage from '@/assets/images/2026/26-03/26-03-01/westt.webp';

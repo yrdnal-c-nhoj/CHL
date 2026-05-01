@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 import mazeImage from '@/assets/images/2026/26-02/26-02-16/puzzle.webp';

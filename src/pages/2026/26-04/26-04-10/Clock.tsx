@@ -1,4 +1,4 @@
-import { useMillisecondClock } from '@/utils/useSmoothClock';
+import { useMillisecondClock } from '@/utils/hooks';
 import hourHand from '@/assets/images/2026/26-04/26-04-10/hour.webp';
 import minuteHand from '@/assets/images/2026/26-04/26-04-10/minute.webp';
 import secondHand from '@/assets/images/2026/26-04/26-04-10/second.webp';

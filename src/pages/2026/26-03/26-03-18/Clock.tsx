@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import walkVideo from '@/assets/images/2026/26-03/26-03-18/walk.mp4';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/useSmoothClock';
+import { useMillisecondClock } from '@/utils/hooks';
 import walkFont from '@/assets/fonts/2026/26-03-18-walk.ttf?url';
 
 const Clock: React.FC = () => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
-import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import torGif from '@/assets/images/2025/25-05/25-05-24/tor.gif';

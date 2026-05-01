@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSecondClock } from '@/utils/hooks';
 
 import bellImage2 from '@/assets/images/2026/26-02/26-02-11/bell.webp';
 import bellImage1 from '@/assets/images/2026/26-02/26-02-11/bell.gif';

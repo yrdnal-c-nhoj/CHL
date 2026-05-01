@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/useSmoothClock';
+import { useMillisecondClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import bgVideo from '@/assets/images/2025/25-09/25-09-22/deex.mp4';
 import fallbackImage from '@/assets/images/2025/25-09/25-09-22/deex.gif';

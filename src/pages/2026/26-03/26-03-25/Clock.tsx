@@ -1,5 +1,5 @@
 import React, { useMemo, memo } from 'react';
-import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSecondClock } from '@/utils/hooks';
 import { calculateAngles } from '@/utils/clockUtils';
 import bgImage from '@/assets/images/2026/26-03/26-03-25/ride.webp';
 import styles from './Clock.module.css';
