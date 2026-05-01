@@ -4,11 +4,11 @@ import { useClockTime } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 // Asset names should be standardized to YY-MM-DD-name format
-import hand1Img from '@/assets/images/2026/26-03/26-03-08/26-03-08-hand2.webp';
-import hand2Img from '@/assets/images/2026/26-03/26-03-08/26-03-08-hand1.webp';
-import handImg from '@/assets/images/2026/26-03/26-03-08/26-03-08-hand.webp';
+import hand1Img from '@/assets/images/2026/26-03/26-03-08/hand2.png';
+import hand2Img from '@/assets/images/2026/26-03/26-03-08/hand1.webp';
+import handImg from '@/assets/images/2026/26-03/26-03-08/hand.webp';
 import dragonFont from '@/assets/fonts/2026/26-03-08-dragon.ttf';
-import dragonVideo from '@/assets/images/2026/26-03/26-03-08/26-03-08-dragon1.mp4';
+import dragonVideo from '@/assets/images/2026/26-03/26-03-08/dragon1.mp4';
 
 const Clock: React.FC = () => {
   const fontConfigs = [
@@ -68,7 +68,7 @@ const Clock: React.FC = () => {
 
   return (
     <main className={styles.container}>
-      <time dateTime={time.toISOString()} className={styles.semanticTime}>
+      <time dateTime={time.toISOString().split('.')[0] + 'Z'} className={styles.semanticTime}>
         {time.toLocaleTimeString()}
       </time>
       
