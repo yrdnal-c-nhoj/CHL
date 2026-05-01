@@ -93,3 +93,4 @@ delete-unused-fonts.mjs
 ProjectAudit.md
 .audit-backups/
 scripts/*.log
+SECURITY.md
