@@ -113,8 +113,8 @@ src/
 - Standard: WebP only
 
 **Videos:**
-- Local limit: 100KB max
-- Policy: CDN for larger files
+- No size restrictions
+- Local storage supported
 
 ## Troubleshooting
 
