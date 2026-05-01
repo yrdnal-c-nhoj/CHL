@@ -9,6 +9,17 @@ import hand2Img from '/src/assets/images/2026/26-03/26-03-08/hand1.webp';
 import handImg from '/src/assets/images/2026/26-03/26-03-08/hand.webp';
 import dragonFont from '/src/assets/fonts/2026/26-03-08-dragon.ttf';
 import dragonVideo from '/src/assets/images/2026/26-03/26-03-08/dragon1.mp4';
+import React from 'react';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
+import styles from './Clock.module.css';
+
+// Asset names should be standardized to YY-MM-DD-name format
+import hand1Img from '@/assets/images/2026/26-03/26-03-08/26-03-08-hand2.webp';
+import hand2Img from '@/assets/images/2026/26-03/26-03-08/26-03-08-hand1.webp';
+import handImg from '@/assets/images/2026/26-03/26-03-08/26-03-08-hand.webp';
+import dragonFont from '@/assets/fonts/2026/26-03-08-dragon.ttf';
+import dragonVideo from '@/assets/images/2026/26-03/26-03-08/26-03-08-dragon1.mp4';
 
 const Clock: React.FC = () => {
   const fontConfigs = [
@@ -23,6 +34,8 @@ const Clock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   const time = useSecondClock();
+  useSuspenseFontLoader(fontConfigs);
+  const time = useClockTime();
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
@@ -42,6 +55,7 @@ const Clock: React.FC = () => {
     clockNumbers.push(
       <div
         key={i}
+        className={styles.number}
         style={{
           position: 'absolute',
           left: `${x}%`,
@@ -88,6 +102,11 @@ const Clock: React.FC = () => {
         background: '#000',
       }}
     >
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.semanticTime}>
+        {time.toLocaleTimeString()}
+      </time>
+      
       <video
         autoPlay
         loop
@@ -105,6 +124,7 @@ const Clock: React.FC = () => {
           filter:
             'hue-rotate(-30deg) saturate(1.5) contrast(1.4) brightness(1.2)',
         }}
+        className={styles.videoBackground}
       >
         <source src={dragonVideo} type="video/mp4" />
       </video>
@@ -118,11 +138,13 @@ const Clock: React.FC = () => {
           opacity: 0.9,
         }}
       >
+      <div className={styles.clockWrapper}>
         {clockNumbers}
 
         <img
           src={hand2Img}
           alt="Hour"
+          className={styles.hand}
           style={getHandStyle(
             hourAngle,
             70,
@@ -134,6 +156,7 @@ const Clock: React.FC = () => {
         <img
           src={hand1Img}
           alt="Minute"
+          className={styles.hand}
           style={getHandStyle(
             minuteAngle,
             60,
@@ -145,6 +168,7 @@ const Clock: React.FC = () => {
         <img
           src={handImg}
           alt="Second"
+          className={styles.hand}
           style={getHandStyle(
             secondAngle,
             50,
@@ -155,6 +179,7 @@ const Clock: React.FC = () => {
         />
       </div>
     </div>
+    </main>
   );
 };
 
