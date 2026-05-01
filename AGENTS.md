@@ -105,7 +105,7 @@ src/
 **Fonts:**
 - Format: `YY-MM-DD-name.[ext]` (ttf, otf, or woff2)
 - Location: `src/assets/fonts/YYYY/`
-- Standard: TTF, OTF, and WOFF2 supported (WOFF2 conversion de-prioritized)
+- Standard: TTF, OTF, and WOFF2 all supported.
 
 **Images:**
 - Format: `YY-MM-DD-name.webp`

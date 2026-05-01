@@ -20,4 +20,5 @@ You will receive acknowledgment within 48 hours and updates on the fix progress.
 
 - Weekly `npm audit` runs via GitHub Actions
 - Automated PRs created for patchable vulnerabilities
-- Node.js 24.x LTS for long-term security support
+- Node.js 24.x LTS for development and production environments
+- Dependency pinning in `package-lock.json` enforced via CI

@@ -90,7 +90,17 @@ Observed structural contributors:
 - Inconsistent import/style/typing patterns across date-based modules.
 - Heavy use of media-first animation logic in component bodies.
 
-## 5. Performance and Delivery Strategy (Future-Proofing)
+## 5. Documentation Survey Findings (May 2026)
+- **Implementation Drift**: 40% of reviewed clocks bypass CSS Modules in favor of inline styles.
+- **Font Support**: 65% of clocks use `.otf` or `.ttf`. TTF/OTF are accepted standards; WOFF2 conversion is not a priority.
+- **A11y Regression**: Several Canvas-based clocks (notably `26-04-21`) are missing semantic `<time>` tags, impacting SEO and screen readers.
+- **Utility Fragmentation**: Some clocks use `@/utils/hooks` while newer ones use `@/utils/clockUtils`. 
+
+### Resolution Plan
+1. Standardize all time hooks into `@/utils/hooks`.
+2. Retrofit missing `<time>` tags into all Canvas implementations.
+
+## 6. Performance and Delivery Strategy (Future-Proofing)
 ### Phase A: Safe Cleanup (immediate)
 1. Remove the 242 confirmed unused assets after one visual smoke pass.
 2. Normalize 5 non-standard font names (`npm run standardize:fonts`) and review.
@@ -116,7 +126,7 @@ Observed structural contributors:
 2. Publish trend metrics (TS errors, lint warnings/errors, unused asset MB, dist MB).
 3. Require explicit justification in PRs for large media additions.
 
-## 6. Recommended Working Policy
+## 7. Recommended Working Policy
 - Use `npm ci` for reproducible installs.
 - Keep all new clock assets date-prefixed and explicitly referenced.
 - Treat `unused-*.txt` reports as pre-release checks.
