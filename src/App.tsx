@@ -28,7 +28,7 @@ import { DataProvider } from './context/DataContext';
 
 // Lazy loaded components for better performance
 const Home = React.lazy(() => import('./Home.jsx'));
-const ClockPage = React.lazy(() => import('./ClockPage.tsx'));
+const ClockPage = React.lazy(() => import('./ClockPage'));
 const Manifesto = React.lazy(() => import('./Manifesto.jsx'));
 const About = React.lazy(() => import('./About.jsx'));
 const Today = React.lazy(() => import('./Today.tsx'));
