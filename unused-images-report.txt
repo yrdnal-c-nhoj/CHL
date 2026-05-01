@@ -1,8 +1,8 @@
 --- Image Audit Report ---
-Generated on: 5/1/2026, 11:29:06 AM
+Generated on: 5/1/2026, 1:20:04 PM
 Total images found: 1116
-Used images: 883
-Unused images: 233
+Used images: 884
+Unused images: 232
 
 - src/assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(2).gif (39.5 KB)
 - src/assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(3).gif (39.5 KB)
@@ -236,9 +236,8 @@ Unused images: 233
 - src/assets/images/2026/26-04/26-04-27/front-lever-ezgif.com-resize.webp (209.1 KB)
 - src/assets/images/2026/26-04/26-04-27/leversfirstorder-ezgif.com-optiwebp.webp (32.2 KB)
 - src/assets/images/2026/26-04/26-04-27/original-f32c72459a60086b4b5dfae5fc92e495-ezgif.com-optiwebp.webp (115.4 KB)
-- src/assets/images/2026/26-04/26-04-30/pleiades.webp (108.5 KB)
 
 
 Total image storage: 215.11 MB
-Unused image storage: 12.35 MB
+Unused image storage: 12.25 MB
 Potential savings: 5.7%
