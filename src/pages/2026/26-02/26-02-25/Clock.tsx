@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSecondClock } from '@/utils/hooks';
 import cocteauVideo from '@/assets/images/2026/26-02/26-02-25/cocteau.mp4';
 import starWebp from '@/assets/images/2026/26-02/26-02-25/star.webp';
 

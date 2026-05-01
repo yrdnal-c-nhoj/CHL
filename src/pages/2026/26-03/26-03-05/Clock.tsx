@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSecondClock } from '@/utils/hooks';
 
 const Clock: React.FC = () => {
   const fontConfigs = [

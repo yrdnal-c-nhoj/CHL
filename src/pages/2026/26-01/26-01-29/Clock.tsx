@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from 'react';
-import { useMillisecondClock } from '@/utils/useSmoothClock';
+import { useMillisecondClock } from '@/utils/hooks';
 
 import backgroundGif3 from '@/assets/images/2026/26-01/26-01-29/ur.png';
 import backgroundGif2 from '@/assets/images/2026/26-01/26-01-29/ur.gif';
