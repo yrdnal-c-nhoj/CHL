@@ -29,7 +29,14 @@ const Clock: React.FC = () => {
 
   return (
     <main className={styles.container}>
-      <video src={bgVideo} autoPlay loop muted playsInline className={styles.video} />
+      <video
+        src={bgVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className={styles.video}
+      />
       <img src={overlayImage} alt="" className={styles.imageOverlay} />
       <div className={styles.overlay} />
       <time className={styles.clockFace} dateTime={time.toISOString()}>
@@ -55,9 +62,18 @@ const Clock: React.FC = () => {
           );
         })}
 
-        <div className={`${styles.hand} ${styles.hourHand}`} style={{ transform: `translateX(-50%) rotate(${hourDeg}deg)` }} />
-        <div className={`${styles.hand} ${styles.minuteHand}`} style={{ transform: `translateX(-50%) rotate(${minDeg}deg)` }} />
-        <div className={`${styles.hand} ${styles.secondHand}`} style={{ transform: `translateX(-50%) rotate(${secDeg}deg)` }} />
+        <div
+          className={`${styles.hand} ${styles.hourHand}`}
+          style={{ transform: `translateX(-50%) rotate(${hourDeg}deg)` }}
+        />
+        <div
+          className={`${styles.hand} ${styles.minuteHand}`}
+          style={{ transform: `translateX(-50%) rotate(${minDeg}deg)` }}
+        />
+        <div
+          className={`${styles.hand} ${styles.secondHand}`}
+          style={{ transform: `translateX(-50%) rotate(${secDeg}deg)` }}
+        />
         <div className={styles.centerDot} />
       </time>
     </main>

@@ -15,8 +15,8 @@ export const fontConfigs = [
   {
     fontFamily: 'hea',
     fontUrl: myFontWoff2,
-    options: { weight: 'normal', style: 'normal' }
-  }
+    options: { weight: 'normal', style: 'normal' },
+  },
 ];
 
 const DigitalClock: FC = () => {

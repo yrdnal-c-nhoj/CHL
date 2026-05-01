@@ -9,13 +9,16 @@ const NUM_PARTICLES = 100;
 
 const Clock: React.FC = () => {
   // 1. Font Loading
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'speed',
-      fontUrl: speedFont,
-      options: { weight: 'normal', style: 'normal' }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'speed',
+        fontUrl: speedFont,
+        options: { weight: 'normal', style: 'normal' },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   const currentTime = useSecondClock();
@@ -34,7 +37,7 @@ const Clock: React.FC = () => {
       wobbleAmp: Math.random() * 2 + 1,
       secondaryWobblePhase: Math.random() * 2 * Math.PI,
       secondaryWobbleFreq: Math.random() * 0.2 + 0.05,
-    }))
+    })),
   );
 
   // 3. Logic Helpers
@@ -47,8 +50,10 @@ const Clock: React.FC = () => {
 
   const getRandColor = () => {
     const rand = Math.random();
-    if (rand < 0.4) return `rgb(${Math.random() * 50 + 90}, ${Math.random() * 40 + 50}, ${Math.random() * 30 + 30})`;
-    if (rand < 0.7) return `rgb(${Math.random() * 30 + 10}, ${Math.random() * 30 + 10}, ${Math.random() * 30 + 10})`;
+    if (rand < 0.4)
+      return `rgb(${Math.random() * 50 + 90}, ${Math.random() * 40 + 50}, ${Math.random() * 30 + 30})`;
+    if (rand < 0.7)
+      return `rgb(${Math.random() * 30 + 10}, ${Math.random() * 30 + 10}, ${Math.random() * 30 + 10})`;
     return `rgb(${Math.random() * 40 + 60}, 80, 70)`;
   };
 
@@ -71,13 +76,16 @@ const Clock: React.FC = () => {
         // Reset particle when it goes off top
         if (p.baseHeight < -10) {
           p.baseHeight = 110;
-          p.el.textContent = timeString[Math.floor(Math.random() * timeString.length)] || '0';
+          p.el.textContent =
+            timeString[Math.floor(Math.random() * timeString.length)] || '0';
           p.el.style.color = getRandColor();
         }
 
         const normalizedHeight = 1 - p.baseHeight / 100;
-        const radius = (3 + normalizedHeight * 20) + Math.sin(elapsed + p.wobblePhase) * 1.5;
-        const wobble = Math.sin(elapsed * p.wobbleFreq + p.wobblePhase) * p.wobbleAmp;
+        const radius =
+          3 + normalizedHeight * 20 + Math.sin(elapsed + p.wobblePhase) * 1.5;
+        const wobble =
+          Math.sin(elapsed * p.wobbleFreq + p.wobblePhase) * p.wobbleAmp;
 
         const x = 50 + swayOffset + Math.cos(p.angle) * radius + wobble;
         const y = p.baseHeight;
@@ -94,9 +102,12 @@ const Clock: React.FC = () => {
     let flashTimeout: NodeJS.Timeout;
     const runFlash = () => {
       if (flashRef.current) {
-        flashRef.current.style.backgroundColor = Math.random() > 0.5 ? 'white' : 'black';
+        flashRef.current.style.backgroundColor =
+          Math.random() > 0.5 ? 'white' : 'black';
         flashRef.current.style.opacity = '1';
-        setTimeout(() => { if(flashRef.current) flashRef.current.style.opacity = '0' }, 50);
+        setTimeout(() => {
+          if (flashRef.current) flashRef.current.style.opacity = '0';
+        }, 50);
       }
       flashTimeout = setTimeout(runFlash, Math.random() * 2000 + 1000);
     };
@@ -135,12 +146,12 @@ const Clock: React.FC = () => {
       `}</style>
 
       <img src={torGif} className="tornado-clock__bg" alt="" />
-      
+
       {/* React renders the spans once; the useEffect animates them via refs */}
       {particles.current.map((p, i) => (
-        <span 
-          key={i} 
-          ref={el => p.el = el} 
+        <span
+          key={i}
+          ref={(el) => (p.el = el)}
           className="tornado-clock__letter"
         >
           {timeString[Math.floor(Math.random() * timeString.length)]}

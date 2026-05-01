@@ -11,9 +11,9 @@ const SlotMachineClock: React.FC = () => {
       fontUrl: slotFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

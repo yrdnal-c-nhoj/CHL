@@ -7,16 +7,19 @@ import backgroundImage from '@/assets/images/2025/25-07/25-07-28/go.gif';
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'CustomFont',
-      fontUrl: customFont,
-      options: {
-        weight: 'normal',
-        style: 'normal',
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'CustomFont',
+        fontUrl: customFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
       },
-    },
-  ], []);
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -36,10 +39,7 @@ const Clock: React.FC = () => {
         backgroundImage: `url(${backgroundImage})`,
       }}
     >
-      <time
-        dateTime={time.toISOString()}
-        className={styles.time}
-      >
+      <time dateTime={time.toISOString()} className={styles.time}>
         {getFormattedTime()}
       </time>
     </main>

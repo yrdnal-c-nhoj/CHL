@@ -5,7 +5,15 @@ import skyImage from '@/assets/images/2026/26-03/26-03-22/sky.webp';
 import balloonFont from '@/assets/fonts/2026/26-03-22-balloon.ttf';
 import styles from './Clock.module.css';
 
-const balloonColors = ['#FF2D2D', '#D4F904', '#32CD32', '#FFCC01FF', '#FF1493', '#FF4500', '#9A6BF9'];
+const balloonColors = [
+  '#FF2D2D',
+  '#D4F904',
+  '#32CD32',
+  '#FFCC01FF',
+  '#FF1493',
+  '#FF4500',
+  '#9A6BF9',
+];
 
 // Shuffled once to ensure colors stay consistent for the session
 const staticShuffledColors = [...balloonColors].sort(() => Math.random() - 0.5);
@@ -49,11 +57,17 @@ const BalloonDigit = memo(({ char, color }: BalloonDigitProps) => {
   } as React.CSSProperties;
 
   return (
-    <span className={styles.balloonWrapper} style={{ margin: '0 4px', ...cssVars }}>
+    <span
+      className={styles.balloonWrapper}
+      style={{ margin: '0 4px', ...cssVars }}
+    >
       <span className={styles.balloonFloat}>
         <span className={styles.balloonDrift}>
           <span className={styles.balloonRock}>
-            <span className={`${styles.balloonString} ${styles.balloonBreathe}`} style={{ color }}>
+            <span
+              className={`${styles.balloonString} ${styles.balloonBreathe}`}
+              style={{ color }}
+            >
               {char}
             </span>
           </span>
@@ -64,40 +78,50 @@ const BalloonDigit = memo(({ char, color }: BalloonDigitProps) => {
 });
 BalloonDigit.displayName = 'BalloonDigit';
 
-const fontConfigs = [{
-  fontFamily: 'Balloon',
-  fontUrl: balloonFont,
-  options: {
-    weight: 'normal',
-    style: 'normal'
-  }
-}];
+const fontConfigs = [
+  {
+    fontFamily: 'Balloon',
+    fontUrl: balloonFont,
+    options: {
+      weight: 'normal',
+      style: 'normal',
+    },
+  },
+];
 
 const VIPParallaxClock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
-  
+
   const time = useSecondClock();
   const timeString = useMemo(() => {
-    return time.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }).replace(':', '');
+    return time
+      .toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
+      .replace(':', '');
   }, [time]);
 
   // Helper to render digits with consistent coloring
   const renderDigits = (offset: number) => {
-    return timeString.split('').map((char, index) => (
-      <BalloonDigit 
-        key={`${offset}-${index}`} 
-        char={char} 
-        color={staticShuffledColors[(index + offset) % staticShuffledColors.length] ?? '#FF2D2D'} 
-      />
-    ));
+    return timeString
+      .split('')
+      .map((char, index) => (
+        <BalloonDigit
+          key={`${offset}-${index}`}
+          char={char}
+          color={
+            staticShuffledColors[
+              (index + offset) % staticShuffledColors.length
+            ] ?? '#FF2D2D'
+          }
+        />
+      ));
   };
 
   return (
     <div className={styles.stage}>
-      <div 
-        className={`${styles.layer} ${styles.bg}`} 
+      <div
+        className={`${styles.layer} ${styles.bg}`}
         style={{ backgroundImage: `url(${skyImage})` }}
-        aria-hidden="true" 
+        aria-hidden="true"
       />
       <div className={`${styles.layer} ${styles.fg}`}>
         <time className={styles.glassTile}>{renderDigits(0)}</time>

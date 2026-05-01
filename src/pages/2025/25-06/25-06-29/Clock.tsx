@@ -3,7 +3,11 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import stretchFont from '@/assets/fonts/2025/25-06-29-stretch.ttf';
 
 const StretchClock: React.FC = () => {
-  const [time, setTime] = useState<any>({ hours: '', minutes: '', seconds: '' });
+  const [time, setTime] = useState<any>({
+    hours: '',
+    minutes: '',
+    seconds: '',
+  });
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -12,9 +16,9 @@ const StretchClock: React.FC = () => {
       fontUrl: stretchFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

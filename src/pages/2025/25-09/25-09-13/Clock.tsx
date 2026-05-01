@@ -6,15 +6,20 @@ import bgImage from '@/assets/images/2025/25-09/25-09-13/anim.jpg';
 const DigitalClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [prevTime, setPrevTime] = useState(new Date());
-  const [isHorizontal, setIsHorizontal] = useState<any>(window.innerWidth >= 768);
+  const [isHorizontal, setIsHorizontal] = useState<any>(
+    window.innerWidth >= 768,
+  );
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'CustomClockFont',
-      fontUrl: customFontpawww,
-      options: { weight: 'normal', style: 'normal' }
-    }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'CustomClockFont',
+        fontUrl: customFontpawww,
+        options: { weight: 'normal', style: 'normal' },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {

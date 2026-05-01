@@ -29,7 +29,6 @@ const Analog260205Clock: React.FC = () => {
   const minuteAngle = ((minutes + seconds / 60) / 60) * 360;
   const hourAngle = ((hours + minutes / 60) / 12) * 360;
 
-
   const containerStyle = {
     width: '100vw',
     height: '100vh',
@@ -53,8 +52,14 @@ const Analog260205Clock: React.FC = () => {
     height: '300px',
     borderRadius: '50%',
   };
-  
-  const handStyle = ({ height, width, image, angle, overlap = 5 }: HandStyleParams) => {
+
+  const handStyle = ({
+    height,
+    width,
+    image,
+    angle,
+    overlap = 5,
+  }: HandStyleParams) => {
     const skewAmount = Math.sin((angle * Math.PI) / 180) * 15; // Max 15px skew
 
     return {
@@ -79,8 +84,22 @@ const Analog260205Clock: React.FC = () => {
   return (
     <div style={containerStyle}>
       <div style={clockFaceStyle}>
-        <div style={handStyle({ height: 110, width: 40, image: hand1Img, angle: hourAngle })} />
-        <div style={handStyle({ height: 200, width: 50, image: hand2Img, angle: minuteAngle })} />
+        <div
+          style={handStyle({
+            height: 110,
+            width: 40,
+            image: hand1Img,
+            angle: hourAngle,
+          })}
+        />
+        <div
+          style={handStyle({
+            height: 200,
+            width: 50,
+            image: hand2Img,
+            angle: minuteAngle,
+          })}
+        />
       </div>
     </div>
   );

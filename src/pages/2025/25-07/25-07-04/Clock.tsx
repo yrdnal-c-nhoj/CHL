@@ -1,16 +1,31 @@
-import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import kalFont from '@/assets/fonts/2025/25-07-04-kal.otf';
 import bgImage from '@/assets/images/2025/25-07/25-07-04/7ZAx.webp';
 
-/** * CONFIGURATION 
+/** * CONFIGURATION
  * Defined outside to prevent re-allocation on every frame
  */
 const SEGMENTS = 12;
 const COLORS = [
-  '#ff0040', '#045DF7FF', '#F9D108FF', '#00ff00',
-  '#FC7B02FF', '#ff00ff', '#00bfff', '#ffffff',
-  '#D0FF00FF', '#C12FFBFF', '#FAA404FF', '#12F5DBFF',
+  '#ff0040',
+  '#045DF7FF',
+  '#F9D108FF',
+  '#00ff00',
+  '#FC7B02FF',
+  '#ff00ff',
+  '#00bfff',
+  '#ffffff',
+  '#D0FF00FF',
+  '#C12FFBFF',
+  '#FAA404FF',
+  '#12F5DBFF',
 ];
 
 const Clock: React.FC = () => {
@@ -18,14 +33,17 @@ const Clock: React.FC = () => {
   const requestRef = useRef<number | null>(null);
 
   // 1. Font Loading Logic
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'kal',
-      fontUrl: kalFont,
-      options: { weight: 'normal', style: 'normal' }
-    }
-  ], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'kal',
+        fontUrl: kalFont,
+        options: { weight: 'normal', style: 'normal' },
+      },
+    ],
+    [],
+  );
+
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   // 2. Optimized Animation Loop
@@ -43,11 +61,7 @@ const Clock: React.FC = () => {
 
   // 3. Loading State Guard
   if (!fontsLoaded) {
-    return (
-      <div style={loadingOverlayStyle}>
-        Initializing Synchronicity...
-      </div>
-    );
+    return <div style={loadingOverlayStyle}>Initializing Synchronicity...</div>;
   }
 
   // 4. Time Formatting
@@ -110,14 +124,7 @@ const Clock: React.FC = () => {
   return (
     <div style={containerStyle}>
       {/* Background Image Layer */}
-      <img 
-        decoding="async" 
-        src={bgImage} 
-        alt="background" 
-        style={bgStyle} 
-      />
-
-    
+      <img decoding="async" src={bgImage} alt="background" style={bgStyle} />
 
       {/* Clock Layers */}
       <div className="kaleidoscope spin-cw">{renderRingSegments(0)}</div>

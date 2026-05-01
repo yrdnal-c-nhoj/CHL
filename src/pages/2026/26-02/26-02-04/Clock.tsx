@@ -20,16 +20,19 @@ interface TimeFormat {
 const DigitalClockTemplate: React.FC = () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'BorrowedDigital',
-      fontUrl: digitalFontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'BorrowedDigital',
+        fontUrl: digitalFontUrl,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -71,14 +74,32 @@ const DigitalClockTemplate: React.FC = () => {
         }}
       />
 
-      <div className={`${styles.timeRow} ${isMobile ? styles.timeRowMobile : ''}`}>
+      <div
+        className={`${styles.timeRow} ${isMobile ? styles.timeRowMobile : ''}`}
+      >
         <div style={{ display: 'flex', gap: '1rem' }}>
-          <span className={`${styles.digit} ${isMobile ? styles.digitMobile : ''}`}>{hh[0]}</span>
-          <span className={`${styles.digit} ${isMobile ? styles.digitMobile : ''}`}>{hh[1]}</span>
+          <span
+            className={`${styles.digit} ${isMobile ? styles.digitMobile : ''}`}
+          >
+            {hh[0]}
+          </span>
+          <span
+            className={`${styles.digit} ${isMobile ? styles.digitMobile : ''}`}
+          >
+            {hh[1]}
+          </span>
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
-          <span className={`${styles.digit} ${isMobile ? styles.digitMobile : ''}`}>{mm[0]}</span>
-          <span className={`${styles.digit} ${isMobile ? styles.digitMobile : ''}`}>{mm[1]}</span>
+          <span
+            className={`${styles.digit} ${isMobile ? styles.digitMobile : ''}`}
+          >
+            {mm[0]}
+          </span>
+          <span
+            className={`${styles.digit} ${isMobile ? styles.digitMobile : ''}`}
+          >
+            {mm[1]}
+          </span>
         </div>
       </div>
     </div>

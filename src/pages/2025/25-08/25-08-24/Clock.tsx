@@ -37,9 +37,9 @@ const RomanClock = () => {
       fontUrl: viaFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
@@ -96,9 +96,7 @@ const RomanClock = () => {
 
   return (
     <div style={containerStyle}>
-      <div style={timeStyle}>
-        {time}
-      </div>
+      <div style={timeStyle}>{time}</div>
     </div>
   );
 };

@@ -3,22 +3,28 @@ import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import eyesFont from '@/assets/fonts/2026/26-04-11-eyes.ttf';
-import bgImage from '@/assets/images/2026/26-04/26-04-11/eyes.webp'; 
+import bgImage from '@/assets/images/2026/26-04/26-04-11/eyes.webp';
 import styles from './Clock.module.css';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 const digitToLetter = (digit: string): string => {
   const map: Record<string, string> = {
-    '0': 'W', '1': 'A', '2': 'Z', '3': 'E', '4': 'J',
-    '5': 'B', '6': 'P', '7': 'M', '8': 'T', '9': 'R',
+    '0': 'W',
+    '1': 'A',
+    '2': 'Z',
+    '3': 'E',
+    '4': 'J',
+    '5': 'B',
+    '6': 'P',
+    '7': 'M',
+    '8': 'T',
+    '9': 'R',
   };
   return map[digit] || digit;
 };
 
-const fontConfigs: FontConfig[] = [
-  { fontFamily: 'Eyes', fontUrl: eyesFont }
-];
+const fontConfigs: FontConfig[] = [{ fontFamily: 'Eyes', fontUrl: eyesFont }];
 
 const Clock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);

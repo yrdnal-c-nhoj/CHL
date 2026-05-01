@@ -65,9 +65,9 @@ export default function ClockWall() {
       fontUrl: CONFIG.fontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
@@ -80,14 +80,14 @@ export default function ClockWall() {
     });
 
   const preloadAll = async () => {
-      // Font loading handled by useMultipleFontLoader
-      await Promise.all([
-        loadImage(bgImage),
-        loadImage(bgImage2),
-        loadImage(bgImage3),
-      ]);
-      setReady(true); // ✅ everything loaded
-    };
+    // Font loading handled by useMultipleFontLoader
+    await Promise.all([
+      loadImage(bgImage),
+      loadImage(bgImage2),
+      loadImage(bgImage3),
+    ]);
+    setReady(true); // ✅ everything loaded
+  };
 
   useEffect(() => {
     preloadAll();

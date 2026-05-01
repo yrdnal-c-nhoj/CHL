@@ -13,16 +13,19 @@ interface GoldenHourClockProps {
 
 const GoldenHourClock: React.FC<GoldenHourClockProps> = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'ShinyFont',
-      fontUrl: shinyFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'ShinyFont',
+        fontUrl: shinyFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates

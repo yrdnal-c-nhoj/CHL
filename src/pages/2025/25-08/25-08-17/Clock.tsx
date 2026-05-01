@@ -13,9 +13,9 @@ const StickyNoteClock: React.FC = () => {
       fontUrl: customFontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

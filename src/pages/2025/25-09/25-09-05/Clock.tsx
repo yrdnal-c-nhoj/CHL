@@ -13,9 +13,9 @@ export default function DigitalClock() {
       fontUrl: DigitalClockFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

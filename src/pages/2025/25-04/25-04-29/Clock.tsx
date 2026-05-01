@@ -18,16 +18,19 @@ const FireworksClock: React.FC<FireworksClockProps> = () => {
   const componentId = `fireworks-clock-${Math.random().toString(36).substr(2, 9)}`;
 
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'bang',
-      fontUrl: fontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'bang',
+        fontUrl: fontUrl,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);
@@ -68,7 +71,8 @@ const FireworksClock: React.FC<FireworksClockProps> = () => {
 
     setTimeout(() => {
       for (const digit of clock.children) {
-        (digit as HTMLElement).style.animation = `${componentId}-explodeWild 1.5s ease-out forwards`;
+        (digit as HTMLElement).style.animation =
+          `${componentId}-explodeWild 1.5s ease-out forwards`;
       }
     }, 1500);
   }, [currentTime, componentId]);
@@ -82,7 +86,11 @@ const FireworksClock: React.FC<FireworksClockProps> = () => {
     return `${Math.floor(Math.random() * 2) + 4}rem`;
   }, []);
 
-  const getRandomExplosionVector = useCallback((): { dx: string; dy: string; rot: string } => {
+  const getRandomExplosionVector = useCallback((): {
+    dx: string;
+    dy: string;
+    rot: string;
+  } => {
     const dx = `${(Math.random() - 0.5) * 80}vw`;
     const dy = `${(Math.random() - 0.5) * 80}vh`;
     const rot = `${Math.random() * 1440 - 720}deg`;

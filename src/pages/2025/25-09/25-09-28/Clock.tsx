@@ -220,7 +220,6 @@ export default function DesertUFOSequence() {
     return () => timer && clearTimeout(timer);
   }, [stage]);
 
-
   return (
     <div
       style={{

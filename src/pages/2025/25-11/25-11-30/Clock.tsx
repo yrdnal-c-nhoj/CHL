@@ -8,17 +8,20 @@ import styles from './Clock.module.css';
 
 export default function DigitalClock() {
   const [now, setNow] = useState(() => new Date());
-  
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'ClockFont2025_12_01',
-      fontUrl: font251130,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      }
-    }
-  ], []);
+
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'ClockFont2025_12_01',
+        fontUrl: font251130,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -63,17 +66,23 @@ export default function DigitalClock() {
 
   const renderPair = (digits: string) => (
     <div style={{ display: 'flex', gap: isPhone ? '2vw' : '1vw' }}>
-      <div className={styles.digitBox} style={{ width: boxWidth, height: boxHeight, fontSize: baseFontSize }}>
+      <div
+        className={styles.digitBox}
+        style={{ width: boxWidth, height: boxHeight, fontSize: baseFontSize }}
+      >
         {digits[0]}
       </div>
-      <div className={styles.digitBox} style={{ width: boxWidth, height: boxHeight, fontSize: baseFontSize }}>
+      <div
+        className={styles.digitBox}
+        style={{ width: boxWidth, height: boxHeight, fontSize: baseFontSize }}
+      >
         {digits[1]}
       </div>
     </div>
   );
 
   return (
-    <div 
+    <div
       className={`${styles.container} ${isPhone ? styles.containerMobile : ''}`}
       style={{ backgroundImage: `url(${backgroundImg})` }}
     >

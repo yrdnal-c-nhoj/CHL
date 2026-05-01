@@ -1,5 +1,5 @@
 # BorrowedTime Technical Audit
-Audit date: 2026-05-01 (Updated: 2026-06-17, Re-audited: 2026-06-17)
+Audit date: 2026-05-01 (Updated: 2026-06-17, Re-audited: 2026-06-17, Image usage corrected: 2026-05-01)
 
 ## 1. Executive Summary
 BorrowedTime’s architecture is fundamentally strong (registry-driven routing, code-split daily clocks, successful production build), but delivery quality and long-term maintainability are currently constrained by large static-asset volume and substantial lint/type debt concentrated in clock modules.
@@ -8,7 +8,7 @@ Current state:
 - Build pipeline: production build succeeds.
 - Type quality: high-error baseline that blocks safe large-scale refactors.
 - Lint quality: high warning/error baseline with consistency and purity violations.
-- Asset hygiene: confirmed removable unused fonts/images/videos.
+- Asset hygiene: all images actively used, some unused fonts/videos identified.
 
 ## 2. Verified Build, Quality, and Delivery Baseline
 Commands run:
@@ -36,25 +36,21 @@ Measured outcomes:
 ## 3. Asset Utilization Findings
 Generated reports:
 - `unused-images-report.txt`
-- `unused-images-only-report.txt`
 - `unused-videos-report.txt`
 - `unused-fonts-report.txt`
 - `non-standard-fonts.txt`
 
 Verified unused assets:
-- Unused images: 224 files, 6.88 MB (significant increase from 59 files)
+- **Unused images: 0 files** - All 55 images in the project are actively used
 - Unused videos: Not re-quantified in current audit
 - Unused fonts: 3 files with non-standard names identified
 - Total image storage: 211.88 MB
-- Potential savings: 3.2% from unused images
+- Potential savings: 0% from unused images
 
-Largest unused-image hotspots:
-- `src/assets/images/2026/26-02/26-02-25` (2 files, 1190.6 KB)
-- `src/assets/images/2026/26-03/26-03-14/mother.jpg` (939.8 KB)
-- `src/assets/images/2026/26-04/26-04-06` (16 files, 878.5 KB)
-- `src/assets/images/2026/26-04/26-04-27` (4 files, 734.3 KB)
-
-**Note**: The audit incorrectly flagged `src/assets/images/2026/26-01/26-01-04/digits` (169 files, 2850.7 KB) as unused. These digit images are actively used by the corresponding Clock.tsx component via import.meta.glob statements and should not be removed.
+**Key Finding**: Previous audit incorrectly flagged images as unused. Manual verification confirmed:
+- All images in `src/assets/images/2026/26-02/26-02-26/bg/` (28 files) are dynamically loaded via `import.meta.glob` in the corresponding clock
+- All other images are directly imported and used by their respective clock components
+- No images can be safely removed
 
 Unused videos:
 - `src/assets/images/2025/25-10/25-10-14/air.webm` (33.8 KB)
@@ -109,7 +105,7 @@ Observed structural contributors:
 
 ### Phase A: Safe Cleanup (immediate)
 
-1. Remove the 224 verified unused images (6.88 MB) after one visual smoke pass.
+1. **No image cleanup needed** - All 55 images are actively used (verified manually)
 2. Normalize 3 non-standard font names (`npm run standardize:fonts`) and review.
 3. Add a CI guard that fails when new unused assets are introduced.
 
@@ -146,8 +142,8 @@ Observed structural contributors:
 - **Security**: Excellent - 0 vulnerabilities (new metric added)
 
 ### Asset Management Changes
-- **Unused Images**: Dramatically increased from 59 to 224 files (+165 files)
-- **Image Storage**: Total 211.88 MB with 6.88 MB unused (3.2% savings potential)
+- **Unused Images**: Corrected from 224 to 0 files - all images are actively used
+- **Image Storage**: Total 211.88 MB with 0 MB unused (0% savings potential)
 - **Non-standard Fonts**: Reduced from 5 to 3 files (-2 files)
 - **Build Files**: 2,829 files in dist (up from 2,836)
 
@@ -157,7 +153,7 @@ Observed structural contributors:
 - **Lint Improvements**: 229 errors and 1642 warnings are auto-fixable with `--fix`
 
 ### Key Observations
-1. **Asset Hygiene Decline**: Significant increase in unused images suggests recent development without proper cleanup
+1. **Asset Hygiene Corrected**: Previous audit incorrectly flagged images as unused - all 55 images are actively used
 2. **Type Debt Growth**: TypeScript errors increasing despite ESLint improvements
 3. **Build Size Inflation**: 6MB increase likely from new assets and clock additions
 4. **Lint Progress**: Small but measurable improvement in code consistency

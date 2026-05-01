@@ -15,9 +15,9 @@ const TreehouseClock: React.FC = () => {
       fontUrl: treeFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

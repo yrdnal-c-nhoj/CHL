@@ -9,9 +9,16 @@ export default function RococoDigitalClock() {
   const [morph, setMorph] = useState<number>(0);
   const [isVertical, setIsVertical] = useState<boolean>(false);
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'RococoBlob', fontUrl: fontUrl_20251128, options: { weight: '800' } }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'RococoBlob',
+        fontUrl: fontUrl_20251128,
+        options: { weight: '800' },
+      },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 

@@ -10,17 +10,20 @@ const DigitalClock: React.FC = () => {
   const time = useSecondClock();
   const [showContent, setShowContent] = useState(false);
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'NeptuneFont',
-      fontUrl: neptuneFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'NeptuneFont',
+        fontUrl: neptuneFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {

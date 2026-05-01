@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useCallback, useState, useMemo } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useCallback,
+  useState,
+  useMemo,
+} from 'react';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -29,9 +35,16 @@ const Clock: React.FC = () => {
   const [slowdownActive, setSlowdownActive] = useState(false);
   const [resetKey, setResetKey] = useState(0);
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'Caveat', fontUrl: 'https://fonts.gstatic.com/s/caveat/v18/Wnz6HAc5bAfYB2Q7azYYMg8.woff2' }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'Caveat',
+        fontUrl:
+          'https://fonts.gstatic.com/s/caveat/v18/Wnz6HAc5bAfYB2Q7azYYMg8.woff2',
+      },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -54,50 +67,59 @@ const Clock: React.FC = () => {
       }, 5000);
     };
     scheduleCycle(); // Initiate the first cycle
-    return () => { clearTimeout(intervalId); clearTimeout(slowdownTimeoutId); };
+    return () => {
+      clearTimeout(intervalId);
+      clearTimeout(slowdownTimeoutId);
+    };
   }, []);
 
   // 1. Corrected Pixel Extraction
-  const createTextPixels = useCallback((text: string): { x: number; y: number }[] => {
-    const textCanvas = document.createElement('canvas');
-    const textCtx = textCanvas.getContext('2d', { willReadFrequently: true })!;
-    
-    const cw = 800; // Slightly wider for full time string
-    const ch = 200;
-    textCanvas.width = cw;
-    textCanvas.height = ch;
-    
-    textCtx.fillStyle = '#000';
-    textCtx.fillRect(0, 0, cw, ch);
-    textCtx.font = `900 120px 'Caveat', cursive`;
-    textCtx.fillStyle = '#fff';
-    textCtx.textAlign = 'center';
-    textCtx.textBaseline = 'middle';
-    textCtx.fillText(text, cw / 2, ch / 2);
-    
-    const imageData = textCtx.getImageData(0, 0, cw, ch).data;
-    const pixels: { x: number; y: number }[] = [];
-    
-    // Step by 6 or 8 for performance/density
-    const step = 7; 
-    for (let y = 0; y < ch; y += step) {
-      for (let x = 0; x < cw; x += step) {
-        // Calculate index for the Red channel of the pixel at (x, y)
-        const index = (y * cw + x) * 4;
-        if (imageData[index]! > 128) {
-          pixels.push({ x, y });
+  const createTextPixels = useCallback(
+    (text: string): { x: number; y: number }[] => {
+      const textCanvas = document.createElement('canvas');
+      const textCtx = textCanvas.getContext('2d', {
+        willReadFrequently: true,
+      })!;
+
+      const cw = 800; // Slightly wider for full time string
+      const ch = 200;
+      textCanvas.width = cw;
+      textCanvas.height = ch;
+
+      textCtx.fillStyle = '#000';
+      textCtx.fillRect(0, 0, cw, ch);
+      textCtx.font = `900 120px 'Caveat', cursive`;
+      textCtx.fillStyle = '#fff';
+      textCtx.textAlign = 'center';
+      textCtx.textBaseline = 'middle';
+      textCtx.fillText(text, cw / 2, ch / 2);
+
+      const imageData = textCtx.getImageData(0, 0, cw, ch).data;
+      const pixels: { x: number; y: number }[] = [];
+
+      // Step by 6 or 8 for performance/density
+      const step = 7;
+      for (let y = 0; y < ch; y += step) {
+        for (let x = 0; x < cw; x += step) {
+          // Calculate index for the Red channel of the pixel at (x, y)
+          const index = (y * cw + x) * 4;
+          if (imageData[index]! > 128) {
+            pixels.push({ x, y });
+          }
         }
       }
-    }
-    return pixels;
-  }, []);
+      return pixels;
+    },
+    [],
+  );
 
   // Initialize particles once
   useEffect(() => {
     const width = window.innerWidth;
     const height = window.innerHeight;
     const circles: Circle[] = [];
-    for (let i = 0; i < 800; i++) { // Increased count for better legibility
+    for (let i = 0; i < 800; i++) {
+      // Increased count for better legibility
       circles.push({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -120,7 +142,7 @@ const Clock: React.FC = () => {
   useEffect(() => {
     const formatTime = (num: number): string => num.toString().padStart(2, '0');
     const timeStr = `${formatTime(time.getHours())}:${formatTime(time.getMinutes())}`;
-    
+
     if (timeStr !== timeRef.current) {
       timeRef.current = timeStr;
       const pixels = createTextPixels(timeStr);
@@ -150,9 +172,9 @@ const Clock: React.FC = () => {
       const delta = Math.min((currentTime - lastTime) / 1000, 0.1); // Cap delta to prevent huge jumps
       lastTime = currentTime;
 
-      const width = canvas.width = window.innerWidth;
-      const height = canvas.height = window.innerHeight;
-      
+      const width = (canvas.width = window.innerWidth);
+      const height = (canvas.height = window.innerHeight);
+
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, width, height);
 
@@ -167,7 +189,7 @@ const Clock: React.FC = () => {
         } else if (circle.movement === 'in' || circle.movement === 'jiggle') {
           const dx = circle.originX - circle.x;
           const dy = circle.originY - circle.y;
-          
+
           // Spring physics
           circle.vx += dx * 50 * delta;
           circle.vy += dy * 50 * delta;
@@ -175,7 +197,7 @@ const Clock: React.FC = () => {
           circle.vy *= 0.85;
 
           if (Math.abs(dx) < 1 && Math.abs(dy) < 1) circle.movement = 'jiggle';
-          
+
           if (circle.movement === 'jiggle') {
             circle.vx += (Math.random() - 0.5) * 2;
             circle.vy += (Math.random() - 0.5) * 2;

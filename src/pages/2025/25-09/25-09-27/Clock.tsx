@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 
-
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import sss47wert from '@/assets/fonts/2025/25-09-27-disc.ttf?url';

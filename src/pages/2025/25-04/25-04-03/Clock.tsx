@@ -27,16 +27,19 @@ interface ClockPosition {
 
 const MobyDickClock = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'MobyClockFont',
-      fontUrl: mobyFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'MobyClockFont',
+        fontUrl: mobyFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);
@@ -48,13 +51,16 @@ const MobyDickClock = () => {
   const currentTime = useSecondClock();
 
   // Returns a random coordinate avoiding center rectangle
-  const getRandomPosAvoidCenter = useCallback((max: number, avoidStart: number, avoidEnd: number): number => {
-    let pos: number;
-    do {
-      pos = Math.random() * max;
-    } while (pos > avoidStart && pos < avoidEnd);
-    return pos;
-  }, []);
+  const getRandomPosAvoidCenter = useCallback(
+    (max: number, avoidStart: number, avoidEnd: number): number => {
+      let pos: number;
+      do {
+        pos = Math.random() * max;
+      } while (pos > avoidStart && pos < avoidEnd);
+      return pos;
+    },
+    [],
+  );
 
   // Calculate new clock position
   const calculateNewPosition = useCallback((): ClockPosition => {
@@ -78,27 +84,29 @@ const MobyDickClock = () => {
   }, [getRandomPosAvoidCenter]);
 
   // Update clock display
-  const updateClockDisplay = useCallback((position: ClockPosition): void => {
-    const clock = clockRef.current;
-    if (!clock) return;
+  const updateClockDisplay = useCallback(
+    (position: ClockPosition): void => {
+      const clock = clockRef.current;
+      if (!clock) return;
 
-    // Update time
-    clock.textContent = currentTime.toLocaleTimeString('en-US', {
-      hour12: false,
-      hour: 'numeric',
-      minute: 'numeric',
-    });
+      // Update time
+      clock.textContent = currentTime.toLocaleTimeString('en-US', {
+        hour12: false,
+        hour: 'numeric',
+        minute: 'numeric',
+      });
 
-    // Apply styles with smooth transition
-    clock.style.transition =
-      'transform 2s ease-in-out, font-size 2s ease-in-out, opacity 2s ease-in-out';
-    clock.style.transform = `translate(${position.x}px, ${position.y}px)`;
-    clock.style.fontSize = `${position.fontSize}rem`;
-    clock.style.opacity = position.opacity.toString();
-  }, [currentTime]);
+      // Apply styles with smooth transition
+      clock.style.transition =
+        'transform 2s ease-in-out, font-size 2s ease-in-out, opacity 2s ease-in-out';
+      clock.style.transform = `translate(${position.x}px, ${position.y}px)`;
+      clock.style.fontSize = `${position.fontSize}rem`;
+      clock.style.opacity = position.opacity.toString();
+    },
+    [currentTime],
+  );
 
   useEffect(() => {
-
     let animationFrameId: number;
     let lastMoveTime: number = 0;
     let nextMoveDelay: number = 2000 + Math.random() * 2000;
@@ -152,10 +160,7 @@ const MobyDickClock = () => {
         userSelect: 'none',
       }}
     >
-      <div
-        ref={clockRef}
-        className={styles.mobyClock}
-      />
+      <div ref={clockRef} className={styles.mobyClock} />
       <img
         decoding="async"
         loading="lazy"

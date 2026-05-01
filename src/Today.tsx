@@ -17,7 +17,9 @@ const TodayClockPage = () => {
   useEffect(() => {
     if (loading || items.length === 0) return;
     const todayVal = parseDateVal(getTodayDate());
-    const sorted = [...items].sort((a, b) => parseDateVal(b.date) - parseDateVal(a.date));
+    const sorted = [...items].sort(
+      (a, b) => parseDateVal(b.date) - parseDateVal(a.date),
+    );
     setCurrentItem(
       sorted.find((i) => parseDateVal(i.date) <= todayVal) ?? sorted[0] ?? null,
     );
@@ -26,17 +28,22 @@ const TodayClockPage = () => {
   // Prevent page scroll while clock is displayed
   useEffect(() => {
     document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, []);
 
   const { prevItem, nextItem } = useMemo(() => {
-    if (!currentItem || items.length === 0) return { prevItem: null, nextItem: null };
+    if (!currentItem || items.length === 0)
+      return { prevItem: null, nextItem: null };
     const idx = items.findIndex(
-      (i: ClockItem) => normalizeDate(i.date) === normalizeDate(currentItem.date),
+      (i: ClockItem) =>
+        normalizeDate(i.date) === normalizeDate(currentItem.date),
     );
     return {
       prevItem: idx > 0 ? (items[idx - 1] ?? null) : null,
-      nextItem: idx >= 0 && idx < items.length - 1 ? (items[idx + 1] ?? null) : null,
+      nextItem:
+        idx >= 0 && idx < items.length - 1 ? (items[idx + 1] ?? null) : null,
     };
   }, [currentItem, items]);
 

@@ -35,15 +35,15 @@ export const fontConfigs = [
     fontUrl: forumFont,
     options: {
       weight: 'normal',
-      style: 'normal'
-    }
-  }
+      style: 'normal',
+    },
+  },
 ];
 
 export default function ClockTemplate() {
   const time = useSecondClock();
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  
+
   useSuspenseFontLoader(fontConfigs);
 
   // Handle Responsiveness

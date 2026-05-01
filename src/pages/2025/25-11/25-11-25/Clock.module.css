@@ -5,9 +5,18 @@
   justify-content: center;
   align-items: center;
   background-color: #111;
-  background-image: var(--bg-img),
-    linear-gradient(to right, rgba(200, 200, 200, 0.05) 0.1vh, transparent 0.1vh),
-    linear-gradient(to bottom, rgba(200, 200, 200, 0.05) 0.1vh, transparent 0.1vh);
+  background-image:
+    var(--bg-img),
+    linear-gradient(
+      to right,
+      rgba(200, 200, 200, 0.05) 0.1vh,
+      transparent 0.1vh
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(200, 200, 200, 0.05) 0.1vh,
+      transparent 0.1vh
+    );
   background-size: 25vh 15vh;
   background-position: center;
   filter: invert(1) saturate(7);
@@ -51,7 +60,8 @@
 }
 
 .marquee.landscape {
-  transform: translate(-50%, -50%) translateY(calc(var(--marquee-pos) * 1vh)) rotate(90deg);
+  transform: translate(-50%, -50%) translateY(calc(var(--marquee-pos) * 1vh))
+    rotate(90deg);
 }
 
 .syncStatus {
@@ -64,8 +74,8 @@
 .digit {
   transition: color 0.2s ease;
   color: var(--digit-color, #0ff);
-  text-shadow: 
-    1.0vh 0 0 var(--digit-shadow, #0ff), 
-    1px 0 black, 
+  text-shadow:
+    1vh 0 0 var(--digit-shadow, #0ff),
+    1px 0 black,
     0 -1px 0 black;
 }

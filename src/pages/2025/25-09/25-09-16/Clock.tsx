@@ -9,9 +9,10 @@ const Clock: React.FC = () => {
   const time = useClockTime();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'MyD250916font', fontUrl: d250916font }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'MyD250916font', fontUrl: d250916font }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 

@@ -34,7 +34,7 @@ const AnalogClock: React.FC = () => {
 
   const numeralsRef = useRef(numerals);
   numeralsRef.current = numerals;
-  
+
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -42,9 +42,9 @@ const AnalogClock: React.FC = () => {
       fontUrl: myFontWoff2,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

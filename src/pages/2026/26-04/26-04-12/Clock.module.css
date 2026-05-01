@@ -18,8 +18,16 @@
   transform: translate(-50%, -50%);
   object-fit: contain;
   transition: all 0.3s ease-in-out;
-  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black var(--vignette-black, 40%), transparent var(--vignette-transparent, 85%));
-  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black var(--vignette-black, 40%), transparent var(--vignette-transparent, 85%));
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 70% at 50% 50%,
+    black var(--vignette-black, 40%),
+    transparent var(--vignette-transparent, 85%)
+  );
+  mask-image: radial-gradient(
+    ellipse 70% 70% at 50% 50%,
+    black var(--vignette-black, 40%),
+    transparent var(--vignette-transparent, 85%)
+  );
 }
 
 .hand {

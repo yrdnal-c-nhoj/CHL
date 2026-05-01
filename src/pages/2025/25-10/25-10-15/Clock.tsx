@@ -17,9 +17,10 @@ function toBrahmi(num) {
 export default function BrahmiClock() {
   const [time, setTime] = useState(new Date());
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'BrahmiFont', fontUrl: font20251016 }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'BrahmiFont', fontUrl: font20251016 }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 

@@ -44,14 +44,14 @@ src/
 
 ## BorrowedTime Standard (BTS)
 
-| Rule          | Enforcement                                     |
-|---------------|-------------------------------------------------|
-| Type Safety   | `.tsx` only, no `any`                          |
-| Styles        | `.module.css` for clocks, Tailwind for UI       |
-| Markup        | `<main>` containers, `<time datetime>` displays   |
-| Time          | `useClockTime` hook                             |
-| Fonts         | `useSuspenseFontLoader` for FOUC prevention      |
-| Cleanup       | Clear timers/RAF on unmount                    |
+| Rule          | Enforcement                                       |
+|---------------|---------------------------------------------------|
+| Type Safety   | `.tsx` only, no `any`                            |
+| Styles        | `.module.css` for clocks, Tailwind for UI         |
+| Markup        | `<main>` containers, `<time datetime>` displays     |
+| Time          | `useClockTime` hook                               |
+| Fonts         | `useSuspenseFontLoader` for FOUC prevention        |
+| Cleanup       | Clear timers/RAF on unmount                      |
 | DOM           | `useRef` only, no `querySelector`               |
 
 ## Development
@@ -64,22 +64,22 @@ npm run clock:new    # Create today's clock
 
 ## Scripts
 
-| Script                    | Description                               |
-|---------------------------|-------------------------------------------|
-| `npm run dev`             | Dev server                                |
-| `npm run build`           | Production build                           |
-| `npm run build:with-types` | Type-check + production build              |
-| `npm run type-check`      | TypeScript check                           |
-| `npm run lint`            | ESLint                                    |
-| `npm run format`          | Prettier                                  |
-| `npm run test`            | Tests (watch)                              |
-| `npm run test:run`        | Tests (CI)                                 |
-| `npm run clock:new`       | New clock from template                    |
-| `npm run audit:fonts`     | Find unused fonts                          |
-| `npm run audit:images`    | Find unused images                         |
-| `npm run standardize:fonts`| Auto-fix non-standard font names            |
-| `npm run optimize:images` | Convert image assets to WebP                |
-| `npm run perf:analyze`    | Bundle analysis                            |
+| Script                      | Description                      |
+| --------------------------- | -------------------------------- |
+| `npm run dev`               | Dev server                       |
+| `npm run build`             | Production build                 |
+| `npm run build:with-types`  | Type-check + production build    |
+| `npm run type-check`        | TypeScript check                 |
+| `npm run lint`              | ESLint                           |
+| `npm run format`            | Prettier                         |
+| `npm run test`              | Tests (watch)                    |
+| `npm run test:run`          | Tests (CI)                       |
+| `npm run clock:new`         | New clock from template          |
+| `npm run audit:fonts`       | Find unused fonts                |
+| `npm run audit:images`      | Find unused images               |
+| `npm run standardize:fonts` | Auto-fix non-standard font names |
+| `npm run optimize:images`   | Convert image assets to WebP     |
+| `npm run perf:analyze`      | Bundle analysis                  |
 
 ## New Clock
 
@@ -134,7 +134,7 @@ Generated audit artifacts:
 - `unused-fonts-report.txt`
 - `non-standard-fonts.txt`
 
-## Current Audit Snapshot (2026-06-17)
+## Current Audit Snapshot (2026-06-17, Image usage corrected: 2026-05-01)
 
 - TypeScript: **~3500+ errors** (concentrated in 424 clock modules)
 - ESLint: **499 errors / 3247 warnings** (improved from previous)
@@ -143,13 +143,13 @@ Generated audit artifacts:
 - Dist footprint: **256 MB** across **2,829 files**
   - Largest JS bundle: `dist/assets/three-C9XuxQ2Y.js` (~747.23 KB)
   - Largest driver: video assets remain primary contributor
-- Asset Hygiene: **224 unused images** (~6.88 MB savings potential)
+- Asset Hygiene: **0 unused images** - all 55 images are actively used
 - Code Scale: **466 TypeScript files**, 424 clock modules (91% of codebase)
 
 Primary near-term priorities:
 
 1. **Code Hygiene**: Reduce lint/type debt in high-error modules.
-2. **Asset Purge**: Remove the 224 unused images (~6.88 MB savings).
+2. **Font Cleanup**: Address unused fonts and non-standard naming.
 3. **A11y Retrofit**: Add missing `<time>` tags to Canvas-based clocks.
 4. **Standardization**: Consolidate fragmentation between `@/utils/hooks` and `@/utils/clockUtils`.
 5. **Deployment Hygiene**: Enforce naming and import conventions in CI.

@@ -18,7 +18,10 @@ const getHandZIndex = (type: 'hour' | 'minute' | 'second'): number => {
   return 10;
 };
 
-const getHandBorderRadius = (type: 'hour' | 'minute' | 'second', width: number): string => {
+const getHandBorderRadius = (
+  type: 'hour' | 'minute' | 'second',
+  width: number,
+): string => {
   if (type === 'second') return '1px';
   return `${width / 2}px`;
 };
@@ -28,7 +31,13 @@ const getHandTransition = (type: 'hour' | 'minute' | 'second'): string => {
   return 'transform 0.1s ease-out';
 };
 
-const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) => {
+const ClockHand: React.FC<HandProps> = ({
+  angle,
+  length,
+  width,
+  color,
+  type,
+}) => {
   const handStyle: React.CSSProperties = {
     position: 'absolute',
     bottom: '50%',
@@ -43,7 +52,9 @@ const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) =
     transition: getHandTransition(type),
   };
 
-  return <div style={handStyle} className={styles.hand} data-hand-type={type} />;
+  return (
+    <div style={handStyle} className={styles.hand} data-hand-type={type} />
+  );
 };
 
 const AnalogClock: React.FC = () => {
@@ -178,8 +189,7 @@ const AnalogClock: React.FC = () => {
 
         {/* Digital readout */}
         <div className={styles.digitalTime}>
-          {String(hours).padStart(2, '0')}:
-          {String(minutes).padStart(2, '0')}:
+          {String(hours).padStart(2, '0')}:{String(minutes).padStart(2, '0')}:
           {String(seconds).padStart(2, '0')}
         </div>
       </time>

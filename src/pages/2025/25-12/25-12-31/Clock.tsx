@@ -7,7 +7,9 @@ import d250916font from '@/assets/fonts/2025/25-12-31-shadow.otf';
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [isLargeScreen, setIsLargeScreen] = useState<any>(window.innerWidth > 768);
+  const [isLargeScreen, setIsLargeScreen] = useState<any>(
+    window.innerWidth > 768,
+  );
 
   // 1. LETTER MAPPING: Change these letters to your preference
   const digitToLetter = {

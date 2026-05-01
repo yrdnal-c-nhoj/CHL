@@ -37,8 +37,12 @@
   display: flex;
   gap: 1vh;
   color: #694006ff;
-  text-shadow: 0 0 0.5vh rgba(255, 255, 254, 1), -1px -1px 0 white,
-    1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
+  text-shadow:
+    0 0 0.5vh rgba(255, 255, 254, 1),
+    -1px -1px 0 white,
+    1px -1px 0 white,
+    -1px 1px 0 white,
+    1px 1px 0 white;
   font-size: 8vw;
 }
 
@@ -113,9 +117,18 @@
 }
 
 @media (min-width: 769px) {
-  .hourHand { width: 4.5vw; height: 11vw; }
-  .minuteHand { width: 36vw; height: 60vw; }
-  .secondHand { width: 26vw; height: 45vw; }
+  .hourHand {
+    width: 4.5vw;
+    height: 11vw;
+  }
+  .minuteHand {
+    width: 36vw;
+    height: 60vw;
+  }
+  .secondHand {
+    width: 26vw;
+    height: 45vw;
+  }
 }
 
 .markerContainer {
@@ -132,5 +145,13 @@
   font-size: 6vmin;
   color: #000080;
 }
-@media (min-width: 768px) { .hourMarker { font-size: 4vmin; } }
-@media (min-width: 1200px) { .hourMarker { font-size: 3vmin; } }
+@media (min-width: 768px) {
+  .hourMarker {
+    font-size: 4vmin;
+  }
+}
+@media (min-width: 1200px) {
+  .hourMarker {
+    font-size: 3vmin;
+  }
+}

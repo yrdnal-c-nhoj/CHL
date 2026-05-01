@@ -13,7 +13,7 @@ const Clock: React.FC = () => {
     const m = time.getMinutes();
     const s = time.getSeconds();
     return {
-      hourDeg: (h * 30) + (m * 0.5),
+      hourDeg: h * 30 + m * 0.5,
       minuteDeg: m * 6,
       secondDeg: s * 6,
     };

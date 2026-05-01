@@ -10,9 +10,9 @@ const Clock: React.FC = () => {
       fontUrl: braiFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

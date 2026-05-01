@@ -16,10 +16,11 @@ export default function VideoClock() {
   const datetime = `${hours}:${minutes}:${seconds}`;
   const digits = (hours + minutes + seconds + milliseconds).split('');
 
-  const fontConfigs = useMemo(() => [
-    { fontFamily: 'CustomFont', fontUrl: fontFile_2025_10_31 }
-  ], []);
-  
+  const fontConfigs = useMemo(
+    () => [{ fontFamily: 'CustomFont', fontUrl: fontFile_2025_10_31 }],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   // Preload assets: video, fallback image

@@ -26,17 +26,21 @@ interface GridSize {
 
 export const background = backgroundImage;
 
-
 const ImageGridClock: React.FC = () => {
-  const fontConfigs = useMemo(() => [{
-      fontFamily: 'DateFont',
-      fontUrl: fuFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-  }], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'DateFont',
+        fontUrl: fuFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   const [images, setImages] = useState<string[]>([]);
@@ -44,7 +48,9 @@ const ImageGridClock: React.FC = () => {
   const [loadedImages, setLoadedImages] = useState(new Set());
   const [imageAssignments, setImageAssignments] = useState<number[]>([]);
   const currentTime = useSecondClock();
-  const [currentImageIndex, setCurrentImageIndex] = useState<Record<string, number>>({});
+  const [currentImageIndex, setCurrentImageIndex] = useState<
+    Record<string, number>
+  >({});
 
   const changeRandomCells = () => {
     if (imageAssignments.length > 0 && images.length > 1) {
@@ -95,7 +101,7 @@ const ImageGridClock: React.FC = () => {
 
   useEffect(() => {
     let resizeTimeout: NodeJS.Timeout;
-    
+
     const calculateGridSize = () => {
       const squareSize = 100;
       const cols = Math.ceil(window.innerWidth / squareSize);

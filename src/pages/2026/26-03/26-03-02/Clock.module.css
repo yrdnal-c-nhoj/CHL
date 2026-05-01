@@ -22,7 +22,8 @@
   pointer-events: none;
 }
 
-.mainTime, .reflection {
+.mainTime,
+.reflection {
   display: flex;
   align-items: center;
   transform-origin: 50% 0%;
@@ -56,7 +57,7 @@
   .digit {
     font-size: 18vw;
   }
-  
+
   .timeWrapper {
     top: 70%;
   }

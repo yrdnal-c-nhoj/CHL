@@ -9,7 +9,8 @@
   transition: opacity 0.3s ease;
 }
 
-.leftBackground, .rightBackground {
+.leftBackground,
+.rightBackground {
   position: absolute;
   top: 0;
   width: 50vw;
@@ -50,8 +51,14 @@
   align-items: center;
 }
 
-.row { flex-direction: row; gap: 0; }
-.column { flex-direction: column; gap: 0; }
+.row {
+  flex-direction: row;
+  gap: 0;
+}
+.column {
+  flex-direction: column;
+  gap: 0;
+}
 
 .unitGroup {
   display: flex;

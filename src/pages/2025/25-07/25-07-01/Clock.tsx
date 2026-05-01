@@ -13,9 +13,9 @@ const CinemaClock: React.FC = () => {
       fontUrl: fontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

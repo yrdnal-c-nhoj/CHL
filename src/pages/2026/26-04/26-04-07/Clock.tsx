@@ -15,7 +15,7 @@ const DigitBox: React.FC<{ value: string }> = ({ value }) => (
 const Clock: React.FC = () => {
   const fontConfigs = useMemo<FontConfig[]>(
     () => [{ fontFamily: 'Wall_26-04-07', fontUrl: wallFont }],
-    []
+    [],
   );
 
   useSuspenseFontLoader(fontConfigs);
@@ -31,7 +31,11 @@ const Clock: React.FC = () => {
   const clockCountInSet = 4;
 
   return (
-    <div className={styles.container} role="img" aria-label={`Current time: ${time.getHours()}:${formatDigit(time.getMinutes())}`}>
+    <div
+      className={styles.container}
+      role="img"
+      aria-label={`Current time: ${time.getHours()}:${formatDigit(time.getMinutes())}`}
+    >
       {/* Background */}
       <div className={styles.backgroundWrapper} aria-hidden="true">
         <img src={bgImage} className={styles.bgImage} alt="" />

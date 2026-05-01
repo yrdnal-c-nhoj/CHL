@@ -31,40 +31,50 @@ const Clock = () => {
 
   return (
     <div className={styles.container}>
-      <img src={backgroundImage} className={styles.background} alt="background" />
+      <img
+        src={backgroundImage}
+        className={styles.background}
+        alt="background"
+      />
       <div className={styles.clockWrapper}>
         <div className={styles.face}>
           <img
             src={hourHand}
             className={styles.hand}
-            style={{
-              '--hand-width': HOUR_HAND_WIDTH,
-              '--hand-height': HOUR_HAND_HEIGHT,
-              '--hand-rotate': `${hourRotate}deg`,
-              '--hand-filter': hourFilter,
-            } as React.CSSProperties}
+            style={
+              {
+                '--hand-width': HOUR_HAND_WIDTH,
+                '--hand-height': HOUR_HAND_HEIGHT,
+                '--hand-rotate': `${hourRotate}deg`,
+                '--hand-filter': hourFilter,
+              } as React.CSSProperties
+            }
             alt="hour hand"
           />
           <img
             src={minuteHand}
             className={styles.hand}
-            style={{
-              '--hand-width': MINUTE_HAND_WIDTH,
-              '--hand-height': MINUTE_HAND_HEIGHT,
-              '--hand-rotate': `${minuteRotate}deg`,
-              '--hand-filter': minuteFilter,
-            } as React.CSSProperties}
+            style={
+              {
+                '--hand-width': MINUTE_HAND_WIDTH,
+                '--hand-height': MINUTE_HAND_HEIGHT,
+                '--hand-rotate': `${minuteRotate}deg`,
+                '--hand-filter': minuteFilter,
+              } as React.CSSProperties
+            }
             alt="minute hand"
           />
           <img
             src={secondHand}
             className={styles.hand}
-            style={{
-              '--hand-width': SECOND_HAND_WIDTH,
-              '--hand-height': SECOND_HAND_HEIGHT,
-              '--hand-rotate': `${secondRotate}deg`,
-              '--hand-filter': secondFilter,
-            } as React.CSSProperties}
+            style={
+              {
+                '--hand-width': SECOND_HAND_WIDTH,
+                '--hand-height': SECOND_HAND_HEIGHT,
+                '--hand-rotate': `${secondRotate}deg`,
+                '--hand-filter': secondFilter,
+              } as React.CSSProperties
+            }
             alt="second hand"
           />
         </div>

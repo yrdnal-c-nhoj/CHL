@@ -13,16 +13,19 @@ interface CheetahClockProps {
 
 const CheetahClock: React.FC<CheetahClockProps> = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'leo',
-      fontUrl: leoFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'leo',
+        fontUrl: leoFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates

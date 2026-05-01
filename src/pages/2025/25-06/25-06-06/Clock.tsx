@@ -10,9 +10,9 @@ const RollingClock: React.FC = () => {
       fontUrl: rrrrFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   useEffect(() => {

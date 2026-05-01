@@ -168,12 +168,7 @@ const ClockFace = memo(({ angles }) => (
     }}
   >
     {NUMERAL_POSITIONS.map((p, i) => (
-      <ClockNumeral
-        key={i}
-        text={p.text}
-        x={p.x}
-        y={p.y}
-      />
+      <ClockNumeral key={i} text={p.text} x={p.x} y={p.y} />
     ))}
 
     <div

@@ -6,16 +6,19 @@ import styles from './Clock.module.css';
 
 export default function PanicAnalogClock() {
   // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'CustomClockFont',
-      fontUrl: font251107kdvsf,
-      options: {
-        weight: '900',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'CustomClockFont',
+        fontUrl: font251107kdvsf,
+        options: {
+          weight: '900',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   const rightImageDelay = 500; // 0.5s delay for right image
@@ -25,10 +28,17 @@ export default function PanicAnalogClock() {
   const [leftSrc, setLeftSrc] = useState<string | null>(null);
   const [rightSrc, setRightSrc] = useState<string | null>(null);
   const [fontUrl, setFontUrl] = useState<string | null>(null);
-  const [showImages, setShowImages] = useState<{ left: boolean; right: boolean }>({ left: false, right: false }); // Restore staggered image timing
+  const [showImages, setShowImages] = useState<{
+    left: boolean;
+    right: boolean;
+  }>({ left: false, right: false }); // Restore staggered image timing
   const [fadeBlack, setFadeBlack] = useState<boolean>(false); // Black overlay fade
   const [rightImageLoaded, setRightImageLoaded] = useState<boolean>(false); // Track right image load
-  const urlsRef = useRef<{ left: string | null; right: string | null; font: string | null }>({ left: null, right: null, font: null });
+  const urlsRef = useRef<{
+    left: string | null;
+    right: string | null;
+    font: string | null;
+  }>({ left: null, right: null, font: null });
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [timeStr, setTimeStr] = useState<string>('');
 
@@ -187,9 +197,7 @@ export default function PanicAnalogClock() {
   };
 
   return (
-    <div
-      className={styles.container}
-    >
+    <div className={styles.container}>
       {/* Left background */}
       <img
         decoding="async"

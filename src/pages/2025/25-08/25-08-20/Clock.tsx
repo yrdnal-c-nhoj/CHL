@@ -33,7 +33,10 @@ const TIMEZONES = [
 ];
 
 // Analog clock component
-const AnalogClock: React.FC<{ zone: string; clockSize: number }> = ({ zone, clockSize }) => {
+const AnalogClock: React.FC<{ zone: string; clockSize: number }> = ({
+  zone,
+  clockSize,
+}) => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -63,8 +66,8 @@ const AnalogClock: React.FC<{ zone: string; clockSize: number }> = ({ zone, cloc
 
   return (
     <div className={styles.clockContainer}>
-      <div 
-        className={styles.clockFace} 
+      <div
+        className={styles.clockFace}
         style={{ width: `${clockSize}px`, height: `${clockSize}px` }}
       >
         <div
@@ -120,7 +123,7 @@ const AnalogClock: React.FC<{ zone: string; clockSize: number }> = ({ zone, cloc
       </div>
     </div>
   );
-}
+};
 
 export default function WorldClockGrid() {
   const [dimensions, setDimensions] = useState({
@@ -128,9 +131,10 @@ export default function WorldClockGrid() {
     height: window.innerHeight,
   });
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'MyCustomFont', fontUrl: myFontUrl }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'MyCustomFont', fontUrl: myFontUrl }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -153,7 +157,7 @@ export default function WorldClockGrid() {
     10;
 
   return (
-    <div 
+    <div
       className={styles.container}
       style={{
         gridTemplateColumns: `repeat(${cols}, 1fr)`,
@@ -162,11 +166,7 @@ export default function WorldClockGrid() {
       }}
     >
       {TIMEZONES.map((zone) => (
-        <AnalogClock
-          key={zone}
-          zone={zone}
-          clockSize={clockSize}
-        />
+        <AnalogClock key={zone} zone={zone} clockSize={clockSize} />
       ))}
     </div>
   );

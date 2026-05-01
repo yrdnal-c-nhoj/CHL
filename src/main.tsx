@@ -31,11 +31,14 @@ if (enablePerformanceMonitoring) {
   // Performance monitoring setup
   if ('performance' in window) {
     window.addEventListener('load', (event: Event) => {
-      const perfData = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const perfData = performance.getEntriesByType(
+        'navigation',
+      )[0] as PerformanceNavigationTiming;
       console.log('Page Load Performance:', {
-        domContentLoaded: perfData &&
+        domContentLoaded:
+          perfData &&
           perfData.domContentLoadedEventEnd -
-          perfData.domContentLoadedEventStart,
+            perfData.domContentLoadedEventStart,
         loadComplete: perfData.loadEventEnd - perfData.loadEventStart,
         totalTime: perfData.loadEventEnd - perfData.navigationStart,
       });
@@ -46,13 +49,16 @@ if (enablePerformanceMonitoring) {
 /**
  * Error handling for unhandled promise rejections
  */
-window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {
-  console.error('Unhandled Promise Rejection:', event.reason);
-  // In production, you might want to send this to an error reporting service
-  if (import.meta.env.PROD) {
-    // Example: sendToErrorReporting(event.reason);
-  }
-});
+window.addEventListener(
+  'unhandledrejection',
+  (event: PromiseRejectionEvent) => {
+    console.error('Unhandled Promise Rejection:', event.reason);
+    // In production, you might want to send this to an error reporting service
+    if (import.meta.env.PROD) {
+      // Example: sendToErrorReporting(event.reason);
+    }
+  },
+);
 
 /**
  * Initialize the application

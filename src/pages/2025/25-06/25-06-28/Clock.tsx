@@ -10,9 +10,9 @@ const Clock24: React.FC = () => {
       fontUrl: twentyFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

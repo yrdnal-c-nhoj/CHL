@@ -16,9 +16,9 @@ const Clock: React.FC = () => {
       fontUrl: customFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

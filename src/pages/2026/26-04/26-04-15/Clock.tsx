@@ -11,12 +11,15 @@ const Clock: React.FC = () => {
   const time = useClockTime();
   // Use a timestamp rounded to 3 seconds to prevent excessive network requests
   const catInterval = Math.floor(time.getTime() / 3000);
-  const [catUrl, setCatUrl] = useState(`https://cataas.com/cat?t=${catInterval}`);
+  const [catUrl, setCatUrl] = useState(
+    `https://cataas.com/cat?t=${catInterval}`,
+  );
 
   // Load the local cat font for this date
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'CatClock', fontUrl: catFont }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'CatClock', fontUrl: catFont }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -35,19 +38,27 @@ const Clock: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.catBox}>
-        <img 
-          src={catUrl} 
-          alt="Random Cat" 
-          className={styles.catImage}
-        />
+        <img src={catUrl} alt="Random Cat" className={styles.catImage} />
       </div>
       <div className={styles.clock}>
-        <div className={styles.digitBox}><span className={styles.digit}>{hours[0]}</span></div>
-        <div className={styles.digitBox}><span className={styles.digit}>{hours[1]}</span></div>
-        <div className={styles.digitBox}><span className={styles.digit}>{minutes[0]}</span></div>
-        <div className={styles.digitBox}><span className={styles.digit}>{minutes[1]}</span></div>
-        <div className={styles.digitBox}><span className={styles.digit}>{seconds[0]}</span></div>
-        <div className={styles.digitBox}><span className={styles.digit}>{seconds[1]}</span></div>
+        <div className={styles.digitBox}>
+          <span className={styles.digit}>{hours[0]}</span>
+        </div>
+        <div className={styles.digitBox}>
+          <span className={styles.digit}>{hours[1]}</span>
+        </div>
+        <div className={styles.digitBox}>
+          <span className={styles.digit}>{minutes[0]}</span>
+        </div>
+        <div className={styles.digitBox}>
+          <span className={styles.digit}>{minutes[1]}</span>
+        </div>
+        <div className={styles.digitBox}>
+          <span className={styles.digit}>{seconds[0]}</span>
+        </div>
+        <div className={styles.digitBox}>
+          <span className={styles.digit}>{seconds[1]}</span>
+        </div>
       </div>
     </div>
   );

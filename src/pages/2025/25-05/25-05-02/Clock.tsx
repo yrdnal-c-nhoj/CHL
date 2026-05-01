@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react';
 import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -30,13 +36,16 @@ interface HandPosition {
 
 const Clock: React.FC<ClockProps> = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'Scorpion',
-      fontUrl: fontFile,
-    }
-  ], []);
-  
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'Scorpion',
+        fontUrl: fontFile,
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
@@ -59,7 +68,7 @@ const Clock: React.FC<ClockProps> = () => {
 
     // Add subtle jitter for realistic movement
     const jitter = () => Math.random() * 2 - 1;
-    
+
     const secondDegrees = seconds * 6 + jitter() * 0.3;
     const minuteDegrees = minutes * 6 + seconds / 10 + jitter() * 0.02;
     const hourDegrees = hours * 30 + minutes / 2 + jitter() * 0.005;
@@ -97,7 +106,7 @@ const Clock: React.FC<ClockProps> = () => {
   // Start animation loop
   useEffect(() => {
     updateClockHands();
-    
+
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
@@ -106,12 +115,17 @@ const Clock: React.FC<ClockProps> = () => {
   }, [updateClockHands]);
 
   // Generate clock numbers
-  const numbers = useMemo<ClockNumber[]>(() =>
-    Array.from({ length: 12 }, (_, index): ClockNumber => ({
-      value: index + 1,
-      rotation: index * 30,
-    }))
-    , []);
+  const numbers = useMemo<ClockNumber[]>(
+    () =>
+      Array.from(
+        { length: 12 },
+        (_, index): ClockNumber => ({
+          value: index + 1,
+          rotation: index * 30,
+        }),
+      ),
+    [],
+  );
 
   return (
     <main className={styles.container}>
@@ -123,8 +137,13 @@ const Clock: React.FC<ClockProps> = () => {
         className={styles.background}
       />
 
-      <time dateTime={currentTime.toISOString()} className={styles.clockContainer}>
-        <span style={{ display: 'none' }}>{currentTime.toLocaleTimeString()}</span>
+      <time
+        dateTime={currentTime.toISOString()}
+        className={styles.clockContainer}
+      >
+        <span style={{ display: 'none' }}>
+          {currentTime.toLocaleTimeString()}
+        </span>
         {/* Clock numbers */}
         {numbers.map((num) => (
           <div
@@ -137,7 +156,6 @@ const Clock: React.FC<ClockProps> = () => {
             {num.value}
           </div>
         ))}
-
 
         {/* Minute Hand */}
         <div className={styles.minuteHand} ref={minuteHandRef}>

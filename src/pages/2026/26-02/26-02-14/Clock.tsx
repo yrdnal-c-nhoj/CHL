@@ -14,15 +14,20 @@ interface SubstitutionMap {
 const DigitalClock: React.FC = () => {
   const time = useSecondClock();
 
-  const fontConfigs = useMemo(() => [{
-      fontFamily: 'Airport',
-      fontUrl: airportFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-  }], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'Airport',
+        fontUrl: airportFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   const substitutionMap: SubstitutionMap = {
@@ -142,21 +147,21 @@ const DigitalClock: React.FC = () => {
         </div>
 
         <div style={styles.digitGroup}>
-            {splitDigitsToLetters(minutes).map((letter, index) => (
-              <div key={`m-${index}`} style={styles.digitBox}>
-                <span style={styles.digit}>{letter}</span>
-              </div>
-            ))}
-          </div>
-
-          <div style={styles.digitGroup}>
-            {splitDigitsToLetters(seconds).map((letter, index) => (
-              <div key={`s-${index}`} style={styles.digitBox}>
-                <span style={styles.digit}>{letter}</span>
-              </div>
-            ))}
-          </div>
+          {splitDigitsToLetters(minutes).map((letter, index) => (
+            <div key={`m-${index}`} style={styles.digitBox}>
+              <span style={styles.digit}>{letter}</span>
+            </div>
+          ))}
         </div>
+
+        <div style={styles.digitGroup}>
+          {splitDigitsToLetters(seconds).map((letter, index) => (
+            <div key={`s-${index}`} style={styles.digitBox}>
+              <span style={styles.digit}>{letter}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

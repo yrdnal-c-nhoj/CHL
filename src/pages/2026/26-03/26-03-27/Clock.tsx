@@ -10,7 +10,7 @@ function maxRadiusInTriangle(
   theta: number,
   cx: number,
   cy: number,
-  vertices: [number, number][]
+  vertices: [number, number][],
 ): number {
   const dx = Math.sin(theta);
   const dy = -Math.cos(theta);
@@ -47,7 +47,7 @@ export default function TriangleClock() {
     {
       fontFamily: 'TriFont',
       fontUrl: triFont,
-    }
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
@@ -78,7 +78,7 @@ export default function TriangleClock() {
 
   const vertices: [number, number][] = [tl, tr, bm];
 
-  const hourR = maxRadiusInTriangle(hourAngle, cx, cy, vertices) * 0.30;
+  const hourR = maxRadiusInTriangle(hourAngle, cx, cy, vertices) * 0.3;
   const minR = maxRadiusInTriangle(minAngle, cx, cy, vertices) * 0.88;
   const secR = maxRadiusInTriangle(secAngle, cx, cy, vertices) * 0.95;
 
@@ -88,7 +88,7 @@ export default function TriangleClock() {
   const my = cy - Math.cos(minAngle) * minR;
 
   const secArcAngle = secFrac * 2 * Math.PI;
-  const prevSecAngle = Math.floor(seconds) / 60 * 2 * Math.PI;
+  const prevSecAngle = (Math.floor(seconds) / 60) * 2 * Math.PI;
 
   const numberPositions: Record<number, string> = {
     10: styles.numberTen,
@@ -100,7 +100,13 @@ export default function TriangleClock() {
   type Tick = { x1: number; y1: number; x2: number; y2: number };
   const cornerTicks: Tick[] = [];
 
-  const makeTicks = (start: [number, number], end: [number, number], cx: number, cy: number, count: number): Tick[] => {
+  const makeTicks = (
+    start: [number, number],
+    end: [number, number],
+    cx: number,
+    cy: number,
+    count: number,
+  ): Tick[] => {
     const ticks: Tick[] = [];
     for (let i = 1; i <= count; i++) {
       const t = i / (count + 1);
@@ -153,7 +159,9 @@ export default function TriangleClock() {
       >
         <defs>
           <clipPath id="triangle-clip">
-            <polygon points={`${tl[0]},${tl[1]} ${tr[0]},${tr[1]} ${bm[0]},${bm[1]}`} />
+            <polygon
+              points={`${tl[0]},${tl[1]} ${tr[0]},${tr[1]} ${bm[0]},${bm[1]}`}
+            />
           </clipPath>
 
           <radialGradient id="bg-grad" cx="50%" cy="40%" r="60%">
@@ -199,7 +207,14 @@ export default function TriangleClock() {
             <stop offset="0%" stopColor="#ff69b4" stopOpacity="0.6" />
             <stop offset="100%" stopColor="#4a0e4e" stopOpacity="0" />
           </radialGradient>
-          <ellipse cx={cx} cy={cy} rx={320} ry={280} fill="url(#inner-glow)" opacity={0.6} />
+          <ellipse
+            cx={cx}
+            cy={cy}
+            rx={320}
+            ry={280}
+            fill="url(#inner-glow)"
+            opacity={0.6}
+          />
 
           <path
             d={buildArc(prevSecAngle, secArcAngle, secR)}
@@ -254,7 +269,13 @@ export default function TriangleClock() {
             />
           ))}
 
-          <circle cx={cx} cy={cy} r={10} fill={centerDot} filter="url(#glow-gold)" />
+          <circle
+            cx={cx}
+            cy={cy}
+            r={10}
+            fill={centerDot}
+            filter="url(#glow-gold)"
+          />
           <circle cx={cx} cy={cy} r={4} fill={bg} />
         </g>
 

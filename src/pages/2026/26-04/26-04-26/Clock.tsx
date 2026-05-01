@@ -6,16 +6,19 @@ import jetFont from '@/assets/fonts/2026/26-04-26-jet.ttf?url';
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 const Clock: React.FC = () => {
   const time = useClockTime();
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'Jet',
-      fontUrl: jetFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'Jet',
+        fontUrl: jetFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
   const { displayHours, displayMinutes, displaySeconds, ampm } = useMemo(() => {
     const rawHours = time.getHours();
@@ -118,14 +121,7 @@ const Clock: React.FC = () => {
 
   return (
     <main style={containerStyle}>
-      <video
-        src={bgVideo}
-        autoPlay
-        loop
-        muted
-        playsInline
-        style={videoStyle}
-      />
+      <video src={bgVideo} autoPlay loop muted playsInline style={videoStyle} />
       <style>{`
         @keyframes blink {
           0%, 100% { opacity: 0.6; }
@@ -134,15 +130,29 @@ const Clock: React.FC = () => {
       `}</style>
       <div style={clockWrapperStyle}>
         <time style={timeStyle} dateTime={time.toISOString()}>
-          <div style={digitBoxStyle}><span style={digitStyle}>{displayHours[0]}</span></div>
-          <div style={digitBoxStyle}><span style={digitStyle}>{displayHours[1]}</span></div>
+          <div style={digitBoxStyle}>
+            <span style={digitStyle}>{displayHours[0]}</span>
+          </div>
+          <div style={digitBoxStyle}>
+            <span style={digitStyle}>{displayHours[1]}</span>
+          </div>
           <span style={separatorStyle}>:</span>
-          <div style={digitBoxStyle}><span style={digitStyle}>{displayMinutes[0]}</span></div>
-          <div style={digitBoxStyle}><span style={digitStyle}>{displayMinutes[1]}</span></div>
+          <div style={digitBoxStyle}>
+            <span style={digitStyle}>{displayMinutes[0]}</span>
+          </div>
+          <div style={digitBoxStyle}>
+            <span style={digitStyle}>{displayMinutes[1]}</span>
+          </div>
           <span style={separatorStyle}>:</span>
-          <div style={digitBoxStyle}><span style={digitStyle}>{displaySeconds[0]}</span></div>
-          <div style={digitBoxStyle}><span style={digitStyle}>{displaySeconds[1]}</span></div>
-          <div style={ampmBoxStyle}><span style={ampmStyle}>{ampm}</span></div>
+          <div style={digitBoxStyle}>
+            <span style={digitStyle}>{displaySeconds[0]}</span>
+          </div>
+          <div style={digitBoxStyle}>
+            <span style={digitStyle}>{displaySeconds[1]}</span>
+          </div>
+          <div style={ampmBoxStyle}>
+            <span style={ampmStyle}>{ampm}</span>
+          </div>
         </time>
       </div>
     </main>

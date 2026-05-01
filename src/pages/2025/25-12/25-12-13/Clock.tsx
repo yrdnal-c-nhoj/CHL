@@ -15,7 +15,7 @@ const fontConfigs: FontConfig[] = [
 
 export default function RococoClock() {
   const [now, setNow] = useState(new Date());
-  
+
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {

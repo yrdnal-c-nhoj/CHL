@@ -79,9 +79,7 @@ const ClockLayout: React.FC<ClockLayoutProps> = ({
       )}
 
       {/* Loading indicator */}
-      {loading && !isReady && (
-        <div className={styles.loading}>Loading...</div>
-      )}
+      {loading && !isReady && <div className={styles.loading}>Loading...</div>}
 
       {/* Navigation */}
       {isReady && ClockComponent && currentItem && (

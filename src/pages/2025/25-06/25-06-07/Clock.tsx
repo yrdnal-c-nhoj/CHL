@@ -23,9 +23,9 @@ export default function BlizzardClock() {
       fontUrl: amaticRegular,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

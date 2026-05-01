@@ -13,9 +13,9 @@ const BarrelrollClock: React.FC = () => {
       fontUrl: berFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   useEffect(() => {

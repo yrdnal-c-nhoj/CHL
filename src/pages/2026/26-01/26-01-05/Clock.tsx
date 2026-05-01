@@ -13,9 +13,9 @@ export default function AardvarkClock() {
       fontUrl: gizaFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

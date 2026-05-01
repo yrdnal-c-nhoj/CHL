@@ -12,17 +12,20 @@ export default function PixelInverseClock() {
   const [assetsLoaded, setAssetsLoaded] = useState<boolean>(false);
   const imageRef = useRef(new Image());
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: FONT_FAMILY,
-      fontUrl: fontFile,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: FONT_FAMILY,
+        fontUrl: fontFile,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
@@ -40,7 +43,10 @@ export default function PixelInverseClock() {
             imageRef.current.style.display = 'none';
             document.body.appendChild(imageRef.current);
             setTimeout(() => {
-              if (imageRef.current && document.body.contains(imageRef.current)) {
+              if (
+                imageRef.current &&
+                document.body.contains(imageRef.current)
+              ) {
                 document.body.removeChild(imageRef.current);
               }
               resolve();
