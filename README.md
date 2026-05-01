@@ -137,15 +137,17 @@ Generated audit artifacts:
 - TypeScript: **3241 errors** (`typecheck-report.txt`)
 - ESLint: **518 errors / 3288 warnings** (`eslint-report.json`)
 - Production build: **passes** (`npm run build`)
-- Dist footprint: **249.87 MB**
+- Dist footprint: **249.87 MB** across 2836 files
   - Largest JS bundle: `dist/assets/three-C9XuxQ2Y.js` (~747.2 KB)
   - Largest driver: video assets (`.mp4` ~81.76 MB total in `dist`)
+- Asset Hygiene: **73 verified removable files** (~9.53 MB savings)
 
 Primary near-term priorities:
-1. Reduce lint/type debt in high-error clock modules.
-2. Remove or archive confirmed unused assets.
-3. Enforce naming and import conventions in CI.
-4. Keep media-heavy clocks segmented to preserve fast initial route loads.
+1. **Code Hygiene**: Reduce lint/type debt in high-error modules.
+2. **Asset Purge**: Remove the 73 verified unused assets (59 images, 2 videos, 12 fonts).
+3. **A11y Retrofit**: Add missing `<time>` tags to Canvas-based clocks.
+4. **Standardization**: Consolidate fragmentation between `@/utils/hooks` and `@/utils/clockUtils`.
+5. **Deployment Hygiene**: Enforce naming and import conventions in CI.
 
 ## Deployment
 
