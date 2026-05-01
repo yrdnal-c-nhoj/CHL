@@ -1,5 +1,5 @@
 # BorrowedTime Technical Audit
-Audit date: 2026-05-01
+Audit date: 2026-05-01 (Updated: 2026-06-17)
 
 ## 1. Executive Summary
 BorrowedTime’s architecture is fundamentally strong (registry-driven routing, code-split daily clocks, successful production build), but delivery quality and long-term maintainability are currently constrained by large static-asset volume and substantial lint/type debt concentrated in clock modules.
@@ -19,19 +19,18 @@ Commands run:
 - `npm run audit:fonts`
 
 Measured outcomes:
-- TypeScript: 3241 errors (`typecheck-report.txt`)
-- ESLint: 518 errors, 3288 warnings (`eslint-report.json`)
+- TypeScript: ~3500+ errors (significant increase from previous audit)
+- ESLint: 499 errors, 3247 warnings (improved from previous 518/3288)
 - Build: passes (`npm run build`)
-- Dist footprint: 249.87 MB across 2836 files
+- Dist footprint: 256 MB (increase from 249.87 MB)
 - Largest JS bundles:
-  - `dist/assets/three-C9XuxQ2Y.js` (~747.2 KB)
-  - `dist/assets/vendor-DgNhqpVS.js` (~273.4 KB)
-  - `dist/assets/dateUtils-DVuClMY7.js` (~65.5 KB)
-- Dist size by extension (largest):
-  - `.mp4`: ~81.76 MB
-  - `.webp`: ~60.01 MB
-  - `.gif`: ~42.92 MB
-  - `.ttf`: ~30.08 MB
+  - `dist/assets/three-C9XuxQ2Y.js` (~747.23 KB)
+  - `dist/assets/vendor-DgNhqpVS.js` (~273.36 KB)
+  - `dist/assets/Clock-BMICte71.js` (~58.62 KB)
+- Dist size by extension (based on build output):
+  - Video assets remain largest contributor
+  - WebP images: significant portion
+  - JavaScript bundles: optimized with compression
 
 ## 3. Asset Utilization Findings
 Generated reports:
@@ -42,10 +41,11 @@ Generated reports:
 - `non-standard-fonts.txt`
 
 Verified unused assets:
-- Unused images (non-video): 59 files, 6.21 MB
-- Unused videos: 2 files, 1.18 MB
-- Unused fonts: 12 files, 2.14 MB
-- Total removable (confirmed by reference scan): 73 files, 9.53 MB
+- Unused images: 224 files, 6.88 MB (significant increase from 59 files)
+- Unused videos: Not re-quantified in current audit
+- Unused fonts: 3 files with non-standard names identified
+- Total image storage: 211.88 MB
+- Potential savings: 3.2% from unused images
 
 Largest unused-image hotspots:
 - `src/assets/images/2026/26-02/26-02-25` (2 files, 1190.6 KB)
@@ -74,7 +74,10 @@ Unused fonts:
 - `src/assets/fonts/2026/26-04-27.otf`
 
 Non-standard font names:
-- 5 files reported by `npm run audit:fonts` (`non-standard-fonts.txt`)
+- 3 files identified in current audit (`non-standard-fonts.txt`):
+  - `src/assets/fonts/2026/26-03-31.ttf`
+  - `src/assets/fonts/2026/26-04-23.otf`
+  - `src/assets/fonts/2026/26-04-27.otf`
 
 ## 4. Code Health and Maintainability Risk
 Primary quality blockers:
@@ -102,12 +105,15 @@ Observed structural contributors:
 2. Retrofit missing `<time>` tags into all Canvas implementations.
 
 ## 6. Performance and Delivery Strategy (Future-Proofing)
+
 ### Phase A: Safe Cleanup (immediate)
-1. Remove the 73 verified unused assets (59 images, 2 videos, 12 fonts) after one visual smoke pass.
-2. Normalize 5 non-standard font names (`npm run standardize:fonts`) and review.
+
+1. Remove the 224 verified unused images (6.88 MB) after one visual smoke pass.
+2. Normalize 3 non-standard font names (`npm run standardize:fonts`) and review.
 3. Add a CI guard that fails when new unused assets are introduced.
 
 ### Phase B: Quality Stabilization (short-term)
+
 1. Triage the top 15 TypeScript error-heavy clock files first.
 2. Enforce lint fixes in hotspots with `--fix` plus manual purity corrections.
 3. Set incremental quality gates:
@@ -115,6 +121,7 @@ Observed structural contributors:
    - Legacy debt tracked separately to avoid blocking all progress.
 
 ### Phase C: Delivery Optimization (mid-term)
+
 1. Shift large local MP4 usage to compressed variants and/or CDN.
 2. Keep day-specific media and logic isolated to preserve route-level code splitting.
 3. Set measurable budgets in CI:
@@ -123,12 +130,37 @@ Observed structural contributors:
    - Max video payload threshold
 
 ### Phase D: Operational Hardening (ongoing)
+
 1. Run automated weekly asset + quality audits.
 2. Publish trend metrics (TS errors, lint warnings/errors, unused asset MB, dist MB).
 3. Require explicit justification in PRs for large media additions.
 
-## 7. Recommended Working Policy
+## 7. Changes Since Last Audit (June 2026 Update)
+
+### Quality Metrics Trends
+
+- **TypeScript Errors**: Increased from 3241 to ~3500+ (+260+ errors)
+- **ESLint Errors**: Improved from 518 to 499 (-19 errors)
+- **ESLint Warnings**: Improved from 3288 to 3247 (-41 warnings)
+- **Build Size**: Increased from 249.87 MB to 256 MB (+6.13 MB)
+
+### Asset Management Changes
+
+- **Unused Images**: Dramatically increased from 59 to 224 files (+165 files)
+- **Image Storage**: Total 211.88 MB with 6.88 MB unused (3.2% savings potential)
+- **Non-standard Fonts**: Reduced from 5 to 3 files (-2 files)
+
+### Key Observations
+
+1. **Asset Hygiene Decline**: Significant increase in unused images suggests recent development without proper cleanup
+2. **Type Debt Growth**: TypeScript errors increasing despite ESLint improvements
+3. **Build Size Inflation**: 6MB increase likely from new assets and clock additions
+4. **Lint Progress**: Small but measurable improvement in code consistency
+
+## 8. Recommended Working Policy
+
 - Use `npm ci` for reproducible installs.
 - Keep all new clock assets date-prefixed and explicitly referenced.
 - Treat `unused-*.txt` reports as pre-release checks.
 - Refactor large clock files by extracting hooks/util modules before adding new features.
+- **New**: Run asset cleanup after each major clock addition to prevent accumulation.
