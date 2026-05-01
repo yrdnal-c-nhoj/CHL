@@ -42,17 +42,18 @@ Generated reports:
 - `non-standard-fonts.txt`
 
 Verified unused assets:
-- Unused images (non-video): 228 files, 9.06 MB
+- Unused images (non-video): 59 files, 6.21 MB
 - Unused videos: 2 files, 1.18 MB
 - Unused fonts: 12 files, 2.14 MB
-- Total removable (confirmed by reference scan): 242 files, 12.38 MB
+- Total removable (confirmed by reference scan): 73 files, 9.53 MB
 
 Largest unused-image hotspots:
-- `src/assets/images/2026/26-01/26-01-04/digits` (169 files, 2850.7 KB)
 - `src/assets/images/2026/26-02/26-02-25` (2 files, 1190.6 KB)
 - `src/assets/images/2026/26-03/26-03-14/mother.jpg` (939.8 KB)
 - `src/assets/images/2026/26-04/26-04-06` (16 files, 878.5 KB)
 - `src/assets/images/2026/26-04/26-04-27` (4 files, 734.3 KB)
+
+**Note**: The audit incorrectly flagged `src/assets/images/2026/26-01/26-01-04/digits` (169 files, 2850.7 KB) as unused. These digit images are actively used by the corresponding Clock.tsx component via import.meta.glob statements and should not be removed.
 
 Unused videos:
 - `src/assets/images/2025/25-10/25-10-14/air.webm` (33.8 KB)
