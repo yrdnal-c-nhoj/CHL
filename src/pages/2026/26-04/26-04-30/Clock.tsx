@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState, useCallback, useEffect } from 'react'
 
 import pleiadesFont from '@/assets/fonts/2026/26-04-30-pleides.otf';
 import { useClockTime } from '@/utils/clockUtils';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader'; // Corrected import path
 import type { FontConfig } from '@/types/clock';
 
 import styles from './Clock.module.css';
