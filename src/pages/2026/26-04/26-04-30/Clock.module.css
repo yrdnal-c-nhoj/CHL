@@ -3,7 +3,7 @@
   height: 100dvh;
   position: relative;
   background-color: #02040a;
-  background-image: radial-gradient(circle at 50% 50%, rgba(30, 50, 100, 0.3), transparent), url('@/assets/images/2026/26-04/26-04-30/pleiades.webp');
+  background-image: radial-gradient(circle at 50% 50%, rgba(30, 50, 100, 0.3), transparent), url('@/assets/images/2026/26-04/26-04-30/26-04-30-pleiades.webp');
   background-size: cover;
   background-position: center;
   overflow: hidden;
