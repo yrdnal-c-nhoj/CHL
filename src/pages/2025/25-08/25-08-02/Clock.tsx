@@ -1,13 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import React, { useMemo } from 'react';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
 import myFontWoff2 from '@/assets/fonts/2025/25-08-02-hea.ttf';
 import bg2 from '@/assets/images/2025/25-08/25-08-02/em.webp';
 
 const DigitalClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState(false);
-  const componentId = useRef(`digital-clock-${Date.now()}`);
+  const time = useClockTime();
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -20,26 +18,15 @@ const DigitalClock: React.FC = () => {
       }
     }
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  
+  // Suspend until font is ready
+  useSuspenseFontLoader(fontConfigs);
 
-  // Update fontLoaded state when fontsLoaded changes
-  useEffect(() => {
-    setFontLoaded(fontsLoaded);
-  }, [fontsLoaded]);
-
-  // Font loading handled by useMultipleFontLoader
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (date) => {
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
+  const isoTime = time.toISOString();
+  const displayTime = () => {
+    const h = time.getHours().toString().padStart(2, '0');
+    const m = time.getMinutes().toString().padStart(2, '0');
+    return `${h}:${m}`;
   };
 
   const bgFilter = 'brightness(1.5) contrast(3.2)';
@@ -63,20 +50,17 @@ const DigitalClock: React.FC = () => {
   const clockContainerStyle = {
     position: 'relative',
     zIndex: 10,
-    fontFamily: fontLoaded ? "'hea', monospace" : 'monospace',
+    fontFamily: "'hea', monospace",
     fontSize: '0.5rem',
     color: '#CFEAEA',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
-    opacity: fontLoaded ? 1 : 0,
-    visibility: fontLoaded ? 'visible' : 'hidden',
-    transition: 'opacity 0.3s ease',
   };
 
   return (
-    <>
+    <main>
       {/* Full-Screen Background Layer for bg2, stretched with distortion */}
       <div
         style={fullScreenBackgroundStyle(bg2, 1, 2, {
@@ -85,8 +69,8 @@ const DigitalClock: React.FC = () => {
       />
 
       {/* Clock Display */}
-      <div style={clockContainerStyle}>{formatTime(time)}</div>
-    </>
+      <time dateTime={isoTime} style={clockContainerStyle}>{displayTime()}</time>
+    </main>
   );
 };
 
