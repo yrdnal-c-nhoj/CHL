@@ -1,0 +1,297 @@
+.container {
+  margin: 0;
+  padding: 0 0 60px 0;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: visible;
+  overflow-y: auto;
+}
+
+.centeredContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* changed from 'left' */
+  width: 90%;
+  max-width: 60ch; /* limits line length for readability */
+  box-sizing: border-box;
+  z-index: 5;
+  color: #060706;
+}
+
+.centeredContent h1 {
+  font-family: 'Roboto Slab', sans-serif;
+  color: var(--lab-red);
+  letter-spacing: 0.1rem;
+  font-size: clamp(1.7rem, 2vw, 3rem); /* responsive font size */
+  line-height: 1.4em;
+  text-align: center;
+  margin: 0.5rem 0;
+}
+
+.centeredContent p {
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem); /* responsive font size */
+  line-height: 1.6;
+  text-align: left;
+}
+/* 
+.epigraph {
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(0.9rem, 1vw, 1rem);
+  margin: 0.6rem 0;
+  text-align: left;
+  color: #323737;
+}
+
+.epigraph .quote {
+  font-style: italic;
+  border-left: 2px solid #9f9a9a;
+  padding-left: 1rem;
+}
+
+.epigraph .attribution {
+  text-align: left;
+  margin-top: 0.2rem;
+  margin-left: 1rem;
+  font-style: normal;
+  font-size: 0.8rem;
+}
+
+.epigraph .author,
+.epigraph .source {
+  color: #6b6969;
+  font-size: 0.8rem;
+} */
+
+.hat {
+  font-family: 'Roboto Slab', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  font-weight: bold;
+  color: var(--lab-red);
+  line-height: 1.2rem;
+  margin-bottom: -1.9rem;
+  display: block;
+  margin-top: 1rem;
+}
+
+.smallcaps {
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 0.041em;
+  text-transform: uppercase;
+}
+
+p {
+  font-family: 'Manrope', sans-serif;
+  margin-top: 2rem;
+}
+
+.translate {
+  display: block;
+  font-size: 0.7rem;
+  font-style: italic;
+  text-align: right;
+  color: #4d514d;
+}
+
+.line {
+  display: block;
+  bottom: 100px;
+  margin-top: 0.2rem;
+}
+
+a {
+  color: var(--lab-blue);
+  padding: 0.2rem 0.4rem;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Media query for larger screens */
+@media (min-width: 1200px) {
+  .centeredContent {
+    width: 70%;
+    max-width: 70ch; /* ensures line length stays readable */
+  }
+}
+/*
+.img {
+
+  max-width: 10%;
+  height: auto;
+  display: block;
+  margin: 1rem 0;
+} */
+/* Image styling */
+.instaImg {
+  /* max-width: clamp(150px, 15vw, 300px); */
+  /* width: 100%; */
+  height: auto;
+  display: block;
+  /* margin: 1rem 0; */
+}
+
+/* Form styling */
+.embeddable-buttondown-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.embeddable-buttondown-form input[type='email'] {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.embeddable-buttondown-form input[type='submit'].form-button,
+.embeddable-buttondown-form input.form-button {
+  background-color: #6e6c6c;
+  color: white;
+  font-weight: bold;
+  font-family: 'Manrope', sans-serif;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.embeddable-buttondown-form input[type='submit'].form-button:hover,
+.embeddable-buttondown-form input.form-button:hover {
+  background-color: #585656;
+}
+.email-link {
+  font-family: 'Manrope', sans-serif;
+  color: var(--lab-blue-deep);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Shared button styles */
+.form-button {
+  background-color: #6e6c6c;
+  color: white;
+  font-weight: bold;
+  font-family: 'Manrope', sans-serif;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: auto;
+  align-self: flex-start;
+}
+
+.form-button:hover {
+  background-color: #585656;
+}
+
+/* Footer styles */
+.footer {
+  width: 100%;
+  background-color: var(--lab-bg-gray);
+  border-top: 1px solid #ddd;
+  margin-top: auto;
+  padding: 1rem 0;
+}
+
+.footer-content {
+  text-align: center;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.9rem;
+  color: #666;
+}
+.social-links {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centers the icons */
+  gap: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.social-icon {
+  width: 4rem;
+  height: 4rem;
+  transition: opacity 0.2s ease;
+}
+
+.social-icon:hover {
+  opacity: 0.7;
+}
+
+.section {
+  margin-bottom: 1rem;
+}
+
+/* Contact form styling */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-family: 'Manrope', sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.contact-form input[type='submit'].form-button,
+.contact-form input.form-button {
+  background-color: #6e6c6c;
+  color: white;
+  font-weight: bold;
+  font-family: 'Manrope', sans-serif;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: auto;
+  align-self: flex-start;
+}
+
+.contact-form input[type='submit'].form-button:hover,
+.contact-form input.form-button:hover {
+  background-color: #585656;
+}
+
+.email-fallback {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* Section divider lines */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--lab-divider);
+  margin: 0.5rem 0 0.5rem 0;
+  width: 300px;
+}
