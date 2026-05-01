@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react';
+// BTS: Use named imports for hooks and types to satisfy the 'automatic' JSX runtime
+import { useMemo, type FC } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 import myFontWoff2 from '@/assets/fonts/2025/25-08-02-hea.ttf';
@@ -18,7 +19,7 @@ export const fontConfigs = [
   }
 ];
 
-const DigitalClock: React.FC = () => {
+const DigitalClock: FC = () => {
   const time = useClockTime();
 
   // BTS: Suspend until font is ready to prevent FOUC
