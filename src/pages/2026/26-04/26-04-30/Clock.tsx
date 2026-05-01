@@ -1,8 +1,6 @@
 import React, { useMemo, useRef, useState, useCallback, useEffect } from 'react';
 
 import pleiadesFont from '@/assets/fonts/2026/26-04-30-pleides.otf';
-import { useClockTime } from '@/utils/clockUtils';
-import { useSuspenseFontLoader } from '@/utils/fontLoader'; // Corrected import path
 import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -26,7 +24,6 @@ interface StarPair {
 }
 
 const STAR_COUNT = 150;
-const formatTime = (num: number): string => num.toString().padStart(2, '0');
 const formatDigits = (num: number): string => num.toString().padStart(2, '0');
 
 const positions = [
@@ -129,8 +126,6 @@ const PleiadesClock: React.FC = () => {
     let h = time.getHours();
     const isAM = h < 12;
     h = h % 12 || 12;
-    const hStr = formatTime(h);
-    const mStr = formatTime(time.getMinutes());
     const hStr = formatDigits(h);
     const mStr = formatDigits(time.getMinutes());
     const isoString = time.toISOString();
@@ -186,10 +181,6 @@ const PleiadesClock: React.FC = () => {
           style={{
             top: star.startY,
             left: star.startX,
-            width: star.length,
-            transform: `rotate(${star.angle}deg)`,
-            animation: `shoot-${star.id}-${star.key} ${star.duration}s ease-out forwards`,
-          }}
             width: `${star.length}px`,
             '--star-angle': `${star.angle}deg`,
             '--star-duration': `${star.duration}s`,
@@ -211,17 +202,6 @@ const PleiadesClock: React.FC = () => {
         <span className={`${styles.indicator} ${styles.indicatorActive} ${styles.indicatorTransition}`} style={{ top: positions[4].top, left: positions[4].left, animationDelay: '3s' }}>{isAM ? 'A' : 'P'}</span>
         <span className={`${styles.indicator} ${styles.indicatorActive} ${styles.indicatorTransition}`} style={{ top: positions[5].top, left: positions[5].left, animationDelay: '3.5s' }}>M</span>
       </time>
-
-      <style>{`
-        ${starPairs.map(s => `
-          @keyframes shoot-${s.id}-${s.key} {
-            0% { transform: rotate(${s.angle}deg) translateX(0); opacity: 0; }
-            10% { opacity: 1; }
-            30% { transform: rotate(${s.angle}deg) translateX(${s.distance}vw); opacity: 0; }
-            100% { transform: rotate(${s.angle}deg) translateX(${s.distance}vw); opacity: 0; }
-          }
-        `).join('')}
-      `}</style>
     </div>
   );
 };
