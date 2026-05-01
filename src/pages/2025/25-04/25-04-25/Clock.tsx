@@ -1,14 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useClockTime } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import backgroundImage from '@/assets/images/2025/25-04/25-04-25/bad.webp';
-import boldFont from '../../../../assets/fonts/2025/25-04-25-Oswald-Bold.ttf?url';
 import hourHandImage from '@/assets/images/2025/25-04/25-04-25/ban.webp';
 import minuteHandImage from '@/assets/images/2025/25-04/25-04-25/ba.gif';
 import secondHandImage from '@/assets/images/2025/25-04/25-04-25/band.gif';
 import styles from './Clock.module.css';
-
 interface ClockImages {
   hourImg: HTMLImageElement;
   minuteImg: HTMLImageElement;
@@ -24,18 +20,15 @@ const MyClock: React.FC<MyClockProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<ClockImages | null>(null);
 
-  const fontConfigs: FontConfig[] = [
-    {
-      fontFamily: 'OswaldBold',
-      fontUrl: boldFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ];
-  useSuspenseFontLoader(fontConfigs);
   const currentTime = useClockTime();
+
+  // Load Google Font for canvas
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+  }, []);
 
   useEffect(() => {
     if (!imagesRef.current) return;
@@ -57,7 +50,7 @@ const MyClock: React.FC<MyClockProps> = () => {
       ctx.fillStyle = '#FA0820FF';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.font = `${r * 0.5}px OswaldBold, sans-serif`; // Fallback font
+      ctx.font = `700 ${r * 0.5}px Oswald, sans-serif`;
 
       for (let i = 1; i <= 12; i++) {
         const angle = (i * Math.PI) / 6;
