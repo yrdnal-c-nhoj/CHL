@@ -1,0 +1,57 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+.videoBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  z-index: 0;
+  transform: scaleX(-1);
+  filter: hue-rotate(-30deg) saturate(1.5) contrast(1.4) brightness(1.2);
+}
+
+.clockWrapper {
+  position: relative;
+  width: 520px;
+  height: 520px;
+  zIndex: 1;
+  opacity: 0.9;
+}
+
+.number {
+  position: absolute;
+  font-family: 'Dragon', serif;
+  font-size: 5rem;
+  color: #83EF907F;
+  user-select: none;
+}
+
+.hand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+}
+
+.semanticTime {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
