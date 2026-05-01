@@ -16,15 +16,20 @@ const STYLE_CONFIG = {
 };
 
 const TrocClock: React.FC = () => {
-  const fontConfigs = useMemo(() => [{
-      fontFamily: 'TrocaderoFont',
-      fontUrl: trocaderoFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-  }], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'TrocaderoFont',
+        fontUrl: trocaderoFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   const time = useSecondClock();

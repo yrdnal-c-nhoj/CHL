@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  useMemo,
+} from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
@@ -13,13 +19,16 @@ export default function DigitalClockVideo() {
 
   const time = useMillisecondClock();
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'CustomFontmmm',
-      fontUrl: customFontmmm,
-      options: { weight: 'normal', style: 'normal' }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'CustomFontmmm',
+        fontUrl: customFontmmm,
+        options: { weight: 'normal', style: 'normal' },
+      },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 

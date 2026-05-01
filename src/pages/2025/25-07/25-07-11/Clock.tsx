@@ -14,9 +14,9 @@ const PenmanshipClock: React.FC = () => {
       fontUrl: penFontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

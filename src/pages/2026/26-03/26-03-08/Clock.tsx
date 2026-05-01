@@ -17,9 +17,9 @@ const Clock: React.FC = () => {
       fontUrl: dragonFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   useSuspenseFontLoader(fontConfigs);
   const time = useClockTime();
@@ -68,17 +68,14 @@ const Clock: React.FC = () => {
 
   return (
     <main className={styles.container}>
-      <time dateTime={time.toISOString().split('.')[0] + 'Z'} className={styles.semanticTime}>
+      <time
+        dateTime={time.toISOString().split('.')[0] + 'Z'}
+        className={styles.semanticTime}
+      >
         {time.toLocaleTimeString()}
       </time>
-      
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className={styles.videoBackground}
-      >
+
+      <video autoPlay loop muted playsInline className={styles.videoBackground}>
         <source src={dragonVideo} type="video/mp4" />
       </video>
 

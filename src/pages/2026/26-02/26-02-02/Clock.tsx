@@ -47,8 +47,8 @@ const SonicBoomClock: React.FC = () => {
         }}
       >
         {digits.map((digit: string, index: number) => {
-          const reverseIndex = digits.length - index - 1; 
-          const fontSize = 40 + reverseIndex * -4.5; 
+          const reverseIndex = digits.length - index - 1;
+          const fontSize = 40 + reverseIndex * -4.5;
           const opacity = Math.max(1.0 - reverseIndex * 0.15, 0.3);
 
           return (

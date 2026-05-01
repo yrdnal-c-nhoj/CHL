@@ -14,9 +14,10 @@ export default function MediaClock() {
   const backgroundShiftX = '49%';
   const backgroundShiftY = 'center';
 
-  const fontConfigs = useMemo(() => [
-    { fontFamily: 'SereneFont', fontUrl: font_20251018 }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [{ fontFamily: 'SereneFont', fontUrl: font_20251018 }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 

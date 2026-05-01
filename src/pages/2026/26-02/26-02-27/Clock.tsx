@@ -5,7 +5,6 @@ import abuVideo from '@/assets/images/2026/26-02/26-02-27/abu.mp4';
 const Clock: React.FC = () => {
   const time = useSecondClock();
 
-
   const seconds = time.getSeconds();
   const minutes = time.getMinutes();
   const hours = time.getHours() % 12;
@@ -130,7 +129,6 @@ const Clock: React.FC = () => {
             </div>
           );
         })}
-
 
         <div
           style={{

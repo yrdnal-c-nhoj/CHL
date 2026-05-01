@@ -39,10 +39,20 @@
   width: 0.75em;
   text-align: center;
   line-height: 0.8;
-  text-shadow: 1px 1px 17px #ffffff, -1px -1px 17px #ffffff, 1px -1px 17px #ffffff, -1px 1px 17px #ffffff;
+  text-shadow:
+    1px 1px 17px #ffffff,
+    -1px -1px 17px #ffffff,
+    1px -1px 17px #ffffff,
+    -1px 1px 17px #ffffff;
 }
 
 @media (min-width: 769px) {
-  .content { flex-direction: row; gap: 1.5vw; }
-  .digit { font-size: 28vh; lineHeight: 1.1; }
+  .content {
+    flex-direction: row;
+    gap: 1.5vw;
+  }
+  .digit {
+    font-size: 28vh;
+    lineheight: 1.1;
+  }
 }

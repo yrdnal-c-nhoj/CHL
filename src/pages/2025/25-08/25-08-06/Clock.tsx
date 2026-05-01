@@ -11,9 +11,9 @@ const DigitalClock: React.FC = () => {
       fontUrl: laikaFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

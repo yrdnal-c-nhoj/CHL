@@ -20,16 +20,19 @@ const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
   const [time, setTime] = useState(new Date());
 
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'Petal',
-      fontUrl: fontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'Petal',
+        fontUrl: fontUrl,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Font loading handled by useSuspenseFontLoader

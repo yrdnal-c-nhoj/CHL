@@ -23,18 +23,18 @@ interface Velocity {
 
 const CubeClock: React.FC<CubeClockProps> = () => {
   const cubeRef = useRef<HTMLDivElement>(null);
-  
+
   // Use refs for physics to prevent "glitching" on re-renders
   const position = useRef<Position>({ x: 50, y: 50 });
-  const velocity = useRef<Velocity>({ 
-    x: (Math.random() > 0.5 ? 1 : -1) * (0.2 + Math.random() * 0.2), 
-    y: (Math.random() > 0.5 ? 1 : -1) * (0.2 + Math.random() * 0.2) 
+  const velocity = useRef<Velocity>({
+    x: (Math.random() > 0.5 ? 1 : -1) * (0.2 + Math.random() * 0.2),
+    y: (Math.random() > 0.5 ? 1 : -1) * (0.2 + Math.random() * 0.2),
   });
 
   // Font loading configuration (memoized) - no custom fonts needed
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
   useSuspenseFontLoader(fontConfigs);
-  
+
   // Use the standardized hook for smooth clock updates
   const currentTime = useSecondClock();
 
@@ -77,9 +77,14 @@ const CubeClock: React.FC<CubeClockProps> = () => {
     if (position.current.y <= 0) {
       position.current.y = 0;
       velocity.current.y = Math.abs(velocity.current.y);
-    } else if (position.current.y + (cubeSizeVw * (window.innerWidth/window.innerHeight)) >= 100) {
+    } else if (
+      position.current.y +
+        cubeSizeVw * (window.innerWidth / window.innerHeight) >=
+      100
+    ) {
       // Corrected for aspect ratio since cube height is 15vw
-      const cubeHeightVh = (cubeSizeVw * window.innerWidth) / window.innerHeight;
+      const cubeHeightVh =
+        (cubeSizeVw * window.innerWidth) / window.innerHeight;
       position.current.y = 100 - cubeHeightVh;
       velocity.current.y = -Math.abs(velocity.current.y);
     }
@@ -90,14 +95,14 @@ const CubeClock: React.FC<CubeClockProps> = () => {
 
   useEffect(() => {
     let animationFrame: number;
-    
+
     const animationLoop = () => {
       animate();
       animationFrame = requestAnimationFrame(animationLoop);
     };
 
     animationLoop();
-    
+
     return () => {
       cancelAnimationFrame(animationFrame);
     };
@@ -106,7 +111,7 @@ const CubeClock: React.FC<CubeClockProps> = () => {
   // Global keyframes injection with proper cleanup
   useEffect(() => {
     if (typeof document === 'undefined') return;
-    
+
     const globalStyle = document.createElement('style');
     globalStyle.id = 'cube-clock-keyframes';
     globalStyle.textContent = `
@@ -116,7 +121,7 @@ const CubeClock: React.FC<CubeClockProps> = () => {
       }
     `;
     document.head.appendChild(globalStyle);
-    
+
     return () => {
       if (globalStyle.parentNode) {
         globalStyle.parentNode.removeChild(globalStyle);
@@ -151,7 +156,7 @@ const styles: Record<string, CSSProperties> = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative'
+    position: 'relative',
   },
   scene: {
     width: '100vw',
@@ -167,7 +172,7 @@ const styles: Record<string, CSSProperties> = {
     position: 'absolute',
     transformStyle: 'preserve-3d',
     // The CSS animation handles the spinning automatically
-    animation: 'rotate 10s linear infinite', 
+    animation: 'rotate 10s linear infinite',
   },
   face: {
     fontFamily: 'monospace',
@@ -183,14 +188,32 @@ const styles: Record<string, CSSProperties> = {
     color: 'rgb(70, 61, 61)',
     backfaceVisibility: 'hidden',
     WebkitBackfaceVisibility: 'hidden',
-    border: '1px solid rgba(255,255,255,0.2)'
+    border: '1px solid rgba(255,255,255,0.2)',
   },
-  front: { transform: 'translateZ(7.5vw)', backgroundColor: 'rgba(235, 108, 108, 0.8)' },
-  back: { transform: 'rotateY(180deg) translateZ(7.5vw)', backgroundColor: 'rgba(163, 231, 163, 0.8)' },
-  left: { transform: 'rotateY(-90deg) translateZ(7.5vw)', backgroundColor: 'rgba(184, 236, 219, 0.8)' },
-  right: { transform: 'rotateY(90deg) translateZ(7.5vw)', backgroundColor: 'rgba(232, 192, 123, 0.8)' },
-  top: { transform: 'rotateX(90deg) translateZ(7.5vw)', backgroundColor: 'rgba(224, 158, 224, 0.8)' },
-  bottom: { transform: 'rotateX(-90deg) translateZ(7.5vw)', backgroundColor: 'rgba(236, 9, 70, 0.8)' },
+  front: {
+    transform: 'translateZ(7.5vw)',
+    backgroundColor: 'rgba(235, 108, 108, 0.8)',
+  },
+  back: {
+    transform: 'rotateY(180deg) translateZ(7.5vw)',
+    backgroundColor: 'rgba(163, 231, 163, 0.8)',
+  },
+  left: {
+    transform: 'rotateY(-90deg) translateZ(7.5vw)',
+    backgroundColor: 'rgba(184, 236, 219, 0.8)',
+  },
+  right: {
+    transform: 'rotateY(90deg) translateZ(7.5vw)',
+    backgroundColor: 'rgba(232, 192, 123, 0.8)',
+  },
+  top: {
+    transform: 'rotateX(90deg) translateZ(7.5vw)',
+    backgroundColor: 'rgba(224, 158, 224, 0.8)',
+  },
+  bottom: {
+    transform: 'rotateX(-90deg) translateZ(7.5vw)',
+    backgroundColor: 'rgba(236, 9, 70, 0.8)',
+  },
 };
 
 export default CubeClock;

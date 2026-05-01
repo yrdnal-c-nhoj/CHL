@@ -44,9 +44,9 @@ const MorseClock: React.FC = () => {
       fontUrl: morseFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

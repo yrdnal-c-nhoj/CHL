@@ -28,12 +28,16 @@ function findClockPaths(dir, paths = [], basePath = '') {
     if (stat.isDirectory()) {
       // Check if this is a clock directory (contains Clock.tsx or Clock.jsx)
       const files = readdirSync(fullPath);
-      if (files.some(f => f === 'Clock.tsx' || f === 'Clock.jsx')) {
+      if (files.some((f) => f === 'Clock.tsx' || f === 'Clock.jsx')) {
         const relativePath = basePath ? `${basePath}/${item}` : item;
         paths.push(relativePath);
       } else {
         // Continue recursing
-        findClockPaths(fullPath, paths, basePath ? `${basePath}/${item}` : item);
+        findClockPaths(
+          fullPath,
+          paths,
+          basePath ? `${basePath}/${item}` : item,
+        );
       }
     }
   }
@@ -42,25 +46,25 @@ function findClockPaths(dir, paths = [], basePath = '') {
 
 async function captureScreenshot(browser, datePath) {
   const page = await browser.newPage();
-  
+
   // Set viewport size for Instagram (4:5 portrait, 540x675 - half size)
   await page.setViewport({
     width: 540,
     height: 675,
-    deviceScaleFactor: 1
+    deviceScaleFactor: 1,
   });
-  
+
   const url = `${BASE_URL}/${datePath}`;
   console.log(`📸 Capturing: ${url}`);
-  
+
   try {
-    await page.goto(url, { 
+    await page.goto(url, {
       waitUntil: 'networkidle0',
-      timeout: 30000 
+      timeout: 30000,
     });
-    
+
     // Wait for clock to be ready (250ms = 1/4 second after load)
-    await new Promise(resolve => setTimeout(resolve, 250));
+    await new Promise((resolve) => setTimeout(resolve, 250));
 
     // Generate unique filename to avoid overwriting
     const baseFileName = `${datePath.replace(/\//g, '-')}.png`;
@@ -74,9 +78,9 @@ async function captureScreenshot(browser, datePath) {
 
     await page.screenshot({
       path: outputFile,
-      fullPage: false
+      fullPage: false,
     });
-    
+
     console.log(`✅ Saved: ${outputFile}`);
     await page.close();
     return true;
@@ -89,7 +93,7 @@ async function captureScreenshot(browser, datePath) {
 
 async function main() {
   const args = process.argv.slice(2);
-  
+
   if (args.includes('--help') || args.includes('-h')) {
     console.log(`
 Usage: node screenshot.mjs [options] [date]
@@ -105,33 +109,33 @@ Examples:
     `);
     process.exit(0);
   }
-  
+
   const captureAll = args.includes('--all');
-  const specificDate = args.find(arg => arg.match(/^\d{2}-\d{2}-\d{2}$/));
-  
+  const specificDate = args.find((arg) => arg.match(/^\d{2}-\d{2}-\d{2}$/));
+
   if (!captureAll && !specificDate) {
     console.error('Please specify --all or a date (e.g., 26-03-23)');
     process.exit(1);
   }
-  
+
   console.log('🚀 Launching browser...');
   const browser = await puppeteer.launch({
     headless: 'new',
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
-  
+
   try {
     if (specificDate) {
       await captureScreenshot(browser, specificDate);
     } else if (captureAll) {
       const pagesDir = join(__dirname, '../src/pages');
       const clockPaths = findClockPaths(pagesDir);
-      
+
       console.log(`Found ${clockPaths.length} clocks to capture\n`);
-      
+
       let successCount = 0;
       let failCount = 0;
-      
+
       for (const datePath of clockPaths) {
         const success = await captureScreenshot(browser, datePath);
         if (success) {
@@ -140,8 +144,10 @@ Examples:
           failCount++;
         }
       }
-      
-      console.log(`\n📊 Results: ${successCount} succeeded, ${failCount} failed`);
+
+      console.log(
+        `\n📊 Results: ${successCount} succeeded, ${failCount} failed`,
+      );
     }
   } finally {
     await browser.close();

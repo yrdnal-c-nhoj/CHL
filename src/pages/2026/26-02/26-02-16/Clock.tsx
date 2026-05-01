@@ -58,14 +58,16 @@ const Digit = React.memo(({ char }: { char: string }) => {
 });
 Digit.displayName = 'Digit';
 
-export const fontConfigs = [{
-  fontFamily: 'MazeFont',
-  fontUrl: mazeFont,
-  options: {
-    weight: 'normal',
-    style: 'normal'
-  }
-}];
+export const fontConfigs = [
+  {
+    fontFamily: 'MazeFont',
+    fontUrl: mazeFont,
+    options: {
+      weight: 'normal',
+      style: 'normal',
+    },
+  },
+];
 
 const DigitalClock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);

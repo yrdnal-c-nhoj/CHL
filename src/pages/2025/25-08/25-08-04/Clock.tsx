@@ -26,9 +26,9 @@ const DigitalClock: React.FC = () => {
       fontUrl: myFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
@@ -106,7 +106,9 @@ const DigitalClock: React.FC = () => {
           zIndex: 10,
           pointerEvents: 'none',
           backgroundColor: 'transparent',
-          fontFamily: fontLoaded ? 'Tr, Arial, sans-serif' : 'Arial, sans-serif',
+          fontFamily: fontLoaded
+            ? 'Tr, Arial, sans-serif'
+            : 'Arial, sans-serif',
         }}
       >
         {clocks.map(({ position, tilt }, index) => {

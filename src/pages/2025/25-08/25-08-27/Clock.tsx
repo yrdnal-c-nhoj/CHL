@@ -16,16 +16,19 @@ export default function TwelfthRootsOfUnityWithClock() {
     timeRef.current = time;
   }, [time]);
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'DodecahedronFont',
-      fontUrl: dodecahedronFontFile,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'DodecahedronFont',
+        fontUrl: dodecahedronFontFile,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -196,7 +199,9 @@ export default function TwelfthRootsOfUnityWithClock() {
         background: 'radial-gradient(circle, #F9C7B4 0%, #D8CFCF 90%)',
       }}
     >
-      <time dateTime={time.toISOString()} style={{ display: 'none' }}>{time.toLocaleTimeString()}</time>
+      <time dateTime={time.toISOString()} style={{ display: 'none' }}>
+        {time.toLocaleTimeString()}
+      </time>
       <div
         style={{
           position: 'relative',

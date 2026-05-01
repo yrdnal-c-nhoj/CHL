@@ -17,9 +17,9 @@
   z-index: 10;
   font-family: 'hea', monospace;
   font-size: 1.5rem;
-  color: #CFEAEA;
+  color: #cfeaea;
   display: flex;
-  justifyContent: center;
+  justifycontent: center;
   align-items: center;
   height: 100vh;
 }

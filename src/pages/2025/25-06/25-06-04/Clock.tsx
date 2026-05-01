@@ -13,12 +13,12 @@ const CoffeeClock: React.FC = () => {
       fontUrl: coffeeFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-  
+
   const jitterSettings = useRef([]);
   const numberRefs = useRef([]);
   const hourHandRef = useRef(null);

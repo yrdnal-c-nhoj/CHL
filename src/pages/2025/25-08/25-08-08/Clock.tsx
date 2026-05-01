@@ -11,9 +11,9 @@ export default function DigitalClock() {
       fontUrl: fontFile_2025_11_01,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

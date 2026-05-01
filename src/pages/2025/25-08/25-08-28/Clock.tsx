@@ -5,7 +5,7 @@ import clockFontFile from '@/assets/fonts/2025/25-08-28-gob.ttf';
 
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
-  
+
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -13,9 +13,9 @@ export default function DigitalClock() {
       fontUrl: clockFontFile,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

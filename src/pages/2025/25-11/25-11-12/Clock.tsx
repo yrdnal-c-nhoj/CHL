@@ -9,13 +9,16 @@ import custom251112tz from '@/assets/fonts/2025/25-11-12-oct.ttf?url';
 export default function TwoBackgroundOctahedron() {
   const threeRef = useRef(null);
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'OctahedronFont',
-      fontUrl: custom251112tz,
-      options: { weight: 'normal', style: 'normal' }
-    }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'OctahedronFont',
+        fontUrl: custom251112tz,
+        options: { weight: 'normal', style: 'normal' },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // THREE.js Octahedron (unchanged)
@@ -55,7 +58,7 @@ export default function TwoBackgroundOctahedron() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // Font is guaranteed loaded by Suspense
       ctx.font = `110px 'OctahedronFont', Arial`;
-      
+
       ctx.fillStyle = '#043D91FF';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';

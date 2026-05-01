@@ -16,9 +16,9 @@ const ShapesClock: React.FC = () => {
       fontUrl: shaFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

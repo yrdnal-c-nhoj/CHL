@@ -16,9 +16,10 @@ const Clock: React.FC = () => {
   const time = useClockTime();
   const timeParts = formatTimeParts(time);
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'Clox', fontUrl: fontUrl }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'Clox', fontUrl: fontUrl }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -114,65 +115,133 @@ const Clock: React.FC = () => {
           .mobile-overlay { display: block !important; }
         }
       `}</style>
-      
+
       <div style={containerStyle} className="clock-container">
-        <video style={videoStyle} autoPlay loop muted playsInline src={backgroundVideo} />
-        <div style={{...overlayStyle, top: 0, background: '#333333'}} className="mobile-overlay" />
-        <div style={{...overlayStyle, bottom: 0, background: '#333333'}} className="mobile-overlay" />
+        <video
+          style={videoStyle}
+          autoPlay
+          loop
+          muted
+          playsInline
+          src={backgroundVideo}
+        />
+        <div
+          style={{ ...overlayStyle, top: 0, background: '#333333' }}
+          className="mobile-overlay"
+        />
+        <div
+          style={{ ...overlayStyle, bottom: 0, background: '#333333' }}
+          className="mobile-overlay"
+        />
         <div style={clockRowsWrapperStyle}>
           <div style={clockWrapperStyle}>
             {timeParts.map((char, index) => (
-              <span key={`t5-${index}`} style={char === ':' ? colonStyle : digitStyle}>{char}</span>
+              <span
+                key={`t5-${index}`}
+                style={char === ':' ? colonStyle : digitStyle}
+              >
+                {char}
+              </span>
             ))}
           </div>
           <div style={clockWrapperStyle}>
             {timeParts.map((char, index) => (
-              <span key={`t4-${index}`} style={char === ':' ? colonStyle : digitStyle}>{char}</span>
+              <span
+                key={`t4-${index}`}
+                style={char === ':' ? colonStyle : digitStyle}
+              >
+                {char}
+              </span>
             ))}
           </div>
           <div style={clockWrapperStyle}>
             {timeParts.map((char, index) => (
-              <span key={`t3-${index}`} style={char === ':' ? colonStyle : digitStyle}>{char}</span>
+              <span
+                key={`t3-${index}`}
+                style={char === ':' ? colonStyle : digitStyle}
+              >
+                {char}
+              </span>
             ))}
           </div>
           <div style={clockWrapperStyle}>
             {timeParts.map((char, index) => (
-              <span key={`t2-${index}`} style={char === ':' ? colonStyle : digitStyle}>{char}</span>
+              <span
+                key={`t2-${index}`}
+                style={char === ':' ? colonStyle : digitStyle}
+              >
+                {char}
+              </span>
             ))}
           </div>
           <div style={clockWrapperStyle}>
             {timeParts.map((char, index) => (
-              <span key={`t1-${index}`} style={char === ':' ? colonStyle : digitStyle}>{char}</span>
+              <span
+                key={`t1-${index}`}
+                style={char === ':' ? colonStyle : digitStyle}
+              >
+                {char}
+              </span>
             ))}
           </div>
           <div style={clockWrapperStyle}>
             {timeParts.map((char, index) => (
-              <span key={`mid-${index}`} style={char === ':' ? colonStyle : digitStyle}>{char}</span>
+              <span
+                key={`mid-${index}`}
+                style={char === ':' ? colonStyle : digitStyle}
+              >
+                {char}
+              </span>
             ))}
           </div>
           <div style={clockWrapperStyle}>
             {timeParts.map((char, index) => (
-              <span key={`b1-${index}`} style={char === ':' ? colonStyle : digitStyle}>{char}</span>
+              <span
+                key={`b1-${index}`}
+                style={char === ':' ? colonStyle : digitStyle}
+              >
+                {char}
+              </span>
             ))}
           </div>
           <div style={clockWrapperStyle}>
             {timeParts.map((char, index) => (
-              <span key={`b2-${index}`} style={char === ':' ? colonStyle : digitStyle}>{char}</span>
+              <span
+                key={`b2-${index}`}
+                style={char === ':' ? colonStyle : digitStyle}
+              >
+                {char}
+              </span>
             ))}
           </div>
           <div style={clockWrapperStyle}>
             {timeParts.map((char, index) => (
-              <span key={`b3-${index}`} style={char === ':' ? colonStyle : digitStyle}>{char}</span>
+              <span
+                key={`b3-${index}`}
+                style={char === ':' ? colonStyle : digitStyle}
+              >
+                {char}
+              </span>
             ))}
           </div>
           <div style={clockWrapperStyle}>
             {timeParts.map((char, index) => (
-              <span key={`b4-${index}`} style={char === ':' ? colonStyle : digitStyle}>{char}</span>
+              <span
+                key={`b4-${index}`}
+                style={char === ':' ? colonStyle : digitStyle}
+              >
+                {char}
+              </span>
             ))}
           </div>
           <div style={clockWrapperStyle}>
             {timeParts.map((char, index) => (
-              <span key={`b5-${index}`} style={char === ':' ? colonStyle : digitStyle}>{char}</span>
+              <span
+                key={`b5-${index}`}
+                style={char === ':' ? colonStyle : digitStyle}
+              >
+                {char}
+              </span>
             ))}
           </div>
         </div>

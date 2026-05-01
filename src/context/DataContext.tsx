@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
 import type { ClockItem, DataContextType } from '../types/data';
 import prodData from './clockpages.json';
 
@@ -11,7 +17,11 @@ const testData =
 const isValidDateFormat = (date: string): boolean =>
   /^\d{2}-\d{2}-\d{2}$/.test(date);
 
-const EMPTY_CONTEXT: DataContextType = { items: [], loading: false, error: null };
+const EMPTY_CONTEXT: DataContextType = {
+  items: [],
+  loading: false,
+  error: null,
+};
 
 export const DataContext = createContext<DataContextType>(EMPTY_CONTEXT);
 
@@ -30,8 +40,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     try {
       const isLocalDev = import.meta.env.DEV;
       const env = (import.meta.env.VITE_ENVIRONMENT as string) || 'production';
-      const clockData =
-        isLocalDev || env === 'testing' ? testData : prodData;
+      const clockData = isLocalDev || env === 'testing' ? testData : prodData;
 
       // Vite imports JSON as objects, but guard against edge cases
       let dataToProcess: typeof prodData = clockData;

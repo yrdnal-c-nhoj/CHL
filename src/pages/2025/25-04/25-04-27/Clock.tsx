@@ -55,7 +55,7 @@ const SpinningCoinClock: React.FC<SpinningCoinClockProps> = () => {
     // Update clock immediately and then every second
     updateClock();
     const interval = setInterval(updateClock, 1000);
-    
+
     return () => clearInterval(interval);
   }, [updateClock]);
 

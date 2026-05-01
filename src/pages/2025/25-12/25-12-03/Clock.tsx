@@ -6,11 +6,14 @@ import font_25_12_03 from '@/assets/fonts/2025/25-12-03-dog.ttf?url';
 import styles from './Clock.module.css';
 
 export const fontConfigs: FontConfig[] = [
-  { fontFamily: 'CustomFont', fontUrl: font_25_12_03 }
+  { fontFamily: 'CustomFont', fontUrl: font_25_12_03 },
 ];
 
 const PuppyClockComponent: React.FC = () => {
-  const [images, setImages] = useState<{ current: string; next: string }>({ current: '', next: '' });
+  const [images, setImages] = useState<{ current: string; next: string }>({
+    current: '',
+    next: '',
+  });
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const transitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const time = useClockTime();
@@ -95,7 +98,9 @@ const PuppyClockComponent: React.FC = () => {
       />
 
       {/* TIME OVERLAY */}
-      <time dateTime={time.toISOString()} className={styles.clock}>{formatStylizedTime(time)}</time>
+      <time dateTime={time.toISOString()} className={styles.clock}>
+        {formatStylizedTime(time)}
+      </time>
     </main>
   );
 };

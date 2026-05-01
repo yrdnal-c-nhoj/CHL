@@ -32,7 +32,9 @@ const Clock: React.FC = () => {
 
       <div className={styles.clock}>
         {hours.split('').map((digit, i) => (
-          <span key={i} className={styles.digit}>{digit}</span>
+          <span key={i} className={styles.digit}>
+            {digit}
+          </span>
         ))}
         <span className={styles.digit}>:</span>
         <span className={styles.digit}>{minutes[0]}</span>

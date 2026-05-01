@@ -28,7 +28,9 @@ type HourStyle = React.CSSProperties;
 type MinuteStyle = React.CSSProperties;
 type SecondStyle = React.CSSProperties;
 
-const SolarSystemClock = ({ backgroundColor = '#0C0D53FF' }: SolarSystemClockProps) => {
+const SolarSystemClock = ({
+  backgroundColor = '#0C0D53FF',
+}: SolarSystemClockProps) => {
   const clockRefs: ClockRefs = {
     hour: useRef<HTMLDivElement>(null),
     minute: useRef<HTMLDivElement>(null),
@@ -71,20 +73,23 @@ const SolarSystemClock = ({ backgroundColor = '#0C0D53FF' }: SolarSystemClockPro
     }
   }, [currentTime]);
 
-  const setBallPosition = useCallback((ball: HTMLDivElement | null, angle: number, radiusVh: number): void => {
-    if (!ball || !clockRefs.clock.current) return;
+  const setBallPosition = useCallback(
+    (ball: HTMLDivElement | null, angle: number, radiusVh: number): void => {
+      if (!ball || !clockRefs.clock.current) return;
 
-    const rad = (angle - 90) * (Math.PI / 180);
-    const clockRect = clockRefs.clock.current.getBoundingClientRect();
-    const centerX = clockRect.width / 2;
-    const centerY = clockRect.height / 2;
-    const radiusPx = (radiusVh / 100) * window.innerHeight;
-    const x = centerX + radiusPx * Math.cos(rad);
-    const y = centerY + radiusPx * Math.sin(rad);
+      const rad = (angle - 90) * (Math.PI / 180);
+      const clockRect = clockRefs.clock.current.getBoundingClientRect();
+      const centerX = clockRect.width / 2;
+      const centerY = clockRect.height / 2;
+      const radiusPx = (radiusVh / 100) * window.innerHeight;
+      const x = centerX + radiusPx * Math.cos(rad);
+      const y = centerY + radiusPx * Math.sin(rad);
 
-    ball.style.left = `${x}px`;
-    ball.style.top = `${y}px`;
-  }, [clockRefs.clock]);
+      ball.style.left = `${x}px`;
+      ball.style.top = `${y}px`;
+    },
+    [clockRefs.clock],
+  );
 
   useEffect(() => {
     updateClock();

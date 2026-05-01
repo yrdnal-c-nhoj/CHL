@@ -39,6 +39,6 @@ const Clock: React.FC = () => {
       </time>
     </div>
   );
-}
+};
 
 export default Clock;

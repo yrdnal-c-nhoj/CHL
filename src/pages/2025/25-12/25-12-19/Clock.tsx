@@ -8,13 +8,16 @@ const FONT_FAMILY = 'DateFont';
 const HourglassTimer: React.FC = () => {
   const [percentDayPassed, setPercentDayPassed] = useState<number>(0);
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: FONT_FAMILY,
-      fontUrl: FONT_PATH,
-      options: { weight: 'normal', style: 'normal' }
-    }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: FONT_FAMILY,
+        fontUrl: FONT_PATH,
+        options: { weight: 'normal', style: 'normal' },
+      },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 

@@ -13,9 +13,9 @@ const CuneiformClock: React.FC = () => {
       fontUrl: cunFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

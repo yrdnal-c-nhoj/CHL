@@ -19,17 +19,19 @@ const VegasClock: React.FC = () => {
       fontUrl: vegasFontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   // Initialize YouTube IFrame API
   useEffect(() => {
     const scriptId = 'youtube-iframe-api-script';
-    let scriptTag = document.getElementById(scriptId) as HTMLScriptElement | null;
-    
+    let scriptTag = document.getElementById(
+      scriptId,
+    ) as HTMLScriptElement | null;
+
     if (!window.YT && !scriptTag) {
       scriptTag = document.createElement('script');
       scriptTag.id = scriptId;

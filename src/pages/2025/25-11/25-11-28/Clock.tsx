@@ -30,7 +30,7 @@ export default function TimelineClock() {
   const [isVertical, setIsVertical] = useState<boolean>(false);
   const [flash, setFlash] = useState<boolean>(false);
   const [comet, setComet] = useState<number>(-100);
-  
+
   useSuspenseFontLoader(fontConfigs);
 
   // EXISTING: Clock update

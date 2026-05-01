@@ -50,8 +50,13 @@ const BlueBrickClock = () => {
     animation: 'pop 0.6s cubic-bezier(0.28, 0.84, 0.42, 1)',
   };
 
-  const renderBalls = useCallback((count: number) =>
-    Array.from({ length: count }, (_, i) => <div key={i} style={ballStyle} />), [ballStyle]);
+  const renderBalls = useCallback(
+    (count: number) =>
+      Array.from({ length: count }, (_, i) => (
+        <div key={i} style={ballStyle} />
+      )),
+    [ballStyle],
+  );
 
   return (
     <div

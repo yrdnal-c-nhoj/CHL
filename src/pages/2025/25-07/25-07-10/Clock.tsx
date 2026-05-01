@@ -21,17 +21,17 @@ const Clock: React.FC = () => {
       fontUrl: sliFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
+        style: 'normal',
+      },
     },
     {
       fontFamily: 'sli2',
       fontUrl: sli2Font,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

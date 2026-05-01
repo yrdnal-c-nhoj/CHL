@@ -11,9 +11,9 @@ const FibonacciClock: React.FC = () => {
       fontUrl: fibFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

@@ -19,14 +19,13 @@ const Clock: React.FC = () => {
       fontUrl: suvFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-
     const updateClock: React.FC = () => {
       const now = new Date();
       let hours = now.getHours();

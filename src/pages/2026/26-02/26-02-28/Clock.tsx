@@ -36,17 +36,20 @@ const ImageGrid: React.FC = () => {
   });
   const [showContent, setShowContent] = useState(false);
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'AtomicFont',
-      fontUrl: atomicFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'AtomicFont',
+        fontUrl: atomicFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
   useEffect(() => {
     setShowContent(true);

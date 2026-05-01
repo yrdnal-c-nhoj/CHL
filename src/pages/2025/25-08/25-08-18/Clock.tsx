@@ -24,9 +24,9 @@ export default function ClockLetters({
       fontUrl: fontFileUrl,
       options: {
         weight: '700',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

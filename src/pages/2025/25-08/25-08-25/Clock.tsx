@@ -16,7 +16,7 @@ export default function DigitalClock() {
     {
       fontFamily: 'BarFont',
       fontUrl: font2,
-    }
+    },
   ]);
 
   const time = useClockTime('ms');

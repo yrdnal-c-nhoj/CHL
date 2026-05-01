@@ -141,25 +141,31 @@ const DeepSpaceClock: React.FC = () => {
     second2: useRef<HTMLDivElement>(null),
   };
 
-  const makeDigit = useCallback((target: React.RefObject<HTMLDivElement | null>, digitMatrix: DigitMatrix): void => {
-    const container = target.current;
-    if (!container) return;
-    container.innerHTML = '';
-    digitMatrix.forEach((row: number[], i: number) =>
-      row.forEach((on: number, j: number) => {
-        if (on) {
-          const div = document.createElement('div');
-          div.style.gridRow = `${i + 1}`;
-          div.style.gridColumn = `${j + 1}`;
-          div.style.height = '4vmin';
-          div.style.width = '4vmin';
-          div.style.backgroundImage = `url(${images.pixelGif})`;
-          div.style.backgroundSize = '220% 250%';
-          container.appendChild(div);
-        }
-      }),
-    );
-  }, []);
+  const makeDigit = useCallback(
+    (
+      target: React.RefObject<HTMLDivElement | null>,
+      digitMatrix: DigitMatrix,
+    ): void => {
+      const container = target.current;
+      if (!container) return;
+      container.innerHTML = '';
+      digitMatrix.forEach((row: number[], i: number) =>
+        row.forEach((on: number, j: number) => {
+          if (on) {
+            const div = document.createElement('div');
+            div.style.gridRow = `${i + 1}`;
+            div.style.gridColumn = `${j + 1}`;
+            div.style.height = '4vmin';
+            div.style.width = '4vmin';
+            div.style.backgroundImage = `url(${images.pixelGif})`;
+            div.style.backgroundSize = '220% 250%';
+            container.appendChild(div);
+          }
+        }),
+      );
+    },
+    [],
+  );
 
   const currentTime = useSecondClock();
 
@@ -280,7 +286,7 @@ const DeepSpaceClock: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 const digitStyle: DigitStyle = {
   display: 'grid',

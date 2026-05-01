@@ -24,10 +24,10 @@ const UPDATE_INTERVAL = 1000; // Update frequency in ms
 
 const getTimeDigits = (date) => {
   const { hours, minutes, seconds } = formatTime(date, '24h');
-  return { 
-    h: hours.split(''), 
-    m: minutes.split(''), 
-    s: seconds.split('') 
+  return {
+    h: hours.split(''),
+    m: minutes.split(''),
+    s: seconds.split(''),
   };
 };
 
@@ -48,10 +48,7 @@ const ClockTemplate: React.FC = () => {
   // Suspend rendering until fonts are ready to prevent FOUC
   useSuspenseFontLoader(fontConfigs);
 
-  const { h, m, s } = useMemo(
-    () => getTimeDigits(time),
-    [time],
-  );
+  const { h, m, s } = useMemo(() => getTimeDigits(time), [time]);
 
   return (
     <main className={styles.container}>

@@ -8,13 +8,20 @@ import { DATE_REGEX, normalizeDate, formatDateDots } from './utils/dateUtils';
 
 const ClockPage: React.FC = () => {
   const { date } = useParams();
-  const { items, loading, error: contextError } = useContext(DataContext) as DataContextType;
+  const {
+    items,
+    loading,
+    error: contextError,
+  } = useContext(DataContext) as DataContextType;
   const navigate = useNavigate();
 
   const normalizedDate = useMemo(() => normalizeDate(date || ''), [date]);
 
   const currentItem = useMemo(
-    () => items.find((item: ClockItem) => normalizeDate(item.date) === normalizedDate) ?? null,
+    () =>
+      items.find(
+        (item: ClockItem) => normalizeDate(item.date) === normalizedDate,
+      ) ?? null,
     [items, normalizedDate],
   );
 
@@ -24,7 +31,8 @@ const ClockPage: React.FC = () => {
     );
     return {
       prevItem: idx > 0 ? (items[idx - 1] ?? null) : null,
-      nextItem: idx >= 0 && idx < items.length - 1 ? (items[idx + 1] ?? null) : null,
+      nextItem:
+        idx >= 0 && idx < items.length - 1 ? (items[idx + 1] ?? null) : null,
     };
   }, [items, normalizedDate]);
 

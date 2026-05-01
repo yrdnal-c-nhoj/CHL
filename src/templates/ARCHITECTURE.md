@@ -19,12 +19,12 @@ src/
 
 ## Hooks
 
-| Hook | Updates | Use Case |
-|------|---------|----------|
-| `useClockTime` | 1s | Static displays |
-| `useSmoothClock` | 60fps RAF | Smooth animations |
-| `useMillisecondClock` | 60fps RAF | Millisecond precision |
-| `useEnhancedFontLoader` | Async | Non-suspending loader |
+| Hook                    | Updates   | Use Case              |
+| ----------------------- | --------- | --------------------- |
+| `useClockTime`          | 1s        | Static displays       |
+| `useSmoothClock`        | 60fps RAF | Smooth animations     |
+| `useMillisecondClock`   | 60fps RAF | Millisecond precision |
+| `useEnhancedFontLoader` | Async     | Non-suspending loader |
 
 ### Examples
 
@@ -94,8 +94,8 @@ export default Clock;
 5. **Memoization**: Use `useMemo` for expensive calculations
 6. **Path Aliases**: Use `@/utils/hooks` and `@/types/clock`.
 7. **Standard Hooks**: Prefer hooks in `@/utils/hooks/` over custom logic in `clockUtils.ts`.
-7. **Cleanup**: Clear all timers/RAF on unmount
-8. **No Direct DOM**: Use `useRef` for canvas/animation references.
+8. **Cleanup**: Clear all timers/RAF on unmount
+9. **No Direct DOM**: Use `useRef` for canvas/animation references.
 
 ## Accessibility (A11y) for Canvas
 
@@ -110,7 +110,9 @@ const CanvasClock: React.FC = () => {
   return (
     <main>
       {/* Visually hidden but accessible */}
-      <time dateTime={iso} className="sr-only">{display}</time>
+      <time dateTime={iso} className="sr-only">
+        {display}
+      </time>
       <canvas ref={canvasRef} />
     </main>
   );
@@ -123,10 +125,10 @@ const CanvasClock: React.FC = () => {
 
 ```tsx
 interface FontConfig {
-  fontFamily: string;      // CSS font-family name
-  fontUrl: string;         // Path to font file
-  fontWeight?: string;     // e.g., '400', '700'
-  fontStyle?: string;      // e.g., 'normal', 'italic'
+  fontFamily: string; // CSS font-family name
+  fontUrl: string; // Path to font file
+  fontWeight?: string; // e.g., '400', '700'
+  fontStyle?: string; // e.g., 'normal', 'italic'
 }
 ```
 
@@ -145,22 +147,18 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 
 const fontConfigs: FontConfig[] = [
-  { 
-    fontFamily: 'MyClockFont', 
+  {
+    fontFamily: 'MyClockFont',
     fontUrl: '/fonts/26-04-30-myfont.ttf',
-    fontWeight: '400'
+    fontWeight: '400',
   },
 ];
 
 const ClockContent: React.FC = () => {
   // Suspends until fonts load
   useSuspenseFontLoader(fontConfigs);
-  
-  return (
-    <div style={{ fontFamily: 'MyClockFont' }}>
-      12:00
-    </div>
-  );
+
+  return <div style={{ fontFamily: 'MyClockFont' }}>12:00</div>;
 };
 
 // Wrap in Suspense (handled by ClockPage.tsx parent)
@@ -204,12 +202,12 @@ The component must be wrapped in `<Suspense>` in the parent (handled by `ClockPa
 
 ## File Locations
 
-| File Type | Path | Required |
-|-----------|------|----------|
-| **Clock component** | `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx` | ✅ Yes |
-| **Styles** | `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.module.css` | ✅ Yes |
-| **Images** | `src/assets/images/YY-MM/YY-MM-DD/` | Optional |
-| **Fonts** | `src/assets/fonts/YYYY/YY-MM-DD-name.[ext]` | Optional |
+| File Type           | Path                                             | Required |
+| ------------------- | ------------------------------------------------ | -------- |
+| **Clock component** | `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx`        | ✅ Yes   |
+| **Styles**          | `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.module.css` | ✅ Yes   |
+| **Images**          | `src/assets/images/YY-MM/YY-MM-DD/`              | Optional |
+| **Fonts**           | `src/assets/fonts/YYYY/YY-MM-DD-name.[ext]`      | Optional |
 
 ## Common Patterns
 
@@ -219,12 +217,10 @@ The component must be wrapped in `<Suspense>` in the parent (handled by `ClockPa
 const ConditionalClock: React.FC = () => {
   const time = useClockTime();
   const isNight = time.getHours() < 6 || time.getHours() > 18;
-  
+
   return (
     <main className={isNight ? styles.night : styles.day}>
-      <time dateTime={time.toISOString()}>
-        {time.toLocaleTimeString()}
-      </time>
+      <time dateTime={time.toISOString()}>{time.toLocaleTimeString()}</time>
     </main>
   );
 };
@@ -237,12 +233,12 @@ const AnimatedClock: React.FC = () => {
   const time = useSmoothClock();
   const seconds = time.getSeconds();
   const ms = time.getMilliseconds();
-  
+
   // Calculate rotation for smooth second hand
   const rotation = (seconds + ms / 1000) * 6; // 6 degrees per second
-  
+
   return (
-    <div 
+    <div
       className={styles.hand}
       style={{ transform: `rotate(${rotation}deg)` }}
     />
@@ -260,7 +256,7 @@ export { bgImage };
 
 const Clock: React.FC = () => {
   return (
-    <main 
+    <main
       className={styles.container}
       style={{ backgroundImage: `url(${bgImage})` }}
     >
@@ -288,6 +284,7 @@ npm run clock:new
 ```
 
 This creates:
+
 - `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx` (from MasterTemplate)
 - `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.module.css`
 

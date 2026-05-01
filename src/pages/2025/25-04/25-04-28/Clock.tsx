@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -45,16 +51,19 @@ const ClockApp: React.FC<ClockAppProps> = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'Skater',
-      fontUrl: SkaterFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'Skater',
+        fontUrl: SkaterFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);
@@ -68,7 +77,11 @@ const ClockApp: React.FC<ClockAppProps> = () => {
     return { x, y };
   }, []);
 
-  const getRandomRotation = useCallback((): { rotationX: number; rotationY: number; rotationZ: number } => {
+  const getRandomRotation = useCallback((): {
+    rotationX: number;
+    rotationY: number;
+    rotationZ: number;
+  } => {
     return {
       rotationX: Math.random() * 360,
       rotationY: Math.random() * 360,
@@ -121,7 +134,14 @@ const ClockApp: React.FC<ClockAppProps> = () => {
 
     setImpressions((prev) => [...prev, newImpression]);
     setImpressionCount((prev) => prev + 1);
-  }, [clockTime, getRandomPosition, getRandomRotation, getRandomSkew, getRandomSize, getRandomGrayShade]);
+  }, [
+    clockTime,
+    getRandomPosition,
+    getRandomRotation,
+    getRandomSkew,
+    getRandomSize,
+    getRandomGrayShade,
+  ]);
 
   useEffect(() => {
     // Start after 0.5s

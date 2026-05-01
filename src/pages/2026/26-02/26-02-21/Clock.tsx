@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useRef, useMemo, memo, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  memo,
+  useCallback,
+} from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
@@ -59,9 +66,9 @@ export const fontConfigs = [
     fontUrl: customFont,
     options: {
       weight: 'normal',
-      style: 'normal'
-    }
-  }
+      style: 'normal',
+    },
+  },
 ];
 
 const StaticCollage = memo<StaticCollageProps>(({ count }) => {
@@ -94,7 +101,7 @@ export default function RefactoredClock() {
   const time = useSecondClock();
   const [dynamicImages, setDynamicImages] = useState<DynamicImages[]>([]);
   const [showContent, setShowContent] = useState(false);
-  
+
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
@@ -106,7 +113,11 @@ export default function RefactoredClock() {
       const newImg = `https://picsum.photos/seed/${Math.random()}/100/100.jpg`;
       setDynamicImages((prev) => [
         ...prev.slice(-(CONFIG.MAX_DYNAMIC_IMAGES - 1)),
-        { id: Date.now().toString(), src: newImg, style: generateImageStyle(true) }
+        {
+          id: Date.now().toString(),
+          src: newImg,
+          style: generateImageStyle(true),
+        },
       ]);
     }
   }, [time]);
@@ -157,7 +168,12 @@ export default function RefactoredClock() {
       <StaticCollage count={CONFIG.COLLAGE_COUNT} />
 
       {dynamicImages.map((img, index) => (
-        <img key={`dynamic-${index}-${img.id}`} src={img.src} style={img.style} alt="" />
+        <img
+          key={`dynamic-${index}-${img.id}`}
+          src={img.src}
+          style={img.style}
+          alt=""
+        />
       ))}
 
       <div style={digitGroupStyle} aria-hidden="true">

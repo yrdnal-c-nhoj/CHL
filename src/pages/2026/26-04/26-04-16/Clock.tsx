@@ -6,16 +6,36 @@ import bgImage from '@/assets/images/2026/26-04/26-04-16/jamine.webp';
 import tileImage from '@/assets/images/2026/26-04/26-04-16/pom.webp';
 import styles from './Clock.module.css';
 
-const ROMAN_NUMERALS = ['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
+const ROMAN_NUMERALS = [
+  'XII',
+  'I',
+  'II',
+  'III',
+  'IV',
+  'V',
+  'VI',
+  'VII',
+  'VIII',
+  'IX',
+  'X',
+  'XI',
+];
 
 const Clock: React.FC = () => {
   const time = useClockTime();
   const angles = useMemo(() => calculateAngles(time), [time]);
 
   // Load Cabin Sketch from Google Fonts
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'Cabin Sketch', fontUrl: 'https://fonts.gstatic.com/s/cabinsketch/v20/QGYpz_kZZAGACAoIxoicKmMfnw_7TAg.woff2' }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'Cabin Sketch',
+        fontUrl:
+          'https://fonts.gstatic.com/s/cabinsketch/v20/QGYpz_kZZAGACAoIxoicKmMfnw_7TAg.woff2',
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Constants for layout
@@ -38,32 +58,48 @@ const Clock: React.FC = () => {
   const backgroundTiles = useMemo(() => {
     const tiles = [];
     const gap = 100;
-    
+
     for (let ring = 1; ring < 10; ring++) {
       const ringOffset = ring * gap;
       const tilesPerSide = ring * 2;
-      
+
       for (let side = 0; side < 4; side++) {
         for (let pos = 0; pos < tilesPerSide; pos++) {
           const offset = (pos - ring + 0.5) * gap;
           let left, top;
-          
+
           switch (side) {
-            case 0: left = `calc(50% + ${offset}px - 50px)`; top = `calc(50% - ${ringOffset}px - 50px)`; break;
-            case 1: left = `calc(50% + ${ringOffset}px - 50px)`; top = `calc(50% + ${offset}px - 50px)`; break;
-            case 2: left = `calc(50% + ${offset}px - 50px)`; top = `calc(50% + ${ringOffset}px - 50px)`; break;
-            case 3: left = `calc(50% - ${ringOffset}px - 50px)`; top = `calc(50% + ${offset}px - 50px)`; break;
-            default: left = '0'; top = '0';
+            case 0:
+              left = `calc(50% + ${offset}px - 50px)`;
+              top = `calc(50% - ${ringOffset}px - 50px)`;
+              break;
+            case 1:
+              left = `calc(50% + ${ringOffset}px - 50px)`;
+              top = `calc(50% + ${offset}px - 50px)`;
+              break;
+            case 2:
+              left = `calc(50% + ${offset}px - 50px)`;
+              top = `calc(50% + ${ringOffset}px - 50px)`;
+              break;
+            case 3:
+              left = `calc(50% - ${ringOffset}px - 50px)`;
+              top = `calc(50% + ${offset}px - 50px)`;
+              break;
+            default:
+              left = '0';
+              top = '0';
           }
-          
+
           tiles.push(
             <img
               key={`${ring}-${side}-${pos}`}
               src={tileImage}
               alt=""
               className={styles.rotatingTile}
-              style={{ '--tile-x': left, '--tile-y': top } as React.CSSProperties}
-            />
+              style={
+                { '--tile-x': left, '--tile-y': top } as React.CSSProperties
+              }
+            />,
           );
         }
       }
@@ -75,24 +111,42 @@ const Clock: React.FC = () => {
     <div className={styles.clockViewport}>
       {/* Tiles Layer */}
       <div className={styles.tileContainer}>
-        <img src={tileImage} alt="" className={styles.rotatingTile} style={{ '--tile-x': 'calc(50% - 50px)', '--tile-y': 'calc(50% - 50px)' } as React.CSSProperties} />
+        <img
+          src={tileImage}
+          alt=""
+          className={styles.rotatingTile}
+          style={
+            {
+              '--tile-x': 'calc(50% - 50px)',
+              '--tile-y': 'calc(50% - 50px)',
+            } as React.CSSProperties
+          }
+        />
         {backgroundTiles}
       </div>
 
       {/* Center Image Layer */}
-      <div className={styles.baseImageLayer} style={{ backgroundImage: `url(${bgImage})` }} />
-   
+      <div
+        className={styles.baseImageLayer}
+        style={{ backgroundImage: `url(${bgImage})` }}
+      />
+
       {/* Clock Face */}
-      <div className={styles.clockFace} style={{ width: `${clockSize}vmin`, height: `${clockSize}vmin` }}>
+      <div
+        className={styles.clockFace}
+        style={{ width: `${clockSize}vmin`, height: `${clockSize}vmin` }}
+      >
         {numerals.map(({ numeral, x, y, rotation }, index) => (
           <span
             key={index}
             className={styles.numeral}
-            style={{
-              '--x': `${x}%`,
-              '--y': `${y}%`,
-              '--rot': `${rotation}deg`,
-            } as React.CSSProperties}
+            style={
+              {
+                '--x': `${x}%`,
+                '--y': `${y}%`,
+                '--rot': `${rotation}deg`,
+              } as React.CSSProperties
+            }
           >
             {numeral}
           </span>
@@ -101,16 +155,24 @@ const Clock: React.FC = () => {
         {/* Hour Hand */}
         <div
           className={styles.hourHand}
-          style={{
-            '--rot': `${angles.hour}deg`,
-          } as React.CSSProperties}
+          style={
+            {
+              '--rot': `${angles.hour}deg`,
+            } as React.CSSProperties
+          }
         />
 
         {/* Minute Hand */}
-        <div className={styles.minuteHand} style={{ '--rot': `${angles.minute}deg` } as React.CSSProperties} />
+        <div
+          className={styles.minuteHand}
+          style={{ '--rot': `${angles.minute}deg` } as React.CSSProperties}
+        />
 
         {/* Second Hand */}
-        <div className={styles.secondHand} style={{ '--rot': `${angles.second}deg` } as React.CSSProperties} />
+        <div
+          className={styles.secondHand}
+          style={{ '--rot': `${angles.second}deg` } as React.CSSProperties}
+        />
 
         {/* Center Cap */}
         <div className={styles.centerCap} />

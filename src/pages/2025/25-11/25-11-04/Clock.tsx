@@ -12,9 +12,9 @@ export default function OceanStorm() {
       fontUrl: cu251104font,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

@@ -19,28 +19,39 @@ function getFiles(dir, extensions) {
     const stat = fs.statSync(fullPath);
     if (stat && stat.isDirectory()) {
       results = results.concat(getFiles(fullPath, extensions));
-    } else if (extensions.some(ext => fullPath.toLowerCase().endsWith(ext))) {
+    } else if (extensions.some((ext) => fullPath.toLowerCase().endsWith(ext))) {
       results.push(fullPath);
     }
   }
   return results;
 }
 
-const imageExtensions = ['.webp', '.jpg', '.jpeg', '.png', '.gif', '.mp4', '.svg'];
+const imageExtensions = [
+  '.webp',
+  '.jpg',
+  '.jpeg',
+  '.png',
+  '.gif',
+  '.mp4',
+  '.svg',
+];
 const codeExtensions = ['.tsx', '.jsx', '.ts', '.js', '.css', '.scss'];
 
-const allImages = getFiles(path.join(rootDir, 'src/assets/images'), imageExtensions)
-  .map(f => path.resolve(f));
-  
+const allImages = getFiles(
+  path.join(rootDir, 'src/assets/images'),
+  imageExtensions,
+).map((f) => path.resolve(f));
+
 // Scan all of src to catch images used in templates, shared components, or context
 const allSourceFiles = getFiles(path.join(rootDir, 'src'), codeExtensions);
 
 const usedImages = new Set();
 
 // Broad regex to find any string ending in an image extension
-const imageImportRegex = /['"]([^'"]+\.(?:webp|jpg|jpeg|png|gif|mp4|svg)(?:\?[^'"]*)?)['"]/gi;
+const imageImportRegex =
+  /['"]([^'"]+\.(?:webp|jpg|jpeg|png|gif|mp4|svg)(?:\?[^'"]*)?)['"]/gi;
 
-allSourceFiles.forEach(sourcePath => {
+allSourceFiles.forEach((sourcePath) => {
   const content = fs.readFileSync(sourcePath, 'utf8');
   let match;
 
@@ -63,7 +74,7 @@ allSourceFiles.forEach(sourcePath => {
   }
 });
 
-const unusedImages = allImages.filter(img => !usedImages.has(img));
+const unusedImages = allImages.filter((img) => !usedImages.has(img));
 
 const reportPath = path.join(rootDir, 'unused-images-report.txt');
 let report = '--- Image Audit Report ---\n';
@@ -76,12 +87,12 @@ report += `Unused images: ${unusedImages.length}\n\n`;
 let totalSize = 0;
 let unusedSize = 0;
 
-allImages.forEach(img => {
+allImages.forEach((img) => {
   const stats = fs.statSync(img);
   totalSize += stats.size;
 });
 
-unusedImages.forEach(img => {
+unusedImages.forEach((img) => {
   const stats = fs.statSync(img);
   unusedSize += stats.size;
   report += `- ${path.relative(rootDir, img)} (${(stats.size / 1024).toFixed(1)} KB)\n`;
@@ -96,5 +107,7 @@ fs.writeFileSync(reportPath, report);
 console.log(`\nReport saved to: ${reportPath}`);
 
 if (allImages.length === 0) {
-  console.warn('Warning: No images found in src/assets/images. Check your path.');
+  console.warn(
+    'Warning: No images found in src/assets/images. Check your path.',
+  );
 }
