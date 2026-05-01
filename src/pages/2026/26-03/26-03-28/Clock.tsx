@@ -11,16 +11,18 @@ const Clock: React.FC = () => {
   const time = useMillisecondClock();
 
   // Font configuration with Suspense loading
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'H2OClock',
-      fontUrl: clockFont,
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'H2OClock',
+        fontUrl: clockFont,
+      },
+    ],
+    [],
+  );
 
   // This hook suspends the component until fonts are loaded, preventing FOUC
   useSuspenseFontLoader(fontConfigs);
-
 
   const hours = time.getHours().toString().padStart(2, '0');
   const minutes = time.getMinutes().toString().padStart(2, '0');
@@ -32,13 +34,7 @@ const Clock: React.FC = () => {
   return (
     <div className={styles.container}>
       {/* Video background - bottom layer */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className={styles.videoBackground}
-      >
+      <video autoPlay muted loop playsInline className={styles.videoBackground}>
         <source src={bgVideo} type="video/mp4" />
       </video>
 

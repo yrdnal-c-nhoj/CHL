@@ -17,17 +17,24 @@ const Digit = React.memo(({ char }: { char: string }) => (
 const Clock: React.FC = () => {
   const time = useSecondClock();
 
-  const fontConfigs = useMemo(() => [{ fontFamily: 'OrigamiFont', fontUrl: origamiFont }], []);
+  const fontConfigs = useMemo(
+    () => [{ fontFamily: 'OrigamiFont', fontUrl: origamiFont }],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   const displayTime = useMemo(() => {
-    const format = (val: number) => 
-      val.toString().padStart(2, '0').split('').map(d => LETTERS[parseInt(d, 10)]);
-    
+    const format = (val: number) =>
+      val
+        .toString()
+        .padStart(2, '0')
+        .split('')
+        .map((d) => LETTERS[parseInt(d, 10)]);
+
     return [
       ...format(time.getHours()),
       ...format(time.getMinutes()),
-      ...format(time.getSeconds())
+      ...format(time.getSeconds()),
     ];
   }, [time]);
 

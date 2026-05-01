@@ -84,8 +84,8 @@ export default function StripeClock() {
     <div className={styles.container}>
       <div className={styles.clock}>
         {timeStr.split('').map((char, idx) => (
-          <div 
-            key={idx} 
+          <div
+            key={idx}
             className={styles.stripe}
             style={{
               backgroundColor: digitStyles[char].bg,

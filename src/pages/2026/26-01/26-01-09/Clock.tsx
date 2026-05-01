@@ -163,7 +163,7 @@ export default function TicTacToeClock() {
   const [isClient, setIsClient] = useState<boolean>(false);
 
   // Font is loaded by useSuspenseFontLoader in BackgroundGrid component
-  
+
   const fontFamily = 'CustomClockFont, monospace';
   const formatTime = useCallback((date) => {
     const hours = date.getHours();

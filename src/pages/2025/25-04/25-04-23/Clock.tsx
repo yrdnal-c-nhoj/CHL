@@ -16,7 +16,7 @@ interface PirateClockProps {
 
 const PirateClock: React.FC<PirateClockProps> = () => {
   const clockRef = useRef<HTMLDivElement>(null);
-  
+
   // Font loading configuration (memoized) - no custom fonts needed
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
   useSuspenseFontLoader(fontConfigs);

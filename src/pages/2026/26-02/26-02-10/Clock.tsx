@@ -15,16 +15,21 @@ const CLOCK_CONFIG = {
 
 const DigitalClock: React.FC = () => {
   const now = useSecondClock();
-  
-  const fontConfigs = useMemo(() => [{
-      fontFamily: 'TeeVeeFont',
-      fontUrl: teeVeeLoungeFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-  }], []);
-  
+
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'TeeVeeFont',
+        fontUrl: teeVeeLoungeFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   // 12-hour format with no leading zeros

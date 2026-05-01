@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
@@ -43,7 +49,7 @@ const GravityClock: React.FC<GravityClockProps> = () => {
 
       // Inverse Gravity: Large is slow, Small is fast
       const gravity = 2.2 / size + 0.005;
-      
+
       // Higher bounce for larger "lighter" clocks
       const bounce = Math.min(0.92, 0.2 + size / 320);
 
@@ -70,7 +76,9 @@ const GravityClock: React.FC<GravityClockProps> = () => {
   const animate = () => {
     setClocks((prevClocks) => {
       // Use the actual pixel height of the viewport/container
-      const containerHeight = containerRef.current?.getBoundingClientRect().height || window.innerHeight;
+      const containerHeight =
+        containerRef.current?.getBoundingClientRect().height ||
+        window.innerHeight;
       // Convert to rem for the physics simulation since we use rem for drawing
       const floor = containerHeight / 16;
 
@@ -118,7 +126,9 @@ const GravityClock: React.FC<GravityClockProps> = () => {
 
   return (
     <main ref={containerRef} className={styles.container}>
-      <time dateTime={currentTime.toISOString()} style={{ display: 'none' }}>{currentTime.toLocaleTimeString()}</time>
+      <time dateTime={currentTime.toISOString()} style={{ display: 'none' }}>
+        {currentTime.toLocaleTimeString()}
+      </time>
       {clocks.map((clock) => (
         <ClockItem key={clock.id} clock={clock} currentTime={currentTime} />
       ))}
@@ -132,7 +142,6 @@ interface ClockItemProps {
 }
 
 const ClockItem: React.FC<ClockItemProps> = ({ clock, currentTime }) => {
-
   const h = (currentTime.getHours() % 12) * 30 + currentTime.getMinutes() * 0.5;
   const m = currentTime.getMinutes() * 6;
 

@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+  useRef,
+} from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -14,16 +20,19 @@ interface HorizonClockProps {
 
 const HorizonClock = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'HorizonClockFont',
-      fontUrl: horizonFontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'HorizonClockFont',
+        fontUrl: horizonFontUrl,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);

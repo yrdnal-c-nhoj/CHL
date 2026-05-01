@@ -22,9 +22,10 @@ const DigitalGridClock: React.FC = () => {
   const time = useClockTime();
   const [width, setWidth] = useState<number>(window.innerWidth);
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'ClockFont_Omission', fontUrl: font_sdfsdfsdfsd }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'ClockFont_Omission', fontUrl: font_sdfsdfsdfsd }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -79,7 +80,13 @@ const DigitalGridClock: React.FC = () => {
           <div
             key={`hour-${i}`}
             className={`${styles.cell} ${i === hours ? styles.activeCell : ''}`}
-            style={i === hours ? { '--active-image': `url(${hourImage})` } as React.CSSProperties : {}}
+            style={
+              i === hours
+                ? ({
+                    '--active-image': `url(${hourImage})`,
+                  } as React.CSSProperties)
+                : {}
+            }
           >
             {String(i).padStart(2, '0')}
           </div>
@@ -90,7 +97,13 @@ const DigitalGridClock: React.FC = () => {
           <div
             key={`min-${i}`}
             className={`${styles.cell} ${i === currentMinute ? styles.activeCell : ''}`}
-            style={i === currentMinute ? { '--active-image': `url(${minuteImage})` } as React.CSSProperties : {}}
+            style={
+              i === currentMinute
+                ? ({
+                    '--active-image': `url(${minuteImage})`,
+                  } as React.CSSProperties)
+                : {}
+            }
           >
             {String(i).padStart(2, '0')}
           </div>

@@ -4,19 +4,21 @@ import type { FontConfig } from '@/types/clock';
 import backgroundImage from '@/assets/images/2025/25-05/25-05-27/dot.jpg';
 import dotsFont from '@/assets/fonts/2025/25-05-27-dots.otf?url';
 
-
 const Clock: React.FC = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'dotsFont',
-      fontUrl: dotsFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'dotsFont',
+        fontUrl: dotsFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   const [time, setTime] = useState(new Date());
@@ -138,6 +140,6 @@ const Clock: React.FC = () => {
       </div>
     </>
   );
-}
+};
 
 export default Clock;

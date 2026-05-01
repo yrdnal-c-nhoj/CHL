@@ -12,9 +12,10 @@ export default function Clock() {
   const videoRef = useRef(null);
   const animationFrameId = useRef<number | null>(null);
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'CustomFont_20251128', fontUrl: fontUrl_20251128 }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'CustomFont_20251128', fontUrl: fontUrl_20251128 }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 

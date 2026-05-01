@@ -13,9 +13,9 @@ const HospitalClock: React.FC = () => {
       fontUrl: xrayFontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

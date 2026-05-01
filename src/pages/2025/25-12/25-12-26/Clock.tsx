@@ -58,12 +58,13 @@ function ScytheOverlay({ rotation = 0, top = '40%' }) {
 
 // Main component
 export default function SaturnClock() {
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: FONT_FAMILY, fontUrl: fontFile }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: FONT_FAMILY, fontUrl: fontFile }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
-  
+
   const now = useClock();
 
   const { hours, minutes } = formatTime(now);
@@ -90,7 +91,7 @@ export default function SaturnClock() {
           to { opacity: 1; }
         }
       `}</style>
-      
+
       {/* Background image with filters applied only to it */}
       <div
         style={{

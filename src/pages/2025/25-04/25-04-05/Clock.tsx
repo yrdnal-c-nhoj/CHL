@@ -108,7 +108,7 @@ const TallClock = () => {
   );
 };
 
-  // Style interfaces - simplified to avoid CSSProperties conflicts
+// Style interfaces - simplified to avoid CSSProperties conflicts
 type ContainerStyle = React.CSSProperties;
 type ClockContainerStyle = React.CSSProperties;
 type ClockFaceStyle = React.CSSProperties;

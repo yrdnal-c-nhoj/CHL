@@ -13,13 +13,16 @@ const SpinningDodecahedronClock: React.FC = () => {
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
 
   // Use standardized font loader
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'Orbitron20251012',
-      fontUrl: OrbitronFont20251012,
-      options: { weight: 'normal', style: 'normal' }
-    }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'Orbitron20251012',
+        fontUrl: OrbitronFont20251012,
+        options: { weight: 'normal', style: 'normal' },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // --- Load background image ---

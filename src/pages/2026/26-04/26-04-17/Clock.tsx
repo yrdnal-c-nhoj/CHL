@@ -8,9 +8,16 @@ import styles from './Clock.module.css';
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 const Clock: React.FC = () => {
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'Space Grotesk', fontUrl: 'https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj7oUXskPMBBSSJLm2E.woff2' }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'Space Grotesk',
+        fontUrl:
+          'https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj7oUXskPMBBSSJLm2E.woff2',
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   const time = useClockTime();
@@ -23,7 +30,10 @@ const Clock: React.FC = () => {
   }, [time]);
 
   return (
-    <div className={styles.container} style={{ backgroundImage: `url(${backgroundImage})` }}>
+    <div
+      className={styles.container}
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
       <div className={styles.clock}>
         <span className={styles.digit}>{hours[0]}</span>
         <span className={styles.digit}>{hours[1]}</span>

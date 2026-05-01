@@ -13,9 +13,9 @@ const CistercianClock: React.FC = () => {
       fontUrl: cisFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

@@ -50,19 +50,25 @@ export default function CenteredLightClock() {
     [],
   );
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { 
-      fontFamily: 'CustomOswald', 
-      fontUrl: customFont, 
-      options: { weight: '600', style: 'normal' } 
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'CustomOswald',
+        fontUrl: customFont,
+        options: { weight: '600', style: 'normal' },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const updateAria = () => {
       setAriaTime(
-        new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+        new Date().toLocaleTimeString([], {
+          hour: 'numeric',
+          minute: '2-digit',
+        }),
       );
     };
     updateAria();
@@ -166,8 +172,10 @@ export default function CenteredLightClock() {
 
       ctx.fillStyle = `rgba(255,255,255,${shadowAlpha})`;
 
-      const shadowDx = Math.sin(-lightAngle - Math.PI / 2) * CONFIG.SHADOW_LENGTH;
-      const shadowDy = Math.cos(-lightAngle - Math.PI / 2) * CONFIG.SHADOW_LENGTH;
+      const shadowDx =
+        Math.sin(-lightAngle - Math.PI / 2) * CONFIG.SHADOW_LENGTH;
+      const shadowDy =
+        Math.cos(-lightAngle - Math.PI / 2) * CONFIG.SHADOW_LENGTH;
 
       for (let i = 0; i < 4; i++) {
         const a = rotatedCorners[i];
@@ -241,8 +249,8 @@ export default function CenteredLightClock() {
           (g.type === 'hour'
             ? baseFontSize
             : g.type === 'minute'
-            ? baseFontSize * 0.8
-            : baseFontSize * 0.6) * g.z;
+              ? baseFontSize * 0.8
+              : baseFontSize * 0.6) * g.z;
 
         // Shadow
         drawProjectedShadow(g.x, y, fontSize, g.spin, cx, cy, g.z);

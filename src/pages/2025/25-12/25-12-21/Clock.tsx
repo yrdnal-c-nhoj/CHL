@@ -9,12 +9,15 @@ const Clock: React.FC = () => {
   const time = useClockTime();
   const fontFamily = 'CasFont_251221';
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily,
-      fontUrl: FONT_PATH
-    }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily,
+        fontUrl: FONT_PATH,
+      },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -87,12 +90,15 @@ const Clock: React.FC = () => {
     transformOrigin: 'center center',
   };
 
-  const clockData = useMemo(() => ({
-    h: formatWithLetters(time.getHours()),
-    m: formatWithLetters(time.getMinutes()),
-    s: formatWithLetters(time.getSeconds()),
-    iso: time.toISOString()
-  }), [time]);
+  const clockData = useMemo(
+    () => ({
+      h: formatWithLetters(time.getHours()),
+      m: formatWithLetters(time.getMinutes()),
+      s: formatWithLetters(time.getSeconds()),
+      iso: time.toISOString(),
+    }),
+    [time],
+  );
 
   return (
     <main style={containerStyle}>

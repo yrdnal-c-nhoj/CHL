@@ -15,12 +15,13 @@
   box-sizing: border-box;
   border: 5px solid transparent;
   border-image: repeating-linear-gradient(
-    45deg,
-    #ff8c00 0px,
-    #ff8c00 10px,
-    #000000 10px,
-    #000000 20px
-  ) 5;
+      45deg,
+      #ff8c00 0px,
+      #ff8c00 10px,
+      #000000 10px,
+      #000000 20px
+    )
+    5;
 }
 
 .clockSvg {

@@ -18,7 +18,12 @@ const MobiusStripClock: React.FC = () => {
 
     // --- Scene Setup ---
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000,
+    );
     camera.position.z = 4;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -47,10 +52,10 @@ const MobiusStripClock: React.FC = () => {
     };
 
     const geometry = new ParametricGeometry(mobiusFunc, 100, 20);
-    const material = new THREE.MeshBasicMaterial({ 
-      map: clockTexture, 
+    const material = new THREE.MeshBasicMaterial({
+      map: clockTexture,
       side: THREE.DoubleSide,
-      transparent: true 
+      transparent: true,
     });
 
     const mobius = new THREE.Mesh(geometry, material);
@@ -61,26 +66,38 @@ const MobiusStripClock: React.FC = () => {
 
     // --- Update Logic ---
     let animationFrameId: number;
-    
+
     const updateClock = () => {
       const now = new Date();
-      const displayTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      
+      const displayTime = now.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      });
+
       if (ctx) {
         ctx.clearRect(0, 0, clockCanvas.width, clockCanvas.height);
         // Draw background for the text path
         ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
         ctx.fillRect(0, 0, clockCanvas.width, clockCanvas.height);
-        
+
         // Draw Text
         ctx.fillStyle = '#ffffff';
         ctx.font = `bold 120px mob, Arial`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         // Repeat the time across the texture so it's always visible on the strip
-        ctx.fillText(displayTime, clockCanvas.width / 4, clockCanvas.height / 2);
-        ctx.fillText(displayTime, (3 * clockCanvas.width) / 4, clockCanvas.height / 2);
-        
+        ctx.fillText(
+          displayTime,
+          clockCanvas.width / 4,
+          clockCanvas.height / 2,
+        );
+        ctx.fillText(
+          displayTime,
+          (3 * clockCanvas.width) / 4,
+          clockCanvas.height / 2,
+        );
+
         clockTexture.needsUpdate = true;
       }
       setTimeString(displayTime);
@@ -88,13 +105,13 @@ const MobiusStripClock: React.FC = () => {
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      
+
       mobius.rotation.y += 0.005;
       mobius.rotation.z += 0.002;
-      
+
       // Infinite scroll effect
       clockTexture.offset.x -= 0.001;
-      
+
       controls.update();
       renderer.render(scene, camera);
     };
@@ -120,13 +137,25 @@ const MobiusStripClock: React.FC = () => {
       material.dispose();
       clockTexture.dispose();
       renderer.dispose();
-      if (containerRef.current) containerRef.current.removeChild(renderer.domElement);
+      if (containerRef.current)
+        containerRef.current.removeChild(renderer.domElement);
     };
   }, [fontsLoaded]); // Re-run when fonts actually load
 
   return (
-    <div ref={containerRef} style={{ width: '100vw', height: '100dvh', background: 'radial-gradient(circle, #ff5978, #8000ff)' }}>
-      <span className="sr-only" aria-live="polite" style={{ position: 'absolute', opacity: 0 }}>
+    <div
+      ref={containerRef}
+      style={{
+        width: '100vw',
+        height: '100dvh',
+        background: 'radial-gradient(circle, #ff5978, #8000ff)',
+      }}
+    >
+      <span
+        className="sr-only"
+        aria-live="polite"
+        style={{ position: 'absolute', opacity: 0 }}
+      >
         {timeString}
       </span>
     </div>

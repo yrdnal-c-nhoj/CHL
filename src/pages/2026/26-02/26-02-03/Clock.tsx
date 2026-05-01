@@ -123,7 +123,13 @@ const Clock: React.FC = () => {
   );
 };
 
-const Disc: React.FC<DiscProps> = ({ size, rotationVar, color, label, weight }) => (
+const Disc: React.FC<DiscProps> = ({
+  size,
+  rotationVar,
+  color,
+  label,
+  weight,
+}) => (
   <div
     style={{
       ...styles.disc,

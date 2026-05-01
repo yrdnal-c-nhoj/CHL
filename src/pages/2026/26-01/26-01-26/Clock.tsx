@@ -11,8 +11,16 @@ const DynamicComponent: React.FC = () => {
   const fontsLoaded = useMultipleFontLoader(
     useMemo(
       () => [
-        { fontFamily: 'TopFont', fontUrl: top260126Font, options: { display: 'block' } },
-        { fontFamily: 'BottomFont', fontUrl: bottom260126Font, options: { display: 'block' } },
+        {
+          fontFamily: 'TopFont',
+          fontUrl: top260126Font,
+          options: { display: 'block' },
+        },
+        {
+          fontFamily: 'BottomFont',
+          fontUrl: bottom260126Font,
+          options: { display: 'block' },
+        },
       ],
       [],
     ),

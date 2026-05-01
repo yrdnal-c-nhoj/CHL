@@ -14,7 +14,7 @@
   inset: 0;
   background-color: #000;
   transition: opacity 600ms ease-in-out;
-  zIndex: 9999;
+  zindex: 9999;
   pointer-events: none;
 }
 
@@ -57,7 +57,9 @@
   align-items: center;
   font-size: 6vh;
   font-family: 'techFont', monospace;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .bitOn {

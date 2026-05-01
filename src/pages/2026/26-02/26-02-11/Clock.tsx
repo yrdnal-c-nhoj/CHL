@@ -43,7 +43,8 @@ const HAND_DIMENSIONS: Record<string, HandDimensions> = {
   second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
 };
 
-const getHandRotation = (value: number, multiplier: number): number => value * multiplier;
+const getHandRotation = (value: number, multiplier: number): number =>
+  value * multiplier;
 
 const calculateNumeralPosition = (number: number) => {
   const angleRad = (number / 12) * 2 * Math.PI;

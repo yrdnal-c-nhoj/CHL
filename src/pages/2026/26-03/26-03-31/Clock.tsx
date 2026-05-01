@@ -10,9 +10,27 @@ import styles from './Clock.module.css';
 
 // ---- DRIFT CONFIGS ----
 const HAND_DRIFT = {
-  hour: { duration: 7.2, delay: -1.3, amp: 10, scaleLo: '0.93', scaleHi: '1.07' },
-  minute: { duration: 5.8, delay: -3.1, amp: 15, scaleLo: '0.90', scaleHi: '1.10' },
-  second: { duration: 4.1, delay: -0.7, amp: 20, scaleLo: '0.88', scaleHi: '1.12' },
+  hour: {
+    duration: 7.2,
+    delay: -1.3,
+    amp: 10,
+    scaleLo: '0.93',
+    scaleHi: '1.07',
+  },
+  minute: {
+    duration: 5.8,
+    delay: -3.1,
+    amp: 15,
+    scaleLo: '0.90',
+    scaleHi: '1.10',
+  },
+  second: {
+    duration: 4.1,
+    delay: -0.7,
+    amp: 20,
+    scaleLo: '0.88',
+    scaleHi: '1.12',
+  },
 };
 
 const NUMERAL_DRIFT = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((_, i) => ({
@@ -20,14 +38,17 @@ const NUMERAL_DRIFT = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((_, i) => ({
   delay: -((i * 0.83 + 0.5) % 8),
   amp: 6 + ((i * 2.11 + 3) % 14),
   scaleLo: (0.3 + ((i * 0.007 + 0.003) % 0.08)).toFixed(3),
-  scaleHi: (3 + ((i * 0.009 + 0.005) % 0.10)).toFixed(3),
+  scaleHi: (3 + ((i * 0.009 + 0.005) % 0.1)).toFixed(3),
 }));
 
 const Clock: React.FC = () => {
   const time = useMillisecondClock();
 
   // Load custom font via Suspense
-  const fontConfigs = useMemo(() => [{ fontFamily: 'CrabFont', fontUrl: crabFont }], []);
+  const fontConfigs = useMemo(
+    () => [{ fontFamily: 'CrabFont', fontUrl: crabFont }],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Time calculations
@@ -49,16 +70,18 @@ const Clock: React.FC = () => {
   // Generate stable numerals with animated gradient colors
   const numeralsRef = useRef<React.ReactNode[]>([]);
   if (numeralsRef.current.length === 0) {
-    numeralsRef.current = ([12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as const).map((num, i) => {
+    numeralsRef.current = (
+      [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as const
+    ).map((num, i) => {
       const angleDeg = i * 30 - 90;
       const angleRad = (angleDeg * Math.PI) / 180;
       const radius = 42;
       const x = 50 + radius * Math.cos(angleRad);
       const y = 50 + radius * Math.sin(angleRad);
       const drift = NUMERAL_DRIFT[i]!;
-      
+
       // Unique gradient animation for each numeral
-      const gradientDuration = 3 + (i * 0.7);
+      const gradientDuration = 3 + i * 0.7;
       const gradientDelay = i * 0.5;
       const startAngle = i * 30;
 
@@ -99,11 +122,23 @@ const Clock: React.FC = () => {
     src: string,
     rotationDeg: number,
     height: string,
-    handType: 'hour' | 'minute' | 'second'
+    handType: 'hour' | 'minute' | 'second',
   ) => {
     const drift = HAND_DRIFT[handType]!;
-    const handClass = handType === 'hour' ? styles.handHour : handType === 'minute' ? styles.handMinute : handType === 'second' ? styles.handSecond : '';
-    const imgClass = handType === 'hour' ? styles.hourHand : handType === 'minute' ? styles.minuteHand : styles.secondHand;
+    const handClass =
+      handType === 'hour'
+        ? styles.handHour
+        : handType === 'minute'
+          ? styles.handMinute
+          : handType === 'second'
+            ? styles.handSecond
+            : '';
+    const imgClass =
+      handType === 'hour'
+        ? styles.hourHand
+        : handType === 'minute'
+          ? styles.minuteHand
+          : styles.secondHand;
 
     return (
       <div

@@ -21,16 +21,21 @@ const CLOCK_CONFIG = {
 
 const AnalogClock: React.FC = () => {
   const now = useMillisecondClock();
-  
-  const fontConfigs = useMemo(() => [{
-      fontFamily: 'BorrowedAnalog',
-      fontUrl: dripFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-  }], []);
-  
+
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'BorrowedAnalog',
+        fontUrl: dripFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   const msec = now.getMilliseconds();

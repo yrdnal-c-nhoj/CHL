@@ -212,7 +212,11 @@ const BirthdayCakeClock = () => {
               />
             </div>
 
-            <div ref={clockRefs.secondHand} style={handBaseStyle} className="second">
+            <div
+              ref={clockRefs.secondHand}
+              style={handBaseStyle}
+              className="second"
+            >
               <img
                 decoding="async"
                 loading="lazy"

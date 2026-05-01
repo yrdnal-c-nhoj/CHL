@@ -11,14 +11,16 @@ const StretchedClock: React.FC = () => {
       fontUrl: fontFile,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   const [time, setTime] = useState(new Date());
-  const [isLargeScreen, setIsLargeScreen] = useState<any>(window.innerWidth > 768);
+  const [isLargeScreen, setIsLargeScreen] = useState<any>(
+    window.innerWidth > 768,
+  );
   const [bgReady, setBgReady] = useState<boolean>(false);
 
   // Font loading handled by useMultipleFontLoader

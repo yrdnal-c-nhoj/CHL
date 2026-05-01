@@ -12,10 +12,10 @@ export function useClockTime(precision: 'ms' | 'seconds' = 'seconds'): Date {
 
   useEffect(() => {
     let frameId: number;
-    
+
     const tick = () => {
       const now = new Date();
-      
+
       if (precision === 'seconds') {
         const currentSecond = now.getSeconds();
         if (currentSecond !== lastSecondRef.current) {
@@ -25,7 +25,7 @@ export function useClockTime(precision: 'ms' | 'seconds' = 'seconds'): Date {
       } else {
         setTime(now);
       }
-      
+
       frameId = requestAnimationFrame(tick);
     };
 
@@ -56,7 +56,7 @@ export function formatTime(date: Date, format: TimeFormat = '12h'): ClockTime {
     hours: hours.toString().padStart(2, '0'),
     minutes: minutes.toString().padStart(2, '0'),
     seconds: seconds.toString().padStart(2, '0'),
-    milliseconds: ms.toString().padStart(3, '0').slice(0, 2)
+    milliseconds: ms.toString().padStart(3, '0').slice(0, 2),
   };
 }
 
@@ -76,9 +76,9 @@ export function calculateAngles(time: Date): {
   const ms = time.getMilliseconds();
 
   return {
-    hour: (hours % 12) * 30 + minutes * 0.5 + seconds * (0.5 / 60), 
+    hour: (hours % 12) * 30 + minutes * 0.5 + seconds * (0.5 / 60),
     minute: minutes * 6 + seconds * 0.1 + ms * (0.1 / 1000),
-    second: seconds * 6 + ms * 0.006 // 6 degrees per second + fractional ms sweep
+    second: seconds * 6 + ms * 0.006, // 6 degrees per second + fractional ms sweep
   };
 }
 

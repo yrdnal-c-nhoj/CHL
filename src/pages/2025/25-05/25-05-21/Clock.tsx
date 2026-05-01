@@ -11,9 +11,9 @@ const Clock: React.FC = () => {
       fontUrl: semFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

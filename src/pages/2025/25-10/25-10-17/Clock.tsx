@@ -43,7 +43,8 @@ export default function TimeWordsClock() {
   ];
 
   // Plural helper
-  const pluralize = (n: number, singular: string, plural: string) => (n === 1 ? singular : plural);
+  const pluralize = (n: number, singular: string, plural: string) =>
+    n === 1 ? singular : plural;
 
   // Translation type definition
   type Translation = {
@@ -392,9 +393,10 @@ export default function TimeWordsClock() {
     },
   };
 
-  const fontConfigs = useMemo(() => [
-    { fontFamily: 'LatinFont', fontUrl: fontLatin }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [{ fontFamily: 'LatinFont', fontUrl: fontLatin }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -413,11 +415,11 @@ export default function TimeWordsClock() {
     let hours = date.getHours(),
       minutes = date.getMinutes(),
       seconds = date.getSeconds();
-    
+
     let relation = t.after;
     let displayMinutes = minutes;
     let displaySeconds = seconds;
-      
+
     let displayHour = hours % 12 === 0 ? 12 : hours % 12;
 
     if (minutes > 30 || (minutes === 30 && seconds > 0)) {

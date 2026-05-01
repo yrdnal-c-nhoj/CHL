@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -19,16 +25,19 @@ interface SlowLightningClockProps {
 
 const SlowLightningClock: React.FC<SlowLightningClockProps> = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'InnerFont',
-      fontUrl: innerFontTTF,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'InnerFont',
+        fontUrl: innerFontTTF,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
@@ -258,6 +267,6 @@ const SlowLightningClock: React.FC<SlowLightningClockProps> = () => {
       <div ref={flashBlackRef} style={styles.flashBlack} />
     </>
   );
-}
+};
 
 export default SlowLightningClock;

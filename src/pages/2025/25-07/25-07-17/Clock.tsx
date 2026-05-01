@@ -38,18 +38,18 @@ const fontFaceStyle = `
 
 const texts = [
   'Ursus arctos middendorffi',
-    'Macropus rufus',
-    'Harpia harpyja',
-    'Eunectes murinus',
-    'Suncus etruscus',
-    'Dicopomorpha echmepterygis',
-    'Mycoplasma genitalium',
-    'Balaenoptera musculus',
-    'Loxodonta africana',
-    'Ceratotherium simum',
-    'Crocodylus porosus',
-    'Equus ferus caballus',
-  ];
+  'Macropus rufus',
+  'Harpia harpyja',
+  'Eunectes murinus',
+  'Suncus etruscus',
+  'Dicopomorpha echmepterygis',
+  'Mycoplasma genitalium',
+  'Balaenoptera musculus',
+  'Loxodonta africana',
+  'Ceratotherium simum',
+  'Crocodylus porosus',
+  'Equus ferus caballus',
+];
 
 const images = [
   { img: num1Img, className: 'num1', style: { left: '78%', top: '65%' } },
@@ -91,9 +91,9 @@ const AnimatedClock: React.FC = () => {
       fontUrl: animFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

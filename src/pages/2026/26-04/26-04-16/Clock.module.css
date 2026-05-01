@@ -52,13 +52,17 @@
   font-size: clamp(3rem, 6vw, 6rem);
   color: #d5ece2;
   opacity: 0.6;
-  text-shadow: 1px 1px 12px rgb(64, 224, 208), 0 8px 1px rgba(0, 0, 0, 0.8);
+  text-shadow:
+    1px 1px 12px rgb(64, 224, 208),
+    0 8px 1px rgba(0, 0, 0, 0.8);
   left: var(--x);
   top: var(--y);
   transform: translate(-50%, -50%) rotate(var(--rot));
 }
 
-.hourHand, .minuteHand, .secondHand {
+.hourHand,
+.minuteHand,
+.secondHand {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -107,18 +111,36 @@
 }
 
 @keyframes rotateTile {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes rotateCounterClockwise {
-  from { transform: rotate(90deg); }
-  to { transform: rotate(-270deg); }
+  from {
+    transform: rotate(90deg);
+  }
+  to {
+    transform: rotate(-270deg);
+  }
 }
 
 @keyframes windFlow {
-  0% { transform: translateX(-100%) skewX(-12deg); opacity: 0; }
-  10% { opacity: 0.3; }
-  90% { opacity: 0.3; }
-  100% { transform: translateX(100vw) skewX(-12deg); opacity: 0; }
+  0% {
+    transform: translateX(-100%) skewX(-12deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateX(100vw) skewX(-12deg);
+    opacity: 0;
+  }
 }

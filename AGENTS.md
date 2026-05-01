@@ -5,16 +5,19 @@ Technical standards for BorrowedTime development.
 ## Architecture
 
 **Registry-Discovery Pattern**
+
 - Source of truth: `src/context/clockpages.json`
 - Dynamic loading: `import.meta.glob` in `useClockPage.ts`
 
 ## Priority Focus (Current Sprint)
+
 1. **Asset Pruning**: Remove the 73 verified unused assets (59 images, 2 videos, 12 fonts) to reduce repo bloat.
 2. **Naming Compliance**: Fix the 5 non-standardized font filenames identified in the audit.
 3. **Logic Migration**: Refactor remaining `setInterval` clocks (e.g., 25-09-15) to the `useClockTime()` hook.
 4. **Image Optimization**: Transition to Phase 4 (WebP automation).
 
 **Key Hooks**
+
 - `useClockTime()` - 1s updates from `@/utils/hooks`
 - `useSuspenseFontLoader()` - FOUC prevention
 - `useImageLoader()` / `useVideoLoader()` - Pre-buffering
@@ -24,52 +27,52 @@ Technical standards for BorrowedTime development.
 1. **Strict Typing**: `.tsx` only, no `any`
 2. **CSS Modules**: `.module.css` for clocks, Tailwind for UI
 3. **Semantic HTML**: `<time dateTime={...}>` for displays
-4.  **No Direct DOM**: Avoid `document.querySelector`. Use `useRef` for canvas/animations.
-5.  **Clean Up**: Always clear `setTimeout`, `setInterval`, and `requestAnimationFrame` on unmount.
+4. **No Direct DOM**: Avoid `document.querySelector`. Use `useRef` for canvas/animations.
+5. **Clean Up**: Always clear `setTimeout`, `setInterval`, and `requestAnimationFrame` on unmount.
 
 ## CLI Operations
 
 ### Essential
 
-| Command | Purpose |
-|---------|---------|
-| `npm run dev` | Start dev server |
-| `npm run build` | Production build |
+| Command                    | Purpose               |
+| -------------------------- | --------------------- |
+| `npm run dev`              | Start dev server      |
+| `npm run build`            | Production build      |
 | `npm run build:with-types` | Build with type check |
-| `npm run type-check` | TypeScript only |
-| `npm run lint` | ESLint |
-| `npm run format` | Prettier |
+| `npm run type-check`       | TypeScript only       |
+| `npm run lint`             | ESLint                |
+| `npm run format`           | Prettier              |
 
 ### Testing
 
-| Command | Purpose |
-|---------|---------|
-| `npm run test` | Vitest watch |
+| Command            | Purpose         |
+| ------------------ | --------------- |
+| `npm run test`     | Vitest watch    |
 | `npm run test:run` | Single run (CI) |
-| `npm run test:ui` | Browser UI |
+| `npm run test:ui`  | Browser UI      |
 
 ### Clock Creation
 
-| Command | Purpose |
-|---------|---------|
+| Command             | Purpose                    |
+| ------------------- | -------------------------- |
 | `npm run clock:new` | Create clock from template |
 
 ### Asset Management
 
-| Command | Purpose |
-|---------|---------|
-| `npm run audit:fonts` | Find unused fonts |
-| `npm run audit:images` | Find unused images |
-| `npm run standardize:fonts` | Fix font names |
-| `npm run optimize:images` | Convert to WebP |
+| Command                     | Purpose            |
+| --------------------------- | ------------------ |
+| `npm run audit:fonts`       | Find unused fonts  |
+| `npm run audit:images`      | Find unused images |
+| `npm run standardize:fonts` | Fix font names     |
+| `npm run optimize:images`   | Convert to WebP    |
 
 ### Performance
 
-| Command | Purpose |
-|---------|---------|
+| Command                | Purpose         |
+| ---------------------- | --------------- |
 | `npm run perf:analyze` | Bundle analysis |
-| `npm run preview` | Preview build |
-| `npm run clean` | Remove dist |
+| `npm run preview`      | Preview build   |
+| `npm run clean`        | Remove dist     |
 
 ## Directory Map
 
@@ -93,39 +96,45 @@ src/
 
 ## Performance Budgets
 
-| Metric | Limit |
-|--------|-------|
-| Clock Bundle | 5MB max |
-| Font Assets | 100KB per clock |
-| Image Assets | 2MB per clock |
-| Total Page | 6MB max |
+| Metric       | Limit           |
+| ------------ | --------------- |
+| Clock Bundle | 5MB max         |
+| Font Assets  | 100KB per clock |
+| Image Assets | 2MB per clock   |
+| Total Page   | 6MB max         |
 
 ## Asset Naming
 
 **Fonts:**
+
 - Format: `YY-MM-DD-name.[ext]` (ttf, otf, or woff2)
 - Location: `src/assets/fonts/YYYY/`
 - Standard: TTF, OTF, and WOFF2 all supported.
 
 **Images:**
+
 - Format: `YY-MM-DD-name.webp`
 - Location: `src/assets/images/YY-MM/YY-MM-DD/`
 - Standard: WebP only
 
 **Videos:**
+
 - No size restrictions
 - Local storage supported
 
 ## Troubleshooting
 
 **TypeScript:**
+
 ```bash
 npm run type-check
 ```
+
 - RefObject null checks: Add `?` optional chaining
 - Missing args: Check hook signatures
 
 **Build:**
+
 ```bash
 npm run clean
 npm run build
@@ -133,6 +142,7 @@ npm run perf:analyze  # Check deps
 ```
 
 **Fonts:**
+
 ```bash
 npm run audit:fonts
 # Check paths match /fonts/YY-MM-DD-name.[ext]
@@ -147,4 +157,5 @@ npm run audit:fonts
 - [ ] Assets follow naming conventions
 
 ---
+
 Cubist Heart Laboratories

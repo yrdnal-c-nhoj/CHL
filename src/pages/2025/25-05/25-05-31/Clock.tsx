@@ -16,9 +16,9 @@ const ElephantClock: React.FC = () => {
       fontUrl: fatFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

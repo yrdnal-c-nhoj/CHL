@@ -11,16 +11,19 @@ interface BarGraphClockProps {
 
 const BarGraphClock = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'BarGraphClockFont',
-      fontUrl: monofettFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'BarGraphClockFont',
+        fontUrl: monofettFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);

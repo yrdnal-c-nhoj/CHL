@@ -11,9 +11,9 @@ export default function MessyClock() {
       fontUrl: Cu250830,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
@@ -56,9 +56,7 @@ export default function MessyClock() {
 
   return (
     <div style={clockStyle}>
-      <style>
-        {`/* Font loading handled by useMultipleFontLoader */`}
-      </style>
+      <style>{`/* Font loading handled by useMultipleFontLoader */`}</style>
       {timeString}
     </div>
   );

@@ -6,7 +6,9 @@ const FONT_NAME = `XanhMono_${fontVersion}`;
 
 const BorrowedTimeClock: React.FC = () => {
   const time = useSecondClock();
-  const [imageUrl, setImageUrl] = useState(`https://picsum.photos/800/600?sig=${Date.now()}`);
+  const [imageUrl, setImageUrl] = useState(
+    `https://picsum.photos/800/600?sig=${Date.now()}`,
+  );
   const [imgOpacity, setImgOpacity] = useState<number>(1);
   const [isPendingNewImage, setIsPendingNewImage] = useState(false);
 
@@ -55,7 +57,7 @@ const BorrowedTimeClock: React.FC = () => {
     height: 'min(56.25vmin, 37.5vh)',
     maxWidth: '500px',
     maxHeight: '375px',
-    border: '1px solid #F2F7F1', 
+    border: '1px solid #F2F7F1',
     backgroundColor: '#111', // Subtle dark fill while empty
     overflow: 'hidden',
     flexShrink: 0,
@@ -93,10 +95,10 @@ const BorrowedTimeClock: React.FC = () => {
 
       <div style={containerStyle}>
         <div style={frameStyle}>
-          <img 
-            src={imageUrl} 
-            alt="Borrowed Time" 
-            style={imageStyle} 
+          <img
+            src={imageUrl}
+            alt="Borrowed Time"
+            style={imageStyle}
             onLoad={handleImageLoad}
           />
         </div>

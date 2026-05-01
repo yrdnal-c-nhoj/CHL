@@ -29,7 +29,10 @@ const formatTimeDigits = (time: Date) => {
 
 const Clock: React.FC = () => {
   const time = useClockTime();
-  const { hourDigits, minDigits } = useMemo(() => formatTimeDigits(time), [time]);
+  const { hourDigits, minDigits } = useMemo(
+    () => formatTimeDigits(time),
+    [time],
+  );
 
   return (
     <>

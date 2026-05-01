@@ -9,7 +9,7 @@ const imageModules = import.meta.glob('@/assets/images/2026/26-04/26-04-06/*', {
 });
 
 const IMAGES = Object.values(imageModules).filter(
-  (src): src is string => typeof src === 'string' && !src.includes('.DS_Store')
+  (src): src is string => typeof src === 'string' && !src.includes('.DS_Store'),
 );
 
 export const assets = IMAGES;
@@ -22,9 +22,11 @@ const getRandomPosition = () => ({
 
 const Clock: React.FC = () => {
   const time = useClockTime();
-  
+
   // Start with all images loaded at random positions
-  const [displayedImages, setDisplayedImages] = useState<Array<{ src: string; pos: React.CSSProperties; id: number }>>(() => {
+  const [displayedImages, setDisplayedImages] = useState<
+    Array<{ src: string; pos: React.CSSProperties; id: number }>
+  >(() => {
     return IMAGES.map((src) => ({
       src,
       pos: getRandomPosition(),
@@ -60,7 +62,6 @@ const Clock: React.FC = () => {
     setImageIndex((prev) => prev + 1);
   }, [seconds]);
 
-
   // Clock Hand Calculations
   const secondDegrees = (time.getSeconds() + time.getMilliseconds() / 1000) * 6;
   const minuteDegrees = (time.getMinutes() + time.getSeconds() / 60) * 6;
@@ -75,7 +76,11 @@ const Clock: React.FC = () => {
   }, [time]);
 
   return (
-    <div className={styles.container} role="img" aria-label={`Analog clock showing ${timeLabel}`}>
+    <div
+      className={styles.container}
+      role="img"
+      aria-label={`Analog clock showing ${timeLabel}`}
+    >
       {/* Background Images Layer */}
       {displayedImages.map((img) => (
         <img
@@ -94,22 +99,51 @@ const Clock: React.FC = () => {
         role="img"
         aria-label={`Time: ${timeLabel}`}
       >
-        
         {/* Markers */}
         {[...Array(12)].map((_, i) => (
           <line
             key={i}
-            x1="50" y1="5" x2="50" y2={i % 3 === 0 ? "10" : "8"}
+            x1="50"
+            y1="5"
+            x2="50"
+            y2={i % 3 === 0 ? '10' : '8'}
             stroke="#000"
-            strokeWidth={i % 3 === 0 ? "1" : "0.5"}
+            strokeWidth={i % 3 === 0 ? '1' : '0.5'}
             transform={`rotate(${i * 30} 50 50)`}
           />
         ))}
 
         {/* Hands */}
-        <line x1="50" y1="50" x2="50" y2="25" stroke="#000" strokeWidth="2.5" strokeLinecap="round" transform={`rotate(${hourDegrees} 50 50)`} />
-        <line x1="50" y1="50" x2="50" y2="15" stroke="#000" strokeWidth="1.5" strokeLinecap="round" transform={`rotate(${minuteDegrees} 50 50)`} />
-        <line x1="50" y1="55" x2="50" y2="8" stroke="#f00" strokeWidth="0.7" strokeLinecap="round" transform={`rotate(${secondDegrees} 50 50)`} />
+        <line
+          x1="50"
+          y1="50"
+          x2="50"
+          y2="25"
+          stroke="#000"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          transform={`rotate(${hourDegrees} 50 50)`}
+        />
+        <line
+          x1="50"
+          y1="50"
+          x2="50"
+          y2="15"
+          stroke="#000"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          transform={`rotate(${minuteDegrees} 50 50)`}
+        />
+        <line
+          x1="50"
+          y1="55"
+          x2="50"
+          y2="8"
+          stroke="#f00"
+          strokeWidth="0.7"
+          strokeLinecap="round"
+          transform={`rotate(${secondDegrees} 50 50)`}
+        />
 
         <circle cx="50" cy="50" r="2" fill="#000" />
       </svg>

@@ -8,7 +8,7 @@ import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {
   const time = useClockTime();
-  
+
   // Calculate total elapsed values to prevent the 360 -> 0 reset glitch
   const seconds = time.getSeconds();
   const minutes = time.getMinutes();
@@ -16,11 +16,11 @@ const Clock: React.FC = () => {
   const ms = time.getMilliseconds();
 
   // Continuous degree calculation
-  // By using the full time string or total seconds, we ensure the hand 
+  // By using the full time string or total seconds, we ensure the hand
   // always moves forward.
-  const secondDeg = ((seconds + ms / 1000) * 6);
-  const minuteDeg = (minutes * 6) + (seconds * 0.1);
-  const hourDeg = ((hours % 12) * 30) + (minutes * 0.5);
+  const secondDeg = (seconds + ms / 1000) * 6;
+  const minuteDeg = minutes * 6 + seconds * 0.1;
+  const hourDeg = (hours % 12) * 30 + minutes * 0.5;
 
   const clockSize = 'min(96vw, 96vh)';
   const imgSize = 34;
@@ -29,22 +29,55 @@ const Clock: React.FC = () => {
   return (
     <div className={styles.container}>
       <svg viewBox="0 0 100 100" className={styles.clockSvg}>
-        
         <defs>
           <filter id="acrylicNoise" x="0%" y="0%" width="100%" height="100%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise"/>
-            <feDiffuseLighting in="noise" lightingColor="#fffaf0" surfaceScale="1" result="light">
-              <feDistantLight azimuth="45" elevation="60"/>
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.8"
+              numOctaves="3"
+              result="noise"
+            />
+            <feDiffuseLighting
+              in="noise"
+              lightingColor="#fffaf0"
+              surfaceScale="1"
+              result="light"
+            >
+              <feDistantLight azimuth="45" elevation="60" />
             </feDiffuseLighting>
-            <feBlend in="SourceGraphic" in2="light" mode="multiply"/>
+            <feBlend in="SourceGraphic" in2="light" mode="multiply" />
           </filter>
         </defs>
 
         {/* Hour Markers */}
-        <image href={img12} x={50 - halfImg} y={3} width={imgSize} height={imgSize} />
-        <image href={img3} x={97 - imgSize} y={50 - halfImg} width={imgSize} height={imgSize} />
-        <image href={img6} x={50 - halfImg} y={97 - imgSize} width={imgSize} height={imgSize} />
-        <image href={img9} x={3} y={50 - halfImg} width={imgSize} height={imgSize} />
+        <image
+          href={img12}
+          x={50 - halfImg}
+          y={3}
+          width={imgSize}
+          height={imgSize}
+        />
+        <image
+          href={img3}
+          x={97 - imgSize}
+          y={50 - halfImg}
+          width={imgSize}
+          height={imgSize}
+        />
+        <image
+          href={img6}
+          x={50 - halfImg}
+          y={97 - imgSize}
+          width={imgSize}
+          height={imgSize}
+        />
+        <image
+          href={img9}
+          x={3}
+          y={50 - halfImg}
+          width={imgSize}
+          height={imgSize}
+        />
 
         {/* Hour Hand - Acrylic Slab */}
         <line

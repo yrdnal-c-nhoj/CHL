@@ -16,9 +16,9 @@ const AnalogClock: React.FC = () => {
       fontUrl: font_06_09_2025,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

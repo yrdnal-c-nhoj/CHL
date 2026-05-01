@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 
-
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/2025/25-09/25-09-17/crush.jpg';

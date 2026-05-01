@@ -14,7 +14,10 @@ const RainOverlay: React.FC = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     // willReadFrequently: false since we never call getImageData
-    const ctx = canvas.getContext('2d', { alpha: true, willReadFrequently: false });
+    const ctx = canvas.getContext('2d', {
+      alpha: true,
+      willReadFrequently: false,
+    });
     if (!ctx) return;
 
     let animationFrameId: number;
@@ -30,7 +33,7 @@ const RainOverlay: React.FC = () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         // Re-scatter drops to fit new dimensions
-        drops.forEach(d => {
+        drops.forEach((d) => {
           d.x = Math.random() * canvas.width;
           d.y = Math.random() * canvas.height;
         });
@@ -101,7 +104,7 @@ const Clock: React.FC = () => {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    
+
     const attemptPlay = () => {
       if (video.paused) {
         video.play().catch(() => {
@@ -109,16 +112,21 @@ const Clock: React.FC = () => {
         });
       }
     };
-    
+
     attemptPlay();
     video.addEventListener('canplaythrough', attemptPlay);
-    
+
     return () => video.removeEventListener('canplaythrough', attemptPlay);
   }, []);
 
-  const fontConfigs = useMemo(() => [{ fontFamily: 'EastWind', fontUrl: eastFont }], []);
+  const fontConfigs = useMemo(
+    () => [{ fontFamily: 'EastWind', fontUrl: eastFont }],
+    [],
+  );
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-  const fontFamily = fontsLoaded ? 'EastWind, Georgia, serif' : 'Georgia, serif';
+  const fontFamily = fontsLoaded
+    ? 'EastWind, Georgia, serif'
+    : 'Georgia, serif';
 
   useEffect(() => {
     let frameId: number;
@@ -162,45 +170,78 @@ const Clock: React.FC = () => {
     return () => cancelAnimationFrame(frameId);
   }, []);
 
-  const borderStyle: React.CSSProperties = useMemo(() => ({
-    backgroundImage: `linear-gradient(rgba(255, 179, 0, 0.31), rgba(255, 179, 0, 0.31)), url(${borderImage})`,
-    backgroundSize: 'auto 7vh',
-    backgroundRepeat: 'repeat-x',
-    filter: 'contrast(1.1) brightness(0.9) saturate(3.7)',
-  }), []);
+  const borderStyle: React.CSSProperties = useMemo(
+    () => ({
+      backgroundImage: `linear-gradient(rgba(255, 179, 0, 0.31), rgba(255, 179, 0, 0.31)), url(${borderImage})`,
+      backgroundSize: 'auto 7vh',
+      backgroundRepeat: 'repeat-x',
+      filter: 'contrast(1.1) brightness(0.9) saturate(3.7)',
+    }),
+    [],
+  );
 
-  const clockFace = useMemo(() => (
-    <div className={styles.clockFace}>
-      {(['xii','i','ii','iii','iv','v','vi','vii','viii','ix','x','xi'] as const).map((numeral, i) => {
-        const angle = (i * 30 - 90) * (Math.PI / 180);
-        const radius = 42;
-        const x = 50 + radius * Math.cos(angle);
-        const y = 50 + radius * Math.sin(angle);
-        return (
-          <div
-            key={numeral}
-            className={styles.numeral}
-            style={{
-              left: `${x}%`,
-              top: `${y}%`,
-              transform: `translate(-50%, -50%) rotate(${i * 30}deg)`,
-              fontFamily,
-            }}
-          >
-            {numeral}
-          </div>
-        );
-      })}
-      <div ref={hourRef} className={styles.hourHand} />
-      <div ref={minRef} className={styles.minuteHand} />
-      <div ref={secRef} className={styles.secondHand} />
-      <div className={styles.scarab} style={{ backgroundImage: `url(${scarabImage})` }} />
-    </div>
-  ), [fontFamily]);
+  const clockFace = useMemo(
+    () => (
+      <div className={styles.clockFace}>
+        {(
+          [
+            'xii',
+            'i',
+            'ii',
+            'iii',
+            'iv',
+            'v',
+            'vi',
+            'vii',
+            'viii',
+            'ix',
+            'x',
+            'xi',
+          ] as const
+        ).map((numeral, i) => {
+          const angle = (i * 30 - 90) * (Math.PI / 180);
+          const radius = 42;
+          const x = 50 + radius * Math.cos(angle);
+          const y = 50 + radius * Math.sin(angle);
+          return (
+            <div
+              key={numeral}
+              className={styles.numeral}
+              style={{
+                left: `${x}%`,
+                top: `${y}%`,
+                transform: `translate(-50%, -50%) rotate(${i * 30}deg)`,
+                fontFamily,
+              }}
+            >
+              {numeral}
+            </div>
+          );
+        })}
+        <div ref={hourRef} className={styles.hourHand} />
+        <div ref={minRef} className={styles.minuteHand} />
+        <div ref={secRef} className={styles.secondHand} />
+        <div
+          className={styles.scarab}
+          style={{ backgroundImage: `url(${scarabImage})` }}
+        />
+      </div>
+    ),
+    [fontFamily],
+  );
 
   return (
     <div className={styles.container}>
-      <video ref={videoRef} autoPlay muted loop playsInline preload="auto" disablePictureInPicture className={styles.videoBg}>
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        disablePictureInPicture
+        className={styles.videoBg}
+      >
         <source src={bgVideo} type="video/mp4" />
       </video>
 
@@ -211,9 +252,7 @@ const Clock: React.FC = () => {
       <div className={styles.borderLeft} style={borderStyle} />
       <div className={styles.borderRight} style={borderStyle} />
 
-      <div className={styles.clockDisplay}>
-        {clockFace}
-      </div>
+      <div className={styles.clockDisplay}>{clockFace}</div>
     </div>
   );
 };

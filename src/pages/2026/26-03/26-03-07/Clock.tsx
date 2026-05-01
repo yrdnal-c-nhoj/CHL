@@ -7,7 +7,7 @@ export const fontConfigs: FontConfig[] = [];
 
 const Clock: React.FC = () => {
   const time = useMillisecondClock();
-  
+
   useSuspenseFontLoader(fontConfigs);
 
   const timeDigits = useMemo(() => {

@@ -66,7 +66,7 @@ const LissajousClock: React.FC = () => {
 
   const fontConfigs = useMemo<FontConfig[]>(
     () => [{ fontFamily: 'LissaFont', fontUrl }],
-    []
+    [],
   );
 
   useSuspenseFontLoader(fontConfigs);

@@ -11,9 +11,10 @@ export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
   const fontVar = 'ElementalFont';
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: fontVar, fontUrl: cust250921font }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: fontVar, fontUrl: cust250921font }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 

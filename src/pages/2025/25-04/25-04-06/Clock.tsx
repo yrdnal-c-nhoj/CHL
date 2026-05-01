@@ -20,16 +20,19 @@ interface ContainerRefs {
 
 const ConfettiClock = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'ConfettiClockFont',
-      fontUrl: confFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'ConfettiClockFont',
+        fontUrl: confFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);
@@ -45,7 +48,11 @@ const ConfettiClock = () => {
 
   const getCurrentTimeDigits = useCallback((): string[] => {
     const hours = currentTime.getHours().toString().padStart(2, '0').split('');
-    const minutes = currentTime.getMinutes().toString().padStart(2, '0').split('');
+    const minutes = currentTime
+      .getMinutes()
+      .toString()
+      .padStart(2, '0')
+      .split('');
     return [...hours, ...minutes];
   }, [currentTime]);
 
@@ -79,7 +86,7 @@ const ConfettiClock = () => {
 
     containerRefs.digits.current.forEach((el, i) => {
       if (!el) return; // Skip null elements
-      
+
       const fontSize = Math.random() * 12 + 4; // 4vh to 16vh
       el.style.fontSize = `${fontSize}vh`;
       el.style.fontFamily = 'ConfettiClockFont, sans-serif' as string;

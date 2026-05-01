@@ -87,16 +87,19 @@ interface SphereDropClockProps {
 
 const SphereDropClock = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'SphFont',
-      fontUrl: permanentMarkerFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'SphFont',
+        fontUrl: permanentMarkerFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);

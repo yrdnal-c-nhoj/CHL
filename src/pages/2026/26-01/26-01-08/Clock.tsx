@@ -21,7 +21,20 @@ import minuteHandImg from '@/assets/images/2026/26-01/26-01-08/min.webp';
 import secondHandImg from '@/assets/images/2026/26-01/26-01-08/seco.webp';
 
 // --- CONSTANTS ---
-const CLOCK_LABELS = [num12, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11];
+const CLOCK_LABELS = [
+  num12,
+  num1,
+  num2,
+  num3,
+  num4,
+  num5,
+  num6,
+  num7,
+  num8,
+  num9,
+  num10,
+  num11,
+];
 
 const SHADOW_FILTER =
   'drop-shadow(0 0 6px rgba(45, 18, 3, 0.9)) drop-shadow(0 0 12px rgba(236, 10, 10, 0.7))';
@@ -45,23 +58,33 @@ const TangerineClock: React.FC = () => {
   const [isClient, setIsClient] = useState<boolean>(false);
 
   // Asset configuration
-  const assetConfig = useMemo(() => ({
-    background: { src: backgroundImage },
-    bgLayer: { src: bgLayerTile },
-    ...Object.fromEntries(
-      CLOCK_LABELS.map((label, index) => [`num${index === 0 ? 12 : index}`, { src: label }])
-    ),
-    hourHand: { src: hourHandImg },
-    minuteHand: { src: minuteHandImg },
-    secondHand: { src: secondHandImg },
-  }), []);
+  const assetConfig = useMemo(
+    () => ({
+      background: { src: backgroundImage },
+      bgLayer: { src: bgLayerTile },
+      ...Object.fromEntries(
+        CLOCK_LABELS.map((label, index) => [
+          `num${index === 0 ? 12 : index}`,
+          { src: label },
+        ]),
+      ),
+      hourHand: { src: hourHandImg },
+      minuteHand: { src: minuteHandImg },
+      secondHand: { src: secondHandImg },
+    }),
+    [],
+  );
 
   const assets = useMultiAssetLoader(assetConfig);
 
   // Handle resizing logic
   const updateClockSize = useCallback(() => {
     if (typeof window !== 'undefined') {
-      const size = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.7, 500);
+      const size = Math.min(
+        window.innerWidth * 0.9,
+        window.innerHeight * 0.7,
+        500,
+      );
       setClockSize(size);
     }
   }, []);
@@ -126,11 +149,15 @@ const TangerineClock: React.FC = () => {
     justifyContent: 'center',
     alignItems: 'flex-end',
     // Optional: Smooths out jitter if the browser drops frames
-    willChange: 'transform', 
+    willChange: 'transform',
   });
 
   if (!isClient) {
-    return <div style={{ position: 'fixed', inset: 0, backgroundColor: '#1a0a02' }} />;
+    return (
+      <div
+        style={{ position: 'fixed', inset: 0, backgroundColor: '#1a0a02' }}
+      />
+    );
   }
 
   const ready = assets.isAllLoaded;
@@ -232,7 +259,12 @@ const TangerineClock: React.FC = () => {
         <div style={getHandStyle(minDeg, CONFIG.sizes.minuteHand)}>
           <img
             src={minuteHandImg}
-            style={{ width: '100%', height: '70%', objectFit: 'contain', filter: SHADOW_FILTER }}
+            style={{
+              width: '100%',
+              height: '70%',
+              objectFit: 'contain',
+              filter: SHADOW_FILTER,
+            }}
             alt=""
           />
         </div>
@@ -241,7 +273,12 @@ const TangerineClock: React.FC = () => {
         <div style={getHandStyle(secDeg, CONFIG.sizes.secondHand)}>
           <img
             src={secondHandImg}
-            style={{ width: '100%', height: '80%', objectFit: 'contain', filter: SHADOW_FILTER }}
+            style={{
+              width: '100%',
+              height: '80%',
+              objectFit: 'contain',
+              filter: SHADOW_FILTER,
+            }}
             alt=""
           />
         </div>

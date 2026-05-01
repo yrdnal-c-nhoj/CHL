@@ -41,11 +41,26 @@ const LeapClock: React.FC = () => {
   const [now, setNow] = useState(new Date());
   const [gateReady, setGateReady] = useState<boolean>(false);
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'LeapFont', fontUrl: font20250119_primary, options: { display: 'swap' } },
-    { fontFamily: 'Oswald', fontUrl: font20250119_secondary, options: { weight: 'bold', display: 'swap' } },
-    { fontFamily: 'Questrial', fontUrl: font20250119_mono, options: { display: 'swap' } },
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'LeapFont',
+        fontUrl: font20250119_primary,
+        options: { display: 'swap' },
+      },
+      {
+        fontFamily: 'Oswald',
+        fontUrl: font20250119_secondary,
+        options: { weight: 'bold', display: 'swap' },
+      },
+      {
+        fontFamily: 'Questrial',
+        fontUrl: font20250119_mono,
+        options: { display: 'swap' },
+      },
+    ],
+    [],
+  );
 
   // Suspend until fonts are loaded
   useSuspenseFontLoader(fontConfigs);

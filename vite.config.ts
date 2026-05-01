@@ -47,7 +47,7 @@ export default defineConfig({
         // Optimize chunk splitting
         manualChunks: (id) => {
           if (!id.includes('node_modules')) return;
-          
+
           if (id.includes('three')) return 'three';
           if (id.includes('react')) return 'vendor';
           if (id.includes('gsap')) return 'animation';

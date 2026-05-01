@@ -8,17 +8,22 @@ const EntropyClock: React.FC = () => {
   const [animationKey, setAnimationKey] = useState<number>(0); // triggers animation restart
   const [showClock, setShowClock] = useState<boolean>(false); // controls fade-in
   const [mountedClockKey, setMountedClockKey] = useState<number>(0); // unique key for each cycle
-  
+
   // Font configuration using the new suspense-based loader
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'EntropyFont', fontUrl: font20251027 }
-  ], []);
-  
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'EntropyFont', fontUrl: font20251027 }],
+    [],
+  );
+
   // This hook suspends the component until fonts are loaded
   useSuspenseFontLoader(fontConfigs);
-  
+
   const numbersRef = useRef<HTMLDivElement[]>([]);
-  const handsRef = useRef<{ hour: HTMLDivElement | null; minute: HTMLDivElement | null; second: HTMLDivElement | null }>({ hour: null, minute: null, second: null });
+  const handsRef = useRef<{
+    hour: HTMLDivElement | null;
+    minute: HTMLDivElement | null;
+    second: HTMLDivElement | null;
+  }>({ hour: null, minute: null, second: null });
   const dotRef = useRef<HTMLDivElement>(null);
   const clockContainerRef = useRef<HTMLDivElement>(null);
   const styleElementRef = useRef(null);
@@ -290,7 +295,9 @@ const EntropyClock: React.FC = () => {
           return (
             <div
               key={i}
-              ref={(el) => { numbersRef.current[i] = el as HTMLDivElement; }}
+              ref={(el) => {
+                numbersRef.current[i] = el as HTMLDivElement;
+              }}
               style={{
                 position: 'absolute',
                 left: `calc(50% + ${40 * Math.cos(rad)}vmin)`,

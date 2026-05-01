@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-
-
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage926 from '@/assets/images/2025/25-09/25-09-26/wall.webp';

@@ -18,7 +18,7 @@ export default function App() {
   const [isLargeScreen, setIsLargeScreen] = useState<any>(
     typeof window !== 'undefined' ? window.innerWidth > 768 : true,
   );
-  
+
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {

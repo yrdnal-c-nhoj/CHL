@@ -41,9 +41,9 @@ const fontConfigs = [
     fontUrl: fogFont,
     options: {
       weight: 'normal',
-      style: 'normal'
-    }
-  }
+      style: 'normal',
+    },
+  },
 ];
 
 export default function DigitalClock() {

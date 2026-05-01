@@ -95,7 +95,7 @@ function SingleSlowRollingClock({ duration, direction }: SingleClockProps) {
     minute: HTMLDivElement | null;
     second: HTMLDivElement | null;
   }>({ hour: null, minute: null, second: null });
-  
+
   const now = useClockTime(); // Standardized animation loop
 
   // Set a large distance to ensure the clock travels completely off-screen

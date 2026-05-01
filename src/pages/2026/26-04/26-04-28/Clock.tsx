@@ -22,7 +22,6 @@ const Clock: React.FC = () => {
     if (secondHandRef.current) {
       secondHandRef.current.style.transform = `translateX(-50%) rotate(${second}deg)`;
     }
-
   }, [time]); // Dependency array includes 'time' to re-run on every time update
 
   const containerStyle: React.CSSProperties = {

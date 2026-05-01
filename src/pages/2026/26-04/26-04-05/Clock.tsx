@@ -11,9 +11,10 @@ const Clock: React.FC = () => {
   const time = useClockTime();
 
   // Load the meteor font using useSuspenseFontLoader
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'Meteor', fontUrl: meteorFont }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'Meteor', fontUrl: meteorFont }],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Split time into 6 individual digits: [H, H, M, M, S, S]
@@ -26,8 +27,22 @@ const Clock: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <video className={styles.videoLayer} autoPlay loop muted playsInline src={backgroundVideo} />
-      <video className={styles.middleVideoLayer} autoPlay loop muted playsInline src={middleVideo} />
+      <video
+        className={styles.videoLayer}
+        autoPlay
+        loop
+        muted
+        playsInline
+        src={backgroundVideo}
+      />
+      <video
+        className={styles.middleVideoLayer}
+        autoPlay
+        loop
+        muted
+        playsInline
+        src={middleVideo}
+      />
 
       <div className={styles.clockWrapper}>
         <div className={styles.digitGroup}>

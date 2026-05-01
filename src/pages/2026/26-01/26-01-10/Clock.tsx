@@ -8,7 +8,9 @@ import styles from './Clock.module.css';
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [isLargeScreen, setIsLargeScreen] = useState<any>(window.innerWidth > 700);
+  const [isLargeScreen, setIsLargeScreen] = useState<any>(
+    window.innerWidth > 700,
+  );
   const [bgReady, setBgReady] = useState<boolean>(false);
 
   // 1. LETTER MAPPING: Change these letters to your preference
@@ -95,23 +97,22 @@ const Clock: React.FC = () => {
   return (
     <>
       {/* Mirror background effect */}
-      <div
-        className={styles.background}
-        style={{ opacity: ready ? 1 : 0 }}
-      >
-        <div 
-          className={styles.leftBackground} 
-          style={{ backgroundImage: `url(${bgImage})` }} 
+      <div className={styles.background} style={{ opacity: ready ? 1 : 0 }}>
+        <div
+          className={styles.leftBackground}
+          style={{ backgroundImage: `url(${bgImage})` }}
         />
-        <div 
-          className={styles.rightBackground} 
-          style={{ backgroundImage: `url(${bgImage})` }} 
+        <div
+          className={styles.rightBackground}
+          style={{ backgroundImage: `url(${bgImage})` }}
         />
       </div>
 
       {/* Clock content layer */}
       <div className={styles.container} style={{ opacity: ready ? 1 : 0 }}>
-        <div className={`${styles.layout} ${isLargeScreen ? styles.row : styles.column}`}>
+        <div
+          className={`${styles.layout} ${isLargeScreen ? styles.row : styles.column}`}
+        >
           {renderUnit(hours)}
           {renderUnit(minutes)}
           {renderUnit(seconds)}
