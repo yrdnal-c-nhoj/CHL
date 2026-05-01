@@ -2,12 +2,12 @@
 
 ## Structure
 
-```text
+```bash
 src/
 ├── templates/
 │   ├── BaseClock.tsx      # Starting point
 │   └── BaseClock.module.css
-├── utils/
+├── utils/                 # Core utilities
 │   ├── hooks/
 │   │   ├── useClockTime.ts     # 1s updates
 │   │   ├── useSmoothClock.ts   # 60fps RAF
@@ -24,12 +24,13 @@ src/
 | `useClockTime` | 1s | Static displays |
 | `useSmoothClock` | 60fps RAF | Smooth animations |
 | `useMillisecondClock` | 60fps RAF | Millisecond precision |
-| `useNtpClock` | 60fps RAF | NTP-synced |
+| `useEnhancedFontLoader` | Async | Non-suspending loader |
 
 ### Examples
 
 ```tsx
-// Static display
+import { useClockTime } from '@/utils/hooks';
+
 const Clock: React.FC = () => {
   const time = useClockTime();
   return <div>{time.toLocaleTimeString()}</div>;
@@ -93,7 +94,7 @@ export default Clock;
 5. **Memoization**: Use `useMemo` for expensive calculations
 6. **Path Aliases**: Use `@/utils/hooks` and `@/types/clock`
 7. **Cleanup**: Clear all timers/RAF on unmount
-8. **No Direct DOM**: Use `useRef` for canvas/animation references
+8. **No Direct DOM**: Use `useRef` for canvas/animation references.
 
 ## Font Loading Deep Dive
 
@@ -110,10 +111,10 @@ interface FontConfig {
 
 ### Font File Requirements
 
-- **Format**: WOFF2 only (better compression than TTF)
-- **Naming**: `YY-MM-DD-descriptive-name.woff2`
+- **Format**: TTF, OTF, or WOFF2 (no preference)
+- **Naming**: `YY-MM-DD-descriptive-name.[ext]`
 - **Location**: `src/assets/fonts/YYYY/`
-- **Public Path**: `/fonts/YY-MM-DD-name.woff2`
+- **Public Path**: `/fonts/YY-MM-DD-name.[ext]`
 
 ### Complete Font Loading Example
 
@@ -125,7 +126,7 @@ import type { FontConfig } from '@/types/clock';
 const fontConfigs: FontConfig[] = [
   { 
     fontFamily: 'MyClockFont', 
-    fontUrl: '/fonts/26-04-30-myfont.woff2',
+    fontUrl: '/fonts/26-04-30-myfont.ttf',
     fontWeight: '400'
   },
 ];
@@ -187,7 +188,7 @@ The component must be wrapped in `<Suspense>` in the parent (handled by `ClockPa
 | **Clock component** | `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx` | ✅ Yes |
 | **Styles** | `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.module.css` | ✅ Yes |
 | **Images** | `src/assets/images/YY-MM/YY-MM-DD/` | Optional |
-| **Fonts** | `src/assets/fonts/YYYY/YY-MM-DD-name.woff2` | Optional |
+| **Fonts** | `src/assets/fonts/YYYY/YY-MM-DD-name.[ext]` | Optional |
 
 ## Common Patterns
 
@@ -256,7 +257,6 @@ const Clock: React.FC = () => {
 4. **Export assets** for preloading to prevent layout shift
 5. **Keep bundles under 5MB** per clock
 6. **Use WebP images** for better compression
-7. **Prefer WOFF2 fonts** over TTF
 
 ## Adding a New Clock
 
