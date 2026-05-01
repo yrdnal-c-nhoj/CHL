@@ -79,3 +79,13 @@ scripts/temp/
 *.pfx
 *.publishsettings
 src/pages/lab/
+
+# --- Audit Reports & Logs ---
+build.txt
+eslint-report.json
+eslint-run.log
+typecheck-report.txt
+unused-*.txt
+non-standard-fonts.txt
+x.txt
+delete-unused-fonts.mjs
