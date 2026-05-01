@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/useSmoothClock';
+import { useSecondClock } from '@/utils/hooks';
 
 import digitalFontUrl from '@/assets/fonts/2026/26-02-12-disco.otf';
 import digitalBgImage from '@/assets/images/2026/26-02/26-02-12/lit.webp';

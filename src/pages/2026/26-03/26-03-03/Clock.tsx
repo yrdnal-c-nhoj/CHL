@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/useSmoothClock';
+import { useMillisecondClock } from '@/utils/hooks';
 import paperflowerVideo from '@/assets/images/2026/26-03/26-03-02/paperflower.mp4';
 import paperFont from '@/assets/fonts/2026/26-03-03-paper.ttf';
 

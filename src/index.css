@@ -1,7 +1,7 @@
 /* Custom font for 26-01-22 */
 @font-face {
   font-family: '26-01-22-shadow';
-  src: url('/src/assets/fonts/26-01-22-shadow.otf') format('opentype');
+  src: url('/src/assets/fonts/2026/26-01-22-shadow.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
