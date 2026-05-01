@@ -2,74 +2,46 @@ import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 import myFontWoff2 from '@/assets/fonts/2025/25-08-02-hea.ttf';
-import bg2 from '@/assets/images/2025/25-08/25-08-02/em.webp';
+// Standardized naming: YY-MM-DD-name.webp
+import bg2 from '@/assets/images/2025/25-08/25-08-02/25-08-02-em.webp';
+import styles from './Clock.module.css';
+
+// BTS: Export assets for the preloading pipeline
+export { bg2 };
+
+// BTS: Export font config for pre-buffering
+export const fontConfigs = [
+  {
+    fontFamily: 'hea',
+    fontUrl: myFontWoff2,
+    options: { weight: 'normal', style: 'normal' }
+  }
+];
 
 const DigitalClock: React.FC = () => {
   const time = useClockTime();
 
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'hea',
-      fontUrl: myFontWoff2,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ];
-  
-  // Suspend until font is ready
+  // BTS: Suspend until font is ready to prevent FOUC
   useSuspenseFontLoader(fontConfigs);
 
-  const isoTime = time.toISOString();
-  const displayTime = () => {
+  const displayTime = useMemo(() => {
     const h = time.getHours().toString().padStart(2, '0');
     const m = time.getMinutes().toString().padStart(2, '0');
     return `${h}:${m}`;
-  };
-
-  const bgFilter = 'brightness(1.5) contrast(3.2)';
-
-  const fullScreenBackgroundStyle = (image, opacity, zIndex, custom = {}) => ({
-    position: 'absolute',
-    backgroundImage: `url(${image})`,
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    opacity,
-    zIndex,
-    pointerEvents: 'none',
-    filter: bgFilter,
-    ...custom,
-  });
-
-  const clockContainerStyle = {
-    position: 'relative',
-    zIndex: 10,
-    fontFamily: "'hea', monospace",
-    fontSize: '0.5rem',
-    color: '#CFEAEA',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-  };
+  }, [time]);
 
   return (
     <main>
       {/* Full-Screen Background Layer for bg2, stretched with distortion */}
       <div
-        style={fullScreenBackgroundStyle(bg2, 1, 2, {
-          backgroundSize: '100% 100%',
-        })}
+        className={styles.background}
+        style={{ backgroundImage: `url(${bg2})` }}
       />
 
       {/* Clock Display */}
-      <time dateTime={isoTime} style={clockContainerStyle}>{displayTime()}</time>
+      <time dateTime={time.toISOString()} className={styles.container}>
+        {displayTime}
+      </time>
     </main>
   );
 };
