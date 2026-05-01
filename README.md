@@ -31,7 +31,7 @@ Registry-Discovery pattern. Zero manual routing.
 2. Register in `src/context/clockpages.json`
 3. Vite's `import.meta.glob` handles code-splitting
 
-```
+```text
 src/
 ├── pages/YYYY/YY-MM/YY-MM-DD/    # Clock modules
 ├── components/                   # Shared UI
@@ -44,15 +44,15 @@ src/
 
 ## BorrowedTime Standard (BTS)
 
-| Rule | Enforcement |
-|------|-------------|
-| Type Safety | `.tsx` only, no `any` |
-| Styles | `.module.css` for clocks, Tailwind for UI |
-| Markup | `<main>` containers, `<time datetime>` displays |
-| Time | `useClockTime` hook |
-| Fonts | `useSuspenseFontLoader` for FOUC prevention |
-| Cleanup | Clear timers/RAF on unmount |
-| DOM | `useRef` only, no `querySelector` |
+| Rule          | Enforcement                                     |
+|---------------|-------------------------------------------------|
+| Type Safety   | `.tsx` only, no `any`                          |
+| Styles        | `.module.css` for clocks, Tailwind for UI       |
+| Markup        | `<main>` containers, `<time datetime>` displays   |
+| Time          | `useClockTime` hook                             |
+| Fonts         | `useSuspenseFontLoader` for FOUC prevention      |
+| Cleanup       | Clear timers/RAF on unmount                    |
+| DOM           | `useRef` only, no `querySelector`               |
 
 ## Development
 
@@ -64,22 +64,22 @@ npm run clock:new    # Create today's clock
 
 ## Scripts
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Dev server |
-| `npm run build` | Production build |
-| `npm run build:with-types` | Type-check + production build |
-| `npm run type-check` | TypeScript check |
-| `npm run lint` | ESLint |
-| `npm run format` | Prettier |
-| `npm run test` | Tests (watch) |
-| `npm run test:run` | Tests (CI) |
-| `npm run clock:new` | New clock from template |
-| `npm run audit:fonts` | Find unused fonts |
-| `npm run audit:images` | Find unused images |
-| `npm run standardize:fonts` | Auto-fix non-standard font names |
-| `npm run optimize:images` | Convert image assets to WebP |
-| `npm run perf:analyze` | Bundle analysis |
+| Script                    | Description                               |
+|---------------------------|-------------------------------------------|
+| `npm run dev`             | Dev server                                |
+| `npm run build`           | Production build                           |
+| `npm run build:with-types` | Type-check + production build              |
+| `npm run type-check`      | TypeScript check                           |
+| `npm run lint`            | ESLint                                    |
+| `npm run format`          | Prettier                                  |
+| `npm run test`            | Tests (watch)                              |
+| `npm run test:run`        | Tests (CI)                                 |
+| `npm run clock:new`       | New clock from template                    |
+| `npm run audit:fonts`     | Find unused fonts                          |
+| `npm run audit:images`    | Find unused images                         |
+| `npm run standardize:fonts`| Auto-fix non-standard font names            |
+| `npm run optimize:images` | Convert image assets to WebP                |
+| `npm run perf:analyze`    | Bundle analysis                            |
 
 ## New Clock
 
@@ -105,6 +105,7 @@ npm run test:ui     # Browser UI
 ```
 
 **Pre-commit:**
+
 ```bash
 npm run type-check && npm run lint && npm run build
 ```
@@ -126,25 +127,27 @@ npm run build
 ```
 
 Generated audit artifacts:
+
 - `unused-images-report.txt`
 - `unused-images-only-report.txt`
 - `unused-videos-report.txt`
 - `unused-fonts-report.txt`
 - `non-standard-fonts.txt`
 
-## Current Audit Snapshot (2026-05-01)
+## Current Audit Snapshot (2026-06-17)
 
-- TypeScript: **3241 errors** (`typecheck-report.txt`)
-- ESLint: **518 errors / 3288 warnings** (`eslint-report.json`)
+- TypeScript: **~3500+ errors** (typecheck report)
+- ESLint: **499 errors / 3247 warnings** (improved from previous)
 - Production build: **passes** (`npm run build`)
-- Dist footprint: **249.87 MB** across 2836 files
-  - Largest JS bundle: `dist/assets/three-C9XuxQ2Y.js` (~747.2 KB)
-  - Largest driver: video assets (`.mp4` ~81.76 MB total in `dist`)
-- Asset Hygiene: **73 verified removable files** (~9.53 MB savings)
+- Dist footprint: **256 MB** across 2800+ files
+  - Largest JS bundle: `dist/assets/three-C9XuxQ2Y.js` (~747.23 KB)
+  - Largest driver: video assets remain primary contributor
+- Asset Hygiene: **224 unused images** (~6.88 MB savings potential)
 
 Primary near-term priorities:
+
 1. **Code Hygiene**: Reduce lint/type debt in high-error modules.
-2. **Asset Purge**: Remove the 73 verified unused assets (59 images, 2 videos, 12 fonts).
+2. **Asset Purge**: Remove the 224 unused images (~6.88 MB savings).
 3. **A11y Retrofit**: Add missing `<time>` tags to Canvas-based clocks.
 4. **Standardization**: Consolidate fragmentation between `@/utils/hooks` and `@/utils/clockUtils`.
 5. **Deployment Hygiene**: Enforce naming and import conventions in CI.
@@ -168,4 +171,4 @@ npm run preview
 
 MIT - See [LICENSE](LICENSE)
 
-**Cubist Heart Laboratories** - cubistheart@gmail.com
+**Cubist Heart Laboratories** - <cubistheart@gmail.com>

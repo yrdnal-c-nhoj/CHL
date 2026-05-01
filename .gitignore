@@ -89,3 +89,7 @@ unused-*.txt
 non-standard-fonts.txt
 x.txt
 delete-unused-fonts.mjs
+*.audit.*
+ProjectAudit.md
+.audit-backups/
+scripts/*.log
