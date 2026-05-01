@@ -3,6 +3,8 @@ import React, { useMemo, useRef, useState, useCallback, useEffect } from 'react'
 import pleiadesFont from '@/assets/fonts/2026/26-04-30-pleides.otf';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader'; // Corrected import path
+import { useClockTime } from '@/utils/hooks';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 
 import styles from './Clock.module.css';
@@ -25,6 +27,7 @@ interface StarPair {
 
 const STAR_COUNT = 150;
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
+const formatDigits = (num: number): string => num.toString().padStart(2, '0');
 
 const positions = [
   { top: '35%', left: '44%' },    // 0: Hour tens - Atlas (upper left of cluster)
@@ -128,6 +131,8 @@ const PleiadesClock: React.FC = () => {
     h = h % 12 || 12;
     const hStr = formatTime(h);
     const mStr = formatTime(time.getMinutes());
+    const hStr = formatDigits(h);
+    const mStr = formatDigits(time.getMinutes());
     const isoString = time.toISOString();
     return { hourTens: hStr[0], hourOnes: hStr[1], minuteTens: mStr[0], minuteOnes: mStr[1], isAM, isoTime: isoString };
   }, [time]);
@@ -185,6 +190,11 @@ const PleiadesClock: React.FC = () => {
             transform: `rotate(${star.angle}deg)`,
             animation: `shoot-${star.id}-${star.key} ${star.duration}s ease-out forwards`,
           }}
+            width: `${star.length}px`,
+            '--star-angle': `${star.angle}deg`,
+            '--star-duration': `${star.duration}s`,
+            '--star-distance': `${star.distance}vw`,
+          } as React.CSSProperties}
           onAnimationEnd={() => regeneratePair(star.id)}
         />
       ))}
