@@ -9,9 +9,9 @@ Technical standards for BorrowedTime development.
 - Dynamic loading: `import.meta.glob` in `useClockPage.ts`
 
 ## Priority Focus (Current Sprint)
-1. **Asset Pruning**: Remove the 270 identified unused font files to reduce repo bloat.
-2. **Naming Compliance**: Fix the 33 non-standardized font filenames.
-3. **Logic Migration**: Refactor remaining `setInterval` clocks to `useClockTime()`.
+1. **Asset Pruning**: Remove the 73 verified unused assets (59 images, 2 videos, 12 fonts) to reduce repo bloat.
+2. **Naming Compliance**: Fix the 5 non-standardized font filenames identified in the audit.
+3. **Logic Migration**: Refactor remaining `setInterval` clocks (e.g., 25-09-15) to the `useClockTime()` hook.
 4. **Image Optimization**: Transition to Phase 4 (WebP automation).
 
 **Key Hooks**

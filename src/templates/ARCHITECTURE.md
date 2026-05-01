@@ -92,9 +92,30 @@ export default Clock;
 3. **Semantic HTML**: Use `<time datetime="...">` for accessibility
 4. **Suspense**: Wrap components using `useSuspenseFontLoader` in `<Suspense>`
 5. **Memoization**: Use `useMemo` for expensive calculations
-6. **Path Aliases**: Use `@/utils/hooks` and `@/types/clock`
+6. **Path Aliases**: Use `@/utils/hooks` and `@/types/clock`.
+7. **Standard Hooks**: Prefer hooks in `@/utils/hooks/` over custom logic in `clockUtils.ts`.
 7. **Cleanup**: Clear all timers/RAF on unmount
 8. **No Direct DOM**: Use `useRef` for canvas/animation references.
+
+## Accessibility (A11y) for Canvas
+
+Clocks using HTML5 Canvas or Three.js **must** still provide semantic time information for screen readers and SEO.
+
+```tsx
+const CanvasClock: React.FC = () => {
+  const time = useClockTime();
+  const iso = time.toISOString();
+  const display = time.toLocaleTimeString();
+
+  return (
+    <main>
+      {/* Visually hidden but accessible */}
+      <time dateTime={iso} className="sr-only">{display}</time>
+      <canvas ref={canvasRef} />
+    </main>
+  );
+};
+```
 
 ## Font Loading Deep Dive
 

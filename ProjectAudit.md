@@ -103,7 +103,7 @@ Observed structural contributors:
 
 ## 6. Performance and Delivery Strategy (Future-Proofing)
 ### Phase A: Safe Cleanup (immediate)
-1. Remove the 242 confirmed unused assets after one visual smoke pass.
+1. Remove the 73 verified unused assets (59 images, 2 videos, 12 fonts) after one visual smoke pass.
 2. Normalize 5 non-standard font names (`npm run standardize:fonts`) and review.
 3. Add a CI guard that fails when new unused assets are introduced.
 
