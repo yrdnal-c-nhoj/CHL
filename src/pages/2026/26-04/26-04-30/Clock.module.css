@@ -93,13 +93,12 @@
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), #fff);
   transform-origin: left center;
-  opacity: 0;
+  opacity: 1;
   animation: shoot var(--star-duration) ease-out forwards;
 }
 
 @keyframes shoot {
-  0% { transform: rotate(var(--star-angle)) translateX(0); opacity: 0; }
-  10% { opacity: 1; }
+  0% { transform: rotate(var(--star-angle)) translateX(0); opacity: 1; }
   30% { transform: rotate(var(--star-angle)) translateX(var(--star-distance)); opacity: 0; }
   100% { transform: rotate(var(--star-angle)) translateX(var(--star-distance)); opacity: 0; }
 }

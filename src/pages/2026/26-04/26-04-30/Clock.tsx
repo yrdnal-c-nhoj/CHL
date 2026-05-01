@@ -194,8 +194,8 @@ const PleiadesClock: React.FC = () => {
       <time dateTime={isoTime} className={styles.timeWrapper}>
         <span className={`${styles.digit} ${styles.digitStandard}`} style={{ top: positions[0].top, left: positions[0].left, animationDelay: '0s' }}>{hourTens}</span>
         <span className={`${styles.digit} ${styles.digitStandard}`} style={{ top: positions[1].top, left: positions[1].left, animationDelay: '0.5s' }}>{hourOnes}</span>
-        <span className={styles.colonStar} style={{ top: '42%', left: '46%', animationDelay: '1s' }}>★</span>
-        <span className={styles.colonStar} style={{ top: '46%', left: '46%', animationDelay: '1.5s' }}>★</span>
+        <span className={styles.colonStar} style={{ top: '42%', left: '43%', animationDelay: '1s' }}>★</span>
+        <span className={styles.colonStar} style={{ top: '46%', left: '43%', animationDelay: '1.5s' }}>★</span>
         <span className={`${styles.digit} ${styles.digitStandard}`} style={{ top: positions[2].top, left: positions[2].left, animationDelay: '2s' }}>{minuteTens}</span>
         <span className={`${styles.digit} ${styles.digitCenter} ${styles.digitBright}`} style={{ top: positions[3].top, left: positions[3].left, animationDelay: '2.5s' }}>{minuteOnes}</span>
         
