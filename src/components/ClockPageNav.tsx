@@ -79,10 +79,12 @@ const ClockPageNav = ({
   const handleTouchCancel = useCallback(() => {
     setVisible(true);
     startInactivityTimer();
+  }, [startInactivityTimer]);
 
-    return () => {
-      clearInactivityTimer();
-    };
+  // Auto-hide nav after initial inactivity period on mount
+  useEffect(() => {
+    startInactivityTimer();
+    return () => clearInactivityTimer();
   }, [startInactivityTimer, clearInactivityTimer]);
 
   if (!currentItem) return null;
