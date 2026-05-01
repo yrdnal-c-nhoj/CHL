@@ -191,13 +191,15 @@ const PleiadesClock: React.FC = () => {
 
       {/* Digits and Indicators */}
       <time dateTime={isoTime} className={styles.timeWrapper}>
-        <span className={`${styles.digit} ${styles.digitStandard}`} style={{ top: positions[0].top, left: positions[0].left }}>{hourTens}</span>
-        <span className={`${styles.digit} ${styles.digitStandard}`} style={{ top: positions[1].top, left: positions[1].left }}>{hourOnes}</span>
-        <span className={`${styles.digit} ${styles.digitStandard}`} style={{ top: positions[3].top, left: positions[3].left }}>{minuteTens}</span>
-        <span className={`${styles.digit} ${styles.digitCenter} ${styles.digitBright}`} style={{ top: positions[2].top, left: positions[2].left }}>{minuteOnes}</span>
+        <span className={`${styles.digit} ${styles.digitStandard}`} style={{ top: positions[0].top, left: positions[0].left, animationDelay: '0s' }}>{hourTens}</span>
+        <span className={`${styles.digit} ${styles.digitStandard}`} style={{ top: positions[1].top, left: positions[1].left, animationDelay: '0.5s' }}>{hourOnes}</span>
+        <span className={styles.colonStar} style={{ top: '42%', left: '46%', animationDelay: '1s' }}>★</span>
+        <span className={styles.colonStar} style={{ top: '46%', left: '46%', animationDelay: '1.5s' }}>★</span>
+        <span className={`${styles.digit} ${styles.digitStandard}`} style={{ top: positions[2].top, left: positions[2].left, animationDelay: '2s' }}>{minuteTens}</span>
+        <span className={`${styles.digit} ${styles.digitCenter} ${styles.digitBright}`} style={{ top: positions[3].top, left: positions[3].left, animationDelay: '2.5s' }}>{minuteOnes}</span>
         
-        <span className={`${styles.indicator} ${styles.indicatorActive} ${styles.indicatorTransition}`} style={{ top: positions[4].top, left: positions[4].left }}>{isAM ? 'A' : 'P'}</span>
-        <span className={`${styles.indicator} ${styles.indicatorActive} ${styles.indicatorTransition}`} style={{ top: positions[5].top, left: positions[5].left }}>M</span>
+        <span className={`${styles.indicator} ${styles.indicatorActive} ${styles.indicatorTransition}`} style={{ top: positions[4].top, left: positions[4].left, animationDelay: '3s' }}>{isAM ? 'A' : 'P'}</span>
+        <span className={`${styles.indicator} ${styles.indicatorActive} ${styles.indicatorTransition}`} style={{ top: positions[5].top, left: positions[5].left, animationDelay: '3.5s' }}>M</span>
       </time>
 
       <style>{`
