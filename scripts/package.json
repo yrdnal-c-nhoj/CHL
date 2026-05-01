@@ -1,0 +1,29 @@
+{
+  "name": "borrowedtime-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Server-side automation scripts for BorrowedTime",
+  "scripts": {
+    "capture": "npx tsx capture-clock.ts",
+    "screenshot": "node screenshot.mjs",
+    "audit:fonts": "node list-non-standard-fonts.mjs",
+    "audit:images": "node audit-images.mjs",
+    "standardize:fonts": "node standardize-font-names.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.52.0",
+    "puppeteer": "^24.22.3",
+    "mongodb": "^7.0.0",
+    "googleapis": "^159.0.0",
+    "axios": "^1.13.2",
+    "form-data": "^4.0.4",
+    "papaparse": "^5.5.3",
+    "csv-parse": "^6.1.0",
+    "dotenv": "^17.2.2",
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "globby": "^14.0.0",
+    "twitter-api-v2": "^1.27.0"
+  }
+}
