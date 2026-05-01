@@ -3,10 +3,11 @@ import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useGlobalStyles } from '@/utils/enhancedFontLoader';
 import type { FontConfig } from '@/types/clock';
-import type { CSSProperties } from 'react';
-import michromaFont from '@/assets/fonts/2025/25-05-10-Michroma.ttf?url';
-import economicaFont from '@/assets/fonts/2025/25-05-10-Economica.ttf?url';
-import questrialFont from '@/assets/fonts/2025/25-05-10-Questrial.ttf?url';
+import type { CSSProperties } from 'react'; // Keep this import if CSSProperties is used elsewhere
+// Google Fonts URLs for Michroma, Economica, and Questrial
+const michromaFontUrl = 'https://fonts.gstatic.com/s/michroma/v18/PN_zRfy9qWD8fE-oB4_J_Q.woff2';
+const economicaFontUrl = 'https://fonts.gstatic.com/s/economica/v13/QwZTDPRQo_oF4RxQ_N_J_Q.woff2';
+const questrialFontUrl = 'https://fonts.gstatic.com/s/questrial/v19/Cf6gUOLrC6N_V5I_AQ.woff2';
 
 const fonts = ["'michroma'", "'economica'", "'questrial'"];
 
@@ -142,7 +143,7 @@ const NumberTossClock: React.FC = () => {
   const fontConfigs = [
     {
       fontFamily: 'michroma',
-      fontUrl: michromaFont,
+      fontUrl: michromaFontUrl,
       options: {
         weight: 'normal',
         style: 'normal'
@@ -150,7 +151,7 @@ const NumberTossClock: React.FC = () => {
     },
     {
       fontFamily: 'economica',
-      fontUrl: economicaFont,
+      fontUrl: economicaFontUrl,
       options: {
         weight: 'normal',
         style: 'normal'
@@ -158,7 +159,7 @@ const NumberTossClock: React.FC = () => {
     },
     {
       fontFamily: 'questrial',
-      fontUrl: questrialFont,
+      fontUrl: questrialFontUrl,
       options: {
         weight: 'normal',
         style: 'normal'
