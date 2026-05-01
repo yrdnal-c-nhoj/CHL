@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import animalsVideo from '@/assets/images/2026/26-04/26-04-29/animals.mp4';
-import { useClockTime } from '@/utils/clockUtils';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 
 import styles from './Clock.module.css';
 
@@ -27,7 +27,7 @@ const Clock: React.FC = () => {
         playsInline
         src={animalsVideo}
       />
-      <div className={styles.clock}>
+      <time dateTime={time.toISOString()} className={styles.clock}>
         <span className={styles.digit}>{hours[0]}</span>
         <span className={styles.digit}>{hours[1]}</span>
         <span className={styles.separator}>:</span>
@@ -36,7 +36,7 @@ const Clock: React.FC = () => {
         <span className={styles.separator}>:</span>
         <span className={styles.digit}>{seconds[0]}</span>
         <span className={styles.digit}>{seconds[1]}</span>
-      </div>
+      </time>
     </div>
   );
 }
