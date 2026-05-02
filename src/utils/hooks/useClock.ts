@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 export function useClock() {
   const [time, setTime] = useState(new Date());
   const offsetRef = useRef<number>(0);
-  const rafRef = useRef<number>(null);
+  const rafRef = useRef<number | null>(null);
 
   // 1. Sync with NTP on mount
   useEffect(() => {

@@ -18,7 +18,7 @@ describe('useClockPage', () => {
   });
 
   it('should return null component when no item provided', () => {
-    const { result } = renderHook(() => useClockPage(null));
+    const { result } = renderHook(() => useClockPage(null as any));
 
     expect(result.current.ClockComponent).toBeNull();
     expect(result.current.isReady).toBe(false);
@@ -26,7 +26,7 @@ describe('useClockPage', () => {
   });
 
   it('should return null component when item is undefined', () => {
-    const { result } = renderHook(() => useClockPage(undefined));
+    const { result } = renderHook(() => useClockPage(undefined as any));
 
     expect(result.current.ClockComponent).toBeNull();
     expect(result.current.isReady).toBe(false);
@@ -136,7 +136,7 @@ describe('useClockPage', () => {
       title: 'Clock 1',
     };
 
-    const { result, rerender } = renderHook(({ item }) => useClockPage(item), {
+    const { result, rerender } = renderHook(({ item }: { item: any }) => useClockPage(item), {
       initialProps: { item: item1 },
     });
 
