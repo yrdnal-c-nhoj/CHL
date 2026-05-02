@@ -23,8 +23,8 @@ function useClock() {
 }
 
 // Format time with padding
-function formatTime(date) {
-  const pad = (n) => String(n).padStart(2, '0');
+function formatTime(date: Date) {
+  const pad = (n: number | string) => String(n).padStart(2, '0');
   return {
     hours: pad(date.getHours()),
     minutes: pad(date.getMinutes()),
