@@ -277,7 +277,7 @@ const TOP_AIRPORTS = [
 ];
 
 // Calculate flight duration using haversine formula
-const calculateFlightDuration = (origin, destination) => {
+const calculateFlightDuration = (origin: any, destination: any) => {
   const R = 6371; // Earth's radius in km
   const toRad = (deg) => deg * (Math.PI / 180);
 
@@ -365,13 +365,13 @@ const BoardingPass: React.FC = () => {
   }, [currentDate]);
 
   // Utility functions
-  const addMinutes = (date, minutes) => {
+  const addMinutes = (date: Date, minutes: number) => {
     const result = new Date(date);
     result.setMinutes(result.getMinutes() + minutes);
     return result;
   };
 
-  const formatTime = (date) => {
+  const formatTime = (date: Date) => {
     return date
       .toLocaleTimeString('en-US', {
         hour: '2-digit',
@@ -459,15 +459,15 @@ const BoardingPass: React.FC = () => {
 };
 
 // Utility functions
-const formatDate = (date) =>
+const formatDate = (date: Date) =>
   date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-const formatTime = (date) =>
+const formatTime = (date: Date) =>
   date.toLocaleTimeString('en-US', {
     hour12: true,
     hour: '2-digit',
     minute: '2-digit',
   });
-const addMinutes = (date, minutes) =>
+const addMinutes = (date: Date, minutes: number) =>
   new Date(date.getTime() + minutes * 60000);
 
 // Generate topographic SVG background with random wavy curves
@@ -500,7 +500,7 @@ const generateTopographicSVG: React.FC = () => {
 };
 
 // Styles
-const styles = {
+const styles: Record<string, any> = {
   container: {
     width: '100vw',
     height: '100dvh',
@@ -536,7 +536,7 @@ const styles = {
     color: COLORS.white,
     backgroundColor: COLORS.primary,
   },
-  logo: (fontLoaded) => ({
+  logo: (fontLoaded: boolean): React.CSSProperties => ({
     fontSize: '1.80rem',
     fontWeight: '400',
     fontStyle: 'italic',
@@ -552,7 +552,7 @@ const styles = {
     borderBottom: `0.0625rem dashed ${COLORS.borderDashed}`,
     backgroundColor: COLORS.white,
   },
-  notch: (side) => ({
+  notch: (side: 'left' | 'right'): React.CSSProperties => ({
     content: '""',
     position: 'absolute',
     bottom: '-0.5rem',
@@ -587,7 +587,7 @@ const styles = {
       height: '0.125rem',
       backgroundColor: COLORS.primary,
     },
-    part: (rotation, origin) => ({
+    part: (rotation: number, origin: string): React.CSSProperties => ({
       content: '""',
       position: 'absolute',
       width: '0.9375rem',

@@ -10,7 +10,7 @@ export default function Clock() {
   const [timeText, setTimeText] = useState<any>('');
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [shake, setShake] = useState<any>({ x: 0, y: 0, rotate: 0 });
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const animationFrameId = useRef<number | null>(null);
 
   const fontConfigs = useMemo<FontConfig[]>(
@@ -20,7 +20,7 @@ export default function Clock() {
 
   useSuspenseFontLoader(fontConfigs);
 
-  const updateTime: React.FC = () => {
+  const updateTime = () => {
     const now = new Date();
     const hours24 = now.getHours();
     const minutes = now.getMinutes();
@@ -100,7 +100,7 @@ export default function Clock() {
     };
   }, []);
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     width: '100vw',
     height: '100dvh',
     position: 'relative',
@@ -118,7 +118,7 @@ export default function Clock() {
     perspective: '1000px',
   };
 
-  const videoStyle = {
+  const videoStyle: React.CSSProperties = {
     position: 'absolute',
     inset: 0,
     width: '100%',
@@ -145,7 +145,7 @@ export default function Clock() {
     zIndex: 5,
   };
 
-  const timeContainerStyle = {
+  const timeContainerStyle: React.CSSProperties = {
     position: 'fixed',
     top: '50%',
     left: '50%',
@@ -173,7 +173,7 @@ export default function Clock() {
     transformStyle: 'preserve-3d',
   };
 
-  const digitStyle = (index) => ({
+  const digitStyle = (index: number): React.CSSProperties => ({
     display: 'inline-block',
     animation: `
       jossel 1.2s infinite 
@@ -242,7 +242,7 @@ export default function Clock() {
         aria-label="Background video and time"
       >
         <div style={timeContainerStyle} aria-live="polite">
-          {timeText.split('').map((char, index) => (
+          {timeText.split('').map((char: string, index: number) => (
             <span key={index} style={digitStyle(index)}>
               {char}
             </span>
