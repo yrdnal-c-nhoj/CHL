@@ -165,7 +165,7 @@ export function useLazyImage(
     threshold: options.threshold || 0.1,
     rootMargin: options.rootMargin || '50px',
   });
-  const imgRef = useRef<HTMLImageElement>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
   const setRefs = useCallback(
     (node: HTMLImageElement | null) => {
