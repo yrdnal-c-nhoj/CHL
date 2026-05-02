@@ -1,6 +1,6 @@
 import React, { Suspense, useMemo } from 'react';
 import backgroundVideo from '@/assets/images/2026/26-04/26-04-23/sunflower.mp4';
-import fontUrl from '@/assets/fonts/2026/26-04-23.otf';
+import fontUrl from '@/assets/fonts/2026/26-04-23-lever.otf';
 import { useClockTime } from '@/utils/clockUtils';
 import {
   useSuspenseFontLoader,
