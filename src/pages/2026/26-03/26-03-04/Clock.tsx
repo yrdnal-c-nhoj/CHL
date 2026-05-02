@@ -28,17 +28,17 @@ const Clock: React.FC = () => {
     setFontLoaded(fontsLoaded);
   }, [fontsLoaded]);
 
-  const digitLetters = {
-    0: 'c',
-    1: 't',
-    2: 'N',
-    3: 'W',
-    4: 'V',
-    5: 'U',
-    6: 'D',
-    7: 'X',
-    8: 'J',
-    9: 'g',
+  const digitLetters: Record<string, string> = {
+    '0': 'c',
+    '1': 't',
+    '2': 'N',
+    '3': 'W',
+    '4': 'V',
+    '5': 'U',
+    '6': 'D',
+    '7': 'X',
+    '8': 'J',
+    '9': 'g',
   };
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const Clock: React.FC = () => {
   const boxWidth = isMobile ? '48vw' : '16vw';
   const boxHeight = isMobile ? '25vh' : '40vh';
 
-  const backgroundStyle = {
+  const backgroundStyle: React.CSSProperties = {
     position: 'fixed',
     top: 0,
     left: 0,
@@ -74,7 +74,7 @@ const Clock: React.FC = () => {
     zIndex: -1,
   };
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     minHeight: '100dvh',
     width: '100vw',
     display: 'flex',
@@ -84,7 +84,7 @@ const Clock: React.FC = () => {
     transition: 'opacity 0.5s ease-in-out',
   };
 
-  const clockGridStyle = {
+  const clockGridStyle: React.CSSProperties = {
     display: 'grid',
     gridTemplateColumns: isMobile
       ? `repeat(2, ${boxWidth})`
@@ -94,7 +94,7 @@ const Clock: React.FC = () => {
     gap: isMobile ? '10px' : '0',
   };
 
-  const digitBoxStyle = {
+  const digitBoxStyle: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

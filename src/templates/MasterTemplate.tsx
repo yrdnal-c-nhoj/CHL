@@ -15,7 +15,7 @@ export const fontConfigs: FontConfig[] = [
 ];
 
 const Clock: React.FC = () => {
-  const time = useClockTime('ms'); // Request millisecond precision for smooth animations
+  const time = useClockTime(); // Standardized hook usage
 
   // Load fonts and suspend if necessary
   useSuspenseFontLoader(fontConfigs);

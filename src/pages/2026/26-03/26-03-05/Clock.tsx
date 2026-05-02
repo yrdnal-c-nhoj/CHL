@@ -53,7 +53,7 @@ const Clock: React.FC = () => {
     return () => clearInterval(typingInterval);
   }, []);
 
-  const styles = {
+  const styles: Record<string, React.CSSProperties> = {
     container: {
       background: '#050505',
       color: '#00fa00',
