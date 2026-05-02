@@ -24,7 +24,7 @@ const ProgressClock: React.FC = () => {
 
   const center = 155;
 
-  const getRingData = (val, max, r) => {
+  const getRingData = (val: number, max: number, r: number) => {
     const circumference = 2 * Math.PI * r;
     const progress = val / max;
     const offset = circumference - progress * circumference;
@@ -113,16 +113,28 @@ const ProgressClock: React.FC = () => {
   );
 };
 
-const Ring = ({
-  radius,
-  stroke,
-  strokeWidth,
-  strokeDasharray,
-  strokeDashoffset,
-  transition,
-  labelPos,
-  value,
-  center,
+interface RingProps {
+  radius: number;
+  stroke: string;
+  strokeWidth: number;
+  strokeDasharray: string;
+  strokeDashoffset: number;
+  transition: string;
+  labelPos: { x: number; y: number };
+  value: number;
+  center: number;
+}
+
+const Ring: React.FC<RingProps> = ({
+    radius,
+    stroke,
+    strokeWidth,
+    strokeDasharray,
+    strokeDashoffset,
+    transition,
+    labelPos,
+    value,
+    center,
 }) => (
   <g>
     <circle

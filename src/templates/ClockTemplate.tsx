@@ -24,7 +24,7 @@ const UPDATE_INTERVAL = 1000; // Update frequency in ms
    UTILITY FUNCTIONS
 ========================= */
 
-const getTimeDigits = (date) => {
+const getTimeDigits = (date: Date) => {
   const { hours, minutes, seconds } = formatTime(date, '24h');
   return {
     h: hours.split(''),

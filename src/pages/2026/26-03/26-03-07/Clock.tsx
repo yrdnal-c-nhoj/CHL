@@ -12,7 +12,7 @@ const Clock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
   const timeDigits = useMemo(() => {
-    const formatTimeUnit = (unit) => unit.toString().padStart(2, '0');
+    const formatTimeUnit = (unit: number) => unit.toString().padStart(2, '0');
 
     const hours = formatTimeUnit(time.getHours());
     const minutes = formatTimeUnit(time.getMinutes());
@@ -26,12 +26,12 @@ const Clock: React.FC = () => {
   }, [time]);
 
   const Digit = useCallback(
-    ({ digit, type, index }) => <span style={digitBoxStyles}>{digit}</span>,
+    ({ digit }: { digit: string; type: string; index: number }) => <span style={digitBoxStyles}>{digit}</span>,
     [],
   );
 
   const TimeUnit = useCallback(
-    ({ digits, label }) => (
+    ({ digits, label }: { digits: string[]; label: string }) => (
       <div style={digitalDigitStyles}>
         {digits.map((digit, index) => (
           <Digit
@@ -46,7 +46,7 @@ const Clock: React.FC = () => {
     [Digit],
   );
 
-  const containerStyles = {
+  const containerStyles: React.CSSProperties = {
     '--pixel-size': '130px',
     background:
       'repeating-conic-gradient(#fff 0 25%, #000 0 50%) 0 0 / 32.5px 130px',
@@ -66,7 +66,7 @@ const Clock: React.FC = () => {
     alignItems: 'center',
   };
 
-  const digitalDigitStyles = {
+  const digitalDigitStyles: React.CSSProperties = {
     fontSize: 'clamp(4rem, 20vw, 15rem)',
     fontFamily: "'Press Start 2P', monospace",
     // fontWeight: 'bold',
@@ -81,7 +81,7 @@ const Clock: React.FC = () => {
     filter: 'drop-shadow(1px 0px 5px #39A94F5C)',
   };
 
-  const digitBoxStyles = {
+  const digitBoxStyles: React.CSSProperties = {
     display: 'inline-flex',
     justifyContent: 'center',
     alignItems: 'center',

@@ -56,7 +56,7 @@ const Clock: React.FC = () => {
     );
   }
 
-  const getHandStyle = (angle, width, height, zIndex, shadow) => ({
+  const getHandStyle = (angle: number, width: number, height: number, zIndex: number, shadow: string): React.CSSProperties => ({
     width: `${width}px`,
     height: `${height}px`,
     transform: `translate(-50%, -100%) rotate(${angle}deg)`,

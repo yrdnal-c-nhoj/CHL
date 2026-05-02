@@ -23,7 +23,7 @@ const Clock: React.FC = () => {
   const [y, setY] = useState(0);
   const yRef = useRef(0);
   const velocityRef = useRef(0);
-  const clockRef = useRef<HTMLDivElement | null>(null);
+  const clockRef = useRef<HTMLTimeElement | null>(null);
   const viewportHeightRef = useRef(window.innerHeight);
   const animationFrameId = useRef<number | null>(null); // Track animation frame ID
 
