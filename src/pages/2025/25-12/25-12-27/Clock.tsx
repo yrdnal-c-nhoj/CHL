@@ -17,7 +17,7 @@ const ConcentricClock: React.FC = () => {
   const minRev = ((minutes + seconds / 60) / 60) * 360;
   const hrRev = ((hours + minutes / 60) / 12) * 360;
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     width: '100vw',
     height: '100dvh',
     display: 'flex',
@@ -30,7 +30,7 @@ const ConcentricClock: React.FC = () => {
     fontFamily: 'sans-serif',
   };
 
-  const clockFaceStyle = {
+  const clockFaceStyle: React.CSSProperties = {
     position: 'relative',
     width: '90vmin',
     height: '90vmin',
@@ -39,7 +39,7 @@ const ConcentricClock: React.FC = () => {
     alignItems: 'center',
   };
 
-  const discBaseStyle = {
+  const discBaseStyle: React.CSSProperties = {
     position: 'absolute',
     borderRadius: '50%',
     display: 'flex',
@@ -47,7 +47,7 @@ const ConcentricClock: React.FC = () => {
     transition: 'transform 0.5s cubic-bezier(0.4, 2.08, 0.55, 0.44)',
   };
 
-  const markerStyle = {
+  const markerStyle: React.CSSProperties = {
     width: '1vmin',
     height: '4vmin',
     backgroundColor: '#38bdf8',
@@ -59,33 +59,33 @@ const ConcentricClock: React.FC = () => {
       <div style={clockFaceStyle}>
         {/* Seconds Ring - Outer */}
         <div
-          style={{
+          style={({
             ...discBaseStyle,
             width: '95vmin',
             height: '95vmin',
             transform: `rotate(${secRev}deg)`,
             zIndex: 1,
-          }}
+          }) as React.CSSProperties}
         >
           <div style={{ ...markerStyle, backgroundColor: '#F50F35' }} />
         </div>
 
         {/* Minutes Ring - Middle */}
         <div
-          style={{
+          style={({
             ...discBaseStyle,
             width: '70vmin',
             height: '70vmin',
             transform: `rotate(${minRev}deg)`,
             zIndex: 2,
-          }}
+          }) as React.CSSProperties}
         >
           <div style={{ ...markerStyle, backgroundColor: '#fbbf24' }} />
         </div>
 
         {/* Hours Ring - Inner */}
         <div
-          style={{
+          style={({
             ...discBaseStyle,
             width: '30vmin',
             height: '40vmin',
@@ -93,7 +93,7 @@ const ConcentricClock: React.FC = () => {
             zIndex: 3,
             // backgroundColor: '#334155',
             // boxShadow: '0 0 5vmin rgba(0,0,0,0.5)'
-          }}
+          }) as React.CSSProperties}
         >
           <div style={markerStyle} />
         </div>
