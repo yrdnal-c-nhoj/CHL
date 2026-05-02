@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+
 import analogBgImage from '@/assets/images/2026/26-01/26-01-25/mirage.webp';
 
 const AnalogClockTemplate: React.FC = () => {
@@ -82,7 +83,7 @@ const AnalogClockTemplate: React.FC = () => {
     width: '110vmin',
     height: '110vmin',
     borderRadius: '50%',
-    opacity: opacity,
+    opacity,
     willChange: 'opacity',
   };
 

@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useMemo, memo, useRef } from 'react';
+
+import fontflam251211 from '@/assets/fonts/2026/26-01-11-flam.ttf';
+import bg1 from '@/assets/images/2026/26-01/26-01-11/flaa.webp';
+import secondHandImg from '@/assets/images/2026/26-01/26-01-11/flam.webp';
+import bg2 from '@/assets/images/2026/26-01/26-01-11/flam4.webp';
+import hourHandImg from '@/assets/images/2026/26-01/26-01-11/leg1.webp';
+import minuteHandImg from '@/assets/images/2026/26-01/26-01-11/leg2.webp';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // --- Image Imports ---
-import bg2 from '@/assets/images/2026/26-01/26-01-11/flam4.webp';
-import bg1 from '@/assets/images/2026/26-01/26-01-11/flaa.webp';
-import fontflam251211 from '@/assets/fonts/2026/26-01-11-flam.ttf';
-import hourHandImg from '@/assets/images/2026/26-01/26-01-11/leg1.webp';
-import minuteHandImg from '@/assets/images/2026/26-01/26-01-11/leg2.webp';
-import secondHandImg from '@/assets/images/2026/26-01/26-01-11/flam.webp';
 
 // --- CONFIG ---
 const CONFIG = {
@@ -142,9 +143,9 @@ const ClockHand = memo(({ img, height, rotation, flip, reverse, zIndex }) => (
       position: 'absolute',
       top: '50%',
       left: '50%',
-      height: height,
+      height,
       width: 'auto',
-      zIndex: zIndex,
+      zIndex,
       transformOrigin: 'bottom center',
       transform: `translate(-50%, -100%) ${flip ? 'scaleX(-1)' : ''} rotate(${reverse ? -rotation : rotation}deg)`,
       pointerEvents: 'none',

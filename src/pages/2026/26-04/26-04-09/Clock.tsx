@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 import backgroundVideo from '@/assets/images/2026/26-04/26-04-09/water.mp4';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
 export { backgroundVideo }; // Export for preloading pipeline
 
 import waterFontUrl from '@/assets/fonts/2026/26-04-09-water.ttf?url';
+
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {
@@ -122,7 +124,7 @@ const Clock: React.FC = () => {
           <span className={styles.digitBox} style={getDigitStyle(1)}>
             {digits[1]}
           </span>
-          <span className={styles.space}></span>
+          <span className={styles.space} />
           <span className={styles.digitBox} style={getDigitStyle(2)}>
             {digits[2]}
           </span>

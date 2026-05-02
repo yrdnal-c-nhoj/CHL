@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+
+import font_25_12_03 from '@/assets/fonts/2025/25-12-03-dog.ttf?url';
+import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
-import type { FontConfig } from '@/types/clock';
-import font_25_12_03 from '@/assets/fonts/2025/25-12-03-dog.ttf?url';
+
 import styles from './Clock.module.css';
 
 export const fontConfigs: FontConfig[] = [

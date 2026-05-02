@@ -5,10 +5,12 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
+import type { CSSProperties } from 'react';
+
+import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
-import type { FontConfig } from '@/types/clock';
-import type { CSSProperties } from 'react';
+
 import styles from './Clock.module.css';
 
 interface ClockData {

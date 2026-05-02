@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import bgImage from './wheel.svg';
 
 export default function AnalogBackgroundClock() {

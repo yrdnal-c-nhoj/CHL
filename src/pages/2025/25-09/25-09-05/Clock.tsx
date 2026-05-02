@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+
+import DigitalClockFont from '@/assets/fonts/2025/25-09-05-swi.ttf';
+import MovingImg from '@/assets/images/2025/25-09/25-09-05/mouse.gif';
+import DigitalClockBg from '@/assets/images/2025/25-09/25-09-05/swiss.jpg';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import DigitalClockFont from '@/assets/fonts/2025/25-09-05-swi.ttf';
-import DigitalClockBg from '@/assets/images/2025/25-09/25-09-05/swiss.jpg';
-import MovingImg from '@/assets/images/2025/25-09/25-09-05/mouse.gif';
 
 export default function DigitalClock() {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -123,7 +124,7 @@ export default function DigitalClock() {
           { x: 60, y: 17 },
           { x: 89, y: 30 },
         ];
-        let z = i < 2 ? 4 : i < 4 ? 3 : 2;
+        const z = i < 2 ? 4 : i < 4 ? 3 : 2;
         return (
           <div
             key={`d${i}`}

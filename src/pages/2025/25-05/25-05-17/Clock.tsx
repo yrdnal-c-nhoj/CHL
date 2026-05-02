@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+
 import bgGif from '@/assets/images/2025/25-05/25-05-17/2501912_2ddac-564534539.gif';
 import layer5Gif from '@/assets/images/2025/25-05/25-05-17/e0435fd452bbed155b5b3c5128b4f7c5.gif';
 import layer3Gif from '@/assets/images/2025/25-05/25-05-17/giphy-3181726992.webp';
 import rectangleGif from '@/assets/images/2025/25-05/25-05-17/tumblr_53c27c64cc9f17a0880aff18b8f6d934_d138a0cd_500.gif';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 const PrimaryClock: React.FC = () => {
   useEffect(() => {
@@ -43,9 +44,9 @@ const PrimaryClock: React.FC = () => {
 
       <div style={styles.centerContainer}>
         <div style={styles.clock}>
-          <div className="hand min-hand" style={styles.minHand}></div>
-          <div className="hand hour-hand" style={styles.hourHand}></div>
-          <div className="hand second-hand" style={styles.secondHand}></div>
+          <div className="hand min-hand" style={styles.minHand} />
+          <div className="hand hour-hand" style={styles.hourHand} />
+          <div className="hand second-hand" style={styles.secondHand} />
         </div>
       </div>
     </div>

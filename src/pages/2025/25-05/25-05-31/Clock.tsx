@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
+import fatFont from '@/assets/fonts/2025/25-05-31-fat.otf';
 import elWebp from '@/assets/images/2025/25-05/25-05-31/el.webp';
 import el1 from '@/assets/images/2025/25-05/25-05-31/el1.png';
 import el2 from '@/assets/images/2025/25-05/25-05-31/el2.png';
 import el3 from '@/assets/images/2025/25-05/25-05-31/el3.png';
 import eleGif from '@/assets/images/2025/25-05/25-05-31/ele.gif';
-import fatFont from '@/assets/fonts/2025/25-05-31-fat.otf';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const ElephantClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -35,8 +36,8 @@ const ElephantClock: React.FC = () => {
     const secondHand = secondRef.current;
     const orbitingImage = orbitRef.current;
 
-    let hourSway = { amplitude: 0, frequency: 0, nextUpdate: 0 };
-    let minuteSway = { amplitude: 0, frequency: 0, nextUpdate: 0 };
+    const hourSway = { amplitude: 0, frequency: 0, nextUpdate: 0 };
+    const minuteSway = { amplitude: 0, frequency: 0, nextUpdate: 0 };
 
     const randomizeSway = (sway) => {
       sway.amplitude = Math.random() * 5;

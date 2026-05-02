@@ -5,17 +5,14 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
-import styles from './Clock.module.css';
+
 
 // Asset Imports
-import hourHandImg from '@/assets/images/2026/26-04/26-04-12/hand.webp';
-import minuteHandImg from '@/assets/images/2026/26-04/26-04-12/hand2.webp';
-import secondHandImg from '@/assets/images/2026/26-04/26-04-12/hand3.gif';
-import bgImage from '@/assets/images/2026/26-04/26-04-12/background.jpeg';
-import centerImg from '@/assets/images/2026/26-04/26-04-12/center.webp';
 
 import m1 from '@/assets/images/2026/26-04/26-04-12/1.webp';
+import m10 from '@/assets/images/2026/26-04/26-04-12/10.gif';
+import m11 from '@/assets/images/2026/26-04/26-04-12/11.gif';
+import m12 from '@/assets/images/2026/26-04/26-04-12/12.webp';
 import m2 from '@/assets/images/2026/26-04/26-04-12/2.gif';
 import m3 from '@/assets/images/2026/26-04/26-04-12/3.gif';
 import m4 from '@/assets/images/2026/26-04/26-04-12/4.gif';
@@ -24,10 +21,15 @@ import m6 from '@/assets/images/2026/26-04/26-04-12/6.webp';
 import m7 from '@/assets/images/2026/26-04/26-04-12/7.webp';
 import m8 from '@/assets/images/2026/26-04/26-04-12/8.gif';
 import m9 from '@/assets/images/2026/26-04/26-04-12/9.webp';
-import m10 from '@/assets/images/2026/26-04/26-04-12/10.gif';
-import m11 from '@/assets/images/2026/26-04/26-04-12/11.gif';
-import m12 from '@/assets/images/2026/26-04/26-04-12/12.webp';
 import m13 from '@/assets/images/2026/26-04/26-04-12/13.webp';
+import bgImage from '@/assets/images/2026/26-04/26-04-12/background.jpeg';
+import centerImg from '@/assets/images/2026/26-04/26-04-12/center.webp';
+import hourHandImg from '@/assets/images/2026/26-04/26-04-12/hand.webp';
+import minuteHandImg from '@/assets/images/2026/26-04/26-04-12/hand2.webp';
+import secondHandImg from '@/assets/images/2026/26-04/26-04-12/hand3.gif';
+import { useClockTime } from '@/utils/clockUtils';
+
+import styles from './Clock.module.css';
 
 const allMatchImages = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13];
 

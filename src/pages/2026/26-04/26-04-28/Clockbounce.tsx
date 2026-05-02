@@ -5,6 +5,7 @@ import React, {
   useState,
   useCallback,
 } from 'react';
+
 import { useClockTime, formatTime as utilFormatTime } from '@/utils/clockUtils';
 
 const GRAVITY = 0.6;

@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react';
-import { useClockTime, calculateAngles } from '@/utils/clockUtils';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 import bgImage from '@/assets/images/2026/26-04/26-04-16/jamine.webp';
 import tileImage from '@/assets/images/2026/26-04/26-04-16/pom.webp';
+import type { FontConfig } from '@/types/clock';
+import { useClockTime, calculateAngles } from '@/utils/clockUtils';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
 import styles from './Clock.module.css';
 
 const ROMAN_NUMERALS = [

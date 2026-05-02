@@ -1,11 +1,12 @@
 import React, { useState, useMemo } from 'react';
+
 import font_2025_11_21 from '@/assets/fonts/2025/25-11-18-cat.ttf?url';
 import bgImg from '@/assets/images/2025/25-11/25-11-18/eyes.webp';
 export { bgImg }; // Export for preloading pipeline
 
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime, formatTime } from '@/utils/clockUtils';
 import type { FontConfig } from '@/types/clock';
+import { useClockTime, formatTime } from '@/utils/clockUtils';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 export default function RotatedClockGrid() {
   // Using the standardized BTS hook
@@ -140,7 +141,7 @@ export default function RotatedClockGrid() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: '0.8vh',
-                    fontFamily: FONT_FAMILY + ', monospace',
+                    fontFamily: `${FONT_FAMILY  }, monospace`,
                     fontSize: `12vh`,
                     lineHeight: 1,
                     letterSpacing: '0.2vh',

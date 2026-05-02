@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 import sys1 from '@/assets/images/2025/25-04/25-04-07/sys1.gif';
 import sys2 from '@/assets/images/2025/25-04/25-04-07/sys2.gif';
 import sys3 from '@/assets/images/2025/25-04/25-04-07/sys3.gif';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface SolarSystemClockProps {
@@ -140,17 +141,17 @@ const SolarSystemClock = ({
             className="ball hour unique-solar-clock"
             style={{ ...styles.ball, ...styles.hour }}
             ref={clockRefs.hour}
-          ></div>
+           />
           <div
             className="ball minute unique-solar-clock"
             style={{ ...styles.ball, ...styles.minute }}
             ref={clockRefs.minute}
-          ></div>
+           />
           <div
             className="ball second unique-solar-clock"
             style={{ ...styles.ball, ...styles.second }}
             ref={clockRefs.second}
-          ></div>
+           />
         </div>
       </div>
     </div>

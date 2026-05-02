@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
 // Use the original fonts - they're not corrupted
 import AsteriskFont1 from '@/assets/fonts/2026/26-02-17-ast.otf?url';
 import AsteriskFont2 from '@/assets/fonts/2026/26-02-17-aster.otf?url';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 /**
  * Types and Interfaces

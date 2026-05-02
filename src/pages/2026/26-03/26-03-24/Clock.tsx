@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import arrowImg from '@/assets/images/2026/26-03/26-03-23/arrow.webp?url';
+
 import fontUrl from '@/assets/fonts/2026/26-03-24-26-03-23-arrow.ttf?url';
+import arrowImg from '@/assets/images/2026/26-03/26-03-23/arrow.webp?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
 import styles from './Clock.module.css';
 
 const FONT_FAMILY = 'ClockFont_Arrow';

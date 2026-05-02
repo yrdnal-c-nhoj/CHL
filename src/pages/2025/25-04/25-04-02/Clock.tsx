@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 
-import stars from '@/assets/images/2025/25-04/25-04-02/stars.webp';
+
+import overlay2 from '@/assets/images/2025/25-04/25-04-02/2556744_d34a4.webp';
 import backgroundGif from '@/assets/images/2025/25-04/25-04-02/437cb739d14912acd84d65ee853b9067.gif';
 import overlay1 from '@/assets/images/2025/25-04/25-04-02/OzJtZ3Z.gif';
-import overlay2 from '@/assets/images/2025/25-04/25-04-02/2556744_d34a4.webp';
 import pixelGif from '@/assets/images/2025/25-04/25-04-02/sdswrf.gif';
+import stars from '@/assets/images/2025/25-04/25-04-02/stars.webp';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 // Image imports from src/assets
 interface Images {
@@ -277,12 +278,12 @@ const DeepSpaceClock: React.FC = () => {
             }
           `}
         </style>
-        <div className="digit" ref={digitRefs.hour1} style={digitStyle}></div>
-        <div className="digit" ref={digitRefs.hour2} style={digitStyle}></div>
-        <div className="digit" ref={digitRefs.minute1} style={digitStyle}></div>
-        <div className="digit" ref={digitRefs.minute2} style={digitStyle}></div>
-        <div className="digit" ref={digitRefs.second1} style={digitStyle}></div>
-        <div className="digit" ref={digitRefs.second2} style={digitStyle}></div>
+        <div className="digit" ref={digitRefs.hour1} style={digitStyle} />
+        <div className="digit" ref={digitRefs.hour2} style={digitStyle} />
+        <div className="digit" ref={digitRefs.minute1} style={digitStyle} />
+        <div className="digit" ref={digitRefs.minute2} style={digitStyle} />
+        <div className="digit" ref={digitRefs.second1} style={digitStyle} />
+        <div className="digit" ref={digitRefs.second2} style={digitStyle} />
       </div>
     </div>
   );

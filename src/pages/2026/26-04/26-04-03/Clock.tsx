@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
+
+import fontUrl from '@/assets/fonts/2026/26-04-03-clox.ttf?url';
+import backgroundVideo from '@/assets/images/2026/26-04/26-04-03/clox.mp4';
+import type { FontConfig } from '@/types/clock';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import backgroundVideo from '@/assets/images/2026/26-04/26-04-03/clox.mp4';
-import fontUrl from '@/assets/fonts/2026/26-04-03-clox.ttf?url';
 
 const formatTimeParts = (date: Date): string[] => {
   const hours = date.getHours().toString().padStart(2, '0');
@@ -17,7 +18,7 @@ const Clock: React.FC = () => {
   const timeParts = formatTimeParts(time);
 
   const fontConfigs = useMemo<FontConfig[]>(
-    () => [{ fontFamily: 'Clox', fontUrl: fontUrl }],
+    () => [{ fontFamily: 'Clox', fontUrl }],
     [],
   );
 

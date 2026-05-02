@@ -1,8 +1,9 @@
-import { useMillisecondClock } from '@/utils/hooks';
 import hourHand from '@/assets/images/2026/26-04/26-04-10/hour.webp';
 import minuteHand from '@/assets/images/2026/26-04/26-04-10/minute.webp';
-import secondHand from '@/assets/images/2026/26-04/26-04-10/second.webp';
 import backgroundImage from '@/assets/images/2026/26-04/26-04-10/sand.jpg';
+import secondHand from '@/assets/images/2026/26-04/26-04-10/second.webp';
+import { useMillisecondClock } from '@/utils/hooks';
+
 import styles from './Clock.module.css';
 
 const Clock = () => {

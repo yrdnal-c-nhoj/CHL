@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+
 import bgImage from '@/assets/images/2026/26-01/26-01-19/hands.webp';
+
 import styles from './Clock.module.css';
 
 const COLORS = {

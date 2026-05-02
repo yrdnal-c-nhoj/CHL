@@ -1,9 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+
+import fontUrl from '@/assets/fonts/2026/26-04-24-lissa.ttf';
+import type { FontConfig } from '@/types/clock';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 import styles from './Clock.module.css';
-import fontUrl from '@/assets/fonts/2026/26-04-24-lissa.ttf';
+
 
 const CONFIG = {
   a: 3,

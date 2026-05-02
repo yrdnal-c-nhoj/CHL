@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import tumbGif from '@/assets/images/2025/25-05/25-05-04/tumb-ezgif.com-optimize.gif';
-import spinnGif from '@/assets/images/2025/25-05/25-05-04/spinn.gif';
+
 import edGif from '@/assets/images/2025/25-05/25-05-04/ed-ezgif.com-optimize.gif';
+import spinnGif from '@/assets/images/2025/25-05/25-05-04/spinn.gif';
+import tumbGif from '@/assets/images/2025/25-05/25-05-04/tumb-ezgif.com-optimize.gif';
 import wallpaperGif from '@/assets/images/2025/25-05/25-05-04/wallpapaer-ezgif.com-optimize.gif';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface ClockProps {
@@ -127,15 +128,15 @@ const Clock: React.FC<ClockProps> = () => {
             height: '6px',
             background: 'rgb(113, 107, 113)',
           }}
-        ></div>
+         />
         <div
           id="minute"
           style={{ ...handStyle, background: 'rgb(65, 69, 69)' }}
-        ></div>
+         />
         <div
           id="second"
           style={{ ...handStyle, height: '1px', background: 'rgb(65, 69, 69)' }}
-        ></div>
+         />
       </div>
 
       <img

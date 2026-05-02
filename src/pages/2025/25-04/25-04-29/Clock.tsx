@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
+
 import fontUrl from '@/assets/fonts/2025/25-04-29-bang.ttf?url';
-import gif1 from '@/assets/images/2025/25-04/25-04-29/fw.webp';
 import gif2 from '@/assets/images/2025/25-04/25-04-29/84298.gif';
+import gif1 from '@/assets/images/2025/25-04/25-04-29/fw.webp';
 import gif3 from '@/assets/images/2025/25-04/25-04-29/giphy.gif';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface FireworksClockProps {
@@ -22,7 +23,7 @@ const FireworksClock: React.FC<FireworksClockProps> = () => {
     () => [
       {
         fontFamily: 'bang',
-        fontUrl: fontUrl,
+        fontUrl,
         options: {
           weight: 'normal',
           style: 'normal',

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import bgImage from '@/assets/images/2026/26-03/26-03-16/metrop.webp';
 import { useSecondClock } from '@/utils/hooks';
 
@@ -31,9 +32,9 @@ const Clock: React.FC = () => {
       return Math.min(vw * 0.8, vh * 0.8, 280);
     } else if (isSmallScreen) {
       return Math.min(vw * 0.7, vh * 0.7, 350);
-    } else {
+    } 
       return Math.min(vw * 0.8, vh * 0.8, 420);
-    }
+    
   };
 
   const clockSize = getClockSize();

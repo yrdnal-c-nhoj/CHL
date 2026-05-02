@@ -1,10 +1,11 @@
 import React from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import font1 from '@/assets/fonts/2025/25-08-25-code.ttf';
+
 import font2 from '@/assets/fonts/2025/25-08-25-bar.ttf';
+import font1 from '@/assets/fonts/2025/25-08-25-code.ttf';
 import bgImage2 from '@/assets/images/2025/25-08/25-08-25/bgla.webp'; // Bottom background
 import bgImage from '@/assets/images/2025/25-08/25-08-25/wh.webp'; // Top background
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 
 export default function DigitalClock() {
   // Standardized font loading with font-display: swap to avoid FOUC

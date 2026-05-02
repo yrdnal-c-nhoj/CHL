@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
 
-import backgroundImg from '@/assets/images/2025/25-08/25-08-14/1.webp';
+import customFont from '@/assets/fonts/2025/25-08-14-bir.ttf';
 import digit1 from '@/assets/images/2025/25-08/25-08-14/1.gif';
+import backgroundImg from '@/assets/images/2025/25-08/25-08-14/1.webp';
+import digit10 from '@/assets/images/2025/25-08/25-08-14/10.gif';
+import digit11 from '@/assets/images/2025/25-08/25-08-14/11.gif';
+import digit12 from '@/assets/images/2025/25-08/25-08-14/12.gif';
 import digit2 from '@/assets/images/2025/25-08/25-08-14/2.gif';
 import digit3 from '@/assets/images/2025/25-08/25-08-14/3.gif';
 import digit4 from '@/assets/images/2025/25-08/25-08-14/4.gif';
@@ -12,10 +14,8 @@ import digit6 from '@/assets/images/2025/25-08/25-08-14/6.gif';
 import digit7 from '@/assets/images/2025/25-08/25-08-14/7.gif';
 import digit8 from '@/assets/images/2025/25-08/25-08-14/8.gif';
 import digit9 from '@/assets/images/2025/25-08/25-08-14/9.gif';
-import digit10 from '@/assets/images/2025/25-08/25-08-14/10.gif';
-import digit11 from '@/assets/images/2025/25-08/25-08-14/11.gif';
-import digit12 from '@/assets/images/2025/25-08/25-08-14/12.gif';
-import customFont from '@/assets/fonts/2025/25-08-14-bir.ttf';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const digitImages = [
   digit1,
@@ -153,7 +153,7 @@ const AnalogClock: React.FC = () => {
 
   return (
     <div style={pageStyle}>
-      <div style={backgroundStyle}></div>
+      <div style={backgroundStyle} />
 
       <div style={clockContainerStyle}>
         <div style={clockStyle}>

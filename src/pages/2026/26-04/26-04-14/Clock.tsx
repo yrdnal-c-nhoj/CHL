@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
+
+import overlayImage from '@/assets/images/2026/26-04/26-04-14/haumea.webp';
+import bgVideo from '@/assets/images/2026/26-04/26-04-14/haumeas.mp4';
 import { useMillisecondClock } from '@/utils/hooks';
+
 import styles from './Clock.module.css';
 
 // Asset imports
-import bgVideo from '@/assets/images/2026/26-04/26-04-14/haumeas.mp4';
-import overlayImage from '@/assets/images/2026/26-04/26-04-14/haumea.webp';
 
 // Export assets for preloading
 export { bgVideo, overlayImage };

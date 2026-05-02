@@ -5,11 +5,13 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useGlobalStyles } from '@/utils/enhancedFontLoader';
-import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react'; // Keep this import if CSSProperties is used elsewhere
+
+import type { FontConfig } from '@/types/clock';
+import { useGlobalStyles } from '@/utils/enhancedFontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+
 // Google Fonts URLs for Michroma, Economica, and Questrial
 const michromaFontUrl =
   'https://fonts.gstatic.com/s/michroma/v18/PN_zRfy9qWD8fE-oB4_J_Q.woff2';
@@ -205,7 +207,7 @@ const NumberTossClock: React.FC = () => {
   return (
     <div style={styles.body}>
       <div style={styles.stationaryClock}>{backgroundTime}</div>
-      <div ref={throwContainer} style={styles.throw}></div>
+      <div ref={throwContainer} style={styles.throw} />
     </div>
   );
 };

@@ -1,12 +1,13 @@
 import React, { useMemo, useCallback } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 
 import overlayImg from '@/assets/images/2025/25-04/25-04-05/gfccc.gif';
 import hourHandSource from '@/assets/images/2025/25-04/25-04-05/gr4.gif';
 import secondHandSource from '@/assets/images/2025/25-04/25-04-05/gr5.gif';
 import minuteHandSource from '@/assets/images/2025/25-04/25-04-05/gr99.webp';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface TallClockProps {

@@ -1,7 +1,9 @@
 import React from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import triFont from '@/assets/fonts/2026/26-03-27-tri.ttf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+
 import styles from './Clock.module.css';
 
 // Returns the max radius a hand at angle `theta` (radians, 0=up, CW) can extend

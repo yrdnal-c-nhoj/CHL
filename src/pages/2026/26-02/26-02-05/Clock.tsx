@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
+
+import ci2602Font from '@/assets/fonts/2026/26-02-05-pin.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import ci2602Font from '@/assets/fonts/2026/26-02-05-pin.ttf?url';
 
 const OVAL = {
   RADIUS_X: 800,

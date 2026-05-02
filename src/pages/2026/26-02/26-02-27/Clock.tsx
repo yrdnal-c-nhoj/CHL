@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+
 import abuVideo from '@/assets/images/2026/26-02/26-02-27/abu.mp4';
+import { useSecondClock } from '@/utils/hooks';
 
 const Clock: React.FC = () => {
   const time = useSecondClock();
@@ -34,7 +35,7 @@ const Clock: React.FC = () => {
     position: 'absolute',
     bottom: '50%',
     left: '50%',
-    width: width,
+    width,
     height: length,
     backgroundColor: color,
     transform: `translateX(-50%) rotate(${angle}deg)`,

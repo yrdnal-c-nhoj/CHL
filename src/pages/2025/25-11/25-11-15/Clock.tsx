@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
 import font_25251115j from '@/assets/fonts/2025/25-11-15-rain.otf?url';
 import bgImage from '@/assets/images/2025/25-11/25-11-15/fall.webp'; // local background image
 import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 export const fontConfigs: FontConfig[] = [
   {
@@ -32,8 +33,8 @@ export default function FallClock() {
   useEffect(() => {
     const updateTimeDigits: React.FC = () => {
       const now = new Date();
-      let hours = now.getHours() % 12 || 12;
-      let minutes = now.getMinutes();
+      const hours = now.getHours() % 12 || 12;
+      const minutes = now.getMinutes();
       timeDigitsRef.current = `${hours}${minutes
         .toString()
         .padStart(2, '0')}`.split('');
@@ -171,7 +172,7 @@ export default function FallClock() {
         ctx.fillRect(0, 0, width, height);
       }
 
-      for (let d of digits) {
+      for (const d of digits) {
         d.update(width, height);
         d.draw(ctx);
       }

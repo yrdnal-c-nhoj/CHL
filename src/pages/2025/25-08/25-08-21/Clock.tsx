@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 import customFont821 from '@/assets/fonts/2025/25-08-21-wide.ttf?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
 import styles from './Clock.module.css';
 
 export const fontConfigs: FontConfig[] = [
@@ -74,7 +76,7 @@ const NumberLineClock: React.FC = () => {
       const now = new Date();
 
       // Get 24-hour format and convert to 12-hour
-      let hours24 = now.getHours();
+      const hours24 = now.getHours();
       let hours12 = hours24 % 12;
       if (hours12 === 0) hours12 = 12; // Convert 0 to 12 for 12 AM/PM
 

@@ -1,13 +1,15 @@
 import React, { useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/clockUtils';
-import type { FontConfig } from '@/types/clock';
+
 import lemonFont from '@/assets/fonts/2026/26-01-31-lemon.otf';
-import lemonBg from '@/assets/images/2026/26-01/26-01-31/lemon.gif';
-import rainBg from '@/assets/images/2026/26-01/26-01-31/lu.webp';
-import lemGif from '@/assets/images/2026/26-01/26-01-31/lemslo.gif';
-import lemons2Bg from '@/assets/images/2026/26-01/26-01-31/lemons2.jpg';
 import centerImage from '@/assets/images/2026/26-01/26-01-31/lem.gif';
+import lemonBg from '@/assets/images/2026/26-01/26-01-31/lemon.gif';
+import lemons2Bg from '@/assets/images/2026/26-01/26-01-31/lemons2.jpg';
+import lemGif from '@/assets/images/2026/26-01/26-01-31/lemslo.gif';
+import rainBg from '@/assets/images/2026/26-01/26-01-31/lu.webp';
+import type { FontConfig } from '@/types/clock';
+import { useClockTime } from '@/utils/clockUtils';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
 import styles from './Clock.module.css';
 
 export const assets = [lemonBg, rainBg, lemGif, lemons2Bg, centerImage];

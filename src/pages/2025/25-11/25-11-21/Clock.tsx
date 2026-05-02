@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import styles from './Clock.module.css';
+
 
 // --- FONT IMPORT (same folder) ---
 import font_sdfsdfsdfsd from '@/assets/fonts/2025/25-11-21-omission.otf?url';
@@ -14,6 +11,11 @@ import img3 from '@/assets/images/2025/25-11/25-11-21/3.jpg';
 import img4 from '@/assets/images/2025/25-11/25-11-21/4.jpg';
 import img5 from '@/assets/images/2025/25-11/25-11-21/5.jpg';
 import img6 from '@/assets/images/2025/25-11/25-11-21/6.jpg';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
+
+import styles from './Clock.module.css';
 
 export { img1, img2, img3, img4, img5, img6 }; // Export for preloading pipeline
 const images = [img1, img2, img3, img4, img5, img6];

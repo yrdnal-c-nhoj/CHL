@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import fontUrl from '@/assets/fonts/2025/25-08-19-cas.ttf';
 import bgUrl from '@/assets/images/2025/25-08/25-08-19/ap.jpeg';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const Pendulum: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
       fontFamily: 'CustomFont',
-      fontUrl: fontUrl,
+      fontUrl,
       options: {
         weight: 'normal',
         style: 'normal',
@@ -107,7 +108,7 @@ const Pendulum: React.FC = () => {
 
   return (
     <div style={styles.pendulumApp}>
-      <div style={styles.bgLayer}></div>
+      <div style={styles.bgLayer} />
 
       <style>{`
         @keyframes left {
@@ -160,15 +161,15 @@ const Pendulum: React.FC = () => {
         <div
           style={{ ...styles.piece, ...styles.pieceFirstChild }}
           className="piece"
-        ></div>
-        <div style={styles.piece} className="piece"></div>
-        <div style={styles.piece} className="piece"></div>
-        <div style={styles.piece} className="piece"></div>
-        <div style={styles.piece} className="piece"></div>
+         />
+        <div style={styles.piece} className="piece" />
+        <div style={styles.piece} className="piece" />
+        <div style={styles.piece} className="piece" />
+        <div style={styles.piece} className="piece" />
         <div
           style={{ ...styles.piece, ...styles.pieceLastChild }}
           className="piece"
-        ></div>
+         />
       </div>
     </div>
   );

@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import bg1 from '@/assets/images/2025/25-11/25-11-17/mars2.webp';
+
+import font2025_11_18 from '@/assets/fonts/2025/25-11-17-mars.ttf?url';
 import bg2 from '@/assets/images/2025/25-11/25-11-17/mars1.gif';
 import bg3 from '@/assets/images/2025/25-11/25-11-17/mars1.gif';
+import bg1 from '@/assets/images/2025/25-11/25-11-17/mars2.webp';
 import bg4 from '@/assets/images/2025/25-11/25-11-17/mars5.webp';
-import font2025_11_18 from '@/assets/fonts/2025/25-11-17-mars.ttf?url';
 
 export { bg1, bg2, bg3, bg4 };
 
@@ -208,11 +209,11 @@ export default function MarsDigitalClock() {
       `}</style>
 
       <div style={styles.root}>
-        <div style={styles.background4} aria-hidden="true"></div>
-        <div style={styles.gradientBackground}></div>
-        <div style={styles.background1}></div>
-        <div style={styles.background2}></div>
-        <div style={styles.background3}></div>
+        <div style={styles.background4} aria-hidden="true" />
+        <div style={styles.gradientBackground} />
+        <div style={styles.background1} />
+        <div style={styles.background2} />
+        <div style={styles.background3} />
 
         <div className="content" style={styles.content}>
           <div className="group" style={styles.group}>

@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+
+import myFont from '@/assets/fonts/2025/25-08-04-Tr.ttf'; // Your custom font file
+import bgImage from '@/assets/images/2025/25-08/25-08-04/shrub.jpeg'; // Your background image file
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
-import bgImage from '@/assets/images/2025/25-08/25-08-04/shrub.jpeg'; // Your background image file
-import myFont from '@/assets/fonts/2025/25-08-04-Tr.ttf'; // Your custom font file
 
 const getRandomPosition = () => ({
   top: `${Math.random() * 80 + 10}%`,
@@ -61,9 +62,9 @@ const DigitalClock: React.FC = () => {
 
     if (diff <= 5) {
       return diff / 5;
-    } else {
+    } 
       return 1 - (diff - 5) / 4;
-    }
+    
   };
 
   const hours = time.getHours() % 12 || 12;

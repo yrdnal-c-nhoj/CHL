@@ -61,7 +61,7 @@ export default function ParallelLineClock() {
     return () => clearInterval(interval);
   }, []);
 
-  let h = time.getHours() % 12 || 12;
+  const h = time.getHours() % 12 || 12;
   const m = time.getMinutes().toString().padStart(2, '0');
   const s = time.getSeconds().toString().padStart(2, '0');
 

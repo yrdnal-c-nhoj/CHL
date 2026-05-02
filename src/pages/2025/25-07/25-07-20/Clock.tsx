@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import camFont from '@/assets/fonts/2025/25-07-20-cam.otf';
 import bg1 from '@/assets/images/2025/25-07/25-07-20/ca.webp';
 import bg2 from '@/assets/images/2025/25-07/25-07-20/cam.webp';
 import bg3 from '@/assets/images/2025/25-07/25-07-20/camer.webp';
 import bg4 from '@/assets/images/2025/25-07/25-07-20/camr.webp';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const FStopClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -273,9 +274,9 @@ const FStopClock: React.FC = () => {
       />
 
       <div className="fstop-clock">
-        <div className="fstop-hand fstop-hour" id="fstop-hourHand"></div>
-        <div className="fstop-hand fstop-minute" id="fstop-minuteHand"></div>
-        <div className="fstop-hand fstop-second" id="fstop-secondHand"></div>
+        <div className="fstop-hand fstop-hour" id="fstop-hourHand" />
+        <div className="fstop-hand fstop-minute" id="fstop-minuteHand" />
+        <div className="fstop-hand fstop-second" id="fstop-secondHand" />
       </div>
     </div>
   );

@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+
 
 // Import number images
 import one from '@/assets/images/2025/25-10/25-10-01/1.png';
-import two from '@/assets/images/2025/25-10/25-10-01/12.png';
-import three from '@/assets/images/2025/25-10/25-10-01/11.png';
 import four from '@/assets/images/2025/25-10/25-10-01/10.png';
-import five from '@/assets/images/2025/25-10/25-10-01/9.png';
-import six from '@/assets/images/2025/25-10/25-10-01/8.png';
-import seven from '@/assets/images/2025/25-10/25-10-01/7.png';
-import eight from '@/assets/images/2025/25-10/25-10-01/6.png';
-import nine from '@/assets/images/2025/25-10/25-10-01/5.png';
-import ten from '@/assets/images/2025/25-10/25-10-01/4.png';
-import eleven from '@/assets/images/2025/25-10/25-10-01/3.png';
+import three from '@/assets/images/2025/25-10/25-10-01/11.png';
+import two from '@/assets/images/2025/25-10/25-10-01/12.png';
 import twelve from '@/assets/images/2025/25-10/25-10-01/2.png';
+import eleven from '@/assets/images/2025/25-10/25-10-01/3.png';
+import ten from '@/assets/images/2025/25-10/25-10-01/4.png';
+import nine from '@/assets/images/2025/25-10/25-10-01/5.png';
+import eight from '@/assets/images/2025/25-10/25-10-01/6.png';
+import seven from '@/assets/images/2025/25-10/25-10-01/7.png';
+import six from '@/assets/images/2025/25-10/25-10-01/8.png';
+import five from '@/assets/images/2025/25-10/25-10-01/9.png';
 
 // Clock face
 import clockFace from '@/assets/images/2025/25-10/25-10-01/gears.webp';
@@ -21,6 +21,7 @@ import clockFace from '@/assets/images/2025/25-10/25-10-01/gears.webp';
 // Background video and fallback
 import backgroundVideo from '@/assets/images/2025/25-10/25-10-01/small.mp4';
 import fallbackGif from '@/assets/images/2025/25-10/25-10-01/small.webp';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 export default function ImageAnalogClock() {
   const [time, setTime] = useState(new Date());
@@ -69,7 +70,7 @@ export default function ImageAnalogClock() {
 
   const metallicHandStyle = (width, length, angle) => ({
     position: 'absolute',
-    width: width,
+    width,
     height: length,
     top: '50%',
     left: '50%',
@@ -100,8 +101,8 @@ export default function ImageAnalogClock() {
 
   const metallicNumberStyle = (width, height) => ({
     position: 'absolute',
-    width: width,
-    height: height,
+    width,
+    height,
     left: '50%',
     top: '50%',
     transform: 'translate(-50%, -50%)',

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/2025/25-06/25-06-12/auth.jpg';
+
 import cattleFont from '@/assets/fonts/2025/25-06-12-cattle.ttf';
+import bgImage from '@/assets/images/2025/25-06/25-06-12/auth.jpg';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const CattleBrandClock: React.FC = () => {
   const [time, setTime] = useState<any>({ hours: 12, minutes: '00' });
@@ -10,7 +11,7 @@ const CattleBrandClock: React.FC = () => {
     const updateClock: React.FC = () => {
       const now = new Date();
       let hours = now.getHours();
-      let minutes = now.getMinutes();
+      const minutes = now.getMinutes();
 
       hours = hours % 12 || 12;
       const minStr = minutes.toString().padStart(2, '0');

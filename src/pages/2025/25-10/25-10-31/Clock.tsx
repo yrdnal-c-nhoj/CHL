@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime, formatTime } from '@/utils/clockUtils';
+
+import fontFile_2025_10_31 from '@/assets/fonts/2025/25-10-31-mi.otf?url';
 import videoFile from '@/assets/images/2025/25-10/25-10-31/mids.mp4';
 import fallbackImg from '@/assets/images/2025/25-10/25-10-31/midsun.webp';
-import fontFile_2025_10_31 from '@/assets/fonts/2025/25-10-31-mi.otf?url';
+import { useClockTime, formatTime } from '@/utils/clockUtils';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 export default function VideoClock() {
   const [ready, setReady] = useState<boolean>(false);

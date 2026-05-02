@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
 
-import bg from '@/assets/images/2025/25-11/25-11-14/ice.jpg'; // background image in same folder
+
 
 import num1 from '@/assets/images/2025/25-11/25-11-14/1.jpg';
+import num10 from '@/assets/images/2025/25-11/25-11-14/10.jpg';
+import num11 from '@/assets/images/2025/25-11/25-11-14/11.webp';
+import num12 from '@/assets/images/2025/25-11/25-11-14/12.webp';
 import num2 from '@/assets/images/2025/25-11/25-11-14/2.webp';
 import num3 from '@/assets/images/2025/25-11/25-11-14/3.webp';
 import num4 from '@/assets/images/2025/25-11/25-11-14/4.jpg';
@@ -12,9 +14,8 @@ import num6 from '@/assets/images/2025/25-11/25-11-14/6.jpg';
 import num7 from '@/assets/images/2025/25-11/25-11-14/7.jpg';
 import num8 from '@/assets/images/2025/25-11/25-11-14/8.jpg';
 import num9 from '@/assets/images/2025/25-11/25-11-14/9.webp';
-import num10 from '@/assets/images/2025/25-11/25-11-14/10.jpg';
-import num11 from '@/assets/images/2025/25-11/25-11-14/11.webp';
-import num12 from '@/assets/images/2025/25-11/25-11-14/12.webp';
+import bg from '@/assets/images/2025/25-11/25-11-14/ice.jpg'; // background image in same folder
+import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 const numberImages = [
   num12,
@@ -161,9 +162,9 @@ export default function ImageAnalogClock() {
           />
         ))}
 
-        <div ref={hourRef} style={hourHand}></div>
-        <div ref={minuteRef} style={minuteHand}></div>
-        <div ref={secondRef} style={secondHand}></div>
+        <div ref={hourRef} style={hourHand} />
+        <div ref={minuteRef} style={minuteHand} />
+        <div ref={secondRef} style={secondHand} />
       </div>
     </div>
   );

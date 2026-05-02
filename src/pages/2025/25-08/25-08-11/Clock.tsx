@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import customFont from '@/assets/fonts/2025/25-08-11-wash.otf';
-import bgImage from '@/assets/images/2025/25-08/25-08-11/mach.gif';
-import topImage from '@/assets/images/2025/25-08/25-08-11/wash.gif';
 import img1 from '@/assets/images/2025/25-08/25-08-11/a.gif';
 import img2 from '@/assets/images/2025/25-08/25-08-11/aa.gif';
 import img3 from '@/assets/images/2025/25-08/25-08-11/b.png';
@@ -12,9 +9,13 @@ import img5 from '@/assets/images/2025/25-08/25-08-11/c.gif';
 import img6 from '@/assets/images/2025/25-08/25-08-11/e.gif';
 import img7 from '@/assets/images/2025/25-08/25-08-11/f.gif';
 import img8 from '@/assets/images/2025/25-08/25-08-11/i.png';
+import bgImage from '@/assets/images/2025/25-08/25-08-11/mach.gif';
 import img9 from '@/assets/images/2025/25-08/25-08-11/q.gif';
+import topImage from '@/assets/images/2025/25-08/25-08-11/wash.gif';
 import img10 from '@/assets/images/2025/25-08/25-08-11/x.webp';
 import img11 from '@/assets/images/2025/25-08/25-08-11/y.gif';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const SwirlingImages: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

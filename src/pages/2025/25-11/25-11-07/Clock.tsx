@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/2025/25-11/25-11-07/birds.webp';
+
 import font251107kdvsf from '@/assets/fonts/2025/25-11-07-twobirds.ttf';
+import bgImage from '@/assets/images/2025/25-11/25-11-07/birds.webp';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import styles from './Clock.module.css';
 
 export default function PanicAnalogClock() {

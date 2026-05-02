@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef, memo } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+
 import overlayBg from '@/assets/images/2026/26-01/26-01-15/red.gif';
 import baseBg from '@/assets/images/2026/26-01/26-01-15/sph.gif';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 // Centralized color control for all clock hands
 const handColors = {
@@ -121,7 +122,7 @@ const Hand = memo(({ type, rotation }) => {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    width: width,
+    width,
     height: `calc(${height} + ${tail})`,
     backgroundColor: color,
     zIndex: z,
@@ -131,7 +132,7 @@ const Hand = memo(({ type, rotation }) => {
     borderRadius: '1px',
   };
 
-  return <div style={containerStyle}></div>;
+  return <div style={containerStyle} />;
 });
 
 const styles = {

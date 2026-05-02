@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useCallback } from 'react';
+
 import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
@@ -26,7 +27,7 @@ const SkewClock: React.FC<SkewClockProps> = () => {
     let hours = currentTime.getHours() % 12;
     if (hours === 0) hours = 12;
     const minutes = String(currentTime.getMinutes()).padStart(2, '0');
-    let digits = `${hours}${minutes}`.split('');
+    const digits = `${hours}${minutes}`.split('');
     if (digits.length < 4) digits.unshift(' '); // pad with space for single-digit hour
     const colors = digits.map(() => getRandomVibrantColor());
     drawText(ctx, canvas, digits, colors);

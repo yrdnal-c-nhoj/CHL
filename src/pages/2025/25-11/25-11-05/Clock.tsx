@@ -1,8 +1,9 @@
 import { useEffect, useState, useMemo } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import WebFonnov25ufuf from '@/assets/fonts/2025/25-11-05-webs1.ttf';
 import Webfont2511055 from '@/assets/fonts/2025/25-11-05-webs2.ttf';
 import w251105font from '@/assets/fonts/2025/25-11-05-webs3.ttf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 // Helper function remains the same
 function makeColumnsBackground(columns, gutterVw, marginVw) {
@@ -177,7 +178,7 @@ function ModernDigitalClock() {
 
   // Avoid FOUT: wait for fonts then reveal component
   useEffect(() => {
-    let raf = requestAnimationFrame(() => {
+    const raf = requestAnimationFrame(() => {
       if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(() => setFontsReady(true));
       } else {
@@ -682,11 +683,9 @@ function ModernDigitalClock() {
             borderRadius: '0.8vh',
           }}
         >
-          <>
-            <span>{pad(now.getHours())}</span>
+          <span>{pad(now.getHours())}</span>
             <span>{pad(now.getMinutes())}</span>
             <span>{pad(now.getSeconds())}</span>
-          </>
         </div>
       </div>
 

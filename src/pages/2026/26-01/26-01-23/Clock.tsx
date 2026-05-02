@@ -1,8 +1,10 @@
-import React, { useState, useEffect, CSSProperties } from 'react';
+import type { CSSProperties } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Asset imports
 import clockDigitImage from '@/assets/images/2026/26-01/26-01-23/eye.gif';
 import clockBackground from '@/assets/images/2026/26-01/26-01-23/eye.webp';
+
 import styles from './Clock.module.css';
 
 interface CustomStyle extends CSSProperties {

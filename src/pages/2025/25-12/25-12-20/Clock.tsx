@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useMemo, memo, useRef } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
-// --- Image Imports ---
-import bg1 from '@/assets/images/2025/25-12/25-12-20/nest.jpg';
+import font251211 from '@/assets/fonts/2025/25-12-20-feather.otf';
 import hourHandImg from '@/assets/images/2025/25-12/25-12-20/fea1.webp';
 import minuteHandImg from '@/assets/images/2025/25-12/25-12-20/fea2.webp';
 import secondHandImg from '@/assets/images/2025/25-12/25-12-20/fea3.webp';
-import font251211 from '@/assets/fonts/2025/25-12-20-feather.otf';
+import bg1 from '@/assets/images/2025/25-12/25-12-20/nest.jpg';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
+// --- Image Imports ---
 
 // Export assets for preloading
 export { bg1, hourHandImg, minuteHandImg, secondHandImg };
