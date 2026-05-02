@@ -20,7 +20,9 @@
     "optimize:images": "npx sharp-cli -i ./src/assets/images -o ./src/assets/images --webp",
     "standardize:fonts": "node scripts/standardize-font-names.mjs",
     "audit:fonts": "node scripts/list-non-standard-fonts.mjs",
-    "audit:images": "node scripts/audit-images.mjs"
+    "audit:images": "node scripts/audit-images.mjs",
+    "cleanup:modules": "node scripts/module-cleanup.mjs",
+    "cleanup:test": "node scripts/test-cleanup.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
