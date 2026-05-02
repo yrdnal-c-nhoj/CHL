@@ -46,7 +46,7 @@ const Clock: React.FC = () => {
     [Digit],
   );
 
-  const containerStyles: React.CSSProperties = {
+  const containerStyles: any = {
     '--pixel-size': '130px',
     background:
       'repeating-conic-gradient(#fff 0 25%, #000 0 50%) 0 0 / 32.5px 130px',

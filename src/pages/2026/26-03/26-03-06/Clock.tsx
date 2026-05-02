@@ -90,7 +90,7 @@ const RocketGrid: React.FC = () => {
 
 // --- STYLES ---
 
-const containerStyle = {
+const containerStyle: React.CSSProperties = {
   position: 'relative',
   width: '100vw',
   height: '100dvh',
@@ -101,7 +101,7 @@ const containerStyle = {
   justifyContent: 'center',
 };
 
-const gridWrapperStyle = {
+const gridWrapperStyle: React.CSSProperties = {
   position: 'absolute',
   inset: '-100px', // Reduced inset for bigger rockets
   display: 'flex',
@@ -114,7 +114,7 @@ const gridWrapperStyle = {
   // gap: '10px'
 };
 
-const rowStyle = {
+const rowStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'row',
   // gap: '15px' // Space between rockets in a row
@@ -129,7 +129,7 @@ const cellStyle = {
   flexShrink: 0,
 };
 
-const clockWrapperStyle = {
+const clockWrapperStyle: React.CSSProperties = {
   position: 'relative',
   width: '600px', // Increased from 450px
   height: '600px', // Increased from 450px
@@ -137,7 +137,7 @@ const clockWrapperStyle = {
   filter: 'drop-shadow(0 0 40px rgb(0, 0, 0))',
 };
 
-const handStyle = {
+const handStyle: React.CSSProperties = {
   position: 'absolute',
   left: '50%',
   bottom: '50%',
