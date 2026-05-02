@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 
-import type { FontConfig } from '../../types/clock';
-import { useSuspenseFontLoader } from '../../utils/fontLoader';
-import { useClockTime } from '../../utils/hooks'; // Use standardized hook
+import type { FontConfig } from '../types/clock';
+import { useSuspenseFontLoader } from '../utils/fontLoader';
+import { useClockTime } from '../utils/hooks'; // Use standardized hook
 
 import styles from './Clock.module.css';
 
