@@ -1,30 +1,25 @@
-name: CI
+name: CHL Quality Gate
 
 on:
-  pull_request:
   push:
-    branches:
-      - main
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
 
 jobs:
-  quality:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
+      - uses: actions/checkout@v4
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
-          node-version: '24.x'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint
+          node-version: "24.x"
+          cache: "npm"
+      - run: npm ci
+      - name: TypeScript Strict Check
+        run: npm run type-check
+      - name: ESLint BTS Enforcement
         run: npm run lint
-
-      - name: Build
+      - name: Production Build Test
         run: npm run build
