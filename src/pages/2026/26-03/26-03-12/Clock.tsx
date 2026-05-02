@@ -5,7 +5,7 @@ import { useSecondClock } from '@/utils/hooks';
 
 const VirtualClock: React.FC = () => {
   const time = useSecondClock();
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     if (videoRef.current) {

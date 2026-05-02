@@ -44,7 +44,7 @@ const Clock: React.FC = () => {
   );
 };
 
-const styles = {
+const styles: Record<string, React.CSSProperties> = {
   container: {
     width: '100vw',
     height: '100dvh',
