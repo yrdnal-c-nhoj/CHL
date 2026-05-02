@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+
 import bgImg from '@/assets/images/2026/26-04/26-04-20/bstream.gif';
+import { useClockTime } from '@/utils/clockUtils';
+
 import styles from './Clock.module.css'; // Import CSS Modules
 
 export const assets = [bgImg];

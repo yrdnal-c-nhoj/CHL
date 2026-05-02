@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
 import cus250930 from '@/assets/fonts/2025/25-09-30-stt.ttf';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 export default function StripedClock() {
   const [time, setTime] = useState<any>([]);

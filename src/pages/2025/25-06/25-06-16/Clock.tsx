@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
+import klaxFont from '@/assets/fonts/2025/25-06-16-klax.ttf';
+import klaHand from '@/assets/images/2025/25-06/25-06-16/kla.png';
 import kla from '@/assets/images/2025/25-06/25-06-16/kla.webp';
 import klax from '@/assets/images/2025/25-06/25-06-16/klax.png';
-import klaxon from '@/assets/images/2025/25-06/25-06-16/klaxon.png';
-import klaHand from '@/assets/images/2025/25-06/25-06-16/kla.png';
-import klaxFont from '@/assets/fonts/2025/25-06-16-klax.ttf';
 import overlayImage from '@/assets/images/2025/25-06/25-06-16/klax.webp';
+import klaxon from '@/assets/images/2025/25-06/25-06-16/klaxon.png';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const romanNumerals = [
   'xii',
@@ -84,8 +85,8 @@ const KlaxonClock: React.FC = () => {
 
       numberElements.forEach((el) => {
         const numAngle = parseFloat(el.dataset.angle);
-        let startAngle = (numAngle - flashStartOffset + 360) % 360;
-        let endAngle = (numAngle + flashEndOffset) % 360;
+        const startAngle = (numAngle - flashStartOffset + 360) % 360;
+        const endAngle = (numAngle + flashEndOffset) % 360;
 
         let insideZone = false;
         if (startAngle < endAngle) {
@@ -125,9 +126,9 @@ const KlaxonClock: React.FC = () => {
 
   return (
     <div style={styles.body}>
-      <div style={styles.bgImage}></div>
+      <div style={styles.bgImage} />
 
-      <div style={styles.overlay}></div>
+      <div style={styles.overlay} />
 
       <div style={styles.clockWrapper}>
         <div style={styles.clock} id="clock">

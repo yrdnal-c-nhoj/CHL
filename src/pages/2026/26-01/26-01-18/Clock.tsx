@@ -177,7 +177,7 @@ const OrtogonalClock: React.FC = () => {
       const fullStr = `${hStr}:${mStr}:${sStr} ${ampm}`;
 
       let totalWidth = 0;
-      for (let char of fullStr) {
+      for (const char of fullStr) {
         if (char === ':') totalWidth += 2;
         else if (char === ' ') totalWidth += 1.5;
         else if (char === 'M') totalWidth += 6;

@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import backgroundImg from '@/assets/images/2025/25-11/25-11-29/squ.webp';
+
 import fontUrl_20251128 from '@/assets/fonts/2025/25-11-29-roc.ttf?url';
+import backgroundImg from '@/assets/images/2025/25-11/25-11-29/squ.webp';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 export default function RococoDigitalClock() {
   const [now, setNow] = useState(new Date());
@@ -53,7 +54,7 @@ export default function RococoDigitalClock() {
   const timeStr = `${hours}:${minutes}:${seconds}`;
 
   const rand = (seed) => {
-    let x = Math.sin(seed) * 12345;
+    const x = Math.sin(seed) * 12345;
     return x - Math.floor(x);
   };
 

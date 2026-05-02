@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+
 
 // Import background and digit images
-import bgImage from '@/assets/images/2025/25-08/25-08-10/bg.gif';
 import digit0 from '@/assets/images/2025/25-08/25-08-10/0-6.webp';
 import digit1 from '@/assets/images/2025/25-08/25-08-10/1-6.webp';
 import digit2 from '@/assets/images/2025/25-08/25-08-10/2-6.webp';
@@ -13,6 +12,8 @@ import digit6 from '@/assets/images/2025/25-08/25-08-10/6-6.webp';
 import digit7 from '@/assets/images/2025/25-08/25-08-10/7-6.webp';
 import digit8 from '@/assets/images/2025/25-08/25-08-10/8-6.webp';
 import digit9 from '@/assets/images/2025/25-08/25-08-10/9-6.webp';
+import bgImage from '@/assets/images/2025/25-08/25-08-10/bg.gif';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 const digitImages = {
   0: digit0,

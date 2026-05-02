@@ -1,8 +1,10 @@
 import React, { useMemo, useState, useEffect } from 'react';
+
+import catFont from '@/assets/fonts/2026/26-04-15-cat.ttf';
+import type { FontConfig } from '@/types/clock';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import catFont from '@/assets/fonts/2026/26-04-15-cat.ttf';
+
 import styles from './Clock.module.css';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');

@@ -1,8 +1,10 @@
 import React, { useMemo, useRef, memo } from 'react';
+
+import balloonFont from '@/assets/fonts/2026/26-03-22-balloon.ttf';
+import skyImage from '@/assets/images/2026/26-03/26-03-22/sky.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import skyImage from '@/assets/images/2026/26-03/26-03-22/sky.webp';
-import balloonFont from '@/assets/fonts/2026/26-03-22-balloon.ttf';
+
 import styles from './Clock.module.css';
 
 const balloonColors = [

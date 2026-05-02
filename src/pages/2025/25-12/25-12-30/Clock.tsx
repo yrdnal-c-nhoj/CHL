@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import fontLemUrl from '@/assets/fonts/2025/25-12-30-lem.ttf?url';
+
 import fontAnaUrl from '@/assets/fonts/2025/25-12-30-ana.ttf?url';
+import fontLemUrl from '@/assets/fonts/2025/25-12-30-lem.ttf?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // 1. Define font configurations for the Suspense-based loader
 export const fontConfigs: FontConfig[] = [
@@ -74,7 +75,7 @@ const RotatingAnalemmaClock: React.FC = () => {
   };
 
   const { pathData, currentPos } = useMemo(() => {
-    let points = [];
+    const points = [];
     for (let i = 0; i <= 365; i++) {
       const pos = calculateAnalemma(i);
       points.push(`${pos.x},${pos.y}`);

@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
-import styles from './Clock.module.css';
 
 import dripFont from '@/assets/fonts/2026/26-02-01-26-01-31-cond.ttf?url';
 import analogBgImage from '@/assets/images/2026/26-02/26-02-01/rain.webp';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+
+import styles from './Clock.module.css';
+
 
 export const background = analogBgImage;
 

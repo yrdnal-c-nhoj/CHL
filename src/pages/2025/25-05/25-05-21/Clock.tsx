@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import background from '@/assets/images/2025/25-05/25-05-21/signals.jpg';
+
 import semFont from '@/assets/fonts/2025/25-05-21-sem.ttf';
+import background from '@/assets/images/2025/25-05/25-05-21/signals.jpg';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -97,7 +98,7 @@ const Clock: React.FC = () => {
 
   return (
     <div style={bodyStyle}>
-      <div style={bgStyle}></div>
+      <div style={bgStyle} />
       <div style={containerStyle}>
         <div style={timeGroupStyle}>
           <div style={digitStyle}>{hourTens}</div>

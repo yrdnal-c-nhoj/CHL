@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+
 import anglerfishIdle from '@/assets/images/2025/25-07/25-07-21/anglerfish-gif_anglerfish_idle_swim.webp';
 import anglerfishFuse from '@/assets/images/2025/25-07/25-07-21/Deep-Sea-Anglerfish-Fuse.webp';
 import patternOverlay from '@/assets/images/2025/25-07/25-07-21/qsxwwd.webp';
 import spinGif from '@/assets/images/2025/25-07/25-07-21/spin.gif';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 const AnglerfishClock: React.FC = () => {
   const [time, setTime] = useState<any>('');
@@ -14,7 +15,7 @@ const AnglerfishClock: React.FC = () => {
       let hours = now.getHours();
       let minutes = now.getMinutes();
       hours = hours % 24;
-      minutes = minutes < 10 ? '0' + minutes : minutes;
+      minutes = minutes < 10 ? `0${  minutes}` : minutes;
       setTime(`${hours} ${minutes}`);
     };
 

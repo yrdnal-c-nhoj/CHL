@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
-import { DataContext } from './context/DataContext';
+
 import ClockLayout from './components/ClockLayout';
-import { ClockItem, DataContextType } from './types/data';
+import { DataContext } from './context/DataContext';
+import type { ClockItem, DataContextType } from './types/data';
 import {
   normalizeDate,
   formatDateSlashes,

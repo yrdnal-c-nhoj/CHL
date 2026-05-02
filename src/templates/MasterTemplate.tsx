@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
-import { useClockTime } from '../../utils/hooks'; // Use standardized hook
-import { useSuspenseFontLoader } from '../../utils/fontLoader';
+
 import type { FontConfig } from '../../types/clock';
+import { useSuspenseFontLoader } from '../../utils/fontLoader';
+import { useClockTime } from '../../utils/hooks'; // Use standardized hook
+
 import styles from './Clock.module.css';
 
 // 1. Export assets for the preloading pipeline

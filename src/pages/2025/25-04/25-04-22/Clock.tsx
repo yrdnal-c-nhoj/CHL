@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
+
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+
 
 // Component Props interface
 interface CubeClockProps {
@@ -133,12 +135,12 @@ const CubeClock: React.FC<CubeClockProps> = () => {
     <div style={styles.body}>
       <div style={styles.scene}>
         <div ref={cubeRef} style={styles.cube}>
-          <div style={{ ...styles.face, ...styles.front }}></div>
-          <div style={{ ...styles.face, ...styles.back }}></div>
-          <div style={{ ...styles.face, ...styles.left }}></div>
-          <div style={{ ...styles.face, ...styles.right }}></div>
-          <div style={{ ...styles.face, ...styles.top }}></div>
-          <div style={{ ...styles.face, ...styles.bottom }}></div>
+          <div style={{ ...styles.face, ...styles.front }} />
+          <div style={{ ...styles.face, ...styles.back }} />
+          <div style={{ ...styles.face, ...styles.left }} />
+          <div style={{ ...styles.face, ...styles.right }} />
+          <div style={{ ...styles.face, ...styles.top }} />
+          <div style={{ ...styles.face, ...styles.bottom }} />
         </div>
       </div>
     </div>

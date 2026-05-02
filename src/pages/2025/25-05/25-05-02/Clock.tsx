@@ -5,17 +5,19 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-import { useClockTime } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import styles from './Clock.module.css';
 
-// Import assets at top level for bundler optimization
-import scorpImage from '@/assets/images/2025/25-05/25-05-02/sand.webp?url';
+import fontFile from '@/assets/fonts/2025/25-05-02-scorp.ttf?url';
 import hourHandImage from '@/assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
 import minuteHandImage from '@/assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
 import secondHandImage from '@/assets/images/2025/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
-import fontFile from '@/assets/fonts/2025/25-05-02-scorp.ttf?url';
+import scorpImage from '@/assets/images/2025/25-05/25-05-02/sand.webp?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
+
+import styles from './Clock.module.css';
+
+// Import assets at top level for bundler optimization
 
 // Component Props interface
 interface ClockProps {

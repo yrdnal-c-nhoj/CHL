@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+
 import videoBg from '@/assets/images/2026/26-04/26-04-22/steamroller.mp4';
+import { useClockTime } from '@/utils/clockUtils';
+
 import styles from './Clock.module.css';
 
 export const assets = [videoBg];

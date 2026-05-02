@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import TopNav from './components/TopNav';
+
 import Footer from './components/Footer';
+import TopNav from './components/TopNav';
 import './WordPages.css';
 import instaImg from './assets/insta.png';
 import elonImg from './assets/x.png';

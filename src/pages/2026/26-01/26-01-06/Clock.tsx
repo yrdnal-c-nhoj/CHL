@@ -1,10 +1,11 @@
 // src/components/PyramidzBackground.jsx
 import { useState, useEffect } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
 // Vite public folder imports (root-relative → auto-hashed in prod)
-import backgroundImage from '@/assets/images/2026/26-01/26-01-05/pyr.webp';
 import gizaFont from '@/assets/fonts/2026/26-01-06-26-01-05-giza.otf?url';
+import backgroundImage from '@/assets/images/2026/26-01/26-01-05/pyr.webp';
 import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 export default function PyramidzBackground() {
   const [timeString, setTimeString] = useState<any>('');
@@ -133,7 +134,7 @@ export default function PyramidzBackground() {
       <div
         className="pz-background"
         style={{ position: 'absolute', inset: 0 }}
-      ></div>
+       />
 
       <div
         style={{

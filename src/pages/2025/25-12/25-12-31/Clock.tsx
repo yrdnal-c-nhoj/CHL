@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/2025/25-12/25-12-31/shadow.jpg';
+
 import d250916font from '@/assets/fonts/2025/25-12-31-shadow.otf';
+import bgImage from '@/assets/images/2025/25-12/25-12-31/shadow.jpg';
+import { useMultipleFontLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(new Date());

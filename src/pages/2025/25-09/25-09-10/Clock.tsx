@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
+import customLavaFont from '@/assets/fonts/2025/25-09-10-lava.otf?url';
+import bgImage from '@/assets/images/2025/25-09/25-09-10/bg.webp';
 
 // Local images
-import bgImage from '@/assets/images/2025/25-09/25-09-10/bg.webp';
 import hourHand from '@/assets/images/2025/25-09/25-09-10/hour.gif';
 import minuteHand from '@/assets/images/2025/25-09/25-09-10/min.gif';
 import secondHand from '@/assets/images/2025/25-09/25-09-10/sec.gif';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 // Local font
-import customLavaFont from '@/assets/fonts/2025/25-09-10-lava.otf?url';
 
 const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

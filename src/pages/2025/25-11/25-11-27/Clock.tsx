@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 import revolution251127font from '@/assets/fonts/2025/25-11-27-dec.ttf?url';
 import line251127font from '@/assets/fonts/2025/25-11-27-french.ttf?url';
+import backgroundImg from '@/assets/images/2025/25-11/25-11-27/fr.jpg';
 import hourHandImg from '@/assets/images/2025/25-11/25-11-27/fre.webp';
 import minuteHandImg from '@/assets/images/2025/25-11/25-11-27/fren.webp';
 import secondHandImg from '@/assets/images/2025/25-11/25-11-27/french.webp';
-import backgroundImg from '@/assets/images/2025/25-11/25-11-27/fr.jpg';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
 import styles from './Clock.module.css';
 
 const fontConfigs: FontConfig[] = [

@@ -6,6 +6,7 @@ import React, {
   memo,
   useCallback,
 } from 'react';
+
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 

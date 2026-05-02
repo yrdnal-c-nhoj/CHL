@@ -1,13 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react';
+
+import fontFile251024 from '@/assets/fonts/2025/25-10-24-esp.ttf';
+import fallbackImg from '@/assets/images/2025/25-10/25-10-24/esp.jpeg';
+import videoFile from '@/assets/images/2025/25-10/25-10-24/esp.mp4';
+import videoWebM from '@/assets/images/2025/25-10/25-10-24/esp.webp';
+import cornerLR from '@/assets/images/2025/25-10/25-10-24/lr.webp';
+import cornerUL from '@/assets/images/2025/25-10/25-10-24/ul.webp';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks'; // Import the standardized clock hook
-import videoFile from '@/assets/images/2025/25-10/25-10-24/esp.mp4';
-import videoWebM from '@/assets/images/2025/25-10/25-10-24/esp.webp';
-import fallbackImg from '@/assets/images/2025/25-10/25-10-24/esp.jpeg';
-import fontFile251024 from '@/assets/fonts/2025/25-10-24-esp.ttf';
-import cornerUL from '@/assets/images/2025/25-10/25-10-24/ul.webp';
-import cornerLR from '@/assets/images/2025/25-10/25-10-24/lr.webp';
 export default function VictorianEsperantoClock() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
@@ -124,7 +125,7 @@ export default function VictorianEsperantoClock() {
   ];
 
   // Prefix "LA " for hours, capitalize minutes/seconds
-  const hourWord = 'La ' + hoursWords[time.getHours()];
+  const hourWord = `La ${  hoursWords[time.getHours()]}`;
   const minuteWord = capitalizeFirst(minutesAndSecondsWords[time.getMinutes()]);
   const secondWord = capitalizeFirst(minutesAndSecondsWords[time.getSeconds()]);
 

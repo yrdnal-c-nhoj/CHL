@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+
 import backgroundImg from '@/assets/images/2026/26-04/26-04-28/2021-07-06-0012.jpg';
 import { useClockTime, calculateAngles } from '@/utils/clockUtils';
 
@@ -93,10 +94,10 @@ const Clock: React.FC = () => {
       `}</style>
 
       <div className="analog-clock-container">
-        <div ref={hourHandRef} className="hand hour-hand"></div>
-        <div ref={minuteHandRef} className="hand minute-hand"></div>
-        <div ref={secondHandRef} className="hand second-hand"></div>
-        <div className="center-dot"></div>
+        <div ref={hourHandRef} className="hand hour-hand" />
+        <div ref={minuteHandRef} className="hand minute-hand" />
+        <div ref={secondHandRef} className="hand second-hand" />
+        <div className="center-dot" />
       </div>
     </main>
   );

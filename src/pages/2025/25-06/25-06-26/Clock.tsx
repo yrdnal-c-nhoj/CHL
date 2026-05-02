@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
+import wheFont from '@/assets/fonts/2025/25-06-26-whe.ttf';
 import bg1 from '@/assets/images/2025/25-06/25-06-26/co.png';
 import bg2 from '@/assets/images/2025/25-06/25-06-26/cos.png';
-import wheFont from '@/assets/fonts/2025/25-06-26-whe.ttf';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const CosmicWheelClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -162,7 +163,7 @@ const CosmicWheelClock: React.FC = () => {
         {['hours', 'minutes', 'seconds'].map((section) => (
           <div style={timeSection} id={section} key={section}>
             {[0, 1].map((i) => (
-              <div key={i} className="digit-box" style={digitBox(i)}></div>
+              <div key={i} className="digit-box" style={digitBox(i)} />
             ))}
           </div>
         ))}

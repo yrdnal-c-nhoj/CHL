@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
+
 import fontUrl from '@/assets/fonts/2025/25-05-03-Petal.ttf?url';
 import bg1 from '@/assets/images/2025/25-05/25-05-03/petalos.gif';
 import bg2 from '@/assets/images/2025/25-05/25-05-03/petals.gif';
 import bg3 from '@/assets/images/2025/25-05/25-05-03/sakura-leaves.gif';
 import bg4 from '@/assets/images/2025/25-05/25-05-03/talos.gif';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface FlyingPetalsClockProps {
@@ -24,7 +25,7 @@ const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
     () => [
       {
         fontFamily: 'Petal',
-        fontUrl: fontUrl,
+        fontUrl,
         options: {
           weight: 'normal',
           style: 'normal',

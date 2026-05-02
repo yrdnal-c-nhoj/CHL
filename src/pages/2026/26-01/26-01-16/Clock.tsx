@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import font20250119_primary from '@/assets/fonts/2026/26-01-16-leap.otf';
+
 import font20250119_secondary from '@/assets/fonts/2025/26-01-16-25-04-25-Oswald-Bold.ttf?url';
 import font20250119_mono from '@/assets/fonts/2025/26-01-16-25-05-10-Questrial.ttf?url';
+import font20250119_primary from '@/assets/fonts/2026/26-01-16-leap.otf';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import '@fontsource/roboto-mono';
 
 const LEAP_SECOND_DATES = [
@@ -322,7 +323,7 @@ const InfoTile = ({ label, value, color = '#086143', isStatus = false }) => (
         fontFamily: 'Questrial, sans-serif',
         fontWeight: 'bold',
         fontSize: 'clamp(13px, 1.2vw, 18px)',
-        color: color,
+        color,
       }}
     >
       {value}

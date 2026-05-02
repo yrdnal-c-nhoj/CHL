@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import sliFont from '@/assets/fonts/2025/25-07-10-sli.otf';
 import sli2Font from '@/assets/fonts/2025/25-07-10-sli2.ttf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const Clock: React.FC = () => {
   const digitGroups = [

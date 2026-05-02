@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import asciiFontUrl from '@/assets/fonts/2025/25-07-15-ascii.ttf';
 import asciiImageUrl from '@/assets/images/2025/25-07/25-07-15/ascii.jpg';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const DIGITS = {
   0: [

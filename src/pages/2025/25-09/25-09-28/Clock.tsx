@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+
+import cu250928fontont from '@/assets/fonts/2025/25-09-28-cow.ttf?url';
+import nebulaImg from '@/assets/images/2025/25-09/25-09-28/sta.gif';
+import skyImg from '@/assets/images/2025/25-09/25-09-28/stars.gif';
+import ufoImg from '@/assets/images/2025/25-09/25-09-28/ufo.webp';
+import type { FontConfig } from '@/types/clock';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import ufoImg from '@/assets/images/2025/25-09/25-09-28/ufo.webp';
-import skyImg from '@/assets/images/2025/25-09/25-09-28/stars.gif';
-import nebulaImg from '@/assets/images/2025/25-09/25-09-28/sta.gif';
-import cu250928fontont from '@/assets/fonts/2025/25-09-28-cow.ttf?url';
-import type { FontConfig } from '@/types/clock';
 
 const fontConfigs: FontConfig[] = [
   {
@@ -175,7 +176,7 @@ export default function DesertUFOSequence() {
           setFlashOpacity(0.7);
           setTimeout(() => setFlashOpacity(0), FLASH_DURATION);
 
-          let blobStart = performance.now();
+          const blobStart = performance.now();
           const moveBlob = (now) => {
             const blobProgress = Math.min(
               (now - blobStart) / UFO_LEAVE_DURATION,

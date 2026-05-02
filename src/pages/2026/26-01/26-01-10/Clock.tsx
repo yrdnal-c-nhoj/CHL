@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/2026/26-01/26-01-10/moo.gif';
+
 import d25090116font from '@/assets/fonts/2026/26-01-10-bit.ttf';
+import bgImage from '@/assets/images/2026/26-01/26-01-10/moo.gif';
+import { useMultipleFontLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
+
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+
 import sunFont from '@/assets/fonts/2026/26-03-04-sun.ttf';
 import sunBg from '@/assets/images/2026/26-03/26-03-04/sun.webp';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 const Clock: React.FC = () => {
   const fontConfigs = [

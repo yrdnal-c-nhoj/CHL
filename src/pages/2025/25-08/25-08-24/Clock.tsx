@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import castelImage from '@/assets/images/2025/25-08/25-08-24/castel.jpg';
+
 import viaFont from '@/assets/fonts/2025/25-08-24-via.ttf';
+import castelImage from '@/assets/images/2025/25-08/25-08-24/castel.jpg';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const toRoman = (num: number) => {
   const romanMap = [

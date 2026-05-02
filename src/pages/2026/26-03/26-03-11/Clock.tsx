@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import { useSecondClock } from '@/utils/hooks';
 
 const fontVersion = '2026-03-11';

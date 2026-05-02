@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useMemo } from 'react';
+
+import clockFont from '@/assets/fonts/2025/25-08-03-st.ttf';
+import overlay1 from '@/assets/images/2025/25-08/25-08-03/cur.webp';
+import overlay2 from '@/assets/images/2025/25-08/25-08-03/pro.gif';
+import bgImage from '@/assets/images/2025/25-08/25-08-03/sta.gif';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/2025/25-08/25-08-03/sta.gif';
-import overlay2 from '@/assets/images/2025/25-08/25-08-03/pro.gif';
-import overlay1 from '@/assets/images/2025/25-08/25-08-03/cur.webp';
-import clockFont from '@/assets/fonts/2025/25-08-03-st.ttf';
 
 const goldGradient =
   'linear-gradient(135deg, #ffd700, #ffec85, #b8860b, #f5d742)';
@@ -214,7 +215,7 @@ const OrnateClock: React.FC = () => {
 
     return Object.entries(positions).map(([num, deg]) => {
       const angle = (deg * Math.PI) / 180;
-      let x = 50 + radius * Math.cos(angle);
+      const x = 50 + radius * Math.cos(angle);
       let y = 50 + radius * Math.sin(angle);
 
       y -= 3; // move numbers slightly upward

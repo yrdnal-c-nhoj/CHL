@@ -15,7 +15,9 @@
  * - Future-proof React Router v7 compatibility
  */
 
-import React, { useEffect, useCallback, ReactNode, ErrorInfo } from 'react';
+import type { ReactNode, ErrorInfo } from 'react';
+import React, { useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import {
   BrowserRouter as Router,
   Routes,
@@ -23,7 +25,8 @@ import {
   Navigate,
   useLocation,
 } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+
+import { pageview } from './analytics';
 import { DataProvider } from './context/DataContext';
 
 // Lazy loaded components for better performance
@@ -34,7 +37,6 @@ const About = React.lazy(() => import('./About'));
 const Today = React.lazy(() => import('./Today'));
 const Contact = React.lazy(() => import('./Contact'));
 
-import { pageview } from './analytics';
 
 // Configuration constants
 const BASE_URL = 'https://www.cubistheart.com';

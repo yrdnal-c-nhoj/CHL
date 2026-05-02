@@ -1,8 +1,9 @@
 // TimelineClock.jsx
 import React, { useEffect, useState } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
 import li251128font from '@/assets/fonts/2025/25-11-28-line.otf?url';
 import patternImg from '@/assets/images/2025/25-11/25-11-28/line.webp';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // Export assets for preloading
 export { patternImg };

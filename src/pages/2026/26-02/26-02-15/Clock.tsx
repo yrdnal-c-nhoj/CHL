@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
+
+import fontFile from '@/assets/fonts/2026/26-02-15-fire.ttf';
+import backgroundImage from '@/assets/images/2026/26-02/26-02-15/caldera.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import backgroundImage from '@/assets/images/2026/26-02/26-02-15/caldera.webp';
-import fontFile from '@/assets/fonts/2026/26-02-15-fire.ttf';
 
 const FONT_FAMILY = 'FireFont';
 

@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
+
 import bgImage from '@/assets/images/2025/25-05/25-05-07/water.webp';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface ClockProps {
@@ -69,11 +70,11 @@ const Clock: React.FC<ClockProps> = () => {
       <div className="clock">
         <div id="radar">
           {/* The trailing glow effect */}
-          <div className="radar-sweep"></div>
+          <div className="radar-sweep" />
 
           <div className="clock-face">
-            <div className="hand hour-hand"></div>
-            <div className="hand minute-hand"></div>
+            <div className="hand hour-hand" />
+            <div className="hand minute-hand" />
             {/* <div className="hand second-hand"></div> */}
             {/* <div className="center"></div> */}
           </div>

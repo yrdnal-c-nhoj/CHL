@@ -1,10 +1,11 @@
 import { useEffect, useState, useMemo } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
+import sproutFontTtf from '@/assets/fonts/2025/25-05-26-sprout.ttf?url';
 import spr from '@/assets/images/2025/25-05/25-05-26/spr.gif';
 import sprou from '@/assets/images/2025/25-05/25-05-26/sprou.gif';
 import sprout from '@/assets/images/2025/25-05/25-05-26/sprout.gif';
-import sproutFontTtf from '@/assets/fonts/2025/25-05-26-sprout.ttf?url';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const baseStyles = {
   container: {
@@ -159,8 +160,8 @@ export default function SproutClock() {
         transition: 'opacity 0.3s ease',
       }}
     >
-      <div style={styles.bgTiled}></div>
-      <div style={styles.bgCover}></div>
+      <div style={styles.bgTiled} />
+      <div style={styles.bgCover} />
 
       <div style={styles.content}>
         {imagePositions.map((pos, i) => (

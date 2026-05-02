@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import morseFont from '@/assets/fonts/2025/25-06-27-morse.ttf';
 import birdsGif from '@/assets/images/2025/25-06/25-06-27/birds.gif';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const colors = [
   '#c0c6c7',
@@ -247,7 +248,7 @@ const MorseClock: React.FC = () => {
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
         preserveAspectRatio="none"
         style={styles.svg}
-      ></svg>
+       />
       <div style={styles.clock} aria-label="Morse Code Clock">
         {digits.map((digit, i) => (
           <div key={i} style={styles.digitBox} aria-live="polite">

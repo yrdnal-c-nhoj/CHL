@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import A3ui from '@/assets/images/2025/25-05/25-05-12/A3ui.gif';
+
 import leoFont from '@/assets/fonts/2025/25-05-12-leo.ttf?url';
+import A3ui from '@/assets/images/2025/25-05/25-05-12/A3ui.gif';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface CheetahClockProps {
@@ -39,7 +40,7 @@ const CheetahClock: React.FC<CheetahClockProps> = () => {
 
     const updateClock = () => {
       const now = new Date();
-      let hours = now.getHours() % 12 || 12;
+      const hours = now.getHours() % 12 || 12;
       const minutes = now.getMinutes();
       const seconds = now.getSeconds();
       const milliseconds = Math.floor(now.getMilliseconds() / 10);
@@ -154,7 +155,7 @@ const CheetahClock: React.FC<CheetahClockProps> = () => {
               ...sharedDigitStyle,
               ...(isMobile ? { gridArea: id } : {}),
             }}
-          ></div>
+           />
         ))}
       </div>
     </div>

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
+import myFont from '@/assets/fonts/2025/25-07-30-Cam.ttf'; // Import font
 import clockBg from '@/assets/images/2025/25-07/25-07-30/ca.gif';
 import fullBg from '@/assets/images/2025/25-07/25-07-30/ca.gif';
-import myFont from '@/assets/fonts/2025/25-07-30-Cam.ttf'; // Import font
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -152,10 +153,10 @@ const Clock: React.FC = () => {
             {i + 1}
           </div>
         ))}
-        <div style={hourHand}></div>
-        <div style={minuteHand}></div>
-        <div style={secondHand}></div>
-        <div style={centerDot}></div>
+        <div style={hourHand} />
+        <div style={minuteHand} />
+        <div style={secondHand} />
+        <div style={centerDot} />
       </div>
     </div>
   );

@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import * as THREE from 'three';
+
 import OrbitronFont20251012 from '@/assets/fonts/2025/25-10-14-air.ttf';
 import bgImage from '@/assets/images/2025/25-10/25-10-14/air.webp';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const SpinningDodecahedronClock: React.FC = () => {
   const containerRef = useRef(null);
@@ -259,7 +260,7 @@ const SpinningDodecahedronClock: React.FC = () => {
             fontSize: '1.2rem',
             zIndex: 5,
           }}
-        ></div>
+         />
       )}
 
       <div

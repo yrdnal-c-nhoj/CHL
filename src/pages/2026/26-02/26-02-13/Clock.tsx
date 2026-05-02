@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
+
 import { useSecondClock } from '@/utils/hooks';
+
 import styles from './Clock.module.css';
 
 const WordClock: React.FC = () => {

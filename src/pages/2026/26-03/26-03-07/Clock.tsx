@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useMemo } from 'react';
+
+import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import type { FontConfig } from '@/types/clock';
 
 export const fontConfigs: FontConfig[] = [];
 

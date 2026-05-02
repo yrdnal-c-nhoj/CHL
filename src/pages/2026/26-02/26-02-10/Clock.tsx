@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
 
 import teeVeeLoungeFont from '@/assets/fonts/2026/26-02-10-tv.ttf?url';
 import analogBgImage from '@/assets/images/2026/26-02/26-02-10/tv.jpg';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+
 
 export const background = analogBgImage;
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
 import sloanFont_2025_1204 from '@/assets/fonts/2025/25-12-04-ichart.otf?url';
 import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const fontFamilyName = 'SloanOptotype_2025_1204';
 
@@ -22,10 +23,10 @@ export default function EyeChart() {
     return () => clearInterval(timer);
   }, []);
 
-  const hours = ('0' + (time.getHours() % 12 || 12)).slice(-2);
-  const minutes = ('0' + time.getMinutes()).slice(-2);
+  const hours = (`0${  time.getHours() % 12 || 12}`).slice(-2);
+  const minutes = (`0${  time.getMinutes()}`).slice(-2);
   const ampm = time.getHours() >= 12 ? 'PM' : 'AM';
-  const seconds = ('0' + time.getSeconds()).slice(-2);
+  const seconds = (`0${  time.getSeconds()}`).slice(-2);
 
   // Removed unused colors
   const lines = [
@@ -50,8 +51,8 @@ export default function EyeChart() {
     justifyContent: 'center',
     background: '#FDF5DDFF',
     fontFamily:
-      fontFamilyName +
-      ", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue'",
+      `${fontFamilyName 
+      }, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue'`,
     WebkitFontSmoothing: 'antialiased',
   };
 

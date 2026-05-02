@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react';
+
+import wallFont from '@/assets/fonts/2026/26-04-07-wall.ttf';
+import bgImage from '@/assets/images/2026/26-04/26-04-07/wall.webp';
+import type { FontConfig } from '@/types/clock';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import bgImage from '@/assets/images/2026/26-04/26-04-07/wall.webp';
-import wallFont from '@/assets/fonts/2026/26-04-07-wall.ttf';
+
 import styles from './Clock.module.css';
 
 const formatDigit = (num: number) => num.toString().padStart(2, '0');

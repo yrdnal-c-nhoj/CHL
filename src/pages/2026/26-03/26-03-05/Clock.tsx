@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
@@ -152,8 +153,8 @@ const Clock: React.FC = () => {
 
       <div style={styles.screen}>
         {/* Visual FX Layers */}
-        <div style={styles.scanlines}></div>
-        <div style={styles.vignette}></div>
+        <div style={styles.scanlines} />
+        <div style={styles.vignette} />
 
         {/* Content */}
         <div style={styles.output}>
@@ -168,7 +169,7 @@ const Clock: React.FC = () => {
                 <a href="mailto:cubistheart@gmail.com" style={styles.link}>
                   cubistheart@gmail.com
                 </a>
-                <span className="cursor"></span>
+                <span className="cursor" />
               </p>
             )}
 

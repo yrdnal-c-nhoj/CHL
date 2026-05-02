@@ -5,12 +5,13 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
+
 import KinaFont from '@/assets/fonts/2025/25-05-09-Kina.ttf?url';
 import swurl from '@/assets/images/2025/25-05/25-05-09/swurl.gif';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 const importantNumbers = [12, 3, 6, 9];
 
@@ -57,8 +58,7 @@ const Clock: React.FC<ClockProps> = () => {
   const radiusVW = 20;
 
   return (
-    <>
-      <div
+    <div
         style={{
           margin: 0,
           display: 'flex',
@@ -238,7 +238,6 @@ const Clock: React.FC<ClockProps> = () => {
           }
         `}</style>
       </div>
-    </>
   );
 };
 

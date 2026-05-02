@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+
 import bgImg from '@/assets/images/2025/25-11/25-11-16/ray.webp';
 import clockBg from '@/assets/images/2025/25-11/25-11-16/ray2.webp';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 export default function AnalogClock() {
   const rafRef = useRef(null);

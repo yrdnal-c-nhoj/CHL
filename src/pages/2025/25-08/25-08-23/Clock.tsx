@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
+import fogFont from '@/assets/fonts/2025/25-08-23-fog.ttf';
+import digit0 from '@/assets/images/2025/25-08/25-08-23/0.gif';
 
 // Digit images (imported as modules)
-import digit0 from '@/assets/images/2025/25-08/25-08-23/0.gif';
 import digit1 from '@/assets/images/2025/25-08/25-08-23/1.gif';
 import digit2 from '@/assets/images/2025/25-08/25-08-23/2.gif';
 import digit3 from '@/assets/images/2025/25-08/25-08-23/3.gif';
@@ -15,11 +15,12 @@ import digit8 from '@/assets/images/2025/25-08/25-08-23/8.gif';
 import digit9 from '@/assets/images/2025/25-08/25-08-23/9.gif';
 
 // Background and overlay images
-import backgroundImage from '@/assets/images/2025/25-08/25-08-23/g.webp';
 import overlayImage from '@/assets/images/2025/25-08/25-08-23/fog.gif';
+import backgroundImage from '@/assets/images/2025/25-08/25-08-23/g.webp';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 // Custom font (imported as module)
-import fogFont from '@/assets/fonts/2025/25-08-23-fog.ttf';
 
 // Map digits to their respective images
 const digitImages = {

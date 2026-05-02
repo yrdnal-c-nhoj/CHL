@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import penFontUrl from '@/assets/fonts/2025/25-07-11-Pen.ttf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const PenmanshipClock: React.FC = () => {
   const [timeString, setTimeString] = useState<any>('--:--');

@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
+
 import { useClockTime } from '@/utils/hooks';
+
 import styles from './Clock.module.css';
 
 interface DigitProps {

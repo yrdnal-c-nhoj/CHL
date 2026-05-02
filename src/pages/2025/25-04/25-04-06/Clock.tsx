@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 import confFont from '@/assets/fonts/2025/25-04-06-conf.ttf?url';
 import confettiBg from '@/assets/images/2025/25-04/25-04-06/conf2.gif';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 const TOTAL_DIGITS = 160;
 

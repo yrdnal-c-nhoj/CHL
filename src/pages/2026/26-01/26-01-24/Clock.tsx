@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
+
 import { formatTime as utilFormatTime } from '@/utils/clockUtils'; // Alias to avoid conflict with local formatTime
 import { useClockTime } from '@/utils/hooks'; // Use the standardized hook
+
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {

@@ -1,7 +1,8 @@
 import React from 'react';
+
+import topImageWebp from '@/assets/images/2026/26-03/26-03-17/0001-0160-ezgif.com-optiwebp-1.webp';
 import pluWebp from '@/assets/images/2026/26-03/26-03-17/plu.webp';
 import tileBgGif from '@/assets/images/2026/26-03/26-03-17/tile_bg.gif';
-import topImageWebp from '@/assets/images/2026/26-03/26-03-17/0001-0160-ezgif.com-optiwebp-1.webp';
 import { useMillisecondClock } from '@/utils/hooks';
 
 const Clock: React.FC = () => {

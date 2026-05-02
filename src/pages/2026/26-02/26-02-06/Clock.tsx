@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+
 import busterImg from '@/assets/images/2026/26-02/26-02-05/buster.webp';
 import hand1Img from '@/assets/images/2026/26-02/26-02-05/hand1.webp';
 import hand2Img from '@/assets/images/2026/26-02/26-02-05/hand2.webp';
+import { useMillisecondClock } from '@/utils/hooks';
 
 // Interface for hand style function parameters
 interface HandStyleParams {

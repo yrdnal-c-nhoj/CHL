@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+
+import dirFontUrl from '@/assets/fonts/2025/25-05-22-Dir.ttf'; // Use static import
 import sunGif from '@/assets/images/2025/25-05/25-05-22/sun.gif'; // Use static import
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import dirFontUrl from '@/assets/fonts/2025/25-05-22-Dir.ttf'; // Use static import
 
 const romanNumerals = [
   'XII',
@@ -103,7 +104,7 @@ const Clock: React.FC = () => {
           color: '#fff',
           background: '#000',
         }}
-      ></div>
+       />
     );
   }
 
@@ -207,7 +208,7 @@ const Clock: React.FC = () => {
               width: '2%',
               height: '25%',
             }}
-          ></div>
+           />
           <div
             id="minute"
             style={{
@@ -219,7 +220,7 @@ const Clock: React.FC = () => {
               width: '1%',
               height: '35%',
             }}
-          ></div>
+           />
           <div
             id="second"
             style={{
@@ -231,7 +232,7 @@ const Clock: React.FC = () => {
               width: '0.4%',
               height: '45%',
             }}
-          ></div>
+           />
         </div>
       </div>
     </div>

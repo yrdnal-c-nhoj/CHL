@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
-import type { FontConfig } from '@/types/clock';
+
 import customFont from '@/assets/fonts/2025/25-07-28-gol.ttf?url';
 import backgroundImage from '@/assets/images/2025/25-07/25-07-28/go.gif';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
+
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {

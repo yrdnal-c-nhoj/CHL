@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useClockTime } from '@/utils/hooks';
+
+import minuteHandImage from '@/assets/images/2025/25-04/25-04-25/ba.gif';
 import backgroundImage from '@/assets/images/2025/25-04/25-04-25/bad.webp';
 import hourHandImage from '@/assets/images/2025/25-04/25-04-25/ban.webp';
-import minuteHandImage from '@/assets/images/2025/25-04/25-04-25/ba.gif';
 import secondHandImage from '@/assets/images/2025/25-04/25-04-25/band.gif';
+import { useClockTime } from '@/utils/hooks';
+
 import styles from './Clock.module.css';
 interface ClockImages {
   hourImg: HTMLImageElement;

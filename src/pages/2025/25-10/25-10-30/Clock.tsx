@@ -1,9 +1,10 @@
 /** @jsxImportSource react */
 import { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import bgImage from '@/assets/images/2025/25-10/25-10-30/turq.webp';
-import clockFaceImage from '@/assets/images/2025/25-10/25-10-30/tur.jpg';
+
 import customFont2025_10_31 from '@/assets/fonts/2025/25-10-30-turqs.ttf?url';
+import clockFaceImage from '@/assets/images/2025/25-10/25-10-30/tur.jpg';
+import bgImage from '@/assets/images/2025/25-10/25-10-30/turq.webp';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
@@ -58,7 +59,7 @@ export default function AnalogClock() {
           fontFamily: 'sans-serif',
           letterSpacing: '0.2em',
         }}
-      ></div>
+       />
     );
 
   // Time math
@@ -247,8 +248,7 @@ export default function AnalogClock() {
   );
 
   return (
-    <>
-      <div style={pageStyle}>
+    <div style={pageStyle}>
         <div style={bgStyle} />
         <div style={wrapperStyle}>
           <div style={overlayStyle} />
@@ -256,9 +256,8 @@ export default function AnalogClock() {
           <div style={hourHand} />
           <div style={minuteHand} />
           <div style={secondHand} />
-          <div style={centerCap}></div>
+          <div style={centerCap} />
         </div>
       </div>
-    </>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+
 import { useSecondClock } from '@/utils/hooks';
 
 const ProgressClock: React.FC = () => {

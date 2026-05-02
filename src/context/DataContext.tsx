@@ -1,11 +1,14 @@
+import type {
+  ReactNode} from 'react';
 import React, {
   createContext,
   useContext,
   useState,
-  useEffect,
-  ReactNode,
+  useEffect
 } from 'react';
+
 import type { ClockItem, DataContextType } from '../types/data';
+
 import prodData from './clockpages.json';
 
 // Optionally load testclocks.json — resolves gracefully if absent

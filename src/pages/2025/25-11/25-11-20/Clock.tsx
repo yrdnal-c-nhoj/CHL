@@ -1,8 +1,9 @@
 // PixelInverseClock.jsx
 import React, { useRef, useEffect, useState } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import videoFile from '@/assets/images/2025/25-11/25-11-20/day.mp4';
+
 import fontFile from '@/assets/fonts/2025/25-11-20-day.ttf';
+import videoFile from '@/assets/images/2025/25-11/25-11-20/day.mp4';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const FONT_FAMILY = 'MyClockFont_20251120';
 const fontUrl = fontFile;
@@ -67,7 +68,7 @@ export default function PixelInverseClock() {
 
       // Get background pixels for inverse sampling
       const image = ctx.getImageData(0, 0, w, h);
-      const data = image.data;
+      const {data} = image;
 
       const now = new Date();
       const sec = now.getSeconds() + now.getMilliseconds() / 1000;

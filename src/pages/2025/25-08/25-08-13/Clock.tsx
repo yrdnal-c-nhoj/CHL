@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+
 import bgImage from '@/assets/images/2025/25-08/25-08-13/bg.webp';
 import secondBgImage from '@/assets/images/2025/25-08/25-08-13/loop.webp';
 import thirdBgImage from '@/assets/images/2025/25-08/25-08-13/tiny.gif'; // new background image
+import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 export default function AnalogClock() {
   const canvasRef = useRef(null);

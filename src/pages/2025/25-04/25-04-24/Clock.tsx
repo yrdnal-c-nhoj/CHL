@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import lava1 from '@/assets/images/2025/25-04/25-04-24/lava.webp';
-import lava2 from '@/assets/images/2025/25-04/25-04-24/vp2OVr.gif';
-import lava3 from '@/assets/images/2025/25-04/25-04-24/lava.webp';
+
 import lavaFont from '@/assets/fonts/2025/25-04-24-lava.ttf?url';
+import lava1 from '@/assets/images/2025/25-04/25-04-24/lava.webp';
+import lava3 from '@/assets/images/2025/25-04/25-04-24/lava.webp';
+import lava2 from '@/assets/images/2025/25-04/25-04-24/vp2OVr.gif';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 // Time state interface
 interface TimeState {
@@ -151,7 +152,7 @@ const LavaClock: React.FC<LavaClockProps> = () => {
         position: 'relative',
       }}
     >
-      <div style={screenStyle}></div>
+      <div style={screenStyle} />
 
       <img
         decoding="async"

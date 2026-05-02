@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 /* ---------- Font ---------- */
 const FONT_FAMILY = 'Newla';
