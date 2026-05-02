@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import woodImg from '@/assets/images/2025/25-05/25-05-13/wood.jpg';
-import tilesImg from '@/assets/images/2025/25-05/25-05-13/tiles.jpg';
+
 import hydFont from '@/assets/fonts/2025/25-05-13-hyd.ttf?url';
+import tilesImg from '@/assets/images/2025/25-05/25-05-13/tiles.jpg';
+import woodImg from '@/assets/images/2025/25-05/25-05-13/wood.jpg';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface FlatClockProps {
@@ -193,15 +194,15 @@ const FlatClock: React.FC<FlatClockProps> = () => {
       </style>
 
       <div className="scene">
-        <div className="grid-plane"></div>
+        <div className="grid-plane" />
         <div className="clock">
-          <div className="numbers" id="clock-numbers"></div>
-          <div className="hand hour" id="hour-hand"></div>
-          <div className="hand minute" id="minute-hand"></div>
-          <div className="hand second" id="second-hand"></div>
+          <div className="numbers" id="clock-numbers" />
+          <div className="hand hour" id="hour-hand" />
+          <div className="hand minute" id="minute-hand" />
+          <div className="hand second" id="second-hand" />
         </div>
       </div>
-      <div className="sr-only" id="clock-time" aria-live="polite"></div>
+      <div className="sr-only" id="clock-time" aria-live="polite" />
     </>
   );
 };

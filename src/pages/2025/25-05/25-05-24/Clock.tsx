@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import torGif from '@/assets/images/2025/25-05/25-05-24/tor.gif';
+
 import speedFont from '@/assets/fonts/2025/25-05-24-speed.ttf';
+import torGif from '@/assets/images/2025/25-05/25-05-24/tor.gif';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 const NUM_PARTICLES = 100;
 
@@ -43,7 +44,7 @@ const Clock: React.FC = () => {
   // 3. Logic Helpers
   const updateTimeText = () => {
     const now = new Date();
-    let hours = now.getHours() % 12 || 12;
+    const hours = now.getHours() % 12 || 12;
     const mins = now.getMinutes().toString().padStart(2, '0');
     setTimeString(`${hours}${mins}`);
   };
@@ -60,8 +61,8 @@ const Clock: React.FC = () => {
   useEffect(() => {
     updateTimeText();
     let animationFrame: number;
-    let clockInterval = setInterval(updateTimeText, 60000);
-    let startTime = Date.now();
+    const clockInterval = setInterval(updateTimeText, 60000);
+    const startTime = Date.now();
 
     const animate = () => {
       const elapsed = (Date.now() - startTime) / 1000;

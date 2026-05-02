@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import background2 from '@/assets/images/2025/25-07/25-07-25/bb.webp'; // front
+
+import customFont from '@/assets/fonts/2025/25-07-25-bamboo.ttf';
 import background1 from '@/assets/images/2025/25-07/25-07-25/bam.webp'; // back
 import background3 from '@/assets/images/2025/25-07/25-07-25/bambu.gif'; // static background
-import customFont from '@/assets/fonts/2025/25-07-25-bamboo.ttf';
+import background2 from '@/assets/images/2025/25-07/25-07-25/bb.webp'; // front
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState(() => new Date());
@@ -144,10 +145,10 @@ const Clock: React.FC = () => {
 
   return (
     <div style={wrapperStyle}>
-      <div style={backgroundLayer1Style}></div>
-      <div style={backgroundLayer2Style}></div>
-      <div style={backgroundLayer3Style}></div>
-      <div style={overlayStyle}></div>
+      <div style={backgroundLayer1Style} />
+      <div style={backgroundLayer2Style} />
+      <div style={backgroundLayer3Style} />
+      <div style={overlayStyle} />
       <div style={clockStackStyle}>
         <div style={digitRowStyle}>
           {hours.split('').map((char, index) => (

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 import backgroundImage from '@/assets/images/2026/26-01/26-01-28/three.webp';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 // NOTE: The Google Font has been downloaded and is now hosted locally for preloading.
 // import fontUrl from '@/assets/fonts/2026/26-01-28-big-shoulders.ttf?url';
 
@@ -45,7 +46,7 @@ function CheckerboardBackground() {
               height: tileSize,
               backgroundImage: `url(${backgroundImage})`,
               backgroundSize: 'cover',
-              transform: transform,
+              transform,
               opacity: 0.2,
             }}
           />,

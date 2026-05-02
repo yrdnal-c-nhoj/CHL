@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useMemo } from 'react';
+
+import digitalFontUrl from '@/assets/fonts/2026/26-02-12-disco.otf';
+import extraBg3 from '@/assets/images/2026/26-02/26-02-12/ball.webp';
+import extraBg2 from '@/assets/images/2026/26-02/26-02-12/li.gif';
+import extraBg1 from '@/assets/images/2026/26-02/26-02-12/light.webp';
+import digitalBgImage from '@/assets/images/2026/26-02/26-02-12/lit.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
-import digitalFontUrl from '@/assets/fonts/2026/26-02-12-disco.otf';
-import digitalBgImage from '@/assets/images/2026/26-02/26-02-12/lit.webp';
-import extraBg1 from '@/assets/images/2026/26-02/26-02-12/light.webp';
-import extraBg2 from '@/assets/images/2026/26-02/26-02-12/li.gif';
-import extraBg3 from '@/assets/images/2026/26-02/26-02-12/ball.webp';
 
 const DISCO_COLORS = [
   '#FF00FF', // Neon Magenta

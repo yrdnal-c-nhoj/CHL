@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
+import customFont_2025_1206 from '@/assets/fonts/2025/25-12-06-gir.otf?url';
+import bgImage from '@/assets/images/2025/25-12/25-12-06/giraffe.webp';
 
 // Image paths in public folder
-import bgImage from '@/assets/images/2025/25-12/25-12-06/giraffe.webp';
-import hourHandImggir from '@/assets/images/2025/25-12/25-12-06/hand3.gif';
 import minnnuteHandImg from '@/assets/images/2025/25-12/25-12-06/hand1.gif';
 import secondHandImg from '@/assets/images/2025/25-12/25-12-06/hand2.gif';
+import hourHandImggir from '@/assets/images/2025/25-12/25-12-06/hand3.gif';
 import tileImg from '@/assets/images/2025/25-12/25-12-06/run.webp';
 import centerImg from '@/assets/images/2025/25-12/25-12-06/walk.webp';
-import customFont_2025_1206 from '@/assets/fonts/2025/25-12-06-gir.otf?url';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useSuspenseFontLoader , useMultipleFontLoader } from '@/utils/fontLoader';
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
@@ -158,7 +158,7 @@ export default function AnalogClock() {
     // translate(-50%, -90%) ensures the pivot point of the image sits exactly in the center
     transform: `translate(-50%, -90%) rotate(${deg}deg)`,
     transformOrigin: '50% 90%',
-    zIndex: zIndex,
+    zIndex,
     filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.5))',
     maskImage: 'linear-gradient(to top, transparent 10%, rgba(0,0,0,1) 30%)',
     WebkitMaskImage:

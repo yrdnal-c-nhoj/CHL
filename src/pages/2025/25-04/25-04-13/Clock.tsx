@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 import backgroundImage from '@/assets/images/2025/25-04/25-04-13/pattern.jpeg';
 import pizzaFace from '@/assets/images/2025/25-04/25-04-13/pie.webp';
-import hourSlice from '@/assets/images/2025/25-04/25-04-13/s3.webp';
-import minuteSlice from '@/assets/images/2025/25-04/25-04-13/s2.webp';
 import secondSlice from '@/assets/images/2025/25-04/25-04-13/s1.webp';
+import minuteSlice from '@/assets/images/2025/25-04/25-04-13/s2.webp';
+import hourSlice from '@/assets/images/2025/25-04/25-04-13/s3.webp';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface PizzaClockProps {

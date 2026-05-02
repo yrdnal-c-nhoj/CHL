@@ -261,7 +261,7 @@ export class PerformanceMonitor {
     percentage: number;
   } {
     if ('memory' in performance) {
-      const memory = (performance as any).memory;
+      const {memory} = (performance as any);
       return {
         used: memory.usedJSHeapSize,
         total: memory.totalJSHeapSize,

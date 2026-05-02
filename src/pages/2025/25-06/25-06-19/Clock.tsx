@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+
 import styles from './Clock.module.css';
 
 const CmykClock: React.FC = () => {
@@ -81,8 +82,7 @@ const CmykClock: React.FC = () => {
   }, []);
 
   return (
-    <>
-      <div className={styles.clock} ref={clockRef}>
+    <div className={styles.clock} ref={clockRef}>
         <canvas ref={canvasRef} className={styles.canvas} />
         <div className={`${styles.hand} ${styles.hourHand}`} />
         <div className={`${styles.hand} ${styles.minuteHand}`} />
@@ -92,7 +92,6 @@ const CmykClock: React.FC = () => {
           {/* Optional date text can go here */}
         </div>
       </div>
-    </>
   );
 };
 

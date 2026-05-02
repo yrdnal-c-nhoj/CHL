@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/2025/25-06/25-06-18/cis.jpg';
+
 import cisFont from '@/assets/fonts/2025/25-06-18-cis.ttf';
+import bgImage from '@/assets/images/2025/25-06/25-06-18/cis.jpg';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const CistercianClock: React.FC = () => {
   const [time, setTime] = useState(new Date());

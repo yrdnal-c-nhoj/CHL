@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import vegasFontUrl from '@/assets/fonts/2025/25-07-05-vegas.ttf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const VegasClock: React.FC = () => {
   const hour1Ref = useRef(null);
@@ -203,22 +204,22 @@ const VegasClock: React.FC = () => {
       `}</style>
 
       {/* YouTube video as background */}
-      <div ref={playerContainerRef} style={iframeStyle}></div>
+      <div ref={playerContainerRef} style={iframeStyle} />
 
       {/* Clock */}
       <div style={wrapperStyle}>
         <div style={clockContainerStyle}>
           <div style={digitGroupStyle}>
-            <div ref={hour1Ref} style={digitBoxStyle}></div>
-            <div ref={hour2Ref} style={digitBoxStyle}></div>
+            <div ref={hour1Ref} style={digitBoxStyle} />
+            <div ref={hour2Ref} style={digitBoxStyle} />
           </div>
           <div style={digitGroupStyle}>
-            <div ref={minute1Ref} style={digitBoxStyle}></div>
-            <div ref={minute2Ref} style={digitBoxStyle}></div>
+            <div ref={minute1Ref} style={digitBoxStyle} />
+            <div ref={minute2Ref} style={digitBoxStyle} />
           </div>
           <div style={digitGroupStyle}>
-            <div ref={second1Ref} style={digitBoxStyle}></div>
-            <div ref={second2Ref} style={digitBoxStyle}></div>
+            <div ref={second1Ref} style={digitBoxStyle} />
+            <div ref={second2Ref} style={digitBoxStyle} />
           </div>
         </div>
       </div>

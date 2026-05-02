@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import rocketGif from '@/assets/images/2025/25-07/25-07-03/rocket.gif';
+
 import rockFont from '@/assets/fonts/2025/25-07-03-rock.ttf';
+import rocketGif from '@/assets/images/2025/25-07/25-07-03/rocket.gif';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const Clock: React.FC = () => {
   const clockRef = useRef(null);

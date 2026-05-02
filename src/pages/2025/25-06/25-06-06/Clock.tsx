@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import rrrrFont from '@/assets/fonts/2025/25-06-06-rrrr.ttf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const RollingClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -23,7 +24,7 @@ const RollingClock: React.FC = () => {
     function createClock() {
       const clockContainer = document.createElement('div');
       clockContainer.className = 'clock-container';
-      clockContainer.style.left = screenWidth + 'px';
+      clockContainer.style.left = `${screenWidth  }px`;
 
       const clock = document.createElement('div');
       clock.className = 'clock';

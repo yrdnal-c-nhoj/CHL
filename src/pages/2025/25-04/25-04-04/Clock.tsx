@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 
 import beat4 from '@/assets/images/2025/25-04/25-04-04/beat4.webp';
 import tumblrImg from '@/assets/images/2025/25-04/25-04-04/heart.webp';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface HeartbeatClockProps {

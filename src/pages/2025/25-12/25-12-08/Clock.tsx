@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import plateImage from '@/assets/images/2025/25-12/25-12-08/plate.webp';
+
+import secondHand from '@/assets/images/2025/25-12/25-12-08/ha.gif';
 import hourHand from '@/assets/images/2025/25-12/25-12-08/hand.gif';
 import minuteHand from '@/assets/images/2025/25-12/25-12-08/hand2.gif';
-import secondHand from '@/assets/images/2025/25-12/25-12-08/ha.gif';
+import plateImage from '@/assets/images/2025/25-12/25-12-08/plate.webp';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 // Styles moved outside the component to avoid recreation on every render (60fps)
 const outerContainerStyle = {

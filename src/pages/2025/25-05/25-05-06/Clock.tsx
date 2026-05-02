@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
+
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+
 
 const googleFonts = [
   'Kablammo',

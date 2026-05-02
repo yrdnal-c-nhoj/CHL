@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-// Explicit module-based imports for the background
+
+import customFont from '@/assets/fonts/2026/26-01-09-26-01-12-tic.ttf?url';
 import gifOne from '@/assets/images/2026/26-01/26-01-12/tic.webp';
+// Explicit module-based imports for the background
 import gifTwo from '@/assets/images/2026/26-01/26-01-12/tic2.gif';
 import gifThree from '@/assets/images/2026/26-01/26-01-12/tic3.gif';
 import gifFour from '@/assets/images/2026/26-01/26-01-12/tic4.gif';
-import customFont from '@/assets/fonts/2026/26-01-09-26-01-12-tic.ttf?url';
 import type { FontConfig } from '@/types/clock';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const fontConfigs: FontConfig[] = [
   {
@@ -181,7 +182,7 @@ export default function TicTacToeClock() {
       s1: Math.floor(seconds / 10),
       s2: seconds % 10,
       ms1: Math.floor((ms % 100) / 10),
-      ampm: ampm,
+      ampm,
     };
   }, []);
 
@@ -226,7 +227,7 @@ export default function TicTacToeClock() {
     alignItems: 'center',
     opacity: isClient ? 1 : 0,
     transition: 'opacity 0.3s ease-in-out',
-    fontFamily: fontFamily,
+    fontFamily,
     position: 'relative',
     zIndex: 10,
     pointerEvents: 'none',

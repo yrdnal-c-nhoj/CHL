@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 import cust250921font from '@/assets/fonts/2025/25-09-21-ele.ttf?url';
-import stripe1 from '@/assets/images/2025/25-09/25-09-21/fire.gif?url';
 import stripe2 from '@/assets/images/2025/25-09/25-09-21/air.webp?url';
-import stripe3 from '@/assets/images/2025/25-09/25-09-21/h2o.webp?url';
 import stripe4 from '@/assets/images/2025/25-09/25-09-21/earth.webp?url';
+import stripe1 from '@/assets/images/2025/25-09/25-09-21/fire.gif?url';
+import stripe3 from '@/assets/images/2025/25-09/25-09-21/h2o.webp?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
@@ -37,9 +38,9 @@ export default function AnalogClock() {
   // Hand style helper
   const handStyle = (width, height, top, rotateDeg) => ({
     position: 'absolute',
-    width: width,
-    height: height,
-    top: top,
+    width,
+    height,
+    top,
     left: '50%',
     transformOrigin: '50% 100%',
     transform: `rotate(${rotateDeg}deg)`,
@@ -144,7 +145,7 @@ export default function AnalogClock() {
                     backgroundRepeat: 'no-repeat',
                     WebkitMaskImage: mask,
                     maskImage: mask,
-                    filter: filter,
+                    filter,
                     opacity: 0.5,
                     transform: flipped ? 'scaleX(-1)' : 'none',
                   }}

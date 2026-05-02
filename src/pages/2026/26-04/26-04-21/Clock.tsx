@@ -5,9 +5,11 @@ import React, {
   useState,
   useMemo,
 } from 'react';
+
+import type { FontConfig } from '@/types/clock';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 import styles from './Clock.module.css';
 
 interface Circle {

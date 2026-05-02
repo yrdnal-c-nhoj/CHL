@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
+
 import airFontUrl from './air.ttf';
+import frameImg from './frame.jpg';
 import stampImg from './stamp.png';
 import stamp2Img from './stamp2.png';
 import stamp3Img from './stamp3.png';
-import frameImg from './frame.jpg';
 
 // CSS animations (font loading handled by useMultipleFontLoader)
 const styleSheet = new CSSStyleSheet();

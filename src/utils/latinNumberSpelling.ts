@@ -47,7 +47,7 @@ const spellNumber = (num: number): string => {
   if (num < 100) {
     const ten = Math.floor(num / 10);
     const one = num % 10;
-    return tens[ten] + (one > 0 ? ' ' + ones[one] : '');
+    return tens[ten] + (one > 0 ? ` ${  ones[one]}` : '');
   }
   return num.toString();
 };
@@ -55,7 +55,7 @@ const spellNumber = (num: number): string => {
 export const spellTwoDigitNumber = (twoDigitStr: string): string => {
   const num = parseInt(twoDigitStr, 10);
   if (twoDigitStr.startsWith('0') && num !== 0) {
-    return 'NULLA ' + spellNumber(num);
+    return `NULLA ${  spellNumber(num)}`;
   }
   return spellNumber(num);
 };

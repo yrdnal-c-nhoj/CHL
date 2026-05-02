@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+
 import bgImageSrc from '@/assets/images/2025/25-09/25-09-14/bg.gif';
 
 const GoldenChordsClock: React.FC = () => {

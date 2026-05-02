@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import bakFont from '@/assets/fonts/2025/25-07-02-bak.ttf';
 import backgroundGif from '@/assets/images/2025/25-07/25-07-02/ba.gif';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 export default function Clock() {
   const hourRef = useRef(null);
@@ -143,7 +144,7 @@ export default function Clock() {
             height: '6rem',
             background: '#634a05',
           }}
-        ></div>
+         />
         <div
           ref={minuteRef}
           className="hand minute-hand"
@@ -153,7 +154,7 @@ export default function Clock() {
             height: '8rem',
             background: '#b97c03',
           }}
-        ></div>
+         />
         <div
           ref={secondRef}
           className="hand second-hand"
@@ -163,7 +164,7 @@ export default function Clock() {
             height: '9rem',
             background: 'rgb(148, 3, 3)',
           }}
-        ></div>
+         />
 
         {/* Center dot */}
         <div
@@ -178,7 +179,7 @@ export default function Clock() {
             transform: 'translate(-50%, -50%) scaleX(-1)',
             zIndex: 3,
           }}
-        ></div>
+         />
 
         {/* Numbers */}
         {numbers.map(({ top, left, angle, label }, i) => (

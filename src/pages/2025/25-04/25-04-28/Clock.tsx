@@ -5,11 +5,12 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
+
 import SkaterFont from '@/assets/fonts/2025/25-04-28-Skater.ttf?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 const fontFaceStyle = `
   @font-face {

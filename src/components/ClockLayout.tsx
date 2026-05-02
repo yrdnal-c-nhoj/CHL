@@ -1,12 +1,14 @@
 import React, { useEffect, Suspense } from 'react';
-import Header from './Header';
-import ClockPageNav from './ClockPageNav';
-import { ClockLoadingFallback } from '../utils/fontLoader';
-import { useClockPage } from '../hooks/useClockPage';
-import { useAutoHeader } from '../hooks/useAutoHeader';
+
 import styles from '../ClockPage.module.css';
+import { useAutoHeader } from '../hooks/useAutoHeader';
+import { useClockPage } from '../hooks/useClockPage';
 import type { ClockItem } from '../types/data';
 import { formatTitle } from '../utils/dateUtils';
+import { ClockLoadingFallback } from '../utils/fontLoader';
+
+import ClockPageNav from './ClockPageNav';
+import Header from './Header';
 
 const HEADER_FADE_DELAY = 1500;
 const OVERLAY_FADE_DURATION = 300;

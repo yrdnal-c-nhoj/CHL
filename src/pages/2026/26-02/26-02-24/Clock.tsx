@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
+
+import futurBg from '@/assets/images/2026/26-02/26-02-24/futur.jpg';
 import { useClockTime } from '@/utils/hooks'; // Corrected import path
 // import { useSuspenseFontLoader } from '@/utils/fontLoader'; // Not suitable for external Google Fonts
-import futurBg from '@/assets/images/2026/26-02/26-02-24/futur.jpg';
 
 interface Position {
   top: string;

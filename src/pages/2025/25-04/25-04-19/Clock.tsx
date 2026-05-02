@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 import permanentMarkerFont from '@/assets/fonts/2025/25-04-19-sph.ttf?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 const BALL_SIZES = {
   hours: 19,
@@ -116,7 +117,7 @@ const SphereDropClock = () => {
 
     // Create rooms
     roomTypes.forEach((type, i) => {
-      let room = document.createElement('div');
+      const room = document.createElement('div');
       room.className = 'room';
       room.id = `${type.name}-room`;
       room.style.width = `${type.width}vw`;
@@ -350,7 +351,7 @@ const SphereDropClock = () => {
         }
       `}</style>
 
-      <div id="tower" ref={towerRef}></div>
+      <div id="tower" ref={towerRef} />
     </>
   );
 };

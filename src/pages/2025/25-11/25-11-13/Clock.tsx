@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
-import styles from './Clock.module.css';
-import { useClockTime } from '@/utils/clockUtils';
+
 import bgImage from '@/assets/images/2025/25-11/25-11-13/bg.webp';
+import { useClockTime } from '@/utils/clockUtils';
+
+import styles from './Clock.module.css';
 
 export const assets = [bgImage];
 

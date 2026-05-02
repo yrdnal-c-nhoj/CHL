@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import backFont from '@/assets/fonts/2025/25-06-17-back.ttf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const BackslantClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -56,7 +57,7 @@ const BackslantClock: React.FC = () => {
     };
 
     ids.forEach((id) => {
-      const trainEl = document.getElementById(id + 'train');
+      const trainEl = document.getElementById(`${id  }train`);
       trainEl.appendChild(createDigitLine());
       trains.current[id] = trainEl;
       positions.current[id] = 0;
@@ -153,7 +154,7 @@ const BackslantClock: React.FC = () => {
                 id={`${id}train`}
                 className="digitTrain"
                 style={styles.digitTrain}
-              ></div>
+               />
             </div>
           ))}
         </div>

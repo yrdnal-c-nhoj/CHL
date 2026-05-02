@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+
 import { useClockTime } from '@/utils/clockUtils';
+
 import styles from './Clock.module.css';
 
 // --- Utilities ---

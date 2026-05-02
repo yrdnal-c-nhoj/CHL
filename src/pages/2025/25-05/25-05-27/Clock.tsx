@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import backgroundImage from '@/assets/images/2025/25-05/25-05-27/dot.jpg';
+
 import dotsFont from '@/assets/fonts/2025/25-05-27-dots.otf?url';
+import backgroundImage from '@/assets/images/2025/25-05/25-05-27/dot.jpg';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const Clock: React.FC = () => {
   // Font loading configuration (memoized)
@@ -102,8 +103,7 @@ const Clock: React.FC = () => {
   );
 
   return (
-    <>
-      <div
+    <div
         style={{
           position: 'relative',
           width: '100vw',
@@ -138,7 +138,6 @@ const Clock: React.FC = () => {
           {renderTimeUnit(seconds)}
         </div>
       </div>
-    </>
   );
 };
 

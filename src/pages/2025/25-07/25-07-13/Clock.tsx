@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import rorFontUrl from '@/assets/fonts/2025/25-07-13-ror.ttf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const RorschachClock: React.FC = () => {
   const clockRef = useRef();
@@ -20,11 +21,11 @@ const RorschachClock: React.FC = () => {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   const getRandomFontSize = (min = 5, max = 14) => {
-    return (Math.random() * (max - min) + min).toFixed(2) + 'vh';
+    return `${(Math.random() * (max - min) + min).toFixed(2)  }vh`;
   };
 
   const getRandomAmpmSize = (min = 2, max = 4) => {
-    return (Math.random() * (max - min) + min).toFixed(2) + 'vh';
+    return `${(Math.random() * (max - min) + min).toFixed(2)  }vh`;
   };
 
   const wrapDigits = (timeStr, ampm) => {
@@ -120,11 +121,11 @@ const RorschachClock: React.FC = () => {
           ref={mirrorRef}
           style={clockStyle('-90deg', true)}
           id="mirrorClock"
-        ></div>
+         />
       </div>
 
       <div style={{ ...clockContainerStyle, right: 'calc(50% - 20vw)' }}>
-        <div ref={clockRef} style={clockStyle('90deg', false)} id="clock"></div>
+        <div ref={clockRef} style={clockStyle('90deg', false)} id="clock" />
       </div>
     </div>
   );

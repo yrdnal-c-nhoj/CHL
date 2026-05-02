@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 import sageFontUrl from '@/assets/fonts/2025/25-04-08-sage.ttf?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface TripleCactusClockProps {
@@ -51,7 +52,7 @@ const TripleCactusClock = () => {
     (container: HTMLDivElement | null, text: string): void => {
       if (!container) return;
       container.innerHTML = '';
-      for (let char of text) {
+      for (const char of text) {
         const span = document.createElement('span');
         span.textContent = char;
         Object.assign(span.style, {
@@ -153,19 +154,19 @@ const TripleCactusClock = () => {
             <div
               style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
               ref={clockRefs.hours}
-            ></div>
+             />
             <div
               style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
               ref={clockRefs.minutes}
-            ></div>
+             />
             <div
               style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
               ref={clockRefs.seconds}
-            ></div>
+             />
             <div
               style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
               ref={clockRefs.milliseconds}
-            ></div>
+             />
           </div>
         </div>
 
@@ -245,7 +246,7 @@ const TripleCactusClock = () => {
                     transform: 'rotate(-40deg)',
                     transformOrigin: 'bottom right',
                   }}
-                ></div>
+                 />
                 <div
                   style={{
                     position: 'absolute',
@@ -258,7 +259,7 @@ const TripleCactusClock = () => {
                     transform: 'rotate(40deg)',
                     transformOrigin: 'bottom left',
                   }}
-                ></div>
+                 />
               </div>
             ))}
           </div>

@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import clouds from '@/assets/images/2025/25-04/25-04-20/clouds.webp';
+
 import cloFont from '@/assets/fonts/2025/25-04-20-clo.ttf?url';
+import clouds from '@/assets/images/2025/25-04/25-04-20/clouds.webp';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface CloudClockProps {

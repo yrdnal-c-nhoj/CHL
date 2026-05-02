@@ -1,11 +1,12 @@
 import React, { useState, useContext, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { DataContext } from './context/DataContext';
-import TopNav from './components/TopNav';
-import Footer from './components/Footer';
-import styles from './Home.module.css';
+
 import instaImg from './assets/i.png';
 import elonImg from './assets/x.png';
+import Footer from './components/Footer';
+import TopNav from './components/TopNav';
+import { DataContext } from './context/DataContext';
+import styles from './Home.module.css';
 
 const Home = () => {
   const { items, loading, error } = useContext(DataContext);
@@ -98,7 +99,7 @@ const Home = () => {
           backgroundColor: 'var(--lab-bg-gray)',
           fontFamily: 'sans-serif',
         }}
-      ></div>
+       />
     );
   }
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import customFontUrl from '@/assets/fonts/2025/25-08-15-dom.ttf';
 import backgroundImg from '@/assets/images/2025/25-08/25-08-15/tabl.webp';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const fontFamily = "'dom', monospace";
 

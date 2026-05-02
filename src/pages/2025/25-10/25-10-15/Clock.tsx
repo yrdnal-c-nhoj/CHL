@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 import font20251016 from '@/assets/fonts/2025/25-10-15-brahmi.ttf?url';
-import image1 from '@/assets/images/2025/25-10/25-10-15/palm.webp';
 import image2 from '@/assets/images/2025/25-10/25-10-15/brahmi.webp';
+import image1 from '@/assets/images/2025/25-10/25-10-15/palm.webp';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const brahmiDigits = ['𑁦', '𑁧', '𑁨', '𑁩', '𑁪', '𑁫', '𑁬', '𑁭', '𑁮', '𑁯'];
 
@@ -116,9 +117,9 @@ export default function BrahmiClock() {
 
   return (
     <div style={containerStyle}>
-      <div style={gradientStyle}></div>
-      <div style={gridStyle}></div>
-      <div style={holeStyle}></div>
+      <div style={gradientStyle} />
+      <div style={gridStyle} />
+      <div style={holeStyle} />
       <div style={clockStyle}>
         {hours.map((h, i) => (
           <div key={`h${i}`} style={digitBoxStyle}>

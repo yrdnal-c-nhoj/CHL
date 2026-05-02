@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import { useGlobalStyles, useKeyframes } from '@/utils/enhancedFontLoader';
 
 const DigitalClock: React.FC = () => {

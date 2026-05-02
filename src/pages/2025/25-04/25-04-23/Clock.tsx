@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
+
+import pirateKnife from '@/assets/images/2025/25-04/25-04-23/cut.gif';
 import pirateHook from '@/assets/images/2025/25-04/25-04-23/hook.webp';
 import pirateCutlass from '@/assets/images/2025/25-04/25-04-23/pirate_foam.gif';
-import pirateKnife from '@/assets/images/2025/25-04/25-04-23/cut.gif';
 import pirateOverlay from '@/assets/images/2025/25-04/25-04-23/sasasd.gif';
 import pirateBackground from '@/assets/images/2025/25-04/25-04-23/water.webp';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface PirateClockProps {

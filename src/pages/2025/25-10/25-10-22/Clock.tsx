@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
+
+import fundyFont from '@/assets/fonts/2025/25-10-22-fundy.ttf?url';
+import videoFile from '@/assets/images/2025/25-10/25-10-22/bg.mp4';
+import fallbackImg from '@/assets/images/2025/25-10/25-10-22/bg.webp';
 import {
   useClockTime,
   formatTime as formatClockTime,
 } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import videoFile from '@/assets/images/2025/25-10/25-10-22/bg.mp4';
-import fallbackImg from '@/assets/images/2025/25-10/25-10-22/bg.webp';
-import fundyFont from '@/assets/fonts/2025/25-10-22-fundy.ttf?url';
 
 /**
  * Constants and Styles defined outside the component to prevent

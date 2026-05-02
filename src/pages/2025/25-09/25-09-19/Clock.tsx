@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useKeyframes } from '@/utils/enhancedFontLoader';
-import { useGlobalStyles } from '@/utils/enhancedFontLoader';
-import { useEnhancedFontLoader } from '@/utils/enhancedFontLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import bgImage from '@/assets/images/2025/25-09/25-09-19/oort.jpg';
+import { useKeyframes , useGlobalStyles , useEnhancedFontLoader } from '@/utils/enhancedFontLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 export default function AnalogClock() {
   const [ready, setReady] = useState<boolean>(false);

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+
+import ana251005font from '@/assets/fonts/2025/25-10-05-do.ttf';
+import diigi251005 from '@/assets/fonts/2025/25-10-05-dode.ttf';
+import clockBgImage from '@/assets/images/2025/25-10/25-10-05/16.webp';
+import bgImage from '@/assets/images/2025/25-10/25-10-05/16a.webp';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/2025/25-10/25-10-05/16a.webp';
-import clockBgImage from '@/assets/images/2025/25-10/25-10-05/16.webp';
-import diigi251005 from '@/assets/fonts/2025/25-10-05-dode.ttf';
-import ana251005font from '@/assets/fonts/2025/25-10-05-do.ttf';
 
 export default function HexAnalogClock() {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -81,7 +82,7 @@ export default function HexAnalogClock() {
           fontSize: '4vh',
           fontFamily: 'sans-serif',
         }}
-      ></div>
+       />
     );
   }
 
@@ -232,12 +233,12 @@ export default function HexAnalogClock() {
         </div>
 
         <div style={styles.progressContainer}>
-          <div style={styles.progressBar}></div>
+          <div style={styles.progressBar} />
         </div>
       </div>
 
       <div style={styles.clockContainer}>
-        <div style={styles.clockFaceBackground}></div>
+        <div style={styles.clockFaceBackground} />
 
         <svg viewBox={`0 0 ${clockSize} ${clockSize}`} style={styles.svg}>
           <circle

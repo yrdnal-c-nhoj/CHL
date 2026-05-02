@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+
 import backgroundImg from '@/assets/images/2025/25-04/25-04-18/Antarctica.jpg';
 
 const AntarcticaClock: React.FC = () => {

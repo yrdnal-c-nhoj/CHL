@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
+
+import platFont from '@/assets/fonts/2026/26-02-19-plat.ttf';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import platFont from '@/assets/fonts/2026/26-02-19-plat.ttf';
 
 const ImageDisplay: React.FC = () => {
   const time = useSecondClock();
@@ -193,7 +194,7 @@ const ImageDisplay: React.FC = () => {
                     backgroundColor: isMainHour ? '#B67423' : '#FFFFFF',
                     top: '0.5vh',
                     left:
-                      'calc(50% - ' + (isMainHour ? '0.6vh' : '0.4vh') + ')',
+                      `calc(50% - ${  isMainHour ? '0.6vh' : '0.4vh'  })`,
                     transformOrigin: '50% 17.25vh',
                     transform: `rotate(${i * 30}deg)`,
                     borderRadius: '1vh',

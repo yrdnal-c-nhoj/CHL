@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+
+import topoImage from '@/assets/images/2025/25-12/25-12-25/topo.jpg';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks/useClockTime';
-import topoImage from '@/assets/images/2025/25-12/25-12-25/topo.jpg';
 
 // Constants
 const COLORS = {
@@ -392,8 +393,8 @@ const BoardingPass: React.FC = () => {
         </div>
 
         <div style={styles.body}>
-          <div style={styles.notch('left')}></div>
-          <div style={styles.notch('right')}></div>
+          <div style={styles.notch('left')} />
+          <div style={styles.notch('right')} />
 
           <div style={styles.locations}>
             <LocationDisplay
@@ -449,7 +450,7 @@ const BoardingPass: React.FC = () => {
               />
             </div>
 
-            <div style={styles.barcode}></div>
+            <div style={styles.barcode} />
           </div>
         </div>
       </div>
@@ -690,8 +691,8 @@ const LocationDisplay = ({ city, code, time }) => (
 const Arrow = () => (
   <div style={styles.location}>
     <div style={styles.arrow.container}>
-      <div style={styles.arrow.part(45, '0.75rem -0.3125rem')}></div>
-      <div style={styles.arrow.part(-45, '0.75rem 0.4375rem')}></div>
+      <div style={styles.arrow.part(45, '0.75rem -0.3125rem')} />
+      <div style={styles.arrow.part(-45, '0.75rem 0.4375rem')} />
     </div>
   </div>
 );

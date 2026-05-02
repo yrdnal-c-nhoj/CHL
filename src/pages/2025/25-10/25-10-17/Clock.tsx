@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/clockUtils';
+
 import fontLatin from '@/assets/fonts/2025/25-10-17-word.ttf?url';
 import backgroundImage from '@/assets/images/2025/25-10/25-10-17/words.jpg';
+import { useClockTime } from '@/utils/clockUtils';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 export default function TimeWordsClock() {
   const now = useClockTime();
@@ -412,7 +413,7 @@ export default function TimeWordsClock() {
   type LangCode = keyof typeof translations;
   const timeToWords = (date: Date, lang: LangCode) => {
     const t = translations[lang]!;
-    let hours = date.getHours(),
+    const hours = date.getHours(),
       minutes = date.getMinutes(),
       seconds = date.getSeconds();
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import font20251006 from '@/assets/fonts/2025/25-10-06-shado.ttf';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 export default function DigitalClock() {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -65,7 +65,7 @@ export default function DigitalClock() {
           fontSize: '2.5rem',
           fontFamily: 'sans-serif',
         }}
-      ></div>
+       />
     );
   }
 

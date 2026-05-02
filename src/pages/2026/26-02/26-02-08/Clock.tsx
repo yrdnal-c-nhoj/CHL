@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
+
+import trocaderoFont from '@/assets/fonts/2026/26-02-08-eiffel.ttf?url';
+import eifGif from '@/assets/images/2026/26-02/26-02-08/eif.gif';
+import analogBgImage from '@/assets/images/2026/26-02/26-02-08/tower.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
-import trocaderoFont from '@/assets/fonts/2026/26-02-08-eiffel.ttf?url';
-import analogBgImage from '@/assets/images/2026/26-02/26-02-08/tower.webp';
-import eifGif from '@/assets/images/2026/26-02/26-02-08/eif.gif';
 
 export const background = analogBgImage;
 

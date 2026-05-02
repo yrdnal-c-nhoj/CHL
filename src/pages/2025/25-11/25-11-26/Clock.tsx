@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
+
+import fontUrl_20251128 from '@/assets/fonts/2025/25-11-26-bird.ttf?url';
+import fallbackImg from '@/assets/images/2025/25-11/25-11-26/birds.webp';
+import videoFile from '@/assets/images/2025/25-11/25-11-26/esp.mp4';
+import videoWebM from '@/assets/images/2025/25-11/25-11-26/esp.mp4';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // Media file paths in public folder
-import videoFile from '@/assets/images/2025/25-11/25-11-26/esp.mp4';
-import videoWebM from '@/assets/images/2025/25-11/25-11-26/esp.mp4';
-import fallbackImg from '@/assets/images/2025/25-11/25-11-26/birds.webp';
-import fontUrl_20251128 from '@/assets/fonts/2025/25-11-26-bird.ttf?url';
 
 // Export assets for preloading
 export { videoFile, videoWebM, fallbackImg };
@@ -124,15 +125,13 @@ function DigitalTime() {
   };
 
   return (
-    <>
-      <div style={containerStyle} aria-live="polite">
+    <div style={containerStyle} aria-live="polite">
         {letters.map((l, idx) => (
           <span key={idx} style={l.style}>
             {l.char}
           </span>
         ))}
       </div>
-    </>
   );
 }
 

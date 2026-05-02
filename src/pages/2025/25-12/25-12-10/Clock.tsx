@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useMemo, memo, useRef } from 'react';
+
+import portImg from '@/assets/images/2025/25-12/25-12-10/eagle.webp';
+import bg1 from '@/assets/images/2025/25-12/25-12-10/j.webp';
+import bg2 from '@/assets/images/2025/25-12/25-12-10/jj.webp';
+import secondHandImg from '@/assets/images/2025/25-12/25-12-10/nk.gif';
+import hourHandImg from '@/assets/images/2025/25-12/25-12-10/oa.gif';
+import minuteHandImg from '@/assets/images/2025/25-12/25-12-10/oak.gif';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // --- Image Imports ---
-import bg1 from '@/assets/images/2025/25-12/25-12-10/j.webp';
-import bg2 from '@/assets/images/2025/25-12/25-12-10/jj.webp';
-import portImg from '@/assets/images/2025/25-12/25-12-10/eagle.webp';
-import hourHandImg from '@/assets/images/2025/25-12/25-12-10/oa.gif';
-import minuteHandImg from '@/assets/images/2025/25-12/25-12-10/oak.gif';
-import secondHandImg from '@/assets/images/2025/25-12/25-12-10/nk.gif';
 const font251211 = '../../../assets/fonts/2025/25-12-10-jup.ttf';
 
 // --- CONFIG ---

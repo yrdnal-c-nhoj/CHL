@@ -1,9 +1,10 @@
 import React, { useEffect, useContext, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { DataContext } from './context/DataContext';
-import ClockLayout from './components/ClockLayout';
+
 import styles from './ClockPage.module.css';
-import { ClockItem, DataContextType } from './types/data';
+import ClockLayout from './components/ClockLayout';
+import { DataContext } from './context/DataContext';
+import type { ClockItem, DataContextType } from './types/data';
 import { DATE_REGEX, normalizeDate, formatDateDots } from './utils/dateUtils';
 
 const ClockPage: React.FC = () => {

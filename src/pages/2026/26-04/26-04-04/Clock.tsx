@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+
 import img12 from '@/assets/images/2026/26-04/26-04-04/12.jpg';
 import img3 from '@/assets/images/2026/26-04/26-04-04/3.png';
 import img6 from '@/assets/images/2026/26-04/26-04-04/6.jpg';
 import img9 from '@/assets/images/2026/26-04/26-04-04/9.png';
+import { useClockTime } from '@/utils/clockUtils';
+
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {

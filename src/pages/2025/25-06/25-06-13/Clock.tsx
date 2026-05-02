@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
 import cloudyFont from '@/assets/fonts/2025/25-06-13-cloudy.ttf';
-import cmoon from '@/assets/images/2025/25-06/25-06-13/cmoon.webp';
-import clouGif from '@/assets/images/2025/25-06/25-06-13/clou.gif';
 import clll from '@/assets/images/2025/25-06/25-06-13/clll.webp';
+import clouGif from '@/assets/images/2025/25-06/25-06-13/clou.gif';
+import cmoon from '@/assets/images/2025/25-06/25-06-13/cmoon.webp';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const CloudyNightClock: React.FC = () => {
   const clockRef = useRef();
@@ -23,7 +23,7 @@ const CloudyNightClock: React.FC = () => {
 
     const updateClock: React.FC = () => {
       const now = new Date();
-      let hours = now.getHours() % 12 || 12;
+      const hours = now.getHours() % 12 || 12;
       const minutes = String(now.getMinutes()).padStart(2, '0');
       clockRef.current.textContent = `${hours}:${minutes}`;
     };
@@ -179,7 +179,7 @@ const CloudyNightClock: React.FC = () => {
         </div>
       </div>
 
-      <div style={cloudStyle}></div>
+      <div style={cloudStyle} />
 
       <style>{`
         @keyframes moonRise {

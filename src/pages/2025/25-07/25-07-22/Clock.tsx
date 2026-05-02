@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
+import berFont from '@/assets/fonts/2025/25-07-22-ber.otf';
 import bardImg from '@/assets/images/2025/25-07/25-07-22/bard.webp';
 import barrsImg from '@/assets/images/2025/25-07/25-07-22/barrs.webp';
-import berFont from '@/assets/fonts/2025/25-07-22-ber.otf';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const BarrelrollClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -210,7 +211,7 @@ const BarrelrollClock: React.FC = () => {
               alt="Right Image"
             />
           </div>
-          <div className="center-line"></div>
+          <div className="center-line" />
         </div>
 
         <div className="clock" id="clock">
@@ -220,9 +221,9 @@ const BarrelrollClock: React.FC = () => {
             </div>
           ))}
 
-          <div className="hand hour" id="hour"></div>
-          <div className="hand minute" id="minute"></div>
-          <div className="hand second" id="second"></div>
+          <div className="hand hour" id="hour" />
+          <div className="hand minute" id="minute" />
+          <div className="hand second" id="second" />
         </div>
       </div>
     </div>

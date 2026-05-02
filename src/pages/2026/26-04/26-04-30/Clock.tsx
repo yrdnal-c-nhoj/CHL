@@ -7,9 +7,9 @@ import React, {
 } from 'react';
 
 import pleiadesFont from '@/assets/fonts/2026/26-04-30-pleides.otf';
-import { useClockTime } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 

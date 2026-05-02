@@ -1,14 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
+
+import fontFileUrl from '@/assets/fonts/2025/25-08-18-targ.otf';
+import bg2 from '@/assets/images/2025/25-08/25-08-18/ar.gif';
+import secondHandImg from '@/assets/images/2025/25-08/25-08-18/ar9.gif';
+import hourHandImg from '@/assets/images/2025/25-08/25-08-18/aro.gif';
+import bg1 from '@/assets/images/2025/25-08/25-08-18/arrows.gif';
+import minuteHandImg from '@/assets/images/2025/25-08/25-08-18/arrr.gif';
+import bg4 from '@/assets/images/2025/25-08/25-08-18/bul.gif';
+import bg3 from '@/assets/images/2025/25-08/25-08-18/target.gif';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import bg3 from '@/assets/images/2025/25-08/25-08-18/target.gif';
-import bg1 from '@/assets/images/2025/25-08/25-08-18/arrows.gif';
-import bg2 from '@/assets/images/2025/25-08/25-08-18/ar.gif';
-import bg4 from '@/assets/images/2025/25-08/25-08-18/bul.gif';
-import fontFileUrl from '@/assets/fonts/2025/25-08-18-targ.otf';
-import hourHandImg from '@/assets/images/2025/25-08/25-08-18/aro.gif';
-import minuteHandImg from '@/assets/images/2025/25-08/25-08-18/arrr.gif';
-import secondHandImg from '@/assets/images/2025/25-08/25-08-18/ar9.gif';
 
 const CLOCK_FONT_FAMILY = 'ClockFont__Scoped_7t3';
 
@@ -71,7 +72,7 @@ export default function ClockLetters({
   const glyphs = useMemo(() => {
     const raw = (letters || '').toString();
     if (raw.length >= 12) return raw.slice(0, 12).split('');
-    return (raw + 'ABCDEFGHIJKL').slice(0, 12).split('');
+    return (`${raw  }ABCDEFGHIJKL`).slice(0, 12).split('');
   }, [letters]);
 
   const root = {

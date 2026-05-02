@@ -1,4 +1,5 @@
 import React, { useLayoutEffect, useMemo } from 'react';
+
 import type { FontConfig } from '../types/clock';
 
 // --- Global Cache & State ---

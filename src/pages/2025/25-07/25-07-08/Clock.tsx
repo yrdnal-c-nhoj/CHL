@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+
 import mintFont from '@/assets/fonts/2025/25-07-08-mint.ttf';
+import bgImage from '@/assets/images/2025/25-07/25-07-08/candy.jpg';
+import secondImg from '@/assets/images/2025/25-07/25-07-08/min.png';
 import hourImg from '@/assets/images/2025/25-07/25-07-08/mint.png';
 import minuteImg from '@/assets/images/2025/25-07/25-07-08/minty.webp';
-import secondImg from '@/assets/images/2025/25-07/25-07-08/min.png';
-import bgImage from '@/assets/images/2025/25-07/25-07-08/candy.jpg';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const MintClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -169,7 +170,7 @@ const MintClock: React.FC = () => {
           }
         `}
       </style>
-      <div className="bgimage"></div>
+      <div className="bgimage" />
       <div className="clock" id="clock">
         <img
           decoding="async"
@@ -192,7 +193,7 @@ const MintClock: React.FC = () => {
           src={secondImg}
           alt="Second Hand"
         />
-        <div className="center-dot"></div>
+        <div className="center-dot" />
       </div>
     </div>
   );

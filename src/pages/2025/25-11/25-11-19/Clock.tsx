@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import bgImg from '@/assets/images/2025/25-11/25-11-19/apple.webp';
+
+import customFontUrl from '@/assets/fonts/2025/25-11-19-apple.ttf?url';
 import tileImg from '@/assets/images/2025/25-11/25-11-19/ap.webp';
 import overlayImg from '@/assets/images/2025/25-11/25-11-19/app.webp';
-import customFontUrl from '@/assets/fonts/2025/25-11-19-apple.ttf?url';
+import bgImg from '@/assets/images/2025/25-11/25-11-19/apple.webp';
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());

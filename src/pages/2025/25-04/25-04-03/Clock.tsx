@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+
 import mobyFont from '@/assets/fonts/2025/25-04-03-moby.ttf?url';
 import waves from '@/assets/images/2025/25-04/25-04-03/waves.gif';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+
 import styles from './Clock.module.css';
 
 // Component Props interface

@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
+
 import shinyFont from '@/assets/fonts/2025/25-05-08-Shiny.ttf?url';
 import bgGif from '@/assets/images/2025/25-05/25-05-08/d7e781b32269a8a82b500c1a9dc97733-ezgif.com-optimize.gif';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface GoldenHourClockProps {
@@ -262,10 +263,10 @@ const GoldenHourClock: React.FC<GoldenHourClockProps> = () => {
       <div className="light">
         <div className="flare one">
           <div className="flare two">
-            <div className="flare five"></div>
-            <div className="flare six"></div>
+            <div className="flare five" />
+            <div className="flare six" />
             <div className="flare three">
-              <div className="flare four"></div>
+              <div className="flare four" />
             </div>
           </div>
         </div>

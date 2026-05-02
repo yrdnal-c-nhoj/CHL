@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+
 import styles from './Clock.module.css';
 
 const MAX_STARS = 1400;
