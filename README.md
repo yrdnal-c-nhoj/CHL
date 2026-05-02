@@ -44,15 +44,15 @@ src/
 
 ## BorrowedTime Standard (BTS)
 
-| Rule          | Enforcement                                       |
-|---------------|---------------------------------------------------|
-| Type Safety   | `.tsx` only, no `any`                            |
-| Styles        | `.module.css` for clocks, Tailwind for UI         |
-| Markup        | `<main>` containers, `<time datetime>` displays     |
-| Time          | `useClockTime` hook                               |
-| Fonts         | `useSuspenseFontLoader` for FOUC prevention        |
-| Cleanup       | Clear timers/RAF on unmount                      |
-| DOM           | `useRef` only, no `querySelector`               |
+| Rule        | Enforcement                                     |
+| ----------- | ----------------------------------------------- |
+| Type Safety | `.tsx` only, no `any`                           |
+| Styles      | `.module.css` for clocks, Tailwind for UI       |
+| Markup      | `<main>` containers, `<time datetime>` displays |
+| Time        | `useClockTime` hook                             |
+| Fonts       | `useSuspenseFontLoader` for FOUC prevention     |
+| Cleanup     | Clear timers/RAF on unmount                     |
+| DOM         | `useRef` only, no `querySelector`               |
 
 ## Development
 
