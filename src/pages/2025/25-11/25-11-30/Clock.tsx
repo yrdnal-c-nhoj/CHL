@@ -34,7 +34,7 @@ export default function DigitalClock() {
   }, []);
 
   // --- 3. Time Calculations and Leetspeak (Unchanged) ---
-  const digitMap = {
+  const digitMap: Record<string, string> = {
     0: '1',
     1: 'T',
     2: 'm',
