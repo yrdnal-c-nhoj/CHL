@@ -33,10 +33,10 @@ const numberImages = [
 ];
 
 export default function ImageAnalogClock() {
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
-  const rafRef = useRef(null);
+  const hourRef = useRef<HTMLDivElement>(null);
+  const minuteRef = useRef<HTMLDivElement>(null);
+  const secondRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     function update() {
@@ -63,12 +63,14 @@ export default function ImageAnalogClock() {
     }
 
     rafRef.current = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(rafRef.current);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   const clockSize = 'min(190vw, 190vh)';
 
-  const wrapper = {
+  const wrapper: React.CSSProperties = {
     width: clockSize,
     height: clockSize,
     borderRadius: '50%',
@@ -85,7 +87,7 @@ export default function ImageAnalogClock() {
     // background: "radial-gradient(circle, #, #000, #000)",
   };
 
-  const numberStyle = (index) => {
+  const numberStyle = (index: number): React.CSSProperties => {
     const angle = (index / 12) * Math.PI * 2 - Math.PI / 2;
     const radius = 0.42;
 
@@ -106,7 +108,7 @@ export default function ImageAnalogClock() {
     };
   };
 
-  const handCommon = {
+  const handCommon: React.CSSProperties = {
     position: 'absolute',
     left: '50%',
     top: '50%',
@@ -115,21 +117,21 @@ export default function ImageAnalogClock() {
     background: '#C8E0EF',
   };
 
-  const hourHand = {
+  const hourHand: React.CSSProperties = {
     ...handCommon,
     width: '1vh',
     height: '15vh',
     zIndex: 10,
   };
 
-  const minuteHand = {
+  const minuteHand: React.CSSProperties = {
     ...handCommon,
     width: '0.7vh',
     height: '22vh',
     zIndex: 11,
   };
 
-  const secondHand = {
+  const secondHand: React.CSSProperties = {
     ...handCommon,
     width: '0.35vh',
     height: '25vh',
