@@ -27,16 +27,30 @@ const totalLines = 250;
 const svgWidth = 1000; // virtual coordinate system for SVG
 const svgHeight = 500;
 
-function randomInt(min, max) {
+function randomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+interface Wire {
+  path: SVGPathElement;
+  currentStartY: number;
+  currentEndY: number;
+  currentControlX: number;
+  currentControlY: number;
+  targetStartY: number;
+  targetEndY: number;
+  targetControlX: number;
+  targetControlY: number;
+  fixedStartY: number;
+  fixedEndY: number;
 }
 
 const MorseClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [digits, setDigits] = useState(Array(6).fill('0'));
   const [changingIndices, setChangingIndices] = useState(new Set());
-  const wiresRef = useRef([]);
-  const svgRef = useRef(null);
+  const wiresRef = useRef<Wire[]>([]);
+  const svgRef = useRef<SVGSVGElement>(null);
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -109,7 +123,7 @@ const MorseClock: React.FC = () => {
   }, []);
 
   // Update wires animation function
-  function updateWires() {
+  const updateWires = () => {
     wiresRef.current.forEach((wire) => {
       const sagFactor = randomInt(10, 100);
       wire.targetControlY = wire.fixedStartY + sagFactor;
@@ -125,7 +139,7 @@ const MorseClock: React.FC = () => {
       const d = `M0 ${wire.fixedStartY} Q${wire.currentControlX} ${wire.currentControlY} ${svgWidth} ${wire.fixedEndY}`;
       wire.path.setAttribute('d', d);
     });
-  }
+  };
 
   // Update time and digits every second
   useEffect(() => {
@@ -166,7 +180,7 @@ const MorseClock: React.FC = () => {
 
   // Styles
 
-  const styles = {
+  const styles: Record<string, React.CSSProperties> = {
     container: {
       margin: 0,
       height: '100dvh',
@@ -227,11 +241,12 @@ const MorseClock: React.FC = () => {
       transition: 'opacity 0.3s ease-in-out',
       userSelect: 'none',
     },
-    digitText: (isChanging) => ({
-      opacity: isChanging ? 0 : 1,
-      transition: 'opacity 0.3s ease-in-out',
-    }),
   };
+
+  const digitText = (isChanging: boolean): React.CSSProperties => ({
+    opacity: isChanging ? 0 : 1,
+    transition: 'opacity 0.3s ease-in-out',
+  });
 
   return (
     <div style={styles.container}>
@@ -252,7 +267,7 @@ const MorseClock: React.FC = () => {
       <div style={styles.clock} aria-label="Morse Code Clock">
         {digits.map((digit, i) => (
           <div key={i} style={styles.digitBox} aria-live="polite">
-            <span style={styles.digitText(changingIndices.has(i))}>
+            <span style={digitText(changingIndices.has(i))}>
               {digit}
             </span>
           </div>

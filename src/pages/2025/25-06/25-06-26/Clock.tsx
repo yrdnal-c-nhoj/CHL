@@ -49,7 +49,7 @@ const CosmicWheelClock: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     margin: 0,
     padding: 0,
     height: '100dvh',
@@ -63,18 +63,18 @@ const CosmicWheelClock: React.FC = () => {
     position: 'relative',
   };
 
-  const clockContainer = {
+  const clockContainer: React.CSSProperties = {
     zIndex: 4,
     display: 'flex',
     flexDirection: window.innerWidth >= 768 ? 'row' : 'column',
     alignItems: 'center',
   };
 
-  const timeSection = {
+  const timeSection: React.CSSProperties = {
     display: 'flex',
   };
 
-  const digitBox = (index) => ({
+  const digitBox = (index: number): React.CSSProperties => ({
     fontFamily: 'whe',
     display: 'flex',
     justifyContent: 'center',
@@ -94,7 +94,7 @@ const CosmicWheelClock: React.FC = () => {
     animation: `${index % 2 === 0 ? 'spinClockwise' : 'spinCounter'} 30s linear infinite`,
   });
 
-  const bgImgStyle = {
+  const bgImgStyle: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -108,7 +108,7 @@ const CosmicWheelClock: React.FC = () => {
     transformOrigin: 'center center',
   };
 
-  const bgImg2Style = {
+  const bgImg2Style: React.CSSProperties = {
     ...bgImgStyle,
     zIndex: 2,
     opacity: 0.5,
