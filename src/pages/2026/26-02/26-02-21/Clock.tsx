@@ -131,7 +131,7 @@ export default function RefactoredClock() {
     return { h, m, raw: time };
   }, [time]);
 
-  const rootStyle = {
+  const rootStyle: React.CSSProperties = {
     width: '100vw',
     height: '100dvh',
     backgroundColor: '#000',
