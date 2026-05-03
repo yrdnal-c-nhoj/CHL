@@ -18,7 +18,7 @@ export default function VenusClock() {
 
   // --- Responsive clock size ---
   useEffect(() => {
-    const handleResize: React.FC = () => {
+    const handleResize = () => {
       const vw = window.innerWidth;
       if (vw < 768)
         setClockSizeVh(30); // phones
@@ -48,7 +48,7 @@ export default function VenusClock() {
     const totalImages = 3;
     let fontLoaded = false;
 
-    const checkReady: React.FC = () => {
+    const checkReady = () => {
       if (imagesLoaded >= totalImages && fontLoaded) setReady(true);
     };
 
@@ -109,7 +109,7 @@ export default function VenusClock() {
     if (!ready) return;
     let posX = 0;
     const speed = -0.1;
-    const scroll: React.FC = () => {
+    const scroll = () => {
       posX -= speed;
       const bgEl = document.getElementById('venus-scroll-bg');
       if (bgEl) bgEl.style.backgroundPosition = `${posX}vh 50%`;
