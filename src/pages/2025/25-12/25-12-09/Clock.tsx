@@ -6,7 +6,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const elementColor = '#BBA8C8FF';
 
-const digitBoxStyle = {
+const digitBoxStyle: React.CSSProperties = {
   position: 'relative',
   width: 'clamp(28px, 8vw, 48px)',
   display: 'flex',
@@ -47,7 +47,7 @@ export default function DigitalClock() {
     return () => clearInterval(interval);
   }, [fontLoaded]);
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     position: 'fixed',
     top: 0,
     left: 0,
@@ -71,7 +71,7 @@ export default function DigitalClock() {
     transition: 'opacity 0.3s ease-in',
   };
 
-  const clockContainerStyle = {
+  const clockContainerStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -86,7 +86,7 @@ export default function DigitalClock() {
     right: 0,
   };
 
-  const separatorStyle = {
+  const separatorStyle: React.CSSProperties = {
     fontSize: 'clamp(34px, 22vw, 58px)',
     color: elementColor,
     lineHeight: 1,

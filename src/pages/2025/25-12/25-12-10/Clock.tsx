@@ -37,7 +37,7 @@ function useTime() {
   useEffect(() => {
     let animationFrameId;
 
-    const updateTime: React.FC = () => {
+    const updateTime = () => {
       setTime(new Date());
     };
 
@@ -53,7 +53,7 @@ function useTime() {
   return time;
 }
 
-function useClockAngles(time) {
+function useClockAngles(time: Date) {
   return useMemo(() => {
     const ms = time.getMilliseconds();
     const s = time.getSeconds() + ms / 1000;
@@ -170,7 +170,13 @@ const TiledBackground = memo(() => {
 });
 
 // --- NUMERAL ---
-const ClockNumeral = memo(({ text, x, y }) => (
+interface ClockNumeralProps {
+  text: string;
+  x: number;
+  y: number;
+}
+
+const ClockNumeral = memo(({ text, x, y }: ClockNumeralProps) => (
   <div
     style={{
       position: 'absolute',
@@ -190,7 +196,14 @@ const ClockNumeral = memo(({ text, x, y }) => (
 ));
 
 // --- CLOCK HAND ---
-const ClockHand = memo(({ img, width, max, rotation }) => (
+interface ClockHandProps {
+  img: string;
+  width: string;
+  max: string;
+  rotation: number;
+}
+
+const ClockHand = memo(({ img, width, max, rotation }: ClockHandProps) => (
   <img
     decoding="async"
     loading="lazy"
@@ -215,7 +228,15 @@ const ClockHand = memo(({ img, width, max, rotation }) => (
 ));
 
 // --- CLOCK FACE ---
-const ClockFace = memo(({ angles }) => (
+interface ClockFaceProps {
+  angles: {
+    second: number;
+    minute: number;
+    hour: number;
+  };
+}
+
+const ClockFace = memo(({ angles }: ClockFaceProps) => (
   <div
     style={{
       position: 'fixed',
