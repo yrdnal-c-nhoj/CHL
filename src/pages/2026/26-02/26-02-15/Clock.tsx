@@ -8,8 +8,8 @@ import { useSecondClock } from '@/utils/hooks';
 const FONT_FAMILY = 'FireFont';
 
 export default function PixelInverseClock() {
-  const canvasRef = useRef(null);
-  const requestRef = useRef();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const requestRef = useRef<number>();
   const [assetsLoaded, setAssetsLoaded] = useState<boolean>(false);
   const imageRef = useRef(new Image());
 
@@ -32,7 +32,7 @@ export default function PixelInverseClock() {
   useEffect(() => {
     const loadAssets = async () => {
       try {
-        await new Promise((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
           if (!imageRef.current) {
             reject(new Error('Image ref is null'));
             return;
@@ -71,11 +71,13 @@ export default function PixelInverseClock() {
   useEffect(() => {
     if (!assetsLoaded) return;
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
     const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      if (canvas) canvas.width = window.innerWidth;
+      if (canvas) canvas.height = window.innerHeight;
     };
 
     window.addEventListener('resize', handleResize);
@@ -88,7 +90,7 @@ export default function PixelInverseClock() {
 
   const time = useSecondClock();
 
-  const render = (ctx) => {
+  const render = (ctx: CanvasRenderingContext2D) => {
     const { width: w, height: h } = ctx.canvas;
 
     ctx.clearRect(0, 0, w, h);
@@ -104,7 +106,7 @@ export default function PixelInverseClock() {
     requestRef.current = requestAnimationFrame(() => render(ctx));
   };
 
-  const drawClockUI = (ctx, w, h, time) => {
+  const drawClockUI = (ctx: CanvasRenderingContext2D, w: number, h: number, time: Date) => {
     const cx = w / 2;
     const cy = h / 2;
     const baseSize = Math.min(w, h);
@@ -129,7 +131,7 @@ export default function PixelInverseClock() {
       );
     }
 
-    const drawHand = (angle, length, width) => {
+    const drawHand = (angle: number, length: number, width: number) => {
       ctx.lineWidth = width;
       ctx.lineCap = 'round';
       ctx.beginPath();
