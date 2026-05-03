@@ -28,15 +28,15 @@ const SIZES = {
 };
 
 const NeonClock: React.FC = () => {
-  const clockRef = useRef(null);
-  const ticksRef = useRef([]);
+  const clockRef = useRef<HTMLDivElement>(null);
+  const ticksRef = useRef<(HTMLDivElement | null)[]>([]);
   const lastTickRef = useRef(-1);
-  const timeRef = useRef(null);
+  const timeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let animationFrameId;
+    let animationFrameId: number;
 
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const ms = now.getMilliseconds();
       const second = now.getSeconds() + ms / 1000;

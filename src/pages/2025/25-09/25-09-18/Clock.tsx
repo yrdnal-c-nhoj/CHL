@@ -4,11 +4,12 @@ import { useMultipleFontLoader , useSuspenseFontLoader } from '@/utils/fontLoade
 const mat250918font = '../../../assets/fonts/2025/25-09-18-matrix.ttf'; // Your Matrix-style font
 
 export default function MatrixRain() {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas?.getContext('2d');
+    if (!canvas || !ctx) return;
 
     // Inject font
     const style = document.createElement('style');
@@ -20,14 +21,14 @@ export default function MatrixRain() {
     `;
     document.head.appendChild(style);
 
-    const resizeCanvas: React.FC = () => {
+    const resizeCanvas = () => {
       canvas.height = window.innerHeight;
       canvas.width = window.innerWidth;
     };
     resizeCanvas();
 
     // Clock string → ["0","7","3","5","P","M"]
-    const getTimeChars: React.FC = () => {
+    const getTimeChars = () => {
       const now = new Date();
       let hours = now.getHours();
       const minutes = now.getMinutes();
@@ -44,8 +45,8 @@ export default function MatrixRain() {
     let columns = Math.floor(canvas.width / fontSize);
 
     // Initialize drops
-    const drops = [];
-    const initDrops: React.FC = () => {
+    const drops: { y: number; speed: number; length: number; offset: number }[] = [];
+    const initDrops = () => {
       const chars = getTimeChars();
       for (let i = 0; i < columns; i++) {
         drops[i] = {
@@ -58,9 +59,9 @@ export default function MatrixRain() {
     };
     initDrops();
 
-    let animationId;
+    let animationId: number;
 
-    const draw: React.FC = () => {
+    const draw = () => {
       // trail effect
       ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -106,7 +107,7 @@ export default function MatrixRain() {
       animationId = requestAnimationFrame(draw);
     };
 
-    const handleResize: React.FC = () => {
+    const handleResize = () => {
       resizeCanvas();
       fontSize = Math.max(44, canvas.width / 40);
       columns = Math.floor(canvas.width / fontSize);
