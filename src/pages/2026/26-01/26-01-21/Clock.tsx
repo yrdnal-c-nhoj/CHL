@@ -15,14 +15,18 @@ export const fontConfigs = [
   { fontFamily: fontFamilyName, fontUrl: custom260121Font },
 ];
 
+interface ClockNumbersProps {
+  fontFamily: string;
+}
+
 // Memoize the Numbers so they don't re-render every second
-const ClockNumbers = memo(({ fontFamily }) => (
+const ClockNumbers = memo<ClockNumbersProps>(({ fontFamily }) => (
   <>
     {[...Array(12)].map((_, i) => (
       <div
         key={i}
         style={{
-          ...styles.numberSlot,
+          ...(styles.numberSlot as React.CSSProperties),
           transform: `rotate(${i * 30}deg)`,
         }}
       >
@@ -53,15 +57,15 @@ const AnalogBirdMigrateClock: React.FC = () => {
   return (
     <div style={styles.wrapper}>
       {/* PERFORMANCE FIX: Isolated Background Layer */}
-      <div style={styles.gpuAcceleratedLayer}>
-        <div style={styles.backgroundLayer} />
-        <div style={styles.backgroundLayer2} />
+      <div style={styles.gpuAcceleratedLayer as React.CSSProperties}>
+        <div style={styles.backgroundLayer as React.CSSProperties} />
+        <div style={styles.backgroundLayer2 as React.CSSProperties} />
         <div
-          style={{ ...styles.tileBase, backgroundSize: '600px', opacity: 0.8 }}
+          style={{ ...(styles.tileBase as React.CSSProperties), backgroundSize: '600px', opacity: 0.8 }}
         />
       </div>
 
-      <div style={styles.clockFace}>
+      <div style={styles.clockFace as React.CSSProperties}>
         <ClockNumbers fontFamily={fontFamilyName} />
 
         {/* Hour Hand */}
@@ -90,7 +94,7 @@ const AnalogBirdMigrateClock: React.FC = () => {
   );
 };
 
-const styles = {
+const styles: Record<string, React.CSSProperties> = {
   wrapper: {
     width: '100vw',
     height: '100dvh',
