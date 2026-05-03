@@ -18,7 +18,7 @@ export const fontConfigs = [
 export default function MarsDigitalClock() {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-  const rafRef = useRef(null);
+  const rafRef = useRef<number | null>(null); // Correctly type rafRef for setInterval ID
 
   useEffect(() => {
     let cancelled = false;
@@ -45,33 +45,33 @@ export default function MarsDigitalClock() {
   }, []);
 
   useEffect(() => {
-    let mounted = true;
-    const loop: React.FC = () => {
-      if (!mounted) return;
+    // Use setInterval directly for time updates
+    const intervalId = setInterval(() => {
       setTime(new Date());
-      rafRef.current = setInterval(() => setTime(new Date()), 100);
-    };
-    rafRef.current = setInterval(() => setTime(new Date()), 100);
+    }, 100);
+
+    // Store the interval ID in the ref
+    rafRef.current = intervalId;
+
     return () => {
-      mounted = false;
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (rafRef.current) clearInterval(rafRef.current);
     };
   }, []);
 
-  const two = (n) => String(n).padStart(2, '0');
+  const two = (n: number) => String(n).padStart(2, '0');
 
   const hoursStr = two(time.getHours());
   const minutesStr = two(time.getMinutes());
   const secondsStr = two(time.getSeconds());
   const msStr = two(Math.floor(time.getMilliseconds() / 10));
 
-  const DigitBox = ({ children }) => (
+  const DigitBox = ({ children }: { children: React.ReactNode }) => (
     <div className="digitBox" style={styles.digitBox}>
       {children}
     </div>
   );
 
-  const styles = {
+  const styles: Record<string, React.CSSProperties> = {
     fontFace: `
       @font-face {
         font-family: 'ClockFont';
