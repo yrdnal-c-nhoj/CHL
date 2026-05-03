@@ -11,6 +11,12 @@ const project = new Project();
 project.addSourceFilesAtPaths('src/pages/**/Clock.tsx');
 
 const sourceFiles = project.getSourceFiles();
+
+const STYLE_TYPES = [
+  'React.CSSProperties',
+  'Record<string, React.CSSProperties>'
+];
+
 console.log(`Processing ${sourceFiles.length} clock modules...`);
 
 sourceFiles.forEach(file => {
@@ -21,6 +27,15 @@ sourceFiles.forEach(file => {
       namedImports: ['React']
     });
   }
+
+  // 2. Automated CSS Typing: Find variables like 'containerStyle' or 'styles'
+  file.getVariableStatements().forEach(v => {
+    const declaration = v.getDeclarations()[0];
+    const name = declaration.getName().toLowerCase();
+    if ((name.includes('style') || name === 's') && !declaration.getTypeNode()) {
+      declaration.setType(name === 'styles' || name === 's' ? STYLE_TYPES[1] : STYLE_TYPES[0]);
+    }
+  });
 
   // 2. Find the default export (the Clock component)
   const defaultExport = file.getDefaultExportSymbol();
