@@ -7,7 +7,7 @@ import plateImage from '@/assets/images/2025/25-12/25-12-08/plate.webp';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 // Styles moved outside the component to avoid recreation on every render (60fps)
-const outerContainerStyle = {
+const outerContainerStyle: React.CSSProperties = {
   height: '100dvh',
   width: '100vw',
   position: 'relative',
@@ -20,7 +20,7 @@ const outerContainerStyle = {
   alignItems: 'center',
 };
 
-const clockContainerStyle = {
+const clockContainerStyle: React.CSSProperties = {
   width: '85vmin',
   height: '85vmin',
   borderRadius: '50%',
@@ -28,7 +28,11 @@ const clockContainerStyle = {
   zIndex: 5,
 };
 
-const handStyle = (deg, width, height) => ({
+const handStyle = (
+  deg: number,
+  width: number,
+  height: number,
+): React.CSSProperties => ({
   position: 'absolute',
   width: `${width}vmin`,
   height: `${height}vmin`,
@@ -48,7 +52,7 @@ export default function AnalogClock() {
   // Smooth update
   useEffect(() => {
     let intervalId;
-    const animate: React.FC = () => {
+    const animate = () => {
       setTime(new Date());
     };
     intervalId = setInterval(animate, 50);
