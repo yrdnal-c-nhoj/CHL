@@ -80,14 +80,14 @@ export default function ClockTemplate() {
     // Show immediately - no FOUC prevention needed
   };
 
-  const topImageStyle = {
+  const topImageStyle: React.CSSProperties = {
     width: '100%',
     height: '20vh',
     objectFit: '100% auto',
     flexShrink: 0,
   };
 
-  const combinedStripeStyle = {
+  const combinedStripeStyle: React.CSSProperties = {
     width: '100%',
     height: isMobile ? 'auto' : '50px', // Full height for combined stripe
     // padding: isMobile ? '1.5rem 0' : '0',
@@ -123,7 +123,6 @@ export default function ClockTemplate() {
   `,
 
     WebkitTextStroke: '0.5px #4a2c0a',
-    textStroke: '0.5px #4a2c0a',
 
     letterSpacing: '0.18em',
     fontSize: isMobile

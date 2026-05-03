@@ -11,7 +11,7 @@ import styles from './Clock.module.css';
 
 export { mazeImage };
 
-const getBackgroundStyle = (isFlipped) => ({
+const getBackgroundStyle = (isFlipped: boolean) => ({
   position: 'absolute' as const,
   inset: 0,
   backgroundImage: `url(${mazeImage})`,
