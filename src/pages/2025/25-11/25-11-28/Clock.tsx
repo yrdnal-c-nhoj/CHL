@@ -80,7 +80,7 @@ export default function TimelineClock() {
     now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
   const percent = (seconds / 86400) * 100;
 
-  const s = {
+  const s: Record<string, React.CSSProperties | ((pos: number) => React.CSSProperties)> = {
     page: {
       width: '100vw',
       height: '100dvh',

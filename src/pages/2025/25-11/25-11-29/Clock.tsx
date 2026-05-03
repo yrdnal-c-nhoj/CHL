@@ -53,12 +53,12 @@ export default function RococoDigitalClock() {
   const seconds = now.getSeconds().toString().padStart(2, '0');
   const timeStr = `${hours}:${minutes}:${seconds}`;
 
-  const rand = (seed) => {
+  const rand = (seed: number) => {
     const x = Math.sin(seed) * 12345;
     return x - Math.floor(x);
   };
 
-  const distortLetter = (char, i) => {
+  const distortLetter = (char: string, i: number) => {
     const s = (morph + i + char.charCodeAt(0)) * 13.37;
     return {
       transform: `

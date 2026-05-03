@@ -24,12 +24,12 @@ export default function DigitalClock() {
     return () => clearInterval(interval);
   }, []);
 
-  const formatTime = (num) => num.toString().padStart(2, '0');
+  const formatTime = (num: number) => num.toString().padStart(2, '0');
   const hours = formatTime(time.getHours());
   const minutes = formatTime(time.getMinutes());
   const seconds = formatTime(time.getSeconds());
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     width: '100vw',
     height: '100dvh', // THIS IS THE FIX
     minHeight: '100dvh', // extra safety
