@@ -8,11 +8,11 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const brahmiDigits = ['𑁦', '𑁧', '𑁨', '𑁩', '𑁪', '𑁫', '𑁬', '𑁭', '𑁮', '𑁯'];
 
-function toBrahmi(num) {
+function toBrahmi(num: string | number) {
   return num
     .toString()
     .split('')
-    .map((d) => brahmiDigits[parseInt(d)]);
+    .map((d: string) => brahmiDigits[parseInt(d)]);
 }
 
 export default function BrahmiClock() {
@@ -36,7 +36,7 @@ export default function BrahmiClock() {
   const seconds = toBrahmi(time.getSeconds().toString().padStart(2, '0'));
 
   // ... your existing styles
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     position: 'relative',
     height: '100dvh',
     width: '100vw',
@@ -52,7 +52,7 @@ export default function BrahmiClock() {
     background: 'black',
   };
 
-  const gradientStyle = {
+  const gradientStyle: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -62,7 +62,7 @@ export default function BrahmiClock() {
     zIndex: 1,
   };
 
-  const gridStyle = {
+  const gridStyle: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -77,7 +77,7 @@ export default function BrahmiClock() {
     zIndex: 2,
   };
 
-  const holeStyle = {
+  const holeStyle: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -93,7 +93,7 @@ export default function BrahmiClock() {
     zIndex: 1,
   };
 
-  const clockStyle = {
+  const clockStyle: React.CSSProperties = {
     position: 'relative',
     display: 'flex',
     zIndex: 3,
@@ -121,19 +121,19 @@ export default function BrahmiClock() {
       <div style={gridStyle} />
       <div style={holeStyle} />
       <div style={clockStyle}>
-        {hours.map((h, i) => (
+        {hours.map((h: string, i: number) => (
           <div key={`h${i}`} style={digitBoxStyle}>
             {h}
           </div>
         ))}
         <div style={colonStyle}>:</div>
-        {minutes.map((m, i) => (
+        {minutes.map((m: string, i: number) => (
           <div key={`m${i}`} style={digitBoxStyle}>
             {m}
           </div>
         ))}
         <div style={colonStyle}>:</div>
-        {seconds.map((s, i) => (
+        {seconds.map((s: string, i: number) => (
           <div key={`s${i}`} style={digitBoxStyle}>
             {s}
           </div>
