@@ -1,9 +1,9 @@
-import type { ComponentType } from 'react';
+import type { FC } from 'react';
 
 export type TimeFormat = '12h' | '24h';
 
 export interface ClockModule {
-  default: ComponentType<any>;
+  default: FC;
   assets?: string[];
 }
 
