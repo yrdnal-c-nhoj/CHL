@@ -15,13 +15,13 @@ const RotatingBackground: React.FC = () => {
   useEffect(() => {
     let isMounted = true;
 
-    const loadImage: React.FC = () => {
+    const loadImage = () => {
       const img = new Image();
       img.src = backgroundImage;
 
       img.onload = () => {
         if (isMounted) {
-          const computeSize: React.FC = () => {
+          const computeSize = () => {
             const w = window.innerWidth;
             const h = window.innerHeight;
             const diagonal = Math.sqrt(w * w + h * h) * ZOOM_MULTIPLIER;
@@ -53,10 +53,10 @@ const RotatingBackground: React.FC = () => {
 
   // Smooth rotation of background
   useEffect(() => {
-    let startTime = null;
-    let frameId;
+    let startTime: number | null = null;
+    let frameId: number;
 
-    const rotate = (timestamp) => {
+    const rotate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const elapsed = (timestamp - startTime) / 1000; // seconds
       const angle = (-360 * (elapsed / ROTATION_DURATION)) % 360; // Clockwise rotation (negative)
@@ -77,7 +77,7 @@ const RotatingBackground: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const viewportContainerStyle = {
+  const viewportContainerStyle: React.CSSProperties = {
     height: '100dvh',
     width: '100vw',
     overflow: 'hidden',
@@ -86,7 +86,7 @@ const RotatingBackground: React.FC = () => {
     position: 'relative',
   };
 
-  const rotatingImageStyle = {
+  const rotatingImageStyle: React.CSSProperties = {
     width: sideLength,
     height: sideLength,
     position: 'absolute',
@@ -103,7 +103,7 @@ const RotatingBackground: React.FC = () => {
   const tickLength = 10;
   const tickWidth = 2;
 
-  const clockStyle = {
+  const clockStyle: React.CSSProperties = {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -116,7 +116,12 @@ const RotatingBackground: React.FC = () => {
     filter: 'saturate(2) brightness(1.5)',
   };
 
-  const handStyle = (length, width, color, angle) => ({
+  const handStyle = (
+    length: number,
+    width: number,
+    color: string,
+    angle: number
+  ): React.CSSProperties => ({
     position: 'absolute',
     bottom: '50%',
     left: '50%',
