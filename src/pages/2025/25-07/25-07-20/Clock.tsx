@@ -26,15 +26,15 @@ const FStopClock: React.FC = () => {
     const minuteHand = document.getElementById('fstop-minuteHand');
     const secondHand = document.getElementById('fstop-secondHand');
 
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const sec = now.getSeconds();
       const min = now.getMinutes();
       const hr = now.getHours() % 12;
 
-      hourHand.style.transform = `rotate(${(hr + min / 60) * 30}deg)`;
-      minuteHand.style.transform = `rotate(${(min + sec / 60) * 6}deg)`;
-      secondHand.style.transform = `rotate(${sec * 6}deg)`;
+      if (hourHand) hourHand.style.transform = `rotate(${(hr + min / 60) * 30}deg)`;
+      if (minuteHand) minuteHand.style.transform = `rotate(${(min + sec / 60) * 6}deg)`;
+      if (secondHand) secondHand.style.transform = `rotate(${sec * 6}deg)`;
     };
 
     updateClock();
@@ -58,7 +58,7 @@ const FStopClock: React.FC = () => {
       'f/32',
       'f/45',
     ];
-    const sharpIndices = [];
+    const sharpIndices: number[] = [];
     while (sharpIndices.length < 6) {
       const randIndex = Math.floor(Math.random() * 12);
       if (!sharpIndices.includes(randIndex)) sharpIndices.push(randIndex);
