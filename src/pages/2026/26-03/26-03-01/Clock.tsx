@@ -25,7 +25,12 @@ const AnalogClock: React.FC = () => {
     };
   }, [time]);
 
-  const getHandStyle = (width, height, angle, zIndex) => ({
+  const getHandStyle = (
+    width: string | number,
+    height: string | number,
+    angle: number,
+    zIndex: number,
+  ): React.CSSProperties => ({
     position: 'absolute',
     bottom: '50%',
     left: '50%',
@@ -71,7 +76,7 @@ const Clock: React.FC = () => {
   });
 
   useEffect(() => {
-    const handleResize: React.FC = () => {
+    const handleResize = () => {
       setDimensions({ width: window.innerWidth, height: window.innerHeight });
     };
     window.addEventListener('resize', handleResize);
