@@ -82,7 +82,7 @@ const AnalogClockWithImages: React.FC = () => {
 
   const clockFaceSize = 'min(90vw, 90vh)';
 
-  const numberStyle = (angleDeg) => {
+  const numberStyle = (angleDeg: number): React.CSSProperties => {
     const radius = 40;
     const angleRad = (angleDeg * Math.PI) / 180;
     const x = radius * Math.cos(angleRad);
@@ -98,7 +98,10 @@ const AnalogClockWithImages: React.FC = () => {
     };
   };
 
-  const handImageStyle = (rotationDeg, sizePercent) => ({
+  const handImageStyle = (
+    rotationDeg: number,
+    sizePercent: string | number,
+  ): React.CSSProperties => ({
     position: 'absolute',
     width: sizePercent,
     height: 'auto',
