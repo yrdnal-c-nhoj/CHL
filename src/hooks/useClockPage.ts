@@ -1,9 +1,5 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-
-interface ClockModule {
-  default: React.ComponentType;
-  assets?: string[];
-}
+import type { ClockModule } from '@/types/clock';
 
 // Safety timeout to prevent infinite black screen
 const LOADING_TIMEOUT = 10000; // 10 seconds

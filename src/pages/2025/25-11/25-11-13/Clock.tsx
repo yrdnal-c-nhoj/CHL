@@ -1,14 +1,11 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 
 import bgImage from '@/assets/images/2025/25-11/25-11-13/bg.webp';
-import { useClockTime } from '@/utils/clockUtils';
+import { useClockTime } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
 export const assets = [bgImage];
-
-// A unique ID generator for each rolling clock
-let nextId = 0;
 
 interface ClockInstance {
   id: number;
@@ -19,41 +16,40 @@ interface ClockInstance {
 
 export default function RollingAnalogClock() {
   const [clocks, setClocks] = useState<ClockInstance[]>([]);
+  const nextIdRef = useRef(0);
 
   /* ------------------------------------------------------------------
      SPAWN CLOCKS AT RANDOM INTERVALS
   ------------------------------------------------------------------ */
   useEffect(() => {
     let isMounted = true;
+    let timerId: ReturnType<typeof setTimeout>;
 
-    const spawnClock: React.FC = () => {
+    const spawnClock = () => {
       if (!isMounted) return;
 
-      // Random animation duration (3–15 seconds)
-      const duration = Math.random() * 12 + 3; // 3 to 15 seconds
-      // Random direction (50% chance each)
+      const duration = Math.random() * 12 + 3;
       const direction = Math.random() < 0.5 ? 'right-to-left' : 'left-to-right';
+      
       setClocks((prev) => [
         ...prev,
-        // duration is stored in milliseconds for cleanup
         {
-          id: nextId++,
+          id: nextIdRef.current++,
           born: Date.now(),
           duration: duration * 1000,
           direction,
         },
       ]);
 
-      // Schedule next spawn after random delay (0.3–2 seconds)
-      const delay = Math.random() * 1700 + 300; // 300ms to 2000ms
-      setTimeout(spawnClock, delay);
+      const delay = Math.random() * 1700 + 300;
+      timerId = setTimeout(spawnClock, delay);
     };
 
-    // Start spawning
     spawnClock();
 
     return () => {
       isMounted = false;
+      clearTimeout(timerId);
     };
   }, []);
 
@@ -61,22 +57,27 @@ export default function RollingAnalogClock() {
      REMOVE CLOCKS AFTER THEIR RANDOM DURATION
   ------------------------------------------------------------------ */
   useEffect(() => {
-    const cleaner = setInterval(() => {
-      setClocks((prev) => prev.filter((c) => Date.now() - c.born < c.duration));
-    }, 200);
-    return () => clearInterval(cleaner);
+    const cleanup = setInterval(() => {
+      const now = Date.now();
+      setClocks((prev) => prev.filter((c) => now - c.born < c.duration));
+    }, 500);
+
+    return () => clearInterval(cleanup);
   }, []);
 
   return (
-    <div className={styles.container}>
+    <main 
+      className={styles.container} 
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
       {clocks.map((clock) => (
         <SingleSlowRollingClock
           key={clock.id}
-          duration={clock.duration / 1000} // Pass duration in seconds
+          duration={clock.duration / 1000}
           direction={clock.direction}
         />
       ))}
-    </div>
+    </main>
   );
 }
 

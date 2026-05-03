@@ -1,10 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 
 import font_2025_11_21 from '@/assets/fonts/2025/25-11-18-cat.ttf?url';
 import bgImg from '@/assets/images/2025/25-11/25-11-18/eyes.webp';
 export { bgImg }; // Export for preloading pipeline
 
-import type { FontConfig } from '@/types/clock';
+import type { FontConfig, ClockDigit } from '@/types/clock';
 import { useClockTime, formatTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
@@ -66,16 +66,15 @@ export default function RotatedClockGrid() {
     (Math.ceil(100 / (digitSize + gap)) + 4 + extraTop) *
     (Math.ceil(100 / ((digitSize + gap) * 3)) + 4 + extraLeft) *
     6;
-  const randIndex = () => Math.floor(Math.random() * COLORS.length);
-  const [digitColors, setDigitColors] = useState(() =>
+  const randIndex = (): number => Math.floor(Math.random() * COLORS.length);
+  const [digitColors, setDigitColors] = useState<number[]>(() =>
     Array.from({ length: totalCells }, () => randIndex()),
   );
 
   // Regenerate colors when the seconds value changes.
-  // We memoize the regeneration logic to stay in sync with the ClockTime interface.
-  useMemo(() => {
+  useEffect(() => {
     setDigitColors(Array.from({ length: totalCells }, () => randIndex()));
-  }, [seconds]);
+  }, [seconds, totalCells]); // Corrected: Side effects belong in useEffect
 
   const rowsNeeded = Math.ceil(100 / (digitSize + gap)) + 4 + extraTop;
   const clocksPerRow = Math.ceil(100 / ((digitSize + gap) * 3)) + 4 + extraLeft;
@@ -149,6 +148,7 @@ export default function RotatedClockGrid() {
                     opacity: 0.9,
                     textAlign: 'center',
                     userSelect: 'none',
+                    willChange: 'color', // Performance hint for browser
                     WebkitFontSmoothing: 'antialiased',
                     MozOsxFontSmoothing: 'grayscale',
                   }}
