@@ -29,9 +29,9 @@ const ClockVideoBackground: React.FC = () => {
 
   // Smooth clock updates using requestAnimationFrame
   useEffect(() => {
-    let animationFrame;
+    let animationFrame: number;
 
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       setTime(new Date());
       animationFrame = requestAnimationFrame(updateClock);
     };
@@ -46,7 +46,7 @@ const ClockVideoBackground: React.FC = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const formatDigits = (value, length = 2) =>
+  const formatDigits = (value: number, length: number = 2) =>
     String(value).padStart(length, '0').split('');
 
   const hDigits = formatDigits(time.getHours());
@@ -55,7 +55,7 @@ const ClockVideoBackground: React.FC = () => {
   // Show 2 digits of milliseconds smoothly
   const msDigits = formatDigits(Math.floor(time.getMilliseconds() / 10));
 
-  const styles = {
+  const styles: Record<string, React.CSSProperties> = {
     root: {
       margin: 0,
       padding: 0,

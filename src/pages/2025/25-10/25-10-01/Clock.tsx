@@ -68,7 +68,11 @@ export default function ImageAnalogClock() {
   const minuteAngle = (minutes + seconds / 60) * 6;
   const secondAngle = seconds * 6;
 
-  const metallicHandStyle = (width, length, angle) => ({
+  const metallicHandStyle = (
+    width: string | number,
+    length: string | number,
+    angle: number,
+  ): React.CSSProperties => ({
     position: 'absolute',
     width,
     height: length,
@@ -99,7 +103,10 @@ export default function ImageAnalogClock() {
     opacity: 1.0,
   });
 
-  const metallicNumberStyle = (width, height) => ({
+  const metallicNumberStyle = (
+    width: string | number,
+    height: string | number,
+  ): React.CSSProperties => ({
     position: 'absolute',
     width,
     height,
