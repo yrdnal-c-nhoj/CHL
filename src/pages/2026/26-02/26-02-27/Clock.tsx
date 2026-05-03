@@ -10,7 +10,7 @@ const Clock: React.FC = () => {
   const minutes = time.getMinutes();
   const hours = time.getHours() % 12;
 
-  const hieraticNumbers = {
+  const hieraticNumbers: Record<number, string> = {
     1: '𐣡',
     2: '𐣢',
     3: '𐣣',
@@ -25,13 +25,19 @@ const Clock: React.FC = () => {
     12: '𐣪𐣢',
   };
 
-  const getEgyptianNumber = (num) => hieraticNumbers[num] || num.toString();
+  const getEgyptianNumber = (num: number) => hieraticNumbers[num] || num.toString();
 
   const secondAngle = seconds * 6;
   const minuteAngle = minutes * 6 + seconds * 0.1;
   const hourAngle = hours * 30 + minutes * 0.5;
 
-  const handStyle = (length, width, color, angle, type) => ({
+  const handStyle = (
+    length: string,
+    width: string,
+    color: string,
+    angle: number,
+    type: string,
+  ): React.CSSProperties => ({
     position: 'absolute',
     bottom: '50%',
     left: '50%',
