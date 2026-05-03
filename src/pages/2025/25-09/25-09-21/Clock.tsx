@@ -36,7 +36,12 @@ export default function AnalogClock() {
   const stripes = [stripe1, stripe2, stripe3, stripe4];
 
   // Hand style helper
-  const handStyle = (width, height, top, rotateDeg) => ({
+  const handStyle = (
+    width: string | number,
+    height: string | number,
+    top: string | number,
+    rotateDeg: number,
+  ): React.CSSProperties => ({
     position: 'absolute',
     width,
     height,
@@ -53,7 +58,7 @@ export default function AnalogClock() {
     `,
   });
 
-  const numberStyle = {
+  const numberStyle: React.CSSProperties = {
     position: 'absolute',
     fontSize: '4rem',
     fontFamily: fontVar,

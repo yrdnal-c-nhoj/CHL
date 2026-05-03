@@ -44,8 +44,8 @@ export default function AnalogClock() {
     img.src = bgImage;
     img.onload = () => setReady(true);
 
-    let animationFrameId;
-    const updateTime: React.FC = () => {
+    let animationFrameId: number;
+    const updateTime = () => {
       setTime(new Date());
       animationFrameId = requestAnimationFrame(updateTime);
     };
