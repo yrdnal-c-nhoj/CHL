@@ -207,7 +207,7 @@ const backgroundStyle: React.CSSProperties = {
   zIndex: 0,
 };
 
-const redOverlayStyle = {
+const redOverlayStyle: React.CSSProperties = {
   position: 'absolute',
   inset: 0,
   backgroundColor: 'rgba(249, 9, 9, 0.7)',
