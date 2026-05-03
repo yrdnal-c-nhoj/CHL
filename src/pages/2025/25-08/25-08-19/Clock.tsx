@@ -24,7 +24,7 @@ const Pendulum: React.FC = () => {
     style.textContent = ``;
     document.head.appendChild(style);
 
-    const updateTimeOnBalls: React.FC = () => {
+    const updateTimeOnBalls = () => {
       const now = new Date();
       let hours = now.getHours();
       hours = hours % 12 || 12;
