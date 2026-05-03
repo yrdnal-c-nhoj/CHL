@@ -32,14 +32,14 @@ export default function DigitalClock() {
     const align = setTimeout(() => {
       tick();
       const id = setInterval(tick, 1000);
-      (window.__digitalClockIntervals ||= new Set()).add(id);
+      ((window as any).__digitalClockIntervals ||= new Set()).add(id);
     }, delay);
 
     return () => {
       clearTimeout(align);
-      if (window.__digitalClockIntervals) {
-        for (const id of window.__digitalClockIntervals) clearInterval(id);
-        window.__digitalClockIntervals.clear();
+      if ((window as any).__digitalClockIntervals) {
+        for (const id of (window as any).__digitalClockIntervals) clearInterval(id);
+        (window as any).__digitalClockIntervals.clear();
       }
     };
   }, []);
@@ -83,11 +83,11 @@ export default function DigitalClock() {
       transform = undefined,
       width = '100%',
       height = '100%',
-      top = 0,
-      left = 0,
+      top = 0 as string | number,
+      left = 0 as string | number,
       backgroundSize = 'cover',
       backgroundPosition = 'center',
-    }) => ({
+    }: any): React.CSSProperties => ({
       position: 'absolute',
       top,
       left,
