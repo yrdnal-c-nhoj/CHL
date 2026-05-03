@@ -23,7 +23,7 @@ export default function DigitalClock() {
   const time = useClockTime('ms');
   const dateTime = time.toISOString();
 
-  const formatTimeDigits = (date) => {
+  const formatTimeDigits = (date: Date) => {
     let hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
@@ -41,7 +41,7 @@ export default function DigitalClock() {
     return [...h, ...m, ...s, ...ms];
   };
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -54,12 +54,12 @@ export default function DigitalClock() {
     backgroundRepeat: 'no-repeat, no-repeat',
   };
 
-  const digitsContainer = {
+  const digitsContainer: React.CSSProperties = {
     display: 'flex',
     transform: 'translateX(-10%) translateY(90%)', // Move right 30%, down 20%
   };
 
-  const digitStack = {
+  const digitStack: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     lineHeight: 1,
@@ -67,7 +67,7 @@ export default function DigitalClock() {
     padding: 0,
   };
 
-  const digitStyle = (fontName, size) => ({
+  const digitStyle = (fontName: string, size: string | number): React.CSSProperties => ({
     fontSize: size,
     fontWeight: 'bold',
     color: '#275254FF', // dark brown ink
