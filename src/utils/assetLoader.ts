@@ -458,7 +458,7 @@ export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
         newState = 'error';
 
         // Try fallback if available
-        const fallback = config.fallback;
+        const {fallback} = config;
         if (fallback) {
           try {
             if (fallback.match(/\.(jpg|jpeg|png|gif|webp|svg)$/i)) {

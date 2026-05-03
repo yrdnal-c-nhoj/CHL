@@ -17,6 +17,7 @@
   transition:
     opacity 0.7s ease-in-out,
     transform 0.5s ease-in-out;
+  will-change: transform, opacity;
   pointer-events: auto;
 }
 

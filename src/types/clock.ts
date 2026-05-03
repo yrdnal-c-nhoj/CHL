@@ -1,4 +1,11 @@
+import type { ComponentType } from 'react';
+
 export type TimeFormat = '12h' | '24h';
+
+export interface ClockModule {
+  default: ComponentType<any>;
+  assets?: string[];
+}
 
 export interface ClockTime {
   hours: string;
