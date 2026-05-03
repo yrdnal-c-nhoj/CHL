@@ -65,7 +65,7 @@ const DigitalClock: React.FC = () => {
   );
 };
 
-const styles = {
+const styles: Record<string, React.CSSProperties> = {
   container: {
     position: 'relative',
     width: '100vw',
