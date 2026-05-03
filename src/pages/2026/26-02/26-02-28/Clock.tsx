@@ -15,7 +15,7 @@ interface Dimensions {
 const DigitalClock: React.FC = () => {
   const time = useMillisecondClock();
 
-  const formatTime = (date) => {
+  const formatTime = (date: Date) => {
     const h = date.getHours().toString().padStart(2, '0');
     const m = date.getMinutes().toString().padStart(2, '0');
     const s = date.getSeconds().toString().padStart(2, '0');
@@ -102,7 +102,7 @@ const ImageGrid: React.FC = () => {
   );
 };
 
-const styles = {
+const styles: Record<string, React.CSSProperties> = {
   container: {
     width: '100vw',
     height: '100dvh',

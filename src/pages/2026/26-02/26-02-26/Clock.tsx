@@ -47,10 +47,10 @@ const ImageGridClock: React.FC = () => {
   const [images, setImages] = useState<string[]>([]);
   const [gridSize, setGridSize] = useState<GridSize>({ rows: 0, cols: 0 });
   const [loadedImages, setLoadedImages] = useState(new Set());
-  const [imageAssignments, setImageAssignments] = useState<number[]>([]);
+  const [imageAssignments, setImageAssignments] = useState<string[]>([]);
   const currentTime = useSecondClock();
   const [currentImageIndex, setCurrentImageIndex] = useState<
-    Record<string, number>
+    Record<number, number>
   >({});
 
   const changeRandomCells = () => {
@@ -77,7 +77,7 @@ const ImageGridClock: React.FC = () => {
   useEffect(() => {
     const loadImages = async () => {
       try {
-        const imageModules = import.meta.glob(
+        const imageModules = import.meta.glob<ViteModule>(
           '../../../../assets/images/2026/26-02/26-02-26/bg/*.{png,jpg,jpeg,gif,svg,webp}',
           { eager: true },
         );
@@ -128,7 +128,7 @@ const ImageGridClock: React.FC = () => {
       const totalCells = gridSize.rows * gridSize.cols;
 
       const initialAssignments = [];
-      const initialIndex = {};
+      const initialIndex: Record<number, number> = {};
 
       for (let i = 0; i < totalCells; i++) {
         const randomImageIndex = Math.floor(Math.random() * images.length);
@@ -141,7 +141,7 @@ const ImageGridClock: React.FC = () => {
     }
   }, [images, gridSize]);
 
-  const formatTime = (date) => {
+  const formatTime = (date: Date) => {
     let hours = date.getHours();
     const minutes = date.getMinutes();
     const ampm = hours >= 12 ? 'P‌M' : 'A‌M';
@@ -151,7 +151,7 @@ const ImageGridClock: React.FC = () => {
   };
 
   // Styles
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
@@ -159,7 +159,7 @@ const ImageGridClock: React.FC = () => {
     position: 'relative',
   };
 
-  const gridStyle = {
+  const gridStyle: React.CSSProperties = {
     display: 'grid',
     position: 'absolute',
     top: '50%',
@@ -171,7 +171,7 @@ const ImageGridClock: React.FC = () => {
     height: `${gridSize.rows * 100}px`,
   };
 
-  const clockStyle = {
+  const clockStyle: React.CSSProperties = {
     position: 'absolute',
     top: '50%',
     left: '50%',
