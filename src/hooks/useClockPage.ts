@@ -22,8 +22,8 @@ export function useClockPage(currentItem: { date: string } | null) {
 
   // Register all clock components via Vite glob (memoized to prevent re-renders)
   const clockModules = useMemo(
-    () => import.meta.glob('../pages/**/Clock.tsx'),
-    [],
+    () => import.meta.glob<ClockModule>('../pages/**/Clock.tsx'),
+    []
   );
 
   const preloadAsset = useCallback((url: string): Promise<void> => {
@@ -78,7 +78,7 @@ export function useClockPage(currentItem: { date: string } | null) {
         }
 
         // 2. Dynamically import the module
-        const module = (await importFn()) as ClockModule;
+        const module = await importFn();
 
         // 3. Preload defined assets (images/gifs)
         if (module.assets && module.assets.length > 0) {
