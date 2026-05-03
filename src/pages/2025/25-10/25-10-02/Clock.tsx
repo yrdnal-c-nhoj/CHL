@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import gridImage from '@/assets/images/2025/25-10/25-10-02/lan.gif';
 
 // Counting rod digit map
-const digitMap = {
+const digitMap: Record<string, string> = {
   0: '▫',
   1: '\u{1D360}',
   2: '\u{1D361}',
@@ -16,11 +16,11 @@ const digitMap = {
   9: '\u{1D369}',
 };
 
-const toCountingRod = (number) =>
+const toCountingRod = (number: number) =>
   String(number)
     .padStart(2, '0')
     .split('')
-    .map((digit) => digitMap[digit]);
+    .map((digit) => digitMap[digit as keyof typeof digitMap]);
 
 const DigitalClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
@@ -67,7 +67,7 @@ const DigitalClock: React.FC = () => {
   const seconds = toCountingRod(time.getSeconds());
 
   // Stable red background for all digits
-  const digitBackgroundStyle = {
+  const digitBackgroundStyle: React.CSSProperties = {
     display: 'inline-flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -78,7 +78,7 @@ const DigitalClock: React.FC = () => {
     margin: '-0.4vw',
   };
 
-  const digitTextStyle = {
+  const digitTextStyle: React.CSSProperties = {
     fontSize: '20vw',
     fontFamily: "'KaiTi', 'STKaiti', serif",
     color: '#D1EEC9FF',
