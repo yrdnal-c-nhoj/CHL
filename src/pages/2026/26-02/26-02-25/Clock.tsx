@@ -6,12 +6,12 @@ import { useSecondClock } from '@/utils/hooks';
 
 const CocteauClock: React.FC = () => {
   const time = useSecondClock();
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.muted = true;
-      videoRef.current.play().catch((err) => {
+      videoRef.current.play().catch((err: any) => {
         console.warn('Autoplay blocked by browser/battery saver:', err);
       });
     }
@@ -25,7 +25,12 @@ const CocteauClock: React.FC = () => {
   const minuteAngle = minutes * 6 + seconds * 0.1;
   const hourAngle = hours * 30 + minutes * 0.5;
 
-  const handStyle = (length, width, color, angle) => ({
+  const handStyle = (
+    length: string,
+    width: string,
+    color: string,
+    angle: number,
+  ): React.CSSProperties => ({
     position: 'absolute',
     bottom: '50%',
     left: '50%',

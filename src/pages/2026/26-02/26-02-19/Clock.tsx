@@ -246,7 +246,7 @@ const ImageDisplay: React.FC = () => {
   );
 };
 
-const handBase = {
+const handBase: React.CSSProperties = {
   position: 'absolute',
   bottom: '50%',
   transformOrigin: 'bottom center',
@@ -254,7 +254,7 @@ const handBase = {
   zIndex: 10,
 };
 
-const centerDot = {
+const centerDot: React.CSSProperties = {
   width: '2vh',
   height: '2vh',
   backgroundColor: '#4F594F',

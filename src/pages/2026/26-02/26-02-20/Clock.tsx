@@ -14,9 +14,9 @@ import forumFont from '@/assets/fonts/2026/26-02-20-forum.otf';
 
 export { backgroundImage, topImage };
 
-const formatTime = (num) => num.toString().padStart(2, '0');
+const formatTime = (num: number | string) => num.toString().padStart(2, '0');
 
-const getTimeDigits = (date) => {
+const getTimeDigits = (date: Date) => {
   const hours24 = date.getHours();
   const hours12 = hours24 % 12 || 12;
   const minutes = date.getMinutes().toString(); // No leading zeros for minutes
@@ -66,7 +66,7 @@ export default function ClockTemplate() {
   const spelledMinutes = spellTwoDigitNumber(minutes);
   const ampm = isPM ? 'POST MERIDIEM' : 'ANTE MERIDIAN';
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     width: '100vw',
     height: '100dvh',
     minHeight: '100dvh',
@@ -99,7 +99,7 @@ export default function ClockTemplate() {
     transition: 'height 0.3s ease',
   };
 
-  const clockRowStyle = {
+  const clockRowStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: isMobile ? 'column' : 'row',
     alignItems: 'center',
@@ -134,7 +134,7 @@ export default function ClockTemplate() {
     textAlign: 'center',
   };
 
-  const bottomStyle = {
+  const bottomStyle: React.CSSProperties = {
     flex: 1,
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: '100% 100%',
