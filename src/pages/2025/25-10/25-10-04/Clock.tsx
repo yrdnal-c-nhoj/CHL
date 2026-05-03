@@ -22,22 +22,21 @@ const ClockVideoBackground: React.FC = () => {
 
   const [time, setTime] = useState(new Date());
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(fontsLoaded);
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // Font loading handled by useMultipleFontLoader
 
   // Smooth clock updates using requestAnimationFrame
   useEffect(() => {
-    let animationFrame: number;
+    let animationFrameId: number;
 
     const updateClock = () => {
       setTime(new Date());
-      animationFrame = requestAnimationFrame(updateClock);
+      animationFrameId = requestAnimationFrame(updateClock);
     };
 
-    animationFrame = requestAnimationFrame(updateClock);
-    return () => cancelAnimationFrame(animationFrame);
+    animationFrameId = requestAnimationFrame(updateClock);
+    return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
   // Fade-in effect for video
@@ -64,7 +63,7 @@ const ClockVideoBackground: React.FC = () => {
       height: '100dvh',
       backgroundColor: '#000000',
       position: 'relative',
-      fontFamily: fontLoaded ? 'iss, sans-serif' : 'sans-serif',
+      fontFamily: fontsLoaded ? 'iss, sans-serif' : 'sans-serif',
     },
     video: {
       position: 'fixed',
@@ -84,7 +83,7 @@ const ClockVideoBackground: React.FC = () => {
       left: '50%',
       transform: 'translate(-50%, -50%)',
       zIndex: 10,
-      display: loaded && fontLoaded ? 'flex' : 'none',
+      display: loaded && fontsLoaded ? 'flex' : 'none',
       flexDirection: 'column',
       gap: '0rem',
       alignItems: 'center',
