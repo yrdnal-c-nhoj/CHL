@@ -17,8 +17,8 @@ export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
   const requestRef = useRef();
 
-  // Smooth update with setInterval
-  const updateTime: React.FC = () => {
+  // Internal update logic (not a Component)
+  const updateTime = () => {
     setTime(new Date());
   };
 
@@ -39,7 +39,7 @@ export default function AnalogClock() {
   const clockSize = 100; // smaller size now
   const tileSize = 25;
 
-  const pageWrapperStyle = {
+  const pageWrapperStyle: React.CSSProperties = {
     position: 'fixed',
     top: 0,
     left: 0,
@@ -51,7 +51,7 @@ export default function AnalogClock() {
     overflow: 'hidden',
   };
 
-  const pageBackgroundBase = {
+  const pageBackgroundBase: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -65,7 +65,7 @@ export default function AnalogClock() {
     zIndex: -3,
   };
 
-  const pageBackgroundLayer1 = {
+  const pageBackgroundLayer1: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -80,7 +80,7 @@ export default function AnalogClock() {
     zIndex: -2,
   };
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     position: 'relative',
     width: `${clockSize}${unit}`,
     height: `${clockSize}${unit}`,
@@ -89,7 +89,7 @@ export default function AnalogClock() {
     textAlign: 'center',
   };
 
-  const backgroundStyle = {
+  const backgroundStyle: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -104,7 +104,7 @@ export default function AnalogClock() {
     zIndex: 1,
   };
 
-  const handStyle = (angle, length) => ({
+  const handStyle = (angle: number, length: number): React.CSSProperties => ({
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -123,7 +123,7 @@ export default function AnalogClock() {
 
   const digits = Array.from({ length: 12 }, (_, i) => i + 1);
 
-  const digitStyle = (num) => {
+  const digitStyle = (num: number): React.CSSProperties => {
     const angle = (num * 30 - 90) * (Math.PI / 180);
     const radius = clockSize / 2 - 7;
     const x = radius * Math.cos(angle);

@@ -20,15 +20,15 @@ export const fontConfigs = [
 
 // --- Digital Time Component ---
 function DigitalTime() {
-  const [timeText, setTimeText] = useState<any>('');
-  const [letters, setLetters] = useState<any>([]);
+  const [timeText, setTimeText] = useState<string>('');
+  const [letters, setLetters] = useState<any[]>([]);
 
   const ANIMATION_DURATION = 10000; // 10 seconds
   const STAGGER_DELAY = 800;
 
   useSuspenseFontLoader(fontConfigs);
 
-  const updateTime: React.FC = () => {
+  const updateTime = () => {
     const now = new Date();
     const pastDate = new Date(now.getTime() - ANIMATION_DURATION);
     const hours24 = pastDate.getHours();
@@ -57,7 +57,7 @@ function DigitalTime() {
     const SIT_DURATION =
       ANIMATION_DURATION - TOTAL_FLY_IN_TIME - charCount * STAGGER_DELAY;
 
-    const lettersArr = chars.map((char) => {
+    const lettersArr = chars.map((char: string) => {
       const enterFromRight = Math.random() > 0.5;
       return {
         char,
@@ -73,9 +73,9 @@ function DigitalTime() {
     setLetters(lettersArr);
 
     // Fly in
-    lettersArr.forEach((_, i) => {
+    lettersArr.forEach((_, i: number) => {
       setTimeout(() => {
-        setLetters((prev) => {
+        setLetters((prev: any[]) => {
           const newArr = [...prev];
           newArr[i].style = {
             ...newArr[i].style,
@@ -89,10 +89,10 @@ function DigitalTime() {
 
     // Fly out
     const flyOutDelay = TOTAL_FLY_IN_TIME + SIT_DURATION;
-    lettersArr.forEach((letter, i) => {
+    lettersArr.forEach((letter: any, i: number) => {
       setTimeout(
         () => {
-          setLetters((prev) => {
+          setLetters((prev: any[]) => {
             const newArr = [...prev];
             newArr[i].style = {
               ...newArr[i].style,
@@ -107,7 +107,7 @@ function DigitalTime() {
     });
   }, [timeText]);
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -126,7 +126,7 @@ function DigitalTime() {
 
   return (
     <div style={containerStyle} aria-live="polite">
-        {letters.map((l, idx) => (
+        {letters.map((l: any, idx: number) => (
           <span key={idx} style={l.style}>
             {l.char}
           </span>
@@ -138,7 +138,7 @@ function DigitalTime() {
 // --- Background Video Component ---
 export default function BackgroundVideo() {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const v = videoRef.current;
@@ -160,7 +160,7 @@ export default function BackgroundVideo() {
     };
   }, []);
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     width: '100vw',
     height: '100dvh',
     position: 'relative',
@@ -168,7 +168,7 @@ export default function BackgroundVideo() {
     backgroundColor: '#000',
   };
 
-  const videoStyle = {
+  const videoStyle: React.CSSProperties = {
     position: 'absolute',
     inset: 0,
     width: '100%',
@@ -177,7 +177,7 @@ export default function BackgroundVideo() {
     zIndex: 0,
   };
 
-  const fallbackStyle = {
+  const fallbackStyle: React.CSSProperties = {
     position: 'absolute',
     inset: 0,
     backgroundImage: `url(${fallbackImg})`,

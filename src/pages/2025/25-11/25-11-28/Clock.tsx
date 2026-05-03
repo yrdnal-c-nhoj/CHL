@@ -55,7 +55,7 @@ export default function TimelineClock() {
 
   // EXISTING: Comet sweep
   useEffect(() => {
-    const triggerComet: React.FC = () => {
+    const triggerComet = () => {
       setComet(-20);
       const duration = 800 + Math.random() * 700;
       const timer = setTimeout(() => setComet(120), 50);
