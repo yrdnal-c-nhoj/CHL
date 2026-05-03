@@ -31,7 +31,7 @@ const ImageDisplay: React.FC = () => {
     setShowContent(true);
   }, []);
 
-  const layerStyle = {
+  const layerStyle: React.CSSProperties = {
     position: 'absolute',
     inset: 0,
     backgroundSize: 'cover',
