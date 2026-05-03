@@ -8,10 +8,16 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "type-check": "tsc --noEmit",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\"",
     "cleanup:modules": "node scripts/module-cleanup.mjs",
     "cleanup:test": "node scripts/test-cleanup.mjs",
     "cleanup:advanced": "node scripts/advanced-cleanup.mjs",
+    "standardize:fonts": "node scripts/standardize-fonts.mjs",
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "audit:fonts": "node scripts/audit-fonts.mjs",
+    "audit:images": "node scripts/audit-images.mjs",
     "test": "vitest",
+    "perf:analyze": "vite build --mode analyze",
     "preview": "vite preview"
   },
   "dependencies": {

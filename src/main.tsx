@@ -34,12 +34,12 @@ if (enablePerformanceMonitoring) {
     window.addEventListener('load', (event: Event) => {
       const perfData = performance.getEntriesByType(
         'navigation',
-      )[0] as PerformanceNavigationTiming;
+      )[0] as PerformanceNavigationTiming | undefined;
+      
+      if (!perfData) return;
+
       console.log('Page Load Performance:', {
-        domContentLoaded:
-          perfData &&
-          perfData.domContentLoadedEventEnd -
-            perfData.domContentLoadedEventStart,
+        domContentLoaded: perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart,
         loadComplete: perfData.loadEventEnd - perfData.loadEventStart,
         totalTime: perfData.loadEventEnd - perfData.navigationStart,
       });
@@ -98,36 +98,8 @@ const initializeApp = () => {
   } catch (error) {
     console.error('Failed to initialize application:', error);
 
-    // Fallback UI for critical initialization errors
-    document.body.innerHTML = `
-      <div style="
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        font-family: monospace;
-        text-align: center;
-        background: #f5f5f5;
-        margin: 0;
-        padding: 20px;
-      ">
-        <div>
-          <h1 style="color: #e74c3c;">Application Error</h1>
-          <p>Failed to load the application. Please refresh the page.</p>
-          <button onclick="window.location.reload()" style="
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-          ">
-            Refresh Page
-          </button>
-        </div>
-      </div>
-    `;
+    // Redirect to a static fallback if the entire React tree fails
+    window.location.href = '/fallback.html';
   }
 };
 
