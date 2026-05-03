@@ -39,7 +39,7 @@ const TrocClock: React.FC = () => {
   const m = time.getMinutes() + s / 60;
   const h = (time.getHours() % 12) + m / 60;
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     position: 'relative',
     width: '100vw',
     height: '100dvh',
@@ -51,7 +51,7 @@ const TrocClock: React.FC = () => {
     backgroundColor: '#000',
   };
 
-  const backgroundLayerStyle = {
+  const backgroundLayerStyle: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -64,21 +64,21 @@ const TrocClock: React.FC = () => {
     zIndex: 0,
   };
 
-  const faceContainerStyle = {
+  const faceContainerStyle: React.CSSProperties = {
     position: 'relative',
     width: '100vmin',
     height: '100vmin',
     zIndex: 1,
   };
 
-  const handBaseStyle = {
+  const handBaseStyle: React.CSSProperties = {
     position: 'absolute',
     bottom: '50%',
     left: '50%',
     transformOrigin: '50% 100%',
   };
 
-  const hourHandStyle = {
+  const hourHandStyle: React.CSSProperties = {
     ...handBaseStyle,
     width: '2.5vmin',
     height: '24vmin',
@@ -91,7 +91,7 @@ const TrocClock: React.FC = () => {
     zIndex: 3,
   };
 
-  const minuteHandStyle = {
+  const minuteHandStyle: React.CSSProperties = {
     ...handBaseStyle,
     width: '1.5vmin',
     height: '38vmin',
@@ -103,7 +103,7 @@ const TrocClock: React.FC = () => {
     zIndex: 7,
   };
 
-  const secondHandStyle = {
+  const secondHandStyle: React.CSSProperties = {
     ...handBaseStyle,
     width: '0.6vmin',
     height: '42vmin',
@@ -115,7 +115,7 @@ const TrocClock: React.FC = () => {
     zIndex: 4,
   };
 
-  const centerDotStyle = {
+  const centerDotStyle: React.CSSProperties = {
     position: 'absolute',
     top: '50%',
     left: '50%',
