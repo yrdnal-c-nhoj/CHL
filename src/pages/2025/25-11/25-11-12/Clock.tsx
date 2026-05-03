@@ -7,7 +7,7 @@ import bgTile from '@/assets/images/2025/25-11/25-11-12/octoh.webp'; // repeatin
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 export default function TwoBackgroundOctahedron() {
-  const threeRef = useRef(null);
+  const threeRef = useRef<HTMLDivElement>(null);
 
   const fontConfigs = useMemo(
     () => [
@@ -49,12 +49,13 @@ export default function TwoBackgroundOctahedron() {
 
     const fontName = 'OctahedronFont'; // Use the same name as the loaded font
 
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const h = now.getHours() % 12 || 12;
       const m = now.getMinutes();
       const txt = `${h}:${m < 10 ? `0${  m}` : m}`;
 
+      if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // Font is guaranteed loaded by Suspense
       ctx.font = `110px 'OctahedronFont', Arial`;
@@ -110,7 +111,7 @@ export default function TwoBackgroundOctahedron() {
     scene.add(new THREE.AmbientLight(0xffffff, 0.4));
 
     const clock = new THREE.Clock();
-    const animate: React.FC = () => {
+    const animate = () => {
       requestAnimationFrame(animate);
 
       oct.rotation.x += 0.003;
@@ -131,7 +132,7 @@ export default function TwoBackgroundOctahedron() {
     };
     animate();
 
-    const handleResize: React.FC = () => {
+    const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -144,7 +145,7 @@ export default function TwoBackgroundOctahedron() {
       geometry.dispose();
       material.dispose();
       texture.dispose();
-      mount.removeChild(renderer.domElement);
+      if (mount && renderer.domElement) mount.removeChild(renderer.domElement);
       window.removeEventListener('resize', handleResize);
     };
   }, []); // Dependencies cleared as font loading is handled by Suspense
