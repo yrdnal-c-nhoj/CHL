@@ -5,7 +5,7 @@ import bgOverlay from '@/assets/images/2025/25-07/25-07-19/cun1.webp';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const CuneiformClock: React.FC = () => {
-  const [time, setTime] = useState<any>('');
+  const [time, setTime] = useState<string>('');
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -21,7 +21,7 @@ const CuneiformClock: React.FC = () => {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const hours = now.getHours() % 12 || 12;
       const minutes = String(now.getMinutes()).padStart(2, '0');
