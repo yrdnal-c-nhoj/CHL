@@ -5,7 +5,7 @@ import bgImage from '@/assets/images/2025/25-07/25-07-18/558074085193-ezgif.com-
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const HospitalClock: React.FC = () => {
-  const [time, setTime] = useState<any>('');
+  const [time, setTime] = useState<string>('');
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -21,7 +21,7 @@ const HospitalClock: React.FC = () => {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const h = String(now.getHours()).padStart(2, '0');
       const m = String(now.getMinutes()).padStart(2, '0');
@@ -41,7 +41,7 @@ const HospitalClock: React.FC = () => {
         <div style={{ ...styles.screen, backgroundImage: `url(${bgImage})` }}>
           <div style={styles.flickerOverlay} />
           <div style={styles.clock}>
-            {time.split('').map((char, i) => (
+            {time.split('').map((char: string, i: number) => (
               <span key={i} style={styles.digit}>
                 {char}
               </span>
@@ -53,7 +53,7 @@ const HospitalClock: React.FC = () => {
   );
 };
 
-const styles = {
+const styles: Record<string, React.CSSProperties> = {
   body: {
     margin: 0,
     height: '100dvh',
