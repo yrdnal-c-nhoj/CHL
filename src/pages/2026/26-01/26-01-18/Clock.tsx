@@ -1,7 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 
 class IsoEngine {
-  constructor(canvas) {
+  ctx: CanvasRenderingContext2D;
+  canvas: HTMLCanvasElement;
+  scale: number;
+  angle: number;
+
+  constructor(canvas: HTMLCanvasElement) {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
     this.scale = 20;
@@ -149,10 +154,10 @@ const OrtogonalClock: React.FC = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const engine = new IsoEngine(canvas);
-    let raf;
+    let raf: number;
 
-    const tick = (time) => {
-      const width = window.innerWidth;
+    const tick = (time: number) => {
+      const width = canvas!.width;
 
       // Responsive Scales
       if (width < 480) {
@@ -195,9 +200,9 @@ const OrtogonalClock: React.FC = () => {
         } else if (char === ' ') {
           currentX += 1.5;
         } else {
-          const shapes = GLYPH_MAP[char];
+          const shapes = GLYPH_MAP[char as keyof typeof GLYPH_MAP];
           if (shapes) {
-            shapes.forEach((f) =>
+            shapes.forEach((f: number[]) =>
               engine.drawPrism(
                 f[0] + currentX,
                 f[1],

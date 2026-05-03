@@ -12,13 +12,20 @@ const COLORS = {
 };
 
 // --- Physics deviation functions ---
-const getJumpOvershoot = (f) => (f < 0.2 ? f * 10 : f < 0.5 ? 2 : 0);
-const getSlowWiggle = (f) => Math.sin(f * Math.PI * 2) * 12;
-const getElasticStretch = (f) => (f < 0.7 ? -f * 8 : -5.6 + (f - 0.7) * 40);
-const getHeavyTwitch = (f) => (f > 0.4 && f < 0.6 ? 6 : 0);
-const getDelayedRush = (f) => (f < 0.6 ? -10 : (f - 0.6) * 25);
+const getJumpOvershoot = (f: number) => (f < 0.2 ? f * 10 : f < 0.5 ? 2 : 0);
+const getSlowWiggle = (f: number) => Math.sin(f * Math.PI * 2) * 12;
+const getElasticStretch = (f: number) => (f < 0.7 ? -f * 8 : -5.6 + (f - 0.7) * 40);
+const getHeavyTwitch = (f: number) => (f > 0.4 && f < 0.6 ? 6 : 0);
+const getDelayedRush = (f: number) => (f < 0.6 ? -10 : (f - 0.6) * 25);
 
-const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }) => {
+interface ComplexYellowHandProps {
+  rotation: number;
+  zIndex: number;
+  transition?: string;
+  size: number;
+}
+
+const ComplexYellowHand: React.FC<ComplexYellowHandProps> = ({ rotation, zIndex, transition = 'none', size }) => {
   const radius = size / 2;
   const handWidth = size * 0.008;
   const outlineWidth = `${size * 0.0015}vh`;
@@ -142,7 +149,7 @@ const ManyHandClock: React.FC = () => {
   const panicStuckAtRef = useRef(0);
 
   useEffect(() => {
-    const updateSize: React.FC = () => {
+    const updateSize = () => {
       const vmin = Math.min(window.innerWidth, window.innerHeight);
       setClockSize((vmin / window.innerHeight) * 95);
     };
