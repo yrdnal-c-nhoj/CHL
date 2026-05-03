@@ -84,7 +84,7 @@ export default function CenteredLightClock() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let animationFrameId;
+    let animationFrameId: number;
     let lastTime = performance.now();
     let spawnAccumulator = 0;
     let logicalWidth = window.innerWidth;
@@ -195,7 +195,7 @@ export default function CenteredLightClock() {
       }
     };
 
-    const drawScene = (timestamp) => {
+    const drawScene = (timestamp: number) => {
       const dt = timestamp - lastTime;
       lastTime = timestamp;
       spawnAccumulator += dt;
