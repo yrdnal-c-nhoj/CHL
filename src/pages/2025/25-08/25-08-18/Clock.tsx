@@ -42,7 +42,7 @@ export default function ClockLetters({
   // Animate rotating layers
   useEffect(() => {
     let frame;
-    const animate: React.FC = () => {
+    const animate = () => {
       setRotation((r) => ({
         layer1: r.layer1 + 0.1, // clockwise
         layer2: r.layer2 + 0.06, // counterclockwise
@@ -75,14 +75,14 @@ export default function ClockLetters({
     return (`${raw  }ABCDEFGHIJKL`).slice(0, 12).split('');
   }, [letters]);
 
-  const root = {
+  const root: React.CSSProperties = {
     position: 'relative',
     width: '100vw',
     height: '100dvh',
     background: '#ffffff',
   };
 
-  const targetBackground = {
+  const targetBackground: React.CSSProperties = {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -154,7 +154,7 @@ export default function ClockLetters({
     },
   ];
 
-  const bgLayerStyle = (layer) => ({
+  const bgLayerStyle = (layer: any): React.CSSProperties => ({
     position: 'absolute',
     width: '150vw',
     height: '150vh',
@@ -173,7 +173,7 @@ export default function ClockLetters({
     filter: `saturate(${layer.saturation || 1}) hue-rotate(${layer.hue || 0}deg) contrast(${layer.contrast || 1})`, // Fix: Added missing contrast
   });
 
-  const crosshairStyle = {
+  const crosshairStyle: React.CSSProperties = {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -184,12 +184,12 @@ export default function ClockLetters({
     pointerEvents: 'none',
   };
 
-  const crosshairLineStyle = {
+  const crosshairLineStyle: React.CSSProperties = {
     position: 'absolute',
     background: 'rgba(0, 0, 0, 0.5)',
   };
 
-  const targetNumberStyle = {
+  const targetNumberStyle: React.CSSProperties = {
     position: 'absolute',
     fontFamily: 'Arial, sans-serif',
     // fontWeight: "bold",
@@ -200,7 +200,7 @@ export default function ClockLetters({
     zIndex: 6, // Above crosshairs
   };
 
-  const faceWrap = {
+  const faceWrap: React.CSSProperties = {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -212,7 +212,7 @@ export default function ClockLetters({
     zIndex: 10,
   };
 
-  const face = {
+  const face: React.CSSProperties = {
     position: 'relative',
     width: '100%',
     height: '100%',
@@ -220,7 +220,7 @@ export default function ClockLetters({
     boxShadow: '1px 0 0 2px rgba(231, 167, 167, 0.5)',
   };
 
-  const letterStyleBase = {
+  const letterStyleBase: React.CSSProperties = {
     position: 'absolute',
     left: '50%',
     top: '50%',
@@ -358,7 +358,7 @@ export default function ClockLetters({
     return nodes;
   }, [sizeVmin]);
 
-  const handContainerStyle = (deg, length, z) => ({
+  const handContainerStyle = (deg: number, length: number, z: number): React.CSSProperties => ({
     position: 'absolute',
     left: '50%',
     top: '50%',
@@ -370,7 +370,7 @@ export default function ClockLetters({
     pointerEvents: 'none',
   });
 
-  const handImageStyle = {
+  const handImageStyle: React.CSSProperties = {
     width: '100%',
     height: 'auto',
     transform: 'rotate(180deg)',
