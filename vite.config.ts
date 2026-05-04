@@ -49,7 +49,19 @@ export default defineConfig({
           if (!id.includes('node_modules')) return;
           
           if (id.includes('three')) return 'three';
-          if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) return 'framework';
+          
+          // More specific matching for core framework to avoid catching 
+          // every library that has "react" in the name
+          if (
+            id.includes('node_modules/react/') || 
+            id.includes('node_modules/react-dom/') || 
+            id.includes('node_modules/react-router/') ||
+            id.includes('node_modules/react-router-dom/') ||
+            id.includes('node_modules/scheduler/')
+          ) {
+            return 'framework';
+          }
+
           if (id.includes('gsap')) return 'animation';
           if (id.includes('framer-motion')) return 'animation';
           return 'vendor';
