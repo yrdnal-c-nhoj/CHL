@@ -2,14 +2,15 @@ import React, { useEffect, useState, useRef } from 'react';
 
 import fontUrl_20251128 from '@/assets/fonts/2025/25-11-26-bird.ttf?url';
 import fallbackImg from '@/assets/images/2025/25-11/25-11-26/birds.webp';
-import videoFile from '@/assets/images/2025/25-11/25-11-26/esp.mp4';
-import videoWebM from '@/assets/images/2025/25-11/25-11-26/esp.mp4';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
+const videoFile = '/assets/media/25-11-26-esp.mp4';
+const videoWebM = '/assets/media/25-11-26-esp.mp4';
 
 // Media file paths in public folder
 
 // Export assets for preloading
-export { videoFile, videoWebM, fallbackImg };
+export { fallbackImg };
 
 export const fontConfigs = [
   {

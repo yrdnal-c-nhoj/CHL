@@ -8,10 +8,11 @@ import React, {
 
 import customFontmmm from '@/assets/fonts/2025/25-09-22-disney.ttf?url';
 import fallbackImage from '@/assets/images/2025/25-09/25-09-22/deex.gif';
-import bgVideo from '@/assets/images/2025/25-09/25-09-22/deex.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
+
+const bgVideo = '/assets/media/25-09-22-deex.mp4';
 
 export default function DigitalClockVideo() {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);

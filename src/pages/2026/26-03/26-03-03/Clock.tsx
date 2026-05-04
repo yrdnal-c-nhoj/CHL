@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
 import paperFont from '@/assets/fonts/2026/26-03-03-paper.ttf';
-import paperflowerVideo from '@/assets/images/2026/26-03/26-03-02/paperflower.mp4';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
+
+const paperflowerVideo = '/assets/media/26-03-03-paperflower.mp4';
 
 const AnalogClock: React.FC = () => {
   const fontConfigs = [
