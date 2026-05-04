@@ -30,10 +30,10 @@
   align-items: center;
   justify-content: center;
   font-family: 'ClockFont', monospace;
-  font-size: 25vh;
+  font-size: 12vw;
   font-weight: 300;
   color: #d82b08;
-  /* text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); */
+  text-shadow: 0 0 20px rgba(22, 21, 21, 0.3);
 }
 
 .digitGroup {
@@ -45,6 +45,5 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 8.7vh;
-  height: 1.4em;
+  width: 8vw;
 }
