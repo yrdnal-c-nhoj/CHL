@@ -111,12 +111,14 @@ const EdgeClockWithHands: React.FC = () => {
 
     return (
         <div className={styles.container}>
+            <time dateTime={time.toISOString()} style={{ display: 'none' }} />
             {/* Numbers at Rectangular Edges */}
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((n) => (
                 <div key={n} className={styles.number} style={getNumberStyle(n)}>
                     {n}
                 </div>
             ))}
+            <div aria-hidden="true">
             {/* Clock Hands */}
             <div className={styles.hand} style={getHandStyle(12, 30, h * 30)} />{' '}
             {/* Hour */}
@@ -129,6 +131,7 @@ const EdgeClockWithHands: React.FC = () => {
             {/* Second */}
             {/* Center Cap */}
             <div className={styles.centerDot} />
+            </div>
         </div>
     );
 };
