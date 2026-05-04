@@ -8,8 +8,13 @@ const testData =
   (testModules['./testclocks.json'] as { default: typeof prodData } | undefined)
     ?.default ?? prodData;
 
-const isValidDateFormat = (date: string): boolean =>
-  /^\d{2}-\d{2}-\d{2}$/.test(date);
+const isValidDateFormat = (date: string): boolean => {
+  if (!/^\d{2}-\d{2}-\d{2}$/.test(date)) return false;
+  const [yy, mm, dd] = date.split('-').map(Number);
+  const year = 2000 + yy;
+  const d = new Date(year, mm - 1, dd);
+  return d.getFullYear() === year && d.getMonth() === mm - 1 && d.getDate() === dd;
+};
 
 const EMPTY_CONTEXT: DataContextType = { items: [], loading: false, error: null };
 
