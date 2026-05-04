@@ -1,6 +1,18 @@
 import React, { useMemo, useRef, useEffect } from 'react';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 
-import { useClockTime } from '@/utils/clockUtils';
+import carVideo from '@/assets/images/2026/26-05/26-05-02/car.mp4';
+// Import the corresponding font from the assets folder
+import fontUrl from '@/assets/fonts/2026/26-05-02-carfall.ttf?url';
+
+// Export assets for the preloading pipeline
+export const assets = [carVideo];
+
+// Font configuration for the suspense loader
+const fontConfigs: FontConfig[] = [
+  { fontFamily: 'ClockFont', fontUrl },
+];
 
 import styles from './Clock.module.css';
 
@@ -47,9 +59,11 @@ const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) =
 };
 
 const AnalogClock: React.FC = () => {
-  const time = useClockTime();
   const rafRef = useRef<number | null>(null);
   const [, forceRender] = React.useReducer((x) => x + 1, 0);
+
+  // Suspend rendering until the custom font is ready
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const animate = () => {
@@ -65,19 +79,13 @@ const AnalogClock: React.FC = () => {
     };
   }, []);
 
-  const { hours, minutes, seconds, ms, isoTime } = useMemo(() => {
-    const h = time.getHours();
-    const m = time.getMinutes();
-    const s = time.getSeconds();
-    const msVal = time.getMilliseconds();
-    return {
-      hours: h,
-      minutes: m,
-      seconds: s,
-      ms: msVal,
-      isoTime: time.toISOString(),
-    };
-  }, [time]);
+  // This ensures the milliseconds update smoothly in the digital boxes.
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
+  const ms = now.getMilliseconds();
+  const isoTime = now.toISOString();
 
   const hourAngle = ((hours % 12) + minutes / 60) * 30;
   const minuteAngle = (minutes + seconds / 60) * 6;
@@ -115,72 +123,27 @@ const AnalogClock: React.FC = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.videoOverlay} />
+      <video
+        className={styles.videoBackground}
+        autoPlay
+        loop
+        muted
+        playsInline
+        src={carVideo}
+      />
       <time dateTime={isoTime} className={styles.timeWrapper}>
-        <div className={styles.clockFace}>
-          {/* Outer ring */}
-          <div className={styles.outerRing} />
-
-          {/* Inner decorative ring */}
-          <div className={styles.innerRing} />
-
-          {/* Tick marks */}
-          {tickMarks.map((tick) => (
-            <div
-              key={tick.id}
-              className={tick.isHour ? styles.hourTick : styles.minuteTick}
-              style={{
-                transform: `rotate(${tick.angle}deg)`,
-              }}
-            />
-          ))}
-
-          {/* Numbers */}
-          {numbers.map((n) => (
-            <span
-              key={n.num}
-              className={styles.number}
-              style={{
-                left: `${n.x}%`,
-                top: `${n.y}%`,
-              }}
-            >
-              {n.num}
-            </span>
-          ))}
-
-          {/* Clock hands */}
-          <ClockHand
-            type="hour"
-            angle={hourAngle}
-            length={60}
-            width={6}
-            color="#1a1a1a"
-          />
-          <ClockHand
-            type="minute"
-            angle={minuteAngle}
-            length={85}
-            width={4}
-            color="#333"
-          />
-          <ClockHand
-            type="second"
-            angle={secondAngle}
-            length={95}
-            width={2}
-            color="#d32f2f"
-          />
-
-          {/* Center dot */}
-          <div className={styles.centerDot} />
-          <div className={styles.centerDotInner} />
-        </div>
-
-        {/* Digital readout */}
         <div className={styles.digitalTime}>
-          {String(hours).padStart(2, '0')}:
-          {String(minutes).padStart(2, '0')}:
-          {String(seconds).padStart(2, '0')}
+          <span className={styles.digitGroup}>
+            <span className={styles.digitBox}>{String(hours).padStart(2, '0')[0]}</span>
+            <span className={styles.digitBox}>{String(hours).padStart(2, '0')[1]}</span>
+            <span className={styles.digitBox}>{String(minutes).padStart(2, '0')[0]}</span>
+            <span className={styles.digitBox}>{String(minutes).padStart(2, '0')[1]}</span>
+            <span className={styles.digitBox}>{String(seconds).padStart(2, '0')[0]}</span>
+            <span className={styles.digitBox}>{String(seconds).padStart(2, '0')[1]}</span>
+            <span className={styles.digitBox}>{String(Math.floor(ms / 10)).padStart(2, '0')[0]}</span>
+            <span className={styles.digitBox}>{String(Math.floor(ms / 10)).padStart(2, '0')[1]}</span>
+          </span>
         </div>
       </time>
     </div>
