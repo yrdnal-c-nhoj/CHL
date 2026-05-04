@@ -1,91 +1,14 @@
-# --- Dependencies ---
-node_modules/
-.pnp
-.pnp.js
-
-# Package manager files
-yarn.lock
-pnpm-lock.yaml
-
-# --- Build / Output ---
-build/
-dist/
-.vite/
-
-# Additional build outputs
-*.tgz
-*.tar.gz
-.next/
-.nuxt/
-.vuepress/dist/
-
-# --- Development & Caches ---
-.local/
-.parcel-cache/
-.cache
-.eslintcache
-
-# --- Environment Variables (Security) ---
-.env
-.env.*
-.env.local
-.env.development
-.env.development.local
-.env.test
-.env.test.local
-.env.production
-.env.production.local
-
-# --- Logs & Debugging ---
-*.cron.log
-logs/
-*.log
-build*.txt
-.windsurf/
-
-# --- Testing ---
-coverage/
-.nyc_output/
-.vercel/
-
-# --- Editor / IDE ---
-.vscode/*
-!.vscode/extensions.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/*.code-snippets
-.idea/
-*.sublime-project
-*.sublime-workspace
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# OS
+# Build and Tooling
+node_modules
+dist
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
 
-# --- Project Specific ---
-src/context/testclock.json
-screenshots/
-scripts/temp/
-*.pfx
-*.publishsettings
-src/pages/lab/
-
-# --- Audit Reports & Logs ---
-build.txt
-eslint-report.json
-eslint-run.log
-typecheck-report.txt
-unused-*.txt
+# Audit Reports & Developer Noise
+*-report.txt
+*-report.json
 non-standard-fonts.txt
-x.txt
-delete-unused-fonts.mjs
+typecheck-report.txt
+
+# Environment
+.env*
+!.env.example
