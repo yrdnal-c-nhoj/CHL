@@ -69,7 +69,7 @@ const digitGlobs = {
 ========================= */
 
 function loadDigitFolders() {
-  const folders = {};
+  const folders: Record<number, string[]> = {};
 
   for (let d = 0; d <= 9; d++) {
     const urls = Object.values(digitGlobs[d] || {}).filter(Boolean);
@@ -84,7 +84,7 @@ function loadDigitFolders() {
    TIME
 ========================= */
 
-function get24HourDigits(date) {
+function get24HourDigits(date: Date) {
   const h = date.getHours().toString().padStart(2, '0');
   const m = date.getMinutes().toString().padStart(2, '0');
   const s = date.getSeconds().toString().padStart(2, '0');
@@ -96,11 +96,11 @@ function get24HourDigits(date) {
    IMAGE SELECTOR ENGINE
 ========================= */
 
-function createSelector(folders) {
-  const lastUsed = {};
+function createSelector(folders: Record<number, string[]>) {
+  const lastUsed: Record<string, number> = {};
 
-  return (digits, tick) => {
-    const usedThisFrame = {};
+  return (digits: number[], tick: number) => {
+    const usedThisFrame: Record<number, number[]> = {};
     const result = new Array(DIGIT_COUNT);
 
     for (let pos = 0; pos < DIGIT_COUNT; pos++) {
@@ -143,8 +143,10 @@ function createSelector(folders) {
    HOOK
 ========================= */
 
-function useDigitClockImages(folders) {
-  const selectorRef = useRef(null);
+type SelectorFn = (digits: number[], tick: number) => string[];
+
+function useDigitClockImages(folders: Record<number, string[]>) {
+  const selectorRef = useRef<SelectorFn | null>(null);
   const lastSecondRef = useRef(-1);
 
   const [urls, setUrls] = useState(() => Array(DIGIT_COUNT).fill(''));
@@ -162,7 +164,7 @@ function useDigitClockImages(folders) {
       lastSecondRef.current = sec;
 
       const digits = get24HourDigits(now);
-      const newUrls = selectorRef.current(digits, sec);
+      const newUrls = selectorRef.current ? selectorRef.current(digits, sec) : [];
 
       setUrls(newUrls);
 
@@ -210,10 +212,14 @@ export default function DigitClock() {
    SUBCOMPONENTS
 ========================= */
 
-function DigitPair({ urls }) {
+interface DigitPairProps {
+  urls: string[];
+}
+
+function DigitPair({ urls }: DigitPairProps) {
   return (
     <div className="pair">
-      {urls.map((url, i) => (
+      {urls.map((url: string, i: number) => (
         <img key={i} src={url} className="digit" alt="" />
       ))}
     </div>
