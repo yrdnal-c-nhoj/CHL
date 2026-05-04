@@ -42,7 +42,7 @@ export default function KurosawaClock() {
     return () => clearTimeout(timeout);
   }, []);
 
-  const styles = {
+  const styles: Record<string, React.CSSProperties> = {
     wrapper: {
       height: '100dvh',
       width: '100vw',
@@ -50,6 +50,7 @@ export default function KurosawaClock() {
       position: 'relative',
       background: '#000',
       boxSizing: 'border-box',
+      opacity: 0, // Base value for transition
     },
     media: {
       position: 'absolute',
@@ -80,7 +81,7 @@ export default function KurosawaClock() {
     },
   };
 
-  const clocksWrapper = {
+  const clocksWrapper: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'center', // Centers the row of clocks
     alignItems: 'flex-start', // Pin to top
@@ -93,7 +94,7 @@ export default function KurosawaClock() {
     // paddingTop: '-2dvh',
   };
 
-  const Clock = ({ time }) => {
+  const Clock = ({ time }: { time: Date }) => {
     const clockDigits = useMemo(() => {
       const timeString = time.toLocaleTimeString('en-GB', {
         hour12: false,
@@ -108,7 +109,7 @@ export default function KurosawaClock() {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         {fontLoaded && (
           <div style={styles.container} aria-hidden="true">
-            {clockDigits.map((digit, index) => (
+            {clockDigits.map((digit: string, index: number) => (
               <div key={`${index}-${digit}`} style={styles.digit}>
                 {digit}
               </div>
