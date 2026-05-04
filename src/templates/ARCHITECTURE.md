@@ -12,7 +12,8 @@ src/
 │   │   ├── useClockTime.ts     # 1s updates
 │   │   ├── useSmoothClock.ts   # 60fps RAF
 │   │   └── useClock.ts         # Legacy
-│   └── fontLoader.tsx
+│   ├── fontLoader.tsx          # Suspense-based font loading
+│   └── clockUtils.ts           # Time formatting & math
 └── types/
     └── clock.ts
 ```
