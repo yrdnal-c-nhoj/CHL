@@ -10,12 +10,12 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 export default function Clock() {
   const [ready, setReady] = useState<boolean>(false);
   const [now, setNow] = useState(new Date());
-  const tickRef = useRef(null);
+  const tickRef = useRef<number | NodeJS.Timeout | null>(null);
 
   const fontSizeVH = 4; // base size for digits and labels
   const dividerScale = 1.4; // divider scale relative to fontSizeVH
 
-  const z = (n) => (n < 10 ? `0${n}` : `${n}`);
+  const z = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 
   // Shared color and shadow for digits and labels
   const sharedTextStyle = {
@@ -93,7 +93,7 @@ export default function Clock() {
     let font1Loaded = false;
     let font2Loaded = false;
 
-    const checkReady: React.FC = () => {
+    const checkReady = () => {
       if (imageLoaded && image2Loaded && font1Loaded && font2Loaded && mounted)
         setReady(true);
     };
@@ -138,7 +138,7 @@ export default function Clock() {
 
     return () => {
       mounted = false;
-      if (tickRef.current) clearInterval(tickRef.current);
+      if (tickRef.current) clearInterval(tickRef.current as any);
     };
   }, []);
 
