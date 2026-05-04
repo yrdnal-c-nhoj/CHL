@@ -11,7 +11,7 @@ import overlay3 from '@/assets/images/2025/25-09/25-09-17/crush2.gif';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader , useMultipleFontLoader } from '@/utils/fontLoader';
 
-const pad = (n) => n.toString().padStart(2, '0');
+const pad = (n: number | string) => n.toString().padStart(2, '0');
 
 const DigitalClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
@@ -35,7 +35,7 @@ const DigitalClock: React.FC = () => {
 
     const fontPromise = document.fonts.load('10rem CustomClockFont');
 
-    const loadImage = (src) =>
+    const loadImage = (src: string) =>
       new Promise((resolve, reject) => {
         const img = new Image();
         img.src = src;
@@ -55,7 +55,9 @@ const DigitalClock: React.FC = () => {
       .then(() => setIsLoaded(true))
       .catch(() => setIsLoaded(true));
 
-    return () => document.head.removeChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
   }, []);
 
   // Update time every second

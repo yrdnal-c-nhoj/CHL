@@ -49,7 +49,7 @@ const DigitalClock: React.FC = () => {
   const previous = formatTime(prevTime);
   const replaceNine = (str) => str.replace(/9/g, 'q');
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     width: '100vw',
     height: '100dvh',
     display: 'flex',
