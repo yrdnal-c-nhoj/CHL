@@ -46,7 +46,7 @@ const InvertedClock: React.FC = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     position: 'relative',
     width: '100vw',
     height: '100dvh',
@@ -60,7 +60,7 @@ const InvertedClock: React.FC = () => {
     visibility: bgReady ? 'visible' : 'hidden',
   };
 
-  const bgMediaStyle = {
+  const bgMediaStyle: React.CSSProperties = {
     position: 'absolute',
     inset: 0,
     backgroundImage: `url(${bg1})`,
@@ -72,7 +72,7 @@ const InvertedClock: React.FC = () => {
     // filter: 'contrast(1.7)', // Add contrast and brightness filters to background only
   };
 
-  const clockOverlayStyle = {
+  const clockOverlayStyle: React.CSSProperties = {
     position: 'relative', // Relative to the flex container
     zIndex: 1,
     mixBlendMode: 'difference',
@@ -84,13 +84,13 @@ const InvertedClock: React.FC = () => {
     height: '100%',
   };
 
-  const clockFaceStyle = {
+  const clockFaceStyle: React.CSSProperties = {
     position: 'relative',
     width: '50vh', // Larger container to accommodate numbers without clipping
     height: '50vh',
   };
 
-  const handBaseStyle = {
+  const handBaseStyle: React.CSSProperties = {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -99,7 +99,7 @@ const InvertedClock: React.FC = () => {
     borderRadius: '10px',
   };
 
-  const numberStyle = (i) => {
+  const numberStyle = (i: number): React.CSSProperties => {
     // Math.PI / 6 = 30 degrees per number
     const angle = (i * 30 - 90) * (Math.PI / 180);
     const radius = 18; // Reduced distance from center in vh to move digits closer
