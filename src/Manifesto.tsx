@@ -1,23 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import TopNav from './components/TopNav';
-// import './WordPages.css';
+import './WordPages.css';
 import Footer from './components/Footer';
 
-function Manifesto() {
+const Manifesto: FC = () => {
   return (
     <div className="container">
       <TopNav />
       <div className="centeredContent">
         <h1>MANIFESTO</h1>
-
-        {/* <div className="epigraph">
-          <div className="quote">“Nature is too green, and badly lit.”</div>
-          <div className="attribution">
-            <span className="author">— François Boucher</span>, 
-            <span className="source"><cite> Boucher et la peinture sous Louis XV</cite></span>
-          </div>
-        </div> */}
-
         <div className="manifestoSection">
           <p>
             <span className="hat">
