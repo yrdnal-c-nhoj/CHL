@@ -106,7 +106,7 @@ const DigitalClock: React.FC = () => {
   const fontsReady = true; // System fonts are always available
 
   useEffect(() => {
-    const checkMobile: React.FC = () => {
+    const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
 
@@ -141,7 +141,7 @@ const DigitalClock: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (date) => {
+  const formatTime = (date: Date) => {
     let hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
@@ -155,7 +155,7 @@ const DigitalClock: React.FC = () => {
 
   const { hours, minutes, seconds } = formatTime(time);
 
-  const digitBoxStyle = {
+  const digitBoxStyle: React.CSSProperties = {
     display: 'inline-block',
     fontFamily: `${fontVariation}, 'JetBrains Mono', 'SF Mono', Menlo, Monaco, Consolas, monospace`,
     fontWeight: '900',
@@ -205,7 +205,7 @@ const DigitalClock: React.FC = () => {
     animation: `${floatName} 7s ease-in-out infinite, ${rainbowGlowName} 6s ease-in-out infinite`,
   };
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     width: '100vw',
     height: '100dvh',
     display: 'flex',
@@ -228,7 +228,7 @@ const DigitalClock: React.FC = () => {
     animation: `${auroraName} 25s ease-in-out infinite, ${fadeInName} 4s ease-out`,
   };
 
-  const timeContainerStyle = {
+  const timeContainerStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: isMobile ? 'column' : 'row',
     alignItems: 'center',
@@ -241,7 +241,7 @@ const DigitalClock: React.FC = () => {
     perspective: '1200px',
   };
 
-  const timeGroupStyle = {
+  const timeGroupStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -250,7 +250,7 @@ const DigitalClock: React.FC = () => {
     animation: `${groupFloatName} 9s ease-in-out infinite`,
   };
 
-  const cosmicNoiseStyle = {
+  const cosmicNoiseStyle: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -271,7 +271,7 @@ const DigitalClock: React.FC = () => {
     animation: `${cosmicDriftName} 35s linear infinite, ${twinkleName} 3s ease-in-out infinite`,
   };
 
-  const auroraOverlayStyle = {
+  const auroraOverlayStyle: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
