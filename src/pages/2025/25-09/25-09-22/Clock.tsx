@@ -100,7 +100,6 @@ export default function DigitalClockVideo() {
   }, []);
 
   // Format time
-  const formatNumber = (num, length = 2) => String(num).padStart(length, '0');
   const formatNumber = (num: number | string, length = 2) => String(num).padStart(length, '0');
   const hours = formatNumber(time.getHours() % 12 || 12);
   const minutes = formatNumber(time.getMinutes());
@@ -170,8 +169,6 @@ export default function DigitalClockVideo() {
   };
 
   const renderBoxes = useCallback(
-    (str) => {
-      return str.split('').map((c, i) => (
     (str: string) => {
       return str.split('').map((c: string, i: number) => (
         <div key={i} style={boxStyle}>
