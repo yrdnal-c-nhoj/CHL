@@ -65,7 +65,7 @@ export default function DigitalClock() {
   const baseFontSize = isPhone ? '32vw' : '18vw';
   const boxWidth = isPhone ? '26vw' : '14vw';
   const boxHeight = isPhone ? '24vw' : '16vw';
-
+  
   const renderPair = (digits: string) => (
     <div style={{ display: 'flex', gap: isPhone ? '2vw' : '1vw' }}>
       <div

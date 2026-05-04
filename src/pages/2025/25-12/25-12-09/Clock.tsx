@@ -53,7 +53,7 @@ export default function DigitalClock() {
     left: 0,
     right: 0,
     bottom: 0,
-    width: '100%',
+    width: '100%' as const,
     height: '100%',
     minHeight: '-webkit-fill-available',
     backgroundImage: `url(${bgImage})`,
