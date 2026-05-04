@@ -7,16 +7,16 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 export default function AnalogClock() {
   const [videoPlayable, setVideoPlayable] = useState<boolean>(false);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // Store the reference "start time" (real time when mounted)
   const startTime = useRef(Date.now());
 
   // Animated render loop
-  const [, forceRender, set] = useState<number>(0);
+  const [, forceRender] = useState<number>(0);
   useEffect(() => {
-    let frame;
-    const update: React.FC = () => {
+    let frame: number;
+    const update = () => {
       forceRender((x) => x + 1);
       frame = requestAnimationFrame(update);
     };
@@ -61,7 +61,7 @@ export default function AnalogClock() {
   const hourDeg = hours * 30;
 
   // ---- STYLES ----
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     position: 'relative',
     width: '100vw',
     height: '100dvh',
@@ -72,7 +72,7 @@ export default function AnalogClock() {
     backgroundColor: '#0b1220',
   };
 
-  const backgroundBaseStyle = {
+  const backgroundBaseStyle: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -92,21 +92,21 @@ export default function AnalogClock() {
 
   const backgroundTransform = 'rotate(0.5deg) scale(1.02)';
 
-  const backgroundVideoStyle = {
+  const backgroundVideoStyle: React.CSSProperties = {
     ...backgroundBaseStyle,
     opacity: videoPlayable && !videoFailed ? 1 : 0,
     filter: backgroundFilters,
     transform: backgroundTransform,
   };
 
-  const backgroundImageStyle = {
+  const backgroundImageStyle: React.CSSProperties = {
     ...backgroundBaseStyle,
     opacity: videoPlayable && !videoFailed ? 0 : 1,
     filter: backgroundFilters,
     transform: backgroundTransform,
   };
 
-  const handsContainerStyle = {
+  const handsContainerStyle: React.CSSProperties = {
     position: 'relative',
     zIndex: 2,
     width: '40vmin',
@@ -114,7 +114,7 @@ export default function AnalogClock() {
     pointerEvents: 'none',
   };
 
-  const handCommon = {
+  const handCommon: React.CSSProperties = {
     position: 'absolute',
     bottom: '50%',
     left: '50%',
@@ -130,21 +130,21 @@ export default function AnalogClock() {
     `,
   };
 
-  const hourStyle = {
+  const hourStyle: React.CSSProperties = {
     ...handCommon,
     width: '1.6vh',
     height: '12vmin',
     transform: `translate(-50%, 0) rotate(${hourDeg}deg)`,
   };
 
-  const minuteStyle = {
+  const minuteStyle: React.CSSProperties = {
     ...handCommon,
     width: '0.9vh',
     height: '28vmin',
     transform: `translate(-50%, 0) rotate(${minuteDeg}deg)`,
   };
 
-  const secondStyle = {
+  const secondStyle: React.CSSProperties = {
     ...handCommon,
     width: '0.4vh',
     height: '44vmin',
