@@ -45,7 +45,7 @@ export default function DigitalClock() {
     boxSizing: 'border-box',
   };
 
-  const digitStyle = {
+  const digitStyle: React.CSSProperties = {
     display: 'inline-flex',
     justifyContent: 'center',
     alignItems: 'center',

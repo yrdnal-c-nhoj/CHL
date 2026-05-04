@@ -83,7 +83,7 @@ export default function RococoDigitalClock() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundImage: `url(${backgroundImg})`,
+          backgroundImage: `url(${backgroundImg})`, // This is a string, compatible with React.CSSProperties
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           filter: 'brightness(1.2) contrast(1.4)',

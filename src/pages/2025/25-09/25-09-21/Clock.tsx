@@ -145,7 +145,7 @@ export default function AnalogClock() {
                     width: '100%',
                     height: '100%',
                     backgroundImage: `url(${src})`,
-                    backgroundSize: 'cover',
+            backgroundSize: 'cover' as const,
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
                     WebkitMaskImage: mask,

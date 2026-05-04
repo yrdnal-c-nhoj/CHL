@@ -88,7 +88,7 @@ export default function AnalogClock() {
           alt="hour"
           style={handStyle(hourDeg, 18, 24)}
         />
-
+        
         {/* Minute hand (restored) */}
         <img
           decoding="async"

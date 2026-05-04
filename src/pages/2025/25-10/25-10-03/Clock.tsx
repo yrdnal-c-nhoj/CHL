@@ -155,7 +155,7 @@ const AnalogClockWithImages: React.FC = () => {
             src={hourHand}
             alt="Hour hand"
             style={handImageStyle(hourAngle, '5%')}
-          />
+          /> // This is a string, compatible with React.CSSProperties
 
           {/* Minute hand */}
           <img

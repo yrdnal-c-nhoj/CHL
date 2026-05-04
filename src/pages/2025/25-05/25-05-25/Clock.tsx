@@ -90,7 +90,7 @@ const Clock: React.FC = () => {
     // border: fontReady ? '2px solid green' : '2px solid red',
   };
 
-  const fontFaceStyle = `
+  const fontFaceStyle: string = `
     @font-face {
       font-family: 'bot';
       src: url('${botFontUrl}') format('truetype');

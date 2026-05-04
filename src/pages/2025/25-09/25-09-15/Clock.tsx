@@ -10,7 +10,7 @@ const SkewFlatClock = ({
   verticalRepeats = 40,
   horizontalRepeats = 30,
 }) => {
-  const [time, setTime] = useState<any>('');
+  const [time, setTime] = useState<string>('');
   const [hue, setHue] = useState<number>(0);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
