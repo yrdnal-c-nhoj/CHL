@@ -115,7 +115,7 @@ export default function RotatedClockGrid() {
           gridAutoRows: `${digitSize}vh`,
           gap: `${gap}vh`,
           alignItems: 'center',
-          justifyItems: 'center',
+          justifyItems: 'center' as const,
         }}
       >
         {Array.from({ length: rowsNeeded }).map((_, rowIndex) => {

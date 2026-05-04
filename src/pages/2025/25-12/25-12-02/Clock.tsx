@@ -172,7 +172,7 @@ const RotatingBackground: React.FC = () => {
           const angle = i * 6;
           const tickStyle = {
             position: 'absolute',
-            width: `${tickWidth}px`,
+            width: `${tickWidth}px` as const,
             height: `${tickLength}px`,
             backgroundColor: 'white',
             top: '50%',

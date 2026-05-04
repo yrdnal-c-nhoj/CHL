@@ -74,7 +74,7 @@ const FStopClock: React.FC = () => {
       num.style.left = `${x}%`;
       num.style.top = `${y}%`;
       num.textContent = customDigits[i - 1];
-      const randomDelay = Math.random() * 10;
+      const randomDelay = Math.random() * 10; // This is a number, compatible with React.CSSProperties
       num.style.animation = `fstop-blurFocus${isSharp ? 'Sharp' : ''} 5s infinite ${randomDelay}s`;
       clock.appendChild(num);
     }

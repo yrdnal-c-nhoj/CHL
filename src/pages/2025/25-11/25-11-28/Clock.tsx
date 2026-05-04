@@ -81,7 +81,7 @@ export default function TimelineClock() {
   const percent = (seconds / 86400) * 100;
 
   const s: Record<string, React.CSSProperties | ((pos: number) => React.CSSProperties)> = {
-    page: {
+    page: { // This is a React.CSSProperties object
       width: '100vw',
       height: '100dvh',
       position: 'fixed',
@@ -91,8 +91,8 @@ export default function TimelineClock() {
       fontFamily: "'Li251128font', system-ui, sans-serif",
       overflow: 'hidden',
     },
-    timeline: { position: 'relative', width: '100%', height: '100%' },
-    bar: {
+    timeline: { position: 'relative', width: '100%', height: '100%' } as React.CSSProperties,
+    bar: { // This is a React.CSSProperties object
       position: 'absolute',
       inset: 0,
       backgroundImage: `url(${patternImg})`,
@@ -101,7 +101,7 @@ export default function TimelineClock() {
     },
     // MODIFIED: Ticks now follow a diagonal path regardless of orientation
     tick: (pos) => ({
-      position: 'absolute',
+      position: 'absolute' as const,
       left: `${pos}%`, // Position horizontally based on hour percentage
       top: `${pos}%`, // Position vertically based on hour percentage
       transform: 'translate(-50%, -50%)', // Centered on the diagonal point
@@ -112,7 +112,7 @@ export default function TimelineClock() {
       textShadow: `-1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red, -1px 0 0 red, 1px 0 0 red, 0 -1px 0 red, 0 1px 0 red`,
       userSelect: 'none',
     }),
-    // UNCHANGED: MAIN RED LINE (nowLine) position based on orientation
+    // UNCHANGED: MAIN RED LINE (nowLine) position based on orientation // This is a React.CSSProperties object
     nowLine: {
       position: 'absolute',
       top: isVertical ? `${percent}%` : 0,
@@ -130,7 +130,7 @@ export default function TimelineClock() {
       zIndex: 10,
       transition: 'all 0.4s ease',
     },
-    // UNCHANGED: COMET position and visibility based on orientation
+    // UNCHANGED: COMET position and visibility based on orientation // This is a React.CSSProperties object
     comet: {
       position: 'absolute',
       top: isVertical ? `${comet}%` : '50%',
@@ -155,10 +155,10 @@ export default function TimelineClock() {
   }));
 
   return (
-    <div style={s.page}>
+    <div style={s.page as React.CSSProperties}>
       <style>{fontStyles}</style>
-      <div style={s.timeline}>
-        <div style={s.bar} />
+      <div style={s.timeline as React.CSSProperties}>
+        <div style={s.bar as React.CSSProperties} />
         {/* Hour ticks (now diagonal) */}
         {ticks.map((t) => (
           <div key={t.hour} style={s.tick(t.pos)}>
@@ -166,9 +166,9 @@ export default function TimelineClock() {
           </div>
         ))}
         {/* Main glowing red line (horizontal or vertical) */}
-        <div style={s.nowLine} />
+        <div style={s.nowLine as React.CSSProperties} />
         {/* Flying comet highlight */}
-        <div style={s.comet} />
+        <div style={s.comet as React.CSSProperties} />
       </div>
     </div>
   );

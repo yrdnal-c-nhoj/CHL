@@ -94,7 +94,7 @@ export default function AnalogClock() {
           width: '150vw',
           height: '150vw',
           backgroundImage: `url(${bgImage})`,
-          backgroundSize: 'cover',
+          backgroundSize: 'cover' as const,
           backgroundPosition: 'center',
           animation: 'spinBackground 240s linear infinite',
           filter:

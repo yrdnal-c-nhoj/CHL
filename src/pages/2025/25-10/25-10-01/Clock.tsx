@@ -148,7 +148,7 @@ export default function ImageAnalogClock() {
           position: 'absolute',
           width: '100vw',
           height: '100dvh',
-          objectFit: 'cover',
+          objectFit: 'cover' as const,
           filter: 'saturate(0.3) contrast(1.1) brightness(1.3)',
           zIndex: -2,
         }}
@@ -166,7 +166,7 @@ export default function ImageAnalogClock() {
           position: 'absolute',
           width: '100vw',
           height: '100dvh',
-          objectFit: 'cover',
+          objectFit: 'cover' as const,
           zIndex: -3,
         }}
       />
@@ -192,7 +192,7 @@ export default function ImageAnalogClock() {
             width: clockSize,
             height: clockSize,
             backgroundImage: `url(${clockFace})`,
-            backgroundSize: 'cover',
+            backgroundSize: 'cover' as const,
             backgroundPosition: 'center',
             filter: 'grayscale(95%)',
             opacity: 0.9,

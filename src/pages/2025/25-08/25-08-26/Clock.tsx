@@ -141,7 +141,7 @@ export default function DigitalClock() {
   ];
 
   return (
-    <div style={styles.root}>
+    <div style={styles.root as React.CSSProperties}>
       {layers.map((layerProps, i) => {
         if (i === 1) {
           return (

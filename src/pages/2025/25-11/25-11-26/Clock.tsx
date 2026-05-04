@@ -73,7 +73,7 @@ function DigitalTime() {
     setLetters(lettersArr);
 
     // Fly in
-    lettersArr.forEach((_, i: number) => {
+    lettersArr.forEach((_letter: any, i: number) => {
       setTimeout(() => {
         setLetters((prev: any[]) => {
           const newArr = [...prev];

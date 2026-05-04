@@ -129,7 +129,7 @@ export default function MatrixRain() {
       ref={canvasRef}
       style={{
         display: 'block',
-        background: '#000000',
+        background: '#000000' as const,
         width: '100vw',
         height: '100dvh',
         position: 'fixed',

@@ -182,7 +182,7 @@ export default function AnalogClock() {
             pointerEvents: 'none',
           }}
         />
-
+        
         <img
           decoding="async"
           loading="lazy"

@@ -65,7 +65,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     position: 'relative',
   },
-  machine: {
+  machine: { // This is a React.CSSProperties object
     background: '#575656',
     border: '1.5rem solid #9a9595',
     borderRadius: '2rem',
@@ -110,7 +110,7 @@ const styles: Record<string, React.CSSProperties> = {
   digit: {
     display: 'inline-block',
     minWidth: '1ch',
-    textAlign: 'center',
+    textAlign: 'center' as const,
   },
   flickerOverlay: {
     content: "''",

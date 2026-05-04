@@ -7,7 +7,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 const DigitalClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [prevTime, setPrevTime] = useState(new Date());
-  const [isHorizontal, setIsHorizontal] = useState<any>(
+  const [isHorizontal, setIsHorizontal] = useState<boolean>(
     window.innerWidth >= 768,
   );
 
@@ -63,8 +63,8 @@ const DigitalClock: React.FC = () => {
     visibility: 'visible',
   };
 
-  const rowStyle = { display: 'flex' };
-  const digitBoxStyle = {
+  const rowStyle: React.CSSProperties = { display: 'flex' };
+  const digitBoxStyle: React.CSSProperties = {
     padding: '1rem 1.2rem',
     fontSize: '6rem',
     minWidth: '4rem',
@@ -73,7 +73,7 @@ const DigitalClock: React.FC = () => {
     position: 'relative',
     overflow: 'hidden',
   };
-  const digitStyle = {
+  const digitStyle: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -100,7 +100,11 @@ const DigitalClock: React.FC = () => {
     opacity: 0.8,
   };
 
-  const renderRow = (currentStr, previousStr, boxStyle) =>
+  const renderRow = (
+    currentStr: string,
+    previousStr: string,
+    boxStyle: React.CSSProperties,
+  ) =>
     replaceNine(currentStr)
       .split('')
       .map((digit, idx) => (

@@ -241,7 +241,7 @@ const ClockFace = memo(({ angles }: ClockFaceProps) => (
     style={{
       position: 'fixed',
       top: '50%',
-      left: '50%',
+              left: '50%' as const,
       width: CONFIG.clockSize,
       height: CONFIG.clockSize,
       transform: 'translate(-50%, -50%)',
